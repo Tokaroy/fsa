@@ -39,7 +39,12 @@ void cls_804A7A68::init() {
     field_0x268 = 0xFF;
 }
 
-static inline void scrollStep(JGeometry::TVec2f pos, s32& col, s32& row, JGeometry::TBox2f box) {
+// Moves the view one screen towards pos when it lies outside the visible box.
+static inline void scrollTo(JGeometry::TVec2f pos) {
+    s32 col = getGameView_802D6A9C()->field_0x14;
+    s32 row = getGameView_802D6A9C()->field_0x18;
+    JGeometry::TBox2f box;
+    box = getGameView_802D6A9C()->mVisibleBox;
     if (pos.x < box.i.x) {
         col--;
     } else if (pos.x >= box.f.x) {
@@ -50,13 +55,6 @@ static inline void scrollStep(JGeometry::TVec2f pos, s32& col, s32& row, JGeomet
     } else if (pos.y >= box.f.y) {
         row++;
     }
-}
-
-// Moves the view one screen towards pos when it lies outside the visible box.
-static inline void scrollTo(JGeometry::TVec2f pos) {
-    s32 col = getGameView_802D6A9C()->field_0x14;
-    s32 row = getGameView_802D6A9C()->field_0x18;
-    scrollStep(pos, col, row, getGameView_802D6A9C()->mVisibleBox);
     getGameView_802D6A9C()->fn_802D9FF4(col, row);
 }
 
