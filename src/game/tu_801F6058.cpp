@@ -666,7 +666,9 @@ s32 ActorManager_804A5800::fn_801F7664(const JGeometry::TVec3f* pos, f32* outDis
     f32 best = 1000000.0f;
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->field_0x1a8 == true) {
-            f32 dist = square(pos->x - mActors[i]->mPos.x) + square(pos->y - mActors[i]->mPos.y);
+            f32 dx = pos->x - mActors[i]->mPos.x;
+            f32 dy = pos->y - mActors[i]->mPos.y;
+            f32 dist = square(dx) + square(dy);
             if (dist < best) {
                 serial = mActors[i]->mSerial;
                 best = dist;
