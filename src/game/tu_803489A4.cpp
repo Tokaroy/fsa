@@ -6,7 +6,7 @@
 #include "game/act/tu_803489A4.h"
 #include "JSystem/JMath/JMath.h"
 
-// FIXME(shotgun): 99.46 %, scheduling + reloc-name
+// FIXME(shotgun): 99.76 %, scheduling; behaviour clean.
 void BeeFormation_804AC7B8::init() {
     mLife = 8;
     field_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -36,7 +36,7 @@ void BeeFormation_804AC7B8::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 92.5 %, missing/extra
+// FIXME(shotgun): 98.26 %, missing/extra; behaviour near.
 void BeeFormation_804AC7B8::update() {
     BeeManager_804AC810* mgr = (BeeManager_804AC810*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x250);
     if (field_0x262 == 1) {
@@ -52,7 +52,7 @@ void BeeFormation_804AC7B8::update() {
             field_0x264 = 1;
             field_0x240 = 10;
             if (field_0x230 != 4) {
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
+                field_0x3c.zero();
                 field_0x230 = 4;
             }
             return;
@@ -91,63 +91,81 @@ void BeeFormation_804AC7B8::update() {
     }
 
     if (field_0x230 != 4) {
-        if (field_0x230 == 0) {
-            if (mgr != NULL) {
-                field_0x268 = mgr->mPos;
-            }
-        } else if (field_0x244 < 0) {
-            field_0x230 = 4;
-        } else if (getPlayerLayer_8023DE58(field_0x244) < 8) {
-            field_0x274 = field_0x268;
-            field_0x268 = *getPlayerPos_8023E724(field_0x244);
-            s32 unk = fn_8022E970(field_0x244);
-            switch (fn_8022CAF8(field_0x244)) {
-            case 0:
-                if (unk > 1 && unk < 5) {
-                    field_0x268.x += 8.0f * (f32)(unk - 1);
-                }
-                break;
-            case 1:
-                if (unk > 1 && unk < 5) {
-                    field_0x268.y += 8.0f * (f32)(unk - 1);
-                }
-                break;
-            case 2:
-                if (unk == 2) {
-                    field_0x268.x += 8.0f;
-                } else if (unk >= 3 && unk < 5) {
-                    field_0x268.x += 8.0f;
-                    field_0x268.y += 8.0f;
-                }
-                break;
-            case 3:
-                if (unk != 1) {
-                    if (fn_802353AC(field_0x244) == true) {
-                        field_0x268 = field_0x274;
-                    } else {
-                        switch (field_0x244) {
-                        case 0:
-                            field_0x268.y += 16.0f;
-                            break;
+        if (field_0x230 != 0) {
+            if (field_0x244 >= 0) {
+                if (getPlayerLayer_8023DE58(field_0x244) < 8) {
+                    field_0x274 = field_0x268;
+                    field_0x268 = *getPlayerPos_8023E724(field_0x244);
+                    s32 unk = fn_8022E970(field_0x244);
+                    switch (fn_8022CAF8(field_0x244)) {
+                    case 0:
+                        switch (unk) {
                         case 1:
-                            field_0x268.x += 16.0f;
                             break;
                         case 2:
-                            field_0x268.x -= 16.0f;
-                            break;
                         case 3:
-                            field_0x268.y -= 16.0f;
+                        case 4:
+                            field_0x268.x += 8.0f * (f32)(unk - 1);
                             break;
                         }
+                        break;
+                    case 1:
+                        switch (unk) {
+                        case 1:
+                            break;
+                        case 2:
+                        case 3:
+                        case 4:
+                            field_0x268.y += 8.0f * (f32)(unk - 1);
+                            break;
+                        }
+                        break;
+                    case 2:
+                        switch (unk) {
+                        case 2:
+                            field_0x268.x += 8.0f;
+                            break;
+                        case 3:
+                        case 4:
+                            field_0x268.x += 8.0f;
+                            field_0x268.y += 8.0f;
+                            break;
+                        }
+                        break;
+                    case 3:
+                        if (unk != 1) {
+                            if (fn_802353AC(field_0x244) == true) {
+                                field_0x268 = field_0x274;
+                            } else {
+                                switch (field_0x244) {
+                                case 0:
+                                    field_0x268.y += 16.0f;
+                                    break;
+                                case 1:
+                                    field_0x268.x += 16.0f;
+                                    break;
+                                case 2:
+                                    field_0x268.x -= 16.0f;
+                                    break;
+                                case 3:
+                                    field_0x268.y -= 16.0f;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                        field_0x268 = *getPlayerPos_8023E724(fn_8022EA0C(field_0x244));
+                        break;
+                    case 5:
+                        break;
                     }
                 }
-                break;
-            case 4:
-                field_0x268 = *getPlayerPos_8023E724(fn_8022EA0C(field_0x244));
-                break;
-            case 5:
-                break;
+            } else {
+                field_0x230 = 4;
             }
+        } else if (mgr != NULL) {
+            field_0x268 = mgr->mPos;
         }
     }
 
@@ -161,7 +179,7 @@ void BeeFormation_804AC7B8::update() {
         addCalc2_801F71A4(&mPos.x, field_0x280.x, 0.4f, 5.0f);
         addCalc2_801F71A4(&mPos.y, field_0x280.y, 0.4f, 5.0f);
         if (field_0x3c.squared() < 0.01f) {
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
         }
     }
 
@@ -217,9 +235,7 @@ void BeeFormation_804AC7B8::update() {
         break;
     case 2:
     case 3:
-        if (field_0x244 < 0) {
-            field_0x230 = 1;
-        } else {
+        if (field_0x244 >= 0) {
             if (PSVECDistance(&mPos, &field_0x268) < 128.0f) {
                 field_0x298.x = field_0x280.x - mPos.x;
                 field_0x298.y = field_0x280.y - mPos.y;
@@ -248,6 +264,8 @@ void BeeFormation_804AC7B8::update() {
             } else {
                 field_0x248 = 2;
             }
+        } else {
+            field_0x230 = 1;
         }
         if (field_0x234 <= 0) {
             field_0x234 = 8;
@@ -262,7 +280,8 @@ void BeeFormation_804AC7B8::update() {
 
     field_0x238--;
     if (field_0x238 <= 0) {
-        field_0x23c = (field_0x23c + 1) & 1;
+        field_0x23c++;
+        field_0x23c &= 1;
         field_0x238 = 2;
     }
     if (field_0x234 > 0) {
@@ -270,7 +289,7 @@ void BeeFormation_804AC7B8::update() {
     }
 }
 
-// FIXME(shotgun): 97.29 %, scheduling+regalloc
+// FIXME(shotgun): 97.29 %, scheduling+regalloc; behaviour clean.
 void BeeFormation_804AC7B8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 1;
