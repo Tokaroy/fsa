@@ -104,6 +104,14 @@ void UnknownENDM_804AA0FC::init() {
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
 }
 
+// Counts the timer down to zero; true once it has run out.
+inline u8 UnknownENDM_804AA0FC::tickTimer() {
+    if (field_0x27c != 0) {
+        field_0x27c--;
+    }
+    return field_0x27c == 0 ? true : false;
+}
+
 // FIXME(shotgun): 64.10 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
@@ -139,20 +147,14 @@ void UnknownENDM_804AA0FC::update() {
         break;
     case 1:
         lbl_8053AF30->mDraw = true;
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 20, 0);
             field_0x27c = 60;
             field_0x23c = 2;
         }
         break;
     case 2:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (field_0x230 == 15) {
                 field_0x23c = 4;
             } else {
@@ -176,10 +178,7 @@ void UnknownENDM_804AA0FC::update() {
         break;
     }
     case 4:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (lbl_8046F280_104[field_0x230] != 0) {
                 lbl_8053AED0->fn_8043A268(lbl_8046F280_0[field_0x230], lbl_8046F280_44[field_0x230],
                                           lbl_8046F280_88[field_0x230], lbl_804D56A8[field_0x230].x,
@@ -247,7 +246,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x297 = 1;
         } else {
             field_0x298 = 0;
-            fn_802E94F4();
+            updateCamera();
             break;
         }
         field_0x28d = *field_0x290;
@@ -331,7 +330,7 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 200;
             }
         } else {
-            fn_802E94F4();
+            updateCamera();
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
@@ -354,10 +353,7 @@ void UnknownENDM_804AA0FC::update() {
         }
         break;
     case 8:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (field_0x295 == 2) {
                 field_0x23c = 0;
             } else {
@@ -391,7 +387,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x231 = 0;
         } else {
-            fn_802E94F4();
+            updateCamera();
         }
         break;
     }
@@ -473,8 +469,7 @@ bool UnknownENDM_804AA0FC::fn_802E9884(const JGeometry::TVec2f* pos) {
     return false;
 }
 
-// Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box
-// inside the limits, eases the zoom to its target and hands both to the camera.
+// Follows the target focus: closes in on (field_0x244, field_0x248) by easing, then updateCamera().
 // Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
 // FIXME: 90.80 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
@@ -505,9 +500,15 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
             field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
+    updateCamera();
+}
+
+// Keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
+inline void UnknownENDM_804AA0FC::updateCamera() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TVec2f focus(pos);
+    focus.add(offset);
     JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
     f32 halfW = view.getWidth() * 0.5f;
     f32 halfH = view.getHeight() * 0.5f;

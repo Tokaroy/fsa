@@ -15,6 +15,8 @@ public:
     /* 0x20 */ virtual void draw();
     bool fn_802E948C(f32 target, s32 frames);
     void fn_802E94F4();
+    void updateCamera();
+    u8 tickTimer();
     bool fn_802E9884(const JGeometry::TVec2f* pos);
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;
