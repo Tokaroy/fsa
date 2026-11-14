@@ -233,7 +233,7 @@ void Camera_804AA9E4::fn_8030DD20(const Mtx m) {
     GXLoadNrmMtxImm(tmp, GX_PNMTX9);
 }
 
-// FIXME(shotgun): 86.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.33 %, missing/extra + reloc-name; behaviour drift.
 // + regalloc
 void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraEntry_804AA8E8* entry,
                                   JGeometry::TBox2f* prevBox, JGeometry::TBox2f* outBox, f32* outDepth) {
@@ -319,35 +319,21 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(i);
-            if (entry->field_0x20 != 0) {
-                if (fn_8022CAF8(0) == 4 && field_0x1e8 == 0 && !fn_80234134(0)) {
-                    if (layer <= 8) {
-                        const JGeometry::TVec3f* pos = fn_8023E3B8(i);
-                        px = pos->x;
-                        py = pos->y;
-                    } else {
-                        if (i != 0 && gGameRoot_8053AAF8->field_0x7e == 0) {
-                            continue;
-                        }
-                        const JGeometry::TVec3f* pos = fn_8023E32C(i);
-                        px = pos->x;
-                        py = pos->y;
+            if (entry->field_0x20 != 0 &&
+                !(fn_8022CAF8(0) == 4 && field_0x1e8 == 0 && !fn_80234134(0))) {
+                if (i != 0 || (fn_8022CAF8(0) == 4 && !fn_80234134(0))) {
+                    if (field_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != fn_8022EA0C(0)) {
+                        continue;
                     }
+                }
+                if (layer <= 8) {
+                    const JGeometry::TVec3f* pos = fn_8023E3B8(i);
+                    px = pos->x;
+                    py = pos->y;
                 } else {
-                    if (i != 0 || (fn_8022CAF8(0) == 4 && !fn_80234134(0))) {
-                        if (field_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != fn_8022EA0C(0)) {
-                            continue;
-                        }
-                    }
-                    if (layer <= 8) {
-                        const JGeometry::TVec3f* pos = fn_8023E3B8(i);
-                        px = pos->x;
-                        py = pos->y;
-                    } else {
-                        const JGeometry::TVec3f* pos = fn_8023E32C(i);
-                        px = pos->x;
-                        py = pos->y;
-                    }
+                    const JGeometry::TVec3f* pos = fn_8023E32C(i);
+                    px = pos->x;
+                    py = pos->y;
                 }
             } else {
                 if (layer <= 8) {
