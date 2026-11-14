@@ -112,7 +112,7 @@ inline u8 UnknownENDM_804AA0FC::tickTimer() {
     return field_0x27c == 0 ? true : false;
 }
 
-// FIXME(shotgun): 64.10 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 64.26 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
