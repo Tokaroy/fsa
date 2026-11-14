@@ -14,7 +14,7 @@
 static const u32 lbl_80471840[] = {'FLME', 'BLZ2', 'NULL'};
 
 // 0x80324AC4.
-// FIXME(shotgun): 98.86 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour drift.
 void SlingshotSeed_804AB3A8::init() {
     field_0x98 = (field_0x90 >> 4) & 7;
     field_0x94 = (field_0x90 >> 8) & 3;
