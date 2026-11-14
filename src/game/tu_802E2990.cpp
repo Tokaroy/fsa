@@ -289,7 +289,7 @@ cls_804A9C20::~cls_804A9C20() {
 }
 
 // 0x802E2C28.
-// FIXME(shotgun): 90.40 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.24 %, missing/extra; behaviour drift.
 void cls_804A9C20::update() {
     if (field_0x230 < 1) {
         field_0x248++;
@@ -564,8 +564,6 @@ void cls_804A9C20::update() {
 }
 
 // 0x802E2998.
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME(shotgun): reloc-name only (string literal placement)
 void cls_804A9C20::draw() {
     if (field_0x230 <= 3) {
         f32 savedX = mPos.x;
