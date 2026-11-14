@@ -152,10 +152,13 @@ void TrickFloor2_804AA628::init() {
 // 8 stays down.
 void TrickFloor2_804AA628::update() {
     JGeometry::TVec3f saved = mPos;
+    JGeometry::TBox2f box;
+    JGeometry::TVec2f p;
     switch (mType) {
     case 0:
     case 1:
     case 6:
+    default:
         mPos.x += 32.0f;
         mPos.y += 32.0f;
         break;
@@ -170,10 +173,10 @@ void TrickFloor2_804AA628::update() {
     case 4:
     case 5: {
         field_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
-        JGeometry::TBox2f box = field_0x80;
+        box = field_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
-        JGeometry::TVec2f p(mPos.x, mPos.y);
+        p.set(mPos.x, mPos.y);
         box.addPos(p);
         fn_80239914(&box, field_0x4, mSerial);
         mPos = saved;
@@ -182,10 +185,10 @@ void TrickFloor2_804AA628::update() {
         break;
     }
     }
-    JGeometry::TVec2f p(mPos.x, mPos.y);
-    JGeometry::TBox2f box = mBox;
-    box.addPos(p);
-    s32 player = fn_8023AF14(&box, field_0x4, false, 4.5f);
+    JGeometry::TVec2f p2(mPos.x, mPos.y);
+    JGeometry::TBox2f box2 = mBox;
+    box2.addPos(p2);
+    s32 player = fn_8023AF14(&box2, field_0x4, false, 4.5f);
     if (player >= 0 && fn_8022F514(player) == true && fn_8022F478(player) == player) {
         player = -1;
     }
@@ -193,10 +196,10 @@ void TrickFloor2_804AA628::update() {
         player = -1;
     }
     s32 ball = fn_801F2718('SBAL');
-    fn_8023A89C(&box, field_0x4, &p);
+    fn_8023A89C(&box2, field_0x4, &p2);
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023A97C(i, &box, field_0x4, &p)) {
+        if (fn_8023A97C(i, &box2, field_0x4, &p2)) {
             count++;
         }
     }
