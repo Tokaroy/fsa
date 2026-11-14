@@ -321,11 +321,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x3c.y = 0.0f;
         field_0x3c.z = 0.0f;
         if (state != 0xB) {
-            bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
-            if (!clear) {
-                mPos.x = mSpawnPos.x;
-                mPos.y = mSpawnPos.y;
-                mPos.z = mSpawnPos.z;
+            if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+                mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
             }
         }
         if (field_0x340.mState != 0) {
@@ -365,11 +362,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             }
             mDrawEnabled = true;
             if (!(field_0x524.field_0x0 & 2)) {
-                bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
-                if (!clear) {
-                    mPos.x = mSpawnPos.x;
-                    mPos.y = mSpawnPos.y;
-                    mPos.z = mSpawnPos.z;
+                if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+                    mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
             field_0x3c.x = 0.0f;
@@ -507,11 +501,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (mState == 0xD) {
             mDrawEnabled = true;
             if (!(field_0x524.field_0x0 & 2)) {
-                bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
-                if (!clear) {
-                    mPos.x = mSpawnPos.x;
-                    mPos.y = mSpawnPos.y;
-                    mPos.z = mSpawnPos.z;
+                if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
+                    mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
             field_0x3c.x = 0.0f;
