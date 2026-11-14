@@ -294,7 +294,7 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     } else {
         mSoundPos = NULL;
     }
-    Vec posVec = field_0x38;
+    JGeometry::TVec3f posVec = field_0x38;
     Vec screenVec;
     fn_8045BA84(&posVec, &screenVec);
     if (mSoundPos != NULL) {
@@ -308,11 +308,15 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     JAISoundHandle* handle;
     if (soundTable->getLevelFlag(id)) {
         handle = getHandleSoundID(id);
-        if (handle != NULL) {
-            (*handle)->updateLifeTime(1);
-            if (mSoundPos != NULL) {
-                (*handle)->setPos(*mSoundPos);
+        if (handle == NULL) {
+            handle = getFreeHandle();
+            if (handle == NULL) {
+                handle = getLowPrioSound(id);
             }
+            if (handle == NULL) {
+                return NULL;
+            }
+            seMgr->startSound(id, handle, mSoundPos);
             JAISound* sound = handle->sound_;
             if (sound != NULL) {
                 if (mSoundPos != NULL) {
@@ -340,22 +344,33 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
                 case 0x400A3:
                     handle->sound_->getAuxiliary().moveVolume(field_0x4c, 0);
                     break;
+                case 0x3002D:
+                case 0x3003E:
+                case 0x30073:
+                case 0x400C1:
+                case 0x5000B:
+                case 0x50010: {
+                    static JMath::TRandom_fast_ lbl_8053AF6C(0);
+                    f32 pitch = 1.0f + (0.08f * lbl_8053AF6C.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
+                    handle->sound_->getAuxiliary().movePitch(pitch, 0);
+                    break;
+                }
                 case 0x4002F:
                     handle->sound_->getAuxiliary().movePitch(1.0f + field_0x48, 0);
                     break;
+                }
+                (*handle)->setLifeTime(1, true);
+                if (handle->sound_ != NULL && fade != 0) {
+                    (*handle)->fadeIn(fade);
                 }
             }
             fn_80455F40(handle);
             return handle;
         }
-        handle = getFreeHandle();
-        if (handle == NULL) {
-            handle = getLowPrioSound(id);
+        (*handle)->updateLifeTime(1);
+        if (mSoundPos != NULL) {
+            (*handle)->setPos(*mSoundPos);
         }
-        if (handle == NULL) {
-            return NULL;
-        }
-        seMgr->startSound(id, handle, mSoundPos);
         JAISound* sound = handle->sound_;
         if (sound != NULL) {
             if (mSoundPos != NULL) {
@@ -383,24 +398,9 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
             case 0x400A3:
                 handle->sound_->getAuxiliary().moveVolume(field_0x4c, 0);
                 break;
-            case 0x3002D:
-            case 0x3003E:
-            case 0x30073:
-            case 0x400C1:
-            case 0x5000B:
-            case 0x50010: {
-                static JMath::TRandom_fast_ lbl_8053AF6C(0);
-                f32 pitch = 1.0f + (0.08f * lbl_8053AF6C.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
-                handle->sound_->getAuxiliary().movePitch(pitch, 0);
-                break;
-            }
             case 0x4002F:
                 handle->sound_->getAuxiliary().movePitch(1.0f + field_0x48, 0);
                 break;
-            }
-            (*handle)->setLifeTime(1, true);
-            if (handle->sound_ != NULL && fade != 0) {
-                (*handle)->fadeIn(fade);
             }
         }
         fn_80455F40(handle);

@@ -100,8 +100,8 @@ public:
     /* 0x51 */ u8 field_0x51; // counter, counted down by fn_80456154
     /* 0x52 */ u8 field_0x52; // cleared by the constructor; not read by any caller yet
     /* 0x53 */ u8 field_0x53;
-    /* 0x54 */ u32 field_0x54; // constructor: 0x400A5
-    /* 0x58 */ u32 field_0x58; // constructor: 0x3006D
+    /* 0x54 */ JAISoundID field_0x54; // constructor: 0x400A5
+    /* 0x58 */ JAISoundID field_0x58; // constructor: 0x3006D
 }; // Size: 0x5C (every __nw__ of it)
 
 #define ACTOR_MANAGER_MAX_ACTORS 0x400
