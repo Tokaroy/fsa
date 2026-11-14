@@ -128,7 +128,7 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
-// FIXME: 90.98 %, different + reloc-name; behaviour drift.
+// FIXME: 91.00 %, different + reloc-name; behaviour drift.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -268,7 +268,8 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.36 %, missing/extra + reloc-name; regalloc and stack-slot order differ.
+// FIXME: 94.36 %, missing/extra + reloc-name; behaviour drift.
+// regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
     switch (arg) {
@@ -604,7 +605,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// FIXME: 75.80 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 82.44 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -915,7 +916,7 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.38 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.53 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1221,7 +1222,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 84.13 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 90.63 %, missing/extra + reloc-name; behaviour near.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
@@ -1338,7 +1339,7 @@ void cls_804AE088::fn_80368660() {
     }
 }
 
-// FIXME: 76.65 %, different + reloc-name; behaviour drift.
+// FIXME: 96.15 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
