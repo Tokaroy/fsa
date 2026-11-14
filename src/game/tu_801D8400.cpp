@@ -14,6 +14,29 @@
 
 void fn_801CCCC4(JGeometry::TVec3f* pos);
 
+static inline bool isColumnRight(cls_804A4C58* self) {
+    bool right = false;
+    if (self->mPos.x < self->field_0x2d4[self->field_0x334].x ||
+        (self->mPos.x == self->field_0x2d4[self->field_0x334].x && (self->mFlags & 0x2000))) {
+        right = true;
+    }
+    return right;
+}
+
+static inline bool needsTurn(cls_804A4C58* self) {
+    bool turn = false;
+    if (isColumnRight(self)) {
+        if (!(self->mFlags & 0x2000)) {
+            turn = true;
+        }
+    } else {
+        if (self->mFlags & 0x2000) {
+            turn = true;
+        }
+    }
+    return turn;
+}
+
 // 0x801DA504. The sequencer's constructor runs before the ceiling is set,
 // and the twelve TVec2f are built after it (the member initialisers run in
 // declaration order); the body then zeroes the fields at 0x334-0x33F and the
@@ -115,7 +138,7 @@ void cls_804A4C58::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME(shotgun): 97.94 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.99 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
@@ -252,7 +275,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 84.80 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.93 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -329,7 +352,7 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-// FIXME(shotgun): 90.68 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 90.87 %, missing/extra + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
@@ -397,17 +420,16 @@ bool cls_804A4C58::fn_801D95F4() {
     return spawned;
 }
 
-#ifdef NONMATCHING
-// FIXME(shotgun): 89.28 %, missing/extra + reloc-name.
+// Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
+// FIXME: 93.78 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::vfunc_0x90(u8 mapHit) {
-    (void)mapHit;
     switch (mState) {
     case 0:
         if (fn_801CD228(field_0x4)) {
             s32 p = 0;
             for (; p < 4; p++) {
-                if (std::fabsf(getPlayerPos_8023E724(p)->x - mPos.x) <= 80.0f &&
-                    std::fabsf(getPlayerPos_8023E724(p)->y - mPos.y) <= 80.0f) {
+                if (__fabsf(getPlayerPos_8023E724(p)->x - mPos.x) <= 80.0f ||
+                    __fabsf(getPlayerPos_8023E724(p)->y - mPos.y) <= 80.0f) {
                     break;
                 }
             }
@@ -433,7 +455,7 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
             field_0x33a = fn_801CD664(0x1E1) + 0x258;
             fn_801D9C58(4);
         } else if (mStateTimer == 6) {
-            mFlags &= ~0x6000;
+            mFlags &= ~0x4000;
             if (!(mFlags & 0x4000) && !(fn_801DAC6C()->field_0x84 & 1)) {
                 s32 n = 30 - fn_801DAC6C()->mCount;
                 s32 count = 10;
@@ -500,16 +522,15 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     case 9:
         if (mStateTimer >= 180) {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (int row = 0; row < 3; row++) {
+                    for (int col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -517,12 +538,7 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
+            if (isColumnRight(this)) {
                 mFlags |= 0x2000;
             } else {
                 mFlags &= ~0x2000;
@@ -553,23 +569,22 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     case 14:
         if (mSeq2a8.field_0x14 & 1) {
             s32 target = -1;
+            const f32 offsetX = -30.0f;
+            const f32 offsetY = -6.0f;
             JGeometry::TVec3f from;
             if (mFlags & 0x2000) {
-                from.x = mPos.x - -30.0f;
-                from.y = -6.0f + mPos.y;
-                from.z = 0.0f;
+                from.set(mPos.x - offsetX, offsetY + mPos.y, 0.0f);
             } else {
-                from.x = -30.0f + mPos.x;
-                from.y = -6.0f + mPos.y;
-                from.z = 0.0f;
+                from.set(offsetX + mPos.x, offsetY + mPos.y, 0.0f);
             }
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
             s32 player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-                if (0.000030517578f * std::fabsf((f32)(s16)(angle - heading)) <= 0.3f) {
+                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                                    (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+                if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
                     target = player;
                 }
             }
@@ -581,16 +596,15 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 }
             }
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (int row = 0; row < 3; row++) {
+                    for (int col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -598,22 +612,7 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            bool turn = false;
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(12);
             } else {
                 fn_801D9C58(11);
@@ -648,16 +647,15 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     case 18:
         if (mSeq2a8.field_0x14 & 1) {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (int row = 0; row < 3; row++) {
+                    for (int col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -665,22 +663,7 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            bool turn = false;
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(12);
             } else {
                 fn_801D9C58(11);
@@ -701,7 +684,6 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
         break;
     }
 }
-#endif
 
 void cls_804A4C58::vfunc_0x94() {
     bool play = false;
