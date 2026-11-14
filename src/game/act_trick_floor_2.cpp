@@ -94,7 +94,8 @@ static inline u16 tileAt(TrickFloor2_804AA628* self, f32 x, f32 y) {
     s32 layer = self->field_0x4;
     GameView_804A9950* gv = getGameView_802D6A9C();
     const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-    JGeometry::TBox2f vbox = view;
+    JGeometry::TBox2f vbox;
+    vbox = view;
     s32 tx = (s32)(x - vbox.i.x);
     s32 ty = (s32)(y - vbox.i.y);
     return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->field_0x4, tileIndex(tx, ty));
@@ -182,7 +183,8 @@ void TrickFloor2_804AA628::update() {
     case 4:
     case 5: {
         field_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
-        JGeometry::TBox2f box4 = field_0x80;
+        JGeometry::TBox2f box4;
+        box4 = field_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
         JGeometry::TVec2f p(mPos.x, mPos.y);
@@ -219,9 +221,6 @@ void TrickFloor2_804AA628::update() {
         field_0x230 = 2;
         break;
     }
-    case 1:
-        mAlive = false;
-        break;
     case 2:
         switch (mType) {
         case 0:
@@ -288,17 +287,18 @@ void TrickFloor2_804AA628::update() {
             s32 layer = field_0x4;
             GameView_804A9950* gv = getGameView_802D6A9C();
             const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-            JGeometry::TBox2f vbox = view;
+            JGeometry::TBox2f vbox;
+            vbox = view;
             for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
                 s32 tx = (s32)(x - vbox.i.x);
                 f32 y = mPos.y;
                 for (s32 j = 0; j < lbl_8046F7A4[mType]; j++) {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
-                    if (mType == 1) {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, index, lbl_8046F7C0[i][j]);
-                    } else {
+                    if (mType != 1) {
                         gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, index, field_0x250);
+                    } else {
+                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, index, lbl_8046F7C0[i][j]);
                     }
                     y += 16.0f;
                 }
@@ -323,9 +323,7 @@ void TrickFloor2_804AA628::update() {
         break;
     }
     case 7: {
-        if (field_0x244 != 0) {
-            field_0x244--;
-        } else {
+        if (field_0x244 == 0) {
             field_0x248 -= field_0x24c;
             field_0x24c = field_0x24c + 0.0012;
             if (field_0x248 <= -3.2f) {
@@ -350,6 +348,8 @@ void TrickFloor2_804AA628::update() {
                 }
                 mAlive = false;
             }
+        } else {
+            field_0x244--;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x7f4 == 0) {
@@ -358,6 +358,9 @@ void TrickFloor2_804AA628::update() {
         break;
     }
     case 8:
+        break;
+    case 1:
+        mAlive = false;
         break;
     }
 }

@@ -24,7 +24,7 @@ public:
     /* 0x248 */ f32 field_0x248; // 0, or -0.06 for types 4 and 5
     /* 0x24C */ f32 field_0x24c; // sink speed of states 6 and 7
     /* 0x250 */ u16 field_0x250; // the tile under the floor, read by update's state 0
-    /* 0x252 */ s16 field_0x252; // 12 when gGameRoot_8053AAF8->field_0x7f == 1, else 13
+    /* 0x252 */ u16 field_0x252; // 12 when gGameRoot_8053AAF8->field_0x7f == 1, else 13
 }; // Size: 0x254
 
 #endif
