@@ -340,16 +340,14 @@ bool fn_802DEB58(void) {
     return false;
 }
 
-// FIXME: 94.23 %, missing/extra; behaviour near.
-// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its mView (lwz 0xc)
-// for the second stage pair; ours takes the view once per pair and its
-// mView load is folded into the field_0x4 load.
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
+        GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
+        if (sub->mView->field_0x4 == 7 && sub->mView->field_0x8 == 0) {
             return true;
         }
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
+        if (gGameRoot_8053AAF8->field_0x4->mView->field_0x4 == 7 &&
+            gGameRoot_8053AAF8->field_0x4->mView->field_0x8 == 2) {
             return true;
         }
         return false;
@@ -2510,15 +2508,17 @@ void GameView_804A9950::fn_802D4874(s32 layer, u16 id, u64* outBit, u64* outMask
     *outMask = fn_802D7AC4(layer);
 }
 
-// FIXME: 96.72 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.48 %, regalloc-only; behaviour clean.
+// FIXME: regalloc only (slot/gGameRoot register swap); behaviour clean.
 // Scheduling and regalloc, as fn_802D4C10: the target adds the view to i * 2
 // before the slot row in the search loop.
 void GameView_804A9950::fn_802D4768(s32 layer, u16 id, s64* outSlot, u64* outMask) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     s32 i;
     for (i = 0x3C; i > 0; i -= 4) {
-        if (getGameView_802D6A9C()->field_0x2948[slot][i] == 0) {
-            getGameView_802D6A9C()->field_0x2948[slot][i] = id;
+        GameView_804A9950* view = getGameView_802D6A9C();
+        if (view->field_0x2948[slot][i] == 0) {
+            view->field_0x2948[slot][i] = id;
             break;
         }
     }
