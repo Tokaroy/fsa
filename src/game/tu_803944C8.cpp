@@ -1452,7 +1452,6 @@ void cls_804AF72C::fn_8039C630(u8 noun, s32 count) {
     }
 }
 
-// FIXME(shotgun): 97.05 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039C258(s32 number) {
     bool started = false;
     if (number < 0) {
@@ -1701,6 +1700,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
+// FIXME: 99.82 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
