@@ -1361,7 +1361,7 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x40() {
     startSound_801F0E34(0x50084, 0);
 }
 
-// FIXME(shotgun): 94.78 %, missing/extra; behaviour near.
+// FIXME(shotgun): scheduling+regalloc differs; behaviour matches.
 void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 count;
     if (mIndex == 0x14) {
@@ -1372,12 +1372,11 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        f32 z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        f32 y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        f32 x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        gem->field_0x3c.x = x;
-        gem->field_0x3c.y = y;
-        gem->field_0x3c.z = z;
+        JGeometry::TVec3f vel;
+        vel.z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        vel.y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        vel.x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        gem->field_0x3c = vel;
     }
     if ((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 3) {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
