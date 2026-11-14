@@ -215,7 +215,7 @@ void cls_804AE4B0::fn_803721F4() {
 #pragma auto_inline reset
 
 // Starts the next lane pattern `arg` (0-3): the four sprites slide in from their start offsets.
-// FIXME(shotgun): 94.18 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.29 %, missing/extra; behaviour drift.
 void cls_804AE4B0::fn_80371D50(s32 arg) {
     mTimer = 0x80;
     field_0x398 = 0;
@@ -274,7 +274,7 @@ void cls_804AE4B0::fn_80371D50(s32 arg) {
 }
 
 // Turns the sprites towards the nearest player, and lets the player pick one up.
-// FIXME(shotgun): 73.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 80.66 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::fn_80371A2C() {
     f32 nearest[4];
     nearest[0] = 49.0f;
@@ -357,7 +357,7 @@ void cls_804AE4B0::fn_80371A2C() {
 }
 
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
-// FIXME(shotgun): 70.29 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 70.52 %, missing/extra; behaviour drift.
 void cls_804AE4B0::fn_803717CC() {
     fn_803721F4();
     JGeometry::TBox2f region;
@@ -410,7 +410,7 @@ void cls_804AE4B0::fn_803717CC() {
 }
 
 // The second state: the camera pans to the lane tile; when it has arrived the message is shown.
-// FIXME(shotgun): 88.68 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.89 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_80371284() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
@@ -502,7 +502,7 @@ void cls_804AE4B0::fn_8037100C() {
     }
 }
 
-// FIXME(shotgun): 95.63 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.83 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_80370C84() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
@@ -558,7 +558,7 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-// FIXME(shotgun): 89.19 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.74 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -584,7 +584,7 @@ void cls_804AE4B0::fn_80370A7C() {
     }
 }
 
-// FIXME(shotgun): 91.43 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.41 %, missing/extra; behaviour drift.
 void cls_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
@@ -650,7 +650,7 @@ void cls_804AE4B0::fn_803706AC() {
     }
 }
 
-// FIXME(shotgun): 90.61 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 90.76 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_803705A0() {
     fn_803703C8();
     if (field_0x324.y > 1680.0f) {
@@ -690,7 +690,7 @@ void cls_804AE4B0::fn_803704E8() {
 
 // Not auto-inlined: the original state handlers call it with a plain bl (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 99.44 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.65 %, regalloc-only; behaviour clean.
 // (literal pool names)
 void cls_804AE4B0::fn_803703C8() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
@@ -740,7 +740,7 @@ void cls_804AE4B0::guidePlayer_80370764() {
     }
 }
 
-// FIXME: 92.83 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 92.92 %, missing/extra + reloc-name; behaviour near.
 // FIXME(shotgun): extra li for the match flag init; literal reloc names differ
 s32 cls_804AE4B0::fn_80370200() {
     s32 idx = field_0x39c;
@@ -793,7 +793,7 @@ s32 cls_804AE4B0::fn_80370200() {
 
 // Not auto-inlined: fn_8037100C calls it with a plain bl.
 #pragma auto_inline off
-// FIXME(shotgun): 75.18 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 75.22 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_80370020() {
     if (field_0x3a8 == 0) {
         if (field_0x3ac == 0) {
