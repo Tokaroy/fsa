@@ -853,19 +853,26 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 74.63 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.97 %, missing/extra + reloc-name; behaviour near.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
         field_0x440--;
     }
-    s32 t0 = 150 - lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
-    s32 t1 = 150 - lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2] - lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
+    s16 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
+    s16 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
+    s16 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
+    s16 e = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
+    s16 g = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
+    s16 h = lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2];
+    s32 t0 = 150 - a;
+    s32 t1 = 150 - a - b;
     s32 t2 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2];
-    s32 t3 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
-    s32 t4 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2] -
-             lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
-    if (field_0x440 == 0) {
+    s32 t3 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a;
+    s32 t4 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a -
+             b;
+    s32 timer = field_0x440;
+    if (timer == 0) {
         if (field_0x450 == 1) {
             if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0x106)) {
                 field_0x4b8[0] = 1;
@@ -900,46 +907,42 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
             field_0x4c1 = 3;
         }
     } else {
-        if (field_0x440 >= t0) {
+        if (timer >= t0) {
             f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
-            s32 d = field_0x440 - t0;
-            s32 dur = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
-            f32 offset = (200.0f + (f32)lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2]) *
-                         (1.0f - (f32)(d * d) / (f32)(dur * dur));
-            field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c - 200.0f + offset);
-            f32 rate = 1.0f - (f32)(field_0x440 - t0) / (f32)lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
+            field_0x10[field_0x450]->search('Pmmwk02')->move(
+                x, field_0x41c - 200.0f +
+                       (200.0f + (f32)c) * (1.0f - (f32)((timer - t0) * (timer - t0)) / (f32)(a * a)));
+            f32 rate = 1.0f - (f32)(field_0x440 - t0) / (f32)a;
             if (field_0x450 < 2) {
                 for (int i = 0; i < 13; i++) {
                     field_0x10[field_0x450]->search(lbl_80476208[i])->setAlpha(field_0x4c9[i] * rate);
                 }
             }
-        } else if (field_0x440 >= t1) {
+        } else if (timer >= t1) {
             f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
-            s32 d = field_0x440 - t1;
-            s32 dur = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
-            f32 offset = (f32)lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2] * ((f32)(d * d) / (f32)(dur * dur));
-            field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c + offset);
+            field_0x10[field_0x450]->search('Pmmwk02')->move(
+                x, field_0x41c + (f32)c * ((f32)((timer - t1) * (timer - t1)) / (f32)(b * b)));
         }
-        if (field_0x440 <= t2) {
-            if (field_0x440 >= t3) {
+        if (timer <= t2) {
+            if (timer >= t3) {
                 s32 d = field_0x440 - t3;
-                s32 dur = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
-                f32 offset = (40.0f + (f32)lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2]) *
+                s32 dur = e;
+                f32 offset = (40.0f + (f32)h) *
                              (1.0f - (f32)(d * d) / (f32)(dur * dur));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
-                    f32 rate = 1.0f - (f32)(field_0x440 - t3) / (f32)lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
+                    f32 rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
                     if (field_0x450 < 2) {
                         for (int j = 0; j < 3; j++) {
                             field_0x10[field_0x450]->search(lbl_80476270[i][j])->setAlpha(field_0x4d6[j] * rate);
                         }
                     }
                 }
-            } else if (field_0x440 >= t4) {
+            } else if (timer >= t4) {
                 s32 d = field_0x440 - t4;
-                s32 dur = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
-                f32 offset = (f32)lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2] * ((f32)(d * d) / (f32)(dur * dur));
+                s32 dur = g;
+                f32 offset = (f32)h * ((f32)(d * d) / (f32)(dur * dur));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
