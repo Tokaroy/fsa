@@ -192,8 +192,8 @@ static inline void startSwing(TennisShop_804A2BF4* self) {
 
 // FIXME(shotgun): 94.73 %, missing/extra + reloc-name; behaviour drift.
 void TennisShop_804A2BF4::fn_801A17B8() {
-    JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f talkPos = mPos;
+    JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
     addCalc2_801F71A4(&field_0x33c, 0.0f, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x324[0], field_0x324[3], 0.2f, 0.1f);
     addCalc2_801F71A4(&field_0x324[1], field_0x324[4], 0.2f, 0.1f);
@@ -219,7 +219,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             if (p >= 0) {
                 s32 id = 0x3C;
                 if (mEmitters[p] == NULL) {
-                    mEmitters[p] = spawnEmitter_8013CC50(field_0x4, getPlayerPos_8023E724(p), 0x565, 0, -1, NULL, NULL, true, 0.5f);
+                    mEmitters[p] = spawnEmitter_8013CC50(getField_0x4(), getPlayerPos_8023E724(p), 0x565, 0, -1, NULL, NULL, true, 0.5f);
                     fn_80230FD0(p, 0x2002A);
                 }
                 field_0x2ac[p]++;
