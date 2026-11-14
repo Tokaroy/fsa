@@ -6,8 +6,7 @@ A function below 100 % counts as structurally done when tools/try.py's classifie
 scheduling+regalloc, with or without reloc-name: every instruction the same apart
 from register numbers and order. A function whose instructions are identical and
 only relocation names differ (class reloc-name) counts too, but only when every
-differing relocation is ours @NNN against the target's lbl_XXXXXXXX with the same
-bytes in both objects (naming_only); otherwise it is reloc-name-unverified. "Structurally
+differing relocation pair is verified (below); otherwise it is reloc-name-unverified. "Structurally
 close" is missing/extra with |instruction difference| <= 4 and >= 85 %, alone or together with
 differences that count as done on their own (a verified reloc-name).
 
@@ -28,11 +27,26 @@ and relocation setting as report_honest.json: build/G4SE01/honest, where the
 weak-duplicate stripping already applies), in parallel, and caches each unit's
 result by the mtimes of its objects (build/G4SE01/structural_cache.json).
 
-A reloc-name difference counts only when every differing relocation pair is
-ours @NNN against the target's lbl_XXXXXXXX, no addend, and the two symbols'
-bytes read from the two objects are equal (one a prefix of the other, not .bss).
-Anything else could be a wrong call, global or value, so that function is class
-"... reloc-name-unverified" and is left out of the structural total.
+A reloc-name difference counts only when every differing relocation pair (both
+sides have a relocation, of the same type) is verified one of two ways:
+  value    ours @NNN+k against the target's lbl_XXXXXXXX+m: the bytes each reaches
+           are equal (the shorter a prefix of the other), no relocation patches
+           them, neither is .bss/.sbss (value_pair). A literal is its value.
+  address  both resolve to the same final address, with the same addend
+           (Addresses): a target symbol its own object defines sits at the unit's
+           splits.txt section start + its offset, and symbols.txt must list that
+           name at that address; an undefined one (either side) is the linked
+           ELF's (build/G4SE01/fsa_game_code.elf) unique global/weak definition of
+           that name, which symbols.txt must not contradict.
+A symbol our object defines has no proven address (its layout is what is being
+measured), so it passes only by value: a same-offset literal with another value
+(5.0f for 10.0f) or ours const data in .rodata against the target's .data stays
+unverified. So does a name the link doesn't define (a provisional fn_80xxxxxx
+whose mangling differs from symbols.txt's: the address is only the writer's
+claim and the object wouldn't link), a missing relocation, and a differing type
+or addend. Such a function is class "... reloc-name-unverified" and is left out of
+the structural total. The cache holds the per-object part; the address check
+runs on every invocation against the current link and config.
 
 Usage: python3 tools/structural.py [-j N] [--no-cache]
 Run after `ninja build/G4SE01/report_honest.json` (ninja runs it as
@@ -46,6 +60,7 @@ import os
 import re
 import subprocess
 import sys
+from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -55,7 +70,7 @@ REPORT = OUT / "report_honest.json"
 CACHE = OUT / "structural_cache.json"
 DONE = {"regalloc-only", "scheduling", "scheduling+regalloc", "reloc-name"}
 CLOSE_INSNS, CLOSE_PCT = 4, 85.0
-VERSION = 3  # bump when the classification changes
+VERSION = 4  # bump when the classification changes
 
 
 LOCAL_LIT = re.compile(r"^@\d+$")
@@ -90,26 +105,187 @@ def read_symbols(path):
     return out
 
 
-def same_value(a, b):
-    """Symbol entry lists a (target) and b (ours): equal bytes (shorter is a prefix), not .bss."""
-    for da, sa in a:
-        for db, sb in b:
-            if da is None or db is None or "bss" in sa or "bss" in sb or not da or not db:
+def read_elf(path, relocations=True):
+    """{name: [Sym]} of an ELF32 big-endian object or executable, every named symbol
+    except files and sections. Sym.data is None for NOBITS and undefined symbols;
+    Sym.relocs is the sorted offsets (from the symbol's start) of the relocations
+    that patch the symbol's bytes (empty with relocations=False)."""
+    import bisect
+    import struct
+    d = Path(path).read_bytes()
+    shoff, = struct.unpack_from(">I", d, 0x20)
+    shentsize, shnum, shstrndx = struct.unpack_from(">HHH", d, 0x2E)
+    secs = [struct.unpack_from(">IIIIIIIIII", d, shoff + i * shentsize) for i in range(shnum)]
+
+    def cstr(off):
+        return d[off:d.index(b"\0", off)].decode(errors="replace")
+
+    shstr = secs[shstrndx][4]
+    names = [cstr(shstr + sh[0]) for sh in secs]
+    tables = {}  # symtab section index -> [(name, value, size, info, shndx)]
+    for i, sh in enumerate(secs):
+        if sh[1] == 2:
+            strtab = secs[sh[6]][4]
+            tables[i] = [(cstr(strtab + nm) if nm else "", val, size, info, shndx)
+                         for nm, val, size, info, other, shndx in
+                         (struct.unpack_from(">IIIBBH", d, sh[4] + k * 16) for k in range(sh[5] // 16))]
+    relocs = {}  # patched section index -> sorted relocation offsets
+    for sh in secs if relocations else ():
+        if sh[1] in (4, 9):  # SHT_RELA, SHT_REL
+            ent = 12 if sh[1] == 4 else 8
+            relocs.setdefault(sh[7], []).extend(
+                struct.unpack_from(">I", d, sh[4] + k * ent)[0] for k in range(sh[5] // ent))
+    for v in relocs.values():
+        v.sort()
+    out = {}
+    for st in tables.values():
+        for nm, val, size, info, shndx in st:
+            if not nm or (info & 0xF) in (3, 4):
                 continue
+            sec = names[shndx] if 0 < shndx < 0xFF00 else None
+            data = None
+            if sec is not None and secs[shndx][1] != 8:
+                data = d[secs[shndx][4] + val: secs[shndx][4] + val + size]
+            rs = relocs.get(shndx, [])
+            rl = [o - val for o in rs[bisect.bisect_left(rs, val):bisect.bisect_left(rs, val + size)]]
+            out.setdefault(nm, []).append(Sym(shndx, sec, val, size, info >> 4, data, rl))
+    return out
+
+
+Sym = namedtuple("Sym", "shndx sec value size bind data relocs")
+
+
+def defined(ents):
+    return [e for e in ents if e.shndx != 0]
+
+
+def value_pair(t, ta, o, oa, tsyms, osyms):
+    """Ours @NNN(+oa) against the target's lbl_XXXXXXXX(+ta): the bytes each reference
+    reaches are equal (the shorter one a prefix of the other) and no relocation
+    patches them; neither in .bss/.sbss nor empty."""
+    if not (LOCAL_LIT.match(o) and ORIG_LBL.match(t)):
+        return False
+    for a in defined(tsyms.get(t, [])):
+        for b in defined(osyms.get(o, [])):
+            if a.data is None or b.data is None or "bss" in a.sec or "bss" in b.sec:
+                continue
+            da, db = a.data[ta:], b.data[oa:]
             n = min(len(da), len(db))
-            if da[:n] == db[:n]:
+            if not n or da[:n] != db[:n]:
+                continue
+            # bytes a relocation patches aren't the value; their targets are names local
+            # to each object, so any relocation in the compared range fails the check
+            if not any(ta <= x < ta + n for x in a.relocs) and not any(oa <= x < oa + n for x in b.relocs):
                 return True
     return False
 
 
-def naming_only(pairs, tsyms=None, osyms=None):
-    """True when every differing relocation is a compiler-local literal/data
-    object (ours @NNN) against the target's unnamed data label (lbl_XXXXXXXX),
-    no addend on either side: just naming. A call, a named global, or a
-    differing addend is a possible wrong target and stays unverified."""
-    return bool(pairs) and all(
-        LOCAL_LIT.match(b) and ORIG_LBL.match(a) and same_value(tsyms.get(a, []), osyms.get(b, []))
-        for a, b in pairs)
+def addr_key(side, name, syms):
+    """What fixes the address a relocation to `name` reaches, independent of other units:
+    ["def", section, offset] for a symbol the target object defines (dtk's split:
+    its section starts at the unit's splits.txt address), ["und", name] for an
+    undefined one (the link resolves it by name). None for a symbol our object
+    defines: its address depends on our own, unproven layout."""
+    ents = syms.get(name, [])
+    d = defined(ents)
+    if side == "ours":
+        return ["und", name] if ents and not d else None
+    if len(d) == 1 and d[0].sec is not None:
+        return ["def", d[0].sec, d[0].value, name]
+    return ["und", name] if ents and not d else None
+
+
+def rich_pairs(lsym, rsym, left, right):
+    """[target name, addend, reloc type, our name, addend, type] (names None without a
+    relocation) for each aligned row where objdiff marks the relocation argument as
+    different; the same rows as try.py's reloc_pairs."""
+    pairs = []
+    for a, b in zip(lsym.get("instructions", []), rsym.get("instructions", [])):
+        ia, ib = a.get("instruction"), b.get("instruction")
+        if not (ia and ib) or not (a.get("diff_kind") or b.get("diff_kind")):
+            continue
+        marked = False
+        for ins, row in ((ia, a), (ib, b)):
+            k = next((n for n, p in enumerate(x for x in ins.get("parts", []) if "arg" in x)
+                      if "reloc" in p["arg"]), None)
+            marked |= k is not None and k < len(row.get("arg_diff", [])) and bool(row["arg_diff"][k])
+        if not marked:
+            continue
+        rec = []
+        for ins, side in ((ia, left), (ib, right)):
+            r = ins.get("relocation")
+            t = r.get("target_symbol") if r else None
+            if r is None or t is None or t >= len(side["symbols"]):
+                rec += [None, 0, None]
+            else:
+                rec += [side["symbols"][t]["name"], int(r.get("addend") or 0), r.get("type")]
+        if rec not in pairs:
+            pairs.append(rec)
+    return pairs
+
+
+def pending_pairs(pairs, tsyms, osyms):
+    """The pairs value_pair can't verify, as [target key, addend, our key, addend] for
+    verify_addresses; None when one can't be verified at all (no pairs found, a
+    missing relocation, differing relocation types or addends, a symbol our object
+    defines)."""
+    if not pairs:
+        return None
+    out = []
+    for t, ta, tt, o, oa, ot in pairs:
+        if t is None or o is None or tt != ot:
+            return None
+        if value_pair(t, ta, o, oa, tsyms, osyms):
+            continue
+        tk, ok = addr_key("target", t, tsyms), addr_key("ours", o, osyms)
+        if tk is None or ok is None or ta != oa:
+            return None
+        if [tk, ta, ok, oa] not in out:
+            out.append([tk, ta, ok, oa])
+    return out
+
+
+class Addresses:
+    """Final addresses: the linked ELF's global and weak symbols (a name defined at two
+    addresses resolves to none), symbols.txt (it must agree where it names the symbol),
+    and splits.txt's section starts for the target objects' own symbols."""
+
+    def __init__(self):
+        self.link = {}
+        for n, ents in read_elf(OUT / "fsa_game_code.elf", relocations=False).items():
+            vals = {e.value for e in ents if e.bind in (1, 2) and e.shndx != 0}
+            self.link[n] = vals.pop() if len(vals) == 1 else None
+        self.symtxt = {}
+        for line in Path("config/G4SE01/symbols.txt").read_text().splitlines():
+            m = re.match(r"(\S+) = [^:\s]+:0x([0-9A-Fa-f]+);", line)
+            if m:
+                self.symtxt.setdefault(m.group(1), set()).add(int(m.group(2), 16))
+        self.splits, cur = {}, None
+        for line in Path("config/G4SE01/splits.txt").read_text().splitlines():
+            if line and not line[0].isspace() and line.endswith(":"):
+                cur = self.splits.setdefault(re.sub(r"\.[A-Za-z]+$", "", line[:-1]), {})
+            elif cur is not None:
+                m = re.match(r"\s+(\S+)\s+start:0x([0-9A-Fa-f]+)\s+end:0x", line)
+                if m:
+                    cur.setdefault(m.group(1), []).append(int(m.group(2), 16))
+
+    def resolve(self, unit, key):
+        if key[0] == "def":
+            starts = self.splits.get(unit.split("/", 1)[-1], {}).get(key[1], [])
+            a = starts[0] + key[2] if len(starts) == 1 else None
+            return a if a is not None and a in self.symtxt.get(key[3], ()) else None
+        # a name the link doesn't define (e.g. ours fn_803BBF08 against the target's
+        # fn_803BBF08__FP12CARDFileInfoPvPvUlUl) resolves to nothing: the address in a
+        # provisional name is only the writer's claim, and the object wouldn't link
+        name = key[1]
+        a = self.link.get(name)
+        if a is not None and name in self.symtxt and a not in self.symtxt[name]:
+            return None
+        return a
+
+    def same(self, unit, tkey, okey):
+        a, b = self.resolve(unit, tkey), self.resolve(unit, okey)
+        return a is not None and a == b
 
 
 def load_try():
@@ -163,17 +339,32 @@ def diff_unit(T, u):
         r = right["symbols"][r] if r is not None else None
         size = int(s.get("size", 0))
         if r is None:
-            res[s["name"]] = [0.0, size, "missing", 0]
+            res[s["name"]] = [0.0, size, "missing", 0, []]
             continue
         t, o = T.insn_list(left, s), T.insn_list(right, r)
         rp = T.reloc_pairs(s, r, left, right)
         if rp and tsyms is None:
-            tsyms, osyms = read_symbols(u["target_path"]), read_symbols(u["base_path"])
+            tsyms, osyms = read_elf(u["target_path"]), read_elf(u["base_path"])
         cls, _ = T.classify(t, o, rp)
-        if "reloc-name" in cls and not naming_only(rp, tsyms, osyms):
-            cls = cls.replace("reloc-name", "reloc-name-unverified")
-        res[s["name"]] = [float(s.get("match_percent") or 0), size, cls, len(o) - len(t)]
+        pending = []
+        if "reloc-name" in cls:
+            pending = pending_pairs(rich_pairs(s, r, left, right), tsyms, osyms)
+            if pending != []:  # main() may still verify these by address
+                cls = cls.replace("reloc-name", "reloc-name-unverified")
+        res[s["name"]] = [float(s.get("match_percent") or 0), size, cls, len(o) - len(t), pending or []]
     return res
+
+
+def verify_addresses(results):
+    """Turn "reloc-name-unverified" into "reloc-name" where every remaining pair
+    resolves to the same final address on both sides (Addresses)."""
+    addrs = None
+    for unit, fns in results.items():
+        for v in fns.values():
+            if v[4] and "reloc-name-unverified" in v[2]:
+                addrs = addrs or Addresses()
+                if all(addrs.same(unit, tk, ok) for tk, ta, ok, oa in v[4]):
+                    v[2] = v[2].replace("reloc-name-unverified", "reloc-name")
 
 
 def main():
@@ -202,6 +393,9 @@ def main():
             cache[u["name"]] = {"stamp": unit_stamp(u), "fns": fns}
     live = {u["name"] for u in units}
     CACHE.write_text(json.dumps({k: v for k, v in cache.items() if k in live}, separators=(",", ":")))
+    # the cache keeps the per-object result; addresses come from the current link and config
+    results = {name: {f: list(v) for f, v in fns.items()} for name, fns in results.items()}
+    verify_addresses(results)
 
     m = json.loads(REPORT.read_text())["measures"]
     honest = {"functions": m.get("matched_functions", 0), "code": int(m.get("matched_code", 0))}
@@ -217,7 +411,7 @@ def main():
     for name, fns in sorted(results.items()):
         if fns:
             out_units[name] = {f: v[:3] for f, v in fns.items()}
-        for fn, (pct, size, cls, ninsn) in fns.items():
+        for fn, (pct, size, cls, ninsn, _) in fns.items():
             c = classes.setdefault(cls, [0, 0])
             c[0] += 1
             c[1] += size
