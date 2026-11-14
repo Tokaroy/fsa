@@ -853,7 +853,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 74.63 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.97 %, missing/extra + reloc-name; behaviour near.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
