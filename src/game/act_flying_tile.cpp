@@ -175,7 +175,7 @@ bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return true;
 }
 
-// FIXME: 93.76 %, missing/extra; behaviour drift.
+// FIXME: 93.97 %, scheduling+regalloc; behaviour drift.
 void FlyingTile_804AC100::update() {
     u16 angle = 0;
     u8 hitWall = 0;
