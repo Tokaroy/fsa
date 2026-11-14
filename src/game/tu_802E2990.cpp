@@ -110,15 +110,8 @@ cls_804A9C20::~cls_804A9C20() {
     }
 }
 
-// The hit box `box` (relative to mPos) the actor shifts to mPos and hands to fn_80239914.
-static inline void shiftBox(JGeometry::TBox2f* out, const JGeometry::TBox2f& box, const JGeometry::TVec3f& pos) {
-    out->set(box);
-    JGeometry::TVec2f shift(pos.x, pos.y);
-    out->addPos(shift);
-}
-
 // 0x802E2C28.
-// FIXME(shotgun): 83.82 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 90.40 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A9C20::update() {
     if (field_0x230 < 1) {
         field_0x248++;
@@ -149,9 +142,9 @@ void cls_804A9C20::update() {
                 mPos = field_0x258[i];
                 mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
                 JGeometry::TBox2f area;
-                shiftBox(&area, mBox, mPos);
-                JGeometry::TVec2f xy;
-                xy.set(mPos.x, mPos.y);
+                JGeometry::TVec2f xy(mPos.x, mPos.y);
+                area.set(mBox);
+                area.addPos(xy);
                 s32 player = fn_8023B8E4(&area, field_0x4, &xy, true);
                 if (field_0x288[i] == 1) {
                     if (player >= 0 && fn_80237060(player) == 2) {
@@ -205,73 +198,90 @@ void cls_804A9C20::update() {
                     }
                 }
                 field_0x80.set(-10.0f, -10.0f, 10.0f, 10.0f);
-                shiftBox(&area, field_0x80, mPos);
+                area = field_0x80;
+                xy.set(mPos.x, mPos.y);
+                area.addPos(xy);
                 fn_80239914(&area, field_0x4, mSerial);
                 if (field_0x2b8[i] != 0) {
                     switch (field_0x238) {
-                    case 4:
-                        if (i < 3) {
-                            if (i != 1) {
-                                for (s32 j = 0; j < 3; j++) {
-                                    mBox.set(lbl_8046EA10.hurtMode4[i][j]);
-                                    shiftBox(&area, mBox, mPos);
-                                    if (!fn_801F2B7C(field_0x114, -1, 4)) {
-                                        field_0x80.set(lbl_8046EA10.attackMode4[i][j]);
-                                        shiftBox(&area, field_0x80, mPos);
-                                        fn_80239914(&area, field_0x4, mSerial);
-                                    }
-                                }
-                            } else {
-                                mBox.set(0.0f, -8.0f, 64.0f, 8.0f);
-                                shiftBox(&area, mBox, mPos);
-                                if (!fn_801F2B7C(field_0x114, -1, 4)) {
-                                    field_0x80.set(0.0f, -7.0f, 64.0f, 7.0f);
-                                    shiftBox(&area, field_0x80, mPos);
-                                    fn_80239914(&area, field_0x4, mSerial);
-                                }
-                            }
+                    default:
+                        mBox.set(lbl_8046EA10.hurtDefault[field_0x238][i]);
+                        area.set(mBox);
+                        xy.set(mPos.x, mPos.y);
+                        area.addPos(xy);
+                        if (!fn_801F2B7C(field_0x114, -1, 0x1A)) {
+                            field_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i]);
+                            area.set(field_0x80);
+                            xy.set(mPos.x, mPos.y);
+                            area.addPos(xy);
+                            fn_80239914(&area, field_0x4, mSerial);
                         }
                         break;
                     case 1:
                         for (s32 j = 0; j < 3; j++) {
                             mBox.set(lbl_8046EA10.hurtMode1[i][j]);
-                            shiftBox(&area, mBox, mPos);
+                            area.set(mBox);
+                            xy.set(mPos.x, mPos.y);
+                            area.addPos(xy);
                             if (!fn_801F2B7C(field_0x114, -1, 0x1A)) {
                                 field_0x80.set(lbl_8046EA10.attackMode1[i][j]);
-                                shiftBox(&area, field_0x80, mPos);
+                                area.set(field_0x80);
+                                xy.set(mPos.x, mPos.y);
+                                area.addPos(xy);
                                 fn_80239914(&area, field_0x4, mSerial);
+                            }
+                        }
+                        break;
+                    case 4:
+                        if (i < 3) {
+                            if (i != 1) {
+                                for (s32 j = 0; j < 3; j++) {
+                                    mBox.set(lbl_8046EA10.hurtMode4[i][j]);
+                                    area.set(mBox);
+                                    xy.set(mPos.x, mPos.y);
+                                    area.addPos(xy);
+                                    if (!fn_801F2B7C(field_0x114, -1, 4)) {
+                                        field_0x80.set(lbl_8046EA10.attackMode4[i][j]);
+                                        area.set(field_0x80);
+                                        xy.set(mPos.x, mPos.y);
+                                        area.addPos(xy);
+                                        fn_80239914(&area, field_0x4, mSerial);
+                                    }
+                                }
+                            } else {
+                                mBox.set(0.0f, -8.0f, 64.0f, 8.0f);
+                                area.set(mBox);
+                                xy.set(mPos.x, mPos.y);
+                                area.addPos(xy);
+                                if (!fn_801F2B7C(field_0x114, -1, 4)) {
+                                    field_0x80.set(0.0f, -7.0f, 64.0f, 7.0f);
+                                    area.set(field_0x80);
+                                    xy.set(mPos.x, mPos.y);
+                                    area.addPos(xy);
+                                    fn_80239914(&area, field_0x4, mSerial);
+                                }
                             }
                         }
                         break;
                     case 5:
                         break;
-                    default:
-                        mBox.set(lbl_8046EA10.hurtDefault[field_0x238][i]);
-                        shiftBox(&area, mBox, mPos);
-                        if (!fn_801F2B7C(field_0x114, -1, 0x1A)) {
-                            field_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i]);
-                            shiftBox(&area, field_0x80, mPos);
-                            fn_80239914(&area, field_0x4, mSerial);
-                        }
-                        break;
                     }
                 }
             }
-            bool anyUp = false;
+            s32 anyUp = 0;
             for (s32 i = 0; i < 4; i++) {
                 if (field_0x288[i] != 4) {
-                    anyUp = true;
+                    anyUp = 1;
                 }
             }
-            if (!anyUp) {
+            if (anyUp == 0) {
                 for (s32 i = 0; i < 4; i++) {
                     mPos = field_0x258[i];
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x7B, 0, 0, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x7C, 0, 0, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x7D, 0, 0, NULL, NULL, true, 1.0f);
                     if (mEmitters2d8[i] != NULL) {
-                        mEmitters2d8[i]->setStatus(1);
-                        // FIXME(shotgun): the original also stores 1 in the emitter word 0x24.
+                        mEmitters2d8[i]->becomeInvalidEmitter();
                         mEmitters2d8[i] = NULL;
                     }
                 }
