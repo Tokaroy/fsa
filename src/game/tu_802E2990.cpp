@@ -111,7 +111,7 @@ cls_804A9C20::~cls_804A9C20() {
 }
 
 // 0x802E2C28.
-// FIXME(shotgun): 83.82 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 90.40 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A9C20::update() {
     if (field_0x230 < 1) {
         field_0x248++;
