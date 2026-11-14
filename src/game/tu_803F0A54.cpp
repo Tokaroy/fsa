@@ -2631,7 +2631,7 @@ void ConnectScreen_804B0F10::fn_803F1C70() {
     field_0x74->field_0x22 = 0;
     field_0x24c = 0;
     field_0x1c8 = field_0x1c4;
-    field_0x1c4 = 12;
+    field_0x1c4 = 10;
 }
 
 void ConnectScreen_804B0F10::fn_803F1C5C() {
