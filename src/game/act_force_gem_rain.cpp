@@ -41,6 +41,7 @@ void ForceGemRain_804A8010::init() {
     }
 }
 
+// FIXME: 95.75 %, missing/extra + reloc-name; behaviour drift.
 // FIXME: the four `range == 0.0f` tests are materialised by mfcr/cntlzw in the
 // original; layer, spawnId and angle sit in r25, r30 and r28 instead of r27,
 // r28 and r30. Data: jumptable_804A8064 vs @NNN and sdata2 literals (@NNN vs lbl_).
