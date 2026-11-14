@@ -1272,6 +1272,20 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 
 class ActorBase_804A5770;
 
+// The JGadget TVector of actors at cls_801192AC+0xC (game/tu_80118384.cpp).
+struct ActorVector {
+    /* 0x00 */ JGadget::TAllocator<ActorBase_804A5770*> mAllocator;
+    /* 0x04 */ ActorBase_804A5770** mBegin;
+    /* 0x08 */ ActorBase_804A5770** mEnd;
+    /* 0x0C */ u32 mCapacity;
+    /* 0x10 */ u32 (*mExtend)(u32, u32, u32); // JGadget::vector::ExtendFunc
+    ActorBase_804A5770** Insert_raw(ActorBase_804A5770** pos, u32 count);
+    void fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804A5770* const* value);
+    ActorBase_804A5770** fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value);
+    // 0x801188B8: push_back, inserts *value at mEnd.
+    void fn_801188B8(ActorBase_804A5770* const* value);
+};
+
 // The 0x20-byte object in .bss at 0x804BC540 (function-local static of
 // fn_8011921C, built on first use); named after its destructor fn_801192AC. Only the fields
 // fn_801186B0 writes are known.
@@ -1283,19 +1297,13 @@ struct cls_801192AC {
     /* 0x08 */ s32 field_0x8;
     // 0x0C..0x20 is a JGadget TVector of the actors (allocator byte, begin, end, capacity,
     // extend function): fn_8011921C stores extend_default at 0x1C, fn_801190E4 reserves 20.
-    // Spelled out as plain fields while other units read mBegin / mEnd directly.
-    /* 0x0C */ JGadget::TAllocator<ActorBase_804A5770*> mAllocator;
-    /* 0x0D */ u8 field_0xd[0x10 - 0xD];
-    // 0x801190E4 (game/tu_80118384.cpp, not written yet): makes room for 20
-    // entries (new 0x50) in [mBegin, mEnd) when field_0x18 is below 20.
-    // GameRoot's fn_80138C9C calls it on fn_8011921C().
-    void fn_801190E4();
     // The actor list: fn_8011888C appends and fn_80118798 removes entries,
     // fn_8011871C searches [mBegin, mEnd) for an actor by mActorId.
-    /* 0x10 */ ActorBase_804A5770** mBegin;
-    /* 0x14 */ ActorBase_804A5770** mEnd;
-    /* 0x18 */ u32 mCapacity;
-    /* 0x1C */ u32 (*mExtend)(u32, u32, u32); // JGadget::vector::ExtendFunc
+    /* 0x0C */ ActorVector mActors;
+    // 0x801190E4 (game/tu_80118384.cpp): makes room for 20
+    // entries (new 0x50) in [mBegin, mEnd) when the capacity is below 20.
+    // GameRoot's fn_80138C9C calls it on fn_8011921C().
+    void fn_801190E4();
 
     cls_801192AC();
     // 0x801192AC (game/tu_80118384.cpp): empties the list, then frees it.
@@ -1324,11 +1332,7 @@ struct cls_801192AC {
     // serial at 0x198 is stored in / removed from the list at 0xC..0x14); called
     // by cls_8049D140's init and destructor (tu_8010DF44) and act_opening_goal.
     void fn_8011888C(ActorBase_804A5770* actor);
-    void fn_80118798(ActorBase_804A5770* actor);
-}; // Size: 0x20
-
-// game/tu_80118384.cpp (not written yet): TVector push_back on the list at cls_801192AC+0xC.
-extern "C" void fn_801188B8(JGadget::TAllocator<ActorBase_804A5770*>* vec, ActorBase_804A5770** value);
+    void fn_80118798(ActorBase_804A5770* actor);}; // Size: 0x20
 
 // game/tu_80118384.cpp (not written yet). Returns the static cls_801192AC.
 extern "C" cls_801192AC* fn_8011921C();
