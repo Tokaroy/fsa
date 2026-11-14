@@ -104,7 +104,7 @@ cls_804A7AE0::~cls_804A7AE0() {
     }
 }
 
-// FIXME(shotgun): 95.65 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.84 %, scheduling+regalloc; behaviour clean.
 void cls_804A7AE0::init() {
     mBox.i.x = -48.0f;
     mBox.i.y = -48.0f;
@@ -171,7 +171,7 @@ void cls_804A7AE0::init() {
     field_0x238.set(mPos.x, mPos.y, mPos.z);
 }
 
-// FIXME(shotgun): 82.39 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 82.48 %, missing/extra + reloc-name; behaviour near.
 // initial position/box arithmetic is scheduled differently, 5 instructions
 void cls_804A7AE0::vfunc_0x10() {
     JGeometry::TVec3f origin = mPos;
@@ -296,7 +296,7 @@ void cls_804A7AE0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 89.23 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 89.38 %, missing/extra + reloc-name; behaviour drift.
 // same shape as fn_80299AD0 (direction/serial selection and the doubled 32 * epsilon constant)
 void cls_804A7AE0::fn_8029A974() {
     if (!(field_0x250.squared() <= 32.0f * JGeometry::TUtilf::epsilon())) {
@@ -402,6 +402,7 @@ void cls_804A7AE0::fn_8029A974() {
     }
 }
 
+// FIXME: 87.47 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
@@ -459,7 +460,7 @@ void cls_804A7AE0::fn_8029A494() {
     }
 }
 
-// FIXME(shotgun): 81.50 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 81.60 %, missing/extra + reloc-name; behaviour drift.
 // same shape as fn_80299AD0 (direction/serial selection and the doubled 32 * epsilon constant)
 void cls_804A7AE0::fn_80299FB0() {
     if (!(field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon())) {
@@ -559,7 +560,7 @@ void cls_804A7AE0::fn_80299FB0() {
     }
 }
 
-// FIXME(shotgun): 80.92 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 81.00 %, missing/extra + reloc-name; behaviour drift.
 // 15 instructions (the 32 * epsilon constant is folded twice, direction/serial selection scheduled differently)
 void cls_804A7AE0::fn_80299AD0() {
     bool still = field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon();
@@ -663,7 +664,7 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 96.88 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.17 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
@@ -739,7 +740,7 @@ void cls_804A7AE0::fn_80299720() {
     }
 }
 
-// FIXME(shotgun): 98.25 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.52 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299374() {
     if (field_0x250.y > 0.0f) {
@@ -813,7 +814,7 @@ void cls_804A7AE0::fn_80299374() {
     }
 }
 
-// FIXME(shotgun): 96.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.18 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298FC4() {
     if (field_0x250.x < 0.0f) {
@@ -890,7 +891,7 @@ void cls_804A7AE0::fn_80298FC4() {
     }
 }
 
-// FIXME(shotgun): 96.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.16 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
@@ -967,7 +968,7 @@ void cls_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 78.73 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 79.62 %, missing/extra; behaviour drift.
 // still differs: the still-vector bool (cror/mfcr), the (k & bit) conversions and the warp-layer branch
 void cls_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
@@ -1031,7 +1032,7 @@ inline void registerBox_802984B0(cls_804A7AE0* actor, f32 x0, f32 y0, f32 x1, f3
     fn_80239914(&box, actor->field_0x4, actor->mSerial);
 }
 
-// FIXME(shotgun): 98.47 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.75 %, different; behaviour clean.
 void cls_804A7AE0::fn_802984B0() {
     switch (field_0x2b0) {
     case 0: {
@@ -1078,7 +1079,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.14 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1574,7 +1575,7 @@ inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpritePara
     }
 }
 
-// FIXME: 98.96 %, different + reloc-name; behaviour clean.
+// FIXME: 99.00 %, different; behaviour clean.
 void cls_804A7AE0::draw() {
     if (field_0x24c == 0 && field_0x2ac == 0) {
         return;
@@ -1634,7 +1635,7 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 93.38 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.69 %, missing/extra + reloc-name; behaviour near.
 // float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
@@ -1687,7 +1688,7 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2ba = 1;
 }
 
-// FIXME(shotgun): 99.48 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.73 %, scheduling+regalloc; behaviour clean.
 // 4 opcodes differ
 void cls_804A7AE0::fn_80295EE8() {
     if (mTimer <= 0) {
@@ -1730,7 +1731,7 @@ void cls_804A7AE0::fn_80295EE8() {
     mTimer--;
 }
 
-// FIXME(shotgun): 94.44 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 94.59 %, missing/extra; behaviour clean.
 // loop register assignment (this/index swapped) and 2 instructions
 void cls_804A7AE0::vfunc_0x24() {
     for (s32 i = 0; i < 4; i++) {
@@ -1774,6 +1775,7 @@ void cls_804A7AE0::vfunc_0x24() {
 }
 
 // Remaining: three `cmplwi 1` bool tests and minor fp/gpr register swaps.
+// FIXME: 97.56 %, missing/extra; behaviour drift.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
