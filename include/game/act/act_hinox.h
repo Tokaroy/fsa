@@ -15,6 +15,7 @@ public:
     /* 0x20 */ virtual void draw();   // fn_8014DCD4
     // 0x8014F76C: lets go of the actor held at field_0x250 (it drops with vertical speed 3).
     void fn_8014F76C();
+    inline s32 releasePlayer();
 
     // SHARED-EDIT: carved from field_0x230[0x58] (game/act_hinox.cpp).
     /* 0x230 */ s32 mState;
