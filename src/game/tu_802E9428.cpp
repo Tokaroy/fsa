@@ -116,7 +116,7 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
     return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
 }
 
-// FIXME(shotgun): 86.23 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.58 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
