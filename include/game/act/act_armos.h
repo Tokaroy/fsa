@@ -4,6 +4,7 @@
 // Code: game/act_armos.cpp.
 
 #include "game/ActorBase.h"
+#include "game/RailBase.h"
 
 // The AMOS actor ("Armos", docs/names/actors.tsv, high confidence): the
 // spawner constructs it with fn_80204220, which stores this vtable
@@ -15,7 +16,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x230 */ u8 field_0x230[0xC8]; // not yet known
+    /* 0x230 */ cls_800FE3EC field_0x230;
     /* 0x2F8 */ s32 field_0x2f8; // init: 3, or 0 / 4 by field_0x94
     /* 0x2FC */ s32 field_0x2fc; // a countdown
     /* 0x300 */ s32 field_0x300;
