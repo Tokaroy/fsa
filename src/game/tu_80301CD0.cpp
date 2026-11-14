@@ -372,13 +372,12 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
+// Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x8030801C
-// FIXME: 64.80 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_8030801C(s32 player) {
-    cls_804AA858Sub11C* record;
     if (lbl_8053AAF0->mState >= 4) {
-        s32 mode = gGameRoot_8053AAF8->field_0x4c;
-        if (mode == 7 || mode == 11 || mode == 12) {
+        if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
+            gGameRoot_8053AAF8->field_0x4c == 12) {
             lbl_80506DE8[player].mKind = 9;
         } else {
             lbl_80506DE8[player].mKind = 13;
@@ -387,27 +386,26 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
         lbl_80506DE8[player].mKind = 13;
     }
     fn_803085A4(player);
-    record = &lbl_80506DE8[player];
     for (s32 i = 0; i < 4; i++) {
-        record->mEntries[i].mXHigh = 1;
-        record->mEntries[i].mXLow = 0x80;
-        record->mEntries[i].mY = 0xE0;
-        record->mEntries[i].field_0x3_1 = 0;
-        record->mEntries[i].field_0x0 = 0;
+        lbl_80506DE8[player].mEntries[i].mXHigh = 1;
+        lbl_80506DE8[player].mEntries[i].mXLow = 0x80;
+        lbl_80506DE8[player].mEntries[i].mY = 0xE0;
+        lbl_80506DE8[player].mEntries[i].field_0x3_1 = 0;
+        lbl_80506DE8[player].mEntries[i].field_0x0 = 0;
     }
-    record->mEntries[0].mScroll = 0;
-    record->mEntries[0].mScrollBit = 0;
-    record->mEntries[1].mScroll = 0;
-    record->mEntries[2].mScroll = 0;
-    record->mEntries[2].mScrollBit = 0;
-    record->mEntries[3].mScroll = 0;
+    lbl_80506DE8[player].mEntries[0].mScroll = 0;
+    lbl_80506DE8[player].mEntries[0].mScrollBit = 0;
+    lbl_80506DE8[player].mEntries[1].mScroll = 0;
+    lbl_80506DE8[player].mEntries[2].mScroll = 0;
+    lbl_80506DE8[player].mEntries[2].mScrollBit = 0;
+    lbl_80506DE8[player].mEntries[3].mScroll = 0;
     s32 layer = fn_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
         u8 near = 0;
         if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
             near = 1;
         }
-        record->mEntries[1].mScrollBit = near ? true : false;
+        lbl_80506DE8[player].mEntries[1].mScrollBit = near ? true : false;
         if (lbl_8053ACD0 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
             u8 flag = 0;
             if (fn_8022F5B0(layer)) {
@@ -416,30 +414,31 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
                     flag = 1;
                 }
             }
-            record->mEntries[3].mScrollBit = flag ? true : false;
+            lbl_80506DE8[player].mEntries[3].mScrollBit = flag ? true : false;
         } else {
-            record->mEntries[3].mScrollBit = 0;
+            lbl_80506DE8[player].mEntries[3].mScrollBit = 0;
         }
     } else {
-        record->mEntries[1].mScrollBit = 0;
-        record->mEntries[3].mScrollBit = 0;
+        lbl_80506DE8[player].mEntries[1].mScrollBit = 0;
+        lbl_80506DE8[player].mEntries[3].mScrollBit = 0;
     }
-    for (s32 i = 0; i < lbl_80541618[lbl_8053AD08] - 7; i++) {
-        GbaSprite_80506F88& sprite = record->field_0x18[i];
-        sprite.f.field_0x3_0 = 1;
-        sprite.f.field_0x2 = 0x80;
-        sprite.f.field_0x1 = 0xE0;
-        sprite.f.field_0x3_1 = 0;
-        sprite.f.field_0x0 = 0;
-        sprite.f.mKind = 0;
-        sprite.f.field_0x3_4 = 0;
+    s32 count = lbl_80541618[lbl_8053AD08] - 7;
+    for (s32 i = 0; i < count; i++) {
+        lbl_80506DE8[player].field_0x18[i].f.field_0x3_0 = 1;
+        lbl_80506DE8[player].field_0x18[i].f.field_0x2 = 0x80;
+        lbl_80506DE8[player].field_0x18[i].f.field_0x1 = 0xE0;
+        lbl_80506DE8[player].field_0x18[i].f.field_0x3_1 = 0;
+        lbl_80506DE8[player].field_0x18[i].f.field_0x0 = 0;
+        lbl_80506DE8[player].field_0x18[i].f.mKind = 0;
+        lbl_80506DE8[player].field_0x18[i].f.field_0x3_4 = 0;
     }
     u8 sum = 0;
-    u8* bytes = (u8*)&record->mSprites[0];
-    for (s32 k = 8; k < lbl_80541618[lbl_8053AD08] * 4; k++) {
+    u8* bytes = (u8*)&lbl_80506DE8[player].mSprites[0];
+    s32 size = lbl_80541618[lbl_8053AD08] * 4;
+    for (s32 k = 8; k < size; k++) {
         sum += *bytes++;
     }
-    record->field_0x0 = sum;
+    lbl_80506DE8[player].field_0x0 = sum;
 }
 
 static inline s32 spriteId(const GbaSprite_80506F88& sprite) {
@@ -501,7 +500,8 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     }
     u8 sum = 0;
     u8* bytes = (u8*)&lbl_80506DE8[player].mSprites[0];
-    for (s32 k = 8; k < lbl_80541618[lbl_8053AD08] * 4; k++) {
+    s32 size = lbl_80541618[lbl_8053AD08] * 4;
+    for (s32 k = 8; k < size; k++) {
         sum += *bytes++;
     }
     lbl_80506DE8[player].field_0x0 = sum;
@@ -1742,16 +1742,8 @@ void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 ma
 
 // The draw order key of mark `i` of a record: its slot's sprite kind when it is set like the
 // player's own mark (lbl_80506DD8), -1 otherwise.
-static inline s32 markKey(const cls_804AA858Sub11C* record, s32 player, s32 i) {
-    s32 own = lbl_80506DD8[player];
-    if ((record->mMask >> i & 1) != (record->mMask >> own & 1)) {
-        return -1;
-    }
-    return lbl_80506DA8[player][i];
-}
-
-static inline s32 markKey2(s32 mask, s32 player, s32 i) {
-    if ((mask >> i & 1) != (mask >> lbl_80506DD8[player] & 1)) {
+static inline s32 markKey(s32 player, s32 i, u8 mask) {
+    if (((mask >> i) & 1) != ((mask >> lbl_80506DD8[player]) & 1)) {
         return -1;
     }
     return lbl_80506DA8[player][i];
@@ -1764,44 +1756,42 @@ static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
 
 // Variant of fn_803022C4.
 // 0x8030275C
-// FIXME: 82.72 %, missing/extra; behaviour drift.
+// FIXME: mMask load hoisting before the mark sort loop and the two isHiddenSprite skip loops differ.
 void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
-    s32 mask = record->mMask;
-    for (s32 i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         order[i] = i;
     }
-    for (s32 i = 3; i > 0; i--) {
-        for (s32 j = 0; j < i; j++) {
-            s32 a = order[j];
-            s32 b = order[j + 1];
-            if (markKey2(mask, player, a) < markKey2(mask, player, b) ||
-                (markKey2(mask, player, a) == markKey2(mask, player, b) &&
-                 record->mEntries[a].mY < record->mEntries[b].mY))
+    for (int i = 3; i > 0; i--) {
+        for (int j = 0; j < i; j++) {
+            if (markKey(player, order[j], record->mMask) < markKey(player, order[j + 1], record->mMask) ||
+                (markKey(player, order[j], record->mMask) == markKey(player, order[j + 1], record->mMask) &&
+                 record->mEntries[order[j]].mY < record->mEntries[order[j + 1]].mY))
             {
-                order[j] = b;
-                order[j + 1] = a;
+                s32 tmp = order[j];
+                order[j] = order[j + 1];
+                order[j + 1] = tmp;
             }
         }
     }
     s32 i28 = 18;
+    s32 i27 = 18;
+    s32 n = 3;
     for (; i28 >= 0; i28--) {
-        if (!(lbl_80506F88[player][0][i28].f.field_0x3_0 == 1 && lbl_80506F88[player][0][i28].f.field_0x2 == 0x80)) {
+        if (lbl_80506F88[player][0][i28].f.field_0x3_0 != 1 || lbl_80506F88[player][0][i28].f.field_0x2 != 0x80) {
             break;
         }
     }
-    s32 i27 = 18;
     for (; i27 >= 0; i27--) {
-        if (!(lbl_80506F88[player][1][i27].f.field_0x3_0 == 1 && lbl_80506F88[player][1][i27].f.field_0x2 == 0x80)) {
+        if (lbl_80506F88[player][1][i27].f.field_0x3_0 != 1 || lbl_80506F88[player][1][i27].f.field_0x2 != 0x80) {
             break;
         }
     }
     if (record->mValid <= 1) {
         set = true;
     }
-    s32 n = 3;
     while (i28 >= 0 || i27 >= 0 || n >= 0) {
-        s32 keyMark = n >= 0 ? markKey(record, player, order[n]) : 0xFF;
+        s32 keyMark = n >= 0 ? markKey(player, order[n], record->mMask) : 0xFF;
         s32 keyA = i28 >= 0 ? spriteKind(lbl_80506F88[player][0][i28]) : 0xFF;
         s32 keyB = i27 >= 0 ? spriteKind(lbl_80506F88[player][1][i27]) : 0xFF;
         if (i27 >= 0 && (n < 0 || keyB < keyMark ||
@@ -1831,7 +1821,7 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
                 i28--;
             }
         } else {
-            if (markKey(record, player, order[n]) >= 2) {
+            if (markKey(player, order[n], record->mMask) >= 2) {
                 n = 0;
             } else {
                 fn_80302C34(&record->mSprites[order[n]], player, order[n], record->mMask, flag);
@@ -1844,66 +1834,70 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
-// FIXME: 70.46 %, missing/extra; behaviour drift.
+// FIXME: mMask load hoisting before the mark sort loop and register allocation differ.
 void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
-    for (s32 i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         order[i] = i;
     }
-    for (s32 i = 3; i > 0; i--) {
-        for (s32 j = 0; j < i; j++) {
-            s32 a = order[j];
-            s32 b = order[j + 1];
-            if (markKey(record, player, a) < markKey(record, player, b) ||
-                (markKey(record, player, a) == markKey(record, player, b) &&
-                 record->mEntries[a].mY < record->mEntries[b].mY))
+    for (int i = 3; i > 0; i--) {
+        for (int j = 0; j < i; j++) {
+            if (markKey(player, order[j], record->mMask) < markKey(player, order[j + 1], record->mMask) ||
+                (markKey(player, order[j], record->mMask) == markKey(player, order[j + 1], record->mMask) &&
+                 record->mEntries[order[j]].mY < record->mEntries[order[j + 1]].mY))
             {
-                order[j] = b;
-                order[j + 1] = a;
+                s32 tmp = order[j];
+                order[j] = order[j + 1];
+                order[j + 1] = tmp;
             }
         }
     }
-    GbaSprite_80506F88* list = lbl_80506F88[player][0];
     s32 i28 = 18;
-    while (i28 >= 0 && isHiddenSprite(list[i28])) {
-        i28--;
-    }
     s32 i27 = 18;
-    while (i27 >= 0 && isHiddenSprite(list[19 + i27])) {
-        i27--;
+    s32 n = 3;
+    for (; i28 >= 0; i28--) {
+        if (lbl_80506F88[player][0][i28].f.field_0x3_0 != 1 || lbl_80506F88[player][0][i28].f.field_0x2 != 0x80) {
+            break;
+        }
+    }
+    for (; i27 >= 0; i27--) {
+        if (lbl_80506F88[player][1][i27].f.field_0x3_0 != 1 || lbl_80506F88[player][1][i27].f.field_0x2 != 0x80) {
+            break;
+        }
     }
     if (record->mValid <= 1) {
         set = true;
     }
-    s32 n = 3;
     while (i28 >= 0 || i27 >= 0 || n >= 0) {
-        s32 keyMark = n >= 0 ? markKey(record, player, order[n]) : 0xFF;
-        s32 keyA = i28 >= 0 ? spriteKind(list[i28]) : 0xFF;
-        s32 keyB = i27 >= 0 ? spriteKind(list[19 + i27]) : 0xFF;
+        s32 keyMark = n >= 0 ? markKey(player, order[n], record->mMask) : 0xFF;
+        s32 keyA = i28 >= 0 ? spriteKind(lbl_80506F88[player][0][i28]) : 0xFF;
+        s32 keyB = i27 >= 0 ? spriteKind(lbl_80506F88[player][1][i27]) : 0xFF;
         if (i27 >= 0 && (n < 0 || keyB < keyMark ||
-                         (keyB == keyMark && record->mEntries[order[n]].mY >= list[19 + i27].f.field_0x1)) &&
+                         (keyB == keyMark && record->mEntries[order[n]].mY >= lbl_80506F88[player][1][i27].f.field_0x1)) &&
             (i28 < 0 || keyA > keyB ||
-             (keyA == keyB && list[i28].f.field_0x1 >= list[19 + i27].f.field_0x1)))
+             (keyA == keyB && lbl_80506F88[player][0][i28].f.field_0x1 >= lbl_80506F88[player][1][i27].f.field_0x1)))
         {
             if (keyB >= 2) {
-                fn_80302F9C(&list[19 + i27], lbl_80506D78[player], flag, set);
+                fn_80302F9C(&lbl_80506F88[player][1][i27], lbl_80506D78[player], flag, set);
             }
-            i27--;
-            while (i27 >= 0 && isHiddenSprite(list[19 + i27])) {
-                i27--;
+            for (i27--; i27 >= 0; i27--) {
+                if (lbl_80506F88[player][1][i27].f.field_0x3_0 != 1 || lbl_80506F88[player][1][i27].f.field_0x2 != 0x80) {
+                    break;
+                }
             }
         } else if (i28 >= 0 && (n < 0 || keyA < keyMark ||
-                                (keyA == keyMark && record->mEntries[order[n]].mY >= list[i28].f.field_0x1)))
+                                (keyA == keyMark && record->mEntries[order[n]].mY >= lbl_80506F88[player][0][i28].f.field_0x1)))
         {
             if (keyA >= 2) {
-                fn_80302F9C(&list[i28], lbl_80506D78[player], flag, set);
+                fn_80302F9C(&lbl_80506F88[player][0][i28], lbl_80506D78[player], flag, set);
             }
-            i28--;
-            while (i28 >= 0 && isHiddenSprite(list[i28])) {
-                i28--;
+            for (i28--; i28 >= 0; i28--) {
+                if (lbl_80506F88[player][0][i28].f.field_0x3_0 != 1 || lbl_80506F88[player][0][i28].f.field_0x2 != 0x80) {
+                    break;
+                }
             }
         } else {
-            if (markKey(record, player, order[n]) >= 2) {
+            if (markKey(player, order[n], record->mMask) >= 2) {
                 fn_80302C34(&record->mSprites[order[n]], player, order[n], record->mMask, flag);
             }
             n--;
