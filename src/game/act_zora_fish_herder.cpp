@@ -12,7 +12,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 99.88 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.98 %, scheduling; behaviour clean.
 void ZoraFishHerding_804A2E30::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
@@ -135,7 +135,7 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
     }
 }
 
-// FIXME(shotgun): 81.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
     s32 nearPlayer = -1;
