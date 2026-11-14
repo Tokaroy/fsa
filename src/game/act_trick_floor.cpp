@@ -127,6 +127,10 @@ static inline void drawSmp(TrickFloor_804A83A0* self, const JGeometry::TVec3f* p
 }
 
 // The tile index of a view-relative position (as init computes it).
+static inline bool boxContains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
+    return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
+}
+
 static inline s32 tileIndex(s32 tx, s32 ty) {
     s32 cx = tx;
     if (cx < 0) {
@@ -225,7 +229,7 @@ void TrickFloor_804A83A0::update() {
     s32 standing = -1;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-        if (p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y) {
+        if (boxContains(box, p)) {
             standing = i;
             if (fn_8022F478(i)) {
                 standing = -1;
@@ -249,20 +253,23 @@ void TrickFloor_804A83A0::update() {
 
     switch (field_0x230) {
     case 0: {
+        f32 x = mPos.x;
+        f32 y = mPos.y;
         s32 layer = field_0x4;
         GameView_804A9950* gameView = getGameView_802D6A9C();
         const JGeometry::TBox2f* src = layer < 8 ? &gameView->mVisibleBox : &gameView->field_0xdc;
         JGeometry::TBox2f vbox;
         vbox = *src;
-        s32 tx = (s32)(mPos.x - vbox.i.x);
-        s32 ty = (s32)(mPos.y - vbox.i.y);
+        s32 tx = (s32)(x - vbox.i.x);
+        s32 ty = (s32)(y - vbox.i.y);
         field_0x250 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, tileIndex(tx, ty));
         field_0x230 = 1;
         break;
     }
     case 1:
-        if (field_0x238 != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(field_0x238)) {
+        s32 bit = field_0x238;
+        if (bit != 0) {
+            if (getGameView_802D6A9C()->fn_802D800C(bit)) {
                 field_0x230 = 2;
             }
         } else {
