@@ -30,7 +30,7 @@ GreatFairy_804AF338::~GreatFairy_804AF338() {
     }
 }
 
-// FIXME(shotgun): 92.49 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.69 %, scheduling+regalloc; behaviour drift.
 void GreatFairy_804AF338::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -135,7 +135,7 @@ void GreatFairy_804AF338::init() {
     field_0x90 = field_0x90 & 0xF;
 }
 
-// FIXME(shotgun): 20.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 89.78 %, missing/extra; behaviour drift.
 // (partial)
 // FIXME(shotgun): states 2-13 (0x8038E900 onward) and the tail of state 1 (0x8038E8D4 and the
 // end of the function at 0x8038F31C) are not written.
