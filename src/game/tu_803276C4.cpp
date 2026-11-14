@@ -79,7 +79,7 @@ void cls_804AB528::init() {
     }
 }
 
-// FIXME(shotgun): 90.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.02 %, missing/extra; behaviour near.
 void cls_804AB528::update() {
     if (field_0x25c < 1.0f) {
         if (vfunc_0x34() == 1 && field_0x25a == 1) {
