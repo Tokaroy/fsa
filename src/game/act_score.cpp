@@ -10,7 +10,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_score.h"
 
-// FIXME(shotgun): 97.98 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.16 %, different + reloc-name; behaviour near.
 void Score_804AF4C0::init() {
     mValue = field_0x90 & 0xFFFF;
     mPlayer = (field_0x90 >> 16) & 0xFF;
@@ -84,7 +84,7 @@ void Score_804AF4C0::init() {
     }
 }
 
-// FIXME(shotgun): 99.66 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.74 %, regalloc-only + reloc-name; behaviour clean.
 void Score_804AF4C0::update() {
     if (mState == 0 || mState == 4) {
         fn_80393514();
@@ -141,7 +141,7 @@ static const u8 lbl_80543178[4] = {0x28, 0x50, 0xFF, 0xFF};
 // Force Gem / fairy sounds by tens digit.
 static const u32 sScoreSounds[10] = {0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C};
 
-// FIXME(shotgun): 99.58 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.53 %, operands + reloc-name; behaviour drift.
 void Score_804AF4C0::fn_80393514() {
     if (mTimer == 90) {
         // The original copies this 12-entry table (rodata 0x80475738) to the stack and passes entry 0.
@@ -213,7 +213,7 @@ void Score_804AF4C0::fn_80393514() {
     }
 }
 
-// FIXME(shotgun): 17.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 17.80 %, missing/extra + reloc-name; behaviour drift.
 // (the original builds each TColor on the stack)
 void Score_804AF4C0::fn_80393228() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
@@ -276,6 +276,7 @@ static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 dig
     putScoreDigit(this, fade, mPos.x + 5.0f, c); \
     putScoreDigit(this, fade, 10.0f + (mPos.x + 5.0f), d)
 
+// FIXME: 96.52 %, operands + reloc-name; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     switch (mValue) {
