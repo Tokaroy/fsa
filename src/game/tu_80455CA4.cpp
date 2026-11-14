@@ -4,7 +4,8 @@
 #include "JSystem/JAudio/System/JASTrack.h"
 #include "Inagaki/GameSoundTable.h"
 
-// FIXME(shotgun): 92.9 %, extra/missing insns (the original also stores 0x54/0x58 to stack temporaries)
+// FIXME(shotgun): 92.92 %, missing/extra; behaviour clean.
+// extra/missing insns (the original also stores 0x54/0x58 to stack temporaries)
 ActorSoundObj_804578F4::ActorSoundObj_804578F4(JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
     : JAUSoundObject(pos, numHandles, heap) {
     field_0x31 = 1;
@@ -46,7 +47,7 @@ void ActorSoundObj_804578F4::fn_80457840(JGeometry::TVec3f* pos) {
 void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id);
 void fn_8045BA84(const Vec* pos, Vec* out);
 
-// FIXME(shotgun): 76.3 %
+// FIXME(shotgun): 76.66 %, missing/extra + reloc-name; behaviour drift.
 JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     if (field_0x31 == 0) {
         return NULL;
@@ -495,7 +496,7 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     }
 }
 
-// FIXME(shotgun): 96.2 %, missing/extra + reloc-name
+// FIXME(shotgun): 96.17 %, missing/extra + reloc-name; behaviour drift.
 void ActorSoundObj_804578F4::fn_804561D8(JAISoundID id, u8 a, u32 fade, u8 c) {
     field_0x44 = c;
     JAISoundHandle* handle = fn_80456334(id, fade);
@@ -567,7 +568,7 @@ void ActorSoundObj_804578F4::fn_80456120() {
 }
 
 // A sound may stop unless its sound-table switch bits have 0x8000 set.
-// FIXME(shotgun): 89.0 %, scheduling+regalloc
+// FIXME(shotgun): 89.00 %, scheduling+regalloc; behaviour clean.
 bool ActorSoundObj_804578F4::stopOK(JAISoundHandle& handle) {
     u32 bits = gAudioMgr_8053AF80->field_0x40->getSwBit(handle->getID());
     return !(bits & 0x8000);
@@ -625,7 +626,7 @@ void ActorSoundObj_804578F4::fn_80455F40(JAISoundHandle* handle) {
 
 // fn_80455CA4: pans and sets the volume of a started sound from a screen position
 // (pos x, y in 0..1).
-// FIXME(shotgun): 96.3 %, missing/extra
+// FIXME(shotgun): 96.26 %, missing/extra; behaviour clean.
 void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id) {
     f32 x = pos->x;
     if (x < 0.0f) {
