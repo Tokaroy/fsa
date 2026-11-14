@@ -2,7 +2,7 @@
 #define GAME_ACT_ACT_SHADOW_LINK_DEMO_H
 
 // Code: game/act_shadow_link_demo.cpp. Named after its vtable, 0x8049DB90
-// (24 slots; init and draw are not written yet). Only the
+// (24 slots; draw is not written yet). Only the
 // field vfunc_0x58 returns is known, and vfunc_0x5C tests it.
 
 #include "game/act/tu_8010DF44.h"

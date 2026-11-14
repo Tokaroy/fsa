@@ -35,8 +35,6 @@ cls_8049DB90::cls_8049DB90() {
     field_0x258 = 0.0f;
 }
 
-// FIXME(shotgun): 99.9 %, reloc-name when compiled, but then __ct__ drops from 100 % to 99.8 % (the .sdata2 literal pool gains 80.0f), so it stays out of the build.
-#ifdef NONMATCHING
 void cls_8049DB90::init() {
     cls_8049D140::init();
     field_0x234 = field_0x90 & 0xF;
@@ -59,7 +57,6 @@ void cls_8049DB90::init() {
     }
     mSequencer.mDir = field_0x98;
 }
-#endif
 
 #ifdef NONMATCHING
 // The hop that update's states share: field_0x3c gets (vx, vy, base - 0.2 * t);
