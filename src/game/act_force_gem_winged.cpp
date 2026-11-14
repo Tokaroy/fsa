@@ -1,6 +1,8 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
+#include "game/GameMath.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/act/act_force_gem_winged.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/Player.h"
@@ -168,9 +170,7 @@ void WingedForceGem_804AB098::update() {
         return;
     }
     u8 hitWall = 0;
-    JGeometry::TVec2f xy;
-    xy.x = mPos.x;
-    xy.y = mPos.y;
+    JGeometry::TVec2f xy(mPos.x, mPos.y);
     if (field_0x94 == 0) {
         field_0x17c = 0;
         field_0x174 = 50;
@@ -184,7 +184,7 @@ void WingedForceGem_804AB098::update() {
         mPos.add(field_0x3c);
     }
     if (field_0x230 != 5 && field_0x230 != 6) {
-        field_0x27c = (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + field_0x27c + 0x200;
+        field_0x27c = field_0x27c + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
         addCalc2_801F71A4(&field_0x2b0.z, 3.0f + 3.0f * JMath::sincosTable_.sinShort(field_0x27c), 0.1f, 0.2f);
     }
     JGeometry::TBox2f box(mBox);
@@ -197,7 +197,7 @@ void WingedForceGem_804AB098::update() {
         mPos.y -= field_0x248;
         mPos.y -= mPos.z;
         s32 player = fn_8023AF14(&box, field_0x4, false, mPos.z);
-        if (getGameView_802D6A9C()->field_0x131df[field_0x4]) {
+        if (viewLayerFlag(field_0x4)) {
             hitWall = fn_801F2618(NULL, false);
         }
         if (player < 0) {
@@ -212,47 +212,49 @@ void WingedForceGem_804AB098::update() {
         if (player >= 0 && !fn_80234C5C(player) && !fn_8022B7C4(player) && !fn_80230188(player) &&
             !fn_8023EA28(player)) {
             if (field_0x94 == 5) {
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4]) {
+                if (viewLayerFlag(field_0x4)) {
                     collect(this, player);
                 } else if (mPos.z - getPlayerPos_8023E724(player)->z <= 20.0f) {
                     collect(this, player);
                 }
             } else if (field_0x274 == 0) {
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] || getPlayerPos_8023E724(player)->z > 10.0f ||
+                if (viewLayerFlag(field_0x4) || getPlayerPos_8023E724(player)->z > 10.0f ||
                     fn_80234ECC(player)) {
                     collect(this, player);
                 }
-            } else if (getGameView_802D6A9C()->field_0x131df[field_0x4] || fn_8023ED8C(player) ||
-                       fn_8023EBB8(player) || fn_80233DA4(player) || field_0x270 == 5 || field_0x270 == 6 ||
-                       field_0x270 == 7) {
+            } else if (!viewLayerFlag(field_0x4) && !fn_8023ED8C(player) &&
+                       !fn_8023EBB8(player) && !fn_80233DA4(player) && field_0x270 != 5 && field_0x270 != 6 &&
+                       field_0x270 != 7) {
+                if (fn_802308E0(player) == 1) {
+                    fixKind(this);
+                    JGeometry::TVec3f pos(*getPlayerPos_8023E724(player));
+                    JGeometry::TVec3f at(pos.x, pos.y - 12.0f, pos.z);
+                    if (fn_80233E40(player)) {
+                        fn_80230498(player, &pos, 0x336, 0xFF, -0x80, -0x80, true);
+                    } else {
+                        fn_80230498(player, &pos, 0xED, 0xFF, -0x80, -0x80, true);
+                    }
+                    s32 who = player;
+                    if (fn_8022F514(player) == 1) {
+                        who = fn_8022F3DC(player);
+                    }
+                    showMessage(who);
+                    getActorManager_801F856C()->spawnActor_801F9484(
+                        'IMUP', field_0x4, &at, field_0x270 + 0xA00000 + (player << 24) + (player << 26) + 4, -1, -1);
+                    fn_801F3668();
+                    return;
+                }
+            } else {
                 collect(this, player);
-            } else if (fn_802308E0(player) == 1) {
-                fixKind(this);
-                JGeometry::TVec3f pos(*getPlayerPos_8023E724(player));
-                JGeometry::TVec3f at(pos.x, pos.y - 12.0f, pos.z);
-                if (fn_80233E40(player)) {
-                    fn_80230498(player, &pos, 0x336, 0xFF, -0x80, -0x80, true);
-                } else {
-                    fn_80230498(player, &pos, 0xED, 0xFF, -0x80, -0x80, true);
-                }
-                s32 who = player;
-                if (fn_8022F514(player) == 1) {
-                    who = fn_8022F3DC(player);
-                }
-                showMessage(who);
-                getActorManager_801F856C()->spawnActor_801F9484(
-                    'IMUP', field_0x4, &at, field_0x270 + 0xA00000 + (player << 24) + (player << 26) + 4, -1, -1);
-                fn_801F3668();
-                return;
             }
         }
         if (field_0x230 == 0) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80233D20(i) == 1) {
                     JGeometry::TVec3f a(*getPlayerPos_8023E724(i));
+                    JGeometry::TVec3f b(mPos);
                     a.y -= a.z;
                     a.z = 0.0f;
-                    JGeometry::TVec3f b(mPos);
                     b.y -= b.z;
                     b.z = 0.0f;
                     if (PSVECDistance(&a, &b) < 16.0f) {
@@ -269,16 +271,19 @@ void WingedForceGem_804AB098::update() {
         if (field_0x286 == 1) {
             s32 serial = -1;
             bool found = false;
-            while ((serial = getActorManager_801F856C()->fn_801F78F4('BOME', serial)) >= 0) {
-                ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (bomb == NULL) {
-                    continue;
-                }
-                f32 dx = mPos.x - bomb->mPos.x;
-                f32 dy = (mPos.y - mPos.z) - bomb->mPos.y;
-                if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) < 48.0f) {
-                    found = true;
+            while (true) {
+                serial = getActorManager_801F856C()->fn_801F78F4('BOME', serial);
+                if (serial < 0) {
                     break;
+                }
+                ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                if (bomb != NULL) {
+                    f32 dx = mPos.x - bomb->mPos.x;
+                    f32 dy = (mPos.y - mPos.z) - bomb->mPos.y;
+                    if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 48.0f) {
+                        found = true;
+                        break;
+                    }
                 }
             }
             JGeometry::TVec3f dir;
@@ -292,7 +297,7 @@ void WingedForceGem_804AB098::update() {
                 addCalc2_801F71A4(&field_0x248, 0.0f, 0.05f, 0.2f);
             }
         }
-        field_0x260 = (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + field_0x260 + 0x200;
+        field_0x260 = field_0x260 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
         switch (field_0x94) {
         case 1:
         case 2:
@@ -330,7 +335,7 @@ void WingedForceGem_804AB098::update() {
             mPos.y = field_0x298.y + field_0x238 * JMath::sincosTable_.cosShort(field_0x264);
             break;
         case 5: {
-            u8 onWall = getGameView_802D6A9C()->field_0x131df[field_0x4];
+            u8 onWall = viewLayerFlag(field_0x4);
             bool hit = false;
             if (onWall && hitWall == 1) {
                 hit = true;
@@ -409,7 +414,7 @@ void WingedForceGem_804AB098::update() {
         field_0x3c.z -= field_0x244;
         f32 dx = mPos.x - field_0x2a4.x;
         f32 dy = mPos.y - field_0x2a4.y;
-        if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) < 2.0f) {
+        if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 2.0f) {
             mPos.x = field_0x2a4.x;
             mPos.y = field_0x2a4.y;
             field_0x274 = 1;
