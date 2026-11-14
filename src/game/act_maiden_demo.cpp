@@ -82,6 +82,7 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
+// FIXME: 96.49 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049D740::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
@@ -155,7 +156,7 @@ void cls_8049D740::draw() {
     }
 }
 
-// FIXME: 97.37 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.89 %, missing/extra; behaviour drift.
 void cls_8049D740::vfunc_0x54() {
     cls_801192AC* state = fn_8011921C();
     s32 id = state->field_0x8;
