@@ -286,100 +286,100 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
             !openById(window, player, msg, serial, pos, flags)) {
             return false;
         }
-        // Every other player that takes part is put into state 9 for the same serial.
-        s32 self = windowIndex(player);
-        for (s32 i = 0; i < 4; i++) {
-            if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
-                if (fn_8022CAF8(i) == 4) {
-                    fn_8022FBB8(fn_8022EA0C(i), serial);
-                } else {
-                    fn_8022FBB8(i, serial);
-                }
-                lbl_8053AD78->mWindows[windowIndex(i)]->field_0x24 = 9;
-                if (!(bits & 4) && !(bits & 2)) {
-                    fn_802308E0(i);
+            // Every other player that takes part is put into state 9 for the same serial.
+            s32 self = windowIndex(player);
+            for (s32 i = 0; i < 4; i++) {
+                if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
+                    if (fn_8022CAF8(i) == 4) {
+                        fn_8022FBB8(fn_8022EA0C(i), serial);
+                    } else {
+                        fn_8022FBB8(i, serial);
+                    }
+                    lbl_8053AD78->mWindows[windowIndex(i)]->field_0x24 = 9;
+                    if (!(bits & 4) && !(bits & 2)) {
+                        fn_802308E0(i);
+                    }
                 }
             }
-        }
-        return true;
-    }
-    if (canOpen(window)) {
-        return openById(window, player, msg, serial, pos, flags);
-    }
-    return lbl_8053AD78->fn_8038C60C(window, player, msg, serial, flags);
-}
-
-bool MessageManager_804AF070::fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u32 flags) {
-    u32 i = 0;
-    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
-    u32 count = inf1->count;
-    for (; i < count; i++) {
-        if (inf1->entries[i].id == msg) {
-            msg = i;
-            break;
-        }
-    }
-    if (i >= count) {
-        msg = 0x12B;
-    }
-    return fn_8038A984(player, actor, msg, serial, flags);
-}
-
-// FIXME(shotgun): 98.92 %, missing/extra + reloc-name; behaviour clean.
-// regalloc (the 0x2F branch)
-bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u32 flags) {
-    s32 window = windowIndex(player);
-    if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
-        return false;
-    }
-    msg = fn_80383EB0(window, msg);
-    u16 bits = flags;
-    if (!(flags & 0x20)) {
-        if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
-            return false;
-        }
-    } else if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
-        s32 index = windowIndex(window);
-        const char* text = messageText(msg);
-        u32 next = msg;
-        if (text[0] == 0x1A && text[2] == 2 && text[4] == 5) {
-            next = operand(text, 5);
-        }
-        msg = fn_80383EB0(index, next);
-    }
-    if (gGameRoot_8053AAF8->field_0x7e == 0 || (bits & 0x40)) {
-        if (layer < 8) {
-            return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
-        }
-        if (!fn_8022C8EC(0)) {
-            JGeometry::TVec2f screen;
-            screen.x = 320.0f;
-            screen.y = 240.0f;
-            JGeometry::TVec3f world;
-            gGameRoot2_8053AB10->field_0x24->fn_8030C4A0(&screen, true, &world);
-            return lbl_8053AD78->fn_80389F78(window, player, msg, world, flags);
+            return true;
         }
         if (canOpen(window)) {
-            return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
+            return openById(window, player, msg, serial, pos, flags);
         }
-        return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
+        return lbl_8053AD78->fn_8038C60C(window, player, msg, serial, flags);
     }
-    s32 index = windowIndex(window);
-    const char* text = messageText(msg);
-    bool sync;
-    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
-        sync = true;
-    } else if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-               gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
-        lbl_8053AD78->field_0xed = 1;
-        lbl_8053AD78->field_0x110 = index;
-        lbl_8053AD78->field_0xee = text[5];
-        sync = true;
-    } else {
-        sync = false;
+
+    bool MessageManager_804AF070::fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u32 flags) {
+        u32 i = 0;
+        MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+        u32 count = inf1->count;
+        for (; i < count; i++) {
+            if (inf1->entries[i].id == msg) {
+                msg = i;
+                break;
+            }
+        }
+        if (i >= count) {
+            msg = 0x12B;
+        }
+        return fn_8038A984(player, actor, msg, serial, flags);
     }
-    if (sync) {
-        if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
+
+    // FIXME(shotgun): 98.92 %, missing/extra + reloc-name; behaviour clean.
+    // regalloc (the 0x2F branch)
+    bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u32 flags) {
+        s32 window = windowIndex(player);
+        if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
+            return false;
+        }
+        msg = fn_80383EB0(window, msg);
+        u16 bits = flags;
+        if (!(flags & 0x20)) {
+            if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+                return false;
+            }
+        } else if (getGameView_802D6A9C()->fn_802D46D8(window, msg, false) == 1) {
+            s32 index = windowIndex(window);
+            const char* text = messageText(msg);
+            u32 next = msg;
+            if (text[0] == 0x1A && text[2] == 2 && text[4] == 5) {
+                next = operand(text, 5);
+            }
+            msg = fn_80383EB0(index, next);
+        }
+        if (gGameRoot_8053AAF8->field_0x7e == 0 || (bits & 0x40)) {
+            if (layer < 8) {
+                return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
+            }
+            if (!fn_8022C8EC(0)) {
+                JGeometry::TVec2f screen;
+                screen.x = 320.0f;
+                screen.y = 240.0f;
+                JGeometry::TVec3f world;
+                gGameRoot2_8053AB10->field_0x24->fn_8030C4A0(&screen, true, &world);
+                return lbl_8053AD78->fn_80389F78(window, player, msg, world, flags);
+            }
+            if (canOpen(window)) {
+                return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
+            }
+            return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
+        }
+        s32 index = windowIndex(window);
+        const char* text = messageText(msg);
+        bool sync;
+        if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
+            sync = true;
+        } else if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
+                   gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
+            lbl_8053AD78->field_0xed = 1;
+            lbl_8053AD78->field_0x110 = index;
+            lbl_8053AD78->field_0xee = text[5];
+            sync = true;
+        } else {
+            sync = false;
+        }
+        if (sync) {
+            if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
             return true;
         }
         return false;
@@ -477,10 +477,8 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         sync = false;
     }
     if (sync) {
-        if (!lbl_8053AD78->fn_80389964(window, msg, flags) ||
-            !lbl_8053AD78->fn_8038A42C(window, player, msg, serial, pos, flags)) {
-            return false;
-        }
+        if (lbl_8053AD78->fn_80389964(window, msg, flags) &&
+            lbl_8053AD78->fn_8038A42C(window, player, msg, serial, pos, flags)) {
         // Every other player that takes part is put into state 9 for the same serial.
         s32 self = windowIndex(player);
         for (s32 i = 0; i < 4; i++) {
@@ -496,7 +494,9 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
                 }
             }
         }
-        return true;
+            return true;
+        }
+        return false;
     }
     if (canOpen(window)) {
         return lbl_8053AD78->fn_8038A42C(window, player, msg, serial, pos, flags);
@@ -824,7 +824,7 @@ static inline bool releasePlayers(s32 player) {
     return true;
 }
 
-// FIXME(shotgun): 99.39 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.99 %, scheduling+regalloc; behaviour clean.
 // (a bit test as rlwinm. not extrwi.)
 // Ends the player's message at once, whatever state the window is in: true when it is idle
 // or closed now (options 8 / 0x80), else the box is sent to its last page (state 5 / 8, with
@@ -841,27 +841,27 @@ bool fn_80387494(s32 player) {
         MessageWindow_804AF490* w = lbl_8053AD78->mWindows[window];
         u16 opt = w->field_0x28;
         if (!(opt & 1)) {
-            if (!releasePlayers(player)) {
-                return false;
-            }
-            getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
-            w = lbl_8053AD78->mWindows[window];
-            opt = w->field_0x28;
-            if ((opt >> 3 & 1) || (opt & 0x80)) {
-                if (mappedWindow(window)->field_0x24 == 8) {
-                    removeFromOrder(windowIndex(window));
-                    if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                        gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+            if (releasePlayers(player)) {
+                    u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+                w = lbl_8053AD78->mWindows[window];
+                opt = w->field_0x28;
+                if ((opt >> 3 & 1) || (opt & 0x80)) {
+                    if (mappedWindow(window)->field_0x24 == 8) {
+                        removeFromOrder(windowIndex(window));
+                        if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
+                            gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                        }
                     }
+                    lbl_8053AD78->mWindows[window]->fn_80391678();
+                    return true;
                 }
-                lbl_8053AD78->mWindows[window]->fn_80391678();
-                return true;
-            }
-            w->field_0x42 = 1;
-            if (mappedWindow(window)->field_0x24 == 6 || mappedWindow(window)->field_0x24 == 7) {
-                mappedWindow(window)->field_0x24 = 8;
-            } else {
-                mappedWindow(window)->field_0x24 = 5;
+                w->field_0x42 = 1;
+                if (mappedWindow(window)->field_0x24 == 6 || mappedWindow(window)->field_0x24 == 7) {
+                    mappedWindow(window)->field_0x24 = 8;
+                } else {
+                    mappedWindow(window)->field_0x24 = 5;
+                }
             }
             return false;
         }
@@ -1041,7 +1041,7 @@ static inline bool releaseSerial(u16 opt, s32 player, s32 serial) {
     return fn_8022FB1C(player, serial);
 }
 
-// FIXME(shotgun): 97.43 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
 // (releaseSerial branch shape)
 // fn_80385960 for a window an actor `serial` speaks in: once the actor (and, without option 4,
 // the players) let go, the window closes and fn_803895EC releases the waiting windows.
@@ -1054,13 +1054,9 @@ bool fn_80384C58(s32 player, s32 serial) {
         if (mappedWindow(window)->field_0x40 == 0) {
             u16 opt = lbl_8053AD78->mWindows[window]->field_0x28;
             if (!(opt >> 2 & 1)) {
-                if (!releaseSerial(opt, player, serial)) {
-                    return false;
-                }
-                if (!releasePlayers(player)) {
-                    return false;
-                }
-                getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
+                if (releaseSerial(opt, player, serial) && releasePlayers(player)) {
+                u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
@@ -1070,7 +1066,7 @@ bool fn_80384C58(s32 player, s32 serial) {
                 bool a = true;
                 bool b = false;
                 u16 opt2 = lbl_8053AD78->mWindows[window]->field_0x28;
-                if ((opt2 & 8) || (opt2 & 0x80)) {
+                if ((opt2 >> 3 & 1) || (opt2 & 0x80)) {
                     a = false;
                 }
                 if (!(opt2 & 0x800)) {
@@ -1079,11 +1075,10 @@ bool fn_80384C58(s32 player, s32 serial) {
                 lbl_8053AD78->mWindows[window]->fn_80391678();
                 lbl_8053AD78->fn_803895EC(player, serial, a, b);
                 return true;
-            }
-            if (!releaseSerial(opt, player, serial)) {
-                return false;
-            }
-            getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
+                }
+            } else if (releaseSerial(opt, player, serial)) {
+            u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+            getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
             if (mappedWindow(window)->field_0x24 == 8) {
                 removeFromOrder(windowIndex(window));
                 if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
@@ -1097,6 +1092,7 @@ bool fn_80384C58(s32 player, s32 serial) {
             lbl_8053AD78->mWindows[window]->fn_80391678();
             lbl_8053AD78->fn_803895EC(player, serial, false, b);
             return true;
+            }
         }
     }
     return false;
