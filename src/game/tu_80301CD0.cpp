@@ -688,7 +688,7 @@ s32 fn_803074A4(s32 kind, s32 id) {
 // words sorted by kind, the layer's mask word and the checksum.
 // Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x80306A94
-// FIXME: 93.93 %, missing/extra; behaviour drift.
+// FIXME: 94.97 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80306A94(s32 player) {
     if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player)) {
         lbl_80506DE8[player].mKind = 5;
@@ -697,36 +697,35 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     }
     fn_803085A4(player);
     s32 layer = fn_8022EA0C(player);
-    cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     for (s32 i = 0; i < 4; i++) {
         s32 idx = fn_802340A0(i);
         if (!fn_8023F264(i) || !fn_8023188C(i) || getPlayerLayer_8023DE58(layer) < 8 ||
             (!fn_8022BC38(layer, getPlayerLayer_8023DE58(i), getPlayerPos_8023E724(i)) &&
              (getPlayerLayer_8023DE58(layer) > 8 || getPlayerLayer_8023DE58(i) > 8))) {
-            record->mEntries[idx].mXHigh = 1;
-            record->mEntries[idx].mXLow = 0x80;
-            record->mEntries[idx].mY = 0xE0;
-            record->mEntries[idx].field_0x3_1 = 0;
-            record->mEntries[idx].field_0x0 = 0;
+            lbl_80506DE8[player].mEntries[idx].mXHigh = 1;
+            lbl_80506DE8[player].mEntries[idx].mXLow = 0x80;
+            lbl_80506DE8[player].mEntries[idx].mY = 0xE0;
+            lbl_80506DE8[player].mEntries[idx].field_0x3_1 = 0;
+            lbl_80506DE8[player].mEntries[idx].field_0x0 = 0;
         } else {
             if (getPlayerLayer_8023DE58(i) < 8) {
-                record->mMask |= 1 << idx;
-                record->mEntries[idx].mXHigh = fn_8023D21C(i, layer) >> 8;
-                record->mEntries[idx].mXLow = fn_8023D21C(i, layer);
-                record->mEntries[idx].mY = fn_8023CEAC(i, layer);
+                lbl_80506DE8[player].mMask |= 1 << idx;
+                lbl_80506DE8[player].mEntries[idx].mXHigh = fn_8023D21C(i, layer) >> 8;
+                lbl_80506DE8[player].mEntries[idx].mXLow = fn_8023D21C(i, layer);
+                lbl_80506DE8[player].mEntries[idx].mY = fn_8023CEAC(i, layer);
             } else {
-                record->mEntries[idx].mXHigh = fn_8023DAF4(i, layer) >> 8;
-                record->mEntries[idx].mXLow = fn_8023DAF4(i, layer);
-                record->mEntries[idx].mY = fn_8023D644(i, layer);
+                lbl_80506DE8[player].mEntries[idx].mXHigh = fn_8023DAF4(i, layer) >> 8;
+                lbl_80506DE8[player].mEntries[idx].mXLow = fn_8023DAF4(i, layer);
+                lbl_80506DE8[player].mEntries[idx].mY = fn_8023D644(i, layer);
             }
-            record->mEntries[idx].field_0x3_1 = fn_8023CBC0(i) >> 8;
-            record->mEntries[idx].field_0x0 = fn_8023CBC0(i);
+            lbl_80506DE8[player].mEntries[idx].field_0x3_1 = fn_8023CBC0(i) >> 8;
+            lbl_80506DE8[player].mEntries[idx].field_0x0 = fn_8023CBC0(i);
         }
     }
     if ((lbl_80506D48[player] & 1) == 1) {
         for (s32 i = 0; i < 4; i++) {
             s32 idx = fn_802340A0(i);
-            record->field_0x4.mOdd.field_0x7_4 |= fn_8022BECC(idx) << idx;
+            lbl_80506DE8[player].field_0x4.mOdd.field_0x7_4 |= fn_8022BECC(idx) << idx;
             bool skip;
             if (gGameRoot_8053AAF8->field_0x4c == 11) {
                 skip = true;
@@ -748,12 +747,13 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
             } else {
                 state = 0;
             }
-            record->field_0x4.mOdd.field_0x6 |= state << (idx * 2);
+            lbl_80506DE8[player].field_0x4.mOdd.field_0x6 |= state << (idx * 2);
             if (fn_8023BCD4(idx) < 0xA0) {
-                record->field_0x4.mOdd.field_0x7_0 |= 1 << idx;
+                lbl_80506DE8[player].field_0x4.mOdd.field_0x7_0 |= 1 << idx;
             }
         }
     }
+        cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     record->mEntries[0].mScroll = (fn_8023CE10(layer) >> 5) & 0xF;
     record->mEntries[0].mScrollBit = (fn_8023CE10(layer) >> 4) & 1;
     record->mEntries[1].mScroll = fn_8023CE10(layer);
