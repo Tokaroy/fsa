@@ -381,7 +381,8 @@ static inline f32 toEffectY(f32 y) {
     return 168.0f * (8.0f + y) / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight;
 }
 
-// FIXME: 99.24. Registers only, in most loops (e.g. the first loop's array
+// FIXME: 99.55 %, regalloc-only; behaviour clean.
+// Registers only, in most loops (e.g. the first loop's array
 // pointers are r24 / r27 in the original, r27 / r28 here).
 // Builds the seven screens and their panes' start state (structure as the
 // twin cls_804B0B00::cls_804B0B00, game/tu_803E1668.cpp).
@@ -715,7 +716,8 @@ ConnectScreen_804B0F10::~ConnectScreen_804B0F10() {
     }
 }
 
-// FIXME: 99.80 %. Instructions identical; only the .sdata2 literals differ (@NNN vs
+// FIXME: 99.83 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (@NNN vs
 // lbl_805437xx): the literal pool follows first use, and the unwritten
 // functions before this one (fn_803F1C70 on) use the earlier literals.
 void ConnectScreen_804B0F10::fn_803FC5E4(u8 flag) {
@@ -739,7 +741,8 @@ void ConnectScreen_804B0F10::fn_803FC5E4(u8 flag) {
     field_0x350 = 4;
 }
 
-// FIXME: 99.79 %. Instructions identical; only the .sdata2 literals differ (@NNN vs
+// FIXME: 99.89 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (@NNN vs
 // lbl_805437xx): the literal pool follows first use, and the unwritten
 // functions before this one (fn_803F1C70 on) use the earlier literals.
 void ConnectScreen_804B0F10::fn_803FC46C() {
@@ -802,7 +805,8 @@ void ConnectScreen_804B0F10::fn_803FC304() {
     }
 }
 
-// FIXME: 96.52. Registers throughout; both `> 0` counter tests are
+// FIXME: 96.81 %, missing/extra + reloc-name; behaviour drift.
+// Registers throughout; both `> 0` counter tests are
 // `lha r0; cmpwi` there but `lha r3; extsh.` here (as in fn_803F8354), and
 // the row loop keeps i * 5 in two registers there but one here; .sdata2
 // @NNN names.
@@ -902,7 +906,8 @@ void ConnectScreen_804B0F10::fn_803FB9E4() {
     mScreen->search('Pscuro02')->move(field_0xec + field_0x130[field_0x1ac], y);
 }
 
-// FIXME: 99.41 %. Same register swap as fn_803F2580 in the inlined
+// FIXME: 99.41 %, different; behaviour clean.
+// Same register swap as fn_803F2580 in the inlined
 // setEntries loop (li r4, 0 for i in the original, mr r4, r3 here).
 void ConnectScreen_804B0F10::fn_803FB6F4() {
     stepBlink(this);
@@ -942,7 +947,7 @@ void ConnectScreen_804B0F10::fn_803FB6F4() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 97 %, different
+// FIXME(shotgun): 96.67 %, missing/extra + reloc-name; behaviour near.
 void ConnectScreen_804B0F10::fn_803FAA88() {
     s32 others[2];
     s32* dst = others;
@@ -1078,7 +1083,8 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
     mScreen->search('Pscuro02')->move(field_0xec + field_0x130[field_0x1ac], y);
 }
 
-// FIXME: 97.12. Registers throughout; the counter's first test is
+// FIXME: 97.35 %, missing/extra + reloc-name; behaviour near.
+// Registers throughout; the counter's first test is
 // `lha r0; cmpwi` there but `lha r3; extsh.` here (as in fn_803F8354), and
 // the player-row loop keeps i * 5 in two registers there (li r30;
 // mr r28, r30, plus a separate this pointer for field_0xdc) but one here;
@@ -1209,7 +1215,7 @@ void ConnectScreen_804B0F10::fn_803F9EA8() {
     field_0x8->search('Ppllbk32')->move(field_0xbc[3], field_0xcc[3] + field_0xdc[3]);
 }
 
-// FIXME(shotgun): 97 %, different
+// FIXME(shotgun): 97.41 %, missing/extra + reloc-name; behaviour drift.
 void ConnectScreen_804B0F10::fn_803F943C() {
     field_0x240[0]++;
     if (field_0x240[0] > 0) {
@@ -1308,7 +1314,8 @@ void ConnectScreen_804B0F10::fn_803F943C() {
     field_0x8->search('Ppllbk32')->move(field_0xbc[3], field_0xcc[3] + field_0xdc[3]);
 }
 
-// FIXME: 99.9. Instructions identical; only the .sdata2 literals differ (@NNN vs lbl_80543xxx: the pool
+// FIXME: 99.90 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (@NNN vs lbl_80543xxx: the pool
 // follows first use and the unwritten functions before this unit's first one use the earlier literals).
 // Update state 6 (waiting for the GBA link through lbl_8053AEC0;
 // field_0x25c: 0 starting, 1 running, 2 ending into state 5, 3 ending with
@@ -1387,7 +1394,8 @@ void ConnectScreen_804B0F10::fn_803F8FBC() {
     }
 }
 
-// FIXME: 99.9. Instructions identical; only the .sdata2 literals differ (@NNN vs lbl_80543xxx: the pool
+// FIXME: 99.90 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (@NNN vs lbl_80543xxx: the pool
 // follows first use and the unwritten functions before this unit's first one use the earlier literals).
 // Update state 5 (the GBA connection prompt): field_0x25c 255, or decide
 // (0x1100) without every controller connected, enters state 6
@@ -1458,7 +1466,8 @@ void ConnectScreen_804B0F10::fn_803F8AE4() {
     }
 }
 
-// FIXME: 96.29. Registers throughout (one more saved register in the
+// FIXME: 96.55 %, missing/extra + reloc-name; behaviour drift.
+// Registers throughout (one more saved register in the
 // original), the counter's first test is `lha r0; cmpwi` there but
 // `lha r3; extsh.` here, and the three-row loop's i * 10 sits in two
 // registers there (li r30; mr r28, r30) but one here; .sdata2 @NNN names.
@@ -1582,7 +1591,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 97 %, different
+// FIXME(shotgun): 97.01 %, missing/extra + reloc-name; behaviour near.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
@@ -1751,7 +1760,8 @@ void ConnectScreen_804B0F10::fn_803F726C() {
     field_0xc->search('Pscuro02')->move(field_0xf4 + field_0x184[field_0x1a8], y);
 }
 
-// FIXME: 99.56 %. Instructions identical; only the .sdata2 literals differ (@NNN vs
+// FIXME: 99.78 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (@NNN vs
 // lbl_805437xx): the literal pool follows first use, and the unwritten
 // functions before this one (fn_803F1C70 on) use the earlier literals.
 void ConnectScreen_804B0F10::fn_803F715C() {
@@ -1776,7 +1786,7 @@ void ConnectScreen_804B0F10::fn_803F715C() {
     }
 }
 
-// FIXME(shotgun): 95 %, different
+// FIXME(shotgun): 95.38 %, missing/extra; behaviour drift.
 void ConnectScreen_804B0F10::fn_803F5A0C() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x240[i] != 0) {
@@ -1963,7 +1973,8 @@ void ConnectScreen_804B0F10::fn_803F59A0() {
     }
 }
 
-// FIXME: 98.68. Stack slots and registers only: the original converts every
+// FIXME: 99.06 %, operands + reloc-name; behaviour clean.
+// Stack slots and registers only: the original converts every
 // int / u8 to float in the one 0x8 slot (ours uses 0x8-0x18), and the loop's
 // table pointers / the lit alpha sit in other registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
@@ -2030,7 +2041,7 @@ void ConnectScreen_804B0F10::fn_803F5410() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME(shotgun): 96 %, different
+// FIXME(shotgun): 96.47 %, missing/extra + reloc-name; behaviour near.
 void ConnectScreen_804B0F10::fn_803F4120() {
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) {
@@ -2207,7 +2218,8 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.60. Stack layout and float registers only: the original keeps
+// FIXME: 99.60 %, operands + reloc-name; behaviour clean.
+// Stack layout and float registers only: the original keeps
 // every int-to-float conversion in one 8-byte slot (0x18; frame 0x60), ours
 // uses two (frame 0x70), and the bounce offset / pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
@@ -2289,7 +2301,8 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.26 (twin cls_804B0B00::fn_803E4650): stack slots only, the
+// FIXME: 99.68 %, operands + reloc-name; behaviour clean.
+// (twin cls_804B0B00::fn_803E4650): stack slots only, the
 // blink's else-branch int conversion sits at 0x10 instead of 0x8.
 // Draws states 10 and 11 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1d0[i] (60 frames), the
@@ -2331,7 +2344,8 @@ void ConnectScreen_804B0F10::fn_803F358C() {
     field_0x58->fn_80436668();
 }
 
-// FIXME: 99.77 %. Instructions identical; only the .sdata2 literals differ (see
+// FIXME: 99.77 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ (see
 // fn_803F715C). fn_803FC5E4 inlines this function.
 void ConnectScreen_804B0F10::fn_803F3324() {
     field_0x110 = -150.0f;
@@ -2369,7 +2383,8 @@ void ConnectScreen_804B0F10::fn_803F32E8() {
     field_0x1c4 = 2;
 }
 
-// FIXME: 99.42. Instructions identical; only the .sdata2 literals differ
+// FIXME: 99.92 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ
 // (@NNN vs lbl_80543xxx: earlier unwritten functions come first in the pool).
 // Twin of cls_804B0B00::fn_803E3CB0.
 // Enter state 3 (the GBA connection screen field_0x8): the player-count
@@ -2469,7 +2484,8 @@ void ConnectScreen_804B0F10::fn_803F2AEC() {
     field_0x1c4 = 6;
 }
 
-// FIXME: 99.89. Instructions identical; only the .sdata2 literals differ
+// FIXME: 99.95 %, reloc-name; behaviour clean.
+// Instructions identical; only the .sdata2 literals differ
 // (@NNN vs lbl_80543xxx: the pool's 3.0 / 800 / 640 come first in the
 // original, from an earlier function not written yet).
 // Enter state 7 (the game-select screen field_0xc): the messages of
@@ -2520,7 +2536,8 @@ void ConnectScreen_804B0F10::fn_803F2660() {
     field_0x1c4 = 8;
 }
 
-// FIXME: 98.04 %. Register swap in setEntries' loop: the original keeps the
+// FIXME: 98.04 %, different; behaviour clean.
+// Register swap in setEntries' loop: the original keeps the
 // 2 * i shift in r4 (the zero stored to field_0x240) and i in a fresh r5 (li);
 // ours keeps i in r4 and copies it (mr r5, r4) for the shift. fn_803F8050
 // inlines this function and matches.
@@ -2534,7 +2551,8 @@ void ConnectScreen_804B0F10::fn_803F2580() {
     field_0x1c4 = 9;
 }
 
-// FIXME: 98.18. Registers: the loop's table pointers and counter sit in other
+// FIXME: 98.57 %, missing/extra + reloc-name; behaviour clean.
+// Registers: the loop's table pointers and counter sit in other
 // registers, and the first digit texture is copied through r0 into r17 (one
 // extra mr) where the original keeps it in r27 (as in the twin
 // cls_804B0B00::fn_803E2A20, 98.17); .sdata2 @NNN names.
@@ -2645,7 +2663,8 @@ void ConnectScreen_804B0F10::fn_803F1C18() {
     field_0x1c4 = 12;
 }
 
-// FIXME: 98.24 %. Same length. The rodata base offsets differ (.rodata not
+// FIXME: 98.83 %, scheduling+regalloc; behaviour clean.
+// Same length. The rodata base offsets differ (.rodata not
 // split yet: the tables above sit at other offsets from the file's base), and
 // in the 112-212 and 212+ phases the i / 2 + (i % 2) * 2 index is scheduled
 // differently (the original computes i % 2 first, then i / 2). The twin
