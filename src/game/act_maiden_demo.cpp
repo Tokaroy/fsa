@@ -220,8 +220,99 @@ s32 cls_8049D740::vfunc_0x5C() {
     return 1;
 }
 
+void cls_8049D740::fn_80112654(s32 kind) {
+    switch (kind) {
+    case 0:
+    case 1:
+    case 2:
+        break;
+    case 3:
+        mEmitter298 = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(0, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter29c = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(1, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mAnim.startAnim_801D22DC(0xA, 0, false);
+        mAnim.fn_801D1F14(0.0f);
+        break;
+    case 4:
+        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(2, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(3, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(4, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(5, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        break;
+    case 5:
+        mAnim.startAnim_801D22DC(8, 2, false);
+        mAnim.fn_801D1F14(0.0f);
+        break;
+    case 6:
+        if (mEmitter298 != NULL) {
+            mEmitter298->becomeInvalidEmitter();
+            mEmitter298 = NULL;
+        }
+        if (mEmitter29c != NULL) {
+            mEmitter29c->becomeInvalidEmitter();
+            mEmitter29c = NULL;
+        }
+        if (mEmitter2a0 != NULL) {
+            mEmitter2a0->becomeInvalidEmitter();
+            mEmitter2a0 = NULL;
+        }
+        mAnim.startAnim_801D22DC(0xB, 0, false);
+        mAnim.fn_801D1F14(0.0f);
+        break;
+    case 7: {
+        JGeometry::TVec3f pos = mPos;
+        pos.y += -16.0f;
+        spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
+        break;
+    }
+    case 8:
+        switch (mMode) {
+        case 0:
+            mAnim.startAnim_801D22DC(1, 2, false);
+            break;
+        case 1:
+            mAnim.startAnim_801D22DC(1, 2, false);
+            break;
+        case 2:
+            mAnim.startAnim_801D22DC(3, 2, false);
+            break;
+        case 3:
+            mAnim.startAnim_801D22DC(3, 2, false);
+            break;
+        case 4:
+            mAnim.startAnim_801D22DC(2, 2, false);
+            break;
+        case 5:
+            mAnim.startAnim_801D22DC(2, 2, false);
+            break;
+        }
+        mAnim.fn_801D1F14(0.0f);
+        break;
+    case 9:
+        mAnim.startAnim_801D22DC(3, 2, false);
+        mAnim.fn_801D1F14(0.0f);
+        break;
+    case 10:
+        mAnim.startAnim_801D22DC(6, 0, false);
+        mAnim.fn_801D1F14(0.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC1, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
+        break;
+    case 11:
+        field_0x230 = 1;
+        break;
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+        break;
+    }
+    field_0x238 = kind;
+}
+
 // Maps (kind, mode) to a message id. Each kind has its own mode table.
-s32 fn_801123C8(s32 kind, s32 mode) {
+u16 fn_801123C8(s32 kind, s32 mode) {
     switch (kind) {
     case 0:
         switch (mode) {
