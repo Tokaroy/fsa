@@ -346,12 +346,10 @@ bool fn_802DEB58(void) {
 // mView load is folded into the field_0x4 load.
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        if (view->field_0x4 == 7 && view->field_0x8 == 0) {
+        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
             return true;
         }
-        view = getGameView_802D6A9C();
-        if (view->field_0x4 == 7 && view->field_0x8 == 2) {
+        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
             return true;
         }
         return false;
