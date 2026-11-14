@@ -20,7 +20,6 @@ static const s32 lbl_804AB130[] = {0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1
 // Table indexed by field_0x268 (update, state 1).
 static const s32 lbl_804AB160[] = {100, 150, 200, 300};
 
-// FIXME(shotgun): 99.4 %, different
 void FleeingForceGem_804AB170::init() {
     field_0x268 = field_0x90 & 3;
     field_0x94 = (field_0x90 >> 16) & 0xFF;
@@ -87,7 +86,7 @@ void FleeingForceGem_804AB170::init() {
     }
 }
 
-// FIXME(shotgun): 89.2 %, missing/extra
+// FIXME(shotgun): 89.23 %, missing/extra; behaviour clean.
 bool FleeingForceGem_804AB170::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = (u16)fn_8022461C(pos, layer);
     if (tile == 3) {
@@ -160,7 +159,7 @@ inline void bobForceGem(FleeingForceGem_804AB170* gem) {
 }
 
 // 0x8031C598.
-// FIXME(shotgun): 90.0 %, missing/extra + reloc-name
+// FIXME(shotgun): 99.23 %, missing/extra + reloc-name; behaviour near.
 void FleeingForceGem_804AB170::update() {
     s32 player = 0;
     u16 angle = 0;
@@ -540,7 +539,7 @@ void FleeingForceGem_804AB170::update() {
 }
 
 // 0x8031C0B0.
-// FIXME(shotgun): 96.0 %, missing/extra
+// FIXME(shotgun): 96.04 %, missing/extra + reloc-name; behaviour clean.
 void FleeingForceGem_804AB170::draw() {
     SpriteParams_801F5AE0 params;
     if (field_0x230 == 8 || field_0x230 == 9) {
