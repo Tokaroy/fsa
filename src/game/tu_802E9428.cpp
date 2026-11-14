@@ -112,7 +112,11 @@ inline u8 UnknownENDM_804AA0FC::tickTimer() {
     return field_0x27c == 0 ? true : false;
 }
 
-// FIXME(shotgun): 86.23 %, missing/extra + reloc-name; behaviour drift.
+static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
+    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+}
+
+// FIXME(shotgun): 86.58 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -206,9 +210,7 @@ void UnknownENDM_804AA0FC::update() {
                     field_0x23c = 5;
                     field_0x244 = field_0x240->mPos;
                     field_0x250 = lbl_804D5730[field_0x230];
-                    JGeometry::TVec2f focus;
-                    focus.x = field_0x250.x;
-                    focus.y = field_0x250.y + -30.0f;
+                    JGeometry::TVec2f focus(field_0x250.x, field_0x250.y + -30.0f);
                     gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
                     field_0x290 = lbl_804AA0B8[field_0x230];
                     field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
@@ -316,10 +318,7 @@ void UnknownENDM_804AA0FC::update() {
         fn_802E94F4();
         if (field_0x288 != (u16)(s32)(field_0x244.x / 512.0f) ||
             field_0x28a != (u16)(s32)(field_0x244.y / 384.0f)) {
-            JGeometry::TVec2f pos;
-            pos.x = field_0x244.x;
-            pos.y = field_0x244.y;
-            if (fn_802E9884(&pos)) {
+            if (fn_802E9884(field_0x244)) {
                 field_0x23c = 5;
                 field_0x297 = 1;
             }
@@ -350,8 +349,7 @@ void UnknownENDM_804AA0FC::update() {
                     view.f.x += 16.0f;
                     view.f.y += 16.0f;
                 }
-                bool inside = owlPos.x >= view.i.x && owlPos.y >= view.i.y && owlPos.x < view.f.x && owlPos.y < view.f.y;
-                if (inside && owl->mAlive != false) {
+                if (contains(view, owlPos) && owl->mAlive) {
                     break;
                 }
             }
@@ -407,9 +405,9 @@ void UnknownENDM_804AA0FC::update() {
 // field_0x290: 0 up, 1 down, 2 left, 3 right); in the settling state (field_0x297 set) it
 // clears the flag once the edge is passed.
 // FIXME(shotgun): 98.02 %, scheduling+regalloc; behaviour clean.
-bool UnknownENDM_804AA0FC::fn_802E9884(const JGeometry::TVec2f* pos) {
-    s32 ry = (s32)pos->y % 384 - 30;
-    s32 rx = (s32)pos->x % 512;
+bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
+    s32 ry = (s32)pos.y % 384 - 30;
+    s32 rx = (s32)pos.x % 512;
     if (field_0x297 == 0) {
         u8 dir = *field_0x290;
         if (dir == 0xFF) {
