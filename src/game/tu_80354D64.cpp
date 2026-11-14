@@ -87,11 +87,11 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 67.60 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 67.99 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box;
-    box.set(field_0x80.i.x + mPos.x, field_0x80.i.y + mPos.y, field_0x80.f.x + mPos.x,
-            field_0x80.f.y + mPos.y);
+    box.set(field_0x80);
+    box.addPos(mPos.x, mPos.y);
     switch (field_0x230) {
     case 0: {
         fn_80239914(&box, field_0x4, mSerial);
