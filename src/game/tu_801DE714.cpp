@@ -525,6 +525,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     case 16:
         startSound_801F0E34(0x5001D, 0);
         break;
+    case 18: // the original's jump table runs to state 18 (nothing to do for it)
     default:
         break;
     }

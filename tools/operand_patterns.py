@@ -114,6 +114,8 @@ def bucket(a, b, prev_t, nxt_t, tsyms, osyms):
                 return f"stack-offset {num(y) - num(x):+#x}", f"{ma} {x} vs {y}"
             return f"field-offset {num(y) - num(x):+#x}", f"{ma} {x} vs {y}"
         if num(x) is not None and num(y) is not None:
+            if ma == "addi" and len(aa) > 1 and aa[1] == "r1":
+                return f"stack-offset {num(y) - num(x):+#x}", f"{ma} {x} vs {y}"
             if ma == "li" and aa[0] == "r3" and nxt_t and nxt_t.startswith("__nw"):
                 return f"sizeof {num(y) - num(x):+#x}", f"new {x} vs {y}"
             if rta == "R_PPC_NONE" or rtb == "R_PPC_NONE":
@@ -193,6 +195,9 @@ def main():
     ap.add_argument("--fn", action="append")
     ap.add_argument("-v", action="store_true")
     ap.add_argument("-j", type=int, default=16)
+    ap.add_argument("--fix-splits", action="store_true",
+                    help="split target placeholders by our object's layout (symbols.txt); "
+                         "rebuild with rm build/G4SE01/config.json && ninja, then compare report_honest.json")
     args = ap.parse_args()
     cfg = json.loads((HONEST / "objdiff.json").read_text())
     byname = {u["name"]: u for u in cfg["units"] if u.get("base_path") and Path(u["base_path"]).exists()}
@@ -229,6 +234,19 @@ def main():
         print(f"{b:16} {n:6} {fn_cnt[b]:5} {fn_bytes[b]:8} {pure[b]:15}")
     if args.json:
         Path(args.json).write_text(json.dumps(results, indent=1))
+    if args.fix_splits:
+        symtxt = Path("config/G4SE01/symbols.txt")
+        symlines, known = read_symlines(symtxt)
+        plans = {}
+        for unit, fns in results.items():
+            u = byname[unit]
+            ob, tb = section_bytes(u["base_path"]), section_bytes(u["target_path"])
+            p = plan_splits(unit, fns, elf_syms(u["base_path"]), elf_syms(u["target_path"]), symlines, known,
+                            lambda ours, sec, ob=ob, tb=tb: (ob if ours else tb)[sec])
+            for ph, (_, lines) in p.items():
+                print(f"split {unit.split('/', 1)[-1]} {ph}: {len(lines)} objects")
+            plans.update(p)
+        apply_plans(symtxt, plans)
 
 
 if __name__ == "__main__":
@@ -400,3 +418,72 @@ def verdict(before, after, eps=1e-4):
     gains = [(k, before.get(k), v) for k, v in after.items() if v > before.get(k, 0) + eps]
     losses = [(k, v, after.get(k)) for k, v in before.items() if after.get(k, -1) < v - eps]
     return bool(gains) and not losses, gains, losses
+
+
+# ---------------------------------------------------------------- mechanical fix: source literals
+
+LIT = re.compile(r"'(?:[^'\\\n]|\\.){1,4}'|\b0[xX][0-9A-Fa-f]+[uUlL]*\b|\b\d+[uUlL]*\b")
+
+
+def lit_value(tok):
+    if tok.startswith("'"):
+        body = tok[1:-1].encode("latin1").decode("unicode_escape").encode("latin1")
+        v = 0
+        for b in body:
+            v = (v << 8) | b
+        return v
+    return int(tok.rstrip("uUlL"), 0)
+
+
+def lit_format(tok, v):
+    if tok.startswith("'"):
+        n = len(tok[1:-1].encode("latin1").decode("unicode_escape"))
+        bs = v.to_bytes(n, "big") if 0 <= v < 1 << (8 * n) else None
+        if bs and all(0x20 <= b < 0x7F and b not in (0x27, 0x5C) for b in bs):
+            return "'" + bs.decode() + "'"
+        return None
+    suf = tok[len(tok.rstrip("uUlL")):]
+    if tok.lower().startswith("0x"):
+        return f"0x{v:X}" + suf if v >= 0 else None
+    return f"{v}" + suf
+
+
+def function_body(text, mangled):
+    """(start, end) of the function's definition body in a .cpp, or None."""
+    short, _, rest = mangled.partition("__")
+    m = re.match(r"(\d+)(\w+)", rest)
+    cls = m.group(2)[:int(m.group(1))] if m else None
+    pat = rf"\b{re.escape(cls)}::{re.escape(short)}\s*\(" if cls and rest[0].isdigit() else rf"\b{re.escape(short)}\s*\("
+    for d in re.finditer(pat, text):
+        line0 = text.rfind("\n", 0, d.start()) + 1
+        if text[line0:d.start()].strip().startswith(("//", "return", "if")):
+            continue
+        k, depth = d.end(), 1
+        while k < len(text) and depth:  # skip the parameter list
+            depth += {"(": 1, ")": -1}.get(text[k], 0)
+            k += 1
+        j = k
+        while j < len(text) and text[j] in " \t\nconst":
+            j += 1
+        if j >= len(text) or text[j] not in "{:":
+            continue
+        b = text.index("{", j)
+        depth, e = 1, b + 1
+        while e < len(text) and depth:
+            depth += {"{": 1, "}": -1}.get(text[e], 0)
+            e += 1
+        return b, e
+    return None
+
+
+def literal_candidates(row):
+    """[(our value, target value)] for an immediate row: full constants for
+    li/cmpwi/cmplwi, the low half of a lis/addi pair otherwise."""
+    name, det = row[0], row[1]
+    mn, x, _, y = det.split()
+    vt, vo = int(x, 0), int(y, 0)
+    if mn in ("li", "cmpwi", "cmplwi", "subfic", "mulli"):
+        return [("full", vo, vt)]
+    if mn in ("addi", "ori", "subi", "addic", "xori"):
+        return [("lo", vo, vt)]
+    return []
