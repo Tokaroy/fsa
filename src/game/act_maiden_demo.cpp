@@ -84,7 +84,7 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
-// FIXME: 96.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.57 %, missing/extra; behaviour drift.
 void cls_8049D740::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
@@ -222,6 +222,7 @@ s32 cls_8049D740::vfunc_0x5C() {
     return 1;
 }
 
+// FIXME: 87.84 %, missing/extra; behaviour drift.
 void cls_8049D740::fn_80112AE8() {
     field_0x248 += 0.01f;
 
