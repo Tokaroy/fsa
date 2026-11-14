@@ -306,22 +306,20 @@ s32 ActorManager_804A5800::fn_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVe
     return spawnActor_801F9484(id, arg_0x4, pos, arg_0x90, -1, -1);
 }
 
-// FIXME: 93.75 %, scheduling; behaviour clean.
-// the target loads last->mListNext before
-// comparing last with actor; this code loads it after the compare.
 s32 ActorManager_804A5800::fn_801F84C4(ActorBase_804A5770* actor) {
     u8 linked = false;
     if (mListHead != NULL) {
         ActorBase_804A5770* last = mListHead;
         while (true) {
+            ActorBase_804A5770* next = last->mListNext;
             if (last == actor) {
                 actor->mInList = true;
                 break;
             }
-            if (last->mListNext == NULL) {
+            if (next == NULL) {
                 break;
             }
-            last = last->mListNext;
+            last = next;
         }
         if (last != actor) {
             last->mListNext = actor;
