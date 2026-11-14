@@ -94,8 +94,7 @@ static inline u16 tileAt(TrickFloor2_804AA628* self, f32 x, f32 y) {
     s32 layer = self->field_0x4;
     GameView_804A9950* gv = getGameView_802D6A9C();
     const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-    JGeometry::TBox2f vbox;
-    vbox = view;
+    JGeometry::TBox2f vbox = view;
     s32 tx = (s32)(x - vbox.i.x);
     s32 ty = (s32)(y - vbox.i.y);
     return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->field_0x4, tileIndex(tx, ty));
@@ -164,8 +163,6 @@ void TrickFloor2_804AA628::init() {
 // 8 stays down.
 void TrickFloor2_804AA628::update() {
     JGeometry::TVec3f saved = mPos;
-    JGeometry::TBox2f box4;
-    JGeometry::TVec2f p;
     switch (mType) {
     case 0:
     case 1:
@@ -185,10 +182,10 @@ void TrickFloor2_804AA628::update() {
     case 4:
     case 5: {
         field_0x80.set(-48.0f, -48.0f, 48.0f, 48.0f);
-        box4 = field_0x80;
+        JGeometry::TBox2f box4 = field_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
-        p.set(mPos.x, mPos.y);
+        JGeometry::TVec2f p(mPos.x, mPos.y);
         box4.addPos(p);
         fn_80239914(&box4, field_0x4, mSerial);
         mPos = saved;
@@ -197,7 +194,7 @@ void TrickFloor2_804AA628::update() {
         break;
     }
     }
-    p.set(mPos.x, mPos.y);
+    JGeometry::TVec2f p(mPos.x, mPos.y);
     JGeometry::TBox2f box = mBox;
     box.addPos(p);
     s32 player = fn_8023AF14(&box, field_0x4, false, 4.5f);
@@ -291,8 +288,7 @@ void TrickFloor2_804AA628::update() {
             s32 layer = field_0x4;
             GameView_804A9950* gv = getGameView_802D6A9C();
             const JGeometry::TBox2f& view = layer < 8 ? gv->mVisibleBox : gv->field_0xdc;
-            JGeometry::TBox2f vbox;
-            vbox = view;
+            JGeometry::TBox2f vbox = view;
             for (s32 i = 0; i < lbl_8046F788[mType]; i++) {
                 s32 tx = (s32)(x - vbox.i.x);
                 f32 y = mPos.y;
