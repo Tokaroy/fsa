@@ -2,6 +2,10 @@
 #include "game/ActorBase.h"
 #include "game/ActorManager.h"
 #include "game/act/tu_801688AC.h"
+#include "game/act/act_arrow.h"
+#include "game/act/act_octorok_rock.h"
+#include "game/ActorId.h"
+#include "game/Effect.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
 #include "game/Player.h"
@@ -85,9 +89,327 @@ s32 fn_801A6108(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 
 } // extern "C"
 
-// FIXME(shotgun): fn_801A5400 (0x801A5400, 0xD08 bytes) not written. It reads and writes fields
-// past ActorBase_804A5770 of the actor fn_8023B2B0(player) names (0x270) and of the OKTM actor it
-// spawns (0x230), whose classes are not declared yet.
+// 0x801A5400.
+// Case 6 also stores 1 at this + 0x230 (past ActorBase_804A5770); that store is not written.
+// FIXME: 95.78 %, missing/extra; behaviour drift.
+s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
+    if ((field_0xb0 & 0xFF) == 0) {
+        return 0;
+    }
+    s32 result = 0;
+    s32 player = fn_8023AE34(box, field_0x4, pos);
+    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+        return 0;
+    }
+    if (field_0xa0 < 0) {
+        if (player < 0) {
+            return 0;
+        }
+        s32 kind = field_0xb0 & 0xFF;
+        ActorBase_804A5770* arrow;
+        if (kind != 3) {
+            field_0xa0 = fn_8023B2B0(player);
+            arrow = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xa0);
+        } else {
+            arrow = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B2B0(player));
+        }
+        if (arrow == NULL) {
+            field_0xa0 = -1;
+            return 0;
+        }
+        if (arrow->mLife == 0) {
+            field_0xa0 = -1;
+            return 0;
+        }
+        field_0x10c = player;
+        if (kind == 9) {
+            kind = 4;
+            f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            s32 face = field_0x98;
+            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
+                                          10430.378f))) {
+                kind = 5;
+            }
+            if (field_0xa4 != 0) {
+                kind = 5;
+            }
+        }
+        if (kind == 16) {
+            f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            s32 face = field_0x98;
+            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
+                                          10430.378f))) {
+                kind = 4;
+            }
+        }
+        if (arrow->field_0x94 != 0 && arrow->field_0x94 != 4) {
+            if (kind == 1 || kind == 8) {
+                kind = 2;
+            }
+            if (kind == 10 || kind == 17) {
+                field_0xa0 = -1;
+                return 0;
+            }
+        }
+        if (kind == 11 && field_0xac >= 3) {
+            kind = 4;
+        }
+        switch (kind) {
+        case 1:
+            static_cast<ArrowPlayer_804A05E0*>(arrow)->field_0x270++;
+            field_0xd8 = 0;
+            field_0xdc = 0;
+            field_0x10c = player;
+            // fall through
+        case 8:
+            if (field_0xc4) {
+                field_0xa0 = -1;
+                result = 0xFF;
+                break;
+            }
+            if (kind == 8 && (mPos.z != 0.0f || field_0x3c.z != 0.0f)) {
+                field_0xa0 = -1;
+                result = 0xFF;
+                break;
+            }
+            mSpawnPos = JGeometry::TVec3f(mPos.x - arrow->mPos.x, mPos.y - arrow->mPos.y, mPos.z - arrow->mPos.z);
+            if (kind == 8) {
+                break;
+            }
+            // fall through
+        case 0:
+        case 9:
+        default:
+            if (!(arrow->field_0x98 & 2)) {
+                field_0x48 = JGeometry::TVec3f(0.5f, 1.4f, 0.0f);
+            } else {
+                field_0x48 = JGeometry::TVec3f(1.4f, 0.5f, 0.0f);
+            }
+            break;
+        case 16:
+            mLife = mLife - fn_8023B5B4(player);
+            if (mLife < 1000) {
+                switch (arrow->field_0x98) {
+                case 0:
+                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    break;
+                case 1:
+                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    break;
+                case 2:
+                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    break;
+                case 3:
+                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    break;
+                }
+            }
+            // fall through
+        case 2:
+            if (field_0xc4) {
+                result = 0xFF;
+                break;
+            }
+            // fall through
+        case 5:
+            if (kind != 16) {
+                s32 life = mLife - fn_8023B5B4(player);
+                if (life <= 0) {
+                    mLife = 0;
+                    result = 20;
+                    arrow->mAlive = false;
+                    break;
+                }
+                mLife = life;
+            }
+            // fall through
+        case 11:
+        case 15:
+        case 18:
+            if (kind == 11) {
+                field_0xac++;
+            }
+            arrow->mAlive = false;
+            if (kind == 5 || kind == 16 || kind == 11 || kind == 18 || kind == 15) {
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('OKTM', arrow->field_0x4, &arrow->mPos, 1, -1, -1);
+                if (serial >= 0) {
+                    OctorokRock_8049F5D8* rock =
+                        static_cast<OctorokRock_8049F5D8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                    if (rock != NULL && rock->field_0x230 != 4) {
+                        u16 dir = fn_801F6874(field_0x98);
+                        f32 dx = 0.8f * (mPos.x - rock->mPos.x);
+                        f32 dy = 0.8f * (mPos.y - rock->mPos.y);
+                        rock->field_0x254 = std::sqrtf(dx * dx + dy * dy);
+                        u16 angle = JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f;
+                        u16 target = fn_801F6874(arrow->field_0x98) + 0x8000;
+                        while (fn_801F681C(angle) != fn_801F681C(target)) {
+                            addCalcAngle2_801F714C(&angle, target, 1, 0x1000);
+                        }
+                        if (kind == 15) {
+                            rock->field_0x230 = 5;
+                        } else if (kind == 16 || kind == 18) {
+                            rock->field_0x230 = 6;
+                        } else {
+                            rock->field_0x230 = 4;
+                        }
+                        rock->field_0x258 = mSerial;
+                        rock->field_0x25c = dir - angle;
+                    }
+                }
+            }
+            field_0xa0 = -1;
+            result = 10;
+            field_0xd8 = 0;
+            field_0xdc = 0;
+            if (kind == 15) {
+                result = 0xFF;
+            }
+            break;
+        case 10:
+            result = 0xFF;
+            break;
+        case 17:
+            result = 10;
+            break;
+        case 6:
+            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+            // fall through
+        case 4:
+            for (s32 i = 0; i < 4; i++) {
+                s32 serial = fn_8023B2B0(i);
+                if (serial >= 0) {
+                    arrow = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    if (arrow != NULL) {
+                        arrow->mLife = 0;
+                    }
+                }
+            }
+            field_0xa0 = -1;
+            // fall through
+        case 3:
+            result = 0xFF;
+            break;
+        case 7:
+            mAlive = false;
+            // fall through
+        case 14:
+            field_0xa0 = -1;
+            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
+            arrow->mAlive = false;
+            result = 0xFF;
+            break;
+        case 12:
+            if (arrow->field_0x94 == 1) {
+                arrow->field_0x94 = 2;
+            }
+            if (arrow->field_0x94 == 0) {
+                arrow->field_0x94 = 4;
+            }
+            field_0xa0 = -1;
+            result = 0xFF;
+            break;
+        case 13:
+            if (arrow->field_0x94 == 2 || arrow->field_0x94 == 4) {
+                field_0x94 = 1;
+            }
+            field_0xa0 = -1;
+            result = 0xFF;
+            break;
+        }
+        if (player >= 0) {
+            lbl_8053A100 = player;
+        }
+        if (kind != 4 && kind != 8) {
+            vfunc_0x44();
+        }
+        if (result != 0) {
+            if (kind == 1 || kind == 2 || kind == 5 || kind == 16) {
+                JGeometry::TVec3f from = mPos;
+                from -= arrow->field_0x3c;
+                fn_801F37AC(0, &from, 0, 3, -1);
+                if (field_0xbc == 3 || kind == 5) {
+                    field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+                }
+            }
+            return result;
+        }
+    }
+    s32 serial = field_0xa0;
+    if (serial >= 0) {
+        ActorBase_804A5770* holder = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        if (holder != NULL) {
+            if (holder->mActorId == ACTOR_ARRW) {
+            result = 10;
+            switch (field_0xb0 & 0xFF) {
+            case 10:
+            case 17: {
+                JGeometry::TVec3f p = holder->mPos;
+                if (player >= 0) {
+                    lbl_8053A100 = player;
+                }
+                // Tests (!mSerial) & 0x10, always false (cntlzw; rlwinm. 27,27,27).
+                if (!mSerial & 0x10) {
+                    p.x += 3.5f - (s32)(mSerial & 7);
+                    p.y += 3.5f - (s32)(mSerial & 7);
+                } else {
+                    p.x -= 3.5f - (s32)(mSerial & 7);
+                    p.y -= 3.5f - (s32)(mSerial & 7);
+                }
+                mPos = p;
+                field_0x4 = holder->field_0x4;
+                vfunc_0x44();
+                break;
+            }
+            case 8:
+                if (field_0xc4 || mPos.z != 0.0f || field_0x3c.z != 0.0f) {
+                    field_0xa0 = -1;
+                    result = 0xFF;
+                    break;
+                }
+                if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 1) {
+                    field_0xa0 = -1;
+                    mLife = 0;
+                    field_0xb0 = 0;
+                }
+                mPos = holder->mPos + mSpawnPos;
+                field_0x4 = holder->field_0x4;
+                vfunc_0x44();
+                if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
+                    vfunc_0x24();
+                    result = 20;
+                }
+                break;
+            case 1:
+                mPos = holder->mPos + mSpawnPos;
+                field_0x4 = holder->field_0x4;
+                if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
+                    vfunc_0x24();
+                    result = 20;
+                }
+                break;
+            }
+            }
+        } else {
+            switch (field_0xb0 & 0xFF) {
+            case 8:
+                mLife = 0;
+                field_0xb0 = 0;
+                break;
+            case 10:
+            case 17:
+                break;
+            default:
+                vfunc_0x24();
+                break;
+            }
+            field_0xa0 = -1;
+            result = 20;
+        }
+    }
+    return result;
+}
 
 // 0x801A4FB4.
 // FIXME(shotgun): 97.06 %, missing/extra; behaviour clean.
