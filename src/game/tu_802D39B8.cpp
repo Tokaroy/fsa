@@ -340,16 +340,14 @@ bool fn_802DEB58(void) {
     return false;
 }
 
-// FIXME: 94.23 %, missing/extra; behaviour near.
-// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its mView (lwz 0xc)
-// for the second stage pair; ours takes the view once per pair and its
-// mView load is folded into the field_0x4 load.
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
+        GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
+        if (sub->mView->field_0x4 == 7 && sub->mView->field_0x8 == 0) {
             return true;
         }
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
+        if (gGameRoot_8053AAF8->field_0x4->mView->field_0x4 == 7 &&
+            gGameRoot_8053AAF8->field_0x4->mView->field_0x8 == 2) {
             return true;
         }
         return false;
