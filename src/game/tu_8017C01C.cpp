@@ -180,7 +180,7 @@ void fn_8017EAB4(JPABaseEmitter* emitter) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 59.36 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 63.32 %, missing/extra + reloc-name; behaviour near.
 // The original hoists the float constants and the stmw prologue differently.
 void cls_804A1318::init() {
     field_0x94 = (field_0x90 >> 4) & 0xF;
@@ -296,7 +296,7 @@ void cls_804A1318::init() {
     }
 }
 
-// FIXME(shotgun): 99.74 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.80 %, regalloc-only; behaviour clean.
 cls_804A1318::~cls_804A1318() {
     for (int i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters2bc[i]);
@@ -322,6 +322,7 @@ cls_804A1318::~cls_804A1318() {
 }
 
 // The 'FGAN' actor's update (vtable slot 0x14).
+// FIXME: 93.65 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1318::update() {
     JGeometry::TBox2f box;
     fn_801546F4(&box, &mBox);
@@ -1143,7 +1144,7 @@ void cls_804A1318::update() {
     }
 }
 
-// FIXME(shotgun): 87.35 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 83.90 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1318::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
