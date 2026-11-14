@@ -254,7 +254,7 @@ static const u8 lbl_8048F1D8[4][10] = {
     { 3, 2, 1, 0, 5, 9, 8, 4, 7, 6 },
 };
 
-// FIXME(shotgun): 80.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.65 %, missing/extra + reloc-name; behaviour drift.
 cls_804B146C::cls_804B146C()
     : field_0x210(0xFFFFFFFF)
     , field_0x214(0xFFFFFFFF)
@@ -412,7 +412,7 @@ cls_804B146C::~cls_804B146C() {
     }
 }
 
-// FIXME(shotgun): 88.87 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.87 %, missing/extra; behaviour drift.
 void cls_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
@@ -527,6 +527,7 @@ static inline bool isPaused() {
 }
 
 // Regalloc (r3-r6 in sx/sy, f26/f27 swap for x/y) and .sdata2 pool order from earlier functions.
+// FIXME: 99.41 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_80425F6C() {
     f32 sx = lbl_8050DB0C.field_0x30[4] *
              (JFWDisplay::getManager()->getEfbWidth() / gGameRoot2_8053AB10->field_0x24->field_0x858);
@@ -568,7 +569,7 @@ void cls_804B146C::fn_80425F24() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 86.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
@@ -838,7 +839,7 @@ void cls_804B146C::fn_80425128() {
     }
 }
 
-// FIXME(shotgun): 86.20 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.62 %, missing/extra + reloc-name; behaviour near.
 void cls_804B146C::fn_80424148(s32 player, bool force) {
     f32 prevA = field_0x108[player];
     f32 prevB = field_0x128[player];
@@ -1086,7 +1087,7 @@ void cls_804B146C::fn_80423DF0(s32 player) {
     }
 }
 
-// FIXME(shotgun): 93.42 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
 void cls_804B146C::fn_80423804(s32 player) {
     if (!(field_0x256 & (u8)(1 << player))) {
         return;
@@ -1167,7 +1168,7 @@ void cls_804B146C::fn_80423804(s32 player) {
     }
 }
 
-// FIXME(shotgun): 63.23 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.29 %, missing/extra; behaviour near.
 void cls_804B146C::fn_80423248(s32 player) {
     if (!(field_0x257 & (u8)(1 << player))) {
         return;
@@ -1336,7 +1337,7 @@ void cls_804B146C::fn_80422824() {
     }
 }
 
-// FIXME(shotgun): 83.14 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
         field_0x1a8[player] = fn_80237774(player);
@@ -1502,7 +1503,7 @@ void cls_804B146C::fn_80421A34(s32 player, bool force) {
     }
 }
 
-// FIXME(shotgun): 96.59 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.60 %, missing/extra; behaviour near.
 void cls_804B146C::fn_8042165C() {
     field_0x1f0[0] = 0;
     field_0x1f0[1] = 0;
