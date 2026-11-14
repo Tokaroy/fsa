@@ -5,6 +5,15 @@
 
 #include "game/ActorBase.h"
 
+// Small out-of-line helpers of game/act_sword_soldier.cpp, called from other units.
+void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
+void fn_801546BC(JGeometry::TVec3f* v);
+s32 fn_8015465C(f32 y, f32 x);
+void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
+void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
+f32 fn_801544FC(s16 angle);
+f32 fn_801544E4(s16 angle);
+
 // The SLR1 actor (Sword Soldier, docs/names/actors.tsv, high confidence).
 // Named after its vtable, lbl_8049FCA0 (.data 0x270, size 0x58). Field names
 // come from the asm only (shotgun pass).
