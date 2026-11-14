@@ -300,7 +300,8 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     return 1;
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name only (float literal pool name); behaviour clean.
+// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
+// only (float literal pool name); behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
     u16 angle;
     s32 dir;
