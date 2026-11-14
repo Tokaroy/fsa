@@ -21,7 +21,7 @@ static const f32 lbl_8046C924[7] = {32.0f, 32.0f, 40.0f, 40.0f, 64.0f, 64.0f, 32
 static const f32 lbl_8046C940[7] = {1.0f, 1.0f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f};
 static const f32 lbl_8046C95C[7] = {1.0f, 1.0f, 1.3f, 1.3f, 1.0f, 1.0f, 1.0f};
 
-// FIXME(shotgun): 98.13 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.89 %, operands + reloc-name; behaviour clean.
 void TrickFloor_804A83A0::init() {
     field_0x234 = field_0x90 & 0x7F;
     field_0x238 = (field_0x90 >> 7) & 0x1F;
@@ -185,6 +185,7 @@ static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
 // Who stands on the floor, then: 0 reads the tile under it, 1 waits for the switch,
 // 2 waits for a rider (kinds 4/5: all four players) and drops, 3 sinks, 4 holds while
 // ridden, 5 rises back and restores the tiles, 6 / 7 fall away, 8 stays down.
+// FIXME: 93.47 %, missing/extra + reloc-name; behaviour drift.
 void TrickFloor_804A83A0::update() {
     JGeometry::TVec3f savedPos = mPos;
     switch (field_0x234) {
@@ -425,6 +426,7 @@ void TrickFloor_804A83A0::update() {
 // The hole picture "otosiana_bg_s.bti" under the floor (scaled per type), then the floor's two
 // halves tilted by field_0x248 (the left one about its edge, the right one mirrored); types 4 / 5
 // draw the ground or the house instead while falling.
+// FIXME: 95.61 %, missing/extra + reloc-name; behaviour drift.
 void TrickFloor_804A83A0::draw() {
     SpriteParams_801F5AE0 sp;
     sp.field_0x1c = -1;
