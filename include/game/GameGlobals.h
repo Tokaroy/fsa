@@ -1899,7 +1899,7 @@ void fn_8023F2BC();
 void fn_8023F390();
 struct cls_8016ED88; // game/cls_8016ED88.h
 extern "C" {
-// Owner: game/tu_8016A2B4.cpp (0x8016D398, not written yet). Steps the four
+// Owner: game/tu_8016A2B4.cpp (0x8016D398). Steps the four
 // cloud-effect entries of `entries` (respawning an effect in each idle one,
 // timers in *timer1 / *timer2, a flag in *flag) relative to the view's
 // translation, then sets the frames of the six btk / brk animations from
