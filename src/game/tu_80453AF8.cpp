@@ -41,7 +41,6 @@ static inline void bounceRows(cls_804B1DA8* self, s32 k) {
     }
 }
 
-// FIXME(shotgun): 99.97 %, reloc-name
 cls_804B1DA8::cls_804B1DA8() {
     lbl_8053AF48 = this;
     mScreen = new J2DScreen;
@@ -103,7 +102,6 @@ cls_804B1DA8::~cls_804B1DA8() {
     lbl_8053AF48 = NULL;
 }
 
-// FIXME(shotgun): 99.94 %, reloc-name
 void cls_804B1DA8::fn_80454A6C() {
     lbl_8053AEC0->fn_804310CC();
     field_0x1c = 0;
@@ -127,7 +125,6 @@ void cls_804B1DA8::fn_80454A6C() {
     field_0x58 = 9;
 }
 
-// FIXME(shotgun): 99.81 %, reloc-name
 void cls_804B1DA8::fn_80454A00() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -136,7 +133,8 @@ void cls_804B1DA8::fn_80454A00() {
     }
 }
 
-// FIXME(shotgun): 94.4 %, missing/extra + reloc-name (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
+// FIXME(shotgun): 97.85 %, missing/extra; behaviour drift.
+// (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
 // A/B-button chain of state 8 skips the rest on a mismatched flag in the original, ours does not)
 s32 cls_804B1DA8::fn_80453B14() {
     field_0x58 = 9;
