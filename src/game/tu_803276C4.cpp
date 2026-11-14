@@ -79,7 +79,7 @@ void cls_804AB528::init() {
     }
 }
 
-// FIXME(shotgun): 90.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.02 %, missing/extra; behaviour near.
 void cls_804AB528::update() {
     if (field_0x25c < 1.0f) {
         if (vfunc_0x34() == 1 && field_0x25a == 1) {
@@ -96,12 +96,13 @@ void cls_804AB528::update() {
         return;
     }
 
-    JGeometry::TBox2f worldBox;
-    worldBox.i.x = mBox.i.x + mPos.x;
-    worldBox.i.y = mBox.i.y + mPos.y;
-    worldBox.f.x = mBox.f.x + mPos.x;
-    worldBox.f.y = mBox.f.y + mPos.y;
-    JGeometry::TBox2f box = worldBox;
+    JGeometry::TBox2f worldBox(mBox);
+    worldBox.i.x += mPos.x;
+    worldBox.i.y += mPos.y;
+    worldBox.f.x += mPos.x;
+    worldBox.f.y += mPos.y;
+    JGeometry::TBox2f box;
+    box.set(worldBox);
     box.i.x += 4.0f;
     box.i.y -= 2.0f;
     box.f.x -= 4.0f;
@@ -118,7 +119,7 @@ void cls_804AB528::update() {
         }
     }
 
-    u8 blocked = 0;
+    s32 blocked = 0;
     if (!fn_801F6758(&mPos, field_0x4, -40.0f)) {
         blocked = fn_801F2618(NULL, false);
     }
@@ -250,9 +251,7 @@ void cls_804AB528::update() {
                 }
             }
             if (blocked != 0 || field_0x244 == 0) {
-                field_0x260.x = mPos.x;
-                field_0x260.y = mPos.y;
-                field_0x260.z = mPos.z;
+                field_0x260 = mPos;
                 field_0x3c.x = 0.0f;
                 field_0x3c.y = -0.5f;
                 field_0x230 = 3;
@@ -260,9 +259,7 @@ void cls_804AB528::update() {
             break;
         case 3:
             if (field_0x260.y - mPos.y >= 8.0f) {
-                field_0x260.x = mPos.x;
-                field_0x260.y = mPos.y;
-                field_0x260.z = mPos.z;
+                field_0x260 = mPos;
                 field_0x3c.z = 0.0f;
                 field_0x3c.y = 0.0f;
                 field_0x3c.x = 0.0f;
