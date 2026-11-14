@@ -173,7 +173,7 @@ void Armos_8049F260::update() {
         field_0x3c.z += -0.2f;
         mPos += field_0x3c;
         if (mPos.z <= 0.0f) {
-            JGeometry::TVec3f p(mPos.x, mPos.y, mPos.z);
+            JGeometry::TVec3f p = mPos;
             p.y += 8.0f;
             if (field_0x304 != 0) {
                 if (field_0x94 == 3 || field_0x94 == 4) {
@@ -366,7 +366,7 @@ void Armos_8049F260::update() {
         mPos += field_0x3c;
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            JGeometry::TVec3f p(mPos.x, mPos.y, mPos.z);
+            JGeometry::TVec3f p = mPos;
             p.y += 8.0f;
             if (field_0x304 != 0) {
                 spawnEmitter_8013CC50(field_0x4, &p, 0x3CF, 0, 0, NULL, NULL, true, 2.0f);
