@@ -42,6 +42,8 @@ public:
     void fn_80364900();
     cls_804ADF28() {}
     /* 0x08 */ virtual ~cls_804ADF28();
+    // 0x80365B5C: decodes field_0x90 (state, sub-state, direction, frame) and sets up the state.
+    /* 0x0C */ virtual void init();
 
     // 0x80362680: draws the boat sprite.
     void fn_80362680();
@@ -102,7 +104,7 @@ public:
     /* 0x2A0 */ JGeometry::TVec3f field_0x2a0[3];
     /* 0x2C4 */ JGeometry::TVec3f field_0x2c4[3];
     /* 0x2E8 */ s32 field_0x2e8[3];
-    /* 0x2F4 */ f32* field_0x2f4; // the walk's leg lengths (field_0x2f8 counts the distance)
+    /* 0x2F4 */ const f32* field_0x2f4; // the walk's leg lengths (field_0x2f8 counts the distance)
     /* 0x2F8 */ f32 field_0x2f8;
     /* 0x2FC */ EndingOwl_804ADF28* field_0x2fc; // the 'EOWL' actor
     /* 0x300 */ JPABaseEmitter* field_0x300;
