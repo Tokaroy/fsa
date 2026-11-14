@@ -10,9 +10,6 @@
 #include "game/act/act_wizzrobe.h"
 #include "JSystem/JMath/JMath.h"
 
-extern const ActorId lbl_80466838[7];
-const ActorId lbl_80466838[7] = { ACTOR_WIZR, ACTOR_FIRE, ACTOR_BLZE, ACTOR_DDGO, ACTOR_FLME, ACTOR_THCL, ACTOR_NULL };
-
 s32 lbl_804A0D50[20] = { 0, 1, 2, 3, 2, 4, 5, 6, 7, 6, 8, 9, 10, 11, 10, 12, 13, 14, 15, 14 };
 s32 lbl_804A0DA0[23] = { 2, 1, 20, 20, 10, 16, 17, 18, 19, 16, 17, 18, 19, 20, 2, 3, 3, 4, 4, 5, 6, 7, 10 };
 s32 lbl_804A0DFC[20] = { 20, 2, 1, 0, 20, 6, 5, 4, 20, 10, 9, 8, 20, 14, 13, 12, 2, 1, 1, 10 };
@@ -22,6 +19,8 @@ s32 lbl_804A0E9C[4] = { 16, 17, 18, 19 };
 s32 lbl_804A0EAC[4] = { 0x4000, 0xC000, 0x8000, 0 };
 s32 lbl_804A0EBC[8] = { 1, 5, 20, 50, 100, 150, 200, 300 };
 
+// Not auto-inlined: update() calls these out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 // Out-of-line copy of TVec3<f32>::set(const TVec3&).
 void fn_80178F10(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
@@ -46,6 +45,7 @@ void fn_80178ED4(JGeometry::TVec3<s16>* v, s16 x, s16 y, s16 z) {
 void fn_80178EB8(JPABaseEmitter* emitter, const JGeometry::TVec3f* trans) {
     emitter->setGlobalTranslation(*trans);
 }
+#pragma auto_inline reset
 
 // Shared by the destructor and vfunc_0x44.
 inline void Wizzrobe_804A0EDC::killLinkedActor() {
@@ -208,7 +208,8 @@ void Wizzrobe_804A0EDC::update() {
     if (field_0x2e4 == 1) {
         s32 prevLife = mLife;
         bool hit = false;
-        if (fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, (const u32*)lbl_80466838)) {
+        const u32 excludeIds[7] = { ACTOR_WIZR, ACTOR_FIRE, ACTOR_BLZE, ACTOR_DDGO, ACTOR_FLME, ACTOR_THCL, ACTOR_NULL };
+        if (fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, excludeIds)) {
             if (prevLife != mLife) {
                 hit = true;
             } else {
@@ -261,10 +262,11 @@ void Wizzrobe_804A0EDC::update() {
                     if (s >= 0) {
                         ActorBase_804A5770* rupy = getActorManager_801F856C()->findActorBySerial_801F666C(s);
                         if (rupy != NULL) {
-                            f32 vx = 2.0f - 4.0f * fn_80154744();
-                            f32 vy = 2.0f - 4.0f * fn_80154744();
-                            f32 vz = 5.0f * fn_80154744() + 10.0f;
-                            rupy->field_0x3c = JGeometry::TVec3f(vx, vy, vz);
+                            JGeometry::TVec3f vel;
+                            vel.x = 2.0f - 4.0f * fn_80154744();
+                            vel.y = 2.0f - 4.0f * fn_80154744();
+                            vel.z = 5.0f * fn_80154744() + 10.0f;
+                            rupy->field_0x3c = vel;
                         }
                     }
                 } else {
@@ -282,7 +284,7 @@ void Wizzrobe_804A0EDC::update() {
         addCalc2_801F71A4(&field_0x2d0, field_0x2d4, 0.5f, field_0x2d8);
     }
 
-    PSVECAdd(&mPos, &field_0x3c, &mPos);
+    mPos.add(field_0x3c);
 
     if (field_0x2e4 == 1 || field_0x94 == 10 || field_0x94 == 11) {
         fn_801F2B7C(-100, -1, 1);
@@ -332,13 +334,13 @@ void Wizzrobe_804A0EDC::update() {
     case 1:
         if (field_0x23c == 30) {
             fn_801EEC98(mSerial, NULL, &dir, NULL, &player, 0, 1);
-            field_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
+            fn_80154590(&field_0x80, -2.0f, -2.0f, 2.0f, 2.0f);
             JGeometry::TVec3f savedPos;
-            savedPos.set(mPos);
+            fn_80178F10(&savedPos, &mPos);
             bool found = false;
             if (player >= 0) {
                 for (s32 i = 0; i < 4; i++) {
-                    mPos.set(*getPlayerPos_8023E724(player));
+                    fn_80178F10(&mPos, &*getPlayerPos_8023E724(player));
                     f32 sinVal = JMath::sincosTable_.sinShort(field_0x250 * 0x4000);
                     mPos.x += (64.0f * fn_80154744() + 64.0f) * sinVal;
                     f32 cosVal = JMath::sincosTable_.cosShort(field_0x250 * 0x4000);
@@ -353,14 +355,14 @@ void Wizzrobe_804A0EDC::update() {
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x50A, 0, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x50B, 0, 1, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x40077, 0);
-                        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+                        fn_80154590(&field_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
                         return;
                     }
                 }
             }
-            field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+            fn_80154590(&field_0x80, -8.0f, -8.0f, 8.0f, 8.0f);
             field_0x23c = 31;
-            mPos.set(savedPos);
+            fn_80178F10(&mPos, &savedPos);
         }
         if (field_0x23c == 0) {
             field_0x260 = lbl_804A0DFC[field_0x98 * 4 + field_0x24c];
@@ -470,7 +472,7 @@ void Wizzrobe_804A0EDC::update() {
             field_0x238 = lbl_804A0DA0[field_0x24c];
             field_0x24c++;
             if (field_0x24c == 3) {
-                u16 kind = field_0x94;
+                s32 kind = field_0x94;
                 s32 spawnArg = 10;
                 s32 spawnArg2 = 21;
                 if (kind == 1 || kind == 2) {
@@ -532,7 +534,7 @@ void Wizzrobe_804A0EDC::update() {
                     // fallthrough
                 case 3: {
                     JGeometry::TVec3f spawnPos;
-                    spawnPos.set(mPos);
+                    fn_80178F10(&spawnPos, &mPos);
                     spawnPos.z = 24.0f;
                     if (kind == 1) {
                         spawnPos.z -= 4.0f;
@@ -635,38 +637,38 @@ void Wizzrobe_804A0EDC::update() {
                     switch (field_0x98) {
                     case 0: {
                         JGeometry::TVec3f v;
-                        v.set(1.0f, 0.0f, 0.0f);
-                        mEmitters[0]->mLocalDir.set(v);
+                        fn_80178F00(&v, 1.0f, 0.0f, 0.0f);
+                        fn_80178EE4(mEmitters[0], &v);
                         break;
                     }
                     case 1: {
                         JGeometry::TVec3f v;
-                        v.set(-1.0f, 0.0f, 0.0f);
-                        mEmitters[0]->mLocalDir.set(v);
+                        fn_80178F00(&v, -1.0f, 0.0f, 0.0f);
+                        fn_80178EE4(mEmitters[0], &v);
                         break;
                     }
                     case 2: {
                         JGeometry::TVec3f v;
-                        v.set(0.0f, 0.0f, 1.0f);
-                        mEmitters[0]->mLocalDir.set(v);
+                        fn_80178F00(&v, 0.0f, 0.0f, 1.0f);
+                        fn_80178EE4(mEmitters[0], &v);
                         break;
                     }
                     case 3: {
                         JGeometry::TVec3f v;
-                        v.set(0.0f, 0.0f, -1.0f);
-                        mEmitters[0]->mLocalDir.set(v);
+                        fn_80178F00(&v, 0.0f, 0.0f, -1.0f);
+                        fn_80178EE4(mEmitters[0], &v);
                         break;
                     }
                     }
                 } else {
                     JGeometry::TVec3<s16> rot;
-                    rot.set<s16>(0, lbl_804A0EAC[field_0x98], 0);
+                    fn_80178ED4(&rot, 0, lbl_804A0EAC[field_0x98], 0);
                     mEmitters[0]->setGlobalRotation(rot);
                 }
             }
             if (field_0x94 == 11 && mEmitters[1] != NULL) {
                 JGeometry::TVec3<s16> rot;
-                rot.set<s16>(0, lbl_804A0EAC[field_0x98], 0);
+                fn_80178ED4(&rot, 0, lbl_804A0EAC[field_0x98], 0);
                 mEmitters[1]->setGlobalRotation(rot);
             }
         } else {
@@ -675,7 +677,7 @@ void Wizzrobe_804A0EDC::update() {
                 setEmitterPos_8013CB44(mEmitters[1], &mPos, 1, 1, true);
                 if (field_0x238 == 0) {
                     JGeometry::TVec3f p;
-                    p.set(mPos);
+                    fn_80178F10(&p, &mPos);
                     if ((field_0x98 & 2) == 0) {
                         p.y += 8.0f;
                     }
@@ -732,10 +734,10 @@ void Wizzrobe_804A0EDC::update() {
     case 14:
         fn_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x24c, 2);
         if (mEmitters[0] != NULL) {
-            mEmitters[0]->setGlobalTranslation(mPos);
+            fn_80178EB8(mEmitters[0], &mPos);
         }
         if (mEmitters[1] != NULL) {
-            mEmitters[1]->setGlobalTranslation(mPos);
+            fn_80178EB8(mEmitters[1], &mPos);
         }
         if (player < 0) {
             if (mEmitters[0] != NULL) {
@@ -798,20 +800,20 @@ void Wizzrobe_804A0EDC::update() {
         }
         break;
     case 15:
-        mPos.set(field_0x2f4);
+        fn_80178F10(&mPos, &field_0x2f4);
         mPos.x += field_0x2e0 * JMath::sincosTable_.sinShort(field_0x2cc);
         mPos.y += field_0x2e0 * JMath::sincosTable_.cosShort(field_0x2cc);
         if (mEmitters[0] != NULL) {
-            mEmitters[0]->setGlobalTranslation(mPos);
+            fn_80178EB8(mEmitters[0], &mPos);
         }
         if (mEmitters[1] != NULL) {
-            mEmitters[1]->setGlobalTranslation(mPos);
+            fn_80178EB8(mEmitters[1], &mPos);
         }
         field_0x2e0 += 2.0f;
         field_0x2cc += 0x500;
         if (field_0x238 == 0) {
             JGeometry::TVec3f p;
-            p.set(mPos);
+            fn_80178F10(&p, &mPos);
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_801F2618(NULL, false) && !fn_801F6758(&p, field_0x4, 0.0f)) {
                     u32 spawnId = ACTOR_POPO;
@@ -849,7 +851,7 @@ void Wizzrobe_804A0EDC::update() {
                         }
                     }
                 }
-                p.set(mPos);
+                fn_80178F10(&p, &mPos);
                 p.x += 24.0f * JMath::sincosTable_.sinShort((i + 1) * 0x4000);
                 p.y += 24.0f * JMath::sincosTable_.cosShort((i + 1) * 0x4000);
             }
@@ -863,7 +865,7 @@ void Wizzrobe_804A0EDC::update() {
             if (parentSerial >= 0) {
                 ActorBase_804A5770* parent = getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial);
                 if (parent != NULL) {
-                    mPos.set(parent->mPos);
+                    fn_80178F10(&mPos, &parent->mPos);
                     mPos.y -= 24.0f;
                     if (mEmitters[0] != NULL) {
                         setEmitterPos_8013CB44(mEmitters[0], &mPos, 1, 1, true);
