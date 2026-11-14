@@ -11,23 +11,201 @@
 #include "game/GameState.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// The 'GOL2' offset tables in rodata (per mode and sprite; only the part init reads is
-// described, the rest of the 0x680 bytes belongs to update).
 struct GoalTables_8046EA10 {
     f32 x1[6][4];
     f32 y1[6][4];
     f32 x2[6][4];
     f32 y2[6][4];
     u16 id[6][4];
-    JGeometry::TBox2f hurtDefault[4][4];  // 0x1B0: [mode][sprite] (modes 0, 2, 3)
-    JGeometry::TBox2f attackDefault[4][4]; // 0x2B0
-    JGeometry::TBox2f hurtMode1[4][3];    // 0x3B0: [sprite][part]
-    JGeometry::TBox2f attackMode1[4][3];  // 0x470
-    JGeometry::TBox2f hurtMode4[3][3];    // 0x530
-    JGeometry::TBox2f attackMode4[3][3];  // 0x5C0
-    JGeometry::TVec2f focus[6];           // 0x650: [mode] offset of the camera focus point
+    f32 hurtDefault[4][4][4];
+    f32 attackDefault[4][4][4];
+    f32 hurtMode1[4][3][4];
+    f32 attackMode1[4][3][4];
+    f32 hurtMode4[3][3][4];
+    f32 attackMode4[3][3][4];
+    f32 focus[6][2];
 };
-extern const GoalTables_8046EA10 lbl_8046EA10;
+
+static const GoalTables_8046EA10 lbl_8046EA10 = {
+{
+    { 0.0f, 64.0f, 0.0f, 64.0f },
+    { 0.0f, -48.0f, 48.0f, 0.0f },
+    { 0.0f, 32.0f, 64.0f, 96.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 48.0f, 112.0f, 160.0f },
+    { 0.0f, 160.0f, 0.0f, 160.0f },
+},
+{
+    { 0.0f, 0.0f, 64.0f, 64.0f },
+    { 0.0f, 48.0f, 48.0f, 96.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 32.0f, 64.0f, 96.0f },
+    { 0.0f, 48.0f, 48.0f, 0.0f },
+    { 0.0f, 0.0f, 96.0f, 96.0f },
+},
+{
+    { 32.0f, 0.0f, 0.0f, -32.0f },
+    { -24.0f, 24.0f, -24.0f, 24.0f },
+    { 16.0f, 16.0f, 16.0f, -16.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 24.0f, 32.0f, 24.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+},
+{
+    { 0.0f, 32.0f, -32.0f, 0.0f },
+    { 24.0f, 24.0f, -24.0f, -24.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 16.0f, 16.0f, 16.0f, 0.0f },
+    { 24.0f, 0.0f, -24.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+},
+{
+    { 0x10D, 0x10F, 0x10F, 0x10D },
+    { 0x10C, 0x10B, 0x10B, 0x10C },
+    { 0x10E, 0x10E, 0x10E, 0 },
+    { 0x110, 0x110, 0x110, 0 },
+    { 0x10B, 0x10D, 0x10C, 0 },
+    { 0x106, 0x107, 0x108, 0x109 },
+},
+{
+    {
+        { -0.0f, -8.0f, 64.0f, 8.0f },
+        { -8.0f, -0.0f, 8.0f, 64.0f },
+        { -8.0f, -64.0f, 8.0f, 0.0f },
+        { -64.0f, -8.0f, 0.0f, 4.0f },
+    },
+    {
+        { -2.0f, -4.0f, 64.0f, 4.0f },
+        { -4.0f, -2.0f, 4.0f, 64.0f },
+        { -4.0f, -64.0f, 4.0f, 2.0f },
+        { -64.0f, -4.0f, 2.0f, 4.0f },
+    },
+    {
+        { -0.0f, -8.0f, 32.0f, 8.0f },
+        { -0.0f, -8.0f, 32.0f, 8.0f },
+        { -0.0f, -8.0f, 32.0f, 8.0f },
+        { -0.0f, -8.0f, 32.0f, 8.0f },
+    },
+    {
+        { -8.0f, -0.0f, 8.0f, 32.0f },
+        { -8.0f, -0.0f, 8.0f, 32.0f },
+        { -8.0f, -0.0f, 8.0f, 32.0f },
+        { -8.0f, -0.0f, 8.0f, 32.0f },
+    },
+},
+{
+    {
+        { -0.0f, -7.0f, 64.0f, 7.0f },
+        { -7.0f, -0.0f, 7.0f, 64.0f },
+        { -7.0f, -64.0f, 7.0f, 0.0f },
+        { -64.0f, -7.0f, 0.0f, 7.0f },
+    },
+    {
+        { -2.0f, -2.0f, 64.0f, 2.0f },
+        { -2.0f, -2.0f, 2.0f, 64.0f },
+        { -2.0f, -64.0f, 2.0f, 2.0f },
+        { -64.0f, -2.0f, 2.0f, 2.0f },
+    },
+    {
+        { -0.0f, -7.0f, 32.0f, 7.0f },
+        { -0.0f, -7.0f, 32.0f, 7.0f },
+        { -0.0f, -7.0f, 32.0f, 7.0f },
+        { -0.0f, -7.0f, 32.0f, 7.0f },
+    },
+    {
+        { -7.0f, -0.0f, 7.0f, 32.0f },
+        { -7.0f, -0.0f, 7.0f, 32.0f },
+        { -7.0f, -0.0f, 7.0f, 32.0f },
+        { -7.0f, -0.0f, 7.0f, 32.0f },
+    },
+},
+{
+    {
+        { -16.0f, 6.0f, -6.0f, 16.0f },
+        { -26.0f, 18.0f, -16.0f, 28.0f },
+        { -36.0f, 30.0f, -26.0f, 40.0f },
+    },
+    {
+        { 10.0f, 0.0f, 20.0f, 10.0f },
+        { 20.0f, 12.0f, 30.0f, 22.0f },
+        { 32.0f, 24.0f, 42.0f, 34.0f },
+    },
+    {
+        { -44.0f, -44.0f, -34.0f, -34.0f },
+        { -36.0f, -32.0f, -26.0f, -22.0f },
+        { -28.0f, -20.0f, -18.0f, -10.0f },
+    },
+    {
+        { 8.0f, -26.0f, 18.0f, -16.0f },
+        { 16.0f, -36.0f, 26.0f, -26.0f },
+        { 26.0f, -46.0f, 36.0f, -36.0f },
+    },
+},
+{
+    {
+        { -15.0f, 7.0f, -7.0f, 15.0f },
+        { -25.0f, 19.0f, -17.0f, 27.0f },
+        { -35.0f, 31.0f, -27.0f, 39.0f },
+    },
+    {
+        { 11.0f, 1.0f, 19.0f, 9.0f },
+        { 21.0f, 13.0f, 29.0f, 21.0f },
+        { 33.0f, 23.0f, 41.0f, 33.0f },
+    },
+    {
+        { -43.0f, -43.0f, -35.0f, -35.0f },
+        { -35.0f, -31.0f, -27.0f, -23.0f },
+        { -27.0f, -19.0f, -19.0f, -11.0f },
+    },
+    {
+        { 9.0f, -25.0f, 17.0f, -17.0f },
+        { 17.0f, -35.0f, 25.0f, -27.0f },
+        { 27.0f, -45.0f, 35.0f, -37.0f },
+    },
+},
+{
+    {
+        { 10.0f, 0.0f, 20.0f, 10.0f },
+        { 20.0f, 12.0f, 30.0f, 22.0f },
+        { 32.0f, 24.0f, 42.0f, 34.0f },
+    },
+    {
+        { 8.0f, -26.0f, 18.0f, -16.0f },
+        { 16.0f, -36.0f, 26.0f, -26.0f },
+        { 26.0f, -46.0f, 36.0f, -36.0f },
+    },
+    {
+        { 8.0f, -26.0f, 18.0f, -16.0f },
+        { 16.0f, -36.0f, 26.0f, -26.0f },
+        { 26.0f, -46.0f, 36.0f, -36.0f },
+    },
+},
+{
+    {
+        { 11.0f, 1.0f, 19.0f, 9.0f },
+        { 21.0f, 13.0f, 29.0f, 21.0f },
+        { 33.0f, 23.0f, 41.0f, 33.0f },
+    },
+    {
+        { 8.0f, -26.0f, 18.0f, -16.0f },
+        { 16.0f, -36.0f, 26.0f, -26.0f },
+        { 26.0f, -46.0f, 36.0f, -36.0f },
+    },
+    {
+        { 9.0f, -25.0f, 17.0f, -17.0f },
+        { 17.0f, -35.0f, 25.0f, -27.0f },
+        { 27.0f, -45.0f, 35.0f, -37.0f },
+    },
+},
+{
+    { 32.0f, 32.0f },
+    { 0.0f, 48.0f },
+    { 48.0f, 0.0f },
+    { 0.0f, 48.0f },
+    { 80.0f, 24.0f },
+    { 80.0f, 32.0f },
+},
+};
 
 // 0x802E3B2C.
 // FIXME(shotgun): 84.33 %, missing/extra; behaviour drift.
@@ -133,17 +311,18 @@ void cls_804A9C20::update() {
     case 0:
         {
             s32 downCount = 0;
-            for (s32 i = 0; i < 4; i++) {
+            s32 i;
+            for (i = 0; i < 4; i++) {
                 if (field_0x288[i] == 4) {
                     downCount++;
                 }
             }
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 mPos = field_0x258[i];
                 mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
                 JGeometry::TBox2f area;
-                JGeometry::TVec2f xy(mPos.x, mPos.y);
                 area.set(mBox);
+                JGeometry::TVec2f xy(mPos.x, mPos.y);
                 area.addPos(xy);
                 s32 player = fn_8023B8E4(&area, field_0x4, &xy, true);
                 if (field_0x288[i] == 1) {
@@ -204,13 +383,22 @@ void cls_804A9C20::update() {
                 fn_80239914(&area, field_0x4, mSerial);
                 if (field_0x2b8[i] != 0) {
                     switch (field_0x238) {
+                    case 0:
+                    case 2:
+                    case 3:
                     default:
-                        mBox.set(lbl_8046EA10.hurtDefault[field_0x238][i]);
+                        mBox.set(lbl_8046EA10.hurtDefault[field_0x238][i][0],
+                                 lbl_8046EA10.hurtDefault[field_0x238][i][1],
+                                 lbl_8046EA10.hurtDefault[field_0x238][i][2],
+                                 lbl_8046EA10.hurtDefault[field_0x238][i][3]);
                         area.set(mBox);
                         xy.set(mPos.x, mPos.y);
                         area.addPos(xy);
                         if (!fn_801F2B7C(field_0x114, -1, 0x1A)) {
-                            field_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i]);
+                            field_0x80.set(lbl_8046EA10.attackDefault[field_0x238][i][0],
+                                           lbl_8046EA10.attackDefault[field_0x238][i][1],
+                                           lbl_8046EA10.attackDefault[field_0x238][i][2],
+                                           lbl_8046EA10.attackDefault[field_0x238][i][3]);
                             area.set(field_0x80);
                             xy.set(mPos.x, mPos.y);
                             area.addPos(xy);
@@ -219,12 +407,18 @@ void cls_804A9C20::update() {
                         break;
                     case 1:
                         for (s32 j = 0; j < 3; j++) {
-                            mBox.set(lbl_8046EA10.hurtMode1[i][j]);
+                            mBox.set(lbl_8046EA10.hurtMode1[i][j][0],
+                                     lbl_8046EA10.hurtMode1[i][j][1],
+                                     lbl_8046EA10.hurtMode1[i][j][2],
+                                     lbl_8046EA10.hurtMode1[i][j][3]);
                             area.set(mBox);
                             xy.set(mPos.x, mPos.y);
                             area.addPos(xy);
                             if (!fn_801F2B7C(field_0x114, -1, 0x1A)) {
-                                field_0x80.set(lbl_8046EA10.attackMode1[i][j]);
+                                field_0x80.set(lbl_8046EA10.attackMode1[i][j][0],
+                                               lbl_8046EA10.attackMode1[i][j][1],
+                                               lbl_8046EA10.attackMode1[i][j][2],
+                                               lbl_8046EA10.attackMode1[i][j][3]);
                                 area.set(field_0x80);
                                 xy.set(mPos.x, mPos.y);
                                 area.addPos(xy);
@@ -236,12 +430,18 @@ void cls_804A9C20::update() {
                         if (i < 3) {
                             if (i != 1) {
                                 for (s32 j = 0; j < 3; j++) {
-                                    mBox.set(lbl_8046EA10.hurtMode4[i][j]);
+                                    mBox.set(lbl_8046EA10.hurtMode4[i][j][0],
+                                             lbl_8046EA10.hurtMode4[i][j][1],
+                                             lbl_8046EA10.hurtMode4[i][j][2],
+                                             lbl_8046EA10.hurtMode4[i][j][3]);
                                     area.set(mBox);
                                     xy.set(mPos.x, mPos.y);
                                     area.addPos(xy);
                                     if (!fn_801F2B7C(field_0x114, -1, 4)) {
-                                        field_0x80.set(lbl_8046EA10.attackMode4[i][j]);
+                                        field_0x80.set(lbl_8046EA10.attackMode4[i][j][0],
+                                                       lbl_8046EA10.attackMode4[i][j][1],
+                                                       lbl_8046EA10.attackMode4[i][j][2],
+                                                       lbl_8046EA10.attackMode4[i][j][3]);
                                         area.set(field_0x80);
                                         xy.set(mPos.x, mPos.y);
                                         area.addPos(xy);
@@ -269,13 +469,13 @@ void cls_804A9C20::update() {
                 }
             }
             s32 anyUp = 0;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (field_0x288[i] != 4) {
                     anyUp = 1;
                 }
             }
             if (anyUp == 0) {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     mPos = field_0x258[i];
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x7B, 0, 0, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x7C, 0, 0, NULL, NULL, true, 1.0f);
@@ -352,8 +552,8 @@ void cls_804A9C20::update() {
     mPos.x = savedX;
     mPos.y = savedY;
     mPos.z = savedZ;
-    JGeometry::TVec3f focus(mPos.x + lbl_8046EA10.focus[field_0x238].x,
-                            mPos.y + lbl_8046EA10.focus[field_0x238].y, mPos.z);
+    JGeometry::TVec3f focus(mPos.x + lbl_8046EA10.focus[field_0x238][0],
+                            mPos.y + lbl_8046EA10.focus[field_0x238][1], mPos.z);
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     if (mEmitter2e8 != NULL) {
         mEmitter2e8->setGlobalAlpha(field_0x2f4);
