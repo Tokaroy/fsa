@@ -1278,7 +1278,7 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: .rodata pool offsets differ while lbl_8048D468..lbl_8048DCF8 are extern; initial field_0xe8[0] load/clamp coalesces r0 into r30.
+// FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
         return;
@@ -1385,7 +1385,7 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
-// String pool offset differs while lbl_8048D818..lbl_8048E144 are extern; initial field_0xe8[player] load coalesces r0 into r28.
+// Initial field_0xe8[player] load coalesces r0 into r28.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
@@ -1933,7 +1933,6 @@ void cls_804B13D4::fn_8041918C(s32 player) {
     }
 }
 
-// .rodata offsets differ by 0x840 while lbl_8048D468..lbl_8048DCF8 remain extern.
 // FIXME: 99.71 %, operands; behaviour drift.
 void cls_804B13D4::fn_80418D08(s32 player, bool force) {
     f32 prevA = field_0x128[player];
