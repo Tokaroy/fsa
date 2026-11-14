@@ -331,22 +331,23 @@ void Armos_8049F260::update() {
             }
         }
         if (dir >= 0 && dir < 4) {
-            static const f32 sVel[4][3] = {
+            static const f32 lbl_80465A98[4][3] = {
                 { 0.5f, 0.0f, 0.0f },
                 { -0.5f, 0.0f, 0.0f },
                 { 0.0f, 0.5f, 0.0f },
                 { 0.0f, -0.5f, 0.0f },
             };
             field_0x30c = 0;
-            field_0x3c.set(sVel[dir][0], sVel[dir][1], sVel[dir][2]);
+            field_0x3c.set(lbl_80465A98[dir][0], lbl_80465A98[dir][1], lbl_80465A98[dir][2]);
             field_0x320 = mPos;
         }
         break;
     }
     case 4:
-        if (field_0x230.fn_800FE3EC(field_0x308, mPos, field_0x4)) {
-            field_0x2f8 = 5;
+        if (!field_0x230.fn_800FE3EC(field_0x308, mPos, field_0x4)) {
+            break;
         }
+        field_0x2f8 = 5;
         // fall through
     case 5: {
         if ((field_0x90 >> 27) != 0 && vfunc_0x34()) {
