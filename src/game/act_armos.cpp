@@ -8,7 +8,6 @@
 #include "game/act/act_armos.h"
 #include "game/act/tu_801BEDBC.h"
 
-// FIXME(shotgun): 99.45 %, reloc-name
 void Armos_8049F260::init() {
     mBox.i.set(-7.0f, -7.0f);
     mBox.f.set(7.0f, 7.0f);
@@ -77,7 +76,8 @@ static inline JGeometry::TBox2f boxAround(const JGeometry::TBox2f& box, const JG
     return out;
 }
 
-// FIXME(shotgun): 36.03 %, missing/extra + reloc-name (partial: states 3 tail, 4, 5 not written)
+// FIXME(shotgun): 91.51 %, missing/extra; behaviour drift.
+// (partial: states 3 tail, 4, 5 not written)
 // FIXME(shotgun): state 3 from the branch at 0x80141938 (moving, grid-snapping step), states 4 and 5
 // (0x80141FF0, 0x80142024) are not written yet.
 void Armos_8049F260::update() {
@@ -389,7 +389,7 @@ void Armos_8049F260::update() {
     }
 }
 
-// FIXME(shotgun): 92.22 %, missing/extra + reloc-name
+// FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
 void Armos_8049F260::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
