@@ -796,7 +796,7 @@ void cls_804ADF28::fn_80364F60() {
             field_0x25c = field_0x270[field_0x268];
             field_0x264 = field_0x274[field_0x268];
         }
-        if (oldAnim != field_0x264 && field_0x238 >= 4 && field_0x238 <= 7 && field_0x264 == 0) {
+        if (oldAnim != field_0x264 && field_0x238 >= 4 && field_0x238 <= 7 && !field_0x264) {
             field_0x25c += fn_801CD664(5) * 6;
         }
         if (field_0x238 == 0x1d || field_0x238 == 0x1e) {
