@@ -76,6 +76,7 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
+// FIXME: 97.37 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049D740::vfunc_0x54() {
     cls_801192AC* state = fn_8011921C();
     s32 id = state->field_0x8;
