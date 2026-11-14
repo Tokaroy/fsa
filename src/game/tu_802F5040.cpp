@@ -492,7 +492,7 @@ void TileMap_804AA858::fn_802FEE68() {
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
-// FIXME: 91.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 91.16 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FDDD4() {
     field_0x2388++;
     if (field_0x2388 >= 2) {
@@ -2287,7 +2287,7 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-// FIXME: 89.03 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 89.08 %, missing/extra; behaviour near.
 // The original keeps obj in memory as if its address were taken:
 // every bit-field store is kept (byte 0x11 stored after each field, the
 // unused mAffineParam = 0 too) and the draw re-reads the fields; ours keeps
@@ -2455,7 +2455,7 @@ static inline bool isOnScreen(const JGeometry::TVec3f* pos) {
 // field_0x24 and field_0xe450 a further TEV stage multiplies in the player's
 // field_0xe428 texture. params' bytes 0x21 / 0x22 queue it instead;
 // field_0x30 adds the effect of fn_802F6800.
-// FIXME: 91.96 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 92.19 %, missing/extra; behaviour near.
 void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (!field_0x2364) {
         return;
