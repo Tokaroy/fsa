@@ -792,9 +792,6 @@ void addCalc2_801F71A4(f32* value, f32 target, f32 rate, f32 maxStep) {
     }
 }
 
-// FIXME: 95.23 %, missing/extra; behaviour near.
-// In the last branch the target zero-extends delta (clrlwi 16)
-// before adding it to *value; this code adds the s16 directly.
 void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     s16 diff = target - *value;
     s16 delta = diff / step;
@@ -803,7 +800,7 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     } else if (delta < -maxStep) {
         *value -= maxStep;
     } else {
-        *value += delta;
+        *value += (u16)delta;
     }
 }
 
