@@ -328,7 +328,7 @@ public:
     cls_804A1318() {}
     /* 0x08 */ virtual ~cls_804A1318();
     /* 0x0C */ virtual void init();   // fn_8017E770
-    /* 0x14 */ virtual void update(); // fn_8017C40C, not written yet
+    /* 0x14 */ virtual void update(); // fn_8017C40C
     /* 0x20 */ virtual void draw();   // fn_8017C078
     /* 0x24 */ virtual void vfunc_0x24(); // fn_8017C01C
     // SHARED-EDIT: carved from field_0x230[0x8A] / field_0x2bb[0x25] (game/tu_8017C01C.cpp).
@@ -357,14 +357,10 @@ public:
     /* 0x288 */ f32 field_0x288;
     /* 0x28C */ f32 field_0x28c;
     /* 0x290 */ f32 field_0x290;
-    /* 0x294 */ f32 field_0x294;
-    /* 0x298 */ f32 field_0x298;
-    /* 0x29C */ f32 field_0x29c;
+    /* 0x294 */ JGeometry::TVec3f field_0x294; // zeroed as a whole by update() (fn_801546BC)
     /* 0x2A0 */ JGeometry::TVec3f field_0x2a0;
-    /* 0x2AC */ f32 field_0x2ac;
-    /* 0x2B0 */ f32 field_0x2b0;
-    /* 0x2B4 */ f32 field_0x2b4;
-    /* 0x2B8 */ s16 field_0x2b8;
+    /* 0x2AC */ JGeometry::TVec3f field_0x2ac; // draw scale; set as a whole by update() (fn_8017EADC)
+    /* 0x2B8 */ u16 field_0x2b8; // angle step (lhz in update())
     /* 0x2BA */ s8 field_0x2ba;
     /* 0x2BB */ u8 field_0x2bb;
     /* 0x2BC */ JPABaseEmitter* mEmitters2bc[4];
