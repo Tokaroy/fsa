@@ -61,9 +61,9 @@ void cls_804AC8C0::init() {
         u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x23c = 3;
-        } else if (angle < 0x6000) {
+        } else if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 1;
-        } else if (angle <= 0xA000) {
+        } else if (angle >= 0x6000 && angle <= 0xA000) {
             field_0x23c = 2;
         } else {
             field_0x23c = 0;
@@ -137,16 +137,18 @@ void cls_804AC8C0::update() {
     fn_8034ACF4();
     switch (field_0x230) {
     case 0: {
-        JGeometry::TBox2f area(24.0f, 8.0f, 88.0f, 72.0f);
+        JGeometry::TBox2f area;
+        area = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
         area.i.x += mPos.x;
         area.i.y += mPos.y;
         area.f.x += mPos.x;
         area.f.y += mPos.y;
-        bool any = false;
+        bool any;
         s32 cucco = -1;
         for (;;) {
             cucco = getActorManager_801F856C()->fn_801F78F4('NIWA', cucco);
             if (cucco < 0) {
+                any = false;
                 break;
             }
             Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
@@ -163,7 +165,7 @@ void cls_804AC8C0::update() {
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (fn_8038AD24(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
+            if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
                 field_0x230 = 1;
             }
         }
@@ -209,11 +211,9 @@ void cls_804AC8C0::update() {
     case 12:
         if (field_0x230 == 5) {
             s32 layer5 = field_0x4;
-            if (layer5 < 8) {
-                box = getGameView_802D6A9C()->mVisibleBox;
-            } else {
-                box = getGameView_802D6A9C()->field_0xdc;
-            }
+            GameView_804A9950* view = getGameView_802D6A9C();
+            const JGeometry::TBox2f* src = (layer5 < 8) ? &view->mVisibleBox : &view->field_0xdc;
+            box = *src;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
@@ -250,48 +250,26 @@ void cls_804AC8C0::update() {
     case 4:
         if (getActorManager_801F856C()->fn_801F68E0() == 1) {
             s32 layer4 = field_0x4;
-            if (layer4 < 8) {
-                box = getGameView_802D6A9C()->mVisibleBox;
-            } else {
-                box = getGameView_802D6A9C()->field_0xdc;
-            }
+            GameView_804A9950* view = getGameView_802D6A9C();
+            const JGeometry::TBox2f* src = (layer4 < 8) ? &view->mVisibleBox : &view->field_0xdc;
+            box = *src;
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0) {
                 fn_8038938C(field_0x240, field_0x24c);
-                if (fn_8038AD24(field_0x240, 0x42f, mSerial, field_0x4, mPos, 0x112)) {
+                if (talk(field_0x240, 0x42f, mSerial, field_0x4, mPos, 0x112)) {
                     field_0x230 = 5;
                 }
             }
         }
         break;
     case 6:
-        if (found < field_0x24c) {
-            field_0x270 = found;
-            field_0x248++;
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-            field_0x240 = fn_8022FD8C(mSerial);
-            if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-                fn_8038938C(field_0x240, field_0x270);
-                switch (field_0x244) {
-                case 0:
-                    field_0x2c0 = 0x42c;
-                    break;
-                case 1:
-                    field_0x2c0 = 0x42a;
-                    break;
-                }
-                if (fn_802300EC(field_0x240)) {
-                    if (fn_8038AD24(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 1)) {
-                        field_0x230 = 7;
-                    }
-                }
-            }
-        } else {
+        if (found >= field_0x24c) {
             fn_801F0D20(0x3b);
             gAudioMgr_8053AF80->fn_80458508(0);
             gGameRoot_8053AAF8->fn_80138B7C();
-            JGeometry::TBox2f area(24.0f, 8.0f, 88.0f, 72.0f);
+            JGeometry::TBox2f area;
+            area = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
             for (s32 i = 0; i < 4; i++) {
                 field_0x274[i] = 0;
             }
@@ -346,6 +324,27 @@ void cls_804AC8C0::update() {
             fn_8022ADCC();
             field_0x28f = getActorManager_801F856C()->fn_801F68E0() != 0;
             field_0x230 = 9;
+        } else {
+            field_0x270 = found;
+            field_0x248++;
+            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            field_0x240 = fn_8022FD8C(mSerial);
+            if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
+                fn_8038938C(field_0x240, field_0x270);
+                switch (field_0x244) {
+                case 0:
+                    field_0x2c0 = 0x42c;
+                    break;
+                case 1:
+                    field_0x2c0 = 0x42a;
+                    break;
+                }
+                if (fn_802300EC(field_0x240)) {
+                    if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 1)) {
+                        field_0x230 = 7;
+                    }
+                }
+            }
         }
         break;
     case 7:
@@ -387,11 +386,9 @@ void cls_804AC8C0::update() {
             field_0x250--;
         } else if (field_0x28f) {
             s32 layer9 = field_0x4;
-            if (layer9 < 8) {
-                box = getGameView_802D6A9C()->mVisibleBox;
-            } else {
-                box = getGameView_802D6A9C()->field_0xdc;
-            }
+            GameView_804A9950* view = getGameView_802D6A9C();
+            const JGeometry::TBox2f* src = (layer9 < 8) ? &view->mVisibleBox : &view->field_0xdc;
+            box = *src;
             switch (field_0x244) {
             case 0:
                 fn_8022FEB8(&box, field_0x4, mSerial, false, false);
@@ -411,22 +408,22 @@ void cls_804AC8C0::update() {
                     fn_803894BC(field_0x240, field_0x254);
                     break;
                 }
-                if (fn_8038AD24(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0x112)) {
+                if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0x112)) {
                     field_0x230 = 10;
                 }
             }
         }
         break;
-    case 10:
+    case 10: {
+        bool flag = true;
         if (field_0x244 == 0) {
             s32 layer10 = field_0x4;
-            if (layer10 < 8) {
-                box = getGameView_802D6A9C()->mVisibleBox;
-            } else {
-                box = getGameView_802D6A9C()->field_0xdc;
-            }
+            GameView_804A9950* view = getGameView_802D6A9C();
+            const JGeometry::TBox2f* src = (layer10 < 8) ? &view->mVisibleBox : &view->field_0xdc;
+            box = *src;
+            flag = false;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, field_0x244 != 0, false);
+        fn_8022FEB8(&box, field_0x4, mSerial, flag, false);
         if (fn_803865B8(field_0x240)) {
             switch (field_0x244) {
             case 0:
@@ -475,6 +472,7 @@ void cls_804AC8C0::update() {
             }
         }
         break;
+    }
     case 11:
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
@@ -488,17 +486,17 @@ void cls_804AC8C0::update() {
                 break;
             }
             if (fn_802300EC(field_0x240)) {
-                if (fn_8038AD24(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
+                if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
                     field_0x230 = 12;
                 }
             }
         }
         break;
     case 13:
-        if (field_0x250 > 0) {
-            field_0x250--;
-        } else {
+        if (field_0x250 <= 0) {
             mPos.x -= 0.5f;
+        } else {
+            field_0x250--;
         }
         if (mSpawnPos.x - mPos.x >= 64.0f) {
             field_0x230 = 11;
@@ -512,9 +510,9 @@ void cls_804AC8C0::update() {
         u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x23c = 3;
-        } else if (angle < 0x6000) {
+        } else if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 1;
-        } else if (angle <= 0xA000) {
+        } else if (angle >= 0x6000 && angle <= 0xA000) {
             field_0x23c = 2;
         } else {
             field_0x23c = 0;

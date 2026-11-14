@@ -4,6 +4,7 @@
 // Code: game/tu_8034AA40.cpp.
 
 #include "game/ActorBase.h"
+#include "game/Message.h"
 
 // Named after its vtable, 0x804AC8C0.
 class cls_804AC8C0 : public ActorBase_804A5770 {
@@ -18,6 +19,9 @@ public:
     s32 fn_8034AAA0();
     // 0x8034ACF4: per player, the facing they left by and the push into the area.
     void fn_8034ACF4();
+    bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
+        return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    }
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ s32 field_0x238;
