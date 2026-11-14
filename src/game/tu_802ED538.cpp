@@ -162,7 +162,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
     }
 }
 
-// FIXME(shotgun): 91.38 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
 void cls_804AA350::update() {
     switch (field_0x24c) {
     case 0:
