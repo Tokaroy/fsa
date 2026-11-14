@@ -252,7 +252,7 @@ AudioMgr_8045A080::AudioMgr_8045A080() {
 }
 
 // 0x80459AE4
-// FIXME(shotgun): 89.79 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.84 %, missing/extra + reloc-name; behaviour drift.
 void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData) {
     JAU_JASInitializer jasInit;
     jasInit.mChannelPoolCount = lbl_8053A228;
@@ -340,8 +340,8 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
         loader.load(lbl_8053A244);
     }
     field_0x34->setSeqDataMgr(field_0x44->sectionHeapData_.seSeqDataMgr_);
+    field_0x38->setSeqDataMgr(field_0x44);
     field_0x40->mSoundTable = field_0x44->getSoundTable();
-    // FIXME(shotgun): field_0x38->setSeqDataMgr(field_0x44) not written (JAISeqDataMgr is a private base of JAUSectionHeap in libs/sdk/include/JSystem/JAudio/JAUSectionHeap.h)
     field_0x4c = 1.0f;
     field_0x50 = 1.0f;
     field_0x54 = 1.0f;

@@ -82,7 +82,7 @@ public:
     TSectionData data_;                   // 38
 };
 
-class JAUSectionHeap : public JAUSection, JASGlobalInstance<JAUSectionHeap>, JAISeqDataMgr
+class JAUSectionHeap : public JAUSection, JASGlobalInstance<JAUSectionHeap>, public JAISeqDataMgr
 {
 public:
     struct TSectionHeapData
