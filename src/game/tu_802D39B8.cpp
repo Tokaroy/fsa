@@ -340,18 +340,18 @@ bool fn_802DEB58(void) {
     return false;
 }
 
-// FIXME: 94.23 %, missing/extra; behaviour near.
-// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its
-// mView (lwz 0xc) and the view's field_0x4 for the second stage pair; ours
-// loads both once. An inline view getter in this file is a no-op. Re-reading
-// the view into a local before each pair gives 96.9 % (field_0x4 reloaded,
-// mView still not) but has no precedent, so it is not used.
+// FIXME: 96.90 %, missing/extra; behaviour near.
+// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its mView (lwz 0xc)
+// for the second stage pair; ours takes the view once per pair and its
+// mView load is folded into the field_0x4 load.
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
+        GameView_804A9950* view = getGameView_802D6A9C();
+        if (view->field_0x4 == 7 && view->field_0x8 == 0) {
             return true;
         }
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
+        view = getGameView_802D6A9C();
+        if (view->field_0x4 == 7 && view->field_0x8 == 2) {
             return true;
         }
         return false;
