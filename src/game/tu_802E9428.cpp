@@ -186,8 +186,8 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x274 = 300.0f;
             fn_802E948C(300.0f, 1);
-            u16 stage = lbl_8046F280_AC[field_0x28c];
-            u16 level = lbl_8046F280_AC[field_0x28c + 1];
+            s32 stage = lbl_8046F280_AC[field_0x28c];
+            s32 level = lbl_8046F280_AC[field_0x28c + 1];
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x4 = stage;
             view->field_0x8 = level;
@@ -246,7 +246,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x297 = 1;
         } else {
             field_0x298 = 0;
-            fn_802E94F4();
+            updateCamera();
             break;
         }
         field_0x28d = *field_0x290;
@@ -254,22 +254,30 @@ void UnknownENDM_804AA0FC::update() {
             field_0x23c = 7;
             break;
         }
-        u16 stage = lbl_8046F280_AC[field_0x28c];
-        u16 level = lbl_8046F280_AC[field_0x28c + 1];
+        s32 stage = lbl_8046F280_AC[field_0x28c];
+        s32 level = lbl_8046F280_AC[field_0x28c + 1];
         GameView_804A9950* view = getGameView_802D6A9C();
         view->field_0x4 = stage;
         view->field_0x8 = level;
         if (field_0x28d == 0) {
-            s32 dir[2] = { 0, -1 };
+            s32 dir[2];
+            dir[0] = 0;
+            dir[1] = -1;
             getGameView_802D6A9C()->fn_802DCD1C(dir);
         } else if (field_0x28d == 1) {
-            s32 dir[2] = { 0, 1 };
+            s32 dir[2];
+            dir[0] = 0;
+            dir[1] = 1;
             getGameView_802D6A9C()->fn_802DCD1C(dir);
         } else if (field_0x28d == 2) {
-            s32 dir[2] = { -1, 0 };
+            s32 dir[2];
+            dir[0] = -1;
+            dir[1] = 0;
             getGameView_802D6A9C()->fn_802DCD1C(dir);
         } else if (field_0x28d == 3) {
-            s32 dir[2] = { 1, 0 };
+            s32 dir[2];
+            dir[0] = 1;
+            dir[1] = 0;
             getGameView_802D6A9C()->fn_802DCD1C(dir);
         }
         s32 prevLevel = field_0x280;
@@ -330,7 +338,7 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 200;
             }
         } else {
-            fn_802E94F4();
+            updateCamera();
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
@@ -362,10 +370,9 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x230++;
             field_0x28c = field_0x230 * 2;
-            field_0x258 = lbl_804D5730[field_0x230].x;
-            field_0x25c = lbl_804D5730[field_0x230].y;
-            mPos.x = field_0x258;
-            mPos.y = field_0x25c;
+            field_0x258 = lbl_804D5730[field_0x230];
+            mPos.x = field_0x258.x;
+            mPos.y = field_0x258.y;
             field_0x240 = NULL;
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
@@ -387,7 +394,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x231 = 0;
         } else {
-            fn_802E94F4();
+            updateCamera();
         }
         break;
     }
@@ -469,6 +476,36 @@ bool UnknownENDM_804AA0FC::fn_802E9884(const JGeometry::TVec2f* pos) {
     return false;
 }
 
+inline void UnknownENDM_804AA0FC::updateCamera() {
+    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
+    JGeometry::TVec2f offset(0.0f, -30.0f);
+    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
+    f32 halfW = view.getWidth() * 0.5f;
+    f32 halfH = view.getHeight() * 0.5f;
+    if (focus.x + halfW >= field_0x268) {
+        focus.x = field_0x268 - halfW;
+    } else if (focus.x - halfW <= field_0x260) {
+        focus.x = field_0x260 + halfW;
+    }
+    if (focus.y + halfH >= field_0x26c) {
+        focus.y = field_0x26c - halfH;
+    } else if (focus.y - halfH <= field_0x264) {
+        focus.y = field_0x264 + halfH;
+    }
+    if (field_0x270 != field_0x274) {
+        field_0x270 += field_0x278;
+        if (field_0x278 < 0.0f) {
+            if (field_0x270 < field_0x274) {
+                field_0x270 = field_0x274;
+            }
+        } else if (field_0x270 > field_0x274) {
+            field_0x270 = field_0x274;
+        }
+    }
+    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
+}
+
 // Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
 // Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
 // FIXME: 90.80 %, missing/extra + reloc-name; behaviour drift.
@@ -500,33 +537,7 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
             field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
-    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
-    JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus = pos + offset;
-    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-    f32 halfW = view.getWidth() * 0.5f;
-    f32 halfH = view.getHeight() * 0.5f;
-    if (focus.x + halfW >= field_0x268) {
-        focus.x = field_0x268 - halfW;
-    } else if (focus.x - halfW <= field_0x260) {
-        focus.x = field_0x260 + halfW;
-    }
-    if (focus.y + halfH >= field_0x26c) {
-        focus.y = field_0x26c - halfH;
-    } else if (focus.y - halfH <= field_0x264) {
-        focus.y = field_0x264 + halfH;
-    }
-    if (field_0x270 != field_0x274) {
-        field_0x270 += field_0x278;
-        if (field_0x278 < 0.0f) {
-            if (field_0x270 < field_0x274) {
-                field_0x270 = field_0x274;
-            }
-        } else if (field_0x270 > field_0x274) {
-            field_0x270 = field_0x274;
-        }
-    }
-    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
+    updateCamera();
 }
 
 // FIXME: 99.81 %, reloc-name; behaviour clean.
