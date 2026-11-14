@@ -2638,8 +2638,9 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
         rot[0][3] = 0.0f;
         rot[1][3] = 0.0f;
         rot[2][3] = 0.0f;
-        f32 sn = sin(0.7853982f);
-        f32 cs = cos(0.7853982f);
+        f32 tilt = 0.7853982f;
+        f32 sn = sin(tilt);
+        f32 cs = cos(tilt);
         rot[0][0] = 1.0f;
         rot[0][1] = 0.0f;
         rot[0][2] = 0.0f;
