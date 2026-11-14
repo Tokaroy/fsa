@@ -107,7 +107,7 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
 // The |dx|, |dy| <= 16 tests and the other fabs conditions were re-checked against the full asm.
 // 0x80169030. A chaser: it follows the trail of positions the player recorded, then the
 // player, and is caught by the player (state 1) or lost when it leaves the room.
-// FIXME(shotgun): 90.85 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 92.43 %, missing/extra; behaviour clean.
 void cls_804A0738::update() {
     s32 target = field_0x90;
     if (fn_8022F478(field_0x90) == 1 && fn_8022F514(field_0x90) == 1) {
@@ -135,17 +135,14 @@ void cls_804A0738::update() {
         p.x = p1.x;
         p.y = p1.y;
         if (fn_8022BC38(target, field_0x2ec[field_0x268].layer1, &p) == 1) {
-            const JGeometry::TVec3f* pp = getPlayerPos_8023E724(target);
-            field_0x2ec[field_0x268].p1.set(pp->x, pp->y);
+            field_0x2ec[field_0x268].p1 = xy(*getPlayerPos_8023E724(target));
         } else {
             field_0x2ec[field_0x268].layer0 = getPlayerLayer_8023DE58(target);
-            const JGeometry::TVec3f* pp = getPlayerPos_8023E724(target);
-            field_0x2ec[field_0x268].p0.set(pp->x, pp->y);
+            field_0x2ec[field_0x268].p0 = xy(*getPlayerPos_8023E724(target));
             field_0x268++;
             if (field_0x268 < 5) {
                 field_0x2ec[field_0x268].layer1 = getPlayerLayer_8023DE58(target);
-                const JGeometry::TVec3f* pp = getPlayerPos_8023E724(target);
-                field_0x2ec[field_0x268].p1.set(pp->x, pp->y);
+                field_0x2ec[field_0x268].p1 = xy(*getPlayerPos_8023E724(target));
             }
         }
     }
@@ -177,7 +174,7 @@ void cls_804A0738::update() {
                 break;
             }
             JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(field_0x90)) - xy(mPos);
-            if (d.x * d.x + d.y * d.y < 240.0f) {
+            if (d.squared() < 240.0f) {
                 const JGeometry::TVec3f* pp = getPlayerPos_8023E724(field_0x90);
                 mPos = *pp;
                 mPos.z = 0.0f;
@@ -186,14 +183,14 @@ void cls_804A0738::update() {
             }
         } else if (field_0x264 < 5) {
             if (!field_0x17d) {
-                field_0x274[field_0x264].p0.set(mPos.x, mPos.y);
+                field_0x274[field_0x264].p0 = xy(mPos);
             } else {
                 field_0x274[field_0x264].layer1 = field_0x4;
-                field_0x274[field_0x264].p1.set(mPos.x, mPos.y);
+                field_0x274[field_0x264].p1 = xy(mPos);
                 field_0x264++;
                 if (field_0x264 < 5) {
                     field_0x274[field_0x264].layer0 = field_0x4;
-                    field_0x274[field_0x264].p0.set(mPos.x, mPos.y);
+                    field_0x274[field_0x264].p0 = xy(mPos);
                 }
                 fn_8016890C(&mPos, field_0x4, (JGeometry::TBox2f*)field_0x370);
             }
@@ -240,11 +237,11 @@ void cls_804A0738::update() {
         break;
     case 1:
         if (fn_8022BC38(field_0x90, field_0x4, &mPos) == 1 &&
-            (fn_8022D75C(target) == 1 || (fn_8022CAF8(field_0x90) == 4 && target != field_0x90))) {
+            (fn_8022D75C(target) != 1 || (fn_8022CAF8(field_0x90) == 4 && target != (s32)field_0x90))) {
             JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(field_0x90)) - xy(mPos);
             if (field_0x260 == 1) {
                 mAlive = false;
-            } else if (d.x * d.x + d.y * d.y < 240.0f) {
+            } else if (d.squared() < 240.0f) {
                 const JGeometry::TVec3f* pp = getPlayerPos_8023E724(field_0x90);
                 mPos = *pp;
                 mPos.z = 0.0f;
@@ -282,7 +279,7 @@ void cls_804A0738::update() {
                     p.y = pt->p0.y;
                     field_0x4 = pt->layer0;
                     mPos = p;
-                    if (fromFirst) {
+                    if (fromFirst == 1) {
                         field_0x26c--;
                     } else {
                         field_0x270++;
