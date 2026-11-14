@@ -3,7 +3,13 @@
 
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
+#include "game/Camera.h"
+#include "game/EnemyBase.h"
 #include "game/GameGlobals.h"
+#include "game/Message.h"
+#include "game/Player.h"
+#include "game/PlayerBit.h"
+#include "JSystem/JMath/JMath.h"
 
 // The Maiden's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
 static const s16 lbl_8053C600[4] = {6, 20, -1, -1};
@@ -76,7 +82,81 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
-// FIXME: 97.37 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.49 %, missing/extra + reloc-name; behaviour drift.
+void cls_8049D740::update() {
+    cls_8049D140::update();
+    JGeometry::TBox2f box = mBox;
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    if (field_0x238 == 0 || field_0x238 == 1) {
+        fn_80239914(&box, field_0x4, mSerial);
+    }
+    if (field_0x238 >= 2 && field_0x238 <= 5) {
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
+    }
+    switch (field_0x238) {
+    case 0: {
+        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        s32 player = fn_8022FD8C(mSerial);
+        if (player >= 0 && player < 4 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+            JGeometry::TVec3f pos = mPos;
+            pos.y += -32.0f;
+            if (fn_8038AD24(player, 0x23E, mSerial, field_0x4, pos, 0x20)) {
+                field_0x240 = player;
+                fn_80112654(1);
+            }
+        }
+        break;
+    }
+    case 1:
+        fn_8022FF8C(field_0x240, &box, field_0x4, mSerial, true, false);
+        if (fn_80388CAC(field_0x240, mSerial)) {
+            field_0x240 = -1;
+            fn_80112654(0);
+        }
+        break;
+    case 3:
+        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+            mAnim.startAnim_801D22DC(0, 2, false);
+            mAnim.fn_801D1F14(0.0f);
+        }
+        break;
+    case 4:
+        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+            mAnim.startAnim_801D22DC(0, 2, false);
+            mAnim.fn_801D1F14(0.0f);
+        }
+        break;
+    case 12:
+        if (moveToGoal()) {
+            fn_80112654(0xD);
+        }
+        break;
+    case 13:
+        shrinkCrystal();
+        break;
+    case 15:
+        mDrawEnabled = false;
+        break;
+    }
+    mAnim.fn_801D1C18();
+    if (field_0x230 != 0) {
+        fn_80112AE8();
+    }
+}
+
+void cls_8049D740::draw() {
+    cls_8049D140::draw();
+    if (field_0x230 == 0) {
+        s32 baseFrame = lbl_80464704[mMode];
+        SpriteParams_801F5AE0 params;
+        drawSprite_801F06F0("enemy_gc_sob.bin", baseFrame + mAnim.mCel, &params, 7, 1.0f, 1.0f);
+    }
+}
+
+// FIXME: 97.89 %, missing/extra; behaviour drift.
 void cls_8049D740::vfunc_0x54() {
     cls_801192AC* state = fn_8011921C();
     s32 id = state->field_0x8;
@@ -205,4 +285,24 @@ s32 fn_801123C8(s32 kind, s32 mode) {
         default: return 0x2E7;
         }
     }
+}
+
+// Plain helpers inlined into update() (cases 12 and 13) whose out-of-line
+// copies the linker dropped; defined at the bottom so deferred inlining pools
+// their .sdata2 constants before draw().
+bool cls_8049D740::moveToGoal() {
+    field_0x248 += 0.04f;
+    fn_801CD950(&field_0x24c, 2.0f, 0.05f);
+    s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
+                      10430.378f);
+    field_0x3c.x = field_0x24c * JMath::sincosTable_.sinShort(angle);
+    field_0x3c.y = field_0x24c * JMath::sincosTable_.cosShort(angle);
+    s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, field_0x3c.x);
+    s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, field_0x3c.y);
+    fn_801CD950(&field_0x250, 0.05f, -0.005f);
+    return doneX == 0 && doneY == 0;
+}
+
+void cls_8049D740::shrinkCrystal() {
+    fn_801CD950(&field_0x250, 0.0f, -0.02f);
 }
