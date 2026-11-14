@@ -683,7 +683,8 @@ void cls_804ADF28::fn_803653EC() {
     }
 }
 
-// FIXME(shotgun): 92.69 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Remaining difference: float literal reloc names (pool split), not codegen.
+// FIXME: 99.84 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80365274() {
     mPos.add(field_0x3c);
     switch (field_0x238) {
@@ -720,10 +721,10 @@ void cls_804ADF28::fn_80365274() {
             field_0x26c = 0x3a4;
         } else if (field_0x248 == 0) {
             field_0x238++;
-            JGeometry::TVec3f bob(0.0f, -0.25f, 0.0f);
-            field_0x3c = bob;
             field_0x26c = 0x3b1;
             field_0x264 = 0;
+            JGeometry::TVec3f bob(0.0f, -0.25f, 0.0f);
+            field_0x3c = bob;
             field_0x248 = 100;
         }
         break;
@@ -933,7 +934,7 @@ void cls_804ADF28::fn_80364A88() {
     }
 }
 
-// FIXME(shotgun): 98.57 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.64 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364900() {
     if (field_0x238 == 0) {
         mPos.add(field_0x3c);
@@ -959,24 +960,23 @@ void cls_804ADF28::fn_80364900() {
     } else {
         field_0x3c.z -= 0.5f;
         mPos.add(field_0x3c);
-        if (mPos.z >= 0.0f) {
-            return;
-        }
-        field_0x238 = 0;
-        mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x26c = 0x38e;
-        field_0x25c = 4;
-        if (field_0x23c == 3) {
-            field_0x23c = 2;
-            field_0x3c.x = -0.8f;
-            field_0x264 = 5;
-            field_0x25c = 4;
-        } else {
-            field_0x23c = 3;
-            field_0x3c.x = 0.8f;
+        if (mPos.z < 0.0f) {
+            field_0x238 = 0;
+            mPos.z = 0.0f;
+            field_0x3c.z = 0.0f;
             field_0x26c = 0x38e;
-            field_0x264 = 0;
+            field_0x25c = 4;
+            if (field_0x23c == 3) {
+                field_0x23c = 2;
+                field_0x3c.x = -0.8f;
+                field_0x264 = 5;
+                field_0x25c = 4;
+            } else {
+                field_0x23c = 3;
+                field_0x3c.x = 0.8f;
+                field_0x26c = 0x38e;
+                field_0x264 = 0;
+            }
         }
     }
 }
