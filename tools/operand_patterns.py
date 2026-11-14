@@ -88,6 +88,18 @@ def parse(side, row, start):
     return mn, args, disp, rel, tgt, add, rtype, ins.get("formatted", "").strip()
 
 
+def same_value(a, b):
+    """Symbol entry lists (target, ours): equal bytes (the shorter a prefix), not .bss."""
+    for da, sa in a:
+        for db, sb in b:
+            if da is None or db is None or "bss" in sa or "bss" in sb or not da or not db:
+                continue
+            n = min(len(da), len(db))
+            if da[:n] == db[:n]:
+                return True
+    return False
+
+
 def num(x):
     try:
         return int(x, 0)
@@ -131,7 +143,7 @@ def bucket(a, b, prev_t, nxt_t, tsyms, osyms):
             return "base-offset", f"{ta}+{xa} vs {tb}+{xb}"
         return "data-reloc", f"{ta}+{xa} vs {tb}+{xb}"
     if ta is not None and ma not in ("bl", "b"):
-        if not S.same_value(tsyms().get(ta, []), osyms().get(tb, [])):
+        if not same_value(tsyms().get(ta, []), osyms().get(tb, [])):
             return "data-value", f"{ta}"
     return "marked-same", fa
 

@@ -262,7 +262,7 @@ void Fairy_804A03B8::update() {
                 }
             }
         }
-        field_0x26c = 10.0f;
+        field_0x26c = 5.0f;
         if (mCounters[2] == 0) {
             field_0x274 = (s16)(JMath::atanTable_.atan2_(targetY - mPos.y, targetX - mPos.x) * 10430.378f);
             mCounters[2] = 4;

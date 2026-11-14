@@ -344,7 +344,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     case 0:
         if (!(mFlags & 0x4000) && mStateTimer >= field_0x250) {
             field_0x2bc = 0;
-            field_0x2b8 = fn_801D05F8(&mPos, 0.0f);
+            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 fn_8020ED5C(1);
             }

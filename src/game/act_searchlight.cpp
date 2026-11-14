@@ -45,7 +45,7 @@ void Searchlight_804A0FF8::init() {
     field_0x304 = 0;
     field_0x308 = 0;
     field_0x324 = 0;
-    field_0x344 = 32.0f;
+    field_0x344 = 64.0f;
     field_0x370.z = 0.0f;
     field_0x370.y = 0.0f;
     field_0x370.x = 0.0f;
