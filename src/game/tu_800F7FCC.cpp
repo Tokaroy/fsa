@@ -894,7 +894,7 @@ void cls_8049C718::vfunc_0x24() {
 }
 
 // FIXME: 96.55 %, different + reloc-name; behaviour drift.
-// FIXME(shotgun): unsigned compares of field_0xb0 (cmplwi) and the early-return branch layout differ.
+// FIXME: the cooldown test branches as bne-to-exit where the original does beq-to-body + b-to-exit; literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12) {
         return;
@@ -1358,7 +1358,8 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x40() {
     startSound_801F0E34(0x50084, 0);
 }
 
-// FIXME(shotgun): 94.78 %, missing/extra; behaviour near.
+// FIXME: 98.30 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): scheduling+regalloc differs; behaviour matches.
 void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 count;
     if (mIndex == 0x14) {
@@ -1369,12 +1370,11 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        f32 z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        f32 y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        f32 x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        gem->field_0x3c.x = x;
-        gem->field_0x3c.y = y;
-        gem->field_0x3c.z = z;
+        JGeometry::TVec3f vel;
+        vel.z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        vel.y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        vel.x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        gem->field_0x3c = vel;
     }
     if ((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 3) {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
@@ -1453,11 +1453,12 @@ static inline bool stepAxis(f32& cur, f32 target, f32 step) {
     return false;
 }
 
-// FIXME(shotgun): 96.04 %, different; behaviour near.
+// FIXME: 99.21 %, missing/extra; behaviour near.
+// FIXME(shotgun): original sign-extends the final bool (extsb); ours does not.
 bool fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
-    arrived += stepAxis(cur->y, target->y, step);
-    arrived += stepAxis(cur->z, target->z, step);
+    arrived = arrived + stepAxis(cur->y, target->y, step);
+    arrived = arrived + stepAxis(cur->z, target->z, step);
     return arrived == 3;
 }
 
