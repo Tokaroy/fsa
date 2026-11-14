@@ -98,7 +98,7 @@ static inline void burst(cls_804A7EB0* self) {
 }
 
 // 0x802A6600.
-// FIXME(shotgun): 71.43 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 71.57 %, missing/extra; behaviour drift.
 // the player-mask test needs a bool form and the
 // 1000-subtraction loop is unrolled here but not in the original
 void cls_804A7EB0::init() {
@@ -159,7 +159,7 @@ cls_804A7EB0::~cls_804A7EB0() {
 }
 
 // 0x802A4A4C.
-// FIXME(shotgun): 20.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 80.73 %, missing/extra + reloc-name; behaviour drift.
 // (states 0-2 only), missing/extra + reloc-name
 void cls_804A7EB0::update() {
     switch (field_0x230) {
@@ -490,7 +490,7 @@ void cls_804A7EB0::update() {
 }
 
 // 0x802A4780.
-// FIXME(shotgun): 92.16 %, different; behaviour drift.
+// FIXME(shotgun): 92.17 %, scheduling+regalloc; behaviour clean.
 void cls_804A7EB0::draw() {
     if (field_0x230 >= 2 && field_0x230 < 9) {
         SpriteParams_801F5AE0 params;
