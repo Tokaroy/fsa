@@ -1666,11 +1666,8 @@ void GameView_804A9950::fn_802D7704(s32 bit, bool count, s32 layer) {
     }
 }
 
-// FIXME: 91.30 %, scheduling; behaviour clean.
-// Only scheduling: the word address add is emitted two slots earlier than in the target
-// (same as fn_802D6AC4; swapped & operands are worse).
 bool GameView_804A9950::fn_802D76A8(s32 bit) {
-    return (field_0x3548[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32))) != 0;
+    return field_0x3548[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
