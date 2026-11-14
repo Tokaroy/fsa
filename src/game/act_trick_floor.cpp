@@ -188,7 +188,7 @@ static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
 // Who stands on the floor, then: 0 reads the tile under it, 1 waits for the switch,
 // 2 waits for a rider (kinds 4/5: all four players) and drops, 3 sinks, 4 holds while
 // ridden, 5 rises back and restores the tiles, 6 / 7 fall away, 8 stays down.
-// FIXME: 93.90 %, different + reloc-name; behaviour drift.
+// FIXME: 96.57 %, different + reloc-name; behaviour near.
 void TrickFloor_804A83A0::update() {
     JGeometry::TVec3f savedPos = mPos;
     JGeometry::TVec2f p;
