@@ -1054,13 +1054,9 @@ bool fn_80384C58(s32 player, s32 serial) {
         if (mappedWindow(window)->field_0x40 == 0) {
             u16 opt = lbl_8053AD78->mWindows[window]->field_0x28;
             if (!(opt >> 2 & 1)) {
-                if (!releaseSerial(opt, player, serial)) {
-                    return false;
-                }
-                if (!releasePlayers(player)) {
-                    return false;
-                }
-                getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
+                if (releaseSerial(opt, player, serial) && releasePlayers(player)) {
+                u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
@@ -1070,7 +1066,7 @@ bool fn_80384C58(s32 player, s32 serial) {
                 bool a = true;
                 bool b = false;
                 u16 opt2 = lbl_8053AD78->mWindows[window]->field_0x28;
-                if ((opt2 & 8) || (opt2 & 0x80)) {
+                if ((opt2 >> 3 & 1) || (opt2 & 0x80)) {
                     a = false;
                 }
                 if (!(opt2 & 0x800)) {
@@ -1079,11 +1075,10 @@ bool fn_80384C58(s32 player, s32 serial) {
                 lbl_8053AD78->mWindows[window]->fn_80391678();
                 lbl_8053AD78->fn_803895EC(player, serial, a, b);
                 return true;
-            }
-            if (!releaseSerial(opt, player, serial)) {
-                return false;
-            }
-            getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
+                }
+            } else if (releaseSerial(opt, player, serial)) {
+            u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+            getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
             if (mappedWindow(window)->field_0x24 == 8) {
                 removeFromOrder(windowIndex(window));
                 if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
@@ -1097,6 +1092,7 @@ bool fn_80384C58(s32 player, s32 serial) {
             lbl_8053AD78->mWindows[window]->fn_80391678();
             lbl_8053AD78->fn_803895EC(player, serial, false, b);
             return true;
+            }
         }
     }
     return false;
