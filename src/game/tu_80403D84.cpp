@@ -284,7 +284,7 @@ void fn_8041499C(JUtility::TColor* dst, const JUtility::TColor* src) {
     *dst = *src;
 }
 
-// FIXME(shotgun): 94.36 %, missing/extra + reloc-name
+// FIXME(shotgun): 94.39 %, missing/extra + reloc-name; behaviour drift.
 MapScreen_804B1288::MapScreen_804B1288() {
     lbl_8053ADF8 = this;
     lbl_80529DEC.field_0x23e[1] = 0;
@@ -816,7 +816,8 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
     field_0x10->search(0x54746C763134ull /* "Ttlv14" */)->setAlpha(field_0x64b[1] * (1.0f - alpha));
 }
 
-// FIXME: 95.84. Missing/extra (two instructions, one saved register): in the stage 10 /
+// FIXME: 95.84 %, missing/extra; behaviour clean.
+// Missing/extra (two instructions, one saved register): in the stage 10 /
 // sub-stage 2 branch the original reads lbl_80529DEC.field_0x120 twice before the two
 // 'Pphu01' size searches (r29 / r31) and indexes lbl_8048C9DC with them after the
 // 'Ndata06' calls; ours reads it after those calls. All else is the same.
@@ -1073,7 +1074,8 @@ void MapScreen_804B1288::fn_804108B4() {
     }
 }
 
-// FIXME(shotgun): 93.56 %, missing/extra (field_0x348 reloads) + pool literals
+// FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
+// (field_0x348 reloads) + pool literals
 void MapScreen_804B1288::fn_8040F480() {
     u8 mode = 0;
     field_0x668 = 6;
@@ -1324,7 +1326,8 @@ void MapScreen_804B1288::fn_8040F35C() {
     }
 }
 
-// FIXME: 94.91. scheduling+regalloc (+ pool literals of unwritten functions). The product
+// FIXME: 95.09 %, scheduling+regalloc + reloc-name; behaviour clean.
+// scheduling+regalloc (+ pool literals of unwritten functions). The product
 // is a local of its own: the original leaves -250 + 250 * t * t unfused (fmuls, fmuls,
 // fadds), which MWCC does only across statements (also fn_8040F16C, fn_8040ED20).
 void MapScreen_804B1288::fn_8040F288() {
@@ -1345,7 +1348,8 @@ void MapScreen_804B1288::fn_8040F288() {
     }
 }
 
-// FIXME: 98.59. regalloc-only (+ pool literals). The product is its own local, as in
+// FIXME: 98.94 %, regalloc-only; behaviour clean.
+// regalloc-only (+ pool literals). The product is its own local, as in
 // fn_8040F288 (the original leaves it unfused).
 void MapScreen_804B1288::fn_8040F16C() {
     field_0x434 += 0x200;
@@ -1366,7 +1370,8 @@ void MapScreen_804B1288::fn_8040F16C() {
     }
 }
 
-// FIXME: 99.58. regalloc-only (+ pool literals of unwritten functions). `drop` and `tt`
+// FIXME: 99.65 %, regalloc-only; behaviour clean.
+// regalloc-only (+ pool literals of unwritten functions). `drop` and `tt`
 // are locals because the original leaves those products unfused (fmuls / fadds, fsubs),
 // which MWCC does only across statements (as fn_8040F288 / fn_8040F16C).
 void MapScreen_804B1288::fn_8040ED20() {
@@ -1461,7 +1466,8 @@ void MapScreen_804B1288::fn_8040E838() {
     }
 }
 
-// FIXME: 92.84. scheduling+regalloc only: the original keeps `this` in r31 and the
+// FIXME: 92.84 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc only: the original keeps `this` in r31 and the
 // counter in r29 (loaded in the prologue after the saves); ours swaps them.
 void MapScreen_804B1288::fn_8040E720() {
     int gone = 0;
@@ -1497,7 +1503,8 @@ void MapScreen_804B1288::fn_8040E700() {
     }
 }
 
-// FIXME: 96.8. Missing/extra: ours extends the u16 angle again (clrlwi r0, r3, 16) before
+// FIXME: 96.95 %, missing/extra; behaviour near.
+// Missing/extra: ours extends the u16 angle again (clrlwi r0, r3, 16) before
 // the third range test; the original keeps the one clrlwi'd copy in r0 (a u32 local
 // holding the (u16) value gives scheduling+regalloc, 97.3 %, but no precedent proves it). Pool literals
 // (3.4f, the sqrtf doubles, 50.0f, 32768/pi) are first used by unwritten functions below.
@@ -1573,7 +1580,8 @@ void MapScreen_804B1288::fn_8040E278() {
     }
 }
 
-// FIXME(shotgun): 98.96 %, regalloc
+// FIXME(shotgun): 99.05 %, scheduling+regalloc; behaviour clean.
+// regalloc
 void MapScreen_804B1288::fn_8040D3D0() {
     if (lbl_8053AD30->fn_80309C4C(0x100, -1) || field_0x657) {
         field_0x348 = 0;
@@ -1674,7 +1682,8 @@ void MapScreen_804B1288::fn_8040D3D0() {
     }
 }
 
-// FIXME(shotgun): 92.60 %, different. Only the fade argument differs: the original
+// FIXME(shotgun): 92.60 %, different + reloc-name; behaviour near.
+// Only the fade argument differs: the original
 // computes 1 - field_0x426 * 0.125 unfused (fmuls, fsubs) and after the first
 // search('Ttlv11') of the inlined fn_80411A94; ours evaluates the argument first, fused
 // (fnmsubs). The rest, including the 1.0f fade and the stage-name copy, is the same.
@@ -1701,7 +1710,8 @@ void MapScreen_804B1288::fn_8040CE90() {
     }
 }
 
-// FIXME(shotgun): 92.60 %, different. Only the fade argument differs: the original
+// FIXME(shotgun): 92.60 %, different + reloc-name; behaviour near.
+// Only the fade argument differs: the original
 // computes 1 - field_0x426 * 0.125 unfused (fmuls, fsubs) and after the first
 // search('Ttlv11') of the inlined fn_80411A94; ours evaluates the argument first, fused
 // (fnmsubs). The rest, including the 1.0f fade and the stage-name copy, is the same.
@@ -1728,7 +1738,8 @@ void MapScreen_804B1288::fn_8040C950() {
     }
 }
 
-// FIXME: 97.68. scheduling+regalloc (+ pool literals of unwritten functions); the
+// FIXME: 97.69 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc (+ pool literals of unwritten functions); the
 // "cleared" test after the stage branch is in both branches, as in fn_804096E8.
 void MapScreen_804B1288::fn_8040BC1C() {
     u8 faded = false;
@@ -1868,7 +1879,8 @@ void MapScreen_804B1288::fn_8040BC1C() {
     }
 }
 
-// FIXME: 99.81. regalloc-only: the original loads field_0x3b8 into f0 and the pane's
+// FIXME: 99.89 %, regalloc-only; behaviour clean.
+// regalloc-only: the original loads field_0x3b8 into f0 and the pane's
 // field_0xc into f2 for `offset`; ours swaps them. 0.5f / 400.0f are pooled by unwritten
 // functions.
 void MapScreen_804B1288::fn_8040B93C() {
@@ -1914,7 +1926,8 @@ void MapScreen_804B1288::fn_8040B93C() {
     }
 }
 
-// FIXME: 99.68. regalloc-only: in state 1 the original loads field_0x3b8 into f0 and the
+// FIXME: 99.83 %, regalloc-only; behaviour clean.
+// regalloc-only: in state 1 the original loads field_0x3b8 into f0 and the
 // pane's field_0xc into f4 for `offset`; ours swaps them. The pool literals 2.0f, 0.5f,
 // 400.0f are first used by unwritten functions.
 void MapScreen_804B1288::fn_8040B5A0() {
@@ -2007,7 +2020,8 @@ void MapScreen_804B1288::fn_8040B388() {
 }
 
 
-// FIXME(shotgun): 99.65 %, pool literals + regalloc
+// FIXME(shotgun): 99.69 %, different; behaviour near.
+// pool literals + regalloc
 void MapScreen_804B1288::fn_80409FDC() {
     f32 x = 0.0f;
     f32 y = 0.0f;
@@ -2203,7 +2217,8 @@ void MapScreen_804B1288::fn_80409FDC() {
     }
 }
 
-// FIXME: 96.44. Missing/extra (one instruction): in the field_0xd4 loop the original
+// FIXME: 96.54 %, missing/extra; behaviour clean.
+// Missing/extra (one instruction): in the field_0xd4 loop the original
 // multiplies scale * field_0x10 after fn_8040271C (keeping field_0x10 in f30), ours before
 // it (an extra fmr); the table / field_0x18 loads of each division are also swapped. The
 // "cleared" test after the stage branch is written in both branches: the original has
@@ -2380,7 +2395,8 @@ void MapScreen_804B1288::fn_80409330() {
     }
 }
 
-// FIXME: 99.06. scheduling+regalloc: for each rotate call the original loads field_0x1c
+// FIXME: 99.26 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: for each rotate call the original loads field_0x1c
 // before field_0x18 and multiplies the height first; ours does the width first.
 void MapScreen_804B1288::fn_80409014() {
     field_0x422++;
@@ -2431,7 +2447,8 @@ void MapScreen_804B1288::fn_80408F38(f32 alpha) {
     }
 }
 
-// FIXME: 96.04. scheduling+regalloc: the zoom divisions load field_0x18 before the
+// FIXME: 96.04 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the zoom divisions load field_0x18 before the
 // lbl_8048C850 entry in the original, and registers differ around fn_80403184. The tail after the
 // stage branch is in both branches: the original has its own copy in the stage 7 branch.
 void MapScreen_804B1288::fn_8040873C() {
@@ -2503,7 +2520,8 @@ void MapScreen_804B1288::fn_8040873C() {
     loadStageInfo();
 }
 
-// FIXME: 90.43. Missing/extra: for the selected row's text-box move the original loads the
+// FIXME: 90.52 %, missing/extra; behaviour near.
+// Missing/extra: for the selected row's text-box move the original loads the
 // y operands (getBounds()->i.y, row[0]->field_0xc, row[2]->field_0xc) before the second
 // getBounds call and adds them after it (f29-f31 saved, five FPRs); ours computes y before
 // that call (three saved FPRs, 8 instructions fewer). Everything else is the same.
@@ -2597,7 +2615,8 @@ void MapScreen_804B1288::fn_80408114() {
     }
 }
 
-// FIXME(shotgun): 99.35 %, regalloc
+// FIXME(shotgun): 99.35 %, operands; behaviour clean.
+// regalloc
 void MapScreen_804B1288::fn_8040732C() {
     s32 picked = -1;
     if (field_0x340 > 7) {
@@ -2701,7 +2720,8 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
-// FIXME(shotgun): 75.38 %, missing/extra. Every call, field and constant is right; two
+// FIXME(shotgun): 75.38 %, missing/extra + reloc-name; behaviour drift.
+// Every call, field and constant is right; two
 // things differ: the original computes `frame` before fn_8013B414 (ours computes it at its
 // first use, after the first draw, which shifts the schedule), and it indexes the sine table
 // straight from (counter % 128) (clrlslwi r0, r0, 27, 9) where sinShort's s16 argument gives
@@ -2738,7 +2758,8 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, cel, &params, 1.0f, 1.0f);
 }
 
-// FIXME(shotgun): 96.30 %, different: setRotScaleMtx's six sin / cos results land in
+// FIXME(shotgun): 96.30 %, different; behaviour near.
+// setRotScaleMtx's six sin / cos results land in
 // other saved FPRs (target sx f28, sy f27, sz f26, cx f31, cy f30, scale f29) and its
 // products are scheduled differently (unproven inline, see game/RotMatrix.h); and the
 // else branch of the stage choice reloads field_0x340 where the original copies the
@@ -2844,7 +2865,8 @@ void MapScreen_804B1288::fn_80406634(s32 stage, bool raised) {
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
 }
 
-// FIXME: 99.98. regalloc-only: the original keeps the render mode's fbWidth (read before
+// FIXME: 99.98 %, regalloc-only; behaviour clean.
+// regalloc-only: the original keeps the render mode's fbWidth (read before
 // the first search) in r24, ours in r26.
 void MapScreen_804B1288::fn_80405FC0() {
     f32 offset = 384.0f * (0.5f * (field_0x10->search('Pli02')->getBounds()->i.x -
@@ -2915,7 +2937,8 @@ void MapScreen_804B1288::fn_80405FC0() {
     }
 }
 
-// FIXME: 96.30. Missing/extra: the original keeps field_0x340 in r5 from the stage test
+// FIXME: 96.30 %, missing/extra; behaviour near.
+// Missing/extra: the original keeps field_0x340 in r5 from the stage test
 // through the table reads (lbl_80543880 / 88 / lbl_8048C90C); ours loads it again after the
 // test (and before lbl_8048C90C), two instructions more. A `stage` local folds 0-5 instead
 // of the original's 0 / 1-5 / 6 (98.26 %, different).
@@ -3142,7 +3165,8 @@ void MapScreen_804B1288::hideStagePanes(s32 stage) {
     }
 }
 
-// FIXME: 95.74 %. The original materialises one 0 (r4) for the stores to field_0xc8-0xd0 and
+// FIXME: 95.74 %, missing/extra; behaviour clean.
+// The original materialises one 0 (r4) for the stores to field_0xc8-0xd0 and
 // the field_0xd4 loop (loop pointer in r5) and a second li r0, 0 for field_0x228; ours uses a new
 // li r0, 0 inside the loop (one instruction fewer); all else equal.
 void MapScreen_804B1288::fn_804049DC() {
@@ -3201,7 +3225,8 @@ void MapScreen_804B1288::fn_804049DC() {
     }
 }
 
-// FIXME: 95.74 %. The original materialises one 0 (r4) for the stores to field_0xc8-0xd0 and
+// FIXME: 95.74 %, missing/extra; behaviour clean.
+// The original materialises one 0 (r4) for the stores to field_0xc8-0xd0 and
 // the field_0xd4 loop (loop pointer in r5) and a second li r0, 0 for field_0x228; ours uses a new
 // li r0, 0 inside the loop (one instruction fewer); all else equal.
 void MapScreen_804B1288::fn_80404648() {
@@ -3282,7 +3307,8 @@ bool MapScreen_804B1288::fn_80404270(s32 stage) {
     return false;
 }
 
-// FIXME: 84.17. Every field, call and branch matches; only the loop differs: ours
+// FIXME: 84.17 %, missing/extra; behaviour drift.
+// Every field, call and branch matches; only the loop differs: ours
 // hoists the save row's flags address out of the unrolled loop, the original keeps
 // only the row index (r12) and recomputes lbl_8050EC80 + index * 0xC8 each pass,
 // which costs it r31 and a stack frame (the same as tu_804023D0's fn_80403514).
