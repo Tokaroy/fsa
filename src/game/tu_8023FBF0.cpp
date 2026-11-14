@@ -1572,8 +1572,8 @@ bool Player_804A6F38::fn_80250090() {
     }
     JGeometry::TBox2f box(-1.0f, -1.0f, 1.0f, 1.0f);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     // The position is added field by field: addPos(mPos.x, mPos.y) loses two
     // instructions against the original.
@@ -1727,8 +1727,8 @@ bool Player_804A6F38::fn_8024F63C() {
     }
     JGeometry::TBox2f box(-1.0f, -1.0f, 1.0f, 1.0f);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     // The position is added field by field: addPos(mPos.x, mPos.y) loses two
     // instructions against the original.
