@@ -106,8 +106,6 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     case 0x30016:
     case 0x30026:
     case 0x30034:
-    case 0x40000:
-    case 0x40001:
     case 0x40002:
     case 0x40003:
     case 0x40009:
@@ -346,7 +344,8 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
                     case 0x5000B:
                     case 0x50010: {
                         static JMath::TRandom_fast_ lbl_8053AF6C(0);
-                        f32 pitch = 1.0f + (0.08f * lbl_8053AF6C.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
+                        f32 r = 0.08f * lbl_8053AF6C.get_ufloat_1();
+                        f32 pitch = 1.0f + (r - 0.04f * (1.0f - FLT_EPSILON));
                         handle->sound_->getAuxiliary().movePitch(pitch, 0);
                         break;
                     }
@@ -462,7 +461,8 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
                 case 0x50047:
                 case 0x50070: {
                     static JMath::TRandom_fast_ lbl_8053AF74(0);
-                    f32 pitch = 1.0f + (0.08f * lbl_8053AF74.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
+                    f32 r = 0.08f * lbl_8053AF74.get_ufloat_1();
+                    f32 pitch = 1.0f + (r - 0.04f * (1.0f - FLT_EPSILON));
                     handle->sound_->getAuxiliary().movePitch(pitch, 0);
                     break;
                 }
