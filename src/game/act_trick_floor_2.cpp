@@ -359,7 +359,7 @@ void TrickFloor2_804AA628::update() {
     }
     case 8:
         break;
-    case 1:
+    default:
         mAlive = false;
         break;
     }
