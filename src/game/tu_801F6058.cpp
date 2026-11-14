@@ -615,7 +615,8 @@ s32 ActorManager_804A5800::fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** o
     return count;
 }
 
-// FIXME: 99.00 %, regalloc-only (f1/f2 swapped on the x terms); behaviour clean.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
+// (f1/f2 swapped on the x terms); behaviour clean.
 s32 ActorManager_804A5800::fn_801F778C(u32 id, const JGeometry::TVec3f* pos, f32* outDistSq) {
     s32 serial = -1;
     f32 best = 1000000.0f;
@@ -656,7 +657,7 @@ s32 ActorManager_804A5800::fn_801F76F0(u32 id, s32 layer, const JGeometry::TVec3
     return serial;
 }
 
-// FIXME: 98.17 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
 // the target loads pos->x, actor x, pos->y,
 // actor y and squares x first; this code loads and squares y first. The
 // 1000000.0f literal is lbl_8053F824 once the pool before it is complete.
@@ -1064,6 +1065,7 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
+// FIXME: 97.25 %, regalloc-only; behaviour clean.
 // FIXME: regalloc only; behaviour clean.
 // the target keeps the key pointer in r6 and the column count in r7;
 // ours swaps those two.
