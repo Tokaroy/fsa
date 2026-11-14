@@ -112,6 +112,10 @@ inline u8 UnknownENDM_804AA0FC::tickTimer() {
     return field_0x27c == 0 ? true : false;
 }
 
+static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
+    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+}
+
 // FIXME(shotgun): 86.23 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
@@ -206,9 +210,7 @@ void UnknownENDM_804AA0FC::update() {
                     field_0x23c = 5;
                     field_0x244 = field_0x240->mPos;
                     field_0x250 = lbl_804D5730[field_0x230];
-                    JGeometry::TVec2f focus;
-                    focus.x = field_0x250.x;
-                    focus.y = field_0x250.y + -30.0f;
+                    JGeometry::TVec2f focus(field_0x250.x, field_0x250.y + -30.0f);
                     gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
                     field_0x290 = lbl_804AA0B8[field_0x230];
                     field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
@@ -316,10 +318,8 @@ void UnknownENDM_804AA0FC::update() {
         fn_802E94F4();
         if (field_0x288 != (u16)(s32)(field_0x244.x / 512.0f) ||
             field_0x28a != (u16)(s32)(field_0x244.y / 384.0f)) {
-            JGeometry::TVec2f pos;
-            pos.x = field_0x244.x;
-            pos.y = field_0x244.y;
-            if (fn_802E9884(&pos)) {
+            JGeometry::TVec3f pos = field_0x244;
+            if (fn_802E9884((const JGeometry::TVec2f*)&pos)) {
                 field_0x23c = 5;
                 field_0x297 = 1;
             }
@@ -350,8 +350,7 @@ void UnknownENDM_804AA0FC::update() {
                     view.f.x += 16.0f;
                     view.f.y += 16.0f;
                 }
-                bool inside = owlPos.x >= view.i.x && owlPos.y >= view.i.y && owlPos.x < view.f.x && owlPos.y < view.f.y;
-                if (inside && owl->mAlive != false) {
+                if (contains(view, owlPos) && owl->mAlive) {
                     break;
                 }
             }
