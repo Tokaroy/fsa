@@ -405,7 +405,7 @@ static inline cls_8049F6C8* findDigdogger(s32 serial) {
     return static_cast<cls_8049F6C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
 }
 
-// FIXME(shotgun): 94.99 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.00 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049F6C8::update() {
     // The copy of the velocity is never read, as in the original (0x8014827C).
     JGeometry::TVec3f vel = field_0x3c;
