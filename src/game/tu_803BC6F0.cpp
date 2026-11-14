@@ -320,7 +320,8 @@ static inline void setTabAlphas(FileSelect_804AFF60* self, s32 file) {
     self->field_0x44[file]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476A88[file]), self->field_0x118[12]);
 }
 
-// FIXME: 99.92 %. Regalloc only: the font pointer (0x154) loaded for each
+// FIXME: 99.92 %, regalloc-only; behaviour clean.
+// Regalloc only: the font pointer (0x154) loaded for each
 // text pane lands in r26/r27 where the original uses r29.
 FileSelect_804AFF60::FileSelect_804AFF60() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
@@ -892,7 +893,8 @@ static s32 getProgressMsg(s32 file) {
     return lbl_80476D00[7];
 }
 
-// FIXME: 99.21 %. The file index and its bit swap r24 / r25; the original
+// FIXME: 99.21 %, missing/extra; behaviour clean.
+// The file index and its bit swap r24 / r25; the original
 // tests the time against the zero it materialises `used` from (one li fewer).
 // Refreshes the three file rows: a file whose checksum fails gets message
 // 0x11D and its bit in field_0x115 (fn_803BD5E0); a used file shows the date
@@ -958,7 +960,8 @@ s32 FileSelect_804AFF60::fn_803CE4B0() {
     return 3;
 }
 
-// FIXME: 99.75. The bounds x and field_0x8 load into f2 / f1 (original f1 / f2)
+// FIXME: 99.75 %, regalloc-only; behaviour clean.
+// The bounds x and field_0x8 load into f2 / f1 (original f1 / f2)
 // and the fsubs operands swap.
 void FileSelect_804AFF60::fn_803CE370() {
     if (field_0xb0 > 0) {
@@ -978,7 +981,8 @@ void FileSelect_804AFF60::fn_803CE370() {
     }
 }
 
-// FIXME: 99.53 %. As in fn_803CE370, the bounds x and field_0x8 load into
+// FIXME: 99.53 %, regalloc-only; behaviour clean.
+// As in fn_803CE370, the bounds x and field_0x8 load into
 // f1 / f0 (original f0 / f1), and the loop's counter and table pointer swap
 // r29 / r30.
 void FileSelect_804AFF60::fn_803CE11C() {
@@ -1100,7 +1104,8 @@ void FileSelect_804AFF60::fn_803CDEE8() {
     }
 }
 
-// FIXME: 95.18 %. One instruction extra: the original computes
+// FIXME: 95.18 %, missing/extra; behaviour clean.
+// One instruction extra: the original computes
 // frames + rowStep * 2 first and spills rowDelay at once (reloading it from
 // the stack), ours adds rowDelay to rowStep * 2 first, and keeps frames in r17
 // for the cursor's fn_80402B10 (mr r4, r17) where the original's r4 still
@@ -1221,7 +1226,8 @@ void FileSelect_804AFF60::fn_803CD2DC() {
     }
 }
 
-// FIXME: 98.47 (try.py: different, same length). The &others register, as
+// FIXME: 98.47 %, different; behaviour near.
+// (try.py: different, same length). The &others register, as
 // fn_803C2E24 / fn_803C9F80. Every field, call and branch is the original's.
 //
 // State 6 (the file menu closed, from fn_803C21A8): as fn_803C2E24, the board
@@ -1522,6 +1528,7 @@ void FileSelect_804AFF60::fn_803CBE38() {
     }
 }
 
+// FIXME: 98.44 %, different; behaviour near.
 // FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
 // loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
 // shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
@@ -1620,6 +1627,7 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     }
 }
 
+// FIXME: 98.70 %, scheduling+regalloc; behaviour clean.
 // FIXME: The four setBlackWhite calls' by-value copies take the
 // stack slots in the opposite order (sp 0x8 upwards in the original); the
 // bob's `frame * frame` is scheduled after the 0x4330 store.
@@ -1769,7 +1777,8 @@ void FileSelect_804AFF60::fn_803CABAC() {
     }
 }
 
-// FIXME: 98.52 (try.py: different, same length; registers shift from it).
+// FIXME: 98.52 %, different; behaviour near.
+// (try.py: different, same length; registers shift from it).
 // As fn_803C2E24: the original keeps &others in r27 from the fill loop on
 // (`mr r3, r27`) and walks it in the row loop; ours computes &others again
 // before the row loop. A second pointer variable holding &others gets the
@@ -1900,7 +1909,8 @@ void FileSelect_804AFF60::fn_803C9F14() {
     }
 }
 
-// FIXME: 98.47. Scheduling and registers only, the timing sums as in
+// FIXME: 98.47 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only, the timing sums as in
 // fn_803C5190.
 // State 22 (copy, after the copy prompt's yes): as fn_803C5190, the board (or
 // the copy board) slides out while row field_0xa4 fades back (fn_803BC6F0);
@@ -2006,7 +2016,8 @@ void FileSelect_804AFF60::fn_803C9898() {
     }
 }
 
-// FIXME: 99.56. Regalloc only: the loop counters / table pointers of the
+// FIXME: 99.56 %, regalloc-only; behaviour clean.
+// Regalloc only: the loop counters / table pointers of the
 // board loops take r24 / r26 / r27 in another order.
 // State 23 (copying): row field_0xa0 slides from the first row's place to the
 // second's and fades in, the boards (field_0x14 / 0x18 / 0x1c) follow it down
@@ -2063,7 +2074,8 @@ void FileSelect_804AFF60::fn_803C92B8() {
     }
 }
 
-// FIXME: 98.56. Scheduling and registers in the cursor bob only, as
+// FIXME: 98.56 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers in the cursor bob only, as
 // fn_803C4054.
 // State 25 (copy): picking the destination file. Up / down move field_0xa0
 // over the three files, skipping the source file field_0xa4; A asks to copy
@@ -2176,7 +2188,8 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 }
 
-// FIXME: 99.39. Scheduling and registers only, the timing sums as in
+// FIXME: 99.39 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only, the timing sums as in
 // fn_803C6798 (`buttonStep * 1` forms change nothing).
 // State 26 (copy, from fn_803C05D8): the destination's board (or the copy
 // board) slides in at the second row's height and the two buttons come in;
@@ -2281,7 +2294,8 @@ void FileSelect_804AFF60::fn_803C7F7C() {
     }
 }
 
-// FIXME: 96.37. Scheduling and registers in the cursor bob, the same as
+// FIXME: 96.37 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers in the cursor bob, the same as
 // fn_803C4054 (see there).
 // The copy prompt (state 27): as the delete prompt fn_803C4054, up / down
 // move the cursor field_0x114 between two buttons, A confirms (0:
@@ -2339,7 +2353,8 @@ void FileSelect_804AFF60::fn_803C7CA0() {
     }
 }
 
-// FIXME: 99.49. Scheduling and registers only, the timing sums as in
+// FIXME: 99.49 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only, the timing sums as in
 // fn_803C6798.
 // State 28 (the copy prompt's no, from fn_803C02CC): the board (or the copy
 // board) slides out from the second row's height and the two buttons slide
@@ -2441,7 +2456,8 @@ void FileSelect_804AFF60::fn_803C70B8() {
     }
 }
 
-// FIXME: 99.83. Regalloc only: the board loops' counter / table pointer
+// FIXME: 99.83 %, regalloc-only; behaviour clean.
+// Regalloc only: the board loops' counter / table pointer
 // swap r14 / r19. With `int` counters (as elsewhere in the file) the row loop
 // keeps a second walker for field_0x70 / field_0x64 (97.87, 6 more
 // instructions); with s32 counters it shares one, as the original.
@@ -2523,7 +2539,8 @@ void FileSelect_804AFF60::fn_803C6690() {
     }
 }
 
-// FIXME: 95.77. Registers and scheduling only: the original sums the start
+// FIXME: 95.77 %, scheduling+regalloc; behaviour clean.
+// Registers and scheduling only: the original sums the start
 // test as (step + frames) + 1 (ours folds frames + 1 first) and every saved
 // register is one higher than ours.
 // State 31: unless it came from state 5, the four buttons slide down and fade
@@ -2619,7 +2636,8 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 98.63. One instruction fewer, as fn_803CB3DC: with the running
+// FIXME: 98.63 %, missing/extra; behaviour near.
+// One instruction fewer, as fn_803CB3DC: with the running
 // `delay += rowStep` ours starts the accumulator at rowDelay (mr r24) where
 // the original keeps the add; `i * rowStep` keeps it but gives fn_803C2E24's
 // &others difference (98.28, different). Timing sums' operand order differs.
@@ -2726,7 +2744,8 @@ void FileSelect_804AFF60::fn_803C579C() {
     }
 }
 
-// FIXME: 98.48. Scheduling and registers only: the original adds
+// FIXME: 98.48 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only: the original adds
 // buttonFrames + buttonStep before it loads buttonDelay (ours adds
 // buttonStep + buttonDelay first), and the timings take other registers.
 //
@@ -2832,7 +2851,8 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
 }
 
-// FIXME: 99.90. Regalloc only: boardDelay / boardFrames swap r21 / r23, and
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
+// Regalloc only: boardDelay / boardFrames swap r21 / r23, and
 // the row offset's fsubs takes f0 / f2 the other way round (as fn_803CE370).
 // The checksum test materialises the bool (neg / or / srwi.), which
 // `!= false` gives (a plain test gives and., 99.43).
@@ -2930,7 +2950,8 @@ void FileSelect_804AFF60::fn_803C4330() {
     }
 }
 
-// FIXME: 96.37 %. Scheduling and registers only, in the cursor bob: the
+// FIXME: 96.37 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only, in the cursor bob: the
 // original computes `(10 - frame)` into r0 and schedules both squares'
 // `lis 0x4330` / stack store before the mullw (same as fn_803CABAC); storing
 // field_0xda first (95.49) or a shared inline (95.96) was worse.
@@ -2990,7 +3011,8 @@ void FileSelect_804AFF60::fn_803C4054() {
     }
 }
 
-// FIXME: 98.24 (try.py: different, same length). As fn_803C2E24: the original
+// FIXME: 98.24 %, different + reloc-name; behaviour near.
+// (try.py: different, same length). As fn_803C2E24: the original
 // keeps &others in r29 from the fill loop on and walks it in the row loop;
 // and it adds frames + rowStep before rowDelay (ours rowStep + rowDelay
 // first). Every field, call and branch is the original's.
@@ -3035,7 +3057,8 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 }
 
-// FIXME: 98.38 % (try.py: different, same length). One instruction moves:
+// FIXME: 98.38 %, different; behaviour near.
+// (try.py: different, same length). One instruction moves:
 // the original keeps &others in r29 from the fill loop on (`mr r3, r29` for
 // the fill pointer) and walks it in the row loop; ours computes &others
 // again before the row loop (addi r29, r1, 0x8). Every field, call and
@@ -3236,7 +3259,8 @@ void FileSelect_804AFF60::fn_803C21A8() {
     setState(6);
 }
 
-// FIXME: 99.39 %. Register allocation only: the table loops' counter and
+// FIXME: 99.47 %, regalloc-only; behaviour clean.
+// Register allocation only: the table loops' counter and
 // pointer swap (r26 / r27 and r29 / r27 in the original); a function-wide
 // `int i` was worse (98.85).
 // Opens the file menu for the chosen file field_0xa4 (state 18): the 'Pdb'
@@ -3403,7 +3427,8 @@ void FileSelect_804AFF60::fn_803C1340() {
 // Not auto-inlined: fn_803C7CA0 calls fn_803C1054 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.73. Regalloc only, as fn_803BF3BC: the 'Pdb' loop's counter and
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// Regalloc only, as fn_803BF3BC: the 'Pdb' loop's counter and
 // table pointer swap r29 / r30.
 // fn_803C7CA0 (state 27), the first answer: as fn_803BF3BC for file
 // field_0xa0, the board comes in from the right at the height of the second
@@ -3448,7 +3473,8 @@ void FileSelect_804AFF60::fn_803C1054() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.69. Regalloc only: the 'Pqb' loop's counter / table pointer swap
+// FIXME: 99.69 %, regalloc-only; behaviour clean.
+// Regalloc only: the 'Pqb' loop's counter / table pointer swap
 // r28 / r29 (as fn_803C05D8), and the row offset's fsubs takes f0 / f2 the
 // other way round (as fn_803CE370).
 // Called by fn_803C9F14 after the copy's card write: shows the copied file
@@ -3505,7 +3531,8 @@ void FileSelect_804AFF60::fn_803C0A34() {
 // Not auto-inlined: fn_803C8B80 calls fn_803C05D8 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.82. Regalloc only, the 'Pdb' loop as fn_803BF3BC (r29 / r30).
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
+// Regalloc only, the 'Pdb' loop as fn_803BF3BC (r29 / r30).
 // Called by fn_803C8B80: shows file field_0xa0's board ('Pqb03'..'Pqb10'
 // hidden where fn_803B90E4 is set, field_0xa8 / field_0xb8 its stage flags),
 // fades the file cursor, brings the board in from the right when the file's
@@ -3648,7 +3675,8 @@ void FileSelect_804AFF60::fn_803C0018() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.54 %. Register allocation and scheduling only: `this` lands in
+// FIXME: 98.54 %, scheduling+regalloc; behaviour clean.
+// Register allocation and scheduling only: `this` lands in
 // r28 (original r31) and the loop registers shift (r26..r30); the 9-pane loop
 // counter / pointer are r28 / r27 in the original. With the counters declared
 // per loop each case of the switch re-loads j = 0 (96.49).
@@ -3779,7 +3807,8 @@ void FileSelect_804AFF60::fn_803BF698() {
     setState(39);
 }
 
-// FIXME: 99.73. Regalloc only: the 'Pdb' loop's counter and table pointer
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// Regalloc only: the 'Pdb' loop's counter and table pointer
 // swap r29 / r30 (an alpha local doesn't change it).
 // fn_803C4054 (the delete prompt), one answer: the file cursor slides off to
 // the left and fades, the board (field_0x20) comes back (in from the right
@@ -3827,7 +3856,8 @@ void FileSelect_804AFF60::fn_803BF3BC() {
 // Not auto-inlined: fn_803C579C calls fn_803BF004 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 97.00. Registers and scheduling only: the original keeps `this` in
+// FIXME: 97.00 %, scheduling+regalloc; behaviour clean.
+// Registers and scheduling only: the original keeps `this` in
 // r31 and the table base in r30 (ours r28 / r31) and loads the two rows' y
 // into f0 / f2 (ours f2 / f0); a hand-inlined row-alpha block with a `file`
 // local is the same.
@@ -3849,7 +3879,8 @@ void FileSelect_804AFF60::fn_803BF004() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.88. Operands only: four PANE_CENTRE fmadds take f25 / f27 the
+// FIXME: 99.88 %, operands; behaviour clean.
+// Operands only: four PANE_CENTRE fmadds take f25 / f27 the
 // other way round, and one TVec3f's stack slot differs (0x28 vs ours 0x34).
 // The board's enemy sprites (fn_803CEED4 draws them after the screens).
 // field_0xdc runs 0..53 for their animation. With field_0xb8[6] set every
@@ -3939,7 +3970,8 @@ void FileSelect_804AFF60::fn_803BE3D8() {
     gGameRoot2_8053AB10->fn_8013B490();
 }
 
-// FIXME: 99.58 %. Stack slots only: the original puts the first call's
+// FIXME: 99.58 %, operands; behaviour clean.
+// Stack slots only: the original puts the first call's
 // by-value copies above the group colours (sp 0xC8) and numbers each group's
 // call temporaries upwards (0x7C, 0x84, ...), ours the other way round. Same
 // copy pattern as fn_803BC6F0.
@@ -3982,7 +4014,8 @@ void FileSelect_804AFF60::fn_803BDD44(s32 file) {
     ((J2DPicture*)mScreenHuuin->search(lbl_80476BD8[file]))->setBlackWhite(black4, white4);
 }
 
-// FIXME: 99.65. Stack slots only: the original puts white0 at 0xD0 and its
+// FIXME: 99.65 %, operands; behaviour clean.
+// Stack slots only: the original puts white0 at 0xD0 and its
 // by-value copy at 0xD4 (black0 0xD8 / 0xDC), ours white0 at 0xDC.
 // black1 / black3 are copy-initialised: the original stores a second copy of
 // each (0xCC, 0xB8) before the group's first call and rebuilds the last
@@ -4029,7 +4062,8 @@ void FileSelect_804AFF60::fn_803BD5E0(s32 file) {
     ((J2DPicture*)mScreenHuuin->search(lbl_80476BD8[file]))->setBlackWhite(black4, white4);
 }
 
-// FIXME: 98.71 %. 8 instructions missing: in groups 1-4 the original copies
+// FIXME: 98.71 %, missing/extra; behaviour clean.
+// 8 instructions missing: in groups 1-4 the original copies
 // black / white into the group copies (sp 0xE4 / 0xE0 ...) through a second
 // temporary (sp 0x20 / 0x24 ...: one extra word store each), which plain
 // copies don't produce; stack offsets shift from there.
