@@ -124,34 +124,34 @@ void cls_804A3698::update() {
                         field_0x2f8 = 0xB;
                         break;
                     }
-                    if (field_0x2f8 == 7) {
+                    if (field_0x2f8 != 7) {
+                        if (actor->mActorId == ACTOR_KETH) {
+                            continue;
+                        }
+                        mBox.set(-64.0f, -48.0f, 64.0f, 48.0f);
+                        if (fn_801F2718(actor->mActorId) < 0) {
+                            continue;
+                        }
+                        field_0x304 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
+                        if (field_0x2f8 != 6) {
+                            startSound_801F0E34(0x400B5, 0);
+                            JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+                            pos.y = mPos.y - 16.0f;
+                            spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
+                        }
+                        dir = field_0x98;
+                        field_0x334 = 0.0f;
+                        field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+                        field_0x32d = 1;
+                        field_0x2f8 = 6;
+                        break;
+                    } else {
                         mBox.set(-256.0f, -48.0f, 256.0f, 48.0f);
                         if (fn_801F2718(actor->mActorId) >= 0) {
                             field_0x32c = 1;
                             break;
                         }
-                        continue;
                     }
-                    if (actor->mActorId == ACTOR_KETH) {
-                        continue;
-                    }
-                    mBox.set(-64.0f, -48.0f, 64.0f, 48.0f);
-                    if (fn_801F2718(actor->mActorId) < 0) {
-                        continue;
-                    }
-                    field_0x304 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
-                    if (field_0x2f8 != 6) {
-                        startSound_801F0E34(0x400B5, 0);
-                        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-                        pos.y = mPos.y - 16.0f;
-                        spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
-                    }
-                    dir = field_0x98;
-                    field_0x334 = 0.0f;
-                    field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
-                    field_0x32d = 1;
-                    field_0x2f8 = 6;
-                    break;
                 }
             }
             field_0x314++;
@@ -239,7 +239,7 @@ void cls_804A3698::update() {
         field_0x338 = 3.0f;
         field_0x334 = step.x;
         if (step.x != 0.0f) {
-            if (fabs(mPos.x - mPrevPos.x) <= 0.7f) {
+            if (std::fabsf(mPos.x - mPrevPos.x) <= 0.7f) {
                 field_0x31c++;
                 if (field_0x31c > 10) {
                     field_0x2f8 = 0;
@@ -272,7 +272,7 @@ void cls_804A3698::update() {
         }
         JGeometry::TVec3f target = obj->mPos;
         target.x = obj->mPos.x + 8.0f;
-        if (fabs(mPos.x - target.x) > 0.1f) {
+        if (std::fabsf(mPos.x - target.x) > 0.1f) {
             addCalc2_801F71A4(&mPos.x, target.x, 0.2f, 0.6f);
             field_0x98 = 0;
             if (mPos.x > target.x) {
@@ -385,7 +385,7 @@ void cls_804A3698::update() {
         }
         JGeometry::TVec3f target = obj->mPos;
         target.x = obj->mPos.x + 8.0f;
-        if (fabs(mPos.x - target.x) > 0.1f) {
+        if (std::fabsf(mPos.x - target.x) > 0.1f) {
             addCalc2_801F71A4(&mPos.x, target.x, 0.2f, 0.6f);
             field_0x98 = 0;
             if (mPos.x > target.x) {
