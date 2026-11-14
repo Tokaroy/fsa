@@ -6,7 +6,7 @@
 #include "game/act/tu_803489A4.h"
 #include "JSystem/JMath/JMath.h"
 
-// FIXME(shotgun): 99.46 %, scheduling + reloc-name
+// FIXME(shotgun): 99.76 %, scheduling; behaviour clean.
 void BeeFormation_804AC7B8::init() {
     mLife = 8;
     field_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -36,7 +36,7 @@ void BeeFormation_804AC7B8::init() {
     field_0x230 = 0;
 }
 
-// FIXME(shotgun): 92.5 %, missing/extra
+// FIXME(shotgun): 98.26 %, missing/extra; behaviour near.
 void BeeFormation_804AC7B8::update() {
     BeeManager_804AC810* mgr = (BeeManager_804AC810*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x250);
     if (field_0x262 == 1) {
@@ -289,7 +289,7 @@ void BeeFormation_804AC7B8::update() {
     }
 }
 
-// FIXME(shotgun): 97.29 %, scheduling+regalloc
+// FIXME(shotgun): 97.29 %, scheduling+regalloc; behaviour clean.
 void BeeFormation_804AC7B8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 1;
