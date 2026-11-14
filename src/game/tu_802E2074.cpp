@@ -5,9 +5,8 @@
 #include "game/act/tu_802E2074.h"
 #include <stdio.h>
 
-// Actor serials, 0x50 slots of the 0x90-word table at 0x804D4768 (the rest
-// of the 0x240-byte bss range is not touched by this unit).
-s32 lbl_804D4768[0x90];
+// Actor serials, 0x50 slots (0x140 bytes: the destructor-chain objects follow at +0x140).
+s32 lbl_804D4768[0x50];
 // Frame counter of the update; 0 after init.
 s32 lbl_8053ACB0;
 

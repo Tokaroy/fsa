@@ -7,6 +7,10 @@
 #include "game/Player.h"
 #include "game/act/act_searchlight.h"
 #include "std/math.h"
+
+// Position of the searchlight / last broken pot (GameGlobals.h; 0xC bytes, the
+// destructor-chain objects follow at +0xC in the original .bss).
+f32 lbl_804C0EA0[3];
 #include "JSystem/JUtility/TColor.h"
 
 // Two dummy ids searchlights share with tu_8018A8D8 (both -1 until a searchlight is made).
