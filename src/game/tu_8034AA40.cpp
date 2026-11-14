@@ -110,7 +110,7 @@ void cls_804AC8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 11.30 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 30.33 %, missing/extra + reloc-name; behaviour drift.
 // (partial): only the preamble and state 0 are written; states 1 to 13 (the message
 // steps, the cucco counting, the rewards) are still missing.
 void cls_804AC8C0::update() {
