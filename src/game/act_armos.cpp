@@ -67,7 +67,7 @@ void Armos_8049F260::init() {
 }
 
 
-// FIXME(shotgun): 91.51 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.40 %, missing/extra; behaviour drift.
 // (partial: states 3 tail, 4, 5 not written)
 // FIXME(shotgun): state 3 from the branch at 0x80141938 (moving, grid-snapping step), states 4 and 5
 // (0x80141FF0, 0x80142024) are not written yet.
