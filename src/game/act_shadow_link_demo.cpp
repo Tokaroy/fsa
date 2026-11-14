@@ -22,7 +22,7 @@ static const s32 lbl_80464AF8[35] = {
 
 cls_8049DB90::cls_8049DB90() {
     field_0x230 = 1;
-    field_0x231 = 0;
+    field_0x231 = false;
     field_0x234 = 0;
     field_0x238 = 0;
     field_0x23c = 0;
@@ -314,8 +314,6 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME(shotgun): 96.3 %, missing/extra + reloc-name (gated: its literals drop __ct__ from 100 % to 99.83 %)
-#ifdef NONMATCHING
 void cls_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
@@ -358,7 +356,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         }
         field_0x260 = mSpawnPos;
         JGeometry::TVec3f d = mSpawnPos - *getPlayerPos_8023E724(0);
-        field_0x26c.set(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+        field_0x26c = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
         break;
     }
     case 13:
@@ -458,7 +456,6 @@ void cls_8049DB90::fn_8011B878(s32 index) {
     }
     field_0x238 = index;
 }
-#endif
 
 // Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
 static inline void setCameraBox(cls_8049DB90* self) {

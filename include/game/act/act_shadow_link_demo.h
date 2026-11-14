@@ -24,7 +24,7 @@ public:
     void fn_8011B878(s32 index);
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor
-    /* 0x231 */ u8 field_0x231; // cleared by the constructor
+    /* 0x231 */ bool field_0x231; // cleared by the constructor
     /* 0x232 */ u8 field_0x232[0x234 - 0x232]; // not yet known
     /* 0x234 */ s32 field_0x234; // cleared by the constructor
     /* 0x238 */ s32 field_0x238; // returned by vfunc_0x58
