@@ -13,6 +13,34 @@
 #include "game/Camera.h"
 #include "game/Message.h"
 
+const char* lbl_804B1390[3] = {
+    "kk_heart_01.bti",
+    "kk_heart_02.bti",
+    "kk_heart_03.bti",
+};
+
+// The digit textures fn_8041918C passes to fn_804030C4 ('TIMG').
+const char* lbl_804B139C[10] = {
+    "kk_rupyNum_00.bti",
+    "kk_rupyNum_01.bti",
+    "kk_rupyNum_02.bti",
+    "kk_rupyNum_03.bti",
+    "kk_rupyNum_04.bti",
+    "kk_rupyNum_05.bti",
+    "kk_rupyNum_06.bti",
+    "kk_rupyNum_07.bti",
+    "kk_rupyNum_08.bti",
+    "kk_rupyNum_09.bti",
+};
+
+// The rank pictures; fn_8041C67C only uses the first.
+const char* lbl_804B13C4[4] = {
+    "kk_mainRank_01.bti",
+    "kk_mainRank_02.bti",
+    "kk_mainRank_03.bti",
+    "kk_mainRank_04.bti",
+};
+
 // J2DPane::search tags, as u64 (the names are padded with leading zeros).
 // The tables are defined in address order.
 
@@ -127,9 +155,113 @@ static const u64 lbl_8048DE00[4] = {
     0x0050343173743032ull,
 };
 
-// FIXME(shotgun): pane-tag tables of this unit's .rodata (0x8048DE20, 0x398 bytes) not
-// written out yet; fn_80418D08 reads four 8-entry tables at [0x24], [0x2C], [0x34], [0x3C].
-extern const u64 lbl_8048DE20[0x398 / 8];
+static const u64 lbl_8048DE20[4] = {
+    'P11st01',
+    'P21st01',
+    'P31st01',
+    'P41st01',
+};
+
+static const u64 lbl_8048DE40[4] = {
+    'Pp1ra02',
+    'Pp2ra02',
+    'Pp3ra02',
+    'Pp4ra02',
+};
+
+static const u64 lbl_8048DE60[4] = {
+    'Pp1ra01',
+    'Pp2ra01',
+    'Pp3ra01',
+    'Pp4ra01',
+};
+
+static const u64 lbl_8048DE80[4] = {
+    'Ndata01',
+    'Ndata04',
+    'Ndata07',
+    'Ndata10',
+};
+
+static const u64 lbl_8048DEA0[4] = {
+    'Pp1noi02',
+    'Pp1noi03',
+    'Pp3noi02',
+    'Pp4noi02',
+};
+
+static const u64 lbl_8048DEC0[4] = {
+    'Pp1noi01',
+    'Pp1noi04',
+    'Pp3noi01',
+    'Pp4noi01',
+};
+
+static const u64 lbl_8048DEE0[4] = {
+    'Pp1iib03',
+    'Pp2iib03',
+    'Pp3iib03',
+    'Pp4iib03',
+};
+
+static const u64 lbl_8048DF00[4] = {
+    'Ndata20',
+    'Ndata21',
+    'Ndata22',
+    'Ndata23',
+};
+
+static const u64 lbl_8048DF20[4] = {
+    'Ndata03',
+    'Ndata05',
+    'Ndata06',
+    'Ndata08',
+};
+
+static const u64 lbl_8048DF40[8] = {
+    'Pp1lf01',
+    'Pp1lf02',
+    'Pp1lf03',
+    'Pp1lf04',
+    'Pp1lf05',
+    'Pp1lf06',
+    'Pp1lf07',
+    'Pp1lf08',
+};
+
+static const u64 lbl_8048DF80[8] = {
+    'Pp1lf09',
+    'Pp1lf10',
+    'Pp1lf11',
+    'Pp1lf12',
+    'Pp1lf13',
+    'Pp1lf14',
+    'Pp1lf15',
+    'Pp1lf16',
+};
+
+static const u64 lbl_8048DFC0[8] = {
+    'Pp1lfk01',
+    'Pp1lfk02',
+    'Pp1lfk03',
+    'Pp1lfk04',
+    'Pp1lfk05',
+    'Pp1lfk06',
+    'Pp1lfk07',
+    'Pp1lfk08',
+};
+
+static const u64 lbl_8048E000[8] = {
+    'Pp1lfk09',
+    'Pp1lfk10',
+    'Pp1lfk11',
+    'Pp1lfk12',
+    'Pp1lfk13',
+    'Pp1lfk14',
+    'Pp1lfk15',
+    'Pp1lfk16',
+};
+
 extern const f32 lbl_8048E020[4][5];
 extern const u8 lbl_8048E070[4][10];
 extern const s16 lbl_8048E0B8[2][5];
@@ -141,35 +273,7 @@ extern const s16 lbl_8048E11C[2][5];
 extern const s16 lbl_8048E130[2][5];
 extern const s16 lbl_8048E144[2][5];
 
-const char* lbl_804B1390[3] = {
-    "kk_heart_01.bti",
-    "kk_heart_02.bti",
-    "kk_heart_03.bti",
-};
-
-// The digit textures fn_8041918C passes to fn_804030C4 ('TIMG').
-const char* lbl_804B139C[10] = {
-    "kk_rupyNum_00.bti",
-    "kk_rupyNum_01.bti",
-    "kk_rupyNum_02.bti",
-    "kk_rupyNum_03.bti",
-    "kk_rupyNum_04.bti",
-    "kk_rupyNum_05.bti",
-    "kk_rupyNum_06.bti",
-    "kk_rupyNum_07.bti",
-    "kk_rupyNum_08.bti",
-    "kk_rupyNum_09.bti",
-};
-
-// The rank pictures; fn_8041C67C only uses the first.
-const char* lbl_804B13C4[4] = {
-    "kk_mainRank_01.bti",
-    "kk_mainRank_02.bti",
-    "kk_mainRank_03.bti",
-    "kk_mainRank_04.bti",
-};
-
-// FIXME(shotgun): 87.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -226,8 +330,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     field_0x260[3] = field_0x4->search(lbl_8048DC18[0][3])->getAlpha();
     field_0x260[4] = field_0x4->search(lbl_8048DC18[0][4])->getAlpha();
     field_0x260[5] = field_0x4->search(lbl_8048DC18[0][5])->getAlpha();
-    field_0x266 = field_0x4->search(lbl_8048DE20[0x8])->getAlpha();
-    field_0x267 = field_0x18->search(lbl_8048DE20[0x4])->getAlpha();
+    field_0x266 = field_0x4->search(lbl_8048DE60[0])->getAlpha();
+    field_0x267 = field_0x18->search(lbl_8048DE40[0])->getAlpha();
     field_0x250[0] = field_0x4->search(lbl_8048D468[0][0])->getAlpha();
     field_0x250[1] = field_0x4->search(lbl_8048D468[1][0])->getAlpha();
     field_0x250[2] = field_0x4->search(lbl_8048D468[2][0])->getAlpha();
@@ -239,7 +343,7 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     field_0x26c[2] = field_0x4->search(lbl_8048D6B8[2])->getAlpha();
     field_0x26c[3] = field_0x4->search(lbl_8048D6B8[3])->getAlpha();
     field_0x268 = field_0x18->search(lbl_8048DE00[0])->getAlpha();
-    field_0x269 = field_0x18->search(lbl_8048DE20[0x0])->getAlpha();
+    field_0x269 = field_0x18->search(lbl_8048DE20[0])->getAlpha();
     for (s32 i = 0; i < 6; i++) {
         field_0x27b[i] = field_0x2c[0]->search(lbl_8048DDD0[i])->getAlpha();
     }
@@ -259,19 +363,19 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
         field_0x74[i] = new PaneCtrl_804AF86C();
         field_0x74[i]->setPane_80402F04(field_0x18->search(lbl_8048DE00[i]));
         field_0x84[i] = new PaneCtrl_804AF86C();
-        field_0x84[i]->setPane_80402F04(field_0x18->search(lbl_8048DE20[0x4 + i]));
+        field_0x84[i]->setPane_80402F04(field_0x18->search(lbl_8048DE40[i]));
         field_0x94[i] = new PaneCtrl_804AF86C();
-        field_0x94[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0x8 + i]));
+        field_0x94[i]->setPane_80402F04(field_0x4->search(lbl_8048DE60[i]));
         field_0xa4[i] = new PaneCtrl_804AF86C();
-        field_0xa4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0xC + i]));
+        field_0xa4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE80[i]));
         field_0xb4[i] = new PaneCtrl_804AF86C();
-        field_0xb4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0x10 + i]));
+        field_0xb4[i]->setPane_80402F04(field_0x4->search(lbl_8048DEA0[i]));
         field_0xc4[i] = new PaneCtrl_804AF86C();
-        field_0xc4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0x18 + i]));
+        field_0xc4[i]->setPane_80402F04(field_0x4->search(lbl_8048DEE0[i]));
         field_0xd4[i] = new PaneCtrl_804AF86C();
-        field_0xd4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0x1C + i]));
+        field_0xd4[i]->setPane_80402F04(field_0x4->search(lbl_8048DF00[i]));
         field_0xe4[i] = new PaneCtrl_804AF86C();
-        field_0xe4[i]->setPane_80402F04(field_0x4->search(lbl_8048DE20[0x20 + i]));
+        field_0xe4[i]->setPane_80402F04(field_0x4->search(lbl_8048DF20[i]));
     }
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         for (s32 i = 0; i < 8; i++) {
@@ -295,8 +399,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
             for (s32 i = 0; i < 8; i++) {
                 for (s32 j = 0; j < 3; j++) {
                     const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
-                    static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DE20[0x24 + i]))->append(res, 1.0f);
-                    static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DE20[0x34 + i]))->append(res, 1.0f);
+                    static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DF40[i]))->append(res, 1.0f);
+                    static_cast<J2DPicture*>(field_0x8[p]->search(lbl_8048DFC0[i]))->append(res, 1.0f);
                 }
             }
         }
@@ -350,7 +454,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 90.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.92 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
     for (s32 i = 0; i < 4; i++) {
         fn_8041E3B4(i);
@@ -398,13 +502,13 @@ void cls_804B13D4::fn_8041FC2C() {
         }
         for (s32 i = 0; i < 4; i++) {
             field_0x18->search(lbl_8048DE00[i])->hide();
-            field_0x18->search(lbl_8048DE20[0x4 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x8 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0xC + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x10 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x18 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x1C + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x20 + i])->hide();
+            field_0x18->search(lbl_8048DE40[i])->hide();
+            field_0x4->search(lbl_8048DE60[i])->hide();
+            field_0x4->search(lbl_8048DE80[i])->hide();
+            field_0x4->search(lbl_8048DEA0[i])->hide();
+            field_0x4->search(lbl_8048DEE0[i])->hide();
+            field_0x4->search(lbl_8048DF00[i])->hide();
+            field_0x4->search(lbl_8048DF20[i])->hide();
         }
         fn_8041A868(true);
     } else {
@@ -450,7 +554,13 @@ static inline bool isPaused() {
     return gGameRoot_8053AAF8->field_0x88 == 2;
 }
 
-// FIXME(shotgun): 82.98 %, missing/extra + reloc-name; behaviour drift.
+// Bit `player` of a u8 mask as a u8 (neg / or / srwi., as in GameMode.h).
+static inline u8 isMaskBitSet(u8 mask, s32 player) {
+    u8 bit = 1 << player;
+    return (mask & bit) != 0 ? true : false;
+}
+
+// FIXME: 99.64 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041F720() {
     s32 mode = lbl_80529DEC.field_0x118;
     if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) || (mode == 0 && lbl_80529DEC.field_0x11c == 2) ||
@@ -461,38 +571,31 @@ void cls_804B13D4::fn_8041F720() {
     }
     if (field_0x291 != 0) {
         f32 sx = lbl_8050DB0C.field_0x30[4] *
-                 ((f32)JUTVideo::getManager()->getFbWidth() / gGameRoot2_8053AB10->field_0x24->field_0x858);
+                 ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / gGameRoot2_8053AB10->field_0x24->field_0x858);
         f32 sy = lbl_8050DB0C.field_0x30[4] *
-                 ((f32)JUTVideo::getManager()->getEfbHeight() / gGameRoot2_8053AB10->field_0x24->field_0x858);
-        JGeometry::TVec2f origin(0.0f, 0.0f);
-        JGeometry::TVec2f size(sx, sy);
-        JGeometry::TVec2f corner(origin);
-        corner.add(size);
+                 ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / gGameRoot2_8053AB10->field_0x24->field_0x858);
         for (s32 i = 0; i < 4; i++) {
             if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
                 continue;
             }
+            Vec screen;
             if (field_0x21a[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
-                Vec screen;
                 gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-                f32 px = sx * (screen.x / (f32)JUTVideo::getManager()->getFbWidth());
-                f32 py = sy * (screen.y / (f32)JUTVideo::getManager()->getEfbHeight());
-                f32 x = px - (f32)JUTVideo::getManager()->getFbWidth() * 0.5f;
-                f32 y = lbl_8050DB0C.field_0x4c[1] + (py - (f32)JUTVideo::getManager()->getEfbHeight() * 0.5f);
-                JGeometry::TBox2f box(origin, corner);
-                field_0x4c->setOrtho(box, -10000.0f, 10000.0f);
+                f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
+                f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
+                f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
+                f32 y = lbl_8050DB0C.field_0x4c[1] + (py - (s32)JUTVideo::getManager()->getRenderMode()->efbHeight / 2.0f);
+                field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
                 field_0x4c->setPort();
                 field_0x8[i]->draw(x, y, field_0x4c);
                 field_0x234[i] = 0;
             } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
-                Vec screen;
                 gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-                f32 px = sx * (screen.x / (f32)JUTVideo::getManager()->getFbWidth());
-                f32 py = sy * (screen.y / (f32)JUTVideo::getManager()->getEfbHeight());
-                f32 x = px - (f32)JUTVideo::getManager()->getFbWidth() * 0.5f;
-                f32 y = lbl_8050DB0C.field_0x4c[1] + (py - (f32)JUTVideo::getManager()->getEfbHeight() * 0.5f);
-                JGeometry::TBox2f box(origin, corner);
-                field_0x4c->setOrtho(box, -10000.0f, 10000.0f);
+                f32 px = sx * (screen.x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth);
+                f32 py = sy * (screen.y / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight);
+                f32 x = px - (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
+                f32 y = lbl_8050DB0C.field_0x4c[1] + (py - (s32)JUTVideo::getManager()->getRenderMode()->efbHeight / 2.0f);
+                field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
                 field_0x4c->setPort();
                 field_0x2c[i]->draw(x, y, field_0x4c);
             }
@@ -517,7 +620,7 @@ void cls_804B13D4::fn_8041F5FC() {
     }
 }
 
-// FIXME(shotgun): 94.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
@@ -551,15 +654,15 @@ void cls_804B13D4::fn_8041EDB0() {
                 if (gGameRoot2_8053AB10->field_0x20->field_0x14c[i] != 0) {
                     if (!(field_0x28c & bit)) {
                         field_0x28c |= bit;
-                        field_0x18->search(lbl_8048DE20[0x4 + i])->show();
-                        field_0x4->search(lbl_8048DE20[0x8 + i])->show();
-                        field_0x4->search(lbl_8048DE20[0xC + i])->hide();
+                        field_0x18->search(lbl_8048DE40[i])->show();
+                        field_0x4->search(lbl_8048DE60[i])->show();
+                        field_0x4->search(lbl_8048DE80[i])->hide();
                     }
                 } else if (field_0x28c & bit) {
                     field_0x28c &= ~bit;
-                    field_0x18->search(lbl_8048DE20[0x4 + i])->hide();
-                    field_0x4->search(lbl_8048DE20[0x8 + i])->hide();
-                    field_0x4->search(lbl_8048DE20[0xC + i])->show();
+                    field_0x18->search(lbl_8048DE40[i])->hide();
+                    field_0x4->search(lbl_8048DE60[i])->hide();
+                    field_0x4->search(lbl_8048DE80[i])->show();
                 }
                 fn_8041D18C(i);
                 fn_8041C0C0(i);
@@ -576,10 +679,10 @@ void cls_804B13D4::fn_8041EDB0() {
                 map->field_0x217[i] = 1;
             }
             if (gGameRoot2_8053AB10->field_0x20->field_0x14c[i] != 0) {
-                s32 x = field_0x4->search(lbl_8048DE20[0x8 + i])->getBounds()->i.x;
-                s32 y = field_0x4->search(lbl_8048DE20[0x8 + i])->getBounds()->i.y;
-                f32 w = field_0x4->search(lbl_8048DE20[0x8 + i])->getWidth();
-                f32 h = field_0x4->search(lbl_8048DE20[0x8 + i])->getHeight();
+                s32 x = field_0x4->search(lbl_8048DE60[i])->getBounds()->i.x;
+                s32 y = field_0x4->search(lbl_8048DE60[i])->getBounds()->i.y;
+                f32 w = field_0x4->search(lbl_8048DE60[i])->getWidth();
+                f32 h = field_0x4->search(lbl_8048DE60[i])->getHeight();
                 cls_803004C0& rect = gGameRoot2_8053AB10->field_0x20->field_0x1d0[i];
                 rect.field_0x0 = x;
                 rect.field_0x4 = y;
@@ -1169,7 +1272,7 @@ void cls_804B13D4::fn_8041CC04() {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit + 3]))->changeTexture(res, 0);
 }
 
-// FIXME(shotgun): 90.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.11 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041C67C() {
     field_0x4->search('Ndata13')->hide();
     field_0x4->search('Php1ni02')->hide();
@@ -1179,30 +1282,30 @@ void cls_804B13D4::fn_8041C67C() {
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
             field_0x18->search(lbl_8048DE00[i])->hide();
-            field_0x18->search(lbl_8048DE20[0x4 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x8 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0xC + i])->show();
-            field_0x4->search(lbl_8048DE20[0x10 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x18 + i])->show();
+            field_0x18->search(lbl_8048DE40[i])->hide();
+            field_0x4->search(lbl_8048DE60[i])->hide();
+            field_0x4->search(lbl_8048DE80[i])->show();
+            field_0x4->search(lbl_8048DEA0[i])->hide();
+            field_0x4->search(lbl_8048DEE0[i])->show();
             if (lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
-                field_0x4->search(lbl_8048DE20[0x1C + i])->show();
+                field_0x4->search(lbl_8048DF00[i])->show();
             } else {
-                field_0x4->search(lbl_8048DE20[0x1C + i])->hide();
+                field_0x4->search(lbl_8048DF00[i])->hide();
             }
-            field_0x4->search(lbl_8048DE20[0x20 + i])->show();
+            field_0x4->search(lbl_8048DF20[i])->show();
             field_0x4->search(lbl_8048DCF8[i][0])->hide();
             field_0x4->search(lbl_8048DCF8[i][1])->hide();
             field_0x4->search(lbl_8048DCF8[i][2])->hide();
             field_0x4->search(lbl_8048DCF8[i][3])->hide();
         } else {
             field_0x18->search(lbl_8048DE00[i])->hide();
-            field_0x18->search(lbl_8048DE20[0x4 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x8 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0xC + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x10 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x18 + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x1C + i])->hide();
-            field_0x4->search(lbl_8048DE20[0x20 + i])->hide();
+            field_0x18->search(lbl_8048DE40[i])->hide();
+            field_0x4->search(lbl_8048DE60[i])->hide();
+            field_0x4->search(lbl_8048DE80[i])->hide();
+            field_0x4->search(lbl_8048DEA0[i])->hide();
+            field_0x4->search(lbl_8048DEE0[i])->hide();
+            field_0x4->search(lbl_8048DF00[i])->hide();
+            field_0x4->search(lbl_8048DF20[i])->hide();
         }
     }
     for (s32 i = 0; i < 4; i++) {
@@ -1496,7 +1599,7 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     }
 }
 
-// FIXME(shotgun): 89.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.02 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     f32 prev1 = field_0x118[player];
     f32 prev2 = field_0x138[player];
@@ -1631,18 +1734,18 @@ void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     for (s32 i = 0; i < 6; i++) {
         field_0x4->search(lbl_8048DC18[player][i])->setAlpha(field_0x260[i] * field_0x118[player]);
     }
-    field_0x4->search(lbl_8048DE20[0x8 + player])->setAlpha(field_0x266 * field_0x138[player]);
-    field_0x18->search(lbl_8048DE20[0x4 + player])->setAlpha(field_0x267 * field_0x148[player]);
+    field_0x4->search(lbl_8048DE60[player])->setAlpha(field_0x266 * field_0x138[player]);
+    field_0x18->search(lbl_8048DE40[player])->setAlpha(field_0x267 * field_0x148[player]);
     field_0x18->search(lbl_8048DE00[player])->setAlpha(field_0x268 * field_0x118[player]);
     field_0x18->search(lbl_8048DE20[player])->setAlpha(field_0x269 * field_0x118[player]);
-    field_0x4->search(lbl_8048DE20[0x10 + player])->setAlpha(field_0x26a * field_0x118[player]);
-    field_0x4->search(lbl_8048DE20[0x14 + player])->setAlpha(field_0x26b * field_0x118[player]);
+    field_0x4->search(lbl_8048DEA0[player])->setAlpha(field_0x26a * field_0x118[player]);
+    field_0x4->search(lbl_8048DEC0[player])->setAlpha(field_0x26b * field_0x118[player]);
     for (s32 i = 0; i < 4; i++) {
         field_0x4->search(lbl_8048DCF8[player][i])->setAlpha(field_0x26c[i] * field_0x118[player]);
     }
 }
 
-// FIXME(shotgun): 81.76 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.16 %, operands; behaviour near.
 void cls_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
         field_0x1d8[player] = fn_80237774(player);
@@ -1665,50 +1768,50 @@ void cls_804B13D4::fn_80419570(s32 player) {
     }
     for (s32 i = 0; i < 8; i++) {
         if (life >= 4) {
-            field_0x8[player]->search(lbl_8048DE20[0x24 + i])->show();
-            field_0x8[player]->search(lbl_8048DE20[0x34 + i])->show();
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x24 + i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x34 + i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x8[player]->search(lbl_8048DE20[0x2C + i])->hide();
-            field_0x8[player]->search(lbl_8048DE20[0x3C + i])->hide();
+            field_0x8[player]->search(lbl_8048DF40[i])->show();
+            field_0x8[player]->search(lbl_8048DFC0[i])->show();
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DF40[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x8[player]->search(lbl_8048DF80[i])->hide();
+            field_0x8[player]->search(lbl_8048E000[i])->hide();
             max -= 4;
             life -= 4;
             continue;
         }
         if (life == 0) {
-            field_0x8[player]->search(lbl_8048DE20[0x24 + i])->hide();
-            field_0x8[player]->search(lbl_8048DE20[0x34 + i])->hide();
+            field_0x8[player]->search(lbl_8048DF40[i])->hide();
+            field_0x8[player]->search(lbl_8048DFC0[i])->hide();
             if (max > 0) {
-                field_0x8[player]->search(lbl_8048DE20[0x2C + i])->show();
-                field_0x8[player]->search(lbl_8048DE20[0x3C + i])->show();
+                field_0x8[player]->search(lbl_8048DF80[i])->show();
+                field_0x8[player]->search(lbl_8048E000[i])->show();
                 max -= 4;
             } else {
-                field_0x8[player]->search(lbl_8048DE20[0x2C + i])->hide();
-                field_0x8[player]->search(lbl_8048DE20[0x3C + i])->hide();
+                field_0x8[player]->search(lbl_8048DF80[i])->hide();
+                field_0x8[player]->search(lbl_8048E000[i])->hide();
             }
         } else if (life == 1) {
-            field_0x8[player]->search(lbl_8048DE20[0x24 + i])->show();
-            field_0x8[player]->search(lbl_8048DE20[0x34 + i])->show();
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x24 + i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x34 + i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x8[player]->search(lbl_8048DE20[0x2C + i])->hide();
-            field_0x8[player]->search(lbl_8048DE20[0x3C + i])->hide();
+            field_0x8[player]->search(lbl_8048DF40[i])->show();
+            field_0x8[player]->search(lbl_8048DFC0[i])->show();
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DF40[i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x8[player]->search(lbl_8048DF80[i])->hide();
+            field_0x8[player]->search(lbl_8048E000[i])->hide();
             max -= 4;
         } else if (life == 2) {
-            field_0x8[player]->search(lbl_8048DE20[0x24 + i])->show();
-            field_0x8[player]->search(lbl_8048DE20[0x34 + i])->show();
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x24 + i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x34 + i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x8[player]->search(lbl_8048DE20[0x2C + i])->hide();
-            field_0x8[player]->search(lbl_8048DE20[0x3C + i])->hide();
+            field_0x8[player]->search(lbl_8048DF40[i])->show();
+            field_0x8[player]->search(lbl_8048DFC0[i])->show();
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DF40[i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x8[player]->search(lbl_8048DF80[i])->hide();
+            field_0x8[player]->search(lbl_8048E000[i])->hide();
             max -= 4;
         } else if (life == 3) {
-            field_0x8[player]->search(lbl_8048DE20[0x24 + i])->show();
-            field_0x8[player]->search(lbl_8048DE20[0x34 + i])->show();
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x24 + i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DE20[0x34 + i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x8[player]->search(lbl_8048DE20[0x2C + i])->hide();
-            field_0x8[player]->search(lbl_8048DE20[0x3C + i])->hide();
+            field_0x8[player]->search(lbl_8048DF40[i])->show();
+            field_0x8[player]->search(lbl_8048DFC0[i])->show();
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DF40[i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x8[player]->search(lbl_8048DF80[i])->hide();
+            field_0x8[player]->search(lbl_8048E000[i])->hide();
             max -= 4;
         }
         life = 0;
@@ -1756,31 +1859,31 @@ void cls_804B13D4::fn_8041918C(s32 player) {
     }
 }
 
-// FIXME(shotgun): 91.26 %, missing/extra; behaviour drift.
+// .rodata offsets differ by 0x840 while lbl_8048D468..lbl_8048DCF8 remain extern.
+// FIXME: 99.71 %, operands; behaviour drift.
 void cls_804B13D4::fn_80418D08(s32 player, bool force) {
-    u8 bit = 1 << player;
     f32 prevA = field_0x128[player];
     f32 prevB = field_0x168[player];
-    if (!(field_0x28f & bit)) {
-        if (prevA > 0.0f) {
-            field_0x128[player] = prevA - 0.1f;
+    if (!isMaskBitSet(field_0x28f, player)) {
+        if (field_0x128[player] > 0.0f) {
+            field_0x128[player] -= 0.1f;
         } else {
             field_0x128[player] = 0.0f;
         }
         gGameRoot2_8053AB10->field_0x20->field_0x217[player] = 1;
     } else if (lbl_80529DEC.field_0xd8[player] == 0 && lbl_8053AEC8->field_0x5e == 0) {
-        if (prevA > 0.6f) {
-            field_0x128[player] = prevA - 0.1f;
+        if (field_0x128[player] > 0.6f) {
+            field_0x128[player] -= 0.1f;
             if (field_0x128[player] <= 0.6f) {
                 field_0x128[player] = 0.6f;
             }
-        } else if (prevA < 0.6f) {
-            field_0x128[player] = prevA + 0.1f;
+        } else if (field_0x128[player] < 0.6f) {
+            field_0x128[player] += 0.1f;
             if (field_0x128[player] >= 0.6f) {
                 field_0x128[player] = 0.6f;
             }
         }
-    } else if (prevA < 1.0f) {
+    } else if (field_0x128[player] < 1.0f) {
         field_0x128[player] += 0.1f;
     } else {
         field_0x128[player] = 1.0f;
@@ -1788,7 +1891,7 @@ void cls_804B13D4::fn_80418D08(s32 player, bool force) {
     if (prevA == field_0x128[player] && !force) {
         return;
     }
-    if (!(field_0x28f & bit) && !fn_8022B1AC()) {
+    if (!(field_0x28f & (u8)(1 << player)) && !fn_8022B1AC()) {
         if (field_0x168[player] > 0.0f) {
             field_0x168[player] -= 0.1f;
         } else {
@@ -1815,10 +1918,10 @@ void cls_804B13D4::fn_80418D08(s32 player, bool force) {
         return;
     }
     for (s32 i = 0; i < 8; i++) {
-        field_0x8[player]->search(lbl_8048DE20[0x24 + i])->setAlpha(field_0x250[0] * field_0x128[player]);
-        field_0x8[player]->search(lbl_8048DE20[0x34 + i])->setAlpha(field_0x250[1] * field_0x128[player]);
-        field_0x8[player]->search(lbl_8048DE20[0x2C + i])->setAlpha(field_0x250[2] * field_0x128[player]);
-        field_0x8[player]->search(lbl_8048DE20[0x3C + i])->setAlpha(field_0x250[3] * field_0x128[player]);
+        field_0x8[player]->search(lbl_8048DF40[i])->setAlpha(field_0x250[0] * field_0x128[player]);
+        field_0x8[player]->search(lbl_8048DFC0[i])->setAlpha(field_0x250[1] * field_0x128[player]);
+        field_0x8[player]->search(lbl_8048DF80[i])->setAlpha(field_0x250[2] * field_0x128[player]);
+        field_0x8[player]->search(lbl_8048E000[i])->setAlpha(field_0x250[3] * field_0x128[player]);
     }
     for (s32 i = 0; i < 6; i++) {
         field_0x2c[player]->search(lbl_8048DDD0[i])->setAlpha(field_0x27b[i] * field_0x168[player]);
