@@ -594,7 +594,20 @@ bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer);
 bool fn_801CCB1C(const JGeometry::TVec3f* pos, s32 layer);
 
 // Random helpers on gGameRoot_8053AAF8->mRandom, defined in game units.
+class ActorBase_804A5770;
 f32 fn_80154744();          // [0, 1); game/act_sword_soldier.cpp
+
+// game/act_sword_soldier.cpp: the actor with a serial; spawns actor `id` on a layer at pos.
+ActorBase_804A5770* fn_8015445C(s32 serial);
+s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
+// game/tu_8018A8D8.cpp: a save flag bit (test, set/clear) and a random pick.
+bool fn_8018E930(s32 bit);
+void fn_8018E8DC(s32 bit, bool set, u8 value);
+s32 fn_8018E89C();
+// game/act_phantom_ganon_2.cpp: whether the player takes part.
+bool fn_8018A614(s32 player);
+// game/tu_80134C04.cpp: the 2-bit field of gGameRoot_8053AAF8->field_0x83 for `index` (0-3).
+u8 fn_8013997C(s32 index);
 s32 fn_801CD664(s32 n);     // [0, n); game/tu_801CB270.cpp
 s32 fn_801CD580(s32 except); // [0, 4) except `except`; game/tu_801CB270.cpp
 

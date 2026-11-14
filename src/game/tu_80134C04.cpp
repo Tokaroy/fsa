@@ -107,7 +107,7 @@ void fn_80139994(int port, void* arg) {
 // Not auto-inlined: GameRoot_8049EF20::fn_80137300 calls fn_8013997C out of line in the original
 // (three bl; docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-s32 fn_8013997C(s32 index) {
+u8 fn_8013997C(s32 index) {
     return (gGameRoot_8053AAF8->field_0x83 >> (index * 2)) & 3;
 }
 #pragma auto_inline reset
