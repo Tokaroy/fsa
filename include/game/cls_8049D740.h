@@ -46,4 +46,6 @@ public:
     /* 0x2A0 */ JPABaseEmitter* mEmitter2a0; // released by the destructor
 }; // Size: 0x2A4
 
+u16 fn_801123C8(s32 kind, s32 mode);
+
 #endif
