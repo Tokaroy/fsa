@@ -2312,7 +2312,7 @@ void ResultScreen_804AF9A0::fn_803AC998() {
     }
 }
 
-// FIXME: 98.71 %, different + reloc-name; behaviour near.
+// FIXME: 99.91 %, reloc-name; behaviour clean.
 // FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AC6FC() {
     s32 done = 0;
