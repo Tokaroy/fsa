@@ -104,37 +104,6 @@ void UnknownENDM_804AA0FC::init() {
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
 }
 
-// Hands the (clamped) focus and the eased zoom to the camera.
-inline void UnknownENDM_804AA0FC::applyCamera() {
-    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
-    JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus = pos + offset;
-    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-    f32 halfW = view.getWidth() * 0.5f;
-    f32 halfH = view.getHeight() * 0.5f;
-    if (focus.x + halfW >= field_0x268) {
-        focus.x = field_0x268 - halfW;
-    } else if (focus.x - halfW <= field_0x260) {
-        focus.x = field_0x260 + halfW;
-    }
-    if (focus.y + halfH >= field_0x26c) {
-        focus.y = field_0x26c - halfH;
-    } else if (focus.y - halfH <= field_0x264) {
-        focus.y = field_0x264 + halfH;
-    }
-    if (field_0x270 != field_0x274) {
-        field_0x270 += field_0x278;
-        if (field_0x278 < 0.0f) {
-            if (field_0x270 < field_0x274) {
-                field_0x270 = field_0x274;
-            }
-        } else if (field_0x270 > field_0x274) {
-            field_0x270 = field_0x274;
-        }
-    }
-    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
-}
-
 // FIXME(shotgun): 60.20 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
@@ -278,7 +247,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x297 = 1;
         } else {
             field_0x298 = 0;
-            applyCamera();
+            fn_802E94F4();
             break;
         }
         field_0x28d = *field_0x290;
@@ -362,7 +331,7 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 200;
             }
         } else {
-            applyCamera();
+            fn_802E94F4();
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
@@ -422,7 +391,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x231 = 0;
         } else {
-            applyCamera();
+            fn_802E94F4();
         }
         break;
     }
@@ -536,7 +505,33 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
             field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
-    applyCamera();
+    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
+    JGeometry::TVec2f offset(0.0f, -30.0f);
+    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
+    f32 halfW = view.getWidth() * 0.5f;
+    f32 halfH = view.getHeight() * 0.5f;
+    if (focus.x + halfW >= field_0x268) {
+        focus.x = field_0x268 - halfW;
+    } else if (focus.x - halfW <= field_0x260) {
+        focus.x = field_0x260 + halfW;
+    }
+    if (focus.y + halfH >= field_0x26c) {
+        focus.y = field_0x26c - halfH;
+    } else if (focus.y - halfH <= field_0x264) {
+        focus.y = field_0x264 + halfH;
+    }
+    if (field_0x270 != field_0x274) {
+        field_0x270 += field_0x278;
+        if (field_0x278 < 0.0f) {
+            if (field_0x270 < field_0x274) {
+                field_0x270 = field_0x274;
+            }
+        } else if (field_0x270 > field_0x274) {
+            field_0x270 = field_0x274;
+        }
+    }
+    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
 }
 
 // FIXME: 99.81 %, reloc-name; behaviour clean.
