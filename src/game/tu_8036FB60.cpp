@@ -421,7 +421,7 @@ void cls_804AE4B0::fn_80371284() {
     if (field_0x324.y > 1720.0f) {
         field_0x324.y -= 0.5f;
         for (s32 i = 0; i < 4; i++) {
-            tickPlayer(i);
+            tickPlayer_80371284(i);
         }
     }
     if (!(field_0x324.y > 1720.0f)) {
@@ -436,7 +436,7 @@ void cls_804AE4B0::fn_80371284() {
         if (fn_8038BD08(0, 0x50F, field_0x4, pos, 0x22)) {
             mState = 2;
             for (s32 i = 0; i < 4; i++) {
-                tickPlayer(i);
+                tickPlayer_80371284(i);
             }
             field_0x3a4 = 0;
             field_0x3a8 = 1;
@@ -595,7 +595,7 @@ void cls_804AE4B0::fn_80370764() {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (fn_8023E854(i)) {
-            guidePlayer();
+            guidePlayer_80370764();
             break;
         }
     }
@@ -604,7 +604,7 @@ void cls_804AE4B0::fn_80370764() {
     }
     field_0x23c++;
     fn_803721F4();
-    guidePlayer();
+    guidePlayer_80370764();
     if (!fn_802341D0(0)) {
         field_0x240 = 2;
     } else if (field_0x398 != 0 && field_0x240 == 0 && fn_8022CAF8(0) == lbl_80474F30[field_0x394] &&
@@ -733,7 +733,7 @@ void cls_804AE4B0::fn_803703C8() {
 
 // A plain function between fn_803703C8 and fn_80370200, inlined at both sites in fn_80370764
 // (its out-of-line copy was dead-stripped by the linker); pools 2232.0f, 1624.0f, 2.0f here.
-void cls_804AE4B0::guidePlayer() {
+void cls_804AE4B0::guidePlayer_80370764() {
     JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
     if (PSVECMag(&d) > 2.0f) {
         fn_8023DFF4(0, &d);
@@ -837,7 +837,7 @@ void cls_804AE4B0::fn_80370020() {
 
 // A plain function between fn_80370020 and fn_8036FDAC, inlined into both loops of fn_80371284
 // (its out-of-line copy was dead-stripped by the linker); pools 0.3f here.
-void cls_804AE4B0::tickPlayer(s32 i) {
+void cls_804AE4B0::tickPlayer_80371284(s32 i) {
     if (field_0x374[i] != 0) {
         field_0x374[i]--;
     }
