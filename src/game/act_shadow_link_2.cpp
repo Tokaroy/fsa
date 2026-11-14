@@ -266,7 +266,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x3c.z = 4.5f;
         field_0x340.fn_800FEB78(4);
         startSound_801F0E34(0x40035, 0);
-        if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+        if (viewLayerFlag(field_0x4) != 0) {
             field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         }
         break;
@@ -291,11 +291,12 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x250 = 0x3C;
         }
         if (!(mFlags & 0x4000)) {
-            if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+            if (viewLayerFlag(field_0x4) != 0) {
                 field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             }
-            mPos = fn_801C0D70()->field_0x54;
-            mPrevPos = fn_801C0D70()->field_0x54;
+            cls_801C0D70* p = fn_801C0D70();
+            mPos = p->field_0x54;
+            mPrevPos = p->field_0x54;
             field_0x3c.x = (mSpawnPos.x - mPos.x) * (1.0f / (f32)field_0x250);
             field_0x3c.y = (mSpawnPos.y - mPos.y) * (1.0f / (f32)field_0x250);
             if (fn_801C0D70()->field_0x0 & 2) {
@@ -319,8 +320,13 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
         field_0x3c.z = 0.0f;
-        if (state != 0xB && (fn_801C0D70()->field_0x50 >> 31) != 0) {
-            mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
+        if (state != 0xB) {
+            bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
+            if (!clear) {
+                mPos.x = mSpawnPos.x;
+                mPos.y = mSpawnPos.y;
+                mPos.z = mSpawnPos.z;
+            }
         }
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
@@ -358,8 +364,13 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
                 fn_8022ADE4();
             }
             mDrawEnabled = true;
-            if (!(field_0x524.field_0x0 & 2) && (fn_801C0D70()->field_0x50 >> 31) != 0) {
-                mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
+            if (!(field_0x524.field_0x0 & 2)) {
+                bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
+                if (!clear) {
+                    mPos.x = mSpawnPos.x;
+                    mPos.y = mSpawnPos.y;
+                    mPos.z = mSpawnPos.z;
+                }
             }
             field_0x3c.x = 0.0f;
             field_0x3c.y = 0.0f;
@@ -495,8 +506,13 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x1E:
         if (mState == 0xD) {
             mDrawEnabled = true;
-            if (!(field_0x524.field_0x0 & 2) && (fn_801C0D70()->field_0x50 >> 31) != 0) {
-                mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
+            if (!(field_0x524.field_0x0 & 2)) {
+                bool clear = (fn_801C0D70()->field_0x50 >> 31) == 0;
+                if (!clear) {
+                    mPos.x = mSpawnPos.x;
+                    mPos.y = mSpawnPos.y;
+                    mPos.z = mSpawnPos.z;
+                }
             }
             field_0x3c.x = 0.0f;
             field_0x3c.y = 0.0f;
