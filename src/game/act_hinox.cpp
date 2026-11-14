@@ -22,7 +22,6 @@ struct HinoxTables {
 // FIXME(shotgun): data table lbl_8049F840 not split into individual arrays
 extern HinoxTables lbl_8049F840;
 
-// FIXME(shotgun): 98.48 %, missing/extra; behaviour near.
 void Hinox_8049F9B4::init() {
     mBox.i.x = -14.0f;
     mBox.i.y = -14.0f;
@@ -148,7 +147,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
     return 0;
 }
 
-// FIXME(shotgun): 82.97 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.21 %, missing/extra + reloc-name; behaviour drift.
 void Hinox_8049F9B4::update() {
     JGeometry::TVec3f pos = mPos;
     s32 playerDir = 0;
