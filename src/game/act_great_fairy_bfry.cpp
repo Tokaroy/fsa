@@ -135,7 +135,7 @@ void GreatFairy_804AF338::init() {
     field_0x90 = field_0x90 & 0xF;
 }
 
-// FIXME(shotgun): 89.78 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 93.33 %, missing/extra + reloc-name; behaviour drift.
 // (partial)
 // FIXME(shotgun): states 2-13 (0x8038E900 onward) and the tail of state 1 (0x8038E8D4 and the
 // end of the function at 0x8038F31C) are not written.
@@ -535,7 +535,7 @@ void GreatFairy_804AF338::update() {
     }
 }
 
-// FIXME(shotgun): 96.99 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.34 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && field_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
