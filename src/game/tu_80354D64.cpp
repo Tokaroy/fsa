@@ -104,10 +104,10 @@ void Log_804ACD70::update() {
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
         boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, field_0x4, mSerial);
         fn_80354FE8();
-        if (!isMotionless()) {
+        if (isMotionless() == false) {
             mPos.add(field_0x3c);
             field_0x2d4.sub(field_0x3c);
-            if (isMotionless()) {
+            if (isMotionless() == true) {
                 field_0x3c.zero();
                 if (mEmitter2e0 != NULL) {
                     mEmitter2e0->becomeInvalidEmitter();
@@ -118,9 +118,11 @@ void Log_804ACD70::update() {
                 setEmitterPos_8013CB44(mEmitter2e0, &mPos, 0, -2, true);
             }
         }
-        if (isMotionless() && field_0x2c8 == 0) {
+        if (isMotionless() != false && field_0x2c8 == 0) {
             for (s32 i = 0; i < 4; i++) {
                 field_0x234[i] = -1;
+            }
+            for (s32 i = 0; i < 4; i++) {
                 field_0x244[i] = 0;
             }
             field_0x2d0 = -1;
@@ -211,7 +213,7 @@ void Log_804ACD70::update() {
                 if (field_0x268[i].field_0x0 == 0) {
                     if (JGeometry::TUtil<f32>::sqrt((cur.x - prev.x) * (cur.x - prev.x) +
                                                     (cur.y - prev.y) * (cur.y - prev.y)) > 2.0f) {
-                        JGeometry::TVec3f d = prev - cur;
+                        const JGeometry::TVec3f& d = prev - cur;
                         fn_8023DFF4(i, &d);
                     }
                 }
