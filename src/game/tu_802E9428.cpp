@@ -13,11 +13,6 @@
 #include "game/act/tu_8044B80C.h"
 #include "game/act/tu_802E9428.h"
 
-struct EndmStagePair {
-    u16 mStage;
-    u16 mLevel;
-};
-
 static const s32 lbl_8046F280_0[17] = {
     0, 0, 1, 1, 2, 2, 2, 3, 3, 0, 0, 4, 5, 5, 6, 7, 7,
 };
@@ -31,12 +26,13 @@ static const s16 lbl_8046F280_88[18] = {
     0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0xB4, 0x00,
 };
 
-static const EndmStagePair lbl_8046F280_AC[17] = {
-    { 13, 0 }, { 13, 1 }, { 13, 2 }, { 13, 3 },
-    { 14, 0 }, { 14, 1 }, { 14, 2 }, { 14, 3 },
-    { 15, 0 }, { 15, 1 }, { 16, 3 }, { 15, 2 },
-    { 15, 3 }, { 17, 0 }, { 16, 0 }, { 16, 1 },
-    { 16, 2 },
+// (stage, level) pairs
+static const u16 lbl_8046F280_AC[34] = {
+    13, 0, 13, 1, 13, 2, 13, 3,
+    14, 0, 14, 1, 14, 2, 14, 3,
+    15, 0, 15, 1, 16, 3, 15, 2,
+    15, 3, 17, 0, 16, 0, 16, 1,
+    16, 2,
 };
 
 static const u8 lbl_8046F280_F0[20] = {
@@ -108,7 +104,7 @@ void UnknownENDM_804AA0FC::init() {
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
 }
 
-// FIXME(shotgun): 60.20 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 64.10 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -176,7 +172,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x27c = 200;
         }
         field_0x23c = 4;
-        field_0x28c = field_0x230 & 0x3F;
+        field_0x28c = field_0x230 * 2;
         break;
     }
     case 4:
@@ -191,15 +187,17 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x274 = 300.0f;
             fn_802E948C(300.0f, 1);
-            u16 stage = lbl_8046F280_AC[field_0x28c & 0x7F].mStage;
-            u16 level = lbl_8046F280_AC[field_0x28c & 0x7F].mLevel;
-            getGameView_802D6A9C()->field_0x4 = stage;
-            getGameView_802D6A9C()->field_0x8 = level;
+            u16 stage = lbl_8046F280_AC[field_0x28c];
+            u16 level = lbl_8046F280_AC[field_0x28c + 1];
+            GameView_804A9950* view = getGameView_802D6A9C();
+            view->field_0x4 = stage;
+            view->field_0x8 = level;
             getGameView_802D6A9C()->fn_802D9CD8();
             s32 prevLevel = field_0x280;
             s32 prevStage = field_0x284;
-            getGameView_802D6A9C()->field_0x4 = prevStage;
-            getGameView_802D6A9C()->field_0x8 = prevLevel;
+            view = getGameView_802D6A9C();
+            view->field_0x4 = prevStage;
+            view->field_0x8 = prevLevel;
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 field_0x240 = getActorManager_801F856C()->mActors[i];
@@ -208,15 +206,14 @@ void UnknownENDM_804AA0FC::update() {
                     (field_0x230 < 4 || field_0x230 > 6 || (field_0x240->field_0x90 & 7) != 0)) {
                     field_0x23c = 5;
                     field_0x244 = field_0x240->mPos;
-                    field_0x250 = lbl_804D5730[field_0x230].x;
-                    field_0x254 = lbl_804D5730[field_0x230].y;
+                    field_0x250 = lbl_804D5730[field_0x230];
                     JGeometry::TVec2f focus;
-                    focus.x = field_0x250;
-                    focus.y = field_0x254 + -30.0f;
+                    focus.x = field_0x250.x;
+                    focus.y = field_0x250.y + -30.0f;
                     gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
                     field_0x290 = lbl_804AA0B8[field_0x230];
-                    field_0x260 = (f32)(u32)(field_0x250 / 512.0f) * 512.0f;
-                    field_0x264 = (f32)(u32)(field_0x254 / 384.0f) * 384.0f;
+                    field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
+                    field_0x264 = (f32)(s32)(field_0x250.y / 384.0f) * 384.0f;
                     if (field_0x230 == 5) {
                         field_0x26c -= 30.0f;
                     } else if (field_0x230 == 16) {
@@ -258,10 +255,11 @@ void UnknownENDM_804AA0FC::update() {
             field_0x23c = 7;
             break;
         }
-        u16 stage = lbl_8046F280_AC[field_0x28c & 0x7F].mStage;
-        u16 level = lbl_8046F280_AC[field_0x28c & 0x7F].mLevel;
-        getGameView_802D6A9C()->field_0x4 = stage;
-        getGameView_802D6A9C()->field_0x8 = level;
+        u16 stage = lbl_8046F280_AC[field_0x28c];
+        u16 level = lbl_8046F280_AC[field_0x28c + 1];
+        GameView_804A9950* view = getGameView_802D6A9C();
+        view->field_0x4 = stage;
+        view->field_0x8 = level;
         if (field_0x28d == 0) {
             s32 dir[2] = { 0, -1 };
             getGameView_802D6A9C()->fn_802DCD1C(dir);
@@ -277,14 +275,15 @@ void UnknownENDM_804AA0FC::update() {
         }
         s32 prevLevel = field_0x280;
         s32 prevStage = field_0x284;
-        getGameView_802D6A9C()->field_0x4 = prevStage;
-        getGameView_802D6A9C()->field_0x8 = prevLevel;
+        view = getGameView_802D6A9C();
+        view->field_0x4 = prevStage;
+        view->field_0x8 = prevLevel;
         field_0x23c = 6;
         field_0x288 = (s32)(field_0x244.x / 512.0f);
         field_0x28a = (s32)(field_0x244.y / 384.0f);
         if (*field_0x290 != 0xFF) {
-            field_0x260 = (f32)(u32)(field_0x250 / 512.0f) * 512.0f;
-            field_0x264 = (f32)(u32)(field_0x254 / 384.0f) * 384.0f;
+            field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
+            field_0x264 = (f32)(s32)(field_0x250.y / 384.0f) * 384.0f;
             field_0x268 = field_0x260 + 512.0f;
             field_0x26c = field_0x264 + 384.0f;
             if (field_0x230 == 5) {
@@ -366,7 +365,7 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 10;
             }
             field_0x230++;
-            field_0x28c = field_0x230 & 0x3F;
+            field_0x28c = field_0x230 * 2;
             field_0x258 = lbl_804D5730[field_0x230].x;
             field_0x25c = lbl_804D5730[field_0x230].y;
             mPos.x = field_0x258;
@@ -482,31 +481,31 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
     f32 ty = field_0x244.y;
     f32 tx = field_0x244.x;
     if (field_0x298 != 0) {
-        field_0x250 = tx;
-        field_0x254 = ty;
+        field_0x250.x = tx;
+        field_0x250.y = ty;
     } else {
         JGeometry::TVec3f vel = field_0x240->field_0x3c;
-        f32 dx = field_0x250 - tx;
-        f32 dy = field_0x254 - ty;
+        f32 dx = field_0x250.x - tx;
+        f32 dy = field_0x250.y - ty;
         f32 dist = JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy));
         f32 speed = PSVECMag(&vel);
         if (dist <= 1.5f * speed) {
-            field_0x250 = tx;
-            field_0x254 = ty;
+            field_0x250.x = tx;
+            field_0x250.y = ty;
             field_0x298 = 1;
         } else if (dist <= 2.0f * speed) {
-            field_0x250 = 0.5f * (field_0x244.x - field_0x250) + field_0x250;
-            field_0x254 = 0.5f * (field_0x244.y - field_0x254) + field_0x254;
+            field_0x250.x = 0.5f * (field_0x244.x - field_0x250.x) + field_0x250.x;
+            field_0x250.y = 0.5f * (field_0x244.y - field_0x250.y) + field_0x250.y;
         } else if (0.1f * dist < 2.5f) {
-            field_0x250 = 0.1f * (field_0x244.x - field_0x250) + field_0x250;
-            field_0x254 = 0.1f * (field_0x244.y - field_0x254) + field_0x254;
+            field_0x250.x = 0.1f * (field_0x244.x - field_0x250.x) + field_0x250.x;
+            field_0x250.y = 0.1f * (field_0x244.y - field_0x250.y) + field_0x250.y;
         } else {
-            s32 angle = (s32)(JMath::atanTable_.atan2_(field_0x244.y - field_0x254, field_0x244.x - field_0x250) * 10430.378f);
-            field_0x250 = 2.5f * JMath::sincosTable_.cosShort(angle) + field_0x250;
-            field_0x254 = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x254;
+            s32 angle = (s32)(JMath::atanTable_.atan2_(field_0x244.y - field_0x250.y, field_0x244.x - field_0x250.x) * 10430.378f);
+            field_0x250.x = 2.5f * JMath::sincosTable_.cosShort(angle) + field_0x250.x;
+            field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
-    JGeometry::TVec2f pos(field_0x250, field_0x254);
+    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
     JGeometry::TVec2f focus = pos + offset;
     JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
