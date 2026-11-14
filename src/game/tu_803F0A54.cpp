@@ -235,11 +235,11 @@ static inline void setPlayerKind(GameRoot_8049EF20* root, s32 player, u8 kind) {
     root->field_0x83 |= (u8)(kind << (2 * player));
 }
 
-static inline s16 nextUnconnected(s16 start, s32 count) {
+static inline s16 nextUnconnected(s16 start, s32 last) {
     s16 cur = start;
-    for (s32 i = 0; i < count; i++) {
+    for (s32 i = 0; i <= last; i++) {
         cur++;
-        if (cur >= count) {
+        if (cur > last) {
             cur = 0;
         }
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (cur + 4)))) {
@@ -2089,13 +2089,13 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x1c4 != 3) {
         if (field_0x220[0] == 0 && field_0x220[1] == 0 && field_0x220[2] == 0 && field_0x220[3] == 0) {
-            field_0x24e = nextUnconnected(field_0x24e, field_0x1ac + 2);
+            field_0x24e = nextUnconnected(field_0x24e, field_0x1ac + 1);
             if (field_0x24e != -1) {
                 field_0x220[field_0x24e]++;
             }
         }
         if (field_0x230[0] == 0 && field_0x230[1] == 0 && field_0x230[2] == 0 && field_0x230[3] == 0) {
-            field_0x250 = nextUnconnected(field_0x250, field_0x1ac + 2);
+            field_0x250 = nextUnconnected(field_0x250, field_0x1ac + 1);
             if (field_0x250 != -1) {
                 field_0x230[field_0x250]++;
             }
@@ -2110,7 +2110,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             field_0x38[i]->setFrame(field_0x220[i]);
             field_0x18[i]->search('NULL_001')->animationTransform();
             if (i == field_0x24e && field_0x220[i] == field_0x38[i]->getFrameMax() - 10) {
-                s16 next = nextUnconnected(field_0x24e, field_0x1ac + 2);
+                s16 next = nextUnconnected(field_0x24e, field_0x1ac + 1);
                 if (next != -1 && field_0x24e != next) {
                     field_0x24e = next;
                     field_0x220[next]++;
@@ -2127,7 +2127,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
             field_0x48[i]->setFrame(field_0x230[i]);
             field_0x28[i]->search('Ndatay00')->animationTransform();
             if (i == field_0x250 && field_0x230[i] == field_0x48[i]->getFrameMax() - 10) {
-                s16 next = nextUnconnected(field_0x250, field_0x1ac + 2);
+                s16 next = nextUnconnected(field_0x250, field_0x1ac + 1);
                 if (next != -1 && field_0x250 != next) {
                     field_0x250 = next;
                     field_0x230[next]++;
