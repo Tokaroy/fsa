@@ -39,12 +39,12 @@ void cls_804AC600::init() {
 // The six trailing pieces fly off the head in a ring (update, states 0).
 static inline void spreadPieces(cls_804AC600* self) {
     s32 shift = 0x10000;
-    for (s32 i = 0; i < 6; i++) {
-        self->field_0x2f8[i + 1] = self->field_0x2f8[0];
-        self->field_0x296[i] = shift / 6;
+    for (s32 i = 1; i < 7; i++) {
+        self->field_0x2f8[i] = self->field_0x2f8[0];
+        self->field_0x296[i - 1] = shift / 6;
         shift += 0x10000;
-        self->field_0x2f8[i + 1].x += 3.0f * JMath::sincosTable_.sinShort(self->field_0x296[i]);
-        self->field_0x2f8[i + 1].y += 3.0f * JMath::sincosTable_.cosShort(self->field_0x296[i]);
+        self->field_0x2f8[i].x += 3.0f * JMath::sincosTable_.sinShort(self->field_0x296[i - 1]);
+        self->field_0x2f8[i].y += 3.0f * JMath::sincosTable_.cosShort(self->field_0x296[i - 1]);
     }
 }
 
@@ -138,7 +138,7 @@ void cls_804AC600::update() {
         }
         addCalcAngle2_801F714C(&field_0x294, field_0x2a2, 4, 0x400);
         mPos = field_0x2a4[0];
-        if (field_0x230 != 4 && (field_0x230 < 5 || field_0x230 > 6)) {
+        if (field_0x230 != 4 && field_0x230 - 5 > 1U) {
             if (fn_801F2B7C(1, -1, 1)) {
                 field_0x250++;
                 if (field_0x250 >= 5) {
@@ -169,7 +169,7 @@ void cls_804AC600::update() {
                 if (fn_8023A51C(p)) {
                     diff.x = getPlayerPos_8023E724(p)->x - mPos.x;
                     diff.y = getPlayerPos_8023E724(p)->y - mPos.y;
-                    if (diff.x * diff.x + diff.y * diff.y <= 6400.0f) {
+                    if (!(diff.x * diff.x + diff.y * diff.y > 6400.0f)) {
                         field_0x238 = 60;
                         spreadPieces(this);
                         field_0x230 = 1;
@@ -182,7 +182,7 @@ void cls_804AC600::update() {
             for (s32 p = 0; p < 4; p++) {
                 diff.x = getPlayerPos_8023E724(p)->x - mPos.x;
                 diff.y = getPlayerPos_8023E724(p)->y - mPos.y;
-                if (diff.x * diff.x + diff.y * diff.y <= 4096.0f) {
+                if (!(diff.x * diff.x + diff.y * diff.y > 4096.0f)) {
                     field_0x238 = 120;
                     spreadPieces(this);
                     field_0x230 = 1;
