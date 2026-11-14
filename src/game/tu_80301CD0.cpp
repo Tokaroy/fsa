@@ -930,61 +930,61 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
 // Appends the player's long-list sprites (lbl_80505438), timer 5 down to 1
 // (or any timer for the player's own), to the record's sprite words after
 // fn_803066F0's `start` ones, until `max`; ids above 0x3FF are kind 2.
-// FIXME(shotgun): 88.05 %, missing/extra; behaviour drift.
+// Remaining: cmpw operand order on the three field_0xc / mTimer checks.
+// FIXME: 99.79 %, regalloc-only; behaviour clean.
 void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     s32 count = start;
     if (max == 0) {
         return;
     }
     s32 slot = fn_8022EA0C(player);
-    GbaSprite_80506F88* dst = &lbl_80506DE8[player].field_0x18[start];
-    for (s32 timer = 5; timer > 0; timer--) {
-        cls_803099FC* sprite = lbl_80505438[player];
-        for (s32 i = 0; i < 40; i++, sprite++) {
-            if (sprite->mActive == 0) {
+    for (int timer = 5; timer > 0; timer--) {
+        for (int i = 0; i < 40; i++) {
+            if (lbl_80505438[player][i].mActive == 0) {
                 continue;
             }
-            if ((sprite->mLayer != getPlayerLayer_8023DE58(slot) && sprite->field_0xc != player) ||
-                (gGameRoot_8053AAF8->field_0x4c == 11 && sprite->field_0x23 == 0)) {
-                sprite->mTimer = 0;
-                sprite->mRemove = 1;
+            if ((lbl_80505438[player][i].mLayer != getPlayerLayer_8023DE58(slot) &&
+                 lbl_80505438[player][i].field_0xc != player) ||
+                (gGameRoot_8053AAF8->field_0x4c == 11 && lbl_80505438[player][i].field_0x23 == 0)) {
+                lbl_80505438[player][i].mTimer = 0;
+                lbl_80505438[player][i].mRemove = 1;
                 continue;
             }
-            if (sprite->mTimer != timer && sprite->field_0xc != player) {
+            if (lbl_80505438[player][i].mTimer != timer && lbl_80505438[player][i].field_0xc != player) {
                 continue;
             }
-            if (sprite->field_0xc >= 0) {
-                dst->f.field_0x3_0 = (s32)sprite->mPos.x >> 8;
-                dst->f.field_0x2 = (s32)sprite->mPos.x;
-                dst->f.field_0x1 = (s32)sprite->mPos.y;
+            if (lbl_80505438[player][i].field_0xc >= 0) {
+                lbl_80506DE8[player].field_0x18[count].f.field_0x3_0 =
+                    ((s32)lbl_80505438[player][i].mPos.x >> 8) & 1;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x2 = (s32)lbl_80505438[player][i].mPos.x;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x1 = (s32)lbl_80505438[player][i].mPos.y;
             } else {
-                s32 x = fn_8023D9B0(&sprite->mPos, slot) & 0x1FF;
-                u8 y = fn_8023D4F8(&sprite->mPos, slot);
+                u16 x = fn_8023D9B0(&lbl_80505438[player][i].mPos, slot) & 0x1FF;
+                u8 y = fn_8023D4F8(&lbl_80505438[player][i].mPos, slot);
                 if (x == 0x180 || y == 0xE0) {
-                    sprite->mTimer = 0;
-                    sprite->mRemove = 1;
+                    lbl_80505438[player][i].mTimer = 0;
+                    lbl_80505438[player][i].mRemove = 1;
                     continue;
                 }
-                dst->f.field_0x3_0 = x >> 8;
-                dst->f.field_0x2 = x;
-                dst->f.field_0x1 = y;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x3_0 = (x >> 8) & 1;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x2 = x;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x1 = y;
             }
-            s32 id = sprite->mId;
+            s32 id = lbl_80505438[player][i].mId;
             if (id > 0x3FF) {
                 id -= 0x400;
-                dst->f.field_0x3_1 = id >> 8;
-                dst->f.field_0x0 = id;
-                dst->f.mKind = 2;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x3_1 = id >> 8;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x0 = id;
+                lbl_80506DE8[player].field_0x18[count].f.mKind = 2;
             } else {
-                dst->f.field_0x3_1 = id >> 8;
-                dst->f.field_0x0 = id;
-                dst->f.mKind = sprite->field_0x20;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x3_1 = id >> 8;
+                lbl_80506DE8[player].field_0x18[count].f.field_0x0 = id;
+                lbl_80506DE8[player].field_0x18[count].f.mKind = lbl_80505438[player][i].field_0x20;
             }
+            lbl_80506DE8[player].field_0x18[count].f.field_0x3_4 = lbl_80505438[player][i].field_0x21;
+            lbl_80506DE8[player].field_0x18[count].f.field_0x3_3 = lbl_80505438[player][i].field_0x22;
+            lbl_80505438[player][i].mRemove = 1;
             count++;
-            dst->f.field_0x3_4 = sprite->field_0x21;
-            dst->f.field_0x3_3 = sprite->field_0x22;
-            sprite->mRemove = 1;
-            dst++;
             if (count >= max) {
                 return;
             }
@@ -1844,7 +1844,7 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
-// FIXME: 68.41 %, missing/extra; behaviour drift.
+// FIXME: 70.46 %, missing/extra; behaviour drift.
 void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (s32 i = 0; i < 4; i++) {
@@ -1878,11 +1878,11 @@ void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 n = 3;
     while (i28 >= 0 || i27 >= 0 || n >= 0) {
         s32 keyMark = n >= 0 ? markKey(record, player, order[n]) : 0xFF;
-        s32 keyA = i28 >= 0 ? fn_803074A4(list[i28].f.mKind, spriteId(list[i28])) : 0xFF;
-        s32 keyB = i27 >= 0 ? fn_803074A4(list[19 + i27].f.mKind, spriteId(list[19 + i27])) : 0xFF;
+        s32 keyA = i28 >= 0 ? spriteKind(list[i28]) : 0xFF;
+        s32 keyB = i27 >= 0 ? spriteKind(list[19 + i27]) : 0xFF;
         if (i27 >= 0 && (n < 0 || keyB < keyMark ||
                          (keyB == keyMark && record->mEntries[order[n]].mY >= list[19 + i27].f.field_0x1)) &&
-            (i28 < 0 || keyA <= keyB ||
+            (i28 < 0 || keyA > keyB ||
              (keyA == keyB && list[i28].f.field_0x1 >= list[19 + i27].f.field_0x1)))
         {
             if (keyB >= 2) {
