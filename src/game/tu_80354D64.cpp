@@ -76,9 +76,9 @@ void Log_804ACD70::init() {
         field_0x254[i] = -1;
         field_0x264[i] = 0;
         field_0x268[i].field_0x0 = 1;
-        field_0x268[i].pos.x = 0.0f;
-        field_0x268[i].pos.y = 0.0f;
-        field_0x268[i].pos.z = 0.0f;
+        field_0x268[i].field_0x4.x = 0.0f;
+        field_0x268[i].field_0x4.y = 0.0f;
+        field_0x268[i].field_0x4.z = 0.0f;
         field_0x268[i].field_0x10 = 0;
     }
     field_0xb8 = 2;
@@ -166,7 +166,7 @@ void Log_804ACD70::update() {
                 }
                 if (field_0x244[field_0x2d0] >= 4) {
                     for (s32 i = 0; i < 4; i++) {
-                        field_0x268[i].pos = *getPlayerPos_8023E724(i);
+                        field_0x268[i].field_0x4 = *getPlayerPos_8023E724(i);
                         field_0x268[i].field_0x10 = fn_8022CAF8(i);
                         if (field_0x234[i] == field_0x2d0 && count < 4) {
                             if (fn_8022F9E4(i, mSerial, true, false)) {
@@ -207,7 +207,7 @@ void Log_804ACD70::update() {
                     return;
                 }
                 JGeometry::TVec3f cur(*getPlayerPos_8023E724(i));
-                JGeometry::TVec3f prev(field_0x268[i].pos);
+                JGeometry::TVec3f prev(field_0x268[i].field_0x4);
                 if (field_0x268[i].field_0x0 == 0) {
                     if (JGeometry::TUtil<f32>::sqrt((cur.x - prev.x) * (cur.x - prev.x) +
                                                     (cur.y - prev.y) * (cur.y - prev.y)) > 2.0f) {
