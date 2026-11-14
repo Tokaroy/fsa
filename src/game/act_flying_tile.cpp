@@ -175,7 +175,7 @@ bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return true;
 }
 
-// FIXME: 93.76 %, missing/extra; behaviour drift.
+// FIXME: 93.97 %, scheduling+regalloc; behaviour drift.
 void FlyingTile_804AC100::update() {
     u16 angle = 0;
     u8 hitWall = 0;
@@ -434,7 +434,8 @@ void FlyingTile_804AC100::update() {
             if (serial >= 0) {
                 ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (gem != NULL) {
-                    gem->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 3.0f);
+                    JGeometry::TVec3f vel(0.0f, 0.0f, 3.0f);
+                    gem->field_0x3c = vel;
                 }
             }
         }
@@ -470,7 +471,7 @@ void FlyingTile_804AC100::update() {
                 if (i == fn_801F285C(NULL, &flag, true, -1)) {
                     if (flag == 1) {
                         fn_802359A4(fn_8022F340(i), fn_802357E0(fn_8022F340(i)));
-                        getActorManager_801F856C()->fn_801F6718(fn_8022F340(i), field_0x4, &mPos,
+                        getActorManager_801F856C()->fn_801F6718(fn_8022F340(i), getField_0x4(), &mPos,
                                                                 fn_802357E0(fn_8022F340(i)), 0);
                     }
                     fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 0, flag, i);
