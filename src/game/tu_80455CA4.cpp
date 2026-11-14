@@ -311,59 +311,58 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
             if (handle == NULL) {
                 handle = getLowPrioSound(id);
             }
-            if (handle == NULL) {
-                return NULL;
-            }
-            seMgr->startSound(id, handle, mSoundPos);
-            JAISound* sound = handle->sound_;
-            if (sound != NULL) {
-                if (mSoundPos != NULL) {
-                    u32 v = id;
-                    if (v - 0x30000 == 0x1E || v - 0x30000 == 0x3C || v - 0x30000 == 0x1F ||
-                        v - 0x30000 == 0x30 || v - 0x50000 == 0x27 || v - 0x50000 - 0x78 <= 1U ||
-                        v - 0x4F <= 1U || v - 0x30000 == 0x74 || v - 0x50000 == 0x3B ||
-                        v - 0x30000 == 0x32 || group == 6) {
-                        sound->getAuxiliary().movePan(0.5f, 0);
+            if (handle != NULL) {
+                seMgr->startSound(id, handle, mSoundPos);
+                JAISound* sound = handle->sound_;
+                if (sound != NULL) {
+                    if (mSoundPos != NULL) {
+                        u32 v = id;
+                        if (v - 0x30000 == 0x1E || v - 0x30000 == 0x3C || v - 0x30000 == 0x1F ||
+                            v - 0x30000 == 0x30 || v - 0x50000 == 0x27 || v - 0x50000 - 0x78 <= 1U ||
+                            v - 0x4F <= 1U || v - 0x30000 == 0x74 || v - 0x50000 == 0x3B ||
+                            v - 0x30000 == 0x32 || group == 6) {
+                            sound->getAuxiliary().movePan(0.5f, 0);
+                        } else {
+                            JGeometry::TVec2f screenPos;
+                            screenPos.x = screenVec.x;
+                            screenPos.y = screenVec.y;
+                            JAISoundID idCopy = v;
+                            fn_80455CA4(this, handle, &screenPos, &idCopy);
+                        }
                     } else {
-                        JGeometry::TVec2f screenPos;
-                        screenPos.x = screenVec.x;
-                        screenPos.y = screenVec.y;
-                        screenPos.y = screenVec.z;
-                        JAISoundID idCopy = v;
-                        fn_80455CA4(this, handle, &screenPos, &idCopy);
+                        sound->getAuxiliary().movePan(0.5f, 0);
                     }
-                } else {
-                    sound->getAuxiliary().movePan(0.5f, 0);
+                    if (0.0f != count) {
+                        handle->sound_->params_.mProperty._0 /= 1.0f + count;
+                    }
+                    switch ((s32)id) {
+                    case 0x400A3:
+                        handle->sound_->getAuxiliary().moveVolume(field_0x4c, 0);
+                        break;
+                    case 0x3002D:
+                    case 0x3003E:
+                    case 0x30073:
+                    case 0x400C1:
+                    case 0x5000B:
+                    case 0x50010: {
+                        static JMath::TRandom_fast_ lbl_8053AF6C(0);
+                        f32 pitch = 1.0f + (0.08f * lbl_8053AF6C.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
+                        handle->sound_->getAuxiliary().movePitch(pitch, 0);
+                        break;
+                    }
+                    case 0x4002F:
+                        handle->sound_->getAuxiliary().movePitch(1.0f + field_0x48, 0);
+                        break;
+                    }
+                    (*handle)->setLifeTime(1, false);
+                    if (handle->sound_ != NULL && fade != 0) {
+                        (*handle)->fadeIn(fade);
+                    }
                 }
-                if (0.0f != count) {
-                    handle->sound_->params_.mProperty._0 /= 1.0f + count;
-                }
-                switch ((s32)id) {
-                case 0x400A3:
-                    handle->sound_->getAuxiliary().moveVolume(field_0x4c, 0);
-                    break;
-                case 0x3002D:
-                case 0x3003E:
-                case 0x30073:
-                case 0x400C1:
-                case 0x5000B:
-                case 0x50010: {
-                    static JMath::TRandom_fast_ lbl_8053AF6C(0);
-                    f32 pitch = 1.0f + (0.08f * lbl_8053AF6C.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
-                    handle->sound_->getAuxiliary().movePitch(pitch, 0);
-                    break;
-                }
-                case 0x4002F:
-                    handle->sound_->getAuxiliary().movePitch(1.0f + field_0x48, 0);
-                    break;
-                }
-                (*handle)->setLifeTime(1, true);
-                if (handle->sound_ != NULL && fade != 0) {
-                    (*handle)->fadeIn(fade);
-                }
+                fn_80455F40(handle);
+                return handle;
             }
-            fn_80455F40(handle);
-            return handle;
+            return NULL;
         }
         (*handle)->updateLifeTime(1);
         if (mSoundPos != NULL) {
@@ -382,7 +381,6 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
                     JGeometry::TVec2f screenPos;
                     screenPos.x = screenVec.x;
                     screenPos.y = screenVec.y;
-                    screenPos.y = screenVec.z;
                     JAISoundID idCopy = v;
                     fn_80455CA4(this, handle, &screenPos, &idCopy);
                 }
@@ -411,86 +409,85 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
         if (handle == NULL) {
             handle = getLowPrioSound(id);
         }
-        if (handle == NULL) {
-            return NULL;
-        }
-        seMgr->startSound(id, handle, mSoundPos);
-        JAISound* sound = handle->sound_;
-        if (sound != NULL) {
-            if (mSoundPos != NULL) {
-                u32 v = id;
-                if (v - 0x30000 == 0x36 || v - 0x30000 == 0x3D || v - 0x30000 == 0x90 ||
-                    v - 0x30000 == 0x5C || v - 0x30000 == 0x31 || v - 0x30000 == 0x79 ||
-                    v - 0x50000 == 0x57 || v - 0x30000 == 0x86 || v - 0x50000 == 0x76 ||
-                    v - 0x30000 == 0x70 || group == 6) {
-                    sound->getAuxiliary().movePan(0.5f, 0);
-                } else if (v - 0x40000 == 0x57 || v - 0x30000 == 0x3 ||
-                           v - 0x30000 - 0x15 <= 1U || v - 0x30000 == 0x61 ||
-                           v - 0x40000 == 0x30 || v - 0x30000 == 0x8F ||
-                           v - 0x30000 - 0x7 <= 2U || v - 0x40000 - 0x63 <= 1U ||
-                           v - 0x40000 == 0x88 || v - 0x50000 == 0x1B || v - 0x50000 == 0x50) {
-                    f32 x = screenVec.x;
-                    if (x < 0.0f) {
-                        sound->getAuxiliary().movePan(0.0f, 0);
-                    } else if (x > 1.0f) {
-                        sound->getAuxiliary().movePan(1.0f, 0);
+        if (handle != NULL) {
+            seMgr->startSound(id, handle, mSoundPos);
+            JAISound* sound = handle->sound_;
+            if (sound != NULL) {
+                if (mSoundPos != NULL) {
+                    u32 v = id;
+                    if (v - 0x30000 == 0x36 || v - 0x30000 == 0x3D || v - 0x30000 == 0x90 ||
+                        v - 0x30000 == 0x5C || v - 0x30000 == 0x31 || v - 0x30000 == 0x79 ||
+                        v - 0x50000 == 0x57 || v - 0x30000 == 0x86 || v - 0x50000 == 0x76 ||
+                        v - 0x30000 == 0x70 || group == 6) {
+                        sound->getAuxiliary().movePan(0.5f, 0);
+                    } else if (v - 0x40000 == 0x57 || v - 0x30000 == 0x3 ||
+                               v - 0x30000 - 0x15 <= 1U || v - 0x30000 == 0x61 ||
+                               v - 0x40000 == 0x30 || v - 0x30000 == 0x8F ||
+                               v - 0x30000 - 0x7 <= 2U || v - 0x40000 - 0x63 <= 1U ||
+                               v - 0x40000 == 0x88 || v - 0x50000 == 0x1B || v - 0x50000 == 0x50) {
+                        f32 x = screenVec.x;
+                        if (x < 0.0f) {
+                            sound->getAuxiliary().movePan(0.0f, 0);
+                        } else if (x > 1.0f) {
+                            sound->getAuxiliary().movePan(1.0f, 0);
+                        } else {
+                            sound->getAuxiliary().movePan(x, 0);
+                        }
                     } else {
-                        sound->getAuxiliary().movePan(x, 0);
+                        JGeometry::TVec2f screenPos;
+                        screenPos.x = screenVec.x;
+                        screenPos.y = screenVec.y;
+                        JAISoundID idCopy = v;
+                        fn_80455CA4(this, handle, &screenPos, &idCopy);
                     }
                 } else {
-                    JGeometry::TVec2f screenPos;
-                    screenPos.x = screenVec.x;
-                    screenPos.y = screenVec.y;
-                    screenPos.y = screenVec.z;
-                    JAISoundID idCopy = v;
-                    fn_80455CA4(this, handle, &screenPos, &idCopy);
+                    sound->getAuxiliary().movePan(0.5f, 0);
                 }
-            } else {
-                sound->getAuxiliary().movePan(0.5f, 0);
-            }
-            if (0.0f != count) {
-                if (count > 20.0f) {
-                    handle->sound_->params_.mProperty._0 /= 20.0f;
-                } else {
-                    handle->sound_->params_.mProperty._0 /= 1.0f + count;
+                if (0.0f != count) {
+                    if (count > 20.0f) {
+                        handle->sound_->params_.mProperty._0 /= 20.0f;
+                    } else {
+                        handle->sound_->params_.mProperty._0 /= 1.0f + count;
+                    }
+                }
+                switch ((s32)id) {
+                case 0x30037:
+                case 0x40007:
+                case 0x4004E:
+                case 0x400D8:
+                case 0x5000C:
+                case 0x50011:
+                case 0x5002C:
+                case 0x50046:
+                case 0x50047:
+                case 0x50070: {
+                    static JMath::TRandom_fast_ lbl_8053AF74(0);
+                    f32 pitch = 1.0f + (0.08f * lbl_8053AF74.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
+                    handle->sound_->getAuxiliary().movePitch(pitch, 0);
+                    break;
+                }
+                case 0x4009D:
+                case 0x4009E:
+                    handle->sound_->getAuxiliary().movePitch(1.1f, 0);
+                    break;
+                case 0x4009A:
+                case 0x4009B:
+                    handle->sound_->getAuxiliary().movePitch(1.2f, 0);
+                    break;
+                }
+                if (fade != 0) {
+                    (*handle)->fadeIn(fade);
                 }
             }
-            switch ((s32)id) {
-            case 0x30037:
-            case 0x40007:
-            case 0x4004E:
-            case 0x400D8:
-            case 0x5000C:
-            case 0x50011:
-            case 0x5002C:
-            case 0x50046:
-            case 0x50047:
-            case 0x50070: {
-                static JMath::TRandom_fast_ lbl_8053AF74(0);
-                f32 pitch = 1.0f + (0.08f * lbl_8053AF74.get_ufloat_1() - 0.04f * (1.0f - FLT_EPSILON));
-                handle->sound_->getAuxiliary().movePitch(pitch, 0);
-                break;
+            u32 v = id;
+            if (v - 0x30000 != 0x3 && v - 0x30000 != 0x7 && v - 0x30000 != 0x15 &&
+                v - 0x30000 != 0x8 && v - 0x30000 != 0x16 && v - 0x30000 != 0x8F &&
+                v - 0x30000 != 0x9) {
+                fn_80455F40(handle);
             }
-            case 0x4009D:
-            case 0x4009E:
-                handle->sound_->getAuxiliary().movePitch(1.1f, 0);
-                break;
-            case 0x4009A:
-            case 0x4009B:
-                handle->sound_->getAuxiliary().movePitch(1.2f, 0);
-                break;
-            }
-            if (fade != 0) {
-                (*handle)->fadeIn(fade);
-            }
+            return handle;
         }
-        u32 v = id;
-        if (v - 0x30000 != 0x3 && v - 0x30000 != 0x7 && v - 0x30000 != 0x15 &&
-            v - 0x30000 != 0x8 && v - 0x30000 != 0x16 && v - 0x30000 != 0x8F &&
-            v - 0x30000 != 0x9) {
-            fn_80455F40(handle);
-        }
-        return handle;
+        return NULL;
     }
 }
 

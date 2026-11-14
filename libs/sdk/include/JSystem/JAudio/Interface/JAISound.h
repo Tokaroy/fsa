@@ -389,7 +389,7 @@ public:
         return;
     }
 
-    s32 getCount() const { return count_; }
+    u32 getCount() const { return count_; }
 
     JAISoundParamsMove &getAuxiliary() { return params_.mMove; }
 
