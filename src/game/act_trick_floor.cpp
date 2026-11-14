@@ -253,15 +253,13 @@ void TrickFloor_804A83A0::update() {
 
     switch (field_0x230) {
     case 0: {
-        f32 x = mPos.x;
-        f32 y = mPos.y;
         s32 layer = field_0x4;
         GameView_804A9950* gameView = getGameView_802D6A9C();
         const JGeometry::TBox2f* src = layer < 8 ? &gameView->mVisibleBox : &gameView->field_0xdc;
         JGeometry::TBox2f vbox;
         vbox = *src;
-        s32 tx = (s32)(x - vbox.i.x);
-        s32 ty = (s32)(y - vbox.i.y);
+        s32 tx = (s32)(mPos.x - vbox.i.x);
+        s32 ty = (s32)(mPos.y - vbox.i.y);
         field_0x250 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, tileIndex(tx, ty));
         field_0x230 = 1;
         break;
