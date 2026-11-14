@@ -104,7 +104,15 @@ void UnknownENDM_804AA0FC::init() {
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
 }
 
-// FIXME(shotgun): 64.10 %, missing/extra + reloc-name; behaviour drift.
+// Counts the timer down to zero; true once it has run out.
+inline u8 UnknownENDM_804AA0FC::tickTimer() {
+    if (field_0x27c != 0) {
+        field_0x27c--;
+    }
+    return field_0x27c == 0 ? true : false;
+}
+
+// FIXME(shotgun): 64.26 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -139,20 +147,14 @@ void UnknownENDM_804AA0FC::update() {
         break;
     case 1:
         lbl_8053AF30->mDraw = true;
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 20, 0);
             field_0x27c = 60;
             field_0x23c = 2;
         }
         break;
     case 2:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (field_0x230 == 15) {
                 field_0x23c = 4;
             } else {
@@ -176,10 +178,7 @@ void UnknownENDM_804AA0FC::update() {
         break;
     }
     case 4:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (lbl_8046F280_104[field_0x230] != 0) {
                 lbl_8053AED0->fn_8043A268(lbl_8046F280_0[field_0x230], lbl_8046F280_44[field_0x230],
                                           lbl_8046F280_88[field_0x230], lbl_804D56A8[field_0x230].x,
@@ -354,10 +353,7 @@ void UnknownENDM_804AA0FC::update() {
         }
         break;
     case 8:
-        if (field_0x27c != 0) {
-            field_0x27c--;
-        }
-        if (field_0x27c == 0) {
+        if (tickTimer()) {
             if (field_0x295 == 2) {
                 field_0x23c = 0;
             } else {
@@ -473,8 +469,7 @@ bool UnknownENDM_804AA0FC::fn_802E9884(const JGeometry::TVec2f* pos) {
     return false;
 }
 
-// Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box
-// inside the limits, eases the zoom to its target and hands both to the camera.
+// Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
 // Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
 // FIXME: 90.80 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
