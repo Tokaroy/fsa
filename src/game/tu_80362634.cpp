@@ -118,9 +118,53 @@ static const s8* const lbl_804ADF08[8] = {
     lbl_80542AC0, lbl_80542AC4, lbl_80474834, lbl_80542AC8, lbl_80474840, lbl_80542ACC, lbl_80542AD0, lbl_80542AD4,
 };
 
-static JGeometry::TVec3f lbl_8050C028[8] = {
+void (cls_804ADF28::*lbl_804ADC38[18])() = {
+    &cls_804ADF28::fn_803653EC,
+    &cls_804ADF28::fn_80365274,
+    &cls_804ADF28::fn_80365220,
+    &cls_804ADF28::fn_8036509C,
+    &cls_804ADF28::fn_80364F60,
+    &cls_804ADF28::fn_80364D0C,
+    &cls_804ADF28::fn_80364A88,
+    &cls_804ADF28::fn_80364900,
+    &cls_804ADF28::fn_803645B4,
+    &cls_804ADF28::fn_80364340,
+    &cls_804ADF28::fn_80363FFC,
+    &cls_804ADF28::fn_80363F7C,
+    &cls_804ADF28::fn_80363880,
+    &cls_804ADF28::fn_80363664,
+    &cls_804ADF28::fn_80363360,
+    &cls_804ADF28::fn_8036335C,
+    &cls_804ADF28::fn_80362C44,
+    &cls_804ADF28::fn_80364F00,
+};
+
+void (cls_804ADF28::*lbl_804ADDE8[18])() = {
+    &cls_804ADF28::fn_80362B74,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362B14,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_803628D4,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+    &cls_804ADF28::fn_80362680,
+};
+
+static JGeometry::TVec3f lbl_8050C028[4] = {
     JGeometry::TVec3f(0.0f, 1.3f, 0.0f),  JGeometry::TVec3f(0.0f, -1.3f, 0.0f),
     JGeometry::TVec3f(-1.3f, 0.0f, 0.0f), JGeometry::TVec3f(1.3f, 0.0f, 0.0f),
+};
+static JGeometry::TVec3f lbl_8050C058[4] = {
     JGeometry::TVec3f(0.0f, 0.3f, 0.0f),  JGeometry::TVec3f(0.0f, -0.3f, 0.0f),
     JGeometry::TVec3f(-0.3f, 0.0f, 0.0f), JGeometry::TVec3f(0.3f, 0.0f, 0.0f),
 };
@@ -516,9 +560,6 @@ void cls_804ADF28::init() {
     }
 }
 
-// Table lbl_804ADC38: member function pointers (0xC bytes each, 0x1B0 bytes in the original); contents not written yet.
-extern void (cls_804ADF28::*lbl_804ADC38[36])();
-
 void cls_804ADF28::fn_80365AF0() {
     if (field_0x230 == 0) {
         if (field_0x248 != 0) {
@@ -530,9 +571,6 @@ void cls_804ADF28::fn_80365AF0() {
         (this->*lbl_804ADC38[field_0x234])();
     }
 }
-
-// Table lbl_804ADDE8: member function pointers (0xC bytes each, 0x140 bytes in the original); contents not written yet.
-extern void (cls_804ADF28::*lbl_804ADDE8[64])();
 
 void cls_804ADF28::fn_80365AB8() {
     (this->*lbl_804ADDE8[field_0x234])();
