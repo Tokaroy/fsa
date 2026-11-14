@@ -232,7 +232,7 @@ TileMap_804AA858::~TileMap_804AA858() {
     delete field_0x238c;
 }
 
-// FIXME: 99.50 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.54 %, regalloc-only; behaviour clean.
 // Register allocation in the per-player loop (r4-r8 one off); the
 // grid's .sdata2 literals (lbl_80541528 ... lbl_80541614) are @NNN because the
 // unwritten functions between fn_802F9DA8 and it use earlier pool entries first.
@@ -492,6 +492,7 @@ void TileMap_804AA858::fn_802FEE68() {
 // expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
 // crater that starts a ring at timer 290), counts the effects down, then
 // shades each grid point from its slopes and flushes both grids.
+// FIXME: 91.15 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FDDD4() {
     field_0x2388++;
     if (field_0x2388 >= 2) {
