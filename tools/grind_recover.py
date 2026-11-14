@@ -2,6 +2,7 @@
 """Re-review work whose review never happened (the reviewer had no quota) and integrate what passes.
 
   python3 tools/grind_recover.py N unit BASE TIP --tier T [--review-tier R]
+  python3 tools/grind_recover.py N unit --patch g2-logs/unreviewed/X.patch --tier T [--review-tier R]
 
 Takes the unit's commits BASE..TIP (e.g. from the worker's reflog), applies their diff to the
 current grind2 in g2-wN, judges it against the unit as it stands now, reviews it as one change
@@ -18,13 +19,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("n", type=int)
     ap.add_argument("unit")
-    ap.add_argument("base")
-    ap.add_argument("tip")
+    ap.add_argument("base", nargs="?")
+    ap.add_argument("tip", nargs="?")
+    ap.add_argument("--patch", help="a g2-logs/unreviewed/ file (header line, changes line, diff)")
     ap.add_argument("--tier", required=True, choices=g.TIER_NAMES)
     ap.add_argument("--review-tier", choices=g.TIER_NAMES)
     a = ap.parse_args()
     owner, wt, branch = f"g2-w{a.n}", g.WT / f"g2-w{a.n}", f"{g.BRANCH}-w{a.n}"
-    diff = g.sh(["git", "diff", a.base, a.tip, "--", "src", "include", "libs", "config"], wt).stdout
+    if a.patch:
+        diff = "".join(Path(a.patch).read_text().splitlines(keepends=True)[2:])
+    else:
+        diff = g.sh(["git", "diff", a.base, a.tip, "--", "src", "include", "libs", "config"], wt).stdout
     if not g.claim(a.unit, owner, wt):
         sys.exit(f"{a.unit} is claimed")
     try:
