@@ -160,9 +160,7 @@ void ForceGemRain_804A8010::update() {
                                 1000.0f);
                         }
                     } else if (field_0x244 == 0xA) {
-                        pos.x = mPos.x;
-                        pos.y = mPos.y;
-                        pos.z = mPos.z;
+                        pos.set(mPos);
                         pos.z = 400.0f;
                     } else if (field_0x244 == 0xB || field_0x244 == 0xD) {
                         u32 n = (field_0x90 >> 8) & 0xF;
