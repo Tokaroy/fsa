@@ -22,7 +22,7 @@ static const s32 lbl_80542510[2] = {20, 15};
 static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 
 // 0x8034C464.
-// FIXME(shotgun): 96.30 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.62 %, different + reloc-name; behaviour near.
 void cls_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
@@ -112,7 +112,7 @@ void cls_804AC8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 76.40 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.67 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
