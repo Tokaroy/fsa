@@ -41,8 +41,82 @@ static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
 static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
 static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
 
-static const s8 lbl_80542AD8[8] = {10, 7, 10, 7, -1, 0, 0, 0};
+
+// Read by init (0x80365B5C). Per field_0x238 of state 4 (125 entries) and of state 0x11 (25):
+// the index into lbl_804ADED0 (field_0x270), into lbl_804ADF08 (field_0x274) and field_0x258.
+static const s8 lbl_80474868[125] = {
+    0, 0, 0, 0, 13, 13, 13, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1,
+    3, 4, 4, 8, 5, 5, 8, 6, 6, 8, 7, 7, 9, 10, 10, 10, 10, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+};
+static const s8 lbl_804748E8[25] = {8, 8, 10, 10, 8, 8, 10, 10, 8, 8, 8, 8, 8,
+                                    8, 8, 8, 8, 8, 8, 0, 8, 8, 8, 8, 8};
+static const s8 lbl_80474914[125] = {
+    0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1,
+    3, 1, 1, 1, 3, 3, 1, 3, 3, 1, 3, 3, 4, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+};
+static const s8 lbl_80474994[25] = {1, 1, 5, 5, 1, 1, 5, 5, 1, 1, 1, 1, 1,
+                                    1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1};
+static const s8 lbl_804749B0[125] = {
+    2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+};
+static const s8 lbl_80474A30[25] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                    1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 0};
+static const f32 lbl_80474A4C[4] = {0.9f, 1.0f, 0.8f, 0.7f};
+
+// The walk's leg lengths (fn_80364A88) and the frame-length / pattern byte lists (fn_80364F00).
+static const f32 lbl_804744F8[5] = {80.0f, 80.0f, 224.0f, 80.0f, 80.0f};
+static const f32 lbl_8047450C[5] = {112.0f, 80.0f, 160.0f, 80.0f, 112.0f};
+static const f32 lbl_80474520[5] = {144.0f, 80.0f, 96.0f, 80.0f, 144.0f};
+static const f32 lbl_80474534[5] = {176.0f, 80.0f, 32.0f, 80.0f, 176.0f};
+static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
+static const s8 lbl_8047481C[24] = {5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, -1, 0};
+static const s8 lbl_80474834[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0};
+static const s8 lbl_80474840[24] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 2, 4, 5, 4, 5, 4, 5, 4, 5, 4, 3, 2, 0, 0};
+
+static const s8 lbl_80542A78[4] = {7, 5, 7, -1};
+static const s8 lbl_80542A7C[4] = {0, 1, 2, 0};
+static const s8 lbl_80542A80[4] = {12, 12, 12, -1};
+static const s8 lbl_80542A84[4] = {20, 20, -1, 0};
+static const s8 lbl_80542A88[8] = {15, 10, 15, 10, -1, 0, 0, 0};
+static const s8 lbl_80542A90[4] = {8, 10, -1, 0};
+static const s8 lbl_80542A94[8] = {7, 7, 12, 7, -1, 0, 0, 0};
+static const s8 lbl_80542A9C[4] = {10, 8, -1, 0};
+static const s8 lbl_80542AA0[8] = {20, 2, 20, 2, -1, 0, 0, 0};
+static const s8 lbl_80542AA8[4] = {15, 15, -1, 0};
+static const s8 lbl_80542AAC[4] = {10, -1, 0, 0};
+static const s8 lbl_80542AB0[4] = {16, 16, -1, 0};
+static const s8 lbl_80542AB4[8] = {8, 8, 8, 8, -1, 0, 0, 0};
+static const s8 lbl_80542ABC[4] = {50, 8, -1, 0};
+static const s8 lbl_80542AC0[4] = {0, 1, 2, 0};
+static const s8 lbl_80542AC4[4] = {0, 1, 0, 0};
 static const s8 lbl_80542AC8[4] = {0, 1, 2, 1};
+static const s8 lbl_80542ACC[4] = {0, 0, 0, 0};
+static const s8 lbl_80542AD0[4] = {0, 1, 0, 0};
+static const s8 lbl_80542AD4[4] = {0, 1, 0, 2};
+static const s8 lbl_80542AD8[8] = {10, 7, 10, 7, -1, 0, 0, 0};
+// the number of entries of each lbl_804ADF08 list
+static const s8 lbl_80542AE0[8] = {3, 2, 9, 4, 22, 1, 2, 4};
+static const u16 lbl_80542AE8[4] = {0x1bd, 0x1be, 0x1bf, 0x1c0};
+
+// .data 0x804ADEC0..0x804ADF28 (the tail of the original's lbl_804ADDE8).
+static const f32* const lbl_804ADEC0[4] = {lbl_804744F8, lbl_8047450C, lbl_80474520, lbl_80474534};
+static const s8* const lbl_804ADED0[14] = {
+    lbl_80542A80, lbl_80542A84, lbl_80474810, lbl_80542A88, lbl_80542A90, lbl_80542A94, lbl_80542A9C,
+    lbl_80542AA0, lbl_80542AA8, lbl_8047481C, lbl_80542AAC, lbl_80542AB0, lbl_80542AB4, lbl_80542ABC,
+};
+static const s8* const lbl_804ADF08[8] = {
+    lbl_80542AC0, lbl_80542AC4, lbl_80474834, lbl_80542AC8, lbl_80474840, lbl_80542ACC, lbl_80542AD0, lbl_80542AD4,
+};
 
 static JGeometry::TVec3f lbl_8050C028[8];
 // bss 0x8050C088: four unit directions, filled by the unit's static initialiser.
@@ -60,6 +134,374 @@ cls_804ADF28::~cls_804ADF28() {
         for (int i = 0; i < 4; i++) {
             deleteEmitter(&field_0x30c[i]);
         }
+    }
+}
+
+// The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
+void cls_804ADF28::init() {
+    field_0x234 = field_0x90 & 0x1f;
+    field_0x238 = (field_0x90 >> 5) & 0x7f;
+    field_0x23c = (field_0x90 >> 12) & 3;
+    field_0x230 = (field_0x90 >> 14) & 0x3f;
+    field_0x248 = 0;
+    field_0x24c = -1;
+    field_0x25c = 0;
+    field_0x260 = 0;
+    field_0x264 = 0;
+    field_0x268 = 0;
+    field_0x26c = 0;
+    field_0x270 = NULL;
+    field_0x274 = NULL;
+    field_0x278 = 0;
+    field_0x300 = NULL;
+    field_0x304 = NULL;
+    field_0x308 = NULL;
+    for (int i = 0; i < 4; i++) {
+        field_0x30c[i] = NULL;
+    }
+    switch (field_0x234) {
+    case 0:
+        field_0x248 = 0xd0;
+        field_0x238 = -1;
+        field_0x258 = 2;
+        field_0x26c = 0x38b;
+        field_0x260 = 8;
+        field_0x25c = 8;
+        field_0x3c.set(-0.75f, 0.0f, 0.0f);
+        for (int i = 0; i < 3; i++) {
+            field_0x2a0[i] = mPos + JGeometry::TVec3f(16.0f * i + 20.0f, 0.0f, 0.0f);
+            field_0x27c[i] = field_0x2a0[i];
+            field_0x2c4[i].zero();
+            field_0x2e8[i] = 0x38b;
+        }
+        break;
+    case 1:
+        field_0x238 = 0;
+        field_0x258 = 2;
+        field_0x26c = 0x3ad;
+        field_0x260 = 8;
+        field_0x25c = 8;
+        field_0x248 = 100;
+        field_0x3c.y = 0.25f;
+        break;
+    case 3:
+        field_0x238 = 0;
+        field_0x258 = 3;
+        field_0x26c = 0xd5;
+        field_0x248 = 0x86;
+        field_0x260 = 8;
+        field_0x300 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x555, -1, 0, NULL, NULL, true, 1.0f);
+        break;
+    case 4:
+    case 0x11:
+        if (field_0x234 == 4) {
+            field_0x26c = lbl_804745B8[field_0x238];
+            field_0x270 = lbl_804ADED0[lbl_80474868[field_0x238]];
+            field_0x274 = lbl_804ADF08[lbl_80474914[field_0x238]];
+            if (field_0x238 == 0x1d || field_0x238 == 0x1e) {
+                field_0x25c = field_0x270[0];
+                field_0x264 = field_0x274[0];
+            } else {
+                field_0x268 = fn_801CD664(lbl_80542AE0[lbl_80474914[field_0x238]]);
+                field_0x25c = fn_801CD664(field_0x270[field_0x268] + 1);
+                field_0x264 = field_0x274[field_0x268];
+            }
+            if (field_0x90 & 0x80000000) {
+                field_0x258 = 3;
+            } else {
+                field_0x258 = lbl_804749B0[field_0x238];
+            }
+            if (field_0x238 >= 4 && field_0x238 <= 7) {
+                field_0x25c = fn_801CD664(50);
+            }
+            if (field_0x238 == 4) {
+                field_0x278 = fn_801CD664(2) != 0;
+            }
+        } else {
+            field_0x26c = lbl_804745B8[field_0x238 + 125];
+            field_0x270 = lbl_804ADED0[lbl_804748E8[field_0x238]];
+            field_0x274 = lbl_804ADF08[lbl_80474994[field_0x238]];
+            field_0x268 = fn_801CD664(lbl_80542AE0[lbl_80474994[field_0x238]]);
+            field_0x25c = fn_801CD664(field_0x270[field_0x268] + 1);
+            field_0x264 = field_0x274[field_0x268];
+            if (field_0x90 & 0x80000000) {
+                field_0x258 = 3;
+            } else {
+                field_0x258 = lbl_80474A30[field_0x238];
+            }
+        }
+        break;
+    case 5: {
+        field_0x24c = -1;
+        s32 end = getActorManager_801F856C()->mActorEnd;
+        field_0x23c = 0;
+        for (s32 i = 0; i < end; i++) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+            if (actor != NULL && actor->mActorId == ACTOR_EOWL) {
+                field_0x24c = i;
+                s32 slot = field_0x24c;
+                ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+                if (owl == NULL) {
+                    field_0x24c = -1;
+                } else if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
+                    field_0x23c = 0;
+                } else {
+                    field_0x240 = (s16)(JMath::atanTable_.atan2_(owl->mPos.y - mPos.y, owl->mPos.x - mPos.x) * 10430.378f);
+                    u16 angle = field_0x240;
+                    if (angle >= 0x2000 && angle < 0x6000) {
+                        field_0x23c = 0;
+                    } else if (angle >= 0x6000 && angle < 0xa000) {
+                        field_0x23c = 2;
+                    } else if (angle >= 0xa000 && angle < 0xe000) {
+                        field_0x23c = 1;
+                    } else {
+                        field_0x23c = 3;
+                    }
+                }
+                field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
+                field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
+                field_0x258 = lbl_80474450[field_0x238 * 2 + 1];
+                break;
+            }
+        }
+        field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
+        field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
+        field_0x258 = lbl_80474450[field_0x238 * 2 + 1];
+        break;
+    }
+    case 6:
+        field_0x23c = 0;
+        field_0x3c.set(lbl_80474A4C[field_0x238], 0.0f, 0.0f);
+        field_0x248 = 0x20;
+        field_0x2f4 = lbl_804ADEC0[field_0x238];
+        field_0x2f8 = 0.0f;
+        field_0x26c = lbl_80474548[field_0x238][3];
+        field_0x264 = 1;
+        field_0x258 = 0;
+        break;
+    case 7:
+        field_0x3c.zero();
+        if ((field_0x238 & 1) == 0) {
+            field_0x3c.x = 0.8f;
+            field_0x264 = 0;
+            field_0x23c = 3;
+        } else {
+            field_0x3c.x = -0.8f;
+            field_0x264 = 5;
+            field_0x23c = 2;
+        }
+        field_0x238 = 0;
+        field_0x26c = 0x38e;
+        field_0x25c = 4;
+        field_0x258 = 0;
+        break;
+    case 8:
+        field_0x238 = 0;
+        field_0x26c = 0x3a9;
+        field_0x258 = 0;
+        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        break;
+    case 9: {
+        field_0x238 = 0;
+        field_0x258 = 3;
+        field_0x248 = fn_801CD664(60);
+        field_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
+        JGeometry::TVec3f oldPos = mPos;
+        for (s32 i = 0; i < 60; i++) {
+            JGeometry::TVec3f off;
+            off.x = (f32)fn_801CD664(380) - 190.0f;
+            off.y = (f32)fn_801CD664(280) - 140.0f;
+            off.z = 0.0f;
+            mPos.add(off);
+            bool blocked;
+            if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
+                blocked = true;
+            } else if (mPos.y < 40.0f || mPos.y > 328.0f) {
+                blocked = true;
+            } else if (mPos.x + mPos.y < 2704.0f) {
+                blocked = true;
+            } else if (mPos.x > 2984.0f && mPos.y < 120.0f) {
+                blocked = true;
+            } else {
+                JGeometry::TVec3f c(2688.0f, 120.0f, 0.0f);
+                if (PSVECDistance(&mPos, &c) < 78.0f) {
+                    blocked = true;
+                } else {
+                    c.set(2944.0f, 216.0f, 0.0f);
+                    if (PSVECDistance(&mPos, &c) < 78.0f) {
+                        blocked = true;
+                    } else {
+                        blocked = false;
+                    }
+                }
+            }
+            if (blocked) {
+                mPos = oldPos;
+                i--;
+            } else {
+                u32 param = fn_801CD664(8) | 0x30000;
+                getActorManager_801F856C()->spawnActor_801F9484('RUPY', field_0x4, &mPos, param, -1, -1);
+                mPos = oldPos;
+            }
+        }
+        break;
+    }
+    case 10:
+        field_0x23c = 3;
+        if (field_0x238 == 0) {
+            field_0x26c = 0x32f;
+        } else {
+            field_0x26c = 0x33b;
+        }
+        field_0x26c += lbl_80474598[field_0x23c];
+        field_0x270 = lbl_80542A78;
+        field_0x274 = lbl_80542A7C;
+        field_0x25c = field_0x270[0];
+        field_0x264 = field_0x274[0];
+        field_0x258 = 0;
+        field_0x3c.set(lbl_8050C028[field_0x23c]);
+        break;
+    case 11:
+        field_0x238 = 0;
+        field_0x26c = 0x375;
+        field_0x25c = 7;
+        field_0x258 = 0;
+        field_0x3c.set(0.0f, 0.5f, 0.0f);
+        break;
+    case 12: {
+        field_0x24c = -1;
+        field_0x27c[0] = mPos;
+        s32 end = getActorManager_801F856C()->mActorEnd;
+        for (s32 i = 0; i < end; i++) {
+            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
+            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive && actor->field_0x278 == 0) {
+                if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
+                    field_0x24c = i;
+                    JGeometry::TVec3f target = actor->mPos;
+                    field_0x240 = (s16)(JMath::atanTable_.atan2_(actor->mPos.y - mPos.y, actor->mPos.x - mPos.x) * 10430.378f);
+                    field_0x3c.x = 0.8f * JMath::sincosTable_.cosShort(field_0x240);
+                    field_0x3c.y = 0.8f * JMath::sincosTable_.sinShort(field_0x240);
+                    u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+                    if (angle >= 0x2000 && angle < 0x6000) {
+                        field_0x23c = 0;
+                    } else if (angle >= 0x6000 && angle < 0xa000) {
+                        field_0x23c = 2;
+                    } else if (angle >= 0xa000 && angle < 0xe000) {
+                        field_0x23c = 1;
+                    } else {
+                        field_0x23c = 3;
+                    }
+                    field_0x26c = lbl_80474858[field_0x23c];
+                    field_0x270 = lbl_80542AD8;
+                    field_0x274 = lbl_80542AC8;
+                    field_0x25c = field_0x270[0];
+                    field_0x264 = field_0x274[0];
+                    field_0x258 = 0;
+                }
+                break;
+            }
+        }
+        field_0x23c = 0;
+        s32 slot = field_0x24c;
+        if (slot >= 0) {
+            ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+            if (owl != NULL) {
+                JGeometry::TVec3f target = owl->mPos;
+                if (PSVECDistance(&mPos, &owl->mPos) >= 60.0f) {
+                    field_0x24c = -1;
+                    field_0x3c.zero();
+                    field_0x264 = 1;
+                    field_0x268 = 0;
+                } else {
+                    field_0x240 = (s16)(JMath::atanTable_.atan2_(owl->mPos.y - mPos.y, owl->mPos.x - mPos.x) * 10430.378f);
+                    field_0x3c.x = 0.5f * JMath::sincosTable_.cosShort(field_0x240);
+                    field_0x3c.y = 0.5f * JMath::sincosTable_.sinShort(field_0x240);
+                    u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+                    if (angle >= 0x2000 && angle < 0x6000) {
+                        field_0x23c = 0;
+                    } else if (angle >= 0x6000 && angle < 0xa000) {
+                        field_0x23c = 2;
+                    } else if (angle >= 0xa000 && angle < 0xe000) {
+                        field_0x23c = 1;
+                    } else {
+                        field_0x23c = 3;
+                    }
+                }
+            }
+        }
+        field_0x26c = lbl_80474858[field_0x23c];
+        field_0x270 = lbl_80542AD8;
+        field_0x274 = lbl_80542AC8;
+        field_0x25c = field_0x270[0];
+        field_0x264 = field_0x274[0];
+        field_0x268 = 0;
+        field_0x258 = 0;
+        break;
+    }
+    case 13:
+        field_0x23c = fn_801CD664(5);
+        if (field_0x23c == 4) {
+            field_0x23c = fn_801CD664(4);
+            field_0x3c.zero();
+        } else {
+            field_0x3c.set(lbl_8050C088[field_0x23c]);
+        }
+        field_0x26c = lbl_804745B8[field_0x23c + 20];
+        field_0x270 = lbl_80474810;
+        field_0x274 = lbl_80474834;
+        field_0x25c = field_0x270[0];
+        field_0x264 = field_0x274[0];
+        field_0x268 = 0;
+        field_0x258 = 1;
+        field_0x248 = fn_801CD664(20) + 30;
+        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        break;
+    case 14: {
+        field_0x27c[0] = mPos;
+        field_0x240 = fn_801CD664(0x10000);
+        field_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
+        field_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+        if (angle >= 0x2000 && angle < 0x6000) {
+            field_0x23c = 0;
+        } else if (angle >= 0x6000 && angle < 0xa000) {
+            field_0x23c = 2;
+        } else if (angle >= 0xa000 && angle < 0xe000) {
+            field_0x23c = 1;
+        } else {
+            field_0x23c = 3;
+        }
+        field_0x248 = fn_801CD664(20) + 0x40;
+        field_0x26c = lbl_804745A8[field_0x23c];
+        field_0x260 = 12;
+        field_0x25c = 12;
+        field_0x258 = 2;
+        break;
+    }
+    case 16: {
+        mPos.x -= 48.0f;
+        field_0x238 = 0;
+        field_0x3c.zero();
+        field_0x26c = 0xa3;
+        field_0x248 = 0xf0;
+        field_0x260 = 7;
+        field_0x258 = 2;
+        // the centre of the room (512 x 384) the actor is in
+        JGeometry::TVec3f center((s32)(mPos.x / 512.0f) * 512.0f + 256.0f,
+                                 (s32)(mPos.y / 384.0f) * 384.0f + 192.0f, 0.0f);
+        for (int i = 0; i < 4; i++) {
+            field_0x30c[i] = spawnEmitter_8013CC50(field_0x4, &center, lbl_80542AE8[i], 0, 0, NULL, NULL, true, 1.0f);
+        }
+        s32 end = getActorManager_801F856C()->mActorEnd;
+        for (s32 i = 0; i < end; i++) {
+            EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
+            if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive) {
+                field_0x2fc = actor;
+                break;
+            }
+        }
+        break;
+    }
     }
 }
 
