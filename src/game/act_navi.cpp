@@ -579,7 +579,7 @@ void cls_804A6708::vfunc_0x88() {
         break;
     }
     case 10:
-        field_0x3c.x = 0.11666667f;
+        field_0x3c.x = 0.116666675f;
         field_0x3c.y = -0.40000004f;
         break;
     case 9:

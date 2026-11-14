@@ -25,7 +25,7 @@ struct Table_8049FFD8 {
 extern const f32 lbl_8049FDA8[4][2];
 extern const s32 lbl_8049FDC8[];     // life by kind and anim tables (.data of this unit)
 extern const Table_8049FFD8 lbl_8049FFD8; // tile positions and velocities of the kind-2 variant
-extern s32 lbl_8053AB50;            // running count of the soldiers spawned
+s32 lbl_8053AB50;            // running count of the soldiers spawned
 
 void fn_801583E4(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(src->x, src->y, src->z);

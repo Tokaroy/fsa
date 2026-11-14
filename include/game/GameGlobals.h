@@ -2132,7 +2132,7 @@ extern cls_804AF860* lbl_8053AD90;
 // game/tu_803A60E4.cpp (defined there): lbl_8053AD90's field_0x80, or 5 without the screen.
 s32 fn_803A65EC();
 
-// game/act_searchlight.cpp (owner unit, .bss:0x804C0EA0, size 0x108).
+// game/act_searchlight.cpp (owner unit, .bss:0x804C0EA0, size 0xC).
 // Position of the searchlight / last broken pot.
 extern f32 lbl_804C0EA0[];
 

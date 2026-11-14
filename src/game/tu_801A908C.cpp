@@ -8,8 +8,8 @@
 #include "game/act/tu_801A908C.h"
 #include "JSystem/JMath/JMath.h"
 
-// A counter of the live instances in state 5 (defined elsewhere).
-extern s32 lbl_8053ABD0;
+// A counter of the live instances in state 5 (.sbss, this unit).
+s32 lbl_8053ABD0;
 extern const u16 lbl_804A2F18[10];
 extern const u16 lbl_8053A108[4];
 

@@ -7,7 +7,8 @@
 #include "JSystem/JUtility/JUTVideo.h"
 
 
-GXLightObj lbl_804BFB60[20];
+// One light object: the destructor-chain objects follow at +0x40 in the original .bss.
+GXLightObj lbl_804BFB60[1];
 
 ShadowCircle_804A0160::ShadowCircle_804A0160(JKRHeap* heap) : field_0x4() {
     field_0x8 = new (heap, 0) JUTTexture(

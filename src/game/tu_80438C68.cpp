@@ -293,7 +293,7 @@ u8 cls_804B17A0::fn_80438E94() {
     if (field_0x54 < lbl_8050DB0C.field_0x4c[40]) {
         field_0x54++;
     } else if (field_0x4c > 0.0f) {
-        field_0x4c -= 1.0f / lbl_8050DB0C.field_0x4c[41];
+        field_0x4c -= 255.0f / lbl_8050DB0C.field_0x4c[41];
         if (field_0x4c <= 0.0f) {
             field_0x5d = 0;
             field_0x4c = 0.0f;

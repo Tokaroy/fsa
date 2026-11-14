@@ -24,12 +24,12 @@ extern const char* const lbl_804A1A84[];
 extern const u16 lbl_804A19F0[];
 extern const u16 lbl_804A1A00[];
 extern const u16 lbl_80539FC0[];
-extern u32 lbl_804C17A8[4];
+u32 lbl_804C17A8[4];
 extern s32 lbl_80539FB8;
-extern s32 lbl_8053AB7C;
-extern s32 lbl_8053AB80;
+s32 lbl_8053AB7C;
+s32 lbl_8053AB80;
 extern u8 lbl_80539FBC;
-extern u8 lbl_8053AB84;
+u8 lbl_8053AB84;
 
 void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 void fn_80154718(const JGeometry::TVec3f* pos);

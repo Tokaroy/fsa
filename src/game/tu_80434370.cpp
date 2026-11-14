@@ -480,7 +480,7 @@ void cls_804B16A8::fn_80434724() {
 // FIXME(shotgun): 99.83 %, operands; behaviour near.
 void cls_804B16A8::fn_80434370() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
-    f32 cellW = lbl_8053AD78->mFont->getWidth();
+    f32 cellW = lbl_8053AD78->mFont->getCellWidth();
     f32 scale = fontSizeW / cellW;
 
     if (field_0x5a == 0) {
