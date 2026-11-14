@@ -78,7 +78,7 @@ static inline s32 field4(u32 f) {
     return (f & 0x80) ? (s32)((f >> 4) & 7) - 8 : (s32)((f >> 4) & 7);
 }
 
-// FIXME(shotgun): 87.00 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 83.89 %, different; behaviour drift.
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
 // then lines them up (fn_8028DDD8) at 16-unit spacing; 1 fades field_0x268 out and walks them
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
