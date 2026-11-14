@@ -154,14 +154,15 @@ static inline void stopEmitter(JPABaseEmitter*& emitter) {
 // Notifies the SLR4 actor in slot `slot`, if there is one.
 static inline void notifySlr4(s32 slot, u8 arg) {
     if (slot >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+        ActorManager_804A5800* manager = getActorManager_801F856C();
+        ActorBase_804A5770* actor = manager->mActors[slot];
         if (actor != NULL && actor->mActorId == ACTOR_SLR4) {
             fn_802EEA24(arg);
         }
     }
 }
 
-// FIXME(shotgun): 91.38 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
 void cls_804AA350::update() {
     switch (field_0x24c) {
     case 0:
@@ -270,18 +271,20 @@ void cls_804AA350::update() {
         mEmitter238->mGlobalPrmClr.a = field_0x275;
         field_0x250--;
         if (field_0x250 <= 0) {
-            deleteEmitter(&mEmitter234);
-            deleteEmitter(&mEmitter238);
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter234);
+            mEmitter234 = NULL;
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter238);
+            mEmitter238 = NULL;
             field_0x275 = 0xFF;
             field_0x24c++;
         }
         break;
     case 9:
         if (field_0x277) {
-            s32 type = field_0x254;
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[type * 3], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[type * 3 + 1], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[type * 3 + 2], 0, 0, NULL, NULL, true, 1.0f);
+            s32 base = field_0x254 * 3;
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[base], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[base + 1], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F544[base + 2], 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x50058, 0);
             field_0x250 = 0x78;
             field_0x24c = 10;
@@ -290,9 +293,9 @@ void cls_804AA350::update() {
     case 10:
         field_0x250--;
         if (field_0x250 <= 0) {
-            s32 type = field_0x254;
-            mEmitter240 = spawnEmitter_8013CC50(field_0x4, &field_0x268, lbl_8046F55C[type * 3], 0, 0, NULL, NULL, true, 1.0f);
-            mEmitter244 = spawnEmitter_8013CC50(field_0x4, &field_0x268, lbl_8046F55C[type * 3 + 1], 0, 0, NULL, NULL, true, 1.0f);
+            s32 base = field_0x254 * 3;
+            mEmitter240 = spawnEmitter_8013CC50(field_0x4, &field_0x268, lbl_8046F55C[base], 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter244 = spawnEmitter_8013CC50(field_0x4, &field_0x268, lbl_8046F55C[base + 1], 0, 0, NULL, NULL, true, 1.0f);
             field_0x2cc = fn_804032E8('TIMG', lbl_804AA340[field_0x254]);
             field_0x3c.z = 0.3f;
             field_0x24c++;
@@ -309,18 +312,19 @@ void cls_804AA350::update() {
         mEmitter230->mGlobalPrmClr.a = field_0x275;
         if (field_0x268.z >= 40.0f) {
             field_0x268.z = 40.0f;
-            deleteEmitter(&mEmitter230);
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter230);
+            mEmitter230 = NULL;
             field_0x24c = 12;
         }
         break;
     case 12:
         if (field_0x278) {
-            s32 type = field_0x254;
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[type * 5], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[type * 5 + 1], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[type * 5 + 2], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[type * 5 + 3], 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[type * 5 + 4], 0, 0, NULL, NULL, true, 1.0f);
+            s32 base = field_0x254 * 5;
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[base], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[base + 1], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[base + 2], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[base + 3], 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5E8[base + 4], 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5006F, 0);
             field_0x24c = 13;
             field_0x250 = 180;
@@ -350,8 +354,10 @@ void cls_804AA350::update() {
             setEmitterPos_8013CB44(mEmitter240, &field_0x268, 0, -1, false);
             setEmitterPos_8013CB44(mEmitter244, &field_0x268, 0, -1, false);
         } else {
-            deleteEmitter(&mEmitter240);
-            deleteEmitter(&mEmitter244);
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter240);
+            mEmitter240 = NULL;
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter244);
+            mEmitter244 = NULL;
             field_0x24c = 16;
         }
         break;
