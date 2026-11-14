@@ -273,17 +273,10 @@ void HammerShopMinigame_8049C858::update() {
                 gAudioMgr_8053AF80->fn_80458508(0);
             }
         }
-        if (field_0x250[0] == 3600) {
-            field_0x236 = 1;
-        }
-        if (field_0x250[1] == 3600) {
-            field_0x236 = 1;
-        }
-        if (field_0x250[2] == 3600) {
-            field_0x236 = 1;
-        }
-        if (field_0x250[3] == 3600) {
-            field_0x236 = 1;
+        for (s32 i = 0; i < 4; i++) {
+            if (field_0x250[i] == 3600) {
+                field_0x236 = 1;
+            }
         }
         if (field_0x244 == 0 || field_0x236 != 0) {
             getActorManager_801F856C()->fn_801F68E0();
@@ -297,7 +290,8 @@ void HammerShopMinigame_8049C858::update() {
     case 5:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         field_0x248++;
-        if (field_0x248 > 50 && getActorManager_801F856C()->fn_801F68E0() == 1) {
+        s32 status = getActorManager_801F856C()->fn_801F68E0();
+        if (field_0x248 > 50 && status == 1) {
             field_0x240 = fn_8022EA0C(field_0x240);
             fn_8022FE80(field_0x240, getPlayerLayer_8023DE58(field_0x240), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
