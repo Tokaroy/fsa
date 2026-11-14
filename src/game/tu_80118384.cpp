@@ -377,6 +377,7 @@ struct ActorVector {
     u32 (*mExtend)(u32, u32, u32);
     ActorBase_804A5770** Insert_raw(ActorBase_804A5770** pos, u32 count);
     void fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804A5770* const* value);
+    ActorBase_804A5770** fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value);
 };
 
 // stand-ins for std::copy / std::copy_backward (the MSL <algorithm> is not usable from game code)
@@ -440,6 +441,8 @@ ActorBase_804A5770** ActorVector::Insert_raw(ActorBase_804A5770** pos, u32 count
 }
 
 // fill-insert: opens a gap with Insert_raw and constructs count copies of *value in it
+// Not auto-inlined: fn_801188E0 calls fn_80118938 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 void ActorVector::fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804A5770* const* value) {
     if (count != 0) {
         ActorBase_804A5770** p = Insert_raw(pos, count);
@@ -451,6 +454,13 @@ void ActorVector::fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804
             }
         }
     }
+}
+#pragma auto_inline reset
+
+ActorBase_804A5770** ActorVector::fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value) {
+    s32 offset = pos - mBegin;
+    fn_80118938(pos, 1, value);
+    return mBegin + offset;
 }
 
 void cls_801192AC::fn_8011888C(ActorBase_804A5770* actor) {
