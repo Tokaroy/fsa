@@ -2541,8 +2541,8 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // FIXME: 97.51 %, missing/extra; behaviour drift.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
-    for (s32 row = 0; row < 10; row++) {
-        for (s32 col = 0; col < 10; col++) {
+    for (u32 row = 0; row < 10; row++) {
+        for (u32 col = 0; col < 10; col++) {
             field_0x60[row][col] = 0xFF;
         }
     }
@@ -2660,7 +2660,12 @@ void GameView_804A9950::fn_802D3D48() {
             } else {
                 u8 value = str[i] - '0';
                 if (str[i + 1] != (u8)',' && str[i + 1] != (u8)'\r') {
-                    value = (value <= 9 ? (u8)(value * 10) : 0) + (u8)(str[i + 1] - '0');
+                    if (value <= 9) {
+                        value *= 10;
+                    } else {
+                        value = 0;
+                    }
+                    value += (u8)(str[i + 1] - '0');
                     i++;
                 }
                 i++;
