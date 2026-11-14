@@ -1266,12 +1266,12 @@ void ConnectScreen_804B0F10::fn_803F943C() {
             }
         }
     }
-    for (int i = 0, base = 0; i < 4; i++, base += 5) {
+    for (int i = 0; i < 4; i++) {
         if (field_0x240[0] > i * 5) {
             if (field_0x240[0] < i * 5 + 8) {
                 s32 idx = 3 - i;
-                field_0xdc[idx] = 200.0f * ((f32)((field_0x240[0] - base) * (field_0x240[0] - base)) / 64.0f);
-                f32 alpha = (f32)(8 - (field_0x240[0] - base)) / 8.0f;
+                field_0xdc[idx] = 200.0f * ((f32)((field_0x240[0] - i * 5) * (field_0x240[0] - i * 5)) / 64.0f);
+                f32 alpha = (f32)(8 - (field_0x240[0] - i * 5)) / 8.0f;
                 if (alpha < 0.0f) {
                     alpha = 0.0f;
                 } else if (alpha > 1.0f) {
