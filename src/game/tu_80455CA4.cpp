@@ -158,6 +158,7 @@ JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
         } else {
             mSoundPos = NULL;
         }
+        gAudioMgr_8053AF80->field_0x28->setPos(*mSoundPos);
         gAudioMgr_8053AF80->field_0x75 = 1;
         break;
     }
