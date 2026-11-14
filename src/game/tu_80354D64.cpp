@@ -25,7 +25,7 @@ Log_804ACD70::~Log_804ACD70() {
     }
 }
 
-// FIXME(shotgun): 89.65 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 90.59 %, scheduling; behaviour clean.
 void Log_804ACD70::init() {
     field_0x2c0 = field_0x90 & 1;
     field_0x2c4 = (field_0x90 >> 4) & 1;
@@ -87,7 +87,7 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 67.99 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.00 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(field_0x80);
     box.addPos(mPos.x, mPos.y);
