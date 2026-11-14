@@ -89,15 +89,16 @@ static const SjisGlyph_80475830 lbl_80475830[317] = {
     {0x0079, 0x3980}, {0x007A, 0x39A0}, {0x002E, 0x39C0}, {0x0027, 0x39E0}, {0x002B, 0x0000}, {0x0028, 0x0020},
     {0x0029, 0x0040}, {0x003A, 0x0060}, {0x0025, 0x0080}, {0x0022, 0x3CA0}, {0xFFFF, 0xFFFF},
 };
-// The buffers fn_8039F540 / fn_8039C9A0 format the colour code "\033CR[%d]" into.
+// The buffers fn_8039F540 / fn_8039C9A0 / fn_8039ACD0 / fn_8039A638 format the colour code "\033CR[%d]" into.
 static char lbl_8050E518[16];
 static char lbl_8050E528[16];
 static char lbl_8050E538[16];
+static char lbl_8050E548[16];
 
 // The glyph of a character in the text-image font (the space's when it has none).
-static inline u16 findGlyph(u16 code) {
+static inline u16 findGlyph(int code) {
     for (int i = 0; lbl_80475830[i].code != 0xFFFF; i++) {
-        if (code == lbl_80475830[i].code) {
+        if ((u16)code == lbl_80475830[i].code) {
             return lbl_80475830[i].glyph;
         }
     }
@@ -1695,6 +1696,78 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         if (digit > 0) {
             appendGlyph(findGlyph(digit + '0'));
         }
+        appendGlyph(findGlyph(ones + '0'));
+        appendGlyph(0x3CA0);
+    }
+}
+
+void cls_804AF72C::fn_8039A638(s16 mode) {
+    char ch[3];
+    ch[2] = 0;
+    ch[1] = 0;
+    ch[0] = 0;
+    s32 minutes = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59;
+    s32 seconds = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58;
+    if (mode == 0) {
+        if (field_0x2d6 != 0) {
+            s32 index = field_0x2cc;
+            if (!field_0x38.isMasked(index) && !(field_0x2d8->field_0x16c != 0 && field_0x38.isMasked(index))) {
+                f32 base;
+                f32 pos;
+                if (!(field_0x2d8->field_0x3b8->field_0x28 & 0x40)) {
+                    base = field_0x2d8->field_0xe8;
+                    pos = field_0x38.field_0x4c[index];
+                } else {
+                    base = field_0x2d8->field_0xf0;
+                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                }
+                s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
+                if (offset > 0) {
+                    snprintf(lbl_8050E548, 15, "\033CR[%d]", offset);
+                    strcat(field_0x2c0, lbl_8050E548);
+                    strcat(field_0x2c4, lbl_8050E548);
+                    field_0x2d0 += strlen(lbl_8050E548);
+                }
+            }
+            field_0x2d6 = 0;
+        }
+        if (minutes > 99) {
+            minutes = 99;
+        }
+        s32 digit = minutes / 10;
+        minutes %= 10;
+        if (digit > 0) {
+            ch[0] = digit + '0';
+            appendText(ch);
+        }
+        ch[0] = minutes + '0';
+        appendText(ch);
+        appendText("'");
+        if (seconds > 99) {
+            seconds = 99;
+        }
+        ch[0] = seconds / 10 + '0';
+        appendText(ch);
+        ch[0] = seconds % 10 + '0';
+        appendText(ch);
+        appendText("''", 2);
+    } else {
+        if (minutes > 99) {
+            minutes = 99;
+        }
+        s32 digit = minutes / 10;
+        s32 ones = minutes % 10;
+        if (digit > 0) {
+            appendGlyph(findGlyph(digit + '0'));
+        }
+        appendGlyph(findGlyph(ones + '0'));
+        appendGlyph(0x39E0);
+        if (seconds > 99) {
+            seconds = 99;
+        }
+        ones = seconds % 10;
+        digit = seconds / 10;
+        appendGlyph(findGlyph(digit + '0'));
         appendGlyph(findGlyph(ones + '0'));
         appendGlyph(0x3CA0);
     }
