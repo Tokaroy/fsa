@@ -241,113 +241,6 @@ void cls_8016ED88::fn_8016ED88() {
     }
 }
 
-#ifdef NONMATCHING
-static const s16 lbl_8050DD28[4] = {0x048F, 0x0490, 0x0491, 0x0492};
-
-// FIXME(shotgun): missing/extra
-void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
-                 s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
-    s32 maxTimer = -1;
-    if (*timer2 > 0) {
-        (*timer2)--;
-    } else if (*flag != 0) {
-        *flag = 0;
-        for (s32 i = 0; i < 4; i++) {
-            cls_8016FDE0* entry = &entries->mEntries[i];
-            if (entry->field_0x0 == NULL) {
-                entry->field_0x4.set(576.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 0.5f),
-                                     384.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 0.5f), 0.0f);
-                entry->field_0x10 = (s16)((s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3);
-                u32 groupId = arg2 ? 0 : 12;
-                entry->field_0x0 = spawnEmitter_8013CC50(groupId, &entry->field_0x4, lbl_8050DD28[entry->field_0x10],
-                                                         0, 0, NULL, NULL, true, 1.0f);
-                entry->field_0x0->setStatus(JPAEMIT_Immortal);
-                entry->field_0x14 = 60;
-                if (entry->field_0x18 != NULL) {
-                    entry->field_0x18->startSound(0x30078);
-                }
-                break;
-            }
-        }
-    } else if (*timer1 > 0) {
-        (*timer1)--;
-    } else {
-        for (s32 i = 0; i < 4; i++) {
-            cls_8016FDE0* entry = &entries->mEntries[i];
-            if (entry->field_0x0 == NULL) {
-                entry->field_0x4.set(576.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 0.5f),
-                                     384.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 0.5f), 0.0f);
-                entry->field_0x10 = (s16)((s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3);
-                u32 groupId = arg2 ? 0 : 12;
-                entry->field_0x0 = spawnEmitter_8013CC50(groupId, &entry->field_0x4, lbl_8050DD28[entry->field_0x10],
-                                                         0, 0, NULL, NULL, true, 1.0f);
-                entry->field_0x0->setStatus(JPAEMIT_Immortal);
-                entry->field_0x14 = 60;
-                if (entry->field_0x18 != NULL) {
-                    entry->field_0x18->startSound(0x30031);
-                }
-                break;
-            }
-        }
-        *timer1 = 60 + (s32)(150.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        if ((s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) < 50) {
-            *flag = 1;
-            *timer2 = 5 + (s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        }
-    }
-
-    for (s32 i = 0; i < 4; i++) {
-        cls_8016FDE0* entry = &entries->mEntries[i];
-        if (entry->field_0x18 != NULL) {
-            entry->field_0x18->process();
-        }
-        if (entry->field_0x0 != NULL) {
-            if (entry->field_0x0->isEnableDeleteEmitter()) {
-                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(entry->field_0x0);
-                entry->field_0x0 = NULL;
-                entry->field_0x14 = 0;
-            } else {
-                JGeometry::TVec3f s(scale, scale, scale);
-                entry->field_0x0->setGlobalScale(s);
-                if (!arg2) {
-                    f32 z = -640.0f;
-                    JGeometry::TVec3f trans(-view[0][3] + entry->field_0x4.x, 32.0f + (z - view[1][3]),
-                                            entry->field_0x4.y + z);
-                    entry->field_0x0->setGlobalTranslation(trans);
-                } else {
-                    JGeometry::TVec3f trans(300.0f + entry->field_0x4.x, 220.0f + entry->field_0x4.y, -513.0f);
-                    entry->field_0x0->setGlobalTranslation(trans);
-                }
-                if (entry->field_0x14 > 0) {
-                    entry->field_0x14--;
-                    if (entry->field_0x14 > maxTimer) {
-                        maxTimer = entry->field_0x14;
-                    }
-                }
-            }
-        }
-    }
-
-    if (maxTimer < 0) {
-        maxTimer = 0;
-    }
-    for (s32 i = 0; i < 6; i++) {
-        if (i == 3 && !arg3) {
-            continue;
-        }
-        if ((i == 1 || i == 2) && arg3) {
-            continue;
-        }
-        if (btk[i] != NULL) {
-            btk[i]->setFrame((f32)(frame % btk[i]->getTotalFrameCount()));
-        }
-        if (brk[i] != NULL) {
-            brk[i]->setFrame((f32)((brk[i]->getTotalFrameCount() * maxTimer) / 60));
-        }
-    }
-}
-#endif
-
 // Still differs: the stack slots of the first two zero vectors are swapped.
 // FIXME: 99.85 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016DE30() {
@@ -591,6 +484,128 @@ void GameRootSub24_8016A3AC::fn_8016DA6C() {
     if (isGameModeSet()) {
         fn_8016ADE0();
         fn_8016AD84();
+    }
+}
+
+void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
+                 s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
+    JGeometry::TVec3f offset(-view[0][3], -view[1][3], 0.0f);
+
+    if (arg3) {
+        if (*timer1 > 0) {
+            (*timer1)--;
+        } else {
+            *timer1 = 310.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+            for (s32 i = 0; i < 4; i++) {
+                cls_8016FDE0* entry = &entries->mEntries[i];
+                if (entry->field_0x14 == 0) {
+                    entry->field_0x14 = 60;
+                    entry->field_0x10 = 0x288;
+                    entry->field_0x4.set(300.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 150.0f,
+                                         48.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 96.0f, 0.0f);
+                    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+                    entry->field_0x0 =
+                        spawnEmitter_8013CC50(0, &pos, entry->field_0x10, 0, 0, NULL, NULL, true, 0.15f);
+                    if (entry->field_0x0 != NULL) {
+                        entry->field_0x0->setStatus(JPAEMIT_Immortal);
+                    }
+                    if (entry->field_0x18 != NULL) {
+                        if (*flag != 0) {
+                            if (arg2) {
+                                entry->field_0x18->startSound(0x30078);
+                            } else {
+                                entry->field_0x18->startSound(0x30031);
+                            }
+                            *flag = 0;
+                        } else {
+                            *flag = 1;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    if (*timer2 > 0) {
+        (*timer2)--;
+    } else {
+        *timer2 = 180.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        for (s32 i = 0; i < 4; i++) {
+            cls_8016FDE0* entry = &entries->mEntries[i];
+            if (entry->field_0x14 == 0) {
+                entry->field_0x14 = 60;
+                entry->field_0x10 = 0x287;
+                f32 sign = 1.0f;
+                f32 y = 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 64.0f;
+                if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() > 0.5f) {
+                    sign = -1.0f;
+                }
+                entry->field_0x4.set((72.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 48.0f) * sign, y, 0.0f);
+                JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+                entry->field_0x0 = spawnEmitter_8013CC50(0, &pos, entry->field_0x10, 0, 0, NULL, NULL, true, 0.15f);
+                if (entry->field_0x0 != NULL) {
+                    entry->field_0x0->setStatus(JPAEMIT_Immortal);
+                }
+                break;
+            }
+        }
+    }
+
+    s32 maxA = 0;
+    s32 maxB = 0;
+    for (s32 i = 0; i < 4; i++) {
+        cls_8016FDE0* entry = &entries->mEntries[i];
+        if (entry->field_0x10 == 0x287) {
+            maxB = maxB >= entry->field_0x14 ? maxB : entry->field_0x14;
+        } else {
+            maxA = maxA >= entry->field_0x14 ? maxA : entry->field_0x14;
+        }
+        if (entry->field_0x14 > 0) {
+            entry->field_0x14--;
+        }
+        if (entry->field_0x0 != NULL) {
+            if (entry->field_0x0->isEnableDeleteEmitter()) {
+                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(entry->field_0x0);
+                entry->field_0x0 = NULL;
+            } else {
+                entry->field_0x0->setGlobalScale(JGeometry::TVec3f(scale, scale, scale));
+                JGeometry::TVec3f pos;
+                pos.add(entry->field_0x4, offset);
+                if (entry->field_0x10 == 0x287) {
+                    if (!arg2) {
+                        pos.y += -880.0f;
+                        pos.z += -31.0f;
+                    }
+                    pos.z += -849.0f;
+                } else {
+                    if (!arg2) {
+                        pos.y += -688.0f;
+                        pos.z += -31.0f;
+                    }
+                    pos.z += -657.0f;
+                }
+                if (arg2) {
+                    pos.x += 304.0f;
+                    pos.y += 224.0f;
+                }
+                entry->field_0x0->setGlobalTranslation(pos);
+            }
+        }
+    }
+    if (maxB < maxA) {
+        maxB = maxA;
+    }
+
+    for (s32 i = 0; i < 6; i++) {
+        J3DAnmTextureSRTKey* srt = btk[i];
+        J3DAnmTevRegKey* tev = brk[i];
+        if (srt != NULL) {
+            srt->setFrame(frame % srt->getTotalFrameCount());
+        }
+        if (tev != NULL) {
+            tev->setFrame(((i < 4 ? maxA : maxB) * tev->getTotalFrameCount()) / 60);
+        }
     }
 }
 
