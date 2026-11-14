@@ -243,39 +243,54 @@ void Score_804AF4C0::fn_80393228() {
     }
 }
 
-// Draws one digit of the gem value at x + dx, in the gem-yellow colour.
-static inline void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 dx, u8 digit) {
-    Vec pos;
-    pos.x = self->mPos.x + dx;
-    pos.y = self->mPos.y;
-    pos.z = self->mPos.z;
+// Draws one digit of the gem value at x, in the gem-yellow colour.
+static inline void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
+    Vec v;
+    v.x = x;
+    v.y = self->mPos.y;
+    v.z = self->mPos.z;
     if (self->field_0x4 < 8) {
+        JGeometry::TVec3f pos = JGeometry::TVec3f(v);
         lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
     }
 }
 
-// FIXME(shotgun): 15.93 %, missing/extra + reloc-name; behaviour drift.
-// (cases 0-3 of the 12-entry jump table only; unrolled in the original)
+// Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
+static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
+    if (self->field_0x4 < 8) {
+        JGeometry::TVec3f pos = JGeometry::TVec3f(self->mPos);
+        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
+    }
+}
+
+#define SCORE_2(a, b) \
+    putScoreDigit(this, fade, mPos.x - 5.0f, a); \
+    putScoreDigit(this, fade, mPos.x + 5.0f, b)
+#define SCORE_3(a, b, c) \
+    putScoreDigit(this, fade, mPos.x - 10.0f, a); \
+    putScoreDigitMid(this, fade, b); \
+    putScoreDigit(this, fade, mPos.x + 10.0f, c)
+#define SCORE_4(a, b, c, d) \
+    putScoreDigit(this, fade, mPos.x - 5.0f - 10.0f, a); \
+    putScoreDigit(this, fade, mPos.x - 5.0f, b); \
+    putScoreDigit(this, fade, mPos.x + 5.0f, c); \
+    putScoreDigit(this, fade, 10.0f + (mPos.x + 5.0f), d)
+
 void Score_804AF4C0::fn_80391F58() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     switch (mValue) {
-    case 0:
-        putScoreDigit(this, fade, 0.0f, 1);
-        break;
-    case 1:
-        putScoreDigit(this, fade, 0.0f, 5);
-        break;
-    case 2:
-        putScoreDigit(this, fade, -5.0f, 2);
-        putScoreDigit(this, fade, 5.0f, 0);
-        break;
-    case 3:
-        putScoreDigit(this, fade, -5.0f, 5);
-        putScoreDigit(this, fade, 5.0f, 0);
-        break;
-    default:
-        // FIXME(shotgun): cases 4-11 not written
-        break;
+    case 0: putScoreDigitMid(this, fade, 1); break;
+    case 1: putScoreDigitMid(this, fade, 5); break;
+    case 2: SCORE_2(2, 0); break;
+    case 3: SCORE_2(5, 0); break;
+    case 4: SCORE_3(1, 0, 0); break;
+    case 5: SCORE_3(1, 5, 0); break;
+    case 6: SCORE_3(2, 0, 0); break;
+    case 7: SCORE_3(3, 0, 0); break;
+    case 8: SCORE_4(1, 0, 0, 0); break;
+    case 9: SCORE_4(1, 5, 0, 0); break;
+    case 10: SCORE_4(2, 0, 0, 0); break;
+    case 11: SCORE_4(3, 0, 0, 0); break;
     }
 }
 
