@@ -71,6 +71,7 @@ static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
     return false;
 }
 
+// FIXME: 95.39 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049DB90::update() {
     cls_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
@@ -214,6 +215,7 @@ void cls_8049DB90::update() {
 }
 
 // The original keeps &mPos in r29 across getResource; ours recomputes it.
+// FIXME: 94.95 %, missing/extra; behaviour clean.
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
@@ -311,6 +313,7 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
+// FIXME: 99.90 %, operands + reloc-name; behaviour drift.
 void cls_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
