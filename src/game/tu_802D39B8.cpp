@@ -1642,11 +1642,8 @@ void GameView_804A9950::fn_802D782C(u8 value) {
     getGameView_802D6A9C()->field_0x131de = value;
 }
 
-// FIXME: 80.00 %, scheduling; behaviour clean.
-// The clrlwi of bits is emitted before the lhz load in ours,
-// after it in the target; swapping the & operands is worse.
 bool GameView_804A9950::fn_802D7804(s32 index, u16 bits) {
-    return (field_0x131b8[index] & bits) != 0;
+    return field_0x131b8[index] & bits;
 }
 
 void GameView_804A9950::fn_802D77E4(s32 index, u16 value) {
@@ -1669,11 +1666,8 @@ void GameView_804A9950::fn_802D7704(s32 bit, bool count, s32 layer) {
     }
 }
 
-// FIXME: 91.30 %, scheduling; behaviour clean.
-// Only scheduling: the word address add is emitted two slots earlier than in the target
-// (same as fn_802D6AC4; swapped & operands are worse).
 bool GameView_804A9950::fn_802D76A8(s32 bit) {
-    return (field_0x3548[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32))) != 0;
+    return field_0x3548[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
@@ -1686,11 +1680,8 @@ void GameView_804A9950::fn_802D7618(s32 bit) {
     field_0x6768[field_0x18][field_0x14][bit / 32] |= 1 << (bit % 32);
 }
 
-// FIXME: 91.30 %, scheduling; behaviour clean.
-// Only scheduling: the word address add is emitted two slots earlier than in the target
-// (same as fn_802D6AC4; swapped & operands are worse).
 bool GameView_804A9950::fn_802D75BC(s32 bit) {
-    return (field_0x6768[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32))) != 0;
+    return field_0x6768[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D7584(s32 index, u8 value) {
@@ -1746,11 +1737,8 @@ void GameView_804A9950::fn_802D73CC(s32 bit, bool set) {
     }
 }
 
-// FIXME: 88.06 %, scheduling; behaviour clean.
-// Scheduling: one add (the word address) is emitted two slots
-// earlier than in the target; a mask local and swapped & operands are worse.
 bool GameView_804A9950::fn_802D7384(s32 bit) {
-    return (field_0x12f68[bit / 32] & (1 << (bit % 32))) != 0;
+    return field_0x12f68[bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D7310(s32 bit, bool set) {
@@ -2550,11 +2538,11 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
 // Still differs: the 0xFF fill keeps an inner-loop guard (li 0; cmpwi 10) the original lacks, and the
 // map500 line skip is not rotated with a guard as in the original.
-// FIXME: 97.51 %, missing/extra; behaviour drift.
+// FIXME: 99.13 %, missing/extra; behaviour near.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
-    for (s32 row = 0; row < 10; row++) {
-        for (s32 col = 0; col < 10; col++) {
+    for (u32 row = 0; row < 10; row++) {
+        for (u32 col = 0; col < 10; col++) {
             field_0x60[row][col] = 0xFF;
         }
     }
@@ -2672,7 +2660,12 @@ void GameView_804A9950::fn_802D3D48() {
             } else {
                 u8 value = str[i] - '0';
                 if (str[i + 1] != (u8)',' && str[i + 1] != (u8)'\r') {
-                    value = (value <= 9 ? (u8)(value * 10) : 0) + (u8)(str[i + 1] - '0');
+                    if (value <= 9) {
+                        value *= 10;
+                    } else {
+                        value = 0;
+                    }
+                    value += (u8)(str[i + 1] - '0');
                     i++;
                 }
                 i++;
