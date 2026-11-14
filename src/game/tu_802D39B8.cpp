@@ -2508,6 +2508,7 @@ void GameView_804A9950::fn_802D4874(s32 layer, u16 id, u64* outBit, u64* outMask
     *outMask = fn_802D7AC4(layer);
 }
 
+// FIXME: 99.48 %, regalloc-only; behaviour clean.
 // FIXME: regalloc only (slot/gGameRoot register swap); behaviour clean.
 // Scheduling and regalloc, as fn_802D4C10: the target adds the view to i * 2
 // before the slot row in the search loop.
