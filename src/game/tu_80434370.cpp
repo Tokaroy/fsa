@@ -120,8 +120,6 @@ cls_804B16A8::~cls_804B16A8() {
 // FIXME(shotgun): 91.99 %, missing/extra + reloc-name; behaviour drift.
 void cls_804B16A8::fn_8043670C(u8 arg) {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Tq01'))->mFontSize.x;
-    f32 cellW = lbl_8053AD78->mFont->getWidth();
-    f32 scale = fontSizeW / cellW;
     field_0x58 = 0;
     field_0x5a = 0;
     field_0x5c = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
@@ -135,6 +133,7 @@ void cls_804B16A8::fn_8043670C(u8 arg) {
     if (field_0x6c == 0) {
         f32 w1 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq01'))->getStringPtr(), 0x129, 0, NULL, NULL);
         field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5c;
+        f32 scale = fontSizeW / 24.0f;
         f32 boxW1 = w1 * scale + 24.0f;
         f32 halfW1 = boxW1 * 0.5f;
         field_0x1c[0]->mPane->move(field_0x1c[0]->field_0x10 - halfW1, field_0x1c[0]->field_0xc);
@@ -153,6 +152,7 @@ void cls_804B16A8::fn_8043670C(u8 arg) {
     } else {
         f32 w1 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Tq01'))->getStringPtr(), 0xF8, 0, NULL, NULL);
         field_0x68 = lbl_8050EC80.getCurrentFile().field_0x5d;
+        f32 scale = fontSizeW / 24.0f;
         f32 boxW1 = w1 * scale + 24.0f;
         f32 halfW1 = boxW1 * 0.5f;
         field_0x1c[0]->mPane->move(field_0x1c[0]->field_0x10 - halfW1, field_0x1c[0]->field_0xc);
