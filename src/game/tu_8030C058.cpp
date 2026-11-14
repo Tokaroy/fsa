@@ -233,7 +233,7 @@ void Camera_804AA9E4::fn_8030DD20(const Mtx m) {
     GXLoadNrmMtxImm(tmp, GX_PNMTX9);
 }
 
-// FIXME(shotgun): 86.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.33 %, missing/extra + reloc-name; behaviour drift.
 // + regalloc
 void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraEntry_804AA8E8* entry,
                                   JGeometry::TBox2f* prevBox, JGeometry::TBox2f* outBox, f32* outDepth) {
