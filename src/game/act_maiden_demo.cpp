@@ -6,9 +6,11 @@
 #include "game/Camera.h"
 #include "game/EnemyBase.h"
 #include "game/GameGlobals.h"
+#include "game/GameRootSub20.h"
 #include "game/Message.h"
 #include "game/Player.h"
 #include "game/PlayerBit.h"
+#include "game/RotMatrix.h"
 #include "JSystem/JMath/JMath.h"
 
 // The Maiden's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
@@ -218,6 +220,45 @@ s32 cls_8049D740::vfunc_0x58() {
 
 s32 cls_8049D740::vfunc_0x5C() {
     return 1;
+}
+
+void cls_8049D740::fn_80112AE8() {
+    field_0x248 += 0.01f;
+
+    Mtx mtx1;
+    PSMTXTrans(mtx1, mPos.x, mPos.y, mPos.z);
+    JGeometry::TVec3f axis1(1.0f, 0.0f, 0.0f);
+    fn_8010F668(mtx1, &axis1, 0.08726646f);
+
+    Mtx mtx2;
+    for (s32 i = 0; i < 3; i++) {
+        for (s32 j = 0; j < 4; j++) {
+            mtx2[i][j] = 0.0f;
+        }
+    }
+    JGeometry::TVec3f axis2(0.0f, 0.0f, 1.0f);
+    fn_8010F668(mtx2, &axis2, field_0x248);
+
+    PSMTXConcat(mtx1, mtx2, mtx1);
+
+    field_0x244++;
+    if (field_0x244 >= 200) {
+        field_0x244 = 0;
+    }
+
+    s32 frame = field_0x244;
+    s32 mode = mMode;
+    f32 scale = field_0x250;
+    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[mode];
+    if (crystal.mModel != NULL && !crystal.mActive) {
+        crystal.mActive = 1;
+        crystal.mPos.set(scale, scale, scale);
+        PSMTXCopy(mtx1, crystal.mMtx);
+        crystal.field_0x48 = -1.0f;
+        crystal.field_0x4c = frame;
+        crystal.field_0x54 = 0;
+        crystal.field_0x58 = 1;
+    }
 }
 
 void cls_8049D740::fn_80112654(s32 kind) {
