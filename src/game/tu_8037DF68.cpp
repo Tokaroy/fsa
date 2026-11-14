@@ -824,7 +824,7 @@ static inline bool releasePlayers(s32 player) {
     return true;
 }
 
-// FIXME(shotgun): 99.39 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.99 %, scheduling+regalloc; behaviour clean.
 // (a bit test as rlwinm. not extrwi.)
 // Ends the player's message at once, whatever state the window is in: true when it is idle
 // or closed now (options 8 / 0x80), else the box is sent to its last page (state 5 / 8, with
@@ -1041,7 +1041,7 @@ static inline bool releaseSerial(u16 opt, s32 player, s32 serial) {
     return fn_8022FB1C(player, serial);
 }
 
-// FIXME(shotgun): 97.43 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
 // (releaseSerial branch shape)
 // fn_80385960 for a window an actor `serial` speaks in: once the actor (and, without option 4,
 // the players) let go, the window closes and fn_803895EC releases the waiting windows.
