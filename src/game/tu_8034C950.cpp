@@ -108,7 +108,7 @@ void cls_804AC950::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 93.77 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 93.96 %, missing/extra; behaviour near.
 void cls_804AC950::update() {
     JGeometry::TBox2f box(field_0x80);
     f32 x0 = -16.0f + mPos.x;
