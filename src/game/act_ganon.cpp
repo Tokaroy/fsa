@@ -37,8 +37,8 @@ extern const f32 lbl_804A2370[5][2];
 extern const char* const lbl_804A2398[59];
 extern const char* const lbl_804A2484[59];
 extern const f32 lbl_804A2570[16][2];
-extern u8 lbl_8053AB90;
-extern u8 lbl_8053AB91;
+u8 lbl_8053AB90;
+u8 lbl_8053AB91;
 extern s32 lbl_80539FE8;
 
 void fn_80154718(const JGeometry::TVec3f* pos);

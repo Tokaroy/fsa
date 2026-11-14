@@ -8,7 +8,7 @@
 #include "game/ActorManager.h"
 #include "JSystem/JMath/JMath.h"
 
-extern s32 lbl_8053AB88;
+s32 lbl_8053AB88;
 s32 lbl_80539FD8[2] = {8, 14};
 s32 lbl_80539FE0[2] = {3, 5};
 

@@ -18,7 +18,7 @@
 extern const s32 lbl_804A1B70[];
 // Sprite names of the animation frames (.data 0x804A1D24), indexed like lbl_804A1B70.
 extern const char* const lbl_804A1D24[];
-extern JGeometry::TVec3f lbl_804C18B8;
+JGeometry::TVec3f lbl_804C18B8;
 extern s32 lbl_80539FC8;
 extern s32 lbl_80539FCC;
 extern s32 lbl_80539FD0;

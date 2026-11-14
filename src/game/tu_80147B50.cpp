@@ -23,9 +23,9 @@ extern const char* const lbl_8049F698[];
 extern const u8 lbl_80539F60[];
 extern s32 lbl_80539F58;
 extern s32 lbl_80539F5C;
-extern s32 lbl_8053AB30;
-extern s32 lbl_8053AB34;
-extern s32 lbl_8053AB38;
+s32 lbl_8053AB30;
+s32 lbl_8053AB34;
+s32 lbl_8053AB38;
 
 // FIXME(shotgun): 99.77 %, different + reloc-name; behaviour drift.
 void cls_8049F6C8::init() {
