@@ -10,8 +10,9 @@
 #include "game/act/act_force_gem_winged.h"
 #include "game/act/act_zora_fish_herder.h"
 #include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 
-// FIXME(shotgun): 99.88 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.98 %, scheduling; behaviour clean.
 void ZoraFishHerding_804A2E30::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
@@ -134,7 +135,7 @@ ZoraFishHerding_804A2E30::~ZoraFishHerding_804A2E30() {
     }
 }
 
-// FIXME(shotgun): 81.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
 void ZoraFishHerding_804A2E30::fn_801A68DC() {
     JGeometry::TVec3f msgPos = mPos;
     s32 nearPlayer = -1;
@@ -143,7 +144,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         fn_801EEC98(mSerial, NULL, &nearPlayer, &nearDist, NULL, 0, 0);
     }
     msgPos.y -= 50.0f;
-    JGeometry::TVec3f dropPos = mPos;
+    JGeometry::TVec3f dropPos(mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f camPos = mPos;
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -243,7 +244,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
@@ -266,7 +267,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
@@ -324,7 +325,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 if (fish != NULL) {
                     f32 dy = fish->mPos.y - mPos.y;
                     f32 dx = fish->mPos.x - mPos.x;
-                    f32 dist = JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy);
+                    f32 dist = std::sqrtf(dx * dx + dy * dy);
                     if (dist > 24.0f) {
                         field_0x26c = -1;
                     } else {
@@ -339,7 +340,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             if (fish != NULL) {
                 f32 dy = fish->mPos.y - mPos.y;
                 f32 dx = fish->mPos.x - mPos.x;
-                f32 dist = JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy);
+                f32 dist = std::sqrtf(dx * dx + dy * dy);
                 if (dist < 2.0f) {
                     if (field_0x250 != 5) {
                         field_0x250 = 5;
@@ -354,7 +355,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 } else {
                     JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
                     fish->field_0x3c = zero;
-                    dropPos = fish->mPos;
+                    dropPos.set(fish->mPos.x, fish->mPos.y, fish->mPos.z);
                     addCalc2_801F71A4(&dropPos.x, mPos.x, 0.3f, 1.0f);
                     addCalc2_801F71A4(&dropPos.y, mPos.y, 0.3f, 1.0f);
                     fish->mPos = dropPos;
@@ -402,7 +403,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         s32 layer = getPlayerLayer_8023DE58(0);
@@ -416,13 +417,13 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
                 s32 spotCount = 0;
                 for (s32 i = 0; i < n && spotCount < 7; i++) {
                     if (sayas[i] != NULL && sayas[i]->field_0x90 == 2) {
-                        spots[spotCount] = sayas[i]->mPos;
+                        spots[spotCount].set(sayas[i]->mPos.x, sayas[i]->mPos.y, sayas[i]->mPos.z);
                         spotCount++;
                     }
                 }
                 if (spotCount > 0) {
                     s32 pick = (s32)((f32)spotCount * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                    dropPos = spots[pick];
+                    dropPos.set(spots[pick].x, spots[pick].y, spots[pick].z);
                 }
                 u32 arg = 0x80000;
                 if (field_0x25c > 40) {
@@ -472,7 +473,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         s32 layer = getPlayerLayer_8023DE58(0);
@@ -526,7 +527,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
@@ -540,7 +541,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (cam->field_0x7f5 == 0) {
             cam->field_0x7f4 = 1;
             cam->field_0x7f8 = 4;
-            cam->field_0x7fc = camPos;
+            cam->field_0x7fc.set(camPos.x, camPos.y, camPos.z);
             cam->field_0x7f6 = 0;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
