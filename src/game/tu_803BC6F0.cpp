@@ -1522,13 +1522,11 @@ void FileSelect_804AFF60::fn_803CBE38() {
     }
 }
 
-// FIXME: 98.51 %. The row loop's start test `field_0xd8 > rowDelay + delay`:
-// with the accumulator form (`delay += rowStep`) ours still starts the
-// accumulator at rowDelay (mr r24, r17; one add fewer per pass) where the
-// original keeps the add; the `field_0x38[0]->field_0xc -
-// field_0x38[a4]->field_0xc` operands load into f2 / f0 (original f0 / f2);
-// registers shift from there (r17-r26). The button loop's i * step form
-// keeps the add, as in the original.
+// FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
+// loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
+// shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
+// `field_0x38[0]->field_0xc - field_0x38[a4]->field_0xc` float regs (f2/f0 vs
+// f0/f2).
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
 void FileSelect_804AFF60::fn_803CB3DC() {
@@ -1540,12 +1538,12 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     s16 buttonDelay = lbl_8050DB0C.field_0x4c[0x9D];
     s16 buttonFrames = lbl_8050DB0C.field_0x4c[0x9E];
     s16 buttonStep = lbl_8050DB0C.field_0x4c[0x9F];
-    s32 end = rowDelay + (frames + rowStep);
+    s32 end = rowDelay + frames + rowStep;
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
     }
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
 
     // The two files that weren't chosen.
@@ -1558,9 +1556,8 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     }
 
     field_0xd8++;
-    s32 delay = 0;
     for (s32 i = 0; i < 2; i++) {
-        if (field_0xd8 > rowDelay + delay) {
+        if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
             field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
             setRowAlphas(this, others[i]);
@@ -1568,8 +1565,6 @@ void FileSelect_804AFF60::fn_803CB3DC() {
             field_0x44[others[i]]->fn_80402628(frames, field_0x44[others[i]]->field_0x28, 0);
             setTabAlphas(this, others[i]);
         }
-        // The running delay keeps the original's add; `i * rowStep` scored worse here (97.94 %).
-        delay += rowStep;
     }
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
@@ -1625,11 +1620,9 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     }
 }
 
-// FIXME: 98.69 %. The four setBlackWhite calls' by-value copies take the
+// FIXME: The four setBlackWhite calls' by-value copies take the
 // stack slots in the opposite order (sp 0x8 upwards in the original); the
-// bob's `frame * frame` is scheduled after the 0x4330 store; the final
-// `field_0xa0 == 3` test lays out its two arms (0xC / 0xB sound) the other
-// way round (same logic).
+// bob's `frame * frame` is scheduled after the 0x4330 store.
 // The file menu (state 19): A runs the highlighted command field_0xa0 (0:
 // start the chosen file, 1: copy, 2: delete, 3: back), B goes back, up /
 // down move the cursor (field_0xa0, skipping commands an empty file lacks);
@@ -1707,10 +1700,10 @@ void FileSelect_804AFF60::fn_803CABAC() {
             fn_803C21A8();
             break;
         }
-        if (field_0xa0 == 3) {
-            gAudioMgr_8053AF80->fn_80458880(0xC, -1);
-        } else {
+        if (field_0xa0 != 3) {
             gAudioMgr_8053AF80->fn_80458880(0xB, -1);
+        } else {
+            gAudioMgr_8053AF80->fn_80458880(0xC, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x200, 1) != 0) {
         fn_803C21A8();
@@ -2448,10 +2441,8 @@ void FileSelect_804AFF60::fn_803C70B8() {
     }
 }
 
-// FIXME: 99.80. Scheduling and registers only: the original adds
-// buttonFrames + buttonStep before buttonDelay (ours buttonStep +
-// buttonDelay first), and the board loops' counter / table pointer swap
-// r14 / r19. With `int` counters (as elsewhere in the file) the row loop
+// FIXME: 99.83. Regalloc only: the board loops' counter / table pointer
+// swap r14 / r19. With `int` counters (as elsewhere in the file) the row loop
 // keeps a second walker for field_0x70 / field_0x64 (97.87, 6 more
 // instructions); with s32 counters it shares one, as the original.
 // State 29 (after a copy, from fn_803C0018): the board slides out from the
@@ -2468,8 +2459,8 @@ void FileSelect_804AFF60::fn_803C6798() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0xBB];
     s16 rowFrames = lbl_8050DB0C.field_0x4c[0xBC];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep)) {
-        end = buttonDelay + (buttonFrames + buttonStep);
+    if (end < buttonDelay + buttonFrames + buttonStep) {
+        end = buttonDelay + buttonFrames + buttonStep;
     }
     if (end < rowDelay + rowFrames) {
         end = rowDelay + rowFrames;
@@ -2486,10 +2477,10 @@ void FileSelect_804AFF60::fn_803C6798() {
         field_0x1c->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
         field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
         field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
-        for (s32 j = 0; j < 81; j++) {
+        for (int j = 0; j < 81; j++) {
             field_0x14->setAlpha_804023D0(mScreen->search(lbl_80476618[j]), field_0x132[j]);
         }
-        for (s32 j = 0; j < 19; j++) {
+        for (int j = 0; j < 19; j++) {
             field_0x14->setAlpha_804023D0(mScreenHuuin->search(lbl_804768A0[j]), field_0x183[j]);
         }
     }
@@ -3328,24 +3319,25 @@ void FileSelect_804AFF60::fn_803C1734() {
         field_0x24[i]->moveFromCentre_80402E08(0.0f, 100.0f);
         field_0x24[i]->field_0x22 = 0;
         field_0x24[i]->mPane->setAlpha(0);
+        int j;
         switch (i) {
         case 0:
-            for (int j = 0; j < 4; j++) {
+            for (j = 0; j < 4; j++) {
                 field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
             }
             break;
         case 1:
-            for (int j = 0; j < 4; j++) {
+            for (j = 0; j < 4; j++) {
                 field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
             }
             break;
         case 2:
-            for (int j = 0; j < 4; j++) {
+            for (j = 0; j < 4; j++) {
                 field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
             }
             break;
         case 3:
-            for (int j = 0; j < 4; j++) {
+            for (j = 0; j < 4; j++) {
                 field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
             }
             break;
