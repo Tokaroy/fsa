@@ -42,7 +42,10 @@ inline void EnemyBase_804A4808::stateStep(u8 mapHit) {
 
 inline void EnemyBase_804A4808::moveStep() {
     if (mSpeed != mTargetSpeed) {
-        f32 step = mSpeed > mTargetSpeed ? mDecel : mAccel;
+        f32 step = mAccel;
+        if (mSpeed > mTargetSpeed) {
+            step = mDecel;
+        }
         fn_801CD950(&mSpeed, mTargetSpeed, step);
     }
     vfunc_0x88();
@@ -864,8 +867,6 @@ void EnemyBase_804A4808::vfunc_0x94() {
     mAnim.fn_801D1C18();
 }
 
-// FIXME: 96.25 %, missing/extra + reloc-name; behaviour clean.
-// the same moveStep difference as vfunc_0x98.
 void EnemyBase_804A4808::fn_801CE32C() {
     moveStep();
 }
@@ -874,10 +875,6 @@ void EnemyBase_804A4808::fn_801CE2BC(u8 mapHit) {
     stateStep(mapHit);
 }
 
-// FIXME: 96.36 %, missing/extra + reloc-name; behaviour clean.
-// (moveStep): the target loads mAccel (lfs 0x25C) before the
-// mSpeed > mTargetSpeed branch and mDecel in it; ours branches first and
-// loads the chosen one after.
 void EnemyBase_804A4808::vfunc_0x98() {
     if (!(mFlags & 7)) {
         moveStep();
