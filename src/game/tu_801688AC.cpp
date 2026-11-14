@@ -82,6 +82,15 @@ void cls_804A0738::init() {
     field_0x230 = 0;
 }
 
+// Same box-margin check as fn_801F6758 (tu_801F6058.cpp), on an arbitrary TBox2f.
+static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::TBox2f* box, f32 margin) {
+    if (pos->x <= box->i.x - margin || pos->x >= box->f.x + margin ||
+        pos->y <= box->i.y - margin || pos->y >= box->f.y + margin) {
+        return true;
+    }
+    return false;
+}
+
 // Turns d into a direction and sets the velocity: 9 per frame for the fast variant, else 6.
 #define AIM_VELOCITY(d, fast)       \
     do {                            \
@@ -190,9 +199,7 @@ void cls_804A0738::update() {
             }
         }
         if ((field_0x4 == 0 && fn_801F6758(&mPos, field_0x4, -16.0f) == 1) ||
-            (field_0x4 >= 8 &&
-             (mPos.x <= field_0x370[0] - -9.0f || mPos.x >= field_0x370[2] + -9.0f ||
-              mPos.y <= field_0x370[1] - -9.0f || mPos.y >= field_0x370[3] + -9.0f))) {
+            (field_0x4 >= 8 && isOutsideBox(&mPos, (const JGeometry::TBox2f*)field_0x370, -9.0f) == 1)) {
             field_0x3c.zero();
             field_0x364[2] = 0.0f;
             field_0x364[1] = 0.0f;
@@ -233,7 +240,7 @@ void cls_804A0738::update() {
         break;
     case 1:
         if (fn_8022BC38(field_0x90, field_0x4, &mPos) == 1 &&
-            (fn_8022D75C(target) == 1 || (fn_8022CAF8(field_0x90) == 4 && target != (s32)field_0x90))) {
+            (fn_8022D75C(target) == 1 || (fn_8022CAF8(field_0x90) == 4 && target != field_0x90))) {
             JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(field_0x90)) - xy(mPos);
             if (field_0x260 == 1) {
                 mAlive = false;
