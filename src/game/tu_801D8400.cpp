@@ -138,7 +138,7 @@ void cls_804A4C58::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME(shotgun): 97.94 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.99 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
@@ -275,7 +275,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 84.80 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 84.93 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -352,7 +352,7 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-// FIXME(shotgun): 90.68 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 90.87 %, missing/extra + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
@@ -421,6 +421,7 @@ bool cls_804A4C58::fn_801D95F4() {
 }
 
 // Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
+// FIXME: 93.78 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
