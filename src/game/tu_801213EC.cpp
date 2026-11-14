@@ -300,13 +300,13 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     return 1;
 }
 
-// FIXME(shotgun): 99.86 %, operands + reloc-name; behaviour clean.
-// stack layout (dist/who slots swapped)
+// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
+// only (float literal pool name); behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
     u16 angle;
     s32 dir;
-    f32 dist;
     s32 who;
+    f32 dist;
     fn_801EEC98(mSerial, &angle, &dir, &dist, &who, a, b);
     if (dir >= 0 && !(dist > limit)) {
         fn_80122730(dir, true, true);
