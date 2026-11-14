@@ -28,7 +28,7 @@ Cucco_804AB8C0::~Cucco_804AB8C0() {
     releaseEmitter_801EE434(mEmitter300);
 }
 
-// FIXME(shotgun): 91.08 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 91.10 %, missing/extra; behaviour near.
 void Cucco_804AB8C0::init() {
     u16 angle = 0;
     mBox.i.x = -7.0f;
@@ -205,7 +205,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.92 %, missing/extra; behaviour drift.
 void Cucco_804AB8C0::fn_80332A60() {
     if (fn_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
         field_0xb0 = 0x41302;
@@ -285,7 +285,7 @@ void Cucco_804AB8C0::fn_80332A60() {
     }
 }
 
-// FIXME(shotgun): 92.14 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.16 %, missing/extra; behaviour drift.
 void Cucco_804AB8C0::fn_803324A8() {
     f32 outDist = 0.0f;
     s32 outDir = -1;
@@ -401,7 +401,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 89.24 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 89.29 %, missing/extra; behaviour near.
 void Cucco_804AB8C0::fn_80331E6C() {
     if (field_0x2a4[0] == 1) {
     s32 warpSerial = -1;
@@ -711,7 +711,7 @@ bool Cucco_804AB8C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// FIXME(shotgun): 89.10 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.09 %, missing/extra + reloc-name; behaviour drift.
 void Cucco_804AB8C0::update() {
     if (field_0x230 == 2) {
         if (fn_8022F9E4(field_0x25c, mSerial, false, false) == 1) {
