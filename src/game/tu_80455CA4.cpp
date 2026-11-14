@@ -4,8 +4,6 @@
 #include "JSystem/JAudio/System/JASTrack.h"
 #include "Inagaki/GameSoundTable.h"
 
-// FIXME(shotgun): 92.92 %, missing/extra; behaviour clean.
-// extra/missing insns (the original also stores 0x54/0x58 to stack temporaries)
 ActorSoundObj_804578F4::ActorSoundObj_804578F4(JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
     : JAUSoundObject(pos, numHandles, heap) {
     field_0x31 = 1;
@@ -47,7 +45,7 @@ void ActorSoundObj_804578F4::fn_80457840(JGeometry::TVec3f* pos) {
 void fn_80455CA4(ActorSoundObj_804578F4* obj, JAISoundHandle* handle, JGeometry::TVec2f* pos, JAISoundID* id);
 void fn_8045BA84(const Vec* pos, Vec* out);
 
-// FIXME(shotgun): 76.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.50 %, missing/extra + reloc-name; behaviour drift.
 JAISoundHandle* ActorSoundObj_804578F4::fn_80456334(JAISoundID id, u32 fade) {
     if (field_0x31 == 0) {
         return NULL;
