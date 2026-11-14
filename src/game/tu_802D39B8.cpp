@@ -2483,7 +2483,7 @@ bool GameView_804A9950::fn_802D49A8(s32 layer, u16 id) {
     return false;
 }
 
-// FIXME: 97.14 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.55 %, regalloc-only; behaviour clean.
 // Scheduling and regalloc, as fn_802D4C10 (the search loop's address add).
 // The shift loop is a for (;;) with the test at the top: the target's loop has its test at
 // the top and a plain branch back (0x802D48FC), which MWCC emits for neither while nor for
