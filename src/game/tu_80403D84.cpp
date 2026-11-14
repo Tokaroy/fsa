@@ -1159,8 +1159,9 @@ void MapScreen_804B1288::fn_8040F480() {
         }
     }
     if (field_0x340 < 8) {
-        field_0x394 = lbl_8048C95C[field_0x340 * 4 + field_0x348][0];
-        field_0x398 = lbl_8048C95C[field_0x340 * 4 + field_0x348][1];
+        const s16* pos = lbl_8048C95C[field_0x340 * 4 + field_0x348];
+        field_0x394 = pos[0];
+        field_0x398 = pos[1];
     }
     field_0x1c->setFrame(field_0x378);
     field_0xc->search('Ndata08')->animationTransform();
@@ -1261,27 +1262,31 @@ void MapScreen_804B1288::fn_8040F480() {
             fn_8040873C();
             if (field_0x340 == 7) {
                 if (field_0x348 == 2) {
-                    field_0x394 = lbl_8048C95C[field_0x340 * 4][0];
-                    field_0x398 = lbl_8048C95C[field_0x340 * 4][1];
+                    const s16* pos = lbl_8048C95C[field_0x340 * 4];
+                    field_0x394 = pos[0];
+                    field_0x398 = pos[1];
                     if (!isStageFlagSet(field_0x340, field_0x348) && !lbl_80529DEC.field_0x254[0]) {
                         field_0x388 = 0;
                     }
                 } else {
-                    field_0x394 = lbl_8048C95C[field_0x340 * 4 + 2][0];
-                    field_0x398 = lbl_8048C95C[field_0x340 * 4 + 2][1];
+                    const s16* pos = lbl_8048C95C[field_0x340 * 4 + 2];
+                    field_0x394 = pos[0];
+                    field_0x398 = pos[1];
                     if (!isStageFlagSet(field_0x340, field_0x348) && !lbl_80529DEC.field_0x254[0]) {
                         field_0x388 = 1;
                     }
                 }
             } else if (field_0x348 == 1) {
-                field_0x394 = lbl_8048C95C[field_0x340 * 4][0];
-                field_0x398 = lbl_8048C95C[field_0x340 * 4][1];
+                const s16* pos = lbl_8048C95C[field_0x340 * 4];
+                field_0x394 = pos[0];
+                field_0x398 = pos[1];
                 if (!isStageFlagSet(field_0x340, field_0x348) && !lbl_80529DEC.field_0x254[0]) {
                     field_0x388 = 0;
                 }
             } else {
-                field_0x394 = lbl_8048C95C[field_0x340 * 4 + 1][0];
-                field_0x398 = lbl_8048C95C[field_0x340 * 4 + 1][1];
+                const s16* pos = lbl_8048C95C[field_0x340 * 4 + 1];
+                field_0x394 = pos[0];
+                field_0x398 = pos[1];
                 if (!isStageFlagSet(field_0x340, field_0x348) && !lbl_80529DEC.field_0x254[0]) {
                     field_0x388 = 1;
                 }
