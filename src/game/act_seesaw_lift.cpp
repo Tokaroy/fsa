@@ -10,6 +10,7 @@
 #include <math.h>
 #include <float.h>
 #include "game/ActorManager.h"
+#include "JSystem/ResTIMG.h"
 
 // The state table. Not const, so its initialiser is copied into it by __sinit_act_seesaw_lift_cpp.
 static void (SeesawLift_804AD348::*lbl_804AD30C[5])() = {
@@ -24,32 +25,64 @@ static const char* lbl_8053A1B8[2] = {"formation_lift.bti", "sand5.bti"};
 
 static const u16 lbl_80542868[2] = {864, 12};
 
-// Writes tile `tile` over the lift's 6 x 6 tile area.
-static inline void fillTiles(SeesawLift_804AD348* lift, u16 tile, s32 state) {
-    JGeometry::TVec3f p = lift->mPos + JGeometry::TVec3f(lift->mBox.i.x, lift->mBox.i.y, 0.0f);
-    f32 baseY = p.y;
-    lift->field_0x258 = state;
-    for (s32 row = 0; row < 6; row++) {
-        for (s32 col = 0; col < 6; col++) {
-            gBgRewrite_8053AC98->fn_802A381C(&p, lift->field_0x4, tile);
-            p.y += 16.0f;
+static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
+    return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
+}
+
+// Shared per-player helpers inlined into all four state functions (fn_8035A210,
+// fn_803597EC, fn_80358F98, fn_803584C0).
+inline void SeesawLift_804AD348::checkContactBox(s32 p) {
+    JGeometry::TBox2f box;
+    fn_801F317C(&box);
+    f32 centerY = mPos.y;
+    f32 cosVal = JMath::sincosTable_.cosShort(field_0x230);
+    box.i.y = (box.i.y - centerY) * JGeometry::TUtilf::abs(cosVal) + centerY;
+    box.f.y = (box.f.y - centerY) * JGeometry::TUtilf::abs(cosVal) + centerY;
+    JGeometry::TVec2f out;
+    s8 side;
+    if (fn_8023AAF8(p, &box, field_0x4, &out)) {
+        f32 d = centerY - out.y;
+        if (field_0x24e && d == 0.0f) {
+            d = 0.1f;
         }
-        p.y = baseY;
-        p.x += 16.0f;
+        if (!field_0x24e && JGeometry::TUtilf::abs(d) <= 8.0f) {
+            d = 0.0f;
+        }
+        field_0x240 += 20.0f * d;
+        if (d >= 0.0f) {
+            side = 1;
+        } else {
+            side = -1;
+        }
+    } else {
+        side = 0;
+    }
+    field_0x24a[p] = side;
+}
+
+inline void SeesawLift_804AD348::pushPlayer(s32 p) {
+    if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
+        f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
+        f32 push = 1.8f * (sinVal * JGeometry::TUtilf::abs(sinVal));
+        if (gGameRoot_8053AAF8->field_0x7e != 0 && getKind() >= 2) {
+            push *= 5.5f;
+        }
+        if (field_0x244 == 0) {
+            if (field_0x258 == 1) {
+                JGeometry::TVec3f v(0.0f, -1.0f * push, 0.0f);
+                fn_8023DF68(p, &v);
+            }
+        } else if (field_0x258 == 1) {
+            JGeometry::TVec3f v(0.0f, push, 0.0f);
+            fn_8023DF68(p, &v);
+        }
     }
 }
 
-// FIXME(shotgun): 83.73 %, missing/extra; behaviour drift.
-// the tile-clearing loop start position and the box arithmetic differ (18 instructions); the two words past the 0x274 allocation (0x274, 0x278) are not stored (nor the first of its two stores to 0x26c)
 void SeesawLift_804AD348::init() {
-    field_0x234 = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8053A1B8[field_0x90 & 0x7F]);
-    const u16* res = (const u16*)field_0x234;
-    u16 width = res[1];
-    u16 height = res[2];
-    mBox.i.x = (f32)(-(s32)width / 2);
-    mBox.i.y = (f32)(-(s32)height / 2);
-    mBox.f.x = (f32)(width / 2);
-    mBox.f.y = (f32)(height / 2);
+    field_0x234 = static_cast<const ResTIMG*>(
+        gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8053A1B8[field_0x90 & 0x7F]));
+    mBox.set(-field_0x234->mSizeX / 2, -field_0x234->mSizeY / 2, field_0x234->mSizeX / 2, field_0x234->mSizeY / 2);
     mLife = 0;
     field_0x230 = 0;
     field_0x238 = 0;
@@ -60,26 +93,20 @@ void SeesawLift_804AD348::init() {
     field_0x244 = 0;
     field_0x245 = 0;
     field_0x24e = 0;
-    field_0x246[0] = 0;
-    field_0x24a[0] = 0;
-    field_0x246[1] = 0;
-    field_0x24a[1] = 0;
-    field_0x246[2] = 0;
-    field_0x24a[2] = 0;
-    field_0x246[3] = 0;
-    field_0x24a[3] = 0;
+    for (int i = 0; i < 4; i++) {
+        field_0x246[i] = 0;
+        field_0x24a[i] = 0;
+    }
     field_0x250 = 0;
     field_0x26c = 0;
-    field_0x25c[0] = NULL;
-    field_0x25c[1] = NULL;
-    field_0x25c[2] = NULL;
-    field_0x25c[3] = NULL;
-    field_0x26c = 0;
-    field_0x270w = 0;
-    fillTiles(this, 864, 0);
+    // Original bug: loops to 8 instead of 4, overwriting field_0x26c, field_0x270, and two words past the 0x274 allocation.
+    for (int i = 0; i < 8; i++) {
+        field_0x25c[i] = NULL;
+    }
+    fillTiles(0);
 }
 
-// FIXME: 90.92 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 90.99 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): scheduling differs: original hoists the field_0x4 load above the layer call
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
@@ -128,7 +155,7 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     return 0;
 }
 
-// FIXME: 90.22 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 90.25 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): scheduling of the player loop differs; literal names differ
 s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_8022D75C(player)) {
@@ -174,7 +201,7 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     return 0;
 }
 
-// FIXME(shotgun): 93.86 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
     s32 moved = 0;
@@ -232,17 +259,12 @@ void SeesawLift_804AD348::fn_8035AA54() {
     }
 }
 
-// FIXME(shotgun): 73.1 %, missing/extra: the inside test and the table lookups (sincosTable_ index form)
 // Not auto-inlined: fn_8035AC84 and fn_8035AE9C call fn_8035A860 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 81.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 85.48 %, missing/extra; behaviour drift.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
-    JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
-    rel.sub(mPos);
-    rel.z = 0.0f;
-    bool inside = rel.x >= mBox.i.x + 7.0f && rel.y >= mBox.i.y && rel.x < mBox.f.x - 7.0f && rel.y < mBox.f.y;
-    if (inside) {
+    if (isPlayerInside(player)) {
         f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
         f32 cosVal = JMath::sincosTable_.cosShort(field_0x230);
         f32 slide = 0.3f * __fabsf(sinVal) * (__fabsf(weight) / (mBox.f.y * __fabsf(cosVal)));
@@ -269,7 +291,6 @@ void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 95.49 %, missing/extra + reloc-name; behaviour drift.
 void SeesawLift_804AD348::fn_8035A210() {
     field_0x240 = 0.0f;
     for (s32 p = 0; p < 4; p++) {
@@ -277,54 +298,14 @@ void SeesawLift_804AD348::fn_8035A210() {
         field_0x24a[p] = 0;
         if (fn_8023F264(p)) {
             field_0x246[p] = fn_8035AE9C(p);
-            JGeometry::TBox2f box;
-            fn_801F317C(&box);
-            f32 centerY = mPos.y;
-            f32 c = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-            box.i.y = (box.i.y - centerY) * c + centerY;
-            box.f.y = (box.f.y - centerY) * c + centerY;
-            JGeometry::TVec2f out;
-            s8 side;
-            if (fn_8023AAF8(p, &box, field_0x4, &out)) {
-                f32 d = centerY - out.y;
-                if (field_0x24e && d == 0.0f) {
-                    d = 0.1f;
-                }
-                if (!field_0x24e && __fabsf(d) <= 8.0f) {
-                    d = 0.0f;
-                }
-                field_0x240 += 20.0f * d;
-                if (d >= 0.0f) {
-                    side = 1;
-                } else {
-                    side = -1;
-                }
-            } else {
-                side = 0;
-            }
-            field_0x24a[p] = side;
+            checkContactBox(p);
         }
     }
     if ((field_0x24a[0] | field_0x24a[1] | field_0x24a[2] | field_0x24a[3]) != 0 && field_0x240 != 0.0f) {
         fn_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
-            f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-            f32 push = 1.8f * (sinVal * __fabsf(sinVal));
-            if (gGameRoot_8053AAF8->field_0x7e != 0 && ((field_0x90 >> 7) & 0x1F) >= 2) {
-                push *= 5.5f;
-            }
-            if (field_0x244 == 0) {
-                if (field_0x258 == 1) {
-                    JGeometry::TVec3f v(0.0f, -1.0f * push, 0.0f);
-                    fn_8023DF68(p, &v);
-                }
-            } else if (field_0x258 == 1) {
-                JGeometry::TVec3f v(0.0f, push, 0.0f);
-                fn_8023DF68(p, &v);
-            }
-        }
+        pushPlayer(p);
     }
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
@@ -345,7 +326,7 @@ void SeesawLift_804AD348::fn_8035A210() {
         field_0x23a = (field_0x240 - 0.15f * (f32)field_0x238 - 0.008f * (f32)mirrored) / 15.0f;
     }
     if (field_0x238 == 0 && field_0x23a != 0) {
-        fillTiles(this, lbl_80542868[1], 1);
+        fillTiles(1);
     }
     field_0x238 += field_0x23a;
     s16 oldAngle = field_0x230;
@@ -365,65 +346,71 @@ void SeesawLift_804AD348::update() {
     (this->*lbl_804AD30C[(field_0x90 >> 7) & 0x1F])();
 }
 
-// Euler tilt matrix: the x rotation is table angle 0, the z rotation is the given angle.
-static inline void setTiltMtx(Mtx mtx, s16 angle, f32 scale) {
-    f32 sa = JMath::sincosTable_.sinShort(angle);
-    f32 ca = JMath::sincosTable_.cosShort(angle);
-    f32 sx = JMath::sincosTable_.sinShort(0);
-    f32 cx = JMath::sincosTable_.cosShort(0);
-    mtx[0][0] = scale * (cx * cx);
-    mtx[0][1] = scale * ((sa * sx) * cx - ca * sx);
-    mtx[0][2] = scale * ((ca * cx) * sx + sa * sx);
-    mtx[1][0] = scale * (cx * sx);
-    mtx[1][1] = scale * ((sa * sx) * sx + ca * cx);
-    mtx[1][2] = scale * ((ca * sx) * sx - sa * cx);
-    mtx[2][0] = scale * -sx;
-    mtx[2][1] = scale * (sa * cx);
-    mtx[2][2] = scale * (ca * cx);
+// The rotation of game/RotMatrix.h's setRotScaleMtx, with the angles as s16
+// read from JMath's sincos table.
+static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scale) {
+    f32 sx = JMath::sincosTable_.sinShort(x);
+    f32 sy = JMath::sincosTable_.sinShort(y);
+    f32 sz = JMath::sincosTable_.sinShort(z);
+    f32 cx = JMath::sincosTable_.cosShort(x);
+    f32 cy = JMath::sincosTable_.cosShort(y);
+    f32 cz = JMath::sincosTable_.cosShort(z);
+    m[0][0] = scale * (cy * cz);
+    m[1][0] = scale * (cy * sz);
+    m[2][0] = scale * -sy;
+    m[0][1] = scale * (sx * sy * cz - cx * sz);
+    m[1][1] = scale * (sx * sy * sz + cx * cz);
+    m[2][1] = scale * (sx * cy);
+    m[0][2] = scale * (cx * cz * sy + sx * sz);
+    m[1][2] = scale * (cx * sz * sy - sx * cz);
+    m[2][2] = scale * (cx * cy);
 }
 
-// FIXME: 90.77 %, different + reloc-name; behaviour drift.
+// Sets the 3x3 part of m to a uniform scale; the translation column is the caller's.
+static inline void setScaleMtx(Mtx m, f32 s) {
+    m[0][0] = s;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = s;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = s;
+}
+
+// Float register allocation differs in setRotScaleMtxS16.
+// FIXME: 99.21 %, regalloc-only; behaviour clean.
 void SeesawLift_804AD348::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    f32 scale = 1.0f;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    s32 type = (field_0x90 >> 7) & 0x1F;
-    if (type == 4 && field_0x230 == 0) {
-        setTiltMtx(mtx, field_0x23c, scale);
+    if (getKind() == 4 && field_0x230 == 0) {
+        setRotScaleMtxS16(mtx, field_0x23c, 0, 0, 1.0f);
     } else {
-        setTiltMtx(mtx, field_0x230, scale);
+        setRotScaleMtxS16(mtx, field_0x230, 0, 0, 1.0f);
     }
     params.mMtx = mtx;
     params.field_0x21 = 1;
     params.field_0x1d = -2;
     params.field_0x25 = 1;
-    if ((field_0x90 & 0x7F) == 1) {
+    if (getMode() == 1) {
         params.field_0x24 = 1;
     }
-    const char* name = lbl_8053A1B8[field_0x90 & 0x7F];
+    const char* name = lbl_8053A1B8[getMode()];
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
-    type = (field_0x90 >> 7) & 0x1F;
-    if (type < 2) {
+    if (getKind() < 2) {
         params.field_0x1c = -1;
         params.field_0x1d = -2;
-        mtx[0][0] = 1.5f;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
         mtx[0][3] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = 1.5f;
-        mtx[1][2] = 0.0f;
         mtx[1][3] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = 1.5f;
         mtx[2][3] = 0.0f;
+        setScaleMtx(mtx, 1.5f);
         params.mMtx = mtx;
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
         JGeometry::TVec3f pos(mPos.x, mPos.y, 0.0f);
@@ -433,7 +420,6 @@ void SeesawLift_804AD348::draw() {
     }
 }
 
-// FIXME(shotgun): 86.75 %, missing/extra + reloc-name; behaviour drift.
 void SeesawLift_804AD348::fn_803597EC() {
     s32 mask = 0;
     field_0x240 = 0.0f;
@@ -451,59 +437,25 @@ void SeesawLift_804AD348::fn_803597EC() {
             field_0x246[p] = fn_8035AE9C(p);
             if (fn_80235448(p) && field_0x246[p] != 0) {
                 field_0x24e |= 1 << p;
-                JGeometry::TBox2f box;
-                fn_801F317C(&box);
-                f32 centerY = mPos.y;
-                f32 c = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-                box.i.y = (box.i.y - centerY) * c + centerY;
-                box.f.y = (box.f.y - centerY) * c + centerY;
-                JGeometry::TVec2f out;
-                s32 side = 0;
-                if (fn_8023AAF8(p, &box, field_0x4, &out)) {
-                    f32 d = centerY - out.y;
-                    if (field_0x24e && d == 0.0f) {
-                        d = 0.1f;
-                    }
-                    if (!field_0x24e && __fabsf(d) <= 8.0f) {
-                        d = 0.0f;
-                    }
-                    field_0x240 += 20.0f * d;
-                    side = (d >= 0.0f) ? 1 : -1;
-                }
-                field_0x24a[p] = side;
             }
         }
+        checkContactBox(p);
         mask |= field_0x24e;
         mask |= field_0x24a[p] << p;
     }
     if (mask != 0) {
         if (field_0x238 == 0 && field_0x240 != 0.0f) {
             field_0x254 = 30;
-            fillTiles(this, lbl_80542868[1], 1);
-            if (field_0x240 > 0.0f) {
-                field_0x238 = 0x200;
-            } else if (field_0x240 < 0.0f) {
-                field_0x238 = -0x200;
-            }
+            fillTiles(1);
+        }
+        if (field_0x240 > 0.0f) {
+            field_0x238 = 0x200;
+        } else if (field_0x240 < 0.0f) {
+            field_0x238 = -0x200;
         }
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
-            f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-            f32 push = 1.8f * (sinVal * __fabsf(sinVal));
-            if (gGameRoot_8053AAF8->field_0x7e != 0 && ((field_0x90 >> 7) & 0x1F) >= 2) {
-                push *= 5.5f;
-            }
-            if (field_0x244 == 0) {
-                if (field_0x258 == 1) {
-                    JGeometry::TVec3f v(0.0f, -1.0f * push, 0.0f);
-                    fn_8023DF68(p, &v);
-                }
-            } else if (field_0x258 == 1) {
-                JGeometry::TVec3f v(0.0f, push, 0.0f);
-                fn_8023DF68(p, &v);
-            }
-        }
+        pushPlayer(p);
     }
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
@@ -527,13 +479,12 @@ void SeesawLift_804AD348::fn_803597EC() {
     }
     if (field_0x230 == 0 || field_0x230 == -0x8000) {
         if (field_0x238 != 0) {
-            fillTiles(this, lbl_80542868[0], 0);
-            field_0x238 = 0;
+            fillTiles(0);
         }
+        field_0x238 = 0;
     }
 }
 
-// FIXME(shotgun): 91.30 %, missing/extra + reloc-name; behaviour drift.
 void SeesawLift_804AD348::fn_80358F98() {
     if (field_0x245) {
         GameRootSub20_801902C0* sub = fn_801902C0();
@@ -552,54 +503,14 @@ void SeesawLift_804AD348::fn_80358F98() {
         field_0x24a[p] = 0;
         if (fn_8023F264(p)) {
             field_0x246[p] = fn_8035AE9C(p);
-            JGeometry::TBox2f box;
-            fn_801F317C(&box);
-            f32 centerY = mPos.y;
-            f32 c = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-            box.i.y = (box.i.y - centerY) * c + centerY;
-            box.f.y = (box.f.y - centerY) * c + centerY;
-            JGeometry::TVec2f out;
-            s8 side;
-            if (fn_8023AAF8(p, &box, field_0x4, &out)) {
-                f32 d = centerY - out.y;
-                if (field_0x24e && d == 0.0f) {
-                    d = 0.1f;
-                }
-                if (!field_0x24e && __fabsf(d) <= 8.0f) {
-                    d = 0.0f;
-                }
-                field_0x240 += 20.0f * d;
-                if (d >= 0.0f) {
-                    side = 1;
-                } else {
-                    side = -1;
-                }
-            } else {
-                side = 0;
-            }
-            field_0x24a[p] = side;
+            checkContactBox(p);
         }
     }
     if ((field_0x24a[0] | field_0x24a[1] | field_0x24a[2] | field_0x24a[3]) != 0 && field_0x240 != 0.0f) {
         fn_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
-            f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-            f32 push = 1.8f * (sinVal * __fabsf(sinVal));
-            if (gGameRoot_8053AAF8->field_0x7e != 0 && ((field_0x90 >> 7) & 0x1F) >= 2) {
-                push *= 5.5f;
-            }
-            if (field_0x244 == 0) {
-                if (field_0x258 == 1) {
-                    JGeometry::TVec3f v(0.0f, -1.0f * push, 0.0f);
-                    fn_8023DF68(p, &v);
-                }
-            } else if (field_0x258 == 1) {
-                JGeometry::TVec3f v(0.0f, push, 0.0f);
-                fn_8023DF68(p, &v);
-            }
-        }
+        pushPlayer(p);
     }
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
@@ -629,7 +540,7 @@ void SeesawLift_804AD348::fn_80358F98() {
     field_0x238 += field_0x23a;
     s16 oldAngle = field_0x230;
     field_0x230 += field_0x238;
-    if (((field_0x90 >> 7) & 0x1F) == 2) {
+    if (getKind() == 2) {
         if (field_0x230 <= -0x3E00) {
             field_0x230 = -0x3E00;
             field_0x238 = 0;
@@ -639,7 +550,7 @@ void SeesawLift_804AD348::fn_80358F98() {
             field_0x238 = 0;
             field_0x23a = 0;
             field_0x245 = 0;
-            fillTiles(this, lbl_80542868[0], 0);
+            fillTiles(0);
         }
     } else {
         if (field_0x230 >= 0x3E00) {
@@ -651,20 +562,17 @@ void SeesawLift_804AD348::fn_80358F98() {
             field_0x238 = 0;
             field_0x23a = 0;
             field_0x245 = 0;
-            fillTiles(this, lbl_80542868[0], 0);
+            fillTiles(0);
         }
     }
     if (oldAngle == 0 && field_0x230 != 0) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
+        spawnSandEmitters();
         field_0x245 = 1;
-        fillTiles(this, lbl_80542868[1], 1);
+        fillTiles(1);
     }
 }
 
-// FIXME(shotgun): 82.33 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.79 %, missing/extra; behaviour drift.
 void SeesawLift_804AD348::fn_803584C0() {
     if (field_0x250 > 0) {
         field_0x250--;
@@ -689,46 +597,20 @@ void SeesawLift_804AD348::fn_803584C0() {
         field_0x24a[p] = 0;
         if (fn_8023F264(p)) {
             field_0x246[p] = fn_8035AC84(p);
-            JGeometry::TBox2f box;
-            fn_801F317C(&box);
-            f32 centerY = mPos.y;
-            f32 c = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-            box.i.y = (box.i.y - centerY) * c + centerY;
-            box.f.y = (box.f.y - centerY) * c + centerY;
-            JGeometry::TVec2f out;
-            s8 side;
-            if (fn_8023AAF8(p, &box, field_0x4, &out)) {
-                f32 d = centerY - out.y;
-                if (field_0x24e && d == 0.0f) {
-                    d = 0.1f;
-                }
-                if (!field_0x24e && __fabsf(d) <= 8.0f) {
-                    d = 0.0f;
-                }
-                field_0x240 += 20.0f * d;
-                if (d >= 0.0f) {
-                    side = 1;
-                } else {
-                    side = -1;
-                }
-            } else {
-                side = 0;
-            }
-            field_0x24a[p] = side;
-            ActorBase_804A5770* carried = field_0x25c[p];
-            if (carried == NULL) {
+            checkContactBox(p);
+            if (field_0x25c[p] == NULL) {
                 if (fn_8023EFEC(p) && fn_8023EEB4(p) == 'YASI') {
                     field_0x25c[p] = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(p));
                 }
-            } else if (!carried->mAlive) {
+            } else if (!field_0x25c[p]->mAlive) {
                 field_0x25c[p] = NULL;
             } else if (field_0x230 == 0) {
-                JGeometry::TVec3f& vel = carried->field_0x3c;
-                if (!(vel.squared() <= 32.0f * FLT_EPSILON) && carried->mPos.z + vel.z < 1.0f) {
-                    JGeometry::TVec3f diff;
-                    diff.sub(carried->mPos, mPos);
-                    if (diff.x >= mBox.i.x && diff.y >= mBox.i.y && diff.x < mBox.f.x && diff.y < mBox.f.y) {
-                        carried->vfunc_0x48();
+                if (!field_0x25c[p]->field_0x3c.isZero() &&
+                    field_0x25c[p]->mPos.z + field_0x25c[p]->field_0x3c.z < 1.0f) {
+                    JGeometry::TVec3f diff = field_0x25c[p]->mPos;
+                    diff.sub(mPos);
+                    if (contains(mBox, diff)) {
+                        field_0x25c[p]->vfunc_0x48();
                         field_0x25c[p] = NULL;
                         if (diff.y >= 0.0f) {
                             field_0x270 = 0x20;
@@ -760,22 +642,7 @@ void SeesawLift_804AD348::fn_803584C0() {
         fn_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
-            f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-            f32 push = 1.8f * (sinVal * __fabsf(sinVal));
-            if (gGameRoot_8053AAF8->field_0x7e != 0 && ((field_0x90 >> 7) & 0x1F) >= 2) {
-                push *= 5.5f;
-            }
-            if (field_0x244 == 0) {
-                if (field_0x258 == 1) {
-                    JGeometry::TVec3f v(0.0f, -1.0f * push, 0.0f);
-                    fn_8023DF68(p, &v);
-                }
-            } else if (field_0x258 == 1) {
-                JGeometry::TVec3f v(0.0f, push, 0.0f);
-                fn_8023DF68(p, &v);
-            }
-        }
+        pushPlayer(p);
     }
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
@@ -826,18 +693,15 @@ void SeesawLift_804AD348::fn_803584C0() {
         field_0x238 = 0;
         field_0x23a = 0;
         field_0x245 = 0;
-        fillTiles(this, 864, 0);
+        fillTiles(0);
         if (field_0x250 == 0) {
             field_0x250 = -1;
         }
     }
     if (oldAngle == 0 && field_0x230 != 0) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
+        spawnSandEmitters();
         field_0x245 = 1;
-        fillTiles(this, 12, 1);
+        fillTiles(1);
     }
     if (field_0x230 != 0) {
         field_0x250 = 0;
@@ -862,3 +726,43 @@ void SeesawLift_804AD348::fn_803584C0() {
 }
 
 SeesawLift_804AD348::~SeesawLift_804AD348() {}
+
+// Dead-stripped helpers inlined into their callers; compiled first (bottom of the
+// file), their out-of-line copies emitted the leading .sdata2 literals (0.0f,
+// 16.0f, 7.0f, 1.0f) ahead of fn_803584C0's block, as in the original.
+void SeesawLift_804AD348::spawnSandEmitters() {
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
+}
+
+bool SeesawLift_804AD348::isPlayerInside(s32 player) const {
+    JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
+    rel.sub(mPos);
+    rel.z = 0.0f;
+    JGeometry::TBox2f box(mBox);
+    box.i.x += 7.0f;
+    box.f.x -= 7.0f;
+    u8 inside = 0;
+    if (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) {
+        inside = 1;
+    }
+    return inside;
+}
+
+void SeesawLift_804AD348::fillTiles(s32 state) {
+    JGeometry::TVec3f p;
+    JGeometry::TVec3f base;
+    p = mPos + JGeometry::TVec3f(mBox.i.x, mBox.i.y, 0.0f);
+    base = p;
+    field_0x258 = state;
+    for (int row = 0; row < 6; row++) {
+        for (int col = 0; col < 6; col++) {
+            gBgRewrite_8053AC98->fn_802A381C(&p, field_0x4, lbl_80542868[state]);
+            p.y += 16.0f;
+        }
+        p.y = base.y;
+        p.x += 16.0f;
+    }
+}

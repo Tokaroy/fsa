@@ -5,6 +5,8 @@
 
 #include "game/ActorBase.h"
 
+struct ResTIMG;
+
 // The SSLF actor ("Seesaw lift", docs/names/actors.tsv, med confidence): the
 // spawner constructs it with fn_8020113C, which stores this vtable
 // (config/G4SE01/game_units.tsv). Named after its vtable, 0x804AD348.
@@ -23,10 +25,18 @@ public:
     void fn_8035AA54();
     s32 fn_8035AC84(s32 player);
     s32 fn_8035AE9C(s32 player);
+    void checkContactBox(s32 player);
+    void pushPlayer(s32 player);
+    void spawnSandEmitters();
+    bool isPlayerInside(s32 player) const;
+    void fillTiles(s32 state);
+
+    s32 getMode() const { return field_0x90 & 0x7F; }
+    s32 getKind() const { return (field_0x90 >> 7) & 0x1F; }
 
     /* 0x230 */ s16 field_0x230; // tilt angle
     /* 0x232 */ u8 field_0x232[0x234 - 0x232];
-    /* 0x234 */ void* field_0x234; // 'formation_lift.bti' / 'sand5.bti' resource
+    /* 0x234 */ const ResTIMG* field_0x234; // 'formation_lift.bti' / 'sand5.bti' resource
     /* 0x238 */ s16 field_0x238;
     /* 0x23A */ s16 field_0x23a;
     /* 0x23C */ s16 field_0x23c;
@@ -43,11 +53,7 @@ public:
     /* 0x258 */ s32 field_0x258;
     /* 0x25C */ ActorBase_804A5770* field_0x25c[4]; // per player: the actor it carries
     /* 0x26C */ s32 field_0x26c;
-    // init clears the word, fn_803584C0 uses the first half as a signed step.
-    union {
-        s32 field_0x270w;
-        s16 field_0x270;
-    };
-}; // Size: 0x274 (init also stores words at 0x274 and 0x278, past the allocation)
+    /* 0x270 */ s16 field_0x270;
+}; // Size: 0x274 (init's 8-element loop on field_0x25c also stores words at 0x274 and 0x278, past the allocation)
 
 #endif
