@@ -22,7 +22,7 @@ static const s32 lbl_80464AF8[35] = {
 
 cls_8049DB90::cls_8049DB90() {
     field_0x230 = 1;
-    field_0x231 = 0;
+    field_0x231 = false;
     field_0x234 = 0;
     field_0x238 = 0;
     field_0x23c = 0;
@@ -35,8 +35,6 @@ cls_8049DB90::cls_8049DB90() {
     field_0x258 = 0.0f;
 }
 
-// FIXME(shotgun): 99.9 %, reloc-name when compiled, but then __ct__ drops from 100 % to 99.8 % (the .sdata2 literal pool gains 80.0f), so it stays out of the build.
-#ifdef NONMATCHING
 void cls_8049DB90::init() {
     cls_8049D140::init();
     field_0x234 = field_0x90 & 0xF;
@@ -59,9 +57,7 @@ void cls_8049DB90::init() {
     }
     mSequencer.mDir = field_0x98;
 }
-#endif
 
-#ifdef NONMATCHING
 // The hop that update's states share: field_0x3c gets (vx, vy, base - 0.2 * t);
 // once t > 1 and the actor is back at z <= 0, it stops and the hop is over.
 static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
@@ -74,10 +70,8 @@ static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
     }
     return false;
 }
-#endif
 
-// FIXME(shotgun): 95.29 %, missing/extra + reloc-name (gated: its literals drop __ct__ from 100 % to 99.83 %)
-#ifdef NONMATCHING
+// FIXME: 95.39 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049DB90::update() {
     cls_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
@@ -103,7 +97,7 @@ void cls_8049DB90::update() {
         break;
     }
     case 11:
-        // FIXME(shotgun): the original passes 0xFF as fn_802303FC's third argument (li r5, 0xff).
+        // the original passes 0xFF as fn_802303FC's flag here and in states 20 and 22 (li r5, 0xff)
         for (s32 i = 0; i < 4; i++) {
             JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
             pos.add(field_0x26c);
@@ -203,6 +197,8 @@ void cls_8049DB90::update() {
             mPos.y = 300.0f + mSpawnPos.y;
         }
         break;
+    case 34: // the original's jump table runs to state 34; nothing is done there
+        break;
     }
     mPos.add(field_0x3c);
     mSequencer.mDir = field_0x98;
@@ -217,25 +213,23 @@ void cls_8049DB90::update() {
         mSequencer.fn_800FE8C0();
     }
 }
-#endif
 
-// FIXME(shotgun): 94.83 %, missing/extra (gated: its literals drop __ct__ from 100 % to 99.83 %)
-#ifdef NONMATCHING
+// The original keeps &mPos in r29 across getResource; ours recomputes it.
+// FIXME: 94.95 %, missing/extra; behaviour clean.
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
-    s32 frame = mSequencer.mFrame;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
+        fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", mSequencer.mFrame, NULL);
     }
+    s32 frame = mSequencer.mFrame;
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, field_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
-#endif
 
 void cls_8049DB90::vfunc_0x54() {
     s32 value = fn_8011921C()->field_0x8;
@@ -319,8 +313,7 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME(shotgun): 96.3 %, missing/extra + reloc-name (gated: its literals drop __ct__ from 100 % to 99.83 %)
-#ifdef NONMATCHING
+// FIXME: 99.90 %, operands + reloc-name; behaviour drift.
 void cls_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
@@ -363,7 +356,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         }
         field_0x260 = mSpawnPos;
         JGeometry::TVec3f d = mSpawnPos - *getPlayerPos_8023E724(0);
-        field_0x26c.set(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+        field_0x26c = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
         break;
     }
     case 13:
@@ -463,7 +456,6 @@ void cls_8049DB90::fn_8011B878(s32 index) {
     }
     field_0x238 = index;
 }
-#endif
 
 // Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
 static inline void setCameraBox(cls_8049DB90* self) {

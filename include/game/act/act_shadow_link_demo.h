@@ -2,7 +2,7 @@
 #define GAME_ACT_ACT_SHADOW_LINK_DEMO_H
 
 // Code: game/act_shadow_link_demo.cpp. Named after its vtable, 0x8049DB90
-// (24 slots; init and draw are not written yet). Only the
+// (24 slots; draw is not written yet). Only the
 // field vfunc_0x58 returns is known, and vfunc_0x5C tests it.
 
 #include "game/act/tu_8010DF44.h"
@@ -24,7 +24,7 @@ public:
     void fn_8011B878(s32 index);
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor
-    /* 0x231 */ u8 field_0x231; // cleared by the constructor
+    /* 0x231 */ bool field_0x231; // cleared by the constructor
     /* 0x232 */ u8 field_0x232[0x234 - 0x232]; // not yet known
     /* 0x234 */ s32 field_0x234; // cleared by the constructor
     /* 0x238 */ s32 field_0x238; // returned by vfunc_0x58
