@@ -2,6 +2,7 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/Map.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
@@ -13,7 +14,7 @@
 static const u32 lbl_80471840[] = {'FLME', 'BLZ2', 'NULL'};
 
 // 0x80324AC4.
-// FIXME(shotgun): 98.86 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour drift.
 void SlingshotSeed_804AB3A8::init() {
     field_0x98 = (field_0x90 >> 4) & 7;
     field_0x94 = (field_0x90 >> 8) & 3;
@@ -108,6 +109,15 @@ static inline bool seedBump(SlingshotSeed_804AB3A8* seed) {
         }
     }
     return false;
+}
+
+// The hit effect at pos (also inlined in tu_8017A44C.cpp): emitter 0x339 on low layers, else HTMK.
+static inline void spawnHitEffect(s32 layer, const JGeometry::TVec3f* pos) {
+    if (layer < 8) {
+        spawnEmitter_8013CC50(layer, pos, 0x339, 0, 1, NULL, NULL, true, 1.0f);
+    } else {
+        getActorManager_801F856C()->spawnActor_801F9484('HTMK', layer, pos, 0, -1, -1);
+    }
 }
 
 // Remaining: register order of layer/pos and the ids constants come from sdata2 in the original.
@@ -213,15 +223,12 @@ SlingshotSeed_804AB3A8::~SlingshotSeed_804AB3A8() {
     releaseEmitter_801EE434(mEmitter26c);
 }
 
-// FIXME(shotgun): 95.1 %, missing/extra + reloc-name; NONMATCHING because its literals shift
-// init's .sdata2 pairing (99.25 -> 98.86 %).
-#ifdef NONMATCHING
 // Re-aims after a layer flag change, moves; state 0 flies (its trail emitter, burnt by FLME /
 // lit BLZ2, bounces off walls and actors, lands in pits and water, hits players in its box),
 // state 1 fades out.
 void SlingshotSeed_804AB3A8::update() {
-    if (field_0x278 != getGameView_802D6A9C()->field_0x131df[field_0x4]) {
-        if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
+    if (field_0x278 != viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(field_0x4) == 0) {
             switch (field_0x98) {
             case 0:
                 field_0x3c.x = 5.0f;
@@ -273,7 +280,7 @@ void SlingshotSeed_804AB3A8::update() {
             field_0x3c.z = 0.0f;
         }
     }
-    field_0x278 = getGameView_802D6A9C()->field_0x131df[field_0x4];
+    field_0x278 = viewLayerFlag(field_0x4);
     mPos.add(field_0x3c);
     switch (field_0x230) {
     case 0: {
@@ -301,18 +308,15 @@ void SlingshotSeed_804AB3A8::update() {
         }
         field_0x269 = field_0x268;
         field_0x268 = 0;
-        JGeometry::TVec3f wall(0.0f, 0.0f, 0.0f);
-        u8 blocked = fn_801F2618(&wall, false);
+        JGeometry::TVec3f wall;
+        wall.zero();
+        s32 blocked = fn_801F2618(&wall, false);
         if ((field_0x26a == 0 && fn_801F2A10(field_0x90, field_0x98, false, false)) || mLife == 0 ||
             blocked != 0)
         {
-            if (field_0x4 < 8) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x339, 0, 1, NULL, NULL, true, 1.0f);
-            } else {
-                getActorManager_801F856C()->spawnActor_801F9484('HTMK', field_0x4, &mPos, 0, -1, -1);
-            }
+            spawnHitEffect(field_0x4, &mPos);
             if (blocked != 0) {
-                if (0.0f != wall.x) {
+                if (wall.x != 0.0f) {
                     field_0x3c.x *= -0.3f;
                     field_0x3c.y *= 0.3f;
                     field_0x3c.z = 2.0f;
@@ -329,23 +333,23 @@ void SlingshotSeed_804AB3A8::update() {
             break;
         }
         if (mPos.z < 0.0f) {
-            u16 tile = fn_8022461C(&mPos, field_0x4);
+            s32 tile = fn_8022461C(&mPos, field_0x4);
             fn_80226850(&mPos, field_0x4);
             if (tile == 0xC || tile == 3) {
                 mAlive = false;
                 break;
             }
             if (tile == 0xE) {
-                s32 splash1;
-                s32 splash2;
+                u16 splash1;
+                u16 splash2;
                 if (fn_802DE9A0() == true) {
-                    startSound_801F0E34(0x30061, 0);
                     splash1 = 0x2A9;
                     splash2 = 0x2AA;
+                    startSound_801F0E34(0x30061, 0);
                 } else if (fn_802DEB58()) {
-                    startSound_801F0E34(0x50042, 0);
                     splash1 = 0x45E;
                     splash2 = 0x45F;
+                    startSound_801F0E34(0x50042, 0);
                 } else {
                     mAlive = false;
                     break;
@@ -376,20 +380,16 @@ void SlingshotSeed_804AB3A8::update() {
             } else {
                 startSound_801F0E34(0x50075, 0);
             }
-            if (field_0x4 < 8) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x339, 0, 1, NULL, NULL, true, 1.0f);
-            } else {
-                getActorManager_801F856C()->spawnActor_801F9484('HTMK', field_0x4, &mPos, 0, -1, -1);
-            }
+            spawnHitEffect(field_0x4, &mPos);
             field_0x230 = 1;
             break;
         }
         if (field_0x94 == 1) {
-            if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
-                field_0x3c.z = field_0x3c.z - 0.1;
+            if (viewLayerFlag(field_0x4) == 0) {
+                field_0x3c.z -= 0.1;
             } else {
                 field_0x270 -= 0.1f;
-                field_0x3c.y = field_0x3c.y + 0.1;
+                field_0x3c.y += 0.1;
             }
         }
         JGeometry::TBox2f box = mBox;
@@ -454,7 +454,6 @@ void SlingshotSeed_804AB3A8::update() {
         field_0x248--;
     }
 }
-#endif
 
 // 0x803239A0.
 // FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
