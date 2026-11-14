@@ -188,67 +188,69 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
     if (res != 0) {
         return res;
     }
-    s32 ok1_0 = fn_803BADAC((SaveFile_803B950C*)&img1->mData[0 * sizeof(SaveFile_803B950C)]);
-    s32 ok1_1 = fn_803BADAC((SaveFile_803B950C*)&img1->mData[1 * sizeof(SaveFile_803B950C)]);
-    s32 ok1_2 = fn_803BADAC((SaveFile_803B950C*)&img1->mData[2 * sizeof(SaveFile_803B950C)]);
+    SaveFile_803B950C* files1 = (SaveFile_803B950C*)img1->mData;
+    SaveFile_803B950C* files2 = (SaveFile_803B950C*)img2->mData;
+    s32 ok1_0 = fn_803BADAC(&files1[0]);
+    s32 ok1_1 = fn_803BADAC(&files1[1]);
+    s32 ok1_2 = fn_803BADAC(&files1[2]);
 
     res = CARDRead(file, img2, 0x2000, 0x4000);
     if (res != 0) {
         return res;
     }
-    s32 ok2_0 = fn_803BADAC((SaveFile_803B950C*)&img2->mData[0 * sizeof(SaveFile_803B950C)]);
-    s32 ok2_1 = fn_803BADAC((SaveFile_803B950C*)&img2->mData[1 * sizeof(SaveFile_803B950C)]);
-    s32 ok2_2 = fn_803BADAC((SaveFile_803B950C*)&img2->mData[2 * sizeof(SaveFile_803B950C)]);
+    s32 ok2_0 = fn_803BADAC(&files2[0]);
+    s32 ok2_1 = fn_803BADAC(&files2[1]);
+    s32 ok2_2 = fn_803BADAC(&files2[2]);
 
     if (!ok1_0) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)(SaveFile_803B950C*)&img1->mData[0 * sizeof(SaveFile_803B950C)];
+        const u8* bytes = (const u8*)&files1[0];
         for (int i = 0; i < 0xC8; i++) {
             sum += bytes[i];
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C((SaveFile_803B950C*)img1->mData, 0);
-            fn_803BACF8((SaveFile_803B950C*)img1->mData, 0);
+            lbl_8050EC80.fn_803B933C(files1, 0);
+            fn_803BACF8(files1, 0);
         } else if (ok2_0) {
-            memcpy((SaveFile_803B950C*)&img1->mData[0 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img2->mData[0 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+            memcpy(&files1[0], &files2[0], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy((SaveFile_803B950C*)&img2->mData[0 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img1->mData[0 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+        memcpy(&files2[0], &files1[0], sizeof(SaveFile_803B950C));
     }
 
     if (!ok1_1) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)(SaveFile_803B950C*)&img1->mData[1 * sizeof(SaveFile_803B950C)];
+        const u8* bytes = (const u8*)&files1[1];
         for (int i = 0; i < 0xC8; i++) {
             sum += bytes[i];
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C((SaveFile_803B950C*)img1->mData, 1);
-            fn_803BACF8((SaveFile_803B950C*)img1->mData, 1);
+            lbl_8050EC80.fn_803B933C(files1, 1);
+            fn_803BACF8(files1, 1);
         } else if (ok2_1) {
-            memcpy((SaveFile_803B950C*)&img1->mData[1 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img2->mData[1 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+            memcpy(&files1[1], &files2[1], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy((SaveFile_803B950C*)&img2->mData[1 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img1->mData[1 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+        memcpy(&files2[1], &files1[1], sizeof(SaveFile_803B950C));
     }
 
     if (!ok1_2) {
         u32 sum = 0;
-        const u8* bytes = (const u8*)(SaveFile_803B950C*)&img1->mData[2 * sizeof(SaveFile_803B950C)];
+        const u8* bytes = (const u8*)&files1[2];
         for (int i = 0; i < 0xC8; i++) {
             sum += bytes[i];
         }
         if (sum == 0) {
-            lbl_8050EC80.fn_803B933C((SaveFile_803B950C*)img1->mData, 2);
-            fn_803BACF8((SaveFile_803B950C*)img1->mData, 2);
+            lbl_8050EC80.fn_803B933C(files1, 2);
+            fn_803BACF8(files1, 2);
         } else if (ok2_2) {
-            memcpy((SaveFile_803B950C*)&img1->mData[2 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img2->mData[2 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+            memcpy(&files1[2], &files2[2], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
     } else {
-        memcpy((SaveFile_803B950C*)&img2->mData[2 * sizeof(SaveFile_803B950C)], (SaveFile_803B950C*)&img1->mData[2 * sizeof(SaveFile_803B950C)], sizeof(SaveFile_803B950C));
+        memcpy(&files2[2], &files1[2], sizeof(SaveFile_803B950C));
     }
 
     if (!isCardStatusValid(file)) {
@@ -267,7 +269,7 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
     }
 
     for (int i = 0; i < 3; i++) {
-        SaveFile_803B950C* f = (SaveFile_803B950C*)&img1->mData[i * sizeof(SaveFile_803B950C)];
+        SaveFile_803B950C* f = &files1[i];
         u8 locked = 0;
         u8 dirty = 0;
         if (f->field_0x65 & 1) {
