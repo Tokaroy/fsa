@@ -1383,7 +1383,7 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 9:
             case 10:
                 if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
-                    ActorBase_804A5770* pot = fn_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
+                    ActorBase_804A5770* pot = fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
