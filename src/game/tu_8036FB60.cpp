@@ -11,18 +11,16 @@
 #include "game/act/tu_8036FB60.h"
 #include "game/cls_804AE9B0.h"
 
-extern const char lbl_80474F6C[];
-extern const char lbl_80474F80[];
-extern s32 lbl_80474ED0[];
-extern s32 lbl_80474EE0[];
-extern s32 lbl_80474EF0[];
-extern s32 lbl_80474F00[];
-extern s32 lbl_80474F10[];
-extern s32 lbl_80474F20[];
-extern s32 lbl_80474F30[];
-extern s32 lbl_80474F40[];
-extern s32 lbl_80474F4C[];
-extern s32 lbl_80474F5C[];
+static const s32 lbl_80474ED0[4] = {0, 1, 0, 2};
+static const s32 lbl_80474EE0[4] = {0x391, 0x38B, 0x388, 0x38E};
+static const s32 lbl_80474EF0[4] = {3, 1, 0, 2};
+static const s32 lbl_80474F00[4] = {0x51D, 0x520, 0x523, 0x524};
+static const s32 lbl_80474F10[4] = {0x506, 0x505, 0x504, 0x503};
+static const s32 lbl_80474F20[4] = {0, 1, 2, 3};
+static const s32 lbl_80474F30[4] = {2, 0, 1, 3};
+static const s32 lbl_80474F40[3] = {0x507, 0x507, 0x508};
+static const s32 lbl_80474F4C[4] = {1, 0, 3, 2};
+static const s32 lbl_80474F5C[4] = {0x403F3, 0x403F6, 0x403F9, 0x403FA};
 
 
 cls_804AE4B0::~cls_804AE4B0() {}
@@ -151,7 +149,6 @@ void cls_804AE4B0::update() {
     (this->*lbl_804AE420[mState])();
 }
 
-// FIXME(shotgun): 76.32 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::draw() {
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         return;
@@ -159,13 +156,13 @@ void cls_804AE4B0::draw() {
     JGeometry::TVec3f saved = mPos;
     for (s32 i = 0; i < 4; i++) {
         mPos = field_0x294[i];
-        drawSprite_801F06F0(lbl_80474F6C, field_0x350[i] + lbl_80474ED0[field_0x364], NULL, 7, 1.0f, 1.0f);
+        drawSprite_801F06F0("enemy_both2_sob.bin", field_0x350[i] + lbl_80474ED0[field_0x364], NULL, 7, 1.0f, 1.0f);
     }
     if (field_0x399 == 0) {
         mPos = saved;
     } else {
         mPos = field_0x324;
-        drawSprite_801F06F0(lbl_80474F80, field_0x368 + field_0x370, NULL, 7, 1.0f, 1.0f);
+        drawSprite_801F06F0("enemy_both_sob.bin", field_0x368 + field_0x370, NULL, 7, 1.0f, 1.0f);
         mPos = saved;
     }
 }
@@ -279,7 +276,11 @@ void cls_804AE4B0::fn_80371D50(s32 arg) {
 // Turns the sprites towards the nearest player, and lets the player pick one up.
 // FIXME(shotgun): 73.66 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::fn_80371A2C() {
-    f32 nearest[4] = {49.0f, 49.0f, 49.0f, 49.0f};
+    f32 nearest[4];
+    nearest[0] = 49.0f;
+    nearest[1] = 49.0f;
+    nearest[2] = 49.0f;
+    nearest[3] = 49.0f;
     for (s32 i = 0; i < 4; i++) {
         if (field_0x330[i] == 0) {
             for (s32 j = 0; j < 4; j++) {
@@ -408,38 +409,6 @@ void cls_804AE4B0::fn_803717CC() {
     }
 }
 
-// Per player: counts the sprite animation down and draws the player's marker above the start
-// tile (the inline both loops of fn_80371284 share).
-static inline void tickPlayer_80371284(cls_804AE4B0* self, s32 i) {
-    if (self->field_0x374[i] != 0) {
-        self->field_0x374[i]--;
-    }
-    if (self->field_0x374[i] == 0) {
-        self->field_0x374[i] = 6;
-        self->field_0x384[i]++;
-        if (fn_8023EFEC(i)) {
-            if (self->field_0x384[i] >= 7) {
-                self->field_0x384[i] = 0;
-            }
-        } else if (fn_8023EA28(i)) {
-            if (self->field_0x384[i] >= 4) {
-                self->field_0x384[i] = 0;
-            }
-        } else if (self->field_0x384[i] >= 8) {
-            self->field_0x384[i] = 0;
-        }
-    }
-    if (fn_80230188(i) || self->mState == 1) {
-        if (fn_8023EFEC(i)) {
-            JGeometry::TVec3f pos = self->field_0x264[self->field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
-            fn_80230498(i, &pos, 0x2CF + self->field_0x384[i], 0xFF, -0x80, -0x80, true);
-        } else {
-            JGeometry::TVec3f pos = self->field_0x264[self->field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
-            fn_80230498(i, &pos, 0x18 + self->field_0x384[i], 0xFF, -0x80, -0x80, true);
-        }
-    }
-}
-
 // The second state: the camera pans to the lane tile; when it has arrived the message is shown.
 // FIXME(shotgun): 88.68 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::fn_80371284() {
@@ -452,7 +421,7 @@ void cls_804AE4B0::fn_80371284() {
     if (field_0x324.y > 1720.0f) {
         field_0x324.y -= 0.5f;
         for (s32 i = 0; i < 4; i++) {
-            tickPlayer_80371284(this, i);
+            tickPlayer(i);
         }
     }
     if (!(field_0x324.y > 1720.0f)) {
@@ -461,13 +430,13 @@ void cls_804AE4B0::fn_80371284() {
         field_0x384[1] = 0;
         field_0x384[2] = 0;
         field_0x384[3] = 0;
-        GXRenderModeObj* renderMode = JUTVideo::sManager->getRenderMode();
-        JGeometry::TVec3f pos(0.5f * (f32)renderMode->fbWidth, 0.5f * (f32)renderMode->efbHeight, 0.0f);
+        JGeometry::TVec3f pos(0.5f * (s32)JUTVideo::sManager->getFbWidth(),
+                              0.5f * (s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x50F, field_0x4, pos, 0x22)) {
             mState = 2;
             for (s32 i = 0; i < 4; i++) {
-                tickPlayer_80371284(this, i);
+                tickPlayer(i);
             }
             field_0x3a4 = 0;
             field_0x3a8 = 1;
@@ -569,8 +538,8 @@ void cls_804AE4B0::fn_80370C84() {
         }
     }
     if (field_0x240 == 0) {
-        JGeometry::TVec3f pos(0.5f * (f32)(s32)JUTVideo::sManager->getFbWidth(),
-                              0.5f * (f32)(s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
+        JGeometry::TVec3f pos(0.5f * (s32)JUTVideo::sManager->getFbWidth(),
+                              0.5f * (s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x502, field_0x4, pos, 0x22)) {
             mState = 5;
@@ -594,8 +563,8 @@ void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
         if (field_0x240 == 1) {
-            JGeometry::TVec3f pos(0.5f * (f32)JUTVideo::sManager->getFbWidth(),
-                                  0.5f * (f32)JUTVideo::sManager->getEfbHeight(), 0.0f);
+            JGeometry::TVec3f pos(0.5f * (s32)JUTVideo::sManager->getFbWidth(),
+                                  0.5f * (s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
             fn_8022FE80(0, field_0x4, mSerial, true, false);
             fn_8038BD08(0, lbl_80474F10[field_0x394], field_0x4, pos, 0x22);
         }
@@ -626,10 +595,7 @@ void cls_804AE4B0::fn_80370764() {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (fn_8023E854(i)) {
-            JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
-            if (PSVECMag((Vec*)&d) > 2.0f) {
-                fn_8023DFF4(0, &d);
-            }
+            guidePlayer();
             break;
         }
     }
@@ -638,18 +604,13 @@ void cls_804AE4B0::fn_80370764() {
     }
     field_0x23c++;
     fn_803721F4();
-    {
-        JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
-        if (PSVECMag((Vec*)&d) > 2.0f) {
-            fn_8023DFF4(0, &d);
-        }
-    }
+    guidePlayer();
     if (!fn_802341D0(0)) {
         field_0x240 = 2;
     } else if (field_0x398 != 0 && field_0x240 == 0 && fn_8022CAF8(0) == lbl_80474F30[field_0x394] &&
                fn_802300EC(0)) {
-        JGeometry::TVec3f pos(0.5f * (f32)(s32)JUTVideo::sManager->getFbWidth(),
-                              0.5f * (f32)(s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
+        JGeometry::TVec3f pos(0.5f * (s32)JUTVideo::sManager->getFbWidth(),
+                              0.5f * (s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         s32 msg;
         if (field_0x394 < 3) {
@@ -706,8 +667,6 @@ void cls_804AE4B0::fn_803705A0() {
     }
 }
 
-// FIXME: 99.74 %, reloc-name; behaviour clean.
-// FIXME(shotgun): reloc-name only: float literals lbl_80542E00/E04 not split into this unit
 void cls_804AE4B0::fn_80370508() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -771,6 +730,15 @@ void cls_804AE4B0::fn_803703C8() {
     }
 }
 #pragma auto_inline reset
+
+// A plain function between fn_803703C8 and fn_80370200, inlined at both sites in fn_80370764
+// (its out-of-line copy was dead-stripped by the linker); pools 2232.0f, 1624.0f, 2.0f here.
+void cls_804AE4B0::guidePlayer() {
+    JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
+    if (PSVECMag(&d) > 2.0f) {
+        fn_8023DFF4(0, &d);
+    }
+}
 
 // FIXME: 92.83 %, missing/extra + reloc-name; behaviour near.
 // FIXME(shotgun): extra li for the match flag init; literal reloc names differ
@@ -866,6 +834,38 @@ void cls_804AE4B0::fn_80370020() {
     }
 }
 #pragma auto_inline reset
+
+// A plain function between fn_80370020 and fn_8036FDAC, inlined into both loops of fn_80371284
+// (its out-of-line copy was dead-stripped by the linker); pools 0.3f here.
+void cls_804AE4B0::tickPlayer(s32 i) {
+    if (field_0x374[i] != 0) {
+        field_0x374[i]--;
+    }
+    if (field_0x374[i] == 0) {
+        field_0x374[i] = 6;
+        field_0x384[i]++;
+        if (fn_8023EFEC(i)) {
+            if (field_0x384[i] >= 7) {
+                field_0x384[i] = 0;
+            }
+        } else if (fn_8023EA28(i)) {
+            if (field_0x384[i] >= 4) {
+                field_0x384[i] = 0;
+            }
+        } else if (field_0x384[i] >= 8) {
+            field_0x384[i] = 0;
+        }
+    }
+    if (fn_80230188(i) || mState == 1) {
+        if (fn_8023EFEC(i)) {
+            JGeometry::TVec3f pos = field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
+            fn_80230498(i, &pos, 0x2CF + field_0x384[i], 0xFF, -0x80, -0x80, true);
+        } else {
+            JGeometry::TVec3f pos = field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
+            fn_80230498(i, &pos, 0x18 + field_0x384[i], 0xFF, -0x80, -0x80, true);
+        }
+    }
+}
 
 // FIXME(shotgun): 98.95 %, regalloc-only; behaviour drift.
 void cls_804AE4B0::fn_8036FDAC() {
