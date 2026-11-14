@@ -7,6 +7,7 @@
 #include "game/Message.h"
 #include "game/tu_803944C8.h"
 #include "game/tu_803B8C74.h"
+#include "game/tu_80379F84.h"
 #include "game/act/act_small_key.h"
 #include "JSystem/JMessage/TControl.h"
 #include "JSystem/J2D/J2DPane.h"
@@ -167,6 +168,7 @@ void cls_804AF5A0::fn_803A30FC(s32 index, s32 value) {
     field_0x13c[index] = value;
 }
 
+
 void cls_804AF5A0::fn_803A30F0() {
     field_0x1a0 = 2;
 }
@@ -178,6 +180,7 @@ void cls_804AF5A0::fn_803A30E4() {
 void cls_804AF5A0::fn_803A30DC(s32 value) {
     field_0x148 = value;
 }
+
 
 void cls_804AF5A0::fn_803A30D0() {
     field_0x1a1 = 1;
@@ -200,6 +203,7 @@ void cls_804AF5A0::fn_803A30A4(u8 a, u32 b) {
     field_0x19e = a;
 }
 
+
 cls_804B20F8* cls_804AF5A0::fn_803A309C() {
     return field_0x3bc;
 }
@@ -219,6 +223,7 @@ void cls_804AF5A0::fn_803A3078() {
 void cls_804AF5A0::fn_803A3070(s32 value) {
     field_0x174 = value;
 }
+
 
 s16 cls_804AF5A0::fn_803A3068() {
     return field_0x190;
@@ -259,7 +264,6 @@ void fn_803A2FEC() {
 s32 fn_803A2FE0() {
     return lbl_8053AD78->field_0x10c;
 }
-
 void cls_804AF774::fn_803A2F74() {
     field_0x4c = 0;
     field_0x54 = 0;
@@ -313,7 +317,6 @@ void cls_804AF774::fn_803A2E48(s32 value) {
 // Adds the length of the counted noun that follows a number (singular when
 // count is 1): the unit's " Force Gem" / " Force Gems" ... " Force Fairy" /
 // " Force Fairies" strings (lbl_80475DC8), plus one.
-// FIXME: 99.85 %, reloc-name; behaviour drift.
 void cls_804AF774::fn_803A2CB0(u8 noun, s32 count) {
     switch (noun) {
     case 1:
@@ -506,6 +509,1181 @@ void cls_804AF774::do_character(int c) {
     }
 }
 
+// The music ids of the music tag 0x20031 (0: the default music, fn_803A3144).
+static const u32 lbl_805431D0[2] = {0, 0x1000007};
+
+// Counts and acts on a message tag: the window's choices, flags, rupees and
+// item tests, and in the text-image windows (window fn_803A313C) the
+// characters the tag's glyphs take.
+// FIXME: 96.33 %, missing/extra; behaviour drift.
+bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
+    const u8* p = (const u8*)data;
+    s32 work[4];
+    if (field_0x60->fn_803A313C() == 0) {
+        switch (tag) {
+        case 0:
+            field_0x58 = 1;
+            return true;
+        case 0x10000:
+        case 0x10001:
+        case 0x10002:
+        case 0x10003:
+        case 0x10004:
+        case 0x10005:
+        case 0x10006:
+        case 0x10007:
+        case 0x10008:
+        case 0x10009:
+        case 0x1000A:
+            return true;
+        case 0x1000B:
+        case 0x1000C:
+            return true;
+        case 0x10010:
+        case 0x10011:
+        case 0x10012:
+        case 0x10013:
+            return true;
+        case 0x20000:
+        case 0x20019:
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x2000A:
+        case 0x20012:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x20001:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x20011:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x20009:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x2001A:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x20002:
+        case 0x2001B:
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x2000C:
+        case 0x20014:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x20003:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x20013:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x2000B:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x2001C:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x20004:
+            field_0x4c = *(const u16*)data;
+            return true;
+        case 0x20005:
+            return true;
+        case 0x20006:
+            if (p[1] != 0) {
+                fn_8018E8DC(p[0], true, 0xFF);
+            } else {
+                fn_8018E8DC(p[0], false, 0xFF);
+            }
+            return true;
+        case 0x20007: {
+            work[0] = *(const s32*)(p + 1);
+            work[1] = *(const s32*)(p + 5);
+            if (fn_8018E930(p[0])) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20008: {
+            s32 check = p[0];
+            u32 state = p[1];
+            s32 bit = p[2];
+            u32 set = p[3];
+            if (fn_8018E930(check != 0 && state == 1) || !fn_8018E930(check != 0 && state == 0)) {
+                if (set != 0) {
+                    fn_8018E8DC(bit, true, 0xFF);
+                } else {
+                    fn_8018E8DC(bit, false, 0xFF);
+                }
+            }
+            return true;
+        }
+        case 0x2000D: {
+            work[0] = *(const s32*)data;
+            u8 who = p[5];
+            u32 add = p[4];
+            u32 keep = p[6];
+            if (who == 5) {
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8018A614(i)) {
+                        if (add == 0) {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, work[0], 0);
+                            } else {
+                                fn_802362C4(i, work[0]);
+                            }
+                        } else if (keep == 0) {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, -work[0], 0);
+                            } else {
+                                fn_802362C4(i, -work[0]);
+                            }
+                        } else {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, -work[0], 0);
+                            } else {
+                                fn_8023619C(i, -work[0]);
+                            }
+                        }
+                    }
+                }
+            } else {
+                switch (who) {
+                case 1:
+                    work[1] = 0;
+                    break;
+                case 2:
+                    work[1] = 1;
+                    break;
+                case 3:
+                    work[1] = 2;
+                    break;
+                case 4:
+                    work[1] = 3;
+                    break;
+                default:
+                    work[1] = field_0x60->fn_803A30BC();
+                    break;
+                }
+                if (add == 0) {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], work[0], 0);
+                    } else {
+                        fn_802362C4(work[1], work[0]);
+                    }
+                } else if (keep == 0) {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], -work[0], 0);
+                    } else {
+                        fn_802362C4(work[1], -work[0]);
+                    }
+                } else {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], -work[0], 0);
+                    } else {
+                        fn_8023619C(work[1], -work[0]);
+                    }
+                }
+            }
+            return true;
+        }
+        case 0x2000E: {
+            u8 amount = p[0];
+            if (amount == 0) {
+                fn_80236554(field_0x60->fn_803A30BC(), fn_80237810(field_0x60->fn_803A30BC()), false);
+            } else {
+                fn_80236554(field_0x60->fn_803A30BC(), amount * 4, false);
+            }
+            return true;
+        }
+        case 0x2000F: {
+            u8 amount = p[0];
+            if (amount == 0) {
+                fn_80237524(field_0x60->fn_803A30BC(), 0x180);
+            } else {
+                fn_80237524(field_0x60->fn_803A30BC(), amount);
+            }
+            return true;
+        }
+        case 0x20010: {
+            u32 kind = p[0];
+            work[0] = *(const s32*)(p + 1);
+            work[1] = *(const s32*)(p + 5);
+            u32 take = p[9];
+            work[2] = work[1];
+            switch (kind) {
+            case 0:
+            case 1:
+            case 2:
+            case 16:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                    SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
+                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                    if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
+                        (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
+                        work[2] = work[0];
+                        if (take != 0) {
+                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        }
+                    }
+                }
+                break;
+            case 3:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 4:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 5:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 6:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 7:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 8:
+            case 9:
+            case 10:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                    ActorBase_804A5770* pot = fn_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
+                    if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
+                        (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
+                        (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
+                        work[2] = work[0];
+                        if (take != 0) {
+                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        }
+                    }
+                }
+                break;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                        work[2] = work[0];
+                    }
+                }
+                break;
+            case 15:
+                if (!fn_8023EFEC(fn_8022EA0C(field_0x60->fn_803A30BC()))) {
+                    work[2] = work[0];
+                }
+                break;
+            }
+            field_0x60->fn_803A30DC(work[2]);
+            return true;
+        }
+        case 0x20015: {
+            u8 b = p[4];
+            work[0] = *(const s32*)data;
+            if (b == 0) {
+                field_0x60->fn_803A30B0();
+            }
+            field_0x60->fn_803A30A4(b, work[0]);
+            return true;
+        }
+        case 0x20016:
+            fn_8045B030(field_0x60->fn_803A309C(), p[0], 0);
+            return true;
+        case 0x20017: {
+            u8 range = p[0];
+            s32 pick = (s32)(range * fn_80154744()) + 1;
+            if (pick > range) {
+                pick = range;
+            }
+            work[0] = fn_803846A4(field_0x60->fn_803A3094());
+            work[0] += pick;
+            work[1] = fn_803846BC(work[0]);
+            field_0x60->fn_803A30DC(work[1]);
+            return true;
+        }
+        case 0x20018: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            work[2] = ((const s32*)data)[2];
+            work[3] = ((const s32*)data)[3];
+            field_0x60->fn_803A30DC(work[fn_8018E89C() - 1]);
+            return true;
+        }
+        case 0x2001D: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            work[2] = ((const s32*)data)[2];
+            if (fn_80236100(field_0x60->fn_803A30BC()) >= work[0]) {
+                field_0x60->fn_803A30DC(work[1]);
+            } else {
+                field_0x60->fn_803A30DC(work[2]);
+            }
+            return true;
+        }
+        case 0x2001E:
+            return true;
+        case 0x2001F:
+            return true;
+        case 0x20020:
+            work[0] = ((const s32*)data)[field_0x60->fn_803A30BC()];
+            field_0x60->fn_803A30DC(work[0]);
+            return true;
+        case 0x20021: {
+            work[0] = *(const s32*)data;
+            work[1] = *(const s32*)data;
+            if (fn_8019CE40(fn_803A3210(), fn_803A3200())) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20022: {
+            u8 who = p[0];
+            u16 bit = *(const u16*)(p + 1);
+            u8 set = p[3];
+            if (who == 5) {
+                if (set != 0) {
+                    fn_803A31AC(0, bit, true);
+                    fn_803A31AC(1, bit, true);
+                    fn_803A31AC(2, bit, true);
+                    fn_803A31AC(3, bit, true);
+                } else {
+                    fn_803A31AC(0, bit, false);
+                    fn_803A31AC(1, bit, false);
+                    fn_803A31AC(2, bit, false);
+                    fn_803A31AC(3, bit, false);
+                }
+            } else if (who >= 1 && who <= 4) {
+                if (set != 0) {
+                    fn_803A31AC(who - 1, bit, true);
+                } else {
+                    fn_803A31AC(who - 1, bit, false);
+                }
+            } else {
+                if (set != 0) {
+                    fn_803A31AC(field_0x60->fn_803A30BC(), bit, true);
+                } else {
+                    fn_803A31AC(field_0x60->fn_803A30BC(), bit, false);
+                }
+            }
+            return true;
+        }
+        case 0x20023: {
+            u8 who = p[0];
+            work[0] = *(const s32*)(p + 3);
+            work[1] = *(const s32*)(p + 7);
+            u16 bit = *(const u16*)(p + 1);
+            u8 player;
+            if (who >= 1 && who <= 4) {
+                player = who - 1;
+            } else {
+                player = field_0x60->fn_803A30BC();
+            }
+            if (fn_803A3168(player, bit)) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20024: {
+            u8 who = p[0];
+            u8 item = p[1];
+            u8 table = p[2];
+            switch (who) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                work[0] = who - 1;
+                break;
+            case 5:
+                work[0] = 5;
+                break;
+            default:
+                work[0] = field_0x60->fn_803A30BC();
+                break;
+            }
+            u8 code;
+            if (table == 1) {
+                code = lbl_80475D24[item];
+            } else {
+                code = lbl_80475D44[item];
+            }
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8018A614(i) && (i == work[0] || who == 5)) {
+                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
+                                                           getPlayerPos_8023E724(fn_8022EA0C(i)),
+                                                           (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                }
+            }
+            return true;
+        }
+        case 0x20025: {
+            work[0] = *(const s32*)data;
+            field_0x60->fn_803A30A4(0, work[0]);
+            field_0x60->fn_803A30B0();
+            return true;
+        }
+        case 0x20026: {
+            work[0] = *(const s32*)data;
+            u8 a = p[4];
+            u8 b = p[5];
+            if (!fn_803A300C()) {
+                field_0x60->fn_803944C8(work[0], a, b);
+            }
+            return true;
+        }
+        case 0x20027:
+            field_0x60->fn_803A3078();
+            fn_803A2FFC();
+            return true;
+        case 0x20028:
+            fn_803A2FEC();
+            return true;
+        case 0x20029:
+        case 0x2002A:
+            return true;
+        case 0x2002B:
+            field_0x60->fn_803A3070(p[0]);
+            return true;
+        case 0x2002C: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_8013997C(field_0x60->fn_803A30BC()) == 2) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x2002D:
+            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+            return true;
+        case 0x2002E:
+            if (field_0x60->fn_803A30BC() >= 0 && field_0x60->fn_803A30BC() < 4 &&
+                fn_8018A614(field_0x60->fn_803A30BC()) && fn_8013997C(field_0x60->fn_803A30BC()) == 1 &&
+                getPlayerLayer_8023DE58(field_0x60->fn_803A30BC()) >= 8) {
+                fn_80230E1C(field_0x60->fn_803A30BC(), false);
+            }
+            return true;
+        case 0x2002F:
+            return true;
+        case 0x20030: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_8022CAF8(field_0x60->fn_803A30BC()) != 4) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20031: {
+            u8 music = p[0];
+            if (music == 0) {
+                fn_803A3144();
+            } else {
+                gAudioMgr_8053AF80->fn_80458FF0(lbl_805431D0[music], true, 0);
+            }
+            return true;
+        }
+        case 0x20032:
+            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
+                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
+                                fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            -1, -1);
+                fn_802372F8(fn_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
+            }
+            return true;
+        case 0x20033: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x30000:
+            fn_803A2E48(field_0x60->fn_803A3068());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3068());
+            return true;
+        case 0x30001:
+            return true;
+        case 0x30002:
+            fn_803A2E48(field_0x60->fn_803A3060());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3060());
+            return true;
+        case 0x30003:
+            fn_803A2E48(field_0x60->fn_803A3058());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3058());
+            return true;
+        case 0x30004:
+            fn_803A2E48(field_0x60->fn_803A3050());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3050());
+            return true;
+        case 0x30005:
+            return true;
+        case 0x30006:
+            fn_803A2E48(fn_803A3034());
+            fn_803A2CB0(4, fn_803A3034());
+            return true;
+        case 0x30007:
+            fn_803A2E48(fn_803A3018());
+            fn_803A2CB0(4, fn_803A3018());
+            return true;
+        case 0x30008:
+            fn_803A2E48(fn_803A2FE0());
+            fn_803A2CB0(6, fn_803A2FE0());
+            return true;
+        }
+    } else {
+        switch (tag) {
+        case 0:
+            field_0x58 = 1;
+            return true;
+        case 0x10000:
+        case 0x10001:
+        case 0x10002:
+        case 0x10003:
+            field_0x50 += 4;
+            return true;
+        case 0x10007:
+        case 0x10008:
+        case 0x10009:
+        case 0x1000A:
+            field_0x50 += 4;
+            return true;
+        case 0x10004:
+        case 0x10005:
+        case 0x10006:
+        case 0x1000B:
+        case 0x1000C:
+            field_0x50 += 2;
+            return true;
+        case 0x10010:
+        case 0x10011:
+        case 0x10012:
+        case 0x10013:
+            return true;
+        case 0x20000:
+        case 0x20019:
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x2000A:
+        case 0x20012:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x20001:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x20011:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x2001A:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x20009:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30F0();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x20002:
+        case 0x2001B:
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x2000C:
+        case 0x20014:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A3114();
+            return true;
+        case 0x20003:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x20013:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30E4();
+            return true;
+        case 0x2001C:
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x2000B:
+            field_0x60->fn_803A30FC(field_0x60->fn_803A310C(), *(const s32*)data);
+            field_0x60->fn_803A30DC(*(const s32*)data);
+            field_0x60->fn_803A3114();
+            field_0x60->fn_803A30C4();
+            field_0x60->fn_803A30D0();
+            return true;
+        case 0x20004:
+            field_0x4c = *(const u16*)data;
+            return true;
+        case 0x20005:
+            return true;
+        case 0x20006:
+            if (p[1] != 0) {
+                fn_8018E8DC(p[0], true, 0xFF);
+            } else {
+                fn_8018E8DC(p[0], false, 0xFF);
+            }
+            return true;
+        case 0x20007: {
+            work[0] = *(const s32*)(p + 1);
+            work[1] = *(const s32*)(p + 5);
+            if (fn_8018E930(p[0])) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20008: {
+            s32 check = p[0];
+            u32 state = p[1];
+            s32 bit = p[2];
+            u32 set = p[3];
+            if (fn_8018E930(check != 0 && state == 1) || !fn_8018E930(check != 0 && state == 0)) {
+                if (set != 0) {
+                    fn_8018E8DC(bit, true, 0xFF);
+                } else {
+                    fn_8018E8DC(bit, false, 0xFF);
+                }
+            }
+            return true;
+        }
+        case 0x2000D: {
+            work[0] = *(const s32*)data;
+            u8 who = p[5];
+            u32 add = p[4];
+            u32 keep = p[6];
+            if (who == 5) {
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8018A614(i)) {
+                        if (add == 0) {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, work[0], 0);
+                            } else {
+                                fn_802362C4(i, work[0]);
+                            }
+                        } else if (keep == 0) {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, -work[0], 0);
+                            } else {
+                                fn_802362C4(i, -work[0]);
+                            }
+                        } else {
+                            if (work[0] >= 100) {
+                                fn_803A3228(i, -work[0], 0);
+                            } else {
+                                fn_8023619C(i, -work[0]);
+                            }
+                        }
+                    }
+                }
+            } else {
+                switch (who) {
+                case 1:
+                    work[1] = 0;
+                    break;
+                case 2:
+                    work[1] = 1;
+                    break;
+                case 3:
+                    work[1] = 2;
+                    break;
+                case 4:
+                    work[1] = 3;
+                    break;
+                default:
+                    work[1] = field_0x60->fn_803A30BC();
+                    break;
+                }
+                if (add == 0) {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], work[0], 0);
+                    } else {
+                        fn_802362C4(work[1], work[0]);
+                    }
+                } else if (keep == 0) {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], -work[0], 0);
+                    } else {
+                        fn_802362C4(work[1], -work[0]);
+                    }
+                } else {
+                    if (work[0] >= 100) {
+                        fn_803A3228(work[1], -work[0], 0);
+                    } else {
+                        fn_8023619C(work[1], -work[0]);
+                    }
+                }
+            }
+            return true;
+        }
+        case 0x2000E: {
+            u8 amount = p[0];
+            if (amount == 0) {
+                fn_80236554(field_0x60->fn_803A30BC(), fn_80237810(field_0x60->fn_803A30BC()), false);
+            } else {
+                fn_80236554(field_0x60->fn_803A30BC(), amount * 4, false);
+            }
+            return true;
+        }
+        case 0x2000F: {
+            u8 amount = p[0];
+            if (amount == 0) {
+                fn_80237524(field_0x60->fn_803A30BC(), 0x180);
+            } else {
+                fn_80237524(field_0x60->fn_803A30BC(), amount);
+            }
+            return true;
+        }
+        case 0x20010: {
+            u32 kind = p[0];
+            work[0] = *(const s32*)(p + 1);
+            work[1] = *(const s32*)(p + 5);
+            u32 take = p[9];
+            work[2] = work[1];
+            switch (kind) {
+            case 0:
+            case 1:
+            case 2:
+            case 16:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                    SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
+                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                    if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
+                        (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
+                        work[2] = work[0];
+                        if (take != 0) {
+                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        }
+                    }
+                }
+                break;
+            case 3:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 4:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 5:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 6:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 7:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                    work[2] = work[0];
+                    if (take != 0) {
+                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                    }
+                }
+                break;
+            case 8:
+            case 9:
+            case 10:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                    ActorBase_804A5770* pot = fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
+                    if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
+                        (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
+                        (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
+                        work[2] = work[0];
+                        if (take != 0) {
+                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        }
+                    }
+                }
+                break;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                        work[2] = work[0];
+                    }
+                }
+                break;
+            case 15:
+                if (!fn_8023EFEC(fn_8022EA0C(field_0x60->fn_803A30BC()))) {
+                    work[2] = work[0];
+                }
+                break;
+            }
+            field_0x60->fn_803A30DC(work[2]);
+            return true;
+        }
+        case 0x20015:
+            work[0] = *(const s32*)data;
+            field_0x60->fn_803A30A4(p[4], work[0]);
+            return true;
+        case 0x20016: {
+            u8 sound = p[0];
+            if (sound > 5 && sound != 11) {
+                fn_8045B030(field_0x60->fn_803A309C(), sound, 0);
+            }
+            return true;
+        }
+        case 0x20017: {
+            u8 range = p[0];
+            s32 pick = (s32)(range * fn_80154744()) + 1;
+            if (pick > range) {
+                pick = range;
+            }
+            work[0] = fn_803846A4(field_0x60->fn_803A3094());
+            work[0] += pick;
+            work[1] = fn_803846BC(work[0]);
+            field_0x60->fn_803A30DC(work[1]);
+            return true;
+        }
+        case 0x20018: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            work[2] = ((const s32*)data)[2];
+            work[3] = ((const s32*)data)[3];
+            field_0x60->fn_803A30DC(work[fn_8018E89C() - 1]);
+            return true;
+        }
+        case 0x2001D: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            work[2] = ((const s32*)data)[2];
+            if (fn_80236100(field_0x60->fn_803A30BC()) >= work[0]) {
+                field_0x60->fn_803A30DC(work[1]);
+            } else {
+                field_0x60->fn_803A30DC(work[2]);
+            }
+            return true;
+        }
+        case 0x2001E:
+            return true;
+        case 0x2001F:
+            return true;
+        case 0x20020:
+            work[0] = ((const s32*)data)[field_0x60->fn_803A30BC()];
+            field_0x60->fn_803A30DC(work[0]);
+            return true;
+        case 0x20021: {
+            work[0] = *(const s32*)data;
+            work[1] = *(const s32*)data;
+            if (fn_8019CE40(fn_803A3210(), fn_803A3200())) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20022: {
+            u8 who = p[0];
+            u16 bit = *(const u16*)(p + 1);
+            u8 set = p[3];
+            if (who == 5) {
+                if (set != 0) {
+                    fn_803A31AC(0, bit, true);
+                    fn_803A31AC(1, bit, true);
+                    fn_803A31AC(2, bit, true);
+                    fn_803A31AC(3, bit, true);
+                } else {
+                    fn_803A31AC(0, bit, false);
+                    fn_803A31AC(1, bit, false);
+                    fn_803A31AC(2, bit, false);
+                    fn_803A31AC(3, bit, false);
+                }
+            } else if (who >= 1 && who <= 4) {
+                if (set != 0) {
+                    fn_803A31AC(who - 1, bit, true);
+                } else {
+                    fn_803A31AC(who - 1, bit, false);
+                }
+            } else {
+                if (set != 0) {
+                    fn_803A31AC(field_0x60->fn_803A30BC(), bit, true);
+                } else {
+                    fn_803A31AC(field_0x60->fn_803A30BC(), bit, false);
+                }
+            }
+            return true;
+        }
+        case 0x20023: {
+            u8 who = p[0];
+            work[0] = *(const s32*)(p + 3);
+            work[1] = *(const s32*)(p + 7);
+            u16 bit = *(const u16*)(p + 1);
+            u8 player;
+            if (who >= 1 && who <= 4) {
+                player = who - 1;
+            } else {
+                player = field_0x60->fn_803A30BC();
+            }
+            if (fn_803A3168(player, bit)) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20024: {
+            u8 who = p[0];
+            u8 item = p[1];
+            u8 table = p[2];
+            switch (who) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                work[0] = who - 1;
+                break;
+            case 5:
+                work[0] = 5;
+                break;
+            default:
+                work[0] = field_0x60->fn_803A30BC();
+                break;
+            }
+            u8 code;
+            if (table == 1) {
+                code = lbl_80475D24[item];
+            } else {
+                code = lbl_80475D44[item];
+            }
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8018A614(i) && (i == work[0] || who == 5)) {
+                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
+                                                           getPlayerPos_8023E724(fn_8022EA0C(i)),
+                                                           (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                }
+            }
+            return true;
+        }
+        case 0x20025: {
+            work[0] = *(const s32*)data;
+            field_0x60->fn_803A30A4(0, work[0]);
+            field_0x60->fn_803A30B0();
+            return true;
+        }
+        case 0x20026: {
+            work[0] = *(const s32*)data;
+            u8 a = p[4];
+            u8 b = p[5];
+            if (!fn_803A300C()) {
+                field_0x60->fn_803944C8(work[0], a, b);
+            }
+            return true;
+        }
+        case 0x20027:
+            field_0x60->fn_803A3078();
+            fn_803A2FFC();
+            return true;
+        case 0x20028:
+            fn_803A2FEC();
+            return true;
+        case 0x20029:
+        case 0x2002A:
+            return true;
+        case 0x2002B:
+            field_0x60->fn_803A3070(p[0]);
+            return true;
+        case 0x2002C: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_8013997C(field_0x60->fn_803A30BC()) == 2) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x2002D:
+            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+            return true;
+        case 0x2002E:
+            if (field_0x60->fn_803A30BC() >= 0 && field_0x60->fn_803A30BC() < 4 &&
+                fn_8018A614(field_0x60->fn_803A30BC()) && fn_8013997C(field_0x60->fn_803A30BC()) == 1 &&
+                getPlayerLayer_8023DE58(field_0x60->fn_803A30BC()) >= 8) {
+                fn_80230E1C(field_0x60->fn_803A30BC(), false);
+            }
+            return true;
+        case 0x2002F:
+            return true;
+        case 0x20030: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_8022CAF8(field_0x60->fn_803A30BC()) != 4) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x20031: {
+            u8 music = p[0];
+            if (music == 0) {
+                fn_803A3144();
+            } else {
+                gAudioMgr_8053AF80->fn_80458FF0(lbl_805431D0[music], true, 0);
+            }
+            return true;
+        }
+        case 0x20032:
+            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
+                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
+                                fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
+                            -1, -1);
+                fn_802372F8(fn_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
+            }
+            return true;
+        case 0x20033: {
+            work[0] = ((const s32*)data)[0];
+            work[1] = ((const s32*)data)[1];
+            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
+                field_0x60->fn_803A30DC(work[0]);
+            } else {
+                field_0x60->fn_803A30DC(work[1]);
+            }
+            return true;
+        }
+        case 0x30000:
+            fn_803A2E48(field_0x60->fn_803A3068());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3068());
+            return true;
+        case 0x30001:
+            return true;
+        case 0x30002:
+            fn_803A2E48(field_0x60->fn_803A3060());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3060());
+            return true;
+        case 0x30003:
+            fn_803A2E48(field_0x60->fn_803A3058());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3058());
+            return true;
+        case 0x30004:
+            fn_803A2E48(field_0x60->fn_803A3050());
+            fn_803A2CB0(p[0], field_0x60->fn_803A3050());
+            return true;
+        case 0x30005:
+            return true;
+        case 0x30006:
+            fn_803A2E48(fn_803A3034());
+            fn_803A2CB0(4, fn_803A3034());
+            return true;
+        case 0x30007:
+            fn_803A2E48(fn_803A3018());
+            fn_803A2CB0(4, fn_803A3018());
+            return true;
+        case 0x30008:
+            fn_803A2E48(fn_803A2FE0());
+            fn_803A2CB0(6, fn_803A2FE0());
+            return true;
+        }
+    }
+    return false;
+}
+
 bool cls_804AF774::do_jump_isReady() {
     return true;
 }
@@ -577,7 +1755,7 @@ void cls_804AF72C::do_end() {
     field_0x2c0[field_0x2d0++] = -2;
 }
 
-// FIXME(shotgun): 99.03 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 99.05 %, different + reloc-name; behaviour near.
 // (the text pointer is formed before the clearing store)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
@@ -1273,7 +2451,7 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 98.29 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.32 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039CDF8(u8 value) {
     if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
         strcat(field_0x2c0, "  ");
@@ -1312,7 +2490,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.55 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.57 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -1383,7 +2561,7 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
     appendText(ch);
 }
 
-// FIXME(shotgun): 99.18 %, reloc-name; behaviour drift.
+// FIXME(shotgun): 99.55 %, reloc-name; behaviour drift.
 void cls_804AF72C::fn_8039C630(u8 noun, s32 count) {
     switch (noun) {
     case 1:
@@ -1609,7 +2787,7 @@ void cls_804AF72C::fn_8039B3EC(u8 noun, s32 count) {
 }
 
 // The play time (minutes, seconds) of the message manager as text (mode 0) or glyph codes.
-// FIXME: 94.26 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 94.30 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039ACD0(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -1700,7 +2878,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.82 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.88 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -1806,7 +2984,7 @@ void cls_804AF6E4::do_end() {
     field_0x257[field_0x281] = 0;
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
+// FIXME: 99.91 %, reloc-name; behaviour clean.
 void cls_804AF6E4::do_character(int c) {
     if (c == '\n') {
         field_0x201++;
@@ -1831,7 +3009,7 @@ void cls_804AF6E4::do_character(int c) {
     }
 }
 
-// FIXME: 99.63 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.69 %, missing/extra + reloc-name; behaviour near.
 bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     switch (tag) {
@@ -2025,7 +3203,7 @@ bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
     return false;
 }
 
-// FIXME(shotgun): 99.75 %, reloc-name; behaviour clean.
+// FIXME(shotgun): 99.89 %, reloc-name; behaviour clean.
 void cls_804AF6E4::fn_8039934C(s32 minutes, s32 seconds) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     if (minutes > 0) {
@@ -2053,7 +3231,7 @@ void cls_804AF6E4::fn_8039934C(s32 minutes, s32 seconds) {
     addSecondsMarkWidth(ratio);
 }
 
-// FIXME(shotgun): 98.72 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.87 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF6E4::fn_80398EF4(s32 minutes, s32 seconds) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     if (minutes > 99) {
@@ -2074,7 +3252,7 @@ void cls_804AF6E4::fn_80398EF4(s32 minutes, s32 seconds) {
     addSecondsMarkWidth(ratio);
 }
 
-// FIXME(shotgun): 99.79 %, reloc-name; behaviour clean.
+// FIXME(shotgun): 99.90 %, reloc-name; behaviour clean.
 void cls_804AF6E4::fn_80398A34(s32 number) {
     bool started = false;
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
@@ -2108,7 +3286,7 @@ void cls_804AF6E4::fn_80398A34(s32 number) {
     addCharWidth(ratio, number + '0');
 }
 
-// FIXME: 98.15 %, scheduling + reloc-name; behaviour drift.
+// FIXME: 98.44 %, scheduling + reloc-name; behaviour drift.
 // Scheduling only: the original increments and compares the
 // loop index right after getWidthEntry, ours at the end of the body.
 void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
@@ -2193,7 +3371,7 @@ void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
 
 cls_804AF6E4::~cls_804AF6E4() {}
 
-// FIXME: 99.79 %, operands + reloc-name; behaviour clean.
+// FIXME: 99.80 %, operands + reloc-name; behaviour clean.
 // Regalloc + stack slots + reloc-name: the message font goes
 // through r27 instead of r28 (the eight setFont calls); the random draw's
 // and the two parse_next pointers' stack slots differ (0x8 / 0x10 / 0xC);
@@ -2527,7 +3705,7 @@ void cls_804AF5A0::fn_80396884() {
 // pulses the pane alphas over lbl_8050DB0C's period, while the window waits (99999)
 // it pops the frame in; otherwise all frames are hidden. Bit 0x40 uses the op_zelda
 // screen (0x2C) and only players 1 and 5.
-// FIXME: 98.43 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 98.46 %, scheduling+regalloc; behaviour clean.
 void cls_804AF5A0::fn_80395BE8() {
     s32 player = field_0x160;
     if ((field_0x3c0->field_0x3b8->field_0x28 & 0x100) && gGameRoot_8053AAF8->field_0x7e) {
@@ -2692,7 +3870,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 97.95 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.08 %, regalloc-only + reloc-name; behaviour clean.
 // (setAlpha argument masking, window load order)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s16 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
@@ -2751,7 +3929,7 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     pane->move(field_0xf8 + field_0x100 * 0.5f - w * 0.5f, (field_0xfc + field_0x104) - h);
 }
 
-// FIXME(shotgun): 97.83 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.95 %, regalloc-only + reloc-name; behaviour clean.
 // (setAlpha argument masking, window load order)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
@@ -2810,7 +3988,7 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     pane->move(field_0x108 + field_0x110 * 0.5f - w * 0.5f, (field_0x10c + field_0x114) - h);
 }
 
-// FIXME: 99.69 %, reloc-name; behaviour clean.
+// FIXME: 99.76 %, reloc-name; behaviour clean.
 void cls_804AF5A0::fn_8039499C(bool flag) {
     if (field_0x1aa == 0) {
         f32 x = field_0xc0;
@@ -2941,7 +4119,7 @@ void cls_804AF5A0::fn_8039499C(bool flag) {
     }
 }
 
-// FIXME: 98.31 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.36 %, missing/extra + reloc-name; behaviour clean.
 // Missing 2 instructions around the clamp: the original copies
 // the processor's frame count (mr r4,r6) and clamps the copy to 0; ours clamps
 // in place (separate-variable, ternary and if/else forms tried: same or worse).
