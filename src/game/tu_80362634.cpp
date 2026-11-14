@@ -118,9 +118,19 @@ static const s8* const lbl_804ADF08[8] = {
     lbl_80542AC0, lbl_80542AC4, lbl_80474834, lbl_80542AC8, lbl_80474840, lbl_80542ACC, lbl_80542AD0, lbl_80542AD4,
 };
 
-static JGeometry::TVec3f lbl_8050C028[8];
+static JGeometry::TVec3f lbl_8050C028[8] = {
+    JGeometry::TVec3f(0.0f, 1.3f, 0.0f),  JGeometry::TVec3f(0.0f, -1.3f, 0.0f),
+    JGeometry::TVec3f(-1.3f, 0.0f, 0.0f), JGeometry::TVec3f(1.3f, 0.0f, 0.0f),
+    JGeometry::TVec3f(0.0f, 0.3f, 0.0f),  JGeometry::TVec3f(0.0f, -0.3f, 0.0f),
+    JGeometry::TVec3f(-0.3f, 0.0f, 0.0f), JGeometry::TVec3f(0.3f, 0.0f, 0.0f),
+};
 // bss 0x8050C088: four unit directions, filled by the unit's static initialiser.
-static JGeometry::TVec3f lbl_8050C088[4];
+static JGeometry::TVec3f lbl_8050C088[4] = {
+    JGeometry::TVec3f(0.0f, 1.0f, 0.0f),
+    JGeometry::TVec3f(0.0f, -1.0f, 0.0f),
+    JGeometry::TVec3f(-1.0f, 0.0f, 0.0f),
+    JGeometry::TVec3f(1.0f, 0.0f, 0.0f),
+};
 
 // Destructor at 0x80366D44.
 // FIXME(shotgun): 97.82 %, regalloc-only; behaviour clean.
