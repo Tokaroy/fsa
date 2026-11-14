@@ -137,8 +137,9 @@ void cls_804AC950::update() {
             if (!fn_8023F264(i)) {
                 continue;
             }
-            f32 px = getPlayerPos_8023E724(i)->x;
-            f32 py = getPlayerPos_8023E724(i)->y;
+            const JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
+            f32 px = ppos->x;
+            f32 py = ppos->y;
             s32 dir = fn_80230CFC(i);
             px += lbl_80472190[dir][0];
             py += lbl_80472190[dir][1];
