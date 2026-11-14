@@ -931,6 +931,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
 // (or any timer for the player's own), to the record's sprite words after
 // fn_803066F0's `start` ones, until `max`; ids above 0x3FF are kind 2.
 // Remaining: cmpw operand order on the three field_0xc / mTimer checks.
+// FIXME: 99.79 %, regalloc-only; behaviour clean.
 void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     s32 count = start;
     if (max == 0) {
@@ -1843,7 +1844,7 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
-// FIXME: 68.41 %, missing/extra; behaviour drift.
+// FIXME: 70.46 %, missing/extra; behaviour drift.
 void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (s32 i = 0; i < 4; i++) {
