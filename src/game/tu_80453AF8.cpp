@@ -41,7 +41,6 @@ static inline void bounceRows(cls_804B1DA8* self, s32 k) {
     }
 }
 
-// FIXME(shotgun): 99.97 %, reloc-name
 cls_804B1DA8::cls_804B1DA8() {
     lbl_8053AF48 = this;
     mScreen = new J2DScreen;
@@ -103,7 +102,6 @@ cls_804B1DA8::~cls_804B1DA8() {
     lbl_8053AF48 = NULL;
 }
 
-// FIXME(shotgun): 99.94 %, reloc-name
 void cls_804B1DA8::fn_80454A6C() {
     lbl_8053AEC0->fn_804310CC();
     field_0x1c = 0;
@@ -127,7 +125,6 @@ void cls_804B1DA8::fn_80454A6C() {
     field_0x58 = 9;
 }
 
-// FIXME(shotgun): 99.81 %, reloc-name
 void cls_804B1DA8::fn_80454A00() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -136,7 +133,8 @@ void cls_804B1DA8::fn_80454A00() {
     }
 }
 
-// FIXME(shotgun): 94.4 %, missing/extra + reloc-name (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
+// FIXME(shotgun): 97.85 %, missing/extra; behaviour drift.
+// (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
 // A/B-button chain of state 8 skips the rest on a mismatched flag in the original, ours does not)
 s32 cls_804B1DA8::fn_80453B14() {
     field_0x58 = 9;
@@ -160,12 +158,12 @@ s32 cls_804B1DA8::fn_80453B14() {
                 field_0x20 = 0;
             }
         }
-        if (lbl_8053AD30->fn_80309A9C(0x8, -1) && field_0x1c > 0) {
+        if (field_0x1c > 0 && lbl_8053AD30->fn_80309A9C(0x8, -1)) {
             field_0x1c--;
             field_0x20 = 1;
             setRowColors(this, field_0x1c);
             gAudioMgr_8053AF80->fn_80458880(0, -1);
-        } else if (lbl_8053AD30->fn_80309A9C(0x4, -1) && field_0x1c < 2) {
+        } else if (field_0x1c < 2 && lbl_8053AD30->fn_80309A9C(0x4, -1)) {
             field_0x1c++;
             field_0x20 = 1;
             setRowColors(this, field_0x1c);
@@ -185,9 +183,13 @@ s32 cls_804B1DA8::fn_80453B14() {
         break;
     case 10: {
         field_0x20++;
-        s32 k = field_0x20;
-        if (k >= 5) {
-            k = k < 10 ? 10 - k : 0;
+        s32 k;
+        if (field_0x20 < 5) {
+            k = field_0x20;
+        } else if (field_0x20 < 10) {
+            k = 10 - field_0x20;
+        } else {
+            k = 0;
         }
         bounceRows(this, k);
         if (field_0x20 >= 15) {
@@ -223,42 +225,38 @@ s32 cls_804B1DA8::fn_80453B14() {
         if (field_0xc->fn_80402940(10, 0, 0.0f, 480.0f)) {
             field_0x1e = 7;
             lbl_8053AEC0->fn_80431A9C(0x10A, 0, &field_0x55);
-        } else {
-            break;
         }
+        break;
     case 7:
         if (lbl_8053AEC0->fn_804317AC()) {
             field_0x1e = 8;
-        } else {
-            break;
         }
+        break;
     case 8:
         if (lbl_8053AD30->fn_80309A9C(0x2, -1)) {
             if (field_0x55 == 0) {
                 field_0x55 = 1;
                 gAudioMgr_8053AF80->fn_80458880(0, -1);
             }
-        }
-        if (lbl_8053AD30->fn_80309A9C(0x1, -1)) {
+        } else if (lbl_8053AD30->fn_80309A9C(0x1, -1)) {
             if (field_0x55 == 1) {
                 field_0x55 = 0;
                 gAudioMgr_8053AF80->fn_80458880(0, -1);
             }
-        }
-        if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
+        } else if (lbl_8053AD30->fn_80309C4C(0x1100, -1)) {
             field_0x1e = 9;
             if (field_0x55 == 1) {
                 gAudioMgr_8053AF80->fn_80458880(0xB, -1);
             }
-        }
-        if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
-            field_0x1e = 9;
+        } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
             field_0x55 = 1;
+            field_0x1e = 9;
             if (field_0x55 == 1) {
                 gAudioMgr_8053AF80->fn_80458880(0xB, -1);
             }
         }
         lbl_8053AEC0->fn_80431174(field_0x55);
+        break;
     case 9:
         if (lbl_8053AEC0->fn_80431740()) {
             if (field_0x55 == 0) {
