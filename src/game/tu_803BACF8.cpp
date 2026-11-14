@@ -18,10 +18,11 @@ struct SaveSector_803BACF8 {
     /* 0x0003 */ u8 field_0x3;
     /* 0x0004 */ u8 field_0x4;
     /* 0x0005 */ u8 pad_0x5[5];
-    /* 0x000A */ u8 mData[0x258];
+    /* 0x000A */ u8 mData[0x258]; // the three SaveFile_803B950C
     /* 0x0262 */ u8 mBodies[0x1D4C];
     /* 0x1FAE */ u8 pad_0x1FAE[0x4E];
     /* 0x1FFC */ u32 mChecksum;
+
 
     u32 calcChecksum() const {
         const u16* halfwords = (const u16*)this;
@@ -73,7 +74,7 @@ static inline bool isCardStatusValid(CARDFileInfo* file) {
            CARDGetIconSpeed(&stat, 7) == CARD_STAT_SPEED_END;
 }
 
-// FIXME: 81.78 %, missing/extra; behaviour near.
+// FIXME: 82.26 %, missing/extra; behaviour near.
 s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 bodySize) {
     snprintf((char*)(lbl_805222C0 + 0x1C00), 0x20, "Four Swords Adventures");
     OSCalendarTime cal;
@@ -175,44 +176,43 @@ s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 body
 }
 
 
-// FIXME(shotgun): 62.5 %, halfword clamp loop and sector-header store not written; reviewer moved under NONMATCHING (empty filler loop, casts)
-#ifdef NONMATCHING
+// Reads both save images, repairs each file of the first from the second (or
+// clears it) when its checksum fails, writes the images back when it took a copy,
+// clamps every file's counters, and hands the save data and bodies out.
+// FIXME: 71.06 %, missing/extra; behaviour drift.
 s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 bodySize) {
-    u8* img1 = lbl_8051E2C0;
-    u8* img2 = lbl_805202C0;
+    SaveSector_803BACF8* img1 = &lbl_8051E2C0;
+    SaveSector_803BACF8* img2 = &lbl_805202C0;
     s32 needWrite = 0;
 
     s32 res = CARDRead(file, img1, 0x2000, 0x2000);
     if (res != 0) {
         return res;
     }
-
-    SaveFile_803B950C* files1 = (SaveFile_803B950C*)(img1 + 0xA);
-    SaveFile_803B950C* files2 = (SaveFile_803B950C*)(img2 + 0xA);
-
-    s32 v1_0 = fn_803BADAC(&files1[0]);
-    s32 v1_1 = fn_803BADAC(&files1[1]);
-    s32 v1_2 = fn_803BADAC(&files1[2]);
+    SaveFile_803B950C* files1 = (SaveFile_803B950C*)img1->mData;
+    SaveFile_803B950C* files2 = (SaveFile_803B950C*)img2->mData;
+    s32 ok1_0 = fn_803BADAC(&files1[0]);
+    s32 ok1_1 = fn_803BADAC(&files1[1]);
+    s32 ok1_2 = fn_803BADAC(&files1[2]);
 
     res = CARDRead(file, img2, 0x2000, 0x4000);
     if (res != 0) {
         return res;
     }
+    s32 ok2_0 = fn_803BADAC(&files2[0]);
+    s32 ok2_1 = fn_803BADAC(&files2[1]);
+    s32 ok2_2 = fn_803BADAC(&files2[2]);
 
-    s32 v2_0 = fn_803BADAC(&files2[0]);
-    s32 v2_1 = fn_803BADAC(&files2[1]);
-    s32 v2_2 = fn_803BADAC(&files2[2]);
-
-    if (!v1_0) {
+    if (!ok1_0) {
         u32 sum = 0;
-        const u8* p = (const u8*)&files1[0];
+        const u8* bytes = (const u8*)&files1[0];
         for (int i = 0; i < 0xC8; i++) {
-            sum += p[i];
+            sum += bytes[i];
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 0);
             fn_803BACF8(files1, 0);
-        } else if (v2_0) {
+        } else if (ok2_0) {
             memcpy(&files1[0], &files2[0], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
@@ -220,16 +220,16 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         memcpy(&files2[0], &files1[0], sizeof(SaveFile_803B950C));
     }
 
-    if (!v1_1) {
+    if (!ok1_1) {
         u32 sum = 0;
-        const u8* p = (const u8*)&files1[1];
+        const u8* bytes = (const u8*)&files1[1];
         for (int i = 0; i < 0xC8; i++) {
-            sum += p[i];
+            sum += bytes[i];
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 1);
             fn_803BACF8(files1, 1);
-        } else if (v2_1) {
+        } else if (ok2_1) {
             memcpy(&files1[1], &files2[1], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
@@ -237,16 +237,16 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
         memcpy(&files2[1], &files1[1], sizeof(SaveFile_803B950C));
     }
 
-    if (!v1_2) {
+    if (!ok1_2) {
         u32 sum = 0;
-        const u8* p = (const u8*)&files1[2];
+        const u8* bytes = (const u8*)&files1[2];
         for (int i = 0; i < 0xC8; i++) {
-            sum += p[i];
+            sum += bytes[i];
         }
         if (sum == 0) {
             lbl_8050EC80.fn_803B933C(files1, 2);
             fn_803BACF8(files1, 2);
-        } else if (v2_2) {
+        } else if (ok2_2) {
             memcpy(&files1[2], &files2[2], sizeof(SaveFile_803B950C));
             needWrite = 1;
         }
@@ -310,21 +310,20 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
                     newlyLocked = 1;
                 }
             }
-            if (f->field_0x5a[0] & (u8)(1 << stage)) {
+            u8 bit = 1 << stage;
+            if (f->field_0x5a[0] & bit) {
                 if (stage < 7) {
                     if (!(f->mFlags & (1 << (stage * 4 + 1)))) {
-                        f->field_0x5a[0] &= ~(u8)(1 << stage);
+                        f->field_0x5a[0] &= ~bit;
                         dirty = 1;
                     }
-                } else {
-                    if (!(f->mFlags & (1 << (stage * 4 + 2)))) {
-                        f->field_0x5a[0] &= ~(u8)(1 << stage);
-                        dirty = 1;
-                    }
+                } else if (!(f->mFlags & (1 << (stage * 4 + 2)))) {
+                    f->field_0x5a[0] &= ~bit;
+                    dirty = 1;
                 }
             }
-            if ((f->field_0x62[0] & (u8)(1 << stage)) && locked == 1 && !newlyLocked) {
-                f->field_0x62[0] &= ~(u8)(1 << stage);
+            if ((f->field_0x62[0] & bit) && locked == 1 && !newlyLocked) {
+                f->field_0x62[0] &= ~bit;
                 dirty = 1;
             }
         }
@@ -389,25 +388,27 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
             f->field_0x69 = 1;
             dirty = 1;
         }
-        // FIXME(shotgun): halfword clamping loop over field_0x18[0..0x3F] not written
-        if (dirty) {
-            // FIXME(shotgun): dirty-flag write-back not written
+        for (int j = 0; j < 28; j++) {
+            if (f->field_0x18[j] > 99999) {
+                f->field_0x18[j] = 0;
+                dirty = 1;
+            }
         }
+        // When dirty is set the original runs an empty 0xC0-count ctr loop here (no stores).
     }
 
-    memcpy(dst, img1 + 0xA, size);
-    // FIXME(shotgun): store of sector header u16 to lbl_8051C1A0.field_0x2000 not written
+    memcpy(dst, img1->mData, size);
+    lbl_8051C1A0.field_0x2000 = img1->mHeader;
 
     u64 serial;
     CARDGetSerialNo(lbl_8051C1A0.field_0x1ff4, &serial);
     if (serial != lbl_8051C1A0.field_0x1ff8) {
-        memcpy(lbl_805242C0, img1 + 0x262, 0x1D4C);
-        memcpy(lbl_80526020, img2 + 0x262, 0x1D4C);
+        memcpy(lbl_805242C0, img1->mBodies, 0x1D4C);
+        memcpy(lbl_80526020, img2->mBodies, 0x1D4C);
     }
     lbl_8051C1A0.field_0x1ff8 = serial;
     return 0;
 }
-#endif
 
 // Reads the save image at card offset 0x2000, or at 0x4000 when that fails, into
 // lbl_8051E2C0; on success keeps its bytes 3 and 4 in the game state. Returns the card result.
@@ -431,30 +432,16 @@ bool fn_803BADAC(SaveFile_803B950C* file) {
     u32 sum = 0;
     u32 inverse = 0;
     const u8* bytes = (const u8*)file; // byte view for the checksum
-    for (int i = 0; i < 0x18; i++) {
-        sum += bytes[0];
-        inverse += ~bytes[0];
-        sum += bytes[1];
-        inverse += ~bytes[1];
-        sum += bytes[2];
-        inverse += ~bytes[2];
-        sum += bytes[3];
-        inverse += ~bytes[3];
-        sum += bytes[4];
-        inverse += ~bytes[4];
-        sum += bytes[5];
-        inverse += ~bytes[5];
-        sum += bytes[6];
-        inverse += ~bytes[6];
-        sum += bytes[7];
-        inverse += ~bytes[7];
-        bytes += 8;
+    for (int i = 0; i < 0xC0; i++) {
+        sum += *bytes;
+        inverse += ~*bytes;
+        bytes++;
     }
     return ((sum ^ file->field_0xc0) | (inverse ^ file->field_0xc4)) == 0;
 }
 
 // Writes the checksum words of files[file].
-// FIXME(shotgun): 53.84 %, missing/extra; behaviour near.
+// FIXME(shotgun): 62.33 %, missing/extra; behaviour clean.
 // (as fn_803BADAC)
 void fn_803BACF8(SaveFile_803B950C* files, u8 file) {
     SaveFile_803B950C* f = &files[file];
@@ -462,8 +449,9 @@ void fn_803BACF8(SaveFile_803B950C* files, u8 file) {
     u32 inverse = 0;
     const u8* bytes = (const u8*)f; // byte view for the checksum
     for (int i = 0; i < 0xC0; i++) {
-        sum += bytes[i];
-        inverse += ~bytes[i];
+        sum += *bytes;
+        inverse += ~*bytes;
+        bytes++;
     }
     f->field_0xc4 = inverse;
     f->field_0xc0 = sum;
