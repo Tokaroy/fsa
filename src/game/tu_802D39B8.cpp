@@ -2538,7 +2538,7 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
 // Still differs: the 0xFF fill keeps an inner-loop guard (li 0; cmpwi 10) the original lacks, and the
 // map500 line skip is not rotated with a guard as in the original.
-// FIXME: 97.51 %, missing/extra; behaviour drift.
+// FIXME: 99.13 %, missing/extra; behaviour near.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
