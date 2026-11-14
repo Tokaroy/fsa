@@ -340,7 +340,7 @@ bool fn_802DEB58(void) {
     return false;
 }
 
-// FIXME: 96.90 %, missing/extra; behaviour near.
+// FIXME: 94.23 %, missing/extra; behaviour near.
 // The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its mView (lwz 0xc)
 // for the second stage pair; ours takes the view once per pair and its
 // mView load is folded into the field_0x4 load.
@@ -577,7 +577,7 @@ void GameView_804A9950::vfunc_0xC() {
     }
 }
 
-// FIXME: 98.71 %, missing/extra; behaviour near.
+// FIXME: 99.09 %, different; behaviour near.
 // Two instructions: in the inlined fn_802DEBA0 the target reloads the view
 // for the stage >= 13 test, as fn_802DEBA0 itself does (see there).
 void GameView_804A9950::vfunc_0x10() {
@@ -1121,7 +1121,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
     return "0";
 }
 
-// FIXME: 99.35 %, missing/extra; behaviour drift.
+// FIXME: 99.46 %, different; behaviour drift.
 // Structurally close, two instructions: in the inlined fn_802DEBA0 the target
 // reloads the view for the stage >= 13 test (the fn_802DEBA0 family). The .rodata strings
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
@@ -1208,7 +1208,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.45 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1270,7 +1270,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.13 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 96.23 %, different + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
 // before its flag test, and extracts both screen bytes before the first compare in the key
