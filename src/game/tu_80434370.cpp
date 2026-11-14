@@ -387,6 +387,7 @@ void cls_804B16A8::fn_80435E20() {
 }
 
 
+// FIXME: 99.77 %, scheduling+regalloc; behaviour clean.
 void cls_804B16A8::fn_80434724() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
     f32 scale = fontSizeW / lbl_8053AD78->mFont->getCellWidth();
