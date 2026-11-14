@@ -165,28 +165,32 @@ void cls_804A7A68::update() {
                 case 4:
                     fn_80230BF4(order[i], 3);
                     fn_80230FD0(i, 0x20018);
-                    p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
+                    p.set(mPos);
+                    p.x += 16.0f * i - 24.0f;
                     fn_802303FC(order[i], &p, field_0x268);
                     field_0x238[order[i]].set(p);
                     break;
                 case 5:
                     fn_80230BF4(order[i], 2);
                     fn_80230FD0(i, 0x2001A);
-                    p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
+                    p.set(mPos);
+                    p.x += 16.0f * i - 24.0f;
                     fn_802303FC(order[i], &p, field_0x268);
                     field_0x238[order[i]].set(p);
                     break;
                 case 6:
                     fn_80230BF4(order[i], 0);
                     fn_80230FD0(i, 0x2001A);
-                    p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
+                    p.set(mPos);
+                    p.y += 16.0f * i - 24.0f;
                     fn_802303FC(order[i], &p, field_0x268);
                     field_0x238[order[i]].set(p);
                     break;
                 case 7:
                     fn_80230BF4(order[i], 1);
                     fn_80230FD0(i, 0x2001A);
-                    p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
+                    p.set(mPos);
+                    p.y += 16.0f * i - 24.0f;
                     fn_802303FC(order[i], &p, field_0x268);
                     field_0x238[order[i]].set(p);
                     break;
