@@ -959,24 +959,23 @@ void cls_804ADF28::fn_80364900() {
     } else {
         field_0x3c.z -= 0.5f;
         mPos.add(field_0x3c);
-        if (mPos.z >= 0.0f) {
-            return;
-        }
-        field_0x238 = 0;
-        mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x26c = 0x38e;
-        field_0x25c = 4;
-        if (field_0x23c == 3) {
-            field_0x23c = 2;
-            field_0x3c.x = -0.8f;
-            field_0x264 = 5;
-            field_0x25c = 4;
-        } else {
-            field_0x23c = 3;
-            field_0x3c.x = 0.8f;
+        if (mPos.z < 0.0f) {
+            field_0x238 = 0;
+            mPos.z = 0.0f;
+            field_0x3c.z = 0.0f;
             field_0x26c = 0x38e;
-            field_0x264 = 0;
+            field_0x25c = 4;
+            if (field_0x23c == 3) {
+                field_0x23c = 2;
+                field_0x3c.x = -0.8f;
+                field_0x264 = 5;
+                field_0x25c = 4;
+            } else {
+                field_0x23c = 3;
+                field_0x3c.x = 0.8f;
+                field_0x26c = 0x38e;
+                field_0x264 = 0;
+            }
         }
     }
 }
