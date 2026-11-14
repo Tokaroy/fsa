@@ -45,11 +45,31 @@ const char* lbl_804B13C4[4] = {
 // The tables are defined in address order.
 
 // The heart panes of player 0 on the main screen: "Php1lf01".., "Php1lk01".., "Php1lf09".., "Php1lk09".. (fn_8041DD24).
-// FIXME(shotgun): table not written out (more literals than the gate allows without a
-// blobs.txt array line); it sits inside dtk's merged .rodata object lbl_8048D454.
-extern const u64 lbl_8048D468[4][8];
-extern const u64 lbl_8048D568[12];
-extern const u64 lbl_8048D5C8[12];
+static const u64 lbl_8048D468[8] = {
+    'Php1lf01', 'Php1lf02', 'Php1lf03', 'Php1lf04', 'Php1lf05', 'Php1lf06', 'Php1lf07', 'Php1lf08',
+};
+
+static const u64 lbl_8048D4A8[8] = {
+    'Php1lk01', 'Php1lk02', 'Php1lk03', 'Php1lk04', 'Php1lk05', 'Php1lk06', 'Php1lk07', 'Php1lk08',
+};
+
+static const u64 lbl_8048D4E8[8] = {
+    'Php1lf09', 'Php1lf10', 'Php1lf11', 'Php1lf12', 'Php1lf13', 'Php1lf14', 'Php1lf15', 'Php1lf16',
+};
+
+static const u64 lbl_8048D528[8] = {
+    'Php1lk09', 'Php1lk10', 'Php1lk11', 'Php1lk12', 'Php1lk13', 'Php1lk14', 'Php1lk15', 'Php1lk16',
+};
+
+static const u64 lbl_8048D568[12] = {
+    'Php1ii01', 'Php1ii03', 'Php1ii05', 'Php1ii07', 'Php1ii09', 'Php1ii11',
+    'Php1ii13', 'Php1ii15', 'Php1ii17', 'Php1ii19', 'Php1ii21', 'Php1ii23',
+};
+
+static const u64 lbl_8048D5C8[12] = {
+    'Php1ii02', 'Php1ii04', 'Php1ii06', 'Php1ii08', 'Php1ii10', 'Php1ii12',
+    'Php1ii14', 'Php1ii16', 'Php1ii18', 'Php1ii20', 'Php1ii22', 'Php1ii24',
+};
 
 static const u64 lbl_8048D628[3] = {
     0x5068317069696231ull, /* "Ph1piib1" */
@@ -94,18 +114,60 @@ static const u64 lbl_8048D6B8[4] = {
 
 // "P1s01" .. "P4r06" and "P1sk01" .. "P4rk06": the Force Gem digits per player (fn_8041C0C0;
 // player 4 has the r tags).
-// FIXME(shotgun): table not written out (more literals than the gate allows without a
-// blobs.txt array line); it sits inside dtk's merged .rodata object lbl_8048D454.
-extern const u64 lbl_8048D6D8[4][5];
-// FIXME(shotgun): table not written out (more literals than the gate allows without a
-// blobs.txt array line); it sits inside dtk's merged .rodata object lbl_8048D454.
-extern const u64 lbl_8048D778[4][5];
-extern const u64 lbl_8048D818[4][2];
-extern const u64 lbl_8048D858[4][12];
-extern const u64 lbl_8048D9D8[4][12];
-extern const u64 lbl_8048DB58[4][3];
-extern const u64 lbl_8048DBB8[4][3];
-extern const u64 lbl_8048DC18[4][6];
+static const u64 lbl_8048D6D8[4][5] = {
+    {'P1s01', 'P1s02', 'P1s03', 'P1s04', 'P1s05'},
+    {'P2s01', 'P2s02', 'P2s03', 'P2s04', 'P2s05'},
+    {'P3s01', 'P3s02', 'P3s03', 'P3s04', 'P3s05'},
+    {'P4r02', 'P4r03', 'P4r04', 'P4r05', 'P4r06'},
+};
+
+static const u64 lbl_8048D778[4][5] = {
+    {'P1sk01', 'P1sk02', 'P1sk03', 'P1sk04', 'P1sk05'},
+    {'P2sk01', 'P2sk02', 'P2sk03', 'P2sk04', 'P2sk05'},
+    {'P3sk01', 'P3sk02', 'P3sk03', 'P3sk04', 'P3sk05'},
+    {'P4rk02', 'P4rk03', 'P4rk04', 'P4rk05', 'P4rk06'},
+};
+static const u64 lbl_8048D818[4][2] = {
+    {'P1r01', 'P1rk01'},
+    {'P2r01', 'P2rk01'},
+    {'P3r01', 'P3rk01'},
+    {'P4r01', 'P4rk01'},
+};
+
+static const u64 lbl_8048D858[4][12] = {
+    {'Pp1ii01', 'Pp1ii03', 'Pp1ii05', 'Pp1ii07', 'Pp1ii09', 'Pp1ii11', 'Pp1ii13', 'Pp1ii15', 'Pp1ii17', 'Pp1ii19', 'Pp1ii21', 'Pp1ii23'},
+    {'Pp2ii01', 'Pp2ii03', 'Pp2ii05', 'Pp2ii07', 'Pp2ii09', 'Pp2ii11', 'Pp2ii13', 'Pp2ii15', 'Pp2ii17', 'Pp2ii19', 'Pp2ii21', 'Pp2ii23'},
+    {'Pp3ii01', 'Pp3ii03', 'Pp3ii05', 'Pp3ii07', 'Pp3ii09', 'Pp3ii11', 'Pp3ii13', 'Pp3ii15', 'Pp3ii17', 'Pp3ii19', 'Pp3ii21', 'Pp3ii23'},
+    {'Pp4ii01', 'Pp4ii03', 'Pp4ii05', 'Pp4ii07', 'Pp4ii09', 'Pp4ii11', 'Pp4ii13', 'Pp4ii15', 'Pp4ii17', 'Pp4ii19', 'Pp4ii21', 'Pp4ii23'},
+};
+
+static const u64 lbl_8048D9D8[4][12] = {
+    {'Pp1ii02', 'Pp1ii04', 'Pp1ii06', 'Pp1ii08', 'Pp1ii10', 'Pp1ii12', 'Pp1ii14', 'Pp1ii16', 'Pp1ii18', 'Pp1ii20', 'Pp1ii22', 'Pp1ii24'},
+    {'Pp2ii02', 'Pp2ii04', 'Pp2ii06', 'Pp2ii08', 'Pp2ii10', 'Pp2ii12', 'Pp2ii14', 'Pp2ii16', 'Pp2ii18', 'Pp2ii20', 'Pp2ii22', 'Pp2ii24'},
+    {'Pp3ii02', 'Pp3ii04', 'Pp3ii06', 'Pp3ii08', 'Pp3ii10', 'Pp3ii12', 'Pp3ii14', 'Pp3ii16', 'Pp3ii18', 'Pp3ii20', 'Pp3ii22', 'Pp3ii24'},
+    {'Pp4ii02', 'Pp4ii04', 'Pp4ii06', 'Pp4ii08', 'Pp4ii10', 'Pp4ii12', 'Pp4ii14', 'Pp4ii16', 'Pp4ii18', 'Pp4ii20', 'Pp4ii22', 'Pp4ii24'},
+};
+
+static const u64 lbl_8048DB58[4][3] = {
+    {'Pp1iib01', 'Pp1iib02', 'Pp1iib03'},
+    {'Pp2iib01', 'Pp2iib02', 'Pp2iib03'},
+    {'Pp3iib01', 'Pp3iib02', 'Pp3iib03'},
+    {'Pp4iib01', 'Pp4iib02', 'Pp4iib03'},
+};
+
+static const u64 lbl_8048DBB8[4][3] = {
+    {'P1le201', 'P1le202', 'P1le203'},
+    {'P2le201', 'P2le202', 'P2le203'},
+    {'P3le201', 'P3le202', 'P3le203'},
+    {'P4le201', 'P4le202', 'P4le203'},
+};
+
+static const u64 lbl_8048DC18[4][6] = {
+    {'Pp1i01', 'Pp1i02', 'Pp1ib01', 'Pp1ib02', 'Pp1ib03', 'Pp1ib04'},
+    {'Pp2i01', 'Pp2i02', 'Pp2ib01', 'Pp2ib02', 'Pp2ib03', 'Pp2ib04'},
+    {'Pp3i01', 'Pp3i02', 'Pp3ib01', 'Pp3ib02', 'Pp3ib03', 'Pp3ib04'},
+    {'Pp4i01', 'Pp4i02', 'Pp4ib01', 'Pp4ib02', 'Pp4ib03', 'Pp4ib04'},
+};
 
 static const u64 lbl_8048DCD8[4] = {
     0x5070316E6F693032ull, /* "Pp1noi02" */
@@ -114,9 +176,12 @@ static const u64 lbl_8048DCD8[4] = {
     0x5070346E6F693032ull, /* "Pp4noi02" */
 };
 
-// FIXME(shotgun): the tags "P1brak01", "P1bra01", "P1brak02", "P1bra02" .. "P4bra02" inside
-// dtk's merged .rodata object lbl_8048D454 (at 0x8048DCF8); not split out yet.
-extern const u64 lbl_8048DCF8[4][4];
+static const u64 lbl_8048DCF8[4][4] = {
+    {'P1brak01', 'P1bra01', 'P1brak02', 'P1bra02'},
+    {'P2brak01', 'P2bra01', 'P2brak02', 'P2bra02'},
+    {'P3brak01', 'P3bra01', 'P3brak02', 'P3bra02'},
+    {'P4brak01', 'P4bra01', 'P4brak02', 'P4bra02'},
+};
 
 static const u64 lbl_8048DD78[3] = {
     0x506870316D623033ull, /* "Php1mb03" */
@@ -273,7 +338,7 @@ extern const s16 lbl_8048E11C[2][5];
 extern const s16 lbl_8048E130[2][5];
 extern const s16 lbl_8048E144[2][5];
 
-// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.25 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -332,10 +397,10 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     field_0x260[5] = field_0x4->search(lbl_8048DC18[0][5])->getAlpha();
     field_0x266 = field_0x4->search(lbl_8048DE60[0])->getAlpha();
     field_0x267 = field_0x18->search(lbl_8048DE40[0])->getAlpha();
-    field_0x250[0] = field_0x4->search(lbl_8048D468[0][0])->getAlpha();
-    field_0x250[1] = field_0x4->search(lbl_8048D468[1][0])->getAlpha();
-    field_0x250[2] = field_0x4->search(lbl_8048D468[2][0])->getAlpha();
-    field_0x250[3] = field_0x4->search(lbl_8048D468[3][0])->getAlpha();
+    field_0x250[0] = field_0x4->search(lbl_8048D468[0])->getAlpha();
+    field_0x250[1] = field_0x4->search(lbl_8048D4A8[0])->getAlpha();
+    field_0x250[2] = field_0x4->search(lbl_8048D4E8[0])->getAlpha();
+    field_0x250[3] = field_0x4->search(lbl_8048D528[0])->getAlpha();
     field_0x26a = field_0x4->search('Php1ni02')->getAlpha();
     field_0x26b = field_0x4->search('Php1ni01')->getAlpha();
     field_0x26c[0] = field_0x4->search(lbl_8048D6B8[0])->getAlpha();
@@ -381,8 +446,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
         for (s32 i = 0; i < 8; i++) {
             for (s32 j = 0; j < 3; j++) {
                 const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
-                static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[0][i]))->append(res, 1.0f);
-                static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[1][i]))->append(res, 1.0f);
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->append(res, 1.0f);
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->append(res, 1.0f);
             }
         }
     } else {
@@ -454,7 +519,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 98.92 %, different; behaviour drift.
+// FIXME(shotgun): 99.49 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
     for (s32 i = 0; i < 4; i++) {
         fn_8041E3B4(i);
@@ -620,7 +685,7 @@ void cls_804B13D4::fn_8041F5FC() {
     }
 }
 
-// FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.69 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
@@ -931,29 +996,23 @@ void cls_804B13D4::fn_8041E58C() {
     }
 }
 
-// register assignment of mask/bit is swapped vs the original
-// FIXME: 92.42 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041E3B4(s32 player) {
-    s32 mask = 1 << player;
-    u8 bit = mask;
-    bool takesPart = (gGameRoot_8053AAF8->mPlayerMask & bit) != 0;
-    if (!takesPart) {
-        field_0x28f &= ~bit;
+    if (!isMaskBitSet(gGameRoot_8053AAF8->mPlayerMask, player)) {
+        field_0x28f &= ~(u8)(1 << player);
         return;
     }
-    bool flagged = (lbl_8053AED0->field_0xdd & bit) != 0;
-    if (flagged && !(field_0x290 & bit)) {
-        field_0x290 |= bit;
-        field_0x28f |= bit;
+    if (isMaskBitSet(lbl_8053AED0->field_0xdd, player) && !(field_0x290 & (u8)(1 << player))) {
+        field_0x290 |= (u8)(1 << player);
+        field_0x28f |= (u8)(1 << player);
         return;
     }
     if (lbl_8053AED0->field_0xdc & 0x10) {
-        field_0x28f &= ~bit;
+        field_0x28f &= ~(u8)(1 << player);
         return;
     }
     if (getGameView_802D6A9C()->field_0x131ef != 0 || fn_8022AF5C() || fn_8022B1AC() || fn_8022B160()) {
-        field_0x28f &= ~bit;
-        field_0x293 |= (u8)mask;
+        field_0x28f &= ~(u8)(1 << player);
+        field_0x293 |= (u8)(1 << player);
         return;
     }
     if (lbl_8053AEC8->field_0x5e == 1) {
@@ -964,16 +1023,15 @@ void cls_804B13D4::fn_8041E3B4(s32 player) {
         return;
     }
     if (gGameRoot_8053AAF8->field_0x4c == 11) {
-        field_0x28f &= ~bit;
+        field_0x28f &= ~(u8)(1 << player);
         return;
     }
-    if (!fn_8022B1AC() && !fn_8022B160() && (field_0x293 & bit)) {
-        field_0x28f |= (u8)mask;
-        field_0x293 &= ~bit;
+    if (!fn_8022B1AC() && !fn_8022B160() && (field_0x293 & (u8)(1 << player))) {
+        field_0x28f |= (u8)(1 << player);
+        field_0x293 &= ~(u8)(1 << player);
     }
 }
 
-// FIXME(shotgun): 94.92 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041DD24() {
     if (!(field_0x28a & 1)) {
         return;
@@ -986,7 +1044,7 @@ void cls_804B13D4::fn_8041DD24() {
     if (max < 0) {
         max = 0;
     }
-    if (max < life) {
+    if (max < lbl_80529DEC.field_0xd8[0]) {
         life = max;
     }
     if (life < 0) {
@@ -994,70 +1052,68 @@ void cls_804B13D4::fn_8041DD24() {
     }
     for (s32 i = 0; i < 8; i++) {
         if (life >= 4) {
-            field_0x4->search(lbl_8048D468[0][i])->show();
-            field_0x4->search(lbl_8048D468[1][i])->show();
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[0][i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[1][i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x4->search(lbl_8048D468[2][i])->hide();
-            field_0x4->search(lbl_8048D468[3][i])->hide();
-            max -= 4;
+            field_0x4->search(lbl_8048D468[i])->show();
+            field_0x4->search(lbl_8048D4A8[i])->show();
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x4->search(lbl_8048D4E8[i])->hide();
+            field_0x4->search(lbl_8048D528[i])->hide();
             life -= 4;
+            max -= 4;
             continue;
         }
         if (life == 0) {
-            field_0x4->search(lbl_8048D468[0][i])->hide();
-            field_0x4->search(lbl_8048D468[1][i])->hide();
+            field_0x4->search(lbl_8048D468[i])->hide();
+            field_0x4->search(lbl_8048D4A8[i])->hide();
             if (max > 0) {
-                field_0x4->search(lbl_8048D468[2][i])->show();
-                field_0x4->search(lbl_8048D468[3][i])->show();
+                field_0x4->search(lbl_8048D4E8[i])->show();
+                field_0x4->search(lbl_8048D528[i])->show();
                 max -= 4;
             } else {
-                field_0x4->search(lbl_8048D468[2][i])->hide();
-                field_0x4->search(lbl_8048D468[3][i])->hide();
+                field_0x4->search(lbl_8048D4E8[i])->hide();
+                field_0x4->search(lbl_8048D528[i])->hide();
             }
         } else if (life == 1) {
-            field_0x4->search(lbl_8048D468[0][i])->show();
-            field_0x4->search(lbl_8048D468[1][i])->show();
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[0][i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[1][i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x4->search(lbl_8048D468[2][i])->hide();
-            field_0x4->search(lbl_8048D468[3][i])->hide();
+            field_0x4->search(lbl_8048D468[i])->show();
+            field_0x4->search(lbl_8048D4A8[i])->show();
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x4->search(lbl_8048D4E8[i])->hide();
+            field_0x4->search(lbl_8048D528[i])->hide();
             max -= 4;
         } else if (life == 2) {
-            field_0x4->search(lbl_8048D468[0][i])->show();
-            field_0x4->search(lbl_8048D468[1][i])->show();
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[0][i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[1][i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x4->search(lbl_8048D468[2][i])->hide();
-            field_0x4->search(lbl_8048D468[3][i])->hide();
+            field_0x4->search(lbl_8048D468[i])->show();
+            field_0x4->search(lbl_8048D4A8[i])->show();
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x4->search(lbl_8048D4E8[i])->hide();
+            field_0x4->search(lbl_8048D528[i])->hide();
             max -= 4;
         } else if (life == 3) {
-            field_0x4->search(lbl_8048D468[0][i])->show();
-            field_0x4->search(lbl_8048D468[1][i])->show();
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[0][i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[1][i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x4->search(lbl_8048D468[2][i])->hide();
-            field_0x4->search(lbl_8048D468[3][i])->hide();
+            field_0x4->search(lbl_8048D468[i])->show();
+            field_0x4->search(lbl_8048D4A8[i])->show();
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D468[i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048D4A8[i]))->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+            field_0x4->search(lbl_8048D4E8[i])->hide();
+            field_0x4->search(lbl_8048D528[i])->hide();
             max -= 4;
         }
         life = 0;
     }
 }
 
-// FIXME(shotgun): 90.11 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041D18C(s32 player) {
     s32 idx = -1;
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
-        u8 bit = 1 << player;
-        if (!(field_0x28d & bit)) {
-            if (!fn_80230188(player) && fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & bit)) {
-                field_0x28d |= bit;
+        if (!isMaskBitSet(field_0x28d, player) && !fn_80230188(player)) {
+            if (fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
+                field_0x28d |= (u8)(1 << player);
                 field_0x4->search('Php1ni02')->show();
             }
         } else {
             if (lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(player), 0x100) == 0 ||
-                (lbl_8053AED0->field_0x255 & bit) || fn_80230188(player)) {
-                field_0x28d &= ~bit;
+                (lbl_8053AED0->field_0x255 & (u8)(1 << player)) || fn_80230188(player)) {
+                field_0x28d &= ~(u8)(1 << player);
                 field_0x4->search('Php1ni02')->hide();
             }
         }
@@ -1084,16 +1140,15 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
             }
         }
     } else {
-        u8 bit = 1 << player;
-        if (!(field_0x28d & bit)) {
-            if (!fn_80230188(player) && fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & bit)) {
-                field_0x28d |= bit;
+        if (!isMaskBitSet(field_0x28d, player) && !fn_80230188(player)) {
+            if (fn_8023BE0C(fn_8022EA0C(player)) && !(lbl_8053AED0->field_0x255 & (u8)(1 << player))) {
+                field_0x28d |= (u8)(1 << player);
                 field_0x4->search(lbl_8048DCD8[player])->show();
             }
         } else {
             if (lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(player), 0x100) == 0 ||
-                (lbl_8053AED0->field_0x255 & bit) || fn_80230188(player)) {
-                field_0x28d &= ~bit;
+                (lbl_8053AED0->field_0x255 & (u8)(1 << player)) || fn_80230188(player)) {
+                field_0x28d &= ~(u8)(1 << player);
                 field_0x4->search(lbl_8048DCD8[player])->hide();
             }
         }
@@ -1223,13 +1278,15 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME(shotgun): 87.86 %, missing/extra; behaviour drift.
+// FIXME: 99.02 %, missing/extra; behaviour near.
+// FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
         return;
     }
-    s32 digit = 0;
     s32 n = lbl_80529DEC.field_0xe8[0];
+    s32 digit = 0;
+    const ResTIMG* res;
     if (n > 9999) {
         n = 9999;
     }
@@ -1242,7 +1299,7 @@ void cls_804B13D4::fn_8041CC04() {
             n = -5000;
         }
         n *= -1;
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
+        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[0]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[0]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D658[4])->show();
@@ -1255,24 +1312,32 @@ void cls_804B13D4::fn_8041CC04() {
         field_0x4->search(lbl_8048D658[4])->hide();
         field_0x4->search(lbl_8048D680[4])->hide();
     }
-    const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 1000]));
-    n -= (n / 1000) * 1000;
+    s32 n1000 = n / 1000;
+    n %= 1000;
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n1000]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 100]));
-    n -= (n / 100) * 100;
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit + 1]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit + 1]))->changeTexture(res, 0);
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 10]));
-    n -= (n / 10) * 10;
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit + 2]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit + 2]))->changeTexture(res, 0);
+    digit++;
+
+    s32 n100 = n / 100;
+    n %= 100;
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n100]));
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
+    digit++;
+
+    s32 n10 = n / 10;
+    n %= 10;
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n10]));
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
+    digit++;
+
     res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n]));
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit + 3]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit + 3]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
 }
 
-// FIXME(shotgun): 98.11 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041C67C() {
     field_0x4->search('Ndata13')->hide();
     field_0x4->search('Php1ni02')->hide();
@@ -1320,13 +1385,15 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
-// FIXME(shotgun): 68.65 %, missing/extra + reloc-name; behaviour drift.
+// Initial field_0xe8[player] load coalesces r0 into r28.
+// FIXME: 99.29 %, missing/extra; behaviour near.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
     }
     s32 digit = 0;
     s32 n = lbl_80529DEC.field_0xe8[player];
+    const ResTIMG* res;
     if (n > 9999) {
         n = 9999;
     }
@@ -1339,7 +1406,7 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
             n = -5000;
         }
         n *= -1;
-        const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
+        res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][0]))->changeTexture(res, 0);
         static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][0]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D6D8[player][4])->show();
@@ -1352,21 +1419,30 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
         field_0x4->search(lbl_8048D6D8[player][4])->hide();
         field_0x4->search(lbl_8048D778[player][4])->hide();
     }
-    const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 1000]));
+    s32 n1000 = n / 1000;
     n %= 1000;
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n1000]));
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 100]));
+    digit++;
+
+    s32 n100 = n / 100;
     n %= 100;
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit + 1]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit + 1]))->changeTexture(res, 0);
-    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n / 10]));
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n100]));
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
+    digit++;
+
+    s32 n10 = n / 10;
     n %= 10;
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit + 2]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit + 2]))->changeTexture(res, 0);
+    res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n10]));
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
+    digit++;
+
     res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B139C[n]));
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit + 3]))->changeTexture(res, 0);
-    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit + 3]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
+    static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
 }
 
 // FIXME(shotgun): 99.78 %, missing/extra; behaviour clean.
@@ -1469,7 +1545,7 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 87.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 89.23 %, missing/extra + reloc-name; behaviour drift.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
@@ -1587,10 +1663,10 @@ void cls_804B13D4::fn_8041A868(bool arg) {
         field_0x4->search(lbl_8048D5C8[i])->setAlpha(field_0x25f * field_0x118[0]);
     }
     for (s32 i = 0; i < 8; i++) {
-        field_0x4->search(lbl_8048D468[0][i])->setAlpha(field_0x250[0] * field_0x118[0]);
-        field_0x4->search(lbl_8048D468[1][i])->setAlpha(field_0x250[1] * field_0x118[0]);
-        field_0x4->search(lbl_8048D468[2][i])->setAlpha(field_0x250[2] * field_0x118[0]);
-        field_0x4->search(lbl_8048D468[3][i])->setAlpha(field_0x250[3] * field_0x118[0]);
+        field_0x4->search(lbl_8048D468[i])->setAlpha(field_0x250[0] * field_0x118[0]);
+        field_0x4->search(lbl_8048D4A8[i])->setAlpha(field_0x250[1] * field_0x118[0]);
+        field_0x4->search(lbl_8048D4E8[i])->setAlpha(field_0x250[2] * field_0x118[0]);
+        field_0x4->search(lbl_8048D528[i])->setAlpha(field_0x250[3] * field_0x118[0]);
     }
     field_0x4->search('Php1ni02')->setAlpha(field_0x26a * field_0x118[0]);
     field_0x4->search('Php1ni01')->setAlpha(field_0x26b * field_0x118[0]);
@@ -1599,11 +1675,11 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     }
 }
 
-// FIXME(shotgun): 94.02 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
-    f32 prev1 = field_0x118[player];
-    f32 prev2 = field_0x138[player];
-    f32 prev3 = field_0x148[player];
+    f32 prev1, prev3, prev2;
+    prev1 = field_0x118[player];
+    prev2 = field_0x138[player];
+    prev3 = field_0x148[player];
     if (player >= 2) {
         field_0x74[player]->moveFromCentre_80402E08(field_0xf8[player], lbl_8053AED0->fn_8043D57C());
         field_0x84[player]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D57C());
@@ -1624,8 +1700,7 @@ void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
         field_0xe4[player]->moveFromCentre_80402E08(field_0xf8[player], lbl_8053AED0->fn_8043D514());
     }
     fn_8037EB4C();
-    u8 bit = 1 << player;
-    if (!(field_0x28f & bit) || (lbl_8053AED0->field_0xdc & bit) ||
+    if (!isMaskBitSet(field_0x28f, player) || (lbl_8053AED0->field_0xdc & (u8)(1 << player)) ||
         gGameRoot2_8053AB10->field_0x30->field_0x284 != 0 || gGameRoot_8053AAF8->field_0x85 != 0) {
         if (field_0x118[player] > 0.1f) {
             field_0x118[player] -= 0.1f;
@@ -1745,7 +1820,7 @@ void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     }
 }
 
-// FIXME(shotgun): 99.16 %, operands; behaviour near.
+// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
         field_0x1d8[player] = fn_80237774(player);
@@ -1859,8 +1934,6 @@ void cls_804B13D4::fn_8041918C(s32 player) {
     }
 }
 
-// .rodata offsets differ by 0x840 while lbl_8048D468..lbl_8048DCF8 remain extern.
-// FIXME: 99.71 %, operands; behaviour drift.
 void cls_804B13D4::fn_80418D08(s32 player, bool force) {
     f32 prevA = field_0x128[player];
     f32 prevB = field_0x168[player];
