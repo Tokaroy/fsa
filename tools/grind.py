@@ -466,6 +466,51 @@ def asm_block(wt, unit, fn):
     return out, first
 
 
+def asm_outline(asm, first, where, per=150):
+    """A large function's assembly cut into regions at labels (about `per` instructions each), with
+    what each region calls and touches, so a session can plan it and write and check it in parts."""
+    regions, cur = [], None
+    for i, line in enumerate(asm):
+        lab = re.match(r"\s*([.\w$@]+):\s*$", line)
+        if cur is None or (lab and cur["n"] >= per):
+            cur = {"start": first + i, "end": first + i, "n": 0, "label": lab.group(1) if lab else "(entry)",
+                   "calls": [], "data": [], "out": set(), "labels": set()}
+            regions.append(cur)
+        cur["end"] = first + i
+        if lab:
+            cur["labels"].add(lab.group(1))
+            continue
+        cur["n"] += 1
+        m = re.search(r"\bbl\s+(\"[^\"]+\"|\S+)", line)
+        if m and m.group(1).strip('"') not in cur["calls"]:
+            cur["calls"].append(m.group(1).strip('"'))
+        for d in re.findall(r"\b((?:lbl|g\w*|s\w*)_[0-9A-F]{8}\w*)@(?:ha|l|sda21)", line):
+            if d not in cur["data"]:
+                cur["data"].append(d)
+        m = re.search(r"\bb\w*\s+(?:\w+,\s*)?(\.L_[0-9A-F]+)", line)
+        if m:
+            cur["out"].add(m.group(1))
+    out = [f"== Outline: {len(regions)} regions (lines of {where}); write and check them in order =="]
+    for k, r in enumerate(regions, 1):
+        exits = sorted(x for x in r["out"] if x not in r["labels"])
+        out.append(f"R{k} lines {r['start']}-{r['end']} ({r['n']} insns, from {r['label']})"
+                   + (f"; calls {', '.join(c.split('__')[0] for c in r['calls'][:8])}" if r["calls"] else "")
+                   + (f"; data {', '.join(r['data'][:6])}" if r["data"] else "")
+                   + (f"; jumps out to {', '.join(exits[:5])}" if exits else ""))
+    return out + [""]
+
+
+def saved_draft(unit, fn):
+    """The newest saved, rejected draft of an unwritten function: (patch text, the judge's reason) or None."""
+    tag = f"_{Path(unit).stem}__" + re.sub(r"[^A-Za-z0-9_]", "_", fn)[:60]
+    found = sorted(p for p in (LOGS / "rejects").glob("*.patch") if p.stem.endswith(tag))
+    if not found:
+        return None
+    text = found[-1].read_text()
+    why, _, body = text.partition("\n")
+    return body, why.lstrip("# ").strip()
+
+
 def declarations(wt, fn, asm):
     calls = sorted({m.group(2) or m.group(1) for l in asm for m in [re.search(r"\bbl\s+(\"([^\"]+)\"|\S+)", l)] if m})
     out = []
@@ -578,6 +623,11 @@ def build_packet(wt, unit, fn, ev, note=None):
         else:
             out += [f"Our source{state}: src/{unit} lines {src[1]}-{src[2]} ({len(src[0])} lines; read the parts the diff points at).", ""]
     where = f"build/G4SE01/asm/game/{stem}.s"
+    if lane == "write" and size > 4096:
+        out += ["This function is large. Plan it from the outline below, then write it region by region in "
+                "order, building with try.py after each region and comparing that stretch of the diff before "
+                "going on. Finish the whole function before you stop.", ""]
+        out += asm_outline(asm, first, where)
     if lane == "write" or len(asm) <= 160:
         cap = 900
         out += [f"== Original assembly ({len(asm)} lines; {where} from line {first}) =="] + asm[:cap]
@@ -1234,7 +1284,19 @@ def attempt(wt, owner, tier, unit, base, fn, names, args, notes, seq):
     if fn:
         e = base["functions"][fn]
         lane, addr, size = lane_of(e), e["addr"], e["size"]
+        draft = saved_draft(unit, fn) if lane == "write" else None
+        if draft:  # start from the last rejected draft instead of from nothing
+            r = subprocess.run(["git", "apply", "--3way", "--whitespace=nowarn", "-"], cwd=wt, input=draft[0],
+                               capture_output=True, text=True)
+            sh(["git", "reset", "-q"], wt)
+            if r.returncode:
+                revert(wt)
+                draft = None
         packet = build_packet(wt, unit, fn, base, notes.get(f"{unit}\t{fn}"))
+        if draft:
+            packet = packet.replace("\n", "\n" + (f"An earlier session's draft of this function is already in the source "
+                                    f"(and wherever else it changed files). The judge rejected it for: {draft[1]}. "
+                                    f"Fix that first (python3 tools/grind.py check), then improve it.\n"), 1)
         turns, timeout = limits(size)
     else:
         lane, addr, size = "file", None, sum(base["functions"][n]["size"] for n in names)
