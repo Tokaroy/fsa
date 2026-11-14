@@ -90,10 +90,7 @@ void Log_804ACD70::init() {
 // FIXME(shotgun): 67.99 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(field_0x80);
-    box.i.x += mPos.x;
-    box.f.x += mPos.x;
-    box.i.y += mPos.y;
-    box.f.y += mPos.y;
+    box.addPos(mPos.x, mPos.y);
     switch (field_0x230) {
     case 0: {
         fn_80239914(&box, field_0x4, mSerial);
