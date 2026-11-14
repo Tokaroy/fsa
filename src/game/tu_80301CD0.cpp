@@ -374,6 +374,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // then the checksum.
 // Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x8030801C
+// FIXME: 81.78 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -468,7 +469,7 @@ static inline u32 swapBytes(u32 v) {
 // and its checksum. Still differs: the original has the checksum loop twice (branch on the
 // queue head entry's mUsed) and different register allocation.
 // 0x80307B58
-// FIXME: 71.06 %, missing/extra; behaviour drift.
+// FIXME: 71.27 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     if (flag) {
         lbl_80506DE8[player].mKind = 10;
@@ -1756,6 +1757,7 @@ static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
 
 // Variant of fn_803022C4.
 // 0x8030275C
+// FIXME: 89.09 %, missing/extra; behaviour drift.
 // FIXME: mMask load hoisting before the mark sort loop and the two isHiddenSprite skip loops differ.
 void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
@@ -1834,6 +1836,7 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
+// FIXME: 93.06 %, scheduling+regalloc; behaviour clean.
 // FIXME: mMask load hoisting before the mark sort loop and register allocation differ.
 void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
