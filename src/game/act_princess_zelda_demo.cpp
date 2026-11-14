@@ -104,15 +104,15 @@ void PrincessZeldaDemo_8049D208::init() {
 
 void PrincessZeldaDemo_8049D208::vfunc_0x10() {
     cls_801192AC* list = fn_8011921C();
-    ActorBase_804A5770** goal = list->fn_8011871C(list->mBegin, ACTOR_DMGL);
-    if (goal != fn_8011921C()->mEnd) {
+    ActorBase_804A5770** goal = list->fn_8011871C(list->mActors.mBegin, ACTOR_DMGL);
+    if (goal != fn_8011921C()->mActors.mEnd) {
         field_0x27c = (*goal)->mPos;
     }
 
-    ActorBase_804A5770** node = fn_8011921C()->mBegin;
+    ActorBase_804A5770** node = fn_8011921C()->mActors.mBegin;
     do {
         node = fn_8011921C()->fn_8011871C(node, ACTOR_DMMD);
-        if (node == fn_8011921C()->mEnd) {
+        if (node == fn_8011921C()->mActors.mEnd) {
             break;
         }
         cls_8049D740* maiden = static_cast<cls_8049D740*>(*node);
@@ -120,7 +120,7 @@ void PrincessZeldaDemo_8049D208::vfunc_0x10() {
             field_0x288[maiden->mMode] = maiden->mPos;
             node++;
         }
-    } while (node != fn_8011921C()->mEnd);
+    } while (node != fn_8011921C()->mActors.mEnd);
 
     field_0x2d0 = mPos;
 }

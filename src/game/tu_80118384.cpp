@@ -250,20 +250,17 @@ void cls_80119E5C::fn_80119468(s32 g, s32 mode) {
     fn_80119998(fadeFrames(mode), 0, mode, 0, 2, 0, g);
 }
 
-// FIXME(shotgun): not written: the JGadget TVector insert machinery fn_801188B8 (push_back) /
-// fn_801188E0 / fn_80118938 / fn_801189B0 (Insert_raw) and fn_8011888C (calls them). They need a
-// typed TVector member at 0xC, and act_princess_zelda_demo / tu_8011CEC8 read mBegin / mEnd.
 inline cls_801192AC::cls_801192AC() {
     field_0x0 = 0;
     field_0x1 = 0;
     field_0x2 = 0;
     field_0x4 = 0x13;
     field_0x8 = 0;
-    mAllocator = lbl_8053AA90;
-    mBegin = NULL;
-    mEnd = NULL;
-    mCapacity = 0;
-    mExtend = JGadget::vector::extend_default;
+    mActors.mAllocator = lbl_8053AA90;
+    mActors.mBegin = NULL;
+    mActors.mEnd = NULL;
+    mActors.mCapacity = 0;
+    mActors.mExtend = JGadget::vector::extend_default;
 }
 
 // JGadget::TVector::erase(first, last): copies the tail down, then destroys the rest.
@@ -285,9 +282,9 @@ static inline void eraseRange(ActorBase_804A5770**& end, ActorBase_804A5770** fi
 
 // FIXME: 97.48 %, missing/extra; behaviour near.
 cls_801192AC::~cls_801192AC() {
-    eraseRange(mEnd, mBegin, mEnd);
-    eraseRange(mEnd, mBegin, mEnd);
-    delete mBegin;
+    eraseRange(mActors.mEnd, mActors.mBegin, mActors.mEnd);
+    eraseRange(mActors.mEnd, mActors.mBegin, mActors.mEnd);
+    delete mActors.mBegin;
 }
 
 // FIXME(shotgun): 82.22 %, missing/extra + reloc-name; behaviour drift.
@@ -311,22 +308,22 @@ struct ActorVectorDealloc {
 // FIXME: 97.56 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): TVector::reserve(20) inline; copy loop and empty destroy loop.
 void cls_801192AC::fn_801190E4() {
-    if (mCapacity >= 20) {
+    if (mActors.mCapacity >= 20) {
         return;
     }
     ActorBase_804A5770** p = (ActorBase_804A5770**)operator new(20 * sizeof(ActorBase_804A5770*));
     if (p == NULL) {
         return;
     }
-    ActorVectorDealloc guard(mAllocator, p);
-    copyDown(mBegin, mEnd, p);
-    ActorBase_804A5770** old = mBegin;
-    for (ActorBase_804A5770** it = mBegin; it != mEnd; ++it) {
+    ActorVectorDealloc guard(mActors.mAllocator, p);
+    copyDown(mActors.mBegin, mActors.mEnd, p);
+    ActorBase_804A5770** old = mActors.mBegin;
+    for (ActorBase_804A5770** it = mActors.mBegin; it != mActors.mEnd; ++it) {
     }
     guard.set(old);
-    mEnd = p + (mEnd - mBegin);
-    mBegin = p;
-    mCapacity = 20;
+    mActors.mEnd = p + (mActors.mEnd - mActors.mBegin);
+    mActors.mBegin = p;
+    mActors.mCapacity = 20;
 }
 
 // FIXME(shotgun): 97.68 %, different; behaviour drift.
@@ -353,7 +350,7 @@ void cls_801192AC::fn_80118E20() {
         return;
     }
     bool done = true;
-    for (ActorBase_804A5770** it = mBegin; it != mEnd; it++) {
+    for (ActorBase_804A5770** it = mActors.mBegin; it != mActors.mEnd; it++) {
         cls_8049D140* actor = static_cast<cls_8049D140*>(*it);
         if (actor != NULL) {
             actor->vfunc_0x54();
@@ -368,17 +365,6 @@ void cls_801192AC::fn_80118E20() {
     field_0x8++;
 }
 
-// The JGadget TVector of actors at cls_801192AC+0xC.
-struct ActorVector {
-    JGadget::TAllocator<ActorBase_804A5770*> mAllocator;
-    ActorBase_804A5770** mBegin;
-    ActorBase_804A5770** mEnd;
-    u32 mCapacity;
-    u32 (*mExtend)(u32, u32, u32);
-    ActorBase_804A5770** Insert_raw(ActorBase_804A5770** pos, u32 count);
-    void fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804A5770* const* value);
-    ActorBase_804A5770** fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value);
-};
 
 // stand-ins for std::copy / std::copy_backward (the MSL <algorithm> is not usable from game code)
 static inline ActorBase_804A5770** copyForward(ActorBase_804A5770** first, ActorBase_804A5770** last,
@@ -455,16 +441,22 @@ void ActorVector::fn_80118938(ActorBase_804A5770** pos, u32 count, ActorBase_804
         }
     }
 }
-#pragma auto_inline reset
 
+// fn_801188B8 calls this out of line in the original as well.
 ActorBase_804A5770** ActorVector::fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value) {
     s32 offset = pos - mBegin;
     fn_80118938(pos, 1, value);
     return mBegin + offset;
 }
 
+// fn_8011888C calls this out of line in the original as well.
+void ActorVector::fn_801188B8(ActorBase_804A5770* const* value) {
+    fn_801188E0(mEnd, value);
+}
+#pragma auto_inline reset
+
 void cls_801192AC::fn_8011888C(ActorBase_804A5770* actor) {
-    fn_801188B8(&mAllocator, &actor);
+    mActors.fn_801188B8(&actor);
 }
 
 // by-value predicate of the std::find_if the original uses: matches an actor by its serial
@@ -477,8 +469,8 @@ struct ActorSerialEq {
 // FIXME: erase of the found element (TVector::erase inline); still differs in the stack frame.
 void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
     ActorSerialEq pred = {actor->mSerial};
-    ActorBase_804A5770** end = mEnd;
-    ActorBase_804A5770** it = mBegin;
+    ActorBase_804A5770** end = mActors.mEnd;
+    ActorBase_804A5770** it = mActors.mBegin;
     while (it != end && !pred(*it)) {
         it++;
     }
@@ -487,9 +479,9 @@ void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
         while (next < end) {
             *it++ = *next++;
         }
-        for (ActorBase_804A5770** p = it; p != mEnd; p++) {
+        for (ActorBase_804A5770** p = it; p != mActors.mEnd; p++) {
         }
-        mEnd = it;
+        mActors.mEnd = it;
     }
 }
 
@@ -498,24 +490,24 @@ void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
 // by-value predicate (its actorId is spilled to the stack); same stand-in note as fn_80118798.
 ActorBase_804A5770** cls_801192AC::fn_8011871C(ActorBase_804A5770** from, u32 actorId) {
     u32 count;
-    if (mBegin == NULL) {
+    if (mActors.mBegin == NULL) {
         count = 0;
     } else {
-        count = mEnd - mBegin;
+        count = mActors.mEnd - mActors.mBegin;
     }
     if (count == 0) {
-        return mEnd;
+        return mActors.mEnd;
     }
-    if (from == mEnd) {
-        return mEnd;
+    if (from == mActors.mEnd) {
+        return mActors.mEnd;
     }
-    while (from != mEnd) {
+    while (from != mActors.mEnd) {
         if ((*from)->mActorId == actorId) {
             return from;
         }
         from++;
     }
-    return mEnd;
+    return mActors.mEnd;
 }
 
 bool cls_801192AC::fn_801186B0(u32 value) {
@@ -539,14 +531,14 @@ bool cls_801192AC::fn_801184F0(bool flag) {
     if (flag) {
         fadeObject()->fn_80119958();
     }
-    ActorBase_804A5770** first = mBegin;
-    ActorBase_804A5770** end = mEnd;
+    ActorBase_804A5770** first = mActors.mBegin;
+    ActorBase_804A5770** end = mActors.mEnd;
     for (ActorBase_804A5770** last = end; last < end; last++) {
         *first++ = *last;
     }
     for (ActorBase_804A5770** it = first; it != end; it++) {
     }
-    mEnd = first;
+    mActors.mEnd = first;
     field_0x0 = 0;
     field_0x1 = 0;
     field_0x2 = 0;

@@ -134,10 +134,10 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
     case 6: {
         for (s32 i = 0; i < 4; i++) {
             cls_801192AC* area = fn_8011921C();
-            ActorBase_804A5770** it = area->fn_8011871C(area->mBegin, ACTOR_DMLK);
+            ActorBase_804A5770** it = area->fn_8011871C(area->mActors.mBegin, ACTOR_DMLK);
             JGeometry::TVec3f zero;
             const JGeometry::TVec3f* pos;
-            if (it == fn_8011921C()->mEnd) {
+            if (it == fn_8011921C()->mActors.mEnd) {
                 zero.set(0.0f, 0.0f, 0.0f);
                 pos = &zero;
             } else {
@@ -146,10 +146,10 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
             fn_80230498(i, pos, 0x3F, 0, -0x80, -0x80, true);
         }
         cls_801192AC* area = fn_8011921C();
-        ActorBase_804A5770** it = area->fn_8011871C(area->mBegin, ACTOR_DMLK);
+        ActorBase_804A5770** it = area->fn_8011871C(area->mActors.mBegin, ACTOR_DMLK);
         JGeometry::TVec3f zero;
         const JGeometry::TVec3f* pos;
-        if (it == fn_8011921C()->mEnd) {
+        if (it == fn_8011921C()->mActors.mEnd) {
             zero.set(0.0f, 0.0f, 0.0f);
             pos = &zero;
         } else {
@@ -225,9 +225,9 @@ void cls_8049DD68::fn_8011CF48() {
     }
     case 8: {
         cls_801192AC* list = fn_8011921C();
-        ActorBase_804A5770** it = list->fn_8011871C(list->mBegin, 'DMSW');
+        ActorBase_804A5770** it = list->fn_8011871C(list->mActors.mBegin, 'DMSW');
         const JGeometry::TVec3f* pos;
-        if (it == fn_8011921C()->mEnd) {
+        if (it == fn_8011921C()->mActors.mEnd) {
             JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
             pos = &zero;
         } else {
