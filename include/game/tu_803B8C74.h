@@ -34,7 +34,8 @@ struct SaveFile_803B950C {
     /* 0x10 */ s32 field_0x10;
     /* 0x14 */ u16 field_0x14; // fn_803A3034 (game/tu_803944C8.cpp) returns it
     /* 0x16 */ u16 field_0x16; // fn_803A3018 returns it
-    /* 0x18 */ u8 field_0x18[0x58 - 0x18];
+    /* 0x18 */ u16 field_0x18[28]; // fn_803BAEF4 clears entries above 99999
+    /* 0x50 */ u8 field_0x50[0x58 - 0x50];
     /* 0x58 */ u8 field_0x58; // written by fn_80215BCC (the stopwatch's centis)
     /* 0x59 */ u8 field_0x59; // written by fn_80215BCC (the stopwatch's seconds)
     /* 0x5A */ u8 field_0x5a[0x5C - 0x5A]; // byte 0: bit tests in MapScreen_804B1288::fn_804045F8

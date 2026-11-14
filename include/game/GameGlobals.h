@@ -1579,7 +1579,8 @@ public:
     /* 0x1FF5 */ u8 field_0x1ff5;
     /* 0x1FF6 */ u8 field_0x1ff6[0x1FF8 - 0x1FF6];
     /* 0x1FF8 */ u64 field_0x1ff8; // CARDGetSerialNo's serial number (fn_803CC53C)
-    /* 0x2000 */ u8 field_0x2000[0x2020 - 0x2000];
+    /* 0x2000 */ u16 field_0x2000; // the save image's header halfword (fn_803BAEF4)
+    /* 0x2002 */ u8 field_0x2002[0x2020 - 0x2002];
 }; // Size: 0x2020
 extern cls_803B9940 lbl_8051C1A0;
 
