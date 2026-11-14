@@ -299,8 +299,6 @@ static u8 THPStatistics[1120];
 // differ only in their .sdata2 literals: the target pools the ReadQuantization
 // double before the IDCT floats, ours after them (part of the unsolved
 // -inline deferred output order, see the progress notes).
-// FIXME: __sinit (99.3 %) calls the JASMemPool constructors kept at
-// 0x8042E964.. (tu_8042E964's range); ours calls this object's own copies.
 #include "../dolphin/thp/THPAudio.c"
 #include "../dolphin/thp/THPDec.c"
 

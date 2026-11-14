@@ -6602,9 +6602,9 @@ game/tu_8042165C.cpp:
 	.sdata2     start:0x80543A40 end:0x80543A90
 
 game/tu_80427D2C.cpp:
-	extab       start:0x800106EC end:0x80010B54
-	extabindex  start:0x80020500 end:0x80020B54
-	.text       start:0x80427D2C end:0x8042E964
+	extab       start:0x800106EC end:0x80010B9C
+	extabindex  start:0x80020500 end:0x80020BC0
+	.text       start:0x80427D2C end:0x8042EB14
 	.ctors      start:0x8045C5A4 end:0x8045C5A8
 	.rodata     start:0x8048F270 end:0x8048F390
 	.data       start:0x804B14C0 end:0x804B1600
@@ -6613,9 +6613,9 @@ game/tu_80427D2C.cpp:
 	.sdata2     start:0x80543A90 end:0x80543AE8
 
 game/tu_8042E964.cpp:
-	extab       start:0x80010B54 end:0x80010C74
-	extabindex  start:0x80020B54 end:0x80020CB0
-	.text       start:0x8042E964 end:0x80432638
+	extab       start:0x80010B9C end:0x80010C74
+	extabindex  start:0x80020BC0 end:0x80020CB0
+	.text       start:0x8042EB14 end:0x80432638
 	.ctors      start:0x8045C5A8 end:0x8045C5AC
 	.rodata     start:0x8048F390 end:0x8048F438
 	.data       start:0x804B1600 end:0x804B1640
