@@ -784,7 +784,7 @@ void cls_804ADF28::fn_8036509C() {
     }
 }
 
-// FIXME(shotgun): 99.43 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.81 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364F60() {
     if (field_0x238 != 5) {
         s32 oldAnim = field_0x264;
