@@ -25,7 +25,7 @@ Log_804ACD70::~Log_804ACD70() {
     }
 }
 
-// FIXME(shotgun): 89.65 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 90.59 %, scheduling; behaviour clean.
 void Log_804ACD70::init() {
     field_0x2c0 = field_0x90 & 1;
     field_0x2c4 = (field_0x90 >> 4) & 1;
@@ -87,10 +87,9 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 67.99 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.00 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
-    JGeometry::TBox2f box;
-    box.set(field_0x80);
+    JGeometry::TBox2f box(field_0x80);
     box.addPos(mPos.x, mPos.y);
     switch (field_0x230) {
     case 0: {
@@ -98,13 +97,13 @@ void Log_804ACD70::update() {
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
         boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, field_0x4, mSerial);
         fn_80354FE8();
-        if (!(field_0x2d4.squared() <= 32.0f * FLT_EPSILON)) {
+        if (!isMotionless()) {
             mPos.add(field_0x3c);
             field_0x2d4.sub(field_0x3c);
-            if (field_0x2d4.squared() <= 32.0f * FLT_EPSILON) {
+            if (isMotionless()) {
                 field_0x3c.zero();
                 if (mEmitter2e0 != NULL) {
-                    releaseEmitter_801EE434(mEmitter2e0);
+                    mEmitter2e0->becomeInvalidEmitter();
                     mEmitter2e0 = NULL;
                 }
                 field_0x2cc = 1;
@@ -112,7 +111,7 @@ void Log_804ACD70::update() {
                 setEmitterPos_8013CB44(mEmitter2e0, &mPos, 0, -2, true);
             }
         }
-        if (field_0x2d4.squared() <= 32.0f * FLT_EPSILON && field_0x2c8 == 0) {
+        if (isMotionless() && field_0x2c8 == 0) {
             for (s32 i = 0; i < 4; i++) {
                 field_0x234[i] = -1;
                 field_0x244[i] = 0;
@@ -214,10 +213,8 @@ void Log_804ACD70::update() {
                 JGeometry::TVec3f cur(*getPlayerPos_8023E724(i));
                 JGeometry::TVec3f prev(field_0x268[i].x, field_0x268[i].y, field_0x268[i].z);
                 if (field_0x268[i].field_0x0 == 0) {
-                    f32 dx = cur.x - prev.x;
-                    f32 dy = cur.y - prev.y;
-                    f32 dist = std::sqrtf(dx * dx + dy * dy);
-                    if (dist > 2.0f) {
+                    JGeometry::TVec2f delta(cur.x - prev.x, cur.y - prev.y);
+                    if (delta.length() > 2.0f) {
                         JGeometry::TVec3f d(prev.x - cur.x, prev.y - cur.y, prev.z - cur.z);
                         fn_8023DFF4(i, &d);
                     }
@@ -239,7 +236,16 @@ void Log_804ACD70::update() {
         } else {
             field_0x3c.z += -0.15f;
             mPos.add(field_0x3c);
-            if (mPos.z >= 0.0f && !fn_801F2618(NULL, false)) {
+            if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+                if (mPos.z < 0.0f) {
+                    if (fn_80226850(&mPos, field_0x4) == 0x90) {
+                        gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x91);
+                    } else if (fn_80226850(&mPos, field_0x4) == 0x91) {
+                        gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x92);
+                    }
+                }
+                field_0x230 = 2;
+            } else {
                 u8 mask = fn_801F2740(-1);
                 bool hurt = false;
                 if (mask > 0) {
@@ -254,15 +260,6 @@ void Log_804ACD70::update() {
                 if (hurt == true || fn_801F2B20(0)) {
                     field_0x230 = 2;
                 }
-            } else {
-                if (mPos.z < 0.0f) {
-                    if (fn_80226850(&mPos, field_0x4) == 0x90) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x91);
-                    } else if (fn_80226850(&mPos, field_0x4) == 0x91) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x92);
-                    }
-                }
-                field_0x230 = 2;
             }
         }
         break;
@@ -394,7 +391,7 @@ bool Log_804ACD70::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 
 // FIXME(shotgun): 87.17 %, missing/extra; behaviour near.
 void Log_804ACD70::fn_80354FE8() {
-    if (field_0x2d4.squared() <= 32.0f * FLT_EPSILON) {
+    if (isMotionless()) {
         if (field_0x2cc == 1) {
             field_0x2cc = 0;
         } else {
