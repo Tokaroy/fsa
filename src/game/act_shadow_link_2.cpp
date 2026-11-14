@@ -234,6 +234,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
 }
 
 // 0x801C3B7C.
+// FIXME: 94.59 %, missing/extra + reloc-name; behaviour drift.
 // FIXME(shotgun): behaviour drift remains (see fingerprint).
 void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     fn_801C50A8(state);
