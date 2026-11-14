@@ -19,6 +19,10 @@ static const f32 lbl_804722F0[4][3] = {
 static const f32 lbl_80472320[4][3] = {
     {16.0f, 0.0f, 0.0f}, {-16.0f, 0.0f, 0.0f}, {0.0f, 16.0f, 0.0f}, {0.0f, -16.0f, 0.0f}};
 
+static inline bool contains(const JGeometry::TBox2f& box, f32 x, f32 y) {
+    return x >= box.i.x && y >= box.i.y && x < box.f.x && y < box.f.y;
+}
+
 Log_804ACD70::~Log_804ACD70() {
     if (mEmitter2e0 != NULL) {
         releaseEmitter_801EE434(mEmitter2e0);
@@ -72,9 +76,9 @@ void Log_804ACD70::init() {
         field_0x254[i] = -1;
         field_0x264[i] = 0;
         field_0x268[i].field_0x0 = 1;
-        field_0x268[i].x = 0.0f;
-        field_0x268[i].y = 0.0f;
-        field_0x268[i].z = 0.0f;
+        field_0x268[i].pos.x = 0.0f;
+        field_0x268[i].pos.y = 0.0f;
+        field_0x268[i].pos.z = 0.0f;
         field_0x268[i].field_0x10 = 0;
     }
     field_0xb8 = 2;
@@ -90,7 +94,10 @@ void Log_804ACD70::init() {
 // FIXME(shotgun): 87.00 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(field_0x80);
-    box.addPos(mPos.x, mPos.y);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
     switch (field_0x230) {
     case 0: {
         fn_80239914(&box, field_0x4, mSerial);
@@ -127,17 +134,9 @@ void Log_804ACD70::update() {
                     py += lbl_804722B0[dir][1];
                     field_0x264[i] = fn_8022C004(i);
                     if (field_0x264[i] == 1 && fn_8023E8F0(i) == 1 && fn_8023188C(i) == 1 &&
-                        fn_802319B4(i, 0x11) == 1 && !fn_80234D94(i)) {
-                        bool inside = false;
-                        if (px >= box.i.x && py >= box.i.y && px < box.f.x && py < box.f.y) {
-                            inside = true;
-                        }
-                        if (inside == true) {
-                            field_0x234[i] = dir;
-                            field_0x244[field_0x234[i]]++;
-                        } else {
-                            field_0x264[i] = 0;
-                        }
+                        fn_802319B4(i, 0x11) == 1 && !fn_80234D94(i) && contains(box, px, py) == true) {
+                        field_0x234[i] = dir;
+                        field_0x244[field_0x234[i]]++;
                     } else {
                         field_0x264[i] = 0;
                     }
@@ -167,10 +166,7 @@ void Log_804ACD70::update() {
                 }
                 if (field_0x244[field_0x2d0] >= 4) {
                     for (s32 i = 0; i < 4; i++) {
-                        JGeometry::TVec3f* pp = getPlayerPos_8023E724(i);
-                        field_0x268[i].x = pp->x;
-                        field_0x268[i].y = pp->y;
-                        field_0x268[i].z = pp->z;
+                        field_0x268[i].pos = *getPlayerPos_8023E724(i);
                         field_0x268[i].field_0x10 = fn_8022CAF8(i);
                         if (field_0x234[i] == field_0x2d0 && count < 4) {
                             if (fn_8022F9E4(i, mSerial, true, false)) {
@@ -211,11 +207,11 @@ void Log_804ACD70::update() {
                     return;
                 }
                 JGeometry::TVec3f cur(*getPlayerPos_8023E724(i));
-                JGeometry::TVec3f prev(field_0x268[i].x, field_0x268[i].y, field_0x268[i].z);
+                JGeometry::TVec3f prev(field_0x268[i].pos);
                 if (field_0x268[i].field_0x0 == 0) {
-                    JGeometry::TVec2f delta(cur.x - prev.x, cur.y - prev.y);
-                    if (delta.length() > 2.0f) {
-                        JGeometry::TVec3f d(prev.x - cur.x, prev.y - cur.y, prev.z - cur.z);
+                    if (JGeometry::TUtil<f32>::sqrt((cur.x - prev.x) * (cur.x - prev.x) +
+                                                    (cur.y - prev.y) * (cur.y - prev.y)) > 2.0f) {
+                        JGeometry::TVec3f d = prev - cur;
                         fn_8023DFF4(i, &d);
                     }
                 }
@@ -224,13 +220,12 @@ void Log_804ACD70::update() {
                     out++;
                 }
             }
-            JGeometry::TVec3f sum(pushers[0]);
-            sum.add(pushers[1]);
-            sum.add(pushers[2]);
-            sum.add(pushers[3]);
-            sum.scale(0.25f);
-            if (sum.z > 0.0f) {
-                mPos = sum;
+            pushers[0].add(pushers[1]);
+            pushers[0].add(pushers[2]);
+            pushers[0].add(pushers[3]);
+            pushers[0].scale(0.25f);
+            if (pushers[0].z > 0.0f) {
+                mPos.set(pushers[0].x, pushers[0].y, pushers[0].z);
                 field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             }
         } else {
@@ -246,7 +241,7 @@ void Log_804ACD70::update() {
                 }
                 field_0x230 = 2;
             } else {
-                u8 mask = fn_801F2740(-1);
+                s32 mask = fn_801F2740(-1);
                 bool hurt = false;
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {

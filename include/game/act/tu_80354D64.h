@@ -20,9 +20,7 @@
 // the class size 0x2E4 is unchanged.
 struct LogSlot_804ACD70 {
     /* 0x00 */ u8 field_0x0;
-    /* 0x04 */ f32 x;
-    /* 0x08 */ f32 y;
-    /* 0x0C */ f32 z;
+    /* 0x04 */ Vec pos;
     /* 0x10 */ s32 field_0x10;
 }; // Size: 0x14
 
