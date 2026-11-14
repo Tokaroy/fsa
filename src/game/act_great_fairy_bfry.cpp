@@ -135,7 +135,7 @@ void GreatFairy_804AF338::init() {
     field_0x90 = field_0x90 & 0xF;
 }
 
-// FIXME(shotgun): 89.78 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 93.33 %, missing/extra + reloc-name; behaviour drift.
 // (partial)
 // FIXME(shotgun): states 2-13 (0x8038E900 onward) and the tail of state 1 (0x8038E8D4 and the
 // end of the function at 0x8038F31C) are not written.
@@ -190,13 +190,15 @@ void GreatFairy_804AF338::update() {
             }
             field_0x234 = fn_8022FD8C(mSerial);
             if (field_0x234 >= 0 && getPlayerPos_8023E724(field_0x234)->z == 0.0f) {
-                if (field_0x90 == 0) {
+                switch (field_0x90) {
+                case 0:
                     field_0x260 = 0x25E;
-                } else {
+                    break;
+                default:
                     field_0x260 = 0x25F;
+                    break;
                 }
-                JGeometry::TVec3f at = mPos;
-                if (fn_8038AD24(field_0x234, field_0x260, mSerial, field_0x4, at, 0x2080)) {
+                if (fn_8038AD24(field_0x234, field_0x260, mSerial, field_0x4, mPos, 0x2080)) {
                     field_0x238 = field_0x234;
                     mState = 1;
                 }
@@ -261,7 +263,7 @@ void GreatFairy_804AF338::update() {
             }
             break;
         case 3:
-            if (lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] == fn_80237810(fn_8022F340(field_0x234)) &&
+            if (fn_80237810(fn_8022F340(field_0x234)) == lbl_80529DEC.field_0xd8[fn_8022F340(field_0x234)] &&
                 field_0x25c == 0 && fn_8023061C(field_0x234, false) == 1)
             {
                 field_0x25c = 0x1E;
@@ -313,7 +315,7 @@ void GreatFairy_804AF338::update() {
         }
         case 7:
             if (field_0x264 >= 0x3C && field_0x90 == 3) {
-                field_0x284 = *getPlayerPos_8023E724(field_0x234);
+                field_0x284.set(*getPlayerPos_8023E724(field_0x234));
                 field_0x284.y += 4.0f;
                 field_0x284.z = 16.0f;
                 field_0x290.x = 0.0f;
@@ -340,22 +342,20 @@ void GreatFairy_804AF338::update() {
             }
             fn_80230498(field_0x234, getPlayerPos_8023E724(field_0x234), anim, 0xFF, -0x80, -0x80, true);
             if (field_0x264 >= 10) {
-                field_0x284.x += field_0x290.x;
-                field_0x284.y += field_0x290.y;
-                field_0x284.z += field_0x290.z;
+                field_0x284 += field_0x290;
                 if (field_0x284.z <= 0.0f) {
                     field_0x284.z = 0.0f;
                     field_0x264 = 0;
                     s32 layer = field_0x4;
                     if (layer < 8) {
                         spawnEmitter_8013CC50(
-                            layer, (const JGeometry::TVec3f*)&field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
+                            layer, &field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
                     } else {
                         getActorManager_801F856C()->spawnActor_801F9484(
-                            'PEFF', layer, (const JGeometry::TVec3f*)&field_0x284, 0x2C, -1, -1);
+                            'PEFF', layer, &field_0x284, 0x2C, -1, -1);
                     }
                     startSound_801F0E34(0x30022, 0);
-                    field_0x284 = mPos;
+                    field_0x284.set(mPos);
                     field_0x284.x = getPlayerPos_8023E724(field_0x234)->x;
                     field_0x290.x = 0.0f;
                     field_0x290.y = 2.0f;
@@ -375,10 +375,10 @@ void GreatFairy_804AF338::update() {
                     s32 layer = field_0x4;
                     if (layer < 8) {
                         spawnEmitter_8013CC50(
-                            layer, (const JGeometry::TVec3f*)&field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
+                            layer, &field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
                     } else {
                         getActorManager_801F856C()->spawnActor_801F9484(
-                            'PEFF', layer, (const JGeometry::TVec3f*)&field_0x284, 0x2C, -1, -1);
+                            'PEFF', layer, &field_0x284, 0x2C, -1, -1);
                     }
                     mState = 10;
                 } else {
@@ -392,9 +392,7 @@ void GreatFairy_804AF338::update() {
             }
             break;
         case 10: {
-            field_0x284.x += field_0x290.x;
-            field_0x284.y += field_0x290.y;
-            field_0x284.z += field_0x290.z;
+            field_0x284 += field_0x290;
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x234);
             if (pos.y - field_0x284.y < 8.0f) {
                 field_0x264 = 0;
@@ -439,11 +437,11 @@ void GreatFairy_804AF338::update() {
                 field_0x284.z = pos.z;
                 if (field_0x2a0[0] == NULL) {
                     field_0x2a0[0] = spawnEmitter_8013CC50(
-                        field_0x4, (const JGeometry::TVec3f*)&field_0x284, 0x562, 0, 1, NULL, NULL, true, 0.7f);
+                        field_0x4, &field_0x284, 0x562, 0, 1, NULL, NULL, true, 0.7f);
                 }
                 if (field_0x2a0[0] == NULL) {
                     field_0x2a0[1] = spawnEmitter_8013CC50(
-                        field_0x4, (const JGeometry::TVec3f*)&field_0x284, 0x563, 0, 1, NULL, NULL, true, 0.6f);
+                        field_0x4, &field_0x284, 0x563, 0, 1, NULL, NULL, true, 0.6f);
                 }
                 if (field_0x264 >= 100) {
                     if (fn_8038BD08(field_0x234, field_0x260, field_0x4, mSpawnPos, 0x2022) == 1) {
@@ -537,7 +535,7 @@ void GreatFairy_804AF338::update() {
     }
 }
 
-// FIXME(shotgun): 96.99 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.34 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && field_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
