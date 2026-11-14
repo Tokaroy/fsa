@@ -684,6 +684,7 @@ void cls_804ADF28::fn_803653EC() {
 }
 
 // Remaining difference: float literal reloc names (pool split), not codegen.
+// FIXME: 99.84 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80365274() {
     mPos.add(field_0x3c);
     switch (field_0x238) {
@@ -933,7 +934,7 @@ void cls_804ADF28::fn_80364A88() {
     }
 }
 
-// FIXME(shotgun): 98.57 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.64 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364900() {
     if (field_0x238 == 0) {
         mPos.add(field_0x3c);
