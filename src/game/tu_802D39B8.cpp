@@ -312,15 +312,19 @@ bool fn_802DEBF8(void) {
     return false;
 }
 
-// FIXME: 89.77 %, missing/extra; behaviour near.
+// FIXME: 92.73 %, different; behaviour near.
 // Same as fn_802DE9A0: the target reloads the view (lwz 0xc off the kept gGameRoot_8053AAF8->0x4)
-// for the stage >= 13 test; ours loads it once.
+// for the stage >= 13 test and falls through to it; ours threads the (9, x) miss straight to false.
 // Stage (9, 3), or stage 13 and up, with gGameRoot_8053AAF8->0x7F set (vfunc_0x10 inlines it).
 bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    if ((getGameView_802D6A9C()->field_0x4 == 9 && getGameView_802D6A9C()->field_0x8 == 3) || getGameView_802D6A9C()->field_0x4 >= 13) {
+    GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
+    if (sub->mView->field_0x4 == 9 && sub->mView->field_0x8 == 3) {
+        return true;
+    }
+    if (sub->mView->field_0x4 >= 13) {
         return true;
     }
     return false;
@@ -337,11 +341,9 @@ bool fn_802DEB58(void) {
 }
 
 // FIXME: 94.23 %, missing/extra; behaviour near.
-// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its
-// mView (lwz 0xc) and the view's field_0x4 for the second stage pair; ours
-// loads both once. An inline view getter in this file is a no-op. Re-reading
-// the view into a local before each pair gives 96.9 % (field_0x4 reloaded,
-// mView still not) but has no precedent, so it is not used.
+// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its mView (lwz 0xc)
+// for the second stage pair; ours takes the view once per pair and its
+// mView load is folded into the field_0x4 load.
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
@@ -575,7 +577,7 @@ void GameView_804A9950::vfunc_0xC() {
     }
 }
 
-// FIXME: 98.71 %, missing/extra; behaviour near.
+// FIXME: 99.09 %, different; behaviour near.
 // Two instructions: in the inlined fn_802DEBA0 the target reloads the view
 // for the stage >= 13 test, as fn_802DEBA0 itself does (see there).
 void GameView_804A9950::vfunc_0x10() {
@@ -1119,7 +1121,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
     return "0";
 }
 
-// FIXME: 99.35 %, missing/extra; behaviour drift.
+// FIXME: 99.46 %, different; behaviour drift.
 // Structurally close, two instructions: in the inlined fn_802DEBA0 the target
 // reloads the view for the stage >= 13 test (the fn_802DEBA0 family). The .rodata strings
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
@@ -1206,7 +1208,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.45 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1268,7 +1270,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.13 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 96.23 %, different + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
 // before its flag test, and extracts both screen bytes before the first compare in the key
