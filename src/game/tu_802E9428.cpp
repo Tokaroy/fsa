@@ -318,8 +318,7 @@ void UnknownENDM_804AA0FC::update() {
         fn_802E94F4();
         if (field_0x288 != (u16)(s32)(field_0x244.x / 512.0f) ||
             field_0x28a != (u16)(s32)(field_0x244.y / 384.0f)) {
-            JGeometry::TVec3f pos = field_0x244;
-            if (fn_802E9884((const JGeometry::TVec2f*)&pos)) {
+            if (fn_802E9884(field_0x244)) {
                 field_0x23c = 5;
                 field_0x297 = 1;
             }
@@ -406,9 +405,9 @@ void UnknownENDM_804AA0FC::update() {
 // field_0x290: 0 up, 1 down, 2 left, 3 right); in the settling state (field_0x297 set) it
 // clears the flag once the edge is passed.
 // FIXME(shotgun): 98.02 %, scheduling+regalloc; behaviour clean.
-bool UnknownENDM_804AA0FC::fn_802E9884(const JGeometry::TVec2f* pos) {
-    s32 ry = (s32)pos->y % 384 - 30;
-    s32 rx = (s32)pos->x % 512;
+bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
+    s32 ry = (s32)pos.y % 384 - 30;
+    s32 rx = (s32)pos.x % 512;
     if (field_0x297 == 0) {
         u8 dir = *field_0x290;
         if (dir == 0xFF) {

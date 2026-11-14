@@ -17,7 +17,7 @@ public:
     void fn_802E94F4();
     void updateCamera();
     u8 tickTimer();
-    bool fn_802E9884(const JGeometry::TVec2f* pos);
+    bool fn_802E9884(JGeometry::TVec3f pos);
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;
     /* 0x232 */ u8 field_0x232[2];
