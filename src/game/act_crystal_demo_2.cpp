@@ -94,11 +94,41 @@ static const s16* lbl_8053A1C0[2] = {lbl_80542C48, lbl_80542C50};
 
 const char* lbl_8053A1C8 = "kk_black.bti";
 
+static const s32 lbl_80474C48[8] = {0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3, 0x21B, 0x21B};
+static const s32 lbl_80474C68[9] = {0x837, 0x838, 0x839, 0x83B, 0x83C, 0x83D, 0x83E, 0x83F, 0x849};
+static const s32 lbl_80474C8C[3] = {0, 0xC9, 0x191};
+static const s32 lbl_80474C98[3] = {0xC8, 0x190, 0x258};
 static const s16 sEmitterAngles[5] = {-5461, 5461, 16384, 27307, -27307};
+static const s32 lbl_80474CB0[5] = {0x1E, 0x37, 0x0A, 0x2D, 0x3C};
+static const s32 lbl_80474CC4[7] = {1, 4, 0, 5, 3, 2, 6};
 static const u16 sEmitterIds[5] = {0x105, 0x106, 0x107, 0x108, 0x109};
 static const s32 sEmitterDepths[5] = {2, 0, 0, 0, 0};
+static const u16 lbl_80474D00[7] = {0x2AB, 0x2AC, 0x2AD, 0x2C4, 0x2C5, 0x2C7, 0x2C6};
+static const u16 lbl_80474D10[7] = {0x2C8, 0x2CD, 0x2CA, 0x2C9, 0x2CC, 0x2CB, 0x2CE};
+static const u16 lbl_80474D20[7] = {0x30B, 0x310, 0x30D, 0x30C, 0x30F, 0x30E, 0x311};
+static const u16 lbl_80474D30[7] = {0x2AF, 0x2BE, 0x2B5, 0x2B2, 0x2BB, 0x2B8, 0x2C1};
+static const u16 lbl_80474D40[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x2C2};
+static const u16 lbl_80474D50[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
+static const u16 lbl_80474D60[6] = {0x53A, 0x53B, 0x53C, 0x53D, 0x53E, 0x53F};
+static const u16 lbl_80474D6C[5] = {0x335, 0x32F, 0x331, 0x337, 0x32D};
+static const u16 lbl_80474D78[5] = {0x336, 0x330, 0x332, 0x338, 0x32E};
+static const u8 lbl_80474D84[5][3] = {
+    {0xFF, 0x41, 0x37}, {0x1E, 0xA0, 0xBE}, {0x4B, 0xFF, 0x2D}, {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF},
+};
+static const s32 lbl_80474D94[6] = {0x96, 0x64, 0x46, 0x78, 0x55, 0x3C};
+static const s32 lbl_80474DAC[6] = {0x55, 0x78, 0x46, 0x64, 0x96, 0x3C};
+static const s32 lbl_80474DC4[5] = {0x1CD, 0x201, 0x17F, 0x1E7, 0x199};
+static const s32 lbl_80474DD8[5] = {0x1E2, 0x1EE, 0x1D0, 0x1E8, 0x1D6};
+static const s32 lbl_80474DEC[6] = {0x1CD, 0x201, 0x17F, 0x1E7, 0x199, 0x1B3};
+static const s32 lbl_80474E04[6] = {0x1E2, 0x1EE, 0x1D0, 0x1E8, 0x1D6, 0x1DC};
+static const u16 lbl_80474E1C[6] = {0x28, 0x22, 0x24, 0x2A, 0x20, 0x26};
+static const u16 lbl_80474E28[6] = {0x29, 0x23, 0x25, 0x2B, 0x21, 0x27};
+static const u8 lbl_80474E34[6][3] = {
+    {0xFF, 0x41, 0x37}, {0x1E, 0xA0, 0xBE}, {0x4B, 0xFF, 0x2D},
+    {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
+};
 
-// FIXME: 90.98 %, different + reloc-name; behaviour drift.
+// FIXME: 91.00 %, different + reloc-name; behaviour drift.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -173,8 +203,6 @@ void cls_804AE088::update() {
     (this->*lbl_804AE070[field_0x23c - 4])();
 }
 
-const s32 lbl_80474C48[8] = {0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3, 0x21B, 0x21B};
-
 void cls_804AE088::draw() {
     JGeometry::TVec3f savedPos = mPos;
     if (field_0x23c == 5 && field_0x240 >= 0x24 && field_0x240 != 0x26) {
@@ -240,22 +268,8 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// Table lbl_80474C68 (0x1E0 bytes) is read by the original; its definition is not written yet.
-extern const s32 lbl_80474C68[120];
-
-static const s32 lbl_80474C8C[3] = {0, 0xC9, 0x191};
-static const s32 lbl_80474CB0[5] = {0x1E, 0x37, 0x0A, 0x2D, 0x3C};
-static const u16 lbl_80474D00[7] = {0x2AB, 0x2AC, 0x2AD, 0x2C4, 0x2C5, 0x2C7, 0x2C6};
-static const u16 lbl_80474D10[7] = {0x2C8, 0x2CD, 0x2CA, 0x2C9, 0x2CC, 0x2CB, 0x2CE};
-static const u16 lbl_80474D20[7] = {0x30B, 0x310, 0x30D, 0x30C, 0x30F, 0x30E, 0x311};
-static const u16 lbl_80474D30[7] = {0x2AF, 0x2BE, 0x2B5, 0x2B2, 0x2BB, 0x2B8, 0x2C1};
-static const u16 lbl_80474D40[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x2C2};
-static const u16 lbl_80474D50[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
-static const u16 lbl_80474D60[6] = {0x53A, 0x53B, 0x53C, 0x53D, 0x53E, 0x53F};
-
-// differs: the original reads every table at an offset from one base (lbl_80474C38); the tables
-// here are copies of parts of lbl_80474C68.
-// FIXME: 92.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.36 %, missing/extra + reloc-name; behaviour drift.
+// regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
     switch (arg) {
@@ -297,8 +311,8 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         field_0x237 = 1;
         break;
     case 5: {
-        JGeometry::TVec3f pos = mPos + JGeometry::TVec3f(0.0f, 160.0f, 20.0f);
-        field_0x25c = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_DNAV, field_0x4, &pos, 0, -1, -1);
+        field_0x25c = getActorManager_801F856C()->spawnActor_801F9484(
+            ACTOR_DNAV, field_0x4, &(mPos + JGeometry::TVec3f(0.0f, 160.0f, 20.0f)), 0, -1, -1);
         mNaviActor = static_cast<Navi54MaidenCrystalCutscene_804ADFE8*>(
             getActorManager_801F856C()->findActorBySerial_801F666C(field_0x25c));
         field_0x258 = 0x3C;
@@ -363,15 +377,15 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         field_0x236 = 0;
         fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x24c = 1;
+        JGeometry::TVec3f playerPos;
         for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
+            playerPos = *getPlayerPos_8023E724(i);
             fn_80230498(i, &playerPos, fn_8023CBC0(i), 0xFF, -128, -128, true);
         }
         fn_8036A65C();
-        JGeometry::TVec3f pos;
-        pos.set(mSpawnPos);
-        pos.z += 20.0f;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRNV, field_0x4, &pos, field_0x23c, -1, -1);
+        playerPos.set(mSpawnPos);
+        playerPos.z += 20.0f;
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRNV, field_0x4, &playerPos, field_0x23c, -1, -1);
         break;
     }
     case 17: {
@@ -591,8 +605,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// FIXME: 75.80 %, missing/extra + reloc-name; behaviour drift.
-// the original keeps lbl_80474C38 in a register as table base (we index lbl_80474C68).
+// FIXME: 82.44 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -613,17 +626,17 @@ void cls_804AE088::fn_8036AA60() {
     switch (field_0x244) {
     case 0:
     case 2:
-        if (field_0x254 >= lbl_80474C68[12 + field_0x244]) {
-            field_0x254 = lbl_80474C68[9 + field_0x244];
+        if (field_0x254 >= lbl_80474C98[field_0x244]) {
+            field_0x254 = lbl_80474C8C[field_0x244];
         }
         break;
     case 1:
-        if (field_0x254 >= lbl_80474C68[13]) {
+        if (field_0x254 >= lbl_80474C98[1]) {
             field_0x244 = 2;
         }
     }
     s32 frame = field_0x254;
-    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[lbl_80474C68[23 + field_0x23c]];
+    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[lbl_80474CC4[field_0x23c]];
     if (crystal.mModel != NULL && crystal.mActive == 0) {
         crystal.mActive = 1;
         crystal.mPos.x = 0.5f;
@@ -903,22 +916,7 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
-static const u16 lbl_80474D6C[5] = {0x335, 0x32F, 0x331, 0x337, 0x32D};
-static const u16 lbl_80474D78[5] = {0x336, 0x330, 0x332, 0x338, 0x32E};
-static const u8 lbl_80474D84[5][3] = {
-    {0xFF, 0x41, 0x37}, {0x1E, 0xA0, 0xBE}, {0x4B, 0xFF, 0x2D}, {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF},
-};
-static const s32 lbl_80474D94[6] = {0x96, 0x64, 0x46, 0x78, 0x55, 0x3C};
-static const s32 lbl_80474DAC[6] = {0x55, 0x78, 0x46, 0x64, 0x96, 0x3C};
-static const u16 lbl_80474E1C[6] = {0x28, 0x22, 0x24, 0x2A, 0x20, 0x26};
-static const u16 lbl_80474E28[6] = {0x29, 0x23, 0x25, 0x2B, 0x21, 0x27};
-static const u8 lbl_80474E34[6][3] = {
-    {0xFF, 0x41, 0x37}, {0x1E, 0xA0, 0xBE}, {0x4B, 0xFF, 0x2D},
-    {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
-};
-
-// differs: the original reads every table at an offset from one base (lbl_80474C38).
-// FIXME: 96.38 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.53 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1224,8 +1222,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 84.13 %, missing/extra + reloc-name; behaviour drift.
-// FIXME: original keeps lbl_80474C38 in a register as table base (we index lbl_80474C68).
+// FIXME: 90.63 %, missing/extra + reloc-name; behaviour near.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
@@ -1303,7 +1300,7 @@ void cls_804AE088::fn_80368660() {
                 if (field_0x294[i] == 0) {
                     mPos = field_0x2a8[i];
                     mPos.z = 20.0f;
-                    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474C68[92 + i], &params, 7, 1.0f, 1.0f);
+                    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DD8[i], &params, 7, 1.0f, 1.0f);
                     if (field_0x3bc[i] != NULL) {
                         JGeometry::TVec3f p = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
                         setEmitterPos_8013CB44(field_0x3bc[i], &p, 0, -1, true);
@@ -1317,7 +1314,7 @@ void cls_804AE088::fn_80368660() {
                 mPos = field_0x2a8[i];
                 if (field_0x240 >= 0x1e && field_0x240 < 0x21) {
                     if (field_0x24c < 0xc0 && mSpriteParams.mMtx == NULL) {
-                        fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x264 + lbl_80474C68[87 + i], NULL);
+                        fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], NULL);
                     }
                     params.field_0x10.r = 255;
                     params.field_0x10.g = 255;
@@ -1325,24 +1322,24 @@ void cls_804AE088::fn_80368660() {
                     params.field_0x10.a = 255 - field_0x24c;
                     if (field_0x4 < 8) {
                         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, field_0x264 + lbl_80474C68[87 + i], &params, 1.0f, 1.0f);
+                        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, field_0x264 + lbl_80474DC4[i], &params, 1.0f, 1.0f);
                     }
-                    fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + lbl_80474C68[87 + i], 0, 1, -1, false, 0, 0);
+                    fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
-                    drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474C68[87 + i], &params, 7, 1.0f, 1.0f);
+                    drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
                 }
             } else {
                 mPos.x = field_0x2a8[i].x;
                 mPos.y = field_0x2a8[i].y;
                 mPos.z = field_0x2a8[i].z;
-                drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474C68[87 + i], &params, 7, 1.0f, 1.0f);
+                drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
             }
         }
         mPos = savedPos;
     }
 }
 
-// FIXME: 76.65 %, different + reloc-name; behaviour drift.
+// FIXME: 96.15 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
@@ -1360,18 +1357,18 @@ void cls_804AE088::fn_803683AC() {
         if (field_0x2f8[i] == 0) {
             mPos = field_0x2a8[i];
             params.field_0x10.a = 255;
-            drawSprite_801F06F0("enemy_gc_sob.bin", lbl_80474C68[97 + i] + 8, &params, 7, 1.0f, 1.0f);
+            drawSprite_801F06F0("enemy_gc_sob.bin", lbl_80474DEC[i] + 8, &params, 7, 1.0f, 1.0f);
         } else if (field_0x2f8[i] != 1 && field_0x2f8[i] != 4) {
             mPos = field_0x2a8[i];
             params.field_0x10.a = 255;
-            drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474C68[103 + i], &params, -1, 1.0f, 1.0f);
+            drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474E04[i], &params, -1, 1.0f, 1.0f);
             if (field_0x2a8[i].z < 255.0f) {
                 params.field_0x10.a = 255 - (s32)field_0x2a8[i].z;
             } else {
                 params.field_0x10.a = 0;
             }
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x264 + lbl_80474C68[103 + i], NULL);
+                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x264 + lbl_80474E04[i], NULL);
             }
         }
     }
