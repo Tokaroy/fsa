@@ -66,7 +66,7 @@ static inline s32 tileIndex(s32 tx, s32 ty) {
     } else if (cy >= 0x200) {
         cy = 0x1FF;
     }
-    return (cx & 0x100) | ((cy & 0x100) << 1) | (cy & 0xF0) | ((cx >> 4) & 0xF);
+    return ((cy & 0x100) << 1) | (cx & 0x100) | (cy & 0xF0) | ((cx >> 4) & 0xF);
 }
 
 // Sets every tile of the floor's block (counts by mType) from x to `tile` (update's four
@@ -164,6 +164,7 @@ void TrickFloor2_804AA628::init() {
 // 8 stays down.
 void TrickFloor2_804AA628::update() {
     JGeometry::TVec3f saved = mPos;
+    JGeometry::TVec2f p;
     switch (mType) {
     case 0:
     case 1:
@@ -187,7 +188,7 @@ void TrickFloor2_804AA628::update() {
         box4 = field_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
-        JGeometry::TVec2f p(mPos.x, mPos.y);
+        p.set(mPos.x, mPos.y);
         box4.addPos(p);
         fn_80239914(&box4, field_0x4, mSerial);
         mPos = saved;
@@ -196,7 +197,7 @@ void TrickFloor2_804AA628::update() {
         break;
     }
     }
-    JGeometry::TVec2f p(mPos.x, mPos.y);
+    p.set(mPos.x, mPos.y);
     JGeometry::TBox2f box = mBox;
     box.addPos(p);
     s32 player = fn_8023AF14(&box, field_0x4, false, 4.5f);
