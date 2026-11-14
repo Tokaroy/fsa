@@ -1,5 +1,6 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
+#include "game/PlayerBit.h"
 #include "game/Player.h"
 #include "game/ActorManager.h"
 #include "game/BoxTest.h"
@@ -109,14 +110,14 @@ void cls_804AC8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 11.30 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 30.33 %, missing/extra + reloc-name; behaviour drift.
 // (partial): only the preamble and state 0 are written; states 1 to 13 (the message
 // steps, the cucco counting, the rewards) are still missing.
 void cls_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
         for (s32 i = 0; i < 4; i++) {
-            if ((bool)(gGameRoot_8053AAF8->mPlayerMask & (1 << i))) {
+            if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true) {
                 lbl_8053AF08->field_0x28[i] = field_0x274[i];
                 lbl_8053AF08->field_0x28[4] |= (u8)(1 << i); // the shown-slot bits
             }
@@ -164,6 +165,102 @@ void cls_804AC8C0::update() {
         }
         break;
     }
+    case 1:
+        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        if (fn_803865B8(field_0x240)) {
+            switch (fn_8037EFB4(field_0x240)) {
+            case 0:
+                switch (field_0x244) {
+                case 0:
+                    field_0x2c0 = 0x425;
+                    break;
+                case 1:
+                    field_0x2c0 = 0x429;
+                    break;
+                }
+                fn_8038938C(field_0x240, field_0x24c);
+                if (fn_8038470C(field_0x240, field_0x2c0)) {
+                    field_0x230 = 3;
+                }
+                break;
+            case 1:
+                switch (field_0x244) {
+                case 0:
+                    field_0x2c0 = 0x424;
+                    break;
+                case 1:
+                    field_0x2c0 = 0x428;
+                    break;
+                }
+                if (fn_8038470C(field_0x240, field_0x2c0)) {
+                    field_0x230 = 2;
+                }
+                break;
+            }
+        }
+        break;
+    case 2:
+    case 3:
+    case 5:
+    case 12:
+        if (field_0x230 == 5) {
+            s32 layer5 = field_0x4;
+            if (layer5 < 8) {
+                box = getGameView_802D6A9C()->mVisibleBox;
+            } else {
+                box = getGameView_802D6A9C()->field_0xdc;
+            }
+        }
+        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        if (fn_80388CAC(field_0x240, mSerial)) {
+            getActorManager_801F856C()->fn_801F6884();
+            switch (field_0x230) {
+            case 3:
+            case 5:
+                fn_801F0D20(0x3a);
+                gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+                fn_8022ADE4();
+                field_0x230 = 6;
+                break;
+            case 2:
+                switch (field_0x244) {
+                case 0:
+                    field_0x2c0 = 0x423;
+                    break;
+                case 1:
+                    field_0x2c0 = 0x427;
+                    break;
+                }
+                field_0x230 = 0;
+                break;
+            case 12:
+                fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+                if (fn_80388CAC(field_0x240, mSerial)) {
+                    getActorManager_801F856C()->fn_801F6884();
+                    field_0x230 = 11;
+                }
+                break;
+            }
+        }
+        break;
+    case 4:
+        if (getActorManager_801F856C()->fn_801F68E0() == 1) {
+            s32 layer4 = field_0x4;
+            if (layer4 < 8) {
+                box = getGameView_802D6A9C()->mVisibleBox;
+            } else {
+                box = getGameView_802D6A9C()->field_0xdc;
+            }
+            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            field_0x240 = fn_8022FD8C(mSerial);
+            if (field_0x240 >= 0) {
+                fn_8038938C(field_0x240, field_0x24c);
+                if (fn_8038AD24(field_0x240, 0x42f, mSerial, field_0x4, mPos, 0x112)) {
+                    field_0x230 = 5;
+                }
+            }
+        }
+        break;
     }
 }
 
