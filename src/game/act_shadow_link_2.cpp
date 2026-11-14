@@ -220,7 +220,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
         mFlags &= ~0x80000;
         break;
     case 0x21:
-        mFlags &= ~0x04000000;
+        mFlags &= ~0x4000000;
         break;
     case 0x2B:
     case 0x2C:
@@ -230,13 +230,11 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox2.set(mBox);
         break;
-    default:
-        break;
     }
 }
 
 // 0x801C3B7C.
-// FIXME(shotgun): 67.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): behaviour drift remains (see fingerprint).
 void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     fn_801C50A8(state);
     switch (state) {
@@ -252,7 +250,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         break;
     case 3:
-        if (fn_801C0D70()->field_0x50 >= 0) {
+        if ((s32)fn_801C0D70()->field_0x50 >= 0) {
             field_0x250 = 0xA0;
         } else {
             field_0x250 = 0xEB;
@@ -261,7 +259,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 4:
         mDrawEnabled = true;
-        if (fn_801C0D70()->field_0x50 >= 0) {
+        if ((s32)fn_801C0D70()->field_0x50 >= 0) {
             mPos.y += 32.0f;
         }
         field_0x3c.z = 4.5f;
@@ -315,12 +313,12 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 8:
     case 9:
     case 0xB:
-        mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
+        mSpeed = 0.0f;
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
         field_0x3c.z = 0.0f;
-        if (state != 0xB && !(fn_801C0D70()->field_0x50 < 0)) {
+        if (state != 0xB && (fn_801C0D70()->field_0x50 >> 31) != 0) {
             mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
         }
         if (field_0x340.mState != 0) {
@@ -328,8 +326,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         break;
     case 0xA:
-        mTargetSpeed = 0.0f;
-        mSpeed = 1.0f;
+        mSpeed = 0.0f;
+        mTargetSpeed = 1.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 1) {
             field_0x340.fn_800FEB78(1);
@@ -352,14 +350,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x10:
         if (state == 0xE) {
             if (mFlags & 0x2000) {
-                if (fn_801C0D70()->field_0x50 >= 0) {
+                if ((s32)fn_801C0D70()->field_0x50 >= 0) {
                     fn_801C0D70()->field_0x0 |= 0x40;
                 }
                 getActorManager_801F856C()->fn_801F6884();
                 fn_8022ADE4();
             }
             mDrawEnabled = true;
-            if (!(field_0x524.field_0x0 & 2) && !(fn_801C0D70()->field_0x50 < 0)) {
+            if (!(field_0x524.field_0x0 & 2) && (fn_801C0D70()->field_0x50 >> 31) != 0) {
                 mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
             }
             field_0x3c.x = 0.0f;
@@ -367,7 +365,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x3c.z = 0.0f;
             mFlags &= ~0x100;
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-            mBox2 = mBox;
+            mBox2.set(mBox);
             field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             field_0x358.fn_8021425C(0, (field_0x90 >> 8) & 0xF, mPos, field_0x4);
             field_0x358.fn_80214254(0);
@@ -382,15 +380,17 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x250 = fn_801CD664(0x10) + 0xF;
             field_0x550.fn_80217484();
         }
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
-        field_0x5a8 = 0.0f; // FIXME(shotgun): field_0x5a4 and u16s at 0x5a0/0x5a2 not typed in header
+        field_0x5a4 = (f32)(fn_801CD664(0x1F) + 0x46);
+        field_0x5a0 = fn_801CD664(0x12D) + 0x12C;
+        field_0x5a2 = fn_801CD664(0x12C1) + 0x258;
         break;
     case 0x11:
         if (mState != 0x17 && mState != 0x18) {
-            mSpeed = 1.0f;
+            mTargetSpeed = 1.0f;
             if (field_0x340.mState != 1) {
                 field_0x340.fn_800FEB78(1);
             }
@@ -408,8 +408,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         } else {
             field_0x250 = 0x5A;
         }
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
@@ -429,7 +429,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mSpeed = 0.0f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
         field_0x3c.x = (field_0x32c.x - mPos.x) * (1.0f / 60.0f);
         field_0x3c.y = (field_0x32c.y - mPos.y) * (1.0f / 60.0f);
@@ -437,46 +437,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x33c = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
         startSound_801F0E34(0x40036, 0);
         break;
-    case 0x15:
-    case 0x1F:
-        if (state == 0x15) {
-            if (fn_801C5348(32.0f)) {
-                field_0x250 = 2;
-            } else {
-                field_0x250 = 0x1E;
-            }
-        } else {
-            u16 minVal = lbl_8046A748[field_0x564][1];
-            u16 maxVal = lbl_8046A748[field_0x564][2];
-            field_0x250 = minVal + fn_801CD664(maxVal - minVal + 1);
-        }
-        mTargetSpeed = 0.0f;
-        mSpeed = 0.0f;
-        field_0x340.mIndex = 8;
-        mFlags &= ~0x100;
-        mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-        mBox2 = mBox;
-        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
-        break;
-    case 0x16:
-        if (fn_801C5348(32.0f)) {
-            field_0x250 = 2;
-        } else {
-            field_0x250 = 0x5A;
-        }
-        mSpeed = 0.0f;
-        if (field_0x340.mState != 0) {
-            field_0x340.fn_800FEB78(0);
-        }
-        break;
     case 0x17:
     case 0x18:
     case 0x19:
     case 0x1A:
-        mSpeed = 1.0f;
+        mTargetSpeed = 1.0f;
         mPathCount = 0;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         mFlags |= 0x1100;
         mFlags &= ~0x20000;
         if (state != 0x17) {
@@ -491,7 +459,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         if (mState == 0x11) {
             field_0x599 = 0x1E;
         }
-        mSpeed = 1.0f;
+        mTargetSpeed = 1.0f;
         if (field_0x340.mState != 1) {
             field_0x340.fn_800FEB78(1);
         }
@@ -500,21 +468,21 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x596 = 1;
         break;
     case 0x1C:
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         field_0x340.fn_800FEB78(4);
         field_0x3c.z = 4.5f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         if (mState != 0x2A) {
             startSound_801F0E34(0x40036, 0);
         }
         break;
     case 0x1D:
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         if (fn_801C0D70()->field_0x0 & 0x400) {
             field_0x4ec.fn_80214E50();
             field_0x59c = 0x3C;
@@ -526,7 +494,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x1E:
         if (mState == 0xD) {
             mDrawEnabled = true;
-            if (!(field_0x524.field_0x0 & 2) && !(fn_801C0D70()->field_0x50 < 0)) {
+            if (!(field_0x524.field_0x0 & 2) && (fn_801C0D70()->field_0x50 >> 31) != 0) {
                 mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
             }
             field_0x3c.x = 0.0f;
@@ -534,16 +502,16 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x3c.z = 0.0f;
             mFlags &= ~0x100;
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-            mBox2 = mBox;
+            mBox2.set(mBox);
             field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             field_0x358.fn_8021425C(0, (field_0x90 >> 8) & 0xF, mPos, field_0x4);
             field_0x358.fn_80214254(0);
         }
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
         field_0x340.fn_800FEB78(4);
         if (mState == 0xD) {
@@ -565,14 +533,46 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         field_0x3c.z = 0.5f * (60.0f * -lbl_8053EFB8);
         field_0x33c = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
         break;
+    case 0x15:
+    case 0x1F:
+        if (state == 0x15) {
+            if (fn_801C5348(32.0f)) {
+                field_0x250 = 2;
+            } else {
+                field_0x250 = 0x1E;
+            }
+        } else {
+            u16 minVal = lbl_8046A748[field_0x564][1];
+            u16 maxVal = lbl_8046A748[field_0x564][2];
+            field_0x250 = minVal + fn_801CD664(maxVal - minVal + 1);
+        }
+        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
+        field_0x340.mIndex = 8;
+        mFlags &= ~0x100;
+        mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        mBox2.set(mBox);
+        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        break;
+    case 0x16:
+        if (fn_801C5348(32.0f)) {
+            field_0x250 = 2;
+        } else {
+            field_0x250 = 0x5A;
+        }
+        mTargetSpeed = 0.0f;
+        if (field_0x340.mState != 0) {
+            field_0x340.fn_800FEB78(0);
+        }
+        break;
     case 0x20:
         field_0x250 = 10;
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         break;
     case 0x21:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (mFlags & 0x04000000) {
             if (field_0x340.mState != 0) {
                 field_0x340.fn_800FEB78(0);
@@ -586,7 +586,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 0x22:
         field_0x250 = fn_801CD664(0x10) + 5;
-        mSpeed = 1.0f;
+        mTargetSpeed = 1.0f;
         if (field_0x340.mState != 1) {
             field_0x340.fn_800FEB78(1);
         }
@@ -598,8 +598,8 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x24:
     case 0x25:
     case 0x26:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (state == 0x23) {
             startSound_801F0E34(0x40000, 0);
             startSound_801F0E34(0x400CC, 0);
@@ -616,20 +616,20 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         } else {
             field_0x250 = fn_801CD664(1) + 0x5A;
         }
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (field_0x340.mState != 3 && field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
         break;
     case 0x29:
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
         mLife = mLifeBackup;
         mFlags |= 0x300;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         field_0xb0 = 0;
         startSound_801F0E34(0x40037, 0);
         fn_801C0D70()->field_0x6++;
@@ -641,25 +641,25 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         break;
     case 0x2A:
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         break;
     case 0x2B:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 7) {
             field_0x340.fn_800FEB78(7);
         }
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         break;
     case 0x2C:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         if (mState == 0x2B || mState == 0x1E) {
             if (field_0x340.mState != 0) {
                 field_0x340.fn_800FEB78(0);
@@ -674,28 +674,28 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         break;
     case 0x2D:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         field_0x33c = 0;
         field_0x340.fn_800FEB78(8);
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         startSound_801F0E34(0x40036, 0);
         break;
     case 0x2E:
-        mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         field_0x33c = 0;
         if (field_0x340.mState != 7) {
             field_0x340.fn_800FEB78(7);
         }
         break;
     case 0x2F:
-        mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
+        mTargetSpeed = 0.0f;
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
         field_0x3c.z = 0.0f;
@@ -704,7 +704,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         }
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         mPathCount = 0;
         break;
     }
