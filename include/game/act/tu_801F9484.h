@@ -551,7 +551,7 @@ public:
     /* 0x23C */ s32 field_0x23c; // bits 17-21
     /* 0x240 */ s32 field_0x240; // bits 22-26
     /* 0x244 */ s32 field_0x244; // state timer (update)
-    /* 0x248 */ u8 field_0x248[0x24C - 0x248]; // not yet known
+    /* 0x248 */ s32 field_0x248; // step of the show in states 4 and 5
     /* 0x24C */ s32 field_0x24c;
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254[4];
@@ -560,7 +560,7 @@ public:
     /* 0x2A4 */ s32 field_0x2a4[4];
     /* 0x2B4 */ JPABaseEmitter* mEmitters[5][4];
     /* 0x304 */ s32 field_0x304;
-    /* 0x308 */ u8 field_0x308[4]; // not yet known
+    /* 0x308 */ s32 field_0x308; // alpha of the show effects
     /* 0x30C */ s32 field_0x30c;
     /* 0x310 */ u8 field_0x310;
     /* 0x311 */ u8 field_0x311[3]; // not yet known
