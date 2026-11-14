@@ -386,128 +386,88 @@ void cls_804B16A8::fn_80435E20() {
     }
 }
 
-// FIXME(shotgun): 27.21 %, missing/extra; behaviour drift.
+
+// FIXME: 99.77 %, scheduling+regalloc; behaviour clean.
 void cls_804B16A8::fn_80434724() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
-    f32 cellW = lbl_8053AD78->mFont->getWidth();
-    f32 scale = fontSizeW / cellW;
+    f32 scale = fontSizeW / lbl_8053AD78->mFont->getCellWidth();
 
     switch (field_0x5a) {
     case 0:
-        ((J2DTextBox*)mScreen->search('Ta01'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Ta01'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        mScreen->search('Prba01')->setAlpha(0xFF);
-        mScreen->search('Prba02')->setAlpha(0xFF);
-
-        ((J2DTextBox*)mScreen->search('Ta02'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Ta02'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        mScreen->search('Prba03')->setAlpha(0x80);
-        mScreen->search('Prba04')->setAlpha(0x80);
-
-        if (field_0x6c != 0) {
-            ((J2DTextBox*)mScreen->search('Ta03'))->setCharColor(JUtility::TColor(0xFFD296FF));
-            ((J2DTextBox*)mScreen->search('Ta03'))->setGradColor(JUtility::TColor(0x968C5AFF));
-            ((J2DTextBox*)mScreen->search('Tq03'))->setCharColor(JUtility::TColor(0xFFD296FF));
-            ((J2DTextBox*)mScreen->search('Tq03'))->setGradColor(JUtility::TColor(0x968C5AFF));
-            ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-            ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-            mScreen->search('Prba05')->setAlpha(0x80);
-            mScreen->search('Prba06')->setAlpha(0x80);
-        }
-        {
-            f32 halfTextW = (field_0x48 * scale) * 0.5f;
-            f32 arrowHalfW = field_0xc[0]->field_0x18 * 0.5f;
-            f32 taX = mScreen->search('Ta01')->getBounds()->i.x;
-            f32 taW = mScreen->search('Ta01')->getWidth();
-            field_0x40 = ((taX + taW * 0.5f) - halfTextW - arrowHalfW) - field_0xc[0]->field_0x10;
-            field_0x3c = mScreen->search('Ta01')->getBounds()->i.y;
-            field_0x44 = 0.0f;
+        ((J2DTextBox*)mScreen->search('Ta01'))->setBlackWhite(JUtility::TColor(100, 20, 0, 255), JUtility::TColor(100, 20, 0, 0));
+        ((J2DTextBox*)mScreen->search('Ta02'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+        ((J2DTextBox*)mScreen->search('Tq01'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        ((J2DTextBox*)mScreen->search('Tq02'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+        ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+        ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+        ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        mScreen->search('Prba01')->setAlpha(0x78);
+        mScreen->search('Prba02')->setAlpha(0x78);
+        mScreen->search('Prba03')->setAlpha(0x46);
+        mScreen->search('Prba04')->setAlpha(0x46);
+        field_0x40 = (mScreen->search('Ta01')->getWidth() - field_0x48 * scale) * 0.5f;
+        field_0x3c = mScreen->search('Tq01')->getBounds()->i.y - mScreen->search('Tq02')->getBounds()->i.y;
+        field_0x44 = mScreen->search('Ta01')->getBounds()->i.y - mScreen->search('Ta02')->getBounds()->i.y;
+        if (field_0x6c == 1) {
+            ((J2DTextBox*)mScreen->search('Ta03'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DTextBox*)mScreen->search('Tq03'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            mScreen->search('Prba05')->setAlpha(0x46);
+            mScreen->search('Prba06')->setAlpha(0x46);
         }
         break;
 
     case 1:
-        ((J2DTextBox*)mScreen->search('Ta01'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Ta01'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        mScreen->search('Prba01')->setAlpha(0x80);
-        mScreen->search('Prba02')->setAlpha(0x80);
-
-        ((J2DTextBox*)mScreen->search('Ta02'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Ta02'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        mScreen->search('Prba03')->setAlpha(0xFF);
-        mScreen->search('Prba04')->setAlpha(0xFF);
-
-        if (field_0x6c != 0) {
-            ((J2DTextBox*)mScreen->search('Ta03'))->setCharColor(JUtility::TColor(0xFFD296FF));
-            ((J2DTextBox*)mScreen->search('Ta03'))->setGradColor(JUtility::TColor(0x968C5AFF));
-            ((J2DTextBox*)mScreen->search('Tq03'))->setCharColor(JUtility::TColor(0xFFD296FF));
-            ((J2DTextBox*)mScreen->search('Tq03'))->setGradColor(JUtility::TColor(0x968C5AFF));
-            ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-            ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-            mScreen->search('Prba05')->setAlpha(0x80);
-            mScreen->search('Prba06')->setAlpha(0x80);
-        }
-        {
-            f32 halfTextW = (field_0x4c * scale) * 0.5f;
-            f32 arrowHalfW = field_0xc[0]->field_0x18 * 0.5f;
-            f32 taX = mScreen->search('Ta02')->getBounds()->i.x;
-            f32 taW = mScreen->search('Ta02')->getWidth();
-            field_0x40 = ((taX + taW * 0.5f) - halfTextW - arrowHalfW) - field_0xc[0]->field_0x10;
-            f32 taY = mScreen->search('Ta02')->getBounds()->i.y;
-            field_0x44 = taY - field_0x3c;
+        ((J2DTextBox*)mScreen->search('Ta02'))->setBlackWhite(JUtility::TColor(100, 20, 0, 255), JUtility::TColor(100, 20, 0, 0));
+        ((J2DTextBox*)mScreen->search('Ta01'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+        ((J2DTextBox*)mScreen->search('Tq02'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        ((J2DTextBox*)mScreen->search('Tq01'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+        ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+        ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+        ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+        mScreen->search('Prba03')->setAlpha(0x78);
+        mScreen->search('Prba04')->setAlpha(0x78);
+        mScreen->search('Prba01')->setAlpha(0x46);
+        mScreen->search('Prba02')->setAlpha(0x46);
+        field_0x40 = (mScreen->search('Ta02')->getWidth() - field_0x4c * scale) * 0.5f;
+        field_0x3c = 0.0f;
+        field_0x44 = 0.0f;
+        if (field_0x6c == 1) {
+            ((J2DTextBox*)mScreen->search('Ta03'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DTextBox*)mScreen->search('Tq03'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            mScreen->search('Prba05')->setAlpha(0x46);
+            mScreen->search('Prba06')->setAlpha(0x46);
         }
         break;
 
-    case 2:
-        ((J2DTextBox*)mScreen->search('Ta01'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Ta01'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Tq01'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        mScreen->search('Prba01')->setAlpha(0x80);
-        mScreen->search('Prba02')->setAlpha(0x80);
-
-        ((J2DTextBox*)mScreen->search('Ta02'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Ta02'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setCharColor(JUtility::TColor(0xFFD296FF));
-        ((J2DTextBox*)mScreen->search('Tq02'))->setGradColor(JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(0x00000000), JUtility::TColor(0x968C5AFF));
-        mScreen->search('Prba03')->setAlpha(0x80);
-        mScreen->search('Prba04')->setAlpha(0x80);
-
-        ((J2DTextBox*)mScreen->search('Ta03'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Ta03'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DTextBox*)mScreen->search('Tq03'))->setCharColor(JUtility::TColor(0xFFFFFFFF));
-        ((J2DTextBox*)mScreen->search('Tq03'))->setGradColor(JUtility::TColor(0xFFFF00FF));
-        ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(0x80370000), JUtility::TColor(0xFFC800FF));
-        mScreen->search('Prba05')->setAlpha(0xFF);
-        mScreen->search('Prba06')->setAlpha(0xFF);
-        {
-            f32 halfTextW = (field_0x50 * scale) * 0.5f;
-            f32 arrowHalfW = field_0xc[0]->field_0x18 * 0.5f;
-            f32 taX = mScreen->search('Ta03')->getBounds()->i.x;
-            f32 taW = mScreen->search('Ta03')->getWidth();
-            field_0x40 = ((taX + taW * 0.5f) - halfTextW - arrowHalfW) - field_0xc[0]->field_0x10;
-            f32 taY = mScreen->search('Ta03')->getBounds()->i.y;
-            field_0x44 = taY - field_0x3c;
+    default:
+        if (field_0x6c == 1) {
+            ((J2DTextBox*)mScreen->search('Ta03'))->setBlackWhite(JUtility::TColor(100, 20, 0, 255), JUtility::TColor(100, 20, 0, 0));
+            ((J2DTextBox*)mScreen->search('Ta02'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DTextBox*)mScreen->search('Ta01'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DTextBox*)mScreen->search('Tq03'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DTextBox*)mScreen->search('Tq02'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DTextBox*)mScreen->search('Tq01'))->setBlackWhite(JUtility::TColor(60, 60, 60, 255), JUtility::TColor(60, 60, 60, 0));
+            ((J2DPicture*)mScreen->search('Prba05'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+            ((J2DPicture*)mScreen->search('Prba06'))->setBlackWhite(JUtility::TColor(255, 255, 120, 255), JUtility::TColor(255, 255, 120, 0));
+            ((J2DPicture*)mScreen->search('Prba03'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DPicture*)mScreen->search('Prba04'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DPicture*)mScreen->search('Prba01'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            ((J2DPicture*)mScreen->search('Prba02'))->setBlackWhite(JUtility::TColor(0, 0, 0, 255), JUtility::TColor(0, 0, 0, 0));
+            mScreen->search('Prba05')->setAlpha(0x78);
+            mScreen->search('Prba06')->setAlpha(0x78);
+            mScreen->search('Prba03')->setAlpha(0x46);
+            mScreen->search('Prba04')->setAlpha(0x46);
+            mScreen->search('Prba01')->setAlpha(0x46);
+            mScreen->search('Prba02')->setAlpha(0x46);
+            field_0x40 = (mScreen->search('Ta03')->getWidth() - field_0x50 * scale) * 0.5f;
+            field_0x3c = mScreen->search('Tq02')->getBounds()->i.y - mScreen->search('Tq03')->getBounds()->i.y;
+            field_0x44 = mScreen->search('Ta02')->getBounds()->i.y - mScreen->search('Ta03')->getBounds()->i.y;
         }
         break;
     }
