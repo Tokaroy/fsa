@@ -154,7 +154,7 @@ void WingedForceGem_804AB098::init() {
     }
 }
 
-// FIXME(shotgun): 93.10 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.67 %, different + reloc-name; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
         if (vfunc_0x34() == 1) {
