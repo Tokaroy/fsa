@@ -1642,11 +1642,8 @@ void GameView_804A9950::fn_802D782C(u8 value) {
     getGameView_802D6A9C()->field_0x131de = value;
 }
 
-// FIXME: 80.00 %, scheduling; behaviour clean.
-// The clrlwi of bits is emitted before the lhz load in ours,
-// after it in the target; swapping the & operands is worse.
 bool GameView_804A9950::fn_802D7804(s32 index, u16 bits) {
-    return (field_0x131b8[index] & bits) != 0;
+    return field_0x131b8[index] & bits;
 }
 
 void GameView_804A9950::fn_802D77E4(s32 index, u16 value) {
