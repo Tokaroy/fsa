@@ -7,7 +7,7 @@
 #include "game/act/tu_80343A70.h"
 
 // 0x803450AC.
-// FIXME(shotgun): 95.10 %, missing/extra + reloc-name
+// FIXME(shotgun): 95.32 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC600::init() {
     field_0x270 = field_0x90 & 1;
     mLife = 1;
@@ -71,7 +71,7 @@ static inline void steerPieces(cls_804AC600* self) {
 }
 
 // 0x80343D90.
-// FIXME(shotgun): 92.7 %, missing/extra + reloc-name
+// FIXME(shotgun): 98.04 %, missing/extra; behaviour near.
 void cls_804AC600::update() {
     JGeometry::TVec3f diff;
     diff.x = diff.y = diff.z = 0.0f;
@@ -330,7 +330,7 @@ void cls_804AC600::update() {
 }
 
 // 0x80343B48.
-// FIXME(shotgun): 93.18 %, missing/extra
+// FIXME(shotgun): 93.18 %, missing/extra; behaviour clean.
 void cls_804AC600::draw() {
     SpriteParams_801F5AE0 params;
     if (field_0x274 == 2) {
@@ -354,7 +354,7 @@ void cls_804AC600::draw() {
 }
 
 // 0x80343AD0.
-// FIXME(shotgun): 96.67 %, missing/extra
+// FIXME(shotgun): 96.67 %, missing/extra; behaviour clean.
 void cls_804AC600::vfunc_0x24() {
     s32 kind = 0;
     if (field_0x274 == 1) {
