@@ -91,6 +91,7 @@ s32 fn_801A6108(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 
 // 0x801A5400.
 // Case 6 also stores 1 at this + 0x230 (past ActorBase_804A5770); that store is not written.
+// FIXME: 95.78 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     if ((field_0xb0 & 0xFF) == 0) {
         return 0;
