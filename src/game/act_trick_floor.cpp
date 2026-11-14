@@ -127,6 +127,10 @@ static inline void drawSmp(TrickFloor_804A83A0* self, const JGeometry::TVec3f* p
 }
 
 // The tile index of a view-relative position (as init computes it).
+static inline bool boxContains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
+    return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
+}
+
 static inline s32 tileIndex(s32 tx, s32 ty) {
     s32 cx = tx;
     if (cx < 0) {
@@ -185,7 +189,7 @@ static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
 // Who stands on the floor, then: 0 reads the tile under it, 1 waits for the switch,
 // 2 waits for a rider (kinds 4/5: all four players) and drops, 3 sinks, 4 holds while
 // ridden, 5 rises back and restores the tiles, 6 / 7 fall away, 8 stays down.
-// FIXME: 93.47 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 93.90 %, different + reloc-name; behaviour drift.
 void TrickFloor_804A83A0::update() {
     JGeometry::TVec3f savedPos = mPos;
     switch (field_0x234) {
@@ -225,7 +229,7 @@ void TrickFloor_804A83A0::update() {
     s32 standing = -1;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-        if (p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y) {
+        if (boxContains(box, p)) {
             standing = i;
             if (fn_8022F478(i)) {
                 standing = -1;
@@ -261,8 +265,9 @@ void TrickFloor_804A83A0::update() {
         break;
     }
     case 1:
-        if (field_0x238 != 0) {
-            if (getGameView_802D6A9C()->fn_802D800C(field_0x238)) {
+        s32 bit = field_0x238;
+        if (bit != 0) {
+            if (getGameView_802D6A9C()->fn_802D800C(bit)) {
                 field_0x230 = 2;
             }
         } else {
