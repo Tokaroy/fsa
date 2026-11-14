@@ -8,7 +8,8 @@ from register numbers and order. A function whose instructions are identical and
 only relocation names differ (class reloc-name) counts too, but only when every
 differing relocation is ours @NNN against the target's lbl_XXXXXXXX with the same
 bytes in both objects (naming_only); otherwise it is reloc-name-unverified. "Structurally
-close" is missing/extra with |instruction difference| <= 4 and >= 85 %.
+close" is missing/extra with |instruction difference| <= 4 and >= 85 %, alone or together with
+differences that count as done on their own (a verified reloc-name).
 
 Writes build/G4SE01/structural.json:
   honest      {functions, code}   100 % matched, from report_honest.json
@@ -123,6 +124,13 @@ def is_done(cls):
     return all(p in DONE for p in parts)
 
 
+def is_close(cls):
+    """missing/extra, alone or with differences that count as done on their own (a verified
+    @NNN/lbl_ literal name): a "+ reloc-name" must not cost a near function its credit."""
+    parts = cls.split(" + ")
+    return parts[0] == "missing/extra" and all(p in DONE for p in parts[1:])
+
+
 def mtime(p):
     try:
         return os.stat(p).st_mtime_ns
@@ -217,7 +225,7 @@ def main():
                 done[0] += 1
                 done[1] += size
                 credit(name, fn, size, "done")
-            elif cls == "missing/extra" and abs(ninsn) <= CLOSE_INSNS and pct >= CLOSE_PCT:
+            elif is_close(cls) and abs(ninsn) <= CLOSE_INSNS and pct >= CLOSE_PCT:
                 close[0] += 1
                 close[1] += size
                 credit(name, fn, size, "close")
