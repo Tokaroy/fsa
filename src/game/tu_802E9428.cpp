@@ -104,7 +104,7 @@ void UnknownENDM_804AA0FC::init() {
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
 }
 
-// FIXME(shotgun): 60.20 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 64.10 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
