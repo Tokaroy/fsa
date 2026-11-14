@@ -615,16 +615,15 @@ s32 ActorManager_804A5800::fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** o
     return count;
 }
 
-// FIXME: 98.17 %, scheduling+regalloc; behaviour clean.
-// the target loads pos->x, actor x, pos->y,
-// actor y and squares x first; this code loads and squares y first. The
-// 1000000.0f literal is lbl_8053F824 once the pool before it is complete.
+// FIXME: 99.00 %, regalloc-only (f1/f2 swapped on the x terms); behaviour clean.
 s32 ActorManager_804A5800::fn_801F778C(u32 id, const JGeometry::TVec3f* pos, f32* outDistSq) {
     s32 serial = -1;
     f32 best = 1000000.0f;
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && id == mActors[i]->mActorId) {
-            f32 dist = square(pos->x - mActors[i]->mPos.x) + square(pos->y - mActors[i]->mPos.y);
+            f32 dx = pos->x - mActors[i]->mPos.x;
+            f32 dy = pos->y - mActors[i]->mPos.y;
+            f32 dist = square(dx) + square(dy);
             if (dist < best) {
                 serial = mActors[i]->mSerial;
                 best = dist;
@@ -668,7 +667,7 @@ s32 ActorManager_804A5800::fn_801F7664(const JGeometry::TVec3f* pos, f32* outDis
         if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->field_0x1a8 == true) {
             f32 dx = pos->x - mActors[i]->mPos.x;
             f32 dy = pos->y - mActors[i]->mPos.y;
-            f32 dist = square(dx) + square(dy);
+            f32 dist = square(dy) + square(dx);
             if (dist < best) {
                 serial = mActors[i]->mSerial;
                 best = dist;
