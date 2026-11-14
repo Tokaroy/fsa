@@ -64,7 +64,7 @@ void Cucco_804AB8C0::init() {
     field_0x2a4[0] = 1;
     field_0x2a4[1] = 1;
     field_0x290 = field_0x90 & 0xF;
-    setVec(field_0x2c4[1], mPos);
+    setVec(field_0x2d0, mPos);
     mLife = 1000;
     field_0x264 = 0;
     field_0x26c = 0;
@@ -79,7 +79,7 @@ void Cucco_804AB8C0::init() {
     field_0x278 = 0;
     field_0x27c = 0x32;
     field_0x280 = 0;
-    setVec(field_0x2c4[2], mPos);
+    setVec(field_0x2dc, mPos);
     field_0x294 = field_0x4;
     field_0x268 = 10;
     mEmitter2f4 = NULL;
@@ -106,12 +106,12 @@ void Cucco_804AB8C0::init() {
     field_0x2b8.y = 0.0f;
     field_0x2b8.z = 0.0f;
     field_0x3c.set(0.0f, 0.0f, 0.0f);
-    field_0x2c4[0].x = 0.0f;
-    field_0x2c4[0].y = 0.0f;
-    field_0x2c4[0].z = 0.0f;
+    field_0x2c4.x = 0.0f;
+    field_0x2c4.y = 0.0f;
+    field_0x2c4.z = 0.0f;
     field_0x184 = 20.0f;
     field_0x284 = 0;
-    setVec(field_0x2c4[3], mPos);
+    setVec(field_0x2e8, mPos);
     switch (field_0x290) {
     case 1: {
         s32 player;
@@ -308,7 +308,7 @@ void Cucco_804AB8C0::fn_803324A8() {
             field_0x258 = 0;
             mPos.z = 0.0f;
             field_0x3c.z = 0.0f;
-            setVec(field_0x2c4[2], mPos);
+            setVec(field_0x2dc, mPos);
             field_0x294 = field_0x4;
             field_0x230 = 1;
         } else {
@@ -318,10 +318,10 @@ void Cucco_804AB8C0::fn_803324A8() {
     if (field_0x290 == 6 && field_0x230 == 1) {
         field_0x280++;
         if (field_0x240 % 4 == 0 && field_0x290 == 6) {
-            f32 dx = mPos.x - field_0x2c4[2].x;
-            f32 dy = mPos.y - field_0x2c4[2].y;
+            f32 dx = mPos.x - field_0x2dc.x;
+            f32 dy = mPos.y - field_0x2dc.y;
             field_0x294 = field_0x4;
-            setVec(field_0x2c4[2], mPos);
+            setVec(field_0x2dc, mPos);
             f32 distSq = dy * dy + dx * dx;
             if (field_0x294 != field_0x4 || !(distSq < 5.0f)) {
                 field_0x280 = 0;
@@ -489,8 +489,8 @@ void Cucco_804AB8C0::fn_80331E6C() {
     mPos = target;
     field_0x4 = newLayer;
     field_0x284 = 0x14;
-    setVec(field_0x2c4[3], target);
-    setVec(field_0x2c4[1], target);
+    setVec(field_0x2e8, target);
+    setVec(field_0x2d0, target);
     field_0x2a4[0] = 0;
     field_0x2a4[1] = 0;
     f32 mag = PSVECMag(&field_0x2b8);
@@ -534,8 +534,8 @@ void Cucco_804AB8C0::fn_80331E6C() {
     } else {
         field_0x284--;
         if (field_0x284 <= 0) {
-            f32 dx = field_0x2c4[3].x - mPos.x;
-            f32 dy = field_0x2c4[3].y - mPos.y;
+            f32 dx = field_0x2e8.x - mPos.x;
+            f32 dy = field_0x2e8.y - mPos.y;
             if (JGeometry::TVec2f(dx, dy).length() > 12.0f) {
                 field_0x2a4[0] = 1;
             }
@@ -771,14 +771,14 @@ void Cucco_804AB8C0::update() {
                     }
                     field_0x2b8.z = 3.0f;
                 }
-                field_0x2c4[0] = field_0x2b8;
+                field_0x2c4 = field_0x2b8;
                 field_0x2b8.z = 0.0f;
                 field_0x2b8.y = 0.0f;
                 field_0x2b8.x = 0.0f;
                 field_0x3c.z = 0.0f;
                 field_0x3c.y = 0.0f;
                 field_0x3c.x = 0.0f;
-                setVec(field_0x2c4[1], mPos);
+                setVec(field_0x2d0, mPos);
                 field_0x23c = 0x14;
                 if (field_0x290 != 6) {
                     field_0x290 = 0xFFFF;
@@ -788,7 +788,7 @@ void Cucco_804AB8C0::update() {
                 }
             } else if (r27) {
                 field_0x23c = 0;
-                setVec(field_0x2c4[1], mPos);
+                setVec(field_0x2d0, mPos);
                 field_0x2b8.x = 0.0f;
                 field_0x2b8.y = 0.0f;
                 field_0x2b8.z = 0.0f;
@@ -803,12 +803,12 @@ void Cucco_804AB8C0::update() {
                 field_0x2b8.y = 0.0f;
                 field_0x2b8.z = 0.0f;
                 if (field_0x2a4[1] == 0) {
-                    setVec(field_0x2c4[1], mPos);
+                    setVec(field_0x2d0, mPos);
                     field_0x2a4[1] = 1;
                 }
                 if (field_0x258 == 0) {
-                    f32 dy = mPos.y - field_0x2c4[1].y;
-                    f32 dx = mPos.x - field_0x2c4[1].x;
+                    f32 dy = mPos.y - field_0x2d0.y;
+                    f32 dx = mPos.x - field_0x2d0.x;
                     if (fn_80154378(dx * dx + dy * dy) > 48.0f && field_0x290 == 0) {
                         outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     } else {
@@ -836,7 +836,7 @@ void Cucco_804AB8C0::update() {
             }
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
-                setVec(field_0x2c4[1], mPos);
+                setVec(field_0x2d0, mPos);
                 field_0xb8 = 2;
                 fn_803319B8();
                 if (field_0x258 == 0) {
@@ -878,7 +878,7 @@ void Cucco_804AB8C0::update() {
                 field_0x268 = 10;
                 field_0x230 = 0;
                 fn_803319B8();
-                setVec(field_0x2c4[1], mPos);
+                setVec(field_0x2d0, mPos);
             }
         } else {
             if (field_0x238 == 0) {
@@ -886,7 +886,7 @@ void Cucco_804AB8C0::update() {
                 field_0x238 = 2;
                 fn_801EEC98(mSerial, &outAngle, &outDir, &dist, NULL, 0, 0);
                 if (outDir < 0 || field_0x174 > 0 || dist > 64.0f) {
-                    outAngle = (s32)(JMath::atanTable_.atan2_(-(mPos.x - field_0x2c4[1].x), -(mPos.y - field_0x2c4[1].y)) * 10430.378f);
+                    outAngle = (s32)(JMath::atanTable_.atan2_(-(mPos.x - field_0x2d0.x), -(mPos.y - field_0x2d0.y)) * 10430.378f);
                 }
                 outAngle += 0x8000;
                 if (r27 == 1) {
@@ -1310,7 +1310,7 @@ void Cucco_804AB8C0::update() {
         break;
     case 11:
         if (field_0x23c <= 0) {
-            field_0x2b8 = field_0x2c4[0];
+            field_0x2b8 = field_0x2c4;
             field_0x230 = 8;
         }
         break;

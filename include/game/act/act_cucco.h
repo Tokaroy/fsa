@@ -72,8 +72,11 @@ public:
     /* 0x2B0 */ f32 field_0x2b0;
     /* 0x2B4 */ f32 field_0x2b4;
     /* 0x2B8 */ JGeometry::TVec3f field_0x2b8;
-    // Plain Vec (not TVec3f) for the array.
-    /* 0x2C4 */ JGeometry::TVec3f field_0x2c4[4];
+    // Four individual TVec3f fields (an array would call __construct_array in __ct__14Cucco_804AB8C0Fv).
+    /* 0x2C4 */ JGeometry::TVec3f field_0x2c4;
+    /* 0x2D0 */ JGeometry::TVec3f field_0x2d0;
+    /* 0x2DC */ JGeometry::TVec3f field_0x2dc;
+    /* 0x2E8 */ JGeometry::TVec3f field_0x2e8;
     /* 0x2F4 */ JPABaseEmitter* mEmitter2f4; // released by the destructor
     /* 0x2F8 */ JPABaseEmitter* mEmitter2f8; // released by the destructor
     /* 0x2FC */ JPABaseEmitter* mEmitter2fc; // released by the destructor
