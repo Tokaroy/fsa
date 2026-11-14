@@ -107,7 +107,7 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
 // The |dx|, |dy| <= 16 tests and the other fabs conditions were re-checked against the full asm.
 // 0x80169030. A chaser: it follows the trail of positions the player recorded, then the
 // player, and is caught by the player (state 1) or lost when it leaves the room.
-// FIXME(shotgun): 90.85 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 92.43 %, missing/extra; behaviour clean.
 void cls_804A0738::update() {
     s32 target = field_0x90;
     if (fn_8022F478(field_0x90) == 1 && fn_8022F514(field_0x90) == 1) {
