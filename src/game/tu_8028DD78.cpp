@@ -43,7 +43,7 @@ void cls_804A7A68::init() {
 static inline void scrollTo(JGeometry::TVec2f pos) {
     s32 col = getGameView_802D6A9C()->field_0x14;
     s32 row = getGameView_802D6A9C()->field_0x18;
-    JGeometry::TBox2f box = getGameView_802D6A9C()->mVisibleBox;
+    JGeometry::TBox2f box(getGameView_802D6A9C()->mVisibleBox);
     if (pos.x < box.i.x) {
         col--;
     } else if (pos.x >= box.f.x) {
@@ -99,7 +99,7 @@ void cls_804A7A68::update() {
             if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                 return;
             }
-            if (getPlayerLayer_8023DE58(i) != field_0x4) {
+            if (field_0x4 != getPlayerLayer_8023DE58(i)) {
                 return;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -126,7 +126,7 @@ void cls_804A7A68::update() {
                 if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                     return;
                 }
-                if (getPlayerLayer_8023DE58(i) != field_0x4) {
+                if (field_0x4 != getPlayerLayer_8023DE58(i)) {
                     return;
                 }
                 JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -160,32 +160,28 @@ void cls_804A7A68::update() {
                 case 4:
                     fn_80230BF4(order[i], 3);
                     fn_80230FD0(i, 0x20018);
-                    p = mPos;
-                    p.x = mPos.x + (16.0f * i - 24.0f);
+                    p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
                     fn_802303FC(order[i], &p, (u8)field_0x268);
                     field_0x238[order[i]] = p;
                     break;
                 case 5:
                     fn_80230BF4(order[i], 2);
                     fn_80230FD0(i, 0x2001A);
-                    p = mPos;
-                    p.x = mPos.x + (16.0f * i - 24.0f);
+                    p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
                     fn_802303FC(order[i], &p, (u8)field_0x268);
                     field_0x238[order[i]] = p;
                     break;
                 case 6:
                     fn_80230BF4(order[i], 0);
                     fn_80230FD0(i, 0x2001A);
-                    p = mPos;
-                    p.y = mPos.y + (16.0f * i - 24.0f);
+                    p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
                     fn_802303FC(order[i], &p, (u8)field_0x268);
                     field_0x238[order[i]] = p;
                     break;
                 case 7:
                     fn_80230BF4(order[i], 1);
                     fn_80230FD0(i, 0x2001A);
-                    p = mPos;
-                    p.y = mPos.y + (16.0f * i - 24.0f);
+                    p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
                     fn_802303FC(order[i], &p, (u8)field_0x268);
                     field_0x238[order[i]] = p;
                     break;
