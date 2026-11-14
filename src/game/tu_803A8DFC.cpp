@@ -2347,11 +2347,12 @@ void ResultScreen_804AF9A0::fn_803AC6FC() {
     }
     if (done >= field_0x454) {
         for (s32 i = 0; i < field_0x454; i++) {
-            if (best < lbl_80529DEC.field_0x150[i]) {
+            s32 score = lbl_80529DEC.field_0x150[i];
+            if (best < score) {
                 field_0x4c8 = 0;
-                best = lbl_80529DEC.field_0x150[i];
+                best = score;
                 field_0x4ac[field_0x4c8] = i;
-            } else if (best == lbl_80529DEC.field_0x150[i]) {
+            } else if (best == score) {
                 field_0x4c8++;
                 field_0x4ac[field_0x4c8] = i;
             }
