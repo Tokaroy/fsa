@@ -216,23 +216,21 @@ void cls_8049DB90::update() {
 }
 #endif
 
-// FIXME(shotgun): 94.83 %, missing/extra (gated: its literals drop __ct__ from 100 % to 99.83 %)
-#ifdef NONMATCHING
+// The original keeps &mPos in r29 across getResource; ours recomputes it.
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
-    s32 frame = mSequencer.mFrame;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
+        fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", mSequencer.mFrame, NULL);
     }
+    s32 frame = mSequencer.mFrame;
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, field_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
-#endif
 
 void cls_8049DB90::vfunc_0x54() {
     s32 value = fn_8011921C()->field_0x8;
