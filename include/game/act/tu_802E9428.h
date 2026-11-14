@@ -16,6 +16,7 @@ public:
     bool fn_802E948C(f32 target, s32 frames);
     void fn_802E94F4();
     bool fn_802E9884(const JGeometry::TVec2f* pos);
+    void applyCamera();
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;
     /* 0x232 */ u8 field_0x232[2];
@@ -24,8 +25,7 @@ public:
     /* 0x23C */ s32 field_0x23c;
     /* 0x240 */ ActorBase_804A5770* field_0x240; // the actor the camera follows (its field_0x3c is read as a vector)
     /* 0x244 */ JGeometry::TVec3f field_0x244; // target focus
-    /* 0x250 */ f32 field_0x250; // current focus x
-    /* 0x254 */ f32 field_0x254; // current focus y
+    /* 0x250 */ JGeometry::TVec2f field_0x250; // current focus
     /* 0x258 */ f32 field_0x258;
     /* 0x25C */ f32 field_0x25c;
     /* 0x260 */ f32 field_0x260; // focus limits: min x, min y, max x, max y
