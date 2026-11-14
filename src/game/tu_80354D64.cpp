@@ -87,7 +87,7 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 67.60 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 67.99 %, missing/extra + reloc-name; behaviour drift.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box;
     box.set(field_0x80);
