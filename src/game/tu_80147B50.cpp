@@ -475,7 +475,7 @@ void cls_8049F6C8::update() {
                     s32 tries = 0;
                     while (field_0x280 == field_0x278 && tries < 100) {
                         tries++;
-                        field_0x280 = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * gGameRoot_8053AAF8->fn_80138A30());
+                        field_0x280 = (s32)(gGameRoot_8053AAF8->fn_80138A30() * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                         field_0x280 &= 3;
                     }
                     field_0x270 = 21;
