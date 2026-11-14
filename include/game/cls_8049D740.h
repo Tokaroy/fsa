@@ -17,6 +17,8 @@ public:
     // (key table, animation 5 in mode 2, frame 0).
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10(); // copies the Goal (DMGL) actor's position
+    void fn_80112654(s32 kind);
+    /* 0x54 */ virtual void vfunc_0x54(); // checks the Maiden's state against the compare table and calls fn_80112654
     /* 0x58 */ virtual s32 vfunc_0x58();
     /* 0x5C */ virtual s32 vfunc_0x5C();
 
