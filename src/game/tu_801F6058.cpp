@@ -1064,22 +1064,21 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
-// FIXME: 96.40 %, scheduling+regalloc; behaviour clean.
-// the target keeps the column count in r7,
-// value in r8, col in r9 and the key pointer in r6 (ours: r6, r7, r8, r9),
-// so the two increments come out in the other order.
+// FIXME: regalloc only; behaviour clean.
+// the target keeps the key pointer in r6 and the column count in r7;
+// ours swaps those two.
 s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
+    u32* key = mParamColumnIds;
     s32 value = 0;
     s32 col = 0;
-    u32* key = mParamColumnIds;
-    for (; col < mParamColumnNum; col++, key++) {
+    for (; col < mParamColumnNum; key++, col++) {
         if (column == *key) {
             break;
         }
     }
     if (col < mParamColumnNum) {
         s32 row = 0;
-        for (u32* rowId = mParamRowIds; row < mParamRowNum; row++, rowId++) {
+        for (u32* rowId = mParamRowIds; row < mParamRowNum; rowId++, row++) {
             if (id == *rowId) {
                 value = mParamValues[row * mParamColumnNum + col];
                 break;
