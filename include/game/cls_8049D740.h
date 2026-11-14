@@ -21,8 +21,9 @@ public:
     /* 0x20 */ virtual void draw();
     void fn_80112AE8();
     void fn_80112654(s32 kind);
-    bool moveToGoal_80113210();
-    void fadeShadow_80113304();
+    // No address (dead-stripped; update inlines both in cases 12 and 13).
+    bool moveToGoal();
+    void shrinkCrystal();
     /* 0x54 */ virtual void vfunc_0x54(); // checks the Maiden's state against the compare table and calls fn_80112654
     /* 0x58 */ virtual s32 vfunc_0x58();
     /* 0x5C */ virtual s32 vfunc_0x5C();

@@ -129,12 +129,12 @@ void cls_8049D740::update() {
         }
         break;
     case 12:
-        if (moveToGoal_80113210()) {
+        if (moveToGoal()) {
             fn_80112654(0xD);
         }
         break;
     case 13:
-        fadeShadow_80113304();
+        shrinkCrystal();
         break;
     case 15:
         mDrawEnabled = false;
@@ -289,7 +289,7 @@ s32 fn_801123C8(s32 kind, s32 mode) {
 // Plain helpers inlined into update() (cases 12 and 13) whose out-of-line
 // copies the linker dropped; defined at the bottom so deferred inlining pools
 // their .sdata2 constants before draw().
-bool cls_8049D740::moveToGoal_80113210() {
+bool cls_8049D740::moveToGoal() {
     field_0x248 += 0.04f;
     fn_801CD950(&field_0x24c, 2.0f, 0.05f);
     s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
@@ -302,6 +302,6 @@ bool cls_8049D740::moveToGoal_80113210() {
     return doneX == 0 && doneY == 0;
 }
 
-void cls_8049D740::fadeShadow_80113304() {
+void cls_8049D740::shrinkCrystal() {
     fn_801CD950(&field_0x250, 0.0f, -0.02f);
 }
