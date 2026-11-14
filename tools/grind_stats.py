@@ -32,7 +32,8 @@ def num(v):
 def table(since, until=None):
     rows = [dict(zip(g.COLS, r)) for r in g.ledger_rows() if len(r) >= len(g.COLS) and r[0] > since
             and (until is None or r[0] <= until)]
-    trick = {(r["unit"], r["fn"]) for r in rows if r["verdict"] == "TRICK"}
+    lost = {(r["unit"], r["fn"]) for r in rows if r["verdict"] == "TRICK" and r["why"] == "no verdict from the reviewer"}
+    trick = {(r["unit"], r["fn"]) for r in rows if r["verdict"] == "TRICK"} - lost  # lost: the reviewer had no quota
     fixed = {(r["unit"], r["fn"]): num(r["pct1"]) for r in rows if r["verdict"] == "FIXED" and re.match(r"^\d", r["pct1"] or "")}
     t = defaultdict(lambda: defaultdict(float))
     for r in rows:
@@ -55,6 +56,9 @@ def table(since, until=None):
         if r["verdict"] == "ACCEPT" and r["fn"] != "FILE":
             a["kept"] += 1
             key = (r["unit"], r["fn"])
+            if key in lost and not r["why"].startswith("recovered:"):
+                a["kept"] -= 1  # counted again by its "recovered:" row once re-reviewed
+                continue
             if key in trick:
                 a["tricks"] += 1
                 continue
