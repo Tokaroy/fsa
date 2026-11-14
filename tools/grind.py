@@ -1160,6 +1160,12 @@ def run_review(wt, owner, unit, base_head, first, changes, args):
     revert(wt)
     verdicts = {m.group(1): (m.group(2), m.group(3).strip()) for m in
                 re.finditer(r"^VERDICT[ \t]+(c\d+)[ \t]+(ACCEPT|FIXED|REJECT)\b:?[ \t]*([^\n]*)$", s["text"], re.M)}
+    if not verdicts and not s["text"].strip():  # the reviewer never answered (quota, crash): not a verdict
+        (LOGS / "unreviewed").mkdir(exist_ok=True)
+        keep = LOGS / "unreviewed" / f"{tag}.patch"
+        keep.write_text(f"# {unit} {base_head} {tier}\n" + json.dumps(changes) + "\n"
+                        + sh(["git", "diff", base_head, "HEAD", "--", "src", "include", "libs", "config"], wt).stdout)
+        raise RuntimeError(f"reviewer {tier} gave no answer; changes kept unreviewed in {keep.name}")
     verdict = lambda c: verdicts.get(c["id"], ("REJECT", "no verdict from the reviewer"))
     notes = review_notes()
 
