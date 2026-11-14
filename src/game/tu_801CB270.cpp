@@ -699,12 +699,11 @@ static inline f32 angleDistance(s16 a, s16 b) {
 }
 
 // How far box a sticks out of box b, as the move that puts it back (out); true if it does.
-// FIXME(shotgun): 99.11 %, regalloc-only; behaviour clean.
 bool fn_801CC29C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b, JGeometry::TVec2f* out) {
     bool outside = false;
-    f32 d = a->i.x - b->i.x;
     out->x = 0.0f;
     out->y = 0.0f;
+    f32 d = a->i.x - b->i.x;
     if (d > 0.0f) {
         out->x += d;
         outside = true;
