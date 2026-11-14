@@ -893,10 +893,13 @@ void cls_8049C718::vfunc_0x24() {
     vfunc_0x28(0, 0.0f, -20.0f);
 }
 
-// FIXME: 96.55 %, different + reloc-name; behaviour drift.
-// FIXME(shotgun): unsigned compares of field_0xb0 (cmplwi) and the early-return branch layout differ.
+// FIXME: the cooldown test branches as bne-to-exit where the original does beq-to-body + b-to-exit; literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
-    if (field_0xb0 == 4 || field_0xb0 == 0x12) {
+    u32 state = field_0xb0;
+    if (state == 4) {
+        return;
+    }
+    if (state == 0x12) {
         return;
     }
     if (mCooldown == 0) {
