@@ -132,39 +132,38 @@ static inline bool boxContains(const JGeometry::TBox2f& box, const JGeometry::TV
 }
 
 static inline s32 tileIndex(s32 tx, s32 ty) {
-    s32 cx = tx;
-    if (cx < 0) {
-        cx = 0;
-    } else if (cx >= 0x200) {
-        cx = 0x1FF;
+    if (tx < 0) {
+        tx = 0;
+    } else if (tx >= 0x200) {
+        tx = 0x1FF;
     }
-    s32 cy = ty;
-    if (cy < 0) {
-        cy = 0;
-    } else if (cy >= 0x200) {
-        cy = 0x1FF;
+    if (ty < 0) {
+        ty = 0;
+    } else if (ty >= 0x200) {
+        ty = 0x1FF;
     }
-    return (cx & 0x100) | ((cy & 0x100) << 1) | (cy & 0xF0) | ((cx >> 4) & 0xF);
+    return (tx & 0x100) | ((ty << 1) & 0x200) | (ty & 0xF0) | ((tx >> 4) & 0xF);
 }
 
-// Sets every tile of the floor's block (counts by kind) from x to `tile`.
-static inline void fillTiles(TrickFloor_804A83A0* self, f32 x, u16 tile) {
-    s32 layer = self->field_0x4;
-    GameView_804A9950* view = getGameView_802D6A9C();
-    const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    JGeometry::TBox2f box;
-    box = *src;
-    for (s32 i = 0; i < lbl_8046C8B0[self->field_0x234]; i++) {
-        s32 tx = (s32)(x - box.i.x);
-        f32 y = self->mPos.y;
-        for (s32 j = 0; j < lbl_8046C8CC[self->field_0x234]; j++) {
-            s32 ty = (s32)(y - box.i.y);
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(self->field_0x4, tileIndex(tx, ty), tile);
-            y += 16.0f;
-        }
-        x += 16.0f;
-    }
-}
+// Sets every tile of the floor's block (counts by kind) from startX to `tile`.
+#define FILL_TILES(vbox, startX, tile)                                                              \
+    do {                                                                                           \
+        f32 x = (startX);                                                                          \
+        s32 layer = field_0x4;                                                                     \
+        GameView_804A9950* view = getGameView_802D6A9C();                                          \
+        const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;         \
+        (vbox) = *src;                                                                             \
+        for (s32 i = 0; i < lbl_8046C8B0[field_0x234]; i++) {                                      \
+            s32 tx = (s32)(x - (vbox).i.x);                                                        \
+            f32 y = mPos.y;                                                                        \
+            for (s32 j = 0; j < lbl_8046C8CC[field_0x234]; j++) {                                  \
+                s32 ty = (s32)(y - (vbox).i.y);                                                    \
+                gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, tileIndex(tx, ty), (tile));\
+                y += 16.0f;                                                                        \
+            }                                                                                      \
+            x += 16.0f;                                                                            \
+        }                                                                                          \
+    } while (0)
 
 // The four dust emitters 0x381-0x384 at the floor's corner.
 static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
@@ -189,9 +188,10 @@ static inline void spawnDust(TrickFloor_804A83A0* self, s32 a) {
 // Who stands on the floor, then: 0 reads the tile under it, 1 waits for the switch,
 // 2 waits for a rider (kinds 4/5: all four players) and drops, 3 sinks, 4 holds while
 // ridden, 5 rises back and restores the tiles, 6 / 7 fall away, 8 stays down.
-// FIXME: 93.90 %, different + reloc-name; behaviour drift.
+// FIXME: 96.57 %, different + reloc-name; behaviour near.
 void TrickFloor_804A83A0::update() {
     JGeometry::TVec3f savedPos = mPos;
+    JGeometry::TVec2f p;
     switch (field_0x234) {
     case 6:
     default:
@@ -213,7 +213,7 @@ void TrickFloor_804A83A0::update() {
         box = field_0x80;
         mPos.x += 48.0f;
         mPos.y += 48.0f;
-        JGeometry::TVec2f p(mPos.x, mPos.y);
+        p.set(mPos.x, mPos.y);
         box.addPos(p);
         fn_80239914(&box, field_0x4, mSerial);
         mPos = savedPos;
@@ -223,7 +223,7 @@ void TrickFloor_804A83A0::update() {
     }
     }
 
-    JGeometry::TVec2f p(mPos.x, mPos.y);
+    p.set(mPos.x, mPos.y);
     JGeometry::TBox2f box = mBox;
     box.addPos(p);
     s32 standing = -1;
@@ -251,15 +251,17 @@ void TrickFloor_804A83A0::update() {
     }
     mPos = savedPos;
 
+    JGeometry::TBox2f vbox;
     switch (field_0x230) {
     case 0: {
+        f32 x = mPos.x;
+        f32 y = mPos.y;
         s32 layer = field_0x4;
         GameView_804A9950* gameView = getGameView_802D6A9C();
         const JGeometry::TBox2f* src = layer < 8 ? &gameView->mVisibleBox : &gameView->field_0xdc;
-        JGeometry::TBox2f vbox;
         vbox = *src;
-        s32 tx = (s32)(mPos.x - vbox.i.x);
-        s32 ty = (s32)(mPos.y - vbox.i.y);
+        s32 tx = (s32)(x - vbox.i.x);
+        s32 ty = (s32)(y - vbox.i.y);
         field_0x250 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, tileIndex(tx, ty));
         field_0x230 = 1;
         break;
@@ -298,7 +300,7 @@ void TrickFloor_804A83A0::update() {
                 vfunc_0x30(0xFF, true);
                 startSound_801F0E34(0x30009, 0);
             }
-            fillTiles(this, mPos.x, 6);
+            FILL_TILES(vbox, mPos.x, 6);
             field_0x230 = 3;
             startSound_801F0E34(0x3001B, 0);
             break;
@@ -309,7 +311,7 @@ void TrickFloor_804A83A0::update() {
             }
             vfunc_0x30(0xFF, true);
             startSound_801F0E34(0x30009, 0);
-            fillTiles(this, mPos.x, 0x7C);
+            FILL_TILES(vbox, mPos.x, 0x7C);
             field_0x24c = 0.07f;
             field_0x230 = 6;
             startSound_801F0E34(0x3001B, 0);
@@ -320,7 +322,7 @@ void TrickFloor_804A83A0::update() {
         field_0x248 += 0.2f;
         if (field_0x248 >= 1.6f) {
             field_0x248 = 1.6384f;
-            fillTiles(this, mPos.x, field_0x252);
+            FILL_TILES(vbox, mPos.x, field_0x252);
             field_0x244 = 0x28;
             if (field_0x23c == 2) {
                 field_0x230 = 8;
@@ -337,7 +339,7 @@ void TrickFloor_804A83A0::update() {
         }
         if (field_0x244 != 0) {
             field_0x244--;
-            if (field_0x244 == 0 && field_0x23c != 0 && vfunc_0x34()) {
+            if (field_0x244 == 0 && field_0x23c != 0 && vfunc_0x34() == true) {
                 field_0x244 = 1;
             }
         }
@@ -350,7 +352,6 @@ void TrickFloor_804A83A0::update() {
             s32 layer = field_0x4;
             GameView_804A9950* gameView = getGameView_802D6A9C();
             const JGeometry::TBox2f* src = layer < 8 ? &gameView->mVisibleBox : &gameView->field_0xdc;
-            JGeometry::TBox2f vbox;
             vbox = *src;
             for (s32 i = 0; i < lbl_8046C8B0[field_0x234]; i++) {
                 s32 tx = (s32)(x - vbox.i.x);
@@ -386,9 +387,7 @@ void TrickFloor_804A83A0::update() {
         break;
     }
     case 7: {
-        if (field_0x244 != 0) {
-            field_0x244--;
-        } else {
+        if (field_0x244 == 0) {
             field_0x248 -= field_0x24c;
             field_0x24c = field_0x24c + 0.0012;
             if (field_0x248 <= -3.2f) {
@@ -409,10 +408,12 @@ void TrickFloor_804A83A0::update() {
                     }
                     startSound_801F0E34(0x30001, 0);
                 } else {
-                    fillTiles(this, 96.0f + mPos.x, field_0x240);
+                    FILL_TILES(vbox, 96.0f + mPos.x, field_0x240);
                 }
                 mAlive = false;
             }
+        } else {
+            field_0x244--;
         }
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x7f4 == 0) {
