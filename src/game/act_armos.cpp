@@ -66,22 +66,17 @@ void Armos_8049F260::init() {
     }
 }
 
-// The box of the actor around mPos.
-static inline JGeometry::TBox2f boxAround(const JGeometry::TBox2f& box, const JGeometry::TVec3f& pos) {
-    JGeometry::TBox2f out = box;
-    out.i.x += pos.x;
-    out.i.y += pos.y;
-    out.f.x += pos.x;
-    out.f.y += pos.y;
-    return out;
-}
 
-// FIXME(shotgun): 91.51 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.40 %, missing/extra; behaviour drift.
 // (partial: states 3 tail, 4, 5 not written)
 // FIXME(shotgun): state 3 from the branch at 0x80141938 (moving, grid-snapping step), states 4 and 5
 // (0x80141FF0, 0x80142024) are not written yet.
 void Armos_8049F260::update() {
-    JGeometry::TBox2f box = boxAround(mBox, mPos);
+    JGeometry::TBox2f box = mBox;
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
     if (fn_801F3D94(true) != 0) {
         fn_801F2618(NULL, false);
         return;
@@ -241,7 +236,11 @@ void Armos_8049F260::update() {
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
             field_0x3c.set(0.0f, 0.0f, 0.0f);
-            JGeometry::TBox2f moved = boxAround(mBox, mPos);
+            JGeometry::TBox2f moved = mBox;
+            moved.i.x += mPos.x;
+            moved.i.y += mPos.y;
+            moved.f.x += mPos.x;
+            moved.f.y += mPos.y;
             fn_80239914(&moved, field_0x4, mSerial);
             mPrevPos = mPos;
             field_0x300 = 8;
@@ -252,7 +251,11 @@ void Armos_8049F260::update() {
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
             field_0x3c.set(0.0f, 0.0f, 0.0f);
-            JGeometry::TBox2f moved = boxAround(mBox, mPos);
+            JGeometry::TBox2f moved = mBox;
+            moved.i.x += mPos.x;
+            moved.i.y += mPos.y;
+            moved.f.x += mPos.x;
+            moved.f.y += mPos.y;
             fn_80239914(&moved, field_0x4, mSerial);
             mPrevPos = mPos;
             field_0x300 = 8;
@@ -297,7 +300,11 @@ void Armos_8049F260::update() {
                 startSound_801F0E34(0x30004, 0);
             }
         }
-        JGeometry::TBox2f moved = boxAround(mBox, mPos);
+        JGeometry::TBox2f moved = mBox;
+        moved.i.x += mPos.x;
+        moved.i.y += mPos.y;
+        moved.f.x += mPos.x;
+        moved.f.y += mPos.y;
         fn_80239914(&moved, field_0x4, mSerial);
         if (field_0x300 > 0) {
             field_0x300--;
@@ -339,7 +346,7 @@ void Armos_8049F260::update() {
             };
             field_0x30c = 0;
             field_0x3c.set(lbl_80465A98[dir][0], lbl_80465A98[dir][1], lbl_80465A98[dir][2]);
-            field_0x320 = mPos;
+            field_0x320.set(mPos);
         }
         break;
     }

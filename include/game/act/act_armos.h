@@ -27,8 +27,7 @@ public:
     /* 0x314 */ s32 field_0x314;
     /* 0x318 */ s32 field_0x318; // draw: added to the frame
     /* 0x31C */ s32 field_0x31c; // init: spawn parameter bit 4 (draw: the bigger sprite)
-    // Plain Vec (not TVec3f): see act_cucco.h on constructor calls in inline constructors.
-    /* 0x320 */ Vec field_0x320; // the last grid-snapped position
+    /* 0x320 */ JGeometry::TVec3f field_0x320; // the last grid-snapped position
 }; // Size: 0x32C
 
 #endif
