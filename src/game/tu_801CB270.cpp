@@ -699,12 +699,11 @@ static inline f32 angleDistance(s16 a, s16 b) {
 }
 
 // How far box a sticks out of box b, as the move that puts it back (out); true if it does.
-// FIXME(shotgun): 99.11 %, regalloc-only; behaviour clean.
 bool fn_801CC29C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b, JGeometry::TVec2f* out) {
     bool outside = false;
-    f32 d = a->i.x - b->i.x;
     out->x = 0.0f;
     out->y = 0.0f;
+    f32 d = a->i.x - b->i.x;
     if (d > 0.0f) {
         out->x += d;
         outside = true;
@@ -933,20 +932,17 @@ void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6) {
     spawnEmitter_8013CC50(layer, pos, 0x101, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
 }
 
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
-// As fn_801CB4A4: saved registers are assigned in a different order.
 // Two effects (spawnEmitter_8013CC50 0x117 and 0x118) at pos on `layer`; arg3 is passed
 // on and arg4 is passed on plus 1 (as the depth).
+// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
 void fn_801CB538(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
     spawnEmitter_8013CC50(layer, pos, 0x117, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(layer, pos, 0x118, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
 }
 
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
-// Same instructions; the target keeps layer, depth, height and pos in
-// r31, r30, r29, r28 (ours: the reverse of the parameter order).
 // Two effects (spawnEmitter_8013CC50 0x473 and 0x474) at pos on `layer`; arg3 and arg4 + 1
 // are the height and depth of both.
+// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
 void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
     spawnEmitter_8013CC50(layer, pos, 0x473, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(layer, pos, 0x474, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
