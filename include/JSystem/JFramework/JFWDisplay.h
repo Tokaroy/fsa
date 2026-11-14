@@ -93,8 +93,8 @@ public:
         mTickRate = 0;
     }
 
-    void getEfbHeight() const {}
-    void getEfbWidth() const {}
+    int getEfbHeight() const { return JUTVideo::getManager()->getEfbHeight(); }
+    int getEfbWidth() const { return JUTVideo::getManager()->getFbWidth(); }
     void getXfbManager() const {}
 
     static JFWDisplay* sManager;
