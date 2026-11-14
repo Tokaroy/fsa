@@ -138,6 +138,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
+// FIXME: 93.98 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -932,7 +933,7 @@ void cls_804ADF28::fn_80364900() {
     }
 }
 
-// FIXME(shotgun): 97.29 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.27 %, different + reloc-name; behaviour drift.
 void cls_804ADF28::fn_803645B4() {
     if (field_0x248 == 0 || field_0x238 != 0) {
         if (field_0x238 == 0) {
@@ -1007,7 +1008,7 @@ void cls_804ADF28::fn_803645B4() {
     }
 }
 
-// FIXME(shotgun): 98.28 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.90 %, missing/extra + reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
         JGeometry::TVec3f oldPos = mPos;
@@ -1136,7 +1137,7 @@ void cls_804ADF28::fn_80363F7C() {
     mPos.add(field_0x3c);
 }
 
-// FIXME(shotgun): 98.24 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.27 %, different + reloc-name; behaviour near.
 void cls_804ADF28::fn_80363880() {
     s32 slot = field_0x24c;
     if (slot >= 0) {
@@ -1356,7 +1357,7 @@ void cls_804ADF28::fn_80363360() {
 
 void cls_804ADF28::fn_8036335C() {}
 
-// FIXME(shotgun): 91.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.42 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::fn_80362C44() {
     s32 skip = 0;
     s32 i;
@@ -1538,7 +1539,7 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.01 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.01 %, operands + reloc-name; behaviour clean.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx mtx;
