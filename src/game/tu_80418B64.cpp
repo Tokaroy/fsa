@@ -273,7 +273,7 @@ extern const s16 lbl_8048E11C[2][5];
 extern const s16 lbl_8048E130[2][5];
 extern const s16 lbl_8048E144[2][5];
 
-// FIXME(shotgun): 87.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -454,7 +454,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 90.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.92 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
     for (s32 i = 0; i < 4; i++) {
         fn_8041E3B4(i);
@@ -560,6 +560,7 @@ static inline u8 isMaskBitSet(u8 mask, s32 player) {
     return (mask & bit) != 0 ? true : false;
 }
 
+// FIXME: 99.64 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041F720() {
     s32 mode = lbl_80529DEC.field_0x118;
     if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) || (mode == 0 && lbl_80529DEC.field_0x11c == 2) ||
@@ -619,7 +620,7 @@ void cls_804B13D4::fn_8041F5FC() {
     }
 }
 
-// FIXME(shotgun): 94.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
@@ -1271,7 +1272,7 @@ void cls_804B13D4::fn_8041CC04() {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit + 3]))->changeTexture(res, 0);
 }
 
-// FIXME(shotgun): 90.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.11 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_8041C67C() {
     field_0x4->search('Ndata13')->hide();
     field_0x4->search('Php1ni02')->hide();
@@ -1598,7 +1599,7 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     }
 }
 
-// FIXME(shotgun): 89.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.02 %, missing/extra; behaviour drift.
 void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     f32 prev1 = field_0x118[player];
     f32 prev2 = field_0x138[player];
@@ -1744,7 +1745,7 @@ void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     }
 }
 
-// FIXME(shotgun): 81.76 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.16 %, operands; behaviour near.
 void cls_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
         field_0x1d8[player] = fn_80237774(player);
@@ -1859,6 +1860,7 @@ void cls_804B13D4::fn_8041918C(s32 player) {
 }
 
 // .rodata offsets differ by 0x840 while lbl_8048D468..lbl_8048DCF8 remain extern.
+// FIXME: 99.71 %, operands; behaviour drift.
 void cls_804B13D4::fn_80418D08(s32 player, bool force) {
     f32 prevA = field_0x128[player];
     f32 prevB = field_0x168[player];
