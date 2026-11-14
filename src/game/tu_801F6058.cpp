@@ -306,22 +306,20 @@ s32 ActorManager_804A5800::fn_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVe
     return spawnActor_801F9484(id, arg_0x4, pos, arg_0x90, -1, -1);
 }
 
-// FIXME: 93.75 %, scheduling; behaviour clean.
-// the target loads last->mListNext before
-// comparing last with actor; this code loads it after the compare.
 s32 ActorManager_804A5800::fn_801F84C4(ActorBase_804A5770* actor) {
     u8 linked = false;
     if (mListHead != NULL) {
         ActorBase_804A5770* last = mListHead;
         while (true) {
+            ActorBase_804A5770* next = last->mListNext;
             if (last == actor) {
                 actor->mInList = true;
                 break;
             }
-            if (last->mListNext == NULL) {
+            if (next == NULL) {
                 break;
             }
-            last = last->mListNext;
+            last = next;
         }
         if (last != actor) {
             last->mListNext = actor;
@@ -617,16 +615,16 @@ s32 ActorManager_804A5800::fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** o
     return count;
 }
 
-// FIXME: 98.17 %, scheduling+regalloc; behaviour clean.
-// the target loads pos->x, actor x, pos->y,
-// actor y and squares x first; this code loads and squares y first. The
-// 1000000.0f literal is lbl_8053F824 once the pool before it is complete.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
+// (f1/f2 swapped on the x terms); behaviour clean.
 s32 ActorManager_804A5800::fn_801F778C(u32 id, const JGeometry::TVec3f* pos, f32* outDistSq) {
     s32 serial = -1;
     f32 best = 1000000.0f;
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && id == mActors[i]->mActorId) {
-            f32 dist = square(pos->x - mActors[i]->mPos.x) + square(pos->y - mActors[i]->mPos.y);
+            f32 dx = pos->x - mActors[i]->mPos.x;
+            f32 dy = pos->y - mActors[i]->mPos.y;
+            f32 dist = square(dx) + square(dy);
             if (dist < best) {
                 serial = mActors[i]->mSerial;
                 best = dist;
@@ -659,7 +657,7 @@ s32 ActorManager_804A5800::fn_801F76F0(u32 id, s32 layer, const JGeometry::TVec3
     return serial;
 }
 
-// FIXME: 98.17 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
 // the target loads pos->x, actor x, pos->y,
 // actor y and squares x first; this code loads and squares y first. The
 // 1000000.0f literal is lbl_8053F824 once the pool before it is complete.
@@ -668,7 +666,9 @@ s32 ActorManager_804A5800::fn_801F7664(const JGeometry::TVec3f* pos, f32* outDis
     f32 best = 1000000.0f;
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && mActors[i]->field_0x1a8 == true) {
-            f32 dist = square(pos->x - mActors[i]->mPos.x) + square(pos->y - mActors[i]->mPos.y);
+            f32 dx = pos->x - mActors[i]->mPos.x;
+            f32 dy = pos->y - mActors[i]->mPos.y;
+            f32 dist = square(dx) + square(dy);
             if (dist < best) {
                 serial = mActors[i]->mSerial;
                 best = dist;
@@ -792,9 +792,6 @@ void addCalc2_801F71A4(f32* value, f32 target, f32 rate, f32 maxStep) {
     }
 }
 
-// FIXME: 95.23 %, missing/extra; behaviour near.
-// In the last branch the target zero-extends delta (clrlwi 16)
-// before adding it to *value; this code adds the s16 directly.
 void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     s16 diff = target - *value;
     s16 delta = diff / step;
@@ -803,7 +800,7 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep) {
     } else if (delta < -maxStep) {
         *value -= maxStep;
     } else {
-        *value += delta;
+        *value += (u16)delta;
     }
 }
 
@@ -1068,22 +1065,22 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
-// FIXME: 96.40 %, scheduling+regalloc; behaviour clean.
-// the target keeps the column count in r7,
-// value in r8, col in r9 and the key pointer in r6 (ours: r6, r7, r8, r9),
-// so the two increments come out in the other order.
+// FIXME: 97.25 %, regalloc-only; behaviour clean.
+// FIXME: regalloc only; behaviour clean.
+// the target keeps the key pointer in r6 and the column count in r7;
+// ours swaps those two.
 s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
+    u32* key = mParamColumnIds;
     s32 value = 0;
     s32 col = 0;
-    u32* key = mParamColumnIds;
-    for (; col < mParamColumnNum; col++, key++) {
+    for (; col < mParamColumnNum; key++, col++) {
         if (column == *key) {
             break;
         }
     }
     if (col < mParamColumnNum) {
         s32 row = 0;
-        for (u32* rowId = mParamRowIds; row < mParamRowNum; row++, rowId++) {
+        for (u32* rowId = mParamRowIds; row < mParamRowNum; rowId++, row++) {
             if (id == *rowId) {
                 value = mParamValues[row * mParamColumnNum + col];
                 break;
