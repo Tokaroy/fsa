@@ -683,7 +683,7 @@ void cls_804ADF28::fn_803653EC() {
     }
 }
 
-// FIXME(shotgun): 92.69 %, scheduling+regalloc + reloc-name; behaviour clean.
+// Remaining difference: float literal reloc names (pool split), not codegen.
 void cls_804ADF28::fn_80365274() {
     mPos.add(field_0x3c);
     switch (field_0x238) {
@@ -720,10 +720,10 @@ void cls_804ADF28::fn_80365274() {
             field_0x26c = 0x3a4;
         } else if (field_0x248 == 0) {
             field_0x238++;
-            JGeometry::TVec3f bob(0.0f, -0.25f, 0.0f);
-            field_0x3c = bob;
             field_0x26c = 0x3b1;
             field_0x264 = 0;
+            JGeometry::TVec3f bob(0.0f, -0.25f, 0.0f);
+            field_0x3c = bob;
             field_0x248 = 100;
         }
         break;
