@@ -841,27 +841,27 @@ bool fn_80387494(s32 player) {
         MessageWindow_804AF490* w = lbl_8053AD78->mWindows[window];
         u16 opt = w->field_0x28;
         if (!(opt & 1)) {
-            if (!releasePlayers(player)) {
-                return false;
-            }
-            getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
-            w = lbl_8053AD78->mWindows[window];
-            opt = w->field_0x28;
-            if ((opt >> 3 & 1) || (opt & 0x80)) {
-                if (mappedWindow(window)->field_0x24 == 8) {
-                    removeFromOrder(windowIndex(window));
-                    if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                        gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+            if (releasePlayers(player)) {
+                    u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+                w = lbl_8053AD78->mWindows[window];
+                opt = w->field_0x28;
+                if ((opt >> 3 & 1) || (opt & 0x80)) {
+                    if (mappedWindow(window)->field_0x24 == 8) {
+                        removeFromOrder(windowIndex(window));
+                        if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
+                            gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                        }
                     }
+                    lbl_8053AD78->mWindows[window]->fn_80391678();
+                    return true;
                 }
-                lbl_8053AD78->mWindows[window]->fn_80391678();
-                return true;
-            }
-            w->field_0x42 = 1;
-            if (mappedWindow(window)->field_0x24 == 6 || mappedWindow(window)->field_0x24 == 7) {
-                mappedWindow(window)->field_0x24 = 8;
-            } else {
-                mappedWindow(window)->field_0x24 = 5;
+                w->field_0x42 = 1;
+                if (mappedWindow(window)->field_0x24 == 6 || mappedWindow(window)->field_0x24 == 7) {
+                    mappedWindow(window)->field_0x24 = 8;
+                } else {
+                    mappedWindow(window)->field_0x24 = 5;
+                }
             }
             return false;
         }
