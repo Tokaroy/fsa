@@ -40,9 +40,11 @@ void cls_804A7A68::init() {
 }
 
 // Moves the view one screen towards pos when it lies outside the visible box.
-static inline void scrollTo(JGeometry::TVec2f pos, JGeometry::TBox2f box) {
+static inline void scrollTo(JGeometry::TVec2f pos) {
     s32 col = getGameView_802D6A9C()->field_0x14;
     s32 row = getGameView_802D6A9C()->field_0x18;
+    JGeometry::TBox2f box;
+    box = getGameView_802D6A9C()->mVisibleBox;
     if (pos.x < box.i.x) {
         col--;
     } else if (pos.x >= box.f.x) {
@@ -78,7 +80,11 @@ static inline s32 field4(u32 f) {
     return (f & 0x80) ? (s32)((f >> 4) & 7) - 8 : (s32)((f >> 4) & 7);
 }
 
-// FIXME(shotgun): 83.89 %, different; behaviour drift.
+static inline s32 kind(u32 f) {
+    return f & 0xF;
+}
+
+// FIXME(shotgun): 93.77 %, missing/extra; behaviour drift.
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
 // then lines them up (fn_8028DDD8) at 16-unit spacing; 1 fades field_0x268 out and walks them
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
@@ -153,7 +159,7 @@ void cls_804A7A68::update() {
                 lbl_8053AD70->fn_8037AE00();
                 fn_80230AD4(order[i]);
                 JGeometry::TVec3f p;
-                switch (field_0x90 & 0xF) {
+                switch (kind(field_0x90)) {
                 case 0:
                 case 1:
                 case 4:
@@ -161,28 +167,28 @@ void cls_804A7A68::update() {
                     fn_80230FD0(i, 0x20018);
                     p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
                     fn_802303FC(order[i], &p, field_0x268);
-                    field_0x238[order[i]] = p;
+                    field_0x238[order[i]].set(p);
                     break;
                 case 5:
                     fn_80230BF4(order[i], 2);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos.x + (16.0f * i - 24.0f), mPos.y, mPos.z);
                     fn_802303FC(order[i], &p, field_0x268);
-                    field_0x238[order[i]] = p;
+                    field_0x238[order[i]].set(p);
                     break;
                 case 6:
                     fn_80230BF4(order[i], 0);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
                     fn_802303FC(order[i], &p, field_0x268);
-                    field_0x238[order[i]] = p;
+                    field_0x238[order[i]].set(p);
                     break;
                 case 7:
                     fn_80230BF4(order[i], 1);
                     fn_80230FD0(i, 0x2001A);
                     p.set(mPos.x, mPos.y + (16.0f * i - 24.0f), mPos.z);
                     fn_802303FC(order[i], &p, field_0x268);
-                    field_0x238[order[i]] = p;
+                    field_0x238[order[i]].set(p);
                     break;
                 }
             }
@@ -202,7 +208,7 @@ void cls_804A7A68::update() {
                 JGeometry::TVec3f start = *getPlayerPos_8023E724(i);
                 JGeometry::TVec3f pos = start;
                 JGeometry::TVec3f ahead;
-                switch (field_0x90 & 0xF) {
+                switch (kind(field_0x90)) {
                 case 0:
                 case 1:
                     pos.y -= 0.5f;
@@ -228,14 +234,14 @@ void cls_804A7A68::update() {
                     fn_8022E088(i, 1, &ahead);
                     break;
                 }
-                if ((field_0x90 & 0xF) >= 4 && fn_802265DC(&ahead, getPlayerLayer_8023DE58(i), true)) {
-                    pos = start;
+                if (kind(field_0x90) >= 4 && fn_802265DC(&ahead, getPlayerLayer_8023DE58(i), true)) {
+                    pos.set(start);
                 }
                 fn_802303FC(i, &pos, field_0x268);
             }
         }
         field_0x234++;
-        if ((field_0x90 & 0xF) >= 4) {
+        if (kind(field_0x90) >= 4) {
             if (field_0x234 >= 0x28) {
                 field_0x234 = 0;
                 field_0x230 = 2;
@@ -246,7 +252,7 @@ void cls_804A7A68::update() {
         }
         break;
     case 2:
-        switch (field_0x90 & 0xF) {
+        switch (kind(field_0x90)) {
         case 0:
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
@@ -256,7 +262,7 @@ void cls_804A7A68::update() {
                     fn_80230BF4(i, 2);
                 }
             }
-            scrollTo(JGeometry::TVec2f(field_0x238[0].x, field_0x238[0].y - 384.0f), getGameView_802D6A9C()->mVisibleBox);
+            scrollTo(JGeometry::TVec2f(field_0x238[0].x, field_0x238[0].y - 384.0f));
             break;
         case 1:
             for (s32 i = 0; i < 4; i++) {
@@ -267,7 +273,7 @@ void cls_804A7A68::update() {
                     fn_80230BF4(i, 2);
                 }
             }
-            scrollTo(JGeometry::TVec2f(field_0x238[0].x, 384.0f + field_0x238[0].y), getGameView_802D6A9C()->mVisibleBox);
+            scrollTo(JGeometry::TVec2f(field_0x238[0].x, 384.0f + field_0x238[0].y));
             break;
         case 4:
             for (s32 i = 0; i < 4; i++) {
@@ -280,7 +286,7 @@ void cls_804A7A68::update() {
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y), getGameView_802D6A9C()->mVisibleBox);
+                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
             break;
         case 5:
             for (s32 i = 0; i < 4; i++) {
@@ -293,7 +299,7 @@ void cls_804A7A68::update() {
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y), getGameView_802D6A9C()->mVisibleBox);
+                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
             break;
         case 6:
             for (s32 i = 0; i < 4; i++) {
@@ -306,7 +312,7 @@ void cls_804A7A68::update() {
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y), getGameView_802D6A9C()->mVisibleBox);
+                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
             break;
         case 7:
             for (s32 i = 0; i < 4; i++) {
@@ -319,7 +325,7 @@ void cls_804A7A68::update() {
                 }
             }
             scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y), getGameView_802D6A9C()->mVisibleBox);
+                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
             break;
         }
         if (field4(field_0x90) == -8) {
@@ -380,7 +386,7 @@ void cls_804A7A68::update() {
             }
         }
         field_0x234++;
-        if ((field_0x90 & 0xF) >= 4) {
+        if (kind(field_0x90) >= 4) {
             if (field_0x234 >= 0x28) {
                 field_0x234 = 0;
                 field_0x230 = 4;
