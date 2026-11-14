@@ -12,6 +12,7 @@
 #include "game/act/act_cucco.h"
 #include "game/act/act_magic_circle.h"
 #include "game/act/act_warp.h"
+#include "game/act/act_wizzrobe.h"
 
 // Cucco's Vec members are plain (see act_cucco.h).
 static inline void setVec(Vec& dst, const JGeometry::TVec3f& src) {
@@ -362,6 +363,8 @@ void Cucco_804AB8C0::fn_803324A8() {
     }
 }
 
+// Not auto-inlined: update() calls fn_80332378 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 // FIXME(shotgun): 95.86 %, scheduling+regalloc; behaviour clean.
 u8 Cucco_804AB8C0::fn_80332378() {
     JGeometry::TVec3f out;
@@ -396,6 +399,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
     }
     return r;
 }
+#pragma auto_inline reset
 
 // FIXME(shotgun): 89.24 %, missing/extra + reloc-name; behaviour near.
 void Cucco_804AB8C0::fn_80331E6C() {
@@ -572,6 +576,8 @@ void Cucco_804AB8C0::fn_80331D38() {
     }
 }
 
+// Not auto-inlined: update() calls fn_80331C24, fn_80331B40, fn_803319B8 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 // FIXME(shotgun): 99.13 %, different; behaviour drift.
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
@@ -641,6 +647,7 @@ void Cucco_804AB8C0::fn_803319B8() {
         }
     }
 }
+#pragma auto_inline reset
 
 // FIXME(shotgun): 86.85 %, missing/extra; behaviour near.
 bool Cucco_804AB8C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
@@ -718,9 +725,9 @@ void Cucco_804AB8C0::update() {
         }
         return;
     }
-    s32 outDir = -1;
-    bool r30 = false;
     f32 outDist = 0.0f;
+    s32 outDir = -1;
+    s32 hit = 0;
     s32 r29 = -1;
     s32 r28 = -1;
     u16 outAngle = 0;
@@ -802,7 +809,7 @@ void Cucco_804AB8C0::update() {
                 if (field_0x258 == 0) {
                     f32 dy = mPos.y - field_0x2c4[1].y;
                     f32 dx = mPos.x - field_0x2c4[1].x;
-                    if (JGeometry::TVec2f(dx, dy).length() > 48.0f && field_0x290 == 0) {
+                    if (fn_80154378(dx * dx + dy * dy) > 48.0f && field_0x290 == 0) {
                         outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     } else {
                         outAngle = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -811,12 +818,11 @@ void Cucco_804AB8C0::update() {
                     if (field_0x2a3 == 1) {
                         speed = 2.0f;
                     }
-                    s32 layer = field_0x4;
-                    if (getGameView_802D6A9C()->field_0x131df[layer] && field_0x2b4 != 0.0f) {
-                        field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
-                    } else {
+                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 || field_0x2b4 == 0.0f) {
                         field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                         field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
+                    } else {
+                        field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     }
                     if (field_0x2b8.x >= 0.0f) {
                         field_0x98 = 0;
@@ -913,12 +919,11 @@ void Cucco_804AB8C0::update() {
                 if (field_0x2a3 == 1) {
                     speed = 4.0f;
                 }
-                s32 layer = field_0x4;
-                if (getGameView_802D6A9C()->field_0x131df[layer] && field_0x2b4 != 0.0f) {
-                    field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
-                } else {
+                if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 || field_0x2b4 == 0.0f) {
                     field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
+                } else {
+                    field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                 }
             }
             if (field_0x250 <= 0) {
@@ -974,6 +979,26 @@ void Cucco_804AB8C0::update() {
     case 3:
         if (!field_0xc4) {
             switch (field_0x290) {
+            default: {
+                field_0x23c = 0x12;
+                field_0x2b8.x = field_0x3c.x;
+                field_0x2b8.y = field_0x3c.y;
+                field_0x2b8.z = field_0x3c.z;
+                s32 layer = field_0x4;
+                if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
+                    mPos.y -= mPos.z;
+                    mPos.z = 0.0f;
+                    field_0x2b8.y -= field_0x2b8.z;
+                    field_0x2b8.z = 0.0f;
+                    field_0x3c.y -= field_0x3c.z;
+                    field_0x3c.z = 0.0f;
+                }
+                if (fn_8022F514(field_0x25c) == 1) {
+                    field_0x25c = fn_8022F3DC(field_0x25c);
+                }
+                field_0x230 = 0;
+                break;
+            }
             case 2:
             case 3:
             case 8:
@@ -1000,26 +1025,6 @@ void Cucco_804AB8C0::update() {
                     field_0x230 = 6;
                 }
                 break;
-            default: {
-                field_0x23c = 0x12;
-                field_0x2b8.x = field_0x3c.x;
-                field_0x2b8.y = field_0x3c.y;
-                field_0x2b8.z = field_0x3c.z;
-                s32 layer = field_0x4;
-                if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
-                    mPos.y -= mPos.z;
-                    mPos.z = 0.0f;
-                    field_0x2b8.y -= field_0x2b8.z;
-                    field_0x2b8.z = 0.0f;
-                    field_0x3c.y -= field_0x3c.z;
-                    field_0x3c.z = 0.0f;
-                }
-                if (fn_8022F514(field_0x25c) == 1) {
-                    field_0x25c = fn_8022F3DC(field_0x25c);
-                }
-                field_0x230 = 0;
-                break;
-            }
             }
         } else {
             if (field_0x2a8 == 0) {
@@ -1058,14 +1063,14 @@ void Cucco_804AB8C0::update() {
                     fn_8032F148(mSerial, (u16*)&field_0x29e, &outDir, &outDist, &outPlayer, field_0x94);
                 }
                 if (outPlayer != field_0x94) {
-                    if (field_0x25c != fn_8022F340(field_0x94) && field_0x8 >= 8 &&
-                        (getPlayerLayer_8023DE58(field_0x94) < 8 || field_0x8 == getPlayerLayer_8023DE58(field_0x94)))
+                    if (field_0x25c == fn_8022F340(field_0x94) || field_0x8 < 8 ||
+                        (getPlayerLayer_8023DE58(field_0x94) >= 8 && field_0x8 != getPlayerLayer_8023DE58(field_0x94)))
                     {
+                        outDir = -1;
+                    } else {
                         field_0x29e = (s32)(JMath::atanTable_.atan2_(-mPos.x, -mPos.y) * 10430.378f);
                         outDir = -1;
                         outDist = 10000.0f;
-                    } else {
-                        outDir = -1;
                     }
                 }
             } else {
@@ -1087,14 +1092,14 @@ void Cucco_804AB8C0::update() {
             }
             field_0x298 = 100;
             if (outPlayer != field_0x94) {
-                if (field_0x25c != fn_8022F3DC(field_0x94) && field_0x8 >= 8 &&
-                    (getPlayerLayer_8023DE58(field_0x94) < 8 || field_0x8 == getPlayerLayer_8023DE58(field_0x94)))
+                if (field_0x25c == fn_8022F3DC(field_0x94) || field_0x8 < 8 ||
+                    (getPlayerLayer_8023DE58(field_0x94) >= 8 && field_0x8 != getPlayerLayer_8023DE58(field_0x94)))
                 {
+                    outDir = -1;
+                } else {
                     field_0x29e = (s32)(JMath::atanTable_.atan2_(-mPos.x, -mPos.y) * 10430.378f);
                     outDir = -1;
                     outDist = 10000.0f;
-                } else {
-                    outDir = -1;
                 }
             }
         }
@@ -1188,20 +1193,25 @@ void Cucco_804AB8C0::update() {
                     } else {
                         fn_801F2B7C(0, -1, 1);
                     }
-                    r30 = true;
+                    hit = 1;
                 }
             }
         }
-        if (r30 && field_0x298 != 0) {
+        if (hit && field_0x298 != 0) {
             field_0x244 = 0x32;
             field_0x230 = 9;
             field_0x238 = 1;
-        } else if (field_0x240 == 0 || r30) {
+        } else if (field_0x240 == 0 || hit) {
             field_0x230 = 8;
         }
         break;
-    case 7:
-        fn_801F2B7C(field_0x2a4[2] == 1 ? 1 : field_0x114, -1, 5);
+    case 7: {
+        s32 dmg = field_0x114;
+        if (field_0x2a4[2] == 1) {
+            dmg = 1;
+        }
+        fn_801F2B7C(dmg, -1, 5);
+    }
         // fallthrough
     case 8:
         if (field_0x290 == 0xFFFF) {
@@ -1218,7 +1228,7 @@ void Cucco_804AB8C0::update() {
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(field_0x25c)->y;
-                outDist = JGeometry::TVec2f(dx, dy).length();
+                outDist = fn_80154378(dx * dx + dy * dy);
                 field_0x29e = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                 outPlayer = field_0x25c;
                 outDir = fn_801F681C((u16)field_0x29e);
@@ -1278,9 +1288,9 @@ void Cucco_804AB8C0::update() {
                 fn_80236554(field_0x25c, field_0x298, false);
                 fn_80230EB8(field_0x25c, 9);
             }
-            r30 = true;
+            hit = 1;
         }
-        if (r30) {
+        if (hit) {
             field_0x230 = 10;
             field_0x248 = 0x1E;
         }
