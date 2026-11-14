@@ -1,5 +1,6 @@
 #include "game/GameAudio.h"
 #include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 #include "game/GameGlobals.h"
 #include "game/Map.h"
 #include "dolphin/gx.h"
@@ -484,6 +485,250 @@ void TileMap_804AA858::fn_802FEE68() {
             }
         }
     }
+}
+
+// Per frame: flips to the other field_0x100 / field_0x108 grid, flattens it,
+// lets each active field_0xbf9c effect deform its heights (1: a dip, 2: an
+// expanding ring wave, 3: a wake pushed along field_0x1c, 5: a bump, 6: a
+// crater that starts a ring at timer 290), counts the effects down, then
+// shades each grid point from its slopes and flushes both grids.
+void TileMap_804AA858::fn_802FDDD4() {
+    field_0x2388++;
+    if (field_0x2388 >= 2) {
+        field_0x2388 = 0;
+    }
+    JGeometry::TVec3f* p = *field_0x100[field_0x2388];
+    s32 x;
+    s32 y;
+    for (y = 0; y <= field_0x2384; y++) {
+        f32 fy = 8.0f * y;
+        for (x = 0; x <= field_0x2380; x++) {
+            p->set(8.0f * x, fy, 0.0f);
+            p++;
+        }
+    }
+
+    field_0xc21c = 0;
+    for (s32 i = 0; i < 16; i++) {
+        cls_803003A8* slot = &field_0xbf9c[i];
+        if (slot->mKind == 0) {
+            continue;
+        }
+        JGeometry::TVec3f d;
+        d.sub(slot->mPos, field_0x2368);
+        p = field_0x100[field_0x2388][1];
+        switch (slot->mKind) {
+        case 2: {
+            f32 t = slot->mTimer / 60.0f;
+            f32 r = 96.0f * slot->field_0x14;
+            f32 amp = 0.25f * (slot->field_0x18 * t);
+            f32 radius = 4.0f * ((1.0f - t) * r);
+            f32 inner = radius - r;
+            f32 outer = r + radius;
+            if (inner > 0.0f) {
+                inner *= inner;
+            }
+            outer *= outer;
+            for (y = 1; y < field_0x2384; y++) {
+                p++;
+                for (x = 1; x < field_0x2380; x++) {
+                    JGeometry::TVec3f q(p->x, p->y, 0.0f);
+                    JGeometry::TVec3f e;
+                    e.sub(d, q);
+                    f32 dist = e.squared();
+                    if (inner < dist && outer > dist) {
+                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        f32 w = r - std::fabsf(dist - radius);
+                        p->z += w * amp * -JMath::sincosTable_.cosDegree(180.0f * w / 96.0f);
+                    }
+                    p++;
+                }
+                p++;
+            }
+            break;
+        }
+        case 1: {
+            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 5.0f);
+            f32 r = 48.0f * slot->field_0x14;
+            f32 h = 8.0f * (slot->field_0x18 * t);
+            f32 k = 180.0f / r;
+            f32 radiusSq = r * r;
+            for (y = 1; y < field_0x2384; y++) {
+                p++;
+                for (x = 1; x < field_0x2380; x++) {
+                    JGeometry::TVec3f q(p->x, p->y, 0.0f);
+                    JGeometry::TVec3f e;
+                    e.sub(d, q);
+                    f32 dist = e.squared();
+                    if (dist < radiusSq) {
+                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        p->z += h * (-1.0f - JMath::sincosTable_.cosDegree(k * dist));
+                    }
+                    p++;
+                }
+                p++;
+            }
+            break;
+        }
+        case 3: {
+            f32 t = slot->mTimer / 18.0f;
+            f32 s = 3000.0f * JGeometry::TUtil<f32>::sqrt(1.0f - t);
+            f32 amp = 0.7f * (t * (t * (slot->field_0x18 * JMath::sincosTable_.sinDegree(s))));
+            if (amp < 0.0f) {
+                amp *= 0.5f;
+            }
+            f32 width = 40.0f * slot->field_0x14;
+            f32 k = 180.0f / width;
+            JGeometry::TVec3f up(0.0f, 0.0f, 1.0f);
+            f32 length = 2.0f * width;
+            JGeometry::TVec3f side;
+            side.cross(slot->field_0x1c, up);
+            side.normalize();
+            JGeometry::TVec3f origin1;
+            origin1.set(d);
+            JGeometry::TVec3f dir1;
+            dir1.set(slot->field_0x1c);
+            JGeometry::TVec3f origin2;
+            origin2.set(d);
+            JGeometry::TVec3f dir2;
+            dir2.set(side);
+            for (y = 1; y < field_0x2384; y++) {
+                p++;
+                for (x = 1; x < field_0x2380; x++) {
+                    JGeometry::TVec3f q(p->x, p->y, 0.0f);
+                    JGeometry::TVec3f e;
+                    e.sub(q, d);
+                    if (e.dot(slot->field_0x1c) > 0.0f) {
+                        JGeometry::TVec3f v1;
+                        v1.sub(q, origin1);
+                        f32 dd1 = dir1.squared();
+                        f32 dv1 = dir1.dot(v1);
+                        f32 dist1 = JGeometry::TUtil<f32>::sqrt((dd1 * v1.squared() - dv1 * dv1) / dd1);
+                        if (dist1 < width) {
+                            JGeometry::TVec3f v2;
+                            v2.sub(q, origin2);
+                            f32 dd2 = dir2.squared();
+                            f32 dv2 = dir2.dot(v2);
+                            f32 dist2 = JGeometry::TUtil<f32>::sqrt((dd2 * v2.squared() - dv2 * dv2) / dd2);
+                            if (dist2 < length) {
+                                JGeometry::TVec3f push;
+                                push.set(slot->field_0x1c);
+                                push.scale(amp * ((length - dist2) *
+                                                  (1.0f + JMath::sincosTable_.cosDegree(dist1 * k))));
+                                p->add(push);
+                            }
+                        }
+                    }
+                    p++;
+                }
+                p++;
+            }
+            break;
+        }
+        case 5: {
+            f32 r = 36.0f * slot->field_0x14;
+            f32 k = 180.0f / r;
+            f32 h = 8.0f * slot->field_0x18;
+            f32 radiusSq = r * r;
+            for (y = 1; y < field_0x2384; y++) {
+                p++;
+                for (x = 1; x < field_0x2380; x++) {
+                    JGeometry::TVec3f q(p->x, p->y, 0.0f);
+                    JGeometry::TVec3f e;
+                    e.sub(d, q);
+                    f32 dist = e.squared();
+                    if (dist < radiusSq) {
+                        dist = JGeometry::TUtil<f32>::sqrt(dist);
+                        p->z += h * (1.0f + JMath::sincosTable_.cosDegree(k * dist));
+                    }
+                    p++;
+                }
+                p++;
+            }
+            break;
+        }
+        case 6: {
+            f32 t = JGeometry::TUtil<f32>::sqrt(slot->mTimer / 300.0f);
+            f32 r = 128.0f * slot->field_0x14;
+            f32 k = 90.0f / r;
+            f32 h = 32.0f * (slot->field_0x18 * t);
+            f32 innerR = 0.6f * r;
+            f32 outerR = 0.8f * r;
+            f32 radiusSq = r * r;
+            f32 innerSq = innerR * innerR;
+            f32 outerSq = outerR * outerR;
+            f32 h2 = 0.2f * h;
+            for (y = 1; y < field_0x2384; y++) {
+                p++;
+                for (x = 1; x < field_0x2380; x++) {
+                    JGeometry::TVec3f q(p->x, p->y, 0.0f);
+                    JGeometry::TVec3f e;
+                    e.sub(d, q);
+                    f32 dist = e.squared();
+                    if (dist < radiusSq) {
+                        if (dist < innerSq) {
+                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            p->z += h * -JMath::sincosTable_.cosDegree(k * (1.6666666f * dist));
+                        } else if (dist > outerSq) {
+                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            p->z += h2 * (0.5f * (1.0f + JMath::sincosTable_.cosDegree(k * (10.0f * (dist - outerR)))));
+                        } else {
+                            dist = JGeometry::TUtil<f32>::sqrt(dist);
+                            p->z += h2 * JMath::sincosTable_.sinDegree(k * (5.0f * (dist - innerR)));
+                        }
+                    }
+                    p++;
+                }
+                p++;
+            }
+            if (slot->mTimer == 290) {
+                fn_802F601C(&slot->mPos, 2, NULL, 1.0f, 1.0f);
+            }
+            break;
+        }
+        }
+        field_0xc21c++;
+        slot->mTimer--;
+        if (slot->mTimer == 0) {
+            slot->mKind = 0;
+        }
+    }
+
+    p = *field_0x100[field_0x2388];
+    JUtility::TColor* c = field_0x108[field_0x2388];
+    for (y = 0; y <= field_0x2384; y++) {
+        if (y == 0) {
+            for (x = 0; x <= field_0x2380; x++) {
+                c->set(0x80, 0x80, 0x80, 0x80);
+                p++;
+                c++;
+            }
+        } else {
+            for (x = 0; x <= field_0x2380; x++) {
+                if (x == 0) {
+                    c->set(0x80, 0x80, 0x80, 0x80);
+                } else {
+                    f32 slope = 0.5f * ((p->z - p[-1].z) + (p->z - (p - field_0x2380)[-1].z));
+                    if (slope >= 0.1f || slope <= -0.1f) {
+                        f32 shade = (1.0f + slope) / JGeometry::TUtil<f32>::sqrt(2.0f * (slope * slope + 1.0f)) -
+                                    0.70710677f;
+                        if (shade > 0.0f) {
+                            shade *= 2.0f;
+                        }
+                        f32 v = 56.0f * shade + 128.0f;
+                        u8 grey = v < 0.0f ? 0.0f : (v > 255.0f ? 255.0f : v);
+                        c->set(grey, grey, grey, 0x80);
+                    } else {
+                        c->set(0x80, 0x80, 0x80, 0x80);
+                    }
+                }
+                p++;
+                c++;
+            }
+        }
+    }
+    DCStoreRange(field_0x100[field_0x2388], 0x1081 * sizeof(JGeometry::TVec3f));
+    DCStoreRange(field_0x108[field_0x2388], 0x1081 * sizeof(JUtility::TColor));
 }
 
 // Per frame: counts each player's field_0x138 up to 40 while its field_0x12c
