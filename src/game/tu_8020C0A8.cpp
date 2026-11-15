@@ -144,7 +144,7 @@ void cls_804A5F40::vfunc_0x90(u8 mapHit) {
             }
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
-            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f < 0.35f) {
+            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.35f) {
                 field_0x250 = fn_801CD664(0x3D) + 0x28;
                 mTargetSpeed = 0.0f;
                 field_0x2a8 = -1;
