@@ -110,8 +110,8 @@ inline void ZoraEscortGoal_8049E424::hover() {
 inline s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_8022FEB8(&box, field_0x4, mSerial, true, false);
     s32 player = fn_8022FD8C(mSerial);
@@ -135,8 +135,8 @@ void ZoraEscortGoal_8049E424::update() {
     field_0x260 = 1.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x230) {
