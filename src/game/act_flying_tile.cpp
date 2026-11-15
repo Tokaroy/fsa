@@ -140,7 +140,7 @@ bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == true) {
         return true;
     }
-    s32 code = fn_8022461C(pos, layer);
+    u16 code = fn_8022461C(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
         return false;
     }
