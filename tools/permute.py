@@ -7,6 +7,7 @@ to the original code.
   python3 tools/permute.py --bulk [--class regalloc-only,...] [--units part,...] [--parallel N] [--apply] [--log FILE]
   python3 tools/permute.py <unit> <function> --deep [--tier b]     # minutes, not seconds: for a stubborn function
   python3 tools/permute.py --callees [--units part,...] [--parallel N] [--apply] [--log FILE]
+  python3 tools/permute.py --callees --chain --kinds nest,decl [--units part,...]   # an inlining chain's helpers together
   python3 tools/permute.py --list-kinds
 
 What nobody can read off the assembly, a search can find: which of two locals was declared first,
@@ -51,6 +52,8 @@ whether it reads naturally; a new local needs a real name):
   cast      an explicit cast removed
   loopform  a for loop written as a while loop
   retvar    a returned expression held in a local first
+  nest      a member read kept in a local, read through a small inline with a local of its own (changes
+            when MWCC creates the value, so in which order it is coloured: docs/REGALLOC.md)
 
 Functions of this file that MWCC inlined into the target are rewritten too (the diff's lines sit
 at the call, so the cause is often in the callee); the whole-unit check covers their other users.
@@ -114,10 +117,10 @@ TYPE_FAMILY = {b"s32": INT_TYPES, b"u32": INT_TYPES, b"s16": INT_TYPES, b"u16": 
                b"f32": FLOAT_TYPES, b"f64": FLOAT_TYPES, b"float": FLOAT_TYPES, b"double": FLOAT_TYPES}
 TIER = {"decl": "a", "commute": "a", "scope": "a", "compound": "a", "if": "a", "boolret": "a", "andif": "a", "early": "a",
         "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a",
-        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b"}
+        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b"}
 # results a person or a session has to finish before they go into the source: a local that needs a
 # real name, or a value written out twice that was probably a macro or an inline in the original
-NEEDS_HAND = {"temp", "inline", "retvar"}
+NEEDS_HAND = {"temp", "inline", "retvar", "nest"}
 KINDS_A = [k for k, t in TIER.items() if t == "a"]
 KINDS_B = [k for k, t in TIER.items() if t == "b"]
 _INDEX = None
@@ -1397,6 +1400,60 @@ def gen_scope(c):
 
 # ---------------------------------------------------------------- tier b generators
 
+def gen_nest(c):
+    """A member read that is kept in a local, read through a small inline with a local of its own
+    (written before the function). MWCC creates an inlined function's locals when its call is
+    expanded, one pass per nesting level, and colours values in the order they were created
+    (docs/REGALLOC.md): a value that comes out of a nested inline is created, and coloured, after
+    every local of the function it is used in. Only matters where this function is itself inlined."""
+    p, d = c.p, c.data
+    fn = c.fn
+    cls = fn.semantic_parent
+    if cls is None or cls.kind not in (K.CLASS_DECL, K.STRUCT_DECL) or not cls.spelling:
+        return
+    top = d.rfind(b"\n", 0, ext(fn)[0]) + 1
+    if d[top:ext(fn)[0]].strip():
+        return
+    while top > 0:  # above the comment block that belongs to the function
+        prev = d.rfind(b"\n", 0, top - 1) + 1
+        if not d[prev:top].lstrip().startswith(b"//"):
+            break
+        top = prev
+    seen = set()
+    for n in c.nodes:
+        rhs = None
+        if n.kind == K.BINARY_OPERATOR and c.is_stmt(n):
+            b = binop(p, n)
+            if b and b[1] == b"=" and strip_expr(b[0]).kind == K.DECL_REF_EXPR:
+                rhs = b[2]
+        elif n.kind == K.VAR_DECL:
+            init = [x for x in n.get_children() if is_expr(x.kind)]
+            if len(init) == 1:
+                rhs = init[0]
+        if rhs is None or not good(p, rhs):
+            continue
+        m = strip_expr(rhs)
+        if m.kind != K.MEMBER_REF_EXPR or m.type.get_canonical().kind not in SCALAR:
+            continue
+        kids = list(m.get_children())
+        if kids and strip_expr(kids[0]).kind != K.CXX_THIS_EXPR:
+            continue  # a member of this object only
+        name = m.spelling
+        ty = m.type.spelling
+        if not name or not ty or "(" in ty or "[" in ty or name in seen:
+            continue
+        seen.add(name)
+        helper = c.fresh("read_" + name + "_" + re.sub(r"\W", "", fn.spelling)).encode()
+        t = ty.encode()
+        text = (b"static inline " + t + (b"" if t.endswith(b"*") else b" ") + helper + b"(const " + cls.spelling.encode()
+                + b"* self) {\n" + c.step + t + (b"" if t.endswith(b"*") else b" ") + b"value = self->" + name.encode()
+                + b";\n" + c.step + b"return value;\n}\n\n")
+        uses = [x for x in c.nodes if x.kind in (K.BINARY_OPERATOR, K.VAR_DECL)]
+        reps = [(top, top, text), (*ext(m), helper + b"(this)")]
+        yield Edit("nest", f"line {n.extent.start.line}: `{name}` read through a nested inline with its own local (`{helper.decode()}`)",
+                   reps, n.extent.start.line)
+
+
 def gen_loopform(c):
     """`for (init; cond; inc) { body }`  ->  `init; while (cond) { body inc; }` (bodies without continue)."""
     p, d = c.p, c.data
@@ -1595,7 +1652,7 @@ GENERATORS = {"decl": gen_decl, "commute": gen_commute, "scope": gen_scope, "com
               "boolret": gen_boolret, "andif": gen_andif, "early": gen_early, "ternary": gen_ternary, "stmt": gen_stmt,
               "const": gen_const, "loop": gen_loop, "incr": gen_incr, "cond": gen_cond, "untemp": gen_untemp,
               "type": gen_type, "temp": gen_temp, "inline": gen_inline, "swap": gen_swap, "cast": gen_cast,
-              "loopform": gen_loopform, "retvar": gen_retvar}
+              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest}
 
 
 # ---------------------------------------------------------------- the slice of the file a function needs
@@ -1701,7 +1758,7 @@ def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=
                 print(f"    (generator {k} failed on {site.spelling}: {type(e).__name__}: {e})", file=sys.stderr)
                 continue
             for ed in eds:
-                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps):
+                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps if not (s == e and s < lo and ed.kind == "nest")):
                     continue
                 if within is not None and not any(within[0] <= data.count(b"\n", 0, s) + 1 <= within[1] for s, _, _ in ed.reps):
                     continue  # --lines: one piece of the function at a time
@@ -2008,7 +2065,7 @@ def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
                 except Exception:  # noqa: BLE001
                     continue
                 for ed in eds:
-                    if all(lo <= s <= e <= hi for s, e, _ in ed.reps):
+                    if all(lo <= s <= e <= hi or (s == e and s < lo and ed.kind == "nest") for s, e, _ in ed.reps):
                         if len(keys) > 1:
                             ed.desc = f"in `{site.spelling}`: " + ed.desc
                         out.append(ed)
@@ -2073,7 +2130,8 @@ def callees(a, kinds):
         from concurrent.futures import ThreadPoolExecutor
         jobs = max(2, scratch.JOBS * 2 // a.parallel)
         argv0 = [sys.executable, __file__, "--callees", "--kinds", ",".join(kinds), "--depth", str(a.depth), "--budget", str(a.budget),
-                 "--max-sites", str(a.max_sites), "--save", a.save] + (["--apply"] if a.apply else []) + (["--log", a.log] if a.log else [])
+                 "--max-sites", str(a.max_sites), "--save", a.save] + (["--apply"] if a.apply else []) + (["--log", a.log] if a.log else []) \
+            + (["--chain"] if a.chain else [])
 
         def run(name):
             env = dict(__import__("os").environ, SCRATCH_JOBS=str(jobs), GRIND_BROKER_SERVER="1")
@@ -2094,9 +2152,13 @@ def callees(a, kinds):
         except Exception as e:  # noqa: BLE001
             print(f"[{name}] {type(e).__name__}: {str(e)[:120]}", flush=True)
             continue
-        for key, users in sites[:a.max_sites]:
+        todo = sites[:a.max_sites]
+        if a.chain and todo:
+            # the helpers of an inlining chain together: a value may have to change in two of them at once
+            todo = [([k for k, _ in todo], sorted({x for _, us in todo for x in us}))]
+        for key, users in todo:
             try:
-                r = unitwide(unit, key, kinds, min(a.depth, 2), a.budget)
+                r = unitwide(unit, key, kinds, min(a.depth, 3 if a.chain else 2), a.budget)
             except Exception as e:  # noqa: BLE001
                 r = {"site": key[1], "text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0, "secs": 0,
                      "note": f"{type(e).__name__}: {str(e)[:150]}"}
@@ -2106,7 +2168,7 @@ def callees(a, kinds):
                 out = Path(a.save)
                 out.mkdir(parents=True, exist_ok=True)
                 hand = any(x in NEEDS_HAND for x in r["kinds"])
-                saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", name.split("/")[-1] + "__callee__" + r["site"])[:110]
+                saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", name.split("/")[-1] + "__callee__" + ("chain" if a.chain else r["site"]))[:110]
                                + (".hand" if hand else ".auto") + ".diff")
                 saved.write_text(diff_text(old, r["text"], unit.src))
                 if a.apply and (not hand or a.apply_b):
@@ -2260,6 +2322,8 @@ def main():
     ap.add_argument("--callees", action="store_true",
                     help="rewrite functions inlined into open functions, scored on the whole unit (all units, or --units)")
     ap.add_argument("--max-sites", type=int, default=10, help="with --callees: inlined functions tried per unit")
+    ap.add_argument("--chain", action="store_true",
+                    help="with --callees: rewrite the unit's inlined functions together in one search (use with --kinds nest)")
     ap.add_argument("--parallel", type=int, default=1, help="with --bulk: this many units at once")
     ap.add_argument("--only", help=argparse.SUPPRESS)
     ap.add_argument("-v", "--verbose", action="store_true")
