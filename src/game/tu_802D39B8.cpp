@@ -968,11 +968,8 @@ void GameView_804A9950::fn_802DA788() {
     }
 }
 
-// FIXME: 94.59 %, different; behaviour clean.
-// Regalloc in the actor loop (the target keeps i, i * 4 and the end in r28,
-// r29, r30, starting i * 4 with mr from i where ours uses li: try.py counts those as
-// 3 differing opcodes) and reloc-name: -70.0f / 70.0f are pooled after literals of
-// functions not written yet (lbl_80541160 / lbl_80541164).
+// FIXME: regalloc-only; target assigns i, i * 4, end to r28, r29, r30 (ours: r29, r30, r28).
+// Also reloc-name: -70.0f / 70.0f are pooled after literals of functions not written yet.
 u8 GameView_804A9950::fn_802DA630() {
     u8 busy = fn_802DA000();
     if (busy == 0) {
@@ -982,16 +979,19 @@ u8 GameView_804A9950::fn_802DA630() {
         } else {
             dx = 70.0f;
         }
-        for (int i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        JGeometry::TVec3f pos;
+        s32 end;
+        int i;
+        for (i = 0; i < 4; i++) {
+            pos = *getPlayerPos_8023E724(i);
             pos.x += dx;
             fn_80230498(i, &pos, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
-        s32 end = getActorManager_801F856C()->mActorEnd;
-        for (int i = 0; i < end; i++) {
+        end = getActorManager_801F856C()->mActorEnd;
+        for (i = 0; i < end; i++) {
             cls_804AB528* actor = (cls_804AB528*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_OSIN && actor->field_0x230 == 2) {
-                JGeometry::TVec3f pos = actor->mPos;
+                pos = actor->mPos;
                 pos.x += dx;
                 actor->mPos = pos;
                 break;
