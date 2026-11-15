@@ -44,7 +44,7 @@ static inline void stepFrame(ForceLike_8049C578* self) {
     }
 }
 
-// FIXME(shotgun): 99 %, reloc-name
+// FIXME(shotgun): 99.64 %, reloc-name; behaviour clean.
 void ForceLike_8049C578::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -70,14 +70,13 @@ void ForceLike_8049C578::init() {
     field_0x24c = 0;
 }
 
-// FIXME(shotgun): 100 %, matches
 ForceLike_8049C578::~ForceLike_8049C578() {
     if (fn_8022DCD8(field_0x238)) {
         fn_8022DD74(field_0x238);
     }
 }
 
-// FIXME(shotgun): 97.59 %, missing/extra
+// FIXME(shotgun): 97.59 %, missing/extra + reloc-name; behaviour drift.
 void ForceLike_8049C578::update() {
     u16 angle = 0;
     s32 dir = 0;
@@ -280,7 +279,7 @@ void ForceLike_8049C578::update() {
     fn_801F2618(NULL, false);
 }
 
-// FIXME(shotgun): 90.25 %, missing/extra
+// FIXME(shotgun): 90.25 %, missing/extra + reloc-name; behaviour drift.
 void ForceLike_8049C578::draw() {
     SpriteParams_801F5AE0 params;
     switch (field_0x230) {
@@ -321,7 +320,7 @@ void ForceLike_8049C578::draw() {
     }
 }
 
-// FIXME(shotgun): 97.94 %, different
+// FIXME(shotgun): 97.94 %, different + reloc-name; behaviour drift.
 void ForceLike_8049C578::vfunc_0x24() {
     s32 layer = field_0x4;
     if (fn_8022DCD8(field_0x238)) {
