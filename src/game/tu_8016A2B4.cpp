@@ -1071,11 +1071,6 @@ static inline void setTevAlpha(GameRootSub24_8016A3AC* self) {
     GXSetTevColor(GX_TEVREG0, color);
 }
 
-// FIXME: 99.97 %, operands; behaviour clean.
-// The colour's stack slots are swapped: the original builds it at
-// sp+0x8 and passes the copy at sp+0xC (ours the other way round).
-// Draws field_0xf4 over the whole screen, scrolled with the map view and
-// field_0x1c0, at alpha field_0x1ec.
 void GameRootSub24_8016A3AC::fn_8016ADE0() {
     if (field_0x1ec) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
