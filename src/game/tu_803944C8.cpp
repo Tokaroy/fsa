@@ -2850,7 +2850,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         }
         ch[0] = ones + '0';
         appendText(ch);
-        appendText("\"", 2);
+        appendText("''", 2);
     } else {
         if (minutes > 99) {
             minutes = 99;
@@ -3988,6 +3988,8 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     pane->move(field_0x108 + field_0x110 * 0.5f - w * 0.5f, (field_0x10c + field_0x114) - h);
 }
 
+void part4047_fn_8039499C(cls_804AF5A0* self, int i, f32 px, f32 py);
+
 // FIXME: 99.76 %, reloc-name; behaviour clean.
 void cls_804AF5A0::fn_8039499C(bool flag) {
     if (field_0x1aa == 0) {
@@ -4044,7 +4046,7 @@ void cls_804AF5A0::fn_8039499C(bool flag) {
                 } else if (field_0x164 == 2) {
                     py -= 13.0f;
                 }
-                field_0x30[field_0x68[i]->field_0x8]->draw(px, py, 29.0f, 29.0f, false, false, false);
+                part4047_fn_8039499C(this, i, px, py);
             }
         }
 
@@ -4171,6 +4173,10 @@ void cls_804AF5A0::fn_803944EC(f32 scale) {
     static_cast<J2DTextBox*>(field_0x20[0]->search('Tm02'))->setFontSize(size);
     static_cast<J2DTextBox*>(field_0x20[0]->search('Tm02'))->setLineSpace(field_0xb0 * scale);
     field_0x14->setScale(scale, field_0x60);
+}
+
+void part4047_fn_8039499C(cls_804AF5A0* self, int i, f32 px, f32 py) {
+    self->field_0x30[self->field_0x68[i]->field_0x8]->draw(px, py, 29.0f, 29.0f, false, false, false);
 }
 
 void cls_804AF5A0::fn_803944C8(s32 value, u8 a, u8 b) {
