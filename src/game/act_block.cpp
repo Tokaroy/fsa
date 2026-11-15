@@ -173,7 +173,7 @@ void Block_804A7A10::update() {
         checkPos.scale(16.0f);
         checkPos += mPos;
         if (PSVECDistance(&checkPos, &field_0x230) >= 16.0f) {
-            s32 tile1 = fn_8022461C(&checkPos, field_0x4);
+            u16 tile1 = fn_8022461C(&checkPos, field_0x4);
             s32 tile2 = fn_8022461C(&mPos, field_0x4);
             if ((u16)tile2 == 0x50 && ((u16)tile1 == 0 || (u16)tile1 == 0x50)) {
                 JGeometry::TVec3f savedVel = field_0x3c;
