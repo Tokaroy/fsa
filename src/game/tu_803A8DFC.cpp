@@ -853,7 +853,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 93.97 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.28 %, regalloc-only + reloc-name; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
@@ -1369,7 +1369,7 @@ void ResultScreen_804AF9A0::fn_803AFA78() {
     }
 }
 
-// FIXME: 98.44 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.64 %, regalloc-only + reloc-name; behaviour clean.
 // FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AF79C() {
     field_0x440--;
