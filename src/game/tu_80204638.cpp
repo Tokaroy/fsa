@@ -55,7 +55,6 @@ void cls_80204638::fn_802049E0(ActorBase_804A5770* actor) {
     }
 }
 
-// FIXME(shotgun): 98.14 %, regalloc-only; behaviour clean.
 void cls_80204638::fn_802048F4() {
     ActorBase_804A5770* actor;
     GameView_804A9950* view = getGameView_802D6A9C();
