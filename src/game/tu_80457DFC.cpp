@@ -652,7 +652,7 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 }
 
 // 0x80458880
-// FIXME: 99.66 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.72 %, missing/extra; behaviour near.
 // One instruction short in the inlined getPlayerPan: for 1 or
 // 5+ players the original reloads 0.5f (lfs) before the movePan call; ours
 // keeps the 0.5f already in f1 (b only). Returns, an uninitialised pan and a
