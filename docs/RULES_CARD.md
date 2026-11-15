@@ -40,7 +40,9 @@ copies outside ninja (`build/scratch/`) and never touch your source unless told.
 ```sh
 python3 tools/diag.py <unit> <function> [-v]   # what differs and where in our source
 python3 tools/diag.py <unit>                   # functions below 100 %: root or derived
-python3 tools/permute.py <unit> <function> [--tier b] [--apply]
+python3 tools/permute.py <unit> <function> [--tier b] [--deep] [--apply]
+python3 tools/permute.py --callees --units <unit>        # rewrite inlined callees, score the whole unit
+python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
 python3 tools/scratch.py <unit> [--sym] [--src FILE] [--fn NAME]
 build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is the same in both
 ```
@@ -60,7 +62,18 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
   statements, dropping a cast): **a tier b result counts only at 100 %**, where
   the byte-identical code proves it; below that it is a lead and never applied.
   Every result must still read as natural code (review judges it) and a new
-  local needs a real name.
+  local needs a real name. `--deep` searches for minutes instead of seconds.
+- `permute.py --callees`: a function can match on its own while the copies MWCC
+  inlined into its callers do not. This mode rewrites each such callee and
+  scores every function of the unit; it keeps a result when more functions
+  match, none that matched breaks and no data section gets worse (callers that
+  were open may move either way). Try it before working on a "derived" function.
+- A saved result that adds or removes a local (`*.hand.diff`, also shown in
+  the task text) is byte-proven but unfinished: give the local a real name; a
+  value written out twice was a macro or an inline in the original.
+- `flagsweep.py --fn`: the function scored under 44 options and pragmas. A
+  setting that makes it match is a hint about the source (CSE off: the original
+  computed a value twice), never a licence to add the pragma.
 - `scratch.py`: one scratch build and objdiff verdict (with `--src`, of another
   text in the unit's place; `--flag`/`--drop` change the command line). The
   library behind diag and permute.
