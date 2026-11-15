@@ -300,7 +300,7 @@ void Bomb_8049F784::update() {
     box.f.add(pos);
     JGeometry::TVec2f mid(0.5f * (box.i.x - box.f.x) + box.f.x, 0.5f * (box.i.y - box.f.y) + box.f.y);
     s32 damage = field_0x114;
-    bool landed = false;
+    s32 landed = false;
     s32 fuseY = 0;
     s32 fuseX = 0;
     if (field_0x230 != 9) {
