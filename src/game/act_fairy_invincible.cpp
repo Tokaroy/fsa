@@ -64,7 +64,8 @@ void InvincibilityFairy_804AB4C0::vfunc_0x44() {
     followEmitters();
 }
 
-// FIXME: 93.97 %. Same .sdata2 literal numbering as update(). Register
+// FIXME: 94.06 %, scheduling+regalloc; behaviour clean.
+// Same .sdata2 literal numbering as update(). Register
 // assignment differs: the original keeps the 0x660d multiplier in r12 and
 // the 0x400 in r30, and loads the random object into r29 for each call.
 void InvincibilityFairy_804AB4C0::init() {
@@ -81,7 +82,8 @@ void InvincibilityFairy_804AB4C0::init() {
     mEmitter268 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.5f);
 }
 
-// FIXME: 96.47 %. Remaining: the .sdata2 literals are numbered differently
+// FIXME: 96.49 %, missing/extra; behaviour near.
+// Remaining: the .sdata2 literals are numbered differently
 // (lbl_80541C28 vs @697); the box corners are loaded and scheduled a little
 // differently around the copy (the first fadds and the stfs of 0x20); the
 // original reads field_0x4 for the spawn a few instructions later; and the
@@ -181,7 +183,8 @@ void InvincibilityFairy_804AB4C0::update() {
     }
 }
 
-// FIXME: 99.55 %, scheduling+regalloc. The matrix stores are in the same order, but the original
+// FIXME: 99.55 %, scheduling+regalloc; behaviour clean.
+// The matrix stores are in the same order, but the original
 // loads 0.0f (into f1) before 1.5f (into f0).
 void InvincibilityFairy_804AB4C0::draw() {
     SpriteParams_801F5AE0 params;
