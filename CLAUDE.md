@@ -163,7 +163,7 @@ lacks), `.bss` (split weak `memPool_` copies yourself, see
 docs/COORDINATOR.md) and kept weak copies are diffed as compiled.
 
 <!-- status:start -->
-Status (2026-11-15, honest report, written by `tools/site_data.py`): 9,587 of 11,557 functions, 2,122,784 of 4,442,032 bytes of code (47.79 %); weighted 73.36 % (3,258,688 bytes, honest plus partial credit for 1,261 structurally matched functions). Game code 4,874 / 6,789 functions (35.7 %; Player 59.4 %, Enemies & bosses 29.6 %, NPCs 31.5 %, Objects & gimmicks 34.0 %, Stage & world 17.8 %, Menus & screens 29.6 %, Game core 57.7 %, Media & link 43.7 %); JSystem 3,650 / 3,702 functions (97.9 %); Dolphin SDK 610 / 610 functions (100 %); GX 172 / 172 functions (100 %); MSL, Runtime, TRK 281 / 284 functions (90.0 %). 470 of 903 split units are Matching; `ninja` ends in SHA-1 OK.
+Status (2026-11-15, honest report, written by `tools/site_data.py`): 9,589 of 11,557 functions, 2,124,248 of 4,442,032 bytes of code (47.82 %); weighted 73.41 % (3,260,796 bytes, honest plus partial credit for 1,260 structurally matched functions). Game code 4,876 / 6,789 functions (35.7 %; Player 59.4 %, Enemies & bosses 29.6 %, NPCs 31.5 %, Objects & gimmicks 34.0 %, Stage & world 17.8 %, Menus & screens 29.8 %, Game core 57.7 %, Media & link 43.7 %); JSystem 3,650 / 3,702 functions (97.9 %); Dolphin SDK 610 / 610 functions (100 %); GX 172 / 172 functions (100 %); MSL, Runtime, TRK 281 / 284 functions (90.0 %). 470 of 903 split units are Matching; `ninja` ends in SHA-1 OK.
 <!-- status:end -->
 
 ## Layout
