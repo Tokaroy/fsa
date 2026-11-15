@@ -70,7 +70,9 @@ s32 lbl_80504A28[4]; // queue tail per player
 cls_803099FC lbl_80504A38[4][16];
 cls_803099FC lbl_80505438[4][40];
 u32 lbl_80506D38[4];
-s32 lbl_80506D48[12];
+s32 lbl_80506D48[4];
+s32 lbl_80506D58[4];
+s32 lbl_80506D68[4];
 f32 lbl_80506D78[4];
 s32 lbl_80506D88[4];
 s32 lbl_80506D98[4];
@@ -136,12 +138,13 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e, s32 player, bool g, u8 h, u8 i);
 
 // 0x8030905C
-// FIXME: 84.65 %, missing/extra + reloc-name; behaviour drift.
+// The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
+// FIXME: 97.72 %, missing/extra + reloc-name; behaviour clean.
 cls_804AA8B8::cls_804AA8B8() {
-    for (s32 p = 0; p < 4; p++) {
+    for (int p = 0; p < 4; p++) {
         lbl_80504A18[p] = 0;
         lbl_80504A28[p] = 0;
-        for (s32 i = 0; i < 32; i++) {
+        for (int i = 0; i < 32; i++) {
             Transfer_8030361C& t = lbl_804FBC18[p][i];
             t.mUsed = 0;
             t.field_0x119 = 0;
@@ -152,12 +155,12 @@ cls_804AA8B8::cls_804AA8B8() {
             t.field_0x10c = 0;
             t.mName[0] = 0;
         }
-        for (s32 i = 0; i < 0x2000; i++) {
+        for (int i = 0; i < 0x2000; i++) {
             lbl_804DBC18[p][i] = 0xCDCDCDCD;
         }
-        lbl_80506D48[p] = 0;
         lbl_8053AD00[p] = 0;
-        lbl_80506D48[p + 4] = 5;
+        lbl_80506D48[p] = 0;
+        lbl_80506D58[p] = 5;
         fn_8030801C(p);
         lbl_8053ACD4[p] = 1;
         lbl_80506D38[p] = 0;
@@ -165,14 +168,14 @@ cls_804AA8B8::cls_804AA8B8() {
         lbl_8053ACDC[p] = 0;
         lbl_8053ACE0[p] = 0;
         lbl_8053ACE4[p] = 0;
-        lbl_80506D48[p + 8] = 0;
-        for (s32 i = 0; i < 19; i++) {
+        lbl_80506D68[p] = 0;
+        for (int i = 0; i < 19; i++) {
             lbl_80506F88[p][0][i].f.field_0x3_0 = 1;
             lbl_80506F88[p][0][i].f.field_0x2 = 0x80;
             lbl_80506F88[p][1][i].f.field_0x3_0 = 1;
             lbl_80506F88[p][1][i].f.field_0x2 = 0x80;
         }
-        for (s32 k = 0; k < 4; k++) {
+        for (int k = 0; k < 4; k++) {
             lbl_80506DA8[p][k] = 0;
             lbl_80506DB8[p][k] = 0;
             lbl_80506DC8[p][k] = 0;
@@ -185,12 +188,12 @@ cls_804AA8B8::cls_804AA8B8() {
         lbl_8053ACF8[p] = 0;
         lbl_8053ACFC[p] = 0;
         lbl_80506DD8[p] = 0;
-        for (s32 i = 0; i < 0x80; i++) {
+        for (int i = 0; i < 0x80; i++) {
             lbl_805071E8[p][i] = 0;
         }
         lbl_8053AD0C[p] = 0;
-        lbl_8053AD04[p] = 0;
         lbl_8053AD14[p] = 0;
+        lbl_8053AD04[p] = 0;
         lbl_8053AD1C[p] = 0;
         lbl_8053AD20[p] = 0;
         lbl_8053AD24[p] = 0;
@@ -374,7 +377,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // then the checksum.
 // Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x8030801C
-// FIXME: 81.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 83.08 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -423,8 +426,7 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
         lbl_80506DE8[player].mEntries[1].mScrollBit = 0;
         lbl_80506DE8[player].mEntries[3].mScrollBit = 0;
     }
-    s32 count = lbl_80541618[lbl_8053AD08] - 7;
-    for (s32 i = 0; i < count; i++) {
+    for (s32 i = 0; i < lbl_80541618[lbl_8053AD08] - 7; i++) {
         lbl_80506DE8[player].field_0x18[i].f.field_0x3_0 = 1;
         lbl_80506DE8[player].field_0x18[i].f.field_0x2 = 0x80;
         lbl_80506DE8[player].field_0x18[i].f.field_0x1 = 0xE0;
@@ -469,7 +471,7 @@ static inline u32 swapBytes(u32 v) {
 // and its checksum. Still differs: the original has the checksum loop twice (branch on the
 // queue head entry's mUsed) and different register allocation.
 // 0x80307B58
-// FIXME: 71.27 %, missing/extra; behaviour drift.
+// FIXME: 71.74 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     if (flag) {
         lbl_80506DE8[player].mKind = 10;
@@ -494,18 +496,19 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     for (; i < count; i++) {
         lbl_805071E8[player][start + i] = 0;
     }
+    cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     s32 n = lbl_80541618[lbl_8053AD08] - 2;
     for (s32 j = 0; j < n; j++) {
         u32 w = (u16)lbl_805071E8[player][start + j * 2] | (u32)(u16)lbl_805071E8[player][start + j * 2 + 1] << 16;
-        lbl_80506DE8[player].mSprites[j].mWord = swapBytes(w);
+        record->mSprites[j].mWord = swapBytes(w);
     }
     u8 sum = 0;
-    u8* bytes = (u8*)&lbl_80506DE8[player].mSprites[0];
+    u8* bytes = (u8*)&record->mSprites[0];
     s32 size = lbl_80541618[lbl_8053AD08] * 4;
     for (s32 k = 8; k < size; k++) {
         sum += *bytes++;
     }
-    lbl_80506DE8[player].field_0x0 = sum;
+    record->field_0x0 = sum;
 }
 
 // Sprite ids below 0x45 (after adding 0x200 when e is 2) go to the 16-entry
@@ -998,7 +1001,7 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
 // transfer queue (file words, kinds 6-8) or the message words (kinds 10-12).
 // Still differs: the original has each checksum loop twice (branch on the queue head entry's mUsed).
 // 0x80304FB0
-// FIXME: 76.04 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 77.05 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_80304FB0() {
     GbaClient_803007D0* client = lbl_804DB798;
     lbl_8053AD08 = 0;
@@ -1086,7 +1089,7 @@ void cls_804AA8B8::fn_80304FB0() {
                     lbl_8053AD1C[player] = 60;
                 }
             }
-            lbl_80506D48[player + 4] = 5;
+            lbl_80506D58[player] = 5;
             continue;
         }
         if (lbl_8053AD34[player] == 0) {
@@ -1154,10 +1157,10 @@ void cls_804AA8B8::fn_80304FB0() {
         } else {
             lbl_8053ACFC[layer] = 0;
         }
-        if (lbl_80506D48[player + 4] > 0) {
+        if (lbl_80506D58[player] > 0) {
             fn_8030801C(player);
             lbl_80506D48[player] = (lbl_80506D48[player] + 1) & 3;
-            lbl_80506D48[player + 4]--;
+            lbl_80506D58[player]--;
             continue;
         }
         Transfer_8030361C* entry = &lbl_804FBC18[player][lbl_80504A18[player]];
@@ -1463,7 +1466,7 @@ bool fn_803049F0(s32 layer, s32 index) {
 // files of the GBA program.
 // Prologue only: the zero for the global resets gets its own register instead of the loop counter's.
 // 0x80303CE4
-// FIXME: 98.46 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.60 %, missing/extra + reloc-name; behaviour clean.
 void fn_80303CE4(s32 player) {
     lbl_80506D38[player] = 0;
     lbl_8053ACE0[player] = 0;
@@ -1511,7 +1514,7 @@ void fn_80303CE4(s32 player) {
 }
 
 // 0x80303870
-// FIXME: 98.91 %, regalloc-only; behaviour clean.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
 void fn_80303870(s32 player) {
     char name[32];
     char name2[32];
@@ -1599,7 +1602,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.44 %, different + reloc-name; behaviour clean.
+// FIXME: 95.48 %, different + reloc-name; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
@@ -1690,7 +1693,7 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
 // Draws one GBA sprite word on the map: the "SOB " frame of its 10-bit id at
 // its (sign-extended 9 / 8-bit) x, y, tinted per player and scaled by the
 // player's lbl_8053ACFC count (or lbl_80506DB8's flag).
-// FIXME(shotgun): 99.59 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
 // (control flow of the early return, the 16 tint stores)
 void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 mask, u8 flag) {
     SpriteParams_801F5AE0 params;
@@ -1757,9 +1760,9 @@ static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
 
 // Variant of fn_803022C4.
 // 0x8030275C
-// FIXME: 89.09 %, missing/extra; behaviour drift.
-// FIXME: mMask load hoisting before the mark sort loop and the two isHiddenSprite skip loops differ.
-void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
+// Still differs: the two isHiddenSprite skip loops (bdnz vs materialised bool) and register allocation.
+// FIXME: 92.84 %, missing/extra; behaviour drift.
+void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
         order[i] = i;
@@ -1836,9 +1839,9 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
-// FIXME: 93.06 %, scheduling+regalloc; behaviour clean.
-// FIXME: mMask load hoisting before the mark sort loop and register allocation differ.
-void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
+// Still differs: scheduling and register allocation.
+// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
+void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
         order[i] = i;

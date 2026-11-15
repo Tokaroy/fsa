@@ -196,8 +196,8 @@ s32 fn_803074A4(s32 kind, s32 id);
 // Called by TileMap_804AA858::fn_802FB69C before (fn_8030275C) and after
 // (fn_803022C4) its tint boxes: the record, the player, fn_802FB69C's flag
 // byte and whether field_0x134[player] is set.
-void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
-void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
+void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
+void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set);
 // Also tu_80301CD0's, read by TileMap_804AA858::fn_802FF0EC per player:
 // fn_80301D30's state (1 / 2), a byte counter (>> 1, or (0x10 - it) << 4)
