@@ -859,6 +859,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
         field_0x440--;
     }
+    s32 timer = field_0x440;
     s16 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
     s16 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
     s16 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
@@ -871,7 +872,6 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     s32 t3 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a;
     s32 t4 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a -
              b;
-    s32 timer = field_0x440;
     if (timer == 0) {
         if (field_0x450 == 1) {
             if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0x106)) {
@@ -909,9 +909,8 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     } else {
         if (timer >= t0) {
             f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
-            field_0x10[field_0x450]->search('Pmmwk02')->move(
-                x, field_0x41c - 200.0f +
-                       (200.0f + (f32)c) * (1.0f - (f32)((timer - t0) * (timer - t0)) / (f32)(a * a)));
+            f32 offset = (200.0f + (f32)c) * (1.0f - (f32)((timer - t0) * (timer - t0)) / (f32)(a * a));
+            field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c - 200.0f + offset);
             f32 rate = 1.0f - (f32)(field_0x440 - t0) / (f32)a;
             if (field_0x450 < 2) {
                 for (int i = 0; i < 13; i++) {
@@ -920,11 +919,11 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
             }
         } else if (timer >= t1) {
             f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
-            field_0x10[field_0x450]->search('Pmmwk02')->move(
-                x, field_0x41c + (f32)c * ((f32)((timer - t1) * (timer - t1)) / (f32)(b * b)));
+            f32 offset = (f32)c * ((f32)((timer - t1) * (timer - t1)) / (f32)(b * b));
+            field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c + offset);
         }
-        if (timer <= t2) {
-            if (timer >= t3) {
+        if (field_0x440 <= t2) {
+            if (field_0x440 >= t3) {
                 s32 d = field_0x440 - t3;
                 s32 dur = e;
                 f32 offset = (40.0f + (f32)h) *
@@ -939,7 +938,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
                         }
                     }
                 }
-            } else if (timer >= t4) {
+            } else if (field_0x440 >= t4) {
                 s32 d = field_0x440 - t4;
                 s32 dur = g;
                 f32 offset = (f32)h * ((f32)(d * d) / (f32)(dur * dur));
