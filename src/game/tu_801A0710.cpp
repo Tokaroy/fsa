@@ -190,7 +190,7 @@ static inline void startSwing(TennisShop_804A2BF4* self) {
     self->field_0x324[2] = 1.75f;
 }
 
-// FIXME(shotgun): 95.18 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.50 %, missing/extra + reloc-name; behaviour drift.
 void TennisShop_804A2BF4::fn_801A17B8() {
     JGeometry::TVec3f talkPos = mPos;
     JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
