@@ -544,7 +544,7 @@ void cls_804A1E50::update() {
         if (field_0x330 != NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(s32)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             setEmitterPos_8013CB44(field_0x330, &pos44, 1, 2, true);
         }
@@ -636,7 +636,7 @@ void cls_804A1E50::update() {
         if (field_0x330 == NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(s32)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             field_0x330 = spawnEmitter_8013CC50(field_0x4, &pos44, 0x56, 1, 2, NULL, NULL, true, 1.0f);
         }
@@ -729,7 +729,7 @@ void cls_804A1E50::update() {
         if (field_0x330 == NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(s32)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             field_0x330 = spawnEmitter_8013CC50(field_0x4, &pos44, 0x56, 1, 2, NULL, NULL, true, 1.0f);
         }
