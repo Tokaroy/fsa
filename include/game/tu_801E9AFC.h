@@ -10,6 +10,10 @@
 #include "dolphin/gx.h"
 #include "JSystem/JGeometry.h"
 
+// Owner: game/tu_801E9AFC.cpp (defined there, 6.0f). Read by
+// game/tu_801E801C.cpp (0x801E9710) and game/tu_801E6D48.cpp (0x801E7030).
+extern const f32 lbl_8053F650;
+
 // One tracked actor of an element: the FSOB actor spawned by fn_801EA75C
 // (0x0), the byte it is looked up by (0x4) and the word fn_801EA6D8 stores
 // (0x8, -1 when free).

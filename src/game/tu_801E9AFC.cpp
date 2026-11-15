@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
+const f32 lbl_8053F650 = 6.0f;
+
 // The texture of each sprite (0-2); the fourth entry ends the table.
 static const char* lbl_804A5610[4] = {"sen.bti", "koge.bti", "sen_top.bti", NULL};
 
