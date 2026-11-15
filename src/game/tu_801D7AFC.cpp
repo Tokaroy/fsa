@@ -66,9 +66,6 @@ void cls_804A4BB0::fn_801D7DB4(f32 scale) {
     }
 }
 
-// FIXME: 99.47%. Registers only: the target keeps the layer and the player
-// mode (1 or 3) in r27 and the loop counter in r28; here the counter gets
-// r27, the mode r28 and the layer r29.
 void cls_804A4BB0::update() {
     s32 i;
     s32 mode;
