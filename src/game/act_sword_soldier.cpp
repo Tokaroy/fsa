@@ -119,9 +119,6 @@ void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b) {
     a->add(*b);
 }
 
-// FIXME: 99.58 %, reloc-name; behaviour clean.
-// The instructions match; only the 0.5f relocation differs
-// (lbl_8053D2B0 in the original; the unit's .sdata2 isn't laid out yet).
 void fn_80154528(const JGeometry::TBox2f* box, JGeometry::TVec2f* out) {
     out->x = box->f.x + (box->i.x - box->f.x) * 0.5f;
     out->y = box->f.y + (box->i.y - box->f.y) * 0.5f;
@@ -654,18 +651,19 @@ void SwordSoldier_8049FCA0::update() {
                         fn_80230FD0(playerIdx, 0x20002);
                     }
                     if (field_0x90 != 6 && (field_0x94 < 6 || field_0x94 > 9)) {
+                        f32 speed = -5.0f;
                         switch (field_0x98) {
                         case 0:
-                            fn_80154518(&field_0x3c, -5.0f, 0.0f, 0.0f);
+                            fn_80154518(&field_0x3c, speed, 0.0f, 0.0f);
                             break;
                         case 1:
-                            fn_80154518(&field_0x3c, 5.0f, 0.0f, 0.0f);
+                            fn_80154518(&field_0x3c, -speed, 0.0f, 0.0f);
                             break;
                         case 2:
-                            fn_80154518(&field_0x3c, 0.0f, -5.0f, 0.0f);
+                            fn_80154518(&field_0x3c, 0.0f, speed, 0.0f);
                             break;
                         case 3:
-                            fn_80154518(&field_0x3c, 0.0f, 5.0f, 0.0f);
+                            fn_80154518(&field_0x3c, 0.0f, -speed, 0.0f);
                             break;
                         }
                         fn_801546BC(&field_0x2ac);
