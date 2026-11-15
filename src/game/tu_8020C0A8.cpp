@@ -8,9 +8,14 @@
 #include "JSystem/JMath/JMath.h"
 #include <float.h>
 
-// Sprite frame tables of the actor (.data 0x8053A178, not written as source here).
-extern const s16* lbl_8053A178[];
-extern const u32 lbl_8053F9E0[];
+// The animation table: pairs of frame and duration, ended by -1.
+static const s16 lbl_8046A398[] = { 4, 6, 7, 4, 8, 6, 7, 4, -1, -1 };
+
+// The actor's animations (one), ended by NULL.
+static const s16* lbl_8053A178[2] = { lbl_8046A398, NULL };
+
+// The actor ids vfunc_0x4C ignores, ended by 'NULL'.
+static const u32 lbl_8053F9E0[2] = { 'TOMI', 'NULL' };
 
 cls_804A5F40::cls_804A5F40() {
     field_0x2a8 = -1;
