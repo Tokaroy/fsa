@@ -1298,7 +1298,7 @@ u8 ActorBase_804A5770::fn_801F2618(JGeometry::TVec3f* out, bool flag) {
 }
 
 // u8, as fn_801F2618 / fn_801F2FAC / fn_801F2DB4 (clrlwi r3, r30, 24).
-// FIXME: 99.24 %, regalloc-only; behaviour clean.
+// FIXME: 99.74 %, regalloc-only; behaviour clean.
 // Float register allocation (step / negStep swap f28/f29);
 // 0.01f / 8.0f / 0.5f are @NNN until .sdata2 is in order.
 u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
