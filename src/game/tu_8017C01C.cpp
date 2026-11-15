@@ -296,7 +296,6 @@ void cls_804A1318::init() {
     }
 }
 
-// FIXME(shotgun): 99.80 %, regalloc-only; behaviour clean.
 cls_804A1318::~cls_804A1318() {
     s32 serial;
     for (int i = 0; i < 4; i++) {
