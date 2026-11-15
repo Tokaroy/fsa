@@ -155,8 +155,6 @@ void CrystalBall_804AB308::init() {
     }
 }
 
-// FIXME(shotgun): 99.93 %, different; behaviour clean.
-// one opcode
 void CrystalBall_804AB308::vfunc_0x54() {
     mPos.z = 0.0f;
     field_0xb0 = 0;
