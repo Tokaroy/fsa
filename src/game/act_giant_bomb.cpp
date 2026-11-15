@@ -123,7 +123,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 // 0x80342850.
-// FIXME(shotgun): 93.45 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.77 %, missing/extra + reloc-name; behaviour drift.
 void GiantBomb_804AC588::update() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
@@ -174,10 +174,7 @@ void GiantBomb_804AC588::update() {
         field_0x254.x += 0.75f / field_0x244;
         field_0x254.y = field_0x254.x;
         field_0x254.z = field_0x254.x;
-        mBox.i.x = -32.0f * field_0x254.x;
-        mBox.i.y = -32.0f * field_0x254.y;
-        mBox.f.x = 32.0f * field_0x254.x;
-        mBox.f.y = 32.0f * field_0x254.y;
+        mBox.set(-32.0f * field_0x254.x, -32.0f * field_0x254.y, 32.0f * field_0x254.x, 32.0f * field_0x254.y);
         if (field_0x254.x >= 0.75f) {
             field_0x254.x = 0.75f;
             field_0x254.y = 0.75f;
