@@ -116,6 +116,22 @@ static inline s32 leaderOf(const Player_804A6F38* player) {
     return leader;
 }
 
+// The player's own index (field_0x4), read the same way. Provisional name (always inlined).
+static inline s32 selfOf(const Player_804A6F38* player) {
+    s32 self = player->field_0x4;
+    return self;
+}
+
+// The leader as the group loops (fn_80248970 / fn_80248778) read it: one inline level above
+// leaderOf. Provisional name (always inlined; the original's accessor is not known, the level is
+// what the registers show). Each level delays the expansion of the call inside it by one inlining
+// pass, so leaderOf's local is created, and coloured, after selfOf's in the same copy and after
+// the counters of the copies expanded with it: 6 more functions of this file match than with
+// leaderOf called directly.
+static inline s32 groupLeader(const Player_804A6F38* player) {
+    return leaderOf(player);
+}
+
 // The gate in front of every pad query of the player (fn_80246904 and the
 // functions around it): the player flags (fn_802413F0); in group mode 4
 // only the player whose turn it is (fn_80240888 == its place in line); and
@@ -1502,9 +1518,6 @@ u8 Player_804A6F38::fn_802517E4() {
 
 // Whether the player pushes (state 0x1A) with the stick along its facing
 // (fn_80247330 / fn_8024712C), fn_80244630's test without the input gate.
-// FIXME: 98.91 %, regalloc-only; behaviour clean.
-// Registers only (the inlined group loops' leader / self
-// temporaries).
 bool Player_804A6F38::fn_80250FD4() {
     if (field_0x1240 == 0x1a &&
         ((field_0x3dc == 0 && fn_80247330() > 0.0f) ||
@@ -1521,9 +1534,6 @@ bool Player_804A6F38::fn_80250FD4() {
 #pragma auto_inline off
 // Whether the player pushes against something: long enough (fn_80250ACC),
 // fn_80250090, state 0xE or fn_80250FD4.
-// FIXME: 98.17 %, regalloc-only; behaviour clean.
-// Registers only (the inlined group loop's leader / self
-// temporaries, as in fn_80250ACC).
 bool Player_804A6F38::fn_80250D30() {
     if (fn_80250ACC() || fn_80250090() || field_0x1240 == 0xe || fn_80250FD4()) {
         return true;
@@ -1535,9 +1545,6 @@ bool Player_804A6F38::fn_80250D30() {
 // Whether the push against a blocked side (field_0xbf0's field_0xa0) has
 // lasted long enough: 0x12 frames for a follower, 0x14 otherwise; never when
 // it is not this player's turn in group mode 4, nor for a follower in mode 5.
-// FIXME: 97.97 %, regalloc-only; behaviour clean.
-// Registers only: the inlined group loop's leader / self
-// temporaries (r27 / r30 in the original, both r27 here).
 bool Player_804A6F38::fn_80250ACC() {
     if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
         return false;
@@ -3318,13 +3325,13 @@ s32 Player_804A6F38::fn_80248970() const {
         if (i == field_0x4) {
             count++;
         } else if (fn_8022F514(i)) {
-            leader = leaderOf(this);
+            leader = groupLeader(this);
             if (leader >= 0) {
                 if (leader == fn_8022F3DC(i)) {
                     count++;
                 }
             } else {
-                self = field_0x4;
+                self = selfOf(this);
                 if (self == fn_8022F3DC(i)) {
                     count++;
                 }
@@ -3357,7 +3364,7 @@ s32 Player_804A6F38::fn_80248778() const {
     }
     s32 count = 0;
     for (s32 i = 0; i < field_0x4; i++) {
-        s32 partner = leaderOf(this);
+        s32 partner = groupLeader(this);
         if (partner == fn_8022F3DC(i)) {
             count++;
         }
@@ -3537,9 +3544,6 @@ void Player_804A6F38::fn_80247F0C() {
 // mode (4) is left first (fn_80248004(5, true)) and still refuses; a
 // leader requests the state (fn_80251AEC), with fn_8022AD88 when the timer
 // had run out (field_0x490).
-// FIXME: 99.35 %, regalloc-only; behaviour clean.
-// Registers only (the inlined group loops' count / index /
-// leader).
 bool Player_804A6F38::fn_80247C0C() {
     if (fn_8022AF5C()) {
         field_0xbc0 = 0x3c;
@@ -4630,8 +4634,6 @@ bool Player_804A6F38::fn_8024119C() {
 // Whether the player is in state 0x39; for one following in group mode 5,
 // the leader's answer (fn_8023513C). Const: its first group loop's
 // field_0x4 is hoisted (r28), as in fn_80240670.
-// FIXME: 99.84 %, regalloc-only; behaviour clean.
-// Registers only: the group loops' count / index / leader.
 bool Player_804A6F38::fn_80240F28() const {
     if (fn_802486A0() == 5 && fn_80240670()) {
         return fn_8023513C(fn_8022EA0C(field_0x4));
@@ -4888,9 +4890,6 @@ bool Player_804A6F38::fn_8023FF50() {
     return field_0x1202;
 }
 
-// FIXME: 99.87 %, regalloc-only; behaviour clean.
-// Register allocation only (the group loops' count / index /
-// leader temporaries, as in fn_802486A0).
 // The byte 0xCA0, halved for a player following in group mode 4 (unless
 // 0xCFE or 0x454 is set); 0 when the player flags are clear. Const: the
 // group loops' field_0x4 is hoisted (r28, r30).
