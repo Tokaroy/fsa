@@ -48,7 +48,8 @@ f32 lbl_804A79E0[4][3] = {
     {0.0f, -12.0f, 0.0f},
 };
 
-// FIXME: 97.48%. Same length; the int-to-float conversion of the first position is scheduled differently (stw/lis/stfd order)
+// FIXME: 97.48 %, different + reloc-name; behaviour drift.
+// Same length; the int-to-float conversion of the first position is scheduled differently (stw/lis/stfd order)
 // and one table load is lfsx instead of lfs (class: different + reloc-name).
 void Block_804A7A10::init() {
     field_0x244 = 0;
@@ -124,7 +125,8 @@ void Block_804A7A10::init() {
     }
 }
 
-// FIXME: 99.92%. reloc-name: all 61 instructions identical, differing only in compiler literal label names
+// FIXME: 99.92 %, reloc-name; behaviour clean.
+// reloc-name: all 61 instructions identical, differing only in compiler literal label names
 u8 fn_8028D4DC(JGeometry::TVec3f* pos, s32 index, s32 layer) {
     u8 viewVal = getGameView_802D6A9C()->fn_802D7544(layer);
     if (viewVal == 0) {
@@ -146,7 +148,8 @@ bool Block_804A7A10::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return ActorBase_804A5770::vfunc_0x4C(layer, pos);
 }
 
-// FIXME: 95.46%. missing/extra + reloc-name: ours has 4 more instructions (812 vs 808). The target compares the (field_0x90 & 3)
+// FIXME: 95.69 %, missing/extra + reloc-name; behaviour drift.
+// missing/extra + reloc-name: ours has 4 more instructions (812 vs 808). The target compares the (field_0x90 & 3)
 // based indices with signed cmpwi and converts them with xoris (signed), ours uses cmplwi / unsigned; the (u16) tile result
 // is extended in ours (clrlwi) where the target moves it; some stack temporaries sit at other offsets.
 void Block_804A7A10::update() {
@@ -375,8 +378,6 @@ void Block_804A7A10::update() {
     }
 }
 
-// FIXME: 98.59%. scheduling+regalloc: the field_0x64 box copy loads y / z into each other's FPRs and
-// stores the sum's y earlier.
 bool Block_804A7A10::fn_8028C518(u8 dir) {
     bool result = false;
     s32 kind = field_0x90 & 3;
@@ -426,8 +427,8 @@ bool Block_804A7A10::fn_8028C518(u8 dir) {
         result = true;
         JGeometry::TBox2f box(mBox);
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
 
         for (int i = 0; i < 4; i++) {

@@ -75,7 +75,8 @@ void cls_804A4F90::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME: 97.86. Register swap only: the original loads lbl_8053EFB8 into f1 and
+// FIXME: 97.86 %, regalloc-only; behaviour clean.
+// Register swap only: the original loads lbl_8053EFB8 into f1 and
 // field_0x3c.y into f0 (fadds f0, f0, f1); ours uses f0 / f1.
 void cls_804A4F90::vfunc_0x88() {
     field_0x3c.x = 0.0f;
@@ -99,7 +100,8 @@ void cls_804A4F90::vfunc_0x74() {
     }
 }
 
-// FIXME: 97.14. Same instructions; the original keeps the layer flag in r27 and
+// FIXME: 97.14 %, scheduling+regalloc; behaviour clean.
+// Same instructions; the original keeps the layer flag in r27 and
 // the rupee serial in r28 (loading 'RUPY' into r28 before getActorManager_801F856C)
 // and puts the upper-layer velocity temporary at sp+0x20, the other at sp+0x2C;
 // ours swaps both pairs, and the random terms' scratch registers follow.
@@ -163,12 +165,11 @@ void cls_804A4F90::draw() {
     }
 }
 
-// FIXME: 98.39. Register swap only: the original keeps the result in r5 and
-// field_0xdc in r4; ours the other way round.
 u8 cls_804A4F90::fn_801DC264() {
+    s32 length;
     u8 alpha = 0;
     if (mAnim.mAnim == 1) {
-        s32 length = field_0xdc;
+        length = field_0xdc;
         s32 time = field_0xd8;
         s32 fadeStart = length - 25;
         if (time > fadeStart || length < 25) {

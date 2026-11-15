@@ -34,7 +34,8 @@ Vulture_804A4230::Vulture_804A4230() {
     field_0x2c8.y = 0.0f;
 }
 
-// FIXME: 87.60. Same instructions; field_0x90's low byte is loaded into another register, and in the else
+// FIXME: 87.60 %, scheduling+regalloc; behaviour clean.
+// Same instructions; field_0x90's low byte is loaded into another register, and in the else
 // branch the original loads/stores the four floats copied from mBox to mBox2 (0x60..0x6C to 0x70..0x7C) in a different order.
 void Vulture_804A4230::init() {
     EnemyBase_804A4808::init();
@@ -69,7 +70,8 @@ void Vulture_804A4230::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 85.53. Compiler promotes the local TVec2fs to registers instead of keeping stack temporaries
+// FIXME: 86.03 %, missing/extra + reloc-name; behaviour clean.
+// Compiler promotes the local TVec2fs to registers instead of keeping stack temporaries
 // at 0x8, 0x10, 0x18, 0x20 (frame 0x60 instead of 0x80); literal names differ (reloc-name).
 void Vulture_804A4230::fn_801C0634() {
     JGeometry::TVec2f diff = field_0x2b8;
@@ -202,7 +204,8 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
     mState = state;
 }
 
-// FIXME: 97.68. Same instructions; registers (r29/r30) and the order of a few loads/stores differ.
+// FIXME: 97.68 %, scheduling+regalloc; behaviour drift.
+// Same instructions; registers (r29/r30) and the order of a few loads/stores differ.
 void Vulture_804A4230::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
@@ -404,8 +407,8 @@ void Vulture_804A4230::vfunc_0x74() {
     }
 }
 
-// FIXME: 99.63. Registers r30/r31 swapped (regalloc only).
 bool Vulture_804A4230::vfunc_0x58() {
+    s32 player;
     if ((mFlags & 0x4000) || mBox2.getWidth() <= 0.0f || mBox2.getHeight() <= 0.0f) {
         return false;
     }
@@ -421,7 +424,7 @@ bool Vulture_804A4230::vfunc_0x58() {
     bool actorC = false;
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
-    s32 player = fn_8023AC74(&box, field_0x4, &probe);
+    player = fn_8023AC74(&box, field_0x4, &probe);
     if (player >= 0) {
         actorC = fn_801CC538(player, &probe, &vel54, &other);
     } else {
@@ -442,7 +445,8 @@ bool Vulture_804A4230::vfunc_0x58() {
     return hit;
 }
 
-// FIXME: 96.88. One extra clrlwi r3, r3, 24 before the return: our bool fn_801CEA60() result is
+// FIXME: 96.88 %, missing/extra; behaviour near.
+// One extra clrlwi r3, r3, 24 before the return: our bool fn_801CEA60() result is
 // widened to the u8 return, the original returns r3 untouched.
 u8 Vulture_804A4230::vfunc_0x60() {
     u8 hit = 0;

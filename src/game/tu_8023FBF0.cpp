@@ -863,7 +863,7 @@ void Player_804A6F38::fn_80253E6C() {
     }
 }
 
-// FIXME: 99.78 %, regalloc-only; behaviour clean.
+// FIXME: 99.67 %, regalloc-only; behaviour clean.
 // Register allocation only: the group loops' count / index
 // (r29 / r30 vs r28 / r29), plus three literal names (@NNN until the unit's
 // literals are in pool order).
@@ -1209,7 +1209,7 @@ bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
 // Keeps a player below layer 8 16 units inside the visible box (one edge
 // per frame: left, right, top, bottom), unless field_0x454, fn_8025F448,
 // fn_80240B84 or field_0x3b0 holds.
-// FIXME: 99.59 %, regalloc-only; behaviour clean.
+// FIXME: 98.91 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loop's leader / self
 // temporaries), plus the 16.0f literal's name (@NNN until the unit's earlier
 // literals are in pool order).
@@ -1251,7 +1251,7 @@ void Player_804A6F38::fn_8025250C() {
 // ground and field_0x3A4 the target 56 inside the opposite edge of the
 // visible box. The player bit is a materialised bool in the original
 // (neg / or / srwi before the branch), hence the local.
-// FIXME: 97.13 %, scheduling+regalloc; behaviour clean.
+// FIXME: 96.71 %, scheduling+regalloc; behaviour clean.
 // Scheduling and registers only: the inlined group loop's
 // leader / own index (two registers in the original, one here), and dir->x
 // is loaded before the field_0x398 / 0x3A4 stores here, after them in the
@@ -1492,7 +1492,7 @@ u8 Player_804A6F38::fn_802517E4() {
 
 // Whether the player pushes (state 0x1A) with the stick along its facing
 // (fn_80247330 / fn_8024712C), fn_80244630's test without the input gate.
-// FIXME: 99.86 %, regalloc-only; behaviour clean.
+// FIXME: 98.91 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loops' leader / self
 // temporaries).
 bool Player_804A6F38::fn_80250FD4() {
@@ -1511,7 +1511,7 @@ bool Player_804A6F38::fn_80250FD4() {
 #pragma auto_inline off
 // Whether the player pushes against something: long enough (fn_80250ACC),
 // fn_80250090, state 0xE or fn_80250FD4.
-// FIXME: 99.59 %, regalloc-only; behaviour clean.
+// FIXME: 98.17 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loop's leader / self
 // temporaries, as in fn_80250ACC).
 bool Player_804A6F38::fn_80250D30() {
@@ -1525,7 +1525,7 @@ bool Player_804A6F38::fn_80250D30() {
 // Whether the push against a blocked side (field_0xbf0's field_0xa0) has
 // lasted long enough: 0x12 frames for a follower, 0x14 otherwise; never when
 // it is not this player's turn in group mode 4, nor for a follower in mode 5.
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
+// FIXME: 97.97 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loop's leader / self
 // temporaries (r27 / r30 in the original, both r27 here).
 bool Player_804A6F38::fn_80250ACC() {
@@ -1551,7 +1551,7 @@ bool Player_804A6F38::fn_80250ACC() {
 // +-1 at mPos + lbl_8046AE08[facing] while the stick points along the facing
 // (fn_80247330 / fn_8024712C), and takes it as 0xD9C with its grabbed actor
 // (fn_8024FF84) in 0xD94 for 3 frames (0xD98).
-// FIXME: 99.70 %, regalloc-only; behaviour clean.
+// FIXME: 99.11 %, regalloc-only; behaviour clean.
 // Scheduling and registers only (the inlined group loop's
 // count / index temporaries).
 bool Player_804A6F38::fn_80250090() {
@@ -1689,7 +1689,7 @@ bool Player_804A6F38::fn_8024FE78() {
 // same way and held by nobody; from states 0 / 2 / 3 (0x11 unless
 // fn_8025F500 / fn_8025F590) it requests the push 0x1A, else takes that
 // player as 0xDAC with its pushed actor in 0xDA4 for 3 frames (0xDA8).
-// FIXME: 99.68 %, regalloc-only; behaviour clean.
+// FIXME: 99.41 %, regalloc-only; behaviour clean.
 // Scheduling and registers only (the inlined group loops'
 // index / leader temporaries).
 bool Player_804A6F38::fn_8024F63C() {
@@ -2055,7 +2055,7 @@ void Player_804A6F38::fn_8024ECCC(s32 value) {
 // rounded down to a gem value (1, 5, 20, 50, 100, 150, 200, 300, 1000, 1500,
 // 2000, 3000) spawned as one gem of that kind (param kind | 0x40000, 0x70000
 // in state 0x51); otherwise the amount itself (| 0x60000 in state 0x51).
-// FIXME: 99.82 %, regalloc-only; behaviour clean.
+// FIXME: 99.54 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loop's count / index /
 // leader temporaries.
 void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
@@ -2366,7 +2366,7 @@ bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a,
 // Only in state 0: sets field_0x450 to `id` (a negative id leaves it; id
 // 0xE8 becomes 0x1C5 in turn-based group mode when it is not this player's
 // turn), field_0xca2 to `flag` and field_0x456.
-// FIXME: 99.32 %, regalloc-only; behaviour clean.
+// FIXME: 98.20 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loops' leader / self
 // temporaries (r25 / r28 in the original, both r25 here).
 bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
@@ -2417,7 +2417,7 @@ bool Player_804A6F38::fn_8024D98C() {
 // fn_8027F1C8 also uses (beside the group by 8 a place in modes 0 / 1,
 // (8, 8) in mode 2, the spin centre 0x11B4 in states 9 / 0xA or 16 toward
 // the player's side in mode 3), on the ground.
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
+// FIXME: 98.27 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loop's count / index
 // temporaries).
 void Player_804A6F38::fn_8024D134() {
@@ -2503,7 +2503,7 @@ bool Player_804A6F38::fn_8024D058(u8 reset) {
 // fn_8024CAC8 for a box (act_dummy_conversation through fn_8022FEB8): the
 // same tests, then the point 16 ahead of the player (by facing 0x3DC) must
 // lie in `box`.
-// FIXME: 99.64 %, regalloc-only; behaviour clean.
+// FIXME: 99.08 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loop (fn_80240670) keeps
 // the leader and the own index in two registers (r22 / r25) in the original,
 // one here, as in the gates (fn_802454C0 ...).
@@ -2558,7 +2558,7 @@ void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 s
 // player waits for this serial or none (field_0xd44), is on `layer`, acts on
 // its own, is not carried (field_0xce8) or fn_8025F448, not in state 0xB
 // unless field_0x454, and with `b` faces 3.
-// FIXME: 99.53 %, regalloc-only; behaviour clean.
+// FIXME: 98.77 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loops' temporaries).
 void Player_804A6F38::fn_8024CAC8(s32 layer, s32 serial, bool a, bool b) {
     if (field_0xd50 > 0) {
@@ -2617,7 +2617,7 @@ bool Player_804A6F38::fn_8024CA0C(s32 arg) {
 // Whether field_0xd44 is `arg` for a player acting on its own
 // (fn_80240670 false), not walking to its spot (field_0x1216) and
 // without field_0xd4c.
-// FIXME: 99.42 %, regalloc-only; behaviour clean.
+// FIXME: 98.47 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loops' temporaries).
 bool Player_804A6F38::fn_8024C828(s32 arg) {
     if (fn_80240670()) {
@@ -2639,7 +2639,7 @@ bool Player_804A6F38::fn_8024C828(s32 arg) {
 // player effect ACTOR_PEFF at the player, kind 0x1C when the actor `serial`
 // exists at or to the right of the player (x), else 0x18 (plus the player's
 // index & 3).
-// FIXME: 99.57 %, regalloc-only; behaviour clean.
+// FIXME: 98.86 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loops' temporaries).
 bool Player_804A6F38::fn_8024C5A0(s32 serial) {
     if (!fn_8024C828(serial)) {
@@ -2729,7 +2729,7 @@ bool Player_804A6F38::fn_8024C35C() {
 // view's top-left corner, layer 0; above it at 0xCB0, layer 0); a fresh
 // press (fn_80246D1C) adds the pad rumble (fn_8030381C, as joinCue) and
 // sound 0x1E. Not in 0x454 mode.
-// FIXME: 99.53 %, regalloc-only; behaviour clean.
+// FIXME: 99.17 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loop's count / index
 // temporaries).
 void Player_804A6F38::fn_8024BDBC() {
@@ -2875,7 +2875,7 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
 // and stored to `from` at the end); each step comes back by value from
 // trailStep (two stack TVec3fs: the step, then the returned copy, z through
 // frsp) and is stored with set().
-// FIXME: 99.29 %, regalloc-only; behaviour clean.
+// FIXME: 99.51 %, regalloc-only; behaviour clean.
 // Registers only: the group-count loops (inlined
 // fn_80248970) and the trail loop's counters are one register off
 // (r30 / r26 / r28 / r27 in the original, r31 / r25 / r30 / r26 here).
@@ -2991,7 +2991,7 @@ bool Player_804A6F38::fn_8024AFF8() {
     return false;
 }
 
-// FIXME: 99.88 %, regalloc-only; behaviour clean.
+// FIXME: 98.96 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' temporaries; the
 // acting-player copy of field_0x4 is r26 vs r30), plus the literal pool
 // (@NNN vs lbl_80540044) until the unit's literals are in order.
@@ -3301,6 +3301,7 @@ bool Player_804A6F38::fn_80248A24() {
 // index li / li in the original, li / mr in ours ("different" 94.9 %, six
 // shapes).
 s32 Player_804A6F38::fn_80248970() const {
+    s32 self;
     s32 leader;
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
@@ -3313,7 +3314,7 @@ s32 Player_804A6F38::fn_80248970() const {
                     count++;
                 }
             } else {
-                s32 self = field_0x4;
+                self = field_0x4;
                 if (self == fn_8022F3DC(i)) {
                     count++;
                 }
@@ -3327,7 +3328,7 @@ s32 Player_804A6F38::fn_80248970() const {
 
 // The number of group places in use: 1 in group mode 4 (turn-based), else
 // the group's size (fn_80248970).
-// FIXME: 94.95 %, different; behaviour clean.
+// FIXME: 96.45 %, different; behaviour clean.
 // Registers only: the original zeroes the loop's count and
 // index with two li (r29, r30), ours with li / mr (r28, r29).
 s32 Player_804A6F38::fn_802487FC() const {
@@ -3356,10 +3357,6 @@ s32 Player_804A6F38::fn_80248778() const {
 
 // The group's mode: 5 alone, else the leader's (fn_8022CAF8) or, leading,
 // field_0x120c.
-// FIXME: 97.69 %, regalloc-only; behaviour clean.
-// Register allocation only: the original gives the count r29,
-// the index r30 and the leader r28, ours r28 / r29 / r30. Const: the loop
-// test's field_0x4 is hoisted out of the loop (r31), as in fn_80248778.
 s32 Player_804A6F38::fn_802486A0() const {
     if (fn_80248970() <= 1) {
         return 5;
@@ -3384,7 +3381,7 @@ void Player_804A6F38::fn_80248604() {
 // acting player's position and trail. Then the reachable players' actors are
 // reset (fn_8023105C / fn_802310F8), the old mode kept in field_0x1210 and,
 // for a leader, the cue played (fn_8024F0E8 / fn_80230FD0) when `cue`.
-// FIXME: 99.61 %, regalloc-only; behaviour clean.
+// FIXME: 99.93 %, regalloc-only; behaviour clean.
 // Registers only: the group loop's count / index / leader
 // (r27 / r28 / r26 in the original) and the 0xCBC / 0xD1C addresses (r5 / r4).
 void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
@@ -3598,7 +3595,7 @@ s32 Player_804A6F38::fn_80247B9C() {
 // with effect 0x503 when it ends), shared by a leader's followers; in the
 // demo (fn_8022AF5C) only state 0xB and field_0xbc0. With music 0x1000019,
 // fn_8022AD64 once no player's countdown runs.
-// FIXME: 99.80 %, regalloc-only; behaviour clean.
+// FIXME: 99.47 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loops' index / leader
 // temporaries.
 void Player_804A6F38::fn_8024762C() {
@@ -3686,7 +3683,7 @@ u8 Player_804A6F38::fn_80247534() {
     return lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(field_0x11ec));
 }
 
-// FIXME: 99.46 %, regalloc-only; behaviour clean.
+// FIXME: 98.57 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // The pad axis fn_80309FCC of the player's slot behind teamCheck, else 0.
@@ -3697,7 +3694,7 @@ f32 Player_804A6F38::fn_80247330() {
     return lbl_8053AD30->fn_80309FCC(getPlayerInputSlot_8030AAF4(field_0x11ec));
 }
 
-// FIXME: 99.46 %, regalloc-only; behaviour clean.
+// FIXME: 98.57 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // The pad axis fn_80309F20 of the player's slot behind teamCheck, else 0.
@@ -3708,7 +3705,7 @@ f32 Player_804A6F38::fn_8024712C() {
     return lbl_8053AD30->fn_80309F20(getPlayerInputSlot_8030AAF4(field_0x11ec));
 }
 
-// FIXME: 99.46 %, regalloc-only; behaviour clean.
+// FIXME: 98.57 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 f32 Player_804A6F38::fn_80246F28() {
@@ -3720,7 +3717,7 @@ f32 Player_804A6F38::fn_80246F28() {
     return lbl_8053AD30->fn_80309D90(getPlayerInputSlot_8030AAF4(field_0x11ec));
 }
 
-// FIXME: 99.47 %, regalloc-only; behaviour clean.
+// FIXME: 98.59 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 u32 Player_804A6F38::fn_80246D1C(u32 mask) {
@@ -3730,7 +3727,7 @@ u32 Player_804A6F38::fn_80246D1C(u32 mask) {
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), mask);
 }
 
-// FIXME: 99.47 %, regalloc-only; behaviour clean.
+// FIXME: 98.59 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 u32 Player_804A6F38::fn_80246B10(u32 mask) {
@@ -3740,7 +3737,7 @@ u32 Player_804A6F38::fn_80246B10(u32 mask) {
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(field_0x11ec), mask);
 }
 
-// FIXME: 99.47 %, regalloc-only; behaviour clean.
+// FIXME: 98.59 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 s32 Player_804A6F38::fn_80246904(u32 mask) {
@@ -3750,7 +3747,7 @@ s32 Player_804A6F38::fn_80246904(u32 mask) {
     return lbl_8053AD30->fn_80309A78(getPlayerInputSlot_8030AAF4(field_0x11ec), mask);
 }
 
-// FIXME: 99.53 %, regalloc-only; behaviour clean.
+// FIXME: 98.75 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_802466B4() {
@@ -3769,7 +3766,7 @@ bool Player_804A6F38::fn_802466B4() {
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200) != 0;
 }
 
-// FIXME: 99.53 %, regalloc-only; behaviour clean.
+// FIXME: 98.75 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80246464() {
@@ -3788,7 +3785,7 @@ bool Player_804A6F38::fn_80246464() {
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80246228() {
@@ -3804,7 +3801,7 @@ bool Player_804A6F38::fn_80246228() {
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x100) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80245FEC() {
@@ -3820,7 +3817,7 @@ bool Player_804A6F38::fn_80245FEC() {
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x100) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80245DB0() {
@@ -3836,7 +3833,7 @@ bool Player_804A6F38::fn_80245DB0() {
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x100) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80245B74() {
@@ -3852,7 +3849,7 @@ bool Player_804A6F38::fn_80245B74() {
     return lbl_8053AD30->fn_80309A78(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x100) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80245938() {
@@ -3868,7 +3865,7 @@ bool Player_804A6F38::fn_80245938() {
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_802456FC() {
@@ -3884,7 +3881,7 @@ bool Player_804A6F38::fn_802456FC() {
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_802454C0() {
@@ -3900,7 +3897,7 @@ bool Player_804A6F38::fn_802454C0() {
     return lbl_8053AD30->fn_80309A54(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.80 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80245238() {
@@ -3919,7 +3916,7 @@ bool Player_804A6F38::fn_80245238() {
     return false;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 bool Player_804A6F38::fn_80244FFC() {
@@ -3932,7 +3929,7 @@ bool Player_804A6F38::fn_80244FFC() {
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.89 %, regalloc-only; behaviour clean.
+// FIXME: 98.91 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // Whether the pad points along the facing 0x3DC.
@@ -3949,7 +3946,7 @@ bool Player_804A6F38::fn_80244630() {
     return false;
 }
 
-// FIXME: 99.89 %, regalloc-only; behaviour clean.
+// FIXME: 98.91 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // Whether the pad points against the facing 0x3DC.
@@ -3966,7 +3963,7 @@ bool Player_804A6F38::fn_80243C64() {
     return false;
 }
 
-// FIXME: 99.88 %, regalloc-only; behaviour clean.
+// FIXME: 98.93 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // Whether the pad points sideways for the facing 0x3DC on a flagged layer
@@ -4110,7 +4107,7 @@ void Player_804A6F38::fn_80242BC0() {
 // player acting on its own (fn_80240670 false) when fn_8030381C allows it;
 // once it has run out with field_0xbe8 set on layer 8 or more,
 // fn_8028FC2C; below layer 8 the count is cleared.
-// FIXME: 99.56 %, regalloc-only; behaviour clean.
+// FIXME: 98.84 %, regalloc-only; behaviour clean.
 // Registers only: the inlined group loop's leader / self
 // temporaries (r27 / r30 in the original, both r27 here).
 void Player_804A6F38::fn_80242940() {
@@ -4136,7 +4133,7 @@ void Player_804A6F38::fn_80242940() {
 
 // Requests state 0x4C (keeping `arg` in field_0xd8c, matched by
 // fn_802426E0) for a player acting on its own and not fn_8025F448.
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // Registers only (the inlined group loops' temporaries, as
 // fn_8024C828).
 bool Player_804A6F38::fn_80242704(s32 arg) {
@@ -4336,7 +4333,7 @@ void Player_804A6F38::fn_80241B44(JGeometry::TBox2f* out) {
 // True alone (fn_80248970 <= 1) or in group mode 4; else only when every
 // other player this one can reach (fn_8022E438) has fn_802349EC (byte
 // 0x1215 of that player, set on arriving at its spot).
-// FIXME: 97.29 %, scheduling+regalloc; behaviour clean.
+// FIXME: 98.96 %, regalloc-only; behaviour clean.
 // Registers and scheduling only: the first group loop's count /
 // index are r29 / r30 in the original, r28 / r29 here (with the stw r28 save
 // moved).
@@ -4623,7 +4620,7 @@ bool Player_804A6F38::fn_8024119C() {
 // Whether the player is in state 0x39; for one following in group mode 5,
 // the leader's answer (fn_8023513C). Const: its first group loop's
 // field_0x4 is hoisted (r28), as in fn_80240670.
-// FIXME: 98.41 %, regalloc-only; behaviour clean.
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 // Registers only: the group loops' count / index / leader.
 bool Player_804A6F38::fn_80240F28() const {
     if (fn_802486A0() == 5 && fn_80240670()) {
@@ -4675,9 +4672,6 @@ bool Player_804A6F38::fn_80240D50() {
 // Whether the player is busy: through its leader (fn_8022EA0C's
 // fn_80233EDC) when it follows, else when it is in state 0x1B. Const like
 // fn_80240670: the inlined group loops hoist field_0x4.
-// FIXME: 98.91 %, regalloc-only; behaviour clean.
-// Registers only: the group loop's count / index (r27 / r26
-// in the original, r29 / r27 here), as in fn_80240670.
 bool Player_804A6F38::fn_80240B84() const {
     return fn_80240670() ? fn_80233EDC(fn_8022EA0C(field_0x4)) : inState1B(this);
 }
@@ -4722,8 +4716,6 @@ bool Player_804A6F38::fn_80240AD4() {
 // to pos on the ground.
 // The trail loop counts with `int`: with s32 (long) MWCC tests the
 // unrolled loop's entry (cmpwi r5, 0x31; bge), which the original does not.
-// FIXME: 99.05 %, regalloc-only; behaviour clean.
-// Registers only (the inlined group loop's temporaries).
 void Player_804A6F38::fn_802408C8(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0xd60 < 0 && field_0xbec->fn_8030B110(layer, *pos) && !fn_80270A8C() && !field_0xce8) {
         fn_80248004(5, false);
@@ -4787,10 +4779,6 @@ bool Player_804A6F38::fn_80240808() {
 // Whether this player does not act on its own: not taking part (bit
 // field_0x4 of gGameRoot_8053AAF8->mPlayerMask clear) without a leader; in
 // group mode 4 when it is not its turn; else when it has a leader.
-// FIXME: 98.77 %, regalloc-only; behaviour clean.
-// Registers only: the group loop's count / index / leader
-// (r28 / r27 / r30 in the original, r30 / r28 / r27 here). Const: the group
-// loop's field_0x4 is hoisted (r29), as in fn_80248778.
 bool Player_804A6F38::fn_80240670() const {
     if (!isPlayerBitSet(gGameRoot_8053AAF8, field_0x4) && field_0xd60 < 0) {
         return true;
@@ -4819,17 +4807,13 @@ s32 Player_804A6F38::fn_80240628() {
 
 // Sets field_0x43e (wait for the leader, see fn_80242CB0) unless the group
 // is turn-based (mode 4) or field_0x1215 is set.
-// FIXME: 95.15 %, scheduling+regalloc; behaviour clean.
-// Registers only (plus the stw r29 save scheduled after the
-// zeroing): the inlined group loop's index / count / leader are r31 / r30 /
-// r29 in the original, r30 / r29 / r31 here.
 void Player_804A6F38::fn_8024051C() {
     if (fn_802486A0() != 4 && !field_0x1215) {
         field_0x43e = 1;
     }
 }
 
-// FIXME: 99.39 %, regalloc-only; behaviour clean.
+// FIXME: 98.38 %, regalloc-only; behaviour clean.
 // Register allocation only: the group loop's index / count /
 // leader r27 / r28 / r29 in ours vs r28 / r29 / r27 (and r30 for the turn).
 // The leader's value (fn_80236768, this function for the leader) for a following
@@ -4844,7 +4828,7 @@ s32 Player_804A6F38::fn_80240354() {
     return 0;
 }
 
-// FIXME: 99.39 %, regalloc-only; behaviour clean.
+// FIXME: 98.38 %, regalloc-only; behaviour clean.
 // Register allocation only: the group loop's index / count /
 // leader r27 / r28 / r29 in ours vs r28 / r29 / r27 (and r30 for the turn).
 // The leader's value (fn_802366CC, this function for the leader) for a following
@@ -4859,7 +4843,7 @@ s32 Player_804A6F38::fn_8024018C() {
     return 0;
 }
 
-// FIXME: 99.39 %, regalloc-only; behaviour clean.
+// FIXME: 98.38 %, regalloc-only; behaviour clean.
 // Register allocation only: the group loop's index / count /
 // leader r27 / r28 / r29 in ours vs r28 / r29 / r27 (and r30 for the turn).
 // The leader's value (fn_80236630, this function for the leader) for a following
@@ -4894,7 +4878,7 @@ bool Player_804A6F38::fn_8023FF50() {
     return field_0x1202;
 }
 
-// FIXME: 98.68 %, regalloc-only; behaviour clean.
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
 // Register allocation only (the group loops' count / index /
 // leader temporaries, as in fn_802486A0).
 // The byte 0xCA0, halved for a player following in group mode 4 (unless

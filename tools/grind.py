@@ -140,11 +140,13 @@ Rules (checked by script)
 - Keep fn_/lbl_/cls_ placeholder names unless you have evidence for a real one; a descriptive name you do give keeps its address (Name_8xxxxxxx). Library templates and classes (JGadget, JGeometry, JKR...) are used from their headers, never rebuilt as a look-alike struct of your own. Declare another unit's function once, in its owner's shared header under include/game/, never in a .cpp.
 - Shared headers and other files may be changed when the assembly proves the change (a field's type or offset, const, a missing member). Then the whole project is rebuilt and nothing anywhere may get worse.
 - Don't write FIXME percentages (the script stamps them); a one-line comment on what still differs is welcome. No progress logs in source.
-- Don't run git or ninja. Only `python3 tools/try.py ...` and `python3 tools/grind.py check` can compile: the compiler does not run directly in your sandbox, and tools/ and configure.py must stay unedited.
+- Don't run git or ninja. Only `python3 tools/try.py ...`, `python3 tools/grind.py check`, `python3 tools/diag.py ...`, `python3 tools/permute.py ...` and `python3 tools/scratch.py ...` can compile: the compiler does not run directly in your sandbox, and tools/ and configure.py must stay unedited.
 
 Useful
 - `python3 tools/fingerprint.py <unit> <function>`: behaviour differences (calls, constants, compares, field offsets), original vs ours.
 - `python3 tools/try.py <unit>`: every function of the unit below 100 %.
+- `python3 tools/diag.py <unit> <function>`: what kind of difference is left and at which of our source lines: swapped registers and stack slots by variable name, rows grouped by line, and whether an inlined function of this file is the real cause (fix that one first).
+- `python3 tools/permute.py <unit> <function> [--tier b] [--apply]`: searches natural rewrites (declaration order, operand order, if/else form...) for the function's register and order differences. Keep a result only if it reads as code a programmer wrote; a new local it introduces needs a real name; a --tier b result counts only at 100 %.
 - build/G4SE01/asm/game/<unit>.s: the unit's whole original assembly (other functions, data, vtables, jump tables).
 - docs/RULES_CARD.md, "Known game-code shapes": recurring MWCC shapes and their natural source. grep it for a keyword; don't read it whole.
 - Functions already at 100 % in the same file and include/game/ headers show the style and the classes.
@@ -165,7 +167,9 @@ LANE_TEXT = {
              "operand order of commutative expressions, signedness and width of locals and counters, if/else vs "
              "early return, loop form, a header inline vs the spelled-out expression, const on locals and "
              "parameters. Cheap ones first. A temporary or reordering that only exists to move a register is a "
-             "trick: don't leave one in.",
+             "trick: don't leave one in. Before editing by hand: read diag.py's output below (what differs, at "
+             "which line; `python3 tools/diag.py {unit} '{fn}'` if it is missing), then run `python3 tools/permute.py "
+             "{unit} '{fn}'`.",
 }
 RELOC_TEXT = ("Its instructions are identical to the original; only a relocation names a different symbol (the pairs "
               "are in try.py's output). `lbl_... vs @NNN` means this unit's literals are pooled in a different order "
@@ -582,6 +586,36 @@ def source_of(wt, unit, e):
     return lines[top:d[1] + 1], top + 1, d[1] + 1
 
 
+def diag_block(wt, unit, fn, cap=40):
+    """tools/diag.py's verdict for the packet (a match-lane function); nothing if it fails or is slow."""
+    try:
+        r = sh(["python3", "tools/diag.py", unit, fn], wt, timeout=30, env=dict(os.environ, GRIND_BROKER_SERVER="1"))
+    except subprocess.TimeoutExpired:
+        return []
+    lines = r.stdout.rstrip().splitlines()
+    if r.returncode or not lines:
+        return []
+    if len(lines) > cap:
+        tail = lines[-1:] if lines[-1].startswith("next:") else []
+        keep = cap - 1 - len(tail)
+        lines = lines[:keep] + [f"... {len(lines) - keep - len(tail)} more lines: python3 tools/diag.py {unit} '{fn}' -v"] + tail
+    return ["== What differs, by our source line (tools/diag.py) =="] + lines + [""]
+
+
+def lead_block(unit, fn, cap=90):
+    """A byte-identical form tools/permute.py found for this function but did not apply because it adds
+    or removes a local (../fsa-wt/g2-logs/leads/<unit>__<function>.hand.diff): for the session to finish."""
+    f = LOGS / "leads" / (re.sub(r"[^A-Za-z0-9_]", "_", Path(unit).stem + "__" + fn)[:110] + ".hand.diff")
+    if not f.exists():
+        return []
+    body = f.read_text(errors="replace").splitlines()
+    return ["== A byte-identical form found by search (tools/permute.py), not applied yet ==",
+            "Compiled, this gives exactly the original's code, so it is right. Make the same change (line numbers may "
+            "have moved), then make it read as its programmers wrote it: a real name for any new local; where a value "
+            "is now written out twice the original most likely had a macro or an inline function, so write that; "
+            "correct comments it contradicts. Keep the function at 100 %."] + body[:cap] + [""]
+
+
 def build_packet(wt, unit, fn, ev, note=None):
     e = ev["functions"][fn]
     lane, size, stem = lane_of(e), e["size"], Path(unit).stem
@@ -590,7 +624,7 @@ def build_packet(wt, unit, fn, ev, note=None):
     hi = fns[idx + 1][0].split("__")[0] if idx + 1 < len(fns) else None
     lo = fns[idx - 1][0].split("__")[0] if idx > 0 else None
     place = "; ".join(x for x in [f"after `{hi}` in the file" if hi else "", f"before `{lo}`" if lo else ""] if x) or "the only function"
-    text = LANE_TEXT[lane].format(unit=unit, place=place, cls=e["cls"])
+    text = LANE_TEXT[lane].format(unit=unit, place=place, cls=e["cls"], fn=fn)
     if lane == "match" and e["cls"] == "reloc-name":
         text = RELOC_TEXT
     elif lane == "match" and e["todo"]:
@@ -615,6 +649,8 @@ def build_packet(wt, unit, fn, ev, note=None):
         hunks, nd, nr = diff_hunks(wt, unit, fn, 60 if size <= 512 else 140 if size <= 2048 else 240)
         out += [f"== Diff, original | ours: {nd} of {nr} rows differ (equal stretches skipped; offsets are hex from the function start) =="]
         out += [l for l in t[1:2] if l.strip()] + hunks + [""]
+        if lane == "match" and e["cls"] != "reloc-name":
+            out += lead_block(unit, fn) or diag_block(wt, unit, fn)
     src = source_of(wt, unit, e)
     if src:
         state = " (not compiled: inside #ifdef NONMATCHING, or it fails to compile)" if lane == "write" else ""

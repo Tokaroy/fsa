@@ -109,7 +109,7 @@ void cls_804AC950::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 93.96 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.59 %, different; behaviour near.
 void cls_804AC950::update() {
     JGeometry::TBox2f box(field_0x80);
     f32 x0 = -16.0f + mPos.x;
@@ -366,9 +366,8 @@ void cls_804AC950::draw() {
     mPos = saved;
 }
 
-// FIXME(shotgun): 98.64 %, different; behaviour drift.
 void cls_804AC950::vfunc_0x24() {
-    u16 tile = fn_8022461C(&mPos, field_0x4);
+    s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
         field_0x3c.x = 0.0f;

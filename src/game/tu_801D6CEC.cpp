@@ -31,22 +31,9 @@ void cls_801D6A58::fn_801D7830() {
 
 // FIXME(shotgun): 96.13 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D77B4() {
-    field_0x0[0x0] = -1;
-    field_0x0[0x1] = -1;
-    field_0x0[0x2] = -1;
-    field_0x0[0x3] = -1;
-    field_0x0[0x4] = -1;
-    field_0x0[0x5] = -1;
-    field_0x0[0x6] = -1;
-    field_0x0[0x7] = -1;
-    field_0x0[0x8] = -1;
-    field_0x0[0x9] = -1;
-    field_0x0[0xA] = -1;
-    field_0x0[0xB] = -1;
-    field_0x0[0xC] = -1;
-    field_0x0[0xD] = -1;
-    field_0x0[0xE] = -1;
-    field_0x0[0xF] = -1;
+    for (u32 i = 0; i < 16; i++) {
+        field_0x0[i] = -1;
+    }
     field_0x40 = 0;
     field_0x44 = 0;
     field_0x48.set(0.0f, 0.0f, 0.0f);
@@ -107,7 +94,6 @@ void cls_801D7730::fn_801D7638() {
     }
 }
 
-// FIXME(shotgun): 93.93 %, scheduling+regalloc; behaviour clean.
 void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
     fn_801D77B4();
     field_0x40 = layer;

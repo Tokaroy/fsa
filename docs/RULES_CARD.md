@@ -34,6 +34,53 @@ python3 tools/gate.py                                # before your last commit: 
 or not in the original order, a data fix, not code), `missing` (unwritten
 or misnamed). Only the honest report counts as progress.
 
+## Mechanical tools
+For a function whose behaviour is right but whose codegen is not. They compile
+copies outside ninja (`build/scratch/`) and never touch your source unless told.
+```sh
+python3 tools/diag.py <unit> <function> [-v]   # what differs and where in our source
+python3 tools/diag.py <unit>                   # functions below 100 %: root or derived
+python3 tools/permute.py <unit> <function> [--tier b] [--deep] [--apply]
+python3 tools/permute.py --callees --units <unit>        # rewrite inlined callees, score the whole unit
+python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
+python3 tools/scratch.py <unit> [--sym] [--src FILE] [--fn NAME]
+build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is the same in both
+```
+- `diag.py` first (≤ 60 lines): class and score; swapped registers and stack
+  slots by our variable names (DWARF of a `-sym on` build); differing rows
+  grouped by our source line with the kind (registers only, order, target/ours
+  has N more with drift_patterns' hint, opcode pair); inlined functions of this
+  file and their %. Line numbers carry no file: code inlined from this file
+  sits at the call's line. "Derived" = it inlines a same-file function below
+  100 %: fix that one first, the caller usually follows.
+- `permute.py` for regalloc-only, scheduling and small missing/extra rests:
+  beam search over source rewrites, each compiled and scored natively; a result
+  is reported only if the function got closer and nothing else in the unit got
+  worse. Tier a (default) keeps behaviour by construction (declaration order,
+  operand order, if/else form, early return, compound assignment, ...). Tier b
+  may change behaviour (a local's type, a temporary, inlining a local, swapping
+  statements, dropping a cast): **a tier b result counts only at 100 %**, where
+  the byte-identical code proves it; below that it is a lead and never applied.
+  Every result must still read as natural code (review judges it) and a new
+  local needs a real name. `--deep` searches for minutes instead of seconds.
+- `permute.py --callees`: a function can match on its own while the copies MWCC
+  inlined into its callers do not. This mode rewrites each such callee and
+  scores every function of the unit; it keeps a result when more functions
+  match, none that matched breaks and no data section gets worse (callers that
+  were open may move either way). Try it before working on a "derived" function.
+- A saved result that adds or removes a local (`*.hand.diff`, also shown in
+  the task text) is byte-proven but unfinished: give the local a real name; a
+  value written out twice was a macro or an inline in the original.
+- `flagsweep.py --fn`: the function scored under 44 options and pragmas. A
+  setting that makes it match is a hint about the source (CSE off: the original
+  computed a value twice), never a licence to add the pragma.
+- `scratch.py`: one scratch build and objdiff verdict (with `--src`, of another
+  text in the unit's place; `--flag`/`--drop` change the command line). The
+  library behind diag and permute.
+- `fnscore`: native per-function scorer (built on first use from
+  tools/fnscore.cpp); 0 means the same code. Its `farm` mode compiles many
+  candidates in parallel; confirm what matters with objdiff (try.py).
+
 ## Working through the file
 You own the whole unit; take its functions small and leaf ones first. Read the asm (frame, saved registers,
 calls, constants), check the donors, write natural C/C++ with real types,

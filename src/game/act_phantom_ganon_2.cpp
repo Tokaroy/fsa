@@ -138,7 +138,8 @@ u16 ActorBase_804A5770::fn_8018A590() const {
     return field_0x94;
 }
 
-// FIXME(shotgun): 56.79 %, missing/extra + reloc-name. Constants and the stmw prologue are scheduled differently; the tables are extern.
+// FIXME(shotgun): 56.79 %, missing/extra + reloc-name; behaviour near.
+// Constants and the stmw prologue are scheduled differently; the tables are extern.
 void PhantomGanon2_804A1A98::init() {
     field_0x94 = (field_0x90 >> 4) & 0xF;
     field_0x90 &= 0xF;
@@ -288,9 +289,8 @@ void PhantomGanon2_804A1A98::init() {
     field_0x270 = lbl_80539FB8 << 2;
 }
 
-// FIXME: 99.7. Regalloc only: the target keeps the serial in r31 (the register of the
-// emitter loop's pointer), we keep it in r30 (the loop counter's).
 PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
+    s32 serial;
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters2f4[i]);
         releaseEmitter_801EE434(mEmitters304[i]);
@@ -301,7 +301,7 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
         fn_8022ADCC();
     }
     if (field_0x90 == 10) {
-        s32 serial = field_0x274;
+        serial = field_0x274;
         if (serial >= 0) {
             PhantomGanon2_804A1A98* other = (PhantomGanon2_804A1A98*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL) {
@@ -312,7 +312,8 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
     }
 }
 
-// FIXME: 98.9. Regalloc only: the target keeps this in r30 and the two layer reads in r29,
+// FIXME: 99.03 %, regalloc-only; behaviour clean.
+// Regalloc only: the target keeps this in r30 and the two layer reads in r29,
 // we use r29 for this and r30/r28 for the counter and the layer reads.
 u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     s32 player = fn_8022EA0C(field_0x94);
@@ -341,7 +342,7 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     return field_0x94;
 }
 
-// FIXME(shotgun): 94.09 %, missing/extra + reloc-name.
+// FIXME(shotgun): 94.13 %, missing/extra + reloc-name; behaviour drift.
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
@@ -1345,7 +1346,8 @@ void PhantomGanon2_804A1A98::update() {
     }
 }
 
-// FIXME(shotgun): 77.36 %, missing/extra + reloc-name. The original addresses the tables off one base register (r31), here they are extern arrays.
+// FIXME(shotgun): 77.36 %, missing/extra + reloc-name; behaviour drift.
+// The original addresses the tables off one base register (r31), here they are extern arrays.
 void PhantomGanon2_804A1A98::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;

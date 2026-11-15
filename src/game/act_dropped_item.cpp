@@ -28,7 +28,8 @@ inline void DroppedItem_804A8C80::talk(s32 serial, s32 layer, const JGeometry::T
     fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
-// FIXME: 95.98 %, missing/extra (ours has 2 fewer instructions). The original saves one more callee-saved register (r28)
+// FIXME: 95.98 %, missing/extra; behaviour near.
+// (ours has 2 fewer instructions). The original saves one more callee-saved register (r28)
 // across the second getGameView call, builds the final spawn key (fn_802D6F38 with `true`) in a different
 // rlwimi order, and loads hit.x / hit.y before the 0.0f literal in the `!= 0.0f` tests.
 void DroppedItem_804A8C80::init() {
@@ -143,7 +144,8 @@ void DroppedItem_804A8C80::vfunc_0x40() {
     field_0x250 = 1;
 }
 
-// FIXME: 98.46 %, missing/extra (ours has 4 more instructions). Our tile 13/14 branches store mAlive = false twice
+// FIXME: 98.46 %, missing/extra; behaviour near.
+// (ours has 4 more instructions). Our tile 13/14 branches store mAlive = false twice
 // more than the original, and the `hit.x != 0.0f` test loads the 0.0f literal before hit.x (original: hit.x first).
 void DroppedItem_804A8C80::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
@@ -324,8 +326,6 @@ void DroppedItem_804A8C80::update() {
     }
 }
 
-// FIXME: 99.43 %, scheduling+regalloc. The diffX / diffY loads and the fabs / frsp / fctiwz pairs are interleaved
-// in the opposite order (the original starts with the mPos.y / playerPos.y pair).
 void DroppedItem_804A8C80::fn_802C0570() {
     mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
     JGeometry::TVec3f savedPos(mPos);
@@ -336,8 +336,8 @@ void DroppedItem_804A8C80::fn_802C0570() {
             if (hitFlags & mask) {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(player);
                 f32 diffX = mPos.x - playerPos.x;
-                f32 diffY = mPos.y - playerPos.y;
                 s32 absX = FABS(diffX);
+                f32 diffY = mPos.y - playerPos.y;
                 s32 absY = FABS(diffY);
                 s32 dir = fn_80230CFC(player);
                 if ((absX >= 0 && absX <= 15 && dir == 0) || dir == 1) {
@@ -367,7 +367,8 @@ void DroppedItem_804A8C80::fn_802C0570() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
 }
 
-// FIXME: 98.79 %, missing/extra (ours has 1 fewer instruction). The original tests field_0x4 == 0 once more (a dead
+// FIXME: 98.79 %, missing/extra; behaviour near.
+// (ours has 1 fewer instruction). The original tests field_0x4 == 0 once more (a dead
 // beq, probably from an inlined helper), and the `mPos.z != 0.0f` test loads mPos.z before the 0.0f literal.
 void DroppedItem_804A8C80::draw() {
     if (field_0x230 == 1) {
@@ -400,7 +401,8 @@ void DroppedItem_804A8C80::draw() {
     drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
 }
 
-// FIXME: 95.55 %, missing/extra (ours has 1 fewer instruction). The original copies player into a second saved
+// FIXME: 95.55 %, missing/extra; behaviour clean.
+// (ours has 1 fewer instruction). The original copies player into a second saved
 // register (r22, an inlined leader lookup) and orders the 0x30000000 addis / param add differently.
 bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
     s32 leader = player;

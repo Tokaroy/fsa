@@ -392,7 +392,7 @@ bool JKRUnitHeap::check()
 {
     u32 freeSize = 0;
     int byteCount = ((int)mUnitCount + 7) / 8;
-    u32 bits;
+    u16 bits;
     u8 *bat = mBat;
     for (int i = 0; i < byteCount; i++, bat++)
     {

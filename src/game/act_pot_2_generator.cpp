@@ -10,8 +10,6 @@
 // Walks every cell of layer 0 and layers 8..14 (32 x 32 cells each) and
 // replaces every tile whose code is 0x41 with a TBO2 pot actor, or with tile
 // 0x12 when the view's bit for the running id is already set.
-// FIXME: 98%. Regalloc only: the original keeps this in r30, the running id
-// in r31 and the tile code in r29 (we swap this/id and put code in r27/r25).
 void Pot2Generator_804AA6F8::init() {
     JGeometry::TVec3f pos;
     u32 id = field_0x90;
@@ -19,7 +17,7 @@ void Pot2Generator_804AA6F8::init() {
     field_0x230 = 0;
     for (s32 i = 0; i < 32; i++) {
         for (s32 j = 0; j < 32; j++) {
-            u32 code = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x230) & 0x3FF;
+            u16 code = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x230) & 0x3FF;
             if (code == 0x41) {
                 if (!getGameView_802D6A9C()->fn_802D76A8(id)) {
                     fn_80226CA8(field_0x230, 0, &pos);
@@ -38,7 +36,7 @@ void Pot2Generator_804AA6F8::init() {
         field_0x230 = 0;
         for (s32 i = 0; i < 32; i++) {
             for (s32 j = 0; j < 32; j++) {
-                u32 code = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x230) & 0x3FF;
+                u16 code = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x230) & 0x3FF;
                 if (code == 0x41) {
                     if (!getGameView_802D6A9C()->fn_802D76A8(id)) {
                         fn_80226CA8(field_0x230, layer, &pos);

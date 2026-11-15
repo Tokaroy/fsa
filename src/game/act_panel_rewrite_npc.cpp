@@ -18,7 +18,7 @@ static const u32 lbl_8046D808[4] = {3, 0, 0, 0};
 // tile grid, other types to the BgRewrite animation (fn_802A3948) by the tile
 // code under the actor.
 static inline void writeCell(PanelRewriteNPC_804A8E40* p) {
-    if (p->field_0x234 == 0x30 || p->field_0x234 == 0x10) {
+    if (0x30 == p->field_0x234 || p->field_0x234 == 0x10) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(p->field_0x4 + p->field_0x256, p->field_0x250, p->field_0x234);
     } else {
         u16 tile = fn_80226998(&p->mPos, p->field_0x4);
@@ -53,6 +53,7 @@ void PanelRewriteNPC_804A8E40::init() {
     field_0x248 = (field_0x90 >> 10) & 3;
 }
 
+// FIXME: 99.35 %, missing/extra; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x10() {
     u8 gameFlag = gGameRoot_8053AAF8->fn_80138A30();
     s32 keep = 0;
@@ -148,8 +149,6 @@ PanelRewriteNPC_804A8E40::~PanelRewriteNPC_804A8E40() {
     }
 }
 
-// FIXME: 97.66%. In the tile write, the original builds layer + offset in the
-// argument register r4 (ours uses a temporary, r7); the rest matches.
 void PanelRewriteNPC_804A8E40::update() {
     if ((field_0x90 >> 27) == 0) {
         mBox.i.x = -48.0f;
@@ -203,6 +202,7 @@ void PanelRewriteNPC_804A8E40::update() {
 
 void PanelRewriteNPC_804A8E40::draw() {}
 
+// FIXME: 98.41 %, scheduling+regalloc; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     if (field_0x24c) {
         if (field_0x4 >= 8) {
@@ -247,7 +247,8 @@ void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     }
 }
 
-// FIXME: 92.02%. The original keeps `this` in r31 from entry and the layer
+// FIXME: 92.18 %, missing/extra; behaviour clean.
+// The original keeps `this` in r31 from entry and the layer
 // temporary in r30; ours swaps the saved registers for this, the serial and
 // the found actor.
 bool PanelRewriteNPC_804A8E40::vfunc_0x58() {

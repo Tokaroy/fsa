@@ -922,7 +922,8 @@ void Player_804A6F38::fn_80283848() {
     }
 }
 
-// FIXME: 99.25. The distance moved: the original stores the TVec2f to the stack (0x8 / 0xC) and
+// FIXME: 99.25 %, missing/extra; behaviour near.
+// The distance moved: the original stores the TVec2f to the stack (0x8 / 0xC) and
 // squares it unfused (fmuls, fmuls, fadds); ours keeps it in registers with one fmadds (TVec2f::length).
 // Unfused square() with the same TVec2f keeps it in registers too.
 // Update of state 0x4A (the 0x4B movement on view-flag-free layers): down (0x33) without life; a
@@ -1278,7 +1279,8 @@ void Player_804A6F38::fn_8028286C() {
     field_0xcea = 0;
 }
 
-// FIXME: 99.33. Scheduling only: before the ground mark (fn_802F601C) the original computes &mPos
+// FIXME: 99.33 %, scheduling+regalloc; behaviour clean.
+// Scheduling only: before the ground mark (fn_802F601C) the original computes &mPos
 // (addi r4) ahead of the layer compare, ours after loading gGameRoot2_8053AB10.
 // Update of state 0x4D (fired from a cannon): sound 0x10003 at frame 72 (0x394); while the landing
 // wait 0x3FC runs (and the GBA link fn_80301CD0 is free), a pending switch 0xCEA moves the player
@@ -1678,14 +1680,8 @@ void Player_804A6F38::fn_80281760() {
     fn_8024F0E8(0x2004C);
 }
 
-// FIXME: 99.92. Registers only: the original keeps the old facing in r29 and the 0xB28 serial in r30,
-// ours the other way round.
-// Update of state 0x50 (burning): on the floor it runs at 2 along the facing (fn_8027EB04 steers)
-// until 300 frames (0x408) or tile 0x39, then stands (0); in the air it falls 0.25 a frame. The
-// ACTOR_FIRE actor 0xB28 follows the box 0x4C0; the walk cycle runs at half speed; on a turn the
-// fire effects 0x135C / 0x132C are respawned for the new facing; 0x135C follows mPos, and the
-// particle callback 0x1330 gets mPos (3 lower facing down, 3 higher facing up) through 0x1344.
 void Player_804A6F38::fn_8028126C() {
+    s32 serial;
     s32 facing = field_0x3dc;
     if (mPos.z <= 0.0f && field_0x344.z <= 0.0f) {
         field_0x344.z = 0.0f;
@@ -1716,7 +1712,7 @@ void Player_804A6F38::fn_8028126C() {
             field_0x344.z = 0.0f;
         }
     }
-    s32 serial = field_0xb28;
+    serial = field_0xb28;
     if (serial >= 0) {
         FireRodFire_804A89F0* fire =
             static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -2469,7 +2465,8 @@ void Player_804A6F38::fn_8027F16C() {
     }
 }
 
-// FIXME: 99.94. regalloc only: in the epsilon compare the original loads __float_epsilon into f0 before the
+// FIXME: 99.94 %, regalloc-only; behaviour clean.
+// regalloc only: in the epsilon compare the original loads __float_epsilon into f0 before the
 // 32.0f constant (f2) and keeps the difference in f0 / -epsilon in f3; ours uses f1-f4. In the 0.0f test the
 // fcmpu operands are swapped (f1, f0 in the original).
 void Player_804A6F38::fn_8027EEB4() {

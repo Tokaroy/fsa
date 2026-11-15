@@ -2,14 +2,15 @@
 """Compile broker for sandboxed grind sessions (tools/grind.py).
 
 A session's Bash runs in Claude Code's sandbox, whose syscall filter kills wibo (the shim
-that runs the Metrowerks compiler). So the two commands that compile, tools/try.py and
-`tools/grind.py check`, hand their arguments to a broker thread of the worker process,
+that runs the Metrowerks compiler). So the commands that compile (tools/try.py, `tools/grind.py
+check`, tools/diag.py, tools/permute.py, tools/scratch.py: KINDS below) hand their arguments
+to a broker thread of the worker process,
 which runs them outside the sandbox with the worktree as its directory and passes the
 output back. Nothing else leaves the sandbox. The broker refuses to run while tools/ or
 configure.py differ from git, so a session cannot change what runs outside.
 
 Protocol: build/grind/broker/ACTIVE exists while a broker serves this worktree; a client
-writes req-<id>.json {"kind": "try"|"check", "argv": [...]} and waits for resp-<id>.json
+writes req-<id>.json {"kind": one of KINDS, "argv": [...]} and waits for resp-<id>.json
 {"rc": int, "out": str}.
 """
 
@@ -21,7 +22,9 @@ import time
 from pathlib import Path
 
 DIR = Path("build/grind/broker")
-KINDS = {"try": ["python3", "tools/try.py"], "check": ["python3", "tools/grind.py", "check"]}
+KINDS = {"try": ["python3", "tools/try.py"], "check": ["python3", "tools/grind.py", "check"],
+         "diag": ["python3", "tools/diag.py"], "permute": ["python3", "tools/permute.py"],
+         "scratch": ["python3", "tools/scratch.py"], "flagsweep": ["python3", "tools/flagsweep.py"]}
 
 
 def maybe_delegate(kind, argv):

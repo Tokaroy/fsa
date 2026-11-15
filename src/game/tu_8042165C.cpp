@@ -1228,8 +1228,8 @@ void cls_804B146C::fn_80423248(s32 player) {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
 }
 
-// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_80422824() {
+    s32 tied;
     s32 count = 0;
     s32 ranked = 0;
     if (!(field_0x256 & 1) && !(field_0x256 & 2) && !(field_0x256 & 4) && !(field_0x256 & 8)) {
@@ -1255,7 +1255,7 @@ void cls_804B146C::fn_80422824() {
     }
     do {
         s32 best = -5001;
-        s32 tied = 0;
+        tied = 0;
         for (s32 i = 0; i < count; i++) {
             if (done[i] == 0 && best < fn_80237774(i)) {
                 best = fn_80237774(i);
@@ -1337,7 +1337,6 @@ void cls_804B146C::fn_80422824() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
         field_0x1a8[player] = fn_80237774(player);
@@ -1368,8 +1367,8 @@ void cls_804B146C::fn_8042215C(s32 player) {
                 ->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
             field_0x8[player]->search(lbl_8048EE60[i])->hide();
             field_0x8[player]->search(lbl_8048EEE0[i])->hide();
-            max -= 4;
             life -= 4;
+            max -= 4;
         } else {
             if (life == 0) {
                 field_0x8[player]->search(lbl_8048EE20[i])->hide();

@@ -1545,7 +1545,7 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 89.23 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.46 %, missing/extra + reloc-name; behaviour drift.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
@@ -1820,7 +1820,6 @@ void cls_804B13D4::fn_80419C38(s32 player, bool arg) {
     }
 }
 
-// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
         field_0x1d8[player] = fn_80237774(player);
@@ -1849,8 +1848,8 @@ void cls_804B13D4::fn_80419570(s32 player) {
             static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
             field_0x8[player]->search(lbl_8048DF80[i])->hide();
             field_0x8[player]->search(lbl_8048E000[i])->hide();
-            max -= 4;
             life -= 4;
+            max -= 4;
             continue;
         }
         if (life == 0) {

@@ -296,8 +296,8 @@ void cls_804A1318::init() {
     }
 }
 
-// FIXME(shotgun): 99.80 %, regalloc-only; behaviour clean.
 cls_804A1318::~cls_804A1318() {
+    s32 serial;
     for (int i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters2bc[i]);
         releaseEmitter_801EE434(mEmitters2cc[i]);
@@ -309,7 +309,7 @@ cls_804A1318::~cls_804A1318() {
         fn_8022ADCC();
     }
     if (field_0x90 == 10) {
-        s32 serial = field_0x274;
+        serial = field_0x274;
         if (serial >= 0) {
             cls_804A1318* other = static_cast<cls_804A1318*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (other != NULL && other->mAlive == true) {
