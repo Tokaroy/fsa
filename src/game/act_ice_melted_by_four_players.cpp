@@ -51,11 +51,10 @@ void IceMeltedByFourPlayers_804AE888::update() {
     if (fn_8037845C() == 1) {
         return;
     }
-    JGeometry::TBox2f box;
-    box.set(mBox);
+    JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     fn_8020D58C()->addBox(mSerial);
