@@ -289,7 +289,7 @@ bool fn_802DEDFC(const s32* dir) {
 // Not auto-inlined: fn_802D4CCC calls fn_802DED40 and fn_802DEC40 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 78.00 %, missing/extra; behaviour near.
+// FIXME(shotgun): 92.60 %, missing/extra; behaviour near.
 // (view reload after __shl2i)
 s32 fn_802DED40(s32 layer, s32 slot) {
     return getGameView_802D6A9C()->fn_802D7B34(layer, slot);
@@ -313,6 +313,7 @@ bool fn_802DEBF8(void) {
 }
 
 // Stage (9, 3), or stage 13 and up, with gGameRoot_8053AAF8->0x7F set (vfunc_0x10 inlines it).
+// FIXME: 94.50 %, missing/extra; behaviour near.
 bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
@@ -569,7 +570,7 @@ void GameView_804A9950::vfunc_0xC() {
     }
 }
 
-// FIXME: 99.09 %, different; behaviour near.
+// FIXME: 99.31 %, missing/extra; behaviour near.
 // Two instructions: in the inlined fn_802DEBA0 the target reloads the view
 // for the stage >= 13 test, as fn_802DEBA0 itself does (see there).
 void GameView_804A9950::vfunc_0x10() {
@@ -967,6 +968,7 @@ void GameView_804A9950::fn_802DA788() {
     }
 }
 
+// FIXME: 98.95 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only; target assigns i, i * 4, end to r28, r29, r30 (ours: r29, r30, r28).
 // Also reloc-name: -70.0f / 70.0f are pooled after literals of functions not written yet.
 u8 GameView_804A9950::fn_802DA630() {
@@ -1112,7 +1114,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
     return "0";
 }
 
-// FIXME: 99.46 %, different; behaviour drift.
+// FIXME: 99.53 %, missing/extra; behaviour drift.
 // Structurally close, two instructions: in the inlined fn_802DEBA0 the target
 // reloads the view for the stage >= 13 test (the fn_802DEBA0 family). The .rodata strings
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
@@ -1199,7 +1201,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.45 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.59 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1261,7 +1263,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.23 %, different + reloc-name; behaviour near.
+// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
 // before its flag test, and extracts both screen bytes before the first compare in the key
@@ -2514,6 +2516,7 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
 // Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6),
 // and str[idx + const] swaps the add operands.
+// FIXME: 99.37 %, missing/extra; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
