@@ -1319,7 +1319,6 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
             step = 8.0f;
         }
         step = (step - 0.01f) * 0.5f;
-        f32 negStep = -step;
         while (moving) {
             JGeometry::TVec3f delta;
             delta.sub(*to, pos);
@@ -1328,18 +1327,18 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
             if (delta.x > step) {
                 delta.y *= step / delta.x;
                 delta.x = step;
-            } else if (delta.x < negStep) {
-                delta.y *= negStep / delta.x;
-                delta.x = negStep;
+            } else if (delta.x < -step) {
+                delta.y *= -step / delta.x;
+                delta.x = -step;
             } else {
                 xDone = true;
             }
             if (delta.y > step) {
                 delta.x *= step / delta.y;
                 delta.y = step;
-            } else if (delta.y < negStep) {
-                delta.x *= negStep / delta.y;
-                delta.y = negStep;
+            } else if (delta.y < -step) {
+                delta.x *= -step / delta.y;
+                delta.y = -step;
             } else {
                 yDone = true;
             }
