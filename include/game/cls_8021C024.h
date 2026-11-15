@@ -7,6 +7,7 @@
 // game/tu_8021BFA8.cpp; embedded at 0x94 of the horse-race table (cls_80215E48).
 class cls_8021C024 {
 public:
+    cls_8021C024() { fn_8021C078(); }
     int fn_8021C024();
     void fn_8021C078();
 

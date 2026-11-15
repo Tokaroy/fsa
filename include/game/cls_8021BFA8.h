@@ -8,6 +8,7 @@
 // (cls_80216238).
 class cls_8021BFA8 {
 public:
+    cls_8021BFA8() { fn_8021C00C(); }
     int fn_8021BFA8();
     void fn_8021C00C();
 

@@ -67,45 +67,17 @@ void cls_80216238Sub::fn_802162B8(s32 id, s32 key) {
     }
 }
 
-// FIXME(shotgun): 96.88 %, missing/extra; behaviour clean.
-void cls_80216238::fn_80216238() {
-    mSub.field_0xc.fn_8021C00C();
-    mSub.mFlag8 = 0;
-    mSub.mFlag9 = 0;
-    mSub.mFlagA = 0;
-    mSub.field_0xc.fn_8021C00C();
-    mWatch.fn_801ED80C();
-    mId = 0;
-    mKey = -1;
-    mSub.mFlag8 = 0;
-    mSub.mFlag9 = 0;
-    mSub.mFlagA = 0;
-    mSub.field_0xc.fn_8021C00C();
-    mWatch.fn_801ED7F0();
+cls_80216238::cls_80216238() {
+    init(0);
 }
 
-// FIXME(shotgun): 50.79 %, missing/extra + reloc-name; behaviour drift.
-// the original builds the entries with __construct_array(fn_80216238), which
-// needs a constructor on cls_80216238 (not added: it would rename the symbols).
-cls_80215E48* fn_80216178(cls_80215E48* table) {
-    table->mCount = gGameRoot_8053AAF8->fn_80138A30();
-    for (s32 i = 0; i < 4; i++) {
-        table->mEntries[i].fn_80216238();
-    }
-    table->field_0x94.fn_8021C078();
-    table->fn_802160F4();
-    return table;
+cls_80215E48::cls_80215E48() : mCount(gGameRoot_8053AAF8->fn_80138A30()) {
+    fn_802160F4();
 }
 
 void cls_80215E48::fn_802160F4() {
     for (s32 i = 0; i < mCount; i++) {
-        mEntries[i].mId = i;
-        mEntries[i].mKey = -1;
-        mEntries[i].mSub.mFlag8 = 0;
-        mEntries[i].mSub.mFlag9 = 0;
-        mEntries[i].mSub.mFlagA = 0;
-        mEntries[i].mSub.field_0xc.fn_8021C00C();
-        mEntries[i].mWatch.fn_801ED7F0();
+        mEntries[i].init(i);
     }
     field_0x94.fn_8021C078();
     field_0xa0 = 0;
@@ -146,15 +118,9 @@ void cls_80215E48::fn_80215F30() {
     }
 }
 
-// FIXME: 89.48 %, different; behaviour drift.
-void cls_80215E48::fn_80215ECC() {
-    s32 count = mCount;
-    cls_80216238* entry = mEntries;
-    // FIXME: 89.48 %. The original keeps the entry walk off `this` (lwz
-    // 0x4(r30), addi 0x1c) with the count loaded first; ours adds 4 first.
-    for (s32 i = 0; i < count; i++) {
-        entry->mWatch.fn_801ED3DC(entry->mId, entry->mKey);
-        entry++;
+void cls_80215E48::fn_80215ECC() const {
+    for (s32 i = 0; i < mCount; i++) {
+        mEntries[i].mWatch.fn_801ED3DC(mEntries[i].mId, mEntries[i].mKey);
     }
 }
 
@@ -224,21 +190,36 @@ bool cls_80215E48::fn_80215D38() {
     return result;
 }
 
-// FIXME(shotgun): 85.78 %, missing/extra; behaviour drift.
-bool cls_80215E48::fn_80215C6C(s32 index) {
+static inline void getWatchTime(const cls_801ED3DC& watch, u8* seconds, u8* centis) {
+    *seconds = watch.mSeconds;
+    *centis = watch.mCentis;
+}
+
+// Inlined into fn_80215C6C: `result` gets r31 ahead of the `index * 0x24` temporary (r30),
+// and getWatchTime loads both bytes upfront with clrlwi on the out-parameters.
+static inline bool checkWatchRecord(const cls_801ED3DC& watch) {
     bool result = false;
-    if (mEntries[index].mWatch.mStopped != 0 && !mEntries[index].mWatch.fn_801ED7B0()) {
-        u8 seconds = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59;
-        u8 centis = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58;
+    if (watch.mStopped != 0 && !watch.fn_801ED7B0()) {
+        u8 centis;
+        u8 seconds;
+        seconds = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59;
+        centis = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58;
         if (seconds == 0 && centis == 0) {
             result = true;
-        } else if (mEntries[index].mWatch.mSeconds < seconds) {
-            result = true;
-        } else if (mEntries[index].mWatch.mSeconds == seconds && mEntries[index].mWatch.mCentis < centis) {
-            result = true;
+        } else {
+            u8 watchSeconds;
+            u8 watchCentis;
+            getWatchTime(watch, &watchSeconds, &watchCentis);
+            if (watchSeconds < seconds || (watchSeconds == seconds && watchCentis < centis)) {
+                result = true;
+            }
         }
     }
     return result;
+}
+
+bool cls_80215E48::fn_80215C6C(s32 index) {
+    return checkWatchRecord(mEntries[index].mWatch);
 }
 
 // FIXME: 93.62 %, scheduling+regalloc; behaviour clean.
@@ -262,13 +243,14 @@ void cls_80215E48::fn_80215B6C(s32 index) {
     }
 }
 
-// FIXME(shotgun): 85.09 %, missing/extra; behaviour drift.
+// FIXME: 85.56 %, missing/extra; behaviour drift.
 s32 cls_80215E48::fn_80215A94() {
-    s32 count = mCount;
     s32 result = -1;
-    if (count >= 2 && count - 1 == fn_80215E98()) {
+    if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
+        s32 count = mCount;
         for (s32 i = 0; i < count; i++) {
-            if (mEntries[i].mKey < 0 && fn_801CD2F8(getPlayerLayer_8023DE58(i))) {
+            bool finished = fn_80215E48(i) >= 0;
+            if (!finished && fn_801CD2F8(getPlayerLayer_8023DE58(i))) {
                 result = i;
                 break;
             }

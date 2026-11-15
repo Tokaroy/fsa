@@ -11,14 +11,14 @@
 #include "types.h"
 
 // A stopwatch that runs at 60 frames a second and stops at 2 minutes (7200
-// frames); no vtable, ctor or dtor symbol, named after its lowest-address
-// function.
+// frames); named after its lowest-address function (constructor 0x801ED80C).
 struct cls_801ED3DC {
     /* 0x0 */ u8 mStopped;
     /* 0x1 */ u8 pad_0x1[3];
     /* 0x4 */ s32 mFrames;
     /* 0x8 */ u8 mSeconds; // at most 119
     /* 0x9 */ u8 mCentis;  // at most 99
+    cls_801ED3DC();
     // Records the displayed time in lbl_8053AEF8's slot `slot`, and `rank`
     // (0-3) when it is in range.
     void fn_801ED3DC(s32 slot, s32 rank) const;
@@ -31,15 +31,15 @@ struct cls_801ED3DC {
     void fn_801ED798();
     // True when the watch has stopped at the 2 minute limit (1, 7200, 119, 99).
     bool fn_801ED7B0() const;
-    // Both stop the watch and zero the time.
+    // Stops the watch and zeroes the time.
     void fn_801ED7F0();
-    void fn_801ED80C();
 }; // Size: 0xA (the entries embedding it are 0x24 bytes)
 
 // A frame countdown (the horse-race man's start count). Named after its
 // lowest-address function.
 struct cls_801ED828 {
     /* 0x0 */ u16 mFrames;
+    cls_801ED828() { fn_801ED974(); }
     // Draws the digit 1-3 for the current second at the screen centre.
     void fn_801ED828() const;
     // Counts down; plays a sound every full second.
