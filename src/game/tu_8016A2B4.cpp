@@ -147,7 +147,6 @@ GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
     }
 }
 
-// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 GameRootSub24_8016A3AC::~GameRootSub24_8016A3AC() {
     for (int i = 0; i < 4; i++) {
         JPABaseEmitter* emitter = field_0x140.mEntries[i].field_0x0;
