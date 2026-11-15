@@ -8,6 +8,7 @@
 #include "game/GameState.h"
 #include "game/Map.h"
 #include "game/Player.h"
+#include "game/RotMatrix.h"
 #include "game/act/act_bomb.h"
 #include "game/act/act_chief_soldier.h"
 #include "game/act/tu_801F9484.h"
@@ -1083,23 +1084,7 @@ void cls_804A00C8::draw() {
         params.field_0x0[2] = 4;
     }
     if (mState == 0xD) {
-        f32 yaw = field_0x29c;
-        f32 scale = field_0x2a0;
-        f32 sx = sin(0.0f);
-        f32 sy = sin(yaw);
-        f32 sz = sin(0.0f);
-        f32 cx = cos(0.0f);
-        f32 cy = cos(yaw);
-        f32 cz = cos(0.0f);
-        mtx[0][0] = scale * (cy * cz);
-        mtx[0][1] = scale * (sx * sy * cz - cx * sz);
-        mtx[0][2] = scale * (cx * cz * sy + sx * sz);
-        mtx[1][0] = scale * (cy * sz);
-        mtx[1][1] = scale * (sx * sy * sz + cx * cz);
-        mtx[1][2] = scale * (cx * sz * sy - sx * cz);
-        mtx[2][0] = scale * -sy;
-        mtx[2][1] = scale * (sx * cy);
-        mtx[2][2] = scale * (cx * cy);
+        setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x29c, 0.0f), field_0x2a0);
         params.mMtx = mtx;
         if (field_0x90 == 2) {
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x274 + 0x114, &params, 0, 1.0f, 1.0f);
