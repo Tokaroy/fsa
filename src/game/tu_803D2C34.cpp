@@ -215,8 +215,8 @@ void cls_804B0288::fn_803D521C() {
             s32 d = field_0x80 - 30;
             alpha = (1.0f - (f32)(d * d) / 900.0f) * (f32)field_0x28->field_0x28;
         }
-        field_0x28->mPane->setAlpha((s32)alpha);
-        mScreen->search('Paccur01')->setAlpha((s32)alpha);
+        field_0x28->mPane->setAlpha(alpha);
+        mScreen->search('Paccur01')->setAlpha(alpha);
         if (field_0x2171 == 0) {
             field_0x28->moveFromCentre_80402E08(0.0f, bounce);
             field_0x1c[0]->moveFromCentre_80402E08(0.0f, bounce);
@@ -485,8 +485,8 @@ void cls_804B0288::fn_803D4484() {
     }
     if (field_0x86 > fadeStart) {
         f32 ratio = (f32)(field_0x86 - fadeStart) / (f32)fadeLength;
-        field_0xc->setAlpha((s32)(255.0f * (1.0f - ratio)));
-        field_0x10->setAlpha((s32)(255.0f * ratio));
+        field_0xc->setAlpha((255.0f * (1.0f - ratio)));
+        field_0x10->setAlpha((255.0f * ratio));
         if (field_0x86 >= fadeLength + fadeStart) {
             flags[2] = 1;
         }
