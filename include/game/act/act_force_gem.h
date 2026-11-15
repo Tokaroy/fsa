@@ -22,6 +22,8 @@ public:
     // under it (water, pit); returns whether it handled the tile.
     void fn_8032ABE0();
     bool fn_8032B0A4();
+    // Not in the binary: a plain function that its callers inline.
+    void stopMoving();
     // 0x8032B3F8: the fall and bounce; returns false when a tile reaction took over.
     bool fn_8032B3F8();
     // 0x8032B7C0: a player nearby kicks it away.
