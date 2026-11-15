@@ -1565,7 +1565,7 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     s16 dx = lbl_8050DB0C.field_0x4c[0xF3] + lbl_8048E0E0[row][field_0x222];
     s16 dy = lbl_8050DB0C.field_0x4c[0xF4] + lbl_8048E0F4[row][field_0x222];
     if (lbl_8048E0CC[row][field_0x222] == 0) {
-        dy = (s32)((f32)dy + lbl_8053AED0->fn_8043D514());
+        dy = ((f32)dy + lbl_8053AED0->fn_8043D514());
     } else {
         dy = (s32)((f32)dy + lbl_8053AED0->fn_8043D57C());
     }
