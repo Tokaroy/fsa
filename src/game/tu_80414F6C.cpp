@@ -356,7 +356,8 @@ void BattleStageSelect_804B1378::fn_804170EC() {
             if (field_0x14 < 30) {
                 rate = (f32)(field_0x14 * field_0x14) / 900.0f;
             } else {
-                rate = 1.0f - (f32)((field_0x14 - 30) * (field_0x14 - 30)) / 900.0f;
+                s32 frame = field_0x14 - 30;
+                rate = 1.0f - (f32)(frame * frame) / 900.0f;
             }
             mScreen->search('Pscur01')->hide();
             mScreen->search('Pscur02')->hide();
