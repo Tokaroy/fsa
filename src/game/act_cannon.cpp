@@ -12,7 +12,6 @@
 static const s16 lbl_80463FD0[] = {0, 3, 1, 2, 2, 2, 3, 3, 4, 3, 5, 3, -1, -1};
 static const s16* lbl_80539ED0[] = {lbl_80463FD0, NULL};
 
-// FIXME: 99.85 %, reloc-name; behaviour clean.
 Cannon_8049CCF0::Cannon_8049CCF0() {
     field_0x268 = 1;
     field_0x269 = 0;
@@ -31,7 +30,6 @@ Cannon_8049CCF0::Cannon_8049CCF0() {
 
 Cannon_8049CCF0::~Cannon_8049CCF0() {}
 
-// FIXME: 98.75 %, reloc-name; behaviour clean.
 f32 Cannon_8049CCF0::fn_801080B8() const {
     if (field_0x4 == 0) {
         return 8.0f;
@@ -44,7 +42,6 @@ f32 Cannon_8049CCF0::fn_801080B8() const {
 
 void readSwingRange(Cannon_8049CCF0* self);
 
-// FIXME: 99.69 %, reloc-name; behaviour clean.
 void Cannon_8049CCF0::init() {
     if ((field_0x90 & 0xF) == 1) {
         field_0x274 = 1;
@@ -84,7 +81,7 @@ void updateRise(Cannon_8049CCF0* self);
 
 void spawnTakenEffect(Cannon_8049CCF0* self);
 
-// FIXME: 95.54 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
 void Cannon_8049CCF0::update() {
     if (vfunc_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
@@ -209,7 +206,7 @@ void Cannon_8049CCF0::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }
 
-// FIXME: 98.23 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.39 %, missing/extra; behaviour clean.
 bool Cannon_8049CCF0::fn_80107360() {
     if (field_0x274 != 2) {
         return false;
