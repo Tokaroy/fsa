@@ -2326,7 +2326,7 @@ bool fn_8037EC98(s32 player, u16 flags) {
     return true;
 }
 
-// FIXME: 97.41 %, regalloc-only; behaviour clean.
+// FIXME: 99.10 %, regalloc-only; behaviour clean.
 // Regalloc only: the volatile registers of window/base pointer still differ (99.1 %).
 void fn_8037EB4C() {
     MessageWindow_804AF490* window;
