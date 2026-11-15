@@ -1262,9 +1262,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
 
 // FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
-// clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
-// before its flag test, and extracts both screen bytes before the first compare in the key
-// loop; regalloc (and a 16-byte larger frame from one more saved register) follows.
+// clrlwi 16 first (as if u16; a u16 local folds it) and extracts both screen bytes
+// before the first compare in the key loops; minor regalloc differences follow.
 // Spawns the current screen's actors from its "d_enemy_map" table (11-byte records: tag,
 // layer, cell x, cell y, parameter; the switch tags of lbl_8046E178 first, then the rest),
 // then the screen's helper actors, its dropped items and keys; with reset, the per-stage
@@ -1345,7 +1344,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
                 }
             }
         }
-        for (s32 i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             s32 serial = serials[i];
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1659,8 +1658,9 @@ bool GameView_804A9950::fn_802D76A8(s32 bit) {
 }
 
 void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
+    s32 slot = layer < 8 ? 0 : layer - 7;
     if (flag) {
-        field_0x6748[layer < 8 ? 0 : layer - 7]++;
+        field_0x6748[slot]++;
     }
 }
 
