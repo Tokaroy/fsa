@@ -6,7 +6,6 @@
 #include "game/ViewLayer.h"
 #include "game/act/act_shadow_link_2.h"
 
-// FIXME: 98.83 %. Register allocation only.
 void ShadowLink2_804A43E8::fn_801D41B8() const {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 id;
@@ -46,7 +45,8 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
     }
 }
 
-// FIXME: 99.61 %. One instruction differs (see try.py).
+// FIXME: 99.61 %, missing/extra; behaviour near.
+// One instruction differs (see try.py).
 void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0xE;
