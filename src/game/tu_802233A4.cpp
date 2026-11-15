@@ -38,7 +38,7 @@ void cls_804A6D00::init() {
 
 // Not auto-inlined: vfunc_0x90 calls it with a plain bl in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 94.95 %, missing/extra
+// FIXME(shotgun): 94.95 %, missing/extra; behaviour near.
 void cls_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
@@ -139,7 +139,7 @@ static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1
 
 // Not auto-inlined: vfunc_0x90 calls it with a plain bl in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 82.92 %, scheduling+regalloc
+// FIXME(shotgun): 82.92 %, scheduling+regalloc; behaviour clean.
 void cls_804A6D00::fn_802238CC() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
@@ -259,7 +259,8 @@ void cls_804A6D00::vfunc_0x6C() {
     field_0x2c0 = NULL;
 }
 
-// FIXME(shotgun): 97.95 %, scheduling+regalloc (the li r3, 0 of the return sits before the state test)
+// FIXME(shotgun): 97.95 %, scheduling+regalloc; behaviour clean.
+// (the li r3, 0 of the return sits before the state test)
 u8 cls_804A6D00::vfunc_0x68() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
