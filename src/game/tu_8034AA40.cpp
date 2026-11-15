@@ -112,7 +112,7 @@ void cls_804AC8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 95.67 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
