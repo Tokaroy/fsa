@@ -27,7 +27,7 @@ extern const u32 lbl_80464CD8[43];
 
 static const u16 lbl_80464D84[8] = {0x2C, 0x2D, 0x2E, 0x2F, 0x28, 0x29, 0x2A, 0x2B};
 
-// FIXME(shotgun): 99.83 %, reloc-name; behaviour drift.
+// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 EscortBase_8049E0C8::EscortBase_8049E0C8(const char* sobName, s32 arg2, s32 arg3) {
     field_0x330 = 1;
     field_0x331 = 1;
@@ -257,7 +257,7 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 97.57 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.74 %, missing/extra + reloc-name; behaviour clean.
 // (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
@@ -642,8 +642,9 @@ void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 91.76 %, missing/extra + reloc-name; behaviour near.
-// The box corners are added in a different order and the stores of the box's y values and the pt zero are interleaved differently (target: x pair, then y pair, stores after pt's).
+// FIXME: 94.04 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: scheduling+regalloc + reloc-name; behaviour clean.
+// The box's f.x/f.y use f3/f4 swapped and pt's zero stores are scheduled two instructions later.
 bool EscortBase_8049E0C8::vfunc_0xBC() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -654,8 +655,10 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
     if (fn_8023AE34(&box, field_0x4, &pt) >= 0) {
         return true;
     }
-    bool inBox = fn_8023AB94(&box, field_0x4, &pt) >= 0;
-    return inBox;
+    if (fn_8023AB94(&box, field_0x4, &pt) >= 0) {
+        return true;
+    }
+    return false;
 }
 
 // FIXME: 96.84 %, scheduling+regalloc + reloc-name; behaviour clean.
