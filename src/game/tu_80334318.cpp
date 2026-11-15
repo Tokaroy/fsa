@@ -289,7 +289,6 @@ void IronBallHoming_804AB9C0::draw() {
 }
 
 // 0x80334378.
-// FIXME(shotgun): 99.78 %, regalloc-only; behaviour clean.
 s32 IronBallHoming_804AB9C0::vfunc_0x54() {
     s32 serial = -1;
     while (true) {
