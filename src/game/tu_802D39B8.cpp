@@ -379,7 +379,7 @@ bool fn_802DEA34(void) {
     return false;
 }
 
-// FIXME: 95.68 %, different; behaviour near.
+// FIXME: 95.00 %, missing/extra; behaviour near.
 // The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads its
 // mView (lwz 0xc) and the view's field_0x4 for the second stage pair; ours
 // loads both once. No-ops: a local for gGameRoot_8053AAF8->0x4, an inline view
@@ -402,7 +402,7 @@ bool fn_802DE9A0(void) {
     return false;
 }
 
-// FIXME: 93.60 %, different; behaviour near.
+// FIXME: 92.60 %, missing/extra; behaviour near.
 // Same as fn_802DE9A0: the target keeps gGameRoot_8053AAF8->0x4 in r4
 // and reloads the view (lwz 0xc) for the second pair; ours loads it once.
 bool fn_802DE93C(void) {
@@ -1533,13 +1533,10 @@ void GameView_804A9950::fn_802D7D00(s32 layer, s32 bit, bool set) {
     }
 }
 
-// FIXME: 99.43 %, regalloc-only; behaviour clean.
-// Regalloc only, as fn_802D7B34: the target keeps the shift in r31 and the slot index in r30.
 void GameView_804A9950::fn_802D7BE8(s32 layer, s32 slot, u32 value) {
     s32 idx = layer < 8 ? 0 : layer - 7;
-    s32 shift = 60 - slot * 4;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] &= (0xFULL << shift) ^ -1;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] |= (u64)value << shift;
+    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] &= (0xFULL << (60 - slot * 4)) ^ -1;
+    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] |= (u64)value << (60 - slot * 4);
 }
 
 // FIXME: 99.44 %, regalloc-only; behaviour clean.
@@ -1874,7 +1871,8 @@ void GameView_804A9950::fn_802D6AAC(u8 value) {
 }
 
 GameView_804A9950* getGameView_802D6A9C(void) {
-    return gGameRoot_8053AAF8->field_0x4->mView;
+    GameView_804A9950* view = gGameRoot_8053AAF8->field_0x4->mView;
+    return view;
 }
 
 // Scans a layer's tile grid (0x800 cells): records the cells of the screen's switchable
@@ -2414,10 +2412,6 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
     }
 }
 
-// FIXME: 94.79 %, scheduling+regalloc; behaviour clean.
-// Scheduling and regalloc: the target adds the view to i * 2 before the slot
-// row (view + i * 2 + 0x2948, then lhzx with slot << 7); ours adds the row and i first and
-// loads the view (r5) after.
 s32 GameView_804A9950::fn_802D4C10(s32 layer, u16 id) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     for (int i = 0; i < 0x40; i++) {
@@ -2428,9 +2422,6 @@ s32 GameView_804A9950::fn_802D4C10(s32 layer, u16 id) {
     return -1;
 }
 
-// FIXME: 95.52 %, scheduling+regalloc; behaviour clean.
-// Scheduling and regalloc, as fn_802D4C10. The match test, the i >= 0x40 check
-// (0x802D4B30) and the rest sit inside the loop in the target; the check is kept as it is.
 bool GameView_804A9950::fn_802D4ADC(s32 layer, u16 id) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     for (s32 i = 0; i < 0x40; i++) {
@@ -2455,8 +2446,6 @@ bool GameView_804A9950::fn_802D4ADC(s32 layer, u16 id) {
     return false;
 }
 
-// FIXME: 97.14 %, scheduling+regalloc; behaviour clean.
-// Scheduling and regalloc, as fn_802D4C10; the shift loop as in fn_802D4874.
 bool GameView_804A9950::fn_802D49A8(s32 layer, u16 id) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     s32 i;

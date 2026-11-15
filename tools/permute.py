@@ -18,7 +18,8 @@ How it works: the source is parsed with libclang (the real C++ grammar and types
 a text edit of the function (or of a function of this file inlined into it); every candidate is
 compiled and scored by the native farm (tools/fnscore.cpp, ~100 candidates a second; only the slice
 of the file the function needs is compiled); candidates that lower the score seed the next round
-(beam search, with a few sideways moves kept). The result is then checked with objdiff on the
+(beam search, with a few sideways moves kept; improvements in different places of the function
+are also tried together, since they mostly add up). The result is then checked with objdiff on the
 whole unit: it is reported only if the function got closer and NOTHING else in the unit got worse.
 
 Tier a rewrites keep the function's behaviour by construction and read as code a programmer wrote
@@ -1476,7 +1477,7 @@ def slice_text(p, fn):
 
 # ---------------------------------------------------------------- search
 
-def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=True, called=None):
+def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=True, called=None, within=None):
     """[Edit] for one function of `data` (and for functions of this file whose lines the diff points
     at: code inlined into it), cheapest kinds first; edits at the diff's lines before the others."""
     p = Parsed(unit, data)
@@ -1513,6 +1514,8 @@ def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=
             for ed in eds:
                 if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps):
                     continue
+                if within is not None and not any(within[0] <= data.count(b"\n", 0, s) + 1 <= within[1] for s, _, _ in ed.reps):
+                    continue  # --lines: one piece of the function at a time
                 key = (ed.kind, tuple(ed.reps))
                 if key in seen:
                     continue
@@ -1534,8 +1537,23 @@ def fn_lines(f):
     return sorted({r[3] for r in f.rows if r[0] and r[3]})
 
 
+def merge_edits(items, cap=12):
+    """From [(gain, Edit)], the edits with the largest gains whose text ranges neither overlap nor touch:
+    improvements in different places of a function mostly add up, so they can be taken together."""
+    taken, spans = [], []
+    for gain, ed in sorted(items, key=lambda x: -x[0]):
+        mine = [(a, b) for a, b, _ in ed.reps]
+        if any(not (b < c or d < a) for a, b in mine for c, d in spans):
+            continue
+        taken.append(ed)
+        spans += mine
+        if len(taken) >= cap:
+            break
+    return taken
+
+
 def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, log=print, data=None, sideways=3,
-           uphill=0, per_round=0, seed=0):
+           uphill=0, per_round=0, seed=0, within=None):
     """Beam search from the unit's source. Returns a dict: fn, base/best (pct, score), trace, kinds,
     text (bytes or None), lead (a below-100 % result that used a tier b rewrite), tried, secs, note.
     uphill > 0 also keeps candidates up to that much WORSE than their parent when a round finds too
@@ -1607,7 +1625,7 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
     for rnd in range(depth):
         pool = []
         for score, h, wtext, ftext, trace, used, lines in frontier:
-            eds = candidates(unit, wtext, f0.demangled, kinds, first_line, lines, called=called)
+            eds = candidates(unit, wtext, f0.demangled, kinds, first_line, lines, called=called, within=within)
             if eds is None:
                 continue
             for ed in eds:
@@ -1621,7 +1639,7 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
                 nf = ed.apply(ftext) if sliced else nw
                 if nf is None:
                     continue
-                pool.append((ed, nw, nf, trace, used, score, h))
+                pool.append((ed, nw, nf, trace, used, score, h, wtext, ftext))
         room = budget - res["tried"]
         if not pool or room <= 0:
             break
@@ -1632,7 +1650,8 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
         _, scores = scratch.farm(unit, [c[1] for c in pool], names, hashes=True)
         res["tried"] += len(pool)
         better, side, up, failed = [], [], [], 0
-        for (ed, nw, nf, trace, used, parent, ph), r in zip(pool, scores):
+        gains = {}
+        for (ed, nw, nf, trace, used, parent, ph, pw, pf), r in zip(pool, scores):
             if isinstance(r, Exception):
                 failed += 1
                 if verbose:
@@ -1646,10 +1665,41 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
             item = (s, h, nw, nf, trace + [ed.desc], used + [ed.kind], None)
             if s < parent:
                 better.append(item)
+                gains.setdefault(id(pw), (pw, pf, trace, used, parent, []))[5].append((parent - s, ed))
             elif s == parent and h != ph and h not in seen_code:
                 side.append(item)
             elif uphill and parent < s <= parent + uphill and h not in seen_code:
                 up.append(item)
+        # piecemeal: improvements in different places of the function, taken together
+        merged = []
+        for pw, pf, trace, used, parent, items in gains.values():
+            if len(items) < 2:
+                continue
+            taken = merge_edits(items)
+            for part in ([taken] if len(taken) < 4 else [taken, taken[:len(taken) // 2]]):
+                if len(part) < 2:
+                    continue
+                m = Edit("merge", "", [r for ed in part for r in ed.reps])
+                nw, nf = m.apply(pw), (m.apply(pf) if sliced else None)
+                if nw is None or (sliced and nf is None):
+                    continue
+                hh = hashlib.sha1(nw).digest()
+                if hh in seen_text:
+                    continue
+                seen_text.add(hh)
+                merged.append((nw, nf if sliced else nw, trace + [ed.desc for ed in part], used + [ed.kind for ed in part],
+                               min(parent - g for g, _ in items)))
+        if merged and budget - res["tried"] > 0:
+            _, ms = scratch.farm(unit, [c[0] for c in merged], names, hashes=True)
+            res["tried"] += len(merged)
+            for (nw, nf, trace, used, best_single), r in zip(merged, ms):
+                if isinstance(r, Exception) or r[0][0] < 0:
+                    continue
+                s, h = r[0]
+                if verbose:
+                    log(f"    merged {len(trace)} edits -> {s} (best single {best_single})")
+                if s < best_single:
+                    better.append((s, h, nw, nf, trace, used, None))
         better.sort(key=lambda x: (x[0], len(x[4])))
         uniq = []
         for it in better:
@@ -2000,6 +2050,7 @@ def main():
                     help="a long search for a stubborn function: depth 14, 20000 candidates, worse-by-a-little steps allowed")
     ap.add_argument("--uphill", type=int, default=0, help="keep candidates up to this much worse than their parent")
     ap.add_argument("--per-round", type=int, default=0, help="compile a random sample of this size per round")
+    ap.add_argument("--lines", metavar="A-B", help="rewrite only these source lines (one piece of a large function; tools/pieces.py)")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--partial", action="store_true", help="with --bulk --apply: also apply results below 100 %%")
     ap.add_argument("--apply-b", action="store_true", help="with --bulk --apply: also apply results that add or remove a local")
@@ -2040,7 +2091,12 @@ def main():
         return 0
     unit = scratch.Unit(a.unit)
     try:
-        r = search(unit, a.function, kinds, a.depth, a.beam, a.budget, a.verbose, uphill=a.uphill, per_round=a.per_round)
+        within = None
+        if a.lines:
+            lo, _, hi = a.lines.partition("-")
+            within = (int(lo), int(hi or lo))
+        r = search(unit, a.function, kinds, a.depth, a.beam, a.budget, a.verbose, uphill=a.uphill, per_round=a.per_round,
+                   within=within)
     except (KeyError, scratch.CompileError) as e:
         sys.exit(str(e))
     finally:

@@ -84,8 +84,8 @@ def row_score(kind, t, o):
             s += REG
         elif a.startswith("@") and b.startswith("@"):
             s += 0 if kind is None else 2  # a branch target moved: counted where the rows moved
-        elif "(" in a and "(" in b and a.split("(")[1] == b.split("(")[1] == "r1)":
-            s += STACK
+        elif "r1" in t[1] and "r1" in o[1] and a.lstrip("-").isdigit() and b.lstrip("-").isdigit():
+            s += STACK  # a displacement off the stack pointer
         else:
             s += IMM
     if t[2] != o[2] and kind:

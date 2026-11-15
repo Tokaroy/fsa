@@ -11,7 +11,8 @@ static const s32 lbl_804751A8[15] = {
     30, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 1, 1,
 };
 
-// FIXME: 99.58 %. The code matches; the four box literals (-92, -16, 92, 16)
+// FIXME: 99.69 %, reloc-name; behaviour clean.
+// The code matches; the four box literals (-92, -16, 92, 16)
 // and 1.0f are numbered in another order (@NNN vs lbl_, a data split).
 void IceMeltedByFourPlayers_804AE888::init() {
     mBox.set(-92.0f, -16.0f, 92.0f, 16.0f);
@@ -41,7 +42,8 @@ IceMeltedByFourPlayers_804AE888::~IceMeltedByFourPlayers_804AE888() {
     }
 }
 
-// FIXME: 97.98 %. Same shape; the box copy's adds are scheduled differently
+// FIXME: 97.93 %, missing/extra + reloc-name; behaviour clean.
+// Same shape; the box copy's adds are scheduled differently
 // (the original keeps f.x in f2 and reloads pos.y into it), case 1 stores the
 // 0 of field_0x24c from a register the original holds for its loop, the
 // request copy and the literals (@NNN vs lbl_) differ.
@@ -142,7 +144,8 @@ u8 IceMeltedByFourPlayers_804AE888::fn_80378880() {
     return playerMask == 0xF;
 }
 
-// FIXME: 99.80 %. regalloc only: the 0.0f compare is fcmpu with the operands
+// FIXME: 99.77 %, regalloc-only + reloc-name; behaviour clean.
+// regalloc only: the 0.0f compare is fcmpu with the operands
 // in the other registers (f0 and f1 swapped); the literal is @NNN vs lbl_.
 bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
     JGeometry::TBox2f ours;
@@ -183,7 +186,8 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
     return false;
 }
 
-// FIXME: 97.99 %. Same instructions except the register of the stage loop
+// FIXME: 97.99 %, missing/extra; behaviour clean.
+// Same instructions except the register of the stage loop
 // counter (r30 here, r29 in the original, which holds the 0x10000 constant
 // of the fn_80230FD0 call in r30) and the epilogue: the original returns 1
 // through several copies of li r3, 1.
@@ -230,9 +234,6 @@ u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
     return true;
 }
 
-// FIXME: 99.30 %. regalloc only: the original keeps the 0.0f in f0 and the
-// scale (field_0x238) in f1 for the matrix stores; ours swaps them (the
-// literals are @NNN vs lbl_, a data split).
 void IceMeltedByFourPlayers_804AE888::draw() {
     if (field_0x251 == 1) {
         return;
@@ -244,15 +245,16 @@ void IceMeltedByFourPlayers_804AE888::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x238;
+        f32 scale = field_0x238;
+        mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
         mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x238;
+        mtx[1][1] = scale;
         mtx[1][2] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x238;
+        mtx[2][2] = scale;
         params.mMtx = mtx;
     }
     void* res = fn_804032E8('TIMG', "yukikabe.bti");

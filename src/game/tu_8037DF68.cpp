@@ -197,18 +197,12 @@ void fn_8038D570() {
     lbl_8053AD78->field_0xe8 = 0;
 }
 
-// FIXME: 99.30 %, regalloc-only; behaviour clean.
-// Regalloc only: the manager pointer and the window index sit in r5 / r4
-// in the original, r4 / r5 here.
-// Draws the open windows in the order they were opened (field_0xfc), then the
-// text box when field_0xe4 is set.
 void fn_8038D4A8() {
     for (s32 i = 0; i < 4; i++) {
-        s32 index = lbl_8053AD78->field_0xfc[i];
-        if (index != -1) {
-            bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << index);
+        if (lbl_8053AD78->field_0xfc[i] != -1) {
+            bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << lbl_8053AD78->field_0xfc[i]);
             if (takesPart == true) {
-                lbl_8053AD78->mWindows[index]->fn_80390E68();
+                lbl_8053AD78->mWindows[lbl_8053AD78->field_0xfc[i]]->fn_80390E68();
             }
         }
     }
