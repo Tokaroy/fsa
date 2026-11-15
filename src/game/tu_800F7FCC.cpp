@@ -1451,9 +1451,7 @@ static inline bool stepAxis(f32& cur, f32 target, f32 step) {
     return false;
 }
 
-// FIXME: 99.21 %, missing/extra; behaviour near.
-// FIXME(shotgun): original sign-extends the final bool (extsb); ours does not.
-bool fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
+s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
     arrived = arrived + stepAxis(cur->y, target->y, step);
     arrived = arrived + stepAxis(cur->z, target->z, step);
