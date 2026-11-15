@@ -612,7 +612,7 @@ void cls_804A1630::update() {
     }
     case 5:
         field_0x308 = 32.0f;
-        if (fabs(field_0x308 - mPos.z) < 1.0f) {
+        if (std::fabsf(field_0x308 - mPos.z) < 1.0f) {
             field_0x27c.zero();
             if (mEmitter318[1] == NULL) {
                 mEmitter318[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x15D, 0, 0, NULL, NULL, true, 1.0f);
@@ -817,7 +817,7 @@ void cls_804A1630::update() {
                 addCalc2_801F71A4(&mPos.x, pos.x, 1.0f, 5.0f);
                 addCalc2_801F71A4(&mPos.y, pos.y, 1.0f, 5.0f);
                 addCalc2_801F71A4(&mPos.z, pos.z, 1.0f, 5.0f);
-                if (fabs(mPos.x - pos.x) < 2.0f && fabs(mPos.z - pos.z) < 1.0f) {
+                if (std::fabsf(mPos.x - pos.x) < 2.0f && std::fabsf(mPos.z - pos.z) < 1.0f) {
                     pos.set(target->mPos);
                     getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
                     for (s32 i = 0; i < 30; i++) {
@@ -1080,7 +1080,7 @@ void cls_804A1630::update() {
                 offset = -80.0f;
             }
             addCalc2_801F71A4(&mPos.x, field_0x288.x + offset, 1.0f, 10.0f);
-            if (fabs(mPos.x - (field_0x288.x + offset)) < 1.0f) {
+            if (std::fabsf(mPos.x - (field_0x288.x + offset)) < 1.0f) {
                 lbl_8053AB70 = field_0x250;
                 mState = 17;
             }
