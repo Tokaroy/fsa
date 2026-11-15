@@ -256,14 +256,14 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     JGeometry::TBox2f box(mBox);
     talkPos.y -= 64.0f;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     box = mBox2;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     switch (field_0x230) {
     case 0:
