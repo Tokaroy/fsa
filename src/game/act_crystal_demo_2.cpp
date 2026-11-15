@@ -605,15 +605,15 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// FIXME: 82.44 %, missing/extra + reloc-name; behaviour drift.
+// differs: rot zero-store order and .sdata2 literal pool order.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
             rot[i][j] = 0.0f;
         }
     }
@@ -631,18 +631,18 @@ void cls_804AE088::fn_8036AA60() {
         }
         break;
     case 1:
-        if (field_0x254 >= lbl_80474C98[1]) {
+        if (field_0x254 >= lbl_80474C98[field_0x244]) {
             field_0x244 = 2;
         }
+        break;
     }
+    s32 index = lbl_80474CC4[field_0x23c];
     s32 frame = field_0x254;
-    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[lbl_80474CC4[field_0x23c]];
+    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[index];
     if (crystal.mModel != NULL && crystal.mActive == 0) {
         crystal.mActive = 1;
-        crystal.mPos.x = 0.5f;
-        crystal.mPos.y = 0.5f;
-        crystal.mPos.z = 0.5f;
-        PSMTXCopy(mtx, crystal.mMtx);
+        crystal.mPos.set(0.5f, 0.5f, 0.5f);
+        JMath::gekko_ps_copy12(crystal.mMtx, mtx);
         crystal.field_0x48 = -1.0f;
         crystal.field_0x4c = frame;
         crystal.field_0x54 = 0;
