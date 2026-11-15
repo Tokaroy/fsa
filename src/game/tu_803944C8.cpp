@@ -896,7 +896,7 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20022: {
             u8 who = p[0];
-            u16 bit = *(const u16*)(p + 1);
+            s32 bit = *(const u16*)(p + 1);
             u8 set = p[3];
             if (who == 5) {
                 if (set != 0) {
@@ -945,7 +945,7 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20024: {
             u8 who = p[0];
-            u8 item = p[1];
+            s32 item = p[1];
             u8 table = p[2];
             switch (who) {
             case 1:
@@ -1478,7 +1478,7 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20022: {
             u8 who = p[0];
-            u16 bit = *(const u16*)(p + 1);
+            s32 bit = *(const u16*)(p + 1);
             u8 set = p[3];
             if (who == 5) {
                 if (set != 0) {
@@ -1527,7 +1527,7 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x20024: {
             u8 who = p[0];
-            u8 item = p[1];
+            s32 item = p[1];
             u8 table = p[2];
             switch (who) {
             case 1:
