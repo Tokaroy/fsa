@@ -50,7 +50,7 @@ void HardhatBeetle_804A06C0::update() {
             mHome.y = (f32)((s32)mHome.y & 0xFFF8);
             mHome.x += -16.0f * JMath::sincosTable_.sinShort(field_0x24c);
             mHome.y += -16.0f * JMath::sincosTable_.cosShort(field_0x24c);
-            u16 code = fn_8022461C(&mHome, field_0x4);
+            s32 code = fn_8022461C(&mHome, field_0x4);
             if ((code >= 2 && code <= 3) || code == 0xE) {
                 if (fn_802DE9A0() == true && code == 0xE) {
                     field_0x25c = 1;
@@ -83,7 +83,7 @@ void HardhatBeetle_804A06C0::update() {
         }
         fn_801F2618(NULL, false);
     }
-    for (u8 i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         if (field_0x234[i] > 0) {
             field_0x234[i]--;
         }
