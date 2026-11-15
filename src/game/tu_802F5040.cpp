@@ -850,7 +850,7 @@ void TileMap_804AA858::fn_802FCE74() {
                     field_0x190[i].field_0xc = h;
                     field_0x210[i] = 1;
                 } else if (!field_0x217[i]) {
-                    cls_804AA858Sub11CEntry* mark = &field_0x11c[i]->mEntries[lbl_80506DD8[i]];
+                    cls_804AA858Sub11CEntry* mark = &field_0x11c[i]->f.mEntries[lbl_80506DD8[i]];
                     s32 markX = (mark->mXLow | mark->mXHigh << 8) - 24;
                     s32 markY = mark->mY - 32;
                     markX = markX < 0 ? 0 : markX;
@@ -1176,12 +1176,12 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
     gGameRoot2_8053AB10->fn_8013B414(&box, false);
     GXSetViewport(rect2->field_0x0, rect2->field_0x4, rect2->field_0x8, rect2->field_0xc, 0.0f, 1.0f);
     GXSetScissor(rect2->field_0x0, rect2->field_0x4, rect2->field_0x8, rect2->field_0xc);
-    s32 scrollX = record->mEntries[0].mScroll << 5 | record->mEntries[0].mScrollBit << 4 | record->mEntries[1].mScroll;
-    s32 scrollY = record->mEntries[2].mScroll << 5 | record->mEntries[2].mScrollBit << 4 | record->mEntries[3].mScroll;
+    s32 scrollX = record->f.mEntries[0].mScroll << 5 | record->f.mEntries[0].mScrollBit << 4 | record->f.mEntries[1].mScroll;
+    s32 scrollY = record->f.mEntries[2].mScroll << 5 | record->f.mEntries[2].mScrollBit << 4 | record->f.mEntries[3].mScroll;
     s32* offsets = NULL;
     cls_804AA8D8* shifts = fn_8022BCD4(player);
     if (flag) {
-        bool first = ((record->mValid - 1) & 7) == 0 || field_0x134[player] != 0;
+        bool first = ((record->f.mValid - 1) & 7) == 0 || field_0x134[player] != 0;
         u16 c = field_0x114[first ? 1 : 2];
         gGameRoot2_8053AB10->fn_8013B3F0();
         JGeometry::TBox2f fill(rect->field_0x0, rect->field_0x4, rect->field_0x0 + rect->field_0x8,
@@ -1189,19 +1189,19 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
         JUtility::TColor color((c & 0x7C00) >> 7 | (c & 0x7C00) >> 12, (c & 0x3E0) >> 2 | (c & 0x3E0) >> 7,
                                (c & 0x1F) << 3 | (c & 0x1F) >> 2, 0xFF);
         fn_8013B004(&fill, &color);
-        if (record->mEntries[3].mScrollBit) {
+        if (record->f.mEntries[3].mScrollBit) {
             if (!(isGameMode(GAME_MODE_B) || gGameRoot_8053AAF8->field_0x88 != 0) ||
                 (u8)(lbl_8053AEC8 != NULL ? lbl_8053AEC8->field_0x5c : 0) < 0xFF) {
                 u8 mode = 6;
-                if (record->mValid <= 1 || field_0x134[player] != 0) {
+                if (record->f.mValid <= 1 || field_0x134[player] != 0) {
                     mode = 5;
-                } else if (record->mMode == 3) {
-                    mode = record->field_0x4.mOdd.mOffsetMode;
+                } else if (record->f.mMode == 3) {
+                    mode = record->f.field_0x4.mOdd.mOffsetMode;
                 }
                 if (shifts != NULL) {
-                    offsets = shifts->fn_8030B1E8(record->mValid, mode, scrollY);
+                    offsets = shifts->fn_8030B1E8(record->f.mValid, mode, scrollY);
                 }
-                fn_802FAC10(record->mValid - 1, scrollX, scrollY, field_0x134[player], 0xFF, 0xFF, offsets);
+                fn_802FAC10(record->f.mValid - 1, scrollX, scrollY, field_0x134[player], 0xFF, 0xFF, offsets);
             }
         }
     } else {
@@ -1234,15 +1234,15 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
     fn_8030275C(record, player, flag, field_0x134[player] != 0);
     if (flag) {
         gGameRoot2_8053AB10->fn_8013B3F0();
-        if (record->mEntries[3].mScrollBit) {
+        if (record->f.mEntries[3].mScrollBit) {
             if (!(isGameMode(GAME_MODE_B) || gGameRoot_8053AAF8->field_0x88 != 0) ||
                 (u8)(lbl_8053AEC8 != NULL ? lbl_8053AEC8->field_0x5c : 0) < 0xFF) {
                 if (field_0x130[player] == 1) {
-                    fn_802FAC10(record->mValid + 7, scrollX, scrollY, field_0x134[player], 0x80, 0xFF, offsets);
+                    fn_802FAC10(record->f.mValid + 7, scrollX, scrollY, field_0x134[player], 0x80, 0xFF, offsets);
                 } else if (field_0x130[player] == 2) {
-                    fn_802FAC10(record->mValid + 7, scrollX, scrollY, field_0x134[player], 0, 0xC0, offsets);
+                    fn_802FAC10(record->f.mValid + 7, scrollX, scrollY, field_0x134[player], 0, 0xC0, offsets);
                 } else {
-                    fn_802FAC10(record->mValid + 7, scrollX, scrollY, field_0x134[player], 0xFF, 0xFF, offsets);
+                    fn_802FAC10(record->f.mValid + 7, scrollX, scrollY, field_0x134[player], 0xFF, 0xFF, offsets);
                 }
             }
         }
@@ -1313,9 +1313,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
 // field_0x18[2], tinted grey / alpha unless both are 0xFF. With offsets, each
 // 8-line row is shifted by the average of its screen lines' offsets, wrapped by
 // 512 when the whole row is off one side.
-// Still differs: ours hoists 8.0f + py out of the corner loops (one more FPR, f29),
-// the shift loop's line index is not one induction variable, count-loop scheduling.
-// FIXME: 92.87 %, missing/extra; behaviour drift.
+// Register allocation only (r28-r31 cycle on x, grid, palette, offsets) and prologue mr order for y.
 void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets) {
     static const GXTlut lbl_8046FA30[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
@@ -1343,8 +1341,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
         GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_TEXA, GX_CA_A0, GX_CA_KONST, GX_CA_ZERO);
         GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_COMP_A8_GT, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     } else {
-        GXColor color = {grey, grey, grey, alpha};
-        GXSetTevColor(GX_TEVREG0, color);
+        GXSetTevColor(GX_TEVREG0, (GXColor){grey, grey, grey, alpha});
         GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
         GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
         GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
@@ -1378,21 +1375,23 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
     }
     for (int by = 0; by < 2; by++) {
         for (int bx = 0; bx < 2; bx++) {
-            s32 block = by * 2 + bx;
+            int block = by * 2 + bx;
             for (int ty = 0; ty < 16; ty++) {
-                s32 dy = (by * 32 + ty * 2) * 8 - y;
+                int dy = (by * 32 + ty * 2) * 8 - y;
                 if (dy <= -16 || dy >= 0xA0) {
                     continue;
                 }
                 for (int tx = 0; tx < 16; tx++) {
-                    s32 dx = (bx * 32 + tx * 2) * 8 - x;
+                    int dx = (bx * 32 + tx * 2) * 8 - x;
                     if (offsets == NULL && (dx <= -16 || dx >= 0xF0)) {
                         continue;
                     }
                     u16 tile = grid[(block * 16 + ty) * 16 + tx];
                     if (tile != 0) {
-                        for (int k = 0; k < 4; k++) {
-                            counts[(field_0x24[tile * 4 + k] >> 12) & 0xF]++;
+                        for (int j = 0; j < 2; j++) {
+                            for (int i = 0; i < 2; i++) {
+                                counts[(field_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
+                            }
                         }
                     }
                 }
@@ -1410,9 +1409,9 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
         GXBegin(GX_QUADS, GX_VTXFMT0, counts[palette] * 4);
         for (int by = 0; by < 2; by++) {
             for (int bx = 0; bx < 2; bx++) {
-                s32 block = by * 2 + bx;
+                int block = by * 2 + bx;
                 for (int ty = 0; ty < 16; ty++) {
-                    s32 dy = (by * 32 + ty * 2) * 8 - y;
+                    int dy = (by * 32 + ty * 2) * 8 - y;
                     if (dy <= -16 || dy >= 0xA0) {
                         continue;
                     }
@@ -1421,8 +1420,8 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                         for (int j = 0; j < 3; j++) {
                             shifts[j] = 0.0f;
                             for (int k = 0; k < 8; k++) {
-                                s32 line = dy + j * 8 + k;
-                                s32 clamped;
+                                int line = dy + j * 8 + k;
+                                int clamped;
                                 if (line < 0) {
                                     clamped = 0;
                                 } else if (line > 0x9F) {
@@ -1447,7 +1446,6 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                                 px -= 512.0f;
                             }
                             for (int j = 0; j < 2; j++) {
-                                f32 py = originY + (by * 32 + ty * 2 + j) * 8;
                                 for (int i = 0; i < 2; i++) {
                                     u16 entry = field_0x24[tile * 4 + j * 2 + i];
                                     if (((entry >> 12) & 0xF) != palette) {
@@ -1455,6 +1453,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                                     }
                                     u16 corner = entry & 0xFFF;
                                     f32 left = px + i * 8;
+                                    f32 py = originY + (by * 32 + ty * 2 + j) * 8;
                                     GXPosition3f32(left + shifts[j], py, 0.0f);
                                     GXTexCoord1x16(corner);
                                     GXPosition3f32(8.0f + left + shifts[j], py, 0.0f);
@@ -1468,7 +1467,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                         }
                     } else {
                         for (int tx = 0; tx < 16; tx++) {
-                            s32 dx = (bx * 32 + tx * 2) * 8 - x;
+                            int dx = (bx * 32 + tx * 2) * 8 - x;
                             if (dx <= -16 || dx >= 0xF0) {
                                 continue;
                             }
@@ -1477,7 +1476,6 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                                 continue;
                             }
                             for (int j = 0; j < 2; j++) {
-                                f32 py = originY + (by * 32 + ty * 2 + j) * 8;
                                 for (int i = 0; i < 2; i++) {
                                     u16 entry = field_0x24[tile * 4 + j * 2 + i];
                                     if (((entry >> 12) & 0xF) != palette) {
@@ -1485,6 +1483,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                                     }
                                     u16 corner = entry & 0xFFF;
                                     f32 left = originX + (bx * 32 + tx * 2 + i) * 8;
+                                    f32 py = originY + (by * 32 + ty * 2 + j) * 8;
                                     GXPosition3f32(left, py, 0.0f);
                                     GXTexCoord1x16(corner);
                                     GXPosition3f32(8.0f + left, py, 0.0f);
@@ -2738,18 +2737,13 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
     }
 }
 
-// FIXME: 89.91 %, missing/extra + reloc-name; behaviour drift.
-// The quad loop: the original converts the tile's pixel x / y
-// ((x * 2 + i) * 8, (y * 2 + j) * 8) to float twice each inside the innermost
-// loop and computes the second texture coordinates as px * (1 / 128) + 0.0f
-// (fmadds with the pool's 0.0f); ours hoists the y conversion out of the i loop,
-// converts once and folds the + 0.0f (fmuls). The count loop's registers differ.
 // Draws the 16 x 16 block map res (little-endian u16 block numbers, 0 empty)
 // at pos: block n is the 2 x 2 tiles field_0x24[n * 4 ...] (GBA BG entries:
 // tile column / row of field_0x4[0], flips, palette), drawn one palette at a
 // time (field_0x18[0]) as 8 x 8 quads; with field_0xe450 a second TEV stage
 // multiplies in the player's field_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
+// FIXME: s0 / t0 fold + 0.0f into fmuls (original keeps fmadds with 0.0f, using f30 too); literals @NNN.
 void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
@@ -2810,8 +2804,10 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
             s32 index = y * 16 + x;
             u16 block = data[index * 2] | data[index * 2 + 1] << 8;
             if (block != 0) {
-                for (int k = 0; k < 4; k++) {
-                    counts[(field_0x24[block * 4 + k] >> 12) & 0xF]++;
+                for (int j = 0; j < 2; j++) {
+                    for (int i = 0; i < 2; i++) {
+                        counts[(field_0x24[block * 4 + j * 2 + i] >> 12) & 0xF]++;
+                    }
                 }
             }
         }
@@ -2835,14 +2831,17 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
                             if (((tile >> 12) & 0xF) != palette) {
                                 continue;
                             }
+                            f32 x0 = (x * 2 + i) * 8;
+                            f32 y0 = (y * 2 + j) * 8;
+                            f32 z0 = out.z;
+                            x0 += out.x;
+                            y0 += out.y;
                             f32 u0 = (8.0f * (tile & 0xF) + 0.501f) / 128.0f;
                             f32 v0 = (8.0f * ((tile >> 4) & 0x3F) + 0.501f) / 512.0f;
                             f32 s0 = ((x * 2 + i) * 8) / 128.0f + 0.0f;
                             f32 t0 = ((y * 2 + j) * 8) / 128.0f + 0.0f;
                             f32 s1 = 0.0625f + s0;
                             f32 t1 = 0.0625f + t0;
-                            f32 x0 = (x * 2 + i) * 8 + out.x;
-                            f32 y0 = (y * 2 + j) * 8 + out.y;
                             f32 u1;
                             if (tile & 0x400) {
                                 u1 = u0;
@@ -2857,16 +2856,16 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
                             } else {
                                 v1 = 0.013632813f + v0;
                             }
-                            GXPosition3f32(x0, y0, out.z);
+                            GXPosition3f32(x0, y0, z0);
                             GXTexCoord2f32(u0, v0);
                             GXTexCoord2f32(s0, t0);
-                            GXPosition3f32(8.0f + x0, y0, out.z);
+                            GXPosition3f32(8.0f + x0, y0, z0);
                             GXTexCoord2f32(u1, v0);
                             GXTexCoord2f32(s1, t0);
-                            GXPosition3f32(8.0f + x0, 8.0f + y0, out.z);
+                            GXPosition3f32(8.0f + x0, 8.0f + y0, z0);
                             GXTexCoord2f32(u1, v1);
                             GXTexCoord2f32(s1, t1);
-                            GXPosition3f32(x0, 8.0f + y0, out.z);
+                            GXPosition3f32(x0, 8.0f + y0, z0);
                             GXTexCoord2f32(u0, v1);
                             GXTexCoord2f32(s0, t1);
                         }
@@ -3228,21 +3227,21 @@ void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_80
 // with a 13-iteration double-word loop; ours unrolls a word copy. Registers also
 // differ (record and slot in r24 / r23, original r23 / r26).
 void TileMap_804AA858::fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record) {
-    if (record->mValid == 0) {
+    if (record->f.mValid == 0) {
         return;
     }
-    if (record->mKind == 5 || record->mKind == 14) {
+    if (record->f.mKind == 5 || record->f.mKind == 14) {
         *field_0x11c[slot] = *record;
-        if (record->mMode == 2) {
-            field_0x134[slot] = record->field_0x4.mOdd.field_0x5_7;
-        } else if (record->mMode == 3) {
-            field_0x130[slot] = record->field_0x4.mOdd.field_0x4_5;
+        if (record->f.mMode == 2) {
+            field_0x134[slot] = record->f.field_0x4.mOdd.field_0x5_7;
+        } else if (record->f.mMode == 3) {
+            field_0x130[slot] = record->f.field_0x4.mOdd.field_0x4_5;
         }
-        if (record->mMode & 1) {
-            for (s32 i = 0; i < 4; i++) {
-                lbl_80506DA8[slot][i] = (record->field_0x4.mOdd.field_0x6 >> (i * 2)) & 3;
-                lbl_80506DB8[slot][i] = (record->field_0x4.mOdd.field_0x7_4 >> i) & 1;
-                lbl_80506DC8[slot][i] = (record->field_0x4.mOdd.field_0x7_0 >> i) & 1;
+        if (record->f.mMode & 1) {
+            for (int i = 0; i < 4; i++) {
+                lbl_80506DA8[slot][i] = (record->f.field_0x4.mOdd.field_0x6 >> (i * 2)) & 3;
+                lbl_80506DB8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_4 >> i) & 1;
+                lbl_80506DC8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_0 >> i) & 1;
                 lbl_80506DD8[slot] = fn_8022EA0C(slot);
             }
         }
