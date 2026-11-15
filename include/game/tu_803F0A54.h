@@ -37,6 +37,9 @@ public:
     // state and field_0x1c4 to the new one).
     void fn_803F1C18(); // 12
     void fn_803F1C5C(); // 11
+    // Not in the binary (inlined into their callers).
+    void enterState13();
+    void drawFade();
     void fn_803F1C70(); // 10
     void fn_803F2580(); // 9
     void fn_803F2660(); // 8

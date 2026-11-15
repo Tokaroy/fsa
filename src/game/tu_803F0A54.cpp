@@ -267,20 +267,6 @@ static inline void setEntries(ConnectScreen_804B0F10* self) {
     }
 }
 
-static inline void enterState13(ConnectScreen_804B0F10* self) {
-    self->field_0x1c8 = self->field_0x1c4;
-    self->field_0x1c4 = 13;
-    self->field_0x350 = 6;
-    lbl_80529DEC.field_0x23e[0] = 0;
-    if (self->field_0x1ac == 1 && lbl_80529DEC.field_0x64 == -1) {
-        s32 r = 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        if (r >= 3) {
-            r = 2;
-        }
-        lbl_80529DEC.field_0x64 = r;
-    }
-}
-
 // The menu cursor's blink counters, stepped at the start of a menu state.
 static inline void stepBlink(ConnectScreen_804B0F10* self) {
     if (self->field_0x240[0] != 0) {
@@ -741,10 +727,6 @@ void ConnectScreen_804B0F10::fn_803FC5E4(u8 flag) {
     field_0x350 = 4;
 }
 
-// FIXME: 99.89 %, reloc-name; behaviour clean.
-// Instructions identical; only the .sdata2 literals differ (@NNN vs
-// lbl_805437xx): the literal pool follows first use, and the unwritten
-// functions before this one (fn_803F1C70 on) use the earlier literals.
 void ConnectScreen_804B0F10::fn_803FC46C() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x14->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -753,30 +735,7 @@ void ConnectScreen_804B0F10::fn_803FC46C() {
     } else {
         (this->*lbl_804B0E4C[field_0x1c8])();
     }
-    if (field_0x25e != 0) {
-        switch (field_0x25e) {
-        case 1:
-            if (field_0x25d >= 245) {
-                field_0x25d = 255;
-                field_0x25e = 2;
-                (this->*lbl_804B0BDC[field_0x1cc])();
-            } else {
-                field_0x25d += 10;
-            }
-            break;
-        case 2:
-            if (field_0x25d <= 10) {
-                field_0x25d = 0;
-                field_0x25e = 0;
-            } else {
-                field_0x25d -= 10;
-            }
-            break;
-        }
-        gGameRoot2_8053AB10->fn_8013B490();
-        field_0x5c->setAlpha(field_0x25d);
-        field_0x5c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
-    }
+    drawFade();
 }
 
 void ConnectScreen_804B0F10::fn_803FC304() {
@@ -1055,7 +1014,7 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
     if (field_0x240[0] >= 28) {
         if (field_0x1cc == 13) {
             if (field_0x1c0 == field_0x1ac + 2) {
-                enterState13(this);
+                enterState13();
             } else {
                 fn_803F2B78();
             }
@@ -1298,7 +1257,7 @@ void ConnectScreen_804B0F10::fn_803F943C() {
     if (field_0x240[0] >= 23) {
         setEntries(this);
         if (field_0x1c0 == field_0x1ac + 2) {
-            enterState13(this);
+            enterState13();
         } else {
             fn_803F2B78();
         }
@@ -1730,9 +1689,9 @@ void ConnectScreen_804B0F10::fn_803F726C() {
     }
     if (field_0x240[0] >= 48) {
         if (field_0x1cc == 0) {
-            enterState13(this);
+            enterState13();
         } else if (field_0x1a8 == 0) {
-            enterState13(this);
+            enterState13();
         } else if (field_0x1a8 == 1) {
             if (field_0x25e == 0) {
                 field_0x1cc = 10;
@@ -2650,6 +2609,55 @@ void ConnectScreen_804B0F10::fn_803F1C70() {
     field_0x24c = 0;
     field_0x1c8 = field_0x1c4;
     field_0x1c4 = 10;
+}
+
+// From here to fn_803F1C5C: plain functions that their callers inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals (3.0f, then 800.0f and 640.0f) ahead
+// of fn_803F1C70's, in the order of these functions from the bottom of the file up, so they were
+// generated before it (tools/pool.py).
+// fn_803FC46C's fade overlay: steps the alpha (field_0x25d) up, runs the screen change at full
+// black, steps it down again, and draws field_0x5c over the screen.
+void ConnectScreen_804B0F10::drawFade() {
+    if (field_0x25e != 0) {
+        switch (field_0x25e) {
+        case 1:
+            if (field_0x25d >= 245) {
+                field_0x25d = 255;
+                field_0x25e = 2;
+                (this->*lbl_804B0BDC[field_0x1cc])();
+            } else {
+                field_0x25d += 10;
+            }
+            break;
+        case 2:
+            if (field_0x25d <= 10) {
+                field_0x25d = 0;
+                field_0x25e = 0;
+            } else {
+                field_0x25d -= 10;
+            }
+            break;
+        }
+        gGameRoot2_8053AB10->fn_8013B490();
+        field_0x5c->setAlpha(field_0x25d);
+        field_0x5c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
+    }
+}
+
+// Enters state 13 like fn_803F1C5C and fn_803F1C18 below enter 11 and 12; when field_0x1ac is 1 it also
+// draws lbl_80529DEC.field_0x64 (0 to 2) at random when it is unset.
+void ConnectScreen_804B0F10::enterState13() {
+    field_0x1c8 = field_0x1c4;
+    field_0x1c4 = 13;
+    field_0x350 = 6;
+    lbl_80529DEC.field_0x23e[0] = 0;
+    if (field_0x1ac == 1 && lbl_80529DEC.field_0x64 == -1) {
+        s32 r = 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        if (r >= 3) {
+            r = 2;
+        }
+        lbl_80529DEC.field_0x64 = r;
+    }
 }
 
 void ConnectScreen_804B0F10::fn_803F1C5C() {
