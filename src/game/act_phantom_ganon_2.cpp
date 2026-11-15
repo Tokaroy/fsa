@@ -1091,7 +1091,7 @@ void PhantomGanon2_804A1A98::update() {
                         }
                         spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A1A00[field_0x94 * 2], 1, 2, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A1A00[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
-                        u16 baseAngle = (u16)fn_8015465C(250.0f - mPos.x, 200.0f - mPos.y) + 0xD000;
+                        s32 baseAngle = (u16)fn_8015465C(250.0f - mPos.x, 200.0f - mPos.y) + 0xD000;
                         fn_801546BC(&vec54);
                         for (s32 i = 0; i < 7; i++) {
                             s32 sparkSer = fn_80154310('FGN2', fn_8015461C(), &mPos, 12, -1, -1);
