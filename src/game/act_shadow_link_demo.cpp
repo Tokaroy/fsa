@@ -448,11 +448,10 @@ void cls_8049DB90::fn_8011B878(s32 index) {
     field_0x238 = index;
 }
 
-// Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
 // Not in the binary: fn_8011B878 and update inline these two, and the pool has their literals
 // between fn_8011B3F0's and fn_8011B878's.
 
-// Effect 0x33B, 8 above mPos.
+// Effect 0x33B at mPos with y offset by -8.
 void cls_8049DB90::spawnFlash() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -8.0f;
@@ -469,6 +468,7 @@ void cls_8049DB90::hopDown() {
     }
 }
 
+// Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
 static inline void setCameraBox(cls_8049DB90* self) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x7f5 == 0) {

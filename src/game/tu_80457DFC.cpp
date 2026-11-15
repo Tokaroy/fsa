@@ -142,7 +142,7 @@ inline void AudioMgr_8045A080::startSecondSeq_80458F04(u32 id) {
 }
 
 // 0x8045A338 / 0x8045A3D8
-// FIXME(shotgun): 99.25 %, missing/extra (mixChannelOut; ~cls_804B2074 is 100 %)
+// FIXME(shotgun): 99.16 %, missing/extra + reloc-name (mixChannelOut; ~cls_804B2074 is 100 %)
 class cls_804B2074 : public JAUDopplerAudience<4> {
 public:
     cls_804B2074() {}
@@ -365,12 +365,8 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
     fn_80458744(0);
 }
 
-// A plain function that fn_80459674 inlines and whose own copy the linker dropped; it stands where
-// the original's .sdata2 order puts it (tools/pool.py), see its definition.
-f32 duckedBgmVolume();
-
 // 0x80459674
-// FIXME(shotgun): 98.21 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.19 %, missing/extra + reloc-name; behaviour drift.
 void AudioMgr_8045A080::fn_80459674() {
     if (field_0x6b != 0) {
         field_0x6b--;
@@ -403,7 +399,7 @@ void AudioMgr_8045A080::fn_80459674() {
                 field_0x54 = 1.0f;
                 break;
             default:
-                field_0x54 = duckedBgmVolume();
+                field_0x54 = 0.7f;
                 break;
             }
         } else {
@@ -652,7 +648,7 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 }
 
 // 0x80458880
-// FIXME: 99.72 %, missing/extra; behaviour near.
+// FIXME: 99.66 %, missing/extra + reloc-name; behaviour near.
 // One instruction short in the inlined getPlayerPan: for 1 or
 // 5+ players the original reloads 0.5f (lfs) before the movePan call; ours
 // keeps the 0.5f already in f1 (b only). Returns, an uninitialised pan and a
@@ -904,6 +900,9 @@ void AudioMgr_8045A080::fn_80458408(s32 id, bool flag) {
 }
 
 // 0x8045815C
+// FIXME: 99.97 %, reloc-name; behaviour clean.
+// only: 0.5f (movePitch) is lbl_80543EC4, pooled after
+// 0.7f, which only the unwritten fn_80459674 uses.
 void AudioMgr_8045A080::fn_8045815C(bool flag) {
     field_0x8b = flag;
     if (!field_0x80 && !field_0x84) {
@@ -958,14 +957,6 @@ void AudioMgr_8045A080::fn_8045815C(bool flag) {
         }
         field_0x8b = flag;
     }
-}
-
-// A plain function that fn_80459674 inlines and whose own copy the linker dropped: the original's
-// .sdata2 has 0.7f ahead of the literals of the functions above, so it was generated here
-// (tools/pool.py). The volume factor of a background sequence, other than the six fn_80459674
-// lists, while field_0x8b is set.
-f32 duckedBgmVolume() {
-    return 0.7f;
 }
 
 // 0x804580DC
