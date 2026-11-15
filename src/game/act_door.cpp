@@ -280,8 +280,12 @@ void Door_804A8D88::update() {
             break;
         }
         case 1: {
-            const u16* t = tiles.mWidth2[field_0x234][field_0x238];
-            gBgRewrite_8053AC98->fn_8029DD50(field_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3]);
+            gBgRewrite_8053AC98->fn_8029DD50(
+                field_0x4, cell, (field_0x238 >> 1) & 1,
+                tiles.mWidth2[field_0x234][field_0x238][0],
+                tiles.mWidth2[field_0x234][field_0x238][1],
+                tiles.mWidth2[field_0x234][field_0x238][2],
+                tiles.mWidth2[field_0x234][field_0x238][3]);
             if (field_0x234 == 0 && field_0x230 == 3) {
                 if (field_0x238 == 0) {
                     spawnEmitter_8013CC50(field_0x4, &JGeometry::TVec3f(32.0f + field_0x258.x, 16.0f + field_0x258.y, 0.0f), 0x43F, 0, 0, NULL, NULL, true, 1.0f);
@@ -296,8 +300,12 @@ void Door_804A8D88::update() {
             if (field_0x234 == 2) {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
                 s32 cell2 = fn_80226BC4(&pos2, field_0x4);
-                const u16* t2 = tiles.mLayer2Width2[field_0x238];
-                gBgRewrite_8053AC98->fn_8029DD50(field_0x4 + upper, cell2, (field_0x238 >> 1) & 1, t2[0], t2[1], t2[2], t2[3]);
+                gBgRewrite_8053AC98->fn_8029DD50(
+                    field_0x4 + upper, cell2, (field_0x238 >> 1) & 1,
+                    tiles.mLayer2Width2[field_0x238][0],
+                    tiles.mLayer2Width2[field_0x238][1],
+                    tiles.mLayer2Width2[field_0x238][2],
+                    tiles.mLayer2Width2[field_0x238][3]);
             }
             break;
         }
@@ -524,8 +532,12 @@ void Door_804A8D88::update() {
             break;
         }
         case 1: {
-            const u16* t = tiles.mOpenWidth2[field_0x238];
-            gBgRewrite_8053AC98->fn_8029DD50(field_0x4, cell, (field_0x238 >> 1) & 1, t[0], t[1], t[2], t[3]);
+            gBgRewrite_8053AC98->fn_8029DD50(
+                field_0x4, cell, (field_0x238 >> 1) & 1,
+                tiles.mOpenWidth2[field_0x238][0],
+                tiles.mOpenWidth2[field_0x238][1],
+                tiles.mOpenWidth2[field_0x238][2],
+                tiles.mOpenWidth2[field_0x238][3]);
             if (field_0x234 != 0) {
                 break;
             }
