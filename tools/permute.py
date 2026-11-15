@@ -52,8 +52,11 @@ whether it reads naturally; a new local needs a real name):
   cast      an explicit cast removed
   loopform  a for loop written as a while loop
   retvar    a returned expression held in a local first
-  outline   a loop that touches only `this` and globals, moved into a small inline helper (its counter is
-            then created at inlining and coloured before the optimiser's loop temporaries)
+  outline   a loop moved into a small inline helper; what it reads of the function's locals becomes the
+            helper's parameters (its counter is then created at inlining and coloured before the
+            optimiser's loop temporaries)
+  outblock  the same for an `if`, a switch or a braced block that declares locals
+  outrun    the same for a run of statements: a declaration up to the last statement that uses it
   nest      a member read kept in a local, read through a small inline with a local of its own (changes
             when MWCC creates the value, so in which order it is coloured: docs/REGALLOC.md)
 
@@ -66,6 +69,11 @@ function of the unit. A callee can match on its own while its inlined copies do 
 declaration in Player's fn_80248970 made five of its callers match. Such a result is kept when
 more functions match, none that matched breaks and no data section gets worse; functions that
 were open may move either way.
+
+--shared looks for a loop or block that one file writes out several times, word for word, puts it
+into ONE inline helper and scores the unit the same way (all its copies, or only those in functions
+that are still open). In the original such a statement was an inline function: FileSelect's three
+pane loops, written out 40 times, only got the original's registers as helpers.
 
 Exit status 0 when an improvement was found, 1 when not. --apply writes the result into the source
 (otherwise the diff is printed and saved under build/permute/). A result below 100 % that used a
@@ -119,10 +127,11 @@ TYPE_FAMILY = {b"s32": INT_TYPES, b"u32": INT_TYPES, b"s16": INT_TYPES, b"u16": 
                b"f32": FLOAT_TYPES, b"f64": FLOAT_TYPES, b"float": FLOAT_TYPES, b"double": FLOAT_TYPES}
 TIER = {"decl": "a", "commute": "a", "scope": "a", "compound": "a", "if": "a", "boolret": "a", "andif": "a", "early": "a",
         "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a",
-        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b", "outline": "b"}
+        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b", "outline": "b", "outblock": "b", "outrun": "b"}
 # results a person or a session has to finish before they go into the source: a local that needs a
 # real name, or a value written out twice that was probably a macro or an inline in the original
-NEEDS_HAND = {"temp", "inline", "retvar", "nest", "outline"}
+NEEDS_HAND = {"temp", "inline", "retvar", "nest", "outline", "outblock", "outrun"}
+ABOVE_FN = ("nest", "outline", "outblock", "outrun")  # kinds that also write a helper above the function
 KINDS_A = [k for k, t in TIER.items() if t == "a"]
 KINDS_B = [k for k, t in TIER.items() if t == "b"]
 _INDEX = None
@@ -1456,69 +1465,222 @@ def gen_nest(c):
                    reps, n.extent.start.line)
 
 
-def gen_outline(c):
-    """A loop that touches nothing but `this` and globals, moved into a small inline helper written
-    above the function. A loop counter declared in the function is a named local and is coloured
-    after the temporaries the optimiser makes for the loop (a strength-reduced table pointer); the
-    counter of an inlined helper is created at inlining, before those, and is coloured first
-    (docs/REGALLOC.md). In the original such loops were inline member functions."""
-    p, d = c.p, c.data
-    fn = c.fn
-    cls = fn.semantic_parent
-    if cls is None or cls.kind not in (K.CLASS_DECL, K.STRUCT_DECL) or not cls.spelling:
-        return
+def helper_top(c):
+    """Where a helper of c.fn is written: above the function and the comment block that belongs to it."""
+    d, fn = c.data, c.fn
     top = d.rfind(b"\n", 0, ext(fn)[0]) + 1
     if d[top:ext(fn)[0]].strip():
-        return
+        return None
     while top > 0:
         prev = d.rfind(b"\n", 0, top - 1) + 1
         if not d[prev:top].lstrip().startswith(b"//"):
             break
         top = prev
+    return top
+
+
+def by_reference(c, use):
+    """Is this use of a local handed to something that could change it through a reference?"""
+    n, par = use, c.parent.get(use.hash)
+    while par is not None and par.kind in (K.UNEXPOSED_EXPR, K.PAREN_EXPR):
+        n, par = par, c.parent.get(par.hash)
+    if par is None:
+        return False
+    if par.kind == K.VAR_DECL:
+        t = par.type
+        return t.kind == TK.LVALUEREFERENCE and not t.get_pointee().is_const_qualified()
+    if par.kind != K.CALL_EXPR:
+        return False
+    args = list(par.get_arguments())
+    idx = next((i for i, x in enumerate(args) if ext(x)[0] <= ext(n)[0] and ext(n)[1] <= ext(x)[1]), None)
+    if idx is None:
+        return False  # the object of a member call (a record goes to the helper by reference anyway)
+    decl = par.referenced
+    if decl is None:
+        return True
+    params = list(decl.get_arguments())
+    if idx >= len(params):
+        return False
+    t = params[idx].type
+    return t.kind == TK.LVALUEREFERENCE and not t.get_pointee().is_const_qualified()
+
+
+def outline_site(c, run, top, need_local=False):
+    """One statement, or a run of consecutive statements of one block, as an inline helper: a dict
+    (span, ind, params, args, body, top, line, end, outer), or None when it cannot move as it stands."""
+    p, d, fn = c.p, c.data, c.fn
+    if not all(good(p, n) for n in run):
+        return None
+    s, e = ext(run[0])[0], semi_end(d, ext(run[-1])[1])
+    span = line_span(d, s, e)
+    if span is None:
+        return None
+    inner = [x for n in run for x in walk(n)]
+    if any(x.kind in (K.RETURN_STMT, K.GOTO_STMT, K.LABEL_STMT, K.CXX_TRY_STMT, K.CASE_STMT, K.DEFAULT_STMT) and
+           not any(y.kind == K.SWITCH_STMT and ext(y)[0] <= ext(x)[0] and ext(x)[1] <= ext(y)[1] for y in inner)
+           for x in inner if x.kind in (K.CASE_STMT, K.DEFAULT_STMT)):
+        return None
+    if any(x.kind in (K.RETURN_STMT, K.GOTO_STMT, K.LABEL_STMT, K.CXX_TRY_STMT) for x in inner):
+        return None
+    if need_local and not any(x.kind == K.VAR_DECL for x in inner):
+        return None
+
+    def leaves(x, loop, sw):
+        """a break or continue that belongs to a statement outside the run"""
+        if x.kind == K.BREAK_STMT and not (loop or sw):
+            return True
+        if x.kind == K.CONTINUE_STMT and not loop:
+            return True
+        lp = loop or x.kind in (K.FOR_STMT, K.WHILE_STMT, K.DO_STMT)
+        return any(leaves(k, lp, sw or x.kind == K.SWITCH_STMT) for k in x.get_children())
+    if any(leaves(n, False, False) for n in run):
+        return None
+    cls = fn.semantic_parent
+    member = cls is not None and cls.kind in (K.CLASS_DECL, K.STRUCT_DECL) and bool(cls.spelling)
     const = b"const " if txt(p, fn).split(b"{", 1)[0].rstrip().endswith(b"const") else b""
+    outer = []
+    for x in inner:
+        if x.kind != K.DECL_REF_EXPR:
+            continue
+        r = x.referenced
+        if r is None or r.kind not in (K.VAR_DECL, K.PARM_DECL) or r.semantic_parent != fn:
+            continue
+        if s <= r.extent.start.offset < e:
+            continue
+        if r.storage_class in (C.StorageClass.STATIC, C.StorageClass.EXTERN) or c.written(x) or by_reference(c, x):
+            return None
+        if all(r != o for o in outer):
+            outer.append(r)
+    if len(outer) > 6:
+        return None
+    params, args = [], []
+    for r in outer:
+        t = r.type
+        ck = t.get_canonical().kind
+        sp = t.spelling
+        if not sp or "(" in sp or "unnamed" in sp or "anonymous" in sp:
+            return None
+        if ck in SCALAR:
+            decl = sp + ("" if sp.endswith("*") else " ") + r.spelling
+        elif ck == TK.LVALUEREFERENCE:
+            decl = sp + ("" if sp.endswith("&") else " ") + r.spelling
+        elif ck == TK.RECORD:
+            decl = sp + "& " + r.spelling
+        elif ck == TK.CONSTANTARRAY and "[" not in t.get_array_element_type().spelling:
+            decl = t.get_array_element_type().spelling + "* " + r.spelling
+        else:
+            return None
+        params.append(decl.encode())
+        args.append(r.spelling.encode())
+    # the text with every use of `this` spelled through the helper's parameter
+    reps = []
+    for x in inner:
+        if not good(p, x):
+            continue
+        if x.kind == K.CXX_THIS_EXPR:
+            xs, xe = ext(x)
+            if d[xs:xe] == b"this":
+                reps.append((xs - s, xe - s, b"self"))
+        elif x.kind == K.MEMBER_REF_EXPR and not list(x.get_children()):
+            xs = ext(x)[0]
+            reps.append((xs - s, xs - s, b"self->"))
+    if reps and not member:
+        return None
+    body = Edit("x", "", reps).apply(d[s:e]) if reps else d[s:e]
+    if body is None:
+        return None
+    if reps:
+        params.insert(0, const + cls.spelling.encode() + b"* self")
+        args.insert(0, b"this")
+    ind = indent_of(d, s)
+    lines = body.split(b"\n")
+    body = b"\n".join([c.step + lines[0]] + [(c.step + l[len(ind):] if l.startswith(ind) else l) for l in lines[1:]])
+    return {"node": run[0], "span": span, "ind": ind, "params": b", ".join(params), "args": b", ".join(args), "body": body,
+            "top": top, "line": run[0].extent.start.line, "end": run[-1].extent.end.line, "outer": len(outer)}
+
+
+def outline_sites(c, kinds=(K.FOR_STMT, K.WHILE_STMT, K.DO_STMT), need_local=False):
+    """Statements of c.fn that can move, as they stand, into an inline helper written above the
+    function. The statement may read (never write) the function's own locals and arguments:
+    scalars go to the helper by value, records and arrays by reference. It may not return, jump or
+    leave an enclosing loop."""
+    top = helper_top(c)
+    if top is None:
+        return []
+    out = []
     for n in c.nodes:
-        if n.kind not in (K.FOR_STMT, K.WHILE_STMT) or not c.is_stmt(n) or not good(p, n):
-            continue
-        s, e = ext(n)
-        span = line_span(d, s, e)
-        if span is None:
-            continue
-        inner = list(walk(n))
-        if any(x.kind in (K.RETURN_STMT, K.GOTO_STMT, K.LABEL_STMT) for x in inner):
-            continue
-        outside = False
-        for x in inner:
-            if x.kind == K.DECL_REF_EXPR:
-                r = x.referenced
-                if r is not None and r.kind in (K.VAR_DECL, K.PARM_DECL) and r.semantic_parent == fn:
-                    rs = r.extent.start.offset
-                    if not (s <= rs < e):
-                        outside = True
-                        break
-        if outside:
-            continue
-        # the loop's text with every use of `this` spelled through the helper's parameter
-        reps = []
-        for x in inner:
-            if not good(p, x):
+        if n.kind in kinds and c.is_stmt(n):
+            site = outline_site(c, [n], top, need_local)
+            if site is not None:
+                out.append(site)
+    return out
+
+
+def run_sites(c, cap=40):
+    """Runs of statements that hold the whole life of the locals declared in them: from a
+    declaration to the last statement of its block that uses what the run declares."""
+    top = helper_top(c)
+    if top is None:
+        return []
+    out, seen = [], set()
+    for comp in c.compounds():
+        kids = list(comp.get_children())
+        for i, st in enumerate(kids):
+            if st.kind != K.DECL_STMT or len(out) >= cap:
                 continue
-            if x.kind == K.CXX_THIS_EXPR:
-                xs, xe = ext(x)
-                if d[xs:xe] == b"this":
-                    reps.append((xs - s, xe - s, b"self"))
-            elif x.kind == K.MEMBER_REF_EXPR and not list(x.get_children()):
-                xs = ext(x)[0]
-                reps.append((xs - s, xs - s, b"self->"))
-        body = Edit("x", "", reps).apply(d[s:e])
-        if body is None:
-            continue
-        ind = indent_of(d, s)
-        lines = body.split(b"\n")
-        body = b"\n".join([c.step + lines[0]] + [(c.step + l[len(ind):] if l.startswith(ind) else l) for l in lines[1:]])
-        name = c.fresh(f"loop{n.extent.start.line}_" + re.sub(r"\W", "", fn.spelling)).encode()
-        helper = (b"static inline void " + name + b"(" + const + cls.spelling.encode() + b"* self) {\n" + body + b"\n}\n\n")
-        yield Edit("outline", f"lines {n.extent.start.line}-{n.extent.end.line}: the loop in an inline helper of its own (`{name.decode()}`)",
-                   [(top, top, helper), (span[0], span[1], ind + name + b"(this);\n")], n.extent.start.line)
+            j = i
+            while True:
+                lo, hi = ext(kids[i])[0], ext(kids[j])[1]
+                last = max((ext(u)[0] for v in c.vars if lo <= ext(v)[0] < hi for u in c.uses(v)), default=lo)
+                k = max((m for m in range(j, len(kids)) if ext(kids[m])[0] <= last), default=j)
+                if k == j:
+                    break
+                j = k
+            if j == i or (i == 0 and j == len(kids) - 1 and comp == c.body):
+                continue  # nothing uses it, or the run is the whole function
+            for stop in {j, len(kids) - 1} if not (i == 0 and comp == c.body) else {j}:
+                key = (ext(kids[i])[0], ext(kids[stop])[1])
+                if key in seen:
+                    continue
+                seen.add(key)
+                site = outline_site(c, kids[i:stop + 1], top)
+                if site is not None:
+                    out.append(site)
+    return out
+
+
+def outline_edit(c, site, kind, what, prefix):
+    name = c.fresh(f"{prefix}{site['line']}_" + re.sub(r"\W", "", c.fn.spelling)).encode()
+    helper = b"static inline void " + name + b"(" + site["params"] + b") {\n" + site["body"] + b"\n}\n\n"
+    return Edit(kind, f"lines {site['line']}-{site['end']}: {what} in an inline helper of its own (`{name.decode()}`)",
+                [(site["top"], site["top"], helper), (site["span"][0], site["span"][1], site["ind"] + name + b"(" + site["args"] + b");\n")],
+                site["line"])
+
+
+def gen_outline(c):
+    """A loop moved into a small inline helper written above the function (values of the function
+    it only reads become the helper's parameters). A loop counter declared in the function is a
+    named local and is coloured after the temporaries the optimiser makes for the loop (a
+    strength-reduced table pointer); the counter of an inlined helper is created at inlining,
+    before those, and is coloured first (docs/REGALLOC.md). In the original such loops were inline
+    functions."""
+    for site in sorted(outline_sites(c), key=lambda x: x["outer"]):
+        yield outline_edit(c, site, "outline", "the loop", "loop")
+
+
+def gen_outblock(c):
+    """An `if` statement or a braced block that declares locals, moved into an inline helper the same
+    way: its locals become the locals of an inlined function, created (and coloured) at inlining
+    instead of with the function's own (docs/REGALLOC.md, rule 4)."""
+    for site in sorted(outline_sites(c, (K.IF_STMT, K.COMPOUND_STMT, K.SWITCH_STMT), need_local=True), key=lambda x: x["outer"]):
+        yield outline_edit(c, site, "outblock", "the block", "block")
+
+
+def gen_outrun(c):
+    """A run of statements that holds the whole life of its locals (a declaration up to the last
+    statement that uses it), moved into an inline helper the same way."""
+    for site in sorted(run_sites(c), key=lambda x: x["outer"]):
+        yield outline_edit(c, site, "outrun", "the statements", "part")
 
 
 def gen_loopform(c):
@@ -1719,7 +1881,7 @@ GENERATORS = {"decl": gen_decl, "commute": gen_commute, "scope": gen_scope, "com
               "boolret": gen_boolret, "andif": gen_andif, "early": gen_early, "ternary": gen_ternary, "stmt": gen_stmt,
               "const": gen_const, "loop": gen_loop, "incr": gen_incr, "cond": gen_cond, "untemp": gen_untemp,
               "type": gen_type, "temp": gen_temp, "inline": gen_inline, "swap": gen_swap, "cast": gen_cast,
-              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest, "outline": gen_outline}
+              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest, "outline": gen_outline, "outblock": gen_outblock, "outrun": gen_outrun}
 
 
 # ---------------------------------------------------------------- the slice of the file a function needs
@@ -1825,7 +1987,7 @@ def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=
                 print(f"    (generator {k} failed on {site.spelling}: {type(e).__name__}: {e})", file=sys.stderr)
                 continue
             for ed in eds:
-                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps if not (s == e and s < lo and ed.kind in ("nest", "outline"))):
+                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps if not (s == e and s < lo and ed.kind in ABOVE_FN)):
                     continue
                 if within is not None and not any(within[0] <= data.count(b"\n", 0, s) + 1 <= within[1] for s, _, _ in ed.reps):
                     continue  # --lines: one piece of the function at a time
@@ -2132,7 +2294,7 @@ def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
                 except Exception:  # noqa: BLE001
                     continue
                 for ed in eds:
-                    if all(lo <= s <= e <= hi or (s == e and s < lo and ed.kind in ("nest", "outline")) for s, e, _ in ed.reps):
+                    if all(lo <= s <= e <= hi or (s == e and s < lo and ed.kind in ABOVE_FN) for s, e, _ in ed.reps):
                         if len(keys) > 1:
                             ed.desc = f"in `{site.spelling}`: " + ed.desc
                         out.append(ed)
@@ -2252,6 +2414,181 @@ def callees(a, kinds):
                       f"({r.get('fixed_bytes', 0)} B), {r['worse']} open ones worse, {r['tried']} tried, {r['secs']} s"
                       + ("  << " + "; ".join(r["trace"])[:140] if r["trace"] else "") + (f" ({r['note']})" if r["note"] else ""), flush=True)
         unit.clean()
+    return 0
+
+
+def shared_groups(unit, data, open_fns=None):
+    """Statements written out identically in two or more places of the file, each group as the
+    edits that put it into ONE inline helper: [(sites, lines, text of the helper, Edit for every
+    site, Edit for the sites in open functions only or None)], most text saved first."""
+    p = Parsed(unit, data)
+    groups = {}
+    for fn in p.functions():
+        if body_of(fn) is None or not good(p, fn):
+            continue
+        try:
+            c = Ctx(p, fn)
+            sites = outline_sites(c) + outline_sites(c, (K.IF_STMT, K.COMPOUND_STMT, K.SWITCH_STMT), need_local=True)
+        except Exception:  # noqa: BLE001
+            continue
+        for site in sites:
+            site["fn"] = fn
+            groups.setdefault((site["params"], site["body"]), []).append(site)
+    out = []
+    for (params, body), sites in groups.items():
+        if len(sites) < 2:
+            continue
+        sites.sort(key=lambda x: x["span"][0])
+        loop = sites[0]["node"].kind in (K.FOR_STMT, K.WHILE_STMT, K.DO_STMT)
+        name = f"{'loop' if loop else 'block'}{sites[0]['line']}_x{len(sites)}".encode()
+        while name in data:
+            name += b"_"
+        helper = b"static inline void " + name + b"(" + params + b") {\n" + body + b"\n}\n\n"
+        top = min(x["top"] for x in sites)
+
+        def edit(which):
+            lines = ", ".join(str(x["line"]) for x in which)
+            return Edit("outline" if loop else "outblock",
+                        f"the same {'loop' if loop else 'block'} at lines {lines} in one inline helper (`{name.decode()}`)",
+                        [(top, top, helper)] + [(x["span"][0], x["span"][1], x["ind"] + name + b"(" + x["args"] + b");\n") for x in which],
+                        sites[0]["line"])
+        part = None
+        if open_fns is not None:
+            sub = [x for x in sites if any(x["fn"] == f for f in open_fns)]
+            if 0 < len(sub) < len(sites):
+                part = edit(sub)
+        out.append((len(sites), body.count(b"\n") + 1, helper, edit(sites), part))
+    out.sort(key=lambda g: -(g[0] - 1) * g[1])
+    return out
+
+
+def shared_unit(unit, depth=4, cap=60, log=print):
+    """Put statements that the file writes out several times into shared inline helpers, one group
+    per round, each scored on every function of the unit (the rule of unitwide). FileSelect had
+    three pane loops written out 40 times; in the original each was one inline function, and its
+    copies only got the original's registers once ours was one too."""
+    dec = lambda b: b.decode("utf-8", "surrogateescape")  # noqa: E731
+    data = unit.source().encode("utf-8", "surrogateescape")
+    t0 = time.time()
+    res = {"text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0, "groups": 0, "secs": 0.0, "note": ""}
+    try:
+        d0 = unit.build(dec(data), sym=True)
+    except scratch.CompileError as e:
+        res["note"] = f"does not compile: {str(e)[:100]}"
+        return res
+    if all(f.pct >= 100 for f in d0.fn.values()):
+        res["note"] = "nothing open"
+        return res
+    names, r0 = scratch.farm(unit, [data], None)
+    if isinstance(r0[0], Exception):
+        res["note"] = f"does not compile: {r0[0]}"
+        return res
+    base = r0[0]
+    n0 = sum(1 for x in base if x == 0)
+    text, trace, used, best_n = data, [], [], n0
+    for _ in range(depth):
+        p = Parsed(unit, text)
+        open_fns = []
+        if text is data:
+            for f in d0.fn.values():
+                if f.pct < 100 and f.cls != "missing":
+                    fn = p.locate(f.demangled, next((r[3] for r in f.rows if r[3]), None))
+                    if fn is not None:
+                        open_fns.append(fn)
+        groups = shared_groups(unit, text, open_fns or None)
+        if _ == 0:
+            res["groups"] = len(groups)
+        pool = []
+        for _, _, _, ed_all, ed_part in groups[:cap]:
+            for ed in (ed_all, ed_part):
+                if ed is not None:
+                    new = ed.apply(text)
+                    if new is not None:
+                        pool.append((new, ed))
+        if not pool:
+            break
+        _, rs = scratch.farm(unit, [c[0] for c in pool], None)
+        res["tried"] += len(pool)
+        scored = []
+        for (new, ed), r in zip(pool, rs):
+            if not isinstance(r, list) or any(b == 0 and x != 0 for b, x in zip(base, r)):
+                continue
+            scored.append((sum(1 for x in r if x == 0), -sum(x for x in r if x > 0), new, ed))
+        scored.sort(key=lambda x: (-x[0], -x[1]))
+        if not scored or scored[0][0] <= best_n:
+            break
+        best_n, text = scored[0][0], scored[0][2]
+        trace.append(scored[0][3].desc)
+        used.append(scored[0][3].kind)
+    if text is not data:
+        try:
+            b = unit.build(dec(text))
+            a = unit.build(dec(data))
+        except scratch.CompileError as e:
+            res["note"] = str(e)[:100]
+            return res
+        fixed = sorted(n for n, f in b.fn.items() if f.pct == 100 and n in a.fn and a.fn[n].pct < 100)
+        broke = [n for n, f in a.fn.items() if f.pct == 100 and (n not in b.fn or b.fn[n].pct < 100)]
+        secs = [k for k, v in a.sections.items() if not k.startswith(".text") and b.sections.get(k, 0) < v - 0.005]
+        extra = [n for n in b.extra if n not in a.extra]
+        if fixed and not broke and not secs and not extra:
+            res.update(text=text, trace=trace, kinds=used, fixed=fixed, fixed_bytes=sum(b.fn[n].size for n in fixed),
+                       worse=sum(1 for n, f in b.fn.items() if n in a.fn and f.pct < a.fn[n].pct - 0.005))
+        else:
+            res["note"] = f"objdiff: fixes {len(fixed)}, breaks {len(broke)}, sections {secs}"
+    res["secs"] = round(time.time() - t0, 1)
+    return res
+
+
+def shared(a):
+    """--shared: every unit (or --units) through shared_unit; one JSON line per unit with groups."""
+    allu = json.loads(Path("objdiff.json").read_text())["units"]
+    names = [u["name"] for u in allu if "base_path" in u and (u.get("metadata") or {}).get("source_path")
+             and (not a.units or any(x in u["name"] for x in a.units.split(",")))]
+    if a.parallel > 1 and not a.only:
+        import subprocess
+        from concurrent.futures import ThreadPoolExecutor
+        jobs = max(2, scratch.JOBS * 2 // a.parallel)
+        argv0 = [sys.executable, __file__, "--shared", "--depth", str(a.depth), "--save", a.save] + (["--log", a.log] if a.log else [])
+
+        def run(name):
+            env = dict(__import__("os").environ, SCRATCH_JOBS=str(jobs), GRIND_BROKER_SERVER="1")
+            pr = subprocess.run(argv0 + ["--units", name, "--only", "1"], capture_output=True, text=True, env=env)
+            return [l for l in pr.stdout.splitlines() if l.startswith(("  ", "["))] + ([pr.stderr[-300:]] if pr.returncode else [])
+        with ThreadPoolExecutor(max_workers=a.parallel) as ex:
+            for lines in ex.map(run, names):
+                for l in lines:
+                    print(l, flush=True)
+        return 0
+    logf = open(a.log, "a") if a.log else None
+    for name in names:
+        if a.only and name != a.units:
+            continue
+        unit = None
+        try:
+            unit = scratch.Unit(name)
+            r = shared_unit(unit, min(a.depth, 6))
+        except Exception as e:  # noqa: BLE001
+            print(f"[{name}] {type(e).__name__}: {str(e)[:120]}", flush=True)
+            continue
+        finally:
+            if unit is not None:
+                unit.clean()
+        saved = None
+        if r["text"] is not None:
+            out = Path(a.save)
+            out.mkdir(parents=True, exist_ok=True)
+            saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", name.split("/")[-1]) + "__shared.hand.diff")
+            saved.write_text(diff_text((unit.root / unit.src).read_bytes(), r["text"], unit.src))
+        row = {"unit": name, "groups": r["groups"], "fixed": r["fixed"], "fixed_bytes": r.get("fixed_bytes", 0), "worse": r["worse"],
+               "trace": r["trace"], "tried": r["tried"], "secs": r["secs"], "note": r["note"], "diff": str(saved) if saved else None}
+        if logf and (r["groups"] or r["note"]):
+            logf.write(json.dumps(row) + "\n")
+            logf.flush()
+        if r["text"] is not None or a.verbose:
+            print(f"  {name.split('/')[-1]}: {r['groups']} repeated statements, fixes {len(r['fixed'])} ({r.get('fixed_bytes', 0)} B), "
+                  f"{r['worse']} open ones worse, {r['tried']} tried, {r['secs']} s"
+                  + ("  << " + "; ".join(r["trace"])[:160] if r["trace"] else "") + (f" ({r['note']})" if r["note"] else ""), flush=True)
     return 0
 
 
@@ -2391,7 +2728,9 @@ def main():
     ap.add_argument("--max-sites", type=int, default=10, help="with --callees: inlined functions tried per unit")
     ap.add_argument("--chain", action="store_true",
                     help="with --callees: rewrite the unit's inlined functions together in one search (use with --kinds nest)")
-    ap.add_argument("--parallel", type=int, default=1, help="with --bulk: this many units at once")
+    ap.add_argument("--shared", action="store_true",
+                    help="statements a file writes out several times, in one inline helper each, scored on the whole unit")
+    ap.add_argument("--parallel", type=int, default=1, help="with --bulk, --callees, --shared: this many units at once")
     ap.add_argument("--only", help=argparse.SUPPRESS)
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args()
@@ -2402,6 +2741,8 @@ def main():
     bad = [k for k in kinds if k not in GENERATORS]
     if bad:
         sys.exit(f"unknown kind {bad[0]!r}; kinds: {', '.join(GENERATORS)}")
+    if a.shared:
+        return shared(a)
     if a.callees:
         return callees(a, kinds if a.kinds or a.tier == "b" else KINDS_A + KINDS_B)
     if a.bulk:

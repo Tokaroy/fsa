@@ -43,6 +43,8 @@ python3 tools/diag.py <unit>                   # functions below 100 %: root or 
 python3 tools/pieces.py <unit> <function> [N]  # a large function in pieces; N: one piece in full
 python3 tools/permute.py <unit> <function> [--tier b] [--deep] [--apply]
 python3 tools/permute.py --callees --units <unit>        # rewrite inlined callees, score the whole unit
+python3 tools/permute.py <unit> <function> --kinds outline,outblock,outrun   # a loop, block or run of statements as an inline helper
+python3 tools/permute.py --shared --units <unit>         # a statement written out several times, in ONE inline helper
 python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
 python3 tools/scratch.py <unit> [--sym] [--src FILE] [--fn NAME]
 python3 tools/clones.py [--fn <unit> <function>]     # shared blocks / inlined helper copies
@@ -76,6 +78,17 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
   scores every function of the unit; it keeps a result when more functions
   match, none that matched breaks and no data section gets worse (callers that
   were open may move either way). Try it before working on a "derived" function.
+- `permute.py --kinds outline,outblock,outrun` and `--shared`: registers-only
+  rests where a loop's counter or a block's locals sit in the wrong registers.
+  In the original the loop (or the `if`, or a declaration with the statements
+  that use it) was an inline function: its locals are created at inlining and
+  coloured before the function's own (docs/REGALLOC.md, rule 4). These kinds
+  move such a statement, as it stands, into a `static inline` helper above the
+  function (what it reads of the function's locals becomes parameters); `--shared`
+  does it for a statement the file writes out several times, with one helper
+  for all copies. 26 functions matched this way. The result is a `.hand.diff`:
+  take the narrowest helper that matches, name it for what it does, and prefer
+  one helper shared by every function that has the same statement.
 - A saved result that adds or removes a local (`*.hand.diff`, also shown in
   the task text) is byte-proven but unfinished: give the local a real name; a
   value written out twice was a macro or an inline in the original.

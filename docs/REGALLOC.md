@@ -105,7 +105,12 @@ in the first register and the table pointer the compiler makes in the next; ours
 way round. By rule 2 the pointer (an optimiser temporary) is coloured before a named counter and
 after an inlined one, so the original's loop sits in an inline function: with the loop moved into a
 small inline helper `fn_803C05D8` matches. `python3 tools/permute.py <unit> <function> --kinds
-outline` tries exactly that for every loop that touches only `this` and globals.
+outline,outblock,outrun` tries exactly that for every loop, every `if`, switch or block with locals
+and every declaration together with the statements that use it (values of the function that the
+statement only reads become the helper's parameters); `--shared --units <unit>` does it for a
+statement the file writes out several times. The same rule explains the non-loop cases: a local
+declared in a block of the function is one of the function's named locals, coloured in declaration
+order after everything inlined; the same local in an inlined helper is coloured before them.
 
 ## Not covered here
 
