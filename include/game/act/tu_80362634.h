@@ -68,6 +68,11 @@ public:
     void fn_80362634();
     // 0x80362B14: draws the "fune.bti" image at mPos.
     void fn_80362B14();
+    // Not in the binary: plain functions that init and the state steps inline.
+    void spawnRoomEmitters();
+    bool isBlocked();
+    void chaseOwl(s32 i, EndingOwl_804ADF28* actor);
+    void faceOwl(ActorBase_804A5770* owl);
     // 0x8036335C: empty.
     void fn_8036335C();
     // 0x80363F7C: steps the pattern index when its counter ran out, then moves by field_0x3c.

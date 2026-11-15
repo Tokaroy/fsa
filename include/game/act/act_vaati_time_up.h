@@ -15,6 +15,9 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: plain functions that update inlines.
+    void steer();
+    bool pickTarget();
     /* 0x230 */ cls_801EB8CC field_0x230;
     /* 0x290 */ f32 field_0x290; // centre of mViewBox, x (init)
     /* 0x294 */ f32 field_0x294; // centre of mViewBox, y, plus 96

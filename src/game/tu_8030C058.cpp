@@ -26,7 +26,7 @@ Camera_804AA9E4::Camera_804AA9E4() {}
 Camera_804AA9E4::~Camera_804AA9E4() {}
 
 // The depth 1024 is passed from a float constant in the original (lfs, not lfd).
-// FIXME: 98.52 %, different + reloc-name; behaviour drift.
+// FIXME: 98.96 %, different; behaviour drift.
 void Camera_804AA9E4::fn_8030E5BC() {
     field_0x154.i.x = 0.0f;
     field_0x154.i.y = 0.0f;
@@ -79,7 +79,7 @@ void Camera_804AA9E4::fn_8030E5BC() {
 // The per-frame update: picks the table entry for the pending request (flags 0x178-0x17B), lets
 // fn_8030CD18 work out the target box and depth, blends towards it while a transition is armed,
 // sets the view (fn_8030CB10) and the zoom, and tells the audio manager where the camera is.
-// FIXME(shotgun): 99.70 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.82 %, operands; behaviour clean.
 // (audio center construction)
 void Camera_804AA9E4::fn_8030E154() {
     JGeometry::TBox2f box = field_0x154;
@@ -171,7 +171,6 @@ void Camera_804AA9E4::fn_8030E150() {}
 
 // Loads the projection / view into the GX state (taking the pending matrices first when copy is
 // set) and sets the viewport and scissor to the screen rect.
-// FIXME(shotgun): 99.56 %, regalloc-only + reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030DFE8(bool copy) {
     if (copy) {
         JMath::gekko_ps_copy12(field_0x74, field_0x4);
@@ -181,16 +180,12 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
     GXLoadPosMtxImm(field_0x74, GX_PNMTX8);
     GXLoadNrmMtxImm(field_0x74, GX_PNMTX8);
     GXSetCurrentMtx(GX_PNMTX8);
-    u32 w = field_0x144.x1 - field_0x144.x0;
-    u32 h = field_0x144.y1 - field_0x144.y0;
-    GXSetViewport((f32)field_0x144.x0, (f32)field_0x144.y0, (f32)w, (f32)h, 0.0f, 1.0f);
-    GXSetScissor(field_0x144.x0, field_0x144.y0, w, h);
-    GXSetZScaleOffset(1.0f, 0.0f);
+    setScreenRectViewport();
 }
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
 // size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
-// FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.11 %, missing/extra + reloc-name; behaviour drift.
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
     field_0x164.i.x = box->i.x;
     field_0x164.i.y = box->i.y;
@@ -233,7 +228,7 @@ void Camera_804AA9E4::fn_8030DD20(const Mtx m) {
     GXLoadNrmMtxImm(tmp, GX_PNMTX9);
 }
 
-// FIXME(shotgun): 88.33 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.47 %, missing/extra + reloc-name; behaviour drift.
 // + regalloc
 void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraEntry_804AA8E8* entry,
                                   JGeometry::TBox2f* prevBox, JGeometry::TBox2f* outBox, f32* outDepth) {
@@ -761,7 +756,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
 
 // Not inlined into its caller fn_8030E5BC in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 75.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 75.27 %, missing/extra; behaviour drift.
 // (the target keeps the box corners in float registers; it also pre-zeroes
 // the translation column and negates the two centres as one ps_neg pair)
 void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
@@ -797,7 +792,7 @@ void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
 // Starts the focus transition to the new box: arms the camera, clears the damping, builds the
 // focus state from the table entry for field_0x174 (fn_8030CD18), then the same bookkeeping as
 // fn_8030C928.
-// FIXME(shotgun): 93.20 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.27 %, missing/extra; behaviour near.
 // (box copy order in inlined fn_8030C928)
 void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     field_0x1e8 = 1;
@@ -858,7 +853,7 @@ static inline f32 projectRow(const f32* row, const Vec& v, f32 w) {
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
-// FIXME(shotgun): 99.16 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.38 %, scheduling+regalloc; behaviour clean.
 // (projection rows loaded in the other order)
 void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, Vec* out) {
     Vec v;
@@ -879,7 +874,6 @@ void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, 
 }
 #pragma auto_inline reset
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeometry::TVec3f* out) {
     if (flag) {
         out->set(field_0x164.i.x + (in->x - (f32)field_0x144.x0) * (field_0x164.f.x - field_0x164.i.x) /
@@ -895,13 +889,24 @@ void Camera_804AA9E4::fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeome
 }
 
 // The camera box's world positions of the screen's top-left and bottom-right corners.
-// FIXME: 99.93 %, reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
     JGeometry::TVec2f topLeft(0.0f, 0.0f);
     fn_8030C4A0(&topLeft, false, &out[0]);
     JGeometry::TVec2f bottomRight((f32)(s32)JUTVideo::sManager->getFbWidth(),
                                   (f32)(s32)JUTVideo::sManager->getEfbHeight());
     fn_8030C4A0(&bottomRight, false, &out[1]);
+}
+
+// A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
+// so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
+// default depth range.
+void Camera_804AA9E4::setScreenRectViewport() {
+    u32 w = field_0x144.x1 - field_0x144.x0;
+    u32 h = field_0x144.y1 - field_0x144.y0;
+    GXSetViewport((f32)field_0x144.x0, (f32)field_0x144.y0, (f32)w, (f32)h, 0.0f, 1.0f);
+    GXSetScissor(field_0x144.x0, field_0x144.y0, w, h);
+    GXSetZScaleOffset(1.0f, 0.0f);
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.

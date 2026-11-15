@@ -22,8 +22,6 @@ static const s32 lbl_80464BBC[11] = {0, 0, 360, 800, 830, 950, 1040, 1160, 1325,
 
 s32 fn_801365A8();
 
-// FIXME(shotgun): 99.84 %, reloc-name; behaviour clean.
-// only (the two float literals are @NNN, not lbl_)
 void cls_8049DD68::init() {
     cls_8049D140::init();
     field_0x274.fn_801D2608(lbl_80539F20, 1);
@@ -34,7 +32,7 @@ void cls_8049DD68::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
-// FIXME(shotgun): 78.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 79.09 %, missing/extra; behaviour drift.
 // the guarded static (lbl_8053AA98 / lbl_8053AA9C) update() zero-inits is not written
 void cls_8049DD68::update() {
     cls_8049D140::update();
@@ -51,14 +49,7 @@ void cls_8049DD68::update() {
         break;
     }
     if (field_0x230) {
-        Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-        JGeometry::TVec3f in(-cam->field_0x4[0][3], -cam->field_0x4[1][3], 0.0f);
-        JGeometry::TVec3f out;
-        cam->fn_8030C5F0((Vec*)&in, false, false, (Vec*)&out);
-        f32 size = fn_801365A8() == 2 ? 373.0f : 500.0f;
-        out.x -= size * 0.5f;
-        out.y -= 20.0f;
-        lbl_8053AED0->fn_8043A208((s32)field_0x238, out.x, out.y, size, 40.0f);
+        setOverlayRect();
     }
     field_0x274.fn_801D1C18();
 }
@@ -101,7 +92,7 @@ s32 cls_8049DD68::vfunc_0x5C() {
 // Not auto-inlined: update and vfunc_0x54 call fn_8011D1B8 / fn_8011CF48 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 96.76 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.99 %, different; behaviour drift.
 // jump table is not yet a named jumptable_8049DDF0; stack layout still differs
 void cls_8049DD68::fn_8011D1B8(s32 state) {
     switch (state) {
@@ -114,16 +105,9 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
         fn_8011921C()->field_0x2 = 1;
         gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
         break;
-    case 2: {
-        field_0x23c = 0.0f;
-        field_0x238 = 0.0f;
-        field_0x230 = 0;
-        s32 dir[2];
-        dir[0] = 0;
-        dir[1] = -1;
-        getGameView_802D6A9C()->fn_802DCD1C(dir);
+    case 2:
+        startScroll();
         break;
-    }
     case 3:
         field_0x238 = 0.0f;
         field_0x230 = 1;
@@ -178,7 +162,25 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
     field_0x234 = state;
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra + reloc-name; behaviour drift.
+#pragma auto_inline reset
+
+// A plain function that update inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 373.0f, 500.0f, 0.5f, 20.0f and 40.0f between fn_8011CF48's literals and
+// fn_8011D1B8's, so it was generated here (tools/pool.py). Gives lbl_8053AED0 its rect, 40 high
+// and centred on the camera's position on the screen, with field_0x238 as the alpha.
+void cls_8049DD68::setOverlayRect() {
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    JGeometry::TVec3f in(-cam->field_0x4[0][3], -cam->field_0x4[1][3], 0.0f);
+    JGeometry::TVec3f out;
+    cam->fn_8030C5F0((Vec*)&in, false, false, (Vec*)&out);
+    f32 size = fn_801365A8() == 2 ? 373.0f : 500.0f;
+    out.x -= size * 0.5f;
+    out.y -= 20.0f;
+    lbl_8053AED0->fn_8043A208((s32)field_0x238, out.x, out.y, size, 40.0f);
+}
+
+#pragma auto_inline off
+// FIXME(shotgun): 97.92 %, missing/extra; behaviour drift.
 void cls_8049DD68::fn_8011CF48() {
     switch (field_0x234) {
     case 0:
@@ -241,5 +243,18 @@ void cls_8049DD68::fn_8011CF48() {
     }
 }
 #pragma auto_inline reset
+
+// A plain function that fn_8011D1B8 inlines and whose own copy the linker dropped: the original's
+// .sdata2 starts with 0.0f, ahead of fn_8011CF48's literals, so it was generated before it
+// (tools/pool.py). Entering state 2: the scroll speed and the overlay's alpha start at zero.
+void cls_8049DD68::startScroll() {
+    field_0x23c = 0.0f;
+    field_0x238 = 0.0f;
+    field_0x230 = 0;
+    s32 dir[2];
+    dir[0] = 0;
+    dir[1] = -1;
+    getGameView_802D6A9C()->fn_802DCD1C(dir);
+}
 
 cls_8049DD68::~cls_8049DD68() {}

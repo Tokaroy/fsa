@@ -13,7 +13,8 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
-// FIXME(shotgun): 95.51 %, missing/extra (the unrolled field_0x24 clear starts with a loop-entry test)
+// FIXME(shotgun): 95.51 %, missing/extra; behaviour drift.
+// (the unrolled field_0x24 clear starts with a loop-entry test)
 cls_804AFAB0::cls_804AFAB0() {
     field_0x28c = -1;
     field_0x290 = -1;
@@ -111,7 +112,8 @@ void cls_804AFAB0::fn_803B8188() {
     fn_8013A884(&color);
 }
 
-// FIXME(shotgun): 99.85 %, different (one branch of the inner switch)
+// FIXME(shotgun): 99.96 %, different; behaviour drift.
+// (one branch of the inner switch)
 void cls_804AFAB0::fn_803B7F6C() {
     switch (field_0x294) {
     case 0:
@@ -190,7 +192,10 @@ void cls_804AFAB0::fn_803B7F6C() {
     }
 }
 
-// FIXME(shotgun): 99.77 %, reloc-name
+// A plain function that fn_803B7E64 inlines and whose own copy the linker dropped; it stands
+// where the original's .sdata2 order puts it (tools/pool.py), see its definition.
+void setFrameBufferOrtho();
+
 void cls_804AFAB0::fn_803B7E64() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x294 == 3 || field_0x294 == 4) {
@@ -199,16 +204,23 @@ void cls_804AFAB0::fn_803B7E64() {
     }
     field_0x4->setAlpha(field_0x296);
     field_0x4->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
-    JGeometry::TBox2f box(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
-                          (s32)JUTVideo::getManager()->getEfbHeight());
-    gGameRoot2_8053AB10->fn_8013B414(&box, true);
+    setFrameBufferOrtho();
 }
 
-// FIXME(shotgun): 99.74 %, reloc-name
 void cls_804AFAB0::fn_803B7DCC() {
     if (!(lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 3)) {
         gGameRoot2_8053AB10->fn_8013B490();
         field_0x4->setAlpha(field_0x296);
         field_0x4->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
     }
+}
+
+// A plain function that fn_803B7E64 inlines and whose own copy the linker dropped: the original's
+// .sdata2 starts with 0.0f and the int -> float bias, ahead of fn_803B7DCC's 800.0f and 640.0f, so
+// it was generated before it (tools/pool.py). Makes the whole frame buffer the ortho projection of the game root's camera, with the light
+// matrices.
+void setFrameBufferOrtho() {
+    JGeometry::TBox2f box(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
+                          (s32)JUTVideo::getManager()->getEfbHeight());
+    gGameRoot2_8053AB10->fn_8013B414(&box, true);
 }

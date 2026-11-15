@@ -113,7 +113,7 @@ cls_804AF860::~cls_804AF860() {
 }
 
 // 0x803A7280.
-// FIXME(shotgun): 95.10 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.30 %, scheduling+regalloc; behaviour clean.
 void cls_804AF860::fn_803A7280() {
     field_0x64 = 0;
     field_0x68 = 0;
@@ -158,7 +158,6 @@ void cls_804AF860::fn_803A7280() {
     field_0x80 = 5;
 }
 
-// FIXME(shotgun): 99.86 %, reloc-name; behaviour clean.
 void cls_804AF860::fn_803A71F0() {
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
     gGameRoot2_8053AB10->fn_8013B490();
@@ -169,7 +168,7 @@ void cls_804AF860::fn_803A71F0() {
 // 0x803A6608. The options screen: left / right choose the arrow, up / down step the pane
 // offsets, the sound mode and the rumble setting toggle with messages 0x98 / 0x99 and
 // 0x38 / 0x39; the six cursor panes blink on a random timer.
-// FIXME(shotgun): 98.91 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.59 %, missing/extra; behaviour near.
 // (the blink block's show / hide pattern of the six panes is approximate)
 void cls_804AF860::fn_803A6608() {
     field_0x80 = 5;
@@ -220,26 +219,14 @@ void cls_804AF860::fn_803A6608() {
         if (field_0x64 > 1) {
             field_0x64 = 0;
         }
-        for (s32 i = 0; i < 6; i++) {
-            field_0xc[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
-        }
-        field_0x6e = 0;
-        for (s32 i = 0; i < 2; i++) {
-            field_0x24[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
-        }
+        moveCursorToRow();
     } else if (lbl_8053AD30->fn_80309A9C(8, 1)) {
         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
         field_0x64--;
         if (field_0x64 < 0) {
             field_0x64 = 1;
         }
-        for (s32 i = 0; i < 6; i++) {
-            field_0xc[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
-        }
-        field_0x6e = 0;
-        for (s32 i = 0; i < 2; i++) {
-            field_0x24[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
-        }
+        moveCursorToRow();
     } else if (lbl_8053AD30->fn_80309A9C(1, 1)) {
         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
         field_0x6e = -1;
@@ -334,6 +321,20 @@ void cls_804AF860::fn_803A6608() {
         }
     }
     fn_803A60E4();
+}
+
+// A plain function that fn_803A6608 inlines (twice: up and down) and whose own copy the linker
+// dropped: the original's .sdata2 has its 0.0f and int -> float bias ahead of the literals of
+// fn_803A6608 and the functions above it, so it was generated here (tools/pool.py). Moves the six
+// cursor panes and the two arrows to the chosen row.
+void cls_804AF860::moveCursorToRow() {
+    for (s32 i = 0; i < 6; i++) {
+        field_0xc[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
+    }
+    field_0x6e = 0;
+    for (s32 i = 0; i < 2; i++) {
+        field_0x24[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
+    }
 }
 
 s32 fn_803A65EC() {

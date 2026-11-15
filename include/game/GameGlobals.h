@@ -1982,6 +1982,8 @@ public:
     f32 fn_80430518(u8 noun, s32 count, f32 scale);
     // 0x8042F6DC: second layout pass over the same window (not written yet).
     void fn_8042F6DC();
+    // Not in the binary: a plain function that fn_8042F6DC inlines.
+    void scaleFrames(f32 w, f32 h);
     // 0x80430368: appends the counted noun (the nouns of cls_804AF774::fn_803A2CB0) to out; 0.0f.
     f32 fn_80430368(u8 noun, s32 count, char* out);
     // 0x804310BC: clears field_0xe8 and field_0xec (owner game/tu_8042E964.cpp).
@@ -2092,6 +2094,8 @@ public:
     void fn_803A60E4();
     // Rotates the pane `tag` about its centre by base + field_0x74 (inlined in fn_803A60E4).
     void rotateArrow(u64 tag, s16 base);
+    // Not in the binary: a plain function that fn_803A6608 inlines.
+    void moveCursorToRow();
     // 0x803A7280: puts the arrow and text panes back in place.
     void fn_803A7280();
     // 0x803A6608: the options screen (per-frame).

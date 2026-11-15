@@ -20,6 +20,8 @@ public:
 
     bool fn_8028C364(u8 dir);
     bool fn_8028C518(u8 dir);
+    // Not in the binary: a plain function that update inlines.
+    bool keepsMoving(f32 threshold);
 
     /* 0x230 */ JGeometry::TVec3f field_0x230;
     /* 0x23C */ s32 field_0x23c;

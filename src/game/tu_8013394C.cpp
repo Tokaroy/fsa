@@ -49,7 +49,6 @@ static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
 }
 
 // 0x8013416C.
-// FIXME(shotgun): 99.80 %, reloc-name; behaviour clean.
 void cls_8049ED30::init() {
     ActorBase_804A5770::init();
     field_0x234 = field_0x90 & 0x1F;
@@ -65,16 +64,11 @@ void cls_8049ED30::init() {
     field_0x240.fn_801D2608(lbl_80539F50, 1);
     field_0x240.startAnim_801D22DC(0, 2, false);
     field_0x240.fn_801D1F14(0.0f);
-    if (mEmitters[0] == NULL) {
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
-    }
-    if (mEmitters[1] == NULL) {
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
-    }
+    spawnEmitters();
 }
 
 // 0x80133DD0.
-// FIXME(shotgun): 87.65 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.71 %, different; behaviour drift.
 void cls_8049ED30::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
@@ -107,7 +101,7 @@ void cls_8049ED30::update() {
 }
 
 // 0x80133C6C.
-// FIXME(shotgun): 99.55 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.61 %, regalloc-only; behaviour clean.
 void cls_8049ED30::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -115,7 +109,7 @@ void cls_8049ED30::draw() {
 }
 
 // 0x80133B58.
-// FIXME(shotgun): 98.70 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.77 %, regalloc-only; behaviour clean.
 bool fn_80133B58() {
     bool res = true;
     s32 serial = getActorManager_801F856C()->fn_801F7A08('CRNV');
@@ -137,6 +131,18 @@ bool fn_80133B58() {
         serial = getActorManager_801F856C()->fn_801F78F4('CRNV', serial);
     }
     return res;
+}
+
+// A plain function that init inlines and whose own copy the linker dropped: the original's .sdata2
+// starts with 1.0f, ahead of fn_80133B58's 0.0f, so it was generated before it (tools/pool.py).
+// Spawns the two emitters that are not there yet.
+void cls_8049ED30::spawnEmitters() {
+    if (mEmitters[0] == NULL) {
+        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
+    }
+    if (mEmitters[1] == NULL) {
+        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
+    }
 }
 
 // 0x801339EC.

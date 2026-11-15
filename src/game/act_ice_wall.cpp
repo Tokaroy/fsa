@@ -23,9 +23,6 @@ static const s32 lbl_80464C0C[] = {
     0, 5, 0x00260004, 2, 0, 0, 4, 0x00030000, 0
 };
 
-// FIXME: 99.81 %, reloc-name; behaviour clean.
-// reloc-name: the 1.0f literal is loaded from its own .sdata2
-// entry in ours, the original's is lbl_8053C8BC (a data split, not code).
 IceWall_8049DE18::IceWall_8049DE18()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(0), field_0x240(1.0f), mSprite(),
       field_0x27c(NULL) {}
@@ -35,8 +32,7 @@ IceWall_8049DE18::~IceWall_8049DE18() {
     field_0x27c = NULL;
 }
 
-// FIXME: 99.86 %, scheduling + reloc-name; behaviour clean.
-// scheduling + reloc-name: instructions match modulo float literals order.
+// FIXME: 99.98 %, scheduling; behaviour clean.
 void IceWall_8049DE18::init() {
     ActorBase_804A5770::init();
     field_0x230 = field_0x90 & 0xF;
@@ -82,19 +78,14 @@ void IceWall_8049DE18::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
-// FIXME: 97.98 %, scheduling+regalloc + reloc-name; behaviour clean.
-// scheduling+regalloc + reloc-name: same instructions, but the three box setups (box, box2,
-// box3) interleave their loads, fadds and stores differently and use other float registers, the saved
-// registers r29/r30 are swapped in cases 1 and 0, and the 0.0f / 1.0f / 0.5f literals sit in other .sdata2 entries.
+// FIXME: 98.04 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: same instructions, but the three box setups (update's, hitByWeapon's and
+// hitByFire's) interleave their loads, fadds and stores differently and use other float registers,
+// and the saved registers r29/r30 are swapped in cases 1 and 0.
 void IceWall_8049DE18::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box;
-    JGeometry::TVec3f stack40;
-    JGeometry::TBox2f box2;
-    JGeometry::TBox2f box3;
     JGeometry::TVec2f pos;
-    JGeometry::TVec2f hitPos;
-    JGeometry::TVec2f hitPos2;
 
     box.set(mBox);
     box.i.x += mPos.x;
@@ -120,69 +111,12 @@ void IceWall_8049DE18::update() {
             break;
         }
 
-        hitPos.set(0.0f, 0.0f);
-        f32 screenY = mPos.y - mPos.z;
-        box2.set(mBox2);
-        box2.i.x += mPos.x;
-        box2.i.y += screenY;
-        box2.f.x += mPos.x;
-        box2.f.y += screenY;
-
-        bool hit2;
-        s32 hitCode = fn_8023AA18(&box2, field_0x4, &hitPos);
-        if (hitCode >= 0) {
-            hit2 = true;
-        } else {
-            hitCode = fn_8023AE34(&box2, field_0x4, &hitPos);
-            if (hitCode >= 0) {
-                fn_801CC820(hitCode, NULL);
-                hit2 = true;
-            } else {
-                hitCode = fn_8023AC74(&box2, field_0x4, &hitPos);
-                if (hitCode >= 0) {
-                    fn_801CC538(hitCode, &hitPos, &stack40, NULL);
-                    hit2 = true;
-                } else {
-                    hitCode = fn_8023AD54(&box2, field_0x4, &hitPos);
-                    if (hitCode >= 0) {
-                        fn_801CC640(hitCode, NULL, NULL);
-                        hit2 = true;
-                    } else {
-                        hit2 = false;
-                    }
-                }
-            }
-        }
-        if (hit2) {
+        if (hitByWeapon()) {
             break;
         }
 
-        box3.set(mBox);
-        box3.i.x += mPos.x;
-        box3.i.y += mPos.y;
-        box3.f.x += mPos.x;
-        box3.f.y += mPos.y;
-        hitPos2.set(0.0f, 0.0f);
-        bool hit3;
-        if (fn_8023AB94(&box3, field_0x4, &hitPos2) >= 0 || fn_801F2718('FIRE') >= 0) {
-            hit3 = true;
-        } else {
-            hit3 = false;
-        }
-        if (hit3) {
-            deleteEmitter(&mEmitter100);
-            deleteEmitter(&mEmitter104);
-            s32 layer = field_0x4;
-            if (layer == 0) {
-                f32 scale = 1.0f;
-                if (field_0x230 == 1) {
-                    scale = 0.5f;
-                }
-                field_0x27c = spawnEmitter_8013CC50(layer, &mPos, 0x28D, 1, 0, NULL, NULL, true, scale);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x28E, 1, 0, NULL, NULL, true, scale);
-            }
-            startSound_801F0E34(0x30061, 0);
-            field_0x234 = 1;
+        if (hitByFire()) {
+            startMelting();
         } else {
             fn_8020D58C()->addBox(mSerial);
         }
@@ -222,8 +156,8 @@ void IceWall_8049DE18::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 99.28 %, scheduling+regalloc + reloc-name; behaviour drift.
-// scheduling+regalloc + reloc-name (same instructions modulo registers, different order).
+// FIXME: 99.46 %, scheduling+regalloc; behaviour drift.
+// scheduling+regalloc (same instructions modulo registers, different order).
 void IceWall_8049DE18::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params1;
@@ -302,4 +236,80 @@ void IceWall_8049DE18::draw() {
         params1.field_0x1c = 1;
     }
     fn_801F02BC("enemy_both2_sob.bin", mSprite.mCel + 0x1CB, &params1, 7, 0, false, 1.0f, 1.0f);
+}
+
+// The three functions below are plain functions that update inlines (state 0) and whose own copies
+// the linker dropped: the original's .sdata2 has 0.0f, 1.0f and 0.5f ahead of draw's 32.0f, so the
+// code that creates them was generated before draw (tools/pool.py). The pool proves the place and
+// the order (the 0.0f of the two tests before startMelting's 1.0f and 0.5f); the boundaries are
+// the bool results update tests (li 1 / li 0, clrlwi.) and inlining (the whole switch as one
+// function is not inlined).
+
+// The wall starts to melt: the smoke emitters (on layer 0) and the sound.
+void IceWall_8049DE18::startMelting() {
+    deleteEmitter(&mEmitter100);
+    deleteEmitter(&mEmitter104);
+    s32 layer = field_0x4;
+    if (layer == 0) {
+        f32 scale = 1.0f;
+        if (field_0x230 == 1) {
+            scale = 0.5f;
+        }
+        field_0x27c = spawnEmitter_8013CC50(layer, &mPos, 0x28D, 1, 0, NULL, NULL, true, scale);
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0x28E, 1, 0, NULL, NULL, true, scale);
+    }
+    startSound_801F0E34(0x30061, 0);
+    field_0x234 = 1;
+}
+
+// Whether the player probe fn_8023AB94 hits the wall's box or a 'FIRE' actor touches the wall.
+bool IceWall_8049DE18::hitByFire() {
+    JGeometry::TBox2f box;
+    JGeometry::TVec2f hitPos;
+    box.set(mBox);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    hitPos.set(0.0f, 0.0f);
+    if (fn_8023AB94(&box, field_0x4, &hitPos) >= 0 || fn_801F2718('FIRE') >= 0) {
+        return true;
+    }
+    return false;
+}
+
+// Whether one of the four player probes hits the wall's box (at its height on the screen); the
+// arrow, bomb or 'PCDM' actor that hit is told so (fn_801CC820 / fn_801CC538 / fn_801CC640).
+bool IceWall_8049DE18::hitByWeapon() {
+    JGeometry::TBox2f box;
+    JGeometry::TVec3f stack40;
+    JGeometry::TVec2f hitPos;
+    hitPos.set(0.0f, 0.0f);
+    f32 screenY = mPos.y - mPos.z;
+    box.set(mBox2);
+    box.i.x += mPos.x;
+    box.i.y += screenY;
+    box.f.x += mPos.x;
+    box.f.y += screenY;
+
+    s32 hitCode = fn_8023AA18(&box, field_0x4, &hitPos);
+    if (hitCode >= 0) {
+        return true;
+    }
+    hitCode = fn_8023AE34(&box, field_0x4, &hitPos);
+    if (hitCode >= 0) {
+        fn_801CC820(hitCode, NULL);
+        return true;
+    }
+    hitCode = fn_8023AC74(&box, field_0x4, &hitPos);
+    if (hitCode >= 0) {
+        fn_801CC538(hitCode, &hitPos, &stack40, NULL);
+        return true;
+    }
+    hitCode = fn_8023AD54(&box, field_0x4, &hitPos);
+    if (hitCode >= 0) {
+        fn_801CC640(hitCode, NULL, NULL);
+        return true;
+    }
+    return false;
 }
