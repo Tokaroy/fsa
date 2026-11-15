@@ -82,7 +82,7 @@ void HammerShopMinigame_8049C858::fn_801003F4() {
     }
 }
 
-// FIXME(shotgun): 95.54 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.84 %, missing/extra; behaviour near.
 void HammerShopMinigame_8049C858::update() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
