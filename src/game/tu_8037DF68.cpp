@@ -1042,10 +1042,6 @@ static inline void setWindowBit(s32 window) {
     getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
 }
 
-// FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
-// (releaseSerial branch shape)
-// fn_80385960 for a window an actor `serial` speaks in: once the actor (and, without option 4,
-// the players) let go, the window closes and fn_803895EC releases the waiting windows.
 bool fn_80384C58(s32 player, s32 serial) {
     s32 window = windowIndex(player);
     if (mappedWindow(window)->field_0x24 == 0) {
