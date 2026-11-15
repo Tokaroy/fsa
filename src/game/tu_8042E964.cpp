@@ -556,7 +556,7 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     lbl_8053AD78->mFont->getCellHeight();
     field_0xea = 0xFF;
     field_0xe4 = 1;
-    s8 digit = value + '0';
+    u8 digit = value + '0';
     s32 i = 0;
     s32 code = 0;
     u8 choice = 0;
