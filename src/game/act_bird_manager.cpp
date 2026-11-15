@@ -292,9 +292,6 @@ static inline void updateByState(cls_804A5C88* self) {
     }
 }
 
-// FIXME: 97.74 %, missing/extra; behaviour clean.
-// (missing/extra). In the mAlive-clearing loop of state 1 the slot pointer and the loop counter
-// trade registers (r29/r30), which costs ours one extra mr (85 vs 84 instructions); the rest matches.
 void cls_804A5C88::vfunc_0x90(u8 mapHit) {
     fn_80207A60();
     updateByState(this);
