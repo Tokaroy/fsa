@@ -1450,7 +1450,7 @@ void Player_804A6F38::fn_8025AED0() {
             dir.z = 0.0f;
             dir.normalize();
             if (!dir.isZero()) {
-                dir.scale(6.0f);
+                dir *= 6.0f;
                 mPos += dir;
             }
             mPos.z = 0.0f;
