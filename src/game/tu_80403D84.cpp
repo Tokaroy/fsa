@@ -1326,9 +1326,6 @@ void MapScreen_804B1288::fn_8040F35C() {
     }
 }
 
-// FIXME: 95.09 %, scheduling+regalloc + reloc-name; behaviour clean.
-// The product is a local of its own: the original leaves -250 + 250 * t * t unfused (fmuls, fmuls,
-// fadds), which MWCC does only across statements (also fn_8040F16C, fn_8040ED20).
 void MapScreen_804B1288::fn_8040F288() {
     // Kept as its own local to match: the original leaves the product unfused (fmuls, fmuls, fadds).
     f32 rise = 250.0f * ((f32)field_0x358 / 90.0f) * ((f32)field_0x358 / 90.0f);
@@ -1346,9 +1343,6 @@ void MapScreen_804B1288::fn_8040F288() {
     }
 }
 
-// FIXME: 98.94 %, regalloc-only; behaviour clean.
-// The product is its own local, as in
-// fn_8040F288 (the original leaves it unfused).
 void MapScreen_804B1288::fn_8040F16C() {
     field_0x434 += 0x200;
     field_0x436 += 0x400;
@@ -1367,9 +1361,6 @@ void MapScreen_804B1288::fn_8040F16C() {
     }
 }
 
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
-// `drop` and `tt` are locals because the original leaves those products unfused (fmuls / fadds, fsubs),
-// which MWCC does only across statements (as fn_8040F288 / fn_8040F16C).
 void MapScreen_804B1288::fn_8040ED20() {
     field_0x434 += 0x200;
     field_0x436 += 0x400;
