@@ -194,8 +194,8 @@ void Block_804A7A10::update() {
         } else {
             JGeometry::TBox2f box2(mBox);
             box2.i.x += mPos.x;
-            box2.f.x += mPos.x;
             box2.i.y += mPos.y;
+            box2.f.x += mPos.x;
             box2.f.y += mPos.y;
             s32 player = fn_80239040(mSerial);
             for (s32 i = 0; i < 4; i++) {
