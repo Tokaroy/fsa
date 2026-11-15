@@ -119,8 +119,8 @@ void cls_804AE7D8::update() {
     JGeometry::TVec3f tmp;
 
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x244) {
