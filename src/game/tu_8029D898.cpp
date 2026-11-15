@@ -540,12 +540,12 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
         leader = fn_8022F3DC(player);
     }
     JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
-    s32 layerOffset = 8;
+    u8 layerOffset = 8;
     if (layer < 8) {
         layerOffset = 1;
     }
     s32 item = fn_802373EC(leader);
-    u32 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer + layerOffset, field_0x20);
+    u16 tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer + layerOffset, field_0x20);
     if (tile == 0xE) {
         return false;
     }
