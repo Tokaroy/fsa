@@ -152,13 +152,13 @@ void cls_8049C718::init() {
     gAudioMgr_8053AF80->fn_80458F9C(0x3C);
     u32 low = mSerial & 0xFFFF;
     for (s32 i = 0; i < 0x18; i++) {
-        getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos, low + 0x1000000 + (i << 16), -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos, low + (i << 16) + 0x1000000, -1, -1);
         mSlot++;
     }
     if (mFlags & 8) {
         for (s32 i = 0; i < 2; i++) {
             mPartner[i] = getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos,
-                                                                         low + 0x2000000 + (i << 16), -1, -1);
+                                                                         low + (i << 16) + 0x2000000, -1, -1);
         }
     }
 }
