@@ -1287,7 +1287,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
         s32 h = rect2->field_0xc;
         for (s32 py = half; py < half + 0xA0; py += step) {
             u16 sy = 0.00625f * (h * py) + y;
-            for (s16 px = half; px < half + 0xF0; px += step) {
+            for (s32 px = half; px < half + 0xF0; px += step) {
                 u16 sx = 0.004166667f * (w * px) + x;
                 u8 argb[4];
                 GXPeekARGB(sx, sy, (u32*)argb);
