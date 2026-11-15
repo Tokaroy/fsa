@@ -1534,12 +1534,10 @@ void GameView_804A9950::fn_802D7D00(s32 layer, s32 bit, bool set) {
 }
 
 // FIXME: 99.43 %, regalloc-only; behaviour clean.
-// Regalloc only, as fn_802D7B34: the target keeps the shift in r31 and the slot index in r30.
 void GameView_804A9950::fn_802D7BE8(s32 layer, s32 slot, u32 value) {
     s32 idx = layer < 8 ? 0 : layer - 7;
-    s32 shift = 60 - slot * 4;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] &= (0xFULL << shift) ^ -1;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] |= (u64)value << shift;
+    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] &= (0xFULL << (60 - slot * 4)) ^ -1;
+    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] |= (u64)value << (60 - slot * 4);
 }
 
 // FIXME: 99.44 %, regalloc-only; behaviour clean.
@@ -1874,7 +1872,8 @@ void GameView_804A9950::fn_802D6AAC(u8 value) {
 }
 
 GameView_804A9950* getGameView_802D6A9C(void) {
-    return gGameRoot_8053AAF8->field_0x4->mView;
+    GameView_804A9950* view = gGameRoot_8053AAF8->field_0x4->mView;
+    return view;
 }
 
 // Scans a layer's tile grid (0x800 cells): records the cells of the screen's switchable
