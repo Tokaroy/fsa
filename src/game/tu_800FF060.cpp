@@ -89,8 +89,8 @@ void HammerShopMinigame_8049C858::update() {
     JGeometry::TVec3f focus = mPos;
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     field_0x234++;
