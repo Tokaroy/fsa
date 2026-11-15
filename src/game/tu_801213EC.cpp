@@ -579,23 +579,25 @@ void EscortBase_8049E0C8::vfunc_0xB0(f32* x, f32* y, s32* player) {
     *y = 16.0f + v;
 }
 
-// FIXME: 92.90 %, missing/extra + reloc-name; behaviour clean.
-// Branch layout differs: the original tests target < 0 / >= 4 with a direct jump past the loop (result = target
-// on that path) and keeps target in r29, result in r31; ours copies target into result before the test (extra mr) and the
-// loop/result registers are shifted by one.
+static inline s32 findGroupMember(s32 target) {
+    if (target < 0 || target >= 4) {
+        return target;
+    }
+    s32 i;
+    s32 result = target;
+    for (i = 0; i < 4; i++) {
+        if (fn_8022E438(i, target)) {
+            result = i;
+        }
+    }
+    return result;
+}
+
+// FIXME: 96.74 %, scheduling+regalloc + reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     *x = 0.0f;
     *y = 0.0f;
-    s32 target = *player;
-    s32 result = target;
-    if (target >= 0 && target < 4) {
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_8022E438(i, target)) {
-                result = i;
-            }
-        }
-    }
-    *player = result;
+    *player = findGroupMember(*player);
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
         v = 16.0f;
