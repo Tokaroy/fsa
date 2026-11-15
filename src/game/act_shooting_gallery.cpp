@@ -662,15 +662,16 @@ void ShootingGallery_804A2B18::fn_8019E7A4() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = field_0x290;
+    f32 scale = field_0x290;
+    mtx[0][0] = scale;
     mtx[0][1] = 0.0f;
     mtx[0][2] = 0.0f;
     mtx[1][0] = 0.0f;
-    mtx[1][1] = field_0x290;
+    mtx[1][1] = scale;
     mtx[1][2] = 0.0f;
     mtx[2][0] = 0.0f;
     mtx[2][1] = 0.0f;
-    mtx[2][2] = field_0x290;
+    mtx[2][2] = scale;
     params.mMtx = mtx;
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + 8, &params, 0, 1.0f, 1.0f);
 }
