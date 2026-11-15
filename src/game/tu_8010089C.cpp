@@ -117,7 +117,7 @@ static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
     }
 }
 
-// FIXME: 95.59 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.68 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): register allocation and float literal split differ.
 void WhackAMoleShop_8049C8EC::draw() {
     if (field_0x90 & 0x10000) {
@@ -139,7 +139,7 @@ void WhackAMoleShop_8049C8EC::draw() {
     }
 }
 
-// FIXME(shotgun): 95.73 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
 void WhackAMoleShop_8049C8EC::fn_80100D28() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
@@ -401,7 +401,7 @@ void WhackAMoleShop_8049C8EC::showTimer() {
     }
 }
 
-// FIXME(shotgun): 96.16 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.22 %, missing/extra; behaviour clean.
 void WhackAMoleShop_8049C8EC::fn_80100A90() {
     field_0x290 = static_cast<WhackAMoleShop_8049C8EC*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x90 & 0xFFFF));
     mBox.i.x = -12.0f;
@@ -477,7 +477,7 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
     spawnSmoke();
 }
 
-// FIXME(shotgun): 97.43 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.62 %, missing/extra; behaviour near.
 void WhackAMoleShop_8049C8EC::vfunc_0x44() {
     s32 player = field_0x10c;
     if (player < 0) {
