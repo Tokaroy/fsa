@@ -106,6 +106,16 @@ static inline bool hiddenFromShownLayer(const Player_804A6F38* player) {
     return r;
 }
 
+// The player's leader (field_0xd60), or negative without one. Provisional name (no symbol: always
+// inlined). The group loops read the leader through an inline with a local of its own, not as a
+// local of the loop: MWCC creates an inlined function's locals when its call is expanded, so this
+// value is created, and coloured, after every loop counter of the caller. Written as a plain local
+// of fn_80248970 / fn_80248778 it lands in another register in about 30 callers.
+static inline s32 leaderOf(const Player_804A6F38* player) {
+    s32 leader = player->field_0xd60;
+    return leader;
+}
+
 // The gate in front of every pad query of the player (fn_80246904 and the
 // functions around it): the player flags (fn_802413F0); in group mode 4
 // only the player whose turn it is (fn_80240888 == its place in line); and
@@ -3308,7 +3318,7 @@ s32 Player_804A6F38::fn_80248970() const {
         if (i == field_0x4) {
             count++;
         } else if (fn_8022F514(i)) {
-            leader = field_0xd60;
+            leader = leaderOf(this);
             if (leader >= 0) {
                 if (leader == fn_8022F3DC(i)) {
                     count++;
@@ -3347,7 +3357,7 @@ s32 Player_804A6F38::fn_80248778() const {
     }
     s32 count = 0;
     for (s32 i = 0; i < field_0x4; i++) {
-        s32 partner = field_0xd60;
+        s32 partner = leaderOf(this);
         if (partner == fn_8022F3DC(i)) {
             count++;
         }
