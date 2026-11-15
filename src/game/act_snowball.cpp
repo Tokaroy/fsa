@@ -140,8 +140,8 @@ void cls_8049D020::update() {
     field_0x26c = 1.0f;
     JGeometry::TBox2<f32> box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x238 != 12 && field_0x238 != 13) {
         JGeometry::TVec2<f32> playerPos;
