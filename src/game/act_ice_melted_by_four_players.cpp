@@ -42,7 +42,7 @@ IceMeltedByFourPlayers_804AE888::~IceMeltedByFourPlayers_804AE888() {
     }
 }
 
-// FIXME: 97.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.22 %, missing/extra + reloc-name; behaviour clean.
 // Same shape; the box copy's adds are scheduled differently
 // (the original keeps f.x in f2 and reloads pos.y into it), case 1 stores the
 // 0 of field_0x24c from a register the original holds for its loop, the
