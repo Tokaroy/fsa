@@ -317,8 +317,7 @@ bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-    if ((sub->mView->field_0x4 == 9 && sub->mView->field_0x8 == 3) ||
+    if ((getGameView_802D6A9C()->field_0x4 == 9 && getGameView_802D6A9C()->field_0x8 == 3) ||
         getGameView_802D6A9C()->field_0x4 >= 13) {
         return true;
     }
@@ -980,14 +979,13 @@ u8 GameView_804A9950::fn_802DA630() {
             dx = 70.0f;
         }
         JGeometry::TVec3f pos;
-        s32 end;
         int i;
         for (i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             pos.x += dx;
             fn_80230498(i, &pos, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
-        end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->mActorEnd;
         for (i = 0; i < end; i++) {
             cls_804AB528* actor = (cls_804AB528*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_OSIN && actor->field_0x230 == 2) {
