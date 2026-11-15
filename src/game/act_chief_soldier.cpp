@@ -219,7 +219,7 @@ void ChiefSoldier_804A0B90::init() {
         field_0x190 = 0;
     }
     field_0x2a4 = 0;
-    field_0x98 = (s32)(3.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) & 3;
+    field_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3;
     field_0x2b4.set(mPos);
     field_0x284 = 10000;
     field_0x238 = -1;
