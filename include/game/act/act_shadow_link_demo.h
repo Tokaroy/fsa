@@ -22,6 +22,9 @@ public:
 
     // 0x8011B878; called by vfunc_0x54 with the index of the matched entry.
     void fn_8011B878(s32 index);
+    // Not in the binary: plain functions that update and fn_8011B878 inline.
+    void hopDown();
+    void spawnFlash();
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor
     /* 0x231 */ bool field_0x231; // cleared by the constructor
