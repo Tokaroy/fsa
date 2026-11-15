@@ -110,30 +110,7 @@ void cls_8049DA0C::init() {
     mEmitter2a8 = spawnEmitter_8013CC50(field_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-inline bool cls_8049DA0C::checkPlayers() {
-    for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023561C(i)) {
-            return false;
-        }
-    }
-    if (fn_80230CFC(0) != 3) {
-        return false;
-    }
-    u16 angle;
-    s32 dir;
-    s32 player;
-    f32 dist;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
-    if (dir != 2) {
-        return false;
-    }
-    if (dist <= 16.0f) {
-        return true;
-    }
-    return false;
-}
-
-// FIXME: 96.12 %, different + reloc-name; behaviour drift.
+// FIXME: 98.07 %, different; behaviour drift.
 // Same length. Differences: fn_8038BD08's result is converted from a byte in the original
 // (clrlwi / neg / or / srwi.; the shared declaration returns bool); the box corner adds store in another
 // order; case 2's camera setup reloads mPos.x / mPos.y where the original reuses registers; the loop
@@ -158,12 +135,7 @@ void cls_8049DA0C::update() {
                 fn_8023077C();
                 fn_8022FE80(0, field_0x4, mSerial, 1, 0);
                 fn_8022FD8C(mSerial);
-                u32 msg = 0x4b2;
-                if (field_0x230 != 0) {
-                    msg = 0x4b3;
-                }
-                bool res = fn_8038BD08(0, (u16)msg, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
-                if (res) {
+                if (showMessage()) {
                     fn_80117074(1);
                 }
                 break;
@@ -229,20 +201,7 @@ void cls_8049DA0C::update() {
         }
         break;
     case 5: {
-        bool flag = false;
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            fn_801CD950(&field_0x23c, 0.3f, 0.03f);
-            fn_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
-            fn_80230BF4(i, 2);
-            fn_80230498(i, &pos, mAnim250.mCel, 0xff, -128, -128, true);
-            mEmitters288[i]->setGlobalTranslation(pos);
-            mEmitters298[i]->setGlobalTranslation(pos);
-            if (i == 0 && field_0x244.x - pos.x >= 24.0f) {
-                flag = true;
-            }
-        }
-        if (flag) {
+        if (spreadPlayers()) {
             fn_80117074(6);
         }
         break;
@@ -264,17 +223,7 @@ void cls_8049DA0C::update() {
         }
         break;
     case 9: {
-        bool flag = false;
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            pos.y += 1.1f;
-            if (pos.y >= mPos.y + 80.0f) {
-                pos.y = mPos.y + 80.0f;
-                flag = true;
-            }
-            fn_802303FC(i, &pos, true);
-        }
-        if (flag) {
+        if (raisePlayers()) {
             fn_80117074(10);
         }
         break;
@@ -292,7 +241,6 @@ void cls_8049DA0C::update() {
     mAnim250.fn_801D1C18();
 }
 
-// FIXME: 99.96 %, reloc-name; behaviour clean.
 void cls_8049DA0C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
@@ -345,9 +293,9 @@ s32 cls_8049DA0C::vfunc_0x5C() {
     }
 }
 
-// FIXME: 97.52 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.58 %, missing/extra; behaviour drift.
 // Case 7's emitter release loop: the original sets up its counter and base pointers with
-// one instruction more and other registers; the rest is register numbering and .sdata2 relocations.
+// one instruction more and other registers; the rest is register numbering.
 void cls_8049DA0C::fn_80117074(s32 index) {
     switch (index) {
     case 2:
@@ -405,27 +353,100 @@ void cls_8049DA0C::fn_80117074(s32 index) {
             fn_80230FD0(i, 0x20047);
         }
         break;
-    case 11: {
-        JGeometry::TVec3f pos = mPos;
-        for (s32 i = 0; i < 4; i++) {
-            const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
-            pos.x = playerPos->x;
-            pos.y = playerPos->y;
-            pos.z = playerPos->z;
-            pos.y += -16.0f;
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x33a, 0, 0, NULL, NULL, true, 1.0f);
-        }
+    case 11:
+        spawnPlayerEffects();
         for (s32 i = 0; i < 4; i++) {
             fn_80230BF4(i, 3);
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3f, 0xff, -128, -128, true);
             fn_80230FD0(i, 0x10015);
         }
         break;
-    }
     case 12:
         break;
     }
     field_0x234 = index;
+}
+
+// From here to fn_80116E8C: plain functions that fn_80117074 (the first) and update inline and
+// whose own copies the linker dropped. The original's .sdata2 has their literals ahead of
+// fn_80117074's, in the order of these functions from the bottom up (tools/pool.py).
+// Entering state 11: effect 0x33a 16 above each player.
+void cls_8049DA0C::spawnPlayerEffects() {
+    JGeometry::TVec3f pos = mPos;
+    for (s32 i = 0; i < 4; i++) {
+        const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
+        pos.x = playerPos->x;
+        pos.y = playerPos->y;
+        pos.z = playerPos->z;
+        pos.y += -16.0f;
+        spawnEmitter_8013CC50(field_0x4, &pos, 0x33a, 0, 0, NULL, NULL, true, 1.0f);
+    }
+}
+
+// State 5: the players move apart sideways from field_0x244. True once the first is 24 away.
+bool cls_8049DA0C::spreadPlayers() {
+    bool flag = false;
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        fn_801CD950(&field_0x23c, 0.3f, 0.03f);
+        fn_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
+        fn_80230BF4(i, 2);
+        fn_80230498(i, &pos, mAnim250.mCel, 0xff, -128, -128, true);
+        mEmitters288[i]->setGlobalTranslation(pos);
+        mEmitters298[i]->setGlobalTranslation(pos);
+        if (i == 0 && field_0x244.x - pos.x >= 24.0f) {
+            flag = true;
+        }
+    }
+    return flag;
+}
+
+// State 9: the players rise to 80 above the actor. True once they are there.
+bool cls_8049DA0C::raisePlayers() {
+    bool flag = false;
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        pos.y += 1.1f;
+        if (pos.y >= mPos.y + 80.0f) {
+            pos.y = mPos.y + 80.0f;
+            flag = true;
+        }
+        fn_802303FC(i, &pos, true);
+    }
+    return flag;
+}
+
+// State 0: whether all four players stand in front of the actor, facing it.
+bool cls_8049DA0C::checkPlayers() {
+    for (s32 i = 0; i < 4; i++) {
+        if (!fn_8023561C(i)) {
+            return false;
+        }
+    }
+    if (fn_80230CFC(0) != 3) {
+        return false;
+    }
+    u16 angle;
+    s32 dir;
+    s32 player;
+    f32 dist;
+    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    if (dir != 2) {
+        return false;
+    }
+    if (dist <= 16.0f) {
+        return true;
+    }
+    return false;
+}
+
+// State 0: opens the message (0x4b2 the first time, 0x4b3 after a "no").
+bool cls_8049DA0C::showMessage() {
+    u32 msg = 0x4b2;
+    if (field_0x230 != 0) {
+        msg = 0x4b3;
+    }
+    return fn_8038BD08(0, (u16)msg, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
 }
 
 // FIXME: 97.80 %, scheduling+regalloc; behaviour clean.
