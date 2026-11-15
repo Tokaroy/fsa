@@ -28,6 +28,8 @@ public:
     // with a zero field_0x3c.xy gets its y moved 16 above or below this one,
     // any other gets mLife 0. Always returns false.
     bool fn_80378680();
+    // Not in the binary: a plain function that update inlines.
+    void spawnMeltEmitter();
 
     /* 0x230 */ JPABaseEmitter* mEmitter230; // released by the destructor, then NULL
     /* 0x234 */ s32 field_0x234; // update() switch: 0 (melt starts), 1 (melting)

@@ -11,9 +11,6 @@ static const s32 lbl_804751A8[15] = {
     30, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 1, 1,
 };
 
-// FIXME: 99.69 %, reloc-name; behaviour clean.
-// The code matches; the four box literals (-92, -16, 92, 16)
-// and 1.0f are numbered in another order (@NNN vs lbl_, a data split).
 void IceMeltedByFourPlayers_804AE888::init() {
     mBox.set(-92.0f, -16.0f, 92.0f, 16.0f);
     mBox2.set(mBox);
@@ -42,11 +39,11 @@ IceMeltedByFourPlayers_804AE888::~IceMeltedByFourPlayers_804AE888() {
     }
 }
 
-// FIXME: 99.22 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.38 %, missing/extra; behaviour clean.
 // Same shape; the box copy's adds are scheduled differently
 // (the original keeps f.x in f2 and reloads pos.y into it), case 1 stores the
-// 0 of field_0x24c from a register the original holds for its loop, the
-// request copy and the literals (@NNN vs lbl_) differ.
+// 0 of field_0x24c from a register the original holds for its loop, and the
+// request copy differs.
 void IceMeltedByFourPlayers_804AE888::update() {
     if (fn_8037845C() == 1) {
         return;
@@ -63,9 +60,7 @@ void IceMeltedByFourPlayers_804AE888::update() {
     case 0:
         mBox.set(-96.0f, -16.0f, 96.0f, 16.0f);
         if (fn_80378880() == 1) {
-            if (mEmitter230 == NULL) {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x456, 0, 1, NULL, NULL, true, 1.0f);
-            }
+            spawnMeltEmitter();
             field_0x238 -= 0.002f;
             if (field_0x238 < 0.5f) {
                 field_0x234 = 1;
@@ -143,9 +138,9 @@ u8 IceMeltedByFourPlayers_804AE888::fn_80378880() {
     return playerMask == 0xF;
 }
 
-// FIXME: 99.77 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.84 %, regalloc-only; behaviour clean.
 // regalloc only: the 0.0f compare is fcmpu with the operands
-// in the other registers (f0 and f1 swapped); the literal is @NNN vs lbl_.
+// in the other registers (f0 and f1 swapped).
 bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
     JGeometry::TBox2f ours;
     ours.set(mBox);
@@ -183,6 +178,15 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
         other->mPos = pos;
     }
     return false;
+}
+
+// A plain function that update inlines and whose own copy the linker dropped: the original's
+// .sdata2 starts with 1.0f, ahead of fn_80378680's 0.0f and 16.0f, so it was generated before it
+// (tools/pool.py). Spawns the emitter of the melting ice unless it is there already.
+void IceMeltedByFourPlayers_804AE888::spawnMeltEmitter() {
+    if (mEmitter230 == NULL) {
+        mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x456, 0, 1, NULL, NULL, true, 1.0f);
+    }
 }
 
 // FIXME: 97.99 %, missing/extra; behaviour clean.
