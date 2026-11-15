@@ -5,6 +5,7 @@ to the original code.
   python3 tools/permute.py <unit> <function> [--tier a|b] [--kinds decl,commute,...] [--depth 4]
                                              [--beam 6] [--budget 1500] [--apply] [--json FILE] [-v]
   python3 tools/permute.py --bulk [--class regalloc-only,...] [--units part,...] [--parallel N] [--apply] [--log FILE]
+  python3 tools/permute.py <unit> <function> --deep [--tier b]     # minutes, not seconds: for a stubborn function
   python3 tools/permute.py --list-kinds
 
 What nobody can read off the assembly, a search can find: which of two locals was declared first,
@@ -1521,9 +1522,15 @@ def fn_lines(f):
     return sorted({r[3] for r in f.rows if r[0] and r[3]})
 
 
-def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, log=print, data=None, sideways=3):
+def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, log=print, data=None, sideways=3,
+           uphill=0, per_round=0, seed=0):
     """Beam search from the unit's source. Returns a dict: fn, base/best (pct, score), trace, kinds,
-    text (bytes or None), lead (a below-100 % result that used a tier b rewrite), tried, secs, note."""
+    text (bytes or None), lead (a below-100 % result that used a tier b rewrite), tried, secs, note.
+    uphill > 0 also keeps candidates up to that much WORSE than their parent when a round finds too
+    few better ones (register allocation often needs two changes of which the first alone looks
+    worse); per_round > 0 compiles a random sample of that size per round instead of everything."""
+    import random
+    rng = random.Random(seed)
     kinds = kinds or KINDS_A
     data = data if data is not None else unit.source().encode("utf-8", "surrogateescape")
     dec = lambda b: b.decode("utf-8", "surrogateescape")  # noqa: E731
@@ -1606,10 +1613,13 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
         room = budget - res["tried"]
         if not pool or room <= 0:
             break
+        if per_round and len(pool) > per_round:
+            head = pool[:per_round // 3]                      # the ordered front (declarations, diff lines)
+            pool = head + rng.sample(pool[per_round // 3:], per_round - len(head))
         pool = pool[:room]
         _, scores = scratch.farm(unit, [c[1] for c in pool], names, hashes=True)
         res["tried"] += len(pool)
-        better, side, failed = [], [], 0
+        better, side, up, failed = [], [], [], 0
         for (ed, nw, nf, trace, used, parent, ph), r in zip(pool, scores):
             if isinstance(r, Exception):
                 failed += 1
@@ -1626,6 +1636,8 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
                 better.append(item)
             elif s == parent and h != ph and h not in seen_code:
                 side.append(item)
+            elif uphill and parent < s <= parent + uphill and h not in seen_code:
+                up.append(item)
         better.sort(key=lambda x: (x[0], len(x[4])))
         uniq = []
         for it in better:
@@ -1658,6 +1670,14 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
         for it in side[:sideways]:
             seen_code.add(it[1])
             nxt.append(it)
+        if uphill and len(nxt) < beam:
+            up.sort(key=lambda x: x[0])
+            for it in up:
+                if len(nxt) >= beam:
+                    break
+                if it[1] not in seen_code:
+                    seen_code.add(it[1])
+                    nxt.append(it)
         if not nxt:
             break
         # diff lines of each new state, for the next round's ordering (one objdiff run each, on the slice)
@@ -1706,7 +1726,8 @@ def bulk(a, kinds):
             by_unit.setdefault(t[0], []).append(t)
         jobs = max(2, scratch.JOBS * 2 // a.parallel)
         argv0 = [sys.executable, __file__, "--bulk", "--class", "all", "--structural", a.structural, "--kinds", ",".join(kinds),
-                 "--depth", str(a.depth), "--beam", str(a.beam), "--budget", str(a.budget)] + \
+                 "--depth", str(a.depth), "--beam", str(a.beam), "--budget", str(a.budget), "--uphill", str(a.uphill),
+                 "--per-round", str(a.per_round)] + \
                 (["--apply"] if a.apply else []) + (["--partial"] if a.partial else []) + (["--log", a.log] if a.log else []) + \
                 (["--apply-b"] if a.apply_b else []) + ["--save", a.save]
         if logf:
@@ -1735,7 +1756,8 @@ def bulk(a, kinds):
         unit = None
         try:
             unit = units.get(uname) or units.setdefault(uname, scratch.Unit(uname))
-            r = search(unit, fn, kinds, a.depth, a.beam, a.budget, False, log=lambda *_: None)
+            r = search(unit, fn, kinds, a.depth, a.beam, a.budget, False, log=lambda *_: None, uphill=a.uphill,
+                       per_round=a.per_round)
         except Exception as e:  # noqa: BLE001
             r = {"fn": fn, "base": (pct, -1), "best": (pct, -1), "trace": [], "kinds": [], "text": None, "lead": None, "tried": 0,
                  "cls": cls, "note": f"{type(e).__name__}: {str(e)[:200]}", "secs": 0}
@@ -1785,6 +1807,10 @@ def main():
     ap.add_argument("--depth", type=int, default=4)
     ap.add_argument("--beam", type=int, default=6)
     ap.add_argument("--budget", type=int, default=1500, help="candidates compiled at most")
+    ap.add_argument("--deep", action="store_true",
+                    help="a long search for a stubborn function: depth 14, 20000 candidates, worse-by-a-little steps allowed")
+    ap.add_argument("--uphill", type=int, default=0, help="keep candidates up to this much worse than their parent")
+    ap.add_argument("--per-round", type=int, default=0, help="compile a random sample of this size per round")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--partial", action="store_true", help="with --bulk --apply: also apply results below 100 %%")
     ap.add_argument("--apply-b", action="store_true", help="with --bulk --apply: also apply results that used a tier b rewrite")
@@ -1806,6 +1832,9 @@ def main():
     ap.add_argument("--only", help=argparse.SUPPRESS)
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args()
+    if a.deep:
+        a.depth, a.budget = max(a.depth, 14), max(a.budget, 20000)
+        a.uphill, a.per_round, a.beam = a.uphill or 40, a.per_round or 600, max(a.beam, 8)
     kinds = [k for k in a.kinds.split(",") if k] if a.kinds else (KINDS_A + KINDS_B if a.tier == "b" else KINDS_A)
     bad = [k for k in kinds if k not in GENERATORS]
     if bad:
@@ -1817,7 +1846,7 @@ def main():
         return 0
     unit = scratch.Unit(a.unit)
     try:
-        r = search(unit, a.function, kinds, a.depth, a.beam, a.budget, a.verbose)
+        r = search(unit, a.function, kinds, a.depth, a.beam, a.budget, a.verbose, uphill=a.uphill, per_round=a.per_round)
     except (KeyError, scratch.CompileError) as e:
         sys.exit(str(e))
     finally:
