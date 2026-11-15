@@ -84,7 +84,7 @@ class Obj:
         byname = {p[2]: k for k, p in enumerate(pool)}
         funcs = sorted((val, size, name, shndx) for name, val, size, info, shndx in syms
                        if (info & 0xF) == 2 and 0 < shndx < len(secs) and secs[shndx]["n"].startswith(".text") and size)
-        refs, single = {}, set()
+        refs, single, double = {}, set(), set()
         for r in secs:
             if r["type"] != 4 or not secs[r["info"]]["n"].startswith(".text"):
                 continue
@@ -98,15 +98,23 @@ class Obj:
                 if k is None:  # through the section symbol: the object that holds the address
                     at = val + add
                     k = next((j for j, p in enumerate(pool) if p[0] <= at < p[0] + p[1]), None)
-                if k is not None:
-                    refs.setdefault(r["info"], []).append((off, k))
-                    word, = struct.unpack_from(">I", b, text["off"] + (off & ~3))
-                    if word >> 26 == 48:  # lfs: a float, whatever size the symbol was given
-                        single.add(k)
-        # a float followed by padding (the last literal of a unit, or one before a double) is an 8-byte
-        # symbol in dtk's split: it is the 4-byte float the code loads with lfs
-        self.pool = pool = [(o, 4, n, d[:4]) if k in single and sz == 8 and d[4:] == b"\0\0\0\0" else (o, sz, n, d)
-                            for k, (o, sz, n, d) in enumerate(pool)]
+                if k is None:
+                    continue
+                word, = struct.unpack_from(">I", b, text["off"] + (off & ~3))
+                if word >> 26 == 48:    # lfs
+                    single.add(k)
+                elif word >> 26 == 50:  # lfd
+                    double.add(k)
+                else:
+                    continue            # a string or a table of the section: not a literal of the pool
+                refs.setdefault(r["info"], []).append((off, k))
+        # The pool is what the code loads as a float or a double. Short strings, tables and padding share
+        # the section and are left out. dtk gives a float followed by padding an 8-byte symbol: it is the
+        # 4-byte float the code loads with lfs.
+        keep = sorted(single | double)
+        renum = {k: i for i, k in enumerate(keep)}
+        self.pool = [(pool[k][0], 4, pool[k][2], pool[k][3][:4]) if k in single and k not in double else pool[k] for k in keep]
+        refs = {sec: [(off, renum[k]) for off, k in v] for sec, v in refs.items()}
         for val, size, name, shndx in funcs:  # .text order = the order the functions were generated
             seq = []
             for off, k in sorted(refs.get(shndx, [])):
