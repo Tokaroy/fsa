@@ -95,8 +95,8 @@ void IceWall_8049DE18::update() {
 
     box.set(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x234) {
@@ -156,8 +156,8 @@ void IceWall_8049DE18::update() {
 
         box3.set(mBox);
         box3.i.x += mPos.x;
-        box3.f.x += mPos.x;
         box3.i.y += mPos.y;
+        box3.f.x += mPos.x;
         box3.f.y += mPos.y;
         hitPos2.set(0.0f, 0.0f);
         bool hit3;
