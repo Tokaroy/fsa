@@ -214,6 +214,14 @@ def report(name, tgt, ours, verbose=True):
           + {"same": "the same pool", "order": f"same literals, another order (equal up to #{k})",
              "values": f"other literals (equal up to #{k})"}[kind])
     if kind == "same":
+        # the same literals in the same order can still sit at other offsets: other data leads the section
+        shift = [(tgt.pool[i][0], ours.pool[i][0]) for i in range(len(P)) if tgt.pool[i][0] != ours.pool[i][0]]
+        if shift:
+            a, b = shift[0]
+            print(f"  but the literals sit at other offsets (first: original +{a:X}, ours +{b:X}): the original has "
+                  f"{'more' if a > b else 'less'} data ahead of them in .sdata2 (small const tables, a const the unit must "
+                  "define, a string). Every literal load stays reloc-name until this unit defines exactly that data.")
+            return "shifted"
         return kind
     if extra:
         print("  ours only: " + ", ".join(show(*x) for x in extra[:12]))
@@ -232,8 +240,12 @@ def report(name, tgt, ours, verbose=True):
         print(f"  early run #{ks[0]}..#{ks[-1]} ({vals}): loaded by {short(user)}, but created before the literals of "
               f"{short(before)}: that code was a plain function generated before it (below it in the source)")
     if kind == "order" and not er:
-        print("  the original's order is its functions' .text order: check ours with tools/order_check.py, then the order "
-              "of the statements inside the first function that differs")
+        print("  no run is out of its function's place, so the difference lies inside one function's literals: either "
+              "its statements create them in another order, or part of it was a plain function generated before it "
+              "(a leading run: --fix finds those too). Also check tools/order_check.py.")
+    if er:
+        print("  (an early run can also be the out-of-line copy of a header inline, generated where it is first used "
+              "rather than at its address: then no plain function of this file will produce it)")
     return kind
 
 
@@ -255,7 +267,9 @@ def survey(a):
         P, Q = tgt.values(), ours.values()
         kind, extra, missing = verdict(P, Q)
         if kind == "same":
-            continue
+            if all(tgt.pool[i][0] == ours.pool[i][0] for i in range(len(P))):
+                continue
+            kind = "shifted"
         fns = st.get(u["name"], {})
         wait = [(f, v[1]) for f, v in fns.items() if v[0] < 100 and v[2] in ("reloc-name", "reloc-name-unverified")]
         part = [(f, v[1]) for f, v in fns.items() if v[0] < 100 and "reloc-name" in v[2] and v[2] not in ("reloc-name", "reloc-name-unverified")]
@@ -263,7 +277,7 @@ def survey(a):
                      "missing": len(missing), "early_runs": len(early_runs(tgt)), "waiting": len(wait),
                      "waiting_bytes": sum(s for _, s in wait), "partly": len(part)})
     rows.sort(key=lambda r: (-r["waiting"], r["unit"]))
-    for kind in ("order", "values"):
+    for kind in ("order", "values", "shifted"):
         sel = [r for r in rows if r["kind"] == kind]
         print(f"{kind}: {len(sel)} units, {sum(r['waiting'] for r in sel)} functions wait on the pool alone "
               f"({sum(r['waiting_bytes'] for r in sel)} B), {sum(r['partly'] for r in sel)} more have it among other differences")

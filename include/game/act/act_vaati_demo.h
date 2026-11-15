@@ -53,6 +53,10 @@ public:
     // Takes the table index 1..11 found by vfunc_0x54.
     void fn_80115F9C(s32 index);
 
+    // Not in the binary: plain functions that update inlines.
+    void updateBobbing();
+    void updateDescent();
+
     // Named after its vtable, 0x8049D940, slot 0x0C. __ct__12cls_8049D940Fv
     // (game/act_vaati_demo.cpp) runs the base constructor, sets the vtable and
     // initialises the members in declaration order. init() (0x801169E8,

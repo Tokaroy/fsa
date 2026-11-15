@@ -9,6 +9,11 @@
 #include "game/Map.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_shadow_link_2.h"
+#include "game/GameGlobals.h"
+
+// 110, the divisor of the fade in game/tu_801D3CBC.cpp (declared in GameGlobals.h). It leads this
+// unit's .sdata2, before the function literals.
+const s32 lbl_8053EE00 = 110;
 
 const u32 lbl_80469450[4] = {
     0x000400BB,
@@ -21,7 +26,6 @@ const u32 lbl_80469450[4] = {
 // FIXME(shotgun): not written; it is the implicit inline destructor of the base classes.
 
 // 0x801C573C.
-// FIXME(shotgun): 99.93 %, reloc-name; behaviour clean.
 ShadowLink2_804A43E8::ShadowLink2_804A43E8() {
     field_0x550.fn_80217484();
     field_0x55c[0] = 0;
@@ -72,7 +76,7 @@ u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e) {
 }
 
 // 0x801C544C.
-// FIXME(shotgun): 96.76 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.87 %, scheduling+regalloc; behaviour clean.
 void ShadowLink2_804A43E8::init() {
     EnemyBase_804A4808::init();
     field_0x94 = fn_801C0D70()->fn_801C14A8(mSerial);
@@ -150,7 +154,6 @@ bool ShadowLink2_804A43E8::fn_801C53C4() {
     return result;
 }
 
-// FIXME(shotgun): 99.84 %, reloc-name; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C5348(f32 range) {
     bool near = false;
     s32 player = fn_801D05F8(&mPos, 0.0f);
@@ -167,7 +170,6 @@ bool fn_801C5340() {
 
 // 0x801C50A8. Leaves the old state (mState) for `state`.
 // Remaining diff: the float constants are literals where the original uses lbl_ names.
-// FIXME: 99.76 %, reloc-name; behaviour drift.
 void ShadowLink2_804A43E8::fn_801C50A8(int state) {
     mFlags &= ~0x40000;
     field_0x55c[0] = 0;
@@ -234,7 +236,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
 }
 
 // 0x801C3B7C.
-// FIXME: 95.59 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.91 %, missing/extra + reloc-name; behaviour drift.
 // FIXME(shotgun): behaviour drift remains (see fingerprint).
 void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     fn_801C50A8(state);
@@ -722,7 +724,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
 }
 
 // 0x801C2ED4.
-// FIXME(shotgun): 98.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.95 %, missing/extra; behaviour drift.
 void ShadowLink2_804A43E8::vfunc_0x90(u8 mapHit) {
     if (mapHit) {
         if (vfunc_0x4C(field_0x4, &mPos)) {
@@ -1158,7 +1160,7 @@ void ShadowLink2_804A43E8::vfunc_0x84() {
 }
 
 // 0x801C2BF4.
-// FIXME(shotgun): 88.86 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 89.10 %, different; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x88() {
     switch (mState) {
     case 6:
@@ -1204,7 +1206,7 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
 }
 
 // 0x801C2A84.
-// FIXME(shotgun): 96.36 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.47 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x98() {
     switch (mState) {
     case 0x17:
@@ -1281,7 +1283,7 @@ void ShadowLink2_804A43E8::vfunc_0x74() {
 }
 
 // 0x801C283C.
-// FIXME(shotgun): 91.56 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 91.70 %, missing/extra; behaviour clean.
 void ShadowLink2_804A43E8::vfunc_0xA0() {
     switch (mState) {
     case 0:

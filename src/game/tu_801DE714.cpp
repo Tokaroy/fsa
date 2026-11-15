@@ -9,7 +9,32 @@
 #include "game/act/tu_801DE714.h"
 #include "game/tu_803B8C74.h"
 
-extern const s16* lbl_804A51A0[]; // the animation tables (.data, this unit)
+// The animation tables: pairs of frame and duration, ended by -1.
+static const s16 lbl_80469AF8[] = { 0, 10, 1, 10, 2, 10, 1, 10, -1, -1 };
+static const s16 lbl_80469B0C[] = { 3, 10, 4, 10, 5, 10, 4, 10, -1, -1 };
+static const s16 lbl_8053F450[] = { 6, 4, -1, -1 };
+static const s16 lbl_80469B20[] = { 7, 2, 8, 2, 9, 2, -1, -1 };
+static const s16 lbl_80469B30[] = { 10, 2, 11, 2, 12, 2, -1, -1 };
+static const s16 lbl_80469B40[] = { 21, 4, 19, 4, 22, 4, 20, 4, -1, -1 };
+static const s16 lbl_8053F458[] = { 27, 3, -1, -1 };
+static const s16 lbl_80469B54[] = { 28, 4, 29, 12, 28, 6, 30, 6, 21, 20, -1, -1 };
+static const s16 lbl_8053F460[] = { 19, 20, -1, -1 };
+static const s16 lbl_8053F468[] = { 20, 20, -1, -1 };
+static const s16 lbl_8053F470[] = { 21, 20, -1, -1 };
+static const s16 lbl_8053F478[] = { 22, 20, -1, -1 };
+static const s16 lbl_80469B6C[] = { 21, 4, 26, 4, 25, 4, 24, 4, 23, 4, 6, 10, -1, -1 };
+static const s16 lbl_80469B88[] = { 0, 4, 1, 4, 2, 6, 1, 6, -1, -1 };
+static const s16 lbl_80469B9C[] = { 3, 4, 4, 4, 5, 6, 4, 6, -1, -1 };
+static const s16 lbl_80469BB0[] = { 0, 4, 13, 8, 14, 8, 15, 6, 14, 6, 15, 6, 14, 6, 15, 6, 14, 6, -1, -1 };
+static const s16 lbl_80469BD8[] = { 3, 4, 16, 8, 17, 8, 18, 6, 17, 6, 18, 6, 17, 6, 18, 6, 17, 6, -1, -1 };
+
+static const s16* lbl_804A51A0[17] = {
+    lbl_80469AF8, lbl_80469B0C, lbl_8053F450, lbl_80469B20,
+    lbl_80469B30, lbl_80469B40, lbl_8053F458, lbl_80469B54,
+    lbl_8053F460, lbl_8053F468, lbl_8053F470, lbl_8053F478,
+    lbl_80469B6C, lbl_80469B88, lbl_80469B9C, lbl_80469BB0,
+    lbl_80469BD8,
+};
 s32 fn_801CD664(s32 n);
 bool fn_801CD290(s32 layer);
 
@@ -107,8 +132,6 @@ static inline void findTargets(cls_804A51E4* a) {
 
 
 // tu_801DE714 (0x801E22A4): the constructor, after EnemyBase's (a plain bl).
-// FIXME: 99.83 %, reloc-name; behaviour clean.
-// Only the literal label of 0.0f (@NNN vs lbl_; data split).
 cls_804A51E4::cls_804A51E4() {
     field_0x2a8 = -1;
     field_0x2ac = -1;
@@ -149,7 +172,6 @@ cls_804A51E4::~cls_804A51E4() {
     }
 }
 
-// FIXME(shotgun): 99.77 %, reloc-name; behaviour clean.
 void cls_804A51E4::init() {
     EnemyBase_804A4808::init();
     field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -177,9 +199,6 @@ void cls_804A51E4::init() {
 
 // tu_801DE714 (0x801E2004, vtable slot 0x54, EnemyBase's start hook): see the
 // declaration in act/tu_801DE714.h.
-// FIXME: 99.84 %, reloc-name; behaviour clean.
-// Only the literal label (30.0f is @NNN, not lbl_8053F4A4:
-// the unit's earlier .sdata2 users are not written yet).
 void cls_804A51E4::vfunc_0x54() {
     getActorManager_801F856C()->fn_801F7AB8(mActorId, mSerial);
     s32 layer = field_0x4;
@@ -189,7 +208,7 @@ void cls_804A51E4::vfunc_0x54() {
     field_0x2c4.set(mPos.x, mPos.y);
 }
 
-// FIXME(shotgun): 98.86 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.09 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E1E08() {
     if (mTargetSerial >= 0) {
         if (!(mFlags & 0x80000)) {
@@ -300,7 +319,7 @@ bool cls_804A51E4::fn_801E1CF8() const {
     return result;
 }
 
-// FIXME(shotgun): 94.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.00 %, missing/extra; behaviour clean.
 void cls_804A51E4::fn_801E1AB4(bool arg) {
     bool found = false;
     u32 kind;
@@ -370,7 +389,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
     }
 }
 
-// FIXME(shotgun): 97.79 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.14 %, different; behaviour drift.
 void cls_804A51E4::fn_801E1594(s32 newState) {
     switch (newState) {
     case 0:
@@ -584,7 +603,7 @@ void cls_804A51E4::fn_801E1300() {
     }
 }
 
-// FIXME(shotgun): 90.33 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 90.42 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         field_0x2a8 = -1;
@@ -712,7 +731,7 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 95.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.67 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -781,7 +800,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
         }
     }
     if (mState == 3 && found != NULL && field_0x2ac == -1) {
-        if (fabs(found->mPos.x - mPos.x) < 10.0f && fabs(found->mPos.y - mPos.y) < 10.0f) {
+        if (__fabsf(found->mPos.x - mPos.x) < 10.0f && __fabsf(found->mPos.y - mPos.y) < 10.0f) {
             f32 height = 5.0f;
             if (mFlags & 0x20000) {
                 height = 20.0f;
@@ -790,7 +809,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
             } else if (field_0x2b0 >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2b0) != NULL) {
                 height = 20.0f;
             }
-            if (fabs(height - mPos.z) < 0.1f) {
+            if (__fabsf(height - mPos.z) < 0.1f) {
                 arrived = true;
             }
         }
@@ -807,7 +826,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 96.58 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.83 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
@@ -841,7 +860,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 95.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
@@ -915,8 +934,8 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
                 }
                 if (ok) {
                     if (getPlayerLayer_8023DE58(field_0x2a8) == field_0x4) {
-                        if (fabs(getPlayerPos_8023E724(field_0x2a8)->x - mPos.x) < 5.0f &&
-                            fabs(getPlayerPos_8023E724(field_0x2a8)->y - mPos.y) < 5.0f) {
+                        if (__fabsf(getPlayerPos_8023E724(field_0x2a8)->x - mPos.x) < 5.0f &&
+                            __fabsf(getPlayerPos_8023E724(field_0x2a8)->y - mPos.y) < 5.0f) {
                             fn_8022FE80(field_0x2a8, field_0x4, mSerial, false, false);
                             if (field_0x2a8 == fn_8022FD8C(mSerial) && fn_802308E0(field_0x2a8)) {
                                 JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
@@ -1127,7 +1146,7 @@ void cls_804A51E4::vfunc_0x9C(u8 mapHit) {
     fn_8021835C();
 }
 
-// FIXME(shotgun): 96.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.43 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x88() {
     bool blocked = fn_801CCF7C();
     field_0x3c.x = 0.0f;

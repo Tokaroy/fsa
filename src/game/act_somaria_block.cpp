@@ -15,25 +15,6 @@ static const f32 lbl_80471368[4][3] = {
 // The sound bits update's push state (3) passes to fn_8022C52C, by direction.
 static const u32 lbl_80471398[4] = {2, 1, 4, 8};
 
-inline bool CaneOfSomariaBlock_804AA9F0::checkGround() {
-    JGeometry::TBox2f box = field_0x80;
-    box.addPos(mPos.x, mPos.y);
-    JGeometry::TVec3f centre;
-    centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
-    centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
-    s32 tile = fn_802265FC(&centre, field_0x4);
-    if (tile == 3 || tile == 0xD || tile == 0xE || tile == 0x3B) {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
-        mState = 6;
-        field_0x23c = tile;
-        return false;
-    }
-    return true;
-}
-
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void CaneOfSomariaBlock_804AA9F0::init() {
     // FIXME: 99.59 %. Same instructions; the sdata2 literals are @486-@492 here
     // (lbl_ in the original, a literal-split issue).
@@ -70,7 +51,7 @@ void CaneOfSomariaBlock_804AA9F0::init() {
     field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
 }
 
-// FIXME(shotgun): 95.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.92 %, missing/extra; behaviour drift.
 // Lands on an OBJLift in state 0xB (taking over its 'SMRI' passenger), then: 0 spawns (two
 // emitters), 1 waits 20 frames, 2 idles (tracks which players are clear of it, gets pushed by
 // fn_80238BC4's direction or picked up through fn_8022F9E4), 3 slides one push, 4 is carried,
@@ -136,15 +117,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         }
         JGeometry::TBox2f here = mBox;
         here.addPos(mPos.x, mPos.y);
-        for (s32 i = 0; i < 4; i++) {
-            if (field_0x246[i] == 1) {
-                if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
-                    fn_80239878(i, &here, field_0x4, mSerial);
-                }
-            } else if (!fn_8023B0F4(i, &here, field_0x4, false, 8.0f)) {
-                field_0x246[i] = 1;
-            }
-        }
+        holdPlayers(&here);
         s32 dir = fn_80238BC4(mSerial);
         if (dir >= 0 && dir < 4) {
             JGeometry::TVec3f saved = mPos;
@@ -190,15 +163,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         box.set(mBox);
         box.addPos(mPos.x, mPos.y);
         JGeometry::TBox2f here = box;
-        for (s32 i = 0; i < 4; i++) {
-            if (field_0x246[i] == 1) {
-                if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
-                    fn_80239878(i, &here, field_0x4, mSerial);
-                }
-            } else if (!fn_8023B0F4(i, &here, field_0x4, false, 8.0f)) {
-                field_0x246[i] = 1;
-            }
-        }
+        holdPlayers(&here);
         if ((field_0x244 & 0x1F) == 0) {
             startSound_801F0E34(0x30004, 0);
         }
@@ -312,10 +277,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
     }
 }
 
-// FIXME: 99.95 %, reloc-name; behaviour clean.
 void CaneOfSomariaBlock_804AA9F0::draw() {
-    // FIXME: 99.86 %. Only the literal names differ: the 1.0f scales and the
-    // "enemy_both2_sob.bin" string are @457 / @458 here, lbl_ in the original.
     if (mState > 7) {
         return;
     }
@@ -371,6 +333,41 @@ bool CaneOfSomariaBlock_804AA9F0::fn_8030EA0C() const {
 
 void CaneOfSomariaBlock_804AA9F0::fn_8030EA00() {
     mState = 7;
+}
+
+// Two plain functions that update inlines; the linker dropped their own copies. Their literals open
+// the pool, before draw's: checkGround's, then holdPlayers'.
+
+// Per player: one that is marked is handed the box (fn_80239878); one that is not gets marked once
+// fn_8023B0F4 fails for it.
+void CaneOfSomariaBlock_804AA9F0::holdPlayers(JGeometry::TBox2f* here) {
+    for (s32 i = 0; i < 4; i++) {
+        if (field_0x246[i] == 1) {
+            if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
+                fn_80239878(i, here, field_0x4, mSerial);
+            }
+        } else if (!fn_8023B0F4(i, here, field_0x4, false, 8.0f)) {
+            field_0x246[i] = 1;
+        }
+    }
+}
+
+bool CaneOfSomariaBlock_804AA9F0::checkGround() {
+    JGeometry::TBox2f box = field_0x80;
+    box.addPos(mPos.x, mPos.y);
+    JGeometry::TVec3f centre;
+    centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
+    centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
+    s32 tile = fn_802265FC(&centre, field_0x4);
+    if (tile == 3 || tile == 0xD || tile == 0xE || tile == 0x3B) {
+        field_0x3c.x = 0.0f;
+        field_0x3c.y = 0.0f;
+        field_0x3c.z = 0.0f;
+        mState = 6;
+        field_0x23c = tile;
+        return false;
+    }
+    return true;
 }
 
 CaneOfSomariaBlock_804AA9F0::~CaneOfSomariaBlock_804AA9F0() {}

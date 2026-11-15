@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
-// First in the unit's .sdata2 (see tu_801E9AFC.h); nothing in this file loads it.
 const f32 lbl_8053F650 = 6.0f;
 
 // The texture of each sprite (0-2); the fourth entry ends the table.

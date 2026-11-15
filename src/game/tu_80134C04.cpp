@@ -120,10 +120,6 @@ void fn_80139958() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// Instructions identical; the string offsets off lbl_804652F0
-// differ (0x324 vs 0x5E8: the strings of the unwritten fn_80135494 - fn_80137300
-// come first in the original .rodata) and the .sdata2 floats / "" are @NNN.
 GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     gGameRoot_8053AAF8 = this;
     field_0x9c = lbl_80529DEC.field_0x4;
@@ -170,7 +166,7 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     ResTIMG* img = (ResTIMG*)fn_804030C4('TIMG', "kk_rival_01.bti");
     field_0xb8 = new (field_0x98, 0) J2DPicture(img);
     field_0xb8->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xFF, 0xD2, 0, 0xFF));
-    img = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "");
+    img = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "go.bti");
     field_0xbc = new (field_0x98, 0) J2DPicture(img);
     if (fn_80021840() == 2) {
         field_0xc0 = new (field_0x98, 0) J2DTextBox('TEXT1',

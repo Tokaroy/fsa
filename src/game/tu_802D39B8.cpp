@@ -454,9 +454,6 @@ bool fn_802DE764(s32 stage, s32 level, s32 value) {
     return false;
 }
 
-// FIXME: 99.93 %, reloc-name; behaviour clean.
-// Reloc-name only: 512.0f (lbl_80541144) is pooled early, the literal users
-// between fn_802D8328 and here are not written yet. Code identical.
 GameView_804A9950::GameView_804A9950() {
     field_0x4 = 0;
     field_0x8 = 0;
@@ -1201,7 +1198,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.59 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.87 %, missing/extra; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1253,8 +1250,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
             }
         }
     }
-    f32 x = 512.0f * field_0x14;
     f32 y = 384.0f * field_0x18;
+    f32 x = 512.0f * field_0x14;
     mVisibleBox.set(x, y, 512.0f + x, 384.0f + y);
     s32 w = 0.125f * mVisibleBox.getWidth();
     s32 h = 0.125f * mVisibleBox.getHeight();
@@ -1263,11 +1260,10 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.43 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
-// clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
-// before its flag test, and extracts both screen bytes before the first compare in the key
-// loop; regalloc (and a 16-byte larger frame from one more saved register) follows.
+// clrlwi 16 first (as if u16; a u16 local folds it) and extracts both screen bytes
+// before the first compare in the key loops; minor regalloc differences follow.
 // Spawns the current screen's actors from its "d_enemy_map" table (11-byte records: tag,
 // layer, cell x, cell y, parameter; the switch tags of lbl_8046E178 first, then the rest),
 // then the screen's helper actors, its dropped items and keys; with reset, the per-stage
@@ -1348,7 +1344,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
                 }
             }
         }
-        for (s32 i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             s32 serial = serials[i];
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1662,8 +1658,9 @@ bool GameView_804A9950::fn_802D76A8(s32 bit) {
 }
 
 void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
+    s32 slot = layer < 8 ? 0 : layer - 7;
     if (flag) {
-        field_0x6748[layer < 8 ? 0 : layer - 7]++;
+        field_0x6748[slot]++;
     }
 }
 

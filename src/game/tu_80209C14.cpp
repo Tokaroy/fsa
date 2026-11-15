@@ -10,7 +10,6 @@
 #include "game/act/tu_80207548.h"
 #include "game/act/tu_80209C14.h"
 
-// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 cls_804A5D60::cls_804A5D60() : mTargetSerial(-1), field_0x2ac(0), field_0x2b0(1), field_0x2b1(0) {
     mVel.x = 0.0f;
     mVel.y = 0.0f;
@@ -19,10 +18,25 @@ cls_804A5D60::cls_804A5D60() : mTargetSerial(-1), field_0x2ac(0), field_0x2b0(1)
     field_0x2c8.set(0.0f, 0.0f);
 }
 
-// The animation tables (.data 0x804A5D38), not written yet.
-extern const s16* lbl_804A5D38[];
+// The animation tables: pairs of frame and duration, ended by -1.
+static const s16 lbl_8046A2E8[] = { 0, 6, 1, 6, 2, 20, 3, 8, -1, -1 };
+static const s16 lbl_8053F948[] = { 4, 6, -1, -1 };
+static const s16 lbl_8046A2FC[] = { 5, 6, 6, 6, -1, -1 };
+static const s16 lbl_8053F950[] = { 4, 6, -1, -1 };
+static const s16 lbl_8046A308[] = { 7, 4, 8, 6, 7, 4, -1, -1 };
+static const s16 lbl_8046A318[] = { 4, 6, 7, 4, 8, 6, 7, 4, -1, -1 };
+static const s16 lbl_8046A32C[] = { 5, 11, 6, 11, -1, -1 };
+static const s16 lbl_8053F958[] = { 4, 50, -1, -1 };
+static const s16 lbl_8046A338[] = { 3, 2, 2, 20, 3, 8, -1, -1 };
+static const s16 lbl_8046A348[] = { 3, 8, 2, 20, -1, -1 };
 
-// FIXME(shotgun): 95.16 %, scheduling+regalloc + reloc-name; behaviour clean.
+static const s16* lbl_804A5D38[10] = {
+    lbl_8046A2E8, lbl_8053F948, lbl_8046A2FC, lbl_8053F950,
+    lbl_8046A308, lbl_8046A318, lbl_8046A32C, lbl_8053F958,
+    lbl_8046A338, lbl_8046A348,
+};
+
+// FIXME(shotgun): 95.36 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804A5D60::init() {
     EnemyBase_804A4808::init();
     mBox.i.set(1.0f, 1.0f);
@@ -82,7 +96,7 @@ void cls_804A5D60::vfunc_0x54() {
     field_0x2c0 = offset;
 }
 
-// FIXME(shotgun): 98.50 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.99 %, missing/extra; behaviour drift.
 // 0x8020AA78: enters `state`, starting its animation and
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
 void cls_804A5D60::fn_8020AA78(s32 state) {
@@ -184,7 +198,7 @@ void cls_804A5D60::fn_8020AA78(s32 state) {
 }
 
 // The animation steps of the box-shrinking state machine; vfunc_0x90 is its per-frame step.
-// FIXME(shotgun): 99.30 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.42 %, missing/extra; behaviour drift.
 void cls_804A5D60::vfunc_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         switch (mState) {
@@ -387,7 +401,7 @@ void cls_804A5D60::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 95.10 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.71 %, missing/extra; behaviour drift.
 void cls_804A5D60::vfunc_0x88() {
     switch (mState) {
     case 3:
@@ -415,7 +429,7 @@ void cls_804A5D60::vfunc_0x88() {
     }
 }
 
-// FIXME(shotgun): 97.38 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.48 %, missing/extra; behaviour clean.
 bool cls_804A5D60::vfunc_0x58() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f) {
         return false;
@@ -471,7 +485,7 @@ u8 cls_804A5D60::vfunc_0x60() {
     return 0;
 }
 
-// FIXME(shotgun): 97.21 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.31 %, missing/extra; behaviour clean.
 u8 cls_804A5D60::vfunc_0x5C() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 flag;
@@ -500,7 +514,7 @@ void cls_804A5D60::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
-// FIXME(shotgun): 73.03 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 73.23 %, missing/extra; behaviour near.
 void cls_804A5D60::draw() {
     bool tiny = field_0x54.squared() <= 32.0f * JGeometry::TUtilf::epsilon();
     if (!tiny) {
