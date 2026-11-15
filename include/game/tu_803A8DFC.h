@@ -103,6 +103,10 @@ public:
     void fn_803B0FD4();
     void fn_803B14F8();
     void fn_803B1B60();
+    // Dead-stripped helpers (bottom of the .cpp): pane alphas field_0x4c9 / 4d6 / 4d9 * rate.
+    void setHeaderAlpha(f32 rate);
+    void setScoreRowAlpha(s32 player, f32 rate);
+    void setRankRowAlpha(s32 player, f32 rate);
     // Dead-stripped helper (see the .cpp): true when the winners' animation ends.
     BOOL animateWinners();
 

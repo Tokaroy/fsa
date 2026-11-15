@@ -83,18 +83,6 @@ static const u16 lbl_8053F730[4] = {2, 3, 14, 0};
 // Frame offsets of the animated tile-0x39 shadow (fn_801EF830).
 static const u8 lbl_8053F738[4] = {0, 1, 2, 1};
 
-// fn_803037D4(player, value) for each player that takes part (field_0x82),
-// is near the actor (fn_8022BC38) and passes fn_8030381C.
-static inline void raisePlayersNear(const ActorBase_804A5770* actor, u32 value) {
-    for (s32 i = 0; i < 4; i++) {
-        if (fn_8022BC38(i, actor->getField_0x4(), &actor->mPos) && fn_8030381C(i) &&
-            (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
-        {
-            fn_803037D4(i, value);
-        }
-    }
-}
-
 // The box `ofs` (relative to pos) in top-down screen space (x, y - z).
 static inline void toScreenBox(JGeometry::TBox2f* out, const JGeometry::TBox2f& ofs,
                                const Vec& pos) {
@@ -1666,10 +1654,10 @@ ActorSoundObj_804578F4* ActorBase_804A5770::fn_801F1184() const {
 
 // Starts sound soundId on the actor's sound object, with the layer
 // (field_0x4 >= 8) and a mode (field_0x45) from the view. Four sounds on
-// layers 8 and up go to fn_803037D4 for the players near the actor instead.
-// FIXME: 99.25 %, regalloc-only; behaviour clean.
-// Register allocation only: the target keeps the player loops'
-// counter in r28 (where `sound` lives later), ours in r31 (fadeTime's).
+// layers 8 and up go to fn_803037D4 for the players near the actor instead:
+// for each player that takes part (mPlayerMask), is near the actor (fn_8022BC38)
+// and passes fn_8030381C. The four loops are written out and the sound object
+// comes from fn_801F1184 (inlined): the counters are coloured after `sound` (r28).
 JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTime) const {
     if (field_0x4 >= 8 && !fn_8022BB48(field_0x4, &mPos)) {
         return NULL;
@@ -1678,21 +1666,44 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
         (gGameRoot_8053AAF8->field_0x7e != 0 || (gGameRoot_8053AAF8->field_0x83 & 3U) != 2))
     {
         if (soundId == 0x30009) {
-            raisePlayersNear(this, 8);
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                    (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
+                {
+                    fn_803037D4(i, 8);
+                }
+            }
             return NULL;
         } else if (soundId == 0x30004) {
-            raisePlayersNear(this, 0xB);
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                    (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
+                {
+                    fn_803037D4(i, 0xB);
+                }
+            }
             return NULL;
         } else if (soundId == 0x30022) {
-            raisePlayersNear(this, 7);
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                    (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
+                {
+                    fn_803037D4(i, 7);
+                }
+            }
             return NULL;
         } else if (soundId == 0x3004B) {
-            raisePlayersNear(this, 8);
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                    (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
+                {
+                    fn_803037D4(i, 8);
+                }
+            }
             return NULL;
         }
     }
-    ActorSoundObj_804578F4* sound =
-        gGameRoot_8053AAF8->field_0x4->mActorManager->fn_801F6644(mSlot);
+    ActorSoundObj_804578F4* sound = fn_801F1184();
     sound->field_0x44 = field_0x4 >= 8;
     if (getGameView_802D6A9C()->fn_802D7804(field_0x4, 0x800)) {
         sound->field_0x45 = 0;
