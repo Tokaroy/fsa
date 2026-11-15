@@ -2188,7 +2188,7 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 }
 
-// FIXME: 99.39 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C6798 (`buttonStep * 1` forms change nothing).
 // State 26 (copy, from fn_803C05D8): the destination's board (or the copy
@@ -2349,7 +2349,7 @@ void FileSelect_804AFF60::fn_803C7CA0() {
     }
 }
 
-// FIXME: 99.49 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.54 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C6798.
 // State 28 (the copy prompt's no, from fn_803C02CC): the board (or the copy
