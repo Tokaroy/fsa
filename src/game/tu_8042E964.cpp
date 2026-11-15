@@ -453,7 +453,7 @@ void cls_804B1634::fn_8042F6DC() {
 
     JGeometry::TVec2<s16> tcA[4];
     JGeometry::TVec2<s16> tcB[4];
-    s16 tx = tilesW << 8;
+    s32 tx = tilesW << 8;
     for (s32 i = 0; i < 4; i++) {
         tcA[i] = field_0x38[i];
         tcB[i] = field_0x78[i];
@@ -476,7 +476,7 @@ void cls_804B1634::fn_8042F6DC() {
     static_cast<J2DPicture*>(field_0x10[1]->mPane)->setTexCoord(tcA);
     static_cast<J2DPicture*>(field_0x24[1]->mPane)->setTexCoord(tcB);
 
-    s16 ty = tilesH << 8;
+    s32 ty = tilesH << 8;
     for (s32 i = 0; i < 4; i++) {
         tcA[i] = field_0x38[8 + i];
         tcB[i] = field_0x78[8 + i];
@@ -556,7 +556,7 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     lbl_8053AD78->mFont->getCellHeight();
     field_0xea = 0xFF;
     field_0xe4 = 1;
-    u8 digit = value + '0';
+    s8 digit = value + '0';
     s32 i = 0;
     s32 code = 0;
     u8 choice = 0;
