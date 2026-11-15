@@ -52,8 +52,8 @@ void FourPersonPullSwitchBTIVersion_804AE574::update() {
 
     JGeometry::TBox2f box(-32.0f, -8.0f, 32.0f, 8.0f);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     s32 playerCount = 0;
@@ -70,8 +70,8 @@ void FourPersonPullSwitchBTIVersion_804AE574::update() {
         box.set(mBox2);
     }
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     box.addPos(0.0f, lbl_80474F98[field_0x23c]);
 
