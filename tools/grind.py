@@ -622,9 +622,18 @@ def pieces_block(wt, unit, fn, cap=16):
 def lead_block(unit, fn, cap=90):
     """A byte-identical form tools/permute.py found for this function but did not apply because it adds
     or removes a local (../fsa-wt/g2-logs/leads/<unit>__<function>.hand.diff): for the session to finish."""
-    f = LOGS / "leads" / (re.sub(r"[^A-Za-z0-9_]", "_", Path(unit).stem + "__" + fn)[:110] + ".hand.diff")
+    stem = re.sub(r"[^A-Za-z0-9_]", "_", Path(unit).stem + "__" + fn)[:110]
+    f = LOGS / "leads" / (stem + ".hand.diff")
     if not f.exists():
-        return []
+        part = LOGS / "leads" / (stem + ".partial.diff")
+        if not part.exists():
+            return []
+        body = part.read_text(errors="replace").splitlines()
+        return ["== A rewrite found by search (tools/permute.py) that brings this function closer ==",
+                f"{body[0].lstrip('# ')}", "It keeps the function's behaviour (declaration order, operand order, if/else "
+                "form and the like) and nothing else in the unit gets worse with it. It is a head start, not the answer: "
+                "take the parts that read naturally (line numbers may have moved), check with try.py, then go on."] \
+            + body[1:61] + [""]
     body = f.read_text(errors="replace").splitlines()
     return ["== A byte-identical form found by search (tools/permute.py), not applied yet ==",
             "Compiled, this gives exactly the original's code, so it is right. Make the same change (line numbers may "
@@ -671,7 +680,8 @@ def build_packet(wt, unit, fn, ev, note=None):
         out += [f"== Diff, original | ours: {nd} of {nr} rows differ (equal stretches skipped; offsets are hex from the function start) =="]
         out += [l for l in t[1:2] if l.strip()] + hunks + [""] + pcs
         if lane == "match" and e["cls"] != "reloc-name":
-            out += lead_block(unit, fn) or diag_block(wt, unit, fn)
+            lead = lead_block(unit, fn)
+            out += lead if lead and "byte-identical" in lead[0] else lead + diag_block(wt, unit, fn)
     src = source_of(wt, unit, e)
     if src:
         state = " (not compiled: inside #ifdef NONMATCHING, or it fails to compile)" if lane == "write" else ""
