@@ -9,6 +9,11 @@
 #include "game/Map.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_shadow_link_2.h"
+#include "game/GameGlobals.h"
+
+// 110, the divisor of the fade in game/tu_801D3CBC.cpp (declared in GameGlobals.h). It leads this
+// unit's .sdata2, before the function literals.
+const s32 lbl_8053EE00 = 110;
 
 const u32 lbl_80469450[4] = {
     0x000400BB,
@@ -21,7 +26,6 @@ const u32 lbl_80469450[4] = {
 // FIXME(shotgun): not written; it is the implicit inline destructor of the base classes.
 
 // 0x801C573C.
-// FIXME(shotgun): 99.93 %, reloc-name; behaviour clean.
 ShadowLink2_804A43E8::ShadowLink2_804A43E8() {
     field_0x550.fn_80217484();
     field_0x55c[0] = 0;
@@ -150,7 +154,6 @@ bool ShadowLink2_804A43E8::fn_801C53C4() {
     return result;
 }
 
-// FIXME(shotgun): 99.84 %, reloc-name; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C5348(f32 range) {
     bool near = false;
     s32 player = fn_801D05F8(&mPos, 0.0f);
@@ -167,7 +170,6 @@ bool fn_801C5340() {
 
 // 0x801C50A8. Leaves the old state (mState) for `state`.
 // Remaining diff: the float constants are literals where the original uses lbl_ names.
-// FIXME: 99.76 %, reloc-name; behaviour drift.
 void ShadowLink2_804A43E8::fn_801C50A8(int state) {
     mFlags &= ~0x40000;
     field_0x55c[0] = 0;
