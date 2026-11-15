@@ -122,7 +122,6 @@ cls_8049CEE0::~cls_8049CEE0() {
     lbl_8053AA81 = 0;
 }
 
-// FIXME: 99.80 %, reloc-name; behaviour drift.
 void cls_8049CEE0::init() {
     ActorBase_804A5770::init();
     field_0x320 = field_0x90 & 0x1F;
@@ -186,7 +185,7 @@ inline bool cls_8049CEE0::stepRail() {
     return false;
 }
 
-// FIXME: 97.98 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.14 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 4 fewer instrs (919 vs 923); some argument setups before calls are scheduled differently and one comparison compiles to an extra cror.
 void cls_8049CEE0::update() {
     ActorBase_804A5770::update();
@@ -511,7 +510,6 @@ void cls_8049CEE0::update() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
 void cls_8049CEE0::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -536,7 +534,6 @@ static inline bool overlaps(const JGeometry::TBox2f& a, const JGeometry::TBox2f&
     return result;
 }
 
-// FIXME: 99.76 %, reloc-name; behaviour clean.
 bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
     outPos->zero();
     s32 serial = getActorManager_801F856C()->fn_801F7A08('CIRC');
@@ -582,7 +579,7 @@ void cls_8049CEE0::stepSpeed(f32 dist) {
     }
 }
 
-// FIXME: 99.49 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.54 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
 bool cls_8049CEE0::fn_801096C8(s32 state) {
     field_0x32c = field_0x328;
@@ -697,7 +694,6 @@ static inline void setLifeMeter(LifeMeter_804B174C* meter, s32 serial, f32 yOffs
     meter->field_0x24c = index;
 }
 
-// FIXME: 99.75 %, reloc-name; behaviour clean.
 void cls_8049CEE0::fn_80109534() {
     if (field_0x310 < 0) {
         field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', field_0x4, &mPos, 0, -1, -1);
