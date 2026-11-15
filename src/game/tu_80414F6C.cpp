@@ -161,7 +161,8 @@ inline void BattleStageSelect_804B1378::setStageText() {
     }
 }
 
-// FIXME: 99.96 %, regalloc only: `font` is in r27 here, r29 in the original.
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
+// regalloc only: `font` is in r27 here, r29 in the original.
 BattleStageSelect_804B1378::BattleStageSelect_804B1378() {
     lbl_8053AE00 = this;
     field_0xe4[0] = 0;
@@ -319,9 +320,6 @@ BattleStageSelect_804B1378::~BattleStageSelect_804B1378() {
     lbl_8053AE00 = NULL;
 }
 
-// FIXME: 99.93 %. Only the frame differs: ours is 0x60 bytes, the original's
-// 0x50; the int-to-float temporaries of the 30..59 blink branch and the
-// offset sit 8 / 16 bytes higher than the original's 0x10 / 0x18 slots.
 void BattleStageSelect_804B1378::fn_804170EC() {
     s32 stage = field_0xc * 5 + field_0x10;
     JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
