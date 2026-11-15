@@ -101,7 +101,7 @@ static inline void focusCamera(cls_8049C718* p) {
 
 cls_8049C718::~cls_8049C718() {}
 
-// FIXME(shotgun): 96.31 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.89 %, reloc-name; behaviour clean.
 void cls_8049C718::init() {
     mHome.x = mPos.x;
     mHome.y = mPos.y;
@@ -893,6 +893,7 @@ void cls_8049C718::vfunc_0x24() {
     vfunc_0x28(0, 0.0f, -20.0f);
 }
 
+// FIXME: 98.69 %, different + reloc-name; behaviour drift.
 // FIXME: cmplwi vs cmpwi on field_0xb0 == 4 / 0x12 (ActorBase::field_0xb0 is s32); literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
@@ -1355,7 +1356,7 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x40() {
     startSound_801F0E34(0x50084, 0);
 }
 
-// FIXME: 98.30 %, scheduling+regalloc; behaviour clean.
+// FIXME: 98.96 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): scheduling+regalloc differs; behaviour matches.
 void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 count;
@@ -1451,6 +1452,7 @@ static inline bool stepAxis(f32& cur, f32 target, f32 step) {
     return false;
 }
 
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
 s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
     arrived = arrived + stepAxis(cur->y, target->y, step);
