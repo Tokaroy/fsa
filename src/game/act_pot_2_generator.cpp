@@ -10,8 +10,6 @@
 // Walks every cell of layer 0 and layers 8..14 (32 x 32 cells each) and
 // replaces every tile whose code is 0x41 with a TBO2 pot actor, or with tile
 // 0x12 when the view's bit for the running id is already set.
-// FIXME: 98%. Regalloc only: the original keeps this in r30, the running id
-// in r31 and the tile code in r29 (we swap this/id and put code in r27/r25).
 void Pot2Generator_804AA6F8::init() {
     JGeometry::TVec3f pos;
     u32 id = field_0x90;
