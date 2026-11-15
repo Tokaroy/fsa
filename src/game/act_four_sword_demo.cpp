@@ -98,7 +98,8 @@ cls_8049DA0C::~cls_8049DA0C() {
     }
 }
 
-// FIXME: 99.65 % (regalloc-only). Minor register allocation differences in visibleBox center computation.
+// FIXME: 99.65 %, regalloc-only; behaviour clean.
+// (regalloc-only). Minor register allocation differences in visibleBox center computation.
 void cls_8049DA0C::init() {
     cls_8049D140::init();
     mAnim250.fn_801D2608(lbl_8049DA00, 3);
@@ -132,7 +133,8 @@ inline bool cls_8049DA0C::checkPlayers() {
     return false;
 }
 
-// FIXME: 95.61 %. Same length. Differences: fn_8038BD08's result is converted from a byte in the original
+// FIXME: 96.12 %, different + reloc-name; behaviour drift.
+// Same length. Differences: fn_8038BD08's result is converted from a byte in the original
 // (clrlwi / neg / or / srwi.; the shared declaration returns bool); the box corner adds store in another
 // order; case 2's camera setup reloads mPos.x / mPos.y where the original reuses registers; the loop
 // counters and base pointers of cases 5 and 8 sit in other saved registers.
@@ -290,6 +292,7 @@ void cls_8049DA0C::update() {
     mAnim250.fn_801D1C18();
 }
 
+// FIXME: 99.96 %, reloc-name; behaviour clean.
 void cls_8049DA0C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
@@ -342,7 +345,8 @@ s32 cls_8049DA0C::vfunc_0x5C() {
     }
 }
 
-// FIXME: 97.52 %. Case 7's emitter release loop: the original sets up its counter and base pointers with
+// FIXME: 97.52 %, missing/extra + reloc-name; behaviour drift.
+// Case 7's emitter release loop: the original sets up its counter and base pointers with
 // one instruction more and other registers; the rest is register numbering and .sdata2 relocations.
 void cls_8049DA0C::fn_80117074(s32 index) {
     switch (index) {
@@ -424,7 +428,8 @@ void cls_8049DA0C::fn_80117074(s32 index) {
     field_0x234 = index;
 }
 
-// FIXME: 97.80 % (scheduling+regalloc). Instruction scheduling and register allocation in Camera focus point setting and interpolation.
+// FIXME: 97.80 %, scheduling+regalloc; behaviour clean.
+// (scheduling+regalloc). Instruction scheduling and register allocation in Camera focus point setting and interpolation.
 void cls_8049DA0C::fn_80116E8C() {
     if (field_0x234 >= 2 && field_0x234 <= 11) {
         if (fn_8011921C()->field_0x8 >= 50) {
