@@ -107,8 +107,8 @@ void cls_804A38D4::fn_801B56A0() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec3f pos = mPos;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (!(lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x254))) {
         return;
