@@ -208,7 +208,7 @@ void cls_804A51E4::vfunc_0x54() {
     field_0x2c4.set(mPos.x, mPos.y);
 }
 
-// FIXME(shotgun): 98.86 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.09 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E1E08() {
     if (mTargetSerial >= 0) {
         if (!(mFlags & 0x80000)) {
@@ -319,7 +319,7 @@ bool cls_804A51E4::fn_801E1CF8() const {
     return result;
 }
 
-// FIXME(shotgun): 94.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.00 %, missing/extra; behaviour clean.
 void cls_804A51E4::fn_801E1AB4(bool arg) {
     bool found = false;
     u32 kind;
@@ -389,7 +389,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
     }
 }
 
-// FIXME(shotgun): 97.79 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.14 %, different; behaviour drift.
 void cls_804A51E4::fn_801E1594(s32 newState) {
     switch (newState) {
     case 0:
@@ -603,7 +603,7 @@ void cls_804A51E4::fn_801E1300() {
     }
 }
 
-// FIXME(shotgun): 90.33 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 90.42 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         field_0x2a8 = -1;
@@ -731,7 +731,7 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 95.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.67 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -826,7 +826,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 96.58 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.83 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
@@ -860,7 +860,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 95.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
@@ -1146,7 +1146,7 @@ void cls_804A51E4::vfunc_0x9C(u8 mapHit) {
     fn_8021835C();
 }
 
-// FIXME(shotgun): 96.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.43 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x88() {
     bool blocked = fn_801CCF7C();
     field_0x3c.x = 0.0f;
