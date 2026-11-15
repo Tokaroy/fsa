@@ -1394,7 +1394,7 @@ void cls_804AE088::fn_80368198() {
         }
         gGameRoot2_8053AB10->fn_8013B490();
         field_0x314->setBlackWhite(JUtility::TColor(0), JUtility::TColor(0xFFFFFFFF));
-        field_0x314->setAlpha((s32)field_0x290);
+        field_0x314->setAlpha(field_0x290);
         field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getRenderMode()->fbWidth,
                           (s32)JUTVideo::getManager()->getRenderMode()->efbHeight, false, false, false);
         if (field_0x274 == 0x80) {
