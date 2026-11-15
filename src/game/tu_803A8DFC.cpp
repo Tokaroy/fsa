@@ -853,25 +853,24 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 99.28 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
         field_0x440--;
     }
     s32 timer = field_0x440;
-    s16 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
-    s16 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
-    s16 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
-    s16 e = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
-    s16 g = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
-    s16 h = lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2];
+    s32 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
+    s32 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
+    s32 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
     s32 t0 = 150 - a;
     s32 t1 = 150 - a - b;
     s32 t2 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2];
-    s32 t3 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a;
-    s32 t4 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a -
-             b;
+    s32 e = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
+    s32 g = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
+    s32 h = lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2];
+    s32 t3 = t2 - a;
+    s32 t4 = t2 - a - b;
     if (timer == 0) {
         if (field_0x450 == 1) {
             if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0x106)) {
@@ -924,10 +923,8 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
         }
         if (field_0x440 <= t2) {
             if (field_0x440 >= t3) {
-                s32 d = field_0x440 - t3;
-                s32 dur = e;
                 f32 offset = (40.0f + (f32)h) *
-                             (1.0f - (f32)(d * d) / (f32)(dur * dur));
+                             (1.0f - (f32)((field_0x440 - t3) * (field_0x440 - t3)) / (f32)(e * e));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
@@ -939,9 +936,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
                     }
                 }
             } else if (field_0x440 >= t4) {
-                s32 d = field_0x440 - t4;
-                s32 dur = g;
-                f32 offset = (f32)h * ((f32)(d * d) / (f32)(dur * dur));
+                f32 offset = (f32)h * ((f32)((field_0x440 - t4) * (field_0x440 - t4)) / (f32)(g * g));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
@@ -1450,17 +1445,12 @@ void ResultScreen_804AF9A0::fn_803AF604() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.89 %, reloc-name; behaviour drift.
-// FIXME: reloc-name only (instructions identical): its function-local point tables
-// are named lbl_80476388.. / lbl_80543378.. in the original, points4$NNN here.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals are not yet
-// in the original order (fn_803AA8F8's ids and lbl_805433B8 are missing in front).
 // Bonus page step as fn_803AE810, by field_0x390, counting field_0x350;
 // with no winner it waits 60 frames instead of sound 0x2D; then state 14.
 void ResultScreen_804AF9A0::fn_803AF1B0() {
-    static const s32 points4[4] = {300, 150, 50, 0};
-    static const s32 points3[3] = {300, 150, 0};
-    static const s32 points2[2] = {150, 0};
+    static const s32 lbl_804763A4[4] = {300, 150, 50, 0};
+    static const s32 lbl_804763B4[3] = {300, 150, 0};
+    static const s32 lbl_80543380[2] = {150, 0};
     // Declared in this order (and values before ranked) as the original's registers and stack slots.
     s32 done = 0;
     s32 best = 0;
@@ -1495,13 +1485,13 @@ void ResultScreen_804AF9A0::fn_803AF1B0() {
                     } else {
                         switch (field_0x450) {
                         case 0:
-                            field_0x330[i] = points4[place];
+                            field_0x330[i] = lbl_804763A4[place];
                             break;
                         case 1:
-                            field_0x330[i] = points3[place];
+                            field_0x330[i] = lbl_804763B4[place];
                             break;
                         case 2:
-                            field_0x330[i] = points2[place];
+                            field_0x330[i] = lbl_80543380[place];
                             break;
                         }
                     }
