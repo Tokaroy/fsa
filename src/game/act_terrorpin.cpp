@@ -416,7 +416,7 @@ u8 Terrorpin_804A3B10::vfunc_0x5C() {
     if (isVulnerable()) {
         if (mFlags & 0x2000) {
             fn_801CEBD0();
-        } else if (mState == 0) {
+        } else if (0 == mState) {
             s32 player = fn_801F285C(NULL, NULL, true, -1);
             if (player >= 0) {
                 fn_801B91A8(5);

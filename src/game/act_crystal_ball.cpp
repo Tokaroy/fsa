@@ -166,7 +166,7 @@ void CrystalBall_804AB308::vfunc_0x54() {
     mBox.f.y = 16.0f;
     getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
     s32 mask;
-    if (!gGameRoot_8053AAF8->field_0x7f) {
+    if (gGameRoot_8053AAF8->field_0x7f == 0) {
         mask = fn_801F2B7C(2, -1, 1);
     } else {
         mask = fn_801F2B7C(0, -1, 1);

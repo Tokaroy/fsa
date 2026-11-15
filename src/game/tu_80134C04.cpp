@@ -1290,42 +1290,41 @@ void GameRoot_8049EF20::fn_80136500() {
 // FIXME(shotgun): 97.67 %, missing/extra; behaviour clean.
 // 0x80136364
 void GameRoot_8049EF20::fn_80136364() {
-    if (field_0xfe != 1 || getGameView_802D6A9C()->fn_802DCD0C() || gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B) {
-        return;
-    }
-    if (lbl_8053AD30->fn_80309C4C(0x1000, -1) == 0) {
-        return;
-    }
-    if (lbl_8053AD70->fn_8037AD34() || lbl_8053AD70->fn_8037ACC4()) {
-        return;
-    }
-    if (gGameRoot_8053AAF8->field_0x85 == 1) {
-        if (field_0x54 == 7) {
-            s32 sub = field_0x78;
-            s32 stage = field_0x74;
-            field_0x50 = 7;
-            field_0x58 = 1;
-            lbl_8053ACA0->fn_802AC8AC(0);
-            lbl_80529DEC.field_0x118 = stage;
-            lbl_80529DEC.field_0x11c = sub;
-            field_0x84 = 1;
-        } else {
-            field_0x50 = field_0x54;
-            field_0x58 = 1;
-            lbl_8053ACA0->fn_802AC8AC(0);
-            field_0x84 = 0;
+    s32 stage;
+    if (!(field_0xfe != 1 || getGameView_802D6A9C()->fn_802DCD0C() || gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B)) {
+        if (lbl_8053AD30->fn_80309C4C(0x1000, -1) == 0) {
+            return;
         }
-    } else if (!fn_802DEBF8() && lbl_8053AD70->fn_8037ADD8()) {
-        field_0x4c = 9;
-        lbl_8053AD70->fn_8037ADA4();
-        lbl_8053AD70->field_0xc = 1;
-        field_0xa0->fn_80458880(1, -1);
-        field_0xa0->fn_804593D4();
-        JUTGamePad* pad = JUTGamePad::getGamePad(0);
-        field_0x10c = 0;
-        field_0x108 = 0;
-        pad->mRumble.stopMotor(pad->getPortNum(), false);
-        pad->mRumble.stopPatternedRumble(pad->getPortNum());
+        if (!(lbl_8053AD70->fn_8037AD34() || lbl_8053AD70->fn_8037ACC4())) {
+            if (gGameRoot_8053AAF8->field_0x85 == 1) {
+                if (field_0x54 == 7) {
+                    s32 sub = field_0x78;
+                    stage = field_0x74;
+                    field_0x50 = 7;
+                    field_0x58 = 1;
+                    lbl_8053ACA0->fn_802AC8AC(0);
+                    lbl_80529DEC.field_0x118 = stage;
+                    lbl_80529DEC.field_0x11c = sub;
+                    field_0x84 = 1;
+                } else {
+                    field_0x50 = field_0x54;
+                    field_0x58 = 1;
+                    lbl_8053ACA0->fn_802AC8AC(0);
+                    field_0x84 = 0;
+                }
+            } else if (!fn_802DEBF8() && lbl_8053AD70->fn_8037ADD8()) {
+                field_0x4c = 9;
+                lbl_8053AD70->fn_8037ADA4();
+                lbl_8053AD70->field_0xc = 1;
+                field_0xa0->fn_80458880(1, -1);
+                field_0xa0->fn_804593D4();
+                JUTGamePad* pad = JUTGamePad::getGamePad(0);
+                field_0x10c = 0;
+                field_0x108 = 0;
+                pad->mRumble.stopMotor(pad->getPortNum(), false);
+                pad->mRumble.stopPatternedRumble(pad->getPortNum());
+            }
+        }
     }
 }
 

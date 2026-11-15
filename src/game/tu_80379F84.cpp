@@ -105,13 +105,13 @@ void cls_804AE9A0::fn_8037A708() {
 // mode (same code); a negated || chain (MWCC turns it into a range check, 84.59 %).
 void cls_804AE9A0::fn_8037A664() {
     if (field_0x4 != NULL) {
-        u8 mode = lbl_8053ADA0->field_0x4c0;
+        const u8 mode = lbl_8053ADA0->field_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7) {
             lbl_8053ADA0->fn_803A97A0();
         }
     }
     if (field_0x8 != NULL) {
-        u8 mode = lbl_8053ADA8->field_0x294;
+        const u8 mode = lbl_8053ADA8->field_0x294;
         if (mode != 5 && mode != 8 && mode != 7) {
             lbl_8053ADA8->fn_803B7E64();
         }
@@ -266,7 +266,7 @@ void fn_80379FF4(void) {
 bool cls_804AE9A0::fn_80379F84() {
     GameRoot_8049EF20* root = gGameRoot_8053AAF8;
     if (root->field_0x7f == 1 && root->field_0x7e == 1 && lbl_8053AD68 != NULL && field_0x4 != NULL) {
-        u8 mode = lbl_8053ADA0->field_0x4c0;
+        const u8 mode = lbl_8053ADA0->field_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7 && mode != 9) {
             return true;
         }

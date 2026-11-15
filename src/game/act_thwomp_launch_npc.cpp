@@ -367,7 +367,7 @@ void NPCLaunchedByThwomp_804AC010::draw() {
         frame = lbl_80471CB8[field_0x250].field_0x4 +
                 lbl_80471BB8[field_0x250].field_0xc[field_0x248][field_0x238];
     }
-    if (field_0x250 == 2) {
+    if (2 == field_0x250) {
         arg5 = 3;
     }
     drawSprite_801F06F0(name, frame, NULL, arg5, 1.0f, 1.0f);
