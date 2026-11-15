@@ -271,7 +271,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (actor != NULL) {
         switch (actor->mActorId) {
         case ACTOR_FIRE: {
-            u32 kind = (actor->field_0x90 >> 6) & 0xF;
+            s32 kind = (actor->field_0x90 >> 6) & 0xF;
             if (kind <= 1 || kind == 5 || kind == 6) {
                 return 0;
             }
