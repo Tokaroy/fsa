@@ -172,8 +172,8 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
     JGeometry::TBox2f box(mBox);
     if (viewLayerFlag(field_0x4)) {
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         box.i.y -= 2.0f;
         if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f)) {
