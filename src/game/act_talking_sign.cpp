@@ -29,7 +29,8 @@ void TalkingSign_804AF428::init() {
     }
 }
 
-// FIXME: 90.26%. Both fn_8038C678 calls: the original loads mSerial and field_0x4 into r29/r28
+// FIXME: 91.56 %, missing/extra; behaviour clean.
+// Both fn_8038C678 calls: the original loads mSerial and field_0x4 into r29/r28
 // before the getPlayerPos_8023E724 call (callee-saved across it); ours reloads them into r5/r6 after it.
 // The view helper's layer then lands in r30/r29 instead of r28/r30. Also the area box's
 // f.x store (0x28) is scheduled after the mPos.y load in the original.
