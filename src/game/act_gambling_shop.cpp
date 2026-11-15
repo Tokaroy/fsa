@@ -63,6 +63,7 @@ void GamblingShop_804AAA70::init() {
     field_0x244 = 0;
 }
 
+// FIXME: 99.51 %, regalloc-only; behaviour clean.
 void GamblingShop_804AAA70::vfunc_0x10() {
     // FIXME: 99.51 %. Regalloc only: the original keeps the chest-slot pointer
     // (this, stored with 0x250(rN)) in r28 and the loop's byte offset in r29.
@@ -122,6 +123,7 @@ void GamblingShop_804AAA70::vfunc_0x10() {
     }
 }
 
+// FIXME: 98.67 %, different; behaviour drift.
 void GamblingShop_804AAA70::update() {
     // FIXME: 98.67 %. The layer is read through getField_0x4() (before the
     // getPlayerLayer_8023DE58 calls, as the original). The player/layer and
@@ -408,6 +410,7 @@ void GamblingShop_804AAA70::update() {
     }
 }
 
+// FIXME: 82.02 %, scheduling+regalloc; behaviour clean.
 void GamblingShop_804AAA70::draw() {
     if (field_0x288) {
         drawSprite_801F06F0("enemy_both_sob.bin", field_0x240 + 0x12C, NULL, 0, 1.0f, 1.0f);
