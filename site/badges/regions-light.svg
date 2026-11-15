@@ -1,23 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="724" viewBox="0 0 960 724" role="img" aria-label="Progress overview: Libraries 98.6 % structural, 97.7 % matched code, 4714 of 4768 functions; Player 94.5 % structural, 60.4 % matched code, 941 of 1054 functions; Enemies &amp; bosses 54.2 % structural, 30.3 % matched code, 892 of 1339 functions; NPCs 64.8 % structural, 31.8 % matched code, 383 of 594 functions; Objects &amp; gimmicks 61.4 % structural, 34.6 % matched code, 1036 of 1518 functions; Stage &amp; world 56.8 % structural, 20.3 % matched code, 184 of 311 functions; Menus &amp; screens 73.0 % structural, 31.3 % matched code, 551 of 863 functions; Game core 80.0 % structural, 58.9 % matched code, 661 of 773 functions; Media &amp; link 65.8 % structural, 43.7 % matched code, 290 of 337 functions">
-<title>Progress overview: Libraries 98.6 % structural, 97.7 % matched code, 4714 of 4768 functions; Player 94.5 % structural, 60.4 % matched code, 941 of 1054 functions; Enemies &amp; bosses 54.2 % structural, 30.3 % matched code, 892 of 1339 functions; NPCs 64.8 % structural, 31.8 % matched code, 383 of 594 functions; Objects &amp; gimmicks 61.4 % structural, 34.6 % matched code, 1036 of 1518 functions; Stage &amp; world 56.8 % structural, 20.3 % matched code, 184 of 311 functions; Menus &amp; screens 73.0 % structural, 31.3 % matched code, 551 of 863 functions; Game core 80.0 % structural, 58.9 % matched code, 661 of 773 functions; Media &amp; link 65.8 % structural, 43.7 % matched code, 290 of 337 functions</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="724" viewBox="0 0 960 724" role="img" aria-label="Progress overview: Libraries 98.6 % structural, 97.7 % matched code, 4714 of 4768 functions; Player 94.6 % structural, 64.6 % matched code, 969 of 1054 functions; Enemies &amp; bosses 54.2 % structural, 30.3 % matched code, 892 of 1339 functions; NPCs 64.8 % structural, 31.8 % matched code, 383 of 594 functions; Objects &amp; gimmicks 61.4 % structural, 34.6 % matched code, 1036 of 1518 functions; Stage &amp; world 56.8 % structural, 20.3 % matched code, 184 of 311 functions; Menus &amp; screens 73.0 % structural, 31.3 % matched code, 551 of 863 functions; Game core 80.0 % structural, 58.9 % matched code, 661 of 773 functions; Media &amp; link 65.8 % structural, 43.7 % matched code, 290 of 337 functions">
+<title>Progress overview: Libraries 98.6 % structural, 97.7 % matched code, 4714 of 4768 functions; Player 94.6 % structural, 64.6 % matched code, 969 of 1054 functions; Enemies &amp; bosses 54.2 % structural, 30.3 % matched code, 892 of 1339 functions; NPCs 64.8 % structural, 31.8 % matched code, 383 of 594 functions; Objects &amp; gimmicks 61.4 % structural, 34.6 % matched code, 1036 of 1518 functions; Stage &amp; world 56.8 % structural, 20.3 % matched code, 184 of 311 functions; Menus &amp; screens 73.0 % structural, 31.3 % matched code, 551 of 863 functions; Game core 80.0 % structural, 58.9 % matched code, 661 of 773 functions; Media &amp; link 65.8 % structural, 43.7 % matched code, 290 of 337 functions</title>
 <style>text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; } .mono { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace; } .grow { transform-box: fill-box; transform-origin: 0 50%; animation: grow 1.4s cubic-bezier(.2,.8,.2,1) both; } @keyframes grow { from { transform: scaleX(0); } } @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }</style>
 <rect x="0.5" y="0.5" width="959" height="723" rx="14" fill="#f6f7fb" stroke="#dfe2ef"/>
 <text x="28" y="40" font-size="16" font-weight="700" fill="#1b1f3a">Remaining work</text>
 <text x="28" y="60" font-size="12" fill="#6b7096">code not matched yet, by category and the libraries</text>
 <clipPath id="rw"><rect x="330" y="28" width="440" height="16" rx="4"/></clipPath><g clip-path="url(#rw)">
-<rect class="grow" x="330.00" y="28" width="29.60" height="16" fill="#4aa75c"/>
-<rect class="grow" x="361.10" y="28" width="89.75" height="16" fill="#c52607"/>
-<rect class="grow" x="452.34" y="28" width="36.80" height="16" fill="#a96087"/>
-<rect class="grow" x="490.65" y="28" width="111.91" height="16" fill="#508ae1"/>
-<rect class="grow" x="604.06" y="28" width="26.48" height="16" fill="#00a8a1"/>
-<rect class="grow" x="632.04" y="28" width="104.58" height="16" fill="#8c55b4"/>
-<rect class="grow" x="738.12" y="28" width="14.22" height="16" fill="#269ac2"/>
-<rect class="grow" x="753.85" y="28" width="10.76" height="16" fill="#608c3d"/>
-<rect class="grow" x="766.10" y="28" width="2.40" height="16" fill="#d29a2e"/>
+<rect class="grow" x="330.00" y="28" width="26.48" height="16" fill="#4aa75c"/>
+<rect class="grow" x="357.98" y="28" width="90.44" height="16" fill="#c52607"/>
+<rect class="grow" x="449.92" y="28" width="37.10" height="16" fill="#a96087"/>
+<rect class="grow" x="488.52" y="28" width="112.78" height="16" fill="#508ae1"/>
+<rect class="grow" x="602.80" y="28" width="26.69" height="16" fill="#00a8a1"/>
+<rect class="grow" x="630.99" y="28" width="105.39" height="16" fill="#8c55b4"/>
+<rect class="grow" x="737.88" y="28" width="14.34" height="16" fill="#269ac2"/>
+<rect class="grow" x="753.72" y="28" width="10.85" height="16" fill="#608c3d"/>
+<rect class="grow" x="766.08" y="28" width="2.42" height="16" fill="#d29a2e"/>
 </g>
-<text x="330" y="62" class="mono" font-size="11.5" fill="#6b7096">2,284,028 bytes left · game code 99.1 % of it</text>
-<text x="932" y="42" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#1b1f3a">73.69 %</text>
-<text x="932" y="62" text-anchor="end" class="mono" font-size="11.5" fill="#a8761a">structural · 48.58 % matched</text>
+<text x="330" y="62" class="mono" font-size="11.5" fill="#6b7096">2,266,764 bytes left · game code 99.1 % of it</text>
+<text x="932" y="42" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#1b1f3a">73.70 %</text>
+<text x="932" y="62" text-anchor="end" class="mono" font-size="11.5" fill="#a8761a">structural · 48.97 % matched</text>
 <line x1="20" x2="940" y1="84" y2="84" stroke="#dfe2ef"/>
 <g fill="#d29a2e"><path d="M34.5 107L41 120L28 120Z"/></g>
 <text x="50" y="119" font-size="16" font-weight="700" fill="#1b1f3a">Libraries</text>
@@ -28,16 +28,16 @@
 <text x="330" y="139" class="mono" font-size="11.5" fill="#6b7096">SDK 100 % · GX 100 % · JSystem 97.9 % · MSL/RT/TRK 90.0 %</text>
 <text x="932" y="120" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#d29a2e">98.6 %</text>
 <text x="932" y="140" text-anchor="end" class="mono" font-size="11.5" fill="#6b7096">4,714 / 4,768 fns</text>
-<text x="28" y="168" class="mono" font-size="10.5" letter-spacing="0.14em" fill="#6b7096">GAME CODE · 67.6 % STRUCTURAL · 36.7 % MATCHED</text>
+<text x="28" y="168" class="mono" font-size="10.5" letter-spacing="0.14em" fill="#6b7096">GAME CODE · 67.6 % STRUCTURAL · 37.1 % MATCHED</text>
 <g fill="#4aa75c"><path d="M34.5 185L41 191.5L34.5 198L28 191.5Z"/></g>
 <text x="50" y="197" font-size="16" font-weight="700" fill="#1b1f3a">Player</text>
 <text x="50" y="217" font-size="12" fill="#6b7096">10 files · 398 KiB · 0 Matching</text>
 <rect x="330" y="184" width="440" height="14" rx="4" fill="#e6e8f3"/>
-<rect class="grow" style="animation-delay:0.1s" x="330" y="184" width="415.82" height="14" rx="4" fill="#4aa75c" fill-opacity="0.35"/>
-<rect class="grow" style="animation-delay:0.1s" x="330" y="184" width="265.71" height="14" rx="4" fill="#4aa75c"/>
-<text x="330" y="217" class="mono" font-size="11.5" fill="#6b7096">structural 94.5 % · matched code 60.4 %</text>
-<text x="932" y="198" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#4aa75c">94.5 %</text>
-<text x="932" y="218" text-anchor="end" class="mono" font-size="11.5" fill="#6b7096">941 / 1,054 fns</text>
+<rect class="grow" style="animation-delay:0.1s" x="330" y="184" width="416.13" height="14" rx="4" fill="#4aa75c" fill-opacity="0.35"/>
+<rect class="grow" style="animation-delay:0.1s" x="330" y="184" width="284.35" height="14" rx="4" fill="#4aa75c"/>
+<text x="330" y="217" class="mono" font-size="11.5" fill="#6b7096">structural 94.6 % · matched code 64.6 %</text>
+<text x="932" y="198" text-anchor="end" class="mono" font-size="20" font-weight="700" fill="#4aa75c">94.6 %</text>
+<text x="932" y="218" text-anchor="end" class="mono" font-size="11.5" fill="#6b7096">969 / 1,054 fns</text>
 <g fill="#c52607"><path d="M34.5 251L41 257.5L34.5 264L28 257.5Z"/></g>
 <text x="50" y="263" font-size="16" font-weight="700" fill="#1b1f3a">Enemies &amp; bosses</text>
 <text x="50" y="283" font-size="12" fill="#6b7096">139 files · 663 KiB · 29 Matching · 54 unconfirmed</text>
