@@ -8,7 +8,8 @@
 #include "game/Unk_8045A080.h"
 #include "game/act/act_shovel_old_timer.h"
 
-// FIXME: 99.83%, reloc-name: only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
+// FIXME: 99.83 %, reloc-name; behaviour clean.
+// only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
 void ShovelOldTimer_804AAB40::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x230 = getGameView_802D6A9C()->mVisibleBox;
@@ -80,7 +81,8 @@ inline bool ShovelOldTimer_804AAB40::findDigSpot() {
     return false;
 }
 
-// FIXME: 98.55%, missing/extra + reloc-name: the original copies the dig-spot TVec3f twice on its
+// FIXME: 98.55 %, missing/extra + reloc-name; behaviour clean.
+// the original copies the dig-spot TVec3f twice on its
 // way into the view (a second psq_st/stfs pair, 2 instructions) and its frame is 0x10 bytes
 // larger; the literal references are lbl_ in the original and @NNN here (data split).
 void ShovelOldTimer_804AAB40::update() {
@@ -176,7 +178,8 @@ void ShovelOldTimer_804AAB40::update() {
     }
 }
 
-// FIXME: 99.83%, reloc-name: only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
+// FIXME: 99.83 %, reloc-name; behaviour clean.
+// only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
 void ShovelOldTimer_804AAB40::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x386, NULL, 0, 1.0f, 1.0f);
     fn_803075AC(mSerial, field_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
