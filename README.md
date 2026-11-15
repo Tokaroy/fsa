@@ -48,9 +48,9 @@ game code in its eight categories, the bottom row the libraries. Click a block t
 <!-- progress:start -->
 As of 2026-11-15:
 
-- **Structural progress: 73.43 %** (3,261,943 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
+- **Structural progress: 73.43 %** (3,261,956 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
 - **Matched code: 47.85 %** (2,125,356 of 4,442,032 bytes), **9,590 / 11,557** functions fully matched.
-- **Structurally matched:** 10,379 / 11,557 functions (same instructions, register or order differences only), +471 close.
+- **Structurally matched:** 10,380 / 11,557 functions (same instructions, register or order differences only), +470 close.
 - **470 of 903** split units are Matching, and `main.dol` built from them links byte-identically (SHA-1 OK).
 <!-- progress:end -->
 
