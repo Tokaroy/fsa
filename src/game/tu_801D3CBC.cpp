@@ -14,12 +14,12 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
     bool onTile = false;
     if (fn_801CD2F8(field_0x56c)) {
         id = 0x3E;
-        alpha = (u8)(255.0f * mStateTimer * (1.0f / lbl_8053EE00));
         pos.set(mPos);
+        alpha = (u8)(255.0f * mStateTimer * (1.0f / lbl_8053EE00));
     } else {
         id = 0x3F;
-        alpha = (u8)(255.0f - 255.0f * mStateTimer * (1.0f / lbl_8053EE00));
         pos.set(field_0x570);
+        alpha = (u8)(255.0f - 255.0f * mStateTimer * (1.0f / lbl_8053EE00));
     }
     if (fn_8022461C(&pos, 0) == 1) {
         switch (fn_80226850(&pos, 0)) {

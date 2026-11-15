@@ -347,6 +347,8 @@ void ActorBase_804A5770::fn_801F52A4() {
 // Register allocation only (the emitter and the killer swap
 // r29/r30); 1.0f and 0.2f are @NNN until .sdata2 is in order.
 void ActorBase_804A5770::vfunc_0x24() {
+    s32 bit;
+    s32 player;
     if (gGameRoot_8053AAF8->field_0x7e != 0 && field_0x1a8 == true &&
         getActorManager_801F856C()->fn_801F7A6C() == 1)
     {
@@ -365,7 +367,7 @@ void ActorBase_804A5770::vfunc_0x24() {
     JPABaseEmitter* emitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true,
                                                     lbl_8046A00C[field_0xc0]);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, lbl_8046A00C[field_0xc0]);
-    s32 player = field_0x10c;
+    player = field_0x10c;
     if (player >= 0 && player < 4) {
         getEffectSystem_8013C824()->fn_8013C830(player, emitter);
         if (fn_8022F514(field_0x10c)) {
@@ -384,7 +386,7 @@ void ActorBase_804A5770::vfunc_0x24() {
         startSound_801F0E34(0x40003, 0);
     }
     mAlive = false;
-    s32 bit = field_0x16c;
+    bit = field_0x16c;
     if (bit != -1) {
         getGameView_802D6A9C()->fn_802D7704(bit, field_0x1a8, field_0x4);
     } else {

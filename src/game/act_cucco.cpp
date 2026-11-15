@@ -552,8 +552,8 @@ void Cucco_804AB8C0::fn_80331D38() {
         box.f.x = mBox.f.x;
         box.f.y = mBox.f.y;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && fn_80239C00(i, &box, field_0x4) && fn_8022F9E4(i, mSerial, true, false)) {

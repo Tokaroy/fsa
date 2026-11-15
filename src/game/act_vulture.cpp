@@ -406,6 +406,7 @@ void Vulture_804A4230::vfunc_0x74() {
 
 // FIXME: 99.63. Registers r30/r31 swapped (regalloc only).
 bool Vulture_804A4230::vfunc_0x58() {
+    s32 player;
     if ((mFlags & 0x4000) || mBox2.getWidth() <= 0.0f || mBox2.getHeight() <= 0.0f) {
         return false;
     }
@@ -421,7 +422,7 @@ bool Vulture_804A4230::vfunc_0x58() {
     bool actorC = false;
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
-    s32 player = fn_8023AC74(&box, field_0x4, &probe);
+    player = fn_8023AC74(&box, field_0x4, &probe);
     if (player >= 0) {
         actorC = fn_801CC538(player, &probe, &vel54, &other);
     } else {

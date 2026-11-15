@@ -26,6 +26,7 @@ void PanelRewriteNPC2_804A9F58::init() {
 // FIXME: 99%. Regalloc only: the original keeps the loop index in r30 and the
 // spawn layer in r31; we swap them.
 void PanelRewriteNPC2_804A9F58::update() {
+    s32 layer;
     JGeometry::TVec3f pos;
 
     if (vfunc_0x34() == true) {
@@ -35,7 +36,7 @@ void PanelRewriteNPC2_804A9F58::update() {
                 gGameRoot2_8053AB10->field_0x20->fn_802F9974(field_0x4, i, field_0x234);
                 if (field_0x23c != 0) {
                     fn_80226CA8(i, field_0x4, &pos);
-                    s32 layer = field_0x4;
+                    layer = field_0x4;
                     if (layer >= 8) {
                         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &pos, 0, -1, -1);
                     } else {

@@ -1100,7 +1100,9 @@ void ActorManager_804A5800::fn_801F6204(u8 value) {
 
 // FIXME(shotgun): 99.17 %, regalloc-only; behaviour clean.
 void ActorManager_804A5800::fn_801F6068() {
+    s32 j;
     s32 count = 0;
+    s32 best;
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i)) {
             field_0x3020[i] = fn_80236228(i);
@@ -1113,9 +1115,9 @@ void ActorManager_804A5800::fn_801F6068() {
     }
     // Selection sort, highest value first.
     for (s32 i = 0; i < count - 1; i++) {
-        s32 best = i;
+        best = i;
         s32 v = field_0x3020[i];
-        for (s32 j = i + 1; j < count; j++) {
+        for (j = i + 1; j < count; j++) {
             if (v < field_0x3020[j]) {
                 field_0x3020[best] = field_0x3020[j];
                 field_0x3020[j] = v;

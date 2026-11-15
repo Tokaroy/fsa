@@ -1849,8 +1849,8 @@ void cls_804B13D4::fn_80419570(s32 player) {
             static_cast<J2DPicture*>(field_0x8[player]->search(lbl_8048DFC0[i]))->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
             field_0x8[player]->search(lbl_8048DF80[i])->hide();
             field_0x8[player]->search(lbl_8048E000[i])->hide();
-            max -= 4;
             life -= 4;
+            max -= 4;
             continue;
         }
         if (life == 0) {

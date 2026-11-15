@@ -291,6 +291,7 @@ void PhantomGanon2_804A1A98::init() {
 // FIXME: 99.7. Regalloc only: the target keeps the serial in r31 (the register of the
 // emitter loop's pointer), we keep it in r30 (the loop counter's).
 PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
+    s32 serial;
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters2f4[i]);
         releaseEmitter_801EE434(mEmitters304[i]);
@@ -301,7 +302,7 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
         fn_8022ADCC();
     }
     if (field_0x90 == 10) {
-        s32 serial = field_0x274;
+        serial = field_0x274;
         if (serial >= 0) {
             PhantomGanon2_804A1A98* other = (PhantomGanon2_804A1A98*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL) {

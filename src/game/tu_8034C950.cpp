@@ -368,7 +368,7 @@ void cls_804AC950::draw() {
 
 // FIXME(shotgun): 98.64 %, different; behaviour drift.
 void cls_804AC950::vfunc_0x24() {
-    u16 tile = fn_8022461C(&mPos, field_0x4);
+    s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
         field_0x3c.x = 0.0f;

@@ -18,7 +18,7 @@ static const u32 lbl_8046D808[4] = {3, 0, 0, 0};
 // tile grid, other types to the BgRewrite animation (fn_802A3948) by the tile
 // code under the actor.
 static inline void writeCell(PanelRewriteNPC_804A8E40* p) {
-    if (p->field_0x234 == 0x30 || p->field_0x234 == 0x10) {
+    if (0x30 == p->field_0x234 || p->field_0x234 == 0x10) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(p->field_0x4 + p->field_0x256, p->field_0x250, p->field_0x234);
     } else {
         u16 tile = fn_80226998(&p->mPos, p->field_0x4);

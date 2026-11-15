@@ -799,7 +799,7 @@ void cls_804B0B00::fn_803ED83C() {
 // FIXME: 99.8. Registers only: the original loads field_0x1bc into r4 and field_0x1d0 into r3, ours the other way round.
 void cls_804B0B00::fn_803ED604() {
     stepBlink(this);
-    if (field_0x1d0 != field_0x1bc + 1 && field_0x1bc > 0) {
+    if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
         field_0x26c = 255;
         (this->*lbl_804B0754[5])();
     } else if (lbl_8053AD30->fn_80309C4C(0x1100, lbl_80529DEC.field_0x23c + 1)) {
@@ -1610,7 +1610,7 @@ void cls_804B0B00::fn_803E926C() {
 // FIXME: 99.8. Registers only: the original loads field_0x1bc into r4 and field_0x1d0 into r3, ours the other way round.
 void cls_804B0B00::fn_803E9034() {
     stepBlink(this);
-    if (field_0x1d0 != field_0x1bc + 1 && field_0x1bc > 0) {
+    if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
         field_0x26c = 255;
         (this->*lbl_804B0754[5])();
     } else if (lbl_8053AD30->fn_80309C4C(0x1100, lbl_80529DEC.field_0x23c + 1)) {

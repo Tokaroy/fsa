@@ -336,8 +336,8 @@ void DroppedItem_804A8C80::fn_802C0570() {
             if (hitFlags & mask) {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(player);
                 f32 diffX = mPos.x - playerPos.x;
-                f32 diffY = mPos.y - playerPos.y;
                 s32 absX = FABS(diffX);
+                f32 diffY = mPos.y - playerPos.y;
                 s32 absY = FABS(diffY);
                 s32 dir = fn_80230CFC(player);
                 if ((absX >= 0 && absX <= 15 && dir == 0) || dir == 1) {

@@ -70,6 +70,8 @@ void cls_804A4BB0::fn_801D7DB4(f32 scale) {
 // mode (1 or 3) in r27 and the loop counter in r28; here the counter gets
 // r27, the mode r28 and the layer r29.
 void cls_804A4BB0::update() {
+    s32 i;
+    s32 mode;
     if (isTiny(field_0x3c)) {
         fn_801F2B7C(field_0x114, -1, 1);
     } else {
@@ -79,13 +81,13 @@ void cls_804A4BB0::update() {
         if (!contains(box, mPos)) {
             mAlive = false;
         } else {
-            s32 mode = 1;
+            mode = 1;
             if (!fn_801CD2F8(field_0x4)) {
                 mode = 3;
             }
             u8 hits = fn_801F2740(-1);
             if (hits) {
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0; i < 4; i++) {
                     if (hits & (1 << i)) {
                         JGeometry::TVec2f p(getPlayerPos_8023E724(i)->x - field_0x3c.x,
                                             getPlayerPos_8023E724(i)->y - getPlayerPos_8023E724(i)->z - field_0x3c.y);

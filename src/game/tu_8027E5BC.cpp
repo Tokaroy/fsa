@@ -1686,6 +1686,7 @@ void Player_804A6F38::fn_80281760() {
 // fire effects 0x135C / 0x132C are respawned for the new facing; 0x135C follows mPos, and the
 // particle callback 0x1330 gets mPos (3 lower facing down, 3 higher facing up) through 0x1344.
 void Player_804A6F38::fn_8028126C() {
+    s32 serial;
     s32 facing = field_0x3dc;
     if (mPos.z <= 0.0f && field_0x344.z <= 0.0f) {
         field_0x344.z = 0.0f;
@@ -1716,7 +1717,7 @@ void Player_804A6F38::fn_8028126C() {
             field_0x344.z = 0.0f;
         }
     }
-    s32 serial = field_0xb28;
+    serial = field_0xb28;
     if (serial >= 0) {
         FireRodFire_804A89F0* fire =
             static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));

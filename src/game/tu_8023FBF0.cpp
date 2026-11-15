@@ -3301,6 +3301,7 @@ bool Player_804A6F38::fn_80248A24() {
 // index li / li in the original, li / mr in ours ("different" 94.9 %, six
 // shapes).
 s32 Player_804A6F38::fn_80248970() const {
+    s32 self;
     s32 leader;
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
@@ -3313,7 +3314,7 @@ s32 Player_804A6F38::fn_80248970() const {
                     count++;
                 }
             } else {
-                s32 self = field_0x4;
+                self = field_0x4;
                 if (self == fn_8022F3DC(i)) {
                     count++;
                 }

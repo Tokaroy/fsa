@@ -65,12 +65,13 @@ s32 cls_804A8578::fn_802B1D60() {
 
 // Stops the pads, the GX thread and the video before a reset.
 static inline void shutdownForReset() {
+    BOOL enabled;
     JUTXfb::getManager()->clearIndex();
     JUTGamePad::clearForReset();
     VIWaitForRetrace();
     VIWaitForRetrace();
     OSThread* gxThread = GXGetCurrentGXThread();
-    BOOL enabled = OSDisableInterrupts();
+    enabled = OSDisableInterrupts();
     if (gxThread != OSGetCurrentThread()) {
         OSCancelThread(gxThread);
         GXSetCurrentGXThread();

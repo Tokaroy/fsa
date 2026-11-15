@@ -166,9 +166,10 @@ void cls_804A4F90::draw() {
 // FIXME: 98.39. Register swap only: the original keeps the result in r5 and
 // field_0xdc in r4; ours the other way round.
 u8 cls_804A4F90::fn_801DC264() {
+    s32 length;
     u8 alpha = 0;
     if (mAnim.mAnim == 1) {
-        s32 length = field_0xdc;
+        length = field_0xdc;
         s32 time = field_0xd8;
         s32 fadeStart = length - 25;
         if (time > fadeStart || length < 25) {

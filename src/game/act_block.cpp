@@ -426,8 +426,8 @@ bool Block_804A7A10::fn_8028C518(u8 dir) {
         result = true;
         JGeometry::TBox2f box(mBox);
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
 
         for (int i = 0; i < 4; i++) {
