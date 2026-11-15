@@ -1367,10 +1367,11 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        JGeometry::TVec3f vel;
-        vel.z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        vel.y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        vel.x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        JGeometry::TVec3f vel(
+            2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+            2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+            3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
+        );
         gem->field_0x3c = vel;
     }
     if ((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 3) {
