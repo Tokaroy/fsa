@@ -18,13 +18,11 @@ static const s16* lbl_804A5620[4] = {
     lbl_80469C88, lbl_80469C94, lbl_80469CA0, lbl_80469CAC,
 };
 
-HorseRaceMan_804A5630::HorseRaceMan_804A5630() {
-    field_0x2a8 = gGameRoot_8053AAF8->fn_80138A30();
-    field_0x2ac = 0;
-    field_0x2b0 = -1;
-    field_0x2b4 = 0;
-    mCountdown.fn_801ED974();
-    fn_80216178(&mTable);
+HorseRaceMan_804A5630::HorseRaceMan_804A5630()
+    : field_0x2a8(gGameRoot_8053AAF8->fn_80138A30()),
+      field_0x2ac(0),
+      field_0x2b0(-1),
+      field_0x2b4(0) {
     lbl_8053A160 = -1;
 }
 

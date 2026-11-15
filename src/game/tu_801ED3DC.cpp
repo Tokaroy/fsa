@@ -53,11 +53,8 @@ void cls_801ED828::fn_801ED828() const {
     }
 }
 
-void cls_801ED3DC::fn_801ED80C() {
-    mStopped = true;
-    mFrames = 0;
-    mSeconds = 0;
-    mCentis = 0;
+cls_801ED3DC::cls_801ED3DC() {
+    fn_801ED7F0();
 }
 
 void cls_801ED3DC::fn_801ED7F0() {

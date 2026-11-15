@@ -67,45 +67,17 @@ void cls_80216238Sub::fn_802162B8(s32 id, s32 key) {
     }
 }
 
-// FIXME(shotgun): 96.88 %, missing/extra; behaviour clean.
-void cls_80216238::fn_80216238() {
-    mSub.field_0xc.fn_8021C00C();
-    mSub.mFlag8 = 0;
-    mSub.mFlag9 = 0;
-    mSub.mFlagA = 0;
-    mSub.field_0xc.fn_8021C00C();
-    mWatch.fn_801ED80C();
-    mId = 0;
-    mKey = -1;
-    mSub.mFlag8 = 0;
-    mSub.mFlag9 = 0;
-    mSub.mFlagA = 0;
-    mSub.field_0xc.fn_8021C00C();
-    mWatch.fn_801ED7F0();
+cls_80216238::cls_80216238() {
+    init(0);
 }
 
-// FIXME(shotgun): 50.79 %, missing/extra + reloc-name; behaviour drift.
-// the original builds the entries with __construct_array(fn_80216238), which
-// needs a constructor on cls_80216238 (not added: it would rename the symbols).
-cls_80215E48* fn_80216178(cls_80215E48* table) {
-    table->mCount = gGameRoot_8053AAF8->fn_80138A30();
-    for (s32 i = 0; i < 4; i++) {
-        table->mEntries[i].fn_80216238();
-    }
-    table->field_0x94.fn_8021C078();
-    table->fn_802160F4();
-    return table;
+cls_80215E48::cls_80215E48() : mCount(gGameRoot_8053AAF8->fn_80138A30()) {
+    fn_802160F4();
 }
 
 void cls_80215E48::fn_802160F4() {
     for (s32 i = 0; i < mCount; i++) {
-        mEntries[i].mId = i;
-        mEntries[i].mKey = -1;
-        mEntries[i].mSub.mFlag8 = 0;
-        mEntries[i].mSub.mFlag9 = 0;
-        mEntries[i].mSub.mFlagA = 0;
-        mEntries[i].mSub.field_0xc.fn_8021C00C();
-        mEntries[i].mWatch.fn_801ED7F0();
+        mEntries[i].init(i);
     }
     field_0x94.fn_8021C078();
     field_0xa0 = 0;
