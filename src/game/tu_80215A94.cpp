@@ -190,21 +190,36 @@ bool cls_80215E48::fn_80215D38() {
     return result;
 }
 
-// FIXME(shotgun): 85.78 %, missing/extra; behaviour drift.
-bool cls_80215E48::fn_80215C6C(s32 index) {
+static inline void getWatchTime(const cls_801ED3DC& watch, u8* seconds, u8* centis) {
+    *seconds = watch.mSeconds;
+    *centis = watch.mCentis;
+}
+
+// Inlined into fn_80215C6C: `result` gets r31 ahead of the `index * 0x24` temporary (r30),
+// and getWatchTime loads both bytes upfront with clrlwi on the out-parameters.
+static inline bool checkWatchRecord(const cls_801ED3DC& watch) {
     bool result = false;
-    if (mEntries[index].mWatch.mStopped != 0 && !mEntries[index].mWatch.fn_801ED7B0()) {
-        u8 seconds = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59;
-        u8 centis = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58;
+    if (watch.mStopped != 0 && !watch.fn_801ED7B0()) {
+        u8 centis;
+        u8 seconds;
+        seconds = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59;
+        centis = lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58;
         if (seconds == 0 && centis == 0) {
             result = true;
-        } else if (mEntries[index].mWatch.mSeconds < seconds) {
-            result = true;
-        } else if (mEntries[index].mWatch.mSeconds == seconds && mEntries[index].mWatch.mCentis < centis) {
-            result = true;
+        } else {
+            u8 watchSeconds;
+            u8 watchCentis;
+            getWatchTime(watch, &watchSeconds, &watchCentis);
+            if (watchSeconds < seconds || (watchSeconds == seconds && watchCentis < centis)) {
+                result = true;
+            }
         }
     }
     return result;
+}
+
+bool cls_80215E48::fn_80215C6C(s32 index) {
+    return checkWatchRecord(mEntries[index].mWatch);
 }
 
 // FIXME: 93.62 %, scheduling+regalloc; behaviour clean.
