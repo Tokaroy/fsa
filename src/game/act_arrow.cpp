@@ -327,7 +327,7 @@ void ArrowPlayer_804A05E0::update() {
         }
         if (field_0x94 == 0 || field_0x94 == 4) {
             if (mEmitters[1] == NULL) {
-                s32 id = 0;
+                u16 id = 0;
                 switch (field_0x98) {
                 case 0:
                     id = 0x283;
