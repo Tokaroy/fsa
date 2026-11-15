@@ -1228,7 +1228,6 @@ void cls_804B146C::fn_80423248(s32 player) {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
 }
 
-// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_80422824() {
     s32 tied;
     s32 count = 0;
@@ -1338,7 +1337,6 @@ void cls_804B146C::fn_80422824() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
         field_0x1a8[player] = fn_80237774(player);
