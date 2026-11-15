@@ -23,8 +23,6 @@ void PanelRewriteNPC2_804A9F58::init() {
 // Scans the 32 x 32 tile cells of this actor's layer (field_0x4) for tiles
 // equal to field_0x230 and rewrites them to field_0x234, with an effect (or,
 // on layer 8 and up, a KMRI actor) and a sound when the flags ask for them.
-// FIXME: 99%. Regalloc only: the original keeps the loop index in r30 and the
-// spawn layer in r31; we swap them.
 void PanelRewriteNPC2_804A9F58::update() {
     s32 layer;
     JGeometry::TVec3f pos;
