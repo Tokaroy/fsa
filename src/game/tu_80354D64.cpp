@@ -95,8 +95,8 @@ void Log_804ACD70::init() {
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(field_0x80);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     switch (field_0x230) {
     case 0: {
