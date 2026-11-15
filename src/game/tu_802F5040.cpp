@@ -1314,6 +1314,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
 // 8-line row is shifted by the average of its screen lines' offsets, wrapped by
 // 512 when the whole row is off one side.
 // Register allocation only (r28-r31 cycle on x, grid, palette, offsets) and prologue mr order for y.
+// FIXME: 99.77 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets) {
     static const GXTlut lbl_8046FA30[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
@@ -2743,6 +2744,7 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
 // time (field_0x18[0]) as 8 x 8 quads; with field_0xe450 a second TEV stage
 // multiplies in the player's field_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
+// FIXME: 96.01 %, missing/extra + reloc-name; behaviour drift.
 // FIXME: s0 / t0 fold + 0.0f into fmuls (original keeps fmadds with 0.0f, using f30 too); literals @NNN.
 void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
@@ -3222,7 +3224,7 @@ void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_80
     }
 }
 
-// FIXME: 76.52 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 90.68 %, missing/extra + reloc-name; behaviour near.
 // Still differs: the table loop's setup (the original keeps slot * 4 in r25 and
 // adds it to each table base) and register allocation.
 void TileMap_804AA858::fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record) {
