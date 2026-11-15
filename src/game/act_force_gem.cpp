@@ -317,7 +317,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -590,7 +590,7 @@ void ForceGem_804AB6D8::update() {
 }
 
 // 0x8032BFB0.
-// FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
 // literal table offsets, register order.
 void ForceGem_804AB6D8::draw() {
     s32 state = field_0x230;
@@ -697,7 +697,7 @@ void ForceGem_804AB6D8::draw() {
     mPos = saved;
 }
 
-// FIXME(shotgun): 95.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
 void ForceGem_804AB6D8::fn_8032BB90() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
@@ -764,7 +764,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
     }
 }
 
-// FIXME(shotgun): 96.87 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.07 %, missing/extra; behaviour clean.
 void ForceGem_804AB6D8::fn_8032B7C0() {
     if (field_0x94 == 0x23 || field_0x94 == 0x24) {
         return;
@@ -864,7 +864,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
     }
 }
 
-// FIXME(shotgun): 99.19 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.40 %, regalloc-only; behaviour clean.
 bool ForceGem_804AB6D8::fn_8032B3F8() {
     s32 layer = field_0x4;
     if (getGameView_802D6A9C()->field_0x131df[layer] == 0) {
@@ -1009,7 +1009,7 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     return false;
 }
 
-// FIXME(shotgun): 97.93 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
 void ForceGem_804AB6D8::fn_8032ABE0() {
     if (!(field_0x230 == 0 || field_0x230 == 6 || field_0x230 == 1 || field_0x230 == 2 || field_0x230 == 9 ||
           field_0x230 == 0xd)) {
