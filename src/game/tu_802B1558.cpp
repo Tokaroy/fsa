@@ -98,7 +98,7 @@ static inline void copySaveRegion() {
     }
 }
 
-// FIXME(shotgun): 92.83 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 93.09 %, missing/extra; behaviour drift.
 // 0x802B1BE0
 void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
     __PADDisableRecalibration(FALSE);
@@ -111,7 +111,7 @@ void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
     }
 }
 
-// FIXME(shotgun): 91.46 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 91.45 %, missing/extra; behaviour drift.
 // 0x802B1610
 void cls_804A8578::fn_802B1610(s32 port, void* arg) {
     if (lbl_80529DEC.mSaveRegion.f.field_0x9 != 0) {
@@ -186,8 +186,6 @@ void cls_804A8578::fn_802B1610(s32 port, void* arg) {
     copySaveRegion();
 }
 
-// FIXME(shotgun): 99.46 %, regalloc-only; behaviour clean.
-// 0x802B1558
 void cls_804A8578::fn_802B1558() {
     shutdownForReset();
 }
