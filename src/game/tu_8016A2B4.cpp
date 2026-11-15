@@ -148,11 +148,11 @@ GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
 }
 
 // FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
-// (the loop's entry and index registers are swapped, r27/r28)
 GameRootSub24_8016A3AC::~GameRootSub24_8016A3AC() {
     for (int i = 0; i < 4; i++) {
-        if (field_0x140.mEntries[i].field_0x0 != NULL) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0x140.mEntries[i].field_0x0);
+        JPABaseEmitter* emitter = field_0x140.mEntries[i].field_0x0;
+        if (emitter != NULL) {
+            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(emitter);
         }
         if (field_0x140.mEntries[i].field_0x18 != NULL) {
             delete field_0x140.mEntries[i].field_0x18;
