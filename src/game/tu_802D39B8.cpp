@@ -1865,11 +1865,8 @@ void GameView_804A9950::fn_802D6B24(s32 bit, bool set) {
     }
 }
 
-// FIXME: 92.08 %, scheduling+regalloc; behaviour clean.
-// FIXME: scheduling+regalloc; behaviour clean. The target computes bit / 32 (srawi/addze) and
-// the row offset earlier; ours places one add later.
 bool GameView_804A9950::fn_802D6AC4(s32 bit) {
-    return ((1 << (bit % 32)) & field_0xfd68[field_0x18][field_0x14][bit / 32]) != 0;
+    return field_0xfd68[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D6AAC(u8 value) {
