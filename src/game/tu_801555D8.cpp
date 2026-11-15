@@ -36,7 +36,7 @@ void fn_801583D4(JGeometry::TVec3f* dst, f32 x, f32 y, f32 z) {
     dst->set(x, y, z);
 }
 
-// FIXME(shotgun): 93.98 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.27 %, missing/extra + reloc-name; behaviour near.
 void cls_804A00C8::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -12.0f;
@@ -136,7 +136,6 @@ void cls_804A00C8::init() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
 cls_804A00C8::~cls_804A00C8() {
     s32 partnerSerial = field_0x280;
     if (partnerSerial >= 0) {
@@ -156,7 +155,6 @@ cls_804A00C8::~cls_804A00C8() {
     }
 }
 
-// FIXME(shotgun): 99.89 %, reloc-name; behaviour clean.
 void cls_804A00C8::vfunc_0x44() {
     s32 serial = field_0x284;
     if (serial >= 0) {
@@ -178,8 +176,6 @@ void cls_804A00C8::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 99.82 %, reloc-name; behaviour clean.
-// only (literal pool order)
 bool cls_804A00C8::vfunc_0x54() {
     if (mState == 0xD) {
         return true;
@@ -216,7 +212,7 @@ bool cls_804A00C8::vfunc_0x54() {
     return false;
 }
 
-// FIXME(shotgun): 85.33 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 85.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
@@ -1070,7 +1066,7 @@ void cls_804A00C8::update() {
     }
 }
 
-// FIXME(shotgun): 95.63 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
 void cls_804A00C8::draw() {
     if (field_0x94 == 2 || field_0x278 != 0) {
         return;
