@@ -860,18 +860,17 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
         field_0x440--;
     }
     s32 timer = field_0x440;
-    s16 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
-    s16 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
-    s16 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
-    s16 e = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
-    s16 g = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
-    s16 h = lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2];
+    s32 a = lbl_8050DB0C.field_0x4c[(0x244 - 0x4C) / 2];
+    s32 b = lbl_8050DB0C.field_0x4c[(0x246 - 0x4C) / 2];
+    s32 c = lbl_8050DB0C.field_0x4c[(0x248 - 0x4C) / 2];
     s32 t0 = 150 - a;
     s32 t1 = 150 - a - b;
     s32 t2 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2];
-    s32 t3 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a;
-    s32 t4 = 150 - lbl_8050DB0C.field_0x4c[(0x24A - 0x4C) / 2] - a -
-             b;
+    s32 e = lbl_8050DB0C.field_0x4c[(0x24C - 0x4C) / 2];
+    s32 g = lbl_8050DB0C.field_0x4c[(0x24E - 0x4C) / 2];
+    s32 h = lbl_8050DB0C.field_0x4c[(0x250 - 0x4C) / 2];
+    s32 t3 = t2 - a;
+    s32 t4 = t2 - a - b;
     if (timer == 0) {
         if (field_0x450 == 1) {
             if (field_0x4b8[0] == 0xFF && fn_80389BF0(0, 0x106)) {
@@ -924,10 +923,8 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
         }
         if (field_0x440 <= t2) {
             if (field_0x440 >= t3) {
-                s32 d = field_0x440 - t3;
-                s32 dur = e;
                 f32 offset = (40.0f + (f32)h) *
-                             (1.0f - (f32)(d * d) / (f32)(dur * dur));
+                             (1.0f - (f32)((field_0x440 - t3) * (field_0x440 - t3)) / (f32)(e * e));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
@@ -939,9 +936,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
                     }
                 }
             } else if (field_0x440 >= t4) {
-                s32 d = field_0x440 - t4;
-                s32 dur = g;
-                f32 offset = (f32)h * ((f32)(d * d) / (f32)(dur * dur));
+                f32 offset = (f32)h * ((f32)((field_0x440 - t4) * (field_0x440 - t4)) / (f32)(g * g));
                 for (s32 i = 0; i < field_0x454; i++) {
                     f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
