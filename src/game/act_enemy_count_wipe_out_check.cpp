@@ -11,9 +11,6 @@ void EnemyCountWipeOutCheck_804A8250::init() {
     field_0x240 = (field_0x90 >> 21) & 1;
 }
 
-// FIXME: 99.7 %. Only the register holding field_0x4 differs: the original
-// keeps it in r30 (lwz r30, 0x4(r31) and the three uses after the call), ours
-// in r28.
 void EnemyCountWipeOutCheck_804A8250::update() {
     s32 layer;
     u32 count = 0;
