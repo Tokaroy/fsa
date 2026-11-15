@@ -38,9 +38,27 @@ void cls_8049DE90::init() {
     }
 }
 
-// FIXME: 99%. Register allocation only, in the state-0 table block: the
-// original keeps the pick index in r29 and the table pointer in r25, mine
-// uses r26 and r27 (and the loop counter/pointer registers shift with them).
+// Picks the next table entry (random, or in turn when mCycle is 1) and shows it alone. An inline
+// of its own: its values get their registers before update's (docs/REGALLOC.md, rule 4).
+static inline void showPickedEntry(cls_8049DE90* self) {
+    s32 pick = fn_801CD664(4);
+    if (self->mCycle == 1) {
+        pick = self->mNext;
+        self->mNext++;
+        if (self->mNext >= 4) {
+            self->mNext = 0;
+        }
+    }
+    if (self->mTable[pick] != 0) {
+        for (s32 i = 0; i < 4; i++) {
+            if (i != pick && self->mTable[i] != self->mTable[pick]) {
+                getGameView_802D6A9C()->fn_802D8050(self->mTable[i], false, 0xFF);
+            }
+        }
+        getGameView_802D6A9C()->fn_802D8050(self->mTable[pick], true, 0xFF);
+    }
+}
+
 void cls_8049DE90::update() {
     switch (mState) {
     case 0:
@@ -50,22 +68,7 @@ void cls_8049DE90::update() {
         }
         mTimer++;
         if (mTimer >= mDuration) {
-            s32 pick = fn_801CD664(4);
-            if (mCycle == 1) {
-                pick = mNext;
-                mNext++;
-                if (mNext >= 4) {
-                    mNext = 0;
-                }
-            }
-            if (mTable[pick] != 0) {
-                for (s32 i = 0; i < 4; i++) {
-                    if (i != pick && mTable[i] != mTable[pick]) {
-                        getGameView_802D6A9C()->fn_802D8050(mTable[i], false, 0xFF);
-                    }
-                }
-                getGameView_802D6A9C()->fn_802D8050(mTable[pick], true, 0xFF);
-            }
+            showPickedEntry(this);
             mTimer = 0;
         }
         if (mDuration == 0) {
