@@ -62,6 +62,26 @@ MUL = {"mulli", "mullw", "slwi", "slw", "mulhw", "mulhwu"}
 ADDR = {"addi", "addis", "lis", "subi"}
 MEMOPS = re.compile(r"^(l|st)(b|h|w|f[sd]|ha|hz|bz|wz|mw)[zux]*$")
 SAVED = re.compile(r"^r(1[4-9]|2\d|3[01])$|^f(1[4-9]|2\d|3[01])$")
+# pattern -> what usually causes it (the table above, short; tools/diag.py prints these)
+HINTS = {
+    "ext": "an integer width or signedness (local, parameter, field, return)",
+    "cmp-sign": "signed vs unsigned compare",
+    "float": "float vs double",
+    "cvt-sign": "an int converted to float as signed vs unsigned",
+    "const": "a constant materialised (often a bool)",
+    "bool": "a materialised bool",
+    "copy": "an extra temporary, or a value kept in a second register",
+    "mem": "a reload or store the other side lacks (aliasing, a copy, a value re-read)",
+    "stack": "a spill or a stack temporary",
+    "prologue": "a saved register more or fewer live",
+    "branch": "branch layout or order",
+    "call": "an inlined vs out-of-line call",
+    "mul": "multiply vs shift",
+    "addr": "an address computed again",
+    "cmp": "a compare more or fewer",
+    "arith": "integer arithmetic",
+    "other": "",
+}
 
 
 def mn_of(ins):
