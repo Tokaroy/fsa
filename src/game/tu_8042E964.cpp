@@ -153,9 +153,6 @@ bool cls_804B1634::fn_80431900(s32 id, u8 value, u8* out) {
     return false;
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// Code identical; only the .sdata2 literal names differ (same pool
-// order cause as fn_80431740).
 BOOL cls_804B1634::fn_804317AC() {
     if (field_0xec != 0) {
         field_0xe8++;
@@ -193,10 +190,8 @@ void cls_804B1634::fn_804316EC() {
     }
 }
 
-// FIXME: 99.57 %, regalloc-only + reloc-name; behaviour clean.
-// Not a counted match: the .sdata2 literals (1.0f, 11.0f, 0.5f) pair
-// only once fn_8042EF9C / fn_8042F6DC put theirs first, and the temporaries
-// f0-f3 of the cursor placement are numbered differently (regalloc only).
+// FIXME: 99.60 %, regalloc-only; behaviour clean.
+// The temporaries f0-f3 of the cursor placement are numbered differently (regalloc only).
 bool cls_804B1634::fn_80431174(u8 cursor) {
     if (field_0x8->search(0x0050776375723031ull)->mIsVisible) {
         field_0xe8--;
@@ -395,7 +390,7 @@ f32 cls_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     return 0.0f;
 }
 
-// FIXME(shotgun): 98.74 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.12 %, scheduling+regalloc; behaviour near.
 // cls_804B1634
 void cls_804B1634::fn_8042F6DC() {
     f32 w = field_0xb8[0] + 48.0f;
@@ -415,25 +410,7 @@ void cls_804B1634::fn_8042F6DC() {
     if (tilesH <= 1) {
         tilesH++;
     }
-    f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
-    field_0x24[0]->fn_80402CE0(sx0, 1.0f);
-    field_0x24[1]->fn_80402CE0(sx0, 1.0f);
-    f32 sy2 = h / field_0x24[4]->field_0x1c;
-    f32 sx2 = w / field_0x24[4]->field_0x18;
-    field_0x24[2]->fn_80402CE0(1.0f, sy2);
-    field_0x24[3]->fn_80402CE0(1.0f, sy2);
-    field_0x24[4]->fn_80402CE0(sx2, sy2);
-
-    f32 sx_bb0 = (w + (field_0x10[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x10[0]->field_0x18;
-    field_0x10[0]->fn_80402CE0(sx_bb0, 1.0f);
-    field_0x10[1]->fn_80402CE0(sx_bb0, 1.0f);
-
-    f32 w4 = field_0x24[4]->field_0x18;
-    f32 w_bb4 = field_0x10[4]->field_0x18;
-    f32 sy_bb2 = (h + (field_0x10[4]->field_0x1c - field_0x24[4]->field_0x1c)) / field_0x10[4]->field_0x1c;
-    field_0x10[2]->fn_80402CE0(1.0f, sy_bb2);
-    field_0x10[3]->fn_80402CE0(1.0f, sy_bb2);
-    field_0x10[4]->fn_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
+    scaleFrames(w, h);
 
     f32 dx4 = field_0x24[4]->field_0x8 - field_0x24[4]->mPane->getBounds()->i.x;
     field_0x24[0]->moveFromCentre_80402E08(dx4, 0.0f);
@@ -540,6 +517,32 @@ void cls_804B1634::fn_8042F6DC() {
         field_0x8->search(0x0050776375723032ull)
             ->rotate(0.5f * cur2->getWidth(), 0.5f * height2, J2DROTATE_Z, lbl_80543AF0[field_0xeb]);
     }
+}
+
+// A plain function that fn_8042F6DC inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 1.0f between fn_8042EF9C's literals and fn_8042F6DC's 48.0f, so it was generated here
+// (tools/pool.py). Scales the edge and centre panes of the two window frames (field_0x24 and
+// field_0x10) to the inner size w x h.
+void cls_804B1634::scaleFrames(f32 w, f32 h) {
+    f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
+    field_0x24[0]->fn_80402CE0(sx0, 1.0f);
+    field_0x24[1]->fn_80402CE0(sx0, 1.0f);
+    f32 sy2 = h / field_0x24[4]->field_0x1c;
+    f32 sx2 = w / field_0x24[4]->field_0x18;
+    field_0x24[2]->fn_80402CE0(1.0f, sy2);
+    field_0x24[3]->fn_80402CE0(1.0f, sy2);
+    field_0x24[4]->fn_80402CE0(sx2, sy2);
+
+    f32 sx_bb0 = (w + (field_0x10[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x10[0]->field_0x18;
+    field_0x10[0]->fn_80402CE0(sx_bb0, 1.0f);
+    field_0x10[1]->fn_80402CE0(sx_bb0, 1.0f);
+
+    f32 w4 = field_0x24[4]->field_0x18;
+    f32 w_bb4 = field_0x10[4]->field_0x18;
+    f32 sy_bb2 = (h + (field_0x10[4]->field_0x1c - field_0x24[4]->field_0x1c)) / field_0x10[4]->field_0x1c;
+    field_0x10[2]->fn_80402CE0(1.0f, sy_bb2);
+    field_0x10[3]->fn_80402CE0(1.0f, sy_bb2);
+    field_0x10[4]->fn_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
 // FIXME(shotgun): 93.99 %, missing/extra + reloc-name; behaviour near.
