@@ -108,11 +108,10 @@ void cls_8049EB8C::init() {
 // FIXME: 96.54%. missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void cls_8049EB8C::update() {
     cls_8049D140::update();
-    JGeometry::TBox2f box;
-    box.set(mBox);
+    JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_801321E4();
     switch (field_0x234) {
@@ -144,11 +143,10 @@ void cls_8049EB8C::update() {
         case 0:
             break;
         case 1: {
-            JGeometry::TBox2f box2;
-            box2.set(mBox);
+            JGeometry::TBox2f box2 = mBox;
             box2.i.x += mPos.x;
-            box2.f.x += mPos.x;
             box2.i.y += mPos.y;
+            box2.f.x += mPos.x;
             box2.f.y += mPos.y;
             fn_8022FEB8(&box2, field_0x4, mSerial, true, false);
             s32 player = fn_8022FD8C(mSerial);
