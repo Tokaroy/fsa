@@ -43,7 +43,32 @@ static const u8 lbl_8046F280_104[20] = {
     1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
 };
 
-extern u8* lbl_804AA0B8[17];
+// The walk direction lists (0 up, 1 down, 2 left, 3 right; 0xFF ends), one per field_0x230.
+static const u8 lbl_805412A8[] = {2, 0xFF};
+static const u8 lbl_805412AC[] = {1, 1, 1, 0xFF};
+static const u8 lbl_805412B0[] = {3, 0xFF};
+static const u8 lbl_805412B4[] = {3, 0xFF};
+static const u8 lbl_805412B8[] = {0, 0xFF};
+static const u8 lbl_805412BC[] = {3, 0, 0xFF};
+static const u8 lbl_805412C0[] = {3, 3, 0xFF};
+static const u8 lbl_805412C4[] = {3, 3, 0xFF};
+static const u8 lbl_805412C8[] = {0, 0, 0xFF};
+static const u8 lbl_805412CC[] = {0, 0, 0xFF};
+static const u8 lbl_805412D0[] = {0, 0xFF};
+static const u8 lbl_805412D4[] = {0, 3, 0xFF};
+static const u8 lbl_805412D8[] = {0, 0xFF};
+static const u8 lbl_805412DC[] = {0, 2, 0xFF};
+static const u8 lbl_805412E0[] = {0, 3, 0, 0xFF};
+static const u8 lbl_805412E4[] = {0xFF};
+static const u8 lbl_805412E8[] = {0xFF};
+
+static const u8* lbl_804AA0B8[17] = {
+    lbl_805412A8, lbl_805412AC, lbl_805412B0, lbl_805412B4,
+    lbl_805412B8, lbl_805412BC, lbl_805412C0, lbl_805412C4,
+    lbl_805412C8, lbl_805412CC, lbl_805412D0, lbl_805412D4,
+    lbl_805412D8, lbl_805412DC, lbl_805412E0, lbl_805412E4,
+    lbl_805412E8,
+};
 JGeometry::TVec2f lbl_804D56A8[17] = {
     JGeometry::TVec2f(50.0f, 40.0f),
     JGeometry::TVec2f(50.0f, 40.0f),
@@ -83,7 +108,6 @@ JGeometry::TVec2f lbl_804D5730[17] = {
     JGeometry::TVec2f(664.0f, 3704.0f)
 };
 
-// FIXME(shotgun): 99.75 %, operands + reloc-name; behaviour near.
 void UnknownENDM_804AA0FC::init() {
     field_0x284 = getGameView_802D6A9C()->field_0x4;
     field_0x280 = getGameView_802D6A9C()->field_0x8;
@@ -98,7 +122,7 @@ void UnknownENDM_804AA0FC::init() {
     field_0x270 = 300.0f;
     field_0x274 = 300.0f;
     field_0x278 = 0.0f;
-    gAudioMgr_8053AF80->fn_80458FF0(0x100028, true, 0);
+    gAudioMgr_8053AF80->fn_80458FF0(0x1000028, true, 0);
     field_0x234 = 0;
     field_0x231 = 0;
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);
@@ -116,7 +140,7 @@ static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f&
     return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
 }
 
-// FIXME(shotgun): 86.58 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.76 %, missing/extra + reloc-name; behaviour drift.
 void UnknownENDM_804AA0FC::update() {
     field_0x234++;
     switch (field_0x23c) {
@@ -212,7 +236,7 @@ void UnknownENDM_804AA0FC::update() {
                     field_0x250 = lbl_804D5730[field_0x230];
                     JGeometry::TVec2f focus(field_0x250.x, field_0x250.y + -30.0f);
                     gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
-                    field_0x290 = lbl_804AA0B8[field_0x230];
+                    field_0x290 = (u8*)lbl_804AA0B8[field_0x230];
                     field_0x260 = (f32)(s32)(field_0x250.x / 512.0f) * 512.0f;
                     field_0x264 = (f32)(s32)(field_0x250.y / 384.0f) * 384.0f;
                     if (field_0x230 == 5) {
@@ -474,39 +498,9 @@ bool UnknownENDM_804AA0FC::fn_802E9884(JGeometry::TVec3f pos) {
     return false;
 }
 
-inline void UnknownENDM_804AA0FC::updateCamera() {
-    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
-    JGeometry::TVec2f offset(0.0f, -30.0f);
-    JGeometry::TVec2f focus = pos + offset;
-    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-    f32 halfW = view.getWidth() * 0.5f;
-    f32 halfH = view.getHeight() * 0.5f;
-    if (focus.x + halfW >= field_0x268) {
-        focus.x = field_0x268 - halfW;
-    } else if (focus.x - halfW <= field_0x260) {
-        focus.x = field_0x260 + halfW;
-    }
-    if (focus.y + halfH >= field_0x26c) {
-        focus.y = field_0x26c - halfH;
-    } else if (focus.y - halfH <= field_0x264) {
-        focus.y = field_0x264 + halfH;
-    }
-    if (field_0x270 != field_0x274) {
-        field_0x270 += field_0x278;
-        if (field_0x278 < 0.0f) {
-            if (field_0x270 < field_0x274) {
-                field_0x270 = field_0x274;
-            }
-        } else if (field_0x270 > field_0x274) {
-            field_0x270 = field_0x274;
-        }
-    }
-    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
-}
-
 // Follows the target focus: closes in on (field_0x244, field_0x248) by easing, keeps the camera box inside the limits, eases the zoom to its target and hands both to the camera.
 // Still differs: the view box is copied to the stack by the original (16 bytes, word moves).
-// FIXME: 91.07 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 91.37 %, missing/extra; behaviour drift.
 void UnknownENDM_804AA0FC::fn_802E94F4() {
     f32 ty = field_0x244.y;
     f32 tx = field_0x244.x;
@@ -538,8 +532,29 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
     updateCamera();
 }
 
-// FIXME: 99.81 %, reloc-name; behaviour clean.
-// only: the 2^52 float-conversion constant is @954 in ours, lbl_805412F0 in the original
+// Not in the binary: a plain function that fn_802E94F4 and update inline. The pool puts it here:
+// its -30.0f comes after fn_802E948C's conversion constant and before fn_802E94F4's literals.
+void UnknownENDM_804AA0FC::updateCamera() {
+    JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
+    JGeometry::TVec2f offset(0.0f, -30.0f);
+    JGeometry::TVec2f focus = pos + offset;
+    JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
+    f32 halfW = view.getWidth() * 0.5f;
+    f32 halfH = view.getHeight() * 0.5f;
+    if (focus.x + halfW >= field_0x268) {
+        focus.x = field_0x268 - halfW;
+    } else if (focus.x - halfW <= field_0x260) {
+        focus.x = field_0x260 + halfW;
+    }
+    if (focus.y + halfH >= field_0x26c) {
+        focus.y = field_0x26c - halfH;
+    } else if (focus.y - halfH <= field_0x264) {
+        focus.y = field_0x264 + halfH;
+    }
+    stepZoom();
+    gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&focus, (f32)(s32)field_0x270);
+}
+
 bool UnknownENDM_804AA0FC::fn_802E948C(f32 target, s32 frames) {
     if (field_0x270 == target) {
         return false;
@@ -552,6 +567,22 @@ bool UnknownENDM_804AA0FC::fn_802E948C(f32 target, s32 frames) {
     }
     field_0x274 = target;
     return true;
+}
+
+// Moves the zoom one step (field_0x278) towards its target (field_0x274).
+// Not in the binary: a plain function that updateCamera inlines. The pool puts it below
+// fn_802E948C: its 0.0f is the unit's first literal.
+void UnknownENDM_804AA0FC::stepZoom() {
+if (field_0x270 != field_0x274) {
+    field_0x270 += field_0x278;
+    if (field_0x278 < 0.0f) {
+        if (field_0x270 < field_0x274) {
+            field_0x270 = field_0x274;
+        }
+    } else if (field_0x270 > field_0x274) {
+        field_0x270 = field_0x274;
+    }
+}
 }
 
 void UnknownENDM_804AA0FC::draw() {}
