@@ -23,36 +23,8 @@ static inline void inflate(JGeometry::TBox2f& box, f32 d) {
     box.f.y += d;
 }
 
-// Whether one of the player's eight probe points (fn_8022E088) lies in the
-// actor's box; only players on the actor's layer count.
-inline bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
-    s32 layer = field_0x4;
-    s32 playerLayer = getPlayerLayer_8023DE58(player);
-    if (playerLayer != layer) {
-        return false;
-    }
-    f32 left = mBox.i.x + mPos.x;
-    f32 right = mBox.f.x + mPos.x;
-    f32 top = mBox.i.y + mPos.y;
-    f32 bottom = mBox.f.y + mPos.y;
-    for (s32 k = 0; k < 8; k++) {
-        fn_8022E088(player, k, &point);
-        point.z = 0.0f;
-        bool inside = false;
-        if (point.x >= left && point.y >= top && point.x < right && point.y < bottom) {
-            inside = true;
-        }
-        if (inside) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// FIXME: 99.78 %, reloc-name; behaviour clean.
-// The sdata2 constants (24.0f, 16.0f, 0.0f, -31.5f, 31.5f)
-// are literals in ours and lbl_80542F88 etc. in the original: only the
-// relocation names differ. Code is identical.
+// The tile loop is written out here: with rewriteTiles() inlined the registers of x/z and of
+// the counters come out swapped (99.29 %), so init's copy is its own code or a differently cut helper.
 void cls_804AE7D8::init() {
     field_0x244 = 0;
     field_0x264 = 0;
@@ -86,14 +58,7 @@ void cls_804AE7D8::init() {
         field_0x3c.y = 0.0f;
         field_0x3c.z = 0.0f;
         field_0x248 = mPos;
-        mBox.i.x = -31.5f;
-        mBox.i.y = -31.5f;
-        mBox.f.x = 31.5f;
-        mBox.f.y = 31.5f;
-        field_0x80.i.x = -31.5f;
-        field_0x80.i.y = -31.5f;
-        field_0x80.f.x = 31.5f;
-        field_0x80.f.y = 31.5f;
+        setBoxes();
         field_0x1a4 = 4;
         field_0x254 = 0;
         field_0xb8 = 2;
@@ -107,12 +72,11 @@ void cls_804AE7D8::init() {
     }
 }
 
-// FIXME: 99.24 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.27 %, missing/extra; behaviour clean.
 // Float registers of the box sums differ (here and in
 // touchesPlayer, whose layer, counter and sums sit in r30/f27-f30 instead of
 // r28/f27-f30 in another order), the field_0x260 < 10 test branches to the
-// increment instead of falling into it, and the float literals are not split
-// into this unit yet.
+// increment instead of falling into it.
 void cls_804AE7D8::update() {
     // Stack slots: the box (highest), then the position and the probe
     // result, as the original's frame lays them out.
@@ -172,48 +136,12 @@ void cls_804AE7D8::update() {
             if (PSVECDistance(&mPos, &mSpawnPos) >= 63.9) {
                 vfunc_0x30(0xFF, true);
 
-                // The same offset loop as init().
-                f32 x = mPos.x;
-                x -= 24.0f;
-                f32 y = mPos.y;
-                f32 z = mPos.z;
-                s32 j;
-                for (s32 i = 0; i < 4; i++) {
-                    pos.x = x;
-                    pos.y = y;
-                    pos.z = z;
-                    const f32* offset = lbl_80475178;
-                    for (j = 0; j < 4; j++) {
-                        pos.y = y + *offset;
-                        gBgRewrite_8053AC98->fn_802A3948(&pos, 0, field_0x4, 0);
-                        offset++;
-                    }
-                    x += 16.0f;
-                }
+                rewriteTiles();
                 field_0x244 = 1;
                 field_0x25c = 50;
                 field_0x260 = 0;
 
-                if (mEmitter230 == NULL) {
-                    mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);
-                    setEmitterPos_8013CB44(mEmitter230, &mPos, -1, -1, true);
-                }
-                if (mEmitter234 == NULL) {
-                    mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb7, 0, 0, NULL, NULL, true, 1.0f);
-                    setEmitterPos_8013CB44(mEmitter234, &mPos, -1, -1, true);
-                }
-                if (mEmitter238 == NULL) {
-                    mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb8, 0, 0, NULL, NULL, true, 1.0f);
-                    setEmitterPos_8013CB44(mEmitter238, &mPos, 0, 0, true);
-                }
-                if (mEmitter23c == NULL) {
-                    mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb9, 0, 0, NULL, NULL, true, 1.0f);
-                    setEmitterPos_8013CB44(mEmitter23c, &mPos, 0, 0, true);
-                }
-                if (mEmitter240 == NULL) {
-                    mEmitter240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xba, 0, 0, NULL, NULL, true, 1.0f);
-                    setEmitterPos_8013CB44(mEmitter240, &mPos, 0, 0, true);
-                }
+                spawnBreakEmitters();
                 startSound_801F0E34(0x50065, 0);
                 if (field_0x265 == 0) {
                     getGameView_802D6A9C()->fn_802D7584(field_0x16c, (u8)field_0x258);
@@ -279,6 +207,96 @@ void cls_804AE7D8::update() {
         }
         break;
     }
+    }
+}
+
+// Rewrites the 4 x 4 tiles under the actor.
+// Not in the binary: a plain function that update inlines. The pool puts the four
+// helpers here, between update and draw, in this order (the unit's literals 1.0f, -31.5f,
+// 31.5f, 0.0f, 24.0f, 16.0f come before update's own).
+void cls_804AE7D8::rewriteTiles() {
+    f32 x = mPos.x;
+    x -= 24.0f;
+    f32 y = mPos.y;
+    f32 z = mPos.z;
+    // The inner counter is declared outside its loop: that gives the
+    // original's register order (r29), not the loop-local one.
+    s32 j;
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos;
+        pos.x = x;
+        pos.y = y;
+        pos.z = z;
+        const f32* offset = lbl_80475178;
+        for (j = 0; j < 4; j++) {
+            pos.y = y + *offset;
+            gBgRewrite_8053AC98->fn_802A3948(&pos, 0, field_0x4, 0);
+            offset++;
+        }
+        x += 16.0f;
+    }
+}
+
+// Whether one of the player's eight probe points (fn_8022E088) lies in the
+// actor's box; only players on the actor's layer count.
+bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
+    s32 layer = field_0x4;
+    s32 playerLayer = getPlayerLayer_8023DE58(player);
+    if (playerLayer != layer) {
+        return false;
+    }
+    f32 left = mBox.i.x + mPos.x;
+    f32 right = mBox.f.x + mPos.x;
+    f32 top = mBox.i.y + mPos.y;
+    f32 bottom = mBox.f.y + mPos.y;
+    for (s32 k = 0; k < 8; k++) {
+        fn_8022E088(player, k, &point);
+        point.z = 0.0f;
+        bool inside = false;
+        if (point.x >= left && point.y >= top && point.x < right && point.y < bottom) {
+            inside = true;
+        }
+        if (inside) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Not in the binary: a plain function that init inlines.
+void cls_804AE7D8::setBoxes() {
+    mBox.i.x = -31.5f;
+    mBox.i.y = -31.5f;
+    mBox.f.x = 31.5f;
+    mBox.f.y = 31.5f;
+    field_0x80.i.x = -31.5f;
+    field_0x80.i.y = -31.5f;
+    field_0x80.f.x = 31.5f;
+    field_0x80.f.y = 31.5f;
+}
+
+// The effects of the rock breaking.
+// Not in the binary: a plain function that update inlines.
+void cls_804AE7D8::spawnBreakEmitters() {
+    if (mEmitter230 == NULL) {
+        mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);
+        setEmitterPos_8013CB44(mEmitter230, &mPos, -1, -1, true);
+    }
+    if (mEmitter234 == NULL) {
+        mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb7, 0, 0, NULL, NULL, true, 1.0f);
+        setEmitterPos_8013CB44(mEmitter234, &mPos, -1, -1, true);
+    }
+    if (mEmitter238 == NULL) {
+        mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb8, 0, 0, NULL, NULL, true, 1.0f);
+        setEmitterPos_8013CB44(mEmitter238, &mPos, 0, 0, true);
+    }
+    if (mEmitter23c == NULL) {
+        mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb9, 0, 0, NULL, NULL, true, 1.0f);
+        setEmitterPos_8013CB44(mEmitter23c, &mPos, 0, 0, true);
+    }
+    if (mEmitter240 == NULL) {
+        mEmitter240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xba, 0, 0, NULL, NULL, true, 1.0f);
+        setEmitterPos_8013CB44(mEmitter240, &mPos, 0, 0, true);
     }
 }
 

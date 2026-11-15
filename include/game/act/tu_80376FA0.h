@@ -13,7 +13,11 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: plain functions that init (setBoxes) and update (the others) inline.
+    void rewriteTiles();
     bool touchesPlayer(s32 player, JGeometry::TVec3f& point);
+    void setBoxes();
+    void spawnBreakEmitters();
     // Effect emitters from spawnEmitter_8013CC50, one per effect id (0x542, 0xB7-0xBA,
     // and 0x319-0x31C for the one update() re-creates); releaseEmitter_801EE434 frees them.
     /* 0x230 */ JPABaseEmitter* mEmitter230;
