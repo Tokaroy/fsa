@@ -63,7 +63,8 @@ static inline bool stepArc(cls_804A5C88::Path* path, bool atTarget) {
     return done;
 }
 
-// FIXME: 97.84% (scheduling+regalloc). In the inlined stepArc the 125.0f literal is loaded
+// FIXME: 97.84 %, scheduling+regalloc; behaviour clean.
+// (scheduling+regalloc). In the inlined stepArc the 125.0f literal is loaded
 // after the sincosTable address (ours before) and the multiply takes its operands the
 // other way round (k * sin written either way).
 // The direction arguments are materialised (cntlzw / extrwi. for == 0, neg / or / srwi. for
@@ -126,7 +127,8 @@ cls_804A5C88::cls_804A5C88() {
     mPath.mTarget.y = 0.0f;
 }
 
-// FIXME: 99.47% (regalloc-only). Minor register differences: dir in r30 vs r29, centerX/centerY in f3/f2 vs f2/f4, and loop counters r28/r29 swapped.
+// FIXME: 99.47 %, regalloc-only; behaviour clean.
+// (regalloc-only). Minor register differences: dir in r30 vs r29, centerX/centerY in f3/f2 vs f2/f4, and loop counters r28/r29 swapped.
 void cls_804A5C88::init() {
     EnemyBase_804A4808::init();
     field_0x2ac = field_0x90 & 3;
@@ -247,7 +249,8 @@ void cls_804A5C88::vfunc_0xA8() {
     }
 }
 
-// FIXME: 97.74% (missing/extra). In the mAlive-clearing loop of state 1 the slot pointer and the loop counter
+// FIXME: 97.74 %, missing/extra; behaviour clean.
+// (missing/extra). In the mAlive-clearing loop of state 1 the slot pointer and the loop counter
 // trade registers (r29/r30), which costs ours one extra mr (85 vs 84 instructions); the rest matches.
 void cls_804A5C88::vfunc_0x90(u8 mapHit) {
     fn_80207A60();
@@ -301,7 +304,6 @@ static inline void copyField3cToSlotActors(cls_804A5C88* self) {
     }
 }
 
-// FIXME: 99.43% (regalloc-only). Loop register allocation: loop counter i and slot pointer registers r30 and r31 are swapped.
 void cls_804A5C88::vfunc_0x88() {
     switch (mState) {
     case 0:
