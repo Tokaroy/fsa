@@ -7,21 +7,8 @@
 #include "game/Player.h"
 #include "game/act/act_fairy_invincible.h"
 
-// A uniform scale as a 3x4 matrix, filled row by row.
-static inline void setUniformScaleMtx(Mtx m, f32 scale) {
-    m[0][0] = scale;
-    m[0][1] = 0.0f;
-    m[0][2] = 0.0f;
-    m[0][3] = 0.0f;
-    m[1][0] = 0.0f;
-    m[1][1] = scale;
-    m[1][2] = 0.0f;
-    m[1][3] = 0.0f;
-    m[2][0] = 0.0f;
-    m[2][1] = 0.0f;
-    m[2][2] = scale;
-    m[2][3] = 0.0f;
-}
+// Not in the binary: a plain function that draw inlines (defined at the bottom of the file).
+void setUniformScaleMtx(Mtx m, f32 scale);
 
 // Moves both emitters to the fairy.
 inline void InvincibilityFairy_804AB4C0::followEmitters() {
@@ -194,9 +181,8 @@ void InvincibilityFairy_804AB4C0::update() {
     }
 }
 
-// FIXME: 99.46 %. The matrix stores are in the same order, but the original
-// loads 0.0f before 1.5f, so the .sdata2 literals are numbered the other way
-// (lbl_80541C28 vs @705, lbl_80541C2C vs @704).
+// FIXME: 99.55 %, scheduling+regalloc. The matrix stores are in the same order, but the original
+// loads 0.0f (into f1) before 1.5f (into f0).
 void InvincibilityFairy_804AB4C0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -207,4 +193,21 @@ void InvincibilityFairy_804AB4C0::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x5E, &params, 0, 1.0f, 1.0f);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 0);
     }
+}
+
+// A uniform scale as a 3x4 matrix, filled row by row. Below every other function: the pool has
+// its 0.0f ahead of draw's 1.5f.
+void setUniformScaleMtx(Mtx m, f32 scale) {
+    m[0][0] = scale;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[0][3] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = scale;
+    m[1][2] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = scale;
+    m[2][3] = 0.0f;
 }
