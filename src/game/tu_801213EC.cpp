@@ -644,7 +644,7 @@ void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 94.04 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.89 %, reloc-name; behaviour clean.
 // FIXME: scheduling+regalloc + reloc-name; behaviour clean.
 // The box's f.x/f.y use f3/f4 swapped and pt's zero stores are scheduled two instructions later.
 bool EscortBase_8049E0C8::vfunc_0xBC() {
@@ -663,7 +663,7 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
     return false;
 }
 
-// FIXME: 96.84 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.80 %, scheduling + reloc-name; behaviour clean.
 // The box corners' adds are scheduled differently (see vfunc_0xBC) and mSerial/field_0x4 are loaded in the other order before the talk call.
 s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
     JGeometry::TBox2f box(mBox);
