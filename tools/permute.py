@@ -1742,10 +1742,12 @@ def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
     and no data section gets worse; functions that were open may move either way (their remaining
     difference is their own). Returns a dict: text (or None), trace, kinds, fixed, worse, tried."""
     kinds = kinds or (KINDS_A + KINDS_B)
+    keys = key if isinstance(key, list) else [key]   # several callees of one inlining chain can be rewritten together
+    key = keys[0]
     data = data if data is not None else unit.source().encode("utf-8", "surrogateescape")
     dec = lambda b: b.decode("utf-8", "surrogateescape")  # noqa: E731
     t0 = time.time()
-    res = {"site": "::".join(x for x in key[:2] if x), "text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0,
+    res = {"site": " + ".join("::".join(x for x in k[:2] if x) for k in keys), "text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0,
            "secs": 0.0, "note": ""}
     names, r0 = scratch.farm(unit, [data], None)
     if isinstance(r0[0], Exception):
@@ -1756,16 +1758,21 @@ def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
 
     def edits(text):
         p = Parsed(unit, text)
-        site = next((f for f in p.functions() if site_key(f) == key), None)
-        if site is None or body_of(site) is None:
-            return []
-        ctx, (lo, hi), out = Ctx(p, site), ext(site), []
-        for k in kinds:
-            try:
-                eds = list(GENERATORS[k](ctx))
-            except Exception:  # noqa: BLE001
+        out = []
+        for site in (f for f in p.functions() if site_key(f) in keys):
+            if body_of(site) is None:
                 continue
-            out += [ed for ed in eds if all(lo <= s <= e <= hi for s, e, _ in ed.reps)]
+            ctx, (lo, hi) = Ctx(p, site), ext(site)
+            for k in kinds:
+                try:
+                    eds = list(GENERATORS[k](ctx))
+                except Exception:  # noqa: BLE001
+                    continue
+                for ed in eds:
+                    if all(lo <= s <= e <= hi for s, e, _ in ed.reps):
+                        if len(keys) > 1:
+                            ed.desc = f"in `{site.spelling}`: " + ed.desc
+                        out.append(ed)
         return out
     level, seen, best = [(data, [], [])], {hashlib.sha1(data).digest()}, None
     for _ in range(depth):
