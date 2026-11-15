@@ -81,8 +81,8 @@ void DiggingGameKeeper_8049C970::update() {
     JGeometry::TVec3f camPos = mPos;
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     fn_80239914(&box, field_0x4, mSerial);
