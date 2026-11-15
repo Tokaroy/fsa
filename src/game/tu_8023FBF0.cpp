@@ -1335,9 +1335,6 @@ static inline void shiftTrail(Player_804A6F38* self) {
 // field_0x14 / field_0x3b8 take the result; then field_0x2d0 (not while
 // carried) and field_0x2e8 are applied and cleared, field_0xda0 =
 // field_0xd94, field_0x1170 counts down and field_0x3e4 keeps the facing.
-// FIXME: 98.64 %, regalloc-only; behaviour clean.
-// Registers only, in the unrolled trail shift (the index and
-// address temporaries r4-r7 rotated).
 void Player_804A6F38::fn_80251D50() {
     bool airborne = false;
     for (s32 i = 0; i < 0x31; i++) {
