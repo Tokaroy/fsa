@@ -309,6 +309,7 @@ void cls_804A7AE0::vfunc_0x10() {
 }
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// FIXME: 98.66 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
         return;
@@ -368,6 +369,7 @@ void cls_804A7AE0::fn_8029A974() {
 }
 
 // Remaining: word-copied stack `view` box (sp+0x3c..0x48), two `cmplwi 1` bool tests, and one loop pointer copy in `bakeTiles`.
+// FIXME: 89.34 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
@@ -426,6 +428,7 @@ void cls_804A7AE0::fn_8029A494() {
 }
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// FIXME: 98.66 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_80299FB0() {
     if (!field_0x250.isZero()) {
         return;
@@ -485,6 +488,7 @@ void cls_804A7AE0::fn_80299FB0() {
 }
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// FIXME: 98.65 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
         return;
@@ -847,7 +851,7 @@ void cls_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 79.62 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 84.07 %, missing/extra; behaviour drift.
 // still differs: the isZero() bool test (mfcr/extrwi.) and the (k & bit) conversions
 void cls_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
@@ -950,7 +954,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.14 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.28 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1446,7 +1450,7 @@ inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpritePara
     }
 }
 
-// FIXME: 99.00 %, different; behaviour clean.
+// FIXME: 99.23 %, different; behaviour clean.
 void cls_804A7AE0::draw() {
     if (field_0x24c == 0 && field_0x2ac == 0) {
         return;
@@ -1506,7 +1510,7 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 93.69 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.13 %, missing/extra + reloc-name; behaviour near.
 // float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
