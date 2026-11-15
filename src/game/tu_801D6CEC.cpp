@@ -37,7 +37,6 @@ static inline void clearSlots(cls_801D7730* self) {
     }
 }
 
-// FIXME(shotgun): 96.13 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D77B4() {
     clearSlots(this);
     field_0x40 = 0;
