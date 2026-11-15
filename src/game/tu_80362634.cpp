@@ -192,7 +192,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
-// FIXME: 93.98 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.20 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -298,20 +298,8 @@ void cls_804ADF28::init() {
                 ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
                 if (owl == NULL) {
                     field_0x24c = -1;
-                } else if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
-                    field_0x23c = 0;
                 } else {
-                    field_0x240 = (s16)(JMath::atanTable_.atan2_(owl->mPos.y - mPos.y, owl->mPos.x - mPos.x) * 10430.378f);
-                    u16 angle = field_0x240;
-                    if (angle >= 0x2000 && angle < 0x6000) {
-                        field_0x23c = 0;
-                    } else if (angle >= 0x6000 && angle < 0xa000) {
-                        field_0x23c = 2;
-                    } else if (angle >= 0xa000 && angle < 0xe000) {
-                        field_0x23c = 1;
-                    } else {
-                        field_0x23c = 3;
-                    }
+                    faceOwl(owl);
                 }
                 field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
                 field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
@@ -368,29 +356,7 @@ void cls_804ADF28::init() {
             off.y = (f32)fn_801CD664(280) - 140.0f;
             off.z = 0.0f;
             mPos.add(off);
-            bool blocked;
-            if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
-                blocked = true;
-            } else if (mPos.y < 40.0f || mPos.y > 328.0f) {
-                blocked = true;
-            } else if (mPos.x + mPos.y < 2704.0f) {
-                blocked = true;
-            } else if (mPos.x > 2984.0f && mPos.y < 120.0f) {
-                blocked = true;
-            } else {
-                JGeometry::TVec3f c(2688.0f, 120.0f, 0.0f);
-                if (PSVECDistance(&mPos, &c) < 78.0f) {
-                    blocked = true;
-                } else {
-                    c.set(2944.0f, 216.0f, 0.0f);
-                    if (PSVECDistance(&mPos, &c) < 78.0f) {
-                        blocked = true;
-                    } else {
-                        blocked = false;
-                    }
-                }
-            }
-            if (blocked) {
+            if (isBlocked()) {
                 mPos = oldPos;
                 i--;
             } else {
@@ -430,29 +396,7 @@ void cls_804ADF28::init() {
         for (s32 i = 0; i < end; i++) {
             EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
             if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive && actor->field_0x278 == 0) {
-                if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
-                    field_0x24c = i;
-                    JGeometry::TVec3f target = actor->mPos;
-                    field_0x240 = (s16)(JMath::atanTable_.atan2_(actor->mPos.y - mPos.y, actor->mPos.x - mPos.x) * 10430.378f);
-                    field_0x3c.x = 0.8f * JMath::sincosTable_.cosShort(field_0x240);
-                    field_0x3c.y = 0.8f * JMath::sincosTable_.sinShort(field_0x240);
-                    u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
-                    if (angle >= 0x2000 && angle < 0x6000) {
-                        field_0x23c = 0;
-                    } else if (angle >= 0x6000 && angle < 0xa000) {
-                        field_0x23c = 2;
-                    } else if (angle >= 0xa000 && angle < 0xe000) {
-                        field_0x23c = 1;
-                    } else {
-                        field_0x23c = 3;
-                    }
-                    field_0x26c = lbl_80474858[field_0x23c];
-                    field_0x270 = lbl_80542AD8;
-                    field_0x274 = lbl_80542AC8;
-                    field_0x25c = field_0x270[0];
-                    field_0x264 = field_0x274[0];
-                    field_0x258 = 0;
-                }
+                chaseOwl(i, actor);
                 break;
             }
         }
@@ -541,12 +485,7 @@ void cls_804ADF28::init() {
         field_0x248 = 0xf0;
         field_0x260 = 7;
         field_0x258 = 2;
-        // the centre of the room (512 x 384) the actor is in
-        JGeometry::TVec3f center((s32)(mPos.x / 512.0f) * 512.0f + 256.0f,
-                                 (s32)(mPos.y / 384.0f) * 384.0f + 192.0f, 0.0f);
-        for (int i = 0; i < 4; i++) {
-            field_0x30c[i] = spawnEmitter_8013CC50(field_0x4, &center, lbl_80542AE8[i], 0, 0, NULL, NULL, true, 1.0f);
-        }
+        spawnRoomEmitters();
         s32 end = getActorManager_801F856C()->mActorEnd;
         for (s32 i = 0; i < end; i++) {
             EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
@@ -576,7 +515,7 @@ void cls_804ADF28::fn_80365AB8() {
     (this->*lbl_804ADDE8[field_0x234])();
 }
 
-// FIXME(shotgun): 98.77 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.96 %, missing/extra + reloc-name; behaviour drift.
 // (the function-local TVec3f statics are guarded with an out-of-line constructor here, the original initialises them inline)
 void cls_804ADF28::fn_803653EC() {
     if (field_0x238 < 0) {
@@ -683,8 +622,6 @@ void cls_804ADF28::fn_803653EC() {
     }
 }
 
-// Remaining difference: float literal reloc names (pool split), not codegen.
-// FIXME: 99.84 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80365274() {
     mPos.add(field_0x3c);
     switch (field_0x238) {
@@ -731,9 +668,6 @@ void cls_804ADF28::fn_80365274() {
     }
 }
 
-// FIXME: 99.52 %, reloc-name; behaviour clean.
-// Instructions identical; only the relocation of the 0.03f literal is @NNN here
-// against lbl_80542BD4 (the unit's sdata2 is not complete yet).
 void cls_804ADF28::fn_80365220() {
     if (field_0x248 == 0) {
         field_0x248 = 0x40;
@@ -746,7 +680,6 @@ void cls_804ADF28::fn_80365220() {
     }
 }
 
-// FIXME(shotgun): 99.90 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_8036509C() {
     if (field_0x248 != 0) {
         if (field_0x248 <= 14) {
@@ -784,7 +717,6 @@ void cls_804ADF28::fn_8036509C() {
     }
 }
 
-// FIXME(shotgun): 99.81 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364F60() {
     if (field_0x238 != 5) {
         s32 oldAnim = field_0x264;
@@ -826,7 +758,7 @@ void cls_804ADF28::fn_80364F00() {
     }
 }
 
-// FIXME(shotgun): 95.74 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.82 %, different; behaviour drift.
 void cls_804ADF28::fn_80364D0C() {
     s32 slot = field_0x24c;
     if (slot < 0) {
@@ -844,21 +776,7 @@ void cls_804ADF28::fn_80364D0C() {
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
-            if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
-                field_0x23c = 0;
-            } else {
-                field_0x240 = (s16)(JMath::atanTable_.atan2_(owl->mPos.y - mPos.y, owl->mPos.x - mPos.x) * 10430.378f);
-                u16 angle = field_0x240;
-                if (angle >= 0x2000 && angle < 0x6000) {
-                    field_0x23c = 0;
-                } else if (angle >= 0x6000 && angle < 0xa000) {
-                    field_0x23c = 2;
-                } else if (angle >= 0xa000 && angle < 0xe000) {
-                    field_0x23c = 1;
-                } else {
-                    field_0x23c = 3;
-                }
-            }
+            faceOwl(owl);
         }
         if (field_0x23c != oldDir) {
             field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
@@ -871,7 +789,7 @@ void cls_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 98.18 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.27 %, missing/extra; behaviour drift.
 void cls_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&field_0x3c);
@@ -934,7 +852,6 @@ void cls_804ADF28::fn_80364A88() {
     }
 }
 
-// FIXME(shotgun): 99.64 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80364900() {
     if (field_0x238 == 0) {
         mPos.add(field_0x3c);
@@ -981,7 +898,7 @@ void cls_804ADF28::fn_80364900() {
     }
 }
 
-// FIXME(shotgun): 97.27 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.46 %, different; behaviour drift.
 void cls_804ADF28::fn_803645B4() {
     if (field_0x248 == 0 || field_0x238 != 0) {
         if (field_0x238 == 0) {
@@ -1056,7 +973,7 @@ void cls_804ADF28::fn_803645B4() {
     }
 }
 
-// FIXME(shotgun): 97.90 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.59 %, missing/extra; behaviour clean.
 void cls_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
         JGeometry::TVec3f oldPos = mPos;
@@ -1065,29 +982,7 @@ void cls_804ADF28::fn_80364340() {
         off.y = (f32)fn_801CD664(380) - 140.0f;
         off.z = 0.0f;
         mPos.add(off);
-        bool blocked;
-        if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
-            blocked = true;
-        } else if (mPos.y < 40.0f || mPos.y > 328.0f) {
-            blocked = true;
-        } else if (mPos.x + mPos.y < 2704.0f) {
-            blocked = true;
-        } else if (mPos.x > 2984.0f && mPos.y < 120.0f) {
-            blocked = true;
-        } else {
-            JGeometry::TVec3f c(2688.0f, 120.0f, 0.0f);
-            if (PSVECDistance(&mPos, &c) < 78.0f) {
-                blocked = true;
-            } else {
-                c.set(2944.0f, 216.0f, 0.0f);
-                if (PSVECDistance(&mPos, &c) < 78.0f) {
-                    blocked = true;
-                } else {
-                    blocked = false;
-                }
-            }
-        }
-        if (blocked) {
+        if (isBlocked()) {
             mPos = oldPos;
         } else {
             field_0x248 = fn_801CD664(50) + 60;
@@ -1100,7 +995,7 @@ void cls_804ADF28::fn_80364340() {
     }
 }
 
-// FIXME: 95.96 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
 // FIXME(shotgun): the original divides by (6.283184f * dist) with fres (estimate), we emit fdivs; literal names differ.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
@@ -1185,7 +1080,7 @@ void cls_804ADF28::fn_80363F7C() {
     mPos.add(field_0x3c);
 }
 
-// FIXME(shotgun): 98.27 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.47 %, different; behaviour near.
 void cls_804ADF28::fn_80363880() {
     s32 slot = field_0x24c;
     if (slot >= 0) {
@@ -1229,29 +1124,7 @@ void cls_804ADF28::fn_80363880() {
         for (s32 i = 0; i < end; i++) {
             EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
             if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true && actor->field_0x278 == 0) {
-                if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
-                    field_0x24c = i;
-                JGeometry::TVec3f target = actor->mPos;
-                field_0x240 = (s16)(JMath::atanTable_.atan2_(actor->mPos.y - mPos.y, actor->mPos.x - mPos.x) * 10430.378f);
-                field_0x3c.x = 0.8f * JMath::sincosTable_.cosShort(field_0x240);
-                field_0x3c.y = 0.8f * JMath::sincosTable_.sinShort(field_0x240);
-                u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
-                if (angle >= 0x2000 && angle < 0x6000) {
-                    field_0x23c = 0;
-                } else if (angle >= 0x6000 && angle < 0xa000) {
-                    field_0x23c = 2;
-                } else if (angle >= 0xa000 && angle < 0xe000) {
-                    field_0x23c = 1;
-                } else {
-                    field_0x23c = 3;
-                }
-                field_0x26c = lbl_80474858[field_0x23c];
-                field_0x270 = lbl_80542AD8;
-                field_0x274 = lbl_80542AC8;
-                field_0x25c = field_0x270[0];
-                field_0x264 = field_0x274[0];
-                field_0x258 = 0;
-                }
+                chaseOwl(i, actor);
                 break;
             }
         }
@@ -1309,7 +1182,7 @@ void cls_804ADF28::fn_80363880() {
     }
 }
 
-// FIXME(shotgun): 95.59 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
 void cls_804ADF28::fn_80363664() {
     if (field_0x248 == 0) {
         if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
@@ -1349,7 +1222,7 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-// FIXME(shotgun): 99.15 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.35 %, missing/extra; behaviour near.
 void cls_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
@@ -1405,7 +1278,7 @@ void cls_804ADF28::fn_80363360() {
 
 void cls_804ADF28::fn_8036335C() {}
 
-// FIXME(shotgun): 91.42 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.71 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::fn_80362C44() {
     s32 skip = 0;
     s32 i;
@@ -1566,7 +1439,7 @@ void cls_804ADF28::fn_80362C44() {
     }
 }
 
-// FIXME(shotgun): 99.33 %, reloc-name; behaviour clean.
+// FIXME(shotgun): 99.52 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80362B74() {
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x264, NULL, 7, 1.0f, 1.0f);
     JGeometry::TVec3f savedPos = mPos;
@@ -1587,7 +1460,7 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.01 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour clean.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx mtx;
@@ -1628,7 +1501,7 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.19 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.40 %, operands; behaviour drift.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1665,6 +1538,95 @@ void cls_804ADF28::fn_80362680() {
         drawSprite_801F06F0("enemy_both_sob.bin", field_0x26c + field_0x264, &params, 7, 1.0f, 1.0f);
     } else if (field_0x258 == 2) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x264, &params, 7, 1.0f, 1.0f);
+    }
+}
+
+// The four functions below are plain functions that init and the state steps inline and whose own
+// copies the linker dropped: the original's .sdata2 has their literals ahead of fn_80362680's
+// -1.0f, in the order spawnRoomEmitters (192.0f ... 1.0f), isBlocked (2600.0f ... 216.0f),
+// chaseOwl (100.0f, 10430.378f, 0.8f), faceOwl (80.0f), so they were generated here, bottom up
+// (tools/pool.py).
+
+// Faces the owl when it is nearer than 80, else down (init's state 5 and fn_80364D0C).
+void cls_804ADF28::faceOwl(ActorBase_804A5770* owl) {
+    if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
+        field_0x23c = 0;
+    } else {
+        field_0x240 = (s16)(JMath::atanTable_.atan2_(owl->mPos.y - mPos.y, owl->mPos.x - mPos.x) * 10430.378f);
+        u16 angle = field_0x240;
+        if (angle >= 0x2000 && angle < 0x6000) {
+            field_0x23c = 0;
+        } else if (angle >= 0x6000 && angle < 0xa000) {
+            field_0x23c = 2;
+        } else if (angle >= 0xa000 && angle < 0xe000) {
+            field_0x23c = 1;
+        } else {
+            field_0x23c = 3;
+        }
+    }
+}
+
+// Takes the owl in actor slot i as the target when it is nearer than 100 and starts walking to it
+// at speed 0.8 (init's state 12 and fn_80363880).
+void cls_804ADF28::chaseOwl(s32 i, EndingOwl_804ADF28* actor) {
+    if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
+        field_0x24c = i;
+        JGeometry::TVec3f target = actor->mPos;
+        field_0x240 = (s16)(JMath::atanTable_.atan2_(actor->mPos.y - mPos.y, actor->mPos.x - mPos.x) * 10430.378f);
+        field_0x3c.x = 0.8f * JMath::sincosTable_.cosShort(field_0x240);
+        field_0x3c.y = 0.8f * JMath::sincosTable_.sinShort(field_0x240);
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+        if (angle >= 0x2000 && angle < 0x6000) {
+            field_0x23c = 0;
+        } else if (angle >= 0x6000 && angle < 0xa000) {
+            field_0x23c = 2;
+        } else if (angle >= 0xa000 && angle < 0xe000) {
+            field_0x23c = 1;
+        } else {
+            field_0x23c = 3;
+        }
+        field_0x26c = lbl_80474858[field_0x23c];
+        field_0x270 = lbl_80542AD8;
+        field_0x274 = lbl_80542AC8;
+        field_0x25c = field_0x270[0];
+        field_0x264 = field_0x274[0];
+        field_0x258 = 0;
+    }
+}
+
+// Whether mPos lies outside the area the rupees may land in: its bounds, the two cut corners and
+// the two circles of radius 78 (init's state 9 and fn_80364340).
+bool cls_804ADF28::isBlocked() {
+    if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
+        return true;
+    }
+    if (mPos.y < 40.0f || mPos.y > 328.0f) {
+        return true;
+    }
+    if (mPos.x + mPos.y < 2704.0f) {
+        return true;
+    }
+    if (mPos.x > 2984.0f && mPos.y < 120.0f) {
+        return true;
+    }
+    JGeometry::TVec3f c(2688.0f, 120.0f, 0.0f);
+    if (PSVECDistance(&mPos, &c) < 78.0f) {
+        return true;
+    }
+    c.set(2944.0f, 216.0f, 0.0f);
+    if (PSVECDistance(&mPos, &c) < 78.0f) {
+        return true;
+    }
+    return false;
+}
+
+// The four emitters of lbl_80542AE8 at the centre of the room (init's state 16).
+void cls_804ADF28::spawnRoomEmitters() {
+    // the centre of the room (512 x 384) the actor is in
+    JGeometry::TVec3f center((s32)(mPos.x / 512.0f) * 512.0f + 256.0f,
+                             (s32)(mPos.y / 384.0f) * 384.0f + 192.0f, 0.0f);
+    for (int i = 0; i < 4; i++) {
+        field_0x30c[i] = spawnEmitter_8013CC50(field_0x4, &center, lbl_80542AE8[i], 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
