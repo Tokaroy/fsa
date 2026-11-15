@@ -68,7 +68,6 @@ inline void ActorManager_804A5800::deleteSlot(s32 slot) {
 // Forward declarations.
 ActorManager_804A5800* getActorManager_801F856C(void);
 
-// FIXME: 98.11 %, scheduling+regalloc; behaviour clean.
 ActorManager_804A5800::ActorManager_804A5800(JKRHeap* parent) {
     // Half the room in two UI modes.
     bool small = false;
