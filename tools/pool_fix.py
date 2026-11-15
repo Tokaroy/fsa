@@ -252,6 +252,7 @@ def run(unit, a, log=print):
         res["note"] = "does not compile"
         return finish(unit, a, res, data, log)
     base = r0[0]
+    cur = list(base)
     text, k = data, k0
     for _ in range(a.rounds):
         Q = ours.values()
@@ -283,9 +284,14 @@ def run(unit, a, log=print):
         _, rs = scratch.farm(unit, [s[1][3] for s in top], None)
         pick = None
         for s, r in zip(top, rs):
-            if isinstance(r, list) and not any(b == 0 and x != 0 for b, x in zip(base, r)):
-                pick = s
-                break
+            if not isinstance(r, list) or any(b == 0 and x != 0 for b, x in zip(base, r)):
+                continue
+            # a caller that stops inlining the new function (too big: a `bl` appears and its code falls
+            # apart) is no proof of anything: no open function may get much worse either
+            if any(x > c * 1.5 + 150 for c, x in zip(cur, r) if c >= 0 and x >= 0):
+                continue
+            pick, cur = s, r
+            break
         if pick is None:
             res["note"] = f"literal #{k}: every candidate breaks a function that matched"
             break
