@@ -52,6 +52,8 @@ whether it reads naturally; a new local needs a real name):
   cast      an explicit cast removed
   loopform  a for loop written as a while loop
   retvar    a returned expression held in a local first
+  outline   a loop that touches only `this` and globals, moved into a small inline helper (its counter is
+            then created at inlining and coloured before the optimiser's loop temporaries)
   nest      a member read kept in a local, read through a small inline with a local of its own (changes
             when MWCC creates the value, so in which order it is coloured: docs/REGALLOC.md)
 
@@ -117,10 +119,10 @@ TYPE_FAMILY = {b"s32": INT_TYPES, b"u32": INT_TYPES, b"s16": INT_TYPES, b"u16": 
                b"f32": FLOAT_TYPES, b"f64": FLOAT_TYPES, b"float": FLOAT_TYPES, b"double": FLOAT_TYPES}
 TIER = {"decl": "a", "commute": "a", "scope": "a", "compound": "a", "if": "a", "boolret": "a", "andif": "a", "early": "a",
         "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a",
-        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b"}
+        "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b", "outline": "b"}
 # results a person or a session has to finish before they go into the source: a local that needs a
 # real name, or a value written out twice that was probably a macro or an inline in the original
-NEEDS_HAND = {"temp", "inline", "retvar", "nest"}
+NEEDS_HAND = {"temp", "inline", "retvar", "nest", "outline"}
 KINDS_A = [k for k, t in TIER.items() if t == "a"]
 KINDS_B = [k for k, t in TIER.items() if t == "b"]
 _INDEX = None
@@ -1454,6 +1456,71 @@ def gen_nest(c):
                    reps, n.extent.start.line)
 
 
+def gen_outline(c):
+    """A loop that touches nothing but `this` and globals, moved into a small inline helper written
+    above the function. A loop counter declared in the function is a named local and is coloured
+    after the temporaries the optimiser makes for the loop (a strength-reduced table pointer); the
+    counter of an inlined helper is created at inlining, before those, and is coloured first
+    (docs/REGALLOC.md). In the original such loops were inline member functions."""
+    p, d = c.p, c.data
+    fn = c.fn
+    cls = fn.semantic_parent
+    if cls is None or cls.kind not in (K.CLASS_DECL, K.STRUCT_DECL) or not cls.spelling:
+        return
+    top = d.rfind(b"\n", 0, ext(fn)[0]) + 1
+    if d[top:ext(fn)[0]].strip():
+        return
+    while top > 0:
+        prev = d.rfind(b"\n", 0, top - 1) + 1
+        if not d[prev:top].lstrip().startswith(b"//"):
+            break
+        top = prev
+    const = b"const " if txt(p, fn).split(b"{", 1)[0].rstrip().endswith(b"const") else b""
+    for n in c.nodes:
+        if n.kind not in (K.FOR_STMT, K.WHILE_STMT) or not c.is_stmt(n) or not good(p, n):
+            continue
+        s, e = ext(n)
+        span = line_span(d, s, e)
+        if span is None:
+            continue
+        inner = list(walk(n))
+        if any(x.kind in (K.RETURN_STMT, K.GOTO_STMT, K.LABEL_STMT) for x in inner):
+            continue
+        outside = False
+        for x in inner:
+            if x.kind == K.DECL_REF_EXPR:
+                r = x.referenced
+                if r is not None and r.kind in (K.VAR_DECL, K.PARM_DECL) and r.semantic_parent == fn:
+                    rs = r.extent.start.offset
+                    if not (s <= rs < e):
+                        outside = True
+                        break
+        if outside:
+            continue
+        # the loop's text with every use of `this` spelled through the helper's parameter
+        reps = []
+        for x in inner:
+            if not good(p, x):
+                continue
+            if x.kind == K.CXX_THIS_EXPR:
+                xs, xe = ext(x)
+                if d[xs:xe] == b"this":
+                    reps.append((xs - s, xe - s, b"self"))
+            elif x.kind == K.MEMBER_REF_EXPR and not list(x.get_children()):
+                xs = ext(x)[0]
+                reps.append((xs - s, xs - s, b"self->"))
+        body = Edit("x", "", reps).apply(d[s:e])
+        if body is None:
+            continue
+        ind = indent_of(d, s)
+        lines = body.split(b"\n")
+        body = b"\n".join([c.step + lines[0]] + [(c.step + l[len(ind):] if l.startswith(ind) else l) for l in lines[1:]])
+        name = c.fresh(f"loop{n.extent.start.line}_" + re.sub(r"\W", "", fn.spelling)).encode()
+        helper = (b"static inline void " + name + b"(" + const + cls.spelling.encode() + b"* self) {\n" + body + b"\n}\n\n")
+        yield Edit("outline", f"lines {n.extent.start.line}-{n.extent.end.line}: the loop in an inline helper of its own (`{name.decode()}`)",
+                   [(top, top, helper), (span[0], span[1], ind + name + b"(this);\n")], n.extent.start.line)
+
+
 def gen_loopform(c):
     """`for (init; cond; inc) { body }`  ->  `init; while (cond) { body inc; }` (bodies without continue)."""
     p, d = c.p, c.data
@@ -1652,7 +1719,7 @@ GENERATORS = {"decl": gen_decl, "commute": gen_commute, "scope": gen_scope, "com
               "boolret": gen_boolret, "andif": gen_andif, "early": gen_early, "ternary": gen_ternary, "stmt": gen_stmt,
               "const": gen_const, "loop": gen_loop, "incr": gen_incr, "cond": gen_cond, "untemp": gen_untemp,
               "type": gen_type, "temp": gen_temp, "inline": gen_inline, "swap": gen_swap, "cast": gen_cast,
-              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest}
+              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest, "outline": gen_outline}
 
 
 # ---------------------------------------------------------------- the slice of the file a function needs
@@ -1758,7 +1825,7 @@ def candidates(unit, data, demangled, kinds, line=None, lines=None, extra_sites=
                 print(f"    (generator {k} failed on {site.spelling}: {type(e).__name__}: {e})", file=sys.stderr)
                 continue
             for ed in eds:
-                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps if not (s == e and s < lo and ed.kind == "nest")):
+                if any(not (lo <= s <= e <= hi) for s, e, _ in ed.reps if not (s == e and s < lo and ed.kind in ("nest", "outline"))):
                     continue
                 if within is not None and not any(within[0] <= data.count(b"\n", 0, s) + 1 <= within[1] for s, _, _ in ed.reps):
                     continue  # --lines: one piece of the function at a time
@@ -2065,7 +2132,7 @@ def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
                 except Exception:  # noqa: BLE001
                     continue
                 for ed in eds:
-                    if all(lo <= s <= e <= hi or (s == e and s < lo and ed.kind == "nest") for s, e, _ in ed.reps):
+                    if all(lo <= s <= e <= hi or (s == e and s < lo and ed.kind in ("nest", "outline")) for s, e, _ in ed.reps):
                         if len(keys) > 1:
                             ed.desc = f"in `{site.spelling}`: " + ed.desc
                         out.append(ed)
