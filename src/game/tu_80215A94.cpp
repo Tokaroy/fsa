@@ -243,6 +243,7 @@ void cls_80215E48::fn_80215B6C(s32 index) {
     }
 }
 
+// FIXME: 85.56 %, missing/extra; behaviour drift.
 s32 cls_80215E48::fn_80215A94() {
     s32 result = -1;
     if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
