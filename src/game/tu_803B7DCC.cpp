@@ -13,7 +13,8 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
-// FIXME(shotgun): 95.51 %, missing/extra (the unrolled field_0x24 clear starts with a loop-entry test)
+// FIXME(shotgun): 95.51 %, missing/extra; behaviour drift.
+// (the unrolled field_0x24 clear starts with a loop-entry test)
 cls_804AFAB0::cls_804AFAB0() {
     field_0x28c = -1;
     field_0x290 = -1;
@@ -111,7 +112,8 @@ void cls_804AFAB0::fn_803B8188() {
     fn_8013A884(&color);
 }
 
-// FIXME(shotgun): 99.85 %, different (one branch of the inner switch)
+// FIXME(shotgun): 99.96 %, different; behaviour drift.
+// (one branch of the inner switch)
 void cls_804AFAB0::fn_803B7F6C() {
     switch (field_0x294) {
     case 0:
