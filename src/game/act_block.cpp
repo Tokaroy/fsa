@@ -48,7 +48,7 @@ f32 lbl_804A79E0[4][3] = {
     {0.0f, -12.0f, 0.0f},
 };
 
-// FIXME: 97.48 %, different + reloc-name; behaviour drift.
+// FIXME: 97.59 %, different + reloc-name; behaviour drift.
 // Same length; the int-to-float conversion of the first position is scheduled differently (stw/lis/stfd order)
 // and one table load is lfsx instead of lfs (class: different + reloc-name).
 void Block_804A7A10::init() {
@@ -125,8 +125,6 @@ void Block_804A7A10::init() {
     }
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour clean.
-// reloc-name: all 61 instructions identical, differing only in compiler literal label names
 u8 fn_8028D4DC(JGeometry::TVec3f* pos, s32 index, s32 layer) {
     u8 viewVal = getGameView_802D6A9C()->fn_802D7544(layer);
     if (viewVal == 0) {
@@ -148,7 +146,7 @@ bool Block_804A7A10::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return ActorBase_804A5770::vfunc_0x4C(layer, pos);
 }
 
-// FIXME: 95.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.11 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 4 more instructions (812 vs 808). The target compares the (field_0x90 & 3)
 // based indices with signed cmpwi and converts them with xoris (signed), ours uses cmplwi / unsigned; the (u16) tile result
 // is extended in ours (clrlwi) where the target moves it; some stack temporaries sit at other offsets.
@@ -357,18 +355,7 @@ void Block_804A7A10::update() {
                         }
                     }
                 } else {
-                    bool ok;
-                    JGeometry::TVec3f vel = field_0x3c;
-                    if ((field_0x90 & 3) != 0 && threshold == 19.9f &&
-                        PSVECDistance(&mPos, &field_0x230) >= 7.9f &&
-                        field_0x248 != 0 &&
-                        !fn_8028C518(field_0x248 - 1)) {
-                        ok = false;
-                    } else {
-                        field_0x3c = vel;
-                        ok = true;
-                    }
-                    if (!ok) {
+                    if (!keepsMoving(threshold)) {
                         field_0x23c = 8;
                         field_0x24d = 1;
                     }
@@ -376,6 +363,22 @@ void Block_804A7A10::update() {
             }
         }
     }
+}
+
+// A plain function that update inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 19.9f and 7.9f between fn_8028C518's 0.0f and update's own literals, so it was
+// generated here (tools/pool.py). False when a block of kind 1-3 that was pushed 7.9 or more from
+// field_0x230 cannot go on in its direction (fn_8028C518, whose change of the velocity is undone).
+bool Block_804A7A10::keepsMoving(f32 threshold) {
+    JGeometry::TVec3f vel = field_0x3c;
+    if ((field_0x90 & 3) != 0 && threshold == 19.9f &&
+        PSVECDistance(&mPos, &field_0x230) >= 7.9f &&
+        field_0x248 != 0 &&
+        !fn_8028C518(field_0x248 - 1)) {
+        return false;
+    }
+    field_0x3c = vel;
+    return true;
 }
 
 bool Block_804A7A10::fn_8028C518(u8 dir) {
