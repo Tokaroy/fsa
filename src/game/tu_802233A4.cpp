@@ -24,7 +24,6 @@ cls_804A6D00::~cls_804A6D00() {
     field_0x2c0 = NULL;
 }
 
-// FIXME(shotgun): 99.84 %, reloc-name
 void cls_804A6D00::init() {
     ShadowLinkBase_804A6A00::init();
     field_0x98 = field_0x90 & 3;
@@ -39,7 +38,7 @@ void cls_804A6D00::init() {
 
 // Not auto-inlined: vfunc_0x90 calls it with a plain bl in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 94.84 %, missing/extra + reloc-name
+// FIXME(shotgun): 94.95 %, missing/extra
 void cls_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
@@ -101,6 +100,14 @@ void cls_804A6D00::fn_80223AD8(s32 state) {
 }
 #pragma auto_inline reset
 
+// Shifts the rectangle by (dx, dy). The original adds the zero component too.
+static inline void moveBox(f32& x0, f32& y0, f32& x1, f32& y1, f32 dx, f32 dy) {
+    x0 += dx;
+    y0 += dy;
+    x1 += dx;
+    y1 += dy;
+}
+
 // The rectangle (in front of the actor while it charges in state 5) as (x0, y0, x1, y1);
 // empty (1, 1, -1, -1) in the other states.
 static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1) {
@@ -115,28 +122,16 @@ static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1
         y1 = x1;
         switch (a->field_0x98) {
         case 0:
-            x0 += 16.0f;
-            y0 += 0.0f;
-            x1 += 16.0f;
-            y1 += 0.0f;
+            moveBox(x0, y0, x1, y1, 16.0f, 0.0f);
             break;
         case 1:
-            x0 += -16.0f;
-            y0 += 0.0f;
-            x1 += -16.0f;
-            y1 += 0.0f;
+            moveBox(x0, y0, x1, y1, -16.0f, 0.0f);
             break;
         case 2:
-            x0 += 0.0f;
-            y0 += 16.0f;
-            x1 += 0.0f;
-            y1 += 16.0f;
+            moveBox(x0, y0, x1, y1, 0.0f, 16.0f);
             break;
         case 3:
-            x0 += 0.0f;
-            y0 += -16.0f;
-            x1 += 0.0f;
-            y1 += -16.0f;
+            moveBox(x0, y0, x1, y1, 0.0f, -16.0f);
             break;
         }
     }
@@ -144,7 +139,7 @@ static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1
 
 // Not auto-inlined: vfunc_0x90 calls it with a plain bl in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 75.89 %, missing/extra + reloc-name
+// FIXME(shotgun): 82.92 %, scheduling+regalloc
 void cls_804A6D00::fn_802238CC() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
@@ -165,7 +160,6 @@ void cls_804A6D00::fn_802238CC() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 99.94 %, reloc-name
 void cls_804A6D00::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
@@ -265,7 +259,7 @@ void cls_804A6D00::vfunc_0x6C() {
     field_0x2c0 = NULL;
 }
 
-// FIXME(shotgun): 84.65 %, missing/extra + reloc-name
+// FIXME(shotgun): 97.95 %, scheduling+regalloc (the li r3, 0 of the return sits before the state test)
 u8 cls_804A6D00::vfunc_0x68() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
