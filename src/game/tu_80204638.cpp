@@ -57,14 +57,16 @@ void cls_80204638::fn_802049E0(ActorBase_804A5770* actor) {
 
 // FIXME(shotgun): 98.14 %, regalloc-only; behaviour clean.
 void cls_80204638::fn_802048F4() {
+    ActorBase_804A5770* actor;
     GameView_804A9950* view = getGameView_802D6A9C();
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 2; j++) {
-            ActorBase_804A5770* actor = mSlots[i][j];
+            actor = mSlots[i][j];
             if (actor != NULL && actor->mAlive && actor->field_0x4 == 0) {
                 bool inside = false;
-                if (actor->mPos.x >= view->mVisibleBox.i.x && actor->mPos.y >= view->mVisibleBox.i.y &&
-                    actor->mPos.x < view->mVisibleBox.f.x && actor->mPos.y < view->mVisibleBox.f.y) {
+                f32 posX = actor->mPos.x;
+                if (posX >= view->mVisibleBox.i.x && actor->mPos.y >= view->mVisibleBox.i.y &&
+                    posX < view->mVisibleBox.f.x && actor->mPos.y < view->mVisibleBox.f.y) {
                     inside = true;
                 }
                 if (!inside && !actor->fn_80204D44()) {
