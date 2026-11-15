@@ -1695,6 +1695,18 @@ void cls_804AF72C::do_reset() {
     *field_0x2c4 = 0;
 }
 
+// Hours and minutes (at least 1) of the frame count lbl_8053AD78->field_0x44. An inline of its own:
+// its two values get their registers before do_begin's (docs/REGALLOC.md, rule 4).
+static inline void setPlayTime(cls_804AF72C* self) {
+    s32 count = lbl_8053AD78->field_0x44;
+    s32 minutes = count / 60 % 60;
+    if (minutes == 0) {
+        minutes = 1;
+    }
+    self->field_0x38.field_0x1d8 = count / 3600;
+    self->field_0x38.field_0x1dc = minutes;
+}
+
 // FIXME: 99.34 %, different; behaviour clean.
 // kept out of the build (merge rule: the rows differ in opcode,
 // `mr r8,r7` vs `li r8,1`). The original keeps -1 in r0 and 1 in r7 (ours the
@@ -1717,13 +1729,7 @@ void cls_804AF72C::do_begin(const void* entry, const char* text) {
     field_0x38.field_0x38 = field_0x2bc;
     field_0x38.setFields0x1e0(field_0x2d8->fn_803A3068(), field_0x2d8->fn_803A3060(), field_0x2d8->fn_803A3058(),
                               field_0x2d8->fn_803A3050());
-    s32 count = lbl_8053AD78->field_0x44;
-    s32 minutes = count / 60 % 60;
-    if (minutes == 0) {
-        minutes = 1;
-    }
-    field_0x38.field_0x1d8 = count / 3600;
-    field_0x38.field_0x1dc = minutes;
+    setPlayTime(this);
     field_0x38.setBegin_messageEntryText(getResourceCache(), entry, text);
     field_0x38.process(NULL);
     field_0x2d8->field_0x164 =

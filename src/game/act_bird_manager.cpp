@@ -249,26 +249,25 @@ void cls_804A5C88::vfunc_0xA8() {
     }
 }
 
-// FIXME: 97.74 %, missing/extra; behaviour clean.
-// (missing/extra). In the mAlive-clearing loop of state 1 the slot pointer and the loop counter
-// trade registers (r29/r30), which costs ours one extra mr (85 vs 84 instructions); the rest matches.
-void cls_804A5C88::vfunc_0x90(u8 mapHit) {
-    fn_80207A60();
-    switch (mState) {
+// State 0 starts the four slot actors, state 1 removes them all once the manager is 96 units outside
+// the visible box. An inline of its own: only then do the loops' registers come out as in the
+// original (docs/REGALLOC.md, rule 4).
+static inline void updateByState(cls_804A5C88* self) {
+    switch (self->mState) {
     case 0:
-        if ((field_0x348 == 0 && mStateTimer >= field_0x250) || vfunc_0x34()) {
+        if ((self->field_0x348 == 0 && self->mStateTimer >= self->field_0x250) || self->vfunc_0x34()) {
             for (s32 i = 0; i < 4; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
+                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
                 if (actor != NULL) {
                     static_cast<cls_804A5E98*>(actor)->fn_8020B500();
                 }
             }
-            mStateTimer = 0;
-            mState = 1;
+            self->mStateTimer = 0;
+            self->mState = 1;
         }
         break;
     case 1: {
-        s32 layer = field_0x4;
+        s32 layer = self->field_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box;
         if (layer < 8) {
@@ -276,10 +275,10 @@ void cls_804A5C88::vfunc_0x90(u8 mapHit) {
         } else {
             box = &view->field_0xdc;
         }
-        if (mPos.x < box->i.x - 96.0f || mPos.x > box->f.x + 96.0f) {
-            mAlive = false;
+        if (self->mPos.x < box->i.x - 96.0f || self->mPos.x > box->f.x + 96.0f) {
+            self->mAlive = false;
             for (s32 i = 0; i < 4; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
+                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
                 if (actor != NULL) {
                     actor->mAlive = false;
                 }
@@ -291,6 +290,14 @@ void cls_804A5C88::vfunc_0x90(u8 mapHit) {
     case 3:
         break;
     }
+}
+
+// FIXME: 97.74 %, missing/extra; behaviour clean.
+// (missing/extra). In the mAlive-clearing loop of state 1 the slot pointer and the loop counter
+// trade registers (r29/r30), which costs ours one extra mr (85 vs 84 instructions); the rest matches.
+void cls_804A5C88::vfunc_0x90(u8 mapHit) {
+    fn_80207A60();
+    updateByState(this);
 }
 
 // field_0x3c handed on to the four slot actors. An inline of its own: its loop registers are

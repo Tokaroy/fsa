@@ -1064,6 +1064,13 @@ void GameRootSub24_8016A3AC::fn_8016B054() {
 }
 #pragma auto_inline reset
 
+// TEV register 0 = black with the alpha field_0x1ec. An inline of its own: the colour temporary is
+// created at inlining (docs/REGALLOC.md, rule 4).
+static inline void setTevAlpha(GameRootSub24_8016A3AC* self) {
+    GXColor color = {0, 0, 0, self->field_0x1ec};
+    GXSetTevColor(GX_TEVREG0, color);
+}
+
 // FIXME: 99.97 %, operands; behaviour clean.
 // The colour's stack slots are swapped: the original builds it at
 // sp+0x8 and passes the copy at sp+0xC (ours the other way round).
@@ -1082,8 +1089,7 @@ void GameRootSub24_8016A3AC::fn_8016ADE0() {
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
         field_0xf4->load(GX_TEXMAP0);
-        GXColor color = {0, 0, 0, field_0x1ec};
-        GXSetTevColor(GX_TEVREG0, color);
+        setTevAlpha(this);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXSetZCompLoc(GX_FALSE);
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
