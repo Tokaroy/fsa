@@ -1361,6 +1361,7 @@ void BgRewrite_804A7C98::fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s
 }
 
 // Register allocation and placement only: the original copies layer into r27 / r31 inside each branch; ours saves it in r30 before the branch.
+// FIXME: 94.12 %, missing/extra; behaviour clean.
 void BgRewrite_804A7C98::fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
     if (vertical == 0) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, a);
