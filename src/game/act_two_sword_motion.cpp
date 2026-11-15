@@ -292,7 +292,7 @@ void TwoSwordMotion_804ABA90::update() {
         break;
     case 3:
         if (field_0x234 <= 0 && fn_80388EEC(field_0x24c)) {
-            bool none = true;
+            s32 none = true;
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
                     if (fn_8022E438(i, field_0x24c) != true) {
