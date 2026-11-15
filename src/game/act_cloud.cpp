@@ -158,7 +158,7 @@ void Cloud_8049CBE0::draw() {
 // Whether `player` is in the cloud: on the cloud's layer, either its box
 // (moved to the cloud's position) overlaps the player's, or one of eight
 // points around the player falls in mBox.
-// FIXME: 94.45 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.34 %, missing/extra + reloc-name; behaviour clean.
 // In the layer branch the original keeps box.i.x and mPos.x in
 // other FPRs and reloads box.i.y and box.f.y from the stack, where ours
 // reuses the registers; the eight-point loop matches.
