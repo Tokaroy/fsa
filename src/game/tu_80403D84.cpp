@@ -2217,7 +2217,7 @@ void MapScreen_804B1288::fn_80409FDC() {
     }
 }
 
-// FIXME: 96.54 %, missing/extra; behaviour clean.
+// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
 // Missing/extra (one instruction): in the field_0xd4 loop the original
 // multiplies scale * field_0x10 after fn_8040271C (keeping field_0x10 in f30), ours before
 // it (an extra fmr); the table / field_0x18 loads of each division are also swapped. The
@@ -2266,10 +2266,10 @@ void MapScreen_804B1288::fn_804096E8() {
                 field_0xd0->fn_80402940(20, 0, dy + lbl_8048C87C[field_0x340], 0.0f);
                 field_0xd0->fn_8040271C(20, lbl_8048C850[field_0x340] / field_0xc8->field_0x18, 1.0f);
                 for (int i = 0; i < 18; i++) {
+                    f32 x = field_0xd4[i]->field_0x10;
                     dy = scale * field_0xd4[i]->field_0x14;
-                    dx = scale * field_0xd4[i]->field_0x10;
                     field_0xd4[i]->fn_8040271C(20, lbl_8048C850[field_0x340] / field_0xc8->field_0x18, 1.0f);
-                    field_0xd4[i]->fn_80402B10(20, 0, dx, 0.0f);
+                    field_0xd4[i]->fn_80402B10(20, 0, scale * x, 0.0f);
                     field_0xd4[i]->fn_80402940(20, 0, dy, 0.0f);
                 }
             }
