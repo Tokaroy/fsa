@@ -116,9 +116,7 @@ void cls_8049E350::update() {
         } else if (!fn_802300EC(player)) {
             player = -1;
         } else {
-            JGeometry::TVec3f pos(mPos);
-            pos.y -= 64.0f;
-            if (!fn_8038AD24(player, msg, mSerial, field_0x4, pos, 0x28)) {
+            if (!talkTo(player, msg)) {
                 player = -1;
             }
         }
@@ -189,18 +187,7 @@ void cls_8049E350::draw() {
 void cls_8049E350::fn_80125C58(bool flag) {
     field_0x231 = flag;
     if (field_0x231) {
-        // FIXME: 96.82 %. The original compares field_0x238 with 1 as
-        // beq / bge / b (an extra bge and b to the default block); ours
-        // has only beq and b.
-        switch (field_0x238) {
-        case 1:
-            mAnim27c.startAnim_801D22DC(0, 0, false);
-            break;
-        default:
-            mAnim27c.startAnim_801D22DC(1, 0, false);
-            break;
-        }
-        mAnim27c.fn_801D1F14(0.0f);
+        startSignAnim();
     }
 }
 
@@ -209,6 +196,32 @@ void cls_8049E350::fn_80125BF4() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
     spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+}
+
+// From here down: plain functions that update and fn_80125C58 inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals (0.0f, then 64.0f) ahead of
+// fn_80125BF4's, in the order of these functions from the bottom of the file up, so they were
+// generated before it (tools/pool.py).
+// Opens message `msg` for `player`, 64 units above the actor.
+bool cls_8049E350::talkTo(s32 player, u16 msg) {
+    JGeometry::TVec3f pos(mPos);
+    pos.y -= 64.0f;
+    return fn_8038AD24(player, msg, mSerial, field_0x4, pos, 0x28);
+}
+
+// Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
+// The original (inlined in fn_80125C58) compares field_0x238 with 1 as beq / bge / b (an extra
+// bge and b to the default block); ours has only beq and b.
+void cls_8049E350::startSignAnim() {
+    switch (field_0x238) {
+    case 1:
+        mAnim27c.startAnim_801D22DC(0, 0, false);
+        break;
+    default:
+        mAnim27c.startAnim_801D22DC(1, 0, false);
+        break;
+    }
+    mAnim27c.fn_801D1F14(0.0f);
 }
 
 cls_8049E350::~cls_8049E350() {}

@@ -149,6 +149,8 @@ void cls_80119E5C::fn_80119958() {
     field_0x10 = 0;
 }
 
+void part191_fn_80119628();
+
 // FIXME: 99.88 %, reloc-name; behaviour clean.
 // reloc-name only: the unit's .sdata2 pool still lacks 0.05f (fn_80118E20,
 // unwritten) and has 1.0f after the double; the original has a 1.0f made before
@@ -188,11 +190,7 @@ void cls_80119E5C::fn_80119628() {
         break;
     case 2:
         if (field_0x24 == 2 && field_0x4 == field_0x8 / 2) {
-            JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-            spawnEmitter_8013CC50(0, &pos, 0x3EC, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(0, &pos, 0x3ED, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(0, &pos, 0x3EE, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(0, &pos, 0x3EF, 0, 0, NULL, NULL, true, 1.0f);
+            part191_fn_80119628();
         }
         if (field_0x4 >= field_0x8 / 2 + 1) {
             if (field_0x2 != 0 && field_0x10 > 0) {
@@ -244,6 +242,14 @@ void cls_80119E5C::fn_801194C4() {
         field_0x2c->draw(0.0f, 0.0f, (s32)JUTVideo::sManager->getFbWidth(),
                          (s32)JUTVideo::sManager->getEfbHeight(), false, false, false);
     }
+}
+
+void part191_fn_80119628() {
+    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+    spawnEmitter_8013CC50(0, &pos, 0x3EC, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(0, &pos, 0x3ED, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(0, &pos, 0x3EE, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(0, &pos, 0x3EF, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_80119E5C::fn_80119468(s32 g, s32 mode) {

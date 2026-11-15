@@ -24,6 +24,9 @@ public:
     // 0x80125C58: stores the flag at 0x231. When it is set, plays animation
     // 0 (field_0x238 == 1) or 1 on mAnim27c and sets its frame to 0.
     void fn_80125C58(bool flag);
+    // Not in the binary (inlined into update and fn_80125C58).
+    bool talkTo(s32 player, u16 msg);
+    void startSignAnim();
     // The state switch of init() and update() (defined inline in tu_80125B58.cpp).
     void enterState();
 
