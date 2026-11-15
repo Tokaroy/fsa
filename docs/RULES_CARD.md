@@ -40,6 +40,7 @@ copies outside ninja (`build/scratch/`) and never touch your source unless told.
 ```sh
 python3 tools/diag.py <unit> <function> [-v]   # what differs and where in our source
 python3 tools/diag.py <unit>                   # functions below 100 %: root or derived
+python3 tools/pieces.py <unit> <function> [N]  # a large function in pieces; N: one piece in full
 python3 tools/permute.py <unit> <function> [--tier b] [--deep] [--apply]
 python3 tools/permute.py --callees --units <unit>        # rewrite inlined callees, score the whole unit
 python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
@@ -53,6 +54,12 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
   file and their %. Line numbers carry no file: code inlined from this file
   sits at the call's line. "Derived" = it inlines a same-file function below
   100 %: fix that one first, the caller usually follows.
+- `pieces.py` for anything large: our source of the function is cut into
+  pieces (statements; long ifs, loops and switches cut again), every diff row
+  goes to the piece its source line belongs to, and each piece says what
+  differs. Work on one piece (`pieces.py ... N`, or `permute.py ... --lines
+  A-B`), structural differences first: a piece that differs in registers or
+  stack slots only usually follows from another one (a frame of another size).
 - `permute.py` for regalloc-only, scheduling and small missing/extra rests:
   beam search over source rewrites, each compiled and scored natively; a result
   is reported only if the function got closer and nothing else in the unit got

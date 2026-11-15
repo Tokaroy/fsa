@@ -140,12 +140,13 @@ Rules (checked by script)
 - Keep fn_/lbl_/cls_ placeholder names unless you have evidence for a real one; a descriptive name you do give keeps its address (Name_8xxxxxxx). Library templates and classes (JGadget, JGeometry, JKR...) are used from their headers, never rebuilt as a look-alike struct of your own. Declare another unit's function once, in its owner's shared header under include/game/, never in a .cpp.
 - Shared headers and other files may be changed when the assembly proves the change (a field's type or offset, const, a missing member). Then the whole project is rebuilt and nothing anywhere may get worse.
 - Don't write FIXME percentages (the script stamps them); a one-line comment on what still differs is welcome. No progress logs in source.
-- Don't run git or ninja. Only `python3 tools/try.py ...`, `python3 tools/grind.py check`, `python3 tools/diag.py ...`, `python3 tools/permute.py ...` and `python3 tools/scratch.py ...` can compile: the compiler does not run directly in your sandbox, and tools/ and configure.py must stay unedited.
+- Don't run git or ninja. Only `python3 tools/try.py ...`, `python3 tools/grind.py check`, `python3 tools/diag.py ...`, `python3 tools/pieces.py ...`, `python3 tools/permute.py ...` and `python3 tools/scratch.py ...` can compile: the compiler does not run directly in your sandbox, and tools/ and configure.py must stay unedited.
 
 Useful
 - `python3 tools/fingerprint.py <unit> <function>`: behaviour differences (calls, constants, compares, field offsets), original vs ours.
 - `python3 tools/try.py <unit>`: every function of the unit below 100 %.
 - `python3 tools/diag.py <unit> <function>`: what kind of difference is left and at which of our source lines: swapped registers and stack slots by variable name, rows grouped by line, and whether an inlined function of this file is the real cause (fix that one first).
+- `python3 tools/pieces.py <unit> <function> [N]`: a large function cut into pieces (statements and blocks of our source) with what differs in each; with N, that piece's source, the original's instructions for exactly that stretch and the differing rows. Solve a large function piece by piece, structural differences (`target +N`, `ours +N`) first: pieces that differ in registers or stack slots only usually follow.
 - `python3 tools/permute.py <unit> <function> [--tier b] [--apply]`: searches natural rewrites (declaration order, operand order, if/else form...) for the function's register and order differences. Keep a result only if it reads as code a programmer wrote; a new local it introduces needs a real name; a --tier b result counts only at 100 %.
 - build/G4SE01/asm/game/<unit>.s: the unit's whole original assembly (other functions, data, vtables, jump tables).
 - docs/RULES_CARD.md, "Known game-code shapes": recurring MWCC shapes and their natural source. grep it for a keyword; don't read it whole.
@@ -602,6 +603,22 @@ def diag_block(wt, unit, fn, cap=40):
     return ["== What differs, by our source line (tools/diag.py) =="] + lines + [""]
 
 
+def pieces_block(wt, unit, fn, cap=16):
+    """tools/pieces.py's scoreboard for a large function: the pieces that still differ, worst first."""
+    try:
+        r = sh(["python3", "tools/pieces.py", unit, fn, "--open"], wt, timeout=30, env=dict(os.environ, GRIND_BROKER_SERVER="1"))
+    except subprocess.TimeoutExpired:
+        return []
+    lines = r.stdout.rstrip().splitlines()
+    if r.returncode or len(lines) < 4:
+        return []
+    more = [f"  ... {len(lines) - cap} more pieces differ: python3 tools/pieces.py {unit} '{fn}' --open"] if len(lines) > cap else []
+    return ["== The function in pieces, worst first (tools/pieces.py) ==",
+            f"Take one piece at a time: `python3 tools/pieces.py {unit} '{fn}' <N>` shows its source, the original's "
+            "instructions for that stretch and the rows that differ. After a change, try.py, then this list again."] \
+        + lines[:cap] + more + [""]
+
+
 def lead_block(unit, fn, cap=90):
     """A byte-identical form tools/permute.py found for this function but did not apply because it adds
     or removes a local (../fsa-wt/g2-logs/leads/<unit>__<function>.hand.diff): for the session to finish."""
@@ -647,8 +664,12 @@ def build_packet(wt, unit, fn, ev, note=None):
             out.append("")
         t = sh(["python3", "tools/try.py", unit, fn], wt).stdout.strip().splitlines()
         hunks, nd, nr = diff_hunks(wt, unit, fn, 60 if size <= 512 else 140 if size <= 2048 else 240)
+        # a large function with differences all over: the overview by piece, and only the first rows of the raw diff
+        pcs = pieces_block(wt, unit, fn) if size > 1024 and nd > 40 else []
+        if pcs and len(hunks) > 60:
+            hunks = hunks[:60] + [f"   ... the rest piece by piece: python3 tools/pieces.py {unit} '{fn}' <N>"]
         out += [f"== Diff, original | ours: {nd} of {nr} rows differ (equal stretches skipped; offsets are hex from the function start) =="]
-        out += [l for l in t[1:2] if l.strip()] + hunks + [""]
+        out += [l for l in t[1:2] if l.strip()] + hunks + [""] + pcs
         if lane == "match" and e["cls"] != "reloc-name":
             out += lead_block(unit, fn) or diag_block(wt, unit, fn)
     src = source_of(wt, unit, e)
