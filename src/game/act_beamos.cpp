@@ -52,7 +52,7 @@ void Beamos_804A40E0::init() {
 // Not auto-inlined: fn_801BE6C4 calls fn_801BE86C out of line in the original, and vfunc_0x90
 // calls fn_801BE6C4 out of line (bl in its asm); docs/INLINING.md pragma rule 1.
 #pragma auto_inline off
-// FIXME: 80.76 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 80.85 %, scheduling+regalloc + reloc-name; behaviour clean.
 // One instruction short: the original keeps the sincos table
 // and its cos half (table + 4) in r30 and loads mPos.y before mPos.x; ours keeps
 // only the table base and loads the literals earlier.
@@ -78,9 +78,6 @@ void Beamos_804A40E0::fn_801BE86C() {
     actor->field_0x3c = JGeometry::TVec3f(dir.x, dir.y, 0.0f);
 }
 
-// FIXME: 99.91 %, reloc-name; behaviour clean.
-// Instructions identical; only the .sdata2 literal names differ
-// (the unit's literals are not split in the original order yet).
 void Beamos_804A40E0::fn_801BE6C4(s32 state) {
     switch (state) {
     case 0:
@@ -116,7 +113,7 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 95.61 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.66 %, missing/extra; behaviour drift.
 void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
     if ((mFlags & 0x2000) && field_0x2b0 != 0) {
         if (getGameView_802D6A9C()->fn_802D800C(field_0x2b0)) {
@@ -237,10 +234,6 @@ void Beamos_804A40E0::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
-// FIXME: 95.29 %, scheduling+regalloc + reloc-name; behaviour drift.
-// Same instructions modulo registers: the position block's
-// table pointer and x term are scheduled in another order (as in fn_801BE86C),
-// plus the .sdata2 literal names.
 void Beamos_804A40E0::draw() {
     SpriteParams_801F5AE0 params;
     if (mState == 2) {
