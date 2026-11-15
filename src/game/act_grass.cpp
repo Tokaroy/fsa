@@ -226,7 +226,7 @@ void Grass_804A92D0::fn_802CEC10() {
             if (field_0x230 == 1) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
             } else if (field_0x230 == 2) {
-                getActorManager_801F856C()->spawnActor_801F9484('MTOB', field_0x4, &mPos, 0, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('MTBO', field_0x4, &mPos, 0, -1, -1);
             } else if (field_0x230 == 3) {
                 JGeometry::TVec3f e(mPos.x + (fn_801CD664(13) - 6), mPos.y, 0.0f);
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &e, 0, -1, -1);

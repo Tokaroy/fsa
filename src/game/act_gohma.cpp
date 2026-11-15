@@ -220,8 +220,8 @@ void Gohma_804A307C::fn_801AB6A8() {
         field_0x264.y = 5.0f;
     }
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x264.x, 0.5f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x264.y, 0.5f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.x, field_0x264.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.y, field_0x264.y, 0.3f, 1.0f);
 
     mPos += field_0x3c;
 

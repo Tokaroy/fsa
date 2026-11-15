@@ -23,10 +23,10 @@ extern const char lbl_80465DD0[]; // "enemy_gc_sob.bin"
 extern s32 lbl_80529DEC[];
 extern s32 lbl_8049FA30[];
 extern s32 lbl_8049FA78[];
-extern s32 lbl_804BF850[4]; // serials of the soldiers that took a hit
-extern s32 lbl_8053AB40;
-extern s32 lbl_8053AB44;
-extern s32 lbl_8053AB48;
+s32 lbl_804BF850[4]; // serials of the soldiers that took a hit
+s32 lbl_8053AB40;
+s32 lbl_8053AB44;
+s32 lbl_8053AB48;
 extern s32 lbl_80539F68;
 
 // Life and sprite mode per kind.

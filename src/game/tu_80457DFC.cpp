@@ -211,7 +211,7 @@ public:
     }
 };
 
-extern f32 lbl_8053AF78;
+f32 lbl_8053AF78;
 
 static const JASDsp::FxlineConfig_ lbl_80491600[4] = {
     {1, 0x6000, 1, 0, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},

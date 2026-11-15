@@ -220,7 +220,8 @@ public:
     /* 0x2175 */ u8 field_0x2175;
     /* 0x2176 */ u8 field_0x2176; // the button-icon overlay (lbl_8053AED8) is drawn when set
     /* 0x2177 */ u8 field_0x2177;
-}; // Size: at least 0x2178
+    /* 0x2178 */ u8 field_0x2178[0x2180 - 0x2178];
+}; // Size: 0x2180 (cls_804AE9A0's constructor news it with __nw__(0x2180))
 
 // The object lbl_8053AD68 holds (declared in GameGlobals.h, which forward
 // declares it). Named after its vtable 0x804AE9A0 (.data, this unit):

@@ -45,9 +45,9 @@ extern s32 lbl_80539FA0;
 extern s32 lbl_80539FA4;
 extern s32 lbl_80539FA8[2];
 extern s32 lbl_80539FB0[2];
-extern s32 lbl_8053AB70;
-extern u8 lbl_8053AB74;
-extern u8 lbl_8053AB75;
+s32 lbl_8053AB70;
+u8 lbl_8053AB74;
+u8 lbl_8053AB75;
 
 struct Unk_804A13E0 {
     f32 field_0x00[2][2];

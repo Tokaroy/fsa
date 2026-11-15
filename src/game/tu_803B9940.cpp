@@ -38,10 +38,9 @@ void cls_803B9940::fn_803BA980() {
     OSResumeThread(&lbl_80511E60);
 }
 
-extern "C" {
-s32 fn_803BAEF4(CARDFileInfo* file, void* dst1, void* dst2, s32 size1, s32 size2);
-s32 fn_803BBF08(CARDFileInfo* file, void* src1, void* src2, s32 size1, s32 size2);
-}
+// game/tu_803BACF8.cpp (defined there, C++ linkage: its symbols are fn_..._FP12CARDFileInfoPvPvUlUl).
+s32 fn_803BAEF4(CARDFileInfo* file, void* dst1, void* dst2, u32 size1, u32 size2);
+s32 fn_803BBF08(CARDFileInfo* file, void* src1, void* src2, u32 size1, u32 size2);
 s32 fn_803BAE68(CARDFileInfo* file);
 
 static inline bool mapCardResult(cls_803B9940* self, s32 result) {
