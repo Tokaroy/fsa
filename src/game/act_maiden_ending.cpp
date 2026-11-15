@@ -70,7 +70,8 @@ void MaidenEnding_804AD5B8::update() {
     (this->*lbl_804AD528[mState])();
 }
 
-// FIXME: 95.84% scheduling+regalloc + reloc-name. Instruction scheduling in matrix setup and register allocation.
+// FIXME: 96.33 %, scheduling+regalloc; behaviour clean.
+// Instruction scheduling in matrix setup and register allocation.
 void MaidenEnding_804AD5B8::draw() {
     if (field_0x240 == 0) {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x250 + field_0x248, NULL, 7, 1.0f, 1.0f);
@@ -136,7 +137,8 @@ void MaidenEnding_804AD5B8::fn_8035D6C4() {
     }
 }
 
-// FIXME: 95.68% missing/extra. 3 fewer instructions in field_0x248 ladder.
+// FIXME: 95.68 %, missing/extra; behaviour near.
+// 3 fewer instructions in field_0x248 ladder.
 void MaidenEnding_804AD5B8::fn_8035D4B8() {
     // The sequencer tests below are written `== true`: the original compares the bool
     // with cmplwi 1 where a plain test gives clrlwi. (92 % instead of 95.7 % here).
@@ -186,7 +188,8 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     }
 }
 
-// FIXME: 99.76% same-text. symbols.txt has sAngles..sColors as one object (lbl_80472748, 0x38).
+// FIXME: 99.76 %, same-text; behaviour drift.
+// symbols.txt has sAngles..sColors as one object (lbl_80472748, 0x38).
 void MaidenEnding_804AD5B8::fn_8035D1CC() {
     if (field_0x234 > 0x128) {
         return;
@@ -239,7 +242,8 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
     }
 }
 
-// FIXME: 97.03% missing/extra + reloc-name. 2 fewer instructions in return value copy.
+// FIXME: 97.25 %, missing/extra; behaviour clean.
+// 2 fewer instructions in return value copy.
 void MaidenEnding_804AD5B8::fn_8035CF50() {
     if (mPos.y < 1790.0f) {
         f32 diffY = mPos.y - mPos.z;
@@ -297,7 +301,8 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
     }
 }
 
-// FIXME: 98.83% operands. Register allocation and return copy stack slot.
+// FIXME: 98.83 %, operands; behaviour clean.
+// Register allocation and return copy stack slot.
 JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CE78() {
     if (field_0x25c > 55.0f) {
         field_0x25c -= 0.1f;
@@ -318,7 +323,8 @@ JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CE78() {
     return ret;
 }
 
-// FIXME: 95.70% operands + reloc-name. Register allocation and return copy stack slot.
+// FIXME: 95.91 %, operands; behaviour clean.
+// Register allocation and return copy stack slot.
 JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CDC0() {
     s16 prevAngle = field_0x260;
     field_0x260 += 0x400;
@@ -338,7 +344,8 @@ JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CDC0() {
     return ret;
 }
 
-// FIXME: 96.04% regalloc-only + reloc-name. Register allocation and return copy stack slot.
+// FIXME: 96.42 %, scheduling+regalloc; behaviour clean.
+// Register allocation and return copy stack slot.
 JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CD00() {
     // ret is declared first here: this order matches the original's stack/register use better (96.04 % vs 95.88 %).
     JGeometry::TVec3f ret;
@@ -368,7 +375,8 @@ inline JGeometry::TVec3f MaidenEnding_804AD5B8::calcTarget_inline() {
     return v;
 }
 
-// FIXME: 99.35% operands. Register allocation and diff vector calculation.
+// FIXME: 99.35 %, operands; behaviour clean.
+// Register allocation and diff vector calculation.
 void MaidenEnding_804AD5B8::fn_8035CAF8() {
     if (field_0x274 != NULL) {
         setEmitterPos_8013CB44(field_0x274, &mPos, -1, -1, true);
