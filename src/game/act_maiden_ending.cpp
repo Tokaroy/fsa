@@ -36,7 +36,6 @@ static JGeometry::TVec3f (MaidenEnding_804AD5B8::*lbl_804AD594[3])() = {
     &MaidenEnding_804AD5B8::fn_8035CD00,
 };
 
-// FIXME: 99.64% reloc-name. Literal relocations in .sdata2 differ in offset.
 void MaidenEnding_804AD5B8::init() {
     mState = 0;
     field_0x234 = 0;
@@ -90,7 +89,7 @@ void MaidenEnding_804AD5B8::draw() {
 
         Mtx mtx;
 
-        f32 scale = (512.0f - (mPos.z - 13.0f)) * 0.001953125f;
+        f32 scale = (512.0f - (mPos.z - 13.0f)) / 512.0f;
         mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
@@ -187,7 +186,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     }
 }
 
-// FIXME: 99.57% reloc-name. Literal relocations in .sdata2 differ in offset.
+// FIXME: 99.76% same-text. symbols.txt has sAngles..sColors as one object (lbl_80472748, 0x38).
 void MaidenEnding_804AD5B8::fn_8035D1CC() {
     if (field_0x234 > 0x128) {
         return;
@@ -242,7 +241,7 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
 
 // FIXME: 97.03% missing/extra + reloc-name. 2 fewer instructions in return value copy.
 void MaidenEnding_804AD5B8::fn_8035CF50() {
-    if (mPos.y < 1795.0f) {
+    if (mPos.y < 1790.0f) {
         f32 diffY = mPos.y - mPos.z;
         if (diffY < 1744.0f) {
             field_0x272 = -2;
@@ -346,8 +345,8 @@ JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CD00() {
     s16 prevAngle = field_0x260;
     field_0x260 += 0x400;
     JGeometry::TVec3f v;
-    v.x = (field_0x264 + 5.0f) + 25.0f * JMASCos(field_0x260);
     v.y = (field_0x268 - field_0x25c + 25.0f) + 25.0f * JMASSin(field_0x260);
+    v.x = (field_0x264 + 5.0f) + 25.0f * JMASCos(field_0x260);
     v.z = mPos.z;
     // Copy into the return local (see fn_8035CE78).
     ret = v;
