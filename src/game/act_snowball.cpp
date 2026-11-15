@@ -33,41 +33,6 @@ static inline void setScaleMtx(Mtx m, const JGeometry::TVec3f& scale, f32 ty) {
     m[2][2] = scale.z;
 }
 
-// Emits and updates the trail emitter (inlined three times in update()).
-inline void cls_8049D020::updateTrailEmitter() {
-    if (field_0x4 == 0) {
-        if (field_0x374 == NULL) {
-            field_0x374 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
-        }
-        JGeometry::TVec3f emitterPos = mPos;
-        emitterPos.y += -2.0f * field_0x260;
-        setEmitterPos_8013CB44(field_0x374, &emitterPos, 0, 0, true);
-        field_0x374->setGlobalAlpha(0x80);
-        if (field_0x264 < 0.2f) {
-            field_0x374->stopCreateParticle();
-        } else {
-            field_0x374->playCreateParticle();
-        }
-    }
-}
-
-// Applies gravity to the velocity and moves; true once landed (inlined three times in update()).
-inline bool cls_8049D020::fallStep() {
-    fn_801CD950(&field_0x3c.z, -10.0f, -0.15f);
-    mPos += field_0x3c;
-    bool atGround;
-    if (mPos.z <= 0.0f) {
-        mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
-        atGround = true;
-    } else {
-        atGround = false;
-    }
-    return atGround;
-}
-
-// FIXME: 99.88 %, reloc-name; behaviour clean.
-// reloc-name: exact instructions match target.
 cls_8049D020::cls_8049D020()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(0),
       field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0), field_0x254(0),
@@ -84,8 +49,6 @@ cls_8049D020::~cls_8049D020() {
     field_0x37c = NULL;
 }
 
-// FIXME: 99.80 %, reloc-name; behaviour clean.
-// reloc-name: exact instructions match target.
 void cls_8049D020::init() {
     ActorBase_804A5770::init();
     field_0x234 = field_0x90 & 0xF;
@@ -133,7 +96,7 @@ void cls_8049D020::init() {
     }
 }
 
-// FIXME: 99.19 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.57 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 3 more instrs (713 vs 710): a mov/clrlwi pair and a lwz in cases 2 and 4, plus swapped stack slots and registers.
 void cls_8049D020::update() {
     ActorBase_804A5770::update();
@@ -173,51 +136,9 @@ void cls_8049D020::update() {
         break;
     case 2:
         if (field_0x23c >= 0) {
-            u16 angle = 0;
-            s32 dir = 0;
-            s32 player = 0;
-            f32 dist = 0.0f;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x23c, 2);
-            s32 step;
-            if (JMath::sincosTable_.cosShort((s16)(field_0x230 - angle)) >= 0.0f) {
-                step = (s16)((s32)fabs(300.0f * JMath::sincosTable_.sinShort((s16)(field_0x230 - angle))) + 100);
-            } else {
-                step = 700;
-            }
-            fn_801CD930(&field_0x230, (s16)angle, step);
-            if (dist >= 64.0f) {
-                fn_801CD950(&field_0x264, 1.6f, 0.08f);
-            } else {
-                fn_801CD950(&field_0x264, 1.2f, 0.03f);
-            }
-            field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
-            field_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
-            field_0x3c.z = 0.0f;
-            mPos += field_0x3c;
-            field_0x26c = PSVECMag(&field_0x3c) / 1.6f;
-            if (field_0x26c >= 1.0f) {
-                field_0x26c = 1.0f;
-            }
-            updateTrailEmitter();
-            startSound_801F0E34(0x3007B, 0);
+            chase();
         }
-        field_0x260 += (0.002f * field_0x264) / 1.6f;
-        if (field_0x260 >= 2.0f) {
-            field_0x260 = 2.0f;
-        }
-        f32 boxHalf = 8.0f * field_0x260;
-        mBox.i.x = -boxHalf;
-        mBox.i.y = -boxHalf;
-        mBox.f.x = boxHalf;
-        mBox.f.y = boxHalf;
-        mBox2.i.x = mBox.i.x;
-        mBox2.i.y = mBox.i.y;
-        mBox2.f.x = mBox.f.x;
-        mBox2.f.y = mBox.f.y;
-        field_0x80.i.x = mBox.i.x;
-        field_0x80.i.y = mBox.i.y;
-        field_0x80.f.x = mBox.f.x;
-        field_0x80.f.y = mBox.f.y;
+        grow();
         fn_801F2DB4('NULL', 'NULL', NULL);
         if (fn_801F2B7C(-100, -1, 1)) {
             fn_8010C294(7);
@@ -279,10 +200,7 @@ void cls_8049D020::update() {
         if (fn_801CD950(&field_0x264, 0.1f, 0.015f) == 0) {
             fn_8010C294(2);
         }
-        field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
-        field_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
-        field_0x3c.z = 0.0f;
-        mPos += field_0x3c;
+        advance();
         updateTrailEmitter();
         break;
     }
@@ -337,7 +255,7 @@ void cls_8049D020::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 95.71 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 95.78 %, missing/extra; behaviour near.
 // missing/extra + reloc-name: ours has 1 fewer instr (215 vs 216); the scale matrices are built with different float register assignment and the frame/pos/res locals are scheduled differently.
 void cls_8049D020::draw() {
     ActorBase_804A5770::draw();
@@ -367,7 +285,7 @@ static inline JGeometry::TVec3f negated(const JGeometry::TVec3f& v) {
     return result;
 }
 
-// FIXME: 94.18 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.32 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 2 fewer instrs (274 vs 276): the original keeps the table, the actor manager tag and the serial in r27-r29 (stmw/lmw r27) and negates case 5 through two stack TVec3f copies; the single-case switch in case 13 has an extra bge in the original.
 bool cls_8049D020::fn_8010C294(s32 state) {
     switch (state) {
@@ -435,11 +353,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
         if (field_0x374 != NULL) {
             field_0x374->stopCreateParticle();
         }
-        JGeometry::TVec3f pos = mPos;
-        pos.y -= 16.0f * field_0x260;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x44A, 0, 1, NULL, NULL, true, field_0x260);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x44B, 0, 1, NULL, NULL, true, field_0x260);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x44C, 0, 1, NULL, NULL, true, field_0x260);
+        spawnBurst();
         startSound_801F0E34(0x50077, 0);
         field_0x270 = field_0x260;
         break;
@@ -453,19 +367,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
             getActorManager_801F856C()->spawnActor_801F9484('KEY0', field_0x4, &mPos, 0x6000, -1, -1);
             break;
         default: {
-            s32 kind = 0;
-            if (field_0x270 >= 2.0f) {
-                kind = 2;
-            } else if (field_0x270 >= 1.4f) {
-                kind = 1;
-            }
-            if (field_0x258 >= 1) {
-                kind = 1;
-            }
-            s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, lbl_80464328[kind]);
-            if (serial >= 0) {
-                getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            }
+            dropRupee();
             break;
         }
         }
@@ -475,4 +377,123 @@ bool cls_8049D020::fn_8010C294(s32 state) {
     field_0x238 = state;
     mSprite.fn_801D1F14(0.0f);
     return true;
+}
+
+// Plain functions that update and fn_8010C294 inline; the linker dropped their own copies. The pool has
+// their literals before fn_8010C294's, in this order from the bottom of the file up.
+
+// Turns towards the player, picks the speed by the distance and rolls on.
+void cls_8049D020::chase() {
+    u16 angle = 0;
+    s32 dir = 0;
+    s32 player = 0;
+    f32 dist = 0.0f;
+    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x23c, 2);
+    s32 step;
+    if (JMath::sincosTable_.cosShort((s16)(field_0x230 - angle)) >= 0.0f) {
+        step = (s16)((s32)fabs(300.0f * JMath::sincosTable_.sinShort((s16)(field_0x230 - angle))) + 100);
+    } else {
+        step = 700;
+    }
+    fn_801CD930(&field_0x230, (s16)angle, step);
+    if (dist >= 64.0f) {
+        fn_801CD950(&field_0x264, 1.6f, 0.08f);
+    } else {
+        fn_801CD950(&field_0x264, 1.2f, 0.03f);
+    }
+    advance();
+    field_0x26c = PSVECMag(&field_0x3c) / 1.6f;
+    if (field_0x26c >= 1.0f) {
+        field_0x26c = 1.0f;
+    }
+    updateTrailEmitter();
+    startSound_801F0E34(0x3007B, 0);
+}
+
+// Grows with the distance rolled, up to twice the size; the boxes follow.
+void cls_8049D020::grow() {
+    field_0x260 += (0.002f * field_0x264) / 1.6f;
+    if (field_0x260 >= 2.0f) {
+        field_0x260 = 2.0f;
+    }
+    f32 boxHalf = 8.0f * field_0x260;
+    mBox.i.x = -boxHalf;
+    mBox.i.y = -boxHalf;
+    mBox.f.x = boxHalf;
+    mBox.f.y = boxHalf;
+    mBox2.i.x = mBox.i.x;
+    mBox2.i.y = mBox.i.y;
+    mBox2.f.x = mBox.f.x;
+    mBox2.f.y = mBox.f.y;
+    field_0x80.i.x = mBox.i.x;
+    field_0x80.i.y = mBox.i.y;
+    field_0x80.f.x = mBox.f.x;
+    field_0x80.f.y = mBox.f.y;
+}
+
+// Applies gravity to the velocity and moves; true once landed.
+bool cls_8049D020::fallStep() {
+    fn_801CD950(&field_0x3c.z, -10.0f, -0.15f);
+    mPos += field_0x3c;
+    bool atGround;
+    if (mPos.z <= 0.0f) {
+        mPos.z = 0.0f;
+        field_0x3c.z = 0.0f;
+        atGround = true;
+    } else {
+        atGround = false;
+    }
+    return atGround;
+}
+
+// The rupee a destroyed snowball leaves, by its size.
+void cls_8049D020::dropRupee() {
+    s32 kind = 0;
+    if (field_0x270 >= 2.0f) {
+        kind = 2;
+    } else if (field_0x270 >= 1.4f) {
+        kind = 1;
+    }
+    if (field_0x258 >= 1) {
+        kind = 1;
+    }
+    s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, lbl_80464328[kind]);
+    if (serial >= 0) {
+        getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    }
+}
+
+// The three burst emitters, at the snowball's foot.
+void cls_8049D020::spawnBurst() {
+    JGeometry::TVec3f pos = mPos;
+    pos.y -= 16.0f * field_0x260;
+    spawnEmitter_8013CC50(field_0x4, &pos, 0x44A, 0, 1, NULL, NULL, true, field_0x260);
+    spawnEmitter_8013CC50(field_0x4, &pos, 0x44B, 0, 1, NULL, NULL, true, field_0x260);
+    spawnEmitter_8013CC50(field_0x4, &pos, 0x44C, 0, 1, NULL, NULL, true, field_0x260);
+}
+
+// Emits and updates the trail emitter.
+void cls_8049D020::updateTrailEmitter() {
+    if (field_0x4 == 0) {
+        if (field_0x374 == NULL) {
+            field_0x374 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
+        }
+        JGeometry::TVec3f emitterPos = mPos;
+        emitterPos.y += -2.0f * field_0x260;
+        setEmitterPos_8013CB44(field_0x374, &emitterPos, 0, 0, true);
+        field_0x374->setGlobalAlpha(0x80);
+        if (field_0x264 < 0.2f) {
+            field_0x374->stopCreateParticle();
+        } else {
+            field_0x374->playCreateParticle();
+        }
+    }
+}
+
+// Moves along the heading at the current speed.
+void cls_8049D020::advance() {
+    field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
+    field_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
+    field_0x3c.z = 0.0f;
+    mPos += field_0x3c;
 }

@@ -51,8 +51,6 @@ cls_8049D940::~cls_8049D940() {
     field_0x318 = NULL;
 }
 
-// FIXME: 99.93 %, reloc-name; behaviour clean.
-// Only the 20.0f literal: .sdata2 not split (lbl_8053C704 vs @NNN).
 void cls_8049D940::init() {
     cls_8049D140::init();
     for (s32 i = 0; i < 4; i++) {
@@ -72,20 +70,6 @@ void cls_8049D940::init() {
     field_0x308 = mPos;
 }
 
-static inline void updateBobbing(cls_8049D940* self) {
-    static s16 lbl_8053AA88 = 0;
-    self->mPos.z = 4.0f * JMath::sincosTable_.sinShort(lbl_8053AA88) + 20.0f;
-    lbl_8053AA88 += 500;
-    if (self->field_0x314 != NULL) {
-        setEmitterPos_8013CB44(self->field_0x314, &self->mPos, 1, 1, true);
-    }
-    if (self->field_0x318 != NULL) {
-        setEmitterPos_8013CB44(self->field_0x318, &self->mPos, 1, 1, true);
-    }
-}
-
-// FIXME: 99.79 %, reloc-name; behaviour drift.
-// only the .sdata2 literal and .sbss symbol names differ.
 void cls_8049D940::update() {
     cls_8049D140::update();
     if (field_0x230 >= 2 && field_0x230 <= 10) {
@@ -108,14 +92,7 @@ void cls_8049D940::update() {
     }
     switch (field_0x230) {
     case 3:
-        if (mSpawnPos.y - mPos.y <= 24.0f) {
-            fn_801CD950(&field_0x3c.y, 0.4f, 0.002f);
-        } else {
-            fn_801CD950(&field_0x3c.y, 0.0f, -0.01f);
-        }
-        if (mPos.y - mSpawnPos.y >= 48.0f) {
-            fn_8011921C()->fn_801183BC();
-        }
+        updateDescent();
         fn_80115A7C();
         break;
     case 4:
@@ -128,10 +105,10 @@ void cls_8049D940::update() {
                 field_0x234 = 0xFE;
             }
         }
-        updateBobbing(this);
+        updateBobbing();
         break;
     case 7:
-        updateBobbing(this);
+        updateBobbing();
         break;
     case 8:
         if (field_0x234 != 0) {
@@ -172,7 +149,7 @@ void cls_8049D940::update() {
     field_0x238.fn_801D1C18();
 }
 
-// FIXME: 98.09 %, scheduling + reloc-name; behaviour drift.
+// FIXME: 98.13 %, scheduling; behaviour clean.
 // The only differences are the literal references (lbl_ in the
 // original, @NNN here: data split) and &mPos, which the original computes a
 // few instructions earlier, before the layer test.
@@ -190,15 +167,15 @@ void cls_8049D940::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = 1.0f;
+    mtx[0][0] = 0.8f;
     mtx[0][1] = 0.0f;
     mtx[0][2] = 0.0f;
     mtx[1][0] = 0.0f;
-    mtx[1][1] = 1.0f;
+    mtx[1][1] = 0.8f;
     mtx[1][2] = 0.0f;
     mtx[2][0] = 0.0f;
     mtx[2][1] = 0.0f;
-    mtx[2][2] = 1.0f;
+    mtx[2][2] = 0.8f;
     params.mMtx = mtx;
     if (field_0x238.mKey < 4) {
         void* res = field_0x31c[field_0x238.mKey];
@@ -252,7 +229,7 @@ s32 cls_8049D940::vfunc_0x5C() {
     }
 }
 
-// FIXME: 94.36 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 94.46 %, scheduling+regalloc; behaviour drift.
 // register allocation and instruction scheduling
 // in cases 9, 10 and 11, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115F9C(s32 index) {
@@ -327,10 +304,35 @@ void cls_8049D940::fn_80115F9C(s32 index) {
     field_0x230 = index;
 }
 
+// Two plain functions that update inlines; the linker dropped their own copies. Their literals stand
+// in the pool between fn_80115D8C's and fn_80115F9C's, so they are defined here.
+void cls_8049D940::updateBobbing() {
+    static s16 lbl_8053AA88 = 0;
+    mPos.z = 4.0f * JMath::sincosTable_.sinShort(lbl_8053AA88) + 20.0f;
+    lbl_8053AA88 += 500;
+    if (field_0x314 != NULL) {
+        setEmitterPos_8013CB44(field_0x314, &mPos, 1, 1, true);
+    }
+    if (field_0x318 != NULL) {
+        setEmitterPos_8013CB44(field_0x318, &mPos, 1, 1, true);
+    }
+}
+
+void cls_8049D940::updateDescent() {
+    if (mSpawnPos.y - mPos.y <= 24.0f) {
+        fn_801CD950(&field_0x3c.y, 0.4f, 0.002f);
+    } else {
+        fn_801CD950(&field_0x3c.y, 0.0f, -0.01f);
+    }
+    if (mPos.y - mSpawnPos.y >= 48.0f) {
+        fn_8011921C()->fn_801183BC();
+    }
+}
+
 // Not auto-inlined: fn_80115BC4 calls fn_80115D8C out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 98.22 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 98.67 %, regalloc-only; behaviour clean.
 // FPR allocation in the distance and target position
 // math, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
@@ -369,7 +371,7 @@ void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
 // Not auto-inlined: fn_80115A7C calls fn_80115BC4 out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 92.98 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 93.25 %, missing/extra; behaviour near.
 // one extra frsp after the __fsel
 // (the intrinsic returns a double; the original scales by the fsel result directly),
 // plus .sdata2 literal symbol names.
@@ -403,11 +405,6 @@ void cls_8049D940::fn_80115BC4(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
 // Not auto-inlined: update calls fn_80115A7C out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 94.45 %, missing/extra; behaviour drift.
-// The original's branch to the fn_8023DFF4 arm is laid out at the
-// end of the loop body with the fn_80230498 arm falling through, and it
-// converts the 255 argument from a float at run time (fctiwz of 255.0f);
-// the 90.0f literal is lbl_ in the original and @NNN here (data split).
 bool cls_8049D940::fn_80115A7C() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f out;
@@ -418,7 +415,9 @@ bool cls_8049D940::fn_80115A7C() {
         f32 dy = pos.y - mPos.y;
         f32 len = JMAFastSqrt(square(dx) + square(dy));
         if (len <= 90.0f) {
-            fn_80230498(i, &pos, field_0x270.mCel + 0x3B5, 255, -128, -128, true);
+            // The alpha is a float, converted where it is passed (fctiwz of 255.0f).
+            f32 alpha = 255.0f;
+            fn_80230498(i, &pos, field_0x270.mCel + 0x3B5, alpha, -128, -128, true);
         } else {
             fn_8023DFF4(i, &pos);
         }

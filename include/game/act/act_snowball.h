@@ -20,8 +20,14 @@ public:
 
     // 0x8010C294: state machine dispatcher.
     bool fn_8010C294(s32 state);
-    void updateTrailEmitter();
+    // Not in the binary: plain functions that update and fn_8010C294 inline.
+    void chase();
+    void grow();
     bool fallStep();
+    void dropRupee();
+    void spawnBurst();
+    void updateTrailEmitter();
+    void advance();
 
     /* 0x230 */ s16 field_0x230;
     /* 0x232 */ u8 field_0x232[2];

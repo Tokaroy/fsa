@@ -49,7 +49,6 @@ static inline void setKick(ActorBase_804A5770* actor, s32 dir) {
 }
 
 // 0x8032D6C0.
-// FIXME(shotgun): 99.86 %, reloc-name; behaviour drift.
 void ForceGem_804AB6D8::init() {
     field_0x94 = (field_0x90 >> 16) & 0xFF;
     field_0x268 = field_0x90 & 0xFF;
@@ -288,11 +287,8 @@ bool ForceGem_804AB6D8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 s32 ActorBase_804A5770::fn_8032D564(s32 index) { return lbl_804719D8[index]; }
 
 // 0x8032D534.
-// FIXME(shotgun): 99.58 %, reloc-name; behaviour clean.
 void ForceGem_804AB6D8::vfunc_0x40() {
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    stopMoving();
     if (field_0x24c < 0x320) {
         field_0x24c = 0x320;
     }
@@ -321,7 +317,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -408,7 +404,7 @@ void ForceGem_804AB6D8::update() {
         }
         break;
     case 3:
-        field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        stopMoving();
         if (field_0x268 >= 4 && field_0x264 >= 0 && field_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
             lbl_8053AED0->fn_8043D67C(lbl_804719D8[field_0x268 + 8], fn_8022F340(field_0x264), 0);
         }
@@ -556,7 +552,7 @@ void ForceGem_804AB6D8::update() {
             field_0x3c.x = 5.0f * JMath::sincosTable_.sinShort(field_0x240);
             field_0x3c.y = 5.0f * JMath::sincosTable_.cosShort(field_0x240);
         } else {
-            field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+            stopMoving();
             field_0x230 = 0;
             field_0x94 = 0;
         }
@@ -594,7 +590,7 @@ void ForceGem_804AB6D8::update() {
 }
 
 // 0x8032BFB0.
-// FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
 // literal table offsets, register order.
 void ForceGem_804AB6D8::draw() {
     s32 state = field_0x230;
@@ -657,9 +653,9 @@ void ForceGem_804AB6D8::draw() {
     if (field_0x4 < 8 && field_0x24c < 0xE0) {
         s32 m = field_0x24c % 64;
         if (m > 32) {
-            params.field_0x10.a = 255.0f * (32.0f - (f32)m) * 0.03125f;
+            params.field_0x10.a = 255.0f * (32.0f - (f32)m) / 32.0f;
         } else {
-            params.field_0x10.a = 255.0f * (f32)m * 0.03125f;
+            params.field_0x10.a = 255.0f * (f32)m / 32.0f;
         }
     }
     if (mPos.z > 0.0f) {
@@ -701,7 +697,7 @@ void ForceGem_804AB6D8::draw() {
     mPos = saved;
 }
 
-// FIXME(shotgun): 95.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
 void ForceGem_804AB6D8::fn_8032BB90() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
@@ -768,7 +764,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
     }
 }
 
-// FIXME(shotgun): 96.87 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.07 %, missing/extra; behaviour clean.
 void ForceGem_804AB6D8::fn_8032B7C0() {
     if (field_0x94 == 0x23 || field_0x94 == 0x24) {
         return;
@@ -868,7 +864,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
     }
 }
 
-// FIXME(shotgun): 99.19 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.40 %, regalloc-only; behaviour clean.
 bool ForceGem_804AB6D8::fn_8032B3F8() {
     s32 layer = field_0x4;
     if (getGameView_802D6A9C()->field_0x131df[layer] == 0) {
@@ -897,9 +893,7 @@ bool ForceGem_804AB6D8::fn_8032B3F8() {
                     field_0x27f = 0;
                 }
             } else {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                stopMoving();
                 if (field_0x27d != 0) {
                     field_0x230 = 9;
                 } else {
@@ -950,8 +944,6 @@ bool ForceGem_804AB6D8::fn_8032B3F8() {
     return true;
 }
 
-// Remaining difference: float literal reloc names only.
-// FIXME: 99.84 %, reloc-name; behaviour clean.
 bool ForceGem_804AB6D8::fn_8032B0A4() {
     if (field_0x94 == 0x23 || field_0x94 == 0x24) {
         return false;
@@ -962,16 +954,12 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 3) {
         field_0x24c = 0x3ff;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        stopMoving();
         field_0x230 = 5;
         return true;
     } else if (tile == 0xe) {
         field_0x24c = 0x3ff;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        stopMoving();
         field_0x238 = 0.0f;
         if (field_0x230 != 5) {
             field_0x230 = 5;
@@ -1001,9 +989,7 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
         }
         return true;
     } else if (tile == 0xd) {
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        stopMoving();
         field_0x3c.z = -0.1f;
         field_0x238 = 1.0f;
         if (field_0x230 != 6) {
@@ -1023,7 +1009,7 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     return false;
 }
 
-// FIXME(shotgun): 97.93 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
 void ForceGem_804AB6D8::fn_8032ABE0() {
     if (!(field_0x230 == 0 || field_0x230 == 6 || field_0x230 == 1 || field_0x230 == 2 || field_0x230 == 9 ||
           field_0x230 == 0xd)) {
@@ -1120,6 +1106,14 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
         field_0x274 = 0;
         field_0xb0 = 0;
     }
+}
+
+// A plain function that its callers inline; the linker dropped its own copy. Its 0.0f is the first
+// literal of the pool.
+void ForceGem_804AB6D8::stopMoving() {
+    field_0x3c.z = 0.0f;
+    field_0x3c.y = 0.0f;
+    field_0x3c.x = 0.0f;
 }
 
 // Destructor at 0x8032AB80.

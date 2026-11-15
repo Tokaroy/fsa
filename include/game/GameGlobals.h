@@ -1462,6 +1462,9 @@ extern const f32 lbl_8053EFBC;
 // multiplies -12.0f by the second at run time (fmuls), so neither is a literal.
 extern const f32 lbl_8053F0B8;
 extern const f32 lbl_8053F0BC;
+// The same unit's 12 and 0x1E, read by game/tu_801E3618.cpp.
+extern const s32 lbl_8053F0C0;
+extern const u8 lbl_8053F0C4;
 
 // Owner: game/tu_802F5040.cpp (defined there). f1 in, f1 out: 192 / (192 -
 // min(x, 96)) (0x802F5FF4); game/tu_801EDBA4.cpp scales by it.
