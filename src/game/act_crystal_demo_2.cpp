@@ -85,8 +85,7 @@ cls_804AE088::~cls_804AE088() {
     fn_8036A65C();
 }
 
-void (cls_804AE088::*lbl_804AE058[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
-void (cls_804AE088::*lbl_804AE070[2])() = {lbl_804AE058[0], lbl_804AE058[1]};
+void (cls_804AE088::*lbl_804AE070[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
 
 static const s16 lbl_80542C48[2] = {9, -1};
 static const s16 lbl_80542C50[2] = {9, -1};
@@ -128,7 +127,7 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
-// FIXME: 91.00 %, different + reloc-name; behaviour drift.
+// FIXME: 91.21 %, different + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -268,7 +267,7 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.56 %, missing/extra + reloc-name; behaviour drift.
 // regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
@@ -605,15 +604,16 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// FIXME: 82.44 %, missing/extra + reloc-name; behaviour drift.
+// differs: rot zero-store order and .sdata2 literal pool order.
+// FIXME: 99.63 %, scheduling + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
             rot[i][j] = 0.0f;
         }
     }
@@ -631,18 +631,18 @@ void cls_804AE088::fn_8036AA60() {
         }
         break;
     case 1:
-        if (field_0x254 >= lbl_80474C98[1]) {
+        if (field_0x254 >= lbl_80474C98[field_0x244]) {
             field_0x244 = 2;
         }
+        break;
     }
+    s32 index = lbl_80474CC4[field_0x23c];
     s32 frame = field_0x254;
-    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[lbl_80474CC4[field_0x23c]];
+    GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[index];
     if (crystal.mModel != NULL && crystal.mActive == 0) {
         crystal.mActive = 1;
-        crystal.mPos.x = 0.5f;
-        crystal.mPos.y = 0.5f;
-        crystal.mPos.z = 0.5f;
-        PSMTXCopy(mtx, crystal.mMtx);
+        crystal.mPos.set(0.5f, 0.5f, 0.5f);
+        JMath::gekko_ps_copy12(crystal.mMtx, mtx);
         crystal.field_0x48 = -1.0f;
         crystal.field_0x4c = frame;
         crystal.field_0x54 = 0;
@@ -722,7 +722,7 @@ static inline void setCameraBox(f32 x, f32 y0, f32 y1) {
 }
 
 // differs: register choice for the camera box and the message position.
-// FIXME: 98.59 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 98.62 %, scheduling+regalloc + reloc-name; behaviour drift.
 void cls_804AE088::fn_80369DDC() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -916,7 +916,7 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.53 %, different + reloc-name; behaviour near.
+// FIXME: 96.67 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1222,7 +1222,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 90.63 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 90.73 %, missing/extra + reloc-name; behaviour near.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
@@ -1339,7 +1339,7 @@ void cls_804AE088::fn_80368660() {
     }
 }
 
-// FIXME: 96.15 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 96.32 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
@@ -1375,7 +1375,7 @@ void cls_804AE088::fn_803683AC() {
     mPos = savedPos;
 }
 
-// FIXME: 97.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
