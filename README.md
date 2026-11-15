@@ -48,9 +48,9 @@ game code in its eight categories, the bottom row the libraries. Click a block t
 <!-- progress:start -->
 As of 2026-11-15:
 
-- **Structural progress: 73.43 %** (3,261,911 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
+- **Structural progress: 73.43 %** (3,261,943 of 4,442,032 bytes): matched code plus, for each structurally matched or close function, its size times its match percent.
 - **Matched code: 47.85 %** (2,125,356 of 4,442,032 bytes), **9,590 / 11,557** functions fully matched.
-- **Structurally matched:** 10,377 / 11,557 functions (same instructions, register or order differences only), +473 close.
+- **Structurally matched:** 10,379 / 11,557 functions (same instructions, register or order differences only), +471 close.
 - **470 of 903** split units are Matching, and `main.dol` built from them links byte-identically (SHA-1 OK).
 <!-- progress:end -->
 
@@ -151,7 +151,7 @@ Of 3,573,784 bytes of game code: **67.3 %** structural progress, **35.8 %** matc
 | Category | Structural | Code matched | Functions | Files Matching | Unconfirmed |
 |---|--:|--:|--:|--:|--:|
 | [Player](https://sh1ftmaker.github.io/fsa/#/game/game-player) | 94.6 % | 59.4 % of 407,528 bytes | 934 / 1,054 | 0 / 10 | – |
-| [Enemies & bosses](https://sh1ftmaker.github.io/fsa/#/game/game-enemies) | 54.1 % | 29.6 % of 679,252 bytes | 881 / 1,339 | 29 / 139 | 54 |
+| [Enemies & bosses](https://sh1ftmaker.github.io/fsa/#/game/game-enemies) | 54.2 % | 29.6 % of 679,252 bytes | 881 / 1,339 | 29 / 139 | 54 |
 | [NPCs](https://sh1ftmaker.github.io/fsa/#/game/game-npcs) | 64.8 % | 31.5 % of 291,360 bytes | 381 / 594 | 10 / 54 | 17 |
 | [Objects & gimmicks](https://sh1ftmaker.github.io/fsa/#/game/game-objects) | 60.8 % | 34.0 % of 900,452 bytes | 1,025 / 1,518 | 68 / 229 | 56 |
 | [Stage & world](https://sh1ftmaker.github.io/fsa/#/game/game-stage) | 54.4 % | 17.8 % of 182,272 bytes | 171 / 311 | 0 / 10 | 2 |
