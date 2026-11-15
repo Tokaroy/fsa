@@ -1755,6 +1755,7 @@ static inline s32 markKey(u8 mask, s32 player, s32 i) {
 
 // Variant of fn_803022C4.
 // 0x8030275C
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
@@ -1854,7 +1855,7 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
 // Still differs: scheduling and register allocation.
-// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
+// FIXME: 97.86 %, scheduling+regalloc; behaviour clean.
 void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
