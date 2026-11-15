@@ -148,7 +148,7 @@ bool Block_804A7A10::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return ActorBase_804A5770::vfunc_0x4C(layer, pos);
 }
 
-// FIXME: 95.69 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.91 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 4 more instructions (812 vs 808). The target compares the (field_0x90 & 3)
 // based indices with signed cmpwi and converts them with xoris (signed), ours uses cmplwi / unsigned; the (u16) tile result
 // is extended in ours (clrlwi) where the target moves it; some stack temporaries sit at other offsets.
