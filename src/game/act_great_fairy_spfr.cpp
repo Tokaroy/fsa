@@ -84,8 +84,6 @@ cls_8049EB8C::~cls_8049EB8C() {
     field_0x288 = 0;
 }
 
-// FIXME: 99.77 %, reloc-name; behaviour clean.
-// (reloc-name: pooled float literals lbl_8053CD28, lbl_8053CD08, lbl_8053CCF0)
 void cls_8049EB8C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 1;
@@ -106,7 +104,7 @@ void cls_8049EB8C::init() {
     }
 }
 
-// FIXME: 97.95 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.11 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void cls_8049EB8C::update() {
     cls_8049D140::update();
@@ -224,8 +222,6 @@ void cls_8049EB8C::update() {
     }
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// (reloc-name: string lbl_80465270, float lbl_8053CD00)
 void cls_8049EB8C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
@@ -305,7 +301,7 @@ s32 cls_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 97.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.08 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 2 fewer instrs (417 vs 419); emitter 0x24 store and float literal order.
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
@@ -430,7 +426,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     }
 }
 
-// FIXME: 92.79 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 93.01 %, scheduling+regalloc + reloc-name; behaviour drift.
 // (scheduling+regalloc: f1/f2/r4; reloc-name: literals lbl_8053CD18, lbl_8053CD1C, lbl_8053CD20)
 void cls_8049EB8C::fn_801321E4() {
     switch (field_0x234) {
