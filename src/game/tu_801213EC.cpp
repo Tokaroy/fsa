@@ -593,6 +593,7 @@ static inline s32 findGroupMember(s32 target) {
     return result;
 }
 
+// FIXME: 96.74 %, scheduling+regalloc + reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     *x = 0.0f;
     *y = 0.0f;
