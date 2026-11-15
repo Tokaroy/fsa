@@ -3178,33 +3178,11 @@ void FileSelect_804AFF60::fn_803C1734() {
     field_0x34->mPane->setAlpha(0);
     field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
     field_0x34->field_0x26 = 0;
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         field_0x24[i]->moveFromCentre_80402E08(0.0f, 100.0f);
         field_0x24[i]->field_0x22 = 0;
         field_0x24[i]->mPane->setAlpha(0);
-        int j;
-        switch (i) {
-        case 0:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-            }
-            break;
-        case 1:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-            }
-            break;
-        case 2:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-            }
-            break;
-        case 3:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-            }
-            break;
-        }
+        restoreButtonAlphas(this, i);
         field_0x24[i]->field_0x26 = 0;
     }
 

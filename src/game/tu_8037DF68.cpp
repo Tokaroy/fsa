@@ -1035,6 +1035,13 @@ static inline bool releaseSerial(u16 opt, s32 player, s32 serial) {
     return fn_8022FB1C(player, serial);
 }
 
+// Sets the window's own bit (field_0x20) in the game view. An inline of its own: the bit gets its
+// register before the caller's values (docs/REGALLOC.md, rule 4).
+static inline void setWindowBit(s32 window) {
+    u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+    getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+}
+
 // FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
 // (releaseSerial branch shape)
 // fn_80385960 for a window an actor `serial` speaks in: once the actor (and, without option 4,
@@ -1049,8 +1056,7 @@ bool fn_80384C58(s32 player, s32 serial) {
             u16 opt = lbl_8053AD78->mWindows[window]->field_0x28;
             if (!(opt >> 2 & 1)) {
                 if (releaseSerial(opt, player, serial) && releasePlayers(player)) {
-                u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
-                getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+                setWindowBit(window);
                 if (mappedWindow(window)->field_0x24 == 8) {
                     removeFromOrder(windowIndex(window));
                     if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
@@ -1071,8 +1077,7 @@ bool fn_80384C58(s32 player, s32 serial) {
                 return true;
                 }
             } else if (releaseSerial(opt, player, serial)) {
-            u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
-            getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+            setWindowBit(window);
             if (mappedWindow(window)->field_0x24 == 8) {
                 removeFromOrder(windowIndex(window));
                 if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {

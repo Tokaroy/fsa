@@ -867,6 +867,13 @@ void cls_804AE4B0::tickPlayer_80371284(s32 i) {
     }
 }
 
+// Spawns the i-th 'JIJI' and keeps the actor. An inline of its own: the serial gets its register
+// before fn_8036FDAC's values (docs/REGALLOC.md, rule 4).
+static inline void spawnJiji(cls_804AE4B0* self, s32 i) {
+    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('JIJI', self->field_0x4, &self->field_0x294[i], lbl_80474F5C[i], -1, -1);
+    self->field_0x3b0[i] = (cls_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+}
+
 // FIXME(shotgun): 98.95 %, regalloc-only; behaviour drift.
 void cls_804AE4B0::fn_8036FDAC() {
     mTimer = 0x50;
@@ -882,8 +889,7 @@ void cls_804AE4B0::fn_8036FDAC() {
         field_0x2c4[i] = mPos + offsets[i];
         field_0x294[i] = field_0x2c4[i];
         field_0x2f4[i].x = field_0x2f4[i].y = field_0x2f4[i].z = 0.0f;
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('JIJI', field_0x4, &field_0x294[i], lbl_80474F5C[i], -1, -1);
-        field_0x3b0[i] = (cls_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        spawnJiji(this, i);
         field_0x340[i] = 1;
     }
     field_0x3c = field_0x2f4[0];

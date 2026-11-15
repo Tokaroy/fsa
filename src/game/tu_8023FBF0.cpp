@@ -2183,6 +2183,16 @@ void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
     fn_8024ED4C(-value);
 }
 
+// The held item and its level as an ACTOR_LSTI at the player's position. An inline of its own:
+// its three values get their registers before fn_8024E500's (docs/REGALLOC.md, rule 4).
+static inline void spawnDroppedItem(Player_804A6F38* self) {
+    s32 player = self->field_0x4;
+    s32 item = self->fn_802416C4();
+    s32 level = self->fn_802415CC();
+    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LSTI, self->field_0x3b4, &self->mPos,
+                                                    item | (level << 22 | player << 17), -1, -1);
+}
+
 // Drops the held item (fn_802416C4, with its level fn_802415CC) as an
 // ACTOR_LSTI at the player's position and clears it (fn_80241618(0, 1)), for
 // a player taking part.
@@ -2196,11 +2206,7 @@ void Player_804A6F38::fn_8024E500() {
     if (fn_802416C4() == 0) {
         return;
     }
-    s32 player = field_0x4;
-    s32 item = fn_802416C4();
-    s32 level = fn_802415CC();
-    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LSTI, field_0x3b4, &mPos,
-                                                    item | (level << 22 | player << 17), -1, -1);
+    spawnDroppedItem(this);
     fn_80241618(0, 1);
 }
 
