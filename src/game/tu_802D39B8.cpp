@@ -1538,8 +1538,7 @@ void GameView_804A9950::fn_802D7BE8(s32 layer, s32 slot, u32 value) {
 // Regalloc only: the target keeps the shift count in r31 and the slot index in r30; ours swaps them.
 s32 GameView_804A9950::fn_802D7B34(s32 layer, s32 slot) {
     s32 idx = layer < 8 ? 0 : layer - 7;
-    s32 shift = 60 - slot * 4;
-    return (getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] & (0xFULL << shift)) >> shift;
+    return (getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] & (0xFULL << (60 - slot * 4))) >> (60 - slot * 4);
 }
 
 // The screen's 64-bit mask for the layer (fn_802D4768-fn_802D4ADC inline it).
