@@ -41,6 +41,8 @@ Tier a rewrites keep the function's behaviour by construction and read as code a
   scope     an uninitialised declaration moved into the block that uses it, or out of it
   boolret   `if (c) return true; return false;`  <->  `return c;`
   const     const put on, or taken off, a local that is never written
+  intlong   a local declared `int` instead of `s32` or the other way round (same size, but another type
+            to MWCC: handed to an inline function's parameter of the other type it is copied first)
 
 Tier b rewrites may change behaviour, so a result that used one is accepted ONLY at 100 %: then
 the compiled code is the original's, which proves the rewrite right (the reviewer still judges
@@ -126,7 +128,7 @@ TYPE_FAMILY = {b"s32": INT_TYPES, b"u32": INT_TYPES, b"s16": INT_TYPES, b"u16": 
                b"unsigned char": INT_TYPES, b"signed char": INT_TYPES, b"bool": INT_TYPES, b"BOOL": INT_TYPES,
                b"f32": FLOAT_TYPES, b"f64": FLOAT_TYPES, b"float": FLOAT_TYPES, b"double": FLOAT_TYPES}
 TIER = {"decl": "a", "commute": "a", "scope": "a", "compound": "a", "if": "a", "boolret": "a", "andif": "a", "early": "a",
-        "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a",
+        "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a", "intlong": "a",
         "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b", "nest": "b", "outline": "b", "outblock": "b", "outrun": "b"}
 # results a person or a session has to finish before they go into the source: a local that needs a
 # real name, or a value written out twice that was probably a macro or an inline in the original
@@ -1767,6 +1769,34 @@ def gen_type(c):
                        [(s, s + len(head), new)], st.extent.start.line)
 
 
+SAME_SIZE = {b"int": b"s32", b"s32": b"int", b"long": b"int", b"u32": b"unsigned int", b"unsigned int": b"u32",
+             b"unsigned long": b"unsigned int"}
+
+
+def gen_intlong(c):
+    """`int` <-> `s32` (`long`), `unsigned int` <-> `u32`, on a local or a for-loop counter. Same size
+    and signedness, so behaviour is kept; but they are different types to MWCC: a value of one handed
+    to an inline function's parameter of the other is converted, and the converted copy is one more
+    value to colour (docs/REGALLOC.md, "An argument of another type is a copy")."""
+    p = c.p
+    for st in c.nodes:
+        if st.kind != K.DECL_STMT:
+            continue
+        sv = single_var(p, st)
+        if sv is None:
+            continue
+        _, v, head, _ = sv
+        words = head.split()
+        quals = [w for w in words if w in (b"const", b"register")]
+        base = b" ".join(w for w in words if w not in (b"const", b"register"))
+        ty = SAME_SIZE.get(base)
+        if ty is None:
+            continue
+        s = ext(st)[0]
+        yield Edit("intlong", f"line {st.extent.start.line}: `{v.spelling}` declared {ty.decode()} (was {base.decode()}; same size, another type)",
+                   [(s, s + len(head), b" ".join(quals + [ty]) + b" ")], st.extent.start.line)
+
+
 def temp_name(text):
     ids = re.findall(rb"[A-Za-z_]\w*", text)
     ids = [i for i in ids if i not in (b"this", b"get", b"sizeof")]
@@ -1881,7 +1911,8 @@ GENERATORS = {"decl": gen_decl, "commute": gen_commute, "scope": gen_scope, "com
               "boolret": gen_boolret, "andif": gen_andif, "early": gen_early, "ternary": gen_ternary, "stmt": gen_stmt,
               "const": gen_const, "loop": gen_loop, "incr": gen_incr, "cond": gen_cond, "untemp": gen_untemp,
               "type": gen_type, "temp": gen_temp, "inline": gen_inline, "swap": gen_swap, "cast": gen_cast,
-              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest, "outline": gen_outline, "outblock": gen_outblock, "outrun": gen_outrun}
+              "loopform": gen_loopform, "retvar": gen_retvar, "nest": gen_nest, "outline": gen_outline, "outblock": gen_outblock, "outrun": gen_outrun,
+              "intlong": gen_intlong}
 
 
 # ---------------------------------------------------------------- the slice of the file a function needs
