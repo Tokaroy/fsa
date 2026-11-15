@@ -105,7 +105,7 @@ void fn_80182640(JGeometry::TVec3f* v, f32 x, f32 y, f32 z) {
     v->set(x, y, z);
 }
 
-// FIXME(shotgun): 99.77 %, reloc-name; behaviour drift.
+// FIXME(shotgun): 99.89 %, reloc-name; behaviour drift.
 void cls_804A1630::init() {
     field_0x90 &= 0xF;
     field_0x94 = 0;
@@ -278,7 +278,7 @@ cls_804A1630::~cls_804A1630() {
     }
 }
 
-// FIXME(shotgun): 97.78 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.93 %, missing/extra; behaviour clean.
 void cls_804A1630::fn_80181BC8(s32 row, s32 mode) {
     s32 frame = 0;
     for (s32 i = 0; i < 4; i++) {
@@ -344,7 +344,7 @@ void cls_804A1630::fn_80181BC8(s32 row, s32 mode) {
     }
 }
 
-// FIXME(shotgun): 94.03 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.71 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1630::update() {
     JGeometry::TBox2f box40(mBox);
     JGeometry::TVec2f pos1c(mPos.x, mPos.y);
