@@ -162,7 +162,8 @@ void Player_804A6F38::fn_8025E79C() {
     field_0xbac = 0;
 }
 
-// FIXME: 98.90. Structurally close (2 extra instructions): the burn loop's point is copied
+// FIXME: 98.90 %, missing/extra; behaviour clean.
+// Structurally close (2 extra instructions): the burn loop's point is copied
 // once more (operator+'s result to the stack before pos; the original builds pos in place,
 // frame 0x100, ours 0x110) and field_0x4 / field_0x3b4 are loaded after the sum; the
 // actor's offset reads the table x before y.
@@ -454,7 +455,8 @@ void Player_804A6F38::fn_8025D9FC() {
     field_0xba8 = 0;
 }
 
-// FIXME: 98.29. Structurally close (2 extra instructions): mPos + offset is copied once
+// FIXME: 98.29 %, missing/extra; behaviour clean.
+// Structurally close (2 extra instructions): mPos + offset is copied once
 // more on the stack (operator+'s result, then pos; the original builds pos in place), as
 // in fn_8025DACC's burn loop.
 // Enter of state 0x41, the recoil hop: speed from lbl_8046AFE0 (back against the facing,
@@ -912,7 +914,8 @@ void Player_804A6F38::fn_8025C79C() {
     field_0x40c = 0;
 }
 
-// FIXME: 99.82. Structurally close (1 extra instruction): the side shot's argument is
+// FIXME: 99.82 %, missing/extra; behaviour clean.
+// Structurally close (1 extra instruction): the side shot's argument is
 // built in r0 and moved to r30 (the original builds it in r30).
 // State 0x3B (item 10, the slingshot; enter fn_8025C79C, exit fn_8025BDD8): after six
 // frames of drawing, frame 6 holds while the button is held (fn_8022C274), charging
@@ -1143,18 +1146,6 @@ void Player_804A6F38::fn_8025BDC8() {
     field_0x40c = 0;
 }
 
-// FIXME: 99.95. regalloc-only: the charge cap keeps full + 1 in r3 (stored unclipped,
-// compared through clrlwi r0) and reloads field_0x3fc into r4; ours uses r0 / r3.
-// State 0x3C (item 5; enter fn_8025BDC8, exit fn_8025B368): a ground smash. At frame 0
-// the button charges field_0x3fc (fn_8027EB04) up to 48 frames (25 while fn_8022B244);
-// a full charge sets field_0xb9b, puts the charge point (lbl_8046B090 by facing) in
-// field_0x12a4 and lights it (emitters 0xCB / 0xCC below layer 8, else a 'PEFF' actor).
-// On the hit frame (field_0xb99 rises: 1 or 5) the point field_0x5c0 (lbl_8046B0C0,
-// charged: the second four) gets the 8x8 box field_0x5b0 (16x16 while fn_8022B244),
-// BgRewrite fn_802A1D44 acts on the tile 16 in front (lbl_8046B120), the TV effect of
-// kind 2 / 1 (fn_802F601C), sound 0x2002B / 0x20024, dust emitters 0x23B-0x23F and
-// 0x3CF / 0x3D0 by tile (0x39, 0xD), a view shake when charged; strength 1 / players,
-// halved below level 2. Ends at frame 17 (charged 30).
 void Player_804A6F38::fn_8025B3F0() {
     s32 full = 48;
     if (fn_8022B244()) {
@@ -1385,7 +1376,8 @@ void Player_804A6F38::fn_8025B35C() {
     field_0x458 = 0;
 }
 
-// FIXME: 95.59. scheduling+regalloc: the original keeps this in r31 and field_0x4 in r30 (ours
+// FIXME: 95.59 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the original keeps this in r31 and field_0x4 in r30 (ours
 // the other way round) and builds the spawn argument from field_0x4 & 3 first.
 void Player_804A6F38::fn_8025B22C() {
     if (field_0x3fa < 2) {
@@ -1419,13 +1411,6 @@ void Player_804A6F38::fn_8025B218() {
     field_0x458 = 0;
 }
 
-// FIXME: 99.81. regalloc-only: the original keeps the speed 6.0f in f30 and dir.z of
-// the isZero test in f31 (ours swaps them), as fn_8025AB00 (state 0x43) does with its
-// variable speed.
-// Update of state 0x42 (requested by fn_8025AA8C with the actor serial field_0x11f8):
-// the player spins (the facing turns every two frames) and is drawn 6 a frame across
-// the floor toward that actor; it ends (state 0) when the actor is gone or on another
-// layer, field_0xafc is 1, or a side flag of field_0xbf0 is set (anyFlag48).
 void Player_804A6F38::fn_8025AED0() {
     field_0x3fc++;
     s32 turn = (field_0x3fc >> 1) & 3;
@@ -1561,7 +1546,8 @@ void Player_804A6F38::fn_8025A9C0() {
     field_0xb8c = 0;
 }
 
-// FIXME: 99.81. scheduling+regalloc: as in fn_80259830, the box's f.x / f.y take their
+// FIXME: 99.44 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: as in fn_80259830, the box's f.x / f.y take their
 // fadds operands the other way round in cases 0 and 2, epsilonEquals keeps 32 * FLT_EPSILON
 // in f2 (ours f3), the emitters' rotation-table address is formed after the matrix pointer,
 // and the slot loop's counter / player index swap r28 / r29.
@@ -1768,7 +1754,8 @@ void Player_804A6F38::fn_8025A04C() {
     field_0xb8c = 0;
 }
 
-// FIXME: 99.88. scheduling+regalloc: the box's f.x / f.y (pos + 36) take their fadds
+// FIXME: 99.50 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the box's f.x / f.y (pos + 36) take their fadds
 // operands the other way round in cases 0 and 2, the epsilon test of epsilonEquals keeps
 // 32 * FLT_EPSILON in f2 (ours f3), and the emitters' rotation-table address is formed
 // after the matrix pointer (ours before).
@@ -1978,7 +1965,8 @@ void Player_804A6F38::fn_80259660() {
     }
 }
 
-// FIXME: 99.69. scheduling+regalloc: before the x/y speed test of the no-pad branch the original
+// FIXME: 99.69 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: before the x/y speed test of the no-pad branch the original
 // already computes &field_0x344 (PSVECMag's argument, addi r3) and so takes r4 for
 // __float_epsilon; ours computes it after the test. Otherwise only .sdata2 literal names.
 // The jump (enter fn_80259660, exit fn_80258BBC): the pad steers field_0x344 in x / y
@@ -2543,7 +2531,8 @@ bool Player_804A6F38::fn_80257DB4() {
     return field_0xd3c < 0;
 }
 
-// FIXME: 95.14. try.py "different", but only block order and registers: the original lays
+// FIXME: 95.14 %, different; behaviour clean.
+// try.py "different", but only block order and registers: the original lays
 // out item 7's mPos.z test (off view-flag layers) after the floor probe, ours before it (the
 // source order `if (viewLayerFlag) { probe } else if (mPos.z > 0) return;` gives the
 // original's layout, 98.07 %, but pools 2.0f before 0.0f and drops 11 functions of the
