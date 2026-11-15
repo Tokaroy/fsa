@@ -12,12 +12,18 @@ inline accessor").
 ## The rules
 
 1. **Every value gets a number, in creation order.** Arguments first; then the function's own named
-   locals; then compiler-named locals (`@...`: every local of every inlined function is one of
-   these); then the temporaries the code generator makes while compiling expressions.
+   locals; then compiler-named locals (`@...`); then the temporaries the back end makes while
+   generating code for expressions. `@` locals are, in the order they come into being: the locals
+   of inlined functions (created when each call is expanded, rule 4), then what the optimiser makes
+   after inlining (a strength-reduced table pointer, a load hoisted out of a loop).
    Within the named and the `@` locals the most recently created has the LOWEST number.
-2. **Colouring runs from the highest number down.** So: code-generator temporaries first; then `@`
-   locals, the ones created first coming first; then the named locals in DECLARATION order (first
-   declared, first coloured); arguments last.
+2. **Colouring runs from the highest number down.** So, first to last:
+   back-end temporaries; the `@` locals of inlined functions, the ones created first coming first;
+   the optimiser's `@` temporaries; the named locals in DECLARATION order (first declared, first
+   coloured); arguments. (Measured exception, not settled: in a member function that inlines other
+   member functions `this` gets r31 as if coloured first.)
+   - A loop counter declared in the function is coloured AFTER the strength-reduced pointer of its
+     loop; the counter of a loop that sits in an inlined helper is coloured BEFORE it.
 3. **A value takes the lowest-numbered register free for it.** Free = not held by a value that is
    live at the same time. A value that lives across a call conflicts with every volatile register, so
    it chooses among the callee-saved registers already handed out; only when none of those is free
@@ -29,11 +35,15 @@ inline accessor").
    - Two values that are never live together share a register only if that register is the lowest
      free choice of the one coloured second. `leader` in r27 next to `self` in r28 need not mean
      they conflict: r27 existed by then and was lower.
+   - A plain move between two compiler-made values merges them (`coalescenodes`,
+     InterferenceGraph.c) into the lower-numbered one, the one created later: `leader =
+     leaderOf(this)` is coloured where leaderOf's own local would be, not where `leader` was declared.
 4. **Inlining goes level by level** (`CInline_Expand`): pass 0 expands the calls written in the
    function, pass 1 the calls inside the bodies just inserted, and so on (up to 8 levels). Within a
    pass, statement order; of two inline calls in one expression the right one came first in our
-   test. Expanding a call creates the callee's used locals as new `@` locals of the caller, most
-   recently declared first, then the parameters that need an object.
+   test. Expanding a call creates, in this order: an object for its result if it is a non-void
+   function with statements (`CInline_ExtractInlineFunction`), the callee's used locals as new `@`
+   locals of the caller, most recently declared first, then the parameters that need an object.
    - A helper with locals declared `a, b, c` colours them a, b, c when compiled on its own and
      **c, b, a in every inlined copy**. A declaration order that matches the standalone function can
      be wrong for its copies and the other way round; only one order satisfies both.
@@ -41,7 +51,14 @@ inline accessor").
      later pass after them. Nesting depth is therefore visible in the registers.
    - A value that comes out of a NESTED inline which has a local of its own is created one pass
      later than the locals of the function that uses it, and coloured after them. An accessor that
-     only returns the member (`return mX;`) creates no object and changes nothing.
+     only returns a member (`return mX;`) creates no object and changes nothing, but a wrapper
+     around another inline (`return leaderOf(p);`) delays that inner call, and its local, by one
+     more pass.
+   - An inline call in the conditional part of `&&`, `||` or `?:` is split out into statements with
+     a temporary of their own (`CInline_SerializeStatement`): one more object per split.
+   - Deeper chains count against the inline size limit. One level too many can silently stop an
+     OUTER call from being inlined (the function drops to a few percent and its extab entry
+     changes): after every test look at the unit's sections and match count, not just the function.
 
 ## Reading a difference with them
 
@@ -54,6 +71,8 @@ original and in ours. Then:
 - A value sitting LOWER than its neighbours in the original was coloured after them: it was created
   later (declared earlier in an inlined copy, later in the function's own body, or it comes out of a
   nested inline), or other values were created earlier than in ours.
+- A loop counter in the wrong register next to a compiler-made pointer: the loop belongs in an
+  inline helper (`--kinds outline`).
 - When the function is a caller and the stretch is an inlined copy, change the HELPER, and check
   every user: `python3 tools/permute.py --callees --units <unit>` scores each rewrite of a helper on
   the whole unit; `--callees --chain --kinds nest,decl` tries the nested-read rewrite on the unit's
@@ -71,11 +90,27 @@ the register of `self`, the original the caller's lowest callee-saved register. 
 not with the loop's locals but one inlining pass later. Reading the field through an inline with a
 local of its own (`leaderOf(player)`), in `fn_80248970` and in `fn_80248778`, does exactly that.
 
-Still open there (see docs/PLAYER.md): in `fn_8024BDBC` the copy of `fn_80248970` that is called
-directly has its leader in r28 where the original has r27 (the original creates it after the
-`partner` of a loop four levels deeper), and the third loop's count and index are exchanged.
+A second step by the same reasoning: `self` through an inline of its own (`selfOf`) and the leader
+one level deeper (`groupLeader` wrapping `leaderOf`) matched six more. Still open (docs/PLAYER.md):
+in `fn_8024BDBC` the directly called copy's leader is in r28 where the original has r27, and the
+third loop's count and index are exchanged; the measurements say the original creates these values
+about two levels deeper still, which only fits under the inline size limit with a differently
+shaped chain.
+
+## Worked example: the FileSelect pane loops
+
+About a dozen functions of `game/tu_803BC6F0.cpp` loop over a table of pane tags
+(`for (i < 9) ctrl->setAlpha(screen->search(table[i]), alphas[i])`). The original has the counter
+in the first register and the table pointer the compiler makes in the next; ours had them the other
+way round. By rule 2 the pointer (an optimiser temporary) is coloured before a named counter and
+after an inlined one, so the original's loop sits in an inline function: with the loop moved into a
+small inline helper `fn_803C05D8` matches. `python3 tools/permute.py <unit> <function> --kinds
+outline` tries exactly that for every loop that touches only `this` and globals.
 
 ## Not covered here
 
-Volatile registers (r0, r3-r12, f0-f13) follow rule 3 with the volatile set, lowest free first;
-copies the compiler merges (`fCoalesced`) and spilling are not described.
+Volatile registers (r0, r3-r12, f0-f13) follow rule 3 with the volatile set, lowest free first.
+Not explained yet: the order of two float operands in `A - B` where the original gives the first
+loaded value the lower register (FileSelect fn_803CE370 and three others); a value that reuses the
+register of a finished loop instead of the lowest free one (ResultScreen fn_803A8F5C `frame`);
+spilling.
