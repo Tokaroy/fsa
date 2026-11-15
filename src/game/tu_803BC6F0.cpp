@@ -2367,8 +2367,8 @@ void FileSelect_804AFF60::fn_803C70B8() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0xBB];
     s16 rowFrames = lbl_8050DB0C.field_0x4c[0xBC];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep)) {
-        end = buttonDelay + (buttonFrames + buttonStep);
+    if (end < buttonDelay + buttonFrames + buttonStep) {
+        end = buttonDelay + buttonFrames + buttonStep;
     }
     if (end < rowDelay + rowFrames) {
         end = rowDelay + rowFrames;
