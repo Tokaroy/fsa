@@ -597,7 +597,8 @@ static inline s32 findGroupMember(s32 target) {
 void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     *x = 0.0f;
     *y = 0.0f;
-    *player = findGroupMember(*player);
+    s32 p = *player;
+    *player = findGroupMember(p);
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
         v = 16.0f;
