@@ -132,8 +132,8 @@ void cls_804B0478::update() {
             JGeometry::TVec3f pos;
             JGeometry::TBox2f box = mBox;
             box.i.x += mPos.x;
-            box.f.x += mPos.x;
             box.i.y += mPos.y;
+            box.f.x += mPos.x;
             box.f.y += mPos.y;
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             field_0x244 = fn_8022FD8C(mSerial);
