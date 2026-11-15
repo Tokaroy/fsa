@@ -967,8 +967,8 @@ void cls_804A7AE0::update() {
             box.f.x = mBox.f.x;
             box.f.y = mBox.f.y;
             box.i.x += mPos.x;
-            box.f.x += mPos.x;
             box.i.y += mPos.y;
+            box.f.x += mPos.x;
             box.f.y += mPos.y;
             gGameRoot2_8053AB10->field_0x24->fn_8030C058(&box);
             break;
@@ -999,8 +999,8 @@ void cls_804A7AE0::update() {
         box.f.x = mBox.f.x;
         box.f.y = mBox.f.y;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_802984B0();
         if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
@@ -1700,11 +1700,10 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
     }
     if (!ok) {
         ok = true;
-        JGeometry::TBox2f box;
-        box.set(mBox);
+        JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
