@@ -3102,14 +3102,6 @@ void FileSelect_804AFF60::fn_803C21A8() {
     setState(6);
 }
 
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
-// Register allocation only: the table loops' counter and
-// pointer swap (r26 / r27 and r29 / r27 in the original); a function-wide
-// `int i` was worse (98.85).
-// Opens the file menu for the chosen file field_0xa4 (state 18): the 'Pdb'
-// marks of its flags, the command buttons (copy and delete greyed out for an
-// empty file), the board panes faded out at their start positions, and the
-// command labels.
 void FileSelect_804AFF60::fn_803C1734() {
     for (int i = 0; i < 8; i++) {
         if (fn_803B90E4(field_0xa4, i)) {
