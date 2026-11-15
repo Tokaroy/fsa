@@ -515,7 +515,7 @@ static const u32 lbl_805431D0[2] = {0, 0x1000007};
 // Counts and acts on a message tag: the window's choices, flags, rupees and
 // item tests, and in the text-image windows (window fn_803A313C) the
 // characters the tag's glyphs take.
-// FIXME: 96.33 %, missing/extra; behaviour drift.
+// FIXME: 97.35 %, missing/extra; behaviour drift.
 bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
     const u8* p = (const u8*)data;
     s32 work[4];
@@ -1842,7 +1842,7 @@ void cls_804AF72C::fn_8039F540(int c) {
 
 // Builds the window text of a message tag: in the text-image windows (window field_0x1aa) as glyph
 // codes in the first line buffer, otherwise as text in both buffers.
-// FIXME: 99.94 %, reloc-name; behaviour clean.
+// FIXME: 99.96 %, reloc-name; behaviour clean.
 bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
     if (field_0x2d8->field_0x1aa == 0) {
         switch (tag) {
@@ -2490,7 +2490,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.57 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.68 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -2509,7 +2509,7 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
                 s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                 if (offset > 0) {
@@ -2561,7 +2561,7 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
     appendText(ch);
 }
 
-// FIXME(shotgun): 99.55 %, reloc-name; behaviour drift.
+// FIXME(shotgun): 99.91 %, reloc-name; behaviour drift.
 void cls_804AF72C::fn_8039C630(u8 noun, s32 count) {
     switch (noun) {
     case 1:
@@ -2878,7 +2878,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.88 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.95 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2897,7 +2897,7 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
                 s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
@@ -3286,7 +3286,7 @@ void cls_804AF6E4::fn_80398A34(s32 number) {
     addCharWidth(ratio, number + '0');
 }
 
-// FIXME: 98.44 %, scheduling + reloc-name; behaviour drift.
+// FIXME: 98.63 %, scheduling + reloc-name; behaviour drift.
 // Scheduling only: the original increments and compares the
 // loop index right after getWidthEntry, ours at the end of the body.
 void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
@@ -3371,7 +3371,7 @@ void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
 
 cls_804AF6E4::~cls_804AF6E4() {}
 
-// FIXME: 99.80 %, operands + reloc-name; behaviour clean.
+// FIXME: 99.87 %, operands + reloc-name; behaviour clean.
 // Regalloc + stack slots + reloc-name: the message font goes
 // through r27 instead of r28 (the eight setFont calls); the random draw's
 // and the two parse_next pointers' stack slots differ (0x8 / 0x10 / 0xC);
@@ -3870,7 +3870,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 98.08 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.16 %, regalloc-only + reloc-name; behaviour clean.
 // (setAlpha argument masking, window load order)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s16 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
@@ -3888,21 +3888,21 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         }
         return;
     }
-    f32 width;
     f32 height;
+    f32 width;
     s16 frame = field_0x194;
     if (frame <= t0) {
         height = 1.0f;
         width = height;
     } else if (frame <= t1) {
-        f32 dt = (f32)(t1 - t0);
         f32 df = (f32)(frame - t0);
+        f32 dt = (f32)(t1 - t0);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475D78[0] + r * (lbl_80475D78[1] - lbl_80475D78[0]);
         height = lbl_80475D8C[0] + r * (lbl_80475D8C[1] - lbl_80475D8C[0]);
     } else if (frame <= t2) {
-        f32 dt = (f32)(t2 - t1);
         f32 df = (f32)(frame - t1);
+        f32 dt = (f32)(t2 - t1);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475D78[1] + r * (lbl_80475D78[2] - lbl_80475D78[1]);
         height = lbl_80475D8C[1] + r * (lbl_80475D8C[2] - lbl_80475D8C[1]);
@@ -3913,8 +3913,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         width = lbl_80475D78[2] + r * (lbl_80475D78[3] - lbl_80475D78[2]);
         height = lbl_80475D8C[2] + r * (lbl_80475D8C[3] - lbl_80475D8C[2]);
     } else if (frame <= t4) {
-        f32 dt = (f32)(t4 - t3);
         f32 df = (f32)(frame - t3);
+        f32 dt = (f32)(t4 - t3);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475D78[3] + r * (lbl_80475D78[4] - lbl_80475D78[3]);
         height = lbl_80475D8C[3] + r * (lbl_80475D8C[4] - lbl_80475D8C[3]);
@@ -3929,7 +3929,7 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     pane->move(field_0xf8 + field_0x100 * 0.5f - w * 0.5f, (field_0xfc + field_0x104) - h);
 }
 
-// FIXME(shotgun): 97.95 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.51 %, regalloc-only + reloc-name; behaviour clean.
 // (setAlpha argument masking, window load order)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
@@ -3947,33 +3947,33 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
         }
         return;
     }
-    f32 width;
     f32 height;
+    f32 width;
     s16 frame = field_0x194;
     if (frame <= t0) {
         width = 1.0f;
         height = width;
     } else if (frame <= t1) {
-        f32 dt = (f32)(t1 - t0);
         f32 df = (f32)(frame - t0);
+        f32 dt = (f32)(t1 - t0);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475DA0[0] + r * (lbl_80475DA0[1] - lbl_80475DA0[0]);
         height = lbl_80475DB4[0] + r * (lbl_80475DB4[1] - lbl_80475DB4[0]);
     } else if (frame <= t2) {
-        f32 dt = (f32)(t2 - t1);
         f32 df = (f32)(frame - t1);
+        f32 dt = (f32)(t2 - t1);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475DA0[1] + r * (lbl_80475DA0[2] - lbl_80475DA0[1]);
         height = lbl_80475DB4[1] + r * (lbl_80475DB4[2] - lbl_80475DB4[1]);
     } else if (frame <= t3) {
-        f32 dt = (f32)(t3 - t2);
         f32 df = (f32)(frame - t2);
+        f32 dt = (f32)(t3 - t2);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475DA0[2] + r * (lbl_80475DA0[3] - lbl_80475DA0[2]);
         height = lbl_80475DB4[2] + r * (lbl_80475DB4[3] - lbl_80475DB4[2]);
     } else if (frame <= t4) {
-        f32 dt = (f32)(t4 - t3);
         f32 df = (f32)(frame - t3);
+        f32 dt = (f32)(t4 - t3);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475DA0[3] + r * (lbl_80475DA0[4] - lbl_80475DA0[3]);
         height = lbl_80475DB4[3] + r * (lbl_80475DB4[4] - lbl_80475DB4[3]);
@@ -4119,7 +4119,7 @@ void cls_804AF5A0::fn_8039499C(bool flag) {
     }
 }
 
-// FIXME: 98.36 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.46 %, missing/extra + reloc-name; behaviour clean.
 // Missing 2 instructions around the clamp: the original copies
 // the processor's frame count (mr r4,r6) and clamps the copy to 0; ours clamps
 // in place (separate-variable, ternary and if/else forms tried: same or worse).

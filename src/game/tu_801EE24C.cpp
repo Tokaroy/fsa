@@ -1298,7 +1298,7 @@ u8 ActorBase_804A5770::fn_801F2618(JGeometry::TVec3f* out, bool flag) {
 }
 
 // u8, as fn_801F2618 / fn_801F2FAC / fn_801F2DB4 (clrlwi r3, r30, 24).
-// FIXME: 99.24 %, regalloc-only; behaviour clean.
+// FIXME: 99.74 %, regalloc-only; behaviour clean.
 // Float register allocation (step / negStep swap f28/f29);
 // 0.01f / 8.0f / 0.5f are @NNN until .sdata2 is in order.
 u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
@@ -1319,7 +1319,6 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
             step = 8.0f;
         }
         step = (step - 0.01f) * 0.5f;
-        f32 negStep = -step;
         while (moving) {
             JGeometry::TVec3f delta;
             delta.sub(*to, pos);
@@ -1328,18 +1327,18 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
             if (delta.x > step) {
                 delta.y *= step / delta.x;
                 delta.x = step;
-            } else if (delta.x < negStep) {
-                delta.y *= negStep / delta.x;
-                delta.x = negStep;
+            } else if (delta.x < -step) {
+                delta.y *= -step / delta.x;
+                delta.x = -step;
             } else {
                 xDone = true;
             }
             if (delta.y > step) {
                 delta.x *= step / delta.y;
                 delta.y = step;
-            } else if (delta.y < negStep) {
-                delta.x *= negStep / delta.y;
-                delta.y = negStep;
+            } else if (delta.y < -step) {
+                delta.x *= -step / delta.y;
+                delta.y = -step;
             } else {
                 yDone = true;
             }

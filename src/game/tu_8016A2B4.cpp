@@ -1180,7 +1180,7 @@ void GameRootSub24_8016A3AC::fn_8016A9EC() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.60 %, regalloc-only; behaviour clean.
+// FIXME: 98.98 %, regalloc-only; behaviour clean.
 // regalloc only: the original keeps the camera in r4 and the 0x4330
 // conversion constant in r3 (ours swaps them) and the float temporaries in f3/f5.
 void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale) {
@@ -1192,8 +1192,8 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
     }
     Mtx mtx;
     JGeometry::TVec3f off;
-    f32 z = 1.5f * (f32)(dir << 10);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+    f32 z = 1.5f * (f32)(dir << 10);
     if (followX) {
         f32 c = -camera->field_0x4[0][3];
         f32 d = c * parallax;
