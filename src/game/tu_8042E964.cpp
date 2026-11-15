@@ -390,7 +390,7 @@ f32 cls_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     return 0.0f;
 }
 
-// FIXME(shotgun): 99.12 %, scheduling+regalloc; behaviour near.
+// FIXME(shotgun): 99.12 %, scheduling+regalloc; behaviour clean.
 // cls_804B1634
 void cls_804B1634::fn_8042F6DC() {
     f32 w = field_0xb8[0] + 48.0f;
