@@ -2514,9 +2514,8 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // Reads the stage's map CSV: the start screen, the stage settings (field_0x34-0x58) and
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
-// Still differs: the 0xFF fill keeps an inner-loop guard (li 0; cmpwi 10) the original lacks, and the
-// map500 line skip is not rotated with a guard as in the original.
-// FIXME: 99.13 %, missing/extra; behaviour near.
+// Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6),
+// and str[idx + const] swaps the add operands.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
@@ -2676,16 +2675,17 @@ void GameView_804A9950::fn_802D3D48() {
         field_0x14 = 1;
         field_0x18 = 1;
         s32 pos = 0;
-        s32 lines = 0;
-        while (line != lines) {
-            while (true) {
-                if (str[pos] == (u8)'\r' && str[pos + 1] == (u8)'\n') {
-                    pos += 2;
-                    lines++;
-                    break;
+        if (line != col) {
+            do {
+                while (true) {
+                    if (str[pos] == (u8)'\r' && str[pos + 1] == (u8)'\n') {
+                        pos += 2;
+                        col++;
+                        break;
+                    }
+                    pos++;
                 }
-                pos++;
-            }
+            } while (line != col);
         }
         u8 value = str[pos] - '0';
         if (str[pos + 1] != (u8)',' && str[pos + 1] != (u8)'\r') {
