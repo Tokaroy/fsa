@@ -1198,7 +1198,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.59 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.87 %, missing/extra; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1260,7 +1260,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.43 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it) and extracts both screen bytes
 // before the first compare in the key loops; minor regalloc differences follow.
