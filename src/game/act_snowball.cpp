@@ -255,7 +255,7 @@ void cls_8049D020::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 95.71 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 95.78 %, missing/extra; behaviour near.
 // missing/extra + reloc-name: ours has 1 fewer instr (215 vs 216); the scale matrices are built with different float register assignment and the frame/pos/res locals are scheduled differently.
 void cls_8049D020::draw() {
     ActorBase_804A5770::draw();
@@ -285,7 +285,7 @@ static inline JGeometry::TVec3f negated(const JGeometry::TVec3f& v) {
     return result;
 }
 
-// FIXME: 94.18 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.32 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 2 fewer instrs (274 vs 276): the original keeps the table, the actor manager tag and the serial in r27-r29 (stmw/lmw r27) and negates case 5 through two stack TVec3f copies; the single-case switch in case 13 has an extra bge in the original.
 bool cls_8049D020::fn_8010C294(s32 state) {
     switch (state) {
