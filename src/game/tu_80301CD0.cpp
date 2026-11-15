@@ -70,7 +70,9 @@ s32 lbl_80504A28[4]; // queue tail per player
 cls_803099FC lbl_80504A38[4][16];
 cls_803099FC lbl_80505438[4][40];
 u32 lbl_80506D38[4];
-s32 lbl_80506D48[12];
+s32 lbl_80506D48[4];
+s32 lbl_80506D58[4];
+s32 lbl_80506D68[4];
 f32 lbl_80506D78[4];
 s32 lbl_80506D88[4];
 s32 lbl_80506D98[4];
@@ -136,12 +138,12 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, s32 e, s32 player, bool g, u8 h, u8 i);
 
 // 0x8030905C
-// FIXME: 84.65 %, missing/extra + reloc-name; behaviour drift.
+// The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
 cls_804AA8B8::cls_804AA8B8() {
-    for (s32 p = 0; p < 4; p++) {
+    for (int p = 0; p < 4; p++) {
         lbl_80504A18[p] = 0;
         lbl_80504A28[p] = 0;
-        for (s32 i = 0; i < 32; i++) {
+        for (int i = 0; i < 32; i++) {
             Transfer_8030361C& t = lbl_804FBC18[p][i];
             t.mUsed = 0;
             t.field_0x119 = 0;
@@ -152,12 +154,12 @@ cls_804AA8B8::cls_804AA8B8() {
             t.field_0x10c = 0;
             t.mName[0] = 0;
         }
-        for (s32 i = 0; i < 0x2000; i++) {
+        for (int i = 0; i < 0x2000; i++) {
             lbl_804DBC18[p][i] = 0xCDCDCDCD;
         }
-        lbl_80506D48[p] = 0;
         lbl_8053AD00[p] = 0;
-        lbl_80506D48[p + 4] = 5;
+        lbl_80506D48[p] = 0;
+        lbl_80506D58[p] = 5;
         fn_8030801C(p);
         lbl_8053ACD4[p] = 1;
         lbl_80506D38[p] = 0;
@@ -165,14 +167,14 @@ cls_804AA8B8::cls_804AA8B8() {
         lbl_8053ACDC[p] = 0;
         lbl_8053ACE0[p] = 0;
         lbl_8053ACE4[p] = 0;
-        lbl_80506D48[p + 8] = 0;
-        for (s32 i = 0; i < 19; i++) {
+        lbl_80506D68[p] = 0;
+        for (int i = 0; i < 19; i++) {
             lbl_80506F88[p][0][i].f.field_0x3_0 = 1;
             lbl_80506F88[p][0][i].f.field_0x2 = 0x80;
             lbl_80506F88[p][1][i].f.field_0x3_0 = 1;
             lbl_80506F88[p][1][i].f.field_0x2 = 0x80;
         }
-        for (s32 k = 0; k < 4; k++) {
+        for (int k = 0; k < 4; k++) {
             lbl_80506DA8[p][k] = 0;
             lbl_80506DB8[p][k] = 0;
             lbl_80506DC8[p][k] = 0;
@@ -185,12 +187,12 @@ cls_804AA8B8::cls_804AA8B8() {
         lbl_8053ACF8[p] = 0;
         lbl_8053ACFC[p] = 0;
         lbl_80506DD8[p] = 0;
-        for (s32 i = 0; i < 0x80; i++) {
+        for (int i = 0; i < 0x80; i++) {
             lbl_805071E8[p][i] = 0;
         }
         lbl_8053AD0C[p] = 0;
-        lbl_8053AD04[p] = 0;
         lbl_8053AD14[p] = 0;
+        lbl_8053AD04[p] = 0;
         lbl_8053AD1C[p] = 0;
         lbl_8053AD20[p] = 0;
         lbl_8053AD24[p] = 0;
@@ -423,8 +425,7 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
         lbl_80506DE8[player].mEntries[1].mScrollBit = 0;
         lbl_80506DE8[player].mEntries[3].mScrollBit = 0;
     }
-    s32 count = lbl_80541618[lbl_8053AD08] - 7;
-    for (s32 i = 0; i < count; i++) {
+    for (s32 i = 0; i < lbl_80541618[lbl_8053AD08] - 7; i++) {
         lbl_80506DE8[player].field_0x18[i].f.field_0x3_0 = 1;
         lbl_80506DE8[player].field_0x18[i].f.field_0x2 = 0x80;
         lbl_80506DE8[player].field_0x18[i].f.field_0x1 = 0xE0;
@@ -494,18 +495,19 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     for (; i < count; i++) {
         lbl_805071E8[player][start + i] = 0;
     }
+    cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     s32 n = lbl_80541618[lbl_8053AD08] - 2;
     for (s32 j = 0; j < n; j++) {
         u32 w = (u16)lbl_805071E8[player][start + j * 2] | (u32)(u16)lbl_805071E8[player][start + j * 2 + 1] << 16;
-        lbl_80506DE8[player].mSprites[j].mWord = swapBytes(w);
+        record->mSprites[j].mWord = swapBytes(w);
     }
     u8 sum = 0;
-    u8* bytes = (u8*)&lbl_80506DE8[player].mSprites[0];
+    u8* bytes = (u8*)&record->mSprites[0];
     s32 size = lbl_80541618[lbl_8053AD08] * 4;
     for (s32 k = 8; k < size; k++) {
         sum += *bytes++;
     }
-    lbl_80506DE8[player].field_0x0 = sum;
+    record->field_0x0 = sum;
 }
 
 // Sprite ids below 0x45 (after adding 0x200 when e is 2) go to the 16-entry
@@ -1086,7 +1088,7 @@ void cls_804AA8B8::fn_80304FB0() {
                     lbl_8053AD1C[player] = 60;
                 }
             }
-            lbl_80506D48[player + 4] = 5;
+            lbl_80506D58[player] = 5;
             continue;
         }
         if (lbl_8053AD34[player] == 0) {
@@ -1154,10 +1156,10 @@ void cls_804AA8B8::fn_80304FB0() {
         } else {
             lbl_8053ACFC[layer] = 0;
         }
-        if (lbl_80506D48[player + 4] > 0) {
+        if (lbl_80506D58[player] > 0) {
             fn_8030801C(player);
             lbl_80506D48[player] = (lbl_80506D48[player] + 1) & 3;
-            lbl_80506D48[player + 4]--;
+            lbl_80506D58[player]--;
             continue;
         }
         Transfer_8030361C* entry = &lbl_804FBC18[player][lbl_80504A18[player]];
@@ -1757,9 +1759,8 @@ static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
 
 // Variant of fn_803022C4.
 // 0x8030275C
-// FIXME: 89.09 %, missing/extra; behaviour drift.
-// FIXME: mMask load hoisting before the mark sort loop and the two isHiddenSprite skip loops differ.
-void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
+// Still differs: the two isHiddenSprite skip loops (bdnz vs materialised bool) and register allocation.
+void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
         order[i] = i;
@@ -1836,9 +1837,8 @@ void fn_8030275C(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
 // Draws a record's marks and the player's two sprite lists (the last visible sprite of each
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
-// FIXME: 93.06 %, scheduling+regalloc; behaviour clean.
-// FIXME: mMask load hoisting before the mark sort loop and register allocation differ.
-void fn_803022C4(cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
+// Still differs: scheduling and register allocation.
+void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
         order[i] = i;
