@@ -127,7 +127,7 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
-// FIXME: 91.00 %, different + reloc-name; behaviour drift.
+// FIXME: 91.21 %, different + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -267,7 +267,7 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.56 %, missing/extra + reloc-name; behaviour drift.
 // regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
@@ -605,6 +605,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 }
 
 // differs: rot zero-store order and .sdata2 literal pool order.
+// FIXME: 99.63 %, scheduling + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -721,7 +722,7 @@ static inline void setCameraBox(f32 x, f32 y0, f32 y1) {
 }
 
 // differs: register choice for the camera box and the message position.
-// FIXME: 98.59 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 98.62 %, scheduling+regalloc + reloc-name; behaviour drift.
 void cls_804AE088::fn_80369DDC() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -915,7 +916,7 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.53 %, different + reloc-name; behaviour near.
+// FIXME: 96.67 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1221,7 +1222,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 90.63 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 90.73 %, missing/extra + reloc-name; behaviour near.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
@@ -1338,7 +1339,7 @@ void cls_804AE088::fn_80368660() {
     }
 }
 
-// FIXME: 96.15 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 96.32 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
@@ -1374,7 +1375,7 @@ void cls_804AE088::fn_803683AC() {
     mPos = savedPos;
 }
 
-// FIXME: 97.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
