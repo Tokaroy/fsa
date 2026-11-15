@@ -120,7 +120,7 @@ void fn_80139958() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.86 %, reloc-name; behaviour clean.
+// FIXME: 99.94 %, reloc-name; behaviour clean.
 // Instructions identical; the string offsets off lbl_804652F0
 // differ (0x324 vs 0x5E8: the strings of the unwritten fn_80135494 - fn_80137300
 // come first in the original .rodata) and the .sdata2 floats / "" are @NNN.
@@ -369,7 +369,7 @@ s32 GameRoot_8049EF20::fn_80138A30() {
 // The per-frame update (the counterpart of fn_80136828): polls the pads, then runs the screen of the current
 // mode (field_0x4c) and, once it asks for another one (field_0x50), the fade and load sequence of field_0x58.
 //
-// FIXME(shotgun): 95.60 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
 // (one fn_802DEBF8 call folded; the saved-register set differs;
 // the target loads field_0x4 into r3 before each fn_80139D70 call).
 void GameRoot_8049EF20::fn_80137300() {
@@ -1287,8 +1287,6 @@ void GameRoot_8049EF20::fn_80136500() {
     }
 }
 
-// FIXME(shotgun): 97.67 %, missing/extra; behaviour clean.
-// 0x80136364
 void GameRoot_8049EF20::fn_80136364() {
     s32 stage;
     if (!(field_0xfe != 1 || getGameView_802D6A9C()->fn_802DCD0C() || gGameRoot_8053AAF8->field_0x4c == GAME_MODE_B)) {
@@ -1344,8 +1342,6 @@ bool GameRoot_8049EF20::fn_80136320() {
 
 // Switches to game mode `mode`: deletes the other modes' screens, reports the
 // heap and starts loading the mode's archives (fn_80401E10) or screen.
-// FIXME: 99.80 %, same-text; behaviour drift.
-// Code identical; jump table @NNN vs jumptable_8049EF94 (as fn_80135020).
 void GameRoot_8049EF20::fn_80135A04(s32 mode) {
     if (field_0x84 != 0) {
         fn_801352F4(field_0x4c);
