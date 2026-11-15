@@ -185,7 +185,8 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
     mState = state;
 }
 
-// FIXME: 98.89%. try.py class missing/extra: the original copies the u8 mPlayersHit into its own register (one clrlwi r5, r0, 24) before the unrolled first-hit-player loop, we test the lbz result directly; the registers of mPlayersHit, the loop shift counts and the -1 initial player (li r30) differ accordingly.
+// FIXME: 98.89 %, missing/extra; behaviour near.
+// try.py class missing/extra: the original copies the u8 mPlayersHit into its own register (one clrlwi r5, r0, 24) before the unrolled first-hit-player loop, we test the lbz result directly; the registers of mPlayersHit, the loop shift counts and the -1 initial player (li r30) differ accordingly.
 void Terrorpin_804A3B10::vfunc_0x90(u8 mapHit) {
     // Declared in this order: MWCC gives the later aggregate the lower stack
     // slot (normal at sp+0x20, box at sp+0x10, out at sp+0x8).
@@ -410,7 +411,6 @@ void Terrorpin_804A3B10::vfunc_0x6C() {
     }
 }
 
-// FIXME: 99.14%. try.py class missing/extra: one extra lwz of mState (r0) before the final state == 0 test; the original keeps the state in the register isVulnerable() already loaded it into.
 u8 Terrorpin_804A3B10::vfunc_0x5C() {
     u8 hit = 0;
     if (isVulnerable()) {
