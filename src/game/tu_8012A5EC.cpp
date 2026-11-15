@@ -164,7 +164,6 @@ static inline void deleteEmitters(cls_8049E770* self) {
     }
 }
 
-// FIXME(shotgun): 97.38 %, regalloc-only; behaviour clean.
 cls_8049E770::~cls_8049E770() {
     deleteEmitters(this);
 }
