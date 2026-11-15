@@ -2217,7 +2217,7 @@ void MapScreen_804B1288::fn_80409FDC() {
     }
 }
 
-// FIXME: 96.54 %, missing/extra; behaviour clean.
+// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
 // Missing/extra (one instruction): in the field_0xd4 loop the original
 // multiplies scale * field_0x10 after fn_8040271C (keeping field_0x10 in f30), ours before
 // it (an extra fmr); the table / field_0x18 loads of each division are also swapped. The
