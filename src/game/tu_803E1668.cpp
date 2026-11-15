@@ -377,7 +377,8 @@ static inline f32 toEffectY(f32 y) {
     return 168.0f * (8.0f + y) / (s32)JUTVideo::getManager()->getRenderMode()->efbHeight;
 }
 
-// FIXME: 99.55. Registers only in the pane-tag loops (e.g. the first loop's
+// FIXME: 99.55 %, regalloc-only; behaviour clean.
+// Registers only in the pane-tag loops (e.g. the first loop's
 // array pointers are r24 / r26 in the original, r26 / r27 here).
 cls_804B0B00::cls_804B0B00() {
     field_0x1b4 = 0;
@@ -796,7 +797,6 @@ void cls_804B0B00::fn_803ED83C() {
     }
 }
 
-// FIXME: 99.8. Registers only: the original loads field_0x1bc into r4 and field_0x1d0 into r3, ours the other way round.
 void cls_804B0B00::fn_803ED604() {
     stepBlink(this);
     if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
@@ -846,7 +846,8 @@ void cls_804B0B00::fn_803ED5B4() {
     gAudioMgr_8053AF80->fn_80458880(11, -1);
 }
 
-// FIXME: 96.95. 2 fewer instrs (594 vs 596): extsh. vs cmpwi r0, 0 on
+// FIXME: 96.95 %, missing/extra; behaviour drift.
+// 2 fewer instrs (594 vs 596): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable (r30) where the
 // original keeps two (r30 and r28).
 void cls_804B0B00::fn_803ECC64() {
@@ -940,7 +941,8 @@ void cls_804B0B00::fn_803ECC64() {
     mScreen->search('Pscuro02')->move(field_0x19c, y);
 }
 
-// FIXME: 99.61. One register: in setEntries' loop the original gives i a
+// FIXME: 99.61 %, different; behaviour clean.
+// One register: in setEntries' loop the original gives i a
 // fresh li r4, 0 and keeps 2 * i in r3 (the zero stored to field_0x1b8);
 // ours copies that zero into i (mr r4, r3). Same as the twin's
 // ConnectScreen_804B0F10::fn_803F2580.
@@ -1005,7 +1007,8 @@ void cls_804B0B00::fn_803EC804() {
     }
 }
 
-// FIXME: 96.93. 2 fewer instrs (853 vs 855): extsh. vs cmpwi r0, 0 on
+// FIXME: 96.93 %, missing/extra + reloc-name; behaviour near.
+// 2 fewer instrs (853 vs 855): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, .rodata base load scheduled before others[], and one
 // merged i * 5 induction variable where the original keeps two (r29 and r27).
 void cls_804B0B00::fn_803EBAA8() {
@@ -1146,7 +1149,8 @@ void cls_804B0B00::fn_803EBAA8() {
     mScreen->search('Pscuro02')->move(field_0x19c + field_0x120[field_0x1bc], y);
 }
 
-// FIXME: 97.46. 2 fewer instrs (758 vs 760): extsh. vs cmpwi r0, 0 on
+// FIXME: 97.46 %, missing/extra; behaviour near.
+// 2 fewer instrs (758 vs 760): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable where the
 // original keeps two (r30 and r28).
 void cls_804B0B00::fn_803EAEC8() {
@@ -1270,7 +1274,8 @@ void cls_804B0B00::fn_803EAEC8() {
     field_0x8->search('Ppllbk32')->move(field_0xc0[3], field_0xd0[3] + field_0xe0[3]);
 }
 
-// FIXME: 97.63. 2 fewer instrs (690 vs 692): extsh. vs cmpwi r0, 0 on
+// FIXME: 97.63 %, missing/extra; behaviour drift.
+// 2 fewer instrs (690 vs 692): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable where the
 // original keeps two (r29 and r27).
 void cls_804B0B00::fn_803EA3F8() {
@@ -1514,7 +1519,8 @@ void cls_804B0B00::fn_803E9A20() {
     }
 }
 
-// FIXME: 96.67. 2 fewer instrs (491 vs 493): extsh. vs cmpwi r0, 0 on
+// FIXME: 96.67 %, missing/extra; behaviour drift.
+// 2 fewer instrs (491 vs 493): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 10 induction variable where the
 // original keeps two (r30 and r28).
 void cls_804B0B00::fn_803E926C() {
@@ -1607,7 +1613,6 @@ void cls_804B0B00::fn_803E926C() {
     field_0xc->search('Pscuro02')->move(field_0x1a4, y);
 }
 
-// FIXME: 99.8. Registers only: the original loads field_0x1bc into r4 and field_0x1d0 into r3, ours the other way round.
 void cls_804B0B00::fn_803E9034() {
     stepBlink(this);
     if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
@@ -1646,7 +1651,8 @@ void cls_804B0B00::fn_803E9034() {
     }
 }
 
-// FIXME: 97.07. 4 fewer instrs (834 vs 838): extsh. vs cmpwi r0, 0 on
+// FIXME: 97.07 %, missing/extra; behaviour near.
+// 4 fewer instrs (834 vs 838): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and merged i * 10 induction variables in the two
 // field_0x184 loops where the original keeps two per loop.
 void cls_804B0B00::fn_803E831C() {
@@ -1859,7 +1865,8 @@ void cls_804B0B00::fn_803E8210() {
     }
 }
 
-// FIXME: 95.41. 4 fewer instrs (1492 vs 1496): register allocation and loop
+// FIXME: 95.41 %, missing/extra; behaviour drift.
+// 4 fewer instrs (1492 vs 1496): register allocation and loop
 // induction pointers across the per-player button and marker loops.
 void cls_804B0B00::fn_803E6AB0() {
     for (s32 i = 0; i < 4; i++) {
@@ -2051,7 +2058,8 @@ void cls_804B0B00::fn_803E6A2C() {
 
 void cls_804B0B00::fn_803E6A28() {}
 
-// FIXME: 99.17. Stack slots and registers only: the original converts every
+// FIXME: 99.17 %, operands; behaviour clean.
+// Stack slots and registers only: the original converts every
 // int / u8 to float in the one 0x8 slot (ours uses 0x8-0x18), and the loop's
 // table pointers / the lit alpha sit in other registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
@@ -2118,7 +2126,8 @@ void cls_804B0B00::fn_803E64A0() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 97.03. 4 fewer instrs (1179 vs 1183): stack slot and induction
+// FIXME: 97.03 %, missing/extra; behaviour near.
+// 4 fewer instrs (1179 vs 1183): stack slot and induction
 // variable register allocation across the three per-player loops.
 void cls_804B0B00::fn_803E51C4() {
     for (s32 i = 0; i < 4; i++) {
@@ -2296,7 +2305,8 @@ void cls_804B0B00::fn_803E51C4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.67. Stack layout and float registers only: the original keeps
+// FIXME: 99.67 %, operands; behaviour clean.
+// Stack layout and float registers only: the original keeps
 // every int-to-float conversion in one 8-byte slot (0x18; frame 0x60), ours
 // uses two (frame 0x70), and the bounce offset / pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
@@ -2379,7 +2389,8 @@ void cls_804B0B00::fn_803E4940() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.81. Stack slots and float registers only: the original converts
+// FIXME: 99.81 %, operands; behaviour clean.
+// Stack slots and float registers only: the original converts
 // both blink branches' ints in the 0x8 slot, ours the first branch's in 0x10
 // (and f30 / f31 swap for the bounce offset and pane x).
 // Draws states 12 and 13 (the results screen field_0x10): each taking
@@ -2640,6 +2651,7 @@ void cls_804B0B00::fn_803E3548() {
 // FIXME: 99.20. One register in setEntries' loop (li r4, 0 vs mr r4, r3, as in fn_803EC804).
 // Not auto-inlined: fn_803E9034 and fn_803ED604 call fn_803E3320 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
+// FIXME: 99.20 %, different; behaviour clean.
 void cls_804B0B00::fn_803E3320() {
     field_0x254[0] = 0;
     field_0x1e0[0] = 5;
@@ -2655,7 +2667,8 @@ void cls_804B0B00::fn_803E3320() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.58. Registers: the loop's table pointers and counter sit in other
+// FIXME: 98.58 %, missing/extra; behaviour clean.
+// Registers: the loop's table pointers and counter sit in other
 // registers (i in r18 here, r16 in the original), and the first digit
 // texture is copied through r0 into r17 (one extra mr) where the original
 // keeps it in r27.
@@ -2824,7 +2837,8 @@ void cls_804B0B00::enterState15() {
     lbl_80529DEC.field_0x23e[0] = 0;
 }
 
-// FIXME: 98.92. Same length. Registers and scheduling of the table index
+// FIXME: 98.92 %, scheduling+regalloc; behaviour clean.
+// Same length. Registers and scheduling of the table index
 // arithmetic (i / 2 + (i % 2) * 2 and the [field_0x1bc] row address are
 // computed in another order).
 // Draws the four player sprites ("player_sob.bin") over field_0xc's player
