@@ -874,7 +874,6 @@ static inline void spawnJiji(cls_804AE4B0* self, s32 i) {
     self->field_0x3b0[i] = (cls_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
 }
 
-// FIXME(shotgun): 98.95 %, regalloc-only; behaviour drift.
 void cls_804AE4B0::fn_8036FDAC() {
     mTimer = 0x50;
     static JGeometry::TVec3f offsets[4] = {
