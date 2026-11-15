@@ -144,7 +144,8 @@ static const ThwompLaunchNPCSprite_80471CB8 lbl_80471CB8[16] = {
     {0, 0x4C6}, {0, 0x4D4}, {0, 0x4B4}, {0, 0x524},
 };
 
-// FIXME: 95.03%, scheduling+regalloc + reloc-name: in the prologue the original
+// FIXME: 95.03 %, scheduling+regalloc + reloc-name; behaviour clean.
+// in the prologue the original
 // schedules the mRandom LCG constant (0x19660d) and the 0.0f/1.0f/7.0f loads before
 // the int-to-float 0x4330 setup, placing 0 in r6 and 3 in r0 instead of r0 and r3.
 void NPCLaunchedByThwomp_804AC010::init() {
@@ -203,7 +204,8 @@ void NPCLaunchedByThwomp_804AC010::init() {
     field_0x194 = 1;
 }
 
-// FIXME: 99.88%, operands + reloc-name: the temporary TVec3f stack slots for
+// FIXME: 99.88 %, operands + reloc-name; behaviour clean.
+// the temporary TVec3f stack slots for
 // field_0x3c and the by-value mPos argument to fn_8038C678 are swapped (0x44/0x38/0x2c/0x20
 // vs 0x14/0x2c/0x20/0x8 and 0x14/0x8 vs 0x44/0x38), and .sdata2 literals use @NNN symbols.
 void NPCLaunchedByThwomp_804AC010::update() {
@@ -346,8 +348,6 @@ void NPCLaunchedByThwomp_804AC010::update() {
     }
 }
 
-// FIXME: 95.06%, missing/extra: the original keeps field_0x250 in r0 across the
-// frame calculation instead of reloading it before the field_0x250 == 2 check (1 extra lwz).
 void NPCLaunchedByThwomp_804AC010::draw() {
     if (field_0x230 == 2) {
         return;
@@ -386,6 +386,7 @@ void NPCLaunchedByThwomp_804AC010::draw() {
 // dx and dy are kept in locals so MWCC does not reload field_0x258/field_0x25c after
 // squaring them.
 #pragma auto_inline off
+// FIXME: 99.62 %, regalloc-only; behaviour clean.
 void NPCLaunchedByThwomp_804AC010::fn_80337A08() {
     s32 prevFacing = field_0x248;
     switch (field_0x250) {
