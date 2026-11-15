@@ -102,7 +102,7 @@ cls_804A38D4::~cls_804A38D4() {
 }
 
 // 0x801B56A0.
-// FIXME(shotgun): 78.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 78.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A38D4::fn_801B56A0() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec3f pos = mPos;
