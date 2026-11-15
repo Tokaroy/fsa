@@ -94,7 +94,6 @@ void cls_801D7730::fn_801D7638() {
     }
 }
 
-// FIXME(shotgun): 93.93 %, scheduling+regalloc; behaviour clean.
 void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
     fn_801D77B4();
     field_0x40 = layer;
