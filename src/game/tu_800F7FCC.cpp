@@ -101,7 +101,7 @@ static inline void focusCamera(cls_8049C718* p) {
 
 cls_8049C718::~cls_8049C718() {}
 
-// FIXME(shotgun): 96.31 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.89 %, reloc-name; behaviour clean.
 void cls_8049C718::init() {
     mHome.x = mPos.x;
     mHome.y = mPos.y;
@@ -152,13 +152,13 @@ void cls_8049C718::init() {
     gAudioMgr_8053AF80->fn_80458F9C(0x3C);
     u32 low = mSerial & 0xFFFF;
     for (s32 i = 0; i < 0x18; i++) {
-        getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos, low + 0x1000000 + (i << 16), -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos, low + (i << 16) + 0x1000000, -1, -1);
         mSlot++;
     }
     if (mFlags & 8) {
         for (s32 i = 0; i < 2; i++) {
             mPartner[i] = getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos,
-                                                                         low + 0x2000000 + (i << 16), -1, -1);
+                                                                         low + (i << 16) + 0x2000000, -1, -1);
         }
     }
 }
@@ -893,45 +893,43 @@ void cls_8049C718::vfunc_0x24() {
     vfunc_0x28(0, 0.0f, -20.0f);
 }
 
-// FIXME: 96.55 %, different + reloc-name; behaviour drift.
-// FIXME: the cooldown test branches as bne-to-exit where the original does beq-to-body + b-to-exit; literal pool order differs.
+// FIXME: 98.69 %, different + reloc-name; behaviour drift.
+// FIXME: cmplwi vs cmpwi on field_0xb0 == 4 / 0x12 (ActorBase::field_0xb0 is s32); literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
-    if (field_0xb0 == 4 || field_0xb0 == 0x12) {
+    if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
         return;
     }
-    if (mCooldown == 0) {
-        if (field_0xd8 == 0) {
-            field_0x255++;
-            mCooldown = 0x32;
-            if (mWobble == 0) {
-                mWobble = 1;
-            }
-            fn_801F37AC(0, &mPos, 3, 0, -1);
-            startSound_801F0E34(0x40005, 0);
-            field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+    if (field_0xd8 == 0) {
+        field_0x255++;
+        mCooldown = 0x32;
+        if (mWobble == 0) {
+            mWobble = 1;
         }
-        if (mSignal != 0) {
-            if (mState == 9) {
-                return;
-            }
-            mState = 9;
-            mFlags |= 1;
-            mFlags &= ~4;
-            field_0x3c.set(0.0f, 0.0f, 5.0f);
-            mWobble = 0;
-            field_0x264 = 0;
-            f32 scale = mScale;
-            mBox.i.x = -26.0f * scale;
-            mBox.i.y = -50.0f * scale;
-            mBox.f.x = 26.0f * scale;
-            mBox.f.y = 0.0f;
-            startSound_801F0E34(0x40005, 0);
-            if (mLife <= 10) {
-                vfunc_0x24();
-            }
-        } else if (field_0x255 == 3) {
-            mSignal = 1;
+        fn_801F37AC(0, &mPos, 3, 0, -1);
+        startSound_801F0E34(0x40005, 0);
+        field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+    }
+    if (mSignal != 0) {
+        if (mState == 9) {
+            return;
         }
+        mState = 9;
+        mFlags |= 1;
+        mFlags &= ~4;
+        field_0x3c.set(0.0f, 0.0f, 5.0f);
+        mWobble = 0;
+        field_0x264 = 0;
+        f32 scale = mScale;
+        mBox.i.x = -26.0f * scale;
+        mBox.i.y = -50.0f * scale;
+        mBox.f.x = 26.0f * scale;
+        mBox.f.y = 0.0f;
+        startSound_801F0E34(0x40005, 0);
+        if (mLife <= 10) {
+            vfunc_0x24();
+        }
+    } else if (field_0x255 == 3) {
+        mSignal = 1;
     }
 }
 
@@ -1358,7 +1356,7 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x40() {
     startSound_801F0E34(0x50084, 0);
 }
 
-// FIXME: 98.30 %, scheduling+regalloc; behaviour clean.
+// FIXME: 98.96 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): scheduling+regalloc differs; behaviour matches.
 void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 count;
@@ -1370,10 +1368,11 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        JGeometry::TVec3f vel;
-        vel.z = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        vel.y = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-        vel.x = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+        JGeometry::TVec3f vel(
+            2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+            2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+            3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
+        );
         gem->field_0x3c = vel;
     }
     if ((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 3) {
@@ -1453,9 +1452,8 @@ static inline bool stepAxis(f32& cur, f32 target, f32 step) {
     return false;
 }
 
-// FIXME: 99.21 %, missing/extra; behaviour near.
-// FIXME(shotgun): original sign-extends the final bool (extsb); ours does not.
-bool fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
+s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
     arrived = arrived + stepAxis(cur->y, target->y, step);
     arrived = arrived + stepAxis(cur->z, target->z, step);
