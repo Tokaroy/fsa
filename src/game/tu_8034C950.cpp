@@ -8,6 +8,7 @@
 #include "game/SpriteParams.h"
 #include "game/act/tu_8034C950.h"
 #include "game/BgRewrite.h"
+#include "game/GameMath.h"
 #include "dolphin/mtx.h"
 
 // The point in front of a player, by its facing (fn_80230CFC): (x, y) offsets.
@@ -263,7 +264,7 @@ void cls_804AC950::update() {
                 if (field_0x320[i].field_0x0 == 0) {
                     f32 dx = pos.x - prev.x;
                     f32 dy = pos.y - prev.y;
-                    if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) > 2.0f) {
+                    if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) > 2.0f) {
                         JGeometry::TVec3f back = prev - pos;
                         fn_8023DFF4(i, &back);
                     }
