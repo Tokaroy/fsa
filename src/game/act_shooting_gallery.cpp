@@ -114,7 +114,8 @@ void ShootingGallery_804A2B18::init() {
     }
 }
 
-// FIXME: 99.08%. regalloc-only: r30/r31 swapped in loop.
+// FIXME: 99.08 %, regalloc-only; behaviour clean.
+// regalloc-only: r30/r31 swapped in loop.
 ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     if (field_0x268 == 0) {
         if (mState == 3 || mState == 4) {
@@ -132,7 +133,8 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.36%. missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
+// FIXME: 96.36 %, missing/extra + reloc-name; behaviour drift.
+// missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
 // the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
 // and 5 differ; lbl_8053ABB8 is referenced via @sda21 in the original (split into act_all_enemies_defeated.cpp).
@@ -449,7 +451,8 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
     }
 }
 
-// FIXME: 94.81%. missing/extra: ours has 2 fewer instrs. The original stores p (0x24(r1)) before the box
+// FIXME: 94.81 %, missing/extra; behaviour near.
+// missing/extra: ours has 2 fewer instrs. The original stores p (0x24(r1)) before the box
 // copy is offset and reloads mPos.x/y for the addPos; ours adds in registers. Also gGameRoot_8053AAF8 and
 // 0x19660D swap r4/r5 in mRandom.get_ufloat_1(), and r29/r30 for this.
 void ShootingGallery_804A2B18::fn_8019EE74() {
@@ -599,7 +602,8 @@ void ShootingGallery_804A2B18::fn_8019EC04() {
     }
 }
 
-// FIXME: 99.44%. regalloc-only: r4/r5 swapped for gGameRoot_8053AAF8 vs 0x19660D in mRandom.get_ufloat_1().
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
+// regalloc-only: r4/r5 swapped for gGameRoot_8053AAF8 vs 0x19660D in mRandom.get_ufloat_1().
 void ShootingGallery_804A2B18::update() {
     switch (field_0x268) {
     case 0:
@@ -655,7 +659,6 @@ void ShootingGallery_804A2B18::update() {
 
 // Not auto-inlined: draw calls fn_8019E7A4 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.23%. regalloc-only: f0 and f3 swapped for 0.0f vs field_0x290.
 void ShootingGallery_804A2B18::fn_8019E7A4() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -677,7 +680,8 @@ void ShootingGallery_804A2B18::fn_8019E7A4() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.68%. regalloc-only: r30/r31 and f28-f31 in setRotScaleMtx.
+// FIXME: 98.68 %, regalloc-only; behaviour clean.
+// regalloc-only: r30/r31 and f28-f31 in setRotScaleMtx.
 void ShootingGallery_804A2B18::fn_8019E480() {
     SpriteParams_801F5AE0 params;
     s32 frame = 0;
