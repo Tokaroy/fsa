@@ -19,8 +19,23 @@ cls_804A5D60::cls_804A5D60() : mTargetSerial(-1), field_0x2ac(0), field_0x2b0(1)
     field_0x2c8.set(0.0f, 0.0f);
 }
 
-// The animation tables (.data 0x804A5D38), not written yet.
-extern const s16* lbl_804A5D38[];
+// The animation tables: pairs of frame and duration, ended by -1.
+static const s16 lbl_8046A2E8[] = { 0, 6, 1, 6, 2, 20, 3, 8, -1, -1 };
+static const s16 lbl_8053F948[] = { 4, 6, -1, -1 };
+static const s16 lbl_8046A2FC[] = { 5, 6, 6, 6, -1, -1 };
+static const s16 lbl_8053F950[] = { 4, 6, -1, -1 };
+static const s16 lbl_8046A308[] = { 7, 4, 8, 6, 7, 4, -1, -1 };
+static const s16 lbl_8046A318[] = { 4, 6, 7, 4, 8, 6, 7, 4, -1, -1 };
+static const s16 lbl_8046A32C[] = { 5, 11, 6, 11, -1, -1 };
+static const s16 lbl_8053F958[] = { 4, 50, -1, -1 };
+static const s16 lbl_8046A338[] = { 3, 2, 2, 20, 3, 8, -1, -1 };
+static const s16 lbl_8046A348[] = { 3, 8, 2, 20, -1, -1 };
+
+static const s16* lbl_804A5D38[10] = {
+    lbl_8046A2E8, lbl_8053F948, lbl_8046A2FC, lbl_8053F950,
+    lbl_8046A308, lbl_8046A318, lbl_8046A32C, lbl_8053F958,
+    lbl_8046A338, lbl_8046A348,
+};
 
 // FIXME(shotgun): 95.16 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804A5D60::init() {
