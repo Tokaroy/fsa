@@ -123,7 +123,7 @@ void Vulture_804A4230::fn_801C0634() {
     }
 
     if (mState == 5) {
-        angle = (s32)((1.0f - 0.05f * (20 - mStateTimer)) * (f32)(s16)angle);
+        angle = ((1.0f - 0.05f * (20 - mStateTimer)) * (f32)(s16)angle);
     }
 
     if (mFlags & 0x2000) {
