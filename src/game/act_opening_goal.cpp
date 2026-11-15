@@ -78,8 +78,8 @@ void cls_8049DB30::update() {
         if (fn_8011921C()->field_0x0 == 0) {
             JGeometry::TBox2f box(mBox);
             box.i.x += mPos.x;
-            box.f.x += mPos.x;
             box.i.y += mPos.y;
+            box.f.x += mPos.x;
             box.f.y += mPos.y;
             bool flag;
             s32 player = fn_8023AF14(&box, field_0x4, false, 0.0f);
