@@ -650,8 +650,8 @@ void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
 bool EscortBase_8049E0C8::vfunc_0xBC() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     JGeometry::TVec2f pt(0.0f, 0.0f);
     if (fn_8023AE34(&box, field_0x4, &pt) >= 0) {
@@ -668,8 +668,8 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
 s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     JGeometry::TVec3f pos(mPos);
     pos.y -= 32.0f;
