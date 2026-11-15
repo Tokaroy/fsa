@@ -94,12 +94,10 @@ GameRootSub20_801902C0* GameRootSub20_801902C0::fn_80191744(s16 flag) {
     return this;
 }
 
-// FIXME: 99.88. Only the 0.0f literal: .sdata2 is not in the original order
-// until the unwritten fn_801902D0 / fn_80190DC8 put their literals before it.
 void GameRootSub20_801902C0::fn_8019169C() {
     for (s32 i = 0; i < 7; i++) {
         mCrystals[i].mActive = 0;
-        mCrystals[i].field_0x48 = 0.0f;
+        mCrystals[i].field_0x48 = -1.0f;
         mCrystals[i].field_0x50 = 0;
     }
     mSmallRequests[0].mActive = 0;
@@ -275,8 +273,9 @@ void GameRootSub20_801902C0::fn_801902D0() {
             mtx2[0][3] = 0.0f;
             mtx2[1][3] = 0.0f;
             mtx2[2][3] = 0.0f;
-            f32 sn = sin(1.5707964f);
-            f32 cs = cos(1.5707964f);
+            f32 angle = 1.5707964f;
+            f32 sn = sin(angle);
+            f32 cs = cos(angle);
             mtx2[0][0] = 1.0f;
             mtx2[1][1] = cs;
             mtx2[1][2] = -sn;
@@ -364,8 +363,9 @@ void GameRootSub20_801902C0::fn_801902D0() {
             JGeometry::TVec3f scale(1.0f, 0.7f, -1.0f);
             Mtx mtx;
             PSMTXTrans(mtx, m.mPos.x, m.mPos.y, m.mPos.z);
-            f32 sn = sin(1.5707964f);
-            f32 cs = cos(1.5707964f);
+            f32 angle = 1.5707964f;
+            f32 sn = sin(angle);
+            f32 cs = cos(angle);
             mtx[0][0] = 1.0f;
             mtx[1][1] = cs;
             mtx[1][2] = -sn;
