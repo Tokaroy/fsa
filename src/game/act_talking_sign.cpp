@@ -40,8 +40,8 @@ void TalkingSign_804AF428::update() {
     }
     JGeometry::TBox2f area(2.0f + mBox.i.x, mBox.i.y, mBox.f.x - 2.0f, mBox.f.y - 2.0f);
     area.i.x += mPos.x;
-    area.f.x += mPos.x;
     area.i.y += mPos.y;
+    area.f.x += mPos.x;
     area.f.y += mPos.y;
     switch (mState) {
     case 0:
