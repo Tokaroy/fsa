@@ -15,8 +15,6 @@ cls_804A5418::cls_804A5418() {
     field_0x2b4 = 0;
 }
 
-// FIXME: 99.88 %, reloc-name; behaviour clean.
-// FIXME(shotgun): literal pool order differs (lbl_8053F5DC/F5C4 vs @938/@939)
 void cls_804A5418::init() {
     EnemyBase_804A4808::init();
     field_0x98 = field_0x90 & 3;
@@ -57,7 +55,7 @@ void cls_804A5418::vfunc_0x10() {
 
 extern const s32 lbl_80469C40[4][2];
 
-// FIXME(shotgun): 95.51 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
 void cls_804A5418::fn_801E728C(int state) {
     if (state == 1) {
         if ((mFlags & 0x4000) && !(mFlags & 0x10000)) {
@@ -145,7 +143,7 @@ void cls_804A5418::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 96.25 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.47 %, missing/extra; behaviour drift.
 u8 cls_804A5418::vfunc_0x60() {
     s32 skip = -1;
     if (mState == 0 && field_0x2ac == -1) {
@@ -155,10 +153,10 @@ u8 cls_804A5418::vfunc_0x60() {
         f32 savedFy = mBox.f.y;
         f32 cx = fn_80210B34(field_0x98);
         f32 cy = fn_80210AF8(field_0x98);
-        mBox.i.x = cx - 1.0f;
-        mBox.i.y = cy - 1.0f;
-        mBox.f.x = cx + 1.0f;
-        mBox.f.y = cy + 1.0f;
+        mBox.i.x = cx - lbl_8053F650;
+        mBox.i.y = cy - lbl_8053F650;
+        mBox.f.x = cx + lbl_8053F650;
+        mBox.f.y = cy + lbl_8053F650;
         JGeometry::TVec2f off;
         fn_801E9C00(field_0x2b0, &off);
         mBox.i.x += off.x;

@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 
+// First in the unit's .sdata2 (see tu_801E9AFC.h); nothing in this file loads it.
+const f32 lbl_8053F650 = 6.0f;
+
 // The texture of each sprite (0-2); the fourth entry ends the table.
 static const char* lbl_804A5610[4] = {"sen.bti", "koge.bti", "sen_top.bti", NULL};
 
@@ -54,7 +57,6 @@ int fn_801EA8C0(const void* a, const void* b) {
     return result;
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void cls_801E9B54::fn_801EA75C(u8 id, u8 flag, u8 index, s32 layer, const JGeometry::TVec2f* pos) {
     s32 i = 0;
     for (s32 n = field_0x60; i < n; i++) {
@@ -173,7 +175,7 @@ void cls_801E9AFC::fn_801EA304() {
 }
 
 // 0x801EA108.
-// FIXME(shotgun): 51.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 52.06 %, missing/extra + reloc-name; behaviour drift.
 // the original reloads the sin/cos table for every vertex.
 void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
     f32 s0 = 0.0f;
@@ -268,7 +270,6 @@ void cls_801E9AFC::fn_801E9C74() {
     }
 }
 
-// FIXME: 99.66 %, reloc-name; behaviour clean.
 void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
     vec->x = 0.0f;
     vec->y = 4.0f;
@@ -278,7 +279,7 @@ void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec) {
     vec->y = x * JMath::sincosTable_.sinShort(-turn) + vec->y * JMath::sincosTable_.cosShort(-turn);
 }
 
-// FIXME: 97.26 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.38 %, missing/extra; behaviour clean.
 // The original copies findActorBySerial_801F666C's result through r0 (mr r0, r3; mr. r30, r0); ours tests it in place.
 s32 ActorBase_804A5770::fn_801E9B58() {
     s32 serial = getActorManager_801F856C()->fn_801F7F58(this, lbl_80469C78, mSerial, 32.0f);

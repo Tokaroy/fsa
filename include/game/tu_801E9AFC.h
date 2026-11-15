@@ -90,6 +90,10 @@ cls_801E9AFC* fn_801E9AFC();
 
 // 0x801E9C00: sets *vec to (0, 4) rotated by angle plus or minus a quarter turn
 // (0x2000, by the angle's sign).
+// Half the side of the square an actor probes with before fn_801E9B58 (6.0f).
+// tu_801E6D48's vfunc_0x60 and tu_801E801C's init load it by this symbol.
+extern const f32 lbl_8053F650;
+
 void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec);
 
 #endif
