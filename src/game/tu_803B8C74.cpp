@@ -52,10 +52,6 @@ static inline void writeDefaults(SaveFile_803B950C *files, s32 index, SaveFileBo
     memcpy(dstBody, &body, sizeof(SaveFileBody_803B950C));
 }
 
-// FIXME: 92.4 %. scheduling+regalloc: the two destination pointers land in r30/r31
-// swapped against the original (files[index] in r30), and their adds are scheduled
-// one slot apart.
-// 0x803B93E8
 s32 cls_804AFB30::fn_803B93E8(SaveFile_803B950C* files, SaveFileBody_803B950C* bodies, s32 index) {
     writeDefaults(files, index, bodies);
     return 0;
