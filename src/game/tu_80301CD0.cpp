@@ -139,6 +139,7 @@ bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 
 // 0x8030905C
 // The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
+// FIXME: 97.72 %, missing/extra + reloc-name; behaviour clean.
 cls_804AA8B8::cls_804AA8B8() {
     for (int p = 0; p < 4; p++) {
         lbl_80504A18[p] = 0;
@@ -376,7 +377,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // then the checksum.
 // Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x8030801C
-// FIXME: 81.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 83.08 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -470,7 +471,7 @@ static inline u32 swapBytes(u32 v) {
 // and its checksum. Still differs: the original has the checksum loop twice (branch on the
 // queue head entry's mUsed) and different register allocation.
 // 0x80307B58
-// FIXME: 71.27 %, missing/extra; behaviour drift.
+// FIXME: 71.74 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     if (flag) {
         lbl_80506DE8[player].mKind = 10;
@@ -1000,7 +1001,7 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
 // transfer queue (file words, kinds 6-8) or the message words (kinds 10-12).
 // Still differs: the original has each checksum loop twice (branch on the queue head entry's mUsed).
 // 0x80304FB0
-// FIXME: 76.04 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 77.05 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_80304FB0() {
     GbaClient_803007D0* client = lbl_804DB798;
     lbl_8053AD08 = 0;
@@ -1465,7 +1466,7 @@ bool fn_803049F0(s32 layer, s32 index) {
 // files of the GBA program.
 // Prologue only: the zero for the global resets gets its own register instead of the loop counter's.
 // 0x80303CE4
-// FIXME: 98.46 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.60 %, missing/extra + reloc-name; behaviour clean.
 void fn_80303CE4(s32 player) {
     lbl_80506D38[player] = 0;
     lbl_8053ACE0[player] = 0;
@@ -1513,7 +1514,7 @@ void fn_80303CE4(s32 player) {
 }
 
 // 0x80303870
-// FIXME: 98.91 %, regalloc-only; behaviour clean.
+// FIXME: 99.00 %, regalloc-only; behaviour clean.
 void fn_80303870(s32 player) {
     char name[32];
     char name2[32];
@@ -1601,7 +1602,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.44 %, different + reloc-name; behaviour clean.
+// FIXME: 95.48 %, different + reloc-name; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
@@ -1692,7 +1693,7 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
 // Draws one GBA sprite word on the map: the "SOB " frame of its 10-bit id at
 // its (sign-extended 9 / 8-bit) x, y, tinted per player and scaled by the
 // player's lbl_8053ACFC count (or lbl_80506DB8's flag).
-// FIXME(shotgun): 99.59 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
 // (control flow of the early return, the 16 tint stores)
 void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 mask, u8 flag) {
     SpriteParams_801F5AE0 params;
@@ -1760,6 +1761,7 @@ static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
 // Variant of fn_803022C4.
 // 0x8030275C
 // Still differs: the two isHiddenSprite skip loops (bdnz vs materialised bool) and register allocation.
+// FIXME: 92.84 %, missing/extra; behaviour drift.
 void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
@@ -1838,6 +1840,7 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
 // Still differs: scheduling and register allocation.
+// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
 void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
