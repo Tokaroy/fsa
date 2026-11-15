@@ -336,8 +336,8 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
     } else {
         JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (field_0x25c == 0 || field_0x25c == 2) {
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
