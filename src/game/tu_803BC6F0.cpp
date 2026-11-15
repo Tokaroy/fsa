@@ -2294,9 +2294,6 @@ void FileSelect_804AFF60::fn_803C7F7C() {
     }
 }
 
-// FIXME: 96.37 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers in the cursor bob, the same as
-// fn_803C4054 (see there).
 // The copy prompt (state 27): as the delete prompt fn_803C4054, up / down
 // move the cursor field_0x114 between two buttons, A confirms (0:
 // fn_803C1054, 1: back out through fn_803C02CC); the cursor bobs.
@@ -2327,15 +2324,14 @@ void FileSelect_804AFF60::fn_803C7CA0() {
     }
 
     if (mState == 27) {
-        s16 frame = field_0xda;
         f32 bob = 0.0f;
-        if (frame != 0) {
-            if (frame < 5) {
-                bob = 5.0f * (frame * frame) / 25.0f;
-                field_0xda = frame + 1;
-            } else if (frame < 10) {
-                bob = 5.0f * ((10 - frame) * (10 - frame)) / 25.0f;
-                field_0xda = frame + 1;
+        if (field_0xda != 0) {
+            if (field_0xda < 5) {
+                bob = 5.0f * (field_0xda * field_0xda) / 25.0f;
+                field_0xda++;
+            } else if (field_0xda < 10) {
+                bob = 5.0f * ((10 - field_0xda) * (10 - field_0xda)) / 25.0f;
+                field_0xda++;
             } else {
                 field_0xda = 0;
             }
