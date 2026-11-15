@@ -454,9 +454,6 @@ bool fn_802DE764(s32 stage, s32 level, s32 value) {
     return false;
 }
 
-// FIXME: 99.93 %, reloc-name; behaviour clean.
-// Reloc-name only: 512.0f (lbl_80541144) is pooled early, the literal users
-// between fn_802D8328 and here are not written yet. Code identical.
 GameView_804A9950::GameView_804A9950() {
     field_0x4 = 0;
     field_0x8 = 0;
@@ -1253,8 +1250,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
             }
         }
     }
-    f32 x = 512.0f * field_0x14;
     f32 y = 384.0f * field_0x18;
+    f32 x = 512.0f * field_0x14;
     mVisibleBox.set(x, y, 512.0f + x, 384.0f + y);
     s32 w = 0.125f * mVisibleBox.getWidth();
     s32 h = 0.125f * mVisibleBox.getHeight();
