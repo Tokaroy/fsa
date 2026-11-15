@@ -20,6 +20,9 @@ public:
     void fn_8011CF48();
     // 0x8011D1B8: enters a state (0-9) and stores it in field_0x234.
     void fn_8011D1B8(s32 state);
+    // Not in the binary: plain functions that fn_8011D1B8 (state 2) and update inline.
+    void startScroll();
+    void setOverlayRect();
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231[0x3];
