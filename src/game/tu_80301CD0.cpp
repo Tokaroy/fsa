@@ -909,7 +909,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
                 count++;
                 sprite->mRemove = 1;
                 dst->f.field_0x3_0 = x >> 8;
-                s32 id = sprite->mId;
+                u16 id = sprite->mId;
                 dst->f.field_0x2 = x;
                 dst->f.field_0x1 = y;
                 dst->f.field_0x3_1 = id >> 8;
