@@ -261,7 +261,7 @@ void cls_804AC950::update() {
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
                 JGeometry::TVec3f prev(field_0x320[i].field_0x4);
                 if (field_0x320[i].field_0x0 == 0) {
-                    f64 dx = pos.x - prev.x;
+                    f32 dx = pos.x - prev.x;
                     f32 dy = pos.y - prev.y;
                     if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) > 2.0f) {
                         JGeometry::TVec3f back = prev - pos;
