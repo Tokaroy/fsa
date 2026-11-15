@@ -191,7 +191,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 continue;
             }
             if (mActors[i]->mAlive) {
-                bool skip = false;
+                s32 skip = false;
                 if (paused == true) {
                     skip = true;
                     if (mActors[i]->field_0x11f) {
