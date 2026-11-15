@@ -59,9 +59,6 @@ static inline void showPickedEntry(cls_8049DE90* self) {
     }
 }
 
-// FIXME: 99%. Register allocation only, in the state-0 table block: the
-// original keeps the pick index in r29 and the table pointer in r25, mine
-// uses r26 and r27 (and the loop counter/pointer registers shift with them).
 void cls_8049DE90::update() {
     switch (mState) {
     case 0:
