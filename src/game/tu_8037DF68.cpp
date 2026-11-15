@@ -1728,7 +1728,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             u32 code = (u8)c;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                code = (code << 8) | (u8)text[pos];
+                code = (code << 8) | text[pos];
                 pos++;
             }
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
