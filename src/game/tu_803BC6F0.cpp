@@ -2188,7 +2188,7 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 }
 
-// FIXME: 99.39 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C6798 (`buttonStep * 1` forms change nothing).
 // State 26 (copy, from fn_803C05D8): the destination's board (or the copy
@@ -2206,8 +2206,8 @@ void FileSelect_804AFF60::fn_803C7F7C() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0xB1];
     s16 rowFrames = lbl_8050DB0C.field_0x4c[0xB2];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep)) {
-        end = buttonDelay + (buttonFrames + buttonStep);
+    if (end < buttonDelay + buttonFrames + buttonStep) {
+        end = buttonDelay + buttonFrames + buttonStep;
     }
     if (end < rowDelay + rowFrames) {
         end = rowDelay + rowFrames;
@@ -2349,7 +2349,7 @@ void FileSelect_804AFF60::fn_803C7CA0() {
     }
 }
 
-// FIXME: 99.49 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.54 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C6798.
 // State 28 (the copy prompt's no, from fn_803C02CC): the board (or the copy
@@ -2367,8 +2367,8 @@ void FileSelect_804AFF60::fn_803C70B8() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0xBB];
     s16 rowFrames = lbl_8050DB0C.field_0x4c[0xBC];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep)) {
-        end = buttonDelay + (buttonFrames + buttonStep);
+    if (end < buttonDelay + buttonFrames + buttonStep) {
+        end = buttonDelay + buttonFrames + buttonStep;
     }
     if (end < rowDelay + rowFrames) {
         end = rowDelay + rowFrames;
