@@ -77,7 +77,6 @@ void cls_80119E5C::fn_80119D48() {
     }
 }
 
-// FIXME: 99.62 %, reloc-name; behaviour clean.
 void cls_80119E5C::fn_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
     field_0x0 = 1;
     field_0x1 = 0;
@@ -217,11 +216,6 @@ void cls_80119E5C::fn_80119628() {
     }
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// reloc-name only (the double of the u16 to float conversions; see
-// fn_80119628).
-// Draws the fade picture over the screen with alpha field_0x14: black, or white
-// for field_0x24 == 1 (not for field_0x24 == 2).
 void cls_80119E5C::fn_801194C4() {
     if (field_0x0 != 0 && field_0x24 != 2 && field_0x14 != 0.0f) {
         gGameRoot2_8053AB10->fn_8013B490();
