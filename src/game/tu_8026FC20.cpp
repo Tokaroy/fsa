@@ -367,7 +367,8 @@ static inline s32 historyDepth(const Player_804A6F38* player) {
 // combo position by the history depth: 2 / 0 / 1 for a first press, 0 / 1 after one. Every
 // attack but the lunge has 0x458 = 1, 0xBF4 = 4 and sound 0x10000; then sound 0x20000 and
 // 0x3F0 = facing.
-// FIXME: 99.04. Registers only in the two inlined recentPresses (r3 / r4 swapped for the count
+// FIXME: 99.04 %, scheduling+regalloc; behaviour clean.
+// Registers only in the two inlined recentPresses (r3 / r4 swapped for the count
 // and the row flag, as in fn_80275D9C).
 void Player_804A6F38::fn_8027DEA0() {
     bool combo = false;
@@ -536,7 +537,8 @@ void Player_804A6F38::fn_8027D320() {
 // 'PEFF' at the player; at frame 20 state 6. Every frame the emitter point 0x12A4 (mPos +
 // lbl_8046BB78[facing]) is handed to the callbacks 0x1278 / 0x1290 and the actor 0x12C0, the
 // boxes 0x4B0 (+-20) and 0x4A0 (+-12) and the point 0x30C are centred on the player.
-// FIXME: 99.37. Scheduling only: the original computes &mPos for fn_802F601C before the
+// FIXME: 99.37 %, scheduling; behaviour clean.
+// Scheduling only: the original computes &mPos for fn_802F601C before the
 // layer < 8 test.
 void Player_804A6F38::fn_8027CC90() {
     if ((!field_0x344.isZero() || mPos.z > 0.0f) && field_0x3fa >= 11) {
@@ -682,7 +684,8 @@ void Player_804A6F38::fn_8027CB24() {
     field_0x436 = 0;
 }
 
-// FIXME: 78.55. Same instructions; in the original the float store and the li 8 / lis come
+// FIXME: 78.55 %, scheduling; behaviour clean.
+// Same instructions; in the original the float store and the li 8 / lis come
 // before the argument setup (lfs, stfs, li, lis, stw, mr, addi), ours hoists lis/li/mr above the stfs.
 void Player_804A6F38::fn_8027CAA8() {
     field_0x458 = 0;
@@ -698,7 +701,8 @@ void Player_804A6F38::fn_8027CAA8() {
 // layers the push moves x / -y at height 0.5 and ends outside the view box less 16 (or with
 // cls_804A71A8 0x4A), else mPos moves by the push and lands at 0. Pose by the frame 0x3FA;
 // from frame 15 the landing (fn_8022C76C / tile 2 test on flagged layers) to state 8 or 0.
-// FIXME: 99.88. Registers only: f0 / f1 swapped for mPos.x / mPos.y in the inlined
+// FIXME: 99.88 %, regalloc-only; behaviour clean.
+// Registers only: f0 / f1 swapped for mPos.x / mPos.y in the inlined
 // containsPoint test.
 void Player_804A6F38::fn_8027C6C4() {
     field_0x344.z -= 0.25f;
@@ -1016,7 +1020,8 @@ void Player_804A6F38::fn_8027BA2C() {
 // fn_8023434C) frames 11-34 walk toward fn_8027FA08's spot at 6 per frame. At frame 10, with
 // no 'SWBM' actor yet (0xB38), one is spawned in front when the life is full (or with
 // fn_80241284 and 0x11AC == 1 at 2+ life); the emitter 0x12BC circles mPos at 20 by 0x11C0.
-// FIXME: 99.89. Stack offsets only: the vectors of the inlined walkToGroupSpot sit in other
+// FIXME: 99.89 %, operands; behaviour clean.
+// Stack offsets only: the vectors of the inlined walkToGroupSpot sit in other
 // slots (the original has the target at 0x44, ours at 0x20; as in fn_8027AAD0).
 void Player_804A6F38::fn_8027B648() {
     fn_80274988();
@@ -1082,7 +1087,8 @@ void Player_804A6F38::fn_8027B304() {
 // 0x3E8. BgRewrite runs at 0x30C (twice) and the probe points; sound 0x20029; the emitter 0x12B8
 // follows the player and 0x12BC circles it at 20 by the angle 0x11C0 (depths by fn_8024EE0C,
 // heights by fn_8024EE14); the step emitters 0x1378 (tile 0x39) / 0x1374.
-// FIXME: 99.60. Stack offsets only: every temporary sits 0x18 higher in ours (the original
+// FIXME: 99.60 %, operands; behaviour clean.
+// Stack offsets only: every temporary sits 0x18 higher in ours (the original
 // puts the probe and emitter vectors above the tile-test vectors).
 void Player_804A6F38::fn_8027AAD0() {
     fn_80274728();
@@ -1193,7 +1199,8 @@ void Player_804A6F38::fn_8027A908() {
 // sound 0x20010, a view shake, 0x344 = 2.5 against the facing, z 2) or, under fn_8022AF5C's
 // alternative, hands the facing on to the group (fn_80230BF4). Pose 2 falls with 0x344 until
 // it lands.
-// FIXME: 97.20. Scheduling and registers only: the original stores the three step floats to
+// FIXME: 97.20 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only: the original stores the three step floats to
 // the stack before scaling (ours scales z first), and keeps `this` in r30 / the old facing in
 // r31 (ours swaps them).
 void Player_804A6F38::fn_8027A1E0() {
@@ -1481,7 +1488,8 @@ static inline void landFromHit(Player_804A6F38* player) {
 // follow the player turned by facing, the step emitters run on the ground, and kinds 0x17 / 0x19
 // move with fn_802685D4. The kind-3 view box is computed and not used (the original keeps
 // its stack stores too).
-// FIXME: 99.32. Scheduling only: the original loads field_0x135c after the table address
+// FIXME: 99.32 %, scheduling; behaviour clean.
+// Scheduling only: the original loads field_0x135c after the table address
 // (lis / addi) for the first JPAGetXYZRotateMtx.
 void Player_804A6F38::fn_80279824() {
     mPos.add(field_0x350);
@@ -1694,7 +1702,8 @@ void Player_804A6F38::fn_802790C0() {
 // up and returns to state 0 healed to 4 below the maximum; otherwise it slides by 0xD78 and can
 // grab a partner within the box (fn_8023B0F4) to be dragged along (0xD08). fn_8027057C then
 // handles the revive.
-// FIXME: 99.92. Registers only: the serial 0x49C in r27 (r29 in the original), the view-corner
+// FIXME: 99.92 %, regalloc-only; behaviour clean.
+// Registers only: the serial 0x49C in r27 (r29 in the original), the view-corner
 // offset's float temporaries (as in tu_8025EB18 fn_8025FDD0) and the operand order of the two
 // `-x * 0.5f` products.
 void Player_804A6F38::fn_80277F98() {
@@ -2048,7 +2057,8 @@ static inline void tingleHeal(Player_804A6F38* player) {
 // Update of state 0x34 (Tingle revives the player): from frame 60 his effects, at 420 the heal,
 // at 480 back to state 0. Outside GameRoot 0x7E it waits for a 'TNGL' actor's 0x251 first.
 // The second fn_80240808() call is in the original (an inline's own test, source unknown).
-// FIXME: 99.75. One instruction missing: after the actor's null test the original has a second,
+// FIXME: 99.77 %, missing/extra; behaviour near.
+// One instruction missing: after the actor's null test the original has a second,
 // dead `beq` to the function's end (cmplwi r3, 0 / beq / beq / lbz 0x251).
 void Player_804A6F38::fn_8027776C() {
     if (!gGameRoot_8053AAF8->field_0x7e) {
@@ -2343,8 +2353,6 @@ void Player_804A6F38::fn_802765C0() {
     }
 }
 
-// FIXME: 99.56. Code identical; the 7 / -15 / 15 literals are reloc-name until the earlier
-// .sdata2 users (fn_8027439C, fn_802756E4, fn_80275D9C) are written.
 void Player_804A6F38::fn_80276538() {
     field_0x4c0.set(mPos.x - 7.0f, mPos.y - 7.0f, mPos.x + 7.0f, mPos.y + 7.0f);
     field_0x4d0.set(-15.0f, -15.0f, 15.0f, 15.0f);
@@ -2354,8 +2362,6 @@ void Player_804A6F38::fn_80276538() {
     field_0x4d0.f.y += mPos.y;
 }
 
-// FIXME: 99.77. Code identical; the 15 literal is reloc-name until the earlier .sdata2 users
-// (fn_8027439C, fn_802756E4, fn_80275D9C: 0.2, 20, 12, -16, 16, -4) are written.
 void Player_804A6F38::fn_80276078() {
     field_0xb98 = 0;
     if (!fn_802413F0()) {
@@ -2409,7 +2415,8 @@ void Player_804A6F38::fn_80276078() {
 // presses in the history 0x117C[4..7] / 0x119C -> state 9 (3); 0x11D4 running -> state 9 (4);
 // else with cls_804A71A8 0xB4 set state 7 (pushed by 1.5 along the facing, z -4) under
 // fn_80243234, otherwise state 5; without it state 4.
-// FIXME: 98.61. Registers only in the inlined recentPresses: the original keeps the count in
+// FIXME: 98.61 %, scheduling+regalloc; behaviour clean.
+// Registers only in the inlined recentPresses: the original keeps the count in
 // r4 and the row result in r3 (ours swap them) and sets up the base pointer r6 after the
 // held test instead of before it.
 bool Player_804A6F38::fn_80275D9C() {
@@ -2659,7 +2666,8 @@ void Player_804A6F38::fn_802756E4() {
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
 // member out of step (mode 4) drops to state 0. Then the facing boxes (fn_80276E5C, or
 // fn_80276BB8 at full charge).
-// FIXME: 96.64. Structurally close: the original loads one .rodata base (0x8046BB48) into r3 at
+// FIXME: 95.57 %, missing/extra; behaviour drift.
+// Structurally close: the original loads one .rodata base (0x8046BB48) into r3 at
 // entry and reaches lbl_8046BCA8's pose / offset members from it (+0x180 / +0x1A0); ours
 // re-materialises the table address (lis / addi) in every pose branch (9 instructions more in all)
 // and keeps mPos.z in f5. Neither separate static tables nor function-local ones give the
@@ -3228,7 +3236,8 @@ u8 Player_804A6F38::fn_802738F0(const JGeometry::TBox2f* box, JGeometry::TVec2f*
     return false;
 }
 
-// FIXME: 99.82. Registers only (r29 / r30 swapped for the actor and the view layer in the
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
+// Registers only (r29 / r30 swapped for the actor and the view layer in the
 // actor branch).
 bool Player_804A6F38::fn_80273518(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out) {
     if (!fn_802413F0()) {
@@ -3394,7 +3403,8 @@ bool Player_804A6F38::fn_80272DCC(const JGeometry::TBox2f* box, s32 layer, s32 s
     return false;
 }
 
-// FIXME: 99.16. Registers only: the grown box lives in f31-f28 from its loads on (ours loads
+// FIXME: 99.16 %, regalloc-only; behaviour clean.
+// Registers only: the grown box lives in f31-f28 from its loads on (ours loads
 // into f0-f3 first). The point loop returns false from inside when all eight points are in the
 // box and breaks out to the slot store (a `for` with a later `i >= 8` test adds a second compare).
 // fn_80272DCC's slot store (without its fn_80249068 test), unless one of the eight points fn_8024B298 gives is inside
@@ -3627,7 +3637,8 @@ bool Player_804A6F38::fn_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 
     return fn_80238548(field_0x4, damage, pos, arg);
 }
 
-// FIXME: 98.54. Structurally done but for the knockback direction: the original also stores
+// FIXME: 98.54 %, missing/extra; behaviour clean.
+// Structurally done but for the knockback direction: the original also stores
 // the TVec2f dir (mPos copy, then the difference) to its stack slot, four dead stfs ours drops;
 // in both hitAngle copies it loads mPos.x before mPos.y. The rest is register allocation
 // (damage r30 / kind r28 / pos r27 there, r27 / r29 / r28 here; the scale constants in f29,
@@ -4019,7 +4030,8 @@ bool Player_804A6F38::fn_80270C88() {
     return fn_80270ABC();
 }
 
-// FIXME: 98.26. Only the first lbz of 0xce8 is hoisted above the prologue's stw r31 / mr in the
+// FIXME: 98.26 %, scheduling; behaviour clean.
+// Only the first lbz of 0xce8 is hoisted above the prologue's stw r31 / mr in the
 // original: the method is const (rules card; 100 % const), which needs fn_802412CC, fn_802411D8,
 // fn_80240808, fn_80247BD4 (tu_8023FBF0) and fn_80270A58 / fn_80270A8C const too; but
 // fn_80247BD4 const drops its inlined copies in fn_8024762C (99.8 -> 99.2), so not yet.
