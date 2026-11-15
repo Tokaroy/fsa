@@ -167,6 +167,8 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     void fn_801339EC();
+    // Not in the binary: a plain function that init inlines.
+    void spawnEmitters();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
