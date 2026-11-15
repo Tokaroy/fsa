@@ -13,6 +13,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: a plain function that update inlines.
+    void setHeading();
     // Slot 0x44: stops the three emitters and forgets them.
     /* 0x44 */ virtual void vfunc_0x44();
     // SHARED-EDIT: carved from u8 field_0x230[0x58] (game/tu_8018EB94.cpp init).
