@@ -427,7 +427,7 @@ void GameRoot_8049EF20::fn_80137300() {
                         }
                     }
                 } else {
-                    u8 inSet;
+                    bool inSet;
                     if (gGameRoot_8053AAF8->field_0x7f != 0) {
                         inSet = isGameModeSetA(gGameRoot_8053AAF8->field_0x4c);
                     } else {
