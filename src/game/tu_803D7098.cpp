@@ -276,8 +276,8 @@ void cls_804B03D8::fn_803D8364() {
                 field_0x79 = field_0x78;
             }
         }
-        field_0x2c->mPane->setAlpha((s32)alpha);
-        field_0x4->search('Paccur01')->setAlpha((s32)alpha);
+        field_0x2c->mPane->setAlpha(alpha);
+        field_0x4->search('Paccur01')->setAlpha(alpha);
         lbl_8053AED8->fn_80440EE8();
     }
 }
@@ -381,21 +381,21 @@ void cls_804B03D8::fn_803D75B0() {
             if (field_0x64 <= 0x14) {
                 if (field_0x6a >= 0) {
                     f32 t = (f32)field_0x64 / 20.0f;
-                    field_0x8->search('P0ka00')->setAlpha((s32)((f32)field_0x7b * t));
+                    field_0x8->search('P0ka00')->setAlpha(((f32)field_0x7b * t));
                     static_cast<J2DPicture*>(field_0x8->search('P0ka00'))->setBlackWhite(
                         static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getBlack(),
                         static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getWhite());
                     J2DPicture::TCornerColor cornerColor;
                     static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getCornerColor(cornerColor);
                     static_cast<J2DPicture*>(field_0x8->search('P0ka00'))->setCornerColor(cornerColor);
-                    field_0x8->search('Pstarli')->setAlpha((s32)((f32)field_0x7d * t));
+                    field_0x8->search('Pstarli')->setAlpha(((f32)field_0x7d * t));
                 }
             } else if (field_0x64 <= 0x28) {
                 f32 t = (f32)(field_0x64 - 0x14) / 20.0f;
                 for (s32 i = 0; i < 4; i++) {
                     for (s32 j = 0; j < 16; j++) {
                         if (field_0x4->search(lbl_80477180[i * 16 + j])->mIsVisible) {
-                            field_0x4->search(lbl_80477180[i * 16 + j])->setAlpha((s32)((f32)field_0x7c * t));
+                            field_0x4->search(lbl_80477180[i * 16 + j])->setAlpha(((f32)field_0x7c * t));
                         }
                     }
                 }
@@ -447,7 +447,7 @@ void cls_804B03D8::fn_803D75B0() {
             field_0x74 = 0;
         }
         s32 step = field_0x74 < 0x3C ? field_0x74 : 0x78 - field_0x74;
-        field_0x4->search(lbl_80477180[64 + field_0x68])->setAlpha((s32)(80.0f * ((f32)step / 60.0f)));
+        field_0x4->search(lbl_80477180[64 + field_0x68])->setAlpha((80.0f * ((f32)step / 60.0f)));
     }
     if (field_0x80 == 2) {
         if (field_0x81 > 0x48) {
