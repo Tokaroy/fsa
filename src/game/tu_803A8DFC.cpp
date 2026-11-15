@@ -1450,17 +1450,12 @@ void ResultScreen_804AF9A0::fn_803AF604() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.89 %, reloc-name; behaviour drift.
-// FIXME: reloc-name only (instructions identical): its function-local point tables
-// are named lbl_80476388.. / lbl_80543378.. in the original, points4$NNN here.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals are not yet
-// in the original order (fn_803AA8F8's ids and lbl_805433B8 are missing in front).
 // Bonus page step as fn_803AE810, by field_0x390, counting field_0x350;
 // with no winner it waits 60 frames instead of sound 0x2D; then state 14.
 void ResultScreen_804AF9A0::fn_803AF1B0() {
-    static const s32 points4[4] = {300, 150, 50, 0};
-    static const s32 points3[3] = {300, 150, 0};
-    static const s32 points2[2] = {150, 0};
+    static const s32 lbl_804763A4[4] = {300, 150, 50, 0};
+    static const s32 lbl_804763B4[3] = {300, 150, 0};
+    static const s32 lbl_80543380[2] = {150, 0};
     // Declared in this order (and values before ranked) as the original's registers and stack slots.
     s32 done = 0;
     s32 best = 0;
@@ -1495,13 +1490,13 @@ void ResultScreen_804AF9A0::fn_803AF1B0() {
                     } else {
                         switch (field_0x450) {
                         case 0:
-                            field_0x330[i] = points4[place];
+                            field_0x330[i] = lbl_804763A4[place];
                             break;
                         case 1:
-                            field_0x330[i] = points3[place];
+                            field_0x330[i] = lbl_804763B4[place];
                             break;
                         case 2:
-                            field_0x330[i] = points2[place];
+                            field_0x330[i] = lbl_80543380[place];
                             break;
                         }
                     }
