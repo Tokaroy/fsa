@@ -20,6 +20,12 @@ public:
     bool fn_801096C8(s32 state);
     bool fn_80109AE0(JGeometry::TVec3f* outPos);
     bool stepRail();
+    // Plain functions without a copy of their own in the original (bottom of the .cpp).
+    void stepSpeed(f32 dist);
+    void approachPlayerSide(JGeometry::TVec3f& ppos);
+    void followPlayerSide(JGeometry::TVec3f& ppos);
+    void spawnEffect33A();
+    void resetAnimFrame();
 
     // fn_8038AD24 takes the position by value; serial and layer are loaded before that copy.
     bool talk(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
