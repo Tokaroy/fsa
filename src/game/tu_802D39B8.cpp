@@ -1487,9 +1487,6 @@ void GameView_804A9950::fn_802D7F84(s32 bit, bool set) {
     }
 }
 
-// FIXME: 85.18 %, scheduling; behaviour clean.
-// Scheduling: the target loads field_0x8 before the stage
-// (field_0x4) and the view; ours loads the stage first.
 bool GameView_804A9950::fn_802D7F40(s32 bit) {
     if (((1 << bit) & getGameView_802D6A9C()->field_0x348[field_0x4][field_0x8]) != 0) {
         return true;
