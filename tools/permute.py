@@ -2428,7 +2428,7 @@ def shared_groups(unit, data, open_fns=None):
             continue
         try:
             c = Ctx(p, fn)
-            sites = outline_sites(c) + outline_sites(c, (K.IF_STMT, K.COMPOUND_STMT, K.SWITCH_STMT), need_local=True)
+            sites = outline_sites(c) + outline_sites(c, (K.IF_STMT, K.COMPOUND_STMT, K.SWITCH_STMT), need_local=True) + run_sites(c)
         except Exception:  # noqa: BLE001
             continue
         for site in sites:
@@ -2439,6 +2439,14 @@ def shared_groups(unit, data, open_fns=None):
         if len(sites) < 2:
             continue
         sites.sort(key=lambda x: x["span"][0])
+        # copies that overlap (a run found from two starting points) count once
+        kept = []
+        for x in sites:
+            if not kept or x["span"][0] >= kept[-1]["span"][1]:
+                kept.append(x)
+        sites = kept
+        if len(sites) < 2:
+            continue
         loop = sites[0]["node"].kind in (K.FOR_STMT, K.WHILE_STMT, K.DO_STMT)
         name = f"{'loop' if loop else 'block'}{sites[0]['line']}_x{len(sites)}".encode()
         while name in data:
