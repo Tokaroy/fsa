@@ -31,10 +31,60 @@ void BgRewrite_804A7C98::fn_802A3D80() {
     field_0x1c = 0;
 }
 
-extern const u16 lbl_8046C4A8[16]; // FIXME(shotgun): not defined in the source yet (unit .rodata)
+static const u16 lbl_8046C4A8[16] = {
+    0x0000, 0x0400, 0x0800, 0x0C00, 0x1000, 0x1400, 0x1800, 0x1C00,
+    0x2000, 0x2400, 0x2800, 0x2C00, 0x3000, 0x3400, 0x3800, 0x3C00,
+};
 
-// FIXME(shotgun): 82.81 %, missing/extra + reloc-name; behaviour drift.
-// rodata table/strings addressed per object (unit .rodata not defined in source)
+static const s32 lbl_8046C4C8[16] = {
+    15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
+};
+
+// Pos offsets of the four directions.
+static const f32 lbl_8046C508[4][2] = {
+    { 16.0f, 0.0f },
+    { -16.0f, 0.0f },
+    { 0.0f, 16.0f },
+    { 0.0f, -16.0f },
+};
+
+// The 4 x 4 tile blocks (patterns of 20 u16: four rows of four tiles and padding).
+static const u16 lbl_8046C528[3][20] = {
+    {
+        0x01B0, 0x01B0, 0x01B0, 0x01B0,
+        0x01B0, 0x01B0, 0x01B0, 0x01B0,
+        0x01B0, 0x01B0, 0x01B0, 0x01B0,
+        0x01B0, 0x01B0, 0x01B0, 0x01B0,
+        0x0000, 0x0000, 0x0000, 0x0000,
+    },
+    {
+        0x01B0, 0x01E1, 0x01E2, 0x01B0,
+        0x01B0, 0x01F1, 0x01F2, 0x01B0,
+        0x01FC, 0x01FD, 0x01FE, 0x01FF,
+        0x020C, 0x020D, 0x020E, 0x020F,
+        0x0000, 0x0000, 0x0000, 0x0000,
+    },
+    {
+        0x01B0, 0x004A, 0x004A, 0x01B0,
+        0x01B0, 0x004A, 0x004A, 0x01B0,
+        0x004B, 0x004A, 0x004A, 0x004C,
+        0x01B0, 0x004D, 0x004D, 0x01B0,
+        0x0000, 0x0000, 0x0000, 0x0000,
+    },
+};
+
+static const u16 lbl_8046C5A0[3][20] = {
+    { 0 },
+    {
+        0x01D0, 0x01D1, 0x01D2, 0x01D3,
+        0x01E0, 0x01E1, 0x01E2, 0x01E3,
+        0x01F0, 0x01F1, 0x01F2, 0x01F3,
+        0x0200, 0x0201, 0x0202, 0x0203,
+        0x0000, 0x0000, 0x0000, 0x0000,
+    },
+    { 0 },
+};
+
 void BgRewrite_804A7C98::fn_802A3A0C() {
     field_0x8--;
     if (field_0x8 == 0) {
@@ -1075,8 +1125,6 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
     return result;
 }
 
-extern const s32 lbl_8046C4C8[16]; // FIXME(shotgun): not defined in the source yet (unit .rodata)
-
 // FIXME(shotgun): 76.81 %, missing/extra; behaviour drift.
 // regalloc/scheduling (cell kept in its own register, index a copy)
 void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB) {
@@ -1117,9 +1165,6 @@ void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 t
         break;
     }
 }
-
-// Pos offsets of the four directions.
-extern const f32 lbl_8046C508[4][2]; // FIXME(shotgun): not defined in the source yet (unit .rodata)
 
 // FIXME(shotgun): 99.07 %, different; behaviour near.
 // 2 opcodes differ
@@ -1315,9 +1360,8 @@ void BgRewrite_804A7C98::fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s
     }
 }
 
-// FIXME(shotgun): 90.27 %, missing/extra; behaviour drift.
-// (register copies of layer / cell)
-void BgRewrite_804A7C98::fn_8029DD50(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d) {
+// Register allocation and placement only: the original copies layer into r27 / r31 inside each branch; ours saves it in r30 before the branch.
+void BgRewrite_804A7C98::fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
     if (vertical == 0) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, a);
         cell++;
@@ -1423,12 +1467,8 @@ void BgRewrite_804A7C98::fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u
     }
 }
 
-// The 4 x 4 tile blocks (patterns of 20 u16: four rows of four tiles and padding).
-extern const u16 lbl_8046C5A0[4][20]; // FIXME(shotgun): not defined in the source yet (unit .rodata)
-extern const u16 lbl_8046C528[3][20]; // FIXME(shotgun): not defined in the source yet (unit .rodata)
-
 // FIXME(shotgun): 91.90 %, missing/extra; behaviour clean.
-// regalloc (cell kept in other registers); pattern tables are externs
+// regalloc (cell kept in other registers)
 void BgRewrite_804A7C98::fn_8029D8F0(const JGeometry::TVec3f* pos, s32 layer, s32 layerOffset, s32 pattern) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = (layer & 0xFE) < 8 ? &view->mVisibleBox : &view->field_0xdc;
