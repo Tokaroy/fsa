@@ -970,7 +970,7 @@ void cls_804A1630::update() {
         box40 = mBox2;
         box40.i.add(pos1c);
         box40.f.add(pos1c);
-        bool hit = false;
+        s32 hit = false;
         if (fn_801F2DB4('HBMB', 'NULL', NULL)) {
             if (mLife != 10000) {
                 hit = true;
