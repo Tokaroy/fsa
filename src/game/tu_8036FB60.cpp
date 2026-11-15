@@ -135,15 +135,15 @@ void cls_804AE4B0::update() {
             field_0x330[i]--;
         }
         work.i.x += field_0x294[i].x;
-        work.f.x += field_0x294[i].x;
         work.i.y += field_0x294[i].y;
+        work.f.x += field_0x294[i].x;
         work.f.y += field_0x294[i].y;
         fn_80239914(&work, field_0x4, mSerial);
         work = box;
     }
     work.i.x += field_0x324.x;
-    work.f.x += field_0x324.x;
     work.i.y += field_0x324.y;
+    work.f.x += field_0x324.x;
     work.f.y += field_0x324.y;
     fn_80239914(&work, field_0x4, mSerial);
     (this->*lbl_804AE420[mState])();

@@ -1707,3 +1707,34 @@ SHARED-EDITS: Player.h fn_80290070 parameter names; extern "C" fn_803020C8(s32, 
   `return hit` gives `mr`, `hit ? true : false` / `hit != false` convert (neg / or / srwi),
   `hit == true` gives subfic / cntlzw, s32 / u32 locals compare with cmpwi / cmplwi.
   fn_80274238, fn_80273E7C, fn_802738F0, fn_80273D44, fn_80273C30 stay 100 %.
+
+## Open problem: the group-count helpers (fn_80248970 / fn_802486A0)
+
+About 100 inlined copies of these two helpers still differ, in roughly 45 functions of
+tu_8023FBF0 (`python3 tools/clones.py --fn game/tu_8023FBF0.cpp fn_802490A8`: the largest open
+function is 88 % such copies). Both helpers match as standalone functions. What is known
+(2026-11-14, measured; N = functions of the unit at 100 %, 196 at the time):
+
+- The difference is registers only, inside the inlined loop: count C, index I, `leader` L, `self` S.
+- In our build S always shares L's register (legal: they live in different branches). In the
+  original they are separate in every copy inlined into a non-const function, and in the copy
+  inlined directly into fn_8024BDBC, the cleanest test: I r30, C r29, S r28, L r27. So in the
+  original MWCC sees S and L live at the same time.
+- Loading `self = field_0x4` before the `leader >= 0` test (with `leader` declared before `self`)
+  reproduces exactly those registers in fn_8024BDBC, but moves the load, so it is not the form:
+  the original still loads it in the else branch.
+- Without effect on N, or worse: all orders and places of declaring `self`, `leader` and `count`
+  (24 combinations: 196 at best, else 190-191); one variable for both values; direct field
+  compares without locals; a while loop; the index declared outside the for; an inline accessor
+  for field_0x4; the loop in a file-static inline `groupSize(const Player*)` that fn_80248970
+  returns (195); 2,000 mechanical rewrites across the eight helpers of the chain.
+- Different callers respond to different helper forms (a combination that takes fn_80245B74 from
+  score 215 to 10 makes fn_8023FC5C and fn_80243234 worse), which hints at two source shapes.
+- Not tried: the helper as an inline member defined in the class; a non-const twin used by the
+  non-const callers; a narrower type (s16 / u8) for the helper's values; `leader` or `self` as
+  the parameter of an inline per-player helper called from the loop.
+
+Judge any new form first by fn_8024BDBC's copy, then by N (`python3 tools/try.py
+game/tu_8023FBF0.cpp`), then polish with `python3 tools/permute.py --callees --units
+game/tu_8023FBF0`.
+

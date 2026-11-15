@@ -1148,8 +1148,8 @@ void cls_804A7AE0::update() {
                             b.f.x = 10.0f;
                             b.f.y = 10.0f;
                             b.i.x += actor->mPos.x;
-                            b.f.x += actor->mPos.x;
                             b.i.y += actor->mPos.y;
+                            b.f.x += actor->mPos.x;
                             b.f.y += actor->mPos.y;
                             fn_80239914(&b, 0, mSerial);
                         }
@@ -1287,8 +1287,8 @@ void cls_804A7AE0::update() {
                             b.f.x = 10.0f;
                             b.f.y = 10.0f;
                             b.i.x += actor->mPos.x;
-                            b.f.x += actor->mPos.x;
                             b.i.y += actor->mPos.y;
+                            b.f.x += actor->mPos.x;
                             b.f.y += actor->mPos.y;
                             fn_80239914(&b, 0, mSerial);
                         }
@@ -1320,8 +1320,8 @@ void cls_804A7AE0::update() {
                 b.f.x = 4.0f;
                 b.f.y = 4.0f;
                 b.i.x += field_0x2dc[i].x;
-                b.f.x += field_0x2dc[i].x;
                 b.i.y += field_0x2dc[i].y;
+                b.f.x += field_0x2dc[i].x;
                 b.f.y += field_0x2dc[i].y;
                 s32 v = (field_0x90 >> 7) & 0x1F;
                 fn_80239914(&b, v != 0 ? v + 7 : 0, mSerial);
