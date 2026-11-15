@@ -111,7 +111,7 @@ void cls_804A5F40::fn_8020C6E8() {
     }
 }
 
-// FIXME(shotgun): 99.27 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.87 %, reloc-name; behaviour clean.
 void cls_804A5F40::vfunc_0x90(u8 mapHit) {
     fn_8020C6E8();
     switch (mState) {
