@@ -212,7 +212,7 @@ void cls_804A1630::init() {
         break;
     case 6:
         field_0x1a8 = false;
-        field_0x30c = 0.2f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f) + 0.1f;
+        field_0x30c = 0.2f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.1f;
         mState = 0x15;
         break;
     case 7:
@@ -222,7 +222,7 @@ void cls_804A1630::init() {
         mState = 0x17;
         break;
     case 8:
-        field_0x26c = (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 0x13;
+        field_0x26c = (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x13;
         field_0x1a8 = false;
         mState = 0x19;
         break;
@@ -239,7 +239,7 @@ void cls_804A1630::init() {
         mState = 0x19;
         break;
     case 10:
-        field_0x26c = (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 0x10;
+        field_0x26c = (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x10;
         field_0x1a8 = false;
         mState = 0x19;
         break;
