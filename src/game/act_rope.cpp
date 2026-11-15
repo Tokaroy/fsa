@@ -41,7 +41,8 @@ void Rope_804A3A68::init() {
     mAnim.fn_801D1D60();
 }
 
-// FIXME: 97.8 %. Only the integer registers of the target search differ: the
+// FIXME: 97.84 %, different; behaviour clean.
+// Only the integer registers of the target search differ: the
 // original keeps found in r27, dir in r28 and i in r29 (the zeros copied with
 // mr from r27, and found = dir = 1 as li/mr in the last branch); ours puts
 // found in r29 and i in r27.
@@ -138,7 +139,8 @@ void Rope_804A3A68::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 99.12 %. Regalloc only: the original loads mSpeed into f2 and the
+// FIXME: 99.12 %, regalloc-only; behaviour clean.
+// Regalloc only: the original loads mSpeed into f2 and the
 // 0.9090909f constant into f1 (ours the reverse).
 void Rope_804A3A68::vfunc_0x94() {
     mAnim.fn_801D2264(field_0x98, 2);
