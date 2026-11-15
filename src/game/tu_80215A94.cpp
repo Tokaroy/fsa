@@ -243,13 +243,13 @@ void cls_80215E48::fn_80215B6C(s32 index) {
     }
 }
 
-// FIXME(shotgun): 85.09 %, missing/extra; behaviour drift.
 s32 cls_80215E48::fn_80215A94() {
-    s32 count = mCount;
     s32 result = -1;
-    if (count >= 2 && count - 1 == fn_80215E98()) {
+    if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
+        s32 count = mCount;
         for (s32 i = 0; i < count; i++) {
-            if (mEntries[i].mKey < 0 && fn_801CD2F8(getPlayerLayer_8023DE58(i))) {
+            bool finished = fn_80215E48(i) >= 0;
+            if (!finished && fn_801CD2F8(getPlayerLayer_8023DE58(i))) {
                 result = i;
                 break;
             }
