@@ -311,7 +311,7 @@ void OkameSan_804A3448::update() {
                 !fn_80230188(i) && !fn_8022DCD8(i)) {
                 f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
                 f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
-                bool vertical = (field_0x98 & 2) != 0;
+                s32 vertical = (field_0x98 & 2) != 0;
                 if ((!vertical && dy < 16.0f) || (vertical && dx < 16.0f)) {
                     JGeometry::TVec3f out1;
                     JGeometry::TVec3f out2;
