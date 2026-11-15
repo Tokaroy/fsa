@@ -954,7 +954,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.57 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1650,7 +1650,7 @@ void cls_804A7AE0::vfunc_0x24() {
 }
 
 // Remaining: three `cmplwi 1` bool tests and minor fp/gpr register swaps.
-// FIXME: 97.56 %, missing/extra; behaviour drift.
+// FIXME: 98.42 %, missing/extra; behaviour drift.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
