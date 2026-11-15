@@ -12,65 +12,76 @@
 static const s16 lbl_80463FD0[] = {0, 3, 1, 2, 2, 2, 3, 3, 4, 3, 5, 3, -1, -1};
 static const s16* lbl_80539ED0[] = {lbl_80463FD0, NULL};
 
-// The swing (state 0 and 2): moves mPos.x between mHomePos.x +- 8 * field_0x280
-// with a speed that falls off near the ends.
-static inline void swing(Cannon_8049CCF0* c) {
-    if (c->field_0x280 <= 0.0f) {
-        return;
-    }
-    f32 speed;
-    f32 rate;
-    switch (c->field_0x27c) {
-    case 1:
-        speed = 1.0f;
-        rate = 4.0f;
-        break;
-    default:
-        speed = 0.5f;
-        rate = 2.0f;
-        break;
-    }
-    f32 dist = __fabsf((c->mPos.x - c->mHomePos.x) / (8.0f * c->field_0x280));
-    if (dist >= 0.8f) {
-        speed -= rate * (dist - 0.8f);
-    }
-    if (c->field_0x268 != 0) {
-        c->field_0x3c.x = speed;
-        c->field_0x3c.y = 0.0f;
-        c->field_0x3c.z = 0.0f;
-    } else {
-        c->field_0x3c.x = -speed;
-        c->field_0x3c.y = 0.0f;
-        c->field_0x3c.z = 0.0f;
-    }
-    c->mPos += c->field_0x3c;
-    if (c->mPos.x >= c->mHomePos.x + 8.0f * c->field_0x280) {
-        c->mPos.x = c->mHomePos.x + 8.0f * c->field_0x280;
-        c->field_0x268 = 0;
-    } else if (c->mPos.x <= c->mHomePos.x - 8.0f * c->field_0x280) {
-        c->mPos.x = c->mHomePos.x - 8.0f * c->field_0x280;
-        c->field_0x268 = 1;
-    }
+Cannon_8049CCF0::Cannon_8049CCF0() {
+    field_0x268 = 1;
+    field_0x269 = 0;
+    field_0x26a = 0;
+    field_0x26c = -1;
+    field_0x270 = 0;
+    field_0x274 = 0;
+    field_0x278 = 0;
+    field_0x27c = 0;
+    field_0x280 = 0.0f;
+    field_0x284 = 0.0f;
+    mHomePos.x = 0.0f;
+    mHomePos.y = 0.0f;
+    mHomePos.z = 0.0f;
 }
 
-// Returns the first player that can take the cannon, or -1.
-static inline s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box) {
-    for (s32 i = 0; i < 4; i++) {
-        u8 bit = 1 << i;
-        if ((gGameRoot_8053AAF8->mPlayerMask & bit) != 0 || fn_8022CAF8(i) == 4) {
-            if (fn_8023B0F4(i, box, c->field_0x4, false, 1000.0f)) {
-                if (c->field_0x26c < 0) {
-                    if (fn_8023162C(i, c->mSerial)) {
-                        return i;
-                    }
-                }
-            }
+Cannon_8049CCF0::~Cannon_8049CCF0() {}
+
+f32 Cannon_8049CCF0::fn_801080B8() const {
+    if (field_0x4 == 0) {
+        return 8.0f;
+    }
+    if (field_0x26a != 0) {
+        return 8.0f;
+    }
+    return 13.0f;
+}
+
+void readSwingRange(Cannon_8049CCF0* self);
+
+void Cannon_8049CCF0::init() {
+    if ((field_0x90 & 0xF) == 1) {
+        field_0x274 = 1;
+    }
+    field_0x27c = field_0x90 >> 4 & 0xF;
+    readSwingRange(this);
+    if ((field_0x90 >> 16 & 1) == 1) {
+        field_0x26a = 1;
+    } else {
+        field_0x26a = 0;
+    }
+    mBox.set(-8.0f, -8.0f, 8.0f, -6.0f);
+    mBox2.set(mBox);
+    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mLife = 0;
+    field_0xb0 = 0x50303;
+    mAnim.fn_801D2608(lbl_80539ED0, 1);
+    mAnim.startAnim_801D22DC(0, 2, false);
+    mAnim.fn_801D1F14(0.0f);
+    mHomePos.set(mPos);
+    if (vfunc_0x3C()) {
+        if (vfunc_0x34()) {
+            field_0x269 = 1;
         }
     }
-    return -1;
 }
 
-// FIXME: 95.54 %, missing/extra + reloc-name; behaviour drift.
+void swing(Cannon_8049CCF0* c);
+
+s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box);
+
+void setBounceHeight(Cannon_8049CCF0* self, s16 a);
+
+void updateRecoil(Cannon_8049CCF0* self);
+
+void updateRise(Cannon_8049CCF0* self);
+
+void spawnTakenEffect(Cannon_8049CCF0* self);
+
+// FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
 void Cannon_8049CCF0::update() {
     if (vfunc_0x3C()) {
         if (field_0x274 == 0 || field_0x274 == 1) {
@@ -79,7 +90,7 @@ void Cannon_8049CCF0::update() {
                 return;
             }
             if (field_0x269 == 0) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 0, 0, NULL, NULL, true, 1.5f);
+                spawnTakenEffect(this);
                 startSound_801F0E34(0x30003, 0);
                 fn_801F0D20(0x42);
             }
@@ -114,12 +125,7 @@ void Cannon_8049CCF0::update() {
         break;
     case 2:
         swing(this);
-        field_0x284 += 0.05f;
-        {
-            f32 t = 2.0f * (0.5f - field_0x284);
-            JGeometry::TVec3f v(0.0f, t, 0.0f);
-            mPos += v;
-        }
+        updateRise(this);
         if (mPos.y < mHomePos.y) {
             mPos.y = mHomePos.y;
         }
@@ -129,8 +135,7 @@ void Cannon_8049CCF0::update() {
         field_0x270++;
         if (field_0x270 >= 180 && field_0x270 < 300) {
             s16 a = (field_0x270 - 180) * (field_0x270 - 180) / 6;
-            f32 sinv = JMath::sincosTable_.sinDegree(a);
-            mPos.y = mHomePos.y + (f32)(12 * ((200 - (field_0x270 - 180)) / 200) + 2) * sinv;
+            setBounceHeight(this, a);
         } else if (field_0x270 >= 300) {
             fn_80231590(field_0x26c, mSerial);
         }
@@ -176,47 +181,32 @@ void Cannon_8049CCF0::update() {
         }
         break;
     case 3:
-        static s32 lbl_8053AA70 = 0;
-        static f32 lbl_8053AA78 = 0.0f;
-        lbl_8053AA78 = lbl_8053AA78 + 0.1f;
-        if (lbl_8053AA78 >= 1.0f) {
-            lbl_8053AA78 = 1.0f;
-        }
-        lbl_8053AA70++;
-        {
-            f32 tmp;
-            if (lbl_8053AA78 <= 0.2f) {
-                tmp = 12.0f * (0.5f - lbl_8053AA78);
-            } else {
-                tmp = 4.0f * (0.2f - lbl_8053AA78);
-            }
-            JGeometry::TVec3f v(0.0f, tmp, 0.0f);
-            mPos += v;
-        }
-        if (mPos.y < mHomePos.y) {
-            mPos.y = mHomePos.y;
-        }
-        {
-            bool done = false;
-            if (lbl_8053AA78 >= 1.0f) {
-                if (lbl_8053AA70 >= 30) {
-                    lbl_8053AA70 = 0;
-                    lbl_8053AA78 = 0.0f;
-                    done = true;
-                }
-            }
-            if (done) {
-                field_0x270 = 0;
-                field_0x26c = -1;
-                field_0x274 = 0;
-            }
-        }
+        updateRecoil(this);
         break;
     }
     mAnim.fn_801D1C18();
 }
 
-// FIXME: 98.23 %, missing/extra + reloc-name; behaviour clean.
+void Cannon_8049CCF0::draw() {
+    if (vfunc_0x3C()) {
+        if (field_0x274 == 0 || field_0x274 == 1) {
+            if (!vfunc_0x34()) {
+                return;
+            }
+        }
+    }
+    SpriteParams_801F5AE0 params;
+    params.field_0x1d = 1;
+    s32 frame = mAnim.mCel + 0x14C;
+    JGeometry::TVec3f* pos = &mPos;
+    if (field_0x4 < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
+        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
+    }
+    fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
+}
+
+// FIXME: 98.39 %, missing/extra; behaviour clean.
 bool Cannon_8049CCF0::fn_80107360() {
     if (field_0x274 != 2) {
         return false;
@@ -246,79 +236,123 @@ bool Cannon_8049CCF0::fn_80107360() {
     return true;
 }
 
-void Cannon_8049CCF0::draw() {
-    if (vfunc_0x3C()) {
-        if (field_0x274 == 0 || field_0x274 == 1) {
-            if (!vfunc_0x34()) {
-                return;
+// From here down: plain functions that update and init inline and whose own copies the linker
+// dropped. The original's .sdata2 has their literals ahead of fn_80107360's, in the order of these
+// functions from the bottom of the file up, so they were generated before it (tools/pool.py).
+void readSwingRange(Cannon_8049CCF0* self) {
+    self->field_0x280 = (f32)(self->field_0x90 >> 8 & 0x1F);
+}
+
+// The swing (state 0 and 2): moves mPos.x between mHomePos.x +- 8 * field_0x280
+// with a speed that falls off near the ends.
+void swing(Cannon_8049CCF0* c) {
+    if (c->field_0x280 <= 0.0f) {
+        return;
+    }
+    f32 speed;
+    f32 rate;
+    switch (c->field_0x27c) {
+    case 1:
+        speed = 1.0f;
+        rate = 4.0f;
+        break;
+    default:
+        speed = 0.5f;
+        rate = 2.0f;
+        break;
+    }
+    f32 dist = __fabsf((c->mPos.x - c->mHomePos.x) / (8.0f * c->field_0x280));
+    if (dist >= 0.8f) {
+        speed -= rate * (dist - 0.8f);
+    }
+    if (c->field_0x268 != 0) {
+        c->field_0x3c.x = speed;
+        c->field_0x3c.y = 0.0f;
+        c->field_0x3c.z = 0.0f;
+    } else {
+        c->field_0x3c.x = -speed;
+        c->field_0x3c.y = 0.0f;
+        c->field_0x3c.z = 0.0f;
+    }
+    c->mPos += c->field_0x3c;
+    if (c->mPos.x >= c->mHomePos.x + 8.0f * c->field_0x280) {
+        c->mPos.x = c->mHomePos.x + 8.0f * c->field_0x280;
+        c->field_0x268 = 0;
+    } else if (c->mPos.x <= c->mHomePos.x - 8.0f * c->field_0x280) {
+        c->mPos.x = c->mHomePos.x - 8.0f * c->field_0x280;
+        c->field_0x268 = 1;
+    }
+}
+
+void spawnTakenEffect(Cannon_8049CCF0* self) {
+    spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x503, 0, 0, NULL, NULL, true, 1.5f);
+}
+
+// Returns the first player that can take the cannon, or -1.
+s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box) {
+    for (s32 i = 0; i < 4; i++) {
+        u8 bit = 1 << i;
+        if ((gGameRoot_8053AAF8->mPlayerMask & bit) != 0 || fn_8022CAF8(i) == 4) {
+            if (fn_8023B0F4(i, box, c->field_0x4, false, 1000.0f)) {
+                if (c->field_0x26c < 0) {
+                    if (fn_8023162C(i, c->mSerial)) {
+                        return i;
+                    }
+                }
             }
         }
     }
-    SpriteParams_801F5AE0 params;
-    params.field_0x1d = 1;
-    s32 frame = mAnim.mCel + 0x14C;
-    JGeometry::TVec3f* pos = &mPos;
-    if (field_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
-    }
-    fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
+    return -1;
 }
 
-// FIXME: 98.75 %, reloc-name; behaviour clean.
-f32 Cannon_8049CCF0::fn_801080B8() const {
-    if (field_0x4 == 0) {
-        return 8.0f;
+void updateRise(Cannon_8049CCF0* self) {
+    self->field_0x284 += 0.05f;
+    {
+        f32 t = 2.0f * (0.5f - self->field_0x284);
+        JGeometry::TVec3f v(0.0f, t, 0.0f);
+        self->mPos += v;
     }
-    if (field_0x26a != 0) {
-        return 8.0f;
-    }
-    return 13.0f;
 }
 
-Cannon_8049CCF0::~Cannon_8049CCF0() {}
-
-// FIXME: 99.69 %, reloc-name; behaviour clean.
-void Cannon_8049CCF0::init() {
-    if ((field_0x90 & 0xF) == 1) {
-        field_0x274 = 1;
+void updateRecoil(Cannon_8049CCF0* self) {
+    static s32 lbl_8053AA70 = 0;
+    static f32 lbl_8053AA78 = 0.0f;
+    lbl_8053AA78 = lbl_8053AA78 + 0.1f;
+    if (lbl_8053AA78 >= 1.0f) {
+        lbl_8053AA78 = 1.0f;
     }
-    field_0x27c = field_0x90 >> 4 & 0xF;
-    field_0x280 = (f32)(field_0x90 >> 8 & 0x1F);
-    if ((field_0x90 >> 16 & 1) == 1) {
-        field_0x26a = 1;
-    } else {
-        field_0x26a = 0;
+    lbl_8053AA70++;
+    {
+        f32 tmp;
+        if (lbl_8053AA78 <= 0.2f) {
+            tmp = 12.0f * (0.5f - lbl_8053AA78);
+        } else {
+            tmp = 4.0f * (0.2f - lbl_8053AA78);
+        }
+        JGeometry::TVec3f v(0.0f, tmp, 0.0f);
+        self->mPos += v;
     }
-    mBox.set(-8.0f, -8.0f, 8.0f, -6.0f);
-    mBox2.set(mBox);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
-    mLife = 0;
-    field_0xb0 = 0x50303;
-    mAnim.fn_801D2608(lbl_80539ED0, 1);
-    mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
-    mHomePos.set(mPos);
-    if (vfunc_0x3C()) {
-        if (vfunc_0x34()) {
-            field_0x269 = 1;
+    if (self->mPos.y < self->mHomePos.y) {
+        self->mPos.y = self->mHomePos.y;
+    }
+    {
+        bool done = false;
+        if (lbl_8053AA78 >= 1.0f) {
+            if (lbl_8053AA70 >= 30) {
+                lbl_8053AA70 = 0;
+                lbl_8053AA78 = 0.0f;
+                done = true;
+            }
+        }
+        if (done) {
+            self->field_0x270 = 0;
+            self->field_0x26c = -1;
+            self->field_0x274 = 0;
         }
     }
 }
 
-// FIXME: 99.85 %, reloc-name; behaviour clean.
-Cannon_8049CCF0::Cannon_8049CCF0() {
-    field_0x268 = 1;
-    field_0x269 = 0;
-    field_0x26a = 0;
-    field_0x26c = -1;
-    field_0x270 = 0;
-    field_0x274 = 0;
-    field_0x278 = 0;
-    field_0x27c = 0;
-    field_0x280 = 0.0f;
-    field_0x284 = 0.0f;
-    mHomePos.x = 0.0f;
-    mHomePos.y = 0.0f;
-    mHomePos.z = 0.0f;
+void setBounceHeight(Cannon_8049CCF0* self, s16 a) {
+    f32 sinv = JMath::sincosTable_.sinDegree(a);
+    self->mPos.y = self->mHomePos.y + (f32)(12 * ((200 - (self->field_0x270 - 180)) / 200) + 2) * sinv;
 }

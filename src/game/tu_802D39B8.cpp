@@ -289,7 +289,7 @@ bool fn_802DEDFC(const s32* dir) {
 // Not auto-inlined: fn_802D4CCC calls fn_802DED40 and fn_802DEC40 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 78.00 %, missing/extra; behaviour near.
+// FIXME(shotgun): 92.60 %, missing/extra; behaviour near.
 // (view reload after __shl2i)
 s32 fn_802DED40(s32 layer, s32 slot) {
     return getGameView_802D6A9C()->fn_802D7B34(layer, slot);
@@ -312,19 +312,14 @@ bool fn_802DEBF8(void) {
     return false;
 }
 
-// FIXME: 92.73 %, different; behaviour near.
-// Same as fn_802DE9A0: the target reloads the view (lwz 0xc off the kept gGameRoot_8053AAF8->0x4)
-// for the stage >= 13 test and falls through to it; ours threads the (9, x) miss straight to false.
 // Stage (9, 3), or stage 13 and up, with gGameRoot_8053AAF8->0x7F set (vfunc_0x10 inlines it).
+// FIXME: 94.50 %, missing/extra; behaviour near.
 bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-    if (sub->mView->field_0x4 == 9 && sub->mView->field_0x8 == 3) {
-        return true;
-    }
-    if (sub->mView->field_0x4 >= 13) {
+    if ((getGameView_802D6A9C()->field_0x4 == 9 && getGameView_802D6A9C()->field_0x8 == 3) ||
+        getGameView_802D6A9C()->field_0x4 >= 13) {
         return true;
     }
     return false;
@@ -575,7 +570,7 @@ void GameView_804A9950::vfunc_0xC() {
     }
 }
 
-// FIXME: 99.09 %, different; behaviour near.
+// FIXME: 99.31 %, missing/extra; behaviour near.
 // Two instructions: in the inlined fn_802DEBA0 the target reloads the view
 // for the stage >= 13 test, as fn_802DEBA0 itself does (see there).
 void GameView_804A9950::vfunc_0x10() {
@@ -973,11 +968,9 @@ void GameView_804A9950::fn_802DA788() {
     }
 }
 
-// FIXME: 94.59 %, different; behaviour clean.
-// Regalloc in the actor loop (the target keeps i, i * 4 and the end in r28,
-// r29, r30, starting i * 4 with mr from i where ours uses li: try.py counts those as
-// 3 differing opcodes) and reloc-name: -70.0f / 70.0f are pooled after literals of
-// functions not written yet (lbl_80541160 / lbl_80541164).
+// FIXME: 98.95 %, regalloc-only; behaviour clean.
+// FIXME: regalloc-only; target assigns i, i * 4, end to r28, r29, r30 (ours: r29, r30, r28).
+// Also reloc-name: -70.0f / 70.0f are pooled after literals of functions not written yet.
 u8 GameView_804A9950::fn_802DA630() {
     u8 busy = fn_802DA000();
     if (busy == 0) {
@@ -987,16 +980,18 @@ u8 GameView_804A9950::fn_802DA630() {
         } else {
             dx = 70.0f;
         }
-        for (int i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        JGeometry::TVec3f pos;
+        int i;
+        for (i = 0; i < 4; i++) {
+            pos = *getPlayerPos_8023E724(i);
             pos.x += dx;
             fn_80230498(i, &pos, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
         s32 end = getActorManager_801F856C()->mActorEnd;
-        for (int i = 0; i < end; i++) {
+        for (i = 0; i < end; i++) {
             cls_804AB528* actor = (cls_804AB528*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_OSIN && actor->field_0x230 == 2) {
-                JGeometry::TVec3f pos = actor->mPos;
+                pos = actor->mPos;
                 pos.x += dx;
                 actor->mPos = pos;
                 break;
@@ -1119,7 +1114,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
     return "0";
 }
 
-// FIXME: 99.46 %, different; behaviour drift.
+// FIXME: 99.53 %, missing/extra; behaviour drift.
 // Structurally close, two instructions: in the inlined fn_802DEBA0 the target
 // reloads the view for the stage >= 13 test (the fn_802DEBA0 family). The .rodata strings
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
@@ -1206,7 +1201,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.45 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.59 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1268,7 +1263,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 96.23 %, different + reloc-name; behaviour near.
+// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it), computes the inlined fn_802D766C's slot
 // before its flag test, and extracts both screen bytes before the first compare in the key
@@ -1543,8 +1538,7 @@ void GameView_804A9950::fn_802D7BE8(s32 layer, s32 slot, u32 value) {
 // Regalloc only: the target keeps the shift count in r31 and the slot index in r30; ours swaps them.
 s32 GameView_804A9950::fn_802D7B34(s32 layer, s32 slot) {
     s32 idx = layer < 8 ? 0 : layer - 7;
-    s32 shift = 60 - slot * 4;
-    return (getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] & (0xFULL << shift)) >> shift;
+    return (getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] & (0xFULL << (60 - slot * 4))) >> (60 - slot * 4);
 }
 
 // The screen's 64-bit mask for the layer (fn_802D4768-fn_802D4ADC inline it).
@@ -2495,17 +2489,12 @@ void GameView_804A9950::fn_802D4874(s32 layer, u16 id, u64* outBit, u64* outMask
     *outMask = fn_802D7AC4(layer);
 }
 
-// FIXME: 99.48 %, regalloc-only; behaviour clean.
-// FIXME: regalloc only (slot/gGameRoot register swap); behaviour clean.
-// Scheduling and regalloc, as fn_802D4C10: the target adds the view to i * 2
-// before the slot row in the search loop.
 void GameView_804A9950::fn_802D4768(s32 layer, u16 id, s64* outSlot, u64* outMask) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     s32 i;
     for (i = 0x3C; i > 0; i -= 4) {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        if (view->field_0x2948[slot][i] == 0) {
-            view->field_0x2948[slot][i] = id;
+        if (getGameView_802D6A9C()->field_0x2948[slot][i] == 0) {
+            getGameView_802D6A9C()->field_0x2948[slot][i] = id;
             break;
         }
     }
@@ -2525,9 +2514,9 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // Reads the stage's map CSV: the start screen, the stage settings (field_0x34-0x58) and
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
-// Still differs: the 0xFF fill keeps an inner-loop guard (li 0; cmpwi 10) the original lacks, and the
-// map500 line skip is not rotated with a guard as in the original.
-// FIXME: 99.13 %, missing/extra; behaviour near.
+// Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6),
+// and str[idx + const] swaps the add operands.
+// FIXME: 99.37 %, missing/extra; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
@@ -2687,16 +2676,17 @@ void GameView_804A9950::fn_802D3D48() {
         field_0x14 = 1;
         field_0x18 = 1;
         s32 pos = 0;
-        s32 lines = 0;
-        while (line != lines) {
-            while (true) {
-                if (str[pos] == (u8)'\r' && str[pos + 1] == (u8)'\n') {
-                    pos += 2;
-                    lines++;
-                    break;
+        if (line != col) {
+            do {
+                while (true) {
+                    if (str[pos] == (u8)'\r' && str[pos + 1] == (u8)'\n') {
+                        pos += 2;
+                        col++;
+                        break;
+                    }
+                    pos++;
                 }
-                pos++;
-            }
+            } while (line != col);
         }
         u8 value = str[pos] - '0';
         if (str[pos + 1] != (u8)',' && str[pos + 1] != (u8)'\r') {
