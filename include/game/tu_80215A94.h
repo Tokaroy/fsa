@@ -56,8 +56,8 @@ struct cls_80215E48 {
     void fn_80215DB8();
     // Number of entries whose mKey is not negative.
     s32 fn_80215E98();
-    // Starts every entry's stopwatch with its mId and mKey.
-    void fn_80215ECC();
+    // Records every entry's displayed stopwatch time with its mId and mKey.
+    void fn_80215ECC() const;
     // True when some entry with a negative mKey has its stopwatch at the
     // 2 minute limit.
     bool fn_8021606C() const;

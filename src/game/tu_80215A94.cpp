@@ -146,15 +146,9 @@ void cls_80215E48::fn_80215F30() {
     }
 }
 
-// FIXME: 89.48 %, different; behaviour drift.
-void cls_80215E48::fn_80215ECC() {
-    s32 count = mCount;
-    cls_80216238* entry = mEntries;
-    // FIXME: 89.48 %. The original keeps the entry walk off `this` (lwz
-    // 0x4(r30), addi 0x1c) with the count loaded first; ours adds 4 first.
-    for (s32 i = 0; i < count; i++) {
-        entry->mWatch.fn_801ED3DC(entry->mId, entry->mKey);
-        entry++;
+void cls_80215E48::fn_80215ECC() const {
+    for (s32 i = 0; i < mCount; i++) {
+        mEntries[i].mWatch.fn_801ED3DC(mEntries[i].mId, mEntries[i].mKey);
     }
 }
 
