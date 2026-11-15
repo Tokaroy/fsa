@@ -213,7 +213,7 @@ void SeesawLift_804AD348::fn_8035AA54() {
     if (all && __fabsf(field_0x240) < 33.0f) {
         near = true;
     }
-    BOOL flag = near;
+    bool flag = near;
     if (!gGameRoot_8053AAF8->field_0x7e) {
         bool owned = fn_8022CAF8(0) == 1;
         flag = near & owned;
@@ -624,7 +624,7 @@ void SeesawLift_804AD348::fn_803584C0() {
         }
     }
     if (field_0x250 == -1) {
-        for (s16 i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (field_0x246[i] != 0) {
                 if (field_0x246[0] == 0) {
                     field_0x250 = 6;
