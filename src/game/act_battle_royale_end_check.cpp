@@ -146,6 +146,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D69AC() {
     }
 }
 
+// FIXME: 99.78 %, regalloc-only; behaviour clean.
 void BattleRoyaleEndCheck_804B0380::fn_803D6730() {
     // FIXME: 99.78 %. Regalloc only: the original loads mWinner into r4 and the
     // camera into r5 before the move; this puts them the other way round.
