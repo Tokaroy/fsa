@@ -149,7 +149,7 @@ void cls_8049D940::update() {
     field_0x238.fn_801D1C18();
 }
 
-// FIXME: 98.09 %, scheduling + reloc-name; behaviour drift.
+// FIXME: 98.13 %, scheduling; behaviour clean.
 // The only differences are the literal references (lbl_ in the
 // original, @NNN here: data split) and &mPos, which the original computes a
 // few instructions earlier, before the layer test.
@@ -229,7 +229,7 @@ s32 cls_8049D940::vfunc_0x5C() {
     }
 }
 
-// FIXME: 94.36 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 94.46 %, scheduling+regalloc; behaviour drift.
 // register allocation and instruction scheduling
 // in cases 9, 10 and 11, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115F9C(s32 index) {
@@ -332,7 +332,7 @@ void cls_8049D940::updateDescent() {
 // Not auto-inlined: fn_80115BC4 calls fn_80115D8C out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 98.22 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 98.67 %, regalloc-only; behaviour clean.
 // FPR allocation in the distance and target position
 // math, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
@@ -371,7 +371,7 @@ void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
 // Not auto-inlined: fn_80115A7C calls fn_80115BC4 out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 92.98 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 93.25 %, missing/extra; behaviour near.
 // one extra frsp after the __fsel
 // (the intrinsic returns a double; the original scales by the fsel result directly),
 // plus .sdata2 literal symbol names.
