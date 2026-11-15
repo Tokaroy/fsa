@@ -9,10 +9,10 @@
 #include "game/cls_804AE9B0.h"
 #include "game/act/act_vaati_time_up.h"
 
-// FIXME: 99.38 %, operands + reloc-name; behaviour clean.
+// FIXME: 99.51 %, operands; behaviour clean.
 // mPos.y's sum takes f4/f5 where the original uses f5/f6, the
-// u32-to-float conversions differ in one li, the epilogue reloads r0 and r31 in
-// the other order, and the unit's .sdata2 literals are not split (@NNN).
+// u32-to-float conversions differ in one li, and the epilogue reloads r0 and r31 in
+// the other order.
 void VaatiTimeUp_804ACCC0::init() {
     cls_801EBA14 rec;
 
@@ -57,8 +57,9 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2b8 = 1;
 }
 
-// FIXME: 95.89 %, missing/extra + reloc-name; behaviour drift.
-// FIXME(shotgun): the original also compares the field_0x290/field_0x294 distance with an unused result before atan2; not reproduced. Literal names differ.
+// FIXME: 96.07 %, missing/extra; behaviour drift.
+// FIXME(shotgun): the original's copy of pickTarget keeps the compare of the squared distance
+// with 0.0f (fcmpo, cror, no branch) although its result is unused; ours drops it.
 void VaatiTimeUp_804ACCC0::update() {
     if (field_0x2b8 != 0) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
@@ -115,19 +116,7 @@ void VaatiTimeUp_804ACCC0::update() {
         }
         break;
     case 3:
-        if (field_0x2c4 <= 0 || (field_0x2c0 <= 0 && mPos.x >= field_0x290 && mPos.y >= field_0x294)) {
-            if (field_0x2c0 <= 0) {
-                field_0x290 = mViewBox.i.x - 192.0f;
-                field_0x294 = (mViewBox.i.y + mViewBox.f.y) * 0.5f + 96.0f;
-            }
-            field_0x2d0 = (u16)(10430.378f * JMath::atanTable_.atan2_(field_0x290 - mPos.x, field_0x294 - mPos.y));
-            field_0x2c4 = 6;
-        }
-        addCalcAngle2_801F714C(&field_0x2cc, field_0x2d0, 20, 0x1000);
-        field_0x2a0 = 6.0f * JMath::sincosTable_.sinShort(field_0x2cc);
-        field_0x2a4 = 6.0f * JMath::sincosTable_.cosShort(field_0x2cc);
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.1f, 0.2f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.1f, 0.2f);
+        steer();
         field_0x2c4--;
         mPos += field_0x3c;
         field_0x230.fn_801EB418(&mPos);
@@ -168,9 +157,6 @@ void VaatiTimeUp_804ACCC0::update() {
 // Frame offsets of the "enemy_gc_sob.bin" sprite, indexed by field_0x2c8.
 static const s32 lbl_80472288[4] = {0, 1, 0, 2};
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// Only the 1.0f literal: the unit's .sdata2 is not split
-// (lbl_80542750 vs @NNN).
 void VaatiTimeUp_804ACCC0::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x2d = 1;
@@ -178,6 +164,39 @@ void VaatiTimeUp_804ACCC0::draw() {
     params.field_0x1d = 1;
     params.field_0x30 = 8;
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x466 + lbl_80472288[field_0x2c8], &params, 7, 1.0f, 1.0f);
+}
+
+// The two functions below are plain functions that update inlines (state 3) and whose own copies
+// the linker dropped: the original's .sdata2 starts with 192.0f, 96.0f, 0.5f, 0.0f (pickTarget)
+// and 10430.378f, 6.0f, 0.1f, 0.2f (steer), ahead of draw's 1.0f, so they were generated before
+// draw (tools/pool.py).
+
+// Every 6 frames (or once past the target with the timer up) takes the angle to the target, then
+// turns towards it and eases the velocity to speed 6 in that direction.
+void VaatiTimeUp_804ACCC0::steer() {
+    if (field_0x2c4 <= 0 || (field_0x2c0 <= 0 && mPos.x >= field_0x290 && mPos.y >= field_0x294)) {
+        pickTarget();
+        field_0x2d0 = (u16)(10430.378f * JMath::atanTable_.atan2_(field_0x290 - mPos.x, field_0x294 - mPos.y));
+        field_0x2c4 = 6;
+    }
+    addCalcAngle2_801F714C(&field_0x2cc, field_0x2d0, 20, 0x1000);
+    field_0x2a0 = 6.0f * JMath::sincosTable_.sinShort(field_0x2cc);
+    field_0x2a4 = 6.0f * JMath::sincosTable_.cosShort(field_0x2cc);
+    addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.1f, 0.2f);
+    addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.1f, 0.2f);
+}
+
+// With the timer up the target becomes the point 192 left of the view box; else tells whether the
+// target is reached (steer does not use the result; the 0.0f is this compare's).
+bool VaatiTimeUp_804ACCC0::pickTarget() {
+    if (field_0x2c0 <= 0) {
+        field_0x290 = mViewBox.i.x - 192.0f;
+        field_0x294 = (mViewBox.i.y + mViewBox.f.y) * 0.5f + 96.0f;
+        return false;
+    }
+    f32 dx = field_0x290 - mPos.x;
+    f32 dy = field_0x294 - mPos.y;
+    return dx * dx + dy * dy <= 0.0f;
 }
 
 VaatiTimeUp_804ACCC0::~VaatiTimeUp_804ACCC0() {}
