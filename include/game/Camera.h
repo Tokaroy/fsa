@@ -130,6 +130,8 @@ public:
     // projection, position matrix 0x74 and viewport / scissor from field_0x144;
     // `copy` first copies the matrices from 0x4 / 0x34 into 0x74 / 0xA4.
     void fn_8030DFE8(bool copy);
+    // Not in the binary: a plain function that fn_8030DFE8 inlines.
+    void setScreenRectViewport();
     void fn_8030E150(); // empty
     void fn_8030E154();
     void fn_8030E5BC();

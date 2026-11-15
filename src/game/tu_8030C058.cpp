@@ -171,7 +171,6 @@ void Camera_804AA9E4::fn_8030E150() {}
 
 // Loads the projection / view into the GX state (taking the pending matrices first when copy is
 // set) and sets the viewport and scissor to the screen rect.
-// FIXME(shotgun): 99.56 %, regalloc-only + reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030DFE8(bool copy) {
     if (copy) {
         JMath::gekko_ps_copy12(field_0x74, field_0x4);
@@ -181,11 +180,7 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
     GXLoadPosMtxImm(field_0x74, GX_PNMTX8);
     GXLoadNrmMtxImm(field_0x74, GX_PNMTX8);
     GXSetCurrentMtx(GX_PNMTX8);
-    u32 w = field_0x144.x1 - field_0x144.x0;
-    u32 h = field_0x144.y1 - field_0x144.y0;
-    GXSetViewport((f32)field_0x144.x0, (f32)field_0x144.y0, (f32)w, (f32)h, 0.0f, 1.0f);
-    GXSetScissor(field_0x144.x0, field_0x144.y0, w, h);
-    GXSetZScaleOffset(1.0f, 0.0f);
+    setScreenRectViewport();
 }
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
@@ -879,7 +874,6 @@ void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, 
 }
 #pragma auto_inline reset
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeometry::TVec3f* out) {
     if (flag) {
         out->set(field_0x164.i.x + (in->x - (f32)field_0x144.x0) * (field_0x164.f.x - field_0x164.i.x) /
@@ -895,13 +889,24 @@ void Camera_804AA9E4::fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeome
 }
 
 // The camera box's world positions of the screen's top-left and bottom-right corners.
-// FIXME: 99.93 %, reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
     JGeometry::TVec2f topLeft(0.0f, 0.0f);
     fn_8030C4A0(&topLeft, false, &out[0]);
     JGeometry::TVec2f bottomRight((f32)(s32)JUTVideo::sManager->getFbWidth(),
                                   (f32)(s32)JUTVideo::sManager->getEfbHeight());
     fn_8030C4A0(&bottomRight, false, &out[1]);
+}
+
+// A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
+// so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
+// default depth range.
+void Camera_804AA9E4::setScreenRectViewport() {
+    u32 w = field_0x144.x1 - field_0x144.x0;
+    u32 h = field_0x144.y1 - field_0x144.y0;
+    GXSetViewport((f32)field_0x144.x0, (f32)field_0x144.y0, (f32)w, (f32)h, 0.0f, 1.0f);
+    GXSetScissor(field_0x144.x0, field_0x144.y0, w, h);
+    GXSetZScaleOffset(1.0f, 0.0f);
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
