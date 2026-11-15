@@ -12,7 +12,7 @@
 #include "game/SpriteParams.h"
 #include "game/act/act_fish.h"
 
-// FIXME: 97.91 %, different + reloc-name; behaviour drift.
+// FIXME: 97.95 %, different + reloc-name; behaviour drift.
 // FIXME(shotgun): different + reloc-name (register order and literal placement in the spawn loop)
 void Fish_804AC658::init() {
     u32 param = field_0x90;
@@ -113,7 +113,7 @@ bool Fish_804AC658::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return true;
 }
 
-// FIXME(shotgun): 95.63 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.69 %, different; behaviour clean.
 s32 Fish_804AC658::fn_80346330() {
     field_0x264 = 0.0f;
     field_0x268 = 0;
@@ -153,7 +153,7 @@ static inline void swimVelocity(Fish_804AC658* fish, f32 speed) {
     fish->field_0x3c.z = fish->field_0x25c;
 }
 
-// FIXME(shotgun): 98.64 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.67 %, missing/extra; behaviour clean.
 // (states follow the asm's switch (0 falls into 1, 2 into 3); the hit-avoid branch of state 1 and the wall-bounce
 // heading draws of state 5 are the asm's, written with plain field stores; the original's vector-add temporaries are not matched)
 void Fish_804AC658::update() {
@@ -288,10 +288,7 @@ void Fish_804AC658::update() {
             }
             if (field_0x238 == 0 && field_0x234 == 0) {
                 if (!fn_80346330()) {
-                    field_0x254 = 0.0f;
-                    field_0x258 = 0.0f;
-                    field_0x25c = 0.0f;
-                    field_0x230 = 0;
+                    stopSwim();
                 } else {
                     field_0x230 = 4;
                 }
@@ -310,7 +307,7 @@ void Fish_804AC658::update() {
     }
 }
 
-// FIXME(shotgun): 76.21 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 76.32 %, missing/extra + reloc-name; behaviour near.
 // (the SpriteParams stores and the matrix are scheduled differently)
 void Fish_804AC658::draw() {
     SpriteParams_801F5AE0 params;
@@ -323,6 +320,14 @@ void Fish_804AC658::draw() {
     f32 angle = (f32)field_0x252 / -10430.228f;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, angle, 0.0f), 1.0f);
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x24c + 0x283, &params, -1, 1.0f, 1.0f);
+}
+
+// Not in the binary (update inlines it); the pool has its 0.0f ahead of every other function's.
+void Fish_804AC658::stopSwim() {
+    field_0x254 = 0.0f;
+    field_0x258 = 0.0f;
+    field_0x25c = 0.0f;
+    field_0x230 = 0;
 }
 
 Fish_804AC658::~Fish_804AC658() {}

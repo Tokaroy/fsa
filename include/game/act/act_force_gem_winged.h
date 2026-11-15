@@ -15,6 +15,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: a plain function that update inlines.
+    void updateRise();
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234; // the state before field_0x230 changed
     /* 0x238 */ f32 field_0x238; // circling radius (30)

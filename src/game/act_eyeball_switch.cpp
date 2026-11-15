@@ -63,7 +63,8 @@ void EyeballSwitch_804AE678::init() {
     }
 }
 
-// FIXME: 98.5 %. Regalloc only: the target keeps this/end in r29/r28 (we swap
+// FIXME: 98.54 %, regalloc-only; behaviour clean.
+// Regalloc only: the target keeps this/end in r29/r28 (we swap
 // them) and params/table/params >> 27 in r27/r26/r25 (we have r25/r27/r26).
 void EyeballSwitch_804AE678::vfunc_0x10() {
     s32 i;
@@ -95,10 +96,9 @@ EyeballSwitch_804AE678::~EyeballSwitch_804AE678() {
     }
 }
 
-// FIXME: 99.1 %. The target loads the bit argument of fn_802D78B4
-// (field_0x248) after the field_0x244 byte, we load it before; and the
-// .sdata2 literals come out as 32.0f, 1.0f, the target has 1.0f, 32.0f
-// (relocation names only).
+// FIXME: 99.21 %, scheduling; behaviour clean.
+// The target loads the bit argument of fn_802D78B4
+// (field_0x248) after the field_0x244 byte, we load it before.
 void EyeballSwitch_804AE678::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
     JGeometry::TBox2f box(mBox);
@@ -129,10 +129,7 @@ void EyeballSwitch_804AE678::update() {
                         getGameView_802D6A9C()->fn_802D78B4(field_0x248, field_0x244);
                     }
                     if (field_0x23c == 0 || field_0x23c == 4) {
-                        vfunc_0x30(0xFF, true);
-                        gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
-                        startSound_801F0E34(0x3008F, 0);
+                        open();
                         field_0x234 = 2;
                     } else {
                         if (field_0x23c == 2) {
@@ -145,10 +142,7 @@ void EyeballSwitch_804AE678::update() {
                             vfunc_0x30(0xFF, false);
                             gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
                         } else {
-                            vfunc_0x30(0xFF, true);
-                            gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
-                            startSound_801F0E34(0x3008F, 0);
+                            open();
                         }
                     }
                 }
@@ -177,6 +171,14 @@ void EyeballSwitch_804AE678::update() {
     } else {
         deleteEmitter(&mEmitter);
     }
+}
+
+// Not in the binary (update inlines it twice); the pool has its 1.0f ahead of update's 32.0f.
+void EyeballSwitch_804AE678::open() {
+    vfunc_0x30(0xFF, true);
+    gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);
+    startSound_801F0E34(0x3008F, 0);
 }
 
 void EyeballSwitch_804AE678::vfunc_0x24() {

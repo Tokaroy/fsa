@@ -17,8 +17,9 @@ public:
     /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
     /* 0x94 */ virtual void vfunc_0x94();
 
+    // Not in the binary: a plain function that vfunc_0x90 inlines.
     void walk(); // start walking: new length, speed 0.4, a random direction
-    void idle(); // start standing: new length, speed 0
+    void idle(); // start standing: new length, speed 0 (inline)
 }; // Size: 0x2A8
 
 #endif

@@ -23,6 +23,9 @@ public:
     // the view through fn_802D6D70).
     void fn_802C3AE4();
     void fn_802C2C30();
+    // Not in the binary: plain functions that update and fn_802C2C30 inline.
+    bool dropAtPlayer();
+    bool bounceOffTile();
     // 0x802C1674 / 0x802C1778 (act_small_key's range, not written yet): no
     // arguments besides the key; Player_804A6F38::fn_80242560 calls them on
     // every 'KEY0' actor (fn_802C1778 also on the key a player holds).

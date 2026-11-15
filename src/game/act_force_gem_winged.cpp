@@ -54,7 +54,7 @@ static inline void showMessage(s32 who) {
     }
 }
 
-// FIXME(shotgun): 95.94 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.09 %, missing/extra; behaviour drift.
 void WingedForceGem_804AB098::init() {
     field_0x94 = (field_0x90 >> 16) & 0xFF;
     field_0x270 = field_0x90 & 7;
@@ -154,7 +154,7 @@ void WingedForceGem_804AB098::init() {
     }
 }
 
-// FIXME(shotgun): 97.67 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.06 %, different; behaviour near.
 void WingedForceGem_804AB098::update() {
     if (field_0x281 == 1) {
         if (vfunc_0x34() == 1) {
@@ -268,36 +268,7 @@ void WingedForceGem_804AB098::update() {
     }
     switch (field_0x230) {
     case 0:
-        if (field_0x286 == 1) {
-            s32 serial = -1;
-            bool found = false;
-            while (true) {
-                serial = getActorManager_801F856C()->fn_801F78F4('BOME', serial);
-                if (serial < 0) {
-                    break;
-                }
-                ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (bomb != NULL) {
-                    f32 dx = mPos.x - bomb->mPos.x;
-                    f32 dy = (mPos.y - mPos.z) - bomb->mPos.y;
-                    if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 48.0f) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-            JGeometry::TVec3f dir;
-            f32 dist;
-            if (!found) {
-                fn_801EE558(&dir, &dist, 0);
-            }
-            if (found == 1 || dist < 48.0f) {
-                addCalc2_801F71A4(&field_0x248, 20.0f, 0.3f, 4.0f);
-            } else {
-                addCalc2_801F71A4(&field_0x248, 0.0f, 0.05f, 0.2f);
-            }
-        }
-        field_0x260 = field_0x260 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
+        updateRise();
         switch (field_0x94) {
         case 1:
         case 2:
@@ -507,7 +478,7 @@ void WingedForceGem_804AB098::update() {
     }
 }
 
-// FIXME(shotgun): 97.48 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.61 %, scheduling+regalloc; behaviour clean.
 void WingedForceGem_804AB098::draw() {
     if (field_0x281 == 1 || field_0x230 == 1 || field_0x230 == 2) {
         return;
@@ -573,6 +544,42 @@ void WingedForceGem_804AB098::draw() {
     }
     fn_803075AC(mSerial, field_0x4, &mPos, field_0x25c + lbl_804AB038[kind], 0, 2, -1, false, 0, 0);
     mPos = saved;
+}
+
+// Not in the binary (update inlines it); the pool has its literals ahead of every other function's.
+// State 0: rises (field_0x248, up to 20) while a bomb or a player is within 48; adds a random step
+// to field_0x260.
+void WingedForceGem_804AB098::updateRise() {
+    if (field_0x286 == 1) {
+        s32 serial = -1;
+        bool found = false;
+        while (true) {
+            serial = getActorManager_801F856C()->fn_801F78F4('BOME', serial);
+            if (serial < 0) {
+                break;
+            }
+            ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (bomb != NULL) {
+                f32 dx = mPos.x - bomb->mPos.x;
+                f32 dy = (mPos.y - mPos.z) - bomb->mPos.y;
+                if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 48.0f) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        JGeometry::TVec3f dir;
+        f32 dist;
+        if (!found) {
+            fn_801EE558(&dir, &dist, 0);
+        }
+        if (found == 1 || dist < 48.0f) {
+            addCalc2_801F71A4(&field_0x248, 20.0f, 0.3f, 4.0f);
+        } else {
+            addCalc2_801F71A4(&field_0x248, 0.0f, 0.05f, 0.2f);
+        }
+    }
+    field_0x260 = field_0x260 + (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
 }
 
 WingedForceGem_804AB098::~WingedForceGem_804AB098() {}

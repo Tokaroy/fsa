@@ -16,6 +16,8 @@ public:
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: a plain function that update inlines.
+    void swapTwoChests();
 
     // act_gambling_chest's update (0x80311364) calls it on the shop that
     // answers its serial: field_0x25c = value, field_0x234 = 0x3C, state 6

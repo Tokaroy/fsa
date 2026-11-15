@@ -13,7 +13,7 @@ s32 lbl_80539FD8[2] = {8, 14};
 s32 lbl_80539FE0[2] = {3, 5};
 
 
-// FIXME(shotgun): 96.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.78 %, missing/extra; behaviour drift.
 // the original addresses the 0x2d0 array off the this pointer (mr r5, r3) and has no
 // inner compare; the random/sin part allocates f-registers differently.
 void cls_804A1FA0::init() {
@@ -101,7 +101,7 @@ void cls_804A1FA0::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 95.44 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.39 %, different; behaviour drift.
 // the body of `if (field_0x230 == 0)` is laid out
 // with beq/b in the original, ours skips it with bne; register and literal differences in the rest.
 void cls_804A1FA0::update() {
@@ -190,17 +190,7 @@ void cls_804A1FA0::update() {
             field_0x98 += field_0x254;
             field_0x98 &= 0xF;
         }
-        s16 angle = (s32)(4000.0f * (f32)field_0x98);
-        field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
-        field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
-        field_0x288[3] = mPos;
-        angle = (s32)(4000.0f * (f32)((field_0x98 - 2) & 0xF));
-        field_0x288[3].x += 6.0f * JMath::sincosTable_.sinShort(angle);
-        field_0x288[3].y += 6.0f * JMath::sincosTable_.cosShort(angle);
-        field_0x288[4] = mPos;
-        angle = (s32)(4000.0f * (f32)((field_0x98 + 2) & 0xF));
-        field_0x288[4].x += 6.0f * JMath::sincosTable_.sinShort(angle);
-        field_0x288[4].y += 6.0f * JMath::sincosTable_.cosShort(angle);
+        setHeading();
         field_0x270 += 500.0f;
     }
     if (field_0x234[0] == 0) {
@@ -209,7 +199,7 @@ void cls_804A1FA0::update() {
     }
 }
 
-// FIXME(shotgun): 97.60 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.92 %, missing/extra; behaviour near.
 void cls_804A1FA0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -258,4 +248,21 @@ void cls_804A1FA0::draw() {
 
     mPos = field_0x288[0];
     mPos.z = z0;
+}
+
+// Not in the binary (update inlines it); the pool has its literals ahead of every other function's.
+// The velocity along heading field_0x98 (sixteenths of a turn) and the two points 6 away, two
+// steps to either side of it.
+void cls_804A1FA0::setHeading() {
+    s16 angle = (s32)(4000.0f * (f32)field_0x98);
+    field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
+    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
+    field_0x288[3] = mPos;
+    angle = (s32)(4000.0f * (f32)((field_0x98 - 2) & 0xF));
+    field_0x288[3].x += 6.0f * JMath::sincosTable_.sinShort(angle);
+    field_0x288[3].y += 6.0f * JMath::sincosTable_.cosShort(angle);
+    field_0x288[4] = mPos;
+    angle = (s32)(4000.0f * (f32)((field_0x98 + 2) & 0xF));
+    field_0x288[4].x += 6.0f * JMath::sincosTable_.sinShort(angle);
+    field_0x288[4].y += 6.0f * JMath::sincosTable_.cosShort(angle);
 }

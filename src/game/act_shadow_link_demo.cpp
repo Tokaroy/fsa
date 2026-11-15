@@ -71,7 +71,7 @@ static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
     return false;
 }
 
-// FIXME: 95.39 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.70 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049DB90::update() {
     cls_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
@@ -87,15 +87,9 @@ void cls_8049DB90::update() {
             fn_8011B878(5);
         }
         break;
-    case 9: {
-        s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9];
-        field_0x3c.z = 4.5f - 0.2f * t;
-        field_0x3c.y = -0.5f;
-        if (t > 1 && mPos.z <= 0.0f) {
-            mPos.z = field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
-        }
+    case 9:
+        hopDown();
         break;
-    }
     case 11:
         // the original passes 0xFF as fn_802303FC's flag here and in states 20 and 22 (li r5, 0xff)
         for (s32 i = 0; i < 4; i++) {
@@ -313,7 +307,7 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 99.90 %, operands + reloc-name; behaviour drift.
+// FIXME: 99.95 %, operands; behaviour drift.
 void cls_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
@@ -384,15 +378,12 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         mSequencer.mState = 0;
         mSequencer.mDir = 2;
         break;
-    case 18: {
+    case 18:
         field_0x98 = 2;
         mSequencer.mState = 0;
         mSequencer.mDir = 2;
-        JGeometry::TVec3f pos(mPos);
-        pos.y += -8.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
+        spawnFlash();
         break;
-    }
     case 20:
         field_0x98 = 3;
         mSequencer.fn_800FEB78(1);
@@ -458,6 +449,26 @@ void cls_8049DB90::fn_8011B878(s32 index) {
 }
 
 // Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
+// Not in the binary: fn_8011B878 and update inline these two, and the pool has their literals
+// between fn_8011B3F0's and fn_8011B878's.
+
+// Effect 0x33B, 8 above mPos.
+void cls_8049DB90::spawnFlash() {
+    JGeometry::TVec3f pos(mPos);
+    pos.y += -8.0f;
+    spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
+}
+
+// State 9 of update: the hop of state 4 with field_0x3c.y -0.5 and field_0x3c.x left alone.
+void cls_8049DB90::hopDown() {
+    s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9];
+    field_0x3c.z = 4.5f - 0.2f * t;
+    field_0x3c.y = -0.5f;
+    if (t > 1 && mPos.z <= 0.0f) {
+        mPos.z = field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+    }
+}
+
 static inline void setCameraBox(cls_8049DB90* self) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x7f5 == 0) {

@@ -90,7 +90,9 @@ void cls_804A03A8::fn_8016005C() {
     }
 }
 
-// FIXME(shotgun): 93.99 %, missing/extra + reloc-name; behaviour near.
+static void drawLetterbox(f32 bar, JUtility::TColor color);
+
+// FIXME(shotgun): 94.00 %, missing/extra + reloc-name; behaviour near.
 // (stack slots of the arrays and colour copies are ordered differently; the white colour is not hoisted)
 // 0x8015F9C0
 void cls_804A03A8::fn_8015F9C0() {
@@ -205,9 +207,7 @@ void cls_804A03A8::fn_8015F9C0() {
         JUtility::TColor color(0, 0, 0, (u8)(255.0f * sq));
         gGameRoot2_8053AB10->fn_8013B460();
         f32 bar = 48.0f * sq;
-        J2DFillBox(0.0f, 0.0f, (f32)(s32)JUTVideo::sManager->getFbWidth(), bar, color);
-        J2DFillBox(0.0f, (f32)(s32)JUTVideo::sManager->getEfbHeight() - bar, (f32)(s32)JUTVideo::sManager->getFbWidth(),
-                   (f32)(s32)JUTVideo::sManager->getEfbHeight(), color);
+        drawLetterbox(bar, color);
     }
 }
 
@@ -328,4 +328,12 @@ void fn_8015F454(JUTTexture* tex, const f32* pos, const f32* uv, GXColor color, 
         GXPosition3f32(pos[0], pos[3], 0.0f);
         GXTexCoord2f32(u0, v1);
     }
+}
+
+// Not in the binary (fn_8015F9C0 inlines it); the pool has its int->float bias ahead of fn_8015F454's
+// -1.0f. Black bars of height `bar` along the top and the bottom of the screen.
+static void drawLetterbox(f32 bar, JUtility::TColor color) {
+    J2DFillBox(0.0f, 0.0f, (f32)(s32)JUTVideo::sManager->getFbWidth(), bar, color);
+    J2DFillBox(0.0f, (f32)(s32)JUTVideo::sManager->getEfbHeight() - bar, (f32)(s32)JUTVideo::sManager->getFbWidth(),
+               (f32)(s32)JUTVideo::sManager->getEfbHeight(), color);
 }

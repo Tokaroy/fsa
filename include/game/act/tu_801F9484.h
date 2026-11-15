@@ -41,6 +41,8 @@ public:
     virtual void update(); // 0x14: 0x800F6D80
     virtual void draw();   // 0x20: 0x800F6AB4
     virtual void vfunc_0x24(); // 0x800F6820
+    // Not in the binary: a plain function that vfunc_0x24 and update inline (game/act_force_like.cpp).
+    void spawnKindEmitter();
     // SHARED-EDIT: carved from field_0x230[0x38] (game/act_force_like.cpp).
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 field_0x234;
