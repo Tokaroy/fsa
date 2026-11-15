@@ -13,17 +13,8 @@ static const s16 lbl_8046915C[6] = {6, 10, 7, 10, -1, -1};
 // The table of animations: one per direction (0 +x, 1 -x, 2 +y, 3 -y).
 static const s16* lbl_804A3A58[4] = {lbl_80469138, lbl_80469144, lbl_80469150, lbl_8046915C};
 
-// Inlined state starts (the original inlines them at each call).
-inline void Rope_804A3A68::walk() {
-    field_0x250 = fn_801CD664(0x29) + 0x3c;
-    mTargetSpeed = 0.4f;
-    if (mState != 2) {
-        field_0x98 = fn_801CF6B8();
-    }
-    mStateTimer = 0;
-    mState = 1;
-}
-
+// A state start the original inlines at each call (walk, the other one, is a plain function
+// further down).
 inline void Rope_804A3A68::idle() {
     field_0x250 = fn_801CD664(0x3d) + 0x28;
     mTargetSpeed = 0.0f;
@@ -147,9 +138,8 @@ void Rope_804A3A68::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 98.8 %. Regalloc only: the original loads mSpeed into f2 and the
-// 0.9090909f constant into f1 (ours the reverse), and the sdata2 literals 0.4f and
-// 0.9090909f come out in the other order.
+// FIXME: 99.12 %. Regalloc only: the original loads mSpeed into f2 and the
+// 0.9090909f constant into f1 (ours the reverse).
 void Rope_804A3A68::vfunc_0x94() {
     mAnim.fn_801D2264(field_0x98, 2);
     f32 t = (mSpeed - 0.4f) * 0.9090909f;
@@ -160,6 +150,18 @@ void Rope_804A3A68::vfunc_0x94() {
     }
     mAnim.mFrameCtrl.setRate(t * 2.0f + 1.0f);
     EnemyBase_804A4808::vfunc_0x94();
+}
+
+// Not in the binary (vfunc_0x90 inlines it at each call); the pool has its 0.4f ahead of
+// vfunc_0x94's 0.9090909f, so it is a plain function generated before vfunc_0x94.
+void Rope_804A3A68::walk() {
+    field_0x250 = fn_801CD664(0x29) + 0x3c;
+    mTargetSpeed = 0.4f;
+    if (mState != 2) {
+        field_0x98 = fn_801CF6B8();
+    }
+    mStateTimer = 0;
+    mState = 1;
 }
 
 void Rope_804A3A68::draw() {
