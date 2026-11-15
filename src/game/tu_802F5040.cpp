@@ -3223,9 +3223,8 @@ void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_80
 }
 
 // FIXME: 76.52 %, missing/extra + reloc-name; behaviour drift.
-// The original copies the 0x68-byte record into field_0x11c[slot]
-// with a 13-iteration double-word loop; ours unrolls a word copy. Registers also
-// differ (record and slot in r24 / r23, original r23 / r26).
+// Still differs: the table loop's setup (the original keeps slot * 4 in r25 and
+// adds it to each table base) and register allocation.
 void TileMap_804AA858::fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record) {
     if (record->f.mValid == 0) {
         return;
