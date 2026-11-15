@@ -77,7 +77,6 @@ static inline void releaseEmitterArrays(cls_8049D83C* self) {
 }
 
 // 0x80115430.
-// FIXME(shotgun): 98.98 %, regalloc-only; behaviour clean.
 cls_8049D83C::~cls_8049D83C() {
     if (field_0x2a0 != NULL) {
         releaseEmitter_801EE434(field_0x2a0);
