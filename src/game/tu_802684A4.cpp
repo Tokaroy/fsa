@@ -586,17 +586,13 @@ static inline void pushOrTurn(cls_804A71A8* self) {
     }
 }
 
-// FIXME: 99.86. Regalloc only: the serial takes r29 (the owner's register) where the
-// original reuses the facing's r30. The same source inlined in fn_8026F000-F54C is 100 %;
-// declaring `s32 serial; s32 dir;` first gives 100 % here but 99.65 % in all four.
-// Pushes the block ahead: a 'BLCK' 16 units along the facing, whose serial goes to the
-// owner's field_0xd94 unless the tile is 0x50.
 void cls_804A71A8::fn_8026EE60() {
     field_0xac = 1;
     pushOrTurn(this);
 }
 
-// FIXME: 99.87. Regalloc only, as fn_8026EE60 (the serial in r28 where the original
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
+// Regalloc only, as fn_8026EE60 (the serial in r28 where the original
 // reuses the facing's r29).
 void cls_804A71A8::fn_8026EC88(s32 player) {
     field_0xac = 1;
@@ -1419,7 +1415,8 @@ void cls_804A71A8::fn_8026B81C(u16 tile) {
     }
 }
 
-// FIXME: 98.83. Ours is 4 instructions shorter (2214 vs 2218). The gotos at
+// FIXME: 98.83 %, missing/extra; behaviour near.
+// Ours is 4 instructions shorter (2214 vs 2218). The gotos at
 // blockMarked50, liftOn60, the counter and the near-'WARP' exit are
 // FAKEMATCH(crack-pass) (docs/CRACK_PASS.md). Left: &mPos kept in a saved
 // register across fn_80240644 (followLeader x2, askLeader), the type-4 'WARP'
@@ -1725,7 +1722,8 @@ void cls_804A71A8::fn_80269420() {
     field_0x98 = 1;
 }
 
-// FIXME: 99.13. The end's TVec2f `moved` lives in registers; the original
+// FIXME: 99.13 %, missing/extra; behaviour clean.
+// The end's TVec2f `moved` lives in registers; the original
 // also stores its x, y before and after the subtraction to a stack slot at
 // 0x8 (4 dead stores), as in fn_802685D4.
 void cls_804A71A8::fn_80268BC4() {
@@ -1803,7 +1801,8 @@ void Player_804A6F38::fn_80268B3C() {
     }
 }
 
-// FIXME: 94.69%. 12 instructions fewer: the original keeps the three step
+// FIXME: 94.69 %, missing/extra; behaviour clean.
+// 12 instructions fewer: the original keeps the three step
 // TVec2fs in stack slots (0x18, 0x10, 0x8) and stores each one's mPos x / y
 // and then its difference there (never read back); ours keeps them in
 // registers, so the probe slots move up by 0x18. The second probe loads
