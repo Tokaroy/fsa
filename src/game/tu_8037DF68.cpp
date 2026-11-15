@@ -1129,21 +1129,14 @@ u16 fn_803846A4(s32 index) {
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
-// FIXME(shotgun): 81.94 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.46 %, missing/extra + reloc-name; behaviour drift.
 // Follows the conditional-message commands (0x1A size 2, the twelve commands fn_80383E2C finds)
 // from message msg for the player window `window`: each command picks one of its operands as the
 // next message id (by a key or other holdable the player carries, a random draw, the player
 // count, the player's slot, a stage flag, a view bit...). Returns the message that has no command.
 u32 fn_80383EB0(s32 window, u32 msg) {
     s32 player = fn_8022EA0C(window);
-    bool listed;
-    if (gGameRoot_8053AAF8->field_0x7f) {
-        s32 mode = gGameRoot_8053AAF8->field_0x4c;
-        listed = mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xA || mode == 0xB;
-    } else {
-        s32 mode = gGameRoot_8053AAF8->field_0x4c;
-        listed = mode == 7 || mode == 8 || mode == 9 || mode == 0x16 || mode == 0xA || mode == 0xB || mode == 0xC;
-    }
+    bool listed = isGameModeSet();
     s32 slot = window;
     if (listed) {
         s32 mapped = fn_8022F340(window);
