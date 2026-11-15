@@ -18,7 +18,7 @@
 static const f32 lbl_8046D560[4][2] = {{0.5f, 0.0f}, {-0.5f, 0.0f}, {0.0f, 0.5f}, {0.0f, -0.5f}};
 
 // 0x802C52DC.
-// FIXME(shotgun): 95.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.72 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::init() {
     field_0x280 = field_0x90 & 0x1F;
     field_0x27c = (field_0x90 >> 7) & 0xF;
@@ -161,7 +161,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 91.38 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.35 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
@@ -179,21 +179,7 @@ void SmallKey_804A8CD8::update() {
                    (!fn_802DE764(1, 1, 2) || field_0x4 != 10 || getPlayerLayer_8023DE58(field_0x23c) != 8)) {
             cont = false;
         } else {
-            mPos.set(*getPlayerPos_8023E724(field_0x23c));
-            field_0x4 = getPlayerLayer_8023DE58(field_0x23c);
-            field_0x240 = 5;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
-            mPos.z = 0.0f;
-            u16 tile = fn_8022461C(&mPos, field_0x4);
-            mPos.z = 400.0f;
-            if (tile == 3 && !fn_801EE24C()) {
-                cont = false;
-            } else {
-                field_0x2b0 = false;
-                cont = true;
-            }
+            cont = dropAtPlayer();
         }
     }
     if (!cont) {
@@ -481,7 +467,7 @@ void SmallKey_804A8CD8::update() {
     }
 }
 
-// FIXME(shotgun): 94.61 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.74 %, missing/extra; behaviour drift.
 // The key on the floor: kind 6 slides with friction; a player touching it picks it up
 // (kinds 3-5 spawn a 'TKRA' instead), players walking into it push it (field_0x2ae the
 // direction), pits and water drop it; keeps its place registered with the view.
@@ -683,7 +669,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 }
 
 // 0x802C2C30.
-// FIXME(shotgun): 93.07 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.34 %, missing/extra + reloc-name; behaviour near.
 void SmallKey_804A8CD8::fn_802C2C30() {
     fn_802C24A8();
     if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
@@ -750,23 +736,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                     }
                     return;
                 }
-                JGeometry::TVec3f checkPos(mPos.x + 6.0f, mPos.y + 8.0f, 0.0f);
-                u16 t1 = fn_80226850(&checkPos, field_0x4);
-                checkPos.x = mPos.x - 6.0f;
-                u16 t2 = fn_80226850(&checkPos, field_0x4);
-                bool bounced;
-                if (t1 == 0x16 || t2 == 0x16) {
-                    field_0x3c.y = -2.0f;
-                    if (getPlayerPos_8023E724(field_0x23c)->x > mPos.x) {
-                        field_0x3c.x = 1.0f;
-                    } else {
-                        field_0x3c.x = -1.0f;
-                    }
-                    bounced = true;
-                } else {
-                    bounced = false;
-                }
-                if (bounced == true) {
+                if (bounceOffTile() == true) {
                     return;
                 }
                 if (fn_802C2154() == true) {
@@ -988,6 +958,25 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     }
 }
 
+// Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
+// Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
+bool SmallKey_804A8CD8::dropAtPlayer() {
+    mPos.set(*getPlayerPos_8023E724(field_0x23c));
+    field_0x4 = getPlayerLayer_8023DE58(field_0x23c);
+    field_0x240 = 5;
+    field_0x3c.z = 0.0f;
+    field_0x3c.y = 0.0f;
+    field_0x3c.x = 0.0f;
+    mPos.z = 0.0f;
+    u16 tile = fn_8022461C(&mPos, field_0x4);
+    mPos.z = 400.0f;
+    if (tile == 3 && !fn_801EE24C()) {
+        return false;
+    }
+    field_0x2b0 = false;
+    return true;
+}
+
 void SmallKey_804A8CD8::fn_802C2BD0() {
     field_0x2b0 = true;
     JGeometry::TVec2f pos(field_0x230.x, field_0x230.y);
@@ -1005,7 +994,7 @@ void SmallKey_804A8CD8::fn_802C2B64() {
 }
 
 // 0x802C2840.
-// FIXME(shotgun): 91.67 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 92.00 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2840() {
     s32 layer = field_0x4;
     if (getGameView_802D6A9C()->field_0x131df[layer] != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
@@ -1100,7 +1089,7 @@ bool SmallKey_804A8CD8::fn_802C2684(ActorBase_804A5770* other, JGeometry::TBox2f
 }
 
 // 0x802C24A8.
-// FIXME(shotgun): 98.70 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.74 %, regalloc-only; behaviour clean.
 void SmallKey_804A8CD8::fn_802C24A8() {
     JGeometry::TBox2f ours(mBox);
     ours.addPos(mPos.x, mPos.y);
@@ -1129,6 +1118,28 @@ void SmallKey_804A8CD8::fn_802C24A8() {
             return;
         }
     }
+}
+
+// Not in the binary (fn_802C2C30 inlines it); the pool puts it between fn_802C24A8 and fn_802C2154.
+// Landing on tile 0x16 throws the key up and towards its player.
+bool SmallKey_804A8CD8::bounceOffTile() {
+    JGeometry::TVec3f checkPos;
+    checkPos.x = mPos.x + 6.0f;
+    checkPos.y = mPos.y + 8.0f;
+    checkPos.z = 0.0f;
+    u16 t1 = fn_80226850(&checkPos, field_0x4);
+    checkPos.x = mPos.x - 6.0f;
+    u16 t2 = fn_80226850(&checkPos, field_0x4);
+    if (t1 == 0x16 || t2 == 0x16) {
+        field_0x3c.y = -2.0f;
+        if (getPlayerPos_8023E724(field_0x23c)->x > mPos.x) {
+            field_0x3c.x = 1.0f;
+        } else {
+            field_0x3c.x = -1.0f;
+        }
+        return true;
+    }
+    return false;
 }
 
 bool SmallKey_804A8CD8::fn_802C2300(u8 playerBits) {
