@@ -4,7 +4,7 @@ to the original code.
 
   python3 tools/permute.py <unit> <function> [--tier a|b] [--kinds decl,commute,...] [--depth 4]
                                              [--beam 6] [--budget 1500] [--apply] [--json FILE] [-v]
-  python3 tools/permute.py --bulk [--class regalloc-only,...] [--units part,...] [--apply] [--log FILE]
+  python3 tools/permute.py --bulk [--class regalloc-only,...] [--units part,...] [--parallel N] [--apply] [--log FILE]
   python3 tools/permute.py --list-kinds
 
 What nobody can read off the assembly, a search can find: which of two locals was declared first,
@@ -54,7 +54,10 @@ at the call, so the cause is often in the callee); the whole-unit check covers t
 
 Exit status 0 when an improvement was found, 1 when not. --apply writes the result into the source
 (otherwise the diff is printed and saved under build/permute/). A result below 100 % that used a
-tier b rewrite is printed as a lead and never applied.
+tier b rewrite is printed as a lead and never applied. --bulk saves every result's diff under
+build/permute/bulk/ (<unit>__<function>.a.diff or .b.diff) and, with --apply, writes only tier a
+results at 100 % into the source: a tier b result is proven right by its 100 % but may still need
+a hand (a duplicated expression that was a macro in the original, a comment that no longer holds).
 """
 
 import argparse
@@ -1704,7 +1707,8 @@ def bulk(a, kinds):
         jobs = max(2, scratch.JOBS * 2 // a.parallel)
         argv0 = [sys.executable, __file__, "--bulk", "--class", "all", "--structural", a.structural, "--kinds", ",".join(kinds),
                  "--depth", str(a.depth), "--beam", str(a.beam), "--budget", str(a.budget)] + \
-                (["--apply"] if a.apply else []) + (["--partial"] if a.partial else []) + (["--log", a.log] if a.log else [])
+                (["--apply"] if a.apply else []) + (["--partial"] if a.partial else []) + (["--log", a.log] if a.log else []) + \
+                (["--apply-b"] if a.apply_b else []) + ["--save", a.save]
         if logf:
             logf.close()
 
@@ -1739,16 +1743,25 @@ def bulk(a, kinds):
             if unit is not None:
                 unit.clean()
         (p0, s0), (p1, s1) = r["base"], r["best"]
-        applied = False
+        applied, saved = False, None
         if r["text"] is not None:
             gained += 1
             won += p1 == 100
-            if a.apply and (p1 == 100 or a.partial):
+            tier_b = any(TIER[x] == "b" for x in r["kinds"])
+            old = (unit.root / unit.src).read_bytes()
+            out = Path(a.save)
+            out.mkdir(parents=True, exist_ok=True)
+            saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", uname.split("/")[-1] + "__" + fn)[:110] + (".b" if tier_b else ".a") + ".diff")
+            saved.write_text(diff_text(old, r["text"], unit.src))
+            # a tier b result is right at 100 % but may not read naturally (a duplicated expression that was
+            # a macro, a stale comment): it goes to a session or a person, not straight into the source
+            if a.apply and (p1 == 100 or a.partial) and (not tier_b or a.apply_b):
                 (unit.root / unit.src).write_bytes(r["text"])
                 applied = True
         leads += r["lead"] is not None
         row = {"unit": uname, "fn": fn, "size": size, "cls": r["cls"], "base": [p0, s0], "best": [p1, s1], "trace": r["trace"],
                "kinds": r["kinds"], "tried": r["tried"], "note": r["note"], "secs": r["secs"], "applied": applied,
+               "diff": str(saved) if saved else None,
                "lead": r["lead"] and {x: r["lead"][x] for x in ("pct", "score", "trace", "kinds")}}
         if logf:
             logf.write(json.dumps(row) + "\n")
@@ -1774,6 +1787,8 @@ def main():
     ap.add_argument("--budget", type=int, default=1500, help="candidates compiled at most")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--partial", action="store_true", help="with --bulk --apply: also apply results below 100 %%")
+    ap.add_argument("--apply-b", action="store_true", help="with --bulk --apply: also apply results that used a tier b rewrite")
+    ap.add_argument("--save", default="build/permute/bulk", help="with --bulk: where each result's diff is saved")
     ap.add_argument("--json")
     ap.add_argument("--list-kinds", action="store_true")
     ap.add_argument("--bulk", action="store_true", help="every function of --class in build/G4SE01/structural.json")
