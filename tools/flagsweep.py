@@ -3,6 +3,8 @@
 
   python3 tools/flagsweep.py <unit> [<unit> ...] [--json FILE] [-v]
   python3 tools/flagsweep.py --game [--only-open] [--json FILE]      # every game unit
+  python3 tools/flagsweep.py <unit> --fn <function>                  # one function: which settings bring
+                                                                     # it closer, and what that says about its source
 
 Compiles each unit as it stands under every variant below (one option or pragma changed at a time)
 and scores every function natively (tools/fnscore.cpp, via tools/scratch.py's farm). For each
@@ -77,6 +79,45 @@ VARIANTS = [
 ]
 
 
+# What a setting that makes ONE function match says about its source (a hint for the rewrite, never a
+# reason to add the pragma: docs/RULES_CARD.md wants evidence from the neighbouring functions for that).
+MEANING = {
+    "-opt nocse": "the original computed a value twice that our source lets the compiler share: an expression written "
+                  "out again, a macro or inline expanded twice, or a member re-read after a store or call",
+    "-opt nopropagation": "the original kept a value in its own variable where ours lets the compiler propagate it "
+                          "(a named local or a copy of a parameter)",
+    "-opt nostrength": "the original loop was not strength-reduced: it indexes by the counter where ours walks a pointer, or the reverse",
+    "-opt noloop": "a loop-invariant value is recomputed inside the original's loop",
+    "-opt nolifetimes": "the original keeps one variable where ours splits the value into two lifetimes (or reuses one)",
+    "-opt nodeadcode": "the original has code our source lets the compiler remove",
+    "pragma opt_unroll_loops off": "the original's loop is not unrolled: its bound or counter type differs from ours",
+    "-fp_contract off": "the original keeps a multiply and an add apart: the product went through a variable or a call",
+    "-inline off": "the original calls a function out of line that ours inlines (declared after its use, or not inline)",
+    "-inline noauto,deferred": "the original does not auto-inline a callee that ours does",
+    "-inline auto (not deferred)": "inlining order: a callee defined later in the original file, or in another order",
+}
+
+
+def hints(unit_name, fn):
+    """Settings under which ONE function matches, each with what it says about the source."""
+    u = scratch.Unit(unit_name)
+    src = u.source()
+    name = u.build(src, want=set()).find(fn).name
+
+    def one(v):
+        label, flags, drop = v
+        try:
+            _, r = scratch.farm(u, [src], [name], flags=flags, drop=drop, jobs=1)
+        except scratch.CompileError:
+            return label, None
+        return label, r[0][0] if isinstance(r[0], list) else None
+    _, r0 = scratch.farm(u, [src], [name], jobs=1)
+    base = r0[0][0] if isinstance(r0[0], list) else None
+    out = [(label, s) for label, s in scratch.pmap(one, VARIANTS) if s is not None and base is not None and s < base]
+    u.clean()
+    return name, base, sorted(out, key=lambda x: x[1])
+
+
 def sweep(unit_name, verbose=False):
     u = scratch.Unit(unit_name)
     src = u.source()
@@ -116,13 +157,30 @@ def sweep(unit_name, verbose=False):
 
 
 def main():
+    import grind_broker
+    grind_broker.maybe_delegate("flagsweep", sys.argv[1:])
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("units", nargs="*")
     ap.add_argument("--game", action="store_true", help="every game/*.cpp unit")
     ap.add_argument("--only-open", action="store_true", help="skip units whose functions all match")
     ap.add_argument("--json")
     ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--fn", help="one function of the (one) unit: the settings that bring it closer, and what they suggest")
     a = ap.parse_args()
+    if a.fn:
+        if len(a.units) != 1:
+            sys.exit("--fn needs exactly one unit")
+        try:
+            name, base, out = hints(a.units[0], a.fn)
+        except (KeyError, scratch.CompileError) as e:
+            sys.exit(str(e))
+        print(f"{name}: score {base} as built; {len(out)} of {len(VARIANTS)} settings bring it closer")
+        for label, sc in out[:12]:
+            print(f"  {label:34} score {sc:5}" + ("  MATCHES" if sc == 0 else "")
+                  + (f"\n      -> {MEANING[label]}" if label in MEANING and sc <= base // 2 else ""))
+        if not out:
+            print("  none: the difference is not one a compiler setting explains")
+        return 0
     units = list(a.units)
     if a.game:
         allu = json.loads(Path("objdiff.json").read_text())["units"]

@@ -602,6 +602,20 @@ def diag_block(wt, unit, fn, cap=40):
     return ["== What differs, by our source line (tools/diag.py) =="] + lines + [""]
 
 
+def lead_block(unit, fn, cap=90):
+    """A byte-identical form tools/permute.py found for this function but did not apply because it adds
+    or removes a local (../fsa-wt/g2-logs/leads/<unit>__<function>.hand.diff): for the session to finish."""
+    f = LOGS / "leads" / (re.sub(r"[^A-Za-z0-9_]", "_", Path(unit).stem + "__" + fn)[:110] + ".hand.diff")
+    if not f.exists():
+        return []
+    body = f.read_text(errors="replace").splitlines()
+    return ["== A byte-identical form found by search (tools/permute.py), not applied yet ==",
+            "Compiled, this gives exactly the original's code, so it is right. Make the same change (line numbers may "
+            "have moved), then make it read as its programmers wrote it: a real name for any new local; where a value "
+            "is now written out twice the original most likely had a macro or an inline function, so write that; "
+            "correct comments it contradicts. Keep the function at 100 %."] + body[:cap] + [""]
+
+
 def build_packet(wt, unit, fn, ev, note=None):
     e = ev["functions"][fn]
     lane, size, stem = lane_of(e), e["size"], Path(unit).stem
@@ -636,7 +650,7 @@ def build_packet(wt, unit, fn, ev, note=None):
         out += [f"== Diff, original | ours: {nd} of {nr} rows differ (equal stretches skipped; offsets are hex from the function start) =="]
         out += [l for l in t[1:2] if l.strip()] + hunks + [""]
         if lane == "match" and e["cls"] != "reloc-name":
-            out += diag_block(wt, unit, fn)
+            out += lead_block(unit, fn) or diag_block(wt, unit, fn)
     src = source_of(wt, unit, e)
     if src:
         state = " (not compiled: inside #ifdef NONMATCHING, or it fails to compile)" if lane == "write" else ""

@@ -24,7 +24,7 @@ from pathlib import Path
 DIR = Path("build/grind/broker")
 KINDS = {"try": ["python3", "tools/try.py"], "check": ["python3", "tools/grind.py", "check"],
          "diag": ["python3", "tools/diag.py"], "permute": ["python3", "tools/permute.py"],
-         "scratch": ["python3", "tools/scratch.py"]}
+         "scratch": ["python3", "tools/scratch.py"], "flagsweep": ["python3", "tools/flagsweep.py"]}
 
 
 def maybe_delegate(kind, argv):

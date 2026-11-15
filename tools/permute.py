@@ -6,6 +6,7 @@ to the original code.
                                              [--beam 6] [--budget 1500] [--apply] [--json FILE] [-v]
   python3 tools/permute.py --bulk [--class regalloc-only,...] [--units part,...] [--parallel N] [--apply] [--log FILE]
   python3 tools/permute.py <unit> <function> --deep [--tier b]     # minutes, not seconds: for a stubborn function
+  python3 tools/permute.py --callees [--units part,...] [--parallel N] [--apply] [--log FILE]
   python3 tools/permute.py --list-kinds
 
 What nobody can read off the assembly, a search can find: which of two locals was declared first,
@@ -53,12 +54,20 @@ whether it reads naturally; a new local needs a real name):
 Functions of this file that MWCC inlined into the target are rewritten too (the diff's lines sit
 at the call, so the cause is often in the callee); the whole-unit check covers their other users.
 
+--callees works the other way round: it takes each function of a file that MWCC inlined into
+functions that are still open (most inliners first), rewrites THAT function and scores every
+function of the unit. A callee can match on its own while its inlined copies do not: one moved
+declaration in Player's fn_80248970 made five of its callers match. Such a result is kept when
+more functions match, none that matched breaks and no data section gets worse; functions that
+were open may move either way.
+
 Exit status 0 when an improvement was found, 1 when not. --apply writes the result into the source
 (otherwise the diff is printed and saved under build/permute/). A result below 100 % that used a
 tier b rewrite is printed as a lead and never applied. --bulk saves every result's diff under
-build/permute/bulk/ (<unit>__<function>.a.diff or .b.diff) and, with --apply, writes only tier a
-results at 100 % into the source: a tier b result is proven right by its 100 % but may still need
-a hand (a duplicated expression that was a macro in the original, a comment that no longer holds).
+build/permute/bulk/ and, with --apply, writes a result at 100 % into the source unless it adds or
+removes a local (kinds temp, inline, retvar: saved as <unit>__<function>.hand.diff). Those are
+proven right by their 100 % but need a hand first: a real name for the local, or the macro or
+inline the original had where a value is now written out twice.
 """
 
 import argparse
@@ -105,6 +114,9 @@ TYPE_FAMILY = {b"s32": INT_TYPES, b"u32": INT_TYPES, b"s16": INT_TYPES, b"u16": 
 TIER = {"decl": "a", "commute": "a", "scope": "a", "compound": "a", "if": "a", "boolret": "a", "andif": "a", "early": "a",
         "ternary": "a", "stmt": "a", "const": "a", "loop": "a", "incr": "a", "cond": "a", "untemp": "a",
         "type": "b", "temp": "b", "inline": "b", "swap": "b", "cast": "b", "loopform": "b", "retvar": "b"}
+# results a person or a session has to finish before they go into the source: a local that needs a
+# real name, or a value written out twice that was probably a macro or an inline in the original
+NEEDS_HAND = {"temp", "inline", "retvar"}
 KINDS_A = [k for k, t in TIER.items() if t == "a"]
 KINDS_B = [k for k, t in TIER.items() if t == "b"]
 _INDEX = None
@@ -1698,6 +1710,176 @@ def search(unit, name, kinds=None, depth=4, beam=6, budget=1500, verbose=False, 
     return res
 
 
+def site_key(f):
+    par = f.semantic_parent
+    return ((par.spelling if par is not None and par.kind in (K.CLASS_DECL, K.STRUCT_DECL, K.CLASS_TEMPLATE) else ""),
+            f.spelling, len(list(f.get_arguments())))
+
+
+def shared_callees(unit, data=None):
+    """Functions of the unit's file that MWCC inlined into functions that are still open, most
+    inliners first: [(site key, [open functions that inline it])]. A callee can match on its own
+    and still be the reason its inlined copies differ."""
+    data = data if data is not None else unit.source().encode("utf-8", "surrogateescape")
+    d = unit.build(data.decode("utf-8", "surrogateescape"), sym=True)
+    p = Parsed(unit, data)
+    users = {}
+    for f in d.fn.values():
+        if f.pct >= 100 or f.cls == "missing":
+            continue
+        fn = p.locate(f.demangled, next((r[3] for r in f.rows if r[3]), None))
+        if fn is None or body_of(fn) is None:
+            continue
+        called = {r[2][2] for r in f.rows if r[2] is not None and r[2][0] in ("bl", "b") and r[2][2]}
+        for g in inlined_callees(p, fn, called):
+            users.setdefault(site_key(g), []).append(f.name)
+    return sorted(users.items(), key=lambda kv: -len(kv[1]))
+
+
+def unitwide(unit, key, kinds=None, depth=2, budget=600, data=None, log=print):
+    """Rewrite ONE function (usually a callee inlined into many) and score every function of the unit.
+    A result is kept when more functions match than before, no function that matched stops matching
+    and no data section gets worse; functions that were open may move either way (their remaining
+    difference is their own). Returns a dict: text (or None), trace, kinds, fixed, worse, tried."""
+    kinds = kinds or (KINDS_A + KINDS_B)
+    data = data if data is not None else unit.source().encode("utf-8", "surrogateescape")
+    dec = lambda b: b.decode("utf-8", "surrogateescape")  # noqa: E731
+    t0 = time.time()
+    res = {"site": "::".join(x for x in key[:2] if x), "text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0,
+           "secs": 0.0, "note": ""}
+    names, r0 = scratch.farm(unit, [data], None)
+    if isinstance(r0[0], Exception):
+        res["note"] = f"does not compile: {r0[0]}"
+        return res
+    base = r0[0]
+    n0 = sum(1 for x in base if x == 0)
+
+    def edits(text):
+        p = Parsed(unit, text)
+        site = next((f for f in p.functions() if site_key(f) == key), None)
+        if site is None or body_of(site) is None:
+            return []
+        ctx, (lo, hi), out = Ctx(p, site), ext(site), []
+        for k in kinds:
+            try:
+                eds = list(GENERATORS[k](ctx))
+            except Exception:  # noqa: BLE001
+                continue
+            out += [ed for ed in eds if all(lo <= s <= e <= hi for s, e, _ in ed.reps)]
+        return out
+    level, seen, best = [(data, [], [])], {hashlib.sha1(data).digest()}, None
+    for _ in range(depth):
+        pool = []
+        for text, trace, used in level:
+            for ed in edits(text):
+                new = ed.apply(text)
+                if new is None:
+                    continue
+                h = hashlib.sha1(new).digest()
+                if h not in seen:
+                    seen.add(h)
+                    pool.append((new, trace + [ed.desc], used + [ed.kind]))
+        pool = pool[:max(0, budget - res["tried"])]
+        if not pool:
+            break
+        _, rs = scratch.farm(unit, [c[0] for c in pool], None)
+        res["tried"] += len(pool)
+        scored = []
+        for (text, trace, used), r in zip(pool, rs):
+            if not isinstance(r, list) or any(b == 0 and x != 0 for b, x in zip(base, r)):
+                continue
+            n = sum(1 for x in r if x == 0)
+            scored.append((n, -sum(x for x in r if x > 0), len(trace), text, trace, used))
+        scored.sort(key=lambda x: (-x[0], -x[1], x[2]))
+        if scored and scored[0][0] > (best[0] if best else n0):
+            best = scored[0]
+        level = [(x[3], x[4], x[5]) for x in scored[:8] if x[0] >= n0]
+        if not level:
+            break
+    if best is not None:
+        try:
+            a, b = unit.build(dec(data)), unit.build(dec(best[3]))
+        except scratch.CompileError as e:
+            res["note"] = str(e)[:100]
+            return res
+        fixed = sorted(n for n, f in b.fn.items() if f.pct == 100 and n in a.fn and a.fn[n].pct < 100)
+        broke = [n for n, f in a.fn.items() if f.pct == 100 and (n not in b.fn or b.fn[n].pct < 100)]
+        secs = [k for k, v in a.sections.items() if not k.startswith(".text") and b.sections.get(k, 0) < v - 0.005]
+        extra = [n for n in b.extra if n not in a.extra]
+        if fixed and not broke and not secs and not extra:
+            res.update(text=best[3], trace=best[4], kinds=best[5], fixed=fixed,
+                       fixed_bytes=sum(b.fn[n].size for n in fixed),
+                       worse=sum(1 for n, f in b.fn.items() if n in a.fn and f.pct < a.fn[n].pct - 0.005))
+        else:
+            res["note"] = f"objdiff: fixes {len(fixed)}, breaks {len(broke)}, sections {secs}"
+    res["secs"] = round(time.time() - t0, 1)
+    return res
+
+
+def callees(a, kinds):
+    """--callees: for every unit, rewrite the functions inlined into open functions, most inliners
+    first, each scored on the whole unit (unitwide). One JSON line per site."""
+    allu = json.loads(Path("objdiff.json").read_text())["units"]
+    names = [u["name"] for u in allu if "base_path" in u and (u.get("metadata") or {}).get("source_path")
+             and (not a.units or any(x in u["name"] for x in a.units.split(",")))]
+    if a.parallel > 1 and not a.only:
+        import subprocess
+        from concurrent.futures import ThreadPoolExecutor
+        jobs = max(2, scratch.JOBS * 2 // a.parallel)
+        argv0 = [sys.executable, __file__, "--callees", "--kinds", ",".join(kinds), "--depth", str(a.depth), "--budget", str(a.budget),
+                 "--max-sites", str(a.max_sites), "--save", a.save] + (["--apply"] if a.apply else []) + (["--log", a.log] if a.log else [])
+
+        def run(name):
+            env = dict(__import__("os").environ, SCRATCH_JOBS=str(jobs), GRIND_BROKER_SERVER="1")
+            pr = subprocess.run(argv0 + ["--units", name, "--only", "1"], capture_output=True, text=True, env=env)
+            return [l for l in pr.stdout.splitlines() if l.startswith(("  ", "["))] + ([pr.stderr[-300:]] if pr.returncode else [])
+        with ThreadPoolExecutor(max_workers=a.parallel) as ex:
+            for lines in ex.map(run, names):
+                for l in lines:
+                    print(l, flush=True)
+        return 0
+    logf = open(a.log, "a") if a.log else None
+    for name in names:
+        if a.only and name != a.units:
+            continue
+        try:
+            unit = scratch.Unit(name)
+            sites = shared_callees(unit)
+        except Exception as e:  # noqa: BLE001
+            print(f"[{name}] {type(e).__name__}: {str(e)[:120]}", flush=True)
+            continue
+        for key, users in sites[:a.max_sites]:
+            try:
+                r = unitwide(unit, key, kinds, min(a.depth, 2), a.budget)
+            except Exception as e:  # noqa: BLE001
+                r = {"site": key[1], "text": None, "trace": [], "kinds": [], "fixed": [], "worse": 0, "tried": 0, "secs": 0,
+                     "note": f"{type(e).__name__}: {str(e)[:150]}"}
+            applied, saved = False, None
+            if r["text"] is not None:
+                old = (unit.root / unit.src).read_bytes()
+                out = Path(a.save)
+                out.mkdir(parents=True, exist_ok=True)
+                hand = any(x in NEEDS_HAND for x in r["kinds"])
+                saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", name.split("/")[-1] + "__callee__" + r["site"])[:110]
+                               + (".hand" if hand else ".auto") + ".diff")
+                saved.write_text(diff_text(old, r["text"], unit.src))
+                if a.apply and (not hand or a.apply_b):
+                    (unit.root / unit.src).write_bytes(r["text"])
+                    applied = True
+            row = {"unit": name, "site": r["site"], "users": len(users), "fixed": r["fixed"], "fixed_bytes": r.get("fixed_bytes", 0),
+                   "worse": r["worse"], "trace": r["trace"], "kinds": r["kinds"], "tried": r["tried"], "secs": r["secs"],
+                   "note": r["note"], "applied": applied, "diff": str(saved) if saved else None}
+            if logf:
+                logf.write(json.dumps(row) + "\n")
+                logf.flush()
+            if r["text"] is not None or a.verbose:
+                print(f"  {name.split('/')[-1]} {r['site']} (inlined into {len(users)} open): fixes {len(r['fixed'])} "
+                      f"({r.get('fixed_bytes', 0)} B), {r['worse']} open ones worse, {r['tried']} tried, {r['secs']} s"
+                      + ("  << " + "; ".join(r["trace"])[:140] if r["trace"] else "") + (f" ({r['note']})" if r["note"] else ""), flush=True)
+        unit.clean()
+    return 0
+
+
 def bulk(a, kinds):
     """Run the search over many functions (from structural.json); one JSON line per function."""
     st = json.loads(Path(a.structural).read_text())["units"]
@@ -1769,14 +1951,14 @@ def bulk(a, kinds):
         if r["text"] is not None:
             gained += 1
             won += p1 == 100
-            tier_b = any(TIER[x] == "b" for x in r["kinds"])
+            tier_b = any(x in NEEDS_HAND for x in r["kinds"])
             old = (unit.root / unit.src).read_bytes()
             out = Path(a.save)
             out.mkdir(parents=True, exist_ok=True)
-            saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", uname.split("/")[-1] + "__" + fn)[:110] + (".b" if tier_b else ".a") + ".diff")
+            saved = out / (re.sub(r"[^A-Za-z0-9_]", "_", uname.split("/")[-1] + "__" + fn)[:110] + (".hand" if tier_b else ".auto") + ".diff")
             saved.write_text(diff_text(old, r["text"], unit.src))
-            # a tier b result is right at 100 % but may not read naturally (a duplicated expression that was
-            # a macro, a stale comment): it goes to a session or a person, not straight into the source
+            # a result that adds or removes a local is right at 100 % but may not read naturally (a new name,
+            # a duplicated expression that was a macro): it goes to a session or a person, not into the source
             if a.apply and (p1 == 100 or a.partial) and (not tier_b or a.apply_b):
                 (unit.root / unit.src).write_bytes(r["text"])
                 applied = True
@@ -1813,7 +1995,7 @@ def main():
     ap.add_argument("--per-round", type=int, default=0, help="compile a random sample of this size per round")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--partial", action="store_true", help="with --bulk --apply: also apply results below 100 %%")
-    ap.add_argument("--apply-b", action="store_true", help="with --bulk --apply: also apply results that used a tier b rewrite")
+    ap.add_argument("--apply-b", action="store_true", help="with --bulk --apply: also apply results that add or remove a local")
     ap.add_argument("--save", default="build/permute/bulk", help="with --bulk: where each result's diff is saved")
     ap.add_argument("--json")
     ap.add_argument("--list-kinds", action="store_true")
@@ -1828,6 +2010,9 @@ def main():
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--step", type=int, default=1)
     ap.add_argument("--log")
+    ap.add_argument("--callees", action="store_true",
+                    help="rewrite functions inlined into open functions, scored on the whole unit (all units, or --units)")
+    ap.add_argument("--max-sites", type=int, default=10, help="with --callees: inlined functions tried per unit")
     ap.add_argument("--parallel", type=int, default=1, help="with --bulk: this many units at once")
     ap.add_argument("--only", help=argparse.SUPPRESS)
     ap.add_argument("-v", "--verbose", action="store_true")
@@ -1839,6 +2024,8 @@ def main():
     bad = [k for k in kinds if k not in GENERATORS]
     if bad:
         sys.exit(f"unknown kind {bad[0]!r}; kinds: {', '.join(GENERATORS)}")
+    if a.callees:
+        return callees(a, kinds if a.kinds or a.tier == "b" else KINDS_A + KINDS_B)
     if a.bulk:
         return bulk(a, kinds)
     if a.list_kinds or not a.unit or not a.function:
