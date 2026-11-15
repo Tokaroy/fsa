@@ -12,7 +12,6 @@
 static const s16 lbl_80465120[] = {0, 3, 1, 2, 2, 2, 3, 3, 4, 3, 5, 3, -1, -1};
 static const s16* lbl_80539F48[] = {lbl_80465120, NULL};
 
-// FIXME: 99.85 %, reloc-name; behaviour clean.
 WarpCannon_8049EAE0::WarpCannon_8049EAE0() {
     field_0x268 = 0;
     field_0x26c = -1;
@@ -29,7 +28,7 @@ WarpCannon_8049EAE0::WarpCannon_8049EAE0() {
 
 WarpCannon_8049EAE0::~WarpCannon_8049EAE0() {}
 
-// FIXME: 99.66 %, reloc-name; behaviour clean.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void WarpCannon_8049EAE0::init() {
     field_0x274 = field_0x90 >> 8 & 0xFF;
     field_0x270 = field_0x90 >> 16 & 0xFF;
@@ -46,7 +45,7 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 95.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.48 %, missing/extra + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
@@ -157,7 +156,7 @@ void WarpCannon_8049EAE0::draw() {
                 1.0f, 1.0f);
 }
 
-// FIXME: 95.24 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.46 %, missing/extra + reloc-name; behaviour drift.
 // The loop over fn_80230360 is the same, but after it the
 // original falls through into the field_0x278 store on its own `cmpwi 4; blt`,
 // where ours compares i again (cmpwi; bne): 3 extra instructions. The switch's
