@@ -230,9 +230,7 @@ u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
     return true;
 }
 
-// FIXME: 99.30 %. regalloc only: the original keeps the 0.0f in f0 and the
-// scale (field_0x238) in f1 for the matrix stores; ours swaps them (the
-// literals are @NNN vs lbl_, a data split).
+// FIXME: 99.30 %.
 void IceMeltedByFourPlayers_804AE888::draw() {
     if (field_0x251 == 1) {
         return;
@@ -244,15 +242,16 @@ void IceMeltedByFourPlayers_804AE888::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x238;
+        f32 scale = field_0x238;
+        mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
         mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x238;
+        mtx[1][1] = scale;
         mtx[1][2] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x238;
+        mtx[2][2] = scale;
         params.mMtx = mtx;
     }
     void* res = fn_804032E8('TIMG', "yukikabe.bti");
