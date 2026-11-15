@@ -19,6 +19,12 @@ public:
     // Stores the state in field_0x268 and runs its block: 1, 2, 3, 4, 6, 7 and
     // 8 do something; 0 and 5 nothing (the jump table's default).
     void fn_80130FAC(s32 state);
+    // Not in the binary: plain functions that update and fn_80130FAC inline.
+    void flyPlayers();
+    void liftPlayers();
+    bool landPlayers();
+    bool recoil();
+    bool fireRecoil();
     /* 0x230 */ SpriteAnim_801D267C mAnim;
     /* 0x268 */ s32 field_0x268; // not yet known; 0 in the constructor
     /* 0x26C */ s32 field_0x26c; // -1 in the constructor

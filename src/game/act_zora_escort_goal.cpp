@@ -51,7 +51,6 @@ static inline void approach(s32& cur, s32 target, f32 remaining) {
     }
 }
 
-// FIXME: 99.78 %, reloc-name; behaviour clean.
 ZoraEscortGoal_8049E424::ZoraEscortGoal_8049E424()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(0),
       field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0), field_0x254(0xFF),
@@ -66,7 +65,6 @@ ZoraEscortGoal_8049E424::~ZoraEscortGoal_8049E424() {
     field_0x380 = NULL;
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
 void ZoraEscortGoal_8049E424::init() {
     ActorBase_804A5770::init();
     if (field_0x90 & 1) {
@@ -90,48 +88,7 @@ void ZoraEscortGoal_8049E424::init() {
     }
 }
 
-// The bobbing of states 8 and 9: z follows a sine of field_0x248, and the emitters follow mPos.
-inline void ZoraEscortGoal_8049E424::hover() {
-    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-    field_0x248 += 600;
-    if (field_0x248 >= 0x10000) {
-        field_0x248 = 0;
-    }
-    pos.z = 4.0f * JMath::sincosTable_.sinShort(field_0x248) + 4.0f;
-    mPos.z = field_0x26c + pos.z;
-    if (field_0x258) {
-        pos = mPos;
-        pos.x += 8.0f;
-        setEmitterPos_8013CB44(field_0x37c, &pos, 0, -1, true);
-        setEmitterPos_8013CB44(field_0x380, &pos, 0, -1, true);
-    }
-}
-
-// Shared by update's states 1 and 8, which differ only in the message: the player who
-// started the talk, or -1.
-inline s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
-    JGeometry::TBox2f box(mBox);
-    box.i.x += mPos.x;
-    box.i.y += mPos.y;
-    box.f.x += mPos.x;
-    box.f.y += mPos.y;
-    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-    s32 player = fn_8022FD8C(mSerial);
-    if (player < 0) {
-        return -1;
-    }
-    if (!fn_802300EC(player)) {
-        return -1;
-    }
-    JGeometry::TVec3f msgPos(mPos);
-    msgPos.y -= 64.0f;
-    if (fn_8038AD24(player, msg, mSerial, field_0x4, msgPos, 0x28)) {
-        return player;
-    }
-    return -1;
-}
-
-// FIXME: 97.93 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.09 %, missing/extra; behaviour drift.
 // ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for fn_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
 void ZoraEscortGoal_8049E424::update() {
     ActorBase_804A5770::update();
@@ -179,29 +136,7 @@ void ZoraEscortGoal_8049E424::update() {
         }
         break;
     case 5: {
-        bool flag;
-        if (field_0x238 <= 0) {
-            flag = true;
-        } else {
-            JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
-            field_0x260 = 1.0f;
-            u16 angle = 0;
-            s32 layer = field_0x4;
-            JGeometry::TVec3f pos(mPos);
-            if (mRail.fn_800FDEA0(&pos, 0.5f, &step, &layer, &angle, 0x200) == 3) {
-                flag = true;
-            } else {
-                field_0x3c.set(step);
-                mPos += field_0x3c;
-                s32 anim = fn_801F681C(angle);
-                if (anim != mAnim27c.mAnim) {
-                    mAnim27c.startAnim_801D22DC(anim, 2, false);
-                    mAnim27c.fn_801D1F14(0.0f);
-                }
-                flag = false;
-            }
-        }
-        if (flag) {
+        if (walkRail()) {
             fn_80126A4C(6);
         }
         break;
@@ -282,7 +217,6 @@ void ZoraEscortGoal_8049E424::update() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
-// FIXME: 99.95 %, reloc-name; behaviour clean.
 void ZoraEscortGoal_8049E424::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -301,7 +235,7 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
     return false;
 }
 
-// FIXME: 97.76 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.94 %, missing/extra; behaviour drift.
 // ours has 1 more instruction (a clrlwi of field_0x238 before fn_800FE3EC's u8 argument, cases 5 and 11; the original passes the lwz'd value as is), and in case 11 the original schedules the clrlwi / psq_st pair before the call differently.
 void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     field_0x230 = arg;
@@ -338,10 +272,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         mBox2.set(mBox);
         field_0x80.set(mBox);
         if (field_0x258) {
-            JGeometry::TVec3f pos(mPos);
-            pos.x += 8.0f;
-            field_0x37c = spawnEmitter_8013CC50(field_0x4, &pos, 0x183, 0, -1, 0, 0, true, 1.0f);
-            field_0x380 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, 0, 0, true, 1.0f);
+            spawnEmitters();
         }
         getGameView_802D6A9C()->fn_802D8050(vfunc_0x3C(), true, 0xFF);
         fn_801283E8()->fn_80128228();
@@ -404,4 +335,85 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         fn_801F3668();
         break;
     }
+}
+
+// From here down: plain functions that update and fn_80126A4C inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals ahead of fn_80126A4C's, in the order
+// of these functions from the bottom of the file up, so they were generated before it
+// (tools/pool.py).
+// Shared by update's states 1 and 8, which differ only in the message: the player who
+// started the talk, or -1.
+s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
+    JGeometry::TBox2f box(mBox);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0) {
+        return -1;
+    }
+    if (!fn_802300EC(player)) {
+        return -1;
+    }
+    JGeometry::TVec3f msgPos(mPos);
+    msgPos.y -= 64.0f;
+    if (fn_8038AD24(player, msg, mSerial, field_0x4, msgPos, 0x28)) {
+        return player;
+    }
+    return -1;
+}
+
+// State 5: a step along the rail at speed 0.5, facing the way it goes. True at the rail's end
+// (or when field_0x238 gives no rail).
+bool ZoraEscortGoal_8049E424::walkRail() {
+    bool flag;
+    if (field_0x238 <= 0) {
+        flag = true;
+    } else {
+        JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
+        field_0x260 = 1.0f;
+        u16 angle = 0;
+        s32 layer = field_0x4;
+        JGeometry::TVec3f pos(mPos);
+        if (mRail.fn_800FDEA0(&pos, 0.5f, &step, &layer, &angle, 0x200) == 3) {
+            flag = true;
+        } else {
+            field_0x3c.set(step);
+            mPos += field_0x3c;
+            s32 anim = fn_801F681C(angle);
+            if (anim != mAnim27c.mAnim) {
+                mAnim27c.startAnim_801D22DC(anim, 2, false);
+                mAnim27c.fn_801D1F14(0.0f);
+            }
+            flag = false;
+        }
+    }
+    return flag;
+}
+
+// The bobbing of states 8 and 9: z follows a sine of field_0x248, and the emitters follow mPos.
+void ZoraEscortGoal_8049E424::hover() {
+    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+    field_0x248 += 600;
+    if (field_0x248 >= 0x10000) {
+        field_0x248 = 0;
+    }
+    pos.z = 4.0f * JMath::sincosTable_.sinShort(field_0x248) + 4.0f;
+    mPos.z = field_0x26c + pos.z;
+    if (field_0x258) {
+        pos = mPos;
+        pos.x += 8.0f;
+        setEmitterPos_8013CB44(field_0x37c, &pos, 0, -1, true);
+        setEmitterPos_8013CB44(field_0x380, &pos, 0, -1, true);
+    }
+}
+
+// The two emitters that follow the goal (hover moves them), 8 units right of mPos.
+void ZoraEscortGoal_8049E424::spawnEmitters() {
+    JGeometry::TVec3f pos(mPos);
+    pos.x += 8.0f;
+    field_0x37c = spawnEmitter_8013CC50(field_0x4, &pos, 0x183, 0, -1, 0, 0, true, 1.0f);
+    field_0x380 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, 0, 0, true, 1.0f);
 }

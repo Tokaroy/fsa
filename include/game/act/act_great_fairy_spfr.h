@@ -24,6 +24,10 @@ public:
     void fn_801321E4();
     // State change: stores the new state in field_0x234 and runs its entry code.
     void fn_80132454(s32 index);
+    // Not in the binary (inlined into update and fn_80132454).
+    bool talkTo(s32 player);
+    void placeAtBarrier();
+    void spawnSoldier();
 
     /* 0x230 */ u8 field_0x230; // set to 0 by the constructor, not yet known
     /* 0x234 */ s32 field_0x234; // state: fn_801321E4 switches on it

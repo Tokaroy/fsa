@@ -17,6 +17,11 @@
 #include "game/act/act_life_meter.h"
 #include "game/act/act_octorok_rock.h"
 
+// Plain functions that their callers inline and whose own copies the linker dropped; each stands
+// where the original's .sdata2 order puts it (tools/pool.py), see their definitions.
+u16 angleOf(f32 x, f32 y);
+f32 lifeMeterSpacing();
+
 // Passes the position on by value (the original loads the other arguments before its copy).
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
     return fn_8038AD24(player, msg, serial, layer, pos, flags);
@@ -27,7 +32,6 @@ extern const u32 lbl_80464CD8[43];
 
 static const u16 lbl_80464D84[8] = {0x2C, 0x2D, 0x2E, 0x2F, 0x28, 0x29, 0x2A, 0x2B};
 
-// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 EscortBase_8049E0C8::EscortBase_8049E0C8(const char* sobName, s32 arg2, s32 arg3) {
     field_0x330 = 1;
     field_0x331 = 1;
@@ -103,7 +107,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     return 3;
 }
 
-// FIXME(shotgun): 99.41 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80124448() {
     ActorBase_804A5770::init();
     lbl_80539F30 = mSerial;
@@ -130,7 +134,7 @@ void EscortBase_8049E0C8::fn_80124448() {
             JGeometry::TVec3f pos(mPos);
             pos.x -= 16.0f;
             for (s32 i = 0; i < field_0x360; i++) {
-                pos.x += 8.0f;
+                pos.x += lifeMeterSpacing();
                 field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
                 s32 serial = field_0x364[i];
                 if (serial < 0) {
@@ -145,7 +149,7 @@ void EscortBase_8049E0C8::fn_80124448() {
     }
 }
 
-// FIXME(shotgun): 94.09 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 94.17 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::update() {
     ActorBase_804A5770::update();
     field_0x37c = 1.0f;
@@ -187,7 +191,7 @@ void EscortBase_8049E0C8::update() {
     vfunc_0x90();
 }
 
-// FIXME(shotgun): 97.19 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.35 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::draw() {
     ActorBase_804A5770::draw();
     if (field_0x332) {
@@ -257,7 +261,7 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 98.74 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.79 %, missing/extra; behaviour clean.
 // (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
@@ -292,7 +296,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (target != NULL) {
                 JGeometry::TVec3f pos = target->mPos;
-                field_0x98 = fn_801F681C((u16)(s32)(JMath::atanTable_.atan2_(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)) * 10430.378f));
+                field_0x98 = fn_801F681C(angleOf(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
             }
         }
         vfunc_0x94();
@@ -300,8 +304,6 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     return 1;
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
-// only (float literal pool name); behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
     u16 angle;
     s32 dir;
@@ -339,7 +341,7 @@ static inline s32 findArrivedSlot(s32 player) {
     return -1;
 }
 
-// FIXME: 97.78 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.91 %, missing/extra; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     if (player < 0) {
         return;
@@ -409,7 +411,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         }
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
-        dir = fn_801F681C((u16)(s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f));
+        dir = fn_801F681C(angleOf(-dx, -dy));
         JGeometry::TVec3f moved = mPos - mPrevPos;
         if (PSVECMag(&moved) >= 1.0f) {
             field_0x380 = 0.5f;
@@ -450,7 +452,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-// FIXME(shotgun): 98.56 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.72 %, different; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
@@ -482,13 +484,12 @@ void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, 
         f32 dx = mPos.x - (x + getPlayerPos_8023E724(who)->x);
         f32 dy = mPos.y - (y + getPlayerPos_8023E724(who)->y);
         *outDist = std::sqrtf(dx * dx + dy * dy);
-        *outAngle = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
+        *outAngle = angleOf(-dx, -dy);
         *outDir = fn_801F681C(*outAngle);
         *outPlayer = player;
     }
 }
 
-// FIXME(shotgun): 99.47 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_80122F6C(f32* x, f32* y, s32* player) {
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
@@ -515,7 +516,6 @@ void EscortBase_8049E0C8::fn_80122F6C(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 99.36 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xA8(f32* x, f32* y, s32* player) {
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
@@ -542,7 +542,6 @@ void EscortBase_8049E0C8::vfunc_0xA8(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 99.21 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xAC(f32* x, f32* y, s32* player) {
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
@@ -568,7 +567,6 @@ void EscortBase_8049E0C8::vfunc_0xAC(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 99.57 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xB0(f32* x, f32* y, s32* player) {
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
@@ -593,7 +591,6 @@ static inline s32 findGroupMember(s32 target) {
     return result;
 }
 
-// FIXME: 99.78 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     *x = 0.0f;
     *y = 0.0f;
@@ -619,7 +616,6 @@ void EscortBase_8049E0C8::vfunc_0xB4(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 99.21 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
     f32 v = 0.0f;
     if (vfunc_0xC4()) {
@@ -645,9 +641,6 @@ void EscortBase_8049E0C8::vfunc_0xB8(f32* x, f32* y, s32* player) {
     }
 }
 
-// FIXME: 99.89 %, reloc-name; behaviour clean.
-// FIXME: scheduling+regalloc + reloc-name; behaviour clean.
-// The box's f.x/f.y use f3/f4 swapped and pt's zero stores are scheduled two instructions later.
 bool EscortBase_8049E0C8::vfunc_0xBC() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -664,7 +657,7 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
     return false;
 }
 
-// FIXME: 99.80 %, scheduling + reloc-name; behaviour clean.
+// FIXME: 99.86 %, scheduling; behaviour clean.
 // The box corners' adds are scheduled differently (see vfunc_0xBC) and mSerial/field_0x4 are loaded in the other order before the talk call.
 s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
     JGeometry::TBox2f box(mBox);
@@ -724,7 +717,6 @@ bool EscortBase_8049E0C8::fn_801227D4() {
     return false;
 }
 
-// FIXME: 99.88 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_80122730(s32 anim, bool shifted, bool throttled) {
     if (anim >= 0) {
         if (throttled) {
@@ -748,7 +740,6 @@ void EscortBase_8049E0C8::fn_80122730(s32 anim, bool shifted, bool throttled) {
     }
 }
 
-// FIXME(shotgun): 99.67 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_80122548() {
     if (fn_8012285C() >= 0) {
         field_0x331 = 0;
@@ -789,7 +780,7 @@ void EscortBase_8049E0C8::fn_80122548() {
     }
 }
 
-// FIXME(shotgun): 96.71 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.87 %, different; behaviour drift.
 void EscortBase_8049E0C8::fn_80122148() {
     if (fn_8012285C() >= 0) {
         s32 state = fn_8012285C();
@@ -871,7 +862,6 @@ void EscortBase_8049E0C8::fn_80122148() {
     }
 }
 
-// FIXME: 99.70 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_801220C4() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
@@ -879,7 +869,6 @@ void EscortBase_8049E0C8::fn_801220C4() {
     startSound_801F0E34(0x400ED, 0);
 }
 
-// FIXME: 99.74 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_8012202C() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
@@ -888,7 +877,6 @@ void EscortBase_8049E0C8::fn_8012202C() {
     mAnim.startAnim_801D22DC(9, 0, false);
 }
 
-// FIXME: 99.70 %, reloc-name; behaviour clean.
 void EscortBase_8049E0C8::fn_80121FA8() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
@@ -896,7 +884,13 @@ void EscortBase_8049E0C8::fn_80121FA8() {
     startSound_801F0E34(0x400ED, 0);
 }
 
-// FIXME: 99.66 %, reloc-name; behaviour clean.
+// A plain function that its three callers inline and whose own copy the linker dropped: the
+// original's .sdata2 has 10430.378f between fn_80121F34's literals and fn_80121FA8's, so it was
+// generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
+u16 angleOf(f32 x, f32 y) {
+    return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
+}
+
 void EscortBase_8049E0C8::fn_80121F34() {
     field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
     switch (field_0x98) {
@@ -916,7 +910,6 @@ void EscortBase_8049E0C8::fn_80121F34() {
     field_0x3c.z = 3.0f;
 }
 
-// FIXME: 99.59 %, reloc-name; behaviour clean.
 bool EscortBase_8049E0C8::fn_80121E40() {
     switch (field_0x98) {
     case 0:
@@ -941,7 +934,6 @@ bool EscortBase_8049E0C8::fn_80121E40() {
     return false;
 }
 
-// FIXME: 99.83 %, reloc-name; behaviour clean.
 f32 EscortBase_8049E0C8::fn_80121DC8(s32 player) {
     JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(player);
     return JMAFastSqrt(square(playerPos.x - mPos.x) + square(playerPos.y - mPos.y));
@@ -959,7 +951,7 @@ s32 EscortBase_8049E0C8::fn_80121D68() {
     return 1;
 }
 
-// FIXME(shotgun): 98.41 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
@@ -998,7 +990,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     return false;
 }
 
-// FIXME: 99.13 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.29 %, regalloc-only; behaviour clean.
 // Regalloc only: the original keeps the array pointer in r29 and the counter in r30; here they are swapped.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
@@ -1007,7 +999,7 @@ void EscortBase_8049E0C8::fn_80121ABC() {
         JGeometry::TVec3f pos(mPos);
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
-            pos.x += 8.0f;
+            pos.x += lifeMeterSpacing();
             field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
             s32 serial = field_0x364[i];
             if (serial < 0) {
@@ -1044,9 +1036,8 @@ static inline void followActor(LifeMeter_804B174C* meter, s32 serial, f32 yOffse
 
 // update's life-meter refresh: respawns the missing meters, then shows each meter (or hides it)
 // and points it at the escort with its heart index. `dead` is update's mLife == 0.
-// FIXME: 99.69 %, regalloc-only + reloc-name; behaviour clean.
-// Regalloc only (+ reloc-name: the pool's first literal, 8.0f, belongs to a function
-// not in the binary): in the respawn loop the original keeps the array pointer in r30 and the
+// FIXME: 99.75 %, regalloc-only; behaviour clean.
+// Regalloc only: in the respawn loop the original keeps the array pointer in r30 and the
 // spawned serial in r31; here they are swapped.
 void EscortBase_8049E0C8::fn_801217EC(bool dead) {
     if (!field_0x332) {
@@ -1142,9 +1133,6 @@ s32 EscortBase_8049E0C8::fn_801216D0(s32 player) {
     return -1;
 }
 
-// FIXME: 99.76 %, reloc-name; behaviour clean.
-// Reloc-name only: the unit's first .sdata2 literal (8.0f, lbl_8053C9B0) comes from
-// a dead-stripped function emitted before this one, so every pool entry up to 0x1C is one slot off.
 // When a live magic circle ('CIRC') on the escort's layer overlaps the escort's box grown by 16,
 // dir is the xy direction from the circle to the escort, length 1.6; else dir stays zero.
 bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
@@ -1180,6 +1168,13 @@ bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
         return true;
     }
     return false;
+}
+
+// A plain function that fn_80124448 and fn_80121ABC inline and whose own copy the linker dropped:
+// the original's .sdata2 starts with 8.0f alone, ahead of fn_80121438's literals, so it was
+// generated before it (tools/pool.py). The x distance between two life meters.
+f32 lifeMeterSpacing() {
+    return 8.0f;
 }
 
 bool EscortBase_8049E0C8::vfunc_0xC4() {

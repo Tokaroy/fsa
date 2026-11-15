@@ -12,7 +12,6 @@
 static const s16 lbl_80465120[] = {0, 3, 1, 2, 2, 2, 3, 3, 4, 3, 5, 3, -1, -1};
 static const s16* lbl_80539F48[] = {lbl_80465120, NULL};
 
-// FIXME: 99.85 %, reloc-name; behaviour clean.
 WarpCannon_8049EAE0::WarpCannon_8049EAE0() {
     field_0x268 = 0;
     field_0x26c = -1;
@@ -29,7 +28,7 @@ WarpCannon_8049EAE0::WarpCannon_8049EAE0() {
 
 WarpCannon_8049EAE0::~WarpCannon_8049EAE0() {}
 
-// FIXME: 99.66 %, reloc-name; behaviour clean.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void WarpCannon_8049EAE0::init() {
     field_0x274 = field_0x90 >> 8 & 0xFF;
     field_0x270 = field_0x90 >> 16 & 0xFF;
@@ -46,7 +45,7 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 95.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.48 %, missing/extra + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
@@ -85,18 +84,7 @@ void WarpCannon_8049EAE0::update() {
     }
     case 1: {
         fn_802308E0(field_0x26c);
-        field_0x280 += 0.05f;
-        JGeometry::TVec3f step(0.0f, 2.0f * (0.5f - field_0x280), 0.0f);
-        mPos.add(step);
-        if (mPos.y < field_0x288) {
-            mPos.y = field_0x288;
-        }
-        bool done = false;
-        if (field_0x280 >= 1.0f) {
-            field_0x280 = 1.0f;
-            done = true;
-        }
-        if (done) {
+        if (recoil()) {
             field_0x26c = -1;
             fn_80130FAC(0);
         }
@@ -109,31 +97,7 @@ void WarpCannon_8049EAE0::update() {
             pos.y -= field_0x27c;
             fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
         }
-        static s32 counter = 0;
-        static f32 phase = 0.0f;
-        phase += 0.1f;
-        if (phase >= 1.0f) {
-            phase = 1.0f;
-        }
-        counter++;
-        f32 t;
-        if (phase <= 0.2f) {
-            t = 12.0f * (0.5f - phase);
-        } else {
-            t = 4.0f * (0.2f - phase);
-        }
-        JGeometry::TVec3f step(0.0f, t, 0.0f);
-        mPos.add(step);
-        if (mPos.y < field_0x288) {
-            mPos.y = field_0x288;
-        }
-        bool done = false;
-        if (phase >= 1.0f && counter >= 30) {
-            counter = 0;
-            phase = 0.0f;
-            done = true;
-        }
-        if (done) {
+        if (fireRecoil()) {
             fn_80130FAC(3);
         }
         break;
@@ -145,23 +109,13 @@ void WarpCannon_8049EAE0::update() {
         }
         break;
     case 4:
-        fn_801CD950(&field_0x27c, -10.0f, -0.002f);
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-            fn_801CD950(&pos.y, 1000.0f, field_0x27c);
-            fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
+        flyPlayers();
         if (getPlayerPos_8023E724(0)->z >= 90.0f) {
             fn_80130FAC(6);
         }
         break;
     case 5:
-        fn_801CD950(&field_0x27c, -10.0f, -0.002f);
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-            fn_801CD950(&pos.y, 1000.0f, field_0x27c);
-            fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
+        flyPlayers();
         if (fn_80119DD0()->field_0x14 >= 250.0f) {
             fn_80130FAC(6);
         }
@@ -170,16 +124,7 @@ void WarpCannon_8049EAE0::update() {
         fn_80130FAC(7);
         break;
     case 7: {
-        fn_801CD950(&field_0x27c, -10.0f, -0.2f);
-        bool all = false;
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-            if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
-                all = true;
-            }
-            fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
-        if (all) {
+        if (landPlayers()) {
             fn_80130FAC(8);
         }
         break;
@@ -190,9 +135,6 @@ void WarpCannon_8049EAE0::update() {
     mAnim.fn_801D1C18();
 }
 
-// FIXME: 99.90 %, reloc-name; behaviour clean.
-// Only the .sdata2 offsets of its literals differ: the
-// original's pool (0x8053CCA0) also holds update()'s, which isn't written yet.
 void WarpCannon_8049EAE0::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1d = 1;
@@ -214,7 +156,7 @@ void WarpCannon_8049EAE0::draw() {
                 1.0f, 1.0f);
 }
 
-// FIXME: 95.24 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.46 %, missing/extra + reloc-name; behaviour drift.
 // The loop over fn_80230360 is the same, but after it the
 // original falls through into the field_0x278 store on its own `cmpwi 4; blt`,
 // where ours compares i again (cmpwi; bne): 3 extra instructions. The switch's
@@ -269,11 +211,7 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     case 7: {
         fn_8023077C();
         field_0x278 = 0;
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            pos.z = 90.0f;
-            fn_80230498(i, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
+        liftPlayers();
         field_0x27c = 0.0f;
         break;
     }
@@ -282,4 +220,88 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
         mAlive = false;
         break;
     }
+}
+
+// From here down: plain functions that update and fn_80130FAC inline and whose own copies the
+// linker dropped. The original's .sdata2 has their literals ahead of fn_80130FAC's, in the order
+// of these functions from the bottom of the file up, so they were generated before it
+// (tools/pool.py). One more is still missing: the original creates a 16.0f after flyPlayers'
+// literals and before fn_80130FAC's 13.0f, which leaves init's literals one slot off.
+// States 4 and 5: the players fly off, accelerating towards y = 1000.
+void WarpCannon_8049EAE0::flyPlayers() {
+    fn_801CD950(&field_0x27c, -10.0f, -0.002f);
+    for (s32 p = 0; p < 4; p++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
+        fn_801CD950(&pos.y, 1000.0f, field_0x27c);
+        fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
+    }
+}
+
+// Entering state 7: the players at z = 90.
+void WarpCannon_8049EAE0::liftPlayers() {
+    for (s32 i = 0; i < 4; i++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
+        pos.z = 90.0f;
+        fn_80230498(i, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
+    }
+}
+
+// State 7: the players come down towards y = 0. True once one has arrived.
+bool WarpCannon_8049EAE0::landPlayers() {
+    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    bool all = false;
+    for (s32 p = 0; p < 4; p++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
+        if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
+            all = true;
+        }
+        fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
+    }
+    return all;
+}
+
+// State 1: the cannon's kick when a player gets in (field_0x280 runs 0 to 1). True at the end.
+bool WarpCannon_8049EAE0::recoil() {
+    field_0x280 += 0.05f;
+    JGeometry::TVec3f step(0.0f, 2.0f * (0.5f - field_0x280), 0.0f);
+    mPos.add(step);
+    if (mPos.y < field_0x288) {
+        mPos.y = field_0x288;
+    }
+    bool done = false;
+    if (field_0x280 >= 1.0f) {
+        field_0x280 = 1.0f;
+        done = true;
+    }
+    return done;
+}
+
+// State 2: the stronger kick of the shot, on its own static phase, held for 30 frames. True at
+// the end.
+bool WarpCannon_8049EAE0::fireRecoil() {
+    static s32 counter = 0;
+    static f32 phase = 0.0f;
+    phase += 0.1f;
+    if (phase >= 1.0f) {
+        phase = 1.0f;
+    }
+    counter++;
+    f32 t;
+    if (phase <= 0.2f) {
+        t = 12.0f * (0.5f - phase);
+    } else {
+        t = 4.0f * (0.2f - phase);
+    }
+    JGeometry::TVec3f step(0.0f, t, 0.0f);
+    mPos.add(step);
+    if (mPos.y < field_0x288) {
+        mPos.y = field_0x288;
+    }
+    bool done = false;
+    if (phase >= 1.0f && counter >= 30) {
+        counter = 0;
+        phase = 0.0f;
+        done = true;
+    }
+    return done;
 }

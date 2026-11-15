@@ -84,8 +84,6 @@ cls_8049EB8C::~cls_8049EB8C() {
     field_0x288 = 0;
 }
 
-// FIXME: 99.77 %, reloc-name; behaviour clean.
-// (reloc-name: pooled float literals lbl_8053CD28, lbl_8053CD08, lbl_8053CCF0)
 void cls_8049EB8C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 1;
@@ -106,7 +104,7 @@ void cls_8049EB8C::init() {
     }
 }
 
-// FIXME: 97.95 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.11 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void cls_8049EB8C::update() {
     cls_8049D140::update();
@@ -157,9 +155,7 @@ void cls_8049EB8C::update() {
             } else if (!fn_802300EC(player)) {
                 player = -1;
             } else {
-                JGeometry::TVec3f pos = mPos;
-                pos.y -= 64.0f;
-                if (!fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28)) {
+                if (!talkTo(player)) {
                     player = -1;
                 }
             }
@@ -188,19 +184,7 @@ void cls_8049EB8C::update() {
         field_0x24c++;
         if (field_0x24c >= 15) {
             field_0x24c = 0;
-            JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-            s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
-            if (bari >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
-                if (actor != NULL) {
-                    pos = actor->mPos;
-                }
-            }
-            pos.x -= 40.0f;
-            pos.y += 180.0f;
-            pos.x += 80.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-            pos.y += 32.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-            getActorManager_801F856C()->spawnActor_801F9484('SLR1', field_0x4, &pos, 0x102, -1, -1);
+            spawnSoldier();
         }
         break;
     case 9:
@@ -238,8 +222,6 @@ void cls_8049EB8C::update() {
     }
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// (reloc-name: string lbl_80465270, float lbl_8053CD00)
 void cls_8049EB8C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
@@ -319,7 +301,7 @@ s32 cls_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 97.75 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.08 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 2 fewer instrs (417 vs 419); emitter 0x24 store and float literal order.
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
@@ -386,26 +368,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         lbl_8053AD70->fn_8037AE00();
         break;
     case 14: {
-        JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
-        s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
-        if (bari >= 0) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
-            if (actor != NULL) {
-                pos = actor->mPos;
-            }
-        }
-        mPos.x = pos.x;
-        pos.y += 32.0f;
-        mPos.y = pos.y;
-        mPos.z = 8.0f;
-        pos.y += 32.0f;
-        pos.x -= 50.0f;
-        for (s32 i = 0; i < 4; i++) {
-            pos.x += 20.0f;
-            fn_80230BF4(i, 3);
-            fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            fn_802303FC(i, &pos, true);
-        }
+        placeAtBarrier();
         break;
     }
     case 15: {
@@ -463,7 +426,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     }
 }
 
-// FIXME: 92.79 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 93.01 %, scheduling+regalloc + reloc-name; behaviour drift.
 // (scheduling+regalloc: f1/f2/r4; reloc-name: literals lbl_8053CD18, lbl_8053CD1C, lbl_8053CD20)
 void cls_8049EB8C::fn_801321E4() {
     switch (field_0x234) {
@@ -571,6 +534,59 @@ void cls_8049EB8C::fn_801321E4() {
         break;
     }
     }
+}
+
+// From here to vfunc_0x58: plain functions that update and fn_80132454 inline and whose own
+// copies the linker dropped. The original's .sdata2 has their literals ahead of fn_801321E4's, in
+// the order of these functions from the bottom of the file up, so they were generated before it
+// (tools/pool.py).
+// Opens message 0x2B6 for `player`, 64 units above the fairy.
+bool cls_8049EB8C::talkTo(s32 player) {
+    JGeometry::TVec3f pos = mPos;
+    pos.y -= 64.0f;
+    return fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28);
+}
+
+// State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
+// in a row 20 units apart at y + 64.
+void cls_8049EB8C::placeAtBarrier() {
+    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+    s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
+    if (bari >= 0) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
+        if (actor != NULL) {
+            pos = actor->mPos;
+        }
+    }
+    mPos.x = pos.x;
+    pos.y += 32.0f;
+    mPos.y = pos.y;
+    mPos.z = 8.0f;
+    pos.y += 32.0f;
+    pos.x -= 50.0f;
+    for (s32 i = 0; i < 4; i++) {
+        pos.x += 20.0f;
+        fn_80230BF4(i, 3);
+        fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
+        fn_802303FC(i, &pos, true);
+    }
+}
+
+// Spawns a soldier ('SLR1') at a random place in an 80 x 32 box, y + 180 from the barrier.
+void cls_8049EB8C::spawnSoldier() {
+    JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
+    s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
+    if (bari >= 0) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(bari);
+        if (actor != NULL) {
+            pos = actor->mPos;
+        }
+    }
+    pos.x -= 40.0f;
+    pos.y += 180.0f;
+    pos.x += 80.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    pos.y += 32.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    getActorManager_801F856C()->spawnActor_801F9484('SLR1', field_0x4, &pos, 0x102, -1, -1);
 }
 
 s32 cls_8049EB8C::vfunc_0x58() {
