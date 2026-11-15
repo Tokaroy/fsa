@@ -1707,12 +1707,6 @@ static inline void setPlayTime(cls_804AF72C* self) {
     self->field_0x38.field_0x1dc = minutes;
 }
 
-// FIXME: 99.34 %, different; behaviour clean.
-// kept out of the build (merge rule: the rows differ in opcode,
-// `mr r8,r7` vs `li r8,1`). The original keeps -1 in r0 and 1 in r7 (ours the
-// other way round), so its minutes fallback copies r7 where ours loads li r8, 1.
-// Lays the message out once with field_0x38 (counting lines and pages), then
-// starts the window's page state.
 void cls_804AF72C::do_begin(const void* entry, const char* text) {
     field_0x2d8->resetFields0x3ab();
     *field_0x2c0 = 0;
