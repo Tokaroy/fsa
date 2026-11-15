@@ -91,7 +91,7 @@ void Log_804ACD70::init() {
     mEmitter2e0 = NULL;
 }
 
-// FIXME(shotgun): 96.07 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 96.46 %, missing/extra; behaviour clean.
 void Log_804ACD70::update() {
     JGeometry::TBox2f box(field_0x80);
     box.i.x += mPos.x;
