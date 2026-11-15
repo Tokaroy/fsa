@@ -74,7 +74,7 @@ void cls_804AC9A8::update() {
             field_0x244 = 0;
             break;
         case 4: {
-            bool wait = true;
+            s32 wait = true;
             if (field_0x240 != count) {
                 if (field_0x23c == 0) {
                     startSound_801F0E34(0x5006E, 0);
