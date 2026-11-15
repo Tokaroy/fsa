@@ -18,6 +18,8 @@ public:
     /* 0x10 */ virtual void vfunc_0x10(); // looks for the switch monitor of its group
     /* 0x14 */ virtual void update();
     /* 0x24 */ virtual void vfunc_0x24(); // deletes the emitter and dies
+    // Not in the binary: a plain function that update inlines.
+    void open();
 
     /* 0x230 */ JPABaseEmitter* mEmitter;
     /* 0x234 */ s32 field_0x234; // state: 0 idle, 1 closing, 2 just switched
