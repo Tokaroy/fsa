@@ -853,7 +853,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 99.28 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
