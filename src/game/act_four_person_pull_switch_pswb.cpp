@@ -40,7 +40,8 @@ void FourPersonPullSwitchBTIVersion_804AE574::init() {
     field_0x250 = 0;
 }
 
-// FIXME: 95.56%. missing/extra: ours has 2 more instrs (268 vs 266). TVec3f temporary on stack around vector addition in 4-player pull loop shifts stack slots.
+// FIXME: 98.19 %, missing/extra; behaviour clean.
+// missing/extra: ours has 2 more instrs (268 vs 266). TVec3f temporary on stack around vector addition in 4-player pull loop shifts stack slots.
 void FourPersonPullSwitchBTIVersion_804AE574::update() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
@@ -142,7 +143,8 @@ void FourPersonPullSwitchBTIVersion_804AE574::draw() {
     }
 }
 
-// FIXME: 96.83%. missing/extra: ours has 2 more instrs (169 vs 167). TVec3f temporary on stack around vector addition in branch 1 shifts stack slots.
+// FIXME: 96.83 %, missing/extra; behaviour clean.
+// missing/extra: ours has 2 more instrs (169 vs 167). TVec3f temporary on stack around vector addition in branch 1 shifts stack slots.
 void FourPersonPullSwitchBTIVersion_804AE574::fn_80373198() {
     if (field_0x24c < 0) {
         return;
