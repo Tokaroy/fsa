@@ -155,8 +155,8 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 
     box = mBox2;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (mState) {
@@ -240,8 +240,8 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         mPos.y = 138.0f;
         box = mBox2;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_80239914(&box, field_0x4, mSerial);
         mPos.x = savedPos.x;
