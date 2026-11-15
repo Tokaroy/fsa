@@ -716,7 +716,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
     if (weapon == NULL || weapon->mLife == 0) {
         return 0;
     }
-    bool byPlayer = false;
+    s32 byPlayer = false;
     s32 kind;
     if (weapon->field_0x94 != 0) {
         kind = (field_0xb0 >> 16) & 0xFF;
