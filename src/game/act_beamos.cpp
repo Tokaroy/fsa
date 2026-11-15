@@ -254,11 +254,10 @@ void Beamos_804A40E0::draw() {
     }
     static JUtility::TColor lbl_8053AC0C(0xFF, 0xFF, 0xFF, 0xFF);
     const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-    f32 floorY = -15.0f + mPos.y;
     JGeometry::TVec3f pos(mPos.x + 10.0f * sincos.sinShort(field_0x2a8),
                           -15.0f + (6.0f * sincos.cosShort(field_0x2a8) + mPos.y), mPos.z);
     s32 depth = 0;
-    if (pos.y >= floorY) {
+    if (pos.y >= (-15.0f + mPos.y)) {
         depth = 1;
     }
     fn_8013AC90(4.0f, &pos, &lbl_8053AC0C, 0, depth, NULL);
