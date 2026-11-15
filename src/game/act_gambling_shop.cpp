@@ -64,7 +64,7 @@ void GamblingShop_804AAA70::init() {
 }
 
 void GamblingShop_804AAA70::vfunc_0x10() {
-    // FIXME: 99.46 %. Regalloc only: the original keeps the chest-slot pointer
+    // FIXME: 99.51 %. Regalloc only: the original keeps the chest-slot pointer
     // (this, stored with 0x250(rN)) in r28 and the loop's byte offset in r29.
     s32 actorEnd = getActorManager_801F856C()->mActorEnd;
     s32 count = 0;
@@ -123,11 +123,10 @@ void GamblingShop_804AAA70::vfunc_0x10() {
 }
 
 void GamblingShop_804AAA70::update() {
-    // FIXME: 98.63 %. The layer is read through getField_0x4() (before the
+    // FIXME: 98.67 %. The layer is read through getField_0x4() (before the
     // getPlayerLayer_8023DE58 calls, as the original). The player/layer and
     // chest-slot loops take their registers in a different order (regalloc),
-    // and the jump table and one float literal are symbol and data-order
-    // differences.
+    // and the jump table is a symbol difference.
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -393,27 +392,7 @@ void GamblingShop_804AAA70::update() {
                 static_cast<GamblingShopChest_804AAAE8*>(actor)->fn_80310E98();
             }
         }
-        s32 roll = (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        switch (roll) {
-        case 0: {
-            s32 tmp = field_0x250[0];
-            field_0x250[0] = field_0x250[1];
-            field_0x250[1] = tmp;
-            break;
-        }
-        case 1: {
-            s32 tmp = field_0x250[1];
-            field_0x250[1] = field_0x250[2];
-            field_0x250[2] = tmp;
-            break;
-        }
-        default: {
-            s32 tmp = field_0x250[0];
-            field_0x250[0] = field_0x250[2];
-            field_0x250[2] = tmp;
-            break;
-        }
-        }
+        swapTwoChests();
         field_0x248 = -1;
         mState = 0;
         break;
@@ -439,6 +418,32 @@ void GamblingShop_804AAA70::draw() {
         drawSprite_801F06F0("enemy_both_sob.bin", field_0x238 * 2 + field_0x240 + 0xEC, NULL, 0, 1.0f,
                     1.0f);
         fn_80307AC8(mSerial, field_0x4, &mPos, field_0x238 * 2 + field_0x240 + 0xEC, 0, 0, -1);
+    }
+}
+
+// Not in the binary (update inlines it); the pool has its 3.0f ahead of draw's 1.0f.
+// Swaps two of the three chest slots at random.
+void GamblingShop_804AAA70::swapTwoChests() {
+    s32 roll = (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    switch (roll) {
+    case 0: {
+        s32 tmp = field_0x250[0];
+        field_0x250[0] = field_0x250[1];
+        field_0x250[1] = tmp;
+        break;
+    }
+    case 1: {
+        s32 tmp = field_0x250[1];
+        field_0x250[1] = field_0x250[2];
+        field_0x250[2] = tmp;
+        break;
+    }
+    default: {
+        s32 tmp = field_0x250[0];
+        field_0x250[0] = field_0x250[2];
+        field_0x250[2] = tmp;
+        break;
+    }
     }
 }
 
