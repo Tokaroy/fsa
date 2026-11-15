@@ -140,8 +140,8 @@ void cls_8049DA0C::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80116E8C();
 
