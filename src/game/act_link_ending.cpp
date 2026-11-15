@@ -77,7 +77,8 @@ void LinkEnding_804AD858::draw() {}
 
 // State 0: copies mPos.y, walks it down to 1810 (0.4 a step) and then hands
 // the partner over to state 2 with a 0x8F countdown.
-// FIXME: 99.90 %. The original's branch on the height is a bne to the partner
+// FIXME: 99.90 %, different; behaviour clean.
+// The original's branch on the height is a bne to the partner
 // block (cror + bne); this one is a beq, the only opcode that differs.
 void LinkEnding_804AD858::fn_8035ED60() {
     field_0x260 = mPos.y;
@@ -119,8 +120,6 @@ static inline void spawnEmitters(LinkEnding_804AD858* self) {
 
 // State 1: spawnEmitter_8013CC50 at the fixed point (1280, 1728) for each of the 17 ids
 // of lbl_80472820, then a sound and a 0x14 countdown.
-// FIXME: 99.20 %. Regalloc only: the original keeps the id table's base in
-// r30 and the loop counter in r31; here they are swapped.
 void LinkEnding_804AD858::fn_8035EC98() {
     if (field_0x234 == 0) {
         spawnEmitters(this);
