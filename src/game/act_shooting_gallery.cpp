@@ -133,7 +133,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.77 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
 // the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
