@@ -69,15 +69,12 @@ inline void ActorManager_804A5800::deleteSlot(s32 slot) {
 ActorManager_804A5800* getActorManager_801F856C(void);
 
 // FIXME: 98.11 %, scheduling+regalloc; behaviour clean.
-// the target keeps `small` in r4 and the
-// mode word in r5 (ours swaps them, so lbl_80529DEC's address is formed one
-// slot later); the 0.0f literal is lbl_8053F828, the pool's last, until the
-// functions before it are written.
 ActorManager_804A5800::ActorManager_804A5800(JKRHeap* parent) {
     // Half the room in two UI modes.
     bool small = false;
-    if ((lbl_80529DEC.field_0x118 == 9 && lbl_80529DEC.field_0x11c == 3) ||
-        (lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 2))
+    s32 mode = lbl_80529DEC.field_0x118;
+    if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) ||
+        (mode == 8 && lbl_80529DEC.field_0x11c == 2))
     {
         small = true;
     }
