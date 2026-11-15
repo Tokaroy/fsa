@@ -139,34 +139,26 @@ void BgRewrite_804A7C98::fn_802A3A0C() {
     }
 }
 
-// FIXME: 98.78 %, different; behaviour near.
-// Only the clrlwi r6, r30, 16 on tile before fn_802F9974 is missing
-// (ours passes the u16 parameter with mr); an s32 / s16 tile matches here but
-// drops the u16-passing callers (tu_8012DAC0, act_shutter, act_burning_block).
-void BgRewrite_804A7C98::fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile) {
+// Shared body of fn_802A3884 / fn_802A3948 (`set` is the bit value written to the screen mask).
+inline void BgRewrite_804A7C98::writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set) {
+    s32 slot;
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer & 0xFE);
     s32 cell = field_0x20;
     getGameView_802D6A9C()->fn_802D782C(1);
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
-    s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, field_0x20);
+    slot = getGameView_802D6A9C()->fn_802D4C10(layer, field_0x20);
     if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
+        getGameView_802D6A9C()->fn_802D7D00(layer, slot, set);
     }
 }
 
-// FIXME: 98.78 %, different; behaviour near.
-// As fn_802A3948: only the clrlwi r6, r30, 16 on tile is missing.
+void BgRewrite_804A7C98::fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile) {
+    writeTileMarkView(pos, layer, tile, true);
+}
+
 void BgRewrite_804A7C98::fn_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile) {
-    JGeometry::TVec2f p(pos->x, pos->y);
-    field_0x20 = fn_80226BC4(&p, layer & 0xFE);
-    s32 cell = field_0x20;
-    getGameView_802D6A9C()->fn_802D782C(1);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
-    s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, field_0x20);
-    if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, false);
-    }
+    writeTileMarkView(pos, layer, tile, false);
 }
 
 // FIXME: 97.69 %, different; behaviour near.

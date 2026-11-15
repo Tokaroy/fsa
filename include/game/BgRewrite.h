@@ -85,6 +85,8 @@ public:
     // (act_switch 0x802A756C) or clrlwi 16 a word first
     // (act_panel_rewrite_npc), so it is a u16.
     void fn_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
+    // Shared body of fn_802A3884 / fn_802A3948, inlined into both and into their callers.
+    void writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set);
     // 1 unit besides tu_8029D898 (act_gravestone). Writes the four tile
     // codes a..d (u16, clrlwi 16 / lhz) into the cells at and after pos on
     // `layer` (two fn_802F9974 calls per pair, like fn_802A3948).
