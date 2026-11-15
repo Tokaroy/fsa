@@ -1189,9 +1189,8 @@ void Player_804A6F38::fn_8025B3F0() {
             }
             fn_8024F0E8(0x2000d);
         } else {
-            u8 max = full + 1;
-            if (field_0x3fc >= max) {
-                field_0x3fc = max;
+            if (field_0x3fc >= (u8)(full + 1)) {
+                field_0x3fc = full + 1;
             }
         }
     } else {
