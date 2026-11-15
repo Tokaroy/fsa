@@ -45,6 +45,7 @@ python3 tools/permute.py <unit> <function> [--tier b] [--deep] [--apply]
 python3 tools/permute.py --callees --units <unit>        # rewrite inlined callees, score the whole unit
 python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
 python3 tools/scratch.py <unit> [--sym] [--src FILE] [--fn NAME]
+python3 tools/clones.py [--fn <unit> <function>]     # shared blocks / inlined helper copies
 build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is the same in both
 ```
 - `diag.py` first (≤ 60 lines): class and score; swapped registers and stack
@@ -84,6 +85,11 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
 - `scratch.py`: one scratch build and objdiff verdict (with `--src`, of another
   text in the unit's place; `--flag`/`--drop` change the command line). The
   library behind diag and permute.
+- `clones.py`: blocks of the original that recur up to register names (inlined
+  helpers' footprints); `--fn` splits a function into `inlined copy of X` / shared
+  stretches with our lines and whether they match, plus what is unique to it. Use
+  it before a big or derived function: write the helper once, fix it where its
+  copies differ, every caller moves. Without `--fn`: top clusters, known helpers.
 - `fnscore`: native per-function scorer (built on first use from
   tools/fnscore.cpp); 0 means the same code. Its `farm` mode compiles many
   candidates in parallel; confirm what matters with objdiff (try.py).

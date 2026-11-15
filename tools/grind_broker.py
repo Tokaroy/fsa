@@ -3,7 +3,7 @@
 
 A session's Bash runs in Claude Code's sandbox, whose syscall filter kills wibo (the shim
 that runs the Metrowerks compiler). So the commands that compile (tools/try.py, `tools/grind.py
-check`, tools/diag.py, tools/permute.py, tools/scratch.py: KINDS below) hand their arguments
+check`, tools/diag.py, tools/permute.py, tools/scratch.py, tools/clones.py: KINDS below) hand their arguments
 to a broker thread of the worker process,
 which runs them outside the sandbox with the worktree as its directory and passes the
 output back. Nothing else leaves the sandbox. The broker refuses to run while tools/ or
@@ -24,7 +24,8 @@ from pathlib import Path
 DIR = Path("build/grind/broker")
 KINDS = {"try": ["python3", "tools/try.py"], "check": ["python3", "tools/grind.py", "check"],
          "diag": ["python3", "tools/diag.py"], "permute": ["python3", "tools/permute.py"],
-         "scratch": ["python3", "tools/scratch.py"], "flagsweep": ["python3", "tools/flagsweep.py"], "pieces": ["python3", "tools/pieces.py"]}
+         "scratch": ["python3", "tools/scratch.py"], "flagsweep": ["python3", "tools/flagsweep.py"],
+         "pieces": ["python3", "tools/pieces.py"], "clones": ["python3", "tools/clones.py"]}
 
 
 def maybe_delegate(kind, argv):
