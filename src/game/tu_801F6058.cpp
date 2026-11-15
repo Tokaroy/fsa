@@ -124,7 +124,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
     field_0x3041 = 0;
 }
 
-// FIXME(shotgun): 96.62 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.75 %, missing/extra + reloc-name; behaviour drift.
 // (fn_801A6160 named in C++)
 // The per-frame update pass. Clears the per-frame serial list (field_0x201c), steps the
 // collision box lists, then updates each live actor: with GameView's fn_802DCD0C only those
@@ -1098,7 +1098,6 @@ void ActorManager_804A5800::fn_801F6204(u8 value) {
     field_0x305c = value;
 }
 
-// FIXME(shotgun): 99.17 %, regalloc-only; behaviour clean.
 void ActorManager_804A5800::fn_801F6068() {
     s32 j;
     s32 count = 0;
