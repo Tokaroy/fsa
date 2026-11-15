@@ -1467,8 +1467,8 @@ bool Player_804A6F38::fn_8025FDD0(const JGeometry::TVec3f* pos) {
     f32 y = box->i.y;
     box = layerBox(field_0x3b4);
     JGeometry::TVec2f offset(box->i.x - x, box->i.y - y);
-    mPos.x += offset.x;
-    mPos.y += offset.y;
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
     field_0xd70 = -1;
     field_0xd58 = 5;
     field_0xd78 = *pos;
@@ -1824,8 +1824,8 @@ bool Player_804A6F38::fn_8025EB18() {
         f32 y = box->i.y;
         box = layerBox(field_0x3b4);
         JGeometry::TVec2f offset(x - box->i.x, y - box->i.y);
-        pos.x += offset.x;
-        pos.y += offset.y;
+        pos.x = offset.x + pos.x;
+        pos.y = offset.y + pos.y;
         u16 tile = fn_8022461C(&pos, getPlayerLayer_8023DE58(field_0xd70));
         if ((fn_802265DC(&pos, getPlayerLayer_8023DE58(field_0xd70), true) && tile != 0xE && tile != 0x39 && tile != 0xD)
             || fn_802684A4(&pos, getPlayerLayer_8023DE58(field_0xd70))) {
