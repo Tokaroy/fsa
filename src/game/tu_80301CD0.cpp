@@ -1746,22 +1746,16 @@ void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 ma
 
 // The draw order key of mark `i` of a record: its slot's sprite kind when it is set like the
 // player's own mark (lbl_80506DD8), -1 otherwise.
-static inline s32 markKey(s32 player, s32 i, u8 mask) {
+static inline s32 markKey(u8 mask, s32 player, s32 i) {
     if (((mask >> i) & 1) != ((mask >> lbl_80506DD8[player]) & 1)) {
         return -1;
     }
     return lbl_80506DA8[player][i];
 }
 
-// A sprite word that is off screen (x = 0x180).
-static inline bool isHiddenSprite(const GbaSprite_80506F88& sprite) {
-    return sprite.f.field_0x3_0 == 1 && sprite.f.field_0x2 == 0x80;
-}
-
 // Variant of fn_803022C4.
 // 0x8030275C
-// Still differs: the two isHiddenSprite skip loops (bdnz vs materialised bool) and register allocation.
-// FIXME: 92.84 %, missing/extra; behaviour drift.
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
@@ -1769,8 +1763,8 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
     }
     for (int i = 3; i > 0; i--) {
         for (int j = 0; j < i; j++) {
-            if (markKey(player, order[j], record->f.mMask) < markKey(player, order[j + 1], record->f.mMask) ||
-                (markKey(player, order[j], record->f.mMask) == markKey(player, order[j + 1], record->f.mMask) &&
+            if (markKey(record->f.mMask, player, order[j]) < markKey(record->f.mMask, player, order[j + 1]) ||
+                (markKey(record->f.mMask, player, order[j]) == markKey(record->f.mMask, player, order[j + 1]) &&
                  record->f.mEntries[order[j]].mY < record->f.mEntries[order[j + 1]].mY))
             {
                 s32 tmp = order[j];
@@ -1796,9 +1790,28 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
         set = true;
     }
     while (i28 >= 0 || i27 >= 0 || n >= 0) {
-        s32 keyMark = n >= 0 ? markKey(player, order[n], record->f.mMask) : 0xFF;
-        s32 keyA = i28 >= 0 ? spriteKind(lbl_80506F88[player][0][i28]) : 0xFF;
-        s32 keyB = i27 >= 0 ? spriteKind(lbl_80506F88[player][1][i27]) : 0xFF;
+        s32 keyMark;
+        if (n >= 0) {
+            if (((record->f.mMask >> order[n]) & 1) != ((record->f.mMask >> lbl_80506DD8[player]) & 1)) {
+                keyMark = -1;
+            } else {
+                keyMark = lbl_80506DA8[player][order[n]];
+            }
+        } else {
+            keyMark = 0xFF;
+        }
+        s32 keyA;
+        if (i28 >= 0) {
+            keyA = spriteKind(lbl_80506F88[player][0][i28]);
+        } else {
+            keyA = 0xFF;
+        }
+        s32 keyB;
+        if (i27 >= 0) {
+            keyB = spriteKind(lbl_80506F88[player][1][i27]);
+        } else {
+            keyB = 0xFF;
+        }
         if (i27 >= 0 && (n < 0 || keyB < keyMark ||
                          (keyB == keyMark && record->f.mEntries[order[n]].mY >= lbl_80506F88[player][1][i27].f.field_0x1)) &&
             (i28 < 0 || keyA > keyB ||
@@ -1809,9 +1822,10 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
             } else {
                 fn_80302F9C(&lbl_80506F88[player][1][i27], lbl_80506D78[player], flag, set);
             }
-            i27--;
-            while (i27 >= 0 && isHiddenSprite(lbl_80506F88[player][1][i27])) {
-                i27--;
+            for (i27--; i27 >= 0; i27--) {
+                if (lbl_80506F88[player][1][i27].f.field_0x3_0 != 1 || lbl_80506F88[player][1][i27].f.field_0x2 != 0x80) {
+                    break;
+                }
             }
         } else if (i28 >= 0 && (n < 0 || keyA < keyMark ||
                                 (keyA == keyMark && record->f.mEntries[order[n]].mY >= lbl_80506F88[player][0][i28].f.field_0x1)))
@@ -1821,12 +1835,13 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
             } else {
                 fn_80302F9C(&lbl_80506F88[player][0][i28], lbl_80506D78[player], flag, set);
             }
-            i28--;
-            while (i28 >= 0 && isHiddenSprite(lbl_80506F88[player][0][i28])) {
-                i28--;
+            for (i28--; i28 >= 0; i28--) {
+                if (lbl_80506F88[player][0][i28].f.field_0x3_0 != 1 || lbl_80506F88[player][0][i28].f.field_0x2 != 0x80) {
+                    break;
+                }
             }
         } else {
-            if (markKey(player, order[n], record->f.mMask) >= 2) {
+            if (markKey(record->f.mMask, player, order[n]) >= 2) {
                 n = 0;
             } else {
                 fn_80302C34(&record->f.mSprites[order[n]], player, order[n], record->f.mMask, flag);
@@ -1840,7 +1855,7 @@ void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
 // first) in order of their kinds (fn_803074A4), each list from its end towards its start.
 // 0x803022C4
 // Still differs: scheduling and register allocation.
-// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
+// FIXME: 97.86 %, scheduling+regalloc; behaviour clean.
 void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set) {
     s32 order[4];
     for (int i = 0; i < 4; i++) {
@@ -1848,8 +1863,8 @@ void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
     }
     for (int i = 3; i > 0; i--) {
         for (int j = 0; j < i; j++) {
-            if (markKey(player, order[j], record->f.mMask) < markKey(player, order[j + 1], record->f.mMask) ||
-                (markKey(player, order[j], record->f.mMask) == markKey(player, order[j + 1], record->f.mMask) &&
+            if (markKey(record->f.mMask, player, order[j]) < markKey(record->f.mMask, player, order[j + 1]) ||
+                (markKey(record->f.mMask, player, order[j]) == markKey(record->f.mMask, player, order[j + 1]) &&
                  record->f.mEntries[order[j]].mY < record->f.mEntries[order[j + 1]].mY))
             {
                 s32 tmp = order[j];
@@ -1875,7 +1890,16 @@ void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
         set = true;
     }
     while (i28 >= 0 || i27 >= 0 || n >= 0) {
-        s32 keyMark = n >= 0 ? markKey(player, order[n], record->f.mMask) : 0xFF;
+        s32 keyMark;
+        if (n >= 0) {
+            if (((record->f.mMask >> order[n]) & 1) != ((record->f.mMask >> lbl_80506DD8[player]) & 1)) {
+                keyMark = -1;
+            } else {
+                keyMark = lbl_80506DA8[player][order[n]];
+            }
+        } else {
+            keyMark = 0xFF;
+        }
         s32 keyA = i28 >= 0 ? spriteKind(lbl_80506F88[player][0][i28]) : 0xFF;
         s32 keyB = i27 >= 0 ? spriteKind(lbl_80506F88[player][1][i27]) : 0xFF;
         if (i27 >= 0 && (n < 0 || keyB < keyMark ||
@@ -1903,7 +1927,7 @@ void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set
                 }
             }
         } else {
-            if (markKey(player, order[n], record->f.mMask) >= 2) {
+            if (markKey(record->f.mMask, player, order[n]) >= 2) {
                 fn_80302C34(&record->f.mSprites[order[n]], player, order[n], record->f.mMask, flag);
             }
             n--;
