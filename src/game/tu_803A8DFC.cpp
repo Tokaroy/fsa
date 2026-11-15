@@ -1389,7 +1389,7 @@ void ResultScreen_804AF9A0::fn_803AF79C() {
         for (s32 i = 0; i < field_0x454; i++) {
             sum += field_0x320[i];
         }
-        field_0x440 = sum % 9 + (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 150;
+        field_0x440 = sum % 9 + 150 + (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x4c4 = 0;
         field_0x4c6 = 0;
         for (s32 i = 0; i < field_0x454; i++) {
