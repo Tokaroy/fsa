@@ -88,7 +88,7 @@ static void (cls_804AE4B0::*lbl_804AE420[12])() = {
     &cls_804AE4B0::fn_803706AC, &cls_804AE4B0::fn_803705A0, &cls_804AE4B0::fn_80370508, &cls_804AE4B0::fn_803704E8,
 };
 
-// FIXME(shotgun): 82.20 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 88.51 %, missing/extra; behaviour clean.
 void cls_804AE4B0::update() {
     if (mTimer != 0) {
         mTimer--;
