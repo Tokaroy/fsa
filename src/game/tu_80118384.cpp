@@ -7,6 +7,8 @@
 #include "JSystem/JUtility/JUTVideo.h"
 #include "game/act/tu_8010DF44.h"
 
+void spawnFadeEmitters();
+
 namespace JGadget {
 namespace vector {
 // JSystem/JGadget/std-vector.cpp (vector.h needs the MSL C++ headers game code lacks).
@@ -149,12 +151,6 @@ void cls_80119E5C::fn_80119958() {
     field_0x10 = 0;
 }
 
-void part191_fn_80119628();
-
-// FIXME: 99.88 %, reloc-name; behaviour clean.
-// reloc-name only: the unit's .sdata2 pool still lacks 0.05f (fn_80118E20,
-// unwritten) and has 1.0f after the double; the original has a 1.0f made before
-// fn_801194C4's double (no function here explains it).
 // The fade step: field_0x4 counts the frames up to field_0x8 while field_0x14 moves
 // by field_0x18 (down for mode 0, up for 1, up then down for 2) within 0..255; at
 // the end the fade holds while field_0x10 counts down (when field_0x2 is set), then
@@ -190,7 +186,7 @@ void cls_80119E5C::fn_80119628() {
         break;
     case 2:
         if (field_0x24 == 2 && field_0x4 == field_0x8 / 2) {
-            part191_fn_80119628();
+            spawnFadeEmitters();
         }
         if (field_0x4 >= field_0x8 / 2 + 1) {
             if (field_0x2 != 0 && field_0x10 > 0) {
@@ -244,7 +240,10 @@ void cls_80119E5C::fn_801194C4() {
     }
 }
 
-void part191_fn_80119628() {
+// A plain function that fn_80119628 inlines (fn_80119998 has the same code written out; calling
+// this there costs its match) and whose own copy the linker dropped: the original's .sdata2 has its 1.0f ahead of fn_801194C4's conversion constant, so it was
+// generated before it (tools/pool.py). The four emitters of the fade of kind 2 (field_0x24).
+void spawnFadeEmitters() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     spawnEmitter_8013CC50(0, &pos, 0x3EC, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(0, &pos, 0x3ED, 0, 0, NULL, NULL, true, 1.0f);
