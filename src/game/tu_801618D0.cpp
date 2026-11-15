@@ -119,7 +119,7 @@ void cls_804A0440::init() {
 }
 
 // 0x80162628.
-// FIXME(shotgun): 94.44 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.12 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A0440::update() {
     mLife = 10000;
     f32 x0 = -30.0f;
