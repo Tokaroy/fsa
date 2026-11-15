@@ -22,7 +22,7 @@ static const s32 lbl_80542510[2] = {20, 15};
 static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 
 // 0x8034C464.
-// FIXME(shotgun): 98.62 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.79 %, different; behaviour near.
 void cls_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
@@ -54,25 +54,7 @@ void cls_804AC8C0::init() {
     }
     mPos.x = 16.0f * (f32)((s32)mPos.x / 16) + 8.0f;
     mPos.y = 16.0f * (f32)((s32)mPos.y / 16) + 8.0f;
-    JGeometry::TVec3f dir;
-    f32 dist;
-    fn_801EE558(&dir, &dist, 0);
-    if (dist < 100.0f) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
-        if (angle < 0x2000 || angle >= 0xE000) {
-            field_0x23c = 3;
-        } else if (angle >= 0x2000 && angle < 0x6000) {
-            field_0x23c = 1;
-        } else if (angle >= 0x6000 && angle <= 0xA000) {
-            field_0x23c = 2;
-        } else {
-            field_0x23c = 0;
-        }
-    } else if (field_0x230 == 0xD) {
-        field_0x23c = 1;
-    } else {
-        field_0x23c = 2;
-    }
+    updateFacing();
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     switch (field_0x244) {
     case 0:
@@ -89,7 +71,9 @@ void cls_804AC8C0::init() {
     }
 }
 
-// FIXME(shotgun): 98.21 %, missing/extra + reloc-name; behaviour drift.
+static void markRandomCucco(s32* serials, s32 count);
+
+// FIXME(shotgun): 98.36 %, missing/extra; behaviour drift.
 void cls_804AC8C0::vfunc_0x10() {
     s32 serials[30];
     s32 serial = -1;
@@ -104,15 +88,10 @@ void cls_804AC8C0::vfunc_0x10() {
             count++;
         }
     }
-    f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(
-        getActorManager_801F856C()->findActorBySerial_801F666C(serials[(s32)((f32)count * roll)]));
-    if (cucco != NULL) {
-        cucco->field_0x2a3 = 1;
-    }
+    markRandomCucco(serials, count);
 }
 
-// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.91 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -503,25 +482,7 @@ void cls_804AC8C0::update() {
         }
         break;
     }
-    JGeometry::TVec3f dir;
-    f32 dist;
-    fn_801EE558(&dir, &dist, 0);
-    if (dist < 100.0f) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
-        if (angle < 0x2000 || angle >= 0xE000) {
-            field_0x23c = 3;
-        } else if (angle >= 0x2000 && angle < 0x6000) {
-            field_0x23c = 1;
-        } else if (angle >= 0x6000 && angle <= 0xA000) {
-            field_0x23c = 2;
-        } else {
-            field_0x23c = 0;
-        }
-    } else if (field_0x230 == 0xD) {
-        field_0x23c = 1;
-    } else {
-        field_0x23c = 2;
-    }
+    updateFacing();
     field_0x234--;
     if (field_0x234 <= 0) {
         field_0x238++;
@@ -542,8 +503,32 @@ void cls_804AC8C0::update() {
     }
 }
 
+// Not in the binary (init and update inline it); the pool has its 100.0f and 10430.378f ahead of
+// update's literals. Faces the nearest player within 100, else left in state 13 and down otherwise.
+void cls_804AC8C0::updateFacing() {
+    JGeometry::TVec3f dir;
+    f32 dist;
+    fn_801EE558(&dir, &dist, 0);
+    if (dist < 100.0f) {
+        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
+        if (angle < 0x2000 || angle >= 0xE000) {
+            field_0x23c = 3;
+        } else if (angle >= 0x2000 && angle < 0x6000) {
+            field_0x23c = 1;
+        } else if (angle >= 0x6000 && angle <= 0xA000) {
+            field_0x23c = 2;
+        } else {
+            field_0x23c = 0;
+        }
+    } else if (field_0x230 == 0xD) {
+        field_0x23c = 1;
+    } else {
+        field_0x23c = 2;
+    }
+}
+
 // 0x8034AFE8.
-// FIXME(shotgun): 99.12 %, reloc-name; behaviour clean.
+// FIXME(shotgun): 99.25 %, same-text; behaviour clean.
 void cls_804AC8C0::draw() {
     const char* name;
     s32 frame;
@@ -564,7 +549,7 @@ void cls_804AC8C0::draw() {
 static const s32 lbl_80472158[3] = {10, 5, 1};
 
 // The box is built in a temporary and copied, as in the original. Literal pool names differ.
-// FIXME: 98.81 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.26 %, missing/extra; behaviour near.
 void cls_804AC8C0::fn_8034ACF4() {
     JGeometry::TBox2f box;
     JGeometry::TBox2f src(9.0f, -7.0f, 103.0f, 87.0f);
@@ -613,7 +598,7 @@ void cls_804AC8C0::fn_8034ACF4() {
     }
 }
 
-// FIXME(shotgun): 68.97 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 69.01 %, missing/extra + reloc-name; behaviour clean.
 s32 cls_804AC8C0::fn_8034AAA0() {
     JGeometry::TBox2f box(24.0f, 8.0f, 88.0f, 72.0f);
     box.i.x += mPos.x;
@@ -646,6 +631,16 @@ s32 cls_804AC8C0::fn_8034AAA0() {
         }
     }
     return count;
+}
+
+// Not in the binary (vfunc_0x10 inlines it); the pool has its literals ahead of fn_8034AAA0's.
+static void markRandomCucco(s32* serials, s32 count) {
+    f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(
+        getActorManager_801F856C()->findActorBySerial_801F666C(serials[(s32)((f32)count * roll)]));
+    if (cucco != NULL) {
+        cucco->field_0x2a3 = 1;
+    }
 }
 
 // Destructor at 0x8034AA40.
