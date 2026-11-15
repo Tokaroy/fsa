@@ -343,9 +343,6 @@ void ActorBase_804A5770::fn_801F52A4() {
 // "dasu" drop (fn_801F52A4). Then the death effects (0x172, 0x173; the
 // killer's effect slot gets the first), the killer's score updates,
 // the death sound, and the view's counters (fn_802D7704 / fn_802D766C).
-// FIXME: 99.80 %, regalloc-only; behaviour clean.
-// Register allocation only (the emitter and the killer swap
-// r29/r30); 1.0f and 0.2f are @NNN until .sdata2 is in order.
 void ActorBase_804A5770::vfunc_0x24() {
     s32 bit;
     s32 player;
