@@ -148,15 +148,15 @@ void WhackAMoleShop_8049C8EC::draw() {
     }
 }
 
-// FIXME(shotgun): 95.46 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.73 %, missing/extra + reloc-name; behaviour drift.
 void WhackAMoleShop_8049C8EC::fn_80100D28() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
     JGeometry::TVec3f focus = mPos;
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     field_0x245++;

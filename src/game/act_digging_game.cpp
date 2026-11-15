@@ -69,7 +69,8 @@ void DiggingGameKeeper_8049C970::init() {
     }
 }
 
-// FIXME: 97.10%, missing/extra (one more instruction than the original, 616 vs 615). The box
+// FIXME: 97.49 %, missing/extra; behaviour drift.
+// (one more instruction than the original, 616 vs 615). The box
 // setup at the top keeps the mPos.y sum in a different register and stores
 // box.i.y one instruction later; the stack slots of the by-value position
 // temporaries for fn_8038AD24 / fn_801EE8F4 and the loop counters and
@@ -81,8 +82,8 @@ void DiggingGameKeeper_8049C970::update() {
     JGeometry::TVec3f camPos = mPos;
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     fn_80239914(&box, field_0x4, mSerial);
@@ -275,7 +276,8 @@ void DiggingGameKeeper_8049C970::update() {
     }
 }
 
-// FIXME: 99.79%, regalloc-only (the add that sums the frame uses r0/r5 swapped).
+// FIXME: 99.79 %, regalloc-only; behaviour clean.
+// (the add that sums the frame uses r0/r5 swapped).
 void DiggingGameKeeper_8049C970::draw() {
     s32 frame = field_0x238;
     frame += field_0x235 * 2;

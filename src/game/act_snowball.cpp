@@ -133,15 +133,15 @@ void cls_8049D020::init() {
     }
 }
 
-// FIXME: 98.85 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.19 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 3 more instrs (713 vs 710): a mov/clrlwi pair and a lwz in cases 2 and 4, plus swapped stack slots and registers.
 void cls_8049D020::update() {
     ActorBase_804A5770::update();
     field_0x26c = 1.0f;
     JGeometry::TBox2<f32> box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x238 != 12 && field_0x238 != 13) {
         JGeometry::TVec2<f32> playerPos;

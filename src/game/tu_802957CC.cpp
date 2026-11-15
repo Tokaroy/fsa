@@ -954,7 +954,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.57 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -967,8 +967,8 @@ void cls_804A7AE0::update() {
             box.f.x = mBox.f.x;
             box.f.y = mBox.f.y;
             box.i.x += mPos.x;
-            box.f.x += mPos.x;
             box.i.y += mPos.y;
+            box.f.x += mPos.x;
             box.f.y += mPos.y;
             gGameRoot2_8053AB10->field_0x24->fn_8030C058(&box);
             break;
@@ -999,8 +999,8 @@ void cls_804A7AE0::update() {
         box.f.x = mBox.f.x;
         box.f.y = mBox.f.y;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_802984B0();
         if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
@@ -1650,7 +1650,7 @@ void cls_804A7AE0::vfunc_0x24() {
 }
 
 // Remaining: three `cmplwi 1` bool tests and minor fp/gpr register swaps.
-// FIXME: 97.56 %, missing/extra; behaviour drift.
+// FIXME: 98.42 %, missing/extra; behaviour drift.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
@@ -1700,11 +1700,10 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
     }
     if (!ok) {
         ok = true;
-        JGeometry::TBox2f box;
-        box.set(mBox);
+        JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {

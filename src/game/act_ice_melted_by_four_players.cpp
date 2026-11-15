@@ -42,7 +42,7 @@ IceMeltedByFourPlayers_804AE888::~IceMeltedByFourPlayers_804AE888() {
     }
 }
 
-// FIXME: 97.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.22 %, missing/extra + reloc-name; behaviour clean.
 // Same shape; the box copy's adds are scheduled differently
 // (the original keeps f.x in f2 and reloads pos.y into it), case 1 stores the
 // 0 of field_0x24c from a register the original holds for its loop, the
@@ -51,11 +51,10 @@ void IceMeltedByFourPlayers_804AE888::update() {
     if (fn_8037845C() == 1) {
         return;
     }
-    JGeometry::TBox2f box;
-    box.set(mBox);
+    JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     fn_8020D58C()->addBox(mSerial);

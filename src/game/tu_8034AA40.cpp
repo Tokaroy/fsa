@@ -112,7 +112,7 @@ void cls_804AC8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 95.67 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour near.
 void cls_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
@@ -126,8 +126,8 @@ void cls_804AC8C0::update() {
     }
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_80239914(&box, field_0x4, mSerial);
     s32 serial = mSerial;

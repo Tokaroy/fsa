@@ -37,8 +37,6 @@ cls_8049DB30::~cls_8049DB30() {
     mEmitter258 = NULL;
 }
 
-// FIXME: 99.8 %. Code identical; only the float literal relocations differ
-// (this unit's .sdata2 literals are not split to match yet).
 void cls_8049DB30::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 0xF;
@@ -49,7 +47,8 @@ void cls_8049DB30::init() {
     getGameView_802D6A9C()->fn_802D7440(false);
 }
 
-// FIXME: 93.5 %. Ours keeps the constant 1 stored at 0x7A8 in r30 (saved)
+// FIXME: 95.34 %, different + reloc-name; behaviour near.
+// Ours keeps the constant 1 stored at 0x7A8 in r30 (saved)
 // instead of loading it into r0 at the store, lacks the bge/b pair after the
 // switch's cmpwi 2, swaps f3/f4 in the box sums and loads the 1 of the bit mask
 // later (no clrlwi); the float literals are not split into this unit yet.
@@ -78,8 +77,8 @@ void cls_8049DB30::update() {
         if (fn_8011921C()->field_0x0 == 0) {
             JGeometry::TBox2f box(mBox);
             box.i.x += mPos.x;
-            box.f.x += mPos.x;
             box.i.y += mPos.y;
+            box.f.x += mPos.x;
             box.f.y += mPos.y;
             bool flag;
             s32 player = fn_8023AF14(&box, field_0x4, false, 0.0f);
@@ -113,8 +112,6 @@ void cls_8049DB30::draw() {
     cls_8049D140::draw();
 }
 
-// FIXME: 99.7 %. Code identical; only the float literal relocations differ
-// (this unit's .sdata2 literals are not split to match yet).
 void cls_8049DB30::vfunc_0x54() {
     switch (field_0x234) {
     case 3:
@@ -168,8 +165,6 @@ s32 cls_8049DB30::vfunc_0x5C() {
     return field_0x234 != 3;
 }
 
-// FIXME: 99.6 %. Code identical; only the float literal relocations differ
-// (this unit's .sdata2 literals are not split to match yet).
 void cls_8049DB30::fn_8011A4BC() {
     switch (field_0x234) {
     case 1:

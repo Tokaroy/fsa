@@ -49,7 +49,8 @@ inline bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
     return false;
 }
 
-// FIXME: 99.78 %. The sdata2 constants (24.0f, 16.0f, 0.0f, -31.5f, 31.5f)
+// FIXME: 99.78 %, reloc-name; behaviour clean.
+// The sdata2 constants (24.0f, 16.0f, 0.0f, -31.5f, 31.5f)
 // are literals in ours and lbl_80542F88 etc. in the original: only the
 // relocation names differ. Code is identical.
 void cls_804AE7D8::init() {
@@ -106,7 +107,8 @@ void cls_804AE7D8::init() {
     }
 }
 
-// FIXME: 98.7 %. Float registers of the box sums differ (here and in
+// FIXME: 99.24 %, missing/extra + reloc-name; behaviour clean.
+// Float registers of the box sums differ (here and in
 // touchesPlayer, whose layer, counter and sums sit in r30/f27-f30 instead of
 // r28/f27-f30 in another order), the field_0x260 < 10 test branches to the
 // increment instead of falling into it, and the float literals are not split
@@ -119,8 +121,8 @@ void cls_804AE7D8::update() {
     JGeometry::TVec3f tmp;
 
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x244) {
@@ -280,9 +282,6 @@ void cls_804AE7D8::update() {
     }
 }
 
-// FIXME: 99.81 %. The two names are .rodata string literals in the original
-// (lbl_80475188, lbl_80475198); ours are literals in the .o, so only their
-// relocation names differ. Code is identical.
 void cls_804AE7D8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 0;

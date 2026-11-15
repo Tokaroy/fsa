@@ -201,7 +201,7 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
     field_0x2c0[0].z = field_0x3d8[0].z;
 }
 
-// FIXME(shotgun): 89.95 %, missing/extra; behaviour near.
+// FIXME(shotgun): 90.48 %, missing/extra; behaviour near.
 bool cls_8049F6C8::fn_80149FDC() {
     if (field_0x250 == 0) {
         return true;
@@ -238,7 +238,7 @@ bool cls_8049F6C8::fn_80149FDC() {
     s32 tries = 0;
     while (field_0x27c == field_0x278 && tries < 100) {
         tries++;
-        field_0x278 = (s32)(4.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f));
+        field_0x278 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x278 &= 3;
     }
     field_0x27c = field_0x278;

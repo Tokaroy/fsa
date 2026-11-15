@@ -51,6 +51,7 @@ static inline void approach(s32& cur, s32 target, f32 remaining) {
     }
 }
 
+// FIXME: 99.78 %, reloc-name; behaviour clean.
 ZoraEscortGoal_8049E424::ZoraEscortGoal_8049E424()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(0),
       field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0), field_0x254(0xFF),
@@ -65,6 +66,7 @@ ZoraEscortGoal_8049E424::~ZoraEscortGoal_8049E424() {
     field_0x380 = NULL;
 }
 
+// FIXME: 99.82 %, reloc-name; behaviour clean.
 void ZoraEscortGoal_8049E424::init() {
     ActorBase_804A5770::init();
     if (field_0x90 & 1) {
@@ -110,8 +112,8 @@ inline void ZoraEscortGoal_8049E424::hover() {
 inline s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     fn_8022FEB8(&box, field_0x4, mSerial, true, false);
     s32 player = fn_8022FD8C(mSerial);
@@ -129,14 +131,15 @@ inline s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
     return -1;
 }
 
-// FIXME: 96.63 %, missing/extra + reloc-name: ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for fn_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
+// FIXME: 97.93 %, missing/extra + reloc-name; behaviour drift.
+// ours has 1 fewer instruction (563 vs 564). The original loads the angle of the rail walk with lha + clrlwi (ours lhz), loads r5/r6 for fn_8038AD24 before the by-value position copy is stored, and orders a few box float stores differently.
 void ZoraEscortGoal_8049E424::update() {
     ActorBase_804A5770::update();
     field_0x260 = 1.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x230) {
@@ -279,6 +282,7 @@ void ZoraEscortGoal_8049E424::update() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
+// FIXME: 99.95 %, reloc-name; behaviour clean.
 void ZoraEscortGoal_8049E424::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -297,7 +301,8 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
     return false;
 }
 
-// FIXME: 97.76 %, missing/extra + reloc-name: ours has 1 more instruction (a clrlwi of field_0x238 before fn_800FE3EC's u8 argument, cases 5 and 11; the original passes the lwz'd value as is), and in case 11 the original schedules the clrlwi / psq_st pair before the call differently.
+// FIXME: 97.76 %, missing/extra + reloc-name; behaviour drift.
+// ours has 1 more instruction (a clrlwi of field_0x238 before fn_800FE3EC's u8 argument, cases 5 and 11; the original passes the lwz'd value as is), and in case 11 the original schedules the clrlwi / psq_st pair before the call differently.
 void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     field_0x230 = arg;
     switch (arg) {

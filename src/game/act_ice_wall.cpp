@@ -23,7 +23,8 @@ static const s32 lbl_80464C0C[] = {
     0, 5, 0x00260004, 2, 0, 0, 4, 0x00030000, 0
 };
 
-// FIXME: 99.81%. reloc-name: the 1.0f literal is loaded from its own .sdata2
+// FIXME: 99.81 %, reloc-name; behaviour clean.
+// reloc-name: the 1.0f literal is loaded from its own .sdata2
 // entry in ours, the original's is lbl_8053C8BC (a data split, not code).
 IceWall_8049DE18::IceWall_8049DE18()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(0), field_0x240(1.0f), mSprite(),
@@ -34,7 +35,8 @@ IceWall_8049DE18::~IceWall_8049DE18() {
     field_0x27c = NULL;
 }
 
-// FIXME: 99.86%. scheduling + reloc-name: instructions match modulo float literals order.
+// FIXME: 99.86 %, scheduling + reloc-name; behaviour clean.
+// scheduling + reloc-name: instructions match modulo float literals order.
 void IceWall_8049DE18::init() {
     ActorBase_804A5770::init();
     field_0x230 = field_0x90 & 0xF;
@@ -80,7 +82,8 @@ void IceWall_8049DE18::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
-// FIXME: 95.85%. scheduling+regalloc + reloc-name: same instructions, but the three box setups (box, box2,
+// FIXME: 97.98 %, scheduling+regalloc + reloc-name; behaviour clean.
+// scheduling+regalloc + reloc-name: same instructions, but the three box setups (box, box2,
 // box3) interleave their loads, fadds and stores differently and use other float registers, the saved
 // registers r29/r30 are swapped in cases 1 and 0, and the 0.0f / 1.0f / 0.5f literals sit in other .sdata2 entries.
 void IceWall_8049DE18::update() {
@@ -95,8 +98,8 @@ void IceWall_8049DE18::update() {
 
     box.set(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (field_0x234) {
@@ -156,8 +159,8 @@ void IceWall_8049DE18::update() {
 
         box3.set(mBox);
         box3.i.x += mPos.x;
-        box3.f.x += mPos.x;
         box3.i.y += mPos.y;
+        box3.f.x += mPos.x;
         box3.f.y += mPos.y;
         hitPos2.set(0.0f, 0.0f);
         bool hit3;
@@ -219,7 +222,8 @@ void IceWall_8049DE18::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 99.28%. scheduling+regalloc + reloc-name (same instructions modulo registers, different order).
+// FIXME: 99.28 %, scheduling+regalloc + reloc-name; behaviour drift.
+// scheduling+regalloc + reloc-name (same instructions modulo registers, different order).
 void IceWall_8049DE18::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params1;

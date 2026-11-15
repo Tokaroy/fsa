@@ -186,7 +186,7 @@ inline bool cls_8049CEE0::stepRail() {
     return false;
 }
 
-// FIXME: 97.45 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.98 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 4 fewer instrs (919 vs 923); some argument setups before calls are scheduled differently and one comparison compiles to an extra cror.
 void cls_8049CEE0::update() {
     ActorBase_804A5770::update();
@@ -195,8 +195,8 @@ void cls_8049CEE0::update() {
 
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     bool canHit = true;
@@ -215,8 +215,8 @@ void cls_8049CEE0::update() {
     if (field_0x328 >= 5 && field_0x328 <= 7) {
         JGeometry::TBox2f searchBox(mBox);
         searchBox.i.x += mPos.x;
-        searchBox.f.x += mPos.x;
         searchBox.i.y += mPos.y;
+        searchBox.f.x += mPos.x;
         searchBox.f.y += mPos.y;
 
         fn_8022FEB8(&searchBox, field_0x4, mSerial, false, false);

@@ -133,7 +133,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.77 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
 // the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
@@ -155,8 +155,8 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 
     box = mBox2;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     switch (mState) {
@@ -240,8 +240,8 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         mPos.y = 138.0f;
         box = mBox2;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_80239914(&box, field_0x4, mSerial);
         mPos.x = savedPos.x;

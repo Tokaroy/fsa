@@ -22,7 +22,8 @@ static const Vec lbl_804750F0[4] = {
     {0.0f, -20.0f, 0.0f},
 };
 
-// FIXME: 99.80. regalloc-only: r6 <-> r7 swap inside the random colour while loop.
+// FIXME: 99.80 %, regalloc-only; behaviour clean.
+// regalloc-only: r6 <-> r7 swap inside the random colour while loop.
 void ColourBlock1Player_804AE620::init() {
     field_0x3c.set(0.0f, 0.0f, 0.0f);
     if ((s32)((field_0x90 >> 2) & 7) == 5) {
@@ -81,12 +82,13 @@ void ColourBlock1Player_804AE620::init() {
     }
 }
 
-// FIXME: 99.12. missing/extra: box expansion float addition scheduling and savedPos stack offset.
+// FIXME: 99.63 %, missing/extra; behaviour near.
+// missing/extra: box expansion float addition scheduling and savedPos stack offset.
 void ColourBlock1Player_804AE620::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     if (field_0x244 != 0) {
@@ -217,7 +219,8 @@ void ColourBlock1Player_804AE620::update() {
     }
 }
 
-// FIXME: 95.88. scheduling+regalloc: loop counter register and box float addition scheduling.
+// FIXME: 96.68 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: loop counter register and box float addition scheduling.
 bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
     bool canMove = false;
     JGeometry::TVec3f savedPos = mPos;
@@ -256,8 +259,8 @@ bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
         canMove = true;
         JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (int i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {

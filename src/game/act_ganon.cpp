@@ -127,7 +127,7 @@ void fn_80196CF4(JPABaseEmitter* emitter, const JGeometry::TVec3f* scale) {
     emitter->setGlobalScale(*scale);
 }
 
-// FIXME(shotgun): 89.10 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 89.48 %, scheduling+regalloc + reloc-name; behaviour clean.
 void Ganon_804A25F0::init() {
     field_0x25c = 0;
     field_0x260 = 0;
@@ -173,7 +173,7 @@ void Ganon_804A25F0::init() {
     field_0x2ac = 255.0f;
     field_0x2b0 = 255.0f;
     field_0x2a5 = 0;
-    field_0x2b6 = (s16)(65536.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f));
+    field_0x2b6 = (s16)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     field_0x2dc.set(mPos);
     field_0x2e8.set(mPos);
     field_0x54.set(1.0f, 1.0f, 1.0f);
@@ -354,7 +354,7 @@ void Ganon_804A25F0::fn_801964AC() {
 
 // Picks the player (of those on this layer) with the most hearts (mode 0) or most of the other
 // stat (mode 1), the nearest on ties by a coin flip; stores its distance, angle and index.
-// FIXME(shotgun): 92.87 %, missing/extra; behaviour near.
+// FIXME(shotgun): 93.58 %, missing/extra; behaviour clean.
 void Ganon_804A25F0::fn_80196208(s32 mode) {
     field_0x2fc = -1;
     s32 best = -1;
@@ -375,7 +375,7 @@ void Ganon_804A25F0::fn_80196208(s32 mode) {
             continue;
         }
         if ((mode == 0 && best == fn_80237774(i)) || (mode == 1 && best == fn_80236228(i))) {
-            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f < 0.5f) {
+            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                 continue;
             }
         }

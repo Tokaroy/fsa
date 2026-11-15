@@ -102,13 +102,13 @@ cls_804A38D4::~cls_804A38D4() {
 }
 
 // 0x801B56A0.
-// FIXME(shotgun): 78.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 78.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A38D4::fn_801B56A0() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec3f pos = mPos;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (!(lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x254))) {
         return;
