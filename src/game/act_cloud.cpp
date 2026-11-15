@@ -6,7 +6,6 @@
 #include "game/act/act_cloud.h"
 
 // Name of each state's sprite, four per state (the state is field_0x36c).
-// FIXME(shotgun): 99.95 %, reloc-name
 static const char* lbl_8049CBB0[3][4] = {
     {"lift_s_a.bti", "lift_s_b.bti", "lift_s_c.bti", "lift_s_d.bti"},
     {"lift_l_a.bti", "lift_l_b.bti", "lift_l_c.bti", "lift_l_d.bti"},
@@ -21,9 +20,6 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
 
-// FIXME: 99.95 %, reloc-name; behaviour clean.
-// Everything matches except the 0.0f literal: this unit's
-// .sdata2 literal order puts it at another offset than lbl_8053C228.
 Cloud_8049CBE0::Cloud_8049CBE0()
     : field_0x344(0.0f), field_0x348(0.0f), field_0x34c(0.0f), field_0x350(0.0f), field_0x354(0),
       field_0x358(0), field_0x35c(-1), field_0x360(0), field_0x364(0), field_0x368(0),
@@ -33,7 +29,7 @@ Cloud_8049CBE0::Cloud_8049CBE0()
     }
 }
 
-// FIXME(shotgun): 98.85 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.89 %, missing/extra; behaviour drift.
 // 0x80105A34.
 void Cloud_8049CBE0::init() {
     ActorBase_804A5770::init();
@@ -77,8 +73,10 @@ void Cloud_8049CBE0::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
+static bool isAirborne(s32 player);
+
 // 0x801056E4.
-// FIXME(shotgun): 90.16 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 90.23 %, missing/extra; behaviour near.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
     s32 layer = field_0x4;
@@ -133,7 +131,7 @@ void Cloud_8049CBE0::update() {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !(getPlayerPos_8023E724(i)->z > 0.0f)) {
+        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !isAirborne(i)) {
             JGeometry::TVec3f d = mPos - mPrevPos;
             fn_8023DF68(i, &d);
         }
@@ -158,7 +156,7 @@ void Cloud_8049CBE0::draw() {
 // Whether `player` is in the cloud: on the cloud's layer, either its box
 // (moved to the cloud's position) overlaps the player's, or one of eight
 // points around the player falls in mBox.
-// FIXME: 97.34 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.41 %, missing/extra + reloc-name; behaviour clean.
 // In the layer branch the original keeps box.i.x and mPos.x in
 // other FPRs and reloads box.i.y and box.f.y from the stack, where ours
 // reuses the registers; the eight-point loop matches.
@@ -200,6 +198,12 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
         }
     }
     return false;
+}
+
+// Not in the binary: a plain function that update inlines. The pool puts it below fn_801053E8:
+// its 0.0f is the unit's first literal.
+static bool isAirborne(s32 player) {
+    return getPlayerPos_8023E724(player)->z > 0.0f;
 }
 
 Cloud_8049CBE0::~Cloud_8049CBE0() {}
