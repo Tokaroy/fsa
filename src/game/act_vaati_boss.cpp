@@ -95,7 +95,7 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x448.mOwner = this;
 }
 
-// FIXME: 96.98 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 97.21 %, scheduling+regalloc; behaviour clean.
 // scheduling+regalloc + reloc-name. Float conversion temporaries and the stores of field_0x5ec.y / field_0x5f4 / field_0x5f4.y are scheduled differently.
 void VaatiBoss_804A4958::init() {
     EnemyBase_804A4808::init();
@@ -177,7 +177,7 @@ void VaatiBoss_804A4958::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME: 97.13 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 97.36 %, regalloc-only; behaviour clean.
 // regalloc-only + reloc-name. Register allocation of the random-velocity arithmetic.
 void VaatiBoss_804A4958::fn_801D63D0() {
     for (s32 i = 0; i < 5; i++) {
@@ -195,7 +195,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
     }
 }
 
-// FIXME(shotgun): 96.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.12 %, missing/extra; behaviour drift.
 void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     switch (state) {
     case 1:
@@ -377,7 +377,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     mState = state;
 }
 
-// FIXME(shotgun): 94.38 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.71 %, missing/extra; behaviour near.
 void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
         if (fn_801CD2F8(field_0x4)) {
@@ -439,7 +439,7 @@ static inline s32 pickTarget(VaatiBoss_804A4958* boss) {
     return chosen;
 }
 
-// FIXME(shotgun): 99.37 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.46 %, different; behaviour drift.
 void VaatiBoss_804A4958::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
@@ -656,7 +656,7 @@ void VaatiBoss_804A4958::vfunc_0x94() {
 }
 
 // The step of the vtable slot 0x9C (0x801D5180, a plain `fn_801D5180` symbol in the original).
-// FIXME(shotgun): 93.92 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 93.96 %, missing/extra; behaviour clean.
 void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
     if (!(mFlags & 0x2000)) {
         if (mState >= 1 && mState < 4) {
@@ -700,7 +700,7 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
 
 // The step of the vtable slot 0x98 (0x801D4ED4, a plain `fn_801D4ED4` symbol in the original).
 // Original reloads field_0x5bc/0x5c0 in each case body and interleaves the sin/cos stores; layout differs.
-// FIXME: 95.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.94 %, missing/extra; behaviour drift.
 void VaatiBoss_804A4958::vfunc_0x98() {
     bool step = false;
     if (field_0x5d1 != 0) {
@@ -792,7 +792,7 @@ void VaatiBoss_804A4958::vfunc_0x98() {
     fn_801E4A18(&field_0x52c.field_0x28);
 }
 
-// FIXME(shotgun): 88.93 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 89.39 %, different; behaviour drift.
 // (the follow flag and target selection are shaped differently; the 0x5EC/0x5F4 pairs are copied into a TVec3f temp because the original passes the field address itself)
 void VaatiBoss_804A4958::fn_801D4C70() {
     switch (mState) {
@@ -917,7 +917,7 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
-// FIXME(shotgun): 96.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.76 %, missing/extra; behaviour drift.
 void VaatiBoss_804A4958::vfunc_0xA0() {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* box = field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
