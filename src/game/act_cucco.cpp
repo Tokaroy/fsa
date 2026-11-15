@@ -543,7 +543,6 @@ void Cucco_804AB8C0::fn_80331E6C() {
     }
 }
 
-// FIXME(shotgun): 96.82 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80331D38() {
     if (mPos.z < 8.0f && field_0x268 > 0) {
         JGeometry::TBox2f box;
