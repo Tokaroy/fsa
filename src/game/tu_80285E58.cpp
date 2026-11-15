@@ -1139,8 +1139,6 @@ void Player_804A6F38::fn_802870C8() {
     }
 }
 
-// FIXME: 99.20. Register allocation: the original keeps the player loop
-// counter, `player` and `start` in r27 and `other` in r29.
 void Player_804A6F38::fn_80286E10() {
     s32 other;
     s32 partner;
@@ -1239,7 +1237,8 @@ void Player_804A6F38::fn_80286E10() {
     }
 }
 
-// FIXME: 99.28. Registers only: the normalization keeps sq / inv_sqrt in f31,
+// FIXME: 99.28 %, regalloc-only; behaviour clean.
+// Registers only: the normalization keeps sq / inv_sqrt in f31,
 // step.z in f29 and 4.0f in f30 (ours f30, f31, f29), and f3 / f4 swap.
 // Moves field_0x338 towards the player's position (in mode 0x7F, offset by
 // 16 in the direction field_0x3dc) by 4 units while it is 4-65 units away,
@@ -1275,7 +1274,8 @@ void Player_804A6F38::fn_80286B74() {
     }
 }
 
-// FIXME: 99.67. f4/f5 swapped for the two planar distances.
+// FIXME: 99.67 %, regalloc-only; behaviour clean.
+// f4/f5 swapped for the two planar distances.
 void Player_804A6F38::fn_8028676C() {
     JGeometry::TVec3f target;
     fn_8027FA08(&target);
