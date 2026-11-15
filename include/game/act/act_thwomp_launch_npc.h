@@ -16,6 +16,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
+    // Not in the binary: a plain function that update inlines.
+    void launch();
 
     void fn_80337A08();
     void fn_803376B0();

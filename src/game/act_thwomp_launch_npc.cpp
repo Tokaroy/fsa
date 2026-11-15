@@ -204,10 +204,10 @@ void NPCLaunchedByThwomp_804AC010::init() {
     field_0x194 = 1;
 }
 
-// FIXME: 99.88 %, operands + reloc-name; behaviour clean.
+// FIXME: 99.97 %, operands; behaviour clean.
 // the temporary TVec3f stack slots for
 // field_0x3c and the by-value mPos argument to fn_8038C678 are swapped (0x44/0x38/0x2c/0x20
-// vs 0x14/0x2c/0x20/0x8 and 0x14/0x8 vs 0x44/0x38), and .sdata2 literals use @NNN symbols.
+// vs 0x14/0x2c/0x20/0x8 and 0x14/0x8 vs 0x44/0x38).
 void NPCLaunchedByThwomp_804AC010::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x -= 2.0f;
@@ -230,9 +230,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            field_0x3c = JGeometry::TVec3f((field_0x278.x - mPos.x) / 40.0f,
-                                           (field_0x278.y - mPos.y) / 40.0f, 4.0f);
-            field_0x260 = 0.2f;
+            launch();
             field_0x230 = 3;
         } else {
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
@@ -313,9 +311,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
         break;
     case 5:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            field_0x3c = JGeometry::TVec3f((field_0x278.x - mPos.x) / 40.0f,
-                                           (field_0x278.y - mPos.y) / 40.0f, 4.0f);
-            field_0x260 = 0.2f;
+            launch();
             field_0x240 = 0;
             field_0x230 = 3;
             field_0x238 = 0;
@@ -346,6 +342,14 @@ void NPCLaunchedByThwomp_804AC010::update() {
     if (field_0x240 > 0) {
         field_0x240--;
     }
+}
+
+// Not in the binary (update inlines it twice); the pool has its literals between fn_80337A08's and
+// update's. The jump that reaches field_0x278 in 40 frames: 4 up, falling by 0.2 a frame.
+void NPCLaunchedByThwomp_804AC010::launch() {
+    field_0x3c = JGeometry::TVec3f((field_0x278.x - mPos.x) / 40.0f,
+                                   (field_0x278.y - mPos.y) / 40.0f, 4.0f);
+    field_0x260 = 0.2f;
 }
 
 void NPCLaunchedByThwomp_804AC010::draw() {
