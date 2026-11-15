@@ -105,19 +105,25 @@ void LinkEnding_804AD858::fn_8035ED60() {
     }
 }
 
+// The 17 emitters of lbl_80472820 at the fixed point. An inline of its own: the position and the
+// loop counter get their registers before fn_8035EC98's values (docs/REGALLOC.md, rule 4).
+static inline void spawnEmitters(LinkEnding_804AD858* self) {
+    JGeometry::TVec3f pos;
+    pos.x = 1280.0f;
+    pos.y = 1728.0f;
+    pos.z = 0.0f;
+    for (s32 i = 0; i < 0x11; i++) {
+        spawnEmitter_8013CC50(self->field_0x4, &pos, lbl_80472820[i], 1, 1, NULL, NULL, true, 1.0f);
+    }
+}
+
 // State 1: spawnEmitter_8013CC50 at the fixed point (1280, 1728) for each of the 17 ids
 // of lbl_80472820, then a sound and a 0x14 countdown.
 // FIXME: 99.20 %. Regalloc only: the original keeps the id table's base in
 // r30 and the loop counter in r31; here they are swapped.
 void LinkEnding_804AD858::fn_8035EC98() {
     if (field_0x234 == 0) {
-        JGeometry::TVec3f pos;
-        pos.x = 1280.0f;
-        pos.y = 1728.0f;
-        pos.z = 0.0f;
-        for (s32 i = 0; i < 0x11; i++) {
-            spawnEmitter_8013CC50(field_0x4, &pos, lbl_80472820[i], 1, 1, NULL, NULL, true, 1.0f);
-        }
+        spawnEmitters(this);
         startSound_801F0E34(0x30087, 0);
         field_0x234 = 0x14;
         mState++;

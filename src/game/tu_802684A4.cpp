@@ -570,6 +570,22 @@ void cls_804A71A8::fn_8026F000() {
     }
 }
 
+// Pushes the block ahead when it can be pushed, else only turns. An inline of its own: its values
+// get their registers before the caller's (docs/REGALLOC.md, rule 4).
+static inline void pushOrTurn(cls_804A71A8* self) {
+    if (canPush(self)) {
+        JGeometry::TVec3f pos = self->field_0x8;
+        pos.z = 0.0f;
+        s32 dir = self->field_0x4->getFacing();
+        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLCK, self->field_0x4->field_0x3b4, &pos, (dir & 3) << 2, -1, -1);
+        if (fn_8022461C(&pos, self->field_0x4->field_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
+            self->field_0x4->field_0xd94 = serial;
+        }
+    } else {
+        setDir(self, self->field_0x38);
+    }
+}
+
 // FIXME: 99.86. Regalloc only: the serial takes r29 (the owner's register) where the
 // original reuses the facing's r30. The same source inlined in fn_8026F000-F54C is 100 %;
 // declaring `s32 serial; s32 dir;` first gives 100 % here but 99.65 % in all four.
@@ -577,17 +593,7 @@ void cls_804A71A8::fn_8026F000() {
 // owner's field_0xd94 unless the tile is 0x50.
 void cls_804A71A8::fn_8026EE60() {
     field_0xac = 1;
-    if (canPush(this)) {
-        JGeometry::TVec3f pos = field_0x8;
-        pos.z = 0.0f;
-        s32 dir = field_0x4->getFacing();
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLCK, field_0x4->field_0x3b4, &pos, (dir & 3) << 2, -1, -1);
-        if (fn_8022461C(&pos, field_0x4->field_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
-            field_0x4->field_0xd94 = serial;
-        }
-    } else {
-        setDir(this, field_0x38);
-    }
+    pushOrTurn(this);
 }
 
 // FIXME: 99.87. Regalloc only, as fn_8026EE60 (the serial in r28 where the original

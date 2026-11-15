@@ -390,6 +390,23 @@ void GameMode_804B0688::fn_803DF624() {
     }
 }
 
+// The pane alphas of entry i. An inline of its own: its loop registers are handed out before
+// fn_803DF2B4's (docs/REGALLOC.md, rule 4).
+static inline void setEntryAlphas(GameMode_804B0688* self, s32 i, f32 alpha) {
+    switch (i) {
+    case 0:
+        for (s32 j = 0; j < 17; j++) {
+            self->mScreen->search(lbl_80477688[j])->setAlpha(alpha * self->field_0xdb[j]);
+        }
+        break;
+    case 1:
+        for (s32 j = 0; j < 20; j++) {
+            self->mScreen->search(lbl_80477710[j])->setAlpha(alpha * self->field_0xec[j]);
+        }
+        break;
+    }
+}
+
 // State 0: slides the entry panes in and fades the screen's panes up, then
 // goes to state 1 once the three slides are done.
 // FIXME: 99.32. Registers only: in the three alpha loops the original keeps
@@ -408,18 +425,7 @@ void GameMode_804B0688::fn_803DF2B4() {
                 t = 20;
             }
             f32 alpha = (f32)(t * t) / 400.0f;
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 17; j++) {
-                    mScreen->search(lbl_80477688[j])->setAlpha(alpha * field_0xdb[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 20; j++) {
-                    mScreen->search(lbl_80477710[j])->setAlpha(alpha * field_0xec[j]);
-                }
-                break;
-            }
+            setEntryAlphas(this, i, alpha);
         }
     }
     if (field_0x9c > 15) {

@@ -1546,6 +1546,32 @@ void FileSelect_804AFF60::fn_803CBE38() {
     }
 }
 
+// The four pane alphas of button i, back to the kept values (field_0x19f).
+static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
+    switch (i) {
+    case 0:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DC8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 1:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DA8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 2:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D88[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 3:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D68[j]), self->field_0x19f[j]);
+        }
+        break;
+    }
+}
+
 // FIXME: 98.60 %, different; behaviour near.
 // FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
 // loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
@@ -1612,28 +1638,7 @@ void FileSelect_804AFF60::fn_803CB3DC() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
             field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     if (field_0xd8 > end) {
@@ -1848,28 +1853,7 @@ void FileSelect_804AFF60::fn_803C9F80() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     // The middle of the second and third rows' places.
@@ -2225,28 +2209,7 @@ void FileSelect_804AFF60::fn_803C7F7C() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
             field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     for (s32 i = 0; i < 3; i++) {
@@ -2380,28 +2343,7 @@ void FileSelect_804AFF60::fn_803C70B8() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     if (field_0xd8 > rowDelay) {
@@ -2659,28 +2601,7 @@ void FileSelect_804AFF60::fn_803C5808() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
             field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
-            switch (i) {
-            case 0:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (s32 j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     if (field_0xd8 > end) {
