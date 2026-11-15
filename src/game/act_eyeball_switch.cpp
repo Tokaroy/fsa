@@ -63,7 +63,8 @@ void EyeballSwitch_804AE678::init() {
     }
 }
 
-// FIXME: 98.5 %. Regalloc only: the target keeps this/end in r29/r28 (we swap
+// FIXME: 98.54 %, regalloc-only; behaviour clean.
+// Regalloc only: the target keeps this/end in r29/r28 (we swap
 // them) and params/table/params >> 27 in r27/r26/r25 (we have r25/r27/r26).
 void EyeballSwitch_804AE678::vfunc_0x10() {
     s32 i;
@@ -95,7 +96,8 @@ EyeballSwitch_804AE678::~EyeballSwitch_804AE678() {
     }
 }
 
-// FIXME: 99.21 %, scheduling. The target loads the bit argument of fn_802D78B4
+// FIXME: 99.21 %, scheduling; behaviour clean.
+// The target loads the bit argument of fn_802D78B4
 // (field_0x248) after the field_0x244 byte, we load it before.
 void EyeballSwitch_804AE678::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
