@@ -243,6 +243,10 @@ static inline bool stepWobble(cls_8049C718* p) {
     return false;
 }
 
+// Plain functions without a copy of their own in the original (see their definitions).
+s32 randomSlotTime();
+s32 headingOf(f32 x, f32 y);
+
 // FIXME: 93.98 %, missing/extra + reloc-name; behaviour clean.
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
@@ -271,8 +275,8 @@ void cls_8049C718::fn_800FC984() {
         if ((mFlags & 8) && mSlot <= 12) {
             mState = 4;
             mTimer = 0;
-            mSlotUsed[0] = (s32)(400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-            mSlotUsed[1] = (s32)(400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
+            mSlotUsed[0] = randomSlotTime();
+            mSlotUsed[1] = randomSlotTime();
             mAngleA = 0x3000;
             mAngleB = 0x5000;
         } else {
@@ -383,6 +387,13 @@ void cls_8049C718::fn_800FC4A8() {
     } else if (mTimer == 0x32) {
         mAnimState = 1;
     }
+}
+
+// A slot's time (mSlotUsed): 400 to 499 frames. No copy of its own in the original: both
+// callers in fn_800FC984 inline it and the linker dropped the body. It was a plain function
+// generated before fn_800FC984 (below it here), which is where the .sdata2 literal 400.0f stands.
+s32 randomSlotTime() {
+    return (s32)(400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
 }
 
 // FIXME(shotgun): 98.10 %, different + reloc-name; behaviour clean.
@@ -606,9 +617,9 @@ void cls_8049C718::fn_800FB6E0(bool first) {
             da.sub(a->mPos);
             db.sub(b->mPos);
             if (PSVECMag((Vec*)&da) < PSVECMag((Vec*)&db)) {
-                angle = (s32)(10430.378f * JMath::atanTable_.atan2_(-da.x, -da.y));
+                angle = headingOf(-da.x, -da.y);
             } else {
-                angle = (s32)(10430.378f * JMath::atanTable_.atan2_(-db.x, -db.y));
+                angle = headingOf(-db.x, -db.y);
             }
         }
         if (dist < 70.0f) {
@@ -689,7 +700,7 @@ void cls_8049C718::fn_800FB32C() {
         field_0x3c.x -= k * n.x;
         field_0x3c.y -= k * n.y;
         field_0x3c.z -= k * n.z;
-        field_0x262 = (s32)(JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f);
+        field_0x262 = headingOf(field_0x3c.x, field_0x3c.y);
     }
     if (field_0x3c.z > 0.0f) {
         mFlags |= 1;
@@ -931,6 +942,13 @@ void cls_8049C718::vfunc_0x44() {
     } else if (field_0x255 == 3) {
         mSignal = 1;
     }
+}
+
+// atan2 as a 16-bit angle. No copy of its own in the original either (inlined into
+// fn_800FB6E0 and fn_800FB32C, body dropped): a plain function at this place, which puts
+// 10430.378f in front of vfunc_0x44's literals as in the original's .sdata2.
+s32 headingOf(f32 x, f32 y) {
+    return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
 }
 
 // FIXME(shotgun): 99.87 %, scheduling+regalloc + reloc-name; behaviour drift.
@@ -1277,7 +1295,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mSoundTimer = 0;
         }
     }
-    if (__fabs(field_0x3c.x) < 1.0f && __fabs(field_0x3c.y) < 1.0f) {
+    if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
         JGeometry::TBox2f box;
         box.i.x = mPos.x - 10.0f;
         box.i.y = mPos.y - 10.0f;
@@ -1291,7 +1309,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     } else {
         fn_801F2B7C(2, -1, 1);
     }
-    if (__fabs(field_0x3c.x) < 1.0f && __fabs(field_0x3c.y) < 1.0f) {
+    if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             JGeometry::TVec3f d;
