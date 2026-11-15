@@ -112,6 +112,15 @@ statement the file writes out several times. The same rule explains the non-loop
 declared in a block of the function is one of the function's named locals, coloured in declaration
 order after everything inlined; the same local in an inlined helper is coloured before them.
 
+## An argument of another type is a copy
+
+`int` and `s32` (`long`) are the same size but not the same type. A value of one handed to an inline
+function's parameter of the other is converted, and MWCC makes the converted value a new temporary:
+one more value to colour, in another place of the order. FileSelect's `restoreButtonAlphas(self,
+s32 i)` matched in the five functions whose loop counter is `s32 i` and not in `fn_803C1734`, whose
+counter was `int i`; with `s32 i` there too all six match. When one copy of a helper differs from
+the others in registers only, compare the types of what the callers pass.
+
 ## Not covered here
 
 Volatile registers (r0, r3-r12, f0-f13) follow rule 3 with the volatile set, lowest free first.

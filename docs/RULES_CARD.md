@@ -86,9 +86,11 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
   move such a statement, as it stands, into a `static inline` helper above the
   function (what it reads of the function's locals becomes parameters); `--shared`
   does it for a statement the file writes out several times, with one helper
-  for all copies. 26 functions matched this way. The result is a `.hand.diff`:
+  for all copies. 21 functions matched this way in the first sweeps. The result is a `.hand.diff`:
   take the narrowest helper that matches, name it for what it does, and prefer
-  one helper shared by every function that has the same statement.
+  one helper shared by every function that has the same statement. Give the
+  argument the parameter's exact type: an `int` counter handed to an `s32`
+  parameter is copied first, and the copy moves the registers.
 - A saved result that adds or removes a local (`*.hand.diff`, also shown in
   the task text) is byte-proven but unfinished: give the local a real name; a
   value written out twice was a macro or an inline in the original.
