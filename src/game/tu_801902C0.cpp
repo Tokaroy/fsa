@@ -12,8 +12,6 @@
 #include <math.h>
 #include <stdio.h>
 
-// FIXME: 99.43. Only the .rodata offsets of the string literals: the original
-// has "rock6_smp.bin" (used by the unwritten draw fn_801902D0) before them.
 GameRootSub20_801902C0::GameRootSub20_801902C0(JKRHeap* parent) {
     mHeap = JKRSolidHeap::create(-1, parent, false);
     mHeap->becomeCurrentHeap();
@@ -152,7 +150,8 @@ void GameRootSub20_801902C0::fn_801914C4() {
     field_0x4++;
 }
 
-// FIXME(shotgun): 97.9 %, missing/extra (the two small requests are unrolled in the target)
+// FIXME(shotgun): 98.21 %, missing/extra; behaviour near.
+// (the two small requests are unrolled in the target)
 void GameRootSub20_801902C0::fn_80190DC8() {
     s32 frame = field_0x4;
     for (s32 i = 0; i < 7; i++) {
@@ -248,6 +247,7 @@ void GameRootSub20_801902C0::fn_80190DC8() {
     }
 }
 
+// FIXME: 98.47 %, missing/extra; behaviour near.
 void GameRootSub20_801902C0::fn_801902D0() {
     for (s32 i = 0; i < 7; i++) {
         Crystal& c = mCrystals[i];
