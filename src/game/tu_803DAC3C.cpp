@@ -409,8 +409,6 @@ static inline void setEntryAlphas(GameMode_804B0688* self, s32 i, f32 alpha) {
 
 // State 0: slides the entry panes in and fades the screen's panes up, then
 // goes to state 1 once the three slides are done.
-// FIXME: 99.32. Registers only: in the three alpha loops the original keeps
-// the counter in r22 and the tag pointer in r21, ours the other way round.
 void GameMode_804B0688::fn_803DF2B4() {
     u8 slid = false;
     u8 titleSlid = false;
@@ -577,7 +575,8 @@ void GameMode_804B0688::fn_803DEC44() {
 // State 2: slides the other entry out and the picked one up, fades the
 // entry panes out and the sub-menu panes in, then starts the movie and goes
 // to state 3.
-// FIXME: 96.35. The original stores the first other entry through the
+// FIXME: 96.35 %, missing/extra + reloc-name; behaviour near.
+// The original stores the first other entry through the
 // pointer (ours stores it straight to the stack slot) and sets up the tag
 // table base (lbl_804774C8, ours via the section) one instruction earlier;
 // the alpha loops' counter and tag pointer registers are swapped.
@@ -796,7 +795,8 @@ void GameMode_804B0688::fn_803DE05C() {
 
 // State 4: back from the sub-menu to the entry menu (state 2 in reverse),
 // then state 1.
-// FIXME: 97.47. Same length; try.py says "different" only for the prologue:
+// FIXME: 97.47 %, different + reloc-name; behaviour near.
+// Same length; try.py says "different" only for the prologue:
 // the original sets up the tag table base (lbl_804774C8; ours goes through
 // the section symbol) after `field_0x9c++` and stores the first other entry
 // through the pointer (ours straight to the stack slot). The rest is
@@ -924,7 +924,8 @@ void GameMode_804B0688::fn_803DD8E8() {
 // State 7: fades to black, waits for the sound to stop and the countdown
 // field_0x98, then copies the save region to 0x80700000 (it survives the
 // reset, see main) and reboots into "/DOL/framework.dol".
-// FIXME: 93.9. The save-region copy loop: the original re-adds the index to
+// FIXME: 93.94 %, missing/extra; behaviour drift.
+// The save-region copy loop: the original re-adds the index to
 // lbl_80529DEC's address for every eight bytes (add r4, r5, r12), ours steps a
 // source pointer (one instruction fewer); the same loop is unsolved in main
 // (tu_801344C0) and cls_804A8578::fn_802B1DE8.
