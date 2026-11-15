@@ -1572,7 +1572,7 @@ static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
     }
 }
 
-// FIXME: 98.60 %, different; behaviour near.
+// FIXME: 98.90 %, different; behaviour near.
 // FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
 // loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
 // shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
@@ -2159,7 +2159,7 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 }
 
-// FIXME: 99.64 %, regalloc-only; behaviour clean.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C6798 (`buttonStep * 1` forms change nothing).
 // State 26 (copy, from fn_803C05D8): the destination's board (or the copy
@@ -2293,15 +2293,6 @@ void FileSelect_804AFF60::fn_803C7CA0() {
     }
 }
 
-// FIXME: 99.74 %, regalloc-only; behaviour clean.
-// Scheduling and registers only, the timing sums as in
-// fn_803C6798.
-// State 28 (the copy prompt's no, from fn_803C02CC): the board (or the copy
-// board) slides out from the second row's height and the two buttons slide
-// out; then, as fn_803C6798, the row that took no part slides back in and the
-// source and destination rows return to their places while row field_0xa4's
-// colours fade back (fn_803BC6F0). Same timings as fn_803C6798
-// (lbl_8050DB0C field_0x4c[0xB6..0xBC]); state 5.
 void FileSelect_804AFF60::fn_803C70B8() {
     s16 boardDelay = lbl_8050DB0C.field_0x4c[0xB6];
     s16 boardFrames = lbl_8050DB0C.field_0x4c[0xB7];
@@ -2535,7 +2526,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 98.71 %, missing/extra; behaviour near.
+// FIXME: 99.03 %, missing/extra; behaviour near.
 // One instruction fewer, as fn_803CB3DC: with the running
 // `delay += rowStep` ours starts the accumulator at rowDelay (mr r24) where
 // the original keeps the add; `i * rowStep` keeps it but gives fn_803C2E24's
