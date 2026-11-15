@@ -169,7 +169,7 @@ void BgRewrite_804A7C98::fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u1
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
 }
 
-// FIXME(shotgun): 99.08 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.18 %, scheduling+regalloc; behaviour clean.
 bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -233,7 +233,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME: 98.55 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.51 %, missing/extra + reloc-name; behaviour near.
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -397,7 +397,6 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
     }
 }
 
-// FIXME(shotgun): 99.81 %, regalloc-only; behaviour clean.
 bool BgRewrite_804A7C98::fn_802A1D44(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -424,7 +423,7 @@ bool BgRewrite_804A7C98::fn_802A1D44(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME(shotgun): 99.41 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.55 %, missing/extra; behaviour clean.
 // 1 fewer insn (literal pool order)
 s32 BgRewrite_804A7C98::fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -476,7 +475,6 @@ s32 BgRewrite_804A7C98::fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s3
     return 0;
 }
 
-// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
 bool BgRewrite_804A7C98::fn_802A1688(const JGeometry::TVec3f* pos, s32 layer, u32 tag) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -530,7 +528,7 @@ bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME(shotgun): 99.08 %, different; behaviour drift.
+// FIXME(shotgun): 99.35 %, different; behaviour drift.
 // 3 opcodes differ (literal pool order)
 void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -760,7 +758,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     return true;
 }
 
-// FIXME(shotgun): 97.83 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.23 %, missing/extra; behaviour drift.
 // 2 more insns (register copies)
 s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -906,7 +904,7 @@ bool BgRewrite_804A7C98::fn_802A01F0(const JGeometry::TVec3f* pos, s32 player, s
 }
 
 // Register copies differ (the original keeps layer, cell and the spawned serial twice).
-// FIXME: 98.17 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.54 %, missing/extra + reloc-name; behaviour clean.
 u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32 layer, JGeometry::TVec3f* out) {
     u8 result = 0;
     if (pos->z < 19.0f) {
@@ -1158,7 +1156,7 @@ void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 t
     }
 }
 
-// FIXME(shotgun): 99.07 %, different; behaviour near.
+// FIXME(shotgun): 99.49 %, different; behaviour near.
 // 2 opcodes differ
 void BgRewrite_804A7C98::fn_8029E9EC(const JGeometry::TVec3f* pos, s32 layer, u16 tile, s32 arg4, u8 dir) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1178,9 +1176,6 @@ void BgRewrite_804A7C98::fn_8029E9EC(const JGeometry::TVec3f* pos, s32 layer, u1
     }
 }
 
-// FIXME: 99.08 %, regalloc-only; behaviour clean.
-// Register allocation only: the original keeps gBgRewrite_8053AC98 in
-// r31 and the cell / slot in r30 (ours swaps them).
 void BgRewrite_804A7C98::fn_8029E928(const JGeometry::TVec3f* pos, s32 layer, s32 tile) {
     gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, tile);
 }
@@ -1193,7 +1188,7 @@ u8 BgRewrite_804A7C98::fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32
     return field_0x24 == 0x30;
 }
 
-// FIXME(shotgun): 95.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.54 %, missing/extra; behaviour drift.
 // (the player-mask test: the original keeps the bool and compares it with 1)
 bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1242,7 +1237,7 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
     return false;
 }
 
-// FIXME(shotgun): 97.16 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 97.41 %, missing/extra; behaviour clean.
 // 2 fewer insns (register copies of layer)
 bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1268,7 +1263,7 @@ bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
 // Not auto-inlined: fn_8029EDB8 calls fn_8029E050 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 96.67 %, different; behaviour drift.
+// FIXME(shotgun): 97.50 %, different; behaviour near.
 // 4 opcodes differ
 void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d) {
     gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, a);
