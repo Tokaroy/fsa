@@ -85,8 +85,7 @@ cls_804AE088::~cls_804AE088() {
     fn_8036A65C();
 }
 
-void (cls_804AE088::*lbl_804AE058[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
-void (cls_804AE088::*lbl_804AE070[2])() = {lbl_804AE058[0], lbl_804AE058[1]};
+void (cls_804AE088::*lbl_804AE070[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
 
 static const s16 lbl_80542C48[2] = {9, -1};
 static const s16 lbl_80542C50[2] = {9, -1};
