@@ -27,8 +27,11 @@ public:
     // 0x10, 0xA and 5).
     void fn_80126A4C(s32 arg);
 
+    // Not in the binary: plain functions that update and fn_80126A4C inline.
     s32 startTalk(u32 msg);
     void hover();
+    bool walkRail();
+    void spawnEmitters();
 
     /* 0x230 */ s32 field_0x230; // state word, read by fn_80126EF8; 0 after construction
     /* 0x234 */ s32 field_0x234; // set to 0 by the constructor, not yet known
