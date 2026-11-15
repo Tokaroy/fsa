@@ -85,8 +85,8 @@ void ColourBlock1Player_804AE620::init() {
 void ColourBlock1Player_804AE620::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
-    box.f.x += mPos.x;
     box.i.y += mPos.y;
+    box.f.x += mPos.x;
     box.f.y += mPos.y;
 
     if (field_0x244 != 0) {
@@ -256,8 +256,8 @@ bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
         canMove = true;
         JGeometry::TBox2f box = mBox;
         box.i.x += mPos.x;
-        box.f.x += mPos.x;
         box.i.y += mPos.y;
+        box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (int i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
