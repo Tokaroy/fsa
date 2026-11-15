@@ -120,7 +120,7 @@ void ForceLike_8049C578::update() {
             field_0x230 = 1;
             field_0x240 = 0;
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DC, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
+            spawnKindEmitter();
             startSound_801F0E34(0x50023, 0);
         }
         break;
@@ -376,7 +376,12 @@ void ForceLike_8049C578::vfunc_0x24() {
             }
         }
     }
-    spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
+    spawnKindEmitter();
     field_0x18c = 0;
     ActorBase_804A5770::vfunc_0x24();
+}
+
+// Not in the binary (vfunc_0x24 and update inline it); the pool has its 1.0f ahead of vfunc_0x24's literals.
+void ForceLike_8049C578::spawnKindEmitter() {
+    spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
 }
