@@ -141,8 +141,8 @@ public:
     // 0x100 boundary). this unused.
     void fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b);
     // 2 units (see above). As fn_8029DEBC for four (DD50) or six (DB2C) tile codes in a row
-    // or column (u16 each, clrlwi 16). this unused.
-    void fn_8029DD50(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d);
+    // or column. this unused.
+    void fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
     void fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
     // 2 units (act_door, tu_802D39B8). The 2 x 2 block of tile codes a..d at
     // cell (right neighbour and the row below as in fn_8029DEBC). this unused.
