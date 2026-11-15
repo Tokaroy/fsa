@@ -573,7 +573,7 @@ void cls_804B146C::fn_80425F24() {
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
-        u8 takesPart = gGameRoot_8053AAF8->mPlayerMask & bit;
+        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & bit;
         if (!takesPart) {
             field_0x25d &= ~bit;
         } else {
@@ -643,7 +643,7 @@ void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         fn_80424148(i, false);
         if (gGameRoot2_8053AB10->field_0x20->field_0x148[i] != 0) {
-            s16 x = field_0x4->search(lbl_8048EF80[i])->getBounds()->i.x;
+            s32 x = field_0x4->search(lbl_8048EF80[i])->getBounds()->i.x;
             s32 y = field_0x4->search(lbl_8048EF80[i])->getBounds()->i.y;
             f32 w = field_0x4->search(lbl_8048EF80[i])->getWidth();
             f32 h = field_0x4->search(lbl_8048EF80[i])->getHeight();
