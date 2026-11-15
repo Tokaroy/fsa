@@ -164,6 +164,195 @@ def clang_args(unit):
             "-fms-extensions", "-target", "powerpc-unknown-eabi", "-fsigned-char", "-I" + str((unit.root / unit.src).parent)] + out
 
 
+# libclang's Python cursors cost a ctypes call per property, and a search reads the same few thousand
+# nodes hundreds of thousands of times per pass. Node wraps a cursor and remembers what it was asked
+# (kind, extent, children, type, what it refers to); nodes are interned per translation unit, so two
+# references to one declaration are the same object. Anything not cached falls through to the cursor.
+_NONE = object()
+_IS_EXPR = {}
+
+
+def is_expr(kind):
+    r = _IS_EXPR.get(kind)
+    if r is None:
+        r = _IS_EXPR[kind] = kind.is_expression()
+    return r
+
+
+class _File:
+    __slots__ = ("name",)
+
+    def __init__(self, name):
+        self.name = name
+
+
+class _Pos:
+    __slots__ = ("line", "offset", "file")
+
+    def __init__(self, loc):
+        f = loc.file
+        self.line, self.offset, self.file = loc.line, loc.offset, (_File(f.name) if f is not None else None)
+
+
+class _Ext:
+    __slots__ = ("start", "end")
+
+    def __init__(self, e):
+        self.start, self.end = _Pos(e.start), _Pos(e.end)
+
+
+class TypeW:
+    __slots__ = ("t", "_kind", "_canon", "_spelling", "_const")
+
+    def __init__(self, t):
+        self.t, self._kind, self._canon, self._spelling, self._const = t, None, None, None, None
+
+    @property
+    def kind(self):
+        if self._kind is None:
+            self._kind = self.t.kind
+        return self._kind
+
+    @property
+    def spelling(self):
+        if self._spelling is None:
+            self._spelling = self.t.spelling
+        return self._spelling
+
+    def get_canonical(self):
+        if self._canon is None:
+            self._canon = TypeW(self.t.get_canonical())
+        return self._canon
+
+    def is_const_qualified(self):
+        if self._const is None:
+            self._const = self.t.is_const_qualified()
+        return self._const
+
+    def __getattr__(self, name):
+        return getattr(self.t, name)
+
+
+class Node:
+    __slots__ = ("c", "tab", "hash", "_kind", "_spelling", "_extent", "_location", "_children", "_type", "_ref", "_sem",
+                 "_lex", "_args", "_rtype", "_def", "_storage", "_isdef")
+
+    def __init__(self, c, tab, h):
+        self.c, self.tab, self.hash = c, tab, h
+        self._kind = self._spelling = self._extent = self._location = self._children = self._type = None
+        self._args = self._rtype = self._storage = self._isdef = None
+        self._ref = self._sem = self._lex = self._def = _NONE
+
+    def __eq__(self, other):
+        if other is self:
+            return True
+        if isinstance(other, Node):
+            return other.hash == self.hash and other.c == self.c
+        return other is not None and self.c == other
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return self.hash
+
+    @property
+    def kind(self):
+        if self._kind is None:
+            self._kind = self.c.kind
+        return self._kind
+
+    @property
+    def spelling(self):
+        if self._spelling is None:
+            self._spelling = self.c.spelling
+        return self._spelling
+
+    @property
+    def extent(self):
+        if self._extent is None:
+            self._extent = _Ext(self.c.extent)
+        return self._extent
+
+    @property
+    def location(self):
+        if self._location is None:
+            self._location = _Pos(self.c.location)
+        return self._location
+
+    def get_children(self):
+        if self._children is None:
+            self._children = [wrap(x, self.tab) for x in self.c.get_children()]
+        return self._children
+
+    @property
+    def type(self):
+        if self._type is None:
+            self._type = TypeW(self.c.type)
+        return self._type
+
+    @property
+    def result_type(self):
+        if self._rtype is None:
+            self._rtype = TypeW(self.c.result_type)
+        return self._rtype
+
+    @property
+    def referenced(self):
+        if self._ref is _NONE:
+            self._ref = wrap(self.c.referenced, self.tab)
+        return self._ref
+
+    @property
+    def semantic_parent(self):
+        if self._sem is _NONE:
+            self._sem = wrap(self.c.semantic_parent, self.tab)
+        return self._sem
+
+    @property
+    def lexical_parent(self):
+        if self._lex is _NONE:
+            self._lex = wrap(self.c.lexical_parent, self.tab)
+        return self._lex
+
+    def get_definition(self):
+        if self._def is _NONE:
+            self._def = wrap(self.c.get_definition(), self.tab)
+        return self._def
+
+    def get_arguments(self):
+        if self._args is None:
+            self._args = [wrap(x, self.tab) for x in self.c.get_arguments()]
+        return self._args
+
+    @property
+    def storage_class(self):
+        if self._storage is None:
+            self._storage = self.c.storage_class
+        return self._storage
+
+    def is_definition(self):
+        if self._isdef is None:
+            self._isdef = self.c.is_definition()
+        return self._isdef
+
+    def __getattr__(self, name):
+        return getattr(self.c, name)
+
+
+def wrap(c, tab):
+    """The interned Node of a cursor (None for no cursor)."""
+    if c is None:
+        return None
+    h = c.hash
+    n = tab.get(h)
+    if n is not None and n.c == c:
+        return n
+    n = Node(c, tab, h)
+    tab.setdefault(h, n)
+    return n
+
+
 class Parsed:
     def __init__(self, unit, data):
         global _INDEX
@@ -171,7 +360,7 @@ class Parsed:
             _INDEX = C.Index.create()
         self.data, self.path = data, str(unit.root / unit.src)
         self.tu = _INDEX.parse(self.path, args=clang_args(unit), unsaved_files=[(self.path, data)])
-        self._fns = None
+        self._fns, self._tab = None, {}
 
     def functions(self):
         if self._fns is None:
@@ -186,7 +375,7 @@ class Parsed:
                         out.append(ch)
                     elif ch.kind in (K.NAMESPACE, K.LINKAGE_SPEC, K.UNEXPOSED_DECL, K.CLASS_DECL, K.STRUCT_DECL):
                         walk_top(ch)
-            walk_top(self.tu.cursor)
+            walk_top(wrap(self.tu.cursor, self._tab))
             self._fns = out
         return self._fns
 
@@ -415,7 +604,7 @@ class Decl:
             return
         self.vars = vs
         self.names = {v.spelling for v in vs}
-        inits = [c for v in vs for c in v.get_children() if c.kind.is_expression()]
+        inits = [c for v in vs for c in v.get_children() if is_expr(c.kind)]
         self.inits = inits
         self.has_init = bool(inits)
         self.impure = any(impure(p, c) for c in inits)
@@ -591,7 +780,7 @@ def gen_compound(c):
         if not good(p, n):
             continue
         par = c.parent.get(n.hash)
-        if par is None or par.kind.is_expression():
+        if par is None or is_expr(par.kind):
             continue
         if n.kind == K.COMPOUND_ASSIGNMENT_OPERATOR:
             b = binop(p, n)
@@ -942,7 +1131,7 @@ def gen_incr(c):
         if not good(p, st):
             continue
         par = c.parent.get(st.hash)
-        if par is None or par.kind.is_expression():
+        if par is None or is_expr(par.kind):
             continue
         t = txt(p, st).strip()
         line = st.extent.start.line
@@ -1381,7 +1570,7 @@ def gen_swap(c):
     for comp in c.compounds():
         kids = list(comp.get_children())
         for a, b in zip(kids, kids[1:]):
-            if not (good(p, a) and good(p, b)) or not a.kind.is_expression() or not b.kind.is_expression():
+            if not (good(p, a) and good(p, b)) or not is_expr(a.kind) or not is_expr(b.kind):
                 continue
             la, lb = line_span(d, *ext(a)), line_span(d, *ext(b))
             if not la or not lb or la[1] != lb[0]:
@@ -1395,7 +1584,7 @@ def gen_cast(c):
     for n in c.nodes:
         if n.kind != K.CSTYLE_CAST_EXPR or not good(p, n):
             continue
-        ch = [x for x in n.get_children() if x.kind.is_expression()]
+        ch = [x for x in n.get_children() if is_expr(x.kind)]
         if len(ch) != 1 or not good(p, ch[0]):
             continue
         yield Edit("cast", f"line {n.extent.start.line}: `{D(txt(p, n))}` without the cast", [(*ext(n), txt(p, ch[0]))],
