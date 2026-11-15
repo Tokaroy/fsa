@@ -528,7 +528,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             f32 c = JMath::sincosTable_.cosShort(angle);
             field_0x32c = mSpawnPos;
             field_0x32c.x += 90.0f * s - 0.0f * c;
-            field_0x32c.y += 90.0f * c + 0.0 * s;
+            field_0x32c.y += 90.0f * c + 0.0f * s;
             startSound_801F0E34(0x40035, 0);
         } else if (fn_801C0D70()->field_0x0 & 0x400) {
             startSound_801F0E34(0x40036, 0);
