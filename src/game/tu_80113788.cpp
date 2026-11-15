@@ -55,6 +55,27 @@ cls_8049D83C::cls_8049D83C()
     gAudioMgr_8053AF80->fn_80458F9C(0x3C);
 }
 
+// An inline of its own: its loop registers are handed out before the destructor's
+// (docs/REGALLOC.md, rule 4).
+static inline void releaseEmitterArrays(cls_8049D83C* self) {
+    for (s32 i = 0; i < 7; i++) {
+        releaseEmitter_801EE434(self->field_0x2a8[i]);
+        self->field_0x2a8[i] = NULL;
+        if (i < 2) {
+            releaseEmitter_801EE434(self->field_0x2e8[i]);
+            self->field_0x2e8[i] = NULL;
+        }
+        if (i < 3) {
+            releaseEmitter_801EE434(self->field_0x2c4[i]);
+            self->field_0x2c4[i] = NULL;
+        }
+        if (i < 5) {
+            releaseEmitter_801EE434(self->field_0x2d0[i]);
+            self->field_0x2d0[i] = NULL;
+        }
+    }
+}
+
 // 0x80115430.
 // FIXME(shotgun): 98.98 %, regalloc-only; behaviour clean.
 cls_8049D83C::~cls_8049D83C() {
@@ -66,22 +87,7 @@ cls_8049D83C::~cls_8049D83C() {
         releaseEmitter_801EE434(field_0x29c);
         field_0x29c = NULL;
     }
-    for (s32 i = 0; i < 7; i++) {
-        releaseEmitter_801EE434(field_0x2a8[i]);
-        field_0x2a8[i] = NULL;
-        if (i < 2) {
-            releaseEmitter_801EE434(field_0x2e8[i]);
-            field_0x2e8[i] = NULL;
-        }
-        if (i < 3) {
-            releaseEmitter_801EE434(field_0x2c4[i]);
-            field_0x2c4[i] = NULL;
-        }
-        if (i < 5) {
-            releaseEmitter_801EE434(field_0x2d0[i]);
-            field_0x2d0[i] = NULL;
-        }
-    }
+    releaseEmitterArrays(this);
     if (field_0x2a4 != NULL) {
         releaseEmitter_801EE434(field_0x2a4);
         field_0x2a4 = NULL;

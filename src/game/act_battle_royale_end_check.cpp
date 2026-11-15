@@ -60,16 +60,22 @@ void BattleRoyaleEndCheck_804B0380::draw() {
     }
 }
 
-void BattleRoyaleEndCheck_804B0380::fn_803D6BDC() {
-    if (fn_80239F10()) {
-        for (s32 i = 0; i < 4; i++) {
-            u8 bit = 1 << i;
-            if (gGameRoot_8053AAF8->mPlayerMask & bit) {
-                if (!fn_80236B50(i)) {
-                    mWinner = i;
-                }
+// The player still standing becomes the winner. An inline of its own: its loop registers are
+// handed out before fn_803D6BDC's (docs/REGALLOC.md, rule 4).
+static inline void findStandingPlayer(BattleRoyaleEndCheck_804B0380* self) {
+    for (s32 i = 0; i < 4; i++) {
+        u8 bit = 1 << i;
+        if (gGameRoot_8053AAF8->mPlayerMask & bit) {
+            if (!fn_80236B50(i)) {
+                self->mWinner = i;
             }
         }
+    }
+}
+
+void BattleRoyaleEndCheck_804B0380::fn_803D6BDC() {
+    if (fn_80239F10()) {
+        findStandingPlayer(this);
         if (mWinner >= 0) {
             lbl_80529DEC.field_0x1a8 = mWinner;
         } else {

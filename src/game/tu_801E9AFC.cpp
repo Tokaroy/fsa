@@ -142,15 +142,21 @@ void cls_801E9B54::fn_801EA594() {
     }
 }
 
+// The three textures of lbl_804A5610. An inline of its own: its loop registers are handed out
+// before fn_801EA384's (docs/REGALLOC.md, rule 4).
+static inline void loadTextures(cls_801E9AFC* self) {
+    for (s32 i = 0; i < 3; i++) {
+        self->field_0x178[i] = fn_801CB270(lbl_804A5610[i], &self->field_0xf4[i], &self->field_0x154[i]);
+    }
+}
+
 // FIXME: 99.24 %, regalloc-only; behaviour clean.
 // Regalloc only: the texture loop's index is r31 in the original
 // (r27 here) and the table, texture, palette and ratio pointers sit one
 // register lower.
 void cls_801E9AFC::fn_801EA384(bool flag) {
     if (flag) {
-        for (s32 i = 0; i < 3; i++) {
-            field_0x178[i] = fn_801CB270(lbl_804A5610[i], &field_0xf4[i], &field_0x154[i]);
-        }
+        loadTextures(this);
         field_0xf0 = 0;
         field_0x0[0].clear();
         field_0x0[1].clear();

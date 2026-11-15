@@ -29,11 +29,17 @@ void cls_801D6A58::fn_801D7830() {
     }
 }
 
+// An inline of its own: the unrolled loop's pointer and counter take the registers the original
+// has (docs/REGALLOC.md, rule 4).
+static inline void clearSlots(cls_801D7730* self) {
+    for (u32 i = 0; i < 16; i++) {
+        self->field_0x0[i] = -1;
+    }
+}
+
 // FIXME(shotgun): 96.13 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D77B4() {
-    for (u32 i = 0; i < 16; i++) {
-        field_0x0[i] = -1;
-    }
+    clearSlots(this);
     field_0x40 = 0;
     field_0x44 = 0;
     field_0x48.set(0.0f, 0.0f, 0.0f);

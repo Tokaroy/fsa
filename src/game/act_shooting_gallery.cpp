@@ -114,6 +114,16 @@ void ShootingGallery_804A2B18::init() {
     }
 }
 
+// Gives the players back the item and level kept in field_0x26c / field_0x27c. An inline of its
+// own: its loop registers are handed out before the destructor's (docs/REGALLOC.md, rule 4).
+static inline void restorePlayerItems(ShootingGallery_804A2B18* self) {
+    for (int i = 0; i < 4; i++) {
+        if (!fn_8022F514(i)) {
+            fn_802372F8(i, self->field_0x26c[i], self->field_0x27c[i]);
+        }
+    }
+}
+
 // FIXME: 99.08 %, regalloc-only; behaviour clean.
 // regalloc-only: r30/r31 swapped in loop.
 ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
@@ -124,11 +134,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
                 gGameRoot_8053AAF8->fn_80138B7C();
                 gAudioMgr_8053AF80->fn_80458508(0);
             }
-            for (int i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
-                    fn_802372F8(i, field_0x26c[i], field_0x27c[i]);
-                }
-            }
+            restorePlayerItems(this);
         }
     }
 }

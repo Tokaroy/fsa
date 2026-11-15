@@ -145,22 +145,28 @@ void cls_8049E770::draw() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 97.38 %, regalloc-only; behaviour clean.
-cls_8049E770::~cls_8049E770() {
+// An inline of its own: its loop registers are handed out before the destructor's
+// (docs/REGALLOC.md, rule 4).
+static inline void deleteEmitters(cls_8049E770* self) {
     for (s32 i = 0; i < 4; i++) {
-        if (field_0x388[0][i] != NULL) {
-            field_0x388[0][i]->setStatus(JPAEMIT_ForceDelete);
-            field_0x388[0][i] = NULL;
+        if (self->field_0x388[0][i] != NULL) {
+            self->field_0x388[0][i]->setStatus(JPAEMIT_ForceDelete);
+            self->field_0x388[0][i] = NULL;
         }
-        if (field_0x388[1][i] != NULL) {
-            field_0x388[1][i]->setStatus(JPAEMIT_ForceDelete);
-            field_0x388[1][i] = NULL;
+        if (self->field_0x388[1][i] != NULL) {
+            self->field_0x388[1][i]->setStatus(JPAEMIT_ForceDelete);
+            self->field_0x388[1][i] = NULL;
         }
-        if (field_0x388[2][i] != NULL) {
-            field_0x388[2][i]->setStatus(JPAEMIT_ForceDelete);
-            field_0x388[2][i] = NULL;
+        if (self->field_0x388[2][i] != NULL) {
+            self->field_0x388[2][i]->setStatus(JPAEMIT_ForceDelete);
+            self->field_0x388[2][i] = NULL;
         }
     }
+}
+
+// FIXME(shotgun): 97.38 %, regalloc-only; behaviour clean.
+cls_8049E770::~cls_8049E770() {
+    deleteEmitters(this);
 }
 
 // FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.

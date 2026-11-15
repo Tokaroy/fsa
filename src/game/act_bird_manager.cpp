@@ -290,6 +290,17 @@ void cls_804A5C88::vfunc_0x90(u8 mapHit) {
     }
 }
 
+// field_0x3c handed on to the four slot actors. An inline of its own: its loop registers are
+// handed out before vfunc_0x88's (docs/REGALLOC.md, rule 4).
+static inline void copyField3cToSlotActors(cls_804A5C88* self) {
+    for (s32 i = 0; i < 4; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
+        if (actor != NULL) {
+            actor->field_0x3c = self->field_0x3c;
+        }
+    }
+}
+
 // FIXME: 99.43% (regalloc-only). Loop register allocation: loop counter i and slot pointer registers r30 and r31 are swapped.
 void cls_804A5C88::vfunc_0x88() {
     switch (mState) {
@@ -310,12 +321,7 @@ void cls_804A5C88::vfunc_0x88() {
         } else {
             field_0x3c.set(-1.2f, 0.0f, 0.0f);
         }
-        for (s32 i = 0; i < 4; i++) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
-            if (actor != NULL) {
-                actor->field_0x3c = field_0x3c;
-            }
-        }
+        copyField3cToSlotActors(this);
         break;
     }
 }

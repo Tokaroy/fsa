@@ -1316,6 +1316,15 @@ void Player_804A6F38::fn_802520C0(const JGeometry::TVec2<s32>* dir) {
     }
 }
 
+// Moves every trail entry one place back. An inline of its own: its loop registers are handed
+// out before fn_80251D50's (docs/REGALLOC.md, rule 4).
+static inline void shiftTrail(Player_804A6F38* self) {
+    for (s32 i = 0x30; i > 0; i--) {
+        self->field_0x38[i] = self->field_0x38[i - 1];
+        self->field_0x284[i] = self->field_0x284[i - 1];
+    }
+}
+
 // The end of the frame's movement. The trail (field_0x38 / field_0x284)
 // takes the position when it moved 1 or more from the newest entry or an
 // entry is airborne (z above 0; on a layer without viewLayerFlag, two
@@ -1353,10 +1362,7 @@ void Player_804A6F38::fn_80251D50() {
     }
     if (magnitude(field_0x38[0] - mPos) >= 1.0f || airborne) {
         if (!field_0xce8 && !field_0x454 && field_0x11f4 == 0 && !field_0x435 && !field_0x1216) {
-            for (s32 i = 0x30; i > 0; i--) {
-                field_0x38[i] = field_0x38[i - 1];
-                field_0x284[i] = field_0x284[i - 1];
-            }
+            shiftTrail(this);
             field_0x38[0] = mPos;
             field_0x284[0] = field_0xbf0->field_0xb4;
         }
