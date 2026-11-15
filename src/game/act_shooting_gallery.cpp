@@ -124,8 +124,6 @@ static inline void restorePlayerItems(ShootingGallery_804A2B18* self) {
     }
 }
 
-// FIXME: 99.08 %, regalloc-only; behaviour clean.
-// regalloc-only: r30/r31 swapped in loop.
 ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     if (field_0x268 == 0) {
         if (mState == 3 || mState == 4) {
