@@ -79,6 +79,10 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
 - A saved result that adds or removes a local (`*.hand.diff`, also shown in
   the task text) is byte-proven but unfinished: give the local a real name; a
   value written out twice was a macro or an inline in the original.
+- **Register-only differences: read docs/REGALLOC.md first.** It is MWCC's own rule, from the
+  compiler's source: values are coloured in the order they were created (a function's locals in
+  declaration order, an inlined copy's locals in REVERSE declaration order, the locals of a nested
+  inline one pass later), each taking the lowest free register. Predict, then test.
 - `flagsweep.py --fn`: the function scored under 44 options and pragmas. A
   setting that makes it match is a hint about the source (CSE off: the original
   computed a value twice), never a licence to add the pragma.
