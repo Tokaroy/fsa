@@ -162,8 +162,8 @@ void cls_804A0440::update() {
         field_0x248 &= 0xF;
         if (field_0x248 == 0) {
             JGeometry::TVec3f pos(mPos);
-            pos.x += -(64.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f) - 32.0f);
-            pos.y += -(64.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f) - 32.0f);
+            pos.x += -(64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 32.0f);
+            pos.y += -(64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 32.0f);
             spawnEmitter_8013CC50(field_0x4, &pos, 0x1FF, 1, 4, NULL, NULL, true, 1.0f);
         }
         if (field_0x188 == 1) {
@@ -283,7 +283,7 @@ void cls_804A0440::update() {
             if (field_0x258 > 3) {
                 field_0x258 = 4;
                 field_0x234 = 10;
-                field_0x254 = (s32)(4.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f));
+                field_0x254 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 field_0x254 &= 3;
                 field_0x274 = 0.0f;
                 field_0x294[0] = field_0x2b8[field_0x254].x;
@@ -303,11 +303,11 @@ void cls_804A0440::update() {
                 field_0x230 = 4;
             } else {
                 field_0x24c++;
-                if (field_0x24c > 3 && (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f) < 0.3f) {
+                if (field_0x24c > 3 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.3f) {
                     field_0x274 = 0.0f;
                     field_0x248 = 0;
                     field_0x24c = 0;
-                    field_0x254 += (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 1;
+                    field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
                     field_0x294[0] = field_0x2b8[field_0x254].x;
                     field_0x294[1] = field_0x2b8[field_0x254].y;
@@ -326,7 +326,7 @@ void cls_804A0440::update() {
                 } else {
                     field_0x284 = 0.4f;
                     field_0x274 = 0.0f;
-                    field_0x254 += (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 1;
+                    field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
                     field_0x294[0] = field_0x2b8[field_0x254].x;
                     field_0x294[1] = field_0x2b8[field_0x254].y;
@@ -392,7 +392,7 @@ void cls_804A0440::update() {
                     startSound_801F0E34(0x40022, 0);
                     field_0x284 = 0.4f;
                     field_0x274 = 0.0f;
-                    field_0x254 += (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 1;
+                    field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
                     field_0x254 &= 3;
                     field_0x294[0] = field_0x2b8[field_0x254].x;
                     field_0x294[1] = field_0x2b8[field_0x254].y;
@@ -442,7 +442,7 @@ void cls_804A0440::update() {
         if (field_0x23c == 0) {
             field_0x258 = 4;
             field_0x234 = 10;
-            field_0x254 += (s32)(2.99f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f)) + 1;
+            field_0x254 += (s32)(2.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             field_0x254 &= 3;
             field_0x274 = 0.0f;
             field_0x278 = 0.05f;
@@ -532,7 +532,7 @@ void cls_804A0440::update() {
                 mPos.z = 0.0f;
                 field_0x3c.z = 3.0f;
                 startSound_801F0E34(0x50086, 0);
-                if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f < 0.5f) {
+                if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                     field_0x294[3] = 0.5f;
                 } else {
                     field_0x294[3] = -0.5f;
