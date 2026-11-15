@@ -272,7 +272,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
         switch (actor->mActorId) {
         case ACTOR_FIRE: {
             s32 kind = (actor->field_0x90 >> 6) & 0xF;
-            if (kind <= 1 || kind == 5 || kind == 6) {
+            if (kind == 0 || kind == 1 || kind == 5 || kind == 6) {
                 return 0;
             }
             // FIXME(shotgun): the asm then tests the word at +0x230 == 2 here as well, but
