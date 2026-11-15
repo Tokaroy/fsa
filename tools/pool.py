@@ -268,6 +268,9 @@ def survey(a):
 
 
 def main():
+    if "--all" not in sys.argv:
+        import grind_broker
+        grind_broker.maybe_delegate("pool", sys.argv[1:])
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("unit", nargs="?")
     ap.add_argument("--all", action="store_true", help="survey every game unit (objects of the last ninja build)")

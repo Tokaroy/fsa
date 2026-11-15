@@ -48,6 +48,7 @@ python3 tools/permute.py --shared --units <unit>         # a statement written o
 python3 tools/flagsweep.py <unit> --fn <function>        # which compiler setting brings it closer, and why
 python3 tools/scratch.py <unit> [--sym] [--src FILE] [--fn NAME]
 python3 tools/clones.py [--fn <unit> <function>]     # shared blocks / inlined helper copies
+python3 tools/pool.py <unit> [--fix]                 # the literal pool: why loads read `lbl_` vs `@N` (reloc-name)
 build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is the same in both
 ```
 - `diag.py` first (≤ 60 lines): class and score; swapped registers and stack
@@ -104,6 +105,21 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
 - `scratch.py`: one scratch build and objdiff verdict (with `--src`, of another
   text in the unit's place; `--flag`/`--drop` change the command line). The
   library behind diag and permute.
+- `pool.py` for the class `reloc-name` (instructions right, a literal load
+  reads `lbl_8053C2C0` in the original and `@845` in ours): the unit's float
+  pool is in another order, or has other values. MWCC pools a literal when it
+  first meets it while generating a function, so the pool lists literals in the
+  order the functions were generated. `pool.py <unit>` prints both pools with
+  the function that first loads each literal and says which case it is:
+  *other values* (one function computes with another constant, and every
+  function after it waits: fix that function), *order only* with *early runs*
+  (literals created before the function that uses them: that code was a plain
+  function its callers inlined and the linker dropped), or functions out of
+  descending address order (`order_check.py`). `pool.py <unit> --fix` searches
+  the early runs' code and writes it as plain functions where the pool wants
+  them (act_cannon: 7 functions, 1 -> 6 of 8 matching; tu_801213EC: 2
+  functions, +18). Its result is a `.hand.diff`: widen each helper to the
+  natural function, name it, keep the comment (bottom of act_cannon.cpp).
 - `clones.py`: blocks of the original that recur up to register names (inlined
   helpers' footprints); `--fn` splits a function into `inlined copy of X` / shared
   stretches with our lines and whether they match, plus what is unique to it. Use
