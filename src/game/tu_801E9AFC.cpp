@@ -150,10 +150,6 @@ static inline void loadTextures(cls_801E9AFC* self) {
     }
 }
 
-// FIXME: 99.24 %, regalloc-only; behaviour clean.
-// Regalloc only: the texture loop's index is r31 in the original
-// (r27 here) and the table, texture, palette and ratio pointers sit one
-// register lower.
 void cls_801E9AFC::fn_801EA384(bool flag) {
     if (flag) {
         loadTextures(this);
