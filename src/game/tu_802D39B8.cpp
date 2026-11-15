@@ -2108,10 +2108,10 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 }
                 s32 right = ((cell + 1) & 0xF) != 0 ? cell + 1 : cell + 0xF1;
                 s32 right2 = ((right + 1) & 0xF) != 0 ? right + 1 : right + 0xF1;
-                u16 upTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, up);
-                u16 downTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, down);
-                u16 leftTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, left);
-                u16 rightTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, right);
+                u32 upTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, up);
+                u32 downTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, down);
+                u32 leftTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, left);
+                u32 rightTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, right);
                 u16 down2Tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, down2);
                 u16 right2Tile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, right2);
                 if (tile == 0x300) {
