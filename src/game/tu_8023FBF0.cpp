@@ -2196,9 +2196,6 @@ static inline void spawnDroppedItem(Player_804A6F38* self) {
 // Drops the held item (fn_802416C4, with its level fn_802415CC) as an
 // ACTOR_LSTI at the player's position and clears it (fn_80241618(0, 1)), for
 // a player taking part.
-// FIXME: 99.70 %, regalloc-only; behaviour clean.
-// Registers only: player / level r29 / r28 in the original,
-// r28 / r29 here.
 void Player_804A6F38::fn_8024E500() {
     if (!isPlayerBitSet(gGameRoot_8053AAF8, field_0x4)) {
         return;
