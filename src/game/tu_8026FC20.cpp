@@ -32,6 +32,13 @@ static inline s16 hitAngle(const Player_804A6F38* player, const JGeometry::TVec2
 }
 
 // `box` made relative to the top-left corner of `layer`'s view box.
+// The actor with this serial, or NULL. An inline with a local of its own: in fn_80273518
+// the carried actor is coloured before toView's layer (r30 / r29, docs/REGALLOC.md rule 4).
+static inline ActorBase_804A5770* actorBySerial(s32 serial) {
+    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    return actor;
+}
+
 static inline void toView(JGeometry::TBox2f& box, s32 layer) {
     const JGeometry::TVec2f& origin = layerBox(layer)->i;
     JGeometry::TVec2f offset;
@@ -3263,7 +3270,7 @@ bool Player_804A6F38::fn_80273518(const JGeometry::TBox2f* box, s32 layer, JGeom
                 return true;
             }
         } else {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = actorBySerial(field_0xd68);
             if (actor != NULL) {
                 carried.set(actor->mBox);
                 toView(carried, field_0x3b4);
