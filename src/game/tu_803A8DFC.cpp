@@ -66,7 +66,7 @@ static s32 lbl_804AF948[14] = {6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 76
 extern const char* lbl_804AF980[4];
 extern const char* lbl_804AF990[4];
 
-// FIXME: 99.85 %, operands + reloc-name; behaviour drift.
+// FIXME: 99.87 %, operands; behaviour drift.
 // Operands + reloc-name only: .rodata string offsets (one addi) and .sdata2
 // names differ (the unit's other .rodata objects, function-local tables of unwritten
 // functions, come first in the original).
@@ -221,9 +221,6 @@ ResultScreen_804AF9A0::~ResultScreen_804AF9A0() {
     lbl_8053ADA0 = NULL;
 }
 
-// FIXME: 99.89 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803B6768() {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
@@ -712,9 +709,6 @@ void ResultScreen_804AF9A0::fn_803B3358(s32 index) {
     }
 }
 
-// FIXME: 99.86 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803B31AC() {
     s32 stage = lbl_80529DEC.field_0x118;
     if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
@@ -795,7 +789,7 @@ inline void ResultScreen_804AF9A0::spawnEffect(u16 id, f32 scale) {
     }
 }
 
-// FIXME: 99.85 %, scheduling + reloc-name; behaviour clean.
+// FIXME: 99.98 %, scheduling; behaviour clean.
 void ResultScreen_804AF9A0::fn_803B236C() {
     if (field_0x458 <= 0) {
         s32 list[4];
@@ -860,7 +854,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
@@ -945,7 +939,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     }
 }
 
-// FIXME(shotgun): 96.16 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.73 %, missing/extra; behaviour near.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B14F8() {
     s32 done = 0;
@@ -1005,7 +999,7 @@ void ResultScreen_804AF9A0::fn_803B14F8() {
     }
 }
 
-// FIXME(shotgun): 99.42 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.82 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B0FD4() {
     field_0x440++;
@@ -1066,7 +1060,7 @@ void ResultScreen_804AF9A0::fn_803B0FD4() {
     }
 }
 
-// FIXME(shotgun): 96.13 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.72 %, missing/extra; behaviour near.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B0978() {
     s32 done = 0;
@@ -1125,7 +1119,7 @@ void ResultScreen_804AF9A0::fn_803B0978() {
     }
 }
 
-// FIXME(shotgun): 98.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.90 %, different; behaviour near.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B03E8() {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x260 - 0x4C) / 2];
@@ -1166,9 +1160,6 @@ void ResultScreen_804AF9A0::fn_803B03E8() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803B0158() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -1328,7 +1319,6 @@ void ResultScreen_804AF9A0::fn_803AFCF0() {
         gAudioMgr_8053AF80->fn_80458880(0xE, -1);
     }
 }
-// FIXME: 99.87 %, reloc-name; behaviour clean.
 void ResultScreen_804AF9A0::fn_803AFA78() {
     BOOL done = FALSE;
     if (field_0x4c8 != 0xFF && animateWinners()) {
@@ -1340,7 +1330,7 @@ void ResultScreen_804AF9A0::fn_803AFA78() {
     }
 }
 
-// FIXME: 99.64 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.78 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AF79C() {
     field_0x440--;
@@ -1529,7 +1519,6 @@ void ResultScreen_804AF9A0::fn_803AF1B0() {
         gAudioMgr_8053AF80->fn_80458880(0xE, -1);
     }
 }
-// FIXME: 99.88 %, reloc-name; behaviour clean.
 void ResultScreen_804AF9A0::fn_803AEF08() {
     BOOL done = FALSE;
     if (field_0x4c8 != 0xFF) {
@@ -1550,9 +1539,6 @@ void ResultScreen_804AF9A0::fn_803AEF08() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803AEC78() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -1712,9 +1698,6 @@ void ResultScreen_804AF9A0::fn_803AE810() {
     }
 }
 
-// FIXME: 99.87 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals are not yet
-// in the original order (fn_803AA8F8's ids and lbl_805433B8 are missing in front).
 void ResultScreen_804AF9A0::fn_803AE598() {
     BOOL done = FALSE;
     if (field_0x4c8 != 0xFF && animateWinners()) {
@@ -1726,9 +1709,6 @@ void ResultScreen_804AF9A0::fn_803AE598() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803AE308() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -1871,9 +1851,6 @@ void ResultScreen_804AF9A0::fn_803ADE9C() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803ADC0C() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -1919,8 +1896,6 @@ void ResultScreen_804AF9A0::fn_803ADC0C() {
     }
 }
 
-// FIXME: 99.86 %, reloc-name; behaviour clean.
-// FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AD894() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -2060,9 +2035,6 @@ void ResultScreen_804AF9A0::fn_803AD4B0() {
     }
 }
 
-// FIXME: 99.82 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803AD220() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -2108,8 +2080,6 @@ void ResultScreen_804AF9A0::fn_803AD220() {
     }
 }
 
-// FIXME: 99.97 %, reloc-name; behaviour clean.
-// FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803ACDA4() {
     s32 done = 0;
     s32 rank = 0;
@@ -2191,8 +2161,6 @@ void ResultScreen_804AF9A0::fn_803ACDA4() {
     }
 }
 
-// FIXME: 99.88 %, reloc-name; behaviour clean.
-// FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AC998() {
     field_0x440--;
     if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -2277,8 +2245,6 @@ void ResultScreen_804AF9A0::fn_803AC998() {
     }
 }
 
-// FIXME: 99.91 %, reloc-name; behaviour clean.
-// FIXME(shotgun): ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803AC6FC() {
     s32 done = 0;
     s32 best = -999999;
@@ -2383,9 +2349,6 @@ inline BOOL ResultScreen_804AF9A0::animateWinners() {
     return false;
 }
 
-// FIXME: 99.94 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals are not yet
-// in the original order (fn_803AA8F8's ids and lbl_805433B8 are missing in front).
 void ResultScreen_804AF9A0::fn_803AC154() {
     BOOL done = FALSE;
     if (field_0x4c8 != 0xFF && animateWinners()) {
@@ -2414,13 +2377,6 @@ void ResultScreen_804AF9A0::fn_803AC154() {
     }
 }
 
-// FIXME: 99.89 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals are not yet
-// in the original order (fn_803AA8F8's ids and lbl_805433B8 are missing in front).
-// State 32: slide the 'Pttlbk05' title pane out and the winner pane in
-// ('Pwinbk05' with the winner's icon in 'Pwnr01' / 'Pwnr02', or 'Pdrwbk05'
-// on a draw); at the end count the round's win in lbl_80529DEC (the winner's
-// field_0x130 and bit, and the per-stage record field_0x1fc), then state 33.
 void ResultScreen_804AF9A0::fn_803ABCEC() {
     field_0x440--;
     s32 timer = field_0x440;
@@ -2524,7 +2480,7 @@ void ResultScreen_804AF9A0::fn_803ABCEC() {
     }
 }
 
-// FIXME: 99.52 %, operands + reloc-name; behaviour clean.
+// FIXME: 99.63 %, operands; behaviour clean.
 // Registers and stack slots only (the ranks / ranked / totals pointers,
 // f29-f31, the corner-colour copy at 0x40 vs 0x1C, the emitter positions) plus .sdata2
 // names.
@@ -2657,7 +2613,7 @@ void ResultScreen_804AF9A0::fn_803AB494() {
 }
 
 // State 21: the original sets `done` to 0 and copies it into i (li; mr); also .sdata2 / jump table / ids names.
-// FIXME: 98.45 %, different + reloc-name; behaviour drift.
+// FIXME: 98.87 %, different; behaviour drift.
 void ResultScreen_804AF9A0::fn_803AA8F8() {
     switch (field_0x4c1) {
     case 0:
@@ -2915,7 +2871,7 @@ void ResultScreen_804AF9A0::fn_803AA8F8() {
 const char* lbl_804AF980[4] = {"P1.bti", "P2.bti", "P3.bti", "P4.bti"};
 const char* lbl_804AF990[4] = {"kk_1st_01.bti", "kk_2nd_01.bti", "kk_3rd_01.bti", "kk_4th_01.bti"};
 
-// FIXME: 98.67 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.88 %, missing/extra; behaviour near.
 // Registers (the second player loop), and each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
@@ -3029,7 +2985,7 @@ void ResultScreen_804AF9A0::fn_803AA1F8() {
 }
 
 
-// FIXME: 98.71 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.92 %, missing/extra; behaviour near.
 // Registers (the second player loop), and each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
@@ -3146,7 +3102,7 @@ void ResultScreen_804AF9A0::fn_803A9AB8() {
     }
 }
 
-// FIXME: 98.62 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.65 %, missing/extra; behaviour drift.
 // The original unrolls the field_0x1b8 loop of mode 6 in two halves (the
 // second through a base register this + 8, one addi more); ours unrolls it flat. Also
 // .sdata2 / jump table names (literal pool not yet in the original order).
@@ -3217,9 +3173,6 @@ void ResultScreen_804AF9A0::fn_803A9830() {
     field_0x4[field_0x450]->animation();
 }
 
-// FIXME: 99.86 %, reloc-name; behaviour clean.
-// FIXME: reloc-name only (instructions identical): the .sdata2 literals / jump table are
-// not yet in the original order (most of the unit is unwritten).
 void ResultScreen_804AF9A0::fn_803A97A0() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x4c0 >= 2) {
@@ -3230,7 +3183,7 @@ void ResultScreen_804AF9A0::fn_803A97A0() {
     field_0x1c->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME: 99.66 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.91 %, regalloc-only + reloc-name; behaviour clean.
 // Regalloc (the sprite frame of the second loop is in r21, the original
 // r23) and .sdata2 names (literal pool not yet in the original order).
 void ResultScreen_804AF9A0::fn_803A8F5C() {
