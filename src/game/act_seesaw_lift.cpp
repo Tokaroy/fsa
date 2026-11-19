@@ -29,6 +29,26 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
 
+// At full tilt: false when any of a player's eight points lies inside the box.
+inline bool SeesawLift_804AD348::isClearOfPlayers() {
+    if (field_0x230 != 0x3E00 && field_0x230 != -0x3E00) {
+        return true;
+    }
+    JGeometry::TBox2f box = mBox;
+    for (s32 p = 0; p < 4; p++) {
+        for (s32 i = 0; i < 8; i++) {
+            JGeometry::TVec3f rel;
+            fn_8022E088(p, i, &rel);
+            rel.sub(mPos);
+            rel.z = 0.0f;
+            if (contains(box, rel)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 // Shared per-player helpers inlined into all four state functions (fn_8035A210,
 // fn_803597EC, fn_80358F98, fn_803584C0).
 inline void SeesawLift_804AD348::checkContactBox(s32 p) {
@@ -607,9 +627,10 @@ void SeesawLift_804AD348::fn_803584C0() {
             } else if (field_0x230 == 0) {
                 if (!field_0x25c[p]->field_0x3c.isZero() &&
                     field_0x25c[p]->mPos.z + field_0x25c[p]->field_0x3c.z < 1.0f) {
+                    JGeometry::TBox2f box = mBox;
                     JGeometry::TVec3f diff = field_0x25c[p]->mPos;
                     diff.sub(mPos);
-                    if (contains(mBox, diff)) {
+                    if (contains(box, diff)) {
                         field_0x25c[p]->vfunc_0x48();
                         field_0x25c[p] = NULL;
                         if (diff.y >= 0.0f) {
@@ -626,14 +647,11 @@ void SeesawLift_804AD348::fn_803584C0() {
     if (field_0x250 == -1) {
         for (s32 i = 0; i < 4; i++) {
             if (field_0x246[i] != 0) {
-                if (field_0x246[0] == 0) {
-                    field_0x250 = 6;
-                } else if (field_0x246[1] == 0) {
-                    field_0x250 = 6;
-                } else if (field_0x246[2] == 0) {
-                    field_0x250 = 6;
-                } else if (field_0x246[3] == 0) {
-                    field_0x250 = 6;
+                for (s32 j = 0; j < 4; j++) {
+                    if (field_0x246[j] == 0) {
+                        field_0x250 = 6;
+                        break;
+                    }
                 }
             }
         }
@@ -655,28 +673,7 @@ void SeesawLift_804AD348::fn_803584C0() {
     }
     fn_8035AA54();
     s16 oldAngle = field_0x230;
-    bool free = true;
-    if (oldAngle == 0x3E00 || oldAngle == -0x3E00) {
-        f32 minX = mBox.i.x;
-        f32 minY = mBox.i.y;
-        f32 maxX = mBox.f.x;
-        f32 maxY = mBox.f.y;
-        for (s32 p = 0; p < 4 && free; p++) {
-            for (s32 i = 0; i < 8; i++) {
-                JGeometry::TVec3f rel;
-                fn_8022E088(p, i, &rel);
-                rel.x -= mPos.x;
-                rel.y -= mPos.y;
-                rel.z -= mPos.z;
-                rel.z = 0.0f;
-                if (rel.x >= minX && rel.y >= minY && rel.x < maxX && rel.y < maxY) {
-                    free = false;
-                    break;
-                }
-            }
-        }
-    }
-    if (!free) {
+    if (!isClearOfPlayers()) {
         field_0x238 = 0;
     }
     field_0x230 += field_0x238;
@@ -706,18 +703,16 @@ void SeesawLift_804AD348::fn_803584C0() {
     if (field_0x230 != 0) {
         field_0x250 = 0;
     }
-    if (field_0x230 == 0) {
-        if ((field_0x246[0] | field_0x246[1] | field_0x246[2] | field_0x246[3]) == 0 && field_0x26c == 0) {
-            field_0x23c = 0;
-        } else if (field_0x26c != 0) {
+    if (field_0x230 == 0 && ((field_0x246[0] | field_0x246[1] | field_0x246[2] | field_0x246[3]) != 0 || field_0x26c != 0)) {
+        if (field_0x26c != 0) {
             field_0x23c += field_0x270;
             if (field_0x23c >= 0xC80 || field_0x23c < -0xC80) {
-                field_0x23e = -field_0x23e;
+                field_0x23e *= -1;
             }
         } else {
             field_0x23c += field_0x23e;
             if (field_0x23c >= 0x640 || field_0x23c < -0x640) {
-                field_0x23e = -field_0x23e;
+                field_0x23e *= -1;
             }
         }
     } else {

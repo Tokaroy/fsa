@@ -28,6 +28,7 @@ public:
     void checkContactBox(s32 player);
     void pushPlayer(s32 player);
     void spawnSandEmitters();
+    bool isClearOfPlayers();
     bool isPlayerInside(s32 player) const;
     void fillTiles(s32 state);
 
