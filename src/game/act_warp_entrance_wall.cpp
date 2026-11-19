@@ -46,25 +46,17 @@ static inline bool overlapsHouseOrLog(s32 i, const JGeometry::TBox2f& box) {
     return false;
 }
 
-// FIXME: 99.2 %. In the shape 0 case the target loads the box's first float
-// into f0 and the second into f1 (ours f1/f0); the shape 1 case matches.
 void WarpEntranceWall_804AE948::init() {
     u32 param = field_0x90;
     u8 shape = param & 3;
     field_0x230 = (param >> 22) & 0x1F;
     switch (field_0x230) {
     case 0: {
-        mBox.i.x = lbl_804752C0[shape][0];
-        mBox.i.y = lbl_804752C0[shape][1];
-        mBox.f.x = lbl_804752C0[shape][2];
-        mBox.f.y = lbl_804752C0[shape][3];
+        mBox.set(lbl_804752C0[shape][0], lbl_804752C0[shape][1], lbl_804752C0[shape][2], lbl_804752C0[shape][3]);
         break;
     }
     case 1: {
-        mBox.i.x = lbl_80475300[shape][0];
-        mBox.i.y = lbl_80475300[shape][1];
-        mBox.f.x = lbl_80475300[shape][2];
-        mBox.f.y = lbl_80475300[shape][3];
+        mBox.set(lbl_80475300[shape][0], lbl_80475300[shape][1], lbl_80475300[shape][2], lbl_80475300[shape][3]);
         break;
     }
     }
