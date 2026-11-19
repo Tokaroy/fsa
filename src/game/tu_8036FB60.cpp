@@ -559,14 +559,18 @@ void cls_804AE4B0::fn_80370C18() {
 }
 
 // FIXME(shotgun): 91.74 %, missing/extra + reloc-name; behaviour drift.
+// Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original;
+// (field_0x83 & 3) == 2 is an unsigned compare there (field type not known).
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
         if (field_0x240 == 1) {
-            JGeometry::TVec3f pos(0.5f * (s32)JUTVideo::sManager->getFbWidth(),
-                                  0.5f * (s32)JUTVideo::sManager->getEfbHeight(), 0.0f);
+            JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
+                                  (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
             fn_8022FE80(0, field_0x4, mSerial, true, false);
-            fn_8038BD08(0, lbl_80474F10[field_0x394], field_0x4, pos, 0x22);
+            if (fn_8038BD08(0, lbl_80474F10[field_0x394], field_0x4, pos, 0x22)) {
+                return;
+            }
         }
     } else {
         fn_8022FE80(0, field_0x4, mSerial, true, false);
