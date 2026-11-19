@@ -9,6 +9,8 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
+#include "game/GameMath.h"
+#include "game/ViewLayer.h"
 #include "game/act/act_cucco.h"
 #include "game/act/act_magic_circle.h"
 #include "game/act/act_warp.h"
@@ -308,7 +310,7 @@ void Cucco_804AB8C0::fn_803324A8() {
             field_0x258 = 0;
             mPos.z = 0.0f;
             field_0x3c.z = 0.0f;
-            setVec(field_0x2dc, mPos);
+            field_0x2dc = mPos;
             field_0x294 = field_0x4;
             field_0x230 = 1;
         } else {
@@ -321,8 +323,8 @@ void Cucco_804AB8C0::fn_803324A8() {
             f32 dx = mPos.x - field_0x2dc.x;
             f32 dy = mPos.y - field_0x2dc.y;
             field_0x294 = field_0x4;
-            setVec(field_0x2dc, mPos);
-            f32 distSq = dy * dy + dx * dx;
+            field_0x2dc = mPos;
+            f32 distSq = square(dx) + square(dy);
             if (field_0x294 != field_0x4 || !(distSq < 5.0f)) {
                 field_0x280 = 0;
                 return;
@@ -349,13 +351,12 @@ void Cucco_804AB8C0::fn_803324A8() {
                 if (field_0x2a3 == 1) {
                     speed = 4.0f;
                 }
-                s32 layer = field_0x4;
-                if (getGameView_802D6A9C()->field_0x131df[layer] && field_0x2b4 != 0.0f) {
-                    field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
-                } else {
+                if (!viewLayerFlag(field_0x4) || field_0x2b4 == 0.0f) {
                     outAngle += (s32)(5461.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f));
                     field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
+                } else {
+                    field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                 }
             }
             field_0x280 = 0;
