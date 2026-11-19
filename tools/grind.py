@@ -88,19 +88,24 @@ BRANCH = "grind2"
 HALT = LOGS / "HALT"  # workers finish their session and exit (the watchdog sets it; or touch it by hand)
 TIERS = {"haiku": ("claude-haiku-5-5", "Claude Haiku 5.5"),
          "sonnet": ("claude-sonnet-5-5", "Claude Sonnet 5.5"),
-         "opus": ("claude-opus-5-5", "Claude Opus 5.5")}
+         "opus": ("claude-opus-5-5", "Claude Opus 5.5"),
+         "fable-low": ("claude-fable-5-2", "Claude Fable 5.2")}  # always at low effort (owner's test, 2026-11-19)
+EFFORT = {"fable-low": "low"}
 ORDER = ["haiku", "sonnet", "opus"]
 # Gemini through Antigravity's `agy` CLI (free quota): the same three rungs, owner's equivalences
 # (2026-11-14): Hydrogen ~ Sonnet, Carbon ~ Opus; Hydrogen at low effort takes the bottom rung.
 GEMINI = {"hydrogen-low": ("gemini-4-hydrogen-low", "Gemini 4 Hydrogen (via Antigravity)", "haiku"),
           "hydrogen": ("gemini-4-hydrogen-medium", "Gemini 4 Hydrogen (via Antigravity)", "sonnet"),
-          "carbon": ("gemini-4-carbon-medium", "Gemini 4 Carbon (via Antigravity)", "opus")}
-TIER_NAMES = ORDER + list(GEMINI)
+          "carbon": ("gemini-4-carbon-medium", "Gemini 4 Carbon (via Antigravity)", "opus"),
+          # low-effort comparison with Fable 5.2 low (owner, 2026-11-19)
+          "carbon-low": ("gemini-4-carbon-low", "Gemini 4 Carbon (via Antigravity)", "sonnet"),
+          "neon-low": ("gemini-4-neon-low", "Gemini 4 Neon (via Antigravity)", "opus")}
+TIER_NAMES = ORDER + ["fable-low"] + list(GEMINI)
 
 
 def canon(tier):
     """The Claude rung a tier stands on (tier logic, escalation and review run on these)."""
-    return GEMINI[tier][2] if tier in GEMINI else tier
+    return GEMINI[tier][2] if tier in GEMINI else "opus" if tier == "fable-low" else tier
 
 
 def trailer(tier):
@@ -986,6 +991,7 @@ def run_session(wt, tier, system, packet, turns, timeout, tag, tools="Bash,Read,
            "--tools", tools, "--system-prompt", system, "--settings", str(settings),
            "--permission-mode", "acceptEdits", "--allowedTools", tools,
            "--disallowedTools", "Bash(git *)", "--max-turns", str(turns)]
+    effort = EFFORT.get(tier, effort)
     if effort:
         cmd += ["--effort", effort]
     env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
@@ -1146,6 +1152,9 @@ def revert(wt):
 
 
 def reset_to_integration(wt, ref=BRANCH):
+    # No session runs here now: a broker flag left by a killed session would make every compile wait for it.
+    for f in (Path(wt) / "build/grind/broker").glob("*"):
+        f.unlink(missing_ok=True)
     sh(["git", "reset", "-q", "--hard", ref], wt, check=True)
     sh(["git", "clean", "-fdq", "--", "src", "include", "libs", "config"], wt)
     r = sh("python3 configure.py >/dev/null && timeout 3000 ninja >/dev/null 2>&1", wt)
@@ -1158,6 +1167,9 @@ def reset_to_integration(wt, ref=BRANCH):
 
 def integrate(wt, branch, unit):
     """Bring the worker's kept commits into `grind2` and re-verify the whole project there."""
+    on = sh(["git", "branch", "--show-current"], wt).stdout.strip()
+    if on != branch:  # its commits are on `on`: merging `branch` would merge nothing and still say "merged"
+        return f"not merged: {Path(wt).name} is on branch {on or '(detached)'}, not {branch}"
     with open(LOGS / "merge.lock", "a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         signal.signal(signal.SIGTERM, signal.SIG_IGN)  # never leave grind2 half-checked
@@ -1195,7 +1207,8 @@ def integrate(wt, branch, unit):
 # The reviewer is never weaker than the author and never below sonnet. (Pilot: an opus review of two sonnet
 # changes cost more than writing them; sonnet and haiku reviewers both caught a planted trick.)
 REVIEW_TIER = {"haiku": "sonnet", "sonnet": "sonnet", "opus": "opus",
-               "hydrogen-low": "carbon", "hydrogen": "carbon", "carbon": "carbon"}  # Gemini work: a Carbon reviewer
+               "hydrogen-low": "carbon", "hydrogen": "carbon", "carbon": "carbon",
+               "fable-low": "opus", "carbon-low": "carbon", "neon-low": "carbon"}  # Gemini work: a Carbon reviewer
 REVIEW_SYSTEM = """You are the adversarial reviewer of a decompilation project: The Legend of Zelda: Four Swords Adventures (GameCube), C++ that Metrowerks GC/2.6 must compile back to the original code. The repository in your working directory is a private copy with the changes applied.
 
 The authors are other models. Scripts reward them for two numbers: objdiff's match % and a behaviour fingerprint that counts a function's calls, constants, compares, field accesses, immediates and operations against the original. The scripts already proved that every change builds, that no function got worse and that some regex style rules hold. They cannot see intent. Assume each author may have gamed the numbers. You never saw the author's reasoning: judge only the diff against the original assembly.
@@ -1434,6 +1447,7 @@ def cmd_worker(args):
     lanes = args.lanes.split(",")
     if not wt.exists():
         sys.exit(f"{wt} missing: run `python3 tools/grind.py setup --workers {args.n}`")
+    sh(["git", "checkout", "-q", "-B", branch], wt, check=True)  # a worktree left on another branch (2026-11-19)
     done, skip = 0, set()
     (LOGS / "pids").mkdir(parents=True, exist_ok=True)
     if not args.ignore_stop:  # the watchdog's hard stop goes by these
@@ -1530,6 +1544,7 @@ def cmd_rejudge(args):
     wt, branch = WT / owner, f"{BRANCH}-w{args.n}"
     if not claim(unit, owner, wt):
         sys.exit(f"{unit} is claimed")
+    sh(["git", "checkout", "-q", "-B", branch], wt, check=True)  # a worktree left on another branch (2026-11-19)
     try:
         reset_to_integration(wt)
         base_head = head(wt)
