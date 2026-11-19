@@ -140,14 +140,16 @@ void cls_804A2FB0::fn_801A9CF4() {
     mLife = 10000;
     fn_801F3D94(0);
     if (field_0x250 > 0 && field_0x26c == 0) {
-        if (field_0x268 >= 0) {
-            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x268));
+        s32 parentSerial = field_0x268;
+        if (parentSerial >= 0) {
+            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
             if (parent != 0 && parent->field_0x250 > 0) {
                 mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
                 s32 hit = fn_801F285C(0, 0, true, -1);
-                s32 idx = field_0x264 << 1;
+                s32 type = field_0x264;
+                s32 idx = type << 1;
                 if (hit >= 0) {
-                    if (hit == field_0x264) {
+                    if (hit == type) {
                         fn_801F37AC(0, &mPos, 3, 0, -1);
                         mBox.set(1.0f, -1.0f, 1.0f, -1.0f);
                         startSound_801F0E34(0x5002D, 0);
@@ -177,8 +179,9 @@ void cls_804A2FB0::fn_801A9CF4() {
         field_0x230 = 6;
         // fallthrough
     case 6:
-        if (field_0x268 >= 0) {
-            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x268));
+        s32 parentSerial = field_0x268;
+        if (parentSerial >= 0) {
+            cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
             if (parent != 0 && parent->field_0x250 <= 0) {
                 break;
             }
@@ -195,8 +198,9 @@ void cls_804A2FB0::fn_801A9CF4() {
         break;
     case 8:
         if (field_0x250 == 0) {
-            if (field_0x268 >= 0) {
-                cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x268));
+            s32 parentSerial = field_0x268;
+            if (parentSerial >= 0) {
+                cls_804A2FB0* parent = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(parentSerial));
                 if (parent != 0) {
                     parent->field_0x250++;
                 }
@@ -222,14 +226,12 @@ void cls_804A2FB0::fn_801A9CF4() {
                 if (serial >= 0) {
                     ActorBase_804A5770* oktm = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (oktm != 0) {
-                        f32 ang = 32768.0f + field_0x2b4;
-                        JGeometry::TVec3f vel(
-                            3.0f * JMASSin((s32)ang),
-                            3.0f * JMASCos((s32)ang),
-                            0.0f
-                        );
+                        JGeometry::TVec3f vel;
+                        vel.x = 3.0f * JMASSin(32768.0f + field_0x2b4);
+                        vel.y = 3.0f * JMASCos((u16)(32768.0f + field_0x2b4));
+                        vel.z = 0.0f;
                         oktm->field_0x3c = vel;
-                        oktm->field_0x98 = fn_801F681C((s32)field_0x2b4);
+                        oktm->field_0x98 = fn_801F681C(field_0x2b4);
                     }
                 }
             }
