@@ -41,7 +41,7 @@ static const u64 lbl_80490410[4][14] = {
 };
 
 // The digit textures (kk_..._00.bti ...).
-static const char* lbl_804B1BF8[10] = {
+const char* lbl_804B1BF8[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
     "kk_rupyNum_02.bti",
