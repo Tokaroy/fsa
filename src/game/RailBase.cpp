@@ -9,11 +9,11 @@
 bool cls_800FE3EC::fn_800FE3EC(u8 group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
     clear();
+    s32 count = 0;
     for (u32 i = 0; i < 0x31; i++) {
         field_0x4[i] = NULL;
     }
     ActorBase_804A5770* found[0x31];
-    s32 count = 0;
     bool ok = getActorManager_801F856C()->fn_801F71E8(field_0x0, found, &count, 0x31);
     field_0x2 = count;
     if (!ok || field_0x2 == 0) {
