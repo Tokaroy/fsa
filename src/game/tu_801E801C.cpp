@@ -293,7 +293,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 69.58 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
@@ -316,7 +316,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 79.39 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.13 %, missing/extra + reloc-name; behaviour drift.
 // cls_804A5568
 void cls_804A5568::fn_801E8080() {
     f32 len = 0.0f;
