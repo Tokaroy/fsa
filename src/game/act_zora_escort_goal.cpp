@@ -235,8 +235,6 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
     return false;
 }
 
-// FIXME: 97.94 %, missing/extra; behaviour drift.
-// ours has 1 more instruction (a clrlwi of field_0x238 before fn_800FE3EC's u8 argument, cases 5 and 11; the original passes the lwz'd value as is), and in case 11 the original schedules the clrlwi / psq_st pair before the call differently.
 void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     field_0x230 = arg;
     switch (arg) {
@@ -291,10 +289,8 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         mRail.fn_800FE3EC(field_0x238, mPos, field_0x4);
         JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
         field_0x260 = 1.0f;
-        u8 count = mRail.fn_800FD894(-1, NULL, 0);
-        JGeometry::TVec3f temp;
-        fn_800FDC70(&temp, &mRail, mPos, 1, count - 1);
-        step = temp;
+        u8 count = mRail.fn_800FD894(-1, NULL, 0) - 1;
+        step = mRail.fn_800FDC70(mPos, 1, count);
         field_0x3c.set(step);
         mPos += field_0x3c;
         field_0x264 = mPos.x;

@@ -192,23 +192,22 @@ void cls_800FE3EC::fn_800FDE38() {
 
 // FIXME(shotgun): 95.97 %, missing/extra; behaviour clean.
 // 0x800FDC70
-void fn_800FDC70(JGeometry::TVec3f* out, cls_800FE3EC* rail, JGeometry::TVec3f pos, s32 arg4, u8 index) {
+JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 index) {
     JGeometry::TVec3f target;
     if (index == 0xFF) {
-        target = rail->field_0x4[rail->field_0x3]->mPos;
+        target = field_0x4[field_0x3]->mPos;
     } else {
-        target = rail->field_0x4[index]->mPos;
+        target = field_0x4[index]->mPos;
     }
     JGeometry::TVec3f diff;
     diff.sub(target, pos);
     f32 len = diff.length();
     if (arg4 == 0) {
-        *out = diff;
-        return;
+        return diff;
     }
     diff.normalize();
     diff.scale(len / (f32)arg4);
-    *out = diff;
+    return diff;
 }
 
 // FIXME(shotgun): 80.59 %, missing/extra; behaviour clean.
