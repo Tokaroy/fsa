@@ -792,7 +792,7 @@ void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
 // Starts the focus transition to the new box: arms the camera, clears the damping, builds the
 // focus state from the table entry for field_0x174 (fn_8030CD18), then the same bookkeeping as
 // fn_8030C928.
-// FIXME(shotgun): 93.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 93.47 %, missing/extra; behaviour near.
 // (box copy order in inlined fn_8030C928)
 void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     field_0x1e8 = 1;
@@ -804,7 +804,7 @@ void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     fn_8030C928(box);
 }
 
-// FIXME(shotgun): 93.38 %, missing/extra; behaviour near.
+// FIXME(shotgun): 93.70 %, missing/extra; behaviour near.
 // (box copy order)
 void Camera_804AA9E4::fn_8030C928(const JGeometry::TBox2f* box) {
     field_0x190.set(box->i.x, box->i.y, box->f.x, box->f.y);
