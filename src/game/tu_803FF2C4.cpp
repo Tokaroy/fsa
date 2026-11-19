@@ -18,7 +18,6 @@ void fn_80139994(int port, void* arg);
 // game/tu_803006E8.cpp: starts the GBA client threads.
 void fn_803007D0();
 
-// FIXME(shotgun): 99.9 %, reloc-name (the archive path string)
 cls_804B0F50::cls_804B0F50() {
     lbl_8053AAF0 = this;
     if (lbl_80529DEC.mSaveRegion.f.field_0xd == 1) {
@@ -71,7 +70,6 @@ cls_804B0F50::cls_804B0F50() {
     JUTGamePad::setResetCallback(fn_80139994, NULL);
 }
 
-// FIXME(shotgun): 100 %
 cls_804B0F50::~cls_804B0F50() {
     lbl_80529DEC.field_0x18->unmount();
     delete field_0xc;
@@ -82,7 +80,7 @@ cls_804B0F50::~cls_804B0F50() {
     lbl_80529DEC.mSaveRegion.f.field_0xf = 0;
 }
 
-// FIXME(shotgun): 97.4 %, different + reloc-name
+// FIXME(shotgun): 97.60 %, different; behaviour near.
 void cls_804B0F50::fn_803FFAA8() {
     if (field_0x79 == 0) {
         cls_804B0FC0* cmd = field_0x44;
@@ -374,7 +372,6 @@ void cls_804B0F50::fn_803FFAA8() {
     }
 }
 
-// FIXME(shotgun): 98.8 %, missing/extra + reloc-name
 void cls_804B0F50::fn_803FF420() {
     if (field_0x79 <= 1) {
         return;
@@ -442,7 +439,6 @@ void cls_804B0F50::fn_803FF420() {
 }
 
 // Frees the loader's archives.
-// FIXME(shotgun): 100 %
 void cls_804B0F50::fn_803FF2C4() {
     if (field_0x18 != NULL) {
         delete field_0x18;
