@@ -1296,7 +1296,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
 
 // Enters demo state `arg` (0x26-0x3D) of the first scene set: animation, camera objects, emitters
 // and the talk prompts of the states that need them.
-// FIXME(shotgun): 96.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.49 %, reloc-name; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     switch (arg) {
     case 0x26:
