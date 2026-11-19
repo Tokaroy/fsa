@@ -1323,7 +1323,6 @@ void GameRoot_8049EF20::fn_80136364() {
 }
 
 // Whether the game mode (field_0x4c) is one of 0 - 6, 9 or 12.
-// FIXME: 85.88 %, missing/extra; behaviour drift.
 bool GameRoot_8049EF20::fn_80136320() {
     if (gGameRoot_8053AAF8 != NULL) {
         s32 mode = field_0x4c;
