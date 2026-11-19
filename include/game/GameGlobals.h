@@ -1317,6 +1317,8 @@ struct cls_801192AC {
     // entries (new 0x50) in [mBegin, mEnd) when the capacity is below 20.
     // GameRoot's fn_80138C9C calls it on fn_8011921C().
     void fn_801190E4();
+    // Inline: callers load the object first and the value after (bl fn_8011921C; li; stb 0x2).
+    void setField_0x2(u8 value) { field_0x2 = value; }
 
     cls_801192AC();
     // 0x801192AC (game/tu_80118384.cpp): empties the list, then frees it.

@@ -1303,7 +1303,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
         fn_801C0D70()->fn_801C11A4();
         break;
     case 0x27:
-        fn_8011921C()->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         field_0x274 = 130.0f;
         field_0x278 = 24.0f;
         break;
@@ -1355,7 +1355,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
     case 0x30:
         field_0x274 = 96.0f;
         getGameView_802D6A9C()->fn_802D8050(field_0x254, true, 0xFF);
-        fn_8011921C()->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         fn_8011921C()->fn_80118454();
         break;
     case 0x31:
@@ -1415,6 +1415,8 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
         getGameView_802D6A9C()->fn_802D8050(field_0x250, true, 0xFF);
         mPos.x = 64.0f + mSpawnPos.x;
         break;
+    case 0x00:
+    case 0x3E:
     default:
         break;
     }
