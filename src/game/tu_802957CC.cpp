@@ -1649,7 +1649,7 @@ void cls_804A7AE0::vfunc_0x24() {
     field_0x2bb = 1;
 }
 
-// Remaining: three `cmplwi 1` bool tests and minor fp/gpr register swaps.
+// Remaining: register swaps only (f2/f3 vs f4/f5 at the start, r27/r28 around testBox).
 // FIXME: 98.42 %, missing/extra; behaviour drift.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
@@ -1674,7 +1674,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.y += mBox.i.y;
         p.y += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL)) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1691,7 +1691,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.x += mBox.i.x;
         p.x += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL)) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1709,7 +1709,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 JGeometry::TVec3f q = *getPlayerPos_8023E724(i);
                 q.add(JGeometry::TVec3f(lbl_8046C298[dir][0], lbl_8046C298[dir][1], lbl_8046C298[dir][2]));
-                if (!gBgRewrite_8053AC98->fn_802A1490(&q) || testBox(field_0x4, &q, mSerial, NULL)) {
+                if (gBgRewrite_8053AC98->fn_802A1490(&q) != 1 || testBox(field_0x4, &q, mSerial, NULL)) {
                     ok = false;
                 }
             }
