@@ -41,7 +41,18 @@ static const u64 lbl_80490410[4][14] = {
 };
 
 // The digit textures (kk_..._00.bti ...).
-extern const char* lbl_804B1BF8[10];
+static const char* lbl_804B1BF8[10] = {
+    "kk_rupyNum_00.bti",
+    "kk_rupyNum_01.bti",
+    "kk_rupyNum_02.bti",
+    "kk_rupyNum_03.bti",
+    "kk_rupyNum_04.bti",
+    "kk_rupyNum_05.bti",
+    "kk_rupyNum_06.bti",
+    "kk_rupyNum_07.bti",
+    "kk_rupyNum_08.bti",
+    "kk_rupyNum_09.bti",
+};
 
 cls_804B1C20::cls_804B1C20() {
     lbl_8053AF08 = this;
