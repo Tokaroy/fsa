@@ -47,7 +47,8 @@ void cls_804A5B28::fn_80207A60() {
 // Registers a request in `slot` (once). The first request sets mTimer from the
 // player count; the request that completes the set (every other slot used)
 // picks 1-3 random players into mMask and calls vfunc_0xA8.
-// FIXME: 96.18%. The original stores mActive from the register holding count
+// FIXME: 96.39 %, missing/extra; behaviour clean.
+// The original stores mActive from the register holding count
 // (li r29, 1; stb r29), ours loads a second constant; and the registers differ
 // (original r28 this, r29 count, r30 remaining, r31 i, r27 &order; ours r27
 // this, r28 i, r29 remaining, r30 count, r31 &order), so the pointer copy for
@@ -119,7 +120,8 @@ void cls_804A5B28::fn_80207830(u16 slot, s32 player, s32 arg3, const JGeometry::
 // aims the actor found by the slot's serial at that player when the player is
 // on the actor's layer and vfunc_0x4C accepts the position. Reports the actor
 // (fn_801F3668) when every other slot was already done.
-// FIXME: 99.60%. Only the registers differ: the original keeps the slot
+// FIXME: 99.60 %, regalloc-only; behaviour clean.
+// Only the registers differ: the original keeps the slot
 // offset (mulli) and the layer in r28, the player in r27 (ours: offset r29,
 // player r28, layer r27); f-registers and the code are identical.
 void cls_804A5B28::fn_802075D8(u16 slot) {
