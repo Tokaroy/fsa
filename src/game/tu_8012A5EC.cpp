@@ -170,7 +170,8 @@ cls_8049E770::~cls_8049E770() {
 
 // FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
 void cls_8049E770::fn_8012C334() {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         if (fn_80230188(i)) {
             return;
         }
@@ -184,7 +185,7 @@ void cls_8049E770::fn_8012C334() {
         JGeometry::TVec3f(field_0x3f8 + 16.0f, field_0x3f4 + 384.0f + 48.0f, 0.0f),
         JGeometry::TVec3f(field_0x3f8 + 48.0f, field_0x3f4 + 384.0f + 48.0f, 0.0f),
     };
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x3b8[i] = lbl_804BD790[i];
         fn_8023EE28(i);
     }
@@ -192,7 +193,7 @@ void cls_8049E770::fn_8012C334() {
     field_0x3e8 = 24;
     field_0x3ec = 0;
     field_0x3f0 = 6;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         fn_80230498(i, &field_0x3b8[i], field_0x3e8 + field_0x3ec, 0xFF, -0x80, -0x80, true);
     }
     field_0x230++;
