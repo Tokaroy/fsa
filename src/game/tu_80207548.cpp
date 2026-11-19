@@ -75,6 +75,8 @@ void cls_804A5B28::fn_80207830(u16 slot, s32 player, s32 arg3, const JGeometry::
     if (noneOthers) {
         mTimer = lbl_8053F8C8[gGameRoot_8053AAF8->fn_80138A30() - 1];
     } else if (allOthers && mTimer) {
+        s32 i;
+        s32 remaining;
         s32 count = 1;
         mActive = true;
         switch (gGameRoot_8053AAF8->fn_80138A30()) {
@@ -89,8 +91,8 @@ void cls_804A5B28::fn_80207830(u16 slot, s32 player, s32 arg3, const JGeometry::
         for (int k = 0; k < 4; k++) {
             order[k] = k;
         }
-        s32 remaining = 4;
-        for (s32 i = 0; i < count; i++) {
+        remaining = 4;
+        for (i = 0; i < count; i++) {
             s32 pick = order[fn_801CD664(remaining)];
             mMask |= 1 << pick;
             bool found = false;
