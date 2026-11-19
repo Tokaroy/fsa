@@ -759,9 +759,11 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
 }
 
 // FIXME(shotgun): 98.23 %, missing/extra; behaviour drift.
-// 2 more insns (register copies)
+// layer/kind registers and the p/q stack slots are swapped
 s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
+    ActorBase_804A5770* actor;
     JGeometry::TVec2f p(pos->x, pos->y);
+    s32 count;
     field_0x20 = fn_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
     s32 kind = -1;
@@ -861,27 +863,26 @@ s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s3
         code = 0x11;
         break;
     }
-    if (kind == -1 || kind == 0x25 || kind == 0xC) {
-        return kind;
-    }
-    if (kind == 0x19) {
-        gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, code);
-        fn_80230FD0(player, 0x20007);
-        s32 count = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < count; i++) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-            if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
-                JGeometry::TVec3f actorPos = actor->mPos;
-                JGeometry::TVec2f q(actorPos.x, actorPos.y);
-                if (field_0x20 == fn_80226BC4(&q, layer)) {
-                    actor->fn_801F3668();
-                    break;
+    if (kind != -1 && kind != 0x25 && kind != 0xC) {
+        if (kind == 0x19) {
+            gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, code);
+            fn_80230FD0(player, 0x20007);
+            count = getActorManager_801F856C()->mActorEnd;
+            for (s32 i = 0; i < count; i++) {
+                actor = getActorManager_801F856C()->mActors[i];
+                if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
+                    JGeometry::TVec3f actorPos = actor->mPos;
+                    JGeometry::TVec2f q(actorPos.x, actorPos.y);
+                    if (field_0x20 == fn_80226BC4(&q, layer)) {
+                        actor->fn_801F3668();
+                        break;
+                    }
                 }
             }
+        } else {
+            gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, code);
+            fn_80230FD0(player, 0x20007);
         }
-    } else {
-        gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, code);
-        fn_80230FD0(player, 0x20007);
     }
     return kind;
 }
