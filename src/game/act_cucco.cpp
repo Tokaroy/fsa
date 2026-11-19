@@ -287,7 +287,6 @@ void Cucco_804AB8C0::fn_80332A60() {
     }
 }
 
-// FIXME(shotgun): 92.16 %, missing/extra; behaviour drift.
 void Cucco_804AB8C0::fn_803324A8() {
     f32 outDist = 0.0f;
     s32 outDir = -1;
