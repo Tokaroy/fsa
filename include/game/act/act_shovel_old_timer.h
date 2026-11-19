@@ -18,6 +18,7 @@ public:
     void fn_8031179C();
     void showHint(s32 player, s32 msg);
     bool findDigSpot();
+    void setDigPos(const JGeometry::TVec3f& pos);
 
     bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
         return fn_8038C678(player, msg, serial, layer, pos, flags);

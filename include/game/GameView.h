@@ -418,6 +418,12 @@ public:
     /* 0x1327C */ u8 field_0x1327c[4];
     /* 0x13280 */ JGeometry::TVec3f field_0x13280; // stored by act_shovel_old_timer
     /* 0x1328C */ s32 field_0x1328c; // fn_802D7970; act_temple_bti_display, tu_80134C04
+
+    void setDigPos(JGeometry::TVec3f pos) {
+        field_0x13280.x = pos.x;
+        field_0x13280.y = pos.y;
+        field_0x13280.z = pos.z;
+    }
 }; // Size: 0x13290
 
 // gGameRoot_8053AAF8->0x4->0xC (game/tu_802D39B8.cpp; 265 units).

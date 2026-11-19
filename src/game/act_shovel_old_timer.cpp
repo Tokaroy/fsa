@@ -33,52 +33,20 @@ void ShovelOldTimer_804AAB40::init() {
 ShovelOldTimer_804AAB40::~ShovelOldTimer_804AAB40() {}
 
 static inline void setViewDigPos(JGeometry::TVec3f pos) {
-    GameView_804A9950* view = getGameView_802D6A9C();
-    view->field_0x13280.x = pos.x;
-    view->field_0x13280.y = pos.y;
-    view->field_0x13280.z = pos.z;
+    getGameView_802D6A9C()->setDigPos(pos);
+}
+
+inline void ShovelOldTimer_804AAB40::setDigPos(const JGeometry::TVec3f& pos) {
+    field_0x240.x = pos.x;
+    field_0x240.y = pos.y;
+    field_0x240.z = pos.z;
+    setViewDigPos(pos);
 }
 
 inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
     if (player == field_0x250 || (fn_8022E438(player, field_0x250) && fn_8022CAF8(player) == 4)) {
         lbl_8053AED0->fn_8043D67C(msg, player, 0);
     }
-}
-
-// Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
-// dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
-inline bool ShovelOldTimer_804AAB40::findDigSpot() {
-    f32 minX = field_0x230.i.x + 64.0f;
-    f32 minY = field_0x230.i.y + 32.0f;
-    f32 maxX = field_0x230.f.x - 32.0f;
-    f32 maxY = field_0x230.f.y - 32.0f;
-    f32 x = minX + 416.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    f32 y = minY + 320.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    f32 z = 0.0f;
-    f32 step = 16.0f;
-    for (int j = 0; j < 20; j++) {
-        for (int i = 0; i < 26; i++) {
-            JGeometry::TVec3f pos(x, y, z);
-            if (fn_80226850(&pos, 0) == 0x1B0) {
-                pos.x = (f32)((u32)pos.x & ~0xF);
-                pos.y = (f32)((u32)pos.y & ~0xF);
-                field_0x240.x = pos.x;
-                field_0x240.y = pos.y;
-                field_0x240.z = pos.z;
-                setViewDigPos(pos);
-                return true;
-            }
-            x += step;
-            if (x >= maxX) {
-                x = minX;
-            }
-        }
-        y += step;
-        if (y >= maxY) {
-            y = minY;
-        }
-    }
-    return false;
 }
 
 // FIXME: 98.55 %, missing/extra + reloc-name; behaviour clean.
@@ -183,6 +151,39 @@ void ShovelOldTimer_804AAB40::update() {
 void ShovelOldTimer_804AAB40::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x386, NULL, 0, 1.0f, 1.0f);
     fn_803075AC(mSerial, field_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
+}
+
+// Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
+// dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
+bool ShovelOldTimer_804AAB40::findDigSpot() {
+    f32 minX = field_0x230.i.x + 64.0f;
+    f32 minY = field_0x230.i.y + 32.0f;
+    f32 maxX = field_0x230.f.x - 32.0f;
+    f32 maxY = field_0x230.f.y - 32.0f;
+    f32 x = minX + 416.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    f32 y = minY + 320.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    f32 z = 0.0f;
+    f32 step = 16.0f;
+    for (int j = 0; j < 20; j++) {
+        for (int i = 0; i < 26; i++) {
+            JGeometry::TVec3f pos(x, y, z);
+            if (fn_80226850(&pos, 0) == 0x1B0) {
+                pos.x = (f32)((u32)pos.x & ~0xF);
+                pos.y = (f32)((u32)pos.y & ~0xF);
+                setDigPos(pos);
+                return true;
+            }
+            x += step;
+            if (x >= maxX) {
+                x = minX;
+            }
+        }
+        y += step;
+        if (y >= maxY) {
+            y = minY;
+        }
+    }
+    return false;
 }
 
 // update() at 0x80312114 calls fn_8031179C out of line.
