@@ -380,7 +380,7 @@ void cls_804B0F50::fn_803FF420() {
         return;
     }
     if ((lbl_80529DEC.mSaveRegion.f.field_0x4[0] != 0xA7 && lbl_80529DEC.mSaveRegion.f.field_0x4[1] != 0xA5) || field_0x7a != 0) {
-        J2DOrthoGraph ortho(0.0f, 0.0f, JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight(), -1.0f, 1.0f);
+        J2DOrthoGraph ortho(0.0f, 0.0f, JFWDisplay::getManager()->getEfbWidth(), JFWDisplay::getManager()->getEfbHeight(), -1.0f, 1.0f);
         JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
         ortho.setPort();
         field_0x18->search('NIN_Logo')->setAlpha(field_0x64);
@@ -433,7 +433,7 @@ void cls_804B0F50::fn_803FF420() {
             break;
         }
     } else {
-        J2DOrthoGraph ortho(0.0f, 0.0f, JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight(), -1.0f, 1.0f);
+        J2DOrthoGraph ortho(0.0f, 0.0f, JFWDisplay::getManager()->getEfbWidth(), JFWDisplay::getManager()->getEfbHeight(), -1.0f, 1.0f);
         JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
         ortho.setPort();
         field_0x30->draw(105.0f, 78.0f, 400.0f, 240.0f, false, false, false);
