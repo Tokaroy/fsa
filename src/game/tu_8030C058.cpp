@@ -807,7 +807,7 @@ void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
 // FIXME(shotgun): 93.38 %, missing/extra; behaviour near.
 // (box copy order)
 void Camera_804AA9E4::fn_8030C928(const JGeometry::TBox2f* box) {
-    field_0x190.set(*box);
+    field_0x190.set(box->i.x, box->i.y, box->f.x, box->f.y);
     for (s32 i = 0; i < 4; i++) {
         gGameRoot2_8053AB10->field_0x20->field_0x2360[i] = gGameRoot2_8053AB10->field_0x20->field_0x235c[i];
     }
