@@ -1650,7 +1650,7 @@ void cls_804A7AE0::vfunc_0x24() {
 }
 
 // Remaining: register swaps only (f2/f3 vs f4/f5 at the start, r27/r28 around testBox).
-// FIXME: 98.42 %, missing/extra; behaviour drift.
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
