@@ -168,7 +168,6 @@ cls_8049E770::~cls_8049E770() {
     deleteEmitters(this);
 }
 
-// FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
 void cls_8049E770::fn_8012C334() {
     s32 i;
     for (i = 0; i < 4; i++) {
