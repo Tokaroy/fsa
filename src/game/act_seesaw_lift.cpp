@@ -592,7 +592,7 @@ void SeesawLift_804AD348::fn_80358F98() {
     }
 }
 
-// FIXME(shotgun): 88.79 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.51 %, missing/extra; behaviour near.
 void SeesawLift_804AD348::fn_803584C0() {
     if (field_0x250 > 0) {
         field_0x250--;
