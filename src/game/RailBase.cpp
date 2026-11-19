@@ -4,7 +4,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 97.18 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 97.53 %, scheduling+regalloc; behaviour clean.
 // 0x800FE3EC
 bool cls_800FE3EC::fn_800FE3EC(u8 group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
