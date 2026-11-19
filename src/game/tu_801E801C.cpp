@@ -293,15 +293,16 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 75.17 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
-    s16 half = (s16)(h + (h > 0.0f ? 0.5f : -0.5f));
+    h += (h > 0.0f) ? 0.5f : -0.5f;
     f32 v = a * (1.0f / (4.0f * b));
-    s16 delta = half - ang;
     f32 s0 = JMath::sincosTable_.mTable[ang >> 5].first;
     f32 c0 = JMath::sincosTable_.mTable[ang >> 5].second;
+    s16 half = (s16)h;
+    s16 delta = half - ang;
     f32 scale = 2.0f * (1.0f / JMath::sincosTable_.cosShort(delta));
     s16 perp = -(s16)(delta - 0x4000);
     f32 s2 = JMath::sincosTable_.sinShort(perp);
