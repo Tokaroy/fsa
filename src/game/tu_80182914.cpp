@@ -94,9 +94,6 @@ cls_804A1718::~cls_804A1718() {
     releaseEmitter_801EE434(mEmitter274);
 }
 
-// FIXME: 99.95 %. Same instructions; the jump-table base is relocated to the
-// compiler's label (@959) where the original uses jumptable_804A176C, and try.py
-// also reports one scheduling difference.
 void cls_804A1718::update() {
     u16 angle = 0;
     f32 dist = 0.0f;
@@ -150,8 +147,8 @@ void cls_804A1718::update() {
                 mEmitter274->setGlobalPrmColor(field_0x238[0], field_0x238[1], field_0x238[2]);
             }
         }
-        field_0x268.set(0.0f, 0.0f, 0.0f);
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        field_0x268.zero();
+        field_0x3c.zero();
         field_0x23c = 6;
         field_0x248 = 0;
         field_0x254 = 0;
@@ -206,8 +203,8 @@ void cls_804A1718::update() {
     case 6:
         followEmitter(this);
         field_0xb0 = 0x1000;
-        field_0x268.set(0.0f, 0.0f, 0.0f);
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        field_0x268.zero();
+        field_0x3c.zero();
         field_0x258 = 0;
         field_0x23c = 4;
         field_0x248 = 0;
