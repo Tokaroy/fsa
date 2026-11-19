@@ -17,7 +17,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    // Force-deletes the emitters (field_0x258, field_0x2A8); the destructor inlines it.
+    // Force-deletes the emitters (field_0x258, field_0x2A8); the destructor repeats the
+    // same statements itself (an inlined call compiles to other code).
     void fn_8036E544();
     // update() helpers: put the sparkle emitters at `pos` in free slots of
     // field_0x258; false when there are not enough free slots.

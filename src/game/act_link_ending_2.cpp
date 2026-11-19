@@ -16,7 +16,18 @@ static const u16 lbl_80474EC0[5] = {0x56E, 0x570, 0x56D, 0x571, 0x56F};
 
 // FIXME(shotgun): 83.77 %, different; behaviour near.
 Link2Ending_804AE338::~Link2Ending_804AE338() {
-    fn_8036E544();
+    for (s32 i = 0; i < 20; i++) {
+        if (field_0x258[i] != NULL) {
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(field_0x258[i]);
+            field_0x258[i] = NULL;
+        }
+    }
+    if (field_0x2A8 != NULL) {
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0x2A8);
+        field_0x2A8 = NULL;
+    }
 }
 
 // FIXME(shotgun): 73.21 %, different + reloc-name; behaviour clean.
@@ -113,7 +124,8 @@ void Link2Ending_804AE338::update() {
         if (field_0x258[i] != NULL) {
             live++;
             if (field_0x258[i]->isEnableDeleteEmitter()) {
-                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0x258[i]);
+                JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(field_0x258[i]);
                 field_0x258[i] = NULL;
             }
         }
@@ -298,12 +310,14 @@ void Link2Ending_804AE338::draw() {}
 void Link2Ending_804AE338::fn_8036E544() {
     for (s32 i = 0; i < 20; i++) {
         if (field_0x258[i] != NULL) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0x258[i]);
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(field_0x258[i]);
             field_0x258[i] = NULL;
         }
     }
     if (field_0x2A8 != NULL) {
-        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0x2A8);
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0x2A8);
         field_0x2A8 = NULL;
     }
 }
