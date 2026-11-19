@@ -310,11 +310,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
     f32 dy = (s0 * s2 + c0 * c2) * scale;
     GXPosition3f32(center->x + dx, sZ + (center->y + dy), sZ);
     GXTexCoord2f32(1.0f, v);
-    f32 nx = -dx;
-    f32 ny = -dy;
-    f32 x = center->x + nx;
-    f32 y = center->y + ny;
-    GXPosition3f32(x, sZ + y, sZ);
+    GXPosition3f32(center->x + -dx, sZ + (center->y + -dy), sZ);
     GXTexCoord2f32(0.0f, v);
 }
 #pragma auto_inline reset
