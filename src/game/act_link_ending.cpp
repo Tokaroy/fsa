@@ -77,7 +77,6 @@ void LinkEnding_804AD858::draw() {}
 
 // State 0: copies mPos.y, walks it down to 1810 (0.4 a step) and then hands
 // the partner over to state 2 with a 0x8F countdown.
-// FIXME: 99.90 %, different; behaviour clean.
 void LinkEnding_804AD858::fn_8035ED60() {
     field_0x260 = mPos.y;
     if (mPos.y >= 1810.0f) {
