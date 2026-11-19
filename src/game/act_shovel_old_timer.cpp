@@ -49,7 +49,7 @@ inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
     }
 }
 
-// FIXME: 98.55 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.24 %, operands + reloc-name; behaviour clean.
 // register allocation differs in the inlined findDigSpot; the literal references are lbl_
 // in the original and @NNN here (data split).
 void ShovelOldTimer_804AAB40::update() {
