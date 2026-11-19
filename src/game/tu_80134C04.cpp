@@ -1324,12 +1324,10 @@ void GameRoot_8049EF20::fn_80136364() {
 
 // Whether the game mode (field_0x4c) is one of 0 - 6, 9 or 12.
 // FIXME: 85.88 %, missing/extra; behaviour drift.
-// The target tests mode == 0 separately and then folds 1-6 into one
-// range (subi; cmplwi 5), reusing r3 for the mode; ours folds 0-6 into one range.
 bool GameRoot_8049EF20::fn_80136320() {
     if (gGameRoot_8053AAF8 != NULL) {
         s32 mode = field_0x4c;
-        if (mode == 0 || (mode >= 1 && mode <= 6) || mode == 9 || mode == 12) {
+        if (mode == 0 || (u32)(mode - 1) <= 5 || mode == 9 || mode == 12) {
             return true;
         }
     }
