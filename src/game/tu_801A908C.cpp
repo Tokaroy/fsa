@@ -135,7 +135,7 @@ cls_804A2FB0::~cls_804A2FB0() {
     }
 }
 
-// FIXME(shotgun): 96.06 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.85 %, regalloc-only + reloc-name; behaviour drift.
 void cls_804A2FB0::fn_801A9CF4() {
     mLife = 10000;
     fn_801F3D94(0);
