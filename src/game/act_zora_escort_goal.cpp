@@ -235,6 +235,7 @@ bool ZoraEscortGoal_8049E424::fn_80126EF8() const {
     return false;
 }
 
+// FIXME: 99.30 %, missing/extra; behaviour drift.
 void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     field_0x230 = arg;
     switch (arg) {
