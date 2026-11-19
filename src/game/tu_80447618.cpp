@@ -81,7 +81,7 @@ cls_804B1C20::~cls_804B1C20() {
     lbl_8053AF08 = NULL;
 }
 
-// FIXME(shotgun): 99.50 %, regalloc-only
+// FIXME(shotgun): 99.50 %, regalloc-only; behaviour clean.
 void cls_804B1C20::fn_804479A0() {
     for (s32 i = 0; i < 4; i++) {
         field_0x28[4] &= ~(u8)(1 << i);
@@ -100,7 +100,7 @@ void cls_804B1C20::fn_80447958() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 99.88 %, regalloc-only
+// FIXME(shotgun): 99.88 %, regalloc-only; behaviour clean.
 void cls_804B1C20::fn_80447618() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
