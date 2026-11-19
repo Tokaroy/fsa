@@ -558,7 +558,7 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-// FIXME(shotgun): 91.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.17 %, different + reloc-name; behaviour drift.
 // Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original;
 // (field_0x83 & 3) == 2 is an unsigned compare there (field type not known).
 void cls_804AE4B0::fn_80370A7C() {
