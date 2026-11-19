@@ -228,7 +228,7 @@ void cls_804A2FB0::fn_801A9CF4() {
                     if (oktm != 0) {
                         JGeometry::TVec3f vel;
                         vel.x = 3.0f * JMASSin(32768.0f + field_0x2b4);
-                        vel.y = 3.0f * JMASCos((u16)(32768.0f + field_0x2b4));
+                        vel.y = 3.0f * JMASCos(32768.0f + field_0x2b4);
                         vel.z = 0.0f;
                         oktm->field_0x3c = vel;
                         oktm->field_0x98 = fn_801F681C(field_0x2b4);
