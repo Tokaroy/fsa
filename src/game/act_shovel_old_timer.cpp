@@ -50,9 +50,8 @@ inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
 }
 
 // FIXME: 98.55 %, missing/extra + reloc-name; behaviour clean.
-// the original copies the dig-spot TVec3f twice on its
-// way into the view (a second psq_st/stfs pair, 2 instructions) and its frame is 0x10 bytes
-// larger; the literal references are lbl_ in the original and @NNN here (data split).
+// register allocation differs in the inlined findDigSpot; the literal references are lbl_
+// in the original and @NNN here (data split).
 void ShovelOldTimer_804AAB40::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -155,7 +154,7 @@ void ShovelOldTimer_804AAB40::draw() {
 
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
 // dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
-bool ShovelOldTimer_804AAB40::findDigSpot() {
+inline bool ShovelOldTimer_804AAB40::findDigSpot() {
     f32 minX = field_0x230.i.x + 64.0f;
     f32 minY = field_0x230.i.y + 32.0f;
     f32 maxX = field_0x230.f.x - 32.0f;
