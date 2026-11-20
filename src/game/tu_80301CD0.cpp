@@ -232,7 +232,7 @@ void fn_80308D0C() {
 // Fills the header of the player's record: player, size, layer, mode and
 // link flags, then the mode's status bits in bytes 4-7.
 // 0x803085A4
-// FIXME: 94.52 %, missing/extra; behaviour drift.
+// FIXME: 97.08 %, missing/extra; behaviour near.
 void cls_804AA8B8::fn_803085A4(s32 player) {
     s32 layer = fn_8022EA0C(player);
     lbl_80506DE8[player].f.field_0x3_0 = lbl_8053AD08;
