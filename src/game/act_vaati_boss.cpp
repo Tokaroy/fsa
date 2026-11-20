@@ -94,8 +94,6 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x448.mOwner = this;
 }
 
-// FIXME: 97.21 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc + reloc-name. Float conversion temporaries and the stores of field_0x5ec.y / field_0x5f4 / field_0x5f4.y are scheduled differently.
 void VaatiBoss_804A4958::init() {
     EnemyBase_804A4808::init();
     field_0x5dc = field_0x90 & 0xF;
@@ -103,10 +101,10 @@ void VaatiBoss_804A4958::init() {
         field_0x5dc += 7;
     }
 
-    u32 y = ((field_0x90 >> 16) & 0x3F) * 8;
-    u32 x = ((field_0x90 >> 24) & 0x3F) * 8;
-    field_0x5e0 = (f32)x + 8.0f;
-    field_0x5e4 = (f32)y + 8.0f;
+    f32 y = (f32)(((field_0x90 >> 16) & 0x3F) * 8) + 8.0f;
+    f32 x = (f32)(((field_0x90 >> 24) & 0x3F) * 8) + 8.0f;
+    field_0x5e0 = x;
+    field_0x5e4 = y;
     field_0x5e8 = (field_0x90 >> 10) & 0x3F;
     field_0x5e9 = (field_0x90 >> 4) & 0x3F;
 
@@ -141,10 +139,8 @@ void VaatiBoss_804A4958::init() {
 
     field_0x5bc.x = mPos.x;
     field_0x5bc.y = mPos.y;
-    field_0x5ec.x = field_0x5e0 + (f32)field_0x5e8 * 8.0f + 32.0f;
-    field_0x5ec.y = field_0x5e4;
-    field_0x5f4.x = field_0x5ec.x;
-    field_0x5f4.y = field_0x5e4 + -32.0f;
+    field_0x5ec.set(field_0x5e0 + (f32)field_0x5e8 * 8.0f + 32.0f, field_0x5e4);
+    field_0x5f4.set(field_0x5ec.x, field_0x5e4 + -32.0f);
 
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         field_0x5cc = 6;
