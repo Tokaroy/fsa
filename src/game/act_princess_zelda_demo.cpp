@@ -1049,21 +1049,18 @@ void fn_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 rad) {
     f32 s = sin(rad);
     f32 c = cos(rad);
     f32 t = 1.0f - c;
-    f32 ytx = n.y * (t * n.x);
-    f32 szn = s * n.z;
-    f32 ztx = n.z * (t * n.x);
-    f32 syn = s * n.y;
-    f32 zty = n.z * (t * n.y);
-    f32 sxn = s * n.x;
-    m[0][0] = t * (n.x * n.x) + c;
-    m[0][1] = ytx - szn;
-    m[0][2] = ztx + syn;
-    m[1][0] = ytx + szn;
-    m[1][1] = t * (n.y * n.y) + c;
-    m[1][2] = zty - sxn;
-    m[2][0] = ztx - syn;
-    m[2][1] = zty + sxn;
-    m[2][2] = t * (n.z * n.z) + c;
+    f32 x = n.x;
+    f32 y = n.y;
+    f32 z = n.z;
+    m[0][0] = t * (x * x) + c;
+    m[0][1] = y * (t * x) - s * z;
+    m[0][2] = z * (t * x) + s * y;
+    m[1][0] = y * (t * x) + s * z;
+    m[1][1] = t * (y * y) + c;
+    m[1][2] = z * (t * y) - s * x;
+    m[2][0] = z * (t * x) - s * y;
+    m[2][1] = z * (t * y) + s * x;
+    m[2][2] = t * (z * z) + c;
 }
 
 // Spins the crystal ring: turns by 0.01 rad per frame and hands the shared crystal its matrix.
