@@ -1908,10 +1908,9 @@ void ConnectScreen_804B0F10::fn_803F59A0() {
     }
 }
 
-// FIXME: 99.17 %, operands; behaviour clean.
-// Stack slots and registers only: the original converts every
-// int / u8 to float in the one 0x8 slot (ours uses 0x8-0x18), and the loop's
-// table pointers / the lit alpha sit in other registers.
+// FIXME: 99.23 %, scheduling+regalloc; behaviour clean.
+// Registers only: the loop's table pointers (r29 / r30) and the float
+// locals (lit, x, offset) sit in other registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
 // 'Pscuro01' / 'Pscuro02' fades with field_0x1d0[0] (in state 4 it fades to
 // 230 over 15 frames, then by (n - 15)^2 / 225), the chosen count's pane
@@ -1924,14 +1923,16 @@ void ConnectScreen_804B0F10::fn_803F5410() {
         if (field_0x1d0[0] < 30) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 30) * (field_0x1d0[0] - 30)) / 900.0f;
+            s32 rest = field_0x1d0[0] - 30;
+            t = 1.0f - (f32)(rest * rest) / 900.0f;
         }
         alpha = t * field_0x258;
     } else {
         if (field_0x1d0[0] < 15) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 225.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 15) * (field_0x1d0[0] - 15)) / 225.0f;
+            s32 rest = field_0x1d0[0] - 15;
+            t = 1.0f - (f32)(rest * rest) / 225.0f;
         }
         alpha = 230.0f * t;
     }
@@ -2236,9 +2237,7 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.81 %, operands; behaviour clean.
-// (twin cls_804B0B00::fn_803E4650): stack slots only, the
-// blink's else-branch int conversion sits at 0x10 instead of 0x8.
+// (twin cls_804B0B00::fn_803E4650)
 // Draws states 10 and 11 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1d0[i] (60 frames), the
 // joined ones' 'Paccur' panes with it; outside state 10 the 'Paccur02'
@@ -2250,7 +2249,8 @@ void ConnectScreen_804B0F10::fn_803F35B0() {
         if (field_0x1d0[i] < 30) {
             t = (f32)(field_0x1d0[i] * field_0x1d0[i]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[i] - 30) * (field_0x1d0[i] - 30)) / 900.0f;
+            s32 rest = field_0x1d0[i] - 30;
+            t = 1.0f - (f32)(rest * rest) / 900.0f;
         }
         if (i <= field_0x1ac + 1) {
             if (field_0x1b0[i] < 4) {
@@ -2262,9 +2262,10 @@ void ConnectScreen_804B0F10::fn_803F35B0() {
             }
         }
         if (field_0x1c4 != 10) {
+            f32 x;
             s32 bounce = field_0x240[i] < 5 ? field_0x240[i] : 10 - field_0x240[i];
             f32 offset = 5.0f * (f32)(bounce * bounce) / 25.0f;
-            f32 x = field_0x10->search(lbl_804793F8[i])->getBounds()->i.x;
+            x = field_0x10->search(lbl_804793F8[i])->getBounds()->i.x;
             field_0x10->search(lbl_804793F8[i])->move(x, field_0x1a0 + offset);
             if (field_0x1b0[i] >= 3) {
                 field_0x64[i]->moveFromCentre_80402E08(0.0f, offset);
