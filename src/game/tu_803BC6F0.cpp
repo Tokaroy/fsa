@@ -244,6 +244,32 @@ static inline void restoreAlphas_804768A0(FileSelect_804AFF60* self) {
     }
 }
 
+// The four pane alphas of button i, back to the kept values (field_0x19f).
+static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
+    switch (i) {
+    case 0:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DC8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 1:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DA8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 2:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D88[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 3:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D68[j]), self->field_0x19f[j]);
+        }
+        break;
+    }
+}
+
 // A point of the 640 x 480 layout on the 360 x 270 sprite layer of the
 // current render mode.
 static inline f32 toSpriteX(f32 x) {
@@ -1285,7 +1311,7 @@ void FileSelect_804AFF60::fn_803CD2DC() {
     }
 }
 
-// FIXME: 98.47 %, different; behaviour near.
+// FIXME: 99.16 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). The &others register, as
 // fn_803C2E24 / fn_803C9F80. Every field, call and branch is the original's.
 //
@@ -1304,19 +1330,20 @@ void FileSelect_804AFF60::fn_803CC760() {
     s16 frames = lbl_8050DB0C.field_0x4c[0x94];
     s16 rowStep = lbl_8050DB0C.field_0x4c[0x95];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
-    if (end < rowDelay + (frames + rowStep)) {
-        end = rowDelay + (frames + rowStep);
+    if (end < rowDelay + frames + rowStep) {
+        end = rowDelay + frames + rowStep;
     }
 
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (int i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -1335,38 +1362,17 @@ void FileSelect_804AFF60::fn_803CC760() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
-            switch (i) {
-            case 0:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(frames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(frames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
@@ -1583,40 +1589,11 @@ void FileSelect_804AFF60::fn_803CBE38() {
     }
 }
 
-// The four pane alphas of button i, back to the kept values (field_0x19f).
-static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
-    switch (i) {
-    case 0:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DC8[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 1:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DA8[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 2:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D88[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 3:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D68[j]), self->field_0x19f[j]);
-        }
-        break;
-    }
-}
-
-// FIXME: 99.00 %, different; behaviour near.
-// FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
-// loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
-// shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
-// `field_0x38[0]->field_0xc - field_0x38[a4]->field_0xc` float regs (f2/f0 vs
-// f0/f2).
+// Registers only: `frames` and two temporaries of the inlined alpha helpers
+// are rotated (r26/r27/r28), and the `field_0xc` subtraction swaps f0/f2.
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
+// FIXME: 99.41 %, regalloc-only; behaviour clean.
 void FileSelect_804AFF60::fn_803CB3DC() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x98];
     s16 frames = lbl_8050DB0C.field_0x4c[0x99];
@@ -1637,22 +1614,22 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
-    s32 i;
-    for (i = 0; i < 3; i++) {
+    s32* dst = others;
+    for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
     field_0xd8++;
-    for (i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x44[others[i]]->fn_80402628(frames, field_0x44[others[i]]->field_0x28, 0);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x44[*other]->fn_80402628(frames, field_0x44[*other]->field_0x28, 0);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves up to the first row's place.
@@ -2881,7 +2858,7 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 }
 
-// FIXME: 98.49 %, different; behaviour near.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). One instruction moves:
 // the original keeps &others in r29 from the fill loop on (`mr r3, r29` for
 // the fill pointer) and walks it in the row loop; ours computes &others
@@ -2902,19 +2879,20 @@ void FileSelect_804AFF60::fn_803C2E24() {
     s16 frames = lbl_8050DB0C.field_0x4c[0xDA];
     s16 rowStep = lbl_8050DB0C.field_0x4c[0xDB];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
-    if (end < rowDelay + (frames + rowStep)) {
-        end = rowDelay + (frames + rowStep);
+    if (end < rowDelay + frames + rowStep) {
+        end = rowDelay + frames + rowStep;
     }
 
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (int i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -2964,14 +2942,14 @@ void FileSelect_804AFF60::fn_803C2E24() {
             }
         }
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(frames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(frames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
