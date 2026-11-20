@@ -368,7 +368,7 @@ void cls_804A7AE0::fn_8029A974() {
     }
 }
 
-// Remaining: word-copied stack `view` box (sp+0x3c..0x48), two `cmplwi 1` bool tests, and one loop pointer copy in `bakeTiles`.
+// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
 // FIXME: 89.34 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
@@ -391,7 +391,8 @@ void cls_804A7AE0::fn_8029A494() {
     if (dir != 2) {
         return;
     }
-    JGeometry::TBox2f view = *layerBox(field_0x4);
+    JGeometry::TBox2f view;
+    view = *layerBox(field_0x4);
     growBox(view, -32.0f);
     JGeometry::TVec3f p = mPos;
     p.x += mBox.i.x;
