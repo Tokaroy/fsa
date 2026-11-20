@@ -1261,9 +1261,9 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
         target = JGeometry::TVec3f(parent->mPos.x + off * JMath::sincosTable_.sinShort(ang),
                                    parent->mPos.y + off * JMath::sincosTable_.cosShort(ang),
                                    10.0f + parent->mPos.z);
+        f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         mFlag249 = 1;
         field_0x3c.set(mPos.x, mPos.y, mPos.z);
-        f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         moveToward(mPos, target, speed);
         field_0x3c.sub(mPos);
         field_0x3c.scale(-0.5f);
