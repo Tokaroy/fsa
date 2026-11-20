@@ -39,7 +39,7 @@ static const u64 lbl_804773D0[3] = { 'P2P02', 'P3P02', 'P4P02' };
 static const u64 lbl_804773E8[4] = { 'Pp1i03', 'Pp2i03', 'Pp3i03', 'Pp4i03' };
 static const u64 lbl_80477408[4] = { 'Ndata11', 'Ndata12', 'Ndata13', 'Ndata14' };
 
-// FIXME(shotgun): 95.54 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.94 %, same-text; behaviour drift.
 cls_804B03D8::cls_804B03D8() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADC0 = this;
@@ -153,7 +153,7 @@ cls_804B03D8::~cls_804B03D8() {
 
 // Resets the screen for a new round: shows the rows of the players that take part and slides the
 // remaining panes out of view.
-// FIXME(shotgun): 73.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.86 %, missing/extra; behaviour near.
 void cls_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
@@ -312,7 +312,7 @@ void cls_804B03D8::fn_803D82EC() {
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
-// FIXME(shotgun): 93.36 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.72 %, missing/extra; behaviour near.
 void cls_804B03D8::fn_803D75B0() {
     if (field_0x80 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x78);
