@@ -61,7 +61,7 @@ void cls_804A2FB0::fn_801AA8F4() {
     }
 }
 
-// FIXME(shotgun): 97.32 %, different; behaviour near.
+// FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour clean.
 void cls_804A2FB0::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
