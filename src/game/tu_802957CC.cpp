@@ -201,7 +201,7 @@ void cls_804A7AE0::init() {
     field_0x238.set(mPos);
 }
 
-// FIXME(shotgun): 82.48 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.87 %, operands; behaviour clean.
 // initial position/box arithmetic is scheduled differently, 5 instructions
 void cls_804A7AE0::vfunc_0x10() {
     JGeometry::TVec3f origin = mPos;
