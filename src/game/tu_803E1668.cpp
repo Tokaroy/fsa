@@ -2309,9 +2309,7 @@ void cls_804B0B00::fn_803E51C4() {
 }
 
 // FIXME: 99.67 %, operands; behaviour clean.
-// Stack layout and float registers only: the original keeps
-// every int-to-float conversion in one 8-byte slot (0x18; frame 0x60), ours
-// uses two (frame 0x70), and the bounce offset / pane x swap f29 and f30.
+// Float registers only: the bounce offset and the pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
 // 'Pscuro01' / 'Pscuro02' fades in and out (field_0x1e0[0] over 60 frames;
 // in state 9 it fades to 230 over 30, or is hidden while field_0x1cc is 0)
@@ -2325,7 +2323,8 @@ void cls_804B0B00::fn_803E4940() {
         if (field_0x1e0[0] < 30) {
             t = (f32)(field_0x1e0[0] * field_0x1e0[0]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[0] - 30) * (field_0x1e0[0] - 30)) / 900.0f;
+            s32 frame = field_0x1e0[0] - 30;
+            t = 1.0f - (f32)(frame * frame) / 900.0f;
         }
         alpha = t * field_0x269;
     } else if (field_0x1dc == 2) {
@@ -2335,7 +2334,8 @@ void cls_804B0B00::fn_803E4940() {
         if (field_0x1e0[0] < 15) {
             t = (f32)(field_0x1e0[0] * field_0x1e0[0]) / 225.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[0] - 15) * (field_0x1e0[0] - 15)) / 225.0f;
+            s32 frame = field_0x1e0[0] - 15;
+            t = 1.0f - (f32)(frame * frame) / 225.0f;
         }
         alpha = 230.0f * t;
     }
