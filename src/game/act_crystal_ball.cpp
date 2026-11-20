@@ -181,15 +181,15 @@ void CrystalBall_804AB308::vfunc_0x54() {
     startSound_801F0E34(0x30001, 0);
 }
 
-// FIXME(shotgun): 99.73 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 void CrystalBall_804AB308::fn_80322F44() {
     if (field_0x284 == 0) {
         if (!gGameRoot_8053AAF8->field_0x7e) {
             field_0x288 = 0;
         } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            s32 base = fn_80236228(field_0x23c);
-            s32 lo = base;
-            s32 hi = base;
+            s32 lo = fn_80236228(field_0x23c);
+            s32 hi = lo;
+            s32 base = hi;
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     if (hi < fn_80236228(i)) {
@@ -244,8 +244,6 @@ void CrystalBall_804AB308::fn_80322F44() {
     }
 }
 
-// FIXME(shotgun): 96.79 %, missing/extra; behaviour drift.
-// a couple of instructions in the player loop
 void CrystalBall_804AB308::fn_80322BC4() {
     s32 rank = 0;
     s32 n = 0;
@@ -254,7 +252,7 @@ void CrystalBall_804AB308::fn_80322BC4() {
     } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
         s32 base = fn_80236228(field_0x23c);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
+            if (fn_8023F264(i) == 1 && field_0x4 == getPlayerLayer_8023DE58(i) && !fn_80230188(i) &&
                 base < fn_80236228(i)) {
                 rank++;
             }
@@ -270,31 +268,44 @@ void CrystalBall_804AB308::fn_80322BC4() {
     }
     s32 candidates[10];
     if ((field_0x90 >> 18) & 1) {
-        candidates[n++] = 10;
+        candidates[n] = 10;
+        n++;
     }
     if ((field_0x90 >> 19) & 1) {
-        candidates[n++] = 3;
+        candidates[n] = 3;
+        n++;
     }
     if ((field_0x90 >> 20) & 1) {
-        candidates[n++] = 4;
+        candidates[n] = 4;
+        n++;
     }
     if ((field_0x90 >> 21) & 1) {
-        candidates[n++] = 8;
+        candidates[n] = 8;
+        n++;
     }
     if ((field_0x90 >> 22) & 1) {
-        candidates[n++] = 6;
+        candidates[n] = 6;
+        n++;
     }
     if ((field_0x90 >> 23) & 1) {
-        candidates[n++] = 5;
+        candidates[n] = 5;
+        n++;
     }
     if ((field_0x90 >> 24) & 1) {
-        candidates[n++] = 7;
+        candidates[n] = 7;
+        n++;
     }
     if ((field_0x90 >> 25) & 1) {
-        candidates[n++] = 1;
+        candidates[n] = 1;
+        n++;
+    }
+    if ((field_0x90 >> 26) & 1) {
+        candidates[n] = 9;
+        n++;
     }
     if ((field_0x90 >> 4) & 1) {
-        candidates[n++] = 2;
+        candidates[n] = 2;
+        n++;
     }
     field_0x294 = candidates[(s32)((f32)n * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) % n];
     if (field_0x294 != 2) {
@@ -845,8 +856,8 @@ void CrystalBall_804AB308::update() {
     fn_803226EC();
 }
 
-// FIXME(shotgun): 97.02 %, missing/extra; behaviour near.
-// a few instructions
+// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
+// setRotScaleMtx's float registers and the li order of flags / held differ
 void CrystalBall_804AB308::draw() {
     if (field_0x230 == 0 && field_0x278 <= 180 && (field_0x278 & 2) == 0) {
         return;
@@ -854,7 +865,10 @@ void CrystalBall_804AB308::draw() {
     if (field_0x94 == 0 && field_0x230 == 4 && field_0xc4 == 1 && field_0x248 % 30 >= 15) {
         return;
     }
-    if (field_0x2b0 >= 6 || field_0x28c == 0) {
+    if (field_0x2b0 >= 6) {
+        return;
+    }
+    if (field_0x28c == 0) {
         return;
     }
     SpriteParams_801F5AE0 params;
@@ -866,6 +880,7 @@ void CrystalBall_804AB308::draw() {
     params.field_0x1c = 1;
     Mtx mtx;
     if (field_0x2a8 == 1) {
+        PSMTXIdentity(mtx);
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x238, 0.0f), field_0x234);
         params.mMtx = mtx;
         params.field_0x1d = 0;
