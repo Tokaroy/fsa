@@ -324,7 +324,7 @@ void cls_804A7AE0::vfunc_0x10() {
     }
 }
 
-// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
+// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.66 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
@@ -504,7 +504,7 @@ void cls_804A7AE0::fn_80299FB0() {
     }
 }
 
-// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
+// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.65 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
