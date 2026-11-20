@@ -230,10 +230,10 @@ bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
         return false;
     }
     if (code == 0x25) {
-        return (u8)(getGameView_802D6A9C()->field_0x171 == 0);
+        return getGameView_802D6A9C()->field_0x171 == 0;
     }
     if (code == 0x26) {
-        return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
+        return getGameView_802D6A9C()->field_0x171 == 1;
     }
     // Half and quarter cells: which 8-unit part of the 16-unit cell is solid.
     if (code == 4 && ((s32)pos->y & 0xF) >= 8) {
@@ -302,11 +302,7 @@ bool fn_802252F4(const JGeometry::TVec3f* pos, s32 layer) {
         }
         if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
             if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
-                for (s32 i = 0; i < 5; i++) {
-                    if (raw == lbl_8046AB20[i]) {
-                        return true;
-                    }
-                }
+                return inList(raw, lbl_8046AB20, 5);
             } else {
                 return inList(raw, lbl_8046AB04, 13);
             }
