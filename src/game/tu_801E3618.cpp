@@ -50,21 +50,16 @@ void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
 }
 
 // FIXME(shotgun): 78.41 %, missing/extra; behaviour near.
-bool VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec2f* pos, JGeometry::TVec3f* outDir) {
-    JGeometry::TBox2f box;
-    box.i.x = field_0x80.i.x + pos->x;
-    box.i.y = field_0x80.i.y + pos->y;
-    box.f.x = field_0x80.f.x + pos->x;
-    box.f.y = field_0x80.f.y + pos->y;
+u8 VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec2f* pos, JGeometry::TVec3f* outDir) {
+    JGeometry::TBox2f box = field_0x80;
+    box.addPos(*pos);
     JGeometry::TVec2f push;
     bool moved = fn_801CC29C(area, &box, &push);
     pos->x += push.x;
     pos->y += push.y;
     if (outDir != NULL) {
         push.normalize();
-        outDir->x = push.x;
-        outDir->y = push.y;
-        outDir->z = 0.0f;
+        outDir->set(push.x, push.y, 0.0f);
     }
     return moved;
 }
