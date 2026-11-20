@@ -396,32 +396,13 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
 }
 
 // FIXME(shotgun): 94.94 %, different; behaviour near.
-bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
+s32 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
+    JGeometry::TBox2f area;
     bool onLayer = fn_801CD2F8(layer);
     bool inside = true;
-    f32 x0, y0, x1, y1;
-    if (onLayer) {
-        x0 = field_0x5e0.x;
-        y0 = field_0x5e0.y;
-        x1 = x0 + 16.0f * (f32)field_0x5e8;
-        y1 = y0 + 16.0f * (f32)field_0x5e9;
-    } else {
-        JGeometry::TBox2f* box = layerBox(field_0x5d8);
-        if (mFlags & 0x2000) {
-            x0 = 160.0f + box->i.x;
-            y0 = 80.0f + box->i.y;
-            x1 = box->f.x - 160.0f;
-            y1 = box->f.y - 112.0f;
-        } else {
-            x0 = 80.0f + box->i.x;
-            y0 = 128.0f + box->i.y;
-            x1 = box->f.x - 80.0f;
-            y1 = box->f.y - 96.0f;
-        }
-    }
-    // Still differs: register assignment only (float temps, layer index/outside).
-    if (pos->x < x0 || pos->y < y0 || pos->x >= x1 || pos->y >= y1) {
+    fn_801E4618(&area, onLayer);
+    if (pos->x < area.i.x || pos->y < area.i.y || pos->x >= area.f.x || pos->y >= area.f.y) {
         inside = false;
     }
     if (!inside) {
