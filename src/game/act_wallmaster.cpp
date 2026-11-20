@@ -186,7 +186,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         break;
     case 1:
         field_0x2bc = 0;
-        mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+        mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
         mBox2.set(mBox);
         mAnim.startAnim_801D22DC(0, 0, false);
         if (mState != 5) {
@@ -196,7 +196,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         break;
     case 3:
         field_0x2bc = 0;
-        mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+        mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
         mBox2.set(mBox);
         mAnim.startAnim_801D22DC(2, 0, false);
         break;
@@ -206,7 +206,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
     case 8:
         mFlags |= 0x2000;
         field_0x2bc = 0;
-        mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+        mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
         mBox2.set(mBox);
         mAnim.startAnim_801D22DC(1, 0, false);
         if (state == 4) {
@@ -220,7 +220,7 @@ void cls_804A3E44::fn_801BC554(s32 state) {
     case 5:
         field_0x2b8 = -1;
         field_0x2bc = 0;
-        mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+        mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
         mBox2.set(mBox);
         mAnim.startAnim_801D22DC(0, 0, false);
         break;
@@ -243,10 +243,10 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         mFlags &= ~0x2000;
         field_0x2b8 = -1;
         field_0x2bc = 0;
-        mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+        mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
         mBox2.set(mBox);
-        mSpeed = 0.5f;
-        mTargetSpeed = 0.5f;
+        mSpeed = 0.4f;
+        mTargetSpeed = 0.4f;
         mParam.mIndex = 0;
         mParam.mTarget = mParam.mOrder[mParam.mIndex];
         mParam.field_0x24 = 0;
@@ -254,9 +254,10 @@ void cls_804A3E44::fn_801BC554(s32 state) {
         break;
     }
 
-    bool b = false;
     mStateTimer = 0;
     mState = state;
+
+    bool b = false;
     switch (mState) {
     case 6:
     case 7:
