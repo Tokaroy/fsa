@@ -1753,22 +1753,23 @@ void cls_804AF72C::do_end() {
 }
 
 // FIXME(shotgun): 99.07 %, different; behaviour near.
-// (the text pointer is formed before the clearing store)
+// (registers only: the float temporaries of the centring offset and the tail's length/shown values)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
-    field_0x2d8->field_0x3ab[0] = 0;
+    text[0] = 0;
     if (field_0x2d8->field_0x1aa == 0) {
         char newline[2];
         newline[1] = 0;
         if (c == '\n') {
             field_0x2cc++;
-            if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c] + 1) {
-                field_0x2d6 = 1;
-                newline[0] = c;
-                strcat(field_0x2c0, newline);
-                strcat(field_0x2c4, newline);
-                field_0x2d0++;
+            if (field_0x2cc <= (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c] + 1) {
+                return;
             }
+            field_0x2d6 = 1;
+            newline[0] = c;
+            strcat(field_0x2c0, newline);
+            strcat(field_0x2c4, newline);
+            field_0x2d0++;
         }
         if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
             if (field_0x2d6 != 0) {
@@ -1782,7 +1783,7 @@ void cls_804AF72C::fn_8039F540(int c) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = window->field_0xf0;
-                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -1797,18 +1798,17 @@ void cls_804AF72C::fn_8039F540(int c) {
             if (c == '\n') {
                 return;
             }
+            s8 high = (c >> 8) & 0xFF;
             s32 length = 0;
-            s8 high = c >> 8;
             if (high != 0) {
                 field_0x2d0++;
                 c &= 0xFF;
-                length = 1;
-                text[0] = high;
+                text[length++] = high;
             }
             field_0x2d0++;
             text[length] = c;
             s32 shown = field_0x2d0 - (length + 1);
-            if (shown != field_0x2d8->field_0x170) {
+            if (field_0x2d8->field_0x170 != shown) {
                 field_0x2d8->field_0x170 = shown;
             }
             strcat(field_0x2c0, text);
@@ -2800,7 +2800,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                         base = field_0x2d8->field_0xf0;
                         pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                     }
-                    s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
+                    s32 offset = (s32)(0.5f * (base - pos) + 0.5f);
                     if (offset > 0) {
                         snprintf(lbl_8050E538, 15, "\033CR[%d]", offset);
                         strcat(field_0x2c0, lbl_8050E538);
