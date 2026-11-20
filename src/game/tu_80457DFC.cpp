@@ -179,8 +179,9 @@ public:
         }
 
         if (audible->getAudibleParam()._00.bytes.b1_0) {
-            u8 flags = audible->getAudibleParam()._00.bytes.b1_2_7;
-            if (!(flags & 1) || ((flags & 1) && (flags & 2))) {
+            int flags = audible->getAudibleParam()._00.bytes.b1_2_7;
+            int panFixed = flags & 1;
+            if (!panFixed || (panFixed && (flags & 2))) {
                 if (numPlayers_ > 2) {
                     newParams.mPan = (index & 1) ? 1.0f : 0.0f;
                 } else {
