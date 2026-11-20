@@ -497,9 +497,7 @@ u8 cls_804A5D60::vfunc_0x5C() {
         if (player >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (actor != NULL) {
-                const JGeometry::TVec3f* pos = getPlayerPos_8023E724(player);
-                s32 type = fn_8023B6CC(player);
-                static_cast<cls_804A5B28*>(actor)->fn_80207830(field_0x94, player, type, pos, flag);
+                static_cast<cls_804A5B28*>(actor)->fn_80207830(field_0x94, player, fn_8023B6CC(player), getPlayerPos_8023E724(player), flag);
             }
         }
     }
