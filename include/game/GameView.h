@@ -163,7 +163,7 @@ public:
     void fn_802DCDF4();
     // 1 unit. The screen change of fn_802DCD1C with dir read the same way
     // (lwz 0/4; the same guess); returns 0 or 1.
-    bool fn_802DCE5C(const s32* dir);
+    u8 fn_802DCE5C(const s32* dir);
     // 1 unit. The same, after looking for a 'SDSM' actor; sets field_0xc8,
     // clears field_0xc9; returns 0 or 1. dir as in fn_802DCD1C (a guess).
     u8 fn_802DD3D4(const s32* dir);
@@ -461,7 +461,7 @@ bool fn_802DEBA0(void);
 // 9 units. Stage (8, 3).
 bool fn_802DEBF8(void);
 // 0 callers found. Forwards to the view's fn_802DCE5C.
-bool fn_802DEDFC(const s32* dir);
+u8 fn_802DEDFC(const s32* dir);
 
 // 1 unit. Stage (6, 0), (6, 1) or (6, 3).
 bool fn_802DEA34(void);
