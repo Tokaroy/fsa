@@ -8,7 +8,6 @@
 
 static const u32 lbl_8053EF18[2] = {'FLME', 'NULL'};
 
-// FIXME(shotgun): 90.23 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer) {
     bool hit = false;
     if (ActorBase_804A5770::vfunc_0x4C(layer, pos) ||
@@ -35,7 +34,7 @@ void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 87.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
     switch (mState) {
     case 0x0:
@@ -377,7 +376,6 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
     return result;
 }
 
-// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801CA0F8() {
     if (mBox.f.x - mBox.i.x <= 0.0f || mBox.f.y - mBox.i.y <= 0.0f || fn_801C53C4()) {
         return false;
@@ -511,7 +509,6 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     return hit;
 }
 
-// FIXME(shotgun): 95.12 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) {
     JGeometry::TVec3f p = *pos;
     if (viewLayerFlag(layer)) {
