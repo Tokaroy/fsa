@@ -1231,7 +1231,6 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
@@ -1257,12 +1256,12 @@ void cls_804ADF28::fn_80363360() {
     }
     if (PSVECDistance(&mPos, &field_0x27c[0]) >= 45.0f) {
         field_0x248 = 0x80;
-        field_0x240 = (s16)(JMath::atanTable_.atan2_(field_0x27c[0].y - mPos.y, field_0x27c[0].x - mPos.x) * 10430.378f);
+        field_0x240 = (s16)(JMath::atanTable_.atan2_(field_0x27c[0].y - mPos.y, field_0x27c[0].x - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
         field_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
     }
     if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
-        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 0;
         } else if (angle >= 0x6000 && angle < 0xa000) {
