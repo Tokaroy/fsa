@@ -974,7 +974,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
 }
 
 // FIXME: 99.29 %, regalloc-only; behaviour clean.
-// Regalloc only: the original keeps the array pointer in r29 and the serial in r28; here they are swapped.
+// Regalloc only: the original keeps the array pointer, counter and serial in r29, r30, r28; here in r28, r29, r30.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
     vfunc_0x7C();
@@ -986,12 +986,11 @@ void EscortBase_8049E0C8::fn_80121ABC() {
 void EscortBase_8049E0C8::spawnLifeMeters() {
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
-        s32 serial;
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
             pos.x += lifeMeterSpacing();
             field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
-            serial = field_0x364[i];
+            s32 serial = field_0x364[i];
             if (serial < 0) {
                 break;
             }
