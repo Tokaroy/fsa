@@ -1011,9 +1011,9 @@ void cls_804B0288::fn_803D3060() {
 void cls_804B0288::fn_803D2FFC() {
     if (field_0x7c > 0) {
         field_0x7c--;
-        if (field_0x7c != 0) {
-            return;
-        }
+    }
+    if (field_0x7c != 0) {
+        return;
     }
     if (lbl_80529DEC.field_0x24d != 0) {
         field_0x216d = 0x19;
