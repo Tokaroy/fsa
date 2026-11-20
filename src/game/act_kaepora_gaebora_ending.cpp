@@ -564,7 +564,7 @@ static const KaeporaStep* lbl_804ADA98[12] = {
     lbl_80474150, lbl_804741A0, lbl_804741F0, lbl_80474240,
 };
 
-// FIXME(shotgun): 84.2 %, missing/extra
+// FIXME(shotgun): 98.21 %, different; behaviour drift.
 void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x3c.zero();
     field_0x230 = 0;
@@ -676,7 +676,7 @@ void KaeporaGaeboraEnding_804ADAC8::update() {
     }
 }
 
-// FIXME(shotgun): 94.2 %, different
+// FIXME(shotgun): 94.46 %, different + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x2B0 != 0) {
         if (field_0x270 == 0) {
@@ -709,7 +709,7 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
     }
 }
 
-// FIXME(shotgun): 90.7 %, scheduling+regalloc
+// FIXME(shotgun): 90.94 %, scheduling+regalloc + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     SpriteParams_801F5AE0 params;
     params.field_0x1f = 0;
@@ -750,7 +750,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 96.3 %, missing/extra
+// FIXME(shotgun): 96.57 %, missing/extra + reloc-name; behaviour near.
 void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     SpriteParams_801F5AE0 params;
     bool shadow = false;
@@ -878,7 +878,8 @@ inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
     }
 }
 
-// FIXME(shotgun): 0 % in objdiff (689 vs 687 instrs: our shared tail of commands 0-5 sits after the switch, the original has it right after case 0), missing/extra
+// FIXME(shotgun): 0.00 %, missing/extra + reloc-name; behaviour drift.
+// in objdiff (689 vs 687 instrs: our shared tail of commands 0-5 sits after the switch, the original has it right after case 0), missing/extra
 // Reads the next command of the script field_0x284 and starts it.
 void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     field_0x26C = 0.0f;
@@ -1035,7 +1036,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     }
 }
 
-// FIXME(shotgun): 96.6 %, missing/extra
+// FIXME(shotgun): 97.01 %, missing/extra + reloc-name; behaviour near.
 // update() step 0: flies along the current command (fn_80360914).
 void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     s32 facing = field_0x274;
@@ -1160,7 +1161,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FF70() {
     }
 }
 
-// FIXME(shotgun): 98.4 %, scheduling+regalloc
+// FIXME(shotgun): 98.33 %, scheduling+regalloc + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
@@ -1191,7 +1192,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FCD8() {
     }
 }
 
-// FIXME(shotgun): 97.9 %, missing/extra
+// FIXME(shotgun): 99.52 %, regalloc-only + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FB64() {
     if (field_0x234 == 0) {
         if (lbl_804742A8[mStep].mValue < 0) {
@@ -1247,7 +1248,7 @@ inline bool KaeporaGaeboraEnding_804ADAC8::fireWaypoint() {
     return true;
 }
 
-// FIXME(shotgun): 98.1 %, missing/extra
+// FIXME(shotgun): 99.56 %, regalloc-only + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
     if (field_0x234 == 0) {
         if (lbl_804742A8[mStep].mValue < 0) {
@@ -1274,7 +1275,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
     }
 }
 
-// FIXME(shotgun): 98.4 %, scheduling+regalloc
+// FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
 u8 KaeporaGaeboraEnding_804ADAC8::fn_8035F3C0() {
     if (field_0x294 == 0 || field_0x298 == NULL) {
         return false;
