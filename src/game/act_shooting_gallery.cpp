@@ -462,7 +462,10 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 void ShootingGallery_804A2B18::fn_8019EE74() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f p(mPos.x, mPos.y);
-    box.addPos(p);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
 
     addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.3f, 1.0f);
@@ -489,7 +492,10 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
                 if (field_0x268 == 1) {
                     lbl_8053AED0->fn_8043D874(field_0x248, 300, 0);
                     for (int i = 0; i < 20; i++) {
-                        JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
+                        JGeometry::TVec3f spawnPos;
+                        spawnPos.x = mPos.x;
+                        spawnPos.y = mPos.y;
+                        spawnPos.z = mPos.z;
                         spawnPos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                         spawnPos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                         getActorManager_801F856C()->spawnActor_801F9484('SYKY', field_0x4, &spawnPos, 4, -1, -1);
