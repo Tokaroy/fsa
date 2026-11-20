@@ -3383,9 +3383,6 @@ void Player_804A6F38::fn_80248604() {
 // acting player's position and trail. Then the reachable players' actors are
 // reset (fn_8023105C / fn_802310F8), the old mode kept in field_0x1210 and,
 // for a leader, the cue played (fn_8024F0E8 / fn_80230FD0) when `cue`.
-// FIXME: 99.93 %, regalloc-only; behaviour clean.
-// Registers only: the group loop's count / index / leader
-// (r27 / r28 / r26 in the original) and the 0xCBC / 0xD1C addresses (r5 / r4).
 void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     if (fn_80248970() <= 1) {
         return;
@@ -3428,8 +3425,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
             }
             mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(field_0x4)));
             field_0x2c.set(mPos);
-            field_0xcbc = mPos;
-            field_0xd1c = field_0xcbc;
+            field_0xd1c = field_0xcbc = mPos;
         }
         for (s32 i = 0; i < 0x31; i++) {
             field_0x38[i].set(*fn_8023E4E4(fn_8022EA0C(field_0x4), 0));
