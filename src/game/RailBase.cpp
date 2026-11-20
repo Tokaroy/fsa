@@ -301,43 +301,50 @@ bool cls_800FE3EC::fn_800FD5E8(u8 index) {
     u32 mode = field_0x4[count - 1]->field_0x90 & 3;
     if (index == 0xFF) {
         u8 cur = field_0x3;
-        s16 next = field_0x1 != 0 ? cur - 1 : cur + 1;
+        s16 next = cur;
+        if (field_0x1 != 0) {
+            next--;
+        } else {
+            next++;
+        }
         if (next < 0) {
-            if (mode != 1) {
+            if (mode == 1) {
+                next = count - 1;
+            } else {
                 return false;
             }
-            next = count - 1;
         } else if (next == count) {
-            if (mode != 1) {
+            if (mode == 1) {
+                next = 0;
+            } else {
                 return false;
             }
-            next = 0;
         }
         if (fn_800FE25C(cur) != fn_800FE25C(next)) {
             return true;
         }
-        return false;
-    }
-    int next = index + 1;
-    int prev = index - 1;
-    if (next == count) {
-        if (mode == 1) {
-            next = 0;
-        } else {
-            next = next - 1;
+    } else {
+        int next = index + 1;
+        int prev = index - 1;
+        if (next == count) {
+            if (mode == 1) {
+                next = 0;
+            } else {
+                next = next - 1;
+            }
+        } else if (prev < 0) {
+            if (mode == 1) {
+                prev = count - 1;
+            } else {
+                prev = 0;
+            }
         }
-    } else if (prev < 0) {
-        if (mode == 1) {
-            prev = count - 1;
-        } else {
-            prev = 0;
+        if (fn_800FE25C(index) != fn_800FE25C(next)) {
+            return true;
         }
-    }
-    if (fn_800FE25C(index) != fn_800FE25C(next)) {
-        return true;
-    }
-    if (fn_800FE25C(index) != fn_800FE25C(prev)) {
-        return true;
+        if (fn_800FE25C(index) != fn_800FE25C(prev)) {
+            return true;
+        }
     }
     return false;
 }
