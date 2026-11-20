@@ -1090,8 +1090,10 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
                 for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                     u16 tile = grid[(block * 16 + y) * 16 + x];
                     if (tile != 0) {
-                        for (int k = 0; k < 4; k++) {
-                            counts[(field_0x24[tile * 4 + k] >> 12) & 0xF]++;
+                        for (int j = 0; j < 2; j++) {
+                            for (int i = 0; i < 2; i++) {
+                                counts[(field_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
+                            }
                         }
                     }
                 }
@@ -1113,40 +1115,38 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
                 for (int y = 0; y < 16 && by * 16 + y < field_0x2384 / 2; y++) {
                     for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                         u16 tile = grid[(block * 16 + y) * 16 + x];
-                        if (tile == 0) {
-                            continue;
-                        }
-                        for (int j = 0; j < 2; j++) {
-                            for (int i = 0; i < 2; i++) {
-                                u16 entry = field_0x24[tile * 4 + j * 2 + i];
-                                if (((entry >> 12) & 0xF) != palette) {
-                                    continue;
+                        if (tile != 0) {
+                            for (int j = 0; j < 2; j++) {
+                                for (int i = 0; i < 2; i++) {
+                                    u16 entry = field_0x24[tile * 4 + j * 2 + i];
+                                    if (((entry >> 12) & 0xF) == palette) {
+                                        s32 cx = bx * 32 + x * 2 + i;
+                                        s32 cy = by * 32 + y * 2 + j;
+                                        u16 corner = entry & 0xFFF;
+                                        f32 s = (origin->x + cx * 8) * 0.0078125f;
+                                        f32 t = (origin->y + cy * 8) * 0.0078125f;
+                                        u16 v0 = cx + cy * 65;
+                                        GXPosition1x16(v0);
+                                        GXColor1x16(v0);
+                                        GXTexCoord1x16(corner);
+                                        GXTexCoord2f32(s, t);
+                                        u16 v1 = v0 + 1;
+                                        GXPosition1x16(v1);
+                                        GXColor1x16(v1);
+                                        GXTexCoord1x16(corner ^ 0x400);
+                                        GXTexCoord2f32(0.0625f + s, t);
+                                        u16 v2 = v1 + 65;
+                                        GXPosition1x16(v2);
+                                        GXColor1x16(v2);
+                                        GXTexCoord1x16(corner ^ 0xC00);
+                                        GXTexCoord2f32(0.0625f + s, 0.0625f + t);
+                                        u16 v3 = v2 - 1;
+                                        GXPosition1x16(v3);
+                                        GXColor1x16(v3);
+                                        GXTexCoord1x16(corner ^ 0x800);
+                                        GXTexCoord2f32(s, 0.0625f + t);
+                                    }
                                 }
-                                s32 cx = bx * 32 + x * 2 + i;
-                                s32 cy = by * 32 + y * 2 + j;
-                                u16 corner = entry & 0xFFF;
-                                f32 s = (origin->x + cx * 8) * 0.0078125f;
-                                f32 t = (origin->y + cy * 8) * 0.0078125f;
-                                u16 v0 = cx + cy * 65;
-                                GXPosition1x16(v0);
-                                GXColor1x16(v0);
-                                GXTexCoord1x16(corner);
-                                GXTexCoord2f32(s, t);
-                                u16 v1 = v0 + 1;
-                                GXPosition1x16(v1);
-                                GXColor1x16(v1);
-                                GXTexCoord1x16(corner ^ 0x400);
-                                GXTexCoord2f32(0.0625f + s, t);
-                                u16 v2 = v1 + 65;
-                                GXPosition1x16(v2);
-                                GXColor1x16(v2);
-                                GXTexCoord1x16(corner ^ 0xC00);
-                                GXTexCoord2f32(0.0625f + s, 0.0625f + t);
-                                u16 v3 = v2 - 1;
-                                GXPosition1x16(v3);
-                                GXColor1x16(v3);
-                                GXTexCoord1x16(corner ^ 0x800);
-                                GXTexCoord2f32(s, 0.0625f + t);
                             }
                         }
                     }
