@@ -3,6 +3,7 @@
 #include "game/GameState.h"
 #include "game/GameView.h"
 #include "game/Player.h"
+#include "game/PlayerBit.h"
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JFramework/JFWDisplay.h"
@@ -835,11 +836,9 @@ void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
 }
 
 // FIXME(shotgun): 98.36 %, missing/extra; behaviour near.
-// (the takesPart bool test is one cmplwi longer)
 void cls_804B146C::fn_80425128() {
     for (s32 i = 0; i < 4; i++) {
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
-        if (takesPart == true) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0) {
             lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
             for (s32 j = 0; j < 4; j++) {
                 if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
