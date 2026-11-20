@@ -272,23 +272,12 @@ void cls_8049E770::fn_8012BE2C() {
             field_0x2f8[i].y = 0.0f;
             field_0x2f8[i].z = 0.5f;
         }
-        s32 id0 = 0x3C0;
-        s32 id1 = 0x3C1;
-        s32 id2 = 0x3C2;
-        for (s32 i = 0; i < 4; i++) {
-            field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
-            id0 += 3;
-            id1 += 3;
-            id2 += 3;
-        }
+        spawnEmitters();
         field_0x234 = 0;
         startSound_801F0E34(0x50062, 0);
     }
 }
 
-// FIXME(shotgun): 98.88 %, scheduling+regalloc; behaviour drift.
 void cls_8049E770::fn_8012BC40() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 279.0f && field_0x248 == 105.0f && done == true) {
@@ -299,19 +288,17 @@ void cls_8049E770::fn_8012BC40() {
             field_0x2f8[i].y = 0.0f;
             field_0x2f8[i].z = 0.5f;
         }
-        s32 id0 = 0x3C0;
-        s32 id1 = 0x3C1;
-        s32 id2 = 0x3C2;
-        for (s32 i = 0; i < 4; i++) {
-            field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
-            id0 += 3;
-            id1 += 3;
-            id2 += 3;
-        }
+        spawnEmitters();
         field_0x230++;
         field_0x234 = 0;
+    }
+}
+
+inline void cls_8049E770::spawnEmitters() {
+    for (s32 i = 0; i < 4; i++) {
+        field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C0 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C1 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C2 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
