@@ -1626,8 +1626,8 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
     JGeometry::TVec3f pos((f32)x, (f32)y, 0.0f);
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.field_0x26 = 0;
     params.field_0x2c = 0;
+    params.field_0x26 = 0;
     params.field_0x2d = 0;
     if (!flag) {
         params.field_0x34 = 2;
@@ -1672,9 +1672,9 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
     }
     params.mMtx = mtx;
     if (set) {
-        params.field_0x22 = 2;
+        params.field_0x1e = 2;
     } else {
-        params.field_0x22 = 1;
+        params.field_0x1e = 1;
     }
     if (sprite->f.mKind < 2) {
         if ((id >= 0x37 && id < 0x41) || (id >= 0x3CD && id < 0x3CE)) {
