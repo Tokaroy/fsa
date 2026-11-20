@@ -323,17 +323,14 @@ JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CE78() {
     return ret;
 }
 
-// FIXME: 95.91 %, operands; behaviour clean.
-// Register allocation and return copy stack slot.
 JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CDC0() {
+    JGeometry::TVec3f ret;
     s16 prevAngle = field_0x260;
     field_0x260 += 0x400;
-    JGeometry::TVec3f v;
-    v.x = (field_0x264 - 5.0f) + 25.0f * JMASCos(field_0x260);
-    v.y = (field_0x268 + field_0x25c - 25.0f) + 25.0f * JMASSin(field_0x260);
-    v.z = mPos.z;
-    // The original copies the result into a second local before returning it (fn_8035CE78 without the copy: 3 instructions fewer).
-    JGeometry::TVec3f ret = v;
+    ret = JGeometry::TVec3f(
+        (field_0x264 - 5.0f) + 25.0f * JMASCos(field_0x260),
+        (field_0x268 + field_0x25c - 25.0f) + 25.0f * JMASSin(field_0x260),
+        mPos.z);
     if (field_0x260 >= 0x4000 && prevAngle < 0x4000) {
         if (field_0x270 < 0) {
             field_0x270 = -0x4000;
