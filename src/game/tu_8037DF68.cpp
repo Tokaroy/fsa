@@ -55,6 +55,22 @@ static inline const char* messageText(u32 msg) {
     return &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
 }
 
+static inline bool checkSync(s32 window, u32 msg) {
+    s32 index = windowIndex(window);
+    const char* text = messageText(msg);
+    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
+        return true;
+    }
+    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
+        gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
+        lbl_8053AD78->field_0xed = 1;
+        lbl_8053AD78->field_0x110 = index;
+        lbl_8053AD78->field_0xee = text[5];
+        return true;
+    }
+    return false;
+}
+
 // Whether the window may open at once: fn_80303750 holds and no window is opening.
 static inline bool canOpen(s32 window) {
     if (!fn_80303750(windowIndex(window))) {
@@ -366,21 +382,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
             }
             return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
         }
-        s32 index = windowIndex(window);
-        const char* text = messageText(msg);
-        bool sync;
-        if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
-            sync = true;
-        } else if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-                   gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
-            lbl_8053AD78->field_0xed = 1;
-            lbl_8053AD78->field_0x110 = index;
-            lbl_8053AD78->field_0xee = text[5];
-            sync = true;
-        } else {
-            sync = false;
-        }
-        if (sync) {
+        if (checkSync(window, msg)) {
             if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
                 return true;
             }
