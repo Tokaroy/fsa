@@ -1101,13 +1101,9 @@ u8 ActorBase_804A5770::fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excl
 // on this layer, with fn_80238548 at the box's centre (moved through
 // fn_801CD0D0 for a player below layer 8 while this is on 8); damage -100
 // means field_0x114 ("atcp"). Returns the bits of the players hit.
-// FIXME: 98.27 %, regalloc-only; behaviour clean.
-// Register allocation (this, damage, arg and the result one
-// register off; the inlined fn_801F2740's result is copied once more), and
-// the 32.0f, 0.5f and 0.0f literals (lbl_8053F748, lbl_8053F74C,
-// lbl_8053F740) pair only once .sdata2 is in order.
+// FIXME: 99.12 %, regalloc-only; behaviour clean.
 u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
-    u8 result = fn_801F2740(skipPlayer);
+    u32 result = fn_801F2740(skipPlayer);
     if (result) {
         JGeometry::TBox2f screen;
         toScreenBox(&screen, mBox, mPos);
@@ -2051,10 +2047,8 @@ void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0*
     }
 }
 
-// FIXME(shotgun): 60.18 %, missing/extra; behaviour clean.
-// (the original copies the params field by field through registers)
 extern "C" void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
-                            SpriteParams_801F5AE0* params) {
+                            const SpriteParams_801F5AE0* params) {
     SpriteParams_801F5AE0 sp;
     if (params != NULL) {
         sp = *params;
@@ -2191,15 +2185,14 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
     }
 }
 
-// FIXME: 99.80 %, scheduling+regalloc; behaviour clean.
-// Scheduling and float registers in the prologue, as in
-// fn_801EE558; literals @NNN.
 // fn_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
 // with no player found the direction is zero (and the distance unset).
 void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
-    JGeometry::TVec3f best(0.0f, 0.0f, 0.0f);
-    JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-    pos.y = pos.y - pos.z;
+    JGeometry::TVec3f best;
+    JGeometry::TVec3f pos;
+    pos.set(mPos);
+    best.set(0.0f, 0.0f, 0.0f);
+    pos.y -= pos.z;
     JGeometry::TVec3f diff;
     bool first = true;
     f32 bestDist;
@@ -2240,7 +2233,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
     }
 }
 
-// FIXME: 99.65 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.66 %, scheduling+regalloc; behaviour clean.
 // Scheduling and float registers only: the original loads
 // mPos.y before mPos.z and x last for `pos`; the literals are @NNN until the
 // unit's .sdata2 is in order.
@@ -2250,8 +2243,9 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
 // With no player found the direction is (0, 512, 0).
 void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best(0.0f, 512.0f, 0.0f);
-    JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-    pos.y = pos.y - pos.z;
+    JGeometry::TVec3f pos;
+    pos.set(mPos);
+    pos.y -= pos.z;
     JGeometry::TVec3f diff;
     bool first = true;
     f32 bestDist = best.squared();
