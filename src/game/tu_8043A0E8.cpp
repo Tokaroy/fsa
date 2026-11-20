@@ -765,20 +765,19 @@ void cls_804B1920::fn_8043D834() {
     }
 }
 
-// FIXME: 95.41 %, missing/extra; behaviour drift.
-// The original tests 0x199 / 0x1B5 unsigned (cmplwi) but switches signed (cmpwi on id
-// itself), compares the message type byte signed (cmpwi 0x2A), and turns field_0xde & bit into a
-// bool first (neg / or / srwi.; ours: and.).
+// Original turns field_0xde & bit into a bool first (neg / or / srwi.; ours: and.),
+// and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
+// FIXME: 95.59 %, missing/extra; behaviour drift.
 bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
     }
-    if (id == 0x199) {
+    if (id == 0x199u) {
         if (getGameView_802D6A9C()->fn_802D46D8(0, id, false) == true) {
             return false;
         }
         getGameView_802D6A9C()->fn_802D46D8(0, id, true);
-    } else if (id == 0x1B5) {
+    } else if (id == 0x1B5u) {
         u8 bit = 1 << arg1;
         if (field_0xde & bit) {
             return false;
@@ -983,7 +982,7 @@ void cls_804B1920::fn_8043CDA0() {
     }
 }
 
-// FIXME(shotgun): 86.75 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
 bool cls_804B1920::fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag, f32 x, f32 y, f32 scale) {
     if (field_0x252 < 10) {
         field_0x118[field_0x252] = x - 0.5f * (19.0f * (digits % 2) * scale) - 16.0f * (digits >> 1) * scale;
@@ -996,11 +995,11 @@ bool cls_804B1920::fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag
         field_0x1f4[2][field_0x252] = 0xFF;
         field_0x1f4[3][field_0x252] = 0xFF;
         field_0x1f4[4][field_0x252] = 0xFF;
+        s32 div = 1;
         bool seen = false;
         if (flag) {
             seen = true;
         }
-        s32 div = 1;
         for (s32 i = 0; i < digits; i++) {
             div *= 10;
         }
