@@ -556,28 +556,27 @@ s32 cls_804AE088::vfunc_0x5C() {
     return 0;
 }
 
-// differs: register allocation (original keeps &mPos in a register across the draw calls).
+// differs: regalloc-only (pos and frame registers swapped) + reloc-name (unit literal pool order).
 // FIXME: 97.28 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
         return;
     SpriteParams_801F5AE0 params;
-    s32 frame;
     if (field_0x23c != 5 || field_0x240 < 0x1E || field_0x240 >= 0x21) {
         if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
-            frame = field_0x264 + 0x1B3;
+            s32 frame = field_0x264 + 0x1B3;
             if (mSpriteParams.mMtx == NULL) {
                 fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         } else {
-            frame = arg + field_0x318.mCel;
+            s32 frame = arg + field_0x318.mCel;
             if (mSpriteParams.mMtx == NULL) {
                 fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         }
     } else {
         if (field_0x24c < 0xC0) {
-            frame = arg + field_0x318.mCel;
+            s32 frame = arg + field_0x318.mCel;
             if (mSpriteParams.mMtx == NULL) {
                 fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
@@ -585,17 +584,19 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
         params.field_0x10.set(0xFF, 0xFF, 0xFF, 0xFF - field_0x24c);
     }
     if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
-        frame = field_0x264 + 0x1B3;
+        JGeometry::TVec3f* pos = getPos();
+        s32 frame = field_0x264 + 0x1B3;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
     } else {
-        frame = arg + field_0x318.mCel;
+        JGeometry::TVec3f* pos = getPos();
+        s32 frame = arg + field_0x318.mCel;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, field_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
     }
@@ -1295,27 +1296,27 @@ void cls_804AE088::fn_80368660() {
                     mPos.z = 20.0f;
                     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DD8[i], &params, 7, 1.0f, 1.0f);
                     if (field_0x3bc[i] != NULL) {
-                        JGeometry::TVec3f p = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                        setEmitterPos_8013CB44(field_0x3bc[i], &p, 0, -1, true);
+                        setEmitterPos_8013CB44(field_0x3bc[i], &(field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f)), 0, -1, true);
                     }
                     if (field_0x3d4[i] != NULL) {
-                        JGeometry::TVec3f p = field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f);
-                        setEmitterPos_8013CB44(field_0x3d4[i], &p, 0, -1, true);
+                        setEmitterPos_8013CB44(field_0x3d4[i], &(field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f)), 0, -1, true);
                     }
                 }
             } else if (field_0x240 < 0x21) {
                 mPos = field_0x2a8[i];
                 if (field_0x240 >= 0x1e && field_0x240 < 0x21) {
-                    if (field_0x24c < 0xc0 && mSpriteParams.mMtx == NULL) {
-                        fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], NULL);
+                    if (field_0x24c < 0xc0) {
+                        s32 frame = field_0x264 + lbl_80474DC4[i];
+                        if (mSpriteParams.mMtx == NULL) {
+                            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", frame, NULL);
+                        }
                     }
-                    params.field_0x10.r = 255;
-                    params.field_0x10.g = 255;
-                    params.field_0x10.b = 255;
-                    params.field_0x10.a = 255 - field_0x24c;
+                    params.field_0x10.set(255, 255, 255, 255 - field_0x24c);
+                    JGeometry::TVec3f* pos = getPos();
+                    s32 frame = field_0x264 + lbl_80474DC4[i];
                     if (field_0x4 < 8) {
                         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-                        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, field_0x264 + lbl_80474DC4[i], &params, 1.0f, 1.0f);
+                        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
                     }
                     fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
