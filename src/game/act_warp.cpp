@@ -203,20 +203,12 @@ Warp_804A6DC8::~Warp_804A6DC8() {
     releaseEmitter_801EE434(mEmitter250);
 }
 
-extern const u32 lbl_8046ABE8[28]; // 'NULL'-ended actor id lists: [0] pushed, [14] and [17] by kind
-
 // Whether the bomb-flower rests: flagged, or its velocity is within 32 * FLT_EPSILON of field_0x364.
 static inline bool bomeAtRest(cls_804A0738* b) {
-    bool rest = false;
-    if (b->field_0x230 == 1) {
-        rest = true;
-    } else {
-        JGeometry::TVec3f ref(b->field_0x364[0], b->field_0x364[1], b->field_0x364[2]);
-        if (epsilonEquals(b->field_0x3c, ref, 32.0f * FLT_EPSILON)) {
-            rest = true;
-        }
+    if (b->field_0x230 == 1 || epsilonEquals(b->field_0x3c, b->field_0x364, 32.0f * FLT_EPSILON)) {
+        return true;
     }
-    return rest;
+    return false;
 }
 
 // 0x80227F50. Every frame: tracks whether a player is near (the sand shake), lets the kind-0x20 warp
@@ -224,12 +216,20 @@ static inline bool bomeAtRest(cls_804A0738* b) {
 // warp's destination (field_0x238) or nudges their velocity.
 // FIXME(shotgun): 88.35 %, missing/extra + reloc-name; behaviour drift.
 void Warp_804A6DC8::update() {
-    for (s32 i = 0; i < 4; i++) {
+    // 'NULL'-ended actor id lists, addressed off one base (0x8046ABE8, +0x38, +0x44): the pushed
+    // actors, then two lists chosen by kind.
+    static const u32 lbl_8046ABE8[] = { 'ARRW', 'FIRE', 'HBMB', 'BOME', 'STON', 'GRAS', 'TUBO',
+                                        'YASI', 'HNRY', 'ESRY', 'PCDM', 'SWBM', 'SBAL', 'NULL' };
+    static const u32 lbl_8046AC20[] = { 'HNRY', 'ESRY', 'NULL' };
+    static const u32 lbl_8046AC2C[] = { 'HBMB', 'BOME', 'STON', 'GRAS', 'TUBO', 'YASI',
+                                        'RUPY', 'HNRY', 'ESRY', 'SBAL', 'NULL' };
+    s32 i;
+    for (i = 0; i < 4; i++) {
         field_0x258[i] = fn_8022C76C(i);
         field_0x268[i] = field_0x258[i];
     }
     field_0x256 = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
         if (__fabsf(mPos.x - pos.x) < 32.0f && __fabsf(mPos.y - pos.y) < 32.0f) {
             field_0x256 = 1;
@@ -322,9 +322,9 @@ void Warp_804A6DC8::update() {
     kind = field_0x90 & 0x7F;
     s32 serial;
     if (kind == 4 || kind == 0x20 || kind == 0x24) {
-        serial = fn_801F26CC(lbl_8046ABE8 + 17);
+        serial = fn_801F26CC(lbl_8046AC2C);
     } else if (kind == 6 || kind == 0xB || kind == 0x14) {
-        serial = fn_801F26CC(lbl_8046ABE8 + 14);
+        serial = fn_801F26CC(lbl_8046AC20);
     } else {
         serial = fn_80227290(32.0f, lbl_8046ABE8, -1);
     }
@@ -359,7 +359,8 @@ void Warp_804A6DC8::update() {
     if (actor->mActorId == 'BOME') {
         cls_804A0738* bome = static_cast<cls_804A0738*>(actor);
         getPlayerLayer_8023DE58(bome->field_0x90 & 0xF);
-        if (bomeAtRest(bome)) {
+        // The original compares this result with 1 (cmplwi), the second one below with 0.
+        if (bomeAtRest(bome) == true) {
             return;
         }
         kind = field_0x90 & 0x7F;
@@ -374,11 +375,11 @@ void Warp_804A6DC8::update() {
         if (PSVECMag(&actor->field_0x3c) <= 1.0f) {
             return;
         }
-    }
-    kind = field_0x90 & 0x7F;
-    if (kind == 4 || (u32)(kind - 7) <= 2 || kind == 0x12 || kind == 0x20 || kind == 0x24) {
-        if (actor->mPos.z > 4.0f) {
-            return;
+        kind = field_0x90 & 0x7F;
+        if (kind == 4 || (u32)(kind - 7) <= 2 || kind == 0x12 || kind == 0x20 || kind == 0x24) {
+            if (actor->mPos.z > 4.0f) {
+                return;
+            }
         }
     }
     id = actor->mActorId;
@@ -391,8 +392,11 @@ void Warp_804A6DC8::update() {
                 return;
             }
         }
+        JGeometry::TVec3f offset = actor->mPos;
         JGeometry::TVec3f dest = field_0x238;
-        dest += JGeometry::TVec3f(actor->mPos.x - mPos.x, actor->mPos.y - mPos.y, actor->mPos.z);
+        offset.x -= mPos.x;
+        offset.y -= mPos.y;
+        dest += offset;
         actor->fn_801F349C(warpLayer(field_0x90), &dest);
         return;
     }
