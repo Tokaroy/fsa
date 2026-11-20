@@ -55,7 +55,6 @@ cls_804A4C58::cls_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
     mEmitter2c[3] = NULL;
 }
 
-// FIXME: 95.98 %, scheduling+regalloc; behaviour clean.
 cls_804A4C58::~cls_804A4C58() {
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitter2c[i]);
@@ -66,7 +65,7 @@ cls_804A4C58::~cls_804A4C58() {
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 68.34 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 67.36 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -277,7 +276,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 91.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.39 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -840,7 +839,6 @@ void cls_804A4C58::vfunc_0xA0() {
 
 void cls_804A4C58::vfunc_0x24() {}
 
-// FIXME: 95.11 %, scheduling+regalloc; behaviour clean.
 void cls_804A4C58::update() {
     if (vfunc_0x2C(0.0f, -16.0f, 50.0f)) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
