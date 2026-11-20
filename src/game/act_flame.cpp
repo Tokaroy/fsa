@@ -136,7 +136,7 @@ void Flame_804A0330::init() {
 
 static u16 lbl_80539F70[4] = {904, 903, 902, 905};
 
-// FIXME(shotgun): 98.18 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.94 %, reloc-name; behaviour drift.
 void Flame_804A0330::fn_8015EA2C() {
     f32 dist = 0.0f;
     switch (mState) {
@@ -255,7 +255,7 @@ extern const Tables_80466110 lbl_80466110;
 extern JGeometry::TVec2f lbl_804A0310[4]; // the emitter offset from mPos
 
 // 0x8015DF7C.
-// FIXME(shotgun): 88.72 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 94.63 %, missing/extra; behaviour drift.
 void Flame_804A0330::fn_8015DF7C() {
     JGeometry::TBox2f box;
     box.set(mBox);
