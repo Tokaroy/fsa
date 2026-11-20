@@ -126,8 +126,8 @@ void SeesawLift_804AD348::init() {
     fillTiles(0);
 }
 
-// FIXME: 90.99 %, scheduling+regalloc; behaviour clean.
-// FIXME(shotgun): scheduling differs: original hoists the field_0x4 load above the layer call
+// FIXME: 99.59 %, regalloc-only; behaviour clean.
+// float registers of the box test and the operand order of the layer compare differ
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -135,7 +135,8 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    if (field_0x4 != getPlayerLayer_8023DE58(player)) {
+    s32 layer = field_0x4;
+    if (layer != getPlayerLayer_8023DE58(player)) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -151,10 +152,11 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         rel.sub(mPos);
         rel.z = 0.0f;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        bool inside = false;
-        if (rel.x >= mBox.i.x && rel.y >= mBox.i.y * cosVal && rel.x < mBox.f.x && rel.y < mBox.f.y * cosVal) {
-            inside = true;
-        }
+        f32 minX = mBox.i.x;
+        f32 minY = mBox.i.y * cosVal;
+        f32 maxX = mBox.f.x;
+        f32 maxY = mBox.f.y * cosVal;
+        bool inside = rel.x >= minX && rel.y >= minY && rel.x < maxX && rel.y < maxY;
         if (inside) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
@@ -175,7 +177,7 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     return 0;
 }
 
-// FIXME: 90.25 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): scheduling of the player loop differs; literal names differ
 s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_8022D75C(player)) {
@@ -184,7 +186,8 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    if (getPlayerLayer_8023DE58(player) != field_0x4) {
+    s32 layer = field_0x4;
+    if (getPlayerLayer_8023DE58(player) != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -200,11 +203,12 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         rel.sub(mPos);
         rel.z = 0.0f;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        bool inside = false;
-        if (rel.x >= mBox.i.x && rel.y >= mBox.i.y * cosVal && rel.x < mBox.f.x && rel.y < mBox.f.y * cosVal) {
-            inside = true;
-        }
-        if (inside) {
+        JGeometry::TBox2f box;
+        box.i.x = mBox.i.x;
+        box.i.y = mBox.i.y * cosVal;
+        box.f.x = mBox.f.x;
+        box.f.y = mBox.f.y * cosVal;
+        if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
             if (d == 0.0f) {
@@ -221,22 +225,21 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     return 0;
 }
 
-// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.71 %, different; behaviour clean.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
+    u8 near = 0;
     s32 moved = 0;
-    bool near = false;
     bool all = false;
     if (field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3]) {
         all = true;
     }
     if (all && __fabsf(field_0x240) < 33.0f) {
-        near = true;
+        near = 1;
     }
-    bool flag = near;
+    u8 flag = near;
     if (!gGameRoot_8053AAF8->field_0x7e) {
-        bool owned = fn_8022CAF8(0) == 1;
-        flag = near & owned;
+        flag = near & (fn_8022CAF8(0) == 1);
     }
     if (field_0x240 != 0.0f) {
         if (flag || field_0x250 > 0) {
@@ -282,7 +285,7 @@ void SeesawLift_804AD348::fn_8035AA54() {
 // Not auto-inlined: fn_8035AC84 and fn_8035AE9C call fn_8035A860 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 85.48 %, missing/extra; behaviour drift.
+// FIXME: 87.56 %, scheduling+regalloc; behaviour clean.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
         f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
@@ -732,18 +735,14 @@ void SeesawLift_804AD348::spawnSandEmitters() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-bool SeesawLift_804AD348::isPlayerInside(s32 player) const {
+u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
     rel.sub(mPos);
     rel.z = 0.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += 7.0f;
     box.f.x -= 7.0f;
-    u8 inside = 0;
-    if (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) {
-        inside = 1;
-    }
-    return inside;
+    return (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) ? true : false;
 }
 
 void SeesawLift_804AD348::fillTiles(s32 state) {
