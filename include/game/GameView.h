@@ -164,9 +164,9 @@ public:
     // 1 unit. The screen change of fn_802DCD1C with dir read the same way
     // (lwz 0/4; the same guess); returns 0 or 1.
     bool fn_802DCE5C(const s32* dir);
-    // 1 unit. The same, after looking for a 'SMSM' actor; sets field_0xc8,
+    // 1 unit. The same, after looking for a 'SDSM' actor; sets field_0xc8,
     // clears field_0xc9; returns 0 or 1. dir as in fn_802DCD1C (a guess).
-    bool fn_802DD3D4(const s32* dir);
+    u8 fn_802DD3D4(const s32* dir);
 
     // --- per-layer actor-id slots (field_0x2948) and their per-screen
     // 64-bit masks (field_0x1048) ---
