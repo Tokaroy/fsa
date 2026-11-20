@@ -1138,21 +1138,25 @@ u16 fn_803846A4(s32 index) {
 u32 fn_80383EB0(s32 window, u32 msg) {
     s32 player = fn_8022EA0C(window);
     bool listed = isGameModeSet();
-    s32 slot = window;
+    s32 slot;
     if (listed) {
         s32 mapped = fn_8022F340(window);
         if (mapped >= 0 && mapped < 4) {
             slot = mapped;
+        } else {
+            slot = window;
         }
+    } else {
+        slot = window;
     }
     u32 index = msg;
     while (true) {
         u8 command;
         const char* p = fn_80383E2C(index, &command);
         if (p == NULL) {
-            return index;
+            break;
         }
-        switch (command) {
+        switch ((s8)command) {
         case 7: {
             s32 yes = operand(p, 6);
             s32 no = operand(p, 10);
@@ -1166,7 +1170,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x10: {
             u8 kind = p[5];
             s32 target = operand(p, 6);
-            u8 consume = p[0xE];
+            u32 consume = (u8)p[0xE];
             s32 next = operand(p, 10);
             switch (kind) {
             case 0:
@@ -1247,13 +1251,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             case 13:
             case 14:
                 if (fn_8023EEB4(player) == 'PLAY') {
-                    if ((fn_8023ECF0(slot) == 0 && kind == 11) || (fn_8023ECF0(slot) == 1 && kind == 12) ||
-                        (fn_8023ECF0(slot) == 2 && kind == 13) || (fn_8023ECF0(slot) == 3 && kind == 14))
+                    if ((fn_8023ECF0(slot) == 0 && kind == 11) || (fn_8023ECF0(player) == 1 && kind == 12) ||
+                        (fn_8023ECF0(player) == 2 && kind == 13) || (fn_8023ECF0(player) == 3 && kind == 14))
                     {
                         next = target;
-                        if (consume) {
-                            fn_8023EE28(player);
-                        }
                     }
                 }
                 break;
@@ -1267,7 +1268,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x17: {
-            s32 count = (u8)p[5];
+            u8 count = p[5];
             s32 pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             if (pick > count) {
                 pick = count;
@@ -1337,8 +1338,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x23: {
-            u8 kind = p[5];
-            u16 bit = *(const u16*)(p + 6);
+            u32 kind = (u8)p[5];
+            s32 bit = *(const u16*)(p + 6);
             s32 yes = operand(p, 8);
             s32 no = operand(p, 12);
             u8 which;
@@ -1386,6 +1387,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         }
     }
+    return index;
 }
 
 // FIXME: 99.55 %, regalloc-only; behaviour drift.
