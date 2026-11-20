@@ -70,8 +70,6 @@ void MaidenEnding_804AD5B8::update() {
     (this->*lbl_804AD528[mState])();
 }
 
-// FIXME: 96.33 %, scheduling+regalloc; behaviour clean.
-// Instruction scheduling in matrix setup and register allocation.
 void MaidenEnding_804AD5B8::draw() {
     if (field_0x240 == 0) {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x250 + field_0x248, NULL, 7, 1.0f, 1.0f);
@@ -94,14 +92,14 @@ void MaidenEnding_804AD5B8::draw() {
         mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = scale;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = scale;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
 
         params.mMtx = mtx;
@@ -111,8 +109,9 @@ void MaidenEnding_804AD5B8::draw() {
         } else {
             params.field_0x10.a = 0;
         }
+        s32 frame = field_0x250 + field_0x248;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x250 + field_0x248, NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
