@@ -141,14 +141,10 @@ void fn_8038D870() {
     lbl_8053AD78->field_0xe4 = 0;
 }
 
-// FIXME: 99.27 %, different; behaviour clean.
-// Two opcodes: the original loads the constant 0 stored into
-// field_0xe4 by the second press loop with li (r30); ours copies the loop
-// index register (mr r30, r29).
 void fn_8038D570() {
-    s32 i;
+    u8 bit;
     lbl_8053AD78->field_0xe7 = 0;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
         if (takesPart == true) {
             lbl_8053AD78->mWindows[i]->mIndex = i;
@@ -157,7 +153,7 @@ void fn_8038D570() {
     }
     if (lbl_8053AD78->field_0xe4 != 0) {
         if (lbl_8053AD78->field_0x7c == 0) {
-            for (i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_8053AD78->field_0xe5 & (1 << i)) {
                     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
                         lbl_8053AD78->field_0xe4 = 0;
@@ -170,7 +166,7 @@ void fn_8038D570() {
             if (lbl_8053AD78->field_0x7c == 0) {
                 lbl_8053AD78->field_0xe4 = 0;
             }
-            for (i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_8053AD78->field_0xe5 & (1 << i)) {
                     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
                         lbl_8053AD78->field_0xe4 = 0;
@@ -194,17 +190,17 @@ void fn_8038D570() {
         if (elapsed > manager->field_0x48) {
             if (manager->field_0xeb != 0) {
                 if (!getGameView_802D6A9C()->fn_802D800C(manager->field_0xea)) {
-                    u8 bit = lbl_8053AD78->field_0xea;
+                    bit = lbl_8053AD78->field_0xea;
                     getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
                 }
             } else if (getGameView_802D6A9C()->fn_802D800C(manager->field_0xea) == true) {
-                u8 bit = lbl_8053AD78->field_0xea;
+                bit = lbl_8053AD78->field_0xea;
                 getGameView_802D6A9C()->fn_802D8050(bit, false, 0xFF);
             }
         }
     }
     if (lbl_8053AD78->field_0xed != 0) {
-        for (i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
             lbl_8053ACD8[i] = 1;
         }
     }
@@ -512,15 +508,14 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
     return lbl_8053AD78->fn_8038A984(window, player, msg, serial, flags);
 }
 
-// FIXME: 99.68 %, regalloc-only; behaviour clean.
-// Regalloc only: the flags parameter is r30 and the option bits r31 in the
-// original, the other way round here.
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
+// Regalloc only: the first fn_8037EC98 call passes the flags parameter (r30) in
+// the original, the truncated copy (r31) here.
 bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u32 flags) {
     if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || (u16)flags & 0x19F) {
-            u16 bits = flags; // only to match: a halfword copy of the flags parameter
             bool ready = false;
-            if (flags & 0x1000) {
+            if ((u16)flags & 0x1000) {
                 if (fn_8037EC98(actor, flags)) {
                     ready = true;
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x800;
@@ -532,16 +527,16 @@ bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 
             if (ready) {
                 lbl_8053AD78->mWindows[player]->fn_80390E40(value, false);
                 lbl_8053AD78->mWindows[windowIndex(player)]->field_0x24 = 1;
-                if (bits & 2) {
+                if ((u16)flags & 2) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x80;
                 }
-                if (bits & 0x80) {
+                if ((u16)flags & 0x80) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x4;
                 }
-                if (bits & 4) {
+                if ((u16)flags & 4) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x8;
                 }
-                if (bits & 0x100) {
+                if ((u16)flags & 0x100) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x100;
                 }
                 return true;
@@ -559,7 +554,7 @@ bool MessageManager_804AF070::fn_8038A42C(s32 player, s32 actor, s32 value, s32 
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || (u16)flags & 0x19F) {
             bool ready = false;
             u16 bits = flags; // only to match: a halfword copy of the flags parameter
-            if (flags & 0x1000) {
+            if ((u16)flags & 0x1000) {
                 if (fn_8037EC98(actor, flags)) {
                     ready = true;
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x800;
