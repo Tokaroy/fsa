@@ -401,7 +401,6 @@ void cls_804A5D60::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 95.71 %, missing/extra; behaviour drift.
 void cls_804A5D60::vfunc_0x88() {
     switch (mState) {
     case 3:
@@ -489,7 +488,6 @@ u8 cls_804A5D60::vfunc_0x60() {
     return 0;
 }
 
-// FIXME(shotgun): 97.31 %, missing/extra; behaviour clean.
 u8 cls_804A5D60::vfunc_0x5C() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 flag;
