@@ -430,9 +430,9 @@ void ActorManager_804A5800::fn_801F7E88() {
     }
 }
 
-// FIXME(shotgun): 98.70 %, regalloc-only; behaviour clean.
-void ActorManager_804A5800::fn_801F7CAC() {
-    GameView_804A9950* view = getGameView_802D6A9C();
+// The view's per-player slots (fn_802D39B8) are cleared and refilled from the
+// live players; the same loop opens fn_801F7CAC and fn_801F7B18.
+static inline void resetPlayerSerials() {
     for (s32 i = 0; i < 4; i++) {
         getGameView_802D6A9C()->fn_802D39B8(i, -1);
         if (fn_8023EBB8(i)) {
@@ -440,6 +440,12 @@ void ActorManager_804A5800::fn_801F7CAC() {
             getGameView_802D6A9C()->fn_802D39B8(i, v);
         }
     }
+}
+
+// FIXME(shotgun): 98.70 %, regalloc-only; behaviour clean.
+void ActorManager_804A5800::fn_801F7CAC() {
+    GameView_804A9950* view = getGameView_802D6A9C();
+    resetPlayerSerials();
     s32 end = mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
@@ -477,16 +483,11 @@ void ActorManager_804A5800::fn_801F7CAC() {
 
 // FIXME(shotgun): 97.13 %, scheduling+regalloc; behaviour clean.
 void ActorManager_804A5800::fn_801F7B18() {
+    s32 i;
     getGameView_802D6A9C();
-    for (s32 i = 0; i < 4; i++) {
-        getGameView_802D6A9C()->fn_802D39B8(i, -1);
-        if (fn_8023EBB8(i)) {
-            s32 v = fn_8023EF50(i);
-            getGameView_802D6A9C()->fn_802D39B8(i, v);
-        }
-    }
+    resetPlayerSerials();
     s32 end = mActorEnd;
-    for (s32 i = 0; i < end; i++) {
+    for (i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
         if (actor == NULL || !actor->mAlive) {
             continue;
