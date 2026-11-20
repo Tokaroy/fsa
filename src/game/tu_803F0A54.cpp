@@ -1764,7 +1764,7 @@ void ConnectScreen_804B0F10::fn_803F715C() {
     }
 }
 
-// FIXME(shotgun): 95.38 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.28 %, missing/extra; behaviour drift.
 void ConnectScreen_804B0F10::fn_803F5A0C() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x240[i] != 0) {
@@ -2176,6 +2176,7 @@ void ConnectScreen_804B0F10::fn_803F4120() {
 // and the chosen entry ('Pstab04' / 'Phanb04' / 'Prub04', field_0x1a8)
 // bounces with field_0x240[0]; then the screen, the player sprites
 // (fn_803F0A54) and lbl_8053AED8's buttons.
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
 void ConnectScreen_804B0F10::fn_803F38A4() {
     f32 alpha;
     f32 t;
