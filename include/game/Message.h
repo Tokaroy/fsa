@@ -597,8 +597,6 @@ const char* fn_80383E2C(u32 index, u8* out);
 // The index of the message whose id is `msg` in the INF1 entries, 0x12B when
 // there is none.
 u32 fn_803846BC(u32 msg);
-// The id of INF1 entry `index`.
-u16 fn_803846A4(s32 index);
 
 // 41 units. Returns 0 or 1.
 bool fn_80388CAC(s32 player, s32 serial);
