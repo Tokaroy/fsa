@@ -620,6 +620,7 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
         }
     }
     if (!(field_0x90 & 0x100)) {
+        s32 i;
         if (field_0x250 == 0x12) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ELK2, field_0x4, &mPos, 0, -1, -1);
             static JGeometry::TVec3f offsets[4] = {
@@ -628,18 +629,17 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
                 JGeometry::TVec3f(-26.0f, -156.0f, 0.0f),
                 JGeometry::TVec3f(26.0f, -156.0f, 0.0f),
             };
-            for (s32 i = 0; i < 4; i++) {
-                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &(mPos + offsets[i]),
+            for (i = 0; i < 4; i++) {
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &(mPos + offsets[i]),
                                                                 (((i + 0x26) << 5) | 4) | 0x80000000, -1, -1);
             }
         } else if (field_0x250 == 0x13) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &mPos, 0x10, -1, -1);
             field_0x230 = 1;
-            JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-            fn_80230498(0, &zero, field_0x238 + field_0x23C, 0xFF, -0x80, -0x80, true);
+            fn_80230498(0, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), field_0x238 + field_0x23C, 0xFF, -0x80, -0x80, true);
         }
         s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
+        for (i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_ENDM && actor->mAlive == true) {
                 field_0x29C = (UnknownENDM_804AA0FC*)actor;
