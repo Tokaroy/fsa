@@ -638,6 +638,7 @@ s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
 
 // 0x80226FC8. Per player: finds the 'YASI' actor the player carries and, once it is moving and
 // inside the warp's box, drops it onto the pad (four tiles around the warp are rewritten).
+// Still differs: the original reads the actor's z again for the subtraction, ours reuses the compared value.
 // FIXME(shotgun): 90.85 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80226FC8(s32 player) {
     if (field_0x255 == 1) {
@@ -667,14 +668,10 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
     if (inside) {
         field_0x27c[player]->vfunc_0x48();
         field_0x27c[player] = NULL;
-        JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-        gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
-        JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-        gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
-        JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-        gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
-        JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-        gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f), player, getField_0x4(), 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f), player, getField_0x4(), 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f), player, getField_0x4(), 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f), player, getField_0x4(), 0xC);
         if (field_0x255 == 0) {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
             field_0x255 = 1;
