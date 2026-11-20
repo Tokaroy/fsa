@@ -112,6 +112,7 @@ namespace JGeometry {
         f32 dot(const TVec2<T> &other) const { return x * other.x + y * other.y; }
         f32 length() const { return TUtilf::sqrt(squared()); }
         f32 squared() const { return dot(*this); }
+        bool isZero() const { return (squared() <= TUtilf::epsilon()); }
 
         f32 normalize()
         {

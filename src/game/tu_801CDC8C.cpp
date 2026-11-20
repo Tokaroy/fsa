@@ -17,6 +17,7 @@
 #include "game/Map.h"
 #include "game/GameGlobals.h"
 #include "game/GameMath.h"
+#include "game/Vec2Ops.h"
 #include "game/GameView.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JAudio/JAUSoundObject.h"
@@ -484,10 +485,6 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     return blocked;
 }
 
-// FIXME: 95.77 %, missing/extra; behaviour near.
-// The target materialises the zero-length test as a bool
-// (mfcr; extrwi.) before branching on it; ours branches on the compare.
-// The rest differs in registers and load order only.
 // Whether the way from *from to *to is blocked (fn_801CFA70): along the line
 // between them, then along the two lines 7 units to either side of it.
 bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer) {
@@ -496,24 +493,26 @@ bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeome
     bool blocked = fn_801CFA70((const JGeometry::TVec3f*)from, to, layer);
     if (!blocked) {
         JGeometry::TVec2f dir(to->x - from->x, to->y - from->y);
-        if (!(dir.squared() <= JGeometry::TUtilf::epsilon())) {
+        bool isZero = dir.isZero();
+        if (!isZero) {
             dir.normalize();
             // dir turned by -90 degrees, 7 units long.
-            f32 c = JMASCos(-0x4000);
-            f32 s = JMASSin(-0x4000);
-            JGeometry::TVec2f side(dir.x * c - dir.y * s, dir.x * s + dir.y * c);
+            JGeometry::TVec2f side(
+                dir.x * JMASCos(-0x4000) - dir.y * JMASSin(-0x4000),
+                dir.x * JMASSin(-0x4000) + dir.y * JMASCos(-0x4000));
             side.scale(7.0f);
             JGeometry::TVec2f a(*from);
-            JGeometry::TVec2f b(to->x, to->y);
+            JGeometry::TVec2f b(xy(*to));
             a.add(side);
             b.add(side);
             blocked = fn_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
             if (!blocked) {
-                JGeometry::TVec2f back(-side.x, -side.y);
+                side.x = -side.x;
+                side.y = -side.y;
                 a.set(*from);
-                b.set(to->x, to->y);
-                a.add(back);
-                b.add(back);
+                b.set(xy(*to));
+                a.add(side);
+                b.add(side);
                 blocked = fn_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
             }
         }
