@@ -126,13 +126,12 @@ s32 Fish_804AC658::fn_80346330() {
         }
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8022CAF8(p) != 4 && fn_8022CAF8(p) != 5 && field_0x270 != p && field_0x4 == getPlayerLayer_8023DE58(p)) {
+        if (fn_8022CAF8(p) != 4 && fn_8022CAF8(p) != 5 && field_0x270 != p && getField_0x4() == getPlayerLayer_8023DE58(p)) {
             if (fn_80233E40(p) == true || fn_8022B7C4(p) == true) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(p)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(p)->y;
-                f32 d2 = dx * dx + dy * dy;
-                if (std::sqrtf(d2) < 32.0f) {
-                    field_0x264 = std::sqrtf(d2);
+                if (std::sqrtf(dx * dx + dy * dy) < 32.0f) {
+                    field_0x264 = std::sqrtf(dx * dx + dy * dy);
                     field_0x268 = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     field_0x270 = p;
                     field_0x26c = fn_801F681C(field_0x268);
