@@ -537,12 +537,13 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
             if (entry->field_0x14 == 0) {
                 entry->field_0x14 = 60;
                 entry->field_0x10 = 0x287;
+                f32 y;
                 f32 sign = 1.0f;
-                f32 y = 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 64.0f;
+                y = 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 64.0f;
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() > 0.5f) {
                     sign = -1.0f;
                 }
-                entry->field_0x4.set((72.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 48.0f) * sign, y, 0.0f);
+                entry->field_0x4.set(sign * (72.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 48.0f), y, 0.0f);
                 JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
                 entry->field_0x0 = spawnEmitter_8013CC50(0, &pos, entry->field_0x10, 0, 0, NULL, NULL, true, 0.15f);
                 if (entry->field_0x0 != NULL) {
