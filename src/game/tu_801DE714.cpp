@@ -71,18 +71,10 @@ static inline bool behind(cls_804A51E4* a, f32 x) {
 static inline void enterFromEdge(cls_804A51E4* a) {
     a->mFlags |= 0x4000;
     a->field_0x2c4.y = a->mPos.y;
-    GameView_804A9950* view = getGameView_802D6A9C();
-    JGeometry::TBox2f* box = a->field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+    JGeometry::TBox2f* box = layerBox(a->field_0x4);
     f32 right = 30.0f + box->f.x;
     f32 left = box->i.x - 30.0f;
-    f32 px = a->mPos.x;
-    bool leftHalf = false;
-    view = getGameView_802D6A9C();
-    box = a->field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    if (px < 0.5f * (box->i.x + box->f.x)) {
-        leftHalf = true;
-    }
-    if (leftHalf && left < a->mPos.x) {
+    if (inLeftHalf(a->field_0x4, a->mPos.x) && left < a->mPos.x) {
         a->field_0x2c4.x = right;
     } else {
         a->field_0x2c4.x = left;
@@ -625,7 +617,7 @@ void cls_804A51E4::fn_801E1300() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 92.53 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         field_0x2a8 = -1;
@@ -661,14 +653,22 @@ void cls_804A51E4::fn_801E0CF4() {
         }
         if (mFlags & 0x10000) {
             mFlags &= ~0x10000;
-            if (mState < 7 && mState >= 5) {
+            switch (mState) {
+            case 5:
+            case 6:
                 field_0x98 = fn_801CD354(field_0x98);
                 field_0x2d0 = -1;
+                break;
             }
             fn_801E1594(8);
-        } else if (mAnim.mAnim < 0xF && mAnim.mAnim >= 0xD) {
-            if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
-                mAnim.startAnim_801D22DC(field_0x98, 2, false);
+        } else {
+            switch (mAnim.mAnim) {
+            case 13:
+            case 14:
+                if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+                    mAnim.startAnim_801D22DC(field_0x98, 2, false);
+                }
+                break;
             }
         }
         if (mFlags & 0x20000) {
@@ -677,7 +677,15 @@ void cls_804A51E4::fn_801E0CF4() {
             case 6:
                 if (field_0x2a8 >= 0 && field_0x2a8 != -1) {
                     bool start = false;
-                    if (mState != 7 && mState != 0 && !(mState >= 0xF && mState < 0x13)) {
+                    switch (mState) {
+                    case 0:
+                    case 7:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                        break;
+                    default:
                         if (!(mFlags & 0x4000) && field_0x2cc == 0 && fn_801E1DB4()) {
                             if (mFlags & 0x20000) {
                                 if (mFlags & 0x100000) {
@@ -687,6 +695,7 @@ void cls_804A51E4::fn_801E0CF4() {
                                 start = true;
                             }
                         }
+                        break;
                     }
                     if (start) {
                         field_0x2a8 = -1;
@@ -703,42 +712,53 @@ void cls_804A51E4::fn_801E0CF4() {
         }
         fn_8021FDB8();
         bool cross = false;
-        if (mState == 0 || (mState >= 5 && mState < 8) || (mState >= 0xF && mState < 0x13)) {
-            // no crossing check
-        } else if (fn_801E1DB4() && mAnim.mAnim != 2) {
-            if (mFlags & 0x4000) {
-                cross = behind(this, field_0x2c4.x);
-            } else if (mFlags & 0x20000) {
-                s32 player = field_0x2a8;
-                if (player >= 0 && player == -1) {
-                    cross = behind(this, getPlayerPos_8023E724(player)->x);
-                }
-            } else {
-                ActorBase_804A5770* t = NULL;
-                s32 serial = field_0x2ac;
-                if (serial >= 0) {
-                    t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                }
-                if (t == NULL) {
-                    serial = field_0x2b0;
+        switch (mState) {
+        case 0:
+        case 5:
+        case 6:
+        case 7:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+            break;
+        default:
+            if (fn_801E1DB4() && !fn_801E1D9C()) {
+                if (mFlags & 0x4000) {
+                    cross = behind(this, field_0x2c4.x);
+                } else if (mFlags & 0x20000) {
+                    s32 player = field_0x2a8;
+                    if (player >= 0 && player == -1) {
+                        cross = behind(this, getPlayerPos_8023E724(player)->x);
+                    }
+                } else {
+                    ActorBase_804A5770* t = NULL;
+                    s32 serial = field_0x2ac;
                     if (serial >= 0) {
                         t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     }
-                }
-                if (t == NULL) {
-                    serial = field_0x2b4;
-                    if (serial >= 0) {
-                        t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    if (t == NULL) {
+                        serial = field_0x2b0;
+                        if (serial >= 0) {
+                            t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        }
+                    }
+                    if (t == NULL) {
+                        serial = field_0x2b4;
+                        if (serial >= 0) {
+                            t = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        }
+                    }
+                    if (t != NULL) {
+                        cross = behind(this, t->mPos.x);
                     }
                 }
-                if (t != NULL) {
-                    cross = behind(this, t->mPos.x);
+                if (cross) {
+                    field_0x2d0 = mState;
+                    fn_801E1594(6);
                 }
             }
-            if (cross) {
-                field_0x2d0 = mState;
-                fn_801E1594(6);
-            }
+            break;
         }
         if (fn_801E1D7C()) {
             if (fn_801E2F40()) {
@@ -753,11 +773,11 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 96.67 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.00 %, different; behaviour near.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
-            if (!(mFlags & 0x4000)) {
+            if (!(mFlags & 0x20000)) {
                 if (fn_80218538()) {
                     startSound_801F0E34(0x40070, 0);
                 }
@@ -826,10 +846,16 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
             f32 height = 5.0f;
             if (mFlags & 0x20000) {
                 height = 20.0f;
-            } else if (field_0x2ac >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2ac) != NULL) {
-                height = 20.0f;
-            } else if (field_0x2b0 >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2b0) != NULL) {
-                height = 20.0f;
+            } else {
+                s32 s = field_0x2ac;
+                if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                    height = 20.0f;
+                } else {
+                    s = field_0x2b0;
+                    if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                        height = 20.0f;
+                    }
+                }
             }
             if (__fabsf(height - mPos.z) < 0.1f) {
                 arrived = true;
@@ -842,13 +868,12 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
         }
         fn_801E1AB4(false);
         enterFromEdge(this);
-    }
-    if (mStateTimer >= 0xB4) {
+    } else if (mStateTimer >= 0xB4) {
         enterFromEdge(this);
     }
 }
 
-// FIXME(shotgun): 96.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.19 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
@@ -882,7 +907,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.62 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
