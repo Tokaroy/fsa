@@ -941,11 +941,6 @@ void cls_804B0B00::fn_803ECC64() {
     mScreen->search('Pscuro02')->move(field_0x19c, y);
 }
 
-// FIXME: 99.61 %, different; behaviour clean.
-// One register: in setEntries' loop the original gives i a
-// fresh li r4, 0 and keeps 2 * i in r3 (the zero stored to field_0x1b8);
-// ours copies that zero into i (mr r4, r3). Same as the twin's
-// ConnectScreen_804B0F10::fn_803F2580.
 // Update state 3 (the player-count menu, field_0x1bc = players - 1): decide
 // with one player takes slot 0 alone (kind 1 with a controller there, else
 // 2); with more, the entries are set when every controller is connected,
@@ -965,7 +960,15 @@ void cls_804B0B00::fn_803EC804() {
             field_0x1b8 = 0;
             gGameRoot_8053AAF8->field_0x7e = 1;
             if (field_0x1d0 == field_0x1bc + 1) {
-                setEntries(this);
+                for (s32 i = 0; i < 4; i++) {
+                    if (i < field_0x1bc + 1) {
+                        gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                        setPlayerKind(gGameRoot_8053AAF8, i, 1);
+                    } else {
+                        gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                        setPlayerKind(gGameRoot_8053AAF8, i, 0);
+                    }
+                }
                 field_0x1dc = 15;
             }
             fn_803E4308();
