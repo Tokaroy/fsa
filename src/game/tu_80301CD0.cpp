@@ -1606,7 +1606,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.48 %, different + reloc-name; behaviour clean.
+// FIXME: 95.49 %, different; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
@@ -1697,11 +1697,9 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
 // Draws one GBA sprite word on the map: the "SOB " frame of its 10-bit id at
 // its (sign-extended 9 / 8-bit) x, y, tinted per player and scaled by the
 // player's lbl_8053ACFC count (or lbl_80506DB8's flag).
-// FIXME(shotgun): 99.63 %, regalloc-only + reloc-name; behaviour clean.
-// (control flow of the early return, the 16 tint stores)
 void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 mask, u8 flag) {
     SpriteParams_801F5AE0 params;
-    s32 x = sprite->f.field_0x2 | sprite->f.field_0x3_0 << 8;
+    s32 x = (sprite->f.field_0x3_0 << 8) | sprite->f.field_0x2;
     s32 y = sprite->f.field_0x1;
     if (x != 0x180 && y != 0xE0 && lbl_8053ACFC[player] < 0x11) {
         if (x >= 0x180) {
@@ -1727,8 +1725,8 @@ void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 ma
         JGeometry::TVec3f pos((f32)x, (f32)y, 0.0f);
         Mtx scale;
         if (lbl_8053ACFC[player] != 0) {
-            PSMTXScale(scale, 1.0f - 0.75f * lbl_8053ACFC[player] * 0.0625f, 1.0f,
-                       lbl_8053ACFC[player] * 0.0625f + 1.0f);
+            PSMTXScale(scale, 1.0f - (0.75f * lbl_8053ACFC[player]) / 16.0f, 1.0f,
+                       lbl_8053ACFC[player] / 16.0f + 1.0f);
         } else if (lbl_80506DB8[record][player] == 1) {
             PSMTXScale(scale, 1.0f, 1.0f, 0.5f);
         } else {
