@@ -100,7 +100,9 @@ GEMINI = {"hydrogen-low": ("gemini-4-hydrogen-low", "Gemini 4 Hydrogen (via Anti
           "carbon": ("gemini-4-carbon-medium", "Gemini 4 Carbon (via Antigravity)", "opus"),
           # low-effort comparison with Fable 5.2 low (owner, 2026-11-19)
           "carbon-low": ("gemini-4-carbon-low", "Gemini 4 Carbon (via Antigravity)", "sonnet"),
-          "neon-low": ("gemini-4-neon-low", "Gemini 4 Neon (via Antigravity)", "opus")}
+          "neon-low": ("gemini-4-neon-low", "Gemini 4 Neon (via Antigravity)", "opus"),
+          # reviewer of Gemini work while Claude is paused (owner, 2026-11-20: Claude stops at 40 %)
+          "neon-high": ("gemini-4-neon-high", "Gemini 4 Neon (via Antigravity)", "opus")}
 TIER_NAMES = ORDER + ["fable-low"] + list(GEMINI)
 
 
