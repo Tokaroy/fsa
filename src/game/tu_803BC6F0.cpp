@@ -1609,12 +1609,8 @@ static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
     }
 }
 
-// FIXME: 99.00 %, different; behaviour near.
-// FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
-// loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
-// shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
-// `field_0x38[0]->field_0xc - field_0x38[a4]->field_0xc` float regs (f2/f0 vs
-// f0/f2).
+// Registers only: `frames` and two temporaries of the inlined alpha helpers
+// are rotated (r26/r27/r28), and the `field_0xc` subtraction swaps f0/f2.
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
 void FileSelect_804AFF60::fn_803CB3DC() {
@@ -1637,22 +1633,22 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
-    s32 i;
-    for (i = 0; i < 3; i++) {
+    s32* dst = others;
+    for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
     field_0xd8++;
-    for (i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x44[others[i]]->fn_80402628(frames, field_0x44[others[i]]->field_0x28, 0);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x44[*other]->fn_80402628(frames, field_0x44[*other]->field_0x28, 0);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves up to the first row's place.
