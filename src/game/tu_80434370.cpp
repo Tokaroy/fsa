@@ -478,7 +478,6 @@ void cls_804B16A8::fn_80434724() {
     field_0x60 = 0;
 }
 
-// FIXME(shotgun): 99.83 %, operands; behaviour near.
 void cls_804B16A8::fn_80434370() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
     f32 cellW = lbl_8053AD78->mFont->getCellWidth();
@@ -493,7 +492,7 @@ void cls_804B16A8::fn_80434370() {
             field_0x48 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Ta01'))->getStringPtr(), 0xFC, 0, NULL, NULL);
         }
         J2DPane* pane = mScreen->search('Ta01');
-        field_0x40 = (pane->getWidth() - field_0x48 * scale) * 0.5f;
+        field_0x40 = (pane->getWidth() - field_0x48 * scale) / 2.0f;
     } else if (field_0x5a == 1) {
         if (field_0x6c == 0) {
             if (field_0x69 == 1) {
@@ -513,7 +512,7 @@ void cls_804B16A8::fn_80434370() {
             }
         }
         J2DPane* pane = mScreen->search('Ta02');
-        field_0x40 = (pane->getWidth() - field_0x4c * scale) * 0.5f;
+        field_0x40 = (pane->getWidth() - field_0x4c * scale) / 2.0f;
     } else if (field_0x5a == 2) {
         if (field_0x6c == 1) {
             if (field_0x6a == 1) {
