@@ -36,7 +36,7 @@ static const s16* lbl_804A5D38[10] = {
     lbl_8046A338, lbl_8046A348,
 };
 
-// FIXME(shotgun): 95.36 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
 void cls_804A5D60::init() {
     EnemyBase_804A4808::init();
     mBox.i.set(1.0f, 1.0f);
@@ -76,12 +76,8 @@ void cls_804A5D60::init() {
         } else {
             angle = fn_801CD664(0x10000);
         }
-        mVel.x = JMASSin(angle) * 1.5f;
-        mVel.y = JMASCos(angle) * 1.5f;
-        mVel.z = 0.5f * (50.0f * (0.3f * -lbl_8053EFB8));
-        field_0x3c.x = mVel.x;
-        field_0x3c.y = mVel.y;
-        field_0x3c.z = mVel.z;
+        mVel.set(JMASSin(angle) * 1.5f, JMASCos(angle) * 1.5f, 0.5f * (50.0f * (0.3f * -lbl_8053EFB8)));
+        field_0x3c.set(mVel);
         break;
     }
     }
@@ -96,16 +92,17 @@ void cls_804A5D60::vfunc_0x54() {
     field_0x2c0 = offset;
 }
 
-// FIXME(shotgun): 98.99 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.83 %, regalloc-only; behaviour drift.
 // 0x8020AA78: enters `state`, starting its animation and
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
 void cls_804A5D60::fn_8020AA78(s32 state) {
     if (mFlags & 0x2000) {
-        if (state < 11) {
-            if (state != 8) {
-                return;
-            }
-        } else if (state >= 13) {
+        switch (state) {
+        case 8:
+        case 11:
+        case 12:
+            break;
+        default:
             return;
         }
     }
@@ -432,18 +429,18 @@ void cls_804A5D60::vfunc_0x88() {
     }
 }
 
-// FIXME(shotgun): 97.48 %, missing/extra; behaviour clean.
 bool cls_804A5D60::vfunc_0x58() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f) {
         return false;
     }
+    s32 player;
     s32 id = -1;
     bool arrow = false;
     bool blocked = false;
     JGeometry::TBox2f box;
     JGeometry::TVec2f probe;
     fn_801F317C(&box);
-    s32 player = fn_8023AE34(&box, field_0x4, &probe);
+    player = fn_8023AE34(&box, field_0x4, &probe);
     if (player >= 0) {
         arrow = fn_801CC820(player, NULL);
     } else {
@@ -468,11 +465,7 @@ bool cls_804A5D60::vfunc_0x58() {
             if (field_0x1dc.fn_801EAC20(player)) {
                 hit = true;
             }
-        } else if (!arrow) {
-            if (id >= 0 && field_0x1dc.fn_801EAC54(id)) {
-                hit = true;
-            }
-        } else {
+        } else if (arrow || (id >= 0 && field_0x1dc.fn_801EAC54(id))) {
             hit = true;
         }
         if (hit) {
@@ -514,38 +507,41 @@ void cls_804A5D60::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
-// FIXME(shotgun): 73.23 %, missing/extra; behaviour near.
+// FIXME: 95.97 %, missing/extra; behaviour near.
 void cls_804A5D60::draw() {
-    bool tiny = field_0x54.squared() <= 32.0f * JGeometry::TUtilf::epsilon();
-    if (!tiny) {
-        SpriteParams_801F5AE0 params;
-        Mtx mtx;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
-        mtx[2][3] = 0.0f;
-        params.mMtx = mtx;
-        params.field_0x1c = 0;
-        params.field_0x1d = 0;
-        s32 frame = mAnim.mCel + 0x2C9;
-        if (mFlags & ENEMY_FLAG_NO_HURT) {
-            if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
-            }
-            if (field_0x4 < 8) {
-                void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
-            }
-        } else {
-            drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
+    if (field_0x54.isZero()) {
+        return;
+    }
+
+    SpriteParams_801F5AE0 params;
+    params.field_0x1c = 0;
+    params.field_0x1d = 0;
+
+    Mtx mtx;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    mtx[0][0] = field_0x54.x;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = field_0x54.y;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = field_0x54.z;
+    params.mMtx = mtx;
+
+    s32 frame = mAnim.mCel + 0x2C9;
+    if (!(mFlags & ENEMY_FLAG_NO_HURT)) {
+        drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
+    } else {
+        if (mSpriteParams.mMtx == NULL) {
+            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+        }
+        if (field_0x4 < 8) {
+            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }
