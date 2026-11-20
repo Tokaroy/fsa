@@ -530,8 +530,6 @@ void cls_804ADF28::fn_80365AB8() {
     (this->*lbl_804ADDE8[field_0x234])();
 }
 
-// FIXME(shotgun): 98.96 %, missing/extra + reloc-name; behaviour drift.
-// (the function-local TVec3f statics are guarded with an out-of-line constructor here, the original initialises them inline)
 void cls_804ADF28::fn_803653EC() {
     if (field_0x238 < 0) {
         if (field_0x248 >= 0x80) {
@@ -554,10 +552,11 @@ void cls_804ADF28::fn_803653EC() {
             }
             return;
         }
-        if (field_0x248 != 0) {
+        if (field_0x248 == 0) {
+            field_0x238 = 0;
+        } else {
             return;
         }
-        field_0x238 = 0;
     }
     if (field_0x25c == 0) {
         field_0x25c = field_0x260;
@@ -598,7 +597,7 @@ void cls_804ADF28::fn_803653EC() {
         case 2: {
             field_0x26c = 0x38E;
             for (int i = 0; i < 3; i++) {
-                field_0x2a0[i] = mPos + JGeometry::TVec3f(16.0f * i + 16.0f, 0.0f, 0.0f);
+                field_0x2a0[i] = mPos + JGeometry::TVec3f(0.0f, 16.0f * i + 16.0f, 0.0f);
                 field_0x2c4[i] = JGeometry::TVec3f((field_0x2a0[i].x - field_0x27c[i].x) / 10.0f,
                                                    (field_0x2a0[i].y - field_0x27c[i].y) / 10.0f, 0.0f);
                 field_0x2e8[i] = 0x38E;
