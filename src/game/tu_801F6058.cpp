@@ -483,11 +483,10 @@ void ActorManager_804A5800::fn_801F7CAC() {
 
 // FIXME(shotgun): 97.13 %, scheduling+regalloc; behaviour clean.
 void ActorManager_804A5800::fn_801F7B18() {
-    s32 i;
     getGameView_802D6A9C();
     resetPlayerSerials();
     s32 end = mActorEnd;
-    for (i = 0; i < end; i++) {
+    for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
         if (actor == NULL || !actor->mAlive) {
             continue;
@@ -725,10 +724,9 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
             fn_801CC9B0(mActors[i]))
         {
-            f32 y = mActors[i]->mPos.y;
-            f32 dy = y - center->y;
             f32 x = mActors[i]->mPos.x;
-            if (square(x - center->x) + square(dy) <= radiusSq) {
+            f32 y = mActors[i]->mPos.y;
+            if (square(x - center->x) + square(y - center->y) <= radiusSq) {
                 f32 dist = square(x - from->x) + square(y - from->y);
                 if (dist < best) {
                     best = dist;
