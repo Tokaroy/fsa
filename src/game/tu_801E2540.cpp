@@ -158,20 +158,20 @@ bool cls_804A51E4::vfunc_0x58() {
     return hit;
 }
 
-// FIXME(shotgun): 84.04 %, missing/extra; behaviour near.
 u8 cls_804A51E4::vfunc_0x60() {
     u8 hit = 0;
     s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
     if (other >= 0 && other != mSerial) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
         if (actor != NULL) {
-            u8 landed;
+            bool landed;
             if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor)) {
-                landed = 0;
+                landed = false;
             } else if (!fn_801E1CF8()) {
-                landed = 1;
+                landed = true;
             } else {
-                JGeometry::TVec3f dir = mPos - actor->field_0x3c;
+                JGeometry::TVec3f dir = mPos;
+                dir.sub(actor->field_0x3c);
                 landed = fn_801F37AC(actor->field_0x118, &dir, 0, actor->field_0x168, -1);
                 if (landed) {
                     hit = 1;
