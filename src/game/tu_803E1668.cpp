@@ -2308,10 +2308,8 @@ void cls_804B0B00::fn_803E51C4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.67 %, operands; behaviour clean.
-// Stack layout and float registers only: the original keeps
-// every int-to-float conversion in one 8-byte slot (0x18; frame 0x60), ours
-// uses two (frame 0x70), and the bounce offset / pane x swap f29 and f30.
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// Float registers only: the bounce offset and the pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
 // 'Pscuro01' / 'Pscuro02' fades in and out (field_0x1e0[0] over 60 frames;
 // in state 9 it fades to 230 over 30, or is hidden while field_0x1cc is 0)
@@ -2325,7 +2323,8 @@ void cls_804B0B00::fn_803E4940() {
         if (field_0x1e0[0] < 30) {
             t = (f32)(field_0x1e0[0] * field_0x1e0[0]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[0] - 30) * (field_0x1e0[0] - 30)) / 900.0f;
+            s32 frame = field_0x1e0[0] - 30;
+            t = 1.0f - (f32)(frame * frame) / 900.0f;
         }
         alpha = t * field_0x269;
     } else if (field_0x1dc == 2) {
@@ -2335,7 +2334,8 @@ void cls_804B0B00::fn_803E4940() {
         if (field_0x1e0[0] < 15) {
             t = (f32)(field_0x1e0[0] * field_0x1e0[0]) / 225.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[0] - 15) * (field_0x1e0[0] - 15)) / 225.0f;
+            s32 frame = field_0x1e0[0] - 15;
+            t = 1.0f - (f32)(frame * frame) / 225.0f;
         }
         alpha = 230.0f * t;
     }
@@ -2674,17 +2674,18 @@ void cls_804B0B00::fn_803E3320() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.58 %, missing/extra; behaviour clean.
-// Registers: the loop's table pointers and counter sit in other
-// registers (i in r18 here, r16 in the original), and the first digit
-// texture is copied through r0 into r17 (one extra mr) where the original
-// keeps it in r27.
+// FIXME: 98.66 %, missing/extra; behaviour clean.
+// Registers: the loop's table pointers sit two registers higher than in
+// the original, and the first digit texture is copied through r0 (one
+// extra mr) where the original keeps it in r27.
 // Enter state 12 (the results / entry screen field_0x10): per player, the
 // 'Pblk' cover over the players beyond field_0x1bc + 1, the rupee count
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
 // four marker tables, the cursor panes by field_0x1c0[i] (3: joined,
 // 4: not); then the panes start their slide-in.
 void cls_804B0B00::fn_803E2A20() {
+    s32 j;
+    s32 count;
     for (s32 i = 0; i < 4; i++) {
         if (i >= 1) {
             if (i > field_0x1bc) {
@@ -2706,8 +2707,8 @@ void cls_804B0B00::fn_803E2A20() {
         tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
         static_cast<J2DPicture*>(field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
-        s32 count = fn_8040305C(field_0x200[i]) - 1;
-        for (s32 j = 0; j < 6; j++) {
+        count = fn_8040305C(field_0x200[i]) - 1;
+        for (j = 0; j < 6; j++) {
             if (j < count) {
                 field_0x10->search(lbl_80478518[i][j])->show();
                 field_0x10->search(lbl_804785D8[i][j])->show();
@@ -2716,7 +2717,7 @@ void cls_804B0B00::fn_803E2A20() {
             } else if (j == count) {
                 field_0x10->search(lbl_80478518[i][j])->hide();
                 field_0x10->search(lbl_804785D8[i][j])->hide();
-                field_0x10->search(lbl_80478698[i][j])->hide();
+                field_0x10->search(lbl_80478698[i][j])->show();
                 field_0x10->search(lbl_80478758[i][j])->show();
             } else {
                 field_0x10->search(lbl_80478518[i][j])->hide();
