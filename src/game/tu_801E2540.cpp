@@ -13,7 +13,7 @@ static inline void releaseTarget(cls_804A51E4* self) {
     if (self->mState == 0xC && self->mStateTimer >= 6 && !self->fn_801E1DE8()) {
         self->fn_801E1594(0xD);
     } else if (self->fn_801E1CF8()) {
-        if (!(self->mFlags & 0x10000)) {
+        if (!self->checkFlag(0x10000)) {
             self->mFlags |= 0x10000;
             self->startSound_801F0E34(0x4003D, 0);
             lbl_8053AC30++;
@@ -186,7 +186,6 @@ u8 cls_804A51E4::vfunc_0x60() {
     return hit;
 }
 
-// FIXME(shotgun): 94.58 %, missing/extra; behaviour near.
 u8 cls_804A51E4::vfunc_0x5C() {
     u8 hit = 0;
     s32 player = fn_801F285C(NULL, NULL, true, -1);
