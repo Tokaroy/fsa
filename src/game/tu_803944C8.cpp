@@ -2497,9 +2497,9 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
-                s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
+                s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
                     snprintf(lbl_8050E528, 15, "\033CR[%d]", offset);
                     strcat(field_0x2c0, lbl_8050E528);
@@ -2519,33 +2519,33 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
         appendText(ch);
     }
     s32 digit = number / 10000;
-    number %= 10000;
+    s32 rem = number % 10000;
     if (digit != 0) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 1000;
-    number %= 1000;
+    digit = rem / 1000;
+    rem %= 1000;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 100;
-    number %= 100;
+    digit = rem / 100;
+    rem %= 100;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 10;
-    number %= 10;
+    digit = rem / 10;
+    rem %= 10;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         appendText(ch);
     }
-    ch[0] = number + '0';
+    ch[0] = rem + '0';
     appendText(ch);
 }
 
