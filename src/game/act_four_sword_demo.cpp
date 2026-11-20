@@ -293,9 +293,65 @@ s32 cls_8049DA0C::vfunc_0x5C() {
     }
 }
 
-// FIXME: 97.58 %, missing/extra; behaviour drift.
-// Case 7's emitter release loop: the original sets up its counter and base pointers with
-// one instruction more and other registers; the rest is register numbering.
+inline void cls_8049DA0C::startState5() {
+    JGeometry::TVec3f pos;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        pos = *getPlayerPos_8023E724(i);
+        mEmitters288[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_8053C740[i], 0, -1, NULL, NULL, true, 1.0f);
+        mEmitters298[i] = spawnEmitter_8013CC50(field_0x4, &pos, 0x475, 0, -1, NULL, NULL, true, 1.0f);
+    }
+    for (i = 0; i < 4; i++) {
+        fn_80230FD0(i, 0x20048);
+    }
+    field_0x23c = 0.0f;
+    fn_8011921C()->fn_80118454();
+}
+
+inline void cls_8049DA0C::releaseEmitters() {
+    for (s32 i = 0; i < 4; i++) {
+        if (mEmitters288[i] != NULL) {
+            mEmitters288[i]->becomeInvalidEmitter();
+            mEmitters288[i] = NULL;
+        }
+        if (mEmitters298[i] != NULL) {
+            mEmitters298[i]->becomeInvalidEmitter();
+            mEmitters298[i] = NULL;
+        }
+    }
+}
+
+inline void cls_8049DA0C::startState7() {
+    JGeometry::TVec3f pos;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        pos = *getPlayerPos_8023E724(i);
+        pos.x += 6.0f;
+        pos.y += -29.0f;
+        spawnEmitter_8013CC50(field_0x4, &pos, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &pos, 0xcc, 0, 0, NULL, NULL, true, 1.0f);
+    }
+    releaseEmitters();
+}
+
+inline void cls_8049DA0C::startState8() {
+    mAnim250.startAnim_801D22DC(2, 0, false);
+    mAnim250.fn_801D1F14(0.0f);
+    mAnim250.mFrameCtrl.setRate(1.0f);
+    for (s32 i = 0; i < 4; i++) {
+        fn_80230FD0(i, 0x20047);
+    }
+}
+
+inline void cls_8049DA0C::startState11() {
+    spawnPlayerEffects();
+    for (s32 i = 0; i < 4; i++) {
+        fn_80230BF4(i, 3);
+        fn_80230498(i, getPlayerPos_8023E724(i), 0x3f, 0xff, -128, -128, true);
+        fn_80230FD0(i, 0x10015);
+    }
+}
+
 void cls_8049DA0C::fn_80117074(s32 index) {
     switch (index) {
     case 2:
@@ -312,54 +368,19 @@ void cls_8049DA0C::fn_80117074(s32 index) {
         mAnim250.mFrameCtrl.setRate(1.0f);
         break;
     case 5:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            mEmitters288[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_8053C740[i], 0, -1, NULL, NULL, true, 1.0f);
-            mEmitters298[i] = spawnEmitter_8013CC50(field_0x4, &pos, 0x475, 0, -1, NULL, NULL, true, 1.0f);
-        }
-        for (s32 i = 0; i < 4; i++) {
-            fn_80230FD0(i, 0x20048);
-        }
-        field_0x23c = 0.0f;
-        fn_8011921C()->fn_80118454();
+        startState5();
         break;
     case 6:
         fn_8011921C()->fn_801183BC();
         break;
     case 7:
-        for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-            pos.x += 6.0f;
-            pos.y += -29.0f;
-            spawnEmitter_8013CC50(field_0x4, &pos, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0xcc, 0, 0, NULL, NULL, true, 1.0f);
-        }
-        for (s32 i = 0; i < 4; i++) {
-            if (mEmitters288[i] != NULL) {
-                mEmitters288[i]->becomeInvalidEmitter();
-                mEmitters288[i] = NULL;
-            }
-            if (mEmitters298[i] != NULL) {
-                mEmitters298[i]->becomeInvalidEmitter();
-                mEmitters298[i] = NULL;
-            }
-        }
+        startState7();
         break;
     case 8:
-        mAnim250.startAnim_801D22DC(2, 0, false);
-        mAnim250.fn_801D1F14(0.0f);
-        mAnim250.mFrameCtrl.setRate(1.0f);
-        for (s32 i = 0; i < 4; i++) {
-            fn_80230FD0(i, 0x20047);
-        }
+        startState8();
         break;
     case 11:
-        spawnPlayerEffects();
-        for (s32 i = 0; i < 4; i++) {
-            fn_80230BF4(i, 3);
-            fn_80230498(i, getPlayerPos_8023E724(i), 0x3f, 0xff, -128, -128, true);
-            fn_80230FD0(i, 0x10015);
-        }
+        startState11();
         break;
     case 12:
         break;
