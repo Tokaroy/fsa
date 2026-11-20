@@ -130,22 +130,7 @@ void EscortBase_8049E0C8::fn_80124448() {
     getGameView_802D6A9C()->fn_802D7440(0);
     if (field_0x332) {
         vfunc_0x7C();
-        if (field_0x332) {
-            JGeometry::TVec3f pos(mPos);
-            pos.x -= 16.0f;
-            for (s32 i = 0; i < field_0x360; i++) {
-                pos.x += lifeMeterSpacing();
-                field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
-                s32 serial = field_0x364[i];
-                if (serial < 0) {
-                    break;
-                }
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (actor) {
-                    actor->mDrawEnabled = false;
-                }
-            }
-        }
+        spawnLifeMeters();
     }
 }
 
@@ -986,17 +971,24 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
 }
 
 // FIXME: 99.29 %, regalloc-only; behaviour clean.
-// Regalloc only: the original keeps the array pointer in r29 and the counter in r30; here they are swapped.
+// Regalloc only: the original keeps the array pointer in r29 and the serial in r28; here they are swapped.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
     vfunc_0x7C();
+    spawnLifeMeters();
+}
+
+// Dead-stripped helper inlined into fn_80124448 and fn_80121ABC: when field_0x332 is set, spawns
+// field_0x360 life-meter actors ('LIMT') in a row at the escort, hidden.
+void EscortBase_8049E0C8::spawnLifeMeters() {
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
+        s32 serial;
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
             pos.x += lifeMeterSpacing();
             field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
-            s32 serial = field_0x364[i];
+            serial = field_0x364[i];
             if (serial < 0) {
                 break;
             }

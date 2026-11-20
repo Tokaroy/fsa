@@ -90,6 +90,8 @@ public:
     // fn_80121ABC (tu_801213EC): spawns field_0x360 life-meter actors ('LIMT') in a row at the
     // escort, hidden, and stores their serials in field_0x364.
     void fn_80121ABC();
+    // Dead-stripped helper inlined into fn_80124448 and fn_80121ABC (their shared field_0x332 test and loop).
+    void spawnLifeMeters();
     // fn_801217EC (tu_801213EC): update's life-meter refresh (dead: mLife == 0).
     void fn_801217EC(bool dead);
     // Dead-stripped helpers inlined into fn_801217EC (its redundant field_0x332 and index tests).
