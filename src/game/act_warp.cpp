@@ -27,17 +27,19 @@ static inline s32 warpKind(u32 param) {
     return param & 0x7F;
 }
 
-// Whether two boxes overlap (edges touching counts), on a copy of `a`.
-static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
-    JGeometry::TBox2f overlap(a);
-    return overlap.intersect(b);
-}
-
-// The box `ofs` (relative to pos) in top-down screen space: the top edge shifts by z, the
-// bottom edge by z / 2 (read from fn_80227290's asm).
-static inline void toScreenBox(JGeometry::TBox2f* out, JGeometry::TBox2f ofs, JGeometry::TVec3f pos) {
-    f32 halfZ = pos.z * 0.5f;
-    out->set(ofs.i.x + pos.x, ofs.i.y + pos.y - pos.z, ofs.f.x + pos.x, ofs.f.y + pos.y - halfZ);
+// Whether two boxes (each relative to a 3D position) overlap in top-down screen space:
+// the top edge shifts by z, the bottom edge by z / 2.
+static inline bool boxesOverlap(JGeometry::TBox2f box1, JGeometry::TVec3f pos1, JGeometry::TBox2f box2, JGeometry::TVec3f pos2) {
+    box1.addPos(pos1.x, pos1.y);
+    box1.i.y -= pos1.z;
+    pos1.z *= 0.5f;
+    box1.f.y -= pos1.z;
+    box2.addPos(pos2.x, pos2.y);
+    box2.i.y -= pos2.z;
+    pos2.z *= 0.5f;
+    box2.f.y -= pos2.z;
+    JGeometry::TBox2f overlap(box1);
+    return overlap.intersect(box2);
 }
 
 // The spawn parameter of the WARP that init() creates for the paired kinds 0x19-0x1C: this warp's
@@ -626,11 +628,7 @@ s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
         }
         for (const u32* id = ids; *id != 'NULL'; id++) {
             if (*id == other->mActorId) {
-                JGeometry::TBox2f box;
-                JGeometry::TBox2f otherBox;
-                toScreenBox(&box, mBox, mPos);
-                toScreenBox(&otherBox, other->mBox, other->mPos);
-                if (boxesOverlap(box, otherBox)) {
+                if (boxesOverlap(mBox, mPos, other->mBox, other->mPos)) {
                     found = other->mSerial;
                     break;
                 }
