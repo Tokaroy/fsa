@@ -2500,7 +2500,7 @@ void MapScreen_804B1288::fn_8040873C() {
     loadStageInfo();
 }
 
-// FIXME: 90.52 %, missing/extra; behaviour near.
+// FIXME: 99.89 %, scheduling; behaviour clean.
 // Scheduling: in the else branch the original loads the second float argument of
 // resize/move (f2) before the first (f1); ours loads f1 first.
 void MapScreen_804B1288::fn_804083D8() {
