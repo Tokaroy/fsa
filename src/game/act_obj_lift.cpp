@@ -39,7 +39,7 @@ static JGeometry::TBox2f lbl_8050ADF8[4] = {
     JGeometry::TBox2f(-31.0f, -31.0f, 31.0f, -17.0f),
     JGeometry::TBox2f(-31.0f, 17.0f, 31.0f, 31.0f),
     JGeometry::TBox2f(-31.0f, -31.0f, -17.0f, 31.0f),
-    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 31.0f),
+    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 17.0f),
 };
 static JGeometry::TBox2f lbl_8050AE38[5][2] = {
     {JGeometry::TBox2f(-14.0f, -6.0f, 0.0f, 22.0f), JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 6.0f)},
@@ -465,7 +465,6 @@ s32 OBJLift_804ACA00::fn_80350974() {
     return count;
 }
 
-// FIXME(shotgun): 97.91 %, scheduling+regalloc; behaviour drift.
 s32 OBJLift_804ACA00::fn_803506E0() {
     static JGeometry::TVec2f lbl_8050AED8[4] = {
         JGeometry::TVec2f(32.0f, 0.0f),
@@ -473,29 +472,30 @@ s32 OBJLift_804ACA00::fn_803506E0() {
         JGeometry::TVec2f(0.0f, 32.0f),
         JGeometry::TVec2f(0.0f, -32.0f),
     };
+    s32 d;
     s32 prev = field_0x270;
     field_0x270 = 0;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8022F514(i) == true && fn_8022CAF8(i) == 5) {
             continue;
         }
-        for (s32 d = 0; d < 4; d++) {
-            f32 px = lbl_8050AED8[d].x + mPos.x;
-            f32 py = lbl_8050AED8[d].y + mPos.y;
-            s32 bit = 1 << d;
-            s32 held = prev & bit;
+        for (d = 0; d < 4; d++) {
+            JGeometry::TVec2f pos = lbl_8050AED8[d];
+            pos.x += mPos.x;
+            pos.y += mPos.y;
+            s32 held = prev & (1 << d);
             f32 limit = 64.0f;
             if (held) {
                 limit = square(8.0f + field_0x260);
             }
             JGeometry::TVec3f* pl = getPlayerPos_8023E724(i);
-            f32 dx = px - pl->x;
-            f32 dy = py - pl->y;
+            f32 dx = pos.x - pl->x;
+            f32 dy = pos.y - pl->y;
             if (square(dx) + square(dy) < limit && getPlayerPos_8023E724(i)->z == 0.0f) {
                 if (held == 0) {
                     startSound_801F0E34(0x30009, 0);
                 }
-                field_0x270 |= bit;
+                field_0x270 |= (1 << d);
             }
         }
     }
@@ -948,7 +948,7 @@ void OBJLift_804ACA00::update() {
     field_0x294 = field_0x3c;
 }
 
-// FIXME(shotgun): 98.34 %, different; behaviour drift.
+// FIXME(shotgun): 99.08 %, regalloc-only; behaviour clean.
 void OBJLift_804ACA00::draw() {
     s32 alpha = 0xFF;
     if (field_0x230 == 4) {
@@ -1008,11 +1008,11 @@ void OBJLift_804ACA00::draw() {
         // Euler rotation (0, 270 deg, 0) from sincosTable_ entries (the original reads them
         // at run time: table index 0 and index 1536).
         f32 sx = JMath::sincosTable_.sinShort(0);
-        f32 cx = JMath::sincosTable_.cosShort(0);
         f32 sy = JMath::sincosTable_.sinShort(-0x4000);
+        f32 sz = JMath::sincosTable_.sinShort(0);
+        f32 cx = JMath::sincosTable_.cosShort(0);
         f32 cy = JMath::sincosTable_.cosShort(-0x4000);
-        f32 sz = sx;
-        f32 cz = cx;
+        f32 cz = JMath::sincosTable_.cosShort(0);
         mtx[0][0] = field_0x28c * (cy * cz);
         mtx[1][0] = field_0x28c * (cy * sz);
         mtx[2][0] = field_0x28c * -sy;
@@ -1024,7 +1024,7 @@ void OBJLift_804ACA00::draw() {
         mtx[2][2] = field_0x28c * (cx * cy);
     } else if (field_0x258 == 5) {
         f32 angle = 2.0f * (3.14f * (1.0f - field_0x28c));
-        JGeometry::TVec3f rot(angle, angle, 0.0f);
+        JGeometry::TVec3f rot(0.0f, angle, 0.0f);
         setRotScaleMtx(mtx, rot, field_0x28c);
     } else {
         mtx[0][0] = field_0x28c;
