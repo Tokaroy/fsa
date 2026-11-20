@@ -36,8 +36,8 @@ void VaatiBoss_804A4958::fn_801E4758() {
 // FIXME(shotgun): 91.19 %, scheduling+regalloc; behaviour clean.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
-        f32 x = field_0x5e0;
-        f32 y = field_0x5e4;
+        f32 x = field_0x5e0.x;
+        f32 y = field_0x5e0.y;
         out->set(x, y, x + 16.0f * (f32)field_0x5e8, y + 16.0f * (f32)field_0x5e9);
     } else {
         JGeometry::TBox2f* box = layerBox(field_0x5d8);
@@ -402,8 +402,8 @@ bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool inside = true;
     f32 x0, y0, x1, y1;
     if (onLayer) {
-        x0 = field_0x5e0;
-        y0 = field_0x5e4;
+        x0 = field_0x5e0.x;
+        y0 = field_0x5e0.y;
         x1 = x0 + 16.0f * (f32)field_0x5e8;
         y1 = y0 + 16.0f * (f32)field_0x5e9;
     } else {
