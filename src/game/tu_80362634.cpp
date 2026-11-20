@@ -42,6 +42,7 @@ static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7
 static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
 static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
 static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
+static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
 
 // Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
 // field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
@@ -1472,14 +1473,12 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.72 %, reloc-name; behaviour drift.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx identity;
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     if ((field_0x268 & 7) >= 5) {
-        static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
