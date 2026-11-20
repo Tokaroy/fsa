@@ -1752,7 +1752,7 @@ void cls_804AF72C::do_end() {
     field_0x2c0[field_0x2d0++] = -2;
 }
 
-// FIXME(shotgun): 99.59 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.83 %, scheduling+regalloc; behaviour clean.
 // (registers only: the float temporaries of the centring offset and the tail's length/shown values)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
@@ -1783,7 +1783,7 @@ void cls_804AF72C::fn_8039F540(int c) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = window->field_0xf0;
-                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -1807,9 +1807,8 @@ void cls_804AF72C::fn_8039F540(int c) {
             }
             field_0x2d0++;
             text[length] = c;
-            s32 shown = field_0x2d0 - (length + 1);
-            if (shown != field_0x2d8->field_0x170) {
-                field_0x2d8->field_0x170 = shown;
+            if (field_0x2d8->field_0x170 != field_0x2d0 - (length + 1)) {
+                field_0x2d8->field_0x170 = field_0x2d0 - (length + 1);
             }
             strcat(field_0x2c0, text);
             strcat(field_0x2c4, text);
@@ -2774,7 +2773,7 @@ void cls_804AF72C::fn_8039B3EC(u8 noun, s32 count) {
 }
 
 // The play time (minutes, seconds) of the message manager as text (mode 0) or glyph codes.
-// FIXME: 94.34 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.43 %, missing/extra; behaviour clean.
 void cls_804AF72C::fn_8039ACD0(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2798,7 +2797,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = field_0x2d8->field_0xf0;
-                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -2816,8 +2815,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                 minutes = 99;
                 seconds = 59;
             }
-            s32 ones = minutes % 10;
             s32 digit = minutes / 10;
+            s32 ones = minutes % 10;
             if (digit > 0) {
                 ch[0] = digit + '0';
                 appendText(ch);
@@ -2829,8 +2828,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         if (seconds > 59) {
             seconds = 59;
         }
-        s32 ones = seconds % 10;
         s32 digit = seconds / 10;
+        s32 ones = seconds % 10;
         if (digit > 0 || minutes > 0) {
             ch[0] = digit + '0';
             appendText(ch);
@@ -2843,8 +2842,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
             minutes = 99;
             seconds = 59;
         }
-        s32 ones = minutes % 10;
         s32 digit = minutes / 10;
+        s32 ones = minutes % 10;
         if (minutes > 0) {
             if (digit > 0) {
                 appendGlyph(findGlyph(digit + '0'));
@@ -2855,8 +2854,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         if (seconds > 59) {
             seconds = 59;
         }
-        ones = seconds % 10;
         digit = seconds / 10;
+        ones = seconds % 10;
         if (digit > 0) {
             appendGlyph(findGlyph(digit + '0'));
         }
@@ -2865,7 +2864,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.91 %, regalloc-only; behaviour clean.
+// FIXME: 99.98 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2884,7 +2883,7 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
                 s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
