@@ -395,7 +395,6 @@ void DroppedItem_804A8C80::draw() {
 // (ours has 1 fewer instruction). The original copies player into a second saved
 // register (r22, an inlined leader lookup) and orders the 0x30000000 addis / param add differently.
 bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
-    s32 i;
     s32 leader = player;
     if (fn_8022F514(player)) {
         leader = fn_8022F3DC(player);
@@ -416,7 +415,7 @@ bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
         spriteIdx += 11;
     }
 
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
         JGeometry::TVec3f pos(1.0f + p.x, p.y - 12.0f, p.z);
 
@@ -451,8 +450,8 @@ bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
 
     if (field_0x244 >= 0) {
         // The original loads these two before the TVec2f argument copy.
-        u32 v264 = field_0x264;
         u32 v270 = field_0x270;
+        u32 v264 = field_0x264;
         getGameView_802D6A9C()->fn_802D6F38(v264, field_0x268, v270, false);
     }
     return true;
