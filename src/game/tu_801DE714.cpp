@@ -590,7 +590,15 @@ void cls_804A51E4::fn_801E1300() {
     if (lost) {
         findTargets(this);
         bool start = false;
-        if (mState != 7 && mState != 0 && !(mState >= 0xF && mState < 0x13)) {
+        switch (mState) {
+        case 0:
+        case 7:
+        case 0xF:
+        case 0x10:
+        case 0x11:
+        case 0x12:
+            break;
+        default:
             if (!(mFlags & 0x4000) && field_0x2cc == 0) {
                 if (fn_801E1DB4()) {
                     if (mFlags & 0x20000) {
@@ -602,6 +610,7 @@ void cls_804A51E4::fn_801E1300() {
                     }
                 }
             }
+            break;
         }
         if (start) {
             fn_801E1594(7);
