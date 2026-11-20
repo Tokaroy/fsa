@@ -16,15 +16,14 @@ Flame_804A0330::~Flame_804A0330() {
     }
 }
 
-// FIXME(shotgun): 84.08 %, missing/extra; behaviour clean.
 void Flame_804A0330::init() {
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
     field_0x24c = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
     mEmitters[0] = NULL;
     mEmitters[1] = NULL;
     mEmitters[2] = NULL;
@@ -49,22 +48,6 @@ void Flame_804A0330::init() {
             field_0x94 = 0;
         }
         switch (field_0x94) {
-        case 3:
-            mState = 3;
-            break;
-        case 1:
-            mState = 1;
-            break;
-        case 2:
-            mState = 2;
-            break;
-        case 0:
-        case 6:
-            field_0x260 = 1.0f;
-            field_0x240 = 1;
-            field_0x234 = 8;
-            mState = 0;
-            break;
         case 4:
         case 5:
             if (field_0x94 == 5) {
@@ -77,8 +60,24 @@ void Flame_804A0330::init() {
             mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3C, 1, 1, NULL, NULL, true, field_0x260);
             mEmitters[2] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D, 1, 1, NULL, NULL, true, field_0x260);
             field_0x240 = 1;
-            field_0x234 = 8;
+            field_0x234[0] = 8;
             mState = 0;
+            break;
+        case 0:
+        case 6:
+            field_0x260 = 1.0f;
+            field_0x240 = 1;
+            field_0x234[0] = 8;
+            mState = 0;
+            break;
+        case 1:
+            mState = 1;
+            break;
+        case 2:
+            mState = 2;
+            break;
+        case 3:
+            mState = 3;
             break;
         }
         switch (field_0x98) {
@@ -137,7 +136,7 @@ void Flame_804A0330::init() {
 
 static u16 lbl_80539F70[4] = {904, 903, 902, 905};
 
-// FIXME(shotgun): 98.18 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.94 %, reloc-name; behaviour drift.
 void Flame_804A0330::fn_8015EA2C() {
     f32 dist = 0.0f;
     switch (mState) {
@@ -173,7 +172,7 @@ void Flame_804A0330::fn_8015EA2C() {
                     field_0x240 = 1;
                 }
             } else if (dir >= 0 && dist >= 96.0f) {
-                field_0x234 = 8;
+                field_0x234[0] = 8;
                 field_0x240 = 0;
             }
         }
@@ -182,15 +181,15 @@ void Flame_804A0330::fn_8015EA2C() {
         if (vfunc_0x34()) {
             field_0x240 = 0;
             mState = 4;
-        } else if (field_0x238 == 0) {
-            if (field_0x23c == 0) {
-                field_0x238 = 0x78;
-                field_0x240 = 1;
+        } else if (field_0x234[1] != 0) {
+            if (field_0x234[1] == 1) {
+                field_0x234[1] = 0;
+                field_0x240 = 0;
+                field_0x234[2] = 0xB4;
             }
-        } else if (field_0x238 == 1) {
-            field_0x238 = 0;
-            field_0x240 = 0;
-            field_0x23c = 0xB4;
+        } else if (field_0x234[2] == 0) {
+            field_0x234[1] = 0x78;
+            field_0x240 = 1;
         }
         break;
     case 4: {
@@ -227,16 +226,16 @@ void Flame_804A0330::fn_8015EA2C() {
         }
         break;
     case 8:
-        if (field_0x234 == 0) {
+        if (field_0x234[0] == 0) {
             if (field_0x248 == 0) {
                 if (field_0x244 != 0) {
                     vfunc_0x30(0xFF, true);
-                    field_0x234 = 8;
+                    field_0x234[0] = 8;
                     field_0x248 = 1;
                 }
             } else if (field_0x244 == 0) {
                 vfunc_0x30(0xFF, true);
-                field_0x234 = 8;
+                field_0x234[0] = 8;
                 field_0x248 = 0;
             }
         }
@@ -256,11 +255,11 @@ extern const Tables_80466110 lbl_80466110;
 extern JGeometry::TVec2f lbl_804A0310[4]; // the emitter offset from mPos
 
 // 0x8015DF7C.
-// FIXME(shotgun): 88.72 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 94.63 %, missing/extra; behaviour drift.
 void Flame_804A0330::fn_8015DF7C() {
-    JGeometry::TVec2f pos2(mPos.x, mPos.y);
     JGeometry::TBox2f box;
     box.set(mBox);
+    JGeometry::TVec2f pos2(mPos.x, mPos.y);
     box.addPos(pos2);
     if (field_0x254 != 0) {
         s32 player = fn_8023B004(&box, field_0x4);
@@ -322,16 +321,10 @@ void Flame_804A0330::fn_8015DF7C() {
                         JGeometry::TVec2f d(ppos->x, ppos->y);
                         d.x -= mPos.x;
                         d.y -= mPos.y;
-                        f32 sq = d.x * d.x + d.y * d.y;
-                        if (sq < 900.0f) {
-                            if (sq > JGeometry::TUtil<f32>::epsilon()) {
-                                f32 inv = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                                d.x *= inv;
-                                d.y *= inv;
-                            }
-                            if (d.x * d.x + d.y * d.y > JGeometry::TUtil<f32>::epsilon()) {
-                                d.x *= 16.0f;
-                                d.y *= 16.0f;
+                        if (d.squared() < 900.0f) {
+                            d.normalize();
+                            if (!d.isZero()) {
+                                d.scale(16.0f);
                             }
                             JGeometry::TVec3f push(d.x, d.y, 0.0f);
                             fn_8023DFF4(i, &push);
@@ -346,9 +339,10 @@ void Flame_804A0330::fn_8015DF7C() {
         field_0x80.set(1.0f, -1.0f, 1.0f, -1.0f);
     }
     if (field_0x94 != 4 && field_0x94 != 5) {
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-        pos.x = mPos.x + lbl_804A0310[field_0x98].x;
-        pos.y = mPos.y + lbl_804A0310[field_0x98].y;
+        JGeometry::TVec3f pos;
+        pos.set(mPos);
+        pos.x += lbl_804A0310[field_0x98].x;
+        pos.y += lbl_804A0310[field_0x98].y;
         if (field_0x260 < 0.1f) {
             if (mEmitters[0] != NULL) {
                 mEmitters[0]->becomeInvalidEmitter();
@@ -420,10 +414,10 @@ void Flame_804A0330::fn_8015DF7C() {
                 count = 1;
             }
             for (s32 i = 0; i < count; i++) {
-                JGeometry::TVec3f spark(mPos.x, mPos.y, mPos.z);
-                f32 r = 16.0f * (f32)i;
-                spark.x = r * JMath::sincosTable_.sinShort(fn_801F6874(field_0x98)) + spark.x;
-                spark.y = r * JMath::sincosTable_.cosShort(fn_801F6874(field_0x98)) + spark.y;
+                JGeometry::TVec3f spark;
+                spark.set(mPos);
+                spark.x += 16.0f * (f32)i * JMath::sincosTable_.sinShort(fn_801F6874(field_0x98));
+                spark.y += 16.0f * (f32)i * JMath::sincosTable_.cosShort(fn_801F6874(field_0x98));
                 spawnEmitter_8013CC50(field_0x4, &spark, 0x54D, 1, 1, NULL, NULL, true, 1.0f);
             }
             field_0x24c = 0;
@@ -441,7 +435,8 @@ void Flame_804A0330::fn_8015DF7C() {
         if (field_0x24c > 10) {
             u16 angle = 0;
             for (s32 i = 0; i < 8; i++) {
-                JGeometry::TVec3f spark(mPos.x, mPos.y, mPos.z);
+                JGeometry::TVec3f spark;
+                spark.set(mPos);
                 f32 r;
                 if (field_0x94 == 5) {
                     r = 40.0f;
@@ -462,20 +457,15 @@ void Flame_804A0330::fn_8015DF7C() {
     }
 }
 
-// FIXME(shotgun): 96.69 %, missing/extra; behaviour near.
 void Flame_804A0330::update() {
     fn_8015EA2C();
     if (mState != 5) {
         fn_8015DF7C();
     }
-    if (field_0x234 > 0) {
-        field_0x234--;
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
+    for (s32 i = 0; i < 3; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+        }
     }
 }
 
