@@ -63,7 +63,7 @@ cls_804A4C58::~cls_804A4C58() {
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 67.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 69.16 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -273,7 +273,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 99.39 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -331,7 +331,7 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-// FIXME(shotgun): 90.87 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.23 %, missing/extra + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
