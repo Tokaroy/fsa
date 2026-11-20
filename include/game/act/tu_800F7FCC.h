@@ -77,7 +77,7 @@ public:
     void fn_800FA1A4(); // keeps the two partner actors apart
     void fn_800FB070(); // state 9
     void fn_800FB32C(); // state 7
-    void fn_800FB6E0(bool first); // starts a hop
+    void fn_800FB6E0(s32 mode); // starts a hop
     void fn_800FBA14(); // state 6
     void fn_800FBD90(); // state 5
     void fn_800FC128(); // state 4
