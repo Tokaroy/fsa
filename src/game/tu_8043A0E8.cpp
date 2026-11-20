@@ -528,7 +528,7 @@ void cls_804B1920::fn_8043E7CC(JGeometry::TVec3f pos) {
     fn_80440928(screen.x, screen.y);
 }
 
-// FIXME(shotgun): 98.72 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.80 %, missing/extra + reloc-name; behaviour clean.
 // (the cx / cy and box bounds live in fewer float registers)
 void cls_804B1920::fn_8043E398(const Vec* a, const Vec* b) {
     Vec screenA;
@@ -554,7 +554,7 @@ void cls_804B1920::fn_8043E398(const Vec* a, const Vec* b) {
     }
 }
 
-// FIXME(shotgun): 99.23 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.31 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
     Vec screenOrigin;
     Vec screenUnit;
@@ -580,15 +580,12 @@ void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
     }
 }
 
-// FIXME: 95.96 %, regalloc-only + reloc-name; behaviour clean.
-// Same instructions, float registers allocated differently (f0/f7/f8).
 bool cls_804B1920::fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin) {
-    JGeometry::TBox2f box(x - 94.0f, y - 61.5f, 94.0f + x, 61.5f + y);
-    box.i.x -= margin;
-    box.i.y -= margin;
-    box.f.x = margin + box.f.x;
-    box.f.y = margin + box.f.y;
-    if (px >= box.i.x && px <= box.f.x && py >= box.i.y && py <= box.f.y) {
+    f32 x0 = x - 94.0f - margin;
+    f32 y0 = y - 61.5f - margin;
+    f32 x1 = margin + (94.0f + x);
+    f32 y1 = margin + (61.5f + y);
+    if (px >= x0 && px <= x1 && py >= y0 && py <= y1) {
         return false;
     }
     return true;
@@ -829,12 +826,11 @@ void cls_804B1920::fn_8043D5F0() {
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME: 98.10 %, regalloc-only; behaviour clean.
-// Registers differ: the original keeps the bounds value in f2 and the 100.0 literal in f1.
 f32 cls_804B1920::fn_8043D57C() {
     f32 result = 0.0f;
     if (field_0x10b != 0 && field_0x10c == 0) {
-        result = -66.0f * (100.0f - (field_0x40[0]->mPane->getBounds()->i.y - field_0x40[0]->field_0xc)) / 100.0f;
+        f32 y = field_0x40[0]->mPane->getBounds()->i.y - field_0x40[0]->field_0xc;
+        result = -66.0f * (100.0f - y) / 100.0f;
     }
     return result;
 }
