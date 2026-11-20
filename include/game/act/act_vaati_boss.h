@@ -141,15 +141,13 @@ public:
 // flags of the actors they name. No vtable; named after that destructor.
 class cls_801D7730 {
 public:
-    // 0x801D76B4: sets the 16 serials to -1 and the rest to 0 (0.0f for the floats).
+    // 0x801D77B4: sets the 16 serials to -1 and the rest to 0 (0.0f for the floats).
     cls_801D7730();
     ~cls_801D7730();
-    // Placement form, so fn_801D5D84 can run the constructor on the member again like the original.
-    static inline void* operator new(size_t, void* p) { return p; }
     // 0x801D7638: clears mAlive of the actors the serials name.
     void fn_801D7638();
     // Shotgun pass: the ring's per-frame steps (names by address).
-    void fn_801D77B4();                                          // reset
+    void fn_801D76B4();                                          // reset: the same stores as the constructor
     void fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer);   // restart and spawn
     void fn_801D6E20(const JGeometry::TVec3f* pos);              // follow
     void fn_801D70BC(const JGeometry::TVec3f* pos, s32 player);  // fling one

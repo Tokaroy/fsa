@@ -276,7 +276,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                 startSound_801F0E34(0x40005, 0);
                 if (field_0x4c4.field_0x44 != 4) {
                     field_0x4c4.fn_801D7638();
-                    new (&field_0x4c4) cls_801D7730();
+                    field_0x4c4.fn_801D76B4();
                 }
                 if (mLife <= lbl_8053F0C0) {
                     mFlags |= 0x8000;
@@ -304,14 +304,14 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                             field_0xdc = 16;
                             fn_801D5D84(0x18);
                             field_0x4c4.fn_801D7638();
-                            new (&field_0x4c4) cls_801D7730();
+                            field_0x4c4.fn_801D76B4();
                         } else {
                             field_0xd8 = 0xB4;
                             field_0xdc = 0xB4;
                             fn_801D63D0();
                             if (field_0x4c4.field_0x44 != 4) {
                                 field_0x4c4.fn_801D7638();
-                                new (&field_0x4c4) cls_801D7730();
+                                field_0x4c4.fn_801D76B4();
                             }
                             if (mLife <= lbl_8053F0C0) {
                                 fn_801D5D84(10);

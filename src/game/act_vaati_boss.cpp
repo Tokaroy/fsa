@@ -50,8 +50,6 @@ cls_801D6A58::cls_801D6A58() {
 
 cls_801E6AB8::~cls_801E6AB8() {}
 
-// FIXME: 99.95 %, reloc-name; behaviour drift.
-// reloc-name. The original calls fn_801D77B4 (an identical copy of cls_801D7730's constructor, tu_801D6CEC) for the member at 0x4C4; ours calls __ct__12cls_801D7730Fv.
 VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x5b0 = -1;
     field_0x5b4 = 0;
@@ -259,8 +257,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     case 11:
         if (field_0x4c4.field_0x44 != 4) {
             field_0x4c4.fn_801D7638();
-            // The original runs the constructor again here.
-            new (&field_0x4c4) cls_801D7730();
+            field_0x4c4.fn_801D76B4();
         }
         field_0x448.fn_80217A74();
         mSpeed = 0.0f;
