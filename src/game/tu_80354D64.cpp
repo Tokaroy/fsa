@@ -477,7 +477,7 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
     bool ok = false;
     JGeometry::TVec3f saved(mPos);
     field_0x3c.set(lbl_804722F0[dir][0], lbl_804722F0[dir][1], lbl_804722F0[dir][2]);
-    mPos.add(field_0x3c);
+    mPos += field_0x3c;
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&out, false)) {
         switch (dir) {
@@ -507,8 +507,11 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
     }
     if (!ok) {
         ok = true;
-        JGeometry::TBox2f box;
-        box.set(mBox.i.x + mPos.x, mBox.i.y + mPos.y, mBox.f.x + mPos.x, mBox.f.y + mPos.y);
+        JGeometry::TBox2f box(mBox);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 JGeometry::TVec3f p(*getPlayerPos_8023E724(i));
@@ -521,6 +524,6 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
         }
     }
     mPos = saved;
-    field_0x3c.zero();
+    field_0x3c.set(0.0f, 0.0f, 0.0f);
     return ok;
 }
