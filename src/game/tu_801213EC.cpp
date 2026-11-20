@@ -107,7 +107,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     return result;
 }
 
-// FIXME(shotgun): 99.45 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.64 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80124448() {
     ActorBase_804A5770::init();
     lbl_80539F30 = mSerial;
@@ -178,13 +178,12 @@ void EscortBase_8049E0C8::update() {
     vfunc_0x90();
 }
 
-// FIXME(shotgun): 97.35 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::draw() {
     ActorBase_804A5770::draw();
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
-        pos.x -= 6.0f * (field_0x360 - 1);
         pos.y += -28.0f;
+        pos.x -= 6.0f * (field_0x360 - 1);
         for (s32 i = 0; i < field_0x360; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x364[i]);
             if (actor == NULL) {
@@ -436,15 +435,15 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-// FIXME(shotgun): 98.77 %, different; behaviour clean.
+// FIXME(shotgun): 98.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
         field_0x334 = 0;
     } else {
-        f32 y = 0.0f;
-        f32 x = 0.0f;
         s32 who = player;
+        f32 x = 0.0f;
+        f32 y = 0.0f;
         switch (fn_8022CAF8(player)) {
         case 0:
             vfunc_0xA4(&x, &y, &who);
@@ -969,7 +968,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     return false;
 }
 
-// FIXME: 99.05 %, regalloc-only; behaviour clean.
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 // Regalloc only: the original keeps the array pointer, counter and serial in r29, r30, r28; here in r28, r29, r30.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
@@ -980,13 +979,14 @@ void EscortBase_8049E0C8::fn_80121ABC() {
 // Dead-stripped helper inlined into fn_80124448 and fn_80121ABC: when field_0x332 is set, spawns
 // field_0x360 life-meter actors ('LIMT') in a row at the escort, hidden.
 void EscortBase_8049E0C8::spawnLifeMeters() {
+    s32 serial;
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
             pos.x += lifeMeterSpacing();
             field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
-            s32 serial = field_0x364[i];
+            serial = field_0x364[i];
             if (serial < 0) {
                 break;
             }
