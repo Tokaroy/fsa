@@ -342,19 +342,14 @@ void TileMap_804AA858::fn_802FF548() {
     fn_802FF798();
 }
 
-// FIXME: 88.72 %, missing/extra; behaviour clean.
-// The original copies the rectangles two words at a time (lwz, lwz,
-// stw, stw) and builds the full-screen one on the stack while storing it; ours copies
-// word by word and drops the stack copy. The loop registers swap as in fn_802FF2D8.
+// The full-screen rect and loop registers differ in register allocation only.
 void TileMap_804AA858::fn_802FF3F0() {
-    if (field_0x248 && field_0x24c.x1 != 0) {
+    if (field_0x248 && field_0x24c.f.x != 0) {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
     } else {
-        ScreenRect_802FF3F0 rect;
-        rect.x0 = 0;
-        rect.y0 = 0;
-        rect.x1 = JUTVideo::getManager()->getFbWidth();
-        rect.y1 = JUTVideo::getManager()->getEfbHeight();
+        JGeometry::TBox2<u32> rect;
+        rect.i.set(0, 0);
+        rect.f.set(JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight());
         gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
     }
     fn_802FC80C();

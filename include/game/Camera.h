@@ -33,18 +33,6 @@
 #include "JSystem/JGeometry.h"
 #include "JSystem/JParticle/JPADrawInfo.h"
 
-// The screen rectangle of Camera_804AA9E4::field_0x144 (x0, y0, x1, y1 as
-// unsigned ints, converted to float with the unsigned idiom: fn_8030C2A8 tests a point against x0+0xE..x1-0xE and y0..y1). No code of its own; named after the first function that builds
-// one (TileMap_804AA858::fn_802FF3F0, game/tu_802F5040.cpp: copied whole from
-// TileMap_804AA858::field_0x24c, or (0, 0, fbWidth, efbHeight) built on the stack).
-struct ScreenRect_802FF3F0 {
-    // All four convert to float unsigned (GameRoot2_8049F108::fn_8013BBE0).
-    /* 0x0 */ u32 x0;
-    /* 0x4 */ u32 y0;
-    /* 0x8 */ u32 x1; // cmplwi against 0 (0x802FF420)
-    /* 0xC */ u32 y1;
-}; // Size: 0x10
-
 struct CameraEntry_804AA8E8 {
     /* 0x00 */ f32 field_0x0;
     /* 0x04 */ f32 field_0x4;
@@ -151,7 +139,7 @@ public:
     /* 0x0E4 */ JPADrawInfo field_0xe4;
     // The screen rectangle (x0, y0, x1, y1) as unsigned ints: written by tu_802F5040
     // (0x802FF438), read by fn_8030C2A8.
-    /* 0x144 */ ScreenRect_802FF3F0 field_0x144;
+    /* 0x144 */ JGeometry::TBox2<u32> field_0x144;
     // The visible area: addFocusPoint_8030C210 / fn_8030C058 test against it,
     // tu_802D39B8 writes it (0x802D9F64), fn_8030C85C resets it from
     // field_0x190.

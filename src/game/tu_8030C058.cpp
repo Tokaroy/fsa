@@ -61,10 +61,10 @@ void Camera_804AA9E4::fn_8030E5BC() {
     field_0x840 = 0;
     u16 width, height;
     JUTVideo::sManager->getBounds(width, height);
-    field_0x144.x0 = 0;
-    field_0x144.y0 = 0;
-    field_0x144.x1 = width;
-    field_0x144.y1 = height;
+    field_0x144.i.x = 0;
+    field_0x144.i.y = 0;
+    field_0x144.f.x = width;
+    field_0x144.f.y = height;
     field_0x858 = 1.0f;
     field_0x174 = 0;
     field_0x178 = 0;
@@ -864,8 +864,8 @@ void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, 
         out->x = 0.5f * (1.0f + x);
         out->y = 0.5f * (1.0f - y);
     } else if (inRect) {
-        out->x = 0.5f * (1.0f + x) * (f32)(field_0x144.x1 - field_0x144.x0) + (f32)field_0x144.x0;
-        out->y = 0.5f * (1.0f - y) * (f32)(field_0x144.y1 - field_0x144.y0) + (f32)field_0x144.y0;
+        out->x = 0.5f * (1.0f + x) * (f32)(field_0x144.f.x - field_0x144.i.x) + (f32)field_0x144.i.x;
+        out->y = 0.5f * (1.0f - y) * (f32)(field_0x144.f.y - field_0x144.i.y) + (f32)field_0x144.i.y;
     } else {
         out->x = 0.5f * (1.0f + x) * (f32)(s32)JUTVideo::sManager->getFbWidth();
         out->y = 0.5f * (1.0f - y) * (f32)(s32)JUTVideo::sManager->getEfbHeight();
@@ -876,10 +876,10 @@ void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, 
 
 void Camera_804AA9E4::fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeometry::TVec3f* out) {
     if (flag) {
-        out->set(field_0x164.i.x + (in->x - (f32)field_0x144.x0) * (field_0x164.f.x - field_0x164.i.x) /
-                                       (f32)(field_0x144.x1 - field_0x144.x0),
-                 field_0x164.i.y + (in->y - (f32)field_0x144.y0) * (field_0x164.f.y - field_0x164.i.y) /
-                                       (f32)(field_0x144.y1 - field_0x144.y0),
+        out->set(field_0x164.i.x + (in->x - (f32)field_0x144.i.x) * (field_0x164.f.x - field_0x164.i.x) /
+                                       (f32)(field_0x144.f.x - field_0x144.i.x),
+                 field_0x164.i.y + (in->y - (f32)field_0x144.i.y) * (field_0x164.f.y - field_0x164.i.y) /
+                                       (f32)(field_0x144.f.y - field_0x144.i.y),
                  0.0f);
     } else {
         out->set(field_0x164.i.x + in->x * (field_0x164.f.x - field_0x164.i.x) / (f32)(s32)JUTVideo::sManager->getFbWidth(),
@@ -902,10 +902,10 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.
 void Camera_804AA9E4::setScreenRectViewport() {
-    u32 w = field_0x144.x1 - field_0x144.x0;
-    u32 h = field_0x144.y1 - field_0x144.y0;
-    GXSetViewport((f32)field_0x144.x0, (f32)field_0x144.y0, (f32)w, (f32)h, 0.0f, 1.0f);
-    GXSetScissor(field_0x144.x0, field_0x144.y0, w, h);
+    u32 w = field_0x144.f.x - field_0x144.i.x;
+    u32 h = field_0x144.f.y - field_0x144.i.y;
+    GXSetViewport((f32)field_0x144.i.x, (f32)field_0x144.i.y, (f32)w, (f32)h, 0.0f, 1.0f);
+    GXSetScissor(field_0x144.i.x, field_0x144.i.y, w, h);
     GXSetZScaleOffset(1.0f, 0.0f);
 }
 
@@ -916,8 +916,8 @@ bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     fn_8030C5F0(pos, true, false, &screen);
     bool result = false;
-    if (screen.x >= (f32)(field_0x144.x0 + 14) && screen.x < (f32)(field_0x144.x1 - 14) &&
-        screen.y >= (f32)(field_0x144.y0 + 14) && screen.y < (f32)(field_0x144.y1 - 14)) {
+    if (screen.x >= (f32)(field_0x144.i.x + 14) && screen.x < (f32)(field_0x144.f.x - 14) &&
+        screen.y >= (f32)(field_0x144.i.y + 14) && screen.y < (f32)(field_0x144.f.y - 14)) {
         result = true;
     }
     return result;
