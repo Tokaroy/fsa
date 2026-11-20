@@ -106,7 +106,7 @@ cls_804A3E44::~cls_804A3E44() {
     }
 }
 
-// FIXME: 99.77 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.87 %, regalloc-only; behaviour clean.
 void cls_804A3E44::init() {
     EnemyBase_804A4808::init();
     u32 p = field_0x90 & 0x1F;
@@ -169,7 +169,7 @@ void cls_804A3E44::init() {
     }
 }
 
-// FIXME: 99.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.62 %, missing/extra; behaviour drift.
 // (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
 void cls_804A3E44::fn_801BC554(s32 state) {
     switch (state) {
@@ -329,8 +329,6 @@ inline bool cls_804A3E44::checkPlayerHit() {
     return hitFlag;
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour clean.
-// FIXME: literal relocation names only (pool order depends on vfunc_0x90).
 void cls_804A3E44::fn_801BC244() {
     switch (mState) {
     case 1:
@@ -410,7 +408,7 @@ void cls_804A3E44::fn_801BC244() {
     }
 }
 
-// FIXME: 99.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.53 %, missing/extra; behaviour drift.
 // (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
 void cls_804A3E44::vfunc_0x90(u8 mapHit) {
     fn_801BC244();
