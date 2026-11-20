@@ -506,23 +506,13 @@ bool cls_801192AC::fn_801186B0(u32 value) {
     return false;
 }
 
-// FIXME(shotgun): 97.59 %, different; behaviour drift.
-// (the vector clear is a plain assignment; the
-// erase(begin(), end()) inline: the copy and empty destroy loops; the extra copy of the source pointer differs)
 bool cls_801192AC::fn_801184F0(bool flag) {
     getActorManager_801F856C()->fn_801F6884();
     field_0x0 = 0;
     if (flag) {
         fadeObject()->fn_80119958();
     }
-    ActorBase_804A5770** first = mActors.mBegin;
-    ActorBase_804A5770** end = mActors.mEnd;
-    for (ActorBase_804A5770** last = end; last < end; last++) {
-        *first++ = *last;
-    }
-    for (ActorBase_804A5770** it = first; it != end; it++) {
-    }
-    mActors.mEnd = first;
+    mActors.clear();
     field_0x0 = 0;
     field_0x1 = 0;
     field_0x2 = 0;
