@@ -995,7 +995,8 @@ void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
         }
     }
     if (arg1 >= 1000 || arg1 <= -1000) {
-        field_0x224[id] = __abs(arg1) / 100;
+        s32 amount = __abs(arg1);
+        field_0x224[id] = amount / 100;
         field_0x22c[id] = 0;
     } else {
         fn_80230FD0(id, 0x20034);
