@@ -1354,7 +1354,7 @@ bool Player_804A6F38::fn_802604CC() {
     return false;
 }
 
-// FIXME: 95.46 %, scheduling+regalloc; behaviour clean.
+// FIXME: 98.48 %, scheduling+regalloc; behaviour clean.
 // scheduling+regalloc: the two facing-table vectors are loaded x, y, z and
 // stored interleaved with the mPos add in the original (ours loads z first); the argument
 // loads of fn_80272B4C's copy differ in order.
