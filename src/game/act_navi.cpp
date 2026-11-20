@@ -79,7 +79,7 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 99.55 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.59 %, missing/extra; behaviour clean.
 // Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
 // the .sdata2 literals are not split.
 void cls_804A6708::init() {
@@ -175,7 +175,7 @@ void cls_804A6708::init() {
 }
 
 
-// FIXME: 88.94 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 90.50 %, missing/extra; behaviour near.
 // Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void cls_804A6708::fn_8021E4F8() {
     switch (mState) {
@@ -218,13 +218,7 @@ void cls_804A6708::fn_8021E4F8() {
     fn_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
     fn_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
     JGeometry::TVec2f goal = field_0x2c8 + d;
-    bool follow2 = false;
-    if (mState == 7) {
-        if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
-            follow2 = true;
-        }
-    }
-    if (follow2) {
+    if (mState == 7 && isFollowing()) {
         fn_801CD754(&field_0x2c0, &goal, 0.3f, 1.0f, 4.0f);
     } else {
         field_0x2c0 = goal;
@@ -251,7 +245,7 @@ void cls_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 96.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.67 %, missing/extra; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
     switch (newState) {
     case 1:
@@ -371,9 +365,6 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     mState = newState;
 }
 
-// FIXME: 98.88 %, missing/extra + reloc-name; behaviour drift.
-// (missing/extra: ours has 2 fewer instrs (216 vs 218)). In case 3, the compiler merges
-// the two "flag = true" assignments into a single branch.
 void cls_804A6708::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
@@ -400,10 +391,13 @@ void cls_804A6708::vfunc_0x90(u8 mapHit) {
         if (field_0x2b4 < 0) {
             break;
         }
-        s32 param = field_0x2b0;
-        // Flag local set in a branch: the plain && form compiles 8 instructions short (96.1%).
         bool flag = false;
-        if (param == 0 || getGameView_802D6A9C()->fn_802D800C(param)) {
+        s32 param = field_0x2b0;
+        if (param != 0) {
+            if (getGameView_802D6A9C()->fn_802D800C(param)) {
+                flag = true;
+            }
+        } else {
             flag = true;
         }
         if (flag && fn_8023077C()) {
@@ -427,7 +421,7 @@ void cls_804A6708::vfunc_0x90(u8 mapHit) {
         }
         fn_8022FE80(field_0x2b4, field_0x4, mSerial, false, false);
         if (field_0x2b4 == fn_8022FD8C(mSerial)) {
-            if (fn_8038C678(field_0x2b4, field_0x2a8, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 16.0f, 0.0f), 0x4002)) {
+            if (fn_8038C678(field_0x2b4, field_0x2a8, mSerial, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
                 if (mFlags & 0x4000) {
                     fn_8021F064()->mFlags |= 1;
                 } else {
