@@ -1546,6 +1546,7 @@ static inline void fadeInSlide(cls_804B0B00* self, s32 start, s32 duration, f32 
     }
 }
 
+// FIXME: 96.73 %, missing/extra; behaviour near.
 void cls_804B0B00::fn_803E926C() {
     field_0x254[0]++;
     fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
