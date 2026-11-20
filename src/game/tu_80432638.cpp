@@ -12,6 +12,16 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/JKernel/JKRFileLoader.h"
 
+// The six pane tags the constructor reads the alphas of (Ptim01 twice).
+static const u64 lbl_8048F438[6] = {
+    0x00000050746B3031ull, /* "Ptk01" */
+    0x0000000050743031ull, /* "Pt01" */
+    0x00000050746B3032ull, /* "Ptk02" */
+    0x0000000050743032ull, /* "Pt02" */
+    0x00005074696D3031ull, /* "Ptim01" */
+    0x00005074696D3031ull, /* "Ptim01" */
+};
+
 static const char* lbl_804B1640[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
@@ -25,17 +35,8 @@ static const char* lbl_804B1640[10] = {
     "kk_rupyNum_09.bti",
 };
 
-// The six pane tags the constructor reads the alphas of (Ptim01 twice).
-static const u64 lbl_8048F438[6] = {
-    0x00000050746B3031ull, /* "Ptk01" */
-    0x0000000050743031ull, /* "Pt01" */
-    0x00000050746B3032ull, /* "Ptk02" */
-    0x0000000050743032ull, /* "Pt02" */
-    0x00005074696D3031ull, /* "Ptim01" */
-    0x00005074696D3031ull, /* "Ptim01" */
-};
-
-// FIXME(shotgun): 99.79 %, operands (the vtable symbol name)
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour near.
+// (the vtable symbol name)
 cls_804B1668::cls_804B1668() {
     field_0x4[0] = new J2DScreen;
     field_0x4[0]->setPriority("main_gba_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
@@ -55,17 +56,17 @@ cls_804B1668::cls_804B1668() {
     field_0x34->mPane->hide();
     f32 width = field_0x18[2]->mPane->getWidth();
     f32 centreX = field_0x18[2]->field_0x10;
-    field_0x40[0].x = (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x) - width * 0.5f;
+    field_0x40[0].x = (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x) - width / 2.0f;
     f32 height = field_0x18[2]->mPane->getHeight();
     f32 centreY = field_0x18[2]->field_0x14;
-    field_0x40[0].y = (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y) - height * 0.5f;
+    field_0x40[0].y = (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y) - height / 2.0f;
     field_0x40[0].z = 0.0f;
     field_0x70[0] = field_0x18[2]->mPane->getWidth();
     field_0x70[2] = field_0x18[2]->mPane->getHeight();
-    centreX = field_0x18[0]->field_0x8;
-    field_0x58[0].x = centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x;
-    centreY = field_0x18[0]->field_0xc;
-    field_0x58[0].y = centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y;
+    f32 leftX = field_0x18[0]->field_0x8;
+    field_0x58[0].x = leftX + field_0x4[0]->search('Ndata01')->getBounds()->i.x;
+    f32 topY = field_0x18[0]->field_0xc;
+    field_0x58[0].y = topY + field_0x4[0]->search('Ndata01')->getBounds()->i.y;
     field_0x58[0].z = 0.0f;
     field_0x80[0] = field_0x18[0]->mPane->getWidth();
     field_0x80[2] = field_0x18[0]->mPane->getHeight();
@@ -82,17 +83,17 @@ cls_804B1668::cls_804B1668() {
     field_0x28[2]->setPane_80402F04(field_0x4[1]->search('Psp04'));
     width = field_0x28[1]->mPane->getWidth();
     centreX = field_0x28[1]->field_0x10;
-    field_0x40[1].x = (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x) - width * 0.5f;
+    field_0x40[1].x = (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x) - width / 2.0f;
     height = field_0x28[1]->mPane->getHeight();
     centreY = field_0x28[1]->field_0x14;
-    field_0x40[1].y = (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y) - height * 0.5f;
+    field_0x40[1].y = (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y) - height / 2.0f;
     field_0x40[1].z = 0.0f;
     field_0x70[1] = field_0x28[1]->mPane->getWidth();
     field_0x70[3] = field_0x28[1]->mPane->getHeight();
-    centreX = field_0x28[0]->field_0x8;
-    field_0x58[1].x = centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x;
-    centreY = field_0x28[0]->field_0xc;
-    field_0x58[1].y = centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y;
+    leftX = field_0x28[0]->field_0x8;
+    field_0x58[1].x = leftX + field_0x4[1]->search('Ndata01')->getBounds()->i.x;
+    topY = field_0x28[0]->field_0xc;
+    field_0x58[1].y = topY + field_0x4[1]->search('Ndata01')->getBounds()->i.y;
     field_0x58[1].z = 0.0f;
     field_0x80[1] = field_0x28[0]->mPane->getWidth();
     field_0x80[3] = field_0x28[0]->mPane->getHeight();
@@ -116,7 +117,6 @@ cls_804B1668::cls_804B1668() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name
 cls_804B1668::~cls_804B1668() {
     for (s32 i = 0; i < 2; i++) {
         delete field_0x4[i];
@@ -140,11 +140,10 @@ cls_804B1668::~cls_804B1668() {
     field_0x3c = NULL;
 }
 
-// FIXME(shotgun): 99.47 %, regalloc-only
 void cls_804B1668::fn_80433718() {
-    if (field_0xa0 != getGameView_802D6A9C()->field_0x131dc) {
-        field_0xa0 = getGameView_802D6A9C()->field_0x131dc;
-        field_0x9e = getGameView_802D6A9C()->field_0x131dc;
+    if (field_0xa0 != getGameView_802D6A9C()->get_0x131dc()) {
+        field_0xa0 = getGameView_802D6A9C()->get_0x131dc();
+        field_0x9e = getGameView_802D6A9C()->get_0x131dc();
         if (field_0x9e & 0x8000) {
             field_0xa4 = 1;
             field_0x9e &= 0x7FFF;
@@ -155,7 +154,7 @@ void cls_804B1668::fn_80433718() {
     }
 }
 
-// FIXME(shotgun): 99.41 %
+// FIXME(shotgun): 99.41 %, missing/extra; behaviour clean.
 void cls_804B1668::fn_80432AF8() {
     field_0x90++;
     field_0x94++;
@@ -276,18 +275,16 @@ void cls_804B1668::fn_80432AF8() {
     }
 }
 
-// FIXME(shotgun): 98.72 %, regalloc-only
+// FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0xa4 == 0) {
         f32 scaleX = w / field_0x18[2]->field_0x18;
         f32 scaleY = h / field_0x18[2]->field_0x1c;
         f32 centreX = field_0x18[2]->field_0x10;
-        f32 left = field_0x4[0]->search('Ndata01')->getBounds()->i.x;
-        f32 moveX = (w * 0.5f + x) - (centreX + left);
+        f32 moveX = (x + w / 2.0f) - (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x);
         f32 centreY = field_0x18[2]->field_0x14;
-        f32 top = field_0x4[0]->search('Ndata01')->getBounds()->i.y;
-        f32 moveY = (h * 0.5f + y) - (centreY + top);
+        f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 4; i++) {
             field_0x18[i]->moveFromCentre_80402E08(moveX, moveY);
             field_0x18[i]->fn_80402CE0(scaleX, scaleY);
@@ -325,11 +322,9 @@ void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
         f32 scaleX = w / field_0x28[1]->field_0x18;
         f32 scaleY = h / field_0x28[1]->field_0x1c;
         f32 centreX = field_0x28[1]->field_0x10;
-        f32 left = field_0x4[1]->search('Ndata01')->getBounds()->i.x;
-        f32 moveX = (w * 0.5f + x) - (centreX + left);
+        f32 moveX = (x + w / 2.0f) - (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x);
         f32 centreY = field_0x28[1]->field_0x14;
-        f32 top = field_0x4[1]->search('Ndata01')->getBounds()->i.y;
-        f32 moveY = (h * 0.5f + y) - (centreY + top);
+        f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 3; i++) {
             field_0x28[i]->moveFromCentre_80402E08(moveX, moveY);
             field_0x28[i]->fn_80402CE0(scaleX, scaleY);
@@ -338,7 +333,6 @@ void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     }
 }
 
-// FIXME(shotgun): 99.14 %, regalloc-only
 void cls_804B1668::fn_80432638() {
     if (field_0xac != 0) {
         f32 x = field_0x18[0]->mPane->getBounds()->i.x;
@@ -346,8 +340,10 @@ void cls_804B1668::fn_80432638() {
         f32 y = field_0x18[0]->mPane->getBounds()->i.y;
         f32 top = field_0x18[0]->field_0xc;
         gGameRoot2_8053AB10->fn_8013B490();
-        field_0x3c->moveFromCentre_80402E08((x - left) + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],
-                                            (y - top) + (f32)lbl_8050DB0C.field_0x4c[(0x240 - 0x4C) / 2]);
+        f32 dx = x - left;
+        f32 dy = y - top;
+        field_0x3c->moveFromCentre_80402E08(dx + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],
+                                            dy + (f32)lbl_8050DB0C.field_0x4c[(0x240 - 0x4C) / 2]);
         field_0xc->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
