@@ -1909,7 +1909,7 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
             }
             if (field_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
-                v = v > 0 ? v : 0;
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 sp.field_0x14.r += v;
