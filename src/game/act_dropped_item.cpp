@@ -20,18 +20,18 @@ static const u32 lbl_8046D4F0[23] = {
 // Spawns the 'IMUP' actor for player i with the given param (item sprite code, collecting player and
 // i in the top bits). Inlined at six sites in fn_802BFF30.
 static inline void spawnImup(u32 param, s32 i, const JGeometry::TVec3f* pos) {
+    u32 fullParam = (i << 24) + param;
     s32 layer = getPlayerLayer_8023DE58(i);
-    getActorManager_801F856C()->spawnActor_801F9484('IMUP', layer, pos, param, -1, -1);
+    getActorManager_801F856C()->spawnActor_801F9484('IMUP', layer, pos, fullParam, -1, -1);
 }
 
-inline void DroppedItem_804A8C80::talk(s32 serial, s32 layer, const JGeometry::TVec3f& pos) {
+inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos) {
     fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
-// FIXME: 95.98 %, missing/extra; behaviour near.
-// (ours has 2 fewer instructions). The original saves one more callee-saved register (r28)
-// across the second getGameView call, builds the final spawn key (fn_802D6F38 with `true`) in a different
-// rlwimi order, and loads hit.x / hit.y before the 0.0f literal in the `!= 0.0f` tests.
+// FIXME: 97.66 %, missing/extra; behaviour clean.
+// FIXME: missing/extra (ours has 1 more instruction: mr r29, r4 in the fn_802D6F38 key
+// build, plus hit.x/hit.y vs 0.0f load order in the `!= 0.0f` tests).
 void DroppedItem_804A8C80::init() {
     field_0x238 = field_0x90 & 0x7F;
     // Both arms unpack the same four fields: hoisting them out of the if/else drops init from 96 % to 91 %
@@ -57,7 +57,7 @@ void DroppedItem_804A8C80::init() {
 
     s32 viewRow = getGameView_802D6A9C()->field_0x18;
     s32 viewCol = getGameView_802D6A9C()->field_0x14;
-    field_0x270 = ((viewCol & 0xFF) << 16) | (field_0x244 << 24) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
+    field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
 
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
@@ -100,11 +100,12 @@ void DroppedItem_804A8C80::init() {
 
         if (field_0x234 == 0) {
             // The original re-reads the view row/col and rebuilds the key (field_0x270 above) here.
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            viewRow = getGameView_802D6A9C()->field_0x18;
+            viewCol = getGameView_802D6A9C()->field_0x14;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            s32 packed = ((col & 0xFF) << 16) | (field_0x244 << 24) | ((row & 0xFF) << 8) | (field_0x4 & 0xFF);
-            getGameView_802D6A9C()->fn_802D6F38(field_0x90, pos, packed, true);
+            s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
+            u32 key = field_0x90;
+            getGameView_802D6A9C()->fn_802D6F38(key, pos, packed, true);
         }
         field_0x248 = 150;
     } else {
@@ -144,9 +145,8 @@ void DroppedItem_804A8C80::vfunc_0x40() {
     field_0x250 = 1;
 }
 
-// FIXME: 98.46 %, missing/extra; behaviour near.
-// (ours has 4 more instructions). Our tile 13/14 branches store mAlive = false twice
-// more than the original, and the `hit.x != 0.0f` test loads the 0.0f literal before hit.x (original: hit.x first).
+// FIXME: 99.42 %, scheduling+regalloc; behaviour clean.
+// FIXME: scheduling+regalloc (`hit.x != 0.0f` / `hit.y != 0.0f` load 0.0f before hit.x/hit.y, and v270/v264 swap r29/r31).
 void DroppedItem_804A8C80::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
     JGeometry::TBox2f box(mBox);
@@ -252,22 +252,17 @@ void DroppedItem_804A8C80::update() {
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5005F, 0);
-                        mAlive = false;
-                        break;
-                    }
-                    if (fn_802DEB58()) {
+                    } else if (fn_802DEB58()) {
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5003F, 0);
-                        mAlive = false;
-                        break;
                     }
                 } else if (tile == 13) {
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30022, 0);
-                    mAlive = false;
-                    break;
                 }
+                mAlive = false;
+                break;
             }
         }
 
@@ -307,7 +302,7 @@ void DroppedItem_804A8C80::update() {
 
     case 2:
         fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
-        talk(mSerial, field_0x4, mPos);
+        talk(field_0x4, mSerial, mPos);
         field_0x230 = 3;
         break;
 
@@ -367,9 +362,6 @@ void DroppedItem_804A8C80::fn_802C0570() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
 }
 
-// FIXME: 98.79 %, missing/extra; behaviour near.
-// (ours has 1 fewer instruction). The original tests field_0x4 == 0 once more (a dead
-// beq, probably from an inlined helper), and the `mPos.z != 0.0f` test loads mPos.z before the 0.0f literal.
 void DroppedItem_804A8C80::draw() {
     if (field_0x230 == 1) {
         return;
@@ -378,7 +370,7 @@ void DroppedItem_804A8C80::draw() {
     if (layer == 0) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = field_0x24c;
-        if (mPos.z != 0.0f) {
+        if (mPos.z) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x40, &params, 0, 1.0f, 1.0f);
         } else if (field_0x23c == 2) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x20c, &params, 0, 1.0f, 1.0f);
@@ -386,9 +378,9 @@ void DroppedItem_804A8C80::draw() {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x182, &params, 0, 1.0f, 1.0f);
         }
     } else {
-        if (field_0x248 == 0 || (field_0x248 & 3) == 0) {
+        if (field_0x248 == 0 || (field_0x248 != 0 && (field_0x248 & 3) == 0)) {
             if (field_0x254 >= 120 || (field_0x254 != 0 && (field_0x254 & 3) == 0)) {
-                if (mPos.z != 0.0f) {
+                if (mPos.z) {
                     fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x40, 0, 2, -1, false, 0, 0);
                 } else if (field_0x23c == 2) {
                     fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x20c, 0, 2, -1, false, 0, 0);
@@ -435,25 +427,25 @@ bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
                     continue;
                 }
                 if (i == player) {
-                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + (i << 24), i, &pos);
+                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26), i, &pos);
                 } else {
-                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000 + (i << 24), i, &pos);
+                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000, i, &pos);
                 }
             } else {
                 if (i != leader) {
                     continue;
                 }
                 if (i == player) {
-                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + (i << 24), i, &pos);
+                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26), i, &pos);
                 } else {
-                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000 + (i << 24), i, &pos);
+                    spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000, i, &pos);
                 }
             }
         } else {
             if (i == player) {
-                spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + (i << 24), i, &pos);
+                spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26), i, &pos);
             } else {
-                spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000 + (i << 24), i, &pos);
+                spawnImup(lbl_8046D4F0[spriteIdx] + (player << 26) + 0x30000000, i, &pos);
             }
         }
     }

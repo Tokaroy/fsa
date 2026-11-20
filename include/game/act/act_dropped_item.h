@@ -19,7 +19,7 @@ public:
     /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     void fn_802C0570();
     // Serial and layer are loaded before the position copy, the player after it (RULES_CARD, by-value message calls).
-    void talk(s32 serial, s32 layer, const JGeometry::TVec3f& pos);
+    void talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos);
     bool fn_802BFF30(s32 player);
 
     /* 0x230 */ s32 field_0x230;
