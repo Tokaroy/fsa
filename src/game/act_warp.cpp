@@ -654,37 +654,31 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
         }
         return;
     }
-    ActorBase_804A5770* carried = field_0x27c[player];
-    if (!carried->mAlive) {
+    if (!field_0x27c[player]->mAlive) {
         field_0x27c[player] = NULL;
         return;
     }
-    if (carried->field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
+    if (field_0x27c[player]->field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
         return;
     }
-    if (!(carried->mPos.z < 4.0f)) {
+    if (!(field_0x27c[player]->mPos.z < 4.0f)) {
         return;
     }
-    JGeometry::TVec3f rel = carried->mPos - mPos;
+    JGeometry::TVec3f rel = field_0x27c[player]->mPos - mPos;
     bool inside = false;
     if (rel.x >= -20.0f && rel.y >= -20.0f && rel.x < 20.0f && rel.y < 20.0f) {
         inside = true;
     }
-    if (!inside) {
-        return;
-    }
-    field_0x27c[player]->vfunc_0x48();
-    field_0x27c[player] = NULL;
-    JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
-    JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
-    JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
-    JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
-    if (field_0x255 == 0) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
-        field_0x255 = 1;
+    if (inside) {
+        field_0x27c[player]->vfunc_0x48();
+        field_0x27c[player] = NULL;
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f), player, field_0x4, 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f), player, field_0x4, 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f), player, field_0x4, 0xC);
+        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f), player, field_0x4, 0xC);
+        if (field_0x255 == 0) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+            field_0x255 = 1;
+        }
     }
 }
