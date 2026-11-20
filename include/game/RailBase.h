@@ -82,6 +82,9 @@ public:
             field_0x3 = index;
         }
     }
+    void setField_0x1(u8 v) {
+        field_0x1 = v;
+    }
 
     /* 0x00 */ u8 field_0x0; // fn_800FE3EC's first argument
     /* 0x01 */ u8 field_0x1;
