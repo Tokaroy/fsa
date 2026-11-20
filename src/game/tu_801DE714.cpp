@@ -142,8 +142,7 @@ static inline void findTargets(cls_804A51E4* a) {
 }
 
 
-// Whether the state may change to 7. fn_801E0CF4 has the same test spelled out;
-// as an inline its result and the flags take the original's registers in fn_801E1300.
+// Whether the state may change to 7. fn_801E0CF4 has the same test spelled out.
 static inline bool canChase(const cls_804A51E4* a) {
     bool result = false;
     switch (a->mState) {
@@ -445,8 +444,8 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     case 2:
     case 4:
         if (mState == 0 && newState == 1) {
-            f32 ty;
             f32 tx;
+            f32 ty;
             if (mFlags & 0x20000) {
                 tx = getPlayerPos_8023E724(field_0x2a8)->x;
                 ty = getPlayerPos_8023E724(field_0x2a8)->y;
