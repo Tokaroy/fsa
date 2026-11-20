@@ -146,17 +146,16 @@ void cls_8049F6C8::init() {
 
 // FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049F6C8::fn_8014A2CC(s32 flag) {
+    s32 i;
     s32 base = 0;
     if (field_0x274 == 1) {
         base = 7;
     }
-    if (flag == 0) {
-        for (s32 i = 78; i >= 0; i--) {
+    for (i = 78; i >= 0; i--) {
+        if (flag == 0) {
             field_0x3d8[i + 1] = field_0x3d8[i];
             field_0x338[i + 1] = field_0x338[i];
-        }
-    } else {
-        for (s32 i = 78; i >= 0; i--) {
+        } else {
             field_0x3d8[i + 1].z = field_0x3d8[i].z;
         }
     }
@@ -166,14 +165,14 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
     } else {
         field_0x3d8[0].z = mPos.z;
     }
-    for (s32 i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
         s32 index = lbl_8049F640[base + i];
         field_0x2c0[i + 1].x = field_0x3d8[index].x;
         field_0x2c0[i + 1].y = field_0x3d8[index].y;
         field_0x2c0[i + 1].z = field_0x3d8[index].z;
         field_0x2ac[i + 1] = field_0x338[index];
         if (flag != 0) {
-            field_0x2c0[i + 1].z = field_0x3d8[(s32)(0.25f * lbl_8049F640[i])].z;
+            field_0x2c0[i + 1].z = field_0x3d8[(s32)(lbl_8049F640[i] / 4.0f)].z;
         }
         if (i < 5) {
             if (mEmitters798[i] == NULL) {
@@ -185,16 +184,17 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
             }
         }
     }
-    s32 index = lbl_8049F640[6 + base];
+    const s32* last = &lbl_8049F640[6];
+    s32 index = last[base];
     field_0x2c0[7].x = field_0x3d8[index].x;
     field_0x2c0[7].y = field_0x3d8[index].y;
     field_0x2c0[7].z = field_0x3d8[index].z;
     field_0x2ac[7] = field_0x338[index];
-    for (s32 i = 0; i < 2; i++) {
-        setEmitterPos_8013CB44(mEmitters7c0[i], &field_0x2c0[7], 0, 0, true);
+    for (s32 j = 0; j < 2; j++) {
+        setEmitterPos_8013CB44(mEmitters7c0[j], &field_0x2c0[7], 0, 0, true);
     }
     if (flag != 0) {
-        field_0x2c0[7].z = field_0x3d8[(s32)(0.25f * lbl_8049F640[6])].z;
+        field_0x2c0[7].z = field_0x3d8[(s32)(*last / 4.0f)].z;
     }
     field_0x2c0[0].x = field_0x3d8[0].x;
     field_0x2c0[0].y = field_0x3d8[0].y;
