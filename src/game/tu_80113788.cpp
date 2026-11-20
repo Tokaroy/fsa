@@ -19,9 +19,33 @@
 #include "game/act/act_environment_control_2.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
-static const s32 lbl_80464830[15] = {
+// Sprite animation frame lists of mAnim ({frame, duration} pairs, -1 terminated).
+static const s16 lbl_8053C660[4] = {0, 9, -1, -1};
+static const s16 lbl_8053C668[4] = {0, 9, -1, -1};
+static const s16 lbl_804647C8[14] = {0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, -1, -1};
+static const s16 lbl_8053C670[4] = {8, 20, -1, -1};
+static const s16 lbl_804647E4[14] = {0, 9, 1, 9, 2, 9, 3, 9, 4, 9, 5, 9, -1, -1};
+static const s16 lbl_80464800[8] = {11, 10, 10, 30, 8, 10, -1, -1};
+static const s16 lbl_80464810[8] = {0, 9, 1, 9, 2, 9, -1, -1};
+
+static const s16* lbl_8049D820[7] = {
+    lbl_8053C660, lbl_8053C668, lbl_804647C8, lbl_8053C670, lbl_804647E4, lbl_80464800, lbl_80464810,
+};
+
+static const char* lbl_80539F00 = "kk_black.bti";
+
+static const s32 lbl_80464830[8] = {
     0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3, 0x21B, 0x21B,
+};
+
+// Message ids of vfunc_0x60's case 5, per field_0x238.
+static const s32 lbl_80464850[7] = {
     0x14C, 0x173, 0x20E, 0x21A, 0x29B, 0x2B1, 0x2CD,
+};
+
+static const s32 lbl_8046486C[18] = {
+    0, 0, 0, 0x96, 0x1FE, 0x32A, 0x3F2, 0x51E, 0x582,
+    0x5B4, 0x6E0, 0x6E0, 0x7EE, 0x852, 0x852, 0x8AC, 0x8D4, 0x974,
 };
 
 // Frame tables of fn_8011395C (indexed by field_0x240): where the counter restarts, where the
@@ -29,6 +53,17 @@ static const s32 lbl_80464830[15] = {
 static const s32 lbl_804648B4[3] = {0, 0xC9, 0x191};
 static const s32 lbl_804648C0[3] = {0xC8, 0x190, 0x258};
 static const s32 lbl_804648CC[7] = {1, 4, 0, 5, 3, 2, 6};
+
+static const u16 lbl_804648E8[5] = {0x105, 0x106, 0x107, 0x108, 0x109};
+static const s32 lbl_804648F4[5] = {2, 0, 0, 0, 0};
+
+// Effect ids of vfunc_0x60: the seven of case 6, then one table per emitter indexed by field_0x238.
+static const u16 lbl_80464908[7] = {0x2AB, 0x2AC, 0x2AD, 0x2C4, 0x2C5, 0x2C7, 0x2C6};
+static const u16 lbl_80464918[7] = {0x2C8, 0x2CD, 0x2CA, 0x2C9, 0x2CC, 0x2CB, 0x2CE};
+static const u16 lbl_80464928[7] = {0x30B, 0x310, 0x30D, 0x30C, 0x30F, 0x30E, 0x311};
+static const u16 lbl_80464938[7] = {0x2AF, 0x2BE, 0x2B5, 0x2B2, 0x2BB, 0x2B8, 0x2C1};
+static const u16 lbl_80464948[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x2C2};
+static const u16 lbl_80464958[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
 
 // 0x80115590.
 // FIXME(shotgun): 99.92 %, reloc-name; behaviour clean.
@@ -97,28 +132,8 @@ cls_8049D83C::~cls_8049D83C() {
     }
 }
 
-// FIXME(shotgun): the next three tables and lbl_80539F00 are declared, not defined: this file does not
-// carve their .rodata / .data / .sdata yet.
-extern const s16* lbl_8049D820[7];
-extern const u16 lbl_804648E8[5];
-extern const s32 lbl_804648F4[5];
-extern const char* lbl_80539F00;
-extern const s32 lbl_8046486C[18];
-// FIXME(shotgun): vfunc_0x60's effect id tables (u16, read with lhz). They sit inside the
-// 0x74-byte lbl_804648F4 of symbols.txt (after its five words), which this file does not carve
-// yet; declared by address until it does. The original reaches them as offsets 0x140-0x190 from
-// the unit's .rodata base lbl_804647C8 (like lbl_80464830 and lbl_804648B4), so they are file
-// statics: the fix is to carve lbl_804648F4 (0x14) plus six 0x10-byte u16 tables in symbols.txt
-// and define them here, not to index lbl_804648F4 (that would read u16s through an s32 table).
-extern const u16 lbl_80464908[7];
-extern const u16 lbl_80464918[];
-extern const u16 lbl_80464928[];
-extern const u16 lbl_80464938[];
-extern const u16 lbl_80464948[];
-extern const u16 lbl_80464958[];
-
 // 0x80115248.
-// FIXME(shotgun): 95.52 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.48 %, scheduling + reloc-name; behaviour clean.
 void cls_8049D83C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 0xFF;
@@ -141,20 +156,12 @@ void cls_8049D83C::init() {
     }
     mAnim.fn_801D1F14(0.0f);
     mPos.y -= 32.0f;
-    JGeometry::TVec3f pos[5];
-    pos[0] = mPos;
-    pos[1] = JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f);
-    pos[2] = JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y - 48.0f, 0.0f);
-    pos[3] = JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y + 48.0f, 0.0f);
-    pos[4] = JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f);
-    for (s32 i = 0; i < 5; i++) {
-        field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
-    }
+    spawnEmitters();
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.86 %, missing/extra + reloc-name; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
@@ -367,8 +374,16 @@ void cls_8049D83C::vfunc_0x54() {
     }
 }
 
+inline void cls_8049D83C::spawnCrystal(s32 crystal) {
+    JGeometry::TVec3f spawnPos = mSpawnPos;
+    spawnPos.z = 20.0f;
+    getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, crystal, -1, -1);
+}
+
 // 0x80113EC4.
-// FIXME(shotgun): 84.45 %, missing/extra + reloc-name; behaviour drift.
+// Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
+// counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
+// FIXME(shotgun): 97.22 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -377,7 +392,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
             field_0x2d0[i]->becomeInvalidEmitter();
             field_0x2d0[i] = NULL;
         }
-        fn_8011921C()->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         for (s32 i = 0; i < 4; i++) {
             JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
             fn_80230498(i, &playerPos, fn_8023CBC0(i), 0xFF, 0, 0, true);
@@ -405,21 +420,22 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         break;
     }
     case 4:
-        if (field_0x238 == 6) {
+        switch (field_0x238) {
+        case 6:
             gAudioMgr_8053AF80->fn_80458FF0(0x100000F, false, 0);
-        } else {
+            break;
+        default:
             gAudioMgr_8053AF80->fn_80458FF0(0x100001C, false, 0);
+            break;
         }
         field_0x233 = 1;
         break;
     case 5: {
-        JGeometry::TVec3f pos;
-        pos.z = 0.0f;
-        pos.y = (s32)JUTVideo::getManager()->getRenderMode()->efbHeight * 0.5f + -16.0f;
-        pos.x = (s32)JUTVideo::getManager()->getRenderMode()->fbWidth * 0.5f;
+        JGeometry::TVec3f pos((s32)JUTVideo::getManager()->getRenderMode()->fbWidth * 0.5f,
+                              (s32)JUTVideo::getManager()->getRenderMode()->efbHeight * 0.5f, 0.0f);
+        pos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        // The message ids per field_0x238 are the last seven words of lbl_80464830.
-        if (fn_8038BD08(0, lbl_80464830[8 + field_0x238], field_0x4, pos, 0x62)) {
+        if (fn_8038BD08(0, lbl_80464850[field_0x238], field_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
         }
         break;
@@ -432,7 +448,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         field_0x29c = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464918[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
         field_0x2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30082, 0);
-        fn_8011921C()->field_0x2 = 0;
+        fn_8011921C()->setField_0x2(0);
         break;
     case 7:
         field_0x230 = 0;
@@ -447,7 +463,9 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
     case 9: {
         fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x248 = 1;
-        JGeometry::TVec3f pos(mSpawnPos.x - 36.0f, mSpawnPos.y + 48.0f, mSpawnPos.z);
+        JGeometry::TVec3f pos = mSpawnPos;
+        pos.y += 48.0f;
+        pos.x -= 36.0f;
         for (s32 i = 0; i < 4; i++) {
             if (i > 0) {
                 pos.x += 24.0f;
@@ -456,7 +474,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
             fn_80230BF4(i, 3);
         }
         if (field_0x238 == 0) {
-            fn_8011921C()->field_0x2 = 1;
+            fn_8011921C()->setField_0x2(1);
         } else {
             field_0x232 = 0;
         }
@@ -492,20 +510,22 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
             releaseEmitter_801EE434(field_0x2e4);
             field_0x2e4 = NULL;
         }
-        if (field_0x238 != 0 && field_0x238 < 6) {
-            JGeometry::TVec3f spawnPos(mSpawnPos.x, mSpawnPos.y, 20.0f);
-            getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, field_0x238, -1, -1);
+        s32 crystal = field_0x238;
+        if (crystal != 0 && crystal < 6) {
+            spawnCrystal(crystal);
         }
         break;
     }
-    case 10:
+    case 10: {
         lbl_8053AD70->fn_8037AD00(field_0x238);
         field_0x248 = 0;
         fn_801F3668();
-        if (field_0x244 > 0) {
-            getGameView_802D6A9C()->fn_802D8050(field_0x244, true, 0xFF);
+        s32 bit = field_0x244;
+        if (bit > 0) {
+            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
         }
         break;
+    }
     case 11:
         field_0x232 = 1;
         field_0x254 = 0.0f;
@@ -536,28 +556,27 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         mAnim.startAnim_801D22DC(2, 2, false);
         mAnim.fn_801D1F14(0.0f);
         break;
-    case 17:
-        fn_8011921C()->field_0x2 = 0;
+    case 17: {
+        fn_8011921C()->setField_0x2(0);
         lbl_8053AD70->fn_8037AD00(field_0x238);
         field_0x248 = 0;
-        if (field_0x2e8[0] != NULL) {
-            field_0x2e8[0]->becomeInvalidEmitter();
-            field_0x2e8[0] = NULL;
-        }
-        if (field_0x2e8[1] != NULL) {
-            field_0x2e8[1]->becomeInvalidEmitter();
-            field_0x2e8[1] = NULL;
+        for (s32 i = 0; i < 2; i++) {
+            if (field_0x2e8[i] != NULL) {
+                field_0x2e8[i]->becomeInvalidEmitter();
+                field_0x2e8[i] = NULL;
+            }
         }
         fn_801F3668();
-        if (field_0x244 > 0) {
-            getGameView_802D6A9C()->fn_802D8050(field_0x244, true, 0xFF);
-            if (field_0x238 < 6) {
-                JGeometry::TVec3f spawnPos = mSpawnPos;
-                spawnPos.z = 20.0f;
-                getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, field_0x238, -1, -1);
+        s32 bit = field_0x244;
+        if (bit > 0) {
+            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            s32 crystal = field_0x238;
+            if (crystal < 6) {
+                spawnCrystal(crystal);
             }
         }
         break;
+    }
     }
     field_0x23c = arg;
 }
@@ -577,7 +596,7 @@ s32 cls_8049D83C::vfunc_0x5C() {
 #pragma auto_inline off
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
-// FIXME(shotgun): 90.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 91.12 %, missing/extra + reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -598,7 +617,7 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     }
 }
 
-// FIXME(shotgun): 99.28 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.31 %, scheduling + reloc-name; behaviour clean.
 void cls_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -645,7 +664,7 @@ void cls_8049D83C::fn_8011395C() {
     }
 }
 
-// FIXME(shotgun): 95.13 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113790() {
     if (field_0x248 > 0) {
         SpriteParams_801F5AE0 params;
@@ -660,17 +679,15 @@ void cls_8049D83C::fn_80113790() {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 96.0f;
-        params.field_0x10.r = 0;
-        params.field_0x10.g = 0;
-        params.field_0x10.b = 0;
-        params.field_0x10.a = field_0x248;
+        params.field_0x14.set(0, 0, 0, field_0x248);
         params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
+        void* res = field_0x260;
         if (field_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x260, &params);
+            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
 }
@@ -679,4 +696,19 @@ void cls_8049D83C::fn_80113790() {
 // 0x80113788.
 s32 cls_8049D83C::vfunc_0x58() {
     return field_0x23c;
+}
+
+// Plain function init inlines (the linker dropped its own copy): its literals 80.0f and 0.0f
+// are pooled before those of fn_80113790.
+void cls_8049D83C::spawnEmitters() {
+    JGeometry::TVec3f pos[5] = {
+        mPos,
+        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y + 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f),
+    };
+    for (s32 i = 0; i < 5; i++) {
+        field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
+    }
 }

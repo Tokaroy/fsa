@@ -25,6 +25,8 @@ public:
     void fn_80113790();
     void fn_8011395C();
     void fn_80113B54(s32 arg);
+    void spawnCrystal(s32 crystal);
+    void spawnEmitters(); // inline, tu_80113788.cpp
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;
