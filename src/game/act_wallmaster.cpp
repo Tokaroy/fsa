@@ -130,10 +130,8 @@ void cls_804A3E44::init() {
             f4 = box->i.x;
             f5 = box->i.y;
         }
-        u32 x = ((field_0x90 >> 16) & 0x3F) * 8;
-        u32 y = ((field_0x90 >> 8) & 0x3F) * 8;
-        field_0x2b0.x = x + f4 + 8.0f;
-        field_0x2b0.y = y + f5 + 8.0f;
+        field_0x2b0.set(((field_0x90 >> 16) & 0x3F) * 8 + f4 + 8.0f,
+                        ((field_0x90 >> 8) & 0x3F) * 8 + f5 + 8.0f);
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
