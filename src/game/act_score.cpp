@@ -10,7 +10,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_score.h"
 
-// FIXME(shotgun): 98.16 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 98.87 %, scheduling + reloc-name; behaviour clean.
 void Score_804AF4C0::init() {
     mValue = field_0x90 & 0xFFFF;
     mPlayer = (field_0x90 >> 16) & 0xFF;
@@ -72,7 +72,7 @@ void Score_804AF4C0::init() {
     }
 }
 
-// FIXME(shotgun): 99.74 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.89 %, reloc-name; behaviour clean.
 void Score_804AF4C0::update() {
     if (mState == 0 || mState == 4) {
         fn_80393514();
@@ -205,6 +205,7 @@ static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtil
     lbl_8053AF50->fn_80455770(scale, digit, &pos, color);
 }
 
+// FIXME: 99.73 %, reloc-name; behaviour clean.
 void Score_804AF4C0::fn_80393228() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     if (mValue < 10) {
@@ -282,7 +283,7 @@ void Score_804AF4C0::fn_80391F58() {
     }
 }
 
-// FIXME(shotgun): 67.37 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.74 %, regalloc-only + reloc-name; behaviour clean.
 // (left: the operand order of the `mPos.x + 10.0f` fadds, and the float literal labels)
 void Score_804AF4C0::fn_80391D44() {
     s32 n = fn_8023BC38(mPlayer) / 60 + 1;
