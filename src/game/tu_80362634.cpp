@@ -1278,10 +1278,23 @@ void cls_804ADF28::fn_80363360() {
 
 void cls_804ADF28::fn_8036335C() {}
 
-// FIXME(shotgun): 91.71 %, missing/extra + reloc-name; behaviour drift.
+// The first non-zero fn_80309D6C result over the four players, else 0: fn_80362C44's
+// loop leaves with the result in r3 and loads 0 after the last player.
+static inline u32 anyPlayerInput(u32 mask) {
+    for (s32 player = 0; player < 4; player++) {
+        u32 result = lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), mask);
+        if (result != 0) {
+            return result;
+        }
+    }
+    return 0;
+}
+
+// Still differs: the original keeps the 0 that clears field_0x30c[i] in r26 (shared with case 6's
+// player counter) and colours i before the two loop pointers; the jump table's name.
 void cls_804ADF28::fn_80362C44() {
-    s32 skip = 0;
     s32 i;
+    s32 skip = 0;
     JGeometry::TVec3f pos = mPos;
     switch (field_0x238) {
     case 0:
@@ -1363,18 +1376,14 @@ void cls_804ADF28::fn_80362C44() {
                 field_0x248 = 300;
                 field_0x250 = (f32)gGameRoot2_8053AB10->field_0x2c->field_0xc;
                 field_0x254 = field_0x250 / (f32)field_0x248;
-                JGeometry::TVec3f effectPos;
-                effectPos.y = (f32)(s32)(mPos.y / 384.0f) * 384.0f + 192.0f;
-                effectPos.x = (f32)(s32)(mPos.x * 0.001953125f) * 512.0f + 256.0f;
-                effectPos.z = 0.0f;
+                JGeometry::TVec3f effectPos((f32)(s32)(mPos.x * 0.001953125f) * 512.0f + 256.0f,
+                                            (f32)(s32)(mPos.y / 384.0f) * 384.0f + 192.0f, 0.0f);
                 static const u16 lbl_80542AF0[4] = {0x4A4, 0x4A5, 0x4A6, 0x4A7};
                 for (i = 0; i < 4; i++) {
                     spawnEmitter_8013CC50(0, &effectPos, lbl_80542AF0[i], 0, 0, NULL, NULL, true, 1.0f);
                     deleteEmitter(&field_0x30c[i]);
                 }
-                effectPos.x = 0.0f;
-                effectPos.y = 0.0f;
-                effectPos.z = 0.0f;
+                effectPos.zero();
                 spawnEmitter_8013CC50(0, &effectPos, 0x55a, 0, 0, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(0, &effectPos, 0x55b, 0, 0, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(0, &effectPos, 0x55c, 0, 0, NULL, NULL, true, 1.0f);
@@ -1409,14 +1418,7 @@ void cls_804ADF28::fn_80362C44() {
         gGameRoot2_8053AB10->field_0x2c->field_0xc = 0;
         if (field_0x248 == 0) {
             skip = 1;
-            u32 found = 0;
-            for (i = 0; i < 4; i++) {
-                found = lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100);
-                if (found != 0) {
-                    break;
-                }
-            }
-            if (found != 0) {
+            if (anyPlayerInput(0x100) != 0) {
                 field_0x238++;
             }
         }
