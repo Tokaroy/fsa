@@ -127,6 +127,8 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
+static void spawnInitEmitters(cls_804AE088* self);
+
 // FIXME: 91.21 %, different + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
@@ -160,17 +162,7 @@ void cls_804AE088::init() {
     }
     field_0x318.fn_801D1F14(0.0f);
     mPos.y -= 32.0f;
-    JGeometry::TVec3f pts[5] = {
-        mPos,
-        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f),
-        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y - 48.0f, 0.0f),
-        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y + 48.0f, 0.0f),
-        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f),
-    };
-    for (s32 i = 0; i < 5; i++) {
-        field_0x384[i] = spawnEmitter_8013CC50(field_0x4, &pts[i], sEmitterIds[i], 0, sEmitterDepths[i], NULL,
-                                               NULL, true, 1.0f);
-    }
+    spawnInitEmitters(this);
     getGameView_802D6A9C()->fn_802D7440(0);
     for (s32 i = 0; i < 5; i++) {
         s16 angle = sEmitterAngles[i];
@@ -607,8 +599,6 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 // Not auto-inlined: draw calls fn_8036A894, fn_80369DDC and fn_80368CD8 call fn_8036AA60 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// differs: .sdata2 literal pool order.
-// FIXME: 99.72 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -650,7 +640,6 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// FIXME: 97.00 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
@@ -702,6 +691,22 @@ void cls_804AE088::fn_8036A65C() {
             deleteEmitter(&field_0x3d4[i]);
             deleteEmitter(&field_0x39c[i]);
         }
+    }
+}
+
+// Inlined helper dead-stripped by the linker; its float literal (80.0f)
+// appears in .sdata2 between fn_80369DDC and fn_8036A894.
+static void spawnInitEmitters(cls_804AE088* self) {
+    JGeometry::TVec3f pts[5] = {
+        self->mPos,
+        JGeometry::TVec3f(self->mSpawnPos.x - 80.0f, self->mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(self->mSpawnPos.x + 80.0f, self->mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(self->mSpawnPos.x - 80.0f, self->mSpawnPos.y + 48.0f, 0.0f),
+        JGeometry::TVec3f(self->mSpawnPos.x + 80.0f, self->mSpawnPos.y + 48.0f, 0.0f),
+    };
+    for (s32 i = 0; i < 5; i++) {
+        self->field_0x384[i] = spawnEmitter_8013CC50(self->field_0x4, &pts[i], sEmitterIds[i], 0,
+                                                     sEmitterDepths[i], NULL, NULL, true, 1.0f);
     }
 }
 
