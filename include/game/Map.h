@@ -223,6 +223,12 @@ extern s32 lbl_80506D98[4];
 class cls_803004C0 {
 public:
     cls_803004C0();
+    void set(s32 x, s32 y, s32 w, s32 h) {
+        field_0x0 = x;
+        field_0x4 = y;
+        field_0x8 = w;
+        field_0xc = h;
+    }
 
     /* 0x00 */ s32 field_0x0;
     /* 0x04 */ s32 field_0x4;

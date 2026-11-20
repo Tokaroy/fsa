@@ -232,10 +232,6 @@ TileMap_804AA858::~TileMap_804AA858() {
     delete field_0x238c;
 }
 
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
-// Register allocation in the per-player loop (r4-r8 one off); the
-// grid's .sdata2 literals (lbl_80541528 ... lbl_80541614) are @NNN because the
-// unwritten functions between fn_802F9DA8 and it use earlier pool entries first.
 void TileMap_804AA858::fn_802FF798() {
     for (s32 i = 0; i < 4; i++) {
         field_0x235c[i] = 0;
@@ -279,12 +275,8 @@ void TileMap_804AA858::fn_802FF798() {
         field_0x148[i] = 0;
         field_0x14c[i] = 0;
         field_0x210[i] = 0;
-        s32 y = (i & 2) ? JUTVideo::getManager()->getEfbHeight() - 0x90 : 0x48;
-        s32 x = (i & 1) ? JUTVideo::getManager()->getFbWidth() - 0x60 : 0x18;
-        field_0x1d0[i].field_0x0 = x;
-        field_0x1d0[i].field_0x4 = y;
-        field_0x1d0[i].field_0x8 = 0x48;
-        field_0x1d0[i].field_0xc = 0x48;
+        field_0x1d0[i].set((i & 1) ? JUTVideo::getManager()->getFbWidth() - 0x60 : 0x18,
+                           (i & 2) ? JUTVideo::getManager()->getEfbHeight() - 0x90 : 0x48, 0x48, 0x48);
         field_0x217[i] = 0;
     }
     field_0x216 = 0;
@@ -1056,7 +1048,7 @@ void TileMap_804AA858::fn_802FC80C() {
     }
 }
 
-// FIXME: 90.32 %, different; behaviour near.
+// FIXME: 94.86 %, missing/extra; behaviour near.
 // Structurally close (2 instructions more): the original builds
 // the four vertex indices as a chain of u16 truncations (clrlwi after +1, +65,
 // -1; ours folds them into offsets from one clrlwi), keeps the draw loop's
@@ -1098,8 +1090,10 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
                 for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                     u16 tile = grid[(block * 16 + y) * 16 + x];
                     if (tile != 0) {
-                        for (int k = 0; k < 4; k++) {
-                            counts[(field_0x24[tile * 4 + k] >> 12) & 0xF]++;
+                        for (int j = 0; j < 2; j++) {
+                            for (int i = 0; i < 2; i++) {
+                                counts[(field_0x24[tile * 4 + j * 2 + i] >> 12) & 0xF]++;
+                            }
                         }
                     }
                 }
@@ -1121,40 +1115,38 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
                 for (int y = 0; y < 16 && by * 16 + y < field_0x2384 / 2; y++) {
                     for (int x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                         u16 tile = grid[(block * 16 + y) * 16 + x];
-                        if (tile == 0) {
-                            continue;
-                        }
-                        for (int j = 0; j < 2; j++) {
-                            for (int i = 0; i < 2; i++) {
-                                u16 entry = field_0x24[tile * 4 + j * 2 + i];
-                                if (((entry >> 12) & 0xF) != palette) {
-                                    continue;
+                        if (tile != 0) {
+                            for (int j = 0; j < 2; j++) {
+                                for (int i = 0; i < 2; i++) {
+                                    u16 entry = field_0x24[tile * 4 + j * 2 + i];
+                                    if (((entry >> 12) & 0xF) == palette) {
+                                        s32 cx = bx * 32 + x * 2 + i;
+                                        s32 cy = by * 32 + y * 2 + j;
+                                        u16 corner = entry & 0xFFF;
+                                        f32 s = (origin->x + cx * 8) * 0.0078125f;
+                                        f32 t = (origin->y + cy * 8) * 0.0078125f;
+                                        u16 v0 = cx + cy * 65;
+                                        GXPosition1x16(v0);
+                                        GXColor1x16(v0);
+                                        GXTexCoord1x16(corner);
+                                        GXTexCoord2f32(s, t);
+                                        u16 v1 = v0 + 1;
+                                        GXPosition1x16(v1);
+                                        GXColor1x16(v1);
+                                        GXTexCoord1x16(corner ^ 0x400);
+                                        GXTexCoord2f32(0.0625f + s, t);
+                                        u16 v2 = v1 + 65;
+                                        GXPosition1x16(v2);
+                                        GXColor1x16(v2);
+                                        GXTexCoord1x16(corner ^ 0xC00);
+                                        GXTexCoord2f32(0.0625f + s, 0.0625f + t);
+                                        u16 v3 = v2 - 1;
+                                        GXPosition1x16(v3);
+                                        GXColor1x16(v3);
+                                        GXTexCoord1x16(corner ^ 0x800);
+                                        GXTexCoord2f32(s, 0.0625f + t);
+                                    }
                                 }
-                                s32 cx = bx * 32 + x * 2 + i;
-                                s32 cy = by * 32 + y * 2 + j;
-                                u16 corner = entry & 0xFFF;
-                                f32 s = (origin->x + cx * 8) * 0.0078125f;
-                                f32 t = (origin->y + cy * 8) * 0.0078125f;
-                                u16 v0 = cx + cy * 65;
-                                GXPosition1x16(v0);
-                                GXColor1x16(v0);
-                                GXTexCoord1x16(corner);
-                                GXTexCoord2f32(s, t);
-                                u16 v1 = v0 + 1;
-                                GXPosition1x16(v1);
-                                GXColor1x16(v1);
-                                GXTexCoord1x16(corner ^ 0x400);
-                                GXTexCoord2f32(0.0625f + s, t);
-                                u16 v2 = v1 + 65;
-                                GXPosition1x16(v2);
-                                GXColor1x16(v2);
-                                GXTexCoord1x16(corner ^ 0xC00);
-                                GXTexCoord2f32(0.0625f + s, 0.0625f + t);
-                                u16 v3 = v2 - 1;
-                                GXPosition1x16(v3);
-                                GXColor1x16(v3);
-                                GXTexCoord1x16(corner ^ 0x800);
-                                GXTexCoord2f32(s, 0.0625f + t);
                             }
                         }
                     }
@@ -2759,8 +2751,6 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
 // time (field_0x18[0]) as 8 x 8 quads; with field_0xe450 a second TEV stage
 // multiplies in the player's field_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
-// FIXME: 96.01 %, missing/extra + reloc-name; behaviour drift.
-// FIXME: s0 / t0 fold + 0.0f into fmuls (original keeps fmadds with 0.0f, using f30 too); literals @NNN.
 void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
@@ -2855,18 +2845,19 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
                             y0 += out.y;
                             f32 u0 = (8.0f * (tile & 0xF) + 0.501f) / 128.0f;
                             f32 v0 = (8.0f * ((tile >> 4) & 0x3F) + 0.501f) / 512.0f;
-                            f32 s0 = ((x * 2 + i) * 8) / 128.0f + 0.0f;
-                            f32 t0 = ((y * 2 + j) * 8) / 128.0f + 0.0f;
+                            f32 u1;
+                            f32 v1;
+                            f32 sOffset = 0.0f;
+                            f32 s0 = ((x * 2 + i) * 8) / 128.0f + sOffset;
+                            f32 t0 = ((y * 2 + j) * 8) / 128.0f + sOffset;
                             f32 s1 = 0.0625f + s0;
                             f32 t1 = 0.0625f + t0;
-                            f32 u1;
                             if (tile & 0x400) {
                                 u1 = u0;
                                 u0 = 0.05453125f + u0;
                             } else {
                                 u1 = 0.05453125f + u0;
                             }
-                            f32 v1;
                             if (tile & 0x800) {
                                 v1 = v0;
                                 v0 = 0.013632813f + v0;
@@ -3143,7 +3134,7 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 88.96 %, missing/extra; behaviour near.
+// FIXME: 96.23 %, different; behaviour near.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
@@ -3159,17 +3150,19 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
         s32 iy = 0.125f * dy;
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
+        f32 invFx = 1.0f - fx;
+        f32 invFy = 1.0f - fy;
         JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         JGeometry::TVec3f v;
         v.set(p[0]);
-        v.scale(1.0f - fx);
+        v.scale(invFx);
         JGeometry::TVec3f top;
         top.set(p[1]);
         top.scale(fx);
         top.add(v);
-        top.scale(1.0f - fy);
+        top.scale(invFy);
         v.set(p[65]);
-        v.scale(1.0f - fx);
+        v.scale(invFx);
         JGeometry::TVec3f point;
         point.set(p[66]);
         point.scale(fx);
@@ -3180,7 +3173,7 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
         JGeometry::TVec3f side;
         side.cross(v, JGeometry::TVec3f(0.0f, 1.0f, 0.0f));
         side.normalize();
-        side.scale(1.0f - fy);
+        side.scale(invFy);
         v.sub(p[66], p[65]);
         JGeometry::TVec3f front;
         front.cross(v, JGeometry::TVec3f(0.0f, 1.0f, 0.0f));
