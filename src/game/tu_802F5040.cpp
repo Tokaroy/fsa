@@ -1157,7 +1157,7 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
     }
 }
 
-// FIXME: 87.97 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 89.62 %, missing/extra + reloc-name; behaviour near.
 // Structurally close (6 instructions more): in the mosaic the
 // original multiplies h * py and w * px per pixel, ours strength-reduces them
 // (four more registers, so flag / alpha live on the stack: lbz 0x8 / 0x9);
@@ -1286,14 +1286,10 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
         GXDrawDone();
         GXBegin(GX_POINTS, GX_VTXFMT0, (s32)(0.9999f + 160.0f / step) * (s32)(0.9999f + 240.0f / step));
         s32 half = step >> 1;
-        s32 x = rect2->field_0x0;
-        s32 y = rect2->field_0x4;
-        s32 w = rect2->field_0x8;
-        s32 h = rect2->field_0xc;
         for (s32 py = half; py < half + 0xA0; py += step) {
-            u16 sy = 0.00625f * (h * py) + y;
+            u16 sy = 0.00625f * (rect2->field_0xc * py) + rect2->field_0x4;
             for (s32 px = half; px < half + 0xF0; px += step) {
-                u16 sx = 0.004166667f * (w * px) + x;
+                u16 sx = 0.004166667f * (rect2->field_0x8 * px) + rect2->field_0x0;
                 u8 argb[4];
                 GXPeekARGB(sx, sy, (u32*)argb);
                 GXPosition3f32(px, py, 0.0f);
@@ -1318,21 +1314,21 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
 // field_0x18[2], tinted grey / alpha unless both are 0xFF. With offsets, each
 // 8-line row is shifted by the average of its screen lines' offsets, wrapped by
 // 512 when the whole row is off one side.
-// Register allocation only (r28-r31 cycle on x, grid, palette, offsets) and prologue mr order for y.
-// FIXME: 99.77 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets) {
     static const GXTlut lbl_8046FA30[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
         GX_TLUT8, GX_TLUT9, GX_TLUT10, GX_TLUT11, GX_TLUT12, GX_TLUT13, GX_TLUT14, GX_TLUT15,
     };
-    if (x > 0x180) {
-        x -= 0x200;
+    s32 scrollX = x;
+    s32 scrollY = y;
+    if (scrollX > 0x180) {
+        scrollX -= 0x200;
     }
-    if (y > 0x180) {
-        y -= 0x200;
+    if (scrollY > 0x180) {
+        scrollY -= 0x200;
     }
-    f32 originX = -x;
-    f32 originY = -y;
+    f32 originX = -scrollX;
+    f32 originY = -scrollY;
     gGameRoot2_8053AB10->fn_8013B1E8();
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -1383,12 +1379,12 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
         for (int bx = 0; bx < 2; bx++) {
             int block = by * 2 + bx;
             for (int ty = 0; ty < 16; ty++) {
-                int dy = (by * 32 + ty * 2) * 8 - y;
+                int dy = (by * 32 + ty * 2) * 8 - scrollY;
                 if (dy <= -16 || dy >= 0xA0) {
                     continue;
                 }
                 for (int tx = 0; tx < 16; tx++) {
-                    int dx = (bx * 32 + tx * 2) * 8 - x;
+                    int dx = (bx * 32 + tx * 2) * 8 - scrollX;
                     if (offsets == NULL && (dx <= -16 || dx >= 0xF0)) {
                         continue;
                     }
@@ -1417,7 +1413,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
             for (int bx = 0; bx < 2; bx++) {
                 int block = by * 2 + bx;
                 for (int ty = 0; ty < 16; ty++) {
-                    int dy = (by * 32 + ty * 2) * 8 - y;
+                    int dy = (by * 32 + ty * 2) * 8 - scrollY;
                     if (dy <= -16 || dy >= 0xA0) {
                         continue;
                     }
@@ -1473,7 +1469,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                         }
                     } else {
                         for (int tx = 0; tx < 16; tx++) {
-                            int dx = (bx * 32 + tx * 2) * 8 - x;
+                            int dx = (bx * 32 + tx * 2) * 8 - scrollX;
                             if (dx <= -16 || dx >= 0xF0) {
                                 continue;
                             }
@@ -1509,7 +1505,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
     }
 }
 
-// FIXME: 98.47 %, operands; behaviour drift.
+// FIXME: 98.98 %, regalloc-only; behaviour drift.
 // Register allocation, stack slots and data offsets only (try.py
 // "operands + reloc-name"): the tables and "circle.bti" sit 0x70 / 0x1D8 too
 // early in our .rodata (fn_802FCE74's tables and fn_802F6800's five are not
@@ -1672,11 +1668,11 @@ void TileMap_804AA858::fn_802FA3FC() {
         {0x366, {0}, 0, 135, 15.0f, 15.0f, 0, {1.0f, 0.0f}, {0.0f, -0.4f}},
     };
 
+    const TileShade_802FA3FC* table;
+    s32 count;
     f32 alphaScale = 1.0f;
     s8 stage = getGameView_802D6A9C()->fn_802D9C4C()[0];
     JUTTexture tex((const ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "circle.bti"), 0);
-    const TileShade_802FA3FC* table;
-    s32 count;
     switch (stage) {
     case 'c':
         table = lbl_804704E8;
@@ -1734,8 +1730,8 @@ void TileMap_804AA858::fn_802FA3FC() {
                     for (s32 x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                         u16 tile = grid[((by * 2 + bx) * 16 + y) * 16 + x];
                         f32 tileX = 16.0f * (bx * 16 + x) + originX;
-                        const TileShade_802FA3FC* shade = table;
-                        for (s32 i = 0; i < count; shade++, i++) {
+                        for (s32 i = 0; i < count; i++) {
+                            const TileShade_802FA3FC* shade = &table[i];
                             if (shade->mTile != tile) {
                                 continue;
                             }
@@ -1756,7 +1752,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                             }
                             switch (shade->mKind) {
                             case 0: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 vx = shade->mV[0];
@@ -1765,7 +1760,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 uy *= 96.0f;
                                 vx *= 96.0f;
                                 vy *= 96.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                 GXPosition3f32(px, py, 614.4f);
                                 GXTexCoord2f32(0.0f, 0.0f);
@@ -1779,7 +1774,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 break;
                             }
                             case 1: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 vx = shade->mV[0];
@@ -1788,7 +1782,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 uy *= 64.0f;
                                 vx *= 24.0f;
                                 vy *= 24.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                 f32 x0 = px - vx;
                                 f32 y0 = py - vy;
@@ -1806,7 +1800,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 break;
                             }
                             case 2: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 backX = ux;
@@ -1819,7 +1812,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 backY *= -4.0f;
                                 vx *= 24.0f;
                                 vy *= 24.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 8);
                                 f32 x0 = px - vx;
                                 f32 y0 = py - vy;
@@ -2294,7 +2287,7 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-// FIXME: 89.08 %, missing/extra; behaviour near.
+// FIXME: 89.55 %, missing/extra; behaviour near.
 // The original keeps obj in memory as if its address were taken:
 // every bit-field store is kept (byte 0x11 stored after each field, the
 // unused mAffineParam = 0 too) and the draw re-reads the fields; ours keeps
@@ -2394,31 +2387,29 @@ void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 
             GXLoadTexObj(&field_0xb5c[set][priority][lastPalette], lbl_80470F60[(lastPalette & 1) << 2 | priority]);
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, lbl_80470F60[(lastPalette & 1) << 2 | priority], GX_COLOR_NULL);
         }
-        f32 w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
-        f32 h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
-        f32 x;
+        f32 x, y, z, u0, v0, u1, v1, w, h;
+        w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
+        h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
         if (obj.mX & 0x100) {
             x = (s16)(obj.mX | 0xFE00);
         } else {
             x = (u8)obj.mX;
         }
-        f32 y = 0.0f;
-        f32 z = -(f32)(s8)obj.mY;
+        y = 0.0f;
+        z = -(f32)(s8)obj.mY;
         if (!loaded) {
             x += out.x;
             y += out.y + offset;
             z += out.z + offset;
         }
-        f32 u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
-        f32 v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
-        f32 u1;
+        u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
+        v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
         if (obj.mHFlip) {
             u1 = u0;
             u0 = (w - 1.0f) / 256.0f + u0;
         } else {
             u1 = (w - 1.0f) / 256.0f + u0;
         }
-        f32 v1;
         if (obj.mVFlip) {
             v1 = v0;
             v0 = (h - 1.0f) / 256.0f + v0;
