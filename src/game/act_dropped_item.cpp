@@ -29,10 +29,8 @@ inline void DroppedItem_804A8C80::talk(s32 serial, s32 layer, const JGeometry::T
     fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
-// FIXME: 95.98 %, missing/extra; behaviour near.
-// (ours has 2 fewer instructions). The original saves one more callee-saved register (r28)
-// across the second getGameView call, builds the final spawn key (fn_802D6F38 with `true`) in a different
-// rlwimi order, and loads hit.x / hit.y before the 0.0f literal in the `!= 0.0f` tests.
+// FIXME: missing/extra (ours has 1 more instruction: mr r29, r4 in the fn_802D6F38 key
+// build, plus hit.x/hit.y vs 0.0f load order in the `!= 0.0f` tests).
 void DroppedItem_804A8C80::init() {
     field_0x238 = field_0x90 & 0x7F;
     // Both arms unpack the same four fields: hoisting them out of the if/else drops init from 96 % to 91 %
@@ -58,7 +56,7 @@ void DroppedItem_804A8C80::init() {
 
     s32 viewRow = getGameView_802D6A9C()->field_0x18;
     s32 viewCol = getGameView_802D6A9C()->field_0x14;
-    field_0x270 = ((viewCol & 0xFF) << 16) | (field_0x244 << 24) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
+    field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
 
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
@@ -101,11 +99,12 @@ void DroppedItem_804A8C80::init() {
 
         if (field_0x234 == 0) {
             // The original re-reads the view row/col and rebuilds the key (field_0x270 above) here.
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            viewRow = getGameView_802D6A9C()->field_0x18;
+            viewCol = getGameView_802D6A9C()->field_0x14;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            s32 packed = ((col & 0xFF) << 16) | (field_0x244 << 24) | ((row & 0xFF) << 8) | (field_0x4 & 0xFF);
-            getGameView_802D6A9C()->fn_802D6F38(field_0x90, pos, packed, true);
+            s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
+            u32 key = field_0x90;
+            getGameView_802D6A9C()->fn_802D6F38(key, pos, packed, true);
         }
         field_0x248 = 150;
     } else {
