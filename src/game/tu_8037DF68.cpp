@@ -1390,16 +1390,12 @@ u32 fn_80383EB0(s32 window, u32 msg) {
     return index;
 }
 
-// FIXME: 99.55 %, regalloc-only; behaviour drift.
-// Regalloc only (r3 / r5 / r6 rotated); the jump table's name waits
-// on the unit's .data (jumptable_804AF0CC is the third of six).
 const char* fn_80383E2C(u32 index, u8* out) {
     MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
     MessageInf1_804AF070* inf1 = &bmg->inf1;
     // BMG text: the DAT1 block starts after the INF1 block (inf1->size) and its 8-byte header; the
-    // entry's textOffset is relative to that. Summed in this order only because it gives the
-    // original's add order (tp's JMessage keeps the DAT1 content pointer instead).
-    const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[index].textOffset];
+    // entry's textOffset is relative to that.
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[index].textOffset;
     *out = 0;
     if (text[0] == 0x1A && text[2] == 2) {
         switch (text[4]) {
