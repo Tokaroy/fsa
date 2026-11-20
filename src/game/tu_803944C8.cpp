@@ -2478,7 +2478,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -2497,9 +2497,9 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
-                s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
+                s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
                     snprintf(lbl_8050E528, 15, "\033CR[%d]", offset);
                     strcat(field_0x2c0, lbl_8050E528);
@@ -2519,33 +2519,33 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
         appendText(ch);
     }
     s32 digit = number / 10000;
-    number %= 10000;
+    s32 rem = number % 10000;
     if (digit != 0) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 1000;
-    number %= 1000;
+    digit = rem / 1000;
+    rem %= 1000;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 100;
-    number %= 100;
+    digit = rem / 100;
+    rem %= 100;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         started = true;
         appendText(ch);
     }
-    digit = number / 10;
-    number %= 10;
+    digit = rem / 10;
+    rem %= 10;
     if (digit != 0 || started) {
         ch[0] = digit + '0';
         appendText(ch);
     }
-    ch[0] = number + '0';
+    ch[0] = rem + '0';
     appendText(ch);
 }
 
@@ -3214,18 +3214,17 @@ void cls_804AF6E4::fn_8039934C(s32 minutes, s32 seconds) {
     addSecondsMarkWidth(ratio);
 }
 
-// FIXME(shotgun): 98.97 %, regalloc-only; behaviour clean.
 void cls_804AF6E4::fn_80398EF4(s32 minutes, s32 seconds) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     if (minutes > 99) {
         minutes = 99;
     }
     s32 digit = minutes / 10;
-    minutes %= 10;
+    s32 ones = minutes % 10;
     if (digit > 0) {
         addCharWidth(ratio, digit + '0');
     }
-    addCharWidth(ratio, minutes + '0');
+    addCharWidth(ratio, ones + '0');
     addCharWidth(ratio, '\'');
     if (seconds > 99) {
         seconds = 99;
@@ -3852,10 +3851,10 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 99.24 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 // (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
-    s16 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
+    s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
     s32 t2 = t1 + lbl_8050DB0C.field_0x4c[(0x28A - 0x4C) / 2];
     s32 t3 = t2 + lbl_8050DB0C.field_0x4c[(0x28C - 0x4C) / 2];
@@ -3874,8 +3873,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     f32 width;
     s16 frame = field_0x194;
     if (frame <= t0) {
-        height = 1.0f;
-        width = height;
+        width = 1.0f;
+        height = width;
     } else if (frame <= t1) {
         f32 df = (f32)(frame - t0);
         f32 dt = (f32)(t1 - t0);
@@ -3889,8 +3888,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         width = lbl_80475D78[1] + r * (lbl_80475D78[2] - lbl_80475D78[1]);
         height = lbl_80475D8C[1] + r * (lbl_80475D8C[2] - lbl_80475D8C[1]);
     } else if (frame <= t3) {
-        f32 dt = (f32)(t3 - t2);
         f32 df = (f32)(frame - t2);
+        f32 dt = (f32)(t3 - t2);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475D78[2] + r * (lbl_80475D78[3] - lbl_80475D78[2]);
         height = lbl_80475D8C[2] + r * (lbl_80475D8C[3] - lbl_80475D8C[2]);
@@ -3901,14 +3900,14 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         width = lbl_80475D78[3] + r * (lbl_80475D78[4] - lbl_80475D78[3]);
         height = lbl_80475D8C[3] + r * (lbl_80475D8C[4] - lbl_80475D8C[3]);
     } else {
-        height = 1.0f;
+        width = 1.0f;
         field_0x194 = 0;
-        width = height;
+        height = width;
     }
     f32 w = width * field_0x100;
     f32 h = height * field_0x104;
     pane->resize(w, h);
-    pane->move(field_0xf8 + field_0x100 * 0.5f - w * 0.5f, (field_0xfc + field_0x104) - h);
+    pane->move(field_0xf8 + field_0x100 / 2.0f - w / 2.0f, (field_0xfc + field_0x104) - h);
 }
 
 // FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
