@@ -411,11 +411,6 @@ s32 EnemyBase_804A4808::fn_801D0020(const JGeometry::TVec3f* pos, s32 player, bo
     return directionTo(pos, player, axis);
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// Whether a step of `dist` in direction `dir` is blocked: field_0x80's box,
-// moved half the step that way and stretched to the step's length along
-// it, must lie inside the view's box for the layer, and the map
-// (vfunc_0x4C) must be clear on an 8-unit grid over it.
 bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     f32 half = 0.5f * dist;
     JGeometry::TVec3f pos = mPos;
@@ -965,7 +960,7 @@ void EnemyBase_804A4808::vfunc_0xA0() {}
 
 // The target passes vfunc_0x64's result to vfunc_0x9C with clrlwi 24 where
 // ours has mr.
-// FIXME: 96.53 %, missing/extra; behaviour near.
+// FIXME: 99.65 %, different; behaviour near.
 void EnemyBase_804A4808::update() {
     u8 mapHit;
     s32 prevD8;
