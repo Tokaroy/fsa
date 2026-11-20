@@ -973,8 +973,6 @@ ActorSoundObj_804578F4* ActorManager_804A5800::fn_801F6644(s32 slot) {
     return field_0x200c;
 }
 
-// FIXME(shotgun): 96.02 %, missing/extra; behaviour clean.
-// (one extra move of the resource pointer)
 void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     char* data = (char*)gGameRoot_8053AAF8->field_0xa4->getResource('ENM ', "EnemyParam.csv");
     s32 size = gGameRoot_8053AAF8->field_0xa4->getResSize(
@@ -982,10 +980,10 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
 
     // The header row gives the column count, the newlines the row count.
     mParamColumnNum = 0;
-    for (char* p = data;; p++) {
-        if (*p == ',') {
+    for (s32 i = 0;; i++) {
+        if (data[i] == ',') {
             mParamColumnNum++;
-        } else if (*p == '\n') {
+        } else if (data[i] == '\n') {
             break;
         }
     }
@@ -1004,30 +1002,32 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     mParamValues = new (heap, 0) s32[(mParamRowNum * mParamColumnNum + 0x1f) & ~0x1f];
 
     // Header: the first two fields are the id and name columns, the rest are 4-character keys.
+    s32 headerIdx = 0;
     s32 fields = 0;
-    s32 start = 0;
-    for (s32 i = 0;; i++) {
-        char c = data[i];
+    s32 headerStart = 0;
+    for (;; headerIdx++) {
+        char c = data[headerIdx];
         if (c == ',' || c == '\n') {
             if (fields > 1) {
-                mParamColumnIds[fields - 2] = ((u8)data[start] << 24) | ((u8)data[start + 1] << 16) |
-                                              ((u8)data[start + 2] << 8) | (u8)data[start + 3];
+                mParamColumnIds[fields - 2] =
+                    ((u8)data[headerStart] << 24) | ((u8)data[headerStart + 1] << 16) |
+                    ((u8)data[headerStart + 2] << 8) | (u8)data[headerStart + 3];
             }
             if (c != ',') {
                 break;
             }
             fields++;
-            start = i + 1;
+            headerStart = headerIdx + 1;
         }
     }
 
     // Rows: column 0 is the ActorId, column 1 the name, the others decimal values.
+    s32 i = 0;
     s32 col = 0;
+    s32 start = 0;
     s32 row = 0;
-    start = 0;
-    char* p = data;
-    for (s32 i = 0; i <= size; i++, p++) {
-        char c = *p;
+    for (; i <= size; i++) {
+        char c = data[i];
         if (c == ',' || c == '\n' || c == 0) {
             if (row > 0 && (c != 0 || col >= 2)) {
                 if (col == 0) {
@@ -1035,13 +1035,13 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
                                             ((u8)data[start + 2] << 8) | (u8)data[start + 3];
                 } else if (col == 1) {
                     mParamRowNames[row - 1] = data + start;
-                    *p = 0;
+                    data[i] = 0;
                 } else {
                     s32 value = 0;
                     for (s32 j = start; j < i; j++) {
-                        char ch = data[j];
-                        if (ch >= '0' && ch <= '9') {
-                            value = value * 10 + (ch - '0');
+                        if (data[j] >= '0' && data[j] <= '9') {
+                            value *= 10;
+                            value += data[j] - '0';
                         }
                     }
                     mParamValues[(row - 1) * mParamColumnNum + col - 2] = value;
