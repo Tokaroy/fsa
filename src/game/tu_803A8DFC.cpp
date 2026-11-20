@@ -939,7 +939,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     }
 }
 
-// FIXME(shotgun): 99.76 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B14F8() {
     s32 done = 0;
@@ -966,8 +966,8 @@ void ResultScreen_804AF9A0::fn_803B14F8() {
                     x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     offset = dy * rate;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
-                    rate = (f32)field_0x460[i] / (f32)t1;
-                    setRankRowAlpha(i, rate);
+                    f32 alpha = (f32)field_0x460[i] / (f32)t1;
+                    setRankRowAlpha(i, alpha);
                 } else if (field_0x460[i] <= t1 + t2) {
                     s32 rem = (t1 + t2) - field_0x460[i];
                     f32 offset = dy * ((f32)(rem * rem) / (f32)(t2 * t2));
@@ -2606,8 +2606,42 @@ void ResultScreen_804AF9A0::fn_803AB494() {
     }
 }
 
+// The score bars: each player's total field_0x3e0 from the field_0x320..field_0x3b0
+// parts, its field_0x158 pane moved up by it, and the effect position field_0x2f0.
+// Dead-stripped: fn_803AA8F8, fn_803AA1F8 and fn_803A9AB8 inline it (identical copies).
+inline void ResultScreen_804AF9A0::updateScoreBars() {
+for (s32 i = 0; i < field_0x454; i++) {
+    field_0x3e0[i] = field_0x320[i] + field_0x340[i] + field_0x350[i] + field_0x360[i] + field_0x370[i] -
+                     field_0x380[i] + field_0x3a0[i] + field_0x3b0[i];
+    if (field_0x3e0[i] < -5000) {
+        field_0x3e0[i] = -5000;
+    }
+    f32 offset;
+    if (field_0x3e0[i] < -500) {
+        offset = -500 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
+    } else if (field_0x3e0[i] > 3000) {
+        offset = 3000 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
+    } else {
+        offset = lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] * (150.0f * field_0x3e0[i] / field_0x434) / 3000.0f;
+    }
+    f32 x = field_0x158[i]->getBounds()->i.x;
+    field_0x158[i]->move(x, field_0x3f0 - offset);
+    if (field_0x3e0[i] > 9999) {
+        field_0x3e0[i] = 9999;
+    }
+    field_0x2f0[i].x = 256.0f *
+                       (field_0x158[i]->getWidth() / 2 +
+                        (field_0x168->getBounds()->i.x + field_0x158[i]->getBounds()->i.x)) /
+                       (s32)JUTVideo::getManager()->getFbWidth();
+    field_0x2f0[i].y = 192.0f *
+                       ((field_0x168->getBounds()->i.y + field_0x158[i]->getBounds()->f.y) - 526.0f - 18.0f) /
+                       (s32)JUTVideo::getManager()->getEfbHeight();
+    field_0x2f0[i].z = 0.0f;
+}
+}
+
 // State 21: the original sets `done` to 0 and copies it into i (li; mr); also .sdata2 / jump table / ids names.
-// FIXME: 98.87 %, different; behaviour drift.
+// FIXME: 98.92 %, different; behaviour drift.
 void ResultScreen_804AF9A0::fn_803AA8F8() {
     switch (field_0x4c1) {
     case 0:
@@ -2828,34 +2862,7 @@ void ResultScreen_804AF9A0::fn_803AA8F8() {
         fn_803AB494();
         break;
     }
-    for (s32 i = 0; i < field_0x454; i++) {
-        field_0x3e0[i] = field_0x320[i] + field_0x340[i] + field_0x350[i] + field_0x360[i] + field_0x370[i] -
-                         field_0x380[i] + field_0x3a0[i] + field_0x3b0[i];
-        if (field_0x3e0[i] < -5000) {
-            field_0x3e0[i] = -5000;
-        }
-        f32 offset;
-        if (field_0x3e0[i] < -500) {
-            offset = -500 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else if (field_0x3e0[i] > 3000) {
-            offset = 3000 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else {
-            offset = lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] * (150.0f * field_0x3e0[i] / field_0x434) / 3000.0f;
-        }
-        f32 x = field_0x158[i]->getBounds()->i.x;
-        field_0x158[i]->move(x, field_0x3f0 - offset);
-        if (field_0x3e0[i] > 9999) {
-            field_0x3e0[i] = 9999;
-        }
-        field_0x2f0[i].x = 256.0f *
-                           (field_0x158[i]->getWidth() / 2 +
-                            (field_0x168->getBounds()->i.x + field_0x158[i]->getBounds()->i.x)) /
-                           (s32)JUTVideo::getManager()->getFbWidth();
-        field_0x2f0[i].y = 192.0f *
-                           ((field_0x168->getBounds()->i.y + field_0x158[i]->getBounds()->f.y) - 526.0f - 18.0f) /
-                           (s32)JUTVideo::getManager()->getEfbHeight();
-        field_0x2f0[i].z = 0.0f;
-    }
+    updateScoreBars();
     fn_803B2FB0();
 }
 
@@ -2865,8 +2872,8 @@ void ResultScreen_804AF9A0::fn_803AA8F8() {
 const char* lbl_804AF980[4] = {"P1.bti", "P2.bti", "P3.bti", "P4.bti"};
 const char* lbl_804AF990[4] = {"kk_1st_01.bti", "kk_2nd_01.bti", "kk_3rd_01.bti", "kk_4th_01.bti"};
 
-// FIXME: 98.88 %, missing/extra; behaviour near.
-// Registers (the second player loop), and each of the two ifs of the
+// FIXME: 99.50 %, missing/extra; behaviour near.
+// Each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
 // row shape of docs/CRACK_PASS.md "Save-data layout"); also .sdata2 names.
@@ -2913,34 +2920,7 @@ void ResultScreen_804AF9A0::fn_803AA1F8() {
             }
         }
     }
-    for (s32 i = 0; i < field_0x454; i++) {
-        field_0x3e0[i] = field_0x320[i] + field_0x340[i] + field_0x350[i] + field_0x360[i] + field_0x370[i] -
-                         field_0x380[i] + field_0x3a0[i] + field_0x3b0[i];
-        if (field_0x3e0[i] < -5000) {
-            field_0x3e0[i] = -5000;
-        }
-        f32 offset;
-        if (field_0x3e0[i] < -500) {
-            offset = -500 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else if (field_0x3e0[i] > 3000) {
-            offset = 3000 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else {
-            offset = lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] * (150.0f * field_0x3e0[i] / field_0x434) / 3000.0f;
-        }
-        f32 x = field_0x158[i]->getBounds()->i.x;
-        field_0x158[i]->move(x, field_0x3f0 - offset);
-        if (field_0x3e0[i] > 9999) {
-            field_0x3e0[i] = 9999;
-        }
-        field_0x2f0[i].x = 256.0f *
-                           (field_0x158[i]->getWidth() / 2 +
-                            (field_0x168->getBounds()->i.x + field_0x158[i]->getBounds()->i.x)) /
-                           (s32)JUTVideo::getManager()->getFbWidth();
-        field_0x2f0[i].y = 192.0f *
-                           ((field_0x168->getBounds()->i.y + field_0x158[i]->getBounds()->f.y) - 526.0f - 18.0f) /
-                           (s32)JUTVideo::getManager()->getEfbHeight();
-        field_0x2f0[i].z = 0.0f;
-    }
+    updateScoreBars();
     fn_803B2FB0();
     if (field_0x4c8 != 0xFF) {
         fn_803B236C();
@@ -2979,8 +2959,8 @@ void ResultScreen_804AF9A0::fn_803AA1F8() {
 }
 
 
-// FIXME: 98.92 %, missing/extra; behaviour near.
-// Registers (the second player loop), and each of the two ifs of the
+// FIXME: 99.52 %, missing/extra; behaviour near.
+// Each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
 // row shape of docs/CRACK_PASS.md "Save-data layout"); also .sdata2 names.
@@ -3027,34 +3007,7 @@ void ResultScreen_804AF9A0::fn_803A9AB8() {
             }
         }
     }
-    for (s32 i = 0; i < field_0x454; i++) {
-        field_0x3e0[i] = field_0x320[i] + field_0x340[i] + field_0x350[i] + field_0x360[i] + field_0x370[i] -
-                         field_0x380[i] + field_0x3a0[i] + field_0x3b0[i];
-        if (field_0x3e0[i] < -5000) {
-            field_0x3e0[i] = -5000;
-        }
-        f32 offset;
-        if (field_0x3e0[i] < -500) {
-            offset = -500 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else if (field_0x3e0[i] > 3000) {
-            offset = 3000 * 150.0f / field_0x434 * lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] / 3000.0f;
-        } else {
-            offset = lbl_8050DB0C.field_0x4c[(0x2B0 - 0x4C) / 2] * (150.0f * field_0x3e0[i] / field_0x434) / 3000.0f;
-        }
-        f32 x = field_0x158[i]->getBounds()->i.x;
-        field_0x158[i]->move(x, field_0x3f0 - offset);
-        if (field_0x3e0[i] > 9999) {
-            field_0x3e0[i] = 9999;
-        }
-        field_0x2f0[i].x = 256.0f *
-                           (field_0x158[i]->getWidth() / 2 +
-                            (field_0x168->getBounds()->i.x + field_0x158[i]->getBounds()->i.x)) /
-                           (s32)JUTVideo::getManager()->getFbWidth();
-        field_0x2f0[i].y = 192.0f *
-                           ((field_0x168->getBounds()->i.y + field_0x158[i]->getBounds()->f.y) - 526.0f - 18.0f) /
-                           (s32)JUTVideo::getManager()->getEfbHeight();
-        field_0x2f0[i].z = 0.0f;
-    }
+    updateScoreBars();
     fn_803B2FB0();
     if (field_0x4c8 != 0xFF) {
         fn_803B236C();

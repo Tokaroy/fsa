@@ -61,6 +61,8 @@ public:
     // input (button 0x40) marks a player in field_0x4b0, lists it in
     // field_0x4b4, then shows the listed players' effects at field_0x2f0.
     void fn_803B2FB0();
+    // Inlined into the same three, before fn_803B2FB0: the score bars.
+    void updateScoreBars();
     // Draws the fade picture field_0x170 (alpha field_0x4c2) over the screen,
     // except on the stages fn_80379FF4 skips and while
     // lbl_80529DEC.field_0x237 is 8.
