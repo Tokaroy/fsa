@@ -3853,7 +3853,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
 // FIXME(shotgun): 99.24 %, regalloc-only; behaviour clean.
-// (setAlpha argument masking, window load order)
+// (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s16 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
@@ -3912,7 +3912,7 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
 }
 
 // FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
-// (setAlpha argument masking, window load order)
+// (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
@@ -3967,7 +3967,7 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     f32 w = width * field_0x110;
     f32 h = height * field_0x114;
     pane->resize(w, h);
-    pane->move(field_0x108 + field_0x110 * 0.5f - w * 0.5f, (field_0x10c + field_0x114) - h);
+    pane->move(field_0x108 + field_0x110 / 2.0f - w / 2.0f, (field_0x10c + field_0x114) - h);
 }
 
 void part4047_fn_8039499C(cls_804AF5A0* self, int i, f32 px, f32 py);
