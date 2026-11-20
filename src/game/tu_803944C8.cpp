@@ -1752,23 +1752,24 @@ void cls_804AF72C::do_end() {
     field_0x2c0[field_0x2d0++] = -2;
 }
 
-// FIXME(shotgun): 99.07 %, different; behaviour near.
-// (the text pointer is formed before the clearing store)
+// FIXME(shotgun): 99.59 %, scheduling+regalloc; behaviour clean.
+// (registers only: the float temporaries of the centring offset and the tail's length/shown values)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
-    field_0x2d8->field_0x3ab[0] = 0;
+    text[0] = 0;
     if (field_0x2d8->field_0x1aa == 0) {
         char newline[2];
         newline[1] = 0;
         if (c == '\n') {
             field_0x2cc++;
-            if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c] + 1) {
-                field_0x2d6 = 1;
-                newline[0] = c;
-                strcat(field_0x2c0, newline);
-                strcat(field_0x2c4, newline);
-                field_0x2d0++;
+            if (field_0x2cc <= (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c] + 1) {
+                return;
             }
+            field_0x2d6 = 1;
+            newline[0] = c;
+            strcat(field_0x2c0, newline);
+            strcat(field_0x2c4, newline);
+            field_0x2d0++;
         }
         if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
             if (field_0x2d6 != 0) {
@@ -1797,13 +1798,12 @@ void cls_804AF72C::fn_8039F540(int c) {
             if (c == '\n') {
                 return;
             }
+            s8 high = (c >> 8) & 0xFF;
             s32 length = 0;
-            s8 high = c >> 8;
             if (high != 0) {
                 field_0x2d0++;
                 c &= 0xFF;
-                length = 1;
-                text[0] = high;
+                text[length++] = high;
             }
             field_0x2d0++;
             text[length] = c;
@@ -2360,8 +2360,8 @@ bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
     return false;
 }
 
-// FIXME(shotgun): 96.37 %, missing/extra; behaviour drift.
-// (the u8 line count is subtracted as an int in the original)
+// FIXME(shotgun): 98.56 %, missing/extra; behaviour near.
+// (the original zero-extends the u8 line count once more before the subtraction)
 void cls_804AF72C::fn_8039D30C(u8 value) {
     s32 index = field_0x2cc;
     s32 offset = 0;
@@ -2377,7 +2377,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
             s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x20 - first;
                 break;
             }
@@ -2387,13 +2387,13 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     }
     case 1: {
         field_0x2c0[field_0x2d0++] = -2;
-        field_0x2c0[field_0x2d0++] = offset + (s8)field_0x38.field_0x1fe[field_0x2d4] + 0x40;
+        field_0x2c0[field_0x2d0++] = 0x40 + offset + (s8)field_0x38.field_0x1fe[field_0x2d4];
         field_0x2c0[field_0x2d0++] = -2;
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
             s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x60 - first;
                 break;
             }
@@ -2403,13 +2403,13 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     }
     case 2: {
         field_0x2c0[field_0x2d0++] = -2;
-        field_0x2c0[field_0x2d0++] = offset + (s8)field_0x38.field_0x1fe[field_0x2d4] + 0x80;
+        field_0x2c0[field_0x2d0++] = 0x80 + offset + (s8)field_0x38.field_0x1fe[field_0x2d4];
         field_0x2c0[field_0x2d0++] = -2;
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
             s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0xa0 - first;
                 break;
             }
@@ -3851,8 +3851,8 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
-// (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
+// FIXME(shotgun): 99.91 %, scheduling; behaviour clean.
+// (the pane's alpha and the target alpha are loaded in the other order)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
@@ -3860,12 +3860,13 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s32 t3 = t2 + lbl_8050DB0C.field_0x4c[(0x28C - 0x4C) / 2];
     s32 t4 = t3 + lbl_8050DB0C.field_0x4c[(0x28E - 0x4C) / 2];
     field_0x194++;
-    if (pane->getAlpha() < field_0x1a3) {
+    u32 alpha = field_0x1a3;
+    if (pane->getAlpha() < alpha) {
         if (field_0x194 == 10) {
             field_0x194 = 0;
             pane->setAlpha(field_0x1a3);
         } else {
-            pane->setAlpha(field_0x1a3 * ((f32)field_0x194 / 10.0f));
+            pane->setAlpha(alpha * ((f32)field_0x194 / 10.0f));
         }
         return;
     }
@@ -3910,8 +3911,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     pane->move(field_0xf8 + field_0x100 / 2.0f - w / 2.0f, (field_0xfc + field_0x104) - h);
 }
 
-// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
-// (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
+// FIXME(shotgun): 99.91 %, scheduling; behaviour clean.
+// (the pane's alpha and the target alpha are loaded in the other order)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
@@ -3919,12 +3920,13 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t3 = t2 + lbl_8050DB0C.field_0x4c[(0x28C - 0x4C) / 2];
     s32 t4 = t3 + lbl_8050DB0C.field_0x4c[(0x28E - 0x4C) / 2];
     field_0x194++;
-    if (pane->getAlpha() < field_0x1a4) {
+    u32 alpha = field_0x1a4;
+    if (pane->getAlpha() < alpha) {
         if (field_0x194 == 10) {
             field_0x194 = 0;
             pane->setAlpha(field_0x1a4);
         } else {
-            pane->setAlpha(field_0x1a4 * ((f32)field_0x194 / 10.0f));
+            pane->setAlpha(alpha * ((f32)field_0x194 / 10.0f));
         }
         return;
     }
