@@ -364,9 +364,10 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
             }
             if (field_0x264 == 1) {
                 field_0x240 += 10;
-                JGeometry::TVec3f pos(mPos);
-                pos.x = mPos.x + lbl_804A08C0[field_0x98][0];
-                pos.y = mPos.y + lbl_804A08C0[field_0x98][1];
+                JGeometry::TVec3f pos;
+                pos.set(mPos);
+                pos.x += lbl_804A08C0[field_0x98][0];
+                pos.y += lbl_804A08C0[field_0x98][1];
                 spawnEmitter_8013CC50(field_0x4, &pos, 0xCB, 0, 3, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(field_0x4, &pos, 0xCC, 0, 3, NULL, NULL, true, 1.0f);
             }
@@ -377,18 +378,19 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
             }
             if (field_0x264 == 4) {
                 startSound_801F0E34(0x4008B, 0);
+                f32 speed = 13.0f;
                 switch (field_0x98) {
                 case 0:
-                    field_0x3c.set(13.0f, 0.0f, 0.0f);
+                    field_0x3c.set(speed, 0.0f, 0.0f);
                     break;
                 case 1:
-                    field_0x3c.set(-13.0f, 0.0f, 0.0f);
+                    field_0x3c.set(-speed, 0.0f, 0.0f);
                     break;
                 case 2:
-                    field_0x3c.set(0.0f, 13.0f, 0.0f);
+                    field_0x3c.set(0.0f, speed, 0.0f);
                     break;
                 case 3:
-                    field_0x3c.set(0.0f, -13.0f, 0.0f);
+                    field_0x3c.set(0.0f, -speed, 0.0f);
                     break;
                 }
             }
