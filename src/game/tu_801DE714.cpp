@@ -434,7 +434,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
     }
 }
 
-// FIXME(shotgun): 98.14 %, different; behaviour drift.
+// FIXME(shotgun): 99.91 %, regalloc-only; behaviour drift.
 void cls_804A51E4::fn_801E1594(s32 newState) {
     switch (newState) {
     case 0:
@@ -587,7 +587,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
 // Not auto-inlined: fn_801E0CF4 calls fn_801E1300 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 94.82 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 95.15 %, scheduling; behaviour clean.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
     ActorBase_804A5770* actor;
