@@ -149,7 +149,6 @@ void cls_804A5568::fn_801E9224() {
     }
 }
 
-// FIXME(shotgun): 98.07 %, missing/extra; behaviour near.
 void cls_804A5568::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0: {
@@ -193,7 +192,6 @@ u8 cls_804A5568::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME(shotgun): 93.68 %, missing/extra; behaviour near.
 u8 cls_804A5568::vfunc_0x60() {
     if (mState == 0 && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         if (fn_801E9B58() >= 0) {
@@ -239,7 +237,7 @@ void cls_804A5568::fn_801E8EB4(u8 index, s32 arg, const JGeometry::TVec2f* pos) 
     field_0x2b0[index].y = pos->y;
 }
 
-// FIXME(shotgun): 95.88 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.19 %, missing/extra; behaviour drift.
 void cls_804A5568::fn_801E8C74(s32 arg) {
     field_0x3b8 = arg;
     mCount = 0;
@@ -282,7 +280,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 83.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 79.07 %, scheduling+regalloc + reloc-name; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
