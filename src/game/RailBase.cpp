@@ -4,8 +4,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 99.97 %, regalloc-only; behaviour clean.
-// 0x800FE3EC
 bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
     clear();
@@ -32,18 +30,7 @@ bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
         }
     }
     JGeometry::TVec3f target = pos;
-    f32 best = 10000.0f;
-    for (u16 i = 0; i < field_0x2; i++) {
-        if (layer == fn_800FE25C(i)) {
-            JGeometry::TVec3f diff = field_0x4[i]->mPos;
-            diff.sub(target);
-            f32 dist = diff.length();
-            if (dist < best) {
-                best = dist;
-                field_0x3 = i;
-            }
-        }
-    }
+    fn_800FE2E4(&target, layer);
     return true;
 }
 
