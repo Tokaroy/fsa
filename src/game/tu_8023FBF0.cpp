@@ -1284,13 +1284,9 @@ void Player_804A6F38::fn_8025250C() {
 // ground and field_0x3A4 the target 56 inside the opposite edge of the
 // visible box. The player bit is a materialised bool in the original
 // (neg / or / srwi before the branch), hence the local.
-// FIXME: 97.38 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers only: the inlined group loop's
-// leader / own index (two registers in the original, one here), and dir->x
-// is loaded before the field_0x398 / 0x3A4 stores here, after them in the
-// original; plus the 56.0f literal's name (lbl_80540088 sits after -1.0f,
-// whose first user fn_8024F63C is unwritten).
-void Player_804A6F38::fn_802520C0(const JGeometry::TVec2<s32>* dir) {
+// dir is a plain pointer: dir->x is loaded after the field_0x398 / 0x3A4
+// stores (a const pointee would let the load move above them).
+void Player_804A6F38::fn_802520C0(JGeometry::TVec2<s32>* dir) {
     if (fn_8025F448()) {
         return;
     }
@@ -1316,13 +1312,17 @@ void Player_804A6F38::fn_802520C0(const JGeometry::TVec2<s32>* dir) {
         field_0x3a4.set(mPos);
         field_0x3a4.z = 0.0f;
         if (dir->x == 1 && dir->y == 0) {
-            field_0x3a4.x = getGameView_802D6A9C()->mVisibleBox.i.x + 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.x = view->mVisibleBox.i.x + 56.0f;
         } else if (dir->x == -1 && dir->y == 0) {
-            field_0x3a4.x = getGameView_802D6A9C()->mVisibleBox.f.x - 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.x = view->mVisibleBox.f.x - 56.0f;
         } else if (dir->x == 0 && dir->y == 1) {
-            field_0x3a4.y = getGameView_802D6A9C()->mVisibleBox.i.y + 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.y = view->mVisibleBox.i.y + 56.0f;
         } else if (dir->x == 0 && dir->y == -1) {
-            field_0x3a4.y = getGameView_802D6A9C()->mVisibleBox.f.y - 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.y = view->mVisibleBox.f.y - 56.0f;
         }
     }
 }
@@ -2524,10 +2524,6 @@ bool Player_804A6F38::fn_8024D058(u8 reset) {
 // fn_8024CAC8 for a box (act_dummy_conversation through fn_8022FEB8): the
 // same tests, then the point 16 ahead of the player (by facing 0x3DC) must
 // lie in `box`.
-// FIXME: 99.98 %, regalloc-only; behaviour clean.
-// Registers only: the inlined group loop (fn_80240670) keeps
-// the leader and the own index in two registers (r22 / r25) in the original,
-// one here, as in the gates (fn_802454C0 ...).
 void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 serial, bool a, bool b) {
     if (field_0xd50 > 0) {
         return;
@@ -2564,8 +2560,7 @@ void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 s
     pos += mPos;
     pos.z = 0.0f;
     JGeometry::TBox2f point;
-    point.i.x = pos.x;
-    point.i.y = pos.y;
+    point.i.set(pos.x, pos.y);
     point.f.x = pos.x;
     point.f.y = pos.y;
     if (point.intersect(*box)) {
@@ -3388,9 +3383,6 @@ void Player_804A6F38::fn_80248604() {
 // acting player's position and trail. Then the reachable players' actors are
 // reset (fn_8023105C / fn_802310F8), the old mode kept in field_0x1210 and,
 // for a leader, the cue played (fn_8024F0E8 / fn_80230FD0) when `cue`.
-// FIXME: 99.93 %, regalloc-only; behaviour clean.
-// Registers only: the group loop's count / index / leader
-// (r27 / r28 / r26 in the original) and the 0xCBC / 0xD1C addresses (r5 / r4).
 void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     if (fn_80248970() <= 1) {
         return;
@@ -3433,8 +3425,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
             }
             mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(field_0x4)));
             field_0x2c.set(mPos);
-            field_0xcbc = mPos;
-            field_0xd1c = field_0xcbc;
+            field_0xd1c = field_0xcbc = mPos;
         }
         for (s32 i = 0; i < 0x31; i++) {
             field_0x38[i].set(*fn_8023E4E4(fn_8022EA0C(field_0x4), 0));
