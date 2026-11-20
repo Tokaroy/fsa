@@ -1008,11 +1008,11 @@ void OBJLift_804ACA00::draw() {
         // Euler rotation (0, 270 deg, 0) from sincosTable_ entries (the original reads them
         // at run time: table index 0 and index 1536).
         f32 sx = JMath::sincosTable_.sinShort(0);
-        f32 cx = JMath::sincosTable_.cosShort(0);
         f32 sy = JMath::sincosTable_.sinShort(-0x4000);
+        f32 sz = JMath::sincosTable_.sinShort(0);
+        f32 cx = JMath::sincosTable_.cosShort(0);
         f32 cy = JMath::sincosTable_.cosShort(-0x4000);
-        f32 sz = sx;
-        f32 cz = cx;
+        f32 cz = JMath::sincosTable_.cosShort(0);
         mtx[0][0] = field_0x28c * (cy * cz);
         mtx[1][0] = field_0x28c * (cy * sz);
         mtx[2][0] = field_0x28c * -sy;
@@ -1024,7 +1024,7 @@ void OBJLift_804ACA00::draw() {
         mtx[2][2] = field_0x28c * (cx * cy);
     } else if (field_0x258 == 5) {
         f32 angle = 2.0f * (3.14f * (1.0f - field_0x28c));
-        JGeometry::TVec3f rot(angle, angle, 0.0f);
+        JGeometry::TVec3f rot(0.0f, angle, 0.0f);
         setRotScaleMtx(mtx, rot, field_0x28c);
     } else {
         mtx[0][0] = field_0x28c;
