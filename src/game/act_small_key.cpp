@@ -1004,8 +1004,7 @@ void SmallKey_804A8CD8::fn_802C2B64() {
 // 0x802C2840.
 // FIXME(shotgun): 92.00 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2840() {
-    s32 layer = field_0x4;
-    if (getGameView_802D6A9C()->field_0x131df[layer] != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
+    if (viewLayerFlag(field_0x4) != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
         field_0x298 = -1;
         return;
     }
@@ -1043,17 +1042,18 @@ void SmallKey_804A8CD8::fn_802C2840() {
         mBox.f.y = 8.0f;
     }
     box.addPos(mPos.x, mPos.y);
-    s32 viewLayer = field_0x4;
-    GameView_804A9950* view = getGameView_802D6A9C();
-    JGeometry::TBox2f* screen = viewLayer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    box.addPos(-screen->i.x, -screen->i.y);
+    JGeometry::TBox2f* screen = layerBox(field_0x4);
+    f32 screenX = screen->i.x;
+    f32 screenY = screen->i.y;
+    box.addPos(-screenX, -screenY);
     s32 slot = field_0x298;
     if (slot != -1) {
-        ActorManager_804A5800* manager = getActorManager_801F856C();
-        ActorBase_804A5770* carrier = manager->mActors[slot];
+        ActorBase_804A5770* carrier = getActorManager_801F856C()->getActor(slot);
         if (fn_802C2684(carrier, &box)) {
             mPos.z = 0.0f;
-            mPos += carrier->mPos - field_0x254;
+            JGeometry::TVec3f delta(carrier->mPos);
+            delta.sub(field_0x254);
+            mPos.add(delta);
             field_0x254 = carrier->mPos;
             return;
         }
@@ -1062,7 +1062,7 @@ void SmallKey_804A8CD8::fn_802C2840() {
     s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
         if (i != mSerial) {
-            ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
+            ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);
             if (fn_802C2684(other, &box)) {
                 field_0x298 = i;
                 mPos.z = 0.0f;
