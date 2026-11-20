@@ -412,12 +412,16 @@ void cls_804A5D60::vfunc_0x88() {
     case 7:
     case 8:
     case 9:
-        if (mAnim.mAnim == 6 || mAnim.mAnim == 2) {
+        switch (mAnim.mAnim) {
+        case 2:
+        case 6:
             field_0x3c.x = mVel.x;
             field_0x3c.y = mVel.y;
-        } else {
+            break;
+        default:
             field_0x3c.x = 0.0f;
             field_0x3c.y = 0.0f;
+            break;
         }
         field_0x3c.z += lbl_8053EFB8;
         break;
