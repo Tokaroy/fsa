@@ -124,7 +124,8 @@ bool SpriteAnim_801D267C::fn_801D2264(s32 anim, s32 mode) {
     return result;
 }
 
-// FIXME: 86.2 %. Only the order of the first instructions differs: the
+// FIXME: 86.21 %, scheduling; behaviour clean.
+// Only the order of the first instructions differs: the
 // target loads mState (lbz 0x29) and sets result = 0 before the stack frame
 // is made; ours does it after. Splitting the || into two ifs was worse.
 bool SpriteAnim_801D267C::fn_801D21F0() {
@@ -135,7 +136,8 @@ bool SpriteAnim_801D267C::fn_801D217C() {
     return isLoopEnd();
 }
 
-// FIXME: 94.4 %. The target tests the first attribute (== 0) through a
+// FIXME: 94.42 %, different; behaviour drift.
+// The target tests the first attribute (== 0) through a
 // bool (cntlzw; extrwi.) and compares it again inside the inlined
 // isStopped with cmplwi; ours compares with cmplwi first and clrlwi. inside.
 // `!getAttribute()` gave the same code.
