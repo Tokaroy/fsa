@@ -720,7 +720,6 @@ void cls_8049C718::fn_800FB32C() {
     }
 }
 
-// FIXME(shotgun): 99.71 %, regalloc-only; behaviour clean.
 void cls_8049C718::fn_800FB070() {
     field_0x3c.z -= 0.3f;
     mPos.add(field_0x3c);
@@ -737,8 +736,11 @@ void cls_8049C718::fn_800FB070() {
         field_0xb0 = 4;
     }
     f32 scale = mScale;
-    mBox.set(-26.0f * scale, -50.0f * scale, 26.0f * scale, 0.0f);
-    field_0x80.set(-26.0f * scale, -50.0f * scale, 26.0f * scale, 0.0f);
+    f32 x0 = -26.0f * scale;
+    f32 y0 = -50.0f * scale;
+    f32 x1 = 26.0f * scale;
+    mBox.set(x0, y0, x1, 0.0f);
+    field_0x80.set(x0, y0, x1, 0.0f);
     if (mWobble != 0) {
         mWobble += 0x2000;
         if (mWobble > 0x10000) {
