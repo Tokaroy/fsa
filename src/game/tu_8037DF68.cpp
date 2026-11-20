@@ -1479,8 +1479,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        // The original keeps the tested byte (neg / or / srwi.), as an explicit compare does.
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) != false) {
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
                             u8 mode = (gGameRoot_8053AAF8->field_0x83 >> ((a - 1) * 2)) & 3;
                             if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {

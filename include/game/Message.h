@@ -640,7 +640,6 @@ bool fn_80387494(s32 player);
 // fn_8038A42C; flags bits 0x40 / 0x2000 select variants (rlwinm tests; the
 // low 16 bits are passed on). Returns 0 or 1. act_talking_npc passes the
 // top 4 bits of its spawn parameter as player and the low 28 as msg.
-// flags: u32 is a guess.
 bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 // 22 units. The same without an actor (callers pass an id, layer, pos and
 // small flags such as 0x21).
