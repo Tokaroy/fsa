@@ -392,7 +392,7 @@ void SwordSoldier_8049FCA0::vfunc_0x44() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (lbl_804BF850[i] == mSerial) {
+        if (lbl_804BF850[i] == getSerial()) {
             lbl_804BF850[i] = -1;
             field_0xbc = 2;
         }
