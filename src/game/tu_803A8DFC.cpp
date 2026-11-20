@@ -1586,17 +1586,14 @@ void ResultScreen_804AF9A0::fn_803AEC78() {
     }
 }
 
-// FIXME: 99.89 %, reloc-name; behaviour drift.
-// FIXME: reloc-name only (instructions identical): its function-local point tables
-// are named lbl_80476388.. / lbl_80543378.. in the original, points4$NNN here.
 // Bonus page step: field_0x330[i] gets the points for player i's place by
 // lbl_80529DEC.field_0x160 (ties share a place; 0 scores nothing; the point
 // table by layout); field_0x360 counts up to it by 2, then the winners
 // (largest field_0x330) are listed in field_0x4ac and the state goes to 17.
 void ResultScreen_804AF9A0::fn_803AE810() {
-    static const s32 points4[4] = {300, 150, 50, 0};
-    static const s32 points3[3] = {300, 150, 0};
-    static const s32 points2[2] = {150, 0};
+    static const s32 lbl_804763C0[4] = {300, 150, 50, 0};
+    static const s32 lbl_804763D0[3] = {300, 150, 0};
+    static const s32 lbl_80543388[2] = {150, 0};
     // Declared in this order (and values before ranked) as the original's registers and stack slots.
     s32 done = 0;
     s32 best = 0;
@@ -1631,13 +1628,13 @@ void ResultScreen_804AF9A0::fn_803AE810() {
                     } else {
                         switch (field_0x450) {
                         case 0:
-                            field_0x330[i] = points4[place];
+                            field_0x330[i] = lbl_804763C0[place];
                             break;
                         case 1:
-                            field_0x330[i] = points3[place];
+                            field_0x330[i] = lbl_804763D0[place];
                             break;
                         case 2:
-                            field_0x330[i] = points2[place];
+                            field_0x330[i] = lbl_80543388[place];
                             break;
                         }
                     }
