@@ -69,11 +69,6 @@ static const u32 lbl_80469F38[16] = {
     0x00040099, 0x0004009E, 0x0004009B, 0x000400AF, 0x00040072, 0x00040038, 0x000400A1, 0x00040037,
 };
 
-// Five floats indexed by field_0xc0 (EnemyParam "efsz").
-static const f32 lbl_8046A00C[5] = {
-    0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
-};
-
 // Tiles without a shadow (fn_801EF830; the last one only unless
 // fn_802DEB58()).
 static const u16 lbl_8053F730[4] = {2, 3, 14, 0};
@@ -346,9 +341,9 @@ void ActorBase_804A5770::vfunc_0x24() {
     } else if (field_0x18c != 0) {
         fn_801F52A4();
     }
-    JPABaseEmitter* emitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true,
-                                                    lbl_8046A00C[field_0xc0]);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, lbl_8046A00C[field_0xc0]);
+    JPABaseEmitter* emitter =
+        spawnEmitter_8013CC50(field_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true, fn_801EE4F0());
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, fn_801EE4F0());
     player = field_0x10c;
     if (player >= 0 && player < 4) {
         getEffectSystem_8013C824()->fn_8013C830(player, emitter);
@@ -578,7 +573,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                 break;
             }
             if (mPos.z == 0.0f && field_0x3c.squared() > 1.0f) {
-                f32 size = mActorId == 'SLK2' ? 1.0f : lbl_8046A00C[field_0xc0];
+                f32 size = mActorId == 'SLK2' ? 1.0f : fn_801EE4F0();
                 f32 scale = 0.9f * size;
                 if (scale > 0.0f) {
                     JGeometry::TVec3f dir;
@@ -637,7 +632,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
         result = 1;
     } else if (field_0xe0 != 0) {
         if (field_0xe0 == 30) {
-            f32 size = lbl_8046A00C[field_0xc0];
+            f32 size = fn_801EE4F0();
             u16 id = 0xFFFF;
             switch (field_0xfc) {
             case 1:
@@ -792,7 +787,7 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
                 if (mActorId == 'TINK' || mLife - attack <= 0) {
                     deleteEmitter(&mEmitter100);
                     deleteEmitter(&mEmitter104);
-                    f32 scale = lbl_8046A00C[field_0xc0];
+                    f32 scale = fn_801EE4F0();
                     mEmitter100 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBB, 0, -1, NULL, NULL,
                                                         true, scale);
                     mEmitter104 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBC, 0, 1, NULL, NULL,
@@ -1355,7 +1350,7 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
 // the far end.) When it moved and `out` is given, *out is the direction of the
 // push (with `flag`, the diagonal tiles 8-0xB at the corners of the old
 // position bend it), normalised. Returns whether it moved.
-// FIXME: 92.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 92.22 %, missing/extra + reloc-name; behaviour drift.
 // (try.py; 6 instructions fewer than the target's 804). Structurally complete; two differences: MWCC keeps the
 // .rodata base in r31 for the four counter initialisers (the target
 // addresses each with its own lis/addi, lbl_80469F78-lbl_80469F9C; one more
@@ -2082,9 +2077,6 @@ extern "C" void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec
 }
 
 // fn_801F2DB4 over the 17 actor ids below (the list is copied to the stack).
-// FIXME: 99.20 %, reloc-name; behaviour clean.
-// Instructions identical; the list is an @NNN literal here but lbl_80469FC8 in the
-// target (rodata order).
 void ActorBase_804A5770::fn_801EF510() {
     u32 list[17] = {'SWBM', 'FIRE', 'BLZE', 'HBMB', 'FLME', 'THCL', 'GRAS', 'SSTN', 'STON',
                     'ROCK', 'RCK2', 'BORD', 'TUBO', 'KEY0', 'YASI', 'SMRI', 'NULL'};
@@ -2308,6 +2300,11 @@ void ActorBase_804A5770::fn_801EE508() {
     fn_801CB71C(&mEmitter100, &mPos, 0, -1);
     fn_801CB71C(&mEmitter104, &mPos, 0, 1);
 }
+
+// Five floats indexed by field_0xc0 (EnemyParam "efsz").
+static const f32 lbl_8046A00C[5] = {
+    0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
+};
 
 f32 ActorBase_804A5770::fn_801EE4F0() {
     return lbl_8046A00C[field_0xc0];
