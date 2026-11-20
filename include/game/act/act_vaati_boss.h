@@ -252,8 +252,7 @@ public:
     /* 0x5B0 */ s32 field_0x5b0;
     /* 0x5B4 */ s32 field_0x5b4;
     /* 0x5B8 */ s32 field_0x5b8;
-    /* 0x5BC */ f32 field_0x5bc;
-    /* 0x5C0 */ f32 field_0x5c0;
+    /* 0x5BC */ JGeometry::TVec2f field_0x5bc;
     /* 0x5C4 */ JGeometry::TVec2f field_0x5c4; // fn_801D5B70 null-checks its address (addic. r0, r31, 0x5c4)
     /* 0x5CC */ u8 field_0x5cc;
     /* 0x5CD */ u8 field_0x5cd;
