@@ -499,7 +499,6 @@ void cls_804B0288::fn_803D4484() {
     }
 }
 
-// FIXME(shotgun): 94.63 %, scheduling+regalloc; behaviour clean.
 void cls_804B0288::fn_803D4298() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
@@ -553,7 +552,6 @@ void cls_804B0288::fn_803D4298() {
     }
 }
 
-// FIXME(shotgun): 99.96 %, scheduling; behaviour clean.
 void cls_804B0288::fn_803D4068() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
@@ -602,7 +600,6 @@ void cls_804B0288::fn_803D4068() {
     }
 }
 
-// FIXME(shotgun): 98.56 %, scheduling+regalloc; behaviour clean.
 void cls_804B0288::fn_803D3EC8() {
     s16 t0 = lbl_8050DB0C.field_0x4c[(0xEE - 0x4C) / 2];
     s16 t1 = lbl_8050DB0C.field_0x4c[(0xF0 - 0x4C) / 2];
