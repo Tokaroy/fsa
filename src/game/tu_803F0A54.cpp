@@ -348,8 +348,6 @@ static inline void stepCursorTimer(ConnectScreen_804B0F10* self) {
         dst = size / 2 + field_0xc->search(tag)->getGlobalBounds().i.y;         \
     } while (0)
 
-// Screen coordinates (640 x 480 layout scaled to 280 x 210) of a point on
-// the current render mode.
 // The rupee count of handicap field_0x1e0[i] as three digit textures.
 inline void ConnectScreen_804B0F10::setRupeeDigits(s32 i) {
     s32 rupees = fn_80403070(field_0x1e0[i]);
@@ -388,6 +386,8 @@ inline void ConnectScreen_804B0F10::setMarkers(s32 i) {
     }
 }
 
+// Screen coordinates (640 x 480 layout scaled to 280 x 210) of a point on
+// the current render mode.
 static inline f32 toSpriteX(f32 x) {
     return 280.0f * x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth;
 }
@@ -2227,9 +2227,9 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2]);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        offset = field_0xf8 + field_0xc->search('Phanb04')->getBounds()->i.y - top;
+        f32 y = field_0xf8 + field_0xc->search('Phanb04')->getBounds()->i.y - top;
         x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, offset);
+        field_0xc->search('Pscuro02')->move(x, y);
     } else {
         x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
@@ -2238,10 +2238,9 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2] + offset);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        // the two locals are reused the other way round here (f29 / f30)
-        x = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
-        offset = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(offset, x);
+        f32 y = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
+        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
+        field_0xc->search('Pscuro02')->move(x, y);
     }
     field_0xc->search('Pscuro01')->setAlpha(alpha);
     field_0xc->search('Pscuro02')->setAlpha(alpha);
