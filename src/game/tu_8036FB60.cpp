@@ -559,8 +559,6 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-// FIXME(shotgun): 94.75 %, scheduling + reloc-name; behaviour clean.
-// Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -568,7 +566,7 @@ void cls_804AE4B0::fn_80370A7C() {
             JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                                   (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
             fn_8022FE80(0, field_0x4, mSerial, true, false);
-            if (fn_8038BD08(0, lbl_80474F10[field_0x394], field_0x4, pos, 0x22)) {
+            if (fn_8038BD08(0, lbl_80474F10[field_0x394], getField_0x4(), pos, 0x22)) {
                 return;
             }
         }
@@ -659,15 +657,15 @@ void cls_804AE4B0::fn_803706AC() {
     }
 }
 
-// FIXME(shotgun): 90.76 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 void cls_804AE4B0::fn_803705A0() {
     fn_803703C8();
     if (field_0x324.y > 1680.0f) {
         field_0x324.y -= 0.5f;
         if (field_0x324.y <= 1680.0f) {
             field_0x324.y = 1680.0f;
-            u8 count = (field_0x23c <= 0xB4) + 2;
-            JGeometry::TVec3f pos = field_0x324 - JGeometry::TVec3f(0.0f, 32.0f, 0.0f);
+            u8 count = field_0x23c <= 0xB4 ? 3 : 2;
+            const JGeometry::TVec3f& pos = field_0x324 - JGeometry::TVec3f(0.0f, 32.0f, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &pos, count | 0x30000, -1, -1);
             field_0x240 = 0x1E;
             mState = 10;
@@ -749,8 +747,7 @@ void cls_804AE4B0::guidePlayer_80370764() {
     }
 }
 
-// FIXME: 92.92 %, missing/extra + reloc-name; behaviour near.
-// FIXME(shotgun): extra li for the match flag init; literal reloc names differ
+// FIXME: 99.46 %, scheduling+regalloc + reloc-name; behaviour clean.
 s32 cls_804AE4B0::fn_80370200() {
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
@@ -759,30 +756,28 @@ s32 cls_804AE4B0::fn_80370200() {
     s32 bestIdx = -1;
     for (s32 i = 0; i < 4; i++) {
         u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x264[idx].y - field_0x294[i].y,
-                                                  field_0x264[idx].x - field_0x294[i].x) * 10430.378f);
-        bool match = false;
+                                                  field_0x264[idx].x - field_0x294[i].x) *
+                          (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle >= 0x2000 && angle < 0x6000) {
-            if (field_0x340[i] == 2) {
-                match = true;
+            if (field_0x340[i] != 2) {
+                continue;
             }
         } else if (angle >= 0x6000 && angle < 0xA000) {
-            if (field_0x340[i] == 1) {
-                match = true;
+            if (field_0x340[i] != 1) {
+                continue;
             }
         } else if (angle >= 0xA000 && angle < 0xE000) {
-            if (field_0x340[i] == 3) {
-                match = true;
+            if (field_0x340[i] != 3) {
+                continue;
             }
         } else {
-            if (field_0x340[i] == 0) {
-                match = true;
+            if (field_0x340[i] != 0) {
+                continue;
             }
         }
-        if (match) {
-            if (lbl_80474F4C[field_0x340[i]] == fn_80230CFC(idx)) {
-                any = true;
-                hit[i] = 1;
-            }
+        if (lbl_80474F4C[field_0x340[i]] == fn_80230CFC(idx)) {
+            any = true;
+            hit[i] = 1;
         }
     }
     if (!any) {
