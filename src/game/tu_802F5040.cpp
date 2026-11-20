@@ -2016,10 +2016,10 @@ void TileMap_804AA858::fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size
     } else {
         src = (u8*)res;
     }
-    src += srcOffset;
+    u8* data = src + srcOffset;
     u32 index = start / 2;
     for (u32 i = start; i < len; i += 2) {
-        field_0x24[index++] = (src[i + 1] << 8) | src[i];
+        field_0x24[index++] = (data[i + 1] << 8) | data[i];
     }
 }
 
