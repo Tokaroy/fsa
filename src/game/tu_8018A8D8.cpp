@@ -439,7 +439,7 @@ bool cls_804A1E50::fn_8018DA6C() {
         getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 22) & 0x1F) &&
         getGameView_802D6A9C()->fn_802D800C(field_0x90 >> 27)) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
+            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_8022F478(i) &&
                 fn_80230188(i) && field_0x29c == 1) {
                 fn_8023061C(i, false);
                 field_0x29c = 0;
