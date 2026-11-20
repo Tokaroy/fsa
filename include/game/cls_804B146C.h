@@ -44,6 +44,11 @@ public:
     void fn_8042215C(s32 player);
     void fn_80421D78(s32 player);
     void fn_80421A34(s32 player, bool force);
+    // Inlined in fn_804263A8 (0x80426530): fn_80421A34(player, true) for every player that
+    // takes part. An inline (game/tu_8042165C.cpp), not a loop written in place: its counter shares the
+    // register of the zero fn_804263A8's first loop stores (coloured after that
+    // function's own locals), which a local loop counter does not.
+    void forceAll_80421A34();
     void fn_8042165C();
 
     /* 0x000 */ // vtable

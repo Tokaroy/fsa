@@ -413,22 +413,44 @@ cls_804B146C::~cls_804B146C() {
     }
 }
 
+static inline u8 checkBit(u8 mask, s32 bit) {
+    u8 b = 1 << bit;
+    return (mask & b) != 0;
+}
+
+static inline void setBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask |= b;
+}
+
+static inline void clearBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask &= ~b;
+}
+
+inline void cls_804B146C::forceAll_80421A34() {
+    for (s32 i = 0; i < 4; i++) {
+        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
+            fn_80421A34(i, true);
+        }
+    }
+}
+
 // FIXME(shotgun): 97.87 %, missing/extra; behaviour drift.
 void cls_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
-        u8 bit = (u8)(1 << i);
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & bit;
+        bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
         if (!takesPart) {
-            field_0x25d &= ~bit;
+            clearBit(field_0x25d, i);
         } else {
-            bool flagged = lbl_8053AED0->field_0xdd & bit;
-            if (flagged && !(field_0x25c & bit)) {
-                field_0x25c |= bit;
-                field_0x25d |= bit;
+            bool flagged = checkBit(lbl_8053AED0->field_0xdd, i);
+            if (flagged && !checkBit(field_0x25c, i)) {
+                setBit(field_0x25c, i);
+                setBit(field_0x25d, i);
             } else if (lbl_8053AED0->field_0xdc & 0x10) {
-                field_0x25d &= ~bit;
+                clearBit(field_0x25d, i);
             } else if (gGameRoot_8053AAF8->field_0x4c == 11) {
-                field_0x25d &= ~bit;
+                clearBit(field_0x25d, i);
             }
         }
         lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
@@ -456,11 +478,7 @@ void cls_804B146C::fn_804263A8() {
         field_0x1d8[i] = 0;
         field_0x208[i] = 0;
     }
-    for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            fn_80421A34(i, true);
-        }
-    }
+    forceAll_80421A34();
     field_0x255 = 0xF;
     field_0x256 = 0xF;
     field_0x257 = 0xF;
@@ -480,12 +498,13 @@ void cls_804B146C::fn_804263A8() {
             field_0x4->search(lbl_8048EFA0[i])->show();
             field_0x4->search(lbl_8048EFE0[i])->hide();
             field_0x4->search(lbl_8048F020[i])->show();
-            if (lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
                 field_0x4->search(lbl_8048F040[i])->show();
             } else {
                 field_0x4->search(lbl_8048F040[i])->hide();
             }
-            if (((gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3) == 2) {
+            u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
+            if (mode == 2) {
                 field_0x4->search(lbl_8048EFC0[i])->show();
                 field_0x4->search(lbl_8048F060[i])->show();
                 field_0x4->search(lbl_8048F080[i])->hide();
@@ -564,21 +583,6 @@ void cls_804B146C::fn_80425F6C() {
 void cls_804B146C::fn_80425F24() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
-}
-
-static inline u8 checkBit(u8 mask, s32 bit) {
-    u8 b = 1 << bit;
-    return (mask & b) != 0;
-}
-
-static inline void setBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask |= b;
-}
-
-static inline void clearBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask &= ~b;
 }
 
 // FIXME(shotgun): 97.80 %, regalloc-only + reloc-name; behaviour clean.
