@@ -713,6 +713,7 @@ s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
 }
 
 // The 16.0f literal is lbl_8053F820 once the pool before it is complete.
+// FIXME: 99.62 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only (f2/f3 swapped for mPos.y and dy); behaviour clean.
 s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* center,
                                        const JGeometry::TVec3f* from, s32 excludeSerial,
