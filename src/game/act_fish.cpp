@@ -39,8 +39,8 @@ void Fish_804AC658::init() {
     field_0x26c = -1;
     field_0x270 = -1;
     fn_801F6758(&mPos, field_0x4, 0.0f);
-    s32 count = field_0x90;
-    if (count != 0) {
+    if (field_0x90 != 0) {
+        s32 count = field_0x90;
         u16 tiles[0x2C9];
         s32 layer = field_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -51,8 +51,9 @@ void Fish_804AC658::init() {
         s32 height = (s32)(box->f.y - y0);
         s32 n = 0;
         s32 xi = 1;
+        s32 packed;
         for (s32 x = 16; x < width; x += 16) {
-            s32 packed = xi + 0x20;
+            packed = xi + 0x20;
             for (s32 y = 16; y < height; y += 16) {
                 JGeometry::TVec3f p;
                 p.x = x + x0;
@@ -82,8 +83,8 @@ void Fish_804AC658::init() {
                 } else {
                     size = 1;
                 }
-                f32 cx = (tile & 0x1F) * 16 + x0;
-                f32 cy = (tile >> 5) * 16 + y0;
+                f32 cx = x0 + (tile & 0x1F) * 16;
+                f32 cy = y0 + (tile >> 5) * 16;
                 for (s32 j = 0; j < size; j++) {
                     f32 ry = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     f32 rx = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
