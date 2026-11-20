@@ -172,15 +172,15 @@ void cls_804AE088::init() {
                                                NULL, true, 1.0f);
     }
     getGameView_802D6A9C()->fn_802D7440(0);
-    for (s32 i = 0; i < 5; i++) {
+    s32 i;
+    for (i = 0; i < 5; i++) {
         s16 angle = sEmitterAngles[i];
-        field_0x2a8[i].x = 55.0f * JMath::sincosTable_.cosShort(angle) + mPos.x;
-        field_0x2a8[i].y = 32.0f + (35.0f * JMath::sincosTable_.sinShort(angle) + mPos.y);
-        field_0x2a8[i].z = 0.0f;
+        field_0x2a8[i].set(55.0f * JMath::sincosTable_.cosShort(angle) + mPos.x,
+                           32.0f + (35.0f * JMath::sincosTable_.sinShort(angle) + mPos.y), 0.0f);
     }
     field_0x2a8[5] = mPos;
     s32 count = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_GOL2) {
             field_0x2f4 = (cls_804A9C20*)actor;
