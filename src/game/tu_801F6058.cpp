@@ -481,12 +481,19 @@ void ActorManager_804A5800::fn_801F7CAC() {
     fn_80204638()->fn_802048F4();
 }
 
-// FIXME(shotgun): 97.23 %, scheduling+regalloc; behaviour clean.
 void ActorManager_804A5800::fn_801F7B18() {
+    s32 serial;
+    s32 i;
     getGameView_802D6A9C();
-    resetPlayerSerials();
+    for (i = 0; i < 4; i++) {
+        getGameView_802D6A9C()->fn_802D39B8(i, -1);
+        if (fn_8023EBB8(i)) {
+            s32 v = fn_8023EF50(i);
+            getGameView_802D6A9C()->fn_802D39B8(i, v);
+        }
+    }
     s32 end = mActorEnd;
-    for (s32 i = 0; i < end; i++) {
+    for (i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
         if (actor == NULL || !actor->mAlive) {
             continue;
@@ -494,7 +501,7 @@ void ActorManager_804A5800::fn_801F7B18() {
         if (actor->mActorId == ACTOR_TZOK) {
             continue;
         }
-        s32 serial = actor->mSerial;
+        serial = actor->mSerial;
         if (serial == getGameView_802D6A9C()->field_0x131a8[0] ||
             serial == getGameView_802D6A9C()->field_0x131a8[1] ||
             serial == getGameView_802D6A9C()->field_0x131a8[2] ||
