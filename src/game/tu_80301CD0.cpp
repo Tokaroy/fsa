@@ -116,11 +116,11 @@ static inline u8 isLinked(s32 player) {
 }
 
 // Whether the player's transfer queue holds anything.
-static inline bool isQueueBusy(s32 player) {
+static inline u8 isQueueBusy(s32 player) {
     if (lbl_80504A18[player] == lbl_80504A28[player]) {
-        return false;
+        return 0;
     }
-    return true;
+    return 1;
 }
 
 // __sinit_tu_80301CD0_cpp (compiler-generated: the two __construct_array calls for the sprite
@@ -1564,9 +1564,6 @@ void fn_803037D4(s32 layer, u32 value) {
     }
 }
 
-// FIXME: 99.39 %, regalloc-only; behaviour clean.
-// Regalloc only: the busy flag is built in r0 and copied to r3 by the clrlwi.
-// the original builds it in r3 and tests it into r0.
 // 0x80303750
 u8 fn_80303750(s32 layer) {
     s32 player = fn_8022F340(layer);
