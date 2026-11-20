@@ -176,11 +176,14 @@ void cls_8049ED30::fn_801339EC() {
 }
 #pragma auto_inline reset
 
-// 0x8013394C.
-// FIXME(shotgun): 89.62 %, different; behaviour clean.
-cls_8049ED30::~cls_8049ED30() {
+static inline void releaseEmitters(cls_8049ED30* self) {
     for (s32 i = 0; i < 2; i++) {
-        releaseEmitter_801EE434(mEmitters[i]);
-        mEmitters[i] = NULL;
+        releaseEmitter_801EE434(self->mEmitters[i]);
+        self->mEmitters[i] = NULL;
     }
+}
+
+// 0x8013394C.
+cls_8049ED30::~cls_8049ED30() {
+    releaseEmitters(this);
 }
