@@ -732,18 +732,14 @@ void SeesawLift_804AD348::spawnSandEmitters() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-bool SeesawLift_804AD348::isPlayerInside(s32 player) const {
+u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
     rel.sub(mPos);
     rel.z = 0.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += 7.0f;
     box.f.x -= 7.0f;
-    u8 inside = 0;
-    if (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) {
-        inside = 1;
-    }
-    return inside;
+    return (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) ? true : false;
 }
 
 void SeesawLift_804AD348::fillTiles(s32 state) {

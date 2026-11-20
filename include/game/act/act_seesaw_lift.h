@@ -29,7 +29,7 @@ public:
     void pushPlayer(s32 player);
     void spawnSandEmitters();
     bool isClearOfPlayers();
-    bool isPlayerInside(s32 player) const;
+    u8 isPlayerInside(s32 player) const;
     void fillTiles(s32 state);
 
     s32 getMode() const { return field_0x90 & 0x7F; }
