@@ -359,7 +359,7 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
 }
 
 // The full-screen rect differs in register allocation only (r0/r3-r5).
-// FIXME: 98.43 %, regalloc-only; behaviour clean.
+// FIXME: 98.90 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
     if (field_0x248 && field_0x24c.f.x != 0) {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
@@ -744,7 +744,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
 // with a plain slwi (ours clrlslwi) and reads field_0x40 / field_0x58 in the
 // loop with lfsx; registers and stack slots follow.
-// FIXME: 72.21 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 72.53 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
