@@ -244,6 +244,32 @@ static inline void restoreAlphas_804768A0(FileSelect_804AFF60* self) {
     }
 }
 
+// The four pane alphas of button i, back to the kept values (field_0x19f).
+static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
+    switch (i) {
+    case 0:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DC8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 1:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DA8[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 2:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D88[j]), self->field_0x19f[j]);
+        }
+        break;
+    case 3:
+        for (s32 j = 0; j < 4; j++) {
+            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D68[j]), self->field_0x19f[j]);
+        }
+        break;
+    }
+}
+
 // A point of the 640 x 480 layout on the 360 x 270 sprite layer of the
 // current render mode.
 static inline f32 toSpriteX(f32 x) {
@@ -1336,28 +1362,7 @@ void FileSelect_804AFF60::fn_803CC760() {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
-            switch (i) {
-            case 0:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     for (int i = 0; i < 2; i++, other++) {
@@ -1581,32 +1586,6 @@ void FileSelect_804AFF60::fn_803CBE38() {
         } else if (result == 2) {
             setState(1);
         }
-    }
-}
-
-// The four pane alphas of button i, back to the kept values (field_0x19f).
-static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
-    switch (i) {
-    case 0:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DC8[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 1:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476DA8[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 2:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D88[j]), self->field_0x19f[j]);
-        }
-        break;
-    case 3:
-        for (s32 j = 0; j < 4; j++) {
-            self->field_0x24[i]->setAlpha_804023D0(self->mScreenHuuin->search(lbl_80476D68[j]), self->field_0x19f[j]);
-        }
-        break;
     }
 }
 
