@@ -22,6 +22,11 @@ static inline s32 warpLayer(u32 param) {
     return layer;
 }
 
+// The warp's kind: the low 7 bits of its spawn parameter.
+static inline s32 warpKind(u32 param) {
+    return param & 0x7F;
+}
+
 // Whether two boxes overlap (edges touching counts), on a copy of `a`.
 static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
     JGeometry::TBox2f overlap(a);
@@ -450,14 +455,12 @@ void Warp_804A6DC8::draw() {
 // 0x802278A8. Per player: the player's reaction to standing in the warp's box (by warp kind, the
 // low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (fn_802317F0).
 // FIXME: 88.22 %, missing/extra; behaviour drift.
-// FIXME(shotgun): the kind range test (1..3 via subi) and the box copy's load order still differ.
+// The box copy and offset keep their values in registers in the original (ours reloads them), and
+// the final grow's operand order differs.
 void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
-        box->i.x = mBox.i.x;
-        box->i.y = mBox.i.y;
-        box->f.x = mBox.f.x;
-        box->f.y = mBox.f.y;
-        box->addPos(mPos.x, mPos.y);
+        box->set(mBox);
+        box->set(box->i.x + mPos.x, box->i.y + mPos.y, box->f.x + mPos.x, box->f.y + mPos.y);
         if (!fn_8022D75C(player) && fn_8022D534(player)) {
             field_0x234[player] = 1;
             continue;
@@ -468,7 +471,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
         }
         if (fn_8022F514(player)) {
             kind = field_0x90 & 0x7F;
-            if (kind <= 3 || kind == 0x17 || kind == 0x18) {
+            if (kind == 0 || (u32)(kind - 1) <= 2 || kind == 0x17 || kind == 0x18) {
                 if (fn_8023B0F4(player, box, field_0x4, false, 8.0f)) {
                     fn_802381B8(player);
                 }
@@ -505,7 +508,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (fn_8022F478(player) && (field_0x90 & 0x7F) != 4) {
+            if (fn_8022F478(player) && warpKind(field_0x90) != 4) {
                 continue;
             }
             kind = field_0x90 & 0x7F;
@@ -514,10 +517,10 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, field_0x90 & 0x7F)) {
+            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
                 continue;
             }
-            if ((field_0x90 & 0x7F) != 4 || !fn_8022F514(player)) {
+            if (warpKind(field_0x90) != 4 || !fn_8022F514(player)) {
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(player);
@@ -527,20 +530,13 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             if (fn_8022CAF8(player) == 4 || fn_8022CAF8(player) == 5) {
                 continue;
             }
-            JGeometry::TVec3f* pos = getPlayerPos_8023E724(player);
-            s32 playerLayer = getPlayerLayer_8023DE58(player);
-            if (!fn_8022BC38(fn_8022F3DC(player), playerLayer, pos)) {
+            if (!fn_8022BC38(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player))) {
                 continue;
             }
             fn_802381B8(fn_8022F3DC(player));
-            pos = getPlayerPos_8023E724(player);
-            playerLayer = getPlayerLayer_8023DE58(player);
-            fn_802348C4(fn_8022F3DC(player), playerLayer, pos);
+            fn_802348C4(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player));
         } else {
-            box->i.x -= 1.0f;
-            box->i.y -= 1.0f;
-            box->f.x += 1.0f;
-            box->f.y += 1.0f;
+            box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
             if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
@@ -575,7 +571,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, field_0x90 & 0x7F)) {
+            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
                 continue;
             }
             if (field_0x254 != 1) {
@@ -594,10 +590,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                 field_0x255 = 1;
             }
         } else {
-            box->i.x -= 1.0f;
-            box->i.y -= 1.0f;
-            box->f.x += 1.0f;
-            box->f.y += 1.0f;
+            box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
             if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
