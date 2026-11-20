@@ -353,15 +353,16 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
                 target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             }
         }
-        pos.x = target->mPos.x;
-        pos.y = target->mPos.y;
-        pos.z = target->mPos.z;
-        s32 state = ((ForceGem_804AB6D8*)target)->field_0x230;
-        kind = target->field_0x90;
+        ForceGem_804AB6D8* gem = (ForceGem_804AB6D8*)target;
+        pos.x = gem->mPos.x;
+        pos.y = gem->mPos.y;
+        pos.z = gem->mPos.z;
+        s32 state = gem->field_0x230;
+        kind = gem->field_0x90;
         if (state == 0 || (u32)(state - 0xF) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 0xD) {
-            target->fn_801F3668();
+            gem->fn_801F3668();
         }
-        if (!target->mAlive) {
+        if (!gem->mAlive) {
             found = true;
         }
     }
