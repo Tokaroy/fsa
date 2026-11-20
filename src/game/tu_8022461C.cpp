@@ -81,8 +81,9 @@ static inline bool inList(u16 code, const u16* list, s32 n) {
 }
 
 // The raw tile code at pos in the layer's box (0xF outside), as fn_80226850 computes it.
+// layer is an int here: the original copies it before handing it on as the tile map's s32.
 template <class V>
-static inline u16 rawTileAt(const V* pos, s32 layer) {
+static inline u16 rawTileAt(const V* pos, int layer) {
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TBox2f box;
