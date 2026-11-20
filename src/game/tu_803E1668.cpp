@@ -2308,7 +2308,7 @@ void cls_804B0B00::fn_803E51C4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.67 %, operands; behaviour clean.
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
 // Float registers only: the bounce offset and the pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
 // 'Pscuro01' / 'Pscuro02' fades in and out (field_0x1e0[0] over 60 frames;
@@ -2674,7 +2674,7 @@ void cls_804B0B00::fn_803E3320() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.58 %, missing/extra; behaviour clean.
+// FIXME: 98.66 %, missing/extra; behaviour clean.
 // Registers: the loop's table pointers sit two registers higher than in
 // the original, and the first digit texture is copied through r0 (one
 // extra mr) where the original keeps it in r27.
