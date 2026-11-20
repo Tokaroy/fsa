@@ -510,38 +510,40 @@ void cls_804A5D60::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
-// FIXME(shotgun): 73.23 %, missing/extra; behaviour near.
 void cls_804A5D60::draw() {
-    bool tiny = field_0x54.squared() <= 32.0f * JGeometry::TUtilf::epsilon();
-    if (!tiny) {
-        SpriteParams_801F5AE0 params;
-        Mtx mtx;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
-        mtx[2][3] = 0.0f;
-        params.mMtx = mtx;
-        params.field_0x1c = 0;
-        params.field_0x1d = 0;
-        s32 frame = mAnim.mCel + 0x2C9;
-        if (mFlags & ENEMY_FLAG_NO_HURT) {
-            if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
-            }
-            if (field_0x4 < 8) {
-                void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
-            }
-        } else {
-            drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
+    if (field_0x54.isZero()) {
+        return;
+    }
+
+    SpriteParams_801F5AE0 params;
+    params.field_0x1c = 0;
+    params.field_0x1d = 0;
+
+    Mtx mtx;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    mtx[0][0] = field_0x54.x;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = field_0x54.y;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = field_0x54.z;
+    params.mMtx = mtx;
+
+    s32 frame = mAnim.mCel + 0x2C9;
+    if (!(mFlags & ENEMY_FLAG_NO_HURT)) {
+        drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
+    } else {
+        if (mSpriteParams.mMtx == NULL) {
+            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+        }
+        if (field_0x4 < 8) {
+            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }
