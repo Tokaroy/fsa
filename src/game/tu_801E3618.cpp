@@ -6,6 +6,7 @@
 #include "game/EnemyBase.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "JSystem/JMath/JMath.h"
 
 extern const s32 lbl_8053F0C0; // 12 (game/act_vaati_boss.cpp)
@@ -35,23 +36,15 @@ void VaatiBoss_804A4958::fn_801E4758() {
 // FIXME(shotgun): 44.77 %, different; behaviour near.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
-        out->i.x = field_0x5e0;
-        out->i.y = field_0x5e4;
-        out->f.x = field_0x5e0 + 16.0f * (f32)field_0x5e8;
-        out->f.y = field_0x5e4 + 16.0f * (f32)field_0x5e9;
+        f32 x = field_0x5e0;
+        f32 y = field_0x5e4;
+        out->set(x, y, x + 16.0f * (f32)field_0x5e8, y + 16.0f * (f32)field_0x5e9);
     } else {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f* box = field_0x5d8 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+        JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
-            out->i.x = 160.0f + box->i.x;
-            out->i.y = 80.0f + box->i.y;
-            out->f.x = box->f.x - 160.0f;
-            out->f.y = box->f.y - 112.0f;
+            out->set(160.0f + box->i.x, 80.0f + box->i.y, box->f.x - 160.0f, box->f.y - 112.0f);
         } else {
-            out->i.x = 80.0f + box->i.x;
-            out->i.y = 128.0f + box->i.y;
-            out->f.x = box->f.x - 80.0f;
-            out->f.y = box->f.y - 96.0f;
+            out->set(80.0f + box->i.x, 128.0f + box->i.y, box->f.x - 80.0f, box->f.y - 96.0f);
         }
     }
 }
