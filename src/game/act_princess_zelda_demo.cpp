@@ -663,7 +663,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
     case 5: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = *getPlayerPos_8023E724(0);
-        p.y = p.y + -8.0f;
+        p.y += -8.0f;
         camRange(p.x, p.y - 96.0f, p.x, 96.0f + p.y);
         break;
     }
@@ -696,7 +696,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         gGameRoot2_8053AB10->field_0x24->field_0x17c = 1;
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mSpawnPos;
-        p.y = p.y + -40.0f;
+        p.y += -40.0f;
         camRange(p.x, p.y - 180.0f, p.x, 180.0f + p.y);
         break;
     }
@@ -713,7 +713,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
     case 20: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mPos;
-        p.y = p.y + -75.0f;
+        p.y += -75.0f;
         camRange(p.x, p.y - 130.0f, p.x, 130.0f + p.y);
         break;
     }
@@ -722,7 +722,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
     case 23: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mPos;
-        p.y = p.y + -75.0f;
+        p.y += -75.0f;
         camBox(p.x, p.y - 130.0f, p.x, 130.0f + p.y);
         break;
     }
@@ -740,10 +740,8 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         Camera_804AA9E4* cam2 = gGameRoot2_8053AB10->field_0x24;
         if (cam2->field_0x840 == 0) {
             cam2->field_0x840 = 1;
-            cam2->field_0x844.f.x = mPos.x;
-            cam2->field_0x844.i.x = mPos.x;
-            cam2->field_0x844.f.y = mPos.y;
-            cam2->field_0x844.i.y = mPos.y;
+            cam2->field_0x844.i.x = cam2->field_0x844.f.x = mPos.x;
+            cam2->field_0x844.i.y = cam2->field_0x844.f.y = mPos.y;
             cam2->field_0x854 = 1.0f;
             cam2->field_0x1d4 = -1.0f;
             cam2->field_0x1d8 = -1.0f;
