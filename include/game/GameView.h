@@ -283,6 +283,9 @@ public:
     void fn_802D77E4(s32 index, u16 value);
     // 3 units / 12 calls. field_0x131b8[index] & bits, as 0 or 1.
     bool fn_802D7804(s32 index, u16 bits);
+    // field_0x131b8[index] & bits: tu_80301CD0 fn_803085A4 inlines it (the index
+    // is computed before getGameView, then add / lhz).
+    u16 getBits(s32 index, u16 bits) { return field_0x131b8[index] & bits; }
     // 6 units (this unused). field_0x131d8[index] = value for index 0-3.
     void fn_802D7844(u8 value, s32 index);
     // Plain setters (this unused; the callers' li or clrlwi decide nothing).
