@@ -557,7 +557,7 @@ s32 cls_804AE088::vfunc_0x5C() {
 }
 
 // differs: regalloc-only (pos and frame registers swapped) + reloc-name (unit literal pool order).
-// FIXME: 97.28 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
         return;
@@ -1216,7 +1216,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 90.73 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.82 %, operands + reloc-name; behaviour near.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
