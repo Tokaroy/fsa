@@ -1666,8 +1666,7 @@ static inline void appendPart(char* out, char* out2, char* out3, u8 part, const 
 }
 
 // The "\x1BCR[n]" prefix that centres a line of the given width in the 358-unit box.
-static inline void centreLine(char* out, f32 width) {
-    char prefix[16];
+static inline void centreLine(char* out, char* prefix, f32 width) {
     s32 pad = (s32)((358.0f - width) * 0.5f + 0.5f);
     if (pad > 0) {
         snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
@@ -1679,15 +1678,16 @@ static inline void centreLine(char* out, f32 width) {
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
-f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* out3c) {
-    char* out2 = (char*)out2c;
-    char* out3 = (char*)out3c;
-    MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
-    MessageInf1_804AF070* inf1 = &bmg->inf1;
-    const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
+// Still differs: ours hoists value + '0' out of the first loop (one more saved register) and
+// folds inf1->size into a load from mBmg.
+f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out3) {
+    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    const char* text = (const char*)inf1 + (inf1->size + inf1->entries[msg].textOffset + 8);
     f32 lineWidth[10];
+    char prefix[16];
     s32 len = 0;
-    s32 pos = 0;
+    s32 pos;
+    s32 i = 0;
     s32 lines = 1;
     f32 widest = 0.0f;
     f32 width = 0.0f;
@@ -1703,8 +1703,8 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     lineWidth[8] = 0.0f;
     lineWidth[9] = 0.0f;
     char c;
-    while ((c = text[pos]) != 0) {
-        const char* p = &text[pos];
+    while ((c = text[i]) != 0) {
+        const char* p = &text[i];
         if (c == '\n') {
             lineWidth[lines - 1] = width;
             if (width > widest) {
@@ -1712,27 +1712,24 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             }
             width = 0.0f;
             lines++;
-            pos++;
+            i++;
         } else if (c == 0x1A) {
             if (p[2] == 2) {
-                if (p[4] == 0) {
-                } else if (p[4] == 10) {
-                } else if (p[4] == 0x12) {
-                } else if (p[4] == 0x19) {
-                } else if (p[4] == 1) {
+                if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19) {
+                } else if (p[4] == 1 || p[4] == 9 || p[4] == 0x11 || p[4] == 0x1A) {
                 }
             } else if (p[2] == 3) {
                 width += lbl_8053AD78->mFont->JUTFont::getWidth(value + '0');
                 width += fn_80381560(p[5], value, 0.7692308f);
             }
-            pos += p[1];
+            i += p[1];
         } else {
             u32 code = (u8)c;
-            pos++;
+            i++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 code <<= 8;
-                code |= text[pos] & 0xFF;
-                pos++;
+                code |= text[i] & 0xFF;
+                i++;
             }
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
@@ -1751,22 +1748,21 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     two[0] = 0;
     out[0] = 0;
     if (out2 != NULL) {
-        out2[0] = 0;
+        ((char*)out2)[0] = 0;
     }
     if (out3 != NULL) {
-        out3[0] = 0;
+        ((char*)out3)[0] = 0;
     }
-    centreLine(out, lineWidth[0]);
+    centreLine(out, prefix, lineWidth[0]);
     while ((c = text[pos]) != 0) {
         const char* p = &text[pos];
         if (c == '\n') {
-            char one[2];
-            one[0] = c;
-            one[1] = 0;
-            appendPart(out, out2, out3, part, one);
+            two[0] = c;
+            two[1] = 0;
+            appendPart(out, (char*)out2, (char*)out3, part, two);
             lines++;
             pos++;
-            centreLine(out, lineWidth[lines - 1]);
+            centreLine(out, prefix, lineWidth[lines - 1]);
             width = 0.0f;
         } else if (c == 0x1A) {
             if (p[2] == 2) {
@@ -1785,11 +1781,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
                     }
                 }
             } else if (p[2] == 3) {
-                char digit[2];
                 s32 d = value + '0';
-                digit[0] = d;
-                digit[1] = 0;
-                appendPart(out, out2, out3, part, digit);
+                two[0] = d;
+                two[1] = 0;
+                appendPart(out, (char*)out2, (char*)out3, part, two);
                 width += lbl_8053AD78->mFont->JUTFont::getWidth(d);
                 width += fn_8037F580(p[5], value, out, &len, 0.7692308f);
             }
@@ -1803,24 +1798,24 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
                     if (two[0] != ' ') {
-                        strcat(out2, two);
+                        strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
-                    strcat(out3, two);
+                    strcat((char*)out3, two);
                 } else {
                     strcat(out, two);
                 }
                 pos += 2;
-                code |= (u8)p[1];
+                code |= (u8)p[0];
             } else {
                 two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
                     if (two[0] != ' ') {
-                        strcat(out2, two);
+                        strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
-                    strcat(out3, two);
+                    strcat((char*)out3, two);
                 } else {
                     strcat(out, two);
                 }
@@ -1829,10 +1824,9 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
     }
-    char end[2];
-    end[0] = c;
-    end[1] = 0;
-    appendPart(out, out2, out3, part, end);
+    two[0] = c;
+    two[1] = 0;
+    appendPart(out, (char*)out2, (char*)out3, part, two);
     return widest;
 }
 
