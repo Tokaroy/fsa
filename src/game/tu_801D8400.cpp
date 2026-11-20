@@ -12,8 +12,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-void fn_801CCCC4(JGeometry::TVec3f* pos);
-
 static inline bool isColumnRight(cls_804A4C58* self) {
     bool right = false;
     if (self->mPos.x < self->field_0x2d4[self->field_0x334].x ||
@@ -95,13 +93,12 @@ void cls_804A4C58::init() {
     } else {
         box = &view->field_0xdc;
     }
-    JGeometry::TVec3f p;
-    p.x = mPos.x;
-    p.y = mPos.y;
+    JGeometry::TVec2f p(mPos.x, mPos.y);
     while (p.y < box->f.y) {
         JGeometry::TVec3f probe(p.x, p.y, 0.0f);
         if (vfunc_0x4C(field_0x4, &probe)) {
-            fn_801CCCC4(&p);
+            // p is 8 bytes on the original's stack; fn_801CCCC4 only touches x and y.
+            fn_801CCCC4((JGeometry::TVec3f*)&p);
             p.y += -24.0f;
             break;
         }
@@ -112,7 +109,7 @@ void cls_804A4C58::init() {
     f32 y0 = 32.0f + mSpawnPos.y;
     f32 step = 0.5f * (field_0x2d0 - 48.0f - y0);
     f32 y = y0;
-    // Still differs: the original unrolls the row loop too (index 0, 4, 8), and keeps p in 8 bytes.
+    // Still differs: the original unrolls the row loop too (index 0, 4, 8).
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {

@@ -377,6 +377,7 @@ s32 fn_801CD30C(s32 value);
 // game/tu_801CB270.cpp. The centre of the 16x16 tile holding *in (x, y)
 // into *out (vfunc_0x80's landing, fn_801D0E58).
 void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out);
+void fn_801CCCC4(JGeometry::TVec3f* pos);
 // game/tu_801CB270.cpp. The opposite direction: 0 <-> 1, 2 <-> 3 (else 0).
 s32 fn_801CD354(s32 dir);
 // game/tu_801CB270.cpp: the step fn_801CD950 wraps.
