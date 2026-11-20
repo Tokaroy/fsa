@@ -193,11 +193,11 @@ cls_804AA8B8::cls_804AA8B8() {
         }
         lbl_8053AD0C[p] = 0;
         lbl_8053AD14[p] = 0;
-        lbl_8053AD04[p] = 0;
         lbl_8053AD1C[p] = 0;
         lbl_8053AD20[p] = 0;
         lbl_8053AD24[p] = 0;
         lbl_8053AD28[p] = 0;
+        lbl_8053AD04[p] = 0;
     }
     lbl_8053AD08 = 0;
 }
