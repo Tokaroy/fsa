@@ -55,18 +55,17 @@ cls_804A4C58::cls_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
     mEmitter2c[3] = NULL;
 }
 
-// Only scheduling differs: ours loads -1 for the serial before the fn_801DAC6C call.
-// FIXME: 95.98 %, scheduling+regalloc; behaviour clean.
 cls_804A4C58::~cls_804A4C58() {
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitter2c[i]);
         mEmitter2c[i] = NULL;
     }
-    fn_801DAC6C()->mSerial0 = -1;
+    Singleton_801DAC6C* frostare = fn_801DAC6C();
+    frostare->mSerial0 = -1;
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 68.34 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 67.36 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -113,10 +112,12 @@ void cls_804A4C58::init() {
     f32 y0 = 32.0f + mSpawnPos.y;
     f32 step = 0.5f * (field_0x2d0 - 48.0f - y0);
     f32 y = y0;
+    // Still differs: the original unrolls the row loop too (index 0, 4, 8), and keeps p in 8 bytes.
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {
-            field_0x2d4[row * 4 + col].set(x, y);
+            JGeometry::TVec2f& point = field_0x2d4[row * 4 + col];
+            point.set(x, y);
             x += 80.0f;
         }
         y += step;
@@ -275,7 +276,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 91.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.39 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -293,7 +294,7 @@ void cls_804A4C58::fn_801D9960() {
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-            s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+            s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
             f32 diff = (s16)(angle - heading);
             if (0.000030517578f * __fabsf(diff) <= 0.3f) {
                 target = player;
@@ -313,7 +314,8 @@ void cls_804A4C58::fn_801D9960() {
                 s32 n = 0;
                 for (s32 i = 0; i < 3; i++) {
                     for (s32 j = 1; j < 3; j++) {
-                        columns[n++] = i * 4 + j;
+                        columns[n] = i * 4 + j;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -325,22 +327,7 @@ void cls_804A4C58::fn_801D9960() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool turn = false;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             }
         }
@@ -380,7 +367,7 @@ bool cls_804A4C58::fn_801D95F4() {
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
                 f32 diff = (s16)(angle - heading);
                 if (0.000030517578f * __fabsf(diff) <= 0.3f) {
                     target = player;
@@ -852,13 +839,13 @@ void cls_804A4C58::vfunc_0xA0() {
 
 void cls_804A4C58::vfunc_0x24() {}
 
-// FIXME: 95.11 %, scheduling+regalloc; behaviour clean.
 void cls_804A4C58::update() {
     if (vfunc_0x2C(0.0f, -16.0f, 50.0f)) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x840 == 0) {
             camera->field_0x840 = 1;
-            camera->field_0x844.set(mPos.x, mPos.y, mPos.x, mPos.y);
+            camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
+            camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
             camera->field_0x854 = 1.0f;
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
