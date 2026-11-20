@@ -116,11 +116,11 @@ static inline u8 isLinked(s32 player) {
 }
 
 // Whether the player's transfer queue holds anything.
-static inline bool isQueueBusy(s32 player) {
+static inline u8 isQueueBusy(s32 player) {
     if (lbl_80504A18[player] == lbl_80504A28[player]) {
-        return false;
+        return 0;
     }
-    return true;
+    return 1;
 }
 
 // __sinit_tu_80301CD0_cpp (compiler-generated: the two __construct_array calls for the sprite
@@ -205,29 +205,26 @@ cls_804AA8B8::cls_804AA8B8() {
 // 0x80309014
 cls_804AA8B8::~cls_804AA8B8() {}
 
-// FIXME: 95.36 %, regalloc-only; behaviour clean.
-// Regalloc only: the same code as fn_80308D0C, but the original keeps the
-// player counter in r4, the list bases in r6 / r7 and the element in r5 (ours r7, r5 / r6, r4).
 // 0x80308E90
 void cls_804AA8B8::fn_80308E90() {
-    for (int player = 0; player < 4; player++) {
-        for (int i = 0; i < 16; i++) {
-            lbl_80504A38[player][i].reset();
-        }
-        for (int j = 0; j < 40; j++) {
-            lbl_80505438[player][j].resetAll();
-        }
-    }
+    fn_80308D0C();
 }
 
 // 0x80308D0C
 void fn_80308D0C() {
     for (s32 player = 0; player < 4; player++) {
         for (int i = 0; i < 16; i++) {
-            lbl_80504A38[player][i].reset();
+            lbl_80504A38[player][i].mActive = 0;
+            lbl_80504A38[player][i].mRemove = 0;
+            lbl_80504A38[player][i].mTimer = 0;
+            lbl_80504A38[player][i].mSerial = -1;
         }
         for (int j = 0; j < 40; j++) {
-            lbl_80505438[player][j].resetAll();
+            lbl_80505438[player][j].mActive = 0;
+            lbl_80505438[player][j].mRemove = 0;
+            lbl_80505438[player][j].mTimer = 0;
+            lbl_80505438[player][j].mSerial = -1;
+            lbl_80505438[player][j].field_0xc = -1;
         }
     }
 }
@@ -235,24 +232,23 @@ void fn_80308D0C() {
 // Fills the header of the player's record: player, size, layer, mode and
 // link flags, then the mode's status bits in bytes 4-7.
 // 0x803085A4
-// FIXME: 94.52 %, missing/extra; behaviour drift.
+// FIXME: 97.08 %, missing/extra; behaviour near.
 void cls_804AA8B8::fn_803085A4(s32 player) {
     s32 layer = fn_8022EA0C(player);
-    cls_804AA858Sub11C* record = &lbl_80506DE8[player];
-    record->f.field_0x3_0 = lbl_8053AD08;
-    record->f.mPlayer = layer;
+    lbl_80506DE8[player].f.field_0x3_0 = lbl_8053AD08;
+    lbl_80506DE8[player].f.mPlayer = layer;
     if (getPlayerLayer_8023DE58(layer) < 8) {
-        record->f.mValid = 0;
+        lbl_80506DE8[player].f.mValid = 0;
     } else {
-        record->f.mValid = getPlayerLayer_8023DE58(layer) - 7;
+        lbl_80506DE8[player].f.mValid = getPlayerLayer_8023DE58(layer) - 7;
     }
-    record->f.mMode = lbl_80506D48[player];
+    lbl_80506DE8[player].f.mMode = lbl_80506D48[player];
     if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
         if (gGameRoot_8053AAF8->field_0x4c == 9 || gGameRoot_8053AAF8->field_0x80 != 0
             || (lbl_8053ACD8[player] && (fn_8037F1E4(player) < 1 || fn_8037F1E4(player) > 5))) {
-            record->f.field_0x2_5 = 1;
+            lbl_80506DE8[player].f.field_0x2_5 = 1;
         } else {
-            record->f.field_0x2_5 = 0;
+            lbl_80506DE8[player].f.field_0x2_5 = 0;
         }
         u8 value;
         if (lbl_8053ACEC[player] > 1) {
@@ -260,30 +256,30 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
         } else {
             value = 0;
         }
-        record->f.field_0x3_2 = value;
+        lbl_80506DE8[player].f.field_0x3_2 = value;
     } else {
-        record->f.field_0x2_5 = 1;
-        record->f.field_0x3_2 = 0;
+        lbl_80506DE8[player].f.field_0x2_5 = 1;
+        lbl_80506DE8[player].f.field_0x3_2 = 0;
     }
-    record->f.mMask = 0;
-    record->f.field_0x1_0 = 0;
-    record->f.field_0x1_0 |= lbl_8053ACF8[0];
-    record->f.field_0x1_0 |= lbl_8053ACF8[1] << 1;
-    record->f.field_0x1_0 |= lbl_8053ACF8[2] << 2;
-    record->f.field_0x1_0 |= lbl_8053ACF8[3] << 3;
-    record->f.field_0x4.mWord = 0;
+    lbl_80506DE8[player].f.mMask = 0;
+    lbl_80506DE8[player].f.field_0x1_0 = 0;
+    lbl_80506DE8[player].f.field_0x1_0 |= lbl_8053ACF8[0];
+    lbl_80506DE8[player].f.field_0x1_0 |= lbl_8053ACF8[1] << 1;
+    lbl_80506DE8[player].f.field_0x1_0 |= lbl_8053ACF8[2] << 2;
+    lbl_80506DE8[player].f.field_0x1_0 |= lbl_8053ACF8[3] << 3;
+    lbl_80506DE8[player].f.field_0x4.mWord = 0;
     if (lbl_80506D48[player] == 1) {
-        record->f.field_0x4.mMode1.field_0x5_4 = 15;
+        lbl_80506DE8[player].f.field_0x4.mMode1.field_0x5_4 = 15;
     }
     if (lbl_8053AAF0->mState >= 4 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
-        record->f.field_0x4.mOdd.field_0x4_0 = lbl_80506D38[player];
+        lbl_80506DE8[player].f.field_0x4.mOdd.field_0x4_0 = lbl_80506D38[player];
         lbl_80506D38[player] = 0;
         if (lbl_8053ACD0 || lbl_8053AD68->fn_80379F84()) {
             s32 mode = lbl_80506D48[player];
             if ((mode & 1) == 0) {
-                record->f.field_0x4.mEven.field_0x5_0 = lbl_80529DEC.field_0xd8[player];
-                record->f.field_0x4.mEven.field_0x4_5 = (u8)(lbl_80529DEC.field_0xc8[player] / 4 - 1);
-                record->f.field_0x4.mEven.field_0x6_0 = fn_8037EE8C(player);
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x5_0 = lbl_80529DEC.field_0xd8[player];
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x4_5 = (u8)(lbl_80529DEC.field_0xc8[player] / 4 - 1);
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x6_0 = fn_8037EE8C(player);
                 s32 v = lbl_80529DEC.field_0xe8[player] + 5000;
                 if (v > 14999) {
                     v = 14999;
@@ -291,7 +287,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                     v = 0;
                 }
                 lbl_80506DE8[player].f.field_0x4.mEven.field_0x7 = (v >> 6) & 0xFF;
-                record->f.field_0x4.mEven.field_0x6_2 = v & 0x3F;
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x6_2 = v & 0x3F;
             } else if (mode == 1) {
                 bool timed = gGameRoot_8053AAF8->field_0x4c == 11;
                 u8 count = gGameRoot_8053AAF8->field_0x88;
@@ -303,14 +299,14 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                 } else {
                     busy = false;
                 }
-                record->f.field_0x4.mMode1.field_0x4_5 = count | (busy << 1) | timed;
-                record->f.field_0x4.mMode1.field_0x5_4 = lbl_80529DEC.field_0xf8[player];
+                lbl_80506DE8[player].f.field_0x4.mMode1.field_0x4_5 = count | (busy << 1) | timed;
+                lbl_80506DE8[player].f.field_0x4.mMode1.field_0x5_4 = lbl_80529DEC.field_0xf8[player];
             }
         }
         if (lbl_8053ACD0) {
             s32 mode = lbl_80506D48[player];
             if (mode == 2) {
-                record->f.field_0x4.mEven.field_0x5_7 = getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 1);
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x5_7 = getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 1);
             } else if ((mode & 1) == 1) {
                 if (getPlayerLayer_8023DE58(layer) >= 8) {
                     bool skip;
@@ -344,22 +340,22 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                                 t = 20;
                             }
                         }
-                        record->f.field_0x4.mOdd.field_0x4_7 = t;
-                        record->f.field_0x4.mOdd.field_0x5_0 = (u8)(t >> 1);
+                        lbl_80506DE8[player].f.field_0x4.mOdd.field_0x4_7 = t;
+                        lbl_80506DE8[player].f.field_0x4.mOdd.field_0x5_0 = (u8)(t >> 1);
                     }
                 }
                 if (lbl_80506D48[player] == 3) {
                     if (getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 12)) {
-                        record->f.field_0x4.mOdd.mOffsetMode =
+                        lbl_80506DE8[player].f.field_0x4.mOdd.mOffsetMode =
                             getGameView_802D6A9C()->getBits(getPlayerLayer_8023DE58(layer), 0xC) >> 2;
                     } else {
-                        record->f.field_0x4.mOdd.mOffsetMode = fn_802351D8(layer) != 0;
+                        lbl_80506DE8[player].f.field_0x4.mOdd.mOffsetMode = fn_802351D8(layer) != 0;
                     }
-                    record->f.field_0x4.mOdd.field_0x4_5 =
+                    lbl_80506DE8[player].f.field_0x4.mOdd.field_0x4_5 =
                         getGameView_802D6A9C()->getBits(getPlayerLayer_8023DE58(layer), 0x3000) >> 12;
-                    record->f.field_0x4.mOdd.field_0x5_6 = (u8)(fn_80237060(player) - 1);
+                    lbl_80506DE8[player].f.field_0x4.mOdd.field_0x5_6 = (u8)(fn_80237060(player) - 1);
                     if (!fn_802DEBF8() && !fn_802DEBA0()) {
-                        record->f.field_0x4.mOdd.field_0x5_7 = 1;
+                        lbl_80506DE8[player].f.field_0x4.mOdd.field_0x5_7 = 1;
                     }
                 }
             }
@@ -367,9 +363,9 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
         if (lbl_8053AD68->fn_80379F84()) {
             s32 mode = lbl_80506D48[player];
             if (mode == 0) {
-                record->f.field_0x4.mEven.field_0x5_7 = 1;
+                lbl_80506DE8[player].f.field_0x4.mEven.field_0x5_7 = 1;
             } else if (mode == 3) {
-                record->f.field_0x4.mOdd.field_0x5_7 = 1;
+                lbl_80506DE8[player].f.field_0x4.mOdd.field_0x5_7 = 1;
             }
         }
     }
@@ -1565,9 +1561,6 @@ void fn_803037D4(s32 layer, u32 value) {
     }
 }
 
-// FIXME: 99.39 %, regalloc-only; behaviour clean.
-// Regalloc only: the busy flag is built in r0 and copied to r3 by the clrlwi.
-// the original builds it in r3 and tests it into r0.
 // 0x80303750
 u8 fn_80303750(s32 layer) {
     s32 player = fn_8022F340(layer);
