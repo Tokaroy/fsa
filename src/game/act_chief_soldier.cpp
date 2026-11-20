@@ -56,7 +56,7 @@ static inline void setScaleMtx(Mtx m, f32 s) {
     m[2][2] = s;
 }
 
-// FIXME(shotgun): 92.81 %, different; behaviour clean.
+// FIXME(shotgun): 99.29 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
     s32 spawned;
     s32 i;
@@ -103,7 +103,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
     }
 }
 
-// FIXME(shotgun): 86.16 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.23 %, missing/extra; behaviour drift.
 void ChiefSoldier_804A0B90::fn_80175024() {
     if (getType() == 6) {
         return;
@@ -467,7 +467,7 @@ void ChiefSoldier_804A0B90::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.01 %, missing/extra; behaviour near.
 // The original reads mPos.x twice (once for the +=, once for the save) and loads all four box floats before storing them.
 void ChiefSoldier_804A0B90::fn_80174220() {
     s32 dir = field_0x98;
