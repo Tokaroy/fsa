@@ -69,6 +69,7 @@ inline void AudioMgr_8045A080::moveMusicTempo_80458508(u8 kind) {
             case 2:
                 moveTempo(tempoMgr, lbl_8053A268, lbl_8053A26C);
                 break;
+            case 0:
             default:
                 tempoMgr->setTempo(1.0f);
                 break;
@@ -860,10 +861,6 @@ void AudioMgr_8045A080::fn_80458658(bool pause) {
 }
 
 // 0x80458508
-// FIXME: 98.55 %, missing/extra; behaviour drift.
-// The switch tree (in moveMusicTempo_80458508) differs: the
-// original tests kind == 1 first (cmpwi 1; beq; bge; b default; cmpwi 3; bge
-// default), ours tests 2 first; two branches more here.
 void AudioMgr_8045A080::fn_80458508(u8 kind) {
     moveMusicTempo_80458508(kind);
 }
