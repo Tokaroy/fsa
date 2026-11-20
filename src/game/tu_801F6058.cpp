@@ -430,52 +430,45 @@ void ActorManager_804A5800::fn_801F7E88() {
     }
 }
 
-// The view's per-player slots (fn_802D39B8) are cleared and refilled from the
-// live players; the same loop opens fn_801F7CAC and fn_801F7B18.
-static inline void resetPlayerSerials() {
-    for (s32 i = 0; i < 4; i++) {
+void ActorManager_804A5800::fn_801F7CAC() {
+    s32 serial;
+    s32 i;
+    GameView_804A9950* view = getGameView_802D6A9C();
+    for (i = 0; i < 4; i++) {
         getGameView_802D6A9C()->fn_802D39B8(i, -1);
         if (fn_8023EBB8(i)) {
             s32 v = fn_8023EF50(i);
             getGameView_802D6A9C()->fn_802D39B8(i, v);
         }
     }
-}
-
-// FIXME(shotgun): 98.78 %, regalloc-only; behaviour clean.
-void ActorManager_804A5800::fn_801F7CAC() {
-    GameView_804A9950* view = getGameView_802D6A9C();
-    resetPlayerSerials();
     s32 end = mActorEnd;
-    for (s32 i = 0; i < end; i++) {
-        ActorBase_804A5770* actor = mActors[i];
-        if (actor == NULL || !actor->mAlive || actor->field_0x4 != 0) {
+    for (i = 0; i < end; i++) {
+        if (mActors[i] == NULL || !mActors[i]->mAlive || mActors[i]->field_0x4 != 0) {
             continue;
         }
-        if (actor->mActorId == ACTOR_TZOK || actor->mActorId == ACTOR_FAZR ||
-            actor->mActorId == ACTOR_DMGA) {
+        if (mActors[i]->mActorId == ACTOR_TZOK || mActors[i]->mActorId == ACTOR_FAZR ||
+            mActors[i]->mActorId == ACTOR_DMGA) {
             continue;
         }
-        if (contains(view->mVisibleBox, actor->mPos)) {
+        if (contains(view->mVisibleBox, mActors[i]->mPos)) {
             continue;
         }
-        s32 serial = actor->mSerial;
+        serial = mActors[i]->mSerial;
         if (serial == getGameView_802D6A9C()->field_0x131a8[0] ||
             serial == getGameView_802D6A9C()->field_0x131a8[1] ||
             serial == getGameView_802D6A9C()->field_0x131a8[2] ||
             serial == getGameView_802D6A9C()->field_0x131a8[3]) {
             continue;
         }
-        actor = mActors[i];
-        if (actor->mActorId == ACTOR_RANK || actor->mActorId == ACTOR_GBAO) {
+        if (mActors[i]->mActorId == ACTOR_RANK || mActors[i]->mActorId == ACTOR_GBAO) {
             continue;
         }
-        if (actor->mActorId == ACTOR_RASN) {
-            if (static_cast<cls_804A7A68*>(actor)->field_0x230 == 0) {
-                actor->mAlive = false;
+        if (mActors[i]->mActorId == ACTOR_RASN) {
+            if (static_cast<cls_804A7A68*>(mActors[i])->field_0x230 == 0) {
+                mActors[i]->mAlive = false;
             }
         } else {
-            actor->mAlive = false;
+            mActors[i]->mAlive = false;
         }
     }
     fn_80204638()->fn_802048F4();
