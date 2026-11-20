@@ -720,11 +720,7 @@ void cls_804AAD60::fn_803146DC() {
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
-                if (fn_8038AD24(p, 0x481, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                    field_0x254 = p;
-                    field_0x268 = 0x481;
-                    field_0x234 = 1;
-                }
+                startMessage(p, 0x481, 0x110);
             }
             break;
         }
