@@ -556,7 +556,7 @@ s32 cls_804AE088::vfunc_0x5C() {
     return 0;
 }
 
-// differs: register allocation (original keeps &mPos in a register across the draw calls) and the alpha store order.
+// differs: only the names of the string/float literals (unit's literal pool not split yet).
 // FIXME: 93.90 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
@@ -582,23 +582,22 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
                 fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         }
-        params.field_0x10.r = 0xFF;
-        params.field_0x10.g = 0xFF;
-        params.field_0x10.b = 0xFF;
-        params.field_0x10.a = 0xFF - field_0x24c;
+        params.field_0x10.set(0xFF, 0xFF, 0xFF, 0xFF - field_0x24c);
     }
     if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
-        frame = field_0x264 + 0x1B3;
+        s32 frame = field_0x264 + 0x1B3;
+        const JGeometry::TVec3f* pos = &mPos;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
     } else {
-        frame = arg + field_0x318.mCel;
+        s32 frame = arg + field_0x318.mCel;
+        const JGeometry::TVec3f* pos = &mPos;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, field_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
     }
