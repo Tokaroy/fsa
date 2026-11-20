@@ -2046,10 +2046,8 @@ void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0*
     }
 }
 
-// FIXME(shotgun): 60.18 %, missing/extra; behaviour clean.
-// (the original copies the params field by field through registers)
 extern "C" void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
-                            SpriteParams_801F5AE0* params) {
+                            const SpriteParams_801F5AE0* params) {
     SpriteParams_801F5AE0 sp;
     if (params != NULL) {
         sp = *params;

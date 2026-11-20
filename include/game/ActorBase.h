@@ -672,7 +672,7 @@ extern "C" {
 // SpriteParams_801F5AE0 or NULL, then defaults are used) to fn_802F86CC
 // (gGameRoot2_8053AB10->0x20).
 void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
-                 SpriteParams_801F5AE0* params);
+                 const SpriteParams_801F5AE0* params);
 
 } // extern "C"
 
