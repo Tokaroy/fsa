@@ -38,8 +38,13 @@ public:
     // 1 when field_0x234 is 12, else 0.
     /* 0x5C */ virtual s32 vfunc_0x5C();
 
-    // Not in the binary: plain functions that fn_80117074 (the first) and update inline.
+    // Not in the binary: plain functions that fn_80117074 and update inline.
     void spawnPlayerEffects();
+    void startState5();
+    void releaseEmitters();
+    void startState7();
+    void startState8();
+    void startState11();
     bool spreadPlayers();
     bool raisePlayers();
     bool checkPlayers();
