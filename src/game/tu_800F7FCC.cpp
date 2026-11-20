@@ -465,7 +465,7 @@ void cls_8049C718::fn_800FC128() {
     fn_801F3D94(1);
 }
 
-// FIXME(shotgun): 97.30 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.52 %, regalloc-only; behaviour clean.
 void cls_8049C718::fn_800FBD90() {
     if (mCooldown != 0) {
         mCooldown--;
