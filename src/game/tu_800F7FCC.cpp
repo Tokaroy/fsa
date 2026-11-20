@@ -483,8 +483,9 @@ void cls_8049C718::fn_800FBD90() {
         return;
     }
     mFlags &= ~0x10;
-    mBox.set(-26.0f * mScale, -50.0f * mScale, 26.0f * mScale, 0.0f);
-    field_0x80.set(-26.0f * mScale, -50.0f * mScale, 26.0f * mScale, 0.0f);
+    f32 s = mScale;
+    mBox.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
+    field_0x80.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
     if (fn_801F2FAC()) {
         field_0xd8 = 10;
         field_0xdc = 10;
