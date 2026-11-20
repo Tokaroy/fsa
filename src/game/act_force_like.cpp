@@ -46,7 +46,6 @@ static inline void stepFrame(ForceLike_8049C578* self) {
     }
 }
 
-// FIXME(shotgun): 99.64 %, reloc-name; behaviour clean.
 void ForceLike_8049C578::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -78,7 +77,7 @@ ForceLike_8049C578::~ForceLike_8049C578() {
     }
 }
 
-// FIXME(shotgun): 97.59 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.51 %, scheduling+regalloc + reloc-name; behaviour clean.
 void ForceLike_8049C578::update() {
     f32 dist = 0.0f;
     u16 angle = 0;
@@ -284,7 +283,7 @@ void ForceLike_8049C578::update() {
     fn_801F2618(NULL, false);
 }
 
-// FIXME(shotgun): 90.25 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.72 %, reloc-name; behaviour clean.
 void ForceLike_8049C578::draw() {
     SpriteParams_801F5AE0 params;
     switch (field_0x230) {
@@ -325,7 +324,7 @@ void ForceLike_8049C578::draw() {
     }
 }
 
-// FIXME(shotgun): 97.94 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
 void ForceLike_8049C578::vfunc_0x24() {
     int layer = field_0x4;
     s32 pick;
