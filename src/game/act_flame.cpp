@@ -22,9 +22,9 @@ void Flame_804A0330::init() {
     field_0x244 = 0;
     field_0x248 = 0;
     field_0x24c = 0;
-    field_0x234 = 0;
-    field_0x238 = 0;
-    field_0x23c = 0;
+    field_0x234[0] = 0;
+    field_0x234[1] = 0;
+    field_0x234[2] = 0;
     mEmitters[0] = NULL;
     mEmitters[1] = NULL;
     mEmitters[2] = NULL;
@@ -62,7 +62,7 @@ void Flame_804A0330::init() {
         case 6:
             field_0x260 = 1.0f;
             field_0x240 = 1;
-            field_0x234 = 8;
+            field_0x234[0] = 8;
             mState = 0;
             break;
         case 4:
@@ -77,7 +77,7 @@ void Flame_804A0330::init() {
             mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3C, 1, 1, NULL, NULL, true, field_0x260);
             mEmitters[2] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D, 1, 1, NULL, NULL, true, field_0x260);
             field_0x240 = 1;
-            field_0x234 = 8;
+            field_0x234[0] = 8;
             mState = 0;
             break;
         }
@@ -173,7 +173,7 @@ void Flame_804A0330::fn_8015EA2C() {
                     field_0x240 = 1;
                 }
             } else if (dir >= 0 && dist >= 96.0f) {
-                field_0x234 = 8;
+                field_0x234[0] = 8;
                 field_0x240 = 0;
             }
         }
@@ -182,15 +182,15 @@ void Flame_804A0330::fn_8015EA2C() {
         if (vfunc_0x34()) {
             field_0x240 = 0;
             mState = 4;
-        } else if (field_0x238 == 0) {
-            if (field_0x23c == 0) {
-                field_0x238 = 0x78;
+        } else if (field_0x234[1] == 0) {
+            if (field_0x234[2] == 0) {
+                field_0x234[1] = 0x78;
                 field_0x240 = 1;
             }
-        } else if (field_0x238 == 1) {
-            field_0x238 = 0;
+        } else if (field_0x234[1] == 1) {
+            field_0x234[1] = 0;
             field_0x240 = 0;
-            field_0x23c = 0xB4;
+            field_0x234[2] = 0xB4;
         }
         break;
     case 4: {
@@ -227,16 +227,16 @@ void Flame_804A0330::fn_8015EA2C() {
         }
         break;
     case 8:
-        if (field_0x234 == 0) {
+        if (field_0x234[0] == 0) {
             if (field_0x248 == 0) {
                 if (field_0x244 != 0) {
                     vfunc_0x30(0xFF, true);
-                    field_0x234 = 8;
+                    field_0x234[0] = 8;
                     field_0x248 = 1;
                 }
             } else if (field_0x244 == 0) {
                 vfunc_0x30(0xFF, true);
-                field_0x234 = 8;
+                field_0x234[0] = 8;
                 field_0x248 = 0;
             }
         }
@@ -464,20 +464,15 @@ void Flame_804A0330::fn_8015DF7C() {
     }
 }
 
-// FIXME(shotgun): 96.69 %, missing/extra; behaviour near.
 void Flame_804A0330::update() {
     fn_8015EA2C();
     if (mState != 5) {
         fn_8015DF7C();
     }
-    if (field_0x234 > 0) {
-        field_0x234--;
-    }
-    if (field_0x238 > 0) {
-        field_0x238--;
-    }
-    if (field_0x23c > 0) {
-        field_0x23c--;
+    for (s32 i = 0; i < 3; i++) {
+        if (field_0x234[i] > 0) {
+            field_0x234[i]--;
+        }
     }
 }
 

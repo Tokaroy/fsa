@@ -16,9 +16,7 @@ public:
     void fn_8015DF7C();
     void fn_8015EA2C();
     /* 0x230 */ s32 mState;
-    /* 0x234 */ s32 field_0x234; // timers counted down by update
-    /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ s32 field_0x23c;
+    /* 0x234 */ s32 field_0x234[3]; // timers counted down by update
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
