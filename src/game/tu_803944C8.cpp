@@ -2422,7 +2422,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 97.74 %, different; behaviour near.
+// FIXME(shotgun): 98.53 %, scheduling+regalloc; behaviour clean.
 // (float registers of the pos / base computation)
 void cls_804AF72C::fn_8039D0DC(u8 value) {
     s32 offset = 0;
@@ -2447,7 +2447,7 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 98.43 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039CDF8(u8 value) {
     if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
         strcat(field_0x2c0, "  ");
