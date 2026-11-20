@@ -843,8 +843,7 @@ void VaatiBoss_804A4958::fn_801D4C70() {
         field_0x3c.y = v.y;
         return;
     }
-    JGeometry::TVec2f d;
-    d.zero();
+    JGeometry::TVec2f d(0.0f, 0.0f);
     bool follow = true;
     f32 tx;
     f32 ty;
@@ -874,15 +873,16 @@ void VaatiBoss_804A4958::fn_801D4C70() {
         break;
     }
     if (follow) {
-        d.set(tx - mPos.x, ty - mPos.y);
-        d.normalize();
+        JGeometry::TVec2f dir(tx - mPos.x, ty - mPos.y);
+        dir.normalize();
         if (mState == 0x12) {
-            d.x *= -2.0f;
-            d.y *= -2.0f;
+            dir.x *= -2.0f;
+            dir.y *= -2.0f;
         } else {
-            d.x *= mSpeed;
-            d.y *= mSpeed;
+            dir.x *= mSpeed;
+            dir.y *= mSpeed;
         }
+        d = dir;
     }
     addCalc2_801F71A4(&field_0x3c.x, d.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x3c.y, d.y, 0.3f, 1.0f);
