@@ -343,20 +343,19 @@ void cls_804A0738::draw() {
 // player is then pushed along.
 // FIXME(shotgun): 83.29 %, missing/extra; behaviour drift.
 bool cls_804A0738::fn_80168C38() {
-    s32 found = -1;
     const JGeometry::TVec3f* first = getPlayerPos_8023E724(field_0x90);
-    JGeometry::TVec2f d;
-    d.x = first->x - mPos.x;
-    d.y = first->y - mPos.y;
-    JGeometry::TBox2f box = mBox;
-    box.i.x = box.i.x + mPos.x - 4.0f;
-    box.i.y = box.i.y + mPos.y - 4.0f;
-    box.f.x = box.f.x + mPos.x + 4.0f;
-    box.f.y = box.f.y + mPos.y + 4.0f;
+    s32 found = -1;
+    JGeometry::TVec2f d = xy(*first) - xy(mPos);
+    JGeometry::TBox2f box(mBox);
+    box.addPos(xy(mPos));
+    box.i.x -= 4.0f;
+    box.i.y -= 4.0f;
+    box.f.x += 4.0f;
+    box.f.y += 4.0f;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
             if (!fn_8022E438(i, field_0x90) ||
-                (fn_8022E438(i, field_0x90) == 1 && i != field_0x90 && fn_80235580(i) == 1)) {
+                (fn_8022E438(i, field_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
                 if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                     found = i;
                 }
@@ -377,10 +376,11 @@ bool cls_804A0738::fn_80168C38() {
                     }
                 }
             }
-            return true;
+        } else {
+            field_0x261 = 1;
+            return fn_8022E23C(found, mSerial);
         }
-        field_0x261 = 1;
-        return fn_8022E23C(found, mSerial);
+        return true;
     }
     return false;
 }
