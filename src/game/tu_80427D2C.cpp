@@ -890,11 +890,11 @@ static u16 VolumeTable[128] = {
 // r3, sampleNum in r7, VolumeTable in r5); code otherwise identical.
 static void MixAudio(s16* destination, s16* source, u32 sample) {
     if (ActivePlayer.open && ActivePlayer.internalState == 2 && ActivePlayer.audioExist) {
+        s16* curPtr;
         u32 sampleNum;
         u32 requestSample;
         s32 i;
         s16* dst;
-        s16* curPtr;
         s32 l_mix, r_mix;
         u16 attenuation;
 
