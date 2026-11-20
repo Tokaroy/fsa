@@ -467,7 +467,8 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
             field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y, 0.0f);
             mPos = JGeometry::TVec3f(mPos.x, mPos.y, 0.0f);
             field_0xd4 = 0;
-            if (((field_0xb0 >> 16) & 0xFF) == 1) {
+            s32 type = (field_0xb0 >> 16) & 0xFF;
+            if (type == 1) {
                 fn_801F3780(300);
             }
         }

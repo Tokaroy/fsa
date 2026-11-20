@@ -907,8 +907,6 @@ void cls_8049C718::vfunc_0x24() {
     vfunc_0x28(0, 0.0f, -20.0f);
 }
 
-// FIXME: 98.83 %, different; behaviour drift.
-// FIXME: cmplwi vs cmpwi on field_0xb0 == 4 / 0x12 (ActorBase::field_0xb0 is s32); literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
         return;
