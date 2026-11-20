@@ -187,9 +187,10 @@ void CrystalBall_804AB308::fn_80322F44() {
         if (!gGameRoot_8053AAF8->field_0x7e) {
             field_0x288 = 0;
         } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            s32 base = fn_80236228(field_0x23c);
-            s32 lo = base;
-            s32 hi = base;
+            int hi;
+            s32 lo = fn_80236228(field_0x23c);
+            hi = lo;
+            s32 base = hi;
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     if (hi < fn_80236228(i)) {
