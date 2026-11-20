@@ -585,7 +585,7 @@ static inline void clearBit(u8& mask, s32 bit) {
     mask &= ~b;
 }
 
-// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.80 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
@@ -792,7 +792,6 @@ void cls_804B146C::fn_804253E0(s32 player) {
     }
 }
 
-// FIXME(shotgun): 99.58 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     s32 target;
     if (fn_8022F514(id)) {
@@ -836,7 +835,6 @@ void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     field_0x257 |= (u8)(1 << target);
 }
 
-// FIXME(shotgun): 98.36 %, missing/extra; behaviour near.
 void cls_804B146C::fn_80425128() {
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0) {
@@ -1503,7 +1501,6 @@ void cls_804B146C::fn_80421A34(s32 player, bool force) {
     }
 }
 
-// FIXME(shotgun): 96.60 %, missing/extra; behaviour near.
 void cls_804B146C::fn_8042165C() {
     field_0x1f0[0] = 0;
     field_0x1f0[1] = 0;
