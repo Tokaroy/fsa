@@ -1908,7 +1908,7 @@ void ConnectScreen_804B0F10::fn_803F59A0() {
     }
 }
 
-// FIXME: 99.17 %, operands; behaviour clean.
+// FIXME: 99.23 %, scheduling+regalloc; behaviour clean.
 // Registers only: the loop's table pointers (r29 / r30) and the float
 // locals (lit, x, offset) sit in other registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
