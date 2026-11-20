@@ -283,12 +283,8 @@ void ActorManager_804A5800::fn_801F8658() {
     }
 }
 
-// FIXME: 91.87 %, missing/extra; behaviour near.
-// The target walks the slots with a pointer advanced by 4
-// (lwz 0x8(r31)); this code recomputes this + 4 * i each pass (add r30), as
-// the original does where this function is inlined into fn_801F8E4C.
 void ActorManager_804A5800::fn_801F857C() {
-    for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+    for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
         deleteSlot(i);
     }
     field_0x200c->fn_80456120();
