@@ -395,10 +395,12 @@ void cls_804AAD60::fn_80315864() {
         case 2:
         case 3:
         case 4: {
+            s32 rank;
+            s32 i;
             s32 p = field_0x244[4 - field_0x238];
             s32 score = fn_80236228(p);
-            s32 rank = 0;
-            for (s32 i = 0; i < 4; i++) {
+            rank = 0;
+            for (i = 0; i < 4; i++) {
                 if (i != p && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
                     if (score < fn_80236228(i)) {
                         rank++;
