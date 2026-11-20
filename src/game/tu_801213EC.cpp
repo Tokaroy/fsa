@@ -885,7 +885,7 @@ void EscortBase_8049E0C8::fn_80121FA8() {
 // original's .sdata2 has 10430.378f between fn_80121F34's literals and fn_80121FA8's, so it was
 // generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
 u16 angleOf(f32 x, f32 y) {
-    return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
+    return (s32)(JMath::atanTable_.atan2_(x, y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
 }
 
 void EscortBase_8049E0C8::fn_80121F34() {
