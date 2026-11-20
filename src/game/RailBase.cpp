@@ -188,17 +188,18 @@ void cls_800FE3EC::fn_800FDE38() {
     }
 }
 
-// FIXME(shotgun): 95.97 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.69 %, regalloc-only; behaviour clean.
 // 0x800FDC70
 JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 index) {
+    JGeometry::TVec3f diff;
     JGeometry::TVec3f target;
     if (index == 0xFF) {
         target = field_0x4[field_0x3]->mPos;
     } else {
         target = field_0x4[index]->mPos;
     }
-    JGeometry::TVec3f diff;
-    diff.sub(target, pos);
+    diff = target;
+    diff.sub(pos);
     f32 len = diff.length();
     if (arg4 == 0) {
         return diff;
@@ -293,50 +294,57 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
     field_0x3 = pos;
 }
 
-// FIXME(shotgun): 89.64 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.29 %, missing/extra; behaviour near.
 // 0x800FD5E8
 bool cls_800FE3EC::fn_800FD5E8(u8 index) {
     u8 count = field_0x2;
     u32 mode = field_0x4[count - 1]->field_0x90 & 3;
     if (index == 0xFF) {
         u8 cur = field_0x3;
-        s16 next = field_0x1 != 0 ? cur - 1 : cur + 1;
+        s16 next = cur;
+        if (field_0x1 != 0) {
+            next--;
+        } else {
+            next++;
+        }
         if (next < 0) {
-            if (mode != 1) {
+            if (mode == 1) {
+                next = count - 1;
+            } else {
                 return false;
             }
-            next = count - 1;
         } else if (next == count) {
-            if (mode != 1) {
+            if (mode == 1) {
+                next = 0;
+            } else {
                 return false;
             }
-            next = 0;
         }
         if (fn_800FE25C(cur) != fn_800FE25C(next)) {
             return true;
         }
-        return false;
-    }
-    int next = index + 1;
-    int prev = index - 1;
-    if (next == count) {
-        if (mode == 1) {
-            next = 0;
-        } else {
-            next = next - 1;
+    } else {
+        int next = index + 1;
+        int prev = index - 1;
+        if (next == count) {
+            if (mode == 1) {
+                next = 0;
+            } else {
+                next = next - 1;
+            }
+        } else if (prev < 0) {
+            if (mode == 1) {
+                prev = count - 1;
+            } else {
+                prev = 0;
+            }
         }
-    } else if (prev < 0) {
-        if (mode == 1) {
-            prev = count - 1;
-        } else {
-            prev = 0;
+        if (fn_800FE25C(index) != fn_800FE25C(next)) {
+            return true;
         }
-    }
-    if (fn_800FE25C(index) != fn_800FE25C(next)) {
-        return true;
-    }
-    if (fn_800FE25C(index) != fn_800FE25C(prev)) {
-        return true;
+        if (fn_800FE25C(index) != fn_800FE25C(prev)) {
+            return true;
+        }
     }
     return false;
 }
