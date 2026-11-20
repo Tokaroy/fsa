@@ -704,13 +704,13 @@ void cls_804AE088::fn_8036A65C() {
 }
 
 // Keeps the camera on the box (x, y0)-(x, y1) unless a scripted move is running.
-static inline void setCameraBox(f32 x, f32 y0, f32 y1) {
+static inline void setCameraBox(const JGeometry::TBox2f& box) {
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->field_0x7f5 == 0) {
         camera->field_0x7f4 = 1;
         camera->field_0x7f8 = 5;
-        camera->field_0x808.set(x, y0, x, y1);
+        camera->field_0x808.set(box);
         camera->field_0x7f6 = 0;
     }
 }
@@ -765,7 +765,7 @@ void cls_804AE088::fn_80369DDC() {
             pos.y += 28.0f;
         }
         if (field_0x240 >= 3) {
-            setCameraBox(pos.x, pos.y - 105.0f, 105.0f + pos.y);
+            setCameraBox(JGeometry::TBox2f(pos.x, pos.y - 105.0f, pos.x, 105.0f + pos.y));
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
@@ -807,8 +807,8 @@ void cls_804AE088::fn_80369DDC() {
         field_0x24c = 0xE1;
         if (field_0x258 != 0) {
             if (field_0x258 == 1) {
-                pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                        (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                        (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                 pos.y += -16.0f;
                 fn_8022FE80(0, field_0x4, mSerial, true, false);
                 if (fn_8038BD08(0, lbl_80474C68[field_0x268], field_0x4, pos, 0x62)) {
@@ -975,7 +975,7 @@ void cls_804AE088::fn_80368CD8() {
             }
         }
         if (field_0x240 >= 0x16) {
-            setCameraBox(pos.x, pos.y - 105.0f, 105.0f + pos.y);
+            setCameraBox(JGeometry::TBox2f(pos.x, pos.y - 105.0f, pos.x, 105.0f + pos.y));
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
@@ -1064,8 +1064,8 @@ void cls_804AE088::fn_80368CD8() {
             break;
         case 0x1D:
             if (field_0x258 == 50) {
-                pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                        (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                        (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                 pos.y += -16.0f;
                 fn_8022FE80(0, field_0x4, mSerial, true, false);
                 fn_8038BD08(0, 0x848, field_0x4, pos, 0x62);
