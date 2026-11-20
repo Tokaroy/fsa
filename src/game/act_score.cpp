@@ -198,6 +198,8 @@ void Score_804AF4C0::fn_80393514() {
     }
 }
 
+// Queues one digit sprite at a position passed by value (the original copies
+// the Vec, then builds the TVec3f from the copy).
 static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtility::TColor color) {
     JGeometry::TVec3f pos(v);
     lbl_8053AF50->fn_80455770(scale, digit, &pos, color);
@@ -280,8 +282,6 @@ void Score_804AF4C0::fn_80391F58() {
     }
 }
 
-// Queues one digit sprite at a position passed by value (the original copies
-// the Vec, then builds the TVec3f from the copy).
 // FIXME(shotgun): 67.37 %, missing/extra + reloc-name; behaviour drift.
 // (left: the operand order of the `mPos.x + 10.0f` fadds, and the float literal labels)
 void Score_804AF4C0::fn_80391D44() {
