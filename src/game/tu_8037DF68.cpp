@@ -1675,25 +1675,17 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
     f32 lineWidth[10];
     char prefix[16];
     s32 len = 0;
-    s32 pos;
-    s32 i = 0;
+    s32 pos = 0;
     u8 part = 0;
     s32 lines = 1;
     f32 widest = 0.0f;
     f32 width = 0.0f;
-    lineWidth[0] = 0.0f;
-    lineWidth[1] = 0.0f;
-    lineWidth[2] = 0.0f;
-    lineWidth[3] = 0.0f;
-    lineWidth[4] = 0.0f;
-    lineWidth[5] = 0.0f;
-    lineWidth[6] = 0.0f;
-    lineWidth[7] = 0.0f;
-    lineWidth[8] = 0.0f;
-    lineWidth[9] = 0.0f;
-    while (text[i] != 0) {
-        char c = text[i];
-        const char* p = &text[i];
+    for (int i = 0; i < 10; i++) {
+        lineWidth[i] = 0.0f;
+    }
+    while (text[pos] != 0) {
+        char c = text[pos];
+        const char* p = &text[pos];
         if (c == '\n') {
             lineWidth[lines - 1] = width;
             if (width > widest) {
@@ -1701,7 +1693,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
             }
             width = 0.0f;
             lines++;
-            i++;
+            pos++;
         } else if (c == 0x1A) {
             if (p[2] == 2) {
                 if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19) {
@@ -1711,14 +1703,14 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 width += lbl_8053AD78->mFont->JUTFont::getWidth(value + '0');
                 width += fn_80381560(p[5], value, 0.7692308f);
             }
-            i += p[1];
+            pos += p[1];
         } else {
             u32 code = (u8)c;
-            i++;
+            pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 code <<= 8;
-                code |= text[i] & 0xFF;
-                i++;
+                code |= text[pos] & 0xFF;
+                pos++;
             }
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
@@ -1787,7 +1779,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[2] = 0;
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
-                    if (p[0] != ' ') {
+                    if (two[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
@@ -1801,7 +1793,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
-                    if (p[0] != ' ') {
+                    if (two[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
