@@ -564,7 +564,7 @@ static const KaeporaStep* lbl_804ADA98[12] = {
     lbl_80474150, lbl_804741A0, lbl_804741F0, lbl_80474240,
 };
 
-// FIXME(shotgun): 98.21 %, different; behaviour drift.
+// FIXME(shotgun): 99.58 %, regalloc-only; behaviour drift.
 void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x3c.zero();
     field_0x230 = 0;
@@ -620,6 +620,7 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
         }
     }
     if (!(field_0x90 & 0x100)) {
+        s32 i;
         if (field_0x250 == 0x12) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ELK2, field_0x4, &mPos, 0, -1, -1);
             static JGeometry::TVec3f offsets[4] = {
@@ -628,18 +629,17 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
                 JGeometry::TVec3f(-26.0f, -156.0f, 0.0f),
                 JGeometry::TVec3f(26.0f, -156.0f, 0.0f),
             };
-            for (s32 i = 0; i < 4; i++) {
-                                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &(mPos + offsets[i]),
+            for (i = 0; i < 4; i++) {
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &(mPos + offsets[i]),
                                                                 (((i + 0x26) << 5) | 4) | 0x80000000, -1, -1);
             }
         } else if (field_0x250 == 0x13) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &mPos, 0x10, -1, -1);
             field_0x230 = 1;
-            JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-            fn_80230498(0, &zero, field_0x238 + field_0x23C, 0xFF, -0x80, -0x80, true);
+            fn_80230498(0, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), field_0x238 + field_0x23C, 0xFF, -0x80, -0x80, true);
         }
         s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
+        for (i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_ENDM && actor->mAlive == true) {
                 field_0x29C = (UnknownENDM_804AA0FC*)actor;
@@ -676,7 +676,17 @@ void KaeporaGaeboraEnding_804ADAC8::update() {
     }
 }
 
-// FIXME(shotgun): 99.72 %, operands; behaviour clean.
+inline void KaeporaGaeboraEnding_804ADAC8::drawOther() {
+    SpriteParams_801F5AE0 params;
+    params.field_0x1f = 0;
+    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
+    params.field_0x10.a = 200;
+    s32 frame = field_0x23C + 0x25C;
+    if (mSpriteParams.mMtx == NULL) {
+        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+    }
+}
+
 void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x2B0 == 0) {
         return;
@@ -684,19 +694,10 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x270 == 0) {
         if (mPtmfIndex == 1) {
             fn_803616FC();
-            return;
-        }
-        if (mPtmfIndex == 0) {
+        } else if (mPtmfIndex == 0) {
             fn_80361424();
-            return;
-        }
-        SpriteParams_801F5AE0 params;
-        params.field_0x1f = 0;
-        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
-        params.field_0x10.a = 200;
-        s32 frame = field_0x23C + 0x25C;
-        if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        } else {
+            drawOther();
         }
     } else {
         SpriteParams_801F5AE0 params;
@@ -1239,8 +1240,9 @@ inline bool KaeporaGaeboraEnding_804ADAC8::fireWaypoint() {
         }
     } else {
         s8 id = wp->mKind;
+        s32 i;
         s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
+        for (i = 0; i < end; i++) {
             cls_804ADF28* actor = (cls_804ADF28*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_EETC && id == actor->field_0x230) {
                 actor->field_0x230 = 0;
@@ -1283,7 +1285,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
     }
 }
 
-// FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.88 %, regalloc-only; behaviour clean.
 u8 KaeporaGaeboraEnding_804ADAC8::fn_8035F3C0() {
     if (field_0x294 == 0 || field_0x298 == NULL) {
         return false;
@@ -1309,9 +1311,7 @@ u8 KaeporaGaeboraEnding_804ADAC8::fn_8035F3C0() {
             return true;
         }
     } else {
-        target.x = wp->mX;
-        target.y = wp->mY;
-        target.z = wp->mZ;
+        target.set(wp->mX, wp->mY, wp->mZ);
     }
     f32 radius = field_0x298->mRadius;
     if (radius > 0.0f) {

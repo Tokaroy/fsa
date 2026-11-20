@@ -53,6 +53,9 @@ public:
     // draw() helpers for mPtmfIndex 0 and 1.
     void fn_80361424();
     void fn_803616FC();
+    // The third draw() helper (any other mPtmfIndex); inlined into draw(): its
+    // SpriteParams sits below draw()'s own in the frame.
+    void drawOther();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;     // countdown, loaded from the table
