@@ -549,7 +549,7 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 97.16 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.61 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
@@ -950,7 +950,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1506,7 +1506,7 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 94.13 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 // float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
