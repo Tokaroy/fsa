@@ -623,7 +623,7 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
     return dir;
 }
 
-// FIXME: 75.30 %, missing/extra; behaviour clean.
+// FIXME: 79.00 %, missing/extra; behaviour clean.
 // Same operations; the target does all loads (y - z first)
 // before it forms &pos in r3, ours forms &pos first and keeps `this` in r4
 // (one extra mr), which reorders the stores. const: the loads off `this`
