@@ -135,9 +135,15 @@ bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold) {
     return true;
 }
 
+static inline void stepToward(f32* cur, f32 target, f32 factor) {
+    if (factor > 1.0f) {
+        factor = 1.0f;
+    }
+    *cur += factor * (target - *cur);
+}
+
 // Moves *cur toward *target by `factor` of the way, the step clamped between minStep and
-// maxStep; true once the point is on the target.
-// FIXME(shotgun): 84.16 %, missing/extra; behaviour drift.
+// maxStep; true while it has not reached the target.
 bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 factor, f32 minStep, f32 maxStep) {
     if (factor > 1.0f) {
         factor = 1.0f;
@@ -145,8 +151,7 @@ bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 fa
         factor = 0.0f;
     }
     JGeometry::TVec2f d(target->x - cur->x, target->y - cur->y);
-    f32 sq = square(d.x) + square(d.y);
-    f32 len = JGeometry::TUtilf::sqrt(sq);
+    f32 len = JGeometry::TUtilf::sqrt(square(d.x) + square(d.y));
     if (len > 0.0f) {
         f32 step = len * factor;
         if (step < minStep) {
@@ -166,15 +171,8 @@ bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 fa
             }
             factor = f;
         }
-        f32 fx = factor;
-        if (factor > 1.0f) {
-            fx = 1.0f;
-        }
-        cur->x = fx * (target->x - cur->x) + cur->x;
-        if (factor > 1.0f) {
-            factor = 1.0f;
-        }
-        cur->y = factor * (target->y - cur->y) + cur->y;
+        stepToward(&cur->x, target->x, factor);
+        stepToward(&cur->y, target->y, factor);
     }
     return !(cur->x == target->x && cur->y == target->y);
 }
