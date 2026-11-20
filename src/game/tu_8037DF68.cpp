@@ -27,6 +27,7 @@ static inline s32 windowIndex(s32 player) {
 }
 
 MessageManager_804AF070* lbl_8053AD78;
+cls_804AF32C lbl_8050DB0C;
 
 // Clears the manager's field_0xe4 when a player of field_0xe5 presses 0x100.
 static inline void clearOnPress() {
@@ -140,13 +141,14 @@ void fn_8038D870() {
     lbl_8053AD78->field_0xe4 = 0;
 }
 
-// FIXME: 98.83 %, different; behaviour clean.
+// FIXME: 99.27 %, different; behaviour clean.
 // Two opcodes: the original loads the constant 0 stored into
 // field_0xe4 by the second press loop with li (r30); ours copies the loop
 // index register (mr r30, r29).
 void fn_8038D570() {
+    s32 i;
     lbl_8053AD78->field_0xe7 = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
         if (takesPart == true) {
             lbl_8053AD78->mWindows[i]->mIndex = i;
@@ -155,14 +157,26 @@ void fn_8038D570() {
     }
     if (lbl_8053AD78->field_0xe4 != 0) {
         if (lbl_8053AD78->field_0x7c == 0) {
-            clearOnPress();
+            for (i = 0; i < 4; i++) {
+                if (lbl_8053AD78->field_0xe5 & (1 << i)) {
+                    if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
+                        lbl_8053AD78->field_0xe4 = 0;
+                    }
+                }
+            }
         } else {
             lbl_8053AD78->field_0x7c--;
             lbl_8053AD78->field_0x70 = lbl_8053AD78->field_0x70 - lbl_8053AD78->field_0x78;
             if (lbl_8053AD78->field_0x7c == 0) {
                 lbl_8053AD78->field_0xe4 = 0;
             }
-            clearOnPress();
+            for (i = 0; i < 4; i++) {
+                if (lbl_8053AD78->field_0xe5 & (1 << i)) {
+                    if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
+                        lbl_8053AD78->field_0xe4 = 0;
+                    }
+                }
+            }
         }
     }
     MessageManager_804AF070* manager = lbl_8053AD78;
@@ -190,7 +204,7 @@ void fn_8038D570() {
         }
     }
     if (lbl_8053AD78->field_0xed != 0) {
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
             lbl_8053ACD8[i] = 1;
         }
     }
@@ -654,19 +668,17 @@ bool fn_80389BF0(s32 player, s32 value) {
     return false;
 }
 
-// FIXME: 97.69 %, missing/extra; behaviour drift.
-// One instruction more than the original (an mr copying the
-// loop index before the fn_8022FA80 call) and the registers shifted by one.
 bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u32 flags) {
+    u16 bits = flags;
     u8 ready[4];
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         ready[i] = 0;
         if (i != exclude && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
             if (!fn_8022FA80(i) && fn_8037F1E4(i) == 0) {
-                if ((flags & 4) || (flags & 2) || msg == 0x265) {
+                if ((bits & 4) || (bits & 2) || msg == 0x265) {
                     if (fn_80230188(i)) {
                         ready[i] = 1;
-                        for (int j = 0; j < 4; j++) {
+                        for (s32 j = 0; j < 4; j++) {
                             if (fn_8022E438(i, j) && !fn_80230188(j)) {
                                 ready[i] = 0;
                             }
@@ -674,7 +686,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u32 flags) {
                     }
                 } else if (fn_802300EC(i)) {
                     ready[i] = 1;
-                    for (int j = 0; j < 4; j++) {
+                    for (s32 j = 0; j < 4; j++) {
                         if (fn_8022E438(i, j) && !fn_802300EC(j)) {
                             ready[i] = 0;
                         }
