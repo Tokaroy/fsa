@@ -834,14 +834,11 @@ void Camera_804AA9E4::fn_8030C85C() {
 // The camera's box of the given width around center (the height keeps the screen's aspect).
 // FIXME(shotgun): 37.71 %, scheduling+regalloc + reloc-name; behaviour clean.
 void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
-    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    f32 half = 0.5f * size;
-    cam->field_0x180.i.x = center->x - half;
+    f32 halfX = 0.5f * size;
     f32 halfY = 0.5f * (size * (f32)(s32)JUTVideo::sManager->getEfbHeight() /
                         (f32)(s32)JUTVideo::sManager->getFbWidth());
-    cam->field_0x180.i.y = center->y - halfY;
-    cam->field_0x180.f.x = center->x + half;
-    cam->field_0x180.f.y = center->y + halfY;
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    cam->field_0x180.set(center->x - halfX, center->y - halfY, center->x + halfX, center->y + halfY);
     cam->field_0x17e = 1;
 }
 
