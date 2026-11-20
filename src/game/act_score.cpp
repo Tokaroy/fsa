@@ -213,32 +213,32 @@ void Score_804AF4C0::fn_80393514() {
     }
 }
 
-// FIXME(shotgun): 17.80 %, missing/extra + reloc-name; behaviour drift.
-// (the original builds each TColor on the stack)
+static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtility::TColor color) {
+    JGeometry::TVec3f pos(v);
+    lbl_8053AF50->fn_80455770(scale, digit, &pos, color);
+}
+
 void Score_804AF4C0::fn_80393228() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     if (mValue < 10) {
         if (field_0x4 < 8) {
-            JGeometry::TVec3f pos = JGeometry::TVec3f(mPos);
-            lbl_8053AF50->fn_80455770(0.5f, mValue, &pos,
-                                      JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], (s32)fade));
+            putTimeDigit(0.5f, mValue, mPos,
+                         JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
     } else if (mValue < 100) {
         if (field_0x4 < 8) {
-            JGeometry::TVec3f pos = JGeometry::TVec3f(mPos.x - 8.333f, mPos.y, mPos.z);
-            lbl_8053AF50->fn_80455770(0.5f, mValue / 10, &pos,
-                                      JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], (s32)fade));
+            putTimeDigit(0.5f, mValue / 10, JGeometry::TVec3f(mPos.x - 8.333f, mPos.y, mPos.z),
+                         JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
+        fade = 255.0f * ((f32)mTimer / 90.0f);
         if (field_0x4 < 8) {
-            JGeometry::TVec3f pos = JGeometry::TVec3f(8.333f + mPos.x, mPos.y, mPos.z);
-            lbl_8053AF50->fn_80455770(0.5f, mValue - (mValue / 10) * 10, &pos,
-                                      JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], (s32)(255.0f * ((f32)mTimer / 90.0f))));
+            putTimeDigit(0.5f, mValue % 10, JGeometry::TVec3f(8.333f + mPos.x, mPos.y, mPos.z),
+                         JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
     } else {
         if (field_0x4 < 8) {
-            JGeometry::TVec3f pos = JGeometry::TVec3f(mPos);
-            lbl_8053AF50->fn_80455770(0.5f, 10, &pos,
-                                      JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], (s32)fade));
+            putTimeDigit(0.5f, 10, mPos,
+                         JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
     }
 }
@@ -297,11 +297,6 @@ void Score_804AF4C0::fn_80391F58() {
 
 // Queues one digit sprite at a position passed by value (the original copies
 // the Vec, then builds the TVec3f from the copy).
-static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtility::TColor color) {
-    JGeometry::TVec3f pos(v);
-    lbl_8053AF50->fn_80455770(scale, digit, &pos, color);
-}
-
 // FIXME(shotgun): 67.37 %, missing/extra + reloc-name; behaviour drift.
 // (left: the operand order of the `mPos.x + 10.0f` fadds, and the float literal labels)
 void Score_804AF4C0::fn_80391D44() {
