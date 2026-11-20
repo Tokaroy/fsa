@@ -2422,7 +2422,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 97.74 %, different; behaviour near.
+// FIXME(shotgun): 98.53 %, scheduling+regalloc; behaviour clean.
 // (float registers of the pos / base computation)
 void cls_804AF72C::fn_8039D0DC(u8 value) {
     s32 offset = 0;
@@ -2439,17 +2439,15 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
         }
         offset = (s32)((base - pos) * 0.5f + 0.5f);
     }
-    cls_804AF5A0* window = field_0x2d8;
-    u8 slot = field_0x2d4;
-    f32 x = (f32)offset + field_0x38.field_0x19c[slot];
-    f32 y = (f32)(field_0x38.field_0x1ee[slot] - field_0x38.field_0x202[window->field_0x15c] - 1);
-    window->field_0x124[slot] = x;
-    window->field_0x130[slot] = y;
+    field_0x2d8->setSlotPos(
+        field_0x2d4,
+        (f32)offset + field_0x38.field_0x19c[field_0x2d4],
+        (f32)(field_0x38.field_0x1ee[field_0x2d4] - field_0x38.field_0x202[field_0x2d8->field_0x15c] - 1));
     field_0x2d8->field_0x3b2[field_0x2d4] = value;
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 98.43 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039CDF8(u8 value) {
     if (field_0x2cc > (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c]) {
         strcat(field_0x2c0, "  ");
@@ -2469,22 +2467,14 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
             pos = field_0x38.field_0x4c[index];
         } else {
             base = field_0x2d8->field_0xf0;
-            pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+            pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
         }
         offset = (s32)((base - pos) * 0.5f + 0.5f);
     }
-    cls_804AF5A0* window = field_0x2d8;
-    u8 slot = field_0x2d5;
-    f32 x = (f32)offset + field_0x38.field_0x19c[slot + 3];
-    f32 y = (f32)(field_0x38.field_0x1ee[slot + 3] - (s8)field_0x38.field_0x202[window->field_0x15c] - 1);
-    for (int i = 0; i < 12; i++) {
-        if (window->field_0x68[i]->field_0x8 == 0xFF) {
-            window->field_0x68[i]->field_0x0 = x;
-            window->field_0x68[i]->field_0x4 = y;
-            window->field_0x68[i]->field_0x8 = value;
-            break;
-        }
-    }
+    field_0x2d8->setEntry0x68(
+        (f32)offset + field_0x38.field_0x19c[field_0x2d5 + 3],
+        (f32)(field_0x38.field_0x1ee[field_0x2d5 + 3] - (s8)field_0x38.field_0x202[field_0x2d8->field_0x15c] - 1),
+        value);
     field_0x2d5++;
 }
 

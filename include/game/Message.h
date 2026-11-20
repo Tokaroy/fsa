@@ -102,6 +102,16 @@ public:
         /* 0x8 */ u8 field_0x8;
     }; // Size: 0xC
     /* 0x068 */ Entry_0x68* field_0x68[12];
+    void setEntry0x68(f32 x, f32 y, u8 value) {
+        for (int i = 0; i < 12; i++) {
+            if (field_0x68[i]->field_0x8 == 0xFF) {
+                field_0x68[i]->field_0x0 = x;
+                field_0x68[i]->field_0x4 = y;
+                field_0x68[i]->field_0x8 = value;
+                break;
+            }
+        }
+    }
     /* 0x098 */ JGeometry::TVec3f field_0x98;
     // The position handed to the constructor's cls_804B20F8 (by pointer).
     /* 0x0A4 */ JGeometry::TVec3f field_0xa4;
@@ -141,6 +151,10 @@ public:
     /* 0x11C */ f32 field_0x11c;
     /* 0x120 */ f32 field_0x120;
     // fn_8039D0DC stores a line's x offset and its line count here, per slot.
+    void setSlotPos(u8 slot, f32 x, f32 y) {
+        field_0x124[slot] = x;
+        field_0x130[slot] = y;
+    }
     /* 0x124 */ f32 field_0x124[3];
     /* 0x130 */ f32 field_0x130[3];
     // fn_803A30FC stores into it by index (the constructor leaves it).
