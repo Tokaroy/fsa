@@ -601,10 +601,8 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
         return false;
     }
 
-    f32 boxMinX = mBox.i.x + mPos.x;
-    f32 boxMaxX = mBox.f.x + mPos.x;
-    f32 boxMinY = mBox.i.y + mPos.y;
-    f32 boxMaxY = mBox.f.y + mPos.y;
+    JGeometry::TBox2f box = mBox;
+    box.addPos(mPos.x, mPos.y);
 
     s32 serial = -1;
     for (;;) {
@@ -621,29 +619,10 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
             continue;
         }
 
-        f32 aMinX = actor->mBox.i.x + actor->mPos.x;
-        f32 aMaxX = actor->mBox.f.x + actor->mPos.x;
-        f32 aMinY = actor->mBox.i.y + actor->mPos.y;
-        f32 aMaxY = actor->mBox.f.y + actor->mPos.y;
+        JGeometry::TBox2f actorBox = actor->mBox;
+        actorBox.addPos(actor->mPos.x, actor->mPos.y);
 
-        if (aMinX <= boxMinX) {
-            aMinX = boxMinX;
-        }
-        if (aMinY <= boxMinY) {
-            aMinY = boxMinY;
-        }
-        if (aMaxX >= boxMaxX) {
-            aMaxX = boxMaxX;
-        }
-        if (aMaxY >= boxMaxY) {
-            aMaxY = boxMaxY;
-        }
-
-        bool hit = false;
-        if (aMaxX >= aMinX && aMaxY >= aMinY) {
-            hit = true;
-        }
-        if (hit) {
+        if (actorBox.intersect(box)) {
             return true;
         }
     }
