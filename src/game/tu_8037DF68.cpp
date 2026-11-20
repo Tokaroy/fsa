@@ -141,7 +141,7 @@ void fn_8038D870() {
     lbl_8053AD78->field_0xe4 = 0;
 }
 
-// FIXME: 98.83 %, different; behaviour clean.
+// FIXME: 99.27 %, different; behaviour clean.
 // Two opcodes: the original loads the constant 0 stored into
 // field_0xe4 by the second press loop with li (r30); ours copies the loop
 // index register (mr r30, r29).
