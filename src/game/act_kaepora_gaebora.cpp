@@ -316,8 +316,8 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
                     p.y = lbl_8046A640[fn_80230CFC(i)][1];
                     p.x = lbl_8046A640[fn_80230CFC(i)][0];
                     const JGeometry::TVec3f* pp = getPlayerPos_8023E724(i);
-                    p.x = pp->x + p.x;
-                    p.y = pp->y + p.y;
+                    p.x += pp->x;
+                    p.y += pp->y;
                     if (containsPoint(hit, p)) {
                         found = true;
                         break;
@@ -389,9 +389,8 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
                 if (mFlags & 0x10000) {
                     gGameRoot_8053AAF8->fn_80138B7C();
                     s32 count = gGameRoot_8053AAF8->fn_80138A30();
-                    s32 dir;
                     for (s32 i = 0; i < count; i++) {
-                        dir = fn_801CD354(fn_801D0020(&mPos, i, false));
+                        s32 dir = fn_801CD354(fn_801D0020(&mPos, i, false));
                         fn_80230BF4(i, dir);
                         fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3c, 0xFF, -0x80, -0x80, true);
                     }
