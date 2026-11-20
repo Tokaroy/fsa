@@ -177,7 +177,7 @@ void VaatiBoss_804A4958::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME: 97.36 %, regalloc-only; behaviour clean.
+// FIXME: 97.99 %, regalloc-only; behaviour clean.
 // regalloc-only + reloc-name. Register allocation of the random-velocity arithmetic.
 void VaatiBoss_804A4958::fn_801D63D0() {
     for (s32 i = 0; i < 5; i++) {
@@ -792,6 +792,7 @@ void VaatiBoss_804A4958::vfunc_0x98() {
     fn_801E4A18(&field_0x52c.field_0x28);
 }
 
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void VaatiBoss_804A4958::fn_801D4C70() {
     switch (mState) {
     case 1:
