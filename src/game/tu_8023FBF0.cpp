@@ -2877,10 +2877,6 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
 // and stored to `from` at the end); each step comes back by value from
 // trailStep (two stack TVec3fs: the step, then the returned copy, z through
 // frsp) and is stored with set().
-// FIXME: 99.84 %, regalloc-only; behaviour clean.
-// Registers only: the group-count loops (inlined
-// fn_80248970) and the trail loop's counters are one register off
-// (r30 / r26 / r28 / r27 in the original, r31 / r25 / r30 / r26 here).
 void Player_804A6F38::fn_8024B2E0() {
     if (field_0x1216) {
         return;
@@ -2902,8 +2898,7 @@ void Player_804A6F38::fn_8024B2E0() {
         }
     } else {
         JGeometry::TVec3f from = mPos;
-        s32 other = field_0x4 + 1;
-        for (s32 n = 1; n < fn_80248970(); n++, other++) {
+        for (s32 n = 1, other = field_0x4 + 1; n < fn_80248970(); n++, other++) {
             while (!fn_8022E438(field_0x4, other)) {
                 if (other >= 4) {
                     break;
