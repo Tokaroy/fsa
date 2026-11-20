@@ -55,6 +55,16 @@ inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
     return false;
 }
 
+// Shows the next message to the player already talking and remembers it.
+inline bool cls_804AAD60::nextMessage(u32 msg) {
+    if (fn_8038470C(field_0x254, msg)) {
+        field_0x268 = msg;
+        field_0x234 = 1;
+        return true;
+    }
+    return false;
+}
+
 inline void cls_804AAD60::updateFacing() {
     if (field_0x274 <= 0) {
         field_0x274 = 20;
@@ -87,7 +97,10 @@ inline void cls_804AAD60::updateFacing() {
 
 static inline u8 getTowerViewByte(s32 i) {
     GameView_804A9950* view = getGameView_802D6A9C();
-    return (i >= 0 && i < 4) ? view->field_0x131d8[i] : 0;
+    if (i >= 0 && i < 4) {
+        return view->field_0x131d8[i];
+    }
+    return 0;
 }
 
 cls_804AAD60::cls_804AAD60() {
@@ -572,11 +585,7 @@ void cls_804AAD60::fn_80315080() {
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
-                if (fn_8038AD24(p, 0x4CE, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                    field_0x254 = p;
-                    field_0x268 = 0x4CE;
-                    field_0x234 = 1;
-                }
+                startMessage(p, 0x4CE, 0x110);
             }
             break;
         }
@@ -589,23 +598,16 @@ void cls_804AAD60::fn_80315080() {
             break;
         case 2: {
             fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            s32 idx;
             s32 i = 0;
             for (; i < count; i++) {
                 if (getTowerViewByte(i) != 0) {
                     break;
                 }
             }
-            s32 idx = i & 3;
+            idx = i & 3;
             fn_803894BC(field_0x254, idx + 1);
-            bool ok;
-            if (fn_8038470C(field_0x254, 0x4D2)) {
-                field_0x268 = 0x4D2;
-                field_0x234 = 1;
-                ok = true;
-            } else {
-                ok = false;
-            }
-            if (ok) {
+            if (nextMessage(0x4D2)) {
                 lbl_8053AED0->fn_8043D874(idx, 300, 0);
             }
             break;
