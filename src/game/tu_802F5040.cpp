@@ -377,21 +377,22 @@ void TileMap_804AA858::fn_802FF3B0() {
     }
 }
 
-// FIXME: 95.56 %, scheduling+regalloc; behaviour clean.
-// The loop index and the element pointer swap r29/r30 (and the
-// stw r29 save moves up one slot). Literals match.
-void TileMap_804AA858::fn_802FF2D8() {
-    for (s32 i = 0; i < field_0xe424; i++) {
-        cls_8030029C* sprite = &field_0xd324[i];
+static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
+    for (s32 i = 0; i < self->field_0xe424; i++) {
+        cls_8030029C* sprite = &self->field_0xd324[i];
         if (sprite->mRes != NULL) {
-            fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
-    field_0xe424 = 0;
+    self->field_0xe424 = 0;
+}
+
+void TileMap_804AA858::fn_802FF2D8() {
+    drawQueuedSprites_802FF2D8(this);
     fn_802FEE68();
 }
 
