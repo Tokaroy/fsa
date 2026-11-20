@@ -849,21 +849,19 @@ void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
 }
 
 // One row of a homogeneous (w) projection.
-static inline f32 projectRow(const f32* row, const Vec& v, f32 w) {
-    return v.x * row[0] + v.y * row[1] + v.z * row[2] + w * row[3];
+static inline f32 projectRow(const f32* row, f32 x, f32 y, f32 z, f32 w) {
+    return x * row[0] + y * row[1] + z * row[2] + w * row[3];
 }
 
 // Not inlined into its caller fn_8030C2A8 in the original (bl fn_8030C5F0).
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
-// FIXME(shotgun): 99.38 %, scheduling+regalloc; behaviour clean.
-// (projection rows loaded in the other order)
 void Camera_804AA9E4::fn_8030C5F0(const Vec* pos, bool inRect, bool normalised, Vec* out) {
     Vec v;
     PSMTXMultVec(field_0x74, pos, &v);
-    f32 x = projectRow(field_0xa4[0], v, 1.0f);
-    f32 y = projectRow(field_0xa4[1], v, 1.0f);
+    f32 y = projectRow(field_0xa4[1], v.x, v.y, v.z, 1.0f);
+    f32 x = projectRow(field_0xa4[0], v.x, v.y, v.z, 1.0f);
     if (normalised) {
         out->x = 0.5f * (1.0f + x);
         out->y = 0.5f * (1.0f - y);
