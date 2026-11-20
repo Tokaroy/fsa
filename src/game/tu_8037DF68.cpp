@@ -1437,6 +1437,7 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
     s32 lines = 1;
     f32 cur = 0.0f;
     u8 part = 0;
+    u32 code;
     lbl_8053AD78->field_0x5c[0] = 0.0f;
     lbl_8053AD78->field_0x5c[2] = 0.0f;
     lbl_8053AD78->field_0x5c[1] = 0.0f;
@@ -1479,7 +1480,7 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) != 0) {
                             u8 mode = (gGameRoot_8053AAF8->field_0x83 >> ((a - 1) * 2)) & 3;
                             if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {
@@ -1516,13 +1517,12 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
             pos += p[1];
         } else {
             line[len++] = text[pos];
-            u32 code = (u8)*p;
+            code = (u8)*p;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 line[len++] = text[pos];
                 code <<= 8;
-                code |= text[pos] & 0xFF;
-                pos++;
+                code |= (u8)text[pos++];
             }
             cur += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
