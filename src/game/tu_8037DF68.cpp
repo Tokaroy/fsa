@@ -1119,7 +1119,8 @@ u32 fn_803846BC(u32 msg) {
 }
 
 u16 fn_803846A4(s32 index) {
-    return lbl_8053AD78->mBmg->inf1.entries[index].id;
+    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    return inf1->entries[index].id;
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
@@ -1262,7 +1263,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x17: {
             u8 count = p[5];
-            s32 pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
+            int pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             if (pick > count) {
                 pick = count;
             }
@@ -1293,11 +1294,9 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x1D: {
             s32 limit = operand(p, 5);
             u32 high = operand(p, 9);
-            u32 low = operand(p, 13);
+            index = operand(p, 13);
             if (fn_80236100(slot) >= limit) {
                 index = high;
-            } else {
-                index = low;
             }
             break;
         }
