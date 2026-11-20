@@ -337,7 +337,6 @@ void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     }
 }
 
-// FIXME(shotgun): 99.14 %, regalloc-only
 void cls_804B1668::fn_80432638() {
     if (field_0xac != 0) {
         f32 x = field_0x18[0]->mPane->getBounds()->i.x;
@@ -345,8 +344,10 @@ void cls_804B1668::fn_80432638() {
         f32 y = field_0x18[0]->mPane->getBounds()->i.y;
         f32 top = field_0x18[0]->field_0xc;
         gGameRoot2_8053AB10->fn_8013B490();
-        field_0x3c->moveFromCentre_80402E08((x - left) + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],
-                                            (y - top) + (f32)lbl_8050DB0C.field_0x4c[(0x240 - 0x4C) / 2]);
+        f32 dx = x - left;
+        f32 dy = y - top;
+        field_0x3c->moveFromCentre_80402E08(dx + (f32)lbl_8050DB0C.field_0x4c[(0x23E - 0x4C) / 2],
+                                            dy + (f32)lbl_8050DB0C.field_0x4c[(0x240 - 0x4C) / 2]);
         field_0xc->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
