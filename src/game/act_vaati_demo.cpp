@@ -271,8 +271,8 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         break;
     case 9: {
         fn_80119DD0()->fn_80119998(120, 0, 1, 0, 0, 70, 0);
-        s32 serial = getActorManager_801F856C()->fn_801F7A08('SWEV');
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(
+            getActorManager_801F856C()->fn_801F7A08('SWEV'));
         if (actor != NULL) {
             static_cast<cls_804A8638*>(actor)->fn_802B3A3C();
         }
@@ -292,10 +292,10 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         break;
     }
     case 11:
+        lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
         lbl_80529DEC.field_0x237 = 6;
         lbl_80529DEC.field_0x118 = 0;
         lbl_80529DEC.field_0x11c = 0;
-        lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
         gGameRoot_8053AAF8->fn_80136798(6, 0);
         break;
     case 0:
