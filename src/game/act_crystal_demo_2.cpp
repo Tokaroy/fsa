@@ -716,7 +716,7 @@ static inline void setCameraBox(const JGeometry::TBox2f& box) {
 }
 
 // differs: register choice for the camera box and the message position.
-// FIXME: 98.62 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME: 98.78 %, scheduling + reloc-name; behaviour drift.
 void cls_804AE088::fn_80369DDC() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -910,7 +910,7 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.67 %, different + reloc-name; behaviour near.
+// FIXME: 96.75 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1216,7 +1216,7 @@ void cls_804AE088::fn_80368CD8() {
     }
 }
 
-// FIXME: 99.82 %, operands + reloc-name; behaviour near.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
