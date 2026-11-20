@@ -205,7 +205,7 @@ s32 fn_80154248(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg) {
     return getActorManager_801F856C()->fn_801F8544(id, layer, pos, arg);
 }
 
-// FIXME(shotgun): 99.60 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 99.66 %, different; behaviour near.
 void SwordSoldier_8049FCA0::init() {
     mBox.set(-8.0f, -4.0f, 8.0f, 8.0f);
     mBox2.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -367,7 +367,6 @@ void SwordSoldier_8049FCA0::init() {
     }
 }
 
-// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
 void SwordSoldier_8049FCA0::vfunc_0x44() {
     lbl_8053AB44 = 1;
     field_0xb8 = 1;
@@ -408,7 +407,6 @@ void SwordSoldier_8049FCA0::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 93.25 %, missing/extra; behaviour near.
 SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
     if (mLife <= 0) {
         if (field_0x288 == 1 || field_0x288 == 3) {
@@ -436,8 +434,6 @@ SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
     }
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour clean.
-// FIXME(shotgun): literal reloc names (lbl_ vs @NNN) still differ
 bool SwordSoldier_8049FCA0::vfunc_0x54() {
     if (viewLayerFlag(field_0x4)) {
         return false;
