@@ -671,13 +671,14 @@ void cls_804AE088::fn_8036A894() {
         params.field_0x14.g = 0;
         params.field_0x14.b = 0;
         params.field_0x14.a = field_0x24c;
+        params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
-        params.mMtx = mtx;
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
+        void* res = field_0x310;
         if (field_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x310, &params);
+            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
 }
