@@ -1424,28 +1424,28 @@ const char* fn_80383E2C(u32 index, u8* out) {
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
+// Still differs: the lead-byte block (the original keeps the code in p's register and masks the
+// second byte separately) and the order of the last line's terminator store.
 s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     char line[100];
     char prefix[16];
+    s32 number = b;
     s32 len = 0;
     s32 pos = 0;
     s32 lines = 1;
     f32 cur = 0.0f;
     u8 part = 0;
-    s32 number = b;
-    s32 shift = (a - 1) * 2;
     lbl_8053AD78->field_0x5c[0] = 0.0f;
     lbl_8053AD78->field_0x5c[2] = 0.0f;
     lbl_8053AD78->field_0x5c[1] = 0.0f;
     lbl_8053AD78->field_0x5c[3] = 0.0f;
     out[0] = 0;
-    char c;
-    while ((c = text[pos]) != 0) {
+    while (text[pos] != 0) {
         const char* p = &text[pos];
-        if (c == '\n') {
-            line[len] = c;
+        if (text[pos] == '\n') {
+            line[len] = text[pos];
             line[len + 1] = 0;
             s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
             for (s32 i = 0; i < 2; i++) {
@@ -1462,7 +1462,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
             cur = 0.0f;
             lines++;
             pos++;
-        } else if (c == 0x1A) {
+        } else if (text[pos] == 0x1A) {
             if (p[2] == 2) {
                 if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19) {
                     if (part < 2) {
@@ -1479,8 +1479,9 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
-                            u8 mode = (gGameRoot_8053AAF8->field_0x83 >> shift) & 3;
+                        // The original keeps the tested byte (neg / or / srwi.), as an explicit compare does.
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) != false) {
+                            u8 mode = (gGameRoot_8053AAF8->field_0x83 >> ((a - 1) * 2)) & 3;
                             if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {
                                     fn_80230E1C(a - 1, false);
@@ -1496,8 +1497,8 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
                     cur += lbl_8053AD78->mFont->JUTFont::getWidth(digit);
                     cur += fn_8037F580(p[5], a, line, &len, 1.0f);
                 } else if (p[4] == 2) {
-                    bool started = false;
                     s32 div = 1000;
+                    bool started = false;
                     for (s32 i = 0; i < 4; i++) {
                         if (number >= div) {
                             started = true;
@@ -1515,19 +1516,19 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
             }
             pos += p[1];
         } else {
-            line[len++] = c;
-            u32 code = (u8)text[pos];
+            line[len++] = text[pos];
+            u32 code = (u8)*p;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 line[len++] = text[pos];
                 code <<= 8;
-                code |= (u8)text[pos];
+                code |= text[pos] & 0xFF;
                 pos++;
             }
             cur += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
     }
-    line[len] = c;
+    line[len] = text[pos];
     s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
     for (s32 i = 0; i < 2; i++) {
         if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
