@@ -1508,7 +1508,7 @@ bool Player_804A6F38::fn_8025FCC8() {
     return true;
 }
 
-// FIXME: 98.42 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.85 %, regalloc-only; behaviour clean.
 // regalloc: the actor branch's scale factor is in f29 in the original, f31 in ours.
 // Let go of what the player holds (from the commit of every state change, with
 // checkState, and from fn_8026000C): a held player is thrown 16 a step along the facing
