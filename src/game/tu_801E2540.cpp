@@ -13,7 +13,7 @@ static inline void releaseTarget(cls_804A51E4* self) {
     if (self->mState == 0xC && self->mStateTimer >= 6 && !self->fn_801E1DE8()) {
         self->fn_801E1594(0xD);
     } else if (self->fn_801E1CF8()) {
-        if (!(self->mFlags & 0x10000)) {
+        if (!self->checkFlag(0x10000)) {
             self->mFlags |= 0x10000;
             self->startSound_801F0E34(0x4003D, 0);
             lbl_8053AC30++;
@@ -38,16 +38,15 @@ static inline void releaseTarget(cls_804A51E4* self) {
     }
 }
 
-// FIXME(shotgun): 77.83 %, missing/extra; behaviour clean.
+// FIXME: 82.61 %, scheduling; behaviour clean.
 bool cls_804A51E4::fn_801E2F40() {
     bool result = false;
-    s32 code = fn_8022461C(&mPos, field_0x4);
-    if (code < 13) {
-        if (code == 3) {
-            result = true;
-        }
-    } else if (code < 15) {
+    switch (fn_8022461C(&mPos, field_0x4)) {
+    case 3:
+    case 13:
+    case 14:
         result = true;
+        break;
     }
     return result;
 }
@@ -106,7 +105,7 @@ void cls_804A51E4::fn_801E2D88() {
 }
 
 // Whether a player-side object (arrow, bomb, sword, ...) hits the actor's box.
-// FIXME: 90.86 %, missing/extra; behaviour near.
+// FIXME: 94.98 %, missing/extra; behaviour clean.
 bool cls_804A51E4::vfunc_0x58() {
     bool arrow = false;
     bool direct = false;
@@ -160,20 +159,20 @@ bool cls_804A51E4::vfunc_0x58() {
     return hit;
 }
 
-// FIXME(shotgun): 84.04 %, missing/extra; behaviour near.
 u8 cls_804A51E4::vfunc_0x60() {
     u8 hit = 0;
     s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
     if (other >= 0 && other != mSerial) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
         if (actor != NULL) {
-            u8 landed;
+            bool landed;
             if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor)) {
-                landed = 0;
+                landed = false;
             } else if (!fn_801E1CF8()) {
-                landed = 1;
+                landed = true;
             } else {
-                JGeometry::TVec3f dir = mPos - actor->field_0x3c;
+                JGeometry::TVec3f dir = mPos;
+                dir.sub(actor->field_0x3c);
                 landed = fn_801F37AC(actor->field_0x118, &dir, 0, actor->field_0x168, -1);
                 if (landed) {
                     hit = 1;
@@ -188,7 +187,6 @@ u8 cls_804A51E4::vfunc_0x60() {
     return hit;
 }
 
-// FIXME(shotgun): 94.58 %, missing/extra; behaviour near.
 u8 cls_804A51E4::vfunc_0x5C() {
     u8 hit = 0;
     s32 player = fn_801F285C(NULL, NULL, true, -1);
