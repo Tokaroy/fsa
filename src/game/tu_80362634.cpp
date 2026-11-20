@@ -1203,27 +1203,23 @@ void cls_804ADF28::fn_80363880() {
 // FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
 void cls_804ADF28::fn_80363664() {
     if (field_0x248 == 0) {
-        if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
+        if (field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
             s32 oldFrame = field_0x26c;
             do {
                 field_0x23c = fn_801CD664(4);
-                field_0x3c = lbl_8050C088[field_0x23c];
+                field_0x3c.set(lbl_8050C088[field_0x23c]);
                 field_0x248 = fn_801CD664(20) + 30;
                 field_0x26c = lbl_804745B8[field_0x23c + 20];
             } while (field_0x26c == oldFrame);
         } else {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
             field_0x248 = fn_801CD664(10) + 15;
             field_0x264 = 0;
         }
     }
-    if (field_0x3c.squared() > 32.0f * FLT_EPSILON) {
+    if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
         if (fn_801F2618(NULL, false)) {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
             field_0x248 = fn_801CD664(10) + 15;
             field_0x264 = 0;
         } else {
