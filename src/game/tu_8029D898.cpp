@@ -1277,8 +1277,7 @@ static inline void writeCellMarkView(s32 layer, s32 cell, s16 tile) {
 // 4 opcodes differ
 void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d) {
     gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, a);
-    s32 cell = field_0x20;
-    cell++;
+    s32 cell = field_0x20 + 1;
     if ((cell & 0xF) == 0) {
         cell += 0xF0;
     }
