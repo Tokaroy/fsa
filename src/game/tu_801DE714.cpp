@@ -777,7 +777,7 @@ void cls_804A51E4::fn_801E0CF4() {
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
-            if (!(mFlags & 0x4000)) {
+            if (!(mFlags & 0x20000)) {
                 if (fn_80218538()) {
                     startSound_801F0E34(0x40070, 0);
                 }
@@ -846,10 +846,16 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
             f32 height = 5.0f;
             if (mFlags & 0x20000) {
                 height = 20.0f;
-            } else if (field_0x2ac >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2ac) != NULL) {
-                height = 20.0f;
-            } else if (field_0x2b0 >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(field_0x2b0) != NULL) {
-                height = 20.0f;
+            } else {
+                s32 s = field_0x2ac;
+                if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                    height = 20.0f;
+                } else {
+                    s = field_0x2b0;
+                    if (s >= 0 && getActorManager_801F856C()->findActorBySerial_801F666C(s) != NULL) {
+                        height = 20.0f;
+                    }
+                }
             }
             if (__fabsf(height - mPos.z) < 0.1f) {
                 arrived = true;
@@ -862,8 +868,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
         }
         fn_801E1AB4(false);
         enterFromEdge(this);
-    }
-    if (mStateTimer >= 0xB4) {
+    } else if (mStateTimer >= 0xB4) {
         enterFromEdge(this);
     }
 }
