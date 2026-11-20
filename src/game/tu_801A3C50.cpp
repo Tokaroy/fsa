@@ -711,14 +711,15 @@ s32 fn_801A46FC(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // 0x801A41D8.
 // FIXME(shotgun): 95.80 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
+    ActorBase_804A5770* weapon;
     s32 player = fn_8023AD54(box, field_0x4, pos);
     if (player < 0) {
         return 0;
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
-    ActorBase_804A5770* weapon = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B358(player));
+    weapon = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B358(player));
     if (weapon == NULL || weapon->mLife == 0) {
         return 0;
     }
@@ -740,12 +741,11 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
     vfunc_0x44();
     if (!byPlayer) {
         if (kind == 6) {
-            kind = 4;
             bool turned = false;
+            kind = 4;
+            f32 angle = JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x), -(mPos.y - weapon->mPos.y));
             s32 face = field_0x98;
-            if ((face ^ 1) != fn_801F681C((s32)(JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x),
-                                                                         -(mPos.y - weapon->mPos.y)) *
-                                                10430.378f))) {
+            if ((face ^ 1) != fn_801F681C((s32)(angle * 10430.378f))) {
                 turned = true;
             }
             if (!turned) {
@@ -803,9 +803,9 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         if (kind == 9) {
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
             s32 face = field_0x98;
-            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
-                                          10430.378f))) {
+            if (face != fn_801F681C((s32)(angle * 10430.378f))) {
                 kind = 5;
             }
         }
@@ -817,7 +817,8 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         case 1:
         case 2:
         case 5: {
-            s32 life = mLife - fn_8023B5B4(player);
+            s32 life = mLife;
+            life -= fn_8023B5B4(player);
             weapon->mAlive = false;
             if (life <= 0) {
                 mLife = 0;
