@@ -255,7 +255,7 @@ static const u8 lbl_8048F1D8[4][10] = {
     { 3, 2, 1, 0, 5, 9, 8, 4, 7, 6 },
 };
 
-// FIXME(shotgun): 99.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.97 %, operands; behaviour near.
 cls_804B146C::cls_804B146C()
     : field_0x210(0xFFFFFFFF)
     , field_0x214(0xFFFFFFFF)
