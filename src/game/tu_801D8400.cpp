@@ -769,19 +769,22 @@ void cls_804A4C58::vfunc_0x88() {
 
 // FIXME: 77.38 %, missing/extra; behaviour drift.
 void cls_804A4C58::vfunc_0x74() {
-    if (mState < 0xF && mState >= 0xB) {
+    switch (mState) {
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0xE:
         if (mState == 0xC) {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (s32 row = 0; row < 3; row++) {
+                    for (s32 col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -801,16 +804,15 @@ void cls_804A4C58::vfunc_0x74() {
             }
         } else {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (s32 row = 0; row < 3; row++) {
+                    for (s32 col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -818,12 +820,12 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            bool turn = false;
             bool left = false;
             if (mPos.x < field_0x2d4[field_0x334].x ||
                 (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
                 left = true;
             }
-            bool turn = false;
             if (left) {
                 if (!(mFlags & 0x2000)) {
                     turn = true;
@@ -839,6 +841,7 @@ void cls_804A4C58::vfunc_0x74() {
                 fn_801D9C58(0xB);
             }
         }
+        break;
     }
 }
 
