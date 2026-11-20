@@ -406,19 +406,8 @@ f32 randomSlotTime() {
     return 400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
-// FIXME(shotgun): 98.19 %, different; behaviour clean.
 void cls_8049C718::fn_800FC128() {
-    bool swapped = false;
-    if (mSlot == 0) {
-        field_0xb0 = 4;
-        mAnimState = 1;
-        mTimer = 0;
-        mState = 8;
-        startSound_801F0E34(0x40005, 0);
-        mSignal = 1;
-        swapped = true;
-    }
-    if (swapped) {
+    if (trySwap(this)) {
         mSlotUsed[0] = 0;
         mSlotUsed[1] = 0;
         JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
