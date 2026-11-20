@@ -21,7 +21,7 @@ public:
     /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
     /* 0x94 */ virtual void vfunc_0x94();
     /* 0xA0 */ virtual void vfunc_0xA0();
-    void setEmitterColor(f32 rMult);
+    void setEmitterColor();
     void onHit();
     void fn_8020EB08();
     void fn_8020ED5C(s32 state);
