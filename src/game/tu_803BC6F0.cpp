@@ -917,7 +917,7 @@ static s32 getProgressMsg(s32 file) {
     return lbl_80476D00[7];
 }
 
-// FIXME: 99.21 %, missing/extra; behaviour clean.
+// FIXME: 99.65 %, missing/extra; behaviour clean.
 // The file index and its bit swap r24 / r25; the original
 // tests the time against the zero it materialises `used` from (one li fewer).
 // Refreshes the three file rows: a file whose checksum fails gets message
