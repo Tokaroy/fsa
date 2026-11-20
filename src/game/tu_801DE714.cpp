@@ -297,8 +297,11 @@ bool cls_804A51E4::fn_801E1D9C() const {
 // tu_801DE714 (0x801E1D7C): whether mState is 0xB or 0xC.
 bool cls_804A51E4::fn_801E1D7C() {
     bool result = false;
-    if (mState < 0xD && mState >= 0xB) {
+    switch (mState) {
+    case 0xB:
+    case 0xC:
         result = true;
+        break;
     }
     return result;
 }
