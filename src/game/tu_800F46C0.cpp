@@ -21,7 +21,7 @@ extern const f32 lbl_80463678[];
 
 Boulder_8049C4C0::~Boulder_8049C4C0() {}
 
-// FIXME(shotgun): 97.58 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.08 %, regalloc-only + reloc-name; behaviour clean.
 void Boulder_8049C4C0::init() {
     field_0x23c = 0;
     field_0x231 = 0;
@@ -402,7 +402,7 @@ void Boulder_8049C4C0::fn_800F555C() {
     }
 }
 
-// FIXME(shotgun): 97.61 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.24 %, scheduling+regalloc; behaviour clean.
 void Boulder_8049C4C0::update() {
     switch (field_0x230) {
     case 0:
@@ -591,7 +591,7 @@ void BoulderSpawner_8049C46C::init() {
     }
 }
 
-// FIXME(shotgun): 97.47 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.81 %, regalloc-only; behaviour clean.
 void BoulderSpawner_8049C46C::update() {
     JGeometry::TVec3f pos;
     if (field_0x234 == 0) {
