@@ -242,9 +242,10 @@ void cls_804A1E50::fn_8018E30C(s32 anim) {
 
 // FIXME(shotgun): 99.81 %, regalloc-only + reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018DFCC() {
-    f32 x = mPos.x - 4.0f;
+    f32 x = mPos.x;
     f32 y = mPos.y;
     f32 z = mPos.z;
+    x -= 4.0f;
     if (field_0x26c == 1) {
         return;
     }
