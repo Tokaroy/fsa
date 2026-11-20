@@ -97,11 +97,12 @@ void cls_804A5D60::vfunc_0x54() {
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
 void cls_804A5D60::fn_8020AA78(s32 state) {
     if (mFlags & 0x2000) {
-        if (state < 11) {
-            if (state != 8) {
-                return;
-            }
-        } else if (state >= 13) {
+        switch (state) {
+        case 8:
+        case 11:
+        case 12:
+            break;
+        default:
             return;
         }
     }
