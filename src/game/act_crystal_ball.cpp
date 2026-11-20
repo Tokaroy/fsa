@@ -869,9 +869,8 @@ void CrystalBall_804AB308::draw() {
     if (field_0x28c == 0) {
         return;
     }
-    s32 flags;
+    s32 flags = -1;
     bool held = false;
-    flags = -1;
     SpriteParams_801F5AE0 params;
     params.field_0x10.a = field_0x28c;
     params.field_0x2d = 1;
