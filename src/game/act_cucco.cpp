@@ -1376,17 +1376,20 @@ void Cucco_804AB8C0::update() {
     }
 }
 
-// FIXME(shotgun): 95.94 %, missing/extra; behaviour drift.
 void Cucco_804AB8C0::draw() {
-    if (field_0x2a7 == 1 || field_0x288 == 0) {
+    if (field_0x2a7 == 1) {
+        return;
+    }
+    if (field_0x288 == 0) {
         return;
     }
     SpriteParams_801F5AE0 params;
+    bool held = false;
     s32 flags = 7;
-    s32 held = 0;
     s32 tint = 0;
     if (mPos.z == 0.0f) {
-        if (fn_8022461C(&mPos, field_0x4) == 0x39) {
+        s32 ground = fn_8022461C(&mPos, field_0x4);
+        if (ground == 0x39) {
             flags = 0;
         }
     }
@@ -1398,24 +1401,24 @@ void Cucco_804AB8C0::draw() {
     }
     switch (tint) {
     case 1:
+        params.field_0x14.g = 20;
         params.field_0x10.r = 200;
         params.field_0x10.b = 150;
-        params.field_0x14.g = 20;
         break;
     case 2:
+        params.field_0x14.r = 20;
         params.field_0x10.g = 200;
         params.field_0x10.b = 170;
-        params.field_0x14.r = 20;
         break;
     case 3:
+        params.field_0x14.b = 20;
         params.field_0x10.r = 180;
         params.field_0x10.g = 200;
-        params.field_0x14.b = 20;
         break;
     case 4:
-        params.field_0x10.g = 195;
         params.field_0x14.r = 20;
         params.field_0x14.b = 20;
+        params.field_0x10.g = 195;
         break;
     }
     if (field_0x230 == 3) {
@@ -1437,7 +1440,7 @@ void Cucco_804AB8C0::draw() {
         flags = -1;
         params.field_0x1d = fn_8023CB24(field_0xc8) + 1;
         params.field_0x1c = fn_8023CA88(field_0xc8);
-        held = 1;
+        held = true;
     }
     if (field_0x230 == 10) {
         if (gGameRoot_8053AAF8->field_0x7f != 1) {
@@ -1445,12 +1448,12 @@ void Cucco_804AB8C0::draw() {
         }
         params.field_0x1d = fn_8023CB24(field_0x25c) + 1;
         params.field_0x1c = fn_8023CA88(field_0x25c);
-        if (field_0x290 == 2) {
-            drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x1D, &params, -1, 1.0f, 1.0f);
-            fn_803075AC(mSerial, field_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
-        } else {
+        if (field_0x290 != 2) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x11, &params, -1, 1.0f, 1.0f);
             fn_803075AC(mSerial, field_0x4, &mPos, 0x11, 0, 2, -1, 1, 0, 0);
+        } else {
+            drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + 0x1D, &params, -1, 1.0f, 1.0f);
+            fn_803075AC(mSerial, field_0x4, &mPos, 0x1D, 0, 2, -1, 1, 0, 0);
         }
         return;
     }
