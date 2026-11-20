@@ -321,16 +321,10 @@ void Flame_804A0330::fn_8015DF7C() {
                         JGeometry::TVec2f d(ppos->x, ppos->y);
                         d.x -= mPos.x;
                         d.y -= mPos.y;
-                        f32 sq = d.squared();
-                        if (sq < 900.0f) {
-                            if (!(sq <= JGeometry::TUtil<f32>::epsilon())) {
-                                f32 inv = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                                d.x *= inv;
-                                d.y *= inv;
-                            }
-                            if (!(d.squared() <= JGeometry::TUtil<f32>::epsilon())) {
-                                d.x *= 16.0f;
-                                d.y *= 16.0f;
+                        if (d.squared() < 900.0f) {
+                            d.normalize();
+                            if (!d.isZero()) {
+                                d.scale(16.0f);
                             }
                             JGeometry::TVec3f push(d.x, d.y, 0.0f);
                             fn_8023DFF4(i, &push);
