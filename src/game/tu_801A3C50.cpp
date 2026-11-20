@@ -493,7 +493,6 @@ s32 fn_801A4F5C(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // 0x801A4D74.
 // FIXME(shotgun): 83.66 %, missing/extra; behaviour near.
 s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
-    s32 oldLife;
     s32 kind = (field_0xb0 >> 8) & 0xF;
     if (kind == 0) {
         return 0;
@@ -507,8 +506,7 @@ s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVe
     }
     if (kind != 3) {
         if (field_0xd8 == 0) {
-            oldLife = mLife;
-            s32 life = oldLife - fn_8023B520(player);
+            s32 life = mLife - fn_8023B520(player);
             field_0x10c = player;
             if (life <= 0) {
                 life = 0;
@@ -817,8 +815,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         case 1:
         case 2:
         case 5: {
-            s32 life = mLife;
-            life -= fn_8023B5B4(player);
+            s32 life = mLife - fn_8023B5B4(player);
             weapon->mAlive = false;
             if (life <= 0) {
                 mLife = 0;
