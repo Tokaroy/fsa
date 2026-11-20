@@ -178,13 +178,12 @@ void EscortBase_8049E0C8::update() {
     vfunc_0x90();
 }
 
-// FIXME(shotgun): 97.35 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::draw() {
     ActorBase_804A5770::draw();
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
-        pos.x -= 6.0f * (field_0x360 - 1);
         pos.y += -28.0f;
+        pos.x -= 6.0f * (field_0x360 - 1);
         for (s32 i = 0; i < field_0x360; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x364[i]);
             if (actor == NULL) {
