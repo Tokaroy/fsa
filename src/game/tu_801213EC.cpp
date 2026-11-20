@@ -279,12 +279,11 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             if (kind == 0 || kind == 1 || kind == 5 || kind == 6) {
                 return 0;
             }
-            // FIXME(shotgun): the asm then tests the word at +0x230 == 2 here as well, but
-            // FireRodFire_804A89F0 types +0x230 as an emitter pointer; not written.
-            break;
+            // fallthrough
         }
         case ACTOR_OKTM:
-            if (static_cast<OctorokRock_8049F5D8*>(actor)->field_0x230 == 2) {
+            switch (static_cast<OctorokRock_8049F5D8*>(actor)->field_0x230) {
+            case 2:
                 return 0;
             }
             break;
