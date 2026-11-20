@@ -127,9 +127,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
                     field_0x32c.y = p.y;
                     field_0x32c.z = p.z;
                 } else {
-                    field_0x32c.x = p.x;
-                    field_0x32c.y = mPos.y;
-                    field_0x32c.z = p.z;
+                    field_0x32c.set(p.x, mPos.y, p.z);
                 }
             }
             return;
@@ -142,8 +140,8 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             field_0x358.fn_80214244()->fn_800FD5E8(field_0x358.fn_80214244()->field_0x3)) {
             skip = true;
         } else if (field_0x524.field_0x0 & 0x100) {
-            u8 prev;
             u8 next;
+            u8 prev;
             getRailNeighbours(&next, &prev);
             if (field_0x358.fn_80214244()->fn_800FD5E8(prev) ||
                 field_0x358.fn_80214244()->fn_800FD5E8(next)) {
@@ -174,9 +172,9 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         if ((field_0x524.field_0x0 & 0x800) && !(mFlags & 0x2000000) && !(mFlags & 0x100000) &&
             fn_801CF888(&detour, &field_0x32c, field_0x4)) {
             bool moved = false;
-            u8 prev;
-            u8 current;
             u8 next;
+            u8 current;
+            u8 prev;
             getRailNeighbours(&next, &current, &prev);
             if (field_0x358.fn_80214244()->fn_800FD4C0(current, prev) ||
                 field_0x358.fn_80214244()->fn_800FD4C0(current, next)) {
@@ -206,9 +204,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             mPath[n].y = field_0x32c.y;
             mPathCount++;
         }
-        field_0x32c.x = detour.x;
-        field_0x32c.y = detour.y;
-        field_0x32c.z = 0.0f;
+        field_0x32c.set(detour.x, detour.y, 0.0f);
         field_0x33c = fn_801D02E0(&field_0x32c);
         mFlags &= ~0x20000;
         mFlags |= 0x1000;
