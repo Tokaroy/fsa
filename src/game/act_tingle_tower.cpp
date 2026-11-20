@@ -377,15 +377,7 @@ void cls_804AAD60::fn_80315864() {
     if (field_0x234 == 0) {
         switch (field_0x238) {
         case 0: {
-            bool ok;
-            if (fn_8038470C(field_0x254, 0x486)) {
-                field_0x268 = 0x486;
-                field_0x234 = 1;
-                ok = true;
-            } else {
-                ok = false;
-            }
-            if (ok) {
+            if (nextMessage(0x486)) {
                 for (s32 n = gGameRoot_8053AAF8->fn_80138A30() - 1; n > 0; n--) {
                     for (s32 i = 0; i < n; i++) {
                         s32 vNext = fn_80236228(field_0x244[i + 1]);
@@ -416,22 +408,9 @@ void cls_804AAD60::fn_80315864() {
             fn_803894BC(field_0x254, rank + 1);
             fn_8038938C(field_0x254, fn_80236228(field_0x244[4 - field_0x238]));
             if (rank != 0) {
-                u32 msg = field_0x244[4 - field_0x238] + 0x48B;
-                if (fn_8038470C(field_0x254, msg)) {
-                    field_0x268 = msg;
-                    field_0x234 = 1;
-                }
+                nextMessage(field_0x244[4 - field_0x238] + 0x48B);
             } else {
-                u32 msg = field_0x244[4 - field_0x238] + 0x48F;
-                bool ok;
-                if (fn_8038470C(field_0x254, msg)) {
-                    field_0x268 = msg;
-                    field_0x234 = 1;
-                    ok = true;
-                } else {
-                    ok = false;
-                }
-                if (ok) {
+                if (nextMessage(field_0x244[4 - field_0x238] + 0x48F)) {
                     gAudioMgr_8053AF80->fn_80458F04(0x1000027);
                 }
             }
@@ -445,7 +424,7 @@ void cls_804AAD60::fn_80315864() {
                 total += fn_80236228(i);
             }
             fn_80389254(field_0x254, total);
-            s32 bonus = total / 1000;
+            s32 bonus = total / 999;
             if (bonus != 0) {
                 for (s32 i = 0; i < bonus; i++) {
                     if (lbl_80529DEC.field_0x24f < 99) {
@@ -455,15 +434,9 @@ void cls_804AAD60::fn_80315864() {
                     }
                 }
                 fn_8038911C(field_0x254, bonus);
-                if (fn_8038470C(field_0x254, 0x493)) {
-                    field_0x268 = 0x493;
-                    field_0x234 = 1;
-                }
+                nextMessage(0x493);
             } else {
-                if (fn_8038470C(field_0x254, 0x495)) {
-                    field_0x268 = 0x495;
-                    field_0x234 = 1;
-                }
+                nextMessage(0x495);
             }
             break;
         }
