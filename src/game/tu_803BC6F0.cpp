@@ -1159,6 +1159,7 @@ void FileSelect_804AFF60::fn_803CDEE8() {
 // State 4: slides the cursor, the three rows (bottom row first) and the
 // board in (the timings are lbl_8050DB0C's 0x84..0x8A), starts the 'kk_'
 // sprite fade-in, then goes to state 5.
+// FIXME: 96.74 %, scheduling+regalloc; behaviour clean.
 void FileSelect_804AFF60::fn_803CD75C() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x84];
     s16 frames = lbl_8050DB0C.field_0x4c[0x85];
@@ -1928,7 +1929,7 @@ void FileSelect_804AFF60::fn_803C9F14() {
     }
 }
 
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C5190.
 // State 22 (copy, after the copy prompt's yes): as fn_803C5190, the board (or
