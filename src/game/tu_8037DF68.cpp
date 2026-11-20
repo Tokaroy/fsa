@@ -1672,7 +1672,7 @@ static inline void centreLine(char* out, char* prefix, f32 width) {
 // folds inf1->size into a load from mBmg.
 f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out3) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
-    const char* text = (const char*)inf1 + (inf1->size + inf1->entries[msg].textOffset + 8);
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
     f32 lineWidth[10];
     char prefix[16];
     s32 len = 0;
@@ -1692,8 +1692,8 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
     lineWidth[7] = 0.0f;
     lineWidth[8] = 0.0f;
     lineWidth[9] = 0.0f;
-    char c;
-    while ((c = text[i]) != 0) {
+    while (text[i] != 0) {
+        char c = text[i];
         const char* p = &text[i];
         if (c == '\n') {
             lineWidth[lines - 1] = width;
@@ -1744,7 +1744,8 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
         ((char*)out3)[0] = 0;
     }
     centreLine(out, prefix, lineWidth[0]);
-    while ((c = text[pos]) != 0) {
+    while (text[pos] != 0) {
+        char c = text[pos];
         const char* p = &text[pos];
         if (c == '\n') {
             two[0] = c;
@@ -1814,7 +1815,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
     }
-    two[0] = c;
+    two[0] = text[pos];
     two[1] = 0;
     appendPart(out, (char*)out2, (char*)out3, part, two);
     return widest;
