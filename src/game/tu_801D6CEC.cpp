@@ -107,15 +107,16 @@ void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // The ring's slot i is on a circle of radius field_0x5c around (field_0x48.x, field_0x48.y).
-// FIXME: 99.23 %, regalloc-only; behaviour clean.
+// FIXME: 99.49 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): the original stores d.x/d.y as one paired-single pair; ours uses separate stores.
 void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (fn_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
+    s32 serial;
     for (s32 i = 0; i < 16; i++) {
-        s32 serial = field_0x0[i];
+        serial = field_0x0[i];
         if (serial >= 0) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (a != NULL) {
@@ -135,8 +136,6 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
     field_0x44 = 4;
 }
 
-// regalloc only: the rotated x / y sit in f3 / f2, the original has f2 / f3.
-// FIXME: 99.38 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (fn_801CD2F8(field_0x40)) {
@@ -156,8 +155,8 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
                     d.normalize();
                 }
                 s16 ang = -(s16)(fn_801CD664(0xE39) - 0x71C);
-                f32 s = JMath::sincosTable_.sinShort(ang);
                 f32 c = JMath::sincosTable_.cosShort(ang);
+                f32 s = JMath::sincosTable_.sinShort(ang);
                 v.set(d.x * c - d.y * s, d.x * s + d.y * c);
             } else {
                 s16 ang = fn_801CD664(0x10000);
