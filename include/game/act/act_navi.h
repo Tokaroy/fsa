@@ -49,10 +49,9 @@ public:
     /* 0x2B4 */ s32 field_0x2b4;
     /* 0x2B8 */ f32 field_0x2b8;
     /* 0x2BC */ f32 field_0x2bc;
-    // vfunc_0x88 passes &field_0x2c0 to fn_801D01A0 as the (x, y) target; the asm reads x/y at
-    // 0x2C0/0x2C4 and uses the third float (.z, at 0x2C8) as the focus x beside field_0x2cc (focus y).
-    /* 0x2C0 */ JGeometry::TVec3f field_0x2c0;
-    /* 0x2CC */ f32 field_0x2cc;
+    // fn_8021E4F8 passes &field_0x2c0 to fn_801CD754 as a TVec2f and copies both pairs as TVec2f.
+    /* 0x2C0 */ JGeometry::TVec2f field_0x2c0;
+    /* 0x2C8 */ JGeometry::TVec2f field_0x2c8;
     /* 0x2D0 */ JPABaseEmitter* mEmitter2D0;
     /* 0x2D4 */ JPABaseEmitter* mEmitter2D4;
 }; // Size: 0x2D8

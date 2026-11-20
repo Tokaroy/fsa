@@ -65,8 +65,8 @@ cls_804A6708::cls_804A6708() {
     field_0x2bc = 0.0f;
     field_0x2c0.x = 0.0f;
     field_0x2c0.y = 0.0f;
-    field_0x2c0.z = 0.0f;
-    field_0x2cc = 0.0f;
+    field_0x2c8.x = 0.0f;
+    field_0x2c8.y = 0.0f;
     mEmitter2D0 = NULL;
     mEmitter2D4 = NULL;
 }
@@ -137,8 +137,8 @@ void cls_804A6708::init() {
         mPos.z = 18.0f;
     }
 
-    field_0x2c0.z = mPos.x;
-    field_0x2cc = mPos.y;
+    field_0x2c8.x = mPos.x;
+    field_0x2c8.y = mPos.y;
 
     if (mFlags & 0x20000) {
         mState = 0;
@@ -185,8 +185,7 @@ void cls_804A6708::init() {
 
 
 // FIXME: 82.11 %, missing/extra + reloc-name; behaviour drift.
-// FIXME(shotgun): missing/extra + reloc-name (the original passes the TVec2f at 0x2c0 to
-// fn_801CD754 in place and builds the temporaries with inlined TVec2 copies, ours goes through copies)
+// Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void cls_804A6708::fn_8021E4F8() {
     switch (mState) {
     case 4: {
@@ -208,32 +207,26 @@ void cls_804A6708::fn_8021E4F8() {
         break;
     }
     }
-    f32 dy = field_0x2c0.y - field_0x2cc;
-    f32 dx = field_0x2c0.x - field_0x2c0.z;
-    f32 len2 = dx * dx + dy * dy;
-    if (len2 > 32.0f * FLT_EPSILON) {
-        f32 inv = JGeometry::TUtilf::inv_sqrt(len2);
-        dx = dx * inv;
-        dy = dy * inv;
-    }
-    dx = dx * field_0x2bc;
-    dy = dy * field_0x2bc;
+    JGeometry::TVec2f d = field_0x2c0 - field_0x2c8;
+    d.normalize();
+    d.scale(field_0x2bc);
+    s32 player = field_0x2b4;
     bool follow = false;
-    if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
+    if (player >= 0 && (mFlags & 0x30000)) {
         follow = true;
     }
     f32 tx, ty;
     if (follow) {
-        const JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
+        const JGeometry::TVec3f* target = getPlayerPos_8023E724(player);
         tx = target->x;
         ty = target->y;
     } else {
         tx = mSpawnPos.x;
         ty = mSpawnPos.y;
     }
-    fn_801CD8E4(&field_0x2c0.z, tx, 1.0f, 0.0f);
-    fn_801CD8E4(&field_0x2cc, ty, 1.0f, 0.0f);
-    JGeometry::TVec2f goal(field_0x2c0.z + dx, field_0x2cc + dy);
+    fn_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
+    fn_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
+    JGeometry::TVec2f goal = field_0x2c8 + d;
     bool follow2 = false;
     if (mState == 7) {
         if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
@@ -241,18 +234,12 @@ void cls_804A6708::fn_8021E4F8() {
         }
     }
     if (follow2) {
-        // FIXME: the original moves the (x, y) at 0x2c0 as a TVec2f in place.
-        JGeometry::TVec2f cur(field_0x2c0.x, field_0x2c0.y);
-        fn_801CD754(&cur, &goal, 0.3f, 1.0f, 4.0f);
-        field_0x2c0.x = cur.x;
-        field_0x2c0.y = cur.y;
+        fn_801CD754(&field_0x2c0, &goal, 0.3f, 1.0f, 4.0f);
     } else {
-        field_0x2c0.x = goal.x;
-        field_0x2c0.y = goal.y;
+        field_0x2c0 = goal;
     }
-    dx = field_0x2c0.x - field_0x2c0.z;
-    dy = field_0x2c0.y - field_0x2cc;
-    f32 len = JGeometry::TVec2f(dx, dy).length();
+    JGeometry::TVec2f e = field_0x2c0 - field_0x2c8;
+    f32 len = e.length();
     s16 angle = 0x622;
     if (len > 0.001f) {
         s16 v = (s16)(s32)(1.0f / len * (1570.0f * field_0x2bc));
@@ -270,8 +257,7 @@ void cls_804A6708::fn_8021E4F8() {
     s16 neg = -angle;
     f32 s = sincos.sinShort(neg);
     f32 co = sincos.cosShort(neg);
-    field_0x2c0.x = field_0x2c0.z + (dx * co - dy * s);
-    field_0x2c0.y = field_0x2cc + (dx * s + dy * co);
+    field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
 // FIXME(shotgun): 91.90 %, missing/extra + reloc-name; behaviour drift.
@@ -317,14 +303,14 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
         }
         if (follow) {
             JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
-            field_0x2c0.z = target->x;
-            field_0x2cc = target->y;
+            field_0x2c8.x = target->x;
+            field_0x2c8.y = target->y;
         } else {
-            field_0x2c0.z = mSpawnPos.x;
-            field_0x2cc = mSpawnPos.y;
+            field_0x2c8.x = mSpawnPos.x;
+            field_0x2c8.y = mSpawnPos.y;
         }
         const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-        JGeometry::TVec2<f32> center(field_0x2c0.z, field_0x2cc);
+        JGeometry::TVec2<f32> center(field_0x2c8.x, field_0x2c8.y);
         JGeometry::TVec2<f32> offset(sincos.sinShort(-0x4000) * field_0x2bc, sincos.cosShort(-0x4000) * field_0x2bc);
         center.add(offset);
         field_0x2c0.x = center.x;
@@ -377,11 +363,11 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
         }
         if (follow) {
             JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
-            field_0x2c0.z = target->x;
-            field_0x2cc = target->y;
+            field_0x2c8.x = target->x;
+            field_0x2c8.y = target->y;
         } else {
-            field_0x2c0.z = mSpawnPos.x;
-            field_0x2cc = mSpawnPos.y;
+            field_0x2c8.x = mSpawnPos.x;
+            field_0x2c8.y = mSpawnPos.y;
         }
         field_0x2c0.x = mPos.x;
         field_0x2c0.y = mPos.y;
@@ -573,7 +559,8 @@ void cls_804A6708::vfunc_0x88() {
     case 4:
     case 7: {
         JGeometry::TVec2f out;
-        fn_801D01A0(&field_0x2c0, &out, FLT_MAX);
+        // fn_801D01A0 reads only (x, y) of its target, typed TVec3f* in EnemyBase.
+        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2c0, &out, FLT_MAX);
         field_0x3c.x = out.x;
         field_0x3c.y = out.y;
         break;
@@ -607,7 +594,7 @@ void cls_804A6708::vfunc_0xA0() {
         }
     }
     if (!(mFlags & 0x10000)) {
-        JGeometry::TVec3f focus(field_0x2c0.z, field_0x2cc - mPos.z, 0.0f);
+        JGeometry::TVec3f focus(field_0x2c8.x, field_0x2c8.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     }
 }
