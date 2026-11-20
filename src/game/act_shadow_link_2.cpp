@@ -128,7 +128,7 @@ void ShadowLink2_804A43E8::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     field_0x340.fn_800FEB78(0);
-    field_0x32c.set(mPos.x, mPos.y, mPos.z);
+    field_0x32c.set(mPos);
 }
 
 // Member: calls fn_801C12B8 on the fn_801C0D70 object when that object's
