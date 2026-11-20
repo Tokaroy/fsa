@@ -441,9 +441,9 @@ void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, 
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
         field_0x334 = 0;
     } else {
-        f32 y = 0.0f;
-        f32 x = 0.0f;
         s32 who = player;
+        f32 x = 0.0f;
+        f32 y = 0.0f;
         switch (fn_8022CAF8(player)) {
         case 0:
             vfunc_0xA4(&x, &y, &who);
