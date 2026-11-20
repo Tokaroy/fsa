@@ -644,16 +644,12 @@ void FlyingTile_804AC100::draw() {
 
 // FIXME(shotgun): 86.42 %, missing/extra; behaviour near.
 void FlyingTile_804AC100::fn_80339820() {
+    bool skip = false;
     JGeometry::TVec3f pos = mPos;
     pos.y -= pos.z;
     pos.z = 0.0f;
-    if (field_0x24c == 5) {
-        if (field_0x260 >= 0x45) {
-            field_0x260 -= 0x45;
-        } else {
-            field_0x260 -= 0x40;
-        }
-    } else if (field_0x24c == 1) {
+    switch (field_0x24c) {
+    case 1:
         switch (field_0x260) {
         case 0x75:
             field_0x260 = 2;
@@ -665,22 +661,29 @@ void FlyingTile_804AC100::fn_80339820() {
             field_0x260 = 1;
             break;
         }
+        break;
+    case 5:
+        if (field_0x260 >= 0x45) {
+            field_0x260 -= 0x45;
+        } else {
+            field_0x260 -= 0x40;
+        }
+        break;
     }
     if (field_0x260 <= 1) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.8f) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &pos, 0x261400, -1, -1);
             } else {
-                bool skip = false;
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                     skip = true;
                 }
                 if (!skip) {
-                if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, field_0x4, &pos, 0, -1, -1);
-                } else {
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &pos, 0, -1, -1);
-                }
+                    if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, field_0x4, &pos, 0, -1, -1);
+                    } else {
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &pos, 0, -1, -1);
+                    }
                 }
             }
         }
