@@ -854,7 +854,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
@@ -920,12 +920,14 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
         }
         if (field_0x440 <= t2) {
             if (field_0x440 >= t3) {
+                f32 x;
+                f32 rate;
                 f32 offset = (40.0f + (f32)h) *
                              (1.0f - (f32)((field_0x440 - t3) * (field_0x440 - t3)) / (f32)(e * e));
                 for (s32 i = 0; i < field_0x454; i++) {
-                    f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
+                    x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
-                    f32 rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
+                    rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
                     setScoreRowAlpha(i, rate);
                 }
             } else if (field_0x440 >= t4) {
@@ -2474,7 +2476,7 @@ void ResultScreen_804AF9A0::fn_803ABCEC() {
     }
 }
 
-// FIXME: 99.63 %, operands; behaviour clean.
+// FIXME: 99.93 %, regalloc-only; behaviour clean.
 // Registers and stack slots only (the ranks / ranked / totals pointers,
 // f29-f31, the corner-colour copy at 0x40 vs 0x1C, the emitter positions) plus .sdata2
 // names.
@@ -2518,14 +2520,14 @@ void ResultScreen_804AF9A0::fn_803AB494() {
     if (lbl_804AF948[field_0x4c3] == -1 && lbl_804AF8CC[field_0x4c4] == -1) {
         if (field_0x4c8 != 0xFF) {
             s32 ranks[4];
-            s32 ranked[4];
             s32 totals[4];
+            s32 ranked[4];
             s32 place = 0;
             for (s32 i = 0; i < field_0x454; i++) {
                 ranks[i] = 0;
+                ranked[i] = 0;
                 totals[i] = field_0x320[i] + field_0x340[i] + field_0x350[i] + field_0x360[i] + field_0x370[i] -
                             field_0x380[i] + field_0x3a0[i] + field_0x3b0[i];
-                ranked[i] = 0;
                 if (totals[i] < -5000) {
                     totals[i] = -5000;
                 }
@@ -2569,22 +2571,24 @@ void ResultScreen_804AF9A0::fn_803AB494() {
                 field_0x40[i]->changeTexture(tex, 0);
                 field_0x40[i]->setCornerColor(field_0x46c[ranks[i]]);
             }
-            s32 winner = 0;
+            rank = 0;
             for (s32 i = 0; i < field_0x454; i++) {
-                if (i == field_0x4ac[winner]) {
-                    JGeometry::TVec3f pos(field_0x2f0[i].x + 7.0f, field_0x2f0[i].y - 27.0f, field_0x2f0[i].z);
-                    spawnEmitter_8013CC50(0, &pos, 0xCB, 1, 0, NULL, NULL, true, 1.0f);
-                    JGeometry::TVec3f pos2(field_0x2f0[i].x + 7.0f, field_0x2f0[i].y - 27.0f, field_0x2f0[i].z);
-                    spawnEmitter_8013CC50(0, &pos2, 0xCC, 1, 0, NULL, NULL, true, 1.0f);
+                if (i == field_0x4ac[rank]) {
+                    spawnEmitter_8013CC50(
+                        0, &JGeometry::TVec3f(field_0x2f0[i].x + 7.0f, field_0x2f0[i].y - 27.0f, field_0x2f0[i].z),
+                        0xCB, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(
+                        0, &JGeometry::TVec3f(field_0x2f0[i].x + 7.0f, field_0x2f0[i].y - 27.0f, field_0x2f0[i].z),
+                        0xCC, 1, 0, NULL, NULL, true, 1.0f);
                     if (field_0x1b8[i] == NULL) {
-                        JGeometry::TVec3f pos3;
-                        pos3.x = field_0x158[i]->getWidth() / 2 + field_0x158[i]->getGlobalBounds().i.x;
-                        pos3.y = 0.0f;
-                        pos3.z = 0.0f;
-                        field_0x1b8[i] = spawnEmitter_8013CC50(0, &pos3, 0x241, 0, 0, NULL, NULL, true, 1.0f);
+                        field_0x1b8[i] = spawnEmitter_8013CC50(
+                            0,
+                            &JGeometry::TVec3f(field_0x158[i]->getWidth() / 2 + field_0x158[i]->getGlobalBounds().i.x,
+                                               0.0f, 0.0f),
+                            0x241, 0, 0, NULL, NULL, true, 1.0f);
                     }
-                    if (field_0x4c8 > winner) {
-                        winner++;
+                    if (field_0x4c8 > rank) {
+                        rank++;
                     }
                 }
             }
