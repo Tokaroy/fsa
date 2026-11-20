@@ -49,14 +49,16 @@ void cls_804A5568::init() {
 // The point on the chain's curve at control point `idx`, sixteenth `seg` (0 and 16 are the control
 // points themselves): inlined twice by fn_801E9224.
 static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* outX, f32* outY) {
+    f32 x;
+    f32 y;
     switch (seg) {
     case 0:
-        *outX = self->field_0x2b0[idx].x;
-        *outY = self->field_0x2b0[idx].y;
+        x = self->field_0x2b0[idx].x;
+        y = self->field_0x2b0[idx].y;
         break;
     case 16:
-        *outX = self->field_0x2b0[idx + 1].x;
-        *outY = self->field_0x2b0[idx + 1].y;
+        x = self->field_0x2b0[idx + 1].x;
+        y = self->field_0x2b0[idx + 1].y;
         break;
     default: {
         f32 prevX;
@@ -82,10 +84,12 @@ static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* out
             p3y = self->field_0x2b0[idx + 2].y;
         }
         f32 t = 0.0625f * (f32)seg;
-        *outY = fn_801CD6D8(prevY, p1y, p2y, p3y, t);
-        *outX = fn_801CD6D8(prevX, p1x, p2x, p3x, t);
+        y = fn_801CD6D8(prevY, p1y, p2y, p3y, t);
+        x = fn_801CD6D8(prevX, p1x, p2x, p3x, t);
     }
     }
+    *outX = x;
+    *outY = y;
 }
 
 // Moves the chain's head along its curve by the speed (0.5 per frame).
@@ -286,7 +290,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME(shotgun): 82.91 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) {
+void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
     h += (h > 0.0f) ? 0.5f : -0.5f;
@@ -313,7 +317,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
 
 // FIXME(shotgun): 82.13 %, missing/extra + reloc-name; behaviour drift.
 // cls_804A5568
-void cls_804A5568::fn_801E8080() {
+void cls_804A5568::fn_801E8080() const {
     f32 len = 0.0f;
     u8 split = 0;
     s32 totalVerts = ((mCount - 1) << 5) + 2;
@@ -330,11 +334,11 @@ void cls_804A5568::fn_801E8080() {
         }
     }
     f32 dx, dy;
+    JGeometry::TVec2f prev;
     if (split != 0) {
         u8 segCur = (s32)(1.0f + field_0x3b4);
         s32 verts1 = (field_0x3b0 << 5) + (segCur << 1) + 2;
         GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, (u16)verts1);
-        JGeometry::TVec2f prev;
         prev.x = field_0x2b0[0].x;
         prev.y = field_0x2b0[0].y;
         s32 drawn = 0;
@@ -348,17 +352,15 @@ void cls_804A5568::fn_801E8080() {
                     dx = sx;
                     dy = sy;
                 }
-                u16 ang1 = (s32)(JMath::atanTable_.atan2_(sx, sy) * 10430.378f);
-                u16 ang0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                u16 ang1 = JMath::atanTable_.atan2_(sx, sy) * 10430.378f;
+                u16 ang0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
                 fn_801E8B1C(len, b1, &prev, ang0, ang1);
                 prev.x = cx;
                 prev.y = cy;
                 dx = sx;
                 dy = sy;
-                f32 sq = sx * sx + sy * sy;
-                f32 d = (sq <= 0.0f) ? sq : sq * JGeometry::TUtil<f32>::inv_sqrt(sq);
+                len += JGeometry::TUtil<f32>::sqrt(sx * sx + sy * sy);
                 drawn += 2;
-                len += d;
                 if (drawn >= verts1 - 2) {
                     break;
                 }
@@ -367,46 +369,42 @@ void cls_804A5568::fn_801E8080() {
                 break;
             }
         }
-        f32 sq = dx * dx + dy * dy;
-        f32 d = (sq <= 0.0f) ? sq : sq * JGeometry::TUtil<f32>::inv_sqrt(sq);
+        f32 d = JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy);
         u8 segFloor = (s32)field_0x3b4;
-        f32 midLen = (len - d) + d * (field_0x3b4 - (f32)segFloor);
-        u16 angEnd1 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-        u16 angEnd0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+        f32 midLen = len - d;
+        midLen += d * (field_0x3b4 - (f32)segFloor);
+        u16 angEnd1 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u16 angEnd0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
         fn_801E8B1C(midLen, b1, (const JGeometry::TVec2f*)&mPos, angEnd0, angEnd1);
         fn_801E9AFC()->fn_801EA344();
         GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, (u16)(totalVerts - verts1 + 4));
-        u16 angStart1 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-        u16 angStart0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+        u16 angStart1 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u16 angStart0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
         fn_801E8B1C(midLen, b0, (const JGeometry::TVec2f*)&mPos, angStart0, angStart1);
         s32 minSeg = segCur + 1;
-        u8 minIdx = field_0x3b0;
-        for (u8 i = minIdx; i < mCount - 1; i++) {
+        for (u8 i = field_0x3b0; i < mCount - 1; i++) {
             for (u8 s = 1; s <= 16; s++) {
-                if (i > minIdx || s >= minSeg) {
+                if (i > field_0x3b0 || s >= minSeg) {
                     f32 cx, cy;
                     curvePoint(this, i, s, &cx, &cy);
                     f32 sx = cx - prev.x;
                     f32 sy = cy - prev.y;
-                    u16 ang1 = (s32)(JMath::atanTable_.atan2_(sx, sy) * 10430.378f);
-                    u16 ang0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                    u16 ang1 = JMath::atanTable_.atan2_(sx, sy) * 10430.378f;
+                    u16 ang0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
                     fn_801E8B1C(len, b0, &prev, ang0, ang1);
                     prev.x = cx;
                     prev.y = cy;
                     dx = sx;
                     dy = sy;
-                    f32 sq2 = sx * sx + sy * sy;
-                    f32 d2 = (sq2 <= 0.0f) ? sq2 : sq2 * JGeometry::TUtil<f32>::inv_sqrt(sq2);
-                    len += d2;
+                    len += JGeometry::TUtil<f32>::sqrt(sx * sx + sy * sy);
                 }
             }
         }
-        u16 angLast1 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-        u16 angLast0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+        u16 angLast1 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u16 angLast0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
         fn_801E8B1C(len, b0, &prev, angLast0, angLast1);
     } else {
         GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, (u16)totalVerts);
-        JGeometry::TVec2f prev;
         prev.x = field_0x2b0[0].x;
         prev.y = field_0x2b0[0].y;
         for (u8 i = 0; i < mCount - 1; i++) {
@@ -419,20 +417,18 @@ void cls_804A5568::fn_801E8080() {
                     dx = sx;
                     dy = sy;
                 }
-                u16 ang1 = (s32)(JMath::atanTable_.atan2_(sx, sy) * 10430.378f);
-                u16 ang0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                u16 ang1 = JMath::atanTable_.atan2_(sx, sy) * 10430.378f;
+                u16 ang0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
                 fn_801E8B1C(len, b, &prev, ang0, ang1);
                 prev.x = cx;
                 prev.y = cy;
                 dx = sx;
                 dy = sy;
-                f32 sq = sx * sx + sy * sy;
-                f32 d = (sq <= 0.0f) ? sq : sq * JGeometry::TUtil<f32>::inv_sqrt(sq);
-                len += d;
+                len += JGeometry::TUtil<f32>::sqrt(sx * sx + sy * sy);
             }
         }
-        u16 angLast1 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-        u16 angLast0 = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+        u16 angLast1 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u16 angLast0 = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
         fn_801E8B1C(len, b, &prev, angLast0, angLast1);
     }
 }

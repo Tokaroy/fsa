@@ -20,9 +20,9 @@ public:
     // 0x801E801C: draws the sprite (fn_801EA108) unless field_0x248 is set.
     void fn_801E801C();
     // 0x801E8080
-    void fn_801E8080();
+    void fn_801E8080() const;
     // 0x801E8B1C
-    void fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span);
+    void fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const;
     // 0x801E8C74: stores arg at 0x3B8 and counts the low bits set in 0x2A8.
     void fn_801E8C74(s32 arg);
     // 0x801E8EB4: sets bit `index` of the word at 0x2A8 and stores pos's x / y
