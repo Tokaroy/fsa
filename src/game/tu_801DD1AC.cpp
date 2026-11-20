@@ -5,9 +5,14 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 
-// FIXME(shotgun): 99.45 %, missing/extra; behaviour drift.
 void cls_804A4C58::fn_801DE12C() {
-    if ((mState >= 0 && mState < 4) || (mState >= 0x13 && mState < 0x15)) {
+    switch (mState) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 0x13:
+    case 0x14:
         mBox.i.x = 1.0f;
         mBox.i.y = 1.0f;
         mBox.f.x = -1.0f;
@@ -17,6 +22,8 @@ void cls_804A4C58::fn_801DE12C() {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         return;
+    default:
+        break;
     }
     switch (mSeq2a8.fn_801DA96C()) {
     case 0:
@@ -175,13 +182,16 @@ void cls_804A4C58::fn_801DE12C() {
     mBox2.f.y = mBox.f.y;
 }
 
-// FIXME(shotgun): 90.94 %, missing/extra; behaviour near.
 bool cls_804A4C58::fn_801DE018() {
-    bool inRange = false;
-    if (mState == 5 || (mState >= 4 && mState < 8)) {
-        inRange = true;
-    }
     bool result = false;
+    bool inRange = false;
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
+        inRange = true;
+        break;
+    }
     if (inRange) {
         JGeometry::TBox2f box;
         JGeometry::TVec2f out;
@@ -189,12 +199,12 @@ bool cls_804A4C58::fn_801DE018() {
         s32 player = fn_8023AE34(&box, field_0x4, &out);
         if (player < 0) {
             player = fn_8023AA18(&box, field_0x4, &out);
-        }
-        if (player < 0) {
-            player = fn_8023AC74(&box, field_0x4, &out);
-        }
-        if (player < 0) {
-            player = fn_8023AD54(&box, field_0x4, &out);
+            if (player < 0) {
+                player = fn_8023AC74(&box, field_0x4, &out);
+                if (player < 0) {
+                    player = fn_8023AD54(&box, field_0x4, &out);
+                }
+            }
         }
         if (player >= 0) {
             fn_801D9C58(5);
@@ -463,18 +473,19 @@ bool cls_804A4C58::fn_801DD410() {
     return hit;
 }
 
-// FIXME(shotgun): 98.87 %, missing/extra; behaviour clean.
 u8 cls_804A4C58::fn_801DD28C() {
     u8 hit = 0;
     f32 x0 = 1.0f;
     f32 y0 = x0;
     f32 x1 = -1.0f;
     f32 y1 = x1;
-    if (mState == 9) {
+    switch (mState) {
+    case 9:
         x0 = -55.0f;
         y0 = -32.0f;
         x1 = 55.0f;
         y1 = 12.0f;
+        break;
     }
     if (x1 - x0 > 0.0f && (mFlags & 0x2000) && mSeq2a8.fn_801DA904()) {
         f32 t = x0;
@@ -499,7 +510,6 @@ u8 cls_804A4C58::fn_801DD28C() {
     return hit;
 }
 
-// FIXME(shotgun): 98.00 %, missing/extra; behaviour clean.
 bool cls_804A4C58::fn_801DD1AC() {
     bool clamped = false;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT)) {
@@ -516,11 +526,20 @@ bool cls_804A4C58::fn_801DD1AC() {
             mPos.y = field_0x2d0;
             clamped = true;
             mMapHitDir.set(0.0f, -1.0f, 0.0f);
-        } else if (mState >= 0xB && mState < 0x11) {
-            if (mPos.y < field_0x2d4[0].y) {
-                mPos.y = field_0x2d4[0].y;
-                clamped = true;
-                mMapHitDir.set(0.0f, 1.0f, 0.0f);
+        } else {
+            switch (mState) {
+            case 0xB:
+            case 0xC:
+            case 0xD:
+            case 0xE:
+            case 0xF:
+            case 0x10:
+                if (mPos.y < field_0x2d4[0].y) {
+                    mPos.y = field_0x2d4[0].y;
+                    clamped = true;
+                    mMapHitDir.set(0.0f, 1.0f, 0.0f);
+                }
+                break;
             }
         }
     }
