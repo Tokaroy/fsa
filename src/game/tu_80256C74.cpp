@@ -1539,11 +1539,8 @@ void Player_804A6F38::fn_8025A9C0() {
     field_0xb8c = 0;
 }
 
-// FIXME: 99.44 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: as in fn_80259830, the box's f.x / f.y take their
-// fadds operands the other way round in cases 0 and 2, epsilonEquals keeps 32 * FLT_EPSILON
-// in f2 (ours f3), the emitters' rotation-table address is formed after the matrix pointer,
-// and the slot loop's counter / player index swap r28 / r29.
+// regalloc-only: the box's f.x / f.y take their fadds operands the other way
+// round in cases 0 and 2.
 // State 0x44 (item 6 below level 2; enter fn_8025A9C0, exit fn_8025A0B0): the Fire Rod
 // flame of state 0x45 without the Somaria block. Frame 11 holds while the button is held
 // (0xB84): the player walks at 1.125 with the 28-frame walk cycle (lbl_8046B150), a 'FIRE'
@@ -1652,14 +1649,14 @@ void Player_804A6F38::fn_8025A15C() {
                 field_0x12c4 = spawnEmitter_8013CC50(field_0x3b4, &pos, 0x1ab, 0, 2, NULL, NULL, true, 1.0f);
             }
             if (field_0x12c4 != NULL) {
-                JPAGetXYZRotateMtx(0, lbl_8046B170[field_0x3dc], -0x8000, field_0x12c4->mGlobalRot);
+                field_0x12c4->setGlobalRotation(JGeometry::TVec3<s16>(0L, lbl_8046B170[field_0x3dc], -0x8000L));
                 setEmitterPos_8013CB44(field_0x12c4, &pos, 0, 2, true);
             }
             if (field_0x12c8 == NULL) {
                 field_0x12c8 = spawnEmitter_8013CC50(field_0x3b4, &pos, 0x54a, -1, 0, NULL, NULL, true, 1.0f);
             }
             if (field_0x12c8 != NULL) {
-                JPAGetXYZRotateMtx(0, 0, lbl_8046B180[field_0x3dc], field_0x12c8->mGlobalRot);
+                field_0x12c8->setGlobalRotation(JGeometry::TVec3<s16>(0L, 0L, lbl_8046B180[field_0x3dc]));
                 setEmitterPos_8013CB44(field_0x12c8, &pos, -1, 0, true);
             }
             fn_8024F0E8(0x30011);
@@ -1695,10 +1692,9 @@ void Player_804A6F38::fn_8025A15C() {
                     }
                     for (int i = 0; i < 3; i++) {
                         if (field_0xb1c[i] < 0) {
-                            s32 index = field_0x4;
                             field_0xb1c[i] = getActorManager_801F856C()->spawnActor_801F9484(
-                                ACTOR_FIRE, field_0x3b4, &placed, ((field_0x3dc & 3) << 4) | 0x1000 | (index & 3), -1,
-                                index);
+                                ACTOR_FIRE, field_0x3b4, &placed, ((field_0x3dc & 3) << 4) | 0x1000 | (field_0x4 & 3),
+                                -1, field_0x4);
                             if (field_0xb1c[i] >= 0) {
                                 field_0xb5c[i] = field_0x3b4;
                                 field_0xb78 = true;
