@@ -15,12 +15,20 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/Camera.h"
 
-// Per-kind value table (fn_8032D564). The two SOB file names that follow it
-// (lbl_80471A28, lbl_80471A3C) are string literals of unwritten functions
+// Per kind (field_0x268): draw's base frame.
+static const s32 lbl_80471948[12] = {1, 5, 9, 13, 17, 21, 25, 29, 1114, 1110, 1122, 1118};
+// Per kind: update's emitter ids (state 0 while moving; state 0xF, three at once).
+static const u16 lbl_80471978[12] = {839, 839, 838, 838, 837, 837, 837, 837, 837, 837, 837, 837};
+static const u16 lbl_80471990[12] = {852, 852, 849, 849, 846, 846, 846, 846, 846, 846, 846, 846};
+static const u16 lbl_804719A8[12] = {853, 853, 850, 850, 847, 847, 847, 847, 847, 847, 847, 847};
+static const u16 lbl_804719C0[12] = {854, 854, 851, 851, 848, 848, 848, 848, 848, 848, 848, 848};
+
+// Per-kind value table (fn_8032D564). The two SOB file names that follow the
+// tables (lbl_80471A28, lbl_80471A3C) are string literals of unwritten functions
 // that address them off the same base.
-static const s32 lbl_804719D8[20] = {
-    1, 5, 20, 50, 100, 150, 200, 300, 1000, 1500, 2000, 3000, 404, 403, 402, 401, 439, 440, 441, 442,
-};
+static const s32 lbl_804719D8[12] = {1, 5, 20, 50, 100, 150, 200, 300, 1000, 1500, 2000, 3000};
+// Kinds 4 and up (index kind - 4).
+static const s32 lbl_80471A08[8] = {404, 403, 402, 401, 439, 440, 441, 442};
 
 // Kick direction of a thrown gem: the new actor gets this velocity (x, y, 5).
 static inline void setKick(ActorBase_804A5770* actor, s32 dir) {
@@ -295,17 +303,6 @@ void ForceGem_804AB6D8::vfunc_0x40() {
     field_0x230 = 1;
 }
 
-// FIXME(shotgun): table not written out (gate.py literal tripwire); extern-declared, size from
-// symbols.txt (0x90). Per kind (field_0x268): draw's base frame and update's emitter ids.
-struct Tables_80471948 {
-    /* 0x00 */ s32 mFrames[12];
-    /* 0x30 */ u16 mMoveEmitters[12];  // update state 0 while moving
-    /* 0x48 */ u16 mEmitters48[12];    // update state 0xF, three at once
-    /* 0x60 */ u16 mEmitters60[12];
-    /* 0x78 */ u16 mEmitters78[12];
-}; // Size: 0x90
-extern const Tables_80471948 lbl_80471948;
-
 // The timer field_0x24c runs while no player holds (fn_80230188).
 inline void ForceGem_804AB6D8::tickTimer() {
     for (s32 i = 0; i < 4; i++) {
@@ -336,7 +333,7 @@ void ForceGem_804AB6D8::update() {
         return;
     case 0:
         if (field_0x3c.squared() > 0.1f) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471948.mMoveEmitters[field_0x268], 0, 0, NULL, NULL,
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471978[field_0x268], 0, 0, NULL, NULL,
                                   true, 0.15f);
         }
         if (field_0x94 == 0x22) {
@@ -374,9 +371,9 @@ void ForceGem_804AB6D8::update() {
         break;
     case 0xF:
         startSound_801F0E34(0x5006D, 0);
-        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471948.mEmitters48[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471948.mEmitters60[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471948.mEmitters78[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80471990[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804719A8[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804719C0[field_0x268], 0, 0, NULL, NULL, true, 1.0f);
         field_0x230 = 0x10;
     case 0x10:
         if (field_0x274 <= 0) {
@@ -406,7 +403,7 @@ void ForceGem_804AB6D8::update() {
     case 3:
         stopMoving();
         if (field_0x268 >= 4 && field_0x264 >= 0 && field_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-            lbl_8053AED0->fn_8043D67C(lbl_804719D8[field_0x268 + 8], fn_8022F340(field_0x264), 0);
+            lbl_8053AED0->fn_8043D67C(lbl_80471A08[field_0x268 - 4], fn_8022F340(field_0x264), 0);
         }
         fn_801F3604();
         field_0x250 = 0;
@@ -638,7 +635,7 @@ void ForceGem_804AB6D8::draw() {
     params.field_0x20 = 0;
     if (field_0x230 == 5 || field_0x230 == 6) {
         params.field_0x10.a = 255.0f * (f32)field_0x24c / 30.0f;
-        s32 frame = field_0x254 + lbl_80471948.mFrames[field_0x268];
+        s32 frame = field_0x254 + lbl_80471948[field_0x268];
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
@@ -684,10 +681,10 @@ void ForceGem_804AB6D8::draw() {
     }
     JGeometry::TVec3f saved = mPos;
     mPos += field_0x290;
-    drawSprite_801F06F0(name, field_0x254 + lbl_80471948.mFrames[field_0x268], &params, flags, 1.0f, 1.0f);
-    s32 frame = field_0x254 + lbl_80471948.mFrames[field_0x268];
+    drawSprite_801F06F0(name, field_0x254 + lbl_80471948[field_0x268], &params, flags, 1.0f, 1.0f);
+    s32 frame = field_0x254 + lbl_80471948[field_0x268];
     if (field_0x268 >= 8) {
-        frame = field_0x254 + lbl_80471948.mFrames[field_0x268 - 4];
+        frame = field_0x254 + lbl_80471948[field_0x268 - 4];
     }
     if (field_0x230 == 0xB) {
         fn_803075AC(mSerial, field_0x4, &mPos, frame, gc != 0, 2, -1, true, 0, 0);
