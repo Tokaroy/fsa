@@ -664,6 +664,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     return entered;
 }
 
+// FIXME: 98.84 %, regalloc-only; behaviour clean.
 u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
     bool moved = false;
     if (fn_802DCD0C() == 0) {
@@ -1771,7 +1772,7 @@ void GameView_804A9950::fn_802D6F38(u32 key, JGeometry::TVec2f pos, s32 value, b
     }
 }
 
-// FIXME: 85.99 %, missing/extra; behaviour drift.
+// FIXME: 88.02 %, missing/extra; behaviour drift.
 // Two instructions short: the target loads b.x once before the first loop
 // and reloads mView (lwz 0xc) for the id test after the epsilon compare; ours keeps both
 // in the loop body / one register. Registers differ throughout.
@@ -1798,7 +1799,7 @@ bool GameView_804A9950::fn_802D6D70(JGeometry::TVec2f a, JGeometry::TVec2f b, s3
     return found;
 }
 
-// FIXME: 98.12 %, regalloc-only; behaviour clean.
+// FIXME: 99.09 %, regalloc-only; behaviour clean.
 // Regalloc only: the loop's i * 4 / i * 8 counters and the match flag take other
 // registers.
 void GameView_804A9950::fn_802D6C10(JGeometry::TVec2f pos, u32 id) {
