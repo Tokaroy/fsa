@@ -107,7 +107,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     return result;
 }
 
-// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.45 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80124448() {
     ActorBase_804A5770::init();
     lbl_80539F30 = mSerial;
@@ -130,32 +130,19 @@ void EscortBase_8049E0C8::fn_80124448() {
     getGameView_802D6A9C()->fn_802D7440(0);
     if (field_0x332) {
         vfunc_0x7C();
-        if (field_0x332) {
-            JGeometry::TVec3f pos(mPos);
-            pos.x -= 16.0f;
-            for (s32 i = 0; i < field_0x360; i++) {
-                pos.x += lifeMeterSpacing();
-                field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
-                s32 serial = field_0x364[i];
-                if (serial < 0) {
-                    break;
-                }
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (actor) {
-                    actor->mDrawEnabled = false;
-                }
-            }
-        }
+        spawnLifeMeters();
     }
 }
 
-// FIXME(shotgun): 94.17 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::update() {
     ActorBase_804A5770::update();
     field_0x37c = 1.0f;
     field_0x331 = 1;
     JGeometry::TBox2f box(mBox);
-    box.addPos(mPos.x, mPos.y);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
     vfunc_0x80();
     if (field_0x333) {
         field_0x354++;
@@ -180,7 +167,7 @@ void EscortBase_8049E0C8::update() {
         fn_801F2618(&out, false);
     }
     JGeometry::TVec3f dir;
-    dir.x = dir.y = dir.z = 0.0f;
+    dir.set(0.0f, 0.0f, 0.0f);
     if (fn_80121438(&dir)) {
         mPos.add(dir);
     }
@@ -261,8 +248,6 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
-// (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
         return 0;
@@ -340,7 +325,7 @@ static inline s32 findArrivedSlot(s32 player) {
     return -1;
 }
 
-// FIXME: 97.91 %, missing/extra; behaviour clean.
+// FIXME: 97.93 %, missing/extra; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     if (player < 0) {
         return;
@@ -451,7 +436,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-// FIXME(shotgun): 98.72 %, different; behaviour clean.
+// FIXME(shotgun): 98.77 %, different; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
@@ -885,7 +870,7 @@ void EscortBase_8049E0C8::fn_80121FA8() {
 // original's .sdata2 has 10430.378f between fn_80121F34's literals and fn_80121FA8's, so it was
 // generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
 u16 angleOf(f32 x, f32 y) {
-    return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
+    return (s32)(JMath::atanTable_.atan2_(x, y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
 }
 
 void EscortBase_8049E0C8::fn_80121F34() {
@@ -946,12 +931,11 @@ s32 EscortBase_8049E0C8::fn_80121D68() {
     return 1;
 }
 
-// FIXME: 98.52 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
     }
-    u16 angle = 0;
+    s16 angle = 0;
     JGeometry::TVec3f step;
     step.set(0.0f, 0.0f, 0.0f);
     s32 layer = field_0x4;
@@ -959,7 +943,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     tmp.x += vec.x;
     tmp.y += vec.y;
     JGeometry::TVec3f pos(tmp);
-    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, &angle, 0x200);
+    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
     field_0x3c.x = step.x;
     field_0x3c.y = step.y;
     field_0x3c.z = step.z;
@@ -985,11 +969,17 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     return false;
 }
 
-// FIXME: 99.29 %, regalloc-only; behaviour clean.
-// Regalloc only: the original keeps the array pointer in r29 and the counter in r30; here they are swapped.
+// FIXME: 99.05 %, regalloc-only; behaviour clean.
+// Regalloc only: the original keeps the array pointer, counter and serial in r29, r30, r28; here in r28, r29, r30.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
     vfunc_0x7C();
+    spawnLifeMeters();
+}
+
+// Dead-stripped helper inlined into fn_80124448 and fn_80121ABC: when field_0x332 is set, spawns
+// field_0x360 life-meter actors ('LIMT') in a row at the escort, hidden.
+void EscortBase_8049E0C8::spawnLifeMeters() {
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
         pos.x -= 16.0f;
