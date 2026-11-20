@@ -207,32 +207,44 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 90.92 %, missing/extra; behaviour drift.
+// Not in the binary: fn_80332A60 inlines it.
+inline bool Cucco_804AB8C0::checkActorHit() {
+    bool hit = false;
+    s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    if (serial >= 0 && serial != mSerial) {
+        ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        bool isFlame = false;
+        if (other == NULL) {
+            return false;
+        }
+        if (other->mActorId == ACTOR_FLME) {
+            isFlame = true;
+        }
+        if (isFlame) {
+            JGeometry::TVec3f from(0.0f, 0.0f, 0.0f);
+            other->fn_801F3128((JGeometry::TVec2f*)&from);
+            from -= other->field_0x3c;
+            hit = fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110);
+        }
+        if (hit) {
+            other->field_0x164 = 1;
+        }
+    }
+    return hit;
+}
+
+// Differs only in the registers of checkActorHit's hit (r29) and serial/other (r28), swapped in ours.
 void Cucco_804AB8C0::fn_80332A60() {
     if (fn_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
         field_0xb0 = 0x41302;
         if (field_0x268 > 0) {
             JGeometry::TBox2f box = mBox;
-            JGeometry::TVec2f center(mPos.x, mPos.y);
+            JGeometry::TVec2f center;
+            center.x = mPos.x;
+            center.y = mPos.y;
             box.addPos(center);
             s32 result = 0;
-            bool hit = false;
-            s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
-            if (serial >= 0 && serial != mSerial) {
-                ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (other != NULL) {
-                    if (other->mActorId == ACTOR_FLME) {
-                        JGeometry::TVec2f center2d(0.0f, 0.0f);
-                        other->fn_801F3128(&center2d);
-                        JGeometry::TVec3f from = JGeometry::TVec3f(center2d.x, center2d.y, 0.0f) - other->field_0x3c;
-                        hit = fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110);
-                    }
-                    if (hit) {
-                        other->field_0x164 = 1;
-                    }
-                }
-            }
-            if (hit) {
+            if (checkActorHit()) {
                 result = 2;
             } else if (fn_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
                        fn_801A4D1C(mSerial, &box, &center) || fn_801A6108(mSerial, &box, &center) ||

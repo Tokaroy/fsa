@@ -22,6 +22,8 @@ public:
     void fn_80331E6C();
     void fn_803324A8();
     void fn_80332A60();
+    // Not in the binary: fn_80332A60 inlines it.
+    bool checkActorHit();
     u8 fn_80332378();
     void fn_80331D38();
     void fn_80331C24();
