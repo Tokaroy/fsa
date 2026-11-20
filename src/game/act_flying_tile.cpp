@@ -10,7 +10,6 @@
 #include "game/GameGlobals.h"
 #include "game/act/act_flying_tile.h"
 
-// FIXME(shotgun): 99.98 %, scheduling; behaviour drift.
 void FlyingTile_804AC100::init() {
     field_0x244 = field_0x90 & 0x7FF;
     field_0x250 = (field_0x90 >> 11) & 0x1F;
@@ -18,12 +17,8 @@ void FlyingTile_804AC100::init() {
     field_0x254 = (field_0x90 >> 20) & 0xF;
     field_0x264 = ((field_0x90 >> 24) & 7) * 5 + 15;
     mLife = 0;
-    field_0x27c = 0.0f;
-    field_0x280 = 0.0f;
-    field_0x284 = 0.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    field_0x27c.zero();
+    field_0x3c.zero();
     field_0x234 = 0;
     field_0x260 = 0;
     field_0x288 = NULL;
@@ -180,8 +175,8 @@ void FlyingTile_804AC100::update() {
     u8 hitWall = 0;
     s32 player;
     s32 flag;
-    addCalc2_801F71A4(&field_0x3c.x, field_0x27c, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x280, 0.3f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.x, field_0x27c.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.y, field_0x27c.y, 0.3f, 1.0f);
     mPos.add(field_0x3c);
     if (field_0x230 == 2 && field_0x238 >= field_0x264) {
         hitWall = fn_801F2618(NULL, false);
@@ -356,8 +351,8 @@ void FlyingTile_804AC100::update() {
                 mPos.y -= mPos.z;
                 fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 0);
                 mPos.y += mPos.z;
-                field_0x27c = 4.0f * JMath::sincosTable_.sinShort(angle);
-                field_0x280 = 4.0f * JMath::sincosTable_.cosShort(angle);
+                field_0x27c.x = 4.0f * JMath::sincosTable_.sinShort(angle);
+                field_0x27c.y = 4.0f * JMath::sincosTable_.cosShort(angle);
             }
             break;
         case 2:
@@ -366,8 +361,8 @@ void FlyingTile_804AC100::update() {
                 mPos.y -= mPos.z;
                 fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 0);
                 mPos.y += mPos.z;
-                field_0x27c = 2.0f * JMath::sincosTable_.sinShort(angle);
-                field_0x280 = 2.0f * JMath::sincosTable_.cosShort(angle);
+                field_0x27c.x = 2.0f * JMath::sincosTable_.sinShort(angle);
+                field_0x27c.y = 2.0f * JMath::sincosTable_.cosShort(angle);
             }
             break;
         }
