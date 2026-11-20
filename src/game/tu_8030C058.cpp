@@ -25,8 +25,8 @@ Camera_804AA9E4::Camera_804AA9E4() {}
 
 Camera_804AA9E4::~Camera_804AA9E4() {}
 
-// The depth 1024 is passed from a float constant in the original (lfs, not lfd).
-// FIXME: 98.96 %, different; behaviour drift.
+// r0/r3 swapped for getBounds width/height.
+// FIXME: 99.83 %, scheduling+regalloc; behaviour clean.
 void Camera_804AA9E4::fn_8030E5BC() {
     field_0x154.i.x = 0.0f;
     field_0x154.i.y = 0.0f;
@@ -60,7 +60,7 @@ void Camera_804AA9E4::fn_8030E5BC() {
     field_0x83c = -1;
     field_0x840 = 0;
     u16 width, height;
-    JUTVideo::sManager->getBounds(width, height);
+    JUTVideo::getManager()->getBounds(width, height);
     field_0x144.i.x = 0;
     field_0x144.i.y = 0;
     field_0x144.f.x = width;
@@ -757,27 +757,35 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
 
 // Not inlined into its caller fn_8030E5BC in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 75.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.97 %, scheduling+regalloc; behaviour clean.
 // (the target keeps the box corners in float registers; it also pre-zeroes
 // the translation column and negates the two centres as one ps_neg pair)
-void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
-    f32 halfW = 0.5f * (box->f.x - box->i.x);
-    f32 halfH = 0.5f * (box->f.y - box->i.y);
-    f32 centerX = 0.5f * (box->i.x + box->f.x);
-    f32 centerY = 0.5f * (box->i.y + box->f.y);
+void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f32 depth) {
+    JGeometry::TVec3f trans;
+    trans.x = 0.5f * (box->i.x + box->f.x);
+    trans.y = 0.5f * (box->i.y + box->f.y);
+    trans.z = depth;
+    trans.negate();
+
     // The view: x and y shifted to the box's centre, z the depth axis.
     field_0x4[0][0] = 1.0f;
     field_0x4[0][1] = 0.0f;
     field_0x4[0][2] = 0.0f;
-    field_0x4[0][3] = -centerX;
+    field_0x4[0][3] = 0.0f;
     field_0x4[1][0] = 0.0f;
     field_0x4[1][1] = 1.0f;
     field_0x4[1][2] = -1.0f;
-    field_0x4[1][3] = -centerY;
+    field_0x4[1][3] = 0.0f;
     field_0x4[2][0] = 0.0f;
     field_0x4[2][1] = 1.0f;
     field_0x4[2][2] = 0.0f;
-    field_0x4[2][3] = -(f32)depth;
+    field_0x4[2][3] = 0.0f;
+    field_0x4[0][3] = trans.x;
+    field_0x4[1][3] = trans.y;
+    field_0x4[2][3] = trans.z;
+
+    f32 halfW = 0.5f * box->getWidth();
+    f32 halfH = 0.5f * box->getHeight();
     C_MTXOrtho(field_0x34, -halfH, halfH, -halfW, halfW, 0.0f, 5120.0f);
     PSMTXCopy(field_0x4, field_0xe4.mCamMtx);
     C_MTXLightOrtho(field_0xe4.mPrjMtx, halfH, -halfH, -halfW, halfW, 0.5f, 0.5f, 0.5f, 0.5f);
@@ -832,13 +840,12 @@ void Camera_804AA9E4::fn_8030C85C() {
 }
 
 // The camera's box of the given width around center (the height keeps the screen's aspect).
-// FIXME(shotgun): 99.21 %, regalloc-only; behaviour clean.
 void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
-    f32 halfX = 0.5f * size;
     f32 halfY = 0.5f * (size * (f32)(s32)JUTVideo::sManager->getEfbHeight() /
                         (f32)(s32)JUTVideo::sManager->getFbWidth());
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    cam->field_0x180.set(center->x - halfX, center->y - halfY, center->x + halfX, center->y + halfY);
+    cam->field_0x180.set(center->x - 0.5f * size, center->y - halfY, center->x + 0.5f * size,
+                         center->y + halfY);
     cam->field_0x17e = 1;
 }
 
