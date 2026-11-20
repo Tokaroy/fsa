@@ -112,7 +112,7 @@ void CrystalBall_804AB308::init() {
     mBox2.f.y = 8.0f;
     field_0x2a8 = 0;
     field_0x2ac = 0;
-    field_0x2b8.set(0.0f, 0.0f, 0.0f);
+    field_0x2b8.zero();
     field_0x2a0 = -1;
     switch (field_0x94) {
     case 0:
@@ -123,7 +123,7 @@ void CrystalBall_804AB308::init() {
         break;
     case 1:
         field_0xb0 = 0;
-        if (fn_8022F9E4(field_0x23c, mSerial, false, false)) {
+        if (fn_8022F9E4(field_0x23c, mSerial, false, false) == 1) {
             fn_80322F44();
         } else {
             field_0x230 = 1;
@@ -133,7 +133,7 @@ void CrystalBall_804AB308::init() {
         field_0xb0 = 0;
         field_0x294 = 2;
         field_0x264 = 2;
-        if (fn_8022F9E4(field_0x23c, mSerial, false, false)) {
+        if (fn_8022F9E4(field_0x23c, mSerial, false, false) == 1) {
             field_0x230 = 4;
         } else {
             field_0x230 = 3;
