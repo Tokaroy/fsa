@@ -2775,13 +2775,14 @@ void cls_804AF72C::fn_8039B3EC(u8 noun, s32 count) {
 // The play time (minutes, seconds) of the message manager as text (mode 0) or glyph codes.
 // FIXME: 94.34 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039ACD0(s16 mode) {
+    s32 seconds;
     char ch[3];
     ch[2] = 0;
     ch[1] = 0;
     ch[0] = 0;
     s32 frames = lbl_8053AD78->field_0x44;
     s32 minutes = frames / 3600;
-    s32 seconds = frames / 60 % 60;
+    seconds = frames / 60 % 60;
     if (seconds == 0) {
         seconds = 1;
     }
@@ -2797,7 +2798,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = field_0x2d8->field_0xf0;
-                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -2815,8 +2816,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                 minutes = 99;
                 seconds = 59;
             }
-            s32 ones = minutes % 10;
             s32 digit = minutes / 10;
+            s32 ones = minutes % 10;
             if (digit > 0) {
                 ch[0] = digit + '0';
                 appendText(ch);
@@ -2828,8 +2829,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         if (seconds > 59) {
             seconds = 59;
         }
-        s32 ones = seconds % 10;
         s32 digit = seconds / 10;
+        s32 ones = seconds % 10;
         if (digit > 0 || minutes > 0) {
             ch[0] = digit + '0';
             appendText(ch);
@@ -2842,8 +2843,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
             minutes = 99;
             seconds = 59;
         }
-        s32 ones = minutes % 10;
         s32 digit = minutes / 10;
+        s32 ones = minutes % 10;
         if (minutes > 0) {
             if (digit > 0) {
                 appendGlyph(findGlyph(digit + '0'));
@@ -2854,8 +2855,8 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
         if (seconds > 59) {
             seconds = 59;
         }
-        ones = seconds % 10;
         digit = seconds / 10;
+        ones = seconds % 10;
         if (digit > 0) {
             appendGlyph(findGlyph(digit + '0'));
         }
