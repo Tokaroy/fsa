@@ -356,11 +356,11 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
 // 0x8033D4AC.
 // FIXME(shotgun): 98.75 %, regalloc-only; behaviour clean.
 f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
-    f32 offset = 0.1f + margin;
+    margin += 0.1f;
     if (value < center) {
-        return center - offset;
+        return center - margin;
     }
-    return center + offset;
+    return center + margin;
 }
 
 // 0x8033D264.
