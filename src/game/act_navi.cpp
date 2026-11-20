@@ -79,7 +79,7 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 96.80 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.55 %, missing/extra + reloc-name; behaviour clean.
 // Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
 // the .sdata2 literals are not split.
 void cls_804A6708::init() {
@@ -175,7 +175,7 @@ void cls_804A6708::init() {
 }
 
 
-// FIXME: 82.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 88.94 %, missing/extra + reloc-name; behaviour near.
 // Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void cls_804A6708::fn_8021E4F8() {
     switch (mState) {
@@ -251,7 +251,7 @@ void cls_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 91.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.65 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
     switch (newState) {
     case 1:
@@ -482,7 +482,7 @@ void cls_804A6708::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 96.53 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
 // Registers only; the .sdata2 literals are not split.
 void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     EnemyBase_804A4808::vfunc_0x9C(mapHit);
@@ -508,7 +508,6 @@ void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour drift.
 void cls_804A6708::vfunc_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
@@ -568,7 +567,7 @@ void cls_804A6708::vfunc_0xA0() {
     }
 }
 
-// FIXME: 91.05 %, different; behaviour clean.
+// FIXME: 92.15 %, missing/extra; behaviour clean.
 // the flag's 0 shares the constructor's zero register in the original (ours loads a second one)
 void cls_804A6708::draw() {
     if (mState != 3 && field_0x2b8 > 0.0f) {
