@@ -2950,9 +2950,9 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
 }
 
 // FIXME: 93.42 %, scheduling; behaviour clean.
-// scheduling (+ the unsplit 0.0f literal): the original
-// interleaves the field_0x1fe stores and field_0x1fd with the first three
-// iterations of the unrolled 15-entry loop.
+// Slots 0-2 are the field_0x282-indexed entries (with field_0x1fe), slots 3-14 the
+// field_0x1fd-indexed ones (always addressed as [field_0x1fd + 3] below); the
+// original's store order clears them as those two groups.
 void cls_804AF6E4::do_begin(const void*, const char*) {
     field_0x3c = -1;
     field_0x40 = -1;
@@ -2964,12 +2964,14 @@ void cls_804AF6E4::do_begin(const void*, const char*) {
     field_0x281 = 0;
     field_0x282 = 0;
     for (int i = 0; i < 3; i++) {
+        field_0x19c[i] = 0.0f;
+        field_0x1ee[i] = 0;
         field_0x1fe[i] = 0;
     }
     field_0x1fd = 0;
-    for (int i = 0; i < 15; i++) {
-        field_0x19c[i] = 0.0f;
-        field_0x1ee[i] = 0;
+    for (int i = 0; i < 12; i++) {
+        field_0x19c[i + 3] = 0.0f;
+        field_0x1ee[i + 3] = 0;
     }
     field_0x202[field_0x281] = -1;
     field_0x257[field_0x281] = 0;
