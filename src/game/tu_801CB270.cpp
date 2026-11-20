@@ -73,28 +73,22 @@ s32 fn_801CD9F0(f32* value, f32 target, f32 step) {
     return result;
 }
 
-// FIXME: 90.62 %, scheduling+regalloc; behaviour clean.
-// Same instructions modulo registers: the target extends target and step
-// once up front (extsh r7, r4; extsh. r0, r5) and keeps them in r7 / r5; ours keeps the
-// extended target in r6 and the step in r7. With (s16, s16) parameters this is 100 %, but
-// then fn_801CD930's callers (it forwards r4 / r5 unextended) would need extsh.
 // Steps *angle towards target by at most step; true while it has not reached
 // the target.
 bool fn_801CD970(s16* angle, s32 target, s32 step) {
     s16 diff = (s16)target - *angle;
-    s16 amount = step;
-    if (amount < 0) {
-        amount = -amount;
+    if ((s16)step < 0) {
+        step = (s16)-step;
     }
     if (diff > 0) {
-        diff -= amount;
+        diff -= step;
         if (diff > 0) {
             *angle = (s16)target - diff;
         } else {
             *angle = target;
         }
     } else {
-        diff += amount;
+        diff += step;
         if (diff < 0) {
             *angle = (s16)target - diff;
         } else {
