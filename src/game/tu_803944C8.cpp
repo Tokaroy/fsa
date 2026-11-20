@@ -2775,14 +2775,13 @@ void cls_804AF72C::fn_8039B3EC(u8 noun, s32 count) {
 // The play time (minutes, seconds) of the message manager as text (mode 0) or glyph codes.
 // FIXME: 94.34 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AF72C::fn_8039ACD0(s16 mode) {
-    s32 seconds;
     char ch[3];
     ch[2] = 0;
     ch[1] = 0;
     ch[0] = 0;
     s32 frames = lbl_8053AD78->field_0x44;
     s32 minutes = frames / 3600;
-    seconds = frames / 60 % 60;
+    s32 seconds = frames / 60 % 60;
     if (seconds == 0) {
         seconds = 1;
     }
