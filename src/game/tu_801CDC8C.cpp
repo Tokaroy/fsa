@@ -329,9 +329,6 @@ bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
     return ok;
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
-// regalloc only (the bools of canTargetPlayer swap).
-// Whether player `player` (0-3) can be targeted and is within `range` of *pos.
 bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f32 range) {
     bool result = false;
     if (player >= 0 && player < 4 && canTargetPlayer(player) && isPlayerNear(player, pos, range)) {
@@ -340,7 +337,7 @@ bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f
     return result;
 }
 
-// FIXME: 98.99 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.87 %, scheduling; behaviour clean.
 // registers and the order of the first loads in the prologue.
 // The nearest player that can be targeted within `range` of *pos (any
 // distance when `range` is 0), or -1.
@@ -360,7 +357,7 @@ s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
     return nearest;
 }
 
-// FIXME: 99.35 %, regalloc-only; behaviour clean.
+// FIXME: 99.60 %, regalloc-only; behaviour clean.
 // regalloc only (the bools of canTargetPlayer swap).
 // The player that can be targeted whose direction from *from is closest to
 // `angle` (16-bit angles; the difference as a fraction of a half turn), or
@@ -626,7 +623,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
     return dir;
 }
 
-// FIXME: 99.27 %, missing/extra; behaviour clean.
+// FIXME: 99.41 %, missing/extra; behaviour clean.
 // Registers (the bools of canTargetPlayer swap) and one extra
 // mr r4, r5 in the target before fn_801CFCF0.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
@@ -687,7 +684,7 @@ s32 EnemyBase_804A4808::fn_801CF0F4() const {
     return fn_801F681C(angle);
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 // regalloc only (the two bools of canTargetPlayer swap r28 /
 // r29, and the player-pointer induction register).
 // Spawns `actorId` (a cls_804A48B0 shot) at mPos aimed at the nearest player
@@ -970,6 +967,7 @@ void EnemyBase_804A4808::vfunc_0xA0() {}
 // The target reloads mFlags before each `|=` (ours reuses the tested load),
 // and tests the hit bits before vfunc_0x68 as a bool value (clrlwi; neg; or;
 // srwi.) where ours uses clrlwi.
+// FIXME: 96.53 %, missing/extra; behaviour near.
 void EnemyBase_804A4808::update() {
     s32 prevD8;
     if (!(mFlags & ENEMY_FLAG_STARTED)) {
