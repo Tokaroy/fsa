@@ -1062,28 +1062,28 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
 }
 
 // FIXME: 97.25 %, regalloc-only; behaviour clean.
-// FIXME: regalloc only; behaviour clean.
-// the target keeps the key pointer in r6 and the column count in r7;
-// ours swaps those two.
 s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
     u32* key = mParamColumnIds;
+    s32 columnNum = mParamColumnNum;
     s32 value = 0;
     s32 col = 0;
-    for (; col < mParamColumnNum; key++, col++) {
+    for (; col < columnNum; key++, col++) {
         if (column == *key) {
             break;
         }
     }
-    if (col < mParamColumnNum) {
+    if (col < columnNum) {
+        u32* rowId = mParamRowIds;
+        s32 rowNum = mParamRowNum;
         s32 row = 0;
-        for (u32* rowId = mParamRowIds; row < mParamRowNum; rowId++, row++) {
+        for (; row < rowNum; rowId++, row++) {
             if (id == *rowId) {
-                value = mParamValues[row * mParamColumnNum + col];
+                value = mParamValues[row * columnNum + col];
                 break;
             }
         }
         // No row for `id`: row 0's default.
-        if (row == mParamRowNum) {
+        if (row == rowNum) {
             value = mParamValues[col];
         }
     }
