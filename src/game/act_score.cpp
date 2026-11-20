@@ -55,32 +55,20 @@ void Score_804AF4C0::init() {
         mTimer = 90;
     } else if (mState == 3) {
         mTimer = 0x257;
-        f32 z = getPlayerPos_8023E724(mPlayer)->z;
-        f32 y = getPlayerPos_8023E724(mPlayer)->y - 32.0f;
-        mPos.x = getPlayerPos_8023E724(mPlayer)->x;
-        mPos.y = y;
-        mPos.z = z;
+        mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
+                 getPlayerPos_8023E724(mPlayer)->z);
     } else if (mState == 5) {
         mTimer = 0x1a3;
-        f32 z = getPlayerPos_8023E724(mPlayer)->z;
-        f32 y = getPlayerPos_8023E724(mPlayer)->y - 32.0f;
-        mPos.x = getPlayerPos_8023E724(mPlayer)->x;
-        mPos.y = y;
-        mPos.z = z;
+        mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
+                 getPlayerPos_8023E724(mPlayer)->z);
     } else if (mState == 6) {
         mTimer = 0x12b;
-        f32 z = getPlayerPos_8023E724(mPlayer)->z;
-        f32 y = getPlayerPos_8023E724(mPlayer)->y - 32.0f;
-        mPos.x = getPlayerPos_8023E724(mPlayer)->x;
-        mPos.y = y;
-        mPos.z = z;
+        mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
+                 getPlayerPos_8023E724(mPlayer)->z);
     } else if (mState == 7) {
         mTimer = 0xb3;
-        f32 z = getPlayerPos_8023E724(mPlayer)->z;
-        f32 y = getPlayerPos_8023E724(mPlayer)->y - 32.0f;
-        mPos.x = getPlayerPos_8023E724(mPlayer)->x;
-        mPos.y = y;
-        mPos.z = z;
+        mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
+                 getPlayerPos_8023E724(mPlayer)->z);
     }
 }
 
@@ -104,11 +92,8 @@ void Score_804AF4C0::update() {
             mAlive = false;
         }
     } else if (mState == 3 || mState == 5 || mState == 6 || mState == 7) {
-        f32 z = getPlayerPos_8023E724(mPlayer)->z;
-        f32 y = getPlayerPos_8023E724(mPlayer)->y - 32.0f;
-        mPos.x = getPlayerPos_8023E724(mPlayer)->x;
-        mPos.y = y;
-        mPos.z = z;
+        mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
+                 getPlayerPos_8023E724(mPlayer)->z);
         if (!fn_80230188(mPlayer) && fn_8023BC38(mPlayer) <= 0) {
             mAlive = false;
         }
