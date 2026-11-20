@@ -255,7 +255,7 @@ static const u8 lbl_8048F1D8[4][10] = {
     { 3, 2, 1, 0, 5, 9, 8, 4, 7, 6 },
 };
 
-// FIXME(shotgun): 99.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.66 %, missing/extra + reloc-name; behaviour drift.
 cls_804B146C::cls_804B146C()
     : field_0x210(0xFFFFFFFF)
     , field_0x214(0xFFFFFFFF)
@@ -413,22 +413,36 @@ cls_804B146C::~cls_804B146C() {
     }
 }
 
-// FIXME(shotgun): 97.87 %, missing/extra; behaviour drift.
+static inline u8 checkBit(u8 mask, s32 bit) {
+    u8 b = 1 << bit;
+    return (mask & b) != 0;
+}
+
+static inline void setBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask |= b;
+}
+
+static inline void clearBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask &= ~b;
+}
+
+// FIXME(shotgun): 99.53 %, missing/extra; behaviour clean.
 void cls_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
-        u8 bit = (u8)(1 << i);
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & bit;
+        bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
         if (!takesPart) {
-            field_0x25d &= ~bit;
+            clearBit(field_0x25d, i);
         } else {
-            bool flagged = lbl_8053AED0->field_0xdd & bit;
-            if (flagged && !(field_0x25c & bit)) {
-                field_0x25c |= bit;
-                field_0x25d |= bit;
+            bool flagged = checkBit(lbl_8053AED0->field_0xdd, i);
+            if (flagged && !checkBit(field_0x25c, i)) {
+                setBit(field_0x25c, i);
+                setBit(field_0x25d, i);
             } else if (lbl_8053AED0->field_0xdc & 0x10) {
-                field_0x25d &= ~bit;
+                clearBit(field_0x25d, i);
             } else if (gGameRoot_8053AAF8->field_0x4c == 11) {
-                field_0x25d &= ~bit;
+                clearBit(field_0x25d, i);
             }
         }
         lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
@@ -480,12 +494,13 @@ void cls_804B146C::fn_804263A8() {
             field_0x4->search(lbl_8048EFA0[i])->show();
             field_0x4->search(lbl_8048EFE0[i])->hide();
             field_0x4->search(lbl_8048F020[i])->show();
-            if (lbl_8050EC80.getCurrentFile().field_0x68 != 0) {
+            if (lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
                 field_0x4->search(lbl_8048F040[i])->show();
             } else {
                 field_0x4->search(lbl_8048F040[i])->hide();
             }
-            if (((gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3) == 2) {
+            u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
+            if (mode == 2) {
                 field_0x4->search(lbl_8048EFC0[i])->show();
                 field_0x4->search(lbl_8048F060[i])->show();
                 field_0x4->search(lbl_8048F080[i])->hide();
@@ -520,6 +535,8 @@ void cls_804B146C::fn_804263A8() {
     field_0xf0->fn_8044172C();
 }
 
+static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y);
+
 static inline bool isPaused() {
     if (gGameRoot_8053AAF8->field_0x4c == 11) {
         return true;
@@ -527,8 +544,6 @@ static inline bool isPaused() {
     return gGameRoot_8053AAF8->field_0x88 == 2;
 }
 
-// Only the .sdata2 pool order (from earlier functions) still differs.
-// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804B146C::fn_80425F6C() {
     f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
     f32 scale = lbl_8050DB0C.field_0x30[4];
@@ -543,20 +558,14 @@ void cls_804B146C::fn_80425F6C() {
         f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
-            f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            calcHudPos(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
             field_0x208[i] = 0;
         } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
-            f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            calcHudPos(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x2c[i]->draw(x, y, field_0x4c);
@@ -572,22 +581,7 @@ void cls_804B146C::fn_80425F24() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-static inline u8 checkBit(u8 mask, s32 bit) {
-    u8 b = 1 << bit;
-    return (mask & b) != 0;
-}
-
-static inline void setBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask |= b;
-}
-
-static inline void clearBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask &= ~b;
-}
-
-// FIXME(shotgun): 97.80 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.91 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
@@ -1085,88 +1079,80 @@ void cls_804B146C::fn_80423DF0(s32 player) {
     }
 }
 
-// FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
 void cls_804B146C::fn_80423804(s32 player) {
     if (!(field_0x256 & (u8)(1 << player))) {
         return;
     }
     s32 max = fn_80237810(player);
-    s32 life = lbl_80529DEC.field_0xd8[player];
+    s32 current = lbl_80529DEC.field_0xd8[player];
+    s32 life = current;
     if (max > 32) {
         max = 32;
     }
     if (max < 0) {
         max = 0;
     }
-    if (max < life) {
+    if (max < current) {
         life = max;
     }
     if (life < 0) {
         life = 0;
     }
-    const u64* a = lbl_8048E3E0[player];
-    const u64* b = lbl_8048E4E0[player];
-    const u64* c = lbl_8048E5E0[player];
-    const u64* d = lbl_8048E6E0[player];
     for (s32 i = 0; i < 8; i++) {
         if (life >= 4) {
-            static_cast<J2DPicture*>(field_0x4->search(*a))
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[player][i]))
                 ->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            static_cast<J2DPicture*>(field_0x4->search(*b))
+            static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[player][i]))
                 ->setBlendRatio(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-            field_0x4->search(*c)->hide();
-            field_0x4->search(*d)->hide();
-            max -= 4;
+            field_0x4->search(lbl_8048E5E0[player][i])->hide();
+            field_0x4->search(lbl_8048E6E0[player][i])->hide();
             life -= 4;
+            max -= 4;
         } else {
             if (life == 0) {
-                static_cast<J2DPicture*>(field_0x4->search(*a))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                static_cast<J2DPicture*>(field_0x4->search(*b))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
                 if (max > 0) {
-                    field_0x4->search(*c)->show();
-                    field_0x4->search(*d)->show();
+                    field_0x4->search(lbl_8048E5E0[player][i])->show();
+                    field_0x4->search(lbl_8048E6E0[player][i])->show();
                     max -= 4;
                 } else {
-                    field_0x4->search(*c)->hide();
-                    field_0x4->search(*d)->hide();
+                    field_0x4->search(lbl_8048E5E0[player][i])->hide();
+                    field_0x4->search(lbl_8048E6E0[player][i])->hide();
                 }
             } else if (life == 1) {
-                static_cast<J2DPicture*>(field_0x4->search(*a))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                static_cast<J2DPicture*>(field_0x4->search(*b))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                field_0x4->search(*c)->hide();
-                field_0x4->search(*d)->hide();
+                field_0x4->search(lbl_8048E5E0[player][i])->hide();
+                field_0x4->search(lbl_8048E6E0[player][i])->hide();
                 max -= 4;
             } else if (life == 2) {
-                static_cast<J2DPicture*>(field_0x4->search(*a))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                static_cast<J2DPicture*>(field_0x4->search(*b))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[player][i]))
                     ->setBlendRatio(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                field_0x4->search(*c)->hide();
-                field_0x4->search(*d)->hide();
+                field_0x4->search(lbl_8048E5E0[player][i])->hide();
+                field_0x4->search(lbl_8048E6E0[player][i])->hide();
                 max -= 4;
             } else if (life == 3) {
-                static_cast<J2DPicture*>(field_0x4->search(*a))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E3E0[player][i]))
                     ->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                static_cast<J2DPicture*>(field_0x4->search(*b))
+                static_cast<J2DPicture*>(field_0x4->search(lbl_8048E4E0[player][i]))
                     ->setBlendRatio(0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-                field_0x4->search(*c)->hide();
-                field_0x4->search(*d)->hide();
+                field_0x4->search(lbl_8048E5E0[player][i])->hide();
+                field_0x4->search(lbl_8048E6E0[player][i])->hide();
                 max -= 4;
             }
             life = 0;
         }
-        a++;
-        b++;
-        c++;
-        d++;
     }
 }
 
-// FIXME(shotgun): 99.66 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.96 %, operands; behaviour near.
 void cls_804B146C::fn_80423248(s32 player) {
     if (!(field_0x257 & (u8)(1 << player))) {
         return;
@@ -1174,7 +1160,7 @@ void cls_804B146C::fn_80423248(s32 player) {
     s32 val = lbl_80529DEC.field_0xe8[player];
     s32 start = 0;
     const ResTIMG* tex;
-    if (lbl_80529DEC.field_0xe8[player] > 9999) {
+    if (9999 < lbl_80529DEC.field_0xe8[player]) {
         val = 9999;
     }
     if (val < 0) {
@@ -1454,6 +1440,14 @@ void cls_804B146C::fn_80421D78(s32 player) {
     if (field_0x208[player] > 0) {
         field_0x208[player]--;
     }
+}
+
+// A projected screen position in the HUD's ortho space, relative to the centre (both callers inline it).
+static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y) {
+    f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
+    f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
+    *x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
+    *y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
 }
 
 void cls_804B146C::fn_80421A34(s32 player, bool force) {
