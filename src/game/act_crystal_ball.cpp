@@ -860,7 +860,7 @@ void CrystalBall_804AB308::update() {
 }
 
 // FIXME(shotgun): 97.02 %, missing/extra; behaviour near.
-// a few instructions
+// setRotScaleMtx's float registers and the li order of flags / held differ
 void CrystalBall_804AB308::draw() {
     if (field_0x230 == 0 && field_0x278 <= 180 && (field_0x278 & 2) == 0) {
         return;
@@ -868,18 +868,22 @@ void CrystalBall_804AB308::draw() {
     if (field_0x94 == 0 && field_0x230 == 4 && field_0xc4 == 1 && field_0x248 % 30 >= 15) {
         return;
     }
-    if (field_0x2b0 >= 6 || field_0x28c == 0) {
+    if (field_0x2b0 >= 6) {
         return;
     }
-    SpriteParams_801F5AE0 params;
-    bool held = false;
+    if (field_0x28c == 0) {
+        return;
+    }
     s32 flags = -1;
+    bool held = false;
+    SpriteParams_801F5AE0 params;
     params.field_0x10.a = field_0x28c;
     params.field_0x2d = 1;
     params.field_0x1d = 1;
     params.field_0x1c = 1;
     Mtx mtx;
     if (field_0x2a8 == 1) {
+        PSMTXIdentity(mtx);
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x238, 0.0f), field_0x234);
         params.mMtx = mtx;
         params.field_0x1d = 0;
