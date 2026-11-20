@@ -446,7 +446,8 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
     if (field_0x27a != 1) {
         return;
     }
-    JGeometry::TVec3f push(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f push;
+    push.zero();
     if (field_0x254 >= 0) {
         return;
     }
@@ -467,7 +468,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
         f32 py = mPos.y - 32.0f;
         f32 dx = getPlayerPos_8023E724(i)->x - px;
         f32 dy = getPlayerPos_8023E724(i)->y - py;
-        u16 angle = angleOf(dx, dy);
+        u32 angle = angleOf(dx, dy);
         if (mode != 1 && angle >= 0x2000 && angle < 0xE000) {
             continue;
         }
@@ -481,6 +482,8 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
             push.x = 2.0f;
             push.y = 2.0f;
             break;
+        case 0:
+        case 2:
         default:
             push.x = 3.0f;
             push.y = 3.0f;
