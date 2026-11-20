@@ -562,9 +562,10 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 99.49 %, different; behaviour drift.
+// FIXME(shotgun): 99.63 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         fn_8041E3B4(i);
         lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
         lbl_80529DEC.field_0xe8[i] = fn_80236100(i);
@@ -608,7 +609,7 @@ void cls_804B13D4::fn_8041FC2C() {
         } else {
             field_0x4->search('Ndata16')->hide();
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x18->search(lbl_8048DE00[i])->hide();
             field_0x18->search(lbl_8048DE40[i])->hide();
             field_0x4->search(lbl_8048DE60[i])->hide();
@@ -623,7 +624,7 @@ void cls_804B13D4::fn_8041FC2C() {
         fn_8041C67C();
     }
     if (field_0x291 != 0) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
                 fn_80418D08(i, true);
             }
@@ -668,7 +669,7 @@ static inline u8 isMaskBitSet(u8 mask, s32 player) {
     return (mask & bit) != 0 ? true : false;
 }
 
-// FIXME: 99.64 %, regalloc-only; behaviour clean.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041F720() {
     s32 mode = lbl_80529DEC.field_0x118;
     if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) || (mode == 0 && lbl_80529DEC.field_0x11c == 2) ||
@@ -678,10 +679,10 @@ void cls_804B13D4::fn_8041F720() {
         return;
     }
     if (field_0x291 != 0) {
-        f32 sx = lbl_8050DB0C.field_0x30[4] *
-                 ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / gGameRoot2_8053AB10->field_0x24->field_0x858);
-        f32 sy = lbl_8050DB0C.field_0x30[4] *
-                 ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / gGameRoot2_8053AB10->field_0x24->field_0x858);
+        f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
+        f32 scale = lbl_8050DB0C.field_0x30[4];
+        f32 sx = scale * ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / zoom);
+        f32 sy = scale * ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / zoom);
         for (s32 i = 0; i < 4; i++) {
             if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
                 continue;
@@ -1316,7 +1317,7 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: 99.03 %, missing/extra; behaviour near.
+// FIXME: 99.69 %, missing/extra; behaviour clean.
 // FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
@@ -1338,11 +1339,11 @@ void cls_804B13D4::fn_8041CC04() {
         }
         n *= -1;
         res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[0]))->changeTexture(res, 0);
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[0]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D658[4])->show();
         field_0x4->search(lbl_8048D680[4])->show();
-        digit = 1;
+        digit++;
     } else {
         for (s32 i = 0; i < 5; i++) {
             static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[i]))->setBlackWhite(field_0x248, field_0x244);
@@ -1424,13 +1425,13 @@ void cls_804B13D4::fn_8041C67C() {
 }
 
 // Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.31 %, missing/extra; behaviour clean.
+// FIXME: 99.67 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
     }
-    s32 digit = 0;
     s32 n = lbl_80529DEC.field_0xe8[player];
+    s32 digit = 0;
     const ResTIMG* res;
     if (n > 9999) {
         n = 9999;
