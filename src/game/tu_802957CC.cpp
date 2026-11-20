@@ -115,10 +115,10 @@ static const Vec lbl_8046C238[4] = {
 };
 
 // Per-direction offsets (right, left, down, up).
-static const f32 lbl_8046C268[4][3] = {
+static const Vec lbl_8046C268[4] = {
     {28.0f, 0.0f, 0.0f}, {-28.0f, 0.0f, 0.0f}, {0.0f, 28.0f, 0.0f}, {0.0f, -28.0f, 0.0f},
 };
-static const f32 lbl_8046C298[4][3] = {
+static const Vec lbl_8046C298[4] = {
     {16.0f, 0.0f, 0.0f}, {-16.0f, 0.0f, 0.0f}, {0.0f, 16.0f, 0.0f}, {0.0f, -16.0f, 0.0f},
 };
 
@@ -1643,12 +1643,11 @@ void cls_804A7AE0::vfunc_0x24() {
     field_0x2bb = 1;
 }
 
-// Remaining: register swaps only (f2/f3 vs f4/f5 at the start, r27/r28 around testBox).
 // FIXME: 99.58 %, regalloc-only; behaviour clean.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
-    field_0x3c.set(lbl_8046C268[dir][0], lbl_8046C268[dir][1], lbl_8046C268[dir][2]);
+    field_0x3c.set(JGeometry::TVec3f(lbl_8046C268[dir].x, lbl_8046C268[dir].y, lbl_8046C268[dir].z));
     mPos.add(field_0x3c);
     mBox.set(-44.0f, -44.0f, 44.0f, 44.0f);
     // Computed into sp+0x3C..0x48 in the original asm (0x80295864-0x802958DC), unused below, as in fn_80279824.
@@ -1668,7 +1667,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.y += mBox.i.y;
         p.y += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, getSerial(), NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1685,7 +1684,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.x += mBox.i.x;
         p.x += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, getSerial(), NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1702,8 +1701,8 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 JGeometry::TVec3f q = *getPlayerPos_8023E724(i);
-                q.add(JGeometry::TVec3f(lbl_8046C298[dir][0], lbl_8046C298[dir][1], lbl_8046C298[dir][2]));
-                if (gBgRewrite_8053AC98->fn_802A1490(&q) != 1 || testBox(field_0x4, &q, mSerial, NULL)) {
+                q.add(JGeometry::TVec3f(lbl_8046C298[dir].x, lbl_8046C298[dir].y, lbl_8046C298[dir].z));
+                if (gBgRewrite_8053AC98->fn_802A1490(&q) != 1 || testBox(field_0x4, &q, getSerial(), NULL)) {
                     ok = false;
                 }
             }
