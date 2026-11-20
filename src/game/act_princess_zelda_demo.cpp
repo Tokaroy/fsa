@@ -186,29 +186,23 @@ void PrincessZeldaDemo_8049D208::update() {
 
 // The two camera requests the demo states make (inlined in the original): a focus range on the
 // view (field_0x840) and a movement box (field_0x7f4), each taken only while free.
-static inline void camRange(f32 x, f32 y0, f32 y1) {
+static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x840 == 0) {
         cam->field_0x840 = 1;
-        cam->field_0x844.i.x = x;
-        cam->field_0x844.i.y = y0;
-        cam->field_0x844.f.x = x;
-        cam->field_0x844.f.y = y1;
+        cam->field_0x844.set(x0, y0, x1, y1);
         cam->field_0x854 = 1.0f;
         cam->field_0x1d4 = -1.0f;
         cam->field_0x1d8 = -1.0f;
     }
 }
 
-static inline void camBox(f32 x, f32 y0, f32 y1) {
+static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x7f5 == 0) {
         cam->field_0x7f4 = 1;
         cam->field_0x7f8 = 5;
-        cam->field_0x808.i.x = x;
-        cam->field_0x808.i.y = y0;
-        cam->field_0x808.f.x = x;
-        cam->field_0x808.f.y = y1;
+        cam->field_0x808.set(x0, y0, x1, y1);
         cam->field_0x7f6 = 0;
     }
 }
@@ -670,7 +664,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = *getPlayerPos_8023E724(0);
         p.y = p.y + -8.0f;
-        camRange(p.x, p.y - 96.0f, 96.0f + p.y);
+        camRange(p.x, p.y - 96.0f, p.x, 96.0f + p.y);
         break;
     }
     case 6:
@@ -678,7 +672,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = *getPlayerPos_8023E724(0);
         p.y = p.y + field_0x278;
-        camBox(p.x, p.y - 96.0f, 96.0f + p.y);
+        camBox(p.x, p.y - 96.0f, p.x, 96.0f + p.y);
         break;
     }
     case 8:
@@ -688,7 +682,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         JGeometry::TVec3f p = *getPlayerPos_8023E724(0);
         fn_801CD950(&field_0x278, -8.0f, 1.0f);
         p.y = p.y + field_0x278;
-        camBox(p.x, p.y - 96.0f, 96.0f + p.y);
+        camBox(p.x, p.y - 96.0f, p.x, 96.0f + p.y);
         break;
     }
     case 11:
@@ -703,24 +697,24 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mSpawnPos;
         p.y = p.y + -40.0f;
-        camRange(p.x, p.y - 180.0f, 180.0f + p.y);
+        camRange(p.x, p.y - 180.0f, p.x, 180.0f + p.y);
         break;
     }
     case 16:
     case 17:
     case 18:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        camRange(mSpawnPos.x, mSpawnPos.y - 80.0f, 80.0f + mSpawnPos.y);
+        camRange(mSpawnPos.x, mSpawnPos.y - 80.0f, mSpawnPos.x, 80.0f + mSpawnPos.y);
         break;
     case 19:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        camRange(field_0x288[6].x, field_0x288[6].y - 80.0f, 80.0f + field_0x288[6].y);
+        camRange(field_0x288[6].x, field_0x288[6].y - 80.0f, field_0x288[6].x, 80.0f + field_0x288[6].y);
         break;
     case 20: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mPos;
         p.y = p.y + -75.0f;
-        camRange(p.x, p.y - 130.0f, 130.0f + p.y);
+        camRange(p.x, p.y - 130.0f, p.x, 130.0f + p.y);
         break;
     }
     case 21:
@@ -729,7 +723,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mPos;
         p.y = p.y + -75.0f;
-        camBox(p.x, p.y - 130.0f, 130.0f + p.y);
+        camBox(p.x, p.y - 130.0f, p.x, 130.0f + p.y);
         break;
     }
     case 24:
@@ -772,16 +766,14 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
     case 0x2A:
     case 0x2B: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        f32 y = mPos.y + field_0x278;
-        camBox(mPos.x, y - field_0x274, field_0x274 + y);
+        camBox(mPos.x, mPos.y + field_0x278 - field_0x274, mPos.x, field_0x274 + (mPos.y + field_0x278));
         break;
     }
     case 0x2C:
     case 0x2D:
     case 0x2E: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        f32 y = mPos.y + field_0x278;
-        camBox(mPos.x, y - field_0x274, field_0x274 + y);
+        camBox(mPos.x, mPos.y + field_0x278 - field_0x274, mPos.x, field_0x274 + (mPos.y + field_0x278));
         break;
     }
     case 0x30:
@@ -798,7 +790,7 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
     case 0x35:
     case 0x36:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        camRange(mPos.x, mPos.y - field_0x274, mPos.y + field_0x274);
+        camRange(mPos.x, mPos.y - field_0x274, mPos.x, mPos.y + field_0x274);
         break;
     case 0x37:
     case 0x38:
@@ -810,7 +802,7 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
         JGeometry::TVec3f p = mSpawnPos;
         p.y = p.y + field_0x278;
-        camBox(p.x, p.y - field_0x274, p.y + field_0x274);
+        camBox(p.x, p.y - field_0x274, p.x, p.y + field_0x274);
         break;
     }
     case 0x2F:
