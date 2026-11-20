@@ -27,17 +27,19 @@ static inline s32 warpKind(u32 param) {
     return param & 0x7F;
 }
 
-// Whether two boxes overlap (edges touching counts), on a copy of `a`.
-static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
-    JGeometry::TBox2f overlap(a);
-    return overlap.intersect(b);
-}
-
-// The box `ofs` (relative to pos) in top-down screen space: the top edge shifts by z, the
-// bottom edge by z / 2 (read from fn_80227290's asm).
-static inline void toScreenBox(JGeometry::TBox2f* out, JGeometry::TBox2f ofs, JGeometry::TVec3f pos) {
-    f32 halfZ = pos.z * 0.5f;
-    out->set(ofs.i.x + pos.x, ofs.i.y + pos.y - pos.z, ofs.f.x + pos.x, ofs.f.y + pos.y - halfZ);
+// Whether two boxes (each relative to a 3D position) overlap in top-down screen space:
+// the top edge shifts by z, the bottom edge by z / 2.
+static inline bool boxesOverlap(JGeometry::TBox2f box1, JGeometry::TVec3f pos1, JGeometry::TBox2f box2, JGeometry::TVec3f pos2) {
+    box1.addPos(pos1.x, pos1.y);
+    box1.i.y -= pos1.z;
+    pos1.z *= 0.5f;
+    box1.f.y -= pos1.z;
+    box2.addPos(pos2.x, pos2.y);
+    box2.i.y -= pos2.z;
+    pos2.z *= 0.5f;
+    box2.f.y -= pos2.z;
+    JGeometry::TBox2f overlap(box1);
+    return overlap.intersect(box2);
 }
 
 // The spawn parameter of the WARP that init() creates for the paired kinds 0x19-0x1C: this warp's
@@ -423,12 +425,14 @@ void Warp_804A6DC8::update() {
     actor->fn_801F349C(warpLayer(field_0x90), &field_0x238);
 }
 
-extern const f32 lbl_8046AC58[24]; // x shifts of the sand while the warp shakes
-
 // 0x80227CE8.
-// Remaining: reloc names.
-// FIXME: 99.87 %, reloc-name; behaviour clean.
+// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
+    static const f32 lbl_8046AC58[24] = {
+        0.0f, 1.0f,  2.0f,  1.0f,  0.0f, -0.9f, -1.8f, -0.9f,
+        0.0f, 0.7f,  1.4f,  0.7f,  0.0f, -0.6f, -1.2f, -0.6f,
+        0.0f, 0.4f,  0.8f,  0.4f,  0.0f, -0.3f, -0.6f, -0.3f,
+    };
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20 && field_0x255 == 0) {
         SpriteParams_801F5AE0 params;
@@ -604,7 +608,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
 
 // 0x80227290. The serial of a live actor on the warp's layer (not excludeSerial, one of `ids`, within
 // maxDz in z unless the layer ignores z) whose box overlaps the warp's, or -1.
-// FIXME(shotgun): 72.18 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 88.30 %, different; behaviour clean.
 s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
     s32 found = -1;
     u8 anyZ = viewLayerFlag(field_0x4);
@@ -619,11 +623,7 @@ s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
         }
         for (const u32* id = ids; *id != 'NULL'; id++) {
             if (*id == other->mActorId) {
-                JGeometry::TBox2f box;
-                JGeometry::TBox2f otherBox;
-                toScreenBox(&box, mBox, mPos);
-                toScreenBox(&otherBox, other->mBox, other->mPos);
-                if (boxesOverlap(box, otherBox)) {
+                if (boxesOverlap(mBox, mPos, other->mBox, other->mPos)) {
                     found = other->mSerial;
                     break;
                 }
@@ -649,37 +649,35 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
         }
         return;
     }
-    ActorBase_804A5770* carried = field_0x27c[player];
-    if (!carried->mAlive) {
+    if (!field_0x27c[player]->mAlive) {
         field_0x27c[player] = NULL;
         return;
     }
-    if (carried->field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
+    if (field_0x27c[player]->field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
         return;
     }
-    if (!(carried->mPos.z < 4.0f)) {
+    if (!(field_0x27c[player]->mPos.z < 4.0f)) {
         return;
     }
-    JGeometry::TVec3f rel = carried->mPos - mPos;
+    JGeometry::TVec3f rel = field_0x27c[player]->mPos - mPos;
     bool inside = false;
     if (rel.x >= -20.0f && rel.y >= -20.0f && rel.x < 20.0f && rel.y < 20.0f) {
         inside = true;
     }
-    if (!inside) {
-        return;
-    }
-    field_0x27c[player]->vfunc_0x48();
-    field_0x27c[player] = NULL;
-    JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
-    JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
-    JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
-    JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-    gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
-    if (field_0x255 == 0) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
-        field_0x255 = 1;
+    if (inside) {
+        field_0x27c[player]->vfunc_0x48();
+        field_0x27c[player] = NULL;
+        JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
+        JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
+        JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
+        JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
+        if (field_0x255 == 0) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+            field_0x255 = 1;
+        }
     }
 }
