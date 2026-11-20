@@ -350,6 +350,44 @@ static inline void stepCursorTimer(ConnectScreen_804B0F10* self) {
 
 // Screen coordinates (640 x 480 layout scaled to 280 x 210) of a point on
 // the current render mode.
+// The rupee count of handicap field_0x1e0[i] as three digit textures.
+inline void ConnectScreen_804B0F10::setRupeeDigits(s32 i) {
+    s32 rupees = fn_80403070(field_0x1e0[i]);
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees / 100]);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_804794B8[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_804794D8[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 100 / 10]);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_80479478[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_80479498[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 10]);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_80479438[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(field_0x10->search(lbl_80479458[i]))->changeTexture(tex, 0);
+}
+
+// The fn_8040305C - 1 markers of player i in the four marker tables.
+inline void ConnectScreen_804B0F10::setMarkers(s32 i) {
+    s32 j;
+    s32 count = fn_8040305C(field_0x1f0[i]) - 1;
+    for (j = 0; j < 6; j++) {
+        if (j < count) {
+            field_0x10->search(lbl_804795C0[i][j])->show();
+            field_0x10->search(lbl_80479680[i][j])->show();
+            field_0x10->search(lbl_80479740[i][j])->hide();
+            field_0x10->search(lbl_80479800[i][j])->hide();
+        } else if (j == count) {
+            field_0x10->search(lbl_804795C0[i][j])->hide();
+            field_0x10->search(lbl_80479680[i][j])->hide();
+            field_0x10->search(lbl_80479740[i][j])->show();
+            field_0x10->search(lbl_80479800[i][j])->show();
+        } else {
+            field_0x10->search(lbl_804795C0[i][j])->hide();
+            field_0x10->search(lbl_80479680[i][j])->hide();
+            field_0x10->search(lbl_80479740[i][j])->hide();
+            field_0x10->search(lbl_80479800[i][j])->hide();
+        }
+    }
+}
+
 static inline f32 toSpriteX(f32 x) {
     return 280.0f * x / (s32)JUTVideo::getManager()->getRenderMode()->fbWidth;
 }
@@ -1810,16 +1848,7 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                         if (field_0x1e0[i] > 3) {
                             field_0x1e0[i] = 0;
                         }
-                        s32 rupees = fn_80403070(field_0x1e0[i]);
-                        const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees / 100]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_804794B8[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_804794D8[i]))->changeTexture(tex, 0);
-                        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 100 / 10]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80479478[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80479498[i]))->changeTexture(tex, 0);
-                        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 10]);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80479438[i]))->changeTexture(tex, 0);
-                        static_cast<J2DPicture*>(field_0x10->search(lbl_80479458[i]))->changeTexture(tex, 0);
+                        setRupeeDigits(i);
                         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
                         break;
                     }
@@ -1828,25 +1857,7 @@ void ConnectScreen_804B0F10::fn_803F5A0C() {
                         if (field_0x1f0[i] > 2) {
                             field_0x1f0[i] = 0;
                         }
-                        s32 count = fn_8040305C(field_0x1f0[i]) - 1;
-                        for (s32 j = 0; j < 6; j++) {
-                            if (j < count) {
-                                field_0x10->search(lbl_804795C0[i][j])->show();
-                                field_0x10->search(lbl_80479680[i][j])->show();
-                                field_0x10->search(lbl_80479740[i][j])->hide();
-                                field_0x10->search(lbl_80479800[i][j])->hide();
-                            } else if (j == count) {
-                                field_0x10->search(lbl_804795C0[i][j])->hide();
-                                field_0x10->search(lbl_80479680[i][j])->hide();
-                                field_0x10->search(lbl_80479740[i][j])->show();
-                                field_0x10->search(lbl_80479800[i][j])->show();
-                            } else {
-                                field_0x10->search(lbl_804795C0[i][j])->hide();
-                                field_0x10->search(lbl_80479680[i][j])->hide();
-                                field_0x10->search(lbl_80479740[i][j])->hide();
-                                field_0x10->search(lbl_80479800[i][j])->hide();
-                            }
-                        }
+                        setMarkers(i);
                         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
                         break;
                     }
@@ -2474,11 +2485,6 @@ void ConnectScreen_804B0F10::fn_803F2580() {
     field_0x1c4 = 9;
 }
 
-// FIXME: 98.59 %, missing/extra; behaviour clean.
-// Registers: the loop's table pointers and counter sit in other
-// registers, and the first digit texture is copied through r0 into r17 (one
-// extra mr) where the original keeps it in r27 (as in the twin
-// cls_804B0B00::fn_803E2A20, 98.17); .sdata2 @NNN names.
 // Enter state 10 (the results / entry screen field_0x10): per player, the
 // 'Pblk' cover over the players beyond field_0x1ac + 2, the rupee count
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
@@ -2497,35 +2503,8 @@ void ConnectScreen_804B0F10::fn_803F1C70() {
         field_0x1e0[i] = fn_80403414(i);
         field_0x1f0[i] = fn_804033D4(i);
         field_0x200[i] = fn_8040336C(i);
-        s32 rupees = fn_80403070(field_0x1e0[i]);
-        const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees / 100]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_804794B8[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_804794D8[i]))->changeTexture(tex, 0);
-        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 100 / 10]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80479478[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80479498[i]))->changeTexture(tex, 0);
-        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0EE8[rupees % 10]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80479438[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80479458[i]))->changeTexture(tex, 0);
-        s32 count = fn_8040305C(field_0x1f0[i]) - 1;
-        for (s32 j = 0; j < 6; j++) {
-            if (j < count) {
-                field_0x10->search(lbl_804795C0[i][j])->show();
-                field_0x10->search(lbl_80479680[i][j])->show();
-                field_0x10->search(lbl_80479740[i][j])->hide();
-                field_0x10->search(lbl_80479800[i][j])->hide();
-            } else if (j == count) {
-                field_0x10->search(lbl_804795C0[i][j])->hide();
-                field_0x10->search(lbl_80479680[i][j])->hide();
-                field_0x10->search(lbl_80479740[i][j])->hide();
-                field_0x10->search(lbl_80479800[i][j])->show();
-            } else {
-                field_0x10->search(lbl_804795C0[i][j])->hide();
-                field_0x10->search(lbl_80479680[i][j])->hide();
-                field_0x10->search(lbl_80479740[i][j])->hide();
-                field_0x10->search(lbl_80479800[i][j])->hide();
-            }
-        }
+        setRupeeDigits(i);
+        setMarkers(i);
         field_0x10->search(lbl_804793F8[i])->hide();
     }
     field_0x60->moveFromCentre_80402E08(0.0f, -200.0f);

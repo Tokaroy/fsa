@@ -40,6 +40,8 @@ public:
     // Not in the binary (inlined into their callers).
     void enterState13();
     void drawFade();
+    void setRupeeDigits(s32 i);
+    void setMarkers(s32 i);
     void fn_803F1C70(); // 10
     void fn_803F2580(); // 9
     void fn_803F2660(); // 8
