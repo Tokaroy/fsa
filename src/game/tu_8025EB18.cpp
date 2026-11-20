@@ -1244,11 +1244,8 @@ bool Player_804A6F38::fn_80260C08() {
     return false;
 }
 
-// FIXME: 95.22 %, missing/extra; behaviour near.
-// missing/extra (8 fewer): the layer-moved points are TVec2f operator chains
-// (members of libs TVec2, by value; game/Vec2Ops.h xy()) and lay out the original's stack
-// temporaries, except that the original also copies the midpoint's `+ other` result into its
-// own temporary (sp 0x48) and rounds it again (frsp) before `- box->i`.
+// FIXME: missing/extra (16 fewer): TVec2f operator+ temporaries are elided into pos in ours
+// but kept on the stack in the original (sp+0x38, sp+0x28, sp+0x20).
 // Lift another player standing in front (16 along the facing, state 0x11, 'PLAY'): it
 // must be present and free, and both its spot seen from this layer and the midpoint of
 // the two (on both layers) must not be blocked (fn_802260DC / fn_802684A4 unless tile
@@ -1296,7 +1293,8 @@ bool Player_804A6F38::fn_802604CC() {
             box = layerBox(getPlayerLayer_8023DE58(i));
             JGeometry::TVec3f* other = getPlayerPos_8023E724(i);
             myBox = layerBox(field_0x3b4);
-            JGeometry::TVec2f mid = (xy(mPos) - myBox->i + xy(*other) - box->i) * 0.5f;
+            JGeometry::TVec2f mid = xy(mPos) - myBox->i + xy(*other) - box->i;
+            mid.scale(0.5f);
             box = layerBox(getPlayerLayer_8023DE58(i));
             pos = mid + box->i;
             if ((fn_802260DC(&pos, getPlayerLayer_8023DE58(i), true)
@@ -1317,7 +1315,7 @@ bool Player_804A6F38::fn_802604CC() {
                 continue;
             }
             if (isPlayerBitSet(gGameRoot_8053AAF8, i) || fn_8022E438(field_0x4, i)
-                || (gGameRoot_8053AAF8->field_0x7e != 0 && fn_8022CAF8(i) != 4)
+                || (gGameRoot_8053AAF8->field_0x7e != 0 && fn_8022CAF8(i) == 4)
                 || (field_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8)) {
                 if ((fn_80236B50(i) || fn_80251BFC(0x19)) && fn_80251AEC(0x11)) {
                     if (fn_80236B50(i)) {
