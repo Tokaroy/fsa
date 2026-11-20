@@ -66,7 +66,7 @@ cls_804A4C58::~cls_804A4C58() {
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 67.27 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 68.34 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -88,9 +88,10 @@ void cls_804A4C58::init() {
     mLifeBackup = mLife;
     field_0x114 = 0;
     field_0x196 = 1;
+    s32 room = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box;
-    if (field_0x4 < 8) {
+    if (room < 8) {
         box = &view->mVisibleBox;
     } else {
         box = &view->field_0xdc;
@@ -115,8 +116,7 @@ void cls_804A4C58::init() {
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {
-            field_0x2d4[row * 4 + col].x = x;
-            field_0x2d4[row * 4 + col].y = y;
+            field_0x2d4[row * 4 + col].set(x, y);
             x += 80.0f;
         }
         y += step;
@@ -275,7 +275,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 84.93 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 90.14 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -284,13 +284,9 @@ void cls_804A4C58::fn_801D9960() {
         s32 target = -1;
         JGeometry::TVec3f from;
         if (mFlags & 0x2000) {
-            from.y = -6.0f + mPos.y;
-            from.x = mPos.x - -30.0f;
-            from.z = 0.0f;
+            from.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
         } else {
-            from.y = -6.0f + mPos.y;
-            from.x = -30.0f + mPos.x;
-            from.z = 0.0f;
+            from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
         }
         s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
         s32 player = fn_801D0338(&from, angle);
@@ -313,7 +309,7 @@ void cls_804A4C58::fn_801D9960() {
         field_0x338--;
         if (field_0x338 == 0) {
             if (field_0x33f == 3) {
-                s32 columns[6];
+                s32 columns[12];
                 columns[0] = 1;
                 columns[1] = 2;
                 columns[2] = 5;
@@ -330,12 +326,12 @@ void cls_804A4C58::fn_801D9960() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            bool turn = false;
             bool left = false;
             if (mPos.x < field_0x2d4[field_0x334].x ||
                 (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
                 left = true;
             }
-            bool turn = false;
             if (left) {
                 if (!(mFlags & 0x2000)) {
                     turn = true;
@@ -767,21 +763,24 @@ void cls_804A4C58::vfunc_0x88() {
 }
 
 
-// FIXME: 77.38 %, missing/extra; behaviour drift.
+// FIXME: 82.49 %, missing/extra; behaviour drift.
 void cls_804A4C58::vfunc_0x74() {
-    if (mState < 0xF && mState >= 0xB) {
+    switch (mState) {
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0xE:
         if (mState == 0xC) {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (s32 row = 0; row < 3; row++) {
+                    for (s32 col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -801,16 +800,15 @@ void cls_804A4C58::vfunc_0x74() {
             }
         } else {
             if (field_0x33f == 3) {
-                s32 columns[6];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 columns[12];
+                s32 n = 0;
+                for (s32 row = 0; row < 3; row++) {
+                    for (s32 col = 1; col < 3; col++) {
+                        columns[n++] = row * 4 + col;
+                    }
+                }
                 if (n > 0) {
-                    field_0x334 = columns[fn_801CD664(6)];
+                    field_0x334 = columns[fn_801CD664(n)];
                 } else {
                     field_0x334 = 0;
                 }
@@ -818,12 +816,12 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
+            bool turn = false;
             bool left = false;
             if (mPos.x < field_0x2d4[field_0x334].x ||
                 (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
                 left = true;
             }
-            bool turn = false;
             if (left) {
                 if (!(mFlags & 0x2000)) {
                     turn = true;
@@ -839,6 +837,7 @@ void cls_804A4C58::vfunc_0x74() {
                 fn_801D9C58(0xB);
             }
         }
+        break;
     }
 }
 
