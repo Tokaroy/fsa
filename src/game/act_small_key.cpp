@@ -19,7 +19,7 @@
 static const f32 lbl_8046D560[8] = {0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, -0.5f};
 
 // 0x802C52DC.
-// FIXME(shotgun): 95.72 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.69 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::init() {
     field_0x280 = field_0x90 & 0x1F;
     field_0x27c = (field_0x90 >> 7) & 0xF;
@@ -1320,7 +1320,7 @@ void SmallKey_804A8CD8::fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer) {
 
 // The tile codes as act_bombchu's vfunc_0x4C (a != chain, the 0x25 / 0x26 results narrowed as
 // bytes).
-// FIXME: 98.52 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.02 %, scheduling+regalloc; behaviour clean.
 // Scheduling and register allocation only: pos and layer take r30 / r28 the
 // other way round (the target copies pos to r30 in the prologue, layer to r28 after the
 // first argument move).
