@@ -2706,8 +2706,6 @@ bool Player_804A6F38::fn_8024C448() {
 
 // The position for layer 8 moved from the second view box (field_0xdc)
 // into the visible box's coordinates, in field_0x1268; on other layers mPos.
-// FIXME: 98.08 %, regalloc-only; behaviour clean.
-// Registers only (f0-f3 of the box loads and the offsets).
 JGeometry::TVec3f* Player_804A6F38::fn_8024C378() {
     if (field_0x3b4 == 8) {
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -2716,11 +2714,11 @@ JGeometry::TVec3f* Player_804A6F38::fn_8024C378() {
         s32 layer = field_0x3b4;
         view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-        x -= box->i.x;
-        y -= box->i.y;
+        f32 boxX = box->i.x;
+        f32 boxY = box->i.y;
         field_0x1268.set(mPos);
-        field_0x1268.x += x;
-        field_0x1268.y += y;
+        field_0x1268.x += x - boxX;
+        field_0x1268.y += y - boxY;
         return &field_0x1268;
     }
     return &mPos;
