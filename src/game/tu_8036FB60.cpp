@@ -467,14 +467,7 @@ void cls_804AE4B0::fn_8037100C() {
     fn_803703C8();
     fn_803721F4();
     fn_80370020();
-    JGeometry::TBox2f region;
-    region.set(2208.0f, 1624.0f, 2288.0f, 1690.0f);
-    bool inside = false;
-    JGeometry::TVec3f* p = &field_0x264[field_0x39c];
-    if (p->x >= region.i.x && p->y >= region.i.y && p->x < region.f.x && p->y < region.f.y) {
-        inside = true;
-    }
-    if (inside) {
+    if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2208.0f, 1624.0f, 2288.0f, 1690.0f))) {
         for (s32 i = 0; i < 4; i++) {
             if (!fn_802300EC(i)) {
                 return;
