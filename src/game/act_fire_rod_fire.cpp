@@ -450,14 +450,14 @@ void FireRodFire_804A89F0::update() {
     }
 }
 
-// FIXME: 95.76 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
         s32 isTwo = (field_0x268 == 2) ? 1 : 0;
-        if (field_0x4 >= 8) {
+        s32 layer = field_0x4;
+        if (layer >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                fn_803075AC(mSerial, field_0x4, &mPos, field_0x270 + field_0x26c + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
+                fn_803075AC(mSerial, layer, &mPos, 0x109 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
                 return;
             }
             if (field_0x264 == 1) {
@@ -484,7 +484,7 @@ void FireRodFire_804A89F0::draw() {
                 break;
             }
 
-            fn_803075AC(mSerial, field_0x4, &pos, field_0x270 + field_0x26c + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, field_0x4, &pos, 0xF1 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
         } else {
             switch (field_0x98) {
             case 0:
@@ -710,7 +710,7 @@ s32 FireRodFire_804A89F0::fn_802BA9F0() {
     return field_0x260;
 }
 
-// FIXME(shotgun): 91.02 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.21 %, missing/extra + reloc-name; behaviour near.
 bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ignoreIds[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     if (field_0x264 != 1) {
@@ -771,8 +771,7 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
                 return false;
             }
             u16 tile = field_0x288;
-            u16 tileOffset = tile - 0x8B;
-            if (tile == 0x3A || tileOffset <= 3 || tile == 0x3D) {
+            if (tile == 0x3A || (u16)(tile - 0x8B) <= 3 || tile == 0x3D) {
                 return false;
             }
             if (field_0x27c == 0x25) {
@@ -797,33 +796,29 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     JGeometry::TVec3f p(*pos);
     s32 code = fn_8022461C(&p, layer);
-    if (code == 0) {
-        return false;
-    }
-    if (code >= 0x28 && code <= 0x2B) {
-        return false;
-    }
-    switch (field_0x98) {
-    case 0:
-        if (code == 0x42) {
-            break;
+    if (code != 0 && !(code >= 0x28 && code <= 0x2B)) {
+        switch (field_0x98) {
+        case 2:
+            if (code == 0x40) {
+                break;
+            }
+            return true;
+        case 3:
+            if (code == 0x41) {
+                break;
+            }
+            return true;
+        case 0:
+            if (code == 0x42) {
+                break;
+            }
+            return true;
+        case 1:
+            if (code == 0x43) {
+                break;
+            }
+            return true;
         }
-        return true;
-    case 1:
-        if (code == 0x43) {
-            break;
-        }
-        return true;
-    case 2:
-        if (code == 0x40) {
-            break;
-        }
-        return true;
-    case 3:
-        if (code == 0x41) {
-            break;
-        }
-        return true;
     }
     return false;
 }
