@@ -455,13 +455,6 @@ void Player_804A6F38::fn_8025D9FC() {
     field_0xba8 = 0;
 }
 
-// FIXME: 98.29 %, missing/extra; behaviour clean.
-// Structurally close (2 extra instructions): mPos + offset is copied once
-// more on the stack (operator+'s result, then pos; the original builds pos in place), as
-// in fn_8025DACC's burn loop.
-// Enter of state 0x41, the recoil hop: speed from lbl_8046AFE0 (back against the facing,
-// 4 up), sound 0x20010, a view shake (fn_802D79E8, along y when the hop has a y speed),
-// and on the TV the effect of kind 3 aimed back along the hop (fn_802F601C).
 void Player_804A6F38::fn_8025D7E4() {
     field_0x124d = 1;
     field_0x458 = 0;
@@ -482,7 +475,7 @@ void Player_804A6F38::fn_8025D7E4() {
     }
     JGeometry::TVec3f dir(-field_0x344.x, -field_0x344.y, 0.0f);
     dir.normalize();
-    JGeometry::TVec3f pos = mPos + offset;
+    const JGeometry::TVec3f& pos = mPos + offset;
     if (field_0x3b4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F601C(&pos, 3, &dir, 1.0f, 1.0f);
     }
@@ -2531,7 +2524,7 @@ bool Player_804A6F38::fn_80257DB4() {
     return field_0xd3c < 0;
 }
 
-// FIXME: 95.14 %, different; behaviour clean.
+// FIXME: 95.16 %, different; behaviour clean.
 // try.py "different", but only block order and registers: the original lays
 // out item 7's mPos.z test (off view-flag layers) after the floor probe, ours before it (the
 // source order `if (viewLayerFlag) { probe } else if (mPos.z > 0) return;` gives the
@@ -2546,8 +2539,7 @@ void Player_804A6F38::fn_8025785C() {
     }
     if (fn_8022B334(field_0x4)) {
         if (fn_80240808()) {
-            s32 item = fn_802416C4();
-            if (item != fn_802373EC(fn_80240644())) {
+            if (fn_802373EC(fn_80240644()) != fn_802416C4()) {
                 fn_80241618(fn_802373EC(fn_80240644()), 1);
             }
         }
