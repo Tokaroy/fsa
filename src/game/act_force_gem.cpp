@@ -761,17 +761,15 @@ void ForceGem_804AB6D8::fn_8032BB90() {
     }
 }
 
-// FIXME(shotgun): 97.07 %, missing/extra; behaviour clean.
 void ForceGem_804AB6D8::fn_8032B7C0() {
     if (field_0x94 == 0x23 || field_0x94 == 0x24) {
         return;
     }
-    s32 layer = field_0x4;
     bool near = false;
-    if (getGameView_802D6A9C()->field_0x131df[layer] == 0) {
+    if (getGameView_802D6A9C()->getField_0x131df(getField_0x4()) == 0) {
         if (field_0x230 == 1 || field_0x230 == 9) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023A51C(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (fn_8023A51C(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f* p = fn_8023A478(i);
                     f32 dx = p->x - mPos.x;
                     f32 dy = p->y - mPos.y;
@@ -820,7 +818,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
         }
         if (field_0x230 != 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023A51C(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (fn_8023A51C(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f* p = fn_8023A478(i);
                     f32 dx = p->x - mPos.x;
                     f32 dy = p->y - mPos.y;
