@@ -264,7 +264,7 @@ u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
     for (u8 i = 0; i < field_0x2; i++) {
         if (layer == fn_800FE25C(i)) {
             if (max == n) {
-                OSPanic(__FILE__, 0x1A3, "RailBase: Buffsize Error");
+                OSPanic(__FILE__, 0x1A3, "RailBase: Buffsize Error\n");
             }
             out[n++] = i;
         }
