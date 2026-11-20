@@ -13,11 +13,103 @@
 #include "game/RotMatrix.h"
 #include "game/SpriteParams.h"
 
-// Animation lengths in frames (.data 0x804A1B70, not written as source here), indexed by
-// field_0x270 + field_0x264.
-extern const s32 lbl_804A1B70[];
+// Animation lengths in frames (.data 0x804A1B70), indexed by field_0x270 + field_0x264.
+s32 lbl_804A1B70[] = {
+    8, 8, 8, 8, 8, 8,
+    6, 9, 13, 17, 9, 6, 6, 8,
+    4, 4, 4, 4,
+    7, 7, 8, 11, 14, 12, 10, 20,
+    4, 4, 4, 4,
+    8, 8, 9, 10, 11, 13, 16, 26,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    8, 8, 8, 8, 8, 8, 0,
+    7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 20,
+    3, 3, 3, 3,
+    0, 1, 2, 1,
+    0, 1, 2, 3, 4,
+    0, 1, 2, 3, 4,
+    6, 6, 6, 6, 6, 6, 6, 6, 6, 40,
+    0, 5, 6, 7, 8,
+    5, 5, 5, 5, 40,
+};
 // Sprite names of the animation frames (.data 0x804A1D24), indexed like lbl_804A1B70.
-extern const char* const lbl_804A1D24[];
+const char* lbl_804A1D24[] = {
+    "boss_p_fly_01.bti",
+    "boss_p_fly_02.bti",
+    "boss_p_fly_03.bti",
+    "boss_p_fly_04.bti",
+    "boss_p_fly_03.bti",
+    "boss_p_fly_02.bti",
+    "boss_p_sui_01.bti",
+    "boss_p_sui_02.bti",
+    "boss_p_sui_03.bti",
+    "boss_p_sui_04.bti",
+    "boss_p_sui_05.bti",
+    "boss_p_sui_06.bti",
+    "boss_p_sui_07.bti",
+    "boss_p_sui_08.bti",
+    "boss_p_sui_loop_01.bti",
+    "boss_p_sui_loop_02.bti",
+    "boss_p_sui_loop_03.bti",
+    "boss_p_sui_loop_04.bti",
+    "boss_p_haki_01.bti",
+    "boss_p_haki_02.bti",
+    "boss_p_haki_03.bti",
+    "boss_p_haki_04.bti",
+    "boss_p_haki_05.bti",
+    "boss_p_haki_06.bti",
+    "boss_p_haki_07.bti",
+    "boss_p_haki_08.bti",
+    "boss_p_haki_loop_01.bti",
+    "boss_p_haki_loop_02.bti",
+    "boss_p_haki_loop_03.bti",
+    "boss_p_haki_loop_04.bti",
+    "boss_p_d_01.bti",
+    "boss_p_d_02.bti",
+    "boss_p_d_03.bti",
+    "boss_p_d_04.bti",
+    "boss_p_d_05.bti",
+    "boss_p_d_06.bti",
+    "boss_p_d_07.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_09.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_09.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_fly_01.bti",
+    "boss_p_d_fly_02.bti",
+    "boss_p_d_fly_03.bti",
+    "boss_p_d_fly_04.bti",
+    "boss_p_d_fly_05.bti",
+    "boss_p_d_fly_06.bti",
+    "boss_p_sui_mask.bti",
+    "boss_p_odoroki_1.bti",
+    "boss_p_odoroki_2.bti",
+    "boss_p_odoroki_3.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_fly_1.bti",
+    "boss_p_odoroki_fly_2.bti",
+    "boss_p_odoroki_fly_3.bti",
+    "boss_p_odoroki_fly_2.bti",
+};
 JGeometry::TVec3f lbl_804C18B8;
 extern s32 lbl_80539FC8;
 extern s32 lbl_80539FCC;
@@ -47,6 +139,7 @@ JGeometry::TBox2f* fn_801826A4(s32 layer);
 AudioMgr_8045A080* fn_8018A6AC();
 s32 fn_8018A660();
 void fn_8018A63C();
+u16 angleOf(f32 x, f32 y);
 
 static inline void stopEmitter(JPABaseEmitter*& emitter) {
     if (emitter != NULL) {
@@ -159,7 +252,6 @@ void cls_804A1E50::init() {
     }
 }
 
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018E30C(s32 anim) {
     JGeometry::TVec3f pos;
     pos.set(mPos);
@@ -239,7 +331,6 @@ void cls_804A1E50::fn_8018E30C(s32 anim) {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-// FIXME(shotgun): 99.88 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018DFCC() {
     f32 x = mPos.x;
     f32 y = mPos.y;
@@ -279,8 +370,9 @@ void cls_804A1E50::fn_8018DFCC() {
             field_0x27a = 1;
         }
         break;
-    case 2:
-        y += 44.0f;
+    case 4:
+    case 6:
+        y += 60.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
         }
@@ -302,9 +394,8 @@ void cls_804A1E50::fn_8018DFCC() {
             field_0x27a = 1;
         }
         break;
-    case 4:
-    case 6:
-        y += 60.0f;
+    case 2:
+        y += 44.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
         }
@@ -347,7 +438,7 @@ void cls_804A1E50::fn_8018DFCC() {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-// FIXME(shotgun): 97.24 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.79 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804A1E50::fn_8018DC70(s32 mode) {
     if (field_0x26c == 1) {
         return;
@@ -355,7 +446,8 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
     if (field_0x27a != 1) {
         return;
     }
-    JGeometry::TVec3f push(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f push;
+    push.zero();
     if (field_0x254 >= 0) {
         return;
     }
@@ -376,7 +468,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
         f32 py = mPos.y - 32.0f;
         f32 dx = getPlayerPos_8023E724(i)->x - px;
         f32 dy = getPlayerPos_8023E724(i)->y - py;
-        u16 angle = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u32 angle = angleOf(dx, dy);
         if (mode != 1 && angle >= 0x2000 && angle < 0xE000) {
             continue;
         }
@@ -390,6 +482,8 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
             push.x = 2.0f;
             push.y = 2.0f;
             break;
+        case 0:
+        case 2:
         default:
             push.x = 3.0f;
             push.y = 3.0f;
@@ -426,7 +520,6 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
     }
 }
 
-// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 bool cls_804A1E50::fn_8018DA6C() {
     if (field_0x27b == 1) {
         return false;
@@ -462,6 +555,13 @@ bool cls_804A1E50::fn_8018DA6C() {
     return false;
 }
 
+// A plain function that fn_8018DC70 inlines and whose own copy the linker dropped: the
+// original's .sdata2 has 10430.378f between update's literals and fn_8018DA6C's, so it was
+// generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
+u16 angleOf(f32 x, f32 y) {
+    return JMath::atanTable_.atan2_(x, y) * 10430.378f;
+}
+
 cls_804A1E50::~cls_804A1E50() {
     releaseEmitter_801EE434(field_0x328);
     releaseEmitter_801EE434(field_0x32c);
@@ -472,7 +572,7 @@ cls_804A1E50::~cls_804A1E50() {
     }
 }
 
-// FIXME(shotgun): 97.40 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.41 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1E50::update() {
     JGeometry::TBox2f box50;
     fn_8017EC5C(&box50, -30.0f, -30.0f, 30.0f, 30.0f);
@@ -1466,7 +1566,7 @@ void cls_804A1E50::update() {
 }
 
 
-// FIXME(shotgun): 87.03 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 87.08 %, missing/extra + reloc-name; behaviour near.
 void cls_804A1E50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
