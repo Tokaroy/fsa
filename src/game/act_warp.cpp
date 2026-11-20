@@ -426,10 +426,11 @@ void Warp_804A6DC8::update() {
 extern const f32 lbl_8046AC58[24]; // x shifts of the sand while the warp shakes
 
 // 0x80227CE8.
-// Remaining: original compares (field_0x90 & 0x7F) with a signed cmpwi; reloc names.
+// Remaining: reloc names.
 // FIXME: 99.45 %, different + reloc-name; behaviour drift.
 void Warp_804A6DC8::draw() {
-    if ((field_0x90 & 0x7F) == 0x20 && field_0x255 == 0) {
+    s32 kind = field_0x90 & 0x7F;
+    if (kind == 0x20 && field_0x255 == 0) {
         SpriteParams_801F5AE0 params;
         JGeometry::TVec3f saved = mPos;
         mPos += JGeometry::TVec3f(-16.0f, -16.0f, 0.0f);
@@ -440,9 +441,9 @@ void Warp_804A6DC8::draw() {
                 field_0x278 = fn_801CD664(10) - 0x69;
             }
         }
-        params.field_0x10.a = 0xA0;
+        params.field_0x24 = 1;
         params.field_0x1d = -2;
-        params.field_0x20 = 1;
+        params.field_0x10.a = 0xA0;
         params.field_0x2c = 0;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "sand2_smp.bin");
