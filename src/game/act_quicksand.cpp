@@ -299,6 +299,7 @@ void cls_804A6270::fn_80211C94() {
 
 #pragma auto_inline reset
 
+// FIXME: 99.30 %, regalloc-only; behaviour drift.
 // FIXME: regalloc-only (r29/r30 swapped in inlined releaseView).
 void cls_804A6270::vfunc_0x90(u8 mapHit) {
     fn_80211EB0();
@@ -433,7 +434,7 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 98.22 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.45 %, missing/extra; behaviour near.
 void cls_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
