@@ -286,14 +286,15 @@ void cls_804A4C58::fn_801D9960() {
         } else {
             from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
         }
+        s32 player;
         s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-        s32 player = fn_801D0338(&from, angle);
+        player = fn_801D0338(&from, angle);
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-            s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
-            f32 diff = (s16)(angle - heading);
-            if (0.000030517578f * __fabsf(diff) <= 0.3f) {
+            s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                                (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+            if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
                 target = player;
             }
         }
@@ -336,13 +337,9 @@ bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
     if (mFlags & 0x2000) {
-        pos.y = -6.0f + mPos.y;
-        pos.x = mPos.x - -30.0f;
-        pos.z = 0.0f;
+        pos.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
     } else {
-        pos.y = -6.0f + mPos.y;
-        pos.x = -30.0f + mPos.x;
-        pos.z = 0.0f;
+        pos.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
     }
     s32 serial = getActorManager_801F856C()->spawnActor_801F9484('BOIB', field_0x4, &pos, 0, -1, -1);
     if (serial >= 0) {
@@ -351,30 +348,26 @@ bool cls_804A4C58::fn_801D95F4() {
             s32 target = -1;
             JGeometry::TVec3f from;
             if (mFlags & 0x2000) {
-                from.y = -6.0f + mPos.y;
-                from.x = mPos.x - -30.0f;
-                from.z = 0.0f;
+                from.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
             } else {
-                from.y = -6.0f + mPos.y;
-                from.x = -30.0f + mPos.x;
-                from.z = 0.0f;
+                from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
             }
+            s32 player;
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-            s32 player = fn_801D0338(&from, angle);
+            player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
-                f32 diff = (s16)(angle - heading);
-                if (0.000030517578f * __fabsf(diff) <= 0.3f) {
+                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                                    (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+                if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
                     target = player;
                 }
             }
             JGeometry::TVec2f dir;
             if (target >= 0) {
                 f32 dy = getPlayerPos_8023E724(target)->y - pos.y;
-                f32 dx = getPlayerPos_8023E724(target)->x - pos.x;
-                dir.set(dx, dy);
+                dir.set(getPlayerPos_8023E724(target)->x - pos.x, dy);
                 if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
                     dir.x = 1.0f;
                     dir.y = 0.0f;
@@ -557,8 +550,9 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
             } else {
                 from.set(offsetX + mPos.x, offsetY + mPos.y, 0.0f);
             }
+            s32 player;
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-            s32 player = fn_801D0338(&from, angle);
+            player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
