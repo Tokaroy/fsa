@@ -467,8 +467,6 @@ s32 OBJLift_804ACA00::fn_80350974() {
 
 // FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour drift.
 s32 OBJLift_804ACA00::fn_803506E0() {
-    s32 bit;
-    s32 d;
     static JGeometry::TVec2f lbl_8050AED8[4] = {
         JGeometry::TVec2f(32.0f, 0.0f),
         JGeometry::TVec2f(-32.0f, 0.0f),
@@ -481,12 +479,10 @@ s32 OBJLift_804ACA00::fn_803506E0() {
         if (fn_8022F514(i) == true && fn_8022CAF8(i) == 5) {
             continue;
         }
-        for (d = 0; d < 4; d++) {
-            f32 px = lbl_8050AED8[d].x;
-            f32 py = lbl_8050AED8[d].y;
-            px += mPos.x;
-            py += mPos.y;
-            bit = 1 << d;
+        for (s32 d = 0; d < 4; d++) {
+            f32 px = lbl_8050AED8[d].x + mPos.x;
+            f32 py = lbl_8050AED8[d].y + mPos.y;
+            s32 bit = 1 << d;
             s32 held = prev & bit;
             f32 limit = 64.0f;
             if (held) {
