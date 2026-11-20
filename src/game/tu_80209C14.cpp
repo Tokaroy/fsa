@@ -36,7 +36,7 @@ static const s16* lbl_804A5D38[10] = {
     lbl_8046A338, lbl_8046A348,
 };
 
-// FIXME(shotgun): 95.36 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
 void cls_804A5D60::init() {
     EnemyBase_804A4808::init();
     mBox.i.set(1.0f, 1.0f);
@@ -92,7 +92,7 @@ void cls_804A5D60::vfunc_0x54() {
     field_0x2c0 = offset;
 }
 
-// FIXME(shotgun): 98.99 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.83 %, regalloc-only; behaviour drift.
 // 0x8020AA78: enters `state`, starting its animation and
 // velocity. While bit 0x2000 is set only 8, 11 and 12 are taken.
 void cls_804A5D60::fn_8020AA78(s32 state) {
@@ -507,6 +507,7 @@ void cls_804A5D60::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
+// FIXME: 95.97 %, missing/extra; behaviour near.
 void cls_804A5D60::draw() {
     if (field_0x54.isZero()) {
         return;
