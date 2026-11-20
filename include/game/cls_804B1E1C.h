@@ -22,7 +22,7 @@ public:
 
     void fn_8045560C();
     void fn_804556A4();
-    void fn_80455770(f32 scale, u8 digit, const Vec* pos, JUtility::TColor color);
+    void fn_80455770(f32 scale, s32 digit, const Vec* pos, JUtility::TColor color);
 
     // One queued sprite (constructor fn_80455A74 sets the colour to -1).
     struct Sprite {
