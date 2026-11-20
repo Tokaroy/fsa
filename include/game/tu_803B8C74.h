@@ -21,6 +21,14 @@ struct SaveFile_803B950C {
         field_0x68 = 1;
         field_0x69 = 1;
     }
+    // An empty file has no time (fn_803CE4CC tests the returned flag).
+    BOOL isUsed() const {
+        BOOL used = FALSE;
+        if (field_0x0 != 0) {
+            used = TRUE;
+        }
+        return used;
+    }
 
     /* 0x00 */ s64 field_0x0; // OSGetTime() when chosen last; 0 for an empty file (tu_803BC6F0)
     // Bit stage * 4 + sub (stage 0-7, sub 0-3): set by fn_80379FF4 and
