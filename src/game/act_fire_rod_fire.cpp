@@ -450,15 +450,14 @@ void FireRodFire_804A89F0::update() {
     }
 }
 
-// FIXME: 95.38 %, missing/extra; behaviour near.
-// FIXME: (field_0x268 == 2) is built as extrwi 8,19 here; the original keeps cntlzw + srwi 5 for it.
+// FIXME: 95.76 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
-        u32 isTwo = (field_0x268 == 2);
+        s32 isTwo = (field_0x268 == 2) ? 1 : 0;
         if (field_0x4 >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                fn_803075AC(mSerial, field_0x4, &mPos, field_0x26c + field_0x270 + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
+                fn_803075AC(mSerial, field_0x4, &mPos, field_0x270 + field_0x26c + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
                 return;
             }
             if (field_0x264 == 1) {
@@ -485,7 +484,7 @@ void FireRodFire_804A89F0::draw() {
                 break;
             }
 
-            fn_803075AC(mSerial, field_0x4, &pos, field_0x26c + field_0x270 + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, field_0x4, &pos, field_0x270 + field_0x26c + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
         } else {
             switch (field_0x98) {
             case 0:
@@ -508,8 +507,6 @@ void FireRodFire_804A89F0::draw() {
     }
 }
 
-// FIXME: 98.26 %, missing/extra; behaviour near.
-// missing/extra + reloc-name. The original's second `field_0x264 == 0` test has an else that only clears mAlive (3 instructions); float literal placement.
 void FireRodFire_804A89F0::vfunc_0x24() {
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x264 == 0) {
@@ -533,18 +530,20 @@ void FireRodFire_804A89F0::vfunc_0x24() {
                 mPos.y -= 8.0f;
                 break;
             }
-        }
 
-        if (field_0x264 == 0) {
-            if (field_0x4 < 8) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
-            }
-            if (field_0x4 < 8) {
-                mAlive = false;
+            if (field_0x264 == 0) {
+                if (field_0x4 < 8) {
+                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
+                }
+                if (field_0x4 < 8) {
+                    mAlive = false;
+                } else {
+                    field_0x238 = 4;
+                    field_0x26c = 0;
+                    field_0x270 = 0;
+                }
             } else {
-                field_0x238 = 4;
-                field_0x26c = 0;
-                field_0x270 = 0;
+                mAlive = false;
             }
         } else {
             mPos = field_0x248;
@@ -555,23 +554,25 @@ void FireRodFire_804A89F0::vfunc_0x24() {
             return;
         }
 
+        s32 layer;
+        s32 id;
         s32 kind = 0;
         if (field_0x264 == 5) {
             kind = 4;
         }
         if (field_0x264 == 5 && field_0x291 == 0) {
-            s32 layer = field_0x4;
+            layer = field_0x4;
             if (layer < 8) {
                 spawnEmitter_8013CC50(layer, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
             } else {
                 getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 6, -1, -1);
             }
         } else {
-            s32 id = field_0x260;
+            id = field_0x260;
             if (id < 0) {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (kind << 6) | (field_0x98 << 4) | 0xF, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (field_0x98 << 4) | (kind << 6) | 0xF, -1, -1);
             } else {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (kind << 6) | (field_0x98 << 4) | id, -1, field_0x110);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (field_0x98 << 4) | (kind << 6) | id, -1, field_0x110);
             }
         }
     } else {
@@ -594,17 +595,15 @@ void FireRodFire_804A89F0::vfunc_0x24() {
     }
 }
 
-// FIXME: 98.02 %, regalloc-only; behaviour clean.
+// FIXME: 98.51 %, regalloc-only; behaviour clean.
 // regalloc-only. Register allocation.
 bool FireRodFire_804A89F0::fn_802BACE4() {
     if (field_0x264 != 0) {
         return false;
     }
 
-    f32 boxMinX = mBox.i.x + mPos.x;
-    f32 boxMaxX = mBox.f.x + mPos.x;
-    f32 boxMinY = mBox.i.y + mPos.y;
-    f32 boxMaxY = mBox.f.y + mPos.y;
+    JGeometry::TBox2f box = mBox;
+    box.addPos(mPos.x, mPos.y);
 
     s32 serial = -1;
     for (;;) {
@@ -621,29 +620,10 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
             continue;
         }
 
-        f32 aMinX = actor->mBox.i.x + actor->mPos.x;
-        f32 aMaxX = actor->mBox.f.x + actor->mPos.x;
-        f32 aMinY = actor->mBox.i.y + actor->mPos.y;
-        f32 aMaxY = actor->mBox.f.y + actor->mPos.y;
+        JGeometry::TBox2f actorBox = actor->mBox;
+        actorBox.addPos(actor->mPos.x, actor->mPos.y);
 
-        if (aMinX <= boxMinX) {
-            aMinX = boxMinX;
-        }
-        if (aMinY <= boxMinY) {
-            aMinY = boxMinY;
-        }
-        if (aMaxX >= boxMaxX) {
-            aMaxX = boxMaxX;
-        }
-        if (aMaxY >= boxMaxY) {
-            aMaxY = boxMaxY;
-        }
-
-        bool hit = false;
-        if (aMaxX >= aMinX && aMaxY >= aMinY) {
-            hit = true;
-        }
-        if (hit) {
+        if (actorBox.intersect(box)) {
             return true;
         }
     }
