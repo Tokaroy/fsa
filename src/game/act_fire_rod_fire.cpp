@@ -450,7 +450,6 @@ void FireRodFire_804A89F0::update() {
     }
 }
 
-// FIXME: 95.76 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
@@ -711,7 +710,7 @@ s32 FireRodFire_804A89F0::fn_802BA9F0() {
     return field_0x260;
 }
 
-// FIXME(shotgun): 91.02 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.21 %, missing/extra + reloc-name; behaviour near.
 bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ignoreIds[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     if (field_0x264 != 1) {
