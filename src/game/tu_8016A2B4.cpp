@@ -486,10 +486,11 @@ void GameRootSub24_8016A3AC::fn_8016DA6C() {
     }
 }
 
-// FIXME: 98.30 %, missing/extra; behaviour near.
+// FIXME: 99.45 %, scheduling+regalloc; behaviour clean.
 void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
                  s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
     JGeometry::TVec3f offset(-view[0][3], -view[1][3], 0.0f);
+    JGeometry::TVec3f pos;
 
     if (arg3) {
         if (*timer1 > 0) {
@@ -566,11 +567,11 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
         }
         if (entry->field_0x0 != NULL) {
             if (entry->field_0x0->isEnableDeleteEmitter()) {
-                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(entry->field_0x0);
+                JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+                manager->forceDeleteEmitter(entry->field_0x0);
                 entry->field_0x0 = NULL;
             } else {
                 entry->field_0x0->setGlobalScale(JGeometry::TVec3f(scale, scale, scale));
-                JGeometry::TVec3f pos;
                 pos.add(entry->field_0x4, offset);
                 if (entry->field_0x10 == 0x287) {
                     if (!arg2) {
@@ -604,7 +605,8 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
             srt->setFrame(frame % srt->getTotalFrameCount());
         }
         if (tev != NULL) {
-            tev->setFrame(((i < 4 ? maxA : maxB) * tev->getTotalFrameCount()) / 60);
+            s32 total = tev->getTotalFrameCount();
+            tev->setFrame(((i < 4 ? maxA : maxB) * total) / 60);
         }
     }
 }
