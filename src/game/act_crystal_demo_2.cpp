@@ -42,7 +42,7 @@ s32 cls_804AE088::vfunc_0x58() {
     return field_0x240;
 }
 
-// FIXME: 98.05 %, scheduling + reloc-name; behaviour clean.
+// FIXME: 99.95 %, reloc-name; behaviour clean.
 cls_804AE088::cls_804AE088()
     : mNaviActor(NULL), field_0x234(1), field_0x235(1), field_0x236(0), field_0x237(0), field_0x238(1),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
@@ -54,8 +54,8 @@ cls_804AE088::cls_804AE088()
     field_0x358 = NULL;
     field_0x398 = NULL;
     for (s32 i = 0; i < 7; i++) {
+        field_0x35c[i] = NULL;
         if (i < 2) {
-            field_0x35c[i] = NULL;
             field_0x3b4[i] = NULL;
         }
         if (i < 3) {
@@ -604,19 +604,19 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// differs: rot zero-store order and .sdata2 literal pool order.
-// FIXME: 99.63 %, scheduling + reloc-name; behaviour clean.
+// Not auto-inlined: draw calls fn_8036A894, fn_80369DDC and fn_80368CD8 call fn_8036AA60 out of line in the
+// original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+// differs: .sdata2 literal pool order.
+// FIXME: 99.72 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            rot[i][j] = 0.0f;
-        }
-    }
+    rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
+        rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
     fn_8010F668(rot, &axisZ, field_0x280);
     PSMTXConcat(mtx, rot, mtx);
@@ -650,9 +650,7 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// Not auto-inlined: draw calls fn_8036A894 out of line in the original (docs/INLINING.md, pragma rule 1).
-#pragma auto_inline off
-// FIXME: 93.25 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 97.00 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
@@ -671,13 +669,14 @@ void cls_804AE088::fn_8036A894() {
         params.field_0x14.g = 0;
         params.field_0x14.b = 0;
         params.field_0x14.a = field_0x24c;
+        params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
-        params.mMtx = mtx;
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
+        void* res = field_0x310;
         if (field_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x310, &params);
+            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
 }
@@ -1375,13 +1374,13 @@ void cls_804AE088::fn_803683AC() {
     mPos = savedPos;
 }
 
-// FIXME: 98.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.98 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
-            field_0x290 -= 8.0f;
+            field_0x290 -= 2.0f;
         } else {
-            field_0x290 += 8.0f;
+            field_0x290 += 2.0f;
         }
         if (field_0x290 >= 255.0f) {
             field_0x290 = 255.0f;
@@ -1389,14 +1388,14 @@ void cls_804AE088::fn_80368198() {
             field_0x290 = 0.0f;
         }
         if (field_0x314 == NULL) {
-            const ResTIMG* tex = (const ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_8053A1C8);
+            ResTIMG* tex = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_8053A1C8);
             field_0x314 = new J2DPicture(tex);
         }
         gGameRoot2_8053AB10->fn_8013B490();
-        field_0x314->setBlackWhite(JUtility::TColor(0), JUtility::TColor(0xFFFFFFFF));
+        field_0x314->setBlackWhite(JUtility::TColor(0xFFFFFFFF), JUtility::TColor(0));
         field_0x314->setAlpha(field_0x290);
-        field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getRenderMode()->fbWidth,
-                          (s32)JUTVideo::getManager()->getRenderMode()->efbHeight, false, false, false);
+        field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
+                          (s32)JUTVideo::getManager()->getEfbHeight(), false, false, false);
         if (field_0x274 == 0x80) {
             field_0x234 = 0;
             field_0x236 = 1;
