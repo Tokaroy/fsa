@@ -24,7 +24,7 @@ static inline void rotateArrowPane(J2DPane* pane, f32 angle) {
     pane->rotate(0.5f * w, 0.5f * h, J2DROTATE_Z, angle);
 }
 
-// FIXME(shotgun): 91.93 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.90 %, scheduling; behaviour clean.
 cls_804B16A8::cls_804B16A8() {
     mScreen = new J2DScreen;
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
