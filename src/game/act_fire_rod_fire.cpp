@@ -773,15 +773,14 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
                 return false;
             }
             u16 tile = field_0x288;
-            u16 tileOffset = tile - 0x8B;
-            if (tile == 0x3A || tileOffset <= 3 || tile == 0x3D) {
+            if (tile == 0x3A || (u16)(tile - 0x8B) <= 3 || tile == 0x3D) {
                 return false;
             }
             if (field_0x27c == 0x25) {
-                return getGameView_802D6A9C()->field_0x171 == 0;
+                return (u8)(getGameView_802D6A9C()->field_0x171 == 0);
             }
             if (field_0x27c == 0x26) {
-                return getGameView_802D6A9C()->field_0x171 == 1;
+                return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
             }
             if (field_0x27c == 0x22) {
                 if (getGameView_802D6A9C()->field_0x170 != 1) {
@@ -799,33 +798,29 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     JGeometry::TVec3f p(*pos);
     s32 code = fn_8022461C(&p, layer);
-    if (code == 0) {
-        return false;
-    }
-    if (code >= 0x28 && code <= 0x2B) {
-        return false;
-    }
-    switch (field_0x98) {
-    case 0:
-        if (code == 0x42) {
-            break;
+    if (code != 0 && !(code >= 0x28 && code <= 0x2B)) {
+        switch (field_0x98) {
+        case 2:
+            if (code == 0x40) {
+                break;
+            }
+            return true;
+        case 3:
+            if (code == 0x41) {
+                break;
+            }
+            return true;
+        case 0:
+            if (code == 0x42) {
+                break;
+            }
+            return true;
+        case 1:
+            if (code == 0x43) {
+                break;
+            }
+            return true;
         }
-        return true;
-    case 1:
-        if (code == 0x43) {
-            break;
-        }
-        return true;
-    case 2:
-        if (code == 0x40) {
-            break;
-        }
-        return true;
-    case 3:
-        if (code == 0x41) {
-            break;
-        }
-        return true;
     }
     return false;
 }
