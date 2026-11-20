@@ -277,10 +277,9 @@ void cls_804AE4B0::fn_80371D50(s32 arg) {
 // FIXME(shotgun): 80.66 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AE4B0::fn_80371A2C() {
     f32 nearest[4];
-    nearest[0] = 49.0f;
-    nearest[1] = 49.0f;
-    nearest[2] = 49.0f;
-    nearest[3] = 49.0f;
+    for (s32 i = 0; i < 4; i++) {
+        nearest[i] = 49.0f;
+    }
     for (s32 i = 0; i < 4; i++) {
         if (field_0x330[i] == 0) {
             for (s32 j = 0; j < 4; j++) {
@@ -314,20 +313,22 @@ void cls_804AE4B0::fn_80371A2C() {
             }
         }
     }
+    JGeometry::TBox2f box;
     if (field_0x3a8 == 0) {
         if (field_0x3ac == 0) {
             s32 idx = fn_80370200();
             if (idx != -1) {
-                JGeometry::TBox2f box;
-                box.i.x = mBox.i.x + field_0x294[idx].x;
-                box.i.y = mBox.i.y + field_0x294[idx].y;
-                box.f.x = mBox.f.x + field_0x294[idx].x;
-                box.f.y = mBox.f.y + field_0x294[idx].y;
+                const JGeometry::TVec3f& pos = field_0x294[idx];
+                box.set(mBox);
+                box.i.x += pos.x;
+                box.i.y += pos.y;
+                box.f.x += pos.x;
+                box.f.y += pos.y;
                 fn_8022FEB8(&box, field_0x4, mSerial, true, false);
                 s32 player = fn_8022FD8C(mSerial);
                 if (player >= 0) {
                     if (fn_802300EC(player)) {
-                        if (fn_8038BD08(player, lbl_80474F00[idx], field_0x4, field_0x294[idx], 0x22)) {
+                        if (fn_8038BD08(player, lbl_80474F00[idx], field_0x4, pos, 0x22)) {
                             field_0x3a4 = player;
                             field_0x3a8 = 1;
                             field_0x3a0 = idx;
@@ -339,11 +340,12 @@ void cls_804AE4B0::fn_80371A2C() {
         }
     } else if (field_0x3a0 != 4) {
         if (field_0x3a0 >= 0) {
-            JGeometry::TBox2f box;
-            box.i.x = mBox.i.x + field_0x294[field_0x3a0].x;
-            box.i.y = mBox.i.y + field_0x294[field_0x3a0].y;
-            box.f.x = mBox.f.x + field_0x294[field_0x3a0].x;
-            box.f.y = mBox.f.y + field_0x294[field_0x3a0].y;
+            const JGeometry::TVec3f& pos = field_0x294[field_0x3a0];
+            box.set(mBox);
+            box.i.x += pos.x;
+            box.i.y += pos.y;
+            box.f.x += pos.x;
+            box.f.y += pos.y;
             fn_8022FF8C(field_0x3a4, &box, field_0x4, mSerial, true, false);
             if (fn_80388CAC(field_0x3a4, mSerial)) {
                 field_0x3a4 = -1;
