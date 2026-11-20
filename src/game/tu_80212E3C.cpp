@@ -24,7 +24,6 @@ static inline void spawnDust(cls_804A6340* self) {
 
 cls_804A6340::cls_804A6340() {}
 
-// FIXME(shotgun): 96.48 %, missing/extra + reloc-name; behaviour near.
 void cls_804A6340::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -55,7 +54,7 @@ void cls_804A6340::init() {
     mAnim.startAnim_801D22DC(1, 2, false);
 }
 
-// FIXME(shotgun): 98.40 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.54 %, regalloc-only; behaviour clean.
 void cls_804A6340::fn_80213774(int mode) {
     switch (mode) {
     case 0:
@@ -141,6 +140,7 @@ void cls_804A6340::fn_80213774(int mode) {
     }
 }
 
+// FIXME: 99.92 %, reloc-name; behaviour drift.
 void cls_804A6340::vfunc_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
@@ -241,7 +241,7 @@ void cls_804A6340::vfunc_0x94() {
     }
 }
 
-// FIXME(shotgun): 95.16 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.81 %, missing/extra + reloc-name; behaviour near.
 void cls_804A6340::draw() {
     if (field_0x54.isZero()) {
         return;
