@@ -10,9 +10,34 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/J2D/J2DAnmLoader.h"
 
-extern const u64 lbl_80476F80[];
-extern const u64 lbl_80477180[];
-extern const u64 lbl_80477408[];
+static const u64 lbl_80476F80[4][16] = {
+    { 'P1ka01', 'P1ka02', 'P1ka03', 'P1ka04', 'P1ka05', 'P1ka06', 'P1ka07', 'P1ka08',
+      'P1ka09', 'P1ka10', 'P1ka11', 'P1ka12', 'P1ka13', 'P1ka14', 'P1ka15', 'P1ka16' },
+    { 'P2ka01', 'P2ka02', 'P2ka03', 'P2ka04', 'P2ka05', 'P2ka06', 'P2ka07', 'P2ka08',
+      'P2ka09', 'P2ka10', 'P2ka11', 'P2ka12', 'P2ka13', 'P2ka14', 'P2ka15', 'P2ka16' },
+    { 'P3ka01', 'P3ka02', 'P3ka03', 'P3ka04', 'P3ka05', 'P3ka06', 'P3ka07', 'P3ka08',
+      'P3ka09', 'P3ka10', 'P3ka11', 'P3ka12', 'P3ka13', 'P3ka14', 'P3ka15', 'P3ka16' },
+    { 'P4ka01', 'P4ka02', 'P4ka03', 'P4ka04', 'P4ka05', 'P4ka06', 'P4ka07', 'P4ka08',
+      'P4ka09', 'P4ka10', 'P4ka11', 'P4ka12', 'P4ka13', 'P4ka14', 'P4ka15', 'P4ka16' },
+};
+
+static const u64 lbl_80477180[4][16] = {
+    { 'P1kak01', 'P1kak02', 'P1kak03', 'P1kak04', 'P1kak05', 'P1kak06', 'P1kak07', 'P1kak08',
+      'P1kak09', 'P1kak10', 'P1kak11', 'P1kak12', 'P1kak13', 'P1kak14', 'P1kak15', 'P1kak16' },
+    { 'P2kak01', 'P2kak02', 'P2kak03', 'P2kak04', 'P2kak05', 'P2kak06', 'P2kak07', 'P2kak08',
+      'P2kak09', 'P2kak10', 'P2kak11', 'P2kak12', 'P2kak13', 'P2kak14', 'P2kak15', 'P2kak16' },
+    { 'P3kak01', 'P3kak02', 'P3kak03', 'P3kak04', 'P3kak05', 'P3kak06', 'P3kak07', 'P3kak08',
+      'P3kak09', 'P3kak10', 'P3kak11', 'P3kak12', 'P3kak13', 'P3kak14', 'P3kak15', 'P3kak16' },
+    { 'P4kak01', 'P4kak02', 'P4kak03', 'P4kak04', 'P4kak05', 'P4kak06', 'P4kak07', 'P4kak08',
+      'P4kak09', 'P4kak10', 'P4kak11', 'P4kak12', 'P4kak13', 'P4kak14', 'P4kak15', 'P4kak16' },
+};
+
+static const u64 lbl_80477380[4] = { 'Pbcur01', 'Pbcur02', 'Pbcur03', 'Pbcur04' };
+static const u64 lbl_804773A0[3] = { 'Pblk01', 'Pblk02', 'Pblk03' };
+static const u64 lbl_804773B8[3] = { 'Ndata002', 'Ndata003', 'Ndata004' };
+static const u64 lbl_804773D0[3] = { 'P2P02', 'P3P02', 'P4P02' };
+static const u64 lbl_804773E8[4] = { 'Pp1i03', 'Pp2i03', 'Pp3i03', 'Pp4i03' };
+static const u64 lbl_80477408[4] = { 'Ndata11', 'Ndata12', 'Ndata13', 'Ndata14' };
 
 // FIXME(shotgun): 95.54 %, missing/extra; behaviour drift.
 cls_804B03D8::cls_804B03D8() {
@@ -79,8 +104,8 @@ cls_804B03D8::cls_804B03D8() {
     field_0x78 = 0;
     field_0x79 = 0;
     field_0x7a = 0;
-    field_0x7b = field_0x4->search(lbl_80477180[0])->mAlpha;
-    field_0x7c = field_0x4->search(lbl_80477180[1])->mAlpha;
+    field_0x7b = field_0x4->search(lbl_80477180[0][0])->mAlpha;
+    field_0x7c = field_0x4->search(lbl_80477180[0][1])->mAlpha;
     field_0x7d = field_0x8->search('Pstarli')->mAlpha;
     field_0x7e = 0;
     field_0x7f = 0;
@@ -133,13 +158,13 @@ void cls_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
         if (i >= gGameRoot_8053AAF8->fn_80138A30() - 1) {
-            field_0x4->search(lbl_80477180[68 + i])->mIsVisible = true;
-            field_0x4->search(lbl_80477180[71 + i])->mIsVisible = false;
-            field_0x4->search(lbl_80477180[74 + i])->mIsVisible = false;
+            field_0x4->search(lbl_804773A0[i])->show();
+            field_0x4->search(lbl_804773B8[i])->hide();
+            field_0x4->search(lbl_804773D0[i])->hide();
         } else {
-            field_0x4->search(lbl_80477180[68 + i])->mIsVisible = false;
-            field_0x4->search(lbl_80477180[71 + i])->mIsVisible = true;
-            field_0x4->search(lbl_80477180[74 + i])->mIsVisible = true;
+            field_0x4->search(lbl_804773A0[i])->hide();
+            field_0x4->search(lbl_804773B8[i])->show();
+            field_0x4->search(lbl_804773D0[i])->show();
         }
     }
     for (s32 k = 0; k < 4; k++) {
@@ -147,26 +172,26 @@ void cls_804B03D8::fn_803D87C0() {
         s32 count = lbl_80529DEC.field_0x140[k];
         if ((lbl_80529DEC.field_0x243[0] & mask) != 0) {
             field_0x68 = k;
-            field_0x4->search(lbl_80477180[77 + k])->mIsVisible = true;
-            field_0x4->search(lbl_80477180[64 + k])->mIsVisible = true;
+            field_0x4->search(lbl_804773E8[k])->show();
+            field_0x4->search(lbl_80477380[k])->show();
         } else {
-            field_0x4->search(lbl_80477180[77 + k])->mIsVisible = false;
-            field_0x4->search(lbl_80477180[64 + k])->mIsVisible = false;
+            field_0x4->search(lbl_804773E8[k])->hide();
+            field_0x4->search(lbl_80477380[k])->hide();
         }
         for (s32 j = 0; j < 16; j++) {
             if (j < count && (gGameRoot_8053AAF8->mPlayerMask & mask) != 0) {
                 if ((lbl_80529DEC.field_0x243[0] & mask) != 0 && j == count - 1) {
                     field_0x6a = j;
-                    field_0x4->search(lbl_80476F80[k * 16 + j])->mIsVisible = false;
-                    field_0x4->search(lbl_80477180[k * 16 + j])->mIsVisible = false;
+                    field_0x4->search(lbl_80476F80[k][j])->hide();
+                    field_0x4->search(lbl_80477180[k][j])->hide();
                 } else {
-                    field_0x4->search(lbl_80476F80[k * 16 + j])->mIsVisible = true;
-                    field_0x4->search(lbl_80477180[k * 16 + j])->mIsVisible = true;
-                    field_0x4->search(lbl_80477180[k * 16 + j])->setAlpha(0);
+                    field_0x4->search(lbl_80476F80[k][j])->show();
+                    field_0x4->search(lbl_80477180[k][j])->show();
+                    field_0x4->search(lbl_80477180[k][j])->setAlpha(0);
                 }
             } else {
-                field_0x4->search(lbl_80476F80[k * 16 + j])->mIsVisible = false;
-                field_0x4->search(lbl_80477180[k * 16 + j])->mIsVisible = false;
+                field_0x4->search(lbl_80476F80[k][j])->hide();
+                field_0x4->search(lbl_80477180[k][j])->hide();
             }
         }
     }
@@ -181,10 +206,11 @@ void cls_804B03D8::fn_803D87C0() {
         field_0x34[i]->moveFromCentre_80402E08(0.0f, 500.0f);
         field_0x34[i]->field_0x22 = 0;
     }
-    lbl_8053AED8->fn_80440D78((const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti"));
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    lbl_8053AED8->fn_80440D78(tex);
     fn_804030C4('TIMG', "kk_modoru_01.bti");
     lbl_8053AED8->fn_80440BF4(false);
-    field_0x2c->mPane->mIsVisible = false;
+    field_0x2c->mPane->hide();
     field_0x2c->mPane->setAlpha(0);
     field_0x4->search('Paccur01')->setAlpha(0);
     for (s32 i = 0; i < 2; i++) {
@@ -383,10 +409,10 @@ void cls_804B03D8::fn_803D75B0() {
                     f32 t = (f32)field_0x64 / 20.0f;
                     field_0x8->search('P0ka00')->setAlpha(((f32)field_0x7b * t));
                     static_cast<J2DPicture*>(field_0x8->search('P0ka00'))->setBlackWhite(
-                        static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getBlack(),
-                        static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getWhite());
+                        static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68][field_0x6a]))->getBlack(),
+                        static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68][field_0x6a]))->getWhite());
                     J2DPicture::TCornerColor cornerColor;
-                    static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68 * 16 + field_0x6a]))->getCornerColor(cornerColor);
+                    static_cast<J2DPicture*>(field_0x4->search(lbl_80476F80[field_0x68][field_0x6a]))->getCornerColor(cornerColor);
                     static_cast<J2DPicture*>(field_0x8->search('P0ka00'))->setCornerColor(cornerColor);
                     field_0x8->search('Pstarli')->setAlpha(((f32)field_0x7d * t));
                 }
@@ -394,8 +420,8 @@ void cls_804B03D8::fn_803D75B0() {
                 f32 t = (f32)(field_0x64 - 0x14) / 20.0f;
                 for (s32 i = 0; i < 4; i++) {
                     for (s32 j = 0; j < 16; j++) {
-                        if (field_0x4->search(lbl_80477180[i * 16 + j])->mIsVisible) {
-                            field_0x4->search(lbl_80477180[i * 16 + j])->setAlpha(((f32)field_0x7c * t));
+                        if (field_0x4->search(lbl_80477180[i][j])->mIsVisible) {
+                            field_0x4->search(lbl_80477180[i][j])->setAlpha(((f32)field_0x7c * t));
                         }
                     }
                 }
@@ -447,7 +473,7 @@ void cls_804B03D8::fn_803D75B0() {
             field_0x74 = 0;
         }
         s32 step = field_0x74 < 0x3C ? field_0x74 : 0x78 - field_0x74;
-        field_0x4->search(lbl_80477180[64 + field_0x68])->setAlpha((80.0f * ((f32)step / 60.0f)));
+        field_0x4->search(lbl_80477380[field_0x68])->setAlpha((80.0f * ((f32)step / 60.0f)));
     }
     if (field_0x80 == 2) {
         if (field_0x81 > 0x48) {
@@ -520,22 +546,22 @@ void cls_804B03D8::fn_803D7098() {
         if (k >= 0 && k < 4) {
             s16 j = field_0x6a;
             if (j >= 0) {
-                f32 x0 = field_0x4->search(lbl_80477180[0])->getBounds()->i.x +
+                f32 x0 = field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x +
                          field_0x4->search(lbl_80477408[0])->getBounds()->i.x;
                 f32 x1 = field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.x +
-                         field_0x4->search(lbl_80477180[k * 16 + j])->getBounds()->i.x;
+                         field_0x4->search(lbl_80477180[k][j])->getBounds()->i.x;
                 f32 x2 = field_0x8->search('P0kak00')->getBounds()->i.x;
                 f32 x3 = field_0x4->search('Ndata03')->getBounds()->i.x +
                          field_0x4->search(lbl_80477408[0])->getBounds()->i.x;
-                field_0x58 = (field_0x4->search(lbl_80477180[0])->getBounds()->i.x + x3) - x2 + x1 - x0;
+                field_0x58 = (field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x + x3) - x2 + x1 - x0;
                 f32 y0 = field_0x4->search(lbl_80477408[0])->getBounds()->i.y +
-                         field_0x4->search(lbl_80477180[0])->getBounds()->i.y;
+                         field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y;
                 f32 y1 = field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.y +
-                         field_0x4->search(lbl_80477180[field_0x68 * 16 + field_0x6a])->getBounds()->i.y;
+                         field_0x4->search(lbl_80477180[field_0x68][field_0x6a])->getBounds()->i.y;
                 f32 y2 = field_0x8->search('P0kak00')->getBounds()->i.y;
                 f32 y3 = field_0x4->search('Ndata03')->getBounds()->i.y +
                          field_0x4->search(lbl_80477408[0])->getBounds()->i.y;
-                field_0x5c = (field_0x4->search(lbl_80477180[0])->getBounds()->i.y + y3) - y2 + y1 - y0;
+                field_0x5c = (field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y + y3) - y2 + y1 - y0;
                 field_0x44->moveFromCentre_80402E08(field_0x58, field_0x5c);
             }
         }
