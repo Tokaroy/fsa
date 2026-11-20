@@ -133,7 +133,7 @@ cls_8049D83C::~cls_8049D83C() {
 }
 
 // 0x80115248.
-// FIXME(shotgun): 95.52 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.48 %, scheduling + reloc-name; behaviour clean.
 void cls_8049D83C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 0xFF;
@@ -161,7 +161,7 @@ void cls_8049D83C::init() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.74 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.86 %, missing/extra + reloc-name; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
@@ -383,7 +383,7 @@ inline void cls_8049D83C::spawnCrystal(s32 crystal) {
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 84.45 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.22 %, missing/extra + reloc-name; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -596,7 +596,7 @@ s32 cls_8049D83C::vfunc_0x5C() {
 #pragma auto_inline off
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
-// FIXME(shotgun): 90.93 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 91.12 %, missing/extra + reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -617,7 +617,7 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     }
 }
 
-// FIXME(shotgun): 99.28 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.31 %, scheduling + reloc-name; behaviour clean.
 void cls_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -664,7 +664,7 @@ void cls_8049D83C::fn_8011395C() {
     }
 }
 
-// FIXME(shotgun): 95.13 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113790() {
     if (field_0x248 > 0) {
         SpriteParams_801F5AE0 params;
