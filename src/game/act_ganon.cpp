@@ -483,7 +483,7 @@ Ganon_804A25F0::~Ganon_804A25F0() {
 
 // Steps the body animation (field_0x25c / field_0x234[0]) and the second layer (field_0x260 /
 // field_0x234[1]) through the frame tables.
-// FIXME(shotgun): 89.95 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.73 %, same-text; behaviour clean.
 void Ganon_804A25F0::fn_801964AC() {
     if (field_0x28c != field_0x290) {
         field_0x290 = field_0x28c;
@@ -576,7 +576,7 @@ void Ganon_804A25F0::fn_801964AC() {
 
 // Picks the player (of those on this layer) with the most hearts (mode 0) or most of the other
 // stat (mode 1), the nearest on ties by a coin flip; stores its distance, angle and index.
-// FIXME(shotgun): 93.58 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.92 %, operands; behaviour clean.
 void Ganon_804A25F0::fn_80196208(s32 mode) {
     field_0x2fc = -1;
     s32 best = -1;
@@ -642,7 +642,7 @@ void Ganon_804A25F0::fn_80196020(s32 player) {
     }
 }
 
-// FIXME(shotgun): 94.32 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.83 %, missing/extra + reloc-name; behaviour drift.
 void Ganon_804A25F0::update() {
     JGeometry::TVec3f posA;
     JGeometry::TVec3f posB;
@@ -1793,7 +1793,6 @@ void Ganon_804A25F0::update() {
     }
 }
 
-// FIXME(shotgun): 98.30 %, missing/extra; behaviour drift.
 void Ganon_804A25F0::fn_80192BD8() {
     switch (mState) {
     case 0x2C:
@@ -1817,7 +1816,7 @@ void Ganon_804A25F0::fn_80192BD8() {
     }
 }
 
-// FIXME(shotgun): 83.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.74 %, scheduling+regalloc + reloc-name; behaviour clean.
 void Ganon_804A25F0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
