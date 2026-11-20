@@ -106,17 +106,6 @@ static inline bool hiddenFromShownLayer(const Player_804A6F38* player) {
     return r;
 }
 
-// In state 0x49 (fn_80240818) or hidden from a shown layer. Provisional name (no symbol: always
-// inlined); fn_80240DCC is this inline and nothing else, its result is coloured before the
-// locals of the helpers above.
-static inline bool inState49OrHidden(const Player_804A6F38* player) {
-    bool r = true;
-    if (!player->fn_80240818() && !hiddenFromShownLayer(player)) {
-        r = false;
-    }
-    return r;
-}
-
 // The player's leader (field_0xd60), or negative without one. Provisional name (no symbol: always
 // inlined). The group loops read the leader through an inline with a local of its own, not as a
 // local of the loop: MWCC creates an inlined function's locals when its call is expanded, so this
@@ -4593,8 +4582,16 @@ bool Player_804A6F38::fn_80240ED4() {
     return field_0x1240 == 0x1e || field_0x1240 == 0x32;
 }
 
+// FIXME: 92.26 %, scheduling+regalloc; behaviour clean.
+// Scheduling and registers only: the original sets `result` (r31) before
+// saving r28-r30; ours keeps `this` in r29 and `result` in r28. const: the load of
+// field_0x1240 (the inlined fn_80240818) sits above the register saves.
 bool Player_804A6F38::fn_80240DCC() const {
-    return inState49OrHidden(this);
+    bool result = true;
+    if (!fn_80240818() && !hiddenFromShownLayer(this)) {
+        result = false;
+    }
+    return result;
 }
 
 bool Player_804A6F38::fn_80240DAC() {
