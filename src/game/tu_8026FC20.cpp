@@ -676,7 +676,6 @@ void Player_804A6F38::fn_8027CB24() {
     field_0x436 = 0;
 }
 
-// FIXME: 78.55 %, scheduling; behaviour clean.
 void Player_804A6F38::fn_8027CAA8() {
     field_0x458 = 0;
     field_0x436 = 1;
@@ -3389,7 +3388,7 @@ bool Player_804A6F38::fn_80272DCC(const JGeometry::TBox2f* box, s32 layer, s32 s
     return false;
 }
 
-// FIXME: 99.16 %, regalloc-only; behaviour clean.
+// FIXME: 99.72 %, regalloc-only; behaviour clean.
 // Registers only: f0 / f1 swapped for p.x / p.y in the inlined containsPoint test. The point loop returns false from inside when all eight points are in the
 // box and breaks out to the slot store (a `for` with a later `i >= 8` test adds a second compare).
 // fn_80272DCC's slot store (without its fn_80249068 test), unless one of the eight points fn_8024B298 gives is inside
