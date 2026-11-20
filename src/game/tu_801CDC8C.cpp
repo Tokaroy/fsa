@@ -451,7 +451,6 @@ bool EnemyBase_804A4808::fn_801CFCF0(s32 dir) {
 // view's box for `layer` (0xCC, or 0xDC for the upper layers), or the map
 // (vfunc_0x4C) blocking a point every 8 units along the line or the end.
 bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer) {
-    s32 steps;
     JGeometry::TVec3f pos;
     JGeometry::TBox2f* box = layerBox(layer);
     if (from->x < box->i.x || from->y < box->i.y || from->x >= box->f.x || from->y >= box->f.y ||
@@ -468,7 +467,7 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     bool blocked = false;
     dir.normalize();
     dir.scale(8.0f);
-    steps = (s32)(0.125f * len) + 1;
+    s32 steps = (s32)(0.125f * len) + 1;
     pos.set(from->x, from->y, 0.0f);
     for (s32 i = 0; i < steps; i++) {
         if (vfunc_0x4C(layer, &pos)) {
