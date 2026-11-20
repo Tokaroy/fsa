@@ -254,8 +254,6 @@ void cls_804B03D8::fn_803D8670() {
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
-// FIXME(shotgun): 96.27 %, missing/extra; behaviour near.
-// (one more saved register: the bounce step)
 void cls_804B03D8::fn_803D8364() {
     f32 bounce;
     f32 alpha;
@@ -289,15 +287,15 @@ void cls_804B03D8::fn_803D8364() {
                 s32 d = field_0x6c - 30;
                 alpha = 156.0f * (1.0f - (f32)(d * d) / 900.0f);
             }
-        }
-        if (field_0x79 == 0) {
-            field_0x2c->moveFromCentre_80402E08(0.0f, bounce);
-            field_0x24[0]->moveFromCentre_80402E08(0.0f, bounce);
-            field_0x24[1]->moveFromCentre_80402E08(0.0f, 0.0f);
-        } else {
-            field_0x2c->moveFromCentre_80402E08(field_0x24[1]->field_0x8 - field_0x24[0]->field_0x8, bounce);
-            field_0x24[0]->moveFromCentre_80402E08(0.0f, 0.0f);
-            field_0x24[1]->moveFromCentre_80402E08(0.0f, bounce);
+            if (field_0x79 == 0) {
+                field_0x2c->moveFromCentre_80402E08(0.0f, bounce);
+                field_0x24[0]->moveFromCentre_80402E08(0.0f, bounce);
+                field_0x24[1]->moveFromCentre_80402E08(0.0f, 0.0f);
+            } else {
+                field_0x2c->moveFromCentre_80402E08(field_0x24[1]->field_0x8 - field_0x24[0]->field_0x8, bounce);
+                field_0x24[0]->moveFromCentre_80402E08(0.0f, 0.0f);
+                field_0x24[1]->moveFromCentre_80402E08(0.0f, bounce);
+            }
             if (0.0f == bounce && field_0x79 != field_0x78) {
                 field_0x79 = field_0x78;
             }
