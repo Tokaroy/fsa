@@ -1670,10 +1670,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
     s32 len = 0;
     s32 pos;
     s32 i = 0;
+    u8 part = 0;
     s32 lines = 1;
     f32 widest = 0.0f;
     f32 width = 0.0f;
-    u8 part = 0;
     lineWidth[0] = 0.0f;
     lineWidth[1] = 0.0f;
     lineWidth[2] = 0.0f;
@@ -1779,7 +1779,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[2] = 0;
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
-                    if (two[0] != ' ') {
+                    if (p[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
@@ -1793,7 +1793,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
-                    if (two[0] != ' ') {
+                    if (p[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
