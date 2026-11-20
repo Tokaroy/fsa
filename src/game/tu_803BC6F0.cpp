@@ -1609,7 +1609,7 @@ static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
     }
 }
 
-// FIXME: 98.90 %, different; behaviour near.
+// FIXME: 99.00 %, different; behaviour near.
 // FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
 // loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
 // shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
@@ -2509,7 +2509,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 99.35 %, regalloc-only; behaviour clean.
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 // Registers only: `frames` and two temporaries of the inlined alpha helpers
 // are rotated (r26/r27/r28). The original keeps &others in one register for
 // both loops: one pointer fills the array, a second walks it.
