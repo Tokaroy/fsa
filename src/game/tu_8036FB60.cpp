@@ -365,6 +365,18 @@ static inline bool contains(const JGeometry::TVec3f* p, JGeometry::TBox2f box) {
     return p->x >= box.i.x && p->y >= box.i.y && p->x < box.f.x && p->y < box.f.y;
 }
 
+static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x840 == 0) {
+        cam->field_0x840 = 1;
+        cam->field_0x844.set(x0, y0, x1, y1);
+        cam->field_0x854 = 1.0f;
+        cam->field_0x1d4 = -1.0f;
+        cam->field_0x1d8 = -1.0f;
+    }
+}
+
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
 // FIXME(shotgun): 98.82 %, operands; behaviour clean.
 void cls_804AE4B0::fn_803717CC() {
@@ -396,19 +408,7 @@ void cls_804AE4B0::fn_803717CC() {
         view = gGameRoot2_8053AB10->field_0x24->field_0x164;
         field_0x25c = view.getHeight() * 0.5f;
         field_0x260 = 144.0f - field_0x25c;
-        f32 bottom = field_0x248 + field_0x25c;
-        f32 top = field_0x248 - field_0x25c;
-        f32 x = field_0x244;
-        cam = gGameRoot2_8053AB10->field_0x24;
-        cam->field_0x179 = 1;
-        cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.set(x, top, x, bottom);
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
-        }
+        camRange(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
     }
 }
 
