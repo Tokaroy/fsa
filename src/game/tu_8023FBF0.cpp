@@ -3856,9 +3856,8 @@ bool Player_804A6F38::fn_802454C0() {
     return lbl_8053AD30->fn_80309A54(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.94 %, regalloc-only; behaviour clean.
-// Register allocation only (the group loops' count / index /
-// leader temporaries, as in fn_802486A0).
+// The layer is read through getLayer() (loaded into a saved register ahead of
+// getGameView_802D6A9C, in the leader's register).
 bool Player_804A6F38::fn_80245238() {
     if (teamCheck(this) == false) {
         return false;
@@ -3869,7 +3868,7 @@ bool Player_804A6F38::fn_80245238() {
     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20)) {
         return true;
     }
-    if (viewLayerFlag(field_0x3b4) && lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200)) {
+    if (viewLayerFlag(getLayer()) && lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200)) {
         return true;
     }
     return false;
