@@ -16,7 +16,6 @@ Flame_804A0330::~Flame_804A0330() {
     }
 }
 
-// FIXME(shotgun): 84.08 %, missing/extra; behaviour clean.
 void Flame_804A0330::init() {
     field_0x240 = 0;
     field_0x244 = 0;
@@ -49,22 +48,6 @@ void Flame_804A0330::init() {
             field_0x94 = 0;
         }
         switch (field_0x94) {
-        case 3:
-            mState = 3;
-            break;
-        case 1:
-            mState = 1;
-            break;
-        case 2:
-            mState = 2;
-            break;
-        case 0:
-        case 6:
-            field_0x260 = 1.0f;
-            field_0x240 = 1;
-            field_0x234[0] = 8;
-            mState = 0;
-            break;
         case 4:
         case 5:
             if (field_0x94 == 5) {
@@ -79,6 +62,22 @@ void Flame_804A0330::init() {
             field_0x240 = 1;
             field_0x234[0] = 8;
             mState = 0;
+            break;
+        case 0:
+        case 6:
+            field_0x260 = 1.0f;
+            field_0x240 = 1;
+            field_0x234[0] = 8;
+            mState = 0;
+            break;
+        case 1:
+            mState = 1;
+            break;
+        case 2:
+            mState = 2;
+            break;
+        case 3:
+            mState = 3;
             break;
         }
         switch (field_0x98) {
