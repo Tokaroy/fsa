@@ -2648,10 +2648,8 @@ void cls_804B0B00::fn_803E3548() {
     field_0x1d4 = 10;
 }
 
-// FIXME: 99.20. One register in setEntries' loop (li r4, 0 vs mr r4, r3, as in fn_803EC804).
 // Not auto-inlined: fn_803E9034 and fn_803ED604 call fn_803E3320 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.20 %, different; behaviour clean.
 void cls_804B0B00::fn_803E3320() {
     field_0x254[0] = 0;
     field_0x1e0[0] = 5;
@@ -2660,7 +2658,15 @@ void cls_804B0B00::fn_803E3320() {
             setSingleEntry();
         }
     } else if (field_0x1b8 == 0) {
-        setEntries(this);
+        for (s32 i = 0; i < 4; i++) {
+            if (i < field_0x1bc + 1) {
+                gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 1);
+            } else {
+                gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 0);
+            }
+        }
     }
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 11;
