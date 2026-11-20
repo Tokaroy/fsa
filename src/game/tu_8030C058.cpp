@@ -26,6 +26,7 @@ Camera_804AA9E4::Camera_804AA9E4() {}
 Camera_804AA9E4::~Camera_804AA9E4() {}
 
 // r0/r3 swapped for getBounds width/height.
+// FIXME: 99.83 %, scheduling+regalloc; behaviour clean.
 void Camera_804AA9E4::fn_8030E5BC() {
     field_0x154.i.x = 0.0f;
     field_0x154.i.y = 0.0f;
@@ -756,7 +757,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
 
 // Not inlined into its caller fn_8030E5BC in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 75.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.97 %, scheduling+regalloc; behaviour clean.
 // (the target keeps the box corners in float registers; it also pre-zeroes
 // the translation column and negates the two centres as one ps_neg pair)
 void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f32 depth) {
