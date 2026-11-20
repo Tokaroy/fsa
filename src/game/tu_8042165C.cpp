@@ -3,6 +3,7 @@
 #include "game/GameState.h"
 #include "game/GameView.h"
 #include "game/Player.h"
+#include "game/PlayerBit.h"
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JFramework/JFWDisplay.h"
@@ -569,15 +570,30 @@ void cls_804B146C::fn_80425F24() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 90.89 %, missing/extra + reloc-name; behaviour drift.
+static inline u8 checkBit(u8 mask, s32 bit) {
+    u8 b = 1 << bit;
+    return (mask & b) != 0;
+}
+
+static inline void setBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask |= b;
+}
+
+static inline void clearBit(u8& mask, s32 bit) {
+    u8 b = 1 << bit;
+    mask &= ~b;
+}
+
+// FIXME(shotgun): 97.80 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & bit;
+        bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
         if (!takesPart) {
             field_0x25d &= ~bit;
         } else {
-            bool flagged = lbl_8053AED0->field_0xdd & bit;
+            bool flagged = checkBit(lbl_8053AED0->field_0xdd, i);
             if (flagged && !(field_0x25c & bit)) {
                 field_0x25c |= bit;
                 field_0x25d |= bit;
@@ -589,10 +605,11 @@ void cls_804B146C::fn_804257E4() {
         }
         if (gGameRoot_8053AAF8->mPlayerMask & bit) {
             fn_804253E0(i);
-            if (((gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3) == 1) {
+            u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
+            if (mode == 1) {
                 if (getPlayerLayer_8023DE58(i) >= 8) {
                     if (!(field_0x258 & bit)) {
-                        field_0x258 |= bit;
+                        setBit(field_0x258, i);
                         mScreen->search(lbl_8048EF60[i])->show();
                         field_0x4->search(lbl_8048EF80[i])->show();
                         field_0x4->search(lbl_8048EFA0[i])->hide();
@@ -605,10 +622,11 @@ void cls_804B146C::fn_804257E4() {
                 }
             }
             fn_80423DF0(i);
-            if (((gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3) == 2) {
+            u32 mode2 = (gGameRoot_8053AAF8->field_0x83 >> (i * 2)) & 3;
+            if (mode2 == 2) {
                 if (!(field_0x25a & bit)) {
                     if (fn_8023BD70(i)) {
-                        field_0x25a |= bit;
+                        setBit(field_0x25a, i);
                         field_0x4->search(lbl_8048F080[i])->show();
                     }
                 } else if (lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(i), 0x100) == 0 || (field_0x255 & bit)) {
@@ -625,12 +643,11 @@ void cls_804B146C::fn_804257E4() {
                     val = 0;
                 }
                 for (s32 j = 0; j < 4; j++) {
-                    J2DPane* p = field_0x4->search(lbl_8048E300[i][j]);
                     if (val >= 0x60) {
-                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4, p->getHeight());
+                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4, field_0x4->search(lbl_8048E300[i][j])->getHeight());
                         val -= 0x60;
                     } else {
-                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4 * ((f32)val / 96.0f), p->getHeight());
+                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4 * ((f32)val / 96.0f), field_0x4->search(lbl_8048E300[i][j])->getHeight());
                         val = 0;
                     }
                 }
@@ -647,11 +664,11 @@ void cls_804B146C::fn_804257E4() {
             s32 y = field_0x4->search(lbl_8048EF80[i])->getBounds()->i.y;
             f32 w = field_0x4->search(lbl_8048EF80[i])->getWidth();
             f32 h = field_0x4->search(lbl_8048EF80[i])->getHeight();
-            cls_803004C0& rect = gGameRoot2_8053AB10->field_0x20->field_0x1d0[i];
-            rect.field_0x0 = x;
-            rect.field_0x4 = y;
-            rect.field_0x8 = w;
-            rect.field_0xc = h;
+            TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
+            map->field_0x1d0[i].field_0x0 = x;
+            map->field_0x1d0[i].field_0x4 = y;
+            map->field_0x1d0[i].field_0x8 = w;
+            map->field_0x1d0[i].field_0xc = h;
             if (i == 0 || i == 2) {
                 if (field_0xf8[i] < 12.0f) {
                     field_0xf8[i] += 3.0f;
@@ -775,7 +792,6 @@ void cls_804B146C::fn_804253E0(s32 player) {
     }
 }
 
-// FIXME(shotgun): 99.58 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     s32 target;
     if (fn_8022F514(id)) {
@@ -803,7 +819,8 @@ void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
         }
     }
     if (arg1 >= 1000 || arg1 <= -1000) {
-        field_0x1f8[id] = __abs(arg1) / 100;
+        s32 amount = __abs(arg1);
+        field_0x1f8[id] = amount / 100;
         field_0x200[id] = 0;
     } else {
         fn_80230FD0(id, 0x20034);
@@ -818,12 +835,9 @@ void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     field_0x257 |= (u8)(1 << target);
 }
 
-// FIXME(shotgun): 98.36 %, missing/extra; behaviour near.
-// (the takesPart bool test is one cmplwi longer)
 void cls_804B146C::fn_80425128() {
     for (s32 i = 0; i < 4; i++) {
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
-        if (takesPart == true) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0) {
             lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
             for (s32 j = 0; j < 4; j++) {
                 if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
@@ -993,21 +1007,6 @@ void cls_804B146C::fn_80424148(s32 player, bool force) {
     field_0x4->search(lbl_8048F0A0[player])->setAlpha(field_0x239 * field_0x108[player]);
     field_0x4->search(lbl_8048F0C0[player])->setAlpha(field_0x23a * field_0x108[player]);
     field_0x4->search(lbl_8048F0E0[player])->setAlpha(field_0x23b * field_0x108[player]);
-}
-
-static inline u8 checkBit(u8 mask, s32 bit) {
-    u8 b = 1 << bit;
-    return (mask & b) != 0;
-}
-
-static inline void setBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask |= b;
-}
-
-static inline void clearBit(u8& mask, s32 bit) {
-    u8 b = 1 << bit;
-    mask &= ~b;
 }
 
 void cls_804B146C::fn_80423DF0(s32 player) {
@@ -1502,20 +1501,16 @@ void cls_804B146C::fn_80421A34(s32 player, bool force) {
     }
 }
 
-// FIXME(shotgun): 96.60 %, missing/extra; behaviour near.
 void cls_804B146C::fn_8042165C() {
     field_0x1f0[0] = 0;
     field_0x1f0[1] = 0;
     field_0x1f0[2] = 0;
     field_0x1f0[3] = 0;
     for (s32 i = 0; i < 4; i++) {
-        u32 bit = 1 << i;
-        bool takesPart = (gGameRoot_8053AAF8->mPlayerMask & (u8)bit) != 0;
-        if (takesPart && !fn_8022C8EC(i)) {
-            u16 mask = (u16)bit;
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0 && !fn_8022C8EC(i)) {
             for (s32 k = 0; k < 4; k++) {
-                if (i != k) {
-                    field_0x1f0[k] |= mask;
+                if (k != i) {
+                    field_0x1f0[k] |= (u16)(1 << i);
                 }
             }
             if (getPlayerLayer_8023DE58(i) < 8) {
@@ -1523,18 +1518,16 @@ void cls_804B146C::fn_8042165C() {
                 gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
                 for (s32 j = 0; j < 10; j++) {
                     if (!lbl_8053AED0->fn_8043DF24(lbl_8048F188[j], lbl_8048F1B0[j], screen.x, screen.y, 0.0f)) {
-                        u16 jbit = (u16)(1 << j);
-                        field_0x1f0[0] |= jbit;
-                        field_0x1f0[1] |= jbit;
-                        field_0x1f0[2] |= jbit;
-                        field_0x1f0[3] |= jbit;
+                        for (s32 k = 0; k < 4; k++) {
+                            field_0x1f0[k] |= (u16)(1 << j);
+                        }
                     }
                 }
             }
         }
         if (field_0x24d[i] != 0xFF) {
             for (s32 k = 0; k < 4; k++) {
-                if (i != k) {
+                if (k != i) {
                     field_0x1f0[k] |= (u16)(1 << field_0x24d[i]);
                 }
             }
@@ -1543,10 +1536,9 @@ void cls_804B146C::fn_8042165C() {
     for (s32 i = 0; i < 4; i++) {
         if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) && !fn_8022C8EC(i) && getPlayerLayer_8023DE58(i) < 8) {
             for (s32 j = 0; j < 10; j++) {
-                u8 cand = lbl_8048F1D8[i][j];
-                if (!(field_0x1f0[i] & (u16)(1 << cand))) {
-                    if (field_0x251[i] != cand && field_0x24d[i] == 0xFF) {
-                        field_0x24d[i] = cand;
+                if (!(field_0x1f0[i] & (u16)(1 << lbl_8048F1D8[i][j]))) {
+                    if (field_0x251[i] != lbl_8048F1D8[i][j] && field_0x24d[i] == 0xFF) {
+                        field_0x24d[i] = lbl_8048F1D8[i][j];
                         field_0x198[i] = 0;
                         field_0x1f0[0] |= (u16)(1 << field_0x24d[i]);
                         field_0x1f0[1] |= (u16)(1 << field_0x24d[i]);
