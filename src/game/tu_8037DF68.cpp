@@ -232,7 +232,7 @@ static inline bool openById(s32 window, s32 player, u32 msg, s32 serial, JGeomet
     return lbl_8053AD78->fn_8038A42C(window, player, fn_803846BC(msg), serial, pos, flags);
 }
 
-// FIXME(shotgun): 96.04 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 96.26 %, missing/extra; behaviour clean.
 // (scheduling of the id lookups)
 // fn_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
 // into its id; the no-position fallback is fn_8038C60C.
@@ -421,7 +421,7 @@ bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 
     return false;
 }
 
-// FIXME(shotgun): 98.66 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.00 %, missing/extra; behaviour clean.
 bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
     s32 window = windowIndex(player);
     if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
@@ -1420,7 +1420,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.74 %, missing/extra + reloc-name; behaviour near.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
@@ -1549,6 +1549,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
 // mFont units. Control code 0x1A size 2 ends a part (the width and line count so
 // far go to field_0x5c[part] / field_0x5c[part + 2]); 0x1A size 3 writes the digit
 // value and the expansion fn_8037F580 makes of its command byte.
+// FIXME: 99.67 %, regalloc-only; behaviour clean.
 f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out3) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
@@ -2380,8 +2381,6 @@ bool fn_8037E4BC() {
     return false;
 }
 
-// FIXME(shotgun): 96.69 %, scheduling; behaviour clean.
-// (0x44 / 0x48 and a few others are stored out of offset order, as the original does)
 cls_804AF32C::cls_804AF32C() {
     field_0x4 = 0;
     field_0x5 = 0;
