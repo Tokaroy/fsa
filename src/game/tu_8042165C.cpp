@@ -428,7 +428,14 @@ static inline void clearBit(u8& mask, s32 bit) {
     mask &= ~b;
 }
 
-// FIXME(shotgun): 99.53 %, missing/extra; behaviour clean.
+static inline void call_80421A34_forActivePlayers(cls_804B146C* self, bool force) {
+    for (s32 i = 0; i < 4; i++) {
+        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
+            self->fn_80421A34(i, force);
+        }
+    }
+}
+
 void cls_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
         bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
@@ -470,11 +477,7 @@ void cls_804B146C::fn_804263A8() {
         field_0x1d8[i] = 0;
         field_0x208[i] = 0;
     }
-    for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            fn_80421A34(i, true);
-        }
-    }
+    call_80421A34_forActivePlayers(this, true);
     field_0x255 = 0xF;
     field_0x256 = 0xF;
     field_0x257 = 0xF;
@@ -581,7 +584,7 @@ void cls_804B146C::fn_80425F24() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 97.91 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.84 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
@@ -694,11 +697,7 @@ void cls_804B146C::fn_804257E4() {
             fn_80421D78(i);
         }
     }
-    for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            fn_80421A34(i, false);
-        }
-    }
+    call_80421A34_forActivePlayers(this, false);
     field_0xf0->fn_80441490();
     field_0x255 = 0;
     field_0x256 = 0;
