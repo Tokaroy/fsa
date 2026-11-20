@@ -282,7 +282,6 @@ void cls_804A4C58::fn_801D9960() {
     }
     if (field_0x33c == 0) {
         s32 target = -1;
-        s32 player;
         JGeometry::TVec3f from;
         if (mFlags & 0x2000) {
             from.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
@@ -290,7 +289,7 @@ void cls_804A4C58::fn_801D9960() {
             from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
         }
         s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-        player = fn_801D0338(&from, angle);
+        s32 player = fn_801D0338(&from, angle);
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
