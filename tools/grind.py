@@ -1463,8 +1463,8 @@ def cmd_worker(args):
     (LOGS / "pids").mkdir(parents=True, exist_ok=True)
     if not args.ignore_stop:  # the watchdog's hard stop goes by these
         (LOGS / "pids" / f"{owner}.pid").write_text(str(os.getpid()))
-    more = lambda: ((args.ignore_stop or not HALT.exists()) and (not args.sessions or done < args.sessions)
-                    and not (tier in GEMINI and HALT_GEMINI.exists()))  # quota: no dead sessions on the rest of the unit
+    more = lambda: (args.ignore_stop or not HALT.exists()) and (not args.sessions or done < args.sessions)
+    in_unit = lambda: more() and not (tier in GEMINI and HALT_GEMINI.exists())  # quota: no dead sessions on the rest of the unit
     loaded = Path(__file__).stat().st_mtime
     while more():
         if Path(__file__).stat().st_mtime != loaded and not args.sessions:
@@ -1519,7 +1519,7 @@ def cmd_worker(args):
             if args.mode == "file":
                 for _ in range(args.relay):
                     names = still(base, 0, args.file_fn_max)[:12]
-                    if not names or not more():
+                    if not names or not in_unit():
                         break
                     base, ch = attempt(wt, owner, tier, unit, base, None, names, args, notes, len(changes) + 1)
                     done += 1
@@ -1528,7 +1528,7 @@ def cmd_worker(args):
                     changes.append(ch)
             else:
                 for fn in still(base, args.min_size, args.max_size)[:args.per_unit]:
-                    if not more():
+                    if not in_unit():
                         break
                     if fn not in base["functions"] or base["functions"][fn]["pct"] >= 100:
                         continue
