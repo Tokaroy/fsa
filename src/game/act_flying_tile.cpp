@@ -637,7 +637,7 @@ void FlyingTile_804AC100::draw() {
     }
 }
 
-// FIXME(shotgun): 86.42 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.55 %, regalloc-only; behaviour clean.
 void FlyingTile_804AC100::fn_80339820() {
     bool skip = false;
     JGeometry::TVec3f pos = mPos;
