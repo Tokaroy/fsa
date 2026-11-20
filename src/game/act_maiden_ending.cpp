@@ -187,8 +187,6 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     }
 }
 
-// FIXME: 99.76 %, same-text; behaviour drift.
-// symbols.txt has sAngles..sColors as one object (lbl_80472748, 0x38).
 void MaidenEnding_804AD5B8::fn_8035D1CC() {
     if (field_0x234 > 0x128) {
         return;
