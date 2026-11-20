@@ -209,7 +209,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 97.51 %, missing/extra; behaviour drift.
+// FIXME: 97.88 %, missing/extra; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -480,7 +480,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
 
 // The idle states of the demo: keeps the maiden's box registered, steers the camera
 // (fn_80110210) and runs the state's step; a player standing at the maiden starts the talk (state 2).
-// FIXME: 96.49 %, different; behaviour drift.
+// FIXME: 98.31 %, missing/extra; behaviour drift.
 // Left: in startTalk the original stores the message position's z after loading mSerial and field_0x4.
 void PrincessZeldaDemo_8049D208::fn_8011093C() {
     JGeometry::TBox2f box = mBox;
@@ -597,7 +597,6 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
 
 // The camera for the demo states 3-28: which part of the stage stays in view (player, spawn point
 // or the maiden), per state.
-// FIXME(shotgun): 97.83 %, missing/extra; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110454() {
     switch (field_0x238) {
     case 3:
@@ -694,7 +693,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
 }
 
 // The camera for the demo states 0x26-0x3C (the second set of scenes).
-// FIXME(shotgun): 98.69 %, regalloc-only; behaviour drift.
+// FIXME(shotgun): 99.69 %, regalloc-only; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110210() {
     switch (field_0x238) {
     case 0x26:
@@ -940,7 +939,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F9F0() {
 // (docs/INLINING.md, pragma rule 1); fn_8010F4DC calls fn_8010F668 out of line twice.
 #pragma auto_inline off
 // Draws the maiden's sprite (frame `arg` of the current animation): bobbing in z while state 0x2F.
-// FIXME(shotgun): 75.72 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.84 %, reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
