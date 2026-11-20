@@ -743,8 +743,9 @@ void TileMap_804AA858::fn_802FDDD4() {
 // field_0x4[1] + 0x200.
 // Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
 // with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
-// loop with lfsx and converts 240.0f / 160.0f with fctiwz (ours folds them);
-// registers and stack slots follow.
+// loop with lfsx; registers and stack slots follow. The original converts
+// 240.0f / 160.0f at run time (fctiwz, hoisted before the loop), so they are
+// float variables there, not literals at the stores.
 // FIXME: 72.58 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
@@ -757,6 +758,8 @@ void TileMap_804AA858::fn_802FCE74() {
         {0, -107, -107, -107, 0, 0, 70, 70, 70},
         {0, -163, -163, -163, 0, 0, 123, 123, 123},
     };
+    f32 screenW = 240.0f;
+    f32 screenH = 160.0f;
     s32 i;
     for (i = 0; i < 4; i++) {
         if (field_0x12c[i] && !field_0x216 && field_0x230 == field_0x22c) {
@@ -847,8 +850,8 @@ void TileMap_804AA858::fn_802FCE74() {
                     field_0x148[i] = 1;
                     field_0x150[i].field_0x0 = 0;
                     field_0x150[i].field_0x4 = 0;
-                    field_0x150[i].field_0x8 = 240.0f;
-                    field_0x150[i].field_0xc = 160.0f;
+                    field_0x150[i].field_0x8 = screenW;
+                    field_0x150[i].field_0xc = screenH;
                     x = lbl_8046F980[field_0x234] +
                         ((((s32)width - w) >> 1) + field_0xfc->field_0x58[field_0xfc->field_0xa4].x);
                     y = lbl_8046F994[field_0x234] +
@@ -928,8 +931,8 @@ void TileMap_804AA858::fn_802FCE74() {
         field_0x148[0] = 1;
         field_0x150[0].field_0x0 = 0;
         field_0x150[0].field_0x4 = 0;
-        field_0x150[0].field_0x8 = 240.0f;
-        field_0x150[0].field_0xc = 160.0f;
+        field_0x150[0].field_0x8 = screenW;
+        field_0x150[0].field_0xc = screenH;
         dx = ((s32)width - w) >> 1;
         dy = ((s32)height - h) >> 1;
         const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
