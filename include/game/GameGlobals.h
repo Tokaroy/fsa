@@ -2027,8 +2027,8 @@ public:
     /* 0x10 */ PaneCtrl_804AF86C* field_0x10[5];  // panes "bb01".."bb05" (fn_80431D84)
     /* 0x24 */ PaneCtrl_804AF86C* field_0x24[5];  // panes "wb01".."wb05"
     // Frame sizes copied from the panes' 0x112 (fn_80431D84): per bb pane (field_0x10) and wb pane (field_0x24) four pairs.
-    /* 0x38 */ JGeometry::TVec2<s16> field_0x38[16];
-    /* 0x78 */ JGeometry::TVec2<s16> field_0x78[16];
+    /* 0x38 */ JGeometry::TVec2<s16> field_0x38[4][4];
+    /* 0x78 */ JGeometry::TVec2<s16> field_0x78[4][4];
     // SHARED-EDIT: floats read by fn_80431174 (cursor placement): the window's
     // pane sizes and offsets, laid out by fn_8042F6DC. fn_8042EF9C stores the
     // widest line in [0] and the width of choice 1 / 2 in [1] / [2]

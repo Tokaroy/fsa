@@ -24,8 +24,6 @@ cls_804B1600* lbl_8053AEC4;
 static const s16 lbl_80543AE8[4] = {0x8, 0x154, 0x5, 0x0};
 static const s16 lbl_80543AF0[4] = {0x164, 0xA, 0x160, 0x0};
 
-// FIXME(shotgun): 95.78 %, missing/extra + reloc-name; behaviour near.
-// (loop counter and pointer registers)
 cls_804B1634::cls_804B1634() {
     JUTResFont* font;
     lbl_8053AEC0 = this;
@@ -58,12 +56,9 @@ cls_804B1634::cls_804B1634() {
     static_cast<J2DTextBox*>(field_0x8->search('Twt01'))->setFont(font);
     for (s32 i = 0; i < 4; i++) {
         u8 k = 0;
-        for (s32 j = 0; j < 2; j++) {
-            field_0x38[i * 4 + j * 2] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
-            field_0x78[i * 4 + j * 2] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
-            k++;
-            field_0x38[i * 4 + j * 2 + 1] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
-            field_0x78[i * 4 + j * 2 + 1] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
+        for (s32 j = 0; j < 4; j++) {
+            field_0x38[i][j] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
+            field_0x78[i][j] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
             k++;
         }
     }
@@ -412,8 +407,8 @@ void cls_804B1634::fn_8042F6DC() {
     JGeometry::TVec2<s16> tcB[4];
     s32 tx = tilesW << 8;
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[i];
-        tcB[i] = field_0x78[i];
+        tcA[i] = field_0x38[0][i];
+        tcB[i] = field_0x78[0][i];
     }
     tcA[1].x = tx;
     tcA[3].x = tx;
@@ -423,8 +418,8 @@ void cls_804B1634::fn_8042F6DC() {
     static_cast<J2DPicture*>(field_0x24[0]->mPane)->setTexCoord(tcB);
 
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[4 + i];
-        tcB[i] = field_0x78[4 + i];
+        tcA[i] = field_0x38[1][i];
+        tcB[i] = field_0x78[1][i];
     }
     tcA[0].x = tx;
     tcA[2].x = tx;
@@ -435,8 +430,8 @@ void cls_804B1634::fn_8042F6DC() {
 
     s32 ty = tilesH << 8;
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[8 + i];
-        tcB[i] = field_0x78[8 + i];
+        tcA[i] = field_0x38[2][i];
+        tcB[i] = field_0x78[2][i];
     }
     tcA[2].x = ty;
     tcA[3].x = ty;
@@ -446,8 +441,8 @@ void cls_804B1634::fn_8042F6DC() {
     static_cast<J2DPicture*>(field_0x24[2]->mPane)->setTexCoord(tcB);
 
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[12 + i];
-        tcB[i] = field_0x78[12 + i];
+        tcA[i] = field_0x38[3][i];
+        tcB[i] = field_0x78[3][i];
     }
     tcA[0].x = ty;
     tcA[1].x = ty;
