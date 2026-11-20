@@ -53,7 +53,7 @@ void TalkingSign_804AF428::update() {
                 fn_8022FEB8(&area, field_0x4, mSerial, true, true);
             }
             mPlayer = fn_8022FD8C(mSerial);
-            u32 flags = 0x400;
+            u16 flags = 0x400;
             if (tile == 0x71) {
                 flags = 0x200;
             }

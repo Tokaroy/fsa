@@ -424,29 +424,29 @@ public:
     // `exclude`, count as ready; the others need their window idle (state 0) and
     // fn_80230188 (flags 2 / 4 or msg 0x265) or fn_802300EC to hold for them and
     // for everyone fn_8022E438 pairs them with.
-    bool fn_80389964(s32 exclude, u32 msg, u32 flags);
+    bool fn_80389964(s32 exclude, u32 msg, u16 flags);
     // (this is the manager and is unused.)
 
     // 0x8038C60C (the fn_803846BC loop inlined by hand, 100 %): fn_8038A984 with
     // msg turned into its INF1 index.
-    bool fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u32 flags);
+    bool fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u16 flags);
     // 0x8038B8A8 (this unused; callers pass the manager): the variant without a
     // serial: the window goes to state 1 for flags with one of 0x91F, else when
     // the player presses 0x100 and fn_8037EC98 (actor) holds.
-    bool fn_8038B8A8(s32 player, s32 actor, s32 value, u32 flags);
+    bool fn_8038B8A8(s32 player, s32 actor, s32 value, u16 flags);
     // 0x8038A984 (this unused; callers pass the manager): like fn_8038A42C
     // without a position: the window goes to state 1 (an actor `serial`
     // speaks); needs fn_80303750 to be 0 and fn_8022C8EC to hold.
-    bool fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u32 flags);
+    bool fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u16 flags);
     // 0x8038A42C (this unused; callers pass the manager): the same for an actor
     // `serial`: `actor` is the player that talks (fn_8037EC98, fn_8022FCF0 /
     // fn_8022FC54 with serial), the window's field_0x30 gets serial.
-    bool fn_8038A42C(s32 player, s32 actor, s32 value, s32 serial, JGeometry::TVec3f pos, u32 flags);
+    bool fn_8038A42C(s32 player, s32 actor, s32 value, s32 serial, JGeometry::TVec3f pos, u16 flags);
     // 0x80389F78 (this unused; callers pass the manager): opens the player's
     // window when it is idle and flags has one of 0x11F: option bits from flags,
     // fn_80390E40(value, false), position pos, state 6, and the window index
     // appended to field_0xfc; true then. arg is unused.
-    bool fn_80389F78(s32 player, s32 arg, s32 value, JGeometry::TVec3f pos, u32 flags);
+    bool fn_80389F78(s32 player, s32 arg, s32 value, JGeometry::TVec3f pos, u16 flags);
     // 0x803895EC (this unused; callers pass the manager): for every window in
     // state 9, optionally (a) fn_8022FB1C(player or its mapped index, arg) and
     // (b) fn_8023061C(window, 0); then the window goes back to state 0.
@@ -640,14 +640,13 @@ bool fn_80387494(s32 player);
 // fn_8038A42C; flags bits 0x40 / 0x2000 select variants (rlwinm tests; the
 // low 16 bits are passed on). Returns 0 or 1. act_talking_npc passes the
 // top 4 bits of its spawn parameter as player and the low 28 as msg.
-// flags: u32 is a guess.
-bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u32 flags);
+bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 // 22 units. The same without an actor (callers pass an id, layer, pos and
 // small flags such as 0x21).
-bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u32 flags);
+bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags);
 // 10 units. fn_8038AD24's argument shape, another variant (flags 0x10 in
 // tu_80441A1C).
-bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u32 flags);
+bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags);
 }
 
 #endif
