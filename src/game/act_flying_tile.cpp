@@ -133,7 +133,6 @@ void FlyingTile_804AC100::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 95.55 %, missing/extra; behaviour drift.
 bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
@@ -147,29 +146,29 @@ bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (code == 0x22 && getGameView_802D6A9C()->field_0x170 == 0) {
         return false;
     }
-    if ((u16)code == 0x39) {
+    if (code == 0x39) {
         return false;
     }
-    if ((u16)code == 0x25 && getGameView_802D6A9C()->field_0x171 == 0) {
+    if (code == 0x25 && getGameView_802D6A9C()->field_0x171 == 0) {
         return false;
     }
-    if ((u16)code == 4) {
+    if (code == 4) {
         if (((s32)pos->y & 0xF) >= 8) {
             return false;
         }
-    } else if ((u16)code == 5) {
+    } else if (code == 5) {
         if (((s32)pos->y & 0xF) < 8) {
             return false;
         }
-    } else if ((u16)code == 6) {
+    } else if (code == 6) {
         if (((s32)pos->x & 0xF) >= 8) {
             return false;
         }
-    } else if ((u16)code == 7) {
+    } else if (code == 7) {
         if (((s32)pos->x & 0xF) < 8) {
             return false;
         }
-    } else if ((u16)code == 3 || (u16)code == 0xE || (u16)code == 0xD) {
+    } else if (code == 3 || code == 0xE || code == 0xD) {
         return false;
     }
     return true;
