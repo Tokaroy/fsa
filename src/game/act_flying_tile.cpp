@@ -10,7 +10,6 @@
 #include "game/GameGlobals.h"
 #include "game/act/act_flying_tile.h"
 
-// FIXME(shotgun): 99.98 %, scheduling; behaviour drift.
 void FlyingTile_804AC100::init() {
     field_0x244 = field_0x90 & 0x7FF;
     field_0x250 = (field_0x90 >> 11) & 0x1F;
@@ -18,12 +17,8 @@ void FlyingTile_804AC100::init() {
     field_0x254 = (field_0x90 >> 20) & 0xF;
     field_0x264 = ((field_0x90 >> 24) & 7) * 5 + 15;
     mLife = 0;
-    field_0x27c = 0.0f;
-    field_0x280 = 0.0f;
-    field_0x284 = 0.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    field_0x27c.zero();
+    field_0x3c.zero();
     field_0x234 = 0;
     field_0x260 = 0;
     field_0x288 = NULL;
@@ -133,7 +128,6 @@ void FlyingTile_804AC100::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 95.55 %, missing/extra; behaviour drift.
 bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
@@ -147,29 +141,29 @@ bool FlyingTile_804AC100::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (code == 0x22 && getGameView_802D6A9C()->field_0x170 == 0) {
         return false;
     }
-    if ((u16)code == 0x39) {
+    if (code == 0x39) {
         return false;
     }
-    if ((u16)code == 0x25 && getGameView_802D6A9C()->field_0x171 == 0) {
+    if (code == 0x25 && getGameView_802D6A9C()->field_0x171 == 0) {
         return false;
     }
-    if ((u16)code == 4) {
+    if (code == 4) {
         if (((s32)pos->y & 0xF) >= 8) {
             return false;
         }
-    } else if ((u16)code == 5) {
+    } else if (code == 5) {
         if (((s32)pos->y & 0xF) < 8) {
             return false;
         }
-    } else if ((u16)code == 6) {
+    } else if (code == 6) {
         if (((s32)pos->x & 0xF) >= 8) {
             return false;
         }
-    } else if ((u16)code == 7) {
+    } else if (code == 7) {
         if (((s32)pos->x & 0xF) < 8) {
             return false;
         }
-    } else if ((u16)code == 3 || (u16)code == 0xE || (u16)code == 0xD) {
+    } else if (code == 3 || code == 0xE || code == 0xD) {
         return false;
     }
     return true;
@@ -181,8 +175,8 @@ void FlyingTile_804AC100::update() {
     u8 hitWall = 0;
     s32 player;
     s32 flag;
-    addCalc2_801F71A4(&field_0x3c.x, field_0x27c, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x280, 0.3f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.x, field_0x27c.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&field_0x3c.y, field_0x27c.y, 0.3f, 1.0f);
     mPos.add(field_0x3c);
     if (field_0x230 == 2 && field_0x238 >= field_0x264) {
         hitWall = fn_801F2618(NULL, false);
@@ -357,8 +351,8 @@ void FlyingTile_804AC100::update() {
                 mPos.y -= mPos.z;
                 fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 0);
                 mPos.y += mPos.z;
-                field_0x27c = 4.0f * JMath::sincosTable_.sinShort(angle);
-                field_0x280 = 4.0f * JMath::sincosTable_.cosShort(angle);
+                field_0x27c.x = 4.0f * JMath::sincosTable_.sinShort(angle);
+                field_0x27c.y = 4.0f * JMath::sincosTable_.cosShort(angle);
             }
             break;
         case 2:
@@ -367,8 +361,8 @@ void FlyingTile_804AC100::update() {
                 mPos.y -= mPos.z;
                 fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 0);
                 mPos.y += mPos.z;
-                field_0x27c = 2.0f * JMath::sincosTable_.sinShort(angle);
-                field_0x280 = 2.0f * JMath::sincosTable_.cosShort(angle);
+                field_0x27c.x = 2.0f * JMath::sincosTable_.sinShort(angle);
+                field_0x27c.y = 2.0f * JMath::sincosTable_.cosShort(angle);
             }
             break;
         }
@@ -643,18 +637,14 @@ void FlyingTile_804AC100::draw() {
     }
 }
 
-// FIXME(shotgun): 86.42 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.55 %, regalloc-only; behaviour clean.
 void FlyingTile_804AC100::fn_80339820() {
+    bool skip = false;
     JGeometry::TVec3f pos = mPos;
     pos.y -= pos.z;
     pos.z = 0.0f;
-    if (field_0x24c == 5) {
-        if (field_0x260 >= 0x45) {
-            field_0x260 -= 0x45;
-        } else {
-            field_0x260 -= 0x40;
-        }
-    } else if (field_0x24c == 1) {
+    switch (field_0x24c) {
+    case 1:
         switch (field_0x260) {
         case 0x75:
             field_0x260 = 2;
@@ -666,22 +656,29 @@ void FlyingTile_804AC100::fn_80339820() {
             field_0x260 = 1;
             break;
         }
+        break;
+    case 5:
+        if (field_0x260 >= 0x45) {
+            field_0x260 -= 0x45;
+        } else {
+            field_0x260 -= 0x40;
+        }
+        break;
     }
     if (field_0x260 <= 1) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.8f) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &pos, 0x261400, -1, -1);
             } else {
-                bool skip = false;
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                     skip = true;
                 }
                 if (!skip) {
-                if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, field_0x4, &pos, 0, -1, -1);
-                } else {
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &pos, 0, -1, -1);
-                }
+                    if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f) {
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, field_0x4, &pos, 0, -1, -1);
+                    } else {
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &pos, 0, -1, -1);
+                    }
                 }
             }
         }
