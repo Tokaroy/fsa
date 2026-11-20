@@ -4025,12 +4025,7 @@ bool Player_804A6F38::fn_80270C88() {
     return fn_80270ABC();
 }
 
-// FIXME: 98.26 %, scheduling; behaviour clean.
-// Only the first lbz of 0xce8 is hoisted above the prologue's stw r31 / mr in the
-// original: the method is const (rules card; 100 % const), which needs fn_802412CC, fn_802411D8,
-// fn_80240808, fn_80247BD4 (tu_8023FBF0) and fn_80270A58 / fn_80270A8C const too; but
-// fn_80247BD4 const drops its inlined copies in fn_8024762C (99.8 -> 99.2), so not yet.
-bool Player_804A6F38::fn_80270ABC() {
+bool Player_804A6F38::fn_80270ABC() const {
     if (field_0xce8 == 1) {
         return true;
     }
@@ -4077,14 +4072,14 @@ bool Player_804A6F38::fn_80270ABC() {
 }
 
 // State 0x33 (requested when the life 0xBFC reaches 0) requested or current, or 0x34.
-bool Player_804A6F38::fn_80270A8C() {
+bool Player_804A6F38::fn_80270A8C() const {
     if (field_0x1244 == 0x33 || field_0x1240 == 0x33 || field_0x1240 == 0x34) {
         return true;
     }
     return false;
 }
 
-bool Player_804A6F38::fn_80270A58() {
+bool Player_804A6F38::fn_80270A58() const {
     if (field_0xd2d || field_0x1244 == 0x34 || field_0x1240 == 0x34) {
         return true;
     }

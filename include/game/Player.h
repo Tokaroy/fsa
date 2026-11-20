@@ -90,7 +90,7 @@ public:
     void fn_8024051C(); // via fn_802384BC
     s32 fn_80240644(); // via fn_8022F3DC
     bool fn_80240670() const; // via fn_8022F478
-    bool fn_80240808(); // via fn_8022F514
+    bool fn_80240808() const; // via fn_8022F514
     bool fn_80247C0C(); // tu_8023FBF0 (li 1 / li 0); via fn_8023C830 (on the leader, fn_8022F3DC, of a follower)
     bool fn_80240818() const; // via fn_8022DCD8
     bool fn_80240840(s32 arg); // via fn_8022E39C
@@ -125,7 +125,7 @@ public:
     bool fn_80241258(); // via fn_80235310
     bool fn_80241284(); // via fn_802353AC
     bool fn_802412A4(); // via fn_80233E40
-    bool fn_802412CC(); // via fn_80235448
+    bool fn_802412CC() const; // via fn_80235448
     u8 fn_802412C4();   // byte at 0x458
     void fn_802635C8(); // byte at 0x458 = 0 (stb r0)
     void fn_802412D4(); // via fn_802356B8
@@ -554,7 +554,7 @@ public:
     bool fn_80272B4C(const JGeometry::TVec3f* pos); // called by tu_8025EB18
     void fn_802790C0(); // called by tu_80285E58
     void fn_8027D4F4(); // called by tu_80285E58
-    bool fn_80270ABC(); // bool: its body only returns li 1 / li 0 and a neg/andc/srwi test; fn_80270C88 returns it unchanged as its bool
+    bool fn_80270ABC() const; // bool: its body only returns li 1 / li 0 and a neg/andc/srwi test; fn_80270C88 returns it unchanged as its bool
     void fn_802709C8(); // BgRewrite fn_802A20F0 on field_0x30c; called by tu_80256C74
     void fn_80270D08(); // counts field_0x464 and field_0x468 down; called by tu_8023FBF0 and tu_80285E58
     bool fn_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg); // fn_80238548 on this player; called with (0, &mPos, 0x12)
@@ -603,8 +603,8 @@ public:
     void fn_802708D0(); // via fn_80236350
     void fn_802708E8(); // via fn_802363DC
     bool fn_80270A04(); // via fn_80236A18
-    bool fn_80270A58(); // via fn_80236AB4
-    bool fn_80270A8C(); // via fn_80236B50; state 0x33 requested or current, or 0x34 (down)
+    bool fn_80270A58() const; // via fn_80236AB4
+    bool fn_80270A8C() const; // via fn_80236B50; state 0x33 requested or current, or 0x34 (down)
     bool fn_80270C88(); // via fn_80236BEC
     void fn_80270F00(s32 arg); // via fn_80236804
     // via fn_80236554 (act_recovery_heart heals 4): adds `amount` to the life 0xBFC (or takes
@@ -1213,14 +1213,14 @@ public:
     s32 fn_8024064C() const;
     bool fn_80240B34();
     bool fn_80240D8C();
-    bool fn_802411D8();
+    bool fn_802411D8() const;
     bool fn_802412E0();
     bool fn_80241338();
     bool fn_80241514(s32 value);
     bool fn_802431B8();
     bool fn_80243194(s32 other);
     s32 fn_80247B9C();
-    s32 fn_80247BD4();
+    s32 fn_80247BD4() const;
     void fn_80247F0C();
     void fn_80249070();
     void fn_8024909C();
