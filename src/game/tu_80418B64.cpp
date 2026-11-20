@@ -604,7 +604,8 @@ void cls_804B13D4::fn_8041FC2C() {
         field_0x4->search(lbl_8048D6B8[1])->hide();
         field_0x4->search(lbl_8048D6B8[2])->hide();
         field_0x4->search(lbl_8048D6B8[3])->hide();
-        if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+        u32 kind = (gGameRoot_8053AAF8->field_0x83 >> (0 * 2)) & 3;
+        if (kind == 2) {
             field_0x4->search('Ndata16')->show();
         } else {
             field_0x4->search('Ndata16')->hide();
