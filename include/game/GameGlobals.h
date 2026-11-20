@@ -1298,6 +1298,24 @@ struct ActorVector {
     ActorBase_804A5770** fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value);
     // 0x801188B8: push_back, inserts *value at mEnd.
     void fn_801188B8(ActorBase_804A5770* const* value);
+    void DestroyElement_(ActorBase_804A5770** pFirst, ActorBase_804A5770** pLast) {
+        for (ActorBase_804A5770** it = pFirst; it != pLast; ++it) {
+            mAllocator.destroy(it);
+        }
+    }
+    ActorBase_804A5770** erase(ActorBase_804A5770** start, ActorBase_804A5770** end) {
+        ActorBase_804A5770** dst = start;
+        ActorBase_804A5770** last = mEnd;
+        while (end < last) {
+            *dst++ = *end++;
+        }
+        DestroyElement_(dst, mEnd);
+        mEnd = dst;
+        return start;
+    }
+    ActorBase_804A5770** erase(ActorBase_804A5770** pos) {
+        return erase(pos, pos + 1);
+    }
 };
 
 // The 0x20-byte object in .bss at 0x804BC540 (function-local static of

@@ -463,26 +463,14 @@ void cls_801192AC::fn_8011888C(ActorBase_804A5770* actor) {
 // by-value predicate of the std::find_if the original uses: matches an actor by its serial
 struct ActorSerialEq {
     s32 mSerial;
+    ActorSerialEq(s32 serial) : mSerial(serial) {}
     bool operator()(ActorBase_804A5770* actor) const { return mSerial == actor->mSerial; }
 };
 
-// FIXME: 90.25 %, missing/extra; behaviour near.
-// FIXME: erase of the found element (TVector::erase inline); still differs in the stack frame.
 void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
-    ActorSerialEq pred = {actor->mSerial};
-    ActorBase_804A5770** end = mActors.mEnd;
-    ActorBase_804A5770** it = mActors.mBegin;
-    while (it != end && !pred(*it)) {
-        it++;
-    }
-    if (it != end) {
-        ActorBase_804A5770** next = it + 1;
-        while (next < end) {
-            *it++ = *next++;
-        }
-        for (ActorBase_804A5770** p = it; p != mActors.mEnd; p++) {
-        }
-        mActors.mEnd = it;
+    ActorBase_804A5770** it = std::find_if(mActors.mBegin, mActors.mEnd, ActorSerialEq(actor->mSerial));
+    if (it != mActors.mEnd) {
+        mActors.erase(it);
     }
 }
 
