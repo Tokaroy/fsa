@@ -22,14 +22,95 @@ s32 lbl_804C1BC0[4];
 JGeometry::TVec3f lbl_804C1BD0[4];
 JGeometry::TVec3f lbl_804C1C00[4];
 
-// Animation tables (.data 0x804A1FF8, not written as source here): per animation, a first
-// frame, and for each step the frame offset (0xFF ends the animation) and its length, for the
-// body (field_0x25c) and the second layer (field_0x260).
-extern const s16 lbl_804A1FF8[16];
-extern const u8* const lbl_804A2118[16];
-extern const u8* const lbl_804A2158[16];
-extern const u8* const lbl_804A2298[16];
-extern const u8* const lbl_804A22D8[16];
+// Animation tables: per animation, a first frame, and for each step the frame offset (0xFF
+// ends the animation) and its length, for the body (field_0x25c) and the second layer
+// (field_0x260).
+s32 lbl_80539FE8 = -1;
+s16 lbl_804A1FF8[16] = {48, 0, 5, 5, 5, 12, 16, 16, 16, 30, 30, 30, 41, 53, 53, 53};
+u8 lbl_804A2018[30] = {0, 1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 0xFF};
+u8 lbl_804A2038[30] = {8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0xFF};
+u8 lbl_804A2058[17] = {0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0xFF};
+u8 lbl_804A206C[17] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0xFF};
+u8 lbl_804A2080[26] = {0, 1, 2, 3, 4, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 4, 11, 12, 13, 0xFF};
+u8 lbl_804A209C[26] = {8, 11, 7, 8, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 8, 9, 40, 0xFF};
+u8 lbl_804A20B8[9] = {5, 9, 10, 6, 4, 11, 12, 13, 0xFF};
+u8 lbl_804A20C4[9] = {6, 6, 6, 6, 8, 8, 9, 9, 0xFF};
+u8 lbl_804A20D0[23] = {0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 0xFF};
+u8 lbl_804A20E8[23] = {8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0xFF};
+u8 lbl_804A2100[11] = {0, 1, 2, 3, 4, 3, 4, 3, 4, 5, 0xFF};
+u8 lbl_804A210C[11] = {6, 6, 7, 7, 7, 7, 7, 7, 7, 6, 0xFF};
+u8 lbl_80539FEC[8] = {0, 1, 0, 2, 3, 4, 2, 0xFF};
+u8 lbl_80539FF4[8] = {9, 9, 9, 9, 9, 9, 9, 0xFF};
+u8 lbl_80539FFC[4] = {0, 1, 2, 0xFF};
+u8 lbl_8053A000[4] = {3, 4, 5, 0xFF};
+u8 lbl_8053A004[6] = {3, 2, 1, 6, 0, 0xFF};
+u8 lbl_8053A00C[4] = {6, 4, 4, 0xFF};
+u8 lbl_8053A010[4] = {6, 6, 6, 0xFF};
+u8 lbl_8053A014[6] = {7, 10, 8, 6, 40, 0xFF};
+u8 lbl_8053A01C[8] = {0, 1, 2, 4, 6, 7, 8, 0xFF};
+u8 lbl_8053A024[8] = {8, 11, 15, 6, 6, 6, 6, 0xFF};
+u8 lbl_8053A02C[4] = {0, 1, 2, 0xFF};
+u8 lbl_8053A030[5] = {3, 4, 3, 5, 0xFF};
+u8 lbl_8053A038[6] = {6, 7, 8, 9, 10, 0xFF};
+u8 lbl_8053A040[4] = {7, 11, 13, 0xFF};
+u8 lbl_8053A044[5] = {9, 9, 9, 9, 0xFF};
+u8 lbl_8053A04C[6] = {6, 9, 11, 9, 40, 0xFF};
+u8 lbl_8053A054[7] = {0, 1, 2, 3, 4, 5, 0xFF};
+u8 lbl_8053A05C[7] = {6, 6, 7, 7, 7, 6, 0xFF};
+u8* lbl_804A2118[16] = {
+    lbl_804A2018, lbl_80539FEC, lbl_80539FFC, lbl_8053A000,
+    lbl_8053A004, lbl_804A2058, lbl_8053A01C, lbl_804A2080,
+    lbl_804A20B8, lbl_8053A02C, lbl_8053A030, lbl_8053A038,
+    lbl_804A20D0, lbl_8053A054, lbl_804A2100, lbl_8053A054,
+};
+u8* lbl_804A2158[16] = {
+    lbl_804A2038, lbl_80539FF4, lbl_8053A00C, lbl_8053A010,
+    lbl_8053A014, lbl_804A206C, lbl_8053A024, lbl_804A209C,
+    lbl_804A20C4, lbl_8053A040, lbl_8053A044, lbl_8053A04C,
+    lbl_804A20E8, lbl_8053A05C, lbl_804A210C, lbl_8053A05C,
+};
+u8 lbl_804A2198[30] = {0, 1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 0xFF};
+u8 lbl_804A21B8[30] = {8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0xFF};
+u8 lbl_804A21D8[17] = {0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0xFF};
+u8 lbl_804A21EC[17] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0xFF};
+u8 lbl_804A2200[26] = {0, 1, 2, 3, 4, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 9, 10, 5, 4, 11, 12, 13, 0xFF};
+u8 lbl_804A221C[26] = {8, 11, 7, 8, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 8, 8, 9, 40, 0xFF};
+u8 lbl_804A2238[9] = {5, 9, 10, 6, 4, 11, 12, 13, 0xFF};
+u8 lbl_804A2244[9] = {6, 6, 6, 6, 8, 8, 9, 9, 0xFF};
+u8 lbl_804A2250[23] = {0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 4, 5, 6, 4, 5, 6, 4, 5, 6, 4, 5, 6, 0xFF};
+u8 lbl_804A2268[23] = {8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0xFF};
+u8 lbl_804A2280[11] = {0, 1, 2, 3, 4, 3, 4, 3, 4, 5, 0xFF};
+u8 lbl_804A228C[11] = {6, 6, 7, 7, 7, 7, 7, 7, 7, 6, 0xFF};
+u8 lbl_8053A064[8] = {0, 1, 0, 2, 3, 4, 2, 0xFF};
+u8 lbl_8053A06C[8] = {9, 9, 9, 9, 9, 9, 9, 0xFF};
+u8 lbl_8053A074[5] = {0, 1, 2, 3, 0xFF};
+u8 lbl_8053A07C[4] = {4, 5, 3, 0xFF};
+u8 lbl_8053A080[6] = {3, 2, 1, 6, 0, 0xFF};
+u8 lbl_8053A088[5] = {6, 4, 4, 6, 0xFF};
+u8 lbl_8053A090[4] = {6, 6, 6, 0xFF};
+u8 lbl_8053A094[6] = {7, 10, 8, 6, 40, 0xFF};
+u8 lbl_8053A09C[8] = {0, 1, 2, 4, 6, 7, 8, 0xFF};
+u8 lbl_8053A0A4[8] = {8, 11, 15, 6, 6, 6, 6, 0xFF};
+u8 lbl_8053A0AC[4] = {0, 1, 2, 0xFF};
+u8 lbl_8053A0B0[5] = {3, 4, 3, 5, 0xFF};
+u8 lbl_8053A0B8[6] = {6, 7, 8, 9, 10, 0xFF};
+u8 lbl_8053A0C0[4] = {7, 11, 13, 0xFF};
+u8 lbl_8053A0C4[5] = {9, 9, 9, 9, 0xFF};
+u8 lbl_8053A0CC[6] = {6, 9, 11, 9, 40, 0xFF};
+u8 lbl_8053A0D4[7] = {0, 1, 2, 3, 4, 5, 0xFF};
+u8 lbl_8053A0DC[7] = {6, 6, 7, 7, 7, 6, 0xFF};
+u8* lbl_804A2298[16] = {
+    lbl_804A2198, lbl_8053A064, lbl_8053A074, lbl_8053A07C,
+    lbl_8053A080, lbl_804A21D8, lbl_8053A09C, lbl_804A2200,
+    lbl_804A2238, lbl_8053A0AC, lbl_8053A0B0, lbl_8053A0B8,
+    lbl_804A2250, lbl_8053A0D4, lbl_804A2280, lbl_8053A0D4,
+};
+u8* lbl_804A22D8[16] = {
+    lbl_804A21B8, lbl_8053A06C, lbl_8053A088, lbl_8053A090,
+    lbl_8053A094, lbl_804A21EC, lbl_8053A0A4, lbl_804A221C,
+    lbl_804A2244, lbl_8053A0C0, lbl_8053A0C4, lbl_8053A0CC,
+    lbl_804A2268, lbl_8053A0DC, lbl_804A228C, lbl_8053A0DC,
+};
 extern const u16 lbl_804A2318[6][4];
 extern const u32 lbl_804A2348[5];
 extern const s32 lbl_804A235C[5];
@@ -39,7 +120,6 @@ extern const char* const lbl_804A2484[59];
 extern const f32 lbl_804A2570[16][2];
 u8 lbl_8053AB90;
 u8 lbl_8053AB91;
-extern s32 lbl_80539FE8;
 
 void fn_80154718(const JGeometry::TVec3f* pos);
 void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
