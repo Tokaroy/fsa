@@ -647,9 +647,9 @@ bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* ou
             }
             ((cls_804A0738*)actor)->field_0x254 = 1;
             if (out != NULL) {
-                JGeometry::TVec3f v(pos->x, pos->y, 0.0f);
-                JGeometry::TVec3f d = actor->field_0x3c * 3.0f;
-                out->sub(v, d);
+                JGeometry::TVec3f d = actor->field_0x3c;
+                d.scale(3.0f);
+                out->sub(JGeometry::TVec3f(pos->x, pos->y, 0.0f), d);
             }
         }
     }
