@@ -281,19 +281,9 @@ static inline ActorBase_804A5770** uninitializedCopy(ActorBase_804A5770** first,
     return copyDown(first, last, result);
 }
 
-static inline void eraseRange(ActorBase_804A5770**& end, ActorBase_804A5770** first,
-                              ActorBase_804A5770** last) {
-    ActorBase_804A5770** newEnd = copyDown(last, end, first);
-    for (ActorBase_804A5770** it = newEnd; it != end; it++) {
-    }
-    end = newEnd;
-}
-
 // FIXME: 97.48 %, missing/extra; behaviour near.
 cls_801192AC::~cls_801192AC() {
-    eraseRange(mActors.mEnd, mActors.mBegin, mActors.mEnd);
-    eraseRange(mActors.mEnd, mActors.mBegin, mActors.mEnd);
-    delete mActors.mBegin;
+    mActors.clear();
 }
 
 extern "C" cls_801192AC* fn_8011921C() {

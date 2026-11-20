@@ -1318,6 +1318,12 @@ struct ActorVector {
     ActorBase_804A5770** erase(ActorBase_804A5770** pos) {
         return erase(pos, pos + 1);
     }
+    void clear() { erase(mBegin, mEnd); }
+    // JGadget::TVector::~TVector, inlined into cls_801192AC's destructor.
+    ~ActorVector() {
+        clear();
+        delete mBegin;
+    }
 };
 
 // The 0x20-byte object in .bss at 0x804BC540 (function-local static of
