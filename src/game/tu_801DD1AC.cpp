@@ -5,7 +5,6 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 
-// FIXME(shotgun): 99.45 %, missing/extra; behaviour drift.
 void cls_804A4C58::fn_801DE12C() {
     switch (mState) {
     case 0:
@@ -183,7 +182,6 @@ void cls_804A4C58::fn_801DE12C() {
     mBox2.f.y = mBox.f.y;
 }
 
-// FIXME(shotgun): 90.94 %, missing/extra; behaviour near.
 bool cls_804A4C58::fn_801DE018() {
     bool result = false;
     bool inRange = false;
@@ -475,7 +473,6 @@ bool cls_804A4C58::fn_801DD410() {
     return hit;
 }
 
-// FIXME(shotgun): 98.87 %, missing/extra; behaviour clean.
 u8 cls_804A4C58::fn_801DD28C() {
     u8 hit = 0;
     f32 x0 = 1.0f;
@@ -513,7 +510,6 @@ u8 cls_804A4C58::fn_801DD28C() {
     return hit;
 }
 
-// FIXME(shotgun): 98.00 %, missing/extra; behaviour clean.
 bool cls_804A4C58::fn_801DD1AC() {
     bool clamped = false;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT)) {
