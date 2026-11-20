@@ -33,7 +33,7 @@ void VaatiBoss_804A4958::fn_801E4758() {
     field_0x80.f.y = 4.0f * lbl_8053F0BC;
 }
 
-// FIXME(shotgun): 91.19 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 91.05 %, scheduling+regalloc; behaviour clean.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
         out->set(field_0x5e0.x, field_0x5e0.y, field_0x5e0.x + 16.0f * (f32)field_0x5e8,
@@ -128,7 +128,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
     return result;
 }
 
-// FIXME(shotgun): 89.02 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E4094() {
     u8 result = 0;
     bool stateOk = true;
@@ -348,7 +348,6 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
 }
 
 // vtable slot 0x64. Pushes Vaati out of the map-free area when a player-sized box is inside.
-// FIXME(shotgun): 95.20 %, scheduling+regalloc; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E376C() {
     u8 result = 0;
     bool stateOk = true;
@@ -379,7 +378,7 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
     return result;
 }
 
-// FIXME(shotgun): 94.94 %, different; behaviour near.
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
     JGeometry::TBox2f area;
