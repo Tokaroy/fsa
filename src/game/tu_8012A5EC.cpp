@@ -630,8 +630,6 @@ void cls_8049E770::fn_8012A8C0() {
 
 // FIXME(shotgun): 96.95 %, missing/extra + reloc-name; behaviour drift.
 bool cls_8049E770::fn_8012A5EC() {
-    f32 posY;
-    f32 halfH;
     switch (field_0x230) {
     case 0:
     case 1:
@@ -700,8 +698,8 @@ bool cls_8049E770::fn_8012A5EC() {
     }
     }
     f32 posX = field_0x238.x + field_0x3fc;
-    posY = field_0x238.y + field_0x400;
-    halfH = field_0x248;
+    f32 posY = field_0x238.y + field_0x400;
+    f32 halfH = field_0x248;
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 y0 = posY - halfH;
     f32 y1 = halfH + posY;
