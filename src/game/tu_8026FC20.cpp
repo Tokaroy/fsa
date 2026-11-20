@@ -690,9 +690,6 @@ void Player_804A6F38::fn_8027CAA8() {
 // layers the push moves x / -y at height 0.5 and ends outside the view box less 16 (or with
 // cls_804A71A8 0x4A), else mPos moves by the push and lands at 0. Pose by the frame 0x3FA;
 // from frame 15 the landing (fn_8022C76C / tile 2 test on flagged layers) to state 8 or 0.
-// FIXME: 99.88 %, regalloc-only; behaviour clean.
-// Registers only: f0 / f1 swapped for mPos.x / mPos.y in the inlined
-// containsPoint test.
 void Player_804A6F38::fn_8027C6C4() {
     field_0x344.z -= 0.25f;
     if (field_0x344.z < -8.0f) {
@@ -705,7 +702,7 @@ void Player_804A6F38::fn_8027C6C4() {
         JGeometry::TBox2f box;
         box = *layerBox(field_0x3b4);
         growBox(box, -16.0f);
-        if (field_0x344.z < 0.0f && (field_0xbf0->field_0x48[2] || !containsPoint(box, mPos))) {
+        if (field_0x344.z < 0.0f && (field_0xbf0->field_0x48[2] || !contains(box, mPos))) {
             mPos.z = 0.0f;
         }
     } else {
