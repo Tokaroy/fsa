@@ -15,7 +15,7 @@
 #include "game/act/act_seesaw_lift.h"
 
 // The push directions fn_802C3AE4 gives a kicked kind-6 key, by field_0x2ae - 1.
-static const f32 lbl_8046D560[4][2] = {{0.5f, 0.0f}, {-0.5f, 0.0f}, {0.0f, 0.5f}, {0.0f, -0.5f}};
+static const f32 lbl_8046D560[8] = {0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, -0.5f};
 
 // 0x802C52DC.
 // FIXME(shotgun): 95.72 %, missing/extra; behaviour drift.
@@ -522,11 +522,12 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (field_0x240 != 2) {
         return;
     }
+    s32 layer = field_0x4;
     s32 step = 1;
-    if (field_0x4 >= 8) {
+    if (layer >= 8) {
         step = 8;
     }
-    u16 code = fn_80226850(&mPos, field_0x4 + step);
+    u16 code = fn_80226850(&mPos, layer + step);
     if (code != 0 && code != 0x39) {
         field_0x2ad = 0x80;
         field_0x2ac = 2;
@@ -575,7 +576,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                         field_0x2ae = 2;
                     }
                 }
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+                if (viewLayerFlag(field_0x4) != 0) {
                     if (mPos.x > playerPos.x) {
                         mPos.x += (15 - dx) >> 1;
                     } else {
@@ -590,16 +591,16 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                         field_0x2ae = 4;
                     }
                 }
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+                if (viewLayerFlag(field_0x4) != 0) {
                     field_0x2ae = 0;
                 }
                 field_0x23c = i;
             }
         }
     } else if (field_0x280 == 6 && field_0x2ae != 0) {
-        const f32* push = lbl_8046D560[field_0x2ae - 1];
-        field_0x3c.x = push[0];
-        field_0x3c.y = push[1];
+        u8 index = (field_0x2ae - 1) * 2;
+        field_0x3c.x = lbl_8046D560[index];
+        field_0x3c.y = lbl_8046D560[index + 1];
         field_0x2ae = 0;
     }
     JGeometry::TVec3f wall(0.0f, 0.0f, 0.0f);
@@ -619,8 +620,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         }
     }
     if (field_0x240 != 10) {
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29);
-        value |= (field_0x280 << 24) & 0x1F000000;
+        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
         value |= field_0x4 & 0xFF;
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
@@ -638,31 +638,10 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (field_0x298 != -1) {
         tile = 0;
     }
-    bool fell;
-    if (tile == 3) {
-        if (fn_801EE24C() == true) {
-            field_0x240 = 4;
-            fell = true;
-        } else {
-            fell = true;
-            field_0x2b0 = true;
-        }
-    } else if (tile == 0xE) {
-        if (fn_802DE9A0()) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
-            startSound_801F0E34(0x5005F, 0);
-        } else if (fn_802DEB58()) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
-            startSound_801F0E34(0x5003F, 0);
-        }
-        fell = true;
-        field_0x2b0 = true;
-    } else {
-        fell = false;
+    if (fallOnTile(tile) == true) {
+        return;
     }
-    if (fell == true && getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+    if (viewLayerFlag(field_0x4) != 0) {
         field_0x2b2 = 0;
         fn_802C2154();
     }
@@ -956,6 +935,31 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     } else if ((field_0x3c.x != 0.0f || field_0x3c.y != 0.0f || field_0x3c.z != 0.0f) && field_0x280 != 2) {
         fn_801F2B20(0);
     }
+}
+
+// Not in the binary (update, fn_802C3AE4 and fn_802C2C30 inline it).
+// The key over a pit (tile 3) or water/lava (tile 0xE): true when it falls in.
+bool SmallKey_804A8CD8::fallOnTile(u16 tile) {
+    if (tile == 3) {
+        if (fn_801EE24C() == true) {
+            field_0x240 = 4;
+            return true;
+        }
+    } else if (tile == 0xE) {
+        if (fn_802DE9A0()) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
+            startSound_801F0E34(0x5005F, 0);
+        } else if (fn_802DEB58()) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
+            startSound_801F0E34(0x5003F, 0);
+        }
+    } else {
+        return false;
+    }
+    field_0x2b0 = true;
+    return true;
 }
 
 // Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
