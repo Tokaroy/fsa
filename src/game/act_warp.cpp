@@ -59,8 +59,6 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
     return v | kind;
 }
 
-static void uncoverSandWarp(Warp_804A6DC8* warp);
-
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
@@ -253,7 +251,26 @@ void Warp_804A6DC8::update() {
     }
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20) {
-        uncoverSandWarp(this);
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
+                JGeometry::TVec3f pos = *fn_8023A478(i);
+                if (__fabsf(mPos.x - pos.x) < 64.0f && __fabsf(mPos.y - pos.y) < 64.0f) {
+                    JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
+                    gBgRewrite_8053AC98->fn_802A3948(&p0, i, field_0x4, 0xC);
+                    JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
+                    gBgRewrite_8053AC98->fn_802A3948(&p1, i, field_0x4, 0xC);
+                    JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
+                    gBgRewrite_8053AC98->fn_802A3948(&p2, i, field_0x4, 0xC);
+                    JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
+                    gBgRewrite_8053AC98->fn_802A3948(&p3, i, field_0x4, 0xC);
+                    if (field_0x255 == 0) {
+                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+                        field_0x255 = 1;
+                    }
+                    break;
+                }
+            }
+        }
     }
     if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
         return;
@@ -439,29 +456,6 @@ void Warp_804A6DC8::draw() {
     } else {
         mPos.y += 0.1f;
         mPos.y -= 0.1f;
-    }
-}
-
-static void uncoverSandWarp(Warp_804A6DC8* warp) {
-    for (s32 i = 0; i < 4; i++) {
-        if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
-            JGeometry::TVec3f pos = *fn_8023A478(i);
-            if (__fabsf(warp->mPos.x - pos.x) < 64.0f && __fabsf(warp->mPos.y - pos.y) < 64.0f) {
-                JGeometry::TVec3f p0(warp->mPos.x - 8.0f, warp->mPos.y - 8.0f, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&p0, i, warp->field_0x4, 0xC);
-                JGeometry::TVec3f p1(warp->mPos.x + 8.0f, warp->mPos.y - 8.0f, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&p1, i, warp->field_0x4, 0xC);
-                JGeometry::TVec3f p2(warp->mPos.x - 8.0f, warp->mPos.y + 8.0f, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&p2, i, warp->field_0x4, 0xC);
-                JGeometry::TVec3f p3(warp->mPos.x + 8.0f, warp->mPos.y + 8.0f, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&p3, i, warp->field_0x4, 0xC);
-                if (warp->field_0x255 == 0) {
-                    spawnEmitter_8013CC50(warp->field_0x4, &warp->mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
-                    warp->field_0x255 = 1;
-                }
-                break;
-            }
-        }
     }
 }
 
@@ -672,10 +666,14 @@ void Warp_804A6DC8::fn_80226FC8(s32 player) {
     if (inside) {
         field_0x27c[player]->vfunc_0x48();
         field_0x27c[player] = NULL;
-        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f), player, field_0x4, 0xC);
-        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f), player, field_0x4, 0xC);
-        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f), player, field_0x4, 0xC);
-        gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f), player, field_0x4, 0xC);
+        JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p0, player, field_0x4, 0xC);
+        JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p1, player, field_0x4, 0xC);
+        JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p2, player, field_0x4, 0xC);
+        JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
+        gBgRewrite_8053AC98->fn_802A3948(&p3, player, field_0x4, 0xC);
         if (field_0x255 == 0) {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
             field_0x255 = 1;
