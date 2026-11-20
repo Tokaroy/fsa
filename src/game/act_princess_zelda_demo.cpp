@@ -1018,18 +1018,19 @@ void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
         if (field_0x264 >= 0x10000) {
             field_0x264 -= 0x10000;
         }
+        f32 z = 2.0f * JMath::sincosTable_.sinShort(field_0x264);
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = z;
         mtx[0][0] = 1.0f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = 1.0f;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 1.0f;
-        mtx[2][3] = 2.0f * JMath::sincosTable_.sinShort(field_0x264);
         params.mMtx = mtx;
     }
     if (arg == 0x21B) {
