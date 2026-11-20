@@ -509,9 +509,8 @@ void cls_804AC8C0::updateFacing() {
     f32 dist;
     fn_801EE558(&dir, &dist, 0);
     if (dist < 100.0f) {
-        f32 rad = JMath::atanTable_.atan2_(-dir.x, -dir.y);
-        rad *= 10430.378f;
-        u16 angle = (s16)rad;
+        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
+                          (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x23c = 3;
         } else if (angle >= 0x2000 && angle < 0x6000) {
