@@ -1522,32 +1522,34 @@ void cls_804B0B00::fn_803E9A20() {
     }
 }
 
-// FIXME: 96.67 %, missing/extra; behaviour drift.
-// 2 fewer instrs (491 vs 493): extsh. vs cmpwi r0, 0 on
-// field_0x254[0] > 0, and one merged i * 10 induction variable where the
-// original keeps two (r30 and r28).
-void cls_804B0B00::fn_803E926C() {
-    field_0x254[0]++;
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 25) {
-            s32 d = 25 - field_0x254[0];
-            field_0x164 = -200.0f * ((f32)(d * d) / 625.0f);
-            f32 alpha = (f32)field_0x254[0] / 25.0f;
+static inline void fadeInSlide(cls_804B0B00* self, s32 start, s32 duration, f32 dist, f32* pos,
+                               const u64* tags, const u8* alphas, s32 count) {
+    if (self->field_0x254[0] > start) {
+        if (self->field_0x254[0] < start + duration) {
+            s32 d = duration - (self->field_0x254[0] - start);
+            *pos = dist * ((f32)(d * d) / (f32)(duration * duration));
+            f32 alpha = (f32)(self->field_0x254[0] - start) / (f32)duration;
             if (alpha < 0.0f) {
                 alpha = 0.0f;
             } else if (alpha > 1.0f) {
                 alpha = 1.0f;
             }
-            for (int i = 0; i < 17; i++) {
-                field_0xc->search(lbl_80477FC0[i])->setAlpha(fadeAlpha(field_0x322[i], alpha));
+            for (int i = 0; i < count; i++) {
+                self->field_0xc->search(tags[i])->setAlpha(fadeAlpha(alphas[i], alpha));
             }
         } else {
-            field_0x164 = 0.0f;
-            for (int i = 0; i < 17; i++) {
-                field_0xc->search(lbl_80477FC0[i])->setAlpha(fadeAlpha(field_0x322[i], 1.0f));
+            *pos = 0.0f;
+            for (int i = 0; i < count; i++) {
+                self->field_0xc->search(tags[i])->setAlpha(fadeAlpha(alphas[i], 1.0f));
             }
         }
     }
+}
+
+// FIXME: 96.73 %, missing/extra; behaviour near.
+void cls_804B0B00::fn_803E926C() {
+    field_0x254[0]++;
+    fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
     if (field_0x254[0] > 25) {
         if (field_0x254[0] < 45) {
             s32 d = 20 - (field_0x254[0] - 25);
@@ -1557,47 +1559,9 @@ void cls_804B0B00::fn_803E926C() {
         }
     }
     for (int i = 0; i < 3; i++) {
-        if (field_0x254[0] > i * 10) {
-            if (field_0x254[0] < i * 10 + 15) {
-                s32 d = 15 - (field_0x254[0] - i * 10);
-                field_0x184[i] = 300.0f * ((f32)(d * d) / 225.0f);
-                f32 alpha = (f32)(field_0x254[0] - i * 10) / 15.0f;
-                if (alpha < 0.0f) {
-                    alpha = 0.0f;
-                } else if (alpha > 1.0f) {
-                    alpha = 1.0f;
-                }
-                for (int j = 0; j < 5; j++) {
-                    field_0xc->search(lbl_80478048[i][j])->setAlpha(fadeAlpha(field_0x333[i][j], alpha));
-                }
-            } else {
-                field_0x184[i] = 0.0f;
-                for (int j = 0; j < 5; j++) {
-                    field_0xc->search(lbl_80478048[i][j])->setAlpha(fadeAlpha(field_0x333[i][j], 1.0f));
-                }
-            }
-        }
+        fadeInSlide(this, i * 10, 15, 300.0f, &field_0x184[i], lbl_80478048[i], field_0x333[i], 5);
     }
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 15) {
-            s32 d = 15 - field_0x254[0];
-            field_0x198 = -450.0f * ((f32)(d * d) / 225.0f);
-            f32 alpha = (f32)field_0x254[0] / 15.0f;
-            if (alpha < 0.0f) {
-                alpha = 0.0f;
-            } else if (alpha > 1.0f) {
-                alpha = 1.0f;
-            }
-            for (int i = 0; i < 26; i++) {
-                field_0xc->search(lbl_804780C0[i])->setAlpha(fadeAlpha(field_0x342[i], alpha));
-            }
-        } else {
-            field_0x198 = 0.0f;
-            for (int i = 0; i < 26; i++) {
-                field_0xc->search(lbl_804780C0[i])->setAlpha(fadeAlpha(field_0x342[i], 1.0f));
-            }
-        }
-    }
+    fadeInSlide(this, 0, 15, -450.0f, &field_0x198, lbl_804780C0, field_0x342, 26);
     if (field_0x254[0] >= 75) {
         field_0x254[0] = 0;
         if (field_0x1bc == 0) {
@@ -2674,18 +2638,48 @@ void cls_804B0B00::fn_803E3320() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.66 %, missing/extra; behaviour clean.
-// Registers: the loop's table pointers sit two registers higher than in
-// the original, and the first digit texture is copied through r0 (one
-// extra mr) where the original keeps it in r27.
 // Enter state 12 (the results / entry screen field_0x10): per player, the
 // 'Pblk' cover over the players beyond field_0x1bc + 1, the rupee count
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
 // four marker tables, the cursor panes by field_0x1c0[i] (3: joined,
 // 4: not); then the panes start their slide-in.
-void cls_804B0B00::fn_803E2A20() {
+static inline void updateRupeeDigits(cls_804B0B00* self, s32 i) {
+    s32 rupees = fn_80403070(self->field_0x1f0[i]);
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478430[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees % 100 / 10]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783D0[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783F0[i]))->changeTexture(tex, 0);
+    tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
+    static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
+}
+
+static inline void updateMarkerPanes(cls_804B0B00* self, s32 i) {
     s32 j;
-    s32 count;
+    s32 count = fn_8040305C(self->field_0x200[i]) - 1;
+    for (j = 0; j < 6; j++) {
+        if (j < count) {
+            self->field_0x10->search(lbl_80478518[i][j])->show();
+            self->field_0x10->search(lbl_804785D8[i][j])->show();
+            self->field_0x10->search(lbl_80478698[i][j])->hide();
+            self->field_0x10->search(lbl_80478758[i][j])->hide();
+        } else if (j == count) {
+            self->field_0x10->search(lbl_80478518[i][j])->hide();
+            self->field_0x10->search(lbl_804785D8[i][j])->hide();
+            self->field_0x10->search(lbl_80478698[i][j])->show();
+            self->field_0x10->search(lbl_80478758[i][j])->show();
+        } else {
+            self->field_0x10->search(lbl_80478518[i][j])->hide();
+            self->field_0x10->search(lbl_804785D8[i][j])->hide();
+            self->field_0x10->search(lbl_80478698[i][j])->hide();
+            self->field_0x10->search(lbl_80478758[i][j])->hide();
+        }
+    }
+}
+
+void cls_804B0B00::fn_803E2A20() {
     for (s32 i = 0; i < 4; i++) {
         if (i >= 1) {
             if (i > field_0x1bc) {
@@ -2697,35 +2691,8 @@ void cls_804B0B00::fn_803E2A20() {
         field_0x1f0[i] = fn_80403414(i);
         field_0x200[i] = fn_804033D4(i);
         field_0x210[i] = fn_8040336C(i);
-        s32 rupees = fn_80403070(field_0x1f0[i]);
-        const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80478430[i]))->changeTexture(tex, 0);
-        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees % 100 / 10]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_804783D0[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_804783F0[i]))->changeTexture(tex, 0);
-        tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees % 10]);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_80478390[i]))->changeTexture(tex, 0);
-        static_cast<J2DPicture*>(field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
-        count = fn_8040305C(field_0x200[i]) - 1;
-        for (j = 0; j < 6; j++) {
-            if (j < count) {
-                field_0x10->search(lbl_80478518[i][j])->show();
-                field_0x10->search(lbl_804785D8[i][j])->show();
-                field_0x10->search(lbl_80478698[i][j])->hide();
-                field_0x10->search(lbl_80478758[i][j])->hide();
-            } else if (j == count) {
-                field_0x10->search(lbl_80478518[i][j])->hide();
-                field_0x10->search(lbl_804785D8[i][j])->hide();
-                field_0x10->search(lbl_80478698[i][j])->show();
-                field_0x10->search(lbl_80478758[i][j])->show();
-            } else {
-                field_0x10->search(lbl_80478518[i][j])->hide();
-                field_0x10->search(lbl_804785D8[i][j])->hide();
-                field_0x10->search(lbl_80478698[i][j])->hide();
-                field_0x10->search(lbl_80478758[i][j])->hide();
-            }
-        }
+        updateRupeeDigits(this, i);
+        updateMarkerPanes(this, i);
         field_0x10->search(lbl_80478350[i])->hide();
     }
     field_0x64->moveFromCentre_80402E08(0.0f, -200.0f);
