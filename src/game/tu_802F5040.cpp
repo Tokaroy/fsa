@@ -1318,21 +1318,21 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
 // field_0x18[2], tinted grey / alpha unless both are 0xFF. With offsets, each
 // 8-line row is shifted by the average of its screen lines' offsets, wrapped by
 // 512 when the whole row is off one side.
-// Register allocation only (r28-r31 cycle on x, grid, palette, offsets) and prologue mr order for y.
-// FIXME: 99.77 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets) {
     static const GXTlut lbl_8046FA30[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
         GX_TLUT8, GX_TLUT9, GX_TLUT10, GX_TLUT11, GX_TLUT12, GX_TLUT13, GX_TLUT14, GX_TLUT15,
     };
-    if (x > 0x180) {
-        x -= 0x200;
+    s32 scrollX = x;
+    s32 scrollY = y;
+    if (scrollX > 0x180) {
+        scrollX -= 0x200;
     }
-    if (y > 0x180) {
-        y -= 0x200;
+    if (scrollY > 0x180) {
+        scrollY -= 0x200;
     }
-    f32 originX = -x;
-    f32 originY = -y;
+    f32 originX = -scrollX;
+    f32 originY = -scrollY;
     gGameRoot2_8053AB10->fn_8013B1E8();
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -1383,12 +1383,12 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
         for (int bx = 0; bx < 2; bx++) {
             int block = by * 2 + bx;
             for (int ty = 0; ty < 16; ty++) {
-                int dy = (by * 32 + ty * 2) * 8 - y;
+                int dy = (by * 32 + ty * 2) * 8 - scrollY;
                 if (dy <= -16 || dy >= 0xA0) {
                     continue;
                 }
                 for (int tx = 0; tx < 16; tx++) {
-                    int dx = (bx * 32 + tx * 2) * 8 - x;
+                    int dx = (bx * 32 + tx * 2) * 8 - scrollX;
                     if (offsets == NULL && (dx <= -16 || dx >= 0xF0)) {
                         continue;
                     }
@@ -1417,7 +1417,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
             for (int bx = 0; bx < 2; bx++) {
                 int block = by * 2 + bx;
                 for (int ty = 0; ty < 16; ty++) {
-                    int dy = (by * 32 + ty * 2) * 8 - y;
+                    int dy = (by * 32 + ty * 2) * 8 - scrollY;
                     if (dy <= -16 || dy >= 0xA0) {
                         continue;
                     }
@@ -1473,7 +1473,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
                         }
                     } else {
                         for (int tx = 0; tx < 16; tx++) {
-                            int dx = (bx * 32 + tx * 2) * 8 - x;
+                            int dx = (bx * 32 + tx * 2) * 8 - scrollX;
                             if (dx <= -16 || dx >= 0xF0) {
                                 continue;
                             }
