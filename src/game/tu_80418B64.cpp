@@ -1430,8 +1430,8 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
     }
-    s32 digit = 0;
     s32 n = lbl_80529DEC.field_0xe8[player];
+    s32 digit = 0;
     const ResTIMG* res;
     if (n > 9999) {
         n = 9999;
