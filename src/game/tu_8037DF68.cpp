@@ -328,7 +328,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 98.93 %, missing/extra; behaviour clean.
+    // FIXME(shotgun): 99.64 %, missing/extra; behaviour clean.
     // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags) {
         s32 window = windowIndex(player);
@@ -382,15 +382,16 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         }
         if (sync) {
             if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
-            return true;
+                return true;
+            }
+        } else {
+            if (canOpen(window)) {
+                return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
+            }
+            return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
         }
         return false;
     }
-        if (canOpen(window)) {
-            return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
-        }
-        return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
-}
 
 bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 flags) {
     if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
@@ -1420,7 +1421,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 95.74 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.58 %, missing/extra + reloc-name; behaviour near.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
@@ -1437,6 +1438,7 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
     s32 lines = 1;
     f32 cur = 0.0f;
     u8 part = 0;
+    u32 code;
     lbl_8053AD78->field_0x5c[0] = 0.0f;
     lbl_8053AD78->field_0x5c[2] = 0.0f;
     lbl_8053AD78->field_0x5c[1] = 0.0f;
@@ -1479,7 +1481,7 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) != 0) {
                             u8 mode = (gGameRoot_8053AAF8->field_0x83 >> ((a - 1) * 2)) & 3;
                             if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {
@@ -1516,13 +1518,12 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
             pos += p[1];
         } else {
             line[len++] = text[pos];
-            u32 code = (u8)*p;
+            code = (u8)*p;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 line[len++] = text[pos];
                 code <<= 8;
-                code |= text[pos] & 0xFF;
-                pos++;
+                code |= (u8)text[pos++];
             }
             cur += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
