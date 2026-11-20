@@ -16,6 +16,13 @@ static inline bool isTiny(const JGeometry::TVec3f& v) {
     return v.squared() <= 32.0f * FLT_EPSILON;
 }
 
+// Distance of two points in the plane. Provisional name (always inlined). In fn_803511F0 the
+// squared sum is coloured before sqrt's own local, so sqrt sits one inline level below the sum.
+static inline f32 distanceXY(const JGeometry::TVec3f& a, const JGeometry::TVec3f& b) {
+    f32 sq = square(a.x - b.x) + square(a.y - b.y);
+    return JGeometry::TUtil<f32>::sqrt(sq);
+}
+
 // The effect shown where the lift breaks or respawns: an emitter on the main layers, a KMRI
 // actor from layer 8 up (fn_803513C0 inlines it behind its own layer test).
 inline void OBJLift_804ACA00::showBreakEffect(s32 layer) {
@@ -260,7 +267,6 @@ void OBJLift_804ACA00::fn_803513C0() {
 }
 
 // 0x803511F0.
-// FIXME(shotgun): 99.44 %, regalloc-only; behaviour clean.
 void OBJLift_804ACA00::fn_803511F0() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
@@ -272,8 +278,7 @@ void OBJLift_804ACA00::fn_803511F0() {
     field_0x248 = 10;
     field_0x274 = -1;
     field_0x268 = field_0x264;
-    f32 dist = JGeometry::TUtil<f32>::sqrt(square(mPos.x - mSpawnPos.x) + square(mPos.y - mSpawnPos.y));
-    if (dist > 48.0f) {
+    if (distanceXY(mPos, mSpawnPos) > 48.0f) {
         mPos = mSpawnPos;
         s32 layer = field_0x4;
         if (layer >= 8) {
