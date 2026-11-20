@@ -1130,11 +1130,15 @@ void cls_804A51E4::vfunc_0x94() {
         field_0x2ce--;
     }
     if (field_0x2ce == 0) {
-        if (mState == 7 && mAnim.mAnim < 0x11 && mAnim.mAnim >= 0xF) {
-            mAnim.startAnim_801D22DC(field_0x98, 2, false);
-        } else {
-            EnemyBase_804A4808::vfunc_0x94();
+        if (mState == 7) {
+            switch (mAnim.mAnim) {
+            case 0xF:
+            case 0x10:
+                mAnim.startAnim_801D22DC(field_0x98, 2, false);
+                return;
+            }
         }
+        EnemyBase_804A4808::vfunc_0x94();
     }
 }
 
