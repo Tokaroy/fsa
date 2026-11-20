@@ -687,17 +687,15 @@ void cls_8049D83C::fn_80113790() {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 96.0f;
-        params.field_0x10.r = 0;
-        params.field_0x10.g = 0;
-        params.field_0x10.b = 0;
-        params.field_0x10.a = field_0x248;
+        params.field_0x14.set(0, 0, 0, field_0x248);
         params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
+        void* res = field_0x260;
         if (field_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x260, &params);
+            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
 }
