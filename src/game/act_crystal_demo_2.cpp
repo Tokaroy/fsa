@@ -1363,8 +1363,9 @@ void cls_804AE088::fn_803683AC() {
             } else {
                 params.field_0x10.a = 0;
             }
+            s32 frame = field_0x264 + lbl_80474E04[i];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x264 + lbl_80474E04[i], NULL);
+                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
     }
