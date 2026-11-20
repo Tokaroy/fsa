@@ -324,7 +324,7 @@ void cls_804A7AE0::vfunc_0x10() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.66 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
@@ -384,7 +384,7 @@ void cls_804A7AE0::fn_8029A974() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.65 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
@@ -444,7 +444,7 @@ void cls_804A7AE0::fn_8029A494() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.66 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_80299FB0() {
     if (!field_0x250.isZero()) {
@@ -476,22 +476,22 @@ void cls_804A7AE0::fn_80299FB0() {
     p.y += mBox.i.y;
     p.y += 8.0f;
     p.z = 0.0f;
-    bool ok = true;
+    u8 ok = 1;
     for (int k = 0; k < 6; k++) {
         if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(field_0x4, &p, mSerial, NULL)) {
-            ok = false;
+            ok = 0;
             break;
         }
         if (!contains(view, p)) {
-            ok = false;
+            ok = 0;
             break;
         }
         p.y += 16.0f;
     }
     if (!fn_802957CC(1)) {
-        ok = false;
+        ok = 0;
     }
-    if (ok) {
+    if (ok == 1) {
         if (dir == 1) {
             fn_80238E08(mSerial);
             field_0x3c.x = -0.32f;
@@ -504,7 +504,7 @@ void cls_804A7AE0::fn_80299FB0() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.65 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
