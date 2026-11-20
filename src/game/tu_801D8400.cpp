@@ -522,7 +522,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -596,7 +597,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -647,7 +649,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
