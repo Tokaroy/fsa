@@ -1522,13 +1522,16 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
             }
             pos += p[1];
         } else {
-            line[len++] = text[pos];
+            line[len] = text[pos];
             code = (u8)*p;
+            len++;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                line[len++] = text[pos];
+                line[len] = text[pos];
                 code <<= 8;
-                code |= (u8)text[pos++];
+                code |= text[pos] & 0xFF;
+                len++;
+                pos++;
             }
             cur += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
