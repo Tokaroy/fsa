@@ -184,6 +184,8 @@ void cls_804A5568::vfunc_0x90(u8 mapHit) {
             mState = 2;
         }
         break;
+    case 2:
+        break;
     }
 }
 
