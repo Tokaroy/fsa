@@ -370,7 +370,8 @@ void cls_804A1E50::fn_8018DFCC() {
             field_0x27a = 1;
         }
         break;
-    case 2:
+    case 4:
+    case 6:
         y += 60.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
@@ -393,8 +394,7 @@ void cls_804A1E50::fn_8018DFCC() {
             field_0x27a = 1;
         }
         break;
-    case 4:
-    case 6:
+    case 2:
         y += 44.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
