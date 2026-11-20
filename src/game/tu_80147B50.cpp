@@ -276,7 +276,7 @@ bool cls_8049F6C8::fn_80149AEC() {
     mPos.x = field_0x2c0[7].x;
     mPos.y = field_0x2c0[7].y;
     mPos.z = field_0x2c0[7].z;
-    field_0xb0 = 0x4000000;
+    field_0xb0 = 0x8040000;
     for (s32 i = 0; i < 4; i++) {
         s32 player = fn_801F285C(NULL, NULL, true, i);
         if (player >= 0) {
@@ -298,8 +298,8 @@ bool cls_8049F6C8::fn_80149AEC() {
     }
     field_0x260 = 0;
     field_0x264 = 0;
-    field_0x2a0.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x2a0.zero();
+    field_0x3c.zero();
     for (s32 i = 0; i < 2; i++) {
         deleteEmitter(&mEmitters7c0[i]);
     }
@@ -307,10 +307,10 @@ bool cls_8049F6C8::fn_80149AEC() {
     if (field_0x274 <= 0) {
         field_0xd8 = 0;
         field_0xdc = 0;
-        if (field_0x90 == 1) {
+        if (getField_0x90() == 1) {
             lbl_80539F58 = -1;
         }
-        if (field_0x90 == 0) {
+        if (getField_0x90() == 0) {
             lbl_80539F5C = -1;
         }
         field_0x234 = 0;
@@ -354,7 +354,7 @@ bool cls_8049F6C8::fn_80149AEC() {
         } else {
             startSound_801F0E34(0x40005, 0);
         }
-        for (s32 i = 0; i < 80; i++) {
+        for (u32 i = 0; i < 80; i++) {
             field_0x3d8[i].set(mPos);
         }
     }
