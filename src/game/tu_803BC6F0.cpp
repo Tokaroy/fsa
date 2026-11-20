@@ -1154,26 +1154,24 @@ void FileSelect_804AFF60::fn_803CDEE8() {
     }
 }
 
-// FIXME: 95.18 %, missing/extra; behaviour clean.
-// One instruction extra: the original computes
-// frames + rowStep * 2 first and spills rowDelay at once (reloading it from
-// the stack), ours adds rowDelay to rowStep * 2 first, and keeps frames in r17
-// for the cursor's fn_80402B10 (mr r4, r17) where the original's r4 still
-// holds it; registers differ from there.
+// Registers rotated (`this` in r15 instead of r31) and `frames` loaded into r17
+// instead of r4 + mr r16, r4.
 // State 4: slides the cursor, the three rows (bottom row first) and the
 // board in (the timings are lbl_8050DB0C's 0x84..0x8A), starts the 'kk_'
 // sprite fade-in, then goes to state 5.
+// FIXME: 96.74 %, scheduling+regalloc; behaviour clean.
 void FileSelect_804AFF60::fn_803CD75C() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x84];
     s16 frames = lbl_8050DB0C.field_0x4c[0x85];
     s32 rowStep = lbl_8050DB0C.field_0x4c[0x86];
+    s32 rowDuration = frames + rowStep * 2;
     s16 boardDelay = lbl_8050DB0C.field_0x4c[0x87];
     s16 boardFrames = lbl_8050DB0C.field_0x4c[0x88];
     s16 kkDelay = lbl_8050DB0C.field_0x4c[0x89];
     s16 kkFrames = lbl_8050DB0C.field_0x4c[0x8A];
     s32 end = rowDelay + frames;
-    if (end < rowDelay + (frames + rowStep * 2)) {
-        end = rowDelay + (frames + rowStep * 2);
+    if (end < rowDelay + rowDuration) {
+        end = rowDelay + rowDuration;
     }
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
@@ -1931,7 +1929,7 @@ void FileSelect_804AFF60::fn_803C9F14() {
     }
 }
 
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
+// FIXME: 99.58 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C5190.
 // State 22 (copy, after the copy prompt's yes): as fn_803C5190, the board (or
@@ -1942,13 +1940,13 @@ void FileSelect_804AFF60::fn_803C9F14() {
 // copied over file field_0xa0, its checksum written and the card write
 // started; state 21 waits for it.
 void FileSelect_804AFF60::fn_803C9898() {
-    s16 boardDelay = lbl_8050DB0C.field_0x4c[0xC2];
-    s16 boardFrames = lbl_8050DB0C.field_0x4c[0xC3];
-    s16 buttonDelay = lbl_8050DB0C.field_0x4c[0xC4];
-    s16 buttonFrames = lbl_8050DB0C.field_0x4c[0xC5];
-    s16 buttonStep = lbl_8050DB0C.field_0x4c[0xC6];
+    s32 boardDelay = lbl_8050DB0C.field_0x4c[0xC2];
+    s32 boardFrames = lbl_8050DB0C.field_0x4c[0xC3];
+    s32 buttonDelay = lbl_8050DB0C.field_0x4c[0xC4];
+    s32 buttonFrames = lbl_8050DB0C.field_0x4c[0xC5];
+    s32 buttonStep = lbl_8050DB0C.field_0x4c[0xC6];
     s16 inDelay = lbl_8050DB0C.field_0x4c[0xC7];
-    s16 inFrames = lbl_8050DB0C.field_0x4c[0xC8];
+    s32 inFrames = lbl_8050DB0C.field_0x4c[0xC8];
     s32 boardEnd = boardDelay + boardFrames;
     s32 end = buttonDelay + buttonFrames + buttonStep;
     if (inDelay < boardEnd) {
@@ -2073,9 +2071,6 @@ void FileSelect_804AFF60::fn_803C92B8() {
     }
 }
 
-// FIXME: 98.56 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers in the cursor bob only, as
-// fn_803C4054.
 // State 25 (copy): picking the destination file. Up / down move field_0xa0
 // over the three files, skipping the source file field_0xa4; A asks to copy
 // (message 0x62, 'Tdb01' 0x66 when the destination's checksum failed) and
@@ -2158,15 +2153,14 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 
     if (mState == 25) {
-        s16 frame = field_0xda;
         f32 bob = 0.0f;
-        if (frame != 0) {
-            if (frame < 5) {
-                bob = 5.0f * (frame * frame) / 25.0f;
-                field_0xda = frame + 1;
-            } else if (frame < 10) {
-                bob = 5.0f * ((10 - frame) * (10 - frame)) / 25.0f;
-                field_0xda = frame + 1;
+        if (field_0xda != 0) {
+            if (field_0xda < 5) {
+                bob = 5.0f * (field_0xda * field_0xda) / 25.0f;
+                field_0xda++;
+            } else if (field_0xda < 10) {
+                bob = 5.0f * ((10 - field_0xda) * (10 - field_0xda)) / 25.0f;
+                field_0xda++;
             } else {
                 field_0xda = 0;
             }
