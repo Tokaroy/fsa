@@ -946,20 +946,19 @@ s32 EscortBase_8049E0C8::fn_80121D68() {
     return 1;
 }
 
-// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
     }
-    u16 angle = 0;
+    s16 angle = 0;
     JGeometry::TVec3f step;
-    step.x = step.y = step.z = 0.0f;
+    step.set(0.0f, 0.0f, 0.0f);
     s32 layer = field_0x4;
     JGeometry::TVec3f tmp(mPos);
     tmp.x += vec.x;
     tmp.y += vec.y;
     JGeometry::TVec3f pos(tmp);
-    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, &angle, 0x200);
+    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
     field_0x3c.x = step.x;
     field_0x3c.y = step.y;
     field_0x3c.z = step.z;
