@@ -610,14 +610,15 @@ bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
 
 // FIXME(shotgun): 96.22 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
+    s32 serial;
     bool found = false;
     if (outPlayer != NULL) {
         *outPlayer = -1;
     }
     if (outVel != NULL) {
-        outVel->zero();
+        outVel->set(0.0f, 0.0f, 0.0f);
     }
-    s32 serial = fn_8023B358(player);
+    serial = fn_8023B358(player);
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL && actor->mAlive && actor->mActorId == ACTOR_PCDM && actor->mLife > 0) {
