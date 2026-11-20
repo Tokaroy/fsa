@@ -2440,8 +2440,12 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
         }
         offset = (s32)((base - pos) * 0.5f + 0.5f);
     }
-    field_0x2d8->setLine(field_0x2d4, (f32)offset + field_0x38.field_0x19c[field_0x2d4],
-                         (f32)(field_0x38.field_0x1ee[field_0x2d4] - field_0x38.field_0x202[field_0x2d8->field_0x15c] - 1));
+    cls_804AF5A0* window = field_0x2d8;
+    u8 slot = field_0x2d4;
+    f32 x = (f32)offset + field_0x38.field_0x19c[slot];
+    f32 y = (f32)(field_0x38.field_0x1ee[slot] - field_0x38.field_0x202[window->field_0x15c] - 1);
+    window->field_0x124[slot] = x;
+    window->field_0x130[slot] = y;
     field_0x2d8->field_0x3b2[field_0x2d4] = value;
     field_0x2d4++;
 }
