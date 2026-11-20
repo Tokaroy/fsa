@@ -563,11 +563,8 @@ void cls_8049D83C::fn_8011395C() {
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
-            rot[i][j] = 0.0f;
-        }
-    }
+    rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
+        rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
     fn_8010F668(rot, &axisZ, field_0x258);
     PSMTXConcat(mtx, rot, mtx);
