@@ -17,8 +17,9 @@
 static const u16 lbl_8053FB90[4] = {0x0413, 0x0414, 0x0415, 0x0000};
 static const u16 lbl_8053FB98[4] = {0x0418, 0x0419, 0x041A, 0x0000};
 
-// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp).
-static inline f32 depthLift(const JGeometry::TVec3f* pos, s32 depth, s32 height, bool adjust) {
+// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp),
+// with the same (height, depth) order. Its callers here are at ~99.7 %: height and depth swap registers.
+static inline f32 depthLift(const JGeometry::TVec3f* pos, s32 height, s32 depth, bool adjust) {
     if (adjust && pos->z > 0.0f) {
         height++;
         depth--;
@@ -62,7 +63,7 @@ void cls_802150B8::fn_80214E50() {
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    f32 lift = depthLift(&pos, 1, 0, true);
+    f32 lift = depthLift(&pos, 0, 1, true);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -83,7 +84,7 @@ void cls_802150B8::fn_80214CE4() {
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    f32 lift = depthLift(&pos, 1, 0, true);
+    f32 lift = depthLift(&pos, 0, 1, true);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -114,7 +115,7 @@ void cls_802150B8::fn_80214AF8() {
     if (fn_801CD2F8(mOwner->field_0x4)) {
         field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->field_0x4, &pos, 0, -1, -1);
     } else {
-        f32 lift = depthLift(&pos, 1, 0, true);
+        f32 lift = depthLift(&pos, 0, 1, true);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
@@ -140,7 +141,7 @@ void cls_802150B8::fn_80214994() {
             }
         }
     } else if (field_0x18 != NULL) {
-        f32 lift = depthLift(&pos, 1, 0, true);
+        f32 lift = depthLift(&pos, 0, 1, true);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
