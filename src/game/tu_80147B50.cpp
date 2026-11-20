@@ -32,6 +32,27 @@ s32 lbl_8053AB30;
 s32 lbl_8053AB34;
 s32 lbl_8053AB38;
 
+static inline u16 dirToAngle(s32 dir) {
+    switch (dir) {
+    case 0:
+        return 0;
+    case 1:
+        return 0x2000;
+    case 2:
+        return 0x4000;
+    case 3:
+        return 0x6000;
+    case 4:
+        return 0x8000;
+    case 5:
+        return 0xA000;
+    case 6:
+        return 0xC000;
+    case 7:
+        return 0xE000;
+    }
+}
+
 // FIXME(shotgun): 99.77 %, different + reloc-name; behaviour drift.
 void cls_8049F6C8::init() {
     field_0x80.i.x = -8.0f;
@@ -69,34 +90,7 @@ void cls_8049F6C8::init() {
     field_0x29c = -1;
     field_0x294 = 255.0f;
     field_0x196 = 1;
-    u16 angle;
-    switch (field_0x98) {
-    case 0:
-        angle = 0;
-        break;
-    case 1:
-        angle = 0x2000;
-        break;
-    case 2:
-        angle = 0x4000;
-        break;
-    case 3:
-        angle = 0x6000;
-        break;
-    case 4:
-        angle = 0x8000;
-        break;
-    case 5:
-        angle = 0xA000;
-        break;
-    case 6:
-        angle = 0xC000;
-        break;
-    case 7:
-        angle = 0xE000;
-        break;
-    }
-    field_0x284 = angle;
+    field_0x284 = dirToAngle(field_0x98);
     field_0x286 = field_0x284;
     for (u32 i = 0; i < 10; i++) {
         field_0x2c0[i].set(mPos);
