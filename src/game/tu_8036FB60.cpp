@@ -936,7 +936,7 @@ void cls_804AE4B0::fn_8036FB60() {
         mTimer++;
         return;
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x3b0[i]->fn_8037B374(field_0x294[i], field_0x340[i] * 3);
     }
     if (mState != 0 && mState != 3 && mState != 0xB && field_0x398 == 1) {
