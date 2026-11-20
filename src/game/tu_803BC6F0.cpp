@@ -1154,12 +1154,8 @@ void FileSelect_804AFF60::fn_803CDEE8() {
     }
 }
 
-// FIXME: 95.18 %, missing/extra; behaviour clean.
-// One instruction extra: the original computes
-// frames + rowStep * 2 first and spills rowDelay at once (reloading it from
-// the stack), ours adds rowDelay to rowStep * 2 first, and keeps frames in r17
-// for the cursor's fn_80402B10 (mr r4, r17) where the original's r4 still
-// holds it; registers differ from there.
+// Registers rotated (`this` in r15 instead of r31) and `frames` loaded into r17
+// instead of r4 + mr r16, r4.
 // State 4: slides the cursor, the three rows (bottom row first) and the
 // board in (the timings are lbl_8050DB0C's 0x84..0x8A), starts the 'kk_'
 // sprite fade-in, then goes to state 5.
@@ -1167,13 +1163,14 @@ void FileSelect_804AFF60::fn_803CD75C() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x84];
     s16 frames = lbl_8050DB0C.field_0x4c[0x85];
     s32 rowStep = lbl_8050DB0C.field_0x4c[0x86];
+    s32 rowDuration = frames + rowStep * 2;
     s16 boardDelay = lbl_8050DB0C.field_0x4c[0x87];
     s16 boardFrames = lbl_8050DB0C.field_0x4c[0x88];
     s16 kkDelay = lbl_8050DB0C.field_0x4c[0x89];
     s16 kkFrames = lbl_8050DB0C.field_0x4c[0x8A];
     s32 end = rowDelay + frames;
-    if (end < rowDelay + (frames + rowStep * 2)) {
-        end = rowDelay + (frames + rowStep * 2);
+    if (end < rowDelay + rowDuration) {
+        end = rowDelay + rowDuration;
     }
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
