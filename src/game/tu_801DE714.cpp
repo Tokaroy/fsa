@@ -271,19 +271,16 @@ bool cls_804A51E4::fn_801E1DE8() {
 // FIXME(shotgun): 59.00 %, missing/extra; behaviour near.
 bool cls_804A51E4::fn_801E1DB4() const {
     bool result = false;
-    s32 anim = mAnim.mAnim;
-    if (anim >= 0xD) {
-        if (anim >= 0x11) {
-            return false;
-        }
+    switch (mAnim.mAnim) {
+    case 0:
+    case 1:
+    case 2:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
         result = true;
-    } else {
-        if (anim >= 3) {
-            return false;
-        }
-        if (anim >= 0) {
-            result = true;
-        }
+        break;
     }
     return result;
 }
