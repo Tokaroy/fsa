@@ -35,7 +35,8 @@ void cls_804A6550::init() {
     bool viewFlag = getGameView_802D6A9C()->field_0x131f9 != 0;
     field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12B;
     u32 t = (field_0x90 >> 20) & 0x1F;
-    field_0x2ac = __fsel((f32)t - 1.5f, (f32)t, 1.5f);
+    f32 minTime = 1.5f;
+    field_0x2ac = __fsel((f32)t - minTime, (f32)t, minTime);
     field_0x2b0 = (field_0x90 >> 25) & 0x1F;
     if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && (field_0x90 >> 31) != 0) {
         mFlags |= 0x10000;
