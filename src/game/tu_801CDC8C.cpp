@@ -353,7 +353,7 @@ s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
     return JMath::atanTable_.atan2_(playerPos->x - mPos.x, playerPos->y - mPos.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
-// FIXME: 90.86 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.61 %, scheduling; behaviour clean.
 // Same instructions; the target loads target->y before mPos.y for the second
 // offset (ours the other way round).
 // The velocity toward *target (x, y), at most `speed` long.
@@ -361,7 +361,7 @@ void EnemyBase_804A4808::fn_801D01A0(const JGeometry::TVec3f* target, JGeometry:
     velocityToward(target, out, speed);
 }
 
-// FIXME: 88.90 %, scheduling+regalloc; behaviour clean.
+// FIXME: 92.63 %, scheduling+regalloc; behaviour clean.
 // and registers as in fn_801D01A0 (the same body).
 // The velocity (x, y) toward player `player`, at most `speed` long.
 void EnemyBase_804A4808::fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed) {
