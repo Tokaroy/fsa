@@ -1509,8 +1509,7 @@ bool Player_804A6F38::fn_8025FCC8() {
 }
 
 // FIXME: 98.42 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: the facing table's three loads for `step` are
-// scheduled z first.
+// regalloc: the actor branch's scale factor is in f29 in the original, f31 in ours.
 // Let go of what the player holds (from the commit of every state change, with
 // checkState, and from fn_8026000C): a held player is thrown 16 a step along the facing
 // (snapped to the tile centre across when two of three steps are walls, else at 3.3
@@ -1528,7 +1527,9 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
             JGeometry::TVec3f speed;
             JGeometry::TVec3f step;
             const Vec& dir = lbl_8046B8FC[field_0x3dc];
-            step.set(dir.x, dir.y, dir.z);
+            step.x = dir.x;
+            step.y = dir.y;
+            step.z = dir.z;
             step.scale(16.0f);
             if (field_0x1244 == 0x1E || field_0x1244 == 0x32 || fn_8024189C() <= 0) {
                 speed.set(0.0f, 0.0f, 0.0f);
@@ -1543,7 +1544,9 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
                     }
                 }
                 const Vec& unit = lbl_8046B8FC[field_0x3dc];
-                speed.set(unit.x, unit.y, unit.z);
+                speed.x = unit.x;
+                speed.y = unit.y;
+                speed.z = unit.z;
                 if (walls >= 2) {
                     if (field_0x3dc == 0 || field_0x3dc == 1) {
                         pos.x = (s32)pos.x / 16 * 16 + 8;
@@ -1565,7 +1568,9 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
             if (actor != 0) {
                 JGeometry::TVec3f speed;
                 const Vec& dir = lbl_8046B92C[field_0x3dc];
-                speed.set(dir.x, dir.y, dir.z);
+                speed.x = dir.x;
+                speed.y = dir.y;
+                speed.z = dir.z;
                 if (actor->mActorId == ACTOR_CRTL || actor->mActorId == ACTOR_BMTY) {
                     speed.scale(2.5f);
                 } else if (actor->mActorId == ACTOR_GRAS) {
@@ -1586,8 +1591,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
         if (held == true && fn_802486A0() != 4 && isPlayerBitSet(gGameRoot_8053AAF8, field_0x4)) {
             for (int i = 0; i < 4; i++) {
                 if (fn_8022E438(field_0x4, i) && i != field_0x4) {
-                    s32 serial = fn_8023EF50(i);
-                    ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(i));
                     if (other != 0 && other->field_0x1a4 <= 0) {
                         fn_80230C6C(i);
                     }
