@@ -242,8 +242,6 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
     }
 }
 
-// FIXME: 97.25 %, missing/extra; behaviour clean.
-// 2 fewer instructions in return value copy.
 void MaidenEnding_804AD5B8::fn_8035CF50() {
     if (mPos.y < 1790.0f) {
         f32 diffY = mPos.y - mPos.z;
@@ -282,14 +280,9 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
     }
 
     s16 prevAngle = field_0x260;
-    JGeometry::TVec3f target = (this->*lbl_804AD594[field_0x270 & 3])();
-    JGeometry::TVec3f diff;
-    diff.x = target.x - mPos.x;
-    diff.y = target.y - mPos.y;
-    diff.z = 0.0f;
-    f32 dist = fn_80093280(&diff);
-    mPos.x += (diff.x * field_0x254) / dist;
-    mPos.y += (diff.y * field_0x254) / dist;
+    JGeometry::TVec3f target;
+    target = (this->*lbl_804AD594[field_0x270 & 3])();
+    moveTowards_inline(target);
 
     if ((field_0x270 & 0xC000U) == 0xC000U) {
         s16 targetAngle = lbl_80472798[field_0x90 & 7];
