@@ -293,8 +293,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
     f32 v = a * (1.0f / (4.0f * b));
     f32 s0 = JMath::sincosTable_.mTable[ang >> 5].first;
     f32 c0 = JMath::sincosTable_.mTable[ang >> 5].second;
-    s16 delta = (s16)h;
-    delta -= ang;
+    s16 delta = (s16)h - (s16)ang;
     f32 scale = 2.0f * (1.0f / JMath::sincosTable_.cosShort(delta));
     s16 perp = -(s16)(delta - 0x4000);
     f32 s2 = JMath::sincosTable_.sinShort(perp);
