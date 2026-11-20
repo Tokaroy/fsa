@@ -185,7 +185,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
     while (true) {
         // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
-        int next = getActorManager_801F856C()->fn_801F78F4(ACTOR_NIWA, serial);
+        s32 next = getActorManager_801F856C()->fn_801F78F4(ACTOR_NIWA, serial);
         serial = next;
         if (serial < 0) {
             return;
