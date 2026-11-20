@@ -743,9 +743,10 @@ void TileMap_804AA858::fn_802FDDD4() {
 // field_0x4[1] + 0x200.
 // Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
 // with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
-// loop with lfsx and converts 240.0f / 160.0f with fctiwz (ours folds them);
-// registers and stack slots follow.
-// FIXME: 72.58 %, missing/extra + reloc-name; behaviour drift.
+// loop with lfsx; registers and stack slots follow. The original converts
+// 240.0f / 160.0f at run time (fctiwz, hoisted before the loop), so they are
+// float variables there, not literals at the stores.
+// FIXME: 74.47 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -757,6 +758,8 @@ void TileMap_804AA858::fn_802FCE74() {
         {0, -107, -107, -107, 0, 0, 70, 70, 70},
         {0, -163, -163, -163, 0, 0, 123, 123, 123},
     };
+    f32 screenW = 240.0f;
+    f32 screenH = 160.0f;
     s32 i;
     for (i = 0; i < 4; i++) {
         if (field_0x12c[i] && !field_0x216 && field_0x230 == field_0x22c) {
@@ -847,8 +850,8 @@ void TileMap_804AA858::fn_802FCE74() {
                     field_0x148[i] = 1;
                     field_0x150[i].field_0x0 = 0;
                     field_0x150[i].field_0x4 = 0;
-                    field_0x150[i].field_0x8 = 240.0f;
-                    field_0x150[i].field_0xc = 160.0f;
+                    field_0x150[i].field_0x8 = screenW;
+                    field_0x150[i].field_0xc = screenH;
                     x = lbl_8046F980[field_0x234] +
                         ((((s32)width - w) >> 1) + field_0xfc->field_0x58[field_0xfc->field_0xa4].x);
                     y = lbl_8046F994[field_0x234] +
@@ -928,8 +931,8 @@ void TileMap_804AA858::fn_802FCE74() {
         field_0x148[0] = 1;
         field_0x150[0].field_0x0 = 0;
         field_0x150[0].field_0x4 = 0;
-        field_0x150[0].field_0x8 = 240.0f;
-        field_0x150[0].field_0xc = 160.0f;
+        field_0x150[0].field_0x8 = screenW;
+        field_0x150[0].field_0xc = screenH;
         dx = ((s32)width - w) >> 1;
         dy = ((s32)height - h) >> 1;
         const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
@@ -1863,12 +1866,14 @@ void TileMap_804AA858::fn_802FA3FC() {
     }
 }
 
-// FIXME: 88.05 %, scheduling+regalloc; behaviour clean.
+// FIXME: 88.38 %, scheduling+regalloc; behaviour clean.
 // As in fn_802F9714: the original loads the next source bytes of the
 // unrolled nibble-swap loop before storing the previous ones; registers differ.
 // fn_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
 // also keeps bytes 0x200-0x2FF of that buffer in field_0x238c.
 void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
+    u8* dst;
+    u8* src;
     u32 len;
     if (size == 0) {
         s32 resSize;
@@ -1885,8 +1890,7 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    u8* dst = field_0x4[slot] + dstOffset;
-    u8* src;
+    dst = field_0x4[slot] + dstOffset;
     if (JKRDecomp::checkCompressed((u8*)res)) {
         JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
         src = field_0xf8;
@@ -1895,7 +1899,8 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     }
     src += srcOffset;
     for (u32 i = 0; i < len; i++) {
-        dst[i] = ((src[i] >> 4) & 0xF) | ((src[i] & 0xF) << 4);
+        u8 b = src[i];
+        dst[i] = ((b >> 4) & 0xF) | ((b & 0xF) << 4);
     }
     DCFlushRange(dst, len);
     if (slot == 1) {
@@ -2024,7 +2029,7 @@ void TileMap_804AA858::fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size
     }
 }
 
-// FIXME: 89.43 %, missing/extra; behaviour clean.
+// FIXME: 89.54 %, missing/extra; behaviour clean.
 // In the 4x-unrolled copy loop the original loads the second
 // element's low byte before storing the first (one mr more); registers differ.
 // Loads the 'SCN ' tile grid of `layer` from res (decoded first when
@@ -2054,7 +2059,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
     } else {
         src = (u8*)res;
     }
-    src += srcOffset;
+    u8* data = src + srcOffset;
     u16* dst;
     if (layer >= 0 && layer < 4) {
         dst = &mLayerGrid[layer][dstOffset / 2];
@@ -2064,7 +2069,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
         dst = &mLayerGrid[layer][dstOffset / 2];
     }
     for (u32 i = 0; i < len; i += 2) {
-        dst[i / 2] = (src[i + 1] << 8) | src[i];
+        dst[i / 2] = (data[i + 1] << 8) | data[i];
     }
 }
 
@@ -2251,7 +2256,6 @@ void TileMap_804AA858::fn_802F91AC(const JGeometry::TVec3f* pos, SpriteParams_80
 // TEV colours, blend mode, z mode and alpha update of params, else white /
 // zero, the plain blend and the default z mode. fn_802F86CC calls it after
 // fn_802F91AC.
-// FIXME: 98.81 %, scheduling; behaviour clean.
 void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
