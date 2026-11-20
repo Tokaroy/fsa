@@ -139,7 +139,7 @@ bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 
 // 0x8030905C
 // The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
-// FIXME: 97.72 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.77 %, missing/extra; behaviour clean.
 cls_804AA8B8::cls_804AA8B8() {
     for (int p = 0; p < 4; p++) {
         lbl_80504A18[p] = 0;
@@ -193,11 +193,11 @@ cls_804AA8B8::cls_804AA8B8() {
         }
         lbl_8053AD0C[p] = 0;
         lbl_8053AD14[p] = 0;
-        lbl_8053AD04[p] = 0;
         lbl_8053AD1C[p] = 0;
         lbl_8053AD20[p] = 0;
         lbl_8053AD24[p] = 0;
         lbl_8053AD28[p] = 0;
+        lbl_8053AD04[p] = 0;
     }
     lbl_8053AD08 = 0;
 }
@@ -375,7 +375,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
 // 0x8030801C
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
+// FIXME: 99.97 %, regalloc-only; behaviour clean.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -403,16 +403,17 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     lbl_80506DE8[player].f.mEntries[3].mScroll = 0;
     s32 layer = fn_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
-        u8 near = 0;
-        if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
-            near = 1;
+        u8 flag = 0;
+        if (fn_8037F1E4(player) >= 1) {
+            if (fn_8037F1E4(player) <= 5) {
+                flag = 1;
+            }
         }
-        lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
+        lbl_80506DE8[player].f.mEntries[1].mScrollBit = flag ? true : false;
         if (lbl_8053ACD0 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
-            u8 flag = 0;
+            flag = 0;
             if (fn_8022F5B0(layer)) {
-                s32 l = getPlayerLayer_8023DE58(layer);
-                if (!getGameView_802D6A9C()->fn_802D7804(l, 2)) {
+                if (!getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
                     flag = 1;
                 }
             }
@@ -435,16 +436,17 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     }
     // The original holds the checksum loop twice (+41C and +4C8), once per state of the queue head entry.
     u8 sum = 0;
+    s32 k;
     if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
-        s32 size = lbl_80541618[lbl_8053AD08] * 4;
         u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
-        for (s32 k = 8; k < size; k++) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        for (k = 8; k < size; k++) {
             sum += *bytes++;
         }
     } else {
-        s32 size = lbl_80541618[lbl_8053AD08] * 4;
         u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
-        for (s32 k = 8; k < size; k++) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        for (k = 8; k < size; k++) {
             sum += *bytes++;
         }
     }
@@ -1606,7 +1608,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.49 %, different; behaviour clean.
+// FIXME: 95.50 %, scheduling+regalloc; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
@@ -1624,8 +1626,8 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
     JGeometry::TVec3f pos((f32)x, (f32)y, 0.0f);
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.field_0x26 = 0;
     params.field_0x2c = 0;
+    params.field_0x26 = 0;
     params.field_0x2d = 0;
     if (!flag) {
         params.field_0x34 = 2;
@@ -1670,9 +1672,9 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
     }
     params.mMtx = mtx;
     if (set) {
-        params.field_0x22 = 2;
+        params.field_0x1e = 2;
     } else {
-        params.field_0x22 = 1;
+        params.field_0x1e = 1;
     }
     if (sprite->f.mKind < 2) {
         if ((id >= 0x37 && id < 0x41) || (id >= 0x3CD && id < 0x3CE)) {
