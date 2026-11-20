@@ -562,7 +562,7 @@ void cls_804A7AE0::fn_80299720() {
             field_0x250.y += 0.32f;
         } else {
             mPos.y += field_0x250.y;
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x250.zero();
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -583,7 +583,7 @@ void cls_804A7AE0::fn_80299720() {
         JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+        if (field_0x250.isZero()) {
             JGeometry::TVec3f push(0.0f, -16.0f, 0.0f);
             for (s32 i = 0; i < mSerialCountD; i++) {
                 Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
@@ -596,8 +596,8 @@ void cls_804A7AE0::fn_80299720() {
             }
             field_0x248 = 0;
             field_0x2b8 = 0;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
+            field_0x250.zero();
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 27) & 0x1F;
                 if (n > 0) {
@@ -999,7 +999,7 @@ void cls_804A7AE0::update() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_802984B0();
-        if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+        if (field_0x250.isZero()) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, field_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false)) {
@@ -1232,7 +1232,7 @@ void cls_804A7AE0::update() {
                             }
                         }
                     }
-                    if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                    if (field_0x250.isZero()) {
                         if (field_0x2ac > 0) {
                             field_0x2ac -= 4;
                             if (field_0x2ac <= 0) {
