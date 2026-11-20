@@ -863,8 +863,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
 
 // FIXME(shotgun): 99.40 %, regalloc-only; behaviour clean.
 bool ForceGem_804AB6D8::fn_8032B3F8() {
-    s32 layer = field_0x4;
-    if (getGameView_802D6A9C()->field_0x131df[layer] == 0) {
+    if (viewLayerFlag(field_0x4) == 0) {
         if (mPos.z > 0.0f || field_0x3c.z > 0.0f) {
             field_0x3c.z -= 0.3f;
         } else if (mPos.z <= 0.0f) {
