@@ -20,7 +20,7 @@ void Score_804AF4C0::init() {
     field_0x240 = mValue;
     field_0x244 = lbl_80529DEC.field_0x1f4[mPlayer];
     if (mState == 0 || mState == 4) {
-        if (gGameRoot_8053AAF8->field_0x7e == 0 || fn_802DE814()) {
+        if (gGameRoot_8053AAF8->field_0x7f == 0 || fn_802DE814()) {
             mAlive = false;
         }
         if (mValue == 0) {
