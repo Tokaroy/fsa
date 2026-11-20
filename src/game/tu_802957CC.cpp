@@ -914,10 +914,8 @@ void cls_804A7AE0::fn_80298978() {
     }
 }
 
-// FIXME(shotgun): 98.5 %, different: 3 opcodes (scheduling of the first box)
 // Registers a collision box (given relative to mPos) for this actor.
-inline void registerBox_802984B0(cls_804A7AE0* actor, f32 x0, f32 y0, f32 x1, f32 y1) {
-    JGeometry::TBox2f box;
+inline void registerBox_802984B0(cls_804A7AE0* actor, JGeometry::TBox2f& box, f32 x0, f32 y0, f32 x1, f32 y1) {
     box.i.x = x0;
     box.i.y = y0;
     box.f.x = x1;
@@ -929,49 +927,52 @@ inline void registerBox_802984B0(cls_804A7AE0* actor, f32 x0, f32 y0, f32 x1, f3
     fn_80239914(&box, actor->field_0x4, actor->mSerial);
 }
 
-// FIXME(shotgun): 98.75 %, different; behaviour clean.
 void cls_804A7AE0::fn_802984B0() {
+    JGeometry::TBox2f box1;
+    JGeometry::TBox2f box2;
     switch (field_0x2b0) {
-    case 0: {
-        JGeometry::TBox2f box;
-        box.i.x = mBox.i.x;
-        box.i.y = mBox.i.y;
-        box.f.x = mBox.f.x;
-        box.f.y = mBox.f.y;
-        box.i.x += mPos.x;
-        box.f.x += mPos.x;
-        box.f.y += mPos.y;
-        box.i.y += mPos.y;
-        box.f.y -= 40.0f;
-        fn_80239914(&box, field_0x4, mSerial);
+    case 0:
+        box1.i.x = mBox.i.x;
+        box1.i.y = mBox.i.y;
+        box1.f.x = mBox.f.x;
+        box1.f.y = mBox.f.y;
+        box1.i.x += mPos.x;
+        box1.i.y += mPos.y;
+        box1.f.x += mPos.x;
+        box1.f.y += mPos.y;
+        box1.f.y -= 40.0f;
+        fn_80239914(&box1, field_0x4, mSerial);
         break;
-    }
     case 1:
-        registerBox_802984B0(this, mBox.i.x, mBox.i.y, mBox.i.x + 42.0f, mBox.i.y + 42.0f);
-        registerBox_802984B0(this, mBox.f.x - 42.0f, mBox.i.y, mBox.f.x, mBox.i.y + 42.0f);
+        registerBox_802984B0(this, box1, mBox.i.x, mBox.i.y, mBox.i.x + 42.0f, mBox.i.y + 42.0f);
+        registerBox_802984B0(this, box2, mBox.f.x - 42.0f, mBox.i.y, mBox.f.x, mBox.i.y + 42.0f);
         break;
     case 2:
-        registerBox_802984B0(this, mBox.i.x, mBox.i.y, mBox.i.x + 42.0f, mBox.f.y - 40.0f);
-        registerBox_802984B0(this, mBox.f.x - 42.0f, mBox.i.y, mBox.f.x, mBox.f.y - 40.0f);
+        registerBox_802984B0(this, box1, mBox.i.x, mBox.i.y, mBox.i.x + 42.0f, mBox.f.y - 40.0f);
+        registerBox_802984B0(this, box2, mBox.f.x - 42.0f, mBox.i.y, mBox.f.x, mBox.f.y - 40.0f);
         break;
     }
+    JGeometry::TBox2f box3;
+    JGeometry::TBox2f box4;
     switch (field_0x244) {
     case 0:
     case 1:
-        registerBox_802984B0(this, mBox.i.x, mBox.f.y - 42.0f, mBox.i.x + 42.0f, mBox.f.y);
-        registerBox_802984B0(this, mBox.f.x - 42.0f, mBox.f.y - 42.0f, mBox.f.x, mBox.f.y);
+        registerBox_802984B0(this, box3, mBox.i.x, mBox.f.y - 42.0f, mBox.i.x + 42.0f, mBox.f.y);
+        registerBox_802984B0(this, box4, mBox.f.x - 42.0f, mBox.f.y - 42.0f, mBox.f.x, mBox.f.y);
         break;
     case 2:
-        registerBox_802984B0(this, mBox.i.x, mBox.f.y - 42.0f, mBox.i.x + 58.0f, mBox.f.y);
-        registerBox_802984B0(this, mBox.f.x - 26.0f, mBox.f.y - 42.0f, mBox.f.x, mBox.f.y);
+        registerBox_802984B0(this, box3, mBox.i.x, mBox.f.y - 42.0f, mBox.i.x + 58.0f, mBox.f.y);
+        registerBox_802984B0(this, box4, mBox.f.x - 26.0f, mBox.f.y - 42.0f, mBox.f.x, mBox.f.y);
         break;
     }
     if (mSerialCountD > 0) {
         if (!field_0x2b6) {
-            registerBox_802984B0(this, mBox.i.x + 40.0f, mBox.f.y - 16.0f, mBox.f.x - 40.0f, mBox.f.y);
+            JGeometry::TBox2f box;
+            registerBox_802984B0(this, box, mBox.i.x + 40.0f, mBox.f.y - 16.0f, mBox.f.x - 40.0f, mBox.f.y);
         }
         if (!field_0x2b7) {
-            registerBox_802984B0(this, mBox.i.x + 40.0f, mBox.i.y, mBox.f.x - 40.0f, mBox.i.y + 16.0f);
+            JGeometry::TBox2f box;
+            registerBox_802984B0(this, box, mBox.i.x + 40.0f, mBox.i.y, mBox.f.x - 40.0f, mBox.i.y + 16.0f);
         }
     }
 }
