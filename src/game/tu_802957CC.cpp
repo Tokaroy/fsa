@@ -1459,7 +1459,6 @@ inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpritePara
     }
 }
 
-// FIXME: 99.23 %, different; behaviour clean.
 void cls_804A7AE0::draw() {
     if (field_0x24c == 0 && field_0x2ac == 0) {
         return;
@@ -1497,22 +1496,21 @@ void cls_804A7AE0::draw() {
         params.field_0x1c++;
         drawSmp_802965BC(field_0x4, &pos, &params, b);
         params.field_0x1c--;
-        pos.x += 48.0f;
-        const char* c;
-        const char* d;
+        pos.y += 48.0f;
         if (field_0x2b6 == 0) {
-            c = "room2_smp.bin";
-            d = "room3_smp.bin";
+            a = "room2_smp.bin";
+            b = "room3_smp.bin";
         } else {
-            c = "room_smp.bin";
-            d = "room1_smp.bin";
+            a = "room_smp.bin";
+            b = "room1_smp.bin";
         }
-        drawSmp_802965BC(field_0x4, &pos, &params, c);
+        drawSmp_802965BC(field_0x4, &pos, &params, a);
         params.field_0x1c++;
-        drawSmp_802965BC(field_0x4, &pos, &params, d);
+        drawSmp_802965BC(field_0x4, &pos, &params, b);
         params.field_0x1c--;
     } else {
-        drawSmp_802965BC(field_0x4, &pos, &params, "house3_smp.bin");
+        const char* a = "house3_smp.bin";
+        drawSmp_802965BC(field_0x4, &pos, &params, a);
         params.field_0x1c++;
         drawSmp_802965BC(field_0x4, &pos, &params, "house31_smp.bin");
         params.field_0x1c--;
