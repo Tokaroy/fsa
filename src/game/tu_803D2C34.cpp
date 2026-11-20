@@ -386,7 +386,7 @@ void cls_804B0288::fn_803D49A4() {
     }
 }
 
-// FIXME(shotgun): 98.58 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 98.76 %, regalloc-only; behaviour clean.
 void cls_804B0288::fn_803D4770() {
     bool done1 = false;
     u8 done2 = 0;
