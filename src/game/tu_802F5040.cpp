@@ -839,21 +839,19 @@ void TileMap_804AA858::fn_802FCE74() {
                     field_0x224 = w;
                     field_0x228 = h;
 
-                    h = field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2] * scaleY[i];
-                    w = field_0xfc->field_0x80[field_0xfc->field_0xa4] * scaleX[i];
+                    width = field_0xfc->field_0x80[field_0xfc->field_0xa4];
+                    height = field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2];
+                    w = width * scaleX[i];
+                    h = height * scaleY[i];
                     field_0x148[i] = 1;
-                    width = 240.0f;
-                    height = 160.0f;
                     field_0x150[i].field_0x0 = 0;
                     field_0x150[i].field_0x4 = 0;
-                    field_0x150[i].field_0x8 = width;
-                    field_0x150[i].field_0xc = height;
+                    field_0x150[i].field_0x8 = 240.0f;
+                    field_0x150[i].field_0xc = 160.0f;
                     x = lbl_8046F980[field_0x234] +
-                        ((((s32)field_0xfc->field_0x80[field_0xfc->field_0xa4] - w) >> 1) +
-                         field_0xfc->field_0x58[field_0xfc->field_0xa4].x);
+                        ((((s32)width - w) >> 1) + field_0xfc->field_0x58[field_0xfc->field_0xa4].x);
                     y = lbl_8046F994[field_0x234] +
-                        ((((s32)field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2] - h) >> 1) +
-                         field_0xfc->field_0x58[field_0xfc->field_0xa4].y);
+                        ((((s32)height - h) >> 1) + field_0xfc->field_0x58[field_0xfc->field_0xa4].y);
                     field_0x190[i].field_0x0 = (w * offX + screen.x) * (1.0f - scaleX[i]) + scaleX[i] * x;
                     field_0x190[i].field_0x4 = (h * offY + screen.y) * (1.0f - scaleY[i]) + scaleY[i] * y;
                     field_0x190[i].field_0x8 = w;
@@ -922,17 +920,17 @@ void TileMap_804AA858::fn_802FCE74() {
         field_0x224 = w;
         field_0x228 = h;
 
-        w = scaleX[0] * field_0xfc->field_0x80[field_0xfc->field_0xa4];
-        h = scaleY[0] * field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2];
+        width = field_0xfc->field_0x80[field_0xfc->field_0xa4];
+        height = field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2];
+        w = scaleX[0] * width;
+        h = scaleY[0] * height;
         field_0x148[0] = 1;
         field_0x150[0].field_0x0 = 0;
         field_0x150[0].field_0x4 = 0;
-        width = 240.0f;
-        height = 160.0f;
-        field_0x150[0].field_0x8 = width;
-        field_0x150[0].field_0xc = height;
-        dx = ((s32)field_0xfc->field_0x80[field_0xfc->field_0xa4] - w) >> 1;
-        dy = ((s32)field_0xfc->field_0x80[field_0xfc->field_0xa4 + 2] - h) >> 1;
+        field_0x150[0].field_0x8 = 240.0f;
+        field_0x150[0].field_0xc = 160.0f;
+        dx = ((s32)width - w) >> 1;
+        dy = ((s32)height - h) >> 1;
         const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
         x = dx + pos58.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
         y = dy + pos58.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
