@@ -229,7 +229,7 @@ s32 cls_8049D940::vfunc_0x5C() {
     }
 }
 
-// FIXME: 94.46 %, scheduling+regalloc; behaviour drift.
+// FIXME: 96.70 %, scheduling+regalloc; behaviour drift.
 // register allocation and instruction scheduling
 // in cases 9, 10 and 11, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115F9C(s32 index) {
@@ -430,6 +430,7 @@ bool cls_8049D940::fn_80115A7C() {
 // Not auto-inlined: draw calls fn_801158B8 out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
+// FIXME: 98.13 %, scheduling; behaviour clean.
 void cls_8049D940::fn_801158B8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
