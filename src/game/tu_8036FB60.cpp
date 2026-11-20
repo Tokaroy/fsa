@@ -274,7 +274,7 @@ void cls_804AE4B0::fn_80371D50(s32 arg) {
 }
 
 // Turns the sprites towards the nearest player, and lets the player pick one up.
-// FIXME(shotgun): 80.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.40 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE4B0::fn_80371A2C() {
     f32 nearest[4];
     for (s32 i = 0; i < 4; i++) {
@@ -364,7 +364,7 @@ static inline bool contains(const JGeometry::TVec3f* p, JGeometry::TBox2f box) {
 }
 
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
-// FIXME(shotgun): 70.52 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.82 %, operands; behaviour clean.
 void cls_804AE4B0::fn_803717CC() {
     fn_803721F4();
     if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2288.0f, 1712.0f, 2320.0f, 1728.0f))) {
@@ -559,7 +559,7 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-// FIXME(shotgun): 94.17 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.75 %, scheduling + reloc-name; behaviour clean.
 // Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
@@ -602,6 +602,7 @@ inline void cls_804AE4B0::guideOrRelease_80370764() {
     }
 }
 
+// FIXME: 94.58 %, different; behaviour clean.
 void cls_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
