@@ -449,8 +449,6 @@ bool cls_8049DA0C::showMessage() {
     return fn_8038BD08(0, (u16)msg, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
 }
 
-// FIXME: 97.80 %, scheduling+regalloc; behaviour clean.
-// (scheduling+regalloc). Instruction scheduling and register allocation in Camera focus point setting and interpolation.
 void cls_8049DA0C::fn_80116E8C() {
     if (field_0x234 >= 2 && field_0x234 <= 11) {
         if (fn_8011921C()->field_0x8 >= 50) {
@@ -475,7 +473,8 @@ void cls_8049DA0C::fn_80116E8C() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x840 == 0) {
             camera->field_0x840 = 1;
-            camera->field_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            camera->field_0x844.i.x = camera->field_0x844.f.x = pos.x;
+            camera->field_0x844.i.y = camera->field_0x844.f.y = pos.y;
             camera->field_0x854 = 1.0f;
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
@@ -489,7 +488,8 @@ void cls_8049DA0C::fn_80116E8C() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x840 == 0) {
             camera->field_0x840 = 1;
-            camera->field_0x844.set(pos.x, pos.y, pos.x, pos.y);
+            camera->field_0x844.i.x = camera->field_0x844.f.x = pos.x;
+            camera->field_0x844.i.y = camera->field_0x844.f.y = pos.y;
             camera->field_0x854 = 1.0f;
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
@@ -500,7 +500,8 @@ void cls_8049DA0C::fn_80116E8C() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x840 == 0) {
             camera->field_0x840 = 1;
-            camera->field_0x844.set(mPos.x, mPos.y, mPos.x, mPos.y);
+            camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
+            camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
             camera->field_0x854 = 1.0f;
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
