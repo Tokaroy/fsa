@@ -144,7 +144,7 @@ void GiantBomb_804AC588::update() {
         corner0.y += mBox.i.y;
         corner1.x += mBox.f.x;
         corner1.y += mBox.f.y;
-        lbl_8053AED0->fn_8043E398(&corner0, &corner1);
+        lbl_8053AED0->fn_8043E398(corner0, corner1);
     }
     if (mState == 6 && mTimer > 0) {
         fn_802397B4(&box, field_0x4, mSerial);
@@ -272,7 +272,8 @@ void GiantBomb_804AC588::update() {
             mState = 7;
             mTimer = 3;
         } else {
-            JGeometry::TVec3f pos(mPos.x + 4.0f, mPos.y - (6.0f + (8.0f * mTimer) / 600.0f), mPos.z);
+            JGeometry::TVec3f pos;
+            pos = JGeometry::TVec3f(mPos.x + 4.0f, mPos.y - (6.0f + (8.0f * mTimer) / 600.0f), mPos.z);
             if (mEmitter264 != NULL) {
                 setEmitterPos_8013CB44(mEmitter264, &pos, 1, 1, true);
             }
