@@ -1684,7 +1684,8 @@ static inline void centreLine(char* out, f32 width) {
 f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* out3c) {
     char* out2 = (char*)out2c;
     char* out3 = (char*)out3c;
-    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
+    MessageInf1_804AF070* inf1 = &bmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     f32 lineWidth[10];
     s32 len = 0;
@@ -1693,9 +1694,16 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     f32 widest = 0.0f;
     f32 width = 0.0f;
     u8 part = 0;
-    for (s32 i = 0; i < 10; i++) {
-        lineWidth[i] = 0.0f;
-    }
+    lineWidth[0] = 0.0f;
+    lineWidth[1] = 0.0f;
+    lineWidth[2] = 0.0f;
+    lineWidth[3] = 0.0f;
+    lineWidth[4] = 0.0f;
+    lineWidth[5] = 0.0f;
+    lineWidth[6] = 0.0f;
+    lineWidth[7] = 0.0f;
+    lineWidth[8] = 0.0f;
+    lineWidth[9] = 0.0f;
     char c;
     while ((c = text[pos]) != 0) {
         const char* p = &text[pos];
@@ -1709,7 +1717,11 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             pos++;
         } else if (c == 0x1A) {
             if (p[2] == 2) {
-                if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19 || p[4] == 1) {
+                if (p[4] == 0) {
+                } else if (p[4] == 10) {
+                } else if (p[4] == 0x12) {
+                } else if (p[4] == 0x19) {
+                } else if (p[4] == 1) {
                 }
             } else if (p[2] == 3) {
                 width += lbl_8053AD78->mFont->JUTFont::getWidth(value + '0');
@@ -1720,7 +1732,8 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             u32 code = (u8)c;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                code = (code << 8) | (u8)text[pos];
+                code <<= 8;
+                code |= text[pos] & 0xFF;
                 pos++;
             }
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
@@ -1734,6 +1747,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     lines = 1;
     width = 0.0f;
     len = 0;
+    char two[3];
+    two[2] = 0;
+    two[1] = 0;
+    two[0] = 0;
     out[0] = 0;
     if (out2 != NULL) {
         out2[0] = 0;
@@ -1781,14 +1798,13 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             pos += p[1];
         } else {
             u32 code = (u8)c;
-            char two[3];
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                two[0] = c;
-                two[1] = text[pos + 1];
+                two[0] = p[0];
+                two[1] = p[1];
                 two[2] = 0;
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
-                    if (c != ' ') {
+                    if (two[0] != ' ') {
                         strcat(out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
@@ -1799,10 +1815,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
                 pos += 2;
                 code |= (u8)p[1];
             } else {
-                two[0] = c;
+                two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
-                    if (c != ' ') {
+                    if (two[0] != ' ') {
                         strcat(out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
