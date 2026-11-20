@@ -992,11 +992,10 @@ void cls_804ADF28::fn_803645B4() {
     }
 }
 
-// FIXME(shotgun): 98.59 %, missing/extra; behaviour clean.
 void cls_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
-        JGeometry::TVec3f oldPos = mPos;
         JGeometry::TVec3f off;
+        JGeometry::TVec3f oldPos = mPos;
         off.x = (f32)fn_801CD664(380) - 190.0f;
         off.y = (f32)fn_801CD664(380) - 140.0f;
         off.z = 0.0f;
@@ -1008,7 +1007,7 @@ void cls_804ADF28::fn_80364340() {
             off.z = 100.0f;
             mPos = oldPos;
             u32 param = fn_801CD664(8) | 0x250000;
-            JGeometry::TVec3f spawnPos = mPos + off;
+            const JGeometry::TVec3f& spawnPos = mPos + off;
             getActorManager_801F856C()->spawnActor_801F9484('RUPY', field_0x4, &spawnPos, param, -1, -1);
         }
     }
