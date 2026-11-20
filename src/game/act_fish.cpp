@@ -12,7 +12,7 @@
 #include "game/SpriteParams.h"
 #include "game/act/act_fish.h"
 
-// FIXME: 97.95 %, different + reloc-name; behaviour drift.
+// FIXME: 97.32 %, different + reloc-name; behaviour clean.
 // FIXME(shotgun): different + reloc-name (register order and literal placement in the spawn loop)
 void Fish_804AC658::init() {
     u32 param = field_0x90;
@@ -39,8 +39,8 @@ void Fish_804AC658::init() {
     field_0x26c = -1;
     field_0x270 = -1;
     fn_801F6758(&mPos, field_0x4, 0.0f);
-    s32 count = field_0x90;
-    if (count != 0) {
+    if (field_0x90 != 0) {
+        s32 count = field_0x90;
         u16 tiles[0x2C9];
         s32 layer = field_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -113,7 +113,7 @@ bool Fish_804AC658::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return true;
 }
 
-// FIXME(shotgun): 95.69 %, different; behaviour clean.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 s32 Fish_804AC658::fn_80346330() {
     field_0x264 = 0.0f;
     field_0x268 = 0;
@@ -126,13 +126,12 @@ s32 Fish_804AC658::fn_80346330() {
         }
     }
     for (s32 p = 0; p < 4; p++) {
-        if (fn_8022CAF8(p) != 4 && fn_8022CAF8(p) != 5 && field_0x270 != p && field_0x4 == getPlayerLayer_8023DE58(p)) {
+        if (fn_8022CAF8(p) != 4 && fn_8022CAF8(p) != 5 && field_0x270 != p && getField_0x4() == getPlayerLayer_8023DE58(p)) {
             if (fn_80233E40(p) == true || fn_8022B7C4(p) == true) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(p)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(p)->y;
-                f32 d2 = dx * dx + dy * dy;
-                if (std::sqrtf(d2) < 32.0f) {
-                    field_0x264 = std::sqrtf(d2);
+                if (std::sqrtf(dx * dx + dy * dy) < 32.0f) {
+                    field_0x264 = std::sqrtf(dx * dx + dy * dy);
                     field_0x268 = (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f);
                     field_0x270 = p;
                     field_0x26c = fn_801F681C(field_0x268);
@@ -153,14 +152,15 @@ static inline void swimVelocity(Fish_804AC658* fish, f32 speed) {
     fish->field_0x3c.z = fish->field_0x25c;
 }
 
-// FIXME(shotgun): 98.67 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.43 %, regalloc-only; behaviour clean.
 // (states follow the asm's switch (0 falls into 1, 2 into 3); the hit-avoid branch of state 1 and the wall-bounce
 // heading draws of state 5 are the asm's, written with plain field stores; the original's vector-add temporaries are not matched)
 void Fish_804AC658::update() {
     addCalc2_801F71A4(&field_0x3c.x, field_0x254, 0.1f, field_0x260);
     addCalc2_801F71A4(&field_0x3c.y, field_0x258, 0.1f, field_0x260);
     mPos += field_0x3c;
-    JGeometry::TVec3f hitDir(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f hitDir;
+    hitDir.zero();
     u8 hit = fn_801F2618(&hitDir, false);
     switch (field_0x230) {
     case 0: {
@@ -174,20 +174,21 @@ void Fish_804AC658::update() {
     }
     case 1:
         if (hit) {
-            s32 angle = field_0x250 + 0x4000;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            s32 angle = field_0x250;
+            field_0x3c.zero();
             f32 savedX = mPos.x;
             f32 savedY = mPos.y;
             f32 savedZ = mPos.z;
+            angle += 0x4000;
             for (s32 i = 0; i < 15; i++) {
                 mPos.x = savedX;
                 mPos.y = savedY;
                 mPos.z = savedZ;
-                JGeometry::TVec3f step(16.0f * JMath::sincosTable_.sinShort(angle), 16.0f * JMath::sincosTable_.cosShort(angle), 0.0f);
+                JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
+                step.x = 16.0f * JMath::sincosTable_.sinShort(angle);
+                step.y = 16.0f * JMath::sincosTable_.cosShort(angle);
                 mPos += step;
-                if (fn_802265DC(&mPos, field_0x4, false)) {
+                if (!fn_802265DC(&mPos, field_0x4, false)) {
                     break;
                 }
                 angle += 0x1000;
@@ -307,26 +308,28 @@ void Fish_804AC658::update() {
     }
 }
 
-// FIXME(shotgun): 76.32 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.79 %, scheduling+regalloc; behaviour clean.
 // (the SpriteParams stores and the matrix are scheduled differently)
 void Fish_804AC658::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.field_0x10.a = 200;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x252 / -10430.228f, 0.0f), 1.0f);
+    params.mMtx = mtx;
+    params.field_0x21 = 1;
     params.field_0x1c = -1;
     params.field_0x1d = -1;
-    params.field_0x21 = 1;
-    params.mMtx = mtx;
-    f32 angle = (f32)field_0x252 / -10430.228f;
-    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, angle, 0.0f), 1.0f);
+    params.field_0x10.a = 200;
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x24c + 0x283, &params, -1, 1.0f, 1.0f);
 }
 
 // Not in the binary (update inlines it); the pool has its 0.0f ahead of every other function's.
 void Fish_804AC658::stopSwim() {
-    field_0x254 = 0.0f;
-    field_0x258 = 0.0f;
     field_0x25c = 0.0f;
+    field_0x258 = 0.0f;
+    field_0x254 = 0.0f;
     field_0x230 = 0;
 }
 
