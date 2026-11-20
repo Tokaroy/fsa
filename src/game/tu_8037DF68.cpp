@@ -1149,8 +1149,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         switch ((s8)command) {
         case 7: {
-            s32 yes = operand(p, 6);
-            s32 no = operand(p, 10);
+            u32 yes = operand(p, 6);
+            u32 no = operand(p, 10);
             if (getGameView_802D6A9C()->fn_802D800C((u8)p[5])) {
                 index = yes;
             } else {
@@ -1160,9 +1160,9 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x10: {
             u8 kind = p[5];
-            s32 target = operand(p, 6);
+            u32 target = operand(p, 6);
             u32 consume = (u8)p[0xE];
-            s32 next = operand(p, 10);
+            u32 next = operand(p, 10);
             switch (kind) {
             case 0:
             case 1:
@@ -1259,7 +1259,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x17: {
-            u8 count = p[5];
+            u32 count = (u8)p[5];
             s32 pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             if (pick > count) {
                 pick = count;
@@ -1268,10 +1268,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x18: {
-            s32 a = operand(p, 5);
-            s32 b = operand(p, 9);
-            s32 c = operand(p, 13);
-            s32 d = operand(p, 17);
+            u32 a = operand(p, 5);
+            u32 b = operand(p, 9);
+            u32 c = operand(p, 13);
+            u32 d = operand(p, 17);
             switch (gGameRoot_8053AAF8->fn_80138A30()) {
             case 1:
                 index = a;
@@ -1290,18 +1290,20 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x1D: {
             s32 limit = operand(p, 5);
-            s32 high = operand(p, 9);
-            index = operand(p, 13);
+            u32 high = operand(p, 9);
+            u32 low = operand(p, 13);
             if (fn_80236100(slot) >= limit) {
                 index = high;
+            } else {
+                index = low;
             }
             break;
         }
         case 0x20: {
-            s32 a = operand(p, 5);
-            s32 b = operand(p, 9);
-            s32 c = operand(p, 13);
-            s32 d = operand(p, 17);
+            u32 a = operand(p, 5);
+            u32 b = operand(p, 9);
+            u32 c = operand(p, 13);
+            u32 d = operand(p, 17);
             switch (slot) {
             case 0:
                 index = a;
@@ -1319,8 +1321,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x21: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
             if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
                 index = yes;
             } else {
@@ -1331,8 +1333,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x23: {
             u32 kind = (u8)p[5];
             s32 bit = *(const u16*)(p + 6);
-            s32 yes = operand(p, 8);
-            s32 no = operand(p, 12);
+            u32 yes = operand(p, 8);
+            u32 no = operand(p, 12);
             u8 which;
             if (kind >= 1 && kind <= 4) {
                 which = kind - 1;
@@ -1347,9 +1349,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x2C: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
-            if (((gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3) == 2) {
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
+            u32 val = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
+            if (val == 2) {
                 index = yes;
             } else {
                 index = no;
@@ -1357,8 +1360,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x30: {
-            s32 notFour = operand(p, 5);
-            s32 four = operand(p, 9);
+            u32 notFour = operand(p, 5);
+            u32 four = operand(p, 9);
             if (fn_8022CAF8(slot) != 4) {
                 index = notFour;
             } else {
@@ -1367,8 +1370,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x33: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
             if (fn_802373EC(slot) == 1) {
                 index = yes;
             } else {
