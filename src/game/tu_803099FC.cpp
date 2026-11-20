@@ -79,21 +79,19 @@ s32 getPlayerInputSlot_8030AAF4(s32 player) {
 }
 
 // FIXME(shotgun): 11.87 %, missing/extra; behaviour drift.
-// The logic follows the asm; the low % is the register
-// numbering, one higher in the target throughout (this in r22, the key word in r31; ours r21/r22),
-// plus two local shapes: the target materialises mState >= 4 as a value (li 4; subi; orc; srwi;
-// subf; srwi.) as main in tu_801344C0 does, where we emit cmplwi 4, and it builds the checksum
-// argument as rlwinm 0xFF00 + rlwimi where we emit extrwi + srwi + rlwimi.
+// What still differs: the target materialises mState >= 4 as a value (li 4; subi; orc; srwi;
+// subf; srwi.) as main in tu_801344C0 does, where we emit cmplwi 4; and the target does not mask
+// fn_803006E8's result at the call (ours clrlwi), which suggests it returns a 32-bit value.
 // 0x8030A43C
 void cls_804AA8C8::fn_8030A43C() {
-    u32 resetMask = 0;
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         field_0x14[i] = field_0x4[i];
         field_0x94[i] = field_0x84[i];
         field_0x84[i] = field_0x24[i];
     }
-    for (s32 i = 0; i < 4; i++) {
-        GbaClient_803007D0& client = lbl_804DB798[i];
+    u32 resetMask = 0;
+    for (i = 0; i < 4; i++) {
         lbl_8053AD34[i] = 0;
         lbl_8053AD38[i] = 0;
         if (field_0xdc[i] < 3) {
@@ -102,6 +100,7 @@ void cls_804AA8C8::fn_8030A43C() {
         if (field_0xe0[i] < 3) {
             field_0xe0[i]++;
         }
+        GbaClient_803007D0& client = lbl_804DB798[i];
         if (client.field_0xd1 != 0) {
             continue;
         }
@@ -120,9 +119,9 @@ void cls_804AA8C8::fn_8030A43C() {
                     u32 keys = client.mKeys;
                     memcpy(client.mTransfer, &lbl_80506DE8[i], lbl_80541618[lbl_8053AD08] * 4);
                     OSSendMessage(&client.mQueue, (OSMessage)10, 1);
-                    if (lbl_8053AD34[i] != 0 && (u8)keys == fn_803006E8(((keys >> 16) & 0xFF) | (keys & 0xFF00))) {
-                        field_0x4[i] = (((keys >> 20) & 1) ? 2 : 0) | (((keys >> 22) & 1) ? 8 : 0) | ((keys >> 21) & 1) |
-                                       (((keys >> 9) & 1) ? 0x40 : 0) | (((keys >> 23) & 1) ? 4 : 0) |
+                    if (lbl_8053AD34[i] != 0 && (keys & 0xFF) == fn_803006E8(((keys & 0xFF0000) >> 16) | (keys & 0xFF00))) {
+                        field_0x4[i] = (((keys >> 20) & 1) ? 2 : 0) | ((keys >> 21) & 1) | (((keys >> 22) & 1) ? 8 : 0) |
+                                       (((keys >> 23) & 1) ? 4 : 0) | (((keys >> 9) & 1) ? 0x40 : 0) |
                                        (((keys >> 8) & 1) ? 0x20 : 0) | (((keys >> 19) & 1) ? 0x1000 : 0) |
                                        (((keys >> 18) & 1) ? 0x400 : 0) | (((keys >> 16) & 1) ? 0x100 : 0) |
                                        (((keys >> 17) & 1) ? 0x200 : 0);
@@ -158,79 +157,83 @@ void cls_804AA8C8::fn_8030A43C() {
             if (pad == NULL) {
                 continue;
             }
-            if (JUTGamePad::mPadStatus[slot].err != 0) {
+            switch (JUTGamePad::mPadStatus[slot].err) {
+            case 0:
+                lbl_8053AD38[i] = 1;
+                if (((pad->getButton() & 1) && gGameRoot_8053AAF8->fn_80136320()) ||
+                    pad->getMainStickX() < -0.6f) {
+                    field_0x4[i] |= 1;
+                }
+                if (((pad->getButton() & 2) && gGameRoot_8053AAF8->fn_80136320()) ||
+                    pad->getMainStickX() > 0.6f) {
+                    field_0x4[i] |= 2;
+                }
+                if (((pad->getButton() & 4) && gGameRoot_8053AAF8->fn_80136320()) ||
+                    pad->getMainStickY() < -0.6f) {
+                    field_0x4[i] |= 4;
+                }
+                if (((pad->getButton() & 8) && gGameRoot_8053AAF8->fn_80136320()) ||
+                    pad->getMainStickY() > 0.6f) {
+                    field_0x4[i] |= 8;
+                }
+                if ((pad->getButton() & 0x400) || ((pad->getButton() & 1) && !gGameRoot_8053AAF8->fn_80136320()) ||
+                    ((pad->getButton() & 2) && !gGameRoot_8053AAF8->fn_80136320()) ||
+                    ((pad->getButton() & 4) && !gGameRoot_8053AAF8->fn_80136320()) ||
+                    ((pad->getButton() & 8) && !gGameRoot_8053AAF8->fn_80136320())) {
+                    field_0x4[i] |= 0x400;
+                }
+                if (pad->getButton() & 0x800) {
+                    field_0x4[i] |= 0x40;
+                }
+                if (field_0xe5 != 0) {
+                    if (pad->getAnalogRf() > 0.6f) {
+                        field_0xe5 = 1;
+                    } else {
+                        field_0xe5 = 0;
+                    }
+                } else {
+                    if (pad->getAnalogRf() > 0.7f) {
+                        field_0xe5 = 1;
+                    } else {
+                        field_0xe5 = 0;
+                    }
+                }
+                if (field_0xe5 != 0) {
+                    field_0x4[i] |= 0x20;
+                }
+                if (field_0xe4 != 0) {
+                    if (pad->getAnalogLf() > 0.6f) {
+                        field_0xe4 = 1;
+                    } else {
+                        field_0xe4 = 0;
+                    }
+                } else {
+                    if (pad->getAnalogLf() > 0.7f) {
+                        field_0xe4 = 1;
+                    } else {
+                        field_0xe4 = 0;
+                    }
+                }
+                if (field_0xe4 != 0) {
+                    field_0x4[i] |= 0x40;
+                }
+                if (pad->getButton() & 0x100) {
+                    field_0x4[i] |= 0x100;
+                }
+                if (pad->getButton() & 0x200) {
+                    field_0x4[i] |= 0x200;
+                }
+                if (pad->getButton() & 0x1000) {
+                    field_0x4[i] |= 0x1000;
+                }
+                field_0xe0[i] = 0;
+                break;
+            case -1:
+            default:
                 client.mState = 0;
                 resetMask |= 0x80000000 >> i;
-                continue;
+                break;
             }
-            lbl_8053AD38[i] = 1;
-            if (((pad->getButton() & 1) && gGameRoot_8053AAF8->fn_80136320()) ||
-                pad->getMainStickX() < -0.6f) {
-                field_0x4[i] |= 1;
-            }
-            if (((pad->getButton() & 2) && gGameRoot_8053AAF8->fn_80136320()) ||
-                pad->getMainStickX() > 0.6f) {
-                field_0x4[i] |= 2;
-            }
-            if (((pad->getButton() & 4) && gGameRoot_8053AAF8->fn_80136320()) ||
-                pad->getMainStickY() < -0.6f) {
-                field_0x4[i] |= 4;
-            }
-            if (((pad->getButton() & 8) && gGameRoot_8053AAF8->fn_80136320()) ||
-                pad->getMainStickY() > 0.6f) {
-                field_0x4[i] |= 8;
-            }
-            if ((pad->getButton() & 0x400) || ((pad->getButton() & 1) && !gGameRoot_8053AAF8->fn_80136320()) ||
-                ((pad->getButton() & 2) && !gGameRoot_8053AAF8->fn_80136320()) ||
-                ((pad->getButton() & 4) && !gGameRoot_8053AAF8->fn_80136320()) ||
-                ((pad->getButton() & 8) && !gGameRoot_8053AAF8->fn_80136320())) {
-                field_0x4[i] |= 0x400;
-            }
-            if (pad->getButton() & 0x800) {
-                field_0x4[i] |= 0x40;
-            }
-            if (field_0xe5 != 0) {
-                if (pad->getAnalogRf() > 0.6f) {
-                    field_0xe5 = 1;
-                } else {
-                    field_0xe5 = 0;
-                }
-            } else {
-                if (pad->getAnalogRf() > 0.7f) {
-                    field_0xe5 = 1;
-                } else {
-                    field_0xe5 = 0;
-                }
-            }
-            if (field_0xe5 != 0) {
-                field_0x4[i] |= 0x20;
-            }
-            if (field_0xe4 != 0) {
-                if (pad->getAnalogLf() > 0.6f) {
-                    field_0xe4 = 1;
-                } else {
-                    field_0xe4 = 0;
-                }
-            } else {
-                if (pad->getAnalogLf() > 0.7f) {
-                    field_0xe4 = 1;
-                } else {
-                    field_0xe4 = 0;
-                }
-            }
-            if (field_0xe4 != 0) {
-                field_0x4[i] |= 0x40;
-            }
-            if (pad->getButton() & 0x100) {
-                field_0x4[i] |= 0x100;
-            }
-            if (pad->getButton() & 0x200) {
-                field_0x4[i] |= 0x200;
-            }
-            if (pad->getButton() & 0x1000) {
-                field_0x4[i] |= 0x1000;
-            }
-            field_0xe0[i] = 0;
         }
     }
     if (resetMask != 0) {
