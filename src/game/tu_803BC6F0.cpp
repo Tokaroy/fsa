@@ -1311,7 +1311,7 @@ void FileSelect_804AFF60::fn_803CD2DC() {
     }
 }
 
-// FIXME: 98.47 %, different; behaviour near.
+// FIXME: 99.16 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). The &others register, as
 // fn_803C2E24 / fn_803C9F80. Every field, call and branch is the original's.
 //
@@ -1593,6 +1593,7 @@ void FileSelect_804AFF60::fn_803CBE38() {
 // are rotated (r26/r27/r28), and the `field_0xc` subtraction swaps f0/f2.
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
+// FIXME: 99.41 %, regalloc-only; behaviour clean.
 void FileSelect_804AFF60::fn_803CB3DC() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x98];
     s16 frames = lbl_8050DB0C.field_0x4c[0x99];
@@ -2857,7 +2858,7 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 }
 
-// FIXME: 98.49 %, different; behaviour near.
+// FIXME: 98.71 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). One instruction moves:
 // the original keeps &others in r29 from the fill loop on (`mr r3, r29` for
 // the fill pointer) and walks it in the row loop; ours computes &others
