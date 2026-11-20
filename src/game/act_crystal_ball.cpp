@@ -181,15 +181,13 @@ void CrystalBall_804AB308::vfunc_0x54() {
     startSound_801F0E34(0x30001, 0);
 }
 
-// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 void CrystalBall_804AB308::fn_80322F44() {
     if (field_0x284 == 0) {
         if (!gGameRoot_8053AAF8->field_0x7e) {
             field_0x288 = 0;
         } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            s32 lo = fn_80236228(field_0x23c);
-            s32 hi = lo;
-            s32 base = hi;
+            s32 hi, lo, base;
+            base = hi = lo = fn_80236228(field_0x23c);
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     if (hi < fn_80236228(i)) {
