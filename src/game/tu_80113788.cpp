@@ -66,7 +66,6 @@ static const u16 lbl_80464948[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x
 static const u16 lbl_80464958[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
 
 // 0x80115590.
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour clean.
 cls_8049D83C::cls_8049D83C()
     : field_0x230(1), field_0x231(1), field_0x232(0), field_0x233(0), field_0x234(1), field_0x238(0),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
@@ -133,7 +132,7 @@ cls_8049D83C::~cls_8049D83C() {
 }
 
 // 0x80115248.
-// FIXME(shotgun): 96.48 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.72 %, scheduling; behaviour clean.
 void cls_8049D83C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 0xFF;
@@ -161,52 +160,11 @@ void cls_8049D83C::init() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.97 %, missing/extra + reloc-name; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
-    switch (field_0x23c) {
-    case 0:
-    case 1:
-    case 10:
-    case 17:
-        break;
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16: {
-        JGeometry::TVec3f focus = mPos;
-        focus.y += 32.0f;
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = focus.x;
-            camera->field_0x7fc.y = focus.y;
-            camera->field_0x7fc.z = focus.z;
-            camera->field_0x7f6 = 0;
-        }
-        break;
-    }
-    default: {
-        JGeometry::TVec3f focus = mPos;
-        focus.y += 16.0f + (mSpawnPos.y - mPos.y - 32.0f);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        if (camera->field_0x7f5 == 0) {
-            camera->field_0x7f4 = 1;
-            camera->field_0x7f8 = 4;
-            camera->field_0x7fc.x = focus.x;
-            camera->field_0x7fc.y = focus.y;
-            camera->field_0x7fc.z = focus.z;
-            camera->field_0x7f6 = 0;
-        }
-        break;
-    }
-    }
+    updateCameraFocus();
     switch (field_0x23c) {
     case 0:
         gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
@@ -374,16 +332,10 @@ void cls_8049D83C::vfunc_0x54() {
     }
 }
 
-inline void cls_8049D83C::spawnCrystal(s32 crystal) {
-    JGeometry::TVec3f spawnPos = mSpawnPos;
-    spawnPos.z = 20.0f;
-    getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, crystal, -1, -1);
-}
-
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.74 %, scheduling+regalloc; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -442,11 +394,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
     }
     case 6:
         field_0x233 = 0;
-        for (s32 i = 0; i < 7; i++) {
-            field_0x2a8[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
-        }
-        field_0x29c = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464918[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
-        field_0x2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
+        spawnSealEmitters();
         startSound_801F0E34(0x30082, 0);
         fn_8011921C()->setField_0x2(0);
         break;
@@ -463,16 +411,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
     case 9: {
         fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x248 = 1;
-        JGeometry::TVec3f pos = mSpawnPos;
-        pos.y += 48.0f;
-        pos.x -= 36.0f;
-        for (s32 i = 0; i < 4; i++) {
-            if (i > 0) {
-                pos.x += 24.0f;
-            }
-            fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            fn_80230BF4(i, 3);
-        }
+        positionPlayers();
         if (field_0x238 == 0) {
             fn_8011921C()->setField_0x2(1);
         } else {
@@ -545,8 +484,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
     case 15:
         mDrawEnabled = false;
         mPos.z = 20.0f;
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
+        spawnBurstEmitters();
         startSound_801F0E34(0x400D9, 0);
         break;
     case 16:
@@ -596,7 +534,7 @@ s32 cls_8049D83C::vfunc_0x5C() {
 #pragma auto_inline off
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
-// FIXME(shotgun): 91.12 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -617,18 +555,15 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     }
 }
 
-// FIXME(shotgun): 99.31 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.68 %, same-text; behaviour clean.
 void cls_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
-            rot[i][j] = 0.0f;
-        }
-    }
+    rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
+        rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
     fn_8010F668(rot, &axisZ, field_0x258);
     PSMTXConcat(mtx, rot, mtx);
@@ -664,7 +599,6 @@ void cls_8049D83C::fn_8011395C() {
     }
 }
 
-// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113790() {
     if (field_0x248 > 0) {
         SpriteParams_801F5AE0 params;
@@ -711,4 +645,83 @@ void cls_8049D83C::spawnEmitters() {
     for (s32 i = 0; i < 5; i++) {
         field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
     }
+}
+
+// Plain functions inlined by their callers (the linker dropped their out-of-line copies);
+// their order below spawnEmitters sets the .sdata2 float-literal pool order.
+void cls_8049D83C::spawnSealEmitters() {
+    for (s32 i = 0; i < 7; i++) {
+        field_0x2a8[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
+    }
+    field_0x29c = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464918[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
+    field_0x2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
+}
+
+void cls_8049D83C::spawnBurstEmitters() {
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(field_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
+}
+
+void cls_8049D83C::positionPlayers() {
+    JGeometry::TVec3f pos = mSpawnPos;
+    pos.y += 48.0f;
+    pos.x -= 36.0f;
+    for (s32 i = 0; i < 4; i++) {
+        if (i > 0) {
+            pos.x += 24.0f;
+        }
+        fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
+        fn_80230BF4(i, 3);
+    }
+}
+
+void cls_8049D83C::updateCameraFocus() {
+    switch (field_0x23c) {
+    case 0:
+    case 1:
+    case 10:
+    case 17:
+        break;
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16: {
+        JGeometry::TVec3f focus = mPos;
+        focus.y += 32.0f;
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+        if (camera->field_0x7f5 == 0) {
+            camera->field_0x7f4 = 1;
+            camera->field_0x7f8 = 4;
+            camera->field_0x7fc.x = focus.x;
+            camera->field_0x7fc.y = focus.y;
+            camera->field_0x7fc.z = focus.z;
+            camera->field_0x7f6 = 0;
+        }
+        break;
+    }
+    default: {
+        JGeometry::TVec3f focus = mPos;
+        focus.y += 16.0f + (mSpawnPos.y - mPos.y - 32.0f);
+        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
+        if (camera->field_0x7f5 == 0) {
+            camera->field_0x7f4 = 1;
+            camera->field_0x7f8 = 4;
+            camera->field_0x7fc.x = focus.x;
+            camera->field_0x7fc.y = focus.y;
+            camera->field_0x7fc.z = focus.z;
+            camera->field_0x7f6 = 0;
+        }
+        break;
+    }
+    }
+}
+
+void cls_8049D83C::spawnCrystal(s32 crystal) {
+    JGeometry::TVec3f spawnPos = mSpawnPos;
+    spawnPos.z = 20.0f;
+    getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, crystal, -1, -1);
 }
