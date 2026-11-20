@@ -107,25 +107,46 @@ inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
 // for these actors also that fn_8022CAF8 is 4 or fn_8022F514 is false.
 inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
     bool ok = false;
-    if (fn_801CCFE4(player) && isPlayerOnLayer(player)) {
+    if (fn_801CCFE4(player)) {
+        bool onLayer = false;
         switch (mActorId) {
         case ACTOR_FALL:
+        case ACTOR_FBGE:
         case ACTOR_FLOR:
         case ACTOR_HRMN:
         case ACTOR_KEPO:
         case ACTOR_NAVI:
+        case ACTOR_SLK2:
         case ACTOR_TINK:
-        case ACTOR_TNDR:
         case ACTOR_TZOK:
-            if (fn_8022CAF8(player) == 4) {
-                ok = true;
-            } else if (!fn_8022F514(player)) {
-                ok = true;
+            if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
+                onLayer = true;
             }
             break;
         default:
-            ok = true;
+            onLayer = fn_801F320C(player);
             break;
+        }
+        if (onLayer) {
+            switch (mActorId) {
+            case ACTOR_FALL:
+            case ACTOR_FLOR:
+            case ACTOR_HRMN:
+            case ACTOR_KEPO:
+            case ACTOR_NAVI:
+            case ACTOR_TINK:
+            case ACTOR_TNDR:
+            case ACTOR_TZOK:
+                if (fn_8022CAF8(player) == 4) {
+                    ok = true;
+                } else if (!fn_8022F514(player)) {
+                    ok = true;
+                }
+                break;
+            default:
+                ok = true;
+                break;
+            }
         }
     }
     return ok;
@@ -262,7 +283,50 @@ bool EnemyBase_804A4808::fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f
 // Whether player `player` can be targeted: present, on this actor's layer and,
 // for some actors, not busy.
 bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
-    return canTargetPlayer(player);
+    bool ok = false;
+    if (fn_801CCFE4(player)) {
+        bool onLayer = false;
+        switch (mActorId) {
+        case ACTOR_FALL:
+        case ACTOR_FBGE:
+        case ACTOR_FLOR:
+        case ACTOR_HRMN:
+        case ACTOR_KEPO:
+        case ACTOR_NAVI:
+        case ACTOR_SLK2:
+        case ACTOR_TINK:
+        case ACTOR_TZOK:
+            if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
+                onLayer = true;
+            }
+            break;
+        default:
+            onLayer = fn_801F320C(player);
+            break;
+        }
+        if (onLayer) {
+            switch (mActorId) {
+            case ACTOR_FALL:
+            case ACTOR_FLOR:
+            case ACTOR_HRMN:
+            case ACTOR_KEPO:
+            case ACTOR_NAVI:
+            case ACTOR_TINK:
+            case ACTOR_TNDR:
+            case ACTOR_TZOK:
+                if (fn_8022CAF8(player) == 4) {
+                    ok = true;
+                } else if (!fn_8022F514(player)) {
+                    ok = true;
+                }
+                break;
+            default:
+                ok = true;
+                break;
+            }
+        }
+    }
+    return ok;
 }
 
 // FIXME: 99.73 %, regalloc-only; behaviour clean.
@@ -281,7 +345,19 @@ bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f
 // The nearest player that can be targeted within `range` of *pos (any
 // distance when `range` is 0), or -1.
 s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
-    return nearestPlayer(pos, range);
+    f32 rangeSq = range * range;
+    f32 best = FLT_MAX;
+    s32 nearest = -1;
+    for (s32 i = 0; i < 4; i++) {
+        if (canTargetPlayer(i)) {
+            f32 distSq = playerDistSq(i, pos);
+            if (distSq < best && (range == 0.0f || distSq <= rangeSq)) {
+                best = distSq;
+                nearest = i;
+            }
+        }
+    }
+    return nearest;
 }
 
 // FIXME: 99.35 %, regalloc-only; behaviour clean.
