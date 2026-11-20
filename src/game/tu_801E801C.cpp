@@ -2,6 +2,7 @@
 #include "game/ActorManager.h"
 #include "game/Camera.h"
 #include "game/Effect.h"
+#include "game/EmitterDelete.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
 #include "game/tu_801E9AFC.h"
@@ -156,9 +157,7 @@ void cls_804A5568::vfunc_0x90(u8 mapHit) {
         if (trigger != 0) {
             if (getGameView_802D6A9C()->fn_802D800C(trigger)) {
                 mFlags |= 0x2000;
-                if (mEmitter3c0 != NULL) {
-                    getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter3c0);
-                }
+                deleteEmitterKeep(&mEmitter3c0);
                 mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
                 mStateTimer = 0;
                 mState = 1;
@@ -197,9 +196,7 @@ u8 cls_804A5568::vfunc_0x60() {
     if (mState == 0 && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         if (fn_801E9B58() >= 0) {
             mFlags |= 0x2000;
-            if (mEmitter3c0 != NULL) {
-                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter3c0);
-            }
+            deleteEmitterKeep(&mEmitter3c0);
             mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
             mStateTimer = 0;
             mState = 1;
