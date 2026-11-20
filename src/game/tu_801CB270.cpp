@@ -631,7 +631,7 @@ bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     return found;
 }
 
-// FIXME(shotgun): 77.73 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.85 %, operands; behaviour clean.
 bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* out, s32* outPlayer) {
     bool found = false;
     if (outPlayer != NULL) {
