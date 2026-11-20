@@ -13,7 +13,6 @@
 #include "std/math.h"
 
 // 0x801A6160.
-// FIXME(shotgun): 96.89 %, different; behaviour drift.
 s32 ActorBase_804A5770::fn_801A6160() {
     s32 timer;
     s32 result = 0;
@@ -414,7 +413,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
 }
 
 // 0x801A4FB4.
-// FIXME(shotgun): 97.06 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.98 %, operands; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4FB4() {
     s32 kind = (field_0xb0 >> 12) & 0xF;
     if (kind == 0) {
@@ -491,7 +490,7 @@ s32 fn_801A4F5C(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x801A4D74.
-// FIXME(shotgun): 83.66 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.95 %, scheduling+regalloc; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     s32 kind = (field_0xb0 >> 8) & 0xF;
     if (kind == 0) {
@@ -707,7 +706,7 @@ s32 fn_801A46FC(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 } // extern "C"
 
 // 0x801A41D8.
-// FIXME(shotgun): 95.80 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.25 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     ActorBase_804A5770* weapon;
     s32 player = fn_8023AD54(box, field_0x4, pos);
