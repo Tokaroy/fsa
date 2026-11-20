@@ -233,8 +233,10 @@ inline void EnemyBase_804A4808::velocityToward(const JGeometry::TVec3f* target, 
                                                f32 speed) {
     JGeometry::TVec2f dir(target->x - mPos.x, target->y - mPos.y);
     dir.normalize();
+    f32 dx = target->x - mPos.x;
+    f32 dy = target->y - mPos.y;
     *out = dir;
-    f32 len = JMAFastSqrt(square(target->x - mPos.x) + square(target->y - mPos.y));
+    f32 len = JMAFastSqrt(square(dx) + square(dy));
     if (len < speed) {
         speed = len;
     }
@@ -351,15 +353,15 @@ s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
     return JMath::atanTable_.atan2_(playerPos->x - mPos.x, playerPos->y - mPos.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
-// FIXME: 90.86 %, scheduling+regalloc; behaviour clean.
-// Same instructions; the target loads the second offset's
-// coordinates before it stores *out (ours stores first), and registers differ.
+// FIXME: 99.61 %, scheduling; behaviour clean.
+// Same instructions; the target loads target->y before mPos.y for the second
+// offset (ours the other way round).
 // The velocity toward *target (x, y), at most `speed` long.
 void EnemyBase_804A4808::fn_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed) {
     velocityToward(target, out, speed);
 }
 
-// FIXME: 88.90 %, scheduling+regalloc; behaviour clean.
+// FIXME: 92.63 %, scheduling+regalloc; behaviour clean.
 // and registers as in fn_801D01A0 (the same body).
 // The velocity (x, y) toward player `player`, at most `speed` long.
 void EnemyBase_804A4808::fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed) {
@@ -959,15 +961,12 @@ void EnemyBase_804A4808::update() {
     }
 }
 
-// FIXME: 99.41 %, regalloc-only; behaviour clean.
-// regalloc only: the target loads pos->x into f2 and
-// pos->z into f0, ours the other way round.
 // Starts sound `soundId` as if this actor were at *pos on `layer`.
 void EnemyBase_804A4808::fn_801CDCD0(s32 layer, const JGeometry::TVec3f* pos, u32 soundId) {
     s32 savedLayer = field_0x4;
     JGeometry::TVec3f savedPos = mPos;
     field_0x4 = layer;
-    mPos.set(pos->x, pos->y, pos->z);
+    mPos.set(*pos);
     startSound_801F0E34(soundId, 0);
     field_0x4 = savedLayer;
     mPos.set(savedPos.x, savedPos.y, savedPos.z);
