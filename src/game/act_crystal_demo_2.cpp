@@ -87,8 +87,8 @@ cls_804AE088::~cls_804AE088() {
 
 void (cls_804AE088::*lbl_804AE070[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
 
-static const s16 lbl_80542C48[2] = {9, -1};
-static const s16 lbl_80542C50[2] = {9, -1};
+static const s16 lbl_80542C48[4] = {0, 9, -1, -1};
+static const s16 lbl_80542C50[4] = {0, 9, -1, -1};
 static const s16* lbl_8053A1C0[2] = {lbl_80542C48, lbl_80542C50};
 
 const char* lbl_8053A1C8 = "kk_black.bti";
@@ -267,7 +267,7 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.57 %, missing/extra + reloc-name; behaviour drift.
 // regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
@@ -608,7 +608,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // differs: .sdata2 literal pool order.
-// FIXME: 99.72 %, reloc-name; behaviour clean.
+// FIXME: 99.80 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -650,7 +650,7 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// FIXME: 97.00 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.87 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
@@ -665,10 +665,7 @@ void cls_804AE088::fn_8036A894() {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 96.0f;
-        params.field_0x14.r = 0;
-        params.field_0x14.g = 0;
-        params.field_0x14.b = 0;
-        params.field_0x14.a = field_0x24c;
+        params.field_0x14.set(0, 0, 0, field_0x24c);
         params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
