@@ -562,7 +562,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 99.63 %, different; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041FC2C() {
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -604,7 +604,8 @@ void cls_804B13D4::fn_8041FC2C() {
         field_0x4->search(lbl_8048D6B8[1])->hide();
         field_0x4->search(lbl_8048D6B8[2])->hide();
         field_0x4->search(lbl_8048D6B8[3])->hide();
-        if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+        u32 kind = gGameRoot_8053AAF8->field_0x83 & 3;
+        if (kind == 2) {
             field_0x4->search('Ndata16')->show();
         } else {
             field_0x4->search('Ndata16')->hide();
@@ -1318,12 +1319,11 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
 }
 
 // FIXME: 99.69 %, missing/extra; behaviour clean.
-// FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
         return;
     }
-    s32 n = lbl_80529DEC.field_0xe8[0];
+    s32 n = lbl_80529DEC.getField0xe8(0);
     s32 digit = 0;
     const ResTIMG* res;
     if (n > 9999) {
@@ -1424,13 +1424,12 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
-// Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.67 %, missing/extra; behaviour clean.
+// FIXME: 99.70 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
     }
-    s32 n = lbl_80529DEC.field_0xe8[player];
+    s32 n = lbl_80529DEC.getField0xe8(player);
     s32 digit = 0;
     const ResTIMG* res;
     if (n > 9999) {
@@ -1446,8 +1445,8 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
         }
         n *= -1;
         res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][0]))->changeTexture(res, 0);
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][0]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D6D8[player][4])->show();
         field_0x4->search(lbl_8048D778[player][4])->show();
         digit = 1;
