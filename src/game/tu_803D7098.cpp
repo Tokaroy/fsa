@@ -505,7 +505,6 @@ void cls_804B03D8::fn_803D75B0() {
 
 // Slides the panes in (the first frames of the screen); once all four have arrived, places the
 // cursor (field_0x44) over the pane of the selected row.
-// FIXME(shotgun): 95.44 %, different + reloc-name; behaviour clean.
 void cls_804B03D8::fn_803D7098() {
     u8 a = false;
     u8 b = false;
@@ -540,28 +539,26 @@ void cls_804B03D8::fn_803D7098() {
         field_0x7a = 3;
         field_0x7f = 1;
         field_0x70 = 1;
-        s16 k = field_0x68;
-        if (k >= 0 && k < 4) {
-            s16 j = field_0x6a;
-            if (j >= 0) {
-                f32 x0 = field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x +
-                         field_0x4->search(lbl_80477408[0])->getBounds()->i.x;
-                f32 x1 = field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.x +
-                         field_0x4->search(lbl_80477180[k][j])->getBounds()->i.x;
-                f32 x2 = field_0x8->search('P0kak00')->getBounds()->i.x;
-                f32 x3 = field_0x4->search('Ndata03')->getBounds()->i.x +
-                         field_0x4->search(lbl_80477408[0])->getBounds()->i.x;
-                field_0x58 = (field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x + x3) - x2 + x1 - x0;
-                f32 y0 = field_0x4->search(lbl_80477408[0])->getBounds()->i.y +
-                         field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y;
-                f32 y1 = field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.y +
-                         field_0x4->search(lbl_80477180[field_0x68][field_0x6a])->getBounds()->i.y;
-                f32 y2 = field_0x8->search('P0kak00')->getBounds()->i.y;
-                f32 y3 = field_0x4->search('Ndata03')->getBounds()->i.y +
-                         field_0x4->search(lbl_80477408[0])->getBounds()->i.y;
-                field_0x5c = (field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y + y3) - y2 + y1 - y0;
-                field_0x44->moveFromCentre_80402E08(field_0x58, field_0x5c);
-            }
+        if (field_0x68 >= 0 && field_0x68 < 4 && field_0x6a >= 0) {
+            field_0x58 =
+                (((field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x +
+                   (field_0x4->search('Ndata03')->getBounds()->i.x +
+                    field_0x4->search(lbl_80477408[0])->getBounds()->i.x)) -
+                  field_0x8->search('P0kak00')->getBounds()->i.x) +
+                 (field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.x +
+                  field_0x4->search(lbl_80477180[field_0x68][field_0x6a])->getBounds()->i.x)) -
+                (field_0x4->search(lbl_80477408[0])->getBounds()->i.x +
+                 field_0x4->search(lbl_80477180[0][0])->getBounds()->i.x);
+            field_0x5c =
+                (((field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y +
+                   (field_0x4->search('Ndata03')->getBounds()->i.y +
+                    field_0x4->search(lbl_80477408[0])->getBounds()->i.y)) -
+                  field_0x8->search('P0kak00')->getBounds()->i.y) +
+                 (field_0x4->search(lbl_80477408[field_0x68])->getBounds()->i.y +
+                  field_0x4->search(lbl_80477180[field_0x68][field_0x6a])->getBounds()->i.y)) -
+                (field_0x4->search(lbl_80477408[0])->getBounds()->i.y +
+                 field_0x4->search(lbl_80477180[0][0])->getBounds()->i.y);
+            field_0x44->moveFromCentre_80402E08(field_0x58, field_0x5c);
         }
     }
 }
