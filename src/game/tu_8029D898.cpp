@@ -1302,12 +1302,11 @@ void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u1
 }
 #pragma auto_inline reset
 
-// FIXME: 93.42 %, missing/extra; behaviour clean.
-// The original copies cell into r31 before the first write and steps
-// that copy in place (addi r31, r31, 1); ours computes the right neighbour into
-// r5 after the call (2 instructions fewer, registers r26-r31 shifted).
+// FIXME: 98.46 %, regalloc-only; behaviour clean.
+// Registers only: the original keeps cell/layer in r29/r30 and b/c/d in r26-r28;
+// ours has cell/layer in r26/r27 and b/c/d in r28-r30.
 void BgRewrite_804A7C98::fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s32 d) {
-    s32 index = cell;
+    int index = cell;
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, index, a);
     index++;
     if ((index & 0xF) == 0) {
