@@ -1608,18 +1608,17 @@ void cls_804A7AE0::fn_80295EE8() {
     mTimer--;
 }
 
-// FIXME(shotgun): 94.59 %, missing/extra; behaviour clean.
-// loop register assignment (this/index swapped) and 2 instructions
 void cls_804A7AE0::vfunc_0x24() {
+    s32 v;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8022F514(i)) {
-            s32 v = (field_0x90 >> 7) & 0x1F;
+            v = (field_0x90 >> 7) & 0x1F;
             s32 layer = v == 0 ? 0 : v + 7;
             if (layer == getPlayerLayer_8023DE58(i)) {
-                if (fn_802317F0(i, field_0x4, getPlayerPos_8023E724(i), &mPos, 0x1F)) {
+                if (fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
                     mPlayerFlags[i] = 1;
                 } else {
-                    mPlayerFlags[i] = fn_802317F0(i, field_0x4, getPlayerPos_8023E724(i), &mPos, 0x21);
+                    mPlayerFlags[i] = fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
                 }
             }
         }
