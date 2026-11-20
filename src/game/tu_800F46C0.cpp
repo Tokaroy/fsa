@@ -402,7 +402,6 @@ void Boulder_8049C4C0::fn_800F555C() {
     }
 }
 
-// FIXME(shotgun): 99.24 %, scheduling+regalloc; behaviour clean.
 void Boulder_8049C4C0::update() {
     switch (field_0x230) {
     case 0:
@@ -410,7 +409,7 @@ void Boulder_8049C4C0::update() {
         fn_800F5E08();
         break;
     case 1:
-        if (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f || field_0x3c.z != 0.0f) {
+        if (field_0x3c.x || field_0x3c.y || field_0x3c.z) {
             fn_801F2B7C(2, -1, 6);
             field_0x3c.z -= 0.2f;
         } else {
