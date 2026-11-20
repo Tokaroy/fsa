@@ -1350,7 +1350,7 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
 // the far end.) When it moved and `out` is given, *out is the direction of the
 // push (with `flag`, the diagonal tiles 8-0xB at the corners of the old
 // position bend it), normalised. Returns whether it moved.
-// FIXME: 92.15 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 92.22 %, missing/extra + reloc-name; behaviour drift.
 // (try.py; 6 instructions fewer than the target's 804). Structurally complete; two differences: MWCC keeps the
 // .rodata base in r31 for the four counter initialisers (the target
 // addresses each with its own lis/addi, lbl_80469F78-lbl_80469F9C; one more
