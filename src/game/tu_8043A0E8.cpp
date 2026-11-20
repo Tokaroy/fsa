@@ -675,11 +675,9 @@ void cls_804B1920::fn_8043DB58() {
 }
 
 // FIXME: 99.70 %, regalloc-only; behaviour clean.
-// Registers only: the second loop counts in r28 (ours r29, the first loop's).
 void cls_804B1920::fn_8043D8B4() {
-    int i;
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
                 s32 player = fn_8022EA0C(i);
                 if (getPlayerLayer_8023DE58(player) < 8) {
@@ -691,7 +689,7 @@ void cls_804B1920::fn_8043D8B4() {
             }
         }
     } else {
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 fn_804408F0(&pos);
