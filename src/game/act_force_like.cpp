@@ -324,25 +324,25 @@ void ForceLike_8049C578::draw() {
 
 // FIXME(shotgun): 97.94 %, different + reloc-name; behaviour drift.
 void ForceLike_8049C578::vfunc_0x24() {
-    s32 layer = field_0x4;
+    int layer = field_0x4;
+    s32 pick;
     if (fn_8022DCD8(field_0x238)) {
         fn_8022DD74(field_0x238);
     }
     JGeometry::TVec3f pos;
-    bool flag;
+    s32 flag;
     if (field_0x90 & 0x1000) {
-        flag = true;
+        flag = 1;
         fn_801CD150(&mPos, &pos);
         layer = 8;
     } else {
-        flag = false;
+        flag = 0;
         pos.x = mPos.x;
         pos.y = mPos.y;
         pos.z = mPos.z;
     }
     while (field_0x244 > 0) {
-        s32 pick;
-        if (flag == false) {
+        if (flag == 0) {
             if (field_0x244 >= 200) {
                 pick = 3;
                 field_0x244 -= 50;
@@ -370,10 +370,10 @@ void ForceLike_8049C578::vfunc_0x24() {
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                f32 vz = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                f32 vy = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                f32 vx = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                actor->field_0x3c = JGeometry::TVec3f(vx, vy, vz);
+                actor->field_0x3c = JGeometry::TVec3f(
+                    0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+                    0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
+                    3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f);
             }
         }
     }
