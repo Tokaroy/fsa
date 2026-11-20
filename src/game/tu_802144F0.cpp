@@ -17,6 +17,15 @@
 static const u16 lbl_8053FB90[4] = {0x0413, 0x0414, 0x0415, 0x0000};
 static const u16 lbl_8053FB98[4] = {0x0418, 0x0419, 0x041A, 0x0000};
 
+// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp).
+static inline f32 depthLift(const JGeometry::TVec3f* pos, s32 depth, s32 height, bool adjust) {
+    if (adjust && pos->z > 0.0f) {
+        height++;
+        depth--;
+    }
+    return height * 1024 + depth * 128;
+}
+
 // Copies the callback's vector into the particle (mOffsetPosition, at 0x18).
 // FIXME(shotgun): 100 %, matches
 void cls_804A64A8::execute(JPABaseEmitter*, JPABaseParticle* particle) {
@@ -47,21 +56,13 @@ cls_802150B8::~cls_802150B8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
-// In the z > 0 branch the original copies depth's register into height
-// (mr r4, r0; li r0, 0); ours loads both constants (li r4, 1; li r0, 0).
 void cls_802150B8::fn_80214E50() {
     if (field_0x0 != NULL) {
         return;
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    s32 depth = 1;
-    s32 height = 0;
-    if (pos.z > 0.0f) {
-        height = 1;
-        depth = 0;
-    }
-    f32 lift = (f32)(height * 1024 + depth * 128);
+    f32 lift = depthLift(&pos, 1, 0, true);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -76,22 +77,13 @@ void cls_802150B8::fn_80214E50() {
     }
 }
 
-// FIXME: 97.57 %. The lift's height is in r4 in the original's prefix (as in
-// fn_80214E50), ours is swapped with depth; the body after the lift matches.
-// The literal rows are the data split.
 void cls_802150B8::fn_80214CE4() {
     if (field_0x0 == NULL) {
         return;
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    s32 depth = 1;
-    s32 height = 0;
-    if (pos.z > 0.0f) {
-        height = 1;
-        depth = 0;
-    }
-    f32 lift = (f32)(height * 1024 + depth * 128);
+    f32 lift = depthLift(&pos, 1, 0, true);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -106,8 +98,6 @@ void cls_802150B8::fn_80214CE4() {
     }
 }
 
-// FIXME: 98.20 %. The lift's height is in r3 in the original, ours in r4 (as in
-// fn_80214994). The literal rows are the data split.
 void cls_802150B8::fn_80214AF8() {
     s32 serial = field_0x30;
     if (serial >= 0) {
@@ -124,13 +114,7 @@ void cls_802150B8::fn_80214AF8() {
     if (fn_801CD2F8(mOwner->field_0x4)) {
         field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->field_0x4, &pos, 0, -1, -1);
     } else {
-        s32 height = 0;
-        s32 depth = 1;
-        if (pos.z > 0.0f) {
-            height = 1;
-            depth = 0;
-        }
-        f32 lift = (f32)(height * 1024 + depth * 128);
+        f32 lift = depthLift(&pos, 1, 0, true);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
@@ -144,9 +128,6 @@ void cls_802150B8::fn_80214AF8() {
     mOwner->startSound_801F0E34(0x4000E, 0);
 }
 
-// FIXME: 97.52 %. The lift's height is in r3 in the original (free after the
-// fn_801CD2F8 call), ours takes r4 and the depth r0 is shared; the other
-// rows are the literal split (@NNN vs lbl_).
 void cls_802150B8::fn_80214994() {
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
@@ -159,13 +140,7 @@ void cls_802150B8::fn_80214994() {
             }
         }
     } else if (field_0x18 != NULL) {
-        s32 height = 0;
-        s32 depth = 1;
-        if (pos.z > 0.0f) {
-            height = 1;
-            depth = 0;
-        }
-        f32 lift = (f32)(height * 1024 + depth * 128);
+        f32 lift = depthLift(&pos, 1, 0, true);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
