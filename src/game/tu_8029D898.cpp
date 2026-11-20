@@ -1216,8 +1216,10 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 if (slot != -1) {
                     getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
                 }
-                JGeometry::TVec3f left(pos->x - 16.0f, pos->y, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&left, 0, layer, 0x19E);
+                playerPos.x = pos->x - 16.0f;
+                playerPos.y = pos->y;
+                playerPos.z = 0.0f;
+                gBgRewrite_8053AC98->fn_802A3948(&playerPos, 0, layer, 0x19E);
             } else {
                 s32 cell = field_0x20;
                 getGameView_802D6A9C()->fn_802D782C(1);
@@ -1226,8 +1228,10 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 if (slot != -1) {
                     getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
                 }
-                JGeometry::TVec3f right(16.0f + pos->x, pos->y, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&right, 0, layer, 0x19F);
+                playerPos.x = 16.0f + pos->x;
+                playerPos.y = pos->y;
+                playerPos.z = 0.0f;
+                gBgRewrite_8053AC98->fn_802A3948(&playerPos, 0, layer, 0x19F);
             }
             fn_80230FD0(player, 0x30007);
         } else {
