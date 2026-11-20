@@ -8,8 +8,13 @@
 #include "JSystem/JGeometry.h"
 #include "JSystem/JMath/JMath.h"
 
-// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
-// The original zero-extends the saved index again before the second restore compare; registers follow.
+// A random offset in [-range / 2, range / 2].
+static inline s32 spread(s32 range) {
+    return fn_801CD664(range + 1) - range / 2;
+}
+
+// FIXME(shotgun): 98.83 %, missing/extra; behaviour near.
+// The original zero-extends the saved index again before the second restore compare.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
     u8 prev;
     u8 next;
@@ -72,12 +77,12 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
 // Not auto-inlined: fn_801C8C84 calls fn_801C9234 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 80.20 %, scheduling+regalloc; behaviour clean.
+// FIXME: 83.81 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): register order and scheduling differ; lbl_ constant reloc-name
 void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 nx = mMapHitDir.x;
     f32 ny = mMapHitDir.y;
-    s16 velAngle = (s32)(JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f);
+    s16 velAngle = (s32)(JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     f32 c1 = JMACosShort(0x4000);
     f32 s1 = JMASinShort(0x4000);
     f32 c2 = JMACosShort(-0x4000);
@@ -86,9 +91,9 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 v1y = nx * s1 + ny * c1;
     f32 v2x = nx * c2 - ny * s2;
     f32 v2y = nx * s2 + ny * c2;
-    s32 a1 = (s32)(JMath::atanTable_.atan2_(v1x, v1y) * 10430.378f);
+    s32 a1 = (s32)(JMath::atanTable_.atan2_(v1x, v1y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     f32 d1 = __fabsf((f32)(s16)(velAngle - a1));
-    s32 a2 = (s32)(JMath::atanTable_.atan2_(v2x, v2y) * 10430.378f);
+    s32 a2 = (s32)(JMath::atanTable_.atan2_(v2x, v2y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
     f32 d2 = __fabsf((f32)(s16)(velAngle - a2));
     JGeometry::TVec2f dir;
     if (0.000030517578f * d2 < 0.000030517578f * d1) {
@@ -99,12 +104,11 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
         dir.y = v1y;
     }
     fn_801C9420(&dir);
-    out->x = mPos.x + dir.x;
-    out->y = mPos.y + dir.y;
+    out->set(mPos.x + dir.x, mPos.y + dir.y);
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 96.52 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.63 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
         JGeometry::TVec3f railPos;
@@ -486,14 +490,14 @@ void ShadowLink2_804A43E8::fn_801C7EE4() {
     }
 }
 
-// FIXME(shotgun): 96.43 %, different; behaviour clean.
+// FIXME(shotgun): 99.74 %, operands; behaviour clean.
 u8 ShadowLink2_804A43E8::fn_801C7BD0() {
     u8 ret = 0;
     s32 count = mPathCount;
     if (count == 2) {
         f32 dx = field_0x32c.x - mPos.x;
-        f32 r = 0.001f + lbl_8053EDF0;
         f32 dy = field_0x32c.y - mPos.y;
+        f32 r = 0.001f + lbl_8053EDF0;
         if (square(dx) + square(dy) <= r * r) {
             s32 idx1 = 1;
             if (count <= 1) {
@@ -527,7 +531,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
             } else {
                 blocked = true;
             }
-            if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
+            if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
                 !field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
                 JGeometry::TVec3f p2;
                 fn_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
@@ -537,9 +541,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
                     field_0x32c.y = copy2.y;
                     field_0x32c.z = copy2.z;
                 } else {
-                    field_0x32c.x = copy2.x;
-                    field_0x32c.y = mPos.y;
-                    field_0x32c.z = copy2.z;
+                    field_0x32c.set(copy2.x, mPos.y, copy2.z);
                 }
             }
         }
@@ -747,7 +749,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
 }
 
-// FIXME(shotgun): 96.51 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.49 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C71BC() {
     mFlags &= ~0x100000;
     if (!(mFlags & 0x2000000)) {
@@ -773,7 +775,7 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
         }
     }
     fn_801C8B50();
-    field_0x33c += fn_801CD664(0x4001) - 0x2000;
+    field_0x33c += spread(0x4000);
     if (!(field_0x524.field_0x0 & 0x40)) {
         fn_801C3B7C(0x1C);
     }
