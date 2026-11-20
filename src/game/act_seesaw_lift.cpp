@@ -127,7 +127,7 @@ void SeesawLift_804AD348::init() {
 }
 
 // FIXME: 90.99 %, scheduling+regalloc; behaviour clean.
-// FIXME(shotgun): scheduling differs: original hoists the field_0x4 load above the layer call
+// float registers of the box test and the operand order of the layer compare differ
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -135,7 +135,8 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    if (field_0x4 != getPlayerLayer_8023DE58(player)) {
+    s32 layer = field_0x4;
+    if (layer != getPlayerLayer_8023DE58(player)) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -151,10 +152,11 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         rel.sub(mPos);
         rel.z = 0.0f;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        bool inside = false;
-        if (rel.x >= mBox.i.x && rel.y >= mBox.i.y * cosVal && rel.x < mBox.f.x && rel.y < mBox.f.y * cosVal) {
-            inside = true;
-        }
+        f32 minX = mBox.i.x;
+        f32 minY = mBox.i.y * cosVal;
+        f32 maxX = mBox.f.x;
+        f32 maxY = mBox.f.y * cosVal;
+        bool inside = rel.x >= minX && rel.y >= minY && rel.x < maxX && rel.y < maxY;
         if (inside) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
