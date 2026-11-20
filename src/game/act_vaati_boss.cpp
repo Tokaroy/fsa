@@ -719,7 +719,7 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
 
 // The step of the vtable slot 0x98 (0x801D4ED4, a plain `fn_801D4ED4` symbol in the original).
 // The sin/cos products sit in other float registers (f1/f0 and the cos in f3 in the original).
-// FIXME: 95.94 %, missing/extra; behaviour drift.
+// FIXME: 99.82 %, regalloc-only; behaviour drift.
 void VaatiBoss_804A4958::vfunc_0x98() {
     bool step = false;
     if (field_0x5d1 != 0) {
@@ -815,7 +815,6 @@ void VaatiBoss_804A4958::vfunc_0x98() {
     fn_801E4A18(&field_0x52c.field_0x28);
 }
 
-// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void VaatiBoss_804A4958::fn_801D4C70() {
     switch (mState) {
     case 1:
@@ -951,7 +950,7 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
-// FIXME(shotgun): 96.76 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.15 %, missing/extra; behaviour drift.
 // Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
     const JGeometry::TBox2f* box = layerBox(field_0x4);
