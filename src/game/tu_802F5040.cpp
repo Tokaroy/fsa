@@ -1987,7 +1987,7 @@ void TileMap_804AA858::fn_802F9DA8(void* res, u32 srcOffset, s32 slot, u32 dstOf
     DCFlushRange(out, len);
 }
 
-// FIXME: 90.71 %, missing/extra; behaviour clean.
+// FIXME: 91.69 %, missing/extra; behaviour clean.
 // As in fn_802F99DC: one mr fewer in the 4x-unrolled copy loop (the
 // original loads the next low byte before the store); registers differ.
 // Loads the u16 grid field_0x24 from res like fn_802F99DC (little-endian,
