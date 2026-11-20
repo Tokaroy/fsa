@@ -56,11 +56,13 @@ static inline void setScaleMtx(Mtx m, f32 s) {
     m[2][2] = s;
 }
 
-// FIXME(shotgun): 92.81 %, different; behaviour clean.
+// FIXME(shotgun): 99.29 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
+    s32 spawned;
+    s32 i;
+    s32 gone;
     if (field_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
-        s32 gone = 0;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0, gone = 0; i < 4; i++) {
             s32 serial = field_0x2c0[i];
             if (serial < 0) {
                 gone++;
@@ -79,9 +81,9 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
             field_0x260 = 900;
         }
         if (field_0x260 == 0 && gone == 4) {
-            if (field_0x4 == getPlayerLayer_8023DE58(0)) {
-                s32 spawned = 0;
-                for (s32 i = 0; i < 4; i++) {
+            s32 layer = field_0x4;
+            if (layer == getPlayerLayer_8023DE58(0)) {
+                for (i = 0, spawned = 0; i < 4; i++) {
                     field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', field_0x4, &mPos, 4, -1, -1);
                     s32 serial = field_0x2c0[i];
                     if (serial >= 0) {
@@ -101,7 +103,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
     }
 }
 
-// FIXME(shotgun): 86.16 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.23 %, missing/extra; behaviour drift.
 void ChiefSoldier_804A0B90::fn_80175024() {
     if (getType() == 6) {
         return;
@@ -136,8 +138,8 @@ void ChiefSoldier_804A0B90::fn_80175024() {
             if (field_0x3c.x < 0.1f && field_0x3c.y < 0.1f) {
                 partner->field_0x94 = 0;
                 if (field_0x4 >= 8 && field_0x23c == 1) {
-                    s32 dir = field_0x98;
-                    mBox.set(lbl_804A0A58[dir][0], lbl_804A0A58[dir][1], lbl_804A0A58[dir][2], lbl_804A0A58[dir][3]);
+                    const f32* box = lbl_804A0A58[field_0x98];
+                    mBox.set(JGeometry::TVec2f(box[0], box[1]), JGeometry::TVec2f(box[2], box[3]));
                 }
                 fn_801F2B7C(-100, -1, 1);
             } else {
@@ -159,15 +161,16 @@ void ChiefSoldier_804A0B90::fn_80175024() {
         }
         JGeometry::TVec3f pos;
         if (partner->field_0x90 == 7) {
-            pos = mPos;
+            pos.set(mPos);
         } else {
             s32 layer = partner->field_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxp = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-            JGeometry::TBox2f box = *boxp;
-            pos.x = mPos.x + box.i.x;
-            pos.y = mPos.y + box.i.y;
-            pos.z = mPos.z;
+            JGeometry::TBox2f box;
+            box = *boxp;
+            pos.set(mPos);
+            pos.x += box.i.x;
+            pos.y += box.i.y;
         }
         partner->mPos = pos;
         partner->field_0x98 = field_0x98;
@@ -464,24 +467,25 @@ void ChiefSoldier_804A0B90::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.01 %, missing/extra; behaviour near.
+// The original reads mPos.x twice (once for the +=, once for the save) and loads all four box floats before storing them.
 void ChiefSoldier_804A0B90::fn_80174220() {
     s32 dir = field_0x98;
     s32 index = dir;
     if (getType() == 8 && field_0x23c != 0) {
         index = dir + 4;
     }
-    f32 x = mPos.x;
-    f32 y = mPos.y;
-    f32 z = mPos.z;
+    f32 x;
+    f32 y;
+    f32 z;
     if (index < 4) {
+        x = mPos.x;
+        y = mPos.y;
+        z = mPos.z;
         mPos.x += lbl_804A0AD8[dir][0];
         mPos.y += lbl_804A0AD8[field_0x98][1];
     }
-    mBox.i.x = lbl_804A0B10[index][0];
-    mBox.i.y = lbl_804A0B10[index][1];
-    mBox.f.x = lbl_804A0B10[index][2];
-    mBox.f.y = lbl_804A0B10[index][3];
+    mBox.set(lbl_804A0B10[index][0], lbl_804A0B10[index][1], lbl_804A0B10[index][2], lbl_804A0B10[index][3]);
     if (field_0x94 == 0 || field_0x94 == 2) {
         s32 serial = field_0x238;
         if (serial >= 0) {
@@ -504,10 +508,10 @@ void ChiefSoldier_804A0B90::fn_80174220() {
             if (fn_80235448(player)) {
                 continue;
             }
-            f32 y0 = mBox.i.y + mPos.y;
-            f32 y1 = mBox.f.y + mPos.y;
             f32 x0 = mBox.i.x + mPos.x;
+            f32 y0 = mBox.i.y + mPos.y;
             f32 x1 = mBox.f.x + mPos.x;
+            f32 y1 = mBox.f.y + mPos.y;
             JGeometry::TVec2f center(0.5f * (x0 - x1) + x1, 0.5f * (y0 - y1) + y1);
             if (fn_80237948(player, &center)) {
                 fn_80230FD0(player, 0x20002);
