@@ -1262,7 +1262,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
         field_0x26C -= 0.2f;
     }
     s16 prev = field_0x254;
-    s32 step = (s32)(65536.0f * (1.3f / (6.283184f * field_0x26C)));
+    s32 step = (s32)(65536.0f * (JMAFastReciprocal(6.283184f * field_0x26C) * 1.3f));
     field_0x254 = prev - step;
     field_0x3c.x = 1.3f * JMath::sincosTable_.cosShort(field_0x254);
     field_0x3c.y = 1.3f * JMath::sincosTable_.sinShort(field_0x254);
