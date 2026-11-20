@@ -713,7 +713,7 @@ s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
 }
 
 // The 16.0f literal is lbl_8053F820 once the pool before it is complete.
-// FIXME: 99.42 %, regalloc-only; behaviour clean.
+// FIXME: regalloc-only (f2/f3 swapped for mPos.y and dy); behaviour clean.
 s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* center,
                                        const JGeometry::TVec3f* from, s32 excludeSerial,
                                        f32 radius) const {
@@ -725,10 +725,11 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
             fn_801CC9B0(mActors[i]))
         {
-            f32 x = mActors[i]->mPos.x;
-            f32 y = mActors[i]->mPos.y;
-            if (square(x - center->x) + square(y - center->y) <= radiusSq) {
-                f32 dist = square(x - from->x) + square(y - from->y);
+            if (square(mActors[i]->mPos.x - center->x) + square(mActors[i]->mPos.y - center->y) <=
+                radiusSq)
+            {
+                f32 dist =
+                    square(mActors[i]->mPos.x - from->x) + square(mActors[i]->mPos.y - from->y);
                 if (dist < best) {
                     best = dist;
                     serial = mActors[i]->mSerial;
