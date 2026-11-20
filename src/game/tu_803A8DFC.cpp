@@ -999,8 +999,6 @@ void ResultScreen_804AF9A0::fn_803B14F8() {
     }
 }
 
-// FIXME(shotgun): 99.82 %, regalloc-only; behaviour clean.
-// ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B0FD4() {
     field_0x440++;
     s32 t1 = lbl_8050DB0C.field_0x4c[(0x25A - 0x4C) / 2];
@@ -1123,8 +1121,6 @@ void ResultScreen_804AF9A0::fn_803B0978() {
     }
 }
 
-// FIXME(shotgun): 99.90 %, different; behaviour near.
-// ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B03E8() {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x260 - 0x4C) / 2];
     s32 t1 = lbl_8050DB0C.field_0x4c[(0x262 - 0x4C) / 2];
