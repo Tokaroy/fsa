@@ -2429,7 +2429,7 @@ void FileSelect_804AFF60::fn_803C6690() {
     }
 }
 
-// FIXME: 97.18 %, regalloc-only; behaviour clean.
+// FIXME: 98.50 %, regalloc-only; behaviour clean.
 // Registers only: `end` sits in r19 in the original (r28 in ours), which
 // shifts the other saved registers by one.
 // State 31: unless it came from state 5, the four buttons slide down and fade
