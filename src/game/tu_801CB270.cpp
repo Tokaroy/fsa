@@ -75,6 +75,7 @@ s32 fn_801CD9F0(f32* value, f32 target, f32 step) {
 
 // Steps *angle towards target by at most step; true while it has not reached
 // the target.
+// FIXME: 99.06 %, regalloc-only; behaviour clean.
 bool fn_801CD970(s16* angle, s32 target, s32 step) {
     s16 diff = (s16)target - *angle;
     if ((s16)step < 0) {
@@ -138,6 +139,7 @@ static inline void stepToward(f32* cur, f32 target, f32 factor) {
 
 // Moves *cur toward *target by `factor` of the way, the step clamped between minStep and
 // maxStep; true while it has not reached the target.
+// FIXME: 90.51 %, missing/extra; behaviour drift.
 bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 factor, f32 minStep, f32 maxStep) {
     if (factor > 1.0f) {
         factor = 1.0f;
