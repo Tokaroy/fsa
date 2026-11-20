@@ -233,7 +233,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME: 98.51 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.51 %, missing/extra; behaviour near.
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -905,7 +905,7 @@ bool BgRewrite_804A7C98::fn_802A01F0(const JGeometry::TVec3f* pos, s32 player, s
 }
 
 // Register copies differ (the original keeps layer, cell and the spawned serial twice).
-// FIXME: 98.54 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.56 %, missing/extra; behaviour clean.
 u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32 layer, JGeometry::TVec3f* out) {
     u8 result = 0;
     if (pos->z < 19.0f) {
@@ -1189,7 +1189,7 @@ u8 BgRewrite_804A7C98::fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32
     return field_0x24 == 0x30;
 }
 
-// FIXME(shotgun): 95.54 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.35 %, regalloc-only; behaviour clean.
 // (the player-mask test: the original keeps the bool and compares it with 1)
 bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1242,7 +1242,7 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
     return false;
 }
 
-// FIXME(shotgun): 97.41 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.12 %, missing/extra; behaviour clean.
 // 2 fewer insns (register copies of layer)
 bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
@@ -1474,7 +1474,7 @@ static inline void writeTileBlock(s32 layer, s32 row, const u16* tiles) {
     }
 }
 
-// FIXME(shotgun): 91.90 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 97.34 %, regalloc-only; behaviour clean.
 // regalloc (cell kept in other registers)
 void BgRewrite_804A7C98::fn_8029D8F0(const JGeometry::TVec3f* pos, s32 layer, s32 layerOffset, s32 pattern) {
     GameView_804A9950* view = getGameView_802D6A9C();
