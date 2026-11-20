@@ -51,9 +51,8 @@ void Fish_804AC658::init() {
         s32 height = (s32)(box->f.y - y0);
         s32 n = 0;
         s32 xi = 1;
-        s32 packed;
         for (s32 x = 16; x < width; x += 16) {
-            packed = xi + 0x20;
+            s32 packed = xi + 0x20;
             for (s32 y = 16; y < height; y += 16) {
                 JGeometry::TVec3f p;
                 p.x = x + x0;
@@ -83,8 +82,8 @@ void Fish_804AC658::init() {
                 } else {
                     size = 1;
                 }
-                f32 cx = x0 + (tile & 0x1F) * 16;
-                f32 cy = y0 + (tile >> 5) * 16;
+                f32 cx = (tile & 0x1F) * 16 + x0;
+                f32 cy = (tile >> 5) * 16 + y0;
                 for (s32 j = 0; j < size; j++) {
                     f32 ry = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     f32 rx = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
