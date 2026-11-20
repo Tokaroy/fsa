@@ -1011,7 +1011,6 @@ void cls_804ADF28::fn_80364340() {
 }
 
 // FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
-// FIXME(shotgun): the original divides by (6.283184f * dist) with fres (estimate), we emit fdivs; literal names differ.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
@@ -1031,7 +1030,7 @@ void cls_804ADF28::fn_80363FFC() {
         }
     }
     if (field_0x3c.z == 0.0f && mPos.z == 0.0f) {
-        s32 cell = (tileX & 0x100) | ((tileY & 0x100) << 1) | (tileY & 0xF0) | ((tileX >> 4) & 0xF);
+        s32 cell = ((tileY & 0x100) << 1) | (tileX & 0x100) | (tileY & 0xF0) | ((tileX >> 4) & 0xF);
         field_0x27a = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, cell) & 0x3FF;
         if (field_0x27a == 0x1a8) {
             field_0x264 = 0;
@@ -1050,13 +1049,13 @@ void cls_804ADF28::fn_80363FFC() {
     JGeometry::TVec3f center(1808.0f, 3296.0f, 0.0f);
     if (mPos.x >= center.x) {
         if (mPos.y < center.y) {
-            s32 angle = (JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f);
+            s32 angle = JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f;
             f32 dist = PSVECDistance(&mPos, &center);
-            s32 delta = 65536.0f * (1.3f / (6.283184f * dist));
-            u16 a = angle + delta;
+            s32 delta = 65536.0f * (JMath::fastReciprocal(6.283184f * dist) * 1.3f);
+            s32 a = angle + delta;
             mPos.x = center.x + dist * JMath::sincosTable_.cosShort(a);
             mPos.y = center.y + dist * JMath::sincosTable_.sinShort(a);
-            if (a >= 0xe000) {
+            if ((u16)a >= 0xe000) {
                 field_0x23c = 0;
                 if (field_0x238 == 0) {
                     field_0x26c = 0x32f;
