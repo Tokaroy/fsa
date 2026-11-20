@@ -793,15 +793,16 @@ s32 cls_804AE4B0::fn_80370200() {
 #pragma auto_inline off
 // FIXME(shotgun): 75.22 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_80370020() {
+    JGeometry::TBox2f box;
     if (field_0x3a8 == 0) {
         if (field_0x3ac == 0) {
-            JGeometry::TBox2f box;
-            box.i.x = mBox.i.x + field_0x324.x;
-            box.i.y = mBox.i.y + field_0x324.y;
-            box.f.x = mBox.f.x + field_0x324.x;
-            box.f.y = mBox.f.y + field_0x324.y;
+            box.set(mBox);
+            box.i.x += field_0x324.x;
+            box.i.y += field_0x324.y;
+            box.f.x += field_0x324.x;
+            box.f.y += field_0x324.y;
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-            s32 player = fn_8022FD8C(mSerial);
+            const s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
                     if (PSVECDistance(&field_0x264[player], &field_0x324) <= 20.0f) {
@@ -816,11 +817,11 @@ void cls_804AE4B0::fn_80370020() {
             }
         }
     } else if (field_0x3a0 == 4) {
-        JGeometry::TBox2f box;
-        box.i.x = mBox.i.x + field_0x324.x;
-        box.i.y = mBox.i.y + field_0x324.y;
-        box.f.x = mBox.f.x + field_0x324.x;
-        box.f.y = mBox.f.y + field_0x324.y;
+        box.set(mBox);
+        box.i.x += field_0x324.x;
+        box.i.y += field_0x324.y;
+        box.f.x += field_0x324.x;
+        box.f.y += field_0x324.y;
         fn_8022FF8C(field_0x3a4, &box, field_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x3a4, mSerial)) {
             field_0x3a4 = -1;
