@@ -389,7 +389,6 @@ bool cls_804A0738::fn_80168C38() {
 }
 
 // 0x8016890C.
-// FIXME(shotgun): 98.32 %, missing/extra + reloc-name; behaviour near.
 void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometry::TBox2f* out) {
     if (layer == 0) {
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -431,6 +430,7 @@ void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometr
     out->i.x = p.x;
     p.x = (f32)gx;
     p.y = (f32)gy;
+    p.z = 0.0f;
     for (s32 n = 0; n < 64; n++) {
         if (p.y >= 512.0f) {
             p.y = 512.0f;
