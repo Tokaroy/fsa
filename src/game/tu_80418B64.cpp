@@ -381,7 +381,7 @@ static const s16 lbl_8048E144[2][5] = {
     { 0, 0, 0, 0, 0 },
 };
 
-// FIXME(shotgun): 97.25 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.28 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -867,7 +867,6 @@ void cls_804B13D4::fn_8041EDB0() {
     }
 }
 
-// FIXME(shotgun): 92.24 %, missing/extra; behaviour near.
 void cls_804B13D4::fn_8041E8B4(s32 player) {
     if (lbl_80529DEC.isField0x239(player)) {
         lbl_80529DEC.field_0xd8[player] = fn_80237774(player);
@@ -966,7 +965,6 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
     }
 }
 
-// FIXME(shotgun): 99.58 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
     s32 target;
     if (fn_8022F514(id)) {
@@ -1318,7 +1316,7 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: 99.02 %, missing/extra; behaviour near.
+// FIXME: 99.03 %, missing/extra; behaviour near.
 // FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
@@ -1426,7 +1424,7 @@ void cls_804B13D4::fn_8041C67C() {
 }
 
 // Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.29 %, missing/extra; behaviour near.
+// FIXME: 99.31 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
@@ -1585,7 +1583,7 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 90.46 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.41 %, different; behaviour near.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
