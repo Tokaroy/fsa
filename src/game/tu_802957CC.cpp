@@ -116,7 +116,6 @@ cls_804A7AE0::~cls_804A7AE0() {
     }
 }
 
-// FIXME(shotgun): 95.84 %, scheduling+regalloc; behaviour clean.
 void cls_804A7AE0::init() {
     mBox.i.x = -48.0f;
     mBox.i.y = -48.0f;
@@ -371,7 +370,7 @@ void cls_804A7AE0::fn_8029A974() {
 }
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
-// FIXME: 89.34 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.65 %, missing/extra; behaviour drift.
 void cls_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
@@ -550,7 +549,7 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 97.17 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.16 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
@@ -626,7 +625,7 @@ void cls_804A7AE0::fn_80299720() {
     }
 }
 
-// FIXME(shotgun): 98.52 %, different; behaviour drift.
+// FIXME(shotgun): 98.51 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299374() {
     if (field_0x250.y > 0.0f) {
@@ -700,7 +699,7 @@ void cls_804A7AE0::fn_80299374() {
     }
 }
 
-// FIXME(shotgun): 97.18 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.17 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298FC4() {
     if (field_0x250.x < 0.0f) {
@@ -777,7 +776,7 @@ void cls_804A7AE0::fn_80298FC4() {
     }
 }
 
-// FIXME(shotgun): 97.16 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.14 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
@@ -854,7 +853,7 @@ void cls_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 84.07 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 92.38 %, missing/extra; behaviour near.
 // still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
 void cls_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
@@ -957,7 +956,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.62 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.90 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
