@@ -676,40 +676,45 @@ void KaeporaGaeboraEnding_804ADAC8::update() {
     }
 }
 
-// FIXME(shotgun): 94.46 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.72 %, operands; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::draw() {
-    if (field_0x2B0 != 0) {
-        if (field_0x270 == 0) {
-            if (mPtmfIndex == 1) {
-                fn_803616FC();
-            } else if (mPtmfIndex == 0) {
-                fn_80361424();
-            } else {
-                SpriteParams_801F5AE0 params;
-                params.field_0x1f = 0;
-                drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
-                params.field_0x10.a = 200;
-                if (mSpriteParams.mMtx == NULL) {
-                    fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", field_0x23C + 0x25C, NULL);
-                }
-            }
-        } else {
-            SpriteParams_801F5AE0 params;
-            params.field_0x1f = 0;
-            params.field_0x1c = mHeight;
-            params.field_0x1d = mDepth;
-            drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + field_0x23C, &params, -1, 1.0f, 1.0f);
-            if (mHeight < 0) {
-                params.field_0x1c = 0;
-            }
-            if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x238 + field_0x23C, NULL);
-            }
+    if (field_0x2B0 == 0) {
+        return;
+    }
+    if (field_0x270 == 0) {
+        if (mPtmfIndex == 1) {
+            fn_803616FC();
+            return;
+        }
+        if (mPtmfIndex == 0) {
+            fn_80361424();
+            return;
+        }
+        SpriteParams_801F5AE0 params;
+        params.field_0x1f = 0;
+        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
+        params.field_0x10.a = 200;
+        s32 frame = field_0x23C + 0x25C;
+        if (mSpriteParams.mMtx == NULL) {
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        }
+    } else {
+        SpriteParams_801F5AE0 params;
+        params.field_0x1f = 0;
+        params.field_0x1c = mHeight;
+        params.field_0x1d = mDepth;
+        drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + field_0x23C, &params, -1, 1.0f, 1.0f);
+        if (mHeight < 0) {
+            params.field_0x1c = 0;
+        }
+        s32 frame = field_0x238 + field_0x23C;
+        if (mSpriteParams.mMtx == NULL) {
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
 
-// FIXME(shotgun): 90.94 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     SpriteParams_801F5AE0 params;
     params.field_0x1f = 0;
@@ -723,20 +728,17 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     params.field_0x1f = 0;
     params.field_0x1d = 1;
     Mtx mtx;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     f32 s = JMath::sincosTable_.sinShort(mSway.mAngle);
     f32 c = JMath::sincosTable_.cosShort(mSway.mAngle);
-    mtx[0][0] = c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = s;
-    mtx[0][3] = 0.0f;
-    mtx[1][0] = 0.0f;
     mtx[1][1] = 1.0f;
-    mtx[1][2] = 0.0f;
-    mtx[1][3] = 0.0f;
+    mtx[0][0] = c;
+    mtx[0][2] = s;
     mtx[2][0] = -s;
-    mtx[2][1] = 0.0f;
     mtx[2][2] = c;
-    mtx[2][3] = 0.0f;
+    mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
     params.mMtx = mtx;
     mPos.y += -21.0f;
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x27A, &params, -1, 1.0f, 1.0f);
@@ -750,7 +752,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     SpriteParams_801F5AE0 params;
     bool shadow = false;
@@ -780,17 +782,14 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     s16 angle = (u16)field_0x254 - lbl_805429F8[field_0x274];
     f32 s = JMath::sincosTable_.sinShort(angle);
     f32 c = JMath::sincosTable_.cosShort(angle);
-    mtx[0][0] = c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = s;
-    mtx[0][3] = 0.0f;
-    mtx[1][0] = 0.0f;
     mtx[1][1] = 1.0f;
-    mtx[1][2] = 0.0f;
-    mtx[1][3] = 0.0f;
+    mtx[0][0] = c;
+    mtx[0][2] = s;
     mtx[2][0] = -s;
-    mtx[2][1] = 0.0f;
     mtx[2][2] = c;
+    mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.mMtx = mtx;
     if (!shadow) {
