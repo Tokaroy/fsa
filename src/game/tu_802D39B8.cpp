@@ -2492,7 +2492,7 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
 // Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6).
-// FIXME: 99.37 %, missing/extra; behaviour clean.
+// FIXME: 99.49 %, missing/extra; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
