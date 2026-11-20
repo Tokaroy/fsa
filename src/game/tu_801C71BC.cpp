@@ -247,79 +247,36 @@ void ShadowLink2_804A43E8::fn_801C8B50() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 80.64 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.65 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C887C() {
     JGeometry::TVec3f railPos;
     fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
     if (fn_801CCB1C(&railPos, field_0x4)) {
-        u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 next = field_0x358.fn_80214244()->field_0x3;
-        cls_800FE3EC* rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 prev = field_0x358.fn_80214244()->field_0x3;
-        rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        u8 opt[3];
-        opt[2] = prev;
-        opt[1] = start;
-        opt[0] = next;
-        if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(opt[2])) {
-            u8 pick = opt[0];
-            rail = field_0x358.fn_80214244();
-            if (pick < rail->field_0x2) {
-                rail->field_0x3 = pick;
-            }
-        } else if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
-            u8 pick = opt[2];
-            rail = field_0x358.fn_80214244();
-            if (pick < rail->field_0x2) {
-                rail->field_0x3 = pick;
-            }
+        u8 prev, cur, next;
+        getRailNeighbours(&next, &cur, &prev);
+        if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(prev)) {
+            field_0x358.fn_80214244()->setIndex(next);
+        } else if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(next)) {
+            field_0x358.fn_80214244()->setIndex(prev);
         } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
             JGeometry::TVec3f p2;
-            fn_800FE294(&p2, field_0x358.fn_80214244(), opt[2]);
+            fn_800FE294(&p2, field_0x358.fn_80214244(), prev);
             if (fn_801CCB1C(&p2, field_0x4)) {
-                u8 pick = opt[0];
-                rail = field_0x358.fn_80214244();
-                if (pick < rail->field_0x2) {
-                    rail->field_0x3 = pick;
-                }
+                field_0x358.fn_80214244()->setIndex(next);
             } else {
-                u8 pick = opt[2];
-                rail = field_0x358.fn_80214244();
-                if (pick < rail->field_0x2) {
-                    rail->field_0x3 = pick;
-                }
+                field_0x358.fn_80214244()->setIndex(prev);
             }
         } else {
             JGeometry::TVec3f p0;
-            fn_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
+            fn_800FE294(&p0, field_0x358.fn_80214244(), next);
             if (fn_801CCB1C(&p0, field_0x4)) {
-                u8 pick = opt[2];
-                rail = field_0x358.fn_80214244();
-                if (pick < rail->field_0x2) {
-                    rail->field_0x3 = pick;
-                }
+                field_0x358.fn_80214244()->setIndex(prev);
             } else {
-                u8 pick = opt[0];
-                rail = field_0x358.fn_80214244();
-                if (pick < rail->field_0x2) {
-                    rail->field_0x3 = pick;
-                }
+                field_0x358.fn_80214244()->setIndex(next);
             }
         }
-        if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
-            u8 pick = opt[1];
-            rail = field_0x358.fn_80214244();
-            if (pick < rail->field_0x2) {
-                rail->field_0x3 = pick;
-            }
+        if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
+            field_0x358.fn_80214244()->setIndex(cur);
         }
     }
 }
@@ -790,30 +747,17 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
 }
 
-// FIXME(shotgun): 96.96 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.51 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C71BC() {
     mFlags &= ~0x100000;
     if (!(mFlags & 0x2000000)) {
         bool moved = false;
-        u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 next = field_0x358.fn_80214244()->field_0x3;
-        cls_800FE3EC* buf = field_0x358.fn_80214244();
-        if (start < buf->field_0x2) {
-            buf->field_0x3 = start;
-        }
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 prev = field_0x358.fn_80214244()->field_0x3;
-        buf = field_0x358.fn_80214244();
-        if (start < buf->field_0x2) {
-            buf->field_0x3 = start;
-        }
-        u8 opt[3];
-        new (&opt[0]) u8(prev);
-        new (&opt[1]) u8(start);
-        new (&opt[2]) u8(next);
-        if (field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[0]) ||
-            field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[2])) {
+        u8 next;
+        u8 cur;
+        u8 prev;
+        getRailNeighbours(&next, &cur, &prev);
+        if (field_0x358.fn_80214244()->fn_800FD4C0(cur, prev) ||
+            field_0x358.fn_80214244()->fn_800FD4C0(cur, next)) {
             JGeometry::TVec3f railPos;
             mPathCount = 0;
             mFlags &= ~(0x1000 | 0x20000);
