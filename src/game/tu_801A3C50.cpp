@@ -92,14 +92,14 @@ s32 fn_801A6108(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 
 // 0x801A5400.
 // Case 6 also stores 1 at this + 0x230 (past ActorBase_804A5770); that store is not written.
-// FIXME: 95.78 %, missing/extra; behaviour drift.
+// FIXME: 96.02 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     if ((field_0xb0 & 0xFF) == 0) {
         return 0;
     }
     s32 result = 0;
     s32 player = fn_8023AE34(box, field_0x4, pos);
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] == 0 && mPos.z > 32.0f) {
         return 0;
     }
     if (field_0xa0 < 0) {
@@ -412,8 +412,11 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
     return result;
 }
 
+static inline f32 getRandFX(f32 max) {
+    return max - 2.0f * max * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+}
+
 // 0x801A4FB4.
-// FIXME(shotgun): 99.98 %, operands; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4FB4() {
     s32 kind = (field_0xb0 >> 12) & 0xF;
     if (kind == 0) {
@@ -446,10 +449,10 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
     if (field_0xd4 == 1) {
         switch (kind) {
         case 1:
-            z = 5.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            z = 5.0f + getRandFX(1.0f);
             break;
         case 2:
-            z = 2.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            z = 2.0f + getRandFX(1.0f);
             break;
         case 3:
             if (mLife - 10 <= 0) {
@@ -542,10 +545,7 @@ s32 fn_801A4D1C(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 } // extern "C"
 
 // 0x801A4754.
-// FIXME(shotgun): 95.60 %, missing/extra; behaviour drift.
-// The actor fn_8023B22C(player) names (the player's field_0xb18, a
-// BOME actor) has an s32 at 0x254 that this function reads and writes (kind 6, cases 1/4 and 8);
-// that class is not declared yet, so those accesses are not written.
+// FIXME: 99.23 %, scheduling+regalloc; behaviour drift.
 s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     s32 kind = (field_0xb0 >> 16) & 0xFF;
     if (kind == 0) {
@@ -567,7 +567,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
                 field_0xa0 = -1;
                 return 0;
             }
-            if (mSerial == 0) {
+            if (!mSerial & 0x10) {
                 p.x += 3.5f - (s32)(mSerial & 7);
                 p.y += 3.5f - (s32)(mSerial & 7);
             } else {
@@ -588,7 +588,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         return 0;
         }
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] == 0 && mPos.z > 32.0f) {
         return 0;
     }
     s32 player = fn_8023AC74(box, field_0x4, pos);
@@ -601,15 +601,14 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         return 0;
     }
     if (kind == 6) {
-        kind = 4;
         bool turned = false;
+        kind = 4;
+        f32 rad = JMath::atanTable_.atan2_(-(mPos.x - other->mPos.x), -(mPos.y - other->mPos.y));
         s32 face = field_0x98;
-        if ((face ^ 1) != fn_801F681C((s32)(JMath::atanTable_.atan2_(-(mPos.x - other->mPos.x),
-                                                                     -(mPos.y - other->mPos.y)) *
-                                            10430.378f))) {
+        if ((face ^ 1) != fn_801F681C((s32)(rad * 10430.378f))) {
             turned = true;
         }
-        if (static_cast<cls_804A0738*>(other)->field_0x254 != 0) {
+        if (other != NULL && static_cast<cls_804A0738*>(other)->field_0x254 != 0) {
             turned = true;
         }
         if (!turned) {
@@ -630,7 +629,9 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         }
         // fall through
     case 1:
-        static_cast<cls_804A0738*>(other)->field_0x254 = 1;
+        if (other != NULL) {
+            static_cast<cls_804A0738*>(other)->field_0x254 = 1;
+        }
         field_0xd8 = 0;
         field_0xdc = 0;
         // fall through
@@ -665,8 +666,8 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         break;
     case 8:
         if (other != NULL) {
-        s32 own = 0;
         s32 idx = field_0x94 - 1;
+        s32 own = 0;
         if (fn_8022F514(player)) {
             if (idx == fn_8022F3DC(player)) {
                 own = 1;
