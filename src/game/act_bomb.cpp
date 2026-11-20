@@ -57,14 +57,13 @@ void Bomb_8049F784::vfunc_0x44() {
     }
 }
 
-// FIXME: 99.14 % (regalloc-only + reloc-name). Only register allocation differs in checkWarp loop.
+// Only r27/r28 are swapped (count vs layer).
 void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     ActorBase_804A5770* warps[ACTOR_MANAGER_MAX_ACTORS];
     s32 count = getActorManager_801F856C()->fn_801F7818('WARP', field_0x4, warps, -1);
     for (s32 i = 0; i < count; i++) {
-        Warp_804A6DC8* warp = static_cast<Warp_804A6DC8*>(warps[i]);
-        if (warp != NULL) {
-            checkWarp(warp, pos);
+        if (warps[i] != NULL) {
+            checkWarp(static_cast<Warp_804A6DC8*>(warps[i]), pos);
         }
     }
 }
