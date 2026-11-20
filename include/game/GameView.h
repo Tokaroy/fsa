@@ -296,6 +296,7 @@ public:
     void fn_802D752C(u8 value); // 1 unit: field_0x131ef
     void fn_802D782C(u8 value); // 1 unit / 83 calls: field_0x131de
     void fn_802D7870(u16 value); // 2 units: field_0x131dc
+    u16 get_0x131dc() const { return field_0x131dc; }
     void fn_802D790C(u8 value); // 1 unit: field_0x171
     void fn_802D7920(u8 value); // 1 unit: field_0x170
     void fn_802D7934(s32 value); // 1 unit: field_0x5c

@@ -140,11 +140,10 @@ cls_804B1668::~cls_804B1668() {
     field_0x3c = NULL;
 }
 
-// FIXME(shotgun): 99.47 %, regalloc-only
 void cls_804B1668::fn_80433718() {
-    if (field_0xa0 != getGameView_802D6A9C()->field_0x131dc) {
-        field_0xa0 = getGameView_802D6A9C()->field_0x131dc;
-        field_0x9e = getGameView_802D6A9C()->field_0x131dc;
+    if (field_0xa0 != getGameView_802D6A9C()->get_0x131dc()) {
+        field_0xa0 = getGameView_802D6A9C()->get_0x131dc();
+        field_0x9e = getGameView_802D6A9C()->get_0x131dc();
         if (field_0x9e & 0x8000) {
             field_0xa4 = 1;
             field_0x9e &= 0x7FFF;
