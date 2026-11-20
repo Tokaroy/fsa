@@ -1906,10 +1906,6 @@ void MapScreen_804B1288::fn_8040B93C() {
     }
 }
 
-// FIXME: 99.83 %, regalloc-only; behaviour clean.
-// regalloc-only: in state 1 the original loads field_0x3b8 into f0 and the
-// pane's field_0xc into f4 for `offset`; ours swaps them. The pool literals 2.0f, 0.5f,
-// 400.0f are first used by unwritten functions.
 void MapScreen_804B1288::fn_8040B5A0() {
     field_0x380++;
     s32 bob = (field_0x380 % 36) / 9;
@@ -1934,7 +1930,7 @@ void MapScreen_804B1288::fn_8040B5A0() {
         break;
     case 1:
         field_0x3b8 -= 2.0f;
-        if (field_0x3b8 <= field_0x208[field_0x340]->field_0xc - 400.0f) {
+        if (field_0x3b8 <= field_0x208[field_0x340]->getY() - 400.0f) {
             lbl_8050EC80.getCurrentFile().field_0x5a[0] |= (u8)(1 << field_0x340);
             if (field_0x340 == 7) {
                 field_0x38c |= 1 << (field_0x340 * 4 + 1);
@@ -1946,7 +1942,7 @@ void MapScreen_804B1288::fn_8040B5A0() {
             lbl_8053AEC4->fn_8042EDAC(0x24F, 0);
             field_0x350 = 0x12;
         }
-        f32 offset = field_0x3b8 - field_0x208[field_0x340]->field_0xc;
+        f32 offset = field_0x3b8 - field_0x208[field_0x340]->getY();
         field_0x3ac = field_0x208[field_0x340]->mPane->mGlobalBounds.i.x +
                       field_0x208[field_0x340]->mPane->getWidth() / 2;
         field_0x3b0 = offset + (field_0x3b8 + field_0x10->search(lbl_8048C4F8[field_0x340])->getBounds()->i.y +
@@ -2500,9 +2496,9 @@ void MapScreen_804B1288::fn_8040873C() {
     loadStageInfo();
 }
 
-// FIXME: 99.89 %, scheduling; behaviour clean.
+// FIXME: 99.94 %, scheduling; behaviour clean.
 // Scheduling: in the else branch the original loads the second float argument of
-// resize/move (f2) before the first (f1); ours loads f1 first.
+// resize (f2) before the first (f1); ours loads f1 first.
 void MapScreen_804B1288::fn_804083D8() {
     f32 boundsY;
     f32 iconY;
@@ -2527,7 +2523,7 @@ void MapScreen_804B1288::fn_804083D8() {
         } else {
             field_0x28[i][0]->fn_80402CE0(1.0f, 1.0f);
             field_0x28[i][1]->mPane->resize(field_0x28[i][1]->field_0x18, field_0x28[i][1]->field_0x1c);
-            field_0x28[i][2]->mPane->move(field_0x28[i][2]->field_0x8, field_0x28[i][2]->field_0xc);
+            field_0x28[i][2]->mPane->move(field_0x28[i][2]->field_0x8, field_0x28[i][2]->getY());
             ((J2DPicture*)field_0x28[i][0]->mPane)->setBlackWhite(field_0x328[0], field_0x310[0]);
             ((J2DPicture*)field_0x28[i][1]->mPane)->setBlackWhite(field_0x328[1], field_0x310[1]);
             ((J2DTextBox*)field_0x28[i][2]->mPane)->setBlackWhite(field_0x328[2], field_0x310[2]);
@@ -2705,8 +2701,6 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
-// FIXME: 94.62 %, scheduling+regalloc + reloc-name; behaviour clean.
-// FIXME: minor instruction scheduling around bob/params and r29 vs r30 for second cel.
 void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f pos;
@@ -2723,20 +2717,20 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     GXSetTevDirect(GX_TEVSTAGE3);
     params.field_0x26 = 0;
     params.field_0x0[2] = 2;
-    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.mTable[((counter % 128) * 64) & 0x7FF].first, pos.z);
+    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
     pos.y += 3.0f;
     params.field_0x0[2] = 3;
-    s32 cel = lbl_8048CB58[frame] + 0xC0;
+    s32 celLeft = lbl_8048CB58[frame] + 0xC0;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, cel, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
     pos.x += 32.0f;
     params.field_0x0[2] = 4;
-    cel = lbl_8048CB58[frame] + 0xC3;
+    s32 celRight = lbl_8048CB58[frame] + 0xC3;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, cel, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
 // FIXME(shotgun): 96.30 %, different; behaviour near.
