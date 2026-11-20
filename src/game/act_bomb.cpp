@@ -57,19 +57,18 @@ void Bomb_8049F784::vfunc_0x44() {
     }
 }
 
-// FIXME: 99.14 % (regalloc-only + reloc-name). Only register allocation differs in checkWarp loop.
+// Only r27/r28 are swapped (count vs layer).
+// FIXME: 99.77 %, regalloc-only; behaviour clean.
 void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     ActorBase_804A5770* warps[ACTOR_MANAGER_MAX_ACTORS];
     s32 count = getActorManager_801F856C()->fn_801F7818('WARP', field_0x4, warps, -1);
     for (s32 i = 0; i < count; i++) {
-        Warp_804A6DC8* warp = static_cast<Warp_804A6DC8*>(warps[i]);
-        if (warp != NULL) {
-            checkWarp(warp, pos);
+        if (warps[i] != NULL) {
+            checkWarp(static_cast<Warp_804A6DC8*>(warps[i]), pos);
         }
     }
 }
 
-// FIXME: 99.90 % (reloc-name). Functionally 100 %; only .sdata2 float relocations differ.
 bool Bomb_8049F784::fn_8014D6DC() {
     if (mPos.z > 0.1f) {
         return false;
@@ -103,7 +102,8 @@ bool Bomb_8049F784::fn_8014D6DC() {
     return false;
 }
 
-// FIXME: 92.86 %. Scheduling of the 2x2 probe loop (the original loads mPos.y/mPos.x and converts j/i in a different order) and the .sdata2 reloc names.
+// Scheduling of the 2x2 probe loop (lwz r6, 0x4(r31) vs lfs/stfs of mPos.z).
+// FIXME: 98.64 %, scheduling; behaviour clean.
 void Bomb_8049F784::vfunc_0x54() {
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
@@ -127,7 +127,6 @@ void Bomb_8049F784::vfunc_0x54() {
     field_0x24c = 0;
     field_0x234 = lbl_8049F760[field_0x24c];
     JGeometry::TVec3f result;
-    JGeometry::TVec3f probe;
     result.z = 0.0f;
     result.y = 0.0f;
     result.x = 0.0f;
@@ -153,9 +152,9 @@ void Bomb_8049F784::vfunc_0x54() {
         } else {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
-                    probe.z = mPos.z;
-                    probe.y = (mPos.y - 8.0f) + 16.0f * (f32)j;
-                    probe.x = (mPos.x - 8.0f) + 16.0f * (f32)i;
+                    JGeometry::TVec3f probe((mPos.x - 8.0f) + 16.0f * (f32)i,
+                                            (mPos.y - 8.0f) + 16.0f * (f32)j,
+                                            mPos.z);
                     if (gBgRewrite_8053AC98->fn_8029EDB8(&probe, 0, field_0x4, &result) == 1) {
                         fn_8014D868(&result);
                     }
@@ -172,7 +171,6 @@ void Bomb_8049F784::vfunc_0x48() {
     vfunc_0x54();
 }
 
-// FIXME: 99.67 % (reloc-name). Functionally 100 %; only .sdata2 float relocations and jumptable label differ.
 void Bomb_8049F784::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     field_0x80.set(-7.0f, -7.0f, 7.0f, 7.0f);
@@ -292,7 +290,7 @@ Bomb_8049F784::~Bomb_8049F784() {
     }
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra
+// FIXME(shotgun): 97.67 %, missing/extra; behaviour drift.
 void Bomb_8049F784::update() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f pos(mPos.x, mPos.y);
@@ -883,7 +881,8 @@ void Bomb_8049F784::update() {
     }
 }
 
-// FIXME: 98.17 % (scheduling+regalloc). Only register allocation differs (frame in r30/flag in r31, float registers in setRotScaleMtx).
+// FIXME: 99.35 %, regalloc-only; behaviour clean.
+// FIXME: Only init order of i/count (r30/r31) and float register allocation (scale and setRotScaleMtx locals) differ.
 void Bomb_8049F784::draw() {
     if (field_0x230 == 9) {
         return;
@@ -915,13 +914,13 @@ void Bomb_8049F784::draw() {
         }
     }
 
-    s32 frame;
     s32 flag;
+    s32 frame;
     f32 scale;
     if (field_0x90 == 8 || field_0x90 == 9) {
         if (field_0x230 != 5) {
             flag = 0;
-            scale = field_0x274 * 0.5f;
+            scale = field_0x274 / 2.0f;
             frame = field_0x24c + 0x312;
         } else {
             flag = 1;
@@ -954,8 +953,8 @@ void Bomb_8049F784::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
 
+    s32 flags = -1;
     if (field_0x24c < 2) {
-        s32 flags = -1;
         if (field_0x230 != 10 && field_0x230 != 0 && field_0x230 != 6 &&
             field_0x230 != 7 && field_0x230 != 8 && !field_0xc4) {
             if (field_0x90 == 8 || field_0x90 == 9) {
@@ -976,7 +975,8 @@ void Bomb_8049F784::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, frame, flag != 0, 2, -1, h, 0, 0);
 }
 
-// FIXME: 97.38 % (scheduling+regalloc). Only register allocation differs (layer in r31/pos in r29/code in r30 in target).
+// FIXME: 97.38 %, scheduling+regalloc; behaviour clean.
+// (scheduling+regalloc). Only register allocation differs (layer in r31/pos in r29/code in r30 in target).
 bool Bomb_8049F784::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     s32 tile = fn_80226850(pos, layer);
