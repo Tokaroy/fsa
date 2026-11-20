@@ -247,7 +247,7 @@ void ShadowLink2_804A43E8::fn_801C8B50() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 80.64 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.65 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C887C() {
     JGeometry::TVec3f railPos;
     fn_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
@@ -747,7 +747,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
 }
 
-// FIXME(shotgun): 96.96 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.51 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C71BC() {
     mFlags &= ~0x100000;
     if (!(mFlags & 0x2000000)) {
