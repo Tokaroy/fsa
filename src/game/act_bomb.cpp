@@ -102,7 +102,7 @@ bool Bomb_8049F784::fn_8014D6DC() {
     return false;
 }
 
-// FIXME: 92.86 %. Scheduling of the 2x2 probe loop (the original loads mPos.y/mPos.x and converts j/i in a different order) and the .sdata2 reloc names.
+// Scheduling of the 2x2 probe loop (lwz r6, 0x4(r31) vs lfs/stfs of mPos.z).
 void Bomb_8049F784::vfunc_0x54() {
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
@@ -126,7 +126,6 @@ void Bomb_8049F784::vfunc_0x54() {
     field_0x24c = 0;
     field_0x234 = lbl_8049F760[field_0x24c];
     JGeometry::TVec3f result;
-    JGeometry::TVec3f probe;
     result.z = 0.0f;
     result.y = 0.0f;
     result.x = 0.0f;
@@ -152,9 +151,9 @@ void Bomb_8049F784::vfunc_0x54() {
         } else {
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
-                    probe.z = mPos.z;
-                    probe.y = (mPos.y - 8.0f) + 16.0f * (f32)j;
-                    probe.x = (mPos.x - 8.0f) + 16.0f * (f32)i;
+                    JGeometry::TVec3f probe((mPos.x - 8.0f) + 16.0f * (f32)i,
+                                            (mPos.y - 8.0f) + 16.0f * (f32)j,
+                                            mPos.z);
                     if (gBgRewrite_8053AC98->fn_8029EDB8(&probe, 0, field_0x4, &result) == 1) {
                         fn_8014D868(&result);
                     }
