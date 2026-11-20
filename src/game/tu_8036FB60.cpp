@@ -378,7 +378,7 @@ static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
 }
 
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
-// FIXME(shotgun): 98.82 %, operands; behaviour clean.
+// FIXME(shotgun): 98.95 %, operands; behaviour clean.
 void cls_804AE4B0::fn_803717CC() {
     fn_803721F4();
     if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2288.0f, 1712.0f, 2320.0f, 1728.0f))) {
@@ -497,7 +497,7 @@ void cls_804AE4B0::fn_8037100C() {
     }
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.29 %, scheduling; behaviour clean.
 void cls_804AE4B0::fn_80370C84() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
