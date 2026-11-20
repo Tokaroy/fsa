@@ -1593,7 +1593,7 @@ void FileSelect_804AFF60::fn_803CBE38() {
 // are rotated (r26/r27/r28), and the `field_0xc` subtraction swaps f0/f2.
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
-// FIXME: 99.41 %, regalloc-only; behaviour clean.
+// FIXME: 99.47 %, regalloc-only; behaviour clean.
 void FileSelect_804AFF60::fn_803CB3DC() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x98];
     s16 frames = lbl_8050DB0C.field_0x4c[0x99];
@@ -2486,7 +2486,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 99.37 %, regalloc-only; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // Registers only: `frames` and two temporaries of the inlined alpha helpers
 // are rotated (r26/r27/r28). The original keeps &others in one register for
 // both loops: one pointer fills the array, a second walks it.
