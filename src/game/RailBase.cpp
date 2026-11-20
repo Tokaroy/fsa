@@ -4,8 +4,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 99.97 %, regalloc-only; behaviour clean.
-// 0x800FE3EC
 bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
     clear();
