@@ -939,7 +939,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     }
 }
 
-// FIXME(shotgun): 98.73 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.76 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B14F8() {
     s32 done = 0;
