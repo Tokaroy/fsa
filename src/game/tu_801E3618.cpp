@@ -404,9 +404,7 @@ bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
         x1 = x0 + 16.0f * (f32)field_0x5e8;
         y1 = y0 + 16.0f * (f32)field_0x5e9;
     } else {
-        s32 index = field_0x5d8;
-        GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f* box = index < 8 ? &view->mVisibleBox : &view->field_0xdc;
+        JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
             x0 = 160.0f + box->i.x;
             y0 = 80.0f + box->i.y;
@@ -419,7 +417,7 @@ bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
             y1 = box->f.y - 96.0f;
         }
     }
-    // Still differs: register assignment only (float temps, index/outside).
+    // Still differs: register assignment only (float temps, layer index/outside).
     if (pos->x < x0 || pos->y < y0 || pos->x >= x1 || pos->y >= y1) {
         inside = false;
     }
