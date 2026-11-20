@@ -1783,7 +1783,7 @@ void cls_804AF72C::fn_8039F540(int c) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = window->field_0xf0;
-                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
+                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -1808,7 +1808,7 @@ void cls_804AF72C::fn_8039F540(int c) {
             field_0x2d0++;
             text[length] = c;
             s32 shown = field_0x2d0 - (length + 1);
-            if (field_0x2d8->field_0x170 != shown) {
+            if (shown != field_0x2d8->field_0x170) {
                 field_0x2d8->field_0x170 = shown;
             }
             strcat(field_0x2c0, text);
@@ -2376,7 +2376,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            s8 first = field_0x38.field_0x202[window->field_0x15c];
             if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x20 - first;
                 break;
@@ -2392,7 +2392,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            s8 first = field_0x38.field_0x202[window->field_0x15c];
             if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x60 - first;
                 break;
@@ -2408,7 +2408,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            s8 first = field_0x38.field_0x202[window->field_0x15c];
             if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0xa0 - first;
                 break;
@@ -2800,7 +2800,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
                         base = field_0x2d8->field_0xf0;
                         pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                     }
-                    s32 offset = (s32)(0.5f * (base - pos) + 0.5f);
+                    s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
                         snprintf(lbl_8050E538, 15, "\033CR[%d]", offset);
                         strcat(field_0x2c0, lbl_8050E538);
