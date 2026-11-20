@@ -486,7 +486,7 @@ void GameRootSub24_8016A3AC::fn_8016DA6C() {
     }
 }
 
-// FIXME: 99.45 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.52 %, scheduling+regalloc; behaviour clean.
 void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
                  s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
     JGeometry::TVec3f offset(-view[0][3], -view[1][3], 0.0f);
@@ -636,7 +636,7 @@ void GameRootSub24_8016A3AC::fn_8016D284() {
     }
 }
 
-// FIXME: 80.50 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 81.17 %, missing/extra + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016CB14() {
     if (field_0x1c7) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
@@ -731,7 +731,7 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
     }
 }
 
-// FIXME: 60.83 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 69.69 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016C2FC() {
     if (field_0x1c8 && field_0x104 != NULL) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
