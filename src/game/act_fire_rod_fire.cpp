@@ -450,7 +450,7 @@ void FireRodFire_804A89F0::update() {
     }
 }
 
-// FIXME: 95.38 %, missing/extra; behaviour near.
+// FIXME: 95.76 %, missing/extra; behaviour near.
 void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
@@ -595,7 +595,7 @@ void FireRodFire_804A89F0::vfunc_0x24() {
     }
 }
 
-// FIXME: 98.02 %, regalloc-only; behaviour clean.
+// FIXME: 98.51 %, regalloc-only; behaviour clean.
 // regalloc-only. Register allocation.
 bool FireRodFire_804A89F0::fn_802BACE4() {
     if (field_0x264 != 0) {
