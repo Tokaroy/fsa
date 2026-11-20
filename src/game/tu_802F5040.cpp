@@ -2391,31 +2391,29 @@ void TileMap_804AA858::fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 
             GXLoadTexObj(&field_0xb5c[set][priority][lastPalette], lbl_80470F60[(lastPalette & 1) << 2 | priority]);
             GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, lbl_80470F60[(lastPalette & 1) << 2 | priority], GX_COLOR_NULL);
         }
-        f32 w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
-        f32 h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
-        f32 x;
+        f32 x, y, z, u0, v0, u1, v1, w, h;
+        w = lbl_80470FC0[obj.mShape][obj.mSize][0] * 8;
+        h = lbl_80470FC0[obj.mShape][obj.mSize][1] * 8;
         if (obj.mX & 0x100) {
             x = (s16)(obj.mX | 0xFE00);
         } else {
             x = (u8)obj.mX;
         }
-        f32 y = 0.0f;
-        f32 z = -(f32)(s8)obj.mY;
+        y = 0.0f;
+        z = -(f32)(s8)obj.mY;
         if (!loaded) {
             x += out.x;
             y += out.y + offset;
             z += out.z + offset;
         }
-        f32 u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
-        f32 v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
-        f32 u1;
+        u0 = (8.0f * (obj.mTile & 0x1F) + 0.5f) / 256.0f;
+        v0 = (8.0f * (obj.mTile & 0x3E0) / 32.0f + 0.5f) / 256.0f;
         if (obj.mHFlip) {
             u1 = u0;
             u0 = (w - 1.0f) / 256.0f + u0;
         } else {
             u1 = (w - 1.0f) / 256.0f + u0;
         }
-        f32 v1;
         if (obj.mVFlip) {
             v1 = v0;
             v0 = (h - 1.0f) / 256.0f + v0;
