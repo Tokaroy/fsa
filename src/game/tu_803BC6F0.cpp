@@ -1942,13 +1942,13 @@ void FileSelect_804AFF60::fn_803C9F14() {
 // copied over file field_0xa0, its checksum written and the card write
 // started; state 21 waits for it.
 void FileSelect_804AFF60::fn_803C9898() {
-    s16 boardDelay = lbl_8050DB0C.field_0x4c[0xC2];
-    s16 boardFrames = lbl_8050DB0C.field_0x4c[0xC3];
-    s16 buttonDelay = lbl_8050DB0C.field_0x4c[0xC4];
-    s16 buttonFrames = lbl_8050DB0C.field_0x4c[0xC5];
-    s16 buttonStep = lbl_8050DB0C.field_0x4c[0xC6];
+    s32 boardDelay = lbl_8050DB0C.field_0x4c[0xC2];
+    s32 boardFrames = lbl_8050DB0C.field_0x4c[0xC3];
+    s32 buttonDelay = lbl_8050DB0C.field_0x4c[0xC4];
+    s32 buttonFrames = lbl_8050DB0C.field_0x4c[0xC5];
+    s32 buttonStep = lbl_8050DB0C.field_0x4c[0xC6];
     s16 inDelay = lbl_8050DB0C.field_0x4c[0xC7];
-    s16 inFrames = lbl_8050DB0C.field_0x4c[0xC8];
+    s32 inFrames = lbl_8050DB0C.field_0x4c[0xC8];
     s32 boardEnd = boardDelay + boardFrames;
     s32 end = buttonDelay + buttonFrames + buttonStep;
     if (inDelay < boardEnd) {
