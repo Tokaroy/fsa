@@ -73,17 +73,14 @@ Floormaster_804A6004::~Floormaster_804A6004() {
     releaseEmitter_801EE434(mEmitter2b0);
 }
 
-// FIXME: 98.78%. scheduling+regalloc + reloc-name: the two int-to-float conversions of field_0x90 are
-// scheduled and allocated in the opposite order (f0/f1, r3/r4 swapped).
 void Floormaster_804A6004::init() {
     EnemyBase_804A4808::init();
     if (field_0x90 & 1) {
         mFlags |= 0x2000;
-        u32 arg = field_0x90;
-        u32 y = ((arg >> 8) & 0x3F) * 8;
-        u32 x = ((arg >> 16) & 0x3F) * 8;
-        field_0x2a8 = 8.0f + (f32)x;
-        field_0x2ac = 8.0f + (f32)y;
+        f32 y = 8.0f + (f32)(((field_0x90 >> 8) & 0x3F) * 8);
+        f32 x = 8.0f + (f32)(((field_0x90 >> 16) & 0x3F) * 8);
+        field_0x2a8 = x;
+        field_0x2ac = y;
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     // Field-wise copy throughout: `mBox2 = mBox` drops init/fn_8020ED5C/vfunc_0x94 to 72-93 %.
