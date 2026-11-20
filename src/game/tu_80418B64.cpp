@@ -562,7 +562,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 99.63 %, different; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041FC2C() {
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -1424,6 +1424,7 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
+// FIXME: 99.70 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
