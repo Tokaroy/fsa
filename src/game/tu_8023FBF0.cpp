@@ -4149,6 +4149,7 @@ void Player_804A6F38::fn_80242560() {
 // cleared, field_0xd54 = 10, the trail reset (fn_80248604), the held key or
 // the 'KEY0' at field_0xd88 moved along (fn_802C1D30), field_0x122c = 5.
 // Registers only: the box test's x / y (f2 / f1 in the original, f1 / f2 here).
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_802422D0() {
     if (fn_80270A8C() && !fn_8025F448()) {
         fn_80270948(getPlayerPos_8023E724(lbl_8053A190));
