@@ -8,7 +8,7 @@
 #include "JSystem/JGeometry.h"
 #include "JSystem/JMath/JMath.h"
 
-// FIXME(shotgun): 79.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
 // The original zero-extends the saved index again before the second restore compare; registers follow.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
     u8 prev;
@@ -104,7 +104,7 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 89.59 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.52 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
         JGeometry::TVec3f railPos;
