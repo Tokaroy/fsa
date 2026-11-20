@@ -1302,7 +1302,7 @@ void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u1
 }
 #pragma auto_inline reset
 
-// FIXME: 93.42 %, missing/extra; behaviour clean.
+// FIXME: 98.46 %, regalloc-only; behaviour clean.
 // Registers only: the original keeps cell/layer in r29/r30 and b/c/d in r26-r28;
 // ours has cell/layer in r26/r27 and b/c/d in r28-r30.
 void BgRewrite_804A7C98::fn_8029DF80(s32 cell, s32 layer, s32 a, s32 b, s32 c, s32 d) {
