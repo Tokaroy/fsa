@@ -13,7 +13,7 @@
 
 // The push step of each direction (x, y, z), .rodata at 0x80471E28 (the rest of that object is
 // string literals of update/draw).
-static const f32 lbl_80471E28[12] = {20.0f, 0.0f, 0.0f, -20.0f, 0.0f, 0.0f, 0.0f, 20.0f, 0.0f, 0.0f, -20.0f, 0.0f};
+static const Vec lbl_80471E28[4] = {{20.0f, 0.0f, 0.0f}, {-20.0f, 0.0f, 0.0f}, {0.0f, 20.0f, 0.0f}, {0.0f, -20.0f, 0.0f}};
 
 // .data at 0x804ABC80 (16 bytes, local to this unit).
 extern const s32 lbl_804ABC80[4];
@@ -368,9 +368,7 @@ f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
 bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     bool movable = false;
     JGeometry::TVec3f savedPos = mPos;
-    field_0x3c.x = lbl_80471E28[dir * 3];
-    field_0x3c.y = lbl_80471E28[dir * 3 + 1];
-    field_0x3c.z = lbl_80471E28[dir * 3 + 2];
+    field_0x3c.set(lbl_80471E28[dir].x, lbl_80471E28[dir].y, lbl_80471E28[dir].z);
     mPos.add(field_0x3c);
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&out, false)) {
@@ -402,11 +400,14 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     if (!movable) {
         movable = true;
         JGeometry::TBox2f box(mBox);
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 if (fn_8022CAF8(i) != 5 || !fn_8022F478(i)) {
-                    if (fn_80238CB4(i) != mSerial) {
+                    if (fn_80238CB4(i) != getSerial()) {
                         movable = false;
                     }
                 }
