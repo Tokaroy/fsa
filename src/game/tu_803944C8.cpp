@@ -2361,7 +2361,7 @@ bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
 }
 
 // FIXME(shotgun): 96.37 %, missing/extra; behaviour drift.
-// (the u8 line count is subtracted as an int in the original)
+// (the original zero-extends the u8 line count once more before the subtraction)
 void cls_804AF72C::fn_8039D30C(u8 value) {
     s32 index = field_0x2cc;
     s32 offset = 0;
@@ -2376,8 +2376,8 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x20 - first;
                 break;
             }
@@ -2387,13 +2387,13 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     }
     case 1: {
         field_0x2c0[field_0x2d0++] = -2;
-        field_0x2c0[field_0x2d0++] = offset + (s8)field_0x38.field_0x1fe[field_0x2d4] + 0x40;
+        field_0x2c0[field_0x2d0++] = 0x40 + offset + (s8)field_0x38.field_0x1fe[field_0x2d4];
         field_0x2c0[field_0x2d0++] = -2;
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0x60 - first;
                 break;
             }
@@ -2403,13 +2403,13 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     }
     case 2: {
         field_0x2c0[field_0x2d0++] = -2;
-        field_0x2c0[field_0x2d0++] = offset + (s8)field_0x38.field_0x1fe[field_0x2d4] + 0x80;
+        field_0x2c0[field_0x2d0++] = 0x80 + offset + (s8)field_0x38.field_0x1fe[field_0x2d4];
         field_0x2c0[field_0x2d0++] = -2;
         cls_804AF5A0* window = field_0x2d8;
         if (window->field_0x1a1 != 0) {
             u8 lines = field_0x38.field_0x1ee[field_0x2d4];
-            s8 first = field_0x38.field_0x202[window->field_0x15c];
-            if (lines - first == 1) {
+            const s8 first = field_0x38.field_0x202[window->field_0x15c];
+            if (lines - first - 1 == 0) {
                 field_0x2c0[field_0x2d0++] = lines + 0xa0 - first;
                 break;
             }
