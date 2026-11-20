@@ -74,42 +74,6 @@ inline void EnemyBase_804A4808::moveStep() {
     }
 }
 
-// The landing on a floor tile: when field_0x80 is not empty, the tile under
-// its bottom edge (fn_802265FC) decides whether the actor stands on it; if
-// so, the box's bottom edge is put on the top of that tile (fn_801CCD34
-// gives the tile's centre) and the actor lands. Shared by vfunc_0x80 and fn_801CE800.
-inline void EnemyBase_804A4808::landStep() {
-    if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f) {
-        JGeometry::TVec2f snapped;
-        JGeometry::TVec2f pos;
-        f32 bottom = field_0x80.f.y;
-        f32 screenY = mPos.y - mPos.z;
-        bool onFloor = false;
-        pos.x = mPos.x;
-        pos.y = bottom + screenY;
-        switch (fn_802265FC((const JGeometry::TVec3f*)&pos, field_0x4)) {
-        case 0:
-            if (mPos.z <= 0.0f) {
-                onFloor = true;
-            }
-            break;
-        case 2:
-            break;
-        case 1:
-        default:
-            onFloor = true;
-            break;
-        }
-        if (onFloor) {
-            fn_801CCD34((const JGeometry::TVec3f*)&pos, (JGeometry::TVec3f*)&snapped);
-            mPos.y = snapped.y - 8.0f - field_0x80.f.y;
-            mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            mFlags |= ENEMY_FLAG_LANDED;
-        }
-    }
-}
-
 // The player tests fn_801D0B44 makes, inlined in every player search below
 // (fn_801CECF4, fn_801D05F8, fn_801D08B4). These actors only need the player
 // on their own layer; the others ask fn_801F320C.
@@ -785,16 +749,41 @@ void EnemyBase_804A4808::vfunc_0x78() {}
 
 void EnemyBase_804A4808::vfunc_0x7C() {}
 
+#pragma auto_inline reset
 void EnemyBase_804A4808::fn_801CE800() {
-    landStep();
+    if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f) {
+        JGeometry::TVec2f pos;
+        JGeometry::TVec2f snapped;
+        f32 bottom = field_0x80.f.y;
+        f32 screenY = mPos.y - mPos.z;
+        bool onFloor = false;
+        pos.x = mPos.x;
+        pos.y = bottom + screenY;
+        switch (fn_802265FC((const JGeometry::TVec3f*)&pos, field_0x4)) {
+        case 0:
+            if (mPos.z <= 0.0f) {
+                onFloor = true;
+            }
+            break;
+        case 2:
+            break;
+        case 1:
+        default:
+            onFloor = true;
+            break;
+        }
+        if (onFloor) {
+            fn_801CCD34((const JGeometry::TVec3f*)&pos, (JGeometry::TVec3f*)&snapped);
+            mPos.y = snapped.y - 8.0f - field_0x80.f.y;
+            mPos.z = 0.0f;
+            field_0x3c.z = 0.0f;
+            mFlags |= ENEMY_FLAG_LANDED;
+        }
+    }
 }
 
-// FIXME: 99.89 %, operands; behaviour clean.
-// Only the frame size (0x30, target 0x20): the target's two
-// points are 8-byte slots (TVec2f-sized), ours TVec3f because fn_802265FC
-// and fn_801CCD34 are declared with TVec3f (they read only x, y).
 // The floor check after a step reached z <= 0 on a floor layer: on a tile of
-// kind 2 the height is folded into y and the actor lands (landStep);
+// kind 2 the height is folded into y and the actor lands (fn_801CE800);
 // elsewhere it just stops at z = 0.
 void EnemyBase_804A4808::vfunc_0x80() {
     if (!(mFlags & ENEMY_FLAG_NO_FLOOR) && fn_8022461C(&mPos, field_0x4) == 2) {
@@ -802,13 +791,14 @@ void EnemyBase_804A4808::vfunc_0x80() {
         f32 lift = -mPos.z;
         mPos.y += lift;
         mPos.z = 0.0f;
-        landStep();
+        fn_801CE800();
     } else {
         mPos.z = 0.0f;
         field_0x3c.z = 0.0f;
         mFlags |= ENEMY_FLAG_LANDED;
     }
 }
+#pragma auto_inline off
 
 // The knock-back step while a hit bit is set.
 void EnemyBase_804A4808::fn_801CE5D4() {

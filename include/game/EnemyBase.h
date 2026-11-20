@@ -313,7 +313,6 @@ public:
     // game/tu_801CDC8C.cpp.
     void moveStep();
     void stateStep(u8 mapHit);
-    void landStep();
     // The player search fn_801D0B44 / fn_801D05F8 / fn_801D0DA0 do, inlined
     // in the other searches of the unit.
     bool isPlayerOnLayer(s32 player);
