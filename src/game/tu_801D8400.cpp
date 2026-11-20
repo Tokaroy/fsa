@@ -113,10 +113,12 @@ void cls_804A4C58::init() {
     f32 y0 = 32.0f + mSpawnPos.y;
     f32 step = 0.5f * (field_0x2d0 - 48.0f - y0);
     f32 y = y0;
+    // Still differs: the original unrolls the row loop too (index 0, 4, 8), and keeps p in 8 bytes.
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {
-            field_0x2d4[row * 4 + col].set(x, y);
+            JGeometry::TVec2f& point = field_0x2d4[row * 4 + col];
+            point.set(x, y);
             x += 80.0f;
         }
         y += step;
