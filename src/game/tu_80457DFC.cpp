@@ -842,9 +842,6 @@ void AudioMgr_8045A080::fn_8045873C(u8 value) {
 }
 
 // 0x80458658
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
-// regalloc only: the original keeps this in r30 and pause in
-// r31 (mr r30, r3 first); ours copies pause first.
 void AudioMgr_8045A080::fn_80458658(bool pause) {
     field_0x8a = pause;
     field_0x34->getCategory(3)->pause(pause);

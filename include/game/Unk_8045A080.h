@@ -79,7 +79,7 @@ struct AudioMgr_8045A080 {
     /* 0x84 */ JAISoundHandle field_0x84; // the second sequence (fn_80458F04)
     /* 0x88 */ u8 field_0x88;
     /* 0x89 */ u8 field_0x89;
-    /* 0x8A */ u8 field_0x8a; // SE categories 3-6 paused (fn_80458658)
+    /* 0x8A */ bool field_0x8a; // SE categories 3-6 paused (fn_80458658)
     /* 0x8B */ bool field_0x8b; // fn_8045815C's flag (fn_80458FF0 passes it on unconverted)
     /* 0x8C */ u8 field_0x8c; // fn_80457E54's flag
     /* 0x8D */ u8 field_0x8d;
