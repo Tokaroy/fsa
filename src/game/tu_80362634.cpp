@@ -530,8 +530,6 @@ void cls_804ADF28::fn_80365AB8() {
     (this->*lbl_804ADDE8[field_0x234])();
 }
 
-// FIXME(shotgun): 98.96 %, missing/extra + reloc-name; behaviour drift.
-// (the function-local TVec3f statics are guarded with an out-of-line constructor here, the original initialises them inline)
 void cls_804ADF28::fn_803653EC() {
     if (field_0x238 < 0) {
         if (field_0x248 >= 0x80) {
@@ -554,10 +552,11 @@ void cls_804ADF28::fn_803653EC() {
             }
             return;
         }
-        if (field_0x248 != 0) {
+        if (field_0x248 == 0) {
+            field_0x238 = 0;
+        } else {
             return;
         }
-        field_0x238 = 0;
     }
     if (field_0x25c == 0) {
         field_0x25c = field_0x260;
@@ -598,7 +597,7 @@ void cls_804ADF28::fn_803653EC() {
         case 2: {
             field_0x26c = 0x38E;
             for (int i = 0; i < 3; i++) {
-                field_0x2a0[i] = mPos + JGeometry::TVec3f(16.0f * i + 16.0f, 0.0f, 0.0f);
+                field_0x2a0[i] = mPos + JGeometry::TVec3f(0.0f, 16.0f * i + 16.0f, 0.0f);
                 field_0x2c4[i] = JGeometry::TVec3f((field_0x2a0[i].x - field_0x27c[i].x) / 10.0f,
                                                    (field_0x2a0[i].y - field_0x27c[i].y) / 10.0f, 0.0f);
                 field_0x2e8[i] = 0x38E;
@@ -1010,7 +1009,7 @@ void cls_804ADF28::fn_80364340() {
     }
 }
 
-// FIXME: 98.80 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.71 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
@@ -1052,10 +1051,10 @@ void cls_804ADF28::fn_80363FFC() {
             s32 angle = JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f;
             f32 dist = PSVECDistance(&mPos, &center);
             s32 delta = 65536.0f * (JMath::fastReciprocal(6.283184f * dist) * 1.3f);
-            s32 a = angle + delta;
-            mPos.x = center.x + dist * JMath::sincosTable_.cosShort(a);
-            mPos.y = center.y + dist * JMath::sincosTable_.sinShort(a);
-            if ((u16)a >= 0xe000) {
+            angle += delta;
+            mPos.x = center.x + dist * JMath::sincosTable_.cosShort(angle);
+            mPos.y = center.y + dist * JMath::sincosTable_.sinShort(angle);
+            if ((u16)angle >= 0xe000) {
                 field_0x23c = 0;
                 if (field_0x238 == 0) {
                     field_0x26c = 0x32f;
@@ -1231,7 +1230,6 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
@@ -1257,12 +1255,12 @@ void cls_804ADF28::fn_80363360() {
     }
     if (PSVECDistance(&mPos, &field_0x27c[0]) >= 45.0f) {
         field_0x248 = 0x80;
-        field_0x240 = (s16)(JMath::atanTable_.atan2_(field_0x27c[0].y - mPos.y, field_0x27c[0].x - mPos.x) * 10430.378f);
+        field_0x240 = (s16)(JMath::atanTable_.atan2_(field_0x27c[0].y - mPos.y, field_0x27c[0].x - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
         field_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
     }
     if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
-        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 0;
         } else if (angle >= 0x6000 && angle < 0xa000) {
