@@ -283,12 +283,8 @@ void ActorManager_804A5800::fn_801F8658() {
     }
 }
 
-// FIXME: 91.87 %, missing/extra; behaviour near.
-// The target walks the slots with a pointer advanced by 4
-// (lwz 0x8(r31)); this code recomputes this + 4 * i each pass (add r30), as
-// the original does where this function is inlined into fn_801F8E4C.
 void ActorManager_804A5800::fn_801F857C() {
-    for (u32 i = 0; i < ACTOR_MANAGER_MAX_ACTORS; i++) {
+    for (int i = 0; i < ARRAY_SIZE(mActors); i++) {
         deleteSlot(i);
     }
     field_0x200c->fn_80456120();
@@ -434,9 +430,9 @@ void ActorManager_804A5800::fn_801F7E88() {
     }
 }
 
-// FIXME(shotgun): 98.70 %, regalloc-only; behaviour clean.
-void ActorManager_804A5800::fn_801F7CAC() {
-    GameView_804A9950* view = getGameView_802D6A9C();
+// The view's per-player slots (fn_802D39B8) are cleared and refilled from the
+// live players; the same loop opens fn_801F7CAC and fn_801F7B18.
+static inline void resetPlayerSerials() {
     for (s32 i = 0; i < 4; i++) {
         getGameView_802D6A9C()->fn_802D39B8(i, -1);
         if (fn_8023EBB8(i)) {
@@ -444,6 +440,12 @@ void ActorManager_804A5800::fn_801F7CAC() {
             getGameView_802D6A9C()->fn_802D39B8(i, v);
         }
     }
+}
+
+// FIXME(shotgun): 98.78 %, regalloc-only; behaviour clean.
+void ActorManager_804A5800::fn_801F7CAC() {
+    GameView_804A9950* view = getGameView_802D6A9C();
+    resetPlayerSerials();
     s32 end = mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
@@ -479,16 +481,10 @@ void ActorManager_804A5800::fn_801F7CAC() {
     fn_80204638()->fn_802048F4();
 }
 
-// FIXME(shotgun): 97.13 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 97.23 %, scheduling+regalloc; behaviour clean.
 void ActorManager_804A5800::fn_801F7B18() {
     getGameView_802D6A9C();
-    for (s32 i = 0; i < 4; i++) {
-        getGameView_802D6A9C()->fn_802D39B8(i, -1);
-        if (fn_8023EBB8(i)) {
-            s32 v = fn_8023EF50(i);
-            getGameView_802D6A9C()->fn_802D39B8(i, v);
-        }
-    }
+    resetPlayerSerials();
     s32 end = mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = mActors[i];
@@ -716,10 +712,8 @@ s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
     return serial;
 }
 
-// FIXME: 99.62 %, regalloc-only; behaviour clean.
-// regalloc only: the two y/x differences sit in f3/f2 in the
-// target, f2/f3 here; the 16.0f literal is lbl_8053F820 once the pool before
-// it is complete.
+// The 16.0f literal is lbl_8053F820 once the pool before it is complete.
+// FIXME: 99.42 %, regalloc-only; behaviour clean.
 s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* center,
                                        const JGeometry::TVec3f* from, s32 excludeSerial,
                                        f32 radius) const {
@@ -729,13 +723,16 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
-            fn_801CC9B0(mActors[i]) &&
-            square(mActors[i]->mPos.x - center->x) + square(mActors[i]->mPos.y - center->y) <= radiusSq)
+            fn_801CC9B0(mActors[i]))
         {
-            f32 dist = square(mActors[i]->mPos.x - from->x) + square(mActors[i]->mPos.y - from->y);
-            if (dist < best) {
-                best = dist;
-                serial = mActors[i]->mSerial;
+            f32 x = mActors[i]->mPos.x;
+            f32 y = mActors[i]->mPos.y;
+            if (square(x - center->x) + square(y - center->y) <= radiusSq) {
+                f32 dist = square(x - from->x) + square(y - from->y);
+                if (dist < best) {
+                    best = dist;
+                    serial = mActors[i]->mSerial;
+                }
             }
         }
     }
@@ -1061,29 +1058,28 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
-// FIXME: 97.25 %, regalloc-only; behaviour clean.
-// FIXME: regalloc only; behaviour clean.
-// the target keeps the key pointer in r6 and the column count in r7;
-// ours swaps those two.
 s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
     u32* key = mParamColumnIds;
+    s32 columnNum = mParamColumnNum;
     s32 value = 0;
     s32 col = 0;
-    for (; col < mParamColumnNum; key++, col++) {
+    for (; col < columnNum; key++, col++) {
         if (column == *key) {
             break;
         }
     }
-    if (col < mParamColumnNum) {
+    if (col < columnNum) {
+        u32* rowId = mParamRowIds;
+        s32 rowNum = mParamRowNum;
         s32 row = 0;
-        for (u32* rowId = mParamRowIds; row < mParamRowNum; rowId++, row++) {
+        for (; row < rowNum; rowId++, row++) {
             if (id == *rowId) {
-                value = mParamValues[row * mParamColumnNum + col];
+                value = mParamValues[row * columnNum + col];
                 break;
             }
         }
         // No row for `id`: row 0's default.
-        if (row == mParamRowNum) {
+        if (row == rowNum) {
             value = mParamValues[col];
         }
     }
