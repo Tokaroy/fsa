@@ -1338,11 +1338,11 @@ void cls_804B13D4::fn_8041CC04() {
         }
         n *= -1;
         res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[0]))->changeTexture(res, 0);
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[0]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[digit]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D680[digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D658[4])->show();
         field_0x4->search(lbl_8048D680[4])->show();
-        digit = 1;
+        digit++;
     } else {
         for (s32 i = 0; i < 5; i++) {
             static_cast<J2DPicture*>(field_0x4->search(lbl_8048D658[i]))->setBlackWhite(field_0x248, field_0x244);
