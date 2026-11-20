@@ -6,6 +6,7 @@
 #include "game/EnemyBase.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "JSystem/JMath/JMath.h"
 
 extern const s32 lbl_8053F0C0; // 12 (game/act_vaati_boss.cpp)
@@ -32,46 +33,33 @@ void VaatiBoss_804A4958::fn_801E4758() {
     field_0x80.f.y = 4.0f * lbl_8053F0BC;
 }
 
-// FIXME(shotgun): 44.77 %, different; behaviour near.
+// FIXME(shotgun): 91.19 %, scheduling+regalloc; behaviour clean.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
-        out->i.x = field_0x5e0;
-        out->i.y = field_0x5e4;
-        out->f.x = field_0x5e0 + 16.0f * (f32)field_0x5e8;
-        out->f.y = field_0x5e4 + 16.0f * (f32)field_0x5e9;
+        f32 x = field_0x5e0;
+        f32 y = field_0x5e4;
+        out->set(x, y, x + 16.0f * (f32)field_0x5e8, y + 16.0f * (f32)field_0x5e9);
     } else {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f* box = field_0x5d8 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+        JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
-            out->i.x = 160.0f + box->i.x;
-            out->i.y = 80.0f + box->i.y;
-            out->f.x = box->f.x - 160.0f;
-            out->f.y = box->f.y - 112.0f;
+            out->set(160.0f + box->i.x, 80.0f + box->i.y, box->f.x - 160.0f, box->f.y - 112.0f);
         } else {
-            out->i.x = 80.0f + box->i.x;
-            out->i.y = 128.0f + box->i.y;
-            out->f.x = box->f.x - 80.0f;
-            out->f.y = box->f.y - 96.0f;
+            out->set(80.0f + box->i.x, 128.0f + box->i.y, box->f.x - 80.0f, box->f.y - 96.0f);
         }
     }
 }
 
-// FIXME(shotgun): 78.41 %, missing/extra; behaviour near.
-bool VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec2f* pos, JGeometry::TVec3f* outDir) {
-    JGeometry::TBox2f box;
-    box.i.x = field_0x80.i.x + pos->x;
-    box.i.y = field_0x80.i.y + pos->y;
-    box.f.x = field_0x80.f.x + pos->x;
-    box.f.y = field_0x80.f.y + pos->y;
+// FIXME(shotgun): 87.64 %, missing/extra; behaviour clean.
+u8 VaatiBoss_804A4958::fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec2f* pos, JGeometry::TVec3f* outDir) {
+    JGeometry::TBox2f box = field_0x80;
+    box.addPos(*pos);
     JGeometry::TVec2f push;
     bool moved = fn_801CC29C(area, &box, &push);
     pos->x += push.x;
     pos->y += push.y;
     if (outDir != NULL) {
         push.normalize();
-        outDir->x = push.x;
-        outDir->y = push.y;
-        outDir->z = 0.0f;
+        outDir->set(push.x, push.y, 0.0f);
     }
     return moved;
 }
@@ -204,7 +192,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
 // vtable slot 0x5C. The bomb/player hit test: a player on the boss's layer that is inside its
 // area (and below its head) turns it towards that player; otherwise each player that hit it
 // this frame is run through fn_801F37AC.
-// FIXME(shotgun): 91.86 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.32 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E3B2C() {
     u8 result = 0;
     bool stateOk = true;
@@ -228,6 +216,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
     }
     if (stateOk && mState != 0x13 && (mFlags & 0x2000) && mBox.f.x - mBox.i.x > 0.0f &&
         mBox.f.y - mBox.i.y > 0.0f) {
+        // one hit type for both loops below: the original keeps it in a single stack slot (0x8)
+        s32 type;
         if (gGameRoot_8053AAF8->field_0x7e && !fn_801CD2F8(field_0x4) && mState != 0xB && !field_0x5d1) {
             JGeometry::TBox2f box;
             fn_801F31C4(&box);
@@ -237,7 +227,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
             box.f.y += 8.0f;
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && !fn_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
-                    getPlayerLayer_8023DE58(i) == field_0x4 && fn_80235448(i) &&
+                    getPlayerLayer_8023DE58(i) == getField_0x4() && fn_80235448(i) &&
                     getPlayerPos_8023E724(i)->z <= 40.0f) {
                     f32 limit = fn_8023E578(i)->z;
                     if (getPlayerPos_8023E724(i)->z < limit) {
@@ -245,9 +235,11 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
                         bool inside = p->x >= box.i.x && p->y >= box.i.y && p->x < box.f.x &&
                                       p->y < box.f.y;
                         if (inside) {
-                            p = getPlayerPos_8023E724(i);
+                            const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
+                            f32 dy = mPos.y - playerPos->y;
+                            f32 dx = mPos.x - playerPos->x;
                             field_0x5d1 = lbl_8053F0C4;
-                            field_0x5d2 = (s16)(JMath::atanTable_.atan2_(mPos.x - p->x, mPos.y - p->y) *
+                            field_0x5d2 = (s16)(JMath::atanTable_.atan2_(dx, dy) *
                                                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                             field_0x448.fn_80217A74();
                             startSound_801F0E34(0x40062, 0);
@@ -259,10 +251,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         }
         if (fn_801CD2F8(field_0x4)) {
             for (s32 i = 0; i < 4; i++) {
-                s32 type;
                 if (i == fn_801F285C(NULL, &type, true, i)) {
-                    const JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
-                    if (fn_801F37AC(fn_8023B6CC(i), p, 2, type, i)) {
+                    if (fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         result = 1;
                         if (fn_80235448(i)) {
                             mFlags |= 0x10000;
@@ -289,7 +279,6 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
             }
             if (mState != 9) {
                 for (s32 i = 0; i < 4; i++) {
-                    s32 type;
                     if (i == fn_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
                         fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         mFlags |= 0x10000;
@@ -358,7 +347,7 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
 }
 
 // vtable slot 0x64. Pushes Vaati out of the map-free area when a player-sized box is inside.
-// FIXME(shotgun): 72.41 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.20 %, scheduling+regalloc; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E376C() {
     u8 result = 0;
     bool stateOk = true;
@@ -403,19 +392,19 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
     return result;
 }
 
-// FIXME(shotgun): 75.59 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.94 %, different; behaviour near.
 bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
+    bool onLayer = fn_801CD2F8(layer);
     bool inside = true;
     f32 x0, y0, x1, y1;
-    if (fn_801CD2F8(layer)) {
+    if (onLayer) {
         x0 = field_0x5e0;
         y0 = field_0x5e4;
         x1 = x0 + 16.0f * (f32)field_0x5e8;
         y1 = y0 + 16.0f * (f32)field_0x5e9;
     } else {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f* box = field_0x5d8 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+        JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
             x0 = 160.0f + box->i.x;
             y0 = 80.0f + box->i.y;
@@ -428,6 +417,7 @@ bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
             y1 = box->f.y - 96.0f;
         }
     }
+    // Still differs: register assignment only (float temps, layer index/outside).
     if (pos->x < x0 || pos->y < y0 || pos->x >= x1 || pos->y >= y1) {
         inside = false;
     }
