@@ -553,7 +553,6 @@ void cls_8049C718::fn_800FBD90() {
     }
 }
 
-// FIXME(shotgun): 97.50 %, missing/extra; behaviour near.
 void cls_8049C718::fn_800FBA14() {
     if (fn_801F3D94(1) == 1) {
         field_0x3c.set(0.0f, 0.0f, 10.0f);
@@ -589,9 +588,7 @@ void cls_8049C718::fn_800FBA14() {
             field_0x257 = 0;
             fn_800FB6E0(0);
         } else {
-            field_0x3c.x = field_0x257;
-            field_0x3c.y = -1.0f * field_0x257;
-            field_0x3c.z = 0.0f;
+            field_0x3c.set((f32)field_0x257, -1.0f * field_0x257, 0.0f);
             mPos.z = 0.0f;
             mState = 5;
             mTimer = 0x19;
