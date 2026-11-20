@@ -736,6 +736,14 @@ static inline f32 edgeSlope(s16 a) {
     return __fabsf(t);
 }
 
+// corner - p in the XY plane (TVec2 operator- shape, with a TVec3 on the right).
+static inline JGeometry::TVec2f cornerOffset(const JGeometry::TVec2f& corner, const JGeometry::TVec3f* p) {
+    JGeometry::TVec2f ret(corner);
+    ret.x -= p->x;
+    ret.y -= p->y;
+    return ret;
+}
+
 static inline u16 cornerAngle(const JGeometry::TVec2f& d) {
     return (s32)(JMath::atanTable_.atan2_(d.x, d.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
 }
@@ -773,53 +781,49 @@ void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 a
         return;
     }
     if (ua <= 0x4000) {
-        JGeometry::TVec2f pp(p->x, p->y);
-        u16 ca = cornerAngle(JGeometry::TVec2f(box->f.x, box->f.y) - pp);
+        u16 ca = cornerAngle(cornerOffset(box->f, p));
         if (ua < ca) {
-            out->x = p->x + __fabsf(box->f.y - p->y) * edgeSlope(angleArg);
+            out->x = p->x + JMAAbs(box->f.y - p->y) * edgeSlope(angleArg);
             out->y = box->f.y;
         } else {
             out->x = box->f.x;
-            out->y = p->y + __fabsf(box->f.x - p->x) * edgeSlope((s16)(0x4000 - angleArg));
+            out->y = p->y + JMAAbs(box->f.x - p->x) * edgeSlope((s16)(0x4000 - angleArg));
         }
         out->x += speed * JMASSin(angleArg);
         out->y += speed * JMASCos(angleArg);
     } else if (ua >= 0x4000 && ua <= 0x8000) {
+        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->f.x, box->i.y), p));
         s16 a2 = 0x8000 - ua;
-        JGeometry::TVec2f pp(p->x, p->y);
-        u16 ca = cornerAngle(JGeometry::TVec2f(box->f.x, box->i.y) - pp);
-        if ((s32)(ca - ua) < 0) {
-            out->x = p->x + __fabsf(p->y - box->i.y) * edgeSlope(a2);
+        if ((u32)(ca - ua) >> 31) { // sign bit of the difference
+            out->x = p->x + JMAAbs(p->y - box->i.y) * edgeSlope(a2);
             out->y = box->i.y;
         } else {
             out->x = box->f.x;
-            out->y = p->y - __fabsf(box->f.x - p->x) * edgeSlope((s16)(0x4000 - a2));
+            out->y = p->y - JMAAbs(box->f.x - p->x) * edgeSlope((s16)(0x4000 - a2));
         }
         out->x += speed * JMASSin(a2);
         out->y -= speed * JMASCos(a2);
     } else if (ua >= 0x8000 && ua <= 0xC000) {
+        u16 ca = cornerAngle(cornerOffset(box->i, p));
         s16 a3 = ua - 0x8000;
-        JGeometry::TVec2f pp(p->x, p->y);
-        u16 ca = cornerAngle(JGeometry::TVec2f(box->i.x, box->i.y) - pp);
-        if ((s32)(ua - ca) < 0) {
-            out->x = p->x - __fabsf(p->y - box->i.y) * edgeSlope(a3);
+        if ((u32)(ua - ca) >> 31) {
+            out->x = p->x - JMAAbs(p->y - box->i.y) * edgeSlope(a3);
             out->y = box->i.y;
         } else {
             out->x = box->i.x;
-            out->y = p->y - __fabsf(p->x - box->i.x) * edgeSlope((s16)(0x4000 - a3));
+            out->y = p->y - JMAAbs(p->x - box->i.x) * edgeSlope((s16)(0x4000 - a3));
         }
         out->x -= speed * JMASSin(a3);
         out->y -= speed * JMASCos(a3);
     } else {
+        u16 ca = cornerAngle(cornerOffset(JGeometry::TVec2f(box->i.x, box->f.y), p));
         s16 a4 = 0x10000 - ua;
-        JGeometry::TVec2f pp(p->x, p->y);
-        u16 ca = cornerAngle(JGeometry::TVec2f(box->i.x, box->f.y) - pp);
-        if ((s32)(ca - ua) < 0) {
-            out->x = p->x - __fabsf(box->f.y - p->y) * edgeSlope(a4);
+        if ((u32)(ca - ua) >> 31) {
+            out->x = p->x - JMAAbs(box->f.y - p->y) * edgeSlope(a4);
             out->y = box->f.y;
         } else {
             out->x = box->i.x;
-            out->y = p->y + __fabsf(p->x - box->i.x) * edgeSlope((s16)(0x4000 - a4));
+            out->y = p->y + JMAAbs(p->x - box->i.x) * edgeSlope((s16)(0x4000 - a4));
         }
         out->x -= speed * JMASSin(a4);
         out->y += speed * JMASCos(a4);
