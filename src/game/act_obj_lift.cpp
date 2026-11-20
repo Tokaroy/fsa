@@ -948,7 +948,7 @@ void OBJLift_804ACA00::update() {
     field_0x294 = field_0x3c;
 }
 
-// FIXME(shotgun): 98.34 %, different; behaviour drift.
+// FIXME(shotgun): 99.08 %, regalloc-only; behaviour clean.
 void OBJLift_804ACA00::draw() {
     s32 alpha = 0xFF;
     if (field_0x230 == 4) {
