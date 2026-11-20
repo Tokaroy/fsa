@@ -1,6 +1,7 @@
 #include "game/GameAudio.h"
 
 #include "game/GameGlobals.h"
+#include "game/ViewLayer.h"
 #include "game/Map.h"
 #include "game/GameState.h"
 
@@ -195,11 +196,10 @@ u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // The same result as fn_8022461C (compiled branch-free in the original).
-// FIXME(shotgun): 96.04 %, scheduling+regalloc; behaviour clean.
 u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     u16 code = lbl_8046CB88[raw];
-    if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
+    if (viewLayerFlag(layer) != 0) {
         if (code == 0) {
             return 2;
         }
