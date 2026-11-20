@@ -31,6 +31,10 @@ static const s32 lbl_804650B0[6] = {0x1B3, 0x1CD, 0x17F, 0x201, 0x1E7, 0x199};
 static const u32 lbl_804650C8[3] = {0x840, 0x841, 0x842};
 static const s16 lbl_804650D4[6] = {-0x4000, -0x1C00, 0x1C00, 0x4000, 0x6400, -0x6400};
 
+inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
+    return fn_8038BD08(0, lbl_804650C8[field_0x254], layer, pos, 0x22);
+}
+
 // FIXME(shotgun): 92.52 %, different + reloc-name; behaviour clean.
 void cls_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
@@ -199,7 +203,6 @@ void cls_8049E770::fn_8012C334() {
     fn_8012A5EC();
 }
 
-// FIXME(shotgun): 95.21 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C170() {
     if (field_0x250 == 1) {
         fn_80119DD0()->fn_80119468(0, 0);
@@ -228,7 +231,7 @@ void cls_8049E770::fn_8012C170() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230 += 2;
@@ -236,7 +239,6 @@ void cls_8049E770::fn_8012C170() {
     }
 }
 
-// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C030() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
@@ -247,7 +249,7 @@ void cls_8049E770::fn_8012C030() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -313,7 +315,7 @@ void cls_8049E770::fn_8012BC40() {
     }
 }
 
-// FIXME(shotgun): 97.96 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.79 %, operands; behaviour drift.
 void cls_8049E770::fn_8012B218() {
     static JGeometry::TVec3f lbl_804BD7C0[4] = {
         JGeometry::TVec3f(-113.0f, 382.0f, 50.0f),
@@ -439,7 +441,7 @@ void cls_8049E770::fn_8012B218() {
             msgPos.x = (s32)rm->fbWidth * 0.5f;
             msgPos.y += -16.0f;
             fn_8022FE80(0, field_0x4, mSerial, true, false);
-            if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+            if (!talk(field_0x4, msgPos)) {
                 return;
             }
             field_0x254++;
@@ -461,7 +463,6 @@ void cls_8049E770::fn_8012B218() {
     }
 }
 
-// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012B0D8() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
@@ -472,7 +473,7 @@ void cls_8049E770::fn_8012B0D8() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -493,7 +494,7 @@ void cls_8049E770::fn_8012B02C() {
     }
 }
 
-// FIXME(shotgun): 95.64 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.13 %, different; behaviour clean.
 void cls_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
@@ -583,7 +584,7 @@ void cls_8049E770::fn_8012AA84() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (!talk(field_0x4, msgPos)) {
             return;
         }
         field_0x254++;
