@@ -709,10 +709,9 @@ void GameView_804A9950::fn_802DCDF4() {
     field_0xc9 = 0;
 }
 
-// FIXME: 94.17 %, missing/extra; behaviour near.
-// One instruction: the target keeps the result in r6 (li r6, 0 at entry) and
-// returns it through clrlwi r3, r6, 24; ours builds it in r3 directly.
-bool GameView_804A9950::fn_802DCD1C(const s32* dir) {
+// Returns a byte like fn_802DCD0C: the bool result is narrowed at the return
+// (clrlwi r3, r6, 24).
+u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
     bool moved = false;
     if (fn_802DCD0C() == 0) {
         if (dir[0] > 0) {
@@ -2450,8 +2449,6 @@ bool GameView_804A9950::fn_802D49A8(s32 layer, u16 id) {
     return false;
 }
 
-// FIXME: 99.55 %, regalloc-only; behaviour clean.
-// Scheduling and regalloc, as fn_802D4C10 (the search loop's address add).
 // The shift loop is a for (;;) with the test at the top: the target's loop has its test at
 // the top and a plain branch back (0x802D48FC), which MWCC emits for neither while nor for
 // with a condition (those it rotates and unrolls).
@@ -2459,9 +2456,8 @@ void GameView_804A9950::fn_802D4874(s32 layer, u16 id, u64* outBit, u64* outMask
     s32 slot = layer < 8 ? 0 : layer - 7;
     s32 i;
     for (i = 0; i < 0x40; i++) {
-        GameView_804A9950* view = getGameView_802D6A9C();
-        if (view->field_0x2948[slot][i] == 0) {
-            view->field_0x2948[slot][i] = id;
+        if (getGameView_802D6A9C()->field_0x2948[slot][i] == 0) {
+            getGameView_802D6A9C()->field_0x2948[slot][i] = id;
             break;
         }
     }

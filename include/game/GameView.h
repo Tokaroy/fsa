@@ -156,7 +156,7 @@ public:
     // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
     // is a guess, a two-int struct passed by value would look the same.
-    bool fn_802DCD1C(const s32* dir);
+    u8 fn_802DCD1C(const s32* dir);
     // 1 unit. Clears the actors (fn_801F7CAC, fn_801F6204), field_0x131de and
     // the effects (fn_8013C8CC), and field_0xc9; fn_802DA788 inlines it after a
     // fn_8038D454 call.
