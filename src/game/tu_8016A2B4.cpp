@@ -486,7 +486,7 @@ void GameRootSub24_8016A3AC::fn_8016DA6C() {
     }
 }
 
-// FIXME: 98.30 %, missing/extra; behaviour near.
+// FIXME: 99.45 %, scheduling+regalloc; behaviour clean.
 void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
                  s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
     JGeometry::TVec3f offset(-view[0][3], -view[1][3], 0.0f);
