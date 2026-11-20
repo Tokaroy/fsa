@@ -8,6 +8,11 @@
 #include "JSystem/JGeometry.h"
 #include "JSystem/JMath/JMath.h"
 
+// A random offset in [-range / 2, range / 2].
+static inline s32 spread(s32 range) {
+    return fn_801CD664(range + 1) - range / 2;
+}
+
 // FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
 // The original zero-extends the saved index again before the second restore compare.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
@@ -773,7 +778,7 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
         }
     }
     fn_801C8B50();
-    field_0x33c += fn_801CD664(0x4001) - 0x2000;
+    field_0x33c += spread(0x4000);
     if (!(field_0x524.field_0x0 & 0x40)) {
         fn_801C3B7C(0x1C);
     }
