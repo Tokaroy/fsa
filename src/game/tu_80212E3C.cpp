@@ -141,12 +141,13 @@ void cls_804A6340::fn_80213774(int mode) {
     }
 }
 
-// FIXME(shotgun): 95.18 %, missing/extra; behaviour drift.
 void cls_804A6340::vfunc_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
     }
     switch (mState) {
+    case 0:
+        break;
     case 1:
         if (mFlags & 0x4000) {
             fn_80213774(0);
