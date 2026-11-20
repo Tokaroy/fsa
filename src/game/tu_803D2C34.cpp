@@ -604,9 +604,6 @@ void cls_804B0288::fn_803D4068() {
 
 // FIXME(shotgun): 98.56 %, scheduling+regalloc; behaviour clean.
 void cls_804B0288::fn_803D3EC8() {
-    u8 done1 = 0;
-    u8 done2 = 0;
-    u8 done3 = 0;
     s16 t0 = lbl_8050DB0C.field_0x4c[(0xEE - 0x4C) / 2];
     s16 t1 = lbl_8050DB0C.field_0x4c[(0xF0 - 0x4C) / 2];
     s16 t2 = lbl_8050DB0C.field_0x4c[(0xF2 - 0x4C) / 2];
@@ -614,18 +611,21 @@ void cls_804B0288::fn_803D3EC8() {
     s16 t4 = lbl_8050DB0C.field_0x4c[(0xF6 - 0x4C) / 2];
     s16 t5 = lbl_8050DB0C.field_0x4c[(0xF8 - 0x4C) / 2];
     s16 t6 = lbl_8050DB0C.field_0x4c[(0xFA - 0x4C) / 2];
+    u8 done1 = 0;
+    u8 done2 = 0;
+    u8 done3 = 0;
     field_0x84++;
     if (field_0x84 > t0) {
         done1 = field_0x24->fn_80402940(t1, 0, 0.0f, 480.0f);
         if (field_0x2176 != 0) {
             field_0x4c->fn_80402940(t1, 0, 0.0f, -200.0f);
-            field_0x14->fn_80402628(t1, field_0x14->field_0x28, 0);
-            for (s32 i = 0; i < 8; i++) {
-                field_0x2c[i]->fn_8040271C(t1, 1.0f, 2.0f);
-                field_0x2c[i]->fn_80402628(t1, field_0x2c[i]->field_0x28, 0);
-            }
-            fn_803D49A4();
         }
+        field_0x14->fn_80402628(t1, field_0x14->field_0x28, 0);
+        for (s32 i = 0; i < 8; i++) {
+            field_0x2c[i]->fn_8040271C(t1, 1.0f, 2.0f);
+            field_0x2c[i]->fn_80402628(t1, field_0x2c[i]->field_0x28, 0);
+        }
+        fn_803D49A4();
     }
     if (field_0x84 > t2) {
         done2 = field_0x18->fn_80402940(t3, 0, 0.0f, 480.0f);
