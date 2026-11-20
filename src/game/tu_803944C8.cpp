@@ -281,7 +281,6 @@ void cls_804AF774::fn_803A2F74() {
 
 // Adds the number of characters `value` prints as (a sign, then its digits
 // without leading zeros, at most five) to the column count.
-// FIXME: 93.87 %, scheduling+regalloc; behaviour clean.
 void cls_804AF774::fn_803A2E48(s32 value) {
     bool started = false;
     if (value < 0) {
@@ -2423,7 +2422,7 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 82.48 %, different; behaviour near.
+// FIXME(shotgun): 97.74 %, different; behaviour near.
 // (float registers of the pos / base computation)
 void cls_804AF72C::fn_8039D0DC(u8 value) {
     s32 offset = 0;
@@ -2489,7 +2488,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.71 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -2876,7 +2875,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.98 %, regalloc-only; behaviour clean.
+// FIXME: 99.91 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2949,10 +2948,6 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
     }
 }
 
-// FIXME: 93.42 %, scheduling; behaviour clean.
-// Slots 0-2 are the field_0x282-indexed entries (with field_0x1fe), slots 3-14 the
-// field_0x1fd-indexed ones (always addressed as [field_0x1fd + 3] below); the
-// original's store order clears them as those two groups.
 void cls_804AF6E4::do_begin(const void*, const char*) {
     field_0x3c = -1;
     field_0x40 = -1;
