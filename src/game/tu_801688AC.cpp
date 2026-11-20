@@ -19,9 +19,9 @@ extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
 // layer 0 gives the view box.
 
 // 0x80169DCC.
-// FIXME(shotgun): 95.79 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.86 %, regalloc-only; behaviour clean.
 void cls_804A0738::init() {
-    field_0x98 = (field_0x90 >> 7) & 7;
+    field_0x98 = (field_0x90 >> 4) & 7;
     field_0x25c = (field_0x90 >> 8) & 1;
     field_0x90 = field_0x90 & 3;
     field_0x80.i.x = -4.0f;
@@ -41,8 +41,9 @@ void cls_804A0738::init() {
         field_0x274[i].layer0 = field_0x4;
     }
     for (s32 i = 0; i < 5; i++) {
-        field_0x2ec[i].p1.x = getPlayerPos_8023E724(field_0x90)->x;
-        field_0x2ec[i].p1.y = getPlayerPos_8023E724(field_0x90)->y;
+        JGeometry::TVec3f* pos = getPlayerPos_8023E724(field_0x90);
+        field_0x2ec[i].p1.x = pos->x;
+        field_0x2ec[i].p1.y = pos->y;
         field_0x2ec[i].layer1 = getPlayerLayer_8023DE58(field_0x90);
     }
     field_0x264 = 0;
@@ -58,7 +59,10 @@ void cls_804A0738::init() {
     field_0x3c.x = 0.0f;
     fn_8016890C(&mPos, field_0x4, (JGeometry::TBox2f*)field_0x370);
     s32 angle = lbl_804A0718[field_0x98];
-    JGeometry::TVec2f dir(1000.0f * JMASinShort(angle), 1000.0f * JMACosShort(angle));
+    JGeometry::TVec2f dir;
+    dir.x = JMASinShort(angle);
+    dir.y = JMACosShort(angle);
+    dir.scale(1000.0f);
     dir.normalize();
     if (field_0x25c) {
         field_0x3c.x = 9.0f * dir.x;
@@ -326,7 +330,6 @@ void cls_804A0738::update() {
 }
 
 // 0x80168E78.
-// FIXME(shotgun): 95.91 %, missing/extra; behaviour near.
 void cls_804A0738::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0x11;
@@ -335,28 +338,27 @@ void cls_804A0738::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
+    fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
 }
 
 
 // 0x80168C38. Whether a player standing in the (grown) hit box gets caught; every other
 // player is then pushed along.
-// FIXME(shotgun): 83.29 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 87.06 %, missing/extra; behaviour drift.
 bool cls_804A0738::fn_80168C38() {
-    s32 found = -1;
     const JGeometry::TVec3f* first = getPlayerPos_8023E724(field_0x90);
-    JGeometry::TVec2f d;
-    d.x = first->x - mPos.x;
-    d.y = first->y - mPos.y;
-    JGeometry::TBox2f box = mBox;
-    box.i.x = box.i.x + mPos.x - 4.0f;
-    box.i.y = box.i.y + mPos.y - 4.0f;
-    box.f.x = box.f.x + mPos.x + 4.0f;
-    box.f.y = box.f.y + mPos.y + 4.0f;
+    s32 found = -1;
+    JGeometry::TVec2f d = xy(*first) - xy(mPos);
+    JGeometry::TBox2f box(mBox);
+    box.addPos(xy(mPos));
+    box.i.x -= 4.0f;
+    box.i.y -= 4.0f;
+    box.f.x += 4.0f;
+    box.f.y += 4.0f;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
             if (!fn_8022E438(i, field_0x90) ||
-                (fn_8022E438(i, field_0x90) == 1 && i != field_0x90 && fn_80235580(i) == 1)) {
+                (fn_8022E438(i, field_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
                 if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                     found = i;
                 }
@@ -377,16 +379,16 @@ bool cls_804A0738::fn_80168C38() {
                     }
                 }
             }
-            return true;
+        } else {
+            field_0x261 = 1;
+            return fn_8022E23C(found, mSerial);
         }
-        field_0x261 = 1;
-        return fn_8022E23C(found, mSerial);
+        return true;
     }
     return false;
 }
 
 // 0x8016890C.
-// FIXME(shotgun): 98.32 %, missing/extra + reloc-name; behaviour near.
 void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometry::TBox2f* out) {
     if (layer == 0) {
         GameView_804A9950* view = getGameView_802D6A9C();
@@ -428,6 +430,7 @@ void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometr
     out->i.x = p.x;
     p.x = (f32)gx;
     p.y = (f32)gy;
+    p.z = 0.0f;
     for (s32 n = 0; n < 64; n++) {
         if (p.y >= 512.0f) {
             p.y = 512.0f;
