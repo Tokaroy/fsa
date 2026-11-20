@@ -852,7 +852,7 @@ void cls_804A7AE0::fn_80298C18() {
 }
 
 // FIXME(shotgun): 84.07 %, missing/extra; behaviour drift.
-// still differs: the isZero() bool test (mfcr/extrwi.) and the (k & bit) conversions
+// still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
 void cls_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
         Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
@@ -865,8 +865,8 @@ void cls_804A7AE0::fn_80298978() {
         } else {
             for (s32 k = 0; k < 4; k++) {
                 JGeometry::TVec3f pos = warp->field_0x238;
-                pos.x += 8.0f * ((k & 1) != 0) - 4.0f;
-                pos.y += 8.0f * ((k & 2) != 0) - 4.0f;
+                pos.x += 8.0f * ((k & 1) > 0) - 4.0f;
+                pos.y += 8.0f * ((k & 2) > 0) - 4.0f;
                 s32 kind = warp->field_0x90 & 0x7F;
                 if (kind == 0 || kind == 3) {
                     pos.y += -16.0f;
