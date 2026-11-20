@@ -397,8 +397,7 @@ void FireRodFire_804A89F0::update() {
                 }
             }
         }
-        s32 layer = field_0x4;
-        if (layer >= 8) {
+        if (field_0x4 >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4) {
                 field_0x274--;
                 if (field_0x238 == 0 && field_0x274 == 0) {
@@ -777,10 +776,10 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
                 return false;
             }
             if (field_0x27c == 0x25) {
-                return (u8)(getGameView_802D6A9C()->field_0x171 == 0);
+                return getGameView_802D6A9C()->field_0x171 == 0;
             }
             if (field_0x27c == 0x26) {
-                return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
+                return getGameView_802D6A9C()->field_0x171 == 1;
             }
             if (field_0x27c == 0x22) {
                 if (getGameView_802D6A9C()->field_0x170 != 1) {
