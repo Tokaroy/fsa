@@ -688,27 +688,18 @@ bool Cucco_804AB8C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         field_0x2b4 = 0.0f;
         return false;
     }
-    bool blocked;
+    bool blocked = false;
     if (code == 3 && tile != 0xC) {
         blocked = false;
     } else if (code == 0x27 || code == 2 || code == 0x39) {
-        blocked = false;
     } else if (code == 0x28 && (s32)pos->y % 16 > 4) {
-        blocked = false;
     } else if (code == 0x29 && (s32)pos->y % 16 < 12) {
-        blocked = false;
     } else if (code == 0x2C && (s32)pos->y % 16 > 4) {
-        blocked = false;
     } else if (code == 0x2D && (s32)pos->y % 16 < 12) {
-        blocked = false;
     } else if (code == 0x2A && (s32)pos->x % 16 > 4) {
-        blocked = false;
     } else if (code == 0x2B && (s32)pos->x % 16 < 12) {
-        blocked = false;
     } else if (code == 0x2E && (s32)pos->x % 16 > 4) {
-        blocked = false;
     } else if (code == 0x2F && (s32)pos->x % 16 < 12) {
-        blocked = false;
     } else {
         blocked = true;
     }
