@@ -39,7 +39,7 @@ inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
 void cls_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
     field_0x3f4 = (s32)(mPos.y / 384.0f) * 384.0f;
-    field_0x3f8 = (s32)(mPos.x * 0.001953125f) * 512.0f + 256.0f;
+    field_0x3f8 = (s32)(mPos.x / 512.0f) * 512.0f + 256.0f;
     mPos.x = field_0x3f8;
     mPos.y = field_0x3f4 + 250.0f;
     field_0x230 = 0;
@@ -47,15 +47,12 @@ void cls_8049E770::init() {
     field_0x248 = 130.0f;
     field_0x250 = 0;
     field_0x254 = 0;
-    field_0x238.x = field_0x3f8;
-    field_0x238.y = (field_0x3f4 + 384.0f) - 102.0f;
-    field_0x238.z = 0.0f;
+    field_0x238.set(field_0x3f8, (field_0x3f4 + 384.0f) - 102.0f, 0.0f);
     field_0x400 = 0.0f;
     field_0x3fc = 0.0f;
     for (s32 i = 0; i < 6; i++) {
         s16 angle = lbl_804650D4[i];
-        JGeometry::TVec3f offset(35.0f * JMACosShort(angle), 55.0f * JMASinShort(angle), 0.0f);
-        field_0x25c[i] = mPos + offset;
+        field_0x25c[i] = mPos + JGeometry::TVec3f(JMACosShort(angle) * 55.0f, JMASinShort(angle) * 35.0f, 0.0f);
         field_0x2a4[i] = lbl_804650B0[i];
     }
     field_0x2bc = 0;
@@ -77,12 +74,12 @@ void cls_8049E770::init() {
     }
     fn_80119DD0()->fn_80119998(150, 0, 0, 0, 0, 110, 0);
     field_0x250 = 60;
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 posX = field_0x238.x;
     f32 posY = field_0x238.y;
     f32 halfH = field_0x248;
     f32 y0 = posY - halfH;
     f32 y1 = posY + halfH;
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x840 == 0) {
         cam->field_0x840 = 1;
