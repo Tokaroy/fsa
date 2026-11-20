@@ -549,7 +549,7 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 97.16 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.61 %, missing/extra; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
@@ -562,7 +562,7 @@ void cls_804A7AE0::fn_80299720() {
             field_0x250.y += 0.32f;
         } else {
             mPos.y += field_0x250.y;
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x250.zero();
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -583,7 +583,7 @@ void cls_804A7AE0::fn_80299720() {
         JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+        if (field_0x250.isZero()) {
             JGeometry::TVec3f push(0.0f, -16.0f, 0.0f);
             for (s32 i = 0; i < mSerialCountD; i++) {
                 Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
@@ -596,8 +596,8 @@ void cls_804A7AE0::fn_80299720() {
             }
             field_0x248 = 0;
             field_0x2b8 = 0;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
+            field_0x250.zero();
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 27) & 0x1F;
                 if (n > 0) {
@@ -950,7 +950,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 74.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -999,7 +999,7 @@ void cls_804A7AE0::update() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         fn_802984B0();
-        if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+        if (field_0x250.isZero()) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, field_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false)) {
@@ -1232,7 +1232,7 @@ void cls_804A7AE0::update() {
                             }
                         }
                     }
-                    if (field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                    if (field_0x250.isZero()) {
                         if (field_0x2ac > 0) {
                             field_0x2ac -= 4;
                             if (field_0x2ac <= 0) {
@@ -1506,7 +1506,7 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 94.13 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 // float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
@@ -1521,13 +1521,11 @@ void cls_804A7AE0::fn_802961AC() {
         return;
     }
     field_0x2d0 = mPos - other->mPos;
-    f32 sq = field_0x2d0.squared();
-    if (!(sq <= 32.0f * JGeometry::TUtil<f32>::epsilon())) {
-        field_0x2d0.scale(JGeometry::TUtil<f32>::inv_sqrt(sq));
-    }
+    field_0x2d0.normalize();
     field_0x3c = field_0x2d0;
     startSound_801F0E34(0x30075, 0);
-    for (s32 i = 0; i < 2; i++) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             if (mEmitters[i][j] == NULL) {
                 JGeometry::TVec3f pos = mPos;
@@ -1540,13 +1538,13 @@ void cls_804A7AE0::fn_802961AC() {
     s32 v = (field_0x90 >> 7) & 0x1F;
     s32 layer = v == 0 ? 0 : v + 7;
     getGameView_802D6A9C()->fn_802D79E8(layer, 16.0f, 0.0f, true);
-    for (s32 i = 0; i < mSerialCountB; i++) {
+    for (i = 0; i < mSerialCountB; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
         if (actor != NULL) {
             actor->mAlive = false;
         }
     }
-    for (s32 i = 0; i < mSerialCountA; i++) {
+    for (i = 0; i < mSerialCountA; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
         if (actor != NULL) {
             actor->mAlive = false;
