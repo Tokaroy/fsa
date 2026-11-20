@@ -24,13 +24,13 @@ s32 lbl_8053ABC0;
 u8 lbl_8053ABC4;
 u8 lbl_8053ABC5;
 
+s32 lbl_804A2B90[16] = {0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0};
+s32 lbl_804A2BD0[5] = {1, 5, 20, 50, 100};
 // The four TIMG pictures of the shop keeper.
 const char* lbl_804A2BE4[4] = {"obachan_1.bti", "obachan_2.bti", "obachan_3.bti", "obachan_4.bti"};
-const s32 lbl_804A2BD0[5] = {1, 5, 20, 50, 100};
-const s32 lbl_804A2B90[16] = {0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0};
 
 // Remaining difference: register allocation of the lbl_804A2B90 index.
-// FIXME: 99.83 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void TennisShop_804A2BF4::init() {
     field_0x248 = 0;
     for (s32 i = 0; i < 6; i++) {
@@ -190,7 +190,7 @@ static inline void startSwing(TennisShop_804A2BF4* self) {
     self->field_0x324[2] = 1.75f;
 }
 
-// FIXME(shotgun): 95.50 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
 void TennisShop_804A2BF4::fn_801A17B8() {
     JGeometry::TVec3f talkPos = mPos;
     JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
@@ -921,7 +921,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
     }
 }
 
-// FIXME(shotgun): 99.94 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 void TennisShop_804A2BF4::fn_801A0BE4() {
     mPos += field_0x3c;
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -979,7 +979,7 @@ void TennisShop_804A2BF4::fn_801A0BE4() {
         } else {
             field_0x3c.z -= 0.5f;
         }
-        if (field_0x238[1] != 0 && field_0x340 < 1.0f) {
+        if (field_0x238[1] == 0 || field_0x340 < 1.0f) {
             mAlive = false;
         }
         break;
@@ -1033,7 +1033,6 @@ void TennisShop_804A2BF4::fn_801A0910() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
 void TennisShop_804A2BF4::fn_801A0754() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
