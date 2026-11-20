@@ -30,32 +30,6 @@ static const s32 lbl_804719D8[12] = {1, 5, 20, 50, 100, 150, 200, 300, 1000, 150
 // Kinds 4 and up (index kind - 4).
 static const s32 lbl_80471A08[8] = {404, 403, 402, 401, 439, 440, 441, 442};
 
-// Kick direction of a thrown gem: the new actor gets this velocity (x, y, 5).
-static inline void setKick(ActorBase_804A5770* actor, s32 dir) {
-    switch (dir) {
-    case 0: {
-        JGeometry::TVec3f v(-2.0f, 0.0f, 5.0f);
-        actor->field_0x3c = v;
-        break;
-    }
-    case 1: {
-        JGeometry::TVec3f v(2.0f, 0.0f, 5.0f);
-        actor->field_0x3c = v;
-        break;
-    }
-    case 2: {
-        JGeometry::TVec3f v(0.0f, -2.0f, 5.0f);
-        actor->field_0x3c = v;
-        break;
-    }
-    case 3: {
-        JGeometry::TVec3f v(0.0f, 2.0f, 5.0f);
-        actor->field_0x3c = v;
-        break;
-    }
-    }
-}
-
 // 0x8032D6C0.
 void ForceGem_804AB6D8::init() {
     field_0x94 = (field_0x90 >> 16) & 0xFF;
@@ -697,7 +671,7 @@ void ForceGem_804AB6D8::draw() {
 // FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
 void ForceGem_804AB6D8::fn_8032BB90() {
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
+        if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
             JGeometry::TVec3f* p = fn_8023A478(i);
             f32 dx = p->x - mPos.x;
             f32 dy = p->y - mPos.y;
@@ -708,7 +682,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     s32 dir;
                     if (field_0x248 != 0) {
                         id = ACTOR_ESRY;
-                        field_0x268 = (field_0x90 & 0xF8000000) | field_0x268;
+                        field_0x268 |= field_0x90 & 0xF8000000;
                         field_0x268 |= 0x10000;
                         if (field_0x94 == 0x20 || field_0x94 == 0x21) {
                             dir = fn_8023A240();
@@ -729,7 +703,21 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     }
                     s32 serial = getActorManager_801F856C()->fn_801F8544(id, field_0x4, &mPos, field_0x268);
                     if (serial >= 0) {
-                        setKick(getActorManager_801F856C()->findActorBySerial_801F666C(serial), dir);
+                        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        switch (dir) {
+                        case 0:
+                            actor->field_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
+                            break;
+                        case 1:
+                            actor->field_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
+                            break;
+                        case 2:
+                            actor->field_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                            break;
+                        case 3:
+                            actor->field_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);
+                            break;
+                        }
                     }
                     fn_801F3668();
                 } else {
@@ -739,7 +727,20 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                     } else {
                         dir = field_0x94 - 0xc;
                     }
-                    setKick(this, dir);
+                    switch (dir) {
+                    case 0:
+                        field_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 5.0f);
+                        break;
+                    case 1:
+                        field_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 5.0f);
+                        break;
+                    case 2:
+                        field_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 5.0f);
+                        break;
+                    case 3:
+                        field_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 5.0f);
+                        break;
+                    }
                     if (gGameRoot_8053AAF8->field_0x7e == 1) {
                         field_0x24c = 0x3d9;
                     } else {
