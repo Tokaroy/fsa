@@ -2883,7 +2883,7 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                 }
                 s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
