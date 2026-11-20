@@ -69,6 +69,11 @@ static const u32 lbl_80469F38[16] = {
     0x00040099, 0x0004009E, 0x0004009B, 0x000400AF, 0x00040072, 0x00040038, 0x000400A1, 0x00040037,
 };
 
+// Five floats indexed by field_0xc0 (EnemyParam "efsz").
+static const f32 lbl_8046A00C[5] = {
+    0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
+};
+
 // Tiles without a shadow (fn_801EF830; the last one only unless
 // fn_802DEB58()).
 static const u16 lbl_8053F730[4] = {2, 3, 14, 0};
@@ -2077,6 +2082,9 @@ extern "C" void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec
 }
 
 // fn_801F2DB4 over the 17 actor ids below (the list is copied to the stack).
+// FIXME: 99.20 %, reloc-name; behaviour clean.
+// Instructions identical; the list is an @NNN literal here but lbl_80469FC8 in the
+// target (rodata order).
 void ActorBase_804A5770::fn_801EF510() {
     u32 list[17] = {'SWBM', 'FIRE', 'BLZE', 'HBMB', 'FLME', 'THCL', 'GRAS', 'SSTN', 'STON',
                     'ROCK', 'RCK2', 'BORD', 'TUBO', 'KEY0', 'YASI', 'SMRI', 'NULL'};
@@ -2300,12 +2308,6 @@ void ActorBase_804A5770::fn_801EE508() {
     fn_801CB71C(&mEmitter100, &mPos, 0, -1);
     fn_801CB71C(&mEmitter104, &mPos, 0, 1);
 }
-
-// Five floats indexed by field_0xc0 (EnemyParam "efsz"); in .rodata after
-// every other table of the unit.
-const f32 ActorBase_804A5770::lbl_8046A00C[5] = {
-    0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
-};
 
 f32 ActorBase_804A5770::fn_801EE4F0() {
     return lbl_8046A00C[field_0xc0];

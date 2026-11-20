@@ -186,8 +186,6 @@ public:
     // 3 units / 13 calls. Returns lbl_8046A00C[field_0xc0] (lfsx; 0xc0 is
     // EnemyParam "efsz") in f1.
     f32 fn_801EE4F0();
-    // The effect sizes fn_801EE4F0 indexes (defined in tu_801EE24C.cpp).
-    static const f32 lbl_8046A00C[5];
     // 1 unit / 2 calls (the manager's update loop, 0x801F8B9C, with
     // mActors[i]). fn_801CB71C(&mEmitter100, &mPos, 0, -1), then the same
     // for mEmitter104 with 1.
