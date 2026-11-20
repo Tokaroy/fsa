@@ -84,7 +84,7 @@ void SmallKey_804A8CD8::init() {
     case 5: {
         field_0x240 = 4;
         field_0x2b1 = 1;
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (field_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
@@ -606,7 +606,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         }
     }
     if (field_0x240 != 10) {
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
         value |= field_0x4 & 0xFF;
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
@@ -746,7 +746,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         return;
     }
     if (field_0x2af != 0) {
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (field_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
@@ -882,7 +882,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             s32 layer = field_0x238;
             getGameView_802D6A9C()->fn_802D6C10(pos, layer);
         }
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (field_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
@@ -1405,25 +1405,25 @@ bool SmallKey_804A8CD8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 // FIXME(shotgun): 79.96 %, missing/extra; behaviour near.
 void SmallKey_804A8CD8::fn_802C1778() {
     if (field_0x4 >= 8 && field_0x2a8 != 0xFFFF) {
-        bool registered = false;
         if (fn_8022F478(field_0x23c) == true) {
-            if (fn_8023EF50(field_0x23c) == mSerial) {
-                registered = true;
+            s32 serial = mSerial;
+            if (fn_8023EF50(field_0x23c) != serial) {
+                return;
             }
         } else if (fn_8022F478(field_0xd0) == true) {
-            if (field_0x240 == 10 && field_0xcc != 0) {
-                registered = true;
+            if (field_0x240 != 10 || field_0xcc == 0) {
+                return;
             }
+        } else {
+            return;
         }
-        if (registered) {
-            JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
-            JGeometry::TVec2f b(mPos.x, mPos.y);
-            u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (field_0x2a8 << 8) | (field_0x4 & 0xFF);
-            s32 layer = field_0x238;
-            getGameView_802D6A9C()->fn_802D6D70(a, b, value, layer);
-            field_0x2a8 = 0xFFFF;
-        }
+        JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
+        JGeometry::TVec2f b(mPos.x, mPos.y);
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+                    (field_0x2a8 << 8) | (field_0x4 & 0xFF);
+        s32 layer = field_0x238;
+        getGameView_802D6A9C()->fn_802D6D70(b, a, value, layer);
+        field_0x2a8 = 0xFFFF;
     }
 }
 
@@ -1432,7 +1432,7 @@ void SmallKey_804A8CD8::fn_802C1674() {
     if (field_0x240 == 4 && field_0xc4 == 0 && field_0x2af != 0 && field_0x2a8 != 0xFFFF) {
         JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
         JGeometry::TVec2f b(mPos.x, mPos.y);
-        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (field_0x2a8 << 8) | (field_0x4 & 0xFF);
         s32 layer = field_0x238;
         getGameView_802D6A9C()->fn_802D6D70(a, b, value, layer);
