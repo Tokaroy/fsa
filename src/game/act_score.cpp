@@ -295,28 +295,42 @@ void Score_804AF4C0::fn_80391F58() {
     }
 }
 
+// Queues one digit sprite at a position passed by value (the original copies
+// the Vec, then builds the TVec3f from the copy).
+static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtility::TColor color) {
+    JGeometry::TVec3f pos(v);
+    lbl_8053AF50->fn_80455770(scale, digit, &pos, color);
+}
+
 // FIXME(shotgun): 67.37 %, missing/extra + reloc-name; behaviour drift.
-// (the original builds a TVec3f copy of mPos and passes it on)
+// (left: the operand order of the `mPos.x + 10.0f` fadds, and the float literal labels)
 void Score_804AF4C0::fn_80391D44() {
     s32 n = fn_8023BC38(mPlayer) / 60 + 1;
+    JGeometry::TVec3f v;
     if (n < 10) {
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+        v.x = mPos.x;
+        v.y = mPos.y;
+        v.z = mPos.z;
         if (field_0x4 < 8) {
-            lbl_8053AF50->fn_80455770(0.5f, n, &pos,
-                                      JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
+            putTimeDigit(0.5f, n, v,
+                         JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
     } else {
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-        pos.x = mPos.x - 10.0f;
+        v.x = mPos.x;
+        v.y = mPos.y;
+        v.z = mPos.z;
+        v.x = mPos.x - 10.0f;
         if (field_0x4 < 8) {
-            lbl_8053AF50->fn_80455770(0.5f, 1, &pos,
-                                      JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
+            putTimeDigit(0.5f, 1, v,
+                         JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
-        pos.set(mPos.x, mPos.y, mPos.z);
-        pos.x = mPos.x + 10.0f;
+        v.x = mPos.x;
+        v.y = mPos.y;
+        v.z = mPos.z;
+        v.x = mPos.x + 10.0f;
         if (field_0x4 < 8) {
-            lbl_8053AF50->fn_80455770(0.5f, 0, &pos,
-                                      JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
+            putTimeDigit(0.5f, 0, v,
+                         JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
     }
 }
