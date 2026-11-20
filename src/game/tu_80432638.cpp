@@ -35,7 +35,8 @@ static const char* lbl_804B1640[10] = {
     "kk_rupyNum_09.bti",
 };
 
-// FIXME(shotgun): 99.79 %, operands (the vtable symbol name)
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour near.
+// (the vtable symbol name)
 cls_804B1668::cls_804B1668() {
     field_0x4[0] = new J2DScreen;
     field_0x4[0]->setPriority("main_gba_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
@@ -116,7 +117,6 @@ cls_804B1668::cls_804B1668() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name
 cls_804B1668::~cls_804B1668() {
     for (s32 i = 0; i < 2; i++) {
         delete field_0x4[i];
@@ -154,7 +154,7 @@ void cls_804B1668::fn_80433718() {
     }
 }
 
-// FIXME(shotgun): 99.41 %
+// FIXME(shotgun): 99.41 %, missing/extra; behaviour clean.
 void cls_804B1668::fn_80432AF8() {
     field_0x90++;
     field_0x94++;
@@ -275,7 +275,7 @@ void cls_804B1668::fn_80432AF8() {
     }
 }
 
-// FIXME(shotgun): 98.72 %, regalloc-only
+// FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0xa4 == 0) {
