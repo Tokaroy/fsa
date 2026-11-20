@@ -42,7 +42,7 @@ s32 cls_804AE088::vfunc_0x58() {
     return field_0x240;
 }
 
-// FIXME: 98.05 %, scheduling + reloc-name; behaviour clean.
+// FIXME: 99.95 %, reloc-name; behaviour clean.
 cls_804AE088::cls_804AE088()
     : mNaviActor(NULL), field_0x234(1), field_0x235(1), field_0x236(0), field_0x237(0), field_0x238(1),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
@@ -608,7 +608,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // differs: .sdata2 literal pool order.
-// FIXME: 99.63 %, scheduling + reloc-name; behaviour clean.
+// FIXME: 99.72 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -650,7 +650,7 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// FIXME: 93.25 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 97.00 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
@@ -1374,7 +1374,7 @@ void cls_804AE088::fn_803683AC() {
     mPos = savedPos;
 }
 
-// FIXME: 98.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.98 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
