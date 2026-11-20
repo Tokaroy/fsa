@@ -618,6 +618,7 @@ void GameView_804A9950::vfunc_0x10() {
 
 void GameView_804A9950::vfunc_0x14() {}
 
+// FIXME: 99.68 %, regalloc-only; behaviour clean.
 // FIXME: regalloc only: end and the loop offset i*4 are swapped (r24/r25).
 u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     s32 col = field_0x14;
