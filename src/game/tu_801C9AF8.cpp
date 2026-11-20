@@ -11,28 +11,12 @@ static const u32 lbl_8053EF18[2] = {'FLME', 'NULL'};
 // FIXME(shotgun): 90.23 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer) {
     bool hit = false;
-    if (ActorBase_804A5770::vfunc_0x4C(layer, pos)) {
+    if (ActorBase_804A5770::vfunc_0x4C(layer, pos) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, 7.0f + pos->y, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, 7.0f + pos->y, pos->z))) {
         hit = true;
-    } else {
-        JGeometry::TVec3f p(pos->x - 7.0f, pos->y - 7.0f, pos->z);
-        if (ActorBase_804A5770::vfunc_0x4C(layer, &p)) {
-            hit = true;
-        } else {
-            JGeometry::TVec3f q(7.0f + pos->x, pos->y - 7.0f, pos->z);
-            if (ActorBase_804A5770::vfunc_0x4C(layer, &q)) {
-                hit = true;
-            } else {
-                JGeometry::TVec3f r(pos->x - 7.0f, 7.0f + pos->y, pos->z);
-                if (ActorBase_804A5770::vfunc_0x4C(layer, &r)) {
-                    hit = true;
-                } else {
-                    JGeometry::TVec3f t(7.0f + pos->x, 7.0f + pos->y, pos->z);
-                    if (ActorBase_804A5770::vfunc_0x4C(layer, &t)) {
-                        hit = true;
-                    }
-                }
-            }
-        }
     }
     return hit;
 }
