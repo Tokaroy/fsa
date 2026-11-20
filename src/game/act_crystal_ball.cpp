@@ -941,10 +941,12 @@ void CrystalBall_804AB308::vfunc_0x24() {
         fn_801F3668();
         return;
     }
-    if ((code == 0xD && mPos.z < 0.1f) || code == 0x3B) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 2.0f);
-        fn_801F3668();
-        return;
+    if (code == 0xD || code == 0x3B) {
+        if ((code == 0xD && mPos.z < 0.1f) || code == 0x3B) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 2.0f);
+            fn_801F3668();
+            return;
+        }
     }
     if (field_0x4 >= 8) {
         JGeometry::TVec3f p = mPos;
@@ -977,7 +979,8 @@ void CrystalBall_804AB308::vfunc_0x24() {
         }
         case 4: {
             JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, field_0x4, &p, ((field_0x23c & 3) << 8) + 3, -1, -1);
+            s32 param = ((field_0x23c & 3) << 8) + 3;
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, field_0x4, &p, param, -1, -1);
             break;
         }
         case 6:
