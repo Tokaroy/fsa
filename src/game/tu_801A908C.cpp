@@ -103,10 +103,9 @@ void cls_804A2FB0::init() {
         field_0x240 = field_0x250;
         field_0x80.set(-16.0f, -16.0f, 16.0f, 16.0f);
         field_0x2b8 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053A108[0], 0, 0, 0, 0, true, 1.0f);
-        s32 serial;
         for (int i = 0; i < 4; i++) {
             field_0x270[i] = getActorManager_801F856C()->spawnActor_801F9484('TTAT', field_0x4, &field_0x280[i], i + 1, -1, -1);
-            serial = field_0x270[i];
+            s32 serial = field_0x270[i];
             if (serial >= 0) {
                 cls_804A2FB0* child = static_cast<cls_804A2FB0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != 0) {
