@@ -655,19 +655,17 @@ bool fn_80389BF0(s32 player, s32 value) {
     return false;
 }
 
-// FIXME: 97.69 %, missing/extra; behaviour drift.
-// One instruction more than the original (an mr copying the
-// loop index before the fn_8022FA80 call) and the registers shifted by one.
 bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u32 flags) {
+    u16 bits = flags;
     u8 ready[4];
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         ready[i] = 0;
         if (i != exclude && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
             if (!fn_8022FA80(i) && fn_8037F1E4(i) == 0) {
-                if ((flags & 4) || (flags & 2) || msg == 0x265) {
+                if ((bits & 4) || (bits & 2) || msg == 0x265) {
                     if (fn_80230188(i)) {
                         ready[i] = 1;
-                        for (int j = 0; j < 4; j++) {
+                        for (s32 j = 0; j < 4; j++) {
                             if (fn_8022E438(i, j) && !fn_80230188(j)) {
                                 ready[i] = 0;
                             }
@@ -675,7 +673,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u32 flags) {
                     }
                 } else if (fn_802300EC(i)) {
                     ready[i] = 1;
-                    for (int j = 0; j < 4; j++) {
+                    for (s32 j = 0; j < 4; j++) {
                         if (fn_8022E438(i, j) && !fn_802300EC(j)) {
                             ready[i] = 0;
                         }
