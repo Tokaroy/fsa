@@ -1432,24 +1432,6 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// Ends a line of the box text: centres it in `width` (scaled by `scale`), adds the
-// indent to the part widths that end on this line, and appends "\x1BCR[n]" and the line to out.
-static inline void flushLine(char* out, const char* line, s32 lines, f32 cur, f32 width, f32 scale) {
-    char prefix[16];
-    s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
-    if (lbl_8053AD78->field_0x5c[2] == (f32)(lines - 1)) {
-        lbl_8053AD78->field_0x5c[0] += (f32)pad;
-    }
-    if (lbl_8053AD78->field_0x5c[3] == (f32)(lines - 1)) {
-        lbl_8053AD78->field_0x5c[1] += (f32)pad;
-    }
-    if (pad > 0) {
-        snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
-        strcat(out, prefix);
-    }
-    strcat(out, line);
-}
-
 // FIXME(shotgun): 84.78 %, missing/extra + reloc-name; behaviour drift.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
@@ -1458,6 +1440,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     char line[100];
+    char prefix[16];
     s32 len = 0;
     s32 pos = 0;
     s32 lines = 1;
@@ -1476,7 +1459,17 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
         if (c == '\n') {
             line[len] = c;
             line[len + 1] = 0;
-            flushLine(out, line, lines, cur, width, scale);
+            s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+            for (s32 i = 0; i < 2; i++) {
+                if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
+                    lbl_8053AD78->field_0x5c[i] += (f32)pad;
+                }
+            }
+            if (pad > 0) {
+                snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
+                strcat(out, prefix);
+            }
+            strcat(out, line);
             len = 0;
             cur = 0.0f;
             lines++;
@@ -1498,8 +1491,9 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) == true) {
-                            if (((gGameRoot_8053AAF8->field_0x83 >> shift) & 3) == 1) {
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
+                            u8 mode = (gGameRoot_8053AAF8->field_0x83 >> shift) & 3;
+                            if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {
                                     fn_80230E1C(a - 1, false);
                                 }
@@ -1534,7 +1528,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
             pos += p[1];
         } else {
             line[len++] = c;
-            u32 code = (u8)c;
+            u32 code = (u8)text[pos];
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 line[len++] = text[pos];
@@ -1546,7 +1540,17 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
         }
     }
     line[len] = c;
-    flushLine(out, line, lines, cur, width, scale);
+    s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+    for (s32 i = 0; i < 2; i++) {
+        if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
+            lbl_8053AD78->field_0x5c[i] += (f32)pad;
+        }
+    }
+    if (pad > 0) {
+        snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
+        strcat(out, prefix);
+    }
+    strcat(out, line);
     return lines;
 }
 
