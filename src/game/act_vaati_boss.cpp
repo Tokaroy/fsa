@@ -994,7 +994,8 @@ void VaatiBoss_804A4958::vfunc_0xA0() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
-            cam->field_0x844.set(focus.x, focus.y, focus.x, focus.y);
+            cam->field_0x844.i.x = cam->field_0x844.f.x = focus.x;
+            cam->field_0x844.i.y = cam->field_0x844.f.y = focus.y;
             cam->field_0x854 = 1.0f;
             cam->field_0x1d4 = -1.0f;
             cam->field_0x1d8 = -1.0f;
