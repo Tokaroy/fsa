@@ -275,7 +275,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 90.14 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -416,7 +416,7 @@ bool cls_804A4C58::fn_801D95F4() {
 }
 
 // Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
-// FIXME: 93.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.70 %, regalloc-only + reloc-name; behaviour drift.
 void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
