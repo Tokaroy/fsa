@@ -171,10 +171,12 @@ void cls_804AE4B0::draw() {
 #pragma auto_inline off
 // FIXME(shotgun): 97.90 %, scheduling+regalloc; behaviour clean.
 void cls_804AE4B0::fn_803721F4() {
+    s32 i;
+    s32 j;
     bool close = false;
     if (field_0x398 == 1) {
-        for (s32 i = 0; i < 4; i++) {
-            for (s32 j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
                 if (PSVECDistance(&field_0x264[j], &field_0x294[i]) < 48.0f) {
                     close = true;
                     break;
@@ -198,11 +200,11 @@ void cls_804AE4B0::fn_803721F4() {
         field_0x234 &= 3;
         fn_80371D50(field_0x234);
     } else {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x294[i] += field_0x2f4[i];
         }
         if (mTimer == 0x76) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
                 gAudioMgr_8053AF80->fn_80458880(0x37, -1);
@@ -914,10 +916,12 @@ void cls_804AE4B0::fn_8036FDAC() {
 
 // FIXME(shotgun): 99.32 %, regalloc-only; behaviour clean.
 void cls_804AE4B0::fn_8036FB60() {
+    s32 i;
+    s32 j;
     bool close = false;
     if (field_0x398 == 1) {
-        for (s32 i = 0; i < 4; i++) {
-            for (s32 j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
                 if (PSVECDistance(&field_0x264[j], &field_0x294[i]) < 48.0f) {
                     close = true;
                     break;
@@ -943,11 +947,11 @@ void cls_804AE4B0::fn_8036FB60() {
         field_0x234 &= 3;
         fn_80371D50(field_0x234);
     } else {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x294[i] += field_0x2f4[i];
         }
         if (mTimer == 0x76) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
                 gAudioMgr_8053AF80->fn_80458880(0x37, -1);
