@@ -145,7 +145,8 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
 void ShootingGallery_804A2B18::fn_8019F3AC() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 50.0f;
-    JGeometry::TVec3f savedPos(mPos.x, mPos.y, mPos.z);
+    JGeometry::TVec3f savedPos;
+    savedPos.set(mPos.x, mPos.y, mPos.z);
     // Unused copy of mPos at 0xa0(r1) (like camPos in act_digging_game.cpp).
     JGeometry::TVec3f unusedPos = mPos;
     JGeometry::TBox2f box(mBox);
@@ -272,7 +273,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         }
 
         s32 doneCount = 0;
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             s32 slot = fn_8022F340(i);
             if (lbl_804C6330[slot] >= 10) {
                 lbl_8053ABB8[i] = 1;
@@ -309,7 +310,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 
         if (field_0x258 == 0) {
             s32 halfCount = 0;
-            for (int i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_804C6330[i] >= 5 || fn_8022F514(i)) {
                     halfCount++;
                 }
