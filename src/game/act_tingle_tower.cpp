@@ -366,7 +366,7 @@ void cls_804AAD60::fn_80315C84() {
 
 void cls_804AAD60::fn_80315C80() {}
 
-// FIXME(shotgun): 97.85 %, different; behaviour clean.
+// FIXME(shotgun): 98.10 %, different; behaviour clean.
 void cls_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -706,7 +706,6 @@ void cls_804AAD60::fn_80314B1C() {
     }
 }
 
-// FIXME(shotgun): 96.82 %, different; behaviour clean.
 void cls_804AAD60::fn_803146DC() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
