@@ -357,16 +357,16 @@ JGeometry::TVec3f MaidenEnding_804AD5B8::fn_8035CD00() {
     return ret;
 }
 
-inline JGeometry::TVec3f MaidenEnding_804AD5B8::calcTarget_inline() {
-    JGeometry::TVec3f v;
-    v.y = field_0x268 + field_0x25c * JMASSin(field_0x260);
-    v.x = field_0x264 + field_0x258 * JMASCos(field_0x260);
-    v.z = mPos.z;
-    return v;
+inline void MaidenEnding_804AD5B8::moveTowards_inline(JGeometry::TVec3f target) {
+    JGeometry::TVec3f diff;
+    diff.x = target.x - mPos.x;
+    diff.y = target.y - mPos.y;
+    diff.z = 0.0f;
+    f32 dist = fn_80093280(&diff);
+    mPos.x += (diff.x * field_0x254) / dist;
+    mPos.y += (diff.y * field_0x254) / dist;
 }
 
-// FIXME: 99.35 %, operands; behaviour clean.
-// Register allocation and diff vector calculation.
 void MaidenEnding_804AD5B8::fn_8035CAF8() {
     if (field_0x274 != NULL) {
         setEmitterPos_8013CB44(field_0x274, &mPos, -1, -1, true);
@@ -378,17 +378,17 @@ void MaidenEnding_804AD5B8::fn_8035CAF8() {
         fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
     }
 
-    JGeometry::TVec3f target = calcTarget_inline();
+    JGeometry::TVec3f target;
+    target = JGeometry::TVec3f(
+        field_0x264 + field_0x258 * JMASCos(field_0x260),
+        field_0x268 + field_0x25c * JMASSin(field_0x260),
+        mPos.z
+    );
+    moveTowards_inline(target);
 
-    JGeometry::TVec3f diff;
-    diff.x = target.x - mPos.x;
-    diff.y = target.y - mPos.y;
-    diff.z = 0.0f;
-    f32 dist = fn_80093280(&diff);
-    mPos.x += (diff.x * field_0x254) / dist;
-    mPos.y += (diff.y * field_0x254) / dist;
-
-    if (__fabsf(mPos.x - target.x) + __fabsf(mPos.y - target.y) < 2.0f) {
+    f32 dy = __fabsf(mPos.y - target.y);
+    f32 dx = __fabsf(mPos.x - target.x);
+    if (dx + dy < 2.0f) {
         field_0x254 = 0.0f;
         mPos.x = field_0x264 + field_0x258 * JMASCos(field_0x260);
         mPos.y = field_0x268 + field_0x25c * JMASSin(field_0x260);
