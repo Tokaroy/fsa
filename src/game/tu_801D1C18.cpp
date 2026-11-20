@@ -15,23 +15,19 @@ static inline T clamp(T value, T min, T max) {
     return value;
 }
 
-// FIXME: 99.9. calcCel's loop costs fn_801D1C18 (99.85 %), fn_801D1D60 (99.89 %),
-// fn_801D1F14 (99.87 %) and startAnim_801D22DC (99.88 %) the same difference: the target
-// stores the int-to-float temporary's low word (the xoris result) before its high
-// word (0x43300000) for `start`. Only scheduling.
 inline void SpriteAnim_801D267C::calcCel() {
     const s16* p = mTables[mAnim];
     s32 time = 0;
     s32 key = 0;
     f32 frame = mFrameCtrl.getFrame();
     for (; p[0] >= 0; p += 2, key++) {
-        s32 start = time;
-        time += p[1];
-        if (start <= frame && frame < time) {
+        s32 end = time + p[1];
+        if (time <= frame && frame < end) {
             mCel = clamp<s32>(p[0], mMinCel, mMaxCel);
             mKey = key;
             return;
         }
+        time = end;
     }
     // p has advanced past the first key; the first cel is reread from the table (a local copy changes register allocation).
     mCel = clamp<s32>(mTables[mAnim][0], mMinCel, mMaxCel);
@@ -128,7 +124,8 @@ bool SpriteAnim_801D267C::fn_801D2264(s32 anim, s32 mode) {
     return result;
 }
 
-// FIXME: 86.2 %. Only the order of the first instructions differs: the
+// FIXME: 86.21 %, scheduling; behaviour clean.
+// Only the order of the first instructions differs: the
 // target loads mState (lbz 0x29) and sets result = 0 before the stack frame
 // is made; ours does it after. Splitting the || into two ifs was worse.
 bool SpriteAnim_801D267C::fn_801D21F0() {
@@ -139,7 +136,8 @@ bool SpriteAnim_801D267C::fn_801D217C() {
     return isLoopEnd();
 }
 
-// FIXME: 94.4 %. The target tests the first attribute (== 0) through a
+// FIXME: 94.42 %, different; behaviour drift.
+// The target tests the first attribute (== 0) through a
 // bool (cntlzw; extrwi.) and compares it again inside the inlined
 // isStopped with cmplwi; ours compares with cmplwi first and clrlwi. inside.
 // `!getAttribute()` gave the same code.
