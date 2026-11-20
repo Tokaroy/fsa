@@ -177,7 +177,7 @@ void VaatiBoss_804A4958::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME: 97.36 %, regalloc-only; behaviour clean.
+// FIXME: 97.99 %, regalloc-only; behaviour clean.
 // regalloc-only + reloc-name. Register allocation of the random-velocity arithmetic.
 void VaatiBoss_804A4958::fn_801D63D0() {
     for (s32 i = 0; i < 5; i++) {
@@ -185,11 +185,11 @@ void VaatiBoss_804A4958::fn_801D63D0() {
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                JGeometry::TVec3f vel;
-                vel.z = 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f;
-                vel.y = 1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                vel.x = 1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                actor->field_0x3c = vel;
+                actor->field_0x3c = JGeometry::TVec3f(
+                    (gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 2.0f - 1.0f) * 1.2f,
+                    (gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 2.0f - 1.0f) * 1.2f,
+                    3.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 3.0f
+                );
             }
         }
     }
@@ -792,8 +792,7 @@ void VaatiBoss_804A4958::vfunc_0x98() {
     fn_801E4A18(&field_0x52c.field_0x28);
 }
 
-// FIXME(shotgun): 89.39 %, different; behaviour drift.
-// (the follow flag and target selection are shaped differently; the 0x5EC/0x5F4 pairs are copied into a TVec3f temp because the original passes the field address itself)
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void VaatiBoss_804A4958::fn_801D4C70() {
     switch (mState) {
     case 1:
@@ -821,26 +820,40 @@ void VaatiBoss_804A4958::fn_801D4C70() {
     }
     }
     if (field_0x5d1 != 0) {
-        field_0x3c.x = 4.0f * JMASSin(field_0x5d2);
-        field_0x3c.y = 4.0f * JMASCos(field_0x5d2);
+        JGeometry::TVec2f v(4.0f * JMASSin(field_0x5d2), 4.0f * JMASCos(field_0x5d2));
+        field_0x3c.x = v.x;
+        field_0x3c.y = v.y;
         return;
     }
-    JGeometry::TVec2f d(0.0f, 0.0f);
+    JGeometry::TVec2f d;
+    d.zero();
     bool follow = true;
     f32 tx;
     f32 ty;
-    if (mState >= 4 && mState < 10 && mState != 5) {
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
         follow = false;
-    } else if (mState >= 0x12 && mState < 0x15) {
+        break;
+    case 0x12:
+    case 0x13:
+    case 0x14:
         tx = field_0x5c4;
         ty = field_0x5c8;
-    } else if (field_0x5b0 >= 0) {
-        const JGeometry::TVec3f* p = getPlayerPos_8023E724(field_0x5b0);
-        tx = p->x;
-        ty = p->y;
-    } else {
-        tx = field_0x5bc;
-        ty = field_0x5c0;
+        break;
+    default:
+        if (field_0x5b0 >= 0) {
+            const JGeometry::TVec3f* p = getPlayerPos_8023E724(field_0x5b0);
+            tx = p->x;
+            ty = p->y;
+        } else {
+            tx = field_0x5bc;
+            ty = field_0x5c0;
+        }
+        break;
     }
     if (follow) {
         d.set(tx - mPos.x, ty - mPos.y);
