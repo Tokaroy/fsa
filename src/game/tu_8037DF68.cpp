@@ -509,14 +509,13 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
 }
 
 // FIXME: 99.68 %, regalloc-only; behaviour clean.
-// Regalloc only: the flags parameter is r30 and the option bits r31 in the
-// original, the other way round here.
+// Regalloc only: the first fn_8037EC98 call passes the flags parameter (r30) in
+// the original, the truncated copy (r31) here.
 bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u32 flags) {
     if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || (u16)flags & 0x19F) {
-            u16 bits = flags; // only to match: a halfword copy of the flags parameter
             bool ready = false;
-            if (flags & 0x1000) {
+            if ((u16)flags & 0x1000) {
                 if (fn_8037EC98(actor, flags)) {
                     ready = true;
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x800;
@@ -528,16 +527,16 @@ bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 
             if (ready) {
                 lbl_8053AD78->mWindows[player]->fn_80390E40(value, false);
                 lbl_8053AD78->mWindows[windowIndex(player)]->field_0x24 = 1;
-                if (bits & 2) {
+                if ((u16)flags & 2) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x80;
                 }
-                if (bits & 0x80) {
+                if ((u16)flags & 0x80) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x4;
                 }
-                if (bits & 4) {
+                if ((u16)flags & 4) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x8;
                 }
-                if (bits & 0x100) {
+                if ((u16)flags & 0x100) {
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x100;
                 }
                 return true;
@@ -555,7 +554,7 @@ bool MessageManager_804AF070::fn_8038A42C(s32 player, s32 actor, s32 value, s32 
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(player), 0x100) != 0 || (u16)flags & 0x19F) {
             bool ready = false;
             u16 bits = flags; // only to match: a halfword copy of the flags parameter
-            if (flags & 0x1000) {
+            if ((u16)flags & 0x1000) {
                 if (fn_8037EC98(actor, flags)) {
                     ready = true;
                     lbl_8053AD78->mWindows[player]->field_0x28 |= 0x800;
