@@ -755,7 +755,8 @@ void THPGXRestore() {
     GXSetTevSwapModeTable(GX_TEV_SWAP3, GX_CH_BLUE, GX_CH_BLUE, GX_CH_BLUE, GX_CH_ALPHA);
 }
 
-// FIXME: 98.4 %: the target loads fbWidth before the -1.0f literal and
+// FIXME: 98.37 %, scheduling; behaviour clean.
+// the target loads fbWidth before the -1.0f literal and
 // converts w before h; ours schedules them the other way round. The GXColorS10
 // literal's relocation also differs while .sdata2 order differs (see below).
 void THPGXYuv2RgbSetup(GXRenderModeObj* rmode) {
@@ -886,7 +887,8 @@ static u16 VolumeTable[128] = {
     25484, 25941, 26402, 26868, 27337, 27810, 28288, 28769, 29255, 29744, 30238, 30736, 31238, 31744, 32254, 32768,
 };
 
-// FIXME: 98.6 %: the loop's temporaries get r3-r7 permuted (target: buffer in
+// FIXME: 98.87 %, regalloc-only; behaviour clean.
+// the loop's temporaries get r3-r7 permuted (target: buffer in
 // r3, sampleNum in r7, VolumeTable in r5); code otherwise identical.
 static void MixAudio(s16* destination, s16* source, u32 sample) {
     if (ActivePlayer.open && ActivePlayer.internalState == 2 && ActivePlayer.audioExist) {
