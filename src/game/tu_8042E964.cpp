@@ -24,24 +24,6 @@ cls_804B1600* lbl_8053AEC4;
 static const s16 lbl_80543AE8[4] = {0x8, 0x154, 0x5, 0x0};
 static const s16 lbl_80543AF0[4] = {0x164, 0xA, 0x160, 0x0};
 
-// The window the warning text slides over: built inline by cls_804B1634's constructor.
-inline cls_804B1600::cls_804B1600() {
-    JUTResFont* font;
-    lbl_8053AEC4 = this;
-    field_0x4 = new J2DScreen;
-    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
-    field_0x8 = new PaneCtrl_804AF86C;
-    field_0x8->setPane_80402F04(field_0x4->search('Pmmwk02'));
-    field_0xc = new PaneCtrl_804AF86C;
-    field_0xc->setPane_80402F04(field_0x4->search('Pbl01'));
-    font = lbl_8053AD78->mFont;
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(font);
-    font = lbl_8053AD78->mFont;
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(font);
-    field_0x10 = 0;
-    field_0x12 = 0;
-}
-
 // FIXME(shotgun): 95.78 %, missing/extra + reloc-name; behaviour near.
 // (loop counter and pointer registers)
 cls_804B1634::cls_804B1634() {
@@ -699,6 +681,24 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     ch[0] = p[0];
     ch[1] = 0;
     strcat(str, ch);
+}
+
+// The window the warning text slides over: inlined by cls_804B1634's constructor and dead-stripped.
+cls_804B1600::cls_804B1600() {
+    JUTResFont* font;
+    lbl_8053AEC4 = this;
+    field_0x4 = new J2DScreen;
+    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x8 = new PaneCtrl_804AF86C;
+    field_0x8->setPane_80402F04(field_0x4->search('Pmmwk02'));
+    field_0xc = new PaneCtrl_804AF86C;
+    field_0xc->setPane_80402F04(field_0x4->search('Pbl01'));
+    font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(font);
+    font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(font);
+    field_0x10 = 0;
+    field_0x12 = 0;
 }
 
 cls_804B1600::~cls_804B1600() {
