@@ -138,9 +138,8 @@ void OBJLift_804ACA00::init() {
         free[1] = true;
         free[2] = true;
         free[3] = true;
-        s32 serial;
+        s32 serial = -1;
         s32 taken = 0;
-        serial = -1;
         for (;;) {
             if (taken >= 4) {
                 break;
