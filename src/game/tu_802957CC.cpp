@@ -978,7 +978,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 75.60 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1521,8 +1521,6 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
-// float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
     if (serial < 0) {
@@ -1643,7 +1641,6 @@ void cls_804A7AE0::vfunc_0x24() {
     field_0x2bb = 1;
 }
 
-// FIXME: 99.58 %, regalloc-only; behaviour clean.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
