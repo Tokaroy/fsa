@@ -2950,13 +2950,13 @@ u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 fr
         4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 1, 4, 4,
     };
 
+    s32 kind = params->field_0x30;
     bool result = false;
-    s32 period = lbl_80471180[params->field_0x30];
+    s32 period = lbl_80471180[kind];
     if (field_0xbf98 && ((u32)res + (u32)image + (u32)res3) % (u32)period == (u32)(gGameRoot_8053AAF8->field_0x5c % period)) {
         for (int i = 0; i < 0x100; i++) {
             cls_803003AC* effect = &field_0x2398[i];
             if (effect->mTimer == 0) {
-                s32 kind = params->field_0x30;
                 effect->mTimer = lbl_804710F0[kind];
                 effect->mScale = lbl_80471138[params->field_0x30];
                 effect->mDuration = effect->mTimer;
@@ -2966,15 +2966,17 @@ u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 fr
                 effect->mImage = image;
                 effect->field_0x24 = res3;
                 const GXColor* c = &lbl_80471060[kind];
-                effect->mColor.r = (params->field_0x10.r * c->r) / 255;
-                effect->mColor.g = (params->field_0x10.g * c->g) / 255;
-                effect->mColor.b = (params->field_0x10.b * c->b) / 255;
-                effect->mColor.a = (params->field_0x10.a * c->a) / 255;
+                effect->mColor.set(
+                    (params->field_0x10.r * c->r) / 255,
+                    (params->field_0x10.g * c->g) / 255,
+                    (params->field_0x10.b * c->b) / 255,
+                    (params->field_0x10.a * c->a) / 255);
                 const GXColor* add = &lbl_804710A8[kind];
-                effect->mAddColor.a = params->field_0x14.a + add->a < 0xFF ? params->field_0x14.a + add->a : 0xFF;
-                effect->mAddColor.b = params->field_0x14.b + add->b < 0xFF ? params->field_0x14.b + add->b : 0xFF;
-                effect->mAddColor.g = params->field_0x14.g + add->g < 0xFF ? params->field_0x14.g + add->g : 0xFF;
-                effect->mAddColor.r = params->field_0x14.r + add->r < 0xFF ? params->field_0x14.r + add->r : 0xFF;
+                effect->mAddColor.set(
+                    params->field_0x14.r + add->r < 0xFF ? params->field_0x14.r + add->r : 0xFF,
+                    params->field_0x14.g + add->g < 0xFF ? params->field_0x14.g + add->g : 0xFF,
+                    params->field_0x14.b + add->b < 0xFF ? params->field_0x14.b + add->b : 0xFF,
+                    params->field_0x14.a + add->a < 0xFF ? params->field_0x14.a + add->a : 0xFF);
                 effect->mParams = *params;
                 effect->mParams.field_0x2c = 0;
                 effect->mParams.field_0x2d = 1;
