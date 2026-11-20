@@ -488,7 +488,8 @@ void Player_804A6F38::fn_802632A8() {
 
 void Player_804A6F38::fn_802632A4() {}
 
-// FIXME: 99.78. Registers only: the view-box test keeps pos.x in f2 and pos.y in f1 (ours
+// FIXME: 99.78 %, regalloc-only; behaviour clean.
+// Registers only: the view-box test keeps pos.x in f2 and pos.y in f1 (ours
 // f1 / f2); with the byte compared directly (cmplwi, not the original's cmpwi) they match.
 // Enter of state 0x13 (tu_80285E58's dispatch; update fn_80262BAC, the cucco glide): with
 // a held cucco ('NIWA') whose field_0x2a1 is 1, probe 16-steps along field_0x344.x inside the view box for the second tile 0x10-0x17; found,
@@ -548,7 +549,8 @@ void Player_804A6F38::fn_80263078() {
     }
 }
 
-// FIXME: 99.23. Two lfs missing: the original reloads mPos.x for the 0.5 steps after
+// FIXME: 99.23 %, missing/extra; behaviour near.
+// Two lfs missing: the original reloads mPos.x for the 0.5 steps after
 // computing field_0x324.x - mPos.x; ours reuses the register.
 // Update of state 0x13 (the fall while carrying, field_0x344 the speed): a cucco ('NIWA') is
 // carried gliding: the player moves 0.5 a frame toward field_0x324.x, bobbing with the
@@ -631,7 +633,8 @@ void Player_804A6F38::fn_80262B6C() {
     fn_80259660();
 }
 
-// FIXME: 99.64. scheduling+regalloc, as fn_80258BE8 (tu_80256C74): the no-pad branch
+// FIXME: 99.64 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc, as fn_80258BE8 (tu_80256C74): the no-pad branch
 // computes &field_0x344 (addi r3) before the x / y speed test in the original.
 // Update of state 0x14, the jump while holding something (enter fn_80262234 runs the
 // jump's exit fn_80258BBC, exit fn_80262B6C its enter fn_80259660): the steering, gravity
@@ -823,7 +826,8 @@ void Player_804A6F38::fn_80262188() {
     }
 }
 
-// FIXME: 99.65. One extra lwz: the original passes the field_0xd70 the inlined
+// FIXME: 99.65 %, missing/extra; behaviour near.
+// One extra lwz: the original passes the field_0xd70 the inlined
 // fn_8025F418 loaded straight to fn_8023EFEC; ours reloads it.
 // Update of state 0x19. Grabbing a player: follow it (its position moved to this
 // layer's view corner, raised 2; effect 0x28F once at height 10), let go when it
@@ -1044,7 +1048,8 @@ void Player_804A6F38::fn_80261468() {
     }
 }
 
-// FIXME: 96.63. scheduling+regalloc: the facing-table vector loads (as in fn_8026022C) and
+// FIXME: 96.63 %, scheduling+regalloc; behaviour drift.
+// scheduling+regalloc: the facing-table vector loads (as in fn_8026022C) and
 // the side probes' argument loads (player / layer before the x / y stores in the original).
 // Pick up what lies on the tile in front (16 along the facing): a wall tile the
 // background rewriter takes (fn_8029E888), else the tile's object, spawned and
@@ -1239,7 +1244,8 @@ bool Player_804A6F38::fn_80260C08() {
     return false;
 }
 
-// FIXME: 95.22. missing/extra (8 fewer): the layer-moved points are TVec2f operator chains
+// FIXME: 95.22 %, missing/extra; behaviour near.
+// missing/extra (8 fewer): the layer-moved points are TVec2f operator chains
 // (members of libs TVec2, by value; game/Vec2Ops.h xy()) and lay out the original's stack
 // temporaries, except that the original also copies the midpoint's `+ other` result into its
 // own temporary (sp 0x48) and rounds it again (frsp) before `- box->i`.
@@ -1348,7 +1354,8 @@ bool Player_804A6F38::fn_802604CC() {
     return false;
 }
 
-// FIXME: 95.46. scheduling+regalloc: the two facing-table vectors are loaded x, y, z and
+// FIXME: 95.46 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the two facing-table vectors are loaded x, y, z and
 // stored interleaved with the mPos add in the original (ours loads z first); the argument
 // loads of fn_80272B4C's copy differ in order.
 // The lift / push start (from fn_80261480): with a wall behind (fn_802265DC / fn_802684A4
@@ -1457,7 +1464,8 @@ bool Player_804A6F38::fn_8025FEDC() {
     return true;
 }
 
-// FIXME: 99.10. Registers only: the float temporaries of the view-corner offset.
+// FIXME: 99.10 %, regalloc-only; behaviour clean.
+// Registers only: the float temporaries of the view-corner offset.
 // Let go of the held player: take its position, moved from its layer's view corner
 // to this player's, and remember pos as the drop point.
 bool Player_804A6F38::fn_8025FDD0(const JGeometry::TVec3f* pos) {
@@ -1495,7 +1503,8 @@ bool Player_804A6F38::fn_8025FCC8() {
     return true;
 }
 
-// FIXME: 98.42. scheduling+regalloc: the facing table's three loads for `step` are
+// FIXME: 98.42 %, scheduling+regalloc; behaviour clean.
+// scheduling+regalloc: the facing table's three loads for `step` are
 // scheduled z first.
 // Let go of what the player holds (from the commit of every state change, with
 // checkState, and from fn_8026000C): a held player is thrown 16 a step along the facing
@@ -1711,7 +1720,8 @@ bool Player_804A6F38::fn_8025F2CC() {
     return true;
 }
 
-// FIXME: 98.89. scheduling: the original sets up r3 (mr r3, r29) for fn_80251AEC before
+// FIXME: 98.89 %, scheduling; behaviour clean.
+// scheduling: the original sets up r3 (mr r3, r29) for fn_80251AEC before
 // the li / beq choosing 0x12 / 0x11; ours after (`lift ? 0x11 : 0x12` gives neg / or / srawi).
 // Lift the actor `serial` (state 0x11, or 0x12 with lift false). With grabOnly, a
 // player already holding or grabbing only claims it through fn_8025EF68.
@@ -1810,8 +1820,6 @@ bool Player_804A6F38::fn_8025EDD4(s32 a, const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME: 99.71. Registers only: the four float temporaries of the view-corner offset
-// (f0-f3) are assigned differently.
 // Whether the held thing can be put down at field_0x2f4: a player held across from
 // a GBA layer (8) is checked on its own layer, with the point moved between the two
 // view corners; else the tile there, and for an actor its vfunc_0x4C. On success the
@@ -1823,9 +1831,10 @@ bool Player_804A6F38::fn_8025EB18() {
         f32 x = box->i.x;
         f32 y = box->i.y;
         box = layerBox(field_0x3b4);
-        JGeometry::TVec2f offset(x - box->i.x, y - box->i.y);
-        pos.x += offset.x;
-        pos.y += offset.y;
+        f32 x2 = box->i.x;
+        f32 y2 = box->i.y;
+        pos.x += x - x2;
+        pos.y += y - y2;
         u16 tile = fn_8022461C(&pos, getPlayerLayer_8023DE58(field_0xd70));
         if ((fn_802265DC(&pos, getPlayerLayer_8023DE58(field_0xd70), true) && tile != 0xE && tile != 0x39 && tile != 0xD)
             || fn_802684A4(&pos, getPlayerLayer_8023DE58(field_0xd70))) {
