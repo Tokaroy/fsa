@@ -2509,10 +2509,9 @@ void FileSelect_804AFF60::fn_803C61C4() {
 }
 
 // FIXME: 99.03 %, missing/extra; behaviour near.
-// One instruction fewer, as fn_803CB3DC: with the running
-// `delay += rowStep` ours starts the accumulator at rowDelay (mr r24) where
-// the original keeps the add; `i * rowStep` keeps it but gives fn_803C2E24's
-// &others difference (98.28, different). Timing sums' operand order differs.
+// Registers only: `frames` and two temporaries of the inlined alpha helpers
+// are rotated (r26/r27/r28). The original keeps &others in one register for
+// both loops: one pointer fills the array, a second walks it.
 //
 // State 32 (from fn_803BF9C4, a file whose checksum failed): as fn_803CB3DC
 // (same timings, lbl_8050DB0C field_0x4c[0x98..0x9F]), the other two rows
@@ -2527,7 +2526,7 @@ void FileSelect_804AFF60::fn_803C5808() {
     s16 buttonDelay = lbl_8050DB0C.field_0x4c[0x9D];
     s16 buttonFrames = lbl_8050DB0C.field_0x4c[0x9E];
     s16 buttonStep = lbl_8050DB0C.field_0x4c[0x9F];
-    s32 end = rowDelay + (frames + rowStep);
+    s32 end = rowDelay + frames + rowStep;
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
     }
@@ -2538,24 +2537,23 @@ void FileSelect_804AFF60::fn_803C5808() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = other;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
     field_0xd8++;
-    s32 delay = 0;
-    for (s32 i = 0; i < 2; i++) {
-        if (field_0xd8 > rowDelay + delay) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x44[others[i]]->fn_80402628(frames, field_0x44[others[i]]->field_0x28, 0);
-            setTabAlphas(this, others[i]);
+    for (s32 i = 0; i < 2; i++, other++) {
+        if (field_0xd8 > rowDelay + i * rowStep) {
+            field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
+            field_0x44[*other]->fn_80402628(frames, field_0x44[*other]->field_0x28, 0);
+            setTabAlphas(this, *other);
         }
-        delay += rowStep;
     }
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
