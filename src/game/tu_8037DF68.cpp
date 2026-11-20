@@ -2398,7 +2398,7 @@ bool fn_8037E4BC() {
 }
 
 // FIXME(shotgun): 96.69 %, scheduling; behaviour clean.
-// (the original stores 0x44 / 0x48 late, after the halfwords)
+// (0x44 / 0x48 and a few others are stored out of offset order, as the original does)
 cls_804AF32C::cls_804AF32C() {
     field_0x4 = 0;
     field_0x5 = 0;
@@ -2408,10 +2408,8 @@ cls_804AF32C::cls_804AF32C() {
     field_0x30[1] = -32.0f;
     field_0x30[2] = 1.0f;
     field_0x30[3] = 0.0f;
-    field_0x30[4] = 1.9f;
-    field_0x30[5] = 1.0f;
-    field_0x30[6] = 0.8f;
     field_0x4c[0] = 6;
+    field_0x30[4] = 1.9f;
     field_0x4c[1] = -40;
     field_0x4c[2] = 80;
     field_0x4c[3] = 5;
@@ -2437,6 +2435,8 @@ cls_804AF32C::cls_804AF32C() {
     field_0x4c[24] = 5;
     field_0x4c[25] = 5;
     field_0x4c[26] = 50;
+    field_0x2fa = 0;
+    field_0x2fb = 0;
     field_0x4c[32] = 28;
     field_0x4c[33] = 5;
     field_0x4c[34] = 26;
@@ -2582,8 +2582,8 @@ cls_804AF32C::cls_804AF32C() {
     field_0x4c[244] = 0;
     field_0x4c[245] = 0;
     field_0x4c[246] = 10;
-    field_0x4c[247] = 4;
     field_0x4c[248] = 10;
+    field_0x4c[247] = 4;
     field_0x4c[249] = 0;
     field_0x4c[250] = -55;
     field_0x4c[252] = 12;
@@ -2607,6 +2607,7 @@ cls_804AF32C::cls_804AF32C() {
     field_0x4c[270] = 5;
     field_0x4c[272] = 24;
     field_0x4c[273] = 15;
+    field_0x4c[290] = 80;
     field_0x4c[274] = 2;
     field_0x4c[275] = 5;
     field_0x4c[276] = 0;
@@ -2623,7 +2624,6 @@ cls_804AF32C::cls_804AF32C() {
     field_0x4c[287] = 8;
     field_0x4c[288] = 6;
     field_0x4c[289] = 4;
-    field_0x4c[290] = 80;
     field_0x4c[292] = -60;
     field_0x4c[293] = 300;
     field_0x4c[294] = 350;
@@ -2670,9 +2670,10 @@ cls_804AF32C::cls_804AF32C() {
     field_0x4c[335] = 130;
     field_0x4c[336] = 0;
     field_0x4c[337] = 2;
+    field_0x30[5] = 1.0f;
+    field_0x30[6] = 0.8f;
     field_0x2f8 = 80;
-    field_0x2fa = 0;
-    field_0x2fb = 0;
+    field_0x304[8] = 0;
     field_0x304[0] = 80;
     field_0x304[1] = 20;
     field_0x304[2] = 150;
@@ -2681,7 +2682,6 @@ cls_804AF32C::cls_804AF32C() {
     field_0x304[5] = 0;
     field_0x304[6] = 0;
     field_0x304[7] = 0;
-    field_0x304[8] = 0;
     field_0x304[8] = 0;
     field_0x304[9] = 0;
 }
