@@ -366,7 +366,7 @@ void cls_804AAD60::fn_80315C84() {
 
 void cls_804AAD60::fn_80315C80() {}
 
-// FIXME(shotgun): 97.85 %, different; behaviour clean.
+// FIXME(shotgun): 98.10 %, different; behaviour clean.
 void cls_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -395,10 +395,12 @@ void cls_804AAD60::fn_80315864() {
         case 2:
         case 3:
         case 4: {
+            s32 rank;
+            s32 i;
             s32 p = field_0x244[4 - field_0x238];
             s32 score = fn_80236228(p);
-            s32 rank = 0;
-            for (s32 i = 0; i < 4; i++) {
+            rank = 0;
+            for (i = 0; i < 4; i++) {
                 if (i != p && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
                     if (score < fn_80236228(i)) {
                         rank++;
@@ -704,7 +706,6 @@ void cls_804AAD60::fn_80314B1C() {
     }
 }
 
-// FIXME(shotgun): 96.82 %, different; behaviour clean.
 void cls_804AAD60::fn_803146DC() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -718,11 +719,7 @@ void cls_804AAD60::fn_803146DC() {
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
-                if (fn_8038AD24(p, 0x481, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                    field_0x254 = p;
-                    field_0x268 = 0x481;
-                    field_0x234 = 1;
-                }
+                startMessage(p, 0x481, 0x110);
             }
             break;
         }
