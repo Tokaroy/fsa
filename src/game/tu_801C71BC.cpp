@@ -138,24 +138,11 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             field_0x358.fn_80214244()->fn_800FD5E8(field_0x358.fn_80214244()->field_0x3)) {
             skip = true;
         } else if (field_0x524.field_0x0 & 0x100) {
-            u8 start = field_0x358.fn_80214244()->field_0x3;
-            field_0x358.fn_80214244()->fn_800FD818(1);
-            u8 next = field_0x358.fn_80214244()->field_0x3;
-            cls_800FE3EC* a = field_0x358.fn_80214244();
-            if (start < a->field_0x2) {
-                a->field_0x3 = start;
-            }
-            field_0x358.fn_80214244()->fn_800FD818(-1);
-            u8 prev = field_0x358.fn_80214244()->field_0x3;
-            cls_800FE3EC* b = field_0x358.fn_80214244();
-            if (start < b->field_0x2) {
-                b->field_0x3 = start;
-            }
-            u8 opt[2];
-            opt[0] = prev;
-            opt[1] = next;
-            if (field_0x358.fn_80214244()->fn_800FD5E8(opt[0]) ||
-                field_0x358.fn_80214244()->fn_800FD5E8(opt[1])) {
+            u8 prev;
+            u8 next;
+            getRailNeighbours(&next, &prev);
+            if (field_0x358.fn_80214244()->fn_800FD5E8(prev) ||
+                field_0x358.fn_80214244()->fn_800FD5E8(next)) {
                 skip = true;
             }
         }
@@ -183,25 +170,12 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
         if ((field_0x524.field_0x0 & 0x800) && !(mFlags & 0x2000000) && !(mFlags & 0x100000) &&
             fn_801CF888(&detour, &field_0x32c, field_0x4)) {
             bool moved = false;
-            u8 start = field_0x358.fn_80214244()->field_0x3;
-            field_0x358.fn_80214244()->fn_800FD818(1);
-            u8 next = field_0x358.fn_80214244()->field_0x3;
-            cls_800FE3EC* a = field_0x358.fn_80214244();
-            if (start < a->field_0x2) {
-                a->field_0x3 = start;
-            }
-            field_0x358.fn_80214244()->fn_800FD818(-1);
-            u8 prev = field_0x358.fn_80214244()->field_0x3;
-            cls_800FE3EC* b = field_0x358.fn_80214244();
-            if (start < b->field_0x2) {
-                b->field_0x3 = start;
-            }
-            u8 opt[3];
-            opt[0] = prev;
-            opt[1] = start;
-            opt[2] = next;
-            if (field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[0]) ||
-                field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[2])) {
+            u8 prev;
+            u8 current;
+            u8 next;
+            getRailNeighbours(&next, &current, &prev);
+            if (field_0x358.fn_80214244()->fn_800FD4C0(current, prev) ||
+                field_0x358.fn_80214244()->fn_800FD4C0(current, next)) {
                 JGeometry::TVec3f railPos;
                 mPathCount = 0;
                 mFlags &= ~(0x1000 | 0x20000);
@@ -217,13 +191,15 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             }
         }
         if (mPathCount < 16) {
-            mPath[mPathCount].x = detour.x;
-            mPath[mPathCount].y = detour.y;
+            s32 n = mPathCount;
+            mPath[n].x = detour.x;
+            mPath[n].y = detour.y;
             mPathCount++;
         }
         if (mPathCount < 16) {
-            mPath[mPathCount].x = field_0x32c.x;
-            mPath[mPathCount].y = field_0x32c.y;
+            s32 n = mPathCount;
+            mPath[n].x = field_0x32c.x;
+            mPath[n].y = field_0x32c.y;
             mPathCount++;
         }
         field_0x32c.x = detour.x;
