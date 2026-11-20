@@ -746,7 +746,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // loop with lfsx; registers and stack slots follow. The original converts
 // 240.0f / 160.0f at run time (fctiwz, hoisted before the loop), so they are
 // float variables there, not literals at the stores.
-// FIXME: 72.58 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 74.47 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -1866,7 +1866,7 @@ void TileMap_804AA858::fn_802FA3FC() {
     }
 }
 
-// FIXME: 88.05 %, scheduling+regalloc; behaviour clean.
+// FIXME: 88.38 %, scheduling+regalloc; behaviour clean.
 // As in fn_802F9714: the original loads the next source bytes of the
 // unrolled nibble-swap loop before storing the previous ones; registers differ.
 // fn_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
@@ -2029,7 +2029,7 @@ void TileMap_804AA858::fn_802F9BE8(void* res, u32 srcOffset, u32 start, u32 size
     }
 }
 
-// FIXME: 89.43 %, missing/extra; behaviour clean.
+// FIXME: 89.54 %, missing/extra; behaviour clean.
 // In the 4x-unrolled copy loop the original loads the second
 // element's low byte before storing the first (one mr more); registers differ.
 // Loads the 'SCN ' tile grid of `layer` from res (decoded first when
@@ -2256,7 +2256,6 @@ void TileMap_804AA858::fn_802F91AC(const JGeometry::TVec3f* pos, SpriteParams_80
 // TEV colours, blend mode, z mode and alpha update of params, else white /
 // zero, the plain blend and the default z mode. fn_802F86CC calls it after
 // fn_802F91AC.
-// FIXME: 98.81 %, scheduling; behaviour clean.
 void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
