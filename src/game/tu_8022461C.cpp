@@ -99,7 +99,10 @@ static inline u16 rawTileAt(const V* pos, s32 layer) {
 
 // field_0x60[row][col] == value for the current screen.
 static inline bool screenValueIs(s32 value) {
-    return getGameView_802D6A9C()->field_0x60[getGameView_802D6A9C()->field_0x18][getGameView_802D6A9C()->field_0x14] == value;
+    // The original reads the column, fetches the view for the row, then the view for the table.
+    s32 col = getGameView_802D6A9C()->field_0x14;
+    GameView_804A9950* view = getGameView_802D6A9C();
+    return getGameView_802D6A9C()->field_0x60[view->field_0x18][col] == value;
 }
 
 // The tile's collision code: the raw tile code (as fn_80226850) through lbl_8046CB88, adjusted
@@ -220,35 +223,35 @@ bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
         return false;
     }
     if (code == 0x25) {
-        return getGameView_802D6A9C()->field_0x171 == 0;
+        return (u8)(getGameView_802D6A9C()->field_0x171 == 0);
     }
     if (code == 0x26) {
-        return getGameView_802D6A9C()->field_0x171 == 1;
+        return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
     }
     // Half and quarter cells: which 8-unit part of the 16-unit cell is solid.
-    if (code == 4) {
-        return ((s32)pos->y & 0xF) < 8;
+    if (code == 4 && ((s32)pos->y & 0xF) >= 8) {
+        return false;
     }
-    if (code == 5) {
-        return ((s32)pos->y & 0xF) >= 8;
+    if (code == 5 && ((s32)pos->y & 0xF) < 8) {
+        return false;
     }
-    if (code == 6) {
-        return ((s32)pos->x & 0xF) < 8;
+    if (code == 6 && ((s32)pos->x & 0xF) >= 8) {
+        return false;
     }
-    if (code == 7) {
-        return ((s32)pos->x & 0xF) >= 8;
+    if (code == 7 && ((s32)pos->x & 0xF) < 8) {
+        return false;
     }
-    if (code == 0x18) {
-        return ((s32)pos->x & 0xF) < 8 && ((s32)pos->y & 0xF) < 8;
+    if (code == 0x18 && (((s32)pos->x & 0xF) >= 8 || ((s32)pos->y & 0xF) >= 8)) {
+        return false;
     }
-    if (code == 0x19) {
-        return ((s32)pos->x & 0xF) >= 8 && ((s32)pos->y & 0xF) < 8;
+    if (code == 0x19 && (((s32)pos->x & 0xF) < 8 || ((s32)pos->y & 0xF) >= 8)) {
+        return false;
     }
-    if (code == 0x1A) {
-        return ((s32)pos->x & 0xF) < 8 && ((s32)pos->y & 0xF) >= 8;
+    if (code == 0x1A && (((s32)pos->x & 0xF) >= 8 || ((s32)pos->y & 0xF) < 8)) {
+        return false;
     }
-    if (code == 0x1B) {
-        return ((s32)pos->x & 0xF) >= 8 && ((s32)pos->y & 0xF) >= 8;
+    if (code == 0x1B && (((s32)pos->x & 0xF) < 8 || ((s32)pos->y & 0xF) < 8)) {
+        return false;
     }
     return true;
 }
