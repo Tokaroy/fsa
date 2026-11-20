@@ -920,12 +920,14 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
         }
         if (field_0x440 <= t2) {
             if (field_0x440 >= t3) {
+                f32 x;
+                f32 rate;
                 f32 offset = (40.0f + (f32)h) *
                              (1.0f - (f32)((field_0x440 - t3) * (field_0x440 - t3)) / (f32)(e * e));
                 for (s32 i = 0; i < field_0x454; i++) {
-                    f32 x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
+                    x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
-                    f32 rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
+                    rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
                     setScoreRowAlpha(i, rate);
                 }
             } else if (field_0x440 >= t4) {
