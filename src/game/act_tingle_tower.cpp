@@ -39,6 +39,32 @@ static void (cls_804AAD60::*lbl_804AACDC[11])() = {
     &cls_804AAD60::fn_80313D7C,
 };
 
+// Passes the position on by value (the original loads the other arguments before its copy).
+static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
+    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+}
+
+// Starts a message for a player and remembers the player and the message.
+inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
+    if (talk(player, msg, field_0x4, mSerial, mPos, flags)) {
+        field_0x254 = player;
+        field_0x268 = msg;
+        field_0x234 = 1;
+        return true;
+    }
+    return false;
+}
+
+// Shows the next message to the player already talking and remembers it.
+inline bool cls_804AAD60::nextMessage(u32 msg) {
+    if (fn_8038470C(field_0x254, msg)) {
+        field_0x268 = msg;
+        field_0x234 = 1;
+        return true;
+    }
+    return false;
+}
+
 inline void cls_804AAD60::updateFacing() {
     if (field_0x274 <= 0) {
         field_0x274 = 20;
@@ -71,7 +97,10 @@ inline void cls_804AAD60::updateFacing() {
 
 static inline u8 getTowerViewByte(s32 i) {
     GameView_804A9950* view = getGameView_802D6A9C();
-    return (i >= 0 && i < 4) ? view->field_0x131d8[i] : 0;
+    if (i >= 0 && i < 4) {
+        return view->field_0x131d8[i];
+    }
+    return 0;
 }
 
 cls_804AAD60::cls_804AAD60() {
@@ -85,7 +114,6 @@ cls_804AAD60::~cls_804AAD60() {
     }
 }
 
-// FIXME(shotgun): 95.85 %, missing/extra; behaviour near.
 void cls_804AAD60::init() {
     field_0x230 = field_0x90 & 3;
     field_0x234 = 0;
@@ -124,7 +152,7 @@ void cls_804AAD60::init() {
         field_0x258.f.y = 24.0f;
     }
 
-    if ((((1 << field_0x23c) & 0xFF) & lbl_8050EC80.getCurrentFile().field_0x5a[0]) != 0) {
+    if ((lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x23c)) ? true : false) {
         field_0x268 = lbl_804714D8[field_0x23c];
     } else {
         field_0x268 = 0x473;
@@ -139,7 +167,7 @@ void cls_804AAD60::init() {
     field_0x26c = 0;
     field_0x270 = 2;
     field_0x274 = 0;
-    field_0x278->fn_80316E50(field_0x4, JGeometry::TVec3f(mPos));
+    field_0x278->fn_80316E50(getField_0x4(), JGeometry::TVec3f(mPos));
 }
 
 void cls_804AAD60::update() {
@@ -314,7 +342,6 @@ void cls_804AAD60::fn_80315EE8() {
     }
 }
 
-// FIXME(shotgun): 94.35 %, different; behaviour clean.
 void cls_804AAD60::fn_80315C84() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -326,11 +353,7 @@ void cls_804AAD60::fn_80315C84() {
         fn_8022FEB8(&box, field_0x4, mSerial, false, false);
         s32 p = fn_8022FD8C(mSerial);
         if (p >= 0 && fn_802300EC(p)) {
-            if (fn_8038AD24(p, 0x480, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                field_0x254 = p;
-                field_0x268 = 0x480;
-                field_0x234 = 1;
-            }
+            startMessage(p, 0x480, 0x110);
         }
     } else {
         fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
@@ -465,7 +488,7 @@ void cls_804AAD60::fn_80315864() {
     }
 }
 
-// FIXME(shotgun): 94.61 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.21 %, missing/extra; behaviour clean.
 void cls_804AAD60::fn_80315460() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -545,7 +568,7 @@ void cls_804AAD60::fn_80315460() {
     }
 }
 
-// FIXME(shotgun): 94.31 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804AAD60::fn_80315080() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -560,11 +583,7 @@ void cls_804AAD60::fn_80315080() {
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
-                if (fn_8038AD24(p, 0x4CE, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                    field_0x254 = p;
-                    field_0x268 = 0x4CE;
-                    field_0x234 = 1;
-                }
+                startMessage(p, 0x4CE, 0x110);
             }
             break;
         }
@@ -585,15 +604,7 @@ void cls_804AAD60::fn_80315080() {
             }
             s32 idx = i & 3;
             fn_803894BC(field_0x254, idx + 1);
-            bool ok;
-            if (fn_8038470C(field_0x254, 0x4D2)) {
-                field_0x268 = 0x4D2;
-                field_0x234 = 1;
-                ok = true;
-            } else {
-                ok = false;
-            }
-            if (ok) {
+            if (nextMessage(0x4D2)) {
                 lbl_8053AED0->fn_8043D874(idx, 300, 0);
             }
             break;
@@ -620,7 +631,7 @@ void cls_804AAD60::fn_80315080() {
     }
 }
 
-// FIXME(shotgun): 91.46 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.81 %, missing/extra; behaviour near.
 void cls_804AAD60::fn_80314B1C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -894,7 +905,7 @@ void cls_804AAD60::fn_803142E4() {
     }
 }
 
-// FIXME(shotgun): 93.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.82 %, missing/extra; behaviour near.
 void cls_804AAD60::fn_80313D7C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -1011,29 +1022,23 @@ void cls_804AAD60::fn_80313D7C() {
     }
 }
 
-// FIXME(shotgun): 52.40 %, different + reloc-name; behaviour clean.
 void cls_804AAD60::fn_80313C20() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    if (field_0x234 == 1) {
+    if (field_0x234 != 1) {
+        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        s32 p = fn_8022FD8C(mSerial);
+        if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
+            startMessage(p, field_0x268, 0x220);
+        }
+    } else {
         fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
         if (fn_80388CAC(field_0x254, mSerial)) {
             field_0x254 = -1;
             field_0x234 = 0;
-        }
-    } else {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-        s32 p = fn_8022FD8C(mSerial);
-        if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
-            u32 msg = field_0x268;
-            if (fn_8038AD24(p, msg, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x220)) {
-                field_0x254 = p;
-                field_0x268 = msg;
-                field_0x234 = 1;
-            }
         }
     }
 }

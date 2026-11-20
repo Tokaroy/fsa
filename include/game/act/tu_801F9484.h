@@ -738,6 +738,8 @@ public:
     void fn_80315C84();
     void fn_80315EE8();
     void updateFacing();
+    bool startMessage(s32 player, u32 msg, u32 flags);
+    bool nextMessage(u32 msg);
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
