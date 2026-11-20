@@ -395,7 +395,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
             }
             JGeometry::TVec3f from(mPos);
             from -= other->field_0x3c;
-            hit = other->fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
+            hit = fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
             if (hit) {
                 other->field_0x164 = 1;
                 if (mState == 16) {
