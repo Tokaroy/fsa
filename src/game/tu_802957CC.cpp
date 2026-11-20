@@ -416,22 +416,22 @@ void cls_804A7AE0::fn_8029A494() {
     p.y += mBox.f.y;
     p.y += 8.0f;
     p.z = 0.0f;
-    bool ok = true;
+    u8 ok = 1;
     for (int k = 0; k < 6; k++) {
         if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(field_0x4, &p, mSerial, NULL)) {
-            ok = false;
+            ok = 0;
             break;
         }
         if (!contains(view, p)) {
-            ok = false;
+            ok = 0;
             break;
         }
         p.x += 16.0f;
     }
     if (!fn_802957CC(2)) {
-        ok = false;
+        ok = 0;
     }
-    if (ok) {
+    if (ok == 1) {
         if (dir == 2) {
             fn_80238E08(mSerial);
             field_0x3c.y = 0.32f;
