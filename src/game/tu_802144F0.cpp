@@ -28,7 +28,6 @@ static inline f32 depthLift(const JGeometry::TVec3f* pos, s32 height, s32 depth,
 }
 
 // Copies the callback's vector into the particle (mOffsetPosition, at 0x18).
-// FIXME(shotgun): 100 %, matches
 void cls_804A64A8::execute(JPABaseEmitter*, JPABaseParticle* particle) {
     if (field_0x10 == 0) {
         particle->mOffsetPosition.x = field_0x4.x;
@@ -40,7 +39,8 @@ void cls_804A64A8::execute(JPABaseEmitter*, JPABaseParticle* particle) {
 cls_802150B8::cls_802150B8() : field_0x0(0), field_0x18(0), field_0x30(-1), mOwner(0) {}
 
 // The two callbacks at 0x04 and 0x1C are destroyed after this body, as members.
-// FIXME: 95.56 %. Register allocation only: the original keeps the delete flag
+// FIXME: 95.56 %, scheduling+regalloc; behaviour clean.
+// Register allocation only: the original keeps the delete flag
 // in r30 (copied before this), this in r29 and the serial in r31; ours takes
 // this into r31 first.
 cls_802150B8::~cls_802150B8() {
@@ -57,6 +57,7 @@ cls_802150B8::~cls_802150B8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
+// FIXME: 99.67 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214E50() {
     if (field_0x0 != NULL) {
         return;
@@ -78,6 +79,7 @@ void cls_802150B8::fn_80214E50() {
     }
 }
 
+// FIXME: 99.70 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214CE4() {
     if (field_0x0 == NULL) {
         return;
@@ -99,6 +101,7 @@ void cls_802150B8::fn_80214CE4() {
     }
 }
 
+// FIXME: 99.74 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214AF8() {
     s32 serial = field_0x30;
     if (serial >= 0) {
@@ -129,6 +132,7 @@ void cls_802150B8::fn_80214AF8() {
     mOwner->startSound_801F0E34(0x4000E, 0);
 }
 
+// FIXME: 99.64 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214994() {
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
@@ -154,7 +158,8 @@ void cls_802150B8::fn_80214994() {
     }
 }
 
-// FIXME: 93.57 %. Register allocation only: the original keeps the owner flag
+// FIXME: 93.88 %, scheduling+regalloc; behaviour clean.
+// Register allocation only: the original keeps the owner flag
 // in r31 and the table pointer in r30, ours is the other way round (the
 // ternary form gives extrwi, 90.45 %). The lbl_8053FBA4 literal rows are the
 // data split.
