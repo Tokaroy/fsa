@@ -258,7 +258,7 @@ static inline bool stepWobble(cls_8049C718* p) {
 s32 randomSlotTime();
 s32 headingOf(f32 x, f32 y);
 
-// FIXME: 94.08 %, missing/extra; behaviour clean.
+// FIXME: 98.10 %, scheduling; behaviour clean.
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
         return;
@@ -279,7 +279,7 @@ void cls_8049C718::fn_800FC984() {
     mAngleSpeed = 0x40;
     mAngle += mAngleSpeed;
     mRadius = 1.0f;
-    fn_801F1184()->field_0x48 = 0.0f;
+    fn_801F1184()->setField_0x48(0.0f);
     startSound_801F0E34(0x4002F, 0);
     mTimer--;
     if (mTimer <= 0) {
@@ -588,7 +588,7 @@ void cls_8049C718::fn_800FBA14() {
     if (mPos.z <= 0.0f) {
         if (mFlags & 8) {
             field_0x257 = 0;
-            fn_800FB6E0(false);
+            fn_800FB6E0(0);
         } else {
             field_0x3c.x = field_0x257;
             field_0x3c.y = -1.0f * field_0x257;
@@ -608,8 +608,8 @@ void cls_8049C718::fn_800FBA14() {
     }
 }
 
-// FIXME(shotgun): 99.18 %, different; behaviour drift.
-void cls_8049C718::fn_800FB6E0(bool first) {
+// FIXME(shotgun): 99.84 %, operands; behaviour clean.
+void cls_8049C718::fn_800FB6E0(s32 mode) {
     u16 angle = 0;
     f32 dist = 0.0f;
     s32 dir = 0;
@@ -627,7 +627,9 @@ void cls_8049C718::fn_800FB6E0(bool first) {
             JGeometry::TVec3f db = mPos;
             da.sub(a->mPos);
             db.sub(b->mPos);
-            if (PSVECMag((Vec*)&da) < PSVECMag((Vec*)&db)) {
+            f32 lenA = PSVECMag((Vec*)&da);
+            f32 lenB = PSVECMag((Vec*)&db);
+            if (lenA < lenB) {
                 angle = headingOf(-da.x, -da.y);
             } else {
                 angle = headingOf(-db.x, -db.y);
@@ -641,7 +643,7 @@ void cls_8049C718::fn_800FB6E0(bool first) {
     }
     field_0x3c.x = 1.5f * JMath::sincosTable_.sinShort((s16)field_0x262);
     field_0x3c.y = 1.5f * JMath::sincosTable_.cosShort((s16)field_0x262);
-    if (first) {
+    if (mode == 1) {
         field_0x3c.z = 8.0f;
         field_0x257 = 0;
         startSound_801F0E34(0x4002B, 0);
@@ -686,7 +688,7 @@ void cls_8049C718::fn_800FB32C() {
     mPos.add(field_0x3c);
     if (mPos.z <= 0.0f) {
         if (field_0x257 == 0) {
-            fn_800FB6E0(false);
+            fn_800FB6E0(0);
             startSound_801F0E34(0x4002C, 0);
             mRing.fn_800F8210(field_0x4, mPos, 0);
             getGameView_802D6A9C()->fn_802D79E8(field_0x4, 5.0f, 0.0f, false);
@@ -697,9 +699,9 @@ void cls_8049C718::fn_800FB32C() {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E9, 0, 0, NULL, NULL, true, 1.0f);
         } else {
             if (field_0x257 == 4) {
-                fn_800FB6E0(true);
+                fn_800FB6E0(1);
             } else {
-                fn_800FB6E0(false);
+                fn_800FB6E0(0);
             }
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x4ED, 0, 0, NULL, NULL, true, 1.0f);
         }
