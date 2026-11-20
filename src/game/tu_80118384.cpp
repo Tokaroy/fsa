@@ -274,6 +274,13 @@ static inline ActorBase_804A5770** copyDown(ActorBase_804A5770** first, ActorBas
     return result;
 }
 
+// std::uninitialized_copy(T*, T*, T*): MSL's <memory> (not on the game include path) forwards to
+// __uninitialized_copy_helper<T, true, false>::uninitialized_copy, the loop above.
+static inline ActorBase_804A5770** uninitializedCopy(ActorBase_804A5770** first, ActorBase_804A5770** last,
+                                            ActorBase_804A5770** result) {
+    return copyDown(first, last, result);
+}
+
 static inline void eraseRange(ActorBase_804A5770**& end, ActorBase_804A5770** first,
                               ActorBase_804A5770** last) {
     ActorBase_804A5770** newEnd = copyDown(last, end, first);
@@ -306,25 +313,26 @@ struct ActorVectorDealloc {
     ActorBase_804A5770** mPointer;
 };
 
-// FIXME: 97.56 %, regalloc-only; behaviour clean.
-// FIXME(shotgun): TVector::reserve(20) inline; copy loop and empty destroy loop.
-void cls_801192AC::fn_801190E4() {
-    if (mActors.mCapacity >= 20) {
+// JGadget::TVector::reserve: new storage, copy, destroy the old elements, free the old storage.
+inline void ActorVector::reserve(u32 n) {
+    if (mCapacity >= n) {
         return;
     }
-    ActorBase_804A5770** p = (ActorBase_804A5770**)operator new(20 * sizeof(ActorBase_804A5770*));
+    ActorBase_804A5770** p = (ActorBase_804A5770**)operator new(n * sizeof(ActorBase_804A5770*));
     if (p == NULL) {
         return;
     }
-    ActorVectorDealloc guard(mActors.mAllocator, p);
-    copyDown(mActors.mBegin, mActors.mEnd, p);
-    ActorBase_804A5770** old = mActors.mBegin;
-    for (ActorBase_804A5770** it = mActors.mBegin; it != mActors.mEnd; ++it) {
-    }
-    guard.set(old);
-    mActors.mEnd = p + (mActors.mEnd - mActors.mBegin);
-    mActors.mBegin = p;
-    mActors.mCapacity = 20;
+    ActorVectorDealloc guard(mAllocator, p);
+    uninitializedCopy(mBegin, mEnd, p);
+    DestroyElement_(mBegin, mEnd);
+    guard.set(mBegin);
+    mEnd = p + (mEnd - mBegin);
+    mBegin = p;
+    mCapacity = n;
+}
+
+void cls_801192AC::fn_801190E4() {
+    mActors.reserve(20);
 }
 
 // FIXME(shotgun): 97.68 %, different; behaviour drift.
