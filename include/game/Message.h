@@ -141,6 +141,10 @@ public:
     /* 0x11C */ f32 field_0x11c;
     /* 0x120 */ f32 field_0x120;
     // fn_8039D0DC stores a line's x offset and its line count here, per slot.
+    void setSlotPos(u8 slot, f32 x, f32 y) {
+        field_0x124[slot] = x;
+        field_0x130[slot] = y;
+    }
     /* 0x124 */ f32 field_0x124[3];
     /* 0x130 */ f32 field_0x130[3];
     // fn_803A30FC stores into it by index (the constructor leaves it).
