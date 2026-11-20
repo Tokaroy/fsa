@@ -12,7 +12,6 @@
 f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t);
 
 
-// FIXME(shotgun): 67.00 %, missing/extra + reloc-name; behaviour clean.
 cls_804A5568::cls_804A5568() : mMask(0), field_0x2ac(0), mCount(0) {
     field_0x3b0 = 0;
     field_0x3b4 = 0.0f;
@@ -90,7 +89,7 @@ static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* out
 }
 
 // Moves the chain's head along its curve by the speed (0.5 per frame).
-// FIXME(shotgun): 85.74 %, different; behaviour drift.
+// FIXME(shotgun): 97.04 %, missing/extra; behaviour near.
 void cls_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
         // The original clamps this with fsel (0.5f >= 0 ? 0.5f : 0.0f, all in float); not reproduced.
@@ -286,7 +285,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 82.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 83.02 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
@@ -312,7 +311,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 82.13 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.68 %, missing/extra; behaviour near.
 // cls_804A5568
 void cls_804A5568::fn_801E8080() const {
     f32 len = 0.0f;
