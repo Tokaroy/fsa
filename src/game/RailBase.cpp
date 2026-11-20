@@ -188,7 +188,7 @@ void cls_800FE3EC::fn_800FDE38() {
     }
 }
 
-// FIXME(shotgun): 95.97 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.69 %, regalloc-only; behaviour clean.
 // 0x800FDC70
 JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 index) {
     JGeometry::TVec3f diff;
@@ -294,7 +294,7 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
     field_0x3 = pos;
 }
 
-// FIXME(shotgun): 89.64 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.29 %, missing/extra; behaviour near.
 // 0x800FD5E8
 bool cls_800FE3EC::fn_800FD5E8(u8 index) {
     u8 count = field_0x2;
