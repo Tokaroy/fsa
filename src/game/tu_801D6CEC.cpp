@@ -135,7 +135,7 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
     field_0x44 = 4;
 }
 
-// FIXME(shotgun): 95.23 %, missing/extra; behaviour near.
+// regalloc only: the rotated x / y sit in f3 / f2, the original has f2 / f3.
 void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (fn_801CD2F8(field_0x40)) {
@@ -145,12 +145,11 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     if (serial >= 0) {
         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (a != NULL) {
-            f32 vx;
-            f32 vy;
+            JGeometry::TVec2f v;
             if (player >= 0 && player < 4) {
                 JGeometry::TVec2f d(getPlayerPos_8023E724(player)->x - a->mPos.x,
                                     getPlayerPos_8023E724(player)->y - a->mPos.y);
-                if (d.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+                if (d.isZero()) {
                     d.set(1.0f, 0.0f);
                 } else {
                     d.normalize();
@@ -158,14 +157,13 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
                 s16 ang = -(s16)(fn_801CD664(0xE39) - 0x71C);
                 f32 s = JMath::sincosTable_.sinShort(ang);
                 f32 c = JMath::sincosTable_.cosShort(ang);
-                vx = d.x * c - d.y * s;
-                vy = d.x * s + d.y * c;
+                v.set(d.x * c - d.y * s, d.x * s + d.y * c);
             } else {
                 s16 ang = fn_801CD664(0x10000);
-                vx = JMath::sincosTable_.sinShort(ang);
-                vy = JMath::sincosTable_.cosShort(ang);
+                v.set(JMath::sincosTable_.sinShort(ang), JMath::sincosTable_.cosShort(ang));
             }
-            a->field_0x3c = JGeometry::TVec3f(5.0f * vx, 5.0f * vy, 0.0f);
+            v.scale(5.0f);
+            a->field_0x3c = JGeometry::TVec3f(v.x, v.y, 0.0f);
         }
     }
     field_0x44 = 4;
