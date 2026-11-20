@@ -442,7 +442,7 @@ static inline void resetPlayerSerials() {
     }
 }
 
-// FIXME(shotgun): 98.70 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 98.78 %, regalloc-only; behaviour clean.
 void ActorManager_804A5800::fn_801F7CAC() {
     GameView_804A9950* view = getGameView_802D6A9C();
     resetPlayerSerials();
@@ -481,7 +481,7 @@ void ActorManager_804A5800::fn_801F7CAC() {
     fn_80204638()->fn_802048F4();
 }
 
-// FIXME(shotgun): 97.13 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 97.23 %, scheduling+regalloc; behaviour clean.
 void ActorManager_804A5800::fn_801F7B18() {
     getGameView_802D6A9C();
     resetPlayerSerials();
@@ -713,6 +713,7 @@ s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
 }
 
 // The 16.0f literal is lbl_8053F820 once the pool before it is complete.
+// FIXME: 99.42 %, regalloc-only; behaviour clean.
 s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* center,
                                        const JGeometry::TVec3f* from, s32 excludeSerial,
                                        f32 radius) const {
@@ -1057,7 +1058,6 @@ void ActorManager_804A5800::fn_801F62AC(JKRHeap* heap) {
     }
 }
 
-// FIXME: 97.25 %, regalloc-only; behaviour clean.
 s32 ActorManager_804A5800::fn_801F620C(u32 id, u32 column) {
     u32* key = mParamColumnIds;
     s32 columnNum = mParamColumnNum;
