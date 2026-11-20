@@ -468,23 +468,24 @@ void ChiefSoldier_804A0B90::vfunc_0x44() {
 }
 
 // FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
+// The original reads mPos.x twice (once for the +=, once for the save) and loads all four box floats before storing them.
 void ChiefSoldier_804A0B90::fn_80174220() {
     s32 dir = field_0x98;
     s32 index = dir;
     if (getType() == 8 && field_0x23c != 0) {
         index = dir + 4;
     }
-    f32 x = mPos.x;
-    f32 y = mPos.y;
-    f32 z = mPos.z;
+    f32 x;
+    f32 y;
+    f32 z;
     if (index < 4) {
+        x = mPos.x;
+        y = mPos.y;
+        z = mPos.z;
         mPos.x += lbl_804A0AD8[dir][0];
         mPos.y += lbl_804A0AD8[field_0x98][1];
     }
-    mBox.i.x = lbl_804A0B10[index][0];
-    mBox.i.y = lbl_804A0B10[index][1];
-    mBox.f.x = lbl_804A0B10[index][2];
-    mBox.f.y = lbl_804A0B10[index][3];
+    mBox.set(lbl_804A0B10[index][0], lbl_804A0B10[index][1], lbl_804A0B10[index][2], lbl_804A0B10[index][3]);
     if (field_0x94 == 0 || field_0x94 == 2) {
         s32 serial = field_0x238;
         if (serial >= 0) {
@@ -507,10 +508,10 @@ void ChiefSoldier_804A0B90::fn_80174220() {
             if (fn_80235448(player)) {
                 continue;
             }
-            f32 y0 = mBox.i.y + mPos.y;
-            f32 y1 = mBox.f.y + mPos.y;
             f32 x0 = mBox.i.x + mPos.x;
+            f32 y0 = mBox.i.y + mPos.y;
             f32 x1 = mBox.f.x + mPos.x;
+            f32 y1 = mBox.f.y + mPos.y;
             JGeometry::TVec2f center(0.5f * (x0 - x1) + x1, 0.5f * (y0 - y1) + y1);
             if (fn_80237948(player, &center)) {
                 fn_80230FD0(player, 0x20002);
