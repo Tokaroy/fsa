@@ -1931,7 +1931,7 @@ void FileSelect_804AFF60::fn_803C9F14() {
     }
 }
 
-// FIXME: 99.49 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.54 %, regalloc-only; behaviour clean.
 // Scheduling and registers only, the timing sums as in
 // fn_803C5190.
 // State 22 (copy, after the copy prompt's yes): as fn_803C5190, the board (or
