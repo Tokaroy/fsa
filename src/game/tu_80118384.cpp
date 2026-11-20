@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
 #include "game/ActorManager.h"
@@ -485,9 +486,12 @@ void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
     }
 }
 
-// FIXME(shotgun): 54.97 %, missing/extra; behaviour clean.
-// The original is TVector size() == 0, then std::find_if with a
-// by-value predicate (its actorId is spilled to the stack); same stand-in note as fn_80118798.
+struct ActorIdEq {
+    u32 mActorId;
+    ActorIdEq(u32 actorId) : mActorId(actorId) {}
+    bool operator()(ActorBase_804A5770* actor) const { return mActorId == actor->mActorId; }
+};
+
 ActorBase_804A5770** cls_801192AC::fn_8011871C(ActorBase_804A5770** from, u32 actorId) {
     u32 count;
     if (mActors.mBegin == NULL) {
@@ -501,13 +505,7 @@ ActorBase_804A5770** cls_801192AC::fn_8011871C(ActorBase_804A5770** from, u32 ac
     if (from == mActors.mEnd) {
         return mActors.mEnd;
     }
-    while (from != mActors.mEnd) {
-        if ((*from)->mActorId == actorId) {
-            return from;
-        }
-        from++;
-    }
-    return mActors.mEnd;
+    return std::find_if(from, mActors.mEnd, ActorIdEq(actorId));
 }
 
 bool cls_801192AC::fn_801186B0(u32 value) {
