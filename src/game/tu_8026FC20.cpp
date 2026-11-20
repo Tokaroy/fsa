@@ -161,7 +161,7 @@ static const struct {
 
 // All four direction hold timers field_0x117c[0..3] running.
 static inline bool allDirectionsHeld(const Player_804A6F38* player) {
-    for (s32 i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         if (player->field_0x117c[i] <= 0) {
             return false;
         }
@@ -169,25 +169,20 @@ static inline bool allDirectionsHeld(const Player_804A6F38* player) {
     return true;
 }
 
-// A row of the press history field_0x119c: any direction column set.
-static inline bool rowPressed(const Player_804A6F38* player, s32 i) {
-    bool pressed = false;
-    for (s32 j = 0; j < 4; j++) {
-        if (player->field_0x119c[i][j] == 1) {
-            pressed = true;
-        }
-    }
-    return pressed;
-}
-
 // How many of the newest press history entries (timer field_0x117c[4 + i] running and a
-// direction column of field_0x119c[i] set) are in a row.
+// direction column of the row field_0x119c[i] set) are in a row.
 static inline s32 recentPresses(const Player_804A6F38* player) {
     for (s32 i = 0; i < 4; i++) {
         if (player->field_0x117c[i + 4] <= 0) {
             return i;
         }
-        if (!rowPressed(player, i)) {
+        bool pressed = false;
+        for (s32 j = 0; j < 4; j++) {
+            if (player->field_0x119c[i][j] == 1) {
+                pressed = true;
+            }
+        }
+        if (!pressed) {
             return i;
         }
     }
@@ -367,9 +362,6 @@ static inline s32 historyDepth(const Player_804A6F38* player) {
 // combo position by the history depth: 2 / 0 / 1 for a first press, 0 / 1 after one. Every
 // attack but the lunge has 0x458 = 1, 0xBF4 = 4 and sound 0x10000; then sound 0x20000 and
 // 0x3F0 = facing.
-// FIXME: 99.04 %, scheduling+regalloc; behaviour clean.
-// Registers only in the two inlined recentPresses (r3 / r4 swapped for the count
-// and the row flag, as in fn_80275D9C).
 void Player_804A6F38::fn_8027DEA0() {
     bool combo = false;
     if (recentPresses(this) >= 3) {
@@ -2413,10 +2405,6 @@ void Player_804A6F38::fn_80276078() {
 // presses in the history 0x117C[4..7] / 0x119C -> state 9 (3); 0x11D4 running -> state 9 (4);
 // else with cls_804A71A8 0xB4 set state 7 (pushed by 1.5 along the facing, z -4) under
 // fn_80243234, otherwise state 5; without it state 4.
-// FIXME: 98.61 %, scheduling+regalloc; behaviour clean.
-// Registers only in the inlined recentPresses: the original keeps the count in
-// r4 and the row result in r3 (ours swap them) and sets up the base pointer r6 after the
-// held test instead of before it.
 bool Player_804A6F38::fn_80275D9C() {
     if (field_0xc9c > 0) {
         return false;
