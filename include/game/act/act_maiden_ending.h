@@ -25,7 +25,7 @@ public:
     void fn_8035C940();
 
     // Vec functions (in lbl_804AD594)
-    inline JGeometry::TVec3f calcTarget_inline();
+    inline void moveTowards_inline(JGeometry::TVec3f target);
     JGeometry::TVec3f fn_8035CE78();
     JGeometry::TVec3f fn_8035CDC0();
     JGeometry::TVec3f fn_8035CD00();
