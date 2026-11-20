@@ -1612,9 +1612,6 @@ bool ActorBase_804A5770::fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s3
 // back to mPrevPos's x/y and 8 further along the reverse of field_0x98's
 // direction; if that is outside the view's box for the layer, respawns at
 // mSpawnPos on layer field_0x8. Returns whether it was blocked.
-// FIXME: 99.41 %, regalloc-only; behaviour clean.
-// Float register allocation only (the step's operands); 8.0f
-// is @NNN until .sdata2 is in order (lbl_8053F7A4).
 bool ActorBase_804A5770::fn_801F11B4() {
     bool blocked = false;
     if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f &&
@@ -1623,10 +1620,11 @@ bool ActorBase_804A5770::fn_801F11B4() {
         mPos.x = mPrevPos.x;
         mPos.y = mPrevPos.y;
         s16 angle = fn_801F6874(field_0x98);
-        f32 dx = JMath::sincosTable_.sinShort(angle - 0x8000) * 8.0f;
-        f32 dy = JMath::sincosTable_.cosShort(angle - 0x8000) * 8.0f;
-        mPos.x += dx;
-        mPos.y += dy;
+        JGeometry::TVec2f dir(JMath::sincosTable_.sinShort(angle - 0x8000),
+                              JMath::sincosTable_.cosShort(angle - 0x8000));
+        dir.scale(8.0f);
+        mPos.x += dir.x;
+        mPos.y += dir.y;
         JGeometry::TBox2f* box = layerBox(field_0x4);
         bool inView = mPos.x >= box->i.x && mPos.y >= box->i.y && mPos.x < box->f.x &&
                       mPos.y < box->f.y;
