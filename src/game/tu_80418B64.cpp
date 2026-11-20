@@ -678,10 +678,10 @@ void cls_804B13D4::fn_8041F720() {
         return;
     }
     if (field_0x291 != 0) {
-        f32 sx = lbl_8050DB0C.field_0x30[4] *
-                 ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / gGameRoot2_8053AB10->field_0x24->field_0x858);
-        f32 sy = lbl_8050DB0C.field_0x30[4] *
-                 ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / gGameRoot2_8053AB10->field_0x24->field_0x858);
+        f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
+        f32 scale = lbl_8050DB0C.field_0x30[4];
+        f32 sx = scale * ((s32)JUTVideo::getManager()->getRenderMode()->fbWidth / zoom);
+        f32 sy = scale * ((s32)JUTVideo::getManager()->getRenderMode()->efbHeight / zoom);
         for (s32 i = 0; i < 4; i++) {
             if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
                 continue;
