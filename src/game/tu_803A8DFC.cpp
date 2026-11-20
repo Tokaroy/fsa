@@ -961,9 +961,11 @@ void ResultScreen_804AF9A0::fn_803B14F8() {
                 if (field_0x460[i] <= t1) {
                     f32 rate = (f32)(field_0x460[i] * field_0x460[i]) / (f32)(t1 * t1);
                     f32 x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
-                    field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 - 40.0f + (40.0f + dy) * rate);
+                    f32 offset = (40.0f + dy) * rate;
+                    field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 - 40.0f + offset);
                     x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
-                    field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + dy * rate);
+                    offset = dy * rate;
+                    field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
                     rate = (f32)field_0x460[i] / (f32)t1;
                     setRankRowAlpha(i, rate);
                 } else if (field_0x460[i] <= t1 + t2) {
