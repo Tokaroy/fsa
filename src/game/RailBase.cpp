@@ -4,7 +4,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 97.53 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.97 %, regalloc-only; behaviour clean.
 // 0x800FE3EC
 bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
@@ -47,14 +47,12 @@ bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     return true;
 }
 
-// FIXME(shotgun): 90.48 %, missing/extra; behaviour near.
-// 0x800FE2E4
 u8 cls_800FE3EC::fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer) {
     f32 best = 10000.0f;
     for (u16 i = 0; i < field_0x2; i++) {
         if (layer == fn_800FE25C(i)) {
-            JGeometry::TVec3f diff;
-            diff.sub(field_0x4[i]->mPos, *pos);
+            JGeometry::TVec3f diff(field_0x4[i]->mPos);
+            diff.sub(*pos);
             f32 dist = diff.length();
             if (dist < best) {
                 best = dist;
@@ -249,8 +247,6 @@ JGeometry::TVec3f cls_800FE3EC::fn_800FD998(JGeometry::TVec3f pos, s32 step, s32
     return result;
 }
 
-// FIXME(shotgun): 99.85 %, reloc-name; behaviour clean.
-// 0x800FD894
 u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
     if (layer == -1) {
         if (out != NULL) {
@@ -264,7 +260,7 @@ u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
     for (u8 i = 0; i < field_0x2; i++) {
         if (layer == fn_800FE25C(i)) {
             if (max == n) {
-                OSPanic(__FILE__, 0x1A3, "RailBase: Buffsize Error");
+                OSPanic(__FILE__, 0x1A3, "RailBase: Buffsize Error\n");
             }
             out[n++] = i;
         }
@@ -272,11 +268,10 @@ u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
     return n;
 }
 
-// FIXME(shotgun): 85.32 %, missing/extra; behaviour drift.
-// 0x800FD818
 void cls_800FE3EC::fn_800FD818(s32 dir) {
     u8 count = field_0x2;
-    s16 pos = field_0x3 + (s8)dir;
+    s16 pos = field_0x3;
+    pos += (s8)dir;
     u32 mode = field_0x4[count - 1]->field_0x90 & 3;
     if (pos < 0) {
         if (mode == 1) {
@@ -287,8 +282,9 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
         return;
     }
     if (pos >= count) {
+        pos -= count;
         if (mode == 1) {
-            field_0x3 = pos - count;
+            field_0x3 = pos;
         } else {
             field_0x3 = count - 1;
         }
