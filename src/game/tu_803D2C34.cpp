@@ -241,7 +241,6 @@ void cls_804B0288::fn_803D521C() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, scheduling; behaviour clean.
 void cls_804B0288::fn_803D5090() {
     if (field_0x2174 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x2170);
@@ -249,7 +248,7 @@ void cls_804B0288::fn_803D5090() {
     u8 state = field_0x216c;
     if (state != 0 && state != 2 && state != 1 && state != 3) {
         u8 card = lbl_8051C1A0.field_0x1ff5;
-        if (card == 0 || (card == 1 && !lbl_8053ACA8->fn_802B1DCC())) {
+        if ((card == 0 || card == 1) && !lbl_8053ACA8->fn_802B1DCC()) {
             if (field_0x216e == 0 && field_0x1b4 == 0) {
                 field_0x216c = 5;
                 field_0x2175 = 1;
@@ -1060,7 +1059,7 @@ void cls_804B0288::fn_803D2E10() {
     }
 }
 
-// FIXME(shotgun): 97.70 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.48 %, missing/extra; behaviour near.
 // the flag bytes are reached through an extra addi 0x20 (the row view of the save file)
 void cls_804B0288::fn_803D2C9C() {
     s32 result = lbl_8051C1A0.fn_803B9A94(field_0x1c0, 0x258, field_0x420, 0x1D4C, 0);
@@ -1075,8 +1074,8 @@ void cls_804B0288::fn_803D2C9C() {
             if ((lbl_8050EC80.getCurrentFile().field_0x65 & 1) == 0) {
                 lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
             }
-            if (lbl_8050EC80.getCurrentFile().mFlags & 1) {
-                lbl_8050EC80.getCurrentFile().field_0x65 |= 2;
+            if (lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].mFlags & 1) {
+                lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x65 |= 2;
             }
             field_0x54 = 0x7E;
             field_0x2177 = 0;
