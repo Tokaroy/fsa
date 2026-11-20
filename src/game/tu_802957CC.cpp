@@ -625,7 +625,7 @@ void cls_804A7AE0::fn_80299720() {
     }
 }
 
-// FIXME(shotgun): 98.51 %, different; behaviour drift.
+// FIXME(shotgun): 98.52 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80299374() {
     if (field_0x250.y > 0.0f) {
@@ -699,7 +699,7 @@ void cls_804A7AE0::fn_80299374() {
     }
 }
 
-// FIXME(shotgun): 97.17 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.53 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298FC4() {
     if (field_0x250.x < 0.0f) {
@@ -847,7 +847,7 @@ void cls_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 92.38 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.23 %, missing/extra; behaviour near.
 // still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
 void cls_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
