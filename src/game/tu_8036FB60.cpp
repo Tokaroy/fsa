@@ -697,8 +697,6 @@ void cls_804AE4B0::fn_803704E8() {
 
 // Not auto-inlined: the original state handlers call it with a plain bl (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 99.65 %, regalloc-only; behaviour clean.
-// (literal pool names)
 void cls_804AE4B0::fn_803703C8() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     f32 a = -cam->field_0x4[0][3];
@@ -721,18 +719,13 @@ void cls_804AE4B0::fn_803703C8() {
     } else {
         field_0x25c += field_0x260;
     }
-    f32 yHi = field_0x248 + field_0x25c;
-    f32 yLo = field_0x248 - field_0x25c;
-    f32 x = field_0x244;
+    JGeometry::TBox2f box(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     if (gGameRoot2_8053AB10->field_0x24->field_0x7f5 == 0) {
         cam = gGameRoot2_8053AB10->field_0x24;
         cam->field_0x7f4 = 1;
         cam->field_0x7f8 = 5;
-        cam->field_0x808.i.x = x;
-        cam->field_0x808.i.y = yLo;
-        cam->field_0x808.f.x = x;
-        cam->field_0x808.f.y = yHi;
+        cam->field_0x808.set(box);
         cam->field_0x7f6 = 0;
     }
 }
