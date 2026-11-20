@@ -13,10 +13,15 @@
 #include "game/act/tu_80147B50.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Tables of the 'DGTL' actor (not written as source here): .data 0x8049F630 emitter ids per
-// direction, 0x8049F640 trail indices, 0x8049F698 resource names (.rodata strings);
+// Tables of the 'DGTL' actor (the rest not written as source here): .data 0x8049F630 emitter
+// ids per direction (below), 0x8049F640 trail indices, 0x8049F698 resource names (.rodata strings);
 // .sdata 0x80539F60 a segment-sprite order.
-extern const u16 lbl_8049F630[];
+u16 lbl_8049F630[][2] = {
+    {0x11F, 0x120},
+    {0x123, 0x124},
+    {0x11D, 0x11E},
+    {0x121, 0x122},
+};
 extern const s32 lbl_8049F640[14];
 extern const s32 lbl_8049F678[8]; // .data 0x8049F678: rupee kind per segment (-1: none)
 extern const char* const lbl_8049F698[];
@@ -144,19 +149,18 @@ void cls_8049F6C8::init() {
     }
 }
 
-// FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_8049F6C8::fn_8014A2CC(s32 flag) {
+    s32 i;
     s32 base = 0;
     if (field_0x274 == 1) {
         base = 7;
     }
-    if (flag == 0) {
-        for (s32 i = 78; i >= 0; i--) {
+    for (i = 78; i >= 0; i--) {
+        if (flag == 0) {
             field_0x3d8[i + 1] = field_0x3d8[i];
             field_0x338[i + 1] = field_0x338[i];
-        }
-    } else {
-        for (s32 i = 78; i >= 0; i--) {
+        } else {
             field_0x3d8[i + 1].z = field_0x3d8[i].z;
         }
     }
@@ -166,14 +170,14 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
     } else {
         field_0x3d8[0].z = mPos.z;
     }
-    for (s32 i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
         s32 index = lbl_8049F640[base + i];
         field_0x2c0[i + 1].x = field_0x3d8[index].x;
         field_0x2c0[i + 1].y = field_0x3d8[index].y;
         field_0x2c0[i + 1].z = field_0x3d8[index].z;
         field_0x2ac[i + 1] = field_0x338[index];
         if (flag != 0) {
-            field_0x2c0[i + 1].z = field_0x3d8[(s32)(0.25f * lbl_8049F640[i])].z;
+            field_0x2c0[i + 1].z = field_0x3d8[(s32)(lbl_8049F640[i] / 4.0f)].z;
         }
         if (i < 5) {
             if (mEmitters798[i] == NULL) {
@@ -185,30 +189,31 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
             }
         }
     }
-    s32 index = lbl_8049F640[6 + base];
+    const s32* last = &lbl_8049F640[6];
+    s32 index = last[base];
     field_0x2c0[7].x = field_0x3d8[index].x;
     field_0x2c0[7].y = field_0x3d8[index].y;
     field_0x2c0[7].z = field_0x3d8[index].z;
     field_0x2ac[7] = field_0x338[index];
-    for (s32 i = 0; i < 2; i++) {
-        setEmitterPos_8013CB44(mEmitters7c0[i], &field_0x2c0[7], 0, 0, true);
+    for (s32 j = 0; j < 2; j++) {
+        setEmitterPos_8013CB44(mEmitters7c0[j], &field_0x2c0[7], 0, 0, true);
     }
     if (flag != 0) {
-        field_0x2c0[7].z = field_0x3d8[(s32)(0.25f * lbl_8049F640[6])].z;
+        field_0x2c0[7].z = field_0x3d8[(s32)(*last / 4.0f)].z;
     }
     field_0x2c0[0].x = field_0x3d8[0].x;
     field_0x2c0[0].y = field_0x3d8[0].y;
     field_0x2c0[0].z = field_0x3d8[0].z;
 }
 
-// FIXME(shotgun): 90.48 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 bool cls_8049F6C8::fn_80149FDC() {
     if (field_0x250 == 0) {
         return true;
     }
     if (field_0x24c == 0) {
         field_0x24c = 300 - field_0x250;
-        field_0x24c = (s32)(0.2f * field_0x24c);
+        field_0x24c *= 0.2f;
         if (field_0x24c < 8) {
             field_0x24c = 8;
         }
@@ -235,18 +240,19 @@ bool cls_8049F6C8::fn_80149FDC() {
         return false;
     }
     field_0x278 = field_0x27c;
-    s32 tries = 0;
-    while (field_0x27c == field_0x278 && tries < 100) {
-        tries++;
+    s32 i = 0;
+    while (field_0x27c == field_0x278 && i < 100) {
+        i++;
         field_0x278 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x278 &= 3;
     }
     field_0x27c = field_0x278;
-    for (s32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         deleteEmitter(&mEmitters7c0[i]);
     }
-    mEmitters7c0[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[field_0x278 * 2], 0, 0, NULL, NULL, true, 1.0f);
-    mEmitters7c0[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[field_0x278 * 2 + 1], 0, 0, NULL, NULL, true, 1.0f);
+    s32 type = field_0x278;
+    mEmitters7c0[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[type][0], 0, 0, NULL, NULL, true, 1.0f);
+    mEmitters7c0[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[type][1], 0, 0, NULL, NULL, true, 1.0f);
     if (mState != 1 && mState != 2) {
         startSound_801F0E34(0x400BF, 0);
     }
@@ -254,7 +260,7 @@ bool cls_8049F6C8::fn_80149FDC() {
     return false;
 }
 
-// FIXME(shotgun): 97.42 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.21 %, different; behaviour clean.
 bool cls_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
@@ -270,7 +276,7 @@ bool cls_8049F6C8::fn_80149AEC() {
     mPos.x = field_0x2c0[7].x;
     mPos.y = field_0x2c0[7].y;
     mPos.z = field_0x2c0[7].z;
-    field_0xb0 = 0x4000000;
+    field_0xb0 = 0x8040000;
     for (s32 i = 0; i < 4; i++) {
         s32 player = fn_801F285C(NULL, NULL, true, i);
         if (player >= 0) {
@@ -292,8 +298,8 @@ bool cls_8049F6C8::fn_80149AEC() {
     }
     field_0x260 = 0;
     field_0x264 = 0;
-    field_0x2a0.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x2a0.zero();
+    field_0x3c.zero();
     for (s32 i = 0; i < 2; i++) {
         deleteEmitter(&mEmitters7c0[i]);
     }
@@ -301,10 +307,10 @@ bool cls_8049F6C8::fn_80149AEC() {
     if (field_0x274 <= 0) {
         field_0xd8 = 0;
         field_0xdc = 0;
-        if (field_0x90 == 1) {
+        if (getField_0x90() == 1) {
             lbl_80539F58 = -1;
         }
-        if (field_0x90 == 0) {
+        if (getField_0x90() == 0) {
             lbl_80539F5C = -1;
         }
         field_0x234 = 0;
@@ -348,14 +354,13 @@ bool cls_8049F6C8::fn_80149AEC() {
         } else {
             startSound_801F0E34(0x40005, 0);
         }
-        for (s32 i = 0; i < 80; i++) {
+        for (u32 i = 0; i < 80; i++) {
             field_0x3d8[i].set(mPos);
         }
     }
     return true;
 }
 
-// FIXME(shotgun): 97.82 %, different; behaviour drift.
 cls_8049F6C8::~cls_8049F6C8() {
     for (s32 i = 0; i < 10; i++) {
         releaseEmitter_801EE434(mEmitters798[i]);
@@ -363,10 +368,10 @@ cls_8049F6C8::~cls_8049F6C8() {
     for (s32 i = 0; i < 2; i++) {
         releaseEmitter_801EE434(mEmitters7c0[i]);
     }
-    if (field_0x90 == 1) {
+    if (getField_0x90() == 1) {
         lbl_80539F58 = -1;
     }
-    if (field_0x90 == 0) {
+    if (getField_0x90() == 0) {
         lbl_80539F5C = -1;
     }
 }
