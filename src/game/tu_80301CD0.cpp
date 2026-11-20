@@ -403,16 +403,17 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     lbl_80506DE8[player].f.mEntries[3].mScroll = 0;
     s32 layer = fn_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
-        u8 near = 0;
-        if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
-            near = 1;
+        u8 flag = 0;
+        if (fn_8037F1E4(player) >= 1) {
+            if (fn_8037F1E4(player) <= 5) {
+                flag = 1;
+            }
         }
-        lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
+        lbl_80506DE8[player].f.mEntries[1].mScrollBit = flag ? true : false;
         if (lbl_8053ACD0 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
-            u8 flag = 0;
+            flag = 0;
             if (fn_8022F5B0(layer)) {
-                s32 l = getPlayerLayer_8023DE58(layer);
-                if (!getGameView_802D6A9C()->fn_802D7804(l, 2)) {
+                if (!getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
                     flag = 1;
                 }
             }
@@ -435,16 +436,17 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     }
     // The original holds the checksum loop twice (+41C and +4C8), once per state of the queue head entry.
     u8 sum = 0;
+    s32 k;
     if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
-        s32 size = lbl_80541618[lbl_8053AD08] * 4;
         u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
-        for (s32 k = 8; k < size; k++) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        for (k = 8; k < size; k++) {
             sum += *bytes++;
         }
     } else {
-        s32 size = lbl_80541618[lbl_8053AD08] * 4;
         u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
-        for (s32 k = 8; k < size; k++) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        for (k = 8; k < size; k++) {
             sum += *bytes++;
         }
     }
