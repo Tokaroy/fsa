@@ -1481,9 +1481,6 @@ static inline void landFromHit(Player_804A6F38* player) {
 // follow the player turned by facing, the step emitters run on the ground, and kinds 0x17 / 0x19
 // move with fn_802685D4. The kind-3 view box is computed and not used (the original keeps
 // its stack stores too).
-// FIXME: 99.32 %, scheduling; behaviour clean.
-// Scheduling only: the original loads field_0x135c after the table address
-// (lis / addi) for the first JPAGetXYZRotateMtx.
 void Player_804A6F38::fn_80279824() {
     mPos.add(field_0x350);
     if (mPos.z < 0.0f) {
@@ -1534,7 +1531,7 @@ void Player_804A6F38::fn_80279824() {
             setEmitterPos_8013CB44(field_0x135c, &mPos, 0, -1, true);
             break;
         }
-        JPAGetXYZRotateMtx(0, lbl_8046BC98[field_0x3dc], 0, field_0x135c->mGlobalRot);
+        field_0x135c->setGlobalRotation(JGeometry::TVec3<s16>(0L, lbl_8046BC98[field_0x3dc], 0L));
     }
     if (field_0x132c != NULL) {
         field_0x1344.set(mPos);
@@ -1544,7 +1541,7 @@ void Player_804A6F38::fn_80279824() {
             field_0x1344.y += 3.0f;
         }
         field_0x1330.field_0x4.set(field_0x1344);
-        JPAGetXYZRotateMtx(0, lbl_8046BC98[field_0x3dc], 0, field_0x132c->mGlobalRot);
+        field_0x132c->setGlobalRotation(JGeometry::TVec3<s16>(0L, lbl_8046BC98[field_0x3dc], 0L));
     }
     if (mPos.z <= 0.0f) {
         updateStepEmitters(this);
