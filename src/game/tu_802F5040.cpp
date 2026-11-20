@@ -2168,13 +2168,12 @@ void TileMap_804AA858::fn_802F93F4(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         src = (u8*)res;
     }
-    src += srcOffset;
     for (s32 i = 0; i < len; i += 2) {
         u16 color;
         if (i != 0 && (i & 0x1F) == 0) {
             color = 0;
         } else {
-            u16 bgr = src[i] | (src[i + 1] << 8);
+            u16 bgr = src[srcOffset + i] | (src[srcOffset + i + 1] << 8);
             color = ((bgr & 0x1F) << 10) | (bgr & 0x3E0) | ((bgr >> 10) & 0x1F) | 0x8000;
             if (i == 0) {
                 color = 0;
