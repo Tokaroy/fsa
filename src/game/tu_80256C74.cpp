@@ -2529,11 +2529,8 @@ bool Player_804A6F38::fn_80257DB4() {
 }
 
 // FIXME: 95.14 %, different; behaviour clean.
-// try.py "different", but only block order and registers: the original lays
-// out item 7's mPos.z test (off view-flag layers) after the floor probe, ours before it (the
-// source order `if (viewLayerFlag) { probe } else if (mPos.z > 0) return;` gives the
-// original's layout, 98.07 %, but pools 2.0f before 0.0f and drops 11 functions of the
-// unit to reloc-name); and this / the item index swap r30 / r31.
+// Registers only: the original keeps `this` in r30 and the item / jump index / 'HBMB' slot
+// pointer in r31; ours has `this` in r31 and the others one register lower.
 // The per-frame item check: while fn_8022B334 and fn_8022C310 hold, the selected
 // item fn_802416C4 (1-10) requests its state. Items 3 and 6 allow three of their
 // actors (field_0xb00 / field_0xb1c) at a time, item 8 ('HBMB') two (field_0xb30).
@@ -2543,8 +2540,7 @@ void Player_804A6F38::fn_8025785C() {
     }
     if (fn_8022B334(field_0x4)) {
         if (fn_80240808()) {
-            s32 item = fn_802416C4();
-            if (item != fn_802373EC(fn_80240644())) {
+            if (fn_802373EC(fn_80240644()) != fn_802416C4()) {
                 fn_80241618(fn_802373EC(fn_80240644()), 1);
             }
         }
@@ -2581,31 +2577,7 @@ void Player_804A6F38::fn_8025785C() {
             } else if (fn_802416C4() == 7) {
                 requestJump_8025785C();
             } else if (fn_802416C4() == 8) {
-                for (s32 i = 0; i < 2; i++) {
-                    if (field_0xb30[i] < 0) {
-                        const Vec& d = lbl_8046B220[field_0x3dc];
-                        JGeometry::TVec3f pos;
-                        pos.x = d.x;
-                        pos.y = d.y;
-                        pos.z = d.z;
-                        pos += mPos;
-                        pos.z = 0.0f;
-                        if (fn_8022461C(&pos, field_0x3b4) == 0xe) {
-                            break;
-                        }
-                        s32 serial;
-                        if (fn_802415CC() >= 2) {
-                            serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x3b4, &pos, 8, -1, field_0x4);
-                        } else {
-                            serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x3b4, &pos, 0, -1, field_0x4);
-                        }
-                        if (getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
-                            field_0xb30[i] = serial;
-                            fn_8024F0E8(0x20006);
-                            break;
-                        }
-                    }
-                }
+                requestBomb_8025785C();
             } else if (fn_802416C4() == 9) {
                 fn_80251AEC(0x47);
             } else if (fn_802416C4() == 10) {
@@ -2618,6 +2590,36 @@ void Player_804A6F38::fn_8025785C() {
         }
     }
     field_0x1174 = 0;
+}
+
+// Item 8: at most two 'HBMB' actors (field_0xb30) at a time. Inlined into fn_8025785C; a plain
+// function here because its 0.0f is pooled ahead of fn_8025785C's own literals.
+void Player_804A6F38::requestBomb_8025785C() {
+    for (s32 i = 0; i < 2; i++) {
+        if (field_0xb30[i] < 0) {
+            const Vec& d = lbl_8046B220[field_0x3dc];
+            JGeometry::TVec3f pos;
+            pos.x = d.x;
+            pos.y = d.y;
+            pos.z = d.z;
+            pos += mPos;
+            pos.z = 0.0f;
+            if (fn_8022461C(&pos, field_0x3b4) == 0xe) {
+                break;
+            }
+            s32 serial;
+            if (fn_802415CC() >= 2) {
+                serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x3b4, &pos, 8, -1, field_0x4);
+            } else {
+                serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x3b4, &pos, 0, -1, field_0x4);
+            }
+            if (getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
+                field_0xb30[i] = serial;
+                fn_8024F0E8(0x20006);
+                break;
+            }
+        }
+    }
 }
 
 // Item 6 below level 2 (state 0x44): at most three flames (field_0xb1c) at a time.
@@ -2655,17 +2657,17 @@ inline void Player_804A6F38::requestJump_8025785C() {
             return;
         }
     }
-    if (!viewLayerFlag(field_0x3b4)) {
-        if (mPos.z > 0.0f) {
-            return;
+    if (viewLayerFlag(field_0x3b4)) {
+        if (!fn_802518AC(true)) {
+            JGeometry::TVec3f pos;
+            fn_8024B298(2, &pos);
+            pos.y += 2.0f;
+            if (fn_8022461C(&pos, field_0x3b4) == 2) {
+                return;
+            }
         }
-    } else if (!fn_802518AC(true)) {
-        JGeometry::TVec3f pos;
-        fn_8024B298(2, &pos);
-        pos.y += 2.0f;
-        if (fn_8022461C(&pos, field_0x3b4) == 2) {
-            return;
-        }
+    } else if (mPos.z > 0.0f) {
+        return;
     }
     if (fn_8025F684()) {
         fn_80251AEC(0x14);
