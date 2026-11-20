@@ -22,11 +22,14 @@ public:
     void fn_80298FC4();
     void fn_80299374();
     void fn_80299720();
+    void addCameraFocus(s32 idx);
+    void moveDoors(const JGeometry::TVec3f& delta);
     void fn_80299AD0();
     void fn_80299FB0();
     void fn_8029A494();
     void fn_8029A974();
     void bakeTiles();
+    void killSerialActors();
     virtual void init(); // fn_8029B2EC
     virtual void vfunc_0x10(); // fn_8029AE58
     virtual void update(); // fn_80296A84

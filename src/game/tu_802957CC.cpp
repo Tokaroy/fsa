@@ -68,6 +68,23 @@ static inline s32 getPullDir(cls_804A7AE0* self) {
     return -1;
 }
 
+// Kills the actors registered in both serial lists.
+// Inlined by fn_802961AC and update.
+inline void cls_804A7AE0::killSerialActors() {
+    for (s32 i = 0; i < mSerialCountB; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+    }
+    for (s32 i = 0; i < mSerialCountA; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+    }
+}
+
 // Snapshots the 6x6 tiles under the actor and clears them from the map (once).
 // Inlined by fn_802961AC, fn_80299AD0 and its three siblings.
 inline void cls_804A7AE0::bakeTiles() {
@@ -93,15 +110,15 @@ inline void cls_804A7AE0::bakeTiles() {
 }
 
 // Camera focus offsets (right, left, down, up).
-static const f32 lbl_8046C238[4][3] = {
+static const Vec lbl_8046C238[4] = {
     {128.0f, 0.0f, 0.0f}, {-128.0f, 0.0f, 0.0f}, {0.0f, 128.0f, 0.0f}, {0.0f, -128.0f, 0.0f},
 };
 
 // Per-direction offsets (right, left, down, up).
-static const f32 lbl_8046C268[4][3] = {
+static const Vec lbl_8046C268[4] = {
     {28.0f, 0.0f, 0.0f}, {-28.0f, 0.0f, 0.0f}, {0.0f, 28.0f, 0.0f}, {0.0f, -28.0f, 0.0f},
 };
-static const f32 lbl_8046C298[4][3] = {
+static const Vec lbl_8046C298[4] = {
     {16.0f, 0.0f, 0.0f}, {-16.0f, 0.0f, 0.0f}, {0.0f, 16.0f, 0.0f}, {0.0f, -16.0f, 0.0f},
 };
 
@@ -549,8 +566,35 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 97.61 %, missing/extra; behaviour drift.
-// layer expression compiles branch-free (cntlzw) in the original, 4 instructions
+// The camera focus point: mPos moved 128 units in direction `idx` of lbl_8046C238 (the opposite
+// one while field_0x2cc is -1). No copy of its own: fn_80299720 inlines it (its two vectors lie
+// below the caller's on the stack, in reverse order).
+inline void cls_804A7AE0::addCameraFocus(s32 idx) {
+    JGeometry::TVec3f focus = mPos;
+    if (mSerialCountC > 0 && field_0x2cc == -1) {
+        idx ^= 1;
+    }
+    const Vec& dir = lbl_8046C238[idx];
+    JGeometry::TVec3f offset;
+    offset.x = dir.x;
+    offset.y = dir.y;
+    offset.z = dir.z;
+    focus.add(offset);
+    gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+}
+
+// Moves every door of mSerialsD by `delta`. No copy of its own: fn_80299720 inlines it (its
+// counter and the caller's vector take the registers and stack slots of an inlined body).
+inline void cls_804A7AE0::moveDoors(const JGeometry::TVec3f& delta) {
+    for (s32 i = 0; i < mSerialCountD; i++) {
+        Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
+        if (door != NULL) {
+            door->mPos = door->mPos + delta;
+            door->fn_802C59B0(&delta);
+        }
+    }
+}
+
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
         field_0x248++;
@@ -575,25 +619,9 @@ void cls_804A7AE0::fn_80299720() {
             gBgRewrite_8053AC98->fn_802A1050(&p);
             p.x += 16.0f;
         }
-        JGeometry::TVec3f focus = mPos;
-        s32 idx = 3;
-        if (mSerialCountC > 0 && field_0x2cc == -1) {
-            idx ^= 1;
-        }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
-        focus.add(offset);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        addCameraFocus(3);
         if (field_0x250.isZero()) {
-            JGeometry::TVec3f push(0.0f, -16.0f, 0.0f);
-            for (s32 i = 0; i < mSerialCountD; i++) {
-                Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
-                if (door != NULL) {
-                    JGeometry::TVec3f q = door->mPos;
-                    q.add(push);
-                    door->mPos = q;
-                    door->fn_802C59B0(&push);
-                }
-            }
+            moveDoors(JGeometry::TVec3f(0.0f, -16.0f, 0.0f));
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
@@ -656,7 +684,7 @@ void cls_804A7AE0::fn_80299374() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.squared() <= JGeometry::TUtil<f32>::epsilon()) {
@@ -730,7 +758,7 @@ void cls_804A7AE0::fn_80298FC4() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.squared() <= 32.0f * FLT_EPSILON) {
@@ -804,7 +832,7 @@ void cls_804A7AE0::fn_80298C18() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.isZero()) {
@@ -950,7 +978,7 @@ void cls_804A7AE0::fn_802984B0() {
     }
 }
 
-// FIXME(shotgun): 74.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 75.60 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
@@ -1004,20 +1032,7 @@ void cls_804A7AE0::update() {
                 if (fn_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, field_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false)) {
                     field_0x234 = 50;
-                    for (s32 j = 0; j < mSerialCountB; j++) {
-                        ActorBase_804A5770* actor =
-                            getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[j]);
-                        if (actor != NULL) {
-                            actor->mAlive = false;
-                        }
-                    }
-                    for (s32 j = 0; j < mSerialCountA; j++) {
-                        ActorBase_804A5770* actor =
-                            getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[j]);
-                        if (actor != NULL) {
-                            actor->mAlive = false;
-                        }
-                    }
+                    killSerialActors();
                     field_0x230 = 1;
                     break;
                 }
@@ -1506,8 +1521,6 @@ void cls_804A7AE0::draw() {
     }
 }
 
-// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
-// float register allocation in the normalize and serial-loop counter registers differ
 void cls_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
     if (serial < 0) {
@@ -1524,8 +1537,7 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2d0.normalize();
     field_0x3c = field_0x2d0;
     startSound_801F0E34(0x30075, 0);
-    s32 i;
-    for (i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             if (mEmitters[i][j] == NULL) {
                 JGeometry::TVec3f pos = mPos;
@@ -1538,18 +1550,7 @@ void cls_804A7AE0::fn_802961AC() {
     s32 v = (field_0x90 >> 7) & 0x1F;
     s32 layer = v == 0 ? 0 : v + 7;
     getGameView_802D6A9C()->fn_802D79E8(layer, 16.0f, 0.0f, true);
-    for (i = 0; i < mSerialCountB; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
-        if (actor != NULL) {
-            actor->mAlive = false;
-        }
-    }
-    for (i = 0; i < mSerialCountA; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
-        if (actor != NULL) {
-            actor->mAlive = false;
-        }
-    }
+    killSerialActors();
     field_0x24c = 0;
     bakeTiles();
     mTimer = 120;
@@ -1640,12 +1641,10 @@ void cls_804A7AE0::vfunc_0x24() {
     field_0x2bb = 1;
 }
 
-// Remaining: register swaps only (f2/f3 vs f4/f5 at the start, r27/r28 around testBox).
-// FIXME: 99.58 %, regalloc-only; behaviour clean.
 bool cls_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
-    field_0x3c.set(lbl_8046C268[dir][0], lbl_8046C268[dir][1], lbl_8046C268[dir][2]);
+    field_0x3c.set(JGeometry::TVec3f(lbl_8046C268[dir].x, lbl_8046C268[dir].y, lbl_8046C268[dir].z));
     mPos.add(field_0x3c);
     mBox.set(-44.0f, -44.0f, 44.0f, 44.0f);
     // Computed into sp+0x3C..0x48 in the original asm (0x80295864-0x802958DC), unused below, as in fn_80279824.
@@ -1665,7 +1664,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.y += mBox.i.y;
         p.y += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, getSerial(), NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1682,7 +1681,7 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         p.x += mBox.i.x;
         p.x += 8.0f;
         for (s32 i = 0; i < 6; i++) {
-            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, mSerial, NULL) == 1) {
+            if (!gBgRewrite_8053AC98->fn_802A1490(&p) || testBox(field_0x4, &p, getSerial(), NULL) == 1) {
                 ok = false;
                 break;
             }
@@ -1699,8 +1698,8 @@ bool cls_804A7AE0::fn_802957CC(u8 dir) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 JGeometry::TVec3f q = *getPlayerPos_8023E724(i);
-                q.add(JGeometry::TVec3f(lbl_8046C298[dir][0], lbl_8046C298[dir][1], lbl_8046C298[dir][2]));
-                if (gBgRewrite_8053AC98->fn_802A1490(&q) != 1 || testBox(field_0x4, &q, mSerial, NULL)) {
+                q.add(JGeometry::TVec3f(lbl_8046C298[dir].x, lbl_8046C298[dir].y, lbl_8046C298[dir].z));
+                if (gBgRewrite_8053AC98->fn_802A1490(&q) != 1 || testBox(field_0x4, &q, getSerial(), NULL)) {
                     ok = false;
                 }
             }
