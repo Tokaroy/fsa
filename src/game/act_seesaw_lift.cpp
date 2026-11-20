@@ -126,8 +126,6 @@ void SeesawLift_804AD348::init() {
     fillTiles(0);
 }
 
-// FIXME: 99.59 %, regalloc-only; behaviour clean.
-// float registers of the box test and the operand order of the layer compare differ
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -136,7 +134,8 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         return 0;
     }
     s32 layer = field_0x4;
-    if (layer != getPlayerLayer_8023DE58(player)) {
+    s32 playerLayer = getPlayerLayer_8023DE58(player);
+    if (playerLayer != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -151,13 +150,11 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         fn_8022E088(player, i, &rel);
         rel.sub(mPos);
         rel.z = 0.0f;
+        JGeometry::TBox2f box = mBox;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        f32 minX = mBox.i.x;
-        f32 minY = mBox.i.y * cosVal;
-        f32 maxX = mBox.f.x;
-        f32 maxY = mBox.f.y * cosVal;
-        bool inside = rel.x >= minX && rel.y >= minY && rel.x < maxX && rel.y < maxY;
-        if (inside) {
+        box.i.y *= cosVal;
+        box.f.y *= cosVal;
+        if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
             if (field_0x24e && d == 0.0f) {
