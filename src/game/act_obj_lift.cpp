@@ -295,7 +295,7 @@ void OBJLift_804ACA00::fn_803511F0() {
 // Not auto-inlined: fn_80350974 calls fn_80351020 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME(shotgun): 85.82 %, missing/extra + reloc-name; behaviour clean.
-// literal pool order and register assignment differ.
+// float register assignment differs (the box test is probably an inline).
 bool OBJLift_804ACA00::fn_80351020(s32 player) {
     s32 layer = field_0x4;
     if (getPlayerLayer_8023DE58(player) != layer) {
@@ -305,13 +305,17 @@ bool OBJLift_804ACA00::fn_80351020(s32 player) {
         JGeometry::TVec3f v;
         fn_8022E088(player, i, &v);
         v -= mPos;
+        v.z = 0.0f;
         s32 angle = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
         f32 dist = JGeometry::TUtil<f32>::sqrt(v.x * v.x + v.y * v.y);
         v.z = 0.0f;
         v.x = dist * JMath::sincosTable_.cosShort(angle);
         v.y = dist * JMath::sincosTable_.sinShort(angle);
-        bool inside = v.x >= field_0x80.i.x - -2.0f && v.y >= field_0x80.i.y - -2.0f && v.x < field_0x80.f.x + -2.0f &&
-                      v.y < field_0x80.f.y + -2.0f;
+        f32 minX = field_0x80.i.x - -2.0f;
+        f32 minY = field_0x80.i.y - -2.0f;
+        f32 maxX = field_0x80.f.x + -2.0f;
+        f32 maxY = field_0x80.f.y + -2.0f;
+        bool inside = v.x >= minX && v.y >= minY && v.x < maxX && v.y < maxY;
         if (inside) {
             fn_8022DF48(player);
             return true;
