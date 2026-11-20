@@ -326,7 +326,7 @@ inline bool cls_804A3E44::checkPlayerHit() {
     return hitFlag;
 }
 
-// FIXME: 99.64% (regalloc-only + reloc-name: f30/f31 register allocation for dz/dy and literal relocations).
+// FIXME: literal relocation names only (pool order depends on vfunc_0x90).
 void cls_804A3E44::fn_801BC244() {
     switch (mState) {
     case 1:
@@ -371,15 +371,11 @@ void cls_804A3E44::fn_801BC244() {
         if (!fn_8022DCD8(field_0x2b8)) {
             fn_801BC554(5);
         } else {
-            f32 dz = (mPos.z - getPlayerPos_8023E724(field_0x2b8)->z) - 2.0f;
-            f32 dy = mPos.y - getPlayerPos_8023E724(field_0x2b8)->y;
-            f32 dx = mPos.x - getPlayerPos_8023E724(field_0x2b8)->x;
-            JGeometry::TVec3f vec;
-            vec.y = dy;
-            vec.z = dz;
-            vec.x = dx;
-            vec.x *= 0.1f;
-            vec.y *= 0.1f;
+            JGeometry::TVec3f vec(mPos.x - getPlayerPos_8023E724(field_0x2b8)->x,
+                                  mPos.y - getPlayerPos_8023E724(field_0x2b8)->y,
+                                  (mPos.z - getPlayerPos_8023E724(field_0x2b8)->z) - 10.0f);
+            vec.x *= 0.2f;
+            vec.y *= 0.2f;
             fn_8023DFF4(field_0x2b8, &vec);
         }
     }
