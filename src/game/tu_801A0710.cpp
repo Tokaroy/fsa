@@ -24,10 +24,10 @@ s32 lbl_8053ABC0;
 u8 lbl_8053ABC4;
 u8 lbl_8053ABC5;
 
+s32 lbl_804A2B90[16] = {0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0};
+s32 lbl_804A2BD0[5] = {1, 5, 20, 50, 100};
 // The four TIMG pictures of the shop keeper.
 const char* lbl_804A2BE4[4] = {"obachan_1.bti", "obachan_2.bti", "obachan_3.bti", "obachan_4.bti"};
-const s32 lbl_804A2BD0[5] = {1, 5, 20, 50, 100};
-const s32 lbl_804A2B90[16] = {0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0};
 
 // Remaining difference: register allocation of the lbl_804A2B90 index.
 // FIXME: 99.83 %, regalloc-only + reloc-name; behaviour clean.
@@ -1033,7 +1033,6 @@ void TennisShop_804A2BF4::fn_801A0910() {
     }
 }
 
-// FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
 void TennisShop_804A2BF4::fn_801A0754() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
