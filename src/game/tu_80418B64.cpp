@@ -1,3 +1,4 @@
+#include "game/PlayerBit.h"
 #include "game/GameAudio.h"
 #include "game/cls_804B13D4.h"
 #include "game/GameState.h"
@@ -735,7 +736,7 @@ void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
         fn_8041E8B4(0);
-        if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+        if ((u32)(gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
             fn_8041DD24();
         }
         fn_8041D18C(0);
@@ -758,18 +759,19 @@ void cls_804B13D4::fn_8041EDB0() {
     } else {
         for (s32 i = 0; i < 4; i++) {
             fn_8041E3B4(i);
-            u8 bit = 1 << i;
-            if (gGameRoot_8053AAF8->mPlayerMask & bit) {
+            s32 bit = 1 << i;
+            // the original keeps the tested value as a bool (neg / or / srwi.)
+            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)bit) ? true : false) {
                 fn_8041E8B4(i);
                 if (gGameRoot2_8053AB10->field_0x20->field_0x14c[i] != 0) {
-                    if (!(field_0x28c & bit)) {
-                        field_0x28c |= bit;
+                    if (!(field_0x28c & (u8)bit)) {
+                        field_0x28c |= (u8)bit;
                         field_0x18->search(lbl_8048DE40[i])->show();
                         field_0x4->search(lbl_8048DE60[i])->show();
                         field_0x4->search(lbl_8048DE80[i])->hide();
                     }
-                } else if (field_0x28c & bit) {
-                    field_0x28c &= ~bit;
+                } else if (field_0x28c & (u8)bit) {
+                    field_0x28c &= ~(u8)bit;
                     field_0x18->search(lbl_8048DE40[i])->hide();
                     field_0x4->search(lbl_8048DE60[i])->hide();
                     field_0x4->search(lbl_8048DE80[i])->show();
@@ -793,11 +795,11 @@ void cls_804B13D4::fn_8041EDB0() {
                 s32 y = field_0x4->search(lbl_8048DE60[i])->getBounds()->i.y;
                 f32 w = field_0x4->search(lbl_8048DE60[i])->getWidth();
                 f32 h = field_0x4->search(lbl_8048DE60[i])->getHeight();
-                cls_803004C0& rect = gGameRoot2_8053AB10->field_0x20->field_0x1d0[i];
-                rect.field_0x0 = x;
-                rect.field_0x4 = y;
-                rect.field_0x8 = w;
-                rect.field_0xc = h;
+                TileMap_804AA858* tileMap = gGameRoot2_8053AB10->field_0x20;
+                tileMap->field_0x1d0[i].field_0x0 = x;
+                tileMap->field_0x1d0[i].field_0x4 = y;
+                tileMap->field_0x1d0[i].field_0x8 = w;
+                tileMap->field_0x1d0[i].field_0xc = h;
                 if (i == 0 || i == 2) {
                     if (field_0xf8[i] < 12.0f) {
                         field_0xf8[i] += 3.0f;
