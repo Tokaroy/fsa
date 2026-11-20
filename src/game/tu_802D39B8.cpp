@@ -1245,10 +1245,9 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 98.63 %, different + reloc-name; behaviour clean.
+// FIXME: 99.27 %, different + reloc-name; behaviour clean.
 // Structurally close: the target converts the record's cell bytes with a
-// clrlwi 16 first (as if u16; a u16 local folds it) and extracts both screen bytes
-// before the first compare in the key loops; minor regalloc differences follow.
+// clrlwi 16 first (as if u16; a u16 local folds it); minor regalloc differences follow.
 // Spawns the current screen's actors from its "d_enemy_map" table (11-byte records: tag,
 // layer, cell x, cell y, parameter; the switch tags of lbl_8046E178 first, then the rest),
 // then the screen's helper actors, its dropped items and keys; with reset, the per-stage
@@ -1371,9 +1370,8 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
     }
     for (int i = 0; i < 8; i++) {
         u32 value = field_0x130c8[i];
-        // u8 locals: the target compares the extracted bytes signed (cmpw); a masked u32 gives cmplw.
-        u8 col = value >> 16;
-        u8 row = value >> 8;
+        s32 col = (value >> 16) & 0xFF;
+        s32 row = (value >> 8) & 0xFF;
         if (col == field_0x14 && row == field_0x18) {
             u32 key = field_0x13068[i];
             JGeometry::TVec3f itemPos(field_0x13088[i].x, field_0x13088[i].y, 0.0f);
@@ -1383,9 +1381,8 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
     }
     for (int i = 0; i < 8; i++) {
         u32 value = field_0x13128[i];
-        // u8 locals: the target compares the extracted bytes signed (cmpw); a masked u32 gives cmplw.
-        u8 col = value >> 16;
-        u8 row = value >> 8;
+        s32 col = (value >> 16) & 0xFF;
+        s32 row = (value >> 8) & 0xFF;
         if (col == field_0x14 && row == field_0x18) {
             JGeometry::TVec3f keyPos(field_0x130e8[i].x, field_0x130e8[i].y, 0.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('KEY0', value & 0xFF, &keyPos,
@@ -2494,9 +2491,8 @@ bool GameView_804A9950::fn_802D46D8(s32 index, u32 bit, bool set) {
 // Reads the stage's map CSV: the start screen, the stage settings (field_0x34-0x58) and
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
-// Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6),
-// and str[idx + const] swaps the add operands.
-// FIXME: 99.37 %, missing/extra; behaviour clean.
+// Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6).
+// FIXME: 99.49 %, missing/extra; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
@@ -2519,11 +2515,13 @@ void GameView_804A9950::fn_802D3D48() {
             }
             i++;
         }
-        field_0x14 = str[i + 1] - '0';
+        i++;
+        field_0x14 = str[i] - '0';
         field_0xc = field_0x14;
-        field_0x18 = str[i + 3] - '0';
+        i += 2;
+        field_0x18 = str[i] - '0';
         field_0x10 = field_0x18;
-        i += 5;
+        i += 2;
         field_0x34 = str[i] - '0';
         if (str[i + 1] != (u8)',' && str[i + 1] != (u8)'\r') {
             if (field_0x34 == 0) {
@@ -2539,8 +2537,9 @@ void GameView_804A9950::fn_802D3D48() {
             i++;
         }
         field_0x38 = field_0x34;
-        field_0x3c = str[i + 2] - '0';
-        i += 4;
+        i += 2;
+        field_0x3c = str[i] - '0';
+        i += 2;
         field_0x40 = str[i] - '0';
         if (str[i + 1] != (u8)',' && str[i + 1] != (u8)'\r') {
             if (field_0x40 == 0) {
@@ -2588,11 +2587,12 @@ void GameView_804A9950::fn_802D3D48() {
             field_0x50 += (u8)(str[i + 1] - '0');
             i++;
         }
-        field_0x54 = str[i + 2] - '0';
+        i += 2;
+        field_0x54 = str[i] - '0';
         if (field_0x54 < 2 || field_0x54 >= 8) {
             field_0x54 = 5;
         }
-        i += 4;
+        i += 2;
         field_0x58 = str[i] - '0';
         while (true) {
             if (str[i] == (u8)'\r' && str[i + 1] == (u8)'\n') {
@@ -2699,8 +2699,9 @@ void GameView_804A9950::fn_802D3D48() {
             pos++;
         }
         field_0x38 = field_0x34;
-        field_0x3c = str[pos + 2] - '0';
-        pos += 4;
+        pos += 2;
+        field_0x3c = str[pos] - '0';
+        pos += 2;
         field_0x40 = str[pos] - '0';
         if (str[pos + 1] != (u8)',' && str[pos + 1] != (u8)'\r') {
             if (field_0x40 == 0) {
@@ -2737,15 +2738,18 @@ void GameView_804A9950::fn_802D3D48() {
             field_0x50 += (u8)(str[pos + 1] - '0');
             pos++;
         }
-        field_0x4c = str[pos + 2] - '0';
+        pos += 2;
+        field_0x4c = str[pos] - '0';
         if (field_0x4c != 1 && field_0x4c != 2) {
             field_0x4c = 1;
         }
-        field_0x54 = str[pos + 4] - '0';
+        pos += 2;
+        field_0x54 = str[pos] - '0';
         if (field_0x54 < 2 || field_0x54 >= 8) {
             field_0x54 = 5;
         }
-        field_0x58 = str[pos + 6] - '0';
+        pos += 2;
+        field_0x58 = str[pos] - '0';
     }
 }
 
