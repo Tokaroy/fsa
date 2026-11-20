@@ -964,13 +964,13 @@ void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
 
 void EnemyBase_804A4808::vfunc_0xA0() {}
 
-// The target reloads mFlags before each `|=` (ours reuses the tested load),
-// and tests the hit bits before vfunc_0x68 as a bool value (clrlwi; neg; or;
-// srwi.) where ours uses clrlwi.
+// The target passes vfunc_0x64's result to vfunc_0x9C with clrlwi 24 where
+// ours has mr.
 // FIXME: 96.53 %, missing/extra; behaviour near.
 void EnemyBase_804A4808::update() {
+    u8 mapHit;
     s32 prevD8;
-    if (!(mFlags & ENEMY_FLAG_STARTED)) {
+    if (!checkFlag(ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
         vfunc_0x54();
     }
@@ -1006,16 +1006,16 @@ void EnemyBase_804A4808::update() {
     if (prevD8 == 1 && field_0xd8 == 0) {
         vfunc_0x74();
     }
-    if (!(mFlags & ENEMY_FLAG_DEAD) && mLife <= 0) {
+    if (!checkFlag(ENEMY_FLAG_DEAD) && mLife <= 0) {
         mFlags |= ENEMY_FLAG_DEAD;
         vfunc_0x78();
     }
     vfunc_0x98();
-    flag = vfunc_0x64();
-    if (!(mFlags & 7) && !(mFlags & ENEMY_FLAG_NO_ATTACK)) {
+    mapHit = vfunc_0x64();
+    if (!isHit() && !(mFlags & ENEMY_FLAG_NO_ATTACK)) {
         mPlayersHit = vfunc_0x68();
     }
-    vfunc_0x9C(flag);
+    vfunc_0x9C(mapHit);
     if (!fn_801CD2F8(field_0x4)) {
         vfunc_0xA0();
     }
