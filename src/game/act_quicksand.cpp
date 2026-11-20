@@ -85,8 +85,6 @@ cls_804A6270::~cls_804A6270() {
     fn_80212AC0()->fn_80212BA0(mSerial);
 }
 
-// FIXME(shotgun): 98.67 %, missing/extra; behaviour near.
-// its literals fixed .sdata2 to 94.74 %
 void cls_804A6270::init() {
     EnemyBase_804A4808::init();
     s32 kind = field_0x90 & 7;
@@ -439,7 +437,7 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.22 %, missing/extra; behaviour near.
 void cls_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
