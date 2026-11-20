@@ -240,11 +240,10 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     }
 }
 
-// Remaining diff: load order and register choice around the normalize.
 // FIXME: 92.48 %, missing/extra; behaviour near.
 void cls_801D6CEC::fn_801D6D38(const JGeometry::TVec2f* dir) {
     JGeometry::TVec2f v(dir->x, dir->y);
-    if (v.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon()) {
+    if (v.squared() <= JGeometry::TUtil<f32>::epsilon()) {
         v.x = 0.0f;
         v.y = -1.0f;
     } else {
