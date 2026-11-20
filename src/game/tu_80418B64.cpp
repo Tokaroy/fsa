@@ -1010,12 +1010,9 @@ void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
     field_0x28b |= (u8)(1 << target);
 }
 
-// FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
-// (the takesPart bool test is one cmplwi longer)
 void cls_804B13D4::fn_8041E58C() {
     for (s32 i = 0; i < 4; i++) {
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
-        if (takesPart == true) {
+        if (isMaskBitSet(gGameRoot_8053AAF8->mPlayerMask, i)) {
             lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
             for (s32 j = 0; j < 4; j++) {
                 if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
