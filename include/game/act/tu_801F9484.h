@@ -405,10 +405,7 @@ public:
     void fn_80198828();
     // SHARED-EDIT: carved from field_0x230[0x74] (game/tu_80197070.cpp).
     /* 0x230 */ s32 mState;
-    /* 0x234 */ s32 field_0x234;
-    /* 0x238 */ s32 field_0x238;
-    /* 0x23C */ s32 field_0x23c;
-    /* 0x240 */ s32 field_0x240;
+    /* 0x234 */ s32 mTimers[4]; // update counts them down to 0
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
     /* 0x24C */ s32 field_0x24c;
