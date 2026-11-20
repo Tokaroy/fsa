@@ -102,6 +102,16 @@ public:
         /* 0x8 */ u8 field_0x8;
     }; // Size: 0xC
     /* 0x068 */ Entry_0x68* field_0x68[12];
+    void setEntry0x68(f32 x, f32 y, u8 value) {
+        for (int i = 0; i < 12; i++) {
+            if (field_0x68[i]->field_0x8 == 0xFF) {
+                field_0x68[i]->field_0x0 = x;
+                field_0x68[i]->field_0x4 = y;
+                field_0x68[i]->field_0x8 = value;
+                break;
+            }
+        }
+    }
     /* 0x098 */ JGeometry::TVec3f field_0x98;
     // The position handed to the constructor's cls_804B20F8 (by pointer).
     /* 0x0A4 */ JGeometry::TVec3f field_0xa4;
