@@ -12,7 +12,9 @@
 // Sprite frame bases per kind (data table at 0x8049C518), the player-drain amounts and the
 // rupee values that fill the log (0x8049C548 / 0x8049C558); effect ids at 0x80539E70, the
 // animation frame script at 0x80539E78.
-static const s32 lbl_8049C518[12] = {0x11, 0x15, 0x19, 0x1D, 0x285, 0x293, 0x28C, 0x29A, 0x2A1, 0x2A9, 0x2A5, 0x2AD};
+static const s32 lbl_8049C518[4] = {0x11, 0x15, 0x19, 0x1D};
+static const s32 lbl_8049C528[4] = {0x285, 0x293, 0x28C, 0x29A};
+static const s32 lbl_8049C538[4] = {0x2A1, 0x2A9, 0x2A5, 0x2AD};
 static const s32 lbl_8049C548[4] = {0xA, 0xF, 0x14, 0x1E};
 static const s32 lbl_8049C558[8] = {1, 5, 20, 50, 100, 150, 200, 300};
 static const u16 lbl_80539E70[4] = {0x3D9, 0x3D8, 0x3DB, 0x3DA};
@@ -289,7 +291,7 @@ void ForceLike_8049C578::draw() {
     case 2:
         mPos.x += field_0x260;
         mPos.y += field_0x264;
-        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C518[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
+        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C538[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
         mPos.x -= field_0x260;
         mPos.y -= field_0x264;
         break;
@@ -301,20 +303,20 @@ void ForceLike_8049C578::draw() {
             scale = 1.3f;
         }
         Mtx mtx;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
         mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = 1.0f;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = scale;
-        mtx[2][3] = 0.0f;
         params.mMtx = mtx;
-        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C518[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
+        fn_801F02BC("enemy_gc_sob.bin", lbl_8049C528[field_0x234] + field_0x235, &params, 7, 0, false, 1.0f, 1.0f);
         break;
     }
     }
