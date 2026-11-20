@@ -1304,19 +1304,20 @@ void FileSelect_804AFF60::fn_803CC760() {
     s16 frames = lbl_8050DB0C.field_0x4c[0x94];
     s16 rowStep = lbl_8050DB0C.field_0x4c[0x95];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
-    if (end < rowDelay + (frames + rowStep)) {
-        end = rowDelay + (frames + rowStep);
+    if (end < rowDelay + frames + rowStep) {
+        end = rowDelay + frames + rowStep;
     }
 
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (int i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -1359,14 +1360,14 @@ void FileSelect_804AFF60::fn_803CC760() {
             }
         }
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(frames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(frames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
@@ -2898,19 +2899,20 @@ void FileSelect_804AFF60::fn_803C2E24() {
     s16 frames = lbl_8050DB0C.field_0x4c[0xDA];
     s16 rowStep = lbl_8050DB0C.field_0x4c[0xDB];
     s32 end = boardDelay + boardFrames;
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
-    if (end < rowDelay + (frames + rowStep)) {
-        end = rowDelay + (frames + rowStep);
+    if (end < rowDelay + frames + rowStep) {
+        end = rowDelay + frames + rowStep;
     }
 
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
+    s32* dst = others;
     for (int i = 0; i < 3; i++) {
         if (i != field_0xa4) {
-            *other++ = i;
+            *dst++ = i;
         }
     }
 
@@ -2960,14 +2962,14 @@ void FileSelect_804AFF60::fn_803C2E24() {
             }
         }
     }
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(frames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(frames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            setRowAlphas(this, *other);
+            field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
