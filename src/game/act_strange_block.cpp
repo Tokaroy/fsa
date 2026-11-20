@@ -22,7 +22,6 @@ extern const f32 lbl_804AC2A8[12]; // push velocity per direction
 extern const s32 lbl_804ABCA0[4][4]; // sprite frame offsets by animation step (and, 4 per row, by phase)
 
 // 0x8033E188.
-// FIXME(shotgun): 97.63 %, scheduling + reloc-name; behaviour clean.
 void StrangeBlock_804AC2D8::init() {
     field_0x25c = (field_0x90 >> 12) & 0xF;
     switch (field_0x25c) {
@@ -83,7 +82,7 @@ void StrangeBlock_804AC2D8::init() {
 
 // 0x8033DA78. States of field_0x234: 0 the block waits to be pushed or slides, 1 a player's
 // message is open, then back to 0.
-// FIXME(shotgun): 93.00 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.83 %, missing/extra; behaviour near.
 void StrangeBlock_804AC2D8::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -227,7 +226,7 @@ void StrangeBlock_804AC2D8::update() {
 
 // 0x8033D4CC. Called when the block is idle: pushes it one step when a player has been
 // shoving it long enough, or lets it slide back to its spawn position.
-// FIXME: 97.33 %, different + reloc-name; behaviour clean.
+// FIXME: 97.34 %, different; behaviour clean.
 // FIXME(shotgun): stack slot order and literal pool names differ.
 void StrangeBlock_804AC2D8::fn_8033D4CC() {
     s32 pushers = fn_80239108(mSerial);
@@ -352,7 +351,6 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
 }
 
 // 0x8033D4AC.
-// FIXME(shotgun): 98.75 %, regalloc-only; behaviour clean.
 f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
     margin += 0.1f;
     if (value < center) {
@@ -372,7 +370,7 @@ bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
 }
 
 // 0x8033D264.
-// FIXME(shotgun): 82.51 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.05 %, scheduling+regalloc; behaviour clean.
 bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     bool movable = false;
     JGeometry::TVec3f savedPos = mPos;
@@ -428,7 +426,7 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
 }
 
 // 0x8033CD44.
-// FIXME(shotgun): 97.00 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.89 %, same-text; behaviour clean.
 void StrangeBlock_804AC2D8::draw() {
     s32 frame;
     switch (field_0x25c) {
