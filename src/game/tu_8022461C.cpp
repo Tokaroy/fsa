@@ -80,6 +80,18 @@ static inline bool inList(u16 code, const u16* list, s32 n) {
     return false;
 }
 
+// inList for the two-entry lists: their callers keep the answer in a flag and leave the loop.
+static inline bool inListFlag(u16 code, const u16* list, s32 n) {
+    bool result = false;
+    for (s32 i = 0; i < n; i++) {
+        if (code == list[i]) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+}
+
 // The raw tile code at pos in the layer's box (0xF outside), as fn_80226850 computes it.
 // layer is an int here: the original copies it before handing it on as the tile map's s32.
 template <class V>
@@ -318,17 +330,8 @@ bool fn_802252F4(const JGeometry::TVec3f* pos, s32 layer) {
 #pragma auto_inline reset
 
 // Whether the raw tile at pos is one of the two codes of lbl_8053FF48.
-// FIXME(shotgun): 95.10 %, scheduling+regalloc + reloc-name; behaviour clean.
 bool fn_8022517C(const JGeometry::TVec3f* pos, s32 layer) {
-    u16 code = rawTileAt(pos, layer);
-    bool result = false;
-    for (s32 i = 0; i < 2; i++) {
-        if (code == lbl_8053FF48[i]) {
-            result = true;
-            break;
-        }
-    }
-    return result;
+    return inListFlag(rawTileAt(pos, layer), lbl_8053FF48, 2);
 }
 
 // FIXME(shotgun): 93.78 %, missing/extra + reloc-name; behaviour clean.
@@ -337,17 +340,8 @@ bool fn_80225000(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // Whether the raw tile at pos is one of the two codes of lbl_8053FF4C.
-// FIXME(shotgun): 95.10 %, scheduling+regalloc + reloc-name; behaviour clean.
 bool fn_80224E88(const JGeometry::TVec3f* pos, s32 layer) {
-    u16 code = rawTileAt(pos, layer);
-    bool result = false;
-    for (s32 i = 0; i < 2; i++) {
-        if (code == lbl_8053FF4C[i]) {
-            result = true;
-            break;
-        }
-    }
-    return result;
+    return inListFlag(rawTileAt(pos, layer), lbl_8053FF4C, 2);
 }
 
 // FIXME(shotgun): 93.78 %, missing/extra + reloc-name; behaviour clean.
