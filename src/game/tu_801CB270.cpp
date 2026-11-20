@@ -325,9 +325,6 @@ void fn_801CD150(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     out->set(upper->field_0xdc.i.x + dx, upper->field_0xdc.i.y + dy, in->z);
 }
 
-// FIXME: 79.09 %, scheduling+regalloc; behaviour clean.
-// Converts `in` from the view's 0xDC/0xE0 box space to the 0xCC/0xD0 one:
-// out = (in.x, in.y) - (0xDC, 0xE0) + (0xCC, 0xD0); z is copied.
 void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     GameView_804A9950* view = getGameView_802D6A9C();
     GameView_804A9950* upper = getGameView_802D6A9C();
@@ -747,7 +744,7 @@ static inline u16 cornerAngle(const JGeometry::TVec2f& d) {
 // Pushes a point inside box along `angle` out through the box edge the ray leaves by, then
 // `speed` further along that direction. Writes the result to out; leaves the point alone (out
 // = point) when it is outside the box.
-// FIXME(shotgun): 72.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.06 %, missing/extra; behaviour near.
 void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* p, s32 angleArg, f32 speed, JGeometry::TVec2f* out) {
     out->x = p->x;
     out->y = p->y;
