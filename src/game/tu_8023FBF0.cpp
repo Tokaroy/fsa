@@ -106,6 +106,15 @@ static inline bool hiddenFromShownLayer(const Player_804A6F38* player) {
     return r;
 }
 
+// In state 0x49 (fn_80240818), or carried on a hidden layer while the previous one is shown.
+static inline bool shownOrState49(const Player_804A6F38* player) {
+    bool r = true;
+    if (!player->fn_80240818() && !hiddenFromShownLayer(player)) {
+        r = false;
+    }
+    return r;
+}
+
 // The player's leader (field_0xd60), or negative without one. Provisional name (no symbol: always
 // inlined). The group loops read the leader through an inline with a local of its own, not as a
 // local of the loop: MWCC creates an inlined function's locals when its call is expanded, so this
@@ -3847,9 +3856,8 @@ bool Player_804A6F38::fn_802454C0() {
     return lbl_8053AD30->fn_80309A54(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20) != 0;
 }
 
-// FIXME: 99.94 %, regalloc-only; behaviour clean.
-// Register allocation only (the group loops' count / index /
-// leader temporaries, as in fn_802486A0).
+// The layer is read through getLayer() (loaded into a saved register ahead of
+// getGameView_802D6A9C, in the leader's register).
 bool Player_804A6F38::fn_80245238() {
     if (teamCheck(this) == false) {
         return false;
@@ -3860,7 +3868,7 @@ bool Player_804A6F38::fn_80245238() {
     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x20)) {
         return true;
     }
-    if (viewLayerFlag(field_0x3b4) && lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200)) {
+    if (viewLayerFlag(getLayer()) && lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(field_0x11ec), 0x200)) {
         return true;
     }
     return false;
@@ -4140,9 +4148,8 @@ void Player_804A6F38::fn_80242560() {
 // on layer 0. Then the saved positions 0x2C4 / 0xCB0 / 0xD1C, 0x344 / 0x368
 // cleared, field_0xd54 = 10, the trail reset (fn_80248604), the held key or
 // the 'KEY0' at field_0xd88 moved along (fn_802C1D30), field_0x122c = 5.
-// FIXME: 99.66 %, regalloc-only; behaviour clean.
-// Registers only: the box test's x / y (f2 / f1 in the
-// original, f1 / f2 here) and the 0xCB0 / 0xD1C addresses (r4 / r3).
+// Registers only: the box test's x / y (f2 / f1 in the original, f1 / f2 here).
+// FIXME: 99.82 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_802422D0() {
     if (fn_80270A8C() && !fn_8025F448()) {
         fn_80270948(getPlayerPos_8023E724(lbl_8053A190));
@@ -4156,8 +4163,7 @@ void Player_804A6F38::fn_802422D0() {
         }
     }
     field_0x2c4 = mPos;
-    field_0xcb0 = field_0x2c4;
-    field_0xd1c = field_0xcb0;
+    field_0xd1c = field_0xcb0 = field_0x2c4;
     field_0x344.set(0.0f, 0.0f, 0.0f);
     field_0x368.set(0.0f, 0.0f, 0.0f);
     field_0xd54 = 10;
@@ -4580,16 +4586,11 @@ bool Player_804A6F38::fn_80240ED4() {
     return field_0x1240 == 0x1e || field_0x1240 == 0x32;
 }
 
-// FIXME: 92.26 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers only: the original sets `result` (r31) before
-// saving r28-r30; ours keeps `this` in r29 and `result` in r28. const: the load of
+// The result (r31) is coloured before the layer queries' results (r30, r29) and `this` (r28):
+// it is the local of an inline one level above them, like theirs. const: the load of
 // field_0x1240 (the inlined fn_80240818) sits above the register saves.
 bool Player_804A6F38::fn_80240DCC() const {
-    bool result = true;
-    if (!fn_80240818() && !hiddenFromShownLayer(this)) {
-        result = false;
-    }
-    return result;
+    return shownOrState49(this);
 }
 
 bool Player_804A6F38::fn_80240DAC() {
