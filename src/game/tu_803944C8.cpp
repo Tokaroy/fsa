@@ -2478,7 +2478,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -3851,7 +3851,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 99.24 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 // (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
