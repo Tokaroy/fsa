@@ -107,25 +107,46 @@ inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
 // for these actors also that fn_8022CAF8 is 4 or fn_8022F514 is false.
 inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
     bool ok = false;
-    if (fn_801CCFE4(player) && isPlayerOnLayer(player)) {
+    if (fn_801CCFE4(player)) {
+        bool onLayer = false;
         switch (mActorId) {
         case ACTOR_FALL:
+        case ACTOR_FBGE:
         case ACTOR_FLOR:
         case ACTOR_HRMN:
         case ACTOR_KEPO:
         case ACTOR_NAVI:
+        case ACTOR_SLK2:
         case ACTOR_TINK:
-        case ACTOR_TNDR:
         case ACTOR_TZOK:
-            if (fn_8022CAF8(player) == 4) {
-                ok = true;
-            } else if (!fn_8022F514(player)) {
-                ok = true;
+            if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
+                onLayer = true;
             }
             break;
         default:
-            ok = true;
+            onLayer = fn_801F320C(player);
             break;
+        }
+        if (onLayer) {
+            switch (mActorId) {
+            case ACTOR_FALL:
+            case ACTOR_FLOR:
+            case ACTOR_HRMN:
+            case ACTOR_KEPO:
+            case ACTOR_NAVI:
+            case ACTOR_TINK:
+            case ACTOR_TNDR:
+            case ACTOR_TZOK:
+                if (fn_8022CAF8(player) == 4) {
+                    ok = true;
+                } else if (!fn_8022F514(player)) {
+                    ok = true;
+                }
+                break;
+            default:
+                ok = true;
+                break;
+            }
         }
     }
     return ok;
@@ -262,12 +283,52 @@ bool EnemyBase_804A4808::fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f
 // Whether player `player` can be targeted: present, on this actor's layer and,
 // for some actors, not busy.
 bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
-    return canTargetPlayer(player);
+    bool ok = false;
+    if (fn_801CCFE4(player)) {
+        bool onLayer = false;
+        switch (mActorId) {
+        case ACTOR_FALL:
+        case ACTOR_FBGE:
+        case ACTOR_FLOR:
+        case ACTOR_HRMN:
+        case ACTOR_KEPO:
+        case ACTOR_NAVI:
+        case ACTOR_SLK2:
+        case ACTOR_TINK:
+        case ACTOR_TZOK:
+            if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
+                onLayer = true;
+            }
+            break;
+        default:
+            onLayer = fn_801F320C(player);
+            break;
+        }
+        if (onLayer) {
+            switch (mActorId) {
+            case ACTOR_FALL:
+            case ACTOR_FLOR:
+            case ACTOR_HRMN:
+            case ACTOR_KEPO:
+            case ACTOR_NAVI:
+            case ACTOR_TINK:
+            case ACTOR_TNDR:
+            case ACTOR_TZOK:
+                if (fn_8022CAF8(player) == 4) {
+                    ok = true;
+                } else if (!fn_8022F514(player)) {
+                    ok = true;
+                }
+                break;
+            default:
+                ok = true;
+                break;
+            }
+        }
+    }
+    return ok;
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
-// regalloc only (the bools of canTargetPlayer swap).
-// Whether player `player` (0-3) can be targeted and is within `range` of *pos.
 bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f32 range) {
     bool result = false;
     if (player >= 0 && player < 4 && canTargetPlayer(player) && isPlayerNear(player, pos, range)) {
@@ -276,15 +337,27 @@ bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f
     return result;
 }
 
-// FIXME: 98.99 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.87 %, scheduling; behaviour clean.
 // registers and the order of the first loads in the prologue.
 // The nearest player that can be targeted within `range` of *pos (any
 // distance when `range` is 0), or -1.
 s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
-    return nearestPlayer(pos, range);
+    f32 rangeSq = range * range;
+    f32 best = FLT_MAX;
+    s32 nearest = -1;
+    for (s32 i = 0; i < 4; i++) {
+        if (canTargetPlayer(i)) {
+            f32 distSq = playerDistSq(i, pos);
+            if (distSq < best && (range == 0.0f || distSq <= rangeSq)) {
+                best = distSq;
+                nearest = i;
+            }
+        }
+    }
+    return nearest;
 }
 
-// FIXME: 99.35 %, regalloc-only; behaviour clean.
+// FIXME: 99.60 %, regalloc-only; behaviour clean.
 // regalloc only (the bools of canTargetPlayer swap).
 // The player that can be targeted whose direction from *from is closest to
 // `angle` (16-bit angles; the difference as a fraction of a half turn), or
@@ -340,8 +413,8 @@ s32 EnemyBase_804A4808::fn_801D0020(const JGeometry::TVec3f* pos, s32 player, bo
     return directionTo(pos, player, axis);
 }
 
-// FIXME: 99.43 %, regalloc-only; behaviour clean.
-// regalloc only (the loop counters and limits).
+// FIXME: 99.60 %, regalloc-only; behaviour clean.
+// regalloc only (the layer and the loop counters).
 // Whether a step of `dist` in direction `dir` is blocked: field_0x80's box,
 // moved half the step that way and stretched to the step's length along
 // it, must lie inside the view's box for the layer, and the map
@@ -381,7 +454,6 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     box.f.x += pos.x;
     box.i.y += screenY;
     box.f.y += screenY;
-    // The layer is read before the view lookup, as in fn_801F320C (field_0x4 directly: 99.4 -> 96.7 %).
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -400,17 +472,17 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
         return true;
     }
     JGeometry::TVec3f point(box.i.x, box.i.y, 0.0f);
+    s32 column;
+    s32 row;
     s32 columns = (s32)(0.125f * width) + 2;
     s32 rows = (s32)(0.125f * height) + 2;
-    s32 lastColumn = columns - 1;
-    s32 lastRow = rows - 1;
-    for (s32 row = 0; row < rows; row++) {
+    for (row = 0; row < rows; row++) {
         point.x = box.i.x;
-        if (row == lastRow) {
+        if (row == rows - 1) {
             point.y = box.f.y;
         }
-        for (s32 column = 0; column < columns; column++) {
-            if (column == lastColumn) {
+        for (column = 0; column < columns; column++) {
+            if (column == columns - 1) {
                 point.x = box.f.x;
             }
             if (vfunc_0x4C(layer, &point)) {
@@ -551,7 +623,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
     return dir;
 }
 
-// FIXME: 99.27 %, missing/extra; behaviour clean.
+// FIXME: 99.41 %, missing/extra; behaviour clean.
 // Registers (the bools of canTargetPlayer swap) and one extra
 // mr r4, r5 in the target before fn_801CFCF0.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
@@ -612,7 +684,7 @@ s32 EnemyBase_804A4808::fn_801CF0F4() const {
     return fn_801F681C(angle);
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 // regalloc only (the two bools of canTargetPlayer swap r28 /
 // r29, and the player-pointer induction register).
 // Spawns `actorId` (a cls_804A48B0 shot) at mPos aimed at the nearest player
@@ -892,13 +964,12 @@ void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
 
 void EnemyBase_804A4808::vfunc_0xA0() {}
 
-// FIXME: 93.53 %, missing/extra; behaviour near.
-// The target keeps `this` in r30 and the flag in r31 (ours:
-// r31 / r30), reloads mFlags before each `|=` (ours reuses the tested load),
+// The target reloads mFlags before each `|=` (ours reuses the tested load),
 // and tests the hit bits before vfunc_0x68 as a bool value (clrlwi; neg; or;
-// srwi.) where ours uses clrlwi. A bool local and an inline isHit() gave
-// the same code as the plain test.
+// srwi.) where ours uses clrlwi.
+// FIXME: 96.53 %, missing/extra; behaviour near.
 void EnemyBase_804A4808::update() {
+    s32 prevD8;
     if (!(mFlags & ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
         vfunc_0x54();
@@ -916,7 +987,7 @@ void EnemyBase_804A4808::update() {
         mLife = mLifeBackup;
     }
     vfunc_0x58();
-    s32 prevD8 = field_0xd8;
+    prevD8 = field_0xd8;
     if (fn_801F3D94(flag)) {
         mFlags |= ENEMY_FLAG_HIT;
     } else if (vfunc_0x5C()) {
