@@ -2508,7 +2508,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 99.03 %, missing/extra; behaviour near.
+// FIXME: 99.35 %, regalloc-only; behaviour clean.
 // Registers only: `frames` and two temporaries of the inlined alpha helpers
 // are rotated (r26/r27/r28). The original keeps &others in one register for
 // both loops: one pointer fills the array, a second walks it.
@@ -2840,7 +2840,7 @@ void FileSelect_804AFF60::fn_803C4054() {
     }
 }
 
-// FIXME: 98.24 %, different + reloc-name; behaviour near.
+// FIXME: 99.17 %, regalloc-only; behaviour clean.
 // Registers only: the original has frames in r26 and the row's index
 // temporaries in r28/r27 (ours r28 and r27/r26).
 // State 38 (after a delete, from fn_803C4330): the two rows that weren't
