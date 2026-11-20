@@ -1170,7 +1170,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FF70() {
     }
 }
 
-// FIXME(shotgun): 98.33 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.88 %, regalloc-only + reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
