@@ -32,7 +32,28 @@ s32 lbl_8053AB30;
 s32 lbl_8053AB34;
 s32 lbl_8053AB38;
 
-// FIXME(shotgun): 99.77 %, different + reloc-name; behaviour drift.
+static inline u16 dirToAngle(s32 dir) {
+    switch (dir) {
+    case 0:
+        return 0;
+    case 1:
+        return 0x2000;
+    case 2:
+        return 0x4000;
+    case 3:
+        return 0x6000;
+    case 4:
+        return 0x8000;
+    case 5:
+        return 0xA000;
+    case 6:
+        return 0xC000;
+    case 7:
+        return 0xE000;
+    }
+}
+
+// FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
 void cls_8049F6C8::init() {
     field_0x80.i.x = -8.0f;
     field_0x80.i.y = -8.0f;
@@ -69,34 +90,7 @@ void cls_8049F6C8::init() {
     field_0x29c = -1;
     field_0x294 = 255.0f;
     field_0x196 = 1;
-    u16 angle;
-    switch (field_0x98) {
-    case 0:
-        angle = 0;
-        break;
-    case 1:
-        angle = 0x2000;
-        break;
-    case 2:
-        angle = 0x4000;
-        break;
-    case 3:
-        angle = 0x6000;
-        break;
-    case 4:
-        angle = 0x8000;
-        break;
-    case 5:
-        angle = 0xA000;
-        break;
-    case 6:
-        angle = 0xC000;
-        break;
-    case 7:
-        angle = 0xE000;
-        break;
-    }
-    field_0x284 = angle;
+    field_0x284 = dirToAngle(field_0x98);
     field_0x286 = field_0x284;
     for (u32 i = 0; i < 10; i++) {
         field_0x2c0[i].set(mPos);
@@ -260,9 +254,10 @@ bool cls_8049F6C8::fn_80149FDC() {
     return false;
 }
 
-// FIXME(shotgun): 99.21 %, different; behaviour clean.
+// FIXME(shotgun): 99.37 %, regalloc-only; behaviour clean.
 bool cls_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
+    s32 i;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
         return false;
     }
@@ -277,7 +272,7 @@ bool cls_8049F6C8::fn_80149AEC() {
     mPos.y = field_0x2c0[7].y;
     mPos.z = field_0x2c0[7].z;
     field_0xb0 = 0x8040000;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         s32 player = fn_801F285C(NULL, NULL, true, i);
         if (player >= 0) {
             if (player == field_0x278 || fn_8022EA0C(player) == field_0x278) {
@@ -323,7 +318,7 @@ bool cls_8049F6C8::fn_80149AEC() {
         field_0x250 = 0;
         field_0x254 = 0;
         field_0x23c = 0xA8;
-        for (s32 i = 0; i < 10; i++) {
+        for (i = 0; i < 10; i++) {
             if (mEmitters798[i] != NULL) {
                 mEmitters798[i]->becomeInvalidEmitter();
                 mEmitters798[i] = NULL;
