@@ -316,15 +316,13 @@ bool fn_801CD1D0(s32 player) {
     return result;
 }
 
-// FIXME: 79.09 %, scheduling+regalloc; behaviour clean.
-// As fn_801CD0D0 (scheduling of the x / y loads and subtracts).
-// The other way round: from the 0xCC/0xD0 box space to the 0xDC/0xE0 one.
+// As fn_801CD0D0, the other way round: from the 0xCC/0xD0 box space to the 0xDC/0xE0 one.
 void fn_801CD150(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     GameView_804A9950* view = getGameView_802D6A9C();
     GameView_804A9950* upper = getGameView_802D6A9C();
-    out->x = upper->field_0xdc.i.x + (in->x - view->mVisibleBox.i.x);
-    out->y = upper->field_0xdc.i.y + (in->y - view->mVisibleBox.i.y);
-    out->z = in->z;
+    f32 dx = in->x - view->mVisibleBox.i.x;
+    f32 dy = in->y - view->mVisibleBox.i.y;
+    out->set(upper->field_0xdc.i.x + dx, upper->field_0xdc.i.y + dy, in->z);
 }
 
 // FIXME: 79.09 %, scheduling+regalloc; behaviour clean.
