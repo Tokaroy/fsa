@@ -247,14 +247,20 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
         record->f.mValid = getPlayerLayer_8023DE58(layer) - 7;
     }
     record->f.mMode = lbl_80506D48[player];
-    if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+    if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
         if (gGameRoot_8053AAF8->field_0x4c == 9 || gGameRoot_8053AAF8->field_0x80 != 0
             || (lbl_8053ACD8[player] && (fn_8037F1E4(player) < 1 || fn_8037F1E4(player) > 5))) {
             record->f.field_0x2_5 = 1;
         } else {
             record->f.field_0x2_5 = 0;
         }
-        record->f.field_0x3_2 = lbl_8053ACEC[player] > 1 ? lbl_8053ACE8[player] : 0;
+        u8 value;
+        if (lbl_8053ACEC[player] > 1) {
+            value = lbl_8053ACE8[player];
+        } else {
+            value = 0;
+        }
+        record->f.field_0x3_2 = value;
     } else {
         record->f.field_0x2_5 = 1;
         record->f.field_0x3_2 = 0;
@@ -290,13 +296,10 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                 bool timed = gGameRoot_8053AAF8->field_0x4c == 11;
                 u8 count = gGameRoot_8053AAF8->field_0x88;
                 bool busy;
-                if (lbl_8053AEC8 != NULL) {
-                    u8 state = lbl_8053AEC8->field_0x40;
-                    if (state == 1 || (u8)(state - 3) <= 1 || state == 6) {
-                        busy = true;
-                    } else {
-                        busy = false;
-                    }
+                if (lbl_8053AEC8 != NULL
+                    && (lbl_8053AEC8->field_0x40 == 1 || (u8)(lbl_8053AEC8->field_0x40 - 3) <= 1
+                        || lbl_8053AEC8->field_0x40 == 6)) {
+                    busy = true;
                 } else {
                     busy = false;
                 }
@@ -310,9 +313,9 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                 record->f.field_0x4.mEven.field_0x5_7 = getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 1);
             } else if ((mode & 1) == 1) {
                 if (getPlayerLayer_8023DE58(layer) >= 8) {
-                    u8 skip;
+                    bool skip;
                     if (gGameRoot_8053AAF8->field_0x4c == 11) {
-                        skip = 1;
+                        skip = true;
                     } else {
                         skip = gGameRoot_8053AAF8->field_0x88 == 2;
                     }
@@ -348,12 +351,12 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
                 if (lbl_80506D48[player] == 3) {
                     if (getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 12)) {
                         record->f.field_0x4.mOdd.mOffsetMode =
-                            (getGameView_802D6A9C()->field_0x131b8[getPlayerLayer_8023DE58(layer)] & 0xC) >> 2;
+                            getGameView_802D6A9C()->getBits(getPlayerLayer_8023DE58(layer), 0xC) >> 2;
                     } else {
                         record->f.field_0x4.mOdd.mOffsetMode = fn_802351D8(layer) != 0;
                     }
                     record->f.field_0x4.mOdd.field_0x4_5 =
-                        (getGameView_802D6A9C()->field_0x131b8[getPlayerLayer_8023DE58(layer)] & 0x3000) >> 12;
+                        getGameView_802D6A9C()->getBits(getPlayerLayer_8023DE58(layer), 0x3000) >> 12;
                     record->f.field_0x4.mOdd.field_0x5_6 = (u8)(fn_80237060(player) - 1);
                     if (!fn_802DEBF8() && !fn_802DEBA0()) {
                         record->f.field_0x4.mOdd.field_0x5_7 = 1;
@@ -1033,7 +1036,7 @@ void cls_804AA8B8::fn_80304FB0() {
         s32 layer = fn_8022EA0C(player);
         cls_804AA858Sub11C* record = &lbl_80506DE8[player];
         if (lbl_8053AD30->fn_8030A364(getPlayerInputSlot_8030AAF4(player))) {
-            if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+            if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
                 fn_80306A94(player);
                 gGameRoot2_8053AB10->field_0x20->fn_802F53F4(player, record);
                 lbl_80506D78[player] += 0.7854;
@@ -1271,7 +1274,7 @@ void cls_804AA8B8::fn_80304FB0() {
                 lbl_8053AD04[player] = 0;
             }
             if (lbl_8053AD20[player] == 0) {
-                if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+                if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
                     fn_80306A94(player);
                 } else {
                     fn_8030801C(player);
