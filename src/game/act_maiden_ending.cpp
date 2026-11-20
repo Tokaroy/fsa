@@ -70,8 +70,7 @@ void MaidenEnding_804AD5B8::update() {
     (this->*lbl_804AD528[mState])();
 }
 
-// FIXME: 96.33 %, scheduling+regalloc; behaviour clean.
-// Instruction scheduling in matrix setup and register allocation.
+// FIXME: 99.89 %, same-text; behaviour clean.
 void MaidenEnding_804AD5B8::draw() {
     if (field_0x240 == 0) {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x250 + field_0x248, NULL, 7, 1.0f, 1.0f);
@@ -94,14 +93,14 @@ void MaidenEnding_804AD5B8::draw() {
         mtx[0][0] = scale;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = scale;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = scale;
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
 
         params.mMtx = mtx;
@@ -111,8 +110,9 @@ void MaidenEnding_804AD5B8::draw() {
         } else {
             params.field_0x10.a = 0;
         }
+        s32 frame = field_0x250 + field_0x248;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x250 + field_0x248, NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
@@ -188,8 +188,6 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     }
 }
 
-// FIXME: 99.76 %, same-text; behaviour drift.
-// symbols.txt has sAngles..sColors as one object (lbl_80472748, 0x38).
 void MaidenEnding_804AD5B8::fn_8035D1CC() {
     if (field_0x234 > 0x128) {
         return;
@@ -242,8 +240,6 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
     }
 }
 
-// FIXME: 97.25 %, missing/extra; behaviour clean.
-// 2 fewer instructions in return value copy.
 void MaidenEnding_804AD5B8::fn_8035CF50() {
     if (mPos.y < 1790.0f) {
         f32 diffY = mPos.y - mPos.z;
@@ -282,14 +278,9 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
     }
 
     s16 prevAngle = field_0x260;
-    JGeometry::TVec3f target = (this->*lbl_804AD594[field_0x270 & 3])();
-    JGeometry::TVec3f diff;
-    diff.x = target.x - mPos.x;
-    diff.y = target.y - mPos.y;
-    diff.z = 0.0f;
-    f32 dist = fn_80093280(&diff);
-    mPos.x += (diff.x * field_0x254) / dist;
-    mPos.y += (diff.y * field_0x254) / dist;
+    JGeometry::TVec3f target;
+    target = (this->*lbl_804AD594[field_0x270 & 3])();
+    moveTowards_inline(target);
 
     if ((field_0x270 & 0xC000U) == 0xC000U) {
         s16 targetAngle = lbl_80472798[field_0x90 & 7];
