@@ -1549,6 +1549,7 @@ void Player_804A6F38::fn_8025A9C0() {
 // turn to the facing. Letting go stops them and, when no flame is out and no 'FIRE' of
 // field_0xb1c is alive, places one 8 in front (argument 0x1000 | facing << 4 | player)
 // into the first free slot of field_0xb1c (its layer in field_0xb5c, field_0xb78 set).
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_8025A15C() {
     if (field_0xb8c > 0) {
         field_0xb8c--;
@@ -1743,6 +1744,7 @@ void Player_804A6F38::fn_8025A04C() {
     field_0xb8c = 0;
 }
 
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only: the box's f.x / f.y (pos + 36) take their fadds
 // operands the other way round in cases 0 and 2.
 // State 0x45 (item 6 at level >= 2; enter fn_8025A04C, exit fn_80259784): frame 11 places
