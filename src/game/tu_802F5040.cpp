@@ -1286,14 +1286,10 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_8
         GXDrawDone();
         GXBegin(GX_POINTS, GX_VTXFMT0, (s32)(0.9999f + 160.0f / step) * (s32)(0.9999f + 240.0f / step));
         s32 half = step >> 1;
-        s32 x = rect2->field_0x0;
-        s32 y = rect2->field_0x4;
-        s32 w = rect2->field_0x8;
-        s32 h = rect2->field_0xc;
         for (s32 py = half; py < half + 0xA0; py += step) {
-            u16 sy = 0.00625f * (h * py) + y;
+            u16 sy = 0.00625f * (rect2->field_0xc * py) + rect2->field_0x4;
             for (s32 px = half; px < half + 0xF0; px += step) {
-                u16 sx = 0.004166667f * (w * px) + x;
+                u16 sx = 0.004166667f * (rect2->field_0x8 * px) + rect2->field_0x0;
                 u8 argb[4];
                 GXPeekARGB(sx, sy, (u32*)argb);
                 GXPosition3f32(px, py, 0.0f);
