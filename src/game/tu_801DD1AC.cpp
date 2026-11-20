@@ -177,11 +177,15 @@ void cls_804A4C58::fn_801DE12C() {
 
 // FIXME(shotgun): 90.94 %, missing/extra; behaviour near.
 bool cls_804A4C58::fn_801DE018() {
-    bool inRange = false;
-    if (mState == 5 || (mState >= 4 && mState < 8)) {
-        inRange = true;
-    }
     bool result = false;
+    bool inRange = false;
+    switch (mState) {
+    case 4:
+    case 6:
+    case 7:
+        inRange = true;
+        break;
+    }
     if (inRange) {
         JGeometry::TBox2f box;
         JGeometry::TVec2f out;
@@ -189,12 +193,12 @@ bool cls_804A4C58::fn_801DE018() {
         s32 player = fn_8023AE34(&box, field_0x4, &out);
         if (player < 0) {
             player = fn_8023AA18(&box, field_0x4, &out);
-        }
-        if (player < 0) {
-            player = fn_8023AC74(&box, field_0x4, &out);
-        }
-        if (player < 0) {
-            player = fn_8023AD54(&box, field_0x4, &out);
+            if (player < 0) {
+                player = fn_8023AC74(&box, field_0x4, &out);
+                if (player < 0) {
+                    player = fn_8023AD54(&box, field_0x4, &out);
+                }
+            }
         }
         if (player >= 0) {
             fn_801D9C58(5);
