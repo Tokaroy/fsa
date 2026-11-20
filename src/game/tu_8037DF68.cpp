@@ -146,8 +146,9 @@ void fn_8038D870() {
 // field_0xe4 by the second press loop with li (r30); ours copies the loop
 // index register (mr r30, r29).
 void fn_8038D570() {
+    s32 i;
     lbl_8053AD78->field_0xe7 = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
         if (takesPart == true) {
             lbl_8053AD78->mWindows[i]->mIndex = i;
@@ -156,14 +157,26 @@ void fn_8038D570() {
     }
     if (lbl_8053AD78->field_0xe4 != 0) {
         if (lbl_8053AD78->field_0x7c == 0) {
-            clearOnPress();
+            for (i = 0; i < 4; i++) {
+                if (lbl_8053AD78->field_0xe5 & (1 << i)) {
+                    if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
+                        lbl_8053AD78->field_0xe4 = 0;
+                    }
+                }
+            }
         } else {
             lbl_8053AD78->field_0x7c--;
             lbl_8053AD78->field_0x70 = lbl_8053AD78->field_0x70 - lbl_8053AD78->field_0x78;
             if (lbl_8053AD78->field_0x7c == 0) {
                 lbl_8053AD78->field_0xe4 = 0;
             }
-            clearOnPress();
+            for (i = 0; i < 4; i++) {
+                if (lbl_8053AD78->field_0xe5 & (1 << i)) {
+                    if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
+                        lbl_8053AD78->field_0xe4 = 0;
+                    }
+                }
+            }
         }
     }
     MessageManager_804AF070* manager = lbl_8053AD78;
@@ -191,7 +204,7 @@ void fn_8038D570() {
         }
     }
     if (lbl_8053AD78->field_0xed != 0) {
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
             lbl_8053ACD8[i] = 1;
         }
     }
