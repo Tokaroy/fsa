@@ -1273,7 +1273,7 @@ static inline void writeCellMarkView(s32 layer, s32 cell, s16 tile) {
 // Not auto-inlined: fn_8029EDB8 calls fn_8029E050 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 97.50 %, different; behaviour near.
+// FIXME(shotgun): 98.49 %, regalloc-only; behaviour clean.
 // 4 opcodes differ
 void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d) {
     gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, a);
