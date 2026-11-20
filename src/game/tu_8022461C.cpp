@@ -167,7 +167,22 @@ u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer) {
 // The same result as fn_8022461C (compiled branch-free in the original).
 // FIXME(shotgun): 83.99 %, missing/extra; behaviour drift.
 u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
-    return fn_8022461C(pos, layer);
+    u16 raw = rawTileAt(pos, layer);
+    u16 code = lbl_8046CB88[raw];
+    if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
+        if (code == 0) {
+            return 2;
+        }
+        return code == 0x61 ? 0 : code;
+    } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
+        if ((getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) ||
+            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 3 &&
+             screenValueIs(0x10) &&
+             pos->y > 2470.0f)) {
+            return 0x51;
+        }
+    }
+    return code;
 }
 
 bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag) {
