@@ -1007,19 +1007,21 @@ void ResultScreen_804AF9A0::fn_803B0FD4() {
     s32 t2 = lbl_8050DB0C.field_0x4c[(0x25C - 0x4C) / 2];
     s32 dy = lbl_8050DB0C.field_0x4c[(0x25E - 0x4C) / 2];
     if (field_0x440 <= t1 + t2) {
+        f32 x;
+        f32 rate;
         if (field_0x440 <= t1) {
             f32 offset = dy * ((f32)(field_0x440 * field_0x440) / (f32)(t1 * t1));
             for (s32 i = 0; i < field_0x454; i++) {
-                f32 x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
+                x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
                 field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 + offset);
             }
         } else if (field_0x440 <= t1 + t2) {
             s32 d = field_0x440 - t1;
             f32 offset = (40.0f + dy) * ((f32)(d * d) / (f32)(t2 * t2));
             for (s32 i = 0; i < field_0x454; i++) {
-                f32 x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
+                x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
                 field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 + dy - offset);
-                f32 rate = 1.0f - (f32)(field_0x440 - t1) / (f32)t2;
+                rate = 1.0f - (f32)(field_0x440 - t1) / (f32)t2;
                 setRankRowAlpha(i, rate);
             }
         }
