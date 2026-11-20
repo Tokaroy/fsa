@@ -32,6 +32,7 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scale) {
 }
 
 // r3/r4 swapped for res and res->mSizeX in mBox.set.
+// FIXME: 99.74 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::init() {
     if (((getField_0x90() >> 17) & 0x1F) == 0) {
         field_0x90 |= 0x20000;
@@ -59,7 +60,7 @@ void Lift_804A6F6C::init() {
     }
 }
 
-// FIXME(shotgun): 79.37 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 84.92 %, missing/extra; behaviour drift.
 // the player-position vector arithmetic, the atan2 argument order and the tile-index math are scheduled differently
 bool Lift_804A6F6C::fn_802565BC(s32 index) {
     if (field_0x4 != getPlayerLayer_8023DE58(index)) {
@@ -171,6 +172,7 @@ void Lift_804A6F6C::fn_80256410() {
 }
 
 // Stack slot order and f4/f5 regalloc around sqrt/sincos still differ.
+// FIXME: 99.17 %, operands; behaviour clean.
 void Lift_804A6F6C::update() {
     if (field_0x90 >> 27 == 0 || vfunc_0x34() == true) {
         fn_80256410();
@@ -197,6 +199,7 @@ void Lift_804A6F6C::update() {
 }
 
 // Float regalloc in setRotScaleMtxS16 (f8-f12) still differs.
+// FIXME: 99.23 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
