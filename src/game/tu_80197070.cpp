@@ -274,17 +274,14 @@ void cls_804A2944::vfunc_0x44() {
     }
 }
 
-// FIXME: 89.54 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers: the original keeps the layer in r31,
-// the player index in r29 and the position pointer in r30; ours has the layer
-// in r29, the index in r30 and the pointer in r31. The .sdata2 literal pairs
-// once the unit's literals are laid out.
 void cls_804A2944::fn_8019C500(s32 keepY) {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
-            s32 layer = field_0x4;
-            if (layer == getPlayerLayer_8023DE58(i)) {
-                JGeometry::TVec3f pos(field_0x2a4[i].x, field_0x2a4[i].y, field_0x2a4[i].z);
+            if (getField_0x4() == getPlayerLayer_8023DE58(i)) {
+                JGeometry::TVec3f pos;
+                pos.x = field_0x2a4[i].x;
+                pos.y = field_0x2a4[i].y;
+                pos.z = field_0x2a4[i].z;
                 if (!keepY) {
                     pos.y = 32.0f + mPos.y;
                 }
