@@ -1758,7 +1758,7 @@ void ActorBase_804A5770::fn_801F0D20(u32 id) {
     gAudioMgr_8053AF80->fn_80458880(id, -1);
 }
 
-// FIXME(shotgun): 57.11 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (fn_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
