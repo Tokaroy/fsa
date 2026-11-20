@@ -836,7 +836,7 @@ inline bool KaeporaGaeboraEnding_804ADAC8::advanceStep() {
 
 // The facing (0-3) of the velocity field_0x3c (fn_80360914, fn_8036003C).
 inline void KaeporaGaeboraEnding_804ADAC8::updateFacing() {
-    u16 a = (s32)(10430.378f * JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x));
+    u16 a = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
     if (a >= 0x2000 && a < 0x6000) {
         field_0x274 = 3;
     } else if (a >= 0x6000 && a < 0xa000) {
@@ -902,7 +902,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
             field_0x28C = mPos.y;
         }
         field_0x290 = *field_0x284++;
-        field_0x254 = (s32)(10430.378f * JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x));
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * 10430.378f);
         break;
     case 1:
         mPtmfIndex = 0;
@@ -1165,7 +1165,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
         field_0x27C = 0;
-        field_0x254 = (s32)(10430.378f * JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x));
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * 10430.378f);
         field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
         field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
         u16 a = field_0x254;
@@ -1205,7 +1205,6 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FB64() {
         field_0x26C += 0.2f;
     }
     s16 prev = field_0x254;
-    // fmuls operand order of the reciprocal product still differs
     s32 step = (s32)(65536.0f * (JMath::fastReciprocal(6.283184f * field_0x26C) * 1.75f));
     field_0x254 = prev - step;
     field_0x3c.x = 1.75f * JMath::sincosTable_.cosShort(field_0x254);
