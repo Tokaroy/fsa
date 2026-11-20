@@ -1262,8 +1262,9 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             off = (f32)(k * -20) - 20.0f;
         }
         JGeometry::TVec3f target;
-        target = JGeometry::TVec3f(parent->mPos.x + off * JMath::sincosTable_.sinShort(ang),
-                                   parent->mPos.y + off * JMath::sincosTable_.cosShort(ang),
+        f32 s = JMath::sincosTable_.sinShort(ang);
+        f32 c = JMath::sincosTable_.cosShort(ang);
+        target = JGeometry::TVec3f(parent->mPos.x + off * s, parent->mPos.y + off * c,
                                    10.0f + parent->mPos.z);
         f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         mFlag249 = 1;
