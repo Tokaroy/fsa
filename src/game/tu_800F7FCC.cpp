@@ -1455,31 +1455,30 @@ void StoneArrghusChildPuff_8049C678::draw() {
     }
 }
 
-// Moves one axis of `cur` toward `target` by `step`; true once it got there.
-static inline bool stepAxis(f32& cur, f32 target, f32 step) {
+// Moves one axis of `cur` toward `target` by `step`; returns 1 once it got there.
+static inline s32 stepAxis(f32& cur, f32 target, f32 step) {
     cur = cut4(cur);
     target = cut4(target);
     if (cur > target) {
         cur -= step;
         if (cur <= target) {
             cur = target;
-            return true;
+            return 1;
         }
     } else {
         cur += step;
         if (cur >= target) {
             cur = target;
-            return true;
+            return 1;
         }
     }
-    return false;
+    return 0;
 }
 
-// FIXME: 99.87 %, regalloc-only; behaviour clean.
 s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
-    arrived = arrived + stepAxis(cur->y, target->y, step);
-    arrived = arrived + stepAxis(cur->z, target->z, step);
+    arrived += stepAxis(cur->y, target->y, step);
+    arrived += stepAxis(cur->z, target->z, step);
     return arrived == 3;
 }
 
