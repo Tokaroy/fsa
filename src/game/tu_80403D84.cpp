@@ -2705,6 +2705,7 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
+// FIXME: 94.62 %, scheduling+regalloc + reloc-name; behaviour clean.
 // FIXME: minor instruction scheduling around bob/params and r29 vs r30 for second cel.
 void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     SpriteParams_801F5AE0 params;
