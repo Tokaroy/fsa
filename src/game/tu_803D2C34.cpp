@@ -1075,8 +1075,8 @@ void cls_804B0288::fn_803D2C9C() {
             if ((lbl_8050EC80.getCurrentFile().field_0x65 & 1) == 0) {
                 lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
             }
-            if (lbl_8050EC80.getCurrentFile().mFlags & 1) {
-                lbl_8050EC80.getCurrentFile().field_0x65 |= 2;
+            if (lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].mFlags & 1) {
+                lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x65 |= 2;
             }
             field_0x54 = 0x7E;
             field_0x2177 = 0;
