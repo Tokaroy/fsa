@@ -1752,7 +1752,7 @@ void cls_804AF72C::do_end() {
     field_0x2c0[field_0x2d0++] = -2;
 }
 
-// FIXME(shotgun): 99.07 %, different; behaviour near.
+// FIXME(shotgun): 99.59 %, scheduling+regalloc; behaviour clean.
 // (registers only: the float temporaries of the centring offset and the tail's length/shown values)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
@@ -2360,7 +2360,7 @@ bool cls_804AF72C::do_tag(u32 tag, const void* data, u32) {
     return false;
 }
 
-// FIXME(shotgun): 96.37 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.56 %, missing/extra; behaviour near.
 // (the original zero-extends the u8 line count once more before the subtraction)
 void cls_804AF72C::fn_8039D30C(u8 value) {
     s32 index = field_0x2cc;
@@ -3851,7 +3851,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // Pops a window pane in: its alpha rises over 10 frames; once it is full, its size
 // follows a five-point curve per axis over the frame counts of the layout constants, then
 // the pane is moved so that it stays centred on the box.
-// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.91 %, scheduling; behaviour clean.
 // (the pane's alpha and the target alpha are loaded in the other order)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
@@ -3911,7 +3911,7 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     pane->move(field_0xf8 + field_0x100 / 2.0f - w / 2.0f, (field_0xfc + field_0x104) - h);
 }
 
-// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.91 %, scheduling; behaviour clean.
 // (the pane's alpha and the target alpha are loaded in the other order)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
