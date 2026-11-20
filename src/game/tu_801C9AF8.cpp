@@ -529,24 +529,26 @@ bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) 
     }
     if (special) {
         switch (fn_8022461C(&p, layer)) {
-        case 3:
-            if (fn_80226850(&p, layer) == 0x7A) {
-                return false;
-            }
-            break;
-        case 1: {
-            s32 tile = fn_80226850(&p, layer);
-            if ((tile >= 0x9B && tile < 0x9D) || (tile >= 0x322 && tile < 0x324)) {
-                return false;
-            }
-            break;
-        }
         case 0x27:
         case 0x28:
         case 0x29:
         case 0x2A:
         case 0x2B:
             return false;
+        case 3:
+            if (fn_80226850(&p, layer) == 0x7A) {
+                return false;
+            }
+            break;
+        case 1:
+            switch (fn_80226850(&p, layer)) {
+            case 0x9B:
+            case 0x9C:
+            case 0x322:
+            case 0x323:
+                return false;
+            }
+            break;
         }
     }
     bool ok = true;
