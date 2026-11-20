@@ -222,7 +222,7 @@ static inline bool openById(s32 window, s32 player, u32 msg, s32 serial, JGeomet
     return lbl_8053AD78->fn_8038A42C(window, player, fn_803846BC(msg), serial, pos, flags);
 }
 
-// FIXME(shotgun): 96.02 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.04 %, missing/extra; behaviour clean.
 // (scheduling of the id lookups)
 // fn_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
 // into its id; the no-position fallback is fn_8038C60C.
@@ -319,7 +319,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 98.92 %, missing/extra + reloc-name; behaviour clean.
+    // FIXME(shotgun): 98.93 %, missing/extra; behaviour clean.
     // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u32 flags) {
         s32 window = windowIndex(player);
@@ -417,7 +417,7 @@ bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u32 
     return false;
 }
 
-// FIXME(shotgun): 98.64 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.66 %, missing/extra; behaviour clean.
 // regalloc + scheduling (the halfword flags copy)
 bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u32 flags) {
     s32 window = windowIndex(player);
@@ -1130,7 +1130,7 @@ u16 fn_803846A4(s32 index) {
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
-// FIXME(shotgun): 92.46 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.50 %, missing/extra; behaviour drift.
 // Follows the conditional-message commands (0x1A size 2, the twelve commands fn_80383E2C finds)
 // from message msg for the player window `window`: each command picks one of its operands as the
 // next message id (by a key or other holdable the player carries, a random draw, the player
@@ -1138,21 +1138,25 @@ u16 fn_803846A4(s32 index) {
 u32 fn_80383EB0(s32 window, u32 msg) {
     s32 player = fn_8022EA0C(window);
     bool listed = isGameModeSet();
-    s32 slot = window;
+    s32 slot;
     if (listed) {
         s32 mapped = fn_8022F340(window);
         if (mapped >= 0 && mapped < 4) {
             slot = mapped;
+        } else {
+            slot = window;
         }
+    } else {
+        slot = window;
     }
     u32 index = msg;
     while (true) {
         u8 command;
         const char* p = fn_80383E2C(index, &command);
         if (p == NULL) {
-            return index;
+            break;
         }
-        switch (command) {
+        switch ((s8)command) {
         case 7: {
             s32 yes = operand(p, 6);
             s32 no = operand(p, 10);
@@ -1166,7 +1170,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x10: {
             u8 kind = p[5];
             s32 target = operand(p, 6);
-            u8 consume = p[0xE];
+            u32 consume = (u8)p[0xE];
             s32 next = operand(p, 10);
             switch (kind) {
             case 0:
@@ -1247,13 +1251,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             case 13:
             case 14:
                 if (fn_8023EEB4(player) == 'PLAY') {
-                    if ((fn_8023ECF0(slot) == 0 && kind == 11) || (fn_8023ECF0(slot) == 1 && kind == 12) ||
-                        (fn_8023ECF0(slot) == 2 && kind == 13) || (fn_8023ECF0(slot) == 3 && kind == 14))
+                    if ((fn_8023ECF0(slot) == 0 && kind == 11) || (fn_8023ECF0(player) == 1 && kind == 12) ||
+                        (fn_8023ECF0(player) == 2 && kind == 13) || (fn_8023ECF0(player) == 3 && kind == 14))
                     {
                         next = target;
-                        if (consume) {
-                            fn_8023EE28(player);
-                        }
                     }
                 }
                 break;
@@ -1267,7 +1268,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x17: {
-            s32 count = (u8)p[5];
+            u8 count = p[5];
             s32 pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             if (pick > count) {
                 pick = count;
@@ -1337,8 +1338,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x23: {
-            u8 kind = p[5];
-            u16 bit = *(const u16*)(p + 6);
+            u32 kind = (u8)p[5];
+            s32 bit = *(const u16*)(p + 6);
             s32 yes = operand(p, 8);
             s32 no = operand(p, 12);
             u8 which;
@@ -1386,18 +1387,15 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         }
     }
+    return index;
 }
 
-// FIXME: 99.55 %, regalloc-only; behaviour drift.
-// Regalloc only (r3 / r5 / r6 rotated); the jump table's name waits
-// on the unit's .data (jumptable_804AF0CC is the third of six).
 const char* fn_80383E2C(u32 index, u8* out) {
     MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
     MessageInf1_804AF070* inf1 = &bmg->inf1;
     // BMG text: the DAT1 block starts after the INF1 block (inf1->size) and its 8-byte header; the
-    // entry's textOffset is relative to that. Summed in this order only because it gives the
-    // original's add order (tp's JMessage keeps the DAT1 content pointer instead).
-    const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[index].textOffset];
+    // entry's textOffset is relative to that.
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[index].textOffset;
     *out = 0;
     if (text[0] == 0x1A && text[2] == 2) {
         switch (text[4]) {
@@ -1432,25 +1430,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// Ends a line of the box text: centres it in `width` (scaled by `scale`), adds the
-// indent to the part widths that end on this line, and appends "\x1BCR[n]" and the line to out.
-static inline void flushLine(char* out, const char* line, s32 lines, f32 cur, f32 width, f32 scale) {
-    char prefix[16];
-    s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
-    if (lbl_8053AD78->field_0x5c[2] == (f32)(lines - 1)) {
-        lbl_8053AD78->field_0x5c[0] += (f32)pad;
-    }
-    if (lbl_8053AD78->field_0x5c[3] == (f32)(lines - 1)) {
-        lbl_8053AD78->field_0x5c[1] += (f32)pad;
-    }
-    if (pad > 0) {
-        snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
-        strcat(out, prefix);
-    }
-    strcat(out, line);
-}
-
-// FIXME(shotgun): 84.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour near.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
@@ -1458,6 +1438,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     char line[100];
+    char prefix[16];
     s32 len = 0;
     s32 pos = 0;
     s32 lines = 1;
@@ -1476,7 +1457,17 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
         if (c == '\n') {
             line[len] = c;
             line[len + 1] = 0;
-            flushLine(out, line, lines, cur, width, scale);
+            s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+            for (s32 i = 0; i < 2; i++) {
+                if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
+                    lbl_8053AD78->field_0x5c[i] += (f32)pad;
+                }
+            }
+            if (pad > 0) {
+                snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
+                strcat(out, prefix);
+            }
+            strcat(out, line);
             len = 0;
             cur = 0.0f;
             lines++;
@@ -1498,8 +1489,9 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
                     }
                 } else if (p[4] == 0x2E) {
                     if (a >= 1 && a <= 4) {
-                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1) == true) {
-                            if (((gGameRoot_8053AAF8->field_0x83 >> shift) & 3) == 1) {
+                        if (isPlayerBitSet(gGameRoot_8053AAF8, a - 1)) {
+                            u8 mode = (gGameRoot_8053AAF8->field_0x83 >> shift) & 3;
+                            if (mode == 1) {
                                 if (getPlayerLayer_8023DE58(a - 1) >= 8) {
                                     fn_80230E1C(a - 1, false);
                                 }
@@ -1534,7 +1526,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
             pos += p[1];
         } else {
             line[len++] = c;
-            u32 code = (u8)c;
+            u32 code = (u8)text[pos];
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
                 line[len++] = text[pos];
@@ -1546,7 +1538,17 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
         }
     }
     line[len] = c;
-    flushLine(out, line, lines, cur, width, scale);
+    s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+    for (s32 i = 0; i < 2; i++) {
+        if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
+            lbl_8053AD78->field_0x5c[i] += (f32)pad;
+        }
+    }
+    if (pad > 0) {
+        snprintf(prefix, 15, "\x1B" "CR[%d]", pad);
+        strcat(out, prefix);
+    }
+    strcat(out, line);
     return lines;
 }
 
@@ -1673,14 +1675,15 @@ static inline void centreLine(char* out, f32 width) {
     }
 }
 
-// FIXME(shotgun): 90.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.55 %, missing/extra + reloc-name; behaviour drift.
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
 f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* out3c) {
     char* out2 = (char*)out2c;
     char* out3 = (char*)out3c;
-    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
+    MessageInf1_804AF070* inf1 = &bmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     f32 lineWidth[10];
     s32 len = 0;
@@ -1689,9 +1692,16 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     f32 widest = 0.0f;
     f32 width = 0.0f;
     u8 part = 0;
-    for (s32 i = 0; i < 10; i++) {
-        lineWidth[i] = 0.0f;
-    }
+    lineWidth[0] = 0.0f;
+    lineWidth[1] = 0.0f;
+    lineWidth[2] = 0.0f;
+    lineWidth[3] = 0.0f;
+    lineWidth[4] = 0.0f;
+    lineWidth[5] = 0.0f;
+    lineWidth[6] = 0.0f;
+    lineWidth[7] = 0.0f;
+    lineWidth[8] = 0.0f;
+    lineWidth[9] = 0.0f;
     char c;
     while ((c = text[pos]) != 0) {
         const char* p = &text[pos];
@@ -1705,7 +1715,11 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             pos++;
         } else if (c == 0x1A) {
             if (p[2] == 2) {
-                if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19 || p[4] == 1) {
+                if (p[4] == 0) {
+                } else if (p[4] == 10) {
+                } else if (p[4] == 0x12) {
+                } else if (p[4] == 0x19) {
+                } else if (p[4] == 1) {
                 }
             } else if (p[2] == 3) {
                 width += lbl_8053AD78->mFont->JUTFont::getWidth(value + '0');
@@ -1716,7 +1730,8 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             u32 code = (u8)c;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                code = (code << 8) | (u8)text[pos];
+                code <<= 8;
+                code |= text[pos] & 0xFF;
                 pos++;
             }
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
@@ -1730,6 +1745,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
     lines = 1;
     width = 0.0f;
     len = 0;
+    char two[3];
+    two[2] = 0;
+    two[1] = 0;
+    two[0] = 0;
     out[0] = 0;
     if (out2 != NULL) {
         out2[0] = 0;
@@ -1777,14 +1796,13 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
             pos += p[1];
         } else {
             u32 code = (u8)c;
-            char two[3];
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                two[0] = c;
-                two[1] = text[pos + 1];
+                two[0] = p[0];
+                two[1] = p[1];
                 two[2] = 0;
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
-                    if (c != ' ') {
+                    if (two[0] != ' ') {
                         strcat(out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
@@ -1795,10 +1813,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2c, const char* ou
                 pos += 2;
                 code |= (u8)p[1];
             } else {
-                two[0] = c;
+                two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
-                    if (c != ' ') {
+                    if (two[0] != ' ') {
                         strcat(out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
