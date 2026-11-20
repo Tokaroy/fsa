@@ -44,6 +44,8 @@ public:
     void flyToGoal();
     void standBelow(const JGeometry::TVec3f& target);
     void flashAtFeet();
+    void faceDir(s32 dir);
+    s32 startTalk(u32 msg, bool talkFlag);
 
     /* 0x230 */ u8 field_0x230; // set to 0 by the ctor
     /* 0x231 */ u8 field_0x231; // set to 0 by the ctor

@@ -238,44 +238,14 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
             s32 other;
             s32 dir;
             fn_801EEC98(mSerial, &angle, &dir, &dist, &other, 0, 2);
-            if (dir >= 0 && !(dist > 80.0f) && dir >= 0) {
-                field_0x98 = dir;
-                if (dir + 6 != mAnim0.mAnim) {
-                    mAnim0.startAnim_801D22DC(dir + 6, 2, false);
-                    mAnim0.fn_801D1F14(0.0f);
-                }
+            if (dir >= 0 && !(dist > 80.0f)) {
+                faceDir(dir);
             }
         } else {
             talkFlag = true;
         }
         u32 msg = lbl_8053C548[field_0x234];
-        JGeometry::TBox2f box2 = mBox;
-        box2.i.x += mPos.x;
-        box2.i.y += mPos.y;
-        box2.f.x += mPos.x;
-        box2.f.y += mPos.y;
-        fn_8022FEB8(&box2, field_0x4, mSerial, true, talkFlag);
-        s32 player = fn_8022FD8C(mSerial);
-        if (player < 0 || player >= 4) {
-            player = -1;
-        } else if (!fn_802300EC(player)) {
-            player = -1;
-        } else if (!fn_8023F264(player)) {
-            player = -1;
-        } else {
-            JGeometry::TVec3f at = mPos;
-            at.y += -10.0f;
-            if (!fn_8038AD24(player, msg, mSerial, field_0x4, at, 0x20)) {
-                player = -1;
-            } else {
-                field_0x23c = player;
-                mAnim0.startAnim_801D22DC(fn_801CD354(fn_80230CFC(field_0x23c)) + 6, 2, false);
-                mAnim0.fn_801D1F14(0.0f);
-                for (s32 i = 0; i < 4; i++) {
-                    fn_80230C6C(i);
-                }
-            }
-        }
+        s32 player = startTalk(msg, talkFlag);
         if (player >= 0) {
             switch (field_0x234) {
             case 0:
@@ -511,7 +481,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
 // The idle states of the demo: keeps the maiden's box registered, steers the camera
 // (fn_80110210) and runs the state's step; a player standing at the maiden starts the talk (state 2).
 // FIXME: 96.49 %, different; behaviour drift.
-// FIXME(shotgun): the original swaps r29/r30 for player/loop index.
+// Left: in startTalk the original stores the message position's z after loading mSerial and field_0x4.
 void PrincessZeldaDemo_8049D208::fn_8011093C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -534,6 +504,8 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
                 break;
             case 2:
                 fn_8010E2D4(0x3D);
+                break;
+            case 3:
                 break;
             }
             field_0x238 = 0x3D;
@@ -598,42 +570,10 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
         s32 other;
         s32 dir;
         fn_801EEC98(mSerial, &angle, &dir, &dist, &other, 0, 2);
-        if (dir >= 0 && !(dist > 80.0f) && dir >= 0) {
-            field_0x98 = dir;
-            if (dir + 6 != mAnim0.mAnim) {
-                mAnim0.startAnim_801D22DC(dir + 6, 2, false);
-                mAnim0.fn_801D1F14(0.0f);
-            }
+        if (dir >= 0 && !(dist > 80.0f)) {
+            faceDir(dir);
         }
-        JGeometry::TBox2f box2 = mBox;
-        box2.i.x += mPos.x;
-        box2.i.y += mPos.y;
-        box2.f.x += mPos.x;
-        box2.f.y += mPos.y;
-        fn_8022FEB8(&box2, field_0x4, mSerial, true, false);
-        s32 player = fn_8022FD8C(mSerial);
-        if (player >= 0) {
-            if (player >= 4) {
-                player = -1;
-            } else if (!fn_802300EC(player)) {
-                player = -1;
-            } else if (!fn_8023F264(player)) {
-                player = -1;
-            } else {
-                JGeometry::TVec3f at = mPos;
-                at.y += -10.0f;
-                if (!fn_8038AD24(player, 0x2D2, mSerial, field_0x4, at, 0x20)) {
-                    player = -1;
-                } else {
-                    field_0x23c = player;
-                    mAnim0.startAnim_801D22DC(fn_801CD354(fn_80230CFC(field_0x23c)) + 6, 2, false);
-                    mAnim0.fn_801D1F14(0.0f);
-                    for (s32 i = 0; i < 4; i++) {
-                        fn_80230C6C(i);
-                    }
-                }
-            }
-        }
+        s32 player = startTalk(0x2D2, false);
         if (player >= 0) {
             switch (field_0x234) {
             case 0:
@@ -642,6 +582,8 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
                 break;
             case 2:
                 fn_8010E2D4(2);
+                break;
+            case 3:
                 break;
             }
             field_0x238 = 2;
@@ -1447,6 +1389,49 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
 
 // Not in the binary: the plain functions below are inlined by fn_80110E9C and fn_8010E7E8, and the
 // pool has their literals ahead of fn_8010E2D4's, so they stand at the bottom of the file.
+
+// Turns the maiden to a direction (0..3) and starts that direction's standing animation.
+void PrincessZeldaDemo_8049D208::faceDir(s32 dir) {
+    if (dir >= 0) {
+        field_0x98 = dir;
+        if (dir + 6 != mAnim0.mAnim) {
+            mAnim0.startAnim_801D22DC(dir + 6, 2, false);
+            mAnim0.fn_801D1F14(0.0f);
+        }
+    }
+}
+
+// Offers the talk to the player standing at the maiden's box; the player it started with, or -1.
+inline s32 PrincessZeldaDemo_8049D208::startTalk(u32 msg, bool talkFlag) {
+    JGeometry::TBox2f box2 = mBox;
+    box2.i.x += mPos.x;
+    box2.i.y += mPos.y;
+    box2.f.x += mPos.x;
+    box2.f.y += mPos.y;
+    fn_8022FEB8(&box2, field_0x4, mSerial, true, talkFlag);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0 || player >= 4) {
+        player = -1;
+    } else if (!fn_802300EC(player)) {
+        player = -1;
+    } else if (!fn_8023F264(player)) {
+        player = -1;
+    } else {
+        JGeometry::TVec3f at = mPos;
+        at.y += -10.0f;
+        if (!fn_8038AD24(player, msg, mSerial, field_0x4, at, 0x20)) {
+            player = -1;
+        } else {
+            field_0x23c = player;
+            mAnim0.startAnim_801D22DC(fn_801CD354(fn_80230CFC(field_0x23c)) + 6, 2, false);
+            mAnim0.fn_801D1F14(0.0f);
+            for (s32 i = 0; i < 4; i++) {
+                fn_80230C6C(i);
+            }
+        }
+    }
+    return player;
+}
 
 // Effect 0x33B and its sound, 16 above mPos.
 void PrincessZeldaDemo_8049D208::flashAtFeet() {
