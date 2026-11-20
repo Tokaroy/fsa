@@ -204,8 +204,7 @@ void cls_8049E770::fn_8012C170() {
     if (field_0x250 == 1) {
         fn_80119DD0()->fn_80119468(0, 0);
     }
-    f32 targetY = field_0x3f4 + 325.0f;
-    if (field_0x3b8[0].y >= targetY) {
+    if (field_0x3b8[0].y >= field_0x3f4 + 325.0f) {
         field_0x3b8[0].y -= 0.5f;
         field_0x3b8[1].y -= 0.5f;
         field_0x3b8[2].y -= 0.5f;
@@ -219,7 +218,7 @@ void cls_8049E770::fn_8012C170() {
         }
         fn_8012A5EC();
     } else {
-        field_0x3b8[0].y = targetY;
+        field_0x3b8[0].y = field_0x3f4 + 325.0f;
         field_0x3ec = 0;
         fn_8012A5EC();
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
