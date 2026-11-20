@@ -384,36 +384,47 @@ bool Log_804ACD70::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x2b8);
 }
 
-// FIXME(shotgun): 87.17 %, missing/extra; behaviour near.
+static inline s32 getPullDir(const Log_804ACD70* self) {
+    JGeometry::TBox2f box = self->field_0x80;
+    box.i.x += self->mPos.x;
+    box.f.x += self->mPos.x;
+    box.i.y += self->mPos.y;
+    box.f.y += self->mPos.y;
+    if (fn_80239470(&box, self->field_0x4, self->mSerial) >= 0 && fn_80238A68(self->mSerial) >= 4) {
+        s32 d = fn_8023885C(self->mSerial);
+        if (d >= 0 && d < 4) {
+            if (d == 0) {
+                d = 1;
+            } else if (d == 1) {
+                d = 0;
+            } else if (d == 2) {
+                d = 3;
+            } else if (d == 3) {
+                d = 2;
+            }
+            return d;
+        }
+    }
+    return -1;
+}
+
+static inline s32 getPushDir(const Log_804ACD70* self) {
+    if (fn_80239108(self->mSerial) >= 4) {
+        s32 d = fn_80238BC4(self->mSerial);
+        if (d >= 0 && d < 4) {
+            return d;
+        }
+    }
+    return -1;
+}
+
 void Log_804ACD70::fn_80354FE8() {
     if (isMotionless()) {
         if (field_0x2cc == 1) {
             field_0x2cc = 0;
         } else {
-            JGeometry::TBox2f box = field_0x80;
-            box.set(box.i.x + mPos.x, box.i.y + mPos.y, box.f.x + mPos.x, box.f.y + mPos.y);
-            s32 dirA = -1;
-            s32 dirB = -1;
-            if (fn_80239470(&box, field_0x4, mSerial) >= 0 && fn_80238A68(mSerial) >= 4) {
-                s32 d = fn_8023885C(mSerial);
-                if (d >= 0 && d < 4) {
-                    if (d == 0) {
-                        dirA = 1;
-                    } else if (d == 1) {
-                        dirA = 0;
-                    } else if (d == 2) {
-                        dirA = 3;
-                    } else if (d == 3) {
-                        dirA = 2;
-                    }
-                }
-            }
-            if (fn_80239108(mSerial) >= 4) {
-                s32 d = fn_80238BC4(mSerial);
-                if (d >= 0 && d < 4) {
-                    dirB = d;
-                }
-            }
+            s32 dirA = getPullDir(this);
+            s32 dirB = getPushDir(this);
             s32 dir;
             if (dirA != -1) {
                 dir = dirA;
@@ -430,15 +441,14 @@ void Log_804ACD70::fn_80354FE8() {
                 if (dirA == -1 && dirB != -1) {
                     fn_80238E08(mSerial);
                 }
+                field_0x3c.zero();
                 field_0x3c.set(lbl_804722D0[dir][0], lbl_804722D0[dir][1], 0.0f);
                 startSound_801F0E34(0x30004, 0);
                 field_0x2d4.x = lbl_804722B0[dir][0];
                 field_0x2d4.y = lbl_804722B0[dir][1];
                 field_0x2d4.z = 0.0f;
                 if (field_0x2c8 == 0) {
-                    // FIXME(shotgun): the asm leaves the id unset when field_0x2c0/field_0x2c4 match no case
-                    // (the original passes an indeterminate value); zeroed here, a behaviour difference.
-                    s32 id = 0;
+                    u16 id;
                     switch (field_0x2c0) {
                     case 0:
                         switch (field_0x2c4) {
