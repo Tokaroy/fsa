@@ -209,11 +209,10 @@ void cls_804A7AE0::vfunc_0x10() {
     origin.y += mBox.i.y;
     origin.x += 8.0f;
     origin.y += 8.0f;
+    origin.z = 0.0f;
     JGeometry::TVec3f p = origin;
-    p.z = 0.0f;
-    f32 baseY = p.y;
     for (s32 row = 0; row < 6; row++) {
-        p.y = baseY;
+        p.y = origin.y;
         for (s32 col = 0; col < 6; col++) {
             mTilesA[row][col] = fn_80226850(&p, 1);
             mTilesB[row][col] = fn_80226850(&p, 0);
@@ -233,9 +232,15 @@ void cls_804A7AE0::vfunc_0x10() {
     f32 minY = mBox.i.y + mPos.y;
     f32 maxX = mBox.f.x + mPos.x;
     f32 maxY = mBox.f.y + mPos.y;
-    s32 serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_WARP, serial)) >= 0) {
-        Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    s32 serialWarp = -1;
+    s32 serialFlme = -1;
+    s32 serialDoor = -1;
+    while (true) {
+        serialWarp = getActorManager_801F856C()->fn_801F78F4(ACTOR_WARP, serialWarp);
+        if (serialWarp < 0) {
+            break;
+        }
+        Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(serialWarp);
         if (warp == NULL) {
             continue;
         }
@@ -244,46 +249,33 @@ void cls_804A7AE0::vfunc_0x10() {
             continue;
         }
         s32 v = (field_0x90 >> 7) & 0x1F;
-        s32 layer = v == 0 ? 0 : v + 7;
-        if (warp->field_0x4 == layer) {
-            s32 w = (warp->field_0x90 >> 24) & 7;
-            if (w != 0) {
-                w += 7;
+        if (warp->field_0x4 == (v == 0 ? 0 : v + 7) && field_0x4 == warpLayer(warp->field_0x90)) {
+            if (mSerialCountA >= 4) {
+                continue;
             }
-            if (field_0x4 == w) {
-                if (mSerialCountA >= 4) {
-                    continue;
-                }
-                mSerialsA[mSerialCountA] = serial;
-                mSerialCountA++;
+            mSerialsA[mSerialCountA] = serialWarp;
+            mSerialCountA++;
+        } else if ((v == 0 ? 0 : v + 7) == warpLayer(warp->field_0x90) && field_0x4 == warp->field_0x4) {
+            if (mSerialCountB >= 4) {
+                continue;
             }
-        } else {
-            s32 w = (warp->field_0x90 >> 24) & 7;
-            if (w != 0) {
-                w += 7;
+            mSerialsB[mSerialCountB] = serialWarp;
+            mSerialCountB++;
+            JGeometry::TVec3f pos = warp->mPos;
+            switch (warp->field_0x90 & 0x7F) {
+            case 0:
+            case 3:
+                pos.y -= 2.0f;
+                break;
+            case 1:
+            case 2:
+                pos.y += 2.0f;
+                break;
+            case 0x17:
+                pos.x += 2.0f;
+                break;
             }
-            if (layer == w && field_0x4 == warp->field_0x4) {
-                if (mSerialCountB >= 4) {
-                    continue;
-                }
-                mSerialsB[mSerialCountB] = serial;
-                mSerialCountB++;
-                JGeometry::TVec3f pos = warp->mPos;
-                switch (warp->field_0x90 & 0x7F) {
-                case 0:
-                case 3:
-                    pos.y -= 2.0f;
-                    break;
-                case 1:
-                case 2:
-                    pos.y += 2.0f;
-                    break;
-                case 0x17:
-                    pos.x += 2.0f;
-                    break;
-                }
-                warp->mPos = pos;
-            }
+            warp->mPos = pos;
         }
     }
     for (s32 i = 0; i < mSerialCountA; i++) {
@@ -293,21 +285,27 @@ void cls_804A7AE0::vfunc_0x10() {
             field_0x2dc[i].y = actor->mPos.y;
         }
     }
-    serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_FLME, serial)) >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    while (true) {
+        serialFlme = getActorManager_801F856C()->fn_801F78F4(ACTOR_FLME, serialFlme);
+        if (serialFlme < 0) {
+            break;
+        }
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serialFlme);
         if (actor == NULL) {
             continue;
         }
         if (mSerialCountC >= 4) {
             break;
         }
-        mSerialsC[mSerialCountC] = serial;
+        mSerialsC[mSerialCountC] = serialFlme;
         mSerialCountC++;
     }
-    serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_DOOR, serial)) >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    while (true) {
+        serialDoor = getActorManager_801F856C()->fn_801F78F4(ACTOR_DOOR, serialDoor);
+        if (serialDoor < 0) {
+            break;
+        }
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serialDoor);
         if (actor == NULL) {
             continue;
         }
@@ -321,7 +319,7 @@ void cls_804A7AE0::vfunc_0x10() {
         if (mSerialCountD >= 4) {
             break;
         }
-        mSerialsD[mSerialCountD] = serial;
+        mSerialsD[mSerialCountD] = serialDoor;
         mSerialCountD++;
     }
 }
