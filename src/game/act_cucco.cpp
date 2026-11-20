@@ -415,20 +415,22 @@ u8 Cucco_804AB8C0::fn_80332378() {
 // FIXME(shotgun): 89.29 %, missing/extra; behaviour near.
 void Cucco_804AB8C0::fn_80331E6C() {
     if (field_0x2a4[0] == 1) {
+    s32 count;
+    ActorBase_804A5770* other;
     s32 warpSerial = -1;
     s32 circleSerial = -1;
     if (field_0x230 == 3) {
         return;
     }
-    s32 count = getActorManager_801F856C()->mActorEnd;
+    count = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < count; i++) {
-        ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
+        other = getActorManager_801F856C()->mActors[i];
         if (other != NULL && (other->mActorId == ACTOR_WARP || other->mActorId == ACTOR_CIRC) &&
             field_0x4 == other->field_0x4)
         {
             f32 dx = other->mPos.x - mPos.x;
             f32 dy = other->mPos.y - mPos.y;
-            if (JGeometry::TVec2f(dx, dy).length() < 12.0f) {
+            if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 12.0f) {
                 if (other->mActorId == ACTOR_WARP) {
                     if (other->vfunc_0x3C() == 0 || other->vfunc_0x34() == true) {
                         warpSerial = other->mSerial;
@@ -445,20 +447,21 @@ void Cucco_804AB8C0::fn_80331E6C() {
         return;
     }
     JGeometry::TVec3f target(0.0f, 0.0f, 0.0f);
-    s32 code = 0;
     s32 newLayer = 0;
+    s32 code = 0;
     if (warpSerial >= 0) {
         Warp_804A6DC8* warp = static_cast<Warp_804A6DC8*>(getActorManager_801F856C()->findActorBySerial_801F666C(warpSerial));
         if (warp == NULL) {
             return;
         }
         target = warp->field_0x238;
-        if (!getGameView_802D6A9C()->field_0x131df[field_0x4]) {
+        s32 layer = field_0x4;
+        if (!getGameView_802D6A9C()->field_0x131df[layer]) {
             target.z = mPos.z;
         }
         u32 arg = warp->field_0x90;
         s32 hi = (arg >> 24) & 7;
-        newLayer = hi != 0 ? hi + 7 : hi;
+        newLayer = hi == 0 ? hi : hi + 7;
         code = arg & 0x7F;
     } else if (circleSerial > 0) {
         MagicCircle_804A7960* circle = static_cast<MagicCircle_804A7960*>(getActorManager_801F856C()->findActorBySerial_801F666C(circleSerial));
@@ -466,11 +469,12 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
         target = circle->field_0x268;
-        if (!getGameView_802D6A9C()->field_0x131df[field_0x4]) {
+        s32 layer = field_0x4;
+        if (!getGameView_802D6A9C()->field_0x131df[layer]) {
             target.z = mPos.z;
         }
         s32 hi = (circle->field_0x90 >> 24) & 7;
-        newLayer = hi != 0 ? hi + 7 : hi;
+        newLayer = hi == 0 ? hi : hi + 7;
         code = 6;
     }
     if (code == 6 || code == 0x14 || code == 4 || code == 0x20 || code == 0x24) {
@@ -500,8 +504,8 @@ void Cucco_804AB8C0::fn_80331E6C() {
     mPos = target;
     field_0x4 = newLayer;
     field_0x284 = 0x14;
-    setVec(field_0x2e8, target);
-    setVec(field_0x2d0, target);
+    field_0x2e8 = target;
+    field_0x2d0 = target;
     field_0x2a4[0] = 0;
     field_0x2a4[1] = 0;
     f32 mag = PSVECMag(&field_0x2b8);
@@ -510,12 +514,10 @@ void Cucco_804AB8C0::fn_80331E6C() {
     } else if (mag > 3.0f) {
         mag = 3.0f;
     }
-    f32 half = mag * 0.5f;
+    f32 half = 0.5f * mag;
     if (code != 6 && code != 0x14) {
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
-        field_0x2b8.x = 0.0f;
-        field_0x2b8.y = 0.0f;
-        field_0x2b8.z = 0.0f;
+        field_0x3c.zero();
+        field_0x2b8.zero();
         field_0x238 = 0x14;
         field_0x258 = 0;
     }
@@ -547,7 +549,7 @@ void Cucco_804AB8C0::fn_80331E6C() {
         if (field_0x284 <= 0) {
             f32 dx = field_0x2e8.x - mPos.x;
             f32 dy = field_0x2e8.y - mPos.y;
-            if (JGeometry::TVec2f(dx, dy).length() > 12.0f) {
+            if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) > 12.0f) {
                 field_0x2a4[0] = 1;
             }
         }
