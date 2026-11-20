@@ -315,12 +315,12 @@ inline bool cls_804A3E44::checkPlayerHit() {
     if (mState == 10 || (mState == 3 && mAnim.mCel == 1)) {
         if (field_0x2b8 >= 0 && !fn_8022DCD8(field_0x2b8)) {
             if (fn_801CD2F8(field_0x4) || !fn_801CD2F8(field_0x2ac) || !fn_801CD1D0(field_0x2b8)) {
-                mBox.set(-16.0f, -24.0f, 16.0f, 0.0f);
+                mBox.set(-8.0f, -9.0f, 8.0f, 6.0f);
                 u8 hit = fn_801F2740(-1);
                 if (hit & (1 << field_0x2b8)) {
                     hitFlag = true;
                 }
-                mBox.set(-12.0f, -20.0f, 12.0f, 8.0f);
+                mBox.set(-12.0f, -14.0f, 12.0f, 8.0f);
                 mBox2.set(mBox);
             }
         }
@@ -416,7 +416,7 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250 && !(mFlags & 0x2000)) {
-            s32 p = fn_801D05F8(&mSpawnPos, 32.0f);
+            s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
             if (p >= 0) {
                 field_0x2b8 = p;
                 fn_801BC554(1);
@@ -426,13 +426,13 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
     case 1:
         if (mStateTimer >= 60) {
             // Steering temporary: testing the call directly costs 0.8 % (98.37 vs 99.16).
-            bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 48.0f);
+            bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 80.0f);
             if (b) {
                 fn_801BC554(5);
                 break;
             }
         }
-        if (mPos.z <= 32.0f) {
+        if (mPos.z <= 48.0f) {
             fn_801BC554(2);
             break;
         }
@@ -455,11 +455,11 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
         break;
     case 2: {
         // Steering temporary, as in state 1.
-        bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 48.0f);
+        bool b = !fn_801D08B4(field_0x2b8, &mSpawnPos, 80.0f);
         if (b) {
             fn_801BC554(5);
-        } else if (mPos.z <= 2.0f) {
-            mPos.z = 2.0f;
+        } else if (mPos.z <= 10.0f) {
+            mPos.z = 10.0f;
             fn_801BC554(3);
         } else if (mAnim.mAnim == 3) {
             if (mAnim.fn_801D21F0()) {
@@ -480,17 +480,17 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
         }
         break;
     case 4:
-        if (mPos.z >= 4.0f) {
+        if (mPos.z >= 30.0f) {
             if (field_0x2ac != field_0x4) {
                 fn_801BC554(7);
             } else {
-                mPos.z = 4.0f;
+                mPos.z = 30.0f;
                 fn_801BC554(6);
             }
         }
         break;
     case 5: {
-        s32 p = fn_801D05F8(&mSpawnPos, 32.0f);
+        s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
         if (mStateTimer >= 100 && !(mFlags & 0x2000) && p >= 0) {
             field_0x2b8 = p;
             fn_801BC554(1);
@@ -504,7 +504,7 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
         break;
     }
     case 6:
-        if (__fabsf(field_0x2b0.x - mPos.x) < 1.0f && __fabsf(field_0x2b0.y - mPos.y) < 1.0f) {
+        if (__fabsf(field_0x2b0.x - mPos.x) < 0.1f && __fabsf(field_0x2b0.y - mPos.y) < 0.1f) {
             if (!fn_8022DD74(field_0x2b8)) {
                 mFlags |= 0x8000;
                 field_0x2c4 = field_0x2b8;
@@ -519,14 +519,14 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
             mPos.x = field_0x2b0.x;
             mPos.y = field_0x2b0.y;
             JGeometry::TVec3f pos;
-            pos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z - 2.0f);
+            pos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z - 10.0f);
             fn_802316C8(field_0x2b8, field_0x2ac, &pos);
             fn_801BC554(8);
         }
         break;
     case 8:
-        if (mPos.z <= 4.0f) {
-            mPos.z = 4.0f;
+        if (mPos.z <= 30.0f) {
+            mPos.z = 30.0f;
             if (!fn_8022DD74(field_0x2b8)) {
                 mFlags |= 0x8000;
                 field_0x2c4 = field_0x2b8;
@@ -561,7 +561,7 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
             fn_801BC554(9);
         } else {
             field_0x98 = mParam.mTarget;
-            field_0x2b8 = fn_801D05F8(&mPos, 32.0f);
+            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {
