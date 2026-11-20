@@ -22,12 +22,6 @@
 #include "game/tu_8030AE84.h"
 #include "game/tu_80379F84.h"
 
-// Whether p (x, y) is in box (min inclusive, max exclusive): fn_802422D0's test (its registers
-// need the plain && return, not BoxTest.h's containsPoint).
-static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3f& p) {
-    return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
-}
-
 // Offsets of 10 along the facing (right, left, down, up), fn_80250090.
 static const f32 lbl_8046AE08[4][2] = {
     {10.0f, 0.0f},
@@ -4154,13 +4148,14 @@ void Player_804A6F38::fn_80242560() {
 // on layer 0. Then the saved positions 0x2C4 / 0xCB0 / 0xD1C, 0x344 / 0x368
 // cleared, field_0xd54 = 10, the trail reset (fn_80248604), the held key or
 // the 'KEY0' at field_0xd88 moved along (fn_802C1D30), field_0x122c = 5.
+// Registers only: the box test's x / y (f2 / f1 in the original, f1 / f2 here).
 void Player_804A6F38::fn_802422D0() {
     if (fn_80270A8C() && !fn_8025F448()) {
         fn_80270948(getPlayerPos_8023E724(lbl_8053A190));
     } else {
         JGeometry::TBox2f box;
         box = getGameView_802D6A9C()->mVisibleBox;
-        if (field_0x3b4 >= 8 || !contains(box, mPos)) {
+        if (field_0x3b4 >= 8 || !containsPoint(box, mPos)) {
             mPos.x = getPlayerPos_8023E724(lbl_8053A190)->x;
             mPos.y = getPlayerPos_8023E724(lbl_8053A190)->y;
             field_0x3b4 = 0;
