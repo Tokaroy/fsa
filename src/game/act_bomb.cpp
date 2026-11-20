@@ -881,7 +881,7 @@ void Bomb_8049F784::update() {
     }
 }
 
-// FIXME: 98.17 % (scheduling+regalloc). Only register allocation differs (frame in r30/flag in r31, float registers in setRotScaleMtx).
+// FIXME: Only float register allocation differs (scale and setRotScaleMtx locals).
 void Bomb_8049F784::draw() {
     if (field_0x230 == 9) {
         return;
@@ -892,9 +892,9 @@ void Bomb_8049F784::draw() {
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
 
-    s32 i;
+    s32 i = 0;
     s32 count = 0;
-    for (i = 0; i < 4; i++) {
+    for (; i < 4; i++) {
         if (fn_80236B50(i)) {
             count++;
         }
@@ -913,13 +913,13 @@ void Bomb_8049F784::draw() {
         }
     }
 
-    s32 frame;
     s32 flag;
+    s32 frame;
     f32 scale;
     if (field_0x90 == 8 || field_0x90 == 9) {
         if (field_0x230 != 5) {
             flag = 0;
-            scale = field_0x274 * 0.5f;
+            scale = field_0x274 / 2.0f;
             frame = field_0x24c + 0x312;
         } else {
             flag = 1;
@@ -952,8 +952,8 @@ void Bomb_8049F784::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
 
+    s32 flags = -1;
     if (field_0x24c < 2) {
-        s32 flags = -1;
         if (field_0x230 != 10 && field_0x230 != 0 && field_0x230 != 6 &&
             field_0x230 != 7 && field_0x230 != 8 && !field_0xc4) {
             if (field_0x90 == 8 || field_0x90 == 9) {
