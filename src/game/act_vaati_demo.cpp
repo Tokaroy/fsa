@@ -454,9 +454,8 @@ void cls_8049D940::fn_801158B8() {
     params.field_0x2d = 1;
     pos = mPos;
     pos.z = 0.0f;
-    void* res = field_0x32c;
     if (field_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x32c, &params);
     }
 }
 #pragma auto_inline reset
