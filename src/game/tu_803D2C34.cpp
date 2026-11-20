@@ -283,8 +283,6 @@ void cls_804B0288::fn_803D5090() {
     }
 }
 
-// FIXME: 99.99 %, scheduling+regalloc; behaviour clean.
-// FIXME(shotgun): stack slots of the f32 locals b/c are swapped vs. original
 void cls_804B0288::fn_803D4DB0() {
     if (field_0x54 == field_0x50) {
         return;
@@ -312,7 +310,7 @@ void cls_804B0288::fn_803D4DB0() {
             msg = field_0x50;
             if (msg == 0x6F || msg == 0x72 || msg == 0x76 || msg == 0x7B || msg == 0x7D || msg == 0x82 || msg == 0x86 ||
                 msg == 0x87) {
-                f32 a, b, c, d;
+                f32 a, c, b, d;
                 fn_8037EB0C(&a, &b, &c, &d, &field_0x2170);
                 if (field_0x216f != 3) {
                     field_0x1c[0]->field_0x22 = 0;
