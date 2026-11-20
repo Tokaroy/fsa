@@ -56,8 +56,8 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x5b8 = 0;
     field_0x5bc = 0.0f;
     field_0x5c0 = 0.0f;
-    field_0x5c4 = 0.0f;
-    field_0x5c8 = 0.0f;
+    field_0x5c4.x = 0.0f;
+    field_0x5c4.y = 0.0f;
     field_0x5cc = 0;
     field_0x5cd = 0;
     field_0x5ce = 0;
@@ -374,7 +374,34 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     mState = state;
 }
 
-// FIXME(shotgun): 94.71 %, missing/extra; behaviour near.
+inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
+    bool found = false;
+    s32 player = fn_801D05F8(&mPos, 160.0f);
+    if (player >= 0) {
+        const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
+        JGeometry::TVec2f target;
+        target.x = p->x;
+        target.y = p->y;
+        found = true;
+        if (out != NULL) {
+            JGeometry::TVec2f d(target.x - mPos.x, target.y - mPos.y);
+            if (d.squared() <= JGeometry::TUtilf::epsilon()) {
+                d.set(1.0f, 0.0f);
+            }
+            d.normalize();
+            d.x *= 10000.0f;
+            d.y *= 10000.0f;
+            out->x = mPos.x;
+            out->y = mPos.y;
+            out->x += d.x;
+            out->y += d.y;
+        }
+    }
+    return found;
+}
+
+// Not auto-inlined: vfunc_0x90 calls fn_801D5B70 out of line in the original.
+#pragma auto_inline off
 void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
         if (fn_801CD2F8(field_0x4)) {
@@ -382,24 +409,7 @@ void VaatiBoss_804A4958::fn_801D5B70() {
                 fn_801D5D84(0x15);
             } else {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-                    bool found = false;
-                    s32 player = fn_801D05F8(&mPos, 160.0f);
-                    if (player >= 0) {
-                        const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
-                        found = true;
-                        JGeometry::TVec2f d(p->x - mPos.x, p->y - mPos.y);
-                        if (d.squared() <= JGeometry::TUtilf::epsilon()) {
-                            d.set(1.0f, 0.0f);
-                        }
-                        d.normalize();
-                        d.x *= 10000.0f;
-                        d.y *= 10000.0f;
-                        field_0x5c4 = mPos.x;
-                        field_0x5c8 = mPos.y;
-                        field_0x5c4 += d.x;
-                        field_0x5c8 += d.y;
-                    }
-                    if (found) {
+                    if (calcTargetFar_801D5B70(&field_0x5c4)) {
                         fn_801D5D84(0x11);
                         return;
                     }
@@ -417,6 +427,7 @@ void VaatiBoss_804A4958::fn_801D5B70() {
         }
     }
 }
+#pragma auto_inline reset
 
 // Collects the players (other than the current target) that are in play and not
 // flagged in field_0x2a8, and picks one at random; -1 when there is none.
@@ -848,8 +859,8 @@ void VaatiBoss_804A4958::fn_801D4C70() {
     case 0x12:
     case 0x13:
     case 0x14:
-        tx = field_0x5c4;
-        ty = field_0x5c8;
+        tx = field_0x5c4.x;
+        ty = field_0x5c4.y;
         break;
     default:
         if (field_0x5b0 >= 0) {
