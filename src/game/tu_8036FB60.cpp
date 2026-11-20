@@ -560,7 +560,6 @@ void cls_804AE4B0::fn_80370C18() {
 }
 
 // FIXME(shotgun): 94.75 %, scheduling + reloc-name; behaviour clean.
-// Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -568,7 +567,7 @@ void cls_804AE4B0::fn_80370A7C() {
             JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                                   (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
             fn_8022FE80(0, field_0x4, mSerial, true, false);
-            if (fn_8038BD08(0, lbl_80474F10[field_0x394], field_0x4, pos, 0x22)) {
+            if (fn_8038BD08(0, lbl_80474F10[field_0x394], getField_0x4(), pos, 0x22)) {
                 return;
             }
         }
