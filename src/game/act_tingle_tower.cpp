@@ -114,7 +114,6 @@ cls_804AAD60::~cls_804AAD60() {
     }
 }
 
-// FIXME(shotgun): 95.85 %, missing/extra; behaviour near.
 void cls_804AAD60::init() {
     field_0x230 = field_0x90 & 3;
     field_0x234 = 0;
@@ -343,7 +342,6 @@ void cls_804AAD60::fn_80315EE8() {
     }
 }
 
-// FIXME(shotgun): 94.35 %, different; behaviour clean.
 void cls_804AAD60::fn_80315C84() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -490,7 +488,7 @@ void cls_804AAD60::fn_80315864() {
     }
 }
 
-// FIXME(shotgun): 94.61 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.21 %, missing/extra; behaviour clean.
 void cls_804AAD60::fn_80315460() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -570,7 +568,7 @@ void cls_804AAD60::fn_80315460() {
     }
 }
 
-// FIXME(shotgun): 94.31 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804AAD60::fn_80315080() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -633,7 +631,7 @@ void cls_804AAD60::fn_80315080() {
     }
 }
 
-// FIXME(shotgun): 91.46 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.81 %, missing/extra; behaviour near.
 void cls_804AAD60::fn_80314B1C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -907,7 +905,7 @@ void cls_804AAD60::fn_803142E4() {
     }
 }
 
-// FIXME(shotgun): 93.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.82 %, missing/extra; behaviour near.
 void cls_804AAD60::fn_80313D7C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -1024,7 +1022,6 @@ void cls_804AAD60::fn_80313D7C() {
     }
 }
 
-// FIXME(shotgun): 52.40 %, different + reloc-name; behaviour clean.
 void cls_804AAD60::fn_80313C20() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
