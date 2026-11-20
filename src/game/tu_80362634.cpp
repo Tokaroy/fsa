@@ -209,7 +209,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
-// FIXME: 96.20 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.55 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -775,7 +775,7 @@ void cls_804ADF28::fn_80364F00() {
     }
 }
 
-// FIXME(shotgun): 95.82 %, different; behaviour drift.
+// FIXME(shotgun): 98.68 %, different; behaviour drift.
 void cls_804ADF28::fn_80364D0C() {
     ActorBase_804A5770* owl;
     s32 slot = field_0x24c;
@@ -1470,9 +1470,6 @@ void cls_804ADF28::fn_80362B74() {
     mPos = savedPos;
 }
 
-// FIXME: 99.58 %, reloc-name; behaviour clean.
-// Instructions identical; only the relocation of the "fune.bti" string is @NNN here
-// against lbl_80474C10 (the unit's rodata is not complete yet).
 void cls_804ADF28::fn_80362B14() {
     void* res = fn_804032E8('TIMG', "fune.bti");
     if (field_0x4 < 8) {
@@ -1480,7 +1477,7 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour drift.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx mtx;
@@ -1521,7 +1518,7 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.40 %, operands; behaviour drift.
+// FIXME(shotgun): 99.45 %, scheduling+regalloc; behaviour clean.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
