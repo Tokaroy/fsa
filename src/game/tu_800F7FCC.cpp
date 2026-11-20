@@ -1072,6 +1072,19 @@ void cls_8049C718::fn_800FA1A4() {
     }
 }
 
+// The 3x3 part of `m` as the scale x, y, z; the translation column is the caller's.
+static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
 // FIXME(shotgun): 99.36 %, regalloc-only; behaviour clean.
 void cls_8049C718::draw() {
     f32 s = JMath::sincosTable_.sinShort((s16)mWobble);
@@ -1082,15 +1095,7 @@ void cls_8049C718::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = mScale + a;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = mScale;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = mScale + b;
+    setScaleMtx(mtx, mScale + a, mScale, mScale + b);
     params.mMtx = mtx;
     params.field_0x14.r = (s32)(255.0f * mTint);
     params.field_0x14.g = (s32)(255.0f * mTint);
