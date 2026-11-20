@@ -279,7 +279,7 @@ void cls_8049C718::fn_800FC984() {
     mAngleSpeed = 0x40;
     mAngle += mAngleSpeed;
     mRadius = 1.0f;
-    fn_801F1184()->field_0x48 = 0.0f;
+    fn_801F1184()->setField_0x48(0.0f);
     startSound_801F0E34(0x4002F, 0);
     mTimer--;
     if (mTimer <= 0) {

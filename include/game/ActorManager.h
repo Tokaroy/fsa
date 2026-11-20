@@ -61,6 +61,8 @@ public:
     // cls_804B20F8::startSound (game/tu_8045B010.cpp) with 0.
     JAISoundHandle* fn_80456334(JAISoundID id, u32 fade);
 
+    void setField_0x48(f32 value) { field_0x48 = value; }
+
     // 0x80455F40 (game/tu_80455CA4.cpp): r3 is this, r4 the handle. Does
     // nothing for a NULL handle or one without a sound; otherwise writes
     // track ports 0xA, 0x9 and 0xB from field_0x44 and field_0x45. Called by
