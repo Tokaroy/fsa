@@ -1072,7 +1072,19 @@ void cls_8049C718::fn_800FA1A4() {
     }
 }
 
-// FIXME(shotgun): 99.36 %, regalloc-only; behaviour clean.
+// The 3x3 part of `m` as the scale x, y, z; the translation column is the caller's.
+static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
 void cls_8049C718::draw() {
     f32 s = JMath::sincosTable_.sinShort((s16)mWobble);
     f32 a = 0.4f * s;
@@ -1082,15 +1094,7 @@ void cls_8049C718::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    mtx[0][0] = mScale + a;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = mScale;
-    mtx[1][2] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[2][1] = 0.0f;
-    mtx[2][2] = mScale + b;
+    setScaleMtx(mtx, mScale + a, mScale, mScale + b);
     params.mMtx = mtx;
     params.field_0x14.r = (s32)(255.0f * mTint);
     params.field_0x14.g = (s32)(255.0f * mTint);
@@ -1242,7 +1246,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     }
 }
 
-// FIXME(shotgun): 86.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.73 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     cls_8049C718* parent = mParent;
     if (parent->mSlotUsed[mIndex] != 0) {
@@ -1261,9 +1265,9 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
         target = JGeometry::TVec3f(parent->mPos.x + off * JMath::sincosTable_.sinShort(ang),
                                    parent->mPos.y + off * JMath::sincosTable_.cosShort(ang),
                                    10.0f + parent->mPos.z);
+        f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         mFlag249 = 1;
         field_0x3c.set(mPos.x, mPos.y, mPos.z);
-        f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         moveToward(mPos, target, speed);
         field_0x3c.sub(mPos);
         field_0x3c.scale(-0.5f);
