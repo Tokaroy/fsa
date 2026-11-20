@@ -110,7 +110,7 @@ void cls_8049DA0C::init() {
     mEmitter2a8 = spawnEmitter_8013CC50(field_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-// FIXME: 98.07 %, different; behaviour drift.
+// FIXME: 98.48 %, missing/extra; behaviour drift.
 // Same length. Differences: fn_8038BD08's result is converted from a byte in the original
 // (clrlwi / neg / or / srwi.; the shared declaration returns bool); the box corner adds store in another
 // order; case 2's camera setup reloads mPos.x / mPos.y where the original reuses registers; the loop
