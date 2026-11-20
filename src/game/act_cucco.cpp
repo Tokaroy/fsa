@@ -387,8 +387,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
     u8 r = fn_801F2618(&out, false);
     if (r == 1) {
         fn_801F11B4();
-        s32 layer = field_0x4;
-        if (getGameView_802D6A9C()->field_0x131df[layer] == 1 && out.y < 0.0f) {
+        if (viewLayerFlag(field_0x4) == 1 && out.y < 0.0f) {
             field_0x2b8.y = 0.0f;
         }
     } else {
@@ -404,8 +403,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
                 }
             }
         }
-        s32 layer = field_0x4;
-        if (getGameView_802D6A9C()->field_0x131df[layer] == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
+        if (viewLayerFlag(field_0x4) == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
             field_0x3c.y = 0.0f;
             field_0x2b8.y = 0.0f;
         }
