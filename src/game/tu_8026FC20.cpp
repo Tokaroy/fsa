@@ -685,16 +685,14 @@ void Player_804A6F38::fn_8027CB24() {
 }
 
 // FIXME: 78.55 %, scheduling; behaviour clean.
-// Same instructions; in the original the float store and the li 8 / lis come
-// before the argument setup (lfs, stfs, li, lis, stw, mr, addi), ours hoists lis/li/mr above the stfs.
 void Player_804A6F38::fn_8027CAA8() {
     field_0x458 = 0;
     field_0x436 = 1;
     if (viewLayerFlag(field_0x3b4)) {
         field_0x344.y = 0.0f;
-        field_0xbf4 = 8;
-        fn_8024F0E8(0x1000b);
     }
+    field_0xbf4 = 8;
+    fn_8024F0E8(0x1000b);
 }
 
 // Update of state 0x07 (a fall / knock-up): gravity 0.25 on 0x344.z (down to -8); on flagged
