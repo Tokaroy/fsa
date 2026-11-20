@@ -31,7 +31,7 @@ public:
         if (field_0x260 != mode) {
             field_0x260 = mode;
             field_0x2b0 = 0;
-            field_0x234 = 0;
+            field_0x234[0] = 0;
             field_0x240 = 0;
             field_0x25c = field_0x264 << 3;
             switch (field_0x260) {
@@ -50,9 +50,7 @@ public:
     }
 
     /* 0x230 */ s32 field_0x230; // substate
-    /* 0x234 */ s32 field_0x234; // countdown (update)
-    /* 0x238 */ s32 field_0x238; // countdown (update)
-    /* 0x23C */ s32 field_0x23c; // countdown (update)
+    /* 0x234 */ s32 field_0x234[3]; // countdowns (update)
     /* 0x240 */ s32 field_0x240; // fn_801AA8F4's frame step (0..3)
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
