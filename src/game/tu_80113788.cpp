@@ -66,7 +66,6 @@ static const u16 lbl_80464948[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x
 static const u16 lbl_80464958[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
 
 // 0x80115590.
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour clean.
 cls_8049D83C::cls_8049D83C()
     : field_0x230(1), field_0x231(1), field_0x232(0), field_0x233(0), field_0x234(1), field_0x238(0),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
@@ -133,7 +132,7 @@ cls_8049D83C::~cls_8049D83C() {
 }
 
 // 0x80115248.
-// FIXME(shotgun): 96.48 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.72 %, scheduling; behaviour clean.
 void cls_8049D83C::init() {
     cls_8049D140::init();
     field_0x238 = field_0x90 & 0xFF;
@@ -161,7 +160,7 @@ void cls_8049D83C::init() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.97 %, missing/extra + reloc-name; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
@@ -336,7 +335,7 @@ void cls_8049D83C::vfunc_0x54() {
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.74 %, scheduling+regalloc; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -535,7 +534,7 @@ s32 cls_8049D83C::vfunc_0x5C() {
 #pragma auto_inline off
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
-// FIXME(shotgun): 91.12 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -556,7 +555,7 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     }
 }
 
-// FIXME(shotgun): 99.31 %, scheduling + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.68 %, same-text; behaviour clean.
 void cls_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -600,7 +599,6 @@ void cls_8049D83C::fn_8011395C() {
     }
 }
 
-// FIXME(shotgun): 99.83 %, reloc-name; behaviour clean.
 void cls_8049D83C::fn_80113790() {
     if (field_0x248 > 0) {
         SpriteParams_801F5AE0 params;
