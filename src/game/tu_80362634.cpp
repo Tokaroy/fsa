@@ -777,6 +777,7 @@ void cls_804ADF28::fn_80364F00() {
 
 // FIXME(shotgun): 95.82 %, different; behaviour drift.
 void cls_804ADF28::fn_80364D0C() {
+    ActorBase_804A5770* owl;
     s32 slot = field_0x24c;
     if (slot < 0) {
         s32 end = getActorManager_801F856C()->mActorEnd;
@@ -789,7 +790,7 @@ void cls_804ADF28::fn_80364D0C() {
         }
     } else {
         s32 oldDir = field_0x23c;
-        ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+        owl = getActorManager_801F856C()->mActors[slot];
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
