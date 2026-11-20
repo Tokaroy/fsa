@@ -2389,7 +2389,7 @@ void cls_804B0B00::fn_803E4940() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.81 %, operands; behaviour clean.
+// FIXME: 99.95 %, operands; behaviour clean.
 // Stack slots only: the original converts
 // both blink branches' ints in the 0x8 slot, ours the second branch's in 0x10.
 // Draws states 12 and 13 (the results screen field_0x10): each taking
