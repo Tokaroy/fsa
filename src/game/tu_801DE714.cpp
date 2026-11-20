@@ -131,6 +131,35 @@ static inline void findTargets(cls_804A51E4* a) {
 }
 
 
+// Whether the state may change to 7. fn_801E0CF4 has the same test spelled out;
+// as an inline its result and the flags take the original's registers in fn_801E1300.
+static inline bool canChase(const cls_804A51E4* a) {
+    bool result = false;
+    switch (a->mState) {
+    case 0:
+    case 7:
+    case 0xF:
+    case 0x10:
+    case 0x11:
+    case 0x12:
+        break;
+    default:
+        if (!(a->mFlags & 0x4000) && a->field_0x2cc == 0) {
+            if (a->fn_801E1DB4()) {
+                if (a->mFlags & 0x20000) {
+                    if (a->mFlags & 0x100000) {
+                        result = true;
+                    }
+                } else if (a->mTargetSerial < 0) {
+                    result = true;
+                }
+            }
+        }
+        break;
+    }
+    return result;
+}
+
 // tu_801DE714 (0x801E22A4): the constructor, after EnemyBase's (a plain bl).
 cls_804A51E4::cls_804A51E4() {
     field_0x2a8 = -1;
@@ -558,6 +587,9 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     mState = newState;
 }
 
+// Not auto-inlined: fn_801E0CF4 calls fn_801E1300 out of line in the
+// original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
 // FIXME(shotgun): 94.82 %, scheduling+regalloc; behaviour clean.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
@@ -589,34 +621,12 @@ void cls_804A51E4::fn_801E1300() {
     }
     if (lost) {
         findTargets(this);
-        bool start = false;
-        switch (mState) {
-        case 0:
-        case 7:
-        case 0xF:
-        case 0x10:
-        case 0x11:
-        case 0x12:
-            break;
-        default:
-            if (!(mFlags & 0x4000) && field_0x2cc == 0) {
-                if (fn_801E1DB4()) {
-                    if (mFlags & 0x20000) {
-                        if (mFlags & 0x100000) {
-                            start = true;
-                        }
-                    } else if (mTargetSerial < 0) {
-                        start = true;
-                    }
-                }
-            }
-            break;
-        }
-        if (start) {
+        if (canChase(this)) {
             fn_801E1594(7);
         }
     }
 }
+#pragma auto_inline reset
 
 // FIXME(shotgun): 92.53 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
