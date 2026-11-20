@@ -188,7 +188,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
     }
 }
 
-// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.73 %, regalloc-only; behaviour drift.
 void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     switch (state) {
     case 1:
@@ -941,7 +941,7 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
-// FIXME(shotgun): 98.15 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.41 %, missing/extra; behaviour drift.
 // Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
     const JGeometry::TBox2f* box = layerBox(field_0x4);
