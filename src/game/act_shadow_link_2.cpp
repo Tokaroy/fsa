@@ -1299,11 +1299,13 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
                 obj->field_0x284 = 1;
                 obj->field_0x28c = 0.05f;
             }
+            f32 x = mPos.x;
+            f32 y = mPos.y;
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
             if (camera->field_0x7f5 == 0) {
                 camera->field_0x7f4 = 1;
                 camera->field_0x7f8 = 4;
-                camera->field_0x7fc.set(mPos.x, mPos.y, 0.0f);
+                camera->field_0x7fc.set(x, y, 0.0f);
                 camera->field_0x7f6 = 0;
             }
         }
@@ -1317,7 +1319,8 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
         break;
     }
     }
-    lbl_8053AED0->fn_8043E7CC(mPos);
+    JGeometry::TVec3f pos = mPos;
+    lbl_8053AED0->fn_8043E7CC(pos);
 }
 
 void ShadowLink2_804A43E8::fn_801C27F0() {
