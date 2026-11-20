@@ -205,29 +205,26 @@ cls_804AA8B8::cls_804AA8B8() {
 // 0x80309014
 cls_804AA8B8::~cls_804AA8B8() {}
 
-// FIXME: 95.36 %, regalloc-only; behaviour clean.
-// Regalloc only: the same code as fn_80308D0C, but the original keeps the
-// player counter in r4, the list bases in r6 / r7 and the element in r5 (ours r7, r5 / r6, r4).
 // 0x80308E90
 void cls_804AA8B8::fn_80308E90() {
-    for (int player = 0; player < 4; player++) {
-        for (int i = 0; i < 16; i++) {
-            lbl_80504A38[player][i].reset();
-        }
-        for (int j = 0; j < 40; j++) {
-            lbl_80505438[player][j].resetAll();
-        }
-    }
+    fn_80308D0C();
 }
 
 // 0x80308D0C
 void fn_80308D0C() {
     for (s32 player = 0; player < 4; player++) {
         for (int i = 0; i < 16; i++) {
-            lbl_80504A38[player][i].reset();
+            lbl_80504A38[player][i].mActive = 0;
+            lbl_80504A38[player][i].mRemove = 0;
+            lbl_80504A38[player][i].mTimer = 0;
+            lbl_80504A38[player][i].mSerial = -1;
         }
         for (int j = 0; j < 40; j++) {
-            lbl_80505438[player][j].resetAll();
+            lbl_80505438[player][j].mActive = 0;
+            lbl_80505438[player][j].mRemove = 0;
+            lbl_80505438[player][j].mTimer = 0;
+            lbl_80505438[player][j].mSerial = -1;
+            lbl_80505438[player][j].field_0xc = -1;
         }
     }
 }
