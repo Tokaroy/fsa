@@ -24,7 +24,7 @@ static inline void rotateArrowPane(J2DPane* pane, f32 angle) {
     pane->rotate(0.5f * w, 0.5f * h, J2DROTATE_Z, angle);
 }
 
-// FIXME(shotgun): 91.93 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.90 %, scheduling; behaviour clean.
 cls_804B16A8::cls_804B16A8() {
     mScreen = new J2DScreen;
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
@@ -62,15 +62,16 @@ cls_804B16A8::cls_804B16A8() {
     field_0x34 = new PaneCtrl_804AF86C;
     field_0x34->setPane_80402F04(mScreen->search('Ptopbb07'));
     field_0x38 = lbl_8053AED8->field_0x8;
-    lbl_8053AED8->fn_80440D78((const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti"));
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    ((J2DTextBox*)mScreen->search('Ta02'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Tq02'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Ta01'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Tq01'))->setFont(lbl_8053AD78->mFont);
+    ((J2DTextBox*)mScreen->search('Ta02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Tq02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Ta01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Tq01'))->setFont(lbl_8053AD78->getFont());
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        ((J2DTextBox*)mScreen->search('Ta03'))->setFont(lbl_8053AD78->mFont);
-        ((J2DTextBox*)mScreen->search('Tq03'))->setFont(lbl_8053AD78->mFont);
+        ((J2DTextBox*)mScreen->search('Ta03'))->setFont(lbl_8053AD78->getFont());
+        ((J2DTextBox*)mScreen->search('Tq03'))->setFont(lbl_8053AD78->getFont());
     }
     field_0x62 = (s32)mScreen->search('Par01')->getRotate();
     field_0x64 = (s32)mScreen->search('Par02')->getRotate();
@@ -223,10 +224,12 @@ void cls_804B16A8::fn_8043670C(u8 arg) {
     }
 }
 
-// FIXME(shotgun): 97.14 %, different; behaviour near.
 s32 cls_804B16A8::fn_804366B8() {
     (this->*lbl_804B1690[field_0x6b])();
-    return field_0x6b == 2;
+    if (field_0x6b != 2) {
+        return 0;
+    }
+    return 1;
 }
 
 void cls_804B16A8::fn_80436668() {
@@ -334,11 +337,9 @@ void cls_804B16A8::fn_804361A8() {
     fn_80435E20();
 }
 
-// FIXME(shotgun): 97.48 %, missing/extra; behaviour drift.
 void cls_804B16A8::fn_80435E20() {
     if (field_0x60 == 0) {
-        field_0x5e--;
-        if (field_0x5e <= 0) {
+        if (--field_0x5e <= 0) {
             field_0x5e = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
             if (field_0x66 == -6) {
                 field_0x66 = 6;
@@ -355,8 +356,8 @@ void cls_804B16A8::fn_80435E20() {
         rotateArrowPane(field_0xc[0]->mPane, (f32)(field_0x62 + field_0x66));
         rotateArrowPane(field_0xc[1]->mPane, (f32)(field_0x64 + field_0x66));
     }
+    s32 t;
     if (field_0x60 < 0) {
-        s32 t;
         if (field_0x60 > -5) {
             t = -field_0x60;
         } else {
@@ -371,8 +372,9 @@ void cls_804B16A8::fn_80435E20() {
             field_0x60--;
         }
     } else if (field_0x60 > 0) {
-        s32 t = field_0x60;
-        if (field_0x60 >= 5) {
+        if (field_0x60 < 5) {
+            t = field_0x60;
+        } else {
             t = 10 - field_0x60;
             if (field_0x60 == 10) {
                 field_0x60 = 0;
@@ -477,7 +479,6 @@ void cls_804B16A8::fn_80434724() {
     field_0x60 = 0;
 }
 
-// FIXME(shotgun): 99.83 %, operands; behaviour near.
 void cls_804B16A8::fn_80434370() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
     f32 cellW = lbl_8053AD78->mFont->getCellWidth();
@@ -492,7 +493,7 @@ void cls_804B16A8::fn_80434370() {
             field_0x48 = getMessageText_803832BC(((J2DTextBox*)mScreen->search('Ta01'))->getStringPtr(), 0xFC, 0, NULL, NULL);
         }
         J2DPane* pane = mScreen->search('Ta01');
-        field_0x40 = (pane->getWidth() - field_0x48 * scale) * 0.5f;
+        field_0x40 = (pane->getWidth() - field_0x48 * scale) / 2.0f;
     } else if (field_0x5a == 1) {
         if (field_0x6c == 0) {
             if (field_0x69 == 1) {
@@ -512,7 +513,7 @@ void cls_804B16A8::fn_80434370() {
             }
         }
         J2DPane* pane = mScreen->search('Ta02');
-        field_0x40 = (pane->getWidth() - field_0x4c * scale) * 0.5f;
+        field_0x40 = (pane->getWidth() - field_0x4c * scale) / 2.0f;
     } else if (field_0x5a == 2) {
         if (field_0x6c == 1) {
             if (field_0x6a == 1) {
