@@ -309,16 +309,15 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
         JGeometry::TBox2f hit;
         hit.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
         bool found = false;
-        for (s32 i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (fn_801D0B44(i)) {
-                s32 slot = getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i);
-                if (lbl_8053AD30->fn_80309D6C(slot, 0x100)) {
+                if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i), 0x100)) {
                     JGeometry::TVec2f p;
                     p.y = lbl_8046A640[fn_80230CFC(i)][1];
                     p.x = lbl_8046A640[fn_80230CFC(i)][0];
                     const JGeometry::TVec3f* pp = getPlayerPos_8023E724(i);
-                    p.x += pp->x;
-                    p.y += pp->y;
+                    p.x = pp->x + p.x;
+                    p.y = pp->y + p.y;
                     if (containsPoint(hit, p)) {
                         found = true;
                         break;
@@ -390,8 +389,9 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
                 if (mFlags & 0x10000) {
                     gGameRoot_8053AAF8->fn_80138B7C();
                     s32 count = gGameRoot_8053AAF8->fn_80138A30();
+                    s32 dir;
                     for (s32 i = 0; i < count; i++) {
-                        s32 dir = fn_801CD354(fn_801D0020(&mPos, i, false));
+                        dir = fn_801CD354(fn_801D0020(&mPos, i, false));
                         fn_80230BF4(i, dir);
                         fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3c, 0xFF, -0x80, -0x80, true);
                     }
@@ -444,8 +444,8 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
         break;
     }
     bool settle = false;
-    if (mState != 10) {
-        settle = fn_80219E04();
+    if (mState != 10 && fn_80219E04()) {
+        settle = true;
     }
     if (mHead.fn_8021A570(settle)) {
         switch (mHead.mState) {
