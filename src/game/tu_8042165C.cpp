@@ -520,6 +520,8 @@ void cls_804B146C::fn_804263A8() {
     field_0xf0->fn_8044172C();
 }
 
+static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y);
+
 static inline bool isPaused() {
     if (gGameRoot_8053AAF8->field_0x4c == 11) {
         return true;
@@ -527,8 +529,6 @@ static inline bool isPaused() {
     return gGameRoot_8053AAF8->field_0x88 == 2;
 }
 
-// Only the .sdata2 pool order (from earlier functions) still differs.
-// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804B146C::fn_80425F6C() {
     f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
     f32 scale = lbl_8050DB0C.field_0x30[4];
@@ -543,20 +543,14 @@ void cls_804B146C::fn_80425F6C() {
         f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
-            f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            calcHudPos(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
             field_0x208[i] = 0;
         } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
-            f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            calcHudPos(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x2c[i]->draw(x, y, field_0x4c);
@@ -1454,6 +1448,14 @@ void cls_804B146C::fn_80421D78(s32 player) {
     if (field_0x208[player] > 0) {
         field_0x208[player]--;
     }
+}
+
+// A projected screen position in the HUD's ortho space, relative to the centre (both callers inline it).
+static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y) {
+    f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
+    f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
+    *x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
+    *y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
 }
 
 void cls_804B146C::fn_80421A34(s32 player, bool force) {
