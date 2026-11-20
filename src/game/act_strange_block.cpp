@@ -16,7 +16,7 @@
 static const Vec lbl_80471E28[4] = {{20.0f, 0.0f, 0.0f}, {-20.0f, 0.0f, 0.0f}, {0.0f, 20.0f, 0.0f}, {0.0f, -20.0f, 0.0f}};
 
 // .data at 0x804ABC80 (16 bytes, local to this unit).
-extern const s32 lbl_804ABC80[4];
+extern s32 lbl_804ABC80[4];
 extern const f32 lbl_804A79E0[12]; // step per direction (game/act_block.cpp)
 extern const f32 lbl_804AC2A8[12]; // push velocity per direction
 extern const s32 lbl_804ABCA0[16]; // sprite frame offsets by animation step (and, 4 per row, by phase)
