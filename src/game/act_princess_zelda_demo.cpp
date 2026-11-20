@@ -62,9 +62,48 @@ PrincessZeldaDemo_8049D208::~PrincessZeldaDemo_8049D208() {
     }
 }
 
-// The animation key tables (lbl_8049D1A0, 26 of them; lbl_80539EF8, 2) are in this unit's data.
-extern const s16* lbl_8049D1A0[26];
-extern const s16* lbl_80539EF8[2];
+// The animation key tables (lbl_8049D1A0, 26 of them; lbl_80539EF8, 2) with their key lists (frame, duration pairs, -1 ends).
+static const s16 lbl_80464360[] = { 0, 3, 1, 3, 2, 3, 3, 3, 4, 3, 5, 3, 6, 3, 7, 3, -1, -1 };
+static const s16 lbl_80464384[] = { 8, 3, 9, 3, 10, 3, 11, 3, 12, 3, 13, 3, 14, 3, 15, 3, -1, -1 };
+static const s16 lbl_804643A8[] = { 16, 3, 17, 3, 18, 3, 19, 3, 20, 3, 21, 3, 22, 3, 23, 3, -1, -1 };
+static const s16 lbl_804643CC[] = { 24, 3, 25, 3, 26, 3, 27, 3, 28, 3, 29, 3, 30, 3, 31, 3, -1, -1 };
+static const s16 lbl_804643F0[] = { 32, 3, 33, 5, 34, 6, 35, 7, 36, 30, -1, -1 };
+static const s16 lbl_80464408[] = { 36, 30, 35, 7, 34, 6, 33, 5, 32, 3, -1, -1 };
+static const s16 lbl_80464420[] = { 24, 1, 0, 2, 16, 10, -1, -1 };
+static const s16 lbl_80464430[] = { 16, 1, 0, 2, 24, 10, -1, -1 };
+static const s16 lbl_80464440[] = { 24, 1, 8, 2, 16, 10, -1, -1 };
+static const s16 lbl_80464450[] = { 16, 1, 8, 2, 24, 10, -1, -1 };
+static const s16 lbl_80464460[] = { 16, 8, 8, 2, 24, 2, -1, -1 };
+static const s16 lbl_80464470[] = { 0, 8, 1, 8, 2, 40, -1, -1 };
+static const s16 lbl_80464480[] = { 3, 5, 4, 5, 5, 5, -1, -1 };
+static const s16 lbl_80464490[] = { 6, 5, 7, 5, 8, 5, -1, -1 };
+static const s16 lbl_804644A0[] = { 0, 9, 1, 9, 2, 9, -1, -1 };
+static const s16 lbl_804644B0[] = { 3, 9, 4, 9, 5, 9, -1, -1 };
+static const s16 lbl_804644C0[] = { 7, 1, 8, 9, 0, 10, -1, -1 };
+static const s16 lbl_804644D0[] = { 10, 1, 6, 10, -1, -1 };
+static const s16 lbl_804644DC[] = { 0, 1, 8, 9, 7, 9, -1, -1 };
+static const s16 lbl_804644EC[] = { 7, 8, 6, 8, -1, -1 };
+static const s16 lbl_804644F8[] = { 5, 5, 9, 9, 10, 10, -1, -1 };
+static const s16 lbl_80464508[] = { 24, 6, 25, 6, 26, 6, 27, 6, 28, 6, 29, 6, 30, 6, 31, 6, -1, -1 };
+static const s16 lbl_8046452C[] = { 16, 6, 17, 6, 18, 6, 19, 6, 20, 6, 21, 6, 22, 6, 23, 6, -1, -1 };
+static const s16 lbl_8053C520[] = { 0, 3, -1, -1 };
+static const s16 lbl_8053C528[] = { 8, 3, -1, -1 };
+static const s16 lbl_8053C530[] = { 16, 3, -1, -1 };
+static const s16 lbl_8053C538[] = { 24, 3, -1, -1 };
+static const s16 lbl_8053C540[] = { 33, 5, -1, -1 };
+
+static const s16* lbl_8049D1A0[26] = {
+    lbl_80464360, lbl_80464384, lbl_804643A8, lbl_804643CC,
+    lbl_804643F0, lbl_80464408, lbl_8053C520, lbl_8053C528,
+    lbl_8053C530, lbl_8053C538, lbl_80464420, lbl_80464430,
+    lbl_80464440, lbl_80464450, lbl_80464460, lbl_80464470,
+    lbl_80464480, lbl_80464490, lbl_8053C540, lbl_804644A0,
+    lbl_804644B0, lbl_804644C0, lbl_804644D0, lbl_804644DC,
+    lbl_804644F8, lbl_804644EC,
+};
+static const s16* lbl_80539EF8[2] = {
+    lbl_80464508, lbl_8046452C,
+};
 // The scenario keys of the demo (rodata 0x80464550).
 extern const s32 lbl_80464550[];
 static const s32 lbl_8053C548[] = { 0x232, 0x4B0 };
