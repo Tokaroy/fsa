@@ -69,7 +69,7 @@ extern const s16* lbl_80539EF8[2];
 extern const s32 lbl_80464550[];
 static const s32 lbl_8053C548[] = { 0x232, 0x4B0 };
 
-// FIXME(shotgun): 98.61 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.87 %, reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::init() {
     cls_8049D140::init();
     field_0x234 = field_0x90 & 0xFF;
