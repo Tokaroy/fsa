@@ -127,7 +127,7 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
-// FIXME: 91.21 %, different + reloc-name; behaviour clean.
+// FIXME: 96.54 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -557,7 +557,7 @@ s32 cls_804AE088::vfunc_0x5C() {
 }
 
 // differs: register allocation (original keeps &mPos in a register across the draw calls).
-// FIXME: 93.90 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.28 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
         return;
@@ -1332,7 +1332,7 @@ void cls_804AE088::fn_80368660() {
     }
 }
 
-// FIXME: 96.32 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
