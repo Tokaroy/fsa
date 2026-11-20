@@ -2689,11 +2689,6 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
 }
 
-// FIXME: 99.97 %, regalloc-only; behaviour clean.
-// Regalloc only: boardDelay / boardFrames swap r21 / r23, and
-// the row offset's fsubs takes f0 / f2 the other way round (as fn_803CE370).
-// The checksum test materialises the bool (neg / or / srwi.), which
-// `!= false` gives (a plain test gives and., 99.43).
 // State 35 (after the delete's card write, from fn_803BF004): row field_0xa4
 // slides out between the first and third rows' places (fading its colours
 // back when its checksum failed); at its end it waits at the right with
@@ -2723,7 +2718,7 @@ void FileSelect_804AFF60::fn_803C4628() {
         field_0x38[field_0xa4]->fn_80402628(outFrames, field_0x38[field_0xa4]->field_0x28, 0);
         setRowAlphas(this, field_0xa4);
         if (field_0xd8 == outEnd) {
-            field_0x38[field_0xa4]->moveFromCentre_80402E08(600.0f, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+            field_0x38[field_0xa4]->moveFromCentre_80402E08(600.0f, field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
             field_0x38[field_0xa4]->field_0x20 = 0;
             field_0x38[field_0xa4]->mPane->setAlpha(0);
             setRowAlphas(this, field_0xa4);
