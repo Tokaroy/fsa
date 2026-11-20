@@ -138,9 +138,13 @@ void OBJLift_804ACA00::init() {
         free[1] = true;
         free[2] = true;
         free[3] = true;
-        s32 serial = -1;
+        s32 serial;
         s32 taken = 0;
-        while (taken < 4) {
+        serial = -1;
+        for (;;) {
+            if (taken >= 4) {
+                break;
+            }
             serial = getActorManager_801F856C()->fn_801F78F4('OBLF', serial);
             if (serial < 0) {
                 break;
@@ -202,20 +206,7 @@ void OBJLift_804ACA00::init() {
         mBox.f.x = 23.0f;
         mBox.f.y = 23.0f;
         field_0x240 = 10;
-        s32 layer = field_0x4;
-        if (layer >= 8) {
-            showBreakEffect(layer);
-            startSound_801F0E34(0x30003, 0);
-        } else {
-            spawnEmitter_8013CC50(layer, &mPos, 0x459, 0, -3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45A, 0, -3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45B, 0, -3, NULL, NULL, true, 1.0f);
-        }
-        startSound_801F0E34(0x30065, 0);
-        field_0x254 = 30;
-        field_0x258 = 12;
-        field_0x230 = 0;
-        field_0x240 = 10;
+        fn_803513C0();
         break;
     }
     case 16:
@@ -243,9 +234,11 @@ void OBJLift_804ACA00::init() {
         break;
     }
     field_0x28c = 1.0f;
-    if (field_0x25c == 2) {
+    switch (field_0x25c) {
+    case 2:
         field_0x230 = 4;
         field_0x28c = 0.0f;
+        break;
     }
 }
 
