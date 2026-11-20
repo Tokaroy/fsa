@@ -288,9 +288,8 @@ void SeesawLift_804AD348::fn_8035AA54() {
 // FIXME: 87.56 %, scheduling+regalloc; behaviour clean.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
-        f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-        f32 cosVal = JMath::sincosTable_.cosShort(field_0x230);
-        f32 slide = 0.3f * __fabsf(sinVal) * (__fabsf(weight) / (mBox.f.y * __fabsf(cosVal)));
+        f32 slide = 0.3f * __fabsf(JMath::sincosTable_.sinShort(field_0x230)) *
+                    (__fabsf(weight) / (mBox.f.y * __fabsf(JMath::sincosTable_.cosShort(field_0x230))));
         if (slide > 0.3f) {
             slide = 0.3f;
         }
@@ -737,11 +736,11 @@ void SeesawLift_804AD348::spawnSandEmitters() {
 
 u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
-    rel.sub(mPos);
-    rel.z = 0.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += 7.0f;
     box.f.x -= 7.0f;
+    rel.sub(mPos);
+    rel.z = 0.0f;
     return (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) ? true : false;
 }
 
