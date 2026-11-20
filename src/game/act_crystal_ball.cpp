@@ -869,9 +869,10 @@ void CrystalBall_804AB308::draw() {
     if (field_0x28c == 0) {
         return;
     }
-    SpriteParams_801F5AE0 params;
+    s32 flags;
     bool held = false;
-    s32 flags = -1;
+    flags = -1;
+    SpriteParams_801F5AE0 params;
     params.field_0x10.a = field_0x28c;
     params.field_0x2d = 1;
     params.field_0x1d = 1;
@@ -879,7 +880,8 @@ void CrystalBall_804AB308::draw() {
     Mtx mtx;
     if (field_0x2a8 == 1) {
         PSMTXIdentity(mtx);
-        setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x238, 0.0f), field_0x234);
+        JGeometry::TVec3f rot(0.0f, field_0x238, 0.0f);
+        setRotScaleMtx(mtx, rot, field_0x234);
         params.mMtx = mtx;
         params.field_0x1d = 0;
         params.field_0x1c = 0;
