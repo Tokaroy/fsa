@@ -160,9 +160,16 @@ s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer) {
 
 // The packed cell index of pos (as fn_80226BC4, on a Vec3).
 // FIXME(shotgun): 95.26 %, scheduling+regalloc; behaviour clean.
-// (forwards to fn_80226BC4)
 s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
-    return fn_80226BC4((const JGeometry::TVec2f*)pos, layer);
+    GameView_804A9950* view = getGameView_802D6A9C();
+    const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+    JGeometry::TBox2f box;
+    box = *src;
+    s32 x = (s32)(pos->x - box.i.x);
+    s32 y = (s32)(pos->y - box.i.y);
+    clampCell(x);
+    clampCell(y);
+    return ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
 }
 
 // The same as fn_80226850 (only the register allocation differs in the original).
