@@ -846,7 +846,8 @@ void cls_804A4C58::update() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x840 == 0) {
             camera->field_0x840 = 1;
-            camera->field_0x844.set(mPos.x, mPos.y, mPos.x, mPos.y);
+            camera->field_0x844.i.x = camera->field_0x844.f.x = mPos.x;
+            camera->field_0x844.i.y = camera->field_0x844.f.y = mPos.y;
             camera->field_0x854 = 1.0f;
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
