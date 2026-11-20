@@ -1353,19 +1353,20 @@ void cls_804AA8B8::fn_80304FB0() {
 }
 
 // FIXME: 98.47 %, regalloc-only; behaviour clean.
-// Regalloc only: the original keeps the list bases in r6 / r7 and the element in
-// r8 (ours r7 / r8 and r6).
 // 0x80304D64
 void fn_80304D64() {
+    cls_803099FC* entry;
     for (int player = 0; player < 4; player++) {
+        entry = lbl_80504A38[player];
         for (int i = 0; i < 16; i++) {
-            if (lbl_80504A38[player][i].mRemove == 1) {
-                lbl_80504A38[player][i].mActive = 0;
-                lbl_80504A38[player][i].mRemove = 0;
-                lbl_80504A38[player][i].mSerial = -1;
-            } else if (lbl_80504A38[player][i].mActive == 1 && lbl_80504A38[player][i].mTimer < 5) {
-                lbl_80504A38[player][i].mTimer++;
+            if (entry->mRemove == 1) {
+                entry->mActive = 0;
+                entry->mRemove = 0;
+                entry->mSerial = -1;
+            } else if (entry->mActive == 1 && entry->mTimer < 5) {
+                entry->mTimer++;
             }
+            entry++;
         }
         for (int i = 0; i < 40; i++) {
             if (lbl_80505438[player][i].mRemove == 1 && lbl_80505438[player][i].mTimer == 0) {
