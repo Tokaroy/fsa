@@ -516,11 +516,20 @@ bool cls_804A4C58::fn_801DD1AC() {
             mPos.y = field_0x2d0;
             clamped = true;
             mMapHitDir.set(0.0f, -1.0f, 0.0f);
-        } else if (mState >= 0xB && mState < 0x11) {
-            if (mPos.y < field_0x2d4[0].y) {
-                mPos.y = field_0x2d4[0].y;
-                clamped = true;
-                mMapHitDir.set(0.0f, 1.0f, 0.0f);
+        } else {
+            switch (mState) {
+            case 0xB:
+            case 0xC:
+            case 0xD:
+            case 0xE:
+            case 0xF:
+            case 0x10:
+                if (mPos.y < field_0x2d4[0].y) {
+                    mPos.y = field_0x2d4[0].y;
+                    clamped = true;
+                    mMapHitDir.set(0.0f, 1.0f, 0.0f);
+                }
+                break;
             }
         }
     }
