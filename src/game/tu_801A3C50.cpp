@@ -15,10 +15,11 @@
 // 0x801A6160.
 // FIXME(shotgun): 96.89 %, different; behaviour drift.
 s32 ActorBase_804A5770::fn_801A6160() {
+    s32 timer;
     s32 result = 0;
     JGeometry::TBox2f box = mBox2;
     JGeometry::TVec2f pos(mPos.x, mPos.y - mPos.z);
-    s32 timer = field_0xa8;
+    timer = field_0xa8;
     if (timer != 0) {
         if (timer == 30) {
             f32 scale = fn_801EE4F0();
@@ -39,8 +40,8 @@ s32 ActorBase_804A5770::fn_801A6160() {
     if (field_0xb0 == 0 || mLife <= 0) {
         return 0;
     }
-    box.addPos(pos);
     lbl_8053A100 = -1;
+    box.addPos(pos);
     s32 hit;
     if ((hit = fn_801A5400(&box, &pos)) != 0) {
         result = 3;
