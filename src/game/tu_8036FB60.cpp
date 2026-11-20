@@ -749,45 +749,43 @@ void cls_804AE4B0::guidePlayer_80370764() {
 }
 
 // FIXME: 92.92 %, missing/extra + reloc-name; behaviour near.
-// FIXME(shotgun): extra li for the match flag init; literal reloc names differ
 s32 cls_804AE4B0::fn_80370200() {
+    s32 i;
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
-    bool any = false;
     f32 best = 100000.0f;
     s32 bestIdx = -1;
-    for (s32 i = 0; i < 4; i++) {
+    bool any = false;
+    for (i = 0; i < 4; i++) {
         u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x264[idx].y - field_0x294[i].y,
-                                                  field_0x264[idx].x - field_0x294[i].x) * 10430.378f);
-        bool match = false;
+                                                  field_0x264[idx].x - field_0x294[i].x) *
+                          (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle >= 0x2000 && angle < 0x6000) {
-            if (field_0x340[i] == 2) {
-                match = true;
+            if (field_0x340[i] != 2) {
+                continue;
             }
         } else if (angle >= 0x6000 && angle < 0xA000) {
-            if (field_0x340[i] == 1) {
-                match = true;
+            if (field_0x340[i] != 1) {
+                continue;
             }
         } else if (angle >= 0xA000 && angle < 0xE000) {
-            if (field_0x340[i] == 3) {
-                match = true;
+            if (field_0x340[i] != 3) {
+                continue;
             }
         } else {
-            if (field_0x340[i] == 0) {
-                match = true;
+            if (field_0x340[i] != 0) {
+                continue;
             }
         }
-        if (match) {
-            if (lbl_80474F4C[field_0x340[i]] == fn_80230CFC(idx)) {
-                any = true;
-                hit[i] = 1;
-            }
+        if (lbl_80474F4C[field_0x340[i]] == fn_80230CFC(idx)) {
+            any = true;
+            hit[i] = 1;
         }
     }
     if (!any) {
         return -1;
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (hit[i] == 1) {
             f32 d = PSVECDistance(&field_0x264[idx], &field_0x294[i]);
             if (d < best) {
