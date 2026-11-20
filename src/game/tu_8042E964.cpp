@@ -24,26 +24,6 @@ cls_804B1600* lbl_8053AEC4;
 static const s16 lbl_80543AE8[4] = {0x8, 0x154, 0x5, 0x0};
 static const s16 lbl_80543AF0[4] = {0x164, 0xA, 0x160, 0x0};
 
-// The window the warning text slides over: built inline by cls_804B1634's constructor.
-inline cls_804B1600::cls_804B1600() {
-    JUTResFont* font;
-    lbl_8053AEC4 = this;
-    field_0x4 = new J2DScreen;
-    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
-    field_0x8 = new PaneCtrl_804AF86C;
-    field_0x8->setPane_80402F04(field_0x4->search('Pmmwk02'));
-    field_0xc = new PaneCtrl_804AF86C;
-    field_0xc->setPane_80402F04(field_0x4->search('Pbl01'));
-    font = lbl_8053AD78->mFont;
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(font);
-    font = lbl_8053AD78->mFont;
-    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(font);
-    field_0x10 = 0;
-    field_0x12 = 0;
-}
-
-// FIXME(shotgun): 95.78 %, missing/extra + reloc-name; behaviour near.
-// (loop counter and pointer registers)
 cls_804B1634::cls_804B1634() {
     JUTResFont* font;
     lbl_8053AEC0 = this;
@@ -76,12 +56,9 @@ cls_804B1634::cls_804B1634() {
     static_cast<J2DTextBox*>(field_0x8->search('Twt01'))->setFont(font);
     for (s32 i = 0; i < 4; i++) {
         u8 k = 0;
-        for (s32 j = 0; j < 2; j++) {
-            field_0x38[i * 4 + j * 2] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
-            field_0x78[i * 4 + j * 2] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
-            k++;
-            field_0x38[i * 4 + j * 2 + 1] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
-            field_0x78[i * 4 + j * 2 + 1] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
+        for (s32 j = 0; j < 4; j++) {
+            field_0x38[i][j] = static_cast<J2DPicture*>(field_0x10[i]->mPane)->mTexCoords[k];
+            field_0x78[i][j] = static_cast<J2DPicture*>(field_0x24[i]->mPane)->mTexCoords[k];
             k++;
         }
     }
@@ -190,8 +167,6 @@ void cls_804B1634::fn_804316EC() {
     }
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// The temporaries f0-f3 of the cursor placement are numbered differently (regalloc only).
 bool cls_804B1634::fn_80431174(u8 cursor) {
     if (field_0x8->search(0x0050776375723031ull)->mIsVisible) {
         field_0xe8--;
@@ -207,19 +182,19 @@ bool cls_804B1634::fn_80431174(u8 cursor) {
         f32 y;
         f32 x;
         J2DPane* textX = field_0x8->search(0x0000005477743031ull);
-        x = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.x + textX->getWidth() * 0.5f;
+        x = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.x + textX->getWidth() / 2.0f;
         J2DPane* textY = field_0x8->search(0x0000005477743031ull);
-        y = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.y + textY->getHeight() * 0.5f;
+        y = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.y + textY->getHeight() / 2.0f;
         if (cursor == 0) {
-            x += (field_0xb8[1] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) * 0.5f;
+            x += (field_0xb8[1] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) / 2.0f;
         } else {
-            x += (field_0xb8[2] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) * 0.5f +
+            x += (field_0xb8[2] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) / 2.0f +
                  (field_0xcc[1] - field_0xcc[0]);
         }
         f32 curHeight = field_0x8->search(0x0050776375723031ull)->getHeight();
-        y += (field_0xd8[cursor] - (f32)field_0xe4 * 0.5f - 1.0f) *
+        y += (field_0xd8[cursor] - (f32)field_0xe4 / 2.0f - 1.0f) *
                  ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() +
-             (((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() - curHeight) * 0.5f;
+             (((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() - curHeight) / 2.0f;
         field_0x8->search(0x0050776375723031ull)->move(x, y);
         field_0x8->search(0x0050776375723032ull)->move(x, y);
         f32 height1 = field_0x8->search(0x0050776375723031ull)->getHeight();
@@ -319,7 +294,7 @@ f32 cls_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
     return total;
 }
 
-// FIXME(shotgun): 99.61 %, operands; behaviour drift.
+// FIXME(shotgun): 99.68 %, same-text; behaviour drift.
 // (string literal pool offsets)
 f32 cls_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     switch (noun) {
@@ -432,8 +407,8 @@ void cls_804B1634::fn_8042F6DC() {
     JGeometry::TVec2<s16> tcB[4];
     s32 tx = tilesW << 8;
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[i];
-        tcB[i] = field_0x78[i];
+        tcA[i] = field_0x38[0][i];
+        tcB[i] = field_0x78[0][i];
     }
     tcA[1].x = tx;
     tcA[3].x = tx;
@@ -443,8 +418,8 @@ void cls_804B1634::fn_8042F6DC() {
     static_cast<J2DPicture*>(field_0x24[0]->mPane)->setTexCoord(tcB);
 
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[4 + i];
-        tcB[i] = field_0x78[4 + i];
+        tcA[i] = field_0x38[1][i];
+        tcB[i] = field_0x78[1][i];
     }
     tcA[0].x = tx;
     tcA[2].x = tx;
@@ -455,8 +430,8 @@ void cls_804B1634::fn_8042F6DC() {
 
     s32 ty = tilesH << 8;
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[8 + i];
-        tcB[i] = field_0x78[8 + i];
+        tcA[i] = field_0x38[2][i];
+        tcB[i] = field_0x78[2][i];
     }
     tcA[2].x = ty;
     tcA[3].x = ty;
@@ -466,8 +441,8 @@ void cls_804B1634::fn_8042F6DC() {
     static_cast<J2DPicture*>(field_0x24[2]->mPane)->setTexCoord(tcB);
 
     for (s32 i = 0; i < 4; i++) {
-        tcA[i] = field_0x38[12 + i];
-        tcB[i] = field_0x78[12 + i];
+        tcA[i] = field_0x38[3][i];
+        tcB[i] = field_0x78[3][i];
     }
     tcA[0].x = ty;
     tcA[1].x = ty;
@@ -545,7 +520,7 @@ void cls_804B1634::scaleFrames(f32 w, f32 h) {
     field_0x10[4]->fn_80402CE0((w + (w_bb4 - w4)) / w_bb4, sy_bb2);
 }
 
-// FIXME(shotgun): 93.99 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.14 %, missing/extra + reloc-name; behaviour near.
 // Lays message `id` out into `str` with each line centred in 428 (a "\x1BCR[n]" prefix), the
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
@@ -559,9 +534,9 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     lbl_8053AD78->mFont->getCellHeight();
     field_0xea = 0xFF;
     field_0xe4 = 1;
-    u8 digit = value + '0';
+    int code = 0;
+    int digit = value + '0';
     s32 i = 0;
-    s32 code = 0;
     u8 choice = 0;
     f32 lineW = 0.0f;
     f32 spaceW = 0.0f;
@@ -699,6 +674,24 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     ch[0] = p[0];
     ch[1] = 0;
     strcat(str, ch);
+}
+
+// The window the warning text slides over: inlined by cls_804B1634's constructor and dead-stripped.
+cls_804B1600::cls_804B1600() {
+    JUTResFont* font;
+    lbl_8053AEC4 = this;
+    field_0x4 = new J2DScreen;
+    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x8 = new PaneCtrl_804AF86C;
+    field_0x8->setPane_80402F04(field_0x4->search('Pmmwk02'));
+    field_0xc = new PaneCtrl_804AF86C;
+    field_0xc->setPane_80402F04(field_0x4->search('Pbl01'));
+    font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt01'))->setFont(font);
+    font = lbl_8053AD78->mFont;
+    static_cast<J2DTextBox*>(field_0x4->search('Tmmt02'))->setFont(font);
+    field_0x10 = 0;
+    field_0x12 = 0;
 }
 
 cls_804B1600::~cls_804B1600() {
