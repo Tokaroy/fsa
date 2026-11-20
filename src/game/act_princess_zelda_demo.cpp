@@ -218,7 +218,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The demo states of the first two scene sets (field_0x234 0 and 1): keeps the maiden's box
 // registered, steers the camera (fn_80110454) and runs the state's step.
-// FIXME: 97.88 %, missing/extra; behaviour drift.
+// FIXME: 98.01 %, missing/extra; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_80110E9C() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -489,7 +489,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
 
 // The idle states of the demo: keeps the maiden's box registered, steers the camera
 // (fn_80110210) and runs the state's step; a player standing at the maiden starts the talk (state 2).
-// FIXME: 98.31 %, missing/extra; behaviour drift.
+// FIXME: 98.66 %, scheduling; behaviour drift.
 // Left: in startTalk the original stores the message position's z after loading mSerial and field_0x4.
 void PrincessZeldaDemo_8049D208::fn_8011093C() {
     JGeometry::TBox2f box = mBox;
@@ -1058,7 +1058,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
 void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
-// FIXME: 97.28 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.87 %, operands; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
     case 3:
