@@ -93,6 +93,8 @@ void PrincessZeldaDemo_8049D208::init() {
             case 2:
                 fn_8010E2D4(0x3d);
                 break;
+            case 3:
+                break;
             }
             field_0x238 = 0x3d;
         } else {
