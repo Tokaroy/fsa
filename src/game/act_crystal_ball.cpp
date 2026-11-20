@@ -60,8 +60,6 @@ CrystalBall_804AB308::~CrystalBall_804AB308() {
     releaseEmitter_801EE434(field_0x2c8);
 }
 
-// FIXME(shotgun): 98.77 %, missing/extra; behaviour drift.
-// one instruction
 void CrystalBall_804AB308::init() {
     field_0x94 = field_0x90 & 0xF;
     field_0x284 = (field_0x90 >> 8) & 0xF;
@@ -414,7 +412,7 @@ void CrystalBall_804AB308::fn_803226EC() {
     }
 }
 
-// FIXME(shotgun): 82.75 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.04 %, scheduling+regalloc; behaviour clean.
 // layer and pos sit in each other's saved register (r30/r28)
 bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u16 effectA;
@@ -499,7 +497,6 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME(shotgun): 99.80 %, scheduling; behaviour clean.
 void CrystalBall_804AB308::vfunc_0x40() {
     field_0x3c.zero();
     if (field_0x278 <= 180) {
