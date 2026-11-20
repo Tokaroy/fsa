@@ -19,6 +19,22 @@ static const s32 lbl_80474320[76] = {
     1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328, 898, 900, 896, 894,
 };
 static const s32 lbl_80474450[42] = {20, 2, 20, 2, 12, 2, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 20, 0, 20, 0, 20, 0, 15, 2};
+// The walk's leg lengths (fn_80364A88) and the frame-length / pattern byte lists (fn_80364F00).
+static const f32 lbl_804744F8[5] = {80.0f, 80.0f, 224.0f, 80.0f, 80.0f};
+static const f32 lbl_8047450C[5] = {112.0f, 80.0f, 160.0f, 80.0f, 112.0f};
+static const f32 lbl_80474520[5] = {144.0f, 80.0f, 96.0f, 80.0f, 144.0f};
+static const f32 lbl_80474534[5] = {176.0f, 80.0f, 32.0f, 80.0f, 176.0f};
+// Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
+// field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
+static const s32 lbl_80474548[5][4] = {
+    {851, 854, 848, 845},
+    {904, 907, 901, 898},
+    {865, 868, 862, 859},
+    {879, 882, 876, 873},
+    {843, 904, 857, 871},
+};
+static const s32 lbl_80474598[4] = {6, 9, 3, 0};
+static const s32 lbl_804745A8[4] = {910, 913, 907, 904};
 static const s32 lbl_804745B8[150] = {
     960, 954, 948, 966, 708, 710, 706, 704, 256, 258, 254, 252, 240, 242, 238, 236,
     248, 250, 246, 244, 211, 219, 203, 195, 902, 839, 974, 976, 890, 892, 895, 968,
@@ -31,34 +47,11 @@ static const s32 lbl_804745B8[150] = {
     292, 294, 296, 299, 298, 300, 306, 312, 314, 326, 328, 330, 332, 338, 340, 304,
     1141, 898, 900, 896, 894, 1335,
 };
-static const s32 lbl_80474598[4] = {6, 9, 3, 0};
-static const s32 lbl_80474A5C[3] = {907, 904, 910};
-static const s32 lbl_80474B58[4] = {937, 945, 929, 921};
-static const s32 lbl_80474B68[8] = {3, 3, 4, 3, 3, 3, 4, 3};
-static const s32 lbl_804745A8[4] = {910, 913, 907, 904};
-static const s32 lbl_80474A98[16] = {4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4};
-static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7, 8,
-                                     5, 6, 7, 8, 4, 1, 2, 3, 5, 6, 7, 8, 4, 1, 2, 3};
-static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
-static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
-static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
-static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
-
-// Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
-// field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
-static const s32 lbl_80474548[5][4] = {
-    {851, 854, 848, 845},
-    {904, 907, 901, 898},
-    {865, 868, 862, 859},
-    {879, 882, 876, 873},
-    {843, 904, 857, 871},
-};
+static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
+static const s8 lbl_8047481C[24] = {5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, -1, 0};
+static const s8 lbl_80474834[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0};
+static const s8 lbl_80474840[24] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 2, 4, 5, 4, 5, 4, 5, 4, 5, 4, 3, 2, 0, 0};
 static const s32 lbl_80474858[4] = {959, 962, 956, 953}; // sprite per heading (the original's table is 0x204 long)
-static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
-static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
-static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
-
-
 // Read by init (0x80365B5C). Per field_0x238 of state 4 (125 entries) and of state 0x11 (25):
 // the index into lbl_804ADED0 (field_0x270), into lbl_804ADF08 (field_0x274) and field_0x258.
 static const s8 lbl_80474868[125] = {
@@ -90,16 +83,20 @@ static const s8 lbl_804749B0[125] = {
 static const s8 lbl_80474A30[25] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                     1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 0};
 static const f32 lbl_80474A4C[4] = {0.9f, 1.0f, 0.8f, 0.7f};
+static const s32 lbl_80474A5C[3] = {907, 904, 910};
+static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
+static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
+static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
+static const s32 lbl_80474A98[16] = {4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4};
+static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7, 8,
+                                     5, 6, 7, 8, 4, 1, 2, 3, 5, 6, 7, 8, 4, 1, 2, 3};
+static const s32 lbl_80474B58[4] = {937, 945, 929, 921};
+static const s32 lbl_80474B68[8] = {3, 3, 4, 3, 3, 3, 4, 3};
+static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
+static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
+static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
+static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
 
-// The walk's leg lengths (fn_80364A88) and the frame-length / pattern byte lists (fn_80364F00).
-static const f32 lbl_804744F8[5] = {80.0f, 80.0f, 224.0f, 80.0f, 80.0f};
-static const f32 lbl_8047450C[5] = {112.0f, 80.0f, 160.0f, 80.0f, 112.0f};
-static const f32 lbl_80474520[5] = {144.0f, 80.0f, 96.0f, 80.0f, 144.0f};
-static const f32 lbl_80474534[5] = {176.0f, 80.0f, 32.0f, 80.0f, 176.0f};
-static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
-static const s8 lbl_8047481C[24] = {5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, -1, 0};
-static const s8 lbl_80474834[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0};
-static const s8 lbl_80474840[24] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 2, 4, 5, 4, 5, 4, 5, 4, 5, 4, 3, 2, 0, 0};
 
 static const s8 lbl_80542A78[4] = {7, 5, 7, -1};
 static const s8 lbl_80542A7C[4] = {0, 1, 2, 0};
@@ -210,7 +207,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
-// FIXME: 97.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.56 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -808,7 +805,7 @@ void cls_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 99.33 %, operands; behaviour drift.
+// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void cls_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&field_0x3c);
@@ -917,13 +914,13 @@ void cls_804ADF28::fn_80364900() {
     }
 }
 
-// FIXME(shotgun): 97.46 %, different; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_803645B4() {
+    JGeometry::TVec3f target;
     if (field_0x248 == 0 || field_0x238 != 0) {
         if (field_0x238 == 0) {
-            s32 slot = field_0x24c;
-            if (slot >= 0) {
-                ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+            if (field_0x24c >= 0) {
+                ActorBase_804A5770* owl = getActorManager_801F856C()->getActor(field_0x24c);
                 if (owl != NULL) {
                     owl->mAlive = false;
                 }
@@ -932,7 +929,7 @@ void cls_804ADF28::fn_803645B4() {
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'RUPY') {
-                    JGeometry::TVec3f target = actor->mPos;
+                    target = actor->mPos;
                     target.y += 4.0f;
                     if (actor->mPos.z == 0.0f && PSVECDistance(&mPos, &target) < 80.0f &&
                         PSVECDistance(&mPos, &target) > 30.0f) {
@@ -943,7 +940,7 @@ void cls_804ADF28::fn_803645B4() {
                         field_0x264 = 0;
                         field_0x268 = 0;
                         field_0x25c = 3;
-                        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+                        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                         if (angle >= 0x2000 && angle < 0x6000) {
                             field_0x23c = 0;
                         } else if (angle >= 0x6000 && angle < 0xa000) {
@@ -962,7 +959,7 @@ void cls_804ADF28::fn_803645B4() {
         } else {
             mPos.add(field_0x3c);
             fn_801F2618(NULL, false);
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[field_0x24c];
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(field_0x24c);
             if (actor == NULL) {
                 field_0x24c = -1;
                 field_0x238 = 0;
@@ -976,7 +973,7 @@ void cls_804ADF28::fn_803645B4() {
                     }
                     field_0x25c = lbl_80474B68[field_0x264];
                 }
-                JGeometry::TVec3f target = actor->mPos;
+                target = actor->mPos;
                 target.y += 4.0f;
                 if (PSVECDistance(&mPos, &target) < 4.0f) {
                     field_0x238 = 0;
@@ -1013,8 +1010,7 @@ void cls_804ADF28::fn_80364340() {
     }
 }
 
-// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
-// FIXME(shotgun): the original divides by (6.283184f * dist) with fres (estimate), we emit fdivs; literal names differ.
+// FIXME: 98.80 %, scheduling+regalloc; behaviour clean.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
@@ -1034,7 +1030,7 @@ void cls_804ADF28::fn_80363FFC() {
         }
     }
     if (field_0x3c.z == 0.0f && mPos.z == 0.0f) {
-        s32 cell = (tileX & 0x100) | ((tileY & 0x100) << 1) | (tileY & 0xF0) | ((tileX >> 4) & 0xF);
+        s32 cell = ((tileY & 0x100) << 1) | (tileX & 0x100) | (tileY & 0xF0) | ((tileX >> 4) & 0xF);
         field_0x27a = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, cell) & 0x3FF;
         if (field_0x27a == 0x1a8) {
             field_0x264 = 0;
@@ -1053,13 +1049,13 @@ void cls_804ADF28::fn_80363FFC() {
     JGeometry::TVec3f center(1808.0f, 3296.0f, 0.0f);
     if (mPos.x >= center.x) {
         if (mPos.y < center.y) {
-            s32 angle = (JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f);
+            s32 angle = JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f;
             f32 dist = PSVECDistance(&mPos, &center);
-            s32 delta = 65536.0f * (1.3f / (6.283184f * dist));
-            u16 a = angle + delta;
+            s32 delta = 65536.0f * (JMath::fastReciprocal(6.283184f * dist) * 1.3f);
+            s32 a = angle + delta;
             mPos.x = center.x + dist * JMath::sincosTable_.cosShort(a);
             mPos.y = center.y + dist * JMath::sincosTable_.sinShort(a);
-            if (a >= 0xe000) {
+            if ((u16)a >= 0xe000) {
                 field_0x23c = 0;
                 if (field_0x238 == 0) {
                     field_0x26c = 0x32f;
@@ -1235,7 +1231,7 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-// FIXME(shotgun): 99.35 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
@@ -1265,8 +1261,8 @@ void cls_804ADF28::fn_80363360() {
         field_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
         field_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
     }
-    if (field_0x3c.squared() > 32.0f * FLT_EPSILON) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+    if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
         if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 0;
         } else if (angle >= 0x6000 && angle < 0xa000) {
