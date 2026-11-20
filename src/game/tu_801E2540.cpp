@@ -38,6 +38,7 @@ static inline void releaseTarget(cls_804A51E4* self) {
     }
 }
 
+// FIXME: 82.61 %, scheduling; behaviour clean.
 bool cls_804A51E4::fn_801E2F40() {
     bool result = false;
     switch (fn_8022461C(&mPos, field_0x4)) {
@@ -104,7 +105,7 @@ void cls_804A51E4::fn_801E2D88() {
 }
 
 // Whether a player-side object (arrow, bomb, sword, ...) hits the actor's box.
-// FIXME: 90.86 %, missing/extra; behaviour near.
+// FIXME: 94.98 %, missing/extra; behaviour clean.
 bool cls_804A51E4::vfunc_0x58() {
     bool arrow = false;
     bool direct = false;
