@@ -917,9 +917,6 @@ static s32 getProgressMsg(s32 file) {
     return lbl_80476D00[7];
 }
 
-// FIXME: 99.65 %, missing/extra; behaviour clean.
-// The file index and its bit swap r24 / r25; the original
-// tests the time against the zero it materialises `used` from (one li fewer).
 // Refreshes the three file rows: a file whose checksum fails gets message
 // 0x11D and its bit in field_0x115 (fn_803BD5E0); a used file shows the date
 // it was chosen last and every file's progress; an empty file (or no card)
@@ -930,11 +927,7 @@ void FileSelect_804AFF60::fn_803CE4CC() {
         // (s32): the original tests field_0xff signed (lbz + cmpwi), as in fn_803CABAC.
         if ((s32)gGameRoot_8053AAF8->field_0xff != 0) {
             if (fn_803BADAC(&lbl_8050EC80.getFile(i))) {
-                BOOL used = FALSE;
-                if (lbl_8050EC80.getFile(i).field_0x0 != 0) {
-                    used = TRUE;
-                }
-                if (used) {
+                if (lbl_8050EC80.getFile(i).isUsed()) {
                     OSCalendarTime time;
                     OSTicksToCalendarTime(lbl_8050EC80.getFile(i).field_0x0, &time);
                     snprintf(((J2DTextBox*)mScreenHuuin->search(lbl_80476600[i]))->getStringPtr(), 30,
