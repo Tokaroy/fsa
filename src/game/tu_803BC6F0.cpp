@@ -2840,21 +2840,20 @@ void FileSelect_804AFF60::fn_803C4054() {
 }
 
 // FIXME: 98.24 %, different + reloc-name; behaviour near.
-// (try.py: different, same length). As fn_803C2E24: the original
-// keeps &others in r29 from the fill loop on and walks it in the row loop;
-// and it adds frames + rowStep before rowDelay (ours rowStep + rowDelay
-// first). Every field, call and branch is the original's.
+// Registers only: the original has frames in r26 and the row's index
+// temporaries in r28/r27 (ours r28 and r27/r26).
 // State 38 (after a delete, from fn_803C4330): the two rows that weren't
 // chosen slide back in and the chosen row returns to its place, as the end of
 // fn_803C2E24 (same timings, lbl_8050DB0C field_0x4c[0xD9..0xDB]); state 5.
 void FileSelect_804AFF60::fn_803C3904() {
-    s16 rowDelay = lbl_8050DB0C.field_0x4c[0xD9];
+    s32 others[2];
+    s32* row = others;
     s16 frames = lbl_8050DB0C.field_0x4c[0xDA];
     s16 rowStep = lbl_8050DB0C.field_0x4c[0xDB];
-    s32 end = rowDelay + (frames + rowStep);
+    s16 rowDelay = lbl_8050DB0C.field_0x4c[0xD9];
+    s32 end = rowDelay + frames + rowStep;
 
     // The two files that weren't chosen.
-    s32 others[2];
     s32* other = others;
     for (int i = 0; i < 3; i++) {
         if (i != field_0xa4) {
@@ -2863,14 +2862,14 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 
     field_0xd8++;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++, row++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(frames, 0, field_0x38[others[i]]->field_0x28);
-            setRowAlphas(this, others[i]);
-            field_0x44[others[i]]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(frames, 0, field_0x44[others[i]]->field_0x28);
-            setTabAlphas(this, others[i]);
+            field_0x38[*row]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x38[*row]->fn_80402628(frames, 0, field_0x38[*row]->field_0x28);
+            setRowAlphas(this, *row);
+            field_0x44[*row]->fn_80402B10(frames, 0, 600.0f, 0.0f);
+            field_0x44[*row]->fn_80402628(frames, 0, field_0x44[*row]->field_0x28);
+            setTabAlphas(this, *row);
         }
     }
     // The chosen row moves back down from the first row's place.
