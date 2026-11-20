@@ -181,15 +181,13 @@ void CrystalBall_804AB308::vfunc_0x54() {
     startSound_801F0E34(0x30001, 0);
 }
 
-// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 void CrystalBall_804AB308::fn_80322F44() {
     if (field_0x284 == 0) {
         if (!gGameRoot_8053AAF8->field_0x7e) {
             field_0x288 = 0;
         } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            s32 lo = fn_80236228(field_0x23c);
-            s32 hi = lo;
-            s32 base = hi;
+            s32 hi, lo, base;
+            base = hi = lo = fn_80236228(field_0x23c);
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
                     if (hi < fn_80236228(i)) {
@@ -856,7 +854,7 @@ void CrystalBall_804AB308::update() {
     fn_803226EC();
 }
 
-// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.36 %, scheduling+regalloc; behaviour clean.
 // setRotScaleMtx's float registers and the li order of flags / held differ
 void CrystalBall_804AB308::draw() {
     if (field_0x230 == 0 && field_0x278 <= 180 && (field_0x278 & 2) == 0) {
@@ -871,9 +869,9 @@ void CrystalBall_804AB308::draw() {
     if (field_0x28c == 0) {
         return;
     }
-    SpriteParams_801F5AE0 params;
-    bool held = false;
     s32 flags = -1;
+    bool held = false;
+    SpriteParams_801F5AE0 params;
     params.field_0x10.a = field_0x28c;
     params.field_0x2d = 1;
     params.field_0x1d = 1;
@@ -881,7 +879,8 @@ void CrystalBall_804AB308::draw() {
     Mtx mtx;
     if (field_0x2a8 == 1) {
         PSMTXIdentity(mtx);
-        setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x238, 0.0f), field_0x234);
+        JGeometry::TVec3f rot(0.0f, field_0x238, 0.0f);
+        setRotScaleMtx(mtx, rot, field_0x234);
         params.mMtx = mtx;
         params.field_0x1d = 0;
         params.field_0x1c = 0;
@@ -911,7 +910,7 @@ void CrystalBall_804AB308::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, frame + 0x90, 0, 2, -1, held, 0, 0);
 }
 
-// FIXME(shotgun): 95.67 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.33 %, missing/extra + reloc-name; behaviour drift.
 // item switch / spawn sequences are laid out differently
 void CrystalBall_804AB308::vfunc_0x24() {
     s32 code = fn_8022461C(&mPos, field_0x4);
@@ -941,10 +940,12 @@ void CrystalBall_804AB308::vfunc_0x24() {
         fn_801F3668();
         return;
     }
-    if ((code == 0xD && mPos.z < 0.1f) || code == 0x3B) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 2.0f);
-        fn_801F3668();
-        return;
+    if (code == 0xD || code == 0x3B) {
+        if ((code == 0xD && mPos.z < 0.1f) || code == 0x3B) {
+            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 2.0f);
+            fn_801F3668();
+            return;
+        }
     }
     if (field_0x4 >= 8) {
         JGeometry::TVec3f p = mPos;
@@ -977,7 +978,8 @@ void CrystalBall_804AB308::vfunc_0x24() {
         }
         case 4: {
             JGeometry::TVec3f p(mPos.x, mPos.y - mPos.z, 0.0f);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, field_0x4, &p, ((field_0x23c & 3) << 8) + 3, -1, -1);
+            s32 param = ((field_0x23c & 3) << 8) + 3;
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, field_0x4, &p, param, -1, -1);
             break;
         }
         case 6:
