@@ -130,7 +130,7 @@ void cls_804A7AE0::init() {
     field_0xbc = 3;
     field_0x1a4 = 4;
     mLife = 10000;
-    field_0x250.zero();
+    field_0x250.set(0.0f, 0.0f, 0.0f);
     field_0x2ac = 0;
     field_0x24c = 0;
     field_0x248 = 0;
@@ -156,6 +156,8 @@ void cls_804A7AE0::init() {
     }
     for (s32 i = 0; i < 4; i++) {
         mSerialsC[i] = -1;
+    }
+    for (s32 i = 0; i < 4; i++) {
         mSerialsD[i] = -1;
     }
     mSerialCountA = 0;
@@ -180,7 +182,7 @@ void cls_804A7AE0::init() {
         mEmitters2[i] = NULL;
     }
     field_0x30c = 0;
-    field_0x238.set(mPos.x, mPos.y, mPos.z);
+    field_0x238.set(mPos);
 }
 
 // FIXME(shotgun): 82.48 %, missing/extra + reloc-name; behaviour near.
@@ -561,7 +563,7 @@ void cls_804A7AE0::fn_80299720() {
             field_0x250.y += 0.32f;
         } else {
             mPos.y += field_0x250.y;
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -596,7 +598,7 @@ void cls_804A7AE0::fn_80299720() {
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.set(0.0f, 0.0f, 0.0f);
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 27) & 0x1F;
                 if (n > 0) {
@@ -637,7 +639,7 @@ void cls_804A7AE0::fn_80299374() {
             field_0x250.y -= 0.32f;
         } else {
             mPos.y += field_0x250.y;
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -670,7 +672,7 @@ void cls_804A7AE0::fn_80299374() {
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 22) & 0x1F;
                 if (n > 0) {
@@ -711,7 +713,7 @@ void cls_804A7AE0::fn_80298FC4() {
             field_0x250.x += 0.32f;
         } else {
             mPos.x += field_0x250.x;
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -747,7 +749,7 @@ void cls_804A7AE0::fn_80298FC4() {
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 17) & 0x1F;
                 if (n > 0) {
@@ -788,7 +790,7 @@ void cls_804A7AE0::fn_80298C18() {
             field_0x250.x -= 0.32f;
         } else {
             mPos.x += field_0x250.x;
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.f.x;
@@ -824,7 +826,7 @@ void cls_804A7AE0::fn_80298C18() {
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.set(0.0f, 0.0f, 0.0f);
-            field_0x250.zero();
+            field_0x250.set(0.0f, 0.0f, 0.0f);
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 12) & 0x1F;
                 if (n > 0) {
@@ -1440,7 +1442,7 @@ void cls_804A7AE0::update() {
             }
         }
     }
-    field_0x238.set(mPos.x, mPos.y, mPos.z);
+    field_0x238.set(mPos);
 }
 
 // FIXME(shotgun): 95.0 %, missing/extra: callee-saved register order in the prologue, 3 instructions
