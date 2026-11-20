@@ -1009,7 +1009,7 @@ void cls_804ADF28::fn_80364340() {
     }
 }
 
-// FIXME: 98.80 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.71 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
