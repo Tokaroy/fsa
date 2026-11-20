@@ -177,8 +177,6 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     return 0;
 }
 
-// FIXME: 99.44 %, regalloc-only; behaviour clean.
-// FIXME(shotgun): scheduling of the player loop differs; literal names differ
 s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -187,7 +185,8 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         return 0;
     }
     s32 layer = field_0x4;
-    if (getPlayerLayer_8023DE58(player) != layer) {
+    s32 playerLayer = getPlayerLayer_8023DE58(player);
+    if (playerLayer != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -202,12 +201,10 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         fn_8022E088(player, i, &rel);
         rel.sub(mPos);
         rel.z = 0.0f;
+        JGeometry::TBox2f box = mBox;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        JGeometry::TBox2f box;
-        box.i.x = mBox.i.x;
-        box.i.y = mBox.i.y * cosVal;
-        box.f.x = mBox.f.x;
-        box.f.y = mBox.f.y * cosVal;
+        box.i.y *= cosVal;
+        box.f.y *= cosVal;
         if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
