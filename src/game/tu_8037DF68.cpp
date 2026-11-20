@@ -1266,7 +1266,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             if (pick > count) {
                 pick = count;
             }
-            index = fn_803846BC(fn_803846A4(index) + pick);
+            index = fn_803846BC(lbl_8053AD78->mBmg->inf1.entries[index].id + pick);
             break;
         }
         case 0x18: {
