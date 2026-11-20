@@ -1311,7 +1311,7 @@ void FileSelect_804AFF60::fn_803CD2DC() {
     }
 }
 
-// FIXME: 99.16 %, regalloc-only; behaviour clean.
+// FIXME: 99.18 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). The &others register, as
 // fn_803C2E24 / fn_803C9F80. Every field, call and branch is the original's.
 //
@@ -1321,14 +1321,14 @@ void FileSelect_804AFF60::fn_803CD2DC() {
 // field_0x4c[0x8E..0x95]); at the end the copy / delete buttons get their
 // colours back, then state 5.
 void FileSelect_804AFF60::fn_803CC760() {
-    s16 boardDelay = lbl_8050DB0C.field_0x4c[0x8E];
-    s16 boardFrames = lbl_8050DB0C.field_0x4c[0x8F];
-    s16 buttonDelay = lbl_8050DB0C.field_0x4c[0x90];
-    s16 buttonFrames = lbl_8050DB0C.field_0x4c[0x91];
-    s16 buttonStep = lbl_8050DB0C.field_0x4c[0x92];
-    s16 rowDelay = lbl_8050DB0C.field_0x4c[0x93];
-    s16 frames = lbl_8050DB0C.field_0x4c[0x94];
-    s16 rowStep = lbl_8050DB0C.field_0x4c[0x95];
+    s32 boardDelay = lbl_8050DB0C.field_0x4c[0x8E];
+    s32 boardFrames = lbl_8050DB0C.field_0x4c[0x8F];
+    s32 buttonDelay = lbl_8050DB0C.field_0x4c[0x90];
+    s32 buttonFrames = lbl_8050DB0C.field_0x4c[0x91];
+    s32 buttonStep = lbl_8050DB0C.field_0x4c[0x92];
+    s32 rowDelay = lbl_8050DB0C.field_0x4c[0x93];
+    s32 frames = lbl_8050DB0C.field_0x4c[0x94];
+    s32 rowStep = lbl_8050DB0C.field_0x4c[0x95];
     s32 end = boardDelay + boardFrames;
     if (end < buttonDelay + buttonFrames + buttonStep * 3) {
         end = buttonDelay + buttonFrames + buttonStep * 3;
