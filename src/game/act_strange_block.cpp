@@ -13,16 +13,15 @@
 
 // The push step of each direction (x, y, z), .rodata at 0x80471E28 (the rest of that object is
 // string literals of update/draw).
-static const f32 lbl_80471E28[12] = {20.0f, 0.0f, 0.0f, -20.0f, 0.0f, 0.0f, 0.0f, 20.0f, 0.0f, 0.0f, -20.0f, 0.0f};
+static const Vec lbl_80471E28[4] = {{20.0f, 0.0f, 0.0f}, {-20.0f, 0.0f, 0.0f}, {0.0f, 20.0f, 0.0f}, {0.0f, -20.0f, 0.0f}};
 
 // .data at 0x804ABC80 (16 bytes, local to this unit).
-extern const s32 lbl_804ABC80[4];
+extern s32 lbl_804ABC80[4];
 extern const f32 lbl_804A79E0[12]; // step per direction (game/act_block.cpp)
 extern const f32 lbl_804AC2A8[12]; // push velocity per direction
-extern const s32 lbl_804ABCA0[16]; // sprite frame offsets by animation step (and, 4 per row, by phase)
+extern const s32 lbl_804ABCA0[4][4]; // sprite frame offsets by animation step (and, 4 per row, by phase)
 
 // 0x8033E188.
-// FIXME(shotgun): 97.63 %, scheduling + reloc-name; behaviour clean.
 void StrangeBlock_804AC2D8::init() {
     field_0x25c = (field_0x90 >> 12) & 0xF;
     switch (field_0x25c) {
@@ -83,7 +82,7 @@ void StrangeBlock_804AC2D8::init() {
 
 // 0x8033DA78. States of field_0x234: 0 the block waits to be pushed or slides, 1 a player's
 // message is open, then back to 0.
-// FIXME(shotgun): 93.00 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.83 %, missing/extra; behaviour near.
 void StrangeBlock_804AC2D8::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -174,9 +173,7 @@ void StrangeBlock_804AC2D8::update() {
                     fn_8033D4CC();
                 } else {
                     JGeometry::TVec3f saved = field_0x3c;
-                    if (!(field_0x260 == 2 && reach == 19.9f &&
-                          PSVECDistance(&mPos, (const Vec*)&field_0x238) >= 8.0f && field_0x26c != 0 &&
-                          !fn_8033D264(field_0x26c - 1))) {
+                    if (!blockedAtFullReach(reach)) {
                         field_0x3c = saved;
                     } else {
                         field_0x244 = 8;
@@ -229,7 +226,7 @@ void StrangeBlock_804AC2D8::update() {
 
 // 0x8033D4CC. Called when the block is idle: pushes it one step when a player has been
 // shoving it long enough, or lets it slide back to its spawn position.
-// FIXME: 97.33 %, different + reloc-name; behaviour clean.
+// FIXME: 97.34 %, different; behaviour clean.
 // FIXME(shotgun): stack slot order and literal pool names differ.
 void StrangeBlock_804AC2D8::fn_8033D4CC() {
     s32 pushers = fn_80239108(mSerial);
@@ -354,23 +351,30 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
 }
 
 // 0x8033D4AC.
-// FIXME(shotgun): 98.75 %, regalloc-only; behaviour clean.
 f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
-    f32 offset = 0.1f + margin;
+    margin += 0.1f;
     if (value < center) {
-        return center - offset;
+        return center - margin;
     }
-    return center + offset;
+    return center + margin;
+}
+
+// A plain function that update inlines and whose own copy the linker dropped: the original's
+// .sdata2 has its literals (19.9f, 8f) ahead of fn_8033D4AC's, so it was generated before it
+// (tools/pool.py). True when a size-2 block at its full reach, 8 or more away from where it
+// started, cannot go on in its direction.
+bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
+    return field_0x260 == 2 && reach == 19.9f &&
+           PSVECDistance(&mPos, (const Vec*)&field_0x238) >= 8.0f && field_0x26c != 0 &&
+           !fn_8033D264(field_0x26c - 1);
 }
 
 // 0x8033D264.
-// FIXME(shotgun): 82.51 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.05 %, scheduling+regalloc; behaviour clean.
 bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     bool movable = false;
     JGeometry::TVec3f savedPos = mPos;
-    field_0x3c.x = lbl_80471E28[dir * 3];
-    field_0x3c.y = lbl_80471E28[dir * 3 + 1];
-    field_0x3c.z = lbl_80471E28[dir * 3 + 2];
+    field_0x3c.set(lbl_80471E28[dir].x, lbl_80471E28[dir].y, lbl_80471E28[dir].z);
     mPos.add(field_0x3c);
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&out, false)) {
@@ -402,11 +406,14 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     if (!movable) {
         movable = true;
         JGeometry::TBox2f box(mBox);
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 if (fn_8022CAF8(i) != 5 || !fn_8022F478(i)) {
-                    if (fn_80238CB4(i) != mSerial) {
+                    if (fn_80238CB4(i) != getSerial()) {
                         movable = false;
                     }
                 }
@@ -419,18 +426,18 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
 }
 
 // 0x8033CD44.
-// FIXME(shotgun): 97.00 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.89 %, same-text; behaviour clean.
 void StrangeBlock_804AC2D8::draw() {
+    s32 frame;
     switch (field_0x25c) {
     case 0:
     case 1:
     case 5: {
         const char* name;
-        s32 frame;
-        if (field_0x25c == 0) {
-            frame = lbl_804ABCA0[field_0x250] + 0x475;
+        if (0 == field_0x25c) {
+            frame = lbl_804ABCA0[0][field_0x250] + 0x475;
             name = "enemy_gc_sob.bin";
-        } else if (field_0x25c == 1) {
+        } else if (1 == field_0x25c) {
             name = "enemy_both2_sob.bin";
             frame = 0x1C1;
         } else {
@@ -443,33 +450,30 @@ void StrangeBlock_804AC2D8::draw() {
     }
     case 2:
     case 6: {
-        if (field_0x25c == 2) {
-            s32 frame = lbl_804ABCA0[field_0x254 * 4 + field_0x250] + 0x3B4;
+        if (2 == field_0x25c) {
+            frame = lbl_804ABCA0[field_0x254][field_0x250] + 0x3B4;
             for (s32 i = 0; i < 2; i++) {
                 for (s32 j = 0; j < 2; j++) {
                     JGeometry::TVec3f saved = mPos;
-                    JGeometry::TVec3f offset(32.0f * i - 16.0f, 32.0f * j - 24.0f, 0.0f);
-                    mPos += offset;
+                    mPos += JGeometry::TVec3f(32.0f * i + -16.0f, 32.0f * j + -24.0f, 0.0f);
                     drawSprite_801F06F0("enemy_both2_sob.bin", frame, NULL, 3, 1.0f, 1.0f);
                     mPos = saved;
                 }
             }
         } else {
             JGeometry::TVec3f saved = mPos;
-            JGeometry::TVec3f offset(0.0f, -16.0f, 0.0f);
-            mPos += offset;
+            mPos += JGeometry::TVec3f(0.0f, -16.0f, 0.0f);
             drawSprite_801F06F0("enemy_both2_sob.bin", 0x37D, NULL, 3, 1.0f, 1.0f);
             mPos = saved;
         }
         s32 frame2;
-        if (field_0x25c == 2) {
-            frame2 = lbl_804ABCA0[field_0x250] + 0x3CA;
+        if (2 == field_0x25c) {
+            frame2 = lbl_804ABCA0[0][field_0x250] + 0x3CA;
         } else {
             frame2 = 0x37D;
         }
         JGeometry::TVec3f saved = mPos;
-        JGeometry::TVec3f offset(0.0f, -16.0f, 0.0f);
-        mPos += offset;
+        mPos += JGeometry::TVec3f(0.0f, -16.0f, 0.0f);
         fn_803075AC(mSerial, field_0x4, &mPos, frame2, 0, 2, -1, false, 0, 0);
         mPos = saved;
         break;
