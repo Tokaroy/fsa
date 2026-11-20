@@ -235,7 +235,7 @@ void fn_80308D0C() {
 // Fills the header of the player's record: player, size, layer, mode and
 // link flags, then the mode's status bits in bytes 4-7.
 // 0x803085A4
-// FIXME: 90.87 %, missing/extra; behaviour drift.
+// FIXME: 94.52 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_803085A4(s32 player) {
     s32 layer = fn_8022EA0C(player);
     cls_804AA858Sub11C* record = &lbl_80506DE8[player];
@@ -379,7 +379,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
 // 0x8030801C
-// FIXME: 83.08 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.65 %, regalloc-only; behaviour clean.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -482,7 +482,7 @@ static inline u32 swapBytes(u32 v) {
 // and its checksum. Still differs: the original computes the addresses of lbl_8053AD0C[player]
 // and lbl_805071E8[player] again after the first loop (ours keeps them in registers).
 // 0x80307B58
-// FIXME: 71.74 %, missing/extra; behaviour drift.
+// FIXME: 92.43 %, missing/extra; behaviour near.
 void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     if (flag) {
         lbl_80506DE8[player].f.mKind = 10;
@@ -711,7 +711,7 @@ s32 fn_803074A4(s32 kind, s32 id) {
 // (screen position and sprite), the mode's status bits, the scroll, the sprite
 // words sorted by kind, the layer's mask word and the checksum.
 // 0x80306A94
-// FIXME: 94.97 %, missing/extra; behaviour drift.
+// FIXME: 98.09 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80306A94(s32 player) {
     if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player)) {
         lbl_80506DE8[player].f.mKind = 5;
