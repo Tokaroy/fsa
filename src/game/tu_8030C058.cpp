@@ -761,23 +761,31 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
 // (the target keeps the box corners in float registers; it also pre-zeroes
 // the translation column and negates the two centres as one ps_neg pair)
 void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
-    f32 halfW = 0.5f * (box->f.x - box->i.x);
-    f32 halfH = 0.5f * (box->f.y - box->i.y);
-    f32 centerX = 0.5f * (box->i.x + box->f.x);
-    f32 centerY = 0.5f * (box->i.y + box->f.y);
+    JGeometry::TVec3f trans;
+    trans.x = 0.5f * (box->i.x + box->f.x);
+    trans.y = 0.5f * (box->i.y + box->f.y);
+    trans.z = depth;
+    trans.negate();
+
     // The view: x and y shifted to the box's centre, z the depth axis.
     field_0x4[0][0] = 1.0f;
     field_0x4[0][1] = 0.0f;
     field_0x4[0][2] = 0.0f;
-    field_0x4[0][3] = -centerX;
+    field_0x4[0][3] = 0.0f;
     field_0x4[1][0] = 0.0f;
     field_0x4[1][1] = 1.0f;
     field_0x4[1][2] = -1.0f;
-    field_0x4[1][3] = -centerY;
+    field_0x4[1][3] = 0.0f;
     field_0x4[2][0] = 0.0f;
     field_0x4[2][1] = 1.0f;
     field_0x4[2][2] = 0.0f;
-    field_0x4[2][3] = -(f32)depth;
+    field_0x4[2][3] = 0.0f;
+    field_0x4[0][3] = trans.x;
+    field_0x4[1][3] = trans.y;
+    field_0x4[2][3] = trans.z;
+
+    f32 halfW = 0.5f * box->getWidth();
+    f32 halfH = 0.5f * box->getHeight();
     C_MTXOrtho(field_0x34, -halfH, halfH, -halfW, halfW, 0.0f, 5120.0f);
     PSMTXCopy(field_0x4, field_0xe4.mCamMtx);
     C_MTXLightOrtho(field_0xe4.mPrjMtx, halfH, -halfH, -halfW, halfW, 0.5f, 0.5f, 0.5f, 0.5f);
