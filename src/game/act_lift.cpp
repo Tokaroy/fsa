@@ -79,7 +79,7 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
         p.z = 0.0f;
         s32 angle = JMath::atanTable_.atan2_(p.y, p.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
         angle -= field_0x238;
-        f32 len = JGeometry::TVec2f(p.x, p.y).length();
+        f32 len = JGeometry::TUtil<f32>::sqrt(p.x * p.x + p.y * p.y);
         p.set(len * JMath::sincosTable_.cosShort(angle), len * JMath::sincosTable_.sinShort(angle), 0.0f);
         bool inside = false;
         if (p.x >= mBox.i.x && p.y >= mBox.i.y && p.x < mBox.f.x && p.y < mBox.f.y) {
@@ -87,8 +87,8 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
         }
         if (inside) {
             ResTIMG* res = static_cast<ResTIMG*>(field_0x23c);
-            s32 px = (s32)p.x + (res->getWidth() >> 1);
-            s32 py = (s32)p.y + (res->getHeight() >> 1);
+            s32 px = (s32)p.x + res->mSizeX / 2;
+            s32 py = (s32)p.y + res->mSizeY / 2;
             bool hit = false;
             if (px >= 0 && px < res->getWidth() && py >= 0 && py < res->getHeight()) {
                 switch (res->mTextureFormat) {
@@ -99,9 +99,9 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
                         s32 offset = (((px >> 3) + (py >> 3) * tilesPerRow) << 6) + ((py & 7) << 3) + (px & 7);
                         const u8* base = (const u8*)res;
                         const u8* image = base + res->mImageDataOffset;
-                        const u16* palette = (const u16*)(base + res->mPaletteOffset);
                         u8 byte = image[offset >> 1];
-                        u32 paletteIndex = (px & 1) == 0 ? (byte >> 4) & 7 : byte & 7;
+                        u32 paletteIndex = (px & 1) ? (byte & 7) : ((byte >> 4) & 7);
+                        const u16* palette = (const u16*)(base + res->mPaletteOffset);
                         u16 color = palette[paletteIndex & 0xFF];
                         if ((color & 0x8000) || (color & 0xF000) == 0x7000) {
                             hit = true;
