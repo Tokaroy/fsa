@@ -327,19 +327,21 @@ void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     out->set(view->mVisibleBox.i.x + dx, view->mVisibleBox.i.y + dy, in->z);
 }
 
-// FIXME(shotgun): 98.14 %, missing/extra; behaviour clean.
 bool fn_801CCFE4(s32 player) {
     bool result = false;
     if (fn_8023F264(player)) {
         if (!fn_80236B50(player) && !fn_8022DCD8(player) && !fn_80234C5C(player) && !fn_8023EA28(player) &&
             !fn_80230188(player) && !fn_8022D534(player) && !fn_802349EC(player)) {
-            s32 mode = fn_8022CAF8(player);
-            if (mode < 6 && mode >= 4) {
+            switch (fn_8022CAF8(player)) {
+            case 4:
+            case 5:
                 if (!fn_8022F478(player)) {
                     result = true;
                 }
-            } else {
+                break;
+            default:
                 result = true;
+                break;
             }
         }
     }
@@ -554,13 +556,13 @@ f32 tileCenter(f32 v) {
     return 8.0f + (u32)((s32)v & ~0xF);
 }
 
-// FIXME(shotgun): 95.47 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
+    s32 serial;
     bool found = false;
     if (out != NULL) {
-        out->zero();
+        out->set(0.0f, 0.0f, 0.0f);
     }
-    s32 serial = fn_8023B2B0(player);
+    serial = fn_8023B2B0(player);
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL && actor->mAlive && actor->mActorId == ACTOR_ARRW && actor->mLife > 0) {
@@ -576,16 +578,16 @@ bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
     return found;
 }
 
-// FIXME(shotgun): 96.22 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
+    s32 serial;
     bool found = false;
     if (outPlayer != NULL) {
         *outPlayer = -1;
     }
     if (outVel != NULL) {
-        outVel->zero();
+        outVel->set(0.0f, 0.0f, 0.0f);
     }
-    s32 serial = fn_8023B2B0(player);
+    serial = fn_8023B2B0(player);
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL && actor->mAlive && actor->mActorId == ACTOR_ARRW && actor->mLife > 0) {
@@ -604,16 +606,16 @@ bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     return found;
 }
 
-// FIXME(shotgun): 96.22 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
+    s32 serial;
     bool found = false;
     if (outPlayer != NULL) {
         *outPlayer = -1;
     }
     if (outVel != NULL) {
-        outVel->zero();
+        outVel->set(0.0f, 0.0f, 0.0f);
     }
-    s32 serial = fn_8023B358(player);
+    serial = fn_8023B358(player);
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL && actor->mAlive && actor->mActorId == ACTOR_PCDM && actor->mLife > 0) {
