@@ -340,8 +340,47 @@ s32 EnemyBase_804A4808::fn_801D0020(const JGeometry::TVec3f* pos, s32 player, bo
     return directionTo(pos, player, axis);
 }
 
-// FIXME: 99.43 %, regalloc-only; behaviour clean.
-// regalloc only (the loop counters and limits).
+static inline bool isBoxBlocked(EnemyBase_804A4808* self, s32 layer, const JGeometry::TBox2f& box) {
+    GameView_804A9950* view = getGameView_802D6A9C();
+    JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+    bool inside = false;
+    if (box.i.x >= viewBox->i.x && box.i.y >= viewBox->i.y && box.f.x < viewBox->f.x &&
+        box.f.y < viewBox->f.y)
+    {
+        inside = true;
+    }
+    if (!inside) {
+        return true;
+    }
+    f32 width = box.getWidth();
+    f32 height;
+    if (width < 0.0f || (height = box.getHeight()) < 0.0f) {
+        return true;
+    }
+    JGeometry::TVec3f point(box.i.x, box.i.y, 0.0f);
+    s32 column;
+    s32 row;
+    s32 columns = (s32)(0.125f * width) + 2;
+    s32 rows = (s32)(0.125f * height) + 2;
+    for (row = 0; row < rows; row++) {
+        point.x = box.i.x;
+        if (row == rows - 1) {
+            point.y = box.f.y;
+        }
+        for (column = 0; column < columns; column++) {
+            if (column == columns - 1) {
+                point.x = box.f.x;
+            }
+            if (self->vfunc_0x4C(layer, &point)) {
+                return true;
+            }
+            point.x += 8.0f;
+        }
+        point.y += 8.0f;
+    }
+    return false;
+}
+
 // Whether a step of `dist` in direction `dir` is blocked: field_0x80's box,
 // moved half the step that way and stretched to the step's length along
 // it, must lie inside the view's box for the layer, and the map
@@ -381,46 +420,7 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     box.f.x += pos.x;
     box.i.y += screenY;
     box.f.y += screenY;
-    // The layer is read before the view lookup, as in fn_801F320C (field_0x4 directly: 99.4 -> 96.7 %).
-    s32 layer = field_0x4;
-    GameView_804A9950* view = getGameView_802D6A9C();
-    JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    bool inside = false;
-    if (box.i.x >= viewBox->i.x && box.i.y >= viewBox->i.y && box.f.x < viewBox->f.x &&
-        box.f.y < viewBox->f.y)
-    {
-        inside = true;
-    }
-    if (!inside) {
-        return true;
-    }
-    f32 width = box.getWidth();
-    f32 height;
-    if (width < 0.0f || (height = box.getHeight()) < 0.0f) {
-        return true;
-    }
-    JGeometry::TVec3f point(box.i.x, box.i.y, 0.0f);
-    s32 columns = (s32)(0.125f * width) + 2;
-    s32 rows = (s32)(0.125f * height) + 2;
-    s32 lastColumn = columns - 1;
-    s32 lastRow = rows - 1;
-    for (s32 row = 0; row < rows; row++) {
-        point.x = box.i.x;
-        if (row == lastRow) {
-            point.y = box.f.y;
-        }
-        for (s32 column = 0; column < columns; column++) {
-            if (column == lastColumn) {
-                point.x = box.f.x;
-            }
-            if (vfunc_0x4C(layer, &point)) {
-                return true;
-            }
-            point.x += 8.0f;
-        }
-        point.y += 8.0f;
-    }
-    return false;
+    return isBoxBlocked(this, field_0x4, box);
 }
 
 // Whether a step of 6 units past the box edge in direction `dir` is blocked.
