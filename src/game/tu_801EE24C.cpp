@@ -2243,8 +2243,9 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
 // With no player found the direction is (0, 512, 0).
 void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best(0.0f, 512.0f, 0.0f);
-    JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-    pos.y = pos.y - pos.z;
+    JGeometry::TVec3f pos;
+    pos.set(mPos);
+    pos.y -= pos.z;
     JGeometry::TVec3f diff;
     bool first = true;
     f32 bestDist = best.squared();
