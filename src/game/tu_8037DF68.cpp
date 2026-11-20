@@ -1662,7 +1662,7 @@ static inline void centreLine(char* out, char* prefix, f32 width) {
     }
 }
 
-// FIXME(shotgun): 94.39 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 94.49 %, missing/extra + reloc-name; behaviour near.
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
