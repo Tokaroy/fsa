@@ -1752,7 +1752,7 @@ void cls_804AF72C::do_end() {
     field_0x2c0[field_0x2d0++] = -2;
 }
 
-// FIXME(shotgun): 99.59 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.83 %, scheduling+regalloc; behaviour clean.
 // (registers only: the float temporaries of the centring offset and the tail's length/shown values)
 void cls_804AF72C::fn_8039F540(int c) {
     char* text = field_0x2d8->field_0x3ab;
@@ -2773,7 +2773,7 @@ void cls_804AF72C::fn_8039B3EC(u8 noun, s32 count) {
 }
 
 // The play time (minutes, seconds) of the message manager as text (mode 0) or glyph codes.
-// FIXME: 94.34 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.43 %, missing/extra; behaviour clean.
 void cls_804AF72C::fn_8039ACD0(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2864,7 +2864,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.91 %, regalloc-only; behaviour clean.
+// FIXME: 99.98 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
