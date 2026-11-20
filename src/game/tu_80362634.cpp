@@ -1292,6 +1292,7 @@ static inline u32 anyPlayerInput(u32 mask) {
 
 // Still differs: the original keeps the 0 that clears field_0x30c[i] in r26 (shared with case 6's
 // player counter) and colours i before the two loop pointers; the jump table's name.
+// FIXME: 97.78 %, different + reloc-name; behaviour drift.
 void cls_804ADF28::fn_80362C44() {
     s32 i;
     s32 skip = 0;
