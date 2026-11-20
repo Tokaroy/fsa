@@ -138,8 +138,7 @@ bool cls_804A6550::fn_80219E04() const {
     return ret;
 }
 
-// FIXME: 98.32 %, missing/extra + reloc-name; behaviour drift.
-// (missing/extra + reloc-name). Target reloads mFlags before ori 0x2000 in case 12.
+// FIXME: jumptable reloc-name and one branch target (0xe88 vs 0xee8).
 void cls_804A6550::fn_80219AFC(s32 state) {
     // The state tests (states 5 and 11) are written out as in the original's inlined helper; a shared helper drops to 91.68 %.
     bool oldFlying = false;
@@ -251,10 +250,10 @@ void cls_804A6550::fn_80219AFC(s32 state) {
         mAnim.startAnim_801D22DC(1, 0, false);
         JGeometry::TBox2f* box = layerBox(field_0x4);
         s32 angle;
-        if (mFlags & 0x10000) {
-            mFlags |= 0x2000;
+        if (checkFlag(0x10000)) {
             angle = -0x3556;
-        } else if (mFlags & 0x2000) {
+            mFlags |= 0x2000;
+        } else if (checkFlag(0x2000)) {
             angle = -0x2AAA;
         } else {
             angle = 0x2AAA;
