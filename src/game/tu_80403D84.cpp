@@ -1662,11 +1662,6 @@ void MapScreen_804B1288::fn_8040D3D0() {
     }
 }
 
-// FIXME(shotgun): 92.60 %, different + reloc-name; behaviour near.
-// Only the fade argument differs: the original
-// computes 1 - field_0x426 * 0.125 unfused (fmuls, fsubs) and after the first
-// search('Ttlv11') of the inlined fn_80411A94; ours evaluates the argument first, fused
-// (fnmsubs). The rest, including the 1.0f fade and the stage-name copy, is the same.
 void MapScreen_804B1288::fn_8040CE90() {
     field_0x426++;
     if (field_0x426 >= 8) {
@@ -1686,15 +1681,11 @@ void MapScreen_804B1288::fn_8040CE90() {
             field_0x228[1][0]->moveFromCentre_80402E08(0.0f, y);
             field_0x228[1][1]->moveFromCentre_80402E08(0.0f, y);
         }
-        fn_80411A94(1.0f - field_0x426 * 0.125f);
+        f32 t = field_0x426 / 8.0f;
+        fn_80411A94(1.0f - t);
     }
 }
 
-// FIXME(shotgun): 92.60 %, different + reloc-name; behaviour near.
-// Only the fade argument differs: the original
-// computes 1 - field_0x426 * 0.125 unfused (fmuls, fsubs) and after the first
-// search('Ttlv11') of the inlined fn_80411A94; ours evaluates the argument first, fused
-// (fnmsubs). The rest, including the 1.0f fade and the stage-name copy, is the same.
 void MapScreen_804B1288::fn_8040C950() {
     field_0x426++;
     if (field_0x426 >= 8) {
@@ -1714,7 +1705,8 @@ void MapScreen_804B1288::fn_8040C950() {
             field_0x228[0][0]->moveFromCentre_80402E08(0.0f, y);
             field_0x228[0][1]->moveFromCentre_80402E08(0.0f, y);
         }
-        fn_80411A94(1.0f - field_0x426 * 0.125f);
+        f32 t = field_0x426 / 8.0f;
+        fn_80411A94(1.0f - t);
     }
 }
 
