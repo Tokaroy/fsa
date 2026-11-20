@@ -3,6 +3,7 @@
 #include "game/GameGlobals.h"
 #include "game/Camera.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/Map.h"
 #include "game/act/act_vaati_boss.h"
 #include "JSystem/JKernel/JKRArchive.h"
@@ -947,12 +948,12 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
 // FIXME(shotgun): 96.76 %, missing/extra; behaviour drift.
+// Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
-    GameView_804A9950* view = getGameView_802D6A9C();
-    const JGeometry::TBox2f* box = field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    f32 groundY = mPos.y - mPos.z;
-    JGeometry::TVec3f focus(mPos.x, groundY, 0.0f);
-    focus.y = __fsel((0.001f + box->i.y) - groundY, 0.001f + box->i.y, groundY);
+    const JGeometry::TBox2f* box = layerBox(field_0x4);
+    JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
+    f32 top = 0.001f + box->i.y;
+    focus.y = __fsel(top - focus.y, top, focus.y);
     switch (mState) {
     case 0:
     case 0x17:
@@ -990,10 +991,7 @@ void VaatiBoss_804A4958::vfunc_0xA0() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
-            cam->field_0x844.f.x = focus.x;
-            cam->field_0x844.i.x = focus.x;
-            cam->field_0x844.f.y = focus.y;
-            cam->field_0x844.i.y = focus.y;
+            cam->field_0x844.set(focus.x, focus.y, focus.x, focus.y);
             cam->field_0x854 = 1.0f;
             cam->field_0x1d4 = -1.0f;
             cam->field_0x1d8 = -1.0f;
