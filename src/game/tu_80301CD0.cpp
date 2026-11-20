@@ -856,7 +856,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
 // Copies a record's sprite words into the half of the player's sprite table
 // its mode selects, hides the rest of that half and the kind-2 sprites below
 // 0x45 of the other half.
-// FIXME(shotgun): 99.10 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.51 %, regalloc-only; behaviour clean.
 // register allocation only.
 void fn_803068D0(cls_804AA858Sub11C* record) {
     if (record->f.mValid == 0) {
@@ -864,12 +864,12 @@ void fn_803068D0(cls_804AA858Sub11C* record) {
     }
     u32 half = record->f.mMode & 1;
     GbaSprite_80506F88* sprites = lbl_80506F88[fn_8022F340(record->f.mPlayer)][0];
+    GbaSprite_80506F88* src = record->f.field_0x18;
     GbaSprite_80506F88* dst = sprites + half * 19;
     s32 i;
-    GbaSprite_80506F88* src = record->f.field_0x18;
     u32 index = record->f.field_0x3_0;
-    for (i = 0; i < lbl_80541618[index] - 7; i++) {
-        dst[i].mWord = src[i].mWord;
+    for (i = 0; i < lbl_80541618[index] - 7; i++, src++) {
+        dst[i].mWord = src->mWord;
     }
     for (; i < 19; i++) {
         dst[i].f.field_0x3_0 = 1;
@@ -888,8 +888,6 @@ void fn_803068D0(cls_804AA858Sub11C* record) {
 // sprites (lbl_80504A38), timer 5 down to 0, at most `max` of them and four of
 // kind 4 or more; every sprite it looks at is marked for removal. Returns the
 // count written.
-// Remaining: register order in the record stores (scheduling+regalloc).
-// FIXME: 94.10 %, missing/extra; behaviour near.
 s32 fn_803066F0(s32 unused, s32 player, s32 max) {
     GbaSprite_80506F88* dst = lbl_80506DE8[player].f.field_0x18;
     s32 count = 0;
@@ -922,9 +920,8 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
                     big++;
                 }
                 count++;
-                sprite->mRemove = 1;
                 dst->f.field_0x3_0 = x >> 8;
-                s32 id = sprite->mId;
+                u16 id = sprite->mId;
                 dst->f.field_0x2 = x;
                 dst->f.field_0x1 = y;
                 dst->f.field_0x3_1 = id >> 8;
@@ -932,6 +929,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
                 dst->f.mKind = sprite->field_0x20;
                 dst->f.field_0x3_4 = sprite->field_0x21;
                 dst->f.field_0x3_3 = sprite->field_0x22;
+                sprite->mRemove = 1;
                 if (count >= max) {
                     return count;
                 }
@@ -946,8 +944,6 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
 // Appends the player's long-list sprites (lbl_80505438), timer 5 down to 1
 // (or any timer for the player's own), to the record's sprite words after
 // fn_803066F0's `start` ones, until `max`; ids above 0x3FF are kind 2.
-// Remaining: cmpw operand order on the three field_0xc / mTimer checks.
-// FIXME: 99.79 %, regalloc-only; behaviour clean.
 void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     s32 count = start;
     if (max == 0) {
@@ -956,37 +952,37 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     s32 slot = fn_8022EA0C(player);
     for (int timer = 5; timer > 0; timer--) {
         for (int i = 0; i < 40; i++) {
-            if (lbl_80505438[player][i].mActive == 0) {
+            cls_803099FC* entry = &lbl_80505438[player][i];
+            if (entry->mActive == 0) {
                 continue;
             }
-            if ((lbl_80505438[player][i].mLayer != getPlayerLayer_8023DE58(slot) &&
-                 lbl_80505438[player][i].field_0xc != player) ||
-                (gGameRoot_8053AAF8->field_0x4c == 11 && lbl_80505438[player][i].field_0x23 == 0)) {
-                lbl_80505438[player][i].mTimer = 0;
-                lbl_80505438[player][i].mRemove = 1;
+            if ((entry->mLayer != getPlayerLayer_8023DE58(slot) && entry->field_0xc != player) ||
+                (gGameRoot_8053AAF8->field_0x4c == 11 && entry->field_0x23 == 0)) {
+                entry->mTimer = 0;
+                entry->mRemove = 1;
                 continue;
             }
-            if (lbl_80505438[player][i].mTimer != timer && lbl_80505438[player][i].field_0xc != player) {
+            if (entry->mTimer != timer && entry->field_0xc != player) {
                 continue;
             }
-            if (lbl_80505438[player][i].field_0xc >= 0) {
+            if (entry->field_0xc >= 0) {
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_0 =
-                    ((s32)lbl_80505438[player][i].mPos.x >> 8) & 1;
-                lbl_80506DE8[player].f.field_0x18[count].f.field_0x2 = (s32)lbl_80505438[player][i].mPos.x;
-                lbl_80506DE8[player].f.field_0x18[count].f.field_0x1 = (s32)lbl_80505438[player][i].mPos.y;
+                    ((s32)entry->mPos.x >> 8) & 1;
+                lbl_80506DE8[player].f.field_0x18[count].f.field_0x2 = (s32)entry->mPos.x;
+                lbl_80506DE8[player].f.field_0x18[count].f.field_0x1 = (s32)entry->mPos.y;
             } else {
-                u16 x = fn_8023D9B0(&lbl_80505438[player][i].mPos, slot) & 0x1FF;
-                u8 y = fn_8023D4F8(&lbl_80505438[player][i].mPos, slot);
+                u16 x = fn_8023D9B0(&entry->mPos, slot) & 0x1FF;
+                u8 y = fn_8023D4F8(&entry->mPos, slot);
                 if (x == 0x180 || y == 0xE0) {
-                    lbl_80505438[player][i].mTimer = 0;
-                    lbl_80505438[player][i].mRemove = 1;
+                    entry->mTimer = 0;
+                    entry->mRemove = 1;
                     continue;
                 }
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_0 = (x >> 8) & 1;
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x2 = x;
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x1 = y;
             }
-            s32 id = lbl_80505438[player][i].mId;
+            s32 id = entry->mId;
             if (id > 0x3FF) {
                 id -= 0x400;
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_1 = id >> 8;
@@ -995,11 +991,11 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
             } else {
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_1 = id >> 8;
                 lbl_80506DE8[player].f.field_0x18[count].f.field_0x0 = id;
-                lbl_80506DE8[player].f.field_0x18[count].f.mKind = lbl_80505438[player][i].field_0x20;
+                lbl_80506DE8[player].f.field_0x18[count].f.mKind = entry->field_0x20;
             }
-            lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_4 = lbl_80505438[player][i].field_0x21;
-            lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_3 = lbl_80505438[player][i].field_0x22;
-            lbl_80505438[player][i].mRemove = 1;
+            lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_4 = entry->field_0x21;
+            lbl_80506DE8[player].f.field_0x18[count].f.field_0x3_3 = entry->field_0x22;
+            entry->mRemove = 1;
             count++;
             if (count >= max) {
                 return;
@@ -1354,20 +1350,19 @@ void cls_804AA8B8::fn_80304FB0() {
     fn_80304D64();
 }
 
-// FIXME: 98.47 %, regalloc-only; behaviour clean.
-// Regalloc only: the original keeps the list bases in r6 / r7 and the element in
-// r8 (ours r7 / r8 and r6).
-// 0x80304D64
 void fn_80304D64() {
+    cls_803099FC* entry;
     for (int player = 0; player < 4; player++) {
+        entry = lbl_80504A38[player];
         for (int i = 0; i < 16; i++) {
-            if (lbl_80504A38[player][i].mRemove == 1) {
-                lbl_80504A38[player][i].mActive = 0;
-                lbl_80504A38[player][i].mRemove = 0;
-                lbl_80504A38[player][i].mSerial = -1;
-            } else if (lbl_80504A38[player][i].mActive == 1 && lbl_80504A38[player][i].mTimer < 5) {
-                lbl_80504A38[player][i].mTimer++;
+            if (entry->mRemove == 1) {
+                entry->mActive = 0;
+                entry->mRemove = 0;
+                entry->mSerial = -1;
+            } else if (entry->mActive == 1 && entry->mTimer < 5) {
+                entry->mTimer++;
             }
+            entry++;
         }
         for (int i = 0; i < 40; i++) {
             if (lbl_80505438[player][i].mRemove == 1 && lbl_80505438[player][i].mTimer == 0) {
