@@ -559,7 +559,6 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-// FIXME(shotgun): 94.75 %, scheduling + reloc-name; behaviour clean.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -658,7 +657,7 @@ void cls_804AE4B0::fn_803706AC() {
     }
 }
 
-// FIXME(shotgun): 90.76 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 void cls_804AE4B0::fn_803705A0() {
     fn_803703C8();
     if (field_0x324.y > 1680.0f) {
@@ -748,7 +747,7 @@ void cls_804AE4B0::guidePlayer_80370764() {
     }
 }
 
-// FIXME: 92.92 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 99.46 %, scheduling+regalloc + reloc-name; behaviour clean.
 s32 cls_804AE4B0::fn_80370200() {
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
