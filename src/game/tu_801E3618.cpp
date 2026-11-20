@@ -395,16 +395,18 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
 // FIXME(shotgun): 75.59 %, missing/extra; behaviour near.
 bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
+    bool onLayer = fn_801CD2F8(layer);
     bool inside = true;
     f32 x0, y0, x1, y1;
-    if (fn_801CD2F8(layer)) {
+    if (onLayer) {
         x0 = field_0x5e0;
         y0 = field_0x5e4;
         x1 = x0 + 16.0f * (f32)field_0x5e8;
         y1 = y0 + 16.0f * (f32)field_0x5e9;
     } else {
+        s32 index = field_0x5d8;
         GameView_804A9950* view = getGameView_802D6A9C();
-        JGeometry::TBox2f* box = field_0x5d8 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+        JGeometry::TBox2f* box = index < 8 ? &view->mVisibleBox : &view->field_0xdc;
         if (mFlags & 0x2000) {
             x0 = 160.0f + box->i.x;
             y0 = 80.0f + box->i.y;
@@ -417,6 +419,7 @@ bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
             y1 = box->f.y - 96.0f;
         }
     }
+    // Still differs: register assignment only (float temps, index/outside).
     if (pos->x < x0 || pos->y < y0 || pos->x >= x1 || pos->y >= y1) {
         inside = false;
     }
