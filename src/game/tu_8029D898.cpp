@@ -1116,14 +1116,14 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
     return result;
 }
 
-// FIXME(shotgun): 76.81 %, missing/extra; behaviour drift.
-// regalloc/scheduling (cell kept in its own register, index a copy)
+// FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
+// The original copies layer into a second register before the fn_802D4C10
+// call and passes that copy in the default and 0xA0 cases.
 void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB) {
     s32 layerPlus = layer + layerOffset;
-    s32 index = cell;
+    int index = cell;
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layerPlus, index, tileB);
-    s32 left = index - 0x10;
-    if ((index & 0x100) != (left & 0x100)) {
+    if ((index & 0x100) != ((index - 0x10) & 0x100)) {
         index -= 0x110;
     } else {
         index -= 0x10;
@@ -1131,8 +1131,12 @@ void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 t
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layerPlus, index, tileA);
     s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
     s32 value = lbl_8046C4C8[(u32)slot >> 2];
-    s32 tile = tileA;
+    u16 tile = tileA;
     switch (tile) {
+    default:
+    case 0:
+        getGameView_802D6A9C()->fn_802D7BE8(layer, value, 1);
+        break;
     case 0x18:
     case 0x19:
     case 0x1A:
@@ -1149,10 +1153,6 @@ void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 t
     case 0xA3:
     case 0xFFF:
         getGameView_802D6A9C()->fn_802D7BE8(layer, value, tile - 0x96);
-        break;
-    case 0:
-    default:
-        getGameView_802D6A9C()->fn_802D7BE8(layer, value, 1);
         break;
     }
 }
