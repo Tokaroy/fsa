@@ -709,8 +709,6 @@ void cls_804A7AE0::fn_80299374() {
     }
 }
 
-// FIXME(shotgun): 98.53 %, different; behaviour drift.
-// layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298FC4() {
     if (field_0x250.x < 0.0f) {
         field_0x248++;
@@ -735,23 +733,9 @@ void cls_804A7AE0::fn_80298FC4() {
             gBgRewrite_8053AC98->fn_802A1050(&p);
             p.y += 16.0f;
         }
-        JGeometry::TVec3f focus = mPos;
-        s32 idx = 1;
-        if (mSerialCountC > 0 && field_0x2cc == -1) {
-            idx ^= 1;
-        }
-        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
-        focus.add(offset);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        if (field_0x250.squared() <= 32.0f * FLT_EPSILON) {
-            JGeometry::TVec3f push(-16.0f, 0.0f, 0.0f);
-            for (s32 i = 0; i < mSerialCountD; i++) {
-                Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
-                if (door != NULL) {
-                    door->mPos = door->mPos + push;
-                    door->fn_802C59B0(&push);
-                }
-            }
+        addCameraFocus(1);
+        if (field_0x250.isZero()) {
+            moveDoors(JGeometry::TVec3f(-16.0f, 0.0f, 0.0f));
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
