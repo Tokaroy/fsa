@@ -380,7 +380,7 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
 }
 
 // FIXME(shotgun): 94.94 %, different; behaviour near.
-s32 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
+u8 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
     JGeometry::TBox2f area;
     bool onLayer = fn_801CD2F8(layer);

@@ -215,7 +215,7 @@ public:
     bool fn_801E4348();
     // Shotgun pass (game/tu_801E3618.cpp), named by address: the area checks, the
     // attack hooks and the hit box setters.
-    s32 fn_801E3618(s32 layer, const JGeometry::TVec2f* pos);
+    u8 fn_801E3618(s32 layer, const JGeometry::TVec2f* pos);
     u8 fn_801E3B2C();
     u8 fn_801E3A4C();
     u8 fn_801E376C();
