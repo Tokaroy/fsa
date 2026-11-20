@@ -290,17 +290,14 @@ void Log_804ACD70::draw() {
         }
         PSMTXIdentity(mtx);
         if (field_0x2c0 == 1) {
-            f32 s = JMath::sincosTable_.sinShort(0x4000);
             f32 c = JMath::sincosTable_.cosShort(0x4000);
+            f32 s = JMath::sincosTable_.sinShort(0x4000);
+            mtx[1][1] = 1.0f;
             mtx[0][0] = c;
             mtx[0][2] = s;
             mtx[2][0] = -s;
             mtx[2][2] = c;
-            mtx[0][1] = 0.0f;
-            mtx[1][0] = 0.0f;
-            mtx[1][1] = 1.0f;
-            mtx[1][2] = 0.0f;
-            mtx[2][1] = 0.0f;
+            mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
         }
         params.mMtx = mtx;
         {
