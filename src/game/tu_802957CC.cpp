@@ -776,7 +776,7 @@ void cls_804A7AE0::fn_80298FC4() {
     }
 }
 
-// FIXME(shotgun): 97.14 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.52 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void cls_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
@@ -789,7 +789,7 @@ void cls_804A7AE0::fn_80298C18() {
             field_0x250.x -= 0.32f;
         } else {
             mPos.x += field_0x250.x;
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x250.zero();
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.f.x;
@@ -810,22 +810,19 @@ void cls_804A7AE0::fn_80298C18() {
         JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
-        bool still = field_0x250.squared() <= 32.0f * JGeometry::TUtil<f32>::epsilon();
-        if (still) {
+        if (field_0x250.isZero()) {
             JGeometry::TVec3f push(16.0f, 0.0f, 0.0f);
             for (s32 i = 0; i < mSerialCountD; i++) {
                 Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
                 if (door != NULL) {
-                    JGeometry::TVec3f q = door->mPos;
-                    q.add(push);
-                    door->mPos = q;
+                    door->mPos = door->mPos + push;
                     door->fn_802C59B0(&push);
                 }
             }
             field_0x248 = 0;
             field_0x2b8 = 0;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
+            field_0x250.zero();
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 12) & 0x1F;
                 if (n > 0) {
@@ -1565,8 +1562,6 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2ba = 1;
 }
 
-// FIXME(shotgun): 99.73 %, scheduling+regalloc; behaviour clean.
-// 4 opcodes differ
 void cls_804A7AE0::fn_80295EE8() {
     if (mTimer <= 0) {
         vfunc_0x24();
@@ -1574,8 +1569,7 @@ void cls_804A7AE0::fn_80295EE8() {
     }
     if (mTimerMax - mTimer < 60) {
         field_0x3c = field_0x2d0;
-        f32 t = 2.0f * ((f32)(mTimer + 60 - mTimerMax) / 60.0f);
-        field_0x3c.scale(t);
+        field_0x3c.scale(2.0f * ((f32)(mTimer + 60 - mTimerMax) / 60.0f));
         mPos.add(field_0x3c);
         for (s32 i = 0; i < 2; i++) {
             for (s32 j = 0; j < 2; j++) {
@@ -1596,30 +1590,30 @@ void cls_804A7AE0::fn_80295EE8() {
                 }
             }
         }
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        field_0x3c.zero();
     }
     for (s32 i = 0; i < 4; i++) {
         s32 v = (field_0x90 >> 7) & 0x1F;
         s32 layer = v == 0 ? 0 : v + 7;
-        if (getPlayerLayer_8023DE58(i) == layer && !fn_80235274(i)) {
+        s32 playerLayer = getPlayerLayer_8023DE58(i);
+        if (playerLayer == layer && !fn_80235274(i)) {
             fn_80238548(i, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 12);
         }
     }
     mTimer--;
 }
 
-// FIXME(shotgun): 94.59 %, missing/extra; behaviour clean.
-// loop register assignment (this/index swapped) and 2 instructions
 void cls_804A7AE0::vfunc_0x24() {
+    s32 v;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8022F514(i)) {
-            s32 v = (field_0x90 >> 7) & 0x1F;
+            v = (field_0x90 >> 7) & 0x1F;
             s32 layer = v == 0 ? 0 : v + 7;
             if (layer == getPlayerLayer_8023DE58(i)) {
-                if (fn_802317F0(i, field_0x4, getPlayerPos_8023E724(i), &mPos, 0x1F)) {
+                if (fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
                     mPlayerFlags[i] = 1;
                 } else {
-                    mPlayerFlags[i] = fn_802317F0(i, field_0x4, getPlayerPos_8023E724(i), &mPos, 0x21);
+                    mPlayerFlags[i] = fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
                 }
             }
         }
