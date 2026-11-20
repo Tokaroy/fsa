@@ -562,7 +562,7 @@ cls_804B13D4::~cls_804B13D4() {
     }
 }
 
-// FIXME(shotgun): 99.49 %, different; behaviour drift.
+// FIXME(shotgun): 99.63 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -669,7 +669,7 @@ static inline u8 isMaskBitSet(u8 mask, s32 player) {
     return (mask & bit) != 0 ? true : false;
 }
 
-// FIXME: 99.64 %, regalloc-only; behaviour clean.
+// FIXME: 99.81 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041F720() {
     s32 mode = lbl_80529DEC.field_0x118;
     if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) || (mode == 0 && lbl_80529DEC.field_0x11c == 2) ||
@@ -1317,7 +1317,7 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: 99.03 %, missing/extra; behaviour near.
+// FIXME: 99.69 %, missing/extra; behaviour clean.
 // FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
@@ -1425,7 +1425,7 @@ void cls_804B13D4::fn_8041C67C() {
 }
 
 // Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.31 %, missing/extra; behaviour clean.
+// FIXME: 99.67 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
