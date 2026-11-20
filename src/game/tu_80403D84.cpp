@@ -2701,8 +2701,6 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
-// FIXME: 94.62 %, scheduling+regalloc + reloc-name; behaviour clean.
-// FIXME: minor instruction scheduling around bob/params and r29 vs r30 for second cel.
 void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f pos;
@@ -2719,20 +2717,20 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     GXSetTevDirect(GX_TEVSTAGE3);
     params.field_0x26 = 0;
     params.field_0x0[2] = 2;
-    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.mTable[((counter % 128) * 64) & 0x7FF].first, pos.z);
+    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
     pos.y += 3.0f;
     params.field_0x0[2] = 3;
-    s32 cel = lbl_8048CB58[frame] + 0xC0;
+    s32 celLeft = lbl_8048CB58[frame] + 0xC0;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, cel, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
     pos.x += 32.0f;
     params.field_0x0[2] = 4;
-    cel = lbl_8048CB58[frame] + 0xC3;
+    s32 celRight = lbl_8048CB58[frame] + 0xC3;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, cel, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
 // FIXME(shotgun): 96.30 %, different; behaviour near.
