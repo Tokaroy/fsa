@@ -267,7 +267,7 @@ void Log_804ACD70::update() {
     }
 }
 
-// FIXME(shotgun): 99.44 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.91 %, same-text; behaviour clean.
 void Log_804ACD70::draw() {
     const char* name;
     SpriteParams_801F5AE0 params;
@@ -418,6 +418,7 @@ static inline s32 getPushDir(const Log_804ACD70* self) {
     return -1;
 }
 
+// FIXME: 98.85 %, scheduling+regalloc; behaviour clean.
 void Log_804ACD70::fn_80354FE8() {
     if (isMotionless()) {
         if (field_0x2cc == 1) {
@@ -480,7 +481,7 @@ void Log_804ACD70::fn_80354FE8() {
     }
 }
 
-// FIXME(shotgun): 92.19 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 bool Log_804ACD70::fn_80354D64(u8 dir) {
     bool ok = false;
     JGeometry::TVec3f saved(mPos);
