@@ -72,7 +72,7 @@ void cls_8049ED30::init() {
 }
 
 // 0x80133DD0.
-// FIXME(shotgun): 87.71 %, different; behaviour drift.
+// FIXME(shotgun): 93.55 %, scheduling+regalloc; behaviour clean.
 void cls_8049ED30::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
