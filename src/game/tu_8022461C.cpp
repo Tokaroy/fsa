@@ -332,9 +332,14 @@ bool fn_8022517C(const JGeometry::TVec3f* pos, s32 layer) {
     return inListFlag(rawTileAt(pos, layer), lbl_8053FF48, 2);
 }
 
-// FIXME(shotgun): 96.46 %, missing/extra + reloc-name; behaviour clean.
 bool fn_80225000(const JGeometry::TVec3f* pos, s32 layer) {
-    return inList(rawTileAt(pos, layer), lbl_8053FF48, 2);
+    u16 code = rawTileAt(pos, layer);
+    for (s32 i = 0; i < 2; i++) {
+        if (code == lbl_8053FF48[i]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Whether the raw tile at pos is one of the two codes of lbl_8053FF4C.
