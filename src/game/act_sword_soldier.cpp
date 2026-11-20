@@ -413,10 +413,10 @@ SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
     if (mLife <= 0) {
         if (field_0x288 == 1 || field_0x288 == 3) {
             if (field_0x288 == 1) {
-                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 4);
+                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 0x30004);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.0f);
             } else {
-                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 8);
+                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 0x30008);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.5f);
             }
         }
@@ -430,7 +430,7 @@ SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (lbl_804BF850[i] == mSerial) {
+        if (lbl_804BF850[i] == getSerial()) {
             lbl_804BF850[i] = -1;
         }
     }
