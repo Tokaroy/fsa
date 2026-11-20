@@ -12,7 +12,7 @@
 #include "game/SpriteParams.h"
 #include "game/act/act_fish.h"
 
-// FIXME: 97.95 %, different + reloc-name; behaviour drift.
+// FIXME: 97.32 %, different + reloc-name; behaviour clean.
 // FIXME(shotgun): different + reloc-name (register order and literal placement in the spawn loop)
 void Fish_804AC658::init() {
     u32 param = field_0x90;
@@ -113,7 +113,7 @@ bool Fish_804AC658::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return true;
 }
 
-// FIXME(shotgun): 95.69 %, different; behaviour clean.
+// FIXME(shotgun): 99.96 %, regalloc-only; behaviour clean.
 s32 Fish_804AC658::fn_80346330() {
     field_0x264 = 0.0f;
     field_0x268 = 0;
@@ -152,7 +152,7 @@ static inline void swimVelocity(Fish_804AC658* fish, f32 speed) {
     fish->field_0x3c.z = fish->field_0x25c;
 }
 
-// FIXME(shotgun): 98.67 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.43 %, regalloc-only; behaviour clean.
 // (states follow the asm's switch (0 falls into 1, 2 into 3); the hit-avoid branch of state 1 and the wall-bounce
 // heading draws of state 5 are the asm's, written with plain field stores; the original's vector-add temporaries are not matched)
 void Fish_804AC658::update() {
@@ -308,7 +308,7 @@ void Fish_804AC658::update() {
     }
 }
 
-// FIXME(shotgun): 76.32 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.79 %, scheduling+regalloc; behaviour clean.
 // (the SpriteParams stores and the matrix are scheduled differently)
 void Fish_804AC658::draw() {
     SpriteParams_801F5AE0 params;
