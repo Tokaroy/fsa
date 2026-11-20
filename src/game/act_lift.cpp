@@ -196,19 +196,17 @@ void Lift_804A6F6C::update() {
     }
 }
 
-// FIXME: 84.93 %, scheduling+regalloc + reloc-name; behaviour clean.
-// Same instructions; scheduling: MWCC places the reset
-// stores' li r9/r8 before the 0.0 lfs that the original loads first.
+// Float regalloc in setRotScaleMtxS16 (f8-f12) still differs.
 void Lift_804A6F6C::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.mMtx = mtx;
-    params.field_0x21 = 1;
-    params.field_0x1d = -2;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     setRotScaleMtxS16(mtx, 0, field_0x238, 0, 1.0f);
+    params.mMtx = mtx;
+    params.field_0x21 = 1;
+    params.field_0x1d = -2;
     const char* name = lbl_804A6F48[getMode()];
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
