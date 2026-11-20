@@ -33,12 +33,11 @@ void VaatiBoss_804A4958::fn_801E4758() {
     field_0x80.f.y = 4.0f * lbl_8053F0BC;
 }
 
-// FIXME(shotgun): 91.19 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 91.05 %, scheduling+regalloc; behaviour clean.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
-        f32 x = field_0x5e0.x;
-        f32 y = field_0x5e0.y;
-        out->set(x, y, x + 16.0f * (f32)field_0x5e8, y + 16.0f * (f32)field_0x5e9);
+        out->set(field_0x5e0.x, field_0x5e0.y, field_0x5e0.x + 16.0f * (f32)field_0x5e8,
+                 field_0x5e0.y + 16.0f * (f32)field_0x5e9);
     } else {
         JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
@@ -129,7 +128,7 @@ bool VaatiBoss_804A4958::fn_801E4348() {
     return result;
 }
 
-// FIXME(shotgun): 89.02 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E4094() {
     u8 result = 0;
     bool stateOk = true;
@@ -154,17 +153,16 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
     if (stateOk && !(mFlags & 0x2000) && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         JGeometry::TVec2f savedI(mBox.i);
         JGeometry::TVec2f savedF(mBox.f);
-        mBox.i.x *= 1.5f;
-        mBox.i.y *= 1.5f;
-        mBox.f.x *= 1.5f;
-        mBox.f.y *= 1.5f;
+        mBox.i.scale(1.5f);
+        mBox.f.scale(1.5f);
         s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 48.0f);
         mBox.i = savedI;
         mBox.f = savedF;
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (bomb != NULL && bomb->mActorId == 'HBMB' && bomb->field_0x94 == 1) {
-                JGeometry::TVec3f d = mPos - bomb->field_0x3c;
+                JGeometry::TVec3f d(mPos);
+                d.sub(bomb->field_0x3c);
                 result = fn_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
                 if (result) {
                     bomb->field_0x164 = 1;
@@ -350,7 +348,6 @@ u8 VaatiBoss_804A4958::fn_801E3A4C() {
 }
 
 // vtable slot 0x64. Pushes Vaati out of the map-free area when a player-sized box is inside.
-// FIXME(shotgun): 95.20 %, scheduling+regalloc; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E376C() {
     u8 result = 0;
     bool stateOk = true;
@@ -376,52 +373,19 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
         field_0x80.f.y - field_0x80.i.y > 0.0f) {
         JGeometry::TBox2f area;
         fn_801E4618(&area, fn_801CD2F8(field_0x4));
-        JGeometry::TBox2f box = field_0x80;
-        box.i.x += mPos.x;
-        box.i.y += mPos.y;
-        box.f.x += mPos.x;
-        box.f.y += mPos.y;
-        JGeometry::TVec2f push;
-        result = fn_801CC29C(&area, &box, &push);
-        mPos.x += push.x;
-        mPos.y += push.y;
-        if (&mMapHitDir != NULL) {
-            push.normalize();
-            mMapHitDir.x = push.x;
-            mMapHitDir.y = push.y;
-            mMapHitDir.z = 0.0f;
-        }
+        result = fn_801E44CC(&area, &mPos, &mMapHitDir);
     }
     return result;
 }
 
-// FIXME(shotgun): 94.94 %, different; behaviour near.
-bool VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
+u8 VaatiBoss_804A4958::fn_801E3618(s32 layer, const JGeometry::TVec2f* pos) {
     bool outside = false;
+    JGeometry::TBox2f area;
     bool onLayer = fn_801CD2F8(layer);
     bool inside = true;
-    f32 x0, y0, x1, y1;
-    if (onLayer) {
-        x0 = field_0x5e0.x;
-        y0 = field_0x5e0.y;
-        x1 = x0 + 16.0f * (f32)field_0x5e8;
-        y1 = y0 + 16.0f * (f32)field_0x5e9;
-    } else {
-        JGeometry::TBox2f* box = layerBox(field_0x5d8);
-        if (mFlags & 0x2000) {
-            x0 = 160.0f + box->i.x;
-            y0 = 80.0f + box->i.y;
-            x1 = box->f.x - 160.0f;
-            y1 = box->f.y - 112.0f;
-        } else {
-            x0 = 80.0f + box->i.x;
-            y0 = 128.0f + box->i.y;
-            x1 = box->f.x - 80.0f;
-            y1 = box->f.y - 96.0f;
-        }
-    }
-    // Still differs: register assignment only (float temps, layer index/outside).
-    if (pos->x < x0 || pos->y < y0 || pos->x >= x1 || pos->y >= y1) {
+    fn_801E4618(&area, onLayer);
+    if (pos->x < area.i.x || pos->y < area.i.y || pos->x >= area.f.x || pos->y >= area.f.y) {
         inside = false;
     }
     if (!inside) {
