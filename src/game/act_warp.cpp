@@ -60,7 +60,7 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
-// FIXME(shotgun): 87.70 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.54 %, scheduling+regalloc; behaviour clean.
 void Warp_804A6DC8::init() {
     field_0x256 = 0;
     field_0x278 = 0;
@@ -214,7 +214,7 @@ static inline bool bomeAtRest(cls_804A0738* b) {
 // 0x80227F50. Every frame: tracks whether a player is near (the sand shake), lets the kind-0x20 warp
 // swallow a player with a drawn box, then pushes the actors lying on the pad (per kind) to the
 // warp's destination (field_0x238) or nudges their velocity.
-// FIXME(shotgun): 88.35 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour clean.
 void Warp_804A6DC8::update() {
     // 'NULL'-ended actor id lists, addressed off one base (0x8046ABE8, +0x38, +0x44): the pushed
     // actors, then two lists chosen by kind.
@@ -427,7 +427,7 @@ extern const f32 lbl_8046AC58[24]; // x shifts of the sand while the warp shakes
 
 // 0x80227CE8.
 // Remaining: reloc names.
-// FIXME: 99.45 %, different + reloc-name; behaviour drift.
+// FIXME: 99.87 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20 && field_0x255 == 0) {
@@ -458,7 +458,7 @@ void Warp_804A6DC8::draw() {
 
 // 0x802278A8. Per player: the player's reaction to standing in the warp's box (by warp kind, the
 // low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (fn_802317F0).
-// FIXME: 88.22 %, missing/extra; behaviour drift.
+// FIXME: 95.27 %, missing/extra; behaviour drift.
 // The box copy and offset keep their values in registers in the original (ours reloads them), and
 // the final grow's operand order differs.
 void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
@@ -550,7 +550,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
 
 // 0x80227530. Per player: runs fn_80226FC8, then marks the player on the warp and, for a player
 // that just stepped on and passes the checks, rewrites the four tiles around it and spawns the effect.
-// FIXME(shotgun): 82.26 %, missing/extra; behaviour near.
+// FIXME(shotgun): 85.93 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
