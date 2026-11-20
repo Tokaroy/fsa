@@ -195,6 +195,8 @@ def now():
 
 
 def notify(title, body=""):
+    if (LOGS / "NO-NOTIFY").exists():  # owner, 2026-11-20: no push notifications from the grinder
+        return
     subprocess.run(["tm-notify", title, body, "--tag", "fsa-grind"], capture_output=True)
 
 
