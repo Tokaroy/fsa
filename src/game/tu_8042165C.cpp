@@ -428,14 +428,6 @@ static inline void clearBit(u8& mask, s32 bit) {
     mask &= ~b;
 }
 
-inline void cls_804B146C::forceAll_80421A34() {
-    for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-            fn_80421A34(i, true);
-        }
-    }
-}
-
 // FIXME(shotgun): 97.87 %, missing/extra; behaviour drift.
 void cls_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
@@ -478,7 +470,11 @@ void cls_804B146C::fn_804263A8() {
         field_0x1d8[i] = 0;
         field_0x208[i] = 0;
     }
-    forceAll_80421A34();
+    for (s32 i = 0; i < 4; i++) {
+        if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
+            fn_80421A34(i, true);
+        }
+    }
     field_0x255 = 0xF;
     field_0x256 = 0xF;
     field_0x257 = 0xF;
