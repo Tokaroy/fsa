@@ -1052,10 +1052,10 @@ void cls_804ADF28::fn_80363FFC() {
             s32 angle = JMath::atanTable_.atan2_(mPos.y - center.y, mPos.x - center.x) * 10430.378f;
             f32 dist = PSVECDistance(&mPos, &center);
             s32 delta = 65536.0f * (JMath::fastReciprocal(6.283184f * dist) * 1.3f);
-            s32 a = angle + delta;
-            mPos.x = center.x + dist * JMath::sincosTable_.cosShort(a);
-            mPos.y = center.y + dist * JMath::sincosTable_.sinShort(a);
-            if ((u16)a >= 0xe000) {
+            angle += delta;
+            mPos.x = center.x + dist * JMath::sincosTable_.cosShort(angle);
+            mPos.y = center.y + dist * JMath::sincosTable_.sinShort(angle);
+            if ((u16)angle >= 0xe000) {
                 field_0x23c = 0;
                 if (field_0x238 == 0) {
                     field_0x26c = 0x32f;
