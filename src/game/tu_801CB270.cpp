@@ -444,16 +444,18 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
     return result;
 }
 
-// FIXME(shotgun): 97.12 %, missing/extra; behaviour clean.
 bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
-    JGeometry::TVec3f p;
+    // An 8-byte position (frame size); fn_80226998 reads only x and y.
+    JGeometry::TVec2f p;
     p.x = pos->x;
     p.y = pos->y;
     bool found = false;
     for (s32 i = 0; i < 2; i++) {
-        s32 tile = fn_80226998(&p, layer);
-        if (tile >= 0x19C && tile < 0x19E) {
+        switch (fn_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        case 0x19C:
+        case 0x19D:
             found = true;
+            break;
         }
         p.y -= 16.0f;
     }
@@ -907,24 +909,21 @@ void fn_801CB71C(JPABaseEmitter** emitter, const JGeometry::TVec3f* pos, s32 hei
     }
 }
 
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
-// As fn_801CB4A4: saved registers are assigned in a different order.
+static inline JPABaseEmitter* spawnEmitterHelper(int layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth) {
+    return spawnEmitter_8013CC50(layer, pos, id, height, depth + 1, NULL, NULL, true, 1.0f);
+}
+
 // Two effects (spawnEmitter_8013CC50 0x24A and 0x24B) at pos on `layer`; arg3 is passed
 // on and arg4 is passed on plus 1 (as the depth).
 void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
-    spawnEmitter_8013CC50(layer, pos, 0x24A, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x24B, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0x24A, arg3, arg4);
+    spawnEmitterHelper(layer, pos, 0x24B, arg3, arg4);
 }
 
-// FIXME(shotgun): 88.94 %, scheduling+regalloc; behaviour clean.
 void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6) {
-    spawnEmitter_8013CC50(layer, pos, 0xFF, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x100, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x101, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
-}
-
-static inline JPABaseEmitter* spawnEmitterHelper(int layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth) {
-    return spawnEmitter_8013CC50(layer, pos, id, height, depth + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0xFF, arg5, arg6);
+    spawnEmitterHelper(layer, pos, 0x100, arg5, arg6);
+    spawnEmitterHelper(layer, pos, 0x101, arg5, arg6);
 }
 
 // Two effects (spawnEmitter_8013CC50 0x117 and 0x118) at pos on `layer`; arg3 is passed
