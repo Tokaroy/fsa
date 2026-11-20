@@ -1211,7 +1211,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     }
     // Resource type: 'M' plus the three stage characters (each minus ' ') added into the
     // low bytes; written as a running sum because the target does not fold the constant.
-    u32 type = 'M   ';
+    unsigned int type = 'M   ';
     type += ((stage[0] - ' ') << 16) + ((stage[1] - ' ') << 8) + (stage[2] - ' ');
     sprintf(name1, "d_map%s_%d%d_mmm_1_0.szs", stage, screen / 10, screen % 10);
     sprintf(name2, "d_map%s_%d%d_mmm_2_0.szs", stage, screen / 10, screen % 10);
