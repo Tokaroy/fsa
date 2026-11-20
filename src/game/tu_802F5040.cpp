@@ -853,8 +853,8 @@ void TileMap_804AA858::fn_802FCE74() {
                     cls_804AA858Sub11CEntry* mark = &field_0x11c[i]->f.mEntries[lbl_80506DD8[i]];
                     s32 markX = (mark->mXLow | mark->mXHigh << 8) - 24;
                     s32 markY = mark->mY - 32;
-                    markX = markX < 0 ? 0 : markX;
-                    markY = markY < 0 ? 0 : markY;
+                    markX = markX <= 0 ? 0 : markX;
+                    markY = markY <= 0 ? 0 : markY;
                     s32 right = markX + 48 > 240 ? 240 : markX + 48;
                     s32 bottom = markY + 40 > 160 ? 160 : markY + 40;
                     field_0x148[i] = 1;
@@ -902,10 +902,9 @@ void TileMap_804AA858::fn_802FCE74() {
         if (!camera->field_0x7f4) {
             camera->field_0x7f5 = 1;
         }
-        f32 x = dx + field_0xfc->field_0x40[field_0xfc->field_0xa4].x +
-                lbl_8046F9A8[field_0xfc->field_0xa4][frame];
-        f32 y = dy + field_0xfc->field_0x40[field_0xfc->field_0xa4].y +
-                lbl_8046F9CC[field_0xfc->field_0xa4][frame];
+        const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
+        f32 x = dx + pos40.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
+        f32 y = dy + pos40.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
         field_0x21c = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
         field_0x220 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
         field_0x224 = w;
@@ -922,8 +921,9 @@ void TileMap_804AA858::fn_802FCE74() {
         field_0x150[0].field_0xc = 160.0f;
         dx = ((s32)width - w) >> 1;
         dy = ((s32)height - h) >> 1;
-        x = dx + field_0xfc->field_0x58[field_0xfc->field_0xa4].x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
-        y = dy + field_0xfc->field_0x58[field_0xfc->field_0xa4].y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
+        const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
+        x = dx + pos58.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
+        y = dy + pos58.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
         field_0x190[0].field_0x0 = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
         field_0x190[0].field_0x4 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
         field_0x190[0].field_0x8 = w;
@@ -934,8 +934,9 @@ void TileMap_804AA858::fn_802FCE74() {
     if (field_0x214) {
         field_0xfc->fn_80432AF8();
     } else {
-        field_0xfc->field_0xa0 = 0xFFFF;
-        field_0xfc->field_0xa4 = 0;
+        cls_804B1668* sub = field_0xfc;
+        sub->field_0xa0 = 0xFFFF;
+        sub->field_0xa4 = 0;
     }
     field_0x2394++;
     if (field_0x2394 >= 10) {
@@ -946,7 +947,7 @@ void TileMap_804AA858::fn_802FCE74() {
         }
         u8* src = field_0x238c + field_0x2390 * 0x40;
         u8* dst = field_0x4[1] + 0x200;
-        for (s32 j = 0; j < 0x40; j++) {
+        for (i = 0; i < 0x40; i++) {
             *dst++ = *src++;
         }
     }
