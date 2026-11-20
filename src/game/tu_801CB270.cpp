@@ -333,13 +333,16 @@ bool fn_801CCFE4(s32 player) {
     if (fn_8023F264(player)) {
         if (!fn_80236B50(player) && !fn_8022DCD8(player) && !fn_80234C5C(player) && !fn_8023EA28(player) &&
             !fn_80230188(player) && !fn_8022D534(player) && !fn_802349EC(player)) {
-            s32 mode = fn_8022CAF8(player);
-            if (mode < 6 && mode >= 4) {
+            switch (fn_8022CAF8(player)) {
+            case 4:
+            case 5:
                 if (!fn_8022F478(player)) {
                     result = true;
                 }
-            } else {
+                break;
+            default:
                 result = true;
+                break;
             }
         }
     }
