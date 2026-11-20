@@ -1559,7 +1559,7 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
     return lines;
 }
 
-// FIXME: 95.16 %, missing/extra; behaviour near.
+// FIXME: 99.20 %, missing/extra; behaviour near.
 // Structurally close (one instruction fewer, registers shifted): the
 // text address is summed as (offset + inf1) + 8 + size where the original adds
 // size + offset, then 8, then inf1 (as in fn_80383E2C); the loop's first
