@@ -52,7 +52,7 @@ static inline s32 operand(const char* p, s32 offset) {
 // The text of INF1 entry `msg`: the DAT1 block starts after the INF1 block and its 8-byte header.
 static inline const char* messageText(u32 msg) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
-    return &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
+    return (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
 }
 
 static inline bool checkSync(s32 window, u32 msg) {
