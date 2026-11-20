@@ -1620,6 +1620,7 @@ void cls_804B0B00::fn_803E9034() {
 
 // extsh. vs cmpwi r0, 0 on field_0x254[0] > 0, &others[0] CSE into r29,
 // and callee-saved register rotation (r19/r20/r21).
+// FIXME: 98.66 %, different; behaviour near.
 void cls_804B0B00::fn_803E831C() {
     if (field_0x1bc != 3) {
         if (field_0x220[0] < 100) {
