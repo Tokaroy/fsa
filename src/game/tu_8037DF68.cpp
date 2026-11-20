@@ -141,14 +141,10 @@ void fn_8038D870() {
     lbl_8053AD78->field_0xe4 = 0;
 }
 
-// FIXME: 99.27 %, different; behaviour clean.
-// Two opcodes: the original loads the constant 0 stored into
-// field_0xe4 by the second press loop with li (r30); ours copies the loop
-// index register (mr r30, r29).
 void fn_8038D570() {
-    s32 i;
+    u8 bit;
     lbl_8053AD78->field_0xe7 = 0;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
         if (takesPart == true) {
             lbl_8053AD78->mWindows[i]->mIndex = i;
@@ -157,7 +153,7 @@ void fn_8038D570() {
     }
     if (lbl_8053AD78->field_0xe4 != 0) {
         if (lbl_8053AD78->field_0x7c == 0) {
-            for (i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_8053AD78->field_0xe5 & (1 << i)) {
                     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
                         lbl_8053AD78->field_0xe4 = 0;
@@ -170,7 +166,7 @@ void fn_8038D570() {
             if (lbl_8053AD78->field_0x7c == 0) {
                 lbl_8053AD78->field_0xe4 = 0;
             }
-            for (i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_8053AD78->field_0xe5 & (1 << i)) {
                     if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(i), 0x100) != 0) {
                         lbl_8053AD78->field_0xe4 = 0;
@@ -194,17 +190,17 @@ void fn_8038D570() {
         if (elapsed > manager->field_0x48) {
             if (manager->field_0xeb != 0) {
                 if (!getGameView_802D6A9C()->fn_802D800C(manager->field_0xea)) {
-                    u8 bit = lbl_8053AD78->field_0xea;
+                    bit = lbl_8053AD78->field_0xea;
                     getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
                 }
             } else if (getGameView_802D6A9C()->fn_802D800C(manager->field_0xea) == true) {
-                u8 bit = lbl_8053AD78->field_0xea;
+                bit = lbl_8053AD78->field_0xea;
                 getGameView_802D6A9C()->fn_802D8050(bit, false, 0xFF);
             }
         }
     }
     if (lbl_8053AD78->field_0xed != 0) {
-        for (i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
             lbl_8053ACD8[i] = 1;
         }
     }
