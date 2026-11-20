@@ -114,8 +114,9 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
     if (fn_801CD2F8(field_0x40)) {
         field_0x48.y = -25.0f + pos->y;
     }
+    s32 serial;
     for (s32 i = 0; i < 16; i++) {
-        s32 serial = field_0x0[i];
+        serial = field_0x0[i];
         if (serial >= 0) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (a != NULL) {
