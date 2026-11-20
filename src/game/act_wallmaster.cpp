@@ -106,6 +106,7 @@ cls_804A3E44::~cls_804A3E44() {
     }
 }
 
+// FIXME: 99.77 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804A3E44::init() {
     EnemyBase_804A4808::init();
     u32 p = field_0x90 & 0x1F;
@@ -130,10 +131,8 @@ void cls_804A3E44::init() {
             f4 = box->i.x;
             f5 = box->i.y;
         }
-        u32 x = ((field_0x90 >> 16) & 0x3F) * 8;
-        u32 y = ((field_0x90 >> 8) & 0x3F) * 8;
-        field_0x2b0.x = x + f4 + 8.0f;
-        field_0x2b0.y = y + f5 + 8.0f;
+        field_0x2b0.set(((field_0x90 >> 16) & 0x3F) * 8 + f4 + 8.0f,
+                        ((field_0x90 >> 8) & 0x3F) * 8 + f5 + 8.0f);
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
@@ -170,7 +169,8 @@ void cls_804A3E44::init() {
     }
 }
 
-// FIXME: 99.09% (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
+// FIXME: 99.22 %, missing/extra + reloc-name; behaviour drift.
+// (missing/extra + reloc-name: 1 extra instruction at 0x3EC; target shares r3=0 for mStateTimer and switch).
 void cls_804A3E44::fn_801BC554(s32 state) {
     switch (state) {
     case 0:
@@ -296,7 +296,8 @@ inline u8 cls_804A3E44::computeShadowAlpha() {
         val = 255;
         break;
     default: {
-        f32 f = (mPos.z - 100.0f) * -0.01f;
+        f32 scale = 1.0f / (48.0f - 100.0f);
+        f32 f = (mPos.z - 100.0f) * scale;
         if (f > 1.0f) {
             f = 1.0f;
         } else if (f < 0.0f) {
@@ -327,7 +328,8 @@ inline bool cls_804A3E44::checkPlayerHit() {
     return hitFlag;
 }
 
-// FIXME: 99.64% (regalloc-only + reloc-name: f30/f31 register allocation for dz/dy and literal relocations).
+// FIXME: 99.92 %, reloc-name; behaviour clean.
+// FIXME: literal relocation names only (pool order depends on vfunc_0x90).
 void cls_804A3E44::fn_801BC244() {
     switch (mState) {
     case 1:
@@ -372,15 +374,11 @@ void cls_804A3E44::fn_801BC244() {
         if (!fn_8022DCD8(field_0x2b8)) {
             fn_801BC554(5);
         } else {
-            f32 dz = (mPos.z - getPlayerPos_8023E724(field_0x2b8)->z) - 2.0f;
-            f32 dy = mPos.y - getPlayerPos_8023E724(field_0x2b8)->y;
-            f32 dx = mPos.x - getPlayerPos_8023E724(field_0x2b8)->x;
-            JGeometry::TVec3f vec;
-            vec.y = dy;
-            vec.z = dz;
-            vec.x = dx;
-            vec.x *= 0.1f;
-            vec.y *= 0.1f;
+            JGeometry::TVec3f vec(mPos.x - getPlayerPos_8023E724(field_0x2b8)->x,
+                                  mPos.y - getPlayerPos_8023E724(field_0x2b8)->y,
+                                  (mPos.z - getPlayerPos_8023E724(field_0x2b8)->z) - 10.0f);
+            vec.x *= 0.2f;
+            vec.y *= 0.2f;
             fn_8023DFF4(field_0x2b8, &vec);
         }
     }
@@ -411,7 +409,8 @@ void cls_804A3E44::fn_801BC244() {
     }
 }
 
-// FIXME: 99.13% (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
+// FIXME: 99.28 %, missing/extra + reloc-name; behaviour drift.
+// (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
 void cls_804A3E44::vfunc_0x90(u8 mapHit) {
     fn_801BC244();
     switch (mState) {
@@ -630,7 +629,7 @@ void cls_804A3E44::vfunc_0x78() {
     }
 }
 
-// FIXME(shotgun): 96.43 %, missing/extra
+// FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
 u8 cls_804A3E44::vfunc_0x60() {
     if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f) {
         return fn_801CEA60();
@@ -655,7 +654,6 @@ void cls_804A3E44::vfunc_0xA0() {
     }
 }
 
-// FIXME: 99.75% (regalloc-only: f1/f2 swap; reloc-name)
 void cls_804A3E44::draw() {
     switch (mState) {
     case 0:
