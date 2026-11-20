@@ -867,6 +867,7 @@ static inline void slideOnly(ConnectScreen_804B0F10* self, int start, int durati
 // up (field_0x240[0] counts the frames: the title from 0 to 25, the box
 // from 25 to 45, the three count rows 5 frames apart, the rest from 0 to
 // 15), then enters state 1 at 75.
+// FIXME: 97.16 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803FB9E4() {
     field_0x240[0]++;
     slideAndFade(this, 0, 25, -150.0f, field_0x110, lbl_80478B18, field_0x25f, 20);
