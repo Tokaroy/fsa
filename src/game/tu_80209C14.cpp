@@ -432,18 +432,18 @@ void cls_804A5D60::vfunc_0x88() {
     }
 }
 
-// FIXME(shotgun): 97.48 %, missing/extra; behaviour clean.
 bool cls_804A5D60::vfunc_0x58() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f) {
         return false;
     }
+    s32 player;
     s32 id = -1;
     bool arrow = false;
     bool blocked = false;
     JGeometry::TBox2f box;
     JGeometry::TVec2f probe;
     fn_801F317C(&box);
-    s32 player = fn_8023AE34(&box, field_0x4, &probe);
+    player = fn_8023AE34(&box, field_0x4, &probe);
     if (player >= 0) {
         arrow = fn_801CC820(player, NULL);
     } else {
@@ -468,11 +468,7 @@ bool cls_804A5D60::vfunc_0x58() {
             if (field_0x1dc.fn_801EAC20(player)) {
                 hit = true;
             }
-        } else if (!arrow) {
-            if (id >= 0 && field_0x1dc.fn_801EAC54(id)) {
-                hit = true;
-            }
-        } else {
+        } else if (arrow || (id >= 0 && field_0x1dc.fn_801EAC54(id))) {
             hit = true;
         }
         if (hit) {
