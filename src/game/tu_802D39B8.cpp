@@ -313,7 +313,6 @@ bool fn_802DEBF8(void) {
 }
 
 // Stage (9, 3), or stage 13 and up, with gGameRoot_8053AAF8->0x7F set (vfunc_0x10 inlines it).
-// FIXME: 94.50 %, missing/extra; behaviour near.
 bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
@@ -397,7 +396,7 @@ bool fn_802DE9A0(void) {
     return false;
 }
 
-// FIXME: 92.60 %, missing/extra; behaviour near.
+// FIXME: 95.16 %, missing/extra; behaviour near.
 // The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads the view
 // (lwz 0xc) for the second pair; ours loads it once.
 bool fn_802DE93C(void) {
@@ -565,9 +564,6 @@ void GameView_804A9950::vfunc_0xC() {
     }
 }
 
-// FIXME: 99.31 %, missing/extra; behaviour near.
-// Two instructions: in the inlined fn_802DEBA0 the target reloads the view
-// for the stage >= 13 test, as fn_802DEBA0 itself does (see there).
 void GameView_804A9950::vfunc_0x10() {
     f32 x = field_0xf0[0].x;
     f32 y = field_0xf0[0].y;
@@ -1109,7 +1105,7 @@ const char* GameView_804A9950::fn_802D9C1C() {
     return "0";
 }
 
-// FIXME: 99.53 %, missing/extra; behaviour drift.
+// FIXME: 99.73 %, operands; behaviour drift.
 // Structurally close, two instructions: in the inlined fn_802DEBA0 the target
 // reloads the view for the stage >= 13 test (the fn_802DEBA0 family). The .rodata strings
 // sit elsewhere in the target: "bg_%s_scl.szs", "bg_%s_ura_scl.szs" (not used here) and
@@ -1196,7 +1192,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 98.87 %, missing/extra; behaviour near.
+// FIXME: 99.17 %, missing/extra; behaviour clean.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1258,7 +1254,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     map->field_0x2384 = h;
 }
 
-// FIXME: 98.43 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.63 %, different + reloc-name; behaviour clean.
 // Structurally close: the target converts the record's cell bytes with a
 // clrlwi 16 first (as if u16; a u16 local folds it) and extracts both screen bytes
 // before the first compare in the key loops; minor regalloc differences follow.
