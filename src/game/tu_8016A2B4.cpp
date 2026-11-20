@@ -704,10 +704,7 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
         GXSetNumTevStages(2);
         GXColor color1 = lbl_8053D910;
         u8 alpha = field_0x1ec * 120 / 47;
-        if (alpha > 120) {
-            alpha = 120;
-        }
-        color1.a = alpha;
+        color1.a = alpha > 120 ? 120 : alpha;
         GXSetTevColor(GX_TEVREG0, color1);
         GXColor color2 = lbl_8053D914;
         GXSetTevColor(GX_TEVREG1, color2);
