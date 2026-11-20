@@ -2705,17 +2705,12 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
-// FIXME(shotgun): 75.38 %, missing/extra + reloc-name; behaviour drift.
-// Every call, field and constant is right; two
-// things differ: the original computes `frame` before fn_8013B414 (ours computes it at its
-// first use, after the first draw, which shifts the schedule), and it indexes the sine table
-// straight from (counter % 128) (clrlslwi r0, r0, 27, 9) where sinShort's s16 argument gives
-// ours slwi / extsh / rlwinm. A const method (no `counter` local) gives 59.9 %.
+// FIXME: minor instruction scheduling around bob/params and r29 vs r30 for second cel.
 void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f pos;
+    s32 frame = (field_0x380 % 40) / 10;
     s32 counter = field_0x380;
-    s32 frame = (counter % 40) / 10;
     JGeometry::TBox2f box(0.0f, 0.0f, 256.0f, 192.0f);
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     pos.x = x * (256.0f / (s32)JUTVideo::getManager()->getFbWidth());
@@ -2725,9 +2720,9 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     GXSetTevDirect(GX_TEVSTAGE1);
     GXSetTevDirect(GX_TEVSTAGE2);
     GXSetTevDirect(GX_TEVSTAGE3);
-    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     params.field_0x26 = 0;
     params.field_0x0[2] = 2;
+    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.mTable[((counter % 128) * 64) & 0x7FF].first, pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
