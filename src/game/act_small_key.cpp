@@ -1323,8 +1323,7 @@ void SmallKey_804A8CD8::fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer) {
 // FIXME: 98.52 %, scheduling+regalloc; behaviour clean.
 // Scheduling and register allocation only: pos and layer take r30 / r28 the
 // other way round (the target copies pos to r30 in the prologue, layer to r28 after the
-// first argument move), and for field_0x3c.x == 0.0f the target loads the field before the
-// constant.
+// first argument move).
 bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tileCode = fn_8022461C(pos, layer);
     s32 rawCode = fn_80226850(pos, layer);
@@ -1360,7 +1359,7 @@ bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
             if (field_0x280 == 7 || field_0x280 == 8) {
                 return false;
             }
-            if (mPos.z > 15.0f && field_0x3c.x == 0.0f) {
+            if (mPos.z > 15.0f && !field_0x3c.x) {
                 field_0x288 = 300;
                 if (mPos.z < 18.0f) {
                     mPos.z = 18.0f;
