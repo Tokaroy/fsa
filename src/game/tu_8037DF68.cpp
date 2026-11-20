@@ -57,7 +57,8 @@ static inline const char* messageText(u32 msg) {
 
 static inline bool checkSync(s32 window, u32 msg) {
     s32 index = windowIndex(window);
-    const char* text = messageText(msg);
+    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
     if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
         return true;
     }
@@ -344,8 +345,6 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 99.89 %, regalloc-only; behaviour clean.
-    // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags) {
         s32 window = windowIndex(player);
         if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
