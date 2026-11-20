@@ -25,7 +25,6 @@ Camera_804AA9E4::Camera_804AA9E4() {}
 
 Camera_804AA9E4::~Camera_804AA9E4() {}
 
-// r0/r3 swapped for getBounds width/height.
 // FIXME: 99.83 %, scheduling+regalloc; behaviour clean.
 void Camera_804AA9E4::fn_8030E5BC() {
     field_0x154.i.x = 0.0f;
@@ -59,8 +58,8 @@ void Camera_804AA9E4::fn_8030E5BC() {
     field_0x7f6 = 0;
     field_0x83c = -1;
     field_0x840 = 0;
-    u16 width, height;
-    JUTVideo::getManager()->getBounds(width, height);
+    u16 height = JUTVideo::getManager()->getEfbHeight();
+    u16 width = JUTVideo::getManager()->getFbWidth();
     field_0x144.i.x = 0;
     field_0x144.i.y = 0;
     field_0x144.f.x = width;
