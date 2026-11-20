@@ -27,6 +27,7 @@ static inline s32 windowIndex(s32 player) {
 }
 
 MessageManager_804AF070* lbl_8053AD78;
+cls_804AF32C lbl_8050DB0C;
 
 // Clears the manager's field_0xe4 when a player of field_0xe5 presses 0x100.
 static inline void clearOnPress() {
