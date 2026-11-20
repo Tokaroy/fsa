@@ -294,38 +294,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
     }
     if ((field_0x524.field_0x0 & 0x100) &&
         field_0x358.fn_80214244()->fn_800FD5E8(field_0x358.fn_80214244()->field_0x3)) {
-        u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 next = field_0x358.fn_80214244()->field_0x3;
-        cls_800FE3EC* rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 prev = field_0x358.fn_80214244()->field_0x3;
-        rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        u8 opt[2];
-        new (&opt[0]) u8(prev);
-        new (&opt[1]) u8(next);
-        u8 pick;
-        if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-            pick = opt[1];
-            if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
-                pick = opt[0];
-            }
-        } else {
-            pick = opt[0];
-            if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
-                pick = opt[1];
-            }
-        }
-        rail = field_0x358.fn_80214244();
-        if (pick < rail->field_0x2) {
-            rail->field_0x3 = pick;
-        }
+        field_0x358.fn_80214244()->setIndex(fn_801C976C());
     }
     if (mFlags & 0x200000) {
         return;
@@ -335,46 +304,25 @@ void ShadowLink2_804A43E8::fn_801C844C() {
         return;
     }
     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.4f) {
-        u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 next = field_0x358.fn_80214244()->field_0x3;
-        cls_800FE3EC* rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 prev = field_0x358.fn_80214244()->field_0x3;
-        rail = field_0x358.fn_80214244();
-        if (start < rail->field_0x2) {
-            rail->field_0x3 = start;
-        }
-        u8 opt[2];
-        new (&opt[1]) u8(prev);
-        new (&opt[0]) u8(next);
+        u8 prev;
+        u8 next;
+        getRailNeighbours(&next, &prev);
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-            if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[1])) {
+            if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(prev)) {
                 JGeometry::TVec3f p1;
-                fn_800FE294(&p1, field_0x358.fn_80214244(), opt[1]);
+                fn_800FE294(&p1, field_0x358.fn_80214244(), prev);
                 JGeometry::TVec3f copy1 = p1;
                 if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, field_0x4)) {
-                    u8 pick = opt[1];
-                    rail = field_0x358.fn_80214244();
-                    if (pick < rail->field_0x2) {
-                        rail->field_0x3 = pick;
-                    }
+                    field_0x358.fn_80214244()->setIndex(prev);
                 }
             }
         } else {
-            if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
+            if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(next)) {
                 JGeometry::TVec3f p0;
-                fn_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
+                fn_800FE294(&p0, field_0x358.fn_80214244(), next);
                 JGeometry::TVec3f copy0 = p0;
                 if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, field_0x4)) {
-                    u8 pick = opt[0];
-                    rail = field_0x358.fn_80214244();
-                    if (pick < rail->field_0x2) {
-                        rail->field_0x3 = pick;
-                    }
+                    field_0x358.fn_80214244()->setIndex(next);
                 }
             }
         }
