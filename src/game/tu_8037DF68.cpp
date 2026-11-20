@@ -1674,7 +1674,7 @@ static inline void centreLine(char* out, char* prefix, f32 width) {
     }
 }
 
-// FIXME(shotgun): 92.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 94.15 %, different + reloc-name; behaviour near.
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
@@ -2339,7 +2339,6 @@ bool fn_8037EC98(s32 player, u16 flags) {
     return true;
 }
 
-// FIXME: 99.10 %, regalloc-only; behaviour clean.
 void fn_8037EB4C() {
     for (s32 i = 0; i < 4; i++) {
         f32 scale = 1.0f;
