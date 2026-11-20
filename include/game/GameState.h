@@ -210,6 +210,11 @@ public:
     /* 0x252 */ u8 field_0x252;
     /* 0x253 */ u8 field_0x253; // stored 0 by fn_8013A1A4 (game/tu_80139BE8.cpp)
     /* 0x254 */ u8 field_0x254[0x258 - 0x254];
+
+    // Inline readers (cls_804B13D4::fn_8041E8B4 loads each before the call it is compared with).
+    bool isField0x239(s32 player) const { return (field_0x239 & (u8)(1 << player)) != 0 ? true : false; }
+    s32 getField0xd8(s32 player) const { return field_0xd8[player]; }
+    s32 getField0xe8(s32 player) const { return field_0xe8[player]; }
 }; // Size: 0x258 (at most; see above)
 
 extern GameState_804B0FE0 lbl_80529DEC;

@@ -327,18 +327,61 @@ static const u64 lbl_8048E000[8] = {
     'Pp1lfk16',
 };
 
-extern const f32 lbl_8048E020[4][5];
-extern const u8 lbl_8048E070[4][10];
-extern const s16 lbl_8048E0B8[2][5];
-extern const s16 lbl_8048E0CC[2][5];
-extern const s16 lbl_8048E0E0[2][5];
-extern const s16 lbl_8048E0F4[2][5];
-extern const s16 lbl_8048E108[2][5];
-extern const s16 lbl_8048E11C[2][5];
-extern const s16 lbl_8048E130[2][5];
-extern const s16 lbl_8048E144[2][5];
+const f32 lbl_8048E040[4][5] = {
+    { 102.5f, 502.5f, 102.5f, 502.5f, 302.5f },
+    { 302.5f, 102.5f, 102.5f, 502.5f, 502.5f },
+    { 60.0f, 60.0f, 420.0f, 420.0f, 60.0f },
+    { 420.0f, 180.0f, 300.0f, 180.0f, 300.0f },
+};
 
-// FIXME(shotgun): 97.25 %, missing/extra + reloc-name; behaviour drift.
+const u8 lbl_8048E090[4][10] = {
+    { 0, 1, 2, 3, 4, 6, 7, 5, 8, 9 },
+    { 1, 3, 0, 2, 4, 8, 9, 5, 6, 7 },
+    { 2, 0, 3, 1, 5, 7, 6, 4, 9, 8 },
+    { 3, 2, 1, 0, 5, 9, 8, 4, 7, 6 },
+};
+
+static const s16 lbl_8048E0B8[2][5] = {
+    { 0, 0, 434, 434, 0 },
+    { 0, 0, 340, 340, 0 },
+};
+
+static const s16 lbl_8048E0CC[2][5] = {
+    { 0, 301, 0, 301, 0 },
+    { 0, 295, 0, 295, 0 },
+};
+
+static const s16 lbl_8048E0E0[2][5] = {
+    { 0, 0, 25, 25, 0 },
+    { 0, 0, 150, 150, 0 },
+};
+
+static const s16 lbl_8048E0F4[2][5] = {
+    { 0, 10, 0, 10, 0 },
+    { 0, 10, 0, 10, 0 },
+};
+
+static const s16 lbl_8048E108[2][5] = {
+    { 0, 0, 0, 0, 0 },
+    { 0, 0, -40, -40, 0 },
+};
+
+static const s16 lbl_8048E11C[2][5] = {
+    { 0, 0, 0, 0, 0 },
+    { 0, 0, -140, -140, 0 },
+};
+
+static const s16 lbl_8048E130[2][5] = {
+    { 0, 0, 40, 40, 0 },
+    { 0, 0, 0, 0, 0 },
+};
+
+static const s16 lbl_8048E144[2][5] = {
+    { 0, 0, 40, 40, 0 },
+    { 0, 0, 0, 0, 0 },
+};
+
+// FIXME(shotgun): 97.28 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -824,10 +867,8 @@ void cls_804B13D4::fn_8041EDB0() {
     }
 }
 
-// FIXME(shotgun): 92.24 %, missing/extra; behaviour near.
 void cls_804B13D4::fn_8041E8B4(s32 player) {
-    bool pending = (lbl_80529DEC.field_0x239 & (u8)(1 << player)) != 0;
-    if (pending) {
+    if (lbl_80529DEC.isField0x239(player)) {
         lbl_80529DEC.field_0xd8[player] = fn_80237774(player);
         for (s32 i = 0; i < 4; i++) {
             if (i != player && fn_8022F514(i) && player == fn_8022F3DC(i)) {
@@ -841,7 +882,7 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
         field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
         field_0x1f8[player] = fn_80237810(player);
         lbl_80529DEC.field_0x239 &= ~(u8)(1 << player);
-    } else if (lbl_80529DEC.field_0xd8[player] < fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
             lbl_80529DEC.field_0xd8[player]++;
@@ -860,7 +901,7 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1f8[player] = fn_80237810(player);
         }
-    } else if (lbl_80529DEC.field_0xd8[player] > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
@@ -882,11 +923,11 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
     } else {
         field_0x198[player] = 0;
     }
-    if (lbl_80529DEC.field_0xe8[player] < fn_80236100(player)) {
+    if (lbl_80529DEC.getField0xe8(player) < fn_80236100(player)) {
         field_0x1a8[player]++;
         if (field_0x1a8[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] += 2;
-            if (lbl_80529DEC.field_0xe8[player] >= fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) >= fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
@@ -895,11 +936,11 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
             field_0x28b |= (u8)(1 << player);
             field_0x1a8[player] = 0;
         }
-    } else if (lbl_80529DEC.field_0xe8[player] > fn_80236100(player)) {
+    } else if (lbl_80529DEC.getField0xe8(player) > fn_80236100(player)) {
         field_0x1a8[player]++;
         if (field_0x1a8[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] -= 2;
-            if (lbl_80529DEC.field_0xe8[player] <= fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) <= fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
@@ -924,7 +965,6 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
     }
 }
 
-// FIXME(shotgun): 99.58 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
     s32 target;
     if (fn_8022F514(id)) {
@@ -952,7 +992,8 @@ void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
         }
     }
     if (arg1 >= 1000 || arg1 <= -1000) {
-        field_0x224[id] = __abs(arg1) / 100;
+        s32 amount = __abs(arg1);
+        field_0x224[id] = amount / 100;
         field_0x22c[id] = 0;
     } else {
         fn_80230FD0(id, 0x20034);
@@ -967,12 +1008,9 @@ void cls_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
     field_0x28b |= (u8)(1 << target);
 }
 
-// FIXME(shotgun): 98.84 %, missing/extra; behaviour near.
-// (the takesPart bool test is one cmplwi longer)
 void cls_804B13D4::fn_8041E58C() {
     for (s32 i = 0; i < 4; i++) {
-        bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
-        if (takesPart == true) {
+        if (isMaskBitSet(gGameRoot_8053AAF8->mPlayerMask, i)) {
             lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
             for (s32 j = 0; j < 4; j++) {
                 if (j != i && fn_8022F514(j) && i == fn_8022F3DC(j)) {
@@ -1278,7 +1316,7 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: 99.02 %, missing/extra; behaviour near.
+// FIXME: 99.03 %, missing/extra; behaviour near.
 // FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
@@ -1386,7 +1424,7 @@ void cls_804B13D4::fn_8041C67C() {
 }
 
 // Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.29 %, missing/extra; behaviour near.
+// FIXME: 99.31 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
@@ -1545,7 +1583,7 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 90.46 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.41 %, different; behaviour near.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
@@ -1565,9 +1603,9 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     s16 dx = lbl_8050DB0C.field_0x4c[0xF3] + lbl_8048E0E0[row][field_0x222];
     s16 dy = lbl_8050DB0C.field_0x4c[0xF4] + lbl_8048E0F4[row][field_0x222];
     if (lbl_8048E0CC[row][field_0x222] == 0) {
-        dy = ((f32)dy + lbl_8053AED0->fn_8043D514());
+        dy = (f32)dy + lbl_8053AED0->fn_8043D514();
     } else {
-        dy = (s32)((f32)dy + lbl_8053AED0->fn_8043D57C());
+        dy = (f32)dy + lbl_8053AED0->fn_8043D57C();
     }
     field_0x54->moveFromCentre_80402E08(
         (f32)(dx + (lbl_8048E0B8[row][field_0x222] + lbl_8050DB0C.field_0x4c[0x143] + lbl_8048E108[row][field_0x222])),
