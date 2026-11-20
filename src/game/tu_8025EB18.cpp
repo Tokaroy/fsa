@@ -1364,11 +1364,17 @@ bool Player_804A6F38::fn_802604CC() {
 // 0x4F (fn_8022C004) push through fn_8025190C / fn_802517F8 or fn_8025197C.
 void Player_804A6F38::fn_8026022C() {
     const Vec& a = lbl_8046B89C[field_0x3dc];
-    JGeometry::TVec3f ahead(a.x, a.y, a.z);
+    JGeometry::TVec3f ahead;
+    ahead.x = a.x;
+    ahead.y = a.y;
+    ahead.z = a.z;
     ahead += mPos;
     ahead.z = 0.0f;
     const Vec& b = lbl_8046B8CC[field_0x3dc];
-    JGeometry::TVec3f behind(b.x, b.y, b.z);
+    JGeometry::TVec3f behind;
+    behind.x = b.x;
+    behind.y = b.y;
+    behind.z = b.z;
     behind += mPos;
     if (field_0x1174 == 0 && field_0xd64 == 0 && field_0xd74 == 0) {
         if (fn_8022BF68(field_0x4)) {
