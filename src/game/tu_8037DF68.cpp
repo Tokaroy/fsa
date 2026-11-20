@@ -55,6 +55,22 @@ static inline const char* messageText(u32 msg) {
     return &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
 }
 
+static inline bool checkSync(s32 window, u32 msg) {
+    s32 index = windowIndex(window);
+    const char* text = messageText(msg);
+    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
+        return true;
+    }
+    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
+        gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
+        lbl_8053AD78->field_0xed = 1;
+        lbl_8053AD78->field_0x110 = index;
+        lbl_8053AD78->field_0xee = text[5];
+        return true;
+    }
+    return false;
+}
+
 // Whether the window may open at once: fn_80303750 holds and no window is opening.
 static inline bool canOpen(s32 window) {
     if (!fn_80303750(windowIndex(window))) {
@@ -328,7 +344,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 99.64 %, missing/extra; behaviour clean.
+    // FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
     // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags) {
         s32 window = windowIndex(player);
@@ -366,21 +382,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
             }
             return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
         }
-        s32 index = windowIndex(window);
-        const char* text = messageText(msg);
-        bool sync;
-        if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
-            sync = true;
-        } else if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-                   gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
-            lbl_8053AD78->field_0xed = 1;
-            lbl_8053AD78->field_0x110 = index;
-            lbl_8053AD78->field_0xee = text[5];
-            sync = true;
-        } else {
-            sync = false;
-        }
-        if (sync) {
+        if (checkSync(window, msg)) {
             if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
                 return true;
             }
@@ -1121,7 +1123,7 @@ u16 fn_803846A4(s32 index) {
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
-// FIXME(shotgun): 95.50 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.42 %, different; behaviour drift.
 // Follows the conditional-message commands (0x1A size 2, the twelve commands fn_80383E2C finds)
 // from message msg for the player window `window`: each command picks one of its operands as the
 // next message id (by a key or other holdable the player carries, a random draw, the player
@@ -1149,8 +1151,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         switch ((s8)command) {
         case 7: {
-            s32 yes = operand(p, 6);
-            s32 no = operand(p, 10);
+            u32 yes = operand(p, 6);
+            u32 no = operand(p, 10);
             if (getGameView_802D6A9C()->fn_802D800C((u8)p[5])) {
                 index = yes;
             } else {
@@ -1160,9 +1162,9 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x10: {
             u8 kind = p[5];
-            s32 target = operand(p, 6);
+            u32 target = operand(p, 6);
             u32 consume = (u8)p[0xE];
-            s32 next = operand(p, 10);
+            u32 next = operand(p, 10);
             switch (kind) {
             case 0:
             case 1:
@@ -1268,10 +1270,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x18: {
-            s32 a = operand(p, 5);
-            s32 b = operand(p, 9);
-            s32 c = operand(p, 13);
-            s32 d = operand(p, 17);
+            u32 a = operand(p, 5);
+            u32 b = operand(p, 9);
+            u32 c = operand(p, 13);
+            u32 d = operand(p, 17);
             switch (gGameRoot_8053AAF8->fn_80138A30()) {
             case 1:
                 index = a;
@@ -1290,18 +1292,20 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         }
         case 0x1D: {
             s32 limit = operand(p, 5);
-            s32 high = operand(p, 9);
-            index = operand(p, 13);
+            u32 high = operand(p, 9);
+            u32 low = operand(p, 13);
             if (fn_80236100(slot) >= limit) {
                 index = high;
+            } else {
+                index = low;
             }
             break;
         }
         case 0x20: {
-            s32 a = operand(p, 5);
-            s32 b = operand(p, 9);
-            s32 c = operand(p, 13);
-            s32 d = operand(p, 17);
+            u32 a = operand(p, 5);
+            u32 b = operand(p, 9);
+            u32 c = operand(p, 13);
+            u32 d = operand(p, 17);
             switch (slot) {
             case 0:
                 index = a;
@@ -1319,8 +1323,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x21: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
             if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
                 index = yes;
             } else {
@@ -1331,8 +1335,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x23: {
             u32 kind = (u8)p[5];
             s32 bit = *(const u16*)(p + 6);
-            s32 yes = operand(p, 8);
-            s32 no = operand(p, 12);
+            u32 yes = operand(p, 8);
+            u32 no = operand(p, 12);
             u8 which;
             if (kind >= 1 && kind <= 4) {
                 which = kind - 1;
@@ -1347,9 +1351,10 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x2C: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
-            if (((gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3) == 2) {
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
+            u32 val = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
+            if (val == 2) {
                 index = yes;
             } else {
                 index = no;
@@ -1357,8 +1362,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x30: {
-            s32 notFour = operand(p, 5);
-            s32 four = operand(p, 9);
+            u32 notFour = operand(p, 5);
+            u32 four = operand(p, 9);
             if (fn_8022CAF8(slot) != 4) {
                 index = notFour;
             } else {
@@ -1367,8 +1372,8 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x33: {
-            s32 yes = operand(p, 5);
-            s32 no = operand(p, 9);
+            u32 yes = operand(p, 5);
+            u32 no = operand(p, 9);
             if (fn_802373EC(slot) == 1) {
                 index = yes;
             } else {
@@ -1656,7 +1661,7 @@ static inline void centreLine(char* out, char* prefix, f32 width) {
     }
 }
 
-// FIXME(shotgun): 94.15 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 94.16 %, different + reloc-name; behaviour near.
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
@@ -1670,10 +1675,10 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
     s32 len = 0;
     s32 pos;
     s32 i = 0;
+    u8 part = 0;
     s32 lines = 1;
     f32 widest = 0.0f;
     f32 width = 0.0f;
-    u8 part = 0;
     lineWidth[0] = 0.0f;
     lineWidth[1] = 0.0f;
     lineWidth[2] = 0.0f;
@@ -1779,7 +1784,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[2] = 0;
                 code <<= 8;
                 if (part == 1 && out2 != NULL) {
-                    if (two[0] != ' ') {
+                    if (p[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
@@ -1793,7 +1798,7 @@ f32 fn_80382B48(char* out, u32 msg, s32 value, const char* out2, const char* out
                 two[0] = p[0];
                 two[1] = 0;
                 if (part == 1 && out2 != NULL) {
-                    if (two[0] != ' ') {
+                    if (p[0] != ' ') {
                         strcat((char*)out2, two);
                     }
                 } else if (part == 2 && out3 != NULL) {
