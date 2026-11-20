@@ -908,17 +908,11 @@ void Camera_804AA9E4::setScreenRectViewport() {
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
-// FIXME(shotgun): 98.70 %, operands; behaviour clean.
-// (u32 -> float constant)
 bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     fn_8030C5F0(pos, true, false, &screen);
-    bool result = false;
-    if (screen.x >= (f32)(field_0x144.i.x + 14) && screen.x < (f32)(field_0x144.f.x - 14) &&
-        screen.y >= (f32)(field_0x144.i.y + 14) && screen.y < (f32)(field_0x144.f.y - 14)) {
-        result = true;
-    }
-    return result;
+    return screen.x >= (f32)(field_0x144.i.x + 14) && screen.x < (f32)(field_0x144.f.x - 14) &&
+           screen.y >= (f32)(field_0x144.i.y + 14) && screen.y < (f32)(field_0x144.f.y - 14);
 }
 
 u8 Camera_804AA9E4::addFocusPoint_8030C210(const JGeometry::TVec3f* pos) {
