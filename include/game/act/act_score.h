@@ -20,6 +20,8 @@ public:
     void fn_80391F58();
     void fn_80393228();
     void fn_80393514();
+    void updateState1();
+    void updateState2();
     /* 0x230 */ s32 mTimer;
     /* 0x234 */ s32 mState;
     /* 0x238 */ s32 mPlayer;

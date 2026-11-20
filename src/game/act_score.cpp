@@ -77,20 +77,9 @@ void Score_804AF4C0::update() {
     if (mState == 0 || mState == 4) {
         fn_80393514();
     } else if (mState == 1) {
-        if (mTimer >= 0x50) {
-            s32 d = 90 - mTimer;
-            field_0x3c.y = -3.0f * (1.0f - (f32)(d * d / 100));
-            mPos.add(field_0x3c);
-        }
-        if (mTimer-- == 0) {
-            mAlive = false;
-        }
+        updateState1();
     } else if (mState == 2) {
-        field_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << 10);
-        mPos.add(field_0x3c);
-        if (mTimer-- == 0) {
-            mAlive = false;
-        }
+        updateState2();
     } else if (mState == 3 || mState == 5 || mState == 6 || mState == 7) {
         mPos.set(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y - 32.0f,
                  getPlayerPos_8023E724(mPlayer)->z);
@@ -230,18 +219,31 @@ void Score_804AF4C0::fn_80393228() {
         }
     }
 }
+#pragma auto_inline reset
 
-// Draws one digit of the gem value at x, in the gem-yellow colour.
-static inline void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
-    Vec v;
-    v.x = x;
-    v.y = self->mPos.y;
-    v.z = self->mPos.z;
-    if (self->field_0x4 < 8) {
-        JGeometry::TVec3f pos = JGeometry::TVec3f(v);
-        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
+// Auto-inlined into update(); placed here to match the original .sdata2 literal pool order.
+void Score_804AF4C0::updateState1() {
+    if (mTimer >= 0x50) {
+        s32 d = 90 - mTimer;
+        field_0x3c.y = -3.0f * (1.0f - (f32)(d * d / 100));
+        mPos.add(field_0x3c);
+    }
+    if (mTimer-- == 0) {
+        mAlive = false;
     }
 }
+
+void Score_804AF4C0::updateState2() {
+    field_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << 10);
+    mPos.add(field_0x3c);
+    if (mTimer-- == 0) {
+        mAlive = false;
+    }
+}
+
+#pragma auto_inline off
+// Draws one digit of the gem value at x, in the gem-yellow colour.
+static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
 
 // Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
 static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
@@ -284,7 +286,6 @@ void Score_804AF4C0::fn_80391F58() {
 }
 
 // FIXME(shotgun): 99.74 %, regalloc-only + reloc-name; behaviour clean.
-// (left: the operand order of the `mPos.x + 10.0f` fadds, and the float literal labels)
 void Score_804AF4C0::fn_80391D44() {
     s32 n = fn_8023BC38(mPlayer) / 60 + 1;
     JGeometry::TVec3f v;
@@ -300,7 +301,7 @@ void Score_804AF4C0::fn_80391D44() {
         v.x = mPos.x;
         v.y = mPos.y;
         v.z = mPos.z;
-        v.x = mPos.x - 10.0f;
+        v.x -= 10.0f;
         if (field_0x4 < 8) {
             putTimeDigit(0.5f, 1, v,
                          JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
@@ -308,7 +309,7 @@ void Score_804AF4C0::fn_80391D44() {
         v.x = mPos.x;
         v.y = mPos.y;
         v.z = mPos.z;
-        v.x = mPos.x + 10.0f;
+        v.x += 10.0f;
         if (field_0x4 < 8) {
             putTimeDigit(0.5f, 0, v,
                          JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
@@ -316,5 +317,16 @@ void Score_804AF4C0::fn_80391D44() {
     }
 }
 #pragma auto_inline reset
+
+static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
+    Vec v;
+    v.x = x;
+    v.y = self->mPos.y;
+    v.z = self->mPos.z;
+    if (self->field_0x4 < 8) {
+        JGeometry::TVec3f pos = JGeometry::TVec3f(v);
+        lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
+    }
+}
 
 Score_804AF4C0::~Score_804AF4C0() {}
