@@ -932,10 +932,12 @@ void GameRootSub24_8016A3AC::fn_8016B4D4() {
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         f32 scroll = 0.000244140625f * (f32)(field_0x1c0 & 0xFFF);
         JGeometry::TVec3f center1;
+        JGeometry::TVec3f center2;
         JGeometry::TVec3f half1;
+        JGeometry::TVec3f half2;
         getMapTexView(center1, half1);
-        JGeometry::TVec3f center2 = center1;
-        JGeometry::TVec3f half2 = half1;
+        center2.set(center1);
+        half2.set(half1);
         center1.mul(JGeometry::TVec3f(1.0f, 3.0f, 1.0f));
         center1.x -= scroll;
         half1.mul(JGeometry::TVec3f(1.0f, 3.0f, 1.0f));
