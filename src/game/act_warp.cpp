@@ -43,12 +43,17 @@ static inline void toScreenBox(JGeometry::TBox2f* out, JGeometry::TBox2f ofs, JG
 // The spawn parameter of the WARP that init() creates for the paired kinds 0x19-0x1C: this warp's
 // tile position (in 8-unit cells, from the layer box origin) and layer in the bits the pair reads
 // back, the kind in the low bits.
+// A layer as the spawn parameter stores it: 0 for the lower layers, layer - 7 from 8 up.
+static inline s32 layerCode(s32 layer) {
+    return layer >= 8 ? layer - 7 : 0;
+}
+
 static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
     u32 v = param & 0xF8000000;
-    v = (v & ~0x07000000) | ((enc & 7) << 24);
-    v = (v & ~0x00FF0000) | (((dx / 8) & 0xFF) << 16);
-    v = (v & ~0x0000FF00) | (((dy / 8) & 0xFF) << 8);
-    v = (v & ~0x80) | (param & 0x80);
+    v = ((enc << 24) & 0x07000000) | (v & ~0x07000000);
+    v = (((dx / 8) << 16) & 0x00FF0000) | (v & ~0x00FF0000);
+    v = (((dy / 8) << 8) & 0x0000FF00) | (v & ~0x0000FF00);
+    v = (param & 0x80) | (v & ~0x80);
     return v | kind;
 }
 
@@ -85,31 +90,25 @@ void Warp_804A6DC8::init() {
         field_0x238.y = destY + (mPos.y - myY);
         field_0x238.z = 0.0f;
     } else {
-        field_0x238.x = (f32)((field_0x90 >> 13) & 0x1F8) + destX;
-        field_0x238.y = (f32)((field_0x90 >> 5) & 0x1F8) + destY;
-        field_0x238.z = 0.0f;
+        field_0x238.set((f32)((field_0x90 >> 13) & 0x1F8) + destX, (f32)((field_0x90 >> 5) & 0x1F8) + destY, 0.0f);
     }
-    s32 enc = myLayer >= 8 ? myLayer - 7 : 0;
+    s32 enc = layerCode(field_0x4);
     kind = field_0x90 & 0x7F;
     if (kind == 0x19) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 1);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = field_0x90 & ~0xFF;
     } else if (kind == 0x1A) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 3);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 2;
     } else if (kind == 0x1B) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x18);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x17;
     } else if (kind == 0x1C) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x17);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x18;
     }
     kind = field_0x90 & 0x7F;
@@ -119,8 +118,8 @@ void Warp_804A6DC8::init() {
     }
     kind = field_0x90 & 0x7F;
     if (((field_0x90 >> 7) & 1) == 0 && kind != 0xB && kind != 0x1E && kind != 0x1F && kind != 0x20) {
-        mPos.x = mPos.x + (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
-        mPos.y = mPos.y + (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
+        mPos.x += (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
+        mPos.y += (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
     }
     kind = field_0x90 & 0x7F;
     if (kind == 6) {
