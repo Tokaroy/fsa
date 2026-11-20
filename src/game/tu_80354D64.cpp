@@ -29,7 +29,6 @@ Log_804ACD70::~Log_804ACD70() {
     }
 }
 
-// FIXME(shotgun): 90.59 %, scheduling; behaviour clean.
 void Log_804ACD70::init() {
     field_0x2c0 = field_0x90 & 1;
     field_0x2c4 = (field_0x90 >> 4) & 1;
@@ -72,14 +71,16 @@ void Log_804ACD70::init() {
     }
     for (s32 i = 0; i < 4; i++) {
         field_0x234[i] = -1;
-        field_0x244[i] = 0;
-        field_0x254[i] = -1;
         field_0x264[i] = 0;
         field_0x268[i].field_0x0 = 1;
-        field_0x268[i].field_0x4.x = 0.0f;
-        field_0x268[i].field_0x4.y = 0.0f;
-        field_0x268[i].field_0x4.z = 0.0f;
+        field_0x268[i].field_0x4.zero();
         field_0x268[i].field_0x10 = 0;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        field_0x254[i] = -1;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        field_0x244[i] = 0;
     }
     field_0xb8 = 2;
     field_0x230 = 0;
