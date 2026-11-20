@@ -42,17 +42,18 @@ static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7
 static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
 static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
 static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
+static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
 
 // Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
 // field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
-static const s32 lbl_80474548[4][4] = {
+static const s32 lbl_80474548[5][4] = {
     {851, 854, 848, 845},
     {904, 907, 901, 898},
     {865, 868, 862, 859},
     {879, 882, 876, 873},
+    {843, 904, 857, 871},
 };
 static const s32 lbl_80474858[4] = {959, 962, 956, 953}; // sprite per heading (the original's table is 0x204 long)
-static const s32 lbl_80474588[4] = {843, 904, 857, 871};
 static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
 static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
 static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
@@ -807,7 +808,7 @@ void cls_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 98.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.33 %, operands; behaviour drift.
 void cls_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&field_0x3c);
@@ -839,7 +840,7 @@ void cls_804ADF28::fn_80364A88() {
                     field_0x3c.z = 0.0f;
                     field_0x26c = lbl_80474548[field_0x238][3];
                 } else {
-                    field_0x26c = lbl_80474588[field_0x238];
+                    field_0x26c = lbl_80474548[4][field_0x238];
                     field_0x260 = 15;
                     field_0x25c = 15;
                     if (field_0x238 == 1) {
@@ -991,11 +992,10 @@ void cls_804ADF28::fn_803645B4() {
     }
 }
 
-// FIXME(shotgun): 98.59 %, missing/extra; behaviour clean.
 void cls_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
-        JGeometry::TVec3f oldPos = mPos;
         JGeometry::TVec3f off;
+        JGeometry::TVec3f oldPos = mPos;
         off.x = (f32)fn_801CD664(380) - 190.0f;
         off.y = (f32)fn_801CD664(380) - 140.0f;
         off.z = 0.0f;
@@ -1007,7 +1007,7 @@ void cls_804ADF28::fn_80364340() {
             off.z = 100.0f;
             mPos = oldPos;
             u32 param = fn_801CD664(8) | 0x250000;
-            JGeometry::TVec3f spawnPos = mPos + off;
+            const JGeometry::TVec3f& spawnPos = mPos + off;
             getActorManager_801F856C()->spawnActor_801F9484('RUPY', field_0x4, &spawnPos, param, -1, -1);
         }
     }
@@ -1472,14 +1472,12 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.72 %, reloc-name; behaviour drift.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx identity;
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     if ((field_0x268 & 7) >= 5) {
-        static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
@@ -1513,7 +1511,6 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.93 %, same-text; behaviour clean.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
