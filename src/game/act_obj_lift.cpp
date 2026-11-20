@@ -39,7 +39,7 @@ static JGeometry::TBox2f lbl_8050ADF8[4] = {
     JGeometry::TBox2f(-31.0f, -31.0f, 31.0f, -17.0f),
     JGeometry::TBox2f(-31.0f, 17.0f, 31.0f, 31.0f),
     JGeometry::TBox2f(-31.0f, -31.0f, -17.0f, 31.0f),
-    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 31.0f),
+    JGeometry::TBox2f(17.0f, -31.0f, 31.0f, 17.0f),
 };
 static JGeometry::TBox2f lbl_8050AE38[5][2] = {
     {JGeometry::TBox2f(-14.0f, -6.0f, 0.0f, 22.0f), JGeometry::TBox2f(0.0f, -22.0f, 14.0f, 6.0f)},
