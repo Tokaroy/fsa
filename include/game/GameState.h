@@ -285,6 +285,8 @@ public:
     // from `from` to `to`; mode 1 eases in and out, any other mode goes up and back.
     bool fn_8040245C(s16 frames, u8 from, u8 to, u8 mode);
 
+    f32 getY() const { return field_0xc; }
+
     /* 0x00 */ // vtable
     /* 0x04 */ J2DPane* mPane;
     /* 0x08 */ f32 field_0x8;  // getBounds()->x

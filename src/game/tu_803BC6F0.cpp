@@ -3224,10 +3224,6 @@ void FileSelect_804AFF60::fn_803C1054() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.95 %, regalloc-only; behaviour clean.
-// Regalloc only: the 'Pqb' loop's counter / table pointer swap
-// r28 / r29 (as fn_803C05D8), and the row offset's fsubs takes f0 / f2 the
-// other way round (as fn_803CE370).
 // Called by fn_803C9F14 after the copy's card write: shows the copied file
 // field_0xa0's board ('Pqb03'..'Pqb10' as in fn_803C05D8, its stage flags into
 // field_0xa8 / field_0xb8), message 0x64, refreshes the rows (fn_803CE4CC),
@@ -3264,7 +3260,7 @@ void FileSelect_804AFF60::fn_803C0A34() {
     field_0x1c->field_0x26 = 0;
     field_0x20->field_0x20 = 0;
     field_0x20->field_0x26 = 0;
-    field_0x38[field_0xa0]->moveFromCentre_80402E08(0.0f, field_0x38[0]->field_0xc - field_0x38[field_0xa0]->field_0xc);
+    field_0x38[field_0xa0]->moveFromCentre_80402E08(0.0f, field_0x38[0]->getY() - field_0x38[field_0xa0]->getY());
     field_0x38[field_0xa0]->field_0x22 = 0;
     field_0x38[field_0xa0]->field_0x26 = 0;
     field_0x38[field_0xa0]->mPane->setAlpha(field_0x38[field_0xa0]->field_0x28);
