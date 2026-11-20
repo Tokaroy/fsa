@@ -2424,13 +2424,13 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
 }
 
 // FIXME(shotgun): 82.48 %, different; behaviour near.
-// (schedule of the window load / int conversion)
+// (float registers of the pos / base computation)
 void cls_804AF72C::fn_8039D0DC(u8 value) {
     s32 offset = 0;
     s32 index = field_0x2cc;
     if (!field_0x38.isMasked(index) && !(field_0x2d8->field_0x16c != 0 && field_0x38.isMasked(index))) {
-        f32 base;
         f32 pos;
+        f32 base;
         if (!(field_0x2d8->field_0x3b8->field_0x28 & 0x40)) {
             base = field_0x2d8->field_0xe8;
             pos = field_0x38.field_0x4c[index];
@@ -2440,10 +2440,8 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
         }
         offset = (s32)((base - pos) * 0.5f + 0.5f);
     }
-    cls_804AF5A0* window = field_0x2d8;
-    u8 slot = field_0x2d4;
-    window->field_0x124[slot] = (f32)offset + field_0x38.field_0x19c[slot];
-    window->field_0x130[slot] = (f32)(field_0x38.field_0x1ee[slot] - field_0x38.field_0x202[window->field_0x15c] - 1);
+    field_0x2d8->setLine(field_0x2d4, (f32)offset + field_0x38.field_0x19c[field_0x2d4],
+                         (f32)(field_0x38.field_0x1ee[field_0x2d4] - field_0x38.field_0x202[field_0x2d8->field_0x15c] - 1));
     field_0x2d8->field_0x3b2[field_0x2d4] = value;
     field_0x2d4++;
 }
@@ -2461,8 +2459,8 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     s32 index = field_0x2cc;
     s32 offset = 0;
     if (!field_0x38.isMasked(index) && !(field_0x2d8->field_0x16c != 0 && field_0x38.isMasked(index))) {
-        f32 base;
         f32 pos;
+        f32 base;
         if (!(field_0x2d8->field_0x3b8->field_0x28 & 0x40)) {
             base = field_0x2d8->field_0xe8;
             pos = field_0x38.field_0x4c[index];
@@ -2506,7 +2504,7 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
+                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                 }
                 s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                 if (offset > 0) {
@@ -2893,7 +2891,7 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
+                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                 }
                 s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
