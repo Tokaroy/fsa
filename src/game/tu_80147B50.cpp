@@ -53,7 +53,7 @@ static inline u16 dirToAngle(s32 dir) {
     }
 }
 
-// FIXME(shotgun): 99.77 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
 void cls_8049F6C8::init() {
     field_0x80.i.x = -8.0f;
     field_0x80.i.y = -8.0f;
@@ -254,7 +254,7 @@ bool cls_8049F6C8::fn_80149FDC() {
     return false;
 }
 
-// FIXME(shotgun): 99.21 %, different; behaviour clean.
+// FIXME(shotgun): 99.37 %, regalloc-only; behaviour clean.
 bool cls_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
     s32 i;
