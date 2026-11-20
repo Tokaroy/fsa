@@ -226,19 +226,19 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
 // FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
+    bool all;
+    u8 near = 0;
     s32 moved = 0;
-    bool near = false;
-    bool all = false;
+    all = false;
     if (field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3]) {
         all = true;
     }
     if (all && __fabsf(field_0x240) < 33.0f) {
-        near = true;
+        near = 1;
     }
-    bool flag = near;
+    u8 flag = near;
     if (!gGameRoot_8053AAF8->field_0x7e) {
-        bool owned = fn_8022CAF8(0) == 1;
-        flag = near & owned;
+        flag = near & (fn_8022CAF8(0) == 1);
     }
     if (field_0x240 != 0.0f) {
         if (flag || field_0x250 > 0) {
