@@ -1298,6 +1298,8 @@ struct ActorVector {
     ActorBase_804A5770** fn_801188E0(ActorBase_804A5770** pos, ActorBase_804A5770* const* value);
     // 0x801188B8: push_back, inserts *value at mEnd.
     void fn_801188B8(ActorBase_804A5770* const* value);
+    // JGadget::TVector::reserve, inlined into cls_801192AC::fn_801190E4 (reserve(20)).
+    void reserve(u32 n);
     void DestroyElement_(ActorBase_804A5770** pFirst, ActorBase_804A5770** pLast) {
         for (ActorBase_804A5770** it = pFirst; it != pLast; ++it) {
             mAllocator.destroy(it);
@@ -1315,6 +1317,12 @@ struct ActorVector {
     }
     ActorBase_804A5770** erase(ActorBase_804A5770** pos) {
         return erase(pos, pos + 1);
+    }
+    void clear() { erase(mBegin, mEnd); }
+    // JGadget::TVector::~TVector, inlined into cls_801192AC's destructor.
+    ~ActorVector() {
+        clear();
+        delete mBegin;
     }
 };
 
