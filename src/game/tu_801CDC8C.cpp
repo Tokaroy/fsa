@@ -357,8 +357,6 @@ s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
     return nearest;
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// regalloc only (the bools of canTargetPlayer swap).
 // The player that can be targeted whose direction from *from is closest to
 // `angle` (16-bit angles; the difference as a fraction of a half turn), or
 // -1.
@@ -370,7 +368,7 @@ s32 EnemyBase_804A4808::fn_801D0338(const JGeometry::TVec3f* from, s16 angle) {
             JGeometry::TVec3f* playerPos = &field_0x1ac[i];
             s32 playerAngle = JMath::atanTable_.atan2_(playerPos->x - from->x, playerPos->y - from->y) *
                               (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-            f32 diff = (1.0f / 32768.0f) * __fabsf((s16)(angle - playerAngle));
+            f32 diff = (1.0f / 32768.0f) * JMAAbs((s16)(angle - playerAngle));
             if (diff < best) {
                 best = diff;
                 nearest = i;
