@@ -746,7 +746,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // loop with lfsx; registers and stack slots follow. The original converts
 // 240.0f / 160.0f at run time (fctiwz, hoisted before the loop), so they are
 // float variables there, not literals at the stores.
-// FIXME: 74.47 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 72.87 %, missing/extra + reloc-name; behaviour near.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
