@@ -53,13 +53,12 @@ void cls_80217F80::fn_80217ED4() {
     }
 }
 
-// FIXME: 92.88 %. Register choice: the original keeps the first emitter in r31
-// and reloads mOwner into r6 for the second spawn; ours differs in registers.
+// Scheduling only: the original loads mOwner for the first spawn before li r9/r10.
 void cls_80217F80::fn_80217DE8() {
     JPABaseEmitter* emitter =
-        spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x231, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x231, 1, 1, NULL, NULL, true, 1.0f);
     JPABaseEmitter* emitter2 =
-        spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x232, 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x232, 1, 1, NULL, NULL, true, 1.0f);
     if (emitter != NULL) {
         emitter->setGlobalScale(lbl_804CD838);
     }
@@ -68,34 +67,30 @@ void cls_80217F80::fn_80217DE8() {
     }
 }
 
-// FIXME: 93.82 %. Register choice only: the original loads mOwner into r3 and
-// takes &mPos before the layer; ours loads it into r4.
 void cls_80217F80::fn_80217CD8() {
     if (mEmitters[0] == NULL) {
-        mEmitters[0] = spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x228, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[0] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x228, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[0] != NULL) {
             mEmitters[0]->setGlobalScale(lbl_804CD838);
         }
     }
     if (mEmitters[1] == NULL) {
-        mEmitters[1] = spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x229, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[1] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x229, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[1] != NULL) {
             mEmitters[1]->setGlobalScale(lbl_804CD838);
         }
     }
 }
 
-// FIXME: 93.82 %. Register choice only: the original loads mOwner into r3 and
-// takes &mPos before the layer; ours loads it into r4.
 void cls_80217F80::fn_80217BC8() {
     if (mEmitters[2] == NULL) {
-        mEmitters[2] = spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x22F, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[2] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x22F, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[2] != NULL) {
             mEmitters[2]->setGlobalScale(lbl_804CD838);
         }
     }
     if (mEmitters[3] == NULL) {
-        mEmitters[3] = spawnEmitter_8013CC50(mOwner->field_0x4, &mOwner->mPos, 0x230, 1, 1, NULL, NULL, true, 1.0f);
+        mEmitters[3] = spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x230, 1, 1, NULL, NULL, true, 1.0f);
         if (mEmitters[3] != NULL) {
             mEmitters[3]->setGlobalScale(lbl_804CD838);
         }
