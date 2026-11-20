@@ -1206,10 +1206,8 @@ void cls_804A51E4::vfunc_0x88() {
             if (!blocked) {
                 if (mFlags & 0x80000) {
                     field_0x3c.z = 0.1f;
-                } else if (mTargetSerial >= 0) {
-                    field_0x3c.z = 0.15f;
                 } else {
-                    field_0x3c.z = 0.3f;
+                    field_0x3c.z = mTargetSerial >= 0 ? 0.15f : 0.3f;
                 }
             }
             break;
