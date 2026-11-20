@@ -406,6 +406,7 @@ void Boulder_8049C4C0::fn_800F555C() {
 void Boulder_8049C4C0::update() {
     switch (field_0x230) {
     case 0:
+    case 4:
         fn_800F5E08();
         break;
     case 1:
