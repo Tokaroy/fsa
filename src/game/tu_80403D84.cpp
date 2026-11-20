@@ -2502,7 +2502,7 @@ void MapScreen_804B1288::fn_8040873C() {
 
 // FIXME: 99.89 %, scheduling; behaviour clean.
 // Scheduling: in the else branch the original loads the second float argument of
-// resize/move (f2) before the first (f1); ours loads f1 first.
+// resize (f2) before the first (f1); ours loads f1 first.
 void MapScreen_804B1288::fn_804083D8() {
     f32 boundsY;
     f32 iconY;
@@ -2527,7 +2527,7 @@ void MapScreen_804B1288::fn_804083D8() {
         } else {
             field_0x28[i][0]->fn_80402CE0(1.0f, 1.0f);
             field_0x28[i][1]->mPane->resize(field_0x28[i][1]->field_0x18, field_0x28[i][1]->field_0x1c);
-            field_0x28[i][2]->mPane->move(field_0x28[i][2]->field_0x8, field_0x28[i][2]->field_0xc);
+            field_0x28[i][2]->mPane->move(field_0x28[i][2]->field_0x8, field_0x28[i][2]->getY());
             ((J2DPicture*)field_0x28[i][0]->mPane)->setBlackWhite(field_0x328[0], field_0x310[0]);
             ((J2DPicture*)field_0x28[i][1]->mPane)->setBlackWhite(field_0x328[1], field_0x310[1]);
             ((J2DTextBox*)field_0x28[i][2]->mPane)->setBlackWhite(field_0x328[2], field_0x310[2]);
