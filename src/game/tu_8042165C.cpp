@@ -528,7 +528,7 @@ static inline bool isPaused() {
 }
 
 // Only the .sdata2 pool order (from earlier functions) still differs.
-// FIXME: 99.41 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804B146C::fn_80425F6C() {
     f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
     f32 scale = lbl_8050DB0C.field_0x30[4];
@@ -711,7 +711,6 @@ void cls_804B146C::fn_804257E4() {
     field_0x257 = 0;
 }
 
-// FIXME: 95.16 %, scheduling+regalloc; behaviour clean.
 void cls_804B146C::fn_804253E0(s32 player) {
     if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x168[player]++;
@@ -1167,7 +1166,7 @@ void cls_804B146C::fn_80423804(s32 player) {
     }
 }
 
-// FIXME(shotgun): 99.29 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.66 %, missing/extra; behaviour near.
 void cls_804B146C::fn_80423248(s32 player) {
     if (!(field_0x257 & (u8)(1 << player))) {
         return;
@@ -1417,7 +1416,6 @@ void cls_804B146C::fn_8042215C(s32 player) {
     field_0x1e8[player]--;
 }
 
-// FIXME(shotgun): 99.46 %, missing/extra; behaviour clean.
 void cls_804B146C::fn_80421D78(s32 player) {
     if (fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
         s32 sec = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
