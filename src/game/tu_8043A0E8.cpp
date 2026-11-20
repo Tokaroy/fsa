@@ -765,20 +765,17 @@ void cls_804B1920::fn_8043D834() {
     }
 }
 
-// FIXME: 95.41 %, missing/extra; behaviour drift.
-// The original tests 0x199 / 0x1B5 unsigned (cmplwi) but switches signed (cmpwi on id
-// itself), compares the message type byte signed (cmpwi 0x2A), and turns field_0xde & bit into a
-// bool first (neg / or / srwi.; ours: and.).
+// Original turns field_0xde & bit into a bool first (neg / or / srwi.; ours: and.).
 bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
     }
-    if (id == 0x199) {
+    if (id == 0x199u) {
         if (getGameView_802D6A9C()->fn_802D46D8(0, id, false) == true) {
             return false;
         }
         getGameView_802D6A9C()->fn_802D46D8(0, id, true);
-    } else if (id == 0x1B5) {
+    } else if (id == 0x1B5u) {
         u8 bit = 1 << arg1;
         if (field_0xde & bit) {
             return false;
@@ -787,7 +784,7 @@ bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     }
     u8 type;
     fn_80383E2C(id, &type);
-    if (type == 0x2A) {
+    if ((s32)type == 0x2A) {
         if (getGameView_802D6A9C()->fn_802D46D8(0, id, false) == true) {
             return false;
         }
