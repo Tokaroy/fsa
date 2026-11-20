@@ -17,8 +17,8 @@ static const s32 lbl_8049C528[4] = {0x285, 0x293, 0x28C, 0x29A};
 static const s32 lbl_8049C538[4] = {0x2A1, 0x2A9, 0x2A5, 0x2AD};
 static const s32 lbl_8049C548[4] = {0xA, 0xF, 0x14, 0x1E};
 static const s32 lbl_8049C558[8] = {1, 5, 20, 50, 100, 150, 200, 300};
-static const u16 lbl_80539E70[4] = {0x3D9, 0x3D8, 0x3DB, 0x3DA};
-static const u8 lbl_80539E78[8] = {0, 1, 2, 3, 1, 0xFF, 0, 0};
+static u16 lbl_80539E70[4] = {0x3D9, 0x3D8, 0x3DB, 0x3DA};
+static u8 lbl_80539E78[8] = {0, 1, 2, 3, 1, 0xFF, 0, 0};
 
 // The sprite frame stepper the update inlines in its three carrying states.
 static inline void stepFrame(ForceLike_8049C578* self) {
