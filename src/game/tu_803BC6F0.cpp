@@ -1635,9 +1635,9 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
         field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+                                            field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
         field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc);
+                                            field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x14->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
@@ -2536,9 +2536,9 @@ void FileSelect_804AFF60::fn_803C5808() {
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
         field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+                                            field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
         field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc);
+                                            field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x20->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
