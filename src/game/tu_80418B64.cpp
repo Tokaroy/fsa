@@ -869,8 +869,7 @@ void cls_804B13D4::fn_8041EDB0() {
 
 // FIXME(shotgun): 92.24 %, missing/extra; behaviour near.
 void cls_804B13D4::fn_8041E8B4(s32 player) {
-    bool pending = (lbl_80529DEC.field_0x239 & (u8)(1 << player)) != 0;
-    if (pending) {
+    if (lbl_80529DEC.isField0x239(player)) {
         lbl_80529DEC.field_0xd8[player] = fn_80237774(player);
         for (s32 i = 0; i < 4; i++) {
             if (i != player && fn_8022F514(i) && player == fn_8022F3DC(i)) {
@@ -884,7 +883,7 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
         field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
         field_0x1f8[player] = fn_80237810(player);
         lbl_80529DEC.field_0x239 &= ~(u8)(1 << player);
-    } else if (lbl_80529DEC.field_0xd8[player] < fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
             lbl_80529DEC.field_0xd8[player]++;
@@ -903,7 +902,7 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1f8[player] = fn_80237810(player);
         }
-    } else if (lbl_80529DEC.field_0xd8[player] > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
@@ -925,11 +924,11 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
     } else {
         field_0x198[player] = 0;
     }
-    if (lbl_80529DEC.field_0xe8[player] < fn_80236100(player)) {
+    if (lbl_80529DEC.getField0xe8(player) < fn_80236100(player)) {
         field_0x1a8[player]++;
         if (field_0x1a8[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] += 2;
-            if (lbl_80529DEC.field_0xe8[player] >= fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) >= fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
@@ -938,11 +937,11 @@ void cls_804B13D4::fn_8041E8B4(s32 player) {
             field_0x28b |= (u8)(1 << player);
             field_0x1a8[player] = 0;
         }
-    } else if (lbl_80529DEC.field_0xe8[player] > fn_80236100(player)) {
+    } else if (lbl_80529DEC.getField0xe8(player) > fn_80236100(player)) {
         field_0x1a8[player]++;
         if (field_0x1a8[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] -= 2;
-            if (lbl_80529DEC.field_0xe8[player] <= fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) <= fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
