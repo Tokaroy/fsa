@@ -1821,7 +1821,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
     }
 }
 
-// FIXME(shotgun): 68.99 %, missing/extra; behaviour near.
+// FIXME(shotgun): 76.57 %, missing/extra; behaviour near.
 // (params copied differently, scale literals)
 void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params,
                                      s32 flags, s32 mode, bool arg, f32 scaleX, f32 scaleY) {
@@ -1883,7 +1883,7 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
     }
 }
 
-// FIXME(shotgun): 57.44 %, missing/extra; behaviour near.
+// FIXME(shotgun): 58.62 %, missing/extra; behaviour near.
 // drawSprite_801F06F0 for a loaded resource `res` (fn_802F745C) at mPos + (x, y, z), below
 // layer 8. During the hit flash a fast knock-back (|field_0x3c|^2 > 1) sets the copy's 0x30 to 8;
 // otherwise the actor's matrix is used and the death countdown field_0x188 tints it (200, 0x41).
