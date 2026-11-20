@@ -397,7 +397,8 @@ void FireRodFire_804A89F0::update() {
                 }
             }
         }
-        if (field_0x4 >= 8) {
+        s32 layer = field_0x4;
+        if (layer >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4) {
                 field_0x274--;
                 if (field_0x238 == 0 && field_0x274 == 0) {
@@ -455,9 +456,10 @@ void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
         s32 isTwo = (field_0x268 == 2) ? 1 : 0;
-        if (field_0x4 >= 8) {
+        s32 layer = field_0x4;
+        if (layer >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                fn_803075AC(mSerial, field_0x4, &mPos, field_0x270 + field_0x26c + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
+                fn_803075AC(mSerial, layer, &mPos, 0x109 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
                 return;
             }
             if (field_0x264 == 1) {
@@ -484,7 +486,7 @@ void FireRodFire_804A89F0::draw() {
                 break;
             }
 
-            fn_803075AC(mSerial, field_0x4, &pos, field_0x270 + field_0x26c + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, field_0x4, &pos, 0xF1 + field_0x26c + field_0x270, isTwo != 0, 2, -1, 1, 0, 0);
         } else {
             switch (field_0x98) {
             case 0:
