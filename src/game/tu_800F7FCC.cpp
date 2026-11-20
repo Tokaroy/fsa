@@ -59,6 +59,12 @@ static inline f32 cut4(f32 v) {
     return (f32)(s32)(10000.0f * v) * 0.0001f;
 }
 
+static inline void moveToward(JGeometry::TVec3f& pos, JGeometry::TVec3f target, f32 speed) {
+    pos.x += cut4(target.x - pos.x) * speed;
+    pos.y += cut4(target.y - pos.y) * speed;
+    pos.z += cut4(target.z - pos.z) * speed;
+}
+
 // The slot of puff index `idx` around `parent`.
 static inline void slotPos(cls_8049C718* parent, u32 idx, JGeometry::TVec3f& out) {
     s32 step;
@@ -901,8 +907,6 @@ void cls_8049C718::vfunc_0x24() {
     vfunc_0x28(0, 0.0f, -20.0f);
 }
 
-// FIXME: 98.83 %, different; behaviour drift.
-// FIXME: cmplwi vs cmpwi on field_0xb0 == 4 / 0x12 (ActorBase::field_0xb0 is s32); literal pool order differs.
 void cls_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
         return;
@@ -1238,13 +1242,13 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     }
 }
 
-// FIXME(shotgun): 82.54 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.22 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     cls_8049C718* parent = mParent;
     if (parent->mSlotUsed[mIndex] != 0) {
         f32 off;
         s16 ang;
-        if (mIndex == 0) {
+        if (!mIndex) {
             s32 k = (parent->mSlot >> 1) + 1;
             ang = parent->mAngleA;
             off = 20.0f + (f32)(k * 20);
@@ -1254,15 +1258,13 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             off = (f32)(k * -20) - 20.0f;
         }
         JGeometry::TVec3f target;
-        target = JGeometry::TVec3f(parent->mPos.x + off * JMASinShort(ang),
-                                   parent->mPos.y + off * JMACosShort(ang),
+        target = JGeometry::TVec3f(parent->mPos.x + off * JMath::sincosTable_.sinShort(ang),
+                                   parent->mPos.y + off * JMath::sincosTable_.cosShort(ang),
                                    10.0f + parent->mPos.z);
         mFlag249 = 1;
         field_0x3c.set(mPos.x, mPos.y, mPos.z);
         f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
-        mPos.x += cut4(target.x - mPos.x) * speed;
-        mPos.y += cut4(target.y - mPos.y) * speed;
-        mPos.z += cut4(target.z - mPos.z) * speed;
+        moveToward(mPos, target, speed);
         field_0x3c.sub(mPos);
         field_0x3c.scale(-0.5f);
     } else {
@@ -1293,11 +1295,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
         }
     }
     if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
-        JGeometry::TBox2f box;
-        box.i.x = mPos.x - 10.0f;
-        box.i.y = mPos.y - 10.0f;
-        box.f.x = mPos.x + 10.0f;
-        box.f.y = mPos.y + 10.0f;
+        JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
         fn_80239914(&box, field_0x4, mSerial);
         if (fn_801F2740(-1)) {
             field_0x3c.x = 0.0f;
@@ -1309,8 +1307,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
-            JGeometry::TVec3f d;
-            d.zero();
+            JGeometry::TVec3f d(0.0f, 0.0f, 0.0f);
             d.x = getPlayerPos_8023E724(player)->x - mPos.x;
             d.y = getPlayerPos_8023E724(player)->y - mPos.y;
             d.normalize();
