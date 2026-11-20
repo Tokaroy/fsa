@@ -56,14 +56,15 @@ static inline void setScaleMtx(Mtx m, f32 s) {
     m[2][2] = s;
 }
 
-// FIXME(shotgun): 99.29 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
-    s32 spawned;
     s32 i;
     s32 gone;
+    s32 serial;
+    s32 spawned;
     if (field_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
         for (i = 0, gone = 0; i < 4; i++) {
-            s32 serial = field_0x2c0[i];
+            serial = field_0x2c0[i];
             if (serial < 0) {
                 gone++;
                 continue;
@@ -85,7 +86,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
             if (layer == getPlayerLayer_8023DE58(0)) {
                 for (i = 0, spawned = 0; i < 4; i++) {
                     field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', field_0x4, &mPos, 4, -1, -1);
-                    s32 serial = field_0x2c0[i];
+                    serial = field_0x2c0[i];
                     if (serial >= 0) {
                         Keese_804A02B8* keese = static_cast<Keese_804A02B8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                         if (keese != NULL) {
@@ -319,7 +320,7 @@ void ChiefSoldier_804A0B90::init() {
     }
 }
 
-// FIXME(shotgun): 82.32 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.70 %, missing/extra; behaviour drift.
 void ChiefSoldier_804A0B90::fn_801746DC() {
     if (field_0x29c != field_0x2a0) {
         field_0x2a0 = field_0x29c;
@@ -364,9 +365,10 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
             }
             if (field_0x264 == 1) {
                 field_0x240 += 10;
-                JGeometry::TVec3f pos(mPos);
-                pos.x = mPos.x + lbl_804A08C0[field_0x98][0];
-                pos.y = mPos.y + lbl_804A08C0[field_0x98][1];
+                JGeometry::TVec3f pos;
+                pos.set(mPos);
+                pos.x += lbl_804A08C0[field_0x98][0];
+                pos.y += lbl_804A08C0[field_0x98][1];
                 spawnEmitter_8013CC50(field_0x4, &pos, 0xCB, 0, 3, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(field_0x4, &pos, 0xCC, 0, 3, NULL, NULL, true, 1.0f);
             }
@@ -377,18 +379,19 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
             }
             if (field_0x264 == 4) {
                 startSound_801F0E34(0x4008B, 0);
+                f32 speed = 13.0f;
                 switch (field_0x98) {
                 case 0:
-                    field_0x3c.set(13.0f, 0.0f, 0.0f);
+                    field_0x3c.set(speed, 0.0f, 0.0f);
                     break;
                 case 1:
-                    field_0x3c.set(-13.0f, 0.0f, 0.0f);
+                    field_0x3c.set(-speed, 0.0f, 0.0f);
                     break;
                 case 2:
-                    field_0x3c.set(0.0f, 13.0f, 0.0f);
+                    field_0x3c.set(0.0f, speed, 0.0f);
                     break;
                 case 3:
-                    field_0x3c.set(0.0f, -13.0f, 0.0f);
+                    field_0x3c.set(0.0f, -speed, 0.0f);
                     break;
                 }
             }
