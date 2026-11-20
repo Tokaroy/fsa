@@ -539,7 +539,7 @@ void cls_8049DB90::fn_8011B3F0() {
         if (c->field_0x7f5 == 0) {
             c->field_0x7f4 = 1;
             c->field_0x7f8 = 4;
-            c->field_0x7fc.set(mPos.x, mPos.y, mPos.z);
+            c->field_0x7fc.set(mPos);
             c->field_0x7f6 = 0;
         }
         break;
@@ -550,7 +550,8 @@ void cls_8049DB90::fn_8011B3F0() {
         Camera_804AA9E4* c = gGameRoot2_8053AB10->field_0x24;
         if (c->field_0x840 == 0) {
             c->field_0x840 = 1;
-            c->field_0x844.set(mPos.x, mPos.y, mPos.x, mPos.y);
+            c->field_0x844.i.x = c->field_0x844.f.x = mPos.x;
+            c->field_0x844.i.y = c->field_0x844.f.y = mPos.y;
             c->field_0x854 = 1.0f;
             c->field_0x1d4 = -1.0f;
             c->field_0x1d8 = -1.0f;
