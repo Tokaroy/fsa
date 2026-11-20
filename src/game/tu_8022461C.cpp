@@ -133,14 +133,14 @@ static inline u16 collisionCodeAt(const V* pos, s32 layer) {
 // The corner of cell `index` (the inverse of fn_80226AE0); z is cleared.
 // FIXME(shotgun): 77.27 %, missing/extra; behaviour near.
 void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out) {
+    JGeometry::TVec3f p = *out;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+    s32 yOff = ((index >> 1) & 0x100) + (index & 0xF0);
+    s32 xOff = (index & 0x100) + ((index & 0xF) << 4);
     JGeometry::TBox2f box;
     box = *src;
-    s32 xOff = (index & 0x100) + ((index & 0xF) << 4);
-    s32 yOff = ((index >> 1) & 0x100) + (index & 0xF0);
-    JGeometry::TVec3f p;
-    p.set(box.i.x + (f32)xOff, box.i.y + (f32)yOff, 0.0f);
+    p.set((f32)xOff + box.i.x, (f32)yOff + box.i.y, 0.0f);
     *out = p;
 }
 
