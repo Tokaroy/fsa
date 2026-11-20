@@ -28,7 +28,7 @@ cls_804A6550::~cls_804A6550() {
 
 extern const s16* lbl_804A6540[4]; // the sprite animation tables (.data of this unit)
 
-// FIXME(shotgun): 98.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.14 %, missing/extra; behaviour near.
 void cls_804A6550::init() {
     EnemyBase_804A4808::init();
     bool cleared = isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) != FALSE;
@@ -139,6 +139,7 @@ bool cls_804A6550::fn_80219E04() const {
     return ret;
 }
 
+// FIXME: 99.90 %, scheduling + reloc-name; behaviour drift.
 // FIXME: jumptable reloc-name and one branch target (0xe88 vs 0xee8).
 void cls_804A6550::fn_80219AFC(s32 state) {
     // The state tests (states 5 and 11) are written out as in the original's inlined helper; a shared helper drops to 91.68 %.
@@ -270,7 +271,7 @@ void cls_804A6550::fn_80219AFC(s32 state) {
 
 extern const f32 lbl_8046A640[4][2]; // x, y offsets (about +-16) by facing, .rodata of this unit
 
-// FIXME(shotgun): 98.12 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.88 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A6550::vfunc_0x90(u8 mapHit) {
     JGeometry::TBox2f box;
     if (mState == 3) {
@@ -535,7 +536,7 @@ u8 cls_804A6550::vfunc_0x60() {
 // The camera: in states 4, 5, 8 and 9 the owl is kept in view (clamped into the view box by 0.001),
 // a scripted camera move to it (states 4 and 5 while field_0x2b4 is 0) or focus points (also
 // 24 units higher in states 8 and 9).
-// FIXME: 94.66 %, missing/extra; behaviour drift.
+// FIXME: 94.33 %, missing/extra; behaviour near.
 void cls_804A6550::vfunc_0xA0() {
     if (field_0x2b4 == 0 || field_0x2b4 == 3) {
         switch (mState) {
