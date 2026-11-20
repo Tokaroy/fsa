@@ -69,9 +69,6 @@ static const u32 lbl_80469F38[16] = {
     0x00040099, 0x0004009E, 0x0004009B, 0x000400AF, 0x00040072, 0x00040038, 0x000400A1, 0x00040037,
 };
 
-// Shadow scale per kind (fn_801EF830).
-static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
-
 // Five floats indexed by field_0xc0 (EnemyParam "efsz").
 static const f32 lbl_8046A00C[5] = {
     0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
@@ -1761,7 +1758,7 @@ void ActorBase_804A5770::fn_801F0D20(u32 id) {
     gAudioMgr_8053AF80->fn_80458880(id, -1);
 }
 
-// FIXME(shotgun): 57.11 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 58.21 %, missing/extra; behaviour drift.
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (fn_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
@@ -1783,16 +1780,18 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
         if (params != NULL) {
             sp = *params;
         }
-        if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
+        s32 total = field_0xdc;
+        s32 excess = total - 0x19;
+        if (field_0xd8 > excess || total < 0x19) {
             s32 v;
-            if (field_0xdc < 0x19) {
-                v = field_0xd8 * 0xFF / field_0xdc;
+            if (total < 0x19) {
+                v = field_0xd8 * 0xFF / total;
             } else {
-                v = (field_0xd8 - (field_0xdc - 0x19)) * 0xFF / 25;
+                v = (field_0xd8 - excess) * 0xFF / 25;
             }
             if (field_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
-                v = v > 0 ? v : 0;
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 sp.field_0x14.r += v;
@@ -1956,6 +1955,9 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
     }
 }
 
+// Shadow scale per kind (fn_801EF830).
+static const f32 lbl_80469FA8[8] = {1.0f, 1.0f, 1.0f, 2.0f, 3.0f, 4.0f, 1.5f, 1.0f};
+
 // FIXME: 93.44 %, missing/extra + reloc-name; behaviour near.
 // One instruction extra: MWCC keeps the .rodata base
 // (lbl_80469FA8 and the two strings) in r30 from the prologue (one more
@@ -2080,9 +2082,9 @@ extern "C" void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec
 }
 
 // fn_801F2DB4 over the 17 actor ids below (the list is copied to the stack).
-// FIXME: 99.00 %, reloc-name; behaviour clean.
+// FIXME: 99.20 %, reloc-name; behaviour clean.
 // Instructions identical; the list is an @NNN literal here but lbl_80469FC8 in the
-// target (rodata order: the unit's earlier .rodata users are unwritten).
+// target (rodata order).
 void ActorBase_804A5770::fn_801EF510() {
     u32 list[17] = {'SWBM', 'FIRE', 'BLZE', 'HBMB', 'FLME', 'THCL', 'GRAS', 'SSTN', 'STON',
                     'ROCK', 'RCK2', 'BORD', 'TUBO', 'KEY0', 'YASI', 'SMRI', 'NULL'};
