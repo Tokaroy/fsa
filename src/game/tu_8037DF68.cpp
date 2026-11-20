@@ -222,7 +222,7 @@ static inline bool openById(s32 window, s32 player, u32 msg, s32 serial, JGeomet
     return lbl_8053AD78->fn_8038A42C(window, player, fn_803846BC(msg), serial, pos, flags);
 }
 
-// FIXME(shotgun): 96.02 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.04 %, missing/extra; behaviour clean.
 // (scheduling of the id lookups)
 // fn_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
 // into its id; the no-position fallback is fn_8038C60C.
@@ -319,7 +319,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 98.92 %, missing/extra + reloc-name; behaviour clean.
+    // FIXME(shotgun): 98.93 %, missing/extra; behaviour clean.
     // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u32 flags) {
         s32 window = windowIndex(player);
@@ -417,7 +417,7 @@ bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u32 
     return false;
 }
 
-// FIXME(shotgun): 98.64 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.66 %, missing/extra; behaviour clean.
 // regalloc + scheduling (the halfword flags copy)
 bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u32 flags) {
     s32 window = windowIndex(player);
@@ -1130,7 +1130,7 @@ u16 fn_803846A4(s32 index) {
 }
 
 // The condition commands of a message are byte streams: their operands are unaligned words.
-// FIXME(shotgun): 92.46 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.50 %, missing/extra; behaviour drift.
 // Follows the conditional-message commands (0x1A size 2, the twelve commands fn_80383E2C finds)
 // from message msg for the player window `window`: each command picks one of its operands as the
 // next message id (by a key or other holdable the player carries, a random draw, the player
@@ -1430,7 +1430,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 84.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour near.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
@@ -1675,7 +1675,7 @@ static inline void centreLine(char* out, f32 width) {
     }
 }
 
-// FIXME(shotgun): 90.41 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 92.55 %, missing/extra + reloc-name; behaviour drift.
 // The same text copy as getMessageText_803832BC, with every line centred by a "\x1BCR[n]" prefix
 // (the widths of the lines are measured first). Returns the widest line. out2 / out3 are written
 // (the header declares them const to keep the mangled name the caller's unit expects).
