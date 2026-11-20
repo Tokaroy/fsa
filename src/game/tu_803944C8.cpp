@@ -3214,18 +3214,17 @@ void cls_804AF6E4::fn_8039934C(s32 minutes, s32 seconds) {
     addSecondsMarkWidth(ratio);
 }
 
-// FIXME(shotgun): 98.97 %, regalloc-only; behaviour clean.
 void cls_804AF6E4::fn_80398EF4(s32 minutes, s32 seconds) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     if (minutes > 99) {
         minutes = 99;
     }
     s32 digit = minutes / 10;
-    minutes %= 10;
+    s32 ones = minutes % 10;
     if (digit > 0) {
         addCharWidth(ratio, digit + '0');
     }
-    addCharWidth(ratio, minutes + '0');
+    addCharWidth(ratio, ones + '0');
     addCharWidth(ratio, '\'');
     if (seconds > 99) {
         seconds = 99;
