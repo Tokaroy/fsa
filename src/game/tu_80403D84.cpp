@@ -2917,11 +2917,6 @@ void MapScreen_804B1288::fn_80405FC0() {
     }
 }
 
-// FIXME: 96.30 %, missing/extra; behaviour near.
-// Missing/extra: the original keeps field_0x340 in r5 from the stage test
-// through the table reads (lbl_80543880 / 88 / lbl_8048C90C); ours loads it again after the
-// test (and before lbl_8048C90C), two instructions more. A `stage` local folds 0-5 instead
-// of the original's 0 / 1-5 / 6 (98.26 %, different).
 void MapScreen_804B1288::fn_80405D00(s32 dir) {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
@@ -2932,8 +2927,8 @@ void MapScreen_804B1288::fn_80405D00(s32 dir) {
     if (count == 1) {
         return;
     }
-    if ((field_0x340 == 0 || field_0x340 == 1 || field_0x340 == 2 || field_0x340 == 3 || field_0x340 == 4 ||
-         field_0x340 == 5 || field_0x340 == 6) &&
+    if ((0 == field_0x340 || 1 == field_0x340 || 2 == field_0x340 || 3 == field_0x340 || 4 == field_0x340 ||
+         5 == field_0x340 || 6 == field_0x340) &&
         !(field_0x38c & (1 << (field_0x340 * 4 + 1))))
     {
         if (field_0x348 == 0) {
