@@ -22,6 +22,7 @@
 #include "game/Player.h"
 #include "game/PlayerBit.h"
 #include "game/StageFlag.h"
+#include "game/VecEpsilon.h"
 #include "game/Map.h"
 #include "game/tu_801E9AFC.h"
 #include "game/tu_80212AC0.h"
@@ -139,10 +140,10 @@ static const char* lbl_804A9830[18][4] = {
     {"map116.csv", "map100.csv", "map100.csv", "map100.csv"},
 };
 
-// Componentwise TUtil::epsilonEquals of two vectors (the shape of tu_8027E5BC's epsilonEqualsXY).
+// Componentwise nearZero of two TVec2f vectors (same shape as VecEpsilon.h's epsilonEqualsXY).
 static inline bool epsilonEquals(const JGeometry::TVec2f& a, const JGeometry::TVec2f& b, f32 eps) {
     bool equal = false;
-    if (JGeometry::TUtilf::epsilonEquals(a.x, b.x, eps) && JGeometry::TUtilf::epsilonEquals(a.y, b.y, eps)) {
+    if (nearZero(a.x - b.x, eps) && nearZero(a.y - b.y, eps)) {
         equal = true;
     }
     return equal;
@@ -1733,25 +1734,24 @@ bool GameView_804A9950::fn_802D72BC(s32 bit) {
     return ((1 << (bit % 32)) & getGameView_802D6A9C()->field_0x12fe8[bit / 32]) != 0;
 }
 
-// FIXME: 96.44 %, missing/extra; behaviour drift.
-// The free-slot search: the target's loop has no entry test (body first, then
-// i < 8 at the bottom, falling into the shift); ours jumps to the test first (b plus a
-// second i < 8 test, 3 instructions). A plain for/break is unrolled instead. Registers
-// differ in the epsilon compare.
 void GameView_804A9950::fn_802D6F38(u32 key, JGeometry::TVec2f pos, s32 value, bool add) {
     int i = 0;
     if (add == true) {
-        while (i < 8 && field_0x130c8[i] != -1) {
-            i++;
-        }
-        if (i >= 8) {
-            // The list is full: drop the oldest entry.
-            for (int j = 0; j < 7; j++) {
-                field_0x13068[j] = field_0x13068[j + 1];
-                field_0x13088[j] = field_0x13088[j + 1];
-                field_0x130c8[j] = field_0x130c8[j + 1];
+        while (true) {
+            if (field_0x130c8[i] == -1) {
+                break;
             }
-            i = 7;
+            i++;
+            if (i >= 8) {
+                // The list is full: drop the oldest entry.
+                for (int j = 0; j < 7; j++) {
+                    field_0x13068[j] = field_0x13068[j + 1];
+                    field_0x13088[j] = field_0x13088[j + 1];
+                    field_0x130c8[j] = field_0x130c8[j + 1];
+                }
+                i = 7;
+                break;
+            }
         }
         field_0x13068[i] = key;
         field_0x13088[i] = pos;
