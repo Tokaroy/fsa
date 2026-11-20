@@ -21,7 +21,7 @@ extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
 // 0x80169DCC.
 // FIXME(shotgun): 95.79 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A0738::init() {
-    field_0x98 = (field_0x90 >> 7) & 7;
+    field_0x98 = (field_0x90 >> 4) & 7;
     field_0x25c = (field_0x90 >> 8) & 1;
     field_0x90 = field_0x90 & 3;
     field_0x80.i.x = -4.0f;
@@ -41,8 +41,9 @@ void cls_804A0738::init() {
         field_0x274[i].layer0 = field_0x4;
     }
     for (s32 i = 0; i < 5; i++) {
-        field_0x2ec[i].p1.x = getPlayerPos_8023E724(field_0x90)->x;
-        field_0x2ec[i].p1.y = getPlayerPos_8023E724(field_0x90)->y;
+        JGeometry::TVec3f* pos = getPlayerPos_8023E724(field_0x90);
+        field_0x2ec[i].p1.x = pos->x;
+        field_0x2ec[i].p1.y = pos->y;
         field_0x2ec[i].layer1 = getPlayerLayer_8023DE58(field_0x90);
     }
     field_0x264 = 0;
@@ -58,7 +59,10 @@ void cls_804A0738::init() {
     field_0x3c.x = 0.0f;
     fn_8016890C(&mPos, field_0x4, (JGeometry::TBox2f*)field_0x370);
     s32 angle = lbl_804A0718[field_0x98];
-    JGeometry::TVec2f dir(1000.0f * JMASinShort(angle), 1000.0f * JMACosShort(angle));
+    JGeometry::TVec2f dir;
+    dir.x = JMASinShort(angle);
+    dir.y = JMACosShort(angle);
+    dir.scale(1000.0f);
     dir.normalize();
     if (field_0x25c) {
         field_0x3c.x = 9.0f * dir.x;
