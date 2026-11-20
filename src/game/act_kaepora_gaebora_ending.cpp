@@ -780,17 +780,14 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     s16 angle = (u16)field_0x254 - lbl_805429F8[field_0x274];
     f32 s = JMath::sincosTable_.sinShort(angle);
     f32 c = JMath::sincosTable_.cosShort(angle);
-    mtx[0][0] = c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = s;
-    mtx[0][3] = 0.0f;
-    mtx[1][0] = 0.0f;
     mtx[1][1] = 1.0f;
-    mtx[1][2] = 0.0f;
-    mtx[1][3] = 0.0f;
+    mtx[0][0] = c;
+    mtx[0][2] = s;
     mtx[2][0] = -s;
-    mtx[2][1] = 0.0f;
     mtx[2][2] = c;
+    mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.mMtx = mtx;
     if (!shadow) {
