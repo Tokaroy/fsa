@@ -389,9 +389,11 @@ u32 cls_804AA8C8::fn_80309D24(s32 slot, u32 mask) {
 // FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
 // 0x80309C4C
 u32 cls_804AA8C8::fn_80309C4C(u32 mask, s32 slot) {
-    s32 count = slot;
-    if (count == -1) {
+    s32 count;
+    if (slot == -1) {
         count = gGameRoot_8053AAF8->fn_80138A30();
+    } else {
+        count = slot;
     }
     for (s32 i = 0; i < count; i++) {
         u32 pressed = fn_80309D6C(getPlayerInputSlot_8030AAF4(i), mask);
@@ -405,9 +407,11 @@ u32 cls_804AA8C8::fn_80309C4C(u32 mask, s32 slot) {
 // FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
 // 0x80309B74
 u32 cls_804AA8C8::fn_80309B74(u32 mask, s32 slot) {
-    s32 count = slot;
-    if (count == -1) {
+    s32 count;
+    if (slot == -1) {
         count = gGameRoot_8053AAF8->fn_80138A30();
+    } else {
+        count = slot;
     }
     for (s32 i = 0; i < count; i++) {
         u32 pressed = fn_80309D24(getPlayerInputSlot_8030AAF4(i), mask);
