@@ -342,7 +342,23 @@ void TileMap_804AA858::fn_802FF548() {
     fn_802FF798();
 }
 
-// The full-screen rect and loop registers differ in register allocation only.
+// The field_0xc220 queue's copy of drawQueuedSprites_802FF2D8 (the counter is
+// coloured before the strength-reduced pointer, as in an inlined loop).
+static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
+    for (s32 i = 0; i < self->field_0xd320; i++) {
+        cls_8030029C* sprite = &self->field_0xc220[i];
+        if (sprite->mRes != NULL) {
+            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+        } else if (sprite->mImage != NULL) {
+            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+        } else if (sprite->field_0x18 != NULL) {
+            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+        }
+    }
+    self->field_0xd320 = 0;
+}
+
+// The full-screen rect differs in register allocation only (r0/r3-r5).
 // FIXME: 98.43 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
     if (field_0x248 && field_0x24c.f.x != 0) {
@@ -354,17 +370,7 @@ void TileMap_804AA858::fn_802FF3F0() {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
     }
     fn_802FC80C();
-    for (s32 i = 0; i < field_0xd320; i++) {
-        cls_8030029C* sprite = &field_0xc220[i];
-        if (sprite->mRes != NULL) {
-            fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
-        } else if (sprite->mImage != NULL) {
-            fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
-        } else if (sprite->field_0x18 != NULL) {
-            fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
-        }
-    }
-    field_0xd320 = 0;
+    drawQueuedSprites_802FF3F0(this);
 }
 
 void TileMap_804AA858::fn_802FF3B0() {
