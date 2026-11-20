@@ -1116,7 +1116,9 @@ void SmallKey_804A8CD8::fn_802C24A8() {
             continue;
         }
         JGeometry::TBox2f theirs(other->mBox);
-        theirs.addPos(other->mPos.x, other->mPos.y);
+        f32 otherX = other->mPos.x;
+        f32 otherY = other->mPos.y;
+        theirs.addPos(otherX, otherY);
         if (theirs.intersect(ours)) {
             field_0x3c.x = -field_0x3c.x;
             field_0x3c.y = -field_0x3c.y;
