@@ -40,7 +40,8 @@ cls_80217F80::~cls_80217F80() {
     mEmitters[5] = NULL;
 }
 
-// FIXME: 98.95 %. Register allocation only.
+// FIXME: 98.95 %, regalloc-only; behaviour clean.
+// Register allocation only.
 void cls_80217F80::fn_80217ED4() {
     VaatiBoss_804A4958* owner = mOwner;
     const JGeometry::TVec3f* pos = &owner->mPos;
@@ -54,6 +55,7 @@ void cls_80217F80::fn_80217ED4() {
 }
 
 // Scheduling only: the original loads mOwner for the first spawn before li r9/r10.
+// FIXME: 96.61 %, scheduling; behaviour clean.
 void cls_80217F80::fn_80217DE8() {
     JPABaseEmitter* emitter =
         spawnEmitter_8013CC50(mOwner->field_0x4, mOwner->getPos(), 0x231, 1, 1, NULL, NULL, true, 1.0f);
@@ -138,7 +140,8 @@ void cls_80217F80::fn_8021798C() {
     setEmitterPos_8013CB44(mEmitters[1], &mOwner->mPos, 1, 1, true);
 }
 
-// FIXME: 90.63 %. Same as fn_8021775C: the original hoists the from.y and from.z
+// FIXME: 90.63 %, missing/extra + reloc-name; behaviour clean.
+// Same as fn_8021775C: the original hoists the from.y and from.z
 // loads above the epsilon compare.
 void cls_80217F80::fn_80217874(f32 t) {
     JGeometry::TVec3f pos = mOwner->mPos;
@@ -162,7 +165,8 @@ void cls_80217F80::fn_80217874(f32 t) {
     setEmitterPos_8013CB44(mEmitters[3], &pos, 1, 1, true);
 }
 
-// FIXME: 90.63 %. Same instructions as the original except the y and z blocks:
+// FIXME: 90.63 %, missing/extra + reloc-name; behaviour clean.
+// Same instructions as the original except the y and z blocks:
 // the original loads from.y and from.z before the FLT_EPSILON compare (into the
 // load gap after the epsilon load) and uses other registers; ours loads them in
 // the branch.
