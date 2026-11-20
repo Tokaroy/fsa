@@ -486,7 +486,7 @@ void GameRootSub24_8016A3AC::fn_8016DA6C() {
     }
 }
 
-// FIXME: 99.45 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.52 %, scheduling+regalloc; behaviour clean.
 void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entries, s32* timer1,
                  s32* timer2, u8* flag, J3DAnmTextureSRTKey** btk, J3DAnmTevRegKey** brk, f32 scale) {
     JGeometry::TVec3f offset(-view[0][3], -view[1][3], 0.0f);
@@ -537,12 +537,13 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
             if (entry->field_0x14 == 0) {
                 entry->field_0x14 = 60;
                 entry->field_0x10 = 0x287;
+                f32 y;
                 f32 sign = 1.0f;
-                f32 y = 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 64.0f;
+                y = 64.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 64.0f;
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() > 0.5f) {
                     sign = -1.0f;
                 }
-                entry->field_0x4.set((72.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 48.0f) * sign, y, 0.0f);
+                entry->field_0x4.set(sign * (72.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 48.0f), y, 0.0f);
                 JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
                 entry->field_0x0 = spawnEmitter_8013CC50(0, &pos, entry->field_0x10, 0, 0, NULL, NULL, true, 0.15f);
                 if (entry->field_0x0 != NULL) {
@@ -635,7 +636,7 @@ void GameRootSub24_8016A3AC::fn_8016D284() {
     }
 }
 
-// FIXME: 80.50 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 81.17 %, missing/extra + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016CB14() {
     if (field_0x1c7) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
@@ -703,10 +704,7 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
         GXSetNumTevStages(2);
         GXColor color1 = lbl_8053D910;
         u8 alpha = field_0x1ec * 120 / 47;
-        if (alpha > 120) {
-            alpha = 120;
-        }
-        color1.a = alpha;
+        color1.a = alpha > 120 ? 120 : alpha;
         GXSetTevColor(GX_TEVREG0, color1);
         GXColor color2 = lbl_8053D914;
         GXSetTevColor(GX_TEVREG1, color2);
@@ -733,14 +731,14 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
     }
 }
 
-// FIXME: 60.83 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 69.69 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016C2FC() {
     if (field_0x1c8 && field_0x104 != NULL) {
+        f32 width = (s32)JUTVideo::getManager()->getFbWidth();
+        f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
         getMapTexView(center, half);
-        f32 width = (s32)JUTVideo::getManager()->getFbWidth();
-        f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
@@ -757,8 +755,8 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         f32 scroll = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scroll;
         center.y -= scroll;
         half.mul(JGeometry::TVec3f(3.0f, 2.25f, 3.0f));
@@ -780,9 +778,9 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         f32 scrollX = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
         f32 scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.5f, 1.875f, 2.5f));
@@ -798,9 +796,9 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         scrollX = 0.00024414063f * (f32)((field_0x1c0 + 3100) & 0xFFF);
         scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
