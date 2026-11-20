@@ -2133,7 +2133,7 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
     DCFlushRange(dst, len);
 }
 
-// FIXME: 94.90 %, scheduling+regalloc; behaviour clean.
+// FIXME: 94.95 %, scheduling+regalloc; behaviour clean.
 // Register allocation (res / srcOffset / dstOffset / len one register
 // off) and the original copies len to r4 before the first loop for the second
 // loop and DCFlushRange (ours after it); its src + srcOffset is added later.
@@ -2920,7 +2920,7 @@ void TileMap_804AA858::fn_802F6BBC(s32 src, s32 dst) {
     }
 }
 
-// FIXME: 49.73 %, missing/extra; behaviour near.
+// FIXME: 57.44 %, missing/extra; behaviour near.
 u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image,
                                  void* res3, SpriteParams_801F5AE0* params) {
     static const GXColor lbl_80471060[18] = {
