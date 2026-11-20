@@ -13,7 +13,6 @@
 // Data this unit owns, not written as source yet (shotgun pass): the sprite
 // name tables and the position/slot tables in .rodata.
 extern const char* lbl_8049C5D0[];
-extern const char* lbl_8049C648[][2];
 extern const char lbl_80463A58[];
 extern const s16 lbl_80463800[];
 extern const s16 lbl_804638C0[];
@@ -22,6 +21,14 @@ static f32 lbl_8049C5FC[4][2] = {{1.4f, 1.4f}, {0.0f, 1.4f}, {-1.4f, 1.4f}, {1.4
 static u8 lbl_8049C61C[] = {0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 0xFF, 0};
 static u8 lbl_8049C628[] = {3, 3, 3, 3, 2, 2, 5, 3, 3, 3, 0xFF, 0};
 static f32 lbl_8049C634[5] = {38.0f, 46.0f, 32.0f, 17.0f, 15.0f};
+static const char* lbl_8049C648[] = {
+    "wart_child1.bti",        "wart_child2.bti",
+    "wart_child1_green.bti",  "wart_child2_green.bti",
+    "wart_child1_red.bti",    "wart_child2_red.bti",
+    "wart_child1_blue.bti",   "wart_child2_blue.bti",
+    "wart_child1_purple.bti", "wart_child2_purple.bti",
+    "wart_child1_purple.bti", "wart_child2_purple.bti",
+};
 static u8 lbl_80539E80[] = {3, 2, 1, 0, 0xFF, 0, 0, 0};
 static u8 lbl_80539E88[] = {3, 3, 3, 3, 0xFF, 0, 0, 0};
 static u8 lbl_80539E90[] = {4, 5, 6, 0xFF};
@@ -1246,7 +1253,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     }
 }
 
-// FIXME(shotgun): 87.73 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 88.45 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     cls_8049C718* parent = mParent;
     if (parent->mSlotUsed[mIndex] != 0) {
@@ -1262,8 +1269,9 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             off = (f32)(k * -20) - 20.0f;
         }
         JGeometry::TVec3f target;
-        target = JGeometry::TVec3f(parent->mPos.x + off * JMath::sincosTable_.sinShort(ang),
-                                   parent->mPos.y + off * JMath::sincosTable_.cosShort(ang),
+        f32 s = JMath::sincosTable_.sinShort(ang);
+        f32 c = JMath::sincosTable_.cosShort(ang);
+        target = JGeometry::TVec3f(parent->mPos.x + off * s, parent->mPos.y + off * c,
                                    10.0f + parent->mPos.z);
         f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         mFlag249 = 1;
@@ -1398,7 +1406,6 @@ void StoneArrghusChildPuff_8049C678::vfunc_0x24() {
     ActorBase_804A5770::vfunc_0x24();
 }
 
-// FIXME(shotgun): 96.46 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::draw() {
     f32 a = 0.0f;
     f32 b = 0.0f;
@@ -1440,9 +1447,9 @@ void StoneArrghusChildPuff_8049C678::draw() {
         }
         void* res;
         if (mState == 2) {
-            res = fn_804032E8('WART', lbl_8049C648[mVariant + 1][1]);
+            res = fn_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2 + 1]);
         } else {
-            res = fn_804032E8('WART', lbl_8049C648[mVariant + 1][0]);
+            res = fn_804032E8('WART', lbl_8049C648[(mVariant + 1) * 2]);
         }
         fn_801EFD34(res, &params, 0, 0.0f, 0.0f, 0.0f);
     }
