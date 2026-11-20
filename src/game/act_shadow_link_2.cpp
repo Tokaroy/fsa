@@ -76,7 +76,6 @@ u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e) {
 }
 
 // 0x801C544C.
-// FIXME(shotgun): 96.87 %, scheduling+regalloc; behaviour clean.
 void ShadowLink2_804A43E8::init() {
     EnemyBase_804A4808::init();
     field_0x94 = fn_801C0D70()->fn_801C14A8(mSerial);
@@ -128,7 +127,7 @@ void ShadowLink2_804A43E8::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     field_0x340.fn_800FEB78(0);
-    field_0x32c.set(mPos.x, mPos.y, mPos.z);
+    field_0x32c.set(mPos);
 }
 
 // Member: calls fn_801C12B8 on the fn_801C0D70 object when that object's
@@ -1160,9 +1159,9 @@ void ShadowLink2_804A43E8::vfunc_0x84() {
 }
 
 // 0x801C2BF4.
-// FIXME(shotgun): 89.10 %, different; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x88() {
-    switch (mState) {
+    s32 state = mState;
+    switch (state) {
     case 6:
     case 0x14:
     case 0x1E:
@@ -1170,7 +1169,7 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
         return;
     }
     f32 speed = mSpeed;
-    switch (mState) {
+    switch (state) {
     case 0x20:
         if (mPos.z <= 0.0f) {
             field_0x3c.x *= 0.78f;
@@ -1179,12 +1178,14 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
         break;
     case 0x11: {
         s16 angle = field_0x33c;
-        field_0x3c.x = JMath::sincosTable_.sinShort(angle) * speed;
-        field_0x3c.y = JMath::sincosTable_.cosShort(angle) * mSpeed;
+        f32 s = JMath::sincosTable_.sinShort(angle);
+        f32 c = JMath::sincosTable_.cosShort(angle);
+        field_0x3c.x = s * mSpeed;
+        field_0x3c.y = c * mSpeed;
         break;
     }
-    default:
-        if (mState == 0x1C) {
+    default: {
+        if (state == 0x1C) {
             switch (field_0x340.mIndex) {
             case 0:
             case 8:
@@ -1195,18 +1196,18 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
                 break;
             }
         }
-        {
-            s16 angle = field_0x33c;
-            field_0x3c.x = JMath::sincosTable_.sinShort(angle) * speed;
-            field_0x3c.y = JMath::sincosTable_.cosShort(angle) * speed;
-        }
+        s16 angle = field_0x33c;
+        f32 s = JMath::sincosTable_.sinShort(angle);
+        f32 c = JMath::sincosTable_.cosShort(angle);
+        field_0x3c.x = s * speed;
+        field_0x3c.y = c * speed;
         break;
+    }
     }
     vfunc_0x84();
 }
 
 // 0x801C2A84.
-// FIXME(shotgun): 96.47 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x98() {
     switch (mState) {
     case 0x17:
@@ -1219,10 +1220,9 @@ void ShadowLink2_804A43E8::vfunc_0x98() {
         field_0x3c.z = 0.0f;
         return;
     }
-    u32 flags = mFlags;
-    if (!(flags & 7)) {
+    if (!isHit()) {
         fn_801CE32C();
-    } else if (!(flags & 2)) {
+    } else if (!(mFlags & 2)) {
         fn_801CE5D4();
     }
     field_0x4ec.fn_80214CE4();
@@ -1283,7 +1283,6 @@ void ShadowLink2_804A43E8::vfunc_0x74() {
 }
 
 // 0x801C283C.
-// FIXME(shotgun): 91.70 %, missing/extra; behaviour clean.
 void ShadowLink2_804A43E8::vfunc_0xA0() {
     switch (mState) {
     case 0:
@@ -1299,11 +1298,13 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
                 obj->field_0x284 = 1;
                 obj->field_0x28c = 0.05f;
             }
+            f32 x = mPos.x;
+            f32 y = mPos.y;
             Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
             if (camera->field_0x7f5 == 0) {
                 camera->field_0x7f4 = 1;
                 camera->field_0x7f8 = 4;
-                camera->field_0x7fc.set(mPos.x, mPos.y, 0.0f);
+                camera->field_0x7fc.set(x, y, 0.0f);
                 camera->field_0x7f6 = 0;
             }
         }
@@ -1317,7 +1318,8 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
         break;
     }
     }
-    lbl_8053AED0->fn_8043E7CC(mPos);
+    JGeometry::TVec3f pos = mPos;
+    lbl_8053AED0->fn_8043E7CC(pos);
 }
 
 void ShadowLink2_804A43E8::fn_801C27F0() {
