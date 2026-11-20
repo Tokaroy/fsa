@@ -29,7 +29,6 @@ Log_804ACD70::~Log_804ACD70() {
     }
 }
 
-// FIXME(shotgun): 90.59 %, scheduling; behaviour clean.
 void Log_804ACD70::init() {
     field_0x2c0 = field_0x90 & 1;
     field_0x2c4 = (field_0x90 >> 4) & 1;
@@ -72,14 +71,16 @@ void Log_804ACD70::init() {
     }
     for (s32 i = 0; i < 4; i++) {
         field_0x234[i] = -1;
-        field_0x244[i] = 0;
-        field_0x254[i] = -1;
         field_0x264[i] = 0;
         field_0x268[i].field_0x0 = 1;
-        field_0x268[i].field_0x4.x = 0.0f;
-        field_0x268[i].field_0x4.y = 0.0f;
-        field_0x268[i].field_0x4.z = 0.0f;
+        field_0x268[i].field_0x4.zero();
         field_0x268[i].field_0x10 = 0;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        field_0x254[i] = -1;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        field_0x244[i] = 0;
     }
     field_0xb8 = 2;
     field_0x230 = 0;
@@ -266,7 +267,7 @@ void Log_804ACD70::update() {
     }
 }
 
-// FIXME(shotgun): 99.44 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.91 %, same-text; behaviour clean.
 void Log_804ACD70::draw() {
     const char* name;
     SpriteParams_801F5AE0 params;
@@ -290,17 +291,14 @@ void Log_804ACD70::draw() {
         }
         PSMTXIdentity(mtx);
         if (field_0x2c0 == 1) {
-            f32 s = JMath::sincosTable_.sinShort(0x4000);
             f32 c = JMath::sincosTable_.cosShort(0x4000);
+            f32 s = JMath::sincosTable_.sinShort(0x4000);
+            mtx[1][1] = 1.0f;
             mtx[0][0] = c;
             mtx[0][2] = s;
             mtx[2][0] = -s;
             mtx[2][2] = c;
-            mtx[0][1] = 0.0f;
-            mtx[1][0] = 0.0f;
-            mtx[1][1] = 1.0f;
-            mtx[1][2] = 0.0f;
-            mtx[2][1] = 0.0f;
+            mtx[0][1] = mtx[1][0] = mtx[1][2] = mtx[2][1] = 0.0f;
         }
         params.mMtx = mtx;
         {
@@ -386,36 +384,48 @@ bool Log_804ACD70::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x2b8);
 }
 
-// FIXME(shotgun): 87.17 %, missing/extra; behaviour near.
+static inline s32 getPullDir(const Log_804ACD70* self) {
+    JGeometry::TBox2f box = self->field_0x80;
+    box.i.x += self->mPos.x;
+    box.f.x += self->mPos.x;
+    box.i.y += self->mPos.y;
+    box.f.y += self->mPos.y;
+    if (fn_80239470(&box, self->field_0x4, self->mSerial) >= 0 && fn_80238A68(self->mSerial) >= 4) {
+        s32 d = fn_8023885C(self->mSerial);
+        if (d >= 0 && d < 4) {
+            if (d == 0) {
+                d = 1;
+            } else if (d == 1) {
+                d = 0;
+            } else if (d == 2) {
+                d = 3;
+            } else if (d == 3) {
+                d = 2;
+            }
+            return d;
+        }
+    }
+    return -1;
+}
+
+static inline s32 getPushDir(const Log_804ACD70* self) {
+    if (fn_80239108(self->mSerial) >= 4) {
+        s32 d = fn_80238BC4(self->mSerial);
+        if (d >= 0 && d < 4) {
+            return d;
+        }
+    }
+    return -1;
+}
+
+// FIXME: 98.85 %, scheduling+regalloc; behaviour clean.
 void Log_804ACD70::fn_80354FE8() {
     if (isMotionless()) {
         if (field_0x2cc == 1) {
             field_0x2cc = 0;
         } else {
-            JGeometry::TBox2f box = field_0x80;
-            box.set(box.i.x + mPos.x, box.i.y + mPos.y, box.f.x + mPos.x, box.f.y + mPos.y);
-            s32 dirA = -1;
-            s32 dirB = -1;
-            if (fn_80239470(&box, field_0x4, mSerial) >= 0 && fn_80238A68(mSerial) >= 4) {
-                s32 d = fn_8023885C(mSerial);
-                if (d >= 0 && d < 4) {
-                    if (d == 0) {
-                        dirA = 1;
-                    } else if (d == 1) {
-                        dirA = 0;
-                    } else if (d == 2) {
-                        dirA = 3;
-                    } else if (d == 3) {
-                        dirA = 2;
-                    }
-                }
-            }
-            if (fn_80239108(mSerial) >= 4) {
-                s32 d = fn_80238BC4(mSerial);
-                if (d >= 0 && d < 4) {
-                    dirB = d;
-                }
-            }
+            s32 dirA = getPullDir(this);
+            s32 dirB = getPushDir(this);
             s32 dir;
             if (dirA != -1) {
                 dir = dirA;
@@ -432,15 +442,14 @@ void Log_804ACD70::fn_80354FE8() {
                 if (dirA == -1 && dirB != -1) {
                     fn_80238E08(mSerial);
                 }
+                field_0x3c.zero();
                 field_0x3c.set(lbl_804722D0[dir][0], lbl_804722D0[dir][1], 0.0f);
                 startSound_801F0E34(0x30004, 0);
                 field_0x2d4.x = lbl_804722B0[dir][0];
                 field_0x2d4.y = lbl_804722B0[dir][1];
                 field_0x2d4.z = 0.0f;
                 if (field_0x2c8 == 0) {
-                    // FIXME(shotgun): the asm leaves the id unset when field_0x2c0/field_0x2c4 match no case
-                    // (the original passes an indeterminate value); zeroed here, a behaviour difference.
-                    s32 id = 0;
+                    u16 id;
                     switch (field_0x2c0) {
                     case 0:
                         switch (field_0x2c4) {
@@ -472,12 +481,12 @@ void Log_804ACD70::fn_80354FE8() {
     }
 }
 
-// FIXME(shotgun): 92.19 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 bool Log_804ACD70::fn_80354D64(u8 dir) {
     bool ok = false;
     JGeometry::TVec3f saved(mPos);
     field_0x3c.set(lbl_804722F0[dir][0], lbl_804722F0[dir][1], lbl_804722F0[dir][2]);
-    mPos.add(field_0x3c);
+    mPos += field_0x3c;
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&out, false)) {
         switch (dir) {
@@ -507,8 +516,11 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
     }
     if (!ok) {
         ok = true;
-        JGeometry::TBox2f box;
-        box.set(mBox.i.x + mPos.x, mBox.i.y + mPos.y, mBox.f.x + mPos.x, mBox.f.y + mPos.y);
+        JGeometry::TBox2f box(mBox);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
                 JGeometry::TVec3f p(*getPlayerPos_8023E724(i));
@@ -521,6 +533,6 @@ bool Log_804ACD70::fn_80354D64(u8 dir) {
         }
     }
     mPos = saved;
-    field_0x3c.zero();
+    field_0x3c.set(0.0f, 0.0f, 0.0f);
     return ok;
 }
