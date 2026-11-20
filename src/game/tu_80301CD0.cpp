@@ -375,7 +375,6 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
-// Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x8030801C
 // FIXME: 83.08 %, missing/extra + reloc-name; behaviour drift.
 void cls_804AA8B8::fn_8030801C(s32 player) {
@@ -435,11 +434,20 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
         lbl_80506DE8[player].f.field_0x18[i].f.mKind = 0;
         lbl_80506DE8[player].f.field_0x18[i].f.field_0x3_4 = 0;
     }
+    // The original holds the checksum loop twice (+41C and +4C8), once per state of the queue head entry.
     u8 sum = 0;
-    u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
-    s32 size = lbl_80541618[lbl_8053AD08] * 4;
-    for (s32 k = 8; k < size; k++) {
-        sum += *bytes++;
+    if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
+    } else {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&lbl_80506DE8[player].f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
     }
     lbl_80506DE8[player].f.field_0x0 = sum;
 }
@@ -699,7 +707,6 @@ s32 fn_803074A4(s32 kind, s32 id) {
 // Builds the player's regular GBA record: the kind, the other players' marks
 // (screen position and sprite), the mode's status bits, the scroll, the sprite
 // words sorted by kind, the layer's mask word and the checksum.
-// Still differs: the original has the checksum loop twice (branch on the queue head entry's mUsed).
 // 0x80306A94
 // FIXME: 94.97 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80306A94(s32 player) {
