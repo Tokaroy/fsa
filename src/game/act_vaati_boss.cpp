@@ -3,6 +3,7 @@
 #include "game/GameGlobals.h"
 #include "game/Camera.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/Map.h"
 #include "game/act/act_vaati_boss.h"
 #include "JSystem/JKernel/JKRArchive.h"
@@ -54,10 +55,10 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x5b0 = -1;
     field_0x5b4 = 0;
     field_0x5b8 = 0;
-    field_0x5bc = 0.0f;
-    field_0x5c0 = 0.0f;
-    field_0x5c4 = 0.0f;
-    field_0x5c8 = 0.0f;
+    field_0x5bc.x = 0.0f;
+    field_0x5bc.y = 0.0f;
+    field_0x5c4.x = 0.0f;
+    field_0x5c4.y = 0.0f;
     field_0x5cc = 0;
     field_0x5cd = 0;
     field_0x5ce = 0;
@@ -138,8 +139,8 @@ void VaatiBoss_804A4958::init() {
     field_0x5d8 = field_0x4;
     field_0x5b8 = fn_801CD664(4);
 
-    field_0x5bc = mPos.x;
-    field_0x5c0 = mPos.y;
+    field_0x5bc.x = mPos.x;
+    field_0x5bc.y = mPos.y;
     field_0x5ec.x = field_0x5e0 + (f32)field_0x5e8 * 8.0f + 32.0f;
     field_0x5ec.y = field_0x5e4;
     field_0x5f4.x = field_0x5ec.x;
@@ -236,8 +237,8 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         JGeometry::TBox2f box;
         fn_801E4618(&box, fn_801CD2F8(field_0x4));
         field_0x60c.set(0.5f * (box.f.x - box.i.x) + box.i.x, 0.5f * (box.f.y - box.i.y) + box.i.y, 0.0f);
-        field_0x5bc = (box.f.x - box.i.x) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.x;
-        field_0x5c0 = (box.f.y - box.i.y) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.y;
+        field_0x5bc.x = (box.f.x - box.i.x) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.x;
+        field_0x5bc.y = (box.f.y - box.i.y) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.y;
         field_0x5d0 = fn_801CD664(2) + 1;
         mTargetSpeed = 0.0f;
         break;
@@ -374,7 +375,34 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     mState = state;
 }
 
-// FIXME(shotgun): 94.71 %, missing/extra; behaviour near.
+inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
+    bool found = false;
+    s32 player = fn_801D05F8(&mPos, 160.0f);
+    if (player >= 0) {
+        const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
+        JGeometry::TVec2f target;
+        target.x = p->x;
+        target.y = p->y;
+        found = true;
+        if (out != NULL) {
+            JGeometry::TVec2f d(target.x - mPos.x, target.y - mPos.y);
+            if (d.squared() <= JGeometry::TUtilf::epsilon()) {
+                d.set(1.0f, 0.0f);
+            }
+            d.normalize();
+            d.x *= 10000.0f;
+            d.y *= 10000.0f;
+            out->x = mPos.x;
+            out->y = mPos.y;
+            out->x += d.x;
+            out->y += d.y;
+        }
+    }
+    return found;
+}
+
+// Not auto-inlined: vfunc_0x90 calls fn_801D5B70 out of line in the original.
+#pragma auto_inline off
 void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
         if (fn_801CD2F8(field_0x4)) {
@@ -382,24 +410,7 @@ void VaatiBoss_804A4958::fn_801D5B70() {
                 fn_801D5D84(0x15);
             } else {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-                    bool found = false;
-                    s32 player = fn_801D05F8(&mPos, 160.0f);
-                    if (player >= 0) {
-                        const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
-                        found = true;
-                        JGeometry::TVec2f d(p->x - mPos.x, p->y - mPos.y);
-                        if (d.squared() <= JGeometry::TUtilf::epsilon()) {
-                            d.set(1.0f, 0.0f);
-                        }
-                        d.normalize();
-                        d.x *= 10000.0f;
-                        d.y *= 10000.0f;
-                        field_0x5c4 = mPos.x;
-                        field_0x5c8 = mPos.y;
-                        field_0x5c4 += d.x;
-                        field_0x5c8 += d.y;
-                    }
-                    if (found) {
+                    if (calcTargetFar_801D5B70(&field_0x5c4)) {
                         fn_801D5D84(0x11);
                         return;
                     }
@@ -417,6 +428,7 @@ void VaatiBoss_804A4958::fn_801D5B70() {
         }
     }
 }
+#pragma auto_inline reset
 
 // Collects the players (other than the current target) that are in play and not
 // flagged in field_0x2a8, and picks one at random; -1 when there is none.
@@ -595,8 +607,8 @@ void VaatiBoss_804A4958::vfunc_0x90(u8 mapHit) {
         if (mStateTimer >= 50) {
             field_0x5b4 = 0;
             field_0x5b8 = fn_801CD664(4);
-            field_0x5bc = field_0x600.x;
-            field_0x5c0 = field_0x600.y;
+            field_0x5bc.x = field_0x600.x;
+            field_0x5bc.y = field_0x600.y;
             field_0x4 = field_0x5fc;
             mPos = field_0x600;
             mPrevPos = field_0x600;
@@ -706,8 +718,8 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
 }
 
 // The step of the vtable slot 0x98 (0x801D4ED4, a plain `fn_801D4ED4` symbol in the original).
-// Original reloads field_0x5bc/0x5c0 in each case body and interleaves the sin/cos stores; layout differs.
-// FIXME: 95.94 %, missing/extra; behaviour drift.
+// The sin/cos products sit in other float registers (f1/f0 and the cos in f3 in the original).
+// FIXME: 99.82 %, regalloc-only; behaviour drift.
 void VaatiBoss_804A4958::vfunc_0x98() {
     bool step = false;
     if (field_0x5d1 != 0) {
@@ -715,10 +727,10 @@ void VaatiBoss_804A4958::vfunc_0x98() {
         if (field_0x5d1 == 0) {
             field_0x448.fn_80217CD8();
             s16 angle = field_0x5d2;
-            f32 sx = JMath::sincosTable_.sinShort(angle);
-            f32 cy = JMath::sincosTable_.cosShort(angle);
-            field_0x3c.x = 1.4f * sx;
-            field_0x3c.y = 1.4f * cy;
+            JGeometry::TVec2<f32> vel(1.4f * JMath::sincosTable_.sinShort(angle),
+                                      1.4f * JMath::sincosTable_.cosShort(angle));
+            field_0x3c.x = vel.x;
+            field_0x3c.y = vel.y;
         }
     }
     switch (mState) {
@@ -740,27 +752,26 @@ void VaatiBoss_804A4958::vfunc_0x98() {
         mPos.z = 500.0f;
         break;
     default: {
-        f32 oldX = field_0x5bc;
-        f32 oldY = field_0x5c0;
+        JGeometry::TVec2<f32> old = field_0x5bc;
         switch (field_0x5b8) {
         case 0:
-            field_0x5bc += 2.5f;
+            field_0x5bc.x += 2.5f;
             break;
         case 1:
-            field_0x5bc -= 2.5f;
+            field_0x5bc.x -= 2.5f;
             break;
         case 2:
-            field_0x5c0 += 2.5f;
+            field_0x5bc.y += 2.5f;
             break;
         case 3:
-            field_0x5c0 -= 2.5f;
+            field_0x5bc.y -= 2.5f;
             break;
         }
         bool turn = false;
-        JGeometry::TVec3f probe(field_0x5bc, field_0x5c0, 0.0f);
+        JGeometry::TVec3f probe(field_0x5bc.x, field_0x5bc.y, 0.0f);
         if (vfunc_0x4C(field_0x4, &probe)) {
-            field_0x5bc = oldX;
-            field_0x5c0 = oldY;
+            field_0x5bc.x = old.x;
+            field_0x5bc.y = old.y;
             turn = true;
         } else {
             field_0x5b4++;
@@ -781,25 +792,29 @@ void VaatiBoss_804A4958::vfunc_0x98() {
     if (step) {
         fn_801CE32C();
     }
-    if (mState == 1) {
+    switch (mState) {
+    case 1:
         if (mPos.z < 90.0f) {
             mPos.z = 90.0f;
         }
-    } else if (!fn_801CD2F8(field_0x4)) {
-        f32 z = mPos.z;
-        if (z > 500.0f) {
-            z = 500.0f;
-        } else if (z < 31.9f) {
-            z = 31.9f;
+        break;
+    default:
+        if (!fn_801CD2F8(field_0x4)) {
+            f32 z = mPos.z;
+            if (z > 500.0f) {
+                z = 500.0f;
+            } else if (z < 31.9f) {
+                z = 31.9f;
+            }
+            mPos.z = z;
         }
-        mPos.z = z;
+        break;
     }
     fn_801E4A18(&field_0x52c.field_0x0);
     fn_801E4A18(&field_0x52c.field_0x14);
     fn_801E4A18(&field_0x52c.field_0x28);
 }
 
-// FIXME: 99.90 %, regalloc-only; behaviour clean.
 void VaatiBoss_804A4958::fn_801D4C70() {
     switch (mState) {
     case 1:
@@ -832,8 +847,7 @@ void VaatiBoss_804A4958::fn_801D4C70() {
         field_0x3c.y = v.y;
         return;
     }
-    JGeometry::TVec2f d;
-    d.zero();
+    JGeometry::TVec2f d(0.0f, 0.0f);
     bool follow = true;
     f32 tx;
     f32 ty;
@@ -848,8 +862,8 @@ void VaatiBoss_804A4958::fn_801D4C70() {
     case 0x12:
     case 0x13:
     case 0x14:
-        tx = field_0x5c4;
-        ty = field_0x5c8;
+        tx = field_0x5c4.x;
+        ty = field_0x5c4.y;
         break;
     default:
         if (field_0x5b0 >= 0) {
@@ -857,21 +871,22 @@ void VaatiBoss_804A4958::fn_801D4C70() {
             tx = p->x;
             ty = p->y;
         } else {
-            tx = field_0x5bc;
-            ty = field_0x5c0;
+            tx = field_0x5bc.x;
+            ty = field_0x5bc.y;
         }
         break;
     }
     if (follow) {
-        d.set(tx - mPos.x, ty - mPos.y);
-        d.normalize();
+        JGeometry::TVec2f dir(tx - mPos.x, ty - mPos.y);
+        dir.normalize();
         if (mState == 0x12) {
-            d.x *= -2.0f;
-            d.y *= -2.0f;
+            dir.x *= -2.0f;
+            dir.y *= -2.0f;
         } else {
-            d.x *= mSpeed;
-            d.y *= mSpeed;
+            dir.x *= mSpeed;
+            dir.y *= mSpeed;
         }
+        d = dir;
     }
     addCalc2_801F71A4(&field_0x3c.x, d.x, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x3c.y, d.y, 0.3f, 1.0f);
@@ -935,13 +950,13 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
-// FIXME(shotgun): 96.76 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.15 %, missing/extra; behaviour drift.
+// Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
-    GameView_804A9950* view = getGameView_802D6A9C();
-    const JGeometry::TBox2f* box = field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    f32 groundY = mPos.y - mPos.z;
-    JGeometry::TVec3f focus(mPos.x, groundY, 0.0f);
-    focus.y = __fsel((0.001f + box->i.y) - groundY, 0.001f + box->i.y, groundY);
+    const JGeometry::TBox2f* box = layerBox(field_0x4);
+    JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
+    f32 top = 0.001f + box->i.y;
+    focus.y = __fsel(top - focus.y, top, focus.y);
     switch (mState) {
     case 0:
     case 0x17:
@@ -979,10 +994,7 @@ void VaatiBoss_804A4958::vfunc_0xA0() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
-            cam->field_0x844.f.x = focus.x;
-            cam->field_0x844.i.x = focus.x;
-            cam->field_0x844.f.y = focus.y;
-            cam->field_0x844.i.y = focus.y;
+            cam->field_0x844.set(focus.x, focus.y, focus.x, focus.y);
             cam->field_0x854 = 1.0f;
             cam->field_0x1d4 = -1.0f;
             cam->field_0x1d8 = -1.0f;

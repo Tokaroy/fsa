@@ -237,6 +237,10 @@ public:
     // field_0x2a8 (countdowns, the 0x2AC timers) against this boss's layer and
     // the positions of the players.
     void fn_801E5754();
+    // Inlined into fn_801D5B70 (the null check of `out` survives there): a
+    // player within 160 units of mPos gives *out = mPos + 10000 * the
+    // normalised direction to it. Returns whether a player was found.
+    bool calcTargetFar_801D5B70(JGeometry::TVec2f* out);
 
     /* 0x2A8 */ cls_801D6A88 field_0x2a8[0x4];
     /* 0x308 */ cls_801D6A58 field_0x308[0x10];
@@ -248,10 +252,8 @@ public:
     /* 0x5B0 */ s32 field_0x5b0;
     /* 0x5B4 */ s32 field_0x5b4;
     /* 0x5B8 */ s32 field_0x5b8;
-    /* 0x5BC */ f32 field_0x5bc;
-    /* 0x5C0 */ f32 field_0x5c0;
-    /* 0x5C4 */ f32 field_0x5c4;
-    /* 0x5C8 */ f32 field_0x5c8;
+    /* 0x5BC */ JGeometry::TVec2f field_0x5bc;
+    /* 0x5C4 */ JGeometry::TVec2f field_0x5c4; // fn_801D5B70 null-checks its address (addic. r0, r31, 0x5c4)
     /* 0x5CC */ u8 field_0x5cc;
     /* 0x5CD */ u8 field_0x5cd;
     /* 0x5CE */ u8 field_0x5ce; // 0 or 0x32, set by fn_801E4D54 / fn_801E4D74
