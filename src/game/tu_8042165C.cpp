@@ -527,24 +527,26 @@ static inline bool isPaused() {
     return gGameRoot_8053AAF8->field_0x88 == 2;
 }
 
-// Regalloc (r3-r6 in sx/sy, f26/f27 swap for x/y) and .sdata2 pool order from earlier functions.
+// Only the .sdata2 pool order (from earlier functions) still differs.
 // FIXME: 99.41 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804B146C::fn_80425F6C() {
-    f32 sx = lbl_8050DB0C.field_0x30[4] *
-             (JFWDisplay::getManager()->getEfbWidth() / gGameRoot2_8053AB10->field_0x24->field_0x858);
-    f32 sy = lbl_8050DB0C.field_0x30[4] *
-             (JFWDisplay::getManager()->getEfbHeight() / gGameRoot2_8053AB10->field_0x24->field_0x858);
+    f32 zoom = gGameRoot2_8053AB10->field_0x24->field_0x858;
+    f32 scale = lbl_8050DB0C.field_0x30[4];
+    f32 sx = scale * (JFWDisplay::getManager()->getEfbWidth() / zoom);
+    f32 sy = scale * (JFWDisplay::getManager()->getEfbHeight() / zoom);
     for (s32 i = 0; i < 4; i++) {
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) || getPlayerLayer_8023DE58(fn_8022EA0C(i)) >= 8) {
             continue;
         }
         Vec screen;
+        f32 x;
+        f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
             f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
             f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            f32 x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            f32 y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
+            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
@@ -553,8 +555,8 @@ void cls_804B146C::fn_80425F6C() {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
             f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
             f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
-            f32 x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
-            f32 y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
+            x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;
+            y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x2c[i]->draw(x, y, field_0x4c);
