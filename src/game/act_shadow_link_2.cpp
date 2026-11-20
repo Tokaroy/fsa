@@ -1223,10 +1223,9 @@ void ShadowLink2_804A43E8::vfunc_0x98() {
         field_0x3c.z = 0.0f;
         return;
     }
-    u32 flags = mFlags;
-    if (!(flags & 7)) {
+    if (!isHit()) {
         fn_801CE32C();
-    } else if (!(flags & 2)) {
+    } else if (!(mFlags & 2)) {
         fn_801CE5D4();
     }
     field_0x4ec.fn_80214CE4();
