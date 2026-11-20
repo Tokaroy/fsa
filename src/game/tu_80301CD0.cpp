@@ -468,8 +468,8 @@ static inline u32 swapBytes(u32 v) {
 }
 
 // Fills the player's record with the message words (mode 10 or 11), byte-swapped,
-// and its checksum. Still differs: the original has the checksum loop twice (branch on the
-// queue head entry's mUsed) and different register allocation.
+// and its checksum. Still differs: the original computes the addresses of lbl_8053AD0C[player]
+// and lbl_805071E8[player] again after the first loop (ours keeps them in registers).
 // 0x80307B58
 // FIXME: 71.74 %, missing/extra; behaviour drift.
 void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
@@ -499,14 +499,23 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     s32 n = lbl_80541618[lbl_8053AD08] - 2;
     for (s32 j = 0; j < n; j++) {
-        u32 w = (u16)lbl_805071E8[player][start + j * 2] | (u32)(u16)lbl_805071E8[player][start + j * 2 + 1] << 16;
+        u32 w = lbl_805071E8[player][start + j * 2] | lbl_805071E8[player][start + j * 2 + 1] << 16;
         record->f.mSprites[j].mWord = swapBytes(w);
     }
+    // The original holds the checksum loop twice, once per state of the queue head entry.
     u8 sum = 0;
-    u8* bytes = (u8*)&record->f.mSprites[0];
-    s32 size = lbl_80541618[lbl_8053AD08] * 4;
-    for (s32 k = 8; k < size; k++) {
-        sum += *bytes++;
+    if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&record->f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
+    } else {
+        s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&record->f.mSprites[0];
+        for (s32 k = 8; k < size; k++) {
+            sum += *bytes++;
+        }
     }
     record->f.field_0x0 = sum;
 }
