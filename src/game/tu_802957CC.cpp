@@ -68,6 +68,23 @@ static inline s32 getPullDir(cls_804A7AE0* self) {
     return -1;
 }
 
+// Kills the actors registered in both serial lists.
+// Inlined by fn_802961AC and update.
+inline void cls_804A7AE0::killSerialActors() {
+    for (s32 i = 0; i < mSerialCountB; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+    }
+    for (s32 i = 0; i < mSerialCountA; i++) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+    }
+}
+
 // Snapshots the 6x6 tiles under the actor and clears them from the map (once).
 // Inlined by fn_802961AC, fn_80299AD0 and its three siblings.
 inline void cls_804A7AE0::bakeTiles() {
@@ -1015,20 +1032,7 @@ void cls_804A7AE0::update() {
                 if (fn_8023F264(i) == 1 && fn_80236E3C(i) == 1 && fn_80239C00(i, &box, field_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false)) {
                     field_0x234 = 50;
-                    for (s32 j = 0; j < mSerialCountB; j++) {
-                        ActorBase_804A5770* actor =
-                            getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[j]);
-                        if (actor != NULL) {
-                            actor->mAlive = false;
-                        }
-                    }
-                    for (s32 j = 0; j < mSerialCountA; j++) {
-                        ActorBase_804A5770* actor =
-                            getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[j]);
-                        if (actor != NULL) {
-                            actor->mAlive = false;
-                        }
-                    }
+                    killSerialActors();
                     field_0x230 = 1;
                     break;
                 }
@@ -1535,8 +1539,7 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2d0.normalize();
     field_0x3c = field_0x2d0;
     startSound_801F0E34(0x30075, 0);
-    s32 i;
-    for (i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             if (mEmitters[i][j] == NULL) {
                 JGeometry::TVec3f pos = mPos;
@@ -1549,18 +1552,7 @@ void cls_804A7AE0::fn_802961AC() {
     s32 v = (field_0x90 >> 7) & 0x1F;
     s32 layer = v == 0 ? 0 : v + 7;
     getGameView_802D6A9C()->fn_802D79E8(layer, 16.0f, 0.0f, true);
-    for (i = 0; i < mSerialCountB; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
-        if (actor != NULL) {
-            actor->mAlive = false;
-        }
-    }
-    for (i = 0; i < mSerialCountA; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
-        if (actor != NULL) {
-            actor->mAlive = false;
-        }
-    }
+    killSerialActors();
     field_0x24c = 0;
     bakeTiles();
     mTimer = 120;

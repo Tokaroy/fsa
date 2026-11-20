@@ -29,6 +29,7 @@ public:
     void fn_8029A494();
     void fn_8029A974();
     void bakeTiles();
+    void killSerialActors();
     virtual void init(); // fn_8029B2EC
     virtual void vfunc_0x10(); // fn_8029AE58
     virtual void update(); // fn_80296A84
