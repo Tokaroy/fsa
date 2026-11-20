@@ -233,7 +233,6 @@ cls_804A2944::~cls_804A2944() {
     }
 }
 
-// FIXME(shotgun): 99.55 %, different; behaviour drift.
 void cls_804A2944::vfunc_0x44() {
     // field_0x90 is u32, but the original tests it with a signed cmpwi.
     if ((s32)field_0x90 == 1 && mState != 0x49) {
@@ -1983,7 +1982,6 @@ void cls_804A2944::fn_801979C4() {
     }
 }
 
-// FIXME(shotgun): 92.19 %, missing/extra; behaviour near.
 void cls_804A2944::fn_801976E8() {
     u32 base = field_0x94 * 6;
     s32 i;
@@ -2054,7 +2052,6 @@ void cls_804A2944::fn_801976E8() {
     }
 }
 
-// FIXME(shotgun): 98.84 %, missing/extra; behaviour drift.
 void cls_804A2944::update() {
     JGeometry::TVec3f pos = mPos;
     mLife = 10000;
