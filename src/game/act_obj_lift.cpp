@@ -639,20 +639,12 @@ void OBJLift_804ACA00::fn_8035001C(u32 dir) {
     case 4:
         field_0x3c.set(0.5f * field_0x260, 0.5f * field_0x260, 0.0f);
         break;
-    case 5: {
-        s32 v = field_0x260;
-        field_0x3c.x = 0.5f * -(f32)v;
-        field_0x3c.y = 0.5f * v;
-        field_0x3c.z = 0.0f;
+    case 5:
+        field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * field_0x260, 0.0f);
         break;
-    }
-    case 6: {
-        s32 v = field_0x260;
-        field_0x3c.x = 0.5f * v;
-        field_0x3c.y = 0.5f * -(f32)v;
-        field_0x3c.z = 0.0f;
+    case 6:
+        field_0x3c.set(0.5f * field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
-    }
     case 7:
         field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
