@@ -750,7 +750,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 96.57 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     SpriteParams_801F5AE0 params;
     bool shadow = false;
@@ -776,7 +776,8 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     }
     params.field_0x1f = 0;
     Mtx mtx;
-    s16 angle = field_0x254 - lbl_805429F8[field_0x274];
+    // The original narrows field_0x254 to u16 before the subtraction (clrlwi at +0x1DC).
+    s16 angle = (u16)field_0x254 - lbl_805429F8[field_0x274];
     f32 s = JMath::sincosTable_.sinShort(angle);
     f32 c = JMath::sincosTable_.cosShort(angle);
     mtx[0][0] = c;
@@ -798,8 +799,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x3E0, &params, -1, 1.0f, 1.0f);
         params.field_0x1c = 0;
         params.field_0x1d = -1;
+        s32 frame = field_0x23C + 0x3E0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", field_0x23C + 0x3E0, NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
     }
 }
@@ -1170,12 +1172,12 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FF70() {
     }
 }
 
-// FIXME(shotgun): 99.88 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
         field_0x27C = 0;
-        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * 10430.378f);
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
         field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
         u16 a = field_0x254;
