@@ -13,7 +13,7 @@ static inline s32 spread(s32 range) {
     return fn_801CD664(range + 1) - range / 2;
 }
 
-// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.83 %, missing/extra; behaviour near.
 // The original zero-extends the saved index again before the second restore compare.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
     u8 prev;
@@ -77,7 +77,7 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
 // Not auto-inlined: fn_801C8C84 calls fn_801C9234 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 80.20 %, scheduling+regalloc; behaviour clean.
+// FIXME: 83.81 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): register order and scheduling differ; lbl_ constant reloc-name
 void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
     f32 nx = mMapHitDir.x;
@@ -108,7 +108,7 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 96.52 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.63 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
         JGeometry::TVec3f railPos;
@@ -490,7 +490,7 @@ void ShadowLink2_804A43E8::fn_801C7EE4() {
     }
 }
 
-// FIXME(shotgun): 96.43 %, different; behaviour clean.
+// FIXME(shotgun): 99.74 %, operands; behaviour clean.
 u8 ShadowLink2_804A43E8::fn_801C7BD0() {
     u8 ret = 0;
     s32 count = mPathCount;
@@ -749,7 +749,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
 }
 
-// FIXME(shotgun): 96.51 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.49 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C71BC() {
     mFlags &= ~0x100000;
     if (!(mFlags & 0x2000000)) {
