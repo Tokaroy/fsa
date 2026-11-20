@@ -1872,6 +1872,8 @@ void TileMap_804AA858::fn_802FA3FC() {
 // fn_802F9714 for the 'SCH ' tile images of field_0x4[slot]; for slot 1 it
 // also keeps bytes 0x200-0x2FF of that buffer in field_0x238c.
 void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
+    u8* dst;
+    u8* src;
     u32 len;
     if (size == 0) {
         s32 resSize;
@@ -1888,8 +1890,7 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    u8* dst = field_0x4[slot] + dstOffset;
-    u8* src;
+    dst = field_0x4[slot] + dstOffset;
     if (JKRDecomp::checkCompressed((u8*)res)) {
         JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
         src = field_0xf8;
@@ -1898,7 +1899,8 @@ void TileMap_804AA858::fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOf
     }
     src += srcOffset;
     for (u32 i = 0; i < len; i++) {
-        dst[i] = ((src[i] >> 4) & 0xF) | ((src[i] & 0xF) << 4);
+        u8 b = src[i];
+        dst[i] = ((b >> 4) & 0xF) | ((b & 0xF) << 4);
     }
     DCFlushRange(dst, len);
     if (slot == 1) {
