@@ -275,7 +275,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 90.14 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 91.91 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -310,13 +310,12 @@ void cls_804A4C58::fn_801D9960() {
         if (field_0x338 == 0) {
             if (field_0x33f == 3) {
                 s32 columns[12];
-                columns[0] = 1;
-                columns[1] = 2;
-                columns[2] = 5;
-                columns[3] = 6;
-                columns[4] = 9;
-                columns[5] = 10;
-                s32 n = 6;
+                s32 n = 0;
+                for (s32 i = 0; i < 3; i++) {
+                    for (s32 j = 1; j < 3; j++) {
+                        columns[n++] = i * 4 + j;
+                    }
+                }
                 if (n > 0) {
                     field_0x334 = columns[fn_801CD664(n)];
                 } else {
@@ -417,7 +416,7 @@ bool cls_804A4C58::fn_801D95F4() {
 }
 
 // Unrolled middle-column fill in states 9/14/18 emits stw instead of stwx for odd slots, plus regalloc and .sdata2 double alignment.
-// FIXME: 93.78 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.70 %, regalloc-only + reloc-name; behaviour drift.
 void cls_804A4C58::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
@@ -522,7 +521,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -596,7 +596,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -647,7 +648,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 s32 n = 0;
                 for (int row = 0; row < 3; row++) {
                     for (int col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -763,7 +765,6 @@ void cls_804A4C58::vfunc_0x88() {
 }
 
 
-// FIXME: 82.49 %, missing/extra; behaviour drift.
 void cls_804A4C58::vfunc_0x74() {
     switch (mState) {
     case 0xB:
@@ -776,7 +777,8 @@ void cls_804A4C58::vfunc_0x74() {
                 s32 n = 0;
                 for (s32 row = 0; row < 3; row++) {
                     for (s32 col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -788,12 +790,7 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
+            if (isColumnRight(this)) {
                 mFlags &= ~0x2000;
             } else {
                 mFlags |= 0x2000;
@@ -804,7 +801,8 @@ void cls_804A4C58::vfunc_0x74() {
                 s32 n = 0;
                 for (s32 row = 0; row < 3; row++) {
                     for (s32 col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -816,22 +814,7 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool turn = false;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             } else {
                 fn_801D9C58(0xB);
