@@ -207,7 +207,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
-// FIXME: 97.55 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.56 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -805,7 +805,7 @@ void cls_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 99.33 %, operands; behaviour drift.
+// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void cls_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&field_0x3c);
@@ -914,7 +914,7 @@ void cls_804ADF28::fn_80364900() {
     }
 }
 
-// FIXME(shotgun): 97.46 %, different; behaviour drift.
+// FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_803645B4() {
     JGeometry::TVec3f target;
     if (field_0x248 == 0 || field_0x238 != 0) {
@@ -1010,7 +1010,7 @@ void cls_804ADF28::fn_80364340() {
     }
 }
 
-// FIXME: 96.29 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.80 %, scheduling+regalloc; behaviour clean.
 void cls_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
@@ -1231,7 +1231,7 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-// FIXME(shotgun): 99.35 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
