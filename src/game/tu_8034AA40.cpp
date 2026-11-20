@@ -22,7 +22,6 @@ static const s32 lbl_80542510[2] = {20, 15};
 static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 
 // 0x8034C464.
-// FIXME(shotgun): 98.79 %, different; behaviour near.
 void cls_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
@@ -62,7 +61,7 @@ void cls_804AC8C0::init() {
         field_0x2c0 = 0x423;
         break;
     case 1:
-        field_0x234 = 20;
+        field_0x234 = lbl_80542510[0];
         field_0x2c0 = 0x427;
         break;
     }
@@ -73,18 +72,18 @@ void cls_804AC8C0::init() {
 
 static void markRandomCucco(s32* serials, s32 count);
 
-// FIXME(shotgun): 98.36 %, missing/extra; behaviour drift.
 void cls_804AC8C0::vfunc_0x10() {
     s32 serials[30];
     s32 serial = -1;
     s32 count = 0;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
-        if (serial < 0) {
+        s32 found = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        serial = found;
+        if (found < 0) {
             break;
         }
         if (count < 30) {
-            serials[count] = serial;
+            serials[count] = found;
             count++;
         }
     }
@@ -510,7 +509,8 @@ void cls_804AC8C0::updateFacing() {
     f32 dist;
     fn_801EE558(&dir, &dist, 0);
     if (dist < 100.0f) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
+        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
+                          (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x23c = 3;
         } else if (angle >= 0x2000 && angle < 0x6000) {
@@ -598,20 +598,24 @@ void cls_804AC8C0::fn_8034ACF4() {
     }
 }
 
-// FIXME(shotgun): 69.01 %, missing/extra + reloc-name; behaviour clean.
 s32 cls_804AC8C0::fn_8034AAA0() {
-    JGeometry::TBox2f box(24.0f, 8.0f, 88.0f, 72.0f);
+    JGeometry::TBox2f box;
+    box = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
+    s32 serial = -1;
     s32 count = 0;
     field_0x274[0] = 0;
     field_0x274[1] = 0;
     field_0x274[2] = 0;
     field_0x274[3] = 0;
-    s32 serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial)) >= 0) {
+    while (true) {
+        serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        if (serial < 0) {
+            break;
+        }
         Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (cucco != NULL && field_0x4 == cucco->field_0x4 && cucco->mPos.z < 8.0f &&
             containsPoint(box, cucco->mPos) == true && !cucco->field_0xc4) {
@@ -621,7 +625,7 @@ s32 cls_804AC8C0::fn_8034AAA0() {
         }
     }
     if (lbl_80472158[field_0x25c] >= field_0x24c - count && field_0x28c[field_0x25c] == 0) {
-        lbl_8053AED0->fn_8043D67C(0x42A, 0, 0);
+        lbl_8053AED0->fn_8043D67C(0x42A, 0, lbl_80472158[field_0x25c]);
         field_0x28c[field_0x25c] = 1;
         if (field_0x25c == 2) {
             gAudioMgr_8053AF80->fn_80458508(1);
