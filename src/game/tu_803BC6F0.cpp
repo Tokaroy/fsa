@@ -2537,7 +2537,7 @@ void FileSelect_804AFF60::fn_803C5808() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
-    s32* dst = other;
+    s32* dst = others;
     for (s32 i = 0; i < 3; i++) {
         if (i != field_0xa4) {
             *dst++ = i;
