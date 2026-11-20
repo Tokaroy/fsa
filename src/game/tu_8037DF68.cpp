@@ -508,7 +508,7 @@ bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
     return lbl_8053AD78->fn_8038A984(window, player, msg, serial, flags);
 }
 
-// FIXME: 99.68 %, regalloc-only; behaviour clean.
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
 // Regalloc only: the first fn_8037EC98 call passes the flags parameter (r30) in
 // the original, the truncated copy (r31) here.
 bool MessageManager_804AF070::fn_8038A984(s32 player, s32 actor, s32 value, s32 serial, u32 flags) {
