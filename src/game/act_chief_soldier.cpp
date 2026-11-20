@@ -136,8 +136,8 @@ void ChiefSoldier_804A0B90::fn_80175024() {
             if (field_0x3c.x < 0.1f && field_0x3c.y < 0.1f) {
                 partner->field_0x94 = 0;
                 if (field_0x4 >= 8 && field_0x23c == 1) {
-                    s32 dir = field_0x98;
-                    mBox.set(lbl_804A0A58[dir][0], lbl_804A0A58[dir][1], lbl_804A0A58[dir][2], lbl_804A0A58[dir][3]);
+                    const f32* box = lbl_804A0A58[field_0x98];
+                    mBox.set(JGeometry::TVec2f(box[0], box[1]), JGeometry::TVec2f(box[2], box[3]));
                 }
                 fn_801F2B7C(-100, -1, 1);
             } else {
@@ -159,15 +159,16 @@ void ChiefSoldier_804A0B90::fn_80175024() {
         }
         JGeometry::TVec3f pos;
         if (partner->field_0x90 == 7) {
-            pos = mPos;
+            pos.set(mPos);
         } else {
             s32 layer = partner->field_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxp = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-            JGeometry::TBox2f box = *boxp;
-            pos.x = mPos.x + box.i.x;
-            pos.y = mPos.y + box.i.y;
-            pos.z = mPos.z;
+            JGeometry::TBox2f box;
+            box = *boxp;
+            pos.set(mPos);
+            pos.x += box.i.x;
+            pos.y += box.i.y;
         }
         partner->mPos = pos;
         partner->field_0x98 = field_0x98;
