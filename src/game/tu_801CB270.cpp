@@ -73,28 +73,23 @@ s32 fn_801CD9F0(f32* value, f32 target, f32 step) {
     return result;
 }
 
-// FIXME: 90.62 %, scheduling+regalloc; behaviour clean.
-// Same instructions modulo registers: the target extends target and step
-// once up front (extsh r7, r4; extsh. r0, r5) and keeps them in r7 / r5; ours keeps the
-// extended target in r6 and the step in r7. With (s16, s16) parameters this is 100 %, but
-// then fn_801CD930's callers (it forwards r4 / r5 unextended) would need extsh.
 // Steps *angle towards target by at most step; true while it has not reached
 // the target.
+// FIXME: 99.06 %, regalloc-only; behaviour clean.
 bool fn_801CD970(s16* angle, s32 target, s32 step) {
     s16 diff = (s16)target - *angle;
-    s16 amount = step;
-    if (amount < 0) {
-        amount = -amount;
+    if ((s16)step < 0) {
+        step = (s16)-step;
     }
     if (diff > 0) {
-        diff -= amount;
+        diff -= step;
         if (diff > 0) {
             *angle = (s16)target - diff;
         } else {
             *angle = target;
         }
     } else {
-        diff += amount;
+        diff += step;
         if (diff < 0) {
             *angle = (s16)target - diff;
         } else {
@@ -135,9 +130,16 @@ bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold) {
     return true;
 }
 
+static inline void stepToward(f32* cur, f32 target, f32 factor) {
+    if (factor > 1.0f) {
+        factor = 1.0f;
+    }
+    *cur += factor * (target - *cur);
+}
+
 // Moves *cur toward *target by `factor` of the way, the step clamped between minStep and
-// maxStep; true once the point is on the target.
-// FIXME(shotgun): 84.16 %, missing/extra; behaviour drift.
+// maxStep; true while it has not reached the target.
+// FIXME: 90.51 %, missing/extra; behaviour drift.
 bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 factor, f32 minStep, f32 maxStep) {
     if (factor > 1.0f) {
         factor = 1.0f;
@@ -145,8 +147,7 @@ bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 fa
         factor = 0.0f;
     }
     JGeometry::TVec2f d(target->x - cur->x, target->y - cur->y);
-    f32 sq = square(d.x) + square(d.y);
-    f32 len = JGeometry::TUtilf::sqrt(sq);
+    f32 len = JGeometry::TUtilf::sqrt(square(d.x) + square(d.y));
     if (len > 0.0f) {
         f32 step = len * factor;
         if (step < minStep) {
@@ -166,15 +167,8 @@ bool fn_801CD754(JGeometry::TVec2f* cur, const JGeometry::TVec2f* target, f32 fa
             }
             factor = f;
         }
-        f32 fx = factor;
-        if (factor > 1.0f) {
-            fx = 1.0f;
-        }
-        cur->x = fx * (target->x - cur->x) + cur->x;
-        if (factor > 1.0f) {
-            factor = 1.0f;
-        }
-        cur->y = factor * (target->y - cur->y) + cur->y;
+        stepToward(&cur->x, target->x, factor);
+        stepToward(&cur->y, target->y, factor);
     }
     return !(cur->x == target->x && cur->y == target->y);
 }
@@ -929,20 +923,22 @@ void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6) {
     spawnEmitter_8013CC50(layer, pos, 0x101, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
 }
 
+static inline JPABaseEmitter* spawnEmitterHelper(int layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth) {
+    return spawnEmitter_8013CC50(layer, pos, id, height, depth + 1, NULL, NULL, true, 1.0f);
+}
+
 // Two effects (spawnEmitter_8013CC50 0x117 and 0x118) at pos on `layer`; arg3 is passed
 // on and arg4 is passed on plus 1 (as the depth).
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
 void fn_801CB538(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
-    spawnEmitter_8013CC50(layer, pos, 0x117, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x118, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0x117, arg3, arg4);
+    spawnEmitterHelper(layer, pos, 0x118, arg3, arg4);
 }
 
 // Two effects (spawnEmitter_8013CC50 0x473 and 0x474) at pos on `layer`; arg3 and arg4 + 1
 // are the height and depth of both.
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
 void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
-    spawnEmitter_8013CC50(layer, pos, 0x473, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x474, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0x473, arg3, arg4);
+    spawnEmitterHelper(layer, pos, 0x474, arg3, arg4);
 }
 
 // Asks the actor manager for a 'RUPY' (fn_801F8544 with id ACTOR_RUPY) at pos on
