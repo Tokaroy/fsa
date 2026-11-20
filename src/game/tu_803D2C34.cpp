@@ -186,7 +186,7 @@ void cls_804B0288::fn_803D5554() {
     lbl_80529DEC.field_0x243[0] = 0;
 }
 
-// FIXME(shotgun): 92.50 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.74 %, scheduling+regalloc; behaviour clean.
 // (one more saved register: the bounce step)
 void cls_804B0288::fn_803D521C() {
     gGameRoot2_8053AB10->fn_8013B490();
@@ -443,8 +443,6 @@ void cls_804B0288::fn_803D4770() {
     }
 }
 
-// FIXME(shotgun): 98.88 %, missing/extra; behaviour near.
-// (register allocation of the loop counters)
 void cls_804B0288::fn_803D4484() {
     s16 fadeStart = lbl_8050DB0C.field_0x4c[(0xE4 - 0x4C) / 2];
     s16 fadeLength = lbl_8050DB0C.field_0x4c[(0xE6 - 0x4C) / 2];
@@ -1007,7 +1005,6 @@ void cls_804B0288::fn_803D3060() {
     }
 }
 
-// FIXME(shotgun): 99.80 %, scheduling; behaviour clean.
 void cls_804B0288::fn_803D2FFC() {
     if (field_0x7c > 0) {
         field_0x7c--;
