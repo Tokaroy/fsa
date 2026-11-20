@@ -79,7 +79,7 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 99.55 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 99.59 %, missing/extra; behaviour clean.
 // Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
 // the .sdata2 literals are not split.
 void cls_804A6708::init() {
@@ -175,7 +175,7 @@ void cls_804A6708::init() {
 }
 
 
-// FIXME: 88.94 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 90.50 %, missing/extra; behaviour near.
 // Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void cls_804A6708::fn_8021E4F8() {
     switch (mState) {
@@ -245,7 +245,7 @@ void cls_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 96.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.67 %, missing/extra; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
     switch (newState) {
     case 1:
