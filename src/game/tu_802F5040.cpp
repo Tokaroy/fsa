@@ -2751,8 +2751,6 @@ void TileMap_804AA858::fn_802F745C(const JGeometry::TVec3f* pos, void* res, Spri
 // time (field_0x18[0]) as 8 x 8 quads; with field_0xe450 a second TEV stage
 // multiplies in the player's field_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
-// FIXME: 96.01 %, missing/extra + reloc-name; behaviour drift.
-// FIXME: s0 / t0 fold + 0.0f into fmuls (original keeps fmadds with 0.0f, using f30 too); literals @NNN.
 void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
@@ -2847,18 +2845,19 @@ void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, Spri
                             y0 += out.y;
                             f32 u0 = (8.0f * (tile & 0xF) + 0.501f) / 128.0f;
                             f32 v0 = (8.0f * ((tile >> 4) & 0x3F) + 0.501f) / 512.0f;
-                            f32 s0 = ((x * 2 + i) * 8) / 128.0f + 0.0f;
-                            f32 t0 = ((y * 2 + j) * 8) / 128.0f + 0.0f;
+                            f32 u1;
+                            f32 v1;
+                            f32 sOffset = 0.0f;
+                            f32 s0 = ((x * 2 + i) * 8) / 128.0f + sOffset;
+                            f32 t0 = ((y * 2 + j) * 8) / 128.0f + sOffset;
                             f32 s1 = 0.0625f + s0;
                             f32 t1 = 0.0625f + t0;
-                            f32 u1;
                             if (tile & 0x400) {
                                 u1 = u0;
                                 u0 = 0.05453125f + u0;
                             } else {
                                 u1 = 0.05453125f + u0;
                             }
-                            f32 v1;
                             if (tile & 0x800) {
                                 v1 = v0;
                                 v0 = 0.013632813f + v0;
