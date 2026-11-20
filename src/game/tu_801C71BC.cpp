@@ -9,7 +9,7 @@
 #include "JSystem/JMath/JMath.h"
 
 // FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
-// The original zero-extends the saved index again before the second restore compare; registers follow.
+// The original zero-extends the saved index again before the second restore compare.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
     u8 prev;
     u8 next;
