@@ -750,7 +750,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 96.57 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     SpriteParams_801F5AE0 params;
     bool shadow = false;
@@ -1172,7 +1172,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FF70() {
     }
 }
 
-// FIXME(shotgun): 99.88 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
