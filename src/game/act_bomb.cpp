@@ -58,6 +58,7 @@ void Bomb_8049F784::vfunc_0x44() {
 }
 
 // Only r27/r28 are swapped (count vs layer).
+// FIXME: 99.77 %, regalloc-only; behaviour clean.
 void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     ActorBase_804A5770* warps[ACTOR_MANAGER_MAX_ACTORS];
     s32 count = getActorManager_801F856C()->fn_801F7818('WARP', field_0x4, warps, -1);
@@ -68,7 +69,6 @@ void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     }
 }
 
-// FIXME: 99.90 % (reloc-name). Functionally 100 %; only .sdata2 float relocations differ.
 bool Bomb_8049F784::fn_8014D6DC() {
     if (mPos.z > 0.1f) {
         return false;
@@ -103,6 +103,7 @@ bool Bomb_8049F784::fn_8014D6DC() {
 }
 
 // Scheduling of the 2x2 probe loop (lwz r6, 0x4(r31) vs lfs/stfs of mPos.z).
+// FIXME: 98.64 %, scheduling; behaviour clean.
 void Bomb_8049F784::vfunc_0x54() {
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
@@ -170,7 +171,6 @@ void Bomb_8049F784::vfunc_0x48() {
     vfunc_0x54();
 }
 
-// FIXME: 99.67 % (reloc-name). Functionally 100 %; only .sdata2 float relocations and jumptable label differ.
 void Bomb_8049F784::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     field_0x80.set(-7.0f, -7.0f, 7.0f, 7.0f);
@@ -290,7 +290,7 @@ Bomb_8049F784::~Bomb_8049F784() {
     }
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra
+// FIXME(shotgun): 97.67 %, missing/extra; behaviour drift.
 void Bomb_8049F784::update() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f pos(mPos.x, mPos.y);
@@ -881,6 +881,7 @@ void Bomb_8049F784::update() {
     }
 }
 
+// FIXME: 99.35 %, regalloc-only; behaviour clean.
 // FIXME: Only init order of i/count (r30/r31) and float register allocation (scale and setRotScaleMtx locals) differ.
 void Bomb_8049F784::draw() {
     if (field_0x230 == 9) {
@@ -974,7 +975,8 @@ void Bomb_8049F784::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, frame, flag != 0, 2, -1, h, 0, 0);
 }
 
-// FIXME: 97.38 % (scheduling+regalloc). Only register allocation differs (layer in r31/pos in r29/code in r30 in target).
+// FIXME: 97.38 %, scheduling+regalloc; behaviour clean.
+// (scheduling+regalloc). Only register allocation differs (layer in r31/pos in r29/code in r30 in target).
 bool Bomb_8049F784::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     s32 tile = fn_80226850(pos, layer);
