@@ -730,7 +730,7 @@ void cls_804B13D4::fn_8041F5FC() {
     }
 }
 
-// FIXME(shotgun): 95.69 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.76 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
@@ -1320,7 +1320,6 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
     }
 }
 
-// FIXME: 99.69 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
         return;
@@ -1426,7 +1425,6 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
-// FIXME: 99.70 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
