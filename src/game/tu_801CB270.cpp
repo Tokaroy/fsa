@@ -931,10 +931,13 @@ void fn_801CB538(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
 
 // Two effects (spawnEmitter_8013CC50 0x473 and 0x474) at pos on `layer`; arg3 and arg4 + 1
 // are the height and depth of both.
-// FIXME: 86.49 %, scheduling+regalloc; behaviour clean.
+static inline JPABaseEmitter* spawnEmitterHelper(int layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth) {
+    return spawnEmitter_8013CC50(layer, pos, id, height, depth + 1, NULL, NULL, true, 1.0f);
+}
+
 void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
-    spawnEmitter_8013CC50(layer, pos, 0x473, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x474, arg3, arg4 + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0x473, arg3, arg4);
+    spawnEmitterHelper(layer, pos, 0x474, arg3, arg4);
 }
 
 // Asks the actor manager for a 'RUPY' (fn_801F8544 with id ACTOR_RUPY) at pos on
