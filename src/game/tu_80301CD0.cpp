@@ -139,7 +139,7 @@ bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
 
 // 0x8030905C
 // The transfer-queue loop loads its own zero for i (r10) instead of sharing r4, shifting the remaining pointers.
-// FIXME: 97.72 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 97.77 %, missing/extra; behaviour clean.
 cls_804AA8B8::cls_804AA8B8() {
     for (int p = 0; p < 4; p++) {
         lbl_80504A18[p] = 0;
@@ -375,7 +375,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
 // 0x8030801C
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
+// FIXME: 99.97 %, regalloc-only; behaviour clean.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -1608,7 +1608,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.49 %, different; behaviour clean.
+// FIXME: 95.50 %, scheduling+regalloc; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
