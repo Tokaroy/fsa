@@ -88,9 +88,10 @@ void cls_804A4C58::init() {
     mLifeBackup = mLife;
     field_0x114 = 0;
     field_0x196 = 1;
+    s32 room = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box;
-    if (field_0x4 < 8) {
+    if (room < 8) {
         box = &view->mVisibleBox;
     } else {
         box = &view->field_0xdc;
@@ -115,8 +116,7 @@ void cls_804A4C58::init() {
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {
-            field_0x2d4[row * 4 + col].x = x;
-            field_0x2d4[row * 4 + col].y = y;
+            field_0x2d4[row * 4 + col].set(x, y);
             x += 80.0f;
         }
         y += step;
