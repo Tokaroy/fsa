@@ -268,7 +268,6 @@ bool cls_804A51E4::fn_801E1DE8() {
     return fn_801CCF7C();
 }
 
-// FIXME(shotgun): 59.00 %, missing/extra; behaviour near.
 bool cls_804A51E4::fn_801E1DB4() const {
     bool result = false;
     switch (mAnim.mAnim) {
@@ -306,7 +305,6 @@ bool cls_804A51E4::fn_801E1D7C() {
     return result;
 }
 
-// FIXME(shotgun): 82.73 %, missing/extra; behaviour clean.
 bool cls_804A51E4::fn_801E1CF8() const {
     bool result = false;
     switch (mState) {
@@ -560,7 +558,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     mState = newState;
 }
 
-// FIXME(shotgun): 93.18 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.23 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
     ActorBase_804A5770* actor;
@@ -611,7 +609,7 @@ void cls_804A51E4::fn_801E1300() {
     }
 }
 
-// FIXME(shotgun): 90.42 %, missing/extra; behaviour near.
+// FIXME(shotgun): 92.53 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         field_0x2a8 = -1;
@@ -1132,7 +1130,6 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     fn_801E2D88();
 }
 
-// FIXME(shotgun): 96.45 %, missing/extra; behaviour clean.
 void cls_804A51E4::vfunc_0x94() {
     if (field_0x2ce != 0) {
         field_0x2ce--;
@@ -1232,7 +1229,6 @@ void cls_804A51E4::vfunc_0x88() {
     }
 }
 
-// FIXME(shotgun): 87.41 %, missing/extra; behaviour clean.
 void cls_804A51E4::vfunc_0x8C() {
     if (fn_801E1D7C()) {
         if (!fn_801CD2F8(field_0x4)) {
