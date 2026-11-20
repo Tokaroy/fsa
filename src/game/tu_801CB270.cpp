@@ -446,14 +446,17 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
 
 // FIXME(shotgun): 97.12 %, missing/extra; behaviour clean.
 bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
-    JGeometry::TVec3f p;
+    // An 8-byte position (frame size); fn_80226998 reads only x and y.
+    JGeometry::TVec2f p;
     p.x = pos->x;
     p.y = pos->y;
     bool found = false;
     for (s32 i = 0; i < 2; i++) {
-        s32 tile = fn_80226998(&p, layer);
-        if (tile >= 0x19C && tile < 0x19E) {
+        switch (fn_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        case 0x19C:
+        case 0x19D:
             found = true;
+            break;
         }
         p.y -= 16.0f;
     }
