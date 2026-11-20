@@ -229,7 +229,7 @@ s32 cls_8049D940::vfunc_0x5C() {
     }
 }
 
-// FIXME: 94.46 %, scheduling+regalloc; behaviour drift.
+// FIXME: 96.70 %, scheduling+regalloc; behaviour drift.
 // register allocation and instruction scheduling
 // in cases 9, 10 and 11, plus .sdata2 literal symbol names.
 void cls_8049D940::fn_80115F9C(s32 index) {
@@ -271,8 +271,8 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         break;
     case 9: {
         fn_80119DD0()->fn_80119998(120, 0, 1, 0, 0, 70, 0);
-        s32 serial = getActorManager_801F856C()->fn_801F7A08('SWEV');
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(
+            getActorManager_801F856C()->fn_801F7A08('SWEV'));
         if (actor != NULL) {
             static_cast<cls_804A8638*>(actor)->fn_802B3A3C();
         }
@@ -292,10 +292,10 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         break;
     }
     case 11:
+        lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
         lbl_80529DEC.field_0x237 = 6;
         lbl_80529DEC.field_0x118 = 0;
         lbl_80529DEC.field_0x11c = 0;
-        lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
         gGameRoot_8053AAF8->fn_80136798(6, 0);
         break;
     case 0:
@@ -430,23 +430,26 @@ bool cls_8049D940::fn_80115A7C() {
 // Not auto-inlined: draw calls fn_801158B8 out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-// FIXME: 88.70 %, missing/extra + reloc-name; behaviour clean.
-// The original loads the 64.0f and 1.0f literals again after the
-// PSMTXTrans call and uses other registers for them; the literal references
-// are lbl_ in the original and @NNN here (data split).
+// FIXME: 98.13 %, scheduling; behaviour clean.
 void cls_8049D940::fn_801158B8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos;
     PSMTXTrans(mtx, 0.0f, 0.0f, 0.0f);
     mtx[0][0] = 64.0f;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
     mtx[1][1] = 1.0f;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
     mtx[2][2] = 64.0f;
-    params.mMtx = mtx;
     params.field_0x14.r = 0;
     params.field_0x14.g = 0;
     params.field_0x14.b = 0;
     params.field_0x14.a = 255;
+    params.mMtx = mtx;
     params.field_0x1c = 1;
     params.field_0x1d = 3;
     params.field_0x2d = 1;
