@@ -570,7 +570,7 @@ void cls_804A6550::vfunc_0xA0() {
         case 9: {
             s32 layer = field_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
-            JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+            const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
             JGeometry::TVec3f pos(mPos.x, mPos.y - mPos.z, 0.0f);
             // Kept 0.001 inside the box's left, top and right edges: max / min with fsel (the
             // MWCC intrinsic, like __fabsf elsewhere), as the original's fsel / frsp show.
