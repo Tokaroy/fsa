@@ -495,6 +495,8 @@ public:
     // compared with (lwz into a saved register ahead of the bl; RULES_CARD).
     s32 getField_0x4() const { return field_0x4; }
     s32 getSerial() const { return mSerial; }
+    // field_0x90 read as a signed value (tu_80147B50 compares it with cmpwi).
+    s32 getField_0x90() const { return field_0x90; }
     // Out-of-line accessors in game/act_sword_soldier.cpp; act_ganon,
     // act_phantom_ganon_2, tu_80197070, tu_8018A8D8 (and tu_803944C8 for
     // fn_801544C8) call them with a bl on actors of other classes.

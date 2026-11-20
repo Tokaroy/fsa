@@ -363,10 +363,10 @@ cls_8049F6C8::~cls_8049F6C8() {
     for (s32 i = 0; i < 2; i++) {
         releaseEmitter_801EE434(mEmitters7c0[i]);
     }
-    if (field_0x90 == 1) {
+    if (getField_0x90() == 1) {
         lbl_80539F58 = -1;
     }
-    if (field_0x90 == 0) {
+    if (getField_0x90() == 0) {
         lbl_80539F5C = -1;
     }
 }
