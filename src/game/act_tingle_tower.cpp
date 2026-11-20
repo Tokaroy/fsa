@@ -39,6 +39,22 @@ static void (cls_804AAD60::*lbl_804AACDC[11])() = {
     &cls_804AAD60::fn_80313D7C,
 };
 
+// Passes the position on by value (the original loads the other arguments before its copy).
+static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
+    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+}
+
+// Starts a message for a player and remembers the player and the message.
+inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
+    if (talk(player, msg, field_0x4, mSerial, mPos, flags)) {
+        field_0x254 = player;
+        field_0x268 = msg;
+        field_0x234 = 1;
+        return true;
+    }
+    return false;
+}
+
 inline void cls_804AAD60::updateFacing() {
     if (field_0x274 <= 0) {
         field_0x274 = 20;
@@ -1018,22 +1034,17 @@ void cls_804AAD60::fn_80313C20() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    if (field_0x234 == 1) {
+    if (field_0x234 != 1) {
+        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        s32 p = fn_8022FD8C(mSerial);
+        if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
+            startMessage(p, field_0x268, 0x220);
+        }
+    } else {
         fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
         if (fn_80388CAC(field_0x254, mSerial)) {
             field_0x254 = -1;
             field_0x234 = 0;
-        }
-    } else {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-        s32 p = fn_8022FD8C(mSerial);
-        if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
-            u32 msg = field_0x268;
-            if (fn_8038AD24(p, msg, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x220)) {
-                field_0x254 = p;
-                field_0x268 = msg;
-                field_0x234 = 1;
-            }
         }
     }
 }
