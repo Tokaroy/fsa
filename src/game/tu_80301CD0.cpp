@@ -776,36 +776,32 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
             }
         }
     }
-        cls_804AA858Sub11C* record = &lbl_80506DE8[player];
-    record->f.mEntries[0].mScroll = (fn_8023CE10(layer) >> 5) & 0xF;
-    record->f.mEntries[0].mScrollBit = (fn_8023CE10(layer) >> 4) & 1;
-    record->f.mEntries[1].mScroll = fn_8023CE10(layer);
-    record->f.mEntries[2].mScroll = (fn_8023CD74(layer) >> 5) & 0xF;
-    record->f.mEntries[2].mScrollBit = (fn_8023CD74(layer) >> 4) & 1;
-    record->f.mEntries[3].mScroll = fn_8023CD74(layer);
+    lbl_80506DE8[player].f.mEntries[0].mScroll = (fn_8023CE10(layer) >> 5) & 0xF;
+    lbl_80506DE8[player].f.mEntries[0].mScrollBit = (fn_8023CE10(layer) >> 4) & 1;
+    lbl_80506DE8[player].f.mEntries[1].mScroll = fn_8023CE10(layer);
+    lbl_80506DE8[player].f.mEntries[2].mScroll = (fn_8023CD74(layer) >> 5) & 0xF;
+    lbl_80506DE8[player].f.mEntries[2].mScrollBit = (fn_8023CD74(layer) >> 4) & 1;
+    lbl_80506DE8[player].f.mEntries[3].mScroll = fn_8023CD74(layer);
     u8 near = 0;
     if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
         near = 1;
     }
-    record->f.mEntries[1].mScrollBit = near ? true : false;
+    lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
     u8 flag = 0;
     if (fn_8022F5B0(layer)) {
-        s32 l = getPlayerLayer_8023DE58(layer);
-        if (!getGameView_802D6A9C()->fn_802D7804(l, 2)) {
+        if (!getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
             flag = 1;
         }
     }
-    record->f.mEntries[3].mScrollBit = flag ? true : false;
-    GbaSprite_80506F88* sprite = record->f.field_0x18;
-    s32 words = lbl_80541618[lbl_8053AD08] - 7;
-    for (s32 i = 0; i < words; i++, sprite++) {
-        sprite->f.field_0x3_0 = 1;
-        sprite->f.field_0x2 = 0x80;
-        sprite->f.field_0x1 = 0xE0;
-        sprite->f.field_0x3_1 = 0;
-        sprite->f.field_0x0 = 0;
-        sprite->f.mKind = 0;
-        sprite->f.field_0x3_4 = 0;
+    lbl_80506DE8[player].f.mEntries[3].mScrollBit = flag ? true : false;
+    for (s32 i = 0; i < lbl_80541618[lbl_8053AD08] - 7; i++) {
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x3_0 = 1;
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x2 = 0x80;
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x1 = 0xE0;
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x3_1 = 0;
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x0 = 0;
+        lbl_80506DE8[player].f.field_0x18[i].f.mKind = 0;
+        lbl_80506DE8[player].f.field_0x18[i].f.field_0x3_4 = 0;
     }
     s32 count = 0;
     if (fn_8023F264(player)) {
@@ -816,16 +812,17 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     }
     for (s32 n = lbl_80541618[lbl_8053AD08] - 8; n > 0; n--) {
         for (s32 j = 0; j < n; j++) {
-            s32 a = spriteKind(record->f.field_0x18[j]);
-            s32 b = spriteKind(record->f.field_0x18[j + 1]);
-            if (record->f.field_0x18[j + 1].f.field_0x1 != 0xE0 &&
-                (a < b || (a == b && record->f.field_0x18[j].f.field_0x1 < record->f.field_0x18[j + 1].f.field_0x1))) {
-                u32 tmp = record->f.field_0x18[j + 1].mWord;
-                record->f.field_0x18[j + 1].mWord = record->f.field_0x18[j].mWord;
-                record->f.field_0x18[j].mWord = tmp;
+            s32 a = spriteKind(lbl_80506DE8[player].f.field_0x18[j]);
+            s32 b = spriteKind(lbl_80506DE8[player].f.field_0x18[j + 1]);
+            if (lbl_80506DE8[player].f.field_0x18[j + 1].f.field_0x1 != 0xE0 &&
+                (a < b || (a == b && lbl_80506DE8[player].f.field_0x18[j].f.field_0x1 < lbl_80506DE8[player].f.field_0x18[j + 1].f.field_0x1))) {
+                u32 tmp = lbl_80506DE8[player].f.field_0x18[j + 1].mWord;
+                lbl_80506DE8[player].f.field_0x18[j + 1].mWord = lbl_80506DE8[player].f.field_0x18[j].mWord;
+                lbl_80506DE8[player].f.field_0x18[j].mWord = tmp;
             }
         }
     }
+    cls_804AA858Sub11C* record = &lbl_80506DE8[player];
     if ((lbl_80506D48[player] & 1) == 0) {
         if (getPlayerLayer_8023DE58(layer) < 8) {
             u64 mask = getGameView_802D6A9C()->fn_802D7AC4(8);
@@ -845,14 +842,14 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     }
     u8 sum = 0;
     if (lbl_804FBC18[player][lbl_80504A18[player]].mUsed == 0) {
-        u8* bytes = (u8*)&record->f.mSprites[0];
         s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&record->f.mSprites[0];
         for (s32 k = 8; k < size; k++) {
             sum += *bytes++;
         }
     } else {
-        u8* bytes = (u8*)&record->f.mSprites[0];
         s32 size = lbl_80541618[lbl_8053AD08] * 4;
+        u8* bytes = (u8*)&record->f.mSprites[0];
         for (s32 k = 8; k < size; k++) {
             sum += *bytes++;
         }
