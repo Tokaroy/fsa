@@ -303,9 +303,7 @@ bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer) {
 // Not auto-inlined: fn_802255F4 calls fn_802252F4 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Tests the raw tile at pos against the code lists of the current stage.
-// Still differs: the original does not copy layer for the tile lookup (rawTileAt's int layer).
-// FIXME(shotgun): 98.70 %, scheduling+regalloc; behaviour clean.
-bool fn_802252F4(const JGeometry::TVec3f* pos, s32 layer) {
+bool fn_802252F4(const JGeometry::TVec3f* pos, int layer) {
     u16 raw = rawTileAt(pos, layer);
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
