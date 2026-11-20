@@ -2,6 +2,7 @@
 #include "game/ActorManager.h"
 #include "game/Camera.h"
 #include "game/Effect.h"
+#include "game/EmitterDelete.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
 #include "game/tu_801E9AFC.h"
@@ -148,7 +149,6 @@ void cls_804A5568::fn_801E9224() {
     }
 }
 
-// FIXME(shotgun): 98.07 %, missing/extra; behaviour near.
 void cls_804A5568::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 0: {
@@ -156,9 +156,7 @@ void cls_804A5568::vfunc_0x90(u8 mapHit) {
         if (trigger != 0) {
             if (getGameView_802D6A9C()->fn_802D800C(trigger)) {
                 mFlags |= 0x2000;
-                if (mEmitter3c0 != NULL) {
-                    getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter3c0);
-                }
+                deleteEmitterKeep(&mEmitter3c0);
                 mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
                 mStateTimer = 0;
                 mState = 1;
@@ -185,6 +183,8 @@ void cls_804A5568::vfunc_0x90(u8 mapHit) {
             mState = 2;
         }
         break;
+    case 2:
+        break;
     }
 }
 
@@ -192,14 +192,11 @@ u8 cls_804A5568::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME(shotgun): 93.68 %, missing/extra; behaviour near.
 u8 cls_804A5568::vfunc_0x60() {
     if (mState == 0 && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         if (fn_801E9B58() >= 0) {
             mFlags |= 0x2000;
-            if (mEmitter3c0 != NULL) {
-                getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitter3c0);
-            }
+            deleteEmitterKeep(&mEmitter3c0);
             mEmitter3c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x260, 0, -2, NULL, NULL, true, 1.0f);
             mStateTimer = 0;
             mState = 1;
@@ -240,12 +237,12 @@ void cls_804A5568::fn_801E8EB4(u8 index, s32 arg, const JGeometry::TVec2f* pos) 
     field_0x2b0[index].y = pos->y;
 }
 
-// FIXME(shotgun): 95.88 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.19 %, missing/extra; behaviour drift.
 void cls_804A5568::fn_801E8C74(s32 arg) {
     field_0x3b8 = arg;
     mCount = 0;
     bool run = true;
-    for (s32 i = 0; i < 8; i++) {
+    for (s32 i = 0; i < 32; i++) {
         if (mMask & (1 << i)) {
             if (run) {
                 mCount++;
@@ -254,11 +251,9 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
             run = false;
         }
     }
-    mPos.x = field_0x2b0[0].x;
-    mPos.y = field_0x2b0[0].y;
-    mPos.z = 0.0f;
-    f32 y2 = field_0x2b0[0].y;
+    mPos.set(field_0x2b0[0].x, field_0x2b0[0].y, 0.0f);
     f32 x0 = field_0x2b0[0].x;
+    f32 y2 = field_0x2b0[0].y;
     f32 x1 = field_0x2b0[1].x;
     f32 y1 = field_0x2b0[1].y;
     f32 x2;
@@ -285,7 +280,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 83.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 79.07 %, scheduling+regalloc + reloc-name; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
@@ -293,8 +288,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
     f32 v = a * (1.0f / (4.0f * b));
     f32 s0 = JMath::sincosTable_.mTable[ang >> 5].first;
     f32 c0 = JMath::sincosTable_.mTable[ang >> 5].second;
-    s16 delta = (s16)h;
-    delta -= ang;
+    s16 delta = (s16)h - (s16)ang;
     f32 scale = 2.0f * (1.0f / JMath::sincosTable_.cosShort(delta));
     s16 perp = -(s16)(delta - 0x4000);
     f32 s2 = JMath::sincosTable_.sinShort(perp);
