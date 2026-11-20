@@ -22,8 +22,9 @@
 u16 angleOf(f32 x, f32 y);
 f32 lifeMeterSpacing();
 
-// Passes the position on by value (the original loads the other arguments before its copy).
-static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
+// Passes the position on by value (the original loads the other arguments before its copy);
+// layer before serial, as fn_8022FEB8 takes them.
+static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
     return fn_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
@@ -656,8 +657,6 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
     return false;
 }
 
-// FIXME: 99.86 %, scheduling; behaviour clean.
-// The box corners' adds are scheduled differently (see vfunc_0xBC) and mSerial/field_0x4 are loaded in the other order before the talk call.
 s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -676,7 +675,7 @@ s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
         field_0x34c = -1;
         return -1;
     }
-    if (talk(player, msg, mSerial, field_0x4, pos, 0x28)) {
+    if (talk(player, msg, field_0x4, mSerial, pos, 0x28)) {
         field_0x34c = player;
         return player;
     }
