@@ -854,7 +854,7 @@ void ResultScreen_804AF9A0::fn_803B236C() {
     }
 }
 
-// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.98 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B1B60() {
     if (field_0x440 > 0) {
@@ -2476,7 +2476,7 @@ void ResultScreen_804AF9A0::fn_803ABCEC() {
     }
 }
 
-// FIXME: 99.63 %, operands; behaviour clean.
+// FIXME: 99.93 %, regalloc-only; behaviour clean.
 // Registers and stack slots only (the ranks / ranked / totals pointers,
 // f29-f31, the corner-colour copy at 0x40 vs 0x1C, the emitter positions) plus .sdata2
 // names.
