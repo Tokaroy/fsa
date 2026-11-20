@@ -765,7 +765,7 @@ void cls_804B1920::fn_8043D834() {
     }
 }
 
-// Original turns field_0xde & bit into a bool first (neg / or / srwi.; ours: and.),
+// Original tests the bool of field_0xde & bit against zero (srwi.; ours: srwi + cmplwi 1),
 // and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
 // FIXME: 95.59 %, missing/extra; behaviour drift.
 bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
@@ -779,7 +779,7 @@ bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
         getGameView_802D6A9C()->fn_802D46D8(0, id, true);
     } else if (id == 0x1B5u) {
         u8 bit = 1 << arg1;
-        if (field_0xde & bit) {
+        if (bool(field_0xde & bit) == true) {
             return false;
         }
         field_0xde |= bit;
