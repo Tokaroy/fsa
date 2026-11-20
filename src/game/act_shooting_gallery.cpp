@@ -137,7 +137,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.77 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
 // the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
@@ -145,7 +145,8 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
 void ShootingGallery_804A2B18::fn_8019F3AC() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 50.0f;
-    JGeometry::TVec3f savedPos(mPos.x, mPos.y, mPos.z);
+    JGeometry::TVec3f savedPos;
+    savedPos.set(mPos.x, mPos.y, mPos.z);
     // Unused copy of mPos at 0xa0(r1) (like camPos in act_digging_game.cpp).
     JGeometry::TVec3f unusedPos = mPos;
     JGeometry::TBox2f box(mBox);
@@ -272,7 +273,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         }
 
         s32 doneCount = 0;
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             s32 slot = fn_8022F340(i);
             if (lbl_804C6330[slot] >= 10) {
                 lbl_8053ABB8[i] = 1;
@@ -309,7 +310,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
 
         if (field_0x258 == 0) {
             s32 halfCount = 0;
-            for (int i = 0; i < 4; i++) {
+            for (s32 i = 0; i < 4; i++) {
                 if (lbl_804C6330[i] >= 5 || fn_8022F514(i)) {
                     halfCount++;
                 }
@@ -455,14 +456,17 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
     }
 }
 
-// FIXME: 94.81 %, missing/extra; behaviour near.
+// FIXME: 96.02 %, missing/extra; behaviour near.
 // missing/extra: ours has 2 fewer instrs. The original stores p (0x24(r1)) before the box
 // copy is offset and reloads mPos.x/y for the addPos; ours adds in registers. Also gGameRoot_8053AAF8 and
 // 0x19660D swap r4/r5 in mRandom.get_ufloat_1(), and r29/r30 for this.
 void ShootingGallery_804A2B18::fn_8019EE74() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TVec2f p(mPos.x, mPos.y);
-    box.addPos(p);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
 
     addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.3f, 1.0f);
@@ -489,7 +493,10 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
                 if (field_0x268 == 1) {
                     lbl_8053AED0->fn_8043D874(field_0x248, 300, 0);
                     for (int i = 0; i < 20; i++) {
-                        JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z);
+                        JGeometry::TVec3f spawnPos;
+                        spawnPos.x = mPos.x;
+                        spawnPos.y = mPos.y;
+                        spawnPos.z = mPos.z;
                         spawnPos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                         spawnPos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                         getActorManager_801F856C()->spawnActor_801F9484('SYKY', field_0x4, &spawnPos, 4, -1, -1);
