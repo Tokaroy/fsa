@@ -1287,7 +1287,7 @@ void FileSelect_804AFF60::fn_803CC760() {
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
     }
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
@@ -1706,7 +1706,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
                 ((J2DPicture*)mScreenHuuin->search('Pcopb02'))->setBlackWhite(field_0xe4, field_0xe0);
                 ((J2DPicture*)mScreenHuuin->search('Pdelb01'))->setBlackWhite(field_0xe4, field_0xe0);
                 ((J2DPicture*)mScreenHuuin->search('Pdelb02'))->setBlackWhite(field_0xe4, field_0xe0);
-                for (int i = 0; i < 4; i++) {
+                for (s32 i = 0; i < 4; i++) {
                     field_0x24[i]->field_0x22 = 0;
                     field_0x24[i]->field_0x26 = 0;
                 }
@@ -1776,7 +1776,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
                 field_0xda = 0;
             }
         }
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (bob != 0.0f && i == field_0xa0) {
                 field_0x24[i]->moveFromCentre_80402E08(0.0f, bob);
             } else {
@@ -3068,7 +3068,7 @@ void FileSelect_804AFF60::fn_803C1734() {
     field_0x18->mPane->show();
     field_0x1c->mPane->show();
     field_0x34->mPane->show();
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         field_0x24[i]->mPane->show();
     }
     if (lbl_8050EC80.getFile(field_0xa4).field_0x0 == 0) {
@@ -3409,19 +3409,11 @@ void FileSelect_804AFF60::fn_803C0018() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.54 %, scheduling+regalloc; behaviour clean.
-// Register allocation and scheduling only: `this` lands in
-// r28 (original r31) and the loop registers shift (r26..r30); the 9-pane loop
-// counter / pointer are r28 / r27 in the original. With the counters declared
-// per loop each case of the switch re-loads j = 0 (96.49).
 // Opens the copy board for the chosen file (state 32): the target cursor
 // field_0x50 and the board field_0x20 with its 'Pdb' panes faded in from
 // their start position, the command buttons back at their colours, and the
 // copy labels; the timings are lbl_8050DB0C's 0xCA..0xCD.
 void FileSelect_804AFF60::fn_803BF9C4() {
-    // Function-scope counters: declared per loop, each switch case re-loads j = 0 (96.49 %).
-    int i;
-    int j;
     field_0x20->mPane->show();
     field_0x34->mPane->show();
     field_0x50->mPane->setAlpha(0);
@@ -3433,7 +3425,7 @@ void FileSelect_804AFF60::fn_803BF9C4() {
     ((J2DPicture*)mScreenHuuin->search('Pcopb02'))->setBlackWhite(field_0xe4, field_0xe0);
     ((J2DPicture*)mScreenHuuin->search('Pdelb01'))->setBlackWhite(field_0xe4, field_0xe0);
     ((J2DPicture*)mScreenHuuin->search('Pdelb02'))->setBlackWhite(field_0xe4, field_0xe0);
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         field_0x38[i]->field_0x20 = 0;
         field_0x38[i]->field_0x22 = 0;
         field_0x38[i]->field_0x26 = 0;
@@ -3445,51 +3437,25 @@ void FileSelect_804AFF60::fn_803BF9C4() {
     field_0x20->moveFromCentre_80402E08(600.0f, 0.0f);
     field_0x20->field_0x20 = 0;
     field_0x20->mPane->setAlpha(field_0x20->field_0x28);
-    for (i = 0; i < 9; i++) {
-        field_0x20->setAlpha_804023D0(mScreen->search(lbl_80476938[i]), field_0x196[i]);
-    }
+    restoreAlphas_80476938(this);
     field_0x20->field_0x26 = 0;
 
     field_0x34->mPane->setAlpha(0);
     field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
     field_0x34->field_0x26 = 0;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         field_0x24[i]->mPane->show();
         field_0x24[i]->moveFromCentre_80402E08(0.0f, 100.0f);
         field_0x24[i]->field_0x22 = 0;
         field_0x24[i]->mPane->setAlpha(0);
         field_0x24[i]->field_0x26 = 0;
-        switch (i) {
-        case 0:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-            }
-            break;
-        case 1:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-            }
-            break;
-        case 2:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-            }
-            break;
-        case 3:
-            for (j = 0; j < 4; j++) {
-                field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-            }
-            break;
-        }
+        restoreButtonAlphas(this, i);
     }
 
     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search('Tstr01'))->getStringPtr(), 0x11E, 0, NULL, NULL);
     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search('Tcop01'))->getStringPtr(), 0x11F, 0, NULL, NULL);
-    s16 delay = lbl_8050DB0C.field_0x4c[0xCA];
-    s16 frames = lbl_8050DB0C.field_0x4c[0xCB];
-    s16 step = lbl_8050DB0C.field_0x4c[0xCC];
+    s16 end = lbl_8050DB0C.field_0x4c[0xCA] + lbl_8050DB0C.field_0x4c[0xCC] + lbl_8050DB0C.field_0x4c[0xCB];
     field_0xd8 = lbl_8050DB0C.field_0x4c[0xCD];
-    s16 end = delay + (frames + step);
     if (field_0xd8 < end) {
         field_0xd8 = end;
     }
