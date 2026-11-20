@@ -594,7 +594,6 @@ inline void cls_804AE4B0::guideOrRelease_80370764() {
     }
 }
 
-// FIXME: 94.66 %, different; behaviour clean.
 void cls_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
@@ -605,17 +604,21 @@ void cls_804AE4B0::fn_80370764() {
     guideOrRelease_80370764();
     field_0x23c++;
     fn_803721F4();
-    guidePlayer_80370764();
+    JGeometry::TVec3f pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
+    if (PSVECMag(&pos) > 2.0f) {
+        fn_8023DFF4(0, &pos);
+    }
     if (!fn_802341D0(0)) {
         field_0x240 = 2;
     } else if (field_0x398 != 0 && field_0x240 == 0 && fn_8022CAF8(0) == lbl_80474F30[field_0x394] &&
                fn_802300EC(0)) {
-        JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
-                              (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
+        pos.set((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
+                (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         s32 msg;
         if (field_0x394 < 3) {
-            msg = lbl_80474F40[field_0x394++];
+            msg = lbl_80474F40[field_0x394];
+            field_0x394++;
         } else if (field_0x23c < 0x168) {
             field_0x394 = 4;
             msg = 0x509;
@@ -623,7 +626,7 @@ void cls_804AE4B0::fn_80370764() {
             field_0x394 = 5;
             msg = 0x50A;
         }
-        if (fn_8038BD08(0, msg, field_0x4, pos, 0x22)) {
+        if (fn_8038BD08(0, msg, getField_0x4(), pos, 0x22)) {
             fn_8023077C();
             mState = 8;
         }
