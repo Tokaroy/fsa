@@ -22,7 +22,6 @@ static const s32 lbl_80542510[2] = {20, 15};
 static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 
 // 0x8034C464.
-// FIXME(shotgun): 98.79 %, different; behaviour near.
 void cls_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
@@ -62,7 +61,7 @@ void cls_804AC8C0::init() {
         field_0x2c0 = 0x423;
         break;
     case 1:
-        field_0x234 = 20;
+        field_0x234 = lbl_80542510[0];
         field_0x2c0 = 0x427;
         break;
     }
@@ -510,7 +509,9 @@ void cls_804AC8C0::updateFacing() {
     f32 dist;
     fn_801EE558(&dir, &dist, 0);
     if (dist < 100.0f) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
+        f32 rad = JMath::atanTable_.atan2_(-dir.x, -dir.y);
+        rad *= 10430.378f;
+        u16 angle = (s16)rad;
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x23c = 3;
         } else if (angle >= 0x2000 && angle < 0x6000) {
