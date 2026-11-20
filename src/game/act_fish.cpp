@@ -312,13 +312,15 @@ void Fish_804AC658::update() {
 void Fish_804AC658::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.field_0x10.a = 200;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x252 / -10430.228f, 0.0f), 1.0f);
+    params.mMtx = mtx;
+    params.field_0x21 = 1;
     params.field_0x1c = -1;
     params.field_0x1d = -1;
-    params.field_0x21 = 1;
-    params.mMtx = mtx;
-    f32 angle = (f32)field_0x252 / -10430.228f;
-    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, angle, 0.0f), 1.0f);
+    params.field_0x10.a = 200;
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x24c + 0x283, &params, -1, 1.0f, 1.0f);
 }
 
