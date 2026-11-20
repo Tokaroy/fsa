@@ -925,17 +925,19 @@ void GameRootSub24_8016A3AC::fn_8016B8AC() {
     }
 }
 
-// FIXME: 77.99 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 82.12 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016B4D4() {
     if ((field_0x1cb[1] && field_0x110 != NULL) || (field_0x1cb[2] && field_0x118 != NULL)) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         f32 scroll = 0.000244140625f * (f32)(field_0x1c0 & 0xFFF);
         JGeometry::TVec3f center1;
+        JGeometry::TVec3f center2;
         JGeometry::TVec3f half1;
+        JGeometry::TVec3f half2;
         getMapTexView(center1, half1);
-        JGeometry::TVec3f center2 = center1;
-        JGeometry::TVec3f half2 = half1;
+        center2.set(center1);
+        half2.set(half1);
         center1.mul(JGeometry::TVec3f(1.0f, 3.0f, 1.0f));
         center1.x -= scroll;
         half1.mul(JGeometry::TVec3f(1.0f, 3.0f, 1.0f));
@@ -1181,9 +1183,6 @@ void GameRootSub24_8016A3AC::fn_8016A9EC() {
 }
 #pragma auto_inline reset
 
-// FIXME: 98.98 %, regalloc-only; behaviour clean.
-// regalloc only: the original keeps the camera in r4 and the 0x4330
-// conversion constant in r3 (ours swaps them) and the float temporaries in f3/f5.
 void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale) {
     if (dir == 1) {
         bool skip = gGameRoot_8053AAF8->field_0x4c == 11 ? true : gGameRoot_8053AAF8->field_0x88 == 2;
@@ -1198,14 +1197,16 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
     if (followX) {
         f32 c = -camera->field_0x4[0][3];
         f32 d = c * parallax;
-        off.x = (c - d) + (f32)((s32)(0.001953125f * d) << 9);
+        f32 e = c - d;
+        off.x = e + (f32)((s32)(d / 512.0f) << 9);
     } else {
         off.x = 0.0f;
     }
     if (followY) {
         f32 c = -camera->field_0x4[1][3];
         f32 d = c * parallax;
-        off.y = (c - d) + (f32)((s32)(0.001953125f * d) << 9);
+        f32 e = c - d;
+        off.y = e + (f32)((s32)(d / 512.0f) << 9);
     } else {
         off.y = 0.0f;
     }
