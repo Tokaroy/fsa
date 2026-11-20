@@ -68,10 +68,9 @@ u8 fn_80154698() {
     return getGameView_802D6A9C()->fn_802DCD0C();
 }
 
-// FIXME: 99.67 %, reloc-name; behaviour clean.
-// The instructions match; only the 10430.378f relocation differs
-// (lbl_8053D310 in the original; the unit's .sdata2 isn't laid out yet).
-s32 fn_8015465C(f32 y, f32 x) {
+// inline: its 10430.378f is pooled right after update()'s literals (first
+// use), while its out-of-line copy sits at the end of the unit.
+inline s32 fn_8015465C(f32 y, f32 x) {
     return JMath::atanTable_.atan2_(y, x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
@@ -183,12 +182,9 @@ ActorBase_804A5770* fn_8015445C(s32 serial) {
     return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
 }
 
-// FIXME: 99.74 %, reloc-name; behaviour clean.
-// FIXME: the instructions match; its four constants (0.0f, .5, 3.0, 0.0)
-// only pair with lbl_8053D258 / lbl_8053D2F8-lbl_8053D308 once the unit's
-// .sdata2 is laid out in the original order. std::sqrtf out of line; 13
-// calls from 7 units.
-f32 fn_80154378(f32 x) {
+// std::sqrtf out of line; 13 calls from 7 units. inline: its constants are
+// pooled right after update()'s literals (first use).
+inline f32 fn_80154378(f32 x) {
     return std::sqrtf(x);
 }
 
