@@ -35,11 +35,11 @@ inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
     return fn_8038BD08(0, lbl_804650C8[field_0x254], layer, pos, 0x22);
 }
 
-// FIXME(shotgun): 92.52 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
 void cls_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
     field_0x3f4 = (s32)(mPos.y / 384.0f) * 384.0f;
-    field_0x3f8 = (s32)(mPos.x * 0.001953125f) * 512.0f + 256.0f;
+    field_0x3f8 = (s32)(mPos.x / 512.0f) * 512.0f + 256.0f;
     mPos.x = field_0x3f8;
     mPos.y = field_0x3f4 + 250.0f;
     field_0x230 = 0;
@@ -47,15 +47,12 @@ void cls_8049E770::init() {
     field_0x248 = 130.0f;
     field_0x250 = 0;
     field_0x254 = 0;
-    field_0x238.x = field_0x3f8;
-    field_0x238.y = (field_0x3f4 + 384.0f) - 102.0f;
-    field_0x238.z = 0.0f;
+    field_0x238.set(field_0x3f8, (field_0x3f4 + 384.0f) - 102.0f, 0.0f);
     field_0x400 = 0.0f;
     field_0x3fc = 0.0f;
     for (s32 i = 0; i < 6; i++) {
         s16 angle = lbl_804650D4[i];
-        JGeometry::TVec3f offset(35.0f * JMACosShort(angle), 55.0f * JMASinShort(angle), 0.0f);
-        field_0x25c[i] = mPos + offset;
+        field_0x25c[i] = mPos + JGeometry::TVec3f(JMACosShort(angle) * 55.0f, JMASinShort(angle) * 35.0f, 0.0f);
         field_0x2a4[i] = lbl_804650B0[i];
     }
     field_0x2bc = 0;
@@ -77,12 +74,12 @@ void cls_8049E770::init() {
     }
     fn_80119DD0()->fn_80119998(150, 0, 0, 0, 0, 110, 0);
     field_0x250 = 60;
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 posX = field_0x238.x;
     f32 posY = field_0x238.y;
     f32 halfH = field_0x248;
     f32 y0 = posY - halfH;
     f32 y1 = posY + halfH;
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x840 == 0) {
         cam->field_0x840 = 1;
@@ -257,7 +254,6 @@ void cls_8049E770::fn_8012C030() {
     }
 }
 
-// FIXME(shotgun): 98.93 %, scheduling+regalloc; behaviour drift.
 void cls_8049E770::fn_8012BE2C() {
     fn_8012A5EC();
     fn_8022FE80(0, field_0x4, mSerial, true, false);
@@ -272,23 +268,12 @@ void cls_8049E770::fn_8012BE2C() {
             field_0x2f8[i].y = 0.0f;
             field_0x2f8[i].z = 0.5f;
         }
-        s32 id0 = 0x3C0;
-        s32 id1 = 0x3C1;
-        s32 id2 = 0x3C2;
-        for (s32 i = 0; i < 4; i++) {
-            field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
-            id0 += 3;
-            id1 += 3;
-            id2 += 3;
-        }
+        spawnEmitters();
         field_0x234 = 0;
         startSound_801F0E34(0x50062, 0);
     }
 }
 
-// FIXME(shotgun): 98.88 %, scheduling+regalloc; behaviour drift.
 void cls_8049E770::fn_8012BC40() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 279.0f && field_0x248 == 105.0f && done == true) {
@@ -299,19 +284,17 @@ void cls_8049E770::fn_8012BC40() {
             field_0x2f8[i].y = 0.0f;
             field_0x2f8[i].z = 0.5f;
         }
-        s32 id0 = 0x3C0;
-        s32 id1 = 0x3C1;
-        s32 id2 = 0x3C2;
-        for (s32 i = 0; i < 4; i++) {
-            field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-            field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
-            id0 += 3;
-            id1 += 3;
-            id2 += 3;
-        }
+        spawnEmitters();
         field_0x230++;
         field_0x234 = 0;
+    }
+}
+
+inline void cls_8049E770::spawnEmitters() {
+    for (s32 i = 0; i < 4; i++) {
+        field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C0 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C1 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C2 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -644,7 +627,7 @@ void cls_8049E770::fn_8012A8C0() {
     }
 }
 
-// FIXME(shotgun): 96.95 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.53 %, regalloc-only + reloc-name; behaviour drift.
 bool cls_8049E770::fn_8012A5EC() {
     switch (field_0x230) {
     case 0:
@@ -659,7 +642,7 @@ bool cls_8049E770::fn_8012A5EC() {
     case 2: {
         f32 targetY = field_0x3f4 + 260.0f;
         if (field_0x238.y > targetY) {
-            field_0x238.y -= field_0x244;
+            field_0x238.y = field_0x238.y - field_0x244;
         } else {
             field_0x238.y = targetY;
         }
@@ -673,7 +656,7 @@ bool cls_8049E770::fn_8012A5EC() {
     case 4: {
         f32 targetY = field_0x3f4 + 279.0f;
         if (field_0x238.y < targetY) {
-            field_0x238.y -= field_0x244;
+            field_0x238.y = field_0x238.y - field_0x244;
         } else {
             field_0x238.y = targetY;
         }
@@ -687,7 +670,7 @@ bool cls_8049E770::fn_8012A5EC() {
     case 6: {
         f32 targetY = field_0x3f4 + 260.0f;
         if (field_0x238.y > targetY) {
-            field_0x238.y -= field_0x244;
+            field_0x238.y = field_0x238.y - field_0x244;
         } else {
             field_0x238.y = targetY;
         }
@@ -701,7 +684,7 @@ bool cls_8049E770::fn_8012A5EC() {
     case 8: {
         f32 targetY = field_0x3f4 + 154.0f;
         if (field_0x238.y > targetY) {
-            field_0x238.y -= field_0x244;
+            field_0x238.y = field_0x238.y - field_0x244;
         } else {
             field_0x238.y = targetY;
         }
@@ -718,8 +701,8 @@ bool cls_8049E770::fn_8012A5EC() {
     f32 halfH = field_0x248;
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     f32 y0 = posY - halfH;
-    f32 y1 = posY + halfH;
-    if (field_0x3fc == 0.0f && field_0x400 == 0.0f && (field_0x230 == 0 || field_0x230 == 1)) {
+    f32 y1 = halfH + posY;
+    if (field_0x3fc != 0.0f || field_0x400 != 0.0f || field_0x230 == 0 || field_0x230 == 1) {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;

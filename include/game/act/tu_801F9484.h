@@ -107,6 +107,7 @@ public:
     bool fn_8012A5EC();
     // the message of the current step (lbl_804650C8[field_0x254]) at a by-value position
     inline bool talk(s32 layer, const JGeometry::TVec3f& pos);
+    inline void spawnEmitters();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
