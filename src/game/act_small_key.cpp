@@ -1073,8 +1073,6 @@ void SmallKey_804A8CD8::fn_802C2840() {
 }
 
 // 0x802C2684.
-// FIXME: 99.55 %, regalloc-only; behaviour clean.
-// FIXME(shotgun): regalloc-only (f0/f1 swapped in the screen-offset block)
 bool SmallKey_804A8CD8::fn_802C2684(ActorBase_804A5770* other, JGeometry::TBox2f* box) {
     if (other == NULL) {
         return false;
@@ -1088,7 +1086,9 @@ bool SmallKey_804A8CD8::fn_802C2684(ActorBase_804A5770* other, JGeometry::TBox2f
         s32 layer = other->field_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f* screen = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-        theirs.addPos(-screen->i.x, -screen->i.y);
+        f32 scrollX = screen->i.x;
+        f32 scrollY = screen->i.y;
+        theirs.addPos(-scrollX, -scrollY);
         if (theirs.intersect(*box)) {
             return true;
         }
