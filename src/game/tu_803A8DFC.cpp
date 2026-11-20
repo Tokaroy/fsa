@@ -1131,19 +1131,19 @@ void ResultScreen_804AF9A0::fn_803B03E8() {
     s32 t2 = lbl_8050DB0C.field_0x4c[(0x264 - 0x4C) / 2];
     s32 t3 = lbl_8050DB0C.field_0x4c[(0x266 - 0x4C) / 2];
     s32 t4 = lbl_8050DB0C.field_0x4c[(0x268 - 0x4C) / 2];
-    s32 end = t2 + t3 + t4 * (field_0x454 - 1);
-    if (end < t0 + t1) {
-        end = t0 + t1;
+    s32 end = t3 + t2 + t4 * (field_0x454 - 1);
+    if (end < t1 + t0) {
+        end = t1 + t0;
     }
     field_0x440++;
-    if (field_0x440 > t0 && field_0x440 <= t0 + t1) {
+    if (field_0x440 > t0 && field_0x440 <= t1 + t0) {
         s32 d = field_0x440 - t0;
         f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
         f32 offset = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c - offset);
         setHeaderAlpha(1.0f - (f32)d / (f32)t1);
     }
-    if (field_0x440 > t2 && field_0x440 <= t2 + t3 + t4 * (field_0x454 - 1)) {
+    if (field_0x440 > t2 && field_0x440 <= t3 + t2 + t4 * (field_0x454 - 1)) {
         for (s32 i = 0; i < field_0x454; i++) {
             if (field_0x440 >= t2 + t4 * i) {
                 s32 d = field_0x440 - (t2 + t4 * i);
@@ -1157,7 +1157,7 @@ void ResultScreen_804AF9A0::fn_803B03E8() {
             }
         }
     }
-    if (field_0x440 >= end) {
+    if (end <= field_0x440) {
         field_0x4c2 = 0;
         field_0x440 = 150;
         field_0x4c1 = 8;
