@@ -412,7 +412,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 89.29 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.74 %, missing/extra; behaviour clean.
 void Cucco_804AB8C0::fn_80331E6C() {
     if (field_0x2a4[0] == 1) {
     s32 count;
@@ -661,7 +661,7 @@ void Cucco_804AB8C0::fn_803319B8() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 86.85 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.97 %, missing/extra; behaviour near.
 bool Cucco_804AB8C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
