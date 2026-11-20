@@ -507,8 +507,6 @@ void FireRodFire_804A89F0::draw() {
     }
 }
 
-// FIXME: 98.26 %, missing/extra; behaviour near.
-// missing/extra + reloc-name. The original's second `field_0x264 == 0` test has an else that only clears mAlive (3 instructions); float literal placement.
 void FireRodFire_804A89F0::vfunc_0x24() {
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x264 == 0) {
@@ -532,18 +530,20 @@ void FireRodFire_804A89F0::vfunc_0x24() {
                 mPos.y -= 8.0f;
                 break;
             }
-        }
 
-        if (field_0x264 == 0) {
-            if (field_0x4 < 8) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
-            }
-            if (field_0x4 < 8) {
-                mAlive = false;
+            if (field_0x264 == 0) {
+                if (field_0x4 < 8) {
+                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
+                }
+                if (field_0x4 < 8) {
+                    mAlive = false;
+                } else {
+                    field_0x238 = 4;
+                    field_0x26c = 0;
+                    field_0x270 = 0;
+                }
             } else {
-                field_0x238 = 4;
-                field_0x26c = 0;
-                field_0x270 = 0;
+                mAlive = false;
             }
         } else {
             mPos = field_0x248;
@@ -554,23 +554,25 @@ void FireRodFire_804A89F0::vfunc_0x24() {
             return;
         }
 
+        s32 layer;
+        s32 id;
         s32 kind = 0;
         if (field_0x264 == 5) {
             kind = 4;
         }
         if (field_0x264 == 5 && field_0x291 == 0) {
-            s32 layer = field_0x4;
+            layer = field_0x4;
             if (layer < 8) {
                 spawnEmitter_8013CC50(layer, &mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
             } else {
                 getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 6, -1, -1);
             }
         } else {
-            s32 id = field_0x260;
+            id = field_0x260;
             if (id < 0) {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (kind << 6) | (field_0x98 << 4) | 0xF, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (field_0x98 << 4) | (kind << 6) | 0xF, -1, -1);
             } else {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (kind << 6) | (field_0x98 << 4) | id, -1, field_0x110);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, (field_0x98 << 4) | (kind << 6) | id, -1, field_0x110);
             }
         }
     } else {
