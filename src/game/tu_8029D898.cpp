@@ -233,7 +233,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     return result;
 }
 
-// FIXME: 98.51 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 98.51 %, missing/extra; behaviour near.
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -905,7 +905,7 @@ bool BgRewrite_804A7C98::fn_802A01F0(const JGeometry::TVec3f* pos, s32 player, s
 }
 
 // Register copies differ (the original keeps layer, cell and the spawned serial twice).
-// FIXME: 98.54 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 98.56 %, missing/extra; behaviour clean.
 u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32 layer, JGeometry::TVec3f* out) {
     u8 result = 0;
     if (pos->z < 19.0f) {
@@ -1189,7 +1189,7 @@ u8 BgRewrite_804A7C98::fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32
     return field_0x24 == 0x30;
 }
 
-// FIXME(shotgun): 95.54 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.35 %, regalloc-only; behaviour clean.
 // (the player-mask test: the original keeps the bool and compares it with 1)
 bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -1216,8 +1216,10 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 if (slot != -1) {
                     getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
                 }
-                JGeometry::TVec3f left(pos->x - 16.0f, pos->y, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&left, 0, layer, 0x19E);
+                playerPos.x = pos->x - 16.0f;
+                playerPos.y = pos->y;
+                playerPos.z = 0.0f;
+                gBgRewrite_8053AC98->fn_802A3948(&playerPos, 0, layer, 0x19E);
             } else {
                 s32 cell = field_0x20;
                 getGameView_802D6A9C()->fn_802D782C(1);
@@ -1226,8 +1228,10 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 if (slot != -1) {
                     getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
                 }
-                JGeometry::TVec3f right(16.0f + pos->x, pos->y, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3948(&right, 0, layer, 0x19F);
+                playerPos.x = 16.0f + pos->x;
+                playerPos.y = pos->y;
+                playerPos.z = 0.0f;
+                gBgRewrite_8053AC98->fn_802A3948(&playerPos, 0, layer, 0x19F);
             }
             fn_80230FD0(player, 0x30007);
         } else {
@@ -1238,13 +1242,13 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
     return false;
 }
 
-// FIXME(shotgun): 97.41 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.12 %, missing/extra; behaviour clean.
 // 2 fewer insns (register copies of layer)
 bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
+    bool result = false;
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
-    bool result = false;
     if (field_0x24 == 0x19C || field_0x24 == 0x19D) {
         if (field_0x24 == 0x19D) {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x19F);
@@ -1449,7 +1453,28 @@ void BgRewrite_804A7C98::fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u
     }
 }
 
-// FIXME(shotgun): 91.90 %, missing/extra; behaviour clean.
+static inline void writeTileBlock(s32 layer, s32 row, const u16* tiles) {
+    for (int r = 0; r < 4; r++) {
+        s32 cell = row;
+        const u16* p = &tiles[r * 4];
+        for (int i = 0; i < 4; i++) {
+            u16 tile = p[i];
+            getGameView_802D6A9C()->fn_802D782C(1);
+            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
+            cell++;
+            if ((cell & 0xF) == 0) {
+                cell += 0xF0;
+            }
+        }
+        s32 next = row + 0x10;
+        if ((row & 0x100) != (next & 0x100)) {
+            next = row + 0x110;
+        }
+        row = next;
+    }
+}
+
+// FIXME(shotgun): 97.34 %, regalloc-only; behaviour clean.
 // regalloc (cell kept in other registers)
 void BgRewrite_804A7C98::fn_8029D8F0(const JGeometry::TVec3f* pos, s32 layer, s32 layerOffset, s32 pattern) {
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -1470,49 +1495,13 @@ void BgRewrite_804A7C98::fn_8029D8F0(const JGeometry::TVec3f* pos, s32 layer, s3
     }
     x -= 0x10;
     y -= 0x30;
-    s32 start = (x & 0x100) | ((y & 0x100) << 1) | (y & 0xF0) | ((x >> 4) & 0xF);
-    s32 layerPlus = layer + layerOffset;
-    s32 row = start;
-    for (int r = 0; r < 4; r++) {
-        s32 cell = row;
-        const u16* p = &lbl_8046C5A0[pattern][r * 4];
-        for (int i = 0; i < 4; i++) {
-            u16 tile = *p++;
-            getGameView_802D6A9C()->fn_802D782C(1);
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layerPlus, cell, tile);
-            cell++;
-            if ((cell & 0xF) == 0) {
-                cell += 0xF0;
-            }
-        }
-        s32 next = row + 0x10;
-        if ((row & 0x100) != (next & 0x100)) {
-            next = row + 0x110;
-        }
-        row = next;
-    }
+    s32 start = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xF0) | ((x >> 4) & 0xF);
+    writeTileBlock(layer + layerOffset, start, lbl_8046C5A0[pattern]);
     s32 row2 = start + 0x10;
     if ((start & 0x100) != (row2 & 0x100)) {
         row2 = start + 0x110;
     }
-    for (int r = 0; r < 4; r++) {
-        s32 cell = row2;
-        const u16* p = &lbl_8046C528[pattern][r * 4];
-        for (int i = 0; i < 4; i++) {
-            u16 tile = *p++;
-            getGameView_802D6A9C()->fn_802D782C(1);
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
-            cell++;
-            if ((cell & 0xF) == 0) {
-                cell += 0xF0;
-            }
-        }
-        s32 next = row2 + 0x10;
-        if ((row2 & 0x100) != (next & 0x100)) {
-            next = row2 + 0x110;
-        }
-        row2 = next;
-    }
+    writeTileBlock(layer, row2, lbl_8046C528[pattern]);
 }
 
 void BgRewrite_804A7C98::fn_8029D898(s32 value) {
