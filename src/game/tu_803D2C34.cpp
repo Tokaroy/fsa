@@ -186,8 +186,6 @@ void cls_804B0288::fn_803D5554() {
     lbl_80529DEC.field_0x243[0] = 0;
 }
 
-// FIXME(shotgun): 96.74 %, scheduling+regalloc; behaviour clean.
-// (one more saved register: the bounce step)
 void cls_804B0288::fn_803D521C() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x216f == 3) {
@@ -210,10 +208,12 @@ void cls_804B0288::fn_803D521C() {
         }
         f32 alpha;
         if (field_0x80 < 30) {
-            alpha = ((f32)(field_0x80 * field_0x80) / 900.0f) * (f32)field_0x28->field_0x28;
+            f32 ratio = (f32)(field_0x80 * field_0x80) / 900.0f;
+            alpha = ratio * (f32)field_0x28->field_0x28;
         } else {
             s32 d = field_0x80 - 30;
-            alpha = (1.0f - (f32)(d * d) / 900.0f) * (f32)field_0x28->field_0x28;
+            f32 ratio = 1.0f - (f32)(d * d) / 900.0f;
+            alpha = ratio * (f32)field_0x28->field_0x28;
         }
         field_0x28->mPane->setAlpha(alpha);
         mScreen->search('Paccur01')->setAlpha(alpha);
@@ -225,9 +225,9 @@ void cls_804B0288::fn_803D521C() {
             field_0x28->moveFromCentre_80402E08(field_0x1c[1]->field_0x8 - field_0x1c[0]->field_0x8, bounce);
             field_0x1c[0]->moveFromCentre_80402E08(0.0f, 0.0f);
             field_0x1c[1]->moveFromCentre_80402E08(0.0f, bounce);
-            if (0.0f == bounce && field_0x2171 != field_0x2170) {
-                field_0x2171 = field_0x2170;
-            }
+        }
+        if (0.0f == bounce && field_0x2171 != field_0x2170) {
+            field_0x2171 = field_0x2170;
         }
     }
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -283,8 +283,6 @@ void cls_804B0288::fn_803D5090() {
     }
 }
 
-// FIXME: 99.99 %, scheduling+regalloc; behaviour clean.
-// FIXME(shotgun): stack slots of the f32 locals b/c are swapped vs. original
 void cls_804B0288::fn_803D4DB0() {
     if (field_0x54 == field_0x50) {
         return;
@@ -312,7 +310,7 @@ void cls_804B0288::fn_803D4DB0() {
             msg = field_0x50;
             if (msg == 0x6F || msg == 0x72 || msg == 0x76 || msg == 0x7B || msg == 0x7D || msg == 0x82 || msg == 0x86 ||
                 msg == 0x87) {
-                f32 a, b, c, d;
+                f32 a, c, b, d;
                 fn_8037EB0C(&a, &b, &c, &d, &field_0x2170);
                 if (field_0x216f != 3) {
                     field_0x1c[0]->field_0x22 = 0;
@@ -388,7 +386,7 @@ void cls_804B0288::fn_803D49A4() {
     }
 }
 
-// FIXME(shotgun): 98.58 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 98.76 %, regalloc-only; behaviour clean.
 void cls_804B0288::fn_803D4770() {
     bool done1 = false;
     u8 done2 = 0;
@@ -430,7 +428,7 @@ void cls_804B0288::fn_803D4770() {
     if (field_0x84 > t10) {
         for (s32 i = 0; i < 8; i++) {
             done5 = field_0x2c[i]->fn_8040271C(t11, 2.0f, 1.0f);
-            field_0x2c[i]->fn_80402628(t11, field_0x2c[i]->field_0x28, 0);
+            field_0x2c[i]->fn_80402628(t11, 0, field_0x2c[i]->field_0x28);
         }
         fn_803D49A4();
     }
