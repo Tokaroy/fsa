@@ -309,7 +309,8 @@ void SmallKey_804A8CD8::update() {
                 field_0x248.set(field_0x244->mPos);
                 s32 otherLayer = field_0x244->field_0x4;
                 if (otherLayer < 8 && field_0x4 == 8) {
-                    JGeometry::TBox2f viewBox = *layerBox(otherLayer);
+                    JGeometry::TBox2f viewBox;
+                    viewBox = *layerBox(otherLayer);
                     field_0x248.x = field_0x244->mPos.x - viewBox.i.x;
                     field_0x248.y = field_0x244->mPos.y - viewBox.i.y;
                 }
