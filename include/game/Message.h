@@ -495,6 +495,8 @@ public:
     /* 0x124 */ JGeometry::TVec3f field_0x124[4];
     // The message font (new JUTResFont(res, NULL)); read by 20 units.
     /* 0x154 */ JUTResFont* mFont;
+
+    JUTResFont* getFont() const { return mFont; }
 }; // Size: 0x158
 
 extern MessageManager_804AF070* lbl_8053AD78;

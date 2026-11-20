@@ -62,15 +62,16 @@ cls_804B16A8::cls_804B16A8() {
     field_0x34 = new PaneCtrl_804AF86C;
     field_0x34->setPane_80402F04(mScreen->search('Ptopbb07'));
     field_0x38 = lbl_8053AED8->field_0x8;
-    lbl_8053AED8->fn_80440D78((const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti"));
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    ((J2DTextBox*)mScreen->search('Ta02'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Tq02'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Ta01'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)mScreen->search('Tq01'))->setFont(lbl_8053AD78->mFont);
+    ((J2DTextBox*)mScreen->search('Ta02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Tq02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Ta01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)mScreen->search('Tq01'))->setFont(lbl_8053AD78->getFont());
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        ((J2DTextBox*)mScreen->search('Ta03'))->setFont(lbl_8053AD78->mFont);
-        ((J2DTextBox*)mScreen->search('Tq03'))->setFont(lbl_8053AD78->mFont);
+        ((J2DTextBox*)mScreen->search('Ta03'))->setFont(lbl_8053AD78->getFont());
+        ((J2DTextBox*)mScreen->search('Tq03'))->setFont(lbl_8053AD78->getFont());
     }
     field_0x62 = (s32)mScreen->search('Par01')->getRotate();
     field_0x64 = (s32)mScreen->search('Par02')->getRotate();
