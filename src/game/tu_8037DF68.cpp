@@ -382,15 +382,16 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         }
         if (sync) {
             if (lbl_8053AD78->fn_80389964(window, msg, flags) && lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags)) {
-            return true;
+                return true;
+            }
+        } else {
+            if (canOpen(window)) {
+                return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
+            }
+            return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
         }
         return false;
     }
-        if (canOpen(window)) {
-            return lbl_8053AD78->fn_80389F78(window, player, msg, pos, flags);
-        }
-        return lbl_8053AD78->fn_8038B8A8(window, player, msg, flags);
-}
 
 bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 flags) {
     if (fn_8037F1E4(player) == 0 && !fn_80303750(player) && fn_8022C8EC(player)) {
