@@ -2390,9 +2390,8 @@ void cls_804B0B00::fn_803E4940() {
 }
 
 // FIXME: 99.81 %, operands; behaviour clean.
-// Stack slots and float registers only: the original converts
-// both blink branches' ints in the 0x8 slot, ours the first branch's in 0x10
-// (and f30 / f31 swap for the bounce offset and pane x).
+// Stack slots only: the original converts
+// both blink branches' ints in the 0x8 slot, ours the second branch's in 0x10.
 // Draws states 12 and 13 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1e0[i] (60 frames), the
 // joined ones' 'Paccur' panes with it; outside state 12 the 'Paccur02'
@@ -2416,9 +2415,10 @@ void cls_804B0B00::fn_803E4650() {
             }
         }
         if (field_0x1d4 != 12) {
+            f32 x;
             s32 bounce = field_0x254[i] < 5 ? field_0x254[i] : 10 - field_0x254[i];
             f32 offset = 5.0f * (f32)(bounce * bounce) / 25.0f;
-            f32 x = field_0x10->search(lbl_80478350[i])->getBounds()->i.x;
+            x = field_0x10->search(lbl_80478350[i])->getBounds()->i.x;
             field_0x10->search(lbl_80478350[i])->move(x, field_0x1b0 + offset);
             if (field_0x1c0[i] >= 3) {
                 field_0x68[i]->moveFromCentre_80402E08(0.0f, offset);
