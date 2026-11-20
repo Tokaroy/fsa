@@ -80,9 +80,9 @@ ForceLike_8049C578::~ForceLike_8049C578() {
 
 // FIXME(shotgun): 97.59 %, missing/extra + reloc-name; behaviour drift.
 void ForceLike_8049C578::update() {
+    f32 dist = 0.0f;
     u16 angle = 0;
     s32 dir = 0;
-    f32 dist = 0.0f;
     s32 player = -1;
     fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     field_0x24c++;
@@ -109,8 +109,10 @@ void ForceLike_8049C578::update() {
             }
         }
         mPos.add(field_0x3c);
-        if (--field_0x240 <= 0) {
-            field_0x235 = (field_0x235 + 1) & 3;
+        field_0x240--;
+        if (field_0x240 <= 0) {
+            field_0x235++;
+            field_0x235 &= 3;
             if (field_0x235 == 0) {
                 field_0x240 = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
             } else {
@@ -137,8 +139,8 @@ void ForceLike_8049C578::update() {
         stepFrame(this);
         if (player != -1 && dist < 80.0f && !fn_8022DCD8(player)) {
             field_0x23e = angle;
-            f32 dx = std::fabsf(mPos.x - getPlayerPos_8023E724(player)->x);
-            f32 dy = std::fabsf(mPos.y - getPlayerPos_8023E724(player)->y);
+            f32 dx = JGeometry::TUtil<f32>::abs(mPos.x - getPlayerPos_8023E724(player)->x);
+            f32 dy = JGeometry::TUtil<f32>::abs(mPos.y - getPlayerPos_8023E724(player)->y);
             if (dx < 8.0f && dy < 8.0f && fn_8022DE10(player, 1) == 1) {
                 field_0x230 = 2;
                 field_0x238 = player;
@@ -147,31 +149,30 @@ void ForceLike_8049C578::update() {
                 field_0x240 = 0;
                 field_0x235 = 0;
             }
-        }
-        f32 distSq;
-        s32 serial = getActorManager_801F856C()->fn_801F778C('RUPY', &mPos, &distSq);
-        if (serial != -1) {
-            ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            f32 tx = target->mPos.x;
-            f32 ty = target->mPos.y;
-            field_0x23e = (s32)(JMath::atanTable_.atan2_(tx - mPos.x, ty - mPos.y) * 10430.378f);
-            if (distSq < 25.0f) {
-                target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                s32 idx = -1;
-                if (target->field_0x94 == 0 || target->field_0x94 == 3) {
-                    idx = target->field_0x90 & 0xFF;
-                }
-                if (idx != -1) {
-                    field_0x244 += lbl_8049C558[idx];
-                    target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                    s32 st = static_cast<ForceGem_804AB6D8*>(target)->field_0x230;
-                    if (st == 0 || (u32)(st - 0xF) <= 1 || (u32)(st - 1) <= 1 || st == 9 || st == 0xD) {
-                        target->fn_801F3668();
+        } else {
+            f32 distSq;
+            s32 serial = getActorManager_801F856C()->fn_801F778C('RUPY', &mPos, &distSq);
+            if (serial != -1) {
+                JGeometry::TVec3f pos = getActorManager_801F856C()->findActorBySerial_801F666C(serial)->mPos;
+                field_0x23e = (s32)(10430.378f * JMath::atanTable_.atan2_(pos.x - mPos.x, pos.y - mPos.y));
+                if (distSq < 25.0f) {
+                    ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                    s32 idx = -1;
+                    if (target->field_0x94 == 0 || target->field_0x94 == 3) {
+                        idx = target->field_0x90 & 0xFF;
+                    }
+                    if (idx != -1) {
+                        field_0x244 += lbl_8049C558[idx];
+                        target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+                        s32 st = static_cast<ForceGem_804AB6D8*>(target)->field_0x230;
+                        if (st == 0 || (u32)(st - 0xF) <= 1 || (u32)(st - 1) <= 1 || st == 9 || st == 0xD) {
+                            target->fn_801F3668();
+                        }
                     }
                 }
+            } else if ((field_0x24c & 0xF) == 0) {
+                field_0x23e = (field_0x23e + (s32)(32768.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1())) - 0x4000;
             }
-        } else if ((field_0x24c & 0xF) == 0) {
-            field_0x23e = (s32)(32768.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + field_0x23e - 0x4000;
         }
         mPos.x += 0.3f * JMath::sincosTable_.sinShort(field_0x23e);
         mPos.y += 0.3f * JMath::sincosTable_.cosShort(field_0x23e);
@@ -208,7 +209,9 @@ void ForceLike_8049C578::update() {
         if (!fn_8022DCD8(field_0x238)) {
             field_0x230 = 3;
             field_0x240 = 0;
-            JGeometry::TVec2f p(mPos.x, mPos.y);
+            JGeometry::TVec2f p;
+            p.x = mPos.x;
+            p.y = mPos.y;
             fn_80238548(field_0x238, 0, &p, 1);
         }
         if (player != -1) {
@@ -230,8 +233,8 @@ void ForceLike_8049C578::update() {
                 getActorManager_801F856C()->spawnActor_801F9484('GOLD', field_0x4, &mPos, 5, -1, -1);
             }
         }
-        field_0x260 = 0.0f;
         field_0x264 = 0.0f;
+        field_0x260 = 0.0f;
         if (fn_8022C5EC(field_0x238, 8)) {
             field_0x264 = -5.0f;
         } else if (fn_8022C5EC(field_0x238, 4)) {
