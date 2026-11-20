@@ -313,8 +313,7 @@ void GiantBomb_804AC588::update() {
     }
 }
 
-// FIXME: 98.74 %, missing/extra; behaviour clean.
-// Two extra `mr` around the getResource results and the float registers of the matrix scale (scheduling).
+// Float register allocation in setRotScaleMtx and scaleY/scaleZ load order.
 void GiantBomb_804AC588::draw() {
     if (mState == 2 || mState == 7) {
         return;
@@ -362,11 +361,9 @@ void GiantBomb_804AC588::draw() {
         params.field_0x14.r = 150;
     }
     if (mState == 6 && count < 10) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big_a.bti");
-        vfunc_0x54(res, &params, flags, 0.0f, f27 - 10.0f, 0.0f);
+        vfunc_0x54(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big_a.bti"), &params, flags, 0.0f, f27 - 10.0f, 0.0f);
     } else {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big.bti");
-        vfunc_0x54(res, &params, flags, 0.0f, f27 - 10.0f, 0.0f);
+        vfunc_0x54(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big.bti"), &params, flags, 0.0f, f27 - 10.0f, 0.0f);
     }
     mPos = savedPos;
     if (mState == 6 && count < 10) {
