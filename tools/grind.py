@@ -86,6 +86,7 @@ INTEG = WT / "g2"
 LOGS = WT / "g2-logs"
 BRANCH = "grind2"
 HALT = LOGS / "HALT"  # workers finish their session and exit (the watchdog sets it; or touch it by hand)
+HALT_GEMINI = LOGS / "HALT-gemini"  # Gemini quota reached: only Gemini workers pause (30 min), then retry
 TIERS = {"haiku": ("claude-haiku-5-5", "Claude Haiku 5.5"),
          "sonnet": ("claude-sonnet-5-5", "Claude Sonnet 5.5"),
          "opus": ("claude-opus-5-5", "Claude Opus 5.5"),
@@ -339,7 +340,13 @@ def _build_queue(cache, force):
 LIBRARY = re.compile(r"^(JAS|JKR|JGeometry|JUtility|JMath|JGadget|J2D|J3D|JPA|JAI|JSU|JUT|JMessage|std)\w*(::|<)")
 
 
-ANY_TIER = False  # --any-tier (experiments): a worker takes functions whatever tier they are at
+ANY_TIER = False  # --any-tier: a worker takes functions whatever tier they are at
+TRIED = set()  # with --any-tier: (unit, fn) this worker's tier already had a session on (never twice)
+
+
+def tried(tier):
+    return {(d["unit"], d["fn"]) for d in (dict(zip(COLS, r)) for r in ledger_rows() if len(r) >= len(COLS))
+            if d["tier"] == tier and d["fn"] not in ("-", "")}
 
 
 def eligible(fns, unit, tier, lanes, lo, hi, hist):
@@ -348,7 +355,7 @@ def eligible(fns, unit, tier, lanes, lo, hi, hist):
         lane = lane_of(e)
         if lane == "write" and LIBRARY.match(e.get("demangled", "")):
             continue
-        if lane in lanes and lo <= e["size"] <= hi and (ANY_TIER or tier_index(e["size"], hist.get((unit, n), []), lane) == ORDER.index(canon(tier))):
+        if lane in lanes and lo <= e["size"] <= hi and ((ANY_TIER and (unit, n) not in TRIED) or tier_index(e["size"], hist.get((unit, n), []), lane) == ORDER.index(canon(tier))):
             out.append((LANES.index(lane), e["size"], n))
     return [n for _, _, n in sorted(out)]
 
@@ -1075,8 +1082,8 @@ def run_gemini(wt, tier, system, packet, timeout, tag):
     if res.get("status") not in (None, "SUCCESS") or not res:
         blob = (out + err).lower()
         if any(k in blob for k in ("quota", "resource_exhausted", "rate limit", "resets in", "exhausted")):
-            HALT.touch()
-            notify("FSA grind: Gemini quota", f"{tier}: quota reached, workers stopping")
+            HALT_GEMINI.touch()
+            notify("FSA grind: Gemini quota", f"{tier}: quota reached, Gemini workers pause 30 min")
     u = res.get("usage") or {}
     d = LOGS / "sessions"
     d.mkdir(parents=True, exist_ok=True)
@@ -1459,6 +1466,12 @@ def cmd_worker(args):
             with open(LOGS / "merge.lock", "a") as lock:  # tools changed: run the new code from this unit on
                 fcntl.flock(lock, fcntl.LOCK_SH)
                 os.execv(sys.executable, [sys.executable] + sys.argv)
+        if tier in GEMINI and HALT_GEMINI.exists():  # Gemini quota: wait it out, Claude workers go on
+            if time.time() - HALT_GEMINI.stat().st_mtime > 1800:
+                HALT_GEMINI.unlink(missing_ok=True)
+            else:
+                time.sleep(300)
+            continue
         if args.usage_stop and done and done % 10 == 0:
             u = usage()
             if u is not None and u >= args.usage_stop:
@@ -1466,6 +1479,9 @@ def cmd_worker(args):
                 notify("FSA grind stopping", f"{owner}: weekly usage {u:.0%}")
                 return
         q, hist = build_queue(), history()
+        if ANY_TIER:
+            TRIED.clear()
+            TRIED.update(tried(tier))
         pool = []
         for unit, fns in q.items():
             if unit in skip or (args.unit and unit != args.unit):
