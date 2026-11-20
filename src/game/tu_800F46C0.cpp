@@ -593,6 +593,7 @@ void BoulderSpawner_8049C46C::init() {
 
 // FIXME(shotgun): 97.47 %, missing/extra; behaviour near.
 void BoulderSpawner_8049C46C::update() {
+    JGeometry::TVec3f pos;
     if (field_0x234 == 0) {
         switch (field_0x230) {
         case 0:
@@ -606,11 +607,11 @@ void BoulderSpawner_8049C46C::update() {
             if ((field_0x90 & 0xF8000000) != 0 && !vfunc_0x34()) {
                 return;
             }
-            JGeometry::TVec3f pos = mPos;
+            pos = mPos;
             pos.z += 200.0f;
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OIWA, field_0x4, &pos, 1, -1, -1);
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            actor->field_0x3c.set(0.0f, -0.01f, 0.0f);
+            actor->field_0x3c = JGeometry::TVec3f(0.0f, -0.01f, 0.0f);
             field_0x234 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x96;
             break;
         }
@@ -626,10 +627,8 @@ void BoulderSpawner_8049C46C::update() {
             if ((field_0x90 & 0xF8000000) != 0 && !vfunc_0x34()) {
                 return;
             }
-            JGeometry::TVec3f pos;
-            pos.x = mPos.x;
-            pos.y = mPos.y;
-            pos.z = mPos.z + 200.0f;
+            pos.set(mPos);
+            pos.z += 200.0f;
             pos.x += (f32)(40 - (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
             pos.y += (f32)(20 - (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OIWA, field_0x4, &pos, 5, -1, -1);
