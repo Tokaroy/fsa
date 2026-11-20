@@ -162,7 +162,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 95.68 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.90 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
@@ -309,7 +309,8 @@ void SmallKey_804A8CD8::update() {
                 field_0x248.set(field_0x244->mPos);
                 s32 otherLayer = field_0x244->field_0x4;
                 if (otherLayer < 8 && field_0x4 == 8) {
-                    JGeometry::TBox2f viewBox = *layerBox(otherLayer);
+                    JGeometry::TBox2f viewBox;
+                    viewBox = *layerBox(otherLayer);
                     field_0x248.x = field_0x244->mPos.x - viewBox.i.x;
                     field_0x248.y = field_0x244->mPos.y - viewBox.i.y;
                 }
@@ -1429,15 +1430,18 @@ void SmallKey_804A8CD8::fn_802C1778() {
     }
 }
 
-// FIXME(shotgun): 83.45 %, different; behaviour clean.
+// FIXME(shotgun): 88.55 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C1674() {
-    if (field_0x240 == 4 && field_0xc4 == 0 && field_0x2af != 0 && field_0x2a8 != 0xFFFF) {
+    if (!(field_0x240 == 4 && field_0xc4 == 0 && field_0x2af != 0)) {
+        return;
+    }
+    if (field_0x2a8 != 0xFFFF) {
+        u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
+                    (field_0x2a8 << 8) | (field_0x4 & 0xFF);
         JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
         JGeometry::TVec2f b(mPos.x, mPos.y);
-        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                    (field_0x2a8 << 8) | (field_0x4 & 0xFF);
         s32 layer = field_0x238;
-        getGameView_802D6A9C()->fn_802D6D70(a, b, value, layer);
+        getGameView_802D6A9C()->fn_802D6D70(b, a, value, layer);
         field_0x2a8 = 0xFFFF;
         field_0x2af = 0;
     }
