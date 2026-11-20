@@ -720,7 +720,6 @@ void cls_8049C718::fn_800FB32C() {
     }
 }
 
-// FIXME(shotgun): 99.71 %, regalloc-only; behaviour clean.
 void cls_8049C718::fn_800FB070() {
     field_0x3c.z -= 0.3f;
     mPos.add(field_0x3c);
@@ -737,8 +736,11 @@ void cls_8049C718::fn_800FB070() {
         field_0xb0 = 4;
     }
     f32 scale = mScale;
-    mBox.set(-26.0f * scale, -50.0f * scale, 26.0f * scale, 0.0f);
-    field_0x80.set(-26.0f * scale, -50.0f * scale, 26.0f * scale, 0.0f);
+    f32 x0 = -26.0f * scale;
+    f32 y0 = -50.0f * scale;
+    f32 x1 = 26.0f * scale;
+    mBox.set(x0, y0, x1, 0.0f);
+    field_0x80.set(x0, y0, x1, 0.0f);
     if (mWobble != 0) {
         mWobble += 0x2000;
         if (mWobble > 0x10000) {
@@ -1455,31 +1457,30 @@ void StoneArrghusChildPuff_8049C678::draw() {
     }
 }
 
-// Moves one axis of `cur` toward `target` by `step`; true once it got there.
-static inline bool stepAxis(f32& cur, f32 target, f32 step) {
+// Moves one axis of `cur` toward `target` by `step`; returns 1 once it got there.
+static inline s32 stepAxis(f32& cur, f32 target, f32 step) {
     cur = cut4(cur);
     target = cut4(target);
     if (cur > target) {
         cur -= step;
         if (cur <= target) {
             cur = target;
-            return true;
+            return 1;
         }
     } else {
         cur += step;
         if (cur >= target) {
             cur = target;
-            return true;
+            return 1;
         }
     }
-    return false;
+    return 0;
 }
 
-// FIXME: 99.87 %, regalloc-only; behaviour clean.
 s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step) {
     u8 arrived = stepAxis(cur->x, target->x, step);
-    arrived = arrived + stepAxis(cur->y, target->y, step);
-    arrived = arrived + stepAxis(cur->z, target->z, step);
+    arrived += stepAxis(cur->y, target->y, step);
+    arrived += stepAxis(cur->z, target->z, step);
     return arrived == 3;
 }
 
