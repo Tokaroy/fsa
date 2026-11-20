@@ -414,7 +414,6 @@ s32 EnemyBase_804A4808::fn_801D0020(const JGeometry::TVec3f* pos, s32 player, bo
 }
 
 // FIXME: 99.60 %, regalloc-only; behaviour clean.
-// regalloc only (the layer and the loop counters).
 // Whether a step of `dist` in direction `dir` is blocked: field_0x80's box,
 // moved half the step that way and stretched to the step's length along
 // it, must lie inside the view's box for the layer, and the map
@@ -454,6 +453,10 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     box.f.x += pos.x;
     box.i.y += screenY;
     box.f.y += screenY;
+    s32 rows;
+    s32 columns;
+    s32 row;
+    s32 column;
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -472,10 +475,8 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
         return true;
     }
     JGeometry::TVec3f point(box.i.x, box.i.y, 0.0f);
-    s32 column;
-    s32 row;
-    s32 columns = (s32)(0.125f * width) + 2;
-    s32 rows = (s32)(0.125f * height) + 2;
+    columns = (s32)(0.125f * width) + 2;
+    rows = (s32)(0.125f * height) + 2;
     for (row = 0; row < rows; row++) {
         point.x = box.i.x;
         if (row == rows - 1) {
@@ -954,6 +955,10 @@ void EnemyBase_804A4808::vfunc_0x9C(u8 mapHit) {
 // Ours adds one frsp after the fsel.
 // The screen position of the actor, raised to the top of the view box.
 void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
+    s32 rows;
+    s32 columns;
+    s32 row;
+    s32 column;
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
