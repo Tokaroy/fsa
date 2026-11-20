@@ -87,8 +87,8 @@ cls_804AE088::~cls_804AE088() {
 
 void (cls_804AE088::*lbl_804AE070[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
 
-static const s16 lbl_80542C48[2] = {9, -1};
-static const s16 lbl_80542C50[2] = {9, -1};
+static const s16 lbl_80542C48[4] = {0, 9, -1, -1};
+static const s16 lbl_80542C50[4] = {0, 9, -1, -1};
 static const s16* lbl_8053A1C0[2] = {lbl_80542C48, lbl_80542C50};
 
 const char* lbl_8053A1C8 = "kk_black.bti";
@@ -915,6 +915,9 @@ void cls_804AE088::fn_80369DDC() {
     }
 }
 
+static void spawnCenterLightEmitter(cls_804AE088* self);
+static void spawnPillarBurstEmitters(cls_804AE088* self, s32 i);
+
 // FIXME: 96.67 %, different + reloc-name; behaviour near.
 void cls_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
@@ -957,7 +960,7 @@ void cls_804AE088::fn_80368CD8() {
         }
     }
     if (field_0x240 <= 0x18 && fn_8016A3AC()->field_0x1ef == 0 && field_0x398 == NULL) {
-        field_0x398 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
+        spawnCenterLightEmitter(this);
     }
     JGeometry::TVec3f pos;
     if (field_0x240 >= 0x15 && field_0x240 != 0x26) {
@@ -1155,11 +1158,7 @@ void cls_804AE088::fn_80368CD8() {
             for (s32 i = 0; i < 6; i++) {
                 if (field_0x258 == lbl_80474D94[i]) {
                     field_0x2f8[i] = 1;
-                    JGeometry::TVec3f p = field_0x2a8[i];
-                    p.z += 6.0f;
-                    spawnEmitter_8013CC50(field_0x4, &p, lbl_80474E1C[i], 0, 0, NULL, NULL, true, 1.0f);
-                    p.z += 7.0f;
-                    spawnEmitter_8013CC50(field_0x4, &p, lbl_80474E28[i], 0, 0, NULL, NULL, true, 1.0f);
+                    spawnPillarBurstEmitters(this, i);
                     startSound_801F0E34(0x400D9, 0);
                     field_0x2a8[i].z = 16.0f;
                 } else if (field_0x258 == lbl_80474D94[i] - 0x28) {
@@ -1407,4 +1406,18 @@ void cls_804AE088::fn_80368198() {
             fn_8011921C()->fn_801183BC();
         }
     }
+}
+
+// Inlined helpers dead-stripped by the linker; their float literals (1.0f, 6.0f, 7.0f)
+// appear at the start of .sdata2 before fn_80368198's literals.
+static void spawnPillarBurstEmitters(cls_804AE088* self, s32 i) {
+    JGeometry::TVec3f p = self->field_0x2a8[i];
+    p.z += 6.0f;
+    spawnEmitter_8013CC50(self->field_0x4, &p, lbl_80474E1C[i], 0, 0, NULL, NULL, true, 1.0f);
+    p.z += 7.0f;
+    spawnEmitter_8013CC50(self->field_0x4, &p, lbl_80474E28[i], 0, 0, NULL, NULL, true, 1.0f);
+}
+
+static void spawnCenterLightEmitter(cls_804AE088* self) {
+    self->field_0x398 = spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x54C, 0, 1, NULL, NULL, true, 1.0f);
 }
