@@ -327,7 +327,6 @@ void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     out->set(view->mVisibleBox.i.x + dx, view->mVisibleBox.i.y + dy, in->z);
 }
 
-// FIXME(shotgun): 98.14 %, missing/extra; behaviour clean.
 bool fn_801CCFE4(s32 player) {
     bool result = false;
     if (fn_8023F264(player)) {
@@ -557,7 +556,6 @@ f32 tileCenter(f32 v) {
     return 8.0f + (u32)((s32)v & ~0xF);
 }
 
-// FIXME(shotgun): 95.47 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
     s32 serial;
     bool found = false;
@@ -580,7 +578,6 @@ bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
     return found;
 }
 
-// FIXME(shotgun): 96.22 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     s32 serial;
     bool found = false;
@@ -609,7 +606,6 @@ bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     return found;
 }
 
-// FIXME(shotgun): 96.22 %, scheduling+regalloc; behaviour clean.
 bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     s32 serial;
     bool found = false;
