@@ -203,7 +203,6 @@ void cls_8049E770::fn_8012C334() {
     fn_8012A5EC();
 }
 
-// FIXME(shotgun): 95.21 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C170() {
     if (field_0x250 == 1) {
         fn_80119DD0()->fn_80119468(0, 0);
@@ -240,7 +239,6 @@ void cls_8049E770::fn_8012C170() {
     }
 }
 
-// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C030() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
@@ -317,7 +315,7 @@ void cls_8049E770::fn_8012BC40() {
     }
 }
 
-// FIXME(shotgun): 97.96 %, different + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.79 %, operands; behaviour drift.
 void cls_8049E770::fn_8012B218() {
     static JGeometry::TVec3f lbl_804BD7C0[4] = {
         JGeometry::TVec3f(-113.0f, 382.0f, 50.0f),
@@ -465,7 +463,6 @@ void cls_8049E770::fn_8012B218() {
     }
 }
 
-// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012B0D8() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
@@ -497,7 +494,7 @@ void cls_8049E770::fn_8012B02C() {
     }
 }
 
-// FIXME(shotgun): 95.64 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.13 %, different; behaviour clean.
 void cls_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
