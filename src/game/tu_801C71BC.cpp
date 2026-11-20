@@ -496,8 +496,8 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
     s32 count = mPathCount;
     if (count == 2) {
         f32 dx = field_0x32c.x - mPos.x;
-        f32 r = 0.001f + lbl_8053EDF0;
         f32 dy = field_0x32c.y - mPos.y;
+        f32 r = 0.001f + lbl_8053EDF0;
         if (square(dx) + square(dy) <= r * r) {
             s32 idx1 = 1;
             if (count <= 1) {
@@ -531,7 +531,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
             } else {
                 blocked = true;
             }
-            if (field_0x4 == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
+            if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(0xFF) &&
                 !field_0x358.fn_80214244()->fn_800FD548(0xFF)) {
                 JGeometry::TVec3f p2;
                 fn_800FE294(&p2, field_0x358.fn_80214244(), 0xFF);
@@ -541,9 +541,7 @@ u8 ShadowLink2_804A43E8::fn_801C7BD0() {
                     field_0x32c.y = copy2.y;
                     field_0x32c.z = copy2.z;
                 } else {
-                    field_0x32c.x = copy2.x;
-                    field_0x32c.y = mPos.y;
-                    field_0x32c.z = copy2.z;
+                    field_0x32c.set(copy2.x, mPos.y, copy2.z);
                 }
             }
         }
