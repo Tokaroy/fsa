@@ -58,9 +58,11 @@ static inline void setScaleMtx(Mtx m, f32 s) {
 
 // FIXME(shotgun): 92.81 %, different; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
+    s32 spawned;
+    s32 i;
+    s32 gone;
     if (field_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
-        s32 gone = 0;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0, gone = 0; i < 4; i++) {
             s32 serial = field_0x2c0[i];
             if (serial < 0) {
                 gone++;
@@ -79,9 +81,9 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
             field_0x260 = 900;
         }
         if (field_0x260 == 0 && gone == 4) {
-            if (field_0x4 == getPlayerLayer_8023DE58(0)) {
-                s32 spawned = 0;
-                for (s32 i = 0; i < 4; i++) {
+            s32 layer = field_0x4;
+            if (layer == getPlayerLayer_8023DE58(0)) {
+                for (i = 0, spawned = 0; i < 4; i++) {
                     field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', field_0x4, &mPos, 4, -1, -1);
                     s32 serial = field_0x2c0[i];
                     if (serial >= 0) {
