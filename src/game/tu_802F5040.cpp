@@ -1048,7 +1048,7 @@ void TileMap_804AA858::fn_802FC80C() {
     }
 }
 
-// FIXME: 90.32 %, different; behaviour near.
+// FIXME: 94.86 %, missing/extra; behaviour near.
 // Structurally close (2 instructions more): the original builds
 // the four vertex indices as a chain of u16 truncations (clrlwi after +1, +65,
 // -1; ours folds them into offsets from one clrlwi), keeps the draw loop's
@@ -3134,7 +3134,7 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 88.96 %, missing/extra; behaviour near.
+// FIXME: 96.23 %, different; behaviour near.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
