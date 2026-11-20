@@ -254,13 +254,13 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
         }
     }
     mPos.set(field_0x2b0[0].x, field_0x2b0[0].y, 0.0f);
-    f32 x2;
     f32 x0 = field_0x2b0[0].x;
     f32 y2 = field_0x2b0[0].y;
     f32 x1 = field_0x2b0[1].x;
     f32 y1 = field_0x2b0[1].y;
+    f32 x2;
     f32 y3;
-    if (mCount - 2 == 0) {
+    if (mCount == 2) {
         x2 = x1;
         y3 = y1;
     } else {
@@ -269,10 +269,7 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
     }
     f32 ry = fn_801CD6D8(y2, y2, y1, y3, 0.0625f);
     f32 rx = fn_801CD6D8(x0, x0, x1, x2, 0.0625f);
-    // differs: the original keeps mPos.x - rx in f0 and moves it to f1 (one fmr more)
-    f32 rad = JMath::atanTable_.atan2_(mPos.x - rx, mPos.y - ry);
-    rad *= 10430.378f;
-    field_0x3bc = (s32)rad;
+    field_0x3bc = (s32)(JMath::atanTable_.atan2_(mPos.x - rx, mPos.y - ry) * 10430.378f);
     JGeometry::TVec2f off;
     fn_801E9C00(field_0x3bc, &off);
     mBox.i.x += off.x;
