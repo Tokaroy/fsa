@@ -10,6 +10,7 @@
 #include "game/ActorManager.h"
 #include "game/Map.h"
 #include "game/Message.h"
+#include "std/math.h"
 
 static const s32 lbl_80471760[9] = {5, 10, 15, 20, 25, 30, 35, 40, 45};
 
@@ -59,8 +60,6 @@ CrystalBall_804AB308::~CrystalBall_804AB308() {
     releaseEmitter_801EE434(field_0x2c8);
 }
 
-// FIXME(shotgun): 98.77 %, missing/extra; behaviour drift.
-// one instruction
 void CrystalBall_804AB308::init() {
     field_0x94 = field_0x90 & 0xF;
     field_0x284 = (field_0x90 >> 8) & 0xF;
@@ -111,7 +110,7 @@ void CrystalBall_804AB308::init() {
     mBox2.f.y = 8.0f;
     field_0x2a8 = 0;
     field_0x2ac = 0;
-    field_0x2b8.set(0.0f, 0.0f, 0.0f);
+    field_0x2b8.zero();
     field_0x2a0 = -1;
     switch (field_0x94) {
     case 0:
@@ -122,7 +121,7 @@ void CrystalBall_804AB308::init() {
         break;
     case 1:
         field_0xb0 = 0;
-        if (fn_8022F9E4(field_0x23c, mSerial, false, false)) {
+        if (fn_8022F9E4(field_0x23c, mSerial, false, false) == 1) {
             fn_80322F44();
         } else {
             field_0x230 = 1;
@@ -132,7 +131,7 @@ void CrystalBall_804AB308::init() {
         field_0xb0 = 0;
         field_0x294 = 2;
         field_0x264 = 2;
-        if (fn_8022F9E4(field_0x23c, mSerial, false, false)) {
+        if (fn_8022F9E4(field_0x23c, mSerial, false, false) == 1) {
             field_0x230 = 4;
         } else {
             field_0x230 = 3;
@@ -324,8 +323,6 @@ void CrystalBall_804AB308::fn_80322BC4() {
     field_0x230 = 4;
 }
 
-// FIXME(shotgun): 98.68 %, missing/extra; behaviour near.
-// the switch over rank is laid out differently
 void CrystalBall_804AB308::fn_80322964() {
     mBox.i.x = -6.0f;
     mBox.i.y = -6.0f;
@@ -338,8 +335,8 @@ void CrystalBall_804AB308::fn_80322964() {
         for (s32 i = 0; i < 4; i++) {
             if (mask & bit) {
                 JGeometry::TVec3f pp = *getPlayerPos_8023E724(i);
-                s32 dx = (s32)__fabs(mPos.x - pp.x);
-                s32 dy = (s32)__fabs(mPos.y - pp.y);
+                s32 dx = (s32)std::fabsf(mPos.x - pp.x);
+                s32 dy = (s32)std::fabsf(mPos.y - pp.y);
                 s32 dir = fn_80230CFC(i);
                 if ((dx >= 0 && dx <= 15 && dir == 0) || dir == 1) {
                     if (mPos.x > pp.x) {
@@ -415,12 +412,15 @@ void CrystalBall_804AB308::fn_803226EC() {
     }
 }
 
-// FIXME(shotgun): 82.75 %, missing/extra; behaviour drift.
-// the code comparison chain and the doubled fn_80226850 test are laid out differently
+// FIXME(shotgun): 99.04 %, scheduling+regalloc; behaviour clean.
+// layer and pos sit in each other's saved register (r30/r28)
 bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+    u16 effectA;
+    u16 effectB;
     s32 code = fn_8022461C(pos, layer);
-    s32 tile = fn_80226850(pos, layer);
-    if ((u32)(code - 0x10) <= 6 || code == 0x17) {
+    fn_80226850(pos, layer);
+    if (code == 0x10 || code == 0x11 || code == 0x12 || code == 0x13 || code == 0x14 || code == 0x15 ||
+        code == 0x16 || code == 0x17) {
         field_0x274 = 1;
         return false;
     }
@@ -436,8 +436,6 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     if (code == 0xE && !field_0x2ac) {
         if (mPos.z < 0.1f) {
-            u16 effectA;
-            u16 effectB;
             if (fn_802DEB58()) {
                 effectA = 0x45E;
                 effectB = 0x45F;
@@ -471,38 +469,36 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         }
         return false;
     }
-    if (code == 0 || code == 3 || code == 0xE || code == 0xD || code == 0x3B || code == 4 || code == 5 ||
-        code == 6 || code == 7 || code == 2 || code == 0x50 || code == 0xC || code == 0x27 || code == 0x28 ||
-        code == 0x29 || code == 0x2A || code == 0x2B || code == 0x2C || code == 0x2D || code == 0x2E ||
-        code == 0x2F || code == 0x20 || code == 0x39 || code == 0x3A || code == 0x4C || code == 0x4D ||
-        code == 0x4E || code == 0x4F) {
-        return false;
-    }
-    if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
-        field_0x274 = 0;
-        return false;
-    }
-    if (code == 0x25) {
-        if (field_0x274 == 0 && !getGameView_802D6A9C()->field_0x171) {
+    if (code != 0 && code != 3 && code != 0xE && code != 0xD && code != 0x3B && code != 4 && code != 5 &&
+        code != 6 && code != 7 && code != 2 && code != 0x50 && code != 0xC && code != 0x27 && code != 0x28 &&
+        code != 0x29 && code != 0x2A && code != 0x2B && code != 0x2C && code != 0x2D && code != 0x2E &&
+        code != 0x2F && code != 0x20 && code != 0x39 && code != 0x3A && code != 0x4C && code != 0x4D &&
+        code != 0x4E && code != 0x4F) {
+        if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+            field_0x274 = 0;
+            return false;
+        }
+        if (code == 0x25) {
+            if (field_0x274 == 0 && !getGameView_802D6A9C()->field_0x171) {
+                return true;
+            }
+            return false;
+        }
+        if (code == 0x26) {
+            if (field_0x274 == 0 && getGameView_802D6A9C()->field_0x171 == 1) {
+                return true;
+            }
+            return false;
+        }
+        if (field_0x274 == 0 && (code != 0x22 || getGameView_802D6A9C()->field_0x170 == 1)) {
             return true;
         }
-        return false;
-    }
-    if (code == 0x26) {
-        if (field_0x274 == 0 && getGameView_802D6A9C()->field_0x171 == 1) {
-            return true;
-        }
-        return false;
-    }
-    if (field_0x274 == 0 && (code != 0x22 || getGameView_802D6A9C()->field_0x170 == 1)) {
-        return true;
     }
     return false;
 }
 
-// FIXME(shotgun): 99.80 %, scheduling; behaviour clean.
 void CrystalBall_804AB308::vfunc_0x40() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x3c.zero();
     if (field_0x278 <= 180) {
         field_0x278 = 182;
     }
