@@ -2530,8 +2530,8 @@ void FileSelect_804AFF60::fn_803C5808() {
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
     }
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
 
     // The two files that weren't chosen.
