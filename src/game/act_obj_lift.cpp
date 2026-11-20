@@ -299,7 +299,7 @@ void OBJLift_804ACA00::fn_803511F0() {
 // 0x80351020.
 // Not auto-inlined: fn_80350974 calls fn_80351020 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 85.82 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.72 %, scheduling+regalloc; behaviour clean.
 // float register assignment differs (the box test is probably an inline).
 bool OBJLift_804ACA00::fn_80351020(s32 player) {
     s32 layer = field_0x4;
@@ -465,7 +465,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
     return count;
 }
 
-// FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 97.91 %, scheduling+regalloc; behaviour drift.
 s32 OBJLift_804ACA00::fn_803506E0() {
     static JGeometry::TVec2f lbl_8050AED8[4] = {
         JGeometry::TVec2f(32.0f, 0.0f),
@@ -623,7 +623,6 @@ bool OBJLift_804ACA00::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 // Not auto-inlined: update calls fn_8035001C out of line in the original (docs/INLINING.md, pragma rule 1).
 // Remaining difference: the jump table's symbol name (jumptable_804ACAC8).
 #pragma auto_inline off
-// FIXME: 99.19 %, scheduling+regalloc; behaviour drift.
 void OBJLift_804ACA00::fn_8035001C(u32 dir) {
     switch (dir) {
     case 0:
