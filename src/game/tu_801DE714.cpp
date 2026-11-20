@@ -324,7 +324,7 @@ bool cls_804A51E4::fn_801E1CF8() const {
     return result;
 }
 
-// FIXME(shotgun): 95.00 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.24 %, regalloc-only; behaviour clean.
 void cls_804A51E4::fn_801E1AB4(bool arg) {
     bool found = false;
     u32 kind;
@@ -558,7 +558,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     mState = newState;
 }
 
-// FIXME(shotgun): 95.23 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.82 %, scheduling+regalloc; behaviour clean.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
     ActorBase_804A5770* actor;
@@ -1164,7 +1164,7 @@ void cls_804A51E4::vfunc_0x9C(u8 mapHit) {
     fn_8021835C();
 }
 
-// FIXME(shotgun): 96.43 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.22 %, scheduling+regalloc; behaviour drift.
 void cls_804A51E4::vfunc_0x88() {
     bool blocked = fn_801CCF7C();
     field_0x3c.x = 0.0f;
