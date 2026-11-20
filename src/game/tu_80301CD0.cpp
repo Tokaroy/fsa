@@ -1606,7 +1606,7 @@ void fn_8030361C() {
 
 // Draws one GBA sprite word on the map in the resource its kind selects, with a
 // scale (or rotation about y by `scale`) chosen by its flag bits.
-// FIXME: 95.48 %, different + reloc-name; behaviour clean.
+// FIXME: 95.49 %, different; behaviour clean.
 // FIXME: register order in the sin/cos matrix block and literal order differ.
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set) {
     s32 x = sprite->f.field_0x3_0 << 8 | sprite->f.field_0x2;
