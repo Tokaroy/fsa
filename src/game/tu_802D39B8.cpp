@@ -709,10 +709,9 @@ void GameView_804A9950::fn_802DCDF4() {
     field_0xc9 = 0;
 }
 
-// FIXME: 94.17 %, missing/extra; behaviour near.
-// One instruction: the target keeps the result in r6 (li r6, 0 at entry) and
-// returns it through clrlwi r3, r6, 24; ours builds it in r3 directly.
-bool GameView_804A9950::fn_802DCD1C(const s32* dir) {
+// Returns a byte like fn_802DCD0C: the bool result is narrowed at the return
+// (clrlwi r3, r6, 24).
+u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
     bool moved = false;
     if (fn_802DCD0C() == 0) {
         if (dir[0] > 0) {
