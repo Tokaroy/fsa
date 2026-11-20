@@ -798,89 +798,83 @@ void ConnectScreen_804B0F10::fn_803FC304() {
     }
 }
 
-// FIXME: 96.90 %, missing/extra; behaviour drift.
-// Registers throughout; both `> 0` counter tests are
-// `lha r0; cmpwi` there but `lha r3; extsh.` here (as in fn_803F8354), and
-// the row loop keeps i * 5 in two registers there but one here; .sdata2
-// @NNN names.
+static inline void slideAndFade(ConnectScreen_804B0F10* self, int start, int duration, f32 dist, f32& out, const u64* tags, const u8* alphas, int count) {
+    if (self->field_0x240[0] > start) {
+        if (self->field_0x240[0] < start + duration) {
+            int rem = duration - (self->field_0x240[0] - start);
+            out = dist * ((f32)(rem * rem) / (f32)(duration * duration));
+            f32 alpha = (f32)(self->field_0x240[0] - start) / (f32)duration;
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            } else if (alpha > 1.0f) {
+                alpha = 1.0f;
+            }
+            for (int i = 0; i < count; i++) {
+                self->mScreen->search(tags[i])->setAlpha(fadeAlpha(alphas[i], alpha));
+            }
+        } else {
+            out = 0.0f;
+            for (int i = 0; i < count; i++) {
+                self->mScreen->search(tags[i])->setAlpha(fadeAlpha(alphas[i], 1.0f));
+            }
+        }
+    }
+}
+
+static inline void slideAndFade2(ConnectScreen_804B0F10* self, int start, int duration, f32 dist, f32& out1, f32& out2, const u64* tags1, const u8* alphas1, int count1, const u64* tags2, const u8* alphas2, int count2) {
+    if (self->field_0x240[0] > start) {
+        if (self->field_0x240[0] < start + duration) {
+            int rem = duration - (self->field_0x240[0] - start);
+            out1 = out2 = dist * ((f32)(rem * rem) / (f32)(duration * duration));
+            f32 alpha = (f32)(self->field_0x240[0] - start) / (f32)duration;
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            } else if (alpha > 1.0f) {
+                alpha = 1.0f;
+            }
+            for (int i = 0; i < count1; i++) {
+                self->mScreen->search(tags1[i])->setAlpha(fadeAlpha(alphas1[i], alpha));
+            }
+            for (int i = 0; i < count2; i++) {
+                self->mScreen->search(tags2[i])->setAlpha(fadeAlpha(alphas2[i], alpha));
+            }
+        } else {
+            out1 = out2 = 0.0f;
+            for (int i = 0; i < count1; i++) {
+                self->mScreen->search(tags1[i])->setAlpha(fadeAlpha(alphas1[i], 1.0f));
+            }
+            for (int i = 0; i < count2; i++) {
+                self->mScreen->search(tags2[i])->setAlpha(fadeAlpha(alphas2[i], 1.0f));
+            }
+        }
+    }
+}
+
+static inline void slideOnly(ConnectScreen_804B0F10* self, int start, int duration, f32 dist, f32& out) {
+    if (self->field_0x240[0] > start) {
+        if (self->field_0x240[0] < start + duration) {
+            int rem = duration - (self->field_0x240[0] - start);
+            out = dist * ((f32)(rem * rem) / (f32)(duration * duration));
+        } else {
+            out = 0.0f;
+        }
+    }
+}
+
+// Registers throughout; the row loop keeps i * 5 in two registers there
+// but one here; .sdata2 @NNN names.
 // Update state 0: slides the player-count screen mScreen in and fades it
 // up (field_0x240[0] counts the frames: the title from 0 to 25, the box
 // from 25 to 45, the three count rows 5 frames apart, the rest from 0 to
 // 15), then enters state 1 at 75.
 void ConnectScreen_804B0F10::fn_803FB9E4() {
     field_0x240[0]++;
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 25) {
-            field_0x110 = -150.0f * ((f32)((25 - field_0x240[0]) * (25 - field_0x240[0])) / 625.0f);
-            f32 alpha = (f32)field_0x240[0] / 25.0f;
-            if (alpha < 0.0f) {
-                alpha = 0.0f;
-            } else if (alpha > 1.0f) {
-                alpha = 1.0f;
-            }
-            for (int i = 0; i < 20; i++) {
-                mScreen->search(lbl_80478B18[i])->setAlpha(fadeAlpha(field_0x25f[i], alpha));
-            }
-        } else {
-            field_0x110 = 0.0f;
-            for (int i = 0; i < 20; i++) {
-                mScreen->search(lbl_80478B18[i])->setAlpha(fadeAlpha(field_0x25f[i], 1.0f));
-            }
-        }
-    }
-    if (field_0x240[0] > 25) {
-        if (field_0x240[0] < 45) {
-            field_0x114 = -100.0f * ((f32)((20 - (field_0x240[0] - 25)) * (20 - (field_0x240[0] - 25))) / 400.0f);
-        } else {
-            field_0x114 = 0.0f;
-        }
-    }
+    slideAndFade(this, 0, 25, -150.0f, field_0x110, lbl_80478B18, field_0x25f, 20);
+    slideOnly(this, 25, 20, -100.0f, field_0x114);
     for (int i = 0; i < 3; i++) {
-        if (field_0x240[0] > i * 5) {
-            if (field_0x240[0] < i * 5 + 10) {
-                field_0x130[i] = -350.0f * ((f32)((10 - (field_0x240[0] - i * 5)) * (10 - (field_0x240[0] - i * 5))) / 100.0f);
-                f32 alpha = (f32)(field_0x240[0] - i * 5) / 10.0f;
-                if (alpha < 0.0f) {
-                    alpha = 0.0f;
-                } else if (alpha > 1.0f) {
-                    alpha = 1.0f;
-                }
-                for (int j = 0; j < 6; j++) {
-                    mScreen->search(lbl_80478BB8[i][j])->setAlpha(fadeAlpha(field_0x273[i][j], alpha));
-                }
-            } else {
-                field_0x130[i] = 0.0f;
-                for (int j = 0; j < 6; j++) {
-                    mScreen->search(lbl_80478BB8[i][j])->setAlpha(fadeAlpha(field_0x273[i][j], 1.0f));
-                }
-            }
-        }
+        slideAndFade(this, i * 5, 10, -350.0f, field_0x130[i], lbl_80478BB8[i], field_0x273[i], 6);
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 15) {
-            field_0x144 = field_0x158 = 400.0f * ((f32)((15 - field_0x240[0]) * (15 - field_0x240[0])) / 225.0f);
-            f32 alpha = (f32)field_0x240[0] / 15.0f;
-            if (alpha < 0.0f) {
-                alpha = 0.0f;
-            } else if (alpha > 1.0f) {
-                alpha = 1.0f;
-            }
-            for (int i = 0; i < 24; i++) {
-                mScreen->search(lbl_80478C48[i])->setAlpha(fadeAlpha(field_0x285[i], alpha));
-            }
-            for (int i = 0; i < 18; i++) {
-                mScreen->search(lbl_80478D08[i])->setAlpha(fadeAlpha(field_0x29d[i], alpha));
-            }
-        } else {
-            field_0x144 = field_0x158 = 0.0f;
-            for (int i = 0; i < 24; i++) {
-                mScreen->search(lbl_80478C48[i])->setAlpha(fadeAlpha(field_0x285[i], 1.0f));
-            }
-            for (int i = 0; i < 18; i++) {
-                mScreen->search(lbl_80478D08[i])->setAlpha(fadeAlpha(field_0x29d[i], 1.0f));
-            }
-        }
-    }
+    slideAndFade2(this, 0, 15, 400.0f, field_0x144, field_0x158, lbl_80478C48, field_0x285, 24, lbl_80478D08, field_0x29d, 18);
     if (field_0x240[0] >= 75) {
         field_0x240[0] = 0;
         fn_803F3310();
