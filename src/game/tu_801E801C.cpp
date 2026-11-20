@@ -50,13 +50,13 @@ void cls_804A5568::init() {
 // points themselves): inlined twice by fn_801E9224.
 static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* outX, f32* outY) {
     switch (seg) {
-    case 16:
-        *outX = self->field_0x2b0[idx + 1].x;
-        *outY = self->field_0x2b0[idx + 1].y;
-        break;
     case 0:
         *outX = self->field_0x2b0[idx].x;
         *outY = self->field_0x2b0[idx].y;
+        break;
+    case 16:
+        *outX = self->field_0x2b0[idx + 1].x;
+        *outY = self->field_0x2b0[idx + 1].y;
         break;
     default: {
         f32 prevX;
@@ -92,14 +92,13 @@ static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* out
 // FIXME(shotgun): 85.74 %, different; behaviour drift.
 void cls_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
+        // The original clamps this with fsel (0.5f >= 0 ? 0.5f : 0.0f, all in float); not reproduced.
         f32 budget = 0.5f;
         bool finished = false;
         while (budget > 0.0f) {
-            u8 seg = (s32)field_0x3b4;
-            u8 idx = field_0x3b0;
             f32 curX;
             f32 curY;
-            curvePoint(this, idx, seg, &curX, &curY);
+            curvePoint(this, field_0x3b0, (s32)field_0x3b4, &curX, &curY);
             u8 idx2 = field_0x3b0;
             u8 seg2 = (s32)field_0x3b4 + 1;
             if (seg2 >= 16) {
@@ -115,13 +114,10 @@ void cls_804A5568::fn_801E9224() {
             curvePoint(this, idx2, seg2, &nextX, &nextY);
             f32 dx = nextX - mPos.x;
             f32 dy = nextY - mPos.y;
+            f32 sx = nextX - curX;
+            f32 sy = nextY - curY;
             f32 sq = dx * dx + dy * dy;
-            f32 len;
-            if (sq <= 0.0f) {
-                len = sq;
-            } else {
-                len = sq * JGeometry::TUtil<f32>::inv_sqrt(sq);
-            }
+            f32 len = JGeometry::TUtil<f32>::sqrt(sq);
             if (budget >= len) {
                 mPos.x = nextX;
                 mPos.y = nextY;
@@ -136,20 +132,16 @@ void cls_804A5568::fn_801E9224() {
                 field_0x3b4 = (f32)seg2;
                 field_0x3b0 = idx2;
             } else {
-                if (sq > 32.0f * FLT_EPSILON) {
+                if (!(sq <= 32.0f * FLT_EPSILON)) {
                     f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
                     dx *= norm;
                     dy *= norm;
                 }
-                mPos.x += dx * budget;
-                mPos.y += dy * budget;
-                f32 sx = nextX - curX;
-                f32 sy = nextY - curY;
-                f32 sq2 = sx * sx + sy * sy;
-                if (sq2 > 0.0f) {
-                    sq2 = sq2 * JGeometry::TUtil<f32>::inv_sqrt(sq2);
-                }
-                field_0x3b4 += budget * (1.0f / sq2);
+                dx *= budget;
+                dy *= budget;
+                mPos.x += dx;
+                mPos.y += dy;
+                field_0x3b4 += budget * (1.0f / JGeometry::TUtil<f32>::sqrt(sx * sx + sy * sy));
                 return;
             }
         }
