@@ -1821,7 +1821,7 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
     }
 }
 
-// FIXME(shotgun): 68.99 %, missing/extra; behaviour near.
+// FIXME(shotgun): 76.57 %, missing/extra; behaviour near.
 // (params copied differently, scale literals)
 void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params,
                                      s32 flags, s32 mode, bool arg, f32 scaleX, f32 scaleY) {
@@ -1829,14 +1829,16 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
         return;
     }
     if (field_0x4 <= 8) {
-        if (mode == 0) {
-            drawSprite_801F06F0(name, frame, params, flags, scaleX, scaleY);
-        } else {
+        if (mode != 0) {
             Mtx m;
-            if (mode == 2) {
+            switch (mode) {
+            case 2:
                 PSMTXScale(m, 1.0f, 1.0f, 0.5f);
-            } else {
+                break;
+            case 1:
+            default:
                 PSMTXScale(m, 2.0f, 2.0f, 2.0f);
+                break;
             }
             if (params != NULL) {
                 SpriteParams_801F5AE0 sp = *params;
@@ -1850,12 +1852,14 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
                 sp.mMtx = m;
                 drawSprite_801F06F0(name, frame, &sp, flags, scaleX, scaleY);
             }
+        } else {
+            drawSprite_801F06F0(name, frame, params, flags, scaleX, scaleY);
         }
     }
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos = mPos;
         bool visible = true;
-        bool dying = false;
+        u8 dying = 0;
         if (field_0xd8 > 0) {
             if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
                 if (field_0xd8 & 2) {
@@ -1867,7 +1871,7 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
                 }
             }
         } else if (field_0xe0 > 0) {
-            dying = true;
+            dying = 1;
         }
         if (visible) {
             if (name[10] == '2') {
@@ -1879,7 +1883,7 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
     }
 }
 
-// FIXME(shotgun): 57.44 %, missing/extra; behaviour near.
+// FIXME(shotgun): 58.62 %, missing/extra; behaviour near.
 // drawSprite_801F06F0 for a loaded resource `res` (fn_802F745C) at mPos + (x, y, z), below
 // layer 8. During the hit flash a fast knock-back (|field_0x3c|^2 > 1) sets the copy's 0x30 to 8;
 // otherwise the actor's matrix is used and the death countdown field_0x188 tints it (200, 0x41).
@@ -1905,7 +1909,7 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
             }
             if (field_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
-                v = v > 0 ? v : 0;
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 sp.field_0x14.r += v;
