@@ -1284,13 +1284,9 @@ void Player_804A6F38::fn_8025250C() {
 // ground and field_0x3A4 the target 56 inside the opposite edge of the
 // visible box. The player bit is a materialised bool in the original
 // (neg / or / srwi before the branch), hence the local.
-// FIXME: 97.38 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers only: the inlined group loop's
-// leader / own index (two registers in the original, one here), and dir->x
-// is loaded before the field_0x398 / 0x3A4 stores here, after them in the
-// original; plus the 56.0f literal's name (lbl_80540088 sits after -1.0f,
-// whose first user fn_8024F63C is unwritten).
-void Player_804A6F38::fn_802520C0(const JGeometry::TVec2<s32>* dir) {
+// dir is a plain pointer: dir->x is loaded after the field_0x398 / 0x3A4
+// stores (a const pointee would let the load move above them).
+void Player_804A6F38::fn_802520C0(JGeometry::TVec2<s32>* dir) {
     if (fn_8025F448()) {
         return;
     }
@@ -1316,13 +1312,17 @@ void Player_804A6F38::fn_802520C0(const JGeometry::TVec2<s32>* dir) {
         field_0x3a4.set(mPos);
         field_0x3a4.z = 0.0f;
         if (dir->x == 1 && dir->y == 0) {
-            field_0x3a4.x = getGameView_802D6A9C()->mVisibleBox.i.x + 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.x = view->mVisibleBox.i.x + 56.0f;
         } else if (dir->x == -1 && dir->y == 0) {
-            field_0x3a4.x = getGameView_802D6A9C()->mVisibleBox.f.x - 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.x = view->mVisibleBox.f.x - 56.0f;
         } else if (dir->x == 0 && dir->y == 1) {
-            field_0x3a4.y = getGameView_802D6A9C()->mVisibleBox.i.y + 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.y = view->mVisibleBox.i.y + 56.0f;
         } else if (dir->x == 0 && dir->y == -1) {
-            field_0x3a4.y = getGameView_802D6A9C()->mVisibleBox.f.y - 56.0f;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            field_0x3a4.y = view->mVisibleBox.f.y - 56.0f;
         }
     }
 }
