@@ -172,8 +172,6 @@ void cls_804B1634::fn_804316EC() {
     }
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// The temporaries f0-f3 of the cursor placement are numbered differently (regalloc only).
 bool cls_804B1634::fn_80431174(u8 cursor) {
     if (field_0x8->search(0x0050776375723031ull)->mIsVisible) {
         field_0xe8--;
@@ -189,19 +187,19 @@ bool cls_804B1634::fn_80431174(u8 cursor) {
         f32 y;
         f32 x;
         J2DPane* textX = field_0x8->search(0x0000005477743031ull);
-        x = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.x + textX->getWidth() * 0.5f;
+        x = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.x + textX->getWidth() / 2.0f;
         J2DPane* textY = field_0x8->search(0x0000005477743031ull);
-        y = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.y + textY->getHeight() * 0.5f;
+        y = ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getBounds()->i.y + textY->getHeight() / 2.0f;
         if (cursor == 0) {
-            x += (field_0xb8[1] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) * 0.5f;
+            x += (field_0xb8[1] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) / 2.0f;
         } else {
-            x += (field_0xb8[2] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) * 0.5f +
+            x += (field_0xb8[2] - field_0xc8 - field_0x8->search(0x0050776375723031ull)->getWidth()) / 2.0f +
                  (field_0xcc[1] - field_0xcc[0]);
         }
         f32 curHeight = field_0x8->search(0x0050776375723031ull)->getHeight();
-        y += (field_0xd8[cursor] - (f32)field_0xe4 * 0.5f - 1.0f) *
+        y += (field_0xd8[cursor] - (f32)field_0xe4 / 2.0f - 1.0f) *
                  ((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() +
-             (((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() - curHeight) * 0.5f;
+             (((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getLineSpace() - curHeight) / 2.0f;
         field_0x8->search(0x0050776375723031ull)->move(x, y);
         field_0x8->search(0x0050776375723032ull)->move(x, y);
         f32 height1 = field_0x8->search(0x0050776375723031ull)->getHeight();
