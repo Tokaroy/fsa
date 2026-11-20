@@ -199,13 +199,12 @@ void cls_8049E770::fn_8012C334() {
     fn_8012A5EC();
 }
 
-// FIXME(shotgun): 93.74 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.21 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C170() {
     if (field_0x250 == 1) {
         fn_80119DD0()->fn_80119468(0, 0);
     }
-    f32 targetY = field_0x3f4 + 325.0f;
-    if (field_0x3b8[0].y >= targetY) {
+    if (field_0x3b8[0].y >= field_0x3f4 + 325.0f) {
         field_0x3b8[0].y -= 0.5f;
         field_0x3b8[1].y -= 0.5f;
         field_0x3b8[2].y -= 0.5f;
@@ -219,14 +218,14 @@ void cls_8049E770::fn_8012C170() {
         }
         fn_8012A5EC();
     } else {
-        field_0x3b8[0].y = targetY;
+        field_0x3b8[0].y = field_0x3f4 + 325.0f;
         field_0x3ec = 0;
         fn_8012A5EC();
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
+        msgPos.x = (s32)rm->fbWidth / 2.0f;
+        msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
-        msgPos.x = (s32)rm->fbWidth * 0.5f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -237,15 +236,15 @@ void cls_8049E770::fn_8012C170() {
     }
 }
 
-// FIXME(shotgun): 91.79 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012C030() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
+        msgPos.x = (s32)rm->fbWidth / 2.0f;
+        msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
-        msgPos.x = (s32)rm->fbWidth * 0.5f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -462,15 +461,15 @@ void cls_8049E770::fn_8012B218() {
     }
 }
 
-// FIXME(shotgun): 91.79 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 93.24 %, scheduling + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012B0D8() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
+        msgPos.x = (s32)rm->fbWidth / 2.0f;
+        msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
-        msgPos.x = (s32)rm->fbWidth * 0.5f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -494,7 +493,7 @@ void cls_8049E770::fn_8012B02C() {
     }
 }
 
-// FIXME(shotgun): 95.32 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.64 %, different + reloc-name; behaviour clean.
 void cls_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
@@ -579,9 +578,9 @@ void cls_8049E770::fn_8012AA84() {
     } else if (field_0x250 == 0) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
+        msgPos.x = (s32)rm->fbWidth / 2.0f;
+        msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
-        msgPos.x = (s32)rm->fbWidth * 0.5f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -631,17 +630,16 @@ void cls_8049E770::fn_8012A9A0() {
     }
 }
 
-// FIXME(shotgun): 34.20 %, missing/extra; behaviour clean.
 void cls_8049E770::fn_8012A8C0() {
+    JGeometry::TBox2f box(mBox);
     JGeometry::TBox2f baseBox(mBox);
-    JGeometry::TBox2f box(baseBox);
     for (s32 i = 0; i < 6; i++) {
         box.i.x += field_0x25c[i].x;
         box.i.y += field_0x25c[i].y;
         box.f.x += field_0x25c[i].x;
         box.f.y += field_0x25c[i].y;
         fn_80239914(&box, field_0x4, mSerial);
-        box.set(baseBox);
+        box = baseBox;
     }
 }
 
