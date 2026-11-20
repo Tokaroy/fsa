@@ -1183,7 +1183,7 @@ static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
 
-// FIXME: 99.17 %, missing/extra; behaviour clean.
+// FIXME: 99.75 %, regalloc-only; behaviour clean.
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
@@ -1211,7 +1211,7 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     }
     // Resource type: 'M' plus the three stage characters (each minus ' ') added into the
     // low bytes; written as a running sum because the target does not fold the constant.
-    u32 type = 'M   ';
+    unsigned int type = 'M   ';
     type += ((stage[0] - ' ') << 16) + ((stage[1] - ' ') << 8) + (stage[2] - ' ');
     sprintf(name1, "d_map%s_%d%d_mmm_1_0.szs", stage, screen / 10, screen % 10);
     sprintf(name2, "d_map%s_%d%d_mmm_2_0.szs", stage, screen / 10, screen % 10);
