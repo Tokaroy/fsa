@@ -942,12 +942,18 @@ u8 Camera_804AA9E4::addFocusPoint_8030C210(const JGeometry::TVec3f* pos) {
 // room for two.
 // FIXME: 99.35 %, different; behaviour near.
 u8 Camera_804AA9E4::fn_8030C058(const JGeometry::TBox2f* box) {
-    u8 result = false;
+    s32 result = false;
     if (field_0x7f0 + 1 < 0x80) {
         if (contains(field_0x154, box->i) && contains(field_0x154, box->f)) {
-            JGeometry::TVec3f topLeft(box->i.x, box->i.y, 0.0f);
+            JGeometry::TVec3f topLeft;
+            topLeft.x = box->i.x;
+            topLeft.y = box->i.y;
+            topLeft.z = 0.0f;
             addFocusPoint_8030C210(&topLeft);
-            JGeometry::TVec3f bottomRight(box->f.x, box->f.y, 0.0f);
+            JGeometry::TVec3f bottomRight;
+            bottomRight.x = box->f.x;
+            bottomRight.y = box->f.y;
+            bottomRight.z = 0.0f;
             addFocusPoint_8030C210(&bottomRight);
             result = true;
         }
