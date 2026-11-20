@@ -7,7 +7,13 @@
 
 // FIXME(shotgun): 99.45 %, missing/extra; behaviour drift.
 void cls_804A4C58::fn_801DE12C() {
-    if ((mState >= 0 && mState < 4) || (mState >= 0x13 && mState < 0x15)) {
+    switch (mState) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 0x13:
+    case 0x14:
         mBox.i.x = 1.0f;
         mBox.i.y = 1.0f;
         mBox.f.x = -1.0f;
@@ -17,6 +23,8 @@ void cls_804A4C58::fn_801DE12C() {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         return;
+    default:
+        break;
     }
     switch (mSeq2a8.fn_801DA96C()) {
     case 0:
