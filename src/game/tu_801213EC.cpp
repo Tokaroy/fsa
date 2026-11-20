@@ -66,8 +66,6 @@ EscortBase_8049E0C8::~EscortBase_8049E0C8() {
 }
 
 // The escort's answer to a screen change (see the header).
-// FIXME(shotgun): 96.44 %, missing/extra; behaviour drift.
-// the final flag test is branchless here (the asm branches on it)
 s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     s32 count = fn_80131F0C()->mCount;
     if (count == 0) {
@@ -101,10 +99,11 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
             }
         }
     }
-    if (flag == 0) {
-        return 2;
+    s32 result = 2;
+    if (flag != 0) {
+        result = 3;
     }
-    return 3;
+    return result;
 }
 
 // FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
