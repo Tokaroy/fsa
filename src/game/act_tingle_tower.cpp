@@ -140,7 +140,7 @@ void cls_804AAD60::init() {
         field_0x258.f.y = 24.0f;
     }
 
-    if ((((1 << field_0x23c) & 0xFF) & lbl_8050EC80.getCurrentFile().field_0x5a[0]) != 0) {
+    if ((lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x23c)) ? true : false) {
         field_0x268 = lbl_804714D8[field_0x23c];
     } else {
         field_0x268 = 0x473;
@@ -155,7 +155,7 @@ void cls_804AAD60::init() {
     field_0x26c = 0;
     field_0x270 = 2;
     field_0x274 = 0;
-    field_0x278->fn_80316E50(field_0x4, JGeometry::TVec3f(mPos));
+    field_0x278->fn_80316E50(getField_0x4(), JGeometry::TVec3f(mPos));
 }
 
 void cls_804AAD60::update() {
