@@ -712,10 +712,7 @@ s32 ActorManager_804A5800::fn_801F7464(s32 layer, s32 excludeSerial) const {
     return serial;
 }
 
-// FIXME: 99.62 %, regalloc-only; behaviour clean.
-// regalloc only: the two y/x differences sit in f3/f2 in the
-// target, f2/f3 here; the 16.0f literal is lbl_8053F820 once the pool before
-// it is complete.
+// The 16.0f literal is lbl_8053F820 once the pool before it is complete.
 s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* center,
                                        const JGeometry::TVec3f* from, s32 excludeSerial,
                                        f32 radius) const {
@@ -725,13 +722,17 @@ s32 ActorManager_804A5800::fn_801F732C(s32 layer, const JGeometry::TVec3f* cente
     for (s32 i = 0; i < mActorEnd; i++) {
         if (mActors[i] != NULL && mActors[i]->mAlive && layer == mActors[i]->field_0x4 &&
             excludeSerial != mActors[i]->mSerial && mActors[i]->mPos.z <= 16.0f &&
-            fn_801CC9B0(mActors[i]) &&
-            square(mActors[i]->mPos.x - center->x) + square(mActors[i]->mPos.y - center->y) <= radiusSq)
+            fn_801CC9B0(mActors[i]))
         {
-            f32 dist = square(mActors[i]->mPos.x - from->x) + square(mActors[i]->mPos.y - from->y);
-            if (dist < best) {
-                best = dist;
-                serial = mActors[i]->mSerial;
+            f32 y = mActors[i]->mPos.y;
+            f32 dy = y - center->y;
+            f32 x = mActors[i]->mPos.x;
+            if (square(x - center->x) + square(dy) <= radiusSq) {
+                f32 dist = square(x - from->x) + square(y - from->y);
+                if (dist < best) {
+                    best = dist;
+                    serial = mActors[i]->mSerial;
+                }
             }
         }
     }
