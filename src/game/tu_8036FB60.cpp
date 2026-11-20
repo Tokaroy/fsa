@@ -697,8 +697,6 @@ void cls_804AE4B0::fn_803704E8() {
 
 // Not auto-inlined: the original state handlers call it with a plain bl (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 99.65 %, regalloc-only; behaviour clean.
-// (literal pool names)
 void cls_804AE4B0::fn_803703C8() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     f32 a = -cam->field_0x4[0][3];
@@ -721,18 +719,13 @@ void cls_804AE4B0::fn_803703C8() {
     } else {
         field_0x25c += field_0x260;
     }
-    f32 yHi = field_0x248 + field_0x25c;
-    f32 yLo = field_0x248 - field_0x25c;
-    f32 x = field_0x244;
+    JGeometry::TBox2f box(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     if (gGameRoot2_8053AB10->field_0x24->field_0x7f5 == 0) {
         cam = gGameRoot2_8053AB10->field_0x24;
         cam->field_0x7f4 = 1;
         cam->field_0x7f8 = 5;
-        cam->field_0x808.i.x = x;
-        cam->field_0x808.i.y = yLo;
-        cam->field_0x808.f.x = x;
-        cam->field_0x808.f.y = yHi;
+        cam->field_0x808.set(box);
         cam->field_0x7f6 = 0;
     }
 }
@@ -747,14 +740,15 @@ void cls_804AE4B0::guidePlayer_80370764() {
     }
 }
 
-// FIXME: 99.46 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.96 %, reloc-name; behaviour clean.
 s32 cls_804AE4B0::fn_80370200() {
+    s32 i;
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
-    bool any = false;
     f32 best = 100000.0f;
     s32 bestIdx = -1;
-    for (s32 i = 0; i < 4; i++) {
+    bool any = false;
+    for (i = 0; i < 4; i++) {
         u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x264[idx].y - field_0x294[i].y,
                                                   field_0x264[idx].x - field_0x294[i].x) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -783,7 +777,7 @@ s32 cls_804AE4B0::fn_80370200() {
     if (!any) {
         return -1;
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (hit[i] == 1) {
             f32 d = PSVECDistance(&field_0x264[idx], &field_0x294[i]);
             if (d < best) {
@@ -797,17 +791,18 @@ s32 cls_804AE4B0::fn_80370200() {
 
 // Not auto-inlined: fn_8037100C calls it with a plain bl.
 #pragma auto_inline off
-// FIXME(shotgun): 75.22 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 96.17 %, scheduling; behaviour clean.
 void cls_804AE4B0::fn_80370020() {
+    JGeometry::TBox2f box;
     if (field_0x3a8 == 0) {
         if (field_0x3ac == 0) {
-            JGeometry::TBox2f box;
-            box.i.x = mBox.i.x + field_0x324.x;
-            box.i.y = mBox.i.y + field_0x324.y;
-            box.f.x = mBox.f.x + field_0x324.x;
-            box.f.y = mBox.f.y + field_0x324.y;
+            box.set(mBox);
+            box.i.x += field_0x324.x;
+            box.i.y += field_0x324.y;
+            box.f.x += field_0x324.x;
+            box.f.y += field_0x324.y;
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-            s32 player = fn_8022FD8C(mSerial);
+            const s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
                     if (PSVECDistance(&field_0x264[player], &field_0x324) <= 20.0f) {
@@ -822,11 +817,11 @@ void cls_804AE4B0::fn_80370020() {
             }
         }
     } else if (field_0x3a0 == 4) {
-        JGeometry::TBox2f box;
-        box.i.x = mBox.i.x + field_0x324.x;
-        box.i.y = mBox.i.y + field_0x324.y;
-        box.f.x = mBox.f.x + field_0x324.x;
-        box.f.y = mBox.f.y + field_0x324.y;
+        box.set(mBox);
+        box.i.x += field_0x324.x;
+        box.i.y += field_0x324.y;
+        box.f.x += field_0x324.x;
+        box.f.y += field_0x324.y;
         fn_8022FF8C(field_0x3a4, &box, field_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x3a4, mSerial)) {
             field_0x3a4 = -1;
