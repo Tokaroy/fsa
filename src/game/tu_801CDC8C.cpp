@@ -953,10 +953,6 @@ void EnemyBase_804A4808::vfunc_0x9C(u8 mapHit) {
 // Ours adds one frsp after the fsel.
 // The screen position of the actor, raised to the top of the view box.
 void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
-    s32 rows;
-    s32 columns;
-    s32 row;
-    s32 column;
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
