@@ -337,7 +337,8 @@ s32 OBJLift_804ACA00::fn_80350974() {
     }
     u8 onLift = 0;
     s32 count = 0;
-    JGeometry::TVec3f push(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f push;
+    push.zero();
     for (s32 i = 0; i < 4; i++) {
         if (field_0x258 == 4) {
             JGeometry::TBox2f saved;
@@ -401,22 +402,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
         (mPos.x - mSpawnPos.x) * (mPos.x - mSpawnPos.x) + (mPos.y - mSpawnPos.y) * (mPos.y - mSpawnPos.y) > 8.0f) {
         field_0x250++;
         if (field_0x250 > 0xF0) {
-            s32 layer = field_0x4;
-            if (layer >= 8) {
-                getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0x83, -1, -1);
-                field_0x28c = 1.0f;
-            } else {
-                spawnEmitter_8013CC50(layer, &mPos, 0x503, 1, 0, NULL, NULL, true, 2.0f);
-            }
+            showBreakEffect(field_0x4);
             mPos = mSpawnPos;
             field_0x28c = 0.0f;
-            layer = field_0x4;
-            if (layer >= 8) {
-                getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0x83, -1, -1);
-                field_0x28c = 1.0f;
-            } else {
-                spawnEmitter_8013CC50(layer, &mPos, 0x503, 1, 0, NULL, NULL, true, 2.0f);
-            }
+            showBreakEffect(field_0x4);
             startSound_801F0E34(0x30003, 0);
         }
     } else {
@@ -427,8 +416,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
     if (field_0x289 == 1) {
         for (s32 i = 0; i < 4; i++) {
             if (field_0x283[i] == 0) {
-                s32 layer = getPlayerLayer_8023DE58(i);
-                if ((u16)fn_8022461C(getPlayerPos_8023E724(i), layer) == 0) {
+                if (fn_8022461C(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i)) == 0) {
                     field_0x289 = 0;
                     break;
                 }
@@ -438,10 +426,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
 
     for (s32 i = 0; i < 4; i++) {
         if (field_0x283[i] == 1 && getPlayerPos_8023E724(i)->z <= 0.0f && field_0x288 == 0) {
-            if (!isTiny(push)) {
+            if (isTiny(push) != TRUE) {
                 if (!fn_8022F478(i) ||
                     (field_0x283[fn_8022F3DC(i)] == 1 && (fn_8022CAF8(i) == 5 || fn_8022CAF8(i) == 4)) ||
-                    fn_80235580(i)) {
+                    fn_80235580(i) == TRUE) {
                     if (field_0x289 == 1 && field_0x258 != 5 && field_0x258 != 0xC &&
                         !(field_0x258 >= 6 && field_0x258 <= 9)) {
                         fn_8023DEDC(i, &push);
