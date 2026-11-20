@@ -181,15 +181,15 @@ void Flame_804A0330::fn_8015EA2C() {
         if (vfunc_0x34()) {
             field_0x240 = 0;
             mState = 4;
-        } else if (field_0x234[1] == 0) {
-            if (field_0x234[2] == 0) {
-                field_0x234[1] = 0x78;
-                field_0x240 = 1;
+        } else if (field_0x234[1] != 0) {
+            if (field_0x234[1] == 1) {
+                field_0x234[1] = 0;
+                field_0x240 = 0;
+                field_0x234[2] = 0xB4;
             }
-        } else if (field_0x234[1] == 1) {
-            field_0x234[1] = 0;
-            field_0x240 = 0;
-            field_0x234[2] = 0xB4;
+        } else if (field_0x234[2] == 0) {
+            field_0x234[1] = 0x78;
+            field_0x240 = 1;
         }
         break;
     case 4: {
