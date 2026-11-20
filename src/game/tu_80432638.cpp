@@ -279,12 +279,11 @@ void cls_804B1668::fn_80432AF8() {
 void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0xa4 == 0) {
-        f32 centreX, centreY;
         f32 scaleX = w / field_0x18[2]->field_0x18;
         f32 scaleY = h / field_0x18[2]->field_0x1c;
-        centreX = field_0x18[2]->field_0x10;
+        f32 centreX = field_0x18[2]->field_0x10;
         f32 moveX = (x + w / 2.0f) - (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x);
-        centreY = field_0x18[2]->field_0x14;
+        f32 centreY = field_0x18[2]->field_0x14;
         f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 4; i++) {
             field_0x18[i]->moveFromCentre_80402E08(moveX, moveY);
@@ -320,12 +319,11 @@ void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
         }
         field_0x4[0]->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     } else {
-        f32 centreX, centreY;
         f32 scaleX = w / field_0x28[1]->field_0x18;
         f32 scaleY = h / field_0x28[1]->field_0x1c;
-        centreX = field_0x28[1]->field_0x10;
+        f32 centreX = field_0x28[1]->field_0x10;
         f32 moveX = (x + w / 2.0f) - (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x);
-        centreY = field_0x28[1]->field_0x14;
+        f32 centreY = field_0x28[1]->field_0x14;
         f32 moveY = (y + h / 2.0f) - (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y);
         for (s32 i = 0; i < 3; i++) {
             field_0x28[i]->moveFromCentre_80402E08(moveX, moveY);
