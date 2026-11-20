@@ -46,14 +46,14 @@ static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
 
 // Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
 // field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
-static const s32 lbl_80474548[4][4] = {
+static const s32 lbl_80474548[5][4] = {
     {851, 854, 848, 845},
     {904, 907, 901, 898},
     {865, 868, 862, 859},
     {879, 882, 876, 873},
+    {843, 904, 857, 871},
 };
 static const s32 lbl_80474858[4] = {959, 962, 956, 953}; // sprite per heading (the original's table is 0x204 long)
-static const s32 lbl_80474588[4] = {843, 904, 857, 871};
 static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
 static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
 static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
@@ -840,7 +840,7 @@ void cls_804ADF28::fn_80364A88() {
                     field_0x3c.z = 0.0f;
                     field_0x26c = lbl_80474548[field_0x238][3];
                 } else {
-                    field_0x26c = lbl_80474588[field_0x238];
+                    field_0x26c = lbl_80474548[4][field_0x238];
                     field_0x260 = 15;
                     field_0x25c = 15;
                     if (field_0x238 == 1) {
