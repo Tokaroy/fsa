@@ -962,8 +962,13 @@ bool fn_803865B8(s32 player) {
     return false;
 }
 
-// FIXME(shotgun): 98.79 %, missing/extra; behaviour clean.
-// (one bit test as rlwinm. not extrwi.)
+// Sets the window's own bit (field_0x20) in the game view. An inline of its own: the bit gets its
+// register before the caller's values (docs/REGALLOC.md, rule 4).
+static inline void setWindowBit(s32 window) {
+    u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
+    getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
+}
+
 // Whether the player's window is done: idle, or in state 5 / 8 with nothing left to show
 // (field_0x40 clear); it is then closed (option 0x1000 resets it at once).
 bool fn_80385960(s32 player) {
@@ -973,25 +978,22 @@ bool fn_80385960(s32 player) {
     }
     if (mappedWindow(window)->field_0x24 == 5 || mappedWindow(window)->field_0x24 == 8) {
         if (mappedWindow(window)->field_0x40 == 0) {
-            MessageWindow_804AF490* w = lbl_8053AD78->mWindows[window];
-            u16 opt = w->field_0x28;
-            if (((opt >> 12) & 1) == 1) {
-                w->fn_80391678();
-                return true;
-            }
-            if (!(opt & 1)) {
-                if (!releasePlayers(player)) {
-                    return false;
-                }
-                getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
-                if (mappedWindow(window)->field_0x24 == 8) {
-                    removeFromOrder(windowIndex(window));
-                    if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
-                        gAudioMgr_8053AF80->fn_80458880(0x29, -1);
-                    }
-                }
+            if (((lbl_8053AD78->mWindows[window]->field_0x28 >> 12) & 1) == 1) {
                 lbl_8053AD78->mWindows[window]->fn_80391678();
                 return true;
+            }
+            if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 1)) {
+                if (releasePlayers(player)) {
+                    setWindowBit(window);
+                    if (mappedWindow(window)->field_0x24 == 8) {
+                        removeFromOrder(windowIndex(window));
+                        if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 0x40)) {
+                            gAudioMgr_8053AF80->fn_80458880(0x29, -1);
+                        }
+                    }
+                    lbl_8053AD78->mWindows[window]->fn_80391678();
+                    return true;
+                }
             } else {
                 // The same close without the release.
                 getGameView_802D6A9C()->fn_802D46D8(window, lbl_8053AD78->mWindows[window]->field_0x20, true);
@@ -1015,13 +1017,6 @@ static inline bool releaseSerial(u16 opt, s32 player, s32 serial) {
         return true;
     }
     return fn_8022FB1C(player, serial);
-}
-
-// Sets the window's own bit (field_0x20) in the game view. An inline of its own: the bit gets its
-// register before the caller's values (docs/REGALLOC.md, rule 4).
-static inline void setWindowBit(s32 window) {
-    u32 bit = lbl_8053AD78->mWindows[window]->field_0x20;
-    getGameView_802D6A9C()->fn_802D46D8(window, bit, true);
 }
 
 bool fn_80384C58(s32 player, s32 serial) {
