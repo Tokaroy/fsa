@@ -65,8 +65,8 @@ cls_804A6708::cls_804A6708() {
     field_0x2bc = 0.0f;
     field_0x2c0.x = 0.0f;
     field_0x2c0.y = 0.0f;
-    field_0x2c0.z = 0.0f;
-    field_0x2cc = 0.0f;
+    field_0x2c8.x = 0.0f;
+    field_0x2c8.y = 0.0f;
     mEmitter2D0 = NULL;
     mEmitter2D4 = NULL;
 }
@@ -79,9 +79,9 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 96.80 %, missing/extra + reloc-name; behaviour clean.
-// Only branch shapes differ: the original has bge; b over the stage >= 1 test (0x8021EA3C) and
-// beq; b over li 1 for the two spawnEmitter_8013CC50 flag arguments, ours blt/bne; the .sdata2 literals are not split.
+// FIXME: 99.55 %, missing/extra + reloc-name; behaviour clean.
+// Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
+// the .sdata2 literals are not split.
 void cls_804A6708::init() {
     EnemyBase_804A4808::init();
     field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12b;
@@ -137,8 +137,8 @@ void cls_804A6708::init() {
         mPos.z = 18.0f;
     }
 
-    field_0x2c0.z = mPos.x;
-    field_0x2cc = mPos.y;
+    field_0x2c8.x = mPos.x;
+    field_0x2c8.y = mPos.y;
 
     if (mFlags & 0x20000) {
         mState = 0;
@@ -165,17 +165,8 @@ void cls_804A6708::init() {
         if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
             fn_801F3668();
         } else {
-            // Flags are locals set in a branch, as in vfunc_0x9C (steering: the plain mState == 9 argument is 22% worse there).
-            bool flag = false;
-            if (mState == 9) {
-                flag = true;
-            }
-            mEmitter2D0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, -1, NULL, NULL, flag, 1.0f);
-            bool flag2 = false;
-            if (mState == 9) {
-                flag2 = true;
-            }
-            mEmitter2D4 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, -1, NULL, NULL, flag2, 1.0f);
+            mEmitter2D0 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x32C, 0, -1, NULL, NULL, isState9(), 1.0f);
+            mEmitter2D4 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x184, 0, -1, NULL, NULL, isState9(), 1.0f);
             if (mEmitter2D0 != NULL) {
                 mEmitter2D0->setGlobalEnvColor(lbl_8046A7AC[field_0x2ac].r, lbl_8046A7AC[field_0x2ac].g, lbl_8046A7AC[field_0x2ac].b);
             }
@@ -184,9 +175,8 @@ void cls_804A6708::init() {
 }
 
 
-// FIXME: 82.11 %, missing/extra + reloc-name; behaviour drift.
-// FIXME(shotgun): missing/extra + reloc-name (the original passes the TVec2f at 0x2c0 to
-// fn_801CD754 in place and builds the temporaries with inlined TVec2 copies, ours goes through copies)
+// FIXME: 88.94 %, missing/extra + reloc-name; behaviour near.
+// Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
 void cls_804A6708::fn_8021E4F8() {
     switch (mState) {
     case 4: {
@@ -208,32 +198,26 @@ void cls_804A6708::fn_8021E4F8() {
         break;
     }
     }
-    f32 dy = field_0x2c0.y - field_0x2cc;
-    f32 dx = field_0x2c0.x - field_0x2c0.z;
-    f32 len2 = dx * dx + dy * dy;
-    if (len2 > 32.0f * FLT_EPSILON) {
-        f32 inv = JGeometry::TUtilf::inv_sqrt(len2);
-        dx = dx * inv;
-        dy = dy * inv;
-    }
-    dx = dx * field_0x2bc;
-    dy = dy * field_0x2bc;
+    JGeometry::TVec2f d = field_0x2c0 - field_0x2c8;
+    d.normalize();
+    d.scale(field_0x2bc);
+    s32 player = field_0x2b4;
     bool follow = false;
-    if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
+    if (player >= 0 && (mFlags & 0x30000)) {
         follow = true;
     }
     f32 tx, ty;
     if (follow) {
-        const JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
+        const JGeometry::TVec3f* target = getPlayerPos_8023E724(player);
         tx = target->x;
         ty = target->y;
     } else {
         tx = mSpawnPos.x;
         ty = mSpawnPos.y;
     }
-    fn_801CD8E4(&field_0x2c0.z, tx, 1.0f, 0.0f);
-    fn_801CD8E4(&field_0x2cc, ty, 1.0f, 0.0f);
-    JGeometry::TVec2f goal(field_0x2c0.z + dx, field_0x2cc + dy);
+    fn_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
+    fn_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
+    JGeometry::TVec2f goal = field_0x2c8 + d;
     bool follow2 = false;
     if (mState == 7) {
         if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
@@ -241,18 +225,12 @@ void cls_804A6708::fn_8021E4F8() {
         }
     }
     if (follow2) {
-        // FIXME: the original moves the (x, y) at 0x2c0 as a TVec2f in place.
-        JGeometry::TVec2f cur(field_0x2c0.x, field_0x2c0.y);
-        fn_801CD754(&cur, &goal, 0.3f, 1.0f, 4.0f);
-        field_0x2c0.x = cur.x;
-        field_0x2c0.y = cur.y;
+        fn_801CD754(&field_0x2c0, &goal, 0.3f, 1.0f, 4.0f);
     } else {
-        field_0x2c0.x = goal.x;
-        field_0x2c0.y = goal.y;
+        field_0x2c0 = goal;
     }
-    dx = field_0x2c0.x - field_0x2c0.z;
-    dy = field_0x2c0.y - field_0x2cc;
-    f32 len = JGeometry::TVec2f(dx, dy).length();
+    JGeometry::TVec2f e = field_0x2c0 - field_0x2c8;
+    f32 len = e.length();
     s16 angle = 0x622;
     if (len > 0.001f) {
         s16 v = (s16)(s32)(1.0f / len * (1570.0f * field_0x2bc));
@@ -270,18 +248,17 @@ void cls_804A6708::fn_8021E4F8() {
     s16 neg = -angle;
     f32 s = sincos.sinShort(neg);
     f32 co = sincos.cosShort(neg);
-    field_0x2c0.x = field_0x2c0.z + (dx * co - dy * s);
-    field_0x2c0.y = field_0x2cc + (dx * s + dy * co);
+    field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 91.90 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.65 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
     switch (newState) {
     case 1:
         fn_801F3604();
         if (mFlags & 0x2000) {
             for (s32 p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && field_0x4 == getPlayerLayer_8023DE58(p)) {
+                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     for (s32 j = 0; j < 4; j++) {
                         spawnEmitter_8013CC50(field_0x4, &pos, lbl_8046A78C[p][j], 0, 0, NULL, NULL, true, 1.0f);
@@ -294,7 +271,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     case 2:
         if (mFlags & 0x2000) {
             for (s32 p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && field_0x4 == getPlayerLayer_8023DE58(p)) {
+                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     fn_80230498(p, &pos, fn_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
                 }
@@ -311,37 +288,24 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     case 4: {
         fn_801F3604();
         field_0x2bc = 1.0f;
+        s32 player = field_0x2b4;
         bool follow = false;
-        if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
+        if (player >= 0 && (mFlags & 0x30000)) {
             follow = true;
         }
         if (follow) {
-            JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
-            field_0x2c0.z = target->x;
-            field_0x2cc = target->y;
+            JGeometry::TVec3f* target = getPlayerPos_8023E724(player);
+            field_0x2c8.x = target->x;
+            field_0x2c8.y = target->y;
         } else {
-            field_0x2c0.z = mSpawnPos.x;
-            field_0x2cc = mSpawnPos.y;
+            field_0x2c8.x = mSpawnPos.x;
+            field_0x2c8.y = mSpawnPos.y;
         }
         const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-        JGeometry::TVec2<f32> center(field_0x2c0.z, field_0x2cc);
-        JGeometry::TVec2<f32> offset(sincos.sinShort(-0x4000) * field_0x2bc, sincos.cosShort(-0x4000) * field_0x2bc);
-        center.add(offset);
-        field_0x2c0.x = center.x;
-        field_0x2c0.y = center.y;
-        mPos.x = field_0x2c0.x;
-        mPos.y = field_0x2c0.y;
-        mPos.z = 0.0f;
-        bool flag = false;
-        if (mState == 9) {
-            flag = true;
-        }
-        mEmitter2D0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, -1, NULL, NULL, flag, 1.0f);
-        bool flag2 = false;
-        if (mState == 9) {
-            flag2 = true;
-        }
-        mEmitter2D4 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, -1, NULL, NULL, flag2, 1.0f);
+        field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(sincos.sinShort(-0x4000) * field_0x2bc, sincos.cosShort(-0x4000) * field_0x2bc);
+        mPos.set(field_0x2c0.x, field_0x2c0.y, 0.0f);
+        mEmitter2D0 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x32C, 0, -1, NULL, NULL, isState9(), 1.0f);
+        mEmitter2D4 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x184, 0, -1, NULL, NULL, isState9(), 1.0f);
         if (mEmitter2D0 != NULL) {
             mEmitter2D0->setGlobalEnvColor(lbl_8046A7AC[field_0x2ac].r, lbl_8046A7AC[field_0x2ac].g, lbl_8046A7AC[field_0x2ac].b);
         }
@@ -353,7 +317,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     case 6:
         if (mFlags & 0x2000) {
             for (s32 p = 0; p < 4; p++) {
-                if (fn_8023F264(p) && field_0x4 == getPlayerLayer_8023DE58(p)) {
+                if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     s32 v;
                     if (mFlags & 0x4000) {
                         v = 3;
@@ -371,17 +335,18 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
         break;
     case 7: {
         field_0x2bc = 18.0f;
+        s32 player = field_0x2b4;
         bool follow = false;
-        if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
+        if (player >= 0 && (mFlags & 0x30000)) {
             follow = true;
         }
         if (follow) {
-            JGeometry::TVec3f* target = getPlayerPos_8023E724(field_0x2b4);
-            field_0x2c0.z = target->x;
-            field_0x2cc = target->y;
+            JGeometry::TVec3f* target = getPlayerPos_8023E724(player);
+            field_0x2c8.x = target->x;
+            field_0x2c8.y = target->y;
         } else {
-            field_0x2c0.z = mSpawnPos.x;
-            field_0x2cc = mSpawnPos.y;
+            field_0x2c8.x = mSpawnPos.x;
+            field_0x2c8.y = mSpawnPos.y;
         }
         field_0x2c0.x = mPos.x;
         field_0x2c0.y = mPos.y;
@@ -517,9 +482,8 @@ void cls_804A6708::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 96.53 %, missing/extra + reloc-name; behaviour clean.
-// Only the two setEmitterPos_8013CB44 flag arguments differ in branch shape (ours bne over li 1,
-// the original beq; b over li 1), and the .sdata2 literals are not split.
+// FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
+// Registers only; the .sdata2 literals are not split.
 void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     EnemyBase_804A4808::vfunc_0x9C(mapHit);
     if (mState == 9) {
@@ -533,18 +497,9 @@ void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     } else {
         field_0x2b8 = 255.0f;
     }
-    // The flag is a local set in a branch: the original compiles its mState == 9 as li/cmpwi/beq/b/li.
-    bool flag1 = false;
-    if (mState == 9) {
-        flag1 = true;
-    }
-    setEmitterPos_8013CB44(mEmitter2D0, &mPos, 0, -1, flag1);
+    setEmitterPos_8013CB44(mEmitter2D0, &mPos, 0, -1, isState9());
 
-    bool flag2 = false;
-    if (mState == 9) {
-        flag2 = true;
-    }
-    setEmitterPos_8013CB44(mEmitter2D4, &mPos, 0, -1, flag2);
+    setEmitterPos_8013CB44(mEmitter2D4, &mPos, 0, -1, isState9());
     if (mEmitter2D0 != NULL) {
         mEmitter2D0->setGlobalAlpha((u8)field_0x2b8);
     }
@@ -553,7 +508,6 @@ void cls_804A6708::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour drift.
 void cls_804A6708::vfunc_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
@@ -573,7 +527,8 @@ void cls_804A6708::vfunc_0x88() {
     case 4:
     case 7: {
         JGeometry::TVec2f out;
-        fn_801D01A0(&field_0x2c0, &out, FLT_MAX);
+        // fn_801D01A0 reads only (x, y) of its target, typed TVec3f* in EnemyBase.
+        fn_801D01A0((const JGeometry::TVec3f*)&field_0x2c0, &out, FLT_MAX);
         field_0x3c.x = out.x;
         field_0x3c.y = out.y;
         break;
@@ -607,20 +562,22 @@ void cls_804A6708::vfunc_0xA0() {
         }
     }
     if (!(mFlags & 0x10000)) {
-        JGeometry::TVec3f focus(field_0x2c0.z, field_0x2cc - mPos.z, 0.0f);
+        JGeometry::TVec3f focus(field_0x2c8.x, field_0x2c8.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     }
 }
 
-// FIXME: 91.05 %, different; behaviour clean.
-// FIXME(shotgun): params block register allocation differs
+// FIXME: 92.15 %, missing/extra; behaviour clean.
+// the flag's 0 shares the constructor's zero register in the original (ours loads a second one)
 void cls_804A6708::draw() {
     if (mState != 3 && field_0x2b8 > 0.0f) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = (s32)field_0x2b8;
         u8 flag = 0;
-        if (mState == 9) {
+        switch (mState) {
+        case 9:
             flag = 1;
+            break;
         }
         params.field_0x20 = flag;
         fn_801F02BC("enemy_both2_sob.bin", lbl_8046A7C0[field_0x2ac] + mAnim.mCel, &params, 0x407, 0, false, 1.0f, 1.0f);
