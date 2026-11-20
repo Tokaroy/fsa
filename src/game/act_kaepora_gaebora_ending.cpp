@@ -1175,7 +1175,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
         field_0x27C = 0;
-        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * 10430.378f);
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
         field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
         u16 a = field_0x254;
