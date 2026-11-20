@@ -941,11 +941,6 @@ void cls_804B0B00::fn_803ECC64() {
     mScreen->search('Pscuro02')->move(field_0x19c, y);
 }
 
-// FIXME: 99.61 %, different; behaviour clean.
-// One register: in setEntries' loop the original gives i a
-// fresh li r4, 0 and keeps 2 * i in r3 (the zero stored to field_0x1b8);
-// ours copies that zero into i (mr r4, r3). Same as the twin's
-// ConnectScreen_804B0F10::fn_803F2580.
 // Update state 3 (the player-count menu, field_0x1bc = players - 1): decide
 // with one player takes slot 0 alone (kind 1 with a controller there, else
 // 2); with more, the entries are set when every controller is connected,
@@ -965,7 +960,15 @@ void cls_804B0B00::fn_803EC804() {
             field_0x1b8 = 0;
             gGameRoot_8053AAF8->field_0x7e = 1;
             if (field_0x1d0 == field_0x1bc + 1) {
-                setEntries(this);
+                for (s32 i = 0; i < 4; i++) {
+                    if (i < field_0x1bc + 1) {
+                        gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                        setPlayerKind(gGameRoot_8053AAF8, i, 1);
+                    } else {
+                        gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                        setPlayerKind(gGameRoot_8053AAF8, i, 0);
+                    }
+                }
                 field_0x1dc = 15;
             }
             fn_803E4308();
@@ -2389,9 +2392,6 @@ void cls_804B0B00::fn_803E4940() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.95 %, operands; behaviour clean.
-// Stack slots only: the original converts
-// both blink branches' ints in the 0x8 slot, ours the second branch's in 0x10.
 // Draws states 12 and 13 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1e0[i] (60 frames), the
 // joined ones' 'Paccur' panes with it; outside state 12 the 'Paccur02'
@@ -2403,7 +2403,8 @@ void cls_804B0B00::fn_803E4650() {
         if (field_0x1e0[i] < 30) {
             t = (f32)(field_0x1e0[i] * field_0x1e0[i]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[i] - 30) * (field_0x1e0[i] - 30)) / 900.0f;
+            s32 frame = field_0x1e0[i] - 30;
+            t = 1.0f - (f32)(frame * frame) / 900.0f;
         }
         if (i <= field_0x1bc) {
             if (field_0x1c0[i] < 4) {
@@ -2648,10 +2649,8 @@ void cls_804B0B00::fn_803E3548() {
     field_0x1d4 = 10;
 }
 
-// FIXME: 99.20. One register in setEntries' loop (li r4, 0 vs mr r4, r3, as in fn_803EC804).
 // Not auto-inlined: fn_803E9034 and fn_803ED604 call fn_803E3320 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.20 %, different; behaviour clean.
 void cls_804B0B00::fn_803E3320() {
     field_0x254[0] = 0;
     field_0x1e0[0] = 5;
@@ -2660,7 +2659,15 @@ void cls_804B0B00::fn_803E3320() {
             setSingleEntry();
         }
     } else if (field_0x1b8 == 0) {
-        setEntries(this);
+        for (s32 i = 0; i < 4; i++) {
+            if (i < field_0x1bc + 1) {
+                gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 1);
+            } else {
+                gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 0);
+            }
+        }
     }
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 11;
