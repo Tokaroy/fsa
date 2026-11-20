@@ -1101,6 +1101,7 @@ u8 ActorBase_804A5770::fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excl
 // on this layer, with fn_80238548 at the box's centre (moved through
 // fn_801CD0D0 for a player below layer 8 while this is on 8); damage -100
 // means field_0x114 ("atcp"). Returns the bits of the players hit.
+// FIXME: 99.12 %, regalloc-only; behaviour clean.
 u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
     u32 result = fn_801F2740(skipPlayer);
     if (result) {
@@ -2232,7 +2233,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
     }
 }
 
-// FIXME: 99.65 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.66 %, scheduling+regalloc; behaviour clean.
 // Scheduling and float registers only: the original loads
 // mPos.y before mPos.z and x last for `pos`; the literals are @NNN until the
 // unit's .sdata2 is in order.
