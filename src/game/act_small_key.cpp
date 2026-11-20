@@ -10,6 +10,7 @@
 #include "game/Player.h"
 #include "game/ViewLayer.h"
 #include "game/act/act_small_key.h"
+#include "game/GameMath.h"
 #include "game/act/act_strange_block.h"
 #include "game/act/act_obj_lift.h"
 #include "game/act/act_seesaw_lift.h"
@@ -166,23 +167,7 @@ void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
     field_0x2b4 = 1;
-    bool cont;
-    if (!field_0x2b0) {
-        cont = true;
-    } else {
-        mPos.z = 400.0f;
-        if (!fn_8023F264(field_0x23c)) {
-            cont = false;
-        } else if (fn_8022D75C(field_0x23c) == true) {
-            cont = false;
-        } else if (!fn_8022BC38(field_0x23c, field_0x4, &mPos) &&
-                   (!fn_802DE764(1, 1, 2) || field_0x4 != 10 || getPlayerLayer_8023DE58(field_0x23c) != 8)) {
-            cont = false;
-        } else {
-            cont = dropAtPlayer();
-        }
-    }
-    if (!cont) {
+    if (!dropAtPlayer()) {
         return;
     }
     if (field_0xc4 != 0 || (field_0xcc != 0 && field_0xd0 != 0)) {
@@ -229,7 +214,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 2:
         fn_802C2840();
-        if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+        if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] != 0) {
             if (field_0x2b2 == 0) {
                 field_0x3c.y += 0.5f;
                 if (field_0x3c.y > 10.0f) {
@@ -324,9 +309,10 @@ void SmallKey_804A8CD8::update() {
                 field_0x248.set(field_0x244->mPos);
                 s32 otherLayer = field_0x244->field_0x4;
                 if (otherLayer < 8 && field_0x4 == 8) {
-                    JGeometry::TBox2f viewBox = (otherLayer < 8)
-                        ? getGameView_802D6A9C()->mVisibleBox
-                        : getGameView_802D6A9C()->field_0xdc;
+                    GameView_804A9950* view = getGameView_802D6A9C();
+                    const JGeometry::TBox2f* src = otherLayer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+                    JGeometry::TBox2f viewBox;
+                    viewBox = *src;
                     field_0x248.x = field_0x244->mPos.x - viewBox.i.x;
                     field_0x248.y = field_0x244->mPos.y - viewBox.i.y;
                 }
@@ -363,26 +349,26 @@ void SmallKey_804A8CD8::update() {
     case 9:
         field_0x294 = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* p = fn_8023A478(i);
                 f32 dx = p->x - mPos.x;
                 f32 dy = p->y - mPos.y;
-                if (dx * dx + dy * dy <= 5184.0f) {
+                if (!(square(dx) + square(dy) > 5184.0f)) {
                     switch (fn_8023A240() ^ 1) {
                     case 0:
-                        field_0x3c.set(2.0f, 0.0f, 3.0f);
+                        field_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 3.0f);
                         break;
                     case 1:
-                        field_0x3c.set(-2.0f, 0.0f, 3.0f);
+                        field_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 3.0f);
                         break;
                     case 2:
-                        field_0x3c.set(0.0f, 2.0f, 3.0f);
+                        field_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 3.0f);
                         break;
                     case 3:
-                        field_0x3c.set(0.0f, -2.0f, 3.0f);
+                        field_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 3.0f);
                         break;
                     default:
-                        field_0x3c.set(0.0f, 0.0f, 3.0f);
+                        field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 3.0f);
                         break;
                     }
                     field_0xb0 = 0x20000;
@@ -418,7 +404,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 11:
         fn_8022FE80(field_0x2a4, field_0x4, mSerial, true, false);
-        fn_8038AD24(field_0x2a4, 0x168, mSerial, field_0x4, mPos, 4);
+        fn_8038AD24(field_0x2a4, 0x168, getSerial(), getField_0x4(), mPos, 4);
         field_0x240 = 12;
         return;
     case 12:
@@ -651,7 +637,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 // FIXME(shotgun): 93.34 %, missing/extra + reloc-name; behaviour near.
 void SmallKey_804A8CD8::fn_802C2C30() {
     fn_802C24A8();
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+    if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] != 0) {
         if (field_0x2b3 == 1) {
             field_0x2b3 = 0;
             mPos.y -= mPos.z;
@@ -965,12 +951,33 @@ bool SmallKey_804A8CD8::fallOnTile(u16 tile) {
 // Not in the binary (update inlines it); the pool puts it between fn_802C2C30 and fn_802C2840.
 // Puts the key 400 above its player; false while the player stands on tile 3 and the key may not drop.
 bool SmallKey_804A8CD8::dropAtPlayer() {
+    if (!field_0x2b0) {
+        return true;
+    }
+    mPos.z = 400.0f;
+    if (!fn_8023F264(field_0x23c)) {
+        return false;
+    }
+    if (fn_8022D75C(field_0x23c) == true) {
+        return false;
+    }
+    if (!fn_8022BC38(field_0x23c, field_0x4, &mPos)) {
+        if (!fn_802DE764(1, 1, 2)) {
+            return false;
+        }
+        if (field_0x4 != 10) {
+            return false;
+        }
+        if (getPlayerLayer_8023DE58(field_0x23c) != 8) {
+            return false;
+        }
+    }
     mPos.set(*getPlayerPos_8023E724(field_0x23c));
     field_0x4 = getPlayerLayer_8023DE58(field_0x23c);
-    field_0x240 = 5;
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.x = 0.0f;
+    field_0x240 = 5;
     mPos.z = 0.0f;
     u16 tile = fn_8022461C(&mPos, field_0x4);
     mPos.z = 400.0f;
