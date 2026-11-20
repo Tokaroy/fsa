@@ -1829,14 +1829,16 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
         return;
     }
     if (field_0x4 <= 8) {
-        if (mode == 0) {
-            drawSprite_801F06F0(name, frame, params, flags, scaleX, scaleY);
-        } else {
+        if (mode != 0) {
             Mtx m;
-            if (mode == 2) {
+            switch (mode) {
+            case 2:
                 PSMTXScale(m, 1.0f, 1.0f, 0.5f);
-            } else {
+                break;
+            case 1:
+            default:
                 PSMTXScale(m, 2.0f, 2.0f, 2.0f);
+                break;
             }
             if (params != NULL) {
                 SpriteParams_801F5AE0 sp = *params;
@@ -1850,12 +1852,14 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
                 sp.mMtx = m;
                 drawSprite_801F06F0(name, frame, &sp, flags, scaleX, scaleY);
             }
+        } else {
+            drawSprite_801F06F0(name, frame, params, flags, scaleX, scaleY);
         }
     }
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos = mPos;
         bool visible = true;
-        bool dying = false;
+        u8 dying = 0;
         if (field_0xd8 > 0) {
             if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
                 if (field_0xd8 & 2) {
@@ -1867,7 +1871,7 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
                 }
             }
         } else if (field_0xe0 > 0) {
-            dying = true;
+            dying = 1;
         }
         if (visible) {
             if (name[10] == '2') {
