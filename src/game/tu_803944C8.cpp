@@ -282,33 +282,31 @@ void cls_804AF774::fn_803A2F74() {
 // Adds the number of characters `value` prints as (a sign, then its digits
 // without leading zeros, at most five) to the column count.
 // FIXME: 93.87 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: in the ten-thousands step the original
-// computes value % 10000 before the digit test (the later steps match).
 void cls_804AF774::fn_803A2E48(s32 value) {
     bool started = false;
     if (value < 0) {
         field_0x50++;
         value *= -1;
     }
+    s32 rest = value % 10000;
     s32 digit = value / 10000;
-    value %= 10000;
     if (digit != 0) {
         field_0x50++;
         started = true;
     }
-    digit = value / 1000;
-    value %= 1000;
+    digit = rest / 1000;
+    rest %= 1000;
     if (digit != 0 || started) {
         field_0x50++;
         started = true;
     }
-    digit = value / 100;
-    value %= 100;
+    digit = rest / 100;
+    rest %= 100;
     if (digit != 0 || started) {
         field_0x50++;
         started = true;
     }
-    if (value / 10 != 0 || started) {
+    if (rest / 10 != 0 || started) {
         field_0x50++;
     }
     field_0x50++;
