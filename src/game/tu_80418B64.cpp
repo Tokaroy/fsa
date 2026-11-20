@@ -1326,7 +1326,7 @@ void cls_804B13D4::fn_8041CC04() {
     s32 n = lbl_80529DEC.getField0xe8(0);
     s32 digit = 0;
     const ResTIMG* res;
-    if (9999 < n) {
+    if (lbl_80529DEC.getField0xe8(0) > 9999) {
         n = 9999;
     }
     if (n < 0) {
@@ -1424,16 +1424,14 @@ void cls_804B13D4::fn_8041C67C() {
     }
 }
 
-// Initial field_0xe8[player] load coalesces r0 into r28.
-// FIXME: 99.67 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041C0C0(s32 player) {
     if (!(field_0x28b & (u8)(1 << player))) {
         return;
     }
-    s32 n = lbl_80529DEC.field_0xe8[player];
+    s32 n = lbl_80529DEC.getField0xe8(player);
     s32 digit = 0;
     const ResTIMG* res;
-    if (n > 9999) {
+    if (lbl_80529DEC.getField0xe8(player) > 9999) {
         n = 9999;
     }
     if (n < 0) {
@@ -1446,8 +1444,8 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
         }
         n *= -1;
         res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_rupyNumMinus.bti"));
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][0]))->changeTexture(res, 0);
-        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][0]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D6D8[player][digit]))->changeTexture(res, 0);
+        static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
         field_0x4->search(lbl_8048D6D8[player][4])->show();
         field_0x4->search(lbl_8048D778[player][4])->show();
         digit = 1;
