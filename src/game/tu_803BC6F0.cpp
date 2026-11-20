@@ -1311,7 +1311,7 @@ void FileSelect_804AFF60::fn_803CD2DC() {
     }
 }
 
-// FIXME: 99.16 %, regalloc-only; behaviour clean.
+// FIXME: 99.18 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). The &others register, as
 // fn_803C2E24 / fn_803C9F80. Every field, call and branch is the original's.
 //
