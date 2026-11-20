@@ -258,7 +258,7 @@ static inline bool stepWobble(cls_8049C718* p) {
 s32 randomSlotTime();
 s32 headingOf(f32 x, f32 y);
 
-// FIXME: 94.08 %, missing/extra; behaviour clean.
+// FIXME: 98.10 %, scheduling; behaviour clean.
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
         return;
@@ -608,7 +608,7 @@ void cls_8049C718::fn_800FBA14() {
     }
 }
 
-// FIXME(shotgun): 99.18 %, different; behaviour drift.
+// FIXME(shotgun): 99.84 %, operands; behaviour clean.
 void cls_8049C718::fn_800FB6E0(s32 mode) {
     u16 angle = 0;
     f32 dist = 0.0f;
