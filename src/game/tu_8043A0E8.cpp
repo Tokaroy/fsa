@@ -43,7 +43,8 @@ static inline f32 topOffset(cls_804B1920* m) {
 static inline f32 bottomOffset(cls_804B1920* m) {
     f32 result = 0.0f;
     if (m->field_0x10b != 0 && m->field_0x10c == 0) {
-        result = -66.0f * (100.0f - (m->field_0x40[0]->mPane->getBounds()->i.y - m->field_0x40[0]->field_0xc)) / 100.0f;
+        f32 y = m->field_0x40[0]->mPane->getBounds()->i.y - m->field_0x40[0]->field_0xc;
+        result = -66.0f * (100.0f - y) / 100.0f;
     }
     return result;
 }
@@ -559,11 +560,14 @@ void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
     Vec screenOrigin;
     Vec screenUnit;
     Vec origin;
-    origin.x = origin.y = origin.z = 0.0f;
+    origin.x = 0.0f;
+    origin.y = 0.0f;
+    origin.z = 0.0f;
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&origin, false, false, &screenOrigin);
     Vec unit;
     unit.x = 16.0f;
-    unit.y = unit.z = 0.0f;
+    unit.y = 0.0f;
+    unit.z = 0.0f;
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&unit, false, false, &screenUnit);
     f32 margin = screenUnit.x - screenOrigin.x;
     if (!outsideBox(93.0f, 61.5f + topOffset(lbl_8053AED0), x, y, margin)) {
