@@ -74,7 +74,7 @@ cls_804B03D8::cls_804B03D8() {
     field_0x34[2]->setPane_80402F04(field_0x4->search('Pblk02'));
     field_0x34[3] = new PaneCtrl_804AF86C;
     field_0x34[3]->setPane_80402F04(field_0x4->search('Pblk01'));
-    field_0x4->search('Ndata05')->mIsVisible = false;
+    field_0x4->search('Ndata05')->hide();
     field_0x44 = new PaneCtrl_804AF86C;
     field_0x44->setPane_80402F04(field_0x8->search('ROOT'));
     field_0x48 = lbl_8053AED8->field_0x8;
@@ -104,8 +104,8 @@ cls_804B03D8::cls_804B03D8() {
     field_0x78 = 0;
     field_0x79 = 0;
     field_0x7a = 0;
-    field_0x7b = field_0x4->search(lbl_80477180[0][0])->mAlpha;
-    field_0x7c = field_0x4->search(lbl_80477180[0][1])->mAlpha;
+    field_0x7b = field_0x4->search(lbl_80476F80[0][0])->mAlpha;
+    field_0x7c = field_0x4->search(lbl_80477180[0][0])->mAlpha;
     field_0x7d = field_0x8->search('Pstarli')->mAlpha;
     field_0x7e = 0;
     field_0x7f = 0;
