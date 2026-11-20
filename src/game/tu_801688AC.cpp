@@ -50,9 +50,9 @@ void cls_804A0738::init() {
     field_0x26c = 0;
     field_0x270 = 0;
     field_0x250 = 0;
-    field_0x364[2] = 0.0f;
-    field_0x364[1] = 0.0f;
-    field_0x364[0] = 0.0f;
+    field_0x364.z = 0.0f;
+    field_0x364.y = 0.0f;
+    field_0x364.x = 0.0f;
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.x = 0.0f;
@@ -114,15 +114,15 @@ void cls_804A0738::update() {
         target = fn_8022F3DC(field_0x90);
     }
     if (field_0x23c == 0) {
-        if (std::fabsf(field_0x3c.x - field_0x364[0]) > 0.01f) {
-            addCalc2_801F71A4(&field_0x3c.x, field_0x364[0], 0.1f, 0.2f);
+        if (std::fabsf(field_0x3c.x - field_0x364.x) > 0.01f) {
+            addCalc2_801F71A4(&field_0x3c.x, field_0x364.x, 0.1f, 0.2f);
         } else {
-            field_0x364[0] = field_0x3c.x;
+            field_0x364.x = field_0x3c.x;
         }
-        if (std::fabsf(field_0x3c.y - field_0x364[1]) > 0.01f) {
-            addCalc2_801F71A4(&field_0x3c.y, field_0x364[1], 0.1f, 0.2f);
+        if (std::fabsf(field_0x3c.y - field_0x364.y) > 0.01f) {
+            addCalc2_801F71A4(&field_0x3c.y, field_0x364.y, 0.1f, 0.2f);
         } else {
-            field_0x364[1] = field_0x3c.y;
+            field_0x364.y = field_0x3c.y;
         }
     }
     if (fn_801F6758(&mPos, field_0x4, 300.0f)) {
@@ -149,11 +149,11 @@ void cls_804A0738::update() {
     mPos += field_0x3c;
     switch (field_0x230) {
     case 0:
-        if (std::fabsf(field_0x3c.x - field_0x364[0]) <= 1.0f && std::fabsf(field_0x3c.y - field_0x364[1]) <= 1.0f) {
+        if (std::fabsf(field_0x3c.x - field_0x364.x) <= 1.0f && std::fabsf(field_0x3c.y - field_0x364.y) <= 1.0f) {
             field_0x174 = field_0x180;
-            field_0x3c.x = field_0x364[0];
-            field_0x3c.y = field_0x364[1];
-            field_0x3c.z = field_0x364[2];
+            field_0x3c.x = field_0x364.x;
+            field_0x3c.y = field_0x364.y;
+            field_0x3c.z = field_0x364.z;
             if (field_0x244) {
                 field_0x26c = field_0x264;
                 field_0x230 = 1;
@@ -198,9 +198,9 @@ void cls_804A0738::update() {
         if ((field_0x4 == 0 && fn_801F6758(&mPos, field_0x4, -16.0f) == 1) ||
             (field_0x4 >= 8 && isOutsideBox(&mPos, (const JGeometry::TBox2f*)field_0x370, -9.0f) == 1)) {
             field_0x3c.zero();
-            field_0x364[2] = 0.0f;
-            field_0x364[1] = 0.0f;
-            field_0x364[0] = 0.0f;
+            field_0x364.z = 0.0f;
+            field_0x364.y = 0.0f;
+            field_0x364.x = 0.0f;
         }
         if (!fn_8022C274(target)) {
             field_0x244 = 1;

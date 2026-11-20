@@ -22,6 +22,11 @@ static inline s32 warpLayer(u32 param) {
     return layer;
 }
 
+// The warp's kind: the low 7 bits of its spawn parameter.
+static inline s32 warpKind(u32 param) {
+    return param & 0x7F;
+}
+
 // Whether two boxes overlap (edges touching counts), on a copy of `a`.
 static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
     JGeometry::TBox2f overlap(a);
@@ -38,19 +43,24 @@ static inline void toScreenBox(JGeometry::TBox2f* out, JGeometry::TBox2f ofs, JG
 // The spawn parameter of the WARP that init() creates for the paired kinds 0x19-0x1C: this warp's
 // tile position (in 8-unit cells, from the layer box origin) and layer in the bits the pair reads
 // back, the kind in the low bits.
+// A layer as the spawn parameter stores it: 0 for the lower layers, layer - 7 from 8 up.
+static inline s32 layerCode(s32 layer) {
+    return layer >= 8 ? layer - 7 : 0;
+}
+
 static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
     u32 v = param & 0xF8000000;
-    v = (v & ~0x07000000) | ((enc & 7) << 24);
-    v = (v & ~0x00FF0000) | (((dx / 8) & 0xFF) << 16);
-    v = (v & ~0x0000FF00) | (((dy / 8) & 0xFF) << 8);
-    v = (v & ~0x80) | (param & 0x80);
+    v = ((enc << 24) & 0x07000000) | (v & ~0x07000000);
+    v = (((dx / 8) << 16) & 0x00FF0000) | (v & ~0x00FF0000);
+    v = (((dy / 8) << 8) & 0x0000FF00) | (v & ~0x0000FF00);
+    v = (param & 0x80) | (v & ~0x80);
     return v | kind;
 }
 
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
-// FIXME(shotgun): 87.70 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.54 %, scheduling+regalloc; behaviour clean.
 void Warp_804A6DC8::init() {
     field_0x256 = 0;
     field_0x278 = 0;
@@ -80,31 +90,25 @@ void Warp_804A6DC8::init() {
         field_0x238.y = destY + (mPos.y - myY);
         field_0x238.z = 0.0f;
     } else {
-        field_0x238.x = (f32)((field_0x90 >> 13) & 0x1F8) + destX;
-        field_0x238.y = (f32)((field_0x90 >> 5) & 0x1F8) + destY;
-        field_0x238.z = 0.0f;
+        field_0x238.set((f32)((field_0x90 >> 13) & 0x1F8) + destX, (f32)((field_0x90 >> 5) & 0x1F8) + destY, 0.0f);
     }
-    s32 enc = myLayer >= 8 ? myLayer - 7 : 0;
+    s32 enc = layerCode(field_0x4);
     kind = field_0x90 & 0x7F;
     if (kind == 0x19) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 1);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = field_0x90 & ~0xFF;
     } else if (kind == 0x1A) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 3);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 2;
     } else if (kind == 0x1B) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x18);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x17;
     } else if (kind == 0x1C) {
-        s32 spawnLayer = warpLayer(field_0x90);
         u32 param = pairParam(field_0x90, enc, (s32)(mPos.x - myX), (s32)(mPos.y - myY), 0x17);
-        getActorManager_801F856C()->spawnActor_801F9484('WARP', spawnLayer, &field_0x238, param, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x18;
     }
     kind = field_0x90 & 0x7F;
@@ -114,8 +118,8 @@ void Warp_804A6DC8::init() {
     }
     kind = field_0x90 & 0x7F;
     if (((field_0x90 >> 7) & 1) == 0 && kind != 0xB && kind != 0x1E && kind != 0x1F && kind != 0x20) {
-        mPos.x = mPos.x + (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
-        mPos.y = mPos.y + (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
+        mPos.x += (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
+        mPos.y += (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
     }
     kind = field_0x90 & 0x7F;
     if (kind == 6) {
@@ -199,33 +203,33 @@ Warp_804A6DC8::~Warp_804A6DC8() {
     releaseEmitter_801EE434(mEmitter250);
 }
 
-extern const u32 lbl_8046ABE8[28]; // 'NULL'-ended actor id lists: [0] pushed, [14] and [17] by kind
-
 // Whether the bomb-flower rests: flagged, or its velocity is within 32 * FLT_EPSILON of field_0x364.
 static inline bool bomeAtRest(cls_804A0738* b) {
-    bool rest = false;
-    if (b->field_0x230 == 1) {
-        rest = true;
-    } else {
-        JGeometry::TVec3f ref(b->field_0x364[0], b->field_0x364[1], b->field_0x364[2]);
-        if (epsilonEquals(b->field_0x3c, ref, 32.0f * FLT_EPSILON)) {
-            rest = true;
-        }
+    if (b->field_0x230 == 1 || epsilonEquals(b->field_0x3c, b->field_0x364, 32.0f * FLT_EPSILON)) {
+        return true;
     }
-    return rest;
+    return false;
 }
 
 // 0x80227F50. Every frame: tracks whether a player is near (the sand shake), lets the kind-0x20 warp
 // swallow a player with a drawn box, then pushes the actors lying on the pad (per kind) to the
 // warp's destination (field_0x238) or nudges their velocity.
-// FIXME(shotgun): 88.35 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour clean.
 void Warp_804A6DC8::update() {
-    for (s32 i = 0; i < 4; i++) {
+    // 'NULL'-ended actor id lists, addressed off one base (0x8046ABE8, +0x38, +0x44): the pushed
+    // actors, then two lists chosen by kind.
+    static const u32 lbl_8046ABE8[] = { 'ARRW', 'FIRE', 'HBMB', 'BOME', 'STON', 'GRAS', 'TUBO',
+                                        'YASI', 'HNRY', 'ESRY', 'PCDM', 'SWBM', 'SBAL', 'NULL' };
+    static const u32 lbl_8046AC20[] = { 'HNRY', 'ESRY', 'NULL' };
+    static const u32 lbl_8046AC2C[] = { 'HBMB', 'BOME', 'STON', 'GRAS', 'TUBO', 'YASI',
+                                        'RUPY', 'HNRY', 'ESRY', 'SBAL', 'NULL' };
+    s32 i;
+    for (i = 0; i < 4; i++) {
         field_0x258[i] = fn_8022C76C(i);
         field_0x268[i] = field_0x258[i];
     }
     field_0x256 = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
         if (__fabsf(mPos.x - pos.x) < 32.0f && __fabsf(mPos.y - pos.y) < 32.0f) {
             field_0x256 = 1;
@@ -318,9 +322,9 @@ void Warp_804A6DC8::update() {
     kind = field_0x90 & 0x7F;
     s32 serial;
     if (kind == 4 || kind == 0x20 || kind == 0x24) {
-        serial = fn_801F26CC(lbl_8046ABE8 + 17);
+        serial = fn_801F26CC(lbl_8046AC2C);
     } else if (kind == 6 || kind == 0xB || kind == 0x14) {
-        serial = fn_801F26CC(lbl_8046ABE8 + 14);
+        serial = fn_801F26CC(lbl_8046AC20);
     } else {
         serial = fn_80227290(32.0f, lbl_8046ABE8, -1);
     }
@@ -355,7 +359,8 @@ void Warp_804A6DC8::update() {
     if (actor->mActorId == 'BOME') {
         cls_804A0738* bome = static_cast<cls_804A0738*>(actor);
         getPlayerLayer_8023DE58(bome->field_0x90 & 0xF);
-        if (bomeAtRest(bome)) {
+        // The original compares this result with 1 (cmplwi), the second one below with 0.
+        if (bomeAtRest(bome) == true) {
             return;
         }
         kind = field_0x90 & 0x7F;
@@ -370,11 +375,11 @@ void Warp_804A6DC8::update() {
         if (PSVECMag(&actor->field_0x3c) <= 1.0f) {
             return;
         }
-    }
-    kind = field_0x90 & 0x7F;
-    if (kind == 4 || (u32)(kind - 7) <= 2 || kind == 0x12 || kind == 0x20 || kind == 0x24) {
-        if (actor->mPos.z > 4.0f) {
-            return;
+        kind = field_0x90 & 0x7F;
+        if (kind == 4 || (u32)(kind - 7) <= 2 || kind == 0x12 || kind == 0x20 || kind == 0x24) {
+            if (actor->mPos.z > 4.0f) {
+                return;
+            }
         }
     }
     id = actor->mActorId;
@@ -387,8 +392,11 @@ void Warp_804A6DC8::update() {
                 return;
             }
         }
+        JGeometry::TVec3f offset = actor->mPos;
         JGeometry::TVec3f dest = field_0x238;
-        dest += JGeometry::TVec3f(actor->mPos.x - mPos.x, actor->mPos.y - mPos.y, actor->mPos.z);
+        offset.x -= mPos.x;
+        offset.y -= mPos.y;
+        dest += offset;
         actor->fn_801F349C(warpLayer(field_0x90), &dest);
         return;
     }
@@ -418,10 +426,11 @@ void Warp_804A6DC8::update() {
 extern const f32 lbl_8046AC58[24]; // x shifts of the sand while the warp shakes
 
 // 0x80227CE8.
-// Remaining: original compares (field_0x90 & 0x7F) with a signed cmpwi; reloc names.
-// FIXME: 99.45 %, different + reloc-name; behaviour drift.
+// Remaining: reloc names.
+// FIXME: 99.87 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
-    if ((field_0x90 & 0x7F) == 0x20 && field_0x255 == 0) {
+    s32 kind = field_0x90 & 0x7F;
+    if (kind == 0x20 && field_0x255 == 0) {
         SpriteParams_801F5AE0 params;
         JGeometry::TVec3f saved = mPos;
         mPos += JGeometry::TVec3f(-16.0f, -16.0f, 0.0f);
@@ -432,9 +441,9 @@ void Warp_804A6DC8::draw() {
                 field_0x278 = fn_801CD664(10) - 0x69;
             }
         }
-        params.field_0x10.a = 0xA0;
+        params.field_0x24 = 1;
         params.field_0x1d = -2;
-        params.field_0x20 = 1;
+        params.field_0x10.a = 0xA0;
         params.field_0x2c = 0;
         if (field_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "sand2_smp.bin");
@@ -449,15 +458,13 @@ void Warp_804A6DC8::draw() {
 
 // 0x802278A8. Per player: the player's reaction to standing in the warp's box (by warp kind, the
 // low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (fn_802317F0).
-// FIXME: 88.22 %, missing/extra; behaviour drift.
-// FIXME(shotgun): the kind range test (1..3 via subi) and the box copy's load order still differ.
+// FIXME: 95.27 %, missing/extra; behaviour drift.
+// The box copy and offset keep their values in registers in the original (ours reloads them), and
+// the final grow's operand order differs.
 void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
-        box->i.x = mBox.i.x;
-        box->i.y = mBox.i.y;
-        box->f.x = mBox.f.x;
-        box->f.y = mBox.f.y;
-        box->addPos(mPos.x, mPos.y);
+        box->set(mBox);
+        box->set(box->i.x + mPos.x, box->i.y + mPos.y, box->f.x + mPos.x, box->f.y + mPos.y);
         if (!fn_8022D75C(player) && fn_8022D534(player)) {
             field_0x234[player] = 1;
             continue;
@@ -468,7 +475,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
         }
         if (fn_8022F514(player)) {
             kind = field_0x90 & 0x7F;
-            if (kind <= 3 || kind == 0x17 || kind == 0x18) {
+            if (kind == 0 || (u32)(kind - 1) <= 2 || kind == 0x17 || kind == 0x18) {
                 if (fn_8023B0F4(player, box, field_0x4, false, 8.0f)) {
                     fn_802381B8(player);
                 }
@@ -505,7 +512,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (fn_8022F478(player) && (field_0x90 & 0x7F) != 4) {
+            if (fn_8022F478(player) && warpKind(field_0x90) != 4) {
                 continue;
             }
             kind = field_0x90 & 0x7F;
@@ -514,10 +521,10 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, field_0x90 & 0x7F)) {
+            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
                 continue;
             }
-            if ((field_0x90 & 0x7F) != 4 || !fn_8022F514(player)) {
+            if (warpKind(field_0x90) != 4 || !fn_8022F514(player)) {
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(player);
@@ -527,20 +534,13 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             if (fn_8022CAF8(player) == 4 || fn_8022CAF8(player) == 5) {
                 continue;
             }
-            JGeometry::TVec3f* pos = getPlayerPos_8023E724(player);
-            s32 playerLayer = getPlayerLayer_8023DE58(player);
-            if (!fn_8022BC38(fn_8022F3DC(player), playerLayer, pos)) {
+            if (!fn_8022BC38(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player))) {
                 continue;
             }
             fn_802381B8(fn_8022F3DC(player));
-            pos = getPlayerPos_8023E724(player);
-            playerLayer = getPlayerLayer_8023DE58(player);
-            fn_802348C4(fn_8022F3DC(player), playerLayer, pos);
+            fn_802348C4(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player));
         } else {
-            box->i.x -= 1.0f;
-            box->i.y -= 1.0f;
-            box->f.x += 1.0f;
-            box->f.y += 1.0f;
+            box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
             if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
@@ -550,7 +550,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
 
 // 0x80227530. Per player: runs fn_80226FC8, then marks the player on the warp and, for a player
 // that just stepped on and passes the checks, rewrites the four tiles around it and spawns the effect.
-// FIXME(shotgun): 82.26 %, missing/extra; behaviour near.
+// FIXME(shotgun): 85.93 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
@@ -575,7 +575,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, field_0x90 & 0x7F)) {
+            if (!fn_802317F0(player, warpLayer(field_0x90), &mPos, &field_0x238, warpKind(field_0x90))) {
                 continue;
             }
             if (field_0x254 != 1) {
@@ -594,10 +594,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                 field_0x255 = 1;
             }
         } else {
-            box->i.x -= 1.0f;
-            box->i.y -= 1.0f;
-            box->f.x += 1.0f;
-            box->f.y += 1.0f;
+            box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
             if (!fn_8023B0F4(player, box, field_0x4, false, 0.0f)) {
                 field_0x234[player] = 0;
             }
