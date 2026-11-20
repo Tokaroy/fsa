@@ -745,7 +745,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
 // loop with lfsx and converts 240.0f / 160.0f with fctiwz (ours folds them);
 // registers and stack slots follow.
-// FIXME: 72.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 72.58 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -2092,7 +2092,7 @@ u16 TileMap_804AA858::fn_802F9908(s32 layer, s32 index) {
     return tile;
 }
 
-// FIXME: 84.44 %, scheduling+regalloc; behaviour clean.
+// FIXME: 84.88 %, scheduling+regalloc; behaviour clean.
 // In the unrolled nibble-swap loop the original loads the next
 // source byte before storing the previous one (ours stores, then loads), and the
 // computed length lives in r26 (ours r31; the parameters move up one register).
