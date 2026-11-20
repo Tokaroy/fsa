@@ -326,7 +326,6 @@ void cls_804A0738::update() {
 }
 
 // 0x80168E78.
-// FIXME(shotgun): 95.91 %, missing/extra; behaviour near.
 void cls_804A0738::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0x11;
@@ -335,7 +334,7 @@ void cls_804A0738::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, frame, 0, 2, -1, false, 0, 0);
+    fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
 }
 
 
