@@ -554,20 +554,16 @@ void cls_804A5D60::fn_80209D44() {
     mFlags |= 0x2000;
 }
 
-// FIXME(shotgun): 87.22 %, missing/extra; behaviour near.
-// (the original re-reads mFlags)
 void cls_804A5D60::fn_80209D20(s32 dir, u8 steps) {
-    if (!(mFlags & 0x2000)) {
+    if (!checkFlag(0x2000)) {
         mFlags |= 0x4000;
         field_0x2ac = dir;
         field_0x2b0 = steps;
     }
 }
 
-// FIXME(shotgun): 70.82 %, missing/extra; behaviour near.
-// (the original re-reads mFlags)
 void cls_804A5D60::fn_80209CF4(const JGeometry::TVec2f* target) {
-    if (!(mFlags & 0x2000)) {
+    if (!checkFlag(0x2000)) {
         mFlags |= 0x8000;
         field_0x2c8 = *target;
     }
