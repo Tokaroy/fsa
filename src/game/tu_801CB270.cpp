@@ -444,7 +444,6 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
     return result;
 }
 
-// FIXME(shotgun): 97.12 %, missing/extra; behaviour clean.
 bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
     // An 8-byte position (frame size); fn_80226998 reads only x and y.
     JGeometry::TVec2f p;
@@ -921,7 +920,6 @@ void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
     spawnEmitterHelper(layer, pos, 0x24B, arg3, arg4);
 }
 
-// FIXME(shotgun): 88.94 %, scheduling+regalloc; behaviour clean.
 void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6) {
     spawnEmitterHelper(layer, pos, 0xFF, arg5, arg6);
     spawnEmitterHelper(layer, pos, 0x100, arg5, arg6);
