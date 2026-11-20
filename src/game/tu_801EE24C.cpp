@@ -1101,13 +1101,8 @@ u8 ActorBase_804A5770::fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excl
 // on this layer, with fn_80238548 at the box's centre (moved through
 // fn_801CD0D0 for a player below layer 8 while this is on 8); damage -100
 // means field_0x114 ("atcp"). Returns the bits of the players hit.
-// FIXME: 98.27 %, regalloc-only; behaviour clean.
-// Register allocation (this, damage, arg and the result one
-// register off; the inlined fn_801F2740's result is copied once more), and
-// the 32.0f, 0.5f and 0.0f literals (lbl_8053F748, lbl_8053F74C,
-// lbl_8053F740) pair only once .sdata2 is in order.
 u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
-    u8 result = fn_801F2740(skipPlayer);
+    u32 result = fn_801F2740(skipPlayer);
     if (result) {
         JGeometry::TBox2f screen;
         toScreenBox(&screen, mBox, mPos);
