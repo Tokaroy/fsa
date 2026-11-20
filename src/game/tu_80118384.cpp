@@ -281,7 +281,6 @@ static inline ActorBase_804A5770** uninitializedCopy(ActorBase_804A5770** first,
     return copyDown(first, last, result);
 }
 
-// FIXME: 97.48 %, missing/extra; behaviour near.
 cls_801192AC::~cls_801192AC() {
     mActors.clear();
 }
@@ -325,7 +324,7 @@ void cls_801192AC::fn_801190E4() {
     mActors.reserve(20);
 }
 
-// FIXME(shotgun): 97.68 %, different; behaviour drift.
+// FIXME(shotgun): 99.66 %, different; behaviour drift.
 // The per-frame pass: clears the four player bits of lbl_8053AED0's 0xDD; with field_0x2
 // raises the flag at field_0x30's 0x284 (0.05f at 0x28C); unless paused (field_0x1) runs each
 // listed actor's vfunc_0x54 and, when all their vfunc_0x5C say done and field_0x4 < 0xE,
