@@ -639,7 +639,7 @@ s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
 // 0x80226FC8. Per player: finds the 'YASI' actor the player carries and, once it is moving and
 // inside the warp's box, drops it onto the pad (four tiles around the warp are rewritten).
 // Still differs: the original reads the actor's z again for the subtraction, ours reuses the compared value.
-// FIXME(shotgun): 90.85 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.90 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80226FC8(s32 player) {
     if (field_0x255 == 1) {
         return;
