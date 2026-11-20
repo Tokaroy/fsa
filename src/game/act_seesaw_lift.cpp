@@ -126,8 +126,6 @@ void SeesawLift_804AD348::init() {
     fillTiles(0);
 }
 
-// FIXME: 99.59 %, regalloc-only; behaviour clean.
-// float registers of the box test and the operand order of the layer compare differ
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -136,7 +134,8 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         return 0;
     }
     s32 layer = field_0x4;
-    if (layer != getPlayerLayer_8023DE58(player)) {
+    s32 playerLayer = getPlayerLayer_8023DE58(player);
+    if (playerLayer != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -151,13 +150,11 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
         fn_8022E088(player, i, &rel);
         rel.sub(mPos);
         rel.z = 0.0f;
+        JGeometry::TBox2f box = mBox;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        f32 minX = mBox.i.x;
-        f32 minY = mBox.i.y * cosVal;
-        f32 maxX = mBox.f.x;
-        f32 maxY = mBox.f.y * cosVal;
-        bool inside = rel.x >= minX && rel.y >= minY && rel.x < maxX && rel.y < maxY;
-        if (inside) {
+        box.i.y *= cosVal;
+        box.f.y *= cosVal;
+        if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
             if (field_0x24e && d == 0.0f) {
@@ -177,8 +174,6 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     return 0;
 }
 
-// FIXME: 99.44 %, regalloc-only; behaviour clean.
-// FIXME(shotgun): scheduling of the player loop differs; literal names differ
 s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_8022D75C(player)) {
         return 0;
@@ -187,7 +182,8 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         return 0;
     }
     s32 layer = field_0x4;
-    if (getPlayerLayer_8023DE58(player) != layer) {
+    s32 playerLayer = getPlayerLayer_8023DE58(player);
+    if (playerLayer != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -202,12 +198,10 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         fn_8022E088(player, i, &rel);
         rel.sub(mPos);
         rel.z = 0.0f;
+        JGeometry::TBox2f box = mBox;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        JGeometry::TBox2f box;
-        box.i.x = mBox.i.x;
-        box.i.y = mBox.i.y * cosVal;
-        box.f.x = mBox.f.x;
-        box.f.y = mBox.f.y * cosVal;
+        box.i.y *= cosVal;
+        box.f.y *= cosVal;
         if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
@@ -225,15 +219,12 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     return 0;
 }
 
-// FIXME(shotgun): 97.71 %, different; behaviour clean.
+// FIXME(shotgun): 99.57 %, different; behaviour clean.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
     u8 near = 0;
     s32 moved = 0;
-    bool all = false;
-    if (field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3]) {
-        all = true;
-    }
+    bool all = field_0x246[0] && field_0x246[1] && field_0x246[2] && field_0x246[3];
     if (all && __fabsf(field_0x240) < 33.0f) {
         near = 1;
     }
@@ -285,12 +276,11 @@ void SeesawLift_804AD348::fn_8035AA54() {
 // Not auto-inlined: fn_8035AC84 and fn_8035AE9C call fn_8035A860 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 87.56 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.16 %, regalloc-only; behaviour clean.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
-        f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
-        f32 cosVal = JMath::sincosTable_.cosShort(field_0x230);
-        f32 slide = 0.3f * __fabsf(sinVal) * (__fabsf(weight) / (mBox.f.y * __fabsf(cosVal)));
+        f32 slide = 0.3f * __fabsf(JMath::sincosTable_.sinShort(field_0x230)) *
+                    (__fabsf(weight) / (mBox.f.y * __fabsf(JMath::sincosTable_.cosShort(field_0x230))));
         if (slide > 0.3f) {
             slide = 0.3f;
         }
@@ -737,11 +727,11 @@ void SeesawLift_804AD348::spawnSandEmitters() {
 
 u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     JGeometry::TVec3f rel = *getPlayerPos_8023E724(player);
-    rel.sub(mPos);
-    rel.z = 0.0f;
     JGeometry::TBox2f box(mBox);
     box.i.x += 7.0f;
     box.f.x -= 7.0f;
+    rel.sub(mPos);
+    rel.z = 0.0f;
     return (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) ? true : false;
 }
 
