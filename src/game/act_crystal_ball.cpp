@@ -187,9 +187,8 @@ void CrystalBall_804AB308::fn_80322F44() {
         if (!gGameRoot_8053AAF8->field_0x7e) {
             field_0x288 = 0;
         } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            int hi;
             s32 lo = fn_80236228(field_0x23c);
-            hi = lo;
+            s32 hi = lo;
             s32 base = hi;
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_8022F514(i)) {
@@ -874,9 +873,9 @@ void CrystalBall_804AB308::draw() {
     if (field_0x28c == 0) {
         return;
     }
-    s32 flags = -1;
-    bool held = false;
     SpriteParams_801F5AE0 params;
+    bool held = false;
+    s32 flags = -1;
     params.field_0x10.a = field_0x28c;
     params.field_0x2d = 1;
     params.field_0x1d = 1;
