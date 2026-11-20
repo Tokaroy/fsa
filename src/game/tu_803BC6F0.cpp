@@ -1637,14 +1637,15 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
-    for (s32 i = 0; i < 3; i++) {
+    s32 i;
+    for (i = 0; i < 3; i++) {
         if (i != field_0xa4) {
             *other++ = i;
         }
     }
 
     field_0xd8++;
-    for (s32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
             field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
