@@ -593,7 +593,8 @@ void Cucco_804AB8C0::fn_80331D38() {
 // FIXME(shotgun): 99.13 %, different; behaviour drift.
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
-        if (fn_8022461C(&mPos, field_0x4) == 0x39) {
+        s32 tile = fn_8022461C(&mPos, field_0x4);
+        if (tile == 0x39) {
             if (((field_0x230 == 0 && field_0x258 == 0) || field_0x230 == 1) && mPos.z < 4.0f) {
                 startSound_801F0E34(0x4007F, 0);
                 if (mEmitter2f8 == NULL) {
