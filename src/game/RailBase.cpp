@@ -191,14 +191,15 @@ void cls_800FE3EC::fn_800FDE38() {
 // FIXME(shotgun): 95.97 %, missing/extra; behaviour clean.
 // 0x800FDC70
 JGeometry::TVec3f cls_800FE3EC::fn_800FDC70(JGeometry::TVec3f pos, s32 arg4, u8 index) {
+    JGeometry::TVec3f diff;
     JGeometry::TVec3f target;
     if (index == 0xFF) {
         target = field_0x4[field_0x3]->mPos;
     } else {
         target = field_0x4[index]->mPos;
     }
-    JGeometry::TVec3f diff;
-    diff.sub(target, pos);
+    diff = target;
+    diff.sub(pos);
     f32 len = diff.length();
     if (arg4 == 0) {
         return diff;
