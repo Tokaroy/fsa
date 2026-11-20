@@ -564,7 +564,8 @@ cls_804B13D4::~cls_804B13D4() {
 
 // FIXME(shotgun): 99.49 %, different; behaviour drift.
 void cls_804B13D4::fn_8041FC2C() {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         fn_8041E3B4(i);
         lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
         lbl_80529DEC.field_0xe8[i] = fn_80236100(i);
@@ -608,7 +609,7 @@ void cls_804B13D4::fn_8041FC2C() {
         } else {
             field_0x4->search('Ndata16')->hide();
         }
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x18->search(lbl_8048DE00[i])->hide();
             field_0x18->search(lbl_8048DE40[i])->hide();
             field_0x4->search(lbl_8048DE60[i])->hide();
@@ -623,7 +624,7 @@ void cls_804B13D4::fn_8041FC2C() {
         fn_8041C67C();
     }
     if (field_0x291 != 0) {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
                 fn_80418D08(i, true);
             }
