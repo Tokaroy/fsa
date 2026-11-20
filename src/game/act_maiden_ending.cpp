@@ -70,6 +70,7 @@ void MaidenEnding_804AD5B8::update() {
     (this->*lbl_804AD528[mState])();
 }
 
+// FIXME: 99.89 %, same-text; behaviour clean.
 void MaidenEnding_804AD5B8::draw() {
     if (field_0x240 == 0) {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x250 + field_0x248, NULL, 7, 1.0f, 1.0f);
