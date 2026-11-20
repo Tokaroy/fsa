@@ -2184,15 +2184,14 @@ void ActorBase_804A5770::fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32
     }
 }
 
-// FIXME: 99.80 %, scheduling+regalloc; behaviour clean.
-// Scheduling and float registers in the prologue, as in
-// fn_801EE558; literals @NNN.
 // fn_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
 // with no player found the direction is zero (and the distance unset).
 void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
-    JGeometry::TVec3f best(0.0f, 0.0f, 0.0f);
-    JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-    pos.y = pos.y - pos.z;
+    JGeometry::TVec3f best;
+    JGeometry::TVec3f pos;
+    pos.set(mPos);
+    best.set(0.0f, 0.0f, 0.0f);
+    pos.y -= pos.z;
     JGeometry::TVec3f diff;
     bool first = true;
     f32 bestDist;
