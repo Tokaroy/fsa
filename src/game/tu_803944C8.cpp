@@ -1783,7 +1783,7 @@ void cls_804AF72C::fn_8039F540(int c) {
                         pos = field_0x38.field_0x4c[index];
                     } else {
                         base = window->field_0xf0;
-                        pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
+                        pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
                     }
                     s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                     if (offset > 0) {
@@ -1807,9 +1807,8 @@ void cls_804AF72C::fn_8039F540(int c) {
             }
             field_0x2d0++;
             text[length] = c;
-            s32 shown = field_0x2d0 - (length + 1);
-            if (shown != field_0x2d8->field_0x170) {
-                field_0x2d8->field_0x170 = shown;
+            if (field_0x2d8->field_0x170 != field_0x2d0 - (length + 1)) {
+                field_0x2d8->field_0x170 = field_0x2d0 - (length + 1);
             }
             strcat(field_0x2c0, text);
             strcat(field_0x2c4, text);
