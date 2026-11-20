@@ -674,12 +674,9 @@ void cls_804B1920::fn_8043DB58() {
     }
 }
 
-// FIXME: 99.70 %, regalloc-only; behaviour clean.
-// Registers only: the second loop counts in r28 (ours r29, the first loop's).
 void cls_804B1920::fn_8043D8B4() {
-    int i;
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
                 s32 player = fn_8022EA0C(i);
                 if (getPlayerLayer_8023DE58(player) < 8) {
@@ -691,7 +688,7 @@ void cls_804B1920::fn_8043D8B4() {
             }
         }
     } else {
-        for (i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && getPlayerLayer_8023DE58(i) < 8) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 fn_804408F0(&pos);
@@ -765,9 +762,9 @@ void cls_804B1920::fn_8043D834() {
     }
 }
 
-// Original turns field_0xde & bit into a bool first (neg / or / srwi.; ours: and.),
+// Original tests the bool of field_0xde & bit against zero (srwi.; ours: srwi + cmplwi 1),
 // and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
-// FIXME: 95.59 %, missing/extra; behaviour drift.
+// FIXME: 98.18 %, missing/extra; behaviour drift.
 bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
@@ -779,7 +776,7 @@ bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
         getGameView_802D6A9C()->fn_802D46D8(0, id, true);
     } else if (id == 0x1B5u) {
         u8 bit = 1 << arg1;
-        if (field_0xde & bit) {
+        if (bool(field_0xde & bit) == true) {
             return false;
         }
         field_0xde |= bit;
@@ -866,9 +863,9 @@ void cls_804B1920::fn_8043D39C() {
     }
 }
 
-// FIXME: 99.04 %, scheduling+regalloc + reloc-name; behaviour clean.
-// The original loads field_0x70[0]->field_0x18 (f1) before the 0xFC / 0x100 words for
-// fn_803837A4 (ours after them, in r7); the 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24 (the earlier first uses) are unwritten.
+// FIXME: 99.98 %, reloc-name; behaviour clean.
+// The 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24
+// (the earlier first uses) are unwritten.
 void cls_804B1920::fn_8043D034() {
     if (lbl_8053AED0->field_0x10a) {
         Vec originScreen;
@@ -877,8 +874,8 @@ void cls_804B1920::fn_8043D034() {
         for (int i = 0; i < 12; i++) {
             field_0x40[i]->field_0x22 = 0;
         }
-        fn_803837A4(field_0x78, lbl_8053AED0->field_0xe8, lbl_8053AED0->field_0xfc, lbl_8053AED0->field_0x100,
-                    field_0x70[0]->field_0x18, 1.0f);
+        fn_803837A4(field_0x78, lbl_8053AED0->field_0xe8, field_0x70[0]->field_0x18, lbl_8053AED0->field_0xfc,
+                    lbl_8053AED0->field_0x100, 1.0f);
         for (int i = 0; i < 2; i++) {
             strcpy(((J2DTextBox*)field_0x70[i]->mPane)->getStringPtr(), field_0x78);
         }

@@ -1426,7 +1426,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
 // four digits. Returns the number of lines.
 // Still differs: the lead-byte block (the original keeps the code in p's register and masks the
 // second byte separately) and the order of the last line's terminator store.
-s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
+s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
     char line[100];
