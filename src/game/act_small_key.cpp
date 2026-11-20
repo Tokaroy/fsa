@@ -37,11 +37,10 @@ void SmallKey_804A8CD8::init() {
     field_0x2b1 = 0;
     field_0x2b5 = 0;
     if ((field_0x90 & 0x800) == 0) {
-        field_0x230.x = mPos.x;
-        field_0x230.y = mPos.y;
+        field_0x230.set(mPos.x, mPos.y);
         s32 row = getGameView_802D6A9C()->field_0x18;
         s32 col = getGameView_802D6A9C()->field_0x14;
-        field_0x238 = ((col & 0xFF) << 16) | ((field_0x280 << 24) & 0x1F000000) | ((row & 0xFF) << 8) |
+        field_0x238 = ((field_0x280 << 24) & 0x1F000000) | ((col & 0xFF) << 16) | ((row & 0xFF) << 8) |
                       (field_0x4 & 0xFF);
         field_0x23c = 0;
     } else if (held != 0) {
@@ -56,7 +55,7 @@ void SmallKey_804A8CD8::init() {
         getGameView_802D6A9C()->fn_802D7584(field_0x16c, 1);
         field_0x240 = 2;
         break;
-    case 1:
+    case 2:
         if (fn_8022F9E4(field_0x278, mSerial, false, false)) {
             field_0x240 = 4;
         } else {
@@ -64,42 +63,43 @@ void SmallKey_804A8CD8::init() {
             field_0x23c = field_0x278;
         }
         break;
-    case 2:
+    case 1:
         if (!getGameView_802D6A9C()->fn_802D800C(field_0x270)) {
             field_0x240 = 0;
         } else {
             mAlive = false;
         }
         break;
-    case 3:
+    case 4:
         field_0x240 = 6;
         break;
-    case 4:
+    case 5:
         if (!getGameView_802D6A9C()->fn_802D800C(field_0x270)) {
             field_0x240 = 1;
         } else {
             mAlive = false;
         }
         break;
-    case 5: {
+    case 6: {
         field_0x240 = 4;
         field_0x2b1 = 1;
-        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
+        s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
                     (field_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
             s32 col = getGameView_802D6A9C()->field_0x14;
-            value |= ((row & 0xFF) << 8) | ((col & 0xFF) << 16);
+            value |= ((col & 0xFF) << 16) | ((row & 0xFF) << 8);
         } else {
             value = field_0x2aa << 8;
         }
         JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
         JGeometry::TVec2f b(mPos.x, mPos.y);
         s32 layer = field_0x238;
-        getGameView_802D6A9C()->fn_802D6D70(a, b, value, layer);
+        getGameView_802D6A9C()->fn_802D6D70(b, a, value, layer);
         break;
     }
-    case 6:
+    case 7:
+    case 8:
         if (getGameView_802D6A9C()->fn_802D7544(field_0x16c)) {
             mAlive = false;
             break;
@@ -148,7 +148,7 @@ void SmallKey_804A8CD8::init() {
     field_0x29c = -1;
     s32 row = getGameView_802D6A9C()->field_0x18;
     s32 col = getGameView_802D6A9C()->field_0x14;
-    field_0x2aa = (row & 0xFF) | ((col << 8) & 0xFF00);
+    field_0x2aa = ((col << 8) & 0xFF00) | (row & 0xFF);
     field_0x2a0 = -1;
     if (held == 0) {
         field_0x2a4 = -1;
