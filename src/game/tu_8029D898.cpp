@@ -1116,7 +1116,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
     return result;
 }
 
-// FIXME(shotgun): 76.81 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 91.69 %, missing/extra; behaviour near.
 // The original copies layer into a second register before the fn_802D4C10
 // call and passes that copy in the default and 0xA0 cases.
 void BgRewrite_804A7C98::fn_8029EC84(s32 cell, s32 layer, s32 layerOffset, u16 tileA, u16 tileB) {
