@@ -19,7 +19,7 @@ extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
 // layer 0 gives the view box.
 
 // 0x80169DCC.
-// FIXME(shotgun): 95.79 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.86 %, regalloc-only; behaviour clean.
 void cls_804A0738::init() {
     field_0x98 = (field_0x90 >> 4) & 7;
     field_0x25c = (field_0x90 >> 8) & 1;
@@ -344,7 +344,7 @@ void cls_804A0738::draw() {
 
 // 0x80168C38. Whether a player standing in the (grown) hit box gets caught; every other
 // player is then pushed along.
-// FIXME(shotgun): 83.29 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 87.06 %, missing/extra; behaviour drift.
 bool cls_804A0738::fn_80168C38() {
     const JGeometry::TVec3f* first = getPlayerPos_8023E724(field_0x90);
     s32 found = -1;
