@@ -54,8 +54,8 @@ cls_804AE088::cls_804AE088()
     field_0x358 = NULL;
     field_0x398 = NULL;
     for (s32 i = 0; i < 7; i++) {
+        field_0x35c[i] = NULL;
         if (i < 2) {
-            field_0x35c[i] = NULL;
             field_0x3b4[i] = NULL;
         }
         if (i < 3) {
