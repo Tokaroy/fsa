@@ -155,7 +155,9 @@ static inline bool inViewBox(const JGeometry::TVec2f& pos, s32 layer) {
 // The length of v in the x/y plane, the squares unfused (see GameMath.h);
 // callers pass an operator- temporary by reference, as magnitude().
 static inline f32 planarDistance(const JGeometry::TVec3f& v) {
-    return JGeometry::TUtil<f32>::sqrt(square(v.x) + square(v.y));
+    f32 x2 = v.x * v.x;
+    f32 y2 = v.y * v.y;
+    return JGeometry::TUtil<f32>::sqrt(x2 + y2);
 }
 
 // The per-player cue of the update's join sequence: at frame `at` of the
@@ -2780,10 +2782,6 @@ void Player_804A6F38::fn_8024BDBC() {
 // its item level 2+, fn_8023725C); not while fn_80270C88 or in state 0x3F /
 // 0xC; skipped with field_0xb9a, field_0xcf0 or state 0x3C current or
 // requested; then clears field_0xb9d.
-// FIXME: 99.61 %, regalloc-only; behaviour clean.
-// regalloc-only: the FPRs of the paired-single distance math, and
-// the literals 50 / 80 / 2 (@NNN vs lbl_ until the pool is in order). The layer is
-// read through getLayer() (before getPlayerLayer_8023DE58, as the original).
 void Player_804A6F38::fn_8024BBB8() {
     if (fn_80270C88() || field_0x1240 == 0x3f || field_0x1240 == 0xc) {
         return;
