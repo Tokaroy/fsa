@@ -13,28 +13,27 @@
 #include "game/RotMatrix.h"
 #include "JSystem/JMath/JMath.h"
 
-// FIXME(shotgun): 63.62 %, missing/extra + reloc-name; behaviour near.
-PrincessZeldaDemo_8049D208::PrincessZeldaDemo_8049D208() {
-    field_0x230 = 0;
-    field_0x231 = 0;
-    field_0x234 = 4;
-    field_0x238 = 1;
-    field_0x23c = -1;
-    field_0x240 = 0;
-    field_0x244 = 0;
-    field_0x248 = 0;
-    field_0x24c = 0;
-    field_0x250 = 0;
-    field_0x254 = 0;
-    field_0x258 = 0;
-    field_0x25c = -1;
-    field_0x260[0] = 0;
-    field_0x260[1] = 0;
-    field_0x268[0] = 0.0f;
-    field_0x268[1] = 0.0f;
-    field_0x270 = 0.37f;
-    field_0x274 = 96.0f;
-    field_0x278 = 0.0f;
+PrincessZeldaDemo_8049D208::PrincessZeldaDemo_8049D208()
+    : field_0x230(0),
+      field_0x231(0),
+      field_0x234(4),
+      field_0x238(1),
+      field_0x23c(-1),
+      field_0x240(0),
+      field_0x244(0),
+      field_0x248(0),
+      field_0x24c(0),
+      field_0x250(0),
+      field_0x254(0),
+      field_0x258(0),
+      field_0x25c(-1),
+      field_0x260(0),
+      field_0x264(0),
+      field_0x268(0.0f),
+      field_0x26c(0.0f),
+      field_0x270(0.37f),
+      field_0x274(96.0f),
+      field_0x278(0.0f) {
     field_0x364 = NULL;
     field_0x368 = NULL;
     field_0x36c = NULL;
@@ -70,7 +69,7 @@ extern const s16* lbl_80539EF8[2];
 extern const s32 lbl_80464550[];
 static const s32 lbl_8053C548[] = { 0x232, 0x4B0 };
 
-// FIXME(shotgun): 98.61 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.87 %, reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::init() {
     cls_8049D140::init();
     field_0x234 = field_0x90 & 0xFF;
@@ -93,6 +92,8 @@ void PrincessZeldaDemo_8049D208::init() {
                 break;
             case 2:
                 fn_8010E2D4(0x3d);
+                break;
+            case 3:
                 break;
             }
             field_0x238 = 0x3d;
@@ -122,7 +123,7 @@ void PrincessZeldaDemo_8049D208::vfunc_0x10() {
         }
     } while (node != fn_8011921C()->mActors.mEnd);
 
-    field_0x2d0 = mPos;
+    field_0x288[6] = mPos;
 }
 
 void PrincessZeldaDemo_8049D208::update() {
@@ -438,7 +439,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         }
         break;
     case 32:
-        switch (field_0x260[0]) {
+        switch (field_0x260) {
         case 0:
         case 90:
         case 110:
@@ -456,7 +457,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
             mAnim0.fn_801D1F14(0.0f);
             break;
         }
-        field_0x260[0]++;
+        field_0x260++;
         break;
     case 33: {
         lowerPlayers();
@@ -675,7 +676,7 @@ void PrincessZeldaDemo_8049D208::fn_80110454() {
         break;
     case 19:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        camRange(field_0x2d0.x, field_0x2d0.y - 80.0f, 80.0f + field_0x2d0.y);
+        camRange(field_0x288[6].x, field_0x288[6].y - 80.0f, 80.0f + field_0x288[6].y);
         break;
     case 20: {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
@@ -975,9 +976,9 @@ void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
     Mtx mtx;
     params.field_0x1d = field_0x24c;
     if (field_0x238 == 0x2F) {
-        field_0x260[1] += 0x258;
-        if (field_0x260[1] >= 0x10000) {
-            field_0x260[1] -= 0x10000;
+        field_0x264 += 0x258;
+        if (field_0x264 >= 0x10000) {
+            field_0x264 -= 0x10000;
         }
         mtx[0][0] = 1.0f;
         mtx[0][1] = 0.0f;
@@ -990,7 +991,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 1.0f;
-        mtx[2][3] = 2.0f * JMath::sincosTable_.sinShort(field_0x260[1]);
+        mtx[2][3] = 2.0f * JMath::sincosTable_.sinShort(field_0x264);
         params.mMtx = mtx;
     }
     if (arg == 0x21B) {
@@ -1029,7 +1030,7 @@ void fn_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 rad) {
 // Spins the crystal ring: turns by 0.01 rad per frame and hands the shared crystal its matrix.
 // FIXME(shotgun): 99.53 %, scheduling + reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
-    field_0x268[0] += 0.01f;
+    field_0x268 += 0.01f;
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
@@ -1041,7 +1042,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
         }
     }
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
-    fn_8010F668(rot, &axisZ, field_0x268[0]);
+    fn_8010F668(rot, &axisZ, field_0x268);
     PSMTXConcat(mtx, rot, mtx);
     field_0x240++;
     if (field_0x240 >= 200) {
@@ -1067,7 +1068,6 @@ void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
 
 // Not auto-inlined: vfunc_0x54 calls fn_8010F478 out of line in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 94.40 %, missing/extra + reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
     switch (field_0x234) {
     case 0:
@@ -1076,6 +1076,8 @@ void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
         break;
     case 2:
         fn_8010E2D4(arg);
+        break;
+    case 3:
         break;
     }
     field_0x238 = arg;
@@ -1350,7 +1352,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
         mAnim0.fn_801D1F14(0.0f);
         fn_801C0D70()->field_0x0 &= ~0x400;
         fn_8011921C()->fn_80118384();
-        field_0x260[1] = 0;
+        field_0x264 = 0;
         break;
     case 0x30:
         field_0x274 = 96.0f;
@@ -1448,12 +1450,12 @@ void PrincessZeldaDemo_8049D208::standBelow(const JGeometry::TVec3f& target) {
 
 // State 35: accelerates towards field_0x27c while shrinking; state 36 on arrival.
 void PrincessZeldaDemo_8049D208::flyToGoal() {
-    field_0x268[0] += 0.04f;
-    fn_801CD950(&field_0x268[1], 2.0f, 0.05f);
+    field_0x268 += 0.04f;
+    fn_801CD950(&field_0x26c, 2.0f, 0.05f);
     s16 angle = (s32)(JMath::atanTable_.atan2_(field_0x27c.x - mPos.x, field_0x27c.y - mPos.y) *
                       10430.378f);
-    field_0x3c.x = field_0x268[1] * JMath::sincosTable_.sinShort(angle);
-    field_0x3c.y = field_0x268[1] * JMath::sincosTable_.cosShort(angle);
+    field_0x3c.x = field_0x26c * JMath::sincosTable_.sinShort(angle);
+    field_0x3c.y = field_0x26c * JMath::sincosTable_.cosShort(angle);
     s32 doneX = fn_801CD950(&mPos.x, field_0x27c.x, field_0x3c.x);
     s32 doneY = fn_801CD950(&mPos.y, field_0x27c.y, field_0x3c.y);
     fn_801CD950(&field_0x270, 0.05f, -0.005f);
