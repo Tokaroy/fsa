@@ -296,7 +296,8 @@ inline u8 cls_804A3E44::computeShadowAlpha() {
         val = 255;
         break;
     default: {
-        f32 f = (mPos.z - 100.0f) * -0.01f;
+        f32 scale = 1.0f / (48.0f - 100.0f);
+        f32 f = (mPos.z - 100.0f) * scale;
         if (f > 1.0f) {
             f = 1.0f;
         } else if (f < 0.0f) {
@@ -655,7 +656,6 @@ void cls_804A3E44::vfunc_0xA0() {
     }
 }
 
-// FIXME: 99.75% (regalloc-only: f1/f2 swap; reloc-name)
 void cls_804A3E44::draw() {
     switch (mState) {
     case 0:
