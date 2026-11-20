@@ -2429,10 +2429,9 @@ void FileSelect_804AFF60::fn_803C6690() {
     }
 }
 
-// FIXME: 95.77 %, scheduling+regalloc; behaviour clean.
-// Registers and scheduling only: the original sums the start
-// test as (step + frames) + 1 (ours folds frames + 1 first) and every saved
-// register is one higher than ours.
+// FIXME: 97.18 %, regalloc-only; behaviour clean.
+// Registers only: `end` sits in r19 in the original (r28 in ours), which
+// shifts the other saved registers by one.
 // State 31: unless it came from state 5, the four buttons slide down and fade
 // out one after another (the first two get their labels back, messages 0x11E
 // / 0x11F, as they finish); then the first two slide back in (timings
@@ -2444,8 +2443,8 @@ void FileSelect_804AFF60::fn_803C61C4() {
     s16 inDelay = lbl_8050DB0C.field_0x4c[0xCD];
     s16 inFrames = lbl_8050DB0C.field_0x4c[0xCE];
     s16 inStep = lbl_8050DB0C.field_0x4c[0xCF];
-    if (inDelay < outDelay + (outStep + outFrames + 1)) {
-        inDelay = outDelay + (outStep + outFrames + 1);
+    if (inDelay < outDelay + outStep + outFrames + 1) {
+        inDelay = outDelay + outStep + outFrames + 1;
     }
     s32 end = inDelay + (inFrames + inStep);
     field_0xd8++;
