@@ -242,7 +242,10 @@ void cls_804A6340::vfunc_0x94() {
 
 // FIXME(shotgun): 95.16 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A6340::draw() {
-    if (field_0x54.squared() > JGeometry::TUtilf::epsilon() && (mState >= 3 || mState < 0)) {
+    if (field_0x54.isZero()) {
+        return;
+    }
+    if (mState >= 3 || mState < 0) {
         s32 frame = mAnim.mCel + 0x13D;
         if (mFlags & 0x2000) {
             frame += 4;
