@@ -366,7 +366,7 @@ void cls_804AAD60::fn_80315C84() {
 
 void cls_804AAD60::fn_80315C80() {}
 
-// FIXME(shotgun): 96.64 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.85 %, different; behaviour clean.
 void cls_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
