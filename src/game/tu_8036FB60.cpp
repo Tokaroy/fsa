@@ -750,13 +750,12 @@ void cls_804AE4B0::guidePlayer_80370764() {
 
 // FIXME: 92.92 %, missing/extra + reloc-name; behaviour near.
 s32 cls_804AE4B0::fn_80370200() {
-    s32 i;
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
+    bool any = false;
     f32 best = 100000.0f;
     s32 bestIdx = -1;
-    bool any = false;
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x264[idx].y - field_0x294[i].y,
                                                   field_0x264[idx].x - field_0x294[i].x) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
@@ -785,7 +784,7 @@ s32 cls_804AE4B0::fn_80370200() {
     if (!any) {
         return -1;
     }
-    for (i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         if (hit[i] == 1) {
             f32 d = PSVECDistance(&field_0x264[idx], &field_0x294[i]);
             if (d < best) {
