@@ -232,10 +232,6 @@ TileMap_804AA858::~TileMap_804AA858() {
     delete field_0x238c;
 }
 
-// FIXME: 99.54 %, regalloc-only; behaviour clean.
-// Register allocation in the per-player loop (r4-r8 one off); the
-// grid's .sdata2 literals (lbl_80541528 ... lbl_80541614) are @NNN because the
-// unwritten functions between fn_802F9DA8 and it use earlier pool entries first.
 void TileMap_804AA858::fn_802FF798() {
     for (s32 i = 0; i < 4; i++) {
         field_0x235c[i] = 0;
@@ -279,12 +275,8 @@ void TileMap_804AA858::fn_802FF798() {
         field_0x148[i] = 0;
         field_0x14c[i] = 0;
         field_0x210[i] = 0;
-        s32 y = (i & 2) ? JUTVideo::getManager()->getEfbHeight() - 0x90 : 0x48;
-        s32 x = (i & 1) ? JUTVideo::getManager()->getFbWidth() - 0x60 : 0x18;
-        field_0x1d0[i].field_0x0 = x;
-        field_0x1d0[i].field_0x4 = y;
-        field_0x1d0[i].field_0x8 = 0x48;
-        field_0x1d0[i].field_0xc = 0x48;
+        field_0x1d0[i].set((i & 1) ? JUTVideo::getManager()->getFbWidth() - 0x60 : 0x18,
+                           (i & 2) ? JUTVideo::getManager()->getEfbHeight() - 0x90 : 0x48, 0x48, 0x48);
         field_0x217[i] = 0;
     }
     field_0x216 = 0;
