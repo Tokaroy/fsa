@@ -676,7 +676,17 @@ void KaeporaGaeboraEnding_804ADAC8::update() {
     }
 }
 
-// FIXME(shotgun): 99.72 %, operands; behaviour clean.
+inline void KaeporaGaeboraEnding_804ADAC8::drawOther() {
+    SpriteParams_801F5AE0 params;
+    params.field_0x1f = 0;
+    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
+    params.field_0x10.a = 200;
+    s32 frame = field_0x23C + 0x25C;
+    if (mSpriteParams.mMtx == NULL) {
+        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+    }
+}
+
 void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x2B0 == 0) {
         return;
@@ -684,19 +694,10 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x270 == 0) {
         if (mPtmfIndex == 1) {
             fn_803616FC();
-            return;
-        }
-        if (mPtmfIndex == 0) {
+        } else if (mPtmfIndex == 0) {
             fn_80361424();
-            return;
-        }
-        SpriteParams_801F5AE0 params;
-        params.field_0x1f = 0;
-        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x25C, &params, -1, 1.0f, 1.0f);
-        params.field_0x10.a = 200;
-        s32 frame = field_0x23C + 0x25C;
-        if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        } else {
+            drawOther();
         }
     } else {
         SpriteParams_801F5AE0 params;
