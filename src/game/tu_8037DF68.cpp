@@ -328,7 +328,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         return fn_8038A984(player, actor, msg, serial, flags);
     }
 
-    // FIXME(shotgun): 98.93 %, missing/extra; behaviour clean.
+    // FIXME(shotgun): 99.64 %, missing/extra; behaviour clean.
     // regalloc (the 0x2F branch)
     bool fn_8038BD08(s32 player, u32 msg, s32 layer, JGeometry::TVec3f pos, u16 flags) {
         s32 window = windowIndex(player);
@@ -1421,7 +1421,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 95.74 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.58 %, missing/extra + reloc-name; behaviour near.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
