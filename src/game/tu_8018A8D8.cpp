@@ -331,7 +331,6 @@ void cls_804A1E50::fn_8018E30C(s32 anim) {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-// FIXME(shotgun): 99.88 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018DFCC() {
     f32 x = mPos.x;
     f32 y = mPos.y;
@@ -372,7 +371,7 @@ void cls_804A1E50::fn_8018DFCC() {
         }
         break;
     case 2:
-        y += 44.0f;
+        y += 60.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
         }
@@ -396,7 +395,7 @@ void cls_804A1E50::fn_8018DFCC() {
         break;
     case 4:
     case 6:
-        y += 60.0f;
+        y += 44.0f;
         if (field_0x328 != NULL) {
             field_0x328->mGlobalTrs.set(x, y, z);
         }
