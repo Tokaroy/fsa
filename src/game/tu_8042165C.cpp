@@ -1168,7 +1168,7 @@ void cls_804B146C::fn_80423248(s32 player) {
     s32 val = lbl_80529DEC.field_0xe8[player];
     s32 start = 0;
     const ResTIMG* tex;
-    if (lbl_80529DEC.field_0xe8[player] > 9999) {
+    if (9999 < lbl_80529DEC.field_0xe8[player]) {
         val = 9999;
     }
     if (val < 0) {
