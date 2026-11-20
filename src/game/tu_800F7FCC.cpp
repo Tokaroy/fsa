@@ -1085,7 +1085,6 @@ static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
     m[2][2] = z;
 }
 
-// FIXME(shotgun): 99.36 %, regalloc-only; behaviour clean.
 void cls_8049C718::draw() {
     f32 s = JMath::sincosTable_.sinShort((s16)mWobble);
     f32 a = 0.4f * s;
@@ -1247,7 +1246,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     }
 }
 
-// FIXME(shotgun): 86.22 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 87.73 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     cls_8049C718* parent = mParent;
     if (parent->mSlotUsed[mIndex] != 0) {
