@@ -57,6 +57,8 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
     return v | kind;
 }
 
+static void uncoverSandWarp(Warp_804A6DC8* warp);
+
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
@@ -249,26 +251,7 @@ void Warp_804A6DC8::update() {
     }
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20) {
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
-                JGeometry::TVec3f pos = *fn_8023A478(i);
-                if (__fabsf(mPos.x - pos.x) < 64.0f && __fabsf(mPos.y - pos.y) < 64.0f) {
-                    JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p0, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p1, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p2, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p3, i, field_0x4, 0xC);
-                    if (field_0x255 == 0) {
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
-                        field_0x255 = 1;
-                    }
-                    break;
-                }
-            }
-        }
+        uncoverSandWarp(this);
     }
     if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
         return;
@@ -423,12 +406,13 @@ void Warp_804A6DC8::update() {
     actor->fn_801F349C(warpLayer(field_0x90), &field_0x238);
 }
 
-extern const f32 lbl_8046AC58[24]; // x shifts of the sand while the warp shakes
-
 // 0x80227CE8.
-// Remaining: reloc names.
-// FIXME: 99.87 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
+    static const f32 lbl_8046AC58[24] = {
+        0.0f, 1.0f,  2.0f,  1.0f,  0.0f, -0.9f, -1.8f, -0.9f,
+        0.0f, 0.7f,  1.4f,  0.7f,  0.0f, -0.6f, -1.2f, -0.6f,
+        0.0f, 0.4f,  0.8f,  0.4f,  0.0f, -0.3f, -0.6f, -0.3f,
+    };
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20 && field_0x255 == 0) {
         SpriteParams_801F5AE0 params;
@@ -453,6 +437,29 @@ void Warp_804A6DC8::draw() {
     } else {
         mPos.y += 0.1f;
         mPos.y -= 0.1f;
+    }
+}
+
+static void uncoverSandWarp(Warp_804A6DC8* warp) {
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
+            JGeometry::TVec3f pos = *fn_8023A478(i);
+            if (__fabsf(warp->mPos.x - pos.x) < 64.0f && __fabsf(warp->mPos.y - pos.y) < 64.0f) {
+                JGeometry::TVec3f p0(warp->mPos.x - 8.0f, warp->mPos.y - 8.0f, 0.0f);
+                gBgRewrite_8053AC98->fn_802A3948(&p0, i, warp->field_0x4, 0xC);
+                JGeometry::TVec3f p1(warp->mPos.x + 8.0f, warp->mPos.y - 8.0f, 0.0f);
+                gBgRewrite_8053AC98->fn_802A3948(&p1, i, warp->field_0x4, 0xC);
+                JGeometry::TVec3f p2(warp->mPos.x - 8.0f, warp->mPos.y + 8.0f, 0.0f);
+                gBgRewrite_8053AC98->fn_802A3948(&p2, i, warp->field_0x4, 0xC);
+                JGeometry::TVec3f p3(warp->mPos.x + 8.0f, warp->mPos.y + 8.0f, 0.0f);
+                gBgRewrite_8053AC98->fn_802A3948(&p3, i, warp->field_0x4, 0xC);
+                if (warp->field_0x255 == 0) {
+                    spawnEmitter_8013CC50(warp->field_0x4, &warp->mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+                    warp->field_0x255 = 1;
+                }
+                break;
+            }
+        }
     }
 }
 
