@@ -55,14 +55,14 @@ cls_804A4C58::cls_804A4C58() : mSeq2a8(), field_0x2d0(0.0f) {
     mEmitter2c[3] = NULL;
 }
 
-// Only scheduling differs: ours loads -1 for the serial before the fn_801DAC6C call.
 // FIXME: 95.98 %, scheduling+regalloc; behaviour clean.
 cls_804A4C58::~cls_804A4C58() {
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitter2c[i]);
         mEmitter2c[i] = NULL;
     }
-    fn_801DAC6C()->mSerial0 = -1;
+    Singleton_801DAC6C* frostare = fn_801DAC6C();
+    frostare->mSerial0 = -1;
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
