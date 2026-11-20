@@ -617,7 +617,7 @@ void cls_804A51E4::fn_801E1300() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 92.53 %, missing/extra; behaviour near.
+// FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         field_0x2a8 = -1;
@@ -773,7 +773,7 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 96.67 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.00 %, different; behaviour near.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -873,7 +873,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 96.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.19 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
@@ -907,7 +907,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 96.34 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.62 %, missing/extra; behaviour drift.
 void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
