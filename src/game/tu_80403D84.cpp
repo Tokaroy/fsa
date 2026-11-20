@@ -2501,11 +2501,13 @@ void MapScreen_804B1288::fn_8040873C() {
 }
 
 // FIXME: 90.52 %, missing/extra; behaviour near.
-// Missing/extra: for the selected row's text-box move the original loads the
-// y operands (getBounds()->i.y, row[0]->field_0xc, row[2]->field_0xc) before the second
-// getBounds call and adds them after it (f29-f31 saved, five FPRs); ours computes y before
-// that call (three saved FPRs, 8 instructions fewer). Everything else is the same.
+// Scheduling: in the else branch the original loads the second float argument of
+// resize/move (f2) before the first (f1); ours loads f1 first.
 void MapScreen_804B1288::fn_804083D8() {
+    f32 boundsY;
+    f32 iconY;
+    f32 textY;
+    f32 boundsX;
     f32 scaleX = field_0x28[0][0]->field_0x18 / 72.0f;
     f32 scaleY = field_0x28[0][0]->field_0x1c / 36.0f;
     field_0x42e = 30;
@@ -2513,9 +2515,12 @@ void MapScreen_804B1288::fn_804083D8() {
         if (i == field_0x340) {
             field_0x28[i][0]->fn_80402CE0(1.0f / scaleX, 1.0f / scaleY);
             field_0x28[i][1]->mPane->resize(72.0f, 36.0f);
-            field_0x28[i][2]->mPane->move(
-                field_0x28[i][2]->field_0x8 + (field_0x28[i][0]->field_0x8 - field_0x28[i][0]->mPane->getBounds()->i.x),
-                field_0x28[i][2]->field_0xc + (field_0x28[i][0]->field_0xc - field_0x28[i][0]->mPane->getBounds()->i.y));
+            boundsY = field_0x28[i][0]->mPane->getBounds()->i.y;
+            iconY = field_0x28[i][0]->field_0xc;
+            textY = field_0x28[i][2]->field_0xc;
+            boundsX = field_0x28[i][0]->mPane->getBounds()->i.x;
+            field_0x28[i][2]->mPane->move(field_0x28[i][2]->field_0x8 + (field_0x28[i][0]->field_0x8 - boundsX),
+                                          textY + (iconY - boundsY));
             ((J2DPicture*)field_0x28[i][0]->mPane)->setBlackWhite(field_0x328[3], field_0x310[3]);
             ((J2DPicture*)field_0x28[i][1]->mPane)->setBlackWhite(field_0x328[4], field_0x310[4]);
             ((J2DTextBox*)field_0x28[i][2]->mPane)->setBlackWhite(field_0x328[5], field_0x310[5]);
