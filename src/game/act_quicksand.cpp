@@ -85,8 +85,6 @@ cls_804A6270::~cls_804A6270() {
     fn_80212AC0()->fn_80212BA0(mSerial);
 }
 
-// FIXME(shotgun): 98.67 %, missing/extra; behaviour near.
-// its literals fixed .sdata2 to 94.74 %
 void cls_804A6270::init() {
     EnemyBase_804A4808::init();
     s32 kind = field_0x90 & 7;
@@ -164,14 +162,10 @@ void cls_804A6270::init() {
     if (field_0x2ac == 0) {
         if (mFlags & 0x4000) {
             mState = 5;
-            field_0x54.x = field_0x394;
-            field_0x54.y = field_0x394;
-            field_0x54.z = field_0x394;
+            field_0x54.set(field_0x394, field_0x394, field_0x394);
         } else {
             mState = 3;
-            field_0x54.x = field_0x390;
-            field_0x54.y = field_0x390;
-            field_0x54.z = field_0x390;
+            field_0x54.set(field_0x390, field_0x390, field_0x390);
         }
         s32 viewSerial = field_0x2b8;
         if (viewSerial != 0) {
@@ -230,20 +224,7 @@ void cls_804A6270::init() {
         active = true;
     }
     if (active) {
-        f32 scaleX = field_0x54.x;
-        f32 field398 = field_0x398;
-        f32 field3a8 = field_0x3a8;
-        GameRootSub20_801902C0* shared = fn_801902C0();
-        if (shared->mQuicksandCount < 10) {
-            GameRootSub20_801902C0::QuicksandEntry& entry = shared->mQuicksandEntries[shared->mQuicksandCount];
-            entry.mPos.x = mPos.x;
-            entry.mPos.y = mPos.y;
-            entry.mPos.z = mPos.z;
-            entry.field_0xc = scaleX;
-            entry.field_0x10 = field398;
-            entry.field_0x14 = field3a8;
-            shared->mQuicksandCount++;
-        }
+        fn_801902C0()->addQuicksand(mPos, field_0x54.x, field_0x398, field_0x3a8);
     }
 }
 
@@ -445,26 +426,7 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
         active = true;
     }
     if (active) {
-        // Read before the fn_801902C0 call (kept in f29-f31 across it); the
-        // declaration order gives the original's register assignment (as the
-        // stack-slot rule in RULES_CARD; read in the natural order: 99.74 %).
-        f32 scaleX;
-        f32 field398;
-        f32 field3a8;
-        field3a8 = field_0x3a8;
-        field398 = field_0x398;
-        scaleX = field_0x54.x;
-        GameRootSub20_801902C0* shared = fn_801902C0();
-        if (shared->mQuicksandCount < 10) {
-            GameRootSub20_801902C0::QuicksandEntry& entry = shared->mQuicksandEntries[shared->mQuicksandCount];
-            entry.mPos.x = mPos.x;
-            entry.mPos.y = mPos.y;
-            entry.mPos.z = mPos.z;
-            entry.field_0xc = scaleX;
-            entry.field_0x10 = field398;
-            entry.field_0x14 = field3a8;
-            shared->mQuicksandCount++;
-        }
+        fn_801902C0()->addQuicksand(mPos, field_0x54.x, field_0x398, field_0x3a8);
     }
     active = false;
     if (mState != 0 && field_0x54.x != 0.0f && field_0x398 != 0.0f) {
@@ -475,7 +437,7 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.22 %, missing/extra; behaviour near.
 void cls_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
@@ -518,7 +480,8 @@ void cls_804A6270::fn_802110A8() {
             }
         }
         if (field_0x38c >= 0) {
-            if (!(field_0x3c.squared() <= 32.0f * JGeometry::TUtilf::epsilon())) {
+            // the original materialises isZero() as a bool (mfcr; extrwi.) before the branch
+            if (!field_0x3c.isZero()) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x38c);
                 if (actor != NULL) {
                     actor->mPos = actor->mPos + field_0x3c;
