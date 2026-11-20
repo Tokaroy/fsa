@@ -37,6 +37,8 @@ public:
     void fn_8035FCD8();
     void fn_8035FD6C();
     bool advanceStep();
+    bool advanceStep(s32 idx);
+    void resetStep(s32 idx);
     void fn_8035FF70();
     void fn_8036003C();
     void fn_80360914();
