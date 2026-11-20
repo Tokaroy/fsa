@@ -249,8 +249,23 @@ static inline bool openById(s32 window, s32 player, u32 msg, s32 serial, JGeomet
     return lbl_8053AD78->fn_8038A42C(window, player, fn_803846BC(msg), serial, pos, flags);
 }
 
-// FIXME(shotgun): 96.30 %, missing/extra; behaviour clean.
-// (scheduling of the id lookups)
+static inline void syncOtherPlayers(s32 player, s32 serial, u16 flags) {
+    s32 self = windowIndex(player);
+    for (s32 i = 0; i < 4; i++) {
+        if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
+            if (fn_8022CAF8(i) == 4) {
+                fn_8022FBB8(fn_8022EA0C(i), serial);
+            } else {
+                fn_8022FBB8(i, serial);
+            }
+            lbl_8053AD78->mWindows[windowIndex(i)]->field_0x24 = 9;
+            if (!(flags & 4) && !(flags & 2)) {
+                fn_802308E0(i);
+            }
+        }
+    }
+}
+
 // fn_8038AD24 for a message id: msg is looked up in the INF1 entries, mapped, and turned back
 // into its id; the no-position fallback is fn_8038C60C.
 bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
@@ -267,7 +282,7 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         if (text[0] == 0x1A && text[2] == 2 && text[4] == 5) {
             next = operand(text, 5);
         }
-        msg = lbl_8053AD78->mBmg->inf1.entries[fn_80383EB0(w, next)].id;
+        msg = fn_803846A4(fn_80383EB0(w, next));
     }
     if (gGameRoot_8053AAF8->field_0x7e == 0 || (flags & 0x40)) {
         if (layer < 8) {
@@ -286,48 +301,20 @@ bool fn_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f p
         }
         return lbl_8053AD78->fn_8038C60C(window, player, msg, serial, flags);
     }
-    u32 found = fn_803846BC(msg);
-    s32 w = windowIndex(window);
-    const char* text = messageText(found);
-    bool sync;
-    if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x1F) {
-        sync = true;
-    } else if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-               gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(w)) >= 8) {
-        lbl_8053AD78->field_0xed = 1;
-        lbl_8053AD78->field_0x110 = w;
-        lbl_8053AD78->field_0xee = text[5];
-        sync = true;
-    } else {
-        sync = false;
-    }
-    if (sync) {
-        if (!lbl_8053AD78->fn_80389964(window, fn_803846BC(msg), flags) ||
-            !openById(window, player, msg, serial, pos, flags)) {
-            return false;
-        }
-            // Every other player that takes part is put into state 9 for the same serial.
-            s32 self = windowIndex(player);
-            for (s32 i = 0; i < 4; i++) {
-                if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
-                    if (fn_8022CAF8(i) == 4) {
-                        fn_8022FBB8(fn_8022EA0C(i), serial);
-                    } else {
-                        fn_8022FBB8(i, serial);
-                    }
-                    lbl_8053AD78->mWindows[windowIndex(i)]->field_0x24 = 9;
-                    if (!(flags & 4) && !(flags & 2)) {
-                        fn_802308E0(i);
-                    }
-                }
-            }
+    if (checkSync(window, fn_803846BC(msg))) {
+        if (lbl_8053AD78->fn_80389964(window, fn_803846BC(msg), flags) &&
+            openById(window, player, msg, serial, pos, flags)) {
+            syncOtherPlayers(player, serial, flags);
             return true;
         }
+    } else {
         if (canOpen(window)) {
             return openById(window, player, msg, serial, pos, flags);
         }
         return lbl_8053AD78->fn_8038C60C(window, player, msg, serial, flags);
     }
+    return false;
+}
 
     bool MessageManager_804AF070::fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u16 flags) {
         u32 i = 0;
@@ -421,23 +408,6 @@ bool MessageManager_804AF070::fn_8038B8A8(s32 player, s32 actor, s32 value, u16 
         }
     }
     return false;
-}
-
-static inline void syncOtherPlayers(s32 player, s32 serial, u16 flags) {
-    s32 self = windowIndex(player);
-    for (s32 i = 0; i < 4; i++) {
-        if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
-            if (fn_8022CAF8(i) == 4) {
-                fn_8022FBB8(fn_8022EA0C(i), serial);
-            } else {
-                fn_8022FBB8(i, serial);
-            }
-            lbl_8053AD78->mWindows[windowIndex(i)]->field_0x24 = 9;
-            if (!(flags & 4) && !(flags & 2)) {
-                fn_802308E0(i);
-            }
-        }
-    }
 }
 
 bool fn_8038AD24(s32 player, u32 msg, s32 serial, s32 layer, JGeometry::TVec3f pos, u16 flags) {
@@ -1090,16 +1060,17 @@ bool fn_8038470C(s32 player, u32 msg) {
 u32 fn_803846BC(u32 msg) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     u32 i = 0;
+    u32 index;
     for (; i < inf1->count; i++) {
         if (inf1->entries[i].id == msg) {
-            msg = i;
+            index = i;
             break;
         }
     }
     if (i >= inf1->count) {
-        msg = 0x12B;
+        index = 0x12B;
     }
-    return msg;
+    return index;
 }
 
 u16 fn_803846A4(s32 index) {
