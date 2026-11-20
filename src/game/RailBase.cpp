@@ -276,7 +276,8 @@ u8 cls_800FE3EC::fn_800FD894(s32 layer, u8* out, s32 max) {
 // 0x800FD818
 void cls_800FE3EC::fn_800FD818(s32 dir) {
     u8 count = field_0x2;
-    s16 pos = field_0x3 + (s8)dir;
+    s16 pos = field_0x3;
+    pos += (s8)dir;
     u32 mode = field_0x4[count - 1]->field_0x90 & 3;
     if (pos < 0) {
         if (mode == 1) {
@@ -287,8 +288,9 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
         return;
     }
     if (pos >= count) {
+        pos -= count;
         if (mode == 1) {
-            field_0x3 = pos - count;
+            field_0x3 = pos;
         } else {
             field_0x3 = count - 1;
         }
