@@ -465,7 +465,6 @@ s32 OBJLift_804ACA00::fn_80350974() {
     return count;
 }
 
-// FIXME(shotgun): 97.91 %, scheduling+regalloc; behaviour drift.
 s32 OBJLift_804ACA00::fn_803506E0() {
     static JGeometry::TVec2f lbl_8050AED8[4] = {
         JGeometry::TVec2f(32.0f, 0.0f),
@@ -473,29 +472,30 @@ s32 OBJLift_804ACA00::fn_803506E0() {
         JGeometry::TVec2f(0.0f, 32.0f),
         JGeometry::TVec2f(0.0f, -32.0f),
     };
+    s32 d;
     s32 prev = field_0x270;
     field_0x270 = 0;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8022F514(i) == true && fn_8022CAF8(i) == 5) {
             continue;
         }
-        for (s32 d = 0; d < 4; d++) {
-            f32 px = lbl_8050AED8[d].x + mPos.x;
-            f32 py = lbl_8050AED8[d].y + mPos.y;
-            s32 bit = 1 << d;
-            s32 held = prev & bit;
+        for (d = 0; d < 4; d++) {
+            JGeometry::TVec2f pos = lbl_8050AED8[d];
+            pos.x += mPos.x;
+            pos.y += mPos.y;
+            s32 held = prev & (1 << d);
             f32 limit = 64.0f;
             if (held) {
                 limit = square(8.0f + field_0x260);
             }
             JGeometry::TVec3f* pl = getPlayerPos_8023E724(i);
-            f32 dx = px - pl->x;
-            f32 dy = py - pl->y;
+            f32 dx = pos.x - pl->x;
+            f32 dy = pos.y - pl->y;
             if (square(dx) + square(dy) < limit && getPlayerPos_8023E724(i)->z == 0.0f) {
                 if (held == 0) {
                     startSound_801F0E34(0x30009, 0);
                 }
-                field_0x270 |= bit;
+                field_0x270 |= (1 << d);
             }
         }
     }
