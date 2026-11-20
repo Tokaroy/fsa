@@ -24,15 +24,14 @@ static inline void spawnDust(cls_804A6340* self) {
 
 cls_804A6340::cls_804A6340() {}
 
-// FIXME(shotgun): 96.48 %, missing/extra + reloc-name; behaviour near.
 void cls_804A6340::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
     mBox.i.y = 1.0f;
     mBox.f.x = -1.0f;
     mBox.f.y = -1.0f;
-    mBox2.i.x = 2.0f;
-    mBox2.i.y = 2.0f;
+    mBox2.i.x = -8.0f;
+    mBox2.i.y = -8.0f;
     mBox2.f.x = 8.0f;
     mBox2.f.y = 8.0f;
     field_0x80.i.x = 1.0f;
@@ -55,7 +54,7 @@ void cls_804A6340::init() {
     mAnim.startAnim_801D22DC(1, 2, false);
 }
 
-// FIXME(shotgun): 98.40 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.54 %, regalloc-only; behaviour clean.
 void cls_804A6340::fn_80213774(int mode) {
     switch (mode) {
     case 0:
@@ -141,12 +140,14 @@ void cls_804A6340::fn_80213774(int mode) {
     }
 }
 
-// FIXME(shotgun): 95.18 %, missing/extra; behaviour drift.
+// FIXME: 99.92 %, reloc-name; behaviour drift.
 void cls_804A6340::vfunc_0x90(u8 mapHit) {
     if (mState >= 3 || mState < 0) {
         fn_801F2B20(0);
     }
     switch (mState) {
+    case 0:
+        break;
     case 1:
         if (mFlags & 0x4000) {
             fn_80213774(0);
@@ -207,8 +208,6 @@ void cls_804A6340::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 90.73 %, missing/extra; behaviour near.
-// FIXME(shotgun): missing/extra: the cel branch is laid out as beq + b in the original.
 void cls_804A6340::vfunc_0x94() {
     if (mState == 4 && mAnim.mAnim == 1 && mAnim.fn_801D217C()) {
         startSound_801F0E34(0x50035, 0);
@@ -217,16 +216,13 @@ void cls_804A6340::vfunc_0x94() {
     switch (mState) {
     case 3:
     case 6:
-        if (mAnim.mCel == 0) {
-            mBox.i.x = 1.0f;
-            mBox.i.y = 1.0f;
-            mBox.f.x = -1.0f;
-            mBox.f.y = -1.0f;
-        } else {
-            mBox.i.x = -8.0f * field_0x54.x;
-            mBox.i.y = -8.0f * field_0x54.y;
-            mBox.f.x = 8.0f * field_0x54.x;
-            mBox.f.y = 8.0f * field_0x54.y;
+        switch (mAnim.mCel) {
+        case 0:
+            mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
+            break;
+        default:
+            mBox.set(-8.0f * field_0x54.x, -8.0f * field_0x54.y, 8.0f * field_0x54.x, 8.0f * field_0x54.y);
+            break;
         }
         if (mState == 0) {
             field_0xb0 = 0;
@@ -245,9 +241,12 @@ void cls_804A6340::vfunc_0x94() {
     }
 }
 
-// FIXME(shotgun): 95.16 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.81 %, missing/extra + reloc-name; behaviour near.
 void cls_804A6340::draw() {
-    if (field_0x54.squared() > JGeometry::TUtilf::epsilon() && (mState >= 3 || mState < 0)) {
+    if (field_0x54.isZero()) {
+        return;
+    }
+    if (mState >= 3 || mState < 0) {
         s32 frame = mAnim.mCel + 0x13D;
         if (mFlags & 0x2000) {
             frame += 4;
