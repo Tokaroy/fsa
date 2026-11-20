@@ -93,7 +93,7 @@ inline void cls_804A7AE0::bakeTiles() {
 }
 
 // Camera focus offsets (right, left, down, up).
-static const f32 lbl_8046C238[4][3] = {
+static const Vec lbl_8046C238[4] = {
     {128.0f, 0.0f, 0.0f}, {-128.0f, 0.0f, 0.0f}, {0.0f, 128.0f, 0.0f}, {0.0f, -128.0f, 0.0f},
 };
 
@@ -549,8 +549,35 @@ void cls_804A7AE0::fn_80299AD0() {
     }
 }
 
-// FIXME(shotgun): 97.61 %, missing/extra; behaviour drift.
-// layer expression compiles branch-free (cntlzw) in the original, 4 instructions
+// The camera focus point: mPos moved 128 units in direction `idx` of lbl_8046C238 (the opposite
+// one while field_0x2cc is -1). No copy of its own: fn_80299720 inlines it (its two vectors lie
+// below the caller's on the stack, in reverse order).
+inline void cls_804A7AE0::addCameraFocus(s32 idx) {
+    JGeometry::TVec3f focus = mPos;
+    if (mSerialCountC > 0 && field_0x2cc == -1) {
+        idx ^= 1;
+    }
+    const Vec& dir = lbl_8046C238[idx];
+    JGeometry::TVec3f offset;
+    offset.x = dir.x;
+    offset.y = dir.y;
+    offset.z = dir.z;
+    focus.add(offset);
+    gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+}
+
+// Moves every door of mSerialsD by `delta`. No copy of its own: fn_80299720 inlines it (its
+// counter and the caller's vector take the registers and stack slots of an inlined body).
+inline void cls_804A7AE0::moveDoors(const JGeometry::TVec3f& delta) {
+    for (s32 i = 0; i < mSerialCountD; i++) {
+        Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
+        if (door != NULL) {
+            door->mPos = door->mPos + delta;
+            door->fn_802C59B0(&delta);
+        }
+    }
+}
+
 void cls_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
         field_0x248++;
@@ -575,25 +602,9 @@ void cls_804A7AE0::fn_80299720() {
             gBgRewrite_8053AC98->fn_802A1050(&p);
             p.x += 16.0f;
         }
-        JGeometry::TVec3f focus = mPos;
-        s32 idx = 3;
-        if (mSerialCountC > 0 && field_0x2cc == -1) {
-            idx ^= 1;
-        }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
-        focus.add(offset);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        addCameraFocus(3);
         if (field_0x250.isZero()) {
-            JGeometry::TVec3f push(0.0f, -16.0f, 0.0f);
-            for (s32 i = 0; i < mSerialCountD; i++) {
-                Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
-                if (door != NULL) {
-                    JGeometry::TVec3f q = door->mPos;
-                    q.add(push);
-                    door->mPos = q;
-                    door->fn_802C59B0(&push);
-                }
-            }
+            moveDoors(JGeometry::TVec3f(0.0f, -16.0f, 0.0f));
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
@@ -656,7 +667,7 @@ void cls_804A7AE0::fn_80299374() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.squared() <= JGeometry::TUtil<f32>::epsilon()) {
@@ -730,7 +741,7 @@ void cls_804A7AE0::fn_80298FC4() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.squared() <= 32.0f * FLT_EPSILON) {
@@ -804,7 +815,7 @@ void cls_804A7AE0::fn_80298C18() {
         if (mSerialCountC > 0 && field_0x2cc == -1) {
             idx ^= 1;
         }
-        JGeometry::TVec3f offset(lbl_8046C238[idx][0], lbl_8046C238[idx][1], lbl_8046C238[idx][2]);
+        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
         focus.add(offset);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
         if (field_0x250.isZero()) {
