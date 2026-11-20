@@ -300,6 +300,7 @@ public:
     // Inline only (game/tu_801F6058.cpp): deletes mActors[slot] and pulls
     // mActorEnd down past trailing empty slots.
     void deleteSlot(s32 slot);
+    ActorBase_804A5770* getActor(s32 slot) { return mActors[slot]; }
 
     /* 0x0000 vtable (0x804A5800) */
     /* 0x0004 */ JKRHeap* mHeap; // JKRUnitHeap::create(...) in the

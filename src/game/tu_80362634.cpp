@@ -775,7 +775,7 @@ void cls_804ADF28::fn_80364F00() {
     }
 }
 
-// FIXME(shotgun): 98.68 %, different; behaviour drift.
+// FIXME(shotgun): 99.92 %, regalloc-only; behaviour clean.
 void cls_804ADF28::fn_80364D0C() {
     ActorBase_804A5770* owl;
     s32 slot = field_0x24c;
@@ -790,7 +790,7 @@ void cls_804ADF28::fn_80364D0C() {
         }
     } else {
         s32 oldDir = field_0x23c;
-        owl = getActorManager_801F856C()->mActors[slot];
+        owl = getActorManager_801F856C()->getActor(slot);
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
@@ -1200,30 +1200,25 @@ void cls_804ADF28::fn_80363880() {
     }
 }
 
-// FIXME(shotgun): 95.73 %, missing/extra; behaviour drift.
 void cls_804ADF28::fn_80363664() {
     if (field_0x248 == 0) {
-        if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
+        if (field_0x3c.squared() <= 32.0f * FLT_EPSILON) {
             s32 oldFrame = field_0x26c;
             do {
                 field_0x23c = fn_801CD664(4);
-                field_0x3c = lbl_8050C088[field_0x23c];
+                field_0x3c.set(lbl_8050C088[field_0x23c]);
                 field_0x248 = fn_801CD664(20) + 30;
                 field_0x26c = lbl_804745B8[field_0x23c + 20];
             } while (field_0x26c == oldFrame);
         } else {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
             field_0x248 = fn_801CD664(10) + 15;
             field_0x264 = 0;
         }
     }
-    if (field_0x3c.squared() > 32.0f * FLT_EPSILON) {
+    if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
         if (fn_801F2618(NULL, false)) {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
             field_0x248 = fn_801CD664(10) + 15;
             field_0x264 = 0;
         } else {
@@ -1477,31 +1472,31 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.72 %, reloc-name; behaviour drift.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
-    Mtx mtx;
+    Mtx identity;
     SpriteParams_801F5AE0 params;
+    Mtx mtx;
     if ((field_0x268 & 7) >= 5) {
         static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
         mtx[0][0] = 1.0f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = 1.0f;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = -1.0f;
-        mtx[2][3] = 0.0f;
         params.mMtx = mtx;
         mPos.y -= lbl_80474BB8[(field_0x268 & 7) - 5];
     }
     drawSprite_801F06F0("enemy_gc_sob.bin", field_0x26c + field_0x264, &params, -1, 1.0f, 1.0f);
     mPos = savedPos;
-    Mtx identity;
     identity[0][0] = 1.0f;
     identity[0][1] = 0.0f;
     identity[0][2] = 0.0f;
@@ -1518,7 +1513,7 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.45 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.93 %, same-text; behaviour clean.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1535,18 +1530,18 @@ void cls_804ADF28::fn_80362680() {
         }
     }
     if (field_0x278 == 1) {
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
         mtx[0][0] = -1.0f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
-        mtx[0][3] = 0.0f;
         mtx[1][0] = 0.0f;
         mtx[1][1] = 1.0f;
         mtx[1][2] = 0.0f;
-        mtx[1][3] = 0.0f;
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 1.0f;
-        mtx[2][3] = 0.0f;
         params.mMtx = mtx;
     }
     if (field_0x258 == 0) {
