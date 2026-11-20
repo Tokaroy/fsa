@@ -53,10 +53,10 @@ static inline void leaveSand(cls_804A6270* sand) {
 // Moves x towards target in `remaining` equal steps (jumps once it is under epsilon).
 static inline void approach(f32& x, f32 target, s32 remaining) {
     f32 t = (f32)remaining;
-    if (t < JGeometry::TUtilf::epsilon()) {
+    if (t < FLT_EPSILON) {
         x = target;
     } else {
-        x = x + (1.0f / t) * (target - x);
+        x += (1.0f / t) * (target - x);
     }
 }
 
@@ -299,7 +299,8 @@ void cls_804A6270::fn_80211C94() {
 
 #pragma auto_inline reset
 
-// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.30 %, regalloc-only; behaviour drift.
+// FIXME: regalloc-only (r29/r30 swapped in inlined releaseView).
 void cls_804A6270::vfunc_0x90(u8 mapHit) {
     fn_80211EB0();
     fn_80211C94();
@@ -327,13 +328,9 @@ void cls_804A6270::vfunc_0x90(u8 mapHit) {
             field_0x3ac = -1;
             field_0x3b0 = 0;
             if (mFlags & 0x4000) {
-                field_0x54.x = field_0x394;
-                field_0x54.y = field_0x394;
-                field_0x54.z = field_0x394;
+                field_0x54.setAll(field_0x394);
             } else {
-                field_0x54.x = field_0x390;
-                field_0x54.y = field_0x390;
-                field_0x54.z = field_0x390;
+                field_0x54.setAll(field_0x390);
             }
             s32 serial = field_0x388;
             if (serial >= 0) {
@@ -437,15 +434,16 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-// FIXME(shotgun): 98.22 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.45 %, missing/extra; behaviour near.
 void cls_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
             JGeometry::TVec3f pos(mPos);
             field_0x2c0.fn_800FDEA0(&pos, 1.0f, &field_0x3c, NULL, NULL, 0x200);
         } else {
+            s32 i;
             bool inside = false;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (fn_801D0B44(i) && fn_80211000(getPlayerPos_8023E724(i))) {
                     inside = true;
                     break;
@@ -479,13 +477,10 @@ void cls_804A6270::fn_802110A8() {
                 field_0x3c.y = step.y;
             }
         }
-        if (field_0x38c >= 0) {
-            // the original materialises isZero() as a bool (mfcr; extrwi.) before the branch
-            if (!field_0x3c.isZero()) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x38c);
-                if (actor != NULL) {
-                    actor->mPos = actor->mPos + field_0x3c;
-                }
+        if (field_0x38c >= 0 && !field_0x3c.isZero()) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x38c);
+            if (actor != NULL) {
+                actor->mPos = actor->mPos + field_0x3c;
             }
         }
     }
