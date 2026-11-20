@@ -282,7 +282,7 @@ void fn_802DEE2C(void) {
     }
 }
 
-bool fn_802DEDFC(const s32* dir) {
+u8 fn_802DEDFC(const s32* dir) {
     return getGameView_802D6A9C()->fn_802DCE5C(dir);
 }
 
@@ -664,10 +664,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     return entered;
 }
 
-// FIXME: 97.94 %, missing/extra; behaviour near.
-// One instruction, as fn_802DCD1C: the target keeps the result in r6 (li r6, 0
-// at entry) and returns it through clrlwi r3, r6, 24; ours builds it in r3.
-bool GameView_804A9950::fn_802DCE5C(const s32* dir) {
+u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
     bool moved = false;
     if (fn_802DCD0C() == 0) {
         restartTimeLimit();
