@@ -255,10 +255,9 @@ static inline bool stepWobble(cls_8049C718* p) {
 }
 
 // Plain functions without a copy of their own in the original (see their definitions).
-s32 randomSlotTime();
+f32 randomSlotTime();
 s32 headingOf(f32 x, f32 y);
 
-// FIXME: 98.10 %, scheduling; behaviour clean.
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
         return;
@@ -403,8 +402,8 @@ void cls_8049C718::fn_800FC4A8() {
 // A slot's time (mSlotUsed): 400 to 499 frames. No copy of its own in the original: both
 // callers in fn_800FC984 inline it and the linker dropped the body. It was a plain function
 // generated before fn_800FC984 (below it here), which is where the .sdata2 literal 400.0f stands.
-s32 randomSlotTime() {
-    return (s32)(400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
+f32 randomSlotTime() {
+    return 400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
 // FIXME(shotgun): 98.19 %, different; behaviour clean.
@@ -554,7 +553,6 @@ void cls_8049C718::fn_800FBD90() {
     }
 }
 
-// FIXME(shotgun): 97.50 %, missing/extra; behaviour near.
 void cls_8049C718::fn_800FBA14() {
     if (fn_801F3D94(1) == 1) {
         field_0x3c.set(0.0f, 0.0f, 10.0f);
@@ -590,9 +588,7 @@ void cls_8049C718::fn_800FBA14() {
             field_0x257 = 0;
             fn_800FB6E0(0);
         } else {
-            field_0x3c.x = field_0x257;
-            field_0x3c.y = -1.0f * field_0x257;
-            field_0x3c.z = 0.0f;
+            field_0x3c.set((f32)field_0x257, -1.0f * field_0x257, 0.0f);
             mPos.z = 0.0f;
             mState = 5;
             mTimer = 0x19;
