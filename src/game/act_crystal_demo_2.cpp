@@ -1378,9 +1378,9 @@ void cls_804AE088::fn_803683AC() {
 void cls_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
-            field_0x290 -= 8.0f;
+            field_0x290 -= 2.0f;
         } else {
-            field_0x290 += 8.0f;
+            field_0x290 += 2.0f;
         }
         if (field_0x290 >= 255.0f) {
             field_0x290 = 255.0f;
@@ -1388,14 +1388,14 @@ void cls_804AE088::fn_80368198() {
             field_0x290 = 0.0f;
         }
         if (field_0x314 == NULL) {
-            const ResTIMG* tex = (const ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_8053A1C8);
+            ResTIMG* tex = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_8053A1C8);
             field_0x314 = new J2DPicture(tex);
         }
         gGameRoot2_8053AB10->fn_8013B490();
-        field_0x314->setBlackWhite(JUtility::TColor(0), JUtility::TColor(0xFFFFFFFF));
+        field_0x314->setBlackWhite(JUtility::TColor(0xFFFFFFFF), JUtility::TColor(0));
         field_0x314->setAlpha(field_0x290);
-        field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getRenderMode()->fbWidth,
-                          (s32)JUTVideo::getManager()->getRenderMode()->efbHeight, false, false, false);
+        field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
+                          (s32)JUTVideo::getManager()->getEfbHeight(), false, false, false);
         if (field_0x274 == 0x80) {
             field_0x234 = 0;
             field_0x236 = 1;
