@@ -618,20 +618,19 @@ void GameView_804A9950::vfunc_0x10() {
 
 void GameView_804A9950::vfunc_0x14() {}
 
-// FIXME: 99.02 %, different; behaviour near.
-// One opcode: the target returns the result through clrlwi r3, r29, 24 (as
-// fn_802DCD1C does), ours with mr; the result's declared type in the original is unknown.
-bool GameView_804A9950::fn_802DD3D4(const s32* dir) {
+// FIXME: 99.68 %, regalloc-only; behaviour clean.
+// FIXME: regalloc only: end and the loop offset i*4 are swapped (r24/r25).
+u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     s32 col = field_0x14;
     s32 row = field_0x18;
-    bool entered = false;
+    s32 entered = 0;
     u32 exits = 0xF;
     field_0xc9 = 0;
     if (fn_802DCD0C() == 0) {
         s32 end = getActorManager_801F856C()->mActorEnd;
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-            if (actor != NULL && actor->mActorId == 'SMSM') {
+            if (actor != NULL && actor->mActorId == 'SDSM') {
                 exits = actor->field_0x90 >> 4;
                 break;
             }
