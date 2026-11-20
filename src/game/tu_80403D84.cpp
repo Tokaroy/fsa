@@ -816,11 +816,6 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
     field_0x10->search(0x54746C763134ull /* "Ttlv14" */)->setAlpha(field_0x64b[1] * (1.0f - alpha));
 }
 
-// FIXME: 95.84 %, missing/extra; behaviour clean.
-// Missing/extra (two instructions, one saved register): in the stage 10 /
-// sub-stage 2 branch the original reads lbl_80529DEC.field_0x120 twice before the two
-// 'Pphu01' size searches (r29 / r31) and indexes lbl_8048C9DC with them after the
-// 'Ndata06' calls; ours reads it after those calls. All else is the same.
 void MapScreen_804B1288::fn_80411230() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x340 < 7 && !isStageFlagSet(field_0x340, 3) && (isCursorState() || field_0x350 == 0x13)) {
@@ -840,13 +835,11 @@ void MapScreen_804B1288::fn_80411230() {
             field_0x10->search('Pphu01')->show();
         }
         field_0x10->search('Pphu01')->setAlpha(field_0x65b * field_0x3fc);
-        f32 height = field_0x10->search('Pphu01')->getHeight();
-        f32 width = field_0x10->search('Pphu01')->getWidth();
         field_0x10->search('Pphu01')
-            ->move(lbl_8048C9DC[lbl_80529DEC.field_0x120][0] - field_0x10->search('Ndata06')->getBounds()->i.x -
-                       width / 2,
-                   lbl_8048C9DC[lbl_80529DEC.field_0x120][1] - field_0x10->search('Ndata06')->getBounds()->i.y -
-                       height / 2);
+            ->move(lbl_8048C9DC[lbl_80529DEC.getField_0x120()][0] - field_0x10->search('Ndata06')->getBounds()->i.x -
+                       field_0x10->search('Pphu01')->getWidth() / 2,
+                   lbl_8048C9DC[lbl_80529DEC.getField_0x120()][1] - field_0x10->search('Ndata06')->getBounds()->i.y -
+                       field_0x10->search('Pphu01')->getHeight() / 2);
     } else if (field_0x10->search('Pphu01')->mIsVisible == true) {
         field_0x10->search('Pphu01')->hide();
     }
@@ -2415,7 +2408,7 @@ void MapScreen_804B1288::fn_80408F38(f32 alpha) {
     }
 }
 
-// FIXME: 96.04 %, scheduling+regalloc; behaviour clean.
+// FIXME: 96.36 %, scheduling+regalloc; behaviour clean.
 // scheduling+regalloc: the zoom divisions load field_0x18 before the
 // lbl_8048C850 entry in the original, and registers differ around fn_80403184. The tail after the
 // stage branch is in both branches: the original has its own copy in the stage 7 branch.
@@ -2430,24 +2423,24 @@ void MapScreen_804B1288::fn_8040873C() {
     } else {
         if (field_0x340 < 7) {
             field_0xc8->moveFromCentre_80402E08(lbl_8048C86C[field_0x340], lbl_8048C87C[field_0x340]);
-            f32 zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xc8->fn_80402CE0(zoom, zoom);
+            field_0xc8->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             f32 scale = lbl_8048C850[field_0x340] / field_0xc8->field_0x18 - 1.0f;
             f32 dx = scale * (field_0xcc->field_0x10 - field_0xc8->field_0x10);
             f32 dy = scale * (field_0xcc->field_0x14 - field_0xc8->field_0x14);
             field_0xcc->moveFromCentre_80402E08(dx + lbl_8048C86C[field_0x340], dy + lbl_8048C87C[field_0x340]);
-            zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xcc->fn_80402CE0(zoom, zoom);
+            field_0xcc->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             dx = scale * (field_0xd0->field_0x10 - field_0xc8->field_0x10);
             dy = scale * (field_0xd0->field_0x14 - field_0xc8->field_0x14);
             field_0xd0->moveFromCentre_80402E08(dx + lbl_8048C86C[field_0x340], dy + lbl_8048C87C[field_0x340]);
-            zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xd0->fn_80402CE0(zoom, zoom);
+            field_0xd0->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             for (int i = 0; i < 18; i++) {
                 field_0xd4[i]->moveFromCentre_80402E08(scale * field_0xd4[i]->field_0x10,
                                                        scale * field_0xd4[i]->field_0x14);
-                zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-                field_0xd4[i]->fn_80402CE0(zoom, zoom);
+                field_0xd4[i]->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                           lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             }
         }
         field_0x120[0]->moveFromCentre_80402E08(0.0f, 0.0f);
@@ -2473,10 +2466,9 @@ void MapScreen_804B1288::fn_8040873C() {
     field_0x23c->moveFromCentre_80402E08(0.0f, -150.0f);
     if (field_0x340 <= 7) {
         if (field_0x350 != 6) {
-            f32 x = lbl_8048C95C[field_0x340 * 4 + field_0x348][0];
-            f32 y = lbl_8048C95C[field_0x340 * 4 + field_0x348][1];
-            field_0x394 = x;
-            field_0x398 = y;
+            s32 idx = field_0x340 * 4 + field_0x348;
+            field_0x394 = lbl_8048C95C[idx][0];
+            field_0x398 = lbl_8048C95C[idx][1];
         }
     } else {
         field_0x394 = field_0x398 = 0.0f;
