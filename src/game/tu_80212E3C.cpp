@@ -31,8 +31,8 @@ void cls_804A6340::init() {
     mBox.i.y = 1.0f;
     mBox.f.x = -1.0f;
     mBox.f.y = -1.0f;
-    mBox2.i.x = 2.0f;
-    mBox2.i.y = 2.0f;
+    mBox2.i.x = -8.0f;
+    mBox2.i.y = -8.0f;
     mBox2.f.x = 8.0f;
     mBox2.f.y = 8.0f;
     field_0x80.i.x = 1.0f;
