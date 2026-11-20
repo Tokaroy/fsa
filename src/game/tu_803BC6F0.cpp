@@ -1622,7 +1622,7 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     }
 
     field_0xd8++;
-    for (s32 i = 0; i < 2; i++, other++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
             field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
@@ -2523,7 +2523,7 @@ void FileSelect_804AFF60::fn_803C5808() {
     }
 
     field_0xd8++;
-    for (s32 i = 0; i < 2; i++, other++) {
+    for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
             field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
@@ -2870,14 +2870,14 @@ void FileSelect_804AFF60::fn_803C3904() {
 // other two rows slide back in and the chosen row returns to its place, one
 // after another (the timings are lbl_8050DB0C's 0xD4..0xDB); then state 5.
 void FileSelect_804AFF60::fn_803C2E24() {
-    s16 boardDelay = lbl_8050DB0C.field_0x4c[0xD4];
-    s16 boardFrames = lbl_8050DB0C.field_0x4c[0xD5];
-    s16 buttonDelay = lbl_8050DB0C.field_0x4c[0xD6];
-    s16 buttonFrames = lbl_8050DB0C.field_0x4c[0xD7];
-    s16 buttonStep = lbl_8050DB0C.field_0x4c[0xD8];
-    s16 rowDelay = lbl_8050DB0C.field_0x4c[0xD9];
-    s16 frames = lbl_8050DB0C.field_0x4c[0xDA];
-    s16 rowStep = lbl_8050DB0C.field_0x4c[0xDB];
+    s32 boardDelay = lbl_8050DB0C.field_0x4c[0xD4];
+    s32 boardFrames = lbl_8050DB0C.field_0x4c[0xD5];
+    s32 buttonDelay = lbl_8050DB0C.field_0x4c[0xD6];
+    s32 buttonFrames = lbl_8050DB0C.field_0x4c[0xD7];
+    s32 buttonStep = lbl_8050DB0C.field_0x4c[0xD8];
+    s32 rowDelay = lbl_8050DB0C.field_0x4c[0xD9];
+    s32 frames = lbl_8050DB0C.field_0x4c[0xDA];
+    s32 rowStep = lbl_8050DB0C.field_0x4c[0xDB];
     s32 end = boardDelay + boardFrames;
     if (end < buttonDelay + buttonFrames + buttonStep * 3) {
         end = buttonDelay + buttonFrames + buttonStep * 3;
