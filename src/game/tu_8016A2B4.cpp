@@ -734,11 +734,11 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
 // FIXME: 60.83 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016C2FC() {
     if (field_0x1c8 && field_0x104 != NULL) {
+        f32 width = (s32)JUTVideo::getManager()->getFbWidth();
+        f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
         getMapTexView(center, half);
-        f32 width = (s32)JUTVideo::getManager()->getFbWidth();
-        f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
@@ -755,8 +755,8 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         f32 scroll = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scroll;
         center.y -= scroll;
         half.mul(JGeometry::TVec3f(3.0f, 2.25f, 3.0f));
@@ -778,9 +778,9 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         f32 scrollX = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
         f32 scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.5f, 1.875f, 2.5f));
@@ -796,9 +796,9 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXTexCoord2f32(center.x - half.x, center.y + half.y);
         GXEnd();
 
-        getMapTexView(center, half);
         scrollX = 0.00024414063f * (f32)((field_0x1c0 + 3100) & 0xFFF);
         scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
+        getMapTexView(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
