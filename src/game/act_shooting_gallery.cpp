@@ -137,7 +137,7 @@ ShootingGallery_804A2B18::~ShootingGallery_804A2B18() {
     }
 }
 
-// FIXME: 96.77 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 96.78 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (935 vs 936). The box setup at the
 // top and in case 3 schedules the mPos.x/mPos.y adds and stores in a different order; the stack slots of
 // the by-value position temporaries for fn_8038AD24 and fn_801EE8F4 and the loop registers in cases 0, 3,
@@ -456,7 +456,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
     }
 }
 
-// FIXME: 94.81 %, missing/extra; behaviour near.
+// FIXME: 96.02 %, missing/extra; behaviour near.
 // missing/extra: ours has 2 fewer instrs. The original stores p (0x24(r1)) before the box
 // copy is offset and reloads mPos.x/y for the addPos; ours adds in registers. Also gGameRoot_8053AAF8 and
 // 0x19660D swap r4/r5 in mRandom.get_ufloat_1(), and r29/r30 for this.
