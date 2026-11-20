@@ -451,14 +451,13 @@ void FireRodFire_804A89F0::update() {
 }
 
 // FIXME: 95.38 %, missing/extra; behaviour near.
-// FIXME: (field_0x268 == 2) is built as extrwi 8,19 here; the original keeps cntlzw + srwi 5 for it.
 void FireRodFire_804A89F0::draw() {
     if (field_0x264 != 5 && field_0x264 != 6) {
         JGeometry::TVec3f pos = mPos;
-        u32 isTwo = (field_0x268 == 2);
+        s32 isTwo = (field_0x268 == 2) ? 1 : 0;
         if (field_0x4 >= 8) {
             if (field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4 || field_0x264 == 5) {
-                fn_803075AC(mSerial, field_0x4, &mPos, field_0x26c + field_0x270 + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
+                fn_803075AC(mSerial, field_0x4, &mPos, field_0x270 + field_0x26c + 0x109, isTwo != 0, 2, -1, 1, 0, 0);
                 return;
             }
             if (field_0x264 == 1) {
@@ -485,7 +484,7 @@ void FireRodFire_804A89F0::draw() {
                 break;
             }
 
-            fn_803075AC(mSerial, field_0x4, &pos, field_0x26c + field_0x270 + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, field_0x4, &pos, field_0x270 + field_0x26c + 0xF1, isTwo != 0, 2, -1, 1, 0, 0);
         } else {
             switch (field_0x98) {
             case 0:
