@@ -58,12 +58,13 @@ static inline void setScaleMtx(Mtx m, f32 s) {
 
 // FIXME(shotgun): 99.29 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
-    s32 spawned;
     s32 i;
     s32 gone;
+    s32 serial;
+    s32 spawned;
     if (field_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
         for (i = 0, gone = 0; i < 4; i++) {
-            s32 serial = field_0x2c0[i];
+            serial = field_0x2c0[i];
             if (serial < 0) {
                 gone++;
                 continue;
@@ -85,7 +86,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
             if (layer == getPlayerLayer_8023DE58(0)) {
                 for (i = 0, spawned = 0; i < 4; i++) {
                     field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', field_0x4, &mPos, 4, -1, -1);
-                    s32 serial = field_0x2c0[i];
+                    serial = field_0x2c0[i];
                     if (serial >= 0) {
                         Keese_804A02B8* keese = static_cast<Keese_804A02B8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                         if (keese != NULL) {
