@@ -76,7 +76,6 @@ u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e) {
 }
 
 // 0x801C544C.
-// FIXME(shotgun): 96.87 %, scheduling+regalloc; behaviour clean.
 void ShadowLink2_804A43E8::init() {
     EnemyBase_804A4808::init();
     field_0x94 = fn_801C0D70()->fn_801C14A8(mSerial);
@@ -1160,7 +1159,6 @@ void ShadowLink2_804A43E8::vfunc_0x84() {
 }
 
 // 0x801C2BF4.
-// FIXME(shotgun): 89.10 %, different; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x88() {
     s32 state = mState;
     switch (state) {
@@ -1210,7 +1208,6 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
 }
 
 // 0x801C2A84.
-// FIXME(shotgun): 96.47 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x98() {
     switch (mState) {
     case 0x17:
@@ -1286,7 +1283,6 @@ void ShadowLink2_804A43E8::vfunc_0x74() {
 }
 
 // 0x801C283C.
-// FIXME(shotgun): 91.70 %, missing/extra; behaviour clean.
 void ShadowLink2_804A43E8::vfunc_0xA0() {
     switch (mState) {
     case 0:
