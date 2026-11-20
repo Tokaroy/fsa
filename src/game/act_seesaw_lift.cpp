@@ -184,7 +184,8 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    if (getPlayerLayer_8023DE58(player) != field_0x4) {
+    s32 layer = field_0x4;
+    if (getPlayerLayer_8023DE58(player) != layer) {
         return 0;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -200,11 +201,12 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
         rel.sub(mPos);
         rel.z = 0.0f;
         f32 cosVal = __fabsf(JMath::sincosTable_.cosShort(field_0x230));
-        bool inside = false;
-        if (rel.x >= mBox.i.x && rel.y >= mBox.i.y * cosVal && rel.x < mBox.f.x && rel.y < mBox.f.y * cosVal) {
-            inside = true;
-        }
-        if (inside) {
+        JGeometry::TBox2f box;
+        box.i.x = mBox.i.x;
+        box.i.y = mBox.i.y * cosVal;
+        box.f.x = mBox.f.x;
+        box.f.y = mBox.f.y * cosVal;
+        if (contains(box, rel)) {
             fn_8022DF48(player);
             f32 d = mPos.y - getPlayerPos_8023E724(player)->y;
             if (d == 0.0f) {
