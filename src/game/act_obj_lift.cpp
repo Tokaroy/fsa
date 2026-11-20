@@ -16,6 +16,13 @@ static inline bool isTiny(const JGeometry::TVec3f& v) {
     return v.squared() <= 32.0f * FLT_EPSILON;
 }
 
+// Distance of two points in the plane. Provisional name (always inlined). In fn_803511F0 the
+// squared sum is coloured before sqrt's own local, so sqrt sits one inline level below the sum.
+static inline f32 distanceXY(const JGeometry::TVec3f& a, const JGeometry::TVec3f& b) {
+    f32 sq = square(a.x - b.x) + square(a.y - b.y);
+    return JGeometry::TUtil<f32>::sqrt(sq);
+}
+
 // The effect shown where the lift breaks or respawns: an emitter on the main layers, a KMRI
 // actor from layer 8 up (fn_803513C0 inlines it behind its own layer test).
 inline void OBJLift_804ACA00::showBreakEffect(s32 layer) {
@@ -260,7 +267,6 @@ void OBJLift_804ACA00::fn_803513C0() {
 }
 
 // 0x803511F0.
-// FIXME(shotgun): 99.44 %, regalloc-only; behaviour clean.
 void OBJLift_804ACA00::fn_803511F0() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
@@ -272,8 +278,7 @@ void OBJLift_804ACA00::fn_803511F0() {
     field_0x248 = 10;
     field_0x274 = -1;
     field_0x268 = field_0x264;
-    f32 dist = JGeometry::TUtil<f32>::sqrt(square(mPos.x - mSpawnPos.x) + square(mPos.y - mSpawnPos.y));
-    if (dist > 48.0f) {
+    if (distanceXY(mPos, mSpawnPos) > 48.0f) {
         mPos = mSpawnPos;
         s32 layer = field_0x4;
         if (layer >= 8) {
@@ -294,8 +299,8 @@ void OBJLift_804ACA00::fn_803511F0() {
 // 0x80351020.
 // Not auto-inlined: fn_80350974 calls fn_80351020 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 85.82 %, missing/extra + reloc-name; behaviour clean.
-// literal pool order and register assignment differ.
+// FIXME(shotgun): 96.72 %, scheduling+regalloc; behaviour clean.
+// float register assignment differs (the box test is probably an inline).
 bool OBJLift_804ACA00::fn_80351020(s32 player) {
     s32 layer = field_0x4;
     if (getPlayerLayer_8023DE58(player) != layer) {
@@ -305,13 +310,17 @@ bool OBJLift_804ACA00::fn_80351020(s32 player) {
         JGeometry::TVec3f v;
         fn_8022E088(player, i, &v);
         v -= mPos;
+        v.z = 0.0f;
         s32 angle = (s32)(JMath::atanTable_.atan2_(v.y, v.x) * 10430.378f);
         f32 dist = JGeometry::TUtil<f32>::sqrt(v.x * v.x + v.y * v.y);
         v.z = 0.0f;
         v.x = dist * JMath::sincosTable_.cosShort(angle);
         v.y = dist * JMath::sincosTable_.sinShort(angle);
-        bool inside = v.x >= field_0x80.i.x - -2.0f && v.y >= field_0x80.i.y - -2.0f && v.x < field_0x80.f.x + -2.0f &&
-                      v.y < field_0x80.f.y + -2.0f;
+        f32 minX = field_0x80.i.x - -2.0f;
+        f32 minY = field_0x80.i.y - -2.0f;
+        f32 maxX = field_0x80.f.x + -2.0f;
+        f32 maxY = field_0x80.f.y + -2.0f;
+        bool inside = v.x >= minX && v.y >= minY && v.x < maxX && v.y < maxY;
         if (inside) {
             fn_8022DF48(player);
             return true;
@@ -456,7 +465,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
     return count;
 }
 
-// FIXME(shotgun): 97.59 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 97.91 %, scheduling+regalloc; behaviour drift.
 s32 OBJLift_804ACA00::fn_803506E0() {
     static JGeometry::TVec2f lbl_8050AED8[4] = {
         JGeometry::TVec2f(32.0f, 0.0f),
@@ -480,7 +489,9 @@ s32 OBJLift_804ACA00::fn_803506E0() {
                 limit = square(8.0f + field_0x260);
             }
             JGeometry::TVec3f* pl = getPlayerPos_8023E724(i);
-            if (square(px - pl->x) + square(py - pl->y) < limit && getPlayerPos_8023E724(i)->z == 0.0f) {
+            f32 dx = px - pl->x;
+            f32 dy = py - pl->y;
+            if (square(dx) + square(dy) < limit && getPlayerPos_8023E724(i)->z == 0.0f) {
                 if (held == 0) {
                     startSound_801F0E34(0x30009, 0);
                 }
@@ -612,7 +623,6 @@ bool OBJLift_804ACA00::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 // Not auto-inlined: update calls fn_8035001C out of line in the original (docs/INLINING.md, pragma rule 1).
 // Remaining difference: the jump table's symbol name (jumptable_804ACAC8).
 #pragma auto_inline off
-// FIXME: 99.19 %, scheduling+regalloc; behaviour drift.
 void OBJLift_804ACA00::fn_8035001C(u32 dir) {
     switch (dir) {
     case 0:
@@ -630,20 +640,12 @@ void OBJLift_804ACA00::fn_8035001C(u32 dir) {
     case 4:
         field_0x3c.set(0.5f * field_0x260, 0.5f * field_0x260, 0.0f);
         break;
-    case 5: {
-        s32 v = field_0x260;
-        field_0x3c.x = 0.5f * -(f32)v;
-        field_0x3c.y = 0.5f * v;
-        field_0x3c.z = 0.0f;
+    case 5:
+        field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * field_0x260, 0.0f);
         break;
-    }
-    case 6: {
-        s32 v = field_0x260;
-        field_0x3c.x = 0.5f * v;
-        field_0x3c.y = 0.5f * -(f32)v;
-        field_0x3c.z = 0.0f;
+    case 6:
+        field_0x3c.set(0.5f * field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
-    }
     case 7:
         field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
