@@ -631,7 +631,10 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
 // Whether the map (fn_801CCB1C) blocks the point 16 units above the actor's
 // screen position.
 bool EnemyBase_804A4808::fn_801CF144() const {
-    JGeometry::TVec3f pos(mPos.x, mPos.y - mPos.z - 16.0f, 0.0f);
+    JGeometry::TVec3f pos;
+    pos.x = mPos.x;
+    pos.y = mPos.y - mPos.z - 16.0f;
+    pos.z = 0.0f;
     bool blocked = false;
     if (fn_801CCB1C(&pos, field_0x4)) {
         blocked = true;
