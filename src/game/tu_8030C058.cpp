@@ -25,8 +25,7 @@ Camera_804AA9E4::Camera_804AA9E4() {}
 
 Camera_804AA9E4::~Camera_804AA9E4() {}
 
-// The depth 1024 is passed from a float constant in the original (lfs, not lfd).
-// FIXME: 98.96 %, different; behaviour drift.
+// r0/r3 swapped for getBounds width/height.
 void Camera_804AA9E4::fn_8030E5BC() {
     field_0x154.i.x = 0.0f;
     field_0x154.i.y = 0.0f;
@@ -60,7 +59,7 @@ void Camera_804AA9E4::fn_8030E5BC() {
     field_0x83c = -1;
     field_0x840 = 0;
     u16 width, height;
-    JUTVideo::sManager->getBounds(width, height);
+    JUTVideo::getManager()->getBounds(width, height);
     field_0x144.i.x = 0;
     field_0x144.i.y = 0;
     field_0x144.f.x = width;
@@ -760,7 +759,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
 // FIXME(shotgun): 75.27 %, missing/extra; behaviour drift.
 // (the target keeps the box corners in float registers; it also pre-zeroes
 // the translation column and negates the two centres as one ps_neg pair)
-void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f64 depth) {
+void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f32 depth) {
     JGeometry::TVec3f trans;
     trans.x = 0.5f * (box->i.x + box->f.x);
     trans.y = 0.5f * (box->i.y + box->f.y);

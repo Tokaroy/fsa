@@ -79,7 +79,7 @@ public:
     // Screen point (the screen rect when flag is set, else the whole screen) to the camera box.
     void fn_8030C4A0(const JGeometry::TVec2f* in, bool flag, JGeometry::TVec3f* out);
     // Sets the orthographic projection and view for the box (depth: the view's distance).
-    void fn_8030CB10(const JGeometry::TBox2f* box, f64 depth);
+    void fn_8030CB10(const JGeometry::TBox2f* box, f32 depth);
     void fn_8030C5F0(const Vec* pos, bool, bool, Vec* out);
     // 2 units / 10 calls (this unused: the body reads the camera through
     // gGameRoot2_8053AB10 again). Sets field_0x180 to the box of half-size
