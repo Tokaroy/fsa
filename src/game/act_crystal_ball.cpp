@@ -416,11 +416,14 @@ void CrystalBall_804AB308::fn_803226EC() {
 }
 
 // FIXME(shotgun): 82.75 %, missing/extra; behaviour drift.
-// the code comparison chain and the doubled fn_80226850 test are laid out differently
+// layer and pos sit in each other's saved register (r30/r28)
 bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+    u16 effectA;
+    u16 effectB;
     s32 code = fn_8022461C(pos, layer);
-    s32 tile = fn_80226850(pos, layer);
-    if ((u32)(code - 0x10) <= 6 || code == 0x17) {
+    fn_80226850(pos, layer);
+    if (code == 0x10 || code == 0x11 || code == 0x12 || code == 0x13 || code == 0x14 || code == 0x15 ||
+        code == 0x16 || code == 0x17) {
         field_0x274 = 1;
         return false;
     }
@@ -436,8 +439,6 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     if (code == 0xE && !field_0x2ac) {
         if (mPos.z < 0.1f) {
-            u16 effectA;
-            u16 effectB;
             if (fn_802DEB58()) {
                 effectA = 0x45E;
                 effectB = 0x45F;
@@ -471,31 +472,30 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         }
         return false;
     }
-    if (code == 0 || code == 3 || code == 0xE || code == 0xD || code == 0x3B || code == 4 || code == 5 ||
-        code == 6 || code == 7 || code == 2 || code == 0x50 || code == 0xC || code == 0x27 || code == 0x28 ||
-        code == 0x29 || code == 0x2A || code == 0x2B || code == 0x2C || code == 0x2D || code == 0x2E ||
-        code == 0x2F || code == 0x20 || code == 0x39 || code == 0x3A || code == 0x4C || code == 0x4D ||
-        code == 0x4E || code == 0x4F) {
-        return false;
-    }
-    if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
-        field_0x274 = 0;
-        return false;
-    }
-    if (code == 0x25) {
-        if (field_0x274 == 0 && !getGameView_802D6A9C()->field_0x171) {
+    if (code != 0 && code != 3 && code != 0xE && code != 0xD && code != 0x3B && code != 4 && code != 5 &&
+        code != 6 && code != 7 && code != 2 && code != 0x50 && code != 0xC && code != 0x27 && code != 0x28 &&
+        code != 0x29 && code != 0x2A && code != 0x2B && code != 0x2C && code != 0x2D && code != 0x2E &&
+        code != 0x2F && code != 0x20 && code != 0x39 && code != 0x3A && code != 0x4C && code != 0x4D &&
+        code != 0x4E && code != 0x4F) {
+        if (fn_80226850(pos, layer) == 0x3A || fn_80226850(pos, layer) == 0x3D) {
+            field_0x274 = 0;
+            return false;
+        }
+        if (code == 0x25) {
+            if (field_0x274 == 0 && !getGameView_802D6A9C()->field_0x171) {
+                return true;
+            }
+            return false;
+        }
+        if (code == 0x26) {
+            if (field_0x274 == 0 && getGameView_802D6A9C()->field_0x171 == 1) {
+                return true;
+            }
+            return false;
+        }
+        if (field_0x274 == 0 && (code != 0x22 || getGameView_802D6A9C()->field_0x170 == 1)) {
             return true;
         }
-        return false;
-    }
-    if (code == 0x26) {
-        if (field_0x274 == 0 && getGameView_802D6A9C()->field_0x171 == 1) {
-            return true;
-        }
-        return false;
-    }
-    if (field_0x274 == 0 && (code != 0x22 || getGameView_802D6A9C()->field_0x170 == 1)) {
-        return true;
     }
     return false;
 }
