@@ -193,7 +193,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
     }
 }
 
-// FIXME(shotgun): 97.12 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
 void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     switch (state) {
     case 1:
@@ -653,7 +653,6 @@ void VaatiBoss_804A4958::vfunc_0x94() {
 }
 
 // The step of the vtable slot 0x9C (0x801D5180, a plain `fn_801D5180` symbol in the original).
-// FIXME(shotgun): 93.96 %, missing/extra; behaviour clean.
 void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
     if (!(mFlags & 0x2000)) {
         switch (mState) {
@@ -900,7 +899,6 @@ void VaatiBoss_804A4958::vfunc_0x88() {
     }
 }
 
-// FIXME: 98.45 %, missing/extra; behaviour near.
 void VaatiBoss_804A4958::vfunc_0x74() {
     if (mState == 5) {
         fn_801E4D74();
