@@ -33,14 +33,17 @@ static const s16* lbl_804A5FE8[] = {
 };
 
 // The hit reaction shared by vfunc_0x58/0x5C/0x60: a hit in the attack states starts state 4.
-inline void Floormaster_804A6004::setEmitterColor(f32 rMult) {
-    f32 gMult = 255.0f;
-    f32 bMult = 0.0f;
-    u8 prm = field_0x2b4 * 255.0f + 0.5f;
+// Fades the emitter from white to (200, 0, 255) as field_0x2b4 goes 0 -> 1.
+inline f32 lerp(f32 from, f32 to, f32 t) {
+    return from + t * (to - from);
+}
+
+inline void Floormaster_804A6004::setEmitterColor() {
+    u8 prm = lerp(255.0f, 0.0f, field_0x2b4);
     mEmitter2b0->setGlobalPrmColor(prm, prm, prm);
-    mEmitter2b0->setGlobalEnvColor(field_0x2b4 * rMult + 0.5f,
-                                   field_0x2b4 * gMult + 0.5f,
-                                   field_0x2b4 * bMult + 0.5f);
+    mEmitter2b0->setGlobalEnvColor(lerp(255.0f, 200.0f, field_0x2b4),
+                                   lerp(255.0f, 0.0f, field_0x2b4),
+                                   lerp(255.0f, 255.0f, field_0x2b4));
 }
 
 inline void Floormaster_804A6004::onHit() {
@@ -73,17 +76,14 @@ Floormaster_804A6004::~Floormaster_804A6004() {
     releaseEmitter_801EE434(mEmitter2b0);
 }
 
-// FIXME: 98.78%. scheduling+regalloc + reloc-name: the two int-to-float conversions of field_0x90 are
-// scheduled and allocated in the opposite order (f0/f1, r3/r4 swapped).
 void Floormaster_804A6004::init() {
     EnemyBase_804A4808::init();
     if (field_0x90 & 1) {
         mFlags |= 0x2000;
-        u32 arg = field_0x90;
-        u32 y = ((arg >> 8) & 0x3F) * 8;
-        u32 x = ((arg >> 16) & 0x3F) * 8;
-        field_0x2a8 = 8.0f + (f32)x;
-        field_0x2ac = 8.0f + (f32)y;
+        f32 y = 8.0f + (f32)(((field_0x90 >> 8) & 0x3F) * 8);
+        f32 x = 8.0f + (f32)(((field_0x90 >> 16) & 0x3F) * 8);
+        field_0x2a8 = x;
+        field_0x2ac = y;
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     // Field-wise copy throughout: `mBox2 = mBox` drops init/fn_8020ED5C/vfunc_0x94 to 72-93 %.
@@ -107,8 +107,9 @@ void Floormaster_804A6004::init() {
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
-// FIXME: 98.76%. scheduling+regalloc + reloc-name: case 1 colour setup is scheduled differently
-// (f-register choice in the fctiwz sequence, one stfd position).
+// Case 1: the three env-colour conversions use other stack slots and f-registers than the original
+// (0x18/0x20/0x10 for r/g/b), and 0.0f/1.0f sit one f-register higher.
+// FIXME: 99.10 %, scheduling+regalloc; behaviour drift.
 void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     switch (state) {
     case 0:
@@ -138,7 +139,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         mTargetSpeed = 1.0f;
         mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 0.0f);
         if (mEmitter2b0 != NULL) {
-            setEmitterColor(150.0f);
+            setEmitterColor();
         }
         break;
     }
@@ -154,7 +155,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         break;
 
     case 3:
-        mBox.set(2.0f, -20.0f, 8.0f, 8.0f);
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
         mBox2.i.x = mBox.i.x;
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
@@ -177,7 +178,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
                 fn_80230224(field_0x2b8, 0);
             }
         }
-        mBox.set(2.0f, -20.0f, 8.0f, 8.0f);
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
         mBox2.i.x = mBox.i.x;
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
@@ -186,7 +187,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         break;
 
     case 5:
-        mBox.set(2.0f, -20.0f, 8.0f, 8.0f);
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
         mBox2.i.x = mBox.i.x;
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
@@ -196,7 +197,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         break;
 
     case 6:
-        mBox.set(2.0f, -20.0f, 8.0f, 8.0f);
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
         mBox2.i.x = mBox.i.x;
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
@@ -216,7 +217,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         break;
 
     case 8:
-        mBox.set(2.0f, -20.0f, 8.0f, 8.0f);
+        mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
         mBox2.i.x = mBox.i.x;
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
@@ -253,9 +254,9 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         case 2:
         case 3:
             const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(field_0x2b8);
-            if (mPos.x < pPos->x - 8.0f) {
+            if (mPos.x < pPos->x - 4.0f) {
                 mFlags &= ~0x8000;
-            } else if (pPos->x + 8.0f < mPos.x) {
+            } else if (pPos->x + 4.0f < mPos.x) {
                 mFlags |= 0x8000;
             }
             break;
@@ -263,7 +264,8 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     }
 }
 
-// FIXME: 99.79%. operands + reloc-name: the three TVec3f locals sit in different stack slots.
+// FIXME: 99.89 %, operands; behaviour clean.
+// operands + reloc-name: the three TVec3f locals sit in different stack slots.
 void Floormaster_804A6004::fn_8020EB08() {
     JGeometry::TVec3f diff;
     JGeometry::TVec3f targetPos;
@@ -335,7 +337,8 @@ void Floormaster_804A6004::fn_8020EB08() {
     }
 }
 
-// FIXME: 96.96%. missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
+// FIXME: 97.40 %, missing/extra; behaviour drift.
+// missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
 // folds 0.0f - x into fneg (1 instruction fewer); case 3 sets the flag with `mr r30, r4` where ours
 // has `li r30, 1`; case 7 stores x/y from pos in the other order and stfd conversion order differs.
 void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
@@ -366,7 +369,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
                 field_0x2b4 += (1.0f - field_0x2b4) * (1.0f / remaining);
             }
             if (mEmitter2b0 != NULL) {
-                setEmitterColor(75.0f);
+                setEmitterColor();
             }
             startSound_801F0E34(0x50089, 0);
         }
@@ -390,11 +393,11 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
                 if (mState == 3 && field_0x2b8 >= 0 && !fn_80230188(field_0x2b8) &&
                     fn_802300EC(field_0x2b8) && !fn_8022DCD8(field_0x2b8) &&
                     !fn_801CD1D0(field_0x2b8)) {
-                    mBox.set(-16.0f, -12.0f, 16.0f, 16.0f);
+                    mBox.set(-10.0f, -16.0f, 10.0f, 10.0f);
                     if (fn_801F2740(-1) & (1 << field_0x2b8)) {
                         flag = true;
                     }
-                    mBox.set(-10.0f, -12.0f, 10.0f, 10.0f);
+                    mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
                     mBox2.i.x = mBox.i.x;
                     mBox2.i.y = mBox.i.y;
                     mBox2.f.x = mBox.f.x;
@@ -491,14 +494,13 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
                 field_0x2b4 += (0.0f - field_0x2b4) * (1.0f / remaining);
             }
             if (mEmitter2b0 != NULL) {
-                setEmitterColor(75.0f);
+                setEmitterColor();
             }
         }
         break;
     }
 }
 
-// FIXME: 99.66%. regalloc-only: the mirrored box x pair (fneg of mBox.f.x / mBox.i.x) uses swapped f registers.
 void Floormaster_804A6004::vfunc_0x94() {
     if (mState == 4) return;
     EnemyBase_804A4808::vfunc_0x94();
@@ -519,10 +521,10 @@ void Floormaster_804A6004::vfunc_0x94() {
         break;
     }
     if (mFlags & 0x8000) {
-        f32 minX = -mBox.f.x;
-        f32 maxX = -mBox.i.x;
-        mBox.i.x = minX;
-        mBox.f.x = maxX;
+        f32 maxX = mBox.f.x;
+        f32 minX = mBox.i.x;
+        mBox.i.x = -maxX;
+        mBox.f.x = -minX;
     }
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
