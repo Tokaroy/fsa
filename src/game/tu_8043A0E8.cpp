@@ -1252,10 +1252,9 @@ void cls_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     field_0x10d = 0;
 }
 
-// FIXME: 99.50 %, regalloc-only; behaviour clean.
-// Registers only: the original keeps delay and wait (both branches) in r31 and the
-// three timings in r30/r29/r28 (ours: r28, r31, r30, r29); one shared s16 for delay and wait gives 99.87.
 void cls_804B1920::fn_8043A638() {
+    s16 wait;
+    s16 delay;
     f32 dx = 0.0f;
     f32 dy = dx;
     s16 fadeIn = lbl_8050DB0C.field_0x4c[(0x22A - 0x4C) / 2];
@@ -1268,14 +1267,13 @@ void cls_804B1920::fn_8043A638() {
         lbl_8053AED0->field_0xdc |= (u8)(1 << i);
     }
     if (field_0x10d == 0) {
-        s16 delay = lbl_8050DB0C.field_0x4c[(0x2E6 - 0x4C) / 2] + 80;
-        s16 t = field_0x106;
-        if (t < delay) {
+        delay = lbl_8050DB0C.field_0x4c[(0x2E6 - 0x4C) / 2] + 80;
+        if (field_0x106 < delay) {
             field_0x8->search('Pdf01')->setAlpha(0);
-        } else if (t <= delay + fadeIn) {
-            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(t - delay) / (f32)fadeIn));
-        } else if (t > delay + fadeIn + hold) {
-            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(delay + fadeIn + hold + fadeOut - t) / (f32)fadeOut));
+        } else if (field_0x106 <= delay + fadeIn) {
+            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(field_0x106 - delay) / (f32)fadeIn));
+        } else if (field_0x106 > delay + fadeIn + hold) {
+            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(delay + fadeIn + hold + fadeOut - field_0x106) / (f32)fadeOut));
         }
         field_0x8->search('Pw0101')->setAlpha(field_0x8->search('Pdf01')->getAlpha());
         if (field_0x106 < delay + fadeIn + hold + fadeOut) {
@@ -1290,14 +1288,13 @@ void cls_804B1920::fn_8043A638() {
         dy += lbl_8050DB0C.field_0x4c[(0x2E4 - 0x4C) / 2];
         field_0x8->search('Pw0101')->move(field_0xec + dx, field_0xf0 + dy);
     } else {
-        s16 t = field_0x106;
-        s16 wait = field_0x108;
-        if (t < 20) {
+        wait = field_0x108;
+        if (field_0x106 < 20) {
             field_0x8->search('Pdf01')->setAlpha(0);
-        } else if (t <= fadeIn + 20) {
-            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(t - 20) / (f32)fadeIn));
-        } else if (t > wait + (fadeIn + 20)) {
-            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(fadeOut + (wait + (fadeIn + 20)) - t) / (f32)fadeOut));
+        } else if (field_0x106 <= fadeIn + 20) {
+            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(field_0x106 - 20) / (f32)fadeIn));
+        } else if (field_0x106 > wait + (fadeIn + 20)) {
+            field_0x8->search('Pdf01')->setAlpha(255.0f * ((f32)(fadeOut + (wait + (fadeIn + 20)) - field_0x106) / (f32)fadeOut));
         }
         field_0x8->search('Pw0101')->setAlpha(field_0x8->search('Pdf01')->getAlpha());
         if (field_0x106 < 20 + fadeIn + wait + fadeOut) {
