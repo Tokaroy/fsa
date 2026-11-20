@@ -1205,7 +1205,8 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FB64() {
         field_0x26C += 0.2f;
     }
     s16 prev = field_0x254;
-    s32 step = (s32)(65536.0f * (1.75f / (6.283184f * field_0x26C)));
+    // fmuls operand order of the reciprocal product still differs
+    s32 step = (s32)(65536.0f * (JMath::fastReciprocal(6.283184f * field_0x26C) * 1.75f));
     field_0x254 = prev - step;
     field_0x3c.x = 1.75f * JMath::sincosTable_.cosShort(field_0x254);
     field_0x3c.y = 1.75f * JMath::sincosTable_.sinShort(field_0x254);
