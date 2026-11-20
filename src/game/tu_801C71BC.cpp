@@ -34,8 +34,8 @@ u8 ShadowLink2_804A43E8::fn_801C976C() {
     return pick;
 }
 
-// FIXME(shotgun): 97.82 %, scheduling+regalloc; behaviour clean.
 void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
+    int i;
     f32 startX = mPos.x;
     f32 startY = mPos.y;
     for (int side = 0; side < 2; side++) {
@@ -45,7 +45,8 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
         f32 stepX = dir->x;
         f32 stepY = dir->y;
         JGeometry::TVec2f cur(startX, startY);
-        for (int i = 0; i < 30; i++) {
+        JGeometry::TVec2f probe;
+        for (i = 0; i < 30; i++) {
             JGeometry::TVec2f prev(cur.x, cur.y);
             cur.x += stepX;
             cur.y += stepY;
@@ -56,10 +57,9 @@ void ShadowLink2_804A43E8::fn_801C9420(JGeometry::TVec2f* dir) {
             toGoal.normalize();
             toGoal.x *= 14.0f;
             toGoal.y *= 14.0f;
-            JGeometry::TVec2f probe(cur.x + toGoal.x, cur.y + toGoal.y);
+            probe.set(cur.x + toGoal.x, cur.y + toGoal.y);
             if (!fn_801CF888(&cur, (const JGeometry::TVec3f*)&probe, field_0x4)) {
-                dir->x = cur.x - startX;
-                dir->y = cur.y - startY;
+                dir->set(cur.x - startX, cur.y - startY);
                 return;
             }
         }
