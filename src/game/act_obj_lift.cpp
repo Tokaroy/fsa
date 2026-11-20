@@ -50,7 +50,7 @@ static JGeometry::TBox2f lbl_8050AE38[5][2] = {
 };
 
 // 0x803513C0.
-// FIXME(shotgun): 98.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.91 %, scheduling+regalloc; behaviour drift.
 void OBJLift_804ACA00::init() {
     field_0x258 = (field_0x90 & 0xF) + ((field_0x90 >> 12) & 0xF0);
     field_0x260 = (field_0x90 >> 4) & 0xF;
@@ -140,7 +140,10 @@ void OBJLift_804ACA00::init() {
         free[3] = true;
         s32 serial = -1;
         s32 taken = 0;
-        while (taken < 4) {
+        for (;;) {
+            if (taken >= 4) {
+                break;
+            }
             serial = getActorManager_801F856C()->fn_801F78F4('OBLF', serial);
             if (serial < 0) {
                 break;
@@ -202,20 +205,7 @@ void OBJLift_804ACA00::init() {
         mBox.f.x = 23.0f;
         mBox.f.y = 23.0f;
         field_0x240 = 10;
-        s32 layer = field_0x4;
-        if (layer >= 8) {
-            showBreakEffect(layer);
-            startSound_801F0E34(0x30003, 0);
-        } else {
-            spawnEmitter_8013CC50(layer, &mPos, 0x459, 0, -3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45A, 0, -3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45B, 0, -3, NULL, NULL, true, 1.0f);
-        }
-        startSound_801F0E34(0x30065, 0);
-        field_0x254 = 30;
-        field_0x258 = 12;
-        field_0x230 = 0;
-        field_0x240 = 10;
+        fn_803513C0();
         break;
     }
     case 16:
@@ -243,9 +233,11 @@ void OBJLift_804ACA00::init() {
         break;
     }
     field_0x28c = 1.0f;
-    if (field_0x25c == 2) {
+    switch (field_0x25c) {
+    case 2:
         field_0x230 = 4;
         field_0x28c = 0.0f;
+        break;
     }
 }
 
@@ -332,7 +324,7 @@ bool OBJLift_804ACA00::fn_80351020(s32 player) {
 // 0x803506E0.
 #pragma auto_inline reset
 
-// FIXME: 97.71 %, missing/extra; behaviour drift.
+// FIXME: 99.16 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): missing/extra; behaviour drift (register allocation, push magnitude not vectorized to ps).
 s32 OBJLift_804ACA00::fn_80350974() {
     field_0x283[0] = 0;
@@ -344,7 +336,8 @@ s32 OBJLift_804ACA00::fn_80350974() {
     }
     u8 onLift = 0;
     s32 count = 0;
-    JGeometry::TVec3f push(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f push;
+    push.zero();
     for (s32 i = 0; i < 4; i++) {
         if (field_0x258 == 4) {
             JGeometry::TBox2f saved;
@@ -408,22 +401,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
         (mPos.x - mSpawnPos.x) * (mPos.x - mSpawnPos.x) + (mPos.y - mSpawnPos.y) * (mPos.y - mSpawnPos.y) > 8.0f) {
         field_0x250++;
         if (field_0x250 > 0xF0) {
-            s32 layer = field_0x4;
-            if (layer >= 8) {
-                getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0x83, -1, -1);
-                field_0x28c = 1.0f;
-            } else {
-                spawnEmitter_8013CC50(layer, &mPos, 0x503, 1, 0, NULL, NULL, true, 2.0f);
-            }
+            showBreakEffect(field_0x4);
             mPos = mSpawnPos;
             field_0x28c = 0.0f;
-            layer = field_0x4;
-            if (layer >= 8) {
-                getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0x83, -1, -1);
-                field_0x28c = 1.0f;
-            } else {
-                spawnEmitter_8013CC50(layer, &mPos, 0x503, 1, 0, NULL, NULL, true, 2.0f);
-            }
+            showBreakEffect(field_0x4);
             startSound_801F0E34(0x30003, 0);
         }
     } else {
@@ -434,8 +415,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
     if (field_0x289 == 1) {
         for (s32 i = 0; i < 4; i++) {
             if (field_0x283[i] == 0) {
-                s32 layer = getPlayerLayer_8023DE58(i);
-                if ((u16)fn_8022461C(getPlayerPos_8023E724(i), layer) == 0) {
+                if (fn_8022461C(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i)) == 0) {
                     field_0x289 = 0;
                     break;
                 }
@@ -445,10 +425,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
 
     for (s32 i = 0; i < 4; i++) {
         if (field_0x283[i] == 1 && getPlayerPos_8023E724(i)->z <= 0.0f && field_0x288 == 0) {
-            if (!isTiny(push)) {
+            if (isTiny(push) != TRUE) {
                 if (!fn_8022F478(i) ||
                     (field_0x283[fn_8022F3DC(i)] == 1 && (fn_8022CAF8(i) == 5 || fn_8022CAF8(i) == 4)) ||
-                    fn_80235580(i)) {
+                    fn_80235580(i) == TRUE) {
                     if (field_0x289 == 1 && field_0x258 != 5 && field_0x258 != 0xC &&
                         !(field_0x258 >= 6 && field_0x258 <= 9)) {
                         fn_8023DEDC(i, &push);

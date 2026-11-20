@@ -50,7 +50,7 @@ public:
     /* 0x274 */ s32 field_0x274; // pushing player
     /* 0x278 */ u8 field_0x278[4]; // not yet known
     /* 0x27C */ s32 field_0x27c;
-    /* 0x280 */ u8 field_0x280;
+    /* 0x280 */ bool field_0x280;
     /* 0x281 */ u8 field_0x281;
     /* 0x282 */ u8 field_0x282;
     /* 0x283 */ u8 field_0x283[4]; // per player: hit by / standing on the lift (fn_80350974)
