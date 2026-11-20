@@ -71,7 +71,7 @@ static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
     return false;
 }
 
-// FIXME: 95.70 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 99.32 %, different; behaviour drift.
 void cls_8049DB90::update() {
     cls_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
@@ -157,8 +157,11 @@ void cls_8049DB90::update() {
         }
         break;
     case 26: {
-        f32 vx = field_0x231 ? -2.9f : 2.9f;
         field_0x23c++;
+        f32 vx = -2.9f;
+        if (!field_0x231) {
+            vx = 2.9f;
+        }
         if (hop(this, field_0x23c, 4.5f, 0.0f, vx)) {
             fn_8011B878(25);
             if (field_0x231) {
@@ -179,7 +182,10 @@ void cls_8049DB90::update() {
         }
         break;
     case 29: {
-        f32 vx = field_0x231 ? 1.45f : -1.45f;
+        f32 vx = 1.45f;
+        if (!field_0x231) {
+            vx = -1.45f;
+        }
         if (hop(this, fn_8011921C()->field_0x8 - lbl_80464AF8[29], 4.5f, 1.1f, vx)) {
             fn_8011B878(30);
         }
@@ -490,7 +496,7 @@ static inline void setCameraBoxPos(cls_8049DB90* self, f32 x, f32 y) {
     setCameraBox(self);
 }
 
-// FIXME: 94.53 %, scheduling+regalloc; behaviour clean.
+// FIXME: 96.72 %, scheduling+regalloc; behaviour clean.
 void cls_8049DB90::fn_8011B3F0() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x179 == 0) {
@@ -539,7 +545,7 @@ void cls_8049DB90::fn_8011B3F0() {
         if (c->field_0x7f5 == 0) {
             c->field_0x7f4 = 1;
             c->field_0x7f8 = 4;
-            c->field_0x7fc.set(mPos.x, mPos.y, mPos.z);
+            c->field_0x7fc.set(mPos);
             c->field_0x7f6 = 0;
         }
         break;
@@ -550,7 +556,8 @@ void cls_8049DB90::fn_8011B3F0() {
         Camera_804AA9E4* c = gGameRoot2_8053AB10->field_0x24;
         if (c->field_0x840 == 0) {
             c->field_0x840 = 1;
-            c->field_0x844.set(mPos.x, mPos.y, mPos.x, mPos.y);
+            c->field_0x844.i.x = c->field_0x844.f.x = mPos.x;
+            c->field_0x844.i.y = c->field_0x844.f.y = mPos.y;
             c->field_0x854 = 1.0f;
             c->field_0x1d4 = -1.0f;
             c->field_0x1d8 = -1.0f;
