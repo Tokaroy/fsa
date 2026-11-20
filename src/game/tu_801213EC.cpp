@@ -107,7 +107,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     return result;
 }
 
-// FIXME(shotgun): 99.59 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.45 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80124448() {
     ActorBase_804A5770::init();
     lbl_80539F30 = mSerial;
@@ -134,7 +134,6 @@ void EscortBase_8049E0C8::fn_80124448() {
     }
 }
 
-// FIXME(shotgun): 94.17 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::update() {
     ActorBase_804A5770::update();
     field_0x37c = 1.0f;
@@ -249,8 +248,6 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
-// (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
         return 0;
@@ -328,7 +325,7 @@ static inline s32 findArrivedSlot(s32 player) {
     return -1;
 }
 
-// FIXME: 97.91 %, missing/extra; behaviour clean.
+// FIXME: 97.93 %, missing/extra; behaviour clean.
 void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     if (player < 0) {
         return;
@@ -439,7 +436,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-// FIXME(shotgun): 98.72 %, different; behaviour clean.
+// FIXME(shotgun): 98.77 %, different; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
@@ -934,7 +931,6 @@ s32 EscortBase_8049E0C8::fn_80121D68() {
     return 1;
 }
 
-// FIXME: 98.52 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
@@ -973,7 +969,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     return false;
 }
 
-// FIXME: 99.29 %, regalloc-only; behaviour clean.
+// FIXME: 99.05 %, regalloc-only; behaviour clean.
 // Regalloc only: the original keeps the array pointer, counter and serial in r29, r30, r28; here in r28, r29, r30.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
