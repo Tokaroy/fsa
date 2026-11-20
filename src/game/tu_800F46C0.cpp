@@ -36,6 +36,7 @@ void Boulder_8049C4C0::init() {
     field_0x244 = 0;
     switch (field_0x230) {
     case 0:
+    case 4:
         mBox.i.x = -16.0f;
         mBox.i.y = -16.0f;
         mBox.f.x = 16.0f;
