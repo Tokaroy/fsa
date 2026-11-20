@@ -76,12 +76,8 @@ void cls_804A5D60::init() {
         } else {
             angle = fn_801CD664(0x10000);
         }
-        mVel.x = JMASSin(angle) * 1.5f;
-        mVel.y = JMASCos(angle) * 1.5f;
-        mVel.z = 0.5f * (50.0f * (0.3f * -lbl_8053EFB8));
-        field_0x3c.x = mVel.x;
-        field_0x3c.y = mVel.y;
-        field_0x3c.z = mVel.z;
+        mVel.set(JMASSin(angle) * 1.5f, JMASCos(angle) * 1.5f, 0.5f * (50.0f * (0.3f * -lbl_8053EFB8)));
+        field_0x3c.set(mVel);
         break;
     }
     }
