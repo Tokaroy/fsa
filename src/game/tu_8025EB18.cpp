@@ -1048,7 +1048,7 @@ void Player_804A6F38::fn_80261468() {
     }
 }
 
-// FIXME: 96.63 %, scheduling+regalloc; behaviour drift.
+// FIXME: 97.18 %, scheduling+regalloc; behaviour drift.
 // scheduling+regalloc: the facing-table vector loads (as in fn_8026022C) and
 // the side probes' argument loads (player / layer before the x / y stores in the original).
 // Pick up what lies on the tile in front (16 along the facing): a wall tile the
@@ -1248,6 +1248,7 @@ bool Player_804A6F38::fn_80260C08() {
     return false;
 }
 
+// FIXME: 94.64 %, missing/extra; behaviour clean.
 // FIXME: missing/extra (16 fewer): TVec2f operator+ temporaries are elided into pos in ours
 // but kept on the stack in the original (sp+0x38, sp+0x28, sp+0x20).
 // Lift another player standing in front (16 along the facing, state 0x11, 'PLAY'): it
