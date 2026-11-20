@@ -241,7 +241,6 @@ void cls_804B0288::fn_803D521C() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, scheduling; behaviour clean.
 void cls_804B0288::fn_803D5090() {
     if (field_0x2174 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x2170);
@@ -249,7 +248,7 @@ void cls_804B0288::fn_803D5090() {
     u8 state = field_0x216c;
     if (state != 0 && state != 2 && state != 1 && state != 3) {
         u8 card = lbl_8051C1A0.field_0x1ff5;
-        if (card == 0 || (card == 1 && !lbl_8053ACA8->fn_802B1DCC())) {
+        if ((card == 0 || card == 1) && !lbl_8053ACA8->fn_802B1DCC()) {
             if (field_0x216e == 0 && field_0x1b4 == 0) {
                 field_0x216c = 5;
                 field_0x2175 = 1;
