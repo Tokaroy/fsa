@@ -773,8 +773,7 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
         }
     }
     fn_801C8B50();
-    s32 angleOffset = fn_801CD664(0x4001) - 0x2000;
-    field_0x33c += angleOffset;
+    field_0x33c += fn_801CD664(0x4001) - 0x2000;
     if (!(field_0x524.field_0x0 & 0x40)) {
         fn_801C3B7C(0x1C);
     }
