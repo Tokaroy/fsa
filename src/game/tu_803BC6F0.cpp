@@ -1593,7 +1593,7 @@ void FileSelect_804AFF60::fn_803CBE38() {
 // are rotated (r26/r27/r28), and the `field_0xc` subtraction swaps f0/f2.
 // Slides the other two file rows out and the command panes in, one after
 // another (the timings are lbl_8050DB0C's 0x98..0x9F), then goes to state 19.
-// FIXME: 99.41 %, regalloc-only; behaviour clean.
+// FIXME: 99.47 %, regalloc-only; behaviour clean.
 void FileSelect_804AFF60::fn_803CB3DC() {
     s16 rowDelay = lbl_8050DB0C.field_0x4c[0x98];
     s16 frames = lbl_8050DB0C.field_0x4c[0x99];
@@ -1635,9 +1635,9 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
         field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+                                            field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
         field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc);
+                                            field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x14->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
@@ -2486,7 +2486,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 99.37 %, regalloc-only; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // Registers only: `frames` and two temporaries of the inlined alpha helpers
 // are rotated (r26/r27/r28). The original keeps &others in one register for
 // both loops: one pointer fills the array, a second walks it.
@@ -2536,9 +2536,9 @@ void FileSelect_804AFF60::fn_803C5808() {
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
         field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+                                            field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
         field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
-                                            field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc);
+                                            field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x20->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
