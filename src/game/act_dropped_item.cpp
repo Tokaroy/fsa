@@ -367,9 +367,6 @@ void DroppedItem_804A8C80::fn_802C0570() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
 }
 
-// FIXME: 98.79 %, missing/extra; behaviour near.
-// (ours has 1 fewer instruction). The original tests field_0x4 == 0 once more (a dead
-// beq, probably from an inlined helper), and the `mPos.z != 0.0f` test loads mPos.z before the 0.0f literal.
 void DroppedItem_804A8C80::draw() {
     if (field_0x230 == 1) {
         return;
@@ -378,7 +375,7 @@ void DroppedItem_804A8C80::draw() {
     if (layer == 0) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = field_0x24c;
-        if (mPos.z != 0.0f) {
+        if (mPos.z) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x40, &params, 0, 1.0f, 1.0f);
         } else if (field_0x23c == 2) {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x20c, &params, 0, 1.0f, 1.0f);
@@ -386,9 +383,9 @@ void DroppedItem_804A8C80::draw() {
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x238 + 0x182, &params, 0, 1.0f, 1.0f);
         }
     } else {
-        if (field_0x248 == 0 || (field_0x248 & 3) == 0) {
+        if (field_0x248 == 0 || (field_0x248 != 0 && (field_0x248 & 3) == 0)) {
             if (field_0x254 >= 120 || (field_0x254 != 0 && (field_0x254 & 3) == 0)) {
-                if (mPos.z != 0.0f) {
+                if (mPos.z) {
                     fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x40, 0, 2, -1, false, 0, 0);
                 } else if (field_0x23c == 2) {
                     fn_803075AC(mSerial, layer, &mPos, field_0x238 + 0x20c, 0, 2, -1, false, 0, 0);
