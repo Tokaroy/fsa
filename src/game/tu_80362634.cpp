@@ -11,10 +11,26 @@
 #include <float.h>
 #include <math.h>
 
-// FIXME(shotgun): tables not written out (gate.py literal tripwire); extern-declared, sizes from symbols.txt.
-extern const s32 lbl_80474320[76];
+static const s32 lbl_80474320[76] = {
+    940, 944, 936, 932, 924, 928, 920, 916, 960, 954, 948, 966, 1078, 1080, 1076, 1074,
+    1156, 1158, 1154, 1152, 1168, 1170, 1166, 1164, 1180, 1182, 1178, 1176, 1194, 1196, 1192, 1190,
+    1212, 1214, 1210, 1208, 1226, 1228, 1224, 1222, 1240, 1242, 1238, 1236, 1254, 1256, 1252, 1250,
+    1268, 1270, 1266, 1264, 1282, 1284, 1280, 1278, 1294, 1296, 1292, 1290, 1306, 1308, 1304, 1302,
+    1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328, 898, 900, 896, 894,
+};
 static const s32 lbl_80474450[42] = {20, 2, 20, 2, 12, 2, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 20, 0, 20, 0, 20, 0, 15, 2};
-extern const s32 lbl_804745B8[150];
+static const s32 lbl_804745B8[150] = {
+    960, 954, 948, 966, 708, 710, 706, 704, 256, 258, 254, 252, 240, 242, 238, 236,
+    248, 250, 246, 244, 211, 219, 203, 195, 902, 839, 974, 976, 890, 892, 895, 968,
+    970, 972, 978, 980, 983, 986, 920, 1018, 842, 1017, 1019, 726, 728, 724, 722, 746,
+    748, 744, 742, 135, 139, 131, 127, 119, 123, 115, 111, 83, 86, 80, 77, 1078,
+    1080, 1076, 1074, 1144, 1148, 1156, 1158, 1154, 1152, 1168, 1170, 1166, 1164, 1180, 1182, 1178,
+    1176, 1194, 1196, 1192, 1190, 1212, 1214, 1210, 1208, 1226, 1228, 1224, 1222, 1240, 1242, 1238,
+    1236, 1254, 1256, 1252, 1250, 1268, 1270, 1266, 1264, 1282, 1284, 1280, 1278, 1294, 1296, 1292,
+    1290, 1306, 1308, 1304, 1302, 1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328, 288, 290, 293,
+    292, 294, 296, 299, 298, 300, 306, 312, 314, 326, 328, 330, 332, 338, 340, 304,
+    1141, 898, 900, 896, 894, 1335,
+};
 static const s32 lbl_80474598[4] = {6, 9, 3, 0};
 static const s32 lbl_80474A5C[3] = {907, 904, 910};
 static const s32 lbl_80474B58[4] = {937, 945, 929, 921};
@@ -53,6 +69,7 @@ static const s8 lbl_80474868[125] = {
 };
 static const s8 lbl_804748E8[25] = {8, 8, 10, 10, 8, 8, 10, 10, 8, 8, 8, 8, 8,
                                     8, 8, 8, 8, 8, 8, 0, 8, 8, 8, 8, 8};
+extern const s8 lbl_80474904[14] = {3, 2, 8, 4, 2, 4, 2, 4, 2, 22, 1, 2, 4, 2};
 static const s8 lbl_80474914[125] = {
     0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1,
     3, 1, 1, 1, 3, 3, 1, 3, 3, 1, 3, 3, 4, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -108,16 +125,6 @@ static const s8 lbl_80542AD8[8] = {10, 7, 10, 7, -1, 0, 0, 0};
 static const s8 lbl_80542AE0[8] = {3, 2, 9, 4, 22, 1, 2, 4};
 static const u16 lbl_80542AE8[4] = {0x1bd, 0x1be, 0x1bf, 0x1c0};
 
-// .data 0x804ADEC0..0x804ADF28 (the tail of the original's lbl_804ADDE8).
-static const f32* const lbl_804ADEC0[4] = {lbl_804744F8, lbl_8047450C, lbl_80474520, lbl_80474534};
-static const s8* const lbl_804ADED0[14] = {
-    lbl_80542A80, lbl_80542A84, lbl_80474810, lbl_80542A88, lbl_80542A90, lbl_80542A94, lbl_80542A9C,
-    lbl_80542AA0, lbl_80542AA8, lbl_8047481C, lbl_80542AAC, lbl_80542AB0, lbl_80542AB4, lbl_80542ABC,
-};
-static const s8* const lbl_804ADF08[8] = {
-    lbl_80542AC0, lbl_80542AC4, lbl_80474834, lbl_80542AC8, lbl_80474840, lbl_80542ACC, lbl_80542AD0, lbl_80542AD4,
-};
-
 void (cls_804ADF28::*lbl_804ADC38[18])() = {
     &cls_804ADF28::fn_803653EC,
     &cls_804ADF28::fn_80365274,
@@ -160,6 +167,16 @@ void (cls_804ADF28::*lbl_804ADDE8[18])() = {
     &cls_804ADF28::fn_80362680,
 };
 
+// .data 0x804ADEC0..0x804ADF28 (the tail of the original's lbl_804ADDE8).
+static const f32* lbl_804ADEC0[4] = {lbl_804744F8, lbl_8047450C, lbl_80474520, lbl_80474534};
+static const s8* lbl_804ADED0[14] = {
+    lbl_80542A80, lbl_80542A84, lbl_80474810, lbl_80542A88, lbl_80542A90, lbl_80542A94, lbl_80542A9C,
+    lbl_80542AA0, lbl_80542AA8, lbl_8047481C, lbl_80542AAC, lbl_80542AB0, lbl_80542AB4, lbl_80542ABC,
+};
+static const s8* lbl_804ADF08[8] = {
+    lbl_80542AC0, lbl_80542AC4, lbl_80474834, lbl_80542AC8, lbl_80474840, lbl_80542ACC, lbl_80542AD0, lbl_80542AD4,
+};
+
 static JGeometry::TVec3f lbl_8050C028[4] = {
     JGeometry::TVec3f(0.0f, 1.3f, 0.0f),  JGeometry::TVec3f(0.0f, -1.3f, 0.0f),
     JGeometry::TVec3f(-1.3f, 0.0f, 0.0f), JGeometry::TVec3f(1.3f, 0.0f, 0.0f),
@@ -192,7 +209,7 @@ cls_804ADF28::~cls_804ADF28() {
 }
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
-// FIXME: 96.20 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 97.55 %, missing/extra + reloc-name; behaviour drift.
 void cls_804ADF28::init() {
     field_0x234 = field_0x90 & 0x1f;
     field_0x238 = (field_0x90 >> 5) & 0x7f;
@@ -758,8 +775,9 @@ void cls_804ADF28::fn_80364F00() {
     }
 }
 
-// FIXME(shotgun): 95.82 %, different; behaviour drift.
+// FIXME(shotgun): 98.68 %, different; behaviour drift.
 void cls_804ADF28::fn_80364D0C() {
+    ActorBase_804A5770* owl;
     s32 slot = field_0x24c;
     if (slot < 0) {
         s32 end = getActorManager_801F856C()->mActorEnd;
@@ -772,7 +790,7 @@ void cls_804ADF28::fn_80364D0C() {
         }
     } else {
         s32 oldDir = field_0x23c;
-        ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+        owl = getActorManager_801F856C()->mActors[slot];
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
@@ -1442,7 +1460,6 @@ void cls_804ADF28::fn_80362C44() {
     }
 }
 
-// FIXME(shotgun): 99.52 %, reloc-name; behaviour clean.
 void cls_804ADF28::fn_80362B74() {
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x264, NULL, 7, 1.0f, 1.0f);
     JGeometry::TVec3f savedPos = mPos;
@@ -1453,9 +1470,6 @@ void cls_804ADF28::fn_80362B74() {
     mPos = savedPos;
 }
 
-// FIXME: 99.58 %, reloc-name; behaviour clean.
-// Instructions identical; only the relocation of the "fune.bti" string is @NNN here
-// against lbl_80474C10 (the unit's rodata is not complete yet).
 void cls_804ADF28::fn_80362B14() {
     void* res = fn_804032E8('TIMG', "fune.bti");
     if (field_0x4 < 8) {
@@ -1463,7 +1477,7 @@ void cls_804ADF28::fn_80362B14() {
     }
 }
 
-// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.22 %, operands + reloc-name; behaviour drift.
 void cls_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx mtx;
@@ -1504,7 +1518,7 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.40 %, operands; behaviour drift.
+// FIXME(shotgun): 99.45 %, scheduling+regalloc; behaviour clean.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
