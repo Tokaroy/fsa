@@ -3911,7 +3911,7 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     pane->move(field_0xf8 + field_0x100 * 0.5f - w * 0.5f, (field_0xfc + field_0x104) - h);
 }
 
-// FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 // (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
