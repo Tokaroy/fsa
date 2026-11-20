@@ -604,7 +604,10 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
     }
 }
 
-// differs: rot zero-store order and .sdata2 literal pool order.
+// Not auto-inlined: draw calls fn_8036A894, fn_80369DDC and fn_80368CD8 call fn_8036AA60 out of line in the
+// original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+// differs: .sdata2 literal pool order.
 // FIXME: 99.63 %, scheduling + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
@@ -612,11 +615,8 @@ void cls_804AE088::fn_8036AA60() {
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
     fn_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            rot[i][j] = 0.0f;
-        }
-    }
+    rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
+        rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
     fn_8010F668(rot, &axisZ, field_0x280);
     PSMTXConcat(mtx, rot, mtx);
@@ -650,8 +650,6 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// Not auto-inlined: draw calls fn_8036A894 out of line in the original (docs/INLINING.md, pragma rule 1).
-#pragma auto_inline off
 // FIXME: 93.25 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
