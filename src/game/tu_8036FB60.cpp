@@ -740,7 +740,7 @@ void cls_804AE4B0::guidePlayer_80370764() {
     }
 }
 
-// FIXME: 99.46 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.96 %, reloc-name; behaviour clean.
 s32 cls_804AE4B0::fn_80370200() {
     s32 i;
     s32 idx = field_0x39c;
@@ -791,7 +791,7 @@ s32 cls_804AE4B0::fn_80370200() {
 
 // Not auto-inlined: fn_8037100C calls it with a plain bl.
 #pragma auto_inline off
-// FIXME(shotgun): 75.22 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 96.17 %, scheduling; behaviour clean.
 void cls_804AE4B0::fn_80370020() {
     JGeometry::TBox2f box;
     if (field_0x3a8 == 0) {
