@@ -584,7 +584,7 @@ void Ganon_804A25F0::fn_80196208(s32 mode) {
         if (!fn_8023F264(i)) {
             continue;
         }
-        if (field_0x4 != getPlayerLayer_8023DE58(i)) {
+        if (getField_0x4() != getPlayerLayer_8023DE58(i)) {
             continue;
         }
         if (fn_80230188(i)) {
@@ -610,7 +610,7 @@ void Ganon_804A25F0::fn_80196208(s32 mode) {
         f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
         f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
         field_0x2f4 = std::sqrtf(dx * dx + dy * dy);
-        field_0x304 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+        field_0x304 = (s16)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
         field_0x2fc = i;
     }
 }
