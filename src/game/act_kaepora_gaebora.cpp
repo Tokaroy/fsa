@@ -28,14 +28,15 @@ cls_804A6550::~cls_804A6550() {
 
 extern const s16* lbl_804A6540[4]; // the sprite animation tables (.data of this unit)
 
-// FIXME(shotgun): 98.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.14 %, missing/extra; behaviour near.
 void cls_804A6550::init() {
     EnemyBase_804A4808::init();
     bool cleared = isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) != FALSE;
     bool viewFlag = getGameView_802D6A9C()->field_0x131f9 != 0;
     field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12B;
     u32 t = (field_0x90 >> 20) & 0x1F;
-    field_0x2ac = __fsel((f32)t - 1.5f, (f32)t, 1.5f);
+    f32 minTime = 1.5f;
+    field_0x2ac = __fsel((f32)t - minTime, (f32)t, minTime);
     field_0x2b0 = (field_0x90 >> 25) & 0x1F;
     if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && (field_0x90 >> 31) != 0) {
         mFlags |= 0x10000;
@@ -138,8 +139,8 @@ bool cls_804A6550::fn_80219E04() const {
     return ret;
 }
 
-// FIXME: 98.32 %, missing/extra + reloc-name; behaviour drift.
-// (missing/extra + reloc-name). Target reloads mFlags before ori 0x2000 in case 12.
+// FIXME: 99.90 %, scheduling + reloc-name; behaviour drift.
+// FIXME: jumptable reloc-name and one branch target (0xe88 vs 0xee8).
 void cls_804A6550::fn_80219AFC(s32 state) {
     // The state tests (states 5 and 11) are written out as in the original's inlined helper; a shared helper drops to 91.68 %.
     bool oldFlying = false;
@@ -251,10 +252,10 @@ void cls_804A6550::fn_80219AFC(s32 state) {
         mAnim.startAnim_801D22DC(1, 0, false);
         JGeometry::TBox2f* box = layerBox(field_0x4);
         s32 angle;
-        if (mFlags & 0x10000) {
-            mFlags |= 0x2000;
+        if (checkFlag(0x10000)) {
             angle = -0x3556;
-        } else if (mFlags & 0x2000) {
+            mFlags |= 0x2000;
+        } else if (checkFlag(0x2000)) {
             angle = -0x2AAA;
         } else {
             angle = 0x2AAA;
@@ -270,7 +271,7 @@ void cls_804A6550::fn_80219AFC(s32 state) {
 
 extern const f32 lbl_8046A640[4][2]; // x, y offsets (about +-16) by facing, .rodata of this unit
 
-// FIXME(shotgun): 98.12 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.88 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A6550::vfunc_0x90(u8 mapHit) {
     JGeometry::TBox2f box;
     if (mState == 3) {
@@ -309,10 +310,9 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
         JGeometry::TBox2f hit;
         hit.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
         bool found = false;
-        for (s32 i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             if (fn_801D0B44(i)) {
-                s32 slot = getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i);
-                if (lbl_8053AD30->fn_80309D6C(slot, 0x100)) {
+                if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i), 0x100)) {
                     JGeometry::TVec2f p;
                     p.y = lbl_8046A640[fn_80230CFC(i)][1];
                     p.x = lbl_8046A640[fn_80230CFC(i)][0];
@@ -444,8 +444,8 @@ void cls_804A6550::vfunc_0x90(u8 mapHit) {
         break;
     }
     bool settle = false;
-    if (mState != 10) {
-        settle = fn_80219E04();
+    if (mState != 10 && fn_80219E04()) {
+        settle = true;
     }
     if (mHead.fn_8021A570(settle)) {
         switch (mHead.mState) {
@@ -536,7 +536,7 @@ u8 cls_804A6550::vfunc_0x60() {
 // The camera: in states 4, 5, 8 and 9 the owl is kept in view (clamped into the view box by 0.001),
 // a scripted camera move to it (states 4 and 5 while field_0x2b4 is 0) or focus points (also
 // 24 units higher in states 8 and 9).
-// FIXME: 94.66 %, missing/extra; behaviour drift.
+// FIXME: 94.33 %, missing/extra; behaviour near.
 void cls_804A6550::vfunc_0xA0() {
     if (field_0x2b4 == 0 || field_0x2b4 == 3) {
         switch (mState) {
@@ -570,7 +570,7 @@ void cls_804A6550::vfunc_0xA0() {
         case 9: {
             s32 layer = field_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
-            JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
+            const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
             JGeometry::TVec3f pos(mPos.x, mPos.y - mPos.z, 0.0f);
             // Kept 0.001 inside the box's left, top and right edges: max / min with fsel (the
             // MWCC intrinsic, like __fabsf elsewhere), as the original's fsel / frsp show.
