@@ -477,13 +477,14 @@ void cls_804A6270::vfunc_0x9C(u8 mapHit) {
 
 // FIXME(shotgun): 97.63 %, missing/extra; behaviour near.
 void cls_804A6270::fn_802110A8() {
+    s32 i;
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
             JGeometry::TVec3f pos(mPos);
             field_0x2c0.fn_800FDEA0(&pos, 1.0f, &field_0x3c, NULL, NULL, 0x200);
         } else {
             bool inside = false;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 if (fn_801D0B44(i) && fn_80211000(getPlayerPos_8023E724(i))) {
                     inside = true;
                     break;
@@ -518,7 +519,8 @@ void cls_804A6270::fn_802110A8() {
             }
         }
         if (field_0x38c >= 0) {
-            if (!(field_0x3c.squared() <= 32.0f * JGeometry::TUtilf::epsilon())) {
+            // the original materialises isZero() as a bool (mfcr; extrwi.) before the branch
+            if (!field_0x3c.isZero()) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x38c);
                 if (actor != NULL) {
                     actor->mPos = actor->mPos + field_0x3c;
