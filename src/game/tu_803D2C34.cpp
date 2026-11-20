@@ -537,8 +537,8 @@ void cls_804B0288::fn_803D4298() {
                 field_0x2171 = field_0x2170;
                 if (field_0x2174 != 0) {
                     lbl_8053AEC0->fn_804310BC();
+                    field_0x2173 = 0;
                 }
-                field_0x2173 = 0;
                 field_0x216d = 0x19;
                 field_0x216c = 4;
             } else {
@@ -546,10 +546,10 @@ void cls_804B0288::fn_803D4298() {
                 field_0x54 = 0x82;
                 field_0x2177 = 0;
                 field_0x216d = 3;
-                gAudioMgr_8053AF80->fn_80458880(0xC, -1);
             }
-            field_0x82 = 1;
+            gAudioMgr_8053AF80->fn_80458880(0xC, -1);
         }
+        field_0x82 = 1;
     }
 }
 
