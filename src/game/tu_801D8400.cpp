@@ -293,7 +293,7 @@ void cls_804A4C58::fn_801D9960() {
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-            s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+            s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
             f32 diff = (s16)(angle - heading);
             if (0.000030517578f * __fabsf(diff) <= 0.3f) {
                 target = player;
@@ -313,7 +313,8 @@ void cls_804A4C58::fn_801D9960() {
                 s32 n = 0;
                 for (s32 i = 0; i < 3; i++) {
                     for (s32 j = 1; j < 3; j++) {
-                        columns[n++] = i * 4 + j;
+                        columns[n] = i * 4 + j;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -325,22 +326,7 @@ void cls_804A4C58::fn_801D9960() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool turn = false;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             }
         }
@@ -380,7 +366,7 @@ bool cls_804A4C58::fn_801D95F4() {
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
+                s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
                 f32 diff = (s16)(angle - heading);
                 if (0.000030517578f * __fabsf(diff) <= 0.3f) {
                     target = player;
