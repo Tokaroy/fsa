@@ -1810,8 +1810,6 @@ bool Player_804A6F38::fn_8025EDD4(s32 a, const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME: 99.71. Registers only: the four float temporaries of the view-corner offset
-// (f0-f3) are assigned differently.
 // Whether the held thing can be put down at field_0x2f4: a player held across from
 // a GBA layer (8) is checked on its own layer, with the point moved between the two
 // view corners; else the tile there, and for an actor its vfunc_0x4C. On success the
@@ -1823,9 +1821,10 @@ bool Player_804A6F38::fn_8025EB18() {
         f32 x = box->i.x;
         f32 y = box->i.y;
         box = layerBox(field_0x3b4);
-        JGeometry::TVec2f offset(x - box->i.x, y - box->i.y);
-        pos.x += offset.x;
-        pos.y += offset.y;
+        f32 x2 = box->i.x;
+        f32 y2 = box->i.y;
+        pos.x += x - x2;
+        pos.y += y - y2;
         u16 tile = fn_8022461C(&pos, getPlayerLayer_8023DE58(field_0xd70));
         if ((fn_802265DC(&pos, getPlayerLayer_8023DE58(field_0xd70), true) && tile != 0xE && tile != 0x39 && tile != 0xD)
             || fn_802684A4(&pos, getPlayerLayer_8023DE58(field_0xd70))) {
