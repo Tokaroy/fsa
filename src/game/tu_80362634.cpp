@@ -19,6 +19,22 @@ static const s32 lbl_80474320[76] = {
     1320, 1322, 1318, 1316, 1332, 1334, 1330, 1328, 898, 900, 896, 894,
 };
 static const s32 lbl_80474450[42] = {20, 2, 20, 2, 12, 2, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 20, 0, 20, 0, 20, 0, 15, 2};
+// The walk's leg lengths (fn_80364A88) and the frame-length / pattern byte lists (fn_80364F00).
+static const f32 lbl_804744F8[5] = {80.0f, 80.0f, 224.0f, 80.0f, 80.0f};
+static const f32 lbl_8047450C[5] = {112.0f, 80.0f, 160.0f, 80.0f, 112.0f};
+static const f32 lbl_80474520[5] = {144.0f, 80.0f, 96.0f, 80.0f, 144.0f};
+static const f32 lbl_80474534[5] = {176.0f, 80.0f, 32.0f, 80.0f, 176.0f};
+// Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
+// field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
+static const s32 lbl_80474548[5][4] = {
+    {851, 854, 848, 845},
+    {904, 907, 901, 898},
+    {865, 868, 862, 859},
+    {879, 882, 876, 873},
+    {843, 904, 857, 871},
+};
+static const s32 lbl_80474598[4] = {6, 9, 3, 0};
+static const s32 lbl_804745A8[4] = {910, 913, 907, 904};
 static const s32 lbl_804745B8[150] = {
     960, 954, 948, 966, 708, 710, 706, 704, 256, 258, 254, 252, 240, 242, 238, 236,
     248, 250, 246, 244, 211, 219, 203, 195, 902, 839, 974, 976, 890, 892, 895, 968,
@@ -31,34 +47,11 @@ static const s32 lbl_804745B8[150] = {
     292, 294, 296, 299, 298, 300, 306, 312, 314, 326, 328, 330, 332, 338, 340, 304,
     1141, 898, 900, 896, 894, 1335,
 };
-static const s32 lbl_80474598[4] = {6, 9, 3, 0};
-static const s32 lbl_80474A5C[3] = {907, 904, 910};
-static const s32 lbl_80474B58[4] = {937, 945, 929, 921};
-static const s32 lbl_80474B68[8] = {3, 3, 4, 3, 3, 3, 4, 3};
-static const s32 lbl_804745A8[4] = {910, 913, 907, 904};
-static const s32 lbl_80474A98[16] = {4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4};
-static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7, 8,
-                                     5, 6, 7, 8, 4, 1, 2, 3, 5, 6, 7, 8, 4, 1, 2, 3};
-static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
-static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
-static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
-static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
-
-// Read by fn_80364A88: the direction/animation words per heading (16-byte rows), then a row of
-// field_0x26c values for the idle state (all inside the original's lbl_80474534 / lbl_80474A5C ranges).
-static const s32 lbl_80474548[5][4] = {
-    {851, 854, 848, 845},
-    {904, 907, 901, 898},
-    {865, 868, 862, 859},
-    {879, 882, 876, 873},
-    {843, 904, 857, 871},
-};
+static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
+static const s8 lbl_8047481C[24] = {5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, -1, 0};
+static const s8 lbl_80474834[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0};
+static const s8 lbl_80474840[24] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 2, 4, 5, 4, 5, 4, 5, 4, 5, 4, 3, 2, 0, 0};
 static const s32 lbl_80474858[4] = {959, 962, 956, 953}; // sprite per heading (the original's table is 0x204 long)
-static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
-static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
-static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
-
-
 // Read by init (0x80365B5C). Per field_0x238 of state 4 (125 entries) and of state 0x11 (25):
 // the index into lbl_804ADED0 (field_0x270), into lbl_804ADF08 (field_0x274) and field_0x258.
 static const s8 lbl_80474868[125] = {
@@ -90,16 +83,20 @@ static const s8 lbl_804749B0[125] = {
 static const s8 lbl_80474A30[25] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                     1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 0};
 static const f32 lbl_80474A4C[4] = {0.9f, 1.0f, 0.8f, 0.7f};
+static const s32 lbl_80474A5C[3] = {907, 904, 910};
+static const s32 lbl_80474A68[4] = {0, 1, 2, 1};
+static const s32 lbl_80474A78[4] = {9, 7, 9, 7};
+static const s32 lbl_80474A88[4] = {10, 7, 10, 7};
+static const s32 lbl_80474A98[16] = {4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4, 4, 4, 6, 4};
+static const s32 lbl_80474AD8[32] = {0, 1, 2, 3, 9, 6, 7, 8, 0, 1, 2, 3, 9, 6, 7, 8,
+                                     5, 6, 7, 8, 4, 1, 2, 3, 5, 6, 7, 8, 4, 1, 2, 3};
+static const s32 lbl_80474B58[4] = {937, 945, 929, 921};
+static const s32 lbl_80474B68[8] = {3, 3, 4, 3, 3, 3, 4, 3};
+static const s32 lbl_80474B88[6] = {7, 10, 10, 7, 10, 10};
+static const s32 lbl_80474BA0[6] = {0, 1, 2, 0, 3, 4};
+static const f32 lbl_80474BB8[3] = {6.0f, 8.0f, 6.0f};
+static const s32 lbl_80474BC4[4] = {0, 1, 0, 2};
 
-// The walk's leg lengths (fn_80364A88) and the frame-length / pattern byte lists (fn_80364F00).
-static const f32 lbl_804744F8[5] = {80.0f, 80.0f, 224.0f, 80.0f, 80.0f};
-static const f32 lbl_8047450C[5] = {112.0f, 80.0f, 160.0f, 80.0f, 112.0f};
-static const f32 lbl_80474520[5] = {144.0f, 80.0f, 96.0f, 80.0f, 144.0f};
-static const f32 lbl_80474534[5] = {176.0f, 80.0f, 32.0f, 80.0f, 176.0f};
-static const s8 lbl_80474810[12] = {8, 8, 8, 8, 8, 8, 8, 8, -1, 0, 0, 0};
-static const s8 lbl_8047481C[24] = {5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, 5, 5, 5, 5, 5, 5, 5, 5, 10, 15, 15, -1, 0};
-static const s8 lbl_80474834[12] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0};
-static const s8 lbl_80474840[24] = {0, 1, 0, 1, 0, 1, 0, 1, 0, 3, 2, 4, 5, 4, 5, 4, 5, 4, 5, 4, 3, 2, 0, 0};
 
 static const s8 lbl_80542A78[4] = {7, 5, 7, -1};
 static const s8 lbl_80542A7C[4] = {0, 1, 2, 0};
