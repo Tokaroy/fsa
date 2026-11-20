@@ -1262,8 +1262,8 @@ void cls_804ADF28::fn_80363360() {
         field_0x3c.x = 0.3f * JMath::sincosTable_.cosShort(field_0x240);
         field_0x3c.y = 0.3f * JMath::sincosTable_.sinShort(field_0x240);
     }
-    if (field_0x3c.squared() > 32.0f * FLT_EPSILON) {
-        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+    if (!(field_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
+        u16 angle = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
         if (angle >= 0x2000 && angle < 0x6000) {
             field_0x23c = 0;
         } else if (angle >= 0x6000 && angle < 0xa000) {
