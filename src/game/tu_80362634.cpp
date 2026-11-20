@@ -790,7 +790,7 @@ void cls_804ADF28::fn_80364D0C() {
         }
     } else {
         s32 oldDir = field_0x23c;
-        owl = getActorManager_801F856C()->mActors[slot];
+        owl = getActorManager_801F856C()->getActor(slot);
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
