@@ -50,8 +50,6 @@ cls_801D6A58::cls_801D6A58() {
 
 cls_801E6AB8::~cls_801E6AB8() {}
 
-// FIXME: 99.95 %, reloc-name; behaviour drift.
-// reloc-name. The original calls fn_801D77B4 (an identical copy of cls_801D7730's constructor, tu_801D6CEC) for the member at 0x4C4; ours calls __ct__12cls_801D7730Fv.
 VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x5b0 = -1;
     field_0x5b4 = 0;
@@ -195,7 +193,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
     }
 }
 
-// FIXME(shotgun): 97.12 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
 void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     switch (state) {
     case 1:
@@ -259,8 +257,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     case 11:
         if (field_0x4c4.field_0x44 != 4) {
             field_0x4c4.fn_801D7638();
-            // The original runs the constructor again here.
-            new (&field_0x4c4) cls_801D7730();
+            field_0x4c4.fn_801D76B4();
         }
         field_0x448.fn_80217A74();
         mSpeed = 0.0f;
@@ -656,11 +653,14 @@ void VaatiBoss_804A4958::vfunc_0x94() {
 }
 
 // The step of the vtable slot 0x9C (0x801D5180, a plain `fn_801D5180` symbol in the original).
-// FIXME(shotgun): 93.96 %, missing/extra; behaviour clean.
 void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
     if (!(mFlags & 0x2000)) {
-        if (mState >= 1 && mState < 4) {
+        switch (mState) {
+        case 1:
+        case 2:
+        case 3:
             startSound_801F0E34(0x4005E, 0);
+            break;
         }
         if (field_0x5ce != 0) {
             field_0x5ce--;
@@ -679,18 +679,25 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
         field_0x4c4.fn_801D6E20(&mPos);
         if (mLife > 0 && !(mFlags & 7) && mState != 0xB && mState != 0x17) {
             startSound_801F0E34(0x4005E, 0);
-            if (mState >= 0xC && mState < 0xE) {
+            switch (mState) {
+            case 0xC:
+            case 0xD:
                 startSound_801F0E34(0x4005F, 0);
+                break;
             }
         }
     }
     bool step = false;
-    if (mState >= 8) {
+    switch (mState) {
+    case 6:
+    case 7:
+        step = true;
+        break;
+    default:
         if (!(mFlags & 7)) {
             step = true;
         }
-    } else if (mState >= 6) {
-        step = true;
+        break;
     }
     if (step) {
         fn_801CE2BC(mapHit);
@@ -892,14 +899,12 @@ void VaatiBoss_804A4958::vfunc_0x88() {
     }
 }
 
-// FIXME: 98.45 %, missing/extra; behaviour near.
-// missing/extra. The original reloads mFlags (0x230) before clearing 0x8000; ours reuses the loaded value.
 void VaatiBoss_804A4958::vfunc_0x74() {
     if (mState == 5) {
         fn_801E4D74();
     }
 
-    if (mFlags & 0x8000) {
+    if (checkFlag(0x8000)) {
         mFlags &= ~0x8000;
         if (fn_801CD2F8(field_0x4)) {
             fn_801D5D84(0x15);

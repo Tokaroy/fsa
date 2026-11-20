@@ -37,7 +37,7 @@ static inline void clearSlots(cls_801D7730* self) {
     }
 }
 
-void cls_801D7730::fn_801D77B4() {
+cls_801D7730::cls_801D7730() {
     clearSlots(this);
     field_0x40 = 0;
     field_0x44 = 0;
@@ -55,23 +55,10 @@ cls_801D7730::~cls_801D7730() {
     fn_801D7638();
 }
 
-cls_801D7730::cls_801D7730() {
-    field_0x0[0x0] = -1;
-    field_0x0[0x1] = -1;
-    field_0x0[0x2] = -1;
-    field_0x0[0x3] = -1;
-    field_0x0[0x4] = -1;
-    field_0x0[0x5] = -1;
-    field_0x0[0x6] = -1;
-    field_0x0[0x7] = -1;
-    field_0x0[0x8] = -1;
-    field_0x0[0x9] = -1;
-    field_0x0[0xA] = -1;
-    field_0x0[0xB] = -1;
-    field_0x0[0xC] = -1;
-    field_0x0[0xD] = -1;
-    field_0x0[0xE] = -1;
-    field_0x0[0xF] = -1;
+void cls_801D7730::fn_801D76B4() {
+    for (u32 i = 0; i < 16; i++) {
+        field_0x0[i] = -1;
+    }
     field_0x40 = 0;
     field_0x44 = 0;
     field_0x48.set(0.0f, 0.0f, 0.0f);
@@ -84,7 +71,7 @@ cls_801D7730::cls_801D7730() {
 }
 
 // Clears mAlive of each actor named by one of the 16 serials (serials below 0
-// are empty slots). Vaati calls it on field_0x4c4 right before reconstructing it.
+// are empty slots). Vaati calls it on field_0x4c4 right before resetting it with fn_801D76B4.
 void cls_801D7730::fn_801D7638() {
     s32* p = field_0x0;
     s32 serial;
@@ -100,7 +87,7 @@ void cls_801D7730::fn_801D7638() {
 }
 
 void cls_801D7730::fn_801D74E0(const JGeometry::TVec3f* pos, s32 layer) {
-    fn_801D77B4();
+    fn_801D76B4();
     field_0x40 = layer;
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (fn_801CD2F8(field_0x40)) {
