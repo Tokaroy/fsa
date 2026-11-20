@@ -604,7 +604,7 @@ void cls_804B13D4::fn_8041FC2C() {
         field_0x4->search(lbl_8048D6B8[1])->hide();
         field_0x4->search(lbl_8048D6B8[2])->hide();
         field_0x4->search(lbl_8048D6B8[3])->hide();
-        u32 kind = (gGameRoot_8053AAF8->field_0x83 >> (0 * 2)) & 3;
+        u32 kind = gGameRoot_8053AAF8->field_0x83 & 3;
         if (kind == 2) {
             field_0x4->search('Ndata16')->show();
         } else {
@@ -1326,7 +1326,7 @@ void cls_804B13D4::fn_8041CC04() {
     s32 n = lbl_80529DEC.getField0xe8(0);
     s32 digit = 0;
     const ResTIMG* res;
-    if (lbl_80529DEC.getField0xe8(0) > 9999) {
+    if (n > 9999) {
         n = 9999;
     }
     if (n < 0) {
@@ -1431,7 +1431,7 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
     s32 n = lbl_80529DEC.getField0xe8(player);
     s32 digit = 0;
     const ResTIMG* res;
-    if (lbl_80529DEC.getField0xe8(player) > 9999) {
+    if (n > 9999) {
         n = 9999;
     }
     if (n < 0) {
