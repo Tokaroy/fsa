@@ -1318,15 +1318,14 @@ void cls_804B13D4::fn_8041D18C(s32 player) {
 }
 
 // FIXME: 99.69 %, missing/extra; behaviour clean.
-// FIXME: initial field_0xe8[0] load/clamp coalesces r0 into r30.
 void cls_804B13D4::fn_8041CC04() {
     if (!(field_0x28b & 1)) {
         return;
     }
-    s32 n = lbl_80529DEC.field_0xe8[0];
+    s32 n = lbl_80529DEC.getField0xe8(0);
     s32 digit = 0;
     const ResTIMG* res;
-    if (n > 9999) {
+    if (9999 < n) {
         n = 9999;
     }
     if (n < 0) {
