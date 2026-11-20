@@ -2278,6 +2278,7 @@ void cls_804B0B00::fn_803E51C4() {
 // and the chosen entry ('Pstab04' / 'Phanb04' / 'Prub04', field_0x1a8)
 // bounces with field_0x254[0]; then the screen, the player sprites
 // (fn_803F0A54) and lbl_8053AED8's buttons.
+// FIXME: 99.96 %, regalloc-only; behaviour clean.
 void cls_804B0B00::fn_803E4940() {
     f32 alpha;
     if (field_0x1d4 != 11) {
