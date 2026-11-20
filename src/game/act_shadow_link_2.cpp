@@ -1162,7 +1162,8 @@ void ShadowLink2_804A43E8::vfunc_0x84() {
 // 0x801C2BF4.
 // FIXME(shotgun): 89.10 %, different; behaviour near.
 void ShadowLink2_804A43E8::vfunc_0x88() {
-    switch (mState) {
+    s32 state = mState;
+    switch (state) {
     case 6:
     case 0x14:
     case 0x1E:
@@ -1170,7 +1171,7 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
         return;
     }
     f32 speed = mSpeed;
-    switch (mState) {
+    switch (state) {
     case 0x20:
         if (mPos.z <= 0.0f) {
             field_0x3c.x *= 0.78f;
@@ -1179,12 +1180,14 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
         break;
     case 0x11: {
         s16 angle = field_0x33c;
-        field_0x3c.x = JMath::sincosTable_.sinShort(angle) * speed;
-        field_0x3c.y = JMath::sincosTable_.cosShort(angle) * mSpeed;
+        f32 s = JMath::sincosTable_.sinShort(angle);
+        f32 c = JMath::sincosTable_.cosShort(angle);
+        field_0x3c.x = s * mSpeed;
+        field_0x3c.y = c * mSpeed;
         break;
     }
-    default:
-        if (mState == 0x1C) {
+    default: {
+        if (state == 0x1C) {
             switch (field_0x340.mIndex) {
             case 0:
             case 8:
@@ -1195,12 +1198,13 @@ void ShadowLink2_804A43E8::vfunc_0x88() {
                 break;
             }
         }
-        {
-            s16 angle = field_0x33c;
-            field_0x3c.x = JMath::sincosTable_.sinShort(angle) * speed;
-            field_0x3c.y = JMath::sincosTable_.cosShort(angle) * speed;
-        }
+        s16 angle = field_0x33c;
+        f32 s = JMath::sincosTable_.sinShort(angle);
+        f32 c = JMath::sincosTable_.cosShort(angle);
+        field_0x3c.x = s * speed;
+        field_0x3c.y = c * speed;
         break;
+    }
     }
     vfunc_0x84();
 }
