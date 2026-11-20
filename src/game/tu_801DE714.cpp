@@ -208,10 +208,9 @@ void cls_804A51E4::vfunc_0x54() {
     field_0x2c4.set(mPos.x, mPos.y);
 }
 
-// FIXME(shotgun): 99.09 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E1E08() {
     if (mTargetSerial >= 0) {
-        if (!(mFlags & 0x80000)) {
+        if (!checkFlag(0x80000)) {
             mFlags |= 0x40000;
         }
         if (mTargetSerial >= 0) {
