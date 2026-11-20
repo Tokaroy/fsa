@@ -38,16 +38,14 @@ static inline void releaseTarget(cls_804A51E4* self) {
     }
 }
 
-// FIXME(shotgun): 77.83 %, missing/extra; behaviour clean.
 bool cls_804A51E4::fn_801E2F40() {
     bool result = false;
-    s32 code = fn_8022461C(&mPos, field_0x4);
-    if (code < 13) {
-        if (code == 3) {
-            result = true;
-        }
-    } else if (code < 15) {
+    switch (fn_8022461C(&mPos, field_0x4)) {
+    case 3:
+    case 13:
+    case 14:
         result = true;
+        break;
     }
     return result;
 }
