@@ -144,7 +144,7 @@ static inline u16 collisionCodeAt(const V* pos, s32 layer) {
 }
 
 // The corner of cell `index` (the inverse of fn_80226AE0); z is cleared.
-// FIXME(shotgun): 77.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 84.33 %, scheduling+regalloc; behaviour clean.
 void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out) {
     JGeometry::TVec3f p = *out;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -185,19 +185,18 @@ s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 // The same as fn_80226850 (only the register allocation differs in the original).
-// FIXME(shotgun): 96.10 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
 u16 fn_80226998(const JGeometry::TVec3f* pos, s32 layer) {
     return rawTileAt(pos, layer);
 }
 
 // The raw tile code at pos, 0xF outside the layer's box.
-// FIXME(shotgun): 96.95 %, scheduling+regalloc; behaviour clean.
 u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer) {
     return rawTileAt(pos, layer);
 }
 
 // The same result as fn_8022461C (compiled branch-free in the original).
-// FIXME(shotgun): 96.41 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 96.04 %, scheduling+regalloc; behaviour clean.
 u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     u16 code = lbl_8046CB88[raw];
@@ -223,7 +222,7 @@ bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag) {
 
 // Whether the tile at pos blocks, from its collision code (and the position inside the cell for
 // the half-cell codes); `flag` selects further cases.
-// FIXME(shotgun): 97.61 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.44 %, missing/extra; behaviour near.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
     s32 code = collisionCodeAt(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
@@ -276,24 +275,23 @@ bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
 }
 
 // Whether the raw tile at pos is one of the codes of lbl_8046AAB0.
-// FIXME(shotgun): 97.95 %, scheduling+regalloc; behaviour clean.
 bool fn_80225EF4(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(rawTileAt(pos, layer), lbl_8046AAB0, 12);
 }
 
 // Whether the collision code at pos is one of the first nine of lbl_8046AAC8.
-// FIXME(shotgun): 95.31 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.03 %, missing/extra; behaviour near.
 bool fn_80225BE4(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AAC8, 9);
 }
 
-// FIXME(shotgun): 95.31 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.03 %, missing/extra; behaviour near.
 bool fn_802258D4(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AAC8, 9);
 }
 
 // Whether the collision code at pos is one of the first five of lbl_8046AADC.
-// FIXME(shotgun): 94.77 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.46 %, missing/extra; behaviour near.
 bool fn_80225614(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(collisionCodeAt(pos, layer), lbl_8046AADC, 5);
 }
@@ -305,7 +303,7 @@ bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer) {
 // Not auto-inlined: fn_802255F4 calls fn_802252F4 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Tests the raw tile at pos against the code lists of the current stage.
-// FIXME(shotgun): 98.54 %, different; behaviour clean.
+// FIXME(shotgun): 97.24 %, different; behaviour clean.
 bool fn_802252F4(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
@@ -334,7 +332,7 @@ bool fn_8022517C(const JGeometry::TVec3f* pos, s32 layer) {
     return inListFlag(rawTileAt(pos, layer), lbl_8053FF48, 2);
 }
 
-// FIXME(shotgun): 93.78 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.46 %, missing/extra + reloc-name; behaviour clean.
 bool fn_80225000(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(rawTileAt(pos, layer), lbl_8053FF48, 2);
 }
@@ -344,13 +342,12 @@ bool fn_80224E88(const JGeometry::TVec3f* pos, s32 layer) {
     return inListFlag(rawTileAt(pos, layer), lbl_8053FF4C, 2);
 }
 
-// FIXME(shotgun): 93.78 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.46 %, missing/extra + reloc-name; behaviour clean.
 bool fn_80224D0C(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(rawTileAt(pos, layer), lbl_8053FF4C, 2);
 }
 
 // On the upper layers, whether the tile is 0x1B0 / 0x1BB while GameView byte 0x131F1 is set.
-// FIXME(shotgun): 97.42 %, scheduling+regalloc; behaviour clean.
 bool fn_80224B88(const JGeometry::TVec3f* pos, s32 layer) {
     u16 code = rawTileAt(pos, layer);
     if (layer < 8 && getGameView_802D6A9C()->field_0x131f1 != 0 && (code == 0x1B0 || code == 0x1BB)) {
@@ -359,7 +356,6 @@ bool fn_80224B88(const JGeometry::TVec3f* pos, s32 layer) {
     return false;
 }
 
-// FIXME(shotgun): 97.42 %, scheduling+regalloc; behaviour clean.
 bool fn_80224A04(const JGeometry::TVec3f* pos, s32 layer) {
     u16 code = rawTileAt(pos, layer);
     if (layer < 8 && getGameView_802D6A9C()->field_0x131f1 != 0 && (code == 0x1B0 || code == 0x1BB)) {
@@ -370,7 +366,6 @@ bool fn_80224A04(const JGeometry::TVec3f* pos, s32 layer) {
 
 // Whether the raw tile at pos is one of the 0x5E codes of lbl_8046AB2C (tile table in this
 // unit's data, not in the source).
-// FIXME(shotgun): 97.55 %, scheduling+regalloc; behaviour clean.
 bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer) {
     return inList(rawTileAt(pos, layer), lbl_8046AB2C, 0x5E);
 }
@@ -378,7 +373,7 @@ bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer) {
 // The tile's collision code: the raw tile code (as fn_80226850) through lbl_8046CB88, adjusted
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
-// FIXME(shotgun): 94.43 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.05 %, missing/extra; behaviour near.
 u16 fn_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
     return collisionCodeAt(pos, layer);
 }
