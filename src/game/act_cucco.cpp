@@ -235,6 +235,7 @@ inline bool Cucco_804AB8C0::checkActorHit() {
 }
 
 // Differs only in the registers of checkActorHit's hit (r29) and serial/other (r28), swapped in ours.
+// FIXME: 99.79 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80332A60() {
     if (fn_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
         field_0xb0 = 0x41302;
@@ -378,7 +379,6 @@ void Cucco_804AB8C0::fn_803324A8() {
 
 // Not auto-inlined: update() calls fn_80332378 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 95.86 %, scheduling+regalloc; behaviour clean.
 u8 Cucco_804AB8C0::fn_80332378() {
     JGeometry::TVec3f out;
     out.z = 0.0f;
@@ -588,7 +588,6 @@ void Cucco_804AB8C0::fn_80331D38() {
 
 // Not auto-inlined: update() calls fn_80331C24, fn_80331B40, fn_803319B8 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 99.13 %, different; behaviour drift.
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
         s32 tile = fn_8022461C(&mPos, field_0x4);
