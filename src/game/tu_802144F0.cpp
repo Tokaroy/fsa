@@ -47,17 +47,16 @@ cls_802150B8::~cls_802150B8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
-// FIXME: 97.28 %. Only the literal rows differ (@NNN vs lbl_8053FBC0,
-// lbl_8053FBC8, lbl_8053FBD4 and friends: the unit's .sdata2 split) and the
-// bne/ble targets, which are not code differences.
+// In the z > 0 branch the original copies depth's register into height
+// (mr r4, r0; li r0, 0); ours loads both constants (li r4, 1; li r0, 0).
 void cls_802150B8::fn_80214E50() {
     if (field_0x0 != NULL) {
         return;
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    s32 height = 0;
     s32 depth = 1;
+    s32 height = 0;
     if (pos.z > 0.0f) {
         height = 1;
         depth = 0;
@@ -86,8 +85,8 @@ void cls_802150B8::fn_80214CE4() {
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    s32 height = 0;
     s32 depth = 1;
+    s32 height = 0;
     if (pos.z > 0.0f) {
         height = 1;
         depth = 0;
