@@ -888,7 +888,6 @@ void fn_803068D0(cls_804AA858Sub11C* record) {
 // sprites (lbl_80504A38), timer 5 down to 0, at most `max` of them and four of
 // kind 4 or more; every sprite it looks at is marked for removal. Returns the
 // count written.
-// Remaining: register order in the record stores (scheduling+regalloc).
 // FIXME: 94.10 %, missing/extra; behaviour near.
 s32 fn_803066F0(s32 unused, s32 player, s32 max) {
     GbaSprite_80506F88* dst = lbl_80506DE8[player].f.field_0x18;
@@ -922,9 +921,8 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
                     big++;
                 }
                 count++;
-                sprite->mRemove = 1;
                 dst->f.field_0x3_0 = x >> 8;
-                s32 id = sprite->mId;
+                u16 id = sprite->mId;
                 dst->f.field_0x2 = x;
                 dst->f.field_0x1 = y;
                 dst->f.field_0x3_1 = id >> 8;
@@ -932,6 +930,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
                 dst->f.mKind = sprite->field_0x20;
                 dst->f.field_0x3_4 = sprite->field_0x21;
                 dst->f.field_0x3_3 = sprite->field_0x22;
+                sprite->mRemove = 1;
                 if (count >= max) {
                     return count;
                 }
