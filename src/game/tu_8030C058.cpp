@@ -940,7 +940,6 @@ u8 Camera_804AA9E4::addFocusPoint_8030C210(const JGeometry::TVec3f* pos) {
 
 // Adds the box's two corners as focus points when both lie inside the camera box and there is
 // room for two.
-// FIXME: 99.35 %, different; behaviour near.
 u8 Camera_804AA9E4::fn_8030C058(const JGeometry::TBox2f* box) {
     s32 result = false;
     if (field_0x7f0 + 1 < 0x80) {
