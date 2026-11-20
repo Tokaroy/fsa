@@ -365,8 +365,20 @@ static inline bool contains(const JGeometry::TVec3f* p, JGeometry::TBox2f box) {
     return p->x >= box.i.x && p->y >= box.i.y && p->x < box.f.x && p->y < box.f.y;
 }
 
+static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x840 == 0) {
+        cam->field_0x840 = 1;
+        cam->field_0x844.set(x0, y0, x1, y1);
+        cam->field_0x854 = 1.0f;
+        cam->field_0x1d4 = -1.0f;
+        cam->field_0x1d8 = -1.0f;
+    }
+}
+
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
-// FIXME(shotgun): 98.82 %, operands; behaviour clean.
+// FIXME(shotgun): 98.95 %, operands; behaviour clean.
 void cls_804AE4B0::fn_803717CC() {
     fn_803721F4();
     if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2288.0f, 1712.0f, 2320.0f, 1728.0f))) {
@@ -396,19 +408,7 @@ void cls_804AE4B0::fn_803717CC() {
         view = gGameRoot2_8053AB10->field_0x24->field_0x164;
         field_0x25c = view.getHeight() * 0.5f;
         field_0x260 = 144.0f - field_0x25c;
-        f32 bottom = field_0x248 + field_0x25c;
-        f32 top = field_0x248 - field_0x25c;
-        f32 x = field_0x244;
-        cam = gGameRoot2_8053AB10->field_0x24;
-        cam->field_0x179 = 1;
-        cam = gGameRoot2_8053AB10->field_0x24;
-        if (cam->field_0x840 == 0) {
-            cam->field_0x840 = 1;
-            cam->field_0x844.set(x, top, x, bottom);
-            cam->field_0x854 = 1.0f;
-            cam->field_0x1d4 = -1.0f;
-            cam->field_0x1d8 = -1.0f;
-        }
+        camRange(field_0x244, field_0x248 - field_0x25c, field_0x244, field_0x248 + field_0x25c);
     }
 }
 
@@ -497,7 +497,7 @@ void cls_804AE4B0::fn_8037100C() {
     }
 }
 
-// FIXME(shotgun): 95.83 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.29 %, scheduling; behaviour clean.
 void cls_804AE4B0::fn_80370C84() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
@@ -508,8 +508,7 @@ void cls_804AE4B0::fn_80370C84() {
     if (field_0x240 == 0x23) {
         field_0x234 = 1;
         for (s32 i = 0; i < 4; i++) {
-            JGeometry::TVec3f off((f32)i * 16.0f, 0.0f, 0.0f);
-            field_0x294[i] = mPos + off;
+            field_0x294[i] = mPos + JGeometry::TVec3f((f32)i * 16.0f, 0.0f, 0.0f);
             field_0x2f4[i].zero();
             field_0x350[i] = 0x38E;
             field_0x330[i] = 0;
@@ -522,19 +521,19 @@ void cls_804AE4B0::fn_80370C84() {
     if (field_0x240 <= 0x23) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023EFEC(i)) {
-                JGeometry::TVec3f pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) +
-                                        JGeometry::TVec3f(16.0f * (f32)i, 0.0f, 0.0f);
+                const JGeometry::TVec3f& pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) +
+                                               JGeometry::TVec3f(16.0f * (f32)i, 0.0f, 0.0f);
                 fn_80230498(i, &pos, 0x2C8, 0xFF, -0x80, -0x80, true);
             } else {
-                JGeometry::TVec3f pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) +
-                                        JGeometry::TVec3f(16.0f * (f32)i, 0.0f, 0.0f);
+                const JGeometry::TVec3f& pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) +
+                                               JGeometry::TVec3f(16.0f * (f32)i, 0.0f, 0.0f);
                 fn_80230498(i, &pos, 0x10, 0xFF, -0x80, -0x80, true);
             }
         }
     }
     if (field_0x240 == 0) {
-        JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() * 0.5f,
-                              (s32)JUTVideo::sManager->getEfbHeight() * 0.5f, 0.0f);
+        JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
+                              (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, 0x502, field_0x4, pos, 0x22)) {
             mState = 5;
@@ -594,7 +593,6 @@ inline void cls_804AE4B0::guideOrRelease_80370764() {
     }
 }
 
-// FIXME: 94.66 %, different; behaviour clean.
 void cls_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
@@ -605,17 +603,21 @@ void cls_804AE4B0::fn_80370764() {
     guideOrRelease_80370764();
     field_0x23c++;
     fn_803721F4();
-    guidePlayer_80370764();
+    JGeometry::TVec3f pos = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
+    if (PSVECMag(&pos) > 2.0f) {
+        fn_8023DFF4(0, &pos);
+    }
     if (!fn_802341D0(0)) {
         field_0x240 = 2;
     } else if (field_0x398 != 0 && field_0x240 == 0 && fn_8022CAF8(0) == lbl_80474F30[field_0x394] &&
                fn_802300EC(0)) {
-        JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
-                              (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
+        pos.set((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
+                (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         s32 msg;
         if (field_0x394 < 3) {
-            msg = lbl_80474F40[field_0x394++];
+            msg = lbl_80474F40[field_0x394];
+            field_0x394++;
         } else if (field_0x23c < 0x168) {
             field_0x394 = 4;
             msg = 0x509;
@@ -623,7 +625,7 @@ void cls_804AE4B0::fn_80370764() {
             field_0x394 = 5;
             msg = 0x50A;
         }
-        if (fn_8038BD08(0, msg, field_0x4, pos, 0x22)) {
+        if (fn_8038BD08(0, msg, getField_0x4(), pos, 0x22)) {
             fn_8023077C();
             mState = 8;
         }
