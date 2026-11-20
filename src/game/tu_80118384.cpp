@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
 #include "game/ActorManager.h"
@@ -21,6 +22,21 @@ static JGadget::TAllocator<ActorBase_804A5770*> lbl_8053AA90;
 
 // The texture name fn_80119D48 loads (.sdata 0x80539F10).
 const char* lbl_80539F10 = "kk_black.bti";
+
+inline ActorVector::ActorVector(const JGadget::TAllocator<ActorBase_804A5770*>& alloc)
+    : mAllocator(alloc),
+      mBegin(NULL),
+      mEnd(NULL),
+      mCapacity(0),
+      mExtend(JGadget::vector::extend_default) {}
+
+inline cls_801192AC::cls_801192AC()
+    : field_0x0(0),
+      field_0x1(0),
+      field_0x2(0),
+      field_0x4(0x13),
+      field_0x8(0),
+      mActors(JGadget::TAllocator<ActorBase_804A5770*>(lbl_8053AA90)) {}
 
 inline cls_80119E5C::cls_80119E5C() {
     field_0x0 = 0;
@@ -249,19 +265,6 @@ void cls_80119E5C::fn_80119468(s32 g, s32 mode) {
     fn_80119998(fadeFrames(mode), 0, mode, 0, 2, 0, g);
 }
 
-inline cls_801192AC::cls_801192AC() {
-    field_0x0 = 0;
-    field_0x1 = 0;
-    field_0x2 = 0;
-    field_0x4 = 0x13;
-    field_0x8 = 0;
-    mActors.mAllocator = lbl_8053AA90;
-    mActors.mBegin = NULL;
-    mActors.mEnd = NULL;
-    mActors.mCapacity = 0;
-    mActors.mExtend = JGadget::vector::extend_default;
-}
-
 // JGadget::TVector::erase(first, last): copies the tail down, then destroys the rest.
 static inline ActorBase_804A5770** copyDown(ActorBase_804A5770** first, ActorBase_804A5770** last,
                                             ActorBase_804A5770** result) {
@@ -286,7 +289,6 @@ cls_801192AC::~cls_801192AC() {
     delete mActors.mBegin;
 }
 
-// FIXME(shotgun): 82.22 %, missing/extra + reloc-name; behaviour drift.
 extern "C" cls_801192AC* fn_8011921C() {
     static cls_801192AC lbl_804BC540;
     return &lbl_804BC540;
@@ -461,32 +463,23 @@ void cls_801192AC::fn_8011888C(ActorBase_804A5770* actor) {
 // by-value predicate of the std::find_if the original uses: matches an actor by its serial
 struct ActorSerialEq {
     s32 mSerial;
+    ActorSerialEq(s32 serial) : mSerial(serial) {}
     bool operator()(ActorBase_804A5770* actor) const { return mSerial == actor->mSerial; }
 };
 
-// FIXME: 90.25 %, missing/extra; behaviour near.
-// FIXME: erase of the found element (TVector::erase inline); still differs in the stack frame.
 void cls_801192AC::fn_80118798(ActorBase_804A5770* actor) {
-    ActorSerialEq pred = {actor->mSerial};
-    ActorBase_804A5770** end = mActors.mEnd;
-    ActorBase_804A5770** it = mActors.mBegin;
-    while (it != end && !pred(*it)) {
-        it++;
-    }
-    if (it != end) {
-        ActorBase_804A5770** next = it + 1;
-        while (next < end) {
-            *it++ = *next++;
-        }
-        for (ActorBase_804A5770** p = it; p != mActors.mEnd; p++) {
-        }
-        mActors.mEnd = it;
+    ActorBase_804A5770** it = std::find_if(mActors.mBegin, mActors.mEnd, ActorSerialEq(actor->mSerial));
+    if (it != mActors.mEnd) {
+        mActors.erase(it);
     }
 }
 
-// FIXME(shotgun): 54.97 %, missing/extra; behaviour clean.
-// The original is TVector size() == 0, then std::find_if with a
-// by-value predicate (its actorId is spilled to the stack); same stand-in note as fn_80118798.
+struct ActorIdEq {
+    u32 mActorId;
+    ActorIdEq(u32 actorId) : mActorId(actorId) {}
+    bool operator()(ActorBase_804A5770* actor) const { return mActorId == actor->mActorId; }
+};
+
 ActorBase_804A5770** cls_801192AC::fn_8011871C(ActorBase_804A5770** from, u32 actorId) {
     u32 count;
     if (mActors.mBegin == NULL) {
@@ -500,13 +493,7 @@ ActorBase_804A5770** cls_801192AC::fn_8011871C(ActorBase_804A5770** from, u32 ac
     if (from == mActors.mEnd) {
         return mActors.mEnd;
     }
-    while (from != mActors.mEnd) {
-        if ((*from)->mActorId == actorId) {
-            return from;
-        }
-        from++;
-    }
-    return mActors.mEnd;
+    return std::find_if(from, mActors.mEnd, ActorIdEq(actorId));
 }
 
 bool cls_801192AC::fn_801186B0(u32 value) {
