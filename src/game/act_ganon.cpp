@@ -111,13 +111,141 @@ u8* lbl_804A22D8[16] = {
     lbl_804A2244, lbl_8053A0C0, lbl_8053A0C4, lbl_8053A0CC,
     lbl_804A2268, lbl_8053A0DC, lbl_804A228C, lbl_8053A0DC,
 };
-extern const u16 lbl_804A2318[6][4];
-extern const u32 lbl_804A2348[5];
-extern const s32 lbl_804A235C[5];
-extern const f32 lbl_804A2370[5][2];
-extern const char* const lbl_804A2398[59];
-extern const char* const lbl_804A2484[59];
-extern const f32 lbl_804A2570[16][2];
+u16 lbl_804A2318[6][4] = {
+    {0x374, 0x375, 0x193, 0x194}, {0x378, 0x379, 0x197, 0x198}, {0x372, 0x373, 0x191, 0x192},
+    {0x376, 0x377, 0x195, 0x196}, {0x368, 0x369, 0x36C, 0x36D}, {0x366, 0x367, 0x36A, 0x36B},
+};
+u32 lbl_804A2348[5] = {'STAL', 'STAL', 'STAL', 'SLR4', 'SLR4'};
+s32 lbl_804A235C[5] = {4, 4, 4, 6, 0x10006};
+f32 lbl_804A2370[5][2] = {{-24.0f, 0.0f}, {0.0f, 0.0f}, {24.0f, 0.0f}, {0.0f, -16.0f}, {0.0f, -8.0f}};
+const char* lbl_804A2398[59] = {
+    "boss_butag_01.bti",
+    "boss_butag_02.bti",
+    "boss_butag_03.bti",
+    "boss_butag_04.bti",
+    "boss_butag_05.bti",
+    "boss_butag_kougeki_age_01.bti",
+    "boss_butag_kougeki_age_02.bti",
+    "boss_butag_kougeki_age_03.bti",
+    "boss_butag_kougeki_age_04.bti",
+    "boss_butag_kougeki_age_05.bti",
+    "boss_butag_kougeki_age_06.bti",
+    "boss_butag_kougeki_age_07.bti",
+    "boss_butag_kougeki_mawashi_01.bti",
+    "boss_butag_kougeki_mawashi_02.bti",
+    "boss_butag_kougeki_mawashi_03.bti",
+    "boss_butag_kougeki_mawashi_04.bti",
+    "boss_butag_kougeki_nage_01.bti",
+    "boss_butag_kougeki_nage_02.bti",
+    "boss_butag_kougeki_nage_03.bti",
+    "boss_butag_kougeki_nage_03_2.bti",
+    "boss_butag_kougeki_nage_04.bti",
+    "boss_butag_kougeki_nage_05.bti",
+    "boss_butag_kougeki_nage_05a.bti",
+    "boss_butag_kougeki_nage_05a_2.bti",
+    "boss_butag_kougeki_nage_05a_3.bti",
+    "boss_butag_kougeki_nage_05_2.bti",
+    "boss_butag_kougeki_nage_05_3.bti",
+    "boss_butag_kougeki_nage_06.bti",
+    "boss_butag_kougeki_nage_07.bti",
+    "boss_butag_kougeki_nage_08.bti",
+    "boss_butag_down_01.bti",
+    "boss_butag_down_02.bti",
+    "boss_butag_down_03.bti",
+    "boss_butag_down_04.bti",
+    "boss_butag_down_04_1.bti",
+    "boss_butag_down_04_2.bti",
+    "boss_butag_down_up_01.bti",
+    "boss_butag_down_up_02.bti",
+    "boss_butag_down_up_03.bti",
+    "boss_butag_down_up_04.bti",
+    "boss_butag_down_up_05.bti",
+    "boss_butag_shometsu_01.bti",
+    "boss_butag_shometsu_02.bti",
+    "boss_butag_shometsu_03.bti",
+    "boss_butag_shometsu_04.bti",
+    "boss_butag_shometsu_05.bti",
+    "boss_butag_shometsu_06.bti",
+    "boss_butag_shometsu_07.bti",
+    "boss_butag_demo_01.bti",
+    "boss_butag_demo_02.bti",
+    "boss_butag_demo_03.bti",
+    "boss_butag_demo_04.bti",
+    "boss_butag_demo_05.bti",
+    "boss_butag_noke_01.bti",
+    "boss_butag_noke_02.bti",
+    "boss_butag_noke_03.bti",
+    "boss_butag_noke_04.bti",
+    "boss_butag_noke_05.bti",
+    "boss_butag_noke_06.bti",
+};
+const char* lbl_804A2484[59] = {
+    "boss_butag_yari_01.bti",
+    "boss_butag_yari_02.bti",
+    "boss_butag_yari_03.bti",
+    "boss_butag_yari_04.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_kougeki_age_yari_01.bti",
+    "boss_butag_kougeki_age_yari_02.bti",
+    "boss_butag_kougeki_age_yari_03.bti",
+    "boss_butag_kougeki_age_yari_04.bti",
+    "boss_butag_kougeki_age_yari_05.bti",
+    "boss_butag_kougeki_age_yari_06.bti",
+    "boss_butag_kougeki_age_yari_07.bti",
+    "boss_butag_yari_mawashi_01.bti",
+    "boss_butag_yari_mawashi_02.bti",
+    "boss_butag_yari_mawashi_03.bti",
+    "boss_butag_yari_mawashi_04.bti",
+    "boss_butag_kougeki_nage_yari01.bti",
+    "boss_butag_kougeki_nage_yari02.bti",
+    "boss_butag_kougeki_nage_yari03.bti",
+    "boss_butag_kougeki_nage_yari03_2.bti",
+    "boss_butag_kougeki_nage_yari04.bti",
+    "boss_butag_kougeki_nage_yari06.bti",
+    "boss_butag_kougeki_nage_yari05a.bti",
+    "boss_butag_kougeki_nage_yari05a_2.bti",
+    "boss_butag_kougeki_nage_yari05a_3.bti",
+    "boss_butag_kougeki_nage_yari05a_2.bti",
+    "boss_butag_kougeki_nage_yari05a_3.bti",
+    "boss_butag_kougeki_nage_yari06.bti",
+    "boss_butag_kougeki_nage_yari07.bti",
+    "boss_butag_kougeki_nage_yari08.bti",
+    "boss_butag_down_yari_01.bti",
+    "boss_butag_down_yari_02.bti",
+    "boss_butag_down_yari_03.bti",
+    "boss_butag_down_yari_04.bti",
+    "boss_butag_down_yari_04_1.bti",
+    "boss_butag_down_yari_04_2.bti",
+    "boss_butag_down_up_yari_01.bti",
+    "boss_butag_down_up_yari_02.bti",
+    "boss_butag_down_up_yari_03.bti",
+    "boss_butag_down_up_yari_04.bti",
+    "boss_butag_down_up_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_yari_05.bti",
+    "boss_butag_demo_yari_01.bti",
+    "boss_butag_demo_yari_02.bti",
+    "boss_butag_demo_yari_03.bti",
+    "boss_butag_demo_yari_04.bti",
+    "boss_butag_demo_yari_05.bti",
+    "boss_butag_noke_yari_01.bti",
+    "boss_butag_noke_yari_02.bti",
+    "boss_butag_noke_yari_03.bti",
+    "boss_butag_noke_yari_04.bti",
+    "boss_butag_noke_yari_05.bti",
+    "boss_butag_noke_yari_06.bti",
+};
+f32 lbl_804A2570[16][2] = {
+    {32.0f, 80.0f},  {0.0f, 88.0f},  {8.0f, -48.0f},  {8.0f, -48.0f},
+    {8.0f, -48.0f},  {-24.0f, -40.0f}, {-40.0f, 0.0f},  {-40.0f, 0.0f},
+    {-40.0f, 0.0f},  {0.0f, -48.0f}, {0.0f, -48.0f},  {0.0f, -48.0f},
+    {-100.0f, 88.0f}, {0.0f, 0.0f},   {0.0f, 0.0f},    {0.0f, 0.0f},
+};
 u8 lbl_8053AB90;
 u8 lbl_8053AB91;
 
@@ -147,6 +275,20 @@ s32 fn_8018A660();
 void fn_8018A63C();
 JPAEmitterManager* fn_8018A5F0();
 s32 fn_8018E89C();
+
+// The scale part of m (its translation column is the caller's); the callers load the
+// scales last argument first (cf. act_terrorpin.cpp).
+static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
 
 static inline void setRotScaleMtx3(Mtx m, const JGeometry::TVec3f& rot, f32 sx, f32 sy, f32 sz) {
     f32 sinx = sin(rot.x);
@@ -1774,29 +1916,19 @@ void Ganon_804A25F0::draw() {
             setRotScaleMtx(mtx, rot, 1.4f);
             res2 = static_cast<ResTIMG*>(fn_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
         } else {
-            mtx[0][0] = field_0x2d0.x;
-            mtx[1][0] = 0.0f;
-            mtx[2][0] = 0.0f;
-            mtx[0][1] = 0.0f;
-            mtx[1][1] = field_0x2d0.y;
-            mtx[2][1] = 0.0f;
-            mtx[0][2] = 0.0f;
-            mtx[1][2] = 0.0f;
-            mtx[2][2] = field_0x2d0.y;
+            setScaleMtx(mtx, field_0x2d0.x, field_0x2d0.y, field_0x2d0.y);
             res2 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2484[field_0x288]));
         }
         params.mMtx = mtx;
         params.field_0x10.set(0, 0, 0, 100);
         params.field_0x1d = -1;
         JUTTexture tex2(res2, 0);
-        offX += 0.5f * (f32)tex2.getWidth();
-        offY += 0.5f * (f32)tex2.getHeight();
-        offX += lbl_804A2570[field_0x28c][0];
-        offY += lbl_804A2570[field_0x28c][1];
-        field_0x2c4 = mPos;
+        offX += 0.5f * (f32)tex2.getWidth() + lbl_804A2570[field_0x28c][0];
+        offY += 0.5f * (f32)tex2.getHeight() + lbl_804A2570[field_0x28c][1];
+        field_0x2c4.set(mPos);
         field_0x2c4.x += offX;
         field_0x2c4.y += offY;
-        if (field_0x2a5 == 0 && (field_0x28c != 7 || field_0x25c < 6)) {
+        if (field_0x2a5 == 0 && (field_0x28c != 7 || (field_0x28c == 7 && field_0x25c < 6))) {
             fn_801EFD34(res2, &params, -1, offX, 0.0f, -offY);
         }
     }
@@ -1805,19 +1937,11 @@ void Ganon_804A25F0::draw() {
     mPos.z = savedZ;
     params.field_0x1d = 3;
     params.field_0x1f = 0;
-    mtx[0][0] = field_0x54.x;
-    mtx[1][0] = 0.0f;
-    mtx[2][0] = 0.0f;
-    mtx[0][1] = 0.0f;
-    mtx[1][1] = field_0x54.y;
-    mtx[2][1] = 0.0f;
-    mtx[0][2] = 0.0f;
-    mtx[1][2] = 0.0f;
-    mtx[2][2] = field_0x54.y;
+    setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.y);
     params.mMtx = mtx;
     params.field_0x10.set(255, 255, 255, 255);
     params.field_0x10.a = (u8)field_0x2ac;
-    if ((field_0x2a0 == 3 && mState == 10) || mState == 16 || mState == 17 || mState == 18) {
+    if ((field_0x2a0 == 3 && mState != 10) || mState == 16 || mState == 17 || mState == 18) {
         params.field_0x30 = 16;
     } else {
         params.field_0x30 = 17;
@@ -1836,15 +1960,7 @@ void Ganon_804A25F0::draw() {
         setRotScaleMtx3(mtx, rot, 1.4f * field_0x2d0.x, 1.4f * field_0x2d0.y, 1.4f * field_0x2d0.y);
         res4 = static_cast<ResTIMG*>(fn_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
     } else {
-        mtx[0][0] = field_0x2d0.x;
-        mtx[1][0] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[0][1] = 0.0f;
-        mtx[1][1] = field_0x2d0.y;
-        mtx[2][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][2] = 0.0f;
-        mtx[2][2] = field_0x2d0.y;
+        setScaleMtx(mtx, field_0x2d0.x, field_0x2d0.y, field_0x2d0.y);
         res4 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2484[field_0x288]));
     }
     params.mMtx = mtx;
@@ -1852,14 +1968,12 @@ void Ganon_804A25F0::draw() {
     params.field_0x1d = 5;
     params.field_0x10.a = (u8)field_0x2b0;
     JUTTexture tex4(res4, 0);
-    offX2 += 0.5f * (f32)tex4.getWidth();
-    offY2 += 0.5f * (f32)tex4.getHeight();
-    offX2 += lbl_804A2570[field_0x28c][0];
-    offY2 += lbl_804A2570[field_0x28c][1];
-    field_0x2c4 = mPos;
+    offX2 += 0.5f * (f32)tex4.getWidth() + lbl_804A2570[field_0x28c][0];
+    offY2 += 0.5f * (f32)tex4.getHeight() + lbl_804A2570[field_0x28c][1];
+    field_0x2c4.set(mPos);
     field_0x2c4.x += offX2;
     field_0x2c4.y += offY2;
-    if (field_0x2a5 == 0 && (field_0x28c != 7 || field_0x25c < 6)) {
+    if (field_0x2a5 == 0 && (field_0x28c != 7 || (field_0x28c == 7 && field_0x25c < 6))) {
         fn_801EFD34(res4, &params, -1, offX2, 0.0f, -offY2);
     }
 }
