@@ -1294,7 +1294,7 @@ void cls_804AE088::fn_80368660() {
                 if (field_0x294[i] == 0) {
                     mPos = field_0x2a8[i];
                     mPos.z = 20.0f;
-                    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DD8[i], &params, 7, 1.0f, 1.0f);
+                    drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474DD8[i], &params, 7, 1.0f, 1.0f);
                     if (field_0x3bc[i] != NULL) {
                         setEmitterPos_8013CB44(field_0x3bc[i], &(field_0x2a8[i] + JGeometry::TVec3f(0.0f, 0.0f, 20.0f)), 0, -1, true);
                     }
@@ -1308,25 +1308,25 @@ void cls_804AE088::fn_80368660() {
                     if (field_0x24c < 0xc0) {
                         s32 frame = field_0x264 + lbl_80474DC4[i];
                         if (mSpriteParams.mMtx == NULL) {
-                            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", frame, NULL);
+                            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
                         }
                     }
                     params.field_0x10.set(255, 255, 255, 255 - field_0x24c);
                     JGeometry::TVec3f* pos = getPos();
                     s32 frame = field_0x264 + lbl_80474DC4[i];
                     if (field_0x4 < 8) {
-                        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
+                        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
                     }
                     fn_803075AC(mSerial, field_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
-                    drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
+                    drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
                 }
             } else {
                 mPos.x = field_0x2a8[i].x;
                 mPos.y = field_0x2a8[i].y;
                 mPos.z = field_0x2a8[i].z;
-                drawSprite_801F06F0("enemy_both2_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
+                drawSprite_801F06F0("enemy_gc_sob.bin", field_0x264 + lbl_80474DC4[i], &params, 7, 1.0f, 1.0f);
             }
         }
         mPos = savedPos;
