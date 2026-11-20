@@ -31,6 +31,10 @@ static const s32 lbl_804650B0[6] = {0x1B3, 0x1CD, 0x17F, 0x201, 0x1E7, 0x199};
 static const u32 lbl_804650C8[3] = {0x840, 0x841, 0x842};
 static const s16 lbl_804650D4[6] = {-0x4000, -0x1C00, 0x1C00, 0x4000, 0x6400, -0x6400};
 
+inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
+    return fn_8038BD08(0, lbl_804650C8[field_0x254], layer, pos, 0x22);
+}
+
 // FIXME(shotgun): 92.52 %, different + reloc-name; behaviour clean.
 void cls_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
@@ -228,7 +232,7 @@ void cls_8049E770::fn_8012C170() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230 += 2;
@@ -247,7 +251,7 @@ void cls_8049E770::fn_8012C030() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -439,7 +443,7 @@ void cls_8049E770::fn_8012B218() {
             msgPos.x = (s32)rm->fbWidth * 0.5f;
             msgPos.y += -16.0f;
             fn_8022FE80(0, field_0x4, mSerial, true, false);
-            if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+            if (!talk(field_0x4, msgPos)) {
                 return;
             }
             field_0x254++;
@@ -472,7 +476,7 @@ void cls_8049E770::fn_8012B0D8() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (talk(field_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -583,7 +587,7 @@ void cls_8049E770::fn_8012AA84() {
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
+        if (!talk(field_0x4, msgPos)) {
             return;
         }
         field_0x254++;
