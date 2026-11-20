@@ -923,9 +923,9 @@ void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4) {
 
 // FIXME(shotgun): 88.94 %, scheduling+regalloc; behaviour clean.
 void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6) {
-    spawnEmitter_8013CC50(layer, pos, 0xFF, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x100, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(layer, pos, 0x101, arg5, arg6 + 1, NULL, NULL, true, 1.0f);
+    spawnEmitterHelper(layer, pos, 0xFF, arg5, arg6);
+    spawnEmitterHelper(layer, pos, 0x100, arg5, arg6);
+    spawnEmitterHelper(layer, pos, 0x101, arg5, arg6);
 }
 
 // Two effects (spawnEmitter_8013CC50 0x117 and 0x118) at pos on `layer`; arg3 is passed
