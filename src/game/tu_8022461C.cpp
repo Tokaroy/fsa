@@ -123,7 +123,7 @@ static inline bool screenValueIs(s32 value) {
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
 template <class V>
-static inline s32 collisionCodeAt(const V* pos, int layer) {
+static inline u16 collisionCodeAt(const V* pos, int layer) {
     u16 code = lbl_8046CB88[rawTileAt(pos, layer)];
     if (viewLayerFlag(layer) != 0) {
         if (code == 0) {
@@ -223,8 +223,7 @@ bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag) {
 // the half-cell codes); `flag` selects further cases.
 // FIXME(shotgun): 97.44 %, missing/extra; behaviour near.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
-    // The original narrows the returned code to 16 bits and then compares it as an int.
-    s32 code = (u16)collisionCodeAt(pos, layer);
+    s32 code = collisionCodeAt(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
         return false;
     }
