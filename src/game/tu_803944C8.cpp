@@ -3855,7 +3855,7 @@ void cls_804AF5A0::fn_80395BE8() {
 // FIXME(shotgun): 99.24 %, regalloc-only; behaviour clean.
 // (the t2/t3 thresholds and field_0x1a4 land in rotated registers)
 void cls_804AF5A0::fn_80395834(J2DPane* pane) {
-    s16 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
+    s32 t0 = lbl_8050DB0C.field_0x4c[(0x286 - 0x4C) / 2];
     s32 t1 = t0 + lbl_8050DB0C.field_0x4c[(0x288 - 0x4C) / 2];
     s32 t2 = t1 + lbl_8050DB0C.field_0x4c[(0x28A - 0x4C) / 2];
     s32 t3 = t2 + lbl_8050DB0C.field_0x4c[(0x28C - 0x4C) / 2];
@@ -3874,8 +3874,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
     f32 width;
     s16 frame = field_0x194;
     if (frame <= t0) {
-        height = 1.0f;
-        width = height;
+        width = 1.0f;
+        height = width;
     } else if (frame <= t1) {
         f32 df = (f32)(frame - t0);
         f32 dt = (f32)(t1 - t0);
@@ -3889,8 +3889,8 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         width = lbl_80475D78[1] + r * (lbl_80475D78[2] - lbl_80475D78[1]);
         height = lbl_80475D8C[1] + r * (lbl_80475D8C[2] - lbl_80475D8C[1]);
     } else if (frame <= t3) {
-        f32 dt = (f32)(t3 - t2);
         f32 df = (f32)(frame - t2);
+        f32 dt = (f32)(t3 - t2);
         f32 r = (df * df) / (dt * dt);
         width = lbl_80475D78[2] + r * (lbl_80475D78[3] - lbl_80475D78[2]);
         height = lbl_80475D8C[2] + r * (lbl_80475D8C[3] - lbl_80475D8C[2]);
@@ -3901,14 +3901,14 @@ void cls_804AF5A0::fn_80395834(J2DPane* pane) {
         width = lbl_80475D78[3] + r * (lbl_80475D78[4] - lbl_80475D78[3]);
         height = lbl_80475D8C[3] + r * (lbl_80475D8C[4] - lbl_80475D8C[3]);
     } else {
-        height = 1.0f;
+        width = 1.0f;
         field_0x194 = 0;
-        width = height;
+        height = width;
     }
     f32 w = width * field_0x100;
     f32 h = height * field_0x104;
     pane->resize(w, h);
-    pane->move(field_0xf8 + field_0x100 * 0.5f - w * 0.5f, (field_0xfc + field_0x104) - h);
+    pane->move(field_0xf8 + field_0x100 / 2.0f - w / 2.0f, (field_0xfc + field_0x104) - h);
 }
 
 // FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
