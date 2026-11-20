@@ -184,9 +184,10 @@ void Cucco_804AB8C0::vfunc_0x10() {
         return;
     }
     while (true) {
+        // Still differs: the original tests `next` before copying it to `serial`, and loads 16.0f before the other two arguments.
         s32 next = getActorManager_801F856C()->fn_801F78F4(ACTOR_NIWA, serial);
         serial = next;
-        if (next < 0) {
+        if (serial < 0) {
             return;
         }
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(next);
@@ -207,32 +208,45 @@ void Cucco_804AB8C0::vfunc_0x10() {
     }
 }
 
-// FIXME(shotgun): 90.92 %, missing/extra; behaviour drift.
+// Not in the binary: fn_80332A60 inlines it.
+inline bool Cucco_804AB8C0::checkActorHit() {
+    bool hit = false;
+    s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+    if (serial >= 0 && serial != mSerial) {
+        ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        bool isFlame = false;
+        if (other == NULL) {
+            return false;
+        }
+        if (other->mActorId == ACTOR_FLME) {
+            isFlame = true;
+        }
+        if (isFlame) {
+            JGeometry::TVec3f from(0.0f, 0.0f, 0.0f);
+            other->fn_801F3128((JGeometry::TVec2f*)&from);
+            from -= other->field_0x3c;
+            hit = fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110);
+        }
+        if (hit) {
+            other->field_0x164 = 1;
+        }
+    }
+    return hit;
+}
+
+// Differs only in the registers of checkActorHit's hit (r29) and serial/other (r28), swapped in ours.
+// FIXME: 99.79 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80332A60() {
     if (fn_801F3D94(true) == 0 && field_0x284 <= 0 && !field_0xc4) {
         field_0xb0 = 0x41302;
         if (field_0x268 > 0) {
             JGeometry::TBox2f box = mBox;
-            JGeometry::TVec2f center(mPos.x, mPos.y);
+            JGeometry::TVec2f center;
+            center.x = mPos.x;
+            center.y = mPos.y;
             box.addPos(center);
             s32 result = 0;
-            bool hit = false;
-            s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
-            if (serial >= 0 && serial != mSerial) {
-                ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-                if (other != NULL) {
-                    if (other->mActorId == ACTOR_FLME) {
-                        JGeometry::TVec2f center2d(0.0f, 0.0f);
-                        other->fn_801F3128(&center2d);
-                        JGeometry::TVec3f from = JGeometry::TVec3f(center2d.x, center2d.y, 0.0f) - other->field_0x3c;
-                        hit = fn_801F37AC(other->field_0x118, &from, 0, other->field_0x168, other->field_0x110);
-                    }
-                    if (hit) {
-                        other->field_0x164 = 1;
-                    }
-                }
-            }
-            if (hit) {
+            if (checkActorHit()) {
                 result = 2;
             } else if (fn_801F2DB4('NULL', ACTOR_FLME, NULL) || fn_801F2FAC() ||
                        fn_801A4D1C(mSerial, &box, &center) || fn_801A6108(mSerial, &box, &center) ||
@@ -365,7 +379,6 @@ void Cucco_804AB8C0::fn_803324A8() {
 
 // Not auto-inlined: update() calls fn_80332378 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 95.86 %, scheduling+regalloc; behaviour clean.
 u8 Cucco_804AB8C0::fn_80332378() {
     JGeometry::TVec3f out;
     out.z = 0.0f;
@@ -374,8 +387,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
     u8 r = fn_801F2618(&out, false);
     if (r == 1) {
         fn_801F11B4();
-        s32 layer = field_0x4;
-        if (getGameView_802D6A9C()->field_0x131df[layer] == 1 && out.y < 0.0f) {
+        if (viewLayerFlag(field_0x4) == 1 && out.y < 0.0f) {
             field_0x2b8.y = 0.0f;
         }
     } else {
@@ -391,8 +403,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
                 }
             }
         }
-        s32 layer = field_0x4;
-        if (getGameView_802D6A9C()->field_0x131df[layer] == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
+        if (viewLayerFlag(field_0x4) == 1 && field_0x2a9 == 1 && field_0x2b4 == 0.0f) {
             field_0x3c.y = 0.0f;
             field_0x2b8.y = 0.0f;
         }
@@ -577,10 +588,10 @@ void Cucco_804AB8C0::fn_80331D38() {
 
 // Not auto-inlined: update() calls fn_80331C24, fn_80331B40, fn_803319B8 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 99.13 %, different; behaviour drift.
 void Cucco_804AB8C0::fn_80331C24() {
     if (field_0x290 == 0 || field_0x290 == 6) {
-        if (fn_8022461C(&mPos, field_0x4) == 0x39) {
+        s32 tile = fn_8022461C(&mPos, field_0x4);
+        if (tile == 0x39) {
             if (((field_0x230 == 0 && field_0x258 == 0) || field_0x230 == 1) && mPos.z < 4.0f) {
                 startSound_801F0E34(0x4007F, 0);
                 if (mEmitter2f8 == NULL) {
