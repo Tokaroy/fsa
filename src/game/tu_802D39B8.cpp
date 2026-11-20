@@ -396,12 +396,11 @@ bool fn_802DE9A0(void) {
     return false;
 }
 
-// FIXME: 95.16 %, missing/extra; behaviour near.
-// The target keeps gGameRoot_8053AAF8->0x4 in r4 and reloads the view
-// (lwz 0xc) for the second pair; ours loads it once.
+// Stage (4, 0) or (7, 2), with gGameRoot_8053AAF8->0x7F set.
 bool fn_802DE93C(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->field_0x4 == 4 && getGameView_802D6A9C()->field_0x8 == 0) ||
+        GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
+        if ((sub->mView->field_0x4 == 4 && sub->mView->field_0x8 == 0) ||
             (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2)) {
             return true;
         }
