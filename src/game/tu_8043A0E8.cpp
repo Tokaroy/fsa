@@ -674,7 +674,6 @@ void cls_804B1920::fn_8043DB58() {
     }
 }
 
-// FIXME: 99.70 %, regalloc-only; behaviour clean.
 void cls_804B1920::fn_8043D8B4() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         for (int i = 0; i < 4; i++) {
@@ -765,7 +764,7 @@ void cls_804B1920::fn_8043D834() {
 
 // Original tests the bool of field_0xde & bit against zero (srwi.; ours: srwi + cmplwi 1),
 // and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
-// FIXME: 95.59 %, missing/extra; behaviour drift.
+// FIXME: 98.18 %, missing/extra; behaviour drift.
 bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
@@ -864,7 +863,7 @@ void cls_804B1920::fn_8043D39C() {
     }
 }
 
-// FIXME: 99.04 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.98 %, reloc-name; behaviour clean.
 // The 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24
 // (the earlier first uses) are unwritten.
 void cls_804B1920::fn_8043D034() {
