@@ -39,6 +39,7 @@ public:
     void fn_803721F4();
     void tickPlayer_80371284(s32 i);
     void guidePlayer_80370764();
+    void guideOrRelease_80370764();
 
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234;
