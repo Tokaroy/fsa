@@ -328,16 +328,14 @@ void fn_801CD150(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
 }
 
 // FIXME: 79.09 %, scheduling+regalloc; behaviour clean.
-// Same instructions; the target loads and subtracts both
-// coordinates first, then adds the box corner and loads z last (ours interleaves x and y).
 // Converts `in` from the view's 0xDC/0xE0 box space to the 0xCC/0xD0 one:
 // out = (in.x, in.y) - (0xDC, 0xE0) + (0xCC, 0xD0); z is copied.
 void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
     GameView_804A9950* view = getGameView_802D6A9C();
     GameView_804A9950* upper = getGameView_802D6A9C();
-    out->x = view->mVisibleBox.i.x + (in->x - upper->field_0xdc.i.x);
-    out->y = view->mVisibleBox.i.y + (in->y - upper->field_0xdc.i.y);
-    out->z = in->z;
+    f32 dx = in->x - upper->field_0xdc.i.x;
+    f32 dy = in->y - upper->field_0xdc.i.y;
+    out->set(view->mVisibleBox.i.x + dx, view->mVisibleBox.i.y + dy, in->z);
 }
 
 // FIXME(shotgun): 98.14 %, missing/extra; behaviour clean.
