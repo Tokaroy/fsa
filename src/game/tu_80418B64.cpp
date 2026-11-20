@@ -1,4 +1,3 @@
-#include "game/PlayerBit.h"
 #include "game/GameAudio.h"
 #include "game/cls_804B13D4.h"
 #include "game/GameState.h"
@@ -736,7 +735,8 @@ void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
         fn_8041E8B4(0);
-        if ((u32)(gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+        u32 kind = gGameRoot_8053AAF8->field_0x83 & 3;
+        if (kind == 2) {
             fn_8041DD24();
         }
         fn_8041D18C(0);
