@@ -50,7 +50,7 @@ static JGeometry::TBox2f lbl_8050AE38[5][2] = {
 };
 
 // 0x803513C0.
-// FIXME(shotgun): 98.02 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.91 %, scheduling+regalloc; behaviour drift.
 void OBJLift_804ACA00::init() {
     field_0x258 = (field_0x90 & 0xF) + ((field_0x90 >> 12) & 0xF0);
     field_0x260 = (field_0x90 >> 4) & 0xF;
@@ -324,7 +324,7 @@ bool OBJLift_804ACA00::fn_80351020(s32 player) {
 // 0x803506E0.
 #pragma auto_inline reset
 
-// FIXME: 97.71 %, missing/extra; behaviour drift.
+// FIXME: 99.16 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): missing/extra; behaviour drift (register allocation, push magnitude not vectorized to ps).
 s32 OBJLift_804ACA00::fn_80350974() {
     field_0x283[0] = 0;
