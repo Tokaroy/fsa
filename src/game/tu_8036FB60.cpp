@@ -88,13 +88,13 @@ static void (cls_804AE4B0::*lbl_804AE420[12])() = {
     &cls_804AE4B0::fn_803706AC, &cls_804AE4B0::fn_803705A0, &cls_804AE4B0::fn_80370508, &cls_804AE4B0::fn_803704E8,
 };
 
-// FIXME(shotgun): 88.51 %, missing/extra; behaviour clean.
 void cls_804AE4B0::update() {
     if (mTimer != 0) {
         mTimer--;
     }
     field_0x39c = fn_8022EA0C(0);
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         field_0x264[i] = *getPlayerPos_8023E724(i);
     }
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
@@ -128,9 +128,9 @@ void cls_804AE4B0::update() {
         }
         field_0x370 ^= 1;
     }
+    JGeometry::TBox2f work = mBox;
     JGeometry::TBox2f box = mBox;
-    JGeometry::TBox2f work = box;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (field_0x330[i] != 0) {
             field_0x330[i]--;
         }
@@ -146,6 +146,7 @@ void cls_804AE4B0::update() {
     work.f.x += field_0x324.x;
     work.f.y += field_0x324.y;
     fn_80239914(&work, field_0x4, mSerial);
+    work = box;
     (this->*lbl_804AE420[mState])();
 }
 
