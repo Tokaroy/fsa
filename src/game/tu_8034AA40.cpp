@@ -73,18 +73,18 @@ void cls_804AC8C0::init() {
 
 static void markRandomCucco(s32* serials, s32 count);
 
-// FIXME(shotgun): 98.36 %, missing/extra; behaviour drift.
 void cls_804AC8C0::vfunc_0x10() {
     s32 serials[30];
     s32 serial = -1;
     s32 count = 0;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
-        if (serial < 0) {
+        s32 found = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        serial = found;
+        if (found < 0) {
             break;
         }
         if (count < 30) {
-            serials[count] = serial;
+            serials[count] = found;
             count++;
         }
     }
