@@ -1061,12 +1061,10 @@ void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 // FIXME: 97.28 %, missing/extra + reloc-name; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
-    case 3: {
-        cls_801192AC* demo = fn_8011921C();
-        demo->field_0x2 = 1;
+    case 3:
+        fn_8011921C()->setField_0x2(1);
         lbl_8053AED0->fn_8043A450(0, 3);
         break;
-    }
     case 4:
         mAnim0.startAnim_801D22DC(2, 2, false);
         mAnim0.fn_801D1F14(0.0f);
@@ -1123,8 +1121,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         getGameView_802D6A9C()->fn_802DA8DC();
         break;
     case 14: {
-        cls_801192AC* demo = fn_8011921C();
-        demo->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         JGeometry::TVec3f start = mSpawnPos;
         JGeometry::TVec3f target = *getPlayerPos_8023E724(0);
         target.y += 32.0f;
@@ -1184,15 +1181,13 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         mAnim1.fn_801D1F14(0.0f);
         break;
     }
-    case 19: {
+    case 19:
         fn_8011921C()->fn_801183BC();
         mAnim0.startAnim_801D22DC(0xF, 0, false);
         mAnim0.fn_801D1F14(0.0f);
-        cls_801192AC* demo = fn_8011921C();
-        demo->field_0x2 = 1;
+        fn_8011921C()->setField_0x2(1);
         gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
         break;
-    }
     case 21:
         field_0x364 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x309, 0, 0, NULL, NULL, true, 1.0f);
         field_0x368 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x30A, 0, 0, NULL, NULL, true, 1.0f);
