@@ -763,7 +763,6 @@ void cls_804A4C58::vfunc_0x88() {
 }
 
 
-// FIXME: 82.49 %, missing/extra; behaviour drift.
 void cls_804A4C58::vfunc_0x74() {
     switch (mState) {
     case 0xB:
@@ -776,7 +775,8 @@ void cls_804A4C58::vfunc_0x74() {
                 s32 n = 0;
                 for (s32 row = 0; row < 3; row++) {
                     for (s32 col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -788,12 +788,7 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
+            if (isColumnRight(this)) {
                 mFlags &= ~0x2000;
             } else {
                 mFlags |= 0x2000;
@@ -804,7 +799,8 @@ void cls_804A4C58::vfunc_0x74() {
                 s32 n = 0;
                 for (s32 row = 0; row < 3; row++) {
                     for (s32 col = 1; col < 3; col++) {
-                        columns[n++] = row * 4 + col;
+                        columns[n] = row * 4 + col;
+                        n++;
                     }
                 }
                 if (n > 0) {
@@ -816,22 +812,7 @@ void cls_804A4C58::vfunc_0x74() {
                 field_0x334 = fn_801CD664(12);
             }
             field_0x338 = fn_801CD664(0x3D) + 0x3C;
-            bool turn = false;
-            bool left = false;
-            if (mPos.x < field_0x2d4[field_0x334].x ||
-                (mPos.x == field_0x2d4[field_0x334].x && (mFlags & 0x2000))) {
-                left = true;
-            }
-            if (left) {
-                if (!(mFlags & 0x2000)) {
-                    turn = true;
-                }
-            } else {
-                if (mFlags & 0x2000) {
-                    turn = true;
-                }
-            }
-            if (turn) {
+            if (needsTurn(this)) {
                 fn_801D9C58(0xC);
             } else {
                 fn_801D9C58(0xB);
