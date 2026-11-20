@@ -430,7 +430,7 @@ void cls_804B0288::fn_803D4770() {
     if (field_0x84 > t10) {
         for (s32 i = 0; i < 8; i++) {
             done5 = field_0x2c[i]->fn_8040271C(t11, 2.0f, 1.0f);
-            field_0x2c[i]->fn_80402628(t11, field_0x2c[i]->field_0x28, 0);
+            field_0x2c[i]->fn_80402628(t11, 0, field_0x2c[i]->field_0x28);
         }
         fn_803D49A4();
     }
