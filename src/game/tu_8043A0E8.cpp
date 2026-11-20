@@ -529,6 +529,10 @@ void cls_804B1920::fn_8043E7CC(JGeometry::TVec3f pos) {
     fn_80440928(screen.x, screen.y);
 }
 
+static inline f32 maxf(f32 a, f32 b) {
+    return (a >= b) ? a : b;
+}
+
 // FIXME(shotgun): 98.80 %, missing/extra + reloc-name; behaviour clean.
 // (the cx / cy and box bounds live in fewer float registers)
 void cls_804B1920::fn_8043E398(const Vec* a, const Vec* b) {
@@ -536,11 +540,9 @@ void cls_804B1920::fn_8043E398(const Vec* a, const Vec* b) {
     Vec screenB;
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(a, false, false, &screenA);
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(b, false, false, &screenB);
-    f32 margin = fabs(screenB.x - screenA.x);
-    f32 dy = fabs(screenB.y - screenA.y);
-    margin = (margin >= dy) ? margin : dy;
-    f32 cx = (screenA.x + screenB.x) * 0.5f;
-    f32 cy = (screenA.y + screenB.y) * 0.5f;
+    f32 margin = maxf(fabs(screenB.x - screenA.x), fabs(screenB.y - screenA.y));
+    f32 cx = (screenA.x + screenB.x) / 2.0f;
+    f32 cy = (screenA.y + screenB.y) / 2.0f;
     if (!outsideBox(93.0f, 61.5f + topOffset(lbl_8053AED0), cx, cy, margin)) {
         lbl_8053AED0->field_0xdc |= 1;
     }
