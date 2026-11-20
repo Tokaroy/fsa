@@ -10,6 +10,7 @@
 #include "game/ActorManager.h"
 #include "game/Map.h"
 #include "game/Message.h"
+#include "std/math.h"
 
 static const s32 lbl_80471760[9] = {5, 10, 15, 20, 25, 30, 35, 40, 45};
 
@@ -324,8 +325,6 @@ void CrystalBall_804AB308::fn_80322BC4() {
     field_0x230 = 4;
 }
 
-// FIXME(shotgun): 98.68 %, missing/extra; behaviour near.
-// the switch over rank is laid out differently
 void CrystalBall_804AB308::fn_80322964() {
     mBox.i.x = -6.0f;
     mBox.i.y = -6.0f;
@@ -338,8 +337,8 @@ void CrystalBall_804AB308::fn_80322964() {
         for (s32 i = 0; i < 4; i++) {
             if (mask & bit) {
                 JGeometry::TVec3f pp = *getPlayerPos_8023E724(i);
-                s32 dx = (s32)__fabs(mPos.x - pp.x);
-                s32 dy = (s32)__fabs(mPos.y - pp.y);
+                s32 dx = (s32)std::fabsf(mPos.x - pp.x);
+                s32 dy = (s32)std::fabsf(mPos.y - pp.y);
                 s32 dir = fn_80230CFC(i);
                 if ((dx >= 0 && dx <= 15 && dir == 0) || dir == 1) {
                     if (mPos.x > pp.x) {
