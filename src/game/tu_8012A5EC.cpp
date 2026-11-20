@@ -224,9 +224,9 @@ void cls_8049E770::fn_8012C170() {
         fn_8012A5EC();
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
-        msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
         msgPos.x = (s32)rm->fbWidth * 0.5f;
+        msgPos.y = (s32)rm->efbHeight * 0.5f;
+        msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -243,9 +243,9 @@ void cls_8049E770::fn_8012C030() {
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
-        msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
         msgPos.x = (s32)rm->fbWidth * 0.5f;
+        msgPos.y = (s32)rm->efbHeight * 0.5f;
+        msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -468,9 +468,9 @@ void cls_8049E770::fn_8012B0D8() {
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
+        msgPos.x = (s32)rm->fbWidth / 2.0f;
+        msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
-        msgPos.x = (s32)rm->fbWidth * 0.5f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
@@ -579,9 +579,9 @@ void cls_8049E770::fn_8012AA84() {
     } else if (field_0x250 == 0) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         JGeometry::TVec3f msgPos;
-        msgPos.z = 0.0f;
-        msgPos.y = (s32)rm->efbHeight * 0.5f;
         msgPos.x = (s32)rm->fbWidth * 0.5f;
+        msgPos.y = (s32)rm->efbHeight * 0.5f;
+        msgPos.z = 0.0f;
         msgPos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (!fn_8038BD08(0, lbl_804650C8[field_0x254], field_0x4, msgPos, 0x22)) {
