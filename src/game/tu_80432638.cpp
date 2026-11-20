@@ -12,6 +12,16 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/JKernel/JKRFileLoader.h"
 
+// The six pane tags the constructor reads the alphas of (Ptim01 twice).
+static const u64 lbl_8048F438[6] = {
+    0x00000050746B3031ull, /* "Ptk01" */
+    0x0000000050743031ull, /* "Pt01" */
+    0x00000050746B3032ull, /* "Ptk02" */
+    0x0000000050743032ull, /* "Pt02" */
+    0x00005074696D3031ull, /* "Ptim01" */
+    0x00005074696D3031ull, /* "Ptim01" */
+};
+
 static const char* lbl_804B1640[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
@@ -23,16 +33,6 @@ static const char* lbl_804B1640[10] = {
     "kk_rupyNum_07.bti",
     "kk_rupyNum_08.bti",
     "kk_rupyNum_09.bti",
-};
-
-// The six pane tags the constructor reads the alphas of (Ptim01 twice).
-static const u64 lbl_8048F438[6] = {
-    0x00000050746B3031ull, /* "Ptk01" */
-    0x0000000050743031ull, /* "Pt01" */
-    0x00000050746B3032ull, /* "Ptk02" */
-    0x0000000050743032ull, /* "Pt02" */
-    0x00005074696D3031ull, /* "Ptim01" */
-    0x00005074696D3031ull, /* "Ptim01" */
 };
 
 // FIXME(shotgun): 99.79 %, operands (the vtable symbol name)
@@ -55,17 +55,17 @@ cls_804B1668::cls_804B1668() {
     field_0x34->mPane->hide();
     f32 width = field_0x18[2]->mPane->getWidth();
     f32 centreX = field_0x18[2]->field_0x10;
-    field_0x40[0].x = (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x) - width * 0.5f;
+    field_0x40[0].x = (centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x) - width / 2.0f;
     f32 height = field_0x18[2]->mPane->getHeight();
     f32 centreY = field_0x18[2]->field_0x14;
-    field_0x40[0].y = (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y) - height * 0.5f;
+    field_0x40[0].y = (centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y) - height / 2.0f;
     field_0x40[0].z = 0.0f;
     field_0x70[0] = field_0x18[2]->mPane->getWidth();
     field_0x70[2] = field_0x18[2]->mPane->getHeight();
-    centreX = field_0x18[0]->field_0x8;
-    field_0x58[0].x = centreX + field_0x4[0]->search('Ndata01')->getBounds()->i.x;
-    centreY = field_0x18[0]->field_0xc;
-    field_0x58[0].y = centreY + field_0x4[0]->search('Ndata01')->getBounds()->i.y;
+    f32 leftX = field_0x18[0]->field_0x8;
+    field_0x58[0].x = leftX + field_0x4[0]->search('Ndata01')->getBounds()->i.x;
+    f32 topY = field_0x18[0]->field_0xc;
+    field_0x58[0].y = topY + field_0x4[0]->search('Ndata01')->getBounds()->i.y;
     field_0x58[0].z = 0.0f;
     field_0x80[0] = field_0x18[0]->mPane->getWidth();
     field_0x80[2] = field_0x18[0]->mPane->getHeight();
@@ -82,17 +82,17 @@ cls_804B1668::cls_804B1668() {
     field_0x28[2]->setPane_80402F04(field_0x4[1]->search('Psp04'));
     width = field_0x28[1]->mPane->getWidth();
     centreX = field_0x28[1]->field_0x10;
-    field_0x40[1].x = (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x) - width * 0.5f;
+    field_0x40[1].x = (centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x) - width / 2.0f;
     height = field_0x28[1]->mPane->getHeight();
     centreY = field_0x28[1]->field_0x14;
-    field_0x40[1].y = (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y) - height * 0.5f;
+    field_0x40[1].y = (centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y) - height / 2.0f;
     field_0x40[1].z = 0.0f;
     field_0x70[1] = field_0x28[1]->mPane->getWidth();
     field_0x70[3] = field_0x28[1]->mPane->getHeight();
-    centreX = field_0x28[0]->field_0x8;
-    field_0x58[1].x = centreX + field_0x4[1]->search('Ndata01')->getBounds()->i.x;
-    centreY = field_0x28[0]->field_0xc;
-    field_0x58[1].y = centreY + field_0x4[1]->search('Ndata01')->getBounds()->i.y;
+    leftX = field_0x28[0]->field_0x8;
+    field_0x58[1].x = leftX + field_0x4[1]->search('Ndata01')->getBounds()->i.x;
+    topY = field_0x28[0]->field_0xc;
+    field_0x58[1].y = topY + field_0x4[1]->search('Ndata01')->getBounds()->i.y;
     field_0x58[1].z = 0.0f;
     field_0x80[1] = field_0x28[0]->mPane->getWidth();
     field_0x80[3] = field_0x28[0]->mPane->getHeight();
