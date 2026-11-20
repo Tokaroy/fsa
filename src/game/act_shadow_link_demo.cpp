@@ -157,8 +157,11 @@ void cls_8049DB90::update() {
         }
         break;
     case 26: {
-        f32 vx = field_0x231 ? -2.9f : 2.9f;
         field_0x23c++;
+        f32 vx = -2.9f;
+        if (!field_0x231) {
+            vx = 2.9f;
+        }
         if (hop(this, field_0x23c, 4.5f, 0.0f, vx)) {
             fn_8011B878(25);
             if (field_0x231) {
@@ -179,7 +182,10 @@ void cls_8049DB90::update() {
         }
         break;
     case 29: {
-        f32 vx = field_0x231 ? 1.45f : -1.45f;
+        f32 vx = 1.45f;
+        if (!field_0x231) {
+            vx = -1.45f;
+        }
         if (hop(this, fn_8011921C()->field_0x8 - lbl_80464AF8[29], 4.5f, 1.1f, vx)) {
             fn_8011B878(30);
         }
