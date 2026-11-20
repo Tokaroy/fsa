@@ -836,7 +836,6 @@ void cls_804AAD60::fn_803146DC() {
     }
 }
 
-// FIXME(shotgun): 94.17 %, missing/extra; behaviour clean.
 void cls_804AAD60::fn_803142E4() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -850,35 +849,21 @@ void cls_804AAD60::fn_803142E4() {
             fn_8022FEB8(&box, field_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
-                if (fn_8038AD24(p, 0x4CE, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                    field_0x254 = p;
-                    field_0x268 = 0x4CE;
-                    field_0x234 = 1;
-                }
+                startMessage(p, 0x4CE, 0x110);
             }
             break;
         }
         case 1:
             fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
-            if (fn_8038470C(field_0x254, 0x4CF)) {
-                field_0x268 = 0x4CF;
-                field_0x234 = 1;
-            }
+            nextMessage(0x4CF);
             break;
         case 2: {
             fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
-            f32 maxP = gGameRoot_8053AAF8->fn_80138A30();
-            s32 rnd = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * maxP) & 3;
+            s32 maxP = gGameRoot_8053AAF8->fn_80138A30();
+            f32 r = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+            s32 rnd = (s32)(r * maxP) & 3;
             fn_803894BC(field_0x254, rnd + 1);
-            bool ok;
-            if (fn_8038470C(field_0x254, 0x4DA)) {
-                field_0x268 = 0x4DA;
-                field_0x234 = 1;
-                ok = true;
-            } else {
-                ok = false;
-            }
-            if (ok) {
+            if (nextMessage(0x4DA)) {
                 lbl_8053AED0->fn_8043D874(rnd, 300, 0);
             }
             break;
