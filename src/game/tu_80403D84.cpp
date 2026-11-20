@@ -2705,17 +2705,13 @@ void MapScreen_804B1288::fn_8040732C() {
     }
 }
 
-// FIXME(shotgun): 75.38 %, missing/extra + reloc-name; behaviour drift.
-// Every call, field and constant is right; two
-// things differ: the original computes `frame` before fn_8013B414 (ours computes it at its
-// first use, after the first draw, which shifts the schedule), and it indexes the sine table
-// straight from (counter % 128) (clrlslwi r0, r0, 27, 9) where sinShort's s16 argument gives
-// ours slwi / extsh / rlwinm. A const method (no `counter` local) gives 59.9 %.
+// FIXME: 94.62 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: minor instruction scheduling around bob/params and r29 vs r30 for second cel.
 void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f pos;
+    s32 frame = (field_0x380 % 40) / 10;
     s32 counter = field_0x380;
-    s32 frame = (counter % 40) / 10;
     JGeometry::TBox2f box(0.0f, 0.0f, 256.0f, 192.0f);
     gGameRoot2_8053AB10->fn_8013B414(&box, true);
     pos.x = x * (256.0f / (s32)JUTVideo::getManager()->getFbWidth());
@@ -2725,9 +2721,9 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     GXSetTevDirect(GX_TEVSTAGE1);
     GXSetTevDirect(GX_TEVSTAGE2);
     GXSetTevDirect(GX_TEVSTAGE3);
-    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     params.field_0x26 = 0;
     params.field_0x0[2] = 2;
+    JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.mTable[((counter % 128) * 64) & 0x7FF].first, pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
@@ -2922,11 +2918,6 @@ void MapScreen_804B1288::fn_80405FC0() {
     }
 }
 
-// FIXME: 96.30 %, missing/extra; behaviour near.
-// Missing/extra: the original keeps field_0x340 in r5 from the stage test
-// through the table reads (lbl_80543880 / 88 / lbl_8048C90C); ours loads it again after the
-// test (and before lbl_8048C90C), two instructions more. A `stage` local folds 0-5 instead
-// of the original's 0 / 1-5 / 6 (98.26 %, different).
 void MapScreen_804B1288::fn_80405D00(s32 dir) {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
@@ -2937,8 +2928,8 @@ void MapScreen_804B1288::fn_80405D00(s32 dir) {
     if (count == 1) {
         return;
     }
-    if ((field_0x340 == 0 || field_0x340 == 1 || field_0x340 == 2 || field_0x340 == 3 || field_0x340 == 4 ||
-         field_0x340 == 5 || field_0x340 == 6) &&
+    if ((0 == field_0x340 || 1 == field_0x340 || 2 == field_0x340 || 3 == field_0x340 || 4 == field_0x340 ||
+         5 == field_0x340 || 6 == field_0x340) &&
         !(field_0x38c & (1 << (field_0x340 * 4 + 1))))
     {
         if (field_0x348 == 0) {
@@ -3292,15 +3283,20 @@ bool MapScreen_804B1288::fn_80404270(s32 stage) {
     return false;
 }
 
-// FIXME: 84.17 %, missing/extra; behaviour drift.
-// Every field, call and branch matches; only the loop differs: ours
-// hoists the save row's flags address out of the unrolled loop, the original keeps
-// only the row index (r12) and recomputes lbl_8050EC80 + index * 0xC8 each pass,
-// which costs it r31 and a stack frame (the same as tu_804023D0's fn_80403514).
+static inline BOOL isFileFlagSet(s32 file, s32 stage, s32 sub) {
+    if (stage < 0 || stage > 7) {
+        return FALSE;
+    }
+    if (sub < 0 || sub > 3) {
+        return FALSE;
+    }
+    return ((1 << (stage * 4 + sub)) & lbl_8050EC80.getFile(file).mFlags) ? TRUE : FALSE;
+}
+
 bool MapScreen_804B1288::fn_80404074(s32 stage, s32 index, s32* out) {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
-        if (isStageFlagSet(stage, i)) {
+        if (isFileFlagSet(lbl_8050EC80.mCurrentFile, stage, i)) {
             count++;
         }
     }
