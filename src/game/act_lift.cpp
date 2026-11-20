@@ -31,21 +31,14 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scale) {
     m[2][2] = scale * (cx * cy);
 }
 
-// FIXME: 97.39 %, missing/extra; behaviour near.
-// The flags test loads 0x90 into r3 and the oris reuses it; the
-// original loads it into r0 for the test and reloads 0x90 (r31) for the oris.
+// r3/r4 swapped for res and res->mSizeX in mBox.set.
 void Lift_804A6F6C::init() {
-    if (((field_0x90 >> 17) & 0x1F) == 0) {
-        field_0x90 = field_0x90 | 0x20000;
+    if (((getField_0x90() >> 17) & 0x1F) == 0) {
+        field_0x90 |= 0x20000;
     }
     field_0x23c = gGameRoot_8053AAF8->field_0xa4->getResource(0x3F3F3F3F /* "????": a char constant would be a trigraph */, lbl_804A6F48[getMode()]);
     ResTIMG* res = static_cast<ResTIMG*>(field_0x23c);
-    u16 sizeX = res->mSizeX;
-    u16 sizeY = res->mSizeY;
-    mBox.i.x = -(s32)sizeX / 2;
-    mBox.i.y = -(s32)sizeY / 2;
-    mBox.f.x = sizeX / 2;
-    mBox.f.y = sizeY / 2;
+    mBox.set(-res->mSizeX / 2, -res->mSizeY / 2, res->mSizeX / 2, res->mSizeY / 2);
     mLife = 0;
     field_0x230 = 0;
     field_0x238 = 0;
