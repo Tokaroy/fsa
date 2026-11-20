@@ -257,7 +257,6 @@ bool cls_8049F6C8::fn_80149FDC() {
 // FIXME(shotgun): 99.21 %, different; behaviour clean.
 bool cls_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
-    s32 serial;
     s32 i;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
         return false;
@@ -335,7 +334,7 @@ bool cls_8049F6C8::fn_80149AEC() {
         if (field_0x274 == 2) {
             if (field_0x90 == 1) {
                 getActorManager_801F856C()->spawnActor_801F9484('DGTL', field_0x4, &mPos, 0, -1, -1);
-                serial = lbl_80539F58;
+                s32 serial = lbl_80539F58;
                 if (serial >= 0) {
                     ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (other != NULL) {
