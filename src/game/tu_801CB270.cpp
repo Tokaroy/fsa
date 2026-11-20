@@ -369,16 +369,13 @@ s32 fn_801CCF34(s32 player) {
     return fn_80236228(target);
 }
 
-// FIXME: 96.94 %, missing/extra; behaviour near.
-// FIXME(shotgun): the original does not contract dx*dx + dy*dy into fmadds.
 s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer) {
     s32 best = -1;
     f32 bestDist = FLT_MAX;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && layer == getPlayerLayer_8023DE58(i) && !fn_8022F514(i)) {
-            f32 dy = getPlayerPos_8023E724(i)->y - pos->y;
-            f32 dx = getPlayerPos_8023E724(i)->x - pos->x;
-            f32 d = dx * dx + dy * dy;
+            f32 d = square(getPlayerPos_8023E724(i)->x - pos->x) +
+                    square(getPlayerPos_8023E724(i)->y - pos->y);
             if (d < bestDist) {
                 bestDist = d;
                 best = i;
@@ -634,7 +631,7 @@ bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
     return found;
 }
 
-// FIXME(shotgun): 77.73 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.85 %, operands; behaviour clean.
 bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* out, s32* outPlayer) {
     bool found = false;
     if (outPlayer != NULL) {
@@ -650,9 +647,9 @@ bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* ou
             }
             ((cls_804A0738*)actor)->field_0x254 = 1;
             if (out != NULL) {
-                JGeometry::TVec3f v(pos->x, pos->y, 0.0f);
-                JGeometry::TVec3f d = actor->field_0x3c * 3.0f;
-                out->sub(v, d);
+                JGeometry::TVec3f d = actor->field_0x3c;
+                d.scale(3.0f);
+                out->sub(JGeometry::TVec3f(pos->x, pos->y, 0.0f), d);
             }
         }
     }
