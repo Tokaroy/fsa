@@ -162,20 +162,23 @@ void cls_804A1E50::init() {
 
 // FIXME(shotgun): 97.85 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018E30C(s32 anim) {
-    JGeometry::TVec3f pos(mPos.x - 4.0f, mPos.y, mPos.z);
+    JGeometry::TVec3f pos;
+    pos.set(mPos);
+    pos.x -= 4.0f;
     if (field_0x26c == 1) {
         return;
     }
     if (anim < 0) {
         return;
     }
-    if (field_0x268 == anim) {
+    if (field_0x268 != anim) {
+        field_0x268 = anim;
+        field_0x27a = 0;
+        field_0x234 = 0;
+        field_0x264 = 0;
+    } else {
         return;
     }
-    field_0x268 = anim;
-    field_0x27a = 0;
-    field_0x234 = 0;
-    field_0x264 = 0;
     switch (field_0x268) {
     case 0:
         field_0x270 = 0;
