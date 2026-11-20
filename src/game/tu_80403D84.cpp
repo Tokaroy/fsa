@@ -2408,7 +2408,7 @@ void MapScreen_804B1288::fn_80408F38(f32 alpha) {
     }
 }
 
-// FIXME: 96.04 %, scheduling+regalloc; behaviour clean.
+// FIXME: 96.36 %, scheduling+regalloc; behaviour clean.
 // scheduling+regalloc: the zoom divisions load field_0x18 before the
 // lbl_8048C850 entry in the original, and registers differ around fn_80403184. The tail after the
 // stage branch is in both branches: the original has its own copy in the stage 7 branch.
