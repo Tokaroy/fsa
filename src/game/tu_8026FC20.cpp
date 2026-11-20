@@ -3402,8 +3402,7 @@ bool Player_804A6F38::fn_80272DCC(const JGeometry::TBox2f* box, s32 layer, s32 s
 }
 
 // FIXME: 99.16 %, regalloc-only; behaviour clean.
-// Registers only: the grown box lives in f31-f28 from its loads on (ours loads
-// into f0-f3 first). The point loop returns false from inside when all eight points are in the
+// Registers only: f0 / f1 swapped for p.x / p.y in the inlined containsPoint test. The point loop returns false from inside when all eight points are in the
 // box and breaks out to the slot store (a `for` with a later `i >= 8` test adds a second compare).
 // fn_80272DCC's slot store (without its fn_80249068 test), unless one of the eight points fn_8024B298 gives is inside
 // `box` grown by 2.5 on every side.
@@ -3418,10 +3417,8 @@ bool Player_804A6F38::fn_80272C20(const JGeometry::TBox2f* box, s32 layer, s32 s
         return false;
     }
     JGeometry::TBox2f grown;
-    grown.i.x = box->i.x - 2.5f;
-    grown.i.y = box->i.y - 2.5f;
-    grown.f.x = box->f.x + 2.5f;
-    grown.f.y = box->f.y + 2.5f;
+    grown.set(*box);
+    growBox(grown, 2.5f);
     s32 i = 0;
     for (;;) {
         JGeometry::TVec3f p;
