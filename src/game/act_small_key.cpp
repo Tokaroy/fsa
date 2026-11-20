@@ -162,7 +162,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 91.35 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 95.68 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
@@ -450,7 +450,7 @@ void SmallKey_804A8CD8::update() {
     }
 }
 
-// FIXME(shotgun): 94.74 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.55 %, missing/extra; behaviour drift.
 // The key on the floor: kind 6 slides with friction; a player touching it picks it up
 // (kinds 3-5 spawn a 'TKRA' instead), players walking into it push it (field_0x2ae the
 // direction), pits and water drop it; keeps its place registered with the view.
@@ -631,7 +631,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 }
 
 // 0x802C2C30.
-// FIXME(shotgun): 93.34 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 93.52 %, missing/extra + reloc-name; behaviour near.
 void SmallKey_804A8CD8::fn_802C2C30() {
     fn_802C24A8();
     if (viewLayerFlag(field_0x4) != 0) {
@@ -1399,7 +1399,7 @@ bool SmallKey_804A8CD8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 
 // The key's registration with the view (fn_802D6D70): the key's value packs its mode,
 // flag, state, id and layer.
-// FIXME(shotgun): 79.96 %, missing/extra; behaviour near.
+// FIXME(shotgun): 87.85 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C1778() {
     if (field_0x4 >= 8 && field_0x2a8 != 0xFFFF) {
         if (fn_8022F478(field_0x23c) == true) {
