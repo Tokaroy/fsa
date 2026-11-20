@@ -269,8 +269,8 @@ cls_804B146C::cls_804B146C()
     lbl_8053AED0->field_0x10e |= 1;
     field_0x4c = new J2DOrthoGraph(
         0.0f, 0.0f,
-        (f32)JUTVideo::getManager()->getFbWidth(),
-        (f32)JUTVideo::getManager()->getEfbHeight(),
+        JFWDisplay::getManager()->getEfbWidth(),
+        JFWDisplay::getManager()->getEfbHeight(),
         -10000.0f, 10000.0f
     );
     field_0xf0 = new cls_804B19E0();
@@ -289,8 +289,8 @@ cls_804B146C::cls_804B146C()
     field_0x4->search('Pp3li01')->hide();
     field_0x4->search('Pp4li01')->hide();
     field_0xf4 = field_0x4->search(lbl_8048E300[0][0])->getWidth();
-    field_0x214 = static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[0][0]))->getWhite();
-    field_0x210 = static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[0][0]))->getBlack();
+    field_0x214 = static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[0][0]))->getBlack();
+    field_0x210 = static_cast<J2DPicture*>(field_0x4->search(lbl_8048EBE0[0][0]))->getWhite();
     for (s32 i = 0; i < 4; i++) {
         field_0x50[i] = new PaneCtrl_804AF86C();
         field_0x50[i]->setPane_80402F04(mScreen->search(lbl_8048EF20[i]));
