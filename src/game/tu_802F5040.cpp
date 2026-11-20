@@ -343,6 +343,7 @@ void TileMap_804AA858::fn_802FF548() {
 }
 
 // The full-screen rect and loop registers differ in register allocation only.
+// FIXME: 98.43 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
     if (field_0x248 && field_0x24c.f.x != 0) {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
@@ -734,7 +735,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // (field_0x150 / field_0x190, the field_0x21c window); then every 10 frames
 // copies the next of the four 0x40-byte blocks of field_0x238c to
 // field_0x4[1] + 0x200.
-// FIXME: 71.43 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 72.21 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -3101,7 +3102,7 @@ f32 fn_802F5FF4(f32 z) {
     return 192.0f / (192.0f - h);
 }
 
-// FIXME: 98.66 %, regalloc-only; behaviour clean.
+// FIXME: 99.01 %, regalloc-only; behaviour clean.
 // Register allocation only: the 8.0f literal and field_0x2368.y swap f5/f6 (and fy is in f6, not f7).
 f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
@@ -3123,7 +3124,7 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 88.51 %, missing/extra; behaviour near.
+// FIXME: 88.96 %, missing/extra; behaviour near.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
@@ -3187,7 +3188,7 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
     return result;
 }
 
-// FIXME: 99.20 %, regalloc-only; behaviour clean.
+// FIXME: 99.34 %, regalloc-only; behaviour clean.
 // Register allocation only, as in fn_802F5E9C (inlined here):
 // 8.0f and pos->x swap f5/f6.
 // The position (out) and parameters (*outParams) a sprite at pos is drawn
