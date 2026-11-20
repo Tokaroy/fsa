@@ -1488,15 +1488,10 @@ void MapScreen_804B1288::fn_8040E700() {
     }
 }
 
-// FIXME: 96.95 %, missing/extra; behaviour near.
-// Missing/extra: ours extends the u16 angle again (clrlwi r0, r3, 16) before
-// the third range test; the original keeps the one clrlwi'd copy in r0 (a u32 local
-// holding the (u16) value gives scheduling+regalloc, 97.3 %, but no precedent proves it). Pool literals
-// (3.4f, the sqrtf doubles, 50.0f, 32768/pi) are first used by unwritten functions below.
 void MapScreen_804B1288::fn_8040E3A0() {
-    f32 speed = 3.4f + lbl_8050DB0C.field_0x4c[311] / 100.0f;
     f32 x = lbl_8048C95C[field_0x340 * 4 + field_0x348][0];
     f32 y = lbl_8048C95C[field_0x340 * 4 + field_0x348][1];
+    f32 speed = 3.4f + lbl_8050DB0C.field_0x4c[311] / 100.0f;
     f32 dx = x - field_0x394;
     f32 dy = y - field_0x398;
     f32 dist = std::sqrtf(dx * dx + dy * dy);
@@ -1522,8 +1517,8 @@ void MapScreen_804B1288::fn_8040E3A0() {
     if (field_0x394 == x) {
         field_0x360 = 0x10;
     } else {
-        u16 angle = JMath::atanTable_.atan2_(-dx, -dy) *
-                    (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+        u32 angle = (u16)(JMath::atanTable_.atan2_(-dx, -dy) *
+                          (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle < 0x2000 || angle >= 0xE000) {
             field_0x360 = 0x18;
         } else if (angle >= 0x2000 && angle < 0x6000) {
