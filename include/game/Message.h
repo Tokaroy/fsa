@@ -622,7 +622,7 @@ u32 fn_80383EB0(s32 window, u32 msg);
 // 1 unit (game/tu_80403D84.cpp) + 1 (tu_8043A0E8). Builds the text of message
 // msg into out (lines wrapped to width / height, the two counters are
 // getMessageText_803832BC-style arguments); returns a line count that starts at 1.
-s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 height);
+s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 height);
 // 16 units (act_talking_npc calls it once fn_8038AD24 has succeeded).
 // Returns 0 or 1.
 bool fn_80384C58(s32 player, s32 serial);

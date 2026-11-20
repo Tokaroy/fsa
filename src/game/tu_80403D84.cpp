@@ -3323,7 +3323,7 @@ void MapScreen_804B1288::fn_80403F50() {
         for (int i = 0; i < 12; i++) {
             field_0x240[i]->field_0x22 = 0;
         }
-        fn_803837A4(field_0x5dc, field_0x390, 0, 0, field_0x270[0]->field_0x18, 1.0f);
+        fn_803837A4(field_0x5dc, field_0x390, field_0x270[0]->field_0x18, 0, 0, 1.0f);
         for (s32 i = 0; i < 2; i++) {
             strcpy(((J2DTextBox*)field_0x270[i]->mPane)->getStringPtr(), field_0x5dc);
         }

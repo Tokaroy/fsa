@@ -865,8 +865,8 @@ void cls_804B1920::fn_8043D39C() {
 }
 
 // FIXME: 99.04 %, scheduling+regalloc + reloc-name; behaviour clean.
-// The original loads field_0x70[0]->field_0x18 (f1) before the 0xFC / 0x100 words for
-// fn_803837A4 (ours after them, in r7); the 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24 (the earlier first uses) are unwritten.
+// The 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24
+// (the earlier first uses) are unwritten.
 void cls_804B1920::fn_8043D034() {
     if (lbl_8053AED0->field_0x10a) {
         Vec originScreen;
@@ -875,8 +875,8 @@ void cls_804B1920::fn_8043D034() {
         for (int i = 0; i < 12; i++) {
             field_0x40[i]->field_0x22 = 0;
         }
-        fn_803837A4(field_0x78, lbl_8053AED0->field_0xe8, lbl_8053AED0->field_0xfc, lbl_8053AED0->field_0x100,
-                    field_0x70[0]->field_0x18, 1.0f);
+        fn_803837A4(field_0x78, lbl_8053AED0->field_0xe8, field_0x70[0]->field_0x18, lbl_8053AED0->field_0xfc,
+                    lbl_8053AED0->field_0x100, 1.0f);
         for (int i = 0; i < 2; i++) {
             strcpy(((J2DTextBox*)field_0x70[i]->mPane)->getStringPtr(), field_0x78);
         }
