@@ -71,18 +71,10 @@ static inline bool behind(cls_804A51E4* a, f32 x) {
 static inline void enterFromEdge(cls_804A51E4* a) {
     a->mFlags |= 0x4000;
     a->field_0x2c4.y = a->mPos.y;
-    GameView_804A9950* view = getGameView_802D6A9C();
-    JGeometry::TBox2f* box = a->field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
+    JGeometry::TBox2f* box = layerBox(a->field_0x4);
     f32 right = 30.0f + box->f.x;
     f32 left = box->i.x - 30.0f;
-    f32 px = a->mPos.x;
-    bool leftHalf = false;
-    view = getGameView_802D6A9C();
-    box = a->field_0x4 < 8 ? &view->mVisibleBox : &view->field_0xdc;
-    if (px < 0.5f * (box->i.x + box->f.x)) {
-        leftHalf = true;
-    }
-    if (leftHalf && left < a->mPos.x) {
+    if (inLeftHalf(a->field_0x4, a->mPos.x) && left < a->mPos.x) {
         a->field_0x2c4.x = right;
     } else {
         a->field_0x2c4.x = left;
