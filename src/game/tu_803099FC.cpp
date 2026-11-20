@@ -78,7 +78,7 @@ s32 getPlayerInputSlot_8030AAF4(s32 player) {
     return -0x3E7;
 }
 
-// FIXME(shotgun): 11.87 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.31 %, missing/extra; behaviour drift.
 // What still differs: the target materialises mState >= 4 as a value (li 4; subi; orc; srwi;
 // subf; srwi.) as main in tu_801344C0 does, where we emit cmplwi 4; and the target does not mask
 // fn_803006E8's result at the call (ours clrlwi), which suggests it returns a 32-bit value.
@@ -386,8 +386,6 @@ u32 cls_804AA8C8::fn_80309D24(s32 slot, u32 mask) {
     return field_0x4[slot] & mask;
 }
 
-// FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
-// 0x80309C4C
 u32 cls_804AA8C8::fn_80309C4C(u32 mask, s32 slot) {
     s32 count;
     if (slot == -1) {
@@ -404,8 +402,6 @@ u32 cls_804AA8C8::fn_80309C4C(u32 mask, s32 slot) {
     return 0;
 }
 
-// FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
-// 0x80309B74
 u32 cls_804AA8C8::fn_80309B74(u32 mask, s32 slot) {
     s32 count;
     if (slot == -1) {
@@ -422,8 +418,6 @@ u32 cls_804AA8C8::fn_80309B74(u32 mask, s32 slot) {
     return 0;
 }
 
-// FIXME(shotgun): 97.78 %, missing/extra; behaviour clean.
-// 0x80309A9C
 u32 cls_804AA8C8::fn_80309A9C(u32 mask, s32 slot) {
     s32 count;
     if (slot == -1) {
