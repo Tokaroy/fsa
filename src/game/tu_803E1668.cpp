@@ -1618,10 +1618,8 @@ void cls_804B0B00::fn_803E9034() {
     }
 }
 
-// FIXME: 97.07 %, missing/extra; behaviour near.
-// 4 fewer instrs (834 vs 838): extsh. vs cmpwi r0, 0 on
-// field_0x254[0] > 0, and merged i * 10 induction variables in the two
-// field_0x184 loops where the original keeps two per loop.
+// extsh. vs cmpwi r0, 0 on field_0x254[0] > 0, &others[0] CSE into r29,
+// and callee-saved register rotation (r19/r20/r21).
 void cls_804B0B00::fn_803E831C() {
     if (field_0x1bc != 3) {
         if (field_0x220[0] < 100) {
@@ -1676,7 +1674,7 @@ void cls_804B0B00::fn_803E831C() {
             if (field_0x254[0] > i * 10) {
                 if (field_0x254[0] < i * 10 + 10) {
                     field_0x184[i] = 300.0f * ((f32)((field_0x254[0] - i * 10) * (field_0x254[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x254[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x254[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
@@ -1699,7 +1697,7 @@ void cls_804B0B00::fn_803E831C() {
                 if (field_0x254[0] < i * 10 + 10) {
                     s16 idx = others[i];
                     field_0x184[idx] = 300.0f * ((f32)((field_0x254[0] - i * 10) * (field_0x254[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x254[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x254[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
