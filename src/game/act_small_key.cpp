@@ -1438,10 +1438,8 @@ void SmallKey_804A8CD8::fn_802C1674() {
     if (field_0x2a8 != 0xFFFF) {
         u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
                     (field_0x2a8 << 8) | (field_0x4 & 0xFF);
-        JGeometry::TVec2f b;
-        JGeometry::TVec2f a;
-        a.set(field_0x230.x, field_0x230.y);
-        b.set(mPos.x, mPos.y);
+        JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
+        JGeometry::TVec2f b(mPos.x, mPos.y);
         s32 layer = field_0x238;
         getGameView_802D6A9C()->fn_802D6D70(b, a, value, layer);
         field_0x2a8 = 0xFFFF;
