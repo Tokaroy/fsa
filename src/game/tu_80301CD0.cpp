@@ -864,12 +864,12 @@ void fn_803068D0(cls_804AA858Sub11C* record) {
     }
     u32 half = record->f.mMode & 1;
     GbaSprite_80506F88* sprites = lbl_80506F88[fn_8022F340(record->f.mPlayer)][0];
+    GbaSprite_80506F88* src = record->f.field_0x18;
     GbaSprite_80506F88* dst = sprites + half * 19;
     s32 i;
-    GbaSprite_80506F88* src = record->f.field_0x18;
     u32 index = record->f.field_0x3_0;
-    for (i = 0; i < lbl_80541618[index] - 7; i++) {
-        dst[i].mWord = src[i].mWord;
+    for (i = 0; i < lbl_80541618[index] - 7; i++, src++) {
+        dst[i].mWord = src->mWord;
     }
     for (; i < 19; i++) {
         dst[i].f.field_0x3_0 = 1;
