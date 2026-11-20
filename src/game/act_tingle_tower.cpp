@@ -568,7 +568,6 @@ void cls_804AAD60::fn_80315460() {
     }
 }
 
-// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804AAD60::fn_80315080() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
@@ -596,13 +595,14 @@ void cls_804AAD60::fn_80315080() {
             break;
         case 2: {
             fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            s32 idx;
             s32 i = 0;
             for (; i < count; i++) {
                 if (getTowerViewByte(i) != 0) {
                     break;
                 }
             }
-            s32 idx = i & 3;
+            idx = i & 3;
             fn_803894BC(field_0x254, idx + 1);
             if (nextMessage(0x4D2)) {
                 lbl_8053AED0->fn_8043D874(idx, 300, 0);
