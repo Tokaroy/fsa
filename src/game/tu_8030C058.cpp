@@ -185,29 +185,30 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
 // size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
-// FIXME(shotgun): 82.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
+// (the target re-reads i.y, f.x and f.y of the box after the copy; ours keeps all four)
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
-    field_0x164.i.x = box->i.x;
-    field_0x164.i.y = box->i.y;
-    field_0x164.f.x = box->f.x;
-    field_0x164.f.y = box->f.y;
-    f32 halfW = 0.5f * (box->f.x - box->i.x);
-    f32 halfH = 0.5f * (box->f.y - box->i.y);
-    f32 centerX = 0.5f * (box->i.x + box->f.x);
-    f32 centerY = 0.5f * (box->i.y + box->f.y);
-    f32 depth = 2048.0f;
+    field_0x164.set(*box);
+    // The view looks down on the box: the rotation first, then the translation to -eye.
     field_0x74[0][0] = 1.0f;
     field_0x74[0][1] = 0.0f;
     field_0x74[0][2] = 0.0f;
-    field_0x74[0][3] = -centerX;
+    field_0x74[0][3] = 0.0f;
     field_0x74[1][0] = 0.0f;
     field_0x74[1][1] = 1.0f;
     field_0x74[1][2] = -1.0f;
-    field_0x74[1][3] = -centerY;
+    field_0x74[1][3] = 0.0f;
     field_0x74[2][0] = 0.0f;
     field_0x74[2][1] = 1.0f;
     field_0x74[2][2] = 0.0f;
-    field_0x74[2][3] = -depth;
+    field_0x74[2][3] = 0.0f;
+    JGeometry::TVec3f eye(0.5f * (box->i.x + box->f.x), 0.5f * (box->i.y + box->f.y), 2048.0f);
+    f32 halfW = 0.5f * (box->f.x - box->i.x);
+    f32 halfH = 0.5f * (box->f.y - box->i.y);
+    eye.negate();
+    field_0x74[0][3] = eye.x;
+    field_0x74[1][3] = eye.y;
+    field_0x74[2][3] = eye.z;
     C_MTXOrtho(field_0xa4, -halfH, halfH, -halfW, halfW, 0.0f, 4096.0f);
     if (light) {
         PSMTXCopy(field_0x74, field_0xe4.mCamMtx);
@@ -831,16 +832,13 @@ void Camera_804AA9E4::fn_8030C85C() {
 }
 
 // The camera's box of the given width around center (the height keeps the screen's aspect).
-// FIXME(shotgun): 37.71 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.21 %, regalloc-only; behaviour clean.
 void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
-    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    f32 half = 0.5f * size;
-    cam->field_0x180.i.x = center->x - half;
+    f32 halfX = 0.5f * size;
     f32 halfY = 0.5f * (size * (f32)(s32)JUTVideo::sManager->getEfbHeight() /
                         (f32)(s32)JUTVideo::sManager->getFbWidth());
-    cam->field_0x180.i.y = center->y - halfY;
-    cam->field_0x180.f.x = center->x + half;
-    cam->field_0x180.f.y = center->y + halfY;
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    cam->field_0x180.set(center->x - halfX, center->y - halfY, center->x + halfX, center->y + halfY);
     cam->field_0x17e = 1;
 }
 
@@ -910,17 +908,11 @@ void Camera_804AA9E4::setScreenRectViewport() {
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
-// FIXME(shotgun): 98.70 %, operands; behaviour clean.
-// (u32 -> float constant)
 bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     fn_8030C5F0(pos, true, false, &screen);
-    bool result = false;
-    if (screen.x >= (f32)(field_0x144.i.x + 14) && screen.x < (f32)(field_0x144.f.x - 14) &&
-        screen.y >= (f32)(field_0x144.i.y + 14) && screen.y < (f32)(field_0x144.f.y - 14)) {
-        result = true;
-    }
-    return result;
+    return screen.x >= (f32)(field_0x144.i.x + 14) && screen.x < (f32)(field_0x144.f.x - 14) &&
+           screen.y >= (f32)(field_0x144.i.y + 14) && screen.y < (f32)(field_0x144.f.y - 14);
 }
 
 u8 Camera_804AA9E4::addFocusPoint_8030C210(const JGeometry::TVec3f* pos) {
