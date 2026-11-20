@@ -892,13 +892,11 @@ void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
 
 void EnemyBase_804A4808::vfunc_0xA0() {}
 
-// FIXME: 93.53 %, missing/extra; behaviour near.
-// The target keeps `this` in r30 and the flag in r31 (ours:
-// r31 / r30), reloads mFlags before each `|=` (ours reuses the tested load),
+// The target reloads mFlags before each `|=` (ours reuses the tested load),
 // and tests the hit bits before vfunc_0x68 as a bool value (clrlwi; neg; or;
-// srwi.) where ours uses clrlwi. A bool local and an inline isHit() gave
-// the same code as the plain test.
+// srwi.) where ours uses clrlwi.
 void EnemyBase_804A4808::update() {
+    s32 prevD8;
     if (!(mFlags & ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
         vfunc_0x54();
@@ -916,7 +914,7 @@ void EnemyBase_804A4808::update() {
         mLife = mLifeBackup;
     }
     vfunc_0x58();
-    s32 prevD8 = field_0xd8;
+    prevD8 = field_0xd8;
     if (fn_801F3D94(flag)) {
         mFlags |= ENEMY_FLAG_HIT;
     } else if (vfunc_0x5C()) {
