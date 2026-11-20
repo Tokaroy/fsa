@@ -77,6 +77,11 @@ public:
         field_0x3 = 0;
         field_0x1 = 0;
     }
+    void setIndex(u8 index) {
+        if (index < field_0x2) {
+            field_0x3 = index;
+        }
+    }
 
     /* 0x00 */ u8 field_0x0; // fn_800FE3EC's first argument
     /* 0x01 */ u8 field_0x1;
