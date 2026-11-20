@@ -323,6 +323,10 @@ public:
     s32 directionTo(const JGeometry::TVec3f* pos, s32 player, bool axis);
     void velocityToward(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed);
 
+    // A flag test the original has as an inline: VaatiBoss vfunc_0x74
+    // (0x801D4AA8) loads mFlags for the test and again for the clear.
+    bool checkFlag(u32 flag) const { return mFlags & flag; }
+
     /* 0x230 */ u32 mFlags; // EnemyFlag_804A4808
     /* 0x234 */ JGeometry::TVec3f mPrevVel; // field_0x3c at the start of update()
     /* 0x240 */ u8 mPlayersHit;  // vfunc_0x68's bitmask, cleared each update()

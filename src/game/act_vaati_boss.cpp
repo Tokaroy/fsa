@@ -893,13 +893,12 @@ void VaatiBoss_804A4958::vfunc_0x88() {
 }
 
 // FIXME: 98.45 %, missing/extra; behaviour near.
-// missing/extra. The original reloads mFlags (0x230) before clearing 0x8000; ours reuses the loaded value.
 void VaatiBoss_804A4958::vfunc_0x74() {
     if (mState == 5) {
         fn_801E4D74();
     }
 
-    if (mFlags & 0x8000) {
+    if (checkFlag(0x8000)) {
         mFlags &= ~0x8000;
         if (fn_801CD2F8(field_0x4)) {
             fn_801D5D84(0x15);
