@@ -169,7 +169,6 @@ void cls_804AE4B0::draw() {
 
 // Not auto-inlined: update-side callers (fn_8037100C, fn_80370764, fn_803704E8) use a plain bl.
 #pragma auto_inline off
-// FIXME(shotgun): 97.90 %, scheduling+regalloc; behaviour clean.
 void cls_804AE4B0::fn_803721F4() {
     s32 i;
     s32 j;
@@ -464,7 +463,6 @@ void cls_804AE4B0::fn_803711F0() {
     }
 }
 
-// FIXME(shotgun): 79.69 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_8037100C() {
     fn_803703C8();
     fn_803721F4();
@@ -914,7 +912,6 @@ void cls_804AE4B0::fn_8036FDAC() {
     }
 }
 
-// FIXME(shotgun): 99.32 %, regalloc-only; behaviour clean.
 void cls_804AE4B0::fn_8036FB60() {
     s32 i;
     s32 j;
