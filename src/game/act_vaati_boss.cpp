@@ -69,8 +69,8 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x5d4 = 0;
     field_0x5d8 = 0;
     field_0x5dc = 0;
-    field_0x5e0 = 0.0f;
-    field_0x5e4 = 0.0f;
+    field_0x5e0.x = 0.0f;
+    field_0x5e0.y = 0.0f;
     field_0x5e8 = 0;
     field_0x5e9 = 0;
     field_0x5ec.x = 0.0f;
@@ -94,8 +94,6 @@ VaatiBoss_804A4958::VaatiBoss_804A4958() {
     field_0x448.mOwner = this;
 }
 
-// FIXME: 97.21 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc + reloc-name. Float conversion temporaries and the stores of field_0x5ec.y / field_0x5f4 / field_0x5f4.y are scheduled differently.
 void VaatiBoss_804A4958::init() {
     EnemyBase_804A4808::init();
     field_0x5dc = field_0x90 & 0xF;
@@ -103,10 +101,8 @@ void VaatiBoss_804A4958::init() {
         field_0x5dc += 7;
     }
 
-    u32 y = ((field_0x90 >> 16) & 0x3F) * 8;
-    u32 x = ((field_0x90 >> 24) & 0x3F) * 8;
-    field_0x5e0 = (f32)x + 8.0f;
-    field_0x5e4 = (f32)y + 8.0f;
+    field_0x5e0.set((f32)(((field_0x90 >> 24) & 0x3F) * 8) + 8.0f,
+                    (f32)(((field_0x90 >> 16) & 0x3F) * 8) + 8.0f);
     field_0x5e8 = (field_0x90 >> 10) & 0x3F;
     field_0x5e9 = (field_0x90 >> 4) & 0x3F;
 
@@ -141,10 +137,8 @@ void VaatiBoss_804A4958::init() {
 
     field_0x5bc.x = mPos.x;
     field_0x5bc.y = mPos.y;
-    field_0x5ec.x = field_0x5e0 + (f32)field_0x5e8 * 8.0f + 32.0f;
-    field_0x5ec.y = field_0x5e4;
-    field_0x5f4.x = field_0x5ec.x;
-    field_0x5f4.y = field_0x5e4 + -32.0f;
+    field_0x5ec.set(field_0x5e0.x + (f32)field_0x5e8 * 8.0f + 32.0f, field_0x5e0.y);
+    field_0x5f4.set(field_0x5ec.x, field_0x5e0.y + -32.0f);
 
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         field_0x5cc = 6;
@@ -194,7 +188,7 @@ void VaatiBoss_804A4958::fn_801D63D0() {
     }
 }
 
-// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.73 %, regalloc-only; behaviour drift.
 void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
     switch (state) {
     case 1:
@@ -320,10 +314,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
         fn_801E4618(&box, fn_801CD2F8(field_0x5fc));
         field_0x600.x = (box.f.x - box.i.x) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.x;
         field_0x600.y = (box.f.y - box.i.y) * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + box.i.y;
-        JGeometry::TVec2f spot(field_0x600.x, field_0x600.y);
-        fn_801E44CC(&box, &spot, NULL);
-        field_0x600.x = spot.x;
-        field_0x600.y = spot.y;
+        fn_801E44CC(&box, &field_0x600, NULL);
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         field_0x3c.x = 0.0f;
@@ -950,7 +941,7 @@ void VaatiBoss_804A4958::vfunc_0x74() {
 
 // The camera step of the vtable slot 0xA0 (0x801D47DC, a plain `fn_801D47DC` symbol in the original):
 // follows Vaati (its ground position) with the camera, by state.
-// FIXME(shotgun): 98.15 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.41 %, missing/extra; behaviour drift.
 // Ours adds one frsp after the fsel.
 void VaatiBoss_804A4958::vfunc_0xA0() {
     const JGeometry::TBox2f* box = layerBox(field_0x4);
@@ -994,7 +985,8 @@ void VaatiBoss_804A4958::vfunc_0xA0() {
         Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
-            cam->field_0x844.set(focus.x, focus.y, focus.x, focus.y);
+            cam->field_0x844.i.x = cam->field_0x844.f.x = focus.x;
+            cam->field_0x844.i.y = cam->field_0x844.f.y = focus.y;
             cam->field_0x854 = 1.0f;
             cam->field_0x1d4 = -1.0f;
             cam->field_0x1d8 = -1.0f;
