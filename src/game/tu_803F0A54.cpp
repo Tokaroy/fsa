@@ -2159,10 +2159,6 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.67 %, operands; behaviour clean.
-// Stack layout and float registers only: the original keeps
-// every int-to-float conversion in one 8-byte slot (0x18; frame 0x60), ours
-// uses two (frame 0x70), and the bounce offset / pane x swap f29 and f30.
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
 // 'Pscuro01' / 'Pscuro02' fades in and out (field_0x1d0[0] over 60 frames;
 // in state 9 it fades to 230 over 30, or is hidden while field_0x1cc is 0)
@@ -2171,22 +2167,23 @@ void ConnectScreen_804B0F10::fn_803F4120() {
 // (fn_803F0A54) and lbl_8053AED8's buttons.
 void ConnectScreen_804B0F10::fn_803F38A4() {
     f32 alpha;
+    f32 t;
     if (field_0x1c4 != 9) {
-        f32 t;
         if (field_0x1d0[0] < 30) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 30) * (field_0x1d0[0] - 30)) / 900.0f;
+            s32 rest = field_0x1d0[0] - 30;
+            t = 1.0f - (f32)(rest * rest) / 900.0f;
         }
         alpha = t * field_0x259;
     } else if (field_0x1cc == 0) {
         alpha = 0.0f;
     } else {
-        f32 t;
         if (field_0x1d0[0] < 15) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 225.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 15) * (field_0x1d0[0] - 15)) / 225.0f;
+            s32 rest = field_0x1d0[0] - 15;
+            t = 1.0f - (f32)(rest * rest) / 225.0f;
         }
         alpha = 230.0f * t;
     }
@@ -2201,8 +2198,9 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         bounce = 0;
     }
     f32 offset = 5.0f * (f32)(bounce * bounce) / 25.0f;
+    f32 x;
     if (field_0x1a8 == 0) {
-        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0] + offset);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
         field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
@@ -2211,27 +2209,28 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         x = field_0xc->search('Pscuro02')->getBounds()->i.x;
         field_0xc->search('Pscuro02')->move(x, field_0xf8 + offset);
     } else if (field_0x1a8 == 1) {
-        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
         field_0xc->search('Phanb04')->move(x, field_0xfc[1] + offset);
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2]);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        f32 y = field_0xf8 + field_0xc->search('Phanb04')->getBounds()->i.y - top;
+        offset = field_0xf8 + field_0xc->search('Phanb04')->getBounds()->i.y - top;
         x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, y);
+        field_0xc->search('Pscuro02')->move(x, offset);
     } else {
-        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
         field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2] + offset);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        f32 y = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
-        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, y);
+        // the two locals are reused the other way round here (f29 / f30)
+        x = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
+        offset = field_0xc->search('Pscuro02')->getBounds()->i.x;
+        field_0xc->search('Pscuro02')->move(offset, x);
     }
     field_0xc->search('Pscuro01')->setAlpha(alpha);
     field_0xc->search('Pscuro02')->setAlpha(alpha);
