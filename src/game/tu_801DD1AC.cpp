@@ -474,11 +474,13 @@ u8 cls_804A4C58::fn_801DD28C() {
     f32 y0 = x0;
     f32 x1 = -1.0f;
     f32 y1 = x1;
-    if (mState == 9) {
+    switch (mState) {
+    case 9:
         x0 = -55.0f;
         y0 = -32.0f;
         x1 = 55.0f;
         y1 = 12.0f;
+        break;
     }
     if (x1 - x0 > 0.0f && (mFlags & 0x2000) && mSeq2a8.fn_801DA904()) {
         f32 t = x0;
