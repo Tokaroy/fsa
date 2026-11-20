@@ -564,7 +564,7 @@ static const KaeporaStep* lbl_804ADA98[12] = {
     lbl_80474150, lbl_804741A0, lbl_804741F0, lbl_80474240,
 };
 
-// FIXME(shotgun): 98.21 %, different; behaviour drift.
+// FIXME(shotgun): 99.58 %, regalloc-only; behaviour drift.
 void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x3c.zero();
     field_0x230 = 0;
@@ -1285,7 +1285,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
     }
 }
 
-// FIXME(shotgun): 98.51 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.88 %, regalloc-only; behaviour clean.
 u8 KaeporaGaeboraEnding_804ADAC8::fn_8035F3C0() {
     if (field_0x294 == 0 || field_0x298 == NULL) {
         return false;
