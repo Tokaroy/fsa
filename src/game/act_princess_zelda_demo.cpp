@@ -1067,7 +1067,6 @@ void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
 
 // Not auto-inlined: vfunc_0x54 calls fn_8010F478 out of line in the original.
 #pragma auto_inline off
-// FIXME(shotgun): 94.40 %, missing/extra + reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
     switch (field_0x234) {
     case 0:
@@ -1076,6 +1075,8 @@ void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
         break;
     case 2:
         fn_8010E2D4(arg);
+        break;
+    case 3:
         break;
     }
     field_0x238 = arg;
