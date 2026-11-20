@@ -1131,7 +1131,7 @@ public:
     bool fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin);
     // 0x8043E398 (act_giant_bomb calls it with two world positions): projects them to the screen and
     // sets the bits of field_0xdc (1, 2, 4, 8) for the four panels (fn_8043DF24 boxes) the span's centre is inside.
-    void fn_8043E398(const Vec* a, const Vec* b);
+    void fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b);
     // 0x8043DF8C (game/tu_8043A0E8.cpp, not written yet): takes a screen x, y.
     void fn_8043DF8C(f32 x, f32 y);
     // 0x8043EDE8 (game/tu_8043A0E8.cpp): field_0xe0 = arg, field_0xe4 = 30.

@@ -123,7 +123,7 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 // 0x80342850.
-// FIXME(shotgun): 94.77 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.13 %, missing/extra; behaviour drift.
 void GiantBomb_804AC588::update() {
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec2f pos2(mPos.x, mPos.y);
@@ -144,7 +144,7 @@ void GiantBomb_804AC588::update() {
         corner0.y += mBox.i.y;
         corner1.x += mBox.f.x;
         corner1.y += mBox.f.y;
-        lbl_8053AED0->fn_8043E398(&corner0, &corner1);
+        lbl_8053AED0->fn_8043E398(corner0, corner1);
     }
     if (mState == 6 && mTimer > 0) {
         fn_802397B4(&box, field_0x4, mSerial);
@@ -272,7 +272,8 @@ void GiantBomb_804AC588::update() {
             mState = 7;
             mTimer = 3;
         } else {
-            JGeometry::TVec3f pos(mPos.x + 4.0f, mPos.y - (6.0f + (8.0f * mTimer) / 600.0f), mPos.z);
+            JGeometry::TVec3f pos;
+            pos = JGeometry::TVec3f(mPos.x + 4.0f, mPos.y - (6.0f + (8.0f * mTimer) / 600.0f), mPos.z);
             if (mEmitter264 != NULL) {
                 setEmitterPos_8013CB44(mEmitter264, &pos, 1, 1, true);
             }
@@ -312,8 +313,8 @@ void GiantBomb_804AC588::update() {
     }
 }
 
-// FIXME: 98.74 %, missing/extra; behaviour clean.
-// Two extra `mr` around the getResource results and the float registers of the matrix scale (scheduling).
+// Float register allocation in setRotScaleMtx and scaleY/scaleZ load order.
+// FIXME: 99.47 %, scheduling+regalloc; behaviour clean.
 void GiantBomb_804AC588::draw() {
     if (mState == 2 || mState == 7) {
         return;
@@ -361,11 +362,9 @@ void GiantBomb_804AC588::draw() {
         params.field_0x14.r = 150;
     }
     if (mState == 6 && count < 10) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big_a.bti");
-        vfunc_0x54(res, &params, flags, 0.0f, f27 - 10.0f, 0.0f);
+        vfunc_0x54(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big_a.bti"), &params, flags, 0.0f, f27 - 10.0f, 0.0f);
     } else {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big.bti");
-        vfunc_0x54(res, &params, flags, 0.0f, f27 - 10.0f, 0.0f);
+        vfunc_0x54(gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "bomb_big.bti"), &params, flags, 0.0f, f27 - 10.0f, 0.0f);
     }
     mPos = savedPos;
     if (mState == 6 && count < 10) {

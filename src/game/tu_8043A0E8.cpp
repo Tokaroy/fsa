@@ -535,11 +535,11 @@ static inline f32 maxf(f32 a, f32 b) {
 
 // FIXME(shotgun): 99.76 %, regalloc-only + reloc-name; behaviour clean.
 // (the cx / cy and box bounds live in fewer float registers)
-void cls_804B1920::fn_8043E398(const Vec* a, const Vec* b) {
+void cls_804B1920::fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) {
     Vec screenA;
     Vec screenB;
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(a, false, false, &screenA);
-    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(b, false, false, &screenB);
+    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&a, false, false, &screenA);
+    gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&b, false, false, &screenB);
     f32 margin = maxf(fabs(screenB.x - screenA.x), fabs(screenB.y - screenA.y));
     f32 cx = (screenA.x + screenB.x) / 2.0f;
     f32 cy = (screenA.y + screenB.y) / 2.0f;
