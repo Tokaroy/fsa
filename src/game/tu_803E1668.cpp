@@ -2389,9 +2389,6 @@ void cls_804B0B00::fn_803E4940() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// FIXME: 99.95 %, operands; behaviour clean.
-// Stack slots only: the original converts
-// both blink branches' ints in the 0x8 slot, ours the second branch's in 0x10.
 // Draws states 12 and 13 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1e0[i] (60 frames), the
 // joined ones' 'Paccur' panes with it; outside state 12 the 'Paccur02'
@@ -2403,7 +2400,8 @@ void cls_804B0B00::fn_803E4650() {
         if (field_0x1e0[i] < 30) {
             t = (f32)(field_0x1e0[i] * field_0x1e0[i]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1e0[i] - 30) * (field_0x1e0[i] - 30)) / 900.0f;
+            s32 frame = field_0x1e0[i] - 30;
+            t = 1.0f - (f32)(frame * frame) / 900.0f;
         }
         if (i <= field_0x1bc) {
             if (field_0x1c0[i] < 4) {
