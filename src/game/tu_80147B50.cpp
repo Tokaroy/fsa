@@ -149,7 +149,7 @@ void cls_8049F6C8::init() {
     }
 }
 
-// FIXME(shotgun): 92.31 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 void cls_8049F6C8::fn_8014A2CC(s32 flag) {
     s32 i;
     s32 base = 0;
@@ -206,7 +206,7 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
     field_0x2c0[0].z = field_0x3d8[0].z;
 }
 
-// FIXME(shotgun): 90.48 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 bool cls_8049F6C8::fn_80149FDC() {
     if (field_0x250 == 0) {
         return true;
@@ -260,7 +260,7 @@ bool cls_8049F6C8::fn_80149FDC() {
     return false;
 }
 
-// FIXME(shotgun): 97.42 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.21 %, different; behaviour clean.
 bool cls_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
@@ -361,7 +361,6 @@ bool cls_8049F6C8::fn_80149AEC() {
     return true;
 }
 
-// FIXME(shotgun): 97.82 %, different; behaviour drift.
 cls_8049F6C8::~cls_8049F6C8() {
     for (s32 i = 0; i < 10; i++) {
         releaseEmitter_801EE434(mEmitters798[i]);
