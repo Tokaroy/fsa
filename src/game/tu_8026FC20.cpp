@@ -1009,13 +1009,20 @@ void Player_804A6F38::fn_8027BA2C() {
 // fn_8023434C) frames 11-34 walk toward fn_8027FA08's spot at 6 per frame. At frame 10, with
 // no 'SWBM' actor yet (0xB38), one is spawned in front when the life is full (or with
 // fn_80241284 and 0x11AC == 1 at 2+ life); the emitter 0x12BC circles mPos at 20 by 0x11C0.
-// FIXME: 99.89 %, operands; behaviour clean.
-// Stack offsets only: the vectors of the inlined walkToGroupSpot sit in other
-// slots (the original has the target at 0x44, ours at 0x20; as in fn_8027AAD0).
 void Player_804A6F38::fn_8027B648() {
     fn_80274988();
     if (fn_802486A0() == 3 && !fn_8023434C(field_0x4) && field_0x3fa >= 11 && field_0x3fa < 35) {
-        walkToGroupSpot(this);
+        JGeometry::TVec3f to;
+        fn_8027FA08(&to);
+        JGeometry::TVec3f dir = to - mPos;
+        dir.z = 0.0f;
+        if (magnitude(dir) >= 6.0f) {
+            dir.normalize();
+            dir.scale(6.0f);
+            mPos += dir;
+        } else {
+            mPos.set(to);
+        }
     }
     gBgRewrite_8053AC98->fn_802A20F0(&field_0x30c, field_0x4, field_0x3b4, 0, 1);
     fn_80268B3C();
