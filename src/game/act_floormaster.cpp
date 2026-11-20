@@ -109,6 +109,7 @@ void Floormaster_804A6004::init() {
 
 // Case 1: the three env-colour conversions use other stack slots and f-registers than the original
 // (0x18/0x20/0x10 for r/g/b), and 0.0f/1.0f sit one f-register higher.
+// FIXME: 99.10 %, scheduling+regalloc; behaviour drift.
 void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     switch (state) {
     case 0:
@@ -263,7 +264,8 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     }
 }
 
-// FIXME: 99.79%. operands + reloc-name: the three TVec3f locals sit in different stack slots.
+// FIXME: 99.89 %, operands; behaviour clean.
+// operands + reloc-name: the three TVec3f locals sit in different stack slots.
 void Floormaster_804A6004::fn_8020EB08() {
     JGeometry::TVec3f diff;
     JGeometry::TVec3f targetPos;
@@ -335,7 +337,8 @@ void Floormaster_804A6004::fn_8020EB08() {
     }
 }
 
-// FIXME: 96.96%. missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
+// FIXME: 97.40 %, missing/extra; behaviour drift.
+// missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
 // folds 0.0f - x into fneg (1 instruction fewer); case 3 sets the flag with `mr r30, r4` where ours
 // has `li r30, 1`; case 7 stores x/y from pos in the other order and stfd conversion order differs.
 void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
