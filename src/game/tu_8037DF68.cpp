@@ -1559,39 +1559,29 @@ s32 fn_803837A4(char* out, u32 msg, s32 a, s32 b, f32 width, f32 scale) {
     return lines;
 }
 
-// FIXME: 99.20 %, missing/extra; behaviour near.
-// Structurally close (one instruction fewer, registers shifted): the
-// text address is summed as (offset + inf1) + 8 + size where the original adds
-// size + offset, then 8, then inf1 (as in fn_80383E2C); the loop's first
-// character test reuses the condition's extsb. where the original sign-extends
-// again; the lead-byte code is loaded into r4 and copied to r31 (the original
-// loads it into r31).
+// Registers only: in the two part-break blocks the zero-extended part, its scaled
+// index and the lbl_8053AD78 load take r5/r6/r4 in the original, r6/r4/r5 here.
 // Copies the text of message msg into out (into out2 / out3 for the parts after
 // the first two part-break control codes, when given) and returns its width in
 // mFont units. Control code 0x1A size 2 ends a part (the width and line count so
 // far go to field_0x5c[part] / field_0x5c[part + 2]); 0x1A size 3 writes the digit
 // value and the expansion fn_8037F580 makes of its command byte.
 f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out3) {
-    MessageFile_804AF070* bmg = lbl_8053AD78->mBmg;
-    MessageInf1_804AF070* inf1 = &bmg->inf1;
-    // BMG text: the DAT1 block starts after the INF1 block (inf1->size) and its 8-byte header; the
-    // entry's textOffset is relative to that. Summed in this order only because it gives the
-    // original's add order (tp's JMessage keeps the DAT1 content pointer instead).
-    const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
+    MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
     s32 len = 0;
     f32 width = 0.0f;
     s32 pos = 0;
     s32 lines = 1;
     u8 part = 0;
-    char c;
-    while ((c = text[pos]) != 0) {
+    while (text[pos] != 0) {
         const char* p = &text[pos];
-        if (c == '\n') {
-            PUT_CHAR(c);
+        if (text[pos] == '\n') {
+            PUT_CHAR(text[pos]);
             len++;
             lines++;
             pos++;
-        } else if (c == 0x1A) {
+        } else if (text[pos] == 0x1A) {
             if (p[2] == 2) {
                 if (p[4] == 0 || p[4] == 10 || p[4] == 0x12 || p[4] == 0x19) {
                     if (part < 2) {
@@ -1639,7 +1629,7 @@ f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out
             }
             pos += p[1];
         } else {
-            PUT_CHAR(c);
+            PUT_CHAR(text[pos]);
             u32 code = (u8)*p;
             len++;
             pos++;
@@ -1653,7 +1643,7 @@ f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out
             width += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
     }
-    PUT_CHAR(c);
+    PUT_CHAR(text[pos]);
     return width;
 }
 
