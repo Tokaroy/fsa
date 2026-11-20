@@ -3583,7 +3583,7 @@ bool Player_804A6F38::fn_80247C0C() {
 }
 
 // The leader's field_0x48c (fn_8023C36C) for a follower, else its own.
-s32 Player_804A6F38::fn_80247BD4() {
+s32 Player_804A6F38::fn_80247BD4() const {
     s32 team = field_0xd60;
     if (team >= 0) {
         return fn_8023C36C(team);
@@ -3623,7 +3623,7 @@ void Player_804A6F38::fn_8024762C() {
     if (field_0xce8) {
         return;
     }
-    if (field_0xd60 < 0) {
+    if (!fn_80240808()) {
         if (field_0x48c > 0) {
             field_0x48c--;
             if (field_0x491 == 1) {
@@ -4520,7 +4520,7 @@ void Player_804A6F38::fn_802412D4() {
     field_0xcaf = 1;
 }
 
-bool Player_804A6F38::fn_802412CC() {
+bool Player_804A6F38::fn_802412CC() const {
     return field_0x460;
 }
 
@@ -4552,7 +4552,7 @@ bool Player_804A6F38::fn_802411EC() {
     return field_0x1240 == 1;
 }
 
-bool Player_804A6F38::fn_802411D8() {
+bool Player_804A6F38::fn_802411D8() const {
     return field_0x1240 == 0xa;
 }
 
@@ -4712,7 +4712,7 @@ bool Player_804A6F38::fn_80240818() const {
     return field_0x1240 == 0x49 || field_0x1244 == 0x49;
 }
 
-bool Player_804A6F38::fn_80240808() {
+bool Player_804A6F38::fn_80240808() const {
     return field_0xd60 >= 0;
 }
 
