@@ -1243,52 +1243,51 @@ bool SmallKey_804A8CD8::fn_802C2154() {
 // 0x802C1EC4.
 // FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour near.
 void SmallKey_804A8CD8::draw() {
-    if (field_0x27c == 8 || field_0x2b4 == 0 || field_0x280 >= 16 || field_0x240 < 2) {
-        return;
-    }
-    SpriteParams_801F5AE0 params;
-    params.field_0x10.a = field_0x2ad;
-    if (field_0x294 >= 0x2BD4) {
-        if (field_0x294 & 2) {
-            params.field_0x10.a = 0;
+    if (field_0x27c != 8 && field_0x2b4 != 0 && field_0x280 < 16 && field_0x240 >= 2) {
+        SpriteParams_801F5AE0 params;
+        params.field_0x10.a = field_0x2ad;
+        if (field_0x294 >= 0x2BD4) {
+            if (field_0x294 & 2) {
+                params.field_0x10.a = 0;
+            }
+        } else if (field_0x294 >= 0x2B20) {
+            if (field_0x294 & 4) {
+                params.field_0x10.a = 0;
+            }
+        } else if (field_0x294 >= 0x2AA8) {
+            if (field_0x294 & 8) {
+                params.field_0x10.a = 0;
+            }
+        } else if (field_0x294 >= 0x2A30) {
+            if (field_0x294 & 0x10) {
+                params.field_0x10.a = 0;
+            }
         }
-    } else if (field_0x294 >= 0x2B20) {
-        if (field_0x294 & 4) {
-            params.field_0x10.a = 0;
+        if (field_0xc4) {
+            params.field_0x20 = 0;
+            params.field_0x1d = fn_8023CB24(field_0xc8) + 1;
+            params.field_0x1c = fn_8023CA88(field_0xc8);
+        } else {
+            params.field_0x1c = field_0x2ac;
         }
-    } else if (field_0x294 >= 0x2AA8) {
-        if (field_0x294 & 8) {
-            params.field_0x10.a = 0;
+        s32 frame = field_0x280;
+        if (field_0x2ac != 0) {
+            frame += 10;
         }
-    } else if (field_0x294 >= 0x2A30) {
-        if (field_0x294 & 0x10) {
-            params.field_0x10.a = 0;
+        params.field_0x2d = 1;
+        bool flag = field_0xc4;
+        if (field_0x240 == 7 || field_0x240 == 10 || (field_0x27c == 2 && field_0xc4 == 0)) {
+            params.field_0x1d = 7;
+            flag = true;
         }
-    }
-    if (field_0xc4) {
-        params.field_0x20 = 0;
-        params.field_0x1d = fn_8023CB24(field_0xc8) + 1;
-        params.field_0x1c = fn_8023CA88(field_0xc8);
-    } else {
-        params.field_0x1c = field_0x2ac;
-    }
-    s32 frame = field_0x280;
-    if (field_0x2ac != 0) {
-        frame += 10;
-    }
-    params.field_0x2d = 1;
-    u8 flag = field_0xc4;
-    if (field_0x240 == 7 || field_0x240 == 10 || (field_0x27c == 2 && field_0xc4 == 0)) {
-        params.field_0x1d = 7;
-        flag = 1;
-    }
-    s32 flags = 7;
-    if (field_0xc4) {
-        flags = -1;
-    }
-    fn_801F02BC("enemy_both2_sob.bin", frame + 0x2D, &params, flags, 0, flag, 1.0f, 1.0f);
-    if (field_0x240 == 7) {
-        field_0xc4 = 0;
+        s32 flags = 7;
+        if (field_0xc4) {
+            flags = -1;
+        }
+        fn_801F02BC("enemy_both2_sob.bin", frame + 0x2D, &params, flags, 0, flag, 1.0f, 1.0f);
+        if (field_0x240 == 7) {
+            field_0xc4 = 0;
+        }
     }
 }
 
