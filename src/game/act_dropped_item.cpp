@@ -25,7 +25,7 @@ static inline void spawnImup(u32 param, s32 i, const JGeometry::TVec3f* pos) {
     getActorManager_801F856C()->spawnActor_801F9484('IMUP', layer, pos, fullParam, -1, -1);
 }
 
-inline void DroppedItem_804A8C80::talk(s32 serial, s32 layer, const JGeometry::TVec3f& pos) {
+inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos) {
     fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
@@ -144,9 +144,7 @@ void DroppedItem_804A8C80::vfunc_0x40() {
     field_0x250 = 1;
 }
 
-// FIXME: 98.46 %, missing/extra; behaviour near.
-// (ours has 4 more instructions). Our tile 13/14 branches store mAlive = false twice
-// more than the original, and the `hit.x != 0.0f` test loads the 0.0f literal before hit.x (original: hit.x first).
+// FIXME: scheduling+regalloc (`hit.x != 0.0f` / `hit.y != 0.0f` load 0.0f before hit.x/hit.y, and v270/v264 swap r29/r31).
 void DroppedItem_804A8C80::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
     JGeometry::TBox2f box(mBox);
@@ -252,22 +250,17 @@ void DroppedItem_804A8C80::update() {
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5005F, 0);
-                        mAlive = false;
-                        break;
-                    }
-                    if (fn_802DEB58()) {
+                    } else if (fn_802DEB58()) {
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5003F, 0);
-                        mAlive = false;
-                        break;
                     }
                 } else if (tile == 13) {
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30022, 0);
-                    mAlive = false;
-                    break;
                 }
+                mAlive = false;
+                break;
             }
         }
 
@@ -307,7 +300,7 @@ void DroppedItem_804A8C80::update() {
 
     case 2:
         fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
-        talk(mSerial, field_0x4, mPos);
+        talk(field_0x4, mSerial, mPos);
         field_0x230 = 3;
         break;
 
