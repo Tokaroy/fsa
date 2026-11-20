@@ -2858,7 +2858,7 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 }
 
-// FIXME: 98.71 %, regalloc-only; behaviour clean.
+// FIXME: 99.15 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). One instruction moves:
 // the original keeps &others in r29 from the fill loop on (`mr r3, r29` for
 // the fill pointer) and walks it in the row loop; ours computes &others
@@ -2914,32 +2914,11 @@ void FileSelect_804AFF60::fn_803C2E24() {
         }
     }
     // Only the first two buttons, although `end` allows for four.
-    for (int i = 0; i < 2; i++) {
+    for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
             field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
             field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
-            switch (i) {
-            case 0:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DC8[j]), field_0x19f[j]);
-                }
-                break;
-            case 1:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476DA8[j]), field_0x19f[j]);
-                }
-                break;
-            case 2:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D88[j]), field_0x19f[j]);
-                }
-                break;
-            case 3:
-                for (int j = 0; j < 4; j++) {
-                    field_0x24[i]->setAlpha_804023D0(mScreenHuuin->search(lbl_80476D68[j]), field_0x19f[j]);
-                }
-                break;
-            }
+            restoreButtonAlphas(this, i);
         }
     }
     for (int i = 0; i < 2; i++, other++) {
