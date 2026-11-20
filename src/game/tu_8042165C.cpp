@@ -1510,13 +1510,10 @@ void cls_804B146C::fn_8042165C() {
     field_0x1f0[2] = 0;
     field_0x1f0[3] = 0;
     for (s32 i = 0; i < 4; i++) {
-        u32 bit = 1 << i;
-        bool takesPart = (gGameRoot_8053AAF8->mPlayerMask & (u8)bit) != 0;
-        if (takesPart && !fn_8022C8EC(i)) {
-            u16 mask = (u16)bit;
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0 && !fn_8022C8EC(i)) {
             for (s32 k = 0; k < 4; k++) {
-                if (i != k) {
-                    field_0x1f0[k] |= mask;
+                if (k != i) {
+                    field_0x1f0[k] |= (u16)(1 << i);
                 }
             }
             if (getPlayerLayer_8023DE58(i) < 8) {
@@ -1524,18 +1521,16 @@ void cls_804B146C::fn_8042165C() {
                 gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(i), false, false, &screen);
                 for (s32 j = 0; j < 10; j++) {
                     if (!lbl_8053AED0->fn_8043DF24(lbl_8048F188[j], lbl_8048F1B0[j], screen.x, screen.y, 0.0f)) {
-                        u16 jbit = (u16)(1 << j);
-                        field_0x1f0[0] |= jbit;
-                        field_0x1f0[1] |= jbit;
-                        field_0x1f0[2] |= jbit;
-                        field_0x1f0[3] |= jbit;
+                        for (s32 k = 0; k < 4; k++) {
+                            field_0x1f0[k] |= (u16)(1 << j);
+                        }
                     }
                 }
             }
         }
         if (field_0x24d[i] != 0xFF) {
             for (s32 k = 0; k < 4; k++) {
-                if (i != k) {
+                if (k != i) {
                     field_0x1f0[k] |= (u16)(1 << field_0x24d[i]);
                 }
             }
@@ -1544,10 +1539,9 @@ void cls_804B146C::fn_8042165C() {
     for (s32 i = 0; i < 4; i++) {
         if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) && !fn_8022C8EC(i) && getPlayerLayer_8023DE58(i) < 8) {
             for (s32 j = 0; j < 10; j++) {
-                u8 cand = lbl_8048F1D8[i][j];
-                if (!(field_0x1f0[i] & (u16)(1 << cand))) {
-                    if (field_0x251[i] != cand && field_0x24d[i] == 0xFF) {
-                        field_0x24d[i] = cand;
+                if (!(field_0x1f0[i] & (u16)(1 << lbl_8048F1D8[i][j]))) {
+                    if (field_0x251[i] != lbl_8048F1D8[i][j] && field_0x24d[i] == 0xFF) {
+                        field_0x24d[i] = lbl_8048F1D8[i][j];
                         field_0x198[i] = 0;
                         field_0x1f0[0] |= (u16)(1 << field_0x24d[i]);
                         field_0x1f0[1] |= (u16)(1 << field_0x24d[i]);
