@@ -160,7 +160,8 @@ void Fish_804AC658::update() {
     addCalc2_801F71A4(&field_0x3c.x, field_0x254, 0.1f, field_0x260);
     addCalc2_801F71A4(&field_0x3c.y, field_0x258, 0.1f, field_0x260);
     mPos += field_0x3c;
-    JGeometry::TVec3f hitDir(0.0f, 0.0f, 0.0f);
+    JGeometry::TVec3f hitDir;
+    hitDir.zero();
     u8 hit = fn_801F2618(&hitDir, false);
     switch (field_0x230) {
     case 0: {
@@ -174,20 +175,21 @@ void Fish_804AC658::update() {
     }
     case 1:
         if (hit) {
-            s32 angle = field_0x250 + 0x4000;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            s32 angle = field_0x250;
+            field_0x3c.zero();
             f32 savedX = mPos.x;
             f32 savedY = mPos.y;
             f32 savedZ = mPos.z;
+            angle += 0x4000;
             for (s32 i = 0; i < 15; i++) {
                 mPos.x = savedX;
                 mPos.y = savedY;
                 mPos.z = savedZ;
-                JGeometry::TVec3f step(16.0f * JMath::sincosTable_.sinShort(angle), 16.0f * JMath::sincosTable_.cosShort(angle), 0.0f);
+                JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
+                step.x = 16.0f * JMath::sincosTable_.sinShort(angle);
+                step.y = 16.0f * JMath::sincosTable_.cosShort(angle);
                 mPos += step;
-                if (fn_802265DC(&mPos, field_0x4, false)) {
+                if (!fn_802265DC(&mPos, field_0x4, false)) {
                     break;
                 }
                 angle += 0x1000;
@@ -326,9 +328,9 @@ void Fish_804AC658::draw() {
 
 // Not in the binary (update inlines it); the pool has its 0.0f ahead of every other function's.
 void Fish_804AC658::stopSwim() {
-    field_0x254 = 0.0f;
-    field_0x258 = 0.0f;
     field_0x25c = 0.0f;
+    field_0x258 = 0.0f;
+    field_0x254 = 0.0f;
     field_0x230 = 0;
 }
 
