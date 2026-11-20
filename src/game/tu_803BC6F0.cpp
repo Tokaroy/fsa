@@ -283,6 +283,17 @@ inline void FileSelect_804AFF60::setMessage(u32 msg) {
     }
 }
 
+// The copy / delete buttons get their saved black and white back. Inlined in
+// fn_803CABAC: the eight by-value colour copies take their stack slots from
+// sp 0x8 upwards there, the order of an inlined body (the callers that spell
+// the four calls out have them from the top downwards).
+inline void FileSelect_804AFF60::resetButtonColors() {
+    ((J2DPicture*)mScreenHuuin->search('Pcopb01'))->setBlackWhite(field_0xe4, field_0xe0);
+    ((J2DPicture*)mScreenHuuin->search('Pcopb02'))->setBlackWhite(field_0xe4, field_0xe0);
+    ((J2DPicture*)mScreenHuuin->search('Pdelb01'))->setBlackWhite(field_0xe4, field_0xe0);
+    ((J2DPicture*)mScreenHuuin->search('Pdelb02'))->setBlackWhite(field_0xe4, field_0xe0);
+}
+
 static void setFadeStep(FileSelect_804AFF60* self, s16 frames);
 
 // Run each frame by fn_803CE9EC (index: mState).
@@ -1672,10 +1683,6 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     }
 }
 
-// FIXME: 98.70 %, scheduling+regalloc; behaviour clean.
-// FIXME: The four setBlackWhite calls' by-value copies take the
-// stack slots in the opposite order (sp 0x8 upwards in the original); the
-// bob's `frame * frame` is scheduled after the 0x4330 store.
 // The file menu (state 19): A runs the highlighted command field_0xa0 (0:
 // start the chosen file, 1: copy, 2: delete, 3: back), B goes back, up /
 // down move the cursor (field_0xa0, skipping commands an empty file lacks);
@@ -1735,10 +1742,7 @@ void FileSelect_804AFF60::fn_803CABAC() {
                 field_0x34->mPane->setAlpha(0);
                 field_0x34->setAlpha_804023D0(mScreenHuuin->search('Paccur01'), field_0x34->field_0x28);
                 field_0x34->field_0x26 = 0;
-                ((J2DPicture*)mScreenHuuin->search('Pcopb01'))->setBlackWhite(field_0xe4, field_0xe0);
-                ((J2DPicture*)mScreenHuuin->search('Pcopb02'))->setBlackWhite(field_0xe4, field_0xe0);
-                ((J2DPicture*)mScreenHuuin->search('Pdelb01'))->setBlackWhite(field_0xe4, field_0xe0);
-                ((J2DPicture*)mScreenHuuin->search('Pdelb02'))->setBlackWhite(field_0xe4, field_0xe0);
+                resetButtonColors();
                 for (s32 i = 0; i < 4; i++) {
                     field_0x24[i]->field_0x22 = 0;
                     field_0x24[i]->field_0x26 = 0;
@@ -1796,15 +1800,14 @@ void FileSelect_804AFF60::fn_803CABAC() {
     }
 
     if (mState == 19) {
-        s16 frame = field_0xda;
         f32 bob = 0.0f;
-        if (frame != 0) {
-            if (frame < 5) {
-                bob = 5.0f * (frame * frame) / 25.0f;
-                field_0xda = frame + 1;
-            } else if (frame < 10) {
-                bob = 5.0f * ((10 - frame) * (10 - frame)) / 25.0f;
-                field_0xda = frame + 1;
+        if (field_0xda != 0) {
+            if (field_0xda < 5) {
+                bob = 5.0f * (field_0xda * field_0xda) / 25.0f;
+                field_0xda++;
+            } else if (field_0xda < 10) {
+                bob = 5.0f * ((10 - field_0xda) * (10 - field_0xda)) / 25.0f;
+                field_0xda++;
             } else {
                 field_0xda = 0;
             }
