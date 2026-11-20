@@ -1609,7 +1609,7 @@ static inline void restoreButtonAlphas(FileSelect_804AFF60* self, s32 i) {
     }
 }
 
-// FIXME: 98.90 %, different; behaviour near.
+// FIXME: 99.00 %, different; behaviour near.
 // FIXME: `others` (&others[0] in r29) is hoisted to before the initialization
 // loop in the original (7C) vs after (C4); `frames` gets r28 instead of r26,
 // shifting others[i] / others[i]*8 (r27/r26 vs r28/r27) and the
@@ -1637,14 +1637,15 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     // The two files that weren't chosen.
     s32 others[2];
     s32* other = others;
-    for (s32 i = 0; i < 3; i++) {
+    s32 i;
+    for (i = 0; i < 3; i++) {
         if (i != field_0xa4) {
             *other++ = i;
         }
     }
 
     field_0xd8++;
-    for (s32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[others[i]]->fn_80402B10(frames, 0, 0.0f, 600.0f);
             field_0x38[others[i]]->fn_80402628(frames, field_0x38[others[i]]->field_0x28, 0);
@@ -2508,7 +2509,7 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
 }
 
-// FIXME: 99.35 %, regalloc-only; behaviour clean.
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 // Registers only: `frames` and two temporaries of the inlined alpha helpers
 // are rotated (r26/r27/r28). The original keeps &others in one register for
 // both loops: one pointer fills the array, a second walks it.
@@ -2530,8 +2531,8 @@ void FileSelect_804AFF60::fn_803C5808() {
     if (end < boardDelay + boardFrames) {
         end = boardDelay + boardFrames;
     }
-    if (end < buttonDelay + (buttonFrames + buttonStep * 3)) {
-        end = buttonDelay + (buttonFrames + buttonStep * 3);
+    if (end < buttonDelay + buttonFrames + buttonStep * 3) {
+        end = buttonDelay + buttonFrames + buttonStep * 3;
     }
 
     // The two files that weren't chosen.
@@ -2688,11 +2689,6 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
 }
 
-// FIXME: 99.97 %, regalloc-only; behaviour clean.
-// Regalloc only: boardDelay / boardFrames swap r21 / r23, and
-// the row offset's fsubs takes f0 / f2 the other way round (as fn_803CE370).
-// The checksum test materialises the bool (neg / or / srwi.), which
-// `!= false` gives (a plain test gives and., 99.43).
 // State 35 (after the delete's card write, from fn_803BF004): row field_0xa4
 // slides out between the first and third rows' places (fading its colours
 // back when its checksum failed); at its end it waits at the right with
@@ -2722,7 +2718,7 @@ void FileSelect_804AFF60::fn_803C4628() {
         field_0x38[field_0xa4]->fn_80402628(outFrames, field_0x38[field_0xa4]->field_0x28, 0);
         setRowAlphas(this, field_0xa4);
         if (field_0xd8 == outEnd) {
-            field_0x38[field_0xa4]->moveFromCentre_80402E08(600.0f, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc);
+            field_0x38[field_0xa4]->moveFromCentre_80402E08(600.0f, field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
             field_0x38[field_0xa4]->field_0x20 = 0;
             field_0x38[field_0xa4]->mPane->setAlpha(0);
             setRowAlphas(this, field_0xa4);
