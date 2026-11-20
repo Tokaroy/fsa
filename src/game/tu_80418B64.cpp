@@ -1326,7 +1326,7 @@ void cls_804B13D4::fn_8041CC04() {
     s32 n = lbl_80529DEC.getField0xe8(0);
     s32 digit = 0;
     const ResTIMG* res;
-    if (n > 9999) {
+    if (9999 < n) {
         n = 9999;
     }
     if (n < 0) {
@@ -1432,7 +1432,7 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
     s32 n = lbl_80529DEC.getField0xe8(player);
     s32 digit = 0;
     const ResTIMG* res;
-    if (n > 9999) {
+    if (9999 < n) {
         n = 9999;
     }
     if (n < 0) {
