@@ -140,7 +140,10 @@ void EscortBase_8049E0C8::update() {
     field_0x37c = 1.0f;
     field_0x331 = 1;
     JGeometry::TBox2f box(mBox);
-    box.addPos(mPos.x, mPos.y);
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
     vfunc_0x80();
     if (field_0x333) {
         field_0x354++;
@@ -165,7 +168,7 @@ void EscortBase_8049E0C8::update() {
         fn_801F2618(&out, false);
     }
     JGeometry::TVec3f dir;
-    dir.x = dir.y = dir.z = 0.0f;
+    dir.set(0.0f, 0.0f, 0.0f);
     if (fn_80121438(&dir)) {
         mPos.add(dir);
     }
