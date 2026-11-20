@@ -2524,10 +2524,6 @@ bool Player_804A6F38::fn_8024D058(u8 reset) {
 // fn_8024CAC8 for a box (act_dummy_conversation through fn_8022FEB8): the
 // same tests, then the point 16 ahead of the player (by facing 0x3DC) must
 // lie in `box`.
-// FIXME: 99.98 %, regalloc-only; behaviour clean.
-// Registers only: the inlined group loop (fn_80240670) keeps
-// the leader and the own index in two registers (r22 / r25) in the original,
-// one here, as in the gates (fn_802454C0 ...).
 void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 serial, bool a, bool b) {
     if (field_0xd50 > 0) {
         return;
@@ -2564,8 +2560,7 @@ void Player_804A6F38::fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 s
     pos += mPos;
     pos.z = 0.0f;
     JGeometry::TBox2f point;
-    point.i.x = pos.x;
-    point.i.y = pos.y;
+    point.i.set(pos.x, pos.y);
     point.f.x = pos.x;
     point.f.y = pos.y;
     if (point.intersect(*box)) {
