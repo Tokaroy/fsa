@@ -1464,8 +1464,6 @@ bool Player_804A6F38::fn_8025FEDC() {
     return true;
 }
 
-// FIXME: 99.10 %, regalloc-only; behaviour clean.
-// Registers only: the float temporaries of the view-corner offset.
 // Let go of the held player: take its position, moved from its layer's view corner
 // to this player's, and remember pos as the drop point.
 bool Player_804A6F38::fn_8025FDD0(const JGeometry::TVec3f* pos) {
@@ -1474,9 +1472,10 @@ bool Player_804A6F38::fn_8025FDD0(const JGeometry::TVec3f* pos) {
     f32 x = box->i.x;
     f32 y = box->i.y;
     box = layerBox(field_0x3b4);
-    JGeometry::TVec2f offset(box->i.x - x, box->i.y - y);
-    mPos.x += offset.x;
-    mPos.y += offset.y;
+    f32 x2 = box->i.x;
+    f32 y2 = box->i.y;
+    mPos.x += x2 - x;
+    mPos.y += y2 - y;
     field_0xd70 = -1;
     field_0xd58 = 5;
     field_0xd78 = *pos;
