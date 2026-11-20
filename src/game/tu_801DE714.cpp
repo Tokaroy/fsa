@@ -208,10 +208,9 @@ void cls_804A51E4::vfunc_0x54() {
     field_0x2c4.set(mPos.x, mPos.y);
 }
 
-// FIXME(shotgun): 99.09 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E1E08() {
     if (mTargetSerial >= 0) {
-        if (!(mFlags & 0x80000)) {
+        if (!checkFlag(0x80000)) {
             mFlags |= 0x40000;
         }
         if (mTargetSerial >= 0) {
@@ -325,7 +324,7 @@ bool cls_804A51E4::fn_801E1CF8() const {
     return result;
 }
 
-// FIXME(shotgun): 95.00 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.24 %, regalloc-only; behaviour clean.
 void cls_804A51E4::fn_801E1AB4(bool arg) {
     bool found = false;
     u32 kind;
@@ -354,15 +353,16 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
                 target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             }
         }
-        pos.x = target->mPos.x;
-        pos.y = target->mPos.y;
-        pos.z = target->mPos.z;
-        s32 state = ((ForceGem_804AB6D8*)target)->field_0x230;
-        kind = target->field_0x90;
+        ForceGem_804AB6D8* gem = (ForceGem_804AB6D8*)target;
+        pos.x = gem->mPos.x;
+        pos.y = gem->mPos.y;
+        pos.z = gem->mPos.z;
+        s32 state = gem->field_0x230;
+        kind = gem->field_0x90;
         if (state == 0 || (u32)(state - 0xF) <= 1 || (u32)(state - 1) <= 1 || state == 9 || state == 0xD) {
-            target->fn_801F3668();
+            gem->fn_801F3668();
         }
-        if (!target->mAlive) {
+        if (!gem->mAlive) {
             found = true;
         }
     }
@@ -558,7 +558,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     mState = newState;
 }
 
-// FIXME(shotgun): 95.23 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.82 %, scheduling+regalloc; behaviour clean.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
     ActorBase_804A5770* actor;
@@ -590,7 +590,15 @@ void cls_804A51E4::fn_801E1300() {
     if (lost) {
         findTargets(this);
         bool start = false;
-        if (mState != 7 && mState != 0 && !(mState >= 0xF && mState < 0x13)) {
+        switch (mState) {
+        case 0:
+        case 7:
+        case 0xF:
+        case 0x10:
+        case 0x11:
+        case 0x12:
+            break;
+        default:
             if (!(mFlags & 0x4000) && field_0x2cc == 0) {
                 if (fn_801E1DB4()) {
                     if (mFlags & 0x20000) {
@@ -602,6 +610,7 @@ void cls_804A51E4::fn_801E1300() {
                     }
                 }
             }
+            break;
         }
         if (start) {
             fn_801E1594(7);
@@ -1155,7 +1164,7 @@ void cls_804A51E4::vfunc_0x9C(u8 mapHit) {
     fn_8021835C();
 }
 
-// FIXME(shotgun): 96.43 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.22 %, scheduling+regalloc; behaviour drift.
 void cls_804A51E4::vfunc_0x88() {
     bool blocked = fn_801CCF7C();
     field_0x3c.x = 0.0f;
@@ -1207,10 +1216,8 @@ void cls_804A51E4::vfunc_0x88() {
             if (!blocked) {
                 if (mFlags & 0x80000) {
                     field_0x3c.z = 0.1f;
-                } else if (mTargetSerial >= 0) {
-                    field_0x3c.z = 0.15f;
                 } else {
-                    field_0x3c.z = 0.3f;
+                    field_0x3c.z = mTargetSerial >= 0 ? 0.15f : 0.3f;
                 }
             }
             break;
