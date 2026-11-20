@@ -12,8 +12,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-void fn_801CCCC4(JGeometry::TVec3f* pos);
-
 static inline bool isColumnRight(cls_804A4C58* self) {
     bool right = false;
     if (self->mPos.x < self->field_0x2d4[self->field_0x334].x ||
@@ -65,7 +63,7 @@ cls_804A4C58::~cls_804A4C58() {
     getGameView_802D6A9C()->fn_802D7440(true);
 }
 
-// FIXME(shotgun): 67.36 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 69.16 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A4C58::init() {
     EnemyBase_804A4808::init();
     mBox.i.x = 1.0f;
@@ -95,13 +93,12 @@ void cls_804A4C58::init() {
     } else {
         box = &view->field_0xdc;
     }
-    JGeometry::TVec3f p;
-    p.x = mPos.x;
-    p.y = mPos.y;
+    JGeometry::TVec2f p(mPos.x, mPos.y);
     while (p.y < box->f.y) {
         JGeometry::TVec3f probe(p.x, p.y, 0.0f);
         if (vfunc_0x4C(field_0x4, &probe)) {
-            fn_801CCCC4(&p);
+            // p is 8 bytes on the original's stack; fn_801CCCC4 only touches x and y.
+            fn_801CCCC4((JGeometry::TVec3f*)&p);
             p.y += -24.0f;
             break;
         }
@@ -112,7 +109,7 @@ void cls_804A4C58::init() {
     f32 y0 = 32.0f + mSpawnPos.y;
     f32 step = 0.5f * (field_0x2d0 - 48.0f - y0);
     f32 y = y0;
-    // Still differs: the original unrolls the row loop too (index 0, 4, 8), and keeps p in 8 bytes.
+    // Still differs: the original unrolls the row loop too (index 0, 4, 8).
     for (s32 row = 0; row < 3; row++) {
         f32 x = x0;
         for (s32 col = 0; col < 4; col++) {
@@ -276,7 +273,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
     mState = state;
 }
 
-// FIXME(shotgun): 99.39 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
 void cls_804A4C58::fn_801D9960() {
     if (field_0x33c != 0) {
         field_0x33c--;
@@ -294,9 +291,9 @@ void cls_804A4C58::fn_801D9960() {
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-            s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
-            f32 diff = (s16)(angle - heading);
-            if (0.000030517578f * __fabsf(diff) <= 0.3f) {
+            s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                                (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+            if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
                 target = player;
             }
         }
@@ -334,18 +331,14 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-// FIXME(shotgun): 90.87 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.23 %, missing/extra + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
     if (mFlags & 0x2000) {
-        pos.y = -6.0f + mPos.y;
-        pos.x = mPos.x - -30.0f;
-        pos.z = 0.0f;
+        pos.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
     } else {
-        pos.y = -6.0f + mPos.y;
-        pos.x = -30.0f + mPos.x;
-        pos.z = 0.0f;
+        pos.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
     }
     s32 serial = getActorManager_801F856C()->spawnActor_801F9484('BOIB', field_0x4, &pos, 0, -1, -1);
     if (serial >= 0) {
@@ -354,22 +347,18 @@ bool cls_804A4C58::fn_801D95F4() {
             s32 target = -1;
             JGeometry::TVec3f from;
             if (mFlags & 0x2000) {
-                from.y = -6.0f + mPos.y;
-                from.x = mPos.x - -30.0f;
-                from.z = 0.0f;
+                from.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
             } else {
-                from.y = -6.0f + mPos.y;
-                from.x = -30.0f + mPos.x;
-                from.z = 0.0f;
+                from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
             }
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
             s32 player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
-                f32 diff = (s16)(angle - heading);
-                if (0.000030517578f * __fabsf(diff) <= 0.3f) {
+                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                                    (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+                if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
                     target = player;
                 }
             }
@@ -723,7 +712,6 @@ void cls_804A4C58::vfunc_0x80() {
     EnemyBase_804A4808::vfunc_0x80();
 }
 
-// FIXME: 99.65 %, regalloc-only; behaviour clean.
 void cls_804A4C58::vfunc_0x88() {
     switch (mState) {
     case 0xB: case 0xC: case 0xD: case 0xE: {
@@ -740,7 +728,7 @@ void cls_804A4C58::vfunc_0x88() {
         switch (mState) {
         case 0x10:
         case 8:
-            field_0x3c.y += __fabsf(lbl_8053EFB8);
+            field_0x3c.y += JMAAbs(lbl_8053EFB8);
             break;
         default:
             field_0x3c.y = 0.0f;
