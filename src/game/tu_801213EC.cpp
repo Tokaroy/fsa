@@ -261,7 +261,7 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 98.79 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 // (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
@@ -946,6 +946,7 @@ s32 EscortBase_8049E0C8::fn_80121D68() {
     return 1;
 }
 
+// FIXME: 98.52 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
