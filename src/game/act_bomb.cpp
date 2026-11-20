@@ -881,7 +881,7 @@ void Bomb_8049F784::update() {
     }
 }
 
-// FIXME: Only float register allocation differs (scale and setRotScaleMtx locals).
+// FIXME: Only init order of i/count (r30/r31) and float register allocation (scale and setRotScaleMtx locals) differ.
 void Bomb_8049F784::draw() {
     if (field_0x230 == 9) {
         return;
@@ -892,9 +892,9 @@ void Bomb_8049F784::draw() {
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
 
-    s32 i = 0;
+    s32 i;
     s32 count = 0;
-    for (; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         if (fn_80236B50(i)) {
             count++;
         }
