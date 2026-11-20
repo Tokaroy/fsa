@@ -1157,7 +1157,7 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
     }
 }
 
-// FIXME: 87.97 %, missing/extra + reloc-name; behaviour near.
+// FIXME: 89.62 %, missing/extra + reloc-name; behaviour near.
 // Structurally close (6 instructions more): in the mosaic the
 // original multiplies h * py and w * px per pixel, ours strength-reduces them
 // (four more registers, so flag / alpha live on the stack: lbz 0x8 / 0x9);
@@ -1505,7 +1505,7 @@ void TileMap_804AA858::fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u
     }
 }
 
-// FIXME: 98.47 %, operands; behaviour drift.
+// FIXME: 98.98 %, regalloc-only; behaviour drift.
 // Register allocation, stack slots and data offsets only (try.py
 // "operands + reloc-name"): the tables and "circle.bti" sit 0x70 / 0x1D8 too
 // early in our .rodata (fn_802FCE74's tables and fn_802F6800's five are not
@@ -2287,7 +2287,7 @@ void TileMap_804AA858::fn_802F8F0C(SpriteParams_801F5AE0* params) {
     GXSetCullMode(GX_CULL_NONE);
 }
 
-// FIXME: 89.08 %, missing/extra; behaviour near.
+// FIXME: 89.55 %, missing/extra; behaviour near.
 // The original keeps obj in memory as if its address were taken:
 // every bit-field store is kept (byte 0x11 stored after each field, the
 // unused mAffineParam = 0 too) and the draw re-reads the fields; ours keeps
