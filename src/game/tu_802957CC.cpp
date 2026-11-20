@@ -864,8 +864,8 @@ void cls_804A7AE0::fn_80298978() {
         } else {
             for (s32 k = 0; k < 4; k++) {
                 JGeometry::TVec3f pos = warp->field_0x238;
-                pos.x += 8.0f * ((k & 1) > 0) - 4.0f;
-                pos.y += 8.0f * ((k & 2) > 0) - 4.0f;
+                pos.x = 8.0f * ((k & 1) > 0) - 4.0f + pos.x;
+                pos.y = 8.0f * ((k & 2) > 0) - 4.0f + pos.y;
                 s32 kind = warp->field_0x90 & 0x7F;
                 if (kind == 0 || kind == 3) {
                     pos.y += -16.0f;
