@@ -1240,8 +1240,9 @@ inline bool KaeporaGaeboraEnding_804ADAC8::fireWaypoint() {
         }
     } else {
         s8 id = wp->mKind;
+        s32 i;
         s32 end = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < end; i++) {
+        for (i = 0; i < end; i++) {
             cls_804ADF28* actor = (cls_804ADF28*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_EETC && id == actor->field_0x230) {
                 actor->field_0x230 = 0;
@@ -1310,9 +1311,7 @@ u8 KaeporaGaeboraEnding_804ADAC8::fn_8035F3C0() {
             return true;
         }
     } else {
-        target.x = wp->mX;
-        target.y = wp->mY;
-        target.z = wp->mZ;
+        target.set(wp->mX, wp->mY, wp->mZ);
     }
     f32 radius = field_0x298->mRadius;
     if (radius > 0.0f) {
