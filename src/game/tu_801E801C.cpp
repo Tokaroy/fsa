@@ -301,17 +301,20 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
     f32 v = a * (1.0f / (4.0f * b));
     f32 s0 = JMath::sincosTable_.mTable[ang >> 5].first;
     f32 c0 = JMath::sincosTable_.mTable[ang >> 5].second;
-    s16 half = (s16)h;
-    s16 delta = half - ang;
+    s16 delta = (s16)h;
+    delta -= ang;
     f32 scale = 2.0f * (1.0f / JMath::sincosTable_.cosShort(delta));
     s16 perp = -(s16)(delta - 0x4000);
     f32 s2 = JMath::sincosTable_.sinShort(perp);
     f32 c2 = JMath::sincosTable_.cosShort(perp);
-    f32 dx = (s0 * c2 - c0 * s2) * scale;
-    f32 dy = (s0 * s2 + c0 * c2) * scale;
-    GXPosition3f32(center->x + dx, sZ + (center->y + dy), sZ);
+    JGeometry::TVec2f off;
+    off.x = (s0 * c2 - c0 * s2) * scale;
+    off.y = (s0 * s2 + c0 * c2) * scale;
+    GXPosition3f32(center->x + off.x, sZ + (center->y + off.y), sZ);
     GXTexCoord2f32(1.0f, v);
-    GXPosition3f32(center->x + -dx, sZ + (center->y + -dy), sZ);
+    off.x = -off.x;
+    off.y = -off.y;
+    GXPosition3f32(center->x + off.x, sZ + (center->y + off.y), sZ);
     GXTexCoord2f32(0.0f, v);
 }
 #pragma auto_inline reset
