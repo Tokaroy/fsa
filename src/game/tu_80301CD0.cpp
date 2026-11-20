@@ -375,7 +375,6 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
 // Builds the player's first GBA record: the kind, the four marks and the hidden sprites,
 // then the checksum.
 // 0x8030801C
-// FIXME: 99.97 %, regalloc-only; behaviour clean.
 void cls_804AA8B8::fn_8030801C(s32 player) {
     if (lbl_8053AAF0->mState >= 4) {
         if (isGameMode(7) || gGameRoot_8053AAF8->field_0x4c == 11 ||
@@ -413,7 +412,8 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
         if (lbl_8053ACD0 && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << player))) {
             flag = 0;
             if (fn_8022F5B0(layer)) {
-                if (!getGameView_802D6A9C()->fn_802D7804(getPlayerLayer_8023DE58(layer), 2)) {
+                s32 playerLayer = getPlayerLayer_8023DE58(layer);
+                if (!getGameView_802D6A9C()->fn_802D7804(playerLayer, 2)) {
                     flag = 1;
                 }
             }
