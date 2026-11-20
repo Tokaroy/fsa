@@ -665,10 +665,7 @@ void cls_804AE088::fn_8036A894() {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 96.0f;
-        params.field_0x14.r = 0;
-        params.field_0x14.g = 0;
-        params.field_0x14.b = 0;
-        params.field_0x14.a = field_0x24c;
+        params.field_0x14.set(0, 0, 0, field_0x24c);
         params.mMtx = mtx;
         params.field_0x1d = -1;
         params.field_0x2d = 1;
