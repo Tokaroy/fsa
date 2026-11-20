@@ -39,10 +39,10 @@ public:
 // names it.
 class cls_800FE3EC {
 public:
-    // Mangled fn_800FE3EC__12cls_800FE3ECFUcQ29JGeometry8TVec3<f>i; the vector
+    // Mangled fn_800FE3EC__12cls_800FE3ECFiQ29JGeometry8TVec3<f>i; the vector
     // is passed by value.
     // Returns false when the group's points are incomplete.
-    bool fn_800FE3EC(u8, JGeometry::TVec3f, int);
+    bool fn_800FE3EC(int, JGeometry::TVec3f, int);
     u8 fn_800FD894(s32 layer, u8* out, s32 max);
     bool fn_800FD5E8(u8 index);
     // RailBase.cpp (0x800FE2E4, not written yet): the entry index of the

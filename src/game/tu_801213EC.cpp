@@ -261,7 +261,7 @@ void EscortBase_8049E0C8::vfunc_0x7C() {
     mLife = field_0x360 * 4;
 }
 
-// FIXME(shotgun): 98.79 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
 // (signed vs unsigned kind compares; the +0x230 test for FIRE is a gap)
 s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (!(u8)vfunc_0x78()) {
@@ -279,12 +279,11 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             if (kind == 0 || kind == 1 || kind == 5 || kind == 6) {
                 return 0;
             }
-            // FIXME(shotgun): the asm then tests the word at +0x230 == 2 here as well, but
-            // FireRodFire_804A89F0 types +0x230 as an emitter pointer; not written.
-            break;
+            // fallthrough
         }
         case ACTOR_OKTM:
-            if (static_cast<OctorokRock_8049F5D8*>(actor)->field_0x230 == 2) {
+            switch (static_cast<OctorokRock_8049F5D8*>(actor)->field_0x230) {
+            case 2:
                 return 0;
             }
             break;
@@ -942,21 +941,19 @@ s32 EscortBase_8049E0C8::fn_80121DB0() {
     return 1;
 }
 
-// FIXME: 92.78 %, missing/extra; behaviour near.
-// The original passes field_0x35c to fn_800FE3EC's u8 parameter without the clrlwi (and keeps this in r6).
 s32 EscortBase_8049E0C8::fn_80121D68() {
     mRail.fn_800FE3EC(field_0x35c, mPos, field_0x4);
     return 1;
 }
 
-// FIXME(shotgun): 98.50 %, missing/extra; behaviour near.
+// FIXME: 98.52 %, missing/extra; behaviour near.
 bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     if (field_0x35c <= 0) {
         return true;
     }
     u16 angle = 0;
     JGeometry::TVec3f step;
-    step.x = step.y = step.z = 0.0f;
+    step.set(0.0f, 0.0f, 0.0f);
     s32 layer = field_0x4;
     JGeometry::TVec3f tmp(mPos);
     tmp.x += vec.x;

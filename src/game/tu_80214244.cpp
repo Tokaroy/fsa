@@ -8,7 +8,7 @@ void cls_80214244::fn_802142A8() {
     }
 }
 
-void cls_80214244::fn_8021425C(u8 index, u8 arg1, const JGeometry::TVec3f& pos, int arg3) {
+void cls_80214244::fn_8021425C(u8 index, int arg1, const JGeometry::TVec3f& pos, int arg3) {
     field_0x0[index].fn_800FE3EC(arg1, pos, arg3);
 }
 
