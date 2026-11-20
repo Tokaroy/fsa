@@ -56,7 +56,7 @@ static inline void setScaleMtx(Mtx m, f32 s) {
     m[2][2] = s;
 }
 
-// FIXME(shotgun): 99.29 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
 void ChiefSoldier_804A0B90::fn_801752D8() {
     s32 i;
     s32 gone;
@@ -320,7 +320,7 @@ void ChiefSoldier_804A0B90::init() {
     }
 }
 
-// FIXME(shotgun): 82.32 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.70 %, missing/extra; behaviour drift.
 void ChiefSoldier_804A0B90::fn_801746DC() {
     if (field_0x29c != field_0x2a0) {
         field_0x2a0 = field_0x29c;
