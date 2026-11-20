@@ -58,17 +58,17 @@ public:
     /* 0x254 */ s32 field_0x254; // bits 17..21 of field_0x90
     /* 0x258 */ s32 field_0x258; // zero after the ctor
     /* 0x25C */ s32 field_0x25c; // -1 after the ctor
-    /* 0x260 */ s32 field_0x260[2]; // zero after the ctor
-    /* 0x268 */ f32 field_0x268[2]; // 0.0f after the ctor
+    /* 0x260 */ s32 field_0x260; // zero after the ctor
+    /* 0x264 */ s32 field_0x264; // zero after the ctor
+    /* 0x268 */ f32 field_0x268; // 0.0f after the ctor
+    /* 0x26C */ f32 field_0x26c; // 0.0f after the ctor
     /* 0x270 */ f32 field_0x270; // 0.37f after the ctor
     /* 0x274 */ f32 field_0x274; // 96.0f after the ctor
     /* 0x278 */ f32 field_0x278; // 0.0f after the ctor
     // The position of the Goal (DMGL) actor, copied by vfunc_0x10.
     /* 0x27C */ JGeometry::TVec3f field_0x27c;
-    // The Maiden (DMMD) actors' positions, one slot per mode (0..5).
-    /* 0x288 */ JGeometry::TVec3f field_0x288[6];
-    // A copy of mPos, taken at the end of vfunc_0x10.
-    /* 0x2D0 */ JGeometry::TVec3f field_0x2d0;
+    // The Maiden (DMMD) actors' positions (0..5) and a copy of mPos (6).
+    /* 0x288 */ JGeometry::TVec3f field_0x288[7];
     // A start position and the per-frame step towards it (fn_8010E7E8).
     /* 0x2DC */ JGeometry::TVec3f field_0x2dc;
     /* 0x2E8 */ JGeometry::TVec3f field_0x2e8;
