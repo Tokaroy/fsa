@@ -136,6 +136,7 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
 }
 
 // regalloc only: the rotated x / y sit in f3 / f2, the original has f2 / f3.
+// FIXME: 99.38 %, regalloc-only; behaviour clean.
 void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
     field_0x48.set(pos->x, -22.0f + pos->y, pos->z);
     if (fn_801CD2F8(field_0x40)) {
@@ -238,7 +239,6 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     }
 }
 
-// FIXME: 92.48 %, missing/extra; behaviour near.
 void cls_801D6CEC::fn_801D6D38(const JGeometry::TVec2f* dir) {
     JGeometry::TVec2f v(dir->x, dir->y);
     if (v.squared() <= JGeometry::TUtil<f32>::epsilon()) {
