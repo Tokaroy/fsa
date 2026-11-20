@@ -3,6 +3,7 @@
 #include "game/ActorManager.h"
 #include "game/GameGlobals.h"
 #include "game/Message.h"
+#include "game/ViewLayer.h"
 #include "game/tu_80212AC0.h"
 #include "game/act/act_force_gem.h"
 #include "game/act/act_tingle_buster.h"
@@ -37,6 +38,16 @@ static const s16* lbl_804A51A0[17] = {
 };
 s32 fn_801CD664(s32 n);
 bool fn_801CD290(s32 layer);
+
+// Whether x lies in the left half of the view's box for `layer`.
+static inline bool inLeftHalf(s32 layer, f32 x) {
+    bool result = false;
+    JGeometry::TBox2f* box = layerBox(layer);
+    if (x < 0.5f * (box->i.x + box->f.x)) {
+        result = true;
+    }
+    return result;
+}
 
 // Whether x lies behind this actor in the direction it faces.
 static inline bool behind(cls_804A51E4* a, f32 x) {
@@ -130,6 +141,34 @@ static inline void findTargets(cls_804A51E4* a) {
     }
 }
 
+
+// Whether the state may change to 7. fn_801E0CF4 has the same test spelled out.
+static inline bool canChase(const cls_804A51E4* a) {
+    bool result = false;
+    switch (a->mState) {
+    case 0:
+    case 7:
+    case 0xF:
+    case 0x10:
+    case 0x11:
+    case 0x12:
+        break;
+    default:
+        if (!(a->mFlags & 0x4000) && a->field_0x2cc == 0) {
+            if (a->fn_801E1DB4()) {
+                if (a->mFlags & 0x20000) {
+                    if (a->mFlags & 0x100000) {
+                        result = true;
+                    }
+                } else if (a->mTargetSerial < 0) {
+                    result = true;
+                }
+            }
+        }
+        break;
+    }
+    return result;
+}
 
 // tu_801DE714 (0x801E22A4): the constructor, after EnemyBase's (a plain bl).
 cls_804A51E4::cls_804A51E4() {
@@ -395,7 +434,7 @@ void cls_804A51E4::fn_801E1AB4(bool arg) {
     }
 }
 
-// FIXME(shotgun): 98.14 %, different; behaviour drift.
+// FIXME(shotgun): 99.91 %, regalloc-only; behaviour drift.
 void cls_804A51E4::fn_801E1594(s32 newState) {
     switch (newState) {
     case 0:
@@ -431,24 +470,11 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
                 tx = target->mPos.x;
                 ty = target->mPos.y;
             }
-            s32 layer = field_0x4;
-            bool left = false;
-            GameView_804A9950* view = getGameView_802D6A9C();
-            JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-            if (tx < 0.5f * (box->i.x + box->f.x)) {
-                left = true;
-            }
-            if (left) {
-                layer = field_0x4;
-                view = getGameView_802D6A9C();
-                box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-                mPos.x = 30.0f + box->f.x;
+            if (inLeftHalf(field_0x4, tx)) {
+                mPos.x = 30.0f + layerBox(field_0x4)->f.x;
                 field_0x98 = 1;
             } else {
-                layer = field_0x4;
-                view = getGameView_802D6A9C();
-                box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-                mPos.x = box->i.x - 30.0f;
+                mPos.x = layerBox(field_0x4)->i.x - 30.0f;
                 field_0x98 = 0;
             }
             mPos.y = ty;
@@ -459,7 +485,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
         field_0x250 = -1;
         if (mTargetSerial >= 0) {
             mTargetSpeed = 0.3f;
-        } else if (mFlags & 0x20000) {
+        } else if (mFlags & 0x4000) {
             mTargetSpeed = 0.3f;
         } else {
             mTargetSpeed = 0.6f;
@@ -534,7 +560,7 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
         field_0x3c.y = 0.0f;
         field_0x3c.x = 0.0f;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-        mBox2 = mBox;
+        mBox2.set(mBox);
         field_0xb0 = 0;
         field_0x250 = -1;
         mSpeed = 0.0f;
@@ -558,7 +584,10 @@ void cls_804A51E4::fn_801E1594(s32 newState) {
     mState = newState;
 }
 
-// FIXME(shotgun): 94.82 %, scheduling+regalloc; behaviour clean.
+// Not auto-inlined: fn_801E0CF4 calls fn_801E1300 out of line in the
+// original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+// FIXME(shotgun): 95.15 %, scheduling; behaviour clean.
 void cls_804A51E4::fn_801E1300() {
     bool lost = false;
     ActorBase_804A5770* actor;
@@ -589,34 +618,12 @@ void cls_804A51E4::fn_801E1300() {
     }
     if (lost) {
         findTargets(this);
-        bool start = false;
-        switch (mState) {
-        case 0:
-        case 7:
-        case 0xF:
-        case 0x10:
-        case 0x11:
-        case 0x12:
-            break;
-        default:
-            if (!(mFlags & 0x4000) && field_0x2cc == 0) {
-                if (fn_801E1DB4()) {
-                    if (mFlags & 0x20000) {
-                        if (mFlags & 0x100000) {
-                            start = true;
-                        }
-                    } else if (mTargetSerial < 0) {
-                        start = true;
-                    }
-                }
-            }
-            break;
-        }
-        if (start) {
+        if (canChase(this)) {
             fn_801E1594(7);
         }
     }
 }
+#pragma auto_inline reset
 
 // FIXME(shotgun): 92.53 %, missing/extra; behaviour near.
 void cls_804A51E4::fn_801E0CF4() {
