@@ -2240,7 +2240,7 @@ void Player_804A6F38::fn_8024E344() {
 // when fn_8030A308 and fn_8030381C allow it, else sound 5. Then the sound
 // objects' position field_0x1258 follows the player (fn_8024C378 from layer
 // 8 on) and both run fn_80456154.
-// FIXME: 99.29 %, regalloc-only; behaviour clean.
+// FIXME: 99.76 %, regalloc-only; behaviour clean.
 // Registers only, in the inlined fn_8024C378 (the view box
 // corner in f31 / f30, swapped here, as in fn_8024C378 itself).
 void Player_804A6F38::fn_8024E0A0() {
