@@ -233,8 +233,10 @@ inline void EnemyBase_804A4808::velocityToward(const JGeometry::TVec3f* target, 
                                                f32 speed) {
     JGeometry::TVec2f dir(target->x - mPos.x, target->y - mPos.y);
     dir.normalize();
+    f32 dx = target->x - mPos.x;
+    f32 dy = target->y - mPos.y;
     *out = dir;
-    f32 len = JMAFastSqrt(square(target->x - mPos.x) + square(target->y - mPos.y));
+    f32 len = JMAFastSqrt(square(dx) + square(dy));
     if (len < speed) {
         speed = len;
     }
@@ -352,8 +354,8 @@ s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
 }
 
 // FIXME: 90.86 %, scheduling+regalloc; behaviour clean.
-// Same instructions; the target loads the second offset's
-// coordinates before it stores *out (ours stores first), and registers differ.
+// Same instructions; the target loads target->y before mPos.y for the second
+// offset (ours the other way round).
 // The velocity toward *target (x, y), at most `speed` long.
 void EnemyBase_804A4808::fn_801D01A0(const JGeometry::TVec3f* target, JGeometry::TVec2f* out, f32 speed) {
     velocityToward(target, out, speed);
