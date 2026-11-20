@@ -314,7 +314,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 97.76 %, missing/extra; behaviour drift.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -587,7 +587,7 @@ void ForceGem_804AB6D8::update() {
 }
 
 // 0x8032BFB0.
-// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.16 %, missing/extra; behaviour clean.
 // literal table offsets, register order.
 void ForceGem_804AB6D8::draw() {
     s32 state = field_0x230;
@@ -861,7 +861,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
     }
 }
 
-// FIXME(shotgun): 99.40 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.44 %, regalloc-only; behaviour clean.
 bool ForceGem_804AB6D8::fn_8032B3F8() {
     if (viewLayerFlag(field_0x4) == 0) {
         if (mPos.z > 0.0f || field_0x3c.z > 0.0f) {
