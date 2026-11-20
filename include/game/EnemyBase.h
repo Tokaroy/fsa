@@ -326,6 +326,9 @@ public:
     // A flag test the original has as an inline: VaatiBoss vfunc_0x74
     // (0x801D4AA8) loads mFlags for the test and again for the clear.
     bool checkFlag(u32 flag) const { return mFlags & flag; }
+    // The hit-bits test update() (0x801CDEAC) has as a materialised bool
+    // (clrlwi 29; neg; or; srwi.) before the ENEMY_FLAG_NO_ATTACK test.
+    bool isHit() const { return (mFlags & 7) ? true : false; }
 
     /* 0x230 */ u32 mFlags; // EnemyFlag_804A4808
     /* 0x234 */ JGeometry::TVec3f mPrevVel; // field_0x3c at the start of update()

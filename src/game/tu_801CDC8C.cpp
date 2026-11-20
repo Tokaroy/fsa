@@ -357,8 +357,6 @@ s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
     return nearest;
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// regalloc only (the bools of canTargetPlayer swap).
 // The player that can be targeted whose direction from *from is closest to
 // `angle` (16-bit angles; the difference as a fraction of a half turn), or
 // -1.
@@ -370,7 +368,7 @@ s32 EnemyBase_804A4808::fn_801D0338(const JGeometry::TVec3f* from, s16 angle) {
             JGeometry::TVec3f* playerPos = &field_0x1ac[i];
             s32 playerAngle = JMath::atanTable_.atan2_(playerPos->x - from->x, playerPos->y - from->y) *
                               (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-            f32 diff = (1.0f / 32768.0f) * __fabsf((s16)(angle - playerAngle));
+            f32 diff = (1.0f / 32768.0f) * JMAAbs((s16)(angle - playerAngle));
             if (diff < best) {
                 best = diff;
                 nearest = i;
@@ -413,12 +411,6 @@ s32 EnemyBase_804A4808::fn_801D0020(const JGeometry::TVec3f* pos, s32 player, bo
     return directionTo(pos, player, axis);
 }
 
-// FIXME: 99.60 %, regalloc-only; behaviour clean.
-// regalloc only (the layer and the loop counters).
-// Whether a step of `dist` in direction `dir` is blocked: field_0x80's box,
-// moved half the step that way and stretched to the step's length along
-// it, must lie inside the view's box for the layer, and the map
-// (vfunc_0x4C) must be clear on an 8-unit grid over it.
 bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     f32 half = 0.5f * dist;
     JGeometry::TVec3f pos = mPos;
@@ -454,6 +446,10 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     box.f.x += pos.x;
     box.i.y += screenY;
     box.f.y += screenY;
+    s32 rows;
+    s32 columns;
+    s32 row;
+    s32 column;
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -472,10 +468,8 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
         return true;
     }
     JGeometry::TVec3f point(box.i.x, box.i.y, 0.0f);
-    s32 column;
-    s32 row;
-    s32 columns = (s32)(0.125f * width) + 2;
-    s32 rows = (s32)(0.125f * height) + 2;
+    columns = (s32)(0.125f * width) + 2;
+    rows = (s32)(0.125f * height) + 2;
     for (row = 0; row < rows; row++) {
         point.x = box.i.x;
         if (row == rows - 1) {
@@ -964,13 +958,13 @@ void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
 
 void EnemyBase_804A4808::vfunc_0xA0() {}
 
-// The target reloads mFlags before each `|=` (ours reuses the tested load),
-// and tests the hit bits before vfunc_0x68 as a bool value (clrlwi; neg; or;
-// srwi.) where ours uses clrlwi.
-// FIXME: 96.53 %, missing/extra; behaviour near.
+// The target passes vfunc_0x64's result to vfunc_0x9C with clrlwi 24 where
+// ours has mr.
+// FIXME: 99.65 %, different; behaviour near.
 void EnemyBase_804A4808::update() {
+    u8 mapHit;
     s32 prevD8;
-    if (!(mFlags & ENEMY_FLAG_STARTED)) {
+    if (!checkFlag(ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
         vfunc_0x54();
     }
@@ -1006,16 +1000,16 @@ void EnemyBase_804A4808::update() {
     if (prevD8 == 1 && field_0xd8 == 0) {
         vfunc_0x74();
     }
-    if (!(mFlags & ENEMY_FLAG_DEAD) && mLife <= 0) {
+    if (!checkFlag(ENEMY_FLAG_DEAD) && mLife <= 0) {
         mFlags |= ENEMY_FLAG_DEAD;
         vfunc_0x78();
     }
     vfunc_0x98();
-    flag = vfunc_0x64();
-    if (!(mFlags & 7) && !(mFlags & ENEMY_FLAG_NO_ATTACK)) {
+    mapHit = vfunc_0x64();
+    if (!isHit() && !(mFlags & ENEMY_FLAG_NO_ATTACK)) {
         mPlayersHit = vfunc_0x68();
     }
-    vfunc_0x9C(flag);
+    vfunc_0x9C(mapHit);
     if (!fn_801CD2F8(field_0x4)) {
         vfunc_0xA0();
     }
