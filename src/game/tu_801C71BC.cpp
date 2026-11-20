@@ -9,33 +9,21 @@
 #include "JSystem/JMath/JMath.h"
 
 // FIXME(shotgun): 79.47 %, missing/extra; behaviour drift.
+// The original zero-extends the saved index again before the second restore compare; registers follow.
 u8 ShadowLink2_804A43E8::fn_801C976C() {
-    u8 start = field_0x358.fn_80214244()->field_0x3;
-    field_0x358.fn_80214244()->fn_800FD818(1);
-    u8 next = field_0x358.fn_80214244()->field_0x3;
-    cls_800FE3EC* a = field_0x358.fn_80214244();
-    if (start < a->field_0x2) {
-        a->field_0x3 = start;
-    }
-    field_0x358.fn_80214244()->fn_800FD818(-1);
-    u8 prev = field_0x358.fn_80214244()->field_0x3;
-    cls_800FE3EC* b = field_0x358.fn_80214244();
-    if (start < b->field_0x2) {
-        b->field_0x3 = start;
-    }
-    u8 opt[2];
-    opt[1] = prev;
-    opt[0] = next;
+    u8 prev;
+    u8 next;
+    getRailNeighbours(&next, &prev);
     u8 pick;
     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-        pick = opt[0];
-        if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
-            pick = opt[1];
+        pick = next;
+        if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
+            pick = prev;
         }
     } else {
-        pick = opt[1];
-        if (field_0x4 != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
-            pick = opt[0];
+        pick = prev;
+        if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(pick)) {
+            pick = next;
         }
     }
     return pick;
