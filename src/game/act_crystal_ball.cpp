@@ -502,7 +502,7 @@ bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 
 // FIXME(shotgun): 99.80 %, scheduling; behaviour clean.
 void CrystalBall_804AB308::vfunc_0x40() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x3c.zero();
     if (field_0x278 <= 180) {
         field_0x278 = 182;
     }
