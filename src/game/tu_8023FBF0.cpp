@@ -2251,9 +2251,6 @@ void Player_804A6F38::fn_8024E344() {
 // when fn_8030A308 and fn_8030381C allow it, else sound 5. Then the sound
 // objects' position field_0x1258 follows the player (fn_8024C378 from layer
 // 8 on) and both run fn_80456154.
-// FIXME: 99.76 %, regalloc-only; behaviour clean.
-// Registers only, in the inlined fn_8024C378 (the view box
-// corner in f31 / f30, swapped here, as in fn_8024C378 itself).
 void Player_804A6F38::fn_8024E0A0() {
     field_0x1264++;
     if (field_0x1264 >= 0x3c) {
@@ -2720,16 +2717,14 @@ bool Player_804A6F38::fn_8024C448() {
 JGeometry::TVec3f* Player_804A6F38::fn_8024C378() {
     if (field_0x3b4 == 8) {
         GameView_804A9950* view = getGameView_802D6A9C();
-        f32 x = view->mVisibleBox.i.x;
-        f32 y = view->mVisibleBox.i.y;
+        JGeometry::TVec2f vis = view->mVisibleBox.i;
         s32 layer = field_0x3b4;
         view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-        f32 boxX = box->i.x;
-        f32 boxY = box->i.y;
+        JGeometry::TVec2f boxPos = box->i;
         field_0x1268.set(mPos);
-        field_0x1268.x += x - boxX;
-        field_0x1268.y += y - boxY;
+        field_0x1268.x += vis.x - boxPos.x;
+        field_0x1268.y += vis.y - boxPos.y;
         return &field_0x1268;
     }
     return &mPos;
