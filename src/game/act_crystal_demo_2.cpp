@@ -267,7 +267,7 @@ void cls_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.56 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 94.57 %, missing/extra + reloc-name; behaviour drift.
 // regalloc and stack-slot order differ.
 void cls_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
@@ -608,7 +608,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // differs: .sdata2 literal pool order.
-// FIXME: 99.72 %, reloc-name; behaviour clean.
+// FIXME: 99.80 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
@@ -650,7 +650,7 @@ void cls_804AE088::fn_8036AA60() {
     }
 }
 
-// FIXME: 97.00 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.87 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
