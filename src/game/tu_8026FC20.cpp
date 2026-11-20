@@ -690,9 +690,6 @@ void Player_804A6F38::fn_8027CAA8() {
 // layers the push moves x / -y at height 0.5 and ends outside the view box less 16 (or with
 // cls_804A71A8 0x4A), else mPos moves by the push and lands at 0. Pose by the frame 0x3FA;
 // from frame 15 the landing (fn_8022C76C / tile 2 test on flagged layers) to state 8 or 0.
-// FIXME: 99.88 %, regalloc-only; behaviour clean.
-// Registers only: f0 / f1 swapped for mPos.x / mPos.y in the inlined
-// containsPoint test.
 void Player_804A6F38::fn_8027C6C4() {
     field_0x344.z -= 0.25f;
     if (field_0x344.z < -8.0f) {
@@ -705,7 +702,7 @@ void Player_804A6F38::fn_8027C6C4() {
         JGeometry::TBox2f box;
         box = *layerBox(field_0x3b4);
         growBox(box, -16.0f);
-        if (field_0x344.z < 0.0f && (field_0xbf0->field_0x48[2] || !containsPoint(box, mPos))) {
+        if (field_0x344.z < 0.0f && (field_0xbf0->field_0x48[2] || !contains(box, mPos))) {
             mPos.z = 0.0f;
         }
     } else {
@@ -1009,13 +1006,20 @@ void Player_804A6F38::fn_8027BA2C() {
 // fn_8023434C) frames 11-34 walk toward fn_8027FA08's spot at 6 per frame. At frame 10, with
 // no 'SWBM' actor yet (0xB38), one is spawned in front when the life is full (or with
 // fn_80241284 and 0x11AC == 1 at 2+ life); the emitter 0x12BC circles mPos at 20 by 0x11C0.
-// FIXME: 99.89 %, operands; behaviour clean.
-// Stack offsets only: the vectors of the inlined walkToGroupSpot sit in other
-// slots (the original has the target at 0x44, ours at 0x20; as in fn_8027AAD0).
 void Player_804A6F38::fn_8027B648() {
     fn_80274988();
     if (fn_802486A0() == 3 && !fn_8023434C(field_0x4) && field_0x3fa >= 11 && field_0x3fa < 35) {
-        walkToGroupSpot(this);
+        JGeometry::TVec3f to;
+        fn_8027FA08(&to);
+        JGeometry::TVec3f dir = to - mPos;
+        dir.z = 0.0f;
+        if (magnitude(dir) >= 6.0f) {
+            dir.normalize();
+            dir.scale(6.0f);
+            mPos += dir;
+        } else {
+            mPos.set(to);
+        }
     }
     gBgRewrite_8053AC98->fn_802A20F0(&field_0x30c, field_0x4, field_0x3b4, 0, 1);
     fn_80268B3C();
