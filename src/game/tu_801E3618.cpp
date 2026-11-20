@@ -36,9 +36,8 @@ void VaatiBoss_804A4958::fn_801E4758() {
 // FIXME(shotgun): 91.19 %, scheduling+regalloc; behaviour clean.
 void VaatiBoss_804A4958::fn_801E4618(JGeometry::TBox2f* out, bool region) {
     if (region) {
-        f32 x = field_0x5e0.x;
-        f32 y = field_0x5e0.y;
-        out->set(x, y, x + 16.0f * (f32)field_0x5e8, y + 16.0f * (f32)field_0x5e9);
+        out->set(field_0x5e0.x, field_0x5e0.y, field_0x5e0.x + 16.0f * (f32)field_0x5e8,
+                 field_0x5e0.y + 16.0f * (f32)field_0x5e9);
     } else {
         JGeometry::TBox2f* box = layerBox(field_0x5d8);
         if (mFlags & 0x2000) {
@@ -375,21 +374,7 @@ u8 VaatiBoss_804A4958::fn_801E376C() {
         field_0x80.f.y - field_0x80.i.y > 0.0f) {
         JGeometry::TBox2f area;
         fn_801E4618(&area, fn_801CD2F8(field_0x4));
-        JGeometry::TBox2f box = field_0x80;
-        box.i.x += mPos.x;
-        box.i.y += mPos.y;
-        box.f.x += mPos.x;
-        box.f.y += mPos.y;
-        JGeometry::TVec2f push;
-        result = fn_801CC29C(&area, &box, &push);
-        mPos.x += push.x;
-        mPos.y += push.y;
-        if (&mMapHitDir != NULL) {
-            push.normalize();
-            mMapHitDir.x = push.x;
-            mMapHitDir.y = push.y;
-            mMapHitDir.z = 0.0f;
-        }
+        result = fn_801E44CC(&area, &mPos, &mMapHitDir);
     }
     return result;
 }
