@@ -214,7 +214,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 2:
         fn_802C2840();
-        if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] != 0) {
+        if (viewLayerFlag(field_0x4) != 0) {
             if (field_0x2b2 == 0) {
                 field_0x3c.y += 0.5f;
                 if (field_0x3c.y > 10.0f) {
@@ -309,10 +309,7 @@ void SmallKey_804A8CD8::update() {
                 field_0x248.set(field_0x244->mPos);
                 s32 otherLayer = field_0x244->field_0x4;
                 if (otherLayer < 8 && field_0x4 == 8) {
-                    GameView_804A9950* view = getGameView_802D6A9C();
-                    const JGeometry::TBox2f* src = otherLayer < 8 ? &view->mVisibleBox : &view->field_0xdc;
-                    JGeometry::TBox2f viewBox;
-                    viewBox = *src;
+                    JGeometry::TBox2f viewBox = *layerBox(otherLayer);
                     field_0x248.x = field_0x244->mPos.x - viewBox.i.x;
                     field_0x248.y = field_0x244->mPos.y - viewBox.i.y;
                 }
@@ -349,7 +346,7 @@ void SmallKey_804A8CD8::update() {
     case 9:
         field_0x294 = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* p = fn_8023A478(i);
                 f32 dx = p->x - mPos.x;
                 f32 dy = p->y - mPos.y;
@@ -404,7 +401,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 11:
         fn_8022FE80(field_0x2a4, field_0x4, mSerial, true, false);
-        fn_8038AD24(field_0x2a4, 0x168, getSerial(), getField_0x4(), mPos, 4);
+        fn_8038AD24(field_0x2a4, 0x168, mSerial, field_0x4, mPos, 4);
         field_0x240 = 12;
         return;
     case 12:
@@ -637,7 +634,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 // FIXME(shotgun): 93.34 %, missing/extra + reloc-name; behaviour near.
 void SmallKey_804A8CD8::fn_802C2C30() {
     fn_802C24A8();
-    if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] != 0) {
+    if (viewLayerFlag(field_0x4) != 0) {
         if (field_0x2b3 == 1) {
             field_0x2b3 = 0;
             mPos.y -= mPos.z;
