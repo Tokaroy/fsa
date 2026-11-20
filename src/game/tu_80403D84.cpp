@@ -3292,15 +3292,20 @@ bool MapScreen_804B1288::fn_80404270(s32 stage) {
     return false;
 }
 
-// FIXME: 84.17 %, missing/extra; behaviour drift.
-// Every field, call and branch matches; only the loop differs: ours
-// hoists the save row's flags address out of the unrolled loop, the original keeps
-// only the row index (r12) and recomputes lbl_8050EC80 + index * 0xC8 each pass,
-// which costs it r31 and a stack frame (the same as tu_804023D0's fn_80403514).
+static inline BOOL isFileFlagSet(s32 file, s32 stage, s32 sub) {
+    if (stage < 0 || stage > 7) {
+        return FALSE;
+    }
+    if (sub < 0 || sub > 3) {
+        return FALSE;
+    }
+    return ((1 << (stage * 4 + sub)) & lbl_8050EC80.getFile(file).mFlags) ? TRUE : FALSE;
+}
+
 bool MapScreen_804B1288::fn_80404074(s32 stage, s32 index, s32* out) {
     s32 count = 0;
     for (int i = 0; i < 4; i++) {
-        if (isStageFlagSet(stage, i)) {
+        if (isFileFlagSet(lbl_8050EC80.mCurrentFile, stage, i)) {
             count++;
         }
     }
