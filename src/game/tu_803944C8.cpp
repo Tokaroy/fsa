@@ -281,34 +281,31 @@ void cls_804AF774::fn_803A2F74() {
 
 // Adds the number of characters `value` prints as (a sign, then its digits
 // without leading zeros, at most five) to the column count.
-// FIXME: 93.87 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: in the ten-thousands step the original
-// computes value % 10000 before the digit test (the later steps match).
 void cls_804AF774::fn_803A2E48(s32 value) {
     bool started = false;
     if (value < 0) {
         field_0x50++;
         value *= -1;
     }
+    s32 rest = value % 10000;
     s32 digit = value / 10000;
-    value %= 10000;
     if (digit != 0) {
         field_0x50++;
         started = true;
     }
-    digit = value / 1000;
-    value %= 1000;
+    digit = rest / 1000;
+    rest %= 1000;
     if (digit != 0 || started) {
         field_0x50++;
         started = true;
     }
-    digit = value / 100;
-    value %= 100;
+    digit = rest / 100;
+    rest %= 100;
     if (digit != 0 || started) {
         field_0x50++;
         started = true;
     }
-    if (value / 10 != 0 || started) {
+    if (rest / 10 != 0 || started) {
         field_0x50++;
     }
     field_0x50++;
@@ -2425,14 +2422,14 @@ void cls_804AF72C::fn_8039D30C(u8 value) {
     field_0x2d4++;
 }
 
-// FIXME(shotgun): 82.48 %, different; behaviour near.
-// (schedule of the window load / int conversion)
+// FIXME(shotgun): 97.74 %, different; behaviour near.
+// (float registers of the pos / base computation)
 void cls_804AF72C::fn_8039D0DC(u8 value) {
     s32 offset = 0;
     s32 index = field_0x2cc;
     if (!field_0x38.isMasked(index) && !(field_0x2d8->field_0x16c != 0 && field_0x38.isMasked(index))) {
-        f32 base;
         f32 pos;
+        f32 base;
         if (!(field_0x2d8->field_0x3b8->field_0x28 & 0x40)) {
             base = field_0x2d8->field_0xe8;
             pos = field_0x38.field_0x4c[index];
@@ -2444,8 +2441,10 @@ void cls_804AF72C::fn_8039D0DC(u8 value) {
     }
     cls_804AF5A0* window = field_0x2d8;
     u8 slot = field_0x2d4;
-    window->field_0x124[slot] = (f32)offset + field_0x38.field_0x19c[slot];
-    window->field_0x130[slot] = (f32)(field_0x38.field_0x1ee[slot] - field_0x38.field_0x202[window->field_0x15c] - 1);
+    f32 x = (f32)offset + field_0x38.field_0x19c[slot];
+    f32 y = (f32)(field_0x38.field_0x1ee[slot] - field_0x38.field_0x202[window->field_0x15c] - 1);
+    window->field_0x124[slot] = x;
+    window->field_0x130[slot] = y;
     field_0x2d8->field_0x3b2[field_0x2d4] = value;
     field_0x2d4++;
 }
@@ -2463,8 +2462,8 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     s32 index = field_0x2cc;
     s32 offset = 0;
     if (!field_0x38.isMasked(index) && !(field_0x2d8->field_0x16c != 0 && field_0x38.isMasked(index))) {
-        f32 base;
         f32 pos;
+        f32 base;
         if (!(field_0x2d8->field_0x3b8->field_0x28 & 0x40)) {
             base = field_0x2d8->field_0xe8;
             pos = field_0x38.field_0x4c[index];
@@ -2489,7 +2488,7 @@ void cls_804AF72C::fn_8039CDF8(u8 value) {
     field_0x2d5++;
 }
 
-// FIXME(shotgun): 99.71 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.60 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039C9A0(s32 number) {
     bool started = false;
     bool negative = false;
@@ -2508,7 +2507,7 @@ void cls_804AF72C::fn_8039C9A0(s32 number) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
+                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                 }
                 s32 offset = (s32)((base - pos) * 0.5f + 0.5f);
                 if (offset > 0) {
@@ -2876,7 +2875,7 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     }
 }
 
-// FIXME: 99.98 %, regalloc-only; behaviour clean.
+// FIXME: 99.91 %, regalloc-only; behaviour clean.
 void cls_804AF72C::fn_8039A638(s16 mode) {
     char ch[3];
     ch[2] = 0;
@@ -2895,7 +2894,7 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
                     pos = field_0x38.field_0x4c[index];
                 } else {
                     base = field_0x2d8->field_0xf0;
-                    pos = (field_0x38.field_0xf4[index] - 3.0f) + field_0x38.field_0x4c[index];
+                    pos = field_0x38.field_0x4c[index] + (field_0x38.field_0xf4[index] - 3.0f);
                 }
                 s32 offset = (s32)((base - pos) / 2.0f + 0.5f);
                 if (offset > 0) {
@@ -2949,10 +2948,6 @@ void cls_804AF72C::fn_8039A638(s16 mode) {
     }
 }
 
-// FIXME: 93.42 %, scheduling; behaviour clean.
-// scheduling (+ the unsplit 0.0f literal): the original
-// interleaves the field_0x1fe stores and field_0x1fd with the first three
-// iterations of the unrolled 15-entry loop.
 void cls_804AF6E4::do_begin(const void*, const char*) {
     field_0x3c = -1;
     field_0x40 = -1;
@@ -2964,12 +2959,14 @@ void cls_804AF6E4::do_begin(const void*, const char*) {
     field_0x281 = 0;
     field_0x282 = 0;
     for (int i = 0; i < 3; i++) {
+        field_0x19c[i] = 0.0f;
+        field_0x1ee[i] = 0;
         field_0x1fe[i] = 0;
     }
     field_0x1fd = 0;
-    for (int i = 0; i < 15; i++) {
-        field_0x19c[i] = 0.0f;
-        field_0x1ee[i] = 0;
+    for (int i = 0; i < 12; i++) {
+        field_0x19c[i + 3] = 0.0f;
+        field_0x1ee[i + 3] = 0;
     }
     field_0x202[field_0x281] = -1;
     field_0x257[field_0x281] = 0;
