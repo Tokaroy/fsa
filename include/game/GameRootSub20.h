@@ -130,6 +130,20 @@ struct GameRootSub20_801902C0 {
 
     /* 0x000 */ JKRSolidHeap* mHeap;
     /* 0x004 */ s32 field_0x4; // counted up by fn_801914C4
+    // Inlined in act_quicksand's init() and vfunc_0x9C.
+    void addQuicksand(const JGeometry::TVec3f& pos, f32 arg_0xc, f32 arg_0x10, f32 arg_0x14) {
+        if (mQuicksandCount < 10) {
+            QuicksandEntry& entry = mQuicksandEntries[mQuicksandCount];
+            entry.mPos.x = pos.x;
+            entry.mPos.y = pos.y;
+            entry.mPos.z = pos.z;
+            entry.field_0xc = arg_0xc;
+            entry.field_0x10 = arg_0x10;
+            entry.field_0x14 = arg_0x14;
+            mQuicksandCount++;
+        }
+    }
+
     /* 0x008 */ Crystal mCrystals[7];
     /* 0x2A8 */ SmallRequest mSmallRequests[2];
     /* 0x2E0 */ Request mRequests[3];
