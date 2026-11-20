@@ -127,7 +127,7 @@ static const u8 lbl_80474E34[6][3] = {
     {0xC8, 0xA0, 0x28}, {0x2D, 0x78, 0xFF}, {0xDC, 0x1E, 0xDC},
 };
 
-// FIXME: 91.21 %, different + reloc-name; behaviour clean.
+// FIXME: 96.54 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = field_0x90 & 0x1F;
@@ -172,15 +172,15 @@ void cls_804AE088::init() {
                                                NULL, true, 1.0f);
     }
     getGameView_802D6A9C()->fn_802D7440(0);
-    for (s32 i = 0; i < 5; i++) {
+    s32 i;
+    for (i = 0; i < 5; i++) {
         s16 angle = sEmitterAngles[i];
-        field_0x2a8[i].x = 55.0f * JMath::sincosTable_.cosShort(angle) + mPos.x;
-        field_0x2a8[i].y = 32.0f + (35.0f * JMath::sincosTable_.sinShort(angle) + mPos.y);
-        field_0x2a8[i].z = 0.0f;
+        field_0x2a8[i].set(55.0f * JMath::sincosTable_.cosShort(angle) + mPos.x,
+                           32.0f + (35.0f * JMath::sincosTable_.sinShort(angle) + mPos.y), 0.0f);
     }
     field_0x2a8[5] = mPos;
     s32 count = getActorManager_801F856C()->mActorEnd;
-    for (s32 i = 0; i < count; i++) {
+    for (i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_GOL2) {
             field_0x2f4 = (cls_804A9C20*)actor;
@@ -556,8 +556,8 @@ s32 cls_804AE088::vfunc_0x5C() {
     return 0;
 }
 
-// differs: register allocation (original keeps &mPos in a register across the draw calls) and the alpha store order.
-// FIXME: 93.90 %, missing/extra + reloc-name; behaviour clean.
+// differs: register allocation (original keeps &mPos in a register across the draw calls).
+// FIXME: 97.28 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
         return;
@@ -582,10 +582,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
                 fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
             }
         }
-        params.field_0x10.r = 0xFF;
-        params.field_0x10.g = 0xFF;
-        params.field_0x10.b = 0xFF;
-        params.field_0x10.a = 0xFF - field_0x24c;
+        params.field_0x10.set(0xFF, 0xFF, 0xFF, 0xFF - field_0x24c);
     }
     if (field_0x240 == 0x1C || field_0x240 == 0x1D || field_0x240 == 0x1E || field_0x240 == 0x21 || field_0x240 == 0x22 || field_0x240 == 0x23) {
         frame = field_0x264 + 0x1B3;
@@ -1335,7 +1332,7 @@ void cls_804AE088::fn_80368660() {
     }
 }
 
-// FIXME: 96.32 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME: 99.83 %, reloc-name; behaviour clean.
 void cls_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
@@ -1363,8 +1360,9 @@ void cls_804AE088::fn_803683AC() {
             } else {
                 params.field_0x10.a = 0;
             }
+            s32 frame = field_0x264 + lbl_80474E04[i];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", field_0x264 + lbl_80474E04[i], NULL);
+                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
     }
