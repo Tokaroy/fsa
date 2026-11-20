@@ -1565,8 +1565,6 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2ba = 1;
 }
 
-// FIXME(shotgun): 99.73 %, scheduling+regalloc; behaviour clean.
-// 4 opcodes differ
 void cls_804A7AE0::fn_80295EE8() {
     if (mTimer <= 0) {
         vfunc_0x24();
@@ -1574,8 +1572,7 @@ void cls_804A7AE0::fn_80295EE8() {
     }
     if (mTimerMax - mTimer < 60) {
         field_0x3c = field_0x2d0;
-        f32 t = 2.0f * ((f32)(mTimer + 60 - mTimerMax) / 60.0f);
-        field_0x3c.scale(t);
+        field_0x3c.scale(2.0f * ((f32)(mTimer + 60 - mTimerMax) / 60.0f));
         mPos.add(field_0x3c);
         for (s32 i = 0; i < 2; i++) {
             for (s32 j = 0; j < 2; j++) {
@@ -1596,12 +1593,13 @@ void cls_804A7AE0::fn_80295EE8() {
                 }
             }
         }
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        field_0x3c.zero();
     }
     for (s32 i = 0; i < 4; i++) {
         s32 v = (field_0x90 >> 7) & 0x1F;
         s32 layer = v == 0 ? 0 : v + 7;
-        if (getPlayerLayer_8023DE58(i) == layer && !fn_80235274(i)) {
+        s32 playerLayer = getPlayerLayer_8023DE58(i);
+        if (playerLayer == layer && !fn_80235274(i)) {
             fn_80238548(i, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 12);
         }
     }
