@@ -2430,24 +2430,24 @@ void MapScreen_804B1288::fn_8040873C() {
     } else {
         if (field_0x340 < 7) {
             field_0xc8->moveFromCentre_80402E08(lbl_8048C86C[field_0x340], lbl_8048C87C[field_0x340]);
-            f32 zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xc8->fn_80402CE0(zoom, zoom);
+            field_0xc8->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             f32 scale = lbl_8048C850[field_0x340] / field_0xc8->field_0x18 - 1.0f;
             f32 dx = scale * (field_0xcc->field_0x10 - field_0xc8->field_0x10);
             f32 dy = scale * (field_0xcc->field_0x14 - field_0xc8->field_0x14);
             field_0xcc->moveFromCentre_80402E08(dx + lbl_8048C86C[field_0x340], dy + lbl_8048C87C[field_0x340]);
-            zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xcc->fn_80402CE0(zoom, zoom);
+            field_0xcc->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             dx = scale * (field_0xd0->field_0x10 - field_0xc8->field_0x10);
             dy = scale * (field_0xd0->field_0x14 - field_0xc8->field_0x14);
             field_0xd0->moveFromCentre_80402E08(dx + lbl_8048C86C[field_0x340], dy + lbl_8048C87C[field_0x340]);
-            zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-            field_0xd0->fn_80402CE0(zoom, zoom);
+            field_0xd0->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                    lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             for (int i = 0; i < 18; i++) {
                 field_0xd4[i]->moveFromCentre_80402E08(scale * field_0xd4[i]->field_0x10,
                                                        scale * field_0xd4[i]->field_0x14);
-                zoom = lbl_8048C850[field_0x340] / field_0xc8->field_0x18;
-                field_0xd4[i]->fn_80402CE0(zoom, zoom);
+                field_0xd4[i]->fn_80402CE0(lbl_8048C850[field_0x340] / field_0xc8->field_0x18,
+                                           lbl_8048C850[field_0x340] / field_0xc8->field_0x18);
             }
         }
         field_0x120[0]->moveFromCentre_80402E08(0.0f, 0.0f);
@@ -2473,10 +2473,9 @@ void MapScreen_804B1288::fn_8040873C() {
     field_0x23c->moveFromCentre_80402E08(0.0f, -150.0f);
     if (field_0x340 <= 7) {
         if (field_0x350 != 6) {
-            f32 x = lbl_8048C95C[field_0x340 * 4 + field_0x348][0];
-            f32 y = lbl_8048C95C[field_0x340 * 4 + field_0x348][1];
-            field_0x394 = x;
-            field_0x398 = y;
+            s32 idx = field_0x340 * 4 + field_0x348;
+            field_0x394 = lbl_8048C95C[idx][0];
+            field_0x398 = lbl_8048C95C[idx][1];
         }
     } else {
         field_0x394 = field_0x398 = 0.0f;
