@@ -742,9 +742,10 @@ void TileMap_804AA858::fn_802FDDD4() {
 // copies the next of the four 0x40-byte blocks of field_0x238c to
 // field_0x4[1] + 0x200.
 // Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
-// with a plain slwi (ours clrlslwi) and reads field_0x40 / field_0x58 in the
-// loop with lfsx; registers and stack slots follow.
-// FIXME: 72.53 %, missing/extra + reloc-name; behaviour drift.
+// with a plain slwi (ours clrlslwi), reads field_0x40 / field_0x58 in the
+// loop with lfsx and converts 240.0f / 160.0f with fctiwz (ours folds them);
+// registers and stack slots follow.
+// FIXME: 72.58 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -799,7 +800,7 @@ void TileMap_804AA858::fn_802FCE74() {
     f32 scaleY[4];
     for (i = 0; i < 4; i++) {
         f32 t = 0.05f * (field_0x138[i] - 20);
-        if (t <= 0.0f) {
+        if (0.0f >= t) {
             t = 0.0f;
         }
         scaleX[i] = JMath::sincosTable_.sinDegree(90.0f * t);
@@ -814,15 +815,15 @@ void TileMap_804AA858::fn_802FCE74() {
             if (field_0x138[i] > 0) {
                 if (field_0x230 == i) {
                     s32 player = fn_8022EA0C(i);
+                    Vec screen;
                     JGeometry::TVec3f pos;
                     if (fn_8023E10C(player) < 8) {
                         pos.set(*fn_8023E214(player));
                     } else {
                         pos.set(*fn_8023E32C(player));
                     }
-                    Vec screen;
                     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
-                    f32 offX = pos.x - 512.0f * (s32)(pos.x / 512.0f) < 256.0f ? -1.0f : 0.0f;
+                    f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
                     f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
 
                     f32 height = field_0xfc->field_0x70[field_0xfc->field_0xa4 + 2];
@@ -885,15 +886,15 @@ void TileMap_804AA858::fn_802FCE74() {
         }
     } else if (field_0x138[0] > 0 && !fn_8022C8EC(0)) {
         s32 player = fn_8022EA0C(0);
+        Vec screen;
         JGeometry::TVec3f pos;
         if (fn_8023E10C(player) < 8) {
             pos.set(*fn_8023E214(player));
         } else {
             pos.set(*fn_8023E32C(player));
         }
-        Vec screen;
         gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
-        f32 offX = pos.x - 512.0f * (s32)(pos.x / 512.0f) < 256.0f ? -1.0f : 0.0f;
+        f32 offX = pos.x - 512.0f * (s32)(pos.x * (1.0f / 512.0f)) < 256.0f ? -1.0f : 0.0f;
         f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
         field_0xfc->fn_80433718();
 
@@ -2091,11 +2092,13 @@ u16 TileMap_804AA858::fn_802F9908(s32 layer, s32 index) {
     return tile;
 }
 
-// FIXME: 84.44 %, scheduling+regalloc; behaviour clean.
+// FIXME: 84.88 %, scheduling+regalloc; behaviour clean.
 // In the unrolled nibble-swap loop the original loads the next
 // source byte before storing the previous one (ours stores, then loads), and the
 // computed length lives in r26 (ours r31; the parameters move up one register).
 void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size) {
+    u8* dst;
+    u8* src;
     u32 len;
     if (size == 0) {
         s32 resSize;
@@ -2112,8 +2115,7 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
     } else {
         len = size;
     }
-    u8* dst = field_0x88[slot] + dstOffset;
-    u8* src;
+    dst = field_0x88[slot] + dstOffset;
     if (JKRDecomp::checkCompressed((u8*)res)) {
         JKRDecomp::decode((u8*)res, field_0xf8, 0x8000, 0);
         src = field_0xf8;
@@ -2122,7 +2124,8 @@ void TileMap_804AA858::fn_802F9714(void* res, u32 srcOffset, s32 slot, u32 dstOf
     }
     src += srcOffset;
     for (u32 i = 0; i < len; i++) {
-        dst[i] = ((src[i] >> 4) & 0xF) | ((src[i] & 0xF) << 4);
+        u8 b = src[i];
+        dst[i] = ((b >> 4) & 0xF) | ((b & 0xF) << 4);
     }
     DCFlushRange(dst, len);
 }
