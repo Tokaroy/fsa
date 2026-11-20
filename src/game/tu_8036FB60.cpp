@@ -169,12 +169,13 @@ void cls_804AE4B0::draw() {
 
 // Not auto-inlined: update-side callers (fn_8037100C, fn_80370764, fn_803704E8) use a plain bl.
 #pragma auto_inline off
-// FIXME(shotgun): 97.90 %, scheduling+regalloc; behaviour clean.
 void cls_804AE4B0::fn_803721F4() {
+    s32 i;
+    s32 j;
     bool close = false;
     if (field_0x398 == 1) {
-        for (s32 i = 0; i < 4; i++) {
-            for (s32 j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
                 if (PSVECDistance(&field_0x264[j], &field_0x294[i]) < 48.0f) {
                     close = true;
                     break;
@@ -198,11 +199,11 @@ void cls_804AE4B0::fn_803721F4() {
         field_0x234 &= 3;
         fn_80371D50(field_0x234);
     } else {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x294[i] += field_0x2f4[i];
         }
         if (mTimer == 0x76) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
                 gAudioMgr_8053AF80->fn_80458880(0x37, -1);
@@ -462,19 +463,11 @@ void cls_804AE4B0::fn_803711F0() {
     }
 }
 
-// FIXME(shotgun): 79.69 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_8037100C() {
     fn_803703C8();
     fn_803721F4();
     fn_80370020();
-    JGeometry::TBox2f region;
-    region.set(2208.0f, 1624.0f, 2288.0f, 1690.0f);
-    bool inside = false;
-    JGeometry::TVec3f* p = &field_0x264[field_0x39c];
-    if (p->x >= region.i.x && p->y >= region.i.y && p->x < region.f.x && p->y < region.f.y) {
-        inside = true;
-    }
-    if (inside) {
+    if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2208.0f, 1624.0f, 2288.0f, 1690.0f))) {
         for (s32 i = 0; i < 4; i++) {
             if (!fn_802300EC(i)) {
                 return;
@@ -919,12 +912,13 @@ void cls_804AE4B0::fn_8036FDAC() {
     }
 }
 
-// FIXME(shotgun): 99.32 %, regalloc-only; behaviour clean.
 void cls_804AE4B0::fn_8036FB60() {
+    s32 i;
+    s32 j;
     bool close = false;
     if (field_0x398 == 1) {
-        for (s32 i = 0; i < 4; i++) {
-            for (s32 j = 0; j < 4; j++) {
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < 4; j++) {
                 if (PSVECDistance(&field_0x264[j], &field_0x294[i]) < 48.0f) {
                     close = true;
                     break;
@@ -939,7 +933,7 @@ void cls_804AE4B0::fn_8036FB60() {
         mTimer++;
         return;
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         field_0x3b0[i]->fn_8037B374(field_0x294[i], field_0x340[i] * 3);
     }
     if (mState != 0 && mState != 3 && mState != 0xB && field_0x398 == 1) {
@@ -950,11 +944,11 @@ void cls_804AE4B0::fn_8036FB60() {
         field_0x234 &= 3;
         fn_80371D50(field_0x234);
     } else {
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             field_0x294[i] += field_0x2f4[i];
         }
         if (mTimer == 0x76) {
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 field_0x294[i] = field_0x2c4[i];
                 field_0x2f4[i].zero();
                 gAudioMgr_8053AF80->fn_80458880(0x37, -1);
