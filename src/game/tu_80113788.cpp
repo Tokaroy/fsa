@@ -156,15 +156,7 @@ void cls_8049D83C::init() {
     }
     mAnim.fn_801D1F14(0.0f);
     mPos.y -= 32.0f;
-    JGeometry::TVec3f pos[5];
-    pos[0] = mPos;
-    pos[1] = JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f);
-    pos[2] = JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y - 48.0f, 0.0f);
-    pos[3] = JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y + 48.0f, 0.0f);
-    pos[4] = JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f);
-    for (s32 i = 0; i < 5; i++) {
-        field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
-    }
+    spawnEmitters();
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
@@ -704,4 +696,19 @@ void cls_8049D83C::fn_80113790() {
 // 0x80113788.
 s32 cls_8049D83C::vfunc_0x58() {
     return field_0x23c;
+}
+
+// Plain function init inlines (the linker dropped its own copy): its literals 80.0f and 0.0f
+// are pooled before those of fn_80113790.
+void cls_8049D83C::spawnEmitters() {
+    JGeometry::TVec3f pos[5] = {
+        mPos,
+        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y - 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y + 48.0f, 0.0f),
+        JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f),
+    };
+    for (s32 i = 0; i < 5; i++) {
+        field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
+    }
 }
