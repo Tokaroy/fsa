@@ -1261,7 +1261,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             break;
         }
         case 0x17: {
-            u32 count = (u8)p[5];
+            u8 count = p[5];
             s32 pick = (s32)((f32)count * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
             if (pick > count) {
                 pick = count;
