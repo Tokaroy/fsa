@@ -861,16 +861,21 @@ void ConnectScreen_804B0F10::fn_803FB9E4() {
     mScreen->search('Pscuro02')->move(field_0xec + field_0x130[field_0x1ac], y);
 }
 
-// FIXME: 99.41 %, different; behaviour clean.
-// Same register swap as fn_803F2580 in the inlined
-// setEntries loop (li r4, 0 for i in the original, mr r4, r3 here).
 void ConnectScreen_804B0F10::fn_803FB6F4() {
     stepBlink(this);
     if (lbl_8053AD30->fn_80309C4C(0x1100, 1)) {
         field_0x1a8 = 0;
         gGameRoot_8053AAF8->field_0x7e = 1;
         if (field_0x1c0 == field_0x1ac + 2) {
-            setEntries(this);
+            for (s32 i = 0; i < 4; i++) {
+                if (i < field_0x1ac + 2) {
+                    gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                    setPlayerKind(gGameRoot_8053AAF8, i, 1);
+                } else {
+                    gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                    setPlayerKind(gGameRoot_8053AAF8, i, 0);
+                }
+            }
             field_0x1cc = 13;
         }
         fn_803F32E8();
