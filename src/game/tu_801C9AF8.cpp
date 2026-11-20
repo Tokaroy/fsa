@@ -8,31 +8,14 @@
 
 static const u32 lbl_8053EF18[2] = {'FLME', 'NULL'};
 
-// FIXME(shotgun): 90.23 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer) {
     bool hit = false;
-    if (ActorBase_804A5770::vfunc_0x4C(layer, pos)) {
+    if (ActorBase_804A5770::vfunc_0x4C(layer, pos) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, pos->y - 7.0f, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(pos->x - 7.0f, 7.0f + pos->y, pos->z)) ||
+        ActorBase_804A5770::vfunc_0x4C(layer, &JGeometry::TVec3f(7.0f + pos->x, 7.0f + pos->y, pos->z))) {
         hit = true;
-    } else {
-        JGeometry::TVec3f p(pos->x - 7.0f, pos->y - 7.0f, pos->z);
-        if (ActorBase_804A5770::vfunc_0x4C(layer, &p)) {
-            hit = true;
-        } else {
-            JGeometry::TVec3f q(7.0f + pos->x, pos->y - 7.0f, pos->z);
-            if (ActorBase_804A5770::vfunc_0x4C(layer, &q)) {
-                hit = true;
-            } else {
-                JGeometry::TVec3f r(pos->x - 7.0f, 7.0f + pos->y, pos->z);
-                if (ActorBase_804A5770::vfunc_0x4C(layer, &r)) {
-                    hit = true;
-                } else {
-                    JGeometry::TVec3f t(7.0f + pos->x, 7.0f + pos->y, pos->z);
-                    if (ActorBase_804A5770::vfunc_0x4C(layer, &t)) {
-                        hit = true;
-                    }
-                }
-            }
-        }
     }
     return hit;
 }
@@ -51,43 +34,66 @@ void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 87.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
-    // fn_80237948 takes the position as a TVec2f; the original hands it mPos itself.
-    JGeometry::TVec2f mPos2;
-    mPos2.x = mPos.x;
-    mPos2.y = mPos.y;
-    if (!((mState >= 0 && mState < 0xE) || (mState >= 0x17 && mState < 0x1B) || (mState >= 0x29 && mState < 0x2E) ||
-          mState == 0x2F)) {
+    switch (mState) {
+    case 0x0:
+    case 0x1:
+    case 0x2:
+    case 0x3:
+    case 0x4:
+    case 0x5:
+    case 0x6:
+    case 0x7:
+    case 0x8:
+    case 0x9:
+    case 0xA:
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0x17:
+    case 0x18:
+    case 0x19:
+    case 0x1A:
+    case 0x29:
+    case 0x2A:
+    case 0x2B:
+    case 0x2C:
+    case 0x2D:
+    case 0x2F:
         return false;
     }
     bool locked = fn_801C53C4();
-    f32 hitX = 0.0f;
-    f32 hitY = 0.0f;
+    JGeometry::TVec2f where;
+    s32 p;
+    f32 hitX;
+    f32 hitY;
     if (mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f) {
-        JGeometry::TBox2f saved = mBox;
+        f32 savedX0 = mBox.i.x;
+        f32 savedY0 = mBox.i.y;
+        f32 savedX1 = mBox.f.x;
+        f32 savedY1 = mBox.f.y;
         bool hit = false;
-        mBox = mHitBox.mBox;
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec2f where;
+        mBox.set(mHitBox.mBox);
+        for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(&where, NULL, true, p)) {
-                if (field_0x560 == 4 || field_0x560 == p) {
+                if (!fn_801CAED4(p)) {
                     hitX = where.x;
                     hitY = where.y;
                     hit = true;
                     field_0x338 = p;
                     fn_8023B6CC(p);
-                    fn_80237948(p, &mPos2);
+                    fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
                 }
             }
         }
-        mBox = saved;
+        mBox.set(savedX0, savedY0, savedX1, savedY1);
         if (hit) {
-            s32 p = field_0x338;
-            f32 dy = mPos.y - getPlayerPos_8023E724(p)->y;
-            f32 dx = mPos.x - getPlayerPos_8023E724(p)->x;
+            s32 player = field_0x338;
+            f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
+            f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
-            if (sq > 32.0f * FLT_EPSILON) {
+            if (!(sq <= 32.0f * FLT_EPSILON)) {
                 f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
                 dx *= norm;
                 dy *= norm;
@@ -96,8 +102,8 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             dy *= 3.0f;
             field_0x3c.x = dx;
             field_0x3c.y = dy;
-            if (field_0x1dc.fn_801EAC20(p)) {
-                fn_80230FD0(p, 0x20002);
+            if (field_0x1dc.fn_801EAC20(player)) {
+                fn_80230FD0(player, 0x20002);
                 JGeometry::TVec3f at(hitX, hitY, 0.0f);
                 fn_801CB4A4(field_0x4, &at, 0, 0);
             }
@@ -158,17 +164,19 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         break;
     }
     if (x1 - x0 > 0.0f && y1 - y0 > 0.0f) {
-        JGeometry::TBox2f saved = mBox;
+        f32 savedX0 = mBox.i.x;
+        f32 savedY0 = mBox.i.y;
+        f32 savedX1 = mBox.f.x;
+        f32 savedY1 = mBox.f.y;
         bool hit = false;
         mBox.set(x0, y0, x1, y1);
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec2f where;
+        for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(&where, NULL, true, p)) {
-                if (fn_801D0020(&mPos, p, false) == field_0x98) {
+                if (field_0x98 == fn_801D0020(&mPos, p, false)) {
                     if (locked) {
                         fn_8023B6CC(p);
-                        fn_80237948(p, &mPos2);
-                    } else if (field_0x560 == 4 || field_0x560 == p) {
+                        fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
+                    } else if (!fn_801CAED4(p)) {
                         hitX = where.x;
                         hitY = where.y;
                         hit = true;
@@ -179,7 +187,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 }
             }
         }
-        mBox = saved;
+        mBox.set(savedX0, savedY0, savedX1, savedY1);
         if (hit) {
             switch (field_0x98) {
             case 0:
@@ -195,11 +203,11 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 hitY = mPos.y - 8.0f;
                 break;
             }
-            s32 p = field_0x338;
-            f32 dy = mPos.y - getPlayerPos_8023E724(p)->y;
-            f32 dx = mPos.x - getPlayerPos_8023E724(p)->x;
+            s32 player = field_0x338;
+            f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
+            f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
-            if (sq > 32.0f * FLT_EPSILON) {
+            if (!(sq <= 32.0f * FLT_EPSILON)) {
                 f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
                 dx *= norm;
                 dy *= norm;
@@ -208,7 +216,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             dy *= 3.0f;
             field_0x3c.x = dx;
             field_0x3c.y = dy;
-            if (field_0x1dc.fn_801EAC20(p)) {
+            if (field_0x1dc.fn_801EAC20(player)) {
                 startSound_801F0E34(0x400D1, 0);
                 JGeometry::TVec3f at(hitX, hitY, 0.0f);
                 fn_801CB4A4(field_0x4, &at, 0, 0);
@@ -220,12 +228,12 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
     bool result = false;
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         bool touched = false;
-        for (s32 p = 0; p < 4; p++) {
+        for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(NULL, NULL, true, p)) {
                 if (locked) {
                     fn_8023B6CC(p);
-                    fn_80237948(p, &mPos2);
-                } else if (field_0x560 == 4 || field_0x560 == p) {
+                    fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
+                } else if (fn_801CAED4(p)) {
                     touched = true;
                     field_0x590 = p;
                 }
@@ -242,11 +250,10 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         }
         if (!locked) {
             JGeometry::TVec3f savedVel = field_0x3c;
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 s32 flag;
                 if (p == fn_801F285C(NULL, &flag, true, p)) {
-                    JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(p);
-                    if (fn_801F37AC(fn_8023B6CC(p), playerPos, 0, flag, p)) {
+                    if (fn_801F37AC(fn_8023B6CC(p), getPlayerPos_8023E724(p), 0, flag, p)) {
                         result = true;
                         field_0x338 = p;
                     }
@@ -257,7 +264,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x338)->x;
                 JGeometry::TVec3f d(dx, dy, 0.0f);
                 d.normalize();
-                field_0x3c = savedVel;
+                field_0x3c.set(savedVel);
                 d.scale(16.0f);
                 field_0x3c.add(d);
                 field_0x3c.z = 0.0f;
@@ -369,7 +376,6 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
     return result;
 }
 
-// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801CA0F8() {
     if (mBox.f.x - mBox.i.x <= 0.0f || mBox.f.y - mBox.i.y <= 0.0f || fn_801C53C4()) {
         return false;
@@ -387,7 +393,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
             }
             JGeometry::TVec3f from(mPos);
             from -= other->field_0x3c;
-            hit = other->fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
+            hit = fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
             if (hit) {
                 other->field_0x164 = 1;
                 if (mState == 16) {
@@ -503,7 +509,6 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     return hit;
 }
 
-// FIXME(shotgun): 95.12 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) {
     JGeometry::TVec3f p = *pos;
     if (viewLayerFlag(layer)) {
@@ -521,24 +526,26 @@ bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) 
     }
     if (special) {
         switch (fn_8022461C(&p, layer)) {
-        case 3:
-            if (fn_80226850(&p, layer) == 0x7A) {
-                return false;
-            }
-            break;
-        case 1: {
-            s32 tile = fn_80226850(&p, layer);
-            if ((tile >= 0x9B && tile < 0x9D) || (tile >= 0x322 && tile < 0x324)) {
-                return false;
-            }
-            break;
-        }
         case 0x27:
         case 0x28:
         case 0x29:
         case 0x2A:
         case 0x2B:
             return false;
+        case 3:
+            if (fn_80226850(&p, layer) == 0x7A) {
+                return false;
+            }
+            break;
+        case 1:
+            switch (fn_80226850(&p, layer)) {
+            case 0x9B:
+            case 0x9C:
+            case 0x322:
+            case 0x323:
+                return false;
+            }
+            break;
         }
     }
     bool ok = true;
