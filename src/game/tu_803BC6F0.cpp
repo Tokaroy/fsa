@@ -2858,7 +2858,7 @@ void FileSelect_804AFF60::fn_803C3904() {
     }
 }
 
-// FIXME: 99.15 %, regalloc-only; behaviour clean.
+// FIXME: 99.17 %, regalloc-only; behaviour clean.
 // (try.py: different, same length). One instruction moves:
 // the original keeps &others in r29 from the fill loop on (`mr r3, r29` for
 // the fill pointer) and walks it in the row loop; ours computes &others
