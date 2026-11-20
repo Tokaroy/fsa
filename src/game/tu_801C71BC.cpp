@@ -752,25 +752,12 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
     mFlags &= ~0x100000;
     if (!(mFlags & 0x2000000)) {
         bool moved = false;
-        u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 next = field_0x358.fn_80214244()->field_0x3;
-        cls_800FE3EC* buf = field_0x358.fn_80214244();
-        if (start < buf->field_0x2) {
-            buf->field_0x3 = start;
-        }
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 prev = field_0x358.fn_80214244()->field_0x3;
-        buf = field_0x358.fn_80214244();
-        if (start < buf->field_0x2) {
-            buf->field_0x3 = start;
-        }
-        u8 opt[3];
-        new (&opt[0]) u8(prev);
-        new (&opt[1]) u8(start);
-        new (&opt[2]) u8(next);
-        if (field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[0]) ||
-            field_0x358.fn_80214244()->fn_800FD4C0(opt[1], opt[2])) {
+        u8 next;
+        u8 cur;
+        u8 prev;
+        getRailNeighbours(&next, &cur, &prev);
+        if (field_0x358.fn_80214244()->fn_800FD4C0(cur, prev) ||
+            field_0x358.fn_80214244()->fn_800FD4C0(cur, next)) {
             JGeometry::TVec3f railPos;
             mPathCount = 0;
             mFlags &= ~(0x1000 | 0x20000);
@@ -786,7 +773,8 @@ void ShadowLink2_804A43E8::fn_801C71BC() {
         }
     }
     fn_801C8B50();
-    field_0x33c += fn_801CD664(0x4001) - 0x2000;
+    s32 angleOffset = fn_801CD664(0x4001) - 0x2000;
+    field_0x33c += angleOffset;
     if (!(field_0x524.field_0x0 & 0x40)) {
         fn_801C3B7C(0x1C);
     }
