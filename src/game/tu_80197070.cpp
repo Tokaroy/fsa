@@ -235,7 +235,8 @@ cls_804A2944::~cls_804A2944() {
 
 // FIXME(shotgun): 99.55 %, different; behaviour drift.
 void cls_804A2944::vfunc_0x44() {
-    if (field_0x90 == 1 && mState != 0x49) {
+    // field_0x90 is u32, but the original tests it with a signed cmpwi.
+    if ((s32)field_0x90 == 1 && mState != 0x49) {
         if (getActorManager_801F856C()->findActorBySerial_801F666C(field_0x25c) != NULL) {
             s32 serial = field_0xa0;
             if (serial >= 0) {
@@ -261,10 +262,10 @@ void cls_804A2944::vfunc_0x44() {
                             mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x19A, 1, 5, NULL, NULL, true, 1.0f);
                         }
                     }
-                    field_0x3c.set(0.0f, 0.0f, 0.0f);
-                    field_0x274 = 0.0f;
-                    field_0x278 = 0.0f;
+                    field_0x3c.zero();
                     field_0x27c = 0.0f;
+                    field_0x278 = 0.0f;
+                    field_0x274 = 0.0f;
                     for (int i = 0; i < 13; i++) {
                         setEmitterPos_8013CB44(mEmitters[i], &mPos, 1, 5, true);
                     }
