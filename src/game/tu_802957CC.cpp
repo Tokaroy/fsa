@@ -638,7 +638,7 @@ void cls_804A7AE0::fn_80299374() {
             field_0x250.y -= 0.32f;
         } else {
             mPos.y += field_0x250.y;
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x250.zero();
         }
         JGeometry::TVec3f p = mPos;
         p.x += mBox.i.x;
@@ -671,7 +671,7 @@ void cls_804A7AE0::fn_80299374() {
             field_0x248 = 0;
             field_0x2b8 = 0;
             field_0x3c.zero();
-            field_0x250.set(0.0f, 0.0f, 0.0f);
+            field_0x250.zero();
             if (field_0x2cc == 1) {
                 s32 n = (field_0x90 >> 22) & 0x1F;
                 if (n > 0) {
