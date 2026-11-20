@@ -16,13 +16,23 @@ static const u16 lbl_8046AAC8[10] = {
     0x03E, 0x000,
 };
 
-// Four lists, each ended by 0: 5 collision codes, then 13, 13 and 5 raw tile codes (by stage).
-static const u16 lbl_8046AADC[40] = {
+// Five collision codes and the 0 that ends them.
+static const u16 lbl_8046AADC[6] = {
     0x039, 0x058, 0x059, 0x05A, 0x05B, 0x000,
+};
+
+// Raw tile codes by stage, each list ended by 0: 13, 13 and 5.
+static const u16 lbl_8046AAE8[14] = {
     0x270, 0x271, 0x272, 0x274, 0x275, 0x27B, 0x27D,
     0x27F, 0x2A0, 0x2A1, 0x2A2, 0x2A5, 0x2A7, 0x000,
+};
+
+static const u16 lbl_8046AB04[14] = {
     0x270, 0x271, 0x272, 0x27D, 0x27F, 0x2A0, 0x2A1,
     0x2A2, 0x2A5, 0x2A7, 0x056, 0x057, 0x361, 0x000,
+};
+
+static const u16 lbl_8046AB20[6] = {
     0x262, 0x265, 0x267, 0x26A, 0x26D, 0x000,
 };
 
@@ -270,29 +280,36 @@ bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer) {
     return fn_802252F4(pos, layer);
 }
 
-// Tests the raw tile at pos against the code lists of the current stage (lbl_8046AADC holds the
-// lists: entries 6.., 20.. and 34..).
+// Not auto-inlined: fn_802255F4 calls fn_802252F4 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+// Tests the raw tile at pos against the code lists of the current stage.
 // FIXME(shotgun): 89.55 %, missing/extra; behaviour drift.
 bool fn_802252F4(const JGeometry::TVec3f* pos, s32 layer) {
     u16 raw = rawTileAt(pos, layer);
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
-            return inList(raw, lbl_8046AADC + 6, 13);
+            return inList(raw, lbl_8046AAE8, 13);
         }
         if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
             if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
-                return inList(raw, lbl_8046AADC + 34, 5);
+                for (s32 i = 0; i < 5; i++) {
+                    if (raw == lbl_8046AB20[i]) {
+                        return true;
+                    }
+                }
+            } else {
+                return inList(raw, lbl_8046AB04, 13);
             }
-            return inList(raw, lbl_8046AADC + 20, 13);
         }
         return false;
     }
     if (lbl_80529DEC.field_0x12c + (lbl_80529DEC.field_0x128 << 2) == 4 ||
         lbl_80529DEC.field_0x12c + (lbl_80529DEC.field_0x128 << 2) == 9) {
-        return inList(raw, lbl_8046AADC + 6, 13);
+        return inList(raw, lbl_8046AAE8, 13);
     }
     return false;
 }
+#pragma auto_inline reset
 
 // Whether the raw tile at pos is one of the two codes of lbl_8053FF48.
 // FIXME(shotgun): 95.10 %, scheduling+regalloc + reloc-name; behaviour clean.
