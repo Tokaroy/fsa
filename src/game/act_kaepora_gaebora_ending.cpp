@@ -819,8 +819,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803613D0() {
 
 // Counts the current step down and loads the next one from the table
 // lbl_804ADA98[field_0x244]; true at the table's terminator.
-inline bool KaeporaGaeboraEnding_804ADAC8::advanceStep() {
-    s32 idx = field_0x244;
+inline bool KaeporaGaeboraEnding_804ADAC8::advanceStep(s32 idx) {
     if (field_0x234 == 0) {
         const KaeporaStep* table = lbl_804ADA98[idx];
         if (table[mStep].mValue < 0) {
@@ -831,6 +830,16 @@ inline bool KaeporaGaeboraEnding_804ADAC8::advanceStep() {
         mStep++;
     }
     return false;
+}
+
+inline bool KaeporaGaeboraEnding_804ADAC8::advanceStep() {
+    return advanceStep(field_0x244);
+}
+
+inline void KaeporaGaeboraEnding_804ADAC8::resetStep(s32 idx) {
+    field_0x234 = 0;
+    mStep = 0;
+    advanceStep(idx);
 }
 
 
@@ -1180,9 +1189,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
             field_0x274 = 0;
         }
         field_0x244 = lbl_80474020[field_0x274];
-        field_0x234 = 0;
-        mStep = 0;
-        advanceStep();
+        resetStep(field_0x244);
     }
 }
 
