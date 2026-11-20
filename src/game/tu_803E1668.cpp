@@ -1522,32 +1522,33 @@ void cls_804B0B00::fn_803E9A20() {
     }
 }
 
-// FIXME: 96.67 %, missing/extra; behaviour drift.
-// 2 fewer instrs (491 vs 493): extsh. vs cmpwi r0, 0 on
-// field_0x254[0] > 0, and one merged i * 10 induction variable where the
-// original keeps two (r30 and r28).
-void cls_804B0B00::fn_803E926C() {
-    field_0x254[0]++;
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 25) {
-            s32 d = 25 - field_0x254[0];
-            field_0x164 = -200.0f * ((f32)(d * d) / 625.0f);
-            f32 alpha = (f32)field_0x254[0] / 25.0f;
+static inline void fadeInSlide(cls_804B0B00* self, s32 start, s32 duration, f32 dist, f32* pos,
+                               const u64* tags, const u8* alphas, s32 count) {
+    if (self->field_0x254[0] > start) {
+        if (self->field_0x254[0] < start + duration) {
+            s32 d = duration - (self->field_0x254[0] - start);
+            *pos = dist * ((f32)(d * d) / (f32)(duration * duration));
+            f32 alpha = (f32)(self->field_0x254[0] - start) / (f32)duration;
             if (alpha < 0.0f) {
                 alpha = 0.0f;
             } else if (alpha > 1.0f) {
                 alpha = 1.0f;
             }
-            for (int i = 0; i < 17; i++) {
-                field_0xc->search(lbl_80477FC0[i])->setAlpha(fadeAlpha(field_0x322[i], alpha));
+            for (int i = 0; i < count; i++) {
+                self->field_0xc->search(tags[i])->setAlpha(fadeAlpha(alphas[i], alpha));
             }
         } else {
-            field_0x164 = 0.0f;
-            for (int i = 0; i < 17; i++) {
-                field_0xc->search(lbl_80477FC0[i])->setAlpha(fadeAlpha(field_0x322[i], 1.0f));
+            *pos = 0.0f;
+            for (int i = 0; i < count; i++) {
+                self->field_0xc->search(tags[i])->setAlpha(fadeAlpha(alphas[i], 1.0f));
             }
         }
     }
+}
+
+void cls_804B0B00::fn_803E926C() {
+    field_0x254[0]++;
+    fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
     if (field_0x254[0] > 25) {
         if (field_0x254[0] < 45) {
             s32 d = 20 - (field_0x254[0] - 25);
@@ -1557,47 +1558,9 @@ void cls_804B0B00::fn_803E926C() {
         }
     }
     for (int i = 0; i < 3; i++) {
-        if (field_0x254[0] > i * 10) {
-            if (field_0x254[0] < i * 10 + 15) {
-                s32 d = 15 - (field_0x254[0] - i * 10);
-                field_0x184[i] = 300.0f * ((f32)(d * d) / 225.0f);
-                f32 alpha = (f32)(field_0x254[0] - i * 10) / 15.0f;
-                if (alpha < 0.0f) {
-                    alpha = 0.0f;
-                } else if (alpha > 1.0f) {
-                    alpha = 1.0f;
-                }
-                for (int j = 0; j < 5; j++) {
-                    field_0xc->search(lbl_80478048[i][j])->setAlpha(fadeAlpha(field_0x333[i][j], alpha));
-                }
-            } else {
-                field_0x184[i] = 0.0f;
-                for (int j = 0; j < 5; j++) {
-                    field_0xc->search(lbl_80478048[i][j])->setAlpha(fadeAlpha(field_0x333[i][j], 1.0f));
-                }
-            }
-        }
+        fadeInSlide(this, i * 10, 15, 300.0f, &field_0x184[i], lbl_80478048[i], field_0x333[i], 5);
     }
-    if (field_0x254[0] > 0) {
-        if (field_0x254[0] < 15) {
-            s32 d = 15 - field_0x254[0];
-            field_0x198 = -450.0f * ((f32)(d * d) / 225.0f);
-            f32 alpha = (f32)field_0x254[0] / 15.0f;
-            if (alpha < 0.0f) {
-                alpha = 0.0f;
-            } else if (alpha > 1.0f) {
-                alpha = 1.0f;
-            }
-            for (int i = 0; i < 26; i++) {
-                field_0xc->search(lbl_804780C0[i])->setAlpha(fadeAlpha(field_0x342[i], alpha));
-            }
-        } else {
-            field_0x198 = 0.0f;
-            for (int i = 0; i < 26; i++) {
-                field_0xc->search(lbl_804780C0[i])->setAlpha(fadeAlpha(field_0x342[i], 1.0f));
-            }
-        }
-    }
+    fadeInSlide(this, 0, 15, -450.0f, &field_0x198, lbl_804780C0, field_0x342, 26);
     if (field_0x254[0] >= 75) {
         field_0x254[0] = 0;
         if (field_0x1bc == 0) {
