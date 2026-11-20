@@ -1909,9 +1909,8 @@ void ConnectScreen_804B0F10::fn_803F59A0() {
 }
 
 // FIXME: 99.17 %, operands; behaviour clean.
-// Stack slots and registers only: the original converts every
-// int / u8 to float in the one 0x8 slot (ours uses 0x8-0x18), and the loop's
-// table pointers / the lit alpha sit in other registers.
+// Registers only: the loop's table pointers (r29 / r30) and the float
+// locals (lit, x, offset) sit in other registers.
 // Draws states 2-4 (the player-count menu, mScreen): the cursor
 // 'Pscuro01' / 'Pscuro02' fades with field_0x1d0[0] (in state 4 it fades to
 // 230 over 15 frames, then by (n - 15)^2 / 225), the chosen count's pane
@@ -1924,14 +1923,16 @@ void ConnectScreen_804B0F10::fn_803F5410() {
         if (field_0x1d0[0] < 30) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 900.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 30) * (field_0x1d0[0] - 30)) / 900.0f;
+            s32 rest = field_0x1d0[0] - 30;
+            t = 1.0f - (f32)(rest * rest) / 900.0f;
         }
         alpha = t * field_0x258;
     } else {
         if (field_0x1d0[0] < 15) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 225.0f;
         } else {
-            t = 1.0f - (f32)((field_0x1d0[0] - 15) * (field_0x1d0[0] - 15)) / 225.0f;
+            s32 rest = field_0x1d0[0] - 15;
+            t = 1.0f - (f32)(rest * rest) / 225.0f;
         }
         alpha = 230.0f * t;
     }
