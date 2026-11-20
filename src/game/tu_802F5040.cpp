@@ -342,19 +342,15 @@ void TileMap_804AA858::fn_802FF548() {
     fn_802FF798();
 }
 
-// FIXME: 88.72 %, missing/extra; behaviour clean.
-// The original copies the rectangles two words at a time (lwz, lwz,
-// stw, stw) and builds the full-screen one on the stack while storing it; ours copies
-// word by word and drops the stack copy. The loop registers swap as in fn_802FF2D8.
+// The full-screen rect and loop registers differ in register allocation only.
+// FIXME: 98.43 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
-    if (field_0x248 && field_0x24c.x1 != 0) {
+    if (field_0x248 && field_0x24c.f.x != 0) {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
     } else {
-        ScreenRect_802FF3F0 rect;
-        rect.x0 = 0;
-        rect.y0 = 0;
-        rect.x1 = JUTVideo::getManager()->getFbWidth();
-        rect.y1 = JUTVideo::getManager()->getEfbHeight();
+        JGeometry::TBox2<u32> rect;
+        rect.i.set(0, 0);
+        rect.f.set(JUTVideo::getManager()->getFbWidth(), JUTVideo::getManager()->getEfbHeight());
         gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
     }
     fn_802FC80C();
@@ -377,21 +373,22 @@ void TileMap_804AA858::fn_802FF3B0() {
     }
 }
 
-// FIXME: 95.56 %, scheduling+regalloc; behaviour clean.
-// The loop index and the element pointer swap r29/r30 (and the
-// stw r29 save moves up one slot). Literals match.
-void TileMap_804AA858::fn_802FF2D8() {
-    for (s32 i = 0; i < field_0xe424; i++) {
-        cls_8030029C* sprite = &field_0xd324[i];
+static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
+    for (s32 i = 0; i < self->field_0xe424; i++) {
+        cls_8030029C* sprite = &self->field_0xd324[i];
         if (sprite->mRes != NULL) {
-            fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
-            fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
-    field_0xe424 = 0;
+    self->field_0xe424 = 0;
+}
+
+void TileMap_804AA858::fn_802FF2D8() {
+    drawQueuedSprites_802FF2D8(this);
     fn_802FEE68();
 }
 
@@ -738,7 +735,7 @@ void TileMap_804AA858::fn_802FDDD4() {
 // (field_0x150 / field_0x190, the field_0x21c window); then every 10 frames
 // copies the next of the four 0x40-byte blocks of field_0x238c to
 // field_0x4[1] + 0x200.
-// FIXME: 71.43 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 72.21 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -853,8 +850,8 @@ void TileMap_804AA858::fn_802FCE74() {
                     cls_804AA858Sub11CEntry* mark = &field_0x11c[i]->f.mEntries[lbl_80506DD8[i]];
                     s32 markX = (mark->mXLow | mark->mXHigh << 8) - 24;
                     s32 markY = mark->mY - 32;
-                    markX = markX < 0 ? 0 : markX;
-                    markY = markY < 0 ? 0 : markY;
+                    markX = markX <= 0 ? 0 : markX;
+                    markY = markY <= 0 ? 0 : markY;
                     s32 right = markX + 48 > 240 ? 240 : markX + 48;
                     s32 bottom = markY + 40 > 160 ? 160 : markY + 40;
                     field_0x148[i] = 1;
@@ -902,10 +899,9 @@ void TileMap_804AA858::fn_802FCE74() {
         if (!camera->field_0x7f4) {
             camera->field_0x7f5 = 1;
         }
-        f32 x = dx + field_0xfc->field_0x40[field_0xfc->field_0xa4].x +
-                lbl_8046F9A8[field_0xfc->field_0xa4][frame];
-        f32 y = dy + field_0xfc->field_0x40[field_0xfc->field_0xa4].y +
-                lbl_8046F9CC[field_0xfc->field_0xa4][frame];
+        const JGeometry::TVec3f& pos40 = field_0xfc->field_0x40[field_0xfc->field_0xa4];
+        f32 x = dx + pos40.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
+        f32 y = dy + pos40.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
         field_0x21c = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
         field_0x220 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
         field_0x224 = w;
@@ -922,8 +918,9 @@ void TileMap_804AA858::fn_802FCE74() {
         field_0x150[0].field_0xc = 160.0f;
         dx = ((s32)width - w) >> 1;
         dy = ((s32)height - h) >> 1;
-        x = dx + field_0xfc->field_0x58[field_0xfc->field_0xa4].x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
-        y = dy + field_0xfc->field_0x58[field_0xfc->field_0xa4].y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
+        const JGeometry::TVec3f& pos58 = field_0xfc->field_0x58[field_0xfc->field_0xa4];
+        x = dx + pos58.x + lbl_8046F9A8[field_0xfc->field_0xa4][frame];
+        y = dy + pos58.y + lbl_8046F9CC[field_0xfc->field_0xa4][frame];
         field_0x190[0].field_0x0 = (1.0f - scaleX[0]) * (w * offX + screen.x) + scaleX[0] * x;
         field_0x190[0].field_0x4 = (1.0f - scaleY[0]) * (h * offY + screen.y) + scaleY[0] * y;
         field_0x190[0].field_0x8 = w;
@@ -934,8 +931,9 @@ void TileMap_804AA858::fn_802FCE74() {
     if (field_0x214) {
         field_0xfc->fn_80432AF8();
     } else {
-        field_0xfc->field_0xa0 = 0xFFFF;
-        field_0xfc->field_0xa4 = 0;
+        cls_804B1668* sub = field_0xfc;
+        sub->field_0xa0 = 0xFFFF;
+        sub->field_0xa4 = 0;
     }
     field_0x2394++;
     if (field_0x2394 >= 10) {
@@ -946,7 +944,7 @@ void TileMap_804AA858::fn_802FCE74() {
         }
         u8* src = field_0x238c + field_0x2390 * 0x40;
         u8* dst = field_0x4[1] + 0x200;
-        for (s32 j = 0; j < 0x40; j++) {
+        for (i = 0; i < 0x40; i++) {
             *dst++ = *src++;
         }
     }
@@ -3104,9 +3102,8 @@ f32 fn_802F5FF4(f32 z) {
     return 192.0f / (192.0f - h);
 }
 
-// FIXME: 98.66 %, regalloc-only; behaviour clean.
-// Register allocation only: the 8.0f literal and field_0x2368.y swap
-// f5/f6 (and 0.125f is in f6, not f7); the ix * 0xC / iy * 0x30C products swap r0/r3.
+// FIXME: 99.01 %, regalloc-only; behaviour clean.
+// Register allocation only: the 8.0f literal and field_0x2368.y swap f5/f6 (and fy is in f6, not f7).
 f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
     if (field_0xc21c > 0 && pos->x >= field_0x2368.x &&
@@ -3117,9 +3114,9 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
         f32 dy = pos->y - field_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
+        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 top = p[0].z * (1.0f - fx) + p[1].z * fx;
         f32 bottom = (1.0f - fx) * p[65].z + fx * p[66].z;
         z += (1.0f - fy) * top + fy * bottom;
@@ -3127,7 +3124,7 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     return z;
 }
 
-// FIXME: 88.51 %, missing/extra; behaviour near.
+// FIXME: 88.96 %, missing/extra; behaviour near.
 // Register allocation (the grid test uses f7-f11 for the original's
 // f3-f9, the result flag r5 for r6) and the first interpolation step: the original
 // scales v before loading p[1] and stores top's z before its x/y. Literals @NNN.
@@ -3141,9 +3138,9 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
         f32 dy = pos->y - field_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
+        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         JGeometry::TVec3f v;
         v.set(p[0]);
         v.scale(1.0f - fx);
@@ -3191,7 +3188,7 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
     return result;
 }
 
-// FIXME: 99.20 %, regalloc-only; behaviour clean.
+// FIXME: 99.34 %, regalloc-only; behaviour clean.
 // Register allocation only, as in fn_802F5E9C (inlined here):
 // 8.0f and pos->x swap f5/f6.
 // The position (out) and parameters (*outParams) a sprite at pos is drawn

@@ -505,7 +505,7 @@ public:
     // When set, fn_802FF3F0 gives the camera's screen rectangle
     // (Camera_804AA9E4::field_0x144) field_0x24c instead of the full screen.
     /* 0x0248 */ u8 field_0x248;
-    /* 0x024C */ ScreenRect_802FF3F0 field_0x24c;
+    /* 0x024C */ JGeometry::TBox2<u32> field_0x24c;
     /* 0x025C */ GXTlutObj field_0x25c[3][4][16];
     /* 0x0B5C */ GXTexObj field_0xb5c[3][4][16];
     // Per-player bytes: tu_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC

@@ -32,12 +32,10 @@ GXRenderModeObj lbl_8049F0CC = {
 // .sdata2 word 0x8053CDD8: the white fn_8013B1E8 sets as TEV register 0.
 static const GXColor lbl_8053CDD8 = {0xFF, 0xFF, 0xFF, 0xFF};
 
-ScreenRect_802FF3F0* fn_8013C394();
-
 // Not auto-inlined: GameRoot2_8049F108::fn_8013BBE0 calls fn_8013C394 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-ScreenRect_802FF3F0* fn_8013C394() {
+JGeometry::TBox2<u32>* fn_8013C394() {
     return &gGameRoot2_8053AB10->field_0x24->field_0x144;
 }
 #pragma auto_inline reset
@@ -101,8 +99,8 @@ void GameRoot2_8049F108::fn_8013BBE0() {
         field_0x28->fn_8013DC44();
         field_0x2c->fn_80159330();
         field_0x30->fn_8016005C();
-        ScreenRect_802FF3F0* r = fn_8013C394();
-        JGeometry::TBox2f box((f32)r->x0, (f32)r->y0, (f32)r->x1, (f32)r->y1);
+        JGeometry::TBox2<u32>* r = fn_8013C394();
+        JGeometry::TBox2f box((f32)r->i.x, (f32)r->i.y, (f32)r->f.x, (f32)r->f.y);
         field_0x14->place(box);
         field_0x14->scissor(box);
         if (!gGameRoot_8053AAF8->field_0x7f || isGameMode(GAME_MODE_C)) {
