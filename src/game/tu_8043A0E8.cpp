@@ -580,15 +580,12 @@ void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
     }
 }
 
-// FIXME: 95.96 %, regalloc-only + reloc-name; behaviour clean.
-// Same instructions, float registers allocated differently (f0/f7/f8).
 bool cls_804B1920::fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin) {
-    JGeometry::TBox2f box(x - 94.0f, y - 61.5f, 94.0f + x, 61.5f + y);
-    box.i.x -= margin;
-    box.i.y -= margin;
-    box.f.x = margin + box.f.x;
-    box.f.y = margin + box.f.y;
-    if (px >= box.i.x && px <= box.f.x && py >= box.i.y && py <= box.f.y) {
+    f32 x0 = x - 94.0f - margin;
+    f32 y0 = y - 61.5f - margin;
+    f32 x1 = margin + (94.0f + x);
+    f32 y1 = margin + (61.5f + y);
+    if (px >= x0 && px <= x1 && py >= y0 && py <= y1) {
         return false;
     }
     return true;
