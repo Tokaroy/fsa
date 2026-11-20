@@ -710,10 +710,8 @@ void cls_804B146C::fn_804257E4() {
 }
 
 // FIXME: 95.16 %, scheduling+regalloc; behaviour clean.
-// FIXME(shotgun): register order and scheduling differ (behaviour matches)
 void cls_804B146C::fn_804253E0(s32 player) {
-    s32 shown = lbl_80529DEC.field_0xd8[player];
-    if (shown < fn_80237774(player)) {
+    if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x168[player]++;
         if (field_0x168[player] >= 10) {
             lbl_80529DEC.field_0xd8[player] += 1;
@@ -730,7 +728,7 @@ void cls_804B146C::fn_804253E0(s32 player) {
             field_0x1a8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1c8[player] = fn_80237810(player);
         }
-    } else if (lbl_80529DEC.field_0xd8[player] > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x168[player]++;
         if (field_0x168[player] >= 10) {
@@ -750,11 +748,11 @@ void cls_804B146C::fn_804253E0(s32 player) {
     } else {
         field_0x168[player] = 0;
     }
-    if (lbl_80529DEC.field_0xe8[player] < fn_80236100(player)) {
+    if (lbl_80529DEC.getField0xe8(player) < fn_80236100(player)) {
         field_0x178[player]++;
         if (field_0x178[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] += 2;
-            if (lbl_80529DEC.field_0xe8[player] >= fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) >= fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
@@ -763,11 +761,11 @@ void cls_804B146C::fn_804253E0(s32 player) {
             field_0x257 |= (u8)(1 << player);
             field_0x178[player] = 0;
         }
-    } else if (lbl_80529DEC.field_0xe8[player] > fn_80236100(player)) {
+    } else if (lbl_80529DEC.getField0xe8(player) > fn_80236100(player)) {
         field_0x178[player]++;
         if (field_0x178[player] >= 2) {
             lbl_80529DEC.field_0xe8[player] -= 2;
-            if (lbl_80529DEC.field_0xe8[player] < fn_80236100(player)) {
+            if (lbl_80529DEC.getField0xe8(player) < fn_80236100(player)) {
                 lbl_80529DEC.field_0xe8[player] = fn_80236100(player);
                 fn_80230EB8(player, 0x51);
             } else {
