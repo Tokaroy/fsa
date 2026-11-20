@@ -2057,7 +2057,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
     } else {
         src = (u8*)res;
     }
-    src += srcOffset;
+    u8* data = src + srcOffset;
     u16* dst;
     if (layer >= 0 && layer < 4) {
         dst = &mLayerGrid[layer][dstOffset / 2];
@@ -2067,7 +2067,7 @@ void TileMap_804AA858::fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstO
         dst = &mLayerGrid[layer][dstOffset / 2];
     }
     for (u32 i = 0; i < len; i += 2) {
-        dst[i / 2] = (src[i + 1] << 8) | src[i];
+        dst[i / 2] = (data[i + 1] << 8) | data[i];
     }
 }
 
