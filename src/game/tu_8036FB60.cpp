@@ -594,7 +594,7 @@ inline void cls_804AE4B0::guideOrRelease_80370764() {
     }
 }
 
-// FIXME: 94.58 %, different; behaviour clean.
+// FIXME: 94.66 %, different; behaviour clean.
 void cls_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
