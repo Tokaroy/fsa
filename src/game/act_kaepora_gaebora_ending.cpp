@@ -676,7 +676,7 @@ void KaeporaGaeboraEnding_804ADAC8::update() {
     }
 }
 
-// FIXME(shotgun): 94.46 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.72 %, operands; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::draw() {
     if (field_0x2B0 == 0) {
         return;
@@ -714,7 +714,7 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
     }
 }
 
-// FIXME(shotgun): 90.94 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.87 %, regalloc-only; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     SpriteParams_801F5AE0 params;
     params.field_0x1f = 0;
@@ -752,7 +752,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     mPos = savedPos;
 }
 
-// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.84 %, regalloc-only; behaviour clean.
 void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     SpriteParams_801F5AE0 params;
     bool shadow = false;
