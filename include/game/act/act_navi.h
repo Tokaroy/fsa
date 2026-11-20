@@ -36,6 +36,17 @@ public:
     // 0x8021D794: returns true if state == 5.
     bool fn_8021D794();
 
+    // Inlined at each spawnEmitter_8013CC50 flag argument (cmpwi 9; beq; b over li 1).
+    bool isState9() const {
+        bool ret = false;
+        switch (mState) {
+        case 9:
+            ret = true;
+            break;
+        }
+        return ret;
+    }
+
     // 0x8021DFAC: state transition helper.
     void fn_8021DFAC(s32 newState);
     // 0x8021E4F8.
