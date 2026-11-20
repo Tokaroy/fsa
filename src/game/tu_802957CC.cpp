@@ -1521,13 +1521,11 @@ void cls_804A7AE0::fn_802961AC() {
         return;
     }
     field_0x2d0 = mPos - other->mPos;
-    f32 sq = field_0x2d0.squared();
-    if (!(sq <= 32.0f * JGeometry::TUtil<f32>::epsilon())) {
-        field_0x2d0.scale(JGeometry::TUtil<f32>::inv_sqrt(sq));
-    }
+    field_0x2d0.normalize();
     field_0x3c = field_0x2d0;
     startSound_801F0E34(0x30075, 0);
-    for (s32 i = 0; i < 2; i++) {
+    s32 i;
+    for (i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             if (mEmitters[i][j] == NULL) {
                 JGeometry::TVec3f pos = mPos;
@@ -1540,13 +1538,13 @@ void cls_804A7AE0::fn_802961AC() {
     s32 v = (field_0x90 >> 7) & 0x1F;
     s32 layer = v == 0 ? 0 : v + 7;
     getGameView_802D6A9C()->fn_802D79E8(layer, 16.0f, 0.0f, true);
-    for (s32 i = 0; i < mSerialCountB; i++) {
+    for (i = 0; i < mSerialCountB; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
         if (actor != NULL) {
             actor->mAlive = false;
         }
     }
-    for (s32 i = 0; i < mSerialCountA; i++) {
+    for (i = 0; i < mSerialCountA; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
         if (actor != NULL) {
             actor->mAlive = false;
