@@ -631,17 +631,16 @@ void cls_8049E770::fn_8012A9A0() {
     }
 }
 
-// FIXME(shotgun): 34.20 %, missing/extra; behaviour clean.
 void cls_8049E770::fn_8012A8C0() {
+    JGeometry::TBox2f box(mBox);
     JGeometry::TBox2f baseBox(mBox);
-    JGeometry::TBox2f box(baseBox);
     for (s32 i = 0; i < 6; i++) {
         box.i.x += field_0x25c[i].x;
         box.i.y += field_0x25c[i].y;
         box.f.x += field_0x25c[i].x;
         box.f.y += field_0x25c[i].y;
         fn_80239914(&box, field_0x4, mSerial);
-        box.set(baseBox);
+        box = baseBox;
     }
 }
 
