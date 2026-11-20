@@ -107,7 +107,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     return result;
 }
 
-// FIXME(shotgun): 99.45 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.64 %, regalloc-only; behaviour clean.
 void EscortBase_8049E0C8::fn_80124448() {
     ActorBase_804A5770::init();
     lbl_80539F30 = mSerial;
@@ -435,7 +435,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-// FIXME(shotgun): 98.77 %, different; behaviour clean.
+// FIXME(shotgun): 98.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
         fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
@@ -968,7 +968,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     return false;
 }
 
-// FIXME: 99.05 %, regalloc-only; behaviour clean.
+// FIXME: 99.37 %, regalloc-only; behaviour clean.
 // Regalloc only: the original keeps the array pointer, counter and serial in r29, r30, r28; here in r28, r29, r30.
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
