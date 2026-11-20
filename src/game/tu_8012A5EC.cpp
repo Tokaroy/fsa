@@ -35,7 +35,7 @@ inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
     return fn_8038BD08(0, lbl_804650C8[field_0x254], layer, pos, 0x22);
 }
 
-// FIXME(shotgun): 92.52 %, different + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
 void cls_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
     field_0x3f4 = (s32)(mPos.y / 384.0f) * 384.0f;
@@ -254,7 +254,6 @@ void cls_8049E770::fn_8012C030() {
     }
 }
 
-// FIXME(shotgun): 98.93 %, scheduling+regalloc; behaviour drift.
 void cls_8049E770::fn_8012BE2C() {
     fn_8012A5EC();
     fn_8022FE80(0, field_0x4, mSerial, true, false);
@@ -628,7 +627,7 @@ void cls_8049E770::fn_8012A8C0() {
     }
 }
 
-// FIXME(shotgun): 96.95 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.53 %, regalloc-only + reloc-name; behaviour drift.
 bool cls_8049E770::fn_8012A5EC() {
     switch (field_0x230) {
     case 0:
