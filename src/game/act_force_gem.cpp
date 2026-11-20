@@ -668,7 +668,7 @@ void ForceGem_804AB6D8::draw() {
     mPos = saved;
 }
 
-// FIXME(shotgun): 95.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.10 %, missing/extra + reloc-name; behaviour drift.
 void ForceGem_804AB6D8::fn_8032BB90() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023A51C(i) == true && getField_0x4() == getPlayerLayer_8023DE58(i)) {
