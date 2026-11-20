@@ -342,8 +342,24 @@ void TileMap_804AA858::fn_802FF548() {
     fn_802FF798();
 }
 
-// The full-screen rect and loop registers differ in register allocation only.
-// FIXME: 98.43 %, regalloc-only; behaviour clean.
+// The field_0xc220 queue's copy of drawQueuedSprites_802FF2D8 (the counter is
+// coloured before the strength-reduced pointer, as in an inlined loop).
+static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
+    for (s32 i = 0; i < self->field_0xd320; i++) {
+        cls_8030029C* sprite = &self->field_0xc220[i];
+        if (sprite->mRes != NULL) {
+            self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
+        } else if (sprite->mImage != NULL) {
+            self->fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
+        } else if (sprite->field_0x18 != NULL) {
+            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+        }
+    }
+    self->field_0xd320 = 0;
+}
+
+// The full-screen rect differs in register allocation only (r0/r3-r5).
+// FIXME: 98.90 %, regalloc-only; behaviour clean.
 void TileMap_804AA858::fn_802FF3F0() {
     if (field_0x248 && field_0x24c.f.x != 0) {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = field_0x24c;
@@ -354,17 +370,7 @@ void TileMap_804AA858::fn_802FF3F0() {
         gGameRoot2_8053AB10->field_0x24->field_0x144 = rect;
     }
     fn_802FC80C();
-    for (s32 i = 0; i < field_0xd320; i++) {
-        cls_8030029C* sprite = &field_0xc220[i];
-        if (sprite->mRes != NULL) {
-            fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
-        } else if (sprite->mImage != NULL) {
-            fn_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
-        } else if (sprite->field_0x18 != NULL) {
-            fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
-        }
-    }
-    field_0xd320 = 0;
+    drawQueuedSprites_802FF3F0(this);
 }
 
 void TileMap_804AA858::fn_802FF3B0() {
@@ -735,7 +741,10 @@ void TileMap_804AA858::fn_802FDDD4() {
 // (field_0x150 / field_0x190, the field_0x21c window); then every 10 frames
 // copies the next of the four 0x40-byte blocks of field_0x238c to
 // field_0x4[1] + 0x200.
-// FIXME: 72.21 %, missing/extra + reloc-name; behaviour drift.
+// Still differs: the original indexes field_0x70 / field_0x80 by field_0xa4
+// with a plain slwi (ours clrlslwi) and reads field_0x40 / field_0x58 in the
+// loop with lfsx; registers and stack slots follow.
+// FIXME: 72.53 %, missing/extra + reloc-name; behaviour drift.
 void TileMap_804AA858::fn_802FCE74() {
     static const s16 lbl_8046F980[10] = {0, -119, 0, 123, -119, 123, -119, 0, 123, 0};
     static const s16 lbl_8046F994[10] = {0, -107, -107, -107, 0, 0, 70, 70, 70, 0};
@@ -776,9 +785,11 @@ void TileMap_804AA858::fn_802FCE74() {
             field_0x138[field_0x22c] = 0;
         }
     }
-    if ((field_0x230 == -1 || field_0x138[field_0x230] <= 0) &&
-        (field_0x22c == -1 || field_0x138[field_0x22c] <= 0)) {
-        field_0x230 = field_0x22c;
+    if (field_0x230 == -1 || field_0x138[field_0x230] <= 0) {
+        s32 next = field_0x22c;
+        if (next == -1 || field_0x138[next] <= 0) {
+            field_0x230 = next;
+        }
     }
     field_0x22c = -1;
     field_0x248 = 0;
@@ -814,10 +825,10 @@ void TileMap_804AA858::fn_802FCE74() {
                     f32 offX = pos.x - 512.0f * (s32)(pos.x / 512.0f) < 256.0f ? -1.0f : 0.0f;
                     f32 offY = pos.y - 384.0f * (s32)(pos.y * (1.0f / 384.0f)) < 192.0f ? -1.0f : 0.0f;
 
-                    f32 width = field_0xfc->field_0x70[field_0xfc->field_0xa4];
                     f32 height = field_0xfc->field_0x70[field_0xfc->field_0xa4 + 2];
-                    s32 w = width * scaleX[i];
+                    f32 width = field_0xfc->field_0x70[field_0xfc->field_0xa4];
                     s32 h = height * scaleY[i];
+                    s32 w = width * scaleX[i];
                     field_0x214 = 1;
                     f32 x = lbl_8046F980[field_0x234] +
                             ((((s32)width - w) >> 1) + field_0xfc->field_0x40[field_0xfc->field_0xa4].x);
@@ -860,10 +871,12 @@ void TileMap_804AA858::fn_802FCE74() {
                     field_0x150[i].field_0x4 = bottom - 40;
                     field_0x150[i].field_0x8 = 48;
                     field_0x150[i].field_0xc = 48;
-                    s32 w = field_0x1d0[i].field_0x8 * scaleX[i];
-                    s32 h = field_0x1d0[i].field_0xc * scaleY[i];
-                    field_0x190[i].field_0x0 = ((field_0x1d0[i].field_0x8 - w) >> 1) + field_0x1d0[i].field_0x0;
-                    field_0x190[i].field_0x4 = ((field_0x1d0[i].field_0xc - h) >> 1) + field_0x1d0[i].field_0x4;
+                    s32 fullH = field_0x1d0[i].field_0xc;
+                    s32 fullW = field_0x1d0[i].field_0x8;
+                    s32 h = fullH * scaleY[i];
+                    s32 w = fullW * scaleX[i];
+                    field_0x190[i].field_0x0 = ((fullW - w) >> 1) + field_0x1d0[i].field_0x0;
+                    field_0x190[i].field_0x4 = ((fullH - h) >> 1) + field_0x1d0[i].field_0x4;
                     field_0x190[i].field_0x8 = w;
                     field_0x190[i].field_0xc = h;
                 }
@@ -944,7 +957,7 @@ void TileMap_804AA858::fn_802FCE74() {
         }
         u8* src = field_0x238c + field_0x2390 * 0x40;
         u8* dst = field_0x4[1] + 0x200;
-        for (i = 0; i < 0x40; i++) {
+        for (int j = 0; j < 0x40; j++) {
             *dst++ = *src++;
         }
     }
