@@ -105,7 +105,16 @@ static const s16* lbl_80539EF8[2] = {
     lbl_80464508, lbl_8046452C,
 };
 // The scenario keys of the demo (rodata 0x80464550).
-extern const s32 lbl_80464550[];
+static const s32 lbl_80464550[] = {
+    0x0000, 0x0000, 0x0000, 0x0000, 0x0078, 0x012C, 0x014A, 0x0168,
+    0x01A4, 0x01E0, 0x01FE, 0x021C, 0x023A, 0x025D, 0x0000, 0x0064,
+    0x00A0, 0x015E, 0x0190, 0x0212, 0x024E, 0x02B2, 0x047E, 0x076C,
+    0x07C6, 0x080C, 0x082A, 0x0834, 0x083E, 0x087A, 0x0974, 0x09D8,
+    0x09F6, 0x0AF0, 0x0C9E, 0x0DAC, 0x0DB6, 0x0E24, 0x0000, 0x007D,
+    0x00F5, 0x015E, 0x01C2, 0x01E0, 0x0230, 0x030C, 0x05FA, 0x062C,
+    0x0000, 0x0000, 0x003C, 0x0078, 0x0316, 0x037A, 0x042E, 0x046A,
+    0x0500, 0x0532, 0x076C, 0x07A8, 0x082A, 0x0848, 0x0000,
+};
 static const s32 lbl_8053C548[] = { 0x232, 0x4B0 };
 
 void PrincessZeldaDemo_8049D208::init() {
@@ -939,7 +948,6 @@ void PrincessZeldaDemo_8049D208::fn_8010F9F0() {
 // (docs/INLINING.md, pragma rule 1); fn_8010F4DC calls fn_8010F668 out of line twice.
 #pragma auto_inline off
 // Draws the maiden's sprite (frame `arg` of the current animation): bobbing in z while state 0x2F.
-// FIXME(shotgun): 99.84 %, reloc-name; behaviour clean.
 void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -1053,10 +1061,12 @@ void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 // FIXME: 97.28 %, missing/extra + reloc-name; behaviour drift.
 void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     switch (arg) {
-    case 3:
-        fn_8011921C()->field_0x2 = 1;
+    case 3: {
+        cls_801192AC* demo = fn_8011921C();
+        demo->field_0x2 = 1;
         lbl_8053AED0->fn_8043A450(0, 3);
         break;
+    }
     case 4:
         mAnim0.startAnim_801D22DC(2, 2, false);
         mAnim0.fn_801D1F14(0.0f);
@@ -1113,7 +1123,8 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         getGameView_802D6A9C()->fn_802DA8DC();
         break;
     case 14: {
-        fn_8011921C()->field_0x2 = 1;
+        cls_801192AC* demo = fn_8011921C();
+        demo->field_0x2 = 1;
         JGeometry::TVec3f start = mSpawnPos;
         JGeometry::TVec3f target = *getPlayerPos_8023E724(0);
         target.y += 32.0f;
@@ -1165,20 +1176,23 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
     case 18: {
         JGeometry::TVec3f start = mPos;
         start.y += 48.0f;
+        JGeometry::TVec3f* target = getPlayerPos_8023E724(0);
         field_0x2dc = start;
-        JGeometry::TVec3f d = start - *getPlayerPos_8023E724(0);
+        JGeometry::TVec3f d = start - *target;
         field_0x2e8 = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
         mAnim1.startAnim_801D22DC(0, 2, false);
         mAnim1.fn_801D1F14(0.0f);
         break;
     }
-    case 19:
+    case 19: {
         fn_8011921C()->fn_801183BC();
         mAnim0.startAnim_801D22DC(0xF, 0, false);
         mAnim0.fn_801D1F14(0.0f);
-        fn_8011921C()->field_0x2 = 1;
+        cls_801192AC* demo = fn_8011921C();
+        demo->field_0x2 = 1;
         gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
         break;
+    }
     case 21:
         field_0x364 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x309, 0, 0, NULL, NULL, true, 1.0f);
         field_0x368 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x30A, 0, 0, NULL, NULL, true, 1.0f);
@@ -1422,7 +1436,8 @@ inline s32 PrincessZeldaDemo_8049D208::startTalk(u32 msg, bool talkFlag) {
             player = -1;
         } else {
             field_0x23c = player;
-            mAnim0.startAnim_801D22DC(fn_801CD354(fn_80230CFC(field_0x23c)) + 6, 2, false);
+            s32 anim = fn_801CD354(fn_80230CFC(field_0x23c)) + 6;
+            mAnim0.startAnim_801D22DC(anim, 2, false);
             mAnim0.fn_801D1F14(0.0f);
             for (s32 i = 0; i < 4; i++) {
                 fn_80230C6C(i);
