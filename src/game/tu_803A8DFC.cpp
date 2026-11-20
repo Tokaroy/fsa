@@ -939,7 +939,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
     }
 }
 
-// FIXME(shotgun): 99.76 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.95 %, regalloc-only; behaviour clean.
 // ResultScreen_804AF9A0
 void ResultScreen_804AF9A0::fn_803B14F8() {
     s32 done = 0;
@@ -2641,7 +2641,7 @@ for (s32 i = 0; i < field_0x454; i++) {
 }
 
 // State 21: the original sets `done` to 0 and copies it into i (li; mr); also .sdata2 / jump table / ids names.
-// FIXME: 98.87 %, different; behaviour drift.
+// FIXME: 98.92 %, different; behaviour drift.
 void ResultScreen_804AF9A0::fn_803AA8F8() {
     switch (field_0x4c1) {
     case 0:
@@ -2872,7 +2872,7 @@ void ResultScreen_804AF9A0::fn_803AA8F8() {
 const char* lbl_804AF980[4] = {"P1.bti", "P2.bti", "P3.bti", "P4.bti"};
 const char* lbl_804AF990[4] = {"kk_1st_01.bti", "kk_2nd_01.bti", "kk_3rd_01.bti", "kk_4th_01.bti"};
 
-// FIXME: 98.88 %, missing/extra; behaviour near.
+// FIXME: 99.50 %, missing/extra; behaviour near.
 // Each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
@@ -2959,7 +2959,7 @@ void ResultScreen_804AF9A0::fn_803AA1F8() {
 }
 
 
-// FIXME: 98.92 %, missing/extra; behaviour near.
+// FIXME: 99.52 %, missing/extra; behaviour near.
 // Each of the two ifs of the
 // clamp of lbl_8050EC80.getCurrentFile().field_0x10 goes through an extra `addi 0x30`
 // pointer (the original keeps the file row address and stores at 0x30: the save-data
