@@ -1287,6 +1287,7 @@ class ActorBase_804A5770;
 
 // The JGadget TVector of actors at cls_801192AC+0xC (game/tu_80118384.cpp).
 struct ActorVector {
+    ActorVector(const JGadget::TAllocator<ActorBase_804A5770*>& alloc);
     /* 0x00 */ JGadget::TAllocator<ActorBase_804A5770*> mAllocator;
     /* 0x04 */ ActorBase_804A5770** mBegin;
     /* 0x08 */ ActorBase_804A5770** mEnd;

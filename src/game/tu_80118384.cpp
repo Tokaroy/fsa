@@ -22,6 +22,21 @@ static JGadget::TAllocator<ActorBase_804A5770*> lbl_8053AA90;
 // The texture name fn_80119D48 loads (.sdata 0x80539F10).
 const char* lbl_80539F10 = "kk_black.bti";
 
+inline ActorVector::ActorVector(const JGadget::TAllocator<ActorBase_804A5770*>& alloc)
+    : mAllocator(alloc),
+      mBegin(NULL),
+      mEnd(NULL),
+      mCapacity(0),
+      mExtend(JGadget::vector::extend_default) {}
+
+inline cls_801192AC::cls_801192AC()
+    : field_0x0(0),
+      field_0x1(0),
+      field_0x2(0),
+      field_0x4(0x13),
+      field_0x8(0),
+      mActors(JGadget::TAllocator<ActorBase_804A5770*>(lbl_8053AA90)) {}
+
 inline cls_80119E5C::cls_80119E5C() {
     field_0x0 = 0;
     field_0x1 = 0;
@@ -249,19 +264,6 @@ void cls_80119E5C::fn_80119468(s32 g, s32 mode) {
     fn_80119998(fadeFrames(mode), 0, mode, 0, 2, 0, g);
 }
 
-inline cls_801192AC::cls_801192AC() {
-    field_0x0 = 0;
-    field_0x1 = 0;
-    field_0x2 = 0;
-    field_0x4 = 0x13;
-    field_0x8 = 0;
-    mActors.mAllocator = lbl_8053AA90;
-    mActors.mBegin = NULL;
-    mActors.mEnd = NULL;
-    mActors.mCapacity = 0;
-    mActors.mExtend = JGadget::vector::extend_default;
-}
-
 // JGadget::TVector::erase(first, last): copies the tail down, then destroys the rest.
 static inline ActorBase_804A5770** copyDown(ActorBase_804A5770** first, ActorBase_804A5770** last,
                                             ActorBase_804A5770** result) {
@@ -286,7 +288,6 @@ cls_801192AC::~cls_801192AC() {
     delete mActors.mBegin;
 }
 
-// FIXME(shotgun): 82.22 %, missing/extra + reloc-name; behaviour drift.
 extern "C" cls_801192AC* fn_8011921C() {
     static cls_801192AC lbl_804BC540;
     return &lbl_804BC540;
