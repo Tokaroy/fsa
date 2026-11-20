@@ -8,6 +8,7 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/Player.h"
 #include "std/math.h"
 
@@ -491,39 +492,42 @@ s32 fn_801A4F5C(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // 0x801A4D74.
 // FIXME(shotgun): 83.66 %, missing/extra; behaviour near.
 s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
+    s32 oldLife;
     s32 kind = (field_0xb0 >> 8) & 0xF;
     if (kind == 0) {
         return 0;
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
     s32 player = fn_8023AA18(box, field_0x4, pos);
     if (player < 0) {
         return 0;
     }
-    if (kind == 3) {
-        return 0xFF;
-    }
-    if (field_0xd8 == 0) {
-        s32 life = mLife - fn_8023B520(player);
-        field_0x10c = player;
-        if (life <= 0) {
-            life = 0;
-            if (field_0xbc != 3) {
-                fn_801A3C50(player);
-                return 40;
+    if (kind != 3) {
+        if (field_0xd8 == 0) {
+            oldLife = mLife;
+            s32 life = oldLife - fn_8023B520(player);
+            field_0x10c = player;
+            if (life <= 0) {
+                life = 0;
+                if (field_0xbc != 3) {
+                    fn_801A3C50(player);
+                    return 40;
+                }
             }
+            mLife = life;
+            fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
+            if (field_0xbc == 3) {
+                field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+            }
+            if (player >= 0) {
+                lbl_8053A100 = player;
+            }
+            vfunc_0x44();
         }
-        mLife = life;
-        fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
-        if (field_0xbc == 3) {
-            field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
-        }
-        if (player >= 0) {
-            lbl_8053A100 = player;
-        }
-        vfunc_0x44();
+    } else {
+        return 0xFF;
     }
     startSound_801F0E34(0x4001E, 0);
     return 30;
