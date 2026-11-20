@@ -356,18 +356,16 @@ void cls_804AE4B0::fn_80371A2C() {
     }
 }
 
+// Whether p lies in box (x, y; the far edges are outside).
+static inline bool contains(const JGeometry::TVec3f* p, JGeometry::TBox2f box) {
+    return p->x >= box.i.x && p->y >= box.i.y && p->x < box.f.x && p->y < box.f.y;
+}
+
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
 // FIXME(shotgun): 70.52 %, missing/extra; behaviour drift.
 void cls_804AE4B0::fn_803717CC() {
     fn_803721F4();
-    JGeometry::TBox2f region;
-    region.set(2288.0f, 1712.0f, 2320.0f, 1728.0f);
-    bool inside = false;
-    JGeometry::TVec3f* p = &field_0x264[field_0x39c];
-    if (p->x >= region.i.x && p->y >= region.i.y && p->x < region.f.x && p->y < region.f.y) {
-        inside = true;
-    }
-    if (inside) {
+    if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2288.0f, 1712.0f, 2320.0f, 1728.0f))) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023ED8C(i)) {
                 fn_80230C6C(i);
@@ -390,18 +388,19 @@ void cls_804AE4B0::fn_803717CC() {
         field_0x24c = 0.0f;
         field_0x250 = (2304.0f - field_0x244) / 60.0f;
         field_0x254 = (1696.0f - field_0x248) / 60.0f;
-        JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-        field_0x25c = (view.f.y - view.i.y) * 0.5f;
+        JGeometry::TBox2f view;
+        view = gGameRoot2_8053AB10->field_0x24->field_0x164;
+        field_0x25c = view.getHeight() * 0.5f;
         field_0x260 = 144.0f - field_0x25c;
+        f32 bottom = field_0x248 + field_0x25c;
+        f32 top = field_0x248 - field_0x25c;
+        f32 x = field_0x244;
         cam = gGameRoot2_8053AB10->field_0x24;
         cam->field_0x179 = 1;
         cam = gGameRoot2_8053AB10->field_0x24;
         if (cam->field_0x840 == 0) {
             cam->field_0x840 = 1;
-            cam->field_0x844.i.x = field_0x244;
-            cam->field_0x844.i.y = field_0x248 - field_0x25c;
-            cam->field_0x844.f.x = field_0x244;
-            cam->field_0x844.f.y = field_0x248 + field_0x25c;
+            cam->field_0x844.set(x, top, x, bottom);
             cam->field_0x854 = 1.0f;
             cam->field_0x1d4 = -1.0f;
             cam->field_0x1d8 = -1.0f;
