@@ -181,7 +181,7 @@ void CrystalBall_804AB308::vfunc_0x54() {
     startSound_801F0E34(0x30001, 0);
 }
 
-// FIXME(shotgun): 99.73 %, regalloc-only; behaviour clean.
+// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 void CrystalBall_804AB308::fn_80322F44() {
     if (field_0x284 == 0) {
         if (!gGameRoot_8053AAF8->field_0x7e) {
@@ -244,8 +244,6 @@ void CrystalBall_804AB308::fn_80322F44() {
     }
 }
 
-// FIXME(shotgun): 96.79 %, missing/extra; behaviour drift.
-// a couple of instructions in the player loop
 void CrystalBall_804AB308::fn_80322BC4() {
     s32 rank = 0;
     s32 n = 0;
@@ -858,7 +856,7 @@ void CrystalBall_804AB308::update() {
     fn_803226EC();
 }
 
-// FIXME(shotgun): 97.02 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
 // setRotScaleMtx's float registers and the li order of flags / held differ
 void CrystalBall_804AB308::draw() {
     if (field_0x230 == 0 && field_0x278 <= 180 && (field_0x278 & 2) == 0) {
