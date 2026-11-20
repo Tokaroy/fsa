@@ -105,9 +105,7 @@ void cls_804A1E50::init() {
         field_0x2e8[i] = 0;
         field_0x2f8[i].set(mPos);
     }
-    lbl_804C18B8.z = 0.0f;
-    lbl_804C18B8.y = 0.0f;
-    lbl_804C18B8.x = 0.0f;
+    lbl_804C18B8.zero();
     lbl_80539FC8 = -1;
     field_0x270 = 0;
     field_0x264 = 0;
@@ -116,12 +114,8 @@ void cls_804A1E50::init() {
     field_0x268 = 0;
     field_0x27b = 0;
     field_0x29c = 0;
-    field_0x2ac.z = 0.0f;
-    field_0x2ac.y = 0.0f;
-    field_0x2ac.x = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    field_0x2ac.zero();
+    field_0x3c.zero();
     field_0x2a0.set(mPos);
     field_0x2c4[0].set(mPos);
     field_0x2c4[1].set(mPos);
@@ -161,7 +155,7 @@ void cls_804A1E50::init() {
         mBox.f.y = 8.0f;
         field_0xb0 = 0x5040004;
         lbl_80539FC8 = field_0x4;
-        lbl_804C18B8.set(field_0x2a0.x, field_0x2a0.y, field_0x2a0.z);
+        lbl_804C18B8.set(field_0x2a0);
         mState = 0x1A;
     }
 }
