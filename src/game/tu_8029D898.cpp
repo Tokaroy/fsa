@@ -1261,6 +1261,15 @@ bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
     return result;
 }
 
+static inline void writeCellMarkView(s32 layer, s32 cell, s16 tile) {
+    getGameView_802D6A9C()->fn_802D782C(1);
+    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
+    s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
+    if (slot != -1) {
+        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
+    }
+}
+
 // Not auto-inlined: fn_8029EDB8 calls fn_8029E050 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
@@ -1268,37 +1277,23 @@ bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
 // 4 opcodes differ
 void BgRewrite_804A7C98::fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d) {
     gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, a);
-    s32 cell = field_0x20 + 1;
+    s32 cell = field_0x20;
+    cell++;
     if ((cell & 0xF) == 0) {
         cell += 0xF0;
     }
-    getGameView_802D6A9C()->fn_802D782C(1);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, b);
-    s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
-    if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
-    }
+    writeCellMarkView(layer, cell, b);
     cell = field_0x20;
     s32 below = cell + 0x10;
     if ((cell & 0x100) != (below & 0x100)) {
         below = cell + 0x110;
     }
-    getGameView_802D6A9C()->fn_802D782C(1);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, below, c);
-    slot = getGameView_802D6A9C()->fn_802D4C10(layer, below);
-    if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
-    }
+    writeCellMarkView(layer, below, c);
     cell = below + 1;
     if ((cell & 0xF) == 0) {
         cell += 0xF0;
     }
-    getGameView_802D6A9C()->fn_802D782C(1);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, d);
-    slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
-    if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
-    }
+    writeCellMarkView(layer, cell, d);
 }
 #pragma auto_inline reset
 
