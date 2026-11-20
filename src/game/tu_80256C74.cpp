@@ -1747,11 +1747,8 @@ void Player_804A6F38::fn_8025A04C() {
     field_0xb8c = 0;
 }
 
-// FIXME: 99.50 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: the box's f.x / f.y (pos + 36) take their fadds
-// operands the other way round in cases 0 and 2, the epsilon test of epsilonEquals keeps
-// 32 * FLT_EPSILON in f2 (ours f3), and the emitters' rotation-table address is formed
-// after the matrix pointer (ours before).
+// FIXME: regalloc-only: the box's f.x / f.y (pos + 36) take their fadds
+// operands the other way round in cases 0 and 2.
 // State 0x45 (item 6 at level >= 2; enter fn_8025A04C, exit fn_80259784): frame 11 places
 // a Cane of Somaria block ('SMRI', 16 in front, field_0xb2c; message 0xE8 once, 0xBB8)
 // or acts on the one that exists (fn_8030EA00); while the button is held (0xB84,
@@ -1890,14 +1887,22 @@ void Player_804A6F38::fn_80259830() {
                 field_0x12c4 = spawnEmitter_8013CC50(field_0x3b4, &pos, 0x1ab, 0, 2, NULL, NULL, true, 1.0f);
             }
             if (field_0x12c4 != NULL) {
-                JPAGetXYZRotateMtx(0, lbl_8046B1B0[field_0x3dc], -0x8000, field_0x12c4->mGlobalRot);
+                JGeometry::TVec3<s16> rot;
+                rot.x = 0;
+                rot.y = lbl_8046B1B0[field_0x3dc];
+                rot.z = -0x8000;
+                field_0x12c4->setGlobalRotation(rot);
                 setEmitterPos_8013CB44(field_0x12c4, &pos, 0, 2, true);
             }
             if (field_0x12c8 == NULL) {
                 field_0x12c8 = spawnEmitter_8013CC50(field_0x3b4, &pos, 0x54a, -1, 0, NULL, NULL, true, 1.0f);
             }
             if (field_0x12c8 != NULL) {
-                JPAGetXYZRotateMtx(0, 0, lbl_8046B1C0[field_0x3dc], field_0x12c8->mGlobalRot);
+                JGeometry::TVec3<s16> rot;
+                rot.x = 0;
+                rot.y = 0;
+                rot.z = lbl_8046B1C0[field_0x3dc];
+                field_0x12c8->setGlobalRotation(rot);
                 setEmitterPos_8013CB44(field_0x12c8, &pos, -1, 0, true);
             }
             fn_8024F0E8(0x30011);
