@@ -2073,9 +2073,6 @@ void FileSelect_804AFF60::fn_803C92B8() {
     }
 }
 
-// FIXME: 98.56 %, scheduling+regalloc; behaviour clean.
-// Scheduling and registers in the cursor bob only, as
-// fn_803C4054.
 // State 25 (copy): picking the destination file. Up / down move field_0xa0
 // over the three files, skipping the source file field_0xa4; A asks to copy
 // (message 0x62, 'Tdb01' 0x66 when the destination's checksum failed) and
@@ -2158,15 +2155,14 @@ void FileSelect_804AFF60::fn_803C8B80() {
     }
 
     if (mState == 25) {
-        s16 frame = field_0xda;
         f32 bob = 0.0f;
-        if (frame != 0) {
-            if (frame < 5) {
-                bob = 5.0f * (frame * frame) / 25.0f;
-                field_0xda = frame + 1;
-            } else if (frame < 10) {
-                bob = 5.0f * ((10 - frame) * (10 - frame)) / 25.0f;
-                field_0xda = frame + 1;
+        if (field_0xda != 0) {
+            if (field_0xda < 5) {
+                bob = 5.0f * (field_0xda * field_0xda) / 25.0f;
+                field_0xda++;
+            } else if (field_0xda < 10) {
+                bob = 5.0f * ((10 - field_0xda) * (10 - field_0xda)) / 25.0f;
+                field_0xda++;
             } else {
                 field_0xda = 0;
             }
