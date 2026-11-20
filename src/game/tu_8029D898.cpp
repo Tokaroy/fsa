@@ -1241,10 +1241,10 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
 // FIXME(shotgun): 97.41 %, missing/extra; behaviour clean.
 // 2 fewer insns (register copies of layer)
 bool BgRewrite_804A7C98::fn_8029E248(const JGeometry::TVec3f* pos, s32 layer) {
+    bool result = false;
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
-    bool result = false;
     if (field_0x24 == 0x19C || field_0x24 == 0x19D) {
         if (field_0x24 == 0x19D) {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x19F);
