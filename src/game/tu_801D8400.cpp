@@ -286,9 +286,8 @@ void cls_804A4C58::fn_801D9960() {
         } else {
             from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
         }
-        s32 player;
         s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-        player = fn_801D0338(&from, angle);
+        s32 player = fn_801D0338(&from, angle);
         if (player >= 0) {
             f32 dy = getPlayerPos_8023E724(player)->y - from.y;
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
@@ -352,9 +351,8 @@ bool cls_804A4C58::fn_801D95F4() {
             } else {
                 from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
             }
-            s32 player;
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-            player = fn_801D0338(&from, angle);
+            s32 player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
@@ -367,7 +365,8 @@ bool cls_804A4C58::fn_801D95F4() {
             JGeometry::TVec2f dir;
             if (target >= 0) {
                 f32 dy = getPlayerPos_8023E724(target)->y - pos.y;
-                dir.set(getPlayerPos_8023E724(target)->x - pos.x, dy);
+                f32 dx = getPlayerPos_8023E724(target)->x - pos.x;
+                dir.set(dx, dy);
                 if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
                     dir.x = 1.0f;
                     dir.y = 0.0f;
@@ -550,9 +549,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
             } else {
                 from.set(offsetX + mPos.x, offsetY + mPos.y, 0.0f);
             }
-            s32 player;
             s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-            player = fn_801D0338(&from, angle);
+            s32 player = fn_801D0338(&from, angle);
             if (player >= 0) {
                 f32 dy = getPlayerPos_8023E724(player)->y - from.y;
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
