@@ -68,10 +68,9 @@ u8 fn_80154698() {
     return getGameView_802D6A9C()->fn_802DCD0C();
 }
 
-// FIXME: 99.67 %, reloc-name; behaviour clean.
-// The instructions match; only the 10430.378f relocation differs
-// (lbl_8053D310 in the original; the unit's .sdata2 isn't laid out yet).
-s32 fn_8015465C(f32 y, f32 x) {
+// inline: its 10430.378f is pooled right after update()'s literals (first
+// use), while its out-of-line copy sits at the end of the unit.
+inline s32 fn_8015465C(f32 y, f32 x) {
     return JMath::atanTable_.atan2_(y, x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
@@ -183,12 +182,9 @@ ActorBase_804A5770* fn_8015445C(s32 serial) {
     return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
 }
 
-// FIXME: 99.74 %, reloc-name; behaviour clean.
-// FIXME: the instructions match; its four constants (0.0f, .5, 3.0, 0.0)
-// only pair with lbl_8053D258 / lbl_8053D2F8-lbl_8053D308 once the unit's
-// .sdata2 is laid out in the original order. std::sqrtf out of line; 13
-// calls from 7 units.
-f32 fn_80154378(f32 x) {
+// std::sqrtf out of line; 13 calls from 7 units. inline: its constants are
+// pooled right after update()'s literals (first use).
+inline f32 fn_80154378(f32 x) {
     return std::sqrtf(x);
 }
 
@@ -209,7 +205,7 @@ s32 fn_80154248(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg) {
     return getActorManager_801F856C()->fn_801F8544(id, layer, pos, arg);
 }
 
-// FIXME(shotgun): 99.60 %, different + reloc-name; behaviour near.
+// FIXME(shotgun): 99.66 %, different; behaviour near.
 void SwordSoldier_8049FCA0::init() {
     mBox.set(-8.0f, -4.0f, 8.0f, 8.0f);
     mBox2.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -371,7 +367,6 @@ void SwordSoldier_8049FCA0::init() {
     }
 }
 
-// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
 void SwordSoldier_8049FCA0::vfunc_0x44() {
     lbl_8053AB44 = 1;
     field_0xb8 = 1;
@@ -396,7 +391,7 @@ void SwordSoldier_8049FCA0::vfunc_0x44() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (lbl_804BF850[i] == mSerial) {
+        if (lbl_804BF850[i] == getSerial()) {
             lbl_804BF850[i] = -1;
             field_0xbc = 2;
         }
@@ -412,15 +407,14 @@ void SwordSoldier_8049FCA0::vfunc_0x44() {
     }
 }
 
-// FIXME(shotgun): 93.25 %, missing/extra; behaviour near.
 SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
     if (mLife <= 0) {
         if (field_0x288 == 1 || field_0x288 == 3) {
             if (field_0x288 == 1) {
-                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 4);
+                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 0x30004);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.0f);
             } else {
-                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 8);
+                getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, 0x30008);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.5f);
             }
         }
@@ -434,14 +428,12 @@ SwordSoldier_8049FCA0::~SwordSoldier_8049FCA0() {
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (lbl_804BF850[i] == mSerial) {
+        if (lbl_804BF850[i] == getSerial()) {
             lbl_804BF850[i] = -1;
         }
     }
 }
 
-// FIXME: 99.92 %, reloc-name; behaviour clean.
-// FIXME(shotgun): literal reloc names (lbl_ vs @NNN) still differ
 bool SwordSoldier_8049FCA0::vfunc_0x54() {
     if (viewLayerFlag(field_0x4)) {
         return false;
