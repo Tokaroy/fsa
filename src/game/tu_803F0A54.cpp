@@ -2452,16 +2452,19 @@ void ConnectScreen_804B0F10::fn_803F2660() {
     field_0x1c4 = 8;
 }
 
-// FIXME: 98.04 %, different; behaviour clean.
-// Register swap in setEntries' loop: the original keeps the
-// 2 * i shift in r4 (the zero stored to field_0x240) and i in a fresh r5 (li);
-// ours keeps i in r4 and copies it (mr r5, r4) for the shift. fn_803F8050
-// inlines this function and matches.
 void ConnectScreen_804B0F10::fn_803F2580() {
     field_0x240[0] = 0;
     field_0x1d0[0] = 5;
     if (field_0x1a8 == 0) {
-        setEntries(this);
+        for (s32 i = 0; i < 4; i++) {
+            if (i < field_0x1ac + 2) {
+                gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 1);
+            } else {
+                gGameRoot_8053AAF8->mPlayerMask &= ~(u8)(1 << i);
+                setPlayerKind(gGameRoot_8053AAF8, i, 0);
+            }
+        }
     }
     field_0x1c8 = field_0x1c4;
     field_0x1c4 = 9;
