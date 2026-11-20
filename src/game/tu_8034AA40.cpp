@@ -598,20 +598,24 @@ void cls_804AC8C0::fn_8034ACF4() {
     }
 }
 
-// FIXME(shotgun): 69.01 %, missing/extra + reloc-name; behaviour clean.
 s32 cls_804AC8C0::fn_8034AAA0() {
-    JGeometry::TBox2f box(24.0f, 8.0f, 88.0f, 72.0f);
+    JGeometry::TBox2f box;
+    box = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
+    s32 serial = -1;
     s32 count = 0;
     field_0x274[0] = 0;
     field_0x274[1] = 0;
     field_0x274[2] = 0;
     field_0x274[3] = 0;
-    s32 serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial)) >= 0) {
+    while (true) {
+        serial = getActorManager_801F856C()->fn_801F78F4('NIWA', serial);
+        if (serial < 0) {
+            break;
+        }
         Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (cucco != NULL && field_0x4 == cucco->field_0x4 && cucco->mPos.z < 8.0f &&
             containsPoint(box, cucco->mPos) == true && !cucco->field_0xc4) {
@@ -621,7 +625,7 @@ s32 cls_804AC8C0::fn_8034AAA0() {
         }
     }
     if (lbl_80472158[field_0x25c] >= field_0x24c - count && field_0x28c[field_0x25c] == 0) {
-        lbl_8053AED0->fn_8043D67C(0x42A, 0, 0);
+        lbl_8053AED0->fn_8043D67C(0x42A, 0, lbl_80472158[field_0x25c]);
         field_0x28c[field_0x25c] = 1;
         if (field_0x25c == 2) {
             gAudioMgr_8053AF80->fn_80458508(1);
