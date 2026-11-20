@@ -1063,7 +1063,10 @@ bool Player_804A6F38::fn_80260C08() {
         return false;
     }
     const Vec& d = lbl_8046B83C[field_0x3dc];
-    JGeometry::TVec3f pos(d.x, d.y, d.z);
+    JGeometry::TVec3f pos;
+    pos.x = d.x;
+    pos.y = d.y;
+    pos.z = d.z;
     pos += mPos;
     pos.z = 0.0f;
     if (fn_8022C1D8(field_0x4) || fn_8022C0A0(field_0x4)) {
@@ -1218,13 +1221,14 @@ bool Player_804A6F38::fn_80260C08() {
         case 33:
         case 34:
         case 35: {
+            s32 index;
             s32 variant = 0;
             if (kind == 34) {
                 variant = 1;
             } else if (kind == 35) {
                 variant = 2;
             }
-            s32 index = kind - 24;
+            index = kind - 24;
             if (kind >= 29) {
                 index = kind - 29;
             }
