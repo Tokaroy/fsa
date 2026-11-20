@@ -1,3 +1,4 @@
+#include "JSystem/JParticle/JPAEmitter.h"
 #include "game/GameAudio.h"
 #include "game/ActorManager.h"
 #include "game/Effect.h"
@@ -148,8 +149,6 @@ void cls_8049ED30::spawnEmitters() {
 // 0x801339EC.
 // Not auto-inlined: update() calls fn_801339EC out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 86.15 %, missing/extra; behaviour drift.
-// (3-byte emitter color copy at emitter+0xBC..0xBE not written; JPABaseEmitter header layout differs).
 void cls_8049ED30::fn_801339EC() {
     static JUtility::TColor colors[6] = {
         JUtility::TColor(0x2D, 0x78, 0xFF, 0xFF),
@@ -162,7 +161,8 @@ void cls_8049ED30::fn_801339EC() {
     for (s32 i = 0; i < 2; i++) {
         if (mEmitters[i] != NULL) {
             setEmitterPos_8013CB44(mEmitters[i], &mPos, 0, 0, true);
-            // FIXME(shotgun): emitter color copy from colors[field_0x234] not written.
+            const JUtility::TColor& color = colors[field_0x234];
+            mEmitters[i]->setGlobalEnvColor(color.r, color.g, color.b);
         }
     }
 }
