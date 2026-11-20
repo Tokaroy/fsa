@@ -816,11 +816,6 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
     field_0x10->search(0x54746C763134ull /* "Ttlv14" */)->setAlpha(field_0x64b[1] * (1.0f - alpha));
 }
 
-// FIXME: 95.84 %, missing/extra; behaviour clean.
-// Missing/extra (two instructions, one saved register): in the stage 10 /
-// sub-stage 2 branch the original reads lbl_80529DEC.field_0x120 twice before the two
-// 'Pphu01' size searches (r29 / r31) and indexes lbl_8048C9DC with them after the
-// 'Ndata06' calls; ours reads it after those calls. All else is the same.
 void MapScreen_804B1288::fn_80411230() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x340 < 7 && !isStageFlagSet(field_0x340, 3) && (isCursorState() || field_0x350 == 0x13)) {
@@ -840,13 +835,11 @@ void MapScreen_804B1288::fn_80411230() {
             field_0x10->search('Pphu01')->show();
         }
         field_0x10->search('Pphu01')->setAlpha(field_0x65b * field_0x3fc);
-        f32 height = field_0x10->search('Pphu01')->getHeight();
-        f32 width = field_0x10->search('Pphu01')->getWidth();
         field_0x10->search('Pphu01')
-            ->move(lbl_8048C9DC[lbl_80529DEC.field_0x120][0] - field_0x10->search('Ndata06')->getBounds()->i.x -
-                       width / 2,
-                   lbl_8048C9DC[lbl_80529DEC.field_0x120][1] - field_0x10->search('Ndata06')->getBounds()->i.y -
-                       height / 2);
+            ->move(lbl_8048C9DC[lbl_80529DEC.getField_0x120()][0] - field_0x10->search('Ndata06')->getBounds()->i.x -
+                       field_0x10->search('Pphu01')->getWidth() / 2,
+                   lbl_8048C9DC[lbl_80529DEC.getField_0x120()][1] - field_0x10->search('Ndata06')->getBounds()->i.y -
+                       field_0x10->search('Pphu01')->getHeight() / 2);
     } else if (field_0x10->search('Pphu01')->mIsVisible == true) {
         field_0x10->search('Pphu01')->hide();
     }

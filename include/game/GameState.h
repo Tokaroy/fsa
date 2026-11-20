@@ -75,6 +75,9 @@ public:
     // Out-of-line copy at 0x8042E780 in game/tu_80427D2C.cpp (the movie
     // player), built there with -inline off.
     JKRHeap* getHeap_8042E780() { return mHeap; }
+    // SHARED-EDIT (tu_80403D84 fn_80411230): inline getter; its call-site
+    // evaluation order hoists the load of field_0x120 before getHeight/getWidth.
+    s32 getField_0x120() const { return field_0x120; }
 
     // 3 units (tu_803BC6F0, tu_803E1668, tu_803F0A54; all pass
     // &lbl_80529DEC). Presets the per-player tables (field_0x68[i] = 0,
