@@ -80,13 +80,14 @@ inline void EnemyBase_804A4808::moveStep() {
 // gives the tile's centre) and the actor lands. Shared by vfunc_0x80 and fn_801CE800.
 inline void EnemyBase_804A4808::landStep() {
     if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f) {
-        JGeometry::TVec3f pos;
+        JGeometry::TVec2f snapped;
+        JGeometry::TVec2f pos;
         f32 bottom = field_0x80.f.y;
         f32 screenY = mPos.y - mPos.z;
         bool onFloor = false;
         pos.x = mPos.x;
         pos.y = bottom + screenY;
-        switch (fn_802265FC(&pos, field_0x4)) {
+        switch (fn_802265FC((const JGeometry::TVec3f*)&pos, field_0x4)) {
         case 0:
             if (mPos.z <= 0.0f) {
                 onFloor = true;
@@ -100,8 +101,7 @@ inline void EnemyBase_804A4808::landStep() {
             break;
         }
         if (onFloor) {
-            JGeometry::TVec3f snapped;
-            fn_801CCD34(&pos, &snapped);
+            fn_801CCD34((const JGeometry::TVec3f*)&pos, (JGeometry::TVec3f*)&snapped);
             mPos.y = snapped.y - 8.0f - field_0x80.f.y;
             mPos.z = 0.0f;
             field_0x3c.z = 0.0f;
@@ -785,8 +785,6 @@ void EnemyBase_804A4808::vfunc_0x78() {}
 
 void EnemyBase_804A4808::vfunc_0x7C() {}
 
-// FIXME: 99.80 %, operands; behaviour clean.
-// The same frame-size difference as vfunc_0x80.
 void EnemyBase_804A4808::fn_801CE800() {
     landStep();
 }
