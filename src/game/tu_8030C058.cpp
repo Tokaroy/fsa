@@ -185,7 +185,7 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
 // size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
-// FIXME(shotgun): 82.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
 // (the target re-reads i.y, f.x and f.y of the box after the copy; ours keeps all four)
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
     field_0x164.set(*box);
@@ -832,7 +832,7 @@ void Camera_804AA9E4::fn_8030C85C() {
 }
 
 // The camera's box of the given width around center (the height keeps the screen's aspect).
-// FIXME(shotgun): 37.71 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.21 %, regalloc-only; behaviour clean.
 void Camera_804AA9E4::fn_8030C7C4(const JGeometry::TVec2f* center, f32 size) {
     f32 halfX = 0.5f * size;
     f32 halfY = 0.5f * (size * (f32)(s32)JUTVideo::sManager->getEfbHeight() /
