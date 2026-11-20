@@ -979,7 +979,7 @@ void TennisShop_804A2BF4::fn_801A0BE4() {
         } else {
             field_0x3c.z -= 0.5f;
         }
-        if (field_0x238[1] != 0 && field_0x340 < 1.0f) {
+        if (field_0x238[1] == 0 || field_0x340 < 1.0f) {
             mAlive = false;
         }
         break;
