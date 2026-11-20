@@ -13,11 +13,103 @@
 #include "game/RotMatrix.h"
 #include "game/SpriteParams.h"
 
-// Animation lengths in frames (.data 0x804A1B70, not written as source here), indexed by
-// field_0x270 + field_0x264.
-extern const s32 lbl_804A1B70[];
+// Animation lengths in frames (.data 0x804A1B70), indexed by field_0x270 + field_0x264.
+s32 lbl_804A1B70[] = {
+    8, 8, 8, 8, 8, 8,
+    6, 9, 13, 17, 9, 6, 6, 8,
+    4, 4, 4, 4,
+    7, 7, 8, 11, 14, 12, 10, 20,
+    4, 4, 4, 4,
+    8, 8, 9, 10, 11, 13, 16, 26,
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    8, 8, 8, 8, 8, 8, 0,
+    7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 20,
+    3, 3, 3, 3,
+    0, 1, 2, 1,
+    0, 1, 2, 3, 4,
+    0, 1, 2, 3, 4,
+    6, 6, 6, 6, 6, 6, 6, 6, 6, 40,
+    0, 5, 6, 7, 8,
+    5, 5, 5, 5, 40,
+};
 // Sprite names of the animation frames (.data 0x804A1D24), indexed like lbl_804A1B70.
-extern const char* const lbl_804A1D24[];
+const char* lbl_804A1D24[] = {
+    "boss_p_fly_01.bti",
+    "boss_p_fly_02.bti",
+    "boss_p_fly_03.bti",
+    "boss_p_fly_04.bti",
+    "boss_p_fly_03.bti",
+    "boss_p_fly_02.bti",
+    "boss_p_sui_01.bti",
+    "boss_p_sui_02.bti",
+    "boss_p_sui_03.bti",
+    "boss_p_sui_04.bti",
+    "boss_p_sui_05.bti",
+    "boss_p_sui_06.bti",
+    "boss_p_sui_07.bti",
+    "boss_p_sui_08.bti",
+    "boss_p_sui_loop_01.bti",
+    "boss_p_sui_loop_02.bti",
+    "boss_p_sui_loop_03.bti",
+    "boss_p_sui_loop_04.bti",
+    "boss_p_haki_01.bti",
+    "boss_p_haki_02.bti",
+    "boss_p_haki_03.bti",
+    "boss_p_haki_04.bti",
+    "boss_p_haki_05.bti",
+    "boss_p_haki_06.bti",
+    "boss_p_haki_07.bti",
+    "boss_p_haki_08.bti",
+    "boss_p_haki_loop_01.bti",
+    "boss_p_haki_loop_02.bti",
+    "boss_p_haki_loop_03.bti",
+    "boss_p_haki_loop_04.bti",
+    "boss_p_d_01.bti",
+    "boss_p_d_02.bti",
+    "boss_p_d_03.bti",
+    "boss_p_d_04.bti",
+    "boss_p_d_05.bti",
+    "boss_p_d_06.bti",
+    "boss_p_d_07.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_09.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_08.bti",
+    "boss_p_d_09.bti",
+    "boss_p_d_10.bti",
+    "boss_p_d_fly_01.bti",
+    "boss_p_d_fly_02.bti",
+    "boss_p_d_fly_03.bti",
+    "boss_p_d_fly_04.bti",
+    "boss_p_d_fly_05.bti",
+    "boss_p_d_fly_06.bti",
+    "boss_p_sui_mask.bti",
+    "boss_p_odoroki_1.bti",
+    "boss_p_odoroki_2.bti",
+    "boss_p_odoroki_3.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_4.bti",
+    "boss_p_odoroki_5.bti",
+    "boss_p_odoroki_6.bti",
+    "boss_p_odoroki_fly_1.bti",
+    "boss_p_odoroki_fly_2.bti",
+    "boss_p_odoroki_fly_3.bti",
+    "boss_p_odoroki_fly_2.bti",
+};
 JGeometry::TVec3f lbl_804C18B8;
 extern s32 lbl_80539FC8;
 extern s32 lbl_80539FCC;
@@ -160,7 +252,6 @@ void cls_804A1E50::init() {
     }
 }
 
-// FIXME(shotgun): 99.92 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018E30C(s32 anim) {
     JGeometry::TVec3f pos;
     pos.set(mPos);
