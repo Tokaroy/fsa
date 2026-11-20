@@ -559,8 +559,7 @@ void cls_804AE4B0::fn_80370C18() {
 }
 
 // FIXME(shotgun): 94.17 %, different + reloc-name; behaviour drift.
-// Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original;
-// (field_0x83 & 3) == 2 is an unsigned compare there (field type not known).
+// Left: field_0x4 is loaded before the pos copy for fn_8038BD08 in the original.
 void cls_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
@@ -579,7 +578,8 @@ void cls_804AE4B0::fn_80370A7C() {
             fn_8022CA6C(0, 5, false);
             mState = 7;
             fn_80371D50(lbl_80474F20[field_0x394]);
-            if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+            u32 mode = gGameRoot_8053AAF8->field_0x83 & 3;
+            if (mode == 2) {
                 lbl_8053AED0->fn_8043D67C(0x50B, 0, 0);
             } else {
                 lbl_8053AED0->fn_8043D67C(0x50C, 0, 0);
