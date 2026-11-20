@@ -31,21 +31,15 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scale) {
     m[2][2] = scale * (cx * cy);
 }
 
-// FIXME: 97.39 %, missing/extra; behaviour near.
-// The flags test loads 0x90 into r3 and the oris reuses it; the
-// original loads it into r0 for the test and reloads 0x90 (r31) for the oris.
+// r3/r4 swapped for res and res->mSizeX in mBox.set.
+// FIXME: 99.74 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::init() {
-    if (((field_0x90 >> 17) & 0x1F) == 0) {
-        field_0x90 = field_0x90 | 0x20000;
+    if (((getField_0x90() >> 17) & 0x1F) == 0) {
+        field_0x90 |= 0x20000;
     }
     field_0x23c = gGameRoot_8053AAF8->field_0xa4->getResource(0x3F3F3F3F /* "????": a char constant would be a trigraph */, lbl_804A6F48[getMode()]);
     ResTIMG* res = static_cast<ResTIMG*>(field_0x23c);
-    u16 sizeX = res->mSizeX;
-    u16 sizeY = res->mSizeY;
-    mBox.i.x = -(s32)sizeX / 2;
-    mBox.i.y = -(s32)sizeY / 2;
-    mBox.f.x = sizeX / 2;
-    mBox.f.y = sizeY / 2;
+    mBox.set(-res->mSizeX / 2, -res->mSizeY / 2, res->mSizeX / 2, res->mSizeY / 2);
     mLife = 0;
     field_0x230 = 0;
     field_0x238 = 0;
@@ -66,7 +60,7 @@ void Lift_804A6F6C::init() {
     }
 }
 
-// FIXME(shotgun): 79.37 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 84.92 %, missing/extra; behaviour drift.
 // the player-position vector arithmetic, the atan2 argument order and the tile-index math are scheduled differently
 bool Lift_804A6F6C::fn_802565BC(s32 index) {
     if (field_0x4 != getPlayerLayer_8023DE58(index)) {
@@ -79,7 +73,7 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
         p.z = 0.0f;
         s32 angle = JMath::atanTable_.atan2_(p.y, p.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
         angle -= field_0x238;
-        f32 len = JGeometry::TVec2f(p.x, p.y).length();
+        f32 len = JGeometry::TUtil<f32>::sqrt(p.x * p.x + p.y * p.y);
         p.set(len * JMath::sincosTable_.cosShort(angle), len * JMath::sincosTable_.sinShort(angle), 0.0f);
         bool inside = false;
         if (p.x >= mBox.i.x && p.y >= mBox.i.y && p.x < mBox.f.x && p.y < mBox.f.y) {
@@ -87,8 +81,8 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
         }
         if (inside) {
             ResTIMG* res = static_cast<ResTIMG*>(field_0x23c);
-            s32 px = (s32)p.x + (res->getWidth() >> 1);
-            s32 py = (s32)p.y + (res->getHeight() >> 1);
+            s32 px = (s32)p.x + res->mSizeX / 2;
+            s32 py = (s32)p.y + res->mSizeY / 2;
             bool hit = false;
             if (px >= 0 && px < res->getWidth() && py >= 0 && py < res->getHeight()) {
                 switch (res->mTextureFormat) {
@@ -99,9 +93,9 @@ bool Lift_804A6F6C::fn_802565BC(s32 index) {
                         s32 offset = (((px >> 3) + (py >> 3) * tilesPerRow) << 6) + ((py & 7) << 3) + (px & 7);
                         const u8* base = (const u8*)res;
                         const u8* image = base + res->mImageDataOffset;
-                        const u16* palette = (const u16*)(base + res->mPaletteOffset);
                         u8 byte = image[offset >> 1];
-                        u32 paletteIndex = (px & 1) == 0 ? (byte >> 4) & 7 : byte & 7;
+                        u32 paletteIndex = (px & 1) ? (byte & 7) : ((byte >> 4) & 7);
+                        const u16* palette = (const u16*)(base + res->mPaletteOffset);
                         u16 color = palette[paletteIndex & 0xFF];
                         if ((color & 0x8000) || (color & 0xF000) == 0x7000) {
                             hit = true;
@@ -177,10 +171,8 @@ void Lift_804A6F6C::fn_80256410() {
     mPos.y = mSpawnPos.y + 64.0f * JMath::sincosTable_.sinShort(field_0x23a);
 }
 
-// FIXME: 88.98 %, missing/extra; behaviour drift.
-// The frame is 0xA4 (original 0x80): the diff/d/push
-// temporaries and the operator- results take more stack than the original;
-// this sits in r31 and i in r30 (original: r30 and r31).
+// Stack slot order and f4/f5 regalloc around sqrt/sincos still differ.
+// FIXME: 99.17 %, operands; behaviour clean.
 void Lift_804A6F6C::update() {
     if (field_0x90 >> 27 == 0 || vfunc_0x34() == true) {
         fn_80256410();
@@ -192,33 +184,32 @@ void Lift_804A6F6C::update() {
         if (field_0x90 >> 27 != 0 && vfunc_0x34() != true) {
             continue;
         }
-        JGeometry::TVec3f diff(mPos - mPrevPos);
-        fn_8023DF68(i, &diff);
+        fn_8023DF68(i, &(mPos - mPrevPos));
         if (getMode() >= 6) {
             continue;
         }
         JGeometry::TVec3f d = mPos - *getPlayerPos_8023E724(i);
-        s32 angle = JMath::atanTable_.atan2_(d.x, d.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
-        f32 len = JGeometry::TVec2f(d.x, d.y).length();
+        d.z = 0.0f;
+        s32 angle = JMath::atanTable_.atan2_(d.y, d.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+        f32 len = JGeometry::TUtilf::sqrt(d.x * d.x + d.y * d.y);
         s16 a = angle - 0x40;
-        JGeometry::TVec3f push = JGeometry::TVec3f(len * JMath::sincosTable_.cosShort(a), len * JMath::sincosTable_.sinShort(a), 0.0f) - d;
-        fn_8023DFF4(i, &push);
+        JGeometry::TVec3f v(len * JMath::sincosTable_.cosShort(a), len * JMath::sincosTable_.sinShort(a), 0.0f);
+        fn_8023DFF4(i, &(v - d));
     }
 }
 
-// FIXME: 84.93 %, scheduling+regalloc + reloc-name; behaviour clean.
-// Same instructions; scheduling: MWCC places the reset
-// stores' li r9/r8 before the 0.0 lfs that the original loads first.
+// Float regalloc in setRotScaleMtxS16 (f8-f12) still differs.
+// FIXME: 99.23 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
-    params.mMtx = mtx;
-    params.field_0x21 = 1;
-    params.field_0x1d = -2;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     setRotScaleMtxS16(mtx, 0, field_0x238, 0, 1.0f);
+    params.mMtx = mtx;
+    params.field_0x21 = 1;
+    params.field_0x1d = -2;
     const char* name = lbl_804A6F48[getMode()];
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
