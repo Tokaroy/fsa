@@ -916,11 +916,11 @@ void cls_804ADF28::fn_80364900() {
 
 // FIXME(shotgun): 97.46 %, different; behaviour drift.
 void cls_804ADF28::fn_803645B4() {
+    JGeometry::TVec3f target;
     if (field_0x248 == 0 || field_0x238 != 0) {
         if (field_0x238 == 0) {
-            s32 slot = field_0x24c;
-            if (slot >= 0) {
-                ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
+            if (field_0x24c >= 0) {
+                ActorBase_804A5770* owl = getActorManager_801F856C()->getActor(field_0x24c);
                 if (owl != NULL) {
                     owl->mAlive = false;
                 }
@@ -929,7 +929,7 @@ void cls_804ADF28::fn_803645B4() {
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'RUPY') {
-                    JGeometry::TVec3f target = actor->mPos;
+                    target = actor->mPos;
                     target.y += 4.0f;
                     if (actor->mPos.z == 0.0f && PSVECDistance(&mPos, &target) < 80.0f &&
                         PSVECDistance(&mPos, &target) > 30.0f) {
@@ -940,7 +940,7 @@ void cls_804ADF28::fn_803645B4() {
                         field_0x264 = 0;
                         field_0x268 = 0;
                         field_0x25c = 3;
-                        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+                        u16 angle = (s16)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                         if (angle >= 0x2000 && angle < 0x6000) {
                             field_0x23c = 0;
                         } else if (angle >= 0x6000 && angle < 0xa000) {
@@ -959,7 +959,7 @@ void cls_804ADF28::fn_803645B4() {
         } else {
             mPos.add(field_0x3c);
             fn_801F2618(NULL, false);
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[field_0x24c];
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(field_0x24c);
             if (actor == NULL) {
                 field_0x24c = -1;
                 field_0x238 = 0;
@@ -973,7 +973,7 @@ void cls_804ADF28::fn_803645B4() {
                     }
                     field_0x25c = lbl_80474B68[field_0x264];
                 }
-                JGeometry::TVec3f target = actor->mPos;
+                target = actor->mPos;
                 target.y += 4.0f;
                 if (PSVECDistance(&mPos, &target) < 4.0f) {
                     field_0x238 = 0;
