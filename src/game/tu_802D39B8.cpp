@@ -318,7 +318,8 @@ bool fn_802DEBA0(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    if ((getGameView_802D6A9C()->field_0x4 == 9 && getGameView_802D6A9C()->field_0x8 == 3) ||
+    GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
+    if ((sub->mView->field_0x4 == 9 && sub->mView->field_0x8 == 3) ||
         getGameView_802D6A9C()->field_0x4 >= 13) {
         return true;
     }
