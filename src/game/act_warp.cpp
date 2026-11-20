@@ -426,6 +426,7 @@ void Warp_804A6DC8::update() {
 }
 
 // 0x80227CE8.
+// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
     static const f32 lbl_8046AC58[24] = {
         0.0f, 1.0f,  2.0f,  1.0f,  0.0f, -0.9f, -1.8f, -0.9f,
@@ -607,7 +608,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
 
 // 0x80227290. The serial of a live actor on the warp's layer (not excludeSerial, one of `ids`, within
 // maxDz in z unless the layer ignores z) whose box overlaps the warp's, or -1.
-// FIXME(shotgun): 72.18 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 88.30 %, different; behaviour clean.
 s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
     s32 found = -1;
     u8 anyZ = viewLayerFlag(field_0x4);
