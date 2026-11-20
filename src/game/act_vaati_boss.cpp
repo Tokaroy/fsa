@@ -656,8 +656,12 @@ void VaatiBoss_804A4958::vfunc_0x94() {
 // FIXME(shotgun): 93.96 %, missing/extra; behaviour clean.
 void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
     if (!(mFlags & 0x2000)) {
-        if (mState >= 1 && mState < 4) {
+        switch (mState) {
+        case 1:
+        case 2:
+        case 3:
             startSound_801F0E34(0x4005E, 0);
+            break;
         }
         if (field_0x5ce != 0) {
             field_0x5ce--;
@@ -676,18 +680,25 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
         field_0x4c4.fn_801D6E20(&mPos);
         if (mLife > 0 && !(mFlags & 7) && mState != 0xB && mState != 0x17) {
             startSound_801F0E34(0x4005E, 0);
-            if (mState >= 0xC && mState < 0xE) {
+            switch (mState) {
+            case 0xC:
+            case 0xD:
                 startSound_801F0E34(0x4005F, 0);
+                break;
             }
         }
     }
     bool step = false;
-    if (mState >= 8) {
+    switch (mState) {
+    case 6:
+    case 7:
+        step = true;
+        break;
+    default:
         if (!(mFlags & 7)) {
             step = true;
         }
-    } else if (mState >= 6) {
-        step = true;
+        break;
     }
     if (step) {
         fn_801CE2BC(mapHit);
