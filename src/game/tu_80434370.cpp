@@ -336,11 +336,9 @@ void cls_804B16A8::fn_804361A8() {
     fn_80435E20();
 }
 
-// FIXME(shotgun): 97.48 %, missing/extra; behaviour drift.
 void cls_804B16A8::fn_80435E20() {
     if (field_0x60 == 0) {
-        field_0x5e--;
-        if (field_0x5e <= 0) {
+        if (--field_0x5e <= 0) {
             field_0x5e = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
             if (field_0x66 == -6) {
                 field_0x66 = 6;
@@ -357,8 +355,8 @@ void cls_804B16A8::fn_80435E20() {
         rotateArrowPane(field_0xc[0]->mPane, (f32)(field_0x62 + field_0x66));
         rotateArrowPane(field_0xc[1]->mPane, (f32)(field_0x64 + field_0x66));
     }
+    s32 t;
     if (field_0x60 < 0) {
-        s32 t;
         if (field_0x60 > -5) {
             t = -field_0x60;
         } else {
@@ -373,8 +371,9 @@ void cls_804B16A8::fn_80435E20() {
             field_0x60--;
         }
     } else if (field_0x60 > 0) {
-        s32 t = field_0x60;
-        if (field_0x60 >= 5) {
+        if (field_0x60 < 5) {
+            t = field_0x60;
+        } else {
             t = 10 - field_0x60;
             if (field_0x60 == 10) {
                 field_0x60 = 0;
