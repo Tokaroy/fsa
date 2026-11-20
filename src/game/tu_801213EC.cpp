@@ -942,8 +942,6 @@ s32 EscortBase_8049E0C8::fn_80121DB0() {
     return 1;
 }
 
-// FIXME: 92.78 %, missing/extra; behaviour near.
-// The original passes field_0x35c to fn_800FE3EC's u8 parameter without the clrlwi (and keeps this in r6).
 s32 EscortBase_8049E0C8::fn_80121D68() {
     mRail.fn_800FE3EC(field_0x35c, mPos, field_0x4);
     return 1;

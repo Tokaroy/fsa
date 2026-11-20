@@ -6,7 +6,7 @@
 
 // FIXME(shotgun): 97.53 %, scheduling+regalloc; behaviour clean.
 // 0x800FE3EC
-bool cls_800FE3EC::fn_800FE3EC(u8 group, JGeometry::TVec3f pos, int layer) {
+bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
     field_0x0 = group;
     clear();
     s32 count = 0;

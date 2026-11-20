@@ -14,7 +14,7 @@ public:
     // The current element.
     cls_800FE3EC* fn_80214244();
     void fn_80214254(u8);
-    void fn_8021425C(u8, u8, const JGeometry::TVec3f&, int);
+    void fn_8021425C(u8, int, const JGeometry::TVec3f&, int);
     void fn_802142A8();
 
     /* 0x000 */ cls_800FE3EC field_0x0[2];
