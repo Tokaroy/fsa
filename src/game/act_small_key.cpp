@@ -1202,14 +1202,16 @@ bool SmallKey_804A8CD8::fn_802C2300(u8 playerBits) {
 }
 
 // 0x802C2154.
-// FIXME(shotgun): 97.93 %, different; behaviour drift.
 bool SmallKey_804A8CD8::fn_802C2154() {
     JGeometry::TBox2f ours(mBox);
     ours.i.x -= 4.0f;
     ours.i.y -= 4.0f;
     ours.f.x += 4.0f;
     ours.f.y += 4.0f;
-    ours.addPos(mPos.x, mPos.y);
+    ours.i.x += mPos.x;
+    ours.i.y += mPos.y;
+    ours.f.x += mPos.x;
+    ours.f.y += mPos.y;
     s32 serial = -1;
     while (true) {
         serial = getActorManager_801F856C()->fn_801F78F4('WARP', serial);
@@ -1220,11 +1222,15 @@ bool SmallKey_804A8CD8::fn_802C2154() {
         if (other == NULL || field_0x4 != other->field_0x4) {
             continue;
         }
-        if ((other->field_0x90 & 0x7F) != 4) {
+        s32 kind = other->field_0x90 & 0x7F;
+        if (kind != 4) {
             continue;
         }
         JGeometry::TBox2f theirs(other->mBox);
-        theirs.addPos(other->mPos.x, other->mPos.y);
+        theirs.i.x += other->mPos.x;
+        theirs.i.y += other->mPos.y;
+        theirs.f.x += other->mPos.x;
+        theirs.f.y += other->mPos.y;
         if (theirs.intersect(ours)) {
             field_0x2b0 = true;
             return true;
