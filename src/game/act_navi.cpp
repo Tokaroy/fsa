@@ -218,13 +218,7 @@ void cls_804A6708::fn_8021E4F8() {
     fn_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
     fn_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
     JGeometry::TVec2f goal = field_0x2c8 + d;
-    bool follow2 = false;
-    if (mState == 7) {
-        if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
-            follow2 = true;
-        }
-    }
-    if (follow2) {
+    if (mState == 7 && isFollowing()) {
         fn_801CD754(&field_0x2c0, &goal, 0.3f, 1.0f, 4.0f);
     } else {
         field_0x2c0 = goal;

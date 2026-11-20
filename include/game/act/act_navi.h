@@ -47,6 +47,14 @@ public:
         return ret;
     }
 
+    bool isFollowing() const {
+        bool ret = false;
+        if (field_0x2b4 >= 0 && (mFlags & 0x30000)) {
+            ret = true;
+        }
+        return ret;
+    }
+
     // 0x8021DFAC: state transition helper.
     void fn_8021DFAC(s32 newState);
     // 0x8021E4F8.
