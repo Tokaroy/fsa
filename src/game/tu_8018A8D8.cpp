@@ -82,7 +82,6 @@ void cls_804A1E50::fn_8018E894(s32 value) {
     field_0x234 = value;
 }
 
-// FIXME(shotgun): 92.81 %, scheduling+regalloc + reloc-name; behaviour clean.
 void cls_804A1E50::init() {
     field_0x80.i.x = -8.0f;
     field_0x80.i.y = -8.0f;
@@ -160,7 +159,7 @@ void cls_804A1E50::init() {
     }
 }
 
-// FIXME(shotgun): 97.85 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.92 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018E30C(s32 anim) {
     JGeometry::TVec3f pos;
     pos.set(mPos);
@@ -240,7 +239,7 @@ void cls_804A1E50::fn_8018E30C(s32 anim) {
     field_0x234 = lbl_804A1B70[field_0x270 + field_0x264];
 }
 
-// FIXME(shotgun): 99.81 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.88 %, reloc-name; behaviour drift.
 void cls_804A1E50::fn_8018DFCC() {
     f32 x = mPos.x;
     f32 y = mPos.y;
@@ -427,7 +426,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
     }
 }
 
-// FIXME(shotgun): 96.41 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 bool cls_804A1E50::fn_8018DA6C() {
     if (field_0x27b == 1) {
         return false;
@@ -473,7 +472,7 @@ cls_804A1E50::~cls_804A1E50() {
     }
 }
 
-// FIXME(shotgun): 97.29 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.40 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A1E50::update() {
     JGeometry::TBox2f box50;
     fn_8017EC5C(&box50, -30.0f, -30.0f, 30.0f, 30.0f);
