@@ -350,7 +350,7 @@ TRIED = set()  # with --any-tier: (unit, fn) this worker's tier already had a se
 
 def tried(tier):
     return {(d["unit"], d["fn"]) for d in (dict(zip(COLS, r)) for r in ledger_rows() if len(r) >= len(COLS))
-            if d["tier"] == tier and d["fn"] not in ("-", "")}
+            if d["tier"] == tier and d["fn"] not in ("-", "") and d["out"] not in ("0", "")}  # not quota deaths
 
 
 def eligible(fns, unit, tier, lanes, lo, hi, hist):
@@ -1463,7 +1463,8 @@ def cmd_worker(args):
     (LOGS / "pids").mkdir(parents=True, exist_ok=True)
     if not args.ignore_stop:  # the watchdog's hard stop goes by these
         (LOGS / "pids" / f"{owner}.pid").write_text(str(os.getpid()))
-    more = lambda: (args.ignore_stop or not HALT.exists()) and (not args.sessions or done < args.sessions)
+    more = lambda: ((args.ignore_stop or not HALT.exists()) and (not args.sessions or done < args.sessions)
+                    and not (tier in GEMINI and HALT_GEMINI.exists()))  # quota: no dead sessions on the rest of the unit
     loaded = Path(__file__).stat().st_mtime
     while more():
         if Path(__file__).stat().st_mtime != loaded and not args.sessions:
