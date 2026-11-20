@@ -1002,7 +1002,7 @@ void SmallKey_804A8CD8::fn_802C2B64() {
 }
 
 // 0x802C2840.
-// FIXME(shotgun): 92.00 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2840() {
     if (viewLayerFlag(field_0x4) != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
         field_0x298 = -1;
@@ -1097,7 +1097,6 @@ bool SmallKey_804A8CD8::fn_802C2684(ActorBase_804A5770* other, JGeometry::TBox2f
 }
 
 // 0x802C24A8.
-// FIXME(shotgun): 98.74 %, regalloc-only; behaviour clean.
 void SmallKey_804A8CD8::fn_802C24A8() {
     JGeometry::TBox2f ours(mBox);
     ours.addPos(mPos.x, mPos.y);
@@ -1241,7 +1240,7 @@ bool SmallKey_804A8CD8::fn_802C2154() {
 }
 
 // 0x802C1EC4.
-// FIXME(shotgun): 93.96 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 98.96 %, missing/extra; behaviour near.
 void SmallKey_804A8CD8::draw() {
     if (field_0x27c != 8 && field_0x2b4 != 0 && field_0x280 < 16 && field_0x240 >= 2) {
         SpriteParams_801F5AE0 params;
