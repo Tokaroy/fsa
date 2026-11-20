@@ -223,10 +223,12 @@ void cls_804B16A8::fn_8043670C(u8 arg) {
     }
 }
 
-// FIXME(shotgun): 97.14 %, different; behaviour near.
 s32 cls_804B16A8::fn_804366B8() {
     (this->*lbl_804B1690[field_0x6b])();
-    return field_0x6b == 2;
+    if (field_0x6b != 2) {
+        return 0;
+    }
+    return 1;
 }
 
 void cls_804B16A8::fn_80436668() {
