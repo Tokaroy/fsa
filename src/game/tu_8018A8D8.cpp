@@ -47,6 +47,7 @@ JGeometry::TBox2f* fn_801826A4(s32 layer);
 AudioMgr_8045A080* fn_8018A6AC();
 s32 fn_8018A660();
 void fn_8018A63C();
+u16 angleOf(f32 x, f32 y);
 
 static inline void stopEmitter(JPABaseEmitter*& emitter) {
     if (emitter != NULL) {
@@ -376,7 +377,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
         f32 py = mPos.y - 32.0f;
         f32 dx = getPlayerPos_8023E724(i)->x - px;
         f32 dy = getPlayerPos_8023E724(i)->y - py;
-        u16 angle = JMath::atanTable_.atan2_(dx, dy) * 10430.378f;
+        u16 angle = angleOf(dx, dy);
         if (mode != 1 && angle >= 0x2000 && angle < 0xE000) {
             continue;
         }
@@ -460,6 +461,13 @@ bool cls_804A1E50::fn_8018DA6C() {
         field_0x284 = 100.0f;
     }
     return false;
+}
+
+// A plain function that fn_8018DC70 inlines and whose own copy the linker dropped: the
+// original's .sdata2 has 10430.378f between update's literals and fn_8018DA6C's, so it was
+// generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
+u16 angleOf(f32 x, f32 y) {
+    return JMath::atanTable_.atan2_(x, y) * 10430.378f;
 }
 
 cls_804A1E50::~cls_804A1E50() {
