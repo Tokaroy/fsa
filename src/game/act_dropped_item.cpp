@@ -29,6 +29,7 @@ inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::T
     fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
+// FIXME: 97.66 %, missing/extra; behaviour clean.
 // FIXME: missing/extra (ours has 1 more instruction: mr r29, r4 in the fn_802D6F38 key
 // build, plus hit.x/hit.y vs 0.0f load order in the `!= 0.0f` tests).
 void DroppedItem_804A8C80::init() {
@@ -144,6 +145,7 @@ void DroppedItem_804A8C80::vfunc_0x40() {
     field_0x250 = 1;
 }
 
+// FIXME: 99.42 %, scheduling+regalloc; behaviour clean.
 // FIXME: scheduling+regalloc (`hit.x != 0.0f` / `hit.y != 0.0f` load 0.0f before hit.x/hit.y, and v270/v264 swap r29/r31).
 void DroppedItem_804A8C80::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
