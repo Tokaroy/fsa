@@ -126,7 +126,7 @@ void SeesawLift_804AD348::init() {
     fillTiles(0);
 }
 
-// FIXME: 90.99 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.59 %, regalloc-only; behaviour clean.
 // float registers of the box test and the operand order of the layer compare differ
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_8022D75C(player)) {
@@ -177,7 +177,7 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     return 0;
 }
 
-// FIXME: 90.25 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.44 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): scheduling of the player loop differs; literal names differ
 s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_8022D75C(player)) {
@@ -225,7 +225,7 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     return 0;
 }
 
-// FIXME(shotgun): 94.29 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.71 %, different; behaviour clean.
 // the branches on field_0x240
 void SeesawLift_804AD348::fn_8035AA54() {
     u8 near = 0;
@@ -285,7 +285,7 @@ void SeesawLift_804AD348::fn_8035AA54() {
 // Not auto-inlined: fn_8035AC84 and fn_8035AE9C call fn_8035A860 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 85.48 %, missing/extra; behaviour drift.
+// FIXME: 87.56 %, scheduling+regalloc; behaviour clean.
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
         f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
