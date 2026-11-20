@@ -495,7 +495,6 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 99.66%. regalloc-only: the mirrored box x pair (fneg of mBox.f.x / mBox.i.x) uses swapped f registers.
 void Floormaster_804A6004::vfunc_0x94() {
     if (mState == 4) return;
     EnemyBase_804A4808::vfunc_0x94();
@@ -516,10 +515,10 @@ void Floormaster_804A6004::vfunc_0x94() {
         break;
     }
     if (mFlags & 0x8000) {
-        f32 minX = -mBox.f.x;
-        f32 maxX = -mBox.i.x;
-        mBox.i.x = minX;
-        mBox.f.x = maxX;
+        f32 maxX = mBox.f.x;
+        f32 minX = mBox.i.x;
+        mBox.i.x = -maxX;
+        mBox.f.x = -minX;
     }
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
