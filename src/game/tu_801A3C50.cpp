@@ -412,8 +412,11 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
     return result;
 }
 
+static inline f32 getRandFX(f32 max) {
+    return max - 2.0f * max * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+}
+
 // 0x801A4FB4.
-// FIXME(shotgun): 99.98 %, operands; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4FB4() {
     s32 kind = (field_0xb0 >> 12) & 0xF;
     if (kind == 0) {
@@ -446,10 +449,10 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
     if (field_0xd4 == 1) {
         switch (kind) {
         case 1:
-            z = 5.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            z = 5.0f + getRandFX(1.0f);
             break;
         case 2:
-            z = 2.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            z = 2.0f + getRandFX(1.0f);
             break;
         case 3:
             if (mLife - 10 <= 0) {
