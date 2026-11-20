@@ -1783,16 +1783,18 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
         if (params != NULL) {
             sp = *params;
         }
-        if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
+        s32 total = field_0xdc;
+        s32 excess = total - 0x19;
+        if (field_0xd8 > excess || total < 0x19) {
             s32 v;
-            if (field_0xdc < 0x19) {
-                v = field_0xd8 * 0xFF / field_0xdc;
+            if (total < 0x19) {
+                v = field_0xd8 * 0xFF / total;
             } else {
-                v = (field_0xd8 - (field_0xdc - 0x19)) * 0xFF / 25;
+                v = (field_0xd8 - excess) * 0xFF / 25;
             }
             if (field_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
-                v = v > 0 ? v : 0;
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 sp.field_0x14.r += v;
