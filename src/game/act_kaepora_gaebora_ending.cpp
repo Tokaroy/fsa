@@ -776,20 +776,21 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
     }
     params.field_0x1f = 0;
     Mtx mtx;
-    s16 angle = field_0x254 - lbl_805429F8[field_0x274];
+    // The original narrows field_0x254 to u16 before the subtraction (clrlwi at +0x1DC).
+    s16 angle = (u16)field_0x254 - lbl_805429F8[field_0x274];
     f32 s = JMath::sincosTable_.sinShort(angle);
     f32 c = JMath::sincosTable_.cosShort(angle);
-    mtx[0][0] = c;
-    mtx[0][1] = 0.0f;
-    mtx[0][2] = s;
-    mtx[0][3] = 0.0f;
-    mtx[1][0] = 0.0f;
-    mtx[1][1] = 1.0f;
-    mtx[1][2] = 0.0f;
-    mtx[1][3] = 0.0f;
-    mtx[2][0] = -s;
     mtx[2][1] = 0.0f;
+    mtx[1][1] = 1.0f;
+    mtx[0][2] = s;
+    mtx[0][0] = c;
+    mtx[2][0] = -s;
     mtx[2][2] = c;
+    mtx[1][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[0][1] = 0.0f;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.mMtx = mtx;
     if (!shadow) {
@@ -798,8 +799,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x23C + 0x3E0, &params, -1, 1.0f, 1.0f);
         params.field_0x1c = 0;
         params.field_0x1d = -1;
+        s32 frame = field_0x23C + 0x3E0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", field_0x23C + 0x3E0, NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
     }
 }
