@@ -959,15 +959,12 @@ void EnemyBase_804A4808::update() {
     }
 }
 
-// FIXME: 99.41 %, regalloc-only; behaviour clean.
-// regalloc only: the target loads pos->x into f2 and
-// pos->z into f0, ours the other way round.
 // Starts sound `soundId` as if this actor were at *pos on `layer`.
 void EnemyBase_804A4808::fn_801CDCD0(s32 layer, const JGeometry::TVec3f* pos, u32 soundId) {
     s32 savedLayer = field_0x4;
     JGeometry::TVec3f savedPos = mPos;
     field_0x4 = layer;
-    mPos.set(pos->x, pos->y, pos->z);
+    mPos.set(*pos);
     startSound_801F0E34(soundId, 0);
     field_0x4 = savedLayer;
     mPos.set(savedPos.x, savedPos.y, savedPos.z);
