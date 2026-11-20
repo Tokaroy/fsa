@@ -1915,7 +1915,7 @@ void FileSelect_804AFF60::fn_803C9898() {
     s16 inDelay = lbl_8050DB0C.field_0x4c[0xC7];
     s16 inFrames = lbl_8050DB0C.field_0x4c[0xC8];
     s32 boardEnd = boardDelay + boardFrames;
-    s32 end = buttonDelay + (buttonFrames + buttonStep);
+    s32 end = buttonDelay + buttonFrames + buttonStep;
     if (inDelay < boardEnd) {
         inDelay = boardEnd;
     }
