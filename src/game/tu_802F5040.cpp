@@ -3107,8 +3107,7 @@ f32 fn_802F5FF4(f32 z) {
 }
 
 // FIXME: 98.66 %, regalloc-only; behaviour clean.
-// Register allocation only: the 8.0f literal and field_0x2368.y swap
-// f5/f6 (and 0.125f is in f6, not f7); the ix * 0xC / iy * 0x30C products swap r0/r3.
+// Register allocation only: the 8.0f literal and field_0x2368.y swap f5/f6 (and fy is in f6, not f7).
 f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
     if (field_0xc21c > 0 && pos->x >= field_0x2368.x &&
@@ -3119,9 +3118,9 @@ f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
         f32 dy = pos->y - field_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
+        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 top = p[0].z * (1.0f - fx) + p[1].z * fx;
         f32 bottom = (1.0f - fx) * p[65].z + fx * p[66].z;
         z += (1.0f - fy) * top + fy * bottom;
@@ -3143,9 +3142,9 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
         f32 dy = pos->y - field_0x2368.y;
         s32 ix = 0.125f * dx;
         s32 iy = 0.125f * dy;
-        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         f32 fx = 0.125f * (dx - 8.0f * ix);
         f32 fy = 0.125f * (dy - 8.0f * iy);
+        JGeometry::TVec3f* p = &field_0x100[field_0x2388][iy][ix];
         JGeometry::TVec3f v;
         v.set(p[0]);
         v.scale(1.0f - fx);
