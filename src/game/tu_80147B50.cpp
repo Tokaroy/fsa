@@ -13,10 +13,15 @@
 #include "game/act/tu_80147B50.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Tables of the 'DGTL' actor (not written as source here): .data 0x8049F630 emitter ids per
-// direction, 0x8049F640 trail indices, 0x8049F698 resource names (.rodata strings);
+// Tables of the 'DGTL' actor (the rest not written as source here): .data 0x8049F630 emitter
+// ids per direction (below), 0x8049F640 trail indices, 0x8049F698 resource names (.rodata strings);
 // .sdata 0x80539F60 a segment-sprite order.
-extern const u16 lbl_8049F630[];
+u16 lbl_8049F630[][2] = {
+    {0x11F, 0x120},
+    {0x123, 0x124},
+    {0x11D, 0x11E},
+    {0x121, 0x122},
+};
 extern const s32 lbl_8049F640[14];
 extern const s32 lbl_8049F678[8]; // .data 0x8049F678: rupee kind per segment (-1: none)
 extern const char* const lbl_8049F698[];
@@ -208,7 +213,7 @@ bool cls_8049F6C8::fn_80149FDC() {
     }
     if (field_0x24c == 0) {
         field_0x24c = 300 - field_0x250;
-        field_0x24c = (s32)(0.2f * field_0x24c);
+        field_0x24c *= 0.2f;
         if (field_0x24c < 8) {
             field_0x24c = 8;
         }
@@ -235,18 +240,19 @@ bool cls_8049F6C8::fn_80149FDC() {
         return false;
     }
     field_0x278 = field_0x27c;
-    s32 tries = 0;
-    while (field_0x27c == field_0x278 && tries < 100) {
-        tries++;
+    s32 i = 0;
+    while (field_0x27c == field_0x278 && i < 100) {
+        i++;
         field_0x278 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x278 &= 3;
     }
     field_0x27c = field_0x278;
-    for (s32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         deleteEmitter(&mEmitters7c0[i]);
     }
-    mEmitters7c0[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[field_0x278 * 2], 0, 0, NULL, NULL, true, 1.0f);
-    mEmitters7c0[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[field_0x278 * 2 + 1], 0, 0, NULL, NULL, true, 1.0f);
+    s32 type = field_0x278;
+    mEmitters7c0[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[type][0], 0, 0, NULL, NULL, true, 1.0f);
+    mEmitters7c0[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8049F630[type][1], 0, 0, NULL, NULL, true, 1.0f);
     if (mState != 1 && mState != 2) {
         startSound_801F0E34(0x400BF, 0);
     }
