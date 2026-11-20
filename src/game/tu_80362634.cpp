@@ -808,7 +808,7 @@ void cls_804ADF28::fn_80364D0C() {
     }
 }
 
-// FIXME(shotgun): 98.27 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.33 %, operands; behaviour drift.
 void cls_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&field_0x3c);
@@ -1511,7 +1511,6 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-// FIXME(shotgun): 99.93 %, same-text; behaviour clean.
 void cls_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
