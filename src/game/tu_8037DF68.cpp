@@ -2340,24 +2340,19 @@ bool fn_8037EC98(s32 player, u16 flags) {
 }
 
 // FIXME: 99.10 %, regalloc-only; behaviour clean.
-// Regalloc only: the volatile registers of window/base pointer still differ (99.1 %).
 void fn_8037EB4C() {
-    MessageWindow_804AF490* window;
     for (s32 i = 0; i < 4; i++) {
-        window = lbl_8053AD78->mWindows[i];
         f32 scale = 1.0f;
-        if ((window->field_0x28 >> 6) & 1) {
+        if ((lbl_8053AD78->mWindows[i]->field_0x28 >> 6) & 1) {
             scale = lbl_8050DB0C.field_0x30[2];
         }
-        f32 width = scale * window->field_0x48->field_0xb8;
-        f32 height = scale * window->field_0x48->field_0xbc;
-        if (window->field_0x24 != 0) {
-            f32 halfH = 0.5f * height;
-            f32 halfW = 0.5f * width;
-            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x - halfW, lbl_8053AD78->field_0x124[i].y - halfH);
-            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x + halfW, lbl_8053AD78->field_0x124[i].y - halfH);
-            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x - halfW, lbl_8053AD78->field_0x124[i].y + halfH);
-            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x + halfW, lbl_8053AD78->field_0x124[i].y + halfH);
+        f32 width = scale * lbl_8053AD78->mWindows[i]->field_0x48->field_0xb8;
+        f32 height = scale * lbl_8053AD78->mWindows[i]->field_0x48->field_0xbc;
+        if (lbl_8053AD78->mWindows[i]->field_0x24 != 0) {
+            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x - 0.5f * width, lbl_8053AD78->field_0x124[i].y - 0.5f * height);
+            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x + 0.5f * width, lbl_8053AD78->field_0x124[i].y - 0.5f * height);
+            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x - 0.5f * width, lbl_8053AD78->field_0x124[i].y + 0.5f * height);
+            lbl_8053AED0->fn_8043DF8C(lbl_8053AD78->field_0x124[i].x + 0.5f * width, lbl_8053AD78->field_0x124[i].y + 0.5f * height);
         }
     }
 }
