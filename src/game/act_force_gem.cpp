@@ -767,7 +767,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
         return;
     }
     bool near = false;
-    if (getGameView_802D6A9C()->getField_0x131df(getField_0x4()) == 0) {
+    if (viewLayerFlag(field_0x4) == 0) {
         if (field_0x230 == 1 || field_0x230 == 9) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023A51C(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {

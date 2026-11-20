@@ -397,7 +397,6 @@ public:
     // in game/tu_802D39B8.cpp.
     /* 0x131DE */ u8 field_0x131de;
     /* 0x131DF */ u8 field_0x131df[0x131EF - 0x131DF];
-    u8 getField_0x131df(s32 layer) const { return field_0x131df[layer]; }
     /* 0x131EF */ u8 field_0x131ef; // fn_802D752C; 2 units read it
     /* 0x131F0 */ u8 field_0x131f0; // fn_802D7440; tu_80301CD0 reads it
     /* 0x131F1 */ u8 field_0x131f1; // read by tu_8013C5C8 (spawnEmitter_8013CC50) and tu_8022461C
