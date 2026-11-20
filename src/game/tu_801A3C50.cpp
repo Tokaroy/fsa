@@ -8,16 +8,17 @@
 #include "game/Effect.h"
 #include "game/GameGlobals.h"
 #include "game/GameView.h"
+#include "game/ViewLayer.h"
 #include "game/Player.h"
 #include "std/math.h"
 
 // 0x801A6160.
-// FIXME(shotgun): 96.89 %, different; behaviour drift.
 s32 ActorBase_804A5770::fn_801A6160() {
+    s32 timer;
     s32 result = 0;
     JGeometry::TBox2f box = mBox2;
     JGeometry::TVec2f pos(mPos.x, mPos.y - mPos.z);
-    s32 timer = field_0xa8;
+    timer = field_0xa8;
     if (timer != 0) {
         if (timer == 30) {
             f32 scale = fn_801EE4F0();
@@ -38,8 +39,8 @@ s32 ActorBase_804A5770::fn_801A6160() {
     if (field_0xb0 == 0 || mLife <= 0) {
         return 0;
     }
-    box.addPos(pos);
     lbl_8053A100 = -1;
+    box.addPos(pos);
     s32 hit;
     if ((hit = fn_801A5400(&box, &pos)) != 0) {
         result = 3;
@@ -412,7 +413,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
 }
 
 // 0x801A4FB4.
-// FIXME(shotgun): 97.06 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.98 %, operands; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4FB4() {
     s32 kind = (field_0xb0 >> 12) & 0xF;
     if (kind == 0) {
@@ -421,7 +422,7 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
     if (field_0xd4 == 0) {
         f32 range = 0.0f;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i) && fn_8023A51C(i) && mPos.z == 0.0f) {
+            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) && fn_8023A51C(i) && !mPos.z) {
                 if (fn_8023725C(i) == 1) {
                     range = 50.0f;
                 } else if (fn_8023725C(i) == 2) {
@@ -441,8 +442,8 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
             }
         }
     }
+    f32 z = 0.0f;
     if (field_0xd4 == 1) {
-        f32 z = 0.0f;
         switch (kind) {
         case 1:
             z = 5.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -489,41 +490,42 @@ s32 fn_801A4F5C(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x801A4D74.
-// FIXME(shotgun): 83.66 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.95 %, scheduling+regalloc; behaviour clean.
 s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     s32 kind = (field_0xb0 >> 8) & 0xF;
     if (kind == 0) {
         return 0;
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
     s32 player = fn_8023AA18(box, field_0x4, pos);
     if (player < 0) {
         return 0;
     }
-    if (kind == 3) {
-        return 0xFF;
-    }
-    if (field_0xd8 == 0) {
-        s32 life = mLife - fn_8023B520(player);
-        field_0x10c = player;
-        if (life <= 0) {
-            life = 0;
-            if (field_0xbc != 3) {
-                fn_801A3C50(player);
-                return 40;
+    if (kind != 3) {
+        if (field_0xd8 == 0) {
+            s32 life = mLife - fn_8023B520(player);
+            field_0x10c = player;
+            if (life <= 0) {
+                life = 0;
+                if (field_0xbc != 3) {
+                    fn_801A3C50(player);
+                    return 40;
+                }
             }
+            mLife = life;
+            fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
+            if (field_0xbc == 3) {
+                field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+            }
+            if (player >= 0) {
+                lbl_8053A100 = player;
+            }
+            vfunc_0x44();
         }
-        mLife = life;
-        fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
-        if (field_0xbc == 3) {
-            field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
-        }
-        if (player >= 0) {
-            lbl_8053A100 = player;
-        }
-        vfunc_0x44();
+    } else {
+        return 0xFF;
     }
     startSound_801F0E34(0x4001E, 0);
     return 30;
@@ -704,16 +706,17 @@ s32 fn_801A46FC(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 } // extern "C"
 
 // 0x801A41D8.
-// FIXME(shotgun): 95.80 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.25 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
+    ActorBase_804A5770* weapon;
     s32 player = fn_8023AD54(box, field_0x4, pos);
     if (player < 0) {
         return 0;
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
-    ActorBase_804A5770* weapon = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B358(player));
+    weapon = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B358(player));
     if (weapon == NULL || weapon->mLife == 0) {
         return 0;
     }
@@ -735,12 +738,11 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
     vfunc_0x44();
     if (!byPlayer) {
         if (kind == 6) {
-            kind = 4;
             bool turned = false;
+            kind = 4;
+            f32 angle = JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x), -(mPos.y - weapon->mPos.y));
             s32 face = field_0x98;
-            if ((face ^ 1) != fn_801F681C((s32)(JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x),
-                                                                         -(mPos.y - weapon->mPos.y)) *
-                                                10430.378f))) {
+            if ((face ^ 1) != fn_801F681C((s32)(angle * 10430.378f))) {
                 turned = true;
             }
             if (!turned) {
@@ -798,9 +800,9 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         if (kind == 9) {
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
+            f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
             s32 face = field_0x98;
-            if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
-                                          10430.378f))) {
+            if (face != fn_801F681C((s32)(angle * 10430.378f))) {
                 kind = 5;
             }
         }
