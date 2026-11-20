@@ -1672,11 +1672,11 @@ void TileMap_804AA858::fn_802FA3FC() {
         {0x366, {0}, 0, 135, 15.0f, 15.0f, 0, {1.0f, 0.0f}, {0.0f, -0.4f}},
     };
 
+    const TileShade_802FA3FC* table;
+    s32 count;
     f32 alphaScale = 1.0f;
     s8 stage = getGameView_802D6A9C()->fn_802D9C4C()[0];
     JUTTexture tex((const ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "circle.bti"), 0);
-    const TileShade_802FA3FC* table;
-    s32 count;
     switch (stage) {
     case 'c':
         table = lbl_804704E8;
@@ -1734,8 +1734,8 @@ void TileMap_804AA858::fn_802FA3FC() {
                     for (s32 x = 0; x < 16 && bx * 16 + x < field_0x2380 / 2; x++) {
                         u16 tile = grid[((by * 2 + bx) * 16 + y) * 16 + x];
                         f32 tileX = 16.0f * (bx * 16 + x) + originX;
-                        const TileShade_802FA3FC* shade = table;
-                        for (s32 i = 0; i < count; shade++, i++) {
+                        for (s32 i = 0; i < count; i++) {
+                            const TileShade_802FA3FC* shade = &table[i];
                             if (shade->mTile != tile) {
                                 continue;
                             }
@@ -1756,7 +1756,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                             }
                             switch (shade->mKind) {
                             case 0: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 vx = shade->mV[0];
@@ -1765,7 +1764,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 uy *= 96.0f;
                                 vx *= 96.0f;
                                 vy *= 96.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                 GXPosition3f32(px, py, 614.4f);
                                 GXTexCoord2f32(0.0f, 0.0f);
@@ -1779,7 +1778,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 break;
                             }
                             case 1: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 vx = shade->mV[0];
@@ -1788,7 +1786,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 uy *= 64.0f;
                                 vx *= 24.0f;
                                 vy *= 24.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 4);
                                 f32 x0 = px - vx;
                                 f32 y0 = py - vy;
@@ -1806,7 +1804,6 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 break;
                             }
                             case 2: {
-                                GXColor color = {0, 0, 0, alpha};
                                 f32 ux = shade->mU[0];
                                 f32 uy = shade->mU[1];
                                 f32 backX = ux;
@@ -1819,7 +1816,7 @@ void TileMap_804AA858::fn_802FA3FC() {
                                 backY *= -4.0f;
                                 vx *= 24.0f;
                                 vy *= 24.0f;
-                                GXSetTevColor(GX_TEVREG0, color);
+                                GXSetTevColor(GX_TEVREG0, (GXColor){0, 0, 0, alpha});
                                 GXBegin(GX_QUADS, GX_VTXFMT0, 8);
                                 f32 x0 = px - vx;
                                 f32 y0 = py - vy;
