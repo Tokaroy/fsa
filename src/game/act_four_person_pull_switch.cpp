@@ -13,11 +13,10 @@ static const s32 lbl_80474E70[15] = {
 
 void FourPersonPullSwitch_804AE230::init() {
     if (((field_0x90 >> 4) & 3) == 0) {
-        u32 param;
         for (s32 i = 0; i < 3; i++) {
             field_0x234[i] = -1;
             s32 idx = i + 1;
-            param = (field_0x90 & 0xF800000F) | (idx << 4);
+            u32 param = (field_0x90 & 0xF800000F) | (idx << 4);
             field_0x234[i] = getActorManager_801F856C()->spawnActor_801F9484(
                 ACTOR_PSW2, field_0x4, &(mPos + JGeometry::TVec3f((f32)idx * 16.0f, 0.0f, 0.0f)), param, -1, -1);
             s32 serial = field_0x234[i];
