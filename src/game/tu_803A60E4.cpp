@@ -17,7 +17,7 @@ inline void cls_804AF860::rotateArrow(u64 tag, s16 base) {
 
 // Fonts, texts and the arrows' base angles of the options screen: the constructor of the
 // object at 0x804AF860 (0x84 bytes).
-// FIXME(shotgun): 95.11 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour near.
 cls_804AF860::cls_804AF860() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     field_0x4 = new J2DScreen;
@@ -45,12 +45,13 @@ cls_804AF860::cls_804AF860() {
     field_0x30 = new PaneCtrl_804AF86C;
     field_0x30->setPane_80402F04(field_0x4->search('Ptopbb07'));
     field_0x34 = lbl_8053AED8->field_0x8;
-    lbl_8053AED8->fn_80440D78((const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti"));
+    const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
+    lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    ((J2DTextBox*)field_0x4->search('Tsi01'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)field_0x4->search('Tsi02'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)field_0x4->search('Tso01'))->setFont(lbl_8053AD78->mFont);
-    ((J2DTextBox*)field_0x4->search('Tso02'))->setFont(lbl_8053AD78->mFont);
+    ((J2DTextBox*)field_0x4->search('Tsi01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tsi02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tso01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tso02'))->setFont(lbl_8053AD78->getFont());
     getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso01'))->getStringPtr(), 0x97, 0, NULL, NULL);
     getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi01'))->getStringPtr(), 0x37, 0, NULL, NULL);
     field_0x4->search('Pocur01')->show();
@@ -79,8 +80,8 @@ cls_804AF860::cls_804AF860() {
     } else {
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi02'))->getStringPtr(), 0x39, 0, NULL, NULL);
     }
-    rotateArrow('Par01', field_0x70);
-    rotateArrow('Par02', field_0x72);
+    field_0x4->search('Par01')->rotate(0.5f * field_0x4->search('Par01')->getWidth(), 0.5f * field_0x4->search('Par01')->getHeight(), J2DROTATE_Z, (f32)(field_0x70 + field_0x74));
+    field_0x4->search('Par02')->rotate(0.5f * field_0x4->search('Par02')->getWidth(), 0.5f * field_0x4->search('Par02')->getHeight(), J2DROTATE_Z, (f32)(field_0x72 + field_0x74));
     field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6c = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6e = 0;
@@ -113,10 +114,11 @@ cls_804AF860::~cls_804AF860() {
 }
 
 // 0x803A7280.
-// FIXME(shotgun): 95.30 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.81 %, regalloc-only; behaviour clean.
 void cls_804AF860::fn_803A7280() {
     field_0x64 = 0;
     field_0x68 = 0;
+    field_0x76 = 0;
     field_0x8->moveFromCentre_80402E08(0.0f, -448.0f);
     field_0x8->field_0x22 = 0;
     for (s32 i = 0; i < 6; i++) {
@@ -145,12 +147,11 @@ void cls_804AF860::fn_803A7280() {
     } else {
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi02'))->getStringPtr(), 0x39, 0, NULL, NULL);
     }
-    rotateArrow('Par01', field_0x70);
-    rotateArrow('Par02', field_0x72);
+    field_0x4->search('Par01')->rotate(0.5f * field_0x4->search('Par01')->getWidth(), 0.5f * field_0x4->search('Par01')->getHeight(), J2DROTATE_Z, (f32)(field_0x70 + field_0x74));
+    field_0x4->search('Par02')->rotate(0.5f * field_0x4->search('Par02')->getWidth(), 0.5f * field_0x4->search('Par02')->getHeight(), J2DROTATE_Z, (f32)(field_0x72 + field_0x74));
     field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6c = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6e = 0;
-    field_0x76 = 0;
     field_0x79 = 0;
     field_0x7a = 10;
     field_0x7b = 0xFF;
@@ -168,8 +169,6 @@ void cls_804AF860::fn_803A71F0() {
 // 0x803A6608. The options screen: left / right choose the arrow, up / down step the pane
 // offsets, the sound mode and the rumble setting toggle with messages 0x98 / 0x99 and
 // 0x38 / 0x39; the six cursor panes blink on a random timer.
-// FIXME(shotgun): 99.59 %, missing/extra; behaviour near.
-// (the blink block's show / hide pattern of the six panes is approximate)
 void cls_804AF860::fn_803A6608() {
     field_0x80 = 5;
     if (!field_0x76) {
@@ -294,8 +293,7 @@ void cls_804AF860::fn_803A6608() {
             }
         }
     }
-    field_0x6a--;
-    if (field_0x6a <= 0) {
+    if (--field_0x6a <= 0) {
         field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
         if (field_0x4->search('Pocur01')->isVisible()) {
             field_0x4->search('Pocur01')->hide();
@@ -345,7 +343,6 @@ s32 fn_803A65EC() {
 }
 
 // 0x803A60E4.
-// FIXME(shotgun): 84.79 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AF860::fn_803A60E4() {
     if (field_0x6e == 0) {
         if (--field_0x6c > 0) {
@@ -357,14 +354,34 @@ void cls_804AF860::fn_803A60E4() {
         } else {
             field_0x74 = -6;
         }
-        rotateArrow('Par01', field_0x70);
-        rotateArrow('Par02', field_0x72);
+        field_0x4->search('Par01')->rotate(
+            0.5f * field_0x4->search('Par01')->getWidth(),
+            0.5f * field_0x4->search('Par01')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x70 + field_0x74)
+        );
+        field_0x4->search('Par02')->rotate(
+            0.5f * field_0x4->search('Par02')->getWidth(),
+            0.5f * field_0x4->search('Par02')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x72 + field_0x74)
+        );
         return;
     }
     if (field_0x6e == 1 || field_0x6e == -1) {
         field_0x74 = 0;
-        rotateArrow('Par01', field_0x70);
-        rotateArrow('Par02', field_0x72);
+        field_0x4->search('Par01')->rotate(
+            0.5f * field_0x4->search('Par01')->getWidth(),
+            0.5f * field_0x4->search('Par01')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x70 + field_0x74)
+        );
+        field_0x4->search('Par02')->rotate(
+            0.5f * field_0x4->search('Par02')->getWidth(),
+            0.5f * field_0x4->search('Par02')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x72 + field_0x74)
+        );
     }
     if (field_0x6e < 0) {
         s32 t;
@@ -376,19 +393,21 @@ void cls_804AF860::fn_803A60E4() {
                 field_0x6e = 0;
             }
         }
-        field_0x24[0]->moveFromCentre_80402E08(-5.0f * (f32)field_0x64 / 25.0f, field_0x60 * (f32)(t * t));
+        field_0x24[0]->moveFromCentre_80402E08(-5.0f * (f32)(t * t) / 25.0f, field_0x60 * (f32)field_0x64);
         if (field_0x6e != 0) {
             field_0x6e--;
         }
     } else if (field_0x6e > 0) {
-        s32 t = field_0x6e;
-        if (field_0x6e >= 5) {
+        s32 t;
+        if (field_0x6e < 5) {
+            t = field_0x6e;
+        } else {
             t = 10 - field_0x6e;
             if (field_0x6e == 10) {
                 field_0x6e = 0;
             }
         }
-        field_0x24[1]->moveFromCentre_80402E08(5.0f * (f32)field_0x64 / 25.0f, field_0x60 * (f32)(t * t));
+        field_0x24[1]->moveFromCentre_80402E08(5.0f * (f32)(t * t) / 25.0f, field_0x60 * (f32)field_0x64);
         if (field_0x6e != 0) {
             field_0x6e++;
         }
