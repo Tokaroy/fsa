@@ -845,7 +845,7 @@ void cls_804B146C::fn_80425128() {
     }
 }
 
-// FIXME(shotgun): 99.62 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.98 %, reloc-name; behaviour clean.
 void cls_804B146C::fn_80424148(s32 player, bool force) {
     f32 prevA = field_0x108[player];
     f32 prevB = field_0x128[player];
