@@ -80,6 +80,7 @@ inline bool Icicle_8049CFC8::checkPlayer() {
     return false;
 }
 
+// FIXME: 98.73 %, scheduling+regalloc; behaviour clean.
 void Icicle_8049CFC8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
