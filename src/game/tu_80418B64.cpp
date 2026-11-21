@@ -382,7 +382,6 @@ static const s16 lbl_8048E144[2][5] = {
     { 0, 0, 0, 0, 0 },
 };
 
-// FIXME(shotgun): 97.28 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -1582,7 +1581,7 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 95.41 %, different; behaviour near.
+// FIXME(shotgun): 95.47 %, different; behaviour clean.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
