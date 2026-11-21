@@ -87,10 +87,10 @@ void PlayerEffect_804A6E20::init() {
 }
 
 // 0x80229F1C.
-// FIXME(shotgun): 97.27 %, missing/extra + reloc-name; behaviour drift.
 void PlayerEffect_804A6E20::update() {
+    const f32 (*table)[2] = lbl_8046ACC8;
     field_0x230++;
-    switch ((field_0x90 >> 2) & 0x3F) {
+    switch (getKind()) {
     case 0:
         if (field_0x230 <= 2) {
             field_0x234 = 0x85;
@@ -104,13 +104,15 @@ void PlayerEffect_804A6E20::update() {
             mAlive = false;
         }
         break;
-    case 1:
+    case 1: {
         mPos = *getPlayerPos_8023E724(field_0x90 & 3);
         field_0x234 = ((field_0x230 >> 1) & 7) + 0x7D;
-        if (fn_80237774(field_0x90 & 3) == lbl_80529DEC.field_0xd8[field_0x90 & 3]) {
+        s32 player = field_0x90 & 3;
+        if (fn_80237774(player) == lbl_80529DEC.field_0xd8[player]) {
             mAlive = false;
         }
         break;
+    }
     case 2:
         if (field_0x230 <= 2) {
             field_0x234 = 0x2AB;
@@ -145,9 +147,8 @@ void PlayerEffect_804A6E20::update() {
         if (field_0x230 >= 12) {
             field_0x230 = 0;
         }
-        // FIXME(shotgun): the original masks the quotient to 16 bits (extrwi 16,15).
-        field_0x234 = field_0x230 / 3 + 0x1C3;
-        if (((field_0x90 >> 2) & 0x3F) == 14) {
+        field_0x234 = (u16)(field_0x230 / 3) + 0x1C3;
+        if (getKind() == 14) {
             mPos.x -= 4.0f;
             if (fn_80239D38() || !fn_80236B50(field_0x90 & 3) || fn_80236AB4(field_0x90 & 3)) {
                 mAlive = false;
@@ -158,24 +159,27 @@ void PlayerEffect_804A6E20::update() {
         break;
     case 5:
         if (field_0x230 == 1) {
-            for (s32 i = 0; i < 9; i++) {
+            const f32 (*p)[2] = table;
+            for (s32 i = 0; i < 9; i++, p++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[0 + i][0];
-                pos.y += lbl_8046ACC8[0 + i][1];
+                pos.x += (*p)[0];
+                pos.y += (*p)[1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
         } else if (field_0x230 == 11) {
-            for (s32 i = 0; i < 12; i++) {
+            const f32 (*p)[2] = table + 9;
+            for (s32 i = 0; i < 12; i++, p++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[9 + i][0];
-                pos.y += lbl_8046ACC8[9 + i][1];
+                pos.x += (*p)[0];
+                pos.y += (*p)[1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
         } else if (field_0x230 == 21) {
-            for (s32 i = 0; i < 16; i++) {
+            const f32 (*p)[2] = table + 21;
+            for (s32 i = 0; i < 16; i++, p++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += lbl_8046ACC8[21 + i][0];
-                pos.y += lbl_8046ACC8[21 + i][1];
+                pos.x += (*p)[0];
+                pos.y += (*p)[1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
             mAlive = false;
@@ -186,11 +190,12 @@ void PlayerEffect_804A6E20::update() {
         mPos = *getPlayerPos_8023E724(field_0x90 & 3);
         mPos.x += 10.0f;
         mPos.z += 20.0f;
-        if (fn_8022FA80(field_0x90 & 3) == 1 || ((field_0x90 >> 2) & 0x3F) == 8) {
+        if (fn_8022FA80(field_0x90 & 3) == 1 || getKind() == 8) {
             if (field_0x230 >= 2 && field_0x234 == 0x2A3) {
                 field_0x230 = 2;
                 s32 slot = fn_8022F340(field_0x90 & 3);
-                if (((gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3) == 2) {
+                u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
+                if (mode == 2) {
                     field_0x234 = 0x2A5;
                 } else if (fn_8037E694(field_0x90 & 3) == 1) {
                     if (field_0x4 < 8) {
@@ -221,11 +226,12 @@ void PlayerEffect_804A6E20::update() {
         mPos = *getPlayerPos_8023E724(field_0x90 & 3);
         mPos.x -= 10.0f;
         mPos.z += 20.0f;
-        if (fn_8022FA80(field_0x90 & 3) == 1 || ((field_0x90 >> 2) & 0x3F) == 9) {
+        if (fn_8022FA80(field_0x90 & 3) == 1 || getKind() == 9) {
             if (field_0x230 > 2 && field_0x234 == 0x2A3) {
                 field_0x230 = 2;
                 s32 slot = fn_8022F340(field_0x90 & 3);
-                if (((gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3) == 2) {
+                u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
+                if (mode == 2) {
                     field_0x234 = 0x2A6;
                 } else if (fn_8037E694(field_0x90 & 3) == 1) {
                     if (field_0x4 < 8) {
