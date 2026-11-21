@@ -393,8 +393,10 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         field_0x233 = 1;
         break;
     case 5: {
-        JGeometry::TVec3f pos((s32)JUTVideo::getManager()->getRenderMode()->fbWidth * 0.5f,
-                              (s32)JUTVideo::getManager()->getRenderMode()->efbHeight * 0.5f, 0.0f);
+        JGeometry::TVec3f pos;
+        pos.x = (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
+        pos.y = (s32)JUTVideo::getManager()->getRenderMode()->efbHeight / 2.0f;
+        pos.z = 0.0f;
         pos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_80464850[field_0x238], field_0x4, pos, 0x62)) {
