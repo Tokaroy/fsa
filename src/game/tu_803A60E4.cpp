@@ -117,6 +117,7 @@ cls_804AF860::~cls_804AF860() {
 void cls_804AF860::fn_803A7280() {
     field_0x64 = 0;
     field_0x68 = 0;
+    field_0x76 = 0;
     field_0x8->moveFromCentre_80402E08(0.0f, -448.0f);
     field_0x8->field_0x22 = 0;
     for (s32 i = 0; i < 6; i++) {
@@ -145,12 +146,11 @@ void cls_804AF860::fn_803A7280() {
     } else {
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi02'))->getStringPtr(), 0x39, 0, NULL, NULL);
     }
-    rotateArrow('Par01', field_0x70);
-    rotateArrow('Par02', field_0x72);
+    field_0x4->search('Par01')->rotate(0.5f * field_0x4->search('Par01')->getWidth(), 0.5f * field_0x4->search('Par01')->getHeight(), J2DROTATE_Z, (f32)(field_0x70 + field_0x74));
+    field_0x4->search('Par02')->rotate(0.5f * field_0x4->search('Par02')->getWidth(), 0.5f * field_0x4->search('Par02')->getHeight(), J2DROTATE_Z, (f32)(field_0x72 + field_0x74));
     field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6c = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6e = 0;
-    field_0x76 = 0;
     field_0x79 = 0;
     field_0x7a = 10;
     field_0x7b = 0xFF;
