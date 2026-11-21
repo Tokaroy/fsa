@@ -37,7 +37,7 @@ public:
     void fn_80371A2C();
     void fn_80371D50(s32 arg);
     void fn_803721F4();
-    void tickPlayer_80371284(s32 i);
+    void tickPlayer_80371284();
     void guidePlayer_80370764();
     void guideOrRelease_80370764();
 

@@ -413,7 +413,6 @@ void cls_804AE4B0::fn_803717CC() {
 }
 
 // The second state: the camera pans to the lane tile; when it has arrived the message is shown.
-// FIXME(shotgun): 88.89 %, missing/extra; behaviour clean.
 void cls_804AE4B0::fn_80371284() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
@@ -423,29 +422,25 @@ void cls_804AE4B0::fn_80371284() {
     fn_803703C8();
     if (field_0x324.y > 1720.0f) {
         field_0x324.y -= 0.5f;
+        tickPlayer_80371284();
+        if (field_0x324.y > 1720.0f) {
+            return;
+        }
+        field_0x324.y = 1720.0f;
         for (s32 i = 0; i < 4; i++) {
-            tickPlayer_80371284(i);
+            field_0x384[i] = 0;
         }
     }
-    if (!(field_0x324.y > 1720.0f)) {
-        field_0x324.y = 1720.0f;
-        field_0x384[0] = 0;
-        field_0x384[1] = 0;
-        field_0x384[2] = 0;
-        field_0x384[3] = 0;
-        JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() * 0.5f,
-                              (s32)JUTVideo::sManager->getEfbHeight() * 0.5f, 0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x50F, field_0x4, pos, 0x22)) {
-            mState = 2;
-            for (s32 i = 0; i < 4; i++) {
-                tickPlayer_80371284(i);
-            }
-            field_0x3a4 = 0;
-            field_0x3a8 = 1;
-            field_0x3a0 = 4;
-            field_0x368 = 0x108;
-        }
+    JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
+                          (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
+    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    if (fn_8038BD08(0, 0x50F, getField_0x4(), pos, 0x22)) {
+        mState = 2;
+        tickPlayer_80371284();
+        field_0x3a4 = 0;
+        field_0x3a8 = 1;
+        field_0x3a0 = 4;
+        field_0x368 = 0x108;
     }
 }
 
@@ -832,32 +827,28 @@ void cls_804AE4B0::fn_80370020() {
 
 // A plain function between fn_80370020 and fn_8036FDAC, inlined into both loops of fn_80371284
 // (its out-of-line copy was dead-stripped by the linker); pools 0.3f here.
-void cls_804AE4B0::tickPlayer_80371284(s32 i) {
-    if (field_0x374[i] != 0) {
-        field_0x374[i]--;
-    }
-    if (field_0x374[i] == 0) {
-        field_0x374[i] = 6;
-        field_0x384[i]++;
-        if (fn_8023EFEC(i)) {
-            if (field_0x384[i] >= 7) {
-                field_0x384[i] = 0;
-            }
-        } else if (fn_8023EA28(i)) {
-            if (field_0x384[i] >= 4) {
-                field_0x384[i] = 0;
-            }
-        } else if (field_0x384[i] >= 8) {
-            field_0x384[i] = 0;
+void cls_804AE4B0::tickPlayer_80371284() {
+    for (s32 i = 0; i < 4; i++) {
+        if (field_0x374[i] != 0) {
+            field_0x374[i]--;
         }
-    }
-    if (fn_80230188(i) || mState == 1) {
-        if (fn_8023EFEC(i)) {
-            JGeometry::TVec3f pos = field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
-            fn_80230498(i, &pos, 0x2CF + field_0x384[i], 0xFF, -0x80, -0x80, true);
-        } else {
-            JGeometry::TVec3f pos = field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f);
-            fn_80230498(i, &pos, 0x18 + field_0x384[i], 0xFF, -0x80, -0x80, true);
+        if (field_0x374[i] == 0) {
+            field_0x374[i] = 6;
+            field_0x384[i]++;
+            if (fn_8023EFEC(i) && field_0x384[i] >= 7) {
+                field_0x384[i] = 0;
+            } else if (fn_8023EA28(i) && field_0x384[i] >= 4) {
+                field_0x384[i] = 0;
+            } else if (field_0x384[i] >= 8) {
+                field_0x384[i] = 0;
+            }
+        }
+        if (fn_80230188(i) || mState == 1) {
+            if (fn_8023EFEC(i)) {
+                fn_80230498(i, &(field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f)), 0x2CF + field_0x384[i], 0xFF, -0x80, -0x80, true);
+            } else {
+                fn_80230498(i, &(field_0x264[field_0x39c] - JGeometry::TVec3f(0.0f, 0.3f, 0.0f)), 0x18 + field_0x384[i], 0xFF, -0x80, -0x80, true);
+            }
         }
     }
 }
