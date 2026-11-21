@@ -289,91 +289,89 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
 // FIXME: 90.95 %, missing/extra + reloc-name; behaviour clean.
 // FIXME(shotgun): register allocation and stack slots differ; early returns are laid out differently.
 u8 ShadowLink2_804A43E8::fn_801CA274() {
-    if (field_0x564 == 3) {
-        return 0;
-    }
-    u8 mask;
-    if (field_0x560 == 4) {
-        mask = 0xF;
-    } else {
-        mask = 1 << field_0x560;
-    }
-    if (!(mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f)) {
-        return 0;
-    }
-    u8 hits = mHitBox.fn_8021693C(mask);
-    if (hits != 0) {
-        bool done = false;
-        for (s32 i = 0; i < 4; i++) {
-            u32 bit = 1 << i;
-            if (hits & bit) {
-                fn_802379E4(i, &mPos);
-                if (!done) {
-                    done = true;
-                    f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
-                    f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
-                    f32 sq = dx * dx + dy * dy;
-                    if (!(sq <= 32.0f * FLT_EPSILON)) {
-                        f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                        dx *= norm;
-                        dy *= norm;
-                    }
-                    dx *= 3.0f;
-                    dy *= 3.0f;
-                    field_0x3c.x = dx;
-                    field_0x3c.y = dy;
-                    fn_801C3B7C(0x20);
-                    mFlags |= 0x80000;
-                }
-                mask &= ~bit;
-            }
+    u8 ret = 0;
+    if (field_0x564 != 3) {
+        u8 mask = 0xF;
+        if (field_0x560 != 4) {
+            mask = 1 << field_0x560;
         }
-    }
-    JGeometry::TBox2f saved;
-    saved.i.x = mBox.i.x;
-    saved.i.y = mBox.i.y;
-    saved.f.x = mBox.f.x;
-    saved.f.y = mBox.f.y;
-    mBox.i.x = mHitBox.mBox.i.x;
-    mBox.i.y = mHitBox.mBox.i.y;
-    mBox.f.x = mHitBox.mBox.f.x;
-    mBox.f.y = mHitBox.mBox.f.y;
-    u8 result;
-    if (mask == 0) {
-        result = 0;
-    } else {
-        result = fn_801F2740(-1);
-        if (result != 0) {
-            JGeometry::TVec2f out;
-            fn_801F3128(&out);
-            for (s32 j = 0; j < 4; j++) {
-                u32 bit = 1 << j;
-                if (result & bit) {
-                    if (mask & bit) {
-                        JGeometry::TVec2f v;
-                        if (fn_801F329C(j)) {
-                            JGeometry::TVec3f in(out.x, out.y, 0.0f);
-                            JGeometry::TVec3f res;
-                            fn_801CD0D0(&in, &res);
-                            v.x = res.x;
-                            v.y = res.y;
-                        } else {
-                            v.x = out.x;
-                            v.y = out.y;
+        if (mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f) {
+            u8 hits = mHitBox.fn_8021693C(mask);
+            if (hits != 0) {
+                bool done = false;
+                for (s32 i = 0; i < 4; i++) {
+                    u32 bit = 1 << i;
+                    if (hits & bit) {
+                        fn_802379E4(i, &mPos);
+                        if (!done) {
+                            done = true;
+                            f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
+                            f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
+                            f32 sq = dx * dx + dy * dy;
+                            if (!(sq <= 32.0f * FLT_EPSILON)) {
+                                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                                dx *= sq;
+                                dy *= sq;
+                            }
+                            dx *= 3.0f;
+                            dy *= 3.0f;
+                            field_0x3c.x = dx;
+                            field_0x3c.y = dy;
+                            fn_801C3B7C(0x20);
+                            mFlags |= 0x80000;
                         }
-                        fn_80238548(j, field_0x114, &v, 2);
-                    } else {
-                        result &= ~bit;
+                        mask &= ~bit;
                     }
                 }
             }
+            JGeometry::TBox2f saved;
+            saved.i.x = mBox.i.x;
+            saved.i.y = mBox.i.y;
+            saved.f.x = mBox.f.x;
+            saved.f.y = mBox.f.y;
+            mBox.i.x = mHitBox.mBox.i.x;
+            mBox.i.y = mHitBox.mBox.i.y;
+            mBox.f.x = mHitBox.mBox.f.x;
+            mBox.f.y = mHitBox.mBox.f.y;
+            u8 result;
+            if (mask == 0) {
+                result = 0;
+            } else {
+                result = fn_801F2740(-1);
+                if (result != 0) {
+                    JGeometry::TVec2f v;
+                    JGeometry::TVec2f out;
+                    fn_801F3128(&out);
+                    for (s32 j = 0; j < 4; j++) {
+                        u32 bit = 1 << j;
+                        if (result & bit) {
+                            if (mask & bit) {
+                                if (fn_801F329C(j)) {
+                                    JGeometry::TVec3f in(out.x, out.y, 0.0f);
+                                    JGeometry::TVec3f res;
+                                    fn_801CD0D0(&in, &res);
+                                    v.x = res.x;
+                                    v.y = res.y;
+                                } else {
+                                    v.x = out.x;
+                                    v.y = out.y;
+                                }
+                                fn_80238548(j, field_0x114, &v, 2);
+                            } else {
+                                result &= ~bit;
+                            }
+                        }
+                    }
+                }
+            }
+            mBox.i.x = saved.i.x;
+            mBox.i.y = saved.i.y;
+            mBox.f.x = saved.f.x;
+            mBox.f.y = saved.f.y;
+            ret = result;
         }
     }
-    mBox.i.x = saved.i.x;
-    mBox.i.y = saved.i.y;
-    mBox.f.x = saved.f.x;
-    mBox.f.y = saved.f.y;
-    return result;
+    return ret;
 }
 
 bool ShadowLink2_804A43E8::fn_801CA0F8() {
