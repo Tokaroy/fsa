@@ -48,6 +48,7 @@ inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
 }
 
 // Stack slot order and volatile r4-r6 in the inlined findDigSpot still differ.
+// FIXME: 99.78 %, operands; behaviour clean.
 void ShovelOldTimer_804AAB40::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
