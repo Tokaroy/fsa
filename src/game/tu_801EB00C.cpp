@@ -53,10 +53,10 @@ void cls_801EB8CC::fn_801EB710(s32 layer, const JGeometry::TVec3f* pos) {
         s16 angle = -(s16)(field_0x5e + i * 0x1F70);
         f32 s = JMASSin(angle);
         f32 c = JMASCos(angle);
-        JGeometry::TVec3f spot;
-        spot.z = pos->z;
-        spot.x = pos->x + (offset.x * c - offset.y * s);
-        spot.y = pos->y + (offset.x * s + offset.y * c);
+        JGeometry::TVec3f spot(
+            pos->x + (offset.x * c - offset.y * s),
+            pos->y + (offset.x * s + offset.y * c),
+            pos->z);
         if (field_0x34[i] == NULL) {
             field_0x34[i] = spawnEmitter_8013CC50(layer, &spot, 0x233 + i, field_0xc.field_0x0, field_0xc.field_0x4, 0, NULL, true, 1.0f);
             if (field_0x34[i] != NULL) {
@@ -125,17 +125,17 @@ void cls_801EB8CC::fn_801EB418(const JGeometry::TVec3f* pos) {
     if (field_0x5c != 0 && 0.0f == field_0x54) {
         done = true;
     }
-    bool remove = done != 0;
+    const bool remove = done != 0;
     const u8 alpha = field_0x54;
     JGeometry::TVec2f offset(0.0f, 14.0f);
     for (s32 i = 0; i < 7; i++) {
         s16 angle = -(s16)(field_0x5e + i * 0x1F70);
         f32 s = JMASSin(angle);
         f32 c = JMASCos(angle);
-        JGeometry::TVec3f spot;
-        spot.z = pos->z;
-        spot.x = pos->x + (offset.x * c - offset.y * s);
-        spot.y = pos->y + (offset.x * s + offset.y * c);
+        JGeometry::TVec3f spot(
+            pos->x + (offset.x * c - offset.y * s),
+            pos->y + (offset.x * s + offset.y * c),
+            pos->z);
         updateEmitter(&field_0x34[i], &spot, field_0xc, remove, alpha);
         if (i == 0) {
             updateEmitter(&field_0x50, &spot, field_0xc, remove, alpha);
