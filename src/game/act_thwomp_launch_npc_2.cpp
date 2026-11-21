@@ -166,6 +166,7 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
 }
 
 // Scheduling of lwz r5/r6 vs psq_l/lfs around fn_8038C678 by-value TVec3f copy.
+// FIXME: 98.06 %, scheduling; behaviour clean.
 void NPCLaunchedByThwomp2_804AD1C8::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x -= 2.0f;
@@ -310,6 +311,7 @@ void NPCLaunchedByThwomp2_804AD1C8::launch() {
     field_0x260 = 0.2f;
 }
 
+// FIXME: 99.37 %, same-text; behaviour clean.
 void NPCLaunchedByThwomp2_804AD1C8::draw() {
     if (field_0x230 == 2) {
         return;
