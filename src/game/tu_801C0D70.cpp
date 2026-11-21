@@ -67,18 +67,16 @@ void cls_801C0D70::fn_801C1440(s32 serial) {
 void cls_801C0D70::fn_801C1374(bool flag) {
     bool clear = (field_0x50 >> 31) == 0;
     field_0x8++;
-    if (field_0x8 == field_0x4) {
-        if (!clear || flag) {
-            if (flag) {
-                field_0x0 |= 0x200;
-            }
-            getGameView_802D6A9C()->fn_802D7440(true);
-            gGameRoot_8053AAF8->fn_80138B7C();
-            getGameView_802D6A9C()->fn_802D6BC8(0);
-            bool noGenerator = (field_0x50 >> 31) == 0;
-            if (!noGenerator) {
-                fn_8022ADCC();
-            }
+    if (field_0x8 == field_0x4 && (!clear || flag)) {
+        if (flag) {
+            field_0x0 |= 0x200;
+        }
+        getGameView_802D6A9C()->fn_802D7440(true);
+        gGameRoot_8053AAF8->fn_80138B7C();
+        getGameView_802D6A9C()->fn_802D6BC8(0);
+        clear = (field_0x50 >> 31) == 0;
+        if (!clear) {
+            fn_8022ADCC();
         }
     } else if (clear && field_0x8 == 3) {
         field_0x0 |= 0x100;
