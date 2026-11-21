@@ -25,19 +25,19 @@ static inline void difference(JGeometry::TVec3f& result, JGeometry::TVec3f a,
     result = a;
 }
 
-// FIXME(shotgun): 83.0 %, missing/extra: frame layout of the spawn-position temporaries (0x10 bytes) and the parameter word are computed in a different order
 void FourPersonPullSwitch_804AE230::init() {
     if (((field_0x90 >> 4) & 3) == 0) {
+        u32 param;
         for (s32 i = 0; i < 3; i++) {
             field_0x234[i] = -1;
-            JGeometry::TVec3f offset((f32)(i + 1) * 16.0f, 0.0f, 0.0f);
-            JGeometry::TVec3f pos = mPos;
-            pos.add(offset);
-            u32 param = (field_0x90 & 0xF800000F) | ((i + 1) << 4);
-            field_0x234[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PSW2, field_0x4, &pos, param, -1, -1);
-            if (field_0x234[i] >= 0) {
+            s32 idx = i + 1;
+            param = (field_0x90 & 0xF800000F) | (idx << 4);
+            field_0x234[i] = getActorManager_801F856C()->spawnActor_801F9484(
+                ACTOR_PSW2, field_0x4, &(mPos + JGeometry::TVec3f((f32)idx * 16.0f, 0.0f, 0.0f)), param, -1, -1);
+            s32 serial = field_0x234[i];
+            if (serial >= 0) {
                 FourPersonPullSwitch_804AE230* child =
-                    (FourPersonPullSwitch_804AE230*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234[i]);
+                    (FourPersonPullSwitch_804AE230*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 child->field_0x230 = mSerial;
             } else {
                 fn_801F3668();
