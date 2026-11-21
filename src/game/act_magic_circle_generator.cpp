@@ -55,34 +55,40 @@ MagicCircleGenerator_804A9FB0::~MagicCircleGenerator_804A9FB0() {
     }
 }
 
-// FIXME(shotgun): 84.73 %, missing/extra; behaviour near.
-// the box temporaries and the key-search loop are scheduled differently
 void MagicCircleGenerator_804A9FB0::update() {
+    u32 param;
+    s32 layer;
     switch (field_0x244) {
     case 0: {
         field_0x80.i.x = -9.0f;
         field_0x80.i.y = -9.0f;
         field_0x80.f.x = 9.0f;
         field_0x80.f.y = 9.0f;
-        JGeometry::TBox2f probe;
-        probe = field_0x80;
-        probe.i.x += mPos.x;
-        probe.i.y += mPos.y;
-        probe.f.x += mPos.x;
-        probe.f.y += mPos.y;
+        JGeometry::TBox2f box;
+        JGeometry::TVec3f keyPos;
+        box = field_0x80;
+        f32 posX = mPos.x;
+        f32 posY = mPos.y;
+        box.i.x += posX;
+        box.i.y += posY;
+        box.f.x += posX;
+        box.f.y += posY;
         mBox.i.x = -32.0f;
         mBox.i.y = -32.0f;
         mBox.f.x = 32.0f;
         mBox.f.y = 32.0f;
-        JGeometry::TBox2f area;
-        area.i.x = mBox.i.x + mPos.x;
-        area.i.y = mBox.i.y + mPos.y;
-        area.f.x = mBox.f.x + mPos.x;
-        area.f.y = mBox.f.y + mPos.y;
-        field_0x250 = fn_8023AF14(&area, field_0x4, false, 0.0f);
+        box.i.x = mBox.i.x;
+        box.i.y = mBox.i.y;
+        box.f.x = mBox.f.x;
+        box.f.y = mBox.f.y;
+        box.i.x += posX;
+        box.i.y += posY;
+        box.f.x += posX;
+        box.f.y += posY;
+        field_0x250 = fn_8023AF14(&box, field_0x4, false, 0.0f);
         if (field_0x250 >= 0) {
             if (mEmitter234 == NULL) {
-                JGeometry::TVec3f pos = mPos;
+                JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
                 mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x2A7, 1, 0, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(9, 0);
                 if (getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 &&
@@ -108,23 +114,27 @@ void MagicCircleGenerator_804A9FB0::update() {
             mBox.i.y = -10.0f;
             mBox.f.x = 20.0f;
             mBox.f.y = 40.0f;
-            JGeometry::TBox2f keyBox;
-            keyBox.i.x = mBox.i.x + mPos.x;
-            keyBox.i.y = mBox.i.y + mPos.y;
-            keyBox.f.x = mBox.f.x + mPos.x;
-            keyBox.f.y = mBox.f.y + mPos.y;
+            box.i.x = mBox.i.x;
+            box.i.y = mBox.i.y;
+            box.f.x = mBox.f.x;
+            box.f.y = mBox.f.y;
+            box.i.x += posX;
+            box.i.y += posY;
+            box.f.x += posX;
+            box.f.y += posY;
             for (s32 player = 0; player < 4; player++) {
-                if (fn_8023B0F4(player, &keyBox, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
+                if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player)));
                     if (key != NULL && key->field_0x280 == 6) {
-                        JGeometry::TVec3f pos = key->mPos;
+                        keyPos = key->mPos;
                         field_0x244 = 1;
                         field_0x24c = 0x14;
-                        if (field_0x4 >= 8) {
-                            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
+                        layer = field_0x4;
+                        if (layer >= 8) {
+                            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &keyPos, 0, -1, -1);
                         } else {
-                            JGeometry::TVec3f effectPos = pos;
+                            JGeometry::TVec3f effectPos = keyPos;
                             if (mEmitter230 != NULL) {
                                 releaseEmitter_801EE434(mEmitter230);
                             }
@@ -173,7 +183,7 @@ void MagicCircleGenerator_804A9FB0::update() {
     case 2:
         field_0x24c--;
         if (field_0x24c == 0) {
-            u32 param = (field_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
+            param = (field_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CIRC, field_0x4, &mPos, param, -1, -1);
             field_0x244 = 3;
             field_0x24c = 0x3C;
