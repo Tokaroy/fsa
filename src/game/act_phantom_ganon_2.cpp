@@ -20,7 +20,12 @@ static s32 lbl_804A1990[6] = { 4, 4, 4, 4, 2, 4 };
 static s32 lbl_804A19A8[5] = { 2, 2, 2, 2, 5 };
 static s32 lbl_804A19BC[8] = { 4, 4, 4, 4, 4, 4, 4, 4 };
 static s32 lbl_804A19DC[5] = { 4, 4, 4, 8, 4 };
-static u16 lbl_804A19F0[8] = { 0x0374, 0x0375, 0x0378, 0x0379, 0x0372, 0x0373, 0x0376, 0x0377 };
+static u16 lbl_804A19F0[4][2] = {
+    { 0x0374, 0x0375 },
+    { 0x0378, 0x0379 },
+    { 0x0372, 0x0373 },
+    { 0x0376, 0x0377 },
+};
 static u16 lbl_804A1A00[8] = { 0x0368, 0x0369, 0x036C, 0x036D, 0x0366, 0x0367, 0x036A, 0x036B };
 static const char* lbl_804A1A10[6] = {
     "dawn_00.bti",
@@ -198,8 +203,8 @@ void PhantomGanon2_804A1A98::init() {
     field_0x196 = 1;
     field_0x26c = 0;
     field_0x2ac = 0.0f;
-    field_0x2b0.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x2b0.zero();
+    field_0x3c.zero();
     for (int i = 0; i < 4; i++) {
         mEmitters2f4[i] = NULL;
         mEmitters304[i] = NULL;
@@ -228,6 +233,35 @@ void PhantomGanon2_804A1A98::init() {
     field_0x2bc.y += 8.0f;
     field_0x2d4.set(mPos);
     switch (field_0x90) {
+    case 0:
+    default:
+        mBox.i.x = -16.0f;
+        mBox.i.y = -8.0f;
+        mBox.f.x = 16.0f;
+        mBox.f.y = 40.0f;
+        field_0x80.i.x = -8.0f;
+        field_0x80.i.y = -8.0f;
+        field_0x80.f.x = 8.0f;
+        field_0x80.f.y = 8.0f;
+        field_0x290 = 0.0f;
+        mPos.x -= 80.0f;
+        field_0x2e0.set(mPos);
+        field_0x2d4.set(mPos);
+        getGameView_802D6A9C()->fn_802D7440(false);
+        lbl_80539FB8 = 100;
+        lbl_8053AB78 = 0;
+        lbl_8053AB7C = 0;
+        lbl_8053AB80 = 0;
+        lbl_80539FBC = 0;
+        lbl_8053AB84 = 0;
+        for (int i = 0; i < 4; i++) {
+            lbl_804C17A8[i] = 0;
+        }
+        field_0x114 = 2;
+        field_0x288 = 40.0f;
+        field_0x2ee = 1;
+        field_0x230 = 0;
+        break;
     case 1:
         mBox.i.x = -16.0f;
         mBox.i.y = -8.0f;
@@ -246,8 +280,8 @@ void PhantomGanon2_804A1A98::init() {
         break;
     case 10:
         for (int i = 0; i < 4; i++) {
-            mEmitters2f4[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i * 2], 1, 2, NULL, NULL, true, 1.0f);
-            mEmitters304[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters2f4[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i][0], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters304[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i][1], 1, 2, NULL, NULL, true, 1.0f);
             if (i != field_0x94) {
                 if (mEmitters2f4[i] != NULL) {
                     mEmitters2f4[i]->setStatus(4);
@@ -293,34 +327,6 @@ void PhantomGanon2_804A1A98::init() {
         field_0x80.f.y = 2.0f;
         field_0x118 = 0;
         field_0x230 = 30;
-        break;
-    default:
-        mBox.i.x = -16.0f;
-        mBox.i.y = -8.0f;
-        mBox.f.x = 16.0f;
-        mBox.f.y = 40.0f;
-        field_0x80.i.x = -8.0f;
-        field_0x80.i.y = -8.0f;
-        field_0x80.f.x = 8.0f;
-        field_0x80.f.y = 8.0f;
-        field_0x290 = 0.0f;
-        mPos.x -= 80.0f;
-        field_0x2e0.set(mPos);
-        field_0x2d4.set(mPos);
-        getGameView_802D6A9C()->fn_802D7440(false);
-        lbl_80539FB8 = 100;
-        lbl_8053AB78 = 0;
-        lbl_8053AB7C = 0;
-        lbl_8053AB80 = 0;
-        lbl_80539FBC = 0;
-        lbl_8053AB84 = 0;
-        for (int i = 0; i < 4; i++) {
-            lbl_804C17A8[i] = 0;
-        }
-        field_0x114 = 2;
-        field_0x288 = 40.0f;
-        field_0x2ee = 1;
-        field_0x230 = 0;
         break;
     }
     field_0x27c = field_0x94;
@@ -1231,8 +1237,8 @@ void PhantomGanon2_804A1A98::update() {
         break;
     case 30:
         field_0x94 &= 3;
-        mEmitters2f4[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94 * 2], 1, 2, NULL, NULL, true, 0.5f);
-        mEmitters304[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters2f4[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94][0], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters304[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94][1], 1, 2, NULL, NULL, true, 0.5f);
         field_0x230 = 31;
         // fall through
     case 31:
