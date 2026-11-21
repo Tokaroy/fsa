@@ -45,39 +45,17 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 95.48 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.76 %, operands + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
     case 0: {
-        JGeometry::TBox2f probe = mBox;
-        f32 dy = mPos.y - mPos.z;
-        probe.i.x += mPos.x;
-        probe.i.y += dy;
-        probe.f.x += mPos.x;
-        probe.f.y += dy;
-        s32 p;
-        for (p = 0; p < 4; p++) {
-            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1.0f) &&
-                !fn_80230188(p) && field_0x26c < 0) {
-                break;
-            }
-        }
-        if (p == 4) {
-            p = -1;
-        }
+        s32 p = findPlayer();
         if (p >= 0) {
             field_0x26c = p;
             fn_80130FAC(1);
         }
-        bool all = true;
-        for (s32 p = 0; p < 4; p++) {
-            if (!fn_80230188(p)) {
-                all = false;
-                break;
-            }
-        }
-        if (all) {
+        if (allPlayersIn()) {
             fn_80130FAC(2);
         }
         break;
@@ -91,12 +69,7 @@ void WarpCannon_8049EAE0::update() {
         break;
     }
     case 2: {
-        fn_801CD950(&field_0x27c, -10.0f, -0.2f);
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-            pos.y -= field_0x27c;
-            fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
+        movePlayers();
         if (fireRecoil()) {
             fn_80130FAC(3);
         }
@@ -156,12 +129,8 @@ void WarpCannon_8049EAE0::draw() {
                 1.0f, 1.0f);
 }
 
-// FIXME: 95.46 %, missing/extra + reloc-name; behaviour drift.
-// The loop over fn_80230360 is the same, but after it the
-// original falls through into the field_0x278 store on its own `cmpwi 4; blt`,
-// where ours compares i again (cmpwi; bne): 3 extra instructions. The switch's
-// jump table is the compiler's (@NNN) where the original names
-// jumptable_8049EB34.
+// FIXME: 99.48 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME: regalloc-only + reloc-name; the switch's jump table is @NNN where the original names jumptable_8049EB34.
 void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     field_0x268 = state;
     switch (field_0x268) {
@@ -176,23 +145,15 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
         break;
     case 3: {
         field_0x290 = *fn_8023E32C(0);
-        s32 i;
-        for (i = 0; i < 4; i++) {
-            if (!fn_80230360(i)) {
-                break;
-            }
-        }
-        if (i == 4) {
-            field_0x278 = 0;
-        }
-        for (i = 0; i < 4; i++) {
+        resetIfAllPlayersReady();
+        for (s32 i = 0; i < 4; i++) {
             fn_80230498(i, &field_0x290, 0xB0, 0, -0x80, -0x80, true);
         }
         break;
     }
     case 4:
         for (s32 i = 0; i < 4; i++) {
-            u16 id = fn_8023CBC0(i);
+            s32 id = fn_8023CBC0(i);
             fn_80230498(i, getPlayerPos_8023E724(i), id, 0xFF, -0x80, -0x80, true);
         }
         for (s32 i = 0; i < 4; i++) {
@@ -227,6 +188,40 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
 // of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py). One more is still missing: the original creates a 16.0f after flyPlayers'
 // literals and before fn_80130FAC's 13.0f, which leaves init's literals one slot off.
+s32 WarpCannon_8049EAE0::findPlayer() {
+    JGeometry::TBox2f probe = mBox;
+    f32 dy = mPos.y - mPos.z;
+    probe.i.x += mPos.x;
+    probe.i.y += dy;
+    probe.f.x += mPos.x;
+    probe.f.y += dy;
+    for (s32 p = 0; p < 4; p++) {
+        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1000.0f) &&
+            !fn_80230188(p) && field_0x26c < 0) {
+            return p;
+        }
+    }
+    return -1;
+}
+
+bool WarpCannon_8049EAE0::allPlayersIn() {
+    for (s32 p = 0; p < 4; p++) {
+        if (!fn_80230188(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void WarpCannon_8049EAE0::movePlayers() {
+    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    for (s32 p = 0; p < 4; p++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
+        pos.y -= field_0x27c;
+        fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
+    }
+}
+
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
 void WarpCannon_8049EAE0::flyPlayers() {
     fn_801CD950(&field_0x27c, -10.0f, -0.002f);
@@ -235,6 +230,16 @@ void WarpCannon_8049EAE0::flyPlayers() {
         fn_801CD950(&pos.y, 1000.0f, field_0x27c);
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
     }
+}
+
+// Entering state 3: reset field_0x278 if all players pass fn_80230360.
+void WarpCannon_8049EAE0::resetIfAllPlayersReady() {
+    for (s32 i = 0; i < 4; i++) {
+        if (!fn_80230360(i)) {
+            return;
+        }
+    }
+    field_0x278 = 0;
 }
 
 // Entering state 7: the players at z = 90.
@@ -248,8 +253,8 @@ void WarpCannon_8049EAE0::liftPlayers() {
 
 // State 7: the players come down towards y = 0. True once one has arrived.
 bool WarpCannon_8049EAE0::landPlayers() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
     bool all = false;
+    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
         if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
@@ -268,12 +273,11 @@ bool WarpCannon_8049EAE0::recoil() {
     if (mPos.y < field_0x288) {
         mPos.y = field_0x288;
     }
-    bool done = false;
     if (field_0x280 >= 1.0f) {
         field_0x280 = 1.0f;
-        done = true;
+        return true;
     }
-    return done;
+    return false;
 }
 
 // State 2: the stronger kick of the shot, on its own static phase, held for 30 frames. True at
@@ -297,11 +301,10 @@ bool WarpCannon_8049EAE0::fireRecoil() {
     if (mPos.y < field_0x288) {
         mPos.y = field_0x288;
     }
-    bool done = false;
     if (phase >= 1.0f && counter >= 30) {
         counter = 0;
         phase = 0.0f;
-        done = true;
+        return true;
     }
-    return done;
+    return false;
 }
