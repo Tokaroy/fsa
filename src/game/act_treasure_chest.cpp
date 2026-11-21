@@ -63,7 +63,7 @@ void TreasureChest_804AA178::init() {
     field_0x24c[3] = -1;
 }
 
-// FIXME: 96.27 %, different; behaviour clean.
+// FIXME: 96.79 %, scheduling+regalloc; behaviour clean.
 // In state 2 the spawn code is built in other registers (the
 // original compares field_0x244 with i as `cmpw r29, r0` and reloads
 // field_0x234 off r28), and the literals are @NNN, not lbl_805413C0 onwards.
@@ -179,7 +179,7 @@ void TreasureChest_804AA178::update() {
 void TreasureChest_804AA178::draw() {}
 
 // Differs only in register numbers.
-// FIXME: 95.09 %, missing/extra; behaviour clean.
+// FIXME: 99.40 %, scheduling+regalloc; behaviour clean.
 bool TreasureChest_804AA178::vfunc_0x54() {
     bool ok = false;
     bool result = false;
