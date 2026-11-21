@@ -406,14 +406,17 @@ u16 fn_801123C8(s32 kind, s32 mode) {
 bool cls_8049D740::moveToGoal() {
     field_0x248 += 0.04f;
     fn_801CD950(&field_0x24c, 2.0f, 0.05f);
-    s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
-                      10430.378f);
+    s16 angle = (s32)(10430.378f *
+                      JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y));
     field_0x3c.x = field_0x24c * JMath::sincosTable_.sinShort(angle);
     field_0x3c.y = field_0x24c * JMath::sincosTable_.cosShort(angle);
     s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, field_0x3c.x);
     s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, field_0x3c.y);
     fn_801CD950(&field_0x250, 0.05f, -0.005f);
-    return doneX == 0 && doneY == 0;
+    if (doneX == 0 && doneY == 0) {
+        return true;
+    }
+    return false;
 }
 
 void cls_8049D740::shrinkCrystal() {
