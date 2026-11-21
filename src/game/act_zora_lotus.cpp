@@ -84,8 +84,7 @@ void cls_804AC3E0::vfunc_0xA8() {
         } else {
             if (touching) {
                 if (mPos.z <= 0.0f) {
-                    JGeometry::TVec3f vec = mPos - mPrevPos;
-                    fn_8023DF68(i, &vec);
+                    fn_8023DF68(i, &(mPos - mPrevPos));
                 }
             }
             if (getPlayerPos_8023E724(i)->z > mPos.z) {
