@@ -9,20 +9,63 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Tables of the FGN2 actor (.data 0x804A1960, not written as source here): the start
-// position and "FGAN" sprite names per player, emitter ids and sprite offsets.
-extern const f32 lbl_804A1960[][3];
-extern const s32 lbl_804A1990[];
-extern const s32 lbl_804A19A8[];
-extern const s32 lbl_804A19BC[];
-extern const s32 lbl_804A19DC[];
-extern const char* const lbl_804A1A10[];
-extern const f32 lbl_804A1A28[][2];
-extern const char* const lbl_804A1A50[];
-extern const char* const lbl_804A1A64[];
-extern const char* const lbl_804A1A84[];
-extern const u16 lbl_804A19F0[];
-extern const u16 lbl_804A1A00[];
+// Tables of the FGN2 actor (.data 0x804A1960):
+static f32 lbl_804A1960[4][3] = {
+    { 0.0f, 255.0f, 0.0f },
+    { 255.0f, 0.0f, 0.0f },
+    { 0.0f, 128.0f, 255.0f },
+    { 200.0f, 0.0f, 200.0f },
+};
+static s32 lbl_804A1990[6] = { 4, 4, 4, 4, 2, 4 };
+static s32 lbl_804A19A8[5] = { 2, 2, 2, 2, 5 };
+static s32 lbl_804A19BC[8] = { 4, 4, 4, 4, 4, 4, 4, 4 };
+static s32 lbl_804A19DC[5] = { 4, 4, 4, 8, 4 };
+static u16 lbl_804A19F0[4][2] = {
+    { 0x0374, 0x0375 },
+    { 0x0378, 0x0379 },
+    { 0x0372, 0x0373 },
+    { 0x0376, 0x0377 },
+};
+static u16 lbl_804A1A00[8] = { 0x0368, 0x0369, 0x036C, 0x036D, 0x0366, 0x0367, 0x036A, 0x036B };
+static const char* lbl_804A1A10[6] = {
+    "dawn_00.bti",
+    "dawn_04.bti",
+    "dawn_08.bti",
+    "dawn_12.bti",
+    "dawn_16.bti",
+    "dawn_18.bti",
+};
+static f32 lbl_804A1A28[5][2] = {
+    { 0.0f, 0.0f },
+    { 0.0f, 0.0f },
+    { -21.0f, 0.0f },
+    { 21.0f, 0.0f },
+    { 21.0f, 0.0f },
+};
+static const char* lbl_804A1A50[5] = {
+    "kenhuri_05.bti",
+    "kenhuri_07.bti",
+    "kenhuri_09_l.bti",
+    "kenhuri_11_r.bti",
+    "kenhuri_13_r.bti",
+};
+static const char* lbl_804A1A64[8] = {
+    "wait_00_u.bti",
+    "wait_04_u.bti",
+    "wait_08_u.bti",
+    "wait_12_u.bti",
+    "wait_16_u.bti",
+    "wait_20_u.bti",
+    "wait_24_u.bti",
+    "wait_28_u.bti",
+};
+static const char* lbl_804A1A84[5] = {
+    "yarare_02.bti",
+    "yarare_06.bti",
+    "yarare_10.bti",
+    "yarare_14.bti",
+    "yarare_22.bti",
+};
 extern const u16 lbl_80539FC0[];
 u32 lbl_804C17A8[4];
 extern s32 lbl_80539FB8;
@@ -138,7 +181,7 @@ u16 ActorBase_804A5770::fn_8018A590() const {
     return field_0x94;
 }
 
-// FIXME(shotgun): 56.79 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.02 %, missing/extra + reloc-name; behaviour near.
 // Constants and the stmw prologue are scheduled differently; the tables are extern.
 void PhantomGanon2_804A1A98::init() {
     field_0x94 = (field_0x90 >> 4) & 0xF;
@@ -160,8 +203,8 @@ void PhantomGanon2_804A1A98::init() {
     field_0x196 = 1;
     field_0x26c = 0;
     field_0x2ac = 0.0f;
-    field_0x2b0.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x2b0.zero();
+    field_0x3c.zero();
     for (int i = 0; i < 4; i++) {
         mEmitters2f4[i] = NULL;
         mEmitters304[i] = NULL;
@@ -190,6 +233,35 @@ void PhantomGanon2_804A1A98::init() {
     field_0x2bc.y += 8.0f;
     field_0x2d4.set(mPos);
     switch (field_0x90) {
+    case 0:
+    default:
+        mBox.i.x = -16.0f;
+        mBox.i.y = -8.0f;
+        mBox.f.x = 16.0f;
+        mBox.f.y = 40.0f;
+        field_0x80.i.x = -8.0f;
+        field_0x80.i.y = -8.0f;
+        field_0x80.f.x = 8.0f;
+        field_0x80.f.y = 8.0f;
+        field_0x290 = 0.0f;
+        mPos.x -= 80.0f;
+        field_0x2e0.set(mPos);
+        field_0x2d4.set(mPos);
+        getGameView_802D6A9C()->fn_802D7440(false);
+        lbl_80539FB8 = 100;
+        lbl_8053AB78 = 0;
+        lbl_8053AB7C = 0;
+        lbl_8053AB80 = 0;
+        lbl_80539FBC = 0;
+        lbl_8053AB84 = 0;
+        for (int i = 0; i < 4; i++) {
+            lbl_804C17A8[i] = 0;
+        }
+        field_0x114 = 2;
+        field_0x288 = 40.0f;
+        field_0x2ee = 1;
+        field_0x230 = 0;
+        break;
     case 1:
         mBox.i.x = -16.0f;
         mBox.i.y = -8.0f;
@@ -208,8 +280,8 @@ void PhantomGanon2_804A1A98::init() {
         break;
     case 10:
         for (int i = 0; i < 4; i++) {
-            mEmitters2f4[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i * 2], 1, 2, NULL, NULL, true, 1.0f);
-            mEmitters304[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters2f4[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i][0], 1, 2, NULL, NULL, true, 1.0f);
+            mEmitters304[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[i][1], 1, 2, NULL, NULL, true, 1.0f);
             if (i != field_0x94) {
                 if (mEmitters2f4[i] != NULL) {
                     mEmitters2f4[i]->setStatus(4);
@@ -256,34 +328,6 @@ void PhantomGanon2_804A1A98::init() {
         field_0x118 = 0;
         field_0x230 = 30;
         break;
-    default:
-        mBox.i.x = -16.0f;
-        mBox.i.y = -8.0f;
-        mBox.f.x = 16.0f;
-        mBox.f.y = 40.0f;
-        field_0x80.i.x = -8.0f;
-        field_0x80.i.y = -8.0f;
-        field_0x80.f.x = 8.0f;
-        field_0x80.f.y = 8.0f;
-        field_0x290 = 0.0f;
-        mPos.x -= 80.0f;
-        field_0x2e0.set(mPos);
-        field_0x2d4.set(mPos);
-        getGameView_802D6A9C()->fn_802D7440(false);
-        lbl_80539FB8 = 100;
-        lbl_8053AB78 = 0;
-        lbl_8053AB7C = 0;
-        lbl_8053AB80 = 0;
-        lbl_80539FBC = 0;
-        lbl_8053AB84 = 0;
-        for (int i = 0; i < 4; i++) {
-            lbl_804C17A8[i] = 0;
-        }
-        field_0x114 = 2;
-        field_0x288 = 40.0f;
-        field_0x2ee = 1;
-        field_0x230 = 0;
-        break;
     }
     field_0x27c = field_0x94;
     field_0x270 = lbl_80539FB8 << 2;
@@ -312,9 +356,6 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
     }
 }
 
-// FIXME: 99.03 %, regalloc-only; behaviour clean.
-// Regalloc only: the target keeps this in r30 and the two layer reads in r29,
-// we use r29 for this and r30/r28 for the counter and the layer reads.
 u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     s32 player = fn_8022EA0C(field_0x94);
     if (player < 0) {
@@ -323,8 +364,9 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     if (!(fn_8023F264(player) && getField_0x4() == getPlayerLayer_8023DE58(player) && !fn_80230188(player) &&
           !fn_80236B50(player) && lbl_8053AB78 != 1))
     {
+        s32 i;
         s32 pick = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (pick != player && fn_8023F264(pick) && getField_0x4() == getPlayerLayer_8023DE58(pick) &&
                 pick == fn_8022EA0C(pick) && !fn_80230188(pick) && !fn_80236B50(pick) &&
                 !fn_8022DCD8(pick))
@@ -335,14 +377,15 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
                 }
                 return field_0x94;
             }
-            pick = (pick + 1) & 3;
+            pick++;
+            pick &= 3;
         }
     }
     field_0x94 = player;
     return field_0x94;
 }
 
-// FIXME(shotgun): 94.13 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 96.56 %, missing/extra + reloc-name; behaviour drift.
 void PhantomGanon2_804A1A98::update() {
     JGeometry::TVec3f pos60;
     JGeometry::TVec3f vec54;
@@ -1194,8 +1237,8 @@ void PhantomGanon2_804A1A98::update() {
         break;
     case 30:
         field_0x94 &= 3;
-        mEmitters2f4[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94 * 2], 1, 2, NULL, NULL, true, 0.5f);
-        mEmitters304[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters2f4[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94][0], 1, 2, NULL, NULL, true, 0.5f);
+        mEmitters304[0] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A19F0[field_0x94][1], 1, 2, NULL, NULL, true, 0.5f);
         field_0x230 = 31;
         // fall through
     case 31:
@@ -1346,20 +1389,19 @@ void PhantomGanon2_804A1A98::update() {
     }
 }
 
-// FIXME(shotgun): 77.36 %, missing/extra + reloc-name; behaviour drift.
-// The original addresses the tables off one base register (r31), here they are extern arrays.
+// FIXME: 85.45 %, scheduling+regalloc + reloc-name; behaviour drift.
 void PhantomGanon2_804A1A98::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos = mPos;
+    f32 scaleY = 0.0f;
+    f32 scaleX = 0.0f;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.field_0x1f = 0;
     if (field_0x90 == 0 || field_0x90 == 1) {
         mPos.z = 0.0f;
-        f32 scaleX = 0.0f;
-        f32 scaleY = 0.0f;
         void* res;
         switch (field_0x278) {
         case 0:
