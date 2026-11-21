@@ -174,8 +174,18 @@ void Tektite_8049FD50::update() {
     }
 }
 
-// FIXME: 93.86%. The target loads the three scale components (z, y, x) before
-// its first matrix store; we load each one just before its store (scheduling).
+static inline void setScaleMtx(Mtx mtx, f32 x, f32 y, f32 z) {
+    mtx[0][0] = x;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = y;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = z;
+}
+
 void Tektite_8049FD50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -186,15 +196,7 @@ void Tektite_8049FD50::draw() {
         return;
     }
     if (field_0x90 != 0) {
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.z);
         params.field_0x1f = 0;
         params.mMtx = mtx;
     }
