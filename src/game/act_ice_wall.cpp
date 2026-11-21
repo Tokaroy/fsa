@@ -152,8 +152,18 @@ void IceWall_8049DE18::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 99.46 %, scheduling+regalloc; behaviour drift.
-// scheduling+regalloc (same instructions modulo registers, different order).
+static inline void setScaleMtx(Mtx mtx, f32 x, f32 y, f32 z) {
+    mtx[0][0] = x;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = y;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = z;
+}
+
 void IceWall_8049DE18::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params1;
@@ -163,15 +173,7 @@ void IceWall_8049DE18::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.z);
         params1.mMtx = mtx;
     }
 
