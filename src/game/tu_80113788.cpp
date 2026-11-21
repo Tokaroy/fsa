@@ -160,7 +160,7 @@ void cls_8049D83C::init() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.97 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
@@ -337,7 +337,7 @@ void cls_8049D83C::vfunc_0x54() {
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.74 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 97.93 %, scheduling+regalloc; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -547,6 +547,7 @@ static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, con
     gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
 }
 
+// FIXME: 96.91 %, missing/extra; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
