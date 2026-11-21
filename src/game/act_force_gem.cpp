@@ -11,6 +11,7 @@
 #include "game/RotMatrix.h"
 #include "game/ViewLayer.h"
 #include "game/act/act_force_gem.h"
+#include "game/act/act_wizzrobe.h"
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/Camera.h"
@@ -288,7 +289,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 97.76 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.08 %, different; behaviour near.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -504,11 +505,17 @@ void ForceGem_804AB6D8::update() {
                 field_0x26c = -1;
                 break;
             }
-            f32 dy = (mPos.y - mPos.z) - target->mPos.y;
             f32 dx = mPos.x - target->mPos.x;
+            f32 dy = (mPos.y - mPos.z) - target->mPos.y;
             if (std::sqrtf(dx * dx + dy * dy) < 4.0f) {
-                // FIXME(shotgun): not written: the target's word at 0x26C is a serial; that actor's
-                // word at 0x2C0 goes up by one (both actor types not identified yet).
+                s32 wizzSerial = static_cast<Wizzrobe_804A0EDC*>(target)->field_0x26c;
+                if (wizzSerial >= 0) {
+                    Wizzrobe_804A0EDC* wizz =
+                        static_cast<Wizzrobe_804A0EDC*>(getActorManager_801F856C()->findActorBySerial_801F666C(wizzSerial));
+                    if (wizz != NULL) {
+                        wizz->field_0x2c0++;
+                    }
+                }
                 fn_801F3668();
                 break;
             }
@@ -518,7 +525,7 @@ void ForceGem_804AB6D8::update() {
                 break;
             }
             addCalcAngle2_801F714C(&field_0x240,
-                                   field_0x242 + (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f), 1, 0x1000);
+                                   field_0x242 + (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dy)), 1, 0x1000);
             addCalcAngle2_801F714C(&field_0x242, 0, 1, 0x500);
             field_0x3c.x = 5.0f * JMath::sincosTable_.sinShort(field_0x240);
             field_0x3c.y = 5.0f * JMath::sincosTable_.cosShort(field_0x240);
@@ -561,7 +568,7 @@ void ForceGem_804AB6D8::update() {
 }
 
 // 0x8032BFB0.
-// FIXME(shotgun): 99.16 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.56 %, regalloc-only; behaviour clean.
 // literal table offsets, register order.
 void ForceGem_804AB6D8::draw() {
     s32 state = field_0x230;
@@ -577,10 +584,7 @@ void ForceGem_804AB6D8::draw() {
     if (state == 0xE) {
         return;
     }
-    if (state == 0x11) {
-        return;
-    }
-    if (field_0x94 == 0x24) {
+    if (state == 0x11 || field_0x94 == 0x24) {
         return;
     }
     if (state == 0xA) {
@@ -592,9 +596,9 @@ void ForceGem_804AB6D8::draw() {
             return;
         }
     }
+    s32 gc = 0;
     const char* name = "enemy_both2_sob.bin";
     f32 scale = field_0x238;
-    s32 gc = 0;
     if (field_0x268 >= 8) {
         name = "enemy_gc_sob.bin";
         gc = 1;
@@ -1004,7 +1008,6 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     return false;
 }
 
-// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
 void ForceGem_804AB6D8::fn_8032ABE0() {
     if (!(field_0x230 == 0 || field_0x230 == 6 || field_0x230 == 1 || field_0x230 == 2 || field_0x230 == 9 ||
           field_0x230 == 0xd)) {
@@ -1081,7 +1084,7 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
                     fn_80230498(found, &playerPos, 0xed, 0xff, -128, -128, true);
                 }
                 getActorManager_801F856C()->spawnActor_801F9484('IMUP', field_0x4, &spawnPos,
-                                                               (found << 24) + (found << 26) + 0xA00000 + field_0x268, -1, -1);
+                                                               field_0x268 + (found << 24) + (found << 26) + 0xA00000, -1, -1);
                 fn_801F3668();
             }
         } else {
