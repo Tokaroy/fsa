@@ -12,8 +12,6 @@
 
 extern const s32 lbl_8046D388[4];
 
-// FIXME: 99.99 %, scheduling; behaviour clean.
-// scheduling + reloc-name. Identical codegen; pending update's float literals in .sdata2.
 void FireRodFire_804A89F0::init() {
     field_0x284 = (field_0x90 >> 11) & 1;
     field_0x98 = (field_0x90 >> 4) & 3;
@@ -171,38 +169,38 @@ void FireRodFire_804A89F0::init() {
                     pos.y -= 8.0f;
                     break;
                 }
-            }
 
-            if (field_0x268 == 2) {
-                scale = 2.0f;
-                switch (field_0x98) {
-                case 0:
-                    pos.x += 8.0f;
-                    field_0x23c.set(4.0f, 0.0f, 0.0f);
-                    break;
-                case 1:
-                    pos.x -= 8.0f;
-                    field_0x23c.set(-4.0f, 0.0f, 0.0f);
-                    break;
-                case 2:
-                    pos.y += 8.0f;
-                    field_0x23c.set(0.0f, 4.0f, 0.0f);
-                    break;
-                case 3:
-                    pos.y -= 8.0f;
-                    field_0x23c.set(0.0f, -4.0f, 0.0f);
-                    break;
+                if (field_0x268 == 2) {
+                    scale = 2.0f;
+                    switch (field_0x98) {
+                    case 0:
+                        pos.x += 8.0f;
+                        field_0x23c.set(4.0f, 0.0f, 0.0f);
+                        break;
+                    case 1:
+                        pos.x -= 8.0f;
+                        field_0x23c.set(-4.0f, 0.0f, 0.0f);
+                        break;
+                    case 2:
+                        pos.y += 8.0f;
+                        field_0x23c.set(0.0f, 4.0f, 0.0f);
+                        break;
+                    case 3:
+                        pos.y -= 8.0f;
+                        field_0x23c.set(0.0f, -4.0f, 0.0f);
+                        break;
+                    }
                 }
-            }
 
-            if (field_0x264 != 5) {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19B, 0, 0, NULL, NULL, true, scale);
-                if (mEmitter230 != NULL) {
-                    JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter230->mGlobalRot);
-                }
-                mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19C, 0, 0, NULL, NULL, true, scale);
-                if (mEmitter234 != NULL) {
-                    JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter234->mGlobalRot);
+                if (field_0x264 != 5) {
+                    mEmitter230 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19B, 0, 0, NULL, NULL, true, scale);
+                    if (mEmitter230 != NULL) {
+                        JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter230->mGlobalRot);
+                    }
+                    mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19C, 0, 0, NULL, NULL, true, scale);
+                    if (mEmitter234 != NULL) {
+                        JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter234->mGlobalRot);
+                    }
                 }
             }
         }
@@ -233,7 +231,7 @@ FireRodFire_804A89F0::~FireRodFire_804A89F0() {
     }
 }
 
-// FIXME(shotgun): 99.11 %, different; behaviour drift.
+// FIXME(shotgun): 99.44 %, missing/extra; behaviour drift.
 void FireRodFire_804A89F0::update() {
     switch (field_0x238) {
     case 0: {
@@ -278,10 +276,11 @@ void FireRodFire_804A89F0::update() {
         }
         if (field_0x264 == 3 || field_0x264 == 4) {
             if (vfunc_0x34()) {
-                if (field_0x292 != 1) {
+                if (field_0x292 == 1) {
+                    field_0x293 = 1;
+                } else {
                     return;
                 }
-                field_0x293 = 1;
             }
         }
         if ((field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4) && mEmitter230 != NULL) {
@@ -710,13 +709,12 @@ s32 FireRodFire_804A89F0::fn_802BA9F0() {
     return field_0x260;
 }
 
-// FIXME(shotgun): 93.21 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.44 %, scheduling+regalloc + reloc-name; behaviour clean.
 bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ignoreIds[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     if (field_0x264 != 1) {
         ignoreIds[3] = 'NULL';
     }
-    JGeometry::TVec3f tmp;
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == 1) {
@@ -724,7 +722,8 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     }
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x254 == 0) {
-            s32 cell = fn_80226AE0(pos, field_0x4);
+            JGeometry::TVec3f tmp;
+            const s32 cell = fn_80226AE0(pos, field_0x4);
             field_0x288 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, cell);
             if (fn_801EE3C0(field_0x288) == 1) {
                 fn_80226CA8(cell, field_0x4, &tmp);
@@ -755,38 +754,42 @@ bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
                 return false;
             }
             field_0x27c = lbl_8046CB88[field_0x288];
-            if (field_0x27c == 0 || field_0x27c == 0x61 || (u32)(field_0x27c - 2) <= 5 || field_0x27c == 0x50 ||
-                (u32)(field_0x27c - 0x27) <= 8 || field_0x27c == 0x20 || (u32)(field_0x27c - 0xC) <= 2 ||
-                (u32)(field_0x27c - 0x39) <= 2 || (u32)(field_0x27c - 0x23) <= 1 ||
-                (field_0x27c >= 4 && field_0x27c <= 7) || (field_0x27c >= 0x18 && field_0x27c <= 0x1F)) {
-                return false;
-            }
-            if ((u32)(field_0x27c - 0x10) <= 6 || field_0x27c == 0x17) {
-                field_0x254 = 0x10;
-                if (field_0x290 == 0) {
-                    field_0x290 = 1;
-                } else {
-                    field_0x290 = 0;
-                }
-                return false;
-            }
-            u16 tile = field_0x288;
-            if (tile == 0x3A || (u16)(tile - 0x8B) <= 3 || tile == 0x3D) {
-                return false;
-            }
-            if (field_0x27c == 0x25) {
-                return getGameView_802D6A9C()->field_0x171 == 0;
-            }
-            if (field_0x27c == 0x26) {
-                return getGameView_802D6A9C()->field_0x171 == 1;
-            }
-            if (field_0x27c == 0x22) {
-                if (getGameView_802D6A9C()->field_0x170 != 1) {
+            if (field_0x27c != 0 && field_0x27c != 0x61 && (u32)(field_0x27c - 2) > 5 && field_0x27c != 0x50 &&
+                (u32)(field_0x27c - 0x27) > 8 && field_0x27c != 0x20 && (u32)(field_0x27c - 0xC) > 2 &&
+                (u32)(field_0x27c - 0x39) > 2 && (u32)(field_0x27c - 0x23) > 1 &&
+                !(field_0x27c >= 4 && field_0x27c <= 7) && !(field_0x27c >= 0x18 && field_0x27c <= 0x1F)) {
+                if ((u32)(field_0x27c - 0x10) <= 6 || field_0x27c == 0x17) {
+                    field_0x254 = 0x10;
+                    if (field_0x290 == 0) {
+                        field_0x290 = 1;
+                    } else {
+                        field_0x290 = 0;
+                    }
                     return false;
                 }
-            }
-            if (field_0x290 == 0) {
-                return true;
+                u16 tile = field_0x288;
+                if (tile == 0x3A || (u16)(tile - 0x8B) <= 3 || tile == 0x3D) {
+                    return false;
+                }
+                if (field_0x27c == 0x25) {
+                    if (getGameView_802D6A9C()->field_0x171 == 0) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (field_0x27c == 0x26) {
+                    if (getGameView_802D6A9C()->field_0x171 == 1) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (field_0x27c != 0x22 || getGameView_802D6A9C()->field_0x170 == 1) {
+                    if (field_0x290 == 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
             }
         }
         return false;
