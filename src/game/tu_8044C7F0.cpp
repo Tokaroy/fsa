@@ -78,7 +78,7 @@ bool fn_80453848(JPABaseEmitter* emitter) {
 
 cls_80453830::cls_80453830() {}
 
-// FIXME: 96.89 %, missing/extra; behaviour near.
+// FIXME: 97.31 %, missing/extra; behaviour near.
 cls_804B1D58::cls_804B1D58() {
     lbl_8053AF40 = this;
     mScreen = new J2DScreen;
@@ -283,7 +283,7 @@ cls_804B1D58::~cls_804B1D58() {
     lbl_8053AF40 = NULL;
 }
 
-// FIXME: 98.68 %, different + reloc-name; behaviour clean.
+// FIXME: 99.18 %, missing/extra; behaviour clean.
 // register choice in the first loop differs (the original keeps the zero shared with the counter).
 void cls_804B1D58::fn_80452350() {
     lbl_8053AEC0->fn_804310CC();
@@ -1264,7 +1264,7 @@ void cls_804B1D58::fn_8044D894() {
 }
 
 // Selects row `arg` (0-3) of the second list; like fn_8044CB08, with one emitter (field_0xb0).
-// FIXME(shotgun): 85.99 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.37 %, same-text; behaviour clean.
 void cls_804B1D58::fn_8044D298(int arg) {
     if (arg >= 0 && arg <= 3) {
         gGameRoot_8053AAF8->fn_80134D20(false);
@@ -1317,7 +1317,7 @@ u8 cls_804B1D58::fn_8044D290() {
 
 // Selects row `arg` (0-6): recolours the cursor panes, hides the row's panes and starts its two
 // emitters (stopped at once: the status bits 1, 2 and 4).
-// FIXME(shotgun): 84.62 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void cls_804B1D58::fn_8044CB08(int arg) {
     if (arg >= 0 && arg <= 6) {
         gGameRoot_8053AAF8->fn_80134D20(false);
