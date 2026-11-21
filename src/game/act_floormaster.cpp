@@ -117,6 +117,7 @@ void Floormaster_804A6004::init() {
 
 // Case 1: the three env-colour conversions use other stack slots and f-registers than the original
 // (0x18/0x20/0x10 for r/g/b), and the player-x check swaps f2/f3.
+// FIXME: 99.18 %, scheduling+regalloc; behaviour drift.
 void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     switch (state) {
     case 0:
@@ -344,6 +345,7 @@ void Floormaster_804A6004::fn_8020EB08() {
 // case 3 sets the flag with `mr r30, r4` where ours has `li r30, 1`;
 // case 7 stores x/y from pos in the other order and swaps pos/vec stack slots;
 // setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
+// FIXME: 98.13 %, different; behaviour drift.
 void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     fn_8020EB08();
     switch (mState) {
