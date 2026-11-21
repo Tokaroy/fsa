@@ -136,7 +136,7 @@ void cls_804A4C58::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME(shotgun): 97.99 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
@@ -359,7 +359,7 @@ static inline s32 findTarget_801D95F4(cls_804A4C58* self) {
     return target;
 }
 
-// FIXME(shotgun): 98.23 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.09 %, regalloc-only + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
