@@ -159,10 +159,14 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 5:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        if (mState >= 6 && mState < 8) {
+        switch (mState) {
+        case 6:
+        case 7:
             mSeq2a8.fn_801DA9E8(2, 0);
-        } else {
+            break;
+        default:
             mSeq2a8.fn_801DA9E8(1, 0);
+            break;
         }
         startSound_801F0E34(0x40052, 0);
         break;
@@ -257,7 +261,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
         mBox.i.y = 1.0f;
         mBox.f.x = -1.0f;
         mBox.f.y = -1.0f;
-        mBox2 = mBox;
+        mBox2.set(mBox);
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
         field_0x3c.set(0.0f, 0.0f, 0.0f);
