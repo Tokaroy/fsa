@@ -39,11 +39,12 @@ IceMeltedByFourPlayers_804AE888::~IceMeltedByFourPlayers_804AE888() {
     }
 }
 
-// FIXME: 99.38 %, missing/extra; behaviour clean.
-// Same shape; the box copy's adds are scheduled differently
-// (the original keeps f.x in f2 and reloads pos.y into it), case 1 stores the
-// 0 of field_0x24c from a register the original holds for its loop, and the
-// request copy differs.
+static inline void applyToAllPlayers() {
+    for (s32 i = 0; i < 4; i++) {
+        fn_80230498(i, getPlayerPos_8023E724(i), 0xE8, 0xFF, -0x80, -0x80, true);
+    }
+}
+
 void IceMeltedByFourPlayers_804AE888::update() {
     if (fn_8037845C() == 1) {
         return;
@@ -84,9 +85,7 @@ void IceMeltedByFourPlayers_804AE888::update() {
                 field_0x244 = 50;
                 field_0x248 = 4;
                 field_0x24c = 0;
-                for (s32 i = 0; i < 4; i++) {
-                    fn_80230498(i, getPlayerPos_8023E724(i), 0xE8, 0xFF, -0x80, -0x80, true);
-                }
+                applyToAllPlayers();
             }
             if (mEmitter230 != NULL) {
                 releaseEmitter_801EE434(mEmitter230);
