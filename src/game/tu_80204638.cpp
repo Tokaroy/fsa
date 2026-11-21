@@ -1,4 +1,5 @@
 #include "game/GameGlobals.h"
+#include "game/GameMath.h"
 #include "game/GameView.h"
 #include "game/ActorBase.h"
 #include <float.h>
@@ -100,7 +101,7 @@ bool cls_80204638::fn_802046FC(JGeometry::TVec3f* vel, JGeometry::TVec3f* pos) {
             for (s32 i = 0; i < mCount; i++) {
                 f32 dy = mPositions[i].y - pos->y;
                 f32 dx = mPositions[i].x - pos->x;
-                f32 dist = dx * dx + dy * dy;
+                f32 dist = square(dx) + square(dy);
                 if (dist < best) {
                     best = dist;
                     nearest = i;
