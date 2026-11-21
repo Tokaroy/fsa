@@ -1568,7 +1568,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 97.15 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.63 %, different; behaviour near.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
@@ -1623,7 +1623,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             if (field_0x240[0] > i * 10) {
                 if (field_0x240[0] < i * 10 + 10) {
                     field_0x184[i] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
@@ -1646,7 +1646,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
                 if (field_0x240[0] < i * 10 + 10) {
                     s16 idx = others[i];
                     field_0x184[idx] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
