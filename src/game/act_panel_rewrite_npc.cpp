@@ -247,46 +247,35 @@ void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     }
 }
 
-// FIXME: 92.18 %, missing/extra; behaviour clean.
-// The original keeps `this` in r31 from entry and the layer
-// temporary in r30; ours swaps the saved registers for this, the serial and
-// the found actor.
+// The original keeps `this` in r31 from entry and the layer temporary in r30;
+// ours rotates the callee-saved registers for this, the temporary, and other.
 bool PanelRewriteNPC_804A8E40::vfunc_0x58() {
+    ActorBase_804A5770* other;
     s32 serial = -1;
     if (viewLayerFlag(field_0x4)) {
         return false;
     }
-    for (;;) {
+    while (true) {
         serial = getActorManager_801F856C()->fn_801F78F4('KEY0', serial);
         if (serial < 0) {
             return false;
         }
-        if (serial == mSerial) {
-            continue;
+        if (serial != mSerial) {
+            other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (other != NULL) {
+                JGeometry::TVec3f otherPos = other->mPos;
+                if (field_0x4 == other->field_0x4 &&
+                    vfunc_0x5C(mPos.x + 8.0f, otherPos.x, 8.0f) &&
+                    vfunc_0x5C(mPos.y + 8.0f, otherPos.y, 8.0f) &&
+                    vfunc_0x5C(mPos.z, otherPos.z, 8.0f)) {
+                    SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(other);
+                    if (key->fn_802C1970(field_0x4, &mPos)) {
+                        key->fn_802C2B64();
+                        return true;
+                    }
+                }
+            }
         }
-        ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (other == NULL) {
-            continue;
-        }
-        JGeometry::TVec3f otherPos = other->mPos;
-        if (field_0x4 != other->field_0x4) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.x + 8.0f, otherPos.x, 8.0f)) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.y + 8.0f, otherPos.y, 8.0f)) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.z, otherPos.z, 8.0f)) {
-            continue;
-        }
-        SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(other);
-        if (!key->fn_802C1970(field_0x4, &mPos)) {
-            continue;
-        }
-        key->fn_802C2B64();
-        return true;
     }
 }
 
