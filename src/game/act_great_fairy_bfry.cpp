@@ -63,9 +63,11 @@ void GreatFairy_804AF338::init() {
             field_0x284.z = mPos.z;
             field_0x284.z += 32.0f;
             p.z = 8.0f;
-            field_0x290.x = (p.x - field_0x284.x) / 120.0f;
-            field_0x290.y = (p.y - field_0x284.y) / 120.0f;
-            field_0x290.z = (p.z - field_0x284.z) / 120.0f;
+            field_0x290.set(
+                (p.x - field_0x284.x) / 120.0f,
+                (p.y - field_0x284.y) / 120.0f,
+                (p.z - field_0x284.z) / 120.0f
+            );
             mState = 9;
         } else {
             field_0x264 = 0x78;
