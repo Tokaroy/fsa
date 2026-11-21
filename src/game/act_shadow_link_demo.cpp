@@ -222,6 +222,7 @@ static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s3
 }
 
 // The original keeps &mPos in r29 across getResource; ours recomputes it.
+// FIXME: 96.79 %, missing/extra; behaviour clean.
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
