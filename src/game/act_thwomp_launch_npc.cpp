@@ -204,10 +204,6 @@ void NPCLaunchedByThwomp_804AC010::init() {
     field_0x194 = 1;
 }
 
-// FIXME: 99.97 %, operands; behaviour clean.
-// the temporary TVec3f stack slots for
-// field_0x3c and the by-value mPos argument to fn_8038C678 are swapped (0x44/0x38/0x2c/0x20
-// vs 0x14/0x2c/0x20/0x8 and 0x14/0x8 vs 0x44/0x38).
 void NPCLaunchedByThwomp_804AC010::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x -= 2.0f;
@@ -236,7 +232,8 @@ void NPCLaunchedByThwomp_804AC010::update() {
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
             field_0x24c = fn_8022FD8C(mSerial);
             if (field_0x24c >= 0 && getPlayerPos_8023E724(field_0x24c)->z == 0.0f &&
-                fn_802300EC(field_0x24c) && talk(field_0x4, mSerial, mPos, 0))
+                fn_802300EC(field_0x24c) &&
+                fn_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0))
             {
                 field_0x230 = 4;
             }
@@ -249,7 +246,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
             if (getPlayerPos_8023E724(field_0x24c)->z != 0.0f || !fn_802300EC(field_0x24c)) {
                 break;
             }
-            if (talk(field_0x4, mSerial, mPos, 0)) {
+            if (fn_8038C678(field_0x24c, field_0x264, getSerial(), getField_0x4(), mPos, 0)) {
                 field_0x230 = 4;
                 break;
             }
