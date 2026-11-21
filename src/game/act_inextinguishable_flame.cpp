@@ -97,7 +97,6 @@ InextinguishableFlame_804A9D28::~InextinguishableFlame_804A9D28() {
 // The state machine. States: 0 wait for the view (field_0x300), 1 search for a
 // tile, 2 spawn the grid, 3 hit, 4 spawn a BLZE actor, 5 count down, 6 wait
 // for the player's hit. The grids are walked in the order of the spawn loops.
-// Still differs: an extra beq after the state 0 flag test.
 // FIXME: 99.05 %, different; behaviour drift.
 void InextinguishableFlame_804A9D28::update() {
     JGeometry::TVec3f pos = mPos;
@@ -109,30 +108,29 @@ void InextinguishableFlame_804A9D28::update() {
 
     switch (mState) {
     case 0: {
-        if (mFlag300 != 0 && vfunc_0x34() != true) {
-            break;
-        }
-        JGeometry::TVec3f grid = mPos;
-        s32 n = 0;
-        for (s32 i = 0; i < mCountX; i++) {
-            for (s32 j = 0; j < mCountY; j++) {
-                mEmitters[0][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
-                mEmitters[1][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
-                mEmitters[2][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
-                grid.y += 16.0f;
-                n++;
+        if (mFlag300 == 0 || (mFlag300 != 0 && vfunc_0x34() == true)) {
+            JGeometry::TVec3f grid = mPos;
+            s32 n = 0;
+            for (s32 i = 0; i < mCountX; i++) {
+                for (s32 j = 0; j < mCountY; j++) {
+                    mEmitters[0][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[1][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[2][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
+                    grid.y += 16.0f;
+                    n++;
+                }
+                grid.y = mPos.y;
+                grid.x += 16.0f;
             }
-            grid.y = mPos.y;
-            grid.x += 16.0f;
+            if (mKind == 0) {
+                mState = 2;
+            } else if (mKind == 3) {
+                mState = 6;
+            } else {
+                mState = 1;
+            }
+            field_0x94 = 1;
         }
-        if (mKind == 0) {
-            mState = 2;
-        } else if (mKind == 3) {
-            mState = 6;
-        } else {
-            mState = 1;
-        }
-        field_0x94 = 1;
         break;
     }
     case 1:
@@ -158,8 +156,8 @@ void InextinguishableFlame_804A9D28::update() {
             for (s32 i = 0; i < mCountX; i++) {
                 for (s32 j = 0; j < mCountY; j++) {
                     mEmitters[0][n] = spawnEmitter_8013CC50(field_0x4, &pos, 0x4f2, 1, 0, NULL, NULL, true, 1.0f);
-                    n++;
                     pos.y += 16.0f;
+                    n++;
                 }
                 pos.y = mPos.y;
                 pos.x += 16.0f;
@@ -224,13 +222,13 @@ void InextinguishableFlame_804A9D28::update() {
         break;
     case 6:
         if (fn_801F2B7C(field_0x114, -1, 7)) {
-            if (fn_80234CF8(0)) {
-                mTimer = 0;
-            } else {
+            if (!fn_80234CF8(0)) {
                 mTimer = 1;
+            } else {
+                mTimer = 0;
             }
         }
-        if (mFlag300 != 0 && vfunc_0x34() != true) {
+        if (mFlag300 != 0 && !vfunc_0x34()) {
             vfunc_0x54();
             field_0x94 = 0;
             mState = 0;
