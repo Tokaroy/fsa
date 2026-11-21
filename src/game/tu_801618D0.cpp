@@ -19,9 +19,17 @@
 static const f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
 static const s32 lbl_804A0430[4] = {0, 1, 2, 1};
 
-// FIXME(shotgun): table not written out (gate.py literal tripwire); 8 colour sets of three
-// RGBA colours (96 bytes), then the three texture names; extern-declared, size from symbols.txt.
-extern const JUtility::TColor lbl_804661E0[24];
+// 8 colour sets of three RGBA colours, .rodata at 0x804661E0.
+static const GXColor lbl_804661E0[8][3] = {
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0x1E}, {0x00, 0x00, 0x00, 0x00}},
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0x1E}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}},
+    {{0x96, 0x64, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x32, 0xC8, 0x64}, {0xFF, 0xC8, 0x96, 0x64}, {0xFF, 0x64, 0x00, 0x64}},
+    {{0xFF, 0x00, 0x00, 0xFF}, {0xFF, 0xFF, 0x00, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x96, 0xFF, 0xFF}, {0x00, 0x50, 0x96, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x96, 0xFF, 0xFF}, {0x00, 0x50, 0x96, 0xFF}, {0x00, 0x00, 0x00, 0xFF}},
+};
 
 // A flag of the ghost's attacks, .sbss at 0x8053AB58.
 s32 lbl_8053AB58;
@@ -618,13 +626,12 @@ void cls_804A0440::draw() {
 // Not auto-inlined: update calls fn_80161F98 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x80161F98.
-// FIXME(shotgun): 72.26 %, missing/extra; behaviour drift.
 void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
     if (field_0x2ec != set) {
         if (field_0x2ec < 0) {
-            for (s32 i = 0; i < 3; i++) {
-                field_0x2f4[i] = lbl_804661E0[set * 3 + i];
-            }
+            field_0x2f4[0].set(lbl_804661E0[set][0]);
+            field_0x2f4[1].set(lbl_804661E0[set][1]);
+            field_0x2f4[2].set(lbl_804661E0[set][2]);
         }
         field_0x2ec = set;
         if (field_0x2f0 < 0) {
@@ -635,11 +642,10 @@ void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
     } else if (field_0x2f0 > 0) {
         f32 weight = 1.0f / field_0x2f0;
         for (s32 i = 0; i < 3; i++) {
-            JUtility::TColor& c = field_0x2f4[i];
-            c.r = (u8)((f32)c.r * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].r);
-            c.g = (u8)((f32)c.g * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].g);
-            c.b = (u8)((f32)c.b * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].b);
-            c.a = (u8)((f32)c.a * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].a);
+            field_0x2f4[i].r = (u8)((f32)field_0x2f4[i].r * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].r);
+            field_0x2f4[i].g = (u8)((f32)field_0x2f4[i].g * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].g);
+            field_0x2f4[i].b = (u8)((f32)field_0x2f4[i].b * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].b);
+            field_0x2f4[i].a = (u8)((f32)field_0x2f4[i].a * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].a);
         }
         field_0x2f0--;
     }
