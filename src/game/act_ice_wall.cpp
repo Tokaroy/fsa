@@ -32,7 +32,6 @@ IceWall_8049DE18::~IceWall_8049DE18() {
     field_0x27c = NULL;
 }
 
-// FIXME: 99.98 %, scheduling; behaviour clean.
 void IceWall_8049DE18::init() {
     ActorBase_804A5770::init();
     field_0x230 = field_0x90 & 0xF;
@@ -41,7 +40,7 @@ void IceWall_8049DE18::init() {
     switch (field_0x230) {
     case 1:
         field_0x240 = 0.5f;
-        field_0x54.x = field_0x54.y = field_0x54.z = field_0x240;
+        field_0x54.setAll(field_0x240);
         mBox.i.x = -8.0f;
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
@@ -78,10 +77,8 @@ void IceWall_8049DE18::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
-// FIXME: 98.04 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: same instructions, but the three box setups (update's, hitByWeapon's and
-// hitByFire's) interleave their loads, fadds and stores differently and use other float registers,
-// and the saved registers r29/r30 are swapped in cases 1 and 0.
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
+// FIXME: regalloc-only: saved registers r29/r30 are swapped in cases 0 and 1.
 void IceWall_8049DE18::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box;
@@ -156,8 +153,18 @@ void IceWall_8049DE18::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 99.46 %, scheduling+regalloc; behaviour drift.
-// scheduling+regalloc (same instructions modulo registers, different order).
+static inline void setScaleMtx(Mtx mtx, f32 x, f32 y, f32 z) {
+    mtx[0][0] = x;
+    mtx[0][1] = 0.0f;
+    mtx[0][2] = 0.0f;
+    mtx[1][0] = 0.0f;
+    mtx[1][1] = y;
+    mtx[1][2] = 0.0f;
+    mtx[2][0] = 0.0f;
+    mtx[2][1] = 0.0f;
+    mtx[2][2] = z;
+}
+
 void IceWall_8049DE18::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params1;
@@ -167,15 +174,7 @@ void IceWall_8049DE18::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.z);
         params1.mMtx = mtx;
     }
 
@@ -285,12 +284,9 @@ bool IceWall_8049DE18::hitByWeapon() {
     JGeometry::TVec3f stack40;
     JGeometry::TVec2f hitPos;
     hitPos.set(0.0f, 0.0f);
-    f32 screenY = mPos.y - mPos.z;
+    JGeometry::TVec2f screenPos(mPos.x, mPos.y - mPos.z);
     box.set(mBox2);
-    box.i.x += mPos.x;
-    box.i.y += screenY;
-    box.f.x += mPos.x;
-    box.f.y += screenY;
+    box.addPos(screenPos);
 
     s32 hitCode = fn_8023AA18(&box, field_0x4, &hitPos);
     if (hitCode >= 0) {
