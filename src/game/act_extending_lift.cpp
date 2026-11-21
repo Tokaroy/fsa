@@ -81,7 +81,7 @@ void ExtendingLift_804A78B0::init() {
     field_0x244 = 0;
 }
 
-// FIXME: 90.58%, missing/extra: ours has 5 more instrs (318 vs 313). Ours saves an extra register (r28) in the player loop (the original loads mPos before the call; field_0x4 is read through getField_0x4()), and the field_0x230/0x234 divides are scheduled differently.
+// FIXME: missing/extra (2 extra instrs): stack frame is 16 bytes larger, mBox bounds in contains() are loaded lazily instead of upfront, and the field_0x230/0x234 divides are scheduled differently.
 void ExtendingLift_804A78B0::update() {
     if (vfunc_0x34()) {
         if (!field_0x244) {
@@ -123,9 +123,10 @@ void ExtendingLift_804A78B0::update() {
         }
     }
 
-    JGeometry::TVec3f oldCenter((mBox.i.x - mBox.f.x) * 0.5f + mBox.f.x,
-                                (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y,
-                                0.0f);
+    JGeometry::TVec3f oldCenter;
+    oldCenter.x = (mBox.i.x - mBox.f.x) * 0.5f + mBox.f.x;
+    oldCenter.y = (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y;
+    oldCenter.z = 0.0f;
 
     switch ((field_0x90 >> 12) & 0x1F) {
     case 0:
@@ -144,11 +145,12 @@ void ExtendingLift_804A78B0::update() {
 
     field_0x230.set(field_0x238.x / field_0x240->mSizeX, field_0x238.y / field_0x240->mSizeY);
 
-    JGeometry::TVec3f newCenter((mBox.i.x - mBox.f.x) * 0.5f + mBox.f.x,
-                                (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y,
-                                0.0f);
+    JGeometry::TVec3f newCenter;
+    newCenter.x = (mBox.i.x - mBox.f.x) * 0.5f + mBox.f.x;
+    newCenter.y = (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y;
+    newCenter.z = 0.0f;
 
-    for (int i = 0; i < 4; i++) {
+    for (s32 i = 0; i < 4; i++) {
         if (isPlayerOn(i)) {
             if (!(newCenter - oldCenter).isZero()) {
                 JGeometry::TVec3f delta = newCenter - oldCenter;
