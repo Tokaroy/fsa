@@ -214,7 +214,15 @@ void cls_8049D83C::update() {
             fn_8011921C()->fn_801183BC();
             break;
         }
-        if (isStageFlagSet(field_0x238, 3) && lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+        bool canSkip;
+        if (!isStageFlagSet(field_0x238, 3)) {
+            canSkip = false;
+        } else if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
+            canSkip = true;
+        } else {
+            canSkip = false;
+        }
+        if (canSkip) {
             fn_80387494(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -244,11 +252,11 @@ void cls_8049D83C::update() {
         for (s32 i = 0; i < 2; i++) {
             if (field_0x2e8[i] != NULL) {
                 setEmitterPos_8013CB44(field_0x2e8[i], &mPos, 0, 0, true);
-                field_0x2e8[i]->mGlobalEnvClr.r = 0x2D;
-                field_0x2e8[i]->mGlobalEnvClr.g = 0x78;
-                field_0x2e8[i]->mGlobalEnvClr.b = 0xFF;
+                field_0x2e8[i]->setGlobalEnvColor(0x2D, 0x78, 0xFF);
             }
         }
+        break;
+    case 17:
         break;
     }
     if (field_0x233 != 0) {
