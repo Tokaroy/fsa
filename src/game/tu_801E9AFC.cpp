@@ -19,7 +19,7 @@ int fn_801EA8C0(const void* a, const void* b);
 static const u32 lbl_80469C78[4] = {'FIRE', 'BLZE', 'BMTY', 'NULL'};
 
 inline void cls_801E9B54::drawOutlines() {
-    for (s32 i = 0; i < field_0x60; i++) {
+    for (s32 i = 0, n = field_0x60; i < n; i++) {
         if (field_0x0[i].actor != NULL) {
             field_0x0[i].actor->fn_801E8080();
         }
@@ -27,12 +27,12 @@ inline void cls_801E9B54::drawOutlines() {
 }
 
 inline void cls_801E9B54::drawSprites() {
-    for (s32 i = 0; i < field_0x60; i++) {
+    for (s32 i = 0, n = field_0x60; i < n; i++) {
         if (field_0x0[i].actor != NULL) {
             field_0x0[i].actor->fn_801E801C();
         }
     }
-    for (s32 i = 0; i < field_0x74; i++) {
+    for (s32 i = 0, n = field_0x74; i < n; i++) {
         s32 serial = field_0x64[i];
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -173,9 +173,15 @@ void cls_801E9AFC::fn_801EA304() {
     GXLoadTexObj(&field_0xf4[1], GX_TEXMAP0);
 }
 
-// 0x801EA108.
-// FIXME(shotgun): 52.06 %, missing/extra + reloc-name; behaviour drift.
-// the original reloads the sin/cos table for every vertex.
+static inline void drawQuadVertex(const JGeometry::TVec2f& center, f32 dx, f32 dy, s16 angle, f32 z, f32 u, f32 v) {
+    f32 x = center.x + (dx * JMath::sincosTable_.cosShort(-angle) - dy * JMath::sincosTable_.sinShort(-angle));
+    f32 y = center.y + (dx * JMath::sincosTable_.sinShort(-angle) + dy * JMath::sincosTable_.cosShort(-angle));
+    GXPosition3f32(x, z + y, z);
+    GXTexCoord2f32(u, v);
+}
+
+// 0x801EA108: the original reloads the sin/cos table for every vertex instead of CSEing it.
+// FIXME: 52.65 %, missing/extra + reloc-name; behaviour drift.
 void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
     f32 s0 = 0.0f;
     f32 s1 = 1.0f;
@@ -188,25 +194,17 @@ void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
         s1 = tmp;
         centerY = -centerY;
     }
-    s16 rot = -angle;
-    f32 x = pos->x + (centerY * JMath::sincosTable_.cosShort(rot) - centerX * JMath::sincosTable_.sinShort(rot));
-    f32 y = pos->y + (centerY * JMath::sincosTable_.sinShort(rot) + centerX * JMath::sincosTable_.cosShort(rot));
+    JGeometry::TVec2f center;
+    center.x = pos->x + (centerY * JMath::sincosTable_.cosShort(-angle) - centerX * JMath::sincosTable_.sinShort(-angle));
+    center.y = pos->y + (centerY * JMath::sincosTable_.sinShort(-angle) + centerX * JMath::sincosTable_.cosShort(-angle));
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    GXPosition3f32(x + (-4.0f * JMath::sincosTable_.cosShort(rot) - -4.0f * JMath::sincosTable_.sinShort(rot)),
-                   y + (-4.0f * JMath::sincosTable_.sinShort(rot) + -4.0f * JMath::sincosTable_.cosShort(rot)) + z, z);
-    GXTexCoord2f32(s0, 0.0f);
-    GXPosition3f32(x + (4.0f * JMath::sincosTable_.cosShort(rot) - -4.0f * JMath::sincosTable_.sinShort(rot)),
-                   y + (4.0f * JMath::sincosTable_.sinShort(rot) + -4.0f * JMath::sincosTable_.cosShort(rot)) + z, z);
-    GXTexCoord2f32(s1, 0.0f);
-    GXPosition3f32(x + (4.0f * JMath::sincosTable_.cosShort(rot) - 4.0f * JMath::sincosTable_.sinShort(rot)),
-                   y + (4.0f * JMath::sincosTable_.sinShort(rot) + 4.0f * JMath::sincosTable_.cosShort(rot)) + z, z);
-    GXTexCoord2f32(s1, 1.0f);
-    GXPosition3f32(x + (-4.0f * JMath::sincosTable_.cosShort(rot) - 4.0f * JMath::sincosTable_.sinShort(rot)),
-                   y + (-4.0f * JMath::sincosTable_.sinShort(rot) + 4.0f * JMath::sincosTable_.cosShort(rot)) + z, z);
-    GXTexCoord2f32(s0, 1.0f);
+    drawQuadVertex(center, -4.0f, -4.0f, angle, z, s0, 0.0f);
+    drawQuadVertex(center, 4.0f, -4.0f, angle, z, s1, 0.0f);
+    drawQuadVertex(center, 4.0f, 4.0f, angle, z, s1, 1.0f);
+    drawQuadVertex(center, -4.0f, 4.0f, angle, z, s0, 1.0f);
 }
 
-// FIXME: 91.74 %, missing/extra; behaviour drift.
+// FIXME: 93.91 %, missing/extra; behaviour drift.
 // Three fewer-instruction spots: the original converts the
 // "outlines" / "sprites" tests to bool through a byte (clrlwi, neg, or, srwi)
 // where ours keeps the compare result; the rest is the same code, registers
