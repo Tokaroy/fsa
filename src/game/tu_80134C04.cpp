@@ -1468,7 +1468,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
 
 // The stage music request of the stage-change path (also for mode 0xE).
 static inline void playStageMusic(GameRoot_8049EF20* self) {
-    u8 count = getGameView_802D6A9C()->field_0x1328c;
+    s32 count = getGameView_802D6A9C()->field_0x1328c;
     s32 sound = getGameView_802D6A9C()->field_0x34;
     if (sound == 0x11) {
         return;
@@ -1478,7 +1478,8 @@ static inline void playStageMusic(GameRoot_8049EF20* self) {
             self->field_0xa0->fn_80458F04(lbl_804652F0[sound]);
         } else {
             self->field_0xa0->fn_80458FF0(lbl_804652F0[sound], false, count);
-            getGameView_802D6A9C()->field_0x1328c = count + 1;
+            GameView_804A9950* view = getGameView_802D6A9C();
+            view->field_0x1328c = count + 1;
         }
     } else if (sound != 0x19) {
         if (self->field_0x86 == 0) {
@@ -1569,15 +1570,11 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
             return;
         }
         field_0x60 = 4;
-        if (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0) {
-            if (getGameView_802D6A9C()->field_0x4 != 0 || getGameView_802D6A9C()->field_0x8 != 0) {
-                return;
-            }
-            if (!(lbl_8050EC80.getCurrentFile().mFlags & 1)) {
-                return;
-            }
+        if (getGameView_802D6A9C()->field_0x4 != 0 || getGameView_802D6A9C()->field_0x8 != 0 ||
+            (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0 &&
+             (lbl_8050EC80.getCurrentFile().mFlags & 1))) {
+            playStageMusic(this);
         }
-        playStageMusic(this);
     } else if (field_0x50 == 0xE) {
         field_0x60 = 4;
         playStageMusic(this);
