@@ -567,15 +567,24 @@ void GreatFairy_804AF338::draw() {
     }
 }
 
-// FIXME(shotgun): 98.75 %, missing/extra; behaviour drift.
+static inline s32 getFlagBit(const s32* flags, s32 player) {
+    return flags[fn_8022F340(player)];
+}
+
 void GreatFairy_804AF338::fn_8038DE74() {
-    if (field_0x274[fn_8022F340(field_0x234)] != 0 &&
-        getGameView_802D6A9C()->fn_802D800C(field_0x274[fn_8022F340(field_0x234)]) == 1) {
+    if (getFlagBit(field_0x274, field_0x234) != 0 &&
+        getGameView_802D6A9C()->fn_802D800C(getFlagBit(field_0x274, field_0x234)) == 1) {
         field_0x29c = 0xC;
     } else {
         switch (fn_802373EC(fn_8022F340(field_0x234))) {
-        case 1:
-            field_0x29c = 7;
+        case 10:
+            field_0x29c = 1;
+            break;
+        case 6:
+            field_0x29c = 2;
+            break;
+        case 5:
+            field_0x29c = 3;
             break;
         case 3:
             field_0x29c = 4;
@@ -583,23 +592,17 @@ void GreatFairy_804AF338::fn_8038DE74() {
         case 4:
             field_0x29c = 5;
             break;
-        case 5:
-            field_0x29c = 3;
+        case 8:
+            field_0x29c = 6;
             break;
-        case 6:
-            field_0x29c = 2;
+        case 1:
+            field_0x29c = 7;
             break;
         case 7:
             field_0x29c = 8;
             break;
-        case 8:
-            field_0x29c = 6;
-            break;
         case 9:
             field_0x29c = 9;
-            break;
-        case 10:
-            field_0x29c = 1;
             break;
         case 0:
         case 2:
@@ -620,9 +623,8 @@ void GreatFairy_804AF338::fn_8038DE74() {
             ACTOR_BFRY, field_0x4, &mPos, ((field_0x29c << 4) & 0xF0) | 3 | ((field_0x234 << 8) & 0x300), -1, -1);
         if (field_0x270 >= 0) {
             mState = 5;
-            if (field_0x274[fn_8022F340(field_0x234)] != 0) {
-                s32 bit = field_0x274[fn_8022F340(field_0x234)];
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            if (getFlagBit(field_0x274, field_0x234) != 0) {
+                getGameView_802D6A9C()->fn_802D8050(getFlagBit(field_0x274, field_0x234), true, 0xFF);
             }
         } else {
             field_0x29c = 0;
