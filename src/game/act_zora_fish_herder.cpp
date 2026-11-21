@@ -12,7 +12,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 99.98 %, scheduling; behaviour clean.
 void ZoraFishHerding_804A2E30::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
@@ -29,9 +28,7 @@ void ZoraFishHerding_804A2E30::init() {
     field_0x25c = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    field_0x3c.zero();
     field_0x264 = -1;
     field_0x268 = -1;
     field_0x250 = 0;
