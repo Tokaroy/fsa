@@ -1805,13 +1805,16 @@ void cls_804A2944::fn_80197EB0() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.z = 0.0f;
+            field_0x3c.y = 0.0f;
+            field_0x3c.x = 0.0f;
             field_0x248 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
             field_0x24c = (s32)std::sqrtf(distSq);
             for (int i = 0; i < 13; i++) {
-                if (mEmitters[i] != NULL) {
-                    mEmitters[i]->mGlobalPScl.x = 1.5f;
-                    mEmitters[i]->mGlobalPScl.y = 1.5f;
+                JPABaseEmitter* emitter = mEmitters[i];
+                if (emitter != NULL) {
+                    emitter->mGlobalPScl.x = 1.5f;
+                    emitter->mGlobalPScl.y = 1.5f;
                 }
             }
             mBox.i.x = -10.0f;
@@ -1828,10 +1831,15 @@ void cls_804A2944::fn_80197EB0() {
         if (actor == NULL || field_0x250 == 0) {
             break;
         }
-        dx = actor->mPos.x - mPos.x;
         dy = actor->mPos.y - mPos.y;
-        if (field_0x250 >= 1 && std::sqrtf(dx * dx + dy * dy) <= 80.0f) {
-            takeToken(this, actor);
+        dx = actor->mPos.x - mPos.x;
+        f32 dist = std::sqrtf(dx * dx + dy * dy);
+        if (field_0x250 >= 1) {
+            if (dist <= 80.0f) {
+                takeToken(this, actor);
+            } else {
+                field_0x258 = 0;
+            }
         } else {
             field_0x258 = 0;
         }
@@ -1870,10 +1878,15 @@ void cls_804A2944::fn_80197EB0() {
             if (actor == NULL || field_0x250 == 0) {
                 break;
             }
-            f32 dx = actor->mPos.x - mPos.x;
             f32 dy = actor->mPos.y - mPos.y;
-            if (field_0x250 >= 1 && std::sqrtf(dx * dx + dy * dy) <= 80.0f) {
-                takeToken(this, actor);
+            f32 dx = actor->mPos.x - mPos.x;
+            f32 dist = std::sqrtf(dx * dx + dy * dy);
+            if (field_0x250 >= 1) {
+                if (dist <= 80.0f) {
+                    takeToken(this, actor);
+                } else {
+                    field_0x258 = 0;
+                }
             } else {
                 field_0x258 = 0;
             }
