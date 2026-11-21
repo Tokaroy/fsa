@@ -143,22 +143,7 @@ void cls_8049EB8C::update() {
         case 0:
             break;
         case 1: {
-            JGeometry::TBox2f box2 = mBox;
-            box2.i.x += mPos.x;
-            box2.i.y += mPos.y;
-            box2.f.x += mPos.x;
-            box2.f.y += mPos.y;
-            fn_8022FEB8(&box2, field_0x4, mSerial, true, false);
-            s32 player = fn_8022FD8C(mSerial);
-            if (player < 0) {
-                player = -1;
-            } else if (!fn_802300EC(player)) {
-                player = -1;
-            } else {
-                if (!talkTo(player)) {
-                    player = -1;
-                }
-            }
+            s32 player = talkTo();
             if (player >= 0) {
                 field_0x23c = player;
                 fn_80132454(3);
@@ -210,6 +195,8 @@ void cls_8049EB8C::update() {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
+        break;
+    case 26:
         break;
     }
     setEmitterPos_8013CB44(field_0x288, &mPos, 0, -1, true);
@@ -518,11 +505,27 @@ void cls_8049EB8C::fn_801321E4() {
 // copies the linker dropped. The original's .sdata2 has their literals ahead of fn_801321E4's, in
 // the order of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
-// Opens message 0x2B6 for `player`, 64 units above the fairy.
-bool cls_8049EB8C::talkTo(s32 player) {
+// Checks for a talking player and opens message 0x2B6 for `player`, 64 units above the fairy.
+s32 cls_8049EB8C::talkTo() {
+    JGeometry::TBox2f box = mBox;
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0) {
+        return -1;
+    }
+    if (!fn_802300EC(player)) {
+        return -1;
+    }
     JGeometry::TVec3f pos = mPos;
     pos.y -= 64.0f;
-    return fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28);
+    if (fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28)) {
+        return player;
+    }
+    return -1;
 }
 
 // State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
