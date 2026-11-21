@@ -345,7 +345,6 @@ s32 fn_803A65EC() {
 }
 
 // 0x803A60E4.
-// FIXME(shotgun): 84.79 %, missing/extra + reloc-name; behaviour clean.
 void cls_804AF860::fn_803A60E4() {
     if (field_0x6e == 0) {
         if (--field_0x6c > 0) {
@@ -357,14 +356,34 @@ void cls_804AF860::fn_803A60E4() {
         } else {
             field_0x74 = -6;
         }
-        rotateArrow('Par01', field_0x70);
-        rotateArrow('Par02', field_0x72);
+        field_0x4->search('Par01')->rotate(
+            0.5f * field_0x4->search('Par01')->getWidth(),
+            0.5f * field_0x4->search('Par01')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x70 + field_0x74)
+        );
+        field_0x4->search('Par02')->rotate(
+            0.5f * field_0x4->search('Par02')->getWidth(),
+            0.5f * field_0x4->search('Par02')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x72 + field_0x74)
+        );
         return;
     }
     if (field_0x6e == 1 || field_0x6e == -1) {
         field_0x74 = 0;
-        rotateArrow('Par01', field_0x70);
-        rotateArrow('Par02', field_0x72);
+        field_0x4->search('Par01')->rotate(
+            0.5f * field_0x4->search('Par01')->getWidth(),
+            0.5f * field_0x4->search('Par01')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x70 + field_0x74)
+        );
+        field_0x4->search('Par02')->rotate(
+            0.5f * field_0x4->search('Par02')->getWidth(),
+            0.5f * field_0x4->search('Par02')->getHeight(),
+            J2DROTATE_Z,
+            (f32)(field_0x72 + field_0x74)
+        );
     }
     if (field_0x6e < 0) {
         s32 t;
@@ -376,19 +395,21 @@ void cls_804AF860::fn_803A60E4() {
                 field_0x6e = 0;
             }
         }
-        field_0x24[0]->moveFromCentre_80402E08(-5.0f * (f32)field_0x64 / 25.0f, field_0x60 * (f32)(t * t));
+        field_0x24[0]->moveFromCentre_80402E08(-5.0f * (f32)(t * t) / 25.0f, field_0x60 * (f32)field_0x64);
         if (field_0x6e != 0) {
             field_0x6e--;
         }
     } else if (field_0x6e > 0) {
-        s32 t = field_0x6e;
-        if (field_0x6e >= 5) {
+        s32 t;
+        if (field_0x6e < 5) {
+            t = field_0x6e;
+        } else {
             t = 10 - field_0x6e;
             if (field_0x6e == 10) {
                 field_0x6e = 0;
             }
         }
-        field_0x24[1]->moveFromCentre_80402E08(5.0f * (f32)field_0x64 / 25.0f, field_0x60 * (f32)(t * t));
+        field_0x24[1]->moveFromCentre_80402E08(5.0f * (f32)(t * t) / 25.0f, field_0x60 * (f32)field_0x64);
         if (field_0x6e != 0) {
             field_0x6e++;
         }
