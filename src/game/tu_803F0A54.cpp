@@ -940,7 +940,18 @@ void ConnectScreen_804B0F10::fn_803FB6F4() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 96.80 %, missing/extra + reloc-name; behaviour near.
+static inline void slideOutOnly(ConnectScreen_804B0F10* self, int start, int duration, f32 dist, f32& out) {
+    if (self->field_0x240[0] > start) {
+        if (self->field_0x240[0] < start + duration) {
+            int t = self->field_0x240[0] - start;
+            out = dist * ((f32)(t * t) / (f32)(duration * duration));
+        } else {
+            out = dist;
+        }
+    }
+}
+
+// FIXME(shotgun): 97.50 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803FAA88() {
     s32 others[2];
     s32* dst = others;
@@ -969,13 +980,7 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 8) {
-            field_0x114 = -100.0f * ((f32)(field_0x240[0] * field_0x240[0]) / 64.0f);
-        } else {
-            field_0x114 = -100.0f;
-        }
-    }
+    slideOutOnly(this, 0, 8, -100.0f, field_0x114);
     for (int i = 0; i < 2; i++) {
         if (field_0x240[0] > i * 5) {
             if (field_0x240[0] < i * 5 + 8) {
@@ -1568,7 +1573,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 98.63 %, different; behaviour near.
+// FIXME(shotgun): 98.72 %, different; behaviour near.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
@@ -1604,9 +1609,10 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 10) {
-            field_0x168 = -200.0f * ((f32)(field_0x240[0] * field_0x240[0]) / 100.0f);
+    s32 frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 10) {
+            field_0x168 = -200.0f * ((f32)(frame * frame) / 100.0f);
         } else {
             field_0x168 = -200.0f;
         }
@@ -2165,17 +2171,51 @@ void ConnectScreen_804B0F10::fn_803F4120() {
     lbl_8053AED8->fn_80440EE8();
 }
 
+static inline void updateGameSelectPanes(ConnectScreen_804B0F10* self, f32 offset) {
+    if (self->field_0x1a8 == 0) {
+        f32 stabX = self->field_0xc->search('Pstab04')->getBounds()->i.x;
+        self->field_0xc->search('Pstab04')->move(stabX, self->field_0xfc[0] + offset);
+        f32 hanbX = self->field_0xc->search('Phanb04')->getBounds()->i.x;
+        self->field_0xc->search('Phanb04')->move(hanbX, self->field_0xfc[1]);
+        f32 rubX = self->field_0xc->search('Prub04')->getBounds()->i.x;
+        self->field_0xc->search('Prub04')->move(rubX, self->field_0xfc[2]);
+        f32 curX = self->field_0xc->search('Pscuro02')->getBounds()->i.x;
+        self->field_0xc->search('Pscuro02')->move(curX, self->field_0xf8 + offset);
+    } else if (self->field_0x1a8 == 1) {
+        f32 stabX = self->field_0xc->search('Pstab04')->getBounds()->i.x;
+        self->field_0xc->search('Pstab04')->move(stabX, self->field_0xfc[0]);
+        f32 hanbX = self->field_0xc->search('Phanb04')->getBounds()->i.x;
+        self->field_0xc->search('Phanb04')->move(hanbX, self->field_0xfc[1] + offset);
+        f32 rubX = self->field_0xc->search('Prub04')->getBounds()->i.x;
+        self->field_0xc->search('Prub04')->move(rubX, self->field_0xfc[2]);
+        f32 top = self->field_0xc->search('Pstab04')->getBounds()->i.y;
+        f32 y = self->field_0xf8 + self->field_0xc->search('Phanb04')->getBounds()->i.y - top;
+        f32 curX = self->field_0xc->search('Pscuro02')->getBounds()->i.x;
+        self->field_0xc->search('Pscuro02')->move(curX, y);
+    } else {
+        f32 stabX = self->field_0xc->search('Pstab04')->getBounds()->i.x;
+        self->field_0xc->search('Pstab04')->move(stabX, self->field_0xfc[0]);
+        f32 hanbX = self->field_0xc->search('Phanb04')->getBounds()->i.x;
+        self->field_0xc->search('Phanb04')->move(hanbX, self->field_0xfc[1]);
+        f32 rubX = self->field_0xc->search('Prub04')->getBounds()->i.x;
+        self->field_0xc->search('Prub04')->move(rubX, self->field_0xfc[2] + offset);
+        f32 top = self->field_0xc->search('Pstab04')->getBounds()->i.y;
+        f32 y = self->field_0xf8 + self->field_0xc->search('Prub04')->getBounds()->i.y - top;
+        f32 curX = self->field_0xc->search('Pscuro02')->getBounds()->i.x;
+        self->field_0xc->search('Pscuro02')->move(curX, y);
+    }
+}
+
 // Draws states 7-9 (the game-select menu, field_0xc): the cursor
 // 'Pscuro01' / 'Pscuro02' fades in and out (field_0x1d0[0] over 60 frames;
 // in state 9 it fades to 230 over 30, or is hidden while field_0x1cc is 0)
 // and the chosen entry ('Pstab04' / 'Phanb04' / 'Prub04', field_0x1a8)
 // bounces with field_0x240[0]; then the screen, the player sprites
 // (fn_803F0A54) and lbl_8053AED8's buttons.
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
 void ConnectScreen_804B0F10::fn_803F38A4() {
     f32 alpha;
-    f32 t;
     if (field_0x1c4 != 9) {
+        f32 t;
         if (field_0x1d0[0] < 30) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 900.0f;
         } else {
@@ -2186,6 +2226,7 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     } else if (field_0x1cc == 0) {
         alpha = 0.0f;
     } else {
+        f32 t;
         if (field_0x1d0[0] < 15) {
             t = (f32)(field_0x1d0[0] * field_0x1d0[0]) / 225.0f;
         } else {
@@ -2205,39 +2246,7 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         bounce = 0;
     }
     f32 offset = 5.0f * (f32)(bounce * bounce) / 25.0f;
-    f32 x;
-    if (field_0x1a8 == 0) {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
-        field_0xc->search('Pstab04')->move(x, field_0xfc[0] + offset);
-        x = field_0xc->search('Phanb04')->getBounds()->i.x;
-        field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
-        x = field_0xc->search('Prub04')->getBounds()->i.x;
-        field_0xc->search('Prub04')->move(x, field_0xfc[2]);
-        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, field_0xf8 + offset);
-    } else if (field_0x1a8 == 1) {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
-        field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
-        x = field_0xc->search('Phanb04')->getBounds()->i.x;
-        field_0xc->search('Phanb04')->move(x, field_0xfc[1] + offset);
-        x = field_0xc->search('Prub04')->getBounds()->i.x;
-        field_0xc->search('Prub04')->move(x, field_0xfc[2]);
-        f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        f32 y = field_0xf8 + field_0xc->search('Phanb04')->getBounds()->i.y - top;
-        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, y);
-    } else {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
-        field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
-        x = field_0xc->search('Phanb04')->getBounds()->i.x;
-        field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
-        x = field_0xc->search('Prub04')->getBounds()->i.x;
-        field_0xc->search('Prub04')->move(x, field_0xfc[2] + offset);
-        f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
-        f32 y = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
-        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, y);
-    }
+    updateGameSelectPanes(this, offset);
     field_0xc->search('Pscuro01')->setAlpha(alpha);
     field_0xc->search('Pscuro02')->setAlpha(alpha);
     field_0xc->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
