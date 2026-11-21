@@ -55,9 +55,8 @@ MagicCircleGenerator_804A9FB0::~MagicCircleGenerator_804A9FB0() {
     }
 }
 
+// FIXME: regalloc-only (r28-r31 permuted).
 void MagicCircleGenerator_804A9FB0::update() {
-    u32 param;
-    s32 layer;
     switch (field_0x244) {
     case 0: {
         field_0x80.i.x = -9.0f;
@@ -67,24 +66,14 @@ void MagicCircleGenerator_804A9FB0::update() {
         JGeometry::TBox2f box;
         JGeometry::TVec3f keyPos;
         box = field_0x80;
-        f32 posX = mPos.x;
-        f32 posY = mPos.y;
-        box.i.x += posX;
-        box.i.y += posY;
-        box.f.x += posX;
-        box.f.y += posY;
+        JGeometry::TVec2f offset(mPos.x, mPos.y);
+        box.addPos(offset);
         mBox.i.x = -32.0f;
         mBox.i.y = -32.0f;
         mBox.f.x = 32.0f;
         mBox.f.y = 32.0f;
-        box.i.x = mBox.i.x;
-        box.i.y = mBox.i.y;
-        box.f.x = mBox.f.x;
-        box.f.y = mBox.f.y;
-        box.i.x += posX;
-        box.i.y += posY;
-        box.f.x += posX;
-        box.f.y += posY;
+        box.set(mBox);
+        box.addPos(offset);
         field_0x250 = fn_8023AF14(&box, field_0x4, false, 0.0f);
         if (field_0x250 >= 0) {
             if (mEmitter234 == NULL) {
@@ -114,14 +103,8 @@ void MagicCircleGenerator_804A9FB0::update() {
             mBox.i.y = -10.0f;
             mBox.f.x = 20.0f;
             mBox.f.y = 40.0f;
-            box.i.x = mBox.i.x;
-            box.i.y = mBox.i.y;
-            box.f.x = mBox.f.x;
-            box.f.y = mBox.f.y;
-            box.i.x += posX;
-            box.i.y += posY;
-            box.f.x += posX;
-            box.f.y += posY;
+            box.set(mBox);
+            box.addPos(offset);
             for (s32 player = 0; player < 4; player++) {
                 if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
@@ -130,7 +113,7 @@ void MagicCircleGenerator_804A9FB0::update() {
                         keyPos = key->mPos;
                         field_0x244 = 1;
                         field_0x24c = 0x14;
-                        layer = field_0x4;
+                        s32 layer = field_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &keyPos, 0, -1, -1);
                         } else {
@@ -183,7 +166,7 @@ void MagicCircleGenerator_804A9FB0::update() {
     case 2:
         field_0x24c--;
         if (field_0x24c == 0) {
-            param = (field_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
+            u32 param = (field_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CIRC, field_0x4, &mPos, param, -1, -1);
             field_0x244 = 3;
             field_0x24c = 0x3C;
@@ -280,11 +263,9 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     }
 }
 
-// FIXME: regalloc-only in keyBox.addPos/intersect (f0-f3 shifted by 1) and
-// fcmpu operand order on pos.z != 0.0f.
+// FIXME: serial/key swapped between r28/r29 (coalescing mr r28, r29),
+// f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
-    SmallKey_804A8CD8* key;
-    s32 found;
     JGeometry::TVec2<f32> myPos(mPos.x, mPos.y);
     mBox.set(-20.0f, -20.0f, 20.0f, 20.0f);
     JGeometry::TBox2<f32> myBox;
@@ -293,12 +274,12 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
 
     s32 serial = -1;
     for (;;) {
-        found = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        s32 found = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
         serial = found;
         if (found < 0) {
             return false;
         }
-        key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
+        SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
         if (key == NULL) {
             continue;
         }
