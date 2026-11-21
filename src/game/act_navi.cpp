@@ -251,11 +251,12 @@ void cls_804A6708::fn_8021E4F8() {
 
 // FIXME(shotgun): 96.67 %, missing/extra; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
+    s32 p;
     switch (newState) {
     case 1:
         fn_801F3604();
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     for (s32 j = 0; j < 4; j++) {
@@ -268,7 +269,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
         break;
     case 2:
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     fn_80230498(p, &pos, fn_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
@@ -314,7 +315,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     }
     case 6:
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     s32 v;
                     if (mFlags & 0x4000) {
