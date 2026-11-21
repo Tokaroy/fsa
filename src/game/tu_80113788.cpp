@@ -160,7 +160,7 @@ void cls_8049D83C::init() {
 }
 
 // 0x80114C98.
-// FIXME(shotgun): 96.97 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void cls_8049D83C::update() {
     cls_8049D140::update();
@@ -244,11 +244,11 @@ void cls_8049D83C::update() {
         for (s32 i = 0; i < 2; i++) {
             if (field_0x2e8[i] != NULL) {
                 setEmitterPos_8013CB44(field_0x2e8[i], &mPos, 0, 0, true);
-                field_0x2e8[i]->mGlobalEnvClr.r = 0x2D;
-                field_0x2e8[i]->mGlobalEnvClr.g = 0x78;
-                field_0x2e8[i]->mGlobalEnvClr.b = 0xFF;
+                field_0x2e8[i]->setGlobalEnvColor(0x2D, 0x78, 0xFF);
             }
         }
+        break;
+    case 17:
         break;
     }
     if (field_0x233 != 0) {
@@ -277,11 +277,11 @@ void cls_8049D83C::draw() {
 }
 
 // 0x80114860.
-// FIXME(shotgun): 99.54 %, missing/extra; behaviour clean.
 void cls_8049D83C::vfunc_0x54() {
     cls_801192AC* sub = fn_8011921C();
     s32 t = sub->field_0x8;
-    if (field_0x238 == 0) {
+    switch (field_0x238) {
+    case 0:
         if (t == lbl_8046486C[2]) {
             vfunc_0x60(2);
         } else if (t == lbl_8046486C[3]) {
@@ -311,7 +311,8 @@ void cls_8049D83C::vfunc_0x54() {
         } else if (t == lbl_8046486C[17]) {
             vfunc_0x60(17);
         }
-    } else {
+        break;
+    default:
         if (t == lbl_8046486C[2]) {
             vfunc_0x60(2);
         } else if (t == lbl_8046486C[3]) {
@@ -329,13 +330,14 @@ void cls_8049D83C::vfunc_0x54() {
         } else if (t == lbl_8046486C[10]) {
             vfunc_0x60(10);
         }
+        break;
     }
 }
 
 // 0x80113EC4.
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
-// FIXME(shotgun): 97.74 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 97.93 %, scheduling+regalloc; behaviour drift.
 void cls_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
@@ -383,8 +385,10 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         field_0x233 = 1;
         break;
     case 5: {
-        JGeometry::TVec3f pos((s32)JUTVideo::getManager()->getRenderMode()->fbWidth * 0.5f,
-                              (s32)JUTVideo::getManager()->getRenderMode()->efbHeight * 0.5f, 0.0f);
+        JGeometry::TVec3f pos;
+        pos.x = (s32)JUTVideo::getManager()->getRenderMode()->fbWidth / 2.0f;
+        pos.y = (s32)JUTVideo::getManager()->getRenderMode()->efbHeight / 2.0f;
+        pos.z = 0.0f;
         pos.y += -16.0f;
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         if (fn_8038BD08(0, lbl_80464850[field_0x238], field_0x4, pos, 0x62)) {
@@ -535,6 +539,15 @@ s32 cls_8049D83C::vfunc_0x5C() {
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
 // FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
+static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
+    if (layer >= 8) {
+        return;
+    }
+    void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
+}
+
+// FIXME: 96.91 %, missing/extra; behaviour clean.
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -542,16 +555,10 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
         fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
-        if (field_0x4 < 8) {
-            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, arg + mAnim.mCel, &params, 1.0f, 1.0f);
-        }
+        drawSob_80113B54(field_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
         fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
-        if (field_0x4 < 8) {
-            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, arg + mAnim.mCel, &params, 1.0f, 1.0f);
-        }
+        drawSob_80113B54(field_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }
 
