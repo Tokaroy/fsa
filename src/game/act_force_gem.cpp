@@ -1004,7 +1004,6 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     return false;
 }
 
-// FIXME(shotgun): 98.00 %, scheduling+regalloc; behaviour clean.
 void ForceGem_804AB6D8::fn_8032ABE0() {
     if (!(field_0x230 == 0 || field_0x230 == 6 || field_0x230 == 1 || field_0x230 == 2 || field_0x230 == 9 ||
           field_0x230 == 0xd)) {
@@ -1081,7 +1080,7 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
                     fn_80230498(found, &playerPos, 0xed, 0xff, -128, -128, true);
                 }
                 getActorManager_801F856C()->spawnActor_801F9484('IMUP', field_0x4, &spawnPos,
-                                                               (found << 24) + (found << 26) + 0xA00000 + field_0x268, -1, -1);
+                                                               field_0x268 + (found << 24) + (found << 26) + 0xA00000, -1, -1);
                 fn_801F3668();
             }
         } else {
