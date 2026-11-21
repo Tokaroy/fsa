@@ -17,18 +17,16 @@
 
 // The 'TLWP' actor, cls_804A38D4.
 
-// FIXME(shotgun): tables not written out (gate.py literal tripwire); extern-declared. dtk has one
-// 0xF4-byte object; the code indexes these parts (probably separate arrays in the original).
-struct Tables_804A37E0 {
-    /* 0x00 */ u16 mEmitterIds[20]; // init spawns one emitter per id
-    /* 0x28 */ s32 field_0x28[8];    // fn_801B56A0 state 7: fn_801365E8's first argument by field_0x254
-    /* 0x48 */ s32 field_0x48[8];    // its second
-    /* 0x68 */ s32 mMsgs[8];         // fn_801B56A0 state 1: the message by field_0x254
-    /* 0x88 */ s32 mFrames[3][4];    // fn_801B5228: field_0x24c by field_0x98 and field_0x240
-    /* 0xB8 */ s32 mDurations[3][4]; // fn_801B5228: mTimers[0] likewise
-    /* 0xE8 */ s32 mRows[3];         // fn_801B5228: field_0x98 by field_0x250 - 1
-}; // Size: 0xF4
-extern Tables_804A37E0 lbl_804A37E0;
+static u16 lbl_804A37E0[20] = {
+    0x051F, 0x0520, 0x0521, 0x0522, 0x0523, 0x0524, 0x0525, 0x0526, 0x0527, 0x0528,
+    0x0529, 0x052A, 0x052B, 0x052C, 0x052D, 0x052E, 0x052F, 0x0530, 0x0531, 0x0532,
+};
+static s32 lbl_804A3808[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+static s32 lbl_804A3828[8] = { 2, 2, 2, 2, 2, 2, 2, 1 };
+static s32 lbl_804A3848[8] = { 0x049C, 0x049D, 0x049E, 0x049F, 0x04A0, 0x04A1, 0x04A2, 0x04A3 };
+static s32 lbl_804A3868[12] = { 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 2, 1 };
+static s32 lbl_804A3898[12] = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+static s32 lbl_804A38C8[3] = { 1, 1, 1 };
 
 extern u8 lbl_8053ABF8;
 s32 lbl_8053A118 = 3;
@@ -64,7 +62,7 @@ void cls_804A38D4::init() {
         pos.x += 96.0f;
         pos.y += -32.0f;
         for (s32 i = 0; i < 20; i++) {
-            mEmitters2A0[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_804A37E0.mEmitterIds[i], 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters2A0[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_804A37E0[i], 0, 0, NULL, NULL, true, 1.0f);
         }
     }
     field_0x24c = 0;
@@ -138,7 +136,7 @@ void cls_804A38D4::fn_801B56A0() {
             break;
         }
         pos.y -= 64.0f;
-        if (!fn_8038AD24(field_0x244, lbl_804A37E0.mMsgs[field_0x254], mSerial, field_0x4, pos, 0x100)) {
+        if (!fn_8038AD24(field_0x244, lbl_804A3848[field_0x254], mSerial, field_0x4, pos, 0x100)) {
             break;
         }
         field_0x230 = 2;
@@ -176,7 +174,7 @@ void cls_804A38D4::fn_801B56A0() {
             break;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                 field_0x264[i].x = ppos->x;
                 field_0x264[i].y = ppos->y;
@@ -255,7 +253,7 @@ void cls_804A38D4::fn_801B56A0() {
         break;
     case 7:
         if (lbl_8053A118 == 0x309) {
-            gGameRoot_8053AAF8->fn_801365E8(lbl_804A37E0.field_0x28[field_0x254], lbl_804A37E0.field_0x48[field_0x254], 0);
+            gGameRoot_8053AAF8->fn_801365E8(lbl_804A3808[field_0x254], lbl_804A3828[field_0x254], 0);
         }
         break;
     }
@@ -267,9 +265,9 @@ void cls_804A38D4::fn_801B5228() {
     addCalc2_801F71A4(&mPos.z, field_0x258, 0.3f, field_0x25c);
     switch (field_0x230) {
     case 8:
-        field_0x98 = lbl_804A37E0.mRows[field_0x250 - 1];
+        field_0x98 = lbl_804A38C8[field_0x250 - 1];
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
                 field_0x264[i].x = pos->x;
                 field_0x264[i].y = pos->y;
@@ -303,7 +301,7 @@ void cls_804A38D4::fn_801B5228() {
         if (std::sqrtf(dx * dx + dz * dz) < 1.0f) {
             if (--lbl_8053A118 == 0) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                         fn_80230498(i, &field_0x264[i], 0x3E, 0xFF, -0x80, -0x80, true);
                     }
                 }
@@ -321,7 +319,7 @@ void cls_804A38D4::fn_801B5228() {
             } else if (field_0x250 == 2) {
                 f32 z = mPos.z;
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
                         addCalc2_801F71A4(&field_0x264[i].z, z, 0.3f, field_0x25c);
                         fn_80230498(i, &field_0x264[i], 0xB0, 0xFF, -0x80, -0x80, true);
                     }
@@ -334,8 +332,8 @@ void cls_804A38D4::fn_801B5228() {
         break;
     }
     if (mTimers[0] == 0) {
-        field_0x24c = lbl_804A37E0.mFrames[field_0x98][field_0x240];
-        mTimers[0] = lbl_804A37E0.mDurations[field_0x98][field_0x240];
+        field_0x24c = lbl_804A3868[field_0x240 + field_0x98 * 4];
+        mTimers[0] = lbl_804A3898[field_0x240 + field_0x98 * 4];
         field_0x240++;
         field_0x240 &= 3;
     }
