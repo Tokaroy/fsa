@@ -77,22 +77,21 @@ void EnemyForEndingControl_804AD48C::init() {
 
 void EnemyForEndingControl_804AD48C::vfunc_0x10() {}
 
-// FIXME: 99.19%. regalloc-only: f2/f0, f0/f1, f3/f2, f1/f3
-void EnemyForEndingControl_804AD48C::update() {
-    // Locals in the order the original loads them (ahead of the camera loads).
-    f32 y = field_0x23c.y;
-    f32 h = field_0x254;
-    f32 x = field_0x23c.x;
-    f32 y1 = y + h;
-    f32 y0 = y - h;
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+static inline void setCameraBox(const JGeometry::TBox2f& box) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->field_0x7f5 == 0) {
         camera->field_0x7f4 = 1;
         camera->field_0x7f8 = 5;
-        camera->field_0x808.set(x, y0, x, y1);
+        camera->field_0x808.set(box);
         camera->field_0x7f6 = 0;
     }
+}
+
+void EnemyForEndingControl_804AD48C::update() {
+    JGeometry::TBox2f box(field_0x23c.x, field_0x23c.y - field_0x254, field_0x23c.x,
+                          field_0x23c.y + field_0x254);
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+    setCameraBox(box);
     field_0x274++;
     if (field_0x260 != 0) {
         field_0x260--;
