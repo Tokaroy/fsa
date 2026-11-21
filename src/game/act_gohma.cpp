@@ -64,9 +64,6 @@ static inline void setMoveDir(JGeometry::TVec3f& v, s32 dir, f32 speed) {
     }
 }
 
-// FIXME: 99.84 %, scheduling+regalloc; behaviour clean.
-// (scheduling+regalloc + reloc-name). `field_0x250 = field_0x244 + field_0x98 * 4` loads field_0x98 and
-// field_0x244 into swapped registers (r5/r0); everything else differs only in literal reloc names.
 void Gohma_804A307C::init() {
     mBox.i.x = -10.0f;
     mBox.i.y = -8.0f;
@@ -97,7 +94,7 @@ void Gohma_804A307C::init() {
     if (viewLayerFlag(layer)) {
         field_0x98 &= 1;
     }
-    field_0x250 = field_0x244 + field_0x98 * 4;
+    field_0x250 = (field_0x98 << 2) + field_0x244;
     field_0x264.z = 0.0f;
     field_0x264.y = 0.0f;
     field_0x264.x = 0.0f;
@@ -122,9 +119,9 @@ void Gohma_804A307C::init() {
         if (field_0x254 == 2) {
             if (lbl_8053ABD8[0] == 0) {
                 gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                lbl_8053ABD8[0]++;
+                field_0x230 = 0;
             }
-            lbl_8053ABD8[0]++;
-            field_0x230 = 0;
         }
     } else {
         field_0xbc = 3;
@@ -142,9 +139,9 @@ void Gohma_804A307C::init() {
         if (field_0x254 == 3) {
             if (lbl_8053ABD8[0] == 0) {
                 gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                lbl_8053ABD8[0]++;
+                field_0x230 = 7;
             }
-            lbl_8053ABD8[0]++;
-            field_0x230 = 7;
         }
     }
     field_0x25c = mLife;
@@ -192,16 +189,12 @@ void Gohma_804A307C::vfunc_0x44() {
     field_0x230 = 5;
 }
 
-// FIXME: 97.44 %, missing/extra + reloc-name; behaviour drift.
-// (missing/extra + reloc-name). (1) Both emitter stops: the original also stores 1 at emitter+0x24
-// right after the status-bit store (JPAEmitter.h has no field there, same as act_force_gem_wooden). (2) The vec.x
-// sign test in case 2 branches the other way round (bge/blt, `flag` set in another block). (3) The original stores and
-// reloads field_0x244 after `(field_0x244 + 1) & 3`. (4) The `field_0x98 = dir` store is scheduled differently.
+// FIXME: 98.59 %, missing/extra; behaviour drift.
+// FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
+// (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
-    f32 f31 = mBox.i.y + mPos.y;
-    f32 f29 = mBox.f.y + mPos.y;
-    f32 f28 = mBox.i.x + mPos.x;
-    f32 f30 = mBox.f.x + mPos.x;
+    JGeometry::TBox2f box(mBox);
+    box.addPos(mPos.x, mPos.y);
 
     if (fn_801F3D94(1)) {
         fn_801F2618(NULL, false);
@@ -226,8 +219,8 @@ void Gohma_804A307C::fn_801AB6A8() {
     mPos += field_0x3c;
 
     if (field_0x230 != 6) {
-        f28 = f30 + 0.5f * (f28 - f30);
-        f29 = f29 + 0.5f * (f31 - f29);
+        f32 centerX = box.f.x + 0.5f * (box.i.x - box.f.x);
+        f32 centerY = box.f.y + 0.5f * (box.i.y - box.f.y);
 
         for (s32 i = 0; i < 4; i++) {
             s32 hitPlayer = fn_801F285C(NULL, NULL, false, i);
@@ -250,8 +243,8 @@ void Gohma_804A307C::fn_801AB6A8() {
                     field_0x3c.y = -10.0f * JMACosShort(angle);
                 }
                 JGeometry::TVec3f hitPos;
-                hitPos.x = f28;
-                hitPos.y = f29;
+                hitPos.x = centerX;
+                hitPos.y = centerY;
                 if (fn_802379E4(hitPlayer, &hitPos)) {
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
@@ -303,28 +296,22 @@ void Gohma_804A307C::fn_801AB6A8() {
         field_0x3c.x = 0.0f;
         setMoveDir(field_0x264, field_0x98, 1.0f);
         mTimers[0] = 0;
-        mTimers[1] = 50 + (s32)(15.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+        mTimers[1] = 50 + (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x244 = 0;
         field_0x230 = 2;
         // fallthrough
     case 2:
         if (r31) {
-            bool flag = false;
+            u8 flag = 0;
             if (!viewLayerFlag(field_0x4)) {
-                flag = true;
+                flag = 1;
             } else if (vec.y != 0.0f) {
-                if (vec.x > 0.0f) {
-                    if (field_0x3c.x < 0.0f) {
-                        flag = true;
-                    }
-                } else if (vec.x < 0.0f) {
-                    if (field_0x3c.x > 0.0f) {
-                        flag = true;
-                    }
+                if ((vec.x > 0.0f && field_0x3c.x < 0.0f) || (vec.x < 0.0f && field_0x3c.x > 0.0f)) {
+                    flag = 1;
                 }
             }
-            if (flag) {
-                if (mTimers[1] >= 5) {
+            if (flag == 1) {
+                if (mTimers[1] < 5) {
                     mTimers[1] = 5;
                 }
                 if (mTimers[3] == 0) {
@@ -348,7 +335,7 @@ void Gohma_804A307C::fn_801AB6A8() {
                         mPos.y = saveY;
                         mPos.z = saveZ;
                     } else {
-                        mTimers[3] = 30 + (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                        mTimers[3] = 30 + (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                         field_0x98 ^= 1;
                     }
                     mTimers[0] = 0;
@@ -360,14 +347,16 @@ void Gohma_804A307C::fn_801AB6A8() {
             }
         }
         if (mTimers[0] == 0) {
-            field_0x250 = field_0x244 + field_0x98 * 4;
+            field_0x250 = field_0x98 * 4 + field_0x244;
             mTimers[0] = 5;
-            field_0x244 = (field_0x244 + 1) & 3;
+            field_0x244++;
+            field_0x244 &= 3;
         }
-        if (mTimers[1] == 0) {
-            field_0x230 = 3;
+        if (mTimers[1] != 0) {
+            break;
         }
-        break;
+        field_0x230 = 3;
+        // fallthrough
     case 3:
         field_0x264.z = 0.0f;
         field_0x264.y = 0.0f;
@@ -380,7 +369,8 @@ void Gohma_804A307C::fn_801AB6A8() {
         // fallthrough
     case 4:
         if (mTimers[1] == 0) {
-            field_0x98 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3;
+            field_0x98 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            field_0x98 &= 3;
             if (!viewLayerFlag(field_0x4)) {
                 f32 saveX = mPos.x;
                 f32 saveY = mPos.y;
@@ -409,14 +399,14 @@ void Gohma_804A307C::fn_801AB6A8() {
         field_0x230 = 6;
         // fallthrough
     case 6:
-        if (FABS(field_0x3c.x - field_0x264.x) < 0.1f && FABS(field_0x3c.y - field_0x264.y) < 0.1f) {
+        if (FABS(field_0x264.x - field_0x3c.x) < 0.1f && FABS(field_0x264.y - field_0x3c.y) < 0.1f) {
             field_0x230 = 1;
         }
         break;
     }
 }
 
-// FIXME: 90.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 91.51 %, missing/extra + reloc-name; behaviour drift.
 // (missing/extra + reloc-name). Scheduling, ours has 2 fewer instructions: the 0.0f that zeroes
 // field_0x3c is loaded earlier in the original (before the case-8/9 speed and timer arithmetic), the `li` argument
 // setup of the fn_801EEC98 call and `li r30, 1` are ordered differently, and in case 11 the original stores
@@ -509,10 +499,10 @@ void Gohma_804A307C::fn_801AAF44() {
             f32 saveX = mPos.x;
             f32 saveY = mPos.y;
             f32 saveZ = mPos.z;
-            mPos.y = saveY + 8.0f;
+            mPos.y += 8.0f;
             u16 angle = 0;
-            fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
             s32 count = 1;
+            fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
             if (field_0x258 == 1) {
                 count = 3;
                 angle -= 0x2000;
@@ -540,7 +530,8 @@ void Gohma_804A307C::fn_801AAF44() {
                 field_0x250 = field_0x244 + 8;
             }
             mTimers[0] = 5;
-            field_0x244 = (field_0x244 + 1) & 3;
+            field_0x244++;
+            field_0x244 &= 3;
         }
         if (mTimers[2] == 0) {
             field_0x264.z = 0.0f;
