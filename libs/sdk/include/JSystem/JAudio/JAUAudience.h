@@ -210,8 +210,8 @@ public:
 template <int N, class Audible, class State, class Audience>
 class JAUAudience_ : public Audience {
 public:
-    JAUAudience_() : numPlayers_(N) {
-        for (int i = 0; i < N; i++) {
+    JAUAudience_() : numPlayers_(MAX_PLAYERS) {
+        for (int i = 0; i < MAX_PLAYERS; i++) {
             state[i].init();
         }
     }
@@ -384,10 +384,10 @@ public:
         }
     }
 
-    static const int MAX_PLAYERS = N;
+    static const int MAX_PLAYERS = 1;
 
     int numPlayers_;
-    State state[N];
+    State state[MAX_PLAYERS];
 };
 
 template <int N>

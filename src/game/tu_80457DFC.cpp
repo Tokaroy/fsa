@@ -107,8 +107,8 @@ inline f32 AudioMgr_8045A080::getPlayerPan(s8 player) {
     f32 pan = 0.5f;
     switch (field_0x5) {
     case 1:
-        pan = 0.5f;
-        break;
+    default:
+        return 0.5f;
     case 2:
     case 3:
     case 4:
@@ -223,18 +223,19 @@ static const JASDsp::FxlineConfig_ lbl_80491600[4] = {
     {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
 };
 
-// 0x8045A0E4
-// Not auto-inlined: fn_80459AE4 calls fn_8045A0E4 out of line in the original (docs/INLINING.md, pragma rule 1).
+// 0x8045A0E4 / 0x8045A0D8
+// Not auto-inlined: fn_80459AE4 calls fn_8045A0E4 and fn_80459674 calls
+// fn_8045A0D8 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void fn_8045A0E4(int count) {
     JASPoolAllocObject<JAUDopplerAudible<4> >::newMemPool(count);
 }
-#pragma auto_inline reset
 
 // 0x8045A0D8
 u8 fn_8045A0D8() {
     return gGameRoot_8053AAF8->field_0x96;
 }
+#pragma auto_inline reset
 
 // 0x8045A080
 AudioMgr_8045A080::AudioMgr_8045A080() {
@@ -255,7 +256,7 @@ AudioMgr_8045A080::AudioMgr_8045A080() {
 }
 
 // 0x80459AE4
-// FIXME(shotgun): 95.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.78 %, reloc-name; behaviour clean.
 void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData) {
     JAU_JASInitializer jasInit;
     jasInit.mChannelPoolCount = lbl_8053A228;
@@ -314,7 +315,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
         {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
     };
     for (u8 i = 0; i < 4; i++) {
-        s16* buf = new (heap, 0x20) s16[fxConfig[i].mBufCount * 0x50];
+        s16* buf = new (heap, 0x20) s16[(fxConfig[i].mBufCount * 0xA0) / 2];
         JASDsp::setFXLine(i, buf, &fxConfig[i]);
     }
 
@@ -325,13 +326,12 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
     field_0x28 = new ActorSoundObj_804578F4(NULL, heap, 1);
     field_0x40 = new (heap, 0) GameAudio::CustomSoundTable();
 
-    JKRArchive* seqArc = (JKRArchive*)seqData;
-    if (seqArc == NULL) {
-        seqArc = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_DVD, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
+    if (seqData == NULL) {
+        seqData = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_DVD, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
     }
     JASWaveArcLoader::setCurrentDir(lbl_8053A248);
     field_0x44 = JAUNewSectionHeap(true);
-    field_0x44->setSeqDataArchive(seqArc);
+    field_0x44->setSeqDataArchive((JKRArchive*)seqData);
     field_0x44->newDynamicSeqBlock(0x16000);
     field_0x44->newDynamicSeqBlock(0x16000);
     field_0x44->newDynamicSeqBlock(0xB000);
@@ -369,7 +369,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
 }
 
 // 0x80459674
-// FIXME(shotgun): 98.19 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.38 %, missing/extra + reloc-name; behaviour drift.
 void AudioMgr_8045A080::fn_80459674() {
     if (field_0x6b != 0) {
         field_0x6b--;
@@ -466,7 +466,7 @@ void AudioMgr_8045A080::fn_80459674() {
     if (field_0x75 != 0) {
         field_0x78++;
         if (field_0x78 > 0x2D) {
-            field_0x28->startLevelSound(0x30089);
+            field_0x28->startSound(0x30089);
         }
     } else {
         field_0x78 = 0;
@@ -651,13 +651,8 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 }
 
 // 0x80458880
-// FIXME: 99.66 %, missing/extra + reloc-name; behaviour near.
-// One instruction short in the inlined getPlayerPan: for 1 or
-// 5+ players the original reloads 0.5f (lfs) before the movePan call; ours
-// keeps the 0.5f already in f1 (b only). Returns, an uninitialised pan and a
-// shared case 1 / default were tried (97.4-99.2 %). Also reloc-name: the
-// .sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7, first used by the
-// unwritten fn_80459674.
+// FIXME: 99.93 %, reloc-name; behaviour clean.
+// FIXME: reloc-name only (.sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7 in fn_80459674).
 void AudioMgr_8045A080::fn_80458880(u32 id, s8 player) {
     if (player >= 4) {
         return;
