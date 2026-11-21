@@ -17,6 +17,7 @@ ForceGem2_804AB850::~ForceGem2_804AB850() {
     releaseEmitter_801EE434(mEmitter284);
 }
 
+// FIXME: 99.57 %, regalloc-only; behaviour clean.
 void ForceGem2_804AB850::init() {
     field_0x94 = (field_0x90 >> 16) & 0xFF;
     field_0x264 = field_0x90 & 7;
@@ -95,7 +96,8 @@ bool ForceGem2_804AB850::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return code != 0;
 }
 
-// FIXME: 97.72 %. Literal and jump-table labels (@NNN) and a few register picks.
+// FIXME: 99.75 %, scheduling+regalloc; behaviour drift.
+// Literal and jump-table labels (@NNN) and a few register picks.
 void ForceGem2_804AB850::update() {
     s32 player = 0;
     u16 angle = 0;
@@ -131,9 +133,10 @@ void ForceGem2_804AB850::update() {
     case 0: {
         addCalc2_801F71A4(&mPos.z, 4.0f * JMath::sincosTable_.sinShort(field_0x250) + 24.0f, 0.3f, 1.0f);
         field_0x250 += (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
-        s32 mode = field_0x94;
-        if (mode < 3) {
-            if (mode >= 1 && field_0x244 == 0) {
+        switch (field_0x94) {
+        case 1:
+        case 2:
+            if (field_0x244 == 0) {
                 switch (field_0x98) {
                 case 0:
                     field_0x26c.set(0.3f, 0.0f, 0.0f);
@@ -151,10 +154,13 @@ void ForceGem2_804AB850::update() {
                 field_0x244 = 500;
                 field_0x98 ^= 1;
             }
-        } else if (mode < 5) {
+            break;
+        case 3:
+        case 4:
             mAngle += mTimer;
             mPos.x = field_0x278.x + mRadius * JMath::sincosTable_.sinShort(mAngle);
             mPos.y = field_0x278.y + mRadius * JMath::sincosTable_.cosShort(mAngle);
+            break;
         }
         break;
     }
@@ -253,7 +259,8 @@ void ForceGem2_804AB850::update() {
     }
 }
 
-// FIXME: 99.25 %. Register allocation only: the original keeps the scale (field_0x238)
+// FIXME: 99.25 %, regalloc-only; behaviour clean.
+// Register allocation only: the original keeps the scale (field_0x238)
 // in f29 and the cos of the zero angle in f31; ours swap them, so the products and the
 // sin / cos results shift registers. Loading the scale before or after the rotation
 // vector does not change it.
