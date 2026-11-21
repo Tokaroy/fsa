@@ -307,8 +307,7 @@ void cls_804AF860::fn_803A6608() {
             }
         }
     }
-    field_0x6a--;
-    if (field_0x6a <= 0) {
+    if (--field_0x6a <= 0) {
         field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
         if (field_0x4->search('Pocur01')->isVisible()) {
             field_0x4->search('Pocur01')->hide();
