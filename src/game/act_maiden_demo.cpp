@@ -33,10 +33,13 @@ static const s16* lbl_8049D710[12] = {
     lbl_80464694, lbl_804646A8, lbl_804646B8, lbl_804646D4, lbl_804646E4, lbl_804646F4,
 };
 
-// The Maiden's compare words (0x80464704), then one per-mode offset table
-// (modes 0..5) for each of three checks.
-static const s32 lbl_80464704[22] = {
-    0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3, 0, 0, 0, 0x276, 0x2B2, 0x47E, 0x76C, 0x83E, 0x848, 0xA3C,
+// The Maiden's base sprite frames (modes 0..5), demo frame table (0x8046471C),
+// then one per-mode offset table (modes 0..5) for each of three checks.
+static const s32 lbl_80464704[6] = {
+    0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3,
+};
+static const s32 lbl_8046471C[16] = {
+    0, 0, 0, 0x276, 0x2B2, 0x47E, 0x76C, 0x83E, 0x848, 0xA3C,
     0xAF0, 0xC9E, 0xD5C, 0xD66, 0xE24, 0,
 };
 static const s32 lbl_8046475C[6] = {0xA, 0x1E, 0x32, 0, 0x14, 0x28};
@@ -158,59 +161,36 @@ void cls_8049D740::draw() {
     }
 }
 
-// FIXME: 97.89 %, missing/extra; behaviour drift.
 void cls_8049D740::vfunc_0x54() {
-    cls_801192AC* state = fn_8011921C();
-    s32 id = state->field_0x8;
-    if (field_0x23c != 0) {
-        return;
-    }
-    if (id == lbl_80464704[8]) {
-        fn_80112654(2);
-        return;
-    }
-    if (id == lbl_80464704[9] + lbl_8046475C[mMode]) {
-        fn_80112654(3);
-        return;
-    }
-    if (id == lbl_80464704[10]) {
-        fn_80112654(4);
-        return;
-    }
-    if (id == lbl_80464704[11]) {
-        fn_80112654(5);
-        return;
-    }
-    if (id == lbl_80464704[12]) {
-        fn_80112654(6);
-        return;
-    }
-    if (id == lbl_80464704[13]) {
-        fn_80112654(7);
-        return;
-    }
-    if (id == lbl_80464704[14]) {
-        fn_80112654(8);
-        return;
-    }
-    if (id == lbl_80464704[15] + lbl_8046478C[mMode]) {
-        fn_80112654(9);
-        return;
-    }
-    if (id == lbl_80464704[16]) {
-        fn_80112654(0xA);
-        return;
-    }
-    if (id == lbl_80464704[17]) {
-        fn_80112654(0xB);
-        return;
-    }
-    if (id == lbl_80464704[18] + lbl_80464774[mMode]) {
-        fn_80112654(0xC);
-        return;
-    }
-    if (id == lbl_80464704[20]) {
-        fn_80112654(0xF);
+    s32 id = fn_8011921C()->field_0x8;
+    switch (field_0x23c) {
+    case 0:
+        if (id == lbl_8046471C[2]) {
+            fn_80112654(2);
+        } else if (id == lbl_8046471C[3] + lbl_8046475C[mMode]) {
+            fn_80112654(3);
+        } else if (id == lbl_8046471C[4]) {
+            fn_80112654(4);
+        } else if (id == lbl_8046471C[5]) {
+            fn_80112654(5);
+        } else if (id == lbl_8046471C[6]) {
+            fn_80112654(6);
+        } else if (id == lbl_8046471C[7]) {
+            fn_80112654(7);
+        } else if (id == lbl_8046471C[8]) {
+            fn_80112654(8);
+        } else if (id == lbl_8046471C[9] + lbl_8046478C[mMode]) {
+            fn_80112654(9);
+        } else if (id == lbl_8046471C[10]) {
+            fn_80112654(0xA);
+        } else if (id == lbl_8046471C[11]) {
+            fn_80112654(0xB);
+        } else if (id == lbl_8046471C[12] + lbl_80464774[mMode]) {
+            fn_80112654(0xC);
+        } else if (id == lbl_8046471C[14]) {
+            fn_80112654(0xF);
+        }
+        break;
     }
 }
 
