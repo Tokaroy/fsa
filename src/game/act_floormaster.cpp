@@ -108,8 +108,7 @@ void Floormaster_804A6004::init() {
 }
 
 // Case 1: the three env-colour conversions use other stack slots and f-registers than the original
-// (0x18/0x20/0x10 for r/g/b), and 0.0f/1.0f sit one f-register higher.
-// FIXME: 99.10 %, scheduling+regalloc; behaviour drift.
+// (0x18/0x20/0x10 for r/g/b), and the player-x check swaps f2/f3.
 void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     switch (state) {
     case 0:
@@ -137,7 +136,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         mTargetSpeed = 1.0f;
-        mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 0.0f);
+        mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 1.0f);
         if (mEmitter2b0 != NULL) {
             setEmitterColor();
         }
