@@ -53,10 +53,11 @@ void PanelRewriteNPC_804A8E40::init() {
     field_0x248 = (field_0x90 >> 10) & 3;
 }
 
-// FIXME: 99.35 %, missing/extra; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x10() {
     u8 gameFlag = gGameRoot_8053AAF8->fn_80138A30();
     s32 keep = 0;
+    u64 bit;
+    u64 mask;
     if (field_0x248 == 0) {
         keep = 1;
     } else if (field_0x248 == 1) {
@@ -98,8 +99,6 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
 
         if (field_0x234 == 0x30) {
             field_0x240 = 2;
-            u64 bit;
-            u64 mask;
             getGameView_802D6A9C()->fn_802D4874(field_0x4, field_0x250, &bit, &mask);
             if (getGameView_802D6A9C()->fn_802D4ADC(field_0x4, field_0x250) == true) {
                 field_0x234 = 0x10;
@@ -124,10 +123,12 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
         }
         if (field_0x23c == 2 && !vfunc_0x34()) {
             field_0x230 = 3;
-            // FIXME: 99.35%. The 0x9E store block is laid out after the function's
-            // final branch in the original; ours keeps it inline (one branch fewer).
-            if (field_0x254 == field_0x234 && field_0x234 == 0x9E) {
-                field_0x254 = 0xDC;
+            if (field_0x254 == field_0x234) {
+                switch (field_0x234) {
+                case 0x9E:
+                    field_0x254 = 0xDC;
+                    break;
+                }
             }
             update();
         } else if (mAlive) {
