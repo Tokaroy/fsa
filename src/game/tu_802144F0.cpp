@@ -158,11 +158,19 @@ void cls_802150B8::fn_80214994() {
     }
 }
 
-// FIXME: 93.88 %, scheduling+regalloc; behaviour clean.
-// Register allocation only: the original keeps the owner flag
-// in r31 and the table pointer in r30, ours is the other way round (the
-// ternary form gives extrwi, 90.45 %). The lbl_8053FBA4 literal rows are the
-// data split.
+void cls_802150B8::fn_80214900() {
+    s32 serial = field_0x30;
+    if (serial >= 0) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+        field_0x30 = -1;
+    }
+    deleteEmitter(&field_0x18);
+    static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
+}
+
 void cls_802150B8::fn_80214740(s32 layer, const JGeometry::TVec3f* pos, bool flag) {
     ShadowLink2_804A43E8* owner = static_cast<ShadowLink2_804A43E8*>(mOwner);
     s32 extra = 0;
@@ -178,25 +186,19 @@ void cls_802150B8::fn_80214740(s32 layer, const JGeometry::TVec3f* pos, bool fla
         spawnEmitter_8013CC50(layer, pos, 0x1D9, 0, extra, NULL, NULL, true, 1.0f);
         mOwner->startSound_801F0E34(0x400D6, 0);
     } else {
-        const u16* ids = flag ? lbl_8053FB98 : lbl_8053FB90;
+        const u16* ids = lbl_8053FB90;
+        if (flag) {
+            ids = lbl_8053FB98;
+        }
         spawnEmitter_8013CC50(layer, pos, ids[0], 0, extra - 1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, ids[1], 0, extra, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, ids[2], 0, extra, NULL, NULL, true, 1.0f);
-        static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDCD0(layer, pos, flag ? 0x4004E : 0x40048);
-    }
-}
-
-void cls_802150B8::fn_80214900() {
-    s32 serial = field_0x30;
-    if (serial >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor != NULL) {
-            actor->mAlive = false;
+        u32 soundId = 0x40048;
+        if (flag) {
+            soundId = 0x4004E;
         }
-        field_0x30 = -1;
+        static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDCD0(layer, pos, soundId);
     }
-    deleteEmitter(&field_0x18);
-    static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
 void cls_802150B8::fn_802146A4() const {
