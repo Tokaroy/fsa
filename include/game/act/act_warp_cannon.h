@@ -20,6 +20,9 @@ public:
     // 8 do something; 0 and 5 nothing (the jump table's default).
     void fn_80130FAC(s32 state);
     // Not in the binary: plain functions that update and fn_80130FAC inline.
+    s32 findPlayer();
+    bool allPlayersIn();
+    void movePlayers();
     void flyPlayers();
     void liftPlayers();
     void resetIfAllPlayersReady();

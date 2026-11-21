@@ -50,34 +50,12 @@ void WarpCannon_8049EAE0::init() {
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
     case 0: {
-        JGeometry::TBox2f probe = mBox;
-        f32 dy = mPos.y - mPos.z;
-        probe.i.x += mPos.x;
-        probe.i.y += dy;
-        probe.f.x += mPos.x;
-        probe.f.y += dy;
-        s32 p;
-        for (p = 0; p < 4; p++) {
-            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1.0f) &&
-                !fn_80230188(p) && field_0x26c < 0) {
-                break;
-            }
-        }
-        if (p == 4) {
-            p = -1;
-        }
+        s32 p = findPlayer();
         if (p >= 0) {
             field_0x26c = p;
             fn_80130FAC(1);
         }
-        bool all = true;
-        for (s32 p = 0; p < 4; p++) {
-            if (!fn_80230188(p)) {
-                all = false;
-                break;
-            }
-        }
-        if (all) {
+        if (allPlayersIn()) {
             fn_80130FAC(2);
         }
         break;
@@ -91,12 +69,7 @@ void WarpCannon_8049EAE0::update() {
         break;
     }
     case 2: {
-        fn_801CD950(&field_0x27c, -10.0f, -0.2f);
-        for (s32 p = 0; p < 4; p++) {
-            JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-            pos.y -= field_0x27c;
-            fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
-        }
+        movePlayers();
         if (fireRecoil()) {
             fn_80130FAC(3);
         }
@@ -214,6 +187,40 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
 // of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py). One more is still missing: the original creates a 16.0f after flyPlayers'
 // literals and before fn_80130FAC's 13.0f, which leaves init's literals one slot off.
+s32 WarpCannon_8049EAE0::findPlayer() {
+    JGeometry::TBox2f probe = mBox;
+    f32 dy = mPos.y - mPos.z;
+    probe.i.x += mPos.x;
+    probe.i.y += dy;
+    probe.f.x += mPos.x;
+    probe.f.y += dy;
+    for (s32 p = 0; p < 4; p++) {
+        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1000.0f) &&
+            !fn_80230188(p) && field_0x26c < 0) {
+            return p;
+        }
+    }
+    return -1;
+}
+
+bool WarpCannon_8049EAE0::allPlayersIn() {
+    for (s32 p = 0; p < 4; p++) {
+        if (!fn_80230188(p)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void WarpCannon_8049EAE0::movePlayers() {
+    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    for (s32 p = 0; p < 4; p++) {
+        JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
+        pos.y -= field_0x27c;
+        fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
+    }
+}
+
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
 void WarpCannon_8049EAE0::flyPlayers() {
     fn_801CD950(&field_0x27c, -10.0f, -0.002f);
@@ -245,8 +252,8 @@ void WarpCannon_8049EAE0::liftPlayers() {
 
 // State 7: the players come down towards y = 0. True once one has arrived.
 bool WarpCannon_8049EAE0::landPlayers() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
     bool all = false;
+    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
         if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
@@ -265,12 +272,11 @@ bool WarpCannon_8049EAE0::recoil() {
     if (mPos.y < field_0x288) {
         mPos.y = field_0x288;
     }
-    bool done = false;
     if (field_0x280 >= 1.0f) {
         field_0x280 = 1.0f;
-        done = true;
+        return true;
     }
-    return done;
+    return false;
 }
 
 // State 2: the stronger kick of the shot, on its own static phase, held for 30 frames. True at
@@ -294,11 +300,10 @@ bool WarpCannon_8049EAE0::fireRecoil() {
     if (mPos.y < field_0x288) {
         mPos.y = field_0x288;
     }
-    bool done = false;
     if (phase >= 1.0f && counter >= 30) {
         counter = 0;
         phase = 0.0f;
-        done = true;
+        return true;
     }
-    return done;
+    return false;
 }
