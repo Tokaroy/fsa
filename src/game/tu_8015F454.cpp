@@ -116,22 +116,17 @@ void cls_804A03A8::fn_8015F9C0() {
                     alpha *= 159.0f;
                     Vec proj;
                     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&field_0x84[i], false, false, &proj);
+                    f32 pos[4];
                     f32 uv[4];
                     uv[0] = t * (proj.x - 20.0f);
                     uv[1] = t * (proj.y - 15.0f);
                     uv[2] = t * (20.0f + proj.x) + (1.0f - t) * width;
                     uv[3] = t * (15.0f + proj.y) + (1.0f - t) * height;
-                    f32 pos[4];
                     pos[0] = 0.0f;
                     pos[1] = 0.0f;
                     pos[2] = width;
                     pos[3] = height;
-                    GXColor color;
-                    color.r = 0xFF;
-                    color.g = 0xFF;
-                    color.b = 0xFF;
-                    color.a = (u8)alpha;
-                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos, uv, color, NULL, NULL, 0, 0);
+                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos, uv, JUtility::TColor(0xFF, 0xFF, 0xFF, (u8)alpha), NULL, NULL, 0, 0);
                     break;
                 }
                 case 1: {
@@ -144,22 +139,17 @@ void cls_804A03A8::fn_8015F9C0() {
                     alpha *= 159.0f;
                     Vec proj;
                     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&field_0x84[i], false, false, &proj);
+                    f32 pos[4];
                     f32 uv[4];
                     uv[0] = t * (proj.x - 20.0f);
                     uv[1] = t * (proj.y - 15.0f);
                     uv[2] = t * (20.0f + proj.x) + (1.0f - t) * width;
                     uv[3] = t * (15.0f + proj.y) + (1.0f - t) * height;
-                    f32 pos[4];
                     pos[0] = 0.0f;
                     pos[1] = 0.0f;
                     pos[2] = width;
                     pos[3] = height;
-                    GXColor color;
-                    color.r = 0xFF;
-                    color.g = 0xFF;
-                    color.b = 0xFF;
-                    color.a = (u8)alpha;
-                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos, uv, color, NULL, NULL, 0, 0);
+                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos, uv, JUtility::TColor(0xFF, 0xFF, 0xFF, (u8)alpha), NULL, NULL, 0, 0);
                     break;
                 }
                 case 5: {
@@ -169,31 +159,29 @@ void cls_804A03A8::fn_8015F9C0() {
                     JGeometry::TVec3f off(20.0f + field_0x84[i].x, 20.0f + field_0x84[i].y, 6.0f + field_0x84[i].z);
                     JGeometry::TVec3f q;
                     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&off, true, false, &q);
+                    q -= p;
+                    f32 pos[4];
                     f32 uv[4];
                     uv[0] = -256.0f;
                     uv[1] = -256.0f;
                     uv[2] = 256.0f;
                     uv[3] = 256.0f;
-                    f32 pos[4];
                     pos[0] = p.x - 80.0f - 4.0f;
                     pos[1] = p.y - 80.0f - 4.0f;
                     pos[2] = 4.0f + (80.0f + p.x);
                     pos[3] = 4.0f + (80.0f + p.y);
-                    q -= p;
-                    JUtility::TColor white(0xFFFFFFFF);
-                    fn_8015F454(field_0x294, pos, uv, white, NULL, NULL, 0, 0);
+                    fn_8015F454(field_0x294, pos, uv, JUtility::TColor(0xFFFFFFFF), NULL, NULL, 0, 0);
+                    f32 pos2[4];
                     f32 uv2[4];
                     uv2[0] = p.x - q.x;
                     uv2[1] = p.y - q.y;
                     uv2[2] = p.x + q.x;
                     uv2[3] = p.y + q.y;
-                    f32 pos2[4];
                     pos2[0] = p.x - 80.0f;
                     pos2[1] = p.y - 80.0f;
                     pos2[2] = 80.0f + p.x;
                     pos2[3] = 80.0f + p.y;
-                    JUtility::TColor white2(0xFFFFFFFF);
-                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos2, uv2, white2, NULL, field_0x294, 1, 0);
+                    fn_8015F454(gGameRoot2_8053AB10->field_0x34, pos2, uv2, JUtility::TColor(0xFFFFFFFF), NULL, field_0x294, 1, 0);
                     break;
                 }
                 }
