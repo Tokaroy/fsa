@@ -864,15 +864,17 @@ static inline void pageSound(s32 window) {
     }
 }
 
-// (the field_0xe7 bit test is materialised as a bool in the original)
+static inline u8 isWindowDone(s32 player) {
+    return (lbl_8053AD78->field_0xe7 & (u8)(1 << windowIndex(player))) ? true : false;
+}
+
 // Steps the player's window while it shows a page (state 5 / 8): returns true once the
 // window is done (bit of field_0xe7, after the countdown field_0xf0 of two frames). On the
 // last page a press (or option 0x20 / the processor's countdown) finishes it; otherwise a
 // press turns the page (state 2 / 7).
-// FIXME: 99.67 %, missing/extra; behaviour near.
 bool fn_803865B8(s32 player) {
     s32 window = windowIndex(player);
-    if (lbl_8053AD78->field_0xe7 & (u8)(1 << windowIndex(window))) {
+    if (isWindowDone(window)) {
         return true;
     }
     if (lbl_8053AD78->field_0xf0[window] > 0) {
