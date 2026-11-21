@@ -222,7 +222,9 @@ s32 cls_8049D740::vfunc_0x5C() {
     return 1;
 }
 
-// FIXME: 87.84 %, missing/extra; behaviour drift.
+// Not auto-inlined: update() calls fn_80112AE8 out of line in the original.
+#pragma auto_inline off
+// FIXME: lwz of field_0x244 and mMode are swapped.
 void cls_8049D740::fn_80112AE8() {
     field_0x248 += 0.01f;
 
@@ -232,11 +234,8 @@ void cls_8049D740::fn_80112AE8() {
     fn_8010F668(mtx1, &axis1, 0.08726646f);
 
     Mtx mtx2;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
-            mtx2[i][j] = 0.0f;
-        }
-    }
+    mtx2[0][0] = mtx2[1][0] = mtx2[2][0] = mtx2[0][1] = mtx2[1][1] = mtx2[2][1] = mtx2[0][2] = mtx2[1][2] =
+        mtx2[2][2] = mtx2[0][3] = mtx2[1][3] = mtx2[2][3] = 0.0f;
     JGeometry::TVec3f axis2(0.0f, 0.0f, 1.0f);
     fn_8010F668(mtx2, &axis2, field_0x248);
 
@@ -247,20 +246,21 @@ void cls_8049D740::fn_80112AE8() {
         field_0x244 = 0;
     }
 
-    s32 frame = field_0x244;
     s32 mode = mMode;
+    s32 frame = field_0x244;
     f32 scale = field_0x250;
     GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[mode];
     if (crystal.mModel != NULL && !crystal.mActive) {
         crystal.mActive = 1;
         crystal.mPos.set(scale, scale, scale);
-        PSMTXCopy(mtx1, crystal.mMtx);
+        JMath::gekko_ps_copy12(crystal.mMtx, mtx1);
         crystal.field_0x48 = -1.0f;
         crystal.field_0x4c = frame;
         crystal.field_0x54 = 0;
         crystal.field_0x58 = 1;
     }
 }
+#pragma auto_inline reset
 
 void cls_8049D740::fn_80112654(s32 kind) {
     switch (kind) {
