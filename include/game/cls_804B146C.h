@@ -43,6 +43,7 @@ public:
     void fn_80422824();
     void fn_8042215C(s32 player);
     void fn_80421D78(s32 player);
+    void updateGaugeBar(s32 player, s32 bar, s32& val);
     void fn_80421A34(s32 player, bool force);
     void fn_8042165C();
 
