@@ -77,6 +77,7 @@ void IceWall_8049DE18::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
+// FIXME: 99.90 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only: saved registers r29/r30 are swapped in cases 0 and 1.
 void IceWall_8049DE18::update() {
     ActorBase_804A5770::update();
