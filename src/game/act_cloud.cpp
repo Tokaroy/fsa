@@ -72,7 +72,9 @@ void Cloud_8049CBE0::init() {
 static bool isAirborne(s32 player);
 
 // 0x801056E4.
-// Only f2/f3 swap in box offset additions remains.
+// Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
+// assignment is inside `if (field_0x354 > 0)` in the original), and stack slot of `at`
+// (fn_800FDEA0 took pos by value in the original; RailBase.h declares it as a pointer).
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
     if (viewLayerFlag(field_0x4) != 0) {
@@ -95,10 +97,7 @@ void Cloud_8049CBE0::update() {
             if (field_0x354 > 0 && field_0x364 > 0) {
                 u8 count = mRail.fn_800FD894(-1, NULL, 0);
                 if (field_0x364 <= count) {
-                    u8 idx = field_0x364;
-                    if (idx < mRail.field_0x2) {
-                        mRail.field_0x3 = idx;
-                    }
+                    mRail.setIndex(field_0x364);
                 }
             }
         }
@@ -110,8 +109,9 @@ void Cloud_8049CBE0::update() {
             JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
             s32 railLayer = field_0x4;
             u16 angle;
+            JGeometry::TVec3f at = mPos;
             f32 speed = 0.2f * field_0x358 + 0.5f;
-            s32 result = mRail.fn_800FDEA0(&JGeometry::TVec3f(mPos), speed, &step, &railLayer, &angle, 0x200);
+            s32 result = mRail.fn_800FDEA0(&at, speed, &step, &railLayer, &angle, 0x200);
             field_0x3c.x = step.x;
             field_0x3c.y = step.y;
             field_0x3c.z = step.z;
