@@ -367,24 +367,23 @@ void cls_804A38D4::update() {
 // 0x801B4EC8.
 // FIXME(shotgun): 95.52 %, different; behaviour clean.
 void cls_804A38D4::fn_801B4EC8() {
-    Mtx mtx;
     SpriteParams_801F5AE0 params;
+    Mtx mtx;
     switch (field_0x250) {
-    case 1:
-        params.field_0x1d = 1;
-        params.field_0x0[2] = 3;
-        break;
     case 2:
         params.field_0x1d = 1;
         params.field_0x0[2] = 9;
+        break;
+    case 1:
+        params.field_0x1d = 1;
+        params.field_0x0[2] = 3;
         break;
     case 3:
         params.field_0x1d = 1;
         params.field_0x0[2] = 4;
         break;
     }
-    JGeometry::TVec3f rot(0.0f, (f32)field_0x260 / -10430.228f, 0.0f);
-    setRotScaleMtx(mtx, rot, 1.0f);
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x260 / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x24c + 0xC0, &params, 7, 1.0f, 1.0f);
 }
