@@ -62,7 +62,7 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
-// FIXME(shotgun): 98.54 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.24 %, scheduling+regalloc; behaviour clean.
 void Warp_804A6DC8::init() {
     field_0x256 = 0;
     field_0x278 = 0;
@@ -217,7 +217,7 @@ static void updateSandHole(Warp_804A6DC8* self);
 // 0x80227F50. Every frame: tracks whether a player is near (the sand shake), lets the kind-0x20 warp
 // swallow a player with a drawn box, then pushes the actors lying on the pad (per kind) to the
 // warp's destination (field_0x238) or nudges their velocity.
-// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.94 %, missing/extra; behaviour clean.
 void Warp_804A6DC8::update() {
     // 'NULL'-ended actor id lists, addressed off one base (0x8046ABE8, +0x38, +0x44): the pushed
     // actors, then two lists chosen by kind.
@@ -408,7 +408,6 @@ void Warp_804A6DC8::update() {
 }
 
 // 0x80227CE8.
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
     static const f32 lbl_8046AC58[24] = {
         0.0f, 1.0f,  2.0f,  1.0f,  0.0f, -0.9f, -1.8f, -0.9f,
@@ -555,7 +554,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
 
 // 0x80227530. Per player: runs fn_80226FC8, then marks the player on the warp and, for a player
 // that just stepped on and passes the checks, rewrites the four tiles around it and spawns the effect.
-// FIXME(shotgun): 85.93 %, missing/extra; behaviour near.
+// FIXME(shotgun): 87.77 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
