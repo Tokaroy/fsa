@@ -427,10 +427,7 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
         }
     } else {
         s32 w1, w2, w3, w4, base;
-        base = 0;
-        w4 = 0;
-        w2 = 0;
-        w1 = 0;
+        w1 = w2 = w4 = base = 0;
         switch (players) {
         case 1:
             w1 = 90;
