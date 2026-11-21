@@ -91,7 +91,7 @@ Pot_804A9428::~Pot_804A9428() {
     }
 }
 
-// FIXME: 99.01 % (missing/extra: duplicate null check in blz2 loop, emitter direction branch order)
+// FIXME: 99.68 % (missing/extra: duplicate null check in blz2 loop)
 void Pot_804A9428::update() {
     field_0x254 = 0xFF;
     if (field_0xc4) {
@@ -164,10 +164,12 @@ void Pot_804A9428::update() {
     }
     if (field_0x234 == 1) {
         if (mPos.x != mPrevPos.x || mPos.y != mPrevPos.y) {
-            if (mPos.x < mPrevPos.x) {
-                respawnEmitter(this, 1, 0x1A7);
-            } else if (mPos.x > mPrevPos.x) {
-                respawnEmitter(this, 2, 0x1A9);
+            if (mPos.x != mPrevPos.x) {
+                if (mPos.x < mPrevPos.x) {
+                    respawnEmitter(this, 1, 0x1A7);
+                } else {
+                    respawnEmitter(this, 2, 0x1A9);
+                }
             } else if (mPos.y < mPrevPos.y) {
                 respawnEmitter(this, 3, 0x1AA);
             } else {
