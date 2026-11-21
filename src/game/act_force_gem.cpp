@@ -577,10 +577,7 @@ void ForceGem_804AB6D8::draw() {
     if (state == 0xE) {
         return;
     }
-    if (state == 0x11) {
-        return;
-    }
-    if (field_0x94 == 0x24) {
+    if (state == 0x11 || field_0x94 == 0x24) {
         return;
     }
     if (state == 0xA) {
@@ -592,9 +589,9 @@ void ForceGem_804AB6D8::draw() {
             return;
         }
     }
+    s32 gc = 0;
     const char* name = "enemy_both2_sob.bin";
     f32 scale = field_0x238;
-    s32 gc = 0;
     if (field_0x268 >= 8) {
         name = "enemy_gc_sob.bin";
         gc = 1;
