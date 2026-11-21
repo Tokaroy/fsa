@@ -117,8 +117,6 @@ static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
     }
 }
 
-// FIXME: 98.68 %, regalloc-only; behaviour clean.
-// FIXME(shotgun): register allocation and float literal split differ.
 void WhackAMoleShop_8049C8EC::draw() {
     if (field_0x90 & 0x10000) {
         SpriteParams_801F5AE0 params;
@@ -391,9 +389,8 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
 // pool before fn_80100D28's.
 void WhackAMoleShop_8049C8EC::showTimer() {
     s32 timer = field_0x23c;
-    s32 seconds = timer / 60;
-    lbl_8053AF18->field_0x30 = seconds;
-    lbl_8053AF18->field_0x31 = (u8)((f32)(timer - seconds * 60) / 0.6f);
+    lbl_8053AF18->field_0x30 = timer / 60;
+    lbl_8053AF18->field_0x31 = (u8)((f32)(timer - (timer / 60) * 60) / 0.6f);
     lbl_8053AF18->field_0x32 |= 0x10;
     for (s32 i = 0; i < field_0x244; i++) {
         lbl_8053AF18->field_0x32 |= (u8)(1 << i);
