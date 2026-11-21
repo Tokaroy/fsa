@@ -77,10 +77,7 @@ void IceWall_8049DE18::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
-// FIXME: 98.04 %, scheduling+regalloc; behaviour clean.
-// scheduling+regalloc: same instructions, but the three box setups (update's, hitByWeapon's and
-// hitByFire's) interleave their loads, fadds and stores differently and use other float registers,
-// and the saved registers r29/r30 are swapped in cases 1 and 0.
+// FIXME: regalloc-only: saved registers r29/r30 are swapped in cases 0 and 1.
 void IceWall_8049DE18::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box;
@@ -285,10 +282,11 @@ bool IceWall_8049DE18::hitByWeapon() {
     JGeometry::TVec2f hitPos;
     hitPos.set(0.0f, 0.0f);
     f32 screenY = mPos.y - mPos.z;
+    f32 screenX = mPos.x;
     box.set(mBox2);
-    box.i.x += mPos.x;
+    box.i.x += screenX;
     box.i.y += screenY;
-    box.f.x += mPos.x;
+    box.f.x += screenX;
     box.f.y += screenY;
 
     s32 hitCode = fn_8023AA18(&box, field_0x4, &hitPos);
