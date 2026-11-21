@@ -33,10 +33,13 @@ static const s16* lbl_8049D710[12] = {
     lbl_80464694, lbl_804646A8, lbl_804646B8, lbl_804646D4, lbl_804646E4, lbl_804646F4,
 };
 
-// The Maiden's compare words (0x80464704), then one per-mode offset table
-// (modes 0..5) for each of three checks.
-static const s32 lbl_80464704[22] = {
-    0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3, 0, 0, 0, 0x276, 0x2B2, 0x47E, 0x76C, 0x83E, 0x848, 0xA3C,
+// The Maiden's base sprite frames (modes 0..5), demo frame table (0x8046471C),
+// then one per-mode offset table (modes 0..5) for each of three checks.
+static const s32 lbl_80464704[6] = {
+    0x199, 0x1E7, 0x17F, 0x201, 0x1CD, 0x1B3,
+};
+static const s32 lbl_8046471C[16] = {
+    0, 0, 0, 0x276, 0x2B2, 0x47E, 0x76C, 0x83E, 0x848, 0xA3C,
     0xAF0, 0xC9E, 0xD5C, 0xD66, 0xE24, 0,
 };
 static const s32 lbl_8046475C[6] = {0xA, 0x1E, 0x32, 0, 0x14, 0x28};
@@ -84,7 +87,7 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
-// FIXME: 96.57 %, missing/extra; behaviour drift.
+// FIXME: 97.94 %, scheduling+regalloc; behaviour drift.
 void cls_8049D740::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
@@ -158,59 +161,37 @@ void cls_8049D740::draw() {
     }
 }
 
-// FIXME: 97.89 %, missing/extra; behaviour drift.
+// FIXME: 98.43 %, regalloc-only; behaviour clean.
 void cls_8049D740::vfunc_0x54() {
-    cls_801192AC* state = fn_8011921C();
-    s32 id = state->field_0x8;
-    if (field_0x23c != 0) {
-        return;
-    }
-    if (id == lbl_80464704[8]) {
-        fn_80112654(2);
-        return;
-    }
-    if (id == lbl_80464704[9] + lbl_8046475C[mMode]) {
-        fn_80112654(3);
-        return;
-    }
-    if (id == lbl_80464704[10]) {
-        fn_80112654(4);
-        return;
-    }
-    if (id == lbl_80464704[11]) {
-        fn_80112654(5);
-        return;
-    }
-    if (id == lbl_80464704[12]) {
-        fn_80112654(6);
-        return;
-    }
-    if (id == lbl_80464704[13]) {
-        fn_80112654(7);
-        return;
-    }
-    if (id == lbl_80464704[14]) {
-        fn_80112654(8);
-        return;
-    }
-    if (id == lbl_80464704[15] + lbl_8046478C[mMode]) {
-        fn_80112654(9);
-        return;
-    }
-    if (id == lbl_80464704[16]) {
-        fn_80112654(0xA);
-        return;
-    }
-    if (id == lbl_80464704[17]) {
-        fn_80112654(0xB);
-        return;
-    }
-    if (id == lbl_80464704[18] + lbl_80464774[mMode]) {
-        fn_80112654(0xC);
-        return;
-    }
-    if (id == lbl_80464704[20]) {
-        fn_80112654(0xF);
+    s32 id = fn_8011921C()->field_0x8;
+    switch (field_0x23c) {
+    case 0:
+        if (id == lbl_8046471C[2]) {
+            fn_80112654(2);
+        } else if (id == lbl_8046471C[3] + lbl_8046475C[mMode]) {
+            fn_80112654(3);
+        } else if (id == lbl_8046471C[4]) {
+            fn_80112654(4);
+        } else if (id == lbl_8046471C[5]) {
+            fn_80112654(5);
+        } else if (id == lbl_8046471C[6]) {
+            fn_80112654(6);
+        } else if (id == lbl_8046471C[7]) {
+            fn_80112654(7);
+        } else if (id == lbl_8046471C[8]) {
+            fn_80112654(8);
+        } else if (id == lbl_8046471C[9] + lbl_8046478C[mMode]) {
+            fn_80112654(9);
+        } else if (id == lbl_8046471C[10]) {
+            fn_80112654(0xA);
+        } else if (id == lbl_8046471C[11]) {
+            fn_80112654(0xB);
+        } else if (id == lbl_8046471C[12] + lbl_80464774[mMode]) {
+            fn_80112654(0xC);
+        } else if (id == lbl_8046471C[14]) {
+            fn_80112654(0xF);
+        }
+        break;
     }
 }
 
@@ -222,7 +203,10 @@ s32 cls_8049D740::vfunc_0x5C() {
     return 1;
 }
 
-// FIXME: 87.84 %, missing/extra; behaviour drift.
+// Not auto-inlined: update() calls fn_80112AE8 out of line in the original.
+#pragma auto_inline off
+// FIXME: 99.89 %, scheduling; behaviour clean.
+// FIXME: lwz of field_0x244 and mMode are swapped.
 void cls_8049D740::fn_80112AE8() {
     field_0x248 += 0.01f;
 
@@ -232,11 +216,8 @@ void cls_8049D740::fn_80112AE8() {
     fn_8010F668(mtx1, &axis1, 0.08726646f);
 
     Mtx mtx2;
-    for (s32 i = 0; i < 3; i++) {
-        for (s32 j = 0; j < 4; j++) {
-            mtx2[i][j] = 0.0f;
-        }
-    }
+    mtx2[0][0] = mtx2[1][0] = mtx2[2][0] = mtx2[0][1] = mtx2[1][1] = mtx2[2][1] = mtx2[0][2] = mtx2[1][2] =
+        mtx2[2][2] = mtx2[0][3] = mtx2[1][3] = mtx2[2][3] = 0.0f;
     JGeometry::TVec3f axis2(0.0f, 0.0f, 1.0f);
     fn_8010F668(mtx2, &axis2, field_0x248);
 
@@ -247,20 +228,21 @@ void cls_8049D740::fn_80112AE8() {
         field_0x244 = 0;
     }
 
-    s32 frame = field_0x244;
     s32 mode = mMode;
+    s32 frame = field_0x244;
     f32 scale = field_0x250;
     GameRootSub20_801902C0::Crystal& crystal = fn_801902C0()->mCrystals[mode];
     if (crystal.mModel != NULL && !crystal.mActive) {
         crystal.mActive = 1;
         crystal.mPos.set(scale, scale, scale);
-        PSMTXCopy(mtx1, crystal.mMtx);
+        JMath::gekko_ps_copy12(crystal.mMtx, mtx1);
         crystal.field_0x48 = -1.0f;
         crystal.field_0x4c = frame;
         crystal.field_0x54 = 0;
         crystal.field_0x58 = 1;
     }
 }
+#pragma auto_inline reset
 
 void cls_8049D740::fn_80112654(s32 kind) {
     switch (kind) {
@@ -433,7 +415,10 @@ bool cls_8049D740::moveToGoal() {
     s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, field_0x3c.x);
     s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, field_0x3c.y);
     fn_801CD950(&field_0x250, 0.05f, -0.005f);
-    return doneX == 0 && doneY == 0;
+    if (doneX == 0 && doneY == 0) {
+        return true;
+    }
+    return false;
 }
 
 void cls_8049D740::shrinkCrystal() {
