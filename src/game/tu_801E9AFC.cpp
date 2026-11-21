@@ -181,6 +181,7 @@ static inline void drawQuadVertex(const JGeometry::TVec2f& center, f32 dx, f32 d
 }
 
 // 0x801EA108: the original reloads the sin/cos table for every vertex instead of CSEing it.
+// FIXME: 52.65 %, missing/extra + reloc-name; behaviour drift.
 void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
     f32 s0 = 0.0f;
     f32 s1 = 1.0f;
@@ -203,7 +204,7 @@ void cls_801E9AFC::fn_801EA108(const JGeometry::TVec2f* pos, s16 angle, f32 z) {
     drawQuadVertex(center, -4.0f, 4.0f, angle, z, s0, 1.0f);
 }
 
-// FIXME: 91.74 %, missing/extra; behaviour drift.
+// FIXME: 93.91 %, missing/extra; behaviour drift.
 // Three fewer-instruction spots: the original converts the
 // "outlines" / "sprites" tests to bool through a byte (clrlwi, neg, or, srwi)
 // where ours keeps the compare result; the rest is the same code, registers
