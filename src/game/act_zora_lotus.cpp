@@ -59,7 +59,8 @@ void cls_804AC3E0::vfunc_0xA4() {
     mPos.y = mSpawnPos.y;
 }
 
-// FIXME: 93.27 %. missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
+// FIXME: 97.52 %, missing/extra + reloc-name; behaviour clean.
+// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
 void cls_804AC3E0::vfunc_0xA8() {
     if (field_0x2b0 != 0) {
         field_0x2b2 += 0x800;
@@ -160,7 +161,8 @@ u8 cls_804AC3E0::vfunc_0x68() {
     return 0;
 }
 
-// FIXME: 94.17 %. missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
+// FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
+// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
 void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
@@ -264,7 +266,8 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
 
 // Not auto-inlined: cls_804AC3E0::draw calls fn_8033FC4C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.50 %. regalloc-only: the original keeps cos(rot.z) in f24, cx*sz in f26 and cx*cz in f25
+// FIXME: 99.50 %, regalloc-only; behaviour clean.
+// regalloc-only: the original keeps cos(rot.z) in f24, cx*sz in f26 and cx*cz in f25
 // (ours f26, f25, f24).
 void fn_8033FC4C(Mtx m, const JGeometry::TVec3f& scale, const JGeometry::TVec3f& rot, const JGeometry::TVec3f& trans) {
     f32 sx = sin(rot.x);
@@ -304,7 +307,6 @@ void fn_8033FC4C(Mtx m, const JGeometry::TVec3f& scale, const JGeometry::TVec3f&
 }
 #pragma auto_inline reset
 
-// FIXME: 99.90 %. reloc-name only: the switch's jump table is jumptable_804AC494 in the original, @NNN in ours.
 void cls_804AC3E0::draw() {
     ZoraEnemy_804A3D7C::draw();
     SpriteParams_801F5AE0 params;
