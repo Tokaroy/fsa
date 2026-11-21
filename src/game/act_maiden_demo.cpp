@@ -87,7 +87,7 @@ void cls_8049D740::vfunc_0x10() {
     }
 }
 
-// FIXME: 96.57 %, missing/extra; behaviour drift.
+// FIXME: 97.94 %, scheduling+regalloc; behaviour drift.
 void cls_8049D740::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
@@ -161,6 +161,7 @@ void cls_8049D740::draw() {
     }
 }
 
+// FIXME: 98.43 %, regalloc-only; behaviour clean.
 void cls_8049D740::vfunc_0x54() {
     s32 id = fn_8011921C()->field_0x8;
     switch (field_0x23c) {
@@ -204,6 +205,7 @@ s32 cls_8049D740::vfunc_0x5C() {
 
 // Not auto-inlined: update() calls fn_80112AE8 out of line in the original.
 #pragma auto_inline off
+// FIXME: 99.89 %, scheduling; behaviour clean.
 // FIXME: lwz of field_0x244 and mMode are swapped.
 void cls_8049D740::fn_80112AE8() {
     field_0x248 += 0.01f;
