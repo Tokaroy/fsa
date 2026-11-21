@@ -76,7 +76,7 @@ void cls_804AA350::init() {
     field_0x11f = 1;
 }
 
-// FIXME(shotgun): 90.08 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
 void cls_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < count; i++) {
@@ -163,7 +163,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
     }
 }
 
-// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.45 %, missing/extra; behaviour drift.
 void cls_804AA350::update() {
     switch (field_0x24c) {
     case 0:
