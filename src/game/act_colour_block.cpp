@@ -82,7 +82,7 @@ void ColourBlock1Player_804AE620::init() {
     }
 }
 
-// FIXME: 99.63 %, missing/extra; behaviour near.
+// FIXME: 99.65 %, missing/extra; behaviour near.
 // missing/extra: box expansion float addition scheduling and savedPos stack offset.
 void ColourBlock1Player_804AE620::update() {
     JGeometry::TBox2f box = mBox;
