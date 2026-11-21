@@ -288,8 +288,7 @@ s32 cls_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 98.08 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: ours has 2 fewer instrs (417 vs 419); emitter 0x24 store and float literal order.
+// operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
@@ -390,7 +389,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     }
     case 20:
         if (field_0x288 != NULL) {
-            field_0x288->stopCreateParticle();
+            field_0x288->becomeInvalidEmitter();
         }
         spawnEmitter_8013CC50(field_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(field_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
@@ -409,6 +408,8 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     case 25:
         fn_8011921C()->fn_80118384();
         fn_801F3668();
+        break;
+    case 26:
         break;
     }
 }
@@ -539,10 +540,8 @@ void cls_8049EB8C::placeAtBarrier() {
             pos = actor->mPos;
         }
     }
-    mPos.x = pos.x;
     pos.y += 32.0f;
-    mPos.y = pos.y;
-    mPos.z = 8.0f;
+    mPos.set(pos.x, pos.y, 8.0f);
     pos.y += 32.0f;
     pos.x -= 50.0f;
     for (s32 i = 0; i < 4; i++) {
