@@ -584,7 +584,7 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x250 = (field_0x90 >> 3) & 0x1F;
     field_0x2B0 = 1;
     field_0x280 = 0;
-    field_0x288 = field_0x28C = field_0x290 = 0.0f;
+    field_0x288.x = field_0x288.y = field_0x288.z = 0.0f;
     field_0x294 = 0;
     field_0x2B4 = NULL;
     field_0x2B8 = NULL;
@@ -865,9 +865,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
         (field_0x250 == 0 && field_0x27C != 0 && field_0x27C != 1 && field_0x26C < 100.0f)) {
         field_0x244++;
         if (!(field_0x248 & 1)) {
-            field_0x234 = 0;
-            mStep = 0;
-            advanceStep();
+            resetStep(field_0x244);
             mStep = 4;
             field_0x234 = 0;
             advanceStep();
@@ -875,7 +873,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
             field_0x234 = 6;
         } else {
             const KaeporaStep* table = lbl_804ADA98[field_0x244];
-            if (mStep == 0) {
+            if (0 == mStep) {
                 field_0x23C = table[4].mValue;
             } else {
                 s32 prev = mStep - 1;
@@ -883,9 +881,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::pickStepTable() {
             }
         }
     } else {
-        field_0x234 = 0;
-        mStep = 0;
-        advanceStep();
+        resetStep(field_0x244);
     }
 }
 
@@ -905,16 +901,16 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     case 0:
         mPtmfIndex = 0;
         field_0x268 = *field_0x284++;
-        field_0x288 = *field_0x284++;
-        if (-1000.0f == field_0x288) {
-            field_0x288 = mPos.x;
+        field_0x288.x = *field_0x284++;
+        if (-1000.0f == field_0x288.x) {
+            field_0x288.x = mPos.x;
         }
-        field_0x28C = *field_0x284++;
-        if (-1000.0f == field_0x28C) {
-            field_0x28C = mPos.y;
+        field_0x288.y = *field_0x284++;
+        if (-1000.0f == field_0x288.y) {
+            field_0x288.y = mPos.y;
         }
-        field_0x290 = *field_0x284++;
-        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * 10430.378f);
+        field_0x288.z = *field_0x284++;
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x288.y - mPos.y, field_0x288.x - mPos.x) * 10430.378f);
         break;
     case 1:
         mPtmfIndex = 0;
@@ -971,9 +967,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
         } else {
             mPtmfIndex = 3;
             field_0x244 = fn_801CD664(2) + 8;
-            field_0x234 = 0;
-            mStep = 0;
-            advanceStep();
+            resetStep(field_0x244);
         }
         return;
     case 8:
@@ -983,13 +977,11 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
         } else {
             mPtmfIndex = 2;
             field_0x268 = *field_0x284++;
-            field_0x288 = *field_0x284++;
-            field_0x28C = *field_0x284++;
-            field_0x290 = *field_0x284++;
+            field_0x288.x = *field_0x284++;
+            field_0x288.y = *field_0x284++;
+            field_0x288.z = *field_0x284++;
             field_0x244 = fn_801CD664(2) + 10;
-            field_0x234 = 0;
-            mStep = 0;
-            advanceStep();
+            resetStep(field_0x244);
         }
         return;
     case 9:
@@ -1047,7 +1039,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     }
 }
 
-// FIXME(shotgun): 97.01 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.77 %, regalloc-only + reloc-name; behaviour clean.
 // update() step 0: flies along the current command (fn_80360914).
 void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     s32 facing = field_0x274;
@@ -1059,9 +1051,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
                 (field_0x250 == 0 && field_0x27C != 0 && field_0x27C != 1 && field_0x26C < 100.0f)) {
                 field_0x244++;
             }
-            field_0x234 = 0;
-            mStep = 0;
-            advanceStep();
+            resetStep(field_0x244);
             if (!(field_0x248 & 1) && (field_0x244 & 1)) {
                 mStep = 4;
                 field_0x234 = 0;
@@ -1089,10 +1079,8 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     }
     if (field_0x27C == 0) {
         mPos += field_0x3c;
-        if (fabs(field_0x288 - mPos.x) < field_0x268 && fabs(field_0x28C - mPos.y) < field_0x268) {
-            mPos.x = field_0x288;
-            mPos.y = field_0x28C;
-            mPos.z = field_0x290;
+        if (fabs(field_0x288.x - mPos.x) < field_0x268 && fabs(field_0x288.y - mPos.y) < field_0x268) {
+            mPos = field_0x288;
             fn_80360914();
             return;
         }
@@ -1105,7 +1093,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
             return;
         }
     } else if (field_0x27C == 2 || field_0x27C == 4) {
-        s32 step = (s32)(65536.0f * (field_0x268 / (6.283184f * field_0x26C)));
+        s32 step = (s32)(65536.0f * (field_0x268 * JMAFastReciprocal(6.283184f * field_0x26C)));
         JGeometry::TVec3f savedPos = mPos;
         if (field_0x27C == 2) {
             field_0x254 += step;
@@ -1132,7 +1120,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
             return;
         }
     } else {
-        s32 step = (s32)(65536.0f * (field_0x268 / (6.283184f * field_0x26C)));
+        s32 step = (s32)(65536.0f * (field_0x268 * JMAFastReciprocal(6.283184f * field_0x26C)));
         if (field_0x27C == 3) {
             field_0x254 += step;
         } else {
@@ -1177,7 +1165,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
     if (advanceStep() == true) {
         mPtmfIndex = 0;
         field_0x27C = 0;
-        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x28C - mPos.y, field_0x288 - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+        field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x288.y - mPos.y, field_0x288.x - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
         field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
         u16 a = field_0x254;
