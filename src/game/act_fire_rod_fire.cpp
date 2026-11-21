@@ -12,8 +12,6 @@
 
 extern const s32 lbl_8046D388[4];
 
-// FIXME: 99.99 %, scheduling; behaviour clean.
-// scheduling + reloc-name. Identical codegen; pending update's float literals in .sdata2.
 void FireRodFire_804A89F0::init() {
     field_0x284 = (field_0x90 >> 11) & 1;
     field_0x98 = (field_0x90 >> 4) & 3;
@@ -171,38 +169,38 @@ void FireRodFire_804A89F0::init() {
                     pos.y -= 8.0f;
                     break;
                 }
-            }
 
-            if (field_0x268 == 2) {
-                scale = 2.0f;
-                switch (field_0x98) {
-                case 0:
-                    pos.x += 8.0f;
-                    field_0x23c.set(4.0f, 0.0f, 0.0f);
-                    break;
-                case 1:
-                    pos.x -= 8.0f;
-                    field_0x23c.set(-4.0f, 0.0f, 0.0f);
-                    break;
-                case 2:
-                    pos.y += 8.0f;
-                    field_0x23c.set(0.0f, 4.0f, 0.0f);
-                    break;
-                case 3:
-                    pos.y -= 8.0f;
-                    field_0x23c.set(0.0f, -4.0f, 0.0f);
-                    break;
+                if (field_0x268 == 2) {
+                    scale = 2.0f;
+                    switch (field_0x98) {
+                    case 0:
+                        pos.x += 8.0f;
+                        field_0x23c.set(4.0f, 0.0f, 0.0f);
+                        break;
+                    case 1:
+                        pos.x -= 8.0f;
+                        field_0x23c.set(-4.0f, 0.0f, 0.0f);
+                        break;
+                    case 2:
+                        pos.y += 8.0f;
+                        field_0x23c.set(0.0f, 4.0f, 0.0f);
+                        break;
+                    case 3:
+                        pos.y -= 8.0f;
+                        field_0x23c.set(0.0f, -4.0f, 0.0f);
+                        break;
+                    }
                 }
-            }
 
-            if (field_0x264 != 5) {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19B, 0, 0, NULL, NULL, true, scale);
-                if (mEmitter230 != NULL) {
-                    JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter230->mGlobalRot);
-                }
-                mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19C, 0, 0, NULL, NULL, true, scale);
-                if (mEmitter234 != NULL) {
-                    JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter234->mGlobalRot);
+                if (field_0x264 != 5) {
+                    mEmitter230 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19B, 0, 0, NULL, NULL, true, scale);
+                    if (mEmitter230 != NULL) {
+                        JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter230->mGlobalRot);
+                    }
+                    mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x19C, 0, 0, NULL, NULL, true, scale);
+                    if (mEmitter234 != NULL) {
+                        JPAGetXYZRotateMtx(0, lbl_8046D388[field_0x98], 0, mEmitter234->mGlobalRot);
+                    }
                 }
             }
         }
