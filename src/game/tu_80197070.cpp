@@ -1769,7 +1769,7 @@ static inline void takeToken(cls_804A2944* self, ActorBase_804A5770* actor) {
     deleteEmitter(&self->mEmitters[1]);
 }
 
-// FIXME(shotgun): 92.19 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.65 %, missing/extra + reloc-name; behaviour near.
 void cls_804A2944::fn_80197EB0() {
     switch (mState) {
     case 0x46:
@@ -1904,7 +1904,7 @@ void cls_804A2944::fn_80197EB0() {
     }
 }
 
-// FIXME(shotgun): 94.26 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.74 %, scheduling+regalloc; behaviour clean.
 void cls_804A2944::fn_801979C4() {
     for (int i = 0; i < 13; i++) {
         setEmitterPos_8013CB44(mEmitters[i], &mPos, 0, 4, true);
@@ -2088,6 +2088,7 @@ void cls_804A2944::update() {
     }
 }
 
+// FIXME: 99.86 %, same-text; behaviour clean.
 void cls_804A2944::draw() {
     switch (field_0x90) {
     case 0: {
