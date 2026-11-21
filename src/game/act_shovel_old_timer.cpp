@@ -47,9 +47,7 @@ inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
     }
 }
 
-// FIXME: 99.24 %, operands + reloc-name; behaviour clean.
-// register allocation differs in the inlined findDigSpot; the literal references are lbl_
-// in the original and @NNN here (data split).
+// Stack slot order and volatile r4-r6 in the inlined findDigSpot still differ.
 void ShovelOldTimer_804AAB40::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -151,12 +149,13 @@ void ShovelOldTimer_804AAB40::draw() {
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
 // dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
 bool ShovelOldTimer_804AAB40::findDigSpot() {
-    f32 minX = field_0x230.i.x + 64.0f;
-    f32 minY = field_0x230.i.y + 32.0f;
-    f32 maxX = field_0x230.f.x - 32.0f;
-    f32 maxY = field_0x230.f.y - 32.0f;
-    f32 x = minX + 416.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    f32 y = minY + 320.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    JGeometry::TBox2f box = field_0x230;
+    box.i.x += 64.0f;
+    box.i.y += 32.0f;
+    box.f.x -= 32.0f;
+    box.f.y -= 32.0f;
+    f32 x = box.i.x + gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 416.0f;
+    f32 y = box.i.y + gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 320.0f;
     f32 z = 0.0f;
     f32 step = 16.0f;
     for (int j = 0; j < 20; j++) {
@@ -169,13 +168,13 @@ bool ShovelOldTimer_804AAB40::findDigSpot() {
                 return true;
             }
             x += step;
-            if (x >= maxX) {
-                x = minX;
+            if (x >= box.f.x) {
+                x = box.i.x;
             }
         }
         y += step;
-        if (y >= maxY) {
-            y = minY;
+        if (y >= box.f.y) {
+            y = box.i.y;
         }
     }
     return false;
