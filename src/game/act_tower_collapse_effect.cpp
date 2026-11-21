@@ -36,7 +36,8 @@ TowerCollapseEffect_8049CA40::~TowerCollapseEffect_8049CA40() {
     }
 }
 
-// FIXME: 99.66 %. The original's mode-1 dispatch has a second unconditional
+// FIXME: 99.66 %, missing/extra; behaviour clean.
+// The original's mode-1 dispatch has a second unconditional
 // `b` to the end after the state-0 test (0x3E8); ours has one.
 void TowerCollapseEffect_8049CA40::update() {
     switch (mMode) {
@@ -127,6 +128,7 @@ void TowerCollapseEffect_8049CA40::update() {
     }
 }
 
+// FIXME: 99.89 %, reloc-name; behaviour clean.
 void TowerCollapseEffect_8049CA40::draw() {
     switch (mMode) {
     case 0:
@@ -145,6 +147,7 @@ void TowerCollapseEffect_8049CA40::draw() {
     }
 }
 
+// FIXME: 98.53 %, operands; behaviour drift.
 // FIXME: string pool order (kowareyuka_*.bti before gareki.bti) and setRotScaleMtx float regalloc.
 void TowerCollapseEffect_8049CA40::fn_80103348() {
     SpriteParams_801F5AE0 params;
