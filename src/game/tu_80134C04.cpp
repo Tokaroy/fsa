@@ -1492,8 +1492,6 @@ static inline void playStageMusic(GameRoot_8049EF20* self) {
     }
 }
 
-// FIXME(shotgun): 97.56 %, missing/extra; behaviour clean.
-// 0x80135494
 void GameRoot_8049EF20::fn_80135494(s32 mode) {
     bool changed = false;
     if ((mode == 2 && field_0x4c != 2 && field_0x4c != 5) || (mode == 5 && field_0x4c != 2 && field_0x4c != 5) ||
