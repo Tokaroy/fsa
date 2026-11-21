@@ -289,7 +289,7 @@ inline void ForceGem_804AB6D8::tickTimer() {
 }
 
 // 0x8032C664.
-// FIXME(shotgun): 97.76 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.08 %, different; behaviour near.
 void ForceGem_804AB6D8::update() {
     field_0x29c = mPos;
     if (field_0x230 != 0x11 && field_0x230 != 0xF && field_0x230 != 0x10) {
@@ -568,7 +568,7 @@ void ForceGem_804AB6D8::update() {
 }
 
 // 0x8032BFB0.
-// FIXME(shotgun): 99.16 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.56 %, regalloc-only; behaviour clean.
 // literal table offsets, register order.
 void ForceGem_804AB6D8::draw() {
     s32 state = field_0x230;
