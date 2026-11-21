@@ -34,6 +34,54 @@ inline void OBJLift_804ACA00::showBreakEffect(s32 layer) {
     }
 }
 
+inline void OBJLift_804ACA00::checkPushDir(s32& dir) {
+    switch (field_0x258) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+        if (field_0x281 == 1 && field_0x26c >= 4) {
+            if (field_0x25c == 1 && !vfunc_0x34()) {
+                vfunc_0x30(0xFF, true);
+            }
+            startSound_801F0E34(0x30009, 0);
+            field_0x244 = 30;
+            field_0x289 = 1;
+            field_0x230 = 5;
+            dir = field_0x268;
+            return;
+        }
+        break;
+    case 5:
+        dir = fn_803506E0();
+        return;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        if (field_0x281 == 1 && field_0x280 == 1) {
+            if (field_0x25c == 1 && !vfunc_0x34()) {
+                vfunc_0x30(0xFF, true);
+            }
+            startSound_801F0E34(0x30009, 0);
+            field_0x230 = 1;
+            dir = field_0x268;
+            return;
+        }
+        break;
+    case 12:
+        dir = fn_80350530();
+        return;
+    }
+    dir = -1;
+}
+
 // Four strips along the lift's edges, then ten boxes by state (two per state from 16 on).
 static JGeometry::TBox2f lbl_8050ADF8[4] = {
     JGeometry::TBox2f(-31.0f, -31.0f, 31.0f, -17.0f),
@@ -681,7 +729,7 @@ void OBJLift_804ACA00::update() {
             field_0x248 = 10;
             field_0x274 = -1;
             field_0x268 = field_0x264;
-            if (JGeometry::TUtil<f32>::sqrt(square(mPos.x - mSpawnPos.x) + square(mPos.y - mSpawnPos.y)) > 48.0f) {
+            if (distanceXY(mPos, mSpawnPos) > 48.0f) {
                 mPos = mSpawnPos;
                 showBreakEffect(field_0x4);
                 startSound_801F0E34(0x30003, 0);
@@ -716,55 +764,7 @@ void OBJLift_804ACA00::update() {
         if (field_0x260 == 0) {
             dir = -1;
         } else {
-            switch (field_0x258) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-            case 20:
-                if (field_0x281 == 1 && field_0x26c >= 4) {
-                    if (field_0x25c == 1 && !vfunc_0x34()) {
-                        vfunc_0x30(0xFF, true);
-                    }
-                    startSound_801F0E34(0x30009, 0);
-                    field_0x244 = 30;
-                    field_0x289 = 1;
-                    field_0x230 = 5;
-                    dir = field_0x268;
-                } else {
-                    dir = -1;
-                }
-                break;
-            case 5:
-                dir = fn_803506E0();
-                break;
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                if (field_0x281 == 1 && field_0x280 == 1) {
-                    if (field_0x25c == 1 && !vfunc_0x34()) {
-                        vfunc_0x30(0xFF, true);
-                    }
-                    startSound_801F0E34(0x30009, 0);
-                    field_0x230 = 1;
-                    dir = field_0x268;
-                } else {
-                    dir = -1;
-                }
-                break;
-            case 12:
-                dir = fn_80350530();
-                break;
-            default:
-                dir = -1;
-                break;
-            }
+            checkPushDir(dir);
         }
         fn_8035001C(dir);
         if (field_0x268 != -1) {

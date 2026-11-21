@@ -19,6 +19,7 @@ public:
     // 0x803513C0: breaks the lift apart (effects and sound).
     void fn_803513C0();
     void showBreakEffect(s32 layer);
+    void checkPushDir(s32& dir);
     // 0x80351020: whether a player's hit point `player` (8 per player) lands inside the lift's box.
     bool fn_80351020(s32 player);
     // 0x8035001C: sets the push velocity for direction `dir`.
