@@ -1039,7 +1039,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     }
 }
 
-// FIXME(shotgun): 97.01 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.77 %, regalloc-only + reloc-name; behaviour clean.
 // update() step 0: flies along the current command (fn_80360914).
 void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
     s32 facing = field_0x274;
