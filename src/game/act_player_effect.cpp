@@ -318,29 +318,28 @@ static inline void drawShadow_802297FC(s32 layer, const JGeometry::TVec3f* pos, 
 }
 
 // 0x802297FC.
-// FIXME(shotgun): 95.23 %, missing/extra + reloc-name; behaviour drift.
 void PlayerEffect_804A6E20::draw() {
     SpriteParams_801F5AE0 params;
     switch ((field_0x90 >> 2) & 0x3F) {
     case 0:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 1:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, false, 0, 0);
         break;
     case 2:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 3:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 4:
     case 14:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 6:
@@ -349,23 +348,23 @@ void PlayerEffect_804A6E20::draw() {
     case 9:
         params.field_0x1c = 2;
         params.field_0x2d = 1;
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, &params);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, &params);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 10:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 11:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 12:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 13:
-        drawShadow_802297FC(field_0x4, &mPos, field_0x234, NULL);
+        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
         fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     }
