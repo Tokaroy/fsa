@@ -584,7 +584,7 @@ void cls_804B146C::fn_80425F24() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 97.84 %, regalloc-only + reloc-name; behaviour clean.
+// FIXME(shotgun): 97.86 %, regalloc-only; behaviour clean.
 void cls_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
