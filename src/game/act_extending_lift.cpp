@@ -46,7 +46,7 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
     return false;
 }
 
-// FIXME: 88.87%, missing/extra: ours has 2 fewer instrs (105 vs 107). The flags test loads 0x90 into r3 and reuses it; the original loads it into r0 for the test and reloads 0x90 (r31) for the oris.
+// FIXME: The flags test loads 0x90 into r3 and reuses it; the original loads it into r0 for the test and reloads 0x90(r31) for ori/oris.
 void ExtendingLift_804A78B0::init() {
     if (!((field_0x90 >> 7) & 0x1F)) {
         field_0x90 |= 0x80;
@@ -72,17 +72,12 @@ void ExtendingLift_804A78B0::init() {
     }
 
     if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
-        field_0x23c = 16.0f * (s32)((field_0x90 >> 7) & 0x1F);
-        field_0x238 = 0.0f;
+        field_0x238.set(0.0f, 16.0f * (s32)((field_0x90 >> 7) & 0x1F));
     } else {
-        field_0x238 = 16.0f * (s32)((field_0x90 >> 7) & 0x1F);
-        field_0x23c = 0.0f;
+        field_0x238.set(16.0f * (s32)((field_0x90 >> 7) & 0x1F), 0.0f);
     }
 
-    u16 sizeX = field_0x240->mSizeX;
-    u16 sizeY = field_0x240->mSizeY;
-    field_0x230 = field_0x238 / sizeX;
-    field_0x234 = field_0x23c / sizeY;
+    field_0x230.set(field_0x238.x / field_0x240->mSizeX, field_0x238.y / field_0x240->mSizeY);
     field_0x244 = 0;
 }
 
@@ -104,26 +99,26 @@ void ExtendingLift_804A78B0::update() {
 
     if (field_0x244) {
         if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
-            field_0x238 += 1.0f;
-            if (field_0x238 >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
-                field_0x238 = 16 * (s32)((field_0x90 >> 17) & 0x1F);
+            field_0x238.x += 1.0f;
+            if (field_0x238.x >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
+                field_0x238.x = 16 * (s32)((field_0x90 >> 17) & 0x1F);
             }
         } else {
-            field_0x23c += 1.0f;
-            if (field_0x23c >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
-                field_0x23c = 16 * (s32)((field_0x90 >> 17) & 0x1F);
+            field_0x238.y += 1.0f;
+            if (field_0x238.y >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
+                field_0x238.y = 16 * (s32)((field_0x90 >> 17) & 0x1F);
             }
         }
     } else {
         if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
-            field_0x238 -= 1.0f;
-            if (field_0x238 <= 0.0f) {
-                field_0x238 = 0.0f;
+            field_0x238.x -= 1.0f;
+            if (field_0x238.x <= 0.0f) {
+                field_0x238.x = 0.0f;
             }
         } else {
-            field_0x23c -= 1.0f;
-            if (field_0x23c <= 0.0f) {
-                field_0x23c = 0.0f;
+            field_0x238.y -= 1.0f;
+            if (field_0x238.y <= 0.0f) {
+                field_0x238.y = 0.0f;
             }
         }
     }
@@ -134,23 +129,20 @@ void ExtendingLift_804A78B0::update() {
 
     switch ((field_0x90 >> 12) & 0x1F) {
     case 0:
-        mBox.set(0.0f, 3.0f, field_0x238, field_0x23c - 3.0f);
+        mBox.set(0.0f, 3.0f, field_0x238.x, field_0x238.y - 3.0f);
         break;
     case 1:
-        mBox.set(-field_0x238, 3.0f, 0.0f, field_0x23c - 3.0f);
+        mBox.set(-field_0x238.x, 3.0f, 0.0f, field_0x238.y - 3.0f);
         break;
     case 2:
-        mBox.set(3.0f, 0.0f, field_0x238 - 3.0f, field_0x23c);
+        mBox.set(3.0f, 0.0f, field_0x238.x - 3.0f, field_0x238.y);
         break;
     case 3:
-        mBox.set(3.0f, -field_0x23c, field_0x238 - 3.0f, 0.0f);
+        mBox.set(3.0f, -field_0x238.y, field_0x238.x - 3.0f, 0.0f);
         break;
     }
 
-    u16 sizeX = field_0x240->mSizeX;
-    u16 sizeY = field_0x240->mSizeY;
-    field_0x230 = field_0x238 / sizeX;
-    field_0x234 = field_0x23c / sizeY;
+    field_0x230.set(field_0x238.x / field_0x240->mSizeX, field_0x238.y / field_0x240->mSizeY);
 
     JGeometry::TVec3f newCenter((mBox.i.x - mBox.f.x) * 0.5f + mBox.f.x,
                                 (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y,
@@ -175,27 +167,27 @@ void ExtendingLift_804A78B0::draw() {
     switch ((field_0x90 >> 12) & 0x1F) {
     case 0:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230),
+                   0.5f * (field_0x240->mSizeX * field_0x230.x),
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x234));
+                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
         break;
     case 1:
         PSMTXTrans(mtx,
-                   0.5f * (-(s32)field_0x240->mSizeX * field_0x230),
+                   0.5f * (-(s32)field_0x240->mSizeX * field_0x230.x),
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x234));
+                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
         break;
     case 2:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230),
+                   0.5f * (field_0x240->mSizeX * field_0x230.x),
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x234));
+                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
         break;
     case 3:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230),
+                   0.5f * (field_0x240->mSizeX * field_0x230.x),
                    0.0f,
-                   0.5f * (field_0x240->mSizeY * field_0x234));
+                   0.5f * (field_0x240->mSizeY * field_0x230.y));
         break;
     default:
         mtx[0][3] = 0.0f;
@@ -204,7 +196,7 @@ void ExtendingLift_804A78B0::draw() {
         break;
     }
 
-    setRotScaleMtxS16(mtx, 0, 0, 0, field_0x230, 1.0f, field_0x234);
+    setRotScaleMtxS16(mtx, 0, 0, 0, field_0x230.x, 1.0f, field_0x230.y);
 
     params.mMtx = mtx;
     params.field_0x21 = 1;
