@@ -152,16 +152,16 @@ void GamblingShop_804AAA70::update() {
             JGeometry::TVec3f dir;
             f32 dist;
             // The layer is on the left: that compare order is what the original emits.
-            if (player >= 0 && getPlayerLayer_8023DE58(player) == getField_0x4()) {
-                fn_801EE558(&dir, &dist, player + 1);
-            } else {
+            if (player < 0 || getPlayerLayer_8023DE58(player) != getField_0x4()) {
                 fn_801EE558(&dir, &dist, 0);
+            } else {
+                fn_801EE558(&dir, &dist, player + 1);
             }
             if (dist >= 80.0f) {
                 field_0x238 = 2;
             } else {
-                u16 angle = JMath::atanTable_.atan2_(-dir.x, -dir.y) *
-                            (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+                u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
+                                  (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                 if (angle < 0x2000 || angle >= 0xE000) {
                     field_0x238 = 3;
                 } else if (angle >= 0x2000 && angle < 0x6000) {
