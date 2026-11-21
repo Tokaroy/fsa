@@ -504,8 +504,9 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
         } else if (field_0x244 != 0) {
             total = 1;
         }
-        field_0x290->field_0x260[player] += hits;
-        field_0x290->field_0x268[player] += total;
+        WhackAMoleShop_8049C8EC* shop = field_0x290;
+        shop->field_0x260[player] += hits;
+        shop->field_0x268[player] += total;
     }
 }
 
