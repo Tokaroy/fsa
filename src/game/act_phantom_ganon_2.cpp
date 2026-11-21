@@ -350,9 +350,6 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
     }
 }
 
-// FIXME: 99.03 %, regalloc-only; behaviour clean.
-// Regalloc only: the target keeps this in r30 and the two layer reads in r29,
-// we use r29 for this and r30/r28 for the counter and the layer reads.
 u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     s32 player = fn_8022EA0C(field_0x94);
     if (player < 0) {
@@ -361,8 +358,9 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
     if (!(fn_8023F264(player) && getField_0x4() == getPlayerLayer_8023DE58(player) && !fn_80230188(player) &&
           !fn_80236B50(player) && lbl_8053AB78 != 1))
     {
+        s32 i;
         s32 pick = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (pick != player && fn_8023F264(pick) && getField_0x4() == getPlayerLayer_8023DE58(pick) &&
                 pick == fn_8022EA0C(pick) && !fn_80230188(pick) && !fn_80236B50(pick) &&
                 !fn_8022DCD8(pick))
@@ -373,7 +371,8 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
                 }
                 return field_0x94;
             }
-            pick = (pick + 1) & 3;
+            pick++;
+            pick &= 3;
         }
     }
     field_0x94 = player;
