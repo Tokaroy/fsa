@@ -169,18 +169,20 @@ void BgRewrite_804A7C98::fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u1
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
 }
 
-// FIXME(shotgun): 99.18 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.40 %, scheduling+regalloc; behaviour clean.
 bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
     bool result = true;
+    s32 serial;
+    ActorBase_804A5770* actor;
     if (field_0x24 >= 0x40 && field_0x24 <= 0x44) {
         if (field_0x24 == 0x41) {
             gBgRewrite_8053AC98->fn_802A3884(pos, 0, layer, 0x12);
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+                actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
                     JGeometry::TVec3f actorPos = actor->mPos;
                     JGeometry::TVec2f q(actorPos.x, actorPos.y);
@@ -195,8 +197,8 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         } else {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
         }
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x40, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x40, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
@@ -208,22 +210,22 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         } else {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x15);
         }
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x45, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x45, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
     } else if (field_0x24 == 0x4E) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x80, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x80, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
     } else if (field_0x24 == 0x4F) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x100, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x100, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
@@ -528,20 +530,21 @@ bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME(shotgun): 99.35 %, different; behaviour drift.
-// 3 opcodes differ (literal pool order)
+// Regalloc: inlined fn_802A3948 slot uses r29 instead of r28 in three cases.
+// FIXME: 99.83 %, regalloc-only; behaviour clean.
 void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x20);
-    u16 tile = field_0x24;
-    if (tile == 0x69 || tile == 0x68 || tile == 0x75 || (u16)(tile - 0x6A) <= 1 || tile == 0x82 || tile == 0x5F ||
-        (u16)(tile - 0x70) <= 3 || (u16)(tile - 0x40) <= 4 || tile == 0xE5) {
-        switch (tile) {
+    if (field_0x24 == 0x69 || field_0x24 == 0x68 || field_0x24 == 0x75 || field_0x24 == 0x6A || field_0x24 == 0x6B ||
+        field_0x24 == 0x82 || field_0x24 == 0x5F || field_0x24 == 0x70 || field_0x24 == 0x71 || field_0x24 == 0x72 ||
+        field_0x24 == 0x73 || field_0x24 == 0x40 || field_0x24 == 0x41 || field_0x24 == 0x42 || field_0x24 == 0x43 ||
+        field_0x24 == 0x44 || field_0x24 == 0xE5) {
+        switch (field_0x24) {
         case 0x72:
         case 0x73:
         case 0x82: {
-            if (tile == 0x72 || tile == 0x73) {
+            if (field_0x24 == 0x72 || field_0x24 == 0x73) {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, 0, 0x7C);
             } else {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, 0, 0x83);
@@ -758,14 +761,18 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     return true;
 }
 
-// FIXME(shotgun): 99.03 %, scheduling+regalloc; behaviour drift.
-// layer/kind registers and the p/q stack slots are swapped
+static inline void readTileAt(BgRewrite_804A7C98* self, const JGeometry::TVec3f* pos, s32 layer) {
+    JGeometry::TVec2f p(pos->x, pos->y);
+    self->field_0x20 = fn_80226BC4(&p, layer);
+    self->field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, self->field_0x20);
+}
+
+// FIXME(shotgun): 99.05 %, regalloc-only; behaviour drift.
+// layer/kind, slot and loop registers differ
 s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     ActorBase_804A5770* actor;
-    JGeometry::TVec2f p(pos->x, pos->y);
     s32 count;
-    field_0x20 = fn_80226BC4(&p, layer);
-    field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
+    readTileAt(this, pos, layer);
     s32 kind = -1;
     s32 code = 0x79;
     switch (field_0x24) {
