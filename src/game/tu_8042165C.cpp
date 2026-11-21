@@ -428,6 +428,11 @@ static inline void clearBit(u8& mask, s32 bit) {
     mask &= ~b;
 }
 
+static inline u8 testBit(u8 mask, s32 bit) {
+    u8 b = 1 << bit;
+    return (mask & b) != 0;
+}
+
 static inline void call_80421A34_forActivePlayers(cls_804B146C* self, bool force) {
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
@@ -875,11 +880,11 @@ void cls_804B146C::fn_80424148(s32 player, bool force) {
     }
     fn_8042165C();
     fn_8037EB4C();
-    if (lbl_8053AED0->field_0xdc & 0x10) {
-        lbl_8053AED0->field_0xdc &= ~(u8)(1 << player);
+    if ((lbl_8053AED0->field_0xdc >> 4) & 1) {
+        clearBit(lbl_8053AED0->field_0xdc, player);
     }
-    u8 bit = (u8)(1 << player);
-    if (!(field_0x25d & bit) || (lbl_8053AED0->field_0xdc & bit) ||
+    bool active = testBit(field_0x25d, player);
+    if (!active || (lbl_8053AED0->field_0xdc & (u8)(1 << player)) ||
         gGameRoot2_8053AB10->field_0x30->field_0x284 != 0 || gGameRoot_8053AAF8->field_0x85 != 0) {
         if (field_0x108[player] > 0.1f) {
             field_0x108[player] -= 0.1f;
