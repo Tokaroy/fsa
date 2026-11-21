@@ -940,6 +940,17 @@ void ConnectScreen_804B0F10::fn_803FB6F4() {
     stepCursorTimer(this);
 }
 
+static inline void slideOutOnly(ConnectScreen_804B0F10* self, int start, int duration, f32 dist, f32& out) {
+    if (self->field_0x240[0] > start) {
+        if (self->field_0x240[0] < start + duration) {
+            int t = self->field_0x240[0] - start;
+            out = dist * ((f32)(t * t) / (f32)(duration * duration));
+        } else {
+            out = dist;
+        }
+    }
+}
+
 // FIXME(shotgun): 96.80 %, missing/extra + reloc-name; behaviour near.
 void ConnectScreen_804B0F10::fn_803FAA88() {
     s32 others[2];
@@ -969,13 +980,7 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 8) {
-            field_0x114 = -100.0f * ((f32)(field_0x240[0] * field_0x240[0]) / 64.0f);
-        } else {
-            field_0x114 = -100.0f;
-        }
-    }
+    slideOutOnly(this, 0, 8, -100.0f, field_0x114);
     for (int i = 0; i < 2; i++) {
         if (field_0x240[0] > i * 5) {
             if (field_0x240[0] < i * 5 + 8) {
