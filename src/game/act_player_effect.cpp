@@ -14,35 +14,32 @@
 extern const f32 lbl_8046ACC8[37][2];
 
 // 0x8022A83C.
-// FIXME(shotgun): 96.87 %, different; behaviour drift.
+// r4/r5 swapped in inlined mRandom.get_ufloat_1().
 void PlayerEffect_804A6E20::init() {
-    u32 kind = (field_0x90 >> 2) & 0x3F;
-    if (kind != 5) {
-        if (kind == 1) {
+    if (getKind() != 5) {
+        if (getKind() == 1) {
             if (fn_8022F514(field_0x90 & 3)) {
                 mAlive = false;
                 return;
             }
-        } else if (kind != 6 && kind != 7 && kind != 8 && kind != 9 && field_0x4 < 8) {
+        } else if (getKind() != 6 && getKind() != 7 && getKind() != 8 && getKind() != 9 && field_0x4 < 8) {
             mAlive = false;
             return;
         }
     }
-    kind = (field_0x90 >> 2) & 0x3F;
-    if (kind == 3) {
+    if (getKind() == 3) {
         mPos.x += (f32)(s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) - 2.0f;
         mPos.y += (f32)(s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) - 5.0f;
-    } else if (kind == 4) {
+    } else if (getKind() == 4) {
         mPos.z += 16.0f;
-    } else if (kind == 0xE) {
+    } else if (getKind() == 0xE) {
         mPos.x -= 4.0f;
         mPos.z += 16.0f;
     }
     mLife = 0;
     field_0x230 = 0;
     field_0x234 = 0;
-    kind = (field_0x90 >> 2) & 0x3F;
-    switch (kind) {
+    switch (getKind()) {
     case 0:
         field_0x234 = 0x85;
         break;
