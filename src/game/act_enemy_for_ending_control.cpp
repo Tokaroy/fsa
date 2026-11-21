@@ -154,6 +154,7 @@ static inline void setCameraRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     }
 }
 
+// FIXME: 99.68 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only: i/serial, zeldaSerial/link
 void EnemyForEndingControl_804AD48C::fn_8035BE24() {
     gGameRoot_8053AAF8->fn_801365C8(0);
