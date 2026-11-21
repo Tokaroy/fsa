@@ -446,7 +446,7 @@ void cls_804B1920::fn_8043EDE8(s32 arg) {
     field_0xe4 = 30;
 }
 
-// FIXME(shotgun): 99.23 %, regalloc-only + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.99 %, reloc-name; behaviour drift.
 void cls_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, f32 y, f32 scale) {
     f32 px;
     f32 py;
