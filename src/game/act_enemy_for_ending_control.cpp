@@ -50,7 +50,6 @@ const EndingStep_804AD460* lbl_804AD460[11] = {
     lbl_80472600, lbl_80472648, lbl_80472680, lbl_804726B8, lbl_804726C8,
 };
 
-// FIXME(shotgun): 88.07 %, missing/extra
 void EnemyForEndingControl_804AD48C::init() {
     mPos.x = 1280.0f;
     mPos.y = 1781.0f;
@@ -64,10 +63,10 @@ void EnemyForEndingControl_804AD48C::init() {
     field_0x268 = 0;
     field_0x26c = 0;
     field_0x238 = 0;
-    for (s32 i = 0; i < 8; i++) {
+    // Original bug: loops to 20 despite mActors having 8 elements (overruns past 0x2A4 to 0x2C8).
+    for (u32 i = 0; i < 20; i++) {
         mActors[i] = -1;
     }
-    // FIXME(shotgun): the original loop runs to i < 20 (overrunning the 0x2A4 object to 0x2C8), omitted to avoid UB
     mEmitter298 = NULL;
     mEmitter29C = NULL;
     mEmitter2A0 = NULL;
