@@ -760,14 +760,14 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     return true;
 }
 
-// FIXME(shotgun): 99.03 %, scheduling+regalloc; behaviour drift.
-// layer/kind registers and the p/q stack slots are swapped
 static inline void readTileAt(BgRewrite_804A7C98* self, const JGeometry::TVec3f* pos, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     self->field_0x20 = fn_80226BC4(&p, layer);
     self->field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, self->field_0x20);
 }
 
+// FIXME(shotgun): 99.05 %, regalloc-only; behaviour drift.
+// layer/kind, slot and loop registers differ
 s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     ActorBase_804A5770* actor;
     s32 count;
