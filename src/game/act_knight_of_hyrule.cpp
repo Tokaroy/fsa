@@ -38,7 +38,8 @@ void KnightOfHyrule_804AABA8::init() {
     field_0x282 = 0xFF;
 }
 
-// FIXME: 99.73% (regalloc-only: r29/r30 swap for mActorEnd and the mActors[i] byte offset).
+// FIXME: 99.73 %, regalloc-only; behaviour clean.
+// (regalloc-only: r29/r30 swap for mActorEnd and the mActors[i] byte offset).
 void KnightOfHyrule_804AABA8::vfunc_0x10() {
     s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
@@ -72,6 +73,7 @@ void KnightOfHyrule_804AABA8::vfunc_0x10() {
     field_0x268.z = 0.0f;
 }
 
+// FIXME: 99.87 %, operands; behaviour near.
 // FIXME: fn_802303FC's 3rd arg is declared bool in Player.h (passes 1 instead of 0xFF); slot uses r29 instead of r30.
 void KnightOfHyrule_804AABA8::update() {
     JGeometry::TVec3f pos;
