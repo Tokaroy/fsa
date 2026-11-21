@@ -14,11 +14,13 @@
 
 // The TIMG resources by the spawn parameter (bits 17-18).
 const char* lbl_804AA330[4] = {"jen_blue.bti", "jen_green.bti", "jen_red.bti", "jen_purple.bti"};
-const char* lbl_804AA340[4] = {"jen_blue_tsume.bti", "jen_green_tsume.bti", "jen_red_tsume.bti", "jen_purple_tsume.bti"};
 
 // Emitter ids by the spawn parameter (bits 17-18): three each in the first two tables, five in the third.
 static const u16 lbl_8046F544[12] = {234, 235, 236, 237, 238, 239, 243, 244, 245, 240, 241, 242};
 static const u16 lbl_8046F55C[12] = {960, 961, 962, 963, 964, 965, 969, 970, 971, 966, 967, 968};
+
+const char* lbl_804AA340[4] = {"jen_blue_tsume.bti", "jen_green_tsume.bti", "jen_red_tsume.bti", "jen_purple_tsume.bti"};
+
 static const u16 lbl_8046F5C8[4][4] = {{2, 3, 4, 5}, {6, 7, 8, 9}, {14, 15, 16, 17}, {10, 11, 12, 13}};
 static const u16 lbl_8046F5E8[20] = {1206, 1207, 1208, 1209, 1210, 1211, 1212, 1213, 1214, 1215,
                                      1221, 1222, 1223, 1224, 1225, 1216, 1217, 1218, 1219, 1220};
@@ -74,7 +76,7 @@ void cls_804AA350::init() {
     field_0x11f = 1;
 }
 
-// FIXME(shotgun): 90.08 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
 void cls_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < count; i++) {
@@ -90,8 +92,7 @@ void cls_804AA350::vfunc_0x10() {
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_SLR4) {
-            field_0x260[found] = i;
-            found++;
+            field_0x260[found++] = i;
             fn_802EEA24(1);
             if (found >= 2) {
                 break;
@@ -162,7 +163,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
     }
 }
 
-// FIXME(shotgun): 97.52 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.45 %, missing/extra; behaviour drift.
 void cls_804AA350::update() {
     switch (field_0x24c) {
     case 0:
@@ -171,7 +172,7 @@ void cls_804AA350::update() {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 field_0x250 = 20;
                 field_0x24c++;
-                gAudioMgr_8053AF80->fn_80458FF0(0x10000D, false, 0);
+                gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
                 fn_8022ADE4();
             }
         }
@@ -220,8 +221,8 @@ void cls_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            s32 type = field_0x254;
             stopEmitter(mEmitter230);
+            s32 type = field_0x254;
             mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][0], 0, -1, NULL, NULL, true, 1.0f);
             mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][1], 0, -1, NULL, NULL, true, 1.0f);
             mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][2], 0, -1, NULL, NULL, true, 1.0f);
@@ -366,7 +367,12 @@ void cls_804AA350::update() {
     }
 }
 
-// FIXME(shotgun): 97.62 %, scheduling; behaviour clean.
+static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+    if (layer < 8) {
+        gGameRoot2_8053AB10->field_0x20->fn_802F745C(pos, res, params);
+    }
+}
+
 void cls_804AA350::draw() {
     if (field_0x2cc != NULL) {
         SpriteParams_801F5AE0 params;
@@ -375,10 +381,7 @@ void cls_804AA350::draw() {
         params.field_0x24 = 1;
         params.field_0x23 = 1;
         params.field_0x21 = 1;
-        if (field_0x4 >= 8) {
-            return;
-        }
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, field_0x2cc, &params);
+        drawSprite(field_0x4, &mPos, field_0x2cc, &params);
     }
 }
 
