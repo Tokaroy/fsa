@@ -150,9 +150,6 @@ void cls_801C0D70::fn_801C115C() {
 }
 
 // 0x801C0FEC
-// FIXME: 96.46. Only the scheduling of the loads after the normalisation differs: the original
-// loads the actor's x and the 90.0f constant, then multiplies d.x, and loads the actor's y
-// after that; ours loads the y first.
 bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const {
     s32 serial = field_0x50;
     bool found = false;
@@ -174,7 +171,8 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
                 } else {
                     d.normalize();
                     d.scale(90.0f);
-                    out->set(actor->mPos.x, actor->mPos.y);
+                    out->x = actor->mPos.x;
+                    out->y = actor->mPos.y;
                     out->add(d);
                 }
             }
