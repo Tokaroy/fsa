@@ -62,12 +62,12 @@ void cls_804A5F40::init() {
     }
 }
 
-// FIXME(shotgun): 95.05 %, missing/extra; behaviour clean.
 void cls_804A5F40::fn_8020C6E8() {
+    s32 i;
     s32 nearest = -1;
     if (mFlags & 0x2000) {
         f32 best = FLT_MAX;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (!fn_8023F264(i)) {
                 continue;
             }
@@ -77,13 +77,13 @@ void cls_804A5F40::fn_8020C6E8() {
             if (fn_8022F478(i)) {
                 continue;
             }
-            if (getPlayerLayer_8023DE58(i) != field_0x4) {
-                continue;
-            }
-            f32 dist = fn_801D0DA0(i, &mPos);
-            if (dist < best) {
-                best = dist;
-                nearest = i;
+            s32 layer = field_0x4;
+            if (getPlayerLayer_8023DE58(i) == layer) {
+                f32 dist = fn_801D0DA0(i, &mPos);
+                if (dist < best) {
+                    best = dist;
+                    nearest = i;
+                }
             }
         }
     }
