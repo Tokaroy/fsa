@@ -8,8 +8,6 @@
 #include "game/Unk_8045A080.h"
 #include "game/act/act_shovel_old_timer.h"
 
-// FIXME: 99.83 %, reloc-name; behaviour clean.
-// only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
 void ShovelOldTimer_804AAB40::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x230 = getGameView_802D6A9C()->mVisibleBox;
@@ -145,8 +143,6 @@ void ShovelOldTimer_804AAB40::update() {
     }
 }
 
-// FIXME: 99.83 %, reloc-name; behaviour clean.
-// only the .sdata2 literal symbol names differ (lbl_ vs @NNN, data split).
 void ShovelOldTimer_804AAB40::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x386, NULL, 0, 1.0f, 1.0f);
     fn_803075AC(mSerial, field_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
@@ -154,7 +150,7 @@ void ShovelOldTimer_804AAB40::draw() {
 
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
 // dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
-inline bool ShovelOldTimer_804AAB40::findDigSpot() {
+bool ShovelOldTimer_804AAB40::findDigSpot() {
     f32 minX = field_0x230.i.x + 64.0f;
     f32 minY = field_0x230.i.y + 32.0f;
     f32 maxX = field_0x230.f.x - 32.0f;
