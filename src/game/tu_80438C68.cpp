@@ -20,6 +20,7 @@ void fn_802B7CD8(ActorBase_804A5770* actor);
 extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
 
 // 0x80439C78
+// FIXME: 99.90 %, same-text; behaviour drift.
 cls_804B17A0::cls_804B17A0() {
     lbl_8053AEC8 = this;
     field_0x4 = new J2DScreen;
@@ -63,6 +64,7 @@ cls_804B17A0::cls_804B17A0() {
 }
 
 // 0x80439B28
+// FIXME: 98.10 %, regalloc-only; behaviour drift.
 cls_804B17A0::~cls_804B17A0() {
     delete field_0x4;
     field_0x4 = NULL;
@@ -344,7 +346,7 @@ void cls_804B17A0::fn_80438E10(u8 flag) {
     fn_80439AB0();
 }
 
-// FIXME(shotgun): 96.56 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.44 %, missing/extra; behaviour clean.
 // 0x80438C68
 void cls_804B17A0::fn_80438C68() {
     switch (field_0x58) {
