@@ -362,9 +362,8 @@ void Octorok_8049F208::update() {
     }
 }
 
-// FIXME: 92.33 % (scheduling+regalloc). The view->mVisibleBox copy and the pos TVec3f stores are
-// scheduled/allocated differently (0x1A8-0x210), and the (field_0x234 >> 3) & 1 / field_0x98 * 2 index
-// arithmetic swaps registers and operand order (0x26C-0x330).
+// FIXME: scheduling+regalloc in the field_0x98 * 4 + step and field_0x98 * 2 + ((field_0x234 >> 3) & 1)
+// index arithmetic (0x220-0x318).
 void Octorok_8049F208::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -395,7 +394,10 @@ void Octorok_8049F208::draw() {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f box;
         box = view->mVisibleBox;
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+        JGeometry::TVec3f pos;
+        pos.x = mPos.x;
+        pos.y = mPos.y;
+        pos.z = mPos.z;
         pos.x += box.i.x;
         pos.y += box.i.y;
         if (field_0x90 == 1) {
