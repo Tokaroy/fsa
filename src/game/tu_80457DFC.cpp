@@ -256,7 +256,7 @@ AudioMgr_8045A080::AudioMgr_8045A080() {
 }
 
 // 0x80459AE4
-// FIXME(shotgun): 95.84 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.78 %, reloc-name; behaviour clean.
 void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* initData, void* seqData) {
     JAU_JASInitializer jasInit;
     jasInit.mChannelPoolCount = lbl_8053A228;
@@ -369,7 +369,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
 }
 
 // 0x80459674
-// FIXME(shotgun): 98.19 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.38 %, missing/extra + reloc-name; behaviour drift.
 void AudioMgr_8045A080::fn_80459674() {
     if (field_0x6b != 0) {
         field_0x6b--;
@@ -651,6 +651,7 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 }
 
 // 0x80458880
+// FIXME: 99.93 %, reloc-name; behaviour clean.
 // FIXME: reloc-name only (.sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7 in fn_80459674).
 void AudioMgr_8045A080::fn_80458880(u32 id, s8 player) {
     if (player >= 4) {
