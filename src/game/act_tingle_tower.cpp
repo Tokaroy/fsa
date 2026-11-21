@@ -201,6 +201,7 @@ void cls_804AAD60::draw() {
     }
 }
 
+// FIXME: 99.94 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only (f1/f2 swapped in box check).
 void cls_804AAD60::fn_80315EE8() {
     updateFacing();
@@ -571,7 +572,6 @@ void cls_804AAD60::fn_80315080() {
     }
 }
 
-// FIXME(shotgun): 96.81 %, missing/extra; behaviour near.
 void cls_804AAD60::fn_80314B1C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
