@@ -869,6 +869,7 @@ static inline void pageSound(s32 window) {
 // window is done (bit of field_0xe7, after the countdown field_0xf0 of two frames). On the
 // last page a press (or option 0x20 / the processor's countdown) finishes it; otherwise a
 // press turns the page (state 2 / 7).
+// FIXME: 99.67 %, missing/extra; behaviour near.
 bool fn_803865B8(s32 player) {
     s32 window = windowIndex(player);
     if (lbl_8053AD78->field_0xe7 & (u8)(1 << windowIndex(window))) {
@@ -1379,7 +1380,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 96.55 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.76 %, scheduling+regalloc + reloc-name; behaviour clean.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
