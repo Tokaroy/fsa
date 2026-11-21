@@ -10,13 +10,17 @@
 #include "game/Player.h"
 #include "game/act/tu_800F7FCC.h"
 
-// Data this unit owns, not written as source yet (shotgun pass): the sprite
-// name tables and the position/slot tables in .rodata.
-extern const char* lbl_8049C5D0[];
+// Data this unit owns, not written as source yet (shotgun pass): the position/slot
+// tables in .rodata.
 extern const char lbl_80463A58[];
 extern const s16 lbl_80463800[];
 extern const s16 lbl_804638C0[];
 
+static const char* lbl_8049C5D0[] = {
+    "wart_eye1.bti",      "wart_eye2.bti",     "wart_eye3.bti",     "wart_eye4.bti",
+    "wart_eye_red1.bti",  "wart_eye_red2.bti", "wart_eye_red3.bti", "wart_eye_left.bti",
+    "wart_eye_right.bti", "wart_eye_down.bti", "wart_eye_up.bti",
+};
 static f32 lbl_8049C5FC[4][2] = {{1.4f, 1.4f}, {0.0f, 1.4f}, {-1.4f, 1.4f}, {1.4f, 1.4f}};
 static u8 lbl_8049C61C[] = {0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 0xFF, 0};
 static u8 lbl_8049C628[] = {3, 3, 3, 3, 2, 2, 5, 3, 3, 3, 0xFF, 0};
@@ -78,17 +82,34 @@ static inline void slotPos(cls_8049C718* parent, u32 idx, JGeometry::TVec3f& out
     s32 ring = slotRing(idx, step);
     u16 ang = parent->mAngle + idx * step + (ring << 12);
     f32 r = lbl_8049C634[ring];
-    f32 c = JMath::sincosTable_.cosShort((s16)ang);
-    f32 s = JMath::sincosTable_.sinShort((s16)ang);
-    parent->mSlot++;
+    f32 s = JMASinShort(ang);
+    f32 c = JMACosShort(ang);
     out.x = parent->mRadius * (r * s) + parent->mPos.x;
     out.y = parent->mRadius * (r * c) + parent->mPos.y;
     out.z = (f32)(ring * 13) + (10.0f + parent->mPos.z);
+    parent->mSlot++;
 }
 
 static inline JGeometry::TVec3f slotPosOf(cls_8049C718* parent, u32 idx) {
     JGeometry::TVec3f out;
     slotPos(parent, idx, out);
+    return out;
+}
+
+static inline JGeometry::TVec3f linePosOf(cls_8049C718* parent, s32 slot) {
+    f32 off;
+    s16 ang;
+    if (slot & 1) {
+        ang = parent->mAngleA;
+        off = 20.0f + (f32)(((slot >> 1) + 1) * 20);
+    } else {
+        ang = parent->mAngleB;
+        off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
+    }
+    JGeometry::TVec3f out(parent->mPos.x + off * JMASinShort(ang),
+                          parent->mPos.y + off * JMACosShort(ang),
+                          10.0f + parent->mPos.z);
+    parent->mSlot++;
     return out;
 }
 
@@ -305,19 +326,8 @@ void cls_8049C718::fn_800FC984() {
     fn_801F3D94(1);
 }
 
-// FIXME(shotgun): 98.70 %, different; behaviour clean.
 void cls_8049C718::fn_800FC4A8() {
-    bool swapped = false;
-    if (mSlot == 0) {
-        field_0xb0 = 4;
-        mAnimState = 1;
-        mTimer = 0;
-        mState = 8;
-        startSound_801F0E34(0x40005, 0);
-        mSignal = 1;
-        swapped = true;
-    }
-    if (swapped) {
+    if (trySwap(this)) {
         return;
     }
     if (mCooldown != 0) {
@@ -769,7 +779,6 @@ void cls_8049C718::fn_800FB070() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
 void cls_8049C718::update() {
     mBox2.set(-21.0f, -35.0f + mPos.z, 22.0f, -2.0f + mPos.z);
     if (vfunc_0x2C(0.0f, -20.0f, 50.0f)) {
@@ -949,7 +958,7 @@ s32 headingOf(f32 x, f32 y) {
     return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
 }
 
-// FIXME(shotgun): 99.87 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.96 %, scheduling+regalloc; behaviour drift.
 void cls_8049C718::fn_800FA6B0() {
     if (mAnimState != mAnimPrev) {
         mAnimPrev = mAnimState;
@@ -1022,10 +1031,6 @@ void cls_8049C718::fn_800FA6B0() {
     mAnimTime++;
 }
 
-// FIXME: 85.65 %, missing/extra + reloc-name; behaviour clean.
-// FIXME(shotgun): the original does its vector arithmetic with paired singles
-// through temporaries; this is the same arithmetic written plainly.
-// 
 void cls_8049C718::fn_800FA1A4() {
     if (!(mFlags & 8)) {
         return;
@@ -1037,34 +1042,38 @@ void cls_8049C718::fn_800FA1A4() {
     JGeometry::TVec3f d = posA;
     d.sub(posB);
     if (PSVECMag((Vec*)&d) < 20.0f) {
-        JGeometry::TVec3f t = a->field_0x3c;
-        a->field_0x3c = b->field_0x3c;
-        b->field_0x3c = t;
+        JGeometry::TVec3f tA = a->field_0x3c;
+        JGeometry::TVec3f tB = b->field_0x3c;
+        a->field_0x3c = tB;
+        b->field_0x3c = tA;
+        JGeometry::TVec3f off;
         JGeometry::TVec3f mid = posA;
-        mid += posB;
+        mid.add(posB);
         mid.scale(0.5f);
         d.normalize();
-        JGeometry::TVec3f off = d;
+        off.set(d);
         off.scale(10.0f);
-        a->mPos = mid + off;
-        off = d;
+        off.add(mid);
+        a->mPos = off;
+        off.set(d);
         off.scale(-10.0f);
-        b->mPos = mid + off;
+        off.add(mid);
+        b->mPos = off;
     }
     if (mSlot == 0) {
-        JGeometry::TVec3f v(mPos.x, mPos.y - 20.0f, mPos.z);
-        v.sub(posA);
-        if (PSVECMag((Vec*)&v) < 50.0f) {
-            v.normalize();
-            v.scale(-5.0f);
-            a->field_0x3c = v;
+        d.set(mPos.x, mPos.y - 20.0f, mPos.z);
+        d.sub(posA);
+        if (PSVECMag((Vec*)&d) < 50.0f) {
+            d.normalize();
+            d.scale(-5.0f);
+            a->field_0x3c = d;
         }
-        v = JGeometry::TVec3f(mPos.x, mPos.y - 20.0f, mPos.z);
-        v.sub(posB);
-        if (PSVECMag((Vec*)&v) < 50.0f) {
-            v.normalize();
-            v.scale(-5.0f);
-            b->field_0x3c = v;
+        d.set(mPos.x, mPos.y - 20.0f, mPos.z);
+        d.sub(posB);
+        if (PSVECMag((Vec*)&d) < 50.0f) {
+            d.normalize();
+            d.scale(-5.0f);
+            b->field_0x3c = d;
         }
     }
 }
@@ -1151,7 +1160,7 @@ void StoneArrghusChildPuff_8049C678::init() {
     }
 }
 
-// FIXME(shotgun): 69.30 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.16 %, missing/extra; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
     field_0x1a8 = true;
@@ -1159,33 +1168,20 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     JGeometry::TVec3f target;
     f32 speed;
     if (parent->mState == 3) {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.3f;
         mFlag249 = 1;
     } else if (parent->mState == 4) {
         s32 slot = parent->mSlot;
-        f32 off;
-        s16 ang;
-        if (slot & 1) {
-            ang = parent->mAngleA;
-            off = 20.0f + (f32)(((slot >> 1) + 1) * 20);
-        } else {
-            ang = parent->mAngleB;
-            off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
-        }
-        JGeometry::TVec3f pos(parent->mPos.x + off * JMASinShort(ang),
-                              parent->mPos.y + off * JMACosShort(ang),
-                              10.0f + parent->mPos.z);
-        parent->mSlot++;
-        target = pos;
+        target.set(linePosOf(parent, slot));
         speed = (0.36f + 0.001f * (f32)lbl_8049C3B8[8]) - (0.032f + 0.001f * (f32)lbl_8049C3B8[9]) * (f32)((slot >> 1) + 1);
         mFlag249 = 1;
     } else if (parent->mState == 1) {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.08f;
         mFlag249 = 1;
     } else {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.2f;
         mFlag249 = 0;
     }
@@ -1194,14 +1190,12 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
             fn_80238548(0, 0, &xy, 0x10);
         }
-        mPos.x += cut4(target.x - mPos.x) * speed;
-        mPos.y += cut4(target.y - mPos.y) * speed;
-        mPos.z += cut4(target.z - mPos.z) * speed;
+        moveToward(mPos, target, speed);
         fn_801F2B7C(2, -1, 1);
     }
 }
 
-// FIXME(shotgun): 88.36 %, missing/extra; behaviour near.
+// FIXME(shotgun): 84.23 %, missing/extra + reloc-name; behaviour near.
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
     cls_8049C718* parent = mParent;
