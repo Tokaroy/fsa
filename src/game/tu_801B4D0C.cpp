@@ -83,17 +83,18 @@ void cls_804A38D4::init() {
 }
 
 // 0x801B609C.
-// FIXME(shotgun): 92.68 %, different; behaviour near.
 cls_804A38D4::~cls_804A38D4() {
     for (s32 i = 0; i < 3; i++) {
         if (mEmitters294[i] != NULL) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitters294[i]);
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(mEmitters294[i]);
             mEmitters294[i] = NULL;
         }
     }
     for (s32 i = 0; i < 20; i++) {
         if (mEmitters2A0[i] != NULL) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitters2A0[i]);
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(mEmitters2A0[i]);
             mEmitters2A0[i] = NULL;
         }
     }
