@@ -140,31 +140,6 @@ void cls_80217F80::fn_8021798C() {
     setEmitterPos_8013CB44(mEmitters[1], &mOwner->mPos, 1, 1, true);
 }
 
-// FIXME: 90.63 %, missing/extra + reloc-name; behaviour clean.
-// Same as fn_8021775C: the original hoists the from.y and from.z
-// loads above the epsilon compare.
-void cls_80217F80::fn_80217874(f32 t) {
-    JGeometry::TVec3f pos = mOwner->mPos;
-    JGeometry::TVec3f from = mOwner->field_0x60c;
-    if (t < FLT_EPSILON) {
-        pos.x = from.x;
-    } else {
-        pos.x = (1.0f / t) * (from.x - pos.x) + pos.x;
-    }
-    if (t < FLT_EPSILON) {
-        pos.y = from.y;
-    } else {
-        pos.y = (1.0f / t) * (from.y - pos.y) + pos.y;
-    }
-    if (t < FLT_EPSILON) {
-        pos.z = from.z;
-    } else {
-        pos.z = (1.0f / t) * (from.z - pos.z) + pos.z;
-    }
-    setEmitterPos_8013CB44(mEmitters[2], &pos, 1, 1, true);
-    setEmitterPos_8013CB44(mEmitters[3], &pos, 1, 1, true);
-}
-
 static inline void approachStep(f32* dst, f32 target, f32 t) {
     if (t < FLT_EPSILON) {
         *dst = target;
@@ -177,6 +152,13 @@ static inline void approachVec(JGeometry::TVec3f* dst, JGeometry::TVec3f target,
     approachStep(&dst->x, target.x, t);
     approachStep(&dst->y, target.y, t);
     approachStep(&dst->z, target.z, t);
+}
+
+void cls_80217F80::fn_80217874(f32 t) {
+    JGeometry::TVec3f pos = mOwner->mPos;
+    approachVec(&pos, mOwner->field_0x60c, t);
+    setEmitterPos_8013CB44(mEmitters[2], &pos, 1, 1, true);
+    setEmitterPos_8013CB44(mEmitters[3], &pos, 1, 1, true);
 }
 
 void cls_80217F80::fn_8021775C(f32 t) {
