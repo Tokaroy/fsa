@@ -10,13 +10,17 @@
 #include "game/Player.h"
 #include "game/act/tu_800F7FCC.h"
 
-// Data this unit owns, not written as source yet (shotgun pass): the sprite
-// name tables and the position/slot tables in .rodata.
-extern const char* lbl_8049C5D0[];
+// Data this unit owns, not written as source yet (shotgun pass): the position/slot
+// tables in .rodata.
 extern const char lbl_80463A58[];
 extern const s16 lbl_80463800[];
 extern const s16 lbl_804638C0[];
 
+static const char* lbl_8049C5D0[] = {
+    "wart_eye1.bti",      "wart_eye2.bti",     "wart_eye3.bti",     "wart_eye4.bti",
+    "wart_eye_red1.bti",  "wart_eye_red2.bti", "wart_eye_red3.bti", "wart_eye_left.bti",
+    "wart_eye_right.bti", "wart_eye_down.bti", "wart_eye_up.bti",
+};
 static f32 lbl_8049C5FC[4][2] = {{1.4f, 1.4f}, {0.0f, 1.4f}, {-1.4f, 1.4f}, {1.4f, 1.4f}};
 static u8 lbl_8049C61C[] = {0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 0xFF, 0};
 static u8 lbl_8049C628[] = {3, 3, 3, 3, 2, 2, 5, 3, 3, 3, 0xFF, 0};
