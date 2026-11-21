@@ -12,7 +12,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
-// FIXME(shotgun): 99.98 %, scheduling; behaviour clean.
 void ZoraFishHerding_804A2E30::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
@@ -29,9 +28,7 @@ void ZoraFishHerding_804A2E30::init() {
     field_0x25c = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    field_0x3c.zero();
     field_0x264 = -1;
     field_0x268 = -1;
     field_0x250 = 0;
@@ -69,8 +66,6 @@ void ZoraFishHerding_804A2E30::init() {
 
 // Advances the fish animation: picks the sprite frame (field_0x254) of the
 // current mode and steps to the next mode when its loop ends.
-// The original has a dead cmpwi 4 / beqlr after the mode 5 test; not reproduced.
-// FIXME: 97.98 %, missing/extra; behaviour near.
 void ZoraFishHerding_804A2E30::fn_801A7C48() {
     if (field_0x234 != 0) {
         return;
@@ -84,9 +79,7 @@ void ZoraFishHerding_804A2E30::fn_801A7C48() {
         field_0x240 = field_0x240 & 7;
         if (field_0x240 >= 4) {
             if (field_0x250 == 5) {
-                field_0x250 = 4;
-                field_0x234 = 0;
-                field_0x240 = 0;
+                setAnimMode(4);
             }
         }
         break;

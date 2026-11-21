@@ -19,6 +19,13 @@ public:
     /* 0x20 */ virtual void draw();
     void fn_801A68DC();
     void fn_801A7C48();
+    void setAnimMode(s32 mode) {
+        if (field_0x250 != mode) {
+            field_0x250 = mode;
+            field_0x234 = 0;
+            field_0x240 = 0;
+        }
+    }
 
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234; // animation frames left (set to 8 / 15 by fn_801A7C48)
