@@ -499,7 +499,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
                 mPos.y = savedPos.y;
                 fn_801CE800();
             }
-        } else if (hit && floorLayer != 0 && !(mFlags & ENEMY_FLAG_LANDED) && !(mPos.z <= 0.0f) &&
+        } else if (hit && floorLayer != 0 && !(mFlags & ENEMY_FLAG_LANDED) && mPos.z <= 0.0f &&
                    __fabsf(mMapHitDir.y - -1.0f) < 0.001f && __fabsf(mPos.y - mPrevPos.y) < 0.001f) {
             mPos.z = 0.0f;
             field_0x3c.z = 0.0f;
