@@ -16,12 +16,20 @@
 #include "std/math.h"
 
 // Offsets of the four ghost positions from mPos (x, y pairs), .data at 0x804A0410.
-static const f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
-static const s32 lbl_804A0430[4] = {0, 1, 2, 1};
+static f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
+static s32 lbl_804A0430[4] = {0, 1, 2, 1};
 
-// FIXME(shotgun): table not written out (gate.py literal tripwire); 8 colour sets of three
-// RGBA colours (96 bytes), then the three texture names; extern-declared, size from symbols.txt.
-extern const JUtility::TColor lbl_804661E0[24];
+// 8 colour sets of three RGBA colours, .rodata at 0x804661E0.
+static const GXColor lbl_804661E0[8][3] = {
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0x1E}, {0x00, 0x00, 0x00, 0x00}},
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0x1E}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}},
+    {{0x96, 0x64, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x32, 0xC8, 0x64}, {0xFF, 0xC8, 0x96, 0x64}, {0xFF, 0x64, 0x00, 0x64}},
+    {{0xFF, 0x00, 0x00, 0xFF}, {0xFF, 0xFF, 0x00, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x96, 0xFF, 0xFF}, {0x00, 0x50, 0x96, 0xFF}, {0xFF, 0x64, 0x00, 0xFF}},
+    {{0x32, 0x96, 0xFF, 0xFF}, {0x00, 0x50, 0x96, 0xFF}, {0x00, 0x00, 0x00, 0xFF}},
+};
 
 // A flag of the ghost's attacks, .sbss at 0x8053AB58.
 s32 lbl_8053AB58;
@@ -36,7 +44,6 @@ cls_804A0440::~cls_804A0440() {
 }
 
 // 0x80163E80.
-// FIXME(shotgun): 80.68 %, missing/extra + reloc-name; behaviour near.
 void cls_804A0440::init() {
     field_0x94 = 0;
     mBox.set(-60.0f, -60.0f, 60.0f, 60.0f);
@@ -56,15 +63,15 @@ void cls_804A0440::init() {
     field_0x274 = 0.0f;
     field_0x278 = 0.05f;
     field_0x254 = 0;
-    field_0x294[8] = 0.0f;
-    field_0x294[7] = 0.0f;
-    field_0x294[6] = 0.0f;
+    field_0x294[5] = 0.0f;
+    field_0x294[4] = 0.0f;
+    field_0x294[3] = 0.0f;
     field_0x294[0] = mPos.x;
     field_0x294[1] = mPos.y;
     field_0x294[2] = mPos.z;
-    field_0x294[3] = mPos.x;
-    field_0x294[4] = mPos.y;
-    field_0x294[5] = mPos.z;
+    field_0x294[6] = mPos.x;
+    field_0x294[7] = mPos.y;
+    field_0x294[8] = mPos.z;
     field_0x260 = 0;
     field_0x288 = 0.0f;
     field_0x28c = 0.0f;
@@ -119,7 +126,7 @@ void cls_804A0440::init() {
 }
 
 // 0x80162628.
-// FIXME(shotgun): 95.12 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A0440::update() {
     mLife = 10000;
     f32 x0 = -30.0f;
@@ -556,7 +563,7 @@ void cls_804A0440::update() {
 }
 
 // 0x80162208.
-// FIXME(shotgun): 96.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.28 %, regalloc-only; behaviour clean.
 void cls_804A0440::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -579,19 +586,18 @@ void cls_804A0440::draw() {
         params.field_0x1d = -1;
     }
     if (field_0x188 == 0 && field_0xd8 > 0) {
-        s32 start = field_0xdc - 25;
-        if (field_0xd8 > start || field_0xdc < 25) {
+        s32 max = field_0xdc;
+        s32 start = max - 25;
+        if (field_0xd8 > start || max < 25) {
             s32 v;
-            if (field_0xdc < 25) {
-                v = field_0xd8 * 255 / field_0xdc;
+            if (max < 25) {
+                v = field_0xd8 * 255 / max;
             } else {
                 v = (field_0xd8 - start) * 255 / 25;
             }
             if (field_0xf8 == 2) {
                 v = (s32)(v - 6.0f * mPos.z);
-                if (v < 0) {
-                    v = 0;
-                }
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 params.field_0x14.r += v;
@@ -618,13 +624,12 @@ void cls_804A0440::draw() {
 // Not auto-inlined: update calls fn_80161F98 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x80161F98.
-// FIXME(shotgun): 72.26 %, missing/extra; behaviour drift.
 void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
     if (field_0x2ec != set) {
         if (field_0x2ec < 0) {
-            for (s32 i = 0; i < 3; i++) {
-                field_0x2f4[i] = lbl_804661E0[set * 3 + i];
-            }
+            field_0x2f4[0].set(lbl_804661E0[set][0]);
+            field_0x2f4[1].set(lbl_804661E0[set][1]);
+            field_0x2f4[2].set(lbl_804661E0[set][2]);
         }
         field_0x2ec = set;
         if (field_0x2f0 < 0) {
@@ -635,11 +640,10 @@ void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
     } else if (field_0x2f0 > 0) {
         f32 weight = 1.0f / field_0x2f0;
         for (s32 i = 0; i < 3; i++) {
-            JUtility::TColor& c = field_0x2f4[i];
-            c.r = (u8)((f32)c.r * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].r);
-            c.g = (u8)((f32)c.g * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].g);
-            c.b = (u8)((f32)c.b * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].b);
-            c.a = (u8)((f32)c.a * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec * 3 + i].a);
+            field_0x2f4[i].r = (u8)((f32)field_0x2f4[i].r * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].r);
+            field_0x2f4[i].g = (u8)((f32)field_0x2f4[i].g * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].g);
+            field_0x2f4[i].b = (u8)((f32)field_0x2f4[i].b * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].b);
+            field_0x2f4[i].a = (u8)((f32)field_0x2f4[i].a * (1.0f - weight) + weight * (f32)lbl_804661E0[field_0x2ec][i].a);
         }
         field_0x2f0--;
     }
@@ -657,7 +661,7 @@ void cls_804A0440::vfunc_0x24() {
 }
 
 // 0x801618D0.
-// FIXME(shotgun): 99.96 %, operands; behaviour drift.
+// FIXME(shotgun): 99.96 %, same-text; behaviour near.
 // (the texture names sit after the extern colour table: +0x20 here, +0x60 in the original)
 void cls_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
     JUTTexture tex0(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_sirokuro.bti")), 0);
