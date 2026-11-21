@@ -6,6 +6,7 @@
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/JFramework/JFWDisplay.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "game/act/tu_80441318.h"
 #include "game/GameGlobals.h"
@@ -406,8 +407,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     } else {
         field_0x50 = NULL;
     }
-    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
-                                   (s32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
+    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, JFWDisplay::getManager()->getEfbWidth(),
+                                   JFWDisplay::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
     field_0x4 = new J2DScreen();
     field_0x4->setPriority("main_adv.blo", 0x1100000, lbl_80529DEC.field_0x4c);
     for (s32 i = 0; i < 4; i++) {
