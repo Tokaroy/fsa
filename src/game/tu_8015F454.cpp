@@ -66,7 +66,6 @@ void cls_804A03A8::fn_801601E0() {
     field_0x28c = 0.0f;
 }
 
-// FIXME(shotgun): 98.61 %, missing/extra + reloc-name; behaviour clean.
 // 0x8016005C
 void cls_804A03A8::fn_8016005C() {
     for (s32 i = 0; i < 0x20; i++) {
@@ -79,8 +78,7 @@ void cls_804A03A8::fn_8016005C() {
         f32 value = old + field_0x28c;
         field_0x288 = value >= 1.0f ? 1.0f : value;
     } else {
-        f32 value = old - field_0x28c;
-        field_0x288 = value >= 0.0f ? value : 0.0f;
+        field_0x288 = (old - field_0x28c >= 0.0f) ? (old - field_0x28c) : 0.0f;
     }
     field_0x284 = 0;
     if (field_0x288 > 0.0f && old == 0.0f) {
