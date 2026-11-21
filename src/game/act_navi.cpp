@@ -249,7 +249,7 @@ void cls_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 96.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
     s32 p;
     switch (newState) {
