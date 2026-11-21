@@ -329,7 +329,7 @@ u16 MessageWindow_804AF490::fn_80390C6C() {
     return field_0x26;
 }
 
-s32 MessageWindow_804AF490::fn_80390C38() {
+u32 MessageWindow_804AF490::fn_80390C38() {
     if (field_0x24 == 5) {
         return field_0x4c->field_0x148;
     }

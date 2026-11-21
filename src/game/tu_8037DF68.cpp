@@ -864,12 +864,12 @@ static inline void pageSound(s32 window) {
     }
 }
 
-// FIXME(shotgun): 99.51 %, missing/extra; behaviour near.
 // (the field_0xe7 bit test is materialised as a bool in the original)
 // Steps the player's window while it shows a page (state 5 / 8): returns true once the
 // window is done (bit of field_0xe7, after the countdown field_0xf0 of two frames). On the
 // last page a press (or option 0x20 / the processor's countdown) finishes it; otherwise a
 // press turns the page (state 2 / 7).
+// FIXME: 99.67 %, missing/extra; behaviour near.
 bool fn_803865B8(s32 player) {
     s32 window = windowIndex(player);
     if (lbl_8053AD78->field_0xe7 & (u8)(1 << windowIndex(window))) {
@@ -1380,7 +1380,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
         out[len] = (c);                      \
     }
 
-// FIXME(shotgun): 96.55 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 96.76 %, scheduling+regalloc + reloc-name; behaviour clean.
 // The text of message msg for the box, line by line, each line centred in `width` (the widths are
 // scaled by `scale`); `a` is the player number the 0x1A size 3 commands write and `b` a number of up to
 // four digits. Returns the number of lines.
@@ -1388,7 +1388,7 @@ const char* fn_80383E2C(u32 index, u8* out) {
 // second byte separately) and the order of the last line's terminator store.
 s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
-    const char* text = &((const char*)inf1 + 8)[inf1->size + inf1->entries[msg].textOffset];
+    const char* text = (const char*)inf1 + inf1->size + 8 + inf1->entries[msg].textOffset;
     char line[100];
     char prefix[16];
     s32 number = b;
@@ -1408,7 +1408,7 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
         if (text[pos] == '\n') {
             line[len] = text[pos];
             line[len + 1] = 0;
-            s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+            s32 pad = (s32)((width - cur * scale) / 2.0f + 0.5f);
             for (s32 i = 0; i < 2; i++) {
                 if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
                     lbl_8053AD78->field_0x5c[i] += (f32)pad;
@@ -1460,18 +1460,18 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
                     s32 div = 1000;
                     bool started = false;
                     for (s32 i = 0; i < 4; i++) {
-                        if (number >= div) {
+                        if (b >= div) {
                             started = true;
                         }
                         if (started || div == 1) {
-                            s32 digit = number / div + '0';
+                            s32 digit = b / div + '0';
                             line[len++] = digit;
                             cur += lbl_8053AD78->mFont->JUTFont::getWidth(digit);
                         }
-                        number -= number / div * div;
+                        b %= div;
                         div /= 10;
                     }
-                    cur += fn_8037F580(p[5], b, line, &len, 1.0f);
+                    cur += fn_8037F580(p[5], number, line, &len, 1.0f);
                 }
             }
             pos += p[1];
@@ -1481,17 +1481,17 @@ s32 fn_803837A4(char* out, u32 msg, f32 width, s32 a, s32 b, f32 scale) {
             len++;
             pos++;
             if (lbl_8053AD78->mFont->isLeadByte(code)) {
-                line[len] = text[pos];
                 code <<= 8;
+                line[len] = text[pos];
                 code |= text[pos] & 0xFF;
-                len++;
                 pos++;
+                len++;
             }
             cur += lbl_8053AD78->mFont->JUTFont::getWidth(code);
         }
     }
     line[len] = text[pos];
-    s32 pad = (s32)((width - cur * scale) * 0.5f + 0.5f);
+    s32 pad = (s32)((width - cur * scale) / 2.0f + 0.5f);
     for (s32 i = 0; i < 2; i++) {
         if (lbl_8053AD78->field_0x5c[i + 2] == (f32)(lines - 1)) {
             lbl_8053AD78->field_0x5c[i] += (f32)pad;
