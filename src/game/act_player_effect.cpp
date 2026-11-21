@@ -88,7 +88,6 @@ void PlayerEffect_804A6E20::init() {
 
 // 0x80229F1C.
 void PlayerEffect_804A6E20::update() {
-    const f32 (*table)[2] = lbl_8046ACC8;
     field_0x230++;
     switch (getKind()) {
     case 0:
@@ -159,27 +158,24 @@ void PlayerEffect_804A6E20::update() {
         break;
     case 5:
         if (field_0x230 == 1) {
-            const f32 (*p)[2] = table;
-            for (s32 i = 0; i < 9; i++, p++) {
+            for (s32 i = 0; i < 9; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += (*p)[0];
-                pos.y += (*p)[1];
+                pos.x += lbl_8046ACC8[0 + i][0];
+                pos.y += lbl_8046ACC8[0 + i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
         } else if (field_0x230 == 11) {
-            const f32 (*p)[2] = table + 9;
-            for (s32 i = 0; i < 12; i++, p++) {
+            for (s32 i = 0; i < 12; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += (*p)[0];
-                pos.y += (*p)[1];
+                pos.x += lbl_8046ACC8[9 + i][0];
+                pos.y += lbl_8046ACC8[9 + i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
         } else if (field_0x230 == 21) {
-            const f32 (*p)[2] = table + 21;
-            for (s32 i = 0; i < 16; i++, p++) {
+            for (s32 i = 0; i < 16; i++) {
                 JGeometry::TVec3f pos(mPos);
-                pos.x += (*p)[0];
-                pos.y += (*p)[1];
+                pos.x += lbl_8046ACC8[21 + i][0];
+                pos.y += lbl_8046ACC8[21 + i][1];
                 gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
             }
             mAlive = false;
