@@ -296,10 +296,14 @@ bool cls_8049D020::fn_8010C294(s32 state) {
     case 2: {
         field_0x248 = 0;
         field_0x24c = 0;
-        u16 outAngle = 0;
-        f32 outDist = 0.0f;
-        s32 outPlayer = 0;
-        s32 outDir = 0;
+        u16 outAngle;
+        f32 outDist;
+        s32 outPlayer;
+        s32 outDir;
+        outAngle = 0;
+        outDir = 0;
+        outPlayer = 0;
+        outDist = 0.0f;
         fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, field_0x23c, 2);
         field_0x230 = outAngle;
         break;
@@ -334,7 +338,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
     case 8:
         field_0x23c = field_0xc8;
         field_0x264 = 0.0f;
-        field_0x3c.zero();
+        field_0x3c.set(0.0f, 0.0f, 0.0f);
         break;
     case 10:
         field_0x3c.x *= -0.1f;
@@ -359,13 +363,14 @@ bool cls_8049D020::fn_8010C294(s32 state) {
         break;
     }
     case 13:
-        field_0x3c.zero();
+        field_0x3c.set(0.0f, 0.0f, 0.0f);
         mPos.z = 0.0f;
         switch (field_0x234) {
         case 1:
             fn_801F0D20(3);
-            getActorManager_801F856C()->spawnActor_801F9484('KEY0', field_0x4, &mPos, 0x6000, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('KEY0', field_0x4, &mPos, 0x60000000, -1, -1);
             break;
+        case 0:
         default: {
             dropRupee();
             break;
