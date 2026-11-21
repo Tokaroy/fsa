@@ -190,10 +190,18 @@ void Icicle_8049CFC8::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 98.63 %, scheduling+regalloc; behaviour clean.
-// Same instructions except the order of the field_0x54.y and
-// field_0x54.x loads (the original loads y first). A read-once local for y
-// matches the order, but only as a trick.
+static inline void setScaleMtx(Mtx m, f32 sx, f32 sy, f32 sz) {
+    m[0][0] = sx;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = sy;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = sz;
+}
+
 void Icicle_8049CFC8::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -202,15 +210,7 @@ void Icicle_8049CFC8::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.z);
         params.mMtx = mtx;
     }
     if (field_0x54.isZero()) {
