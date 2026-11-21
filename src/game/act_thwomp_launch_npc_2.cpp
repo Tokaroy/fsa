@@ -79,42 +79,32 @@ struct NPCLaunchSpriteInfo {
     s32 baseSpriteId;
 };
 
-struct NPCLaunchTable {
-    NPCLaunchAnimInfo animInfo[11];
-    NPCLaunchSpriteInfo spriteInfo[11];
-    char enemyBothSob[20];
-    char enemyGcSob[20];
+static const NPCLaunchAnimInfo lbl_80472390[11] = {
+    { lbl_804ACE88, lbl_804ACE98, lbl_804ACDC8, lbl_804ACE48 },
+    { lbl_804ABB40, lbl_804ABB50, lbl_804ACDC8, lbl_804ACE48 },
+    { lbl_804ABB40, lbl_804ABB50, lbl_804ACDC8, lbl_804ACE48 },
+    { lbl_804ACEB8, lbl_804ACEB8, lbl_804ACDC8, lbl_804ACE08 },
+    { lbl_804ACEA8, lbl_804ACEB8, lbl_804ACDC8, lbl_804ACE08 },
+    { lbl_804ACEC8, lbl_804ACED8, lbl_804ACEE8, lbl_804ACF28 },
+    { lbl_804ABB40, lbl_804ABB50, lbl_804ACF88, lbl_804ACFC8 },
+    { lbl_804ACF68, lbl_804ACF78, lbl_804ACF88, lbl_804ACFC8 },
+    { lbl_804AD008, lbl_804AD018, lbl_804AD028, lbl_804AD068 },
+    { lbl_804AD0A8, lbl_804AD0B8, lbl_804AD0C8, lbl_804AD108 },
+    { lbl_804ACEA8, lbl_804ACEB8, lbl_804AD148, lbl_804AD188 },
 };
 
-static const NPCLaunchTable lbl_80472390 = {
-    {
-        { lbl_804ACE88, lbl_804ACE98, lbl_804ACDC8, lbl_804ACE48 },
-        { lbl_804ABB40, lbl_804ABB50, lbl_804ACDC8, lbl_804ACE48 },
-        { lbl_804ABB40, lbl_804ABB50, lbl_804ACDC8, lbl_804ACE48 },
-        { lbl_804ACEB8, lbl_804ACEB8, lbl_804ACDC8, lbl_804ACE08 },
-        { lbl_804ACEA8, lbl_804ACEB8, lbl_804ACDC8, lbl_804ACE08 },
-        { lbl_804ACEC8, lbl_804ACED8, lbl_804ACEE8, lbl_804ACF28 },
-        { lbl_804ABB40, lbl_804ABB50, lbl_804ACF88, lbl_804ACFC8 },
-        { lbl_804ACF68, lbl_804ACF78, lbl_804ACF88, lbl_804ACFC8 },
-        { lbl_804AD008, lbl_804AD018, lbl_804AD028, lbl_804AD068 },
-        { lbl_804AD0A8, lbl_804AD0B8, lbl_804AD0C8, lbl_804AD108 },
-        { lbl_804ACEA8, lbl_804ACEB8, lbl_804AD148, lbl_804AD188 },
-    },
-    {
-        { 0, 0x516 },
-        { 0, 0x4E2 },
-        { 0, 0x4F0 },
-        { 0, 0x4FE },
-        { 0, 0x50A },
-        { 1, 0x13A },
-        { 0, 0x540 },
-        { 0, 0x537 },
-        { 0, 0x53B },
-        { 1, 0x14C },
-        { 0, 0x530 },
-    },
-    "enemy_both_sob.bin",
-    "enemy_gc_sob.bin"
+static const NPCLaunchSpriteInfo lbl_80472440[11] = {
+    { 0, 0x516 },
+    { 0, 0x4E2 },
+    { 0, 0x4F0 },
+    { 0, 0x4FE },
+    { 0, 0x50A },
+    { 1, 0x13A },
+    { 0, 0x540 },
+    { 0, 0x537 },
+    { 0, 0x53B },
+    { 1, 0x14C },
+    { 0, 0x530 },
 };
 
 // FIXME: 94.43 %, scheduling+regalloc + reloc-name; behaviour clean.
@@ -171,20 +161,26 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
     field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
 
-    field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays0[0];
+    field_0x234 = lbl_80472390[field_0x250].animDelays0[0];
     field_0x194 = 1;
 }
 
-// FIXME: 96.05 %, different; behaviour near.
-// Stack frame size (0x80 vs 0x70) and float temporary layout in inlined launch(), plus switch dispatch ordering in updateAnim().
+// Scheduling of lwz r5/r6 vs psq_l/lfs around fn_8038C678 by-value TVec3f copy.
+// FIXME: 98.06 %, scheduling; behaviour clean.
 void NPCLaunchedByThwomp2_804AD1C8::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x -= 2.0f;
     box.f.x += 2.0f;
     if (field_0x254 == 1 && (field_0x230 == 0 || field_0x230 == 4 || field_0x230 == 1)) {
-        box.addPos(field_0x26c.x, field_0x26c.y);
+        box.i.x += field_0x26c.x;
+        box.i.y += field_0x26c.y;
+        box.f.x += field_0x26c.x;
+        box.f.y += field_0x26c.y;
     } else {
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
     }
 
     if (field_0x230 != 2) {
@@ -197,6 +193,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
             launch();
+            field_0x230 = 3;
             break;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, 1, 0);
@@ -242,7 +239,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
             field_0x240 = field_0x23c;
             field_0x230 = 5;
             field_0x238 = 0;
-            field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays1[0];
+            field_0x234 = lbl_80472390[field_0x250].animDelays1[0];
         }
         break;
 
@@ -261,7 +258,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
             field_0x240 = field_0x23c;
             field_0x230 = 5;
             field_0x238 = 0;
-            field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays1[0];
+            field_0x234 = lbl_80472390[field_0x250].animDelays1[0];
         }
         break;
 
@@ -269,14 +266,15 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
         if (field_0x268 == 0 && fn_8023A30C()) {
             launch();
             field_0x240 = 0;
+            field_0x230 = 3;
             field_0x238 = 0;
-            field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays1[0];
+            field_0x234 = lbl_80472390[field_0x250].animDelays1[0];
         } else if (field_0x240 <= 0 || (mPos.x == mSpawnPos.x && mPos.y == mSpawnPos.y)) {
             mPos = mSpawnPos;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
             field_0x230 = 0;
             field_0x238 = 0;
-            field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays0[0];
+            field_0x234 = lbl_80472390[field_0x250].animDelays0[0];
         }
         break;
 
@@ -311,23 +309,24 @@ void NPCLaunchedByThwomp2_804AD1C8::launch() {
         4.0f
     );
     field_0x260 = 0.2f;
-    field_0x230 = 3;
 }
 
-// FIXME(shotgun): 74.78 %, different; behaviour drift.
+// FIXME: 99.37 %, same-text; behaviour clean.
 void NPCLaunchedByThwomp2_804AD1C8::draw() {
-    const char* name = lbl_80472390.enemyGcSob;
     if (field_0x230 == 2) {
         return;
     }
-    if (lbl_80472390.spriteInfo[field_0x250].sobType == 1) {
-        name = lbl_80472390.enemyBothSob;
+    const char* name;
+    if (lbl_80472440[field_0x250].sobType == 1) {
+        name = "enemy_both_sob.bin";
+    } else {
+        name = "enemy_gc_sob.bin";
     }
     s32 frame;
     if (field_0x230 == 0 || field_0x230 == 3 || field_0x230 == 4 || field_0x230 == 1) {
-        frame = lbl_80472390.spriteInfo[field_0x250].baseSpriteId + lbl_80472390.animInfo[field_0x250].spriteFrames0[field_0x248][field_0x238];
+        frame = lbl_80472440[field_0x250].baseSpriteId + lbl_80472390[field_0x250].spriteFrames0[field_0x248][field_0x238];
     } else {
-        frame = lbl_80472390.spriteInfo[field_0x250].baseSpriteId + lbl_80472390.animInfo[field_0x250].spriteFrames1[field_0x248][field_0x238];
+        frame = lbl_80472440[field_0x250].baseSpriteId + lbl_80472390[field_0x250].spriteFrames1[field_0x248][field_0x238];
     }
     drawSprite_801F06F0(name, frame, NULL, 0, 1.0f, 1.0f);
     if (field_0x250 == 5) {
@@ -414,12 +413,17 @@ inline void NPCLaunchedByThwomp2_804AD1C8::updateAnim() {
         case 0:
         case 1:
         case 2:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
             if (field_0x230 == 0 || field_0x230 == 1 || field_0x230 == 3 || field_0x230 == 4) {
                 field_0x238 &= 1;
-                field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays0[field_0x238];
+                field_0x234 = lbl_80472390[field_0x250].animDelays0[field_0x238];
             } else if (field_0x230 == 5) {
                 field_0x238 &= 3;
-                field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays1[field_0x238];
+                field_0x234 = lbl_80472390[field_0x250].animDelays1[field_0x238];
             }
             break;
         case 3:
@@ -427,10 +431,10 @@ inline void NPCLaunchedByThwomp2_804AD1C8::updateAnim() {
         case 10:
             if (field_0x230 == 0 || field_0x230 == 1 || field_0x230 == 3 || field_0x230 == 4) {
                 field_0x238 &= 1;
-                field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays0[field_0x238];
+                field_0x234 = lbl_80472390[field_0x250].animDelays0[field_0x238];
             } else if (field_0x230 == 5) {
                 field_0x238 &= 1;
-                field_0x234 = lbl_80472390.animInfo[field_0x250].animDelays1[field_0x238];
+                field_0x234 = lbl_80472390[field_0x250].animDelays1[field_0x238];
             }
             break;
         }
