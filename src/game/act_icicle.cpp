@@ -268,11 +268,9 @@ bool Icicle_8049CFC8::fn_8010B40C(s32 state) {
 // Not auto-inlined: update calls fn_8010B284 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 97.59 %, scheduling+regalloc; behaviour clean.
 bool Icicle_8049CFC8::fn_8010B284() {
     JGeometry::TVec3f playerPos;
     JGeometry::TVec3f probe = mPos;
-    bool blocked = false;
     for (s32 i = 0; i < 4; i++) {
         playerPos = *getPlayerPos_8023E724(i);
         if (field_0x4 == 8 && getPlayerLayer_8023DE58(i) == 0) {
@@ -282,7 +280,9 @@ bool Icicle_8049CFC8::fn_8010B284() {
             playerPos.x > mPos.x + 40.0f) {
             continue;
         }
-        for (s32 j = 1; j <= 24; j++) {
+        s32 j;
+        bool blocked = false;
+        for (j = 1; j <= 24; j++) {
             probe.y = mPos.y + 16.0f * j;
             if (probe.y >= playerPos.y) {
                 break;
