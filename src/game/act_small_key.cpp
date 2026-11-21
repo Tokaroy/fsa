@@ -632,7 +632,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 }
 
 // 0x802C2C30.
-// FIXME(shotgun): 93.52 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.73 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2C30() {
     JGeometry::TVec3f wall;
     fn_802C24A8();
