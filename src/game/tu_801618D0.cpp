@@ -17,7 +17,7 @@
 
 // Offsets of the four ghost positions from mPos (x, y pairs), .data at 0x804A0410.
 static f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
-static const s32 lbl_804A0430[4] = {0, 1, 2, 1};
+static s32 lbl_804A0430[4] = {0, 1, 2, 1};
 
 // 8 colour sets of three RGBA colours, .rodata at 0x804661E0.
 static const GXColor lbl_804661E0[8][3] = {
