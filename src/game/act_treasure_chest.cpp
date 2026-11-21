@@ -81,11 +81,9 @@ void TreasureChest_804AA178::update() {
         mBox.f.x = 6.0f;
         mBox.f.y = 5.0f;
     }
-    {
-        JGeometry::TBox2f box(mBox);
-        box.addPos(pos);
-        field_0x240 = fn_8023AF14(&box, field_0x4, false, 0.0f);
-    }
+    JGeometry::TBox2f box(mBox);
+    box.addPos(pos);
+    field_0x240 = fn_8023AF14(&box, field_0x4, false, 0.0f);
 
     switch (field_0x230) {
     case 0:
@@ -108,7 +106,7 @@ void TreasureChest_804AA178::update() {
                 mBox.i.y = -18.0f;
                 mBox.f.x = 20.0f;
                 mBox.f.y = 18.0f;
-                JGeometry::TBox2f box(mBox);
+                box.set(mBox);
                 box.addPos(pos);
                 fn_8022FEB8(&box, field_0x4, mSerial, true, true);
             }
@@ -143,23 +141,23 @@ void TreasureChest_804AA178::update() {
             at.y = from.y - 12.0f;
             at.z = from.z;
             if (fn_8022F514(i) == true) {
-                if (field_0x244 == i) {
-                    u32 code = ((field_0x244 << 26) + 0x80000000) + ((i << 24) + field_0x234);
+                if (i == field_0x244) {
+                    u32 code = (field_0x234 + (i << 24)) + ((field_0x244 << 26) + 0x80000000);
                     s32 spawnLayer = getPlayerLayer_8023DE58(i);
                     field_0x24c[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, spawnLayer, &at, code, -1, -1);
                 }
             } else {
-                if (field_0x244 == i) {
-                    u32 code = ((field_0x244 << 26) + 0x80000000) + ((i << 24) + field_0x234);
+                if (i == field_0x244) {
+                    u32 code = (field_0x234 + (i << 24)) + ((field_0x244 << 26) + 0x80000000);
                     s32 spawnLayer = getPlayerLayer_8023DE58(i);
                     field_0x24c[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, spawnLayer, &at, code, -1, -1);
                 }
             }
         }
-        if (field_0x238 == 1) {
-            field_0x230 = 4;
-        } else {
+        if (field_0x238 != 1) {
             mAlive = false;
+        } else {
+            field_0x230 = 4;
         }
         break;
     case 4:
