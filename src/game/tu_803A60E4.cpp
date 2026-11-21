@@ -17,7 +17,7 @@ inline void cls_804AF860::rotateArrow(u64 tag, s16 base) {
 
 // Fonts, texts and the arrows' base angles of the options screen: the constructor of the
 // object at 0x804AF860 (0x84 bytes).
-// FIXME(shotgun): 95.11 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.90 %, regalloc-only; behaviour near.
 cls_804AF860::cls_804AF860() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     field_0x4 = new J2DScreen;
@@ -114,7 +114,7 @@ cls_804AF860::~cls_804AF860() {
 }
 
 // 0x803A7280.
-// FIXME(shotgun): 95.30 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.81 %, regalloc-only; behaviour clean.
 void cls_804AF860::fn_803A7280() {
     field_0x64 = 0;
     field_0x68 = 0;
@@ -169,8 +169,6 @@ void cls_804AF860::fn_803A71F0() {
 // 0x803A6608. The options screen: left / right choose the arrow, up / down step the pane
 // offsets, the sound mode and the rumble setting toggle with messages 0x98 / 0x99 and
 // 0x38 / 0x39; the six cursor panes blink on a random timer.
-// FIXME(shotgun): 99.59 %, missing/extra; behaviour near.
-// (the blink block's show / hide pattern of the six panes is approximate)
 void cls_804AF860::fn_803A6608() {
     field_0x80 = 5;
     if (!field_0x76) {
