@@ -77,6 +77,7 @@ void cls_804AA350::init() {
 // FIXME(shotgun): 90.08 %, missing/extra; behaviour drift.
 void cls_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->mActorEnd;
+    s32 found;
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_WARP && field_0x25c == actor->vfunc_0x3C()) {
@@ -86,12 +87,11 @@ void cls_804AA350::vfunc_0x10() {
             actor->mPos = pos;
         }
     }
-    s32 found = 0;
+    found = 0;
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_SLR4) {
-            field_0x260[found] = i;
-            found++;
+            field_0x260[found++] = i;
             fn_802EEA24(1);
             if (found >= 2) {
                 break;
