@@ -1604,9 +1604,10 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             }
         }
     }
-    if (field_0x240[0] > 0) {
-        if (field_0x240[0] < 10) {
-            field_0x168 = -200.0f * ((f32)(field_0x240[0] * field_0x240[0]) / 100.0f);
+    s32 frame = field_0x240[0];
+    if (frame > 0) {
+        if (frame < 10) {
+            field_0x168 = -200.0f * ((f32)(frame * frame) / 100.0f);
         } else {
             field_0x168 = -200.0f;
         }
@@ -1623,7 +1624,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             if (field_0x240[0] > i * 10) {
                 if (field_0x240[0] < i * 10 + 10) {
                     field_0x184[i] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
@@ -1646,7 +1647,7 @@ void ConnectScreen_804B0F10::fn_803F726C() {
                 if (field_0x240[0] < i * 10 + 10) {
                     s16 idx = others[i];
                     field_0x184[idx] = 300.0f * ((f32)((field_0x240[0] - i * 10) * (field_0x240[0] - i * 10)) / 100.0f);
-                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 10)) / 10.0f;
+                    f32 alpha = (f32)(10 - (field_0x240[0] - i * 30)) / 10.0f;
                     if (alpha < 0.0f) {
                         alpha = 0.0f;
                     } else if (alpha > 1.0f) {
