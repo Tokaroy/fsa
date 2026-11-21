@@ -34,7 +34,7 @@ void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.51 %, missing/extra; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
     switch (mState) {
     case 0x0:
@@ -94,9 +94,9 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
             if (!(sq <= 32.0f * FLT_EPSILON)) {
-                f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= norm;
-                dy *= norm;
+                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                dx *= sq;
+                dy *= sq;
             }
             dx *= 3.0f;
             dy *= 3.0f;
@@ -104,8 +104,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             field_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 fn_80230FD0(player, 0x20002);
-                JGeometry::TVec3f at(hitX, hitY, 0.0f);
-                fn_801CB4A4(field_0x4, &at, 0, 0);
+                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             mFlags |= 0x80000;
@@ -172,7 +171,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         mBox.set(x0, y0, x1, y1);
         for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(&where, NULL, true, p)) {
-                if (field_0x98 == fn_801D0020(&mPos, p, false)) {
+                if (fn_801D0020(&mPos, p, false) == field_0x98) {
                     if (locked) {
                         fn_8023B6CC(p);
                         fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
@@ -208,9 +207,9 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
             if (!(sq <= 32.0f * FLT_EPSILON)) {
-                f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= norm;
-                dy *= norm;
+                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                dx *= sq;
+                dy *= sq;
             }
             dx *= 3.0f;
             dy *= 3.0f;
@@ -218,8 +217,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             field_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 startSound_801F0E34(0x400D1, 0);
-                JGeometry::TVec3f at(hitX, hitY, 0.0f);
-                fn_801CB4A4(field_0x4, &at, 0, 0);
+                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             return false;
@@ -286,94 +284,92 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
 }
 
 // Whether something hurts the actor through its hit box: the hit box of player attacks.
-// FIXME: 90.95 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 95.93 %, missing/extra; behaviour clean.
 // FIXME(shotgun): register allocation and stack slots differ; early returns are laid out differently.
 u8 ShadowLink2_804A43E8::fn_801CA274() {
-    if (field_0x564 == 3) {
-        return 0;
-    }
-    u8 mask;
-    if (field_0x560 == 4) {
-        mask = 0xF;
-    } else {
-        mask = 1 << field_0x560;
-    }
-    if (!(mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f)) {
-        return 0;
-    }
-    u8 hits = mHitBox.fn_8021693C(mask);
-    if (hits != 0) {
-        bool done = false;
-        for (s32 i = 0; i < 4; i++) {
-            u32 bit = 1 << i;
-            if (hits & bit) {
-                fn_802379E4(i, &mPos);
-                if (!done) {
-                    done = true;
-                    f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
-                    f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
-                    f32 sq = dx * dx + dy * dy;
-                    if (!(sq <= 32.0f * FLT_EPSILON)) {
-                        f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                        dx *= norm;
-                        dy *= norm;
-                    }
-                    dx *= 3.0f;
-                    dy *= 3.0f;
-                    field_0x3c.x = dx;
-                    field_0x3c.y = dy;
-                    fn_801C3B7C(0x20);
-                    mFlags |= 0x80000;
-                }
-                mask &= ~bit;
-            }
+    u8 ret = 0;
+    if (field_0x564 != 3) {
+        u8 mask = 0xF;
+        if (field_0x560 != 4) {
+            mask = 1 << field_0x560;
         }
-    }
-    JGeometry::TBox2f saved;
-    saved.i.x = mBox.i.x;
-    saved.i.y = mBox.i.y;
-    saved.f.x = mBox.f.x;
-    saved.f.y = mBox.f.y;
-    mBox.i.x = mHitBox.mBox.i.x;
-    mBox.i.y = mHitBox.mBox.i.y;
-    mBox.f.x = mHitBox.mBox.f.x;
-    mBox.f.y = mHitBox.mBox.f.y;
-    u8 result;
-    if (mask == 0) {
-        result = 0;
-    } else {
-        result = fn_801F2740(-1);
-        if (result != 0) {
-            JGeometry::TVec2f out;
-            fn_801F3128(&out);
-            for (s32 j = 0; j < 4; j++) {
-                u32 bit = 1 << j;
-                if (result & bit) {
-                    if (mask & bit) {
-                        JGeometry::TVec2f v;
-                        if (fn_801F329C(j)) {
-                            JGeometry::TVec3f in(out.x, out.y, 0.0f);
-                            JGeometry::TVec3f res;
-                            fn_801CD0D0(&in, &res);
-                            v.x = res.x;
-                            v.y = res.y;
-                        } else {
-                            v.x = out.x;
-                            v.y = out.y;
+        if (mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f) {
+            u8 hits = mHitBox.fn_8021693C(mask);
+            if (hits != 0) {
+                bool done = false;
+                for (s32 i = 0; i < 4; i++) {
+                    u32 bit = 1 << i;
+                    if (hits & bit) {
+                        fn_802379E4(i, &mPos);
+                        if (!done) {
+                            done = true;
+                            f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
+                            f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
+                            f32 sq = dx * dx + dy * dy;
+                            if (!(sq <= 32.0f * FLT_EPSILON)) {
+                                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                                dx *= sq;
+                                dy *= sq;
+                            }
+                            dx *= 3.0f;
+                            dy *= 3.0f;
+                            field_0x3c.x = dx;
+                            field_0x3c.y = dy;
+                            fn_801C3B7C(0x20);
+                            mFlags |= 0x80000;
                         }
-                        fn_80238548(j, field_0x114, &v, 2);
-                    } else {
-                        result &= ~bit;
+                        mask &= ~bit;
                     }
                 }
             }
+            JGeometry::TBox2f saved;
+            saved.i.x = mBox.i.x;
+            saved.i.y = mBox.i.y;
+            saved.f.x = mBox.f.x;
+            saved.f.y = mBox.f.y;
+            mBox.i.x = mHitBox.mBox.i.x;
+            mBox.i.y = mHitBox.mBox.i.y;
+            mBox.f.x = mHitBox.mBox.f.x;
+            mBox.f.y = mHitBox.mBox.f.y;
+            u8 result;
+            if (mask == 0) {
+                result = 0;
+            } else {
+                result = fn_801F2740(-1);
+                if (result != 0) {
+                    JGeometry::TVec2f v;
+                    JGeometry::TVec2f out;
+                    fn_801F3128(&out);
+                    for (s32 j = 0; j < 4; j++) {
+                        u32 bit = 1 << j;
+                        if (result & bit) {
+                            if (mask & bit) {
+                                if (fn_801F329C(j)) {
+                                    JGeometry::TVec3f in(out.x, out.y, 0.0f);
+                                    JGeometry::TVec3f res;
+                                    fn_801CD0D0(&in, &res);
+                                    v.x = res.x;
+                                    v.y = res.y;
+                                } else {
+                                    v.x = out.x;
+                                    v.y = out.y;
+                                }
+                                fn_80238548(j, field_0x114, &v, 2);
+                            } else {
+                                result &= ~bit;
+                            }
+                        }
+                    }
+                }
+            }
+            mBox.i.x = saved.i.x;
+            mBox.i.y = saved.i.y;
+            mBox.f.x = saved.f.x;
+            mBox.f.y = saved.f.y;
+            ret = result;
         }
     }
-    mBox.i.x = saved.i.x;
-    mBox.i.y = saved.i.y;
-    mBox.f.x = saved.f.x;
-    mBox.f.y = saved.f.y;
-    return result;
+    return ret;
 }
 
 bool ShadowLink2_804A43E8::fn_801CA0F8() {
@@ -408,21 +404,21 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
 }
 
 // Whether something hit by the actor's second box counts as a hit on the player/arrow/bomb.
-// FIXME(shotgun): 93.52 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C9EB8() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f || fn_801C53C4()) {
         return false;
     }
     s32 outPlayer = -1;
+    JGeometry::TVec3f bombVel;
     JGeometry::TVec3f arrowVel(0.0f, 0.0f, 0.0f);
+    s32 player;
     bool arrow = false;
     bool direct = false;
     bool bomb = false;
     JGeometry::TBox2f box;
     fn_801F317C(&box);
     JGeometry::TVec2f pos2;
-    JGeometry::TVec3f bombVel;
-    s32 player = fn_8023AE34(&box, field_0x4, &pos2);
+    player = fn_8023AE34(&box, field_0x4, &pos2);
     if (player >= 0) {
         arrow = fn_801CC820(player, &arrowVel);
     } else {
@@ -448,9 +444,9 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
         if (direct) {
             type = 4;
         } else if (bomb) {
-            from = bombVel;
+            from.set(bombVel);
         } else {
-            from = mPos - arrowVel;
+            from.set(mPos - arrowVel);
             if (arrow) {
                 type = 3;
             }
@@ -469,7 +465,7 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
 
 // Moves the actor along the map; lifts the z-offset into the ground plane for the sweep when the
 // actor is in the air (state 0x1C) and lands it when it touches ground.
-// FIXME: 98.31 %, missing/extra; behaviour near.
+// FIXME: 98.35 %, missing/extra; behaviour near.
 // FIXME(shotgun): the airborne test is materialised as a bool in the original (mfcr/extrwi).
 u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     u8 hit = 0;
@@ -499,7 +495,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
                 mPos.y = savedPos.y;
                 fn_801CE800();
             }
-        } else if (hit && floorLayer != 0 && !(mFlags & ENEMY_FLAG_LANDED) && !(mPos.z <= 0.0f) &&
+        } else if (hit && floorLayer != 0 && !(mFlags & ENEMY_FLAG_LANDED) && mPos.z <= 0.0f &&
                    __fabsf(mMapHitDir.y - -1.0f) < 0.001f && __fabsf(mPos.y - mPrevPos.y) < 0.001f) {
             mPos.z = 0.0f;
             field_0x3c.z = 0.0f;
