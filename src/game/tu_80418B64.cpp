@@ -13,14 +13,14 @@
 #include "game/Camera.h"
 #include "game/Message.h"
 
-const char* lbl_804B1390[3] = {
+static const char* lbl_804B1390[3] = {
     "kk_heart_01.bti",
     "kk_heart_02.bti",
     "kk_heart_03.bti",
 };
 
 // The digit textures fn_8041918C passes to fn_804030C4 ('TIMG').
-const char* lbl_804B139C[10] = {
+static const char* lbl_804B139C[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
     "kk_rupyNum_02.bti",
@@ -34,7 +34,7 @@ const char* lbl_804B139C[10] = {
 };
 
 // The rank pictures; fn_8041C67C only uses the first.
-const char* lbl_804B13C4[4] = {
+static const char* lbl_804B13C4[4] = {
     "kk_mainRank_01.bti",
     "kk_mainRank_02.bti",
     "kk_mainRank_03.bti",
@@ -406,8 +406,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     } else {
         field_0x50 = NULL;
     }
-    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, (f32)JUTVideo::getManager()->getFbWidth(),
-                                   (f32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
+    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),
+                                   (s32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
     field_0x4 = new J2DScreen();
     field_0x4->setPriority("main_adv.blo", 0x1100000, lbl_80529DEC.field_0x4c);
     for (s32 i = 0; i < 4; i++) {
@@ -496,7 +496,7 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     } else {
         for (s32 i = 0; i < 4; i++) {
             for (s32 j = 1; j < 4; j++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B13C4[j]));
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE00[i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE20[i]))->append(res, 1.0f);
             }
