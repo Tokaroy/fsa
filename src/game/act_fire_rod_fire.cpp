@@ -276,10 +276,11 @@ void FireRodFire_804A89F0::update() {
         }
         if (field_0x264 == 3 || field_0x264 == 4) {
             if (vfunc_0x34()) {
-                if (field_0x292 != 1) {
+                if (field_0x292 == 1) {
+                    field_0x293 = 1;
+                } else {
                     return;
                 }
-                field_0x293 = 1;
             }
         }
         if ((field_0x264 == 0 || field_0x264 == 3 || field_0x264 == 4) && mEmitter230 != NULL) {
