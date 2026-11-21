@@ -29,7 +29,6 @@ Cloud_8049CBE0::Cloud_8049CBE0()
     }
 }
 
-// FIXME(shotgun): 98.89 %, missing/extra; behaviour drift.
 // 0x80105A34.
 void Cloud_8049CBE0::init() {
     ActorBase_804A5770::init();
@@ -42,10 +41,6 @@ void Cloud_8049CBE0::init() {
     for (s32 i = 0; i < 4; i++) {
         field_0x2f8[i] = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8049CBB0[field_0x36c][i]);
     }
-    // FIXME: 88.48%. The original's dispatch is `cmpwi 1; beq state1; bge L;
-    // b default; L: cmpwi 3; bge default; b state2`, with the blocks laid out
-    // state1, state2, default. This switch and an if/else chain both compare
-    // against 1 again; the 0.0f/-38.0f literals also sit at other offsets.
     switch (field_0x36c) {
     case 1:
         mBox.i.x = -38.0f;
@@ -59,6 +54,7 @@ void Cloud_8049CBE0::init() {
         mBox.f.x = 32.0f;
         mBox.f.y = 12.0f;
         break;
+    case 0:
     default:
         mBox.i.x = -22.0f;
         mBox.i.y = -22.0f;
@@ -76,13 +72,18 @@ void Cloud_8049CBE0::init() {
 static bool isAirborne(s32 player);
 
 // 0x801056E4.
-// FIXME(shotgun): 90.23 %, missing/extra; behaviour near.
+// Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
+// assignment is inside `if (field_0x354 > 0)` in the original), and stack slot of `at`
+// (fn_800FDEA0 took pos by value in the original; RailBase.h declares it as a pointer).
+// FIXME: 94.02 %, scheduling+regalloc; behaviour clean.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
-    s32 layer = field_0x4;
-    if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
+    if (viewLayerFlag(field_0x4) != 0) {
         JGeometry::TBox2f box(mBox);
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.f.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.y += mPos.y;
         fn_80239914(&box, field_0x4, mSerial);
     }
     s32 bit = field_0x368;
@@ -96,8 +97,8 @@ void Cloud_8049CBE0::update() {
             mRail.fn_800FE3EC(field_0x354, mPos, field_0x4);
             if (field_0x354 > 0 && field_0x364 > 0) {
                 u8 count = mRail.fn_800FD894(-1, NULL, 0);
-                if (field_0x364 <= count && (u8)field_0x364 < mRail.field_0x2) {
-                    mRail.field_0x3 = field_0x364;
+                if (field_0x364 <= count) {
+                    mRail.setIndex(field_0x364);
                 }
             }
         }
@@ -107,17 +108,18 @@ void Cloud_8049CBE0::update() {
     case 1:
         if (field_0x354 > 0) {
             JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
-            JGeometry::TVec3f at = mPos;
             s32 railLayer = field_0x4;
             u16 angle;
-            s32 result = mRail.fn_800FDEA0(&at, 0.2f * field_0x358 + 0.5f, &step, &railLayer, &angle, 0x200);
+            JGeometry::TVec3f at = mPos;
+            f32 speed = 0.2f * field_0x358 + 0.5f;
+            s32 result = mRail.fn_800FDEA0(&at, speed, &step, &railLayer, &angle, 0x200);
             field_0x3c.x = step.x;
             field_0x3c.y = step.y;
             field_0x3c.z = step.z;
             mPos.add(field_0x3c);
             if (result != 0 && mRail.fn_800FE21C(0xFF) != 0) {
                 field_0x360 = 0;
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
+                field_0x3c.zero();
                 field_0x370 = 2;
             }
         }
@@ -132,7 +134,7 @@ void Cloud_8049CBE0::update() {
     }
     for (s32 i = 0; i < 4; i++) {
         if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !isAirborne(i)) {
-            JGeometry::TVec3f d = mPos - mPrevPos;
+            const JGeometry::TVec3f& d = mPos - mPrevPos;
             fn_8023DF68(i, &d);
         }
     }
@@ -156,10 +158,6 @@ void Cloud_8049CBE0::draw() {
 // Whether `player` is in the cloud: on the cloud's layer, either its box
 // (moved to the cloud's position) overlaps the player's, or one of eight
 // points around the player falls in mBox.
-// FIXME: 97.41 %, missing/extra + reloc-name; behaviour clean.
-// In the layer branch the original keeps box.i.x and mPos.x in
-// other FPRs and reloads box.i.y and box.f.y from the stack, where ours
-// reuses the registers; the eight-point loop matches.
 bool Cloud_8049CBE0::fn_801053E8(s32 player) {
     if (player < 0) {
         return false;
@@ -184,11 +182,12 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
         JGeometry::TVec3f v;
         fn_8022E088(player, i, &v);
         v -= mPos;
+        v.z = 0.0f;
         // The angle is in s16 units (32768 = 180 degrees); JMASinShort and
         // JMACosShort index the sin/cos table with it.
         s32 angle = (s32)(JMath::atanTable_.atan2_(v.y, v.x) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        f32 len = JGeometry::TVec2<f32>(v.x, v.y).length();
+        f32 len = JGeometry::TUtil<f32>::sqrt(v.x * v.x + v.y * v.y);
         v.x = len * JMACosShort(angle);
         v.y = len * JMASinShort(angle);
         v.z = 0.0f;
