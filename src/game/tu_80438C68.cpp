@@ -376,7 +376,9 @@ void cls_804B17A0::fn_80438C68() {
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == ACTOR_DETH) {
-                    fn_802B7CD8(actor);
+                    if (actor != NULL) {
+                        fn_802B7CD8(actor);
+                    }
                 }
             }
             break;
