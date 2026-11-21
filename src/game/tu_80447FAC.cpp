@@ -77,11 +77,11 @@ cls_804B1C58::~cls_804B1C58() {
     lbl_8053AF10 = NULL;
 }
 
-// FIXME(shotgun): 99.50 %, regalloc-only
 void cls_804B1C58::fn_80448334() {
+    const ResTIMG* zero;
     for (s32 i = 0; i < 4; i++) {
         field_0x2c &= ~(u8)(1 << i);
-        const ResTIMG* zero = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C30[0]));
+        zero = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C30[0]));
         static_cast<J2DPicture*>(mScreen->search(lbl_804906A8[i][9]))->changeTexture(zero, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_804906A8[i][10]))->changeTexture(zero, 0);
         static_cast<J2DPicture*>(mScreen->search(lbl_804906A8[i][11]))->changeTexture(zero, 0);
