@@ -22,11 +22,11 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     /* 0x230 */ s32 field_0x230; // state, 0 at init
-    /* 0x234 */ s32 mCounters[2][2]; // pairs, stepped by 8 bytes; each counts down to 0 in update()
-    //   [0][0] 0x234: 0x400 at init, 0x1F4 when tracking starts, 1000 in state 1
-    //   [0][1] 0x238: 0 at init; 4 when it reaches 0, with the sprite frame (0x250)
-    //   [1][0] 0x23C: 10 at init; 5 after each re-aim in state 1
-    //   [1][1] 0x240: timer, 30 + a random 0..29 at init
+    /* 0x234 */ s32 mCounters[4]; // each counts down to 0 in update()
+    //   [0] 0x234: 0x400 at init, 0x1F4 when tracking starts, 1000 in state 1
+    //   [1] 0x238: 0 at init; 4 when it reaches 0, with the sprite frame (0x250)
+    //   [2] 0x23C: 10 at init; 5 after each re-aim in state 1
+    //   [3] 0x240: timer, 30 + a random 0..29 at init
     /* 0x244 */ s32 field_0x244; // bob angle (+0x300 a frame) in state 0; the tracked player in state 1
     /* 0x248 */ s32 field_0x248; // random 0..32767 at init; counts up in state 1
     /* 0x24C */ s32 field_0x24c; // 0 at init; flag for the state 0 timer
