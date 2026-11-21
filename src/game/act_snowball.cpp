@@ -98,8 +98,6 @@ void cls_8049D020::init() {
     }
 }
 
-// FIXME: 99.57 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: ours has 3 more instrs (713 vs 710): a mov/clrlwi pair and a lwz in cases 2 and 4, plus swapped stack slots and registers.
 void cls_8049D020::update() {
     ActorBase_804A5770::update();
     field_0x26c = 1.0f;
@@ -120,8 +118,8 @@ void cls_8049D020::update() {
         field_0x26c = 0.0f;
         u16 angle;
         s32 dir;
-        f32 dist;
         s32 player;
+        f32 dist;
         fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (player >= 0 && dist < 64.0f) {
             field_0x23c = player;
@@ -138,7 +136,7 @@ void cls_8049D020::update() {
         break;
     case 2:
         if (field_0x23c >= 0) {
-            chase();
+            chase(field_0x23c);
         }
         grow();
         fn_801F2DB4('NULL', 'NULL', NULL);
@@ -158,17 +156,7 @@ void cls_8049D020::update() {
         break;
     case 4:
         if (field_0x258 > 0) {
-            u16 angle = 0;
-            JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
-            s32 layer = field_0x4;
-            JGeometry::TVec3f pos = mPos;
-            mRail.fn_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
-            field_0x3c.x = outStep.x;
-            field_0x3c.y = outStep.y;
-            field_0x3c.z = outStep.z;
-            mPos += field_0x3c;
-            updateTrailEmitter();
-            startSound_801F0E34(0x3007B, 0);
+            followRail();
         }
         fn_801F2DB4('NULL', 'NULL', NULL);
         fn_801F2B7C(-100, -1, 1);
@@ -395,12 +383,12 @@ bool cls_8049D020::fn_8010C294(s32 state) {
 // their literals before fn_8010C294's, in this order from the bottom of the file up.
 
 // Turns towards the player, picks the speed by the distance and rolls on.
-void cls_8049D020::chase() {
+void cls_8049D020::chase(s32 target) {
     u16 angle = 0;
     s32 dir = 0;
     s32 player = 0;
     f32 dist = 0.0f;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, field_0x23c, 2);
+    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, target, 2);
     s32 step;
     if (JMath::sincosTable_.cosShort((s16)(field_0x230 - angle)) >= 0.0f) {
         step = (s16)((s32)fabs(300.0f * JMath::sincosTable_.sinShort((s16)(field_0x230 - angle))) + 100);
@@ -418,6 +406,21 @@ void cls_8049D020::chase() {
     if (field_0x26c >= 1.0f) {
         field_0x26c = 1.0f;
     }
+    updateTrailEmitter();
+    startSound_801F0E34(0x3007B, 0);
+}
+
+// Moves along the rail and updates the trail emitter.
+void cls_8049D020::followRail() {
+    u16 angle = 0;
+    JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
+    s32 layer = field_0x4;
+    JGeometry::TVec3f pos = mPos;
+    mRail.fn_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
+    field_0x3c.x = outStep.x;
+    field_0x3c.y = outStep.y;
+    field_0x3c.z = outStep.z;
+    mPos += field_0x3c;
     updateTrailEmitter();
     startSound_801F0E34(0x3007B, 0);
 }
@@ -491,7 +494,7 @@ void cls_8049D020::updateTrailEmitter() {
             field_0x374 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
         }
         JGeometry::TVec3f emitterPos = mPos;
-        emitterPos.y += -2.0f * field_0x260;
+        emitterPos.y = mPos.y + -2.0f * field_0x260;
         setEmitterPos_8013CB44(field_0x374, &emitterPos, 0, 0, true);
         field_0x374->setGlobalAlpha(0x80);
         if (field_0x264 < 0.2f) {
