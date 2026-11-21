@@ -99,7 +99,7 @@ void cls_804A5568::fn_801E9224() {
         while (budget > 0.0f) {
             f32 curX;
             f32 curY;
-            curvePoint(this, field_0x3b0, (s32)field_0x3b4, &curX, &curY);
+            curvePoint(this, field_0x3b0, (u8)field_0x3b4, &curX, &curY);
             u8 idx2 = field_0x3b0;
             u8 seg2 = (s32)field_0x3b4 + 1;
             if (seg2 >= 16) {
@@ -134,9 +134,9 @@ void cls_804A5568::fn_801E9224() {
                 field_0x3b0 = idx2;
             } else {
                 if (!(sq <= 32.0f * FLT_EPSILON)) {
-                    f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                    dx *= norm;
-                    dy *= norm;
+                    sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                    dx *= sq;
+                    dy *= sq;
                 }
                 dx *= budget;
                 dy *= budget;
