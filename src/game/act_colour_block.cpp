@@ -82,7 +82,7 @@ void ColourBlock1Player_804AE620::init() {
     }
 }
 
-// FIXME: 99.63 %, missing/extra; behaviour near.
+// FIXME: 99.65 %, missing/extra; behaviour near.
 // missing/extra: box expansion float addition scheduling and savedPos stack offset.
 void ColourBlock1Player_804AE620::update() {
     JGeometry::TBox2f box = mBox;
@@ -125,9 +125,10 @@ void ColourBlock1Player_804AE620::update() {
         return;
     }
 
+    JGeometry::TVec3f probe;
     if (PSVECDistance(&mPos, &field_0x230) >= 15.9f) {
         if (!fn_801F2618(NULL, false)) {
-            JGeometry::TVec3f probe = field_0x3c;
+            probe = field_0x3c;
             probe.normalize();
             probe.scale(16.0f);
             probe += mPos;
@@ -180,8 +181,9 @@ void ColourBlock1Player_804AE620::update() {
     if (fn_80239108(mSerial) >= 1) {
         if (PSVECDistance(&mPos, &mSpawnPos) < 15.9f) {
             s32 dir = fn_80238BC4(mSerial);
-            savedPos = mPos;
-            JGeometry::TVec3f offset(lbl_804A79E0[dir][0], lbl_804A79E0[dir][1], lbl_804A79E0[dir][2]);
+            JGeometry::TVec3f offset;
+            JGeometry::TVec3f savedPos = mPos;
+            offset.set(lbl_804A79E0[dir][0], lbl_804A79E0[dir][1], lbl_804A79E0[dir][2]);
             if (field_0x240 == 0 || fn_80239558(&box, field_0x4, mSerial) == field_0x240 - 1) {
                 if (dir == (s32)(field_0x90 & 3)) {
                     if (fn_80374964(dir)) {
@@ -199,7 +201,7 @@ void ColourBlock1Player_804AE620::update() {
                             field_0x3c.x = lbl_804750C0[dir].x;
                             field_0x3c.y = lbl_804750C0[dir].y;
                             field_0x3c.z = lbl_804750C0[dir].z;
-                            JGeometry::TVec3f probe = field_0x3c;
+                            probe = field_0x3c;
                             probe.normalize();
                             probe.scale(16.0f);
                             probe += mPos;
