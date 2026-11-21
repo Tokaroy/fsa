@@ -89,23 +89,22 @@ void cls_804A4EE8::fn_801DB9CC() {
     mAngleSpeed = 0;
     mAngle = fn_801CD664(0x10000);
     if (field_0x16c == -1) {
-        f32 vx = field_0x2b4;
-        f32 vy = field_0x2b8;
-        if (!(vx * vx + vy * vy <= 32.0f * JGeometry::TUtil<f32>::epsilon())) {
+        JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
+        if (!v.isZero()) {
             f32 rx;
             f32 ry;
-            if (vx < 0.0f) {
+            if (v.x < 0.0f) {
                 mFlags |= 0x2000;
-                f32 s = JMath::sincosTable_.sinShort((s16)0xC000);
                 f32 c = JMath::sincosTable_.cosShort((s16)0xC000);
-                ry = vx * s + vy * c;
-                rx = vx * c - vy * s;
+                f32 s = JMath::sincosTable_.sinShort((s16)0xC000);
+                ry = v.x * s + v.y * c;
+                rx = v.x * c - v.y * s;
             } else {
                 mFlags &= ~0x2000;
-                f32 s = JMath::sincosTable_.sinShort(0x4000);
                 f32 c = JMath::sincosTable_.cosShort(0x4000);
-                ry = vx * s + vy * c;
-                rx = vx * c - vy * s;
+                f32 s = JMath::sincosTable_.sinShort(0x4000);
+                ry = v.x * s + v.y * c;
+                rx = v.x * c - v.y * s;
             }
             if (fn_801CD664(2) == 0) {
                 rx = -rx;
@@ -113,12 +112,16 @@ void cls_804A4EE8::fn_801DB9CC() {
                 mFlags ^= 0x2000;
             }
             mAngle = (s32)(JMath::atanTable_.atan2_(rx, ry) * 10430.378f);
-            JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
-            mAngleSpeed = (s32)(0.015915494f * (65536.0f * v.length()));
+            JGeometry::TVec2f v2(field_0x2b4, field_0x2b8);
+            mAngleSpeed = (s32)(0.015915494f * (65536.0f * v2.length()));
         }
     }
-    mSearchPos.x = mPos.x - JMath::sincosTable_.sinShort(mAngle) * mRadius;
-    mSearchPos.y = mPos.y - JMath::sincosTable_.cosShort(mAngle) * mRadius;
+    mSearchPos.x = mPos.x;
+    mSearchPos.y = mPos.y;
+    JGeometry::TVec2f dir(-JMath::sincosTable_.sinShort(mAngle), -JMath::sincosTable_.cosShort(mAngle));
+    dir.scale(mRadius);
+    mSearchPos.x += dir.x;
+    mSearchPos.y += dir.y;
     mSearchPos.z = mSearchPos.x;
     field_0x2c8 = mSearchPos.y;
     if (field_0x16c == -1) {
