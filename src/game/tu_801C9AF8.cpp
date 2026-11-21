@@ -408,21 +408,21 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
 }
 
 // Whether something hit by the actor's second box counts as a hit on the player/arrow/bomb.
-// FIXME(shotgun): 93.52 %, missing/extra; behaviour clean.
 bool ShadowLink2_804A43E8::fn_801C9EB8() {
     if (mBox2.f.x - mBox2.i.x <= 0.0f || mBox2.f.y - mBox2.i.y <= 0.0f || fn_801C53C4()) {
         return false;
     }
     s32 outPlayer = -1;
+    JGeometry::TVec3f bombVel;
     JGeometry::TVec3f arrowVel(0.0f, 0.0f, 0.0f);
+    s32 player;
     bool arrow = false;
     bool direct = false;
     bool bomb = false;
     JGeometry::TBox2f box;
     fn_801F317C(&box);
     JGeometry::TVec2f pos2;
-    JGeometry::TVec3f bombVel;
-    s32 player = fn_8023AE34(&box, field_0x4, &pos2);
+    player = fn_8023AE34(&box, field_0x4, &pos2);
     if (player >= 0) {
         arrow = fn_801CC820(player, &arrowVel);
     } else {
@@ -448,9 +448,9 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
         if (direct) {
             type = 4;
         } else if (bomb) {
-            from = bombVel;
+            from.set(bombVel);
         } else {
-            from = mPos - arrowVel;
+            from.set(mPos - arrowVel);
             if (arrow) {
                 type = 3;
             }
