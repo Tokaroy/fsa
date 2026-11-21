@@ -548,13 +548,13 @@ void GreatFairy_804AF338::draw() {
             SpriteParams_801F5AE0 params;
             JGeometry::TVec3f savedPos = mPos;
             s32 frame = lbl_80475600[field_0x29c - 1];
+            s32 flags = 7;
             params.field_0x1d = 0;
             params.field_0x1c = 0;
             mPos = field_0x284;
             if (mState == 10 || mState == 11 || mState == 12) {
                 frame = lbl_80475600[field_0x29c + 10];
             }
-            s32 flags = 7;
             if (mState == 11 || mState == 12) {
                 params.field_0x1d = 1;
                 params.field_0x1c = 1;
