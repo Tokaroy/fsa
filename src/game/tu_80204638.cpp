@@ -29,12 +29,12 @@ void cls_80204638::fn_80204A20(ActorBase_804A5770* actor) {
     ActorBase_804A5770** slot = mSlots[static_cast<Thief_804A5A30*>(actor)->field_0x34a];
     if (slot[0] == NULL) {
         slot[0] = actor;
-        if (slot[1] != NULL && actor->fn_80204D44()) {
+        if (slot[1] != NULL && slot[1]->fn_80204D44()) {
             actor->mAlive = false;
         }
     } else if (slot[1] == NULL) {
         slot[1] = actor;
-        if (slot[0] != NULL && actor->fn_80204D44()) {
+        if (slot[0] != NULL && slot[0]->fn_80204D44()) {
             actor->mAlive = false;
         }
     }
