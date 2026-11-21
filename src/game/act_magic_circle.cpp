@@ -193,6 +193,7 @@ bool MagicCircle_804A7960::fn_8028B850() {
 }
 #pragma auto_inline reset
 
+// FIXME: 99.90 %, scheduling+regalloc; behaviour clean.
 // FIXME: scheduling+regalloc (register choice at 0x90C and x/y evaluation order in dest)
 void MagicCircle_804A7960::update() {
     bool prevActive = field_0x234;
@@ -390,7 +391,8 @@ void MagicCircle_804A7960::update() {
     }
 }
 
-// FIXME: 93.63%, scheduling+regalloc. In the inlined setRotScaleMtx the float registers (f26-f31)
+// FIXME: 93.63 %, scheduling+regalloc; behaviour clean.
+// In the inlined setRotScaleMtx the float registers (f26-f31)
 // are allocated differently and the fmuls/fmsubs/fmadds are scheduled in another order (0x158-0x258).
 void MagicCircle_804A7960::draw() {
     if (field_0x240 <= 0.0f) {
