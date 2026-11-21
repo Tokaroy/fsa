@@ -4,7 +4,6 @@
 // Code: game/act_thwomp_launch_npc.cpp.
 
 #include "game/ActorBase.h"
-#include "game/Message.h"
 
 // The JPEN actor ("NPC launched by Thwomp", docs/names/actors.tsv, med
 // confidence): the spawner constructs it with fn_80201F8C, which stores this
@@ -21,13 +20,6 @@ public:
 
     void fn_80337A08();
     void fn_803376B0();
-
-    // fn_8038C678 takes the position by value. The original loads mSerial,
-    // field_0x4 and flags before the mPos copy, and field_0x24c and field_0x264
-    // after it, so layer, serial, pos and flags are parameters here.
-    bool talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038C678(field_0x24c, field_0x264, serial, layer, pos, flags);
-    }
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
