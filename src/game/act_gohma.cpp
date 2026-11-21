@@ -64,9 +64,6 @@ static inline void setMoveDir(JGeometry::TVec3f& v, s32 dir, f32 speed) {
     }
 }
 
-// FIXME: 99.84 %, scheduling+regalloc; behaviour clean.
-// (scheduling+regalloc + reloc-name). `field_0x250 = field_0x244 + field_0x98 * 4` loads field_0x98 and
-// field_0x244 into swapped registers (r5/r0); everything else differs only in literal reloc names.
 void Gohma_804A307C::init() {
     mBox.i.x = -10.0f;
     mBox.i.y = -8.0f;
@@ -97,7 +94,7 @@ void Gohma_804A307C::init() {
     if (viewLayerFlag(layer)) {
         field_0x98 &= 1;
     }
-    field_0x250 = field_0x244 + field_0x98 * 4;
+    field_0x250 = (field_0x98 << 2) + field_0x244;
     field_0x264.z = 0.0f;
     field_0x264.y = 0.0f;
     field_0x264.x = 0.0f;
@@ -122,9 +119,9 @@ void Gohma_804A307C::init() {
         if (field_0x254 == 2) {
             if (lbl_8053ABD8[0] == 0) {
                 gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                lbl_8053ABD8[0]++;
+                field_0x230 = 0;
             }
-            lbl_8053ABD8[0]++;
-            field_0x230 = 0;
         }
     } else {
         field_0xbc = 3;
@@ -142,9 +139,9 @@ void Gohma_804A307C::init() {
         if (field_0x254 == 3) {
             if (lbl_8053ABD8[0] == 0) {
                 gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                lbl_8053ABD8[0]++;
+                field_0x230 = 7;
             }
-            lbl_8053ABD8[0]++;
-            field_0x230 = 7;
         }
     }
     field_0x25c = mLife;
