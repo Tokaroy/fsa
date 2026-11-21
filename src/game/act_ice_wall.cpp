@@ -283,13 +283,9 @@ bool IceWall_8049DE18::hitByWeapon() {
     JGeometry::TVec3f stack40;
     JGeometry::TVec2f hitPos;
     hitPos.set(0.0f, 0.0f);
-    f32 screenY = mPos.y - mPos.z;
-    f32 screenX = mPos.x;
+    JGeometry::TVec2f screenPos(mPos.x, mPos.y - mPos.z);
     box.set(mBox2);
-    box.i.x += screenX;
-    box.i.y += screenY;
-    box.f.x += screenX;
-    box.f.y += screenY;
+    box.addPos(screenPos);
 
     s32 hitCode = fn_8023AA18(&box, field_0x4, &hitPos);
     if (hitCode >= 0) {
