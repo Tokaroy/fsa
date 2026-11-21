@@ -169,7 +169,7 @@ void BgRewrite_804A7C98::fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u1
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
 }
 
-// FIXME(shotgun): 99.18 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.40 %, scheduling+regalloc; behaviour clean.
 bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s32 layer) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, layer);
@@ -531,6 +531,7 @@ bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
 }
 
 // Regalloc: inlined fn_802A3948 slot uses r29 instead of r28 in three cases.
+// FIXME: 99.83 %, regalloc-only; behaviour clean.
 void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
