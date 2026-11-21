@@ -79,9 +79,6 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 99.59 %, missing/extra; behaviour clean.
-// Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
-// the .sdata2 literals are not split.
 void cls_804A6708::init() {
     EnemyBase_804A4808::init();
     field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12b;
@@ -116,10 +113,17 @@ void cls_804A6708::init() {
         mFlags |= 0x2000;
     }
 
-    if ((field_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0 && lbl_80529DEC.field_0x118 < 7) {
-        if (lbl_80529DEC.field_0x118 >= 1) {
+    if ((field_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0) {
+        switch (lbl_80529DEC.field_0x118) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
             mFlags |= 0x20000;
             mFlags &= ~0x10000;
+            break;
         }
     }
 
@@ -245,13 +249,14 @@ void cls_804A6708::fn_8021E4F8() {
     field_0x2c0 = field_0x2c8 + JGeometry::TVec2f(e.x * co - e.y * s, e.x * s + e.y * co);
 }
 
-// FIXME(shotgun): 96.67 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
 void cls_804A6708::fn_8021DFAC(s32 newState) {
+    s32 p;
     switch (newState) {
     case 1:
         fn_801F3604();
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     for (s32 j = 0; j < 4; j++) {
@@ -264,7 +269,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
         break;
     case 2:
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     fn_80230498(p, &pos, fn_80230CFC(p) + 0x3C, 0xFF, -0x80, -0x80, true);
@@ -310,7 +315,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     }
     case 6:
         if (mFlags & 0x2000) {
-            for (s32 p = 0; p < 4; p++) {
+            for (p = 0; p < 4; p++) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     s32 v;
                     if (mFlags & 0x4000) {
