@@ -154,7 +154,7 @@ static inline void setCameraRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     }
 }
 
-// regalloc-only: zeldaSerial/link
+// FIXME: regalloc-only: i/serial, zeldaSerial/link
 void EnemyForEndingControl_804AD48C::fn_8035BE24() {
     gGameRoot_8053AAF8->fn_801365C8(0);
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
@@ -170,11 +170,10 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
         actor->field_0x23c = mSerial;
     }
 
-    s32 serial;
     for (s32 i = 0; i < 6; i++) {
         mActors[i + 1] = getActorManager_801F856C()->spawnActor_801F9484(
             ACTOR_EMIK, field_0x4, &mPos, i, -1, -1);
-        serial = mActors[i + 1];
+        s32 serial = mActors[i + 1];
         if (serial >= 0) {
             cls_804A5958* maiden =
                 static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -185,10 +184,10 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
     s32 zeldaSerial = mActors[0];
     mActors[7] = getActorManager_801F856C()->spawnActor_801F9484(
         ACTOR_ELNK, field_0x4, &(mPos + JGeometry::TVec3f(-48.0f, 200.0f, 0.0f)), zeldaSerial, -1, -1);
-    serial = mActors[7];
-    if (serial >= 0) {
+    s32 link = mActors[7];
+    if (link >= 0) {
         cls_804A5958* actor =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(link));
         actor->field_0x23c = mSerial;
     }
 
