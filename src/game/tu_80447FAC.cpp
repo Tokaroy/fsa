@@ -12,7 +12,6 @@ extern const u64 lbl_804906A8[4][14];
 // The digit textures (kk_rupyNum_00.bti ...).
 extern const char* lbl_804B1C30[10];
 
-// FIXME(shotgun): 99.77 %, reloc-name
 cls_804B1C58::cls_804B1C58() {
     lbl_8053AF10 = this;
     mScreen = new J2DScreen;
@@ -30,7 +29,6 @@ cls_804B1C58::cls_804B1C58() {
     field_0x2c = 0;
 }
 
-// FIXME(shotgun): 99.84 %, reloc-name
 cls_804B1C58::~cls_804B1C58() {
     delete mScreen;
     mScreen = NULL;
