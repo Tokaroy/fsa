@@ -779,7 +779,6 @@ void cls_8049C718::fn_800FB070() {
     }
 }
 
-// FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
 void cls_8049C718::update() {
     mBox2.set(-21.0f, -35.0f + mPos.z, 22.0f, -2.0f + mPos.z);
     if (vfunc_0x2C(0.0f, -20.0f, 50.0f)) {
@@ -959,7 +958,7 @@ s32 headingOf(f32 x, f32 y) {
     return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
 }
 
-// FIXME(shotgun): 99.87 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.96 %, scheduling+regalloc; behaviour drift.
 void cls_8049C718::fn_800FA6B0() {
     if (mAnimState != mAnimPrev) {
         mAnimPrev = mAnimState;
@@ -1161,7 +1160,7 @@ void StoneArrghusChildPuff_8049C678::init() {
     }
 }
 
-// FIXME(shotgun): 69.30 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 92.16 %, missing/extra; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
     field_0x1a8 = true;
@@ -1196,7 +1195,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     }
 }
 
-// FIXME(shotgun): 88.36 %, missing/extra; behaviour near.
+// FIXME(shotgun): 84.23 %, missing/extra + reloc-name; behaviour near.
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
     cls_8049C718* parent = mParent;
