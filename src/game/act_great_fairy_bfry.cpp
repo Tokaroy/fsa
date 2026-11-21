@@ -30,7 +30,7 @@ GreatFairy_804AF338::~GreatFairy_804AF338() {
     }
 }
 
-// FIXME(shotgun): 92.69 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 98.63 %, scheduling+regalloc; behaviour drift.
 void GreatFairy_804AF338::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -537,7 +537,7 @@ void GreatFairy_804AF338::update() {
     }
 }
 
-// FIXME(shotgun): 98.34 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.55 %, reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && field_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
