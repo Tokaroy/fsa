@@ -65,8 +65,7 @@ void Tektite_8049FD50::init() {
     }
 }
 
-// FIXME: 99.23%. The target compares field_0x254 (in r0) with the tile (in r3)
-// as `cmplw r0, r3`; we emit the operands the other way round.
+// FIXME: regalloc r4/r5 swap between 0x19660d and gGameRoot_8053AAF8 in mRandom.get_ufloat_1().
 void Tektite_8049FD50::update() {
     if (field_0x90 == 2 || field_0x90 == 3) {
         // fn_80226998 (declared with TVec3f in Map.h) reads only the x and y of
@@ -82,8 +81,7 @@ void Tektite_8049FD50::update() {
         }
         s32 layer = field_0x4;
         JGeometry::TVec2f p(mPos.x, mPos.y);
-        u16 tile = fn_80226998((const JGeometry::TVec3f*)&p, layer);
-        if (tile == field_0x254) {
+        if (field_0x254 == fn_80226998((const JGeometry::TVec3f*)&p, layer)) {
             return;
         }
         field_0x90 &= 1;
