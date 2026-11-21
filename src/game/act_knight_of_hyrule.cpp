@@ -116,7 +116,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (field_0x27e == 0 && allLayer0 == true) {
             s32 slot = field_0x278;
             if (slot >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->field_0x276 = 1;
                 }
@@ -217,7 +217,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (mTimer <= 0) {
             s32 slot = field_0x278;
             if (slot >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->field_0x277 = 1;
                 }
@@ -253,7 +253,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (mTimer <= 0) {
             s32 slot = field_0x278;
             if (slot >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->field_0x278 = 1;
                 }
@@ -283,7 +283,7 @@ void KnightOfHyrule_804AABA8::update() {
             mPos.z += field_0x3c.z;
             s32 slot = field_0x278;
             if (slot >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
                 }
@@ -464,8 +464,6 @@ void KnightOfHyrule_804AABA8::update() {
     }
 }
 
-// FIXME: 99.32% (different: getActorManager_801F856C()->mActors[slot] indexing uses addi+lwzx
-// instead of add+lwz 0x8).
 void KnightOfHyrule_804AABA8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1f = 0;
@@ -490,7 +488,7 @@ void KnightOfHyrule_804AABA8::draw() {
             }
             s32 slot = field_0x278;
             if (slot >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
                 }
