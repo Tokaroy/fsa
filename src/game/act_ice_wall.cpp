@@ -32,7 +32,6 @@ IceWall_8049DE18::~IceWall_8049DE18() {
     field_0x27c = NULL;
 }
 
-// FIXME: 99.98 %, scheduling; behaviour clean.
 void IceWall_8049DE18::init() {
     ActorBase_804A5770::init();
     field_0x230 = field_0x90 & 0xF;
@@ -41,7 +40,7 @@ void IceWall_8049DE18::init() {
     switch (field_0x230) {
     case 1:
         field_0x240 = 0.5f;
-        field_0x54.x = field_0x54.y = field_0x54.z = field_0x240;
+        field_0x54.setAll(field_0x240);
         mBox.i.x = -8.0f;
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
