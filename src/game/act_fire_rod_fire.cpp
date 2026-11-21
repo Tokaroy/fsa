@@ -231,7 +231,7 @@ FireRodFire_804A89F0::~FireRodFire_804A89F0() {
     }
 }
 
-// FIXME(shotgun): 99.11 %, different; behaviour drift.
+// FIXME(shotgun): 99.44 %, missing/extra; behaviour drift.
 void FireRodFire_804A89F0::update() {
     switch (field_0x238) {
     case 0: {
@@ -709,7 +709,7 @@ s32 FireRodFire_804A89F0::fn_802BA9F0() {
     return field_0x260;
 }
 
-// FIXME(shotgun): 93.21 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 96.44 %, scheduling+regalloc + reloc-name; behaviour clean.
 bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ignoreIds[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     if (field_0x264 != 1) {
