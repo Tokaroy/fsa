@@ -17,7 +17,7 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scaleX, f32
     m[0][0] = scaleX * (cy * cz);
     m[1][0] = scaleX * (cy * sz);
     m[2][0] = scaleX * -sy;
-    m[0][1] = scaleY * (sx * sy * cz - cx * sz);
+    m[0][1] = scaleY * (sy * sx * cz - cx * sz);
     m[1][1] = scaleY * (sx * sy * sz + cx * cz);
     m[2][1] = scaleY * (sx * cy);
     m[0][2] = scaleZ * (cx * cz * sy + sx * sz);
@@ -167,27 +167,27 @@ void ExtendingLift_804A78B0::draw() {
     switch ((field_0x90 >> 12) & 0x1F) {
     case 0:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230.x),
+                   (field_0x240->mSizeX * field_0x230.x) / 2.0f,
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
+                   (-(s32)field_0x240->mSizeY * field_0x230.y) / 2.0f);
         break;
     case 1:
         PSMTXTrans(mtx,
-                   0.5f * (-(s32)field_0x240->mSizeX * field_0x230.x),
+                   (-(s32)field_0x240->mSizeX * field_0x230.x) / 2.0f,
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
+                   (-(s32)field_0x240->mSizeY * field_0x230.y) / 2.0f);
         break;
     case 2:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230.x),
+                   (field_0x240->mSizeX * field_0x230.x) / 2.0f,
                    0.0f,
-                   0.5f * (-(s32)field_0x240->mSizeY * field_0x230.y));
+                   (-(s32)field_0x240->mSizeY * field_0x230.y) / 2.0f);
         break;
     case 3:
         PSMTXTrans(mtx,
-                   0.5f * (field_0x240->mSizeX * field_0x230.x),
+                   (field_0x240->mSizeX * field_0x230.x) / 2.0f,
                    0.0f,
-                   0.5f * (field_0x240->mSizeY * field_0x230.y));
+                   (field_0x240->mSizeY * field_0x230.y) / 2.0f);
         break;
     default:
         mtx[0][3] = 0.0f;
@@ -202,8 +202,9 @@ void ExtendingLift_804A78B0::draw() {
     params.field_0x21 = 1;
     params.field_0x1d = -2;
 
+    const char* name = lbl_8053A198[0];
     if (field_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_8053A198[0]);
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
 }
