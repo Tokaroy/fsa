@@ -2602,18 +2602,8 @@ void MapScreen_804B1288::fn_8040732C() {
         return;
     }
     for (int i = field_0x340 * 3; i < field_0x340 * 3 + 3; i++) {
+        u8 rank = lbl_80529DEC.getField1FC(i / 3, i % 3);
         s32 stage = i / 3;
-        u8 rank;
-        if (stage < 0 || stage >= 8) {
-            rank = 0xFF;
-        } else {
-            s32 sub = i % 3;
-            if (sub < 0 || sub >= 3) {
-                rank = 0xFF;
-            } else {
-                rank = lbl_80529DEC.field_0x1fc[stage][sub];
-            }
-        }
         s32 sub = i % 3;
         if (stage == 7) {
             if (sub > 0) {

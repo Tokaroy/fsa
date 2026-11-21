@@ -171,6 +171,15 @@ public:
     /* 0x1C4 */ JGeometry::TVec3f field_0x1c4[4];
     /* 0x1F4 */ u16 field_0x1f4[4]; // per player; fn_802702EC clears one
     /* 0x1FC */ u8 field_0x1fc[8][3]; // 0xFF after the reset
+    u8 getField1FC(s32 stage, s32 sub) const {
+        if (stage < 0 || stage >= 8) {
+            return 0xFF;
+        }
+        if (sub < 0 || sub >= 3) {
+            return 0xFF;
+        }
+        return field_0x1fc[stage][sub];
+    }
     /* 0x214 */ u8 field_0x214;
     /* 0x215 */ u8 field_0x215;
     // main (tu_801344C0, 0x801344F8-0x80134624) copies 0x20 bytes here from
