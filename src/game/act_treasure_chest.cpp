@@ -63,7 +63,7 @@ void TreasureChest_804AA178::init() {
     field_0x24c[3] = -1;
 }
 
-// FIXME: 96.27 %, different; behaviour clean.
+// FIXME: 96.79 %, scheduling+regalloc; behaviour clean.
 // In state 2 the spawn code is built in other registers (the
 // original compares field_0x244 with i as `cmpw r29, r0` and reloads
 // field_0x234 off r28), and the literals are @NNN, not lbl_805413C0 onwards.
@@ -81,11 +81,9 @@ void TreasureChest_804AA178::update() {
         mBox.f.x = 6.0f;
         mBox.f.y = 5.0f;
     }
-    {
-        JGeometry::TBox2f box(mBox);
-        box.addPos(pos);
-        field_0x240 = fn_8023AF14(&box, field_0x4, false, 0.0f);
-    }
+    JGeometry::TBox2f box(mBox);
+    box.addPos(pos);
+    field_0x240 = fn_8023AF14(&box, field_0x4, false, 0.0f);
 
     switch (field_0x230) {
     case 0:
@@ -108,7 +106,7 @@ void TreasureChest_804AA178::update() {
                 mBox.i.y = -18.0f;
                 mBox.f.x = 20.0f;
                 mBox.f.y = 18.0f;
-                JGeometry::TBox2f box(mBox);
+                box.set(mBox);
                 box.addPos(pos);
                 fn_8022FEB8(&box, field_0x4, mSerial, true, true);
             }
@@ -143,23 +141,23 @@ void TreasureChest_804AA178::update() {
             at.y = from.y - 12.0f;
             at.z = from.z;
             if (fn_8022F514(i) == true) {
-                if (field_0x244 == i) {
-                    u32 code = ((field_0x244 << 26) + 0x80000000) + ((i << 24) + field_0x234);
+                if (i == field_0x244) {
+                    u32 code = (field_0x234 + (i << 24)) + ((field_0x244 << 26) + 0x80000000);
                     s32 spawnLayer = getPlayerLayer_8023DE58(i);
                     field_0x24c[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, spawnLayer, &at, code, -1, -1);
                 }
             } else {
-                if (field_0x244 == i) {
-                    u32 code = ((field_0x244 << 26) + 0x80000000) + ((i << 24) + field_0x234);
+                if (i == field_0x244) {
+                    u32 code = (field_0x234 + (i << 24)) + ((field_0x244 << 26) + 0x80000000);
                     s32 spawnLayer = getPlayerLayer_8023DE58(i);
                     field_0x24c[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, spawnLayer, &at, code, -1, -1);
                 }
             }
         }
-        if (field_0x238 == 1) {
-            field_0x230 = 4;
-        } else {
+        if (field_0x238 != 1) {
             mAlive = false;
+        } else {
+            field_0x230 = 4;
         }
         break;
     case 4:
@@ -181,7 +179,7 @@ void TreasureChest_804AA178::update() {
 void TreasureChest_804AA178::draw() {}
 
 // Differs only in register numbers.
-// FIXME: 95.09 %, missing/extra; behaviour clean.
+// FIXME: 99.40 %, scheduling+regalloc; behaviour clean.
 bool TreasureChest_804AA178::vfunc_0x54() {
     bool ok = false;
     bool result = false;
@@ -218,11 +216,11 @@ bool TreasureChest_804AA178::vfunc_0x54() {
             at.x = pos.x + 1.0f;
             at.y = pos.y - 12.0f;
             at.z = pos.z;
-            if (field_0x234 >= 0x30) {
+            if (0x30 <= field_0x234) {
                 if (gGameRoot_8053AAF8->field_0x7e == 1) {
                     if (fn_8022F514(i) == true) {
                         if (field_0x248 == fn_8022F3DC(i)) {
-                            if (field_0x240 == i) {
+                            if (i == field_0x240) {
                                 u32 code = field_0x234 + (i << 24) + (field_0x240 << 26);
                                 s32 layer = getPlayerLayer_8023DE58(i);
                                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
@@ -232,8 +230,8 @@ bool TreasureChest_804AA178::vfunc_0x54() {
                                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
                             }
                         }
-                    } else if (field_0x248 == i) {
-                        if (field_0x240 == i) {
+                    } else if (i == field_0x248) {
+                        if (i == field_0x240) {
                             u32 code = field_0x234 + (i << 24) + (field_0x240 << 26);
                             s32 layer = getPlayerLayer_8023DE58(i);
                             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
@@ -244,7 +242,7 @@ bool TreasureChest_804AA178::vfunc_0x54() {
                         }
                     }
                 } else {
-                    if (field_0x240 == i) {
+                    if (i == field_0x240) {
                         u32 code = field_0x234 + (i << 24) + (field_0x240 << 26);
                         s32 layer = getPlayerLayer_8023DE58(i);
                         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
@@ -255,11 +253,11 @@ bool TreasureChest_804AA178::vfunc_0x54() {
                     }
                 }
             } else {
-                if (fn_8022F514(i) == true && fn_8022F3DC(i) == field_0x248 && field_0x240 == i) {
+                if (fn_8022F514(i) == true && fn_8022F3DC(i) == field_0x248 && i == field_0x240) {
                     u32 code = field_0x234 + (i << 24) + (field_0x240 << 26) + 0x00800000;
                     s32 layer = getPlayerLayer_8023DE58(i);
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
-                } else if (field_0x248 == i && field_0x240 == i) {
+                } else if (i == field_0x248 && i == field_0x240) {
                     u32 code = field_0x234 + (i << 24) + (field_0x240 << 26) + 0x00800000;
                     s32 layer = getPlayerLayer_8023DE58(i);
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_IMUP, layer, &at, code, -1, -1);
@@ -284,21 +282,18 @@ bool TreasureChest_804AA178::vfunc_0x54() {
     return result;
 }
 
-// FIXME: 97.11 %, missing/extra; behaviour clean.
 bool TreasureChest_804AA178::fn_802EB27C() {
-    // FIXME: 97.11 %. The original copies findActorBySerial_801F666C's result through r0
-    // (mr r0, r3; mr. r30, r0) where ours tests it directly (mr. r30, r3).
     s32 serial;
     bool result = false;
     for (s32 i = 0; i < 4; i++) {
         serial = field_0x24c[i];
-        if (serial < 0) {
-            continue;
-        }
-        LiftableItem_804A01D0* item = static_cast<LiftableItem_804A01D0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
-        if (item != NULL && item->fn_801597B8() == 3) {
-            item->fn_801597C0();
-            result = true;
+        if (serial >= 0) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            LiftableItem_804A01D0* item = static_cast<LiftableItem_804A01D0*>(actor);
+            if (item != NULL && item->fn_801597B8() == 3) {
+                item->fn_801597C0();
+                result = true;
+            }
         }
     }
     return result;
