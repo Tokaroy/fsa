@@ -16,12 +16,18 @@
 #include "game/act/act_pot.h"
 #include "std/math.h"
 
-// x offsets [0..4] and y offsets [5..9] of the 5 flames spawned on layers >= 8;
-// x offsets [10..22] and y offsets [23..35] of the 13 flames spawned below.
-static const f32 lbl_8046E070[36] = {
+// x and y offsets of the 5 flames spawned on layers >= 8,
+// and of the 13 flames spawned below.
+static const f32 lbl_8046E070_x5[5] = {
     0.0f, -16.0f, 0.0f, 16.0f, 0.0f,
+};
+static const f32 lbl_8046E070_y5[5] = {
     -16.0f, 0.0f, 0.0f, 0.0f, 16.0f,
+};
+static const f32 lbl_8046E070_x13[13] = {
     0.0f, -16.0f, 0.0f, 16.0f, -32.0f, -16.0f, 0.0f, 16.0f, 32.0f, -16.0f, 0.0f, 16.0f, 0.0f,
+};
+static const f32 lbl_8046E070_y13[13] = {
     -32.0f, -16.0f, -16.0f, -16.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 16.0f, 16.0f, 16.0f, 32.0f,
 };
 
@@ -33,16 +39,6 @@ static inline void respawnEmitter(Pot_804A9428* pot, s32 dir, s32 effect) {
         pot->mEmitter = spawnEmitter_8013CC50(pot->field_0x4, &pot->mPos, effect, 0, 0, NULL, NULL, true, 1.0f);
         pot->field_0x244 = dir;
     }
-}
-
-// Spawn a fire actor (BLZE) on the tile under `pos`, as the burning pot's loops below do.
-static inline void igniteTile(Pot_804A9428* pot, JGeometry::TVec3f* pos, JGeometry::TVec3f* tilePos) {
-    s32 tileIdx = fn_80226AE0(pos, pot->field_0x4);
-    gGameRoot2_8053AB10->field_0x20->fn_802F9908(pot->field_0x4, tileIdx);
-    fn_80226CA8(tileIdx, pot->field_0x4, tilePos);
-    tilePos->x += 8.0f;
-    tilePos->y += 8.0f;
-    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, pot->field_0x4, tilePos, 0xF, -1, -1);
 }
 
 // Spawn a rupee actor of `kind` (the low bits of its parameter); 0xA00 is added while the pot is above the ground (mPos.z > 0).
@@ -205,12 +201,13 @@ void Pot_804A9428::draw() {
     }
 }
 
-// FIXME: 95.67 % (missing/extra: stack frame size 0xA0 vs target 0x80; local vector layout)
+// FIXME: regalloc-only (r26/r27/r28 in loops and rupee type, f1/f2/f3 in heartPos)
 void Pot_804A9428::vfunc_0x24() {
+    JGeometry::TVec3f tilePos;
     JGeometry::TVec3f pos(mPos);
     if (field_0x234 == 0) {
         pos.z = 0.0f;
-        if (field_0x4 >= 8) {
+        if (8 <= field_0x4) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
         }
         if (field_0x240 <= 1) {
@@ -240,10 +237,10 @@ void Pot_804A9428::vfunc_0x24() {
         } else if (field_0x240 == 3) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_MTBO, field_0x4, &pos, 0, -1, -1);
         } else if (field_0x240 == 4) {
-            JGeometry::TVec3f heartPos(pos.x + (f32)(fn_801CD664(13) - 6), pos.y, 0.0f);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &heartPos, 0, -1, -1);
-            heartPos.x = pos.x + (f32)(fn_801CD664(13) - 6);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &heartPos, 0, -1, -1);
+            JGeometry::TVec3f heartPos1(pos.x + (f32)(fn_801CD664(13) - 6), pos.y, 0.0f);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &heartPos1, 0, -1, -1);
+            JGeometry::TVec3f heartPos2(pos.x + (f32)(fn_801CD664(13) - 6), pos.y, 0.0f);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &heartPos2, 0, -1, -1);
         } else if (field_0x240 == 5) {
             if (fn_801CD664(100) < 60) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &pos, 0, -1, -1);
@@ -269,28 +266,37 @@ void Pot_804A9428::vfunc_0x24() {
         }
     } else if (field_0x234 == 1) {
         startSound_801F0E34(0x3000B, 0);
-        JGeometry::TVec3f tilePos;
-        if (field_0x4 >= 8) {
+        if (8 <= field_0x4) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
             for (int i = 0; i < 5; i++) {
-                pos.x = mPos.x + lbl_8046E070[i];
-                pos.y = mPos.y + lbl_8046E070[i + 5];
+                pos.x = mPos.x + lbl_8046E070_x5[i];
+                pos.y = mPos.y + lbl_8046E070_y5[i];
                 pos.z = 0.0f;
-                igniteTile(this, &pos, &tilePos);
+                s32 tileIdx = fn_80226AE0(&pos, field_0x4);
+                gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, tileIdx);
+                fn_80226CA8(tileIdx, field_0x4, &tilePos);
+                tilePos.x += 8.0f;
+                tilePos.y += 8.0f;
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, field_0x4, &tilePos, 0xF, -1, -1);
             }
         } else {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x1A3, 0, -1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x1A4, 0, 0, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x1A4, 0, 0, NULL, NULL, true, 1.0f);
             for (int i = 0; i < 13; i++) {
-                pos.x = mPos.x + lbl_8046E070[10 + i];
-                pos.y = mPos.y + lbl_8046E070[23 + i];
+                pos.x = mPos.x + lbl_8046E070_x13[i];
+                pos.y = mPos.y + lbl_8046E070_y13[i];
                 pos.z = 0.0f;
-                igniteTile(this, &pos, &tilePos);
+                s32 tileIdx = fn_80226AE0(&pos, field_0x4);
+                gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, tileIdx);
+                fn_80226CA8(tileIdx, field_0x4, &tilePos);
+                tilePos.x += 8.0f;
+                tilePos.y += 8.0f;
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, field_0x4, &tilePos, 0xF, -1, -1);
             }
         }
     } else {
-        if (field_0x4 >= 8) {
+        if (8 <= field_0x4) {
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 5, -1, -1);
         } else {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EF, 0, -1, NULL, NULL, true, 1.0f);
