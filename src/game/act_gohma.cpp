@@ -192,11 +192,8 @@ void Gohma_804A307C::vfunc_0x44() {
 // FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
 // (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
-    s32 hitPlayer;
-    f32 minY = mPos.y + mBox.i.y;
-    f32 maxX = mPos.x + mBox.f.x;
-    f32 maxY = mPos.y + mBox.f.y;
-    f32 minX = mPos.x + mBox.i.x;
+    JGeometry::TBox2f box(mBox);
+    box.addPos(mPos.x, mPos.y);
 
     if (fn_801F3D94(1)) {
         fn_801F2618(NULL, false);
@@ -221,11 +218,11 @@ void Gohma_804A307C::fn_801AB6A8() {
     mPos += field_0x3c;
 
     if (field_0x230 != 6) {
-        minX = maxX + 0.5f * (minX - maxX);
-        maxY = maxY + 0.5f * (minY - maxY);
+        f32 centerX = box.f.x + 0.5f * (box.i.x - box.f.x);
+        f32 centerY = box.f.y + 0.5f * (box.i.y - box.f.y);
 
         for (s32 i = 0; i < 4; i++) {
-            hitPlayer = fn_801F285C(NULL, NULL, false, i);
+            s32 hitPlayer = fn_801F285C(NULL, NULL, false, i);
             if (hitPlayer >= 0) {
                 u16 angle;
                 s32 dir;
@@ -245,8 +242,8 @@ void Gohma_804A307C::fn_801AB6A8() {
                     field_0x3c.y = -10.0f * JMACosShort(angle);
                 }
                 JGeometry::TVec3f hitPos;
-                hitPos.x = minX;
-                hitPos.y = maxY;
+                hitPos.x = centerX;
+                hitPos.y = centerY;
                 if (fn_802379E4(hitPlayer, &hitPos)) {
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
