@@ -17,8 +17,8 @@
 
 void fn_802B7CD8(ActorBase_804A5770* actor);
 
-// FIXME(shotgun): 99.88 %, operands; behaviour drift.
-// (string literal pooling)
+extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
+
 // 0x80439C78
 cls_804B17A0::cls_804B17A0() {
     lbl_8053AEC8 = this;
