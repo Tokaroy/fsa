@@ -1481,8 +1481,8 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
 }
 
-// FIXME(shotgun): 99.78 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041B69C() {
+    s32 tieCount;
     s32 count = 0;
     s32 assigned = 0;
     if (!(field_0x28b & 1) && !(field_0x28b & 2) && !(field_0x28b & 4) && !(field_0x28b & 8)) {
@@ -1506,9 +1506,9 @@ void cls_804B13D4::fn_8041B69C() {
             count++;
         }
     }
-    while (assigned < count) {
+    do {
         s32 maxScore = -5001;
-        s32 tieCount = 0;
+        tieCount = 0;
         for (s32 i = 0; i < count; i++) {
             if (done[i] == 0 && maxScore < fn_80236100(i)) {
                 maxScore = fn_80236100(i);
@@ -1522,7 +1522,7 @@ void cls_804B13D4::fn_8041B69C() {
             }
         }
         assigned += tieCount;
-    }
+    } while (assigned < count);
     for (s32 i = 0; i < count; i++) {
         switch (rank[i]) {
         case 0:
