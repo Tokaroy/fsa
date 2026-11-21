@@ -44,11 +44,43 @@ void Icicle_8049CFC8::init() {
     }
 }
 
-// FIXME: 91.98 %, different + reloc-name; behaviour clean.
-// Same calls and constants as the original; the rest is register
-// and stack-slot allocation (the original keeps the `found` flags in r0 and r30,
-// and its box copies are laid out differently), plus the order of the fn_801CC640
-// call block.
+// Remaining diff: f2/f3 register swap and one scheduled store in checkPlayer().
+inline bool Icicle_8049CFC8::checkAttack() {
+    JGeometry::TVec2f pt(0.0f, 0.0f);
+    JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
+    JGeometry::TBox2f box(mBox2);
+    box.addPos(p);
+    JGeometry::TVec3f out;
+    s32 player = fn_8023AA18(&box, field_0x4, &pt);
+    if (player >= 0) {
+        return true;
+    } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC820(player, NULL);
+        return true;
+    } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC538(player, &pt, &out, NULL);
+        return true;
+    } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC640(player, NULL, NULL);
+        return true;
+    }
+    return false;
+}
+
+inline bool Icicle_8049CFC8::checkPlayer() {
+    JGeometry::TBox2f box(mBox);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
+    JGeometry::TVec2f out;
+    if (fn_8023AB94(&box, field_0x4, &out) >= 0) {
+        return true;
+    }
+    return false;
+}
+
+// FIXME: 98.73 %, scheduling+regalloc; behaviour clean.
 void Icicle_8049CFC8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
@@ -61,40 +93,12 @@ void Icicle_8049CFC8::update() {
             fn_8010B40C(1);
             break;
         }
-        {
-            JGeometry::TVec2f pt(0.0f, 0.0f);
-            JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
-            JGeometry::TBox2f box(mBox2);
-            box.addPos(p);
-            JGeometry::TVec3f out;
-            bool found = false;
-            s32 player = fn_8023AA18(&box, field_0x4, &pt);
-            if (player >= 0) {
-                found = true;
-            } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC820(player, NULL);
-                found = true;
-            } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC538(player, &pt, &out, NULL);
-                found = true;
-            } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC640(player, NULL, NULL);
-                found = true;
-            }
-            if (found) {
-                fn_8010B40C(1);
-                break;
-            }
+        if (checkAttack()) {
+            fn_8010B40C(1);
+            break;
         }
-        {
-            JGeometry::TVec2f p(mPos.x, mPos.y);
-            JGeometry::TBox2f box(mBox);
-            box.addPos(p);
-            JGeometry::TVec2f out;
-            bool inBox = fn_8023AB94(&box, field_0x4, &out) >= 0;
-            if (inBox) {
-                fn_8010B40C(2);
-            }
+        if (checkPlayer()) {
+            fn_8010B40C(2);
         }
         break;
     case 1:
@@ -124,40 +128,12 @@ void Icicle_8049CFC8::update() {
             fn_8010B40C(3);
             break;
         }
-        {
-            JGeometry::TVec2f pt(0.0f, 0.0f);
-            JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
-            JGeometry::TBox2f box(mBox2);
-            box.addPos(p);
-            JGeometry::TVec3f out;
-            bool found = false;
-            s32 player = fn_8023AA18(&box, field_0x4, &pt);
-            if (player >= 0) {
-                found = true;
-            } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC820(player, NULL);
-                found = true;
-            } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC538(player, &pt, &out, NULL);
-                found = true;
-            } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC640(player, NULL, NULL);
-                found = true;
-            }
-            if (found) {
-                fn_8010B40C(3);
-                break;
-            }
+        if (checkAttack()) {
+            fn_8010B40C(3);
+            break;
         }
-        {
-            JGeometry::TVec2f p(mPos.x, mPos.y);
-            JGeometry::TBox2f box(mBox);
-            box.addPos(p);
-            JGeometry::TVec2f out;
-            bool inBox = fn_8023AB94(&box, field_0x4, &out) >= 0;
-            if (inBox) {
-                fn_8010B40C(2);
-            }
+        if (checkPlayer()) {
+            fn_8010B40C(2);
         }
         break;
     case 2:
@@ -186,14 +162,22 @@ void Icicle_8049CFC8::update() {
         }
         break;
     }
-    field_0x54.x = field_0x54.y = field_0x54.z = field_0x240;
+    field_0x54.setAll(field_0x240);
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 98.63 %, scheduling+regalloc; behaviour clean.
-// Same instructions except the order of the field_0x54.y and
-// field_0x54.x loads (the original loads y first). A read-once local for y
-// matches the order, but only as a trick.
+static inline void setScaleMtx(Mtx m, f32 sx, f32 sy, f32 sz) {
+    m[0][0] = sx;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = sy;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = sz;
+}
+
 void Icicle_8049CFC8::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
@@ -202,15 +186,7 @@ void Icicle_8049CFC8::draw() {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
-        mtx[0][0] = field_0x54.x;
-        mtx[0][1] = 0.0f;
-        mtx[0][2] = 0.0f;
-        mtx[1][0] = 0.0f;
-        mtx[1][1] = field_0x54.y;
-        mtx[1][2] = 0.0f;
-        mtx[2][0] = 0.0f;
-        mtx[2][1] = 0.0f;
-        mtx[2][2] = field_0x54.z;
+        setScaleMtx(mtx, field_0x54.x, field_0x54.y, field_0x54.z);
         params.mMtx = mtx;
     }
     if (field_0x54.isZero()) {
@@ -268,11 +244,9 @@ bool Icicle_8049CFC8::fn_8010B40C(s32 state) {
 // Not auto-inlined: update calls fn_8010B284 out of line in the original
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 97.59 %, scheduling+regalloc; behaviour clean.
 bool Icicle_8049CFC8::fn_8010B284() {
     JGeometry::TVec3f playerPos;
     JGeometry::TVec3f probe = mPos;
-    bool blocked = false;
     for (s32 i = 0; i < 4; i++) {
         playerPos = *getPlayerPos_8023E724(i);
         if (field_0x4 == 8 && getPlayerLayer_8023DE58(i) == 0) {
@@ -282,7 +256,9 @@ bool Icicle_8049CFC8::fn_8010B284() {
             playerPos.x > mPos.x + 40.0f) {
             continue;
         }
-        for (s32 j = 1; j <= 24; j++) {
+        s32 j;
+        bool blocked = false;
+        for (j = 1; j <= 24; j++) {
             probe.y = mPos.y + 16.0f * j;
             if (probe.y >= playerPos.y) {
                 break;
