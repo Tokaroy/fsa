@@ -189,6 +189,7 @@ void Gohma_804A307C::vfunc_0x44() {
     field_0x230 = 5;
 }
 
+// FIXME: 98.59 %, missing/extra; behaviour drift.
 // FIXME: emitter stops also store 1 at emitter+0x24 right after the status-bit store
 // (JPAEmitter.h has no field there, same as act_force_gem_wooden).
 void Gohma_804A307C::fn_801AB6A8() {
@@ -405,7 +406,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     }
 }
 
-// FIXME: 90.65 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 91.51 %, missing/extra + reloc-name; behaviour drift.
 // (missing/extra + reloc-name). Scheduling, ours has 2 fewer instructions: the 0.0f that zeroes
 // field_0x3c is loaded earlier in the original (before the case-8/9 speed and timer arithmetic), the `li` argument
 // setup of the fn_801EEC98 call and `li r30, 1` are ordered differently, and in case 11 the original stores
