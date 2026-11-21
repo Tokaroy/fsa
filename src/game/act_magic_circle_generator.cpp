@@ -55,8 +55,8 @@ MagicCircleGenerator_804A9FB0::~MagicCircleGenerator_804A9FB0() {
     }
 }
 
-// FIXME(shotgun): 84.73 %, missing/extra; behaviour near.
-// the box temporaries and the key-search loop are scheduled differently
+// FIXME: 98.65 %, regalloc-only; behaviour clean.
+// FIXME: regalloc-only (r28-r31 permuted).
 void MagicCircleGenerator_804A9FB0::update() {
     switch (field_0x244) {
     case 0: {
@@ -64,25 +64,21 @@ void MagicCircleGenerator_804A9FB0::update() {
         field_0x80.i.y = -9.0f;
         field_0x80.f.x = 9.0f;
         field_0x80.f.y = 9.0f;
-        JGeometry::TBox2f probe;
-        probe = field_0x80;
-        probe.i.x += mPos.x;
-        probe.i.y += mPos.y;
-        probe.f.x += mPos.x;
-        probe.f.y += mPos.y;
+        JGeometry::TBox2f box;
+        JGeometry::TVec3f keyPos;
+        box = field_0x80;
+        JGeometry::TVec2f offset(mPos.x, mPos.y);
+        box.addPos(offset);
         mBox.i.x = -32.0f;
         mBox.i.y = -32.0f;
         mBox.f.x = 32.0f;
         mBox.f.y = 32.0f;
-        JGeometry::TBox2f area;
-        area.i.x = mBox.i.x + mPos.x;
-        area.i.y = mBox.i.y + mPos.y;
-        area.f.x = mBox.f.x + mPos.x;
-        area.f.y = mBox.f.y + mPos.y;
-        field_0x250 = fn_8023AF14(&area, field_0x4, false, 0.0f);
+        box.set(mBox);
+        box.addPos(offset);
+        field_0x250 = fn_8023AF14(&box, field_0x4, false, 0.0f);
         if (field_0x250 >= 0) {
             if (mEmitter234 == NULL) {
-                JGeometry::TVec3f pos = mPos;
+                JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
                 mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x2A7, 1, 0, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(9, 0);
                 if (getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 &&
@@ -108,23 +104,21 @@ void MagicCircleGenerator_804A9FB0::update() {
             mBox.i.y = -10.0f;
             mBox.f.x = 20.0f;
             mBox.f.y = 40.0f;
-            JGeometry::TBox2f keyBox;
-            keyBox.i.x = mBox.i.x + mPos.x;
-            keyBox.i.y = mBox.i.y + mPos.y;
-            keyBox.f.x = mBox.f.x + mPos.x;
-            keyBox.f.y = mBox.f.y + mPos.y;
+            box.set(mBox);
+            box.addPos(offset);
             for (s32 player = 0; player < 4; player++) {
-                if (fn_8023B0F4(player, &keyBox, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
+                if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player)));
                     if (key != NULL && key->field_0x280 == 6) {
-                        JGeometry::TVec3f pos = key->mPos;
+                        keyPos = key->mPos;
                         field_0x244 = 1;
                         field_0x24c = 0x14;
-                        if (field_0x4 >= 8) {
-                            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
+                        s32 layer = field_0x4;
+                        if (layer >= 8) {
+                            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &keyPos, 0, -1, -1);
                         } else {
-                            JGeometry::TVec3f effectPos = pos;
+                            JGeometry::TVec3f effectPos = keyPos;
                             if (mEmitter230 != NULL) {
                                 releaseEmitter_801EE434(mEmitter230);
                             }
@@ -209,33 +203,39 @@ void MagicCircleGenerator_804A9FB0::update() {
     }
 }
 
-// FIXME(shotgun): 87.24 %, missing/extra + reloc-name; behaviour near.
-// sqrtf's expansion (the original calls the guarded software form) and the emitter alpha stores
 void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     s32 bestSerial = -1;
     s32 bestDist = -1;
-    s32 serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial)) >= 0) {
+    int serial = -1;
+    JGeometry::TVec3f pos;
+    while (true) {
+        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        if (serial < 0) {
+            break;
+        }
         SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (key == NULL || key->field_0x280 != 6 || key->field_0x240 == 0) {
             continue;
         }
-        JGeometry::TVec3f keyPos = key->mPos;
-        f32 dy = keyPos.y - mPos.y;
-        f32 dx = keyPos.x - mPos.x;
-        s32 dist = (s32)std::sqrtf(dy * dy + dx * dx);
+        pos = key->mPos;
+        f32 dx = pos.x - mPos.x;
+        f32 dy = pos.y - mPos.y;
+        s32 dist = (s32)std::sqrtf(dx * dx + dy * dy);
         if (dist > 64) {
             dist = 64;
         }
-        if (bestDist < 0 || dist < bestDist) {
+        if (bestDist < 0) {
+            bestDist = dist;
+            bestSerial = serial;
+        } else if (dist < bestDist) {
             bestDist = dist;
             bestSerial = serial;
         }
     }
     if (bestSerial >= 0) {
         SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(bestSerial));
-        u8 alpha = (64 - bestDist) * 4;
-        JGeometry::TVec3f pos = key->mPos;
+        s32 alpha = (64 - bestDist) * 4;
+        pos = key->mPos;
         if (mEmitter238 == NULL) {
             mEmitter238 = spawnEmitter_8013CC50(field_0x4, &pos, 0x314, 0, 2, NULL, NULL, true, 1.0f);
         }
@@ -247,7 +247,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
         }
         if (mEmitter238 != NULL) {
             if (key->field_0xc4) {
-                pos = *fn_8023E7B0(key->field_0xc8);
+                pos.set(*fn_8023E7B0(key->field_0xc8));
                 setEmitterPos_8013CB44(mEmitter238, &pos, -1, 3, true);
             } else {
                 pos.z += 0.1f;
@@ -264,16 +264,15 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     }
 }
 
-// FIXME: 93.51 %, missing/extra; behaviour clean.
-// The -20.0f / 20.0f literals are @508 / @509, not
-// lbl_80541260 / lbl_80541264 (data split), and the search keeps its loop
-// value in r29 where the original has li r28, -1 (r28 = previous serial).
+// FIXME: 98.28 %, missing/extra; behaviour clean.
+// FIXME: serial/key swapped between r28/r29 (coalescing mr r28, r29),
+// f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
+    JGeometry::TVec2<f32> myPos(mPos.x, mPos.y);
     mBox.set(-20.0f, -20.0f, 20.0f, 20.0f);
-    f32 left = mBox.i.x + mPos.x;
-    f32 top = mBox.i.y + mPos.y;
-    f32 right = mBox.f.x + mPos.x;
-    f32 bottom = mBox.f.y + mPos.y;
+    JGeometry::TBox2<f32> myBox;
+    myBox.set(mBox);
+    myBox.addPos(myPos);
 
     s32 serial = -1;
     for (;;) {
@@ -293,27 +292,10 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
         if (pos.z != 0.0f) {
             continue;
         }
-        f32 keyLeft = key->mBox.i.x + pos.x;
-        f32 keyTop = key->mBox.i.y + pos.y;
-        f32 keyRight = key->mBox.f.x + pos.x;
-        f32 keyBottom = key->mBox.f.y + pos.y;
-        if (keyLeft <= left) {
-            keyLeft = left;
-        }
-        if (keyTop <= top) {
-            keyTop = top;
-        }
-        if (keyRight >= right) {
-            keyRight = right;
-        }
-        if (keyBottom >= bottom) {
-            keyBottom = bottom;
-        }
-        bool overlap = false;
-        if (keyRight >= keyLeft && keyBottom >= keyTop) {
-            overlap = true;
-        }
-        if (!overlap) {
+        JGeometry::TBox2<f32> keyBox;
+        keyBox.set(key->mBox);
+        keyBox.addPos(pos.x, pos.y);
+        if (!keyBox.intersect(myBox)) {
             continue;
         }
 
