@@ -152,10 +152,6 @@ void Cloud_8049CBE0::draw() {
 // Whether `player` is in the cloud: on the cloud's layer, either its box
 // (moved to the cloud's position) overlaps the player's, or one of eight
 // points around the player falls in mBox.
-// FIXME: 97.41 %, missing/extra + reloc-name; behaviour clean.
-// In the layer branch the original keeps box.i.x and mPos.x in
-// other FPRs and reloads box.i.y and box.f.y from the stack, where ours
-// reuses the registers; the eight-point loop matches.
 bool Cloud_8049CBE0::fn_801053E8(s32 player) {
     if (player < 0) {
         return false;
@@ -180,11 +176,12 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
         JGeometry::TVec3f v;
         fn_8022E088(player, i, &v);
         v -= mPos;
+        v.z = 0.0f;
         // The angle is in s16 units (32768 = 180 degrees); JMASinShort and
         // JMACosShort index the sin/cos table with it.
         s32 angle = (s32)(JMath::atanTable_.atan2_(v.y, v.x) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        f32 len = JGeometry::TVec2<f32>(v.x, v.y).length();
+        f32 len = JGeometry::TUtil<f32>::sqrt(v.x * v.x + v.y * v.y);
         v.x = len * JMACosShort(angle);
         v.y = len * JMASinShort(angle);
         v.z = 0.0f;
