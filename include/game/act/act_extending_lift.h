@@ -20,10 +20,8 @@ public:
 
     bool isPlayerOn(s32 player);
 
-    /* 0x230 */ f32 field_0x230;
-    /* 0x234 */ f32 field_0x234;
-    /* 0x238 */ f32 field_0x238;
-    /* 0x23C */ f32 field_0x23c;
+    /* 0x230 */ JGeometry::TVec2f field_0x230;
+    /* 0x238 */ JGeometry::TVec2f field_0x238;
     /* 0x240 */ const ResTIMG* field_0x240;
     /* 0x244 */ u8 field_0x244;
     /* 0x245 */ u8 field_0x245[3];
