@@ -43,7 +43,7 @@ cls_801EB8CC::~cls_801EB8CC() {
 // fn_801EB710: restarts the ring: stores *pos in field_0x0, clears field_0x5c and
 // spawns, on effect layer `layer`, the seven emitters (ids 0x233 + i, 14 away from
 // *pos, 0x1F70 apart) with field_0x54 as their alpha, plus id 0x23A once at the first.
-// FIXME(shotgun): 92.83 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.41 %, scheduling+regalloc; behaviour clean.
 void cls_801EB8CC::fn_801EB710(s32 layer, const JGeometry::TVec3f* pos) {
     field_0x0.set(*pos);
     field_0x5c = 0;
@@ -107,7 +107,7 @@ bool cls_801EB8CC::fn_801EB648() const {
 // 0x16A a frame, 0x1F70 apart) and the one at 0x50 on the first spot; field_0x54
 // eases towards field_0x58 and is the emitters' alpha. Once it reaches 0 with
 // field_0x5c set, the emitters are deleted.
-// FIXME: 97.08 %, missing/extra; behaviour near.
+// FIXME: 98.99 %, scheduling+regalloc; behaviour clean.
 // missing/extra (4 fewer): the original turns the u8 fade-out flag into
 // the bool with neg / or / srwi (ours: clrlwi) and keeps the alpha's clrlwi; its
 // loop-invariant loads are ordered differently (registers follow).
