@@ -94,9 +94,9 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
             if (!(sq <= 32.0f * FLT_EPSILON)) {
-                f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= norm;
-                dy *= norm;
+                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                dx *= sq;
+                dy *= sq;
             }
             dx *= 3.0f;
             dy *= 3.0f;
@@ -104,8 +104,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             field_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 fn_80230FD0(player, 0x20002);
-                JGeometry::TVec3f at(hitX, hitY, 0.0f);
-                fn_801CB4A4(field_0x4, &at, 0, 0);
+                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             mFlags |= 0x80000;
@@ -172,7 +171,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         mBox.set(x0, y0, x1, y1);
         for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(&where, NULL, true, p)) {
-                if (field_0x98 == fn_801D0020(&mPos, p, false)) {
+                if (fn_801D0020(&mPos, p, false) == field_0x98) {
                     if (locked) {
                         fn_8023B6CC(p);
                         fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
@@ -208,9 +207,9 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 sq = dx * dx + dy * dy;
             if (!(sq <= 32.0f * FLT_EPSILON)) {
-                f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= norm;
-                dy *= norm;
+                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                dx *= sq;
+                dy *= sq;
             }
             dx *= 3.0f;
             dy *= 3.0f;
@@ -218,8 +217,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             field_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 startSound_801F0E34(0x400D1, 0);
-                JGeometry::TVec3f at(hitX, hitY, 0.0f);
-                fn_801CB4A4(field_0x4, &at, 0, 0);
+                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             return false;
