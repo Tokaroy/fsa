@@ -90,7 +90,7 @@ static inline void curvePoint(const cls_804A5568* self, u8 idx, u8 seg, f32* out
 }
 
 // Moves the chain's head along its curve by the speed (0.5 per frame).
-// FIXME(shotgun): 97.04 %, missing/extra; behaviour near.
+// FIXME(shotgun): 97.46 %, missing/extra; behaviour near.
 void cls_804A5568::fn_801E9224() {
     if (!(mFlags & 0x4000)) {
         // The original clamps this with fsel (0.5f >= 0 ? 0.5f : 0.0f, all in float); not reproduced.
@@ -99,7 +99,7 @@ void cls_804A5568::fn_801E9224() {
         while (budget > 0.0f) {
             f32 curX;
             f32 curY;
-            curvePoint(this, field_0x3b0, (s32)field_0x3b4, &curX, &curY);
+            curvePoint(this, field_0x3b0, (u8)field_0x3b4, &curX, &curY);
             u8 idx2 = field_0x3b0;
             u8 seg2 = (s32)field_0x3b4 + 1;
             if (seg2 >= 16) {
@@ -134,9 +134,9 @@ void cls_804A5568::fn_801E9224() {
                 field_0x3b0 = idx2;
             } else {
                 if (!(sq <= 32.0f * FLT_EPSILON)) {
-                    f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                    dx *= norm;
-                    dy *= norm;
+                    sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
+                    dx *= sq;
+                    dy *= sq;
                 }
                 dx *= budget;
                 dy *= budget;
@@ -280,22 +280,22 @@ void cls_804A5568::fn_801E8C74(s32 arg) {
 // `b` scaling the texture coordinate.
 // Not auto-inlined: fn_801E8080 calls fn_801E8B1C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 79.07 %, scheduling+regalloc + reloc-name; behaviour drift.
+// FIXME(shotgun): 80.12 %, scheduling+regalloc; behaviour drift.
 void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u16 ang, u16 span) const {
     static f32 sZ = -256.0f;
     f32 h = 0.5f * (f32)(s32)(ang + span);
     h += (h > 0.0f) ? 0.5f : -0.5f;
-    f32 v = a * (1.0f / (4.0f * b));
     f32 s0 = JMath::sincosTable_.mTable[ang >> 5].first;
     f32 c0 = JMath::sincosTable_.mTable[ang >> 5].second;
     s16 delta = (s16)h - (s16)ang;
     f32 scale = 2.0f * (1.0f / JMath::sincosTable_.cosShort(delta));
     s16 perp = -(s16)(delta - 0x4000);
-    f32 s2 = JMath::sincosTable_.sinShort(perp);
     f32 c2 = JMath::sincosTable_.cosShort(perp);
+    f32 s2 = JMath::sincosTable_.sinShort(perp);
     JGeometry::TVec2f off;
-    off.x = (s0 * c2 - c0 * s2) * scale;
     off.y = (s0 * s2 + c0 * c2) * scale;
+    off.x = (s0 * c2 - c0 * s2) * scale;
+    f32 v = a * (1.0f / (4.0f * b));
     GXPosition3f32(center->x + off.x, sZ + (center->y + off.y), sZ);
     GXTexCoord2f32(1.0f, v);
     off.x = -off.x;
@@ -305,7 +305,7 @@ void cls_804A5568::fn_801E8B1C(f32 a, f32 b, const JGeometry::TVec2f* center, u1
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.68 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.98 %, scheduling+regalloc; behaviour clean.
 // cls_804A5568
 void cls_804A5568::fn_801E8080() const {
     f32 len = 0.0f;
@@ -354,9 +354,6 @@ void cls_804A5568::fn_801E8080() const {
                 if (drawn >= verts1 - 2) {
                     break;
                 }
-            }
-            if (drawn >= verts1 - 2) {
-                break;
             }
         }
         f32 d = JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy);
