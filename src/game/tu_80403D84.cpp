@@ -2178,7 +2178,7 @@ void MapScreen_804B1288::fn_80409FDC() {
     }
 }
 
-// FIXME: 96.84 %, scheduling+regalloc; behaviour clean.
+// FIXME: 96.86 %, scheduling+regalloc; behaviour clean.
 // Missing/extra (one instruction): in the field_0xd4 loop the original
 // multiplies scale * field_0x10 after fn_8040271C (keeping field_0x10 in f30), ours before
 // it (an extra fmr); the table / field_0x18 loads of each division are also swapped. The
@@ -2227,10 +2227,10 @@ void MapScreen_804B1288::fn_804096E8() {
                 field_0xd0->fn_80402940(20, 0, dy + lbl_8048C87C[field_0x340], 0.0f);
                 field_0xd0->fn_8040271C(20, lbl_8048C850[field_0x340] / field_0xc8->field_0x18, 1.0f);
                 for (int i = 0; i < 18; i++) {
-                    f32 x = field_0xd4[i]->field_0x10;
+                    dx = field_0xd4[i]->field_0x10;
                     dy = scale * field_0xd4[i]->field_0x14;
                     field_0xd4[i]->fn_8040271C(20, lbl_8048C850[field_0x340] / field_0xc8->field_0x18, 1.0f);
-                    field_0xd4[i]->fn_80402B10(20, 0, scale * x, 0.0f);
+                    field_0xd4[i]->fn_80402B10(20, 0, scale * dx, 0.0f);
                     field_0xd4[i]->fn_80402940(20, 0, dy, 0.0f);
                 }
             }
@@ -2580,7 +2580,7 @@ void MapScreen_804B1288::fn_80408114() {
     }
 }
 
-// FIXME(shotgun): 99.35 %, operands; behaviour clean.
+// FIXME(shotgun): 99.67 %, operands; behaviour clean.
 // regalloc
 void MapScreen_804B1288::fn_8040732C() {
     s32 picked = -1;
@@ -2602,18 +2602,8 @@ void MapScreen_804B1288::fn_8040732C() {
         return;
     }
     for (int i = field_0x340 * 3; i < field_0x340 * 3 + 3; i++) {
+        u8 rank = lbl_80529DEC.getField1FC(i / 3, i % 3);
         s32 stage = i / 3;
-        u8 rank;
-        if (stage < 0 || stage >= 8) {
-            rank = 0xFF;
-        } else {
-            s32 sub = i % 3;
-            if (sub < 0 || sub >= 3) {
-                rank = 0xFF;
-            } else {
-                rank = lbl_80529DEC.field_0x1fc[stage][sub];
-            }
-        }
         s32 sub = i % 3;
         if (stage == 7) {
             if (sub > 0) {
