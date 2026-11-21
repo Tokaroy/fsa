@@ -55,6 +55,7 @@ MagicCircleGenerator_804A9FB0::~MagicCircleGenerator_804A9FB0() {
     }
 }
 
+// FIXME: 98.65 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only (r28-r31 permuted).
 void MagicCircleGenerator_804A9FB0::update() {
     switch (field_0x244) {
@@ -263,6 +264,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     }
 }
 
+// FIXME: 98.28 %, missing/extra; behaviour clean.
 // FIXME: serial/key swapped between r28/r29 (coalescing mr r28, r29),
 // f0-f3 shifted by 1 in keyBox.addPos/intersect, and fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
