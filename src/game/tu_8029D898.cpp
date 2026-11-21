@@ -175,12 +175,14 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     field_0x20 = fn_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
     bool result = true;
+    s32 serial;
+    ActorBase_804A5770* actor;
     if (field_0x24 >= 0x40 && field_0x24 <= 0x44) {
         if (field_0x24 == 0x41) {
             gBgRewrite_8053AC98->fn_802A3884(pos, 0, layer, 0x12);
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
+                actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
                     JGeometry::TVec3f actorPos = actor->mPos;
                     JGeometry::TVec2f q(actorPos.x, actorPos.y);
@@ -195,8 +197,8 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         } else {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
         }
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x40, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x40, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
@@ -208,22 +210,22 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         } else {
             gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x15);
         }
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x45, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x45, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
     } else if (field_0x24 == 0x4E) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x80, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x80, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
     } else if (field_0x24 == 0x4F) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x100, -1, -1);
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x100, -1, -1);
+        actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->vfunc_0x24();
         }
