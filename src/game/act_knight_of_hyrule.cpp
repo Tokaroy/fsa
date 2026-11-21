@@ -72,9 +72,7 @@ void KnightOfHyrule_804AABA8::vfunc_0x10() {
     field_0x268.z = 0.0f;
 }
 
-// FIXME: 98.62% (different: getActorManager_801F856C()->mActors[slot] indexing uses addi+lwzx
-// instead of add+lwz 0x8; fn_802303FC's 3rd arg is declared bool in Player.h so it passes 1
-// instead of 0xFF; and f0..f5 register allocation in the camera box setup).
+// FIXME: fn_802303FC's 3rd arg is declared bool in Player.h (passes 1 instead of 0xFF); slot uses r29 instead of r30.
 void KnightOfHyrule_804AABA8::update() {
     JGeometry::TVec3f pos;
     switch (mState) {
@@ -237,7 +235,7 @@ void KnightOfHyrule_804AABA8::update() {
         }
         s32 slot = field_0x278;
         if (slot >= 0) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                 if (static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z)) {
                     mPos.z += field_0x3c.z;
@@ -299,7 +297,7 @@ void KnightOfHyrule_804AABA8::update() {
         mPos.z += field_0x3c.z;
         s32 slot = field_0x278;
         if (slot >= 0) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                 static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
             }
@@ -310,7 +308,7 @@ void KnightOfHyrule_804AABA8::update() {
         } else if (mPos.z <= 10.0f && field_0x27d == 0) {
             s32 slot2 = field_0x278;
             if (slot2 >= 0) {
-                ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot2];
+                ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot2);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                     static_cast<cls_804AA350*>(actor)->fn_802ED7D8();
                     field_0x27d = 1;
@@ -382,7 +380,7 @@ void KnightOfHyrule_804AABA8::update() {
         mPos.z += field_0x3c.z;
         s32 slot = field_0x278;
         if (slot >= 0) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[slot];
+            ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                 static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
             }
@@ -409,27 +407,21 @@ void KnightOfHyrule_804AABA8::update() {
                 cam->field_0x1d8 = cam->field_0x1d4 = -1.0f;
             }
         } else {
-            f32 x0, y0, x1, y1;
+            JGeometry::TBox2f box;
             if (gGameRoot_8053AAF8->field_0x7e != 0) {
-                x0 = -30.0f;
-                y0 = -38.0f;
-                x1 = 30.0f;
-                y1 = 22.0f;
+                box.set(-30.0f, -38.0f, 30.0f, 22.0f);
             } else {
-                x0 = -10.0f;
-                y0 = -18.0f;
-                x1 = 10.0f;
-                y1 = 2.0f;
+                box.set(-10.0f, -18.0f, 10.0f, 2.0f);
             }
-            x0 += field_0x268.x;
-            x1 += field_0x268.x;
-            y0 += field_0x268.y;
-            y1 += field_0x268.y;
+            box.i.x += field_0x268.x;
+            box.f.x += field_0x268.x;
+            box.i.y += field_0x268.y;
+            box.f.y += field_0x268.y;
             Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
             if (cam->field_0x7f5 == 0) {
                 cam->field_0x7f4 = 1;
                 cam->field_0x7f8 = 5;
-                cam->field_0x808.set(x0, y0, x1, y1);
+                cam->field_0x808.set(box);
                 cam->field_0x7f6 = 0;
             }
         }
