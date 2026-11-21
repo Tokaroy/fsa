@@ -309,19 +309,8 @@ void cls_8049C718::fn_800FC984() {
     fn_801F3D94(1);
 }
 
-// FIXME(shotgun): 98.70 %, different; behaviour clean.
 void cls_8049C718::fn_800FC4A8() {
-    bool swapped = false;
-    if (mSlot == 0) {
-        field_0xb0 = 4;
-        mAnimState = 1;
-        mTimer = 0;
-        mState = 8;
-        startSound_801F0E34(0x40005, 0);
-        mSignal = 1;
-        swapped = true;
-    }
-    if (swapped) {
+    if (trySwap(this)) {
         return;
     }
     if (mCooldown != 0) {
