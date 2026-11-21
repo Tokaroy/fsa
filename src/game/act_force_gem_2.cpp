@@ -17,6 +17,7 @@ ForceGem2_804AB850::~ForceGem2_804AB850() {
     releaseEmitter_801EE434(mEmitter284);
 }
 
+// FIXME: 99.57 %, regalloc-only; behaviour clean.
 void ForceGem2_804AB850::init() {
     field_0x94 = (field_0x90 >> 16) & 0xFF;
     field_0x264 = field_0x90 & 7;
@@ -95,7 +96,8 @@ bool ForceGem2_804AB850::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return code != 0;
 }
 
-// FIXME: 97.72 %. Literal and jump-table labels (@NNN) and a few register picks.
+// FIXME: 99.75 %, scheduling+regalloc; behaviour drift.
+// Literal and jump-table labels (@NNN) and a few register picks.
 void ForceGem2_804AB850::update() {
     s32 player = 0;
     u16 angle = 0;
@@ -257,7 +259,8 @@ void ForceGem2_804AB850::update() {
     }
 }
 
-// FIXME: 99.25 %. Register allocation only: the original keeps the scale (field_0x238)
+// FIXME: 99.25 %, regalloc-only; behaviour clean.
+// Register allocation only: the original keeps the scale (field_0x238)
 // in f29 and the cos of the zero angle in f31; ours swap them, so the products and the
 // sin / cos results shift registers. Loading the scale before or after the rotation
 // vector does not change it.
