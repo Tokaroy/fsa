@@ -47,7 +47,6 @@ MagicCircle_804A7960::~MagicCircle_804A7960() {
     releaseEmitter_801EE434(mEmitter278);
 }
 
-// FIXME: 99.89%, regalloc-only (f2/f31 and f1/f30 swapped in the two destMin fadds)
 void MagicCircle_804A7960::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mLife = 0;
@@ -80,8 +79,10 @@ void MagicCircle_804A7960::init() {
         field_0x268.y = destMinY + (mPos.y - srcMinY);
         field_0x268.z = 0.0f;
     } else {
-        field_0x268.set(8.0f + ((f32)getTargetX(field_0x90) + destMinX),
-                        8.0f + ((f32)getTargetY(field_0x90) + destMinY),
+        f32 targetX = getTargetX(field_0x90);
+        f32 targetY = getTargetY(field_0x90);
+        field_0x268.set(8.0f + (targetX + destMinX),
+                        8.0f + (targetY + destMinY),
                         0.0f);
     }
 
@@ -192,7 +193,8 @@ bool MagicCircle_804A7960::fn_8028B850() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.81%, scheduling+regalloc (register choice at 0x90C and x/y evaluation order in dest.set)
+// FIXME: 99.90 %, scheduling+regalloc; behaviour clean.
+// FIXME: scheduling+regalloc (register choice at 0x90C and x/y evaluation order in dest)
 void MagicCircle_804A7960::update() {
     bool prevActive = field_0x234;
     field_0x262 = 0;
@@ -381,15 +383,16 @@ void MagicCircle_804A7960::update() {
         }
         if (actor != NULL && (actor->mActorId != ACTOR_FIRE || ((actor->field_0x90 >> 6) & 3) != 1) && !actor->field_0xc4) {
             JGeometry::TVec3f dest;
-            dest.set(8.0f + ((f32)getTargetX(field_0x90) + viewX),
-                     8.0f + ((f32)getTargetY(field_0x90) + viewY),
-                     0.0f);
+            dest.x = (f32)getTargetX(field_0x90) + viewX + 8.0f;
+            dest.y = (f32)getTargetY(field_0x90) + viewY + 8.0f;
+            dest.z = 0.0f;
             actor->fn_801F349C(getTargetLayer(field_0x90), &dest);
         }
     }
 }
 
-// FIXME: 93.63%, scheduling+regalloc. In the inlined setRotScaleMtx the float registers (f26-f31)
+// FIXME: 93.63 %, scheduling+regalloc; behaviour clean.
+// In the inlined setRotScaleMtx the float registers (f26-f31)
 // are allocated differently and the fmuls/fmsubs/fmadds are scheduled in another order (0x158-0x258).
 void MagicCircle_804A7960::draw() {
     if (field_0x240 <= 0.0f) {
