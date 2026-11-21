@@ -8,8 +8,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_tektite.h"
 
-// FIXME: 95.70%. The 0xFFFF store is built with `lis r6, 1; subi r0, r6, 1` in
-// the original and with r3 here (register choice only).
+// FIXME: regalloc r6/r7 swap between 0x10000 constant and gGameRoot_8053AAF8.
 void Tektite_8049FD50::init() {
     field_0x240 = 0;
     field_0x244 = 0;
@@ -59,9 +58,9 @@ void Tektite_8049FD50::init() {
         field_0x250 = 2;
         field_0x230 = 1;
     } else {
-        field_0xb0 = 0x11101;
         field_0x238 = 0x14 + (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         field_0x250 = 0;
+        field_0xb0 = 0x11101;
         field_0x230 = 0;
     }
 }
