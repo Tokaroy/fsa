@@ -34,7 +34,7 @@ void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.51 %, missing/extra; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
     switch (mState) {
     case 0x0:
@@ -284,7 +284,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
 }
 
 // Whether something hurts the actor through its hit box: the hit box of player attacks.
-// FIXME: 90.95 %, missing/extra + reloc-name; behaviour clean.
+// FIXME: 95.93 %, missing/extra; behaviour clean.
 // FIXME(shotgun): register allocation and stack slots differ; early returns are laid out differently.
 u8 ShadowLink2_804A43E8::fn_801CA274() {
     u8 ret = 0;
@@ -465,7 +465,7 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
 
 // Moves the actor along the map; lifts the z-offset into the ground plane for the sweep when the
 // actor is in the air (state 0x1C) and lands it when it touches ground.
-// FIXME: 98.31 %, missing/extra; behaviour near.
+// FIXME: 98.35 %, missing/extra; behaviour near.
 // FIXME(shotgun): the airborne test is materialised as a bool in the original (mfcr/extrwi).
 u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     u8 hit = 0;
