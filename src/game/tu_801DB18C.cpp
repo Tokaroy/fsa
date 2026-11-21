@@ -6,7 +6,8 @@
 #include "game/act/tu_801DB18C.h"
 #include "game/act/tu_801DAC6C.h"
 
-extern const s16* lbl_8053A148[]; // the animation table (.sdata, this unit)
+static const s16 lbl_80469A98[] = { 7, 5, 8, 5, -1, -1 };
+static const s16* lbl_8053A148[] = { lbl_80469A98, NULL };
 extern const char lbl_80469AA4[]; // "enemy_both_sob.bin"
 
 cls_804A4EE8::cls_804A4EE8() {
@@ -37,7 +38,6 @@ cls_804A4EE8::~cls_804A4EE8() {
     }
 }
 
-// FIXME(shotgun): 97.92 %, missing/extra; behaviour clean.
 void cls_804A4EE8::init() {
     EnemyBase_804A4808::init();
     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
@@ -52,7 +52,7 @@ void cls_804A4EE8::init() {
         if (fn_801CD664(2) == 0) {
             a = -a;
         }
-        f32 n = (f32)(fn_801CD664(0x3C) + 1);
+        s32 n = fn_801CD664(0x3C) + 1;
         field_0x2b4 = 0.0f;
         field_0x2b8 = 0.1f * n;
         f32 x = field_0x2b4;
@@ -78,7 +78,7 @@ void cls_804A4EE8::init() {
     }
 }
 
-// FIXME(shotgun): 76.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
 void cls_804A4EE8::fn_801DB9CC() {
     if (fn_801CD664(2) == 0) {
         mFlags &= ~0x2000;
@@ -89,23 +89,22 @@ void cls_804A4EE8::fn_801DB9CC() {
     mAngleSpeed = 0;
     mAngle = fn_801CD664(0x10000);
     if (field_0x16c == -1) {
-        f32 vx = field_0x2b4;
-        f32 vy = field_0x2b8;
-        if (!(vx * vx + vy * vy <= 32.0f * JGeometry::TUtil<f32>::epsilon())) {
+        JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
+        if (!v.isZero()) {
             f32 rx;
             f32 ry;
-            if (vx < 0.0f) {
+            if (v.x < 0.0f) {
                 mFlags |= 0x2000;
-                f32 s = JMath::sincosTable_.sinShort((s16)0xC000);
                 f32 c = JMath::sincosTable_.cosShort((s16)0xC000);
-                ry = vx * s + vy * c;
-                rx = vx * c - vy * s;
+                f32 s = JMath::sincosTable_.sinShort((s16)0xC000);
+                ry = v.x * s + v.y * c;
+                rx = v.x * c - v.y * s;
             } else {
                 mFlags &= ~0x2000;
-                f32 s = JMath::sincosTable_.sinShort(0x4000);
                 f32 c = JMath::sincosTable_.cosShort(0x4000);
-                ry = vx * s + vy * c;
-                rx = vx * c - vy * s;
+                f32 s = JMath::sincosTable_.sinShort(0x4000);
+                ry = v.x * s + v.y * c;
+                rx = v.x * c - v.y * s;
             }
             if (fn_801CD664(2) == 0) {
                 rx = -rx;
@@ -113,12 +112,16 @@ void cls_804A4EE8::fn_801DB9CC() {
                 mFlags ^= 0x2000;
             }
             mAngle = (s32)(JMath::atanTable_.atan2_(rx, ry) * 10430.378f);
-            JGeometry::TVec2f v(field_0x2b4, field_0x2b8);
-            mAngleSpeed = (s32)(0.015915494f * (65536.0f * v.length()));
+            JGeometry::TVec2f v2(field_0x2b4, field_0x2b8);
+            mAngleSpeed = (s32)(0.015915494f * (65536.0f * v2.length()));
         }
     }
-    mSearchPos.x = mPos.x - JMath::sincosTable_.sinShort(mAngle) * mRadius;
-    mSearchPos.y = mPos.y - JMath::sincosTable_.cosShort(mAngle) * mRadius;
+    mSearchPos.x = mPos.x;
+    mSearchPos.y = mPos.y;
+    JGeometry::TVec2f dir(-JMath::sincosTable_.sinShort(mAngle), -JMath::sincosTable_.cosShort(mAngle));
+    dir.scale(mRadius);
+    mSearchPos.x += dir.x;
+    mSearchPos.y += dir.y;
     mSearchPos.z = mSearchPos.x;
     field_0x2c8 = mSearchPos.y;
     if (field_0x16c == -1) {
@@ -163,7 +166,7 @@ void cls_804A4EE8::fn_801DB950(s32 state) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 96.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 void cls_804A4EE8::fn_801DB6C8() {
     if (field_0x16c == -1) {
         JGeometry::TVec3f p;
@@ -174,30 +177,30 @@ void cls_804A4EE8::fn_801DB6C8() {
             field_0x2c8 += field_0x2d0;
         }
     }
-    f32 tx;
-    f32 ty;
+    JGeometry::TVec2f target;
     if (mTargetPlayer == -1) {
-        tx = mSearchPos.z + field_0x2b4;
-        ty = field_0x2c8 + field_0x2b8;
+        target.set(mSearchPos.z, field_0x2c8);
+        target.x += field_0x2b4;
+        target.y += field_0x2b8;
     } else {
-        JGeometry::TVec3f* player = &field_0x1ac[mTargetPlayer];
-        f32 px = player->x;
-        f32 py = player->y;
-        JGeometry::TVec2f away(mSearchPos.x - px, mSearchPos.y - py);
-        if (away.squared() <= JGeometry::TUtil<f32>::epsilon()) {
+        JGeometry::TVec3f* p = &field_0x1ac[mTargetPlayer];
+        JGeometry::TVec2f player(p->x, p->y);
+        JGeometry::TVec2f away(mSearchPos.x - player.x, mSearchPos.y - player.y);
+        if (away.isZero()) {
             away.set(0.0f, -1.0f);
         } else {
             away.normalize();
         }
-        away.x *= mRadius;
-        away.y *= mRadius;
-        tx = px + away.x + field_0x2b4;
-        ty = py + away.y + field_0x2b8;
+        away.scale(mRadius);
+        target.set(player);
+        target.add(away);
+        target.x += field_0x2b4;
+        target.y += field_0x2b8;
     }
-    JGeometry::TVec2f d(tx - mSearchPos.x, ty - mSearchPos.y);
-    if (d.squared() > JGeometry::TUtil<f32>::epsilon()) {
-        f32 len = d.length();
+    JGeometry::TVec2f d(target.x - mSearchPos.x, target.y - mSearchPos.y);
+    if (!d.isZero()) {
         f32 step = field_0x2e0;
+        f32 len = d.length();
         if (len < step) {
             step = len;
         }
@@ -261,7 +264,7 @@ void cls_804A4EE8::vfunc_0x9C(u8 mapHit) {
     setEmitterPos_8013CB44(field_0x2e4, &mPos, 1, 0, true);
 }
 
-// FIXME: 87.43 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.07 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): remaining diff is instruction scheduling and registers only.
 void cls_804A4EE8::vfunc_0x88() {
     if (field_0x2b4 != 0.0f) {
@@ -285,18 +288,12 @@ void cls_804A4EE8::vfunc_0x88() {
         }
     }
     if (mState == 0) {
-        field_0x3c.x = field_0x2b4;
-        field_0x3c.y = field_0x2b8;
-        field_0x3c.z = 0.0f;
+        field_0x3c.set(field_0x2b4, field_0x2b8, 0.0f);
         return;
     }
     f32 sinv = JMath::sincosTable_.sinShort(mAngle) * mRadius;
     f32 cosv = JMath::sincosTable_.cosShort(mAngle) * mRadius;
-    f32 tx = mSearchPos.x + sinv;
-    f32 ty = mSearchPos.y + cosv;
-    field_0x3c.x = tx - mPos.x;
-    field_0x3c.y = ty - mPos.y;
-    field_0x3c.z = 0.0f;
+    field_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
 }
 
 u8 cls_804A4EE8::vfunc_0x68() {
