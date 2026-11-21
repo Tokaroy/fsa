@@ -535,6 +535,14 @@ s32 cls_8049D83C::vfunc_0x5C() {
 // Darkens the screen: draws the image field_0x260 scaled by 96 with an alpha of field_0x248.
 // 0x80113790.
 // FIXME(shotgun): 91.17 %, missing/extra; behaviour clean.
+static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame, SpriteParams_801F5AE0* params) {
+    if (layer >= 8) {
+        return;
+    }
+    void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
+}
+
 void cls_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
@@ -542,16 +550,10 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
         fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
-        if (field_0x4 < 8) {
-            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, arg + mAnim.mCel, &params, 1.0f, 1.0f);
-        }
+        drawSob_80113B54(field_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
         fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
-        if (field_0x4 < 8) {
-            void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, arg + mAnim.mCel, &params, 1.0f, 1.0f);
-        }
+        drawSob_80113B54(field_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }
 
