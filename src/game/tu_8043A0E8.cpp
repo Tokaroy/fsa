@@ -1163,7 +1163,6 @@ void cls_804B1920::fn_8043BB84() {
     }
 }
 
-// FIXME: 99.99 %, reloc-name; behaviour drift.
 void cls_804B1920::fn_8043ACE4() {
     // Built once, never read.
     static JUtility::TColor lbl_8052C5F0[4] = {
