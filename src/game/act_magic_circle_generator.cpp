@@ -264,25 +264,25 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     }
 }
 
-// FIXME: 93.51 %, missing/extra; behaviour clean.
-// The -20.0f / 20.0f literals are @508 / @509, not
-// lbl_80541260 / lbl_80541264 (data split), and the search keeps its loop
-// value in r29 where the original has li r28, -1 (r28 = previous serial).
+// FIXME: regalloc-only in keyBox.addPos/intersect (f0-f3 shifted by 1) and
+// fcmpu operand order on pos.z != 0.0f.
 bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
+    SmallKey_804A8CD8* key;
+    s32 found;
+    JGeometry::TVec2<f32> myPos(mPos.x, mPos.y);
     mBox.set(-20.0f, -20.0f, 20.0f, 20.0f);
-    f32 left = mBox.i.x + mPos.x;
-    f32 top = mBox.i.y + mPos.y;
-    f32 right = mBox.f.x + mPos.x;
-    f32 bottom = mBox.f.y + mPos.y;
+    JGeometry::TBox2<f32> myBox;
+    myBox.set(mBox);
+    myBox.addPos(myPos);
 
     s32 serial = -1;
     for (;;) {
-        s32 found = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        found = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
         serial = found;
         if (found < 0) {
             return false;
         }
-        SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
+        key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(found));
         if (key == NULL) {
             continue;
         }
@@ -293,27 +293,10 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
         if (pos.z != 0.0f) {
             continue;
         }
-        f32 keyLeft = key->mBox.i.x + pos.x;
-        f32 keyTop = key->mBox.i.y + pos.y;
-        f32 keyRight = key->mBox.f.x + pos.x;
-        f32 keyBottom = key->mBox.f.y + pos.y;
-        if (keyLeft <= left) {
-            keyLeft = left;
-        }
-        if (keyTop <= top) {
-            keyTop = top;
-        }
-        if (keyRight >= right) {
-            keyRight = right;
-        }
-        if (keyBottom >= bottom) {
-            keyBottom = bottom;
-        }
-        bool overlap = false;
-        if (keyRight >= keyLeft && keyBottom >= keyTop) {
-            overlap = true;
-        }
-        if (!overlap) {
+        JGeometry::TBox2<f32> keyBox;
+        keyBox.set(key->mBox);
+        keyBox.addPos(pos.x, pos.y);
+        if (!keyBox.intersect(myBox)) {
             continue;
         }
 
