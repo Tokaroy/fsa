@@ -2171,7 +2171,6 @@ void ConnectScreen_804B0F10::fn_803F4120() {
 // and the chosen entry ('Pstab04' / 'Phanb04' / 'Prub04', field_0x1a8)
 // bounces with field_0x240[0]; then the screen, the player sprites
 // (fn_803F0A54) and lbl_8053AED8's buttons.
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
 void ConnectScreen_804B0F10::fn_803F38A4() {
     f32 alpha;
     f32 t;
@@ -2204,22 +2203,21 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     } else {
         bounce = 0;
     }
-    f32 offset = 5.0f * (f32)(bounce * bounce) / 25.0f;
-    f32 x;
+    t = 5.0f * (f32)(bounce * bounce) / 25.0f;
     if (field_0x1a8 == 0) {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
-        field_0xc->search('Pstab04')->move(x, field_0xfc[0] + offset);
+        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        field_0xc->search('Pstab04')->move(x, field_0xfc[0] + t);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
         field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2]);
         x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, field_0xf8 + offset);
+        field_0xc->search('Pscuro02')->move(x, field_0xf8 + t);
     } else if (field_0x1a8 == 1) {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
-        field_0xc->search('Phanb04')->move(x, field_0xfc[1] + offset);
+        field_0xc->search('Phanb04')->move(x, field_0xfc[1] + t);
         x = field_0xc->search('Prub04')->getBounds()->i.x;
         field_0xc->search('Prub04')->move(x, field_0xfc[2]);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
@@ -2227,16 +2225,16 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
         x = field_0xc->search('Pscuro02')->getBounds()->i.x;
         field_0xc->search('Pscuro02')->move(x, y);
     } else {
-        x = field_0xc->search('Pstab04')->getBounds()->i.x;
+        f32 x = field_0xc->search('Pstab04')->getBounds()->i.x;
         field_0xc->search('Pstab04')->move(x, field_0xfc[0]);
         x = field_0xc->search('Phanb04')->getBounds()->i.x;
         field_0xc->search('Phanb04')->move(x, field_0xfc[1]);
         x = field_0xc->search('Prub04')->getBounds()->i.x;
-        field_0xc->search('Prub04')->move(x, field_0xfc[2] + offset);
+        field_0xc->search('Prub04')->move(x, field_0xfc[2] + t);
         f32 top = field_0xc->search('Pstab04')->getBounds()->i.y;
         f32 y = field_0xf8 + field_0xc->search('Prub04')->getBounds()->i.y - top;
-        x = field_0xc->search('Pscuro02')->getBounds()->i.x;
-        field_0xc->search('Pscuro02')->move(x, y);
+        f32 cursorX = field_0xc->search('Pscuro02')->getBounds()->i.x;
+        field_0xc->search('Pscuro02')->move(cursorX, y);
     }
     field_0xc->search('Pscuro01')->setAlpha(alpha);
     field_0xc->search('Pscuro02')->setAlpha(alpha);
