@@ -34,7 +34,11 @@ inline void OBJLift_804ACA00::showBreakEffect(s32 layer) {
     }
 }
 
-inline void OBJLift_804ACA00::checkPushDir(s32& dir) {
+// Provisional name (always inlined): returns the push direction for state 0, or -1.
+inline s32 OBJLift_804ACA00::checkPushDir() {
+    if (field_0x260 == 0) {
+        return -1;
+    }
     switch (field_0x258) {
     case 0:
     case 1:
@@ -54,13 +58,11 @@ inline void OBJLift_804ACA00::checkPushDir(s32& dir) {
             field_0x244 = 30;
             field_0x289 = 1;
             field_0x230 = 5;
-            dir = field_0x268;
-            return;
+            return field_0x268;
         }
         break;
     case 5:
-        dir = fn_803506E0();
-        return;
+        return fn_803506E0();
     case 6:
     case 7:
     case 8:
@@ -71,15 +73,13 @@ inline void OBJLift_804ACA00::checkPushDir(s32& dir) {
             }
             startSound_801F0E34(0x30009, 0);
             field_0x230 = 1;
-            dir = field_0x268;
-            return;
+            return field_0x268;
         }
         break;
     case 12:
-        dir = fn_80350530();
-        return;
+        return fn_80350530();
     }
-    dir = -1;
+    return -1;
 }
 
 // Four strips along the lift's edges, then ten boxes by state (two per state from 16 on).
@@ -685,8 +685,6 @@ void OBJLift_804ACA00::fn_8035001C(u32 dir) {
 #pragma auto_inline reset
 
 // 0x8034F43C.
-// Still differs: the dir = -1 of the failed push tests is not merged with the default case.
-// FIXME: 99.36 %, missing/extra; behaviour drift.
 void OBJLift_804ACA00::update() {
     if (field_0x230 == 4) {
         if (vfunc_0x34() == 1) {
@@ -759,14 +757,8 @@ void OBJLift_804ACA00::update() {
     }
 
     switch (field_0x230) {
-    case 0: {
-        s32 dir;
-        if (field_0x260 == 0) {
-            dir = -1;
-        } else {
-            checkPushDir(dir);
-        }
-        fn_8035001C(dir);
+    case 0:
+        fn_8035001C(checkPushDir());
         if (field_0x268 != -1) {
             JGeometry::TVec3f saved = mPos;
             mPos += field_0x3c;
@@ -793,7 +785,6 @@ void OBJLift_804ACA00::update() {
             field_0x244 = 0;
         }
         break;
-    }
     case 5:
         if (present == TRUE && field_0x288 == 0) {
             startSound_801F0E34(0x30066, 0);
