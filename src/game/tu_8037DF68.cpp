@@ -864,7 +864,6 @@ static inline void pageSound(s32 window) {
     }
 }
 
-// FIXME(shotgun): 99.51 %, missing/extra; behaviour near.
 // (the field_0xe7 bit test is materialised as a bool in the original)
 // Steps the player's window while it shows a page (state 5 / 8): returns true once the
 // window is done (bit of field_0xe7, after the countdown field_0xf0 of two frames). On the

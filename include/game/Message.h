@@ -401,7 +401,7 @@ public:
 
     // fn_80390C38: the field at 0x148 of the processor of the window's
     // state (5: field_0x4c, 8: field_0x48), -1 in any other state.
-    s32 fn_80390C38();
+    u32 fn_80390C38();
 
     // fn_80390894: the byte at index + 0x3B2 of the processor of the window's
     // state (5: field_0x4c, 8: field_0x48), 0 in any other state.
