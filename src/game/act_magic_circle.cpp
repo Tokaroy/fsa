@@ -193,7 +193,7 @@ bool MagicCircle_804A7960::fn_8028B850() {
 }
 #pragma auto_inline reset
 
-// FIXME: 99.81%, scheduling+regalloc (register choice at 0x90C and x/y evaluation order in dest.set)
+// FIXME: scheduling+regalloc (register choice at 0x90C and x/y evaluation order in dest)
 void MagicCircle_804A7960::update() {
     bool prevActive = field_0x234;
     field_0x262 = 0;
@@ -382,9 +382,9 @@ void MagicCircle_804A7960::update() {
         }
         if (actor != NULL && (actor->mActorId != ACTOR_FIRE || ((actor->field_0x90 >> 6) & 3) != 1) && !actor->field_0xc4) {
             JGeometry::TVec3f dest;
-            dest.set(8.0f + ((f32)getTargetX(field_0x90) + viewX),
-                     8.0f + ((f32)getTargetY(field_0x90) + viewY),
-                     0.0f);
+            dest.x = (f32)getTargetX(field_0x90) + viewX + 8.0f;
+            dest.y = (f32)getTargetY(field_0x90) + viewY + 8.0f;
+            dest.z = 0.0f;
             actor->fn_801F349C(getTargetLayer(field_0x90), &dest);
         }
     }
