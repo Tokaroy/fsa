@@ -355,9 +355,6 @@ void cls_804A5568::fn_801E8080() const {
                     break;
                 }
             }
-            if (drawn >= verts1 - 2) {
-                break;
-            }
         }
         f32 d = JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy);
         u8 segFloor = (s32)field_0x3b4;
