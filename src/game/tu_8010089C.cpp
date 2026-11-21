@@ -401,7 +401,6 @@ void WhackAMoleShop_8049C8EC::showTimer() {
     }
 }
 
-// FIXME(shotgun): 96.22 %, missing/extra; behaviour clean.
 void WhackAMoleShop_8049C8EC::fn_80100A90() {
     field_0x290 = static_cast<WhackAMoleShop_8049C8EC*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x90 & 0xFFFF));
     mBox.i.x = -12.0f;
@@ -433,11 +432,11 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
             field_0x244 = 0;
         }
     } else {
-        s32 base = 0;
-        s32 w2 = 0;
-        s32 w1 = 0;
-        s32 w4 = 0;
-        s32 w3 = 0;
+        s32 w1, w2, w3, w4, base;
+        base = 0;
+        w4 = 0;
+        w2 = 0;
+        w1 = 0;
         switch (players) {
         case 1:
             w1 = 90;
