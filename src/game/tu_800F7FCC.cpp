@@ -1015,10 +1015,6 @@ void cls_8049C718::fn_800FA6B0() {
     mAnimTime++;
 }
 
-// FIXME: 85.65 %, missing/extra + reloc-name; behaviour clean.
-// FIXME(shotgun): the original does its vector arithmetic with paired singles
-// through temporaries; this is the same arithmetic written plainly.
-// 
 void cls_8049C718::fn_800FA1A4() {
     if (!(mFlags & 8)) {
         return;
@@ -1030,34 +1026,38 @@ void cls_8049C718::fn_800FA1A4() {
     JGeometry::TVec3f d = posA;
     d.sub(posB);
     if (PSVECMag((Vec*)&d) < 20.0f) {
-        JGeometry::TVec3f t = a->field_0x3c;
-        a->field_0x3c = b->field_0x3c;
-        b->field_0x3c = t;
+        JGeometry::TVec3f tA = a->field_0x3c;
+        JGeometry::TVec3f tB = b->field_0x3c;
+        a->field_0x3c = tB;
+        b->field_0x3c = tA;
+        JGeometry::TVec3f off;
         JGeometry::TVec3f mid = posA;
-        mid += posB;
+        mid.add(posB);
         mid.scale(0.5f);
         d.normalize();
-        JGeometry::TVec3f off = d;
+        off.set(d);
         off.scale(10.0f);
-        a->mPos = mid + off;
-        off = d;
+        off.add(mid);
+        a->mPos = off;
+        off.set(d);
         off.scale(-10.0f);
-        b->mPos = mid + off;
+        off.add(mid);
+        b->mPos = off;
     }
     if (mSlot == 0) {
-        JGeometry::TVec3f v(mPos.x, mPos.y - 20.0f, mPos.z);
-        v.sub(posA);
-        if (PSVECMag((Vec*)&v) < 50.0f) {
-            v.normalize();
-            v.scale(-5.0f);
-            a->field_0x3c = v;
+        d.set(mPos.x, mPos.y - 20.0f, mPos.z);
+        d.sub(posA);
+        if (PSVECMag((Vec*)&d) < 50.0f) {
+            d.normalize();
+            d.scale(-5.0f);
+            a->field_0x3c = d;
         }
-        v = JGeometry::TVec3f(mPos.x, mPos.y - 20.0f, mPos.z);
-        v.sub(posB);
-        if (PSVECMag((Vec*)&v) < 50.0f) {
-            v.normalize();
-            v.scale(-5.0f);
-            b->field_0x3c = v;
+        d.set(mPos.x, mPos.y - 20.0f, mPos.z);
+        d.sub(posB);
+        if (PSVECMag((Vec*)&d) < 50.0f) {
+            d.normalize();
+            d.scale(-5.0f);
+            b->field_0x3c = d;
         }
     }
 }
