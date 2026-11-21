@@ -186,17 +186,15 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
 
 // Stops the rumble, deletes the screens and objects the constructor and
 // fn_80135020 made, unmounts the archives and destroys both heaps.
-// FIXME: 99.31 %, missing/extra; behaviour drift.
-// Only the null test before deleting field_0x104 is missing
-// (cmplwi / beq): the original's type for it is a class with a non-virtual
-// destructor, unknown yet (nothing but the constructor's NULL stores it).
 GameRoot_8049EF20::~GameRoot_8049EF20() {
     JUTGamePad* pad = JUTGamePad::getGamePad(0);
     field_0x10c = 0;
     field_0x108 = 0;
     JUTGamePad::CRumble::stopMotor(pad->mPortNum, false);
     pad->mRumble.stopPatternedRumble(pad->mPortNum);
-    delete field_0x104;
+    if (field_0x104 != NULL) {
+        delete field_0x104;
+    }
     if (field_0x4 != NULL) {
         delete field_0x4;
         field_0x4 = NULL;
