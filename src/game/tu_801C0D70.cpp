@@ -181,21 +181,10 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
     return found;
 }
 
-inline bool cls_801C0D70::checkFlagged_801C0DCC() const {
-    u16 count = 0;
-    for (s32 i = 0; i < mCount; i++) {
-        ShadowLink2_804A43E8* actor =
-            static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
-        if (actor != NULL && (actor->mFlags & 0x8000)) {
-            count++;
-        }
-    }
-    return count >= field_0x2;
-}
-
 // 0x801C0DCC
-// FIXME: Register allocation only: the original keeps this in r30 (ours r31); the serial
-// walk pointer, counters and the constant 1 are allocated r27/r29/r31 there, r28/r29/r30 here.
+// FIXME: 94.93. Register allocation (this in r30 vs r31; walk pointer, counters and constant 1 in
+// r27/r29/r31 vs r29/r28/r30) and the counting loop's prologue (original copies 0 from count into
+// the loop index with mr r31, r29 after li r29, 0 / mr r27, r30; ours emits mr / li / li).
 void cls_801C0D70::fn_801C0DCC() {
     if (field_0x0 & 0x100) {
         if (fn_8011921C()->fn_801186B0(0xF)) {
@@ -226,7 +215,15 @@ void cls_801C0D70::fn_801C0DCC() {
         }
     }
     if (field_0x0 & 0x38) {
-        bool done = checkFlagged_801C0DCC();
+        u16 count = 0;
+        for (s32 i = 0; i < mCount; i++) {
+            ShadowLink2_804A43E8* actor =
+                static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
+            if (actor != NULL && (actor->mFlags & 0x8000)) {
+                count++;
+            }
+        }
+        bool done = count >= field_0x2;
         for (s32 i = 0; i < mCount; i++) {
             ShadowLink2_804A43E8* actor =
                 static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
