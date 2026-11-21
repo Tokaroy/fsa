@@ -586,19 +586,18 @@ void cls_804A0440::draw() {
         params.field_0x1d = -1;
     }
     if (field_0x188 == 0 && field_0xd8 > 0) {
-        s32 start = field_0xdc - 25;
-        if (field_0xd8 > start || field_0xdc < 25) {
+        s32 max = field_0xdc;
+        s32 start = max - 25;
+        if (field_0xd8 > start || max < 25) {
             s32 v;
-            if (field_0xdc < 25) {
-                v = field_0xd8 * 255 / field_0xdc;
+            if (max < 25) {
+                v = field_0xd8 * 255 / max;
             } else {
                 v = (field_0xd8 - start) * 255 / 25;
             }
             if (field_0xf8 == 2) {
                 v = (s32)(v - 6.0f * mPos.z);
-                if (v < 0) {
-                    v = 0;
-                }
+                v = v <= 0 ? 0 : v;
             }
             if (field_0xfc == 5) {
                 params.field_0x14.r += v;
