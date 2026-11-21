@@ -17,10 +17,11 @@
 static const u16 lbl_8053FB90[4] = {0x0413, 0x0414, 0x0415, 0x0000};
 static const u16 lbl_8053FB98[4] = {0x0418, 0x0419, 0x041A, 0x0000};
 
-// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp),
-// with the same (height, depth) order. Its callers here are at ~99.7 %: height and depth swap registers.
-static inline f32 depthLift(const JGeometry::TVec3f* pos, s32 height, s32 depth, bool adjust) {
-    if (adjust && pos->z > 0.0f) {
+// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp).
+static inline f32 depthLift(const JGeometry::TVec3f* pos) {
+    s32 height = 0;
+    s32 depth = 1;
+    if (pos->z > 0.0f) {
         height++;
         depth--;
     }
@@ -57,14 +58,13 @@ cls_802150B8::~cls_802150B8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
-// FIXME: 99.67 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214E50() {
     if (field_0x0 != NULL) {
         return;
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    f32 lift = depthLift(&pos, 0, 1, true);
+    f32 lift = depthLift(&pos);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -79,14 +79,13 @@ void cls_802150B8::fn_80214E50() {
     }
 }
 
-// FIXME: 99.70 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214CE4() {
     if (field_0x0 == NULL) {
         return;
     }
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -24.0f;
-    f32 lift = depthLift(&pos, 0, 1, true);
+    f32 lift = depthLift(&pos);
     f32 x = pos.x;
     f32 y = pos.y + lift;
     f32 z = pos.z + lift;
@@ -101,7 +100,6 @@ void cls_802150B8::fn_80214CE4() {
     }
 }
 
-// FIXME: 99.74 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214AF8() {
     s32 serial = field_0x30;
     if (serial >= 0) {
@@ -118,7 +116,7 @@ void cls_802150B8::fn_80214AF8() {
     if (fn_801CD2F8(mOwner->field_0x4)) {
         field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->field_0x4, &pos, 0, -1, -1);
     } else {
-        f32 lift = depthLift(&pos, 0, 1, true);
+        f32 lift = depthLift(&pos);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
@@ -132,7 +130,6 @@ void cls_802150B8::fn_80214AF8() {
     mOwner->startSound_801F0E34(0x4000E, 0);
 }
 
-// FIXME: 99.64 %, scheduling+regalloc; behaviour clean.
 void cls_802150B8::fn_80214994() {
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
@@ -145,7 +142,7 @@ void cls_802150B8::fn_80214994() {
             }
         }
     } else if (field_0x18 != NULL) {
-        f32 lift = depthLift(&pos, 0, 1, true);
+        f32 lift = depthLift(&pos);
         f32 x = pos.x;
         f32 y = pos.y + lift;
         f32 z = pos.z + lift;
@@ -158,11 +155,19 @@ void cls_802150B8::fn_80214994() {
     }
 }
 
-// FIXME: 93.88 %, scheduling+regalloc; behaviour clean.
-// Register allocation only: the original keeps the owner flag
-// in r31 and the table pointer in r30, ours is the other way round (the
-// ternary form gives extrwi, 90.45 %). The lbl_8053FBA4 literal rows are the
-// data split.
+void cls_802150B8::fn_80214900() {
+    s32 serial = field_0x30;
+    if (serial >= 0) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        if (actor != NULL) {
+            actor->mAlive = false;
+        }
+        field_0x30 = -1;
+    }
+    deleteEmitter(&field_0x18);
+    static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
+}
+
 void cls_802150B8::fn_80214740(s32 layer, const JGeometry::TVec3f* pos, bool flag) {
     ShadowLink2_804A43E8* owner = static_cast<ShadowLink2_804A43E8*>(mOwner);
     s32 extra = 0;
@@ -178,25 +183,19 @@ void cls_802150B8::fn_80214740(s32 layer, const JGeometry::TVec3f* pos, bool fla
         spawnEmitter_8013CC50(layer, pos, 0x1D9, 0, extra, NULL, NULL, true, 1.0f);
         mOwner->startSound_801F0E34(0x400D6, 0);
     } else {
-        const u16* ids = flag ? lbl_8053FB98 : lbl_8053FB90;
+        const u16* ids = lbl_8053FB90;
+        if (flag) {
+            ids = lbl_8053FB98;
+        }
         spawnEmitter_8013CC50(layer, pos, ids[0], 0, extra - 1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, ids[1], 0, extra, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, ids[2], 0, extra, NULL, NULL, true, 1.0f);
-        static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDCD0(layer, pos, flag ? 0x4004E : 0x40048);
-    }
-}
-
-void cls_802150B8::fn_80214900() {
-    s32 serial = field_0x30;
-    if (serial >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (actor != NULL) {
-            actor->mAlive = false;
+        u32 soundId = 0x40048;
+        if (flag) {
+            soundId = 0x4004E;
         }
-        field_0x30 = -1;
+        static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDCD0(layer, pos, soundId);
     }
-    deleteEmitter(&field_0x18);
-    static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
 }
 
 void cls_802150B8::fn_802146A4() const {
