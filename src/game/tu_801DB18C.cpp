@@ -288,18 +288,12 @@ void cls_804A4EE8::vfunc_0x88() {
         }
     }
     if (mState == 0) {
-        field_0x3c.x = field_0x2b4;
-        field_0x3c.y = field_0x2b8;
-        field_0x3c.z = 0.0f;
+        field_0x3c.set(field_0x2b4, field_0x2b8, 0.0f);
         return;
     }
     f32 sinv = JMath::sincosTable_.sinShort(mAngle) * mRadius;
     f32 cosv = JMath::sincosTable_.cosShort(mAngle) * mRadius;
-    f32 tx = mSearchPos.x + sinv;
-    f32 ty = mSearchPos.y + cosv;
-    field_0x3c.x = tx - mPos.x;
-    field_0x3c.y = ty - mPos.y;
-    field_0x3c.z = 0.0f;
+    field_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
 }
 
 u8 cls_804A4EE8::vfunc_0x68() {
