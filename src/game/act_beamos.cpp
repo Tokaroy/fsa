@@ -113,16 +113,18 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 95.66 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.05 %, regalloc-only; behaviour clean.
 void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
-    if ((mFlags & 0x2000) && field_0x2b0 != 0) {
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x2b0)) {
+    if (mFlags & 0x2000) {
+        s32 sw = field_0x2b0;
+        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
             mFlags &= ~0x2000;
             fn_801BE6C4(0);
         }
     }
-    if (!(mFlags & 0x2000) && field_0x2b4 != 0) {
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x2b4)) {
+    if (!(mFlags & 0x2000)) {
+        s32 sw = field_0x2b4;
+        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
             mFlags |= 0x2000;
         }
     }
@@ -136,22 +138,22 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
             }
             break;
         case 1:
-            if (mStateTimer == 0) {
+            if (!(mFlags & 0x2000)) {
                 startSound_801F0E34(0x400C1, 0);
             }
             field_0x2a8 += 0x100;
             if (mStateTimer >= 30) {
+                s32 target = -1;
                 const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
                 s16 heading = (s32)(JMath::atanTable_.atan2_(10.0f * sincos.sinShort(field_0x2a8),
-                                                              6.0f * sincos.cosShort(field_0x2a8)) *
+                                                             6.0f * sincos.cosShort(field_0x2a8)) *
                                     10430.378f);
-                s32 target = -1;
                 for (s32 i = 0; i < 4; i++) {
                     if (fn_801D08B4(i, &mPos, 16.0f * field_0x2ac)) {
                         f32 dy = getPlayerPos_8023E724(i)->y - (-15.0f + mPos.y);
                         f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                         s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-                        if (0.000030517578f * std::fabsf((f32)(s16)(heading - angle)) <= 0.02f) {
+                        if (0.000030517578f * __fabsf((s16)(heading - angle)) <= 0.02f) {
                             target = i;
                             break;
                         }
@@ -176,11 +178,9 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 80.85 %, missing/extra; behaviour clean.
-// The original keeps `this` in r30 and loads the layer and
-// serial into r30 and r31 before the fn_8020D58C call (ours loads them after
-// it, so only r31 is saved); its box corners also load mPos.y before the 8.0f
-// constant and add it as (y, c) where ours adds (c, y).
+// FIXME: 90.76 %, scheduling+regalloc; behaviour clean.
+// FIXME: The original keeps `this` in r30 (ours uses r31), and its box corners
+// load mPos.y before 8.0f and add as (y, c) where ours adds (c, y).
 void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
     JGeometry::TBox2f listBox;
     fn_801CE2BC(mapHit);
@@ -191,8 +191,7 @@ void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
     fn_80239914(&box, field_0x4, mSerial);
     if (field_0x2aa == 0) {
         listBox.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
-        CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        boxes->mLists[boxes->field_0x0].fn_8020D8C0(&listBox, field_0x4, mSerial);
+        fn_8020D58C()->addBox(&listBox, field_0x4, mSerial);
     }
 }
 
