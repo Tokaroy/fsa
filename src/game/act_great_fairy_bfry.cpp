@@ -30,7 +30,7 @@ GreatFairy_804AF338::~GreatFairy_804AF338() {
     }
 }
 
-// FIXME(shotgun): 92.69 %, scheduling+regalloc; behaviour drift.
+// FIXME(shotgun): 98.63 %, scheduling+regalloc; behaviour drift.
 void GreatFairy_804AF338::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -63,9 +63,11 @@ void GreatFairy_804AF338::init() {
             field_0x284.z = mPos.z;
             field_0x284.z += 32.0f;
             p.z = 8.0f;
-            field_0x290.x = (p.x - field_0x284.x) / 120.0f;
-            field_0x290.y = (p.y - field_0x284.y) / 120.0f;
-            field_0x290.z = (p.z - field_0x284.z) / 120.0f;
+            field_0x290.set(
+                (p.x - field_0x284.x) / 120.0f,
+                (p.y - field_0x284.y) / 120.0f,
+                (p.z - field_0x284.z) / 120.0f
+            );
             mState = 9;
         } else {
             field_0x264 = 0x78;
@@ -535,7 +537,7 @@ void GreatFairy_804AF338::update() {
     }
 }
 
-// FIXME(shotgun): 98.34 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.55 %, reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
     if (field_0x248 != 1 && (field_0x240 & 2) && field_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
@@ -546,13 +548,13 @@ void GreatFairy_804AF338::draw() {
             SpriteParams_801F5AE0 params;
             JGeometry::TVec3f savedPos = mPos;
             s32 frame = lbl_80475600[field_0x29c - 1];
+            s32 flags = 7;
             params.field_0x1d = 0;
             params.field_0x1c = 0;
             mPos = field_0x284;
             if (mState == 10 || mState == 11 || mState == 12) {
                 frame = lbl_80475600[field_0x29c + 10];
             }
-            s32 flags = 7;
             if (mState == 11 || mState == 12) {
                 params.field_0x1d = 1;
                 params.field_0x1c = 1;
@@ -565,15 +567,24 @@ void GreatFairy_804AF338::draw() {
     }
 }
 
-// FIXME(shotgun): 98.75 %, missing/extra; behaviour drift.
+static inline s32 getFlagBit(const s32* flags, s32 player) {
+    return flags[fn_8022F340(player)];
+}
+
 void GreatFairy_804AF338::fn_8038DE74() {
-    if (field_0x274[fn_8022F340(field_0x234)] != 0 &&
-        getGameView_802D6A9C()->fn_802D800C(field_0x274[fn_8022F340(field_0x234)]) == 1) {
+    if (getFlagBit(field_0x274, field_0x234) != 0 &&
+        getGameView_802D6A9C()->fn_802D800C(getFlagBit(field_0x274, field_0x234)) == 1) {
         field_0x29c = 0xC;
     } else {
         switch (fn_802373EC(fn_8022F340(field_0x234))) {
-        case 1:
-            field_0x29c = 7;
+        case 10:
+            field_0x29c = 1;
+            break;
+        case 6:
+            field_0x29c = 2;
+            break;
+        case 5:
+            field_0x29c = 3;
             break;
         case 3:
             field_0x29c = 4;
@@ -581,23 +592,17 @@ void GreatFairy_804AF338::fn_8038DE74() {
         case 4:
             field_0x29c = 5;
             break;
-        case 5:
-            field_0x29c = 3;
+        case 8:
+            field_0x29c = 6;
             break;
-        case 6:
-            field_0x29c = 2;
+        case 1:
+            field_0x29c = 7;
             break;
         case 7:
             field_0x29c = 8;
             break;
-        case 8:
-            field_0x29c = 6;
-            break;
         case 9:
             field_0x29c = 9;
-            break;
-        case 10:
-            field_0x29c = 1;
             break;
         case 0:
         case 2:
@@ -618,9 +623,8 @@ void GreatFairy_804AF338::fn_8038DE74() {
             ACTOR_BFRY, field_0x4, &mPos, ((field_0x29c << 4) & 0xF0) | 3 | ((field_0x234 << 8) & 0x300), -1, -1);
         if (field_0x270 >= 0) {
             mState = 5;
-            if (field_0x274[fn_8022F340(field_0x234)] != 0) {
-                s32 bit = field_0x274[fn_8022F340(field_0x234)];
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            if (getFlagBit(field_0x274, field_0x234) != 0) {
+                getGameView_802D6A9C()->fn_802D8050(getFlagBit(field_0x274, field_0x234), true, 0xFF);
             }
         } else {
             field_0x29c = 0;
