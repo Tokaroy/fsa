@@ -251,6 +251,7 @@ void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
 
 // The original keeps `this` in r31 from entry and the layer temporary in r30;
 // ours rotates the callee-saved registers for this, the temporary, and other.
+// FIXME: 96.65 %, scheduling+regalloc; behaviour clean.
 bool PanelRewriteNPC_804A8E40::vfunc_0x58() {
     ActorBase_804A5770* other;
     s32 serial = -1;
