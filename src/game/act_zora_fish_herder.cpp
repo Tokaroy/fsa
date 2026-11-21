@@ -69,8 +69,6 @@ void ZoraFishHerding_804A2E30::init() {
 
 // Advances the fish animation: picks the sprite frame (field_0x254) of the
 // current mode and steps to the next mode when its loop ends.
-// The original has a dead cmpwi 4 / beqlr after the mode 5 test; not reproduced.
-// FIXME: 97.98 %, missing/extra; behaviour near.
 void ZoraFishHerding_804A2E30::fn_801A7C48() {
     if (field_0x234 != 0) {
         return;
@@ -84,9 +82,7 @@ void ZoraFishHerding_804A2E30::fn_801A7C48() {
         field_0x240 = field_0x240 & 7;
         if (field_0x240 >= 4) {
             if (field_0x250 == 5) {
-                field_0x250 = 4;
-                field_0x234 = 0;
-                field_0x240 = 0;
+                setAnimMode(4);
             }
         }
         break;
