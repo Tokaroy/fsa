@@ -209,33 +209,39 @@ void MagicCircleGenerator_804A9FB0::update() {
     }
 }
 
-// FIXME(shotgun): 87.24 %, missing/extra + reloc-name; behaviour near.
-// sqrtf's expansion (the original calls the guarded software form) and the emitter alpha stores
 void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
     s32 bestSerial = -1;
     s32 bestDist = -1;
-    s32 serial = -1;
-    while ((serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial)) >= 0) {
+    int serial = -1;
+    JGeometry::TVec3f pos;
+    while (true) {
+        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_KEY0, serial);
+        if (serial < 0) {
+            break;
+        }
         SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (key == NULL || key->field_0x280 != 6 || key->field_0x240 == 0) {
             continue;
         }
-        JGeometry::TVec3f keyPos = key->mPos;
-        f32 dy = keyPos.y - mPos.y;
-        f32 dx = keyPos.x - mPos.x;
-        s32 dist = (s32)std::sqrtf(dy * dy + dx * dx);
+        pos = key->mPos;
+        f32 dx = pos.x - mPos.x;
+        f32 dy = pos.y - mPos.y;
+        s32 dist = (s32)std::sqrtf(dx * dx + dy * dy);
         if (dist > 64) {
             dist = 64;
         }
-        if (bestDist < 0 || dist < bestDist) {
+        if (bestDist < 0) {
+            bestDist = dist;
+            bestSerial = serial;
+        } else if (dist < bestDist) {
             bestDist = dist;
             bestSerial = serial;
         }
     }
     if (bestSerial >= 0) {
         SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(bestSerial));
-        u8 alpha = (64 - bestDist) * 4;
-        JGeometry::TVec3f pos = key->mPos;
+        s32 alpha = (64 - bestDist) * 4;
+        pos = key->mPos;
         if (mEmitter238 == NULL) {
             mEmitter238 = spawnEmitter_8013CC50(field_0x4, &pos, 0x314, 0, 2, NULL, NULL, true, 1.0f);
         }
@@ -247,7 +253,7 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
         }
         if (mEmitter238 != NULL) {
             if (key->field_0xc4) {
-                pos = *fn_8023E7B0(key->field_0xc8);
+                pos.set(*fn_8023E7B0(key->field_0xc8));
                 setEmitterPos_8013CB44(mEmitter238, &pos, -1, 3, true);
             } else {
                 pos.z += 0.1f;
