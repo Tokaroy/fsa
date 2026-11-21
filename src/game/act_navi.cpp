@@ -79,9 +79,6 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-// FIXME: 99.59 %, missing/extra; behaviour clean.
-// Only a branch shape differs: the original has bge; b over the stage >= 1 test (0x8021EA3C), ours blt;
-// the .sdata2 literals are not split.
 void cls_804A6708::init() {
     EnemyBase_804A4808::init();
     field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12b;
@@ -116,10 +113,17 @@ void cls_804A6708::init() {
         mFlags |= 0x2000;
     }
 
-    if ((field_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0 && lbl_80529DEC.field_0x118 < 7) {
-        if (lbl_80529DEC.field_0x118 >= 1) {
+    if ((field_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0) {
+        switch (lbl_80529DEC.field_0x118) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
             mFlags |= 0x20000;
             mFlags &= ~0x10000;
+            break;
         }
     }
 
