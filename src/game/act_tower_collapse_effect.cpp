@@ -5,18 +5,6 @@
 #include "game/GameView.h"
 #include "game/RotMatrix.h"
 
-// Turns a sprite to the angle (s16 units, as field_0x264 and friends hold it)
-// about y, at the actor's current position.
-static inline void setSpriteRotation(Mtx mtx, SpriteParams_801F5AE0& params, s32 angle) {
-    mtx[0][3] = 0.0f;
-    mtx[1][3] = 0.0f;
-    mtx[2][3] = 0.0f;
-    JGeometry::TVec3f rot(0.0f, (f32)angle / -10430.228f, 0.0f);
-    setRotScaleMtx(mtx, rot, 1.0f);
-    params.mMtx = mtx;
-    params.field_0x1d = 1;
-}
-
 void TowerCollapseEffect_8049CA40::init() {
     field_0x230 = 0;
     mMode = 0;
@@ -157,10 +145,7 @@ void TowerCollapseEffect_8049CA40::draw() {
     }
 }
 
-// FIXME: 86.64 %. Scheduling: the original loads the rotation constants and
-// field_0x23c/0x240 interleaved with the mPos stores and the int-to-float
-// conversion; ours keeps them in source order (4 more instructions), and the
-// literals are @NNN, not lbl_8053C1D0-lbl_8053C1E0.
+// FIXME: string pool order (kowareyuka_*.bti before gareki.bti) and setRotScaleMtx float regalloc.
 void TowerCollapseEffect_8049CA40::fn_80103348() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -169,18 +154,37 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     void* res = fn_804032E8('TIMG', "kowareyuka_a.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
-    mPos.set(field_0x238[0].x, field_0x238[0].y, field_0x238[0].z);
-    setSpriteRotation(mtx, params, field_0x264[0]);
+    mPos.x = field_0x238[0].x;
+    mPos.y = field_0x238[0].y;
+    mPos.z = field_0x238[0].z;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[0] / -10430.228f, 0.0f), 1.0f);
+    params.mMtx = mtx;
+    params.field_0x1d = 1;
     res = fn_804032E8('TIMG', "kowareyuka_b.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
-    mPos.set(field_0x238[1].x, field_0x238[1].y, field_0x238[1].z);
-    setSpriteRotation(mtx, params, field_0x264[1]);
+    mPos.x = field_0x238[1].x;
+    mPos.y = field_0x238[1].y;
+    mPos.z = field_0x238[1].z;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[1] / -10430.228f, 0.0f), 1.0f);
+    params.mMtx = mtx;
     res = fn_804032E8('TIMG', "kowareyuka_c.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
-    mPos.set(field_0x238[2].x, field_0x238[2].y, field_0x238[2].z);
-    setSpriteRotation(mtx, params, field_0x264[2]);
+    mPos.x = field_0x238[2].x;
+    mPos.y = field_0x238[2].y;
+    mPos.z = field_0x238[2].z;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[2] / -10430.228f, 0.0f), 1.0f);
+    params.mMtx = mtx;
     res = fn_804032E8('TIMG', "kowareyuka_d.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
