@@ -176,11 +176,8 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
     }
 }
 
-// FIXME: 80.85 %, missing/extra; behaviour clean.
-// The original keeps `this` in r30 and loads the layer and
-// serial into r30 and r31 before the fn_8020D58C call (ours loads them after
-// it, so only r31 is saved); its box corners also load mPos.y before the 8.0f
-// constant and add it as (y, c) where ours adds (c, y).
+// FIXME: The original keeps `this` in r30 (ours uses r31), and its box corners
+// load mPos.y before 8.0f and add as (y, c) where ours adds (c, y).
 void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
     JGeometry::TBox2f listBox;
     fn_801CE2BC(mapHit);
@@ -191,8 +188,7 @@ void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
     fn_80239914(&box, field_0x4, mSerial);
     if (field_0x2aa == 0) {
         listBox.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
-        CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        boxes->mLists[boxes->field_0x0].fn_8020D8C0(&listBox, field_0x4, mSerial);
+        fn_8020D58C()->addBox(&listBox, field_0x4, mSerial);
     }
 }
 
