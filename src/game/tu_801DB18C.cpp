@@ -78,7 +78,7 @@ void cls_804A4EE8::init() {
     }
 }
 
-// FIXME(shotgun): 76.89 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 82.70 %, missing/extra; behaviour drift.
 void cls_804A4EE8::fn_801DB9CC() {
     if (fn_801CD664(2) == 0) {
         mFlags &= ~0x2000;
@@ -166,7 +166,7 @@ void cls_804A4EE8::fn_801DB950(s32 state) {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 96.27 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
 void cls_804A4EE8::fn_801DB6C8() {
     if (field_0x16c == -1) {
         JGeometry::TVec3f p;
@@ -264,7 +264,7 @@ void cls_804A4EE8::vfunc_0x9C(u8 mapHit) {
     setEmitterPos_8013CB44(field_0x2e4, &mPos, 1, 0, true);
 }
 
-// FIXME: 87.43 %, scheduling+regalloc; behaviour clean.
+// FIXME: 99.07 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): remaining diff is instruction scheduling and registers only.
 void cls_804A4EE8::vfunc_0x88() {
     if (field_0x2b4 != 0.0f) {
