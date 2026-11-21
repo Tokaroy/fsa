@@ -9,20 +9,58 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Tables of the FGN2 actor (.data 0x804A1960, not written as source here): the start
-// position and "FGAN" sprite names per player, emitter ids and sprite offsets.
-extern const f32 lbl_804A1960[][3];
-extern const s32 lbl_804A1990[];
-extern const s32 lbl_804A19A8[];
-extern const s32 lbl_804A19BC[];
-extern const s32 lbl_804A19DC[];
-extern const char* const lbl_804A1A10[];
-extern const f32 lbl_804A1A28[][2];
-extern const char* const lbl_804A1A50[];
-extern const char* const lbl_804A1A64[];
-extern const char* const lbl_804A1A84[];
-extern const u16 lbl_804A19F0[];
-extern const u16 lbl_804A1A00[];
+// Tables of the FGN2 actor (.data 0x804A1960):
+static f32 lbl_804A1960[4][3] = {
+    { 0.0f, 255.0f, 0.0f },
+    { 255.0f, 0.0f, 0.0f },
+    { 0.0f, 128.0f, 255.0f },
+    { 200.0f, 0.0f, 200.0f },
+};
+static s32 lbl_804A1990[6] = { 4, 4, 4, 4, 2, 4 };
+static s32 lbl_804A19A8[5] = { 2, 2, 2, 2, 5 };
+static s32 lbl_804A19BC[8] = { 4, 4, 4, 4, 4, 4, 4, 4 };
+static s32 lbl_804A19DC[5] = { 4, 4, 4, 8, 4 };
+static u16 lbl_804A19F0[8] = { 0x0374, 0x0375, 0x0378, 0x0379, 0x0372, 0x0373, 0x0376, 0x0377 };
+static u16 lbl_804A1A00[8] = { 0x0368, 0x0369, 0x036C, 0x036D, 0x0366, 0x0367, 0x036A, 0x036B };
+static const char* lbl_804A1A10[6] = {
+    "dawn_00.bti",
+    "dawn_04.bti",
+    "dawn_08.bti",
+    "dawn_12.bti",
+    "dawn_16.bti",
+    "dawn_18.bti",
+};
+static f32 lbl_804A1A28[5][2] = {
+    { 0.0f, 0.0f },
+    { 0.0f, 0.0f },
+    { -21.0f, 0.0f },
+    { 21.0f, 0.0f },
+    { 21.0f, 0.0f },
+};
+static const char* lbl_804A1A50[5] = {
+    "kenhuri_05.bti",
+    "kenhuri_07.bti",
+    "kenhuri_09_l.bti",
+    "kenhuri_11_r.bti",
+    "kenhuri_13_r.bti",
+};
+static const char* lbl_804A1A64[8] = {
+    "wait_00_u.bti",
+    "wait_04_u.bti",
+    "wait_08_u.bti",
+    "wait_12_u.bti",
+    "wait_16_u.bti",
+    "wait_20_u.bti",
+    "wait_24_u.bti",
+    "wait_28_u.bti",
+};
+static const char* lbl_804A1A84[5] = {
+    "yarare_02.bti",
+    "yarare_06.bti",
+    "yarare_10.bti",
+    "yarare_14.bti",
+    "yarare_22.bti",
+};
 extern const u16 lbl_80539FC0[];
 u32 lbl_804C17A8[4];
 extern s32 lbl_80539FB8;
@@ -1346,20 +1384,18 @@ void PhantomGanon2_804A1A98::update() {
     }
 }
 
-// FIXME(shotgun): 77.36 %, missing/extra + reloc-name; behaviour drift.
-// The original addresses the tables off one base register (r31), here they are extern arrays.
 void PhantomGanon2_804A1A98::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos = mPos;
+    f32 scaleY = 0.0f;
+    f32 scaleX = 0.0f;
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
     params.field_0x1f = 0;
     if (field_0x90 == 0 || field_0x90 == 1) {
         mPos.z = 0.0f;
-        f32 scaleX = 0.0f;
-        f32 scaleY = 0.0f;
         void* res;
         switch (field_0x278) {
         case 0:
