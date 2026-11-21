@@ -509,10 +509,10 @@ void Gohma_804A307C::fn_801AAF44() {
             f32 saveX = mPos.x;
             f32 saveY = mPos.y;
             f32 saveZ = mPos.z;
-            mPos.y = saveY + 8.0f;
+            mPos.y += 8.0f;
             u16 angle = 0;
-            fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
             s32 count = 1;
+            fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
             if (field_0x258 == 1) {
                 count = 3;
                 angle -= 0x2000;
@@ -540,7 +540,8 @@ void Gohma_804A307C::fn_801AAF44() {
                 field_0x250 = field_0x244 + 8;
             }
             mTimers[0] = 5;
-            field_0x244 = (field_0x244 + 1) & 3;
+            field_0x244++;
+            field_0x244 &= 3;
         }
         if (mTimers[2] == 0) {
             field_0x264.z = 0.0f;
