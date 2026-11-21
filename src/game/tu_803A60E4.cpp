@@ -8,10 +8,6 @@ void* fn_804030C4(u32 type, const char* name);
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JFramework/JFWDisplay.h"
 
-static inline void setPaneFont(J2DScreen* screen, u64 tag, JUTFont* font) {
-    ((J2DTextBox*)screen->search(tag))->setFont(font);
-}
-
 // Rotates a pane of the screen about its centre.
 inline void cls_804AF860::rotateArrow(u64 tag, s16 base) {
     f32 h = field_0x4->search(tag)->getHeight();
@@ -52,10 +48,10 @@ cls_804AF860::cls_804AF860() {
     const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
     lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    setPaneFont(field_0x4, 'Tsi01', lbl_8053AD78->mFont);
-    setPaneFont(field_0x4, 'Tsi02', lbl_8053AD78->mFont);
-    setPaneFont(field_0x4, 'Tso01', lbl_8053AD78->mFont);
-    setPaneFont(field_0x4, 'Tso02', lbl_8053AD78->mFont);
+    ((J2DTextBox*)field_0x4->search('Tsi01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tsi02'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tso01'))->setFont(lbl_8053AD78->getFont());
+    ((J2DTextBox*)field_0x4->search('Tso02'))->setFont(lbl_8053AD78->getFont());
     getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tso01'))->getStringPtr(), 0x97, 0, NULL, NULL);
     getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi01'))->getStringPtr(), 0x37, 0, NULL, NULL);
     field_0x4->search('Pocur01')->show();
@@ -84,16 +80,8 @@ cls_804AF860::cls_804AF860() {
     } else {
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search('Tsi02'))->getStringPtr(), 0x39, 0, NULL, NULL);
     }
-    {
-        f32 h = field_0x4->search('Par01')->getHeight();
-        J2DPane* pane = field_0x4->search('Par01');
-        field_0x4->search('Par01')->rotate(0.5f * pane->getWidth(), 0.5f * h, J2DROTATE_Z, (f32)(field_0x70 + field_0x74));
-    }
-    {
-        f32 h = field_0x4->search('Par02')->getHeight();
-        J2DPane* pane = field_0x4->search('Par02');
-        field_0x4->search('Par02')->rotate(0.5f * pane->getWidth(), 0.5f * h, J2DROTATE_Z, (f32)(field_0x72 + field_0x74));
-    }
+    field_0x4->search('Par01')->rotate(0.5f * field_0x4->search('Par01')->getWidth(), 0.5f * field_0x4->search('Par01')->getHeight(), J2DROTATE_Z, (f32)(field_0x70 + field_0x74));
+    field_0x4->search('Par02')->rotate(0.5f * field_0x4->search('Par02')->getWidth(), 0.5f * field_0x4->search('Par02')->getHeight(), J2DROTATE_Z, (f32)(field_0x72 + field_0x74));
     field_0x6a = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6c = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
     field_0x6e = 0;
