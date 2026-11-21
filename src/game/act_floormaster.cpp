@@ -38,6 +38,14 @@ inline f32 lerp(f32 from, f32 to, f32 t) {
     return from + t * (to - from);
 }
 
+inline void approachLinear(f32* value, f32 target, f32 remaining) {
+    if (remaining < FLT_EPSILON) {
+        *value = target;
+    } else {
+        *value += (1.0f / remaining) * (target - *value);
+    }
+}
+
 inline void Floormaster_804A6004::setEmitterColor() {
     u8 prm = lerp(255.0f, 0.0f, field_0x2b4);
     mEmitter2b0->setGlobalPrmColor(prm, prm, prm);
@@ -333,10 +341,9 @@ void Floormaster_804A6004::fn_8020EB08() {
 }
 #pragma auto_inline reset
 
-// FIXME: 97.40 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
-// folds 0.0f - x into fneg (1 instruction fewer); case 3 sets the flag with `mr r30, r4` where ours
-// has `li r30, 1`; case 7 stores x/y from pos in the other order and stfd conversion order differs.
+// case 3 sets the flag with `mr r30, r4` where ours has `li r30, 1`;
+// case 7 stores x/y from pos in the other order and swaps pos/vec stack slots;
+// setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
 void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     fn_8020EB08();
     switch (mState) {
@@ -358,12 +365,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
                 fn_8020ED5C(10);
             }
         } else {
-            f32 remaining = 60 - mStateTimer;
-            if (remaining < FLT_EPSILON) {
-                field_0x2b4 = 1.0f;
-            } else {
-                field_0x2b4 += (1.0f - field_0x2b4) * (1.0f / remaining);
-            }
+            approachLinear(&field_0x2b4, 1.0f, 60 - mStateTimer);
             if (mEmitter2b0 != NULL) {
                 setEmitterColor();
             }
@@ -483,12 +485,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
             deleteEmitter(&mEmitter2b0);
             fn_8020ED5C(0);
         } else {
-            f32 remaining = 60 - mStateTimer;
-            if (remaining < FLT_EPSILON) {
-                field_0x2b4 = 0.0f;
-            } else {
-                field_0x2b4 += (0.0f - field_0x2b4) * (1.0f / remaining);
-            }
+            approachLinear(&field_0x2b4, 0.0f, 60 - mStateTimer);
             if (mEmitter2b0 != NULL) {
                 setEmitterColor();
             }
