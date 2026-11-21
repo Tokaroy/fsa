@@ -104,7 +104,7 @@ static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
     f32 dist;
     shop->fn_801EE558(&dir, &dist, player + 1);
     if (dist < 100.0f) {
-        u32 angle = (u16)(s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f);
+        u32 angle = (u16)(s32)(10430.378f * JMath::atanTable_.atan2_(-dir.x, -dir.y));
         if (!(angle >= 0x2000 && angle < 0xE000)) {
             shop->field_0x247 = 3;
         } else if (angle >= 0x2000 && angle < 0x6000) {
@@ -115,6 +115,17 @@ static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
             shop->field_0x247 = 0;
         }
     }
+}
+
+static inline void spawnMole(WhackAMoleShop_8049C8EC* shop) {
+    s32 n = (s32)(9.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    JGeometry::TVec3f pos;
+    pos.x = (85.0f + shop->field_0x24c) + 80.0f * (f32)(n % 3) +
+            (60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 30.0f);
+    pos.y = 80.0f * (f32)(n / 3) + (shop->field_0x250 - 75.0f) +
+            (60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 30.0f);
+    pos.z = 0.0f;
+    getActorManager_801F856C()->spawnActor_801F9484('MGYA', shop->field_0x4, &pos, shop->mSerial + 0x10000, -1, -1);
 }
 
 void WhackAMoleShop_8049C8EC::draw() {
@@ -161,11 +172,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         fn_8022FEB8(&box, field_0x4, mSerial, true, false);
         field_0x238 = fn_8022FD8C(mSerial);
         if (field_0x238 >= 0 && fn_802300EC(field_0x238)) {
-            u32 msg = 0x31F;
-            if (field_0x244 == 1) {
-                msg = 0x328;
-            }
-            if (fn_8038AD24(field_0x238, msg, mSerial, field_0x4, msgPos, 0)) {
+            if (fn_8038AD24(field_0x238, field_0x244 == 1 ? 0x328 : 0x31F, mSerial, field_0x4, msgPos, 0)) {
                 for (s32 i = 0; i < 4; i++) {
                     fn_802308E0(i);
                 }
@@ -184,11 +191,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         if (fn_803865B8(field_0x238)) {
             switch (fn_8037EFB4(field_0x238)) {
             case 0: {
-                u32 msg = 0x320;
-                if (field_0x244 == 1) {
-                    msg = 0x329;
-                }
-                fn_8038470C(field_0x238, msg);
+                fn_8038470C(field_0x238, field_0x244 == 1 ? 0x329 : 0x320);
                 for (s32 i = 0; i < 4; i++) {
                     field_0x270[i] = fn_802373EC(i);
                     field_0x280[i] = fn_8023725C(i);
@@ -264,14 +267,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         }
         field_0x234++;
         if (field_0x234 >= lbl_8049C8D8[field_0x244] && field_0x23c >= 0x78) {
-            s32 n = (s32)(9.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-            JGeometry::TVec3f pos;
-            pos.x = (85.0f + field_0x24c) + 80.0f * (f32)(n % 3) +
-                    (60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 30.0f);
-            pos.y = 80.0f * (f32)(n / 3) + (field_0x250 - 75.0f) +
-                    (60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 30.0f);
-            pos.z = 0.0f;
-            getActorManager_801F856C()->spawnActor_801F9484('MGYA', field_0x4, &pos, mSerial + 0x10000, -1, -1);
+            spawnMole(this);
             field_0x234 = 0;
         }
         if (field_0x23c == 0) {
@@ -287,8 +283,9 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
     case 6:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         field_0x234++;
-        if (field_0x234 > 50 && getActorManager_801F856C()->fn_801F68E0() == 1) {
-            field_0x238 = fn_8022EA0C(0);
+        s32 count = getActorManager_801F856C()->fn_801F68E0();
+        if (field_0x234 > 50 && count == 1) {
+            field_0x238 = fn_8022EA0C(field_0x238);
             fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
                 fn_8038AD24(field_0x238, 0x322, mSerial, field_0x4, msgPos, 2);
@@ -314,9 +311,9 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
                 u32 msg;
                 if (field_0x260[field_0x234] >= 40) {
                     msg = 0x323;
-                } else if (field_0x260[field_0x234] >= 20) {
+                } else if (field_0x260[field_0x234] < 40 && field_0x260[field_0x234] >= 20) {
                     msg = 0x324;
-                } else if (field_0x260[field_0x234] >= 1) {
+                } else if (field_0x260[field_0x234] < 20 && field_0x260[field_0x234] >= 1) {
                     msg = 0x325;
                 } else {
                     msg = 0x31E;
