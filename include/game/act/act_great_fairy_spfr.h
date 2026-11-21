@@ -25,7 +25,7 @@ public:
     // State change: stores the new state in field_0x234 and runs its entry code.
     void fn_80132454(s32 index);
     // Not in the binary (inlined into update and fn_80132454).
-    bool talkTo(s32 player);
+    s32 talkTo();
     void placeAtBarrier();
     void spawnSoldier();
 

@@ -104,7 +104,7 @@ void cls_8049EB8C::init() {
     }
 }
 
-// FIXME: 98.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.52 %, scheduling+regalloc; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void cls_8049EB8C::update() {
     cls_8049D140::update();
@@ -143,22 +143,7 @@ void cls_8049EB8C::update() {
         case 0:
             break;
         case 1: {
-            JGeometry::TBox2f box2 = mBox;
-            box2.i.x += mPos.x;
-            box2.i.y += mPos.y;
-            box2.f.x += mPos.x;
-            box2.f.y += mPos.y;
-            fn_8022FEB8(&box2, field_0x4, mSerial, true, false);
-            s32 player = fn_8022FD8C(mSerial);
-            if (player < 0) {
-                player = -1;
-            } else if (!fn_802300EC(player)) {
-                player = -1;
-            } else {
-                if (!talkTo(player)) {
-                    player = -1;
-                }
-            }
+            s32 player = talkTo();
             if (player >= 0) {
                 field_0x23c = player;
                 fn_80132454(3);
@@ -210,6 +195,8 @@ void cls_8049EB8C::update() {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
+        break;
+    case 26:
         break;
     }
     setEmitterPos_8013CB44(field_0x288, &mPos, 0, -1, true);
@@ -301,8 +288,8 @@ s32 cls_8049EB8C::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 98.08 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: ours has 2 fewer instrs (417 vs 419); emitter 0x24 store and float literal order.
+// operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
+// FIXME: 99.94 %, operands; behaviour drift.
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
@@ -403,7 +390,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     }
     case 20:
         if (field_0x288 != NULL) {
-            field_0x288->stopCreateParticle();
+            field_0x288->becomeInvalidEmitter();
         }
         spawnEmitter_8013CC50(field_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(field_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
@@ -423,11 +410,32 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         fn_8011921C()->fn_80118384();
         fn_801F3668();
         break;
+    case 26:
+        break;
     }
 }
 
-// FIXME: 93.01 %, scheduling+regalloc + reloc-name; behaviour drift.
-// (scheduling+regalloc: f1/f2/r4; reloc-name: literals lbl_8053CD18, lbl_8053CD1C, lbl_8053CD20)
+static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x840 == 0) {
+        cam->field_0x840 = 1;
+        cam->field_0x844.set(x0, y0, x1, y1);
+        cam->field_0x854 = 1.0f;
+        cam->field_0x1d4 = -1.0f;
+        cam->field_0x1d8 = -1.0f;
+    }
+}
+
+static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x7f5 == 0) {
+        cam->field_0x7f4 = 1;
+        cam->field_0x7f8 = 5;
+        cam->field_0x808.set(x0, y0, x1, y1);
+        cam->field_0x7f6 = 0;
+    }
+}
+
 void cls_8049EB8C::fn_801321E4() {
     switch (field_0x234) {
     case 0:
@@ -449,17 +457,7 @@ void cls_8049EB8C::fn_801321E4() {
             gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
         } else {
             gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-            Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-            f32 y1 = mPos.y + 96.0f;
-            f32 x = mPos.x;
-            f32 y0 = mPos.y - 96.0f;
-            if (camera->field_0x7f5 == 0) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = 5;
-                camera->field_0x808.set(x, y0, x, y1);
-                camera->field_0x7f6 = 0;
-            }
+            camBox(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         }
         break;
     case 8: {
@@ -472,34 +470,15 @@ void cls_8049EB8C::fn_801321E4() {
                 pos = actor->mPos;
             }
         }
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         pos.y += 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(pos.x, pos.y - 108.0f, pos.x, pos.y + 108.0f);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(pos.x, pos.y - 108.0f, pos.x, pos.y + 108.0f);
         break;
     }
     case 9:
-    case 10: {
+    case 10:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-        f32 y1 = mPos.y + 96.0f;
-        f32 x = mPos.x;
-        f32 y0 = mPos.y - 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(x, y0, x, y1);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         break;
-    }
     case 11: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x7f4 == 0) {
@@ -517,22 +496,10 @@ void cls_8049EB8C::fn_801321E4() {
     case 17:
     case 18:
     case 19:
-    case 20: {
+    case 20:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-        f32 y1 = mPos.y + 96.0f;
-        f32 x = mPos.x;
-        f32 y0 = mPos.y - 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(x, y0, x, y1);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         break;
-    }
     }
 }
 
@@ -540,11 +507,27 @@ void cls_8049EB8C::fn_801321E4() {
 // copies the linker dropped. The original's .sdata2 has their literals ahead of fn_801321E4's, in
 // the order of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
-// Opens message 0x2B6 for `player`, 64 units above the fairy.
-bool cls_8049EB8C::talkTo(s32 player) {
+// Checks for a talking player and opens message 0x2B6 for `player`, 64 units above the fairy.
+s32 cls_8049EB8C::talkTo() {
+    JGeometry::TBox2f box = mBox;
+    box.i.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.x += mPos.x;
+    box.f.y += mPos.y;
+    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    s32 player = fn_8022FD8C(mSerial);
+    if (player < 0) {
+        return -1;
+    }
+    if (!fn_802300EC(player)) {
+        return -1;
+    }
     JGeometry::TVec3f pos = mPos;
     pos.y -= 64.0f;
-    return fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28);
+    if (fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28)) {
+        return player;
+    }
+    return -1;
 }
 
 // State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
@@ -558,10 +541,8 @@ void cls_8049EB8C::placeAtBarrier() {
             pos = actor->mPos;
         }
     }
-    mPos.x = pos.x;
     pos.y += 32.0f;
-    mPos.y = pos.y;
-    mPos.z = 8.0f;
+    mPos.set(pos.x, pos.y, 8.0f);
     pos.y += 32.0f;
     pos.x -= 50.0f;
     for (s32 i = 0; i < 4; i++) {
