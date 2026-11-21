@@ -214,15 +214,7 @@ void cls_8049D83C::update() {
             fn_8011921C()->fn_801183BC();
             break;
         }
-        bool canSkip;
-        if (!isStageFlagSet(field_0x238, 3)) {
-            canSkip = false;
-        } else if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
-            canSkip = true;
-        } else {
-            canSkip = false;
-        }
-        if (canSkip) {
+        if (isStageFlagSet(field_0x238, 3) && lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
             fn_80387494(0);
             fn_8011921C()->fn_801183BC();
         }
