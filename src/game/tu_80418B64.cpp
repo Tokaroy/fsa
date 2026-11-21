@@ -1586,7 +1586,8 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
     s32 row = 0;
-    if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+    u32 kind = gGameRoot_8053AAF8->field_0x83 & 3;
+    if (kind == 2) {
         row = 1;
     }
     s32 level = fn_80418B64();
@@ -1601,9 +1602,9 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     s16 dx = lbl_8050DB0C.field_0x4c[0xF3] + lbl_8048E0E0[row][field_0x222];
     s16 dy = lbl_8050DB0C.field_0x4c[0xF4] + lbl_8048E0F4[row][field_0x222];
     if (lbl_8048E0CC[row][field_0x222] == 0) {
-        dy = (f32)dy + lbl_8053AED0->fn_8043D514();
+        dy += lbl_8053AED0->fn_8043D514();
     } else {
-        dy = (f32)dy + lbl_8053AED0->fn_8043D57C();
+        dy += lbl_8053AED0->fn_8043D57C();
     }
     field_0x54->moveFromCentre_80402E08(
         (f32)(dx + (lbl_8048E0B8[row][field_0x222] + lbl_8050DB0C.field_0x4c[0x143] + lbl_8048E108[row][field_0x222])),
