@@ -47,7 +47,6 @@ MagicCircle_804A7960::~MagicCircle_804A7960() {
     releaseEmitter_801EE434(mEmitter278);
 }
 
-// FIXME: 99.89%, regalloc-only (f2/f31 and f1/f30 swapped in the two destMin fadds)
 void MagicCircle_804A7960::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mLife = 0;
@@ -80,8 +79,10 @@ void MagicCircle_804A7960::init() {
         field_0x268.y = destMinY + (mPos.y - srcMinY);
         field_0x268.z = 0.0f;
     } else {
-        field_0x268.set(8.0f + ((f32)getTargetX(field_0x90) + destMinX),
-                        8.0f + ((f32)getTargetY(field_0x90) + destMinY),
+        f32 targetX = getTargetX(field_0x90);
+        f32 targetY = getTargetY(field_0x90);
+        field_0x268.set(8.0f + (targetX + destMinX),
+                        8.0f + (targetY + destMinY),
                         0.0f);
     }
 
