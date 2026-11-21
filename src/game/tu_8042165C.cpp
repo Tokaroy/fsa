@@ -642,13 +642,7 @@ void cls_804B146C::fn_804257E4() {
                     val = 0;
                 }
                 for (s32 j = 0; j < 4; j++) {
-                    if (val >= 0x60) {
-                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4, field_0x4->search(lbl_8048E300[i][j])->getHeight());
-                        val -= 0x60;
-                    } else {
-                        field_0x4->search(lbl_8048E300[i][j])->resize(field_0xf4 * ((f32)val / 96.0f), field_0x4->search(lbl_8048E300[i][j])->getHeight());
-                        val = 0;
-                    }
+                    updateGaugeBar(i, j, val);
                 }
             }
             fn_80423248(i);
@@ -845,7 +839,6 @@ void cls_804B146C::fn_80425128() {
     }
 }
 
-// FIXME(shotgun): 99.98 %, reloc-name; behaviour clean.
 void cls_804B146C::fn_80424148(s32 player, bool force) {
     f32 prevA = field_0x108[player];
     f32 prevB = field_0x128[player];
@@ -1438,6 +1431,16 @@ void cls_804B146C::fn_80421D78(s32 player) {
     }
     if (field_0x208[player] > 0) {
         field_0x208[player]--;
+    }
+}
+
+void cls_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
+    if (val >= 0x60) {
+        field_0x4->search(lbl_8048E300[player][bar])->resize(field_0xf4, field_0x4->search(lbl_8048E300[player][bar])->getHeight());
+        val -= 0x60;
+    } else {
+        field_0x4->search(lbl_8048E300[player][bar])->resize(field_0xf4 * ((f32)val / 96.0f), field_0x4->search(lbl_8048E300[player][bar])->getHeight());
+        val = 0;
     }
 }
 
