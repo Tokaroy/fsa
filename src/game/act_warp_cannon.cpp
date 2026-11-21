@@ -156,12 +156,7 @@ void WarpCannon_8049EAE0::draw() {
                 1.0f, 1.0f);
 }
 
-// FIXME: 95.46 %, missing/extra + reloc-name; behaviour drift.
-// The loop over fn_80230360 is the same, but after it the
-// original falls through into the field_0x278 store on its own `cmpwi 4; blt`,
-// where ours compares i again (cmpwi; bne): 3 extra instructions. The switch's
-// jump table is the compiler's (@NNN) where the original names
-// jumptable_8049EB34.
+// FIXME: regalloc-only + reloc-name; the switch's jump table is @NNN where the original names jumptable_8049EB34.
 void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     field_0x268 = state;
     switch (field_0x268) {
@@ -176,23 +171,15 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
         break;
     case 3: {
         field_0x290 = *fn_8023E32C(0);
-        s32 i;
-        for (i = 0; i < 4; i++) {
-            if (!fn_80230360(i)) {
-                break;
-            }
-        }
-        if (i == 4) {
-            field_0x278 = 0;
-        }
-        for (i = 0; i < 4; i++) {
+        resetIfAllPlayersReady();
+        for (s32 i = 0; i < 4; i++) {
             fn_80230498(i, &field_0x290, 0xB0, 0, -0x80, -0x80, true);
         }
         break;
     }
     case 4:
         for (s32 i = 0; i < 4; i++) {
-            u16 id = fn_8023CBC0(i);
+            s32 id = fn_8023CBC0(i);
             fn_80230498(i, getPlayerPos_8023E724(i), id, 0xFF, -0x80, -0x80, true);
         }
         for (s32 i = 0; i < 4; i++) {
@@ -235,6 +222,16 @@ void WarpCannon_8049EAE0::flyPlayers() {
         fn_801CD950(&pos.y, 1000.0f, field_0x27c);
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
     }
+}
+
+// Entering state 3: reset field_0x278 if all players pass fn_80230360.
+void WarpCannon_8049EAE0::resetIfAllPlayersReady() {
+    for (s32 i = 0; i < 4; i++) {
+        if (!fn_80230360(i)) {
+            return;
+        }
+    }
+    field_0x278 = 0;
 }
 
 // Entering state 7: the players at z = 90.

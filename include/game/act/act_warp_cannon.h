@@ -22,6 +22,7 @@ public:
     // Not in the binary: plain functions that update and fn_80130FAC inline.
     void flyPlayers();
     void liftPlayers();
+    void resetIfAllPlayersReady();
     bool landPlayers();
     bool recoil();
     bool fireRecoil();
