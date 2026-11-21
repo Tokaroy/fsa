@@ -17,7 +17,7 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scaleX, f32
     m[0][0] = scaleX * (cy * cz);
     m[1][0] = scaleX * (cy * sz);
     m[2][0] = scaleX * -sy;
-    m[0][1] = scaleY * (sy * sx * cz - cx * sz);
+    m[0][1] = scaleY * (sx * sy * cz - cx * sz);
     m[1][1] = scaleY * (sx * sy * sz + cx * cz);
     m[2][1] = scaleY * (sx * cy);
     m[0][2] = scaleZ * (cx * cz * sy + sx * sz);
