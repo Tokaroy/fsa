@@ -495,6 +495,7 @@ void ArrowPlayer_804A05E0::draw() {
         if (field_0x24c >= 50 || (field_0x24c & 2) == 0) {
             SpriteParams_801F5AE0 params;
             params.field_0x10.a = (u8)(s32)field_0x234;
+            params.field_0x1d = 1;
             if (fn_8022B160() == true) {
                 switch (field_0x90) {
                 case 0:
