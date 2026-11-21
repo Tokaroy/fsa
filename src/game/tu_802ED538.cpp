@@ -366,7 +366,12 @@ void cls_804AA350::update() {
     }
 }
 
-// FIXME(shotgun): 97.62 %, scheduling; behaviour clean.
+static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+    if (layer < 8) {
+        gGameRoot2_8053AB10->field_0x20->fn_802F745C(pos, res, params);
+    }
+}
+
 void cls_804AA350::draw() {
     if (field_0x2cc != NULL) {
         SpriteParams_801F5AE0 params;
@@ -375,10 +380,7 @@ void cls_804AA350::draw() {
         params.field_0x24 = 1;
         params.field_0x23 = 1;
         params.field_0x21 = 1;
-        if (field_0x4 >= 8) {
-            return;
-        }
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, field_0x2cc, &params);
+        drawSprite(field_0x4, &mPos, field_0x2cc, &params);
     }
 }
 
