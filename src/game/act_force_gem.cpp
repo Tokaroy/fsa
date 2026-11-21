@@ -11,6 +11,7 @@
 #include "game/RotMatrix.h"
 #include "game/ViewLayer.h"
 #include "game/act/act_force_gem.h"
+#include "game/act/act_wizzrobe.h"
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
 #include "game/Camera.h"
@@ -504,11 +505,17 @@ void ForceGem_804AB6D8::update() {
                 field_0x26c = -1;
                 break;
             }
-            f32 dy = (mPos.y - mPos.z) - target->mPos.y;
             f32 dx = mPos.x - target->mPos.x;
+            f32 dy = (mPos.y - mPos.z) - target->mPos.y;
             if (std::sqrtf(dx * dx + dy * dy) < 4.0f) {
-                // FIXME(shotgun): not written: the target's word at 0x26C is a serial; that actor's
-                // word at 0x2C0 goes up by one (both actor types not identified yet).
+                s32 wizzSerial = static_cast<Wizzrobe_804A0EDC*>(target)->field_0x26c;
+                if (wizzSerial >= 0) {
+                    Wizzrobe_804A0EDC* wizz =
+                        static_cast<Wizzrobe_804A0EDC*>(getActorManager_801F856C()->findActorBySerial_801F666C(wizzSerial));
+                    if (wizz != NULL) {
+                        wizz->field_0x2c0++;
+                    }
+                }
                 fn_801F3668();
                 break;
             }
@@ -518,7 +525,7 @@ void ForceGem_804AB6D8::update() {
                 break;
             }
             addCalcAngle2_801F714C(&field_0x240,
-                                   field_0x242 + (s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f), 1, 0x1000);
+                                   field_0x242 + (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dy)), 1, 0x1000);
             addCalcAngle2_801F714C(&field_0x242, 0, 1, 0x500);
             field_0x3c.x = 5.0f * JMath::sincosTable_.sinShort(field_0x240);
             field_0x3c.y = 5.0f * JMath::sincosTable_.cosShort(field_0x240);
