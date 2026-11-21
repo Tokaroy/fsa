@@ -29,7 +29,6 @@ Cloud_8049CBE0::Cloud_8049CBE0()
     }
 }
 
-// FIXME(shotgun): 98.89 %, missing/extra; behaviour drift.
 // 0x80105A34.
 void Cloud_8049CBE0::init() {
     ActorBase_804A5770::init();
@@ -42,10 +41,6 @@ void Cloud_8049CBE0::init() {
     for (s32 i = 0; i < 4; i++) {
         field_0x2f8[i] = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8049CBB0[field_0x36c][i]);
     }
-    // FIXME: 88.48%. The original's dispatch is `cmpwi 1; beq state1; bge L;
-    // b default; L: cmpwi 3; bge default; b state2`, with the blocks laid out
-    // state1, state2, default. This switch and an if/else chain both compare
-    // against 1 again; the 0.0f/-38.0f literals also sit at other offsets.
     switch (field_0x36c) {
     case 1:
         mBox.i.x = -38.0f;
@@ -59,6 +54,7 @@ void Cloud_8049CBE0::init() {
         mBox.f.x = 32.0f;
         mBox.f.y = 12.0f;
         break;
+    case 0:
     default:
         mBox.i.x = -22.0f;
         mBox.i.y = -22.0f;
