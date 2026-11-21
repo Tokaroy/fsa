@@ -45,7 +45,7 @@ void WarpCannon_8049EAE0::init() {
     field_0x28c = mPos.z;
 }
 
-// FIXME(shotgun): 95.48 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.76 %, operands + reloc-name; behaviour drift.
 // a few instructions (state 0 probe loop, shared statics @NNN)
 void WarpCannon_8049EAE0::update() {
     switch (field_0x268) {
@@ -129,6 +129,7 @@ void WarpCannon_8049EAE0::draw() {
                 1.0f, 1.0f);
 }
 
+// FIXME: 99.48 %, regalloc-only + reloc-name; behaviour drift.
 // FIXME: regalloc-only + reloc-name; the switch's jump table is @NNN where the original names jumptable_8049EB34.
 void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
     field_0x268 = state;
