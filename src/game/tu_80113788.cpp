@@ -277,11 +277,11 @@ void cls_8049D83C::draw() {
 }
 
 // 0x80114860.
-// FIXME(shotgun): 99.54 %, missing/extra; behaviour clean.
 void cls_8049D83C::vfunc_0x54() {
     cls_801192AC* sub = fn_8011921C();
     s32 t = sub->field_0x8;
-    if (field_0x238 == 0) {
+    switch (field_0x238) {
+    case 0:
         if (t == lbl_8046486C[2]) {
             vfunc_0x60(2);
         } else if (t == lbl_8046486C[3]) {
@@ -311,7 +311,8 @@ void cls_8049D83C::vfunc_0x54() {
         } else if (t == lbl_8046486C[17]) {
             vfunc_0x60(17);
         }
-    } else {
+        break;
+    default:
         if (t == lbl_8046486C[2]) {
             vfunc_0x60(2);
         } else if (t == lbl_8046486C[3]) {
@@ -329,6 +330,7 @@ void cls_8049D83C::vfunc_0x54() {
         } else if (t == lbl_8046486C[10]) {
             vfunc_0x60(10);
         }
+        break;
     }
 }
 
