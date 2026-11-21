@@ -214,15 +214,19 @@ void cls_8049DB90::update() {
     }
 }
 
+static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s32 frame,
+                                 SpriteParams_801F5AE0* params, s32 flags) {
+    if (actor->mSpriteParams.mMtx == NULL) {
+        fn_801EF830(actor->field_0x4, &actor->mPos, params, flags, name, frame, NULL);
+    }
+}
+
 // The original keeps &mPos in r29 across getResource; ours recomputes it.
-// FIXME: 94.95 %, missing/extra; behaviour clean.
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
-    if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", mSequencer.mFrame, NULL);
-    }
+    drawShadowSob(this, "player_sob.bin", mSequencer.mFrame, &params, 7);
     s32 frame = mSequencer.mFrame;
     if (field_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
