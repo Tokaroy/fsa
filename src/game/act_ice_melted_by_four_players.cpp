@@ -138,9 +138,6 @@ u8 IceMeltedByFourPlayers_804AE888::fn_80378880() {
     return playerMask == 0xF;
 }
 
-// FIXME: 99.84 %, regalloc-only; behaviour clean.
-// regalloc only: the 0.0f compare is fcmpu with the operands
-// in the other registers (f0 and f1 swapped).
 bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
     JGeometry::TBox2f ours;
     ours.set(mBox);
@@ -165,7 +162,7 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
             continue;
         }
         JGeometry::TVec3f offset = other->field_0x3c;
-        if (offset.x != 0.0f || offset.y != 0.0f) {
+        if (offset.x || offset.y) {
             other->mLife = 0;
             continue;
         }
