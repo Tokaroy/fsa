@@ -38,6 +38,14 @@ inline f32 lerp(f32 from, f32 to, f32 t) {
     return from + t * (to - from);
 }
 
+inline void approachLinear(f32* value, f32 target, f32 remaining) {
+    if (remaining < FLT_EPSILON) {
+        *value = target;
+    } else {
+        *value += (1.0f / remaining) * (target - *value);
+    }
+}
+
 inline void Floormaster_804A6004::setEmitterColor() {
     u8 prm = lerp(255.0f, 0.0f, field_0x2b4);
     mEmitter2b0->setGlobalPrmColor(prm, prm, prm);
@@ -108,8 +116,8 @@ void Floormaster_804A6004::init() {
 }
 
 // Case 1: the three env-colour conversions use other stack slots and f-registers than the original
-// (0x18/0x20/0x10 for r/g/b), and 0.0f/1.0f sit one f-register higher.
-// FIXME: 99.10 %, scheduling+regalloc; behaviour drift.
+// (0x18/0x20/0x10 for r/g/b), and the player-x check swaps f2/f3.
+// FIXME: 99.18 %, scheduling+regalloc; behaviour drift.
 void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     switch (state) {
     case 0:
@@ -137,7 +145,7 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
         mTargetSpeed = 1.0f;
-        mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 0.0f);
+        mEmitter2b0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1AF, 0, 0, NULL, NULL, true, 1.0f);
         if (mEmitter2b0 != NULL) {
             setEmitterColor();
         }
@@ -264,13 +272,30 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     }
 }
 
-// FIXME: 99.89 %, operands; behaviour clean.
-// operands + reloc-name: the three TVec3f locals sit in different stack slots.
-void Floormaster_804A6004::fn_8020EB08() {
-    JGeometry::TVec3f diff;
-    JGeometry::TVec3f targetPos;
-    JGeometry::TVec3f pPos;
+inline void Floormaster_804A6004::updateGrabbedPlayer_8020EB08() {
+    JGeometry::TVec3f pPos = *getPlayerPos_8023E724(field_0x2b8);
+    JGeometry::TVec3f targetPos = pPos;
+    JGeometry::TVec3f dest;
+    if (mState == 6) {
+        dest.set(mPos.x, mPos.y, 16.0f);
+    } else {
+        dest.set(mPos.x, mPos.y, 0.0f);
+    }
+    fn_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
+    fn_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
+    fn_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
 
+    if (mState == 5) {
+        fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
+    } else {
+        JGeometry::TVec3f diff = targetPos - pPos;
+        fn_8023DFF4(field_0x2b8, &diff);
+    }
+}
+
+// Not auto-inlined: vfunc_0x90 calls fn_8020EB08 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+void Floormaster_804A6004::fn_8020EB08() {
     setEmitterPos_8013CB44(mEmitter2b0, &mPos, 0, 0, true);
     switch (mState) {
     case 1:
@@ -305,28 +330,7 @@ void Floormaster_804A6004::fn_8020EB08() {
         break;
     }
     if (inRange) {
-        pPos = *getPlayerPos_8023E724(field_0x2b8);
-        targetPos = pPos;
-        f32 x, y, z;
-        if (mState == 6) {
-            x = mPos.x;
-            y = mPos.y;
-            z = 16.0f;
-        } else {
-            x = mPos.x;
-            y = mPos.y;
-            z = 0.0f;
-        }
-        fn_801CD8E4(&targetPos.x, x, 0.2f, 0.0f);
-        fn_801CD8E4(&targetPos.y, y, 0.2f, 0.0f);
-        fn_801CD8E4(&targetPos.z, z, 0.2f, 0.0f);
-
-        if (mState == 5) {
-            fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
-        } else {
-            diff = targetPos - pPos;
-            fn_8023DFF4(field_0x2b8, &diff);
-        }
+        updateGrabbedPlayer_8020EB08();
     }
 
     if (mFlags & 0x4000) {
@@ -336,11 +340,12 @@ void Floormaster_804A6004::fn_8020EB08() {
         }
     }
 }
+#pragma auto_inline reset
 
-// FIXME: 97.40 %, missing/extra; behaviour drift.
-// missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
-// folds 0.0f - x into fneg (1 instruction fewer); case 3 sets the flag with `mr r30, r4` where ours
-// has `li r30, 1`; case 7 stores x/y from pos in the other order and stfd conversion order differs.
+// case 3 sets the flag with `mr r30, r4` where ours has `li r30, 1`;
+// case 7 stores x/y from pos in the other order and swaps pos/vec stack slots;
+// setEmitterColor() env-color stfd conversion order differs in cases 1 and 10.
+// FIXME: 98.13 %, different; behaviour drift.
 void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
     fn_8020EB08();
     switch (mState) {
@@ -362,12 +367,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
                 fn_8020ED5C(10);
             }
         } else {
-            f32 remaining = 60 - mStateTimer;
-            if (remaining < FLT_EPSILON) {
-                field_0x2b4 = 1.0f;
-            } else {
-                field_0x2b4 += (1.0f - field_0x2b4) * (1.0f / remaining);
-            }
+            approachLinear(&field_0x2b4, 1.0f, 60 - mStateTimer);
             if (mEmitter2b0 != NULL) {
                 setEmitterColor();
             }
@@ -487,12 +487,7 @@ void Floormaster_804A6004::vfunc_0x90(u8 mapHit) {
             deleteEmitter(&mEmitter2b0);
             fn_8020ED5C(0);
         } else {
-            f32 remaining = 60 - mStateTimer;
-            if (remaining < FLT_EPSILON) {
-                field_0x2b4 = 0.0f;
-            } else {
-                field_0x2b4 += (0.0f - field_0x2b4) * (1.0f / remaining);
-            }
+            approachLinear(&field_0x2b4, 0.0f, 60 - mStateTimer);
             if (mEmitter2b0 != NULL) {
                 setEmitterColor();
             }

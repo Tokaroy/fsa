@@ -25,6 +25,7 @@ public:
     void onHit();
     void fn_8020EB08();
     void fn_8020ED5C(s32 state);
+    inline void updateGrabbedPlayer_8020EB08();
     /* 0x2A8 */ f32 field_0x2a8;
     /* 0x2AC */ f32 field_0x2ac;
     /* 0x2B0 */ JPABaseEmitter* mEmitter2b0; // released by the destructor
