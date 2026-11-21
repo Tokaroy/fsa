@@ -315,7 +315,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
         {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
     };
     for (u8 i = 0; i < 4; i++) {
-        s16* buf = new (heap, 0x20) s16[fxConfig[i].mBufCount * 0x50];
+        s16* buf = new (heap, 0x20) s16[(fxConfig[i].mBufCount * 0xA0) / 2];
         JASDsp::setFXLine(i, buf, &fxConfig[i]);
     }
 
@@ -326,13 +326,12 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
     field_0x28 = new ActorSoundObj_804578F4(NULL, heap, 1);
     field_0x40 = new (heap, 0) GameAudio::CustomSoundTable();
 
-    JKRArchive* seqArc = (JKRArchive*)seqData;
-    if (seqArc == NULL) {
-        seqArc = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_DVD, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
+    if (seqData == NULL) {
+        seqData = JKRArchive::mount(lbl_8053A24C, JKRArchive::MOUNT_DVD, heap, JKRArchive::MOUNT_DIRECTION_HEAD);
     }
     JASWaveArcLoader::setCurrentDir(lbl_8053A248);
     field_0x44 = JAUNewSectionHeap(true);
-    field_0x44->setSeqDataArchive(seqArc);
+    field_0x44->setSeqDataArchive((JKRArchive*)seqData);
     field_0x44->newDynamicSeqBlock(0x16000);
     field_0x44->newDynamicSeqBlock(0x16000);
     field_0x44->newDynamicSeqBlock(0xB000);
