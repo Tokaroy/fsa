@@ -528,20 +528,20 @@ bool BgRewrite_804A7C98::fn_802A1490(const JGeometry::TVec3f* pos) {
     return false;
 }
 
-// FIXME(shotgun): 99.35 %, different; behaviour drift.
-// 3 opcodes differ (literal pool order)
+// Regalloc: inlined fn_802A3948 slot uses r29 instead of r28 in three cases.
 void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = fn_80226BC4(&p, 0);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(0, field_0x20);
-    u16 tile = field_0x24;
-    if (tile == 0x69 || tile == 0x68 || tile == 0x75 || (u16)(tile - 0x6A) <= 1 || tile == 0x82 || tile == 0x5F ||
-        (u16)(tile - 0x70) <= 3 || (u16)(tile - 0x40) <= 4 || tile == 0xE5) {
-        switch (tile) {
+    if (field_0x24 == 0x69 || field_0x24 == 0x68 || field_0x24 == 0x75 || field_0x24 == 0x6A || field_0x24 == 0x6B ||
+        field_0x24 == 0x82 || field_0x24 == 0x5F || field_0x24 == 0x70 || field_0x24 == 0x71 || field_0x24 == 0x72 ||
+        field_0x24 == 0x73 || field_0x24 == 0x40 || field_0x24 == 0x41 || field_0x24 == 0x42 || field_0x24 == 0x43 ||
+        field_0x24 == 0x44 || field_0x24 == 0xE5) {
+        switch (field_0x24) {
         case 0x72:
         case 0x73:
         case 0x82: {
-            if (tile == 0x72 || tile == 0x73) {
+            if (field_0x24 == 0x72 || field_0x24 == 0x73) {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, 0, 0x7C);
             } else {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, 0, 0x83);
