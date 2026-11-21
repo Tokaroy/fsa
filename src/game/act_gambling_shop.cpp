@@ -160,7 +160,7 @@ void GamblingShop_804AAA70::update() {
             if (dist >= 80.0f) {
                 field_0x238 = 2;
             } else {
-                u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
+                u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
                                   (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
                 if (angle < 0x2000 || angle >= 0xE000) {
                     field_0x238 = 3;
