@@ -38,7 +38,10 @@ extern const u16 lbl_804A2880[];
 extern const s32 lbl_804A288C[];
 extern const s32 lbl_804A289C[];
 extern const s32 lbl_804A28B0[];
-extern const u8 lbl_804A28C4[];
+u8 lbl_804A28C4[6][3] = {
+    {0x4B, 0xFF, 0x2D}, {0xFF, 0x41, 0x37}, {0x2D, 0x78, 0xFF},
+    {0xDC, 0x1E, 0xDC}, {0xC8, 0xA0, 0x28}, {0x1E, 0xA0, 0xBE},
+};
 extern const u16 lbl_804A28D8[];
 extern const u16 lbl_804A28FC[];
 extern const s32 lbl_8053A0E8[2];
@@ -109,7 +112,6 @@ void fn_8019CD9C(s32 v) {
     gGameRoot_8053AAF8->fn_8013670C(v);
 }
 
-// FIXME(shotgun): 96.21 %, missing/extra; behaviour drift.
 void cls_804A2944::init() {
     lbl_8053ABA8 = 0;
     mBox.i.x = -8.0f;
@@ -129,15 +131,15 @@ void cls_804A2944::init() {
     mTimers[2] = 0;
     mTimers[3] = 0;
     for (int i = 0; i < 4; i++) {
-        field_0x2a4[i].set(0.0f, 0.0f, 0.0f);
-        field_0x2d4[i].set(0.0f, 0.0f, 0.0f);
+        field_0x2a4[i].zero();
+        field_0x2d4[i].zero();
     }
     field_0x25c = -1;
     field_0x264 = -1;
     field_0x27c = 0.0f;
     field_0x278 = 0.0f;
     field_0x274 = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x3c.zero();
     field_0x94 = (field_0x90 >> 4) & 0xF;
     field_0x90 &= 3;
     field_0x26c = 0.0f;
@@ -172,12 +174,11 @@ void cls_804A2944::init() {
                 static_cast<LifeMeter_804B174C*>(limit)->fn_8019CEF8(mSerial, -28.0f, field_0x258);
             }
         }
-        JGeometry::TVec3f origin(field_0x280[0].x, field_0x280[0].y, field_0x280[0].z);
         if (mEmitters[0] == NULL) {
-            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &origin, 0x1CA, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, static_cast<const JGeometry::TVec3f*>(&field_0x280[0]), 0x1CA, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitters[1] == NULL) {
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &origin, 0x1CB, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, static_cast<const JGeometry::TVec3f*>(&field_0x280[0]), 0x1CB, 0, 0, NULL, NULL, true, 1.0f);
         }
         mPos.y += 148.0f;
         mPos.x = field_0x280[0].x;
@@ -201,19 +202,17 @@ void cls_804A2944::init() {
         field_0x270 = 255.0f;
         if (mEmitters[0] == NULL) {
             mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 4, NULL, NULL, true, 1.0f);
-            const u8* color = &lbl_804A28C4[field_0x94 * 3];
-            mEmitters[0]->setGlobalEnvColor(color[0], color[1], color[2]);
+            mEmitters[0]->setGlobalEnvColor(lbl_804A28C4[field_0x94][0], lbl_804A28C4[field_0x94][1],
+                                            lbl_804A28C4[field_0x94][2]);
         }
         if (mEmitters[1] == NULL) {
             mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 4, NULL, NULL, true, 1.0f);
-            const u8* color = &lbl_804A28C4[field_0x94 * 3];
-            mEmitters[1]->setGlobalEnvColor(color[0], color[1], color[2]);
+            mEmitters[1]->setGlobalEnvColor(lbl_804A28C4[field_0x94][0], lbl_804A28C4[field_0x94][1],
+                                            lbl_804A28C4[field_0x94][2]);
         }
         mState = 0x4A;
         break;
     case 3:
-        break;
-    default:
         field_0x26c = mPos.z;
         mTimers[0] = 9;
         mState = 0x4F;
