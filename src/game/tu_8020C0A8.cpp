@@ -23,7 +23,6 @@ cls_804A5F40::cls_804A5F40() {
     field_0x2ae = 0;
 }
 
-// FIXME(shotgun): 86.50 %, scheduling+regalloc; behaviour clean.
 void cls_804A5F40::init() {
     EnemyBase_804A4808::init();
     if (field_0x90 & 1) {
@@ -50,9 +49,11 @@ void cls_804A5F40::init() {
             fn_801F3668();
         } else {
             JGeometry::TBox2f* box = layerBox(field_0x4);
+            JGeometry::TBox2f bounds(field_0x80.i.x + mPos.x, field_0x80.i.y + mPos.y,
+                                     field_0x80.f.x + mPos.x, field_0x80.f.y + mPos.y);
             bool inside = false;
-            if (field_0x80.i.x + mPos.x >= box->i.x && field_0x80.i.y + mPos.y >= box->i.y &&
-                field_0x80.f.x + mPos.x < box->f.x && field_0x80.f.y + mPos.y < box->f.y) {
+            if (bounds.i.x >= box->i.x && bounds.i.y >= box->i.y &&
+                bounds.f.x < box->f.x && bounds.f.y < box->f.y) {
                 inside = true;
             }
             if (!inside) {
