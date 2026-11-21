@@ -17,9 +17,10 @@
 
 void fn_802B7CD8(ActorBase_804A5770* actor);
 
-// FIXME(shotgun): 99.88 %, operands; behaviour drift.
-// (string literal pooling)
+extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
+
 // 0x80439C78
+// FIXME: 99.90 %, same-text; behaviour drift.
 cls_804B17A0::cls_804B17A0() {
     lbl_8053AEC8 = this;
     field_0x4 = new J2DScreen;
@@ -62,8 +63,8 @@ cls_804B17A0::cls_804B17A0() {
     field_0x5f = 0;
 }
 
-// FIXME(shotgun): 95.20 %, different; behaviour drift.
 // 0x80439B28
+// FIXME: 98.10 %, regalloc-only; behaviour drift.
 cls_804B17A0::~cls_804B17A0() {
     delete field_0x4;
     field_0x4 = NULL;
@@ -73,16 +74,19 @@ cls_804B17A0::~cls_804B17A0() {
     field_0x34 = NULL;
     for (s32 i = 0; i < 8; i++) {
         if (field_0xc[i] != NULL) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[i]);
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(field_0xc[i]);
             field_0xc[i] = NULL;
         }
     }
     if (field_0xc[8] != NULL) {
-        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[8]);
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0xc[8]);
         field_0xc[8] = NULL;
     }
     if (field_0xc[9] != NULL) {
-        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[9]);
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0xc[9]);
         field_0xc[9] = NULL;
     }
     lbl_8053AEC8 = NULL;
@@ -142,8 +146,6 @@ static inline void sparkEmitter(JPABaseEmitter*& slot, JGeometry::TVec3f& pos, f
     gAudioMgr_8053AF80->fn_80458880(0xD, -1);
 }
 
-// FIXME(shotgun): 97.57 %, missing/extra + reloc-name; behaviour drift.
-// (we keep one more saved register: the target reuses r28-r30 for the cleanup loops)
 // 0x80438E94
 u8 cls_804B17A0::fn_80438E94() {
     s32 serial = field_0x44;
@@ -247,16 +249,19 @@ u8 cls_804B17A0::fn_80438E94() {
             if (field_0x3c >= field_0x8->mTotalFrameCount - 1) {
                 for (s32 i = 0; i < 8; i++) {
                     if (field_0xc[i] != NULL) {
-                        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[i]);
+                        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+                        manager->forceDeleteEmitter(field_0xc[i]);
                         field_0xc[i] = NULL;
                     }
                 }
                 if (field_0xc[8] != NULL) {
-                    getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[8]);
+                    JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+                    manager->forceDeleteEmitter(field_0xc[8]);
                     field_0xc[8] = NULL;
                 }
                 if (field_0xc[9] != NULL) {
-                    getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[9]);
+                    JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+                    manager->forceDeleteEmitter(field_0xc[9]);
                     field_0xc[9] = NULL;
                 }
                 field_0x3c = 0;
@@ -278,16 +283,19 @@ u8 cls_804B17A0::fn_80438E94() {
     field_0x4->search('Ndata01')->animationTransform();
     for (s32 i = 0; i < 8; i++) {
         if (field_0xc[i] != NULL && field_0xc[i]->isEnableDeleteEmitter()) {
-            getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[i]);
+            JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+            manager->forceDeleteEmitter(field_0xc[i]);
             field_0xc[i] = NULL;
         }
     }
     if (field_0xc[8] != NULL && field_0xc[8]->isEnableDeleteEmitter()) {
-        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[8]);
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0xc[8]);
         field_0xc[8] = NULL;
     }
     if (field_0xc[9] != NULL && field_0xc[9]->isEnableDeleteEmitter()) {
-        getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(field_0xc[9]);
+        JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
+        manager->forceDeleteEmitter(field_0xc[9]);
         field_0xc[9] = NULL;
     }
     if (field_0x54 < lbl_8050DB0C.field_0x4c[40]) {
@@ -338,7 +346,7 @@ void cls_804B17A0::fn_80438E10(u8 flag) {
     fn_80439AB0();
 }
 
-// FIXME(shotgun): 96.56 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.44 %, missing/extra; behaviour clean.
 // 0x80438C68
 void cls_804B17A0::fn_80438C68() {
     switch (field_0x58) {
@@ -374,7 +382,9 @@ void cls_804B17A0::fn_80438C68() {
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == ACTOR_DETH) {
-                    fn_802B7CD8(actor);
+                    if (actor != NULL) {
+                        fn_802B7CD8(actor);
+                    }
                 }
             }
             break;
