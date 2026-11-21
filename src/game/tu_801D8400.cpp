@@ -136,7 +136,7 @@ void cls_804A4C58::vfunc_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-// FIXME(shotgun): 97.99 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
 void cls_804A4C58::fn_801D9C58(int state) {
     field_0x336 = 0;
     if (mState == 0x11) {
@@ -159,10 +159,14 @@ void cls_804A4C58::fn_801D9C58(int state) {
     case 5:
         field_0x250 = -1;
         mTargetSpeed = 0.0f;
-        if (mState >= 6 && mState < 8) {
+        switch (mState) {
+        case 6:
+        case 7:
             mSeq2a8.fn_801DA9E8(2, 0);
-        } else {
+            break;
+        default:
             mSeq2a8.fn_801DA9E8(1, 0);
+            break;
         }
         startSound_801F0E34(0x40052, 0);
         break;
@@ -257,7 +261,7 @@ void cls_804A4C58::fn_801D9C58(int state) {
         mBox.i.y = 1.0f;
         mBox.f.x = -1.0f;
         mBox.f.y = -1.0f;
-        mBox2 = mBox;
+        mBox2.set(mBox);
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
         field_0x3c.set(0.0f, 0.0f, 0.0f);
@@ -331,7 +335,31 @@ void cls_804A4C58::fn_801D9960() {
     }
 }
 
-// FIXME(shotgun): 98.23 %, missing/extra + reloc-name; behaviour clean.
+static inline s32 findTarget_801D95F4(cls_804A4C58* self) {
+    s16 angle;
+    s32 player;
+    s32 target = -1;
+    JGeometry::TVec3f from;
+    if (self->mFlags & 0x2000) {
+        from.set(self->mPos.x - -30.0f, -6.0f + self->mPos.y, 0.0f);
+    } else {
+        from.set(-30.0f + self->mPos.x, -6.0f + self->mPos.y, 0.0f);
+    }
+    angle = (self->mFlags & 0x2000) ? 0x2000 : -0x2000;
+    player = self->fn_801D0338(&from, angle);
+    if (player >= 0) {
+        f32 dy = getPlayerPos_8023E724(player)->y - from.y;
+        f32 dx = getPlayerPos_8023E724(player)->x - from.x;
+        s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
+                            (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
+        if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
+            target = player;
+        }
+    }
+    return target;
+}
+
+// FIXME(shotgun): 99.09 %, regalloc-only + reloc-name; behaviour clean.
 bool cls_804A4C58::fn_801D95F4() {
     bool spawned = false;
     JGeometry::TVec3f pos;
@@ -344,29 +372,11 @@ bool cls_804A4C58::fn_801D95F4() {
     if (serial >= 0) {
         ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (bomb != NULL) {
-            s32 target = -1;
-            JGeometry::TVec3f from;
-            if (mFlags & 0x2000) {
-                from.set(mPos.x - -30.0f, -6.0f + mPos.y, 0.0f);
-            } else {
-                from.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
-            }
-            s16 angle = (mFlags & 0x2000) ? 0x2000 : -0x2000;
-            s32 player = fn_801D0338(&from, angle);
-            if (player >= 0) {
-                f32 dy = getPlayerPos_8023E724(player)->y - from.y;
-                f32 dx = getPlayerPos_8023E724(player)->x - from.x;
-                s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
-                                    (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
-                    target = player;
-                }
-            }
+            s32 target = findTarget_801D95F4(this);
             JGeometry::TVec2f dir;
             if (target >= 0) {
-                f32 dy = getPlayerPos_8023E724(target)->y - pos.y;
-                f32 dx = getPlayerPos_8023E724(target)->x - pos.x;
-                dir.set(dx, dy);
+                dir.set(getPlayerPos_8023E724(target)->x - pos.x,
+                        getPlayerPos_8023E724(target)->y - pos.y);
                 if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
                     dir.x = 1.0f;
                     dir.y = 0.0f;
@@ -383,7 +393,9 @@ bool cls_804A4C58::fn_801D95F4() {
             s16 jitter = fn_801CD664(0xE39) - 0x71C;
             f32 s = JMath::sincosTable_.sinShort(-jitter);
             f32 c = JMath::sincosTable_.cosShort(-jitter);
-            JGeometry::TVec3f vel((dir.x * c - dir.y * s) * 2.4f, (dir.x * s + dir.y * c) * 2.4f, 0.0f);
+            dir.set(dir.x * c - dir.y * s, dir.x * s + dir.y * c);
+            dir.scale(2.4f);
+            JGeometry::TVec3f vel(dir.x, dir.y, 0.0f);
             bomb->field_0x3c = vel;
             spawned = true;
         }
