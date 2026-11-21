@@ -18,7 +18,8 @@ static s32 lbl_8049F1F8[4] = {1, 2, 0, 3};
 
 s32 lbl_8053AB28;
 
-// FIXME: 97.41 % (scheduling+regalloc). The 1.0f literal load (lfs f5) is scheduled earlier than in the
+// FIXME: 97.41 %, scheduling+regalloc; behaviour clean.
+// (scheduling+regalloc). The 1.0f literal load (lfs f5) is scheduled earlier than in the
 // original, and the zero, LCG multiplier (0x660d) and 3 constants take r8/r7/r6 instead of r7/r6/r5.
 void Octorok_8049F208::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -89,7 +90,8 @@ void Octorok_8049F208::init() {
     field_0x230 = 0;
 }
 
-// FIXME: 99.94 % (regalloc-only). r4/r5 swapped for the LCG multiplier and seed loads in the inlined
+// FIXME: 99.94 %, regalloc-only; behaviour clean.
+// (regalloc-only). r4/r5 swapped for the LCG multiplier and seed loads in the inlined
 // mRandom.get_ufloat_1() calls (0x8B8-0x8C4, 0x910-0x928).
 void Octorok_8049F208::update() {
     JGeometry::TVec3f focusPos = mPos;
@@ -362,9 +364,9 @@ void Octorok_8049F208::update() {
     }
 }
 
-// FIXME: 92.33 % (scheduling+regalloc). The view->mVisibleBox copy and the pos TVec3f stores are
-// scheduled/allocated differently (0x1A8-0x210), and the (field_0x234 >> 3) & 1 / field_0x98 * 2 index
-// arithmetic swaps registers and operand order (0x26C-0x330).
+// FIXME: 97.44 %, scheduling+regalloc; behaviour clean.
+// FIXME: scheduling+regalloc in the field_0x98 * 4 + step and field_0x98 * 2 + ((field_0x234 >> 3) & 1)
+// index arithmetic (0x220-0x318).
 void Octorok_8049F208::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -395,7 +397,10 @@ void Octorok_8049F208::draw() {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f box;
         box = view->mVisibleBox;
-        JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
+        JGeometry::TVec3f pos;
+        pos.x = mPos.x;
+        pos.y = mPos.y;
+        pos.z = mPos.z;
         pos.x += box.i.x;
         pos.y += box.i.y;
         if (field_0x90 == 1) {
