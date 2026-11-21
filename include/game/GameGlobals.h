@@ -1403,6 +1403,7 @@ struct cls_801C0D70 {
     // Owner tu_801C0D70 (symbol fn_801C12B8). Called by act_shadow_link_2's
     // fn_801C53F8 on the object from fn_801C0D70: marks one of the actors.
     void fn_801C12B8();
+    bool checkFlagged_801C0DCC() const;
     void fn_801C0DCC();
     void fn_801C115C();
     void fn_801C11A4();
