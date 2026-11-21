@@ -202,12 +202,13 @@ void PanelRewriteNPC_804A8E40::update() {
 
 void PanelRewriteNPC_804A8E40::draw() {}
 
-// FIXME: 98.41 %, scheduling+regalloc; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     if (field_0x24c) {
         if (field_0x4 >= 8) {
-            JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-            // FIXME: 98.41%. The original stores the zero z before the y sum (scheduling).
+            JGeometry::TVec3f pos;
+            pos.x = mPos.x + 8.0f;
+            pos.y = mPos.y + 8.0f;
+            pos.z = 0.0f;
             u32 entry = lbl_8046D808[field_0x244];
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4, &pos, entry, -1, -1);
         } else {
