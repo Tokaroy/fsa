@@ -183,7 +183,6 @@ void Pot_804A9428::update() {
     }
 }
 
-// FIXME: 91.51 % (scheduling+regalloc: frame base addition operand order)
 void Pot_804A9428::draw() {
     s32 flags = 7;
     SpriteParams_801F5AE0 params;
@@ -195,9 +194,9 @@ void Pot_804A9428::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
     if (viewLayerFlag(field_0x4)) {
-        fn_801F02BC("enemy_both2_sob.bin", field_0x234 + field_0x238 + 0x1BB, &params, flags, 0, true, 1.0f, 1.0f);
+        fn_801F02BC("enemy_both2_sob.bin", 0x1BB + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
     } else {
-        fn_801F02BC("enemy_both2_sob.bin", field_0x234 + field_0x238 + 0x21, &params, flags, 0, true, 1.0f, 1.0f);
+        fn_801F02BC("enemy_both2_sob.bin", 0x21 + field_0x234 + field_0x238, &params, flags, 0, true, 1.0f, 1.0f);
     }
     if (field_0x234 == 1) {
         drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 24.0f);
