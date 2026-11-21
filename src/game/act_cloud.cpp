@@ -72,13 +72,15 @@ void Cloud_8049CBE0::init() {
 static bool isAirborne(s32 player);
 
 // 0x801056E4.
-// FIXME(shotgun): 90.23 %, missing/extra; behaviour near.
+// Only f2/f3 swap in box offset additions remains.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
-    s32 layer = field_0x4;
-    if (getGameView_802D6A9C()->field_0x131df[layer] != 0) {
+    if (viewLayerFlag(field_0x4) != 0) {
         JGeometry::TBox2f box(mBox);
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.f.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.y += mPos.y;
         fn_80239914(&box, field_0x4, mSerial);
     }
     s32 bit = field_0x368;
@@ -92,8 +94,11 @@ void Cloud_8049CBE0::update() {
             mRail.fn_800FE3EC(field_0x354, mPos, field_0x4);
             if (field_0x354 > 0 && field_0x364 > 0) {
                 u8 count = mRail.fn_800FD894(-1, NULL, 0);
-                if (field_0x364 <= count && (u8)field_0x364 < mRail.field_0x2) {
-                    mRail.field_0x3 = field_0x364;
+                if (field_0x364 <= count) {
+                    u8 idx = field_0x364;
+                    if (idx < mRail.field_0x2) {
+                        mRail.field_0x3 = idx;
+                    }
                 }
             }
         }
@@ -103,17 +108,17 @@ void Cloud_8049CBE0::update() {
     case 1:
         if (field_0x354 > 0) {
             JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
-            JGeometry::TVec3f at = mPos;
             s32 railLayer = field_0x4;
             u16 angle;
-            s32 result = mRail.fn_800FDEA0(&at, 0.2f * field_0x358 + 0.5f, &step, &railLayer, &angle, 0x200);
+            f32 speed = 0.2f * field_0x358 + 0.5f;
+            s32 result = mRail.fn_800FDEA0(&JGeometry::TVec3f(mPos), speed, &step, &railLayer, &angle, 0x200);
             field_0x3c.x = step.x;
             field_0x3c.y = step.y;
             field_0x3c.z = step.z;
             mPos.add(field_0x3c);
             if (result != 0 && mRail.fn_800FE21C(0xFF) != 0) {
                 field_0x360 = 0;
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
+                field_0x3c.zero();
                 field_0x370 = 2;
             }
         }
@@ -128,7 +133,7 @@ void Cloud_8049CBE0::update() {
     }
     for (s32 i = 0; i < 4; i++) {
         if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !isAirborne(i)) {
-            JGeometry::TVec3f d = mPos - mPrevPos;
+            const JGeometry::TVec3f& d = mPos - mPrevPos;
             fn_8023DF68(i, &d);
         }
     }
