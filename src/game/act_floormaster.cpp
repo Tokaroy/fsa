@@ -264,13 +264,30 @@ void Floormaster_804A6004::fn_8020ED5C(s32 state) {
     }
 }
 
-// FIXME: 99.89 %, operands; behaviour clean.
-// operands + reloc-name: the three TVec3f locals sit in different stack slots.
-void Floormaster_804A6004::fn_8020EB08() {
-    JGeometry::TVec3f diff;
-    JGeometry::TVec3f targetPos;
-    JGeometry::TVec3f pPos;
+inline void Floormaster_804A6004::updateGrabbedPlayer_8020EB08() {
+    JGeometry::TVec3f pPos = *getPlayerPos_8023E724(field_0x2b8);
+    JGeometry::TVec3f targetPos = pPos;
+    JGeometry::TVec3f dest;
+    if (mState == 6) {
+        dest.set(mPos.x, mPos.y, 16.0f);
+    } else {
+        dest.set(mPos.x, mPos.y, 0.0f);
+    }
+    fn_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
+    fn_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
+    fn_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
 
+    if (mState == 5) {
+        fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
+    } else {
+        JGeometry::TVec3f diff = targetPos - pPos;
+        fn_8023DFF4(field_0x2b8, &diff);
+    }
+}
+
+// Not auto-inlined: vfunc_0x90 calls fn_8020EB08 out of line in the original (docs/INLINING.md, pragma rule 1).
+#pragma auto_inline off
+void Floormaster_804A6004::fn_8020EB08() {
     setEmitterPos_8013CB44(mEmitter2b0, &mPos, 0, 0, true);
     switch (mState) {
     case 1:
@@ -305,28 +322,7 @@ void Floormaster_804A6004::fn_8020EB08() {
         break;
     }
     if (inRange) {
-        pPos = *getPlayerPos_8023E724(field_0x2b8);
-        targetPos = pPos;
-        f32 x, y, z;
-        if (mState == 6) {
-            x = mPos.x;
-            y = mPos.y;
-            z = 16.0f;
-        } else {
-            x = mPos.x;
-            y = mPos.y;
-            z = 0.0f;
-        }
-        fn_801CD8E4(&targetPos.x, x, 0.2f, 0.0f);
-        fn_801CD8E4(&targetPos.y, y, 0.2f, 0.0f);
-        fn_801CD8E4(&targetPos.z, z, 0.2f, 0.0f);
-
-        if (mState == 5) {
-            fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
-        } else {
-            diff = targetPos - pPos;
-            fn_8023DFF4(field_0x2b8, &diff);
-        }
+        updateGrabbedPlayer_8020EB08();
     }
 
     if (mFlags & 0x4000) {
@@ -336,6 +332,7 @@ void Floormaster_804A6004::fn_8020EB08() {
         }
     }
 }
+#pragma auto_inline reset
 
 // FIXME: 97.40 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: case 10 fade-out: the original loads 0.0f and fsubs, ours
