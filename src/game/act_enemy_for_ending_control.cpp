@@ -50,7 +50,6 @@ const EndingStep_804AD460* lbl_804AD460[11] = {
     lbl_80472600, lbl_80472648, lbl_80472680, lbl_804726B8, lbl_804726C8,
 };
 
-// FIXME(shotgun): 88.07 %, missing/extra
 void EnemyForEndingControl_804AD48C::init() {
     mPos.x = 1280.0f;
     mPos.y = 1781.0f;
@@ -64,10 +63,10 @@ void EnemyForEndingControl_804AD48C::init() {
     field_0x268 = 0;
     field_0x26c = 0;
     field_0x238 = 0;
-    for (s32 i = 0; i < 8; i++) {
+    // Original bug: loops to 20 despite mActors having 8 elements (overruns past 0x2A4 to 0x2C8).
+    for (u32 i = 0; i < 20; i++) {
         mActors[i] = -1;
     }
-    // FIXME(shotgun): the original loop runs to i < 20 (overrunning the 0x2A4 object to 0x2C8), omitted to avoid UB
     mEmitter298 = NULL;
     mEmitter29C = NULL;
     mEmitter2A0 = NULL;
@@ -78,22 +77,21 @@ void EnemyForEndingControl_804AD48C::init() {
 
 void EnemyForEndingControl_804AD48C::vfunc_0x10() {}
 
-// FIXME: 99.19%. regalloc-only: f2/f0, f0/f1, f3/f2, f1/f3
-void EnemyForEndingControl_804AD48C::update() {
-    // Locals in the order the original loads them (ahead of the camera loads).
-    f32 y = field_0x23c.y;
-    f32 h = field_0x254;
-    f32 x = field_0x23c.x;
-    f32 y1 = y + h;
-    f32 y0 = y - h;
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+static inline void setCameraBox(const JGeometry::TBox2f& box) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->field_0x7f5 == 0) {
         camera->field_0x7f4 = 1;
         camera->field_0x7f8 = 5;
-        camera->field_0x808.set(x, y0, x, y1);
+        camera->field_0x808.set(box);
         camera->field_0x7f6 = 0;
     }
+}
+
+void EnemyForEndingControl_804AD48C::update() {
+    JGeometry::TBox2f box(field_0x23c.x, field_0x23c.y - field_0x254, field_0x23c.x,
+                          field_0x23c.y + field_0x254);
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+    setCameraBox(box);
     field_0x274++;
     if (field_0x260 != 0) {
         field_0x260--;
@@ -145,24 +143,24 @@ bool cls_804A5958::fn_8035C15C(s32 seq) {
     return false;
 }
 
-// FIXME: 99.37%. regalloc-only: r28/r27, f1/f0
-void EnemyForEndingControl_804AD48C::fn_8035BE24() {
-    gGameRoot_8053AAF8->fn_801365C8(0);
-    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-    // Locals in the order the original loads them.
-    f32 y = field_0x23c.y;
+static inline void setCameraRange(f32 x0, f32 y0, f32 x1, f32 y1) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-    f32 h = field_0x254;
-    f32 y1 = y + h;
-    f32 x = field_0x23c.x;
-    f32 y0 = y - h;
     if (camera->field_0x840 == 0) {
         camera->field_0x840 = 1;
-        camera->field_0x844.set(x, y0, x, y1);
+        camera->field_0x844.set(x0, y0, x1, y1);
         camera->field_0x854 = 1.0f;
         camera->field_0x1d4 = -1.0f;
         camera->field_0x1d8 = -1.0f;
     }
+}
+
+// FIXME: 99.68 %, regalloc-only; behaviour clean.
+// FIXME: regalloc-only: i/serial, zeldaSerial/link
+void EnemyForEndingControl_804AD48C::fn_8035BE24() {
+    gGameRoot_8053AAF8->fn_801365C8(0);
+    gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
+    setCameraRange(field_0x23c.x, field_0x23c.y - field_0x254, field_0x23c.x,
+                   field_0x23c.y + field_0x254);
 
     mActors[0] = getActorManager_801F856C()->spawnActor_801F9484(
         ACTOR_EZLD, field_0x4, &(mPos + JGeometry::TVec3f(0.0f, -37.0f, 0.0f)), 0, -1, -1);
