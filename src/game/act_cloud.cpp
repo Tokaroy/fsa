@@ -75,6 +75,7 @@ static bool isAirborne(s32 player);
 // Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
 // assignment is inside `if (field_0x354 > 0)` in the original), and stack slot of `at`
 // (fn_800FDEA0 took pos by value in the original; RailBase.h declares it as a pointer).
+// FIXME: 94.02 %, scheduling+regalloc; behaviour clean.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
     if (viewLayerFlag(field_0x4) != 0) {
