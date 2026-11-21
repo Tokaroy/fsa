@@ -3,12 +3,12 @@
 #include "game/Player.h"
 #include "game/act/act_zora_lotus.h"
 
-static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
-    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+    return x >= x0 && y >= y0 && x < x1 && y < y1;
 }
 
 // Does one of player `i`'s 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
-static inline bool outlineInBox(cls_804AC3E0* self, int i) {
+static inline bool outlineInBox(cls_804AC3E0* self, s32 i) {
     for (int j = 0; j < 8; j++) {
         JGeometry::TVec3f point;
         fn_8022E088(i, j, &point);
@@ -20,7 +20,7 @@ static inline bool outlineInBox(cls_804AC3E0* self, int i) {
         point.z = 0.0f;
         point.y = dist * JMath::sincosTable_.sinShort(angle);
         point.x = dist * JMath::sincosTable_.cosShort(angle);
-        if (contains(self->mBox, point)) {
+        if (contains(point.x, point.y, self->mBox.i.x, self->mBox.i.y, self->mBox.f.x, self->mBox.f.y)) {
             fn_8022DF48(i);
             return true;
         }
@@ -102,7 +102,7 @@ void cls_804AC3E0::vfunc_0xA8() {
 bool cls_804AC3E0::vfunc_0xAC() {
     bool flag = false;
     if (field_0x90 & 1) {
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (fn_80233E40(i)) {
                 f32 diffX = mPos.x - getPlayerPos_8023E724(i)->x;
                 f32 diffY = mPos.y - getPlayerPos_8023E724(i)->y;
@@ -171,11 +171,8 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
             vfunc_0xA4();
         } else {
             JGeometry::TBox2f box(mBox);
-            box.i.y += mPos.y;
-            box.i.x += mPos.x;
-            box.f.x += mPos.x;
-            box.f.y += mPos.y;
-            for (int i = 0; i < 4; i++) {
+            box.addPos(mPos.x, mPos.y);
+            for (s32 i = 0; i < 4; i++) {
                 if (fn_80233E40(i) == 1) {
                     fn_802399D8(i, &box, field_0x4, mSerial);
                 } else if (fn_8023B0F4(i, &box, field_0x4, false, 8.0f) == 1) {
@@ -252,7 +249,7 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
         break;
     case 5:
         resetBoxes(this);
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 outlineInBox(this, i);
             }
