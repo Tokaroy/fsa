@@ -38,7 +38,8 @@ u16 cls_801C0D70::fn_801C14A8(s32 serial) {
 }
 
 // 0x801C1440
-// FIXME: 96.54. The loop counter in the original starts as a copy of the zero in found's
+// FIXME: 96.54 %, different; behaviour clean.
+// The loop counter in the original starts as a copy of the zero in found's
 // register (mr r5, r6); ours loads a separate zero (li r8, 0) and keeps the counter in r8.
 void cls_801C0D70::fn_801C1440(s32 serial) {
     bool found = false;
@@ -61,24 +62,23 @@ void cls_801C0D70::fn_801C1440(s32 serial) {
 }
 
 // 0x801C1374
-// FIXME: 94.12. The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
+// FIXME: 94.22 %, missing/extra; behaviour drift.
+// The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
 // the u16 compare and again (srwi, xori, clrlwi.) before fn_8022ADCC; ours keeps it in r5, tests
 // the second read with srwi. alone, and compares field_0x8 with 3 using cmplwi instead of cmpwi.
 void cls_801C0D70::fn_801C1374(bool flag) {
     bool clear = (field_0x50 >> 31) == 0;
     field_0x8++;
-    if (field_0x8 == field_0x4) {
-        if (!clear || flag) {
-            if (flag) {
-                field_0x0 |= 0x200;
-            }
-            getGameView_802D6A9C()->fn_802D7440(true);
-            gGameRoot_8053AAF8->fn_80138B7C();
-            getGameView_802D6A9C()->fn_802D6BC8(0);
-            bool noGenerator = (field_0x50 >> 31) == 0;
-            if (!noGenerator) {
-                fn_8022ADCC();
-            }
+    if (field_0x8 == field_0x4 && (!clear || flag)) {
+        if (flag) {
+            field_0x0 |= 0x200;
+        }
+        getGameView_802D6A9C()->fn_802D7440(true);
+        gGameRoot_8053AAF8->fn_80138B7C();
+        getGameView_802D6A9C()->fn_802D6BC8(0);
+        clear = (field_0x50 >> 31) == 0;
+        if (!clear) {
+            fn_8022ADCC();
         }
     } else if (clear && field_0x8 == 3) {
         field_0x0 |= 0x100;
@@ -152,9 +152,6 @@ void cls_801C0D70::fn_801C115C() {
 }
 
 // 0x801C0FEC
-// FIXME: 96.46. Only the scheduling of the loads after the normalisation differs: the original
-// loads the actor's x and the 90.0f constant, then multiplies d.x, and loads the actor's y
-// after that; ours loads the y first.
 bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const {
     s32 serial = field_0x50;
     bool found = false;
@@ -176,7 +173,8 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
                 } else {
                     d.normalize();
                     d.scale(90.0f);
-                    out->set(actor->mPos.x, actor->mPos.y);
+                    out->x = actor->mPos.x;
+                    out->y = actor->mPos.y;
                     out->add(d);
                 }
             }
@@ -186,8 +184,10 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
 }
 
 // 0x801C0DCC
-// FIXME: 94.93. Register allocation only: the original keeps this in r30 (ours r31); the serial
-// walk pointer, counters and the constant 1 are allocated r27/r29/r31 there, r29/r28/r30 here.
+// FIXME: 94.93 %, different; behaviour clean.
+// Register allocation (this in r30 vs r31; walk pointer, counters and constant 1 in
+// r27/r29/r31 vs r29/r28/r30) and the counting loop's prologue (original copies 0 from count into
+// the loop index with mr r31, r29 after li r29, 0 / mr r27, r30; ours emits mr / li / li).
 void cls_801C0D70::fn_801C0DCC() {
     if (field_0x0 & 0x100) {
         if (fn_8011921C()->fn_801186B0(0xF)) {
@@ -218,7 +218,7 @@ void cls_801C0D70::fn_801C0DCC() {
         }
     }
     if (field_0x0 & 0x38) {
-        s32 count = 0;
+        u16 count = 0;
         for (s32 i = 0; i < mCount; i++) {
             ShadowLink2_804A43E8* actor =
                 static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
@@ -226,7 +226,7 @@ void cls_801C0D70::fn_801C0DCC() {
                 count++;
             }
         }
-        bool done = (u16)count >= field_0x2;
+        bool done = count >= field_0x2;
         for (s32 i = 0; i < mCount; i++) {
             ShadowLink2_804A43E8* actor =
                 static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
