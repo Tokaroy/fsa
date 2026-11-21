@@ -951,7 +951,7 @@ static inline void slideOutOnly(ConnectScreen_804B0F10* self, int start, int dur
     }
 }
 
-// FIXME(shotgun): 96.80 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.50 %, missing/extra; behaviour near.
 void ConnectScreen_804B0F10::fn_803FAA88() {
     s32 others[2];
     s32* dst = others;
@@ -1573,7 +1573,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 98.63 %, different; behaviour near.
+// FIXME(shotgun): 98.72 %, different; behaviour near.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
