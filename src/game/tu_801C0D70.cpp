@@ -38,7 +38,8 @@ u16 cls_801C0D70::fn_801C14A8(s32 serial) {
 }
 
 // 0x801C1440
-// FIXME: 96.54. The loop counter in the original starts as a copy of the zero in found's
+// FIXME: 96.54 %, different; behaviour clean.
+// The loop counter in the original starts as a copy of the zero in found's
 // register (mr r5, r6); ours loads a separate zero (li r8, 0) and keeps the counter in r8.
 void cls_801C0D70::fn_801C1440(s32 serial) {
     bool found = false;
@@ -61,7 +62,8 @@ void cls_801C0D70::fn_801C1440(s32 serial) {
 }
 
 // 0x801C1374
-// FIXME: 94.12. The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
+// FIXME: 94.22 %, missing/extra; behaviour drift.
+// The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
 // the u16 compare and again (srwi, xori, clrlwi.) before fn_8022ADCC; ours keeps it in r5, tests
 // the second read with srwi. alone, and compares field_0x8 with 3 using cmplwi instead of cmpwi.
 void cls_801C0D70::fn_801C1374(bool flag) {
@@ -182,7 +184,8 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
 }
 
 // 0x801C0DCC
-// FIXME: 94.93. Register allocation (this in r30 vs r31; walk pointer, counters and constant 1 in
+// FIXME: 94.93 %, different; behaviour clean.
+// Register allocation (this in r30 vs r31; walk pointer, counters and constant 1 in
 // r27/r29/r31 vs r29/r28/r30) and the counting loop's prologue (original copies 0 from count into
 // the loop index with mr r31, r29 after li r29, 0 / mr r27, r30; ours emits mr / li / li).
 void cls_801C0D70::fn_801C0DCC() {
