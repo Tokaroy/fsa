@@ -183,9 +183,6 @@ void InvincibilityFairy_804AB4C0::update() {
     }
 }
 
-// FIXME: 99.55 %, scheduling+regalloc; behaviour clean.
-// The matrix stores are in the same order, but the original
-// loads 0.0f (into f1) before 1.5f (into f0).
 void InvincibilityFairy_804AB4C0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -198,19 +195,19 @@ void InvincibilityFairy_804AB4C0::draw() {
     }
 }
 
-// A uniform scale as a 3x4 matrix, filled row by row. Below every other function: the pool has
-// its 0.0f ahead of draw's 1.5f.
+// A uniform scale as a 3x4 matrix (zero translation, then diagonal scale).
+// Below every other function: the pool has its 0.0f ahead of draw's 1.5f.
 void setUniformScaleMtx(Mtx m, f32 scale) {
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
     m[0][0] = scale;
     m[0][1] = 0.0f;
     m[0][2] = 0.0f;
-    m[0][3] = 0.0f;
     m[1][0] = 0.0f;
     m[1][1] = scale;
     m[1][2] = 0.0f;
-    m[1][3] = 0.0f;
     m[2][0] = 0.0f;
     m[2][1] = 0.0f;
     m[2][2] = scale;
-    m[2][3] = 0.0f;
 }
