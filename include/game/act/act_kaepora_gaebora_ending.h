@@ -82,9 +82,7 @@ public:
     /* 0x27C */ s32 field_0x27C;
     /* 0x280 */ s32 field_0x280;
     /* 0x284 */ const f32* field_0x284; // the command script fn_80360914 reads
-    /* 0x288 */ f32 field_0x288;
-    /* 0x28C */ f32 field_0x28C;
-    /* 0x290 */ f32 field_0x290;
+    /* 0x288 */ JGeometry::TVec3f field_0x288;
     /* 0x294 */ u8 field_0x294;
     /* 0x295 */ u8 field_0x295[0x3]; // not yet known
     /* 0x298 */ const KaeporaWaypoint* field_0x298; // the path (init, fn_8035F3C0)
