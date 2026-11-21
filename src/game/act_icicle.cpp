@@ -48,9 +48,9 @@ void Icicle_8049CFC8::init() {
 inline bool Icicle_8049CFC8::checkAttack() {
     JGeometry::TVec2f pt(0.0f, 0.0f);
     JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
-    JGeometry::TVec3f out;
     JGeometry::TBox2f box(mBox2);
     box.addPos(p);
+    JGeometry::TVec3f out;
     s32 player = fn_8023AA18(&box, field_0x4, &pt);
     if (player >= 0) {
         return true;
