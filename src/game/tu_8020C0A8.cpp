@@ -63,6 +63,7 @@ void cls_804A5F40::init() {
     }
 }
 
+// FIXME: 99.40 %, regalloc-only; behaviour clean.
 void cls_804A5F40::fn_8020C6E8() {
     s32 nearest = -1;
     if (mFlags & 0x2000) {
