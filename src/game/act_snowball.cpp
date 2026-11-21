@@ -17,20 +17,22 @@ static const s16 lbl_80464314[] = {2, 3, 3, 3, 4, 3, 5, 3, -1, -1};
 static const u32 lbl_80464328[] = {0x00260001, 0x00260004, 0x00260007};
 static const s16* lbl_80539EE8[] = {lbl_80464308, lbl_80464314};
 
-// Diagonal scale matrix with the translation (0, ty, 0).
-static inline void setScaleMtx(Mtx m, const JGeometry::TVec3f& scale, f32 ty) {
-    m[0][3] = 0.0f;
-    m[1][3] = ty;
-    m[2][3] = 0.0f;
-    m[0][0] = scale.x;
+static inline void setTrans(Mtx m, f32 x, f32 y, f32 z) {
+    m[0][3] = x;
+    m[1][3] = y;
+    m[2][3] = z;
+}
+
+static inline void setScaleMtx(Mtx m, f32 sx, f32 sy, f32 sz) {
+    m[0][0] = sx;
     m[0][1] = 0.0f;
     m[0][2] = 0.0f;
     m[1][0] = 0.0f;
-    m[1][1] = scale.y;
+    m[1][1] = sy;
     m[1][2] = 0.0f;
     m[2][0] = 0.0f;
     m[2][1] = 0.0f;
-    m[2][2] = scale.z;
+    m[2][2] = sz;
 }
 
 cls_8049D020::cls_8049D020()
@@ -255,27 +257,32 @@ void cls_8049D020::update() {
     mSprite.fn_801D1C18();
 }
 
-// FIXME: 95.78 %, missing/extra; behaviour near.
-// missing/extra + reloc-name: ours has 1 fewer instr (215 vs 216); the scale matrices are built with different float register assignment and the frame/pos/res locals are scheduled differently.
+static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, const char* name,
+                              s32 frame, SpriteParams_801F5AE0* params) {
+    if (layer < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
+    }
+}
+
+// One instruction short: &mPos stays folded into r31+0xc instead of moving to r30 before the layer check.
 void cls_8049D020::draw() {
     ActorBase_804A5770::draw();
-    SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
+    SpriteParams_801F5AE0 params;
     Mtx mtx1;
     Mtx mtx2;
     if (!field_0x54.isZero()) {
-        setScaleMtx(mtx1, field_0x54, 0.0f);
+        setTrans(mtx1, 0.0f, 0.0f, 0.0f);
+        setScaleMtx(mtx1, field_0x54.x, field_0x54.y, field_0x54.z);
         params2.mMtx = mtx1;
-        setScaleMtx(mtx2, field_0x54, 4.0f * field_0x260);
+        setTrans(mtx2, 0.0f, 4.0f * field_0x260, 0.0f);
+        setScaleMtx(mtx2, field_0x54.x, field_0x54.y, field_0x54.z);
         params.mMtx = mtx2;
     }
     params.field_0x10.a = 0x80;
-    s32 frame = mSprite.mCel + 0x165;
-    fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
-    if (field_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params2, 1.0f, 1.0f);
-    }
+    fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
+    drawSprite(field_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
 }
 
 // -v by value, as a unary TVec3 operator- would give it.
