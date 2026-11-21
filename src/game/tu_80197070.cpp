@@ -31,7 +31,8 @@ u8 lbl_8053ABA8;
 // Tables of the ZLD2 actor, not written as source here (.rodata 0x80468428: two s32[6] sprite
 // frame tables, then the sprite bank names; .data 0x804A2880 / 0x804A28C4 / 0x804A28D8 /
 // 0x804A28FC: u16 angles, u8 colours and u16 emitter ids indexed by field_0x94).
-static const s32 lbl_80468428[12] = {0x1D0, 0x1E2, 0x1D6, 0x1DC, 0x1E8, 0x1EE, 0x17F, 0x1CD, 0x199, 0x1B3, 0x1E7, 0x201};
+static const s32 lbl_80468428[6] = {0x1D0, 0x1E2, 0x1D6, 0x1DC, 0x1E8, 0x1EE};
+static const s32 lbl_80468440[6] = {0x17F, 0x1CD, 0x199, 0x1B3, 0x1E7, 0x201};
 extern const s32 lbl_804A2700[];
 extern const u16 lbl_804A2880[];
 extern const s32 lbl_804A288C[];
@@ -2085,19 +2086,17 @@ void cls_804A2944::update() {
     }
 }
 
-// FIXME(shotgun): 86.18 %, different; behaviour near.
-// The original addresses the frame tables and sprite bank names off one .rodata base (r31); here the names are plain literals and the tables extern.
 void cls_804A2944::draw() {
     switch (field_0x90) {
     case 0: {
         SpriteParams_801F5AE0 params;
+        s32 frame = 0x9B;
+        s32 flags = 7;
         if (mTimers[2] == 0 || (mTimers[2] & 2)) {
             params.field_0x1f = 0;
-            s32 frame = 0x9B;
             if (field_0x268 == 1) {
                 frame = 0x274;
             }
-            s32 flags = 7;
             if (mState == 0x15) {
                 flags = -1;
             }
@@ -2113,22 +2112,22 @@ void cls_804A2944::draw() {
             fn_801F02BC("enemy_both2_sob.bin", field_0x254 + lbl_80468428[field_0x94], &params, -1, 0, false,
                         1.0f, 1.0f);
             params.field_0x10.a = (u8)field_0x270;
+            s32 frame = field_0x254 + lbl_80468428[field_0x94];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin",
-                            field_0x254 + lbl_80468428[field_0x94], NULL);
+                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
         break;
     case 3: {
         SpriteParams_801F5AE0 params;
-        params.field_0x1d = 5;
         params.field_0x1f = 0;
-        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x254 + lbl_80468428[6 + field_0x94], &params, -1,
+        params.field_0x1d = 5;
+        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x254 + lbl_80468440[field_0x94], &params, -1,
                             1.0f, 1.0f);
         params.field_0x10.a = (u8)field_0x270;
+        s32 frame = field_0x254 + lbl_80468440[field_0x94];
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin",
-                        field_0x254 + lbl_80468428[6 + field_0x94], NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
         break;
     }
