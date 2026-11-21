@@ -1604,10 +1604,9 @@ void ConnectScreen_804B0F10::fn_803F726C() {
             }
         }
     }
-    s32 frame = field_0x240[0];
-    if (frame > 0) {
-        if (frame < 10) {
-            field_0x168 = -200.0f * ((f32)(frame * frame) / 100.0f);
+    if (field_0x240[0] > 0) {
+        if (field_0x240[0] < 10) {
+            field_0x168 = -200.0f * ((f32)(field_0x240[0] * field_0x240[0]) / 100.0f);
         } else {
             field_0x168 = -200.0f;
         }
