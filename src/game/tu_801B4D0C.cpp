@@ -101,7 +101,7 @@ cls_804A38D4::~cls_804A38D4() {
 }
 
 // 0x801B56A0.
-// FIXME(shotgun): 78.53 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 86.71 %, missing/extra; behaviour drift.
 void cls_804A38D4::fn_801B56A0() {
     JGeometry::TVec3f target;
     JGeometry::TBox2f box = mBox;
@@ -266,7 +266,7 @@ void cls_804A38D4::fn_801B56A0() {
 }
 
 // 0x801B5228.
-// FIXME(shotgun): 89.24 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.44 %, regalloc-only; behaviour clean.
 void cls_804A38D4::fn_801B5228() {
     addCalc2_801F71A4(&mPos.z, field_0x258, 0.3f, field_0x25c);
     switch (field_0x230) {
@@ -365,7 +365,7 @@ void cls_804A38D4::update() {
 }
 
 // 0x801B4EC8.
-// FIXME(shotgun): 95.52 %, different; behaviour clean.
+// FIXME(shotgun): 96.97 %, scheduling+regalloc; behaviour clean.
 void cls_804A38D4::fn_801B4EC8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
