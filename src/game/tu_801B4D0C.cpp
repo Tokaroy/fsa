@@ -102,6 +102,7 @@ cls_804A38D4::~cls_804A38D4() {
 // 0x801B56A0.
 // FIXME(shotgun): 78.53 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A38D4::fn_801B56A0() {
+    JGeometry::TVec3f target;
     JGeometry::TBox2f box = mBox;
     JGeometry::TVec3f pos = mPos;
     box.i.x += mPos.x;
@@ -111,151 +112,155 @@ void cls_804A38D4::fn_801B56A0() {
     if (!(lbl_8050EC80.getCurrentFile().field_0x5a[0] & (u8)(1 << field_0x254))) {
         return;
     }
-    if (gGameRoot_8053AAF8->field_0x7e == 0) {
-        return;
-    }
-    if (field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
-        if (lbl_8053AD30->fn_80309C4C(0x1000, -1)) {
-            lbl_8053A118 = 0x309;
-            field_0x230 = 7;
-        }
-    }
-    s32 dir;
-    f32 dist;
-    s32 player;
-    fn_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
-    switch (field_0x230) {
-    case 0:
-        mEmitters294[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x48B, 0, 0, NULL, NULL, true, 1.0f);
-        mEmitters294[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x48C, 0, 0, NULL, NULL, true, 1.0f);
-        field_0x230 = 1;
-    case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, false, false);
-        field_0x244 = fn_8022FD8C(mSerial);
-        if (field_0x244 < 0 || !fn_802300EC(field_0x244)) {
-            break;
-        }
-        pos.y -= 64.0f;
-        if (!fn_8038AD24(field_0x244, lbl_804A3848[field_0x254], mSerial, field_0x4, pos, 0x100)) {
-            break;
-        }
-        field_0x230 = 2;
-    case 2:
-        fn_8022FE80(field_0x244, field_0x4, mSerial, false, false);
-        if (fn_803865B8(field_0x244)) {
-            fn_80384C58(field_0x244, mSerial);
-            switch (fn_8037EFB4(field_0x244)) {
-            case 0:
-                field_0x230 = 4;
-                break;
-            case 1:
-                fn_80230534(false);
-                field_0x230 = 3;
-                break;
+    if (gGameRoot_8053AAF8->field_0x7e != 0) {
+        if (field_0x230 == 5 || field_0x230 == 6 || field_0x230 == 7) {
+            if (lbl_8053AD30->fn_80309C4C(0x1000, -1)) {
+                lbl_8053A118 = 0x309;
+                field_0x230 = 7;
             }
         }
-        break;
-    case 3: {
-        s32 far = 0;
-        for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
-            f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
-            f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
-            if (std::sqrtf(dx * dx + dy * dy) > 33.0f) {
-                far++;
-            }
-        }
-        if (far >= gGameRoot_8053AAF8->fn_80138A30()) {
+        s32 dir;
+        f32 dist;
+        s32 player;
+        fn_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
+        switch (field_0x230) {
+        case 0:
+            mEmitters294[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x48B, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters294[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x48C, 0, 0, NULL, NULL, true, 1.0f);
             field_0x230 = 1;
-        }
-        break;
-    }
-    case 4:
-        if (getActorManager_801F856C()->fn_801F68E0() == 0) {
+        case 1:
+            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            field_0x244 = fn_8022FD8C(mSerial);
+            if (field_0x244 < 0 || !fn_802300EC(field_0x244)) {
+                break;
+            }
+            pos.y -= 64.0f;
+            if (!fn_8038AD24(field_0x244, lbl_804A3848[field_0x254], mSerial, field_0x4, pos, 0x100)) {
+                break;
+            }
+            field_0x230 = 2;
+        case 2:
+            fn_8022FE80(field_0x244, field_0x4, mSerial, false, false);
+            if (fn_803865B8(field_0x244)) {
+                fn_80384C58(field_0x244, mSerial);
+                switch (fn_8037EFB4(field_0x244)) {
+                case 0:
+                    field_0x230 = 4;
+                    break;
+                case 1:
+                    fn_80230534(false);
+                    field_0x230 = 3;
+                    break;
+                }
+            }
+            break;
+        case 3: {
+            s32 far = 0;
+            for (s32 i = 0; i < gGameRoot_8053AAF8->fn_80138A30(); i++) {
+                f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
+                f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
+                if (std::sqrtf(dx * dx + dy * dy) > 33.0f) {
+                    far++;
+                }
+            }
+            if (far >= gGameRoot_8053AAF8->fn_80138A30()) {
+                field_0x230 = 1;
+            }
             break;
         }
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
-                JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
-                field_0x264[i].x = ppos->x;
-                field_0x264[i].y = ppos->y;
-                field_0x264[i].z = ppos->z;
-                field_0x264[i].z = 0.0f;
-                if (fn_8022F3DC(i) < 0) {
-                    fn_8022CA6C(i, 5, false);
-                }
-                if (fn_80236B50(i)) {
-                    fn_8023764C(i, 1);
-                }
+        case 4:
+            if (getActorManager_801F856C()->fn_801F68E0() == 0) {
+                break;
             }
-        }
-        lbl_80529DEC.field_0x24e = 1;
-        field_0x230 = 5;
-    case 5: {
-        JGeometry::TVec3f target(mPos.x, mPos.y, mPos.z);
-        s32 done = 0;
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i)) {
-                if (i != 0) {
-                    target.y -= 0.2f;
-                }
-                addCalc2_801F71A4(&field_0x264[i].x, target.x, 0.3f, 1.0f);
-                addCalc2_801F71A4(&field_0x264[i].y, target.y, 0.3f, 1.0f);
-                f32 dy = field_0x264[i].y - target.y;
-                f32 dx = field_0x264[i].x - target.x;
-                if (std::sqrtf(dx * dx + dy * dy) < 1.0f) {
-                    done++;
-                    fn_80230498(i, &field_0x264[i], 0x3F, 0xFF, -0x80, -0x80, true);
-                } else {
-                    fn_80230BF4(i, fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
-                    fn_802303FC(i, &field_0x264[i], true);
-                }
-            } else {
-                done++;
-            }
-        }
-        if (done >= 4) {
-            field_0x230 = 6;
-        }
-        break;
-    }
-    case 6:
-        if (mTimers[0] == 0) {
-            JGeometry::TVec3f target(mPos.x, mPos.y, mPos.z);
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i)) {
+                    JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
+                    field_0x264[i].x = ppos->x;
+                    field_0x264[i].y = ppos->y;
+                    field_0x264[i].z = ppos->z;
+                    field_0x264[i].z = 0.0f;
+                    if (fn_8022F3DC(i) < 0) {
+                        fn_8022CA6C(i, 5, false);
+                    }
+                    if (fn_80236B50(i)) {
+                        fn_8023764C(i, 1);
+                    }
+                }
+            }
+            lbl_80529DEC.field_0x24e = 1;
+            field_0x230 = 5;
+        case 5: {
+            target.x = mPos.x;
+            target.y = mPos.y;
+            target.z = mPos.z;
+            s32 done = 0;
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_8023F264(i)) {
                     if (i != 0) {
                         target.y -= 0.2f;
                     }
                     addCalc2_801F71A4(&field_0x264[i].x, target.x, 0.3f, 1.0f);
                     addCalc2_801F71A4(&field_0x264[i].y, target.y, 0.3f, 1.0f);
-                    // FIXME(shotgun): the original also computes this distance (fabs form) and
-                    // compares it with 2.0f without using the result.
-                    if (field_0x240 == 0) {
-                        fn_80230498(i, &field_0x264[i], 0x3C, 0xFF, -0x80, -0x80, true);
+                    f32 dy = field_0x264[i].y - target.y;
+                    f32 dx = field_0x264[i].x - target.x;
+                    if (std::sqrtf(dx * dx + dy * dy) < 1.0f) {
+                        done++;
+                        fn_80230498(i, &field_0x264[i], 0x3F, 0xFF, -0x80, -0x80, true);
                     } else {
-                        fn_80230498(i, &field_0x264[i], 0x3E, 0xFF, -0x80, -0x80, true);
+                        fn_80230BF4(i, fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
+                        fn_802303FC(i, &field_0x264[i], true);
+                    }
+                } else {
+                    done++;
+                }
+            }
+            if (done >= 4) {
+                field_0x230 = 6;
+            }
+            break;
+        }
+        case 6:
+            if (mTimers[0] == 0) {
+                target.x = mPos.x;
+                target.y = mPos.y;
+                target.z = mPos.z;
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                        if (i != 0) {
+                            target.y -= 0.2f;
+                        }
+                        addCalc2_801F71A4(&field_0x264[i].x, target.x, 0.3f, 1.0f);
+                        addCalc2_801F71A4(&field_0x264[i].y, target.y, 0.3f, 1.0f);
+                        // FIXME: original also computes sqrtf(fabsf(dx)^2 + fabsf(dy)^2) and compares with 2.0f.
+                        if (field_0x240 == 0) {
+                            fn_80230498(i, &field_0x264[i], 0x3C, 0xFF, -0x80, -0x80, true);
+                        } else {
+                            fn_80230498(i, &field_0x264[i], 0x3E, 0xFF, -0x80, -0x80, true);
+                        }
                     }
                 }
-            }
-            mTimers[0] = 8;
-            field_0x240++;
-            if (field_0x240 > 1) {
-                f32 offset = -48.0f;
-                for (s32 i = 0; i < 3; i++) {
-                    JGeometry::TVec3f spawnPos = mPos;
-                    spawnPos.x = mPos.x + offset;
-                    offset += 48.0f;
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TLWP, field_0x4, &spawnPos, (i + 1) << 4, -1, -1);
+                mTimers[0] = 8;
+                field_0x240++;
+                if (field_0x240 > 1) {
+                    f32 offset = -48.0f;
+                    for (s32 i = 0; i < 3; i++) {
+                        target.x = mPos.x;
+                        target.y = mPos.y;
+                        target.z = mPos.z;
+                        target.x += offset;
+                        offset += 48.0f;
+                        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_TLWP, field_0x4, &target, (i + 1) << 4, -1, -1);
+                    }
+                    field_0x230 = 7;
                 }
-                field_0x230 = 7;
             }
+            break;
+        case 7:
+            if (lbl_8053A118 == 0x309) {
+                gGameRoot_8053AAF8->fn_801365E8(lbl_804A3808[field_0x254], lbl_804A3828[field_0x254], 0);
+            }
+            break;
         }
-        break;
-    case 7:
-        if (lbl_8053A118 == 0x309) {
-            gGameRoot_8053AAF8->fn_801365E8(lbl_804A3808[field_0x254], lbl_804A3828[field_0x254], 0);
-        }
-        break;
     }
 }
 
