@@ -29,6 +29,9 @@ public:
     // No address (dead-stripped; update inlines it): one frame of the fall,
     // mPos.y = mSpawnPos.y + g t^2 / 2 with g = 9.8 and t in field_0x23c.
     void fall();
+    // Inlined into update() in both state 0 and state 1.
+    inline bool checkAttack();
+    inline bool checkPlayer();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;

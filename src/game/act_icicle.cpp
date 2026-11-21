@@ -44,11 +44,42 @@ void Icicle_8049CFC8::init() {
     }
 }
 
-// FIXME: 91.98 %, different + reloc-name; behaviour clean.
-// Same calls and constants as the original; the rest is register
-// and stack-slot allocation (the original keeps the `found` flags in r0 and r30,
-// and its box copies are laid out differently), plus the order of the fn_801CC640
-// call block.
+// Remaining diff: f2/f3 register swap and one scheduled store in checkPlayer().
+inline bool Icicle_8049CFC8::checkAttack() {
+    JGeometry::TVec2f pt(0.0f, 0.0f);
+    JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
+    JGeometry::TVec3f out;
+    JGeometry::TBox2f box(mBox2);
+    box.addPos(p);
+    s32 player = fn_8023AA18(&box, field_0x4, &pt);
+    if (player >= 0) {
+        return true;
+    } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC820(player, NULL);
+        return true;
+    } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC538(player, &pt, &out, NULL);
+        return true;
+    } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
+        fn_801CC640(player, NULL, NULL);
+        return true;
+    }
+    return false;
+}
+
+inline bool Icicle_8049CFC8::checkPlayer() {
+    JGeometry::TBox2f box(mBox);
+    box.i.x += mPos.x;
+    box.f.x += mPos.x;
+    box.i.y += mPos.y;
+    box.f.y += mPos.y;
+    JGeometry::TVec2f out;
+    if (fn_8023AB94(&box, field_0x4, &out) >= 0) {
+        return true;
+    }
+    return false;
+}
+
 void Icicle_8049CFC8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
@@ -61,40 +92,12 @@ void Icicle_8049CFC8::update() {
             fn_8010B40C(1);
             break;
         }
-        {
-            JGeometry::TVec2f pt(0.0f, 0.0f);
-            JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
-            JGeometry::TBox2f box(mBox2);
-            box.addPos(p);
-            JGeometry::TVec3f out;
-            bool found = false;
-            s32 player = fn_8023AA18(&box, field_0x4, &pt);
-            if (player >= 0) {
-                found = true;
-            } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC820(player, NULL);
-                found = true;
-            } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC538(player, &pt, &out, NULL);
-                found = true;
-            } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC640(player, NULL, NULL);
-                found = true;
-            }
-            if (found) {
-                fn_8010B40C(1);
-                break;
-            }
+        if (checkAttack()) {
+            fn_8010B40C(1);
+            break;
         }
-        {
-            JGeometry::TVec2f p(mPos.x, mPos.y);
-            JGeometry::TBox2f box(mBox);
-            box.addPos(p);
-            JGeometry::TVec2f out;
-            bool inBox = fn_8023AB94(&box, field_0x4, &out) >= 0;
-            if (inBox) {
-                fn_8010B40C(2);
-            }
+        if (checkPlayer()) {
+            fn_8010B40C(2);
         }
         break;
     case 1:
@@ -124,40 +127,12 @@ void Icicle_8049CFC8::update() {
             fn_8010B40C(3);
             break;
         }
-        {
-            JGeometry::TVec2f pt(0.0f, 0.0f);
-            JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
-            JGeometry::TBox2f box(mBox2);
-            box.addPos(p);
-            JGeometry::TVec3f out;
-            bool found = false;
-            s32 player = fn_8023AA18(&box, field_0x4, &pt);
-            if (player >= 0) {
-                found = true;
-            } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC820(player, NULL);
-                found = true;
-            } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC538(player, &pt, &out, NULL);
-                found = true;
-            } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
-                fn_801CC640(player, NULL, NULL);
-                found = true;
-            }
-            if (found) {
-                fn_8010B40C(3);
-                break;
-            }
+        if (checkAttack()) {
+            fn_8010B40C(3);
+            break;
         }
-        {
-            JGeometry::TVec2f p(mPos.x, mPos.y);
-            JGeometry::TBox2f box(mBox);
-            box.addPos(p);
-            JGeometry::TVec2f out;
-            bool inBox = fn_8023AB94(&box, field_0x4, &out) >= 0;
-            if (inBox) {
-                fn_8010B40C(2);
-            }
+        if (checkPlayer()) {
+            fn_8010B40C(2);
         }
         break;
     case 2:
@@ -186,7 +161,7 @@ void Icicle_8049CFC8::update() {
         }
         break;
     }
-    field_0x54.x = field_0x54.y = field_0x54.z = field_0x240;
+    field_0x54.setAll(field_0x240);
     mSprite.fn_801D1C18();
 }
 
