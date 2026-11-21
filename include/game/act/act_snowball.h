@@ -21,7 +21,8 @@ public:
     // 0x8010C294: state machine dispatcher.
     bool fn_8010C294(s32 state);
     // Not in the binary: plain functions that update and fn_8010C294 inline.
-    void chase();
+    void chase(s32 target);
+    void followRail();
     void grow();
     bool fallStep();
     void dropRupee();
