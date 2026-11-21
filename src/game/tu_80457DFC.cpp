@@ -107,8 +107,8 @@ inline f32 AudioMgr_8045A080::getPlayerPan(s8 player) {
     f32 pan = 0.5f;
     switch (field_0x5) {
     case 1:
-        pan = 0.5f;
-        break;
+    default:
+        return 0.5f;
     case 2:
     case 3:
     case 4:
@@ -651,13 +651,7 @@ void AudioMgr_8045A080::fn_80458F04(u32 id) {
 }
 
 // 0x80458880
-// FIXME: 99.66 %, missing/extra + reloc-name; behaviour near.
-// One instruction short in the inlined getPlayerPan: for 1 or
-// 5+ players the original reloads 0.5f (lfs) before the movePan call; ours
-// keeps the 0.5f already in f1 (b only). Returns, an uninitialised pan and a
-// shared case 1 / default were tried (97.4-99.2 %). Also reloc-name: the
-// .sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7, first used by the
-// unwritten fn_80459674.
+// FIXME: reloc-name only (.sdata2 literals 0.5 / 0.2 / 0.8 come after 0.7 in fn_80459674).
 void AudioMgr_8045A080::fn_80458880(u32 id, s8 player) {
     if (player >= 4) {
         return;
