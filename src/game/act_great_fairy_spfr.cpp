@@ -426,8 +426,27 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     }
 }
 
-// FIXME: 93.01 %, scheduling+regalloc + reloc-name; behaviour drift.
-// (scheduling+regalloc: f1/f2/r4; reloc-name: literals lbl_8053CD18, lbl_8053CD1C, lbl_8053CD20)
+static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x840 == 0) {
+        cam->field_0x840 = 1;
+        cam->field_0x844.set(x0, y0, x1, y1);
+        cam->field_0x854 = 1.0f;
+        cam->field_0x1d4 = -1.0f;
+        cam->field_0x1d8 = -1.0f;
+    }
+}
+
+static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
+    Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
+    if (cam->field_0x7f5 == 0) {
+        cam->field_0x7f4 = 1;
+        cam->field_0x7f8 = 5;
+        cam->field_0x808.set(x0, y0, x1, y1);
+        cam->field_0x7f6 = 0;
+    }
+}
+
 void cls_8049EB8C::fn_801321E4() {
     switch (field_0x234) {
     case 0:
@@ -449,17 +468,7 @@ void cls_8049EB8C::fn_801321E4() {
             gGameRoot2_8053AB10->field_0x24->field_0x17d = 1;
         } else {
             gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-            Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-            // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-            f32 y1 = mPos.y + 96.0f;
-            f32 x = mPos.x;
-            f32 y0 = mPos.y - 96.0f;
-            if (camera->field_0x7f5 == 0) {
-                camera->field_0x7f4 = 1;
-                camera->field_0x7f8 = 5;
-                camera->field_0x808.set(x, y0, x, y1);
-                camera->field_0x7f6 = 0;
-            }
+            camBox(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         }
         break;
     case 8: {
@@ -472,34 +481,15 @@ void cls_8049EB8C::fn_801321E4() {
                 pos = actor->mPos;
             }
         }
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         pos.y += 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(pos.x, pos.y - 108.0f, pos.x, pos.y + 108.0f);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(pos.x, pos.y - 108.0f, pos.x, pos.y + 108.0f);
         break;
     }
     case 9:
-    case 10: {
+    case 10:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-        f32 y1 = mPos.y + 96.0f;
-        f32 x = mPos.x;
-        f32 y0 = mPos.y - 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(x, y0, x, y1);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         break;
-    }
     case 11: {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->field_0x7f4 == 0) {
@@ -517,22 +507,10 @@ void cls_8049EB8C::fn_801321E4() {
     case 17:
     case 18:
     case 19:
-    case 20: {
+    case 20:
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
-        Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
-        // Steering: hoists the loads before the camera check, as the original's order does (inlining differs).
-        f32 y1 = mPos.y + 96.0f;
-        f32 x = mPos.x;
-        f32 y0 = mPos.y - 96.0f;
-        if (camera->field_0x840 == 0) {
-            camera->field_0x840 = 1;
-            camera->field_0x844.set(x, y0, x, y1);
-            camera->field_0x854 = 1.0f;
-            camera->field_0x1d4 = -1.0f;
-            camera->field_0x1d8 = -1.0f;
-        }
+        camRange(mPos.x, mPos.y - 96.0f, mPos.x, mPos.y + 96.0f);
         break;
-    }
     }
 }
 
