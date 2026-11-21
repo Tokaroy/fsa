@@ -82,17 +82,34 @@ static inline void slotPos(cls_8049C718* parent, u32 idx, JGeometry::TVec3f& out
     s32 ring = slotRing(idx, step);
     u16 ang = parent->mAngle + idx * step + (ring << 12);
     f32 r = lbl_8049C634[ring];
-    f32 c = JMath::sincosTable_.cosShort((s16)ang);
-    f32 s = JMath::sincosTable_.sinShort((s16)ang);
-    parent->mSlot++;
+    f32 s = JMASinShort(ang);
+    f32 c = JMACosShort(ang);
     out.x = parent->mRadius * (r * s) + parent->mPos.x;
     out.y = parent->mRadius * (r * c) + parent->mPos.y;
     out.z = (f32)(ring * 13) + (10.0f + parent->mPos.z);
+    parent->mSlot++;
 }
 
 static inline JGeometry::TVec3f slotPosOf(cls_8049C718* parent, u32 idx) {
     JGeometry::TVec3f out;
     slotPos(parent, idx, out);
+    return out;
+}
+
+static inline JGeometry::TVec3f linePosOf(cls_8049C718* parent, s32 slot) {
+    f32 off;
+    s16 ang;
+    if (slot & 1) {
+        ang = parent->mAngleA;
+        off = 20.0f + (f32)(((slot >> 1) + 1) * 20);
+    } else {
+        ang = parent->mAngleB;
+        off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
+    }
+    JGeometry::TVec3f out(parent->mPos.x + off * JMASinShort(ang),
+                          parent->mPos.y + off * JMACosShort(ang),
+                          10.0f + parent->mPos.z);
+    parent->mSlot++;
     return out;
 }
 
@@ -1152,33 +1169,20 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     JGeometry::TVec3f target;
     f32 speed;
     if (parent->mState == 3) {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.3f;
         mFlag249 = 1;
     } else if (parent->mState == 4) {
         s32 slot = parent->mSlot;
-        f32 off;
-        s16 ang;
-        if (slot & 1) {
-            ang = parent->mAngleA;
-            off = 20.0f + (f32)(((slot >> 1) + 1) * 20);
-        } else {
-            ang = parent->mAngleB;
-            off = (f32)(((slot >> 1) + 1) * -20) - 20.0f;
-        }
-        JGeometry::TVec3f pos(parent->mPos.x + off * JMASinShort(ang),
-                              parent->mPos.y + off * JMACosShort(ang),
-                              10.0f + parent->mPos.z);
-        parent->mSlot++;
-        target = pos;
+        target.set(linePosOf(parent, slot));
         speed = (0.36f + 0.001f * (f32)lbl_8049C3B8[8]) - (0.032f + 0.001f * (f32)lbl_8049C3B8[9]) * (f32)((slot >> 1) + 1);
         mFlag249 = 1;
     } else if (parent->mState == 1) {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.08f;
         mFlag249 = 1;
     } else {
-        target = slotPosOf(parent, parent->mSlot);
+        target.set(slotPosOf(parent, parent->mSlot));
         speed = 0.2f;
         mFlag249 = 0;
     }
@@ -1187,9 +1191,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
             JGeometry::TVec2f xy(mPos.x, mPos.y);
             fn_80238548(0, 0, &xy, 0x10);
         }
-        mPos.x += cut4(target.x - mPos.x) * speed;
-        mPos.y += cut4(target.y - mPos.y) * speed;
-        mPos.z += cut4(target.z - mPos.z) * speed;
+        moveToward(mPos, target, speed);
         fn_801F2B7C(2, -1, 1);
     }
 }
