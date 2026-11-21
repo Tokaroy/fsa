@@ -8,6 +8,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/act/act_tektite.h"
 
+// FIXME: 99.78 %, regalloc-only; behaviour clean.
 // FIXME: regalloc r6/r7 swap between 0x10000 constant and gGameRoot_8053AAF8.
 void Tektite_8049FD50::init() {
     field_0x240 = 0;
@@ -65,6 +66,7 @@ void Tektite_8049FD50::init() {
     }
 }
 
+// FIXME: 99.26 %, scheduling+regalloc; behaviour clean.
 // FIXME: regalloc r4/r5 swap between 0x19660d and gGameRoot_8053AAF8 in mRandom.get_ufloat_1().
 void Tektite_8049FD50::update() {
     if (field_0x90 == 2 || field_0x90 == 3) {
@@ -183,6 +185,7 @@ static inline void setScaleMtx(Mtx mtx, f32 x, f32 y, f32 z) {
     mtx[2][2] = z;
 }
 
+// FIXME: 97.94 %, scheduling+regalloc; behaviour clean.
 void Tektite_8049FD50::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
