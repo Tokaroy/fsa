@@ -319,7 +319,24 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
-// FIXME: 99.95 %, operands; behaviour drift.
+static inline void setupMoveToPlayer(cls_8049DB90* self) {
+    for (s32 i = 0; i < 4; i++) {
+        fn_80230BF4(i, 3);
+    }
+    self->field_0x260 = self->mSpawnPos;
+    JGeometry::TVec3f d = self->mSpawnPos - *getPlayerPos_8023E724(0);
+    self->field_0x26c = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+}
+
+static inline void spawnAppearEmitters(cls_8049DB90* self) {
+    JGeometry::TVec3f pos(self->mPos);
+    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41D, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41E, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41F, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x420, 0, 0, NULL, NULL, true, 1.0f);
+    self->startSound_801F0E34(0x30091, 0);
+}
+
 void cls_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
@@ -356,27 +373,15 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         }
         break;
     }
-    case 11: {
-        for (s32 i = 0; i < 4; i++) {
-            fn_80230BF4(i, 3);
-        }
-        field_0x260 = mSpawnPos;
-        JGeometry::TVec3f d = mSpawnPos - *getPlayerPos_8023E724(0);
-        field_0x26c = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
+    case 11:
+        setupMoveToPlayer(this);
         break;
-    }
     case 13:
         mDrawEnabled = false;
         break;
-    case 14: {
-        JGeometry::TVec3f pos(mPos);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x41D, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x41E, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x41F, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x420, 0, 0, NULL, NULL, true, 1.0f);
-        startSound_801F0E34(0x30091, 0);
+    case 14:
+        spawnAppearEmitters(this);
         break;
-    }
     case 15:
         mDrawEnabled = true;
         break;
