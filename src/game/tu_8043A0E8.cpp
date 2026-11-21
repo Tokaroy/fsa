@@ -448,6 +448,8 @@ void cls_804B1920::fn_8043EDE8(s32 arg) {
 
 // FIXME(shotgun): 99.23 %, regalloc-only + reloc-name; behaviour drift.
 void cls_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, f32 y, f32 scale) {
+    f32 px;
+    f32 py;
     f32 sx;
     f32 sy;
     if ((99.0f == scale) | ((90.0f == scale) | (91.0f == scale))) {
@@ -467,8 +469,8 @@ void cls_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, 
         sx = size;
         sy = size;
     }
-    f32 px = (12.0f + x) - sx * 0.5f;
-    f32 py = (12.0f + y) - sy * 0.5f;
+    px = (12.0f + x) - sx / 2.0f;
+    py = (12.0f + y) - sy / 2.0f;
     switch (digit) {
     case 0:
         field_0x258[0]->setBlackWhite(JUtility::TColor(top), JUtility::TColor(bottom));
