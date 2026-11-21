@@ -25,9 +25,6 @@ cls_804A03A8::~cls_804A03A8() {
     delete field_0x290;
 }
 
-// FIXME(shotgun): 99.87 %, reloc-name; behaviour clean.
-// (the 32 zeros are stored straight-line, as in the original)
-// 0x801601E0
 void cls_804A03A8::fn_801601E0() {
     field_0x204[0] = 0;
     field_0x204[1] = 0;
@@ -90,7 +87,7 @@ void cls_804A03A8::fn_8016005C() {
 
 static void drawLetterbox(f32 bar, JUtility::TColor color);
 
-// FIXME(shotgun): 94.00 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 97.94 %, different; behaviour clean.
 // (stack slots of the arrays and colour copies are ordered differently; the white colour is not hoisted)
 // 0x8015F9C0
 void cls_804A03A8::fn_8015F9C0() {
@@ -229,8 +226,6 @@ u8 cls_804A03A8::fn_8015F8FC(s32 layer, const JGeometry::TVec3f* pos, s32 mode) 
     return placed;
 }
 
-// FIXME(shotgun): 99.88 %, reloc-name; behaviour clean.
-// 0x8015F454
 void fn_8015F454(JUTTexture* tex, const f32* pos, const f32* uv, GXColor color, const GXColorS10* color2,
                  JUTTexture* mask, u8 mirror, u8 blend) {
     f32 u0 = uv[0];
