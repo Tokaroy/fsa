@@ -221,18 +221,19 @@ static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s3
     }
 }
 
-// The original keeps &mPos in r29 across getResource; ours recomputes it.
-// FIXME: 96.79 %, missing/extra; behaviour clean.
+static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* name, s32 frame) {
+    if (layer < 8) {
+        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
+        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
+    }
+}
+
 void cls_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
     drawShadowSob(this, "player_sob.bin", mSequencer.mFrame, &params, 7);
-    s32 frame = mSequencer.mFrame;
-    if (field_0x4 < 8) {
-        void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
-    }
+    drawSob(field_0x4, getPos(), "player_sob.bin", mSequencer.mFrame);
     fn_803075AC(mSerial, field_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
 
