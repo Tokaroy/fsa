@@ -1924,10 +1924,10 @@ void cls_804A2944::fn_801979C4() {
         break;
     case 0x4C: {
         s16 angle = lbl_804A2880[field_0x94];
-        f32 tx = field_0x280[0].x + 112.0f * JMath::sincosTable_.sinShort(angle);
-        f32 ty = field_0x280[0].y + 112.0f * JMath::sincosTable_.cosShort(angle);
-        f32 dx = tx - mPos.x;
-        f32 dy = ty - (mPos.y - mPos.z);
+        f32 dx = field_0x280[0].x + 112.0f * JMath::sincosTable_.sinShort(angle);
+        f32 dy = field_0x280[0].y + 112.0f * JMath::sincosTable_.cosShort(angle);
+        dx -= mPos.x;
+        dy -= mPos.y - mPos.z;
         field_0x274 = 2.0f * JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         field_0x278 = 2.0f * JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         if (std::sqrtf(dx * dx + dy * dy) < 2.0f) {
@@ -1936,16 +1936,18 @@ void cls_804A2944::fn_801979C4() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.z = 0.0f;
+            field_0x3c.y = 0.0f;
+            field_0x3c.x = 0.0f;
         }
         break;
     }
     case 0x4D:
         if (lbl_8053ABA4 == 1) {
-            const u16* ids = &lbl_804A28D8[field_0x94 * 3];
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[0], 0, 5, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[1], 0, 5, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[2], 0, 5, NULL, NULL, true, 1.0f);
+            s32 idx = field_0x94 * 3;
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx], 0, 5, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx + 1], 0, 5, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx + 2], 0, 5, NULL, NULL, true, 1.0f);
             field_0x248 = 0;
             mState = 0x4E;
         }
