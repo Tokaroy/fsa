@@ -3,12 +3,12 @@
 #include "game/Player.h"
 #include "game/act/act_zora_lotus.h"
 
-static inline bool contains(const JGeometry::TBox2f& b, const JGeometry::TVec3f& p) {
-    return p.x >= b.i.x && p.y >= b.i.y && p.x < b.f.x && p.y < b.f.y;
+static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
+    return x >= x0 && y >= y0 && x < x1 && y < y1;
 }
 
 // Does one of player `i`'s 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
-static inline bool outlineInBox(cls_804AC3E0* self, int i) {
+static inline bool outlineInBox(cls_804AC3E0* self, s32 i) {
     for (int j = 0; j < 8; j++) {
         JGeometry::TVec3f point;
         fn_8022E088(i, j, &point);
@@ -20,7 +20,7 @@ static inline bool outlineInBox(cls_804AC3E0* self, int i) {
         point.z = 0.0f;
         point.y = dist * JMath::sincosTable_.sinShort(angle);
         point.x = dist * JMath::sincosTable_.cosShort(angle);
-        if (contains(self->mBox, point)) {
+        if (contains(point.x, point.y, self->mBox.i.x, self->mBox.i.y, self->mBox.f.x, self->mBox.f.y)) {
             fn_8022DF48(i);
             return true;
         }
@@ -59,7 +59,8 @@ void cls_804AC3E0::vfunc_0xA4() {
     mPos.y = mSpawnPos.y;
 }
 
-// FIXME: 93.27 %. missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
+// FIXME: 97.52 %, missing/extra + reloc-name; behaviour clean.
+// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
 void cls_804AC3E0::vfunc_0xA8() {
     if (field_0x2b0 != 0) {
         field_0x2b2 += 0x800;
@@ -84,8 +85,7 @@ void cls_804AC3E0::vfunc_0xA8() {
         } else {
             if (touching) {
                 if (mPos.z <= 0.0f) {
-                    JGeometry::TVec3f vec = mPos - mPrevPos;
-                    fn_8023DF68(i, &vec);
+                    fn_8023DF68(i, &(mPos - mPrevPos));
                 }
             }
             if (getPlayerPos_8023E724(i)->z > mPos.z) {
@@ -103,7 +103,7 @@ void cls_804AC3E0::vfunc_0xA8() {
 bool cls_804AC3E0::vfunc_0xAC() {
     bool flag = false;
     if (field_0x90 & 1) {
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (fn_80233E40(i)) {
                 f32 diffX = mPos.x - getPlayerPos_8023E724(i)->x;
                 f32 diffY = mPos.y - getPlayerPos_8023E724(i)->y;
@@ -161,7 +161,8 @@ u8 cls_804AC3E0::vfunc_0x68() {
     return 0;
 }
 
-// FIXME: 94.17 %. missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
+// FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
+// missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
 void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
@@ -172,11 +173,8 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
             vfunc_0xA4();
         } else {
             JGeometry::TBox2f box(mBox);
-            box.i.y += mPos.y;
-            box.i.x += mPos.x;
-            box.f.x += mPos.x;
-            box.f.y += mPos.y;
-            for (int i = 0; i < 4; i++) {
+            box.addPos(mPos.x, mPos.y);
+            for (s32 i = 0; i < 4; i++) {
                 if (fn_80233E40(i) == 1) {
                     fn_802399D8(i, &box, field_0x4, mSerial);
                 } else if (fn_8023B0F4(i, &box, field_0x4, false, 8.0f) == 1) {
@@ -253,7 +251,7 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
         break;
     case 5:
         resetBoxes(this);
-        for (int i = 0; i < 4; i++) {
+        for (s32 i = 0; i < 4; i++) {
             if (getPlayerLayer_8023DE58(i) == getField_0x4()) {
                 outlineInBox(this, i);
             }
@@ -268,7 +266,8 @@ void cls_804AC3E0::vfunc_0x90(u8 mapHit) {
 
 // Not auto-inlined: cls_804AC3E0::draw calls fn_8033FC4C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME: 99.50 %. regalloc-only: the original keeps cos(rot.z) in f24, cx*sz in f26 and cx*cz in f25
+// FIXME: 99.50 %, regalloc-only; behaviour clean.
+// regalloc-only: the original keeps cos(rot.z) in f24, cx*sz in f26 and cx*cz in f25
 // (ours f26, f25, f24).
 void fn_8033FC4C(Mtx m, const JGeometry::TVec3f& scale, const JGeometry::TVec3f& rot, const JGeometry::TVec3f& trans) {
     f32 sx = sin(rot.x);
@@ -308,7 +307,6 @@ void fn_8033FC4C(Mtx m, const JGeometry::TVec3f& scale, const JGeometry::TVec3f&
 }
 #pragma auto_inline reset
 
-// FIXME: 99.90 %. reloc-name only: the switch's jump table is jumptable_804AC494 in the original, @NNN in ours.
 void cls_804AC3E0::draw() {
     ZoraEnemy_804A3D7C::draw();
     SpriteParams_801F5AE0 params;
