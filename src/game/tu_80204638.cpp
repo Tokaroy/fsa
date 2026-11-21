@@ -4,13 +4,7 @@
 #include "game/ActorBase.h"
 #include <float.h>
 #include "game/act/act_thief.h"
-#include "JSystem/JAudio/JAUAudience.h"
-#include "JSystem/JAudio/System/JASTrack.h"
-#include "JSystem/JAudio/System/JASChannel.h"
-#include "JSystem/JAudio/Interface/JAISe.h"
-#include "JSystem/JAudio/Interface/JAISeq.h"
-#include "JSystem/JAudio/Interface/JAISoundChild.h"
-#include "JSystem/JAudio/Interface/JAIStream.h"
+#include "game/GameAudio.h"
 
 // Out-of-line copy used by the repel step: pushes `a` away from `b` (2D) into *out, true when it moved.
 bool fn_801CB85C(const JGeometry::TVec2f* a, const JGeometry::TVec2f* b, JGeometry::TVec2f* out, f32 min, f32 max);
@@ -126,9 +120,3 @@ extern "C" cls_80204638* fn_80204638() {
     static cls_80204638 sInstance;
     return &sInstance;
 }
-
-// Pool statics this unit's static initializer registers. The others come in through the headers.
-// FIXME: JASTrack, JASChannel, JAIStream, JAISoundChild, JAISeq and JAISe pools still differ.
-template class JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>;
-template class JASPoolAllocObject<JAUDopplerAudible<4> >;
-template class JASPoolAllocObject<JAUAudible<4> >;
