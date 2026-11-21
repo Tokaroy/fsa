@@ -14,11 +14,13 @@
 
 // The TIMG resources by the spawn parameter (bits 17-18).
 const char* lbl_804AA330[4] = {"jen_blue.bti", "jen_green.bti", "jen_red.bti", "jen_purple.bti"};
-const char* lbl_804AA340[4] = {"jen_blue_tsume.bti", "jen_green_tsume.bti", "jen_red_tsume.bti", "jen_purple_tsume.bti"};
 
 // Emitter ids by the spawn parameter (bits 17-18): three each in the first two tables, five in the third.
 static const u16 lbl_8046F544[12] = {234, 235, 236, 237, 238, 239, 243, 244, 245, 240, 241, 242};
 static const u16 lbl_8046F55C[12] = {960, 961, 962, 963, 964, 965, 969, 970, 971, 966, 967, 968};
+
+const char* lbl_804AA340[4] = {"jen_blue_tsume.bti", "jen_green_tsume.bti", "jen_red_tsume.bti", "jen_purple_tsume.bti"};
+
 static const u16 lbl_8046F5C8[4][4] = {{2, 3, 4, 5}, {6, 7, 8, 9}, {14, 15, 16, 17}, {10, 11, 12, 13}};
 static const u16 lbl_8046F5E8[20] = {1206, 1207, 1208, 1209, 1210, 1211, 1212, 1213, 1214, 1215,
                                      1221, 1222, 1223, 1224, 1225, 1216, 1217, 1218, 1219, 1220};
@@ -171,7 +173,7 @@ void cls_804AA350::update() {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 field_0x250 = 20;
                 field_0x24c++;
-                gAudioMgr_8053AF80->fn_80458FF0(0x10000D, false, 0);
+                gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
                 fn_8022ADE4();
             }
         }
@@ -220,8 +222,8 @@ void cls_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            s32 type = field_0x254;
             stopEmitter(mEmitter230);
+            s32 type = field_0x254;
             mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][0], 0, -1, NULL, NULL, true, 1.0f);
             mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][1], 0, -1, NULL, NULL, true, 1.0f);
             mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8046F5C8[type][2], 0, -1, NULL, NULL, true, 1.0f);
