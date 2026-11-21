@@ -186,12 +186,8 @@ void IceMeltedByFourPlayers_804AE888::spawnMeltEmitter() {
     }
 }
 
-// FIXME: 97.99 %, missing/extra; behaviour clean.
-// Same instructions except the register of the stage loop
-// counter (r30 here, r29 in the original, which holds the 0x10000 constant
-// of the fn_80230FD0 call in r30) and the epilogue: the original returns 1
-// through several copies of li r3, 1.
 u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
+    s32 i;
     if (field_0x244 > 0) {
         field_0x244--;
     }
@@ -203,19 +199,23 @@ u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
             field_0x248 = 4;
             field_0x244 = 50;
             field_0x24c = 0;
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 fn_80230498(i, getPlayerPos_8023E724(i), 0xE8, 0xFF, -0x80, -0x80, true);
             }
         }
-    } else if (field_0x24c == 0 && field_0x244 > 30) {
-        for (s32 i = 0; i < 4; i++) {
+        return true;
+    }
+    if (field_0x24c == 0 && field_0x244 > 30) {
+        for (i = 0; i < 4; i++) {
             fn_80230498(i, getPlayerPos_8023E724(i), 0xE8, 0xFF, -0x80, -0x80, true);
         }
-    } else if (field_0x24c < 13) {
+        return true;
+    }
+    if (field_0x24c < 13) {
         if (field_0x244 == 0) {
             field_0x24c++;
             field_0x244 = lbl_804751A8[field_0x24c];
-            for (s32 i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 fn_80230498(i, getPlayerPos_8023E724(i), field_0x24c + 0xDB, 0xFF, -0x80, -0x80, true);
                 if (field_0x24c == 1) {
                     fn_80230FD0(i, 0x10001);
