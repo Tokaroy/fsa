@@ -96,7 +96,6 @@ void cls_804B1C58::fn_804482EC() {
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-// FIXME(shotgun): 99.88 %, regalloc-only
 void cls_804B1C58::fn_80447FAC() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
@@ -119,9 +118,10 @@ void cls_804B1C58::fn_80447FAC() {
             if (field_0x28[i] >= 100) {
                 field_0x28[i] = 99;
             }
+            const ResTIMG* tex;
             s32 tens = field_0x28[i] / 10;
             s32 ones = field_0x28[i] % 10;
-            const ResTIMG* tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C30[tens]));
+            tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C30[tens]));
             static_cast<J2DPicture*>(mScreen->search(lbl_804906A8[i][9]))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(mScreen->search(lbl_804906A8[i][10]))->changeTexture(tex, 0);
             tex = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1C30[ones]));
