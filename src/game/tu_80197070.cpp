@@ -1805,9 +1805,7 @@ void cls_804A2944::fn_80197EB0() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
             field_0x248 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
             field_0x24c = (s32)std::sqrtf(distSq);
             for (int i = 0; i < 13; i++) {
@@ -1834,12 +1832,8 @@ void cls_804A2944::fn_80197EB0() {
         dy = actor->mPos.y - mPos.y;
         dx = actor->mPos.x - mPos.x;
         f32 dist = std::sqrtf(dx * dx + dy * dy);
-        if (field_0x250 >= 1) {
-            if (dist <= 80.0f) {
-                takeToken(this, actor);
-            } else {
-                field_0x258 = 0;
-            }
+        if (field_0x250 >= 1 && dist <= 80.0f) {
+            takeToken(this, actor);
         } else {
             field_0x258 = 0;
         }
@@ -1881,12 +1875,8 @@ void cls_804A2944::fn_80197EB0() {
             f32 dy = actor->mPos.y - mPos.y;
             f32 dx = actor->mPos.x - mPos.x;
             f32 dist = std::sqrtf(dx * dx + dy * dy);
-            if (field_0x250 >= 1) {
-                if (dist <= 80.0f) {
-                    takeToken(this, actor);
-                } else {
-                    field_0x258 = 0;
-                }
+            if (field_0x250 >= 1 && dist <= 80.0f) {
+                takeToken(this, actor);
             } else {
                 field_0x258 = 0;
             }
@@ -1948,9 +1938,7 @@ void cls_804A2944::fn_801979C4() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            field_0x3c.zero();
         }
         break;
     }
