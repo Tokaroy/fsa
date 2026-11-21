@@ -6,6 +6,7 @@
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/JFramework/JFWDisplay.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "game/act/tu_80441318.h"
 #include "game/GameGlobals.h"
@@ -13,14 +14,14 @@
 #include "game/Camera.h"
 #include "game/Message.h"
 
-const char* lbl_804B1390[3] = {
+static const char* lbl_804B1390[3] = {
     "kk_heart_01.bti",
     "kk_heart_02.bti",
     "kk_heart_03.bti",
 };
 
 // The digit textures fn_8041918C passes to fn_804030C4 ('TIMG').
-const char* lbl_804B139C[10] = {
+static const char* lbl_804B139C[10] = {
     "kk_rupyNum_00.bti",
     "kk_rupyNum_01.bti",
     "kk_rupyNum_02.bti",
@@ -34,7 +35,7 @@ const char* lbl_804B139C[10] = {
 };
 
 // The rank pictures; fn_8041C67C only uses the first.
-const char* lbl_804B13C4[4] = {
+static const char* lbl_804B13C4[4] = {
     "kk_mainRank_01.bti",
     "kk_mainRank_02.bti",
     "kk_mainRank_03.bti",
@@ -381,7 +382,6 @@ static const s16 lbl_8048E144[2][5] = {
     { 0, 0, 0, 0, 0 },
 };
 
-// FIXME(shotgun): 97.28 %, missing/extra + reloc-name; behaviour drift.
 cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) {
     if (lbl_80529DEC.field_0x118 != 0 || lbl_80529DEC.field_0x11c != 0) {
         lbl_8053AED0->field_0x10e |= 1;
@@ -406,8 +406,8 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     } else {
         field_0x50 = NULL;
     }
-    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, (f32)JUTVideo::getManager()->getFbWidth(),
-                                   (f32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
+    field_0x4c = new J2DOrthoGraph(0.0f, 0.0f, JFWDisplay::getManager()->getEfbWidth(),
+                                   JFWDisplay::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
     field_0x4 = new J2DScreen();
     field_0x4->setPriority("main_adv.blo", 0x1100000, lbl_80529DEC.field_0x4c);
     for (s32 i = 0; i < 4; i++) {
@@ -496,7 +496,7 @@ cls_804B13D4::cls_804B13D4() : field_0x244(0xFFFFFFFF), field_0x248(0xFFFFFFFF) 
     } else {
         for (s32 i = 0; i < 4; i++) {
             for (s32 j = 1; j < 4; j++) {
-                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1390[j]));
+                const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B13C4[j]));
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE00[i]))->append(res, 1.0f);
                 static_cast<J2DPicture*>(field_0x18->search(lbl_8048DE20[i]))->append(res, 1.0f);
             }
@@ -730,7 +730,6 @@ void cls_804B13D4::fn_8041F5FC() {
     }
 }
 
-// FIXME(shotgun): 99.76 %, regalloc-only; behaviour clean.
 void cls_804B13D4::fn_8041EDB0() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         fn_8041E3B4(0);
@@ -759,19 +758,18 @@ void cls_804B13D4::fn_8041EDB0() {
     } else {
         for (s32 i = 0; i < 4; i++) {
             fn_8041E3B4(i);
-            s32 bit = 1 << i;
             // the original keeps the tested value as a bool (neg / or / srwi.)
-            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)bit) ? true : false) {
+            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) ? true : false) {
                 fn_8041E8B4(i);
                 if (gGameRoot2_8053AB10->field_0x20->field_0x14c[i] != 0) {
-                    if (!(field_0x28c & (u8)bit)) {
-                        field_0x28c |= (u8)bit;
+                    if (!(field_0x28c & (u8)(1 << i))) {
+                        field_0x28c |= (u8)(1 << i);
                         field_0x18->search(lbl_8048DE40[i])->show();
                         field_0x4->search(lbl_8048DE60[i])->show();
                         field_0x4->search(lbl_8048DE80[i])->hide();
                     }
-                } else if (field_0x28c & (u8)bit) {
-                    field_0x28c &= ~(u8)bit;
+                } else if (field_0x28c & (u8)(1 << i)) {
+                    field_0x28c &= ~(u8)(1 << i);
                     field_0x18->search(lbl_8048DE40[i])->hide();
                     field_0x4->search(lbl_8048DE60[i])->hide();
                     field_0x4->search(lbl_8048DE80[i])->show();
@@ -1483,8 +1481,8 @@ void cls_804B13D4::fn_8041C0C0(s32 player) {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048D778[player][digit]))->changeTexture(res, 0);
 }
 
-// FIXME(shotgun): 99.78 %, missing/extra; behaviour clean.
 void cls_804B13D4::fn_8041B69C() {
+    s32 tieCount;
     s32 count = 0;
     s32 assigned = 0;
     if (!(field_0x28b & 1) && !(field_0x28b & 2) && !(field_0x28b & 4) && !(field_0x28b & 8)) {
@@ -1508,9 +1506,9 @@ void cls_804B13D4::fn_8041B69C() {
             count++;
         }
     }
-    while (assigned < count) {
+    do {
         s32 maxScore = -5001;
-        s32 tieCount = 0;
+        tieCount = 0;
         for (s32 i = 0; i < count; i++) {
             if (done[i] == 0 && maxScore < fn_80236100(i)) {
                 maxScore = fn_80236100(i);
@@ -1524,7 +1522,7 @@ void cls_804B13D4::fn_8041B69C() {
             }
         }
         assigned += tieCount;
-    }
+    } while (assigned < count);
     for (s32 i = 0; i < count; i++) {
         switch (rank[i]) {
         case 0:
@@ -1583,12 +1581,13 @@ void cls_804B13D4::fn_8041B69C() {
     }
 }
 
-// FIXME(shotgun): 95.41 %, different; behaviour near.
+// FIXME(shotgun): 95.47 %, different; behaviour clean.
 void cls_804B13D4::fn_8041A868(bool arg) {
     f32 prev0 = field_0x118[0];
     f32 prev4 = field_0x158[0];
     s32 row = 0;
-    if ((gGameRoot_8053AAF8->field_0x83 & 3) == 2) {
+    u32 kind = gGameRoot_8053AAF8->field_0x83 & 3;
+    if (kind == 2) {
         row = 1;
     }
     s32 level = fn_80418B64();
@@ -1603,9 +1602,9 @@ void cls_804B13D4::fn_8041A868(bool arg) {
     s16 dx = lbl_8050DB0C.field_0x4c[0xF3] + lbl_8048E0E0[row][field_0x222];
     s16 dy = lbl_8050DB0C.field_0x4c[0xF4] + lbl_8048E0F4[row][field_0x222];
     if (lbl_8048E0CC[row][field_0x222] == 0) {
-        dy = (f32)dy + lbl_8053AED0->fn_8043D514();
+        dy += lbl_8053AED0->fn_8043D514();
     } else {
-        dy = (f32)dy + lbl_8053AED0->fn_8043D57C();
+        dy += lbl_8053AED0->fn_8043D57C();
     }
     field_0x54->moveFromCentre_80402E08(
         (f32)(dx + (lbl_8048E0B8[row][field_0x222] + lbl_8050DB0C.field_0x4c[0x143] + lbl_8048E108[row][field_0x222])),
