@@ -62,7 +62,7 @@ static inline u32 pairParam(u32 param, s32 enc, s32 dx, s32 dy, u32 kind) {
 // 0x80228B60. Decodes the spawn parameter (field_0x90: kind in the low 7 bits, layer, a 6-bit cell
 // offset to the destination), sets the destination (field_0x238) and the trigger box, and for the
 // paired kinds 0x19-0x1C spawns the other warp and turns this one into the matching kind.
-// FIXME(shotgun): 98.54 %, scheduling+regalloc; behaviour clean.
+// FIXME(shotgun): 99.24 %, scheduling+regalloc; behaviour clean.
 void Warp_804A6DC8::init() {
     field_0x256 = 0;
     field_0x278 = 0;
@@ -113,13 +113,13 @@ void Warp_804A6DC8::init() {
         getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x18;
     }
-    kind = field_0x90 & 0x7F;
-    if (((field_0x90 >> 7) & 1) == 0 && kind != 0x20) {
+    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0x20) {
         field_0x238.x += 8.0f;
         field_0x238.y += 8.0f;
     }
-    kind = field_0x90 & 0x7F;
-    if (((field_0x90 >> 7) & 1) == 0 && kind != 0xB && kind != 0x1E && kind != 0x1F && kind != 0x20) {
+    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0xB && warpKind(field_0x90) != 0x1E &&
+        warpKind(field_0x90) != 0x1F && warpKind(field_0x90) != 0x20)
+    {
         mPos.x += (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
         mPos.y += (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
     }
@@ -171,8 +171,7 @@ void Warp_804A6DC8::init() {
     } else {
         mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
     }
-    kind = field_0x90 & 0x7F;
-    if (kind == 0x28) {
+    if (warpKind(field_0x90) == 0x28) {
         field_0x90 = (field_0x90 & ~0x7F) | 4;
     }
     mLife = 0;
@@ -213,10 +212,12 @@ static inline bool bomeAtRest(cls_804A0738* b) {
     return false;
 }
 
+static void updateSandHole(Warp_804A6DC8* self);
+
 // 0x80227F50. Every frame: tracks whether a player is near (the sand shake), lets the kind-0x20 warp
 // swallow a player with a drawn box, then pushes the actors lying on the pad (per kind) to the
 // warp's destination (field_0x238) or nudges their velocity.
-// FIXME(shotgun): 95.86 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 95.94 %, missing/extra; behaviour clean.
 void Warp_804A6DC8::update() {
     // 'NULL'-ended actor id lists, addressed off one base (0x8046ABE8, +0x38, +0x44): the pushed
     // actors, then two lists chosen by kind.
@@ -251,26 +252,7 @@ void Warp_804A6DC8::update() {
     }
     s32 kind = field_0x90 & 0x7F;
     if (kind == 0x20) {
-        for (s32 i = 0; i < 4; i++) {
-            if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
-                JGeometry::TVec3f pos = *fn_8023A478(i);
-                if (__fabsf(mPos.x - pos.x) < 64.0f && __fabsf(mPos.y - pos.y) < 64.0f) {
-                    JGeometry::TVec3f p0(mPos.x - 8.0f, mPos.y - 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p0, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p1(mPos.x + 8.0f, mPos.y - 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p1, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p2(mPos.x - 8.0f, mPos.y + 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p2, i, field_0x4, 0xC);
-                    JGeometry::TVec3f p3(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-                    gBgRewrite_8053AC98->fn_802A3948(&p3, i, field_0x4, 0xC);
-                    if (field_0x255 == 0) {
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
-                        field_0x255 = 1;
-                    }
-                    break;
-                }
-            }
-        }
+        updateSandHole(this);
     }
     if ((field_0x90 >> 27) != 0 && !vfunc_0x34()) {
         return;
@@ -426,7 +408,6 @@ void Warp_804A6DC8::update() {
 }
 
 // 0x80227CE8.
-// FIXME: 99.94 %, reloc-name; behaviour clean.
 void Warp_804A6DC8::draw() {
     static const f32 lbl_8046AC58[24] = {
         0.0f, 1.0f,  2.0f,  1.0f,  0.0f, -0.9f, -1.8f, -0.9f,
@@ -457,6 +438,25 @@ void Warp_804A6DC8::draw() {
     } else {
         mPos.y += 0.1f;
         mPos.y -= 0.1f;
+    }
+}
+
+static void updateSandHole(Warp_804A6DC8* self) {
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_802373EC(i) == 1 && fn_8023A51C(i)) {
+            JGeometry::TVec3f pos = *fn_8023A478(i);
+            if (__fabsf(self->mPos.x - pos.x) < 64.0f && __fabsf(self->mPos.y - pos.y) < 64.0f) {
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->field_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y - 8.0f, 0.0f), i, self->field_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x - 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->field_0x4, 0xC);
+                gBgRewrite_8053AC98->fn_802A3948(&JGeometry::TVec3f(self->mPos.x + 8.0f, self->mPos.y + 8.0f, 0.0f), i, self->field_0x4, 0xC);
+                if (self->field_0x255 == 0) {
+                    spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x3E3, 0, -2, NULL, NULL, true, 1.0f);
+                    self->field_0x255 = 1;
+                }
+                break;
+            }
+        }
     }
 }
 
@@ -554,12 +554,12 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
 
 // 0x80227530. Per player: runs fn_80226FC8, then marks the player on the warp and, for a player
 // that just stepped on and passes the checks, rewrites the four tiles around it and spawns the effect.
-// FIXME(shotgun): 85.93 %, missing/extra; behaviour near.
+// FIXME(shotgun): 87.77 %, missing/extra; behaviour near.
 void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
     for (s32 player = 0; player < 4; player++) {
         fn_80226FC8(player);
         box->set(mBox);
-        box->addPos(mPos.x, mPos.y);
+        box->set(box->i.x + mPos.x, box->i.y + mPos.y, box->f.x + mPos.x, box->f.y + mPos.y);
         if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(player)) {
             if (getPlayerLayer_8023DE58(player) != warpLayer(field_0x90)) {
                 continue;
