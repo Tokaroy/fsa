@@ -6,7 +6,8 @@
 #include "game/act/tu_801DB18C.h"
 #include "game/act/tu_801DAC6C.h"
 
-extern const s16* lbl_8053A148[]; // the animation table (.sdata, this unit)
+static const s16 lbl_80469A98[] = { 7, 5, 8, 5, -1, -1 };
+static const s16* lbl_8053A148[] = { lbl_80469A98, NULL };
 extern const char lbl_80469AA4[]; // "enemy_both_sob.bin"
 
 cls_804A4EE8::cls_804A4EE8() {
@@ -37,7 +38,6 @@ cls_804A4EE8::~cls_804A4EE8() {
     }
 }
 
-// FIXME(shotgun): 97.92 %, missing/extra; behaviour clean.
 void cls_804A4EE8::init() {
     EnemyBase_804A4808::init();
     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
@@ -52,7 +52,7 @@ void cls_804A4EE8::init() {
         if (fn_801CD664(2) == 0) {
             a = -a;
         }
-        f32 n = (f32)(fn_801CD664(0x3C) + 1);
+        s32 n = fn_801CD664(0x3C) + 1;
         field_0x2b4 = 0.0f;
         field_0x2b8 = 0.1f * n;
         f32 x = field_0x2b4;
