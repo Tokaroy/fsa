@@ -11,6 +11,7 @@ static const s32 lbl_80474E70[15] = {
     30, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 1, 1,
 };
 
+// FIXME: 99.17 %, regalloc-only; behaviour clean.
 void FourPersonPullSwitch_804AE230::init() {
     if (((field_0x90 >> 4) & 3) == 0) {
         for (s32 i = 0; i < 3; i++) {
