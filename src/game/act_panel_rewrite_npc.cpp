@@ -53,10 +53,11 @@ void PanelRewriteNPC_804A8E40::init() {
     field_0x248 = (field_0x90 >> 10) & 3;
 }
 
-// FIXME: 99.35 %, missing/extra; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x10() {
     u8 gameFlag = gGameRoot_8053AAF8->fn_80138A30();
     s32 keep = 0;
+    u64 bit;
+    u64 mask;
     if (field_0x248 == 0) {
         keep = 1;
     } else if (field_0x248 == 1) {
@@ -98,8 +99,6 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
 
         if (field_0x234 == 0x30) {
             field_0x240 = 2;
-            u64 bit;
-            u64 mask;
             getGameView_802D6A9C()->fn_802D4874(field_0x4, field_0x250, &bit, &mask);
             if (getGameView_802D6A9C()->fn_802D4ADC(field_0x4, field_0x250) == true) {
                 field_0x234 = 0x10;
@@ -124,10 +123,12 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
         }
         if (field_0x23c == 2 && !vfunc_0x34()) {
             field_0x230 = 3;
-            // FIXME: 99.35%. The 0x9E store block is laid out after the function's
-            // final branch in the original; ours keeps it inline (one branch fewer).
-            if (field_0x254 == field_0x234 && field_0x234 == 0x9E) {
-                field_0x254 = 0xDC;
+            if (field_0x254 == field_0x234) {
+                switch (field_0x234) {
+                case 0x9E:
+                    field_0x254 = 0xDC;
+                    break;
+                }
             }
             update();
         } else if (mAlive) {
@@ -202,12 +203,13 @@ void PanelRewriteNPC_804A8E40::update() {
 
 void PanelRewriteNPC_804A8E40::draw() {}
 
-// FIXME: 98.41 %, scheduling+regalloc; behaviour clean.
 void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     if (field_0x24c) {
         if (field_0x4 >= 8) {
-            JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
-            // FIXME: 98.41%. The original stores the zero z before the y sum (scheduling).
+            JGeometry::TVec3f pos;
+            pos.x = mPos.x + 8.0f;
+            pos.y = mPos.y + 8.0f;
+            pos.z = 0.0f;
             u32 entry = lbl_8046D808[field_0x244];
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4, &pos, entry, -1, -1);
         } else {
@@ -247,46 +249,36 @@ void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
     }
 }
 
-// FIXME: 92.18 %, missing/extra; behaviour clean.
-// The original keeps `this` in r31 from entry and the layer
-// temporary in r30; ours swaps the saved registers for this, the serial and
-// the found actor.
+// The original keeps `this` in r31 from entry and the layer temporary in r30;
+// ours rotates the callee-saved registers for this, the temporary, and other.
+// FIXME: 96.65 %, scheduling+regalloc; behaviour clean.
 bool PanelRewriteNPC_804A8E40::vfunc_0x58() {
+    ActorBase_804A5770* other;
     s32 serial = -1;
     if (viewLayerFlag(field_0x4)) {
         return false;
     }
-    for (;;) {
+    while (true) {
         serial = getActorManager_801F856C()->fn_801F78F4('KEY0', serial);
         if (serial < 0) {
             return false;
         }
-        if (serial == mSerial) {
-            continue;
+        if (serial != mSerial) {
+            other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            if (other != NULL) {
+                JGeometry::TVec3f otherPos = other->mPos;
+                if (field_0x4 == other->field_0x4 &&
+                    vfunc_0x5C(mPos.x + 8.0f, otherPos.x, 8.0f) &&
+                    vfunc_0x5C(mPos.y + 8.0f, otherPos.y, 8.0f) &&
+                    vfunc_0x5C(mPos.z, otherPos.z, 8.0f)) {
+                    SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(other);
+                    if (key->fn_802C1970(field_0x4, &mPos)) {
+                        key->fn_802C2B64();
+                        return true;
+                    }
+                }
+            }
         }
-        ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (other == NULL) {
-            continue;
-        }
-        JGeometry::TVec3f otherPos = other->mPos;
-        if (field_0x4 != other->field_0x4) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.x + 8.0f, otherPos.x, 8.0f)) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.y + 8.0f, otherPos.y, 8.0f)) {
-            continue;
-        }
-        if (!vfunc_0x5C(mPos.z, otherPos.z, 8.0f)) {
-            continue;
-        }
-        SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(other);
-        if (!key->fn_802C1970(field_0x4, &mPos)) {
-            continue;
-        }
-        key->fn_802C2B64();
-        return true;
     }
 }
 
