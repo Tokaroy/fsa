@@ -16,7 +16,7 @@
 #include "std/math.h"
 
 // Offsets of the four ghost positions from mPos (x, y pairs), .data at 0x804A0410.
-static const f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
+static f32 lbl_804A0410[8] = {-80.0f, -40.0f, 80.0f, -40.0f, -80.0f, 40.0f, 80.0f, 40.0f};
 static const s32 lbl_804A0430[4] = {0, 1, 2, 1};
 
 // 8 colour sets of three RGBA colours, .rodata at 0x804661E0.
@@ -44,7 +44,6 @@ cls_804A0440::~cls_804A0440() {
 }
 
 // 0x80163E80.
-// FIXME(shotgun): 80.68 %, missing/extra + reloc-name; behaviour near.
 void cls_804A0440::init() {
     field_0x94 = 0;
     mBox.set(-60.0f, -60.0f, 60.0f, 60.0f);
@@ -64,15 +63,15 @@ void cls_804A0440::init() {
     field_0x274 = 0.0f;
     field_0x278 = 0.05f;
     field_0x254 = 0;
-    field_0x294[8] = 0.0f;
-    field_0x294[7] = 0.0f;
-    field_0x294[6] = 0.0f;
+    field_0x294[5] = 0.0f;
+    field_0x294[4] = 0.0f;
+    field_0x294[3] = 0.0f;
     field_0x294[0] = mPos.x;
     field_0x294[1] = mPos.y;
     field_0x294[2] = mPos.z;
-    field_0x294[3] = mPos.x;
-    field_0x294[4] = mPos.y;
-    field_0x294[5] = mPos.z;
+    field_0x294[6] = mPos.x;
+    field_0x294[7] = mPos.y;
+    field_0x294[8] = mPos.z;
     field_0x260 = 0;
     field_0x288 = 0.0f;
     field_0x28c = 0.0f;

@@ -281,7 +281,7 @@ public:
     /* 0x284 */ f32 field_0x284;
     /* 0x288 */ f32 field_0x288;
     /* 0x28C */ f32 field_0x28c;
-    /* 0x290 */ s16 field_0x290;
+    /* 0x290 */ u16 field_0x290;
     /* 0x292 */ u8 field_0x292[2]; // not yet known
     /* 0x294 */ f32 field_0x294[9]; // three positions (x, y, z) copied from mPos by init
     /* 0x2B8 */ JGeometry::TVec3f field_0x2b8[4];
