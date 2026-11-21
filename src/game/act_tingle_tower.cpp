@@ -201,8 +201,7 @@ void cls_804AAD60::draw() {
     }
 }
 
-// FIXME: 95.50 %, missing/extra; behaviour clean.
-// FIXME(shotgun): missing/extra; argument setup order of the first fn_8038AD24 call differs.
+// FIXME: regalloc-only (f1/f2 swapped in box check).
 void cls_804AAD60::fn_80315EE8() {
     updateFacing();
     JGeometry::TBox2f box;
@@ -228,16 +227,7 @@ void cls_804AAD60::fn_80315EE8() {
         }
         if (found >= 0) {
             fn_8022FF8C(found, &box, field_0x4, mSerial, 0, 0);
-            bool started;
-            if (fn_8038AD24(found, 0x47E, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x110)) {
-                field_0x254 = found;
-                field_0x268 = 0x47E;
-                field_0x234 = 1;
-                started = true;
-            } else {
-                started = false;
-            }
-            if (started) {
+            if (startMessage(found, 0x47E, 0x110)) {
                 JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(found);
                 targetPos.y = box.i.y - 1.0f;
                 fn_80230BF4(found, 3);
@@ -251,20 +241,12 @@ void cls_804AAD60::fn_80315EE8() {
             box.f.x += mPos.x;
             box.f.y += mPos.y;
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
-            s32 p = fn_8022FD8C(mSerial);
-            if (p >= 0 && fn_802300EC(p)) {
+            found = fn_8022FD8C(mSerial);
+            if (found >= 0 && fn_802300EC(found)) {
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
-                    if (fn_8038AD24(p, 0x47C, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x120)) {
-                        field_0x254 = p;
-                        field_0x268 = 0x47C;
-                        field_0x234 = 1;
-                    }
+                    startMessage(found, 0x47C, 0x120);
                 } else {
-                    if (fn_8038AD24(p, 0x47D, mSerial, field_0x4, JGeometry::TVec3f(mPos), 0x10)) {
-                        field_0x254 = p;
-                        field_0x268 = 0x47D;
-                        field_0x234 = 1;
-                    }
+                    startMessage(found, 0x47D, 0x10);
                 }
             }
         }
