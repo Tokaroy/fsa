@@ -177,30 +177,30 @@ void cls_804A4EE8::fn_801DB6C8() {
             field_0x2c8 += field_0x2d0;
         }
     }
-    f32 tx;
-    f32 ty;
+    JGeometry::TVec2f target;
     if (mTargetPlayer == -1) {
-        tx = mSearchPos.z + field_0x2b4;
-        ty = field_0x2c8 + field_0x2b8;
+        target.set(mSearchPos.z, field_0x2c8);
+        target.x += field_0x2b4;
+        target.y += field_0x2b8;
     } else {
-        JGeometry::TVec3f* player = &field_0x1ac[mTargetPlayer];
-        f32 px = player->x;
-        f32 py = player->y;
-        JGeometry::TVec2f away(mSearchPos.x - px, mSearchPos.y - py);
-        if (away.squared() <= JGeometry::TUtil<f32>::epsilon()) {
+        JGeometry::TVec3f* p = &field_0x1ac[mTargetPlayer];
+        JGeometry::TVec2f player(p->x, p->y);
+        JGeometry::TVec2f away(mSearchPos.x - player.x, mSearchPos.y - player.y);
+        if (away.isZero()) {
             away.set(0.0f, -1.0f);
         } else {
             away.normalize();
         }
-        away.x *= mRadius;
-        away.y *= mRadius;
-        tx = px + away.x + field_0x2b4;
-        ty = py + away.y + field_0x2b8;
+        away.scale(mRadius);
+        target.set(player);
+        target.add(away);
+        target.x += field_0x2b4;
+        target.y += field_0x2b8;
     }
-    JGeometry::TVec2f d(tx - mSearchPos.x, ty - mSearchPos.y);
-    if (d.squared() > JGeometry::TUtil<f32>::epsilon()) {
-        f32 len = d.length();
+    JGeometry::TVec2f d(target.x - mSearchPos.x, target.y - mSearchPos.y);
+    if (!d.isZero()) {
         f32 step = field_0x2e0;
+        f32 len = d.length();
         if (len < step) {
             step = len;
         }
