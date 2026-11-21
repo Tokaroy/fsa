@@ -285,10 +285,9 @@ cls_804B1D58::~cls_804B1D58() {
 // register choice in the first loop differs (the original keeps the zero shared with the counter).
 void cls_804B1D58::fn_80452350() {
     lbl_8053AEC0->fn_804310CC();
-    s32 i = 0;
-    field_0xf8 = i;
-    field_0xfe = i;
-    for (; i < 3; i++) {
+    field_0xf8 = 0;
+    field_0xfe = 0;
+    for (s32 i = 0; i < 3; i++) {
         field_0x48[i]->moveFromCentre_80402E08(300.0f, 0.0f);
         field_0x60[i]->moveFromCentre_80402E08(300.0f, 0.0f);
         field_0x48[i]->field_0x20 = 0;
@@ -312,7 +311,6 @@ void cls_804B1D58::fn_80452350() {
         field_0xc[i]->moveFromCentre_80402E08(0.0f, -480.0f);
         field_0xc[i]->field_0x22 = 0;
     }
-    const ResTIMG* image;
     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
         ((lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 2) ||
@@ -322,10 +320,10 @@ void cls_804B1D58::fn_80452350() {
          (lbl_80529DEC.field_0x118 == 5 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 7 && lbl_80529DEC.field_0x11c == 1))) {
-        image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     } else {
-        image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     }
     fn_8044D894();
