@@ -1568,7 +1568,7 @@ void ConnectScreen_804B0F10::fn_803F8050() {
     stepCursorTimer(this);
 }
 
-// FIXME(shotgun): 97.15 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.63 %, different; behaviour near.
 void ConnectScreen_804B0F10::fn_803F726C() {
     if (field_0x1ac != 2) {
         if (field_0x210[0] < 100) {
