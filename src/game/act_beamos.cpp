@@ -115,14 +115,19 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
 
 // FIXME(shotgun): 95.66 %, missing/extra; behaviour drift.
 void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
-    if ((mFlags & 0x2000) && field_0x2b0 != 0) {
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x2b0)) {
+    s16 heading;
+    s32 i;
+    s32 target;
+    if (mFlags & 0x2000) {
+        s32 sw = field_0x2b0;
+        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
             mFlags &= ~0x2000;
             fn_801BE6C4(0);
         }
     }
-    if (!(mFlags & 0x2000) && field_0x2b4 != 0) {
-        if (getGameView_802D6A9C()->fn_802D800C(field_0x2b4)) {
+    if (!(mFlags & 0x2000)) {
+        s32 sw = field_0x2b4;
+        if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
             mFlags |= 0x2000;
         }
     }
@@ -136,22 +141,21 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
             }
             break;
         case 1:
-            if (mStateTimer == 0) {
+            if (!(mFlags & 0x2000)) {
                 startSound_801F0E34(0x400C1, 0);
             }
             field_0x2a8 += 0x100;
             if (mStateTimer >= 30) {
+                target = -1;
                 const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
-                s16 heading = (s32)(JMath::atanTable_.atan2_(10.0f * sincos.sinShort(field_0x2a8),
-                                                              6.0f * sincos.cosShort(field_0x2a8)) *
-                                    10430.378f);
-                s32 target = -1;
-                for (s32 i = 0; i < 4; i++) {
+                heading = (s32)(10430.378f * JMath::atanTable_.atan2_(10.0f * sincos.sinShort(field_0x2a8),
+                                                                      6.0f * sincos.cosShort(field_0x2a8)));
+                for (i = 0; i < 4; i++) {
                     if (fn_801D08B4(i, &mPos, 16.0f * field_0x2ac)) {
                         f32 dy = getPlayerPos_8023E724(i)->y - (-15.0f + mPos.y);
                         f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
-                        s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-                        if (0.000030517578f * std::fabsf((f32)(s16)(heading - angle)) <= 0.02f) {
+                        s32 angle = (s32)(10430.378f * JMath::atanTable_.atan2_(dx, dy));
+                        if (0.000030517578f * __fabsf((s16)(heading - angle)) <= 0.02f) {
                             target = i;
                             break;
                         }
