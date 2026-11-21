@@ -78,7 +78,7 @@ bool fn_80453848(JPABaseEmitter* emitter) {
 
 cls_80453830::cls_80453830() {}
 
-// FIXME: 96.89 %, missing/extra; behaviour near.
+// FIXME: 97.31 %, missing/extra; behaviour near.
 cls_804B1D58::cls_804B1D58() {
     lbl_8053AF40 = this;
     mScreen = new J2DScreen;
@@ -178,7 +178,9 @@ cls_804B1D58::cls_804B1D58() {
     field_0x164[0].field_0x8.r = 0xE6;
     field_0x164[0].field_0x8.g = 0xE1;
     field_0x164[0].field_0x8.b = 0x87;
-    field_0x164[0].field_0xc.set(0xE6, 0xE1, 0x87, field_0x164[0].field_0xc.a);
+    field_0x164[0].field_0xc.r = 0xE6;
+    field_0x164[0].field_0xc.g = 0xE1;
+    field_0x164[0].field_0xc.b = 0x87;
     field_0x164[1].field_0x0.r = 0xA9;
     field_0x164[1].field_0x0.g = 0x80;
     field_0x164[1].field_0x0.b = 0x46;
@@ -281,14 +283,13 @@ cls_804B1D58::~cls_804B1D58() {
     lbl_8053AF40 = NULL;
 }
 
-// FIXME: 98.68 %, different + reloc-name; behaviour clean.
+// FIXME: 99.18 %, missing/extra; behaviour clean.
 // register choice in the first loop differs (the original keeps the zero shared with the counter).
 void cls_804B1D58::fn_80452350() {
     lbl_8053AEC0->fn_804310CC();
-    s32 i = 0;
-    field_0xf8 = i;
-    field_0xfe = i;
-    for (; i < 3; i++) {
+    field_0xf8 = 0;
+    field_0xfe = 0;
+    for (s32 i = 0; i < 3; i++) {
         field_0x48[i]->moveFromCentre_80402E08(300.0f, 0.0f);
         field_0x60[i]->moveFromCentre_80402E08(300.0f, 0.0f);
         field_0x48[i]->field_0x20 = 0;
@@ -312,7 +313,6 @@ void cls_804B1D58::fn_80452350() {
         field_0xc[i]->moveFromCentre_80402E08(0.0f, -480.0f);
         field_0xc[i]->field_0x22 = 0;
     }
-    const ResTIMG* image;
     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
         ((lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 2) ||
@@ -322,10 +322,10 @@ void cls_804B1D58::fn_80452350() {
          (lbl_80529DEC.field_0x118 == 5 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 2) ||
          (lbl_80529DEC.field_0x118 == 7 && lbl_80529DEC.field_0x11c == 1))) {
-        image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     } else {
-        image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     }
     fn_8044D894();
@@ -1264,7 +1264,7 @@ void cls_804B1D58::fn_8044D894() {
 }
 
 // Selects row `arg` (0-3) of the second list; like fn_8044CB08, with one emitter (field_0xb0).
-// FIXME(shotgun): 85.99 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.37 %, same-text; behaviour clean.
 void cls_804B1D58::fn_8044D298(int arg) {
     if (arg >= 0 && arg <= 3) {
         gGameRoot_8053AAF8->fn_80134D20(false);
@@ -1273,41 +1273,41 @@ void cls_804B1D58::fn_8044D298(int arg) {
         field_0x134 = 0;
         field_0x138 = arg;
         for (s32 i = 0; i < 3; i++) {
-            JUtility::TColor white(100, 100, 100, field_0x15c[0].a);
-            JUtility::TColor black(0, 0, 0, field_0x154[0].a);
-            static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(black, white);
-            JUtility::TColor white2(80, 80, 80, field_0x14c[0].a);
-            JUtility::TColor black2(80, 80, 80, field_0x144[0].a);
-            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(black2, white2);
-            JUtility::TColor c3(150, 150, 150, field_0x164[0].field_0xc.a);
-            JUtility::TColor c2(150, 150, 150, field_0x164[0].field_0x8.a);
-            JUtility::TColor c1(150, 150, 150, field_0x164[0].field_0x4.a);
-            JUtility::TColor c0(150, 150, 150, field_0x164[0].field_0x0.a);
-            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setContentsColor(c0, c1, c2, c3);
+            static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(
+                JUtility::TColor(0, 0, 0, field_0x154[0].a),
+                JUtility::TColor(100, 100, 100, field_0x15c[0].a));
+            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(
+                JUtility::TColor(80, 80, 80, field_0x144[0].a),
+                JUtility::TColor(80, 80, 80, field_0x14c[0].a));
+            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setContentsColor(
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x0.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x4.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x8.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0xc.a));
             mScreen->search(lbl_80490FE0[i])->setAlpha(200);
         }
-        mScreen->search(lbl_80491210[field_0x138])->mIsVisible = true;
+        mScreen->search(lbl_80491210[field_0x138])->show();
         mScreen->search(lbl_80491210[field_0x138])->setAlpha(0);
         mScreen->search(lbl_80491230[field_0x138])->setAlpha(0);
         mScreen->search(lbl_80491250[field_0x138])->setAlpha(0);
         if (field_0xb0[field_0x138] == NULL) {
             J2DPane* box = mScreen->search(lbl_80491230[field_0x138]);
             f32 h = box->mBounds.f.y - box->mBounds.i.y;
-            f32 y0 = mScreen->search(lbl_80491210[field_0x138])->getBounds()->i.y;
-            f32 y1 = mScreen->search('Ndataj01')->getBounds()->i.y;
-            f32 y = 0.5f * h + (mScreen->search(lbl_80491230[field_0x138])->getBounds()->i.y + (y1 + y0));
+            f32 y = h / 2.0f + (mScreen->search('Ndataj01')->getBounds()->i.y
+                + mScreen->search(lbl_80491210[field_0x138])->getBounds()->i.y
+                + mScreen->search(lbl_80491230[field_0x138])->getBounds()->i.y);
             box = mScreen->search(lbl_80491230[field_0x138]);
             f32 w = box->mBounds.f.x - box->mBounds.i.x;
-            f32 x0 = mScreen->search(lbl_80491210[field_0x138])->getBounds()->i.x;
-            f32 x1 = mScreen->search('Ndataj01')->getBounds()->i.x;
-            f32 x = 0.5f * w + (mScreen->search(lbl_80491230[field_0x138])->getBounds()->i.x + (x1 + x0));
+            f32 x = w / 2.0f + (mScreen->search('Ndataj01')->getBounds()->i.x
+                + mScreen->search(lbl_80491210[field_0x138])->getBounds()->i.x
+                + mScreen->search(lbl_80491230[field_0x138])->getBounds()->i.x);
             JGeometry::TVec3f pos(x, y, 0.0f);
             field_0xb0[field_0x138] = spawnEmitter_8013CC50(0, &pos, lbl_80543DD8[field_0x138], 0, 0, NULL, NULL, true, 1.0f);
         }
         field_0xb0[field_0x138]->setStatus(1);
         field_0xb0[field_0x138]->setStatus(2);
         field_0xb0[field_0x138]->setStatus(4);
-        mScreen->search('Pcul01')->mIsVisible = false;
+        mScreen->search('Pcul01')->hide();
     }
 }
 
@@ -1317,7 +1317,7 @@ u8 cls_804B1D58::fn_8044D290() {
 
 // Selects row `arg` (0-6): recolours the cursor panes, hides the row's panes and starts its two
 // emitters (stopped at once: the status bits 1, 2 and 4).
-// FIXME(shotgun): 84.62 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.38 %, same-text; behaviour clean.
 void cls_804B1D58::fn_8044CB08(int arg) {
     if (arg >= 0 && arg <= 6) {
         gGameRoot_8053AAF8->fn_80134D20(false);
@@ -1326,51 +1326,35 @@ void cls_804B1D58::fn_8044CB08(int arg) {
         field_0x134 = 0;
         field_0x138 = arg;
         for (s32 i = 0; i < 3; i++) {
-            JUtility::TColor white(100, 100, 100, field_0x15c[0].a);
-            JUtility::TColor black(0, 0, 0, field_0x154[0].a);
-            static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(black, white);
-            JUtility::TColor white2(80, 80, 80, field_0x14c[0].a);
-            JUtility::TColor black2(80, 80, 80, field_0x144[0].a);
-            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(black2, white2);
-            JUtility::TColor c3(150, 150, 150, field_0x164[0].field_0xc.a);
-            JUtility::TColor c2(150, 150, 150, field_0x164[0].field_0x8.a);
-            JUtility::TColor c1(150, 150, 150, field_0x164[0].field_0x4.a);
-            JUtility::TColor c0(150, 150, 150, field_0x164[0].field_0x0.a);
-            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setContentsColor(c0, c1, c2, c3);
+            static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(
+                JUtility::TColor(0, 0, 0, field_0x154[0].a),
+                JUtility::TColor(100, 100, 100, field_0x15c[0].a));
+            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(
+                JUtility::TColor(80, 80, 80, field_0x144[0].a),
+                JUtility::TColor(80, 80, 80, field_0x14c[0].a));
+            static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setContentsColor(
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x0.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x4.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0x8.a),
+                JUtility::TColor(150, 150, 150, field_0x164[0].field_0xc.a));
             mScreen->search(lbl_80490FE0[i])->setAlpha(200);
         }
-        mScreen->search(lbl_80491130[field_0x138])->mIsVisible = false;
-        mScreen->search(lbl_804911D8[field_0x138])->mIsVisible = false;
+        mScreen->search(lbl_80491130[field_0x138])->hide();
+        mScreen->search(lbl_804911D8[field_0x138])->hide();
         mScreen->search(lbl_80491168[field_0x138])->setAlpha(0);
         mScreen->search(lbl_804911A0[field_0x138])->setAlpha(0);
         if (field_0x6c[field_0x138] == NULL) {
-            J2DPane* pane = mScreen->search(lbl_804911D8[field_0x138]);
-            f32 h = pane->mBounds.f.y - pane->mBounds.i.y;
-            f32 y0 = mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.y;
-            f32 y1 = mScreen->search('Ndata06')->getBounds()->i.y;
-            JGeometry::TVec3f pos;
-            pos.y = 0.5f * h + (y1 + y0);
-            pos.z = 0.0f;
-            pane = mScreen->search(lbl_804911D8[field_0x138]);
-            f32 w = pane->mBounds.f.x - pane->mBounds.i.x;
-            f32 x0 = mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.x;
-            f32 x1 = mScreen->search('Ndata06')->getBounds()->i.x;
-            pos.x = 0.5f * w + (x1 + x0);
+            JGeometry::TVec3f pos(
+                mScreen->search('Ndata06')->getBounds()->i.x + mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.x + mScreen->search(lbl_804911D8[field_0x138])->getWidth() / 2.0f,
+                mScreen->search('Ndata06')->getBounds()->i.y + mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.y + mScreen->search(lbl_804911D8[field_0x138])->getHeight() / 2.0f,
+                0.0f);
             field_0x6c[field_0x138] = spawnEmitter_8013CC50(0, &pos, lbl_804913B0[field_0x138], 0, 0, NULL, NULL, true, 1.0f);
         }
         if (field_0x88[field_0x138] == NULL) {
-            J2DPane* pane = mScreen->search(lbl_804911D8[field_0x138]);
-            f32 h = pane->mBounds.f.y - pane->mBounds.i.y;
-            f32 y0 = mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.y;
-            f32 y1 = mScreen->search('Ndata06')->getBounds()->i.y;
-            JGeometry::TVec3f pos;
-            pos.y = 0.5f * h + (y1 + y0);
-            pos.z = 0.0f;
-            pane = mScreen->search(lbl_804911D8[field_0x138]);
-            f32 w = pane->mBounds.f.x - pane->mBounds.i.x;
-            f32 x0 = mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.x;
-            f32 x1 = mScreen->search('Ndata06')->getBounds()->i.x;
-            pos.x = 0.5f * w + (x1 + x0);
+            JGeometry::TVec3f pos(
+                mScreen->search('Ndata06')->getBounds()->i.x + mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.x + mScreen->search(lbl_804911D8[field_0x138])->getWidth() / 2.0f,
+                mScreen->search('Ndata06')->getBounds()->i.y + mScreen->search(lbl_804911D8[field_0x138])->getBounds()->i.y + mScreen->search(lbl_804911D8[field_0x138])->getHeight() / 2.0f,
+                0.0f);
             field_0x88[field_0x138] = spawnEmitter_8013CC50(0, &pos, lbl_804913C0[field_0x138], 0, 0, NULL, NULL, true, 1.0f);
         }
         field_0x6c[field_0x138]->setStatus(1);
@@ -1379,7 +1363,7 @@ void cls_804B1D58::fn_8044CB08(int arg) {
         field_0x88[field_0x138]->setStatus(1);
         field_0x88[field_0x138]->setStatus(2);
         field_0x88[field_0x138]->setStatus(4);
-        mScreen->search('Pcul01')->mIsVisible = false;
+        mScreen->search('Pcul01')->hide();
     }
 }
 
