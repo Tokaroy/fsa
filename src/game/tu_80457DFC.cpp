@@ -223,18 +223,19 @@ static const JASDsp::FxlineConfig_ lbl_80491600[4] = {
     {1, 0, 1, 0x6000, 0, 0x40, {0, 0, 0, 0, 0, 0, 0x3FFF, 0}},
 };
 
-// 0x8045A0E4
-// Not auto-inlined: fn_80459AE4 calls fn_8045A0E4 out of line in the original (docs/INLINING.md, pragma rule 1).
+// 0x8045A0E4 / 0x8045A0D8
+// Not auto-inlined: fn_80459AE4 calls fn_8045A0E4 and fn_80459674 calls
+// fn_8045A0D8 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 void fn_8045A0E4(int count) {
     JASPoolAllocObject<JAUDopplerAudible<4> >::newMemPool(count);
 }
-#pragma auto_inline reset
 
 // 0x8045A0D8
 u8 fn_8045A0D8() {
     return gGameRoot_8053AAF8->field_0x96;
 }
+#pragma auto_inline reset
 
 // 0x8045A080
 AudioMgr_8045A080::AudioMgr_8045A080() {
@@ -466,7 +467,7 @@ void AudioMgr_8045A080::fn_80459674() {
     if (field_0x75 != 0) {
         field_0x78++;
         if (field_0x78 > 0x2D) {
-            field_0x28->startLevelSound(0x30089);
+            field_0x28->startSound(0x30089);
         }
     } else {
         field_0x78 = 0;
