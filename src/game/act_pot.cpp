@@ -87,7 +87,8 @@ Pot_804A9428::~Pot_804A9428() {
     }
 }
 
-// FIXME: 99.68 % (missing/extra: duplicate null check in blz2 loop)
+// FIXME: 99.68 %, missing/extra; behaviour near.
+// (missing/extra: duplicate null check in blz2 loop)
 void Pot_804A9428::update() {
     field_0x254 = 0xFF;
     if (field_0xc4) {
@@ -201,6 +202,7 @@ void Pot_804A9428::draw() {
     }
 }
 
+// FIXME: 99.59 %, regalloc-only; behaviour drift.
 // FIXME: regalloc-only (r26/r27/r28 in loops and rupee type, f1/f2/f3 in heartPos)
 void Pot_804A9428::vfunc_0x24() {
     JGeometry::TVec3f tilePos;
