@@ -19,7 +19,7 @@ int fn_801EA8C0(const void* a, const void* b);
 static const u32 lbl_80469C78[4] = {'FIRE', 'BLZE', 'BMTY', 'NULL'};
 
 inline void cls_801E9B54::drawOutlines() {
-    for (s32 i = 0; i < field_0x60; i++) {
+    for (s32 i = 0, n = field_0x60; i < n; i++) {
         if (field_0x0[i].actor != NULL) {
             field_0x0[i].actor->fn_801E8080();
         }
@@ -27,12 +27,12 @@ inline void cls_801E9B54::drawOutlines() {
 }
 
 inline void cls_801E9B54::drawSprites() {
-    for (s32 i = 0; i < field_0x60; i++) {
+    for (s32 i = 0, n = field_0x60; i < n; i++) {
         if (field_0x0[i].actor != NULL) {
             field_0x0[i].actor->fn_801E801C();
         }
     }
-    for (s32 i = 0; i < field_0x74; i++) {
+    for (s32 i = 0, n = field_0x74; i < n; i++) {
         s32 serial = field_0x64[i];
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
