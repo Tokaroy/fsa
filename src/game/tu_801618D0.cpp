@@ -126,7 +126,7 @@ void cls_804A0440::init() {
 }
 
 // 0x80162628.
-// FIXME(shotgun): 95.12 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour drift.
 void cls_804A0440::update() {
     mLife = 10000;
     f32 x0 = -30.0f;
@@ -563,7 +563,7 @@ void cls_804A0440::update() {
 }
 
 // 0x80162208.
-// FIXME(shotgun): 96.91 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.28 %, regalloc-only; behaviour clean.
 void cls_804A0440::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
@@ -661,7 +661,7 @@ void cls_804A0440::vfunc_0x24() {
 }
 
 // 0x801618D0.
-// FIXME(shotgun): 99.96 %, operands; behaviour drift.
+// FIXME(shotgun): 99.96 %, same-text; behaviour near.
 // (the texture names sit after the extern colour table: +0x20 here, +0x60 in the original)
 void cls_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
     JUTTexture tex0(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_sirokuro.bti")), 0);
