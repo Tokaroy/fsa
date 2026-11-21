@@ -46,6 +46,7 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
     return false;
 }
 
+// FIXME: 97.85 %, missing/extra; behaviour near.
 // FIXME: The flags test loads 0x90 into r3 and reuses it; the original loads it into r0 for the test and reloads 0x90(r31) for ori/oris.
 void ExtendingLift_804A78B0::init() {
     if (!((field_0x90 >> 7) & 0x1F)) {
@@ -81,6 +82,7 @@ void ExtendingLift_804A78B0::init() {
     field_0x244 = 0;
 }
 
+// FIXME: 92.98 %, missing/extra; behaviour clean.
 // FIXME: missing/extra (2 extra instrs): stack frame is 16 bytes larger, mBox bounds in contains() are loaded lazily instead of upfront, and the field_0x230/0x234 divides are scheduled differently.
 void ExtendingLift_804A78B0::update() {
     if (vfunc_0x34()) {
@@ -160,7 +162,8 @@ void ExtendingLift_804A78B0::update() {
     }
 }
 
-// FIXME: 95.52%, scheduling+regalloc: instruction scheduling and register allocation in setRotScaleMtxS16 and sprite setup.
+// FIXME: 96.53 %, scheduling+regalloc; behaviour clean.
+// instruction scheduling and register allocation in setRotScaleMtxS16 and sprite setup.
 void ExtendingLift_804A78B0::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1d = -1;
