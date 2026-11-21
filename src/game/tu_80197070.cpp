@@ -31,13 +31,17 @@ u8 lbl_8053ABA8;
 // Tables of the ZLD2 actor, not written as source here (.rodata 0x80468428: two s32[6] sprite
 // frame tables, then the sprite bank names; .data 0x804A2880 / 0x804A28C4 / 0x804A28D8 /
 // 0x804A28FC: u16 angles, u8 colours and u16 emitter ids indexed by field_0x94).
-static const s32 lbl_80468428[12] = {0x1D0, 0x1E2, 0x1D6, 0x1DC, 0x1E8, 0x1EE, 0x17F, 0x1CD, 0x199, 0x1B3, 0x1E7, 0x201};
+static const s32 lbl_80468428[6] = {0x1D0, 0x1E2, 0x1D6, 0x1DC, 0x1E8, 0x1EE};
+static const s32 lbl_80468440[6] = {0x17F, 0x1CD, 0x199, 0x1B3, 0x1E7, 0x201};
 extern const s32 lbl_804A2700[];
 extern const u16 lbl_804A2880[];
 extern const s32 lbl_804A288C[];
 extern const s32 lbl_804A289C[];
 extern const s32 lbl_804A28B0[];
-extern const u8 lbl_804A28C4[];
+u8 lbl_804A28C4[6][3] = {
+    {0x4B, 0xFF, 0x2D}, {0xFF, 0x41, 0x37}, {0x2D, 0x78, 0xFF},
+    {0xDC, 0x1E, 0xDC}, {0xC8, 0xA0, 0x28}, {0x1E, 0xA0, 0xBE},
+};
 extern const u16 lbl_804A28D8[];
 extern const u16 lbl_804A28FC[];
 extern const s32 lbl_8053A0E8[2];
@@ -108,7 +112,6 @@ void fn_8019CD9C(s32 v) {
     gGameRoot_8053AAF8->fn_8013670C(v);
 }
 
-// FIXME(shotgun): 96.21 %, missing/extra; behaviour drift.
 void cls_804A2944::init() {
     lbl_8053ABA8 = 0;
     mBox.i.x = -8.0f;
@@ -128,15 +131,15 @@ void cls_804A2944::init() {
     mTimers[2] = 0;
     mTimers[3] = 0;
     for (int i = 0; i < 4; i++) {
-        field_0x2a4[i].set(0.0f, 0.0f, 0.0f);
-        field_0x2d4[i].set(0.0f, 0.0f, 0.0f);
+        field_0x2a4[i].zero();
+        field_0x2d4[i].zero();
     }
     field_0x25c = -1;
     field_0x264 = -1;
     field_0x27c = 0.0f;
     field_0x278 = 0.0f;
     field_0x274 = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x3c.zero();
     field_0x94 = (field_0x90 >> 4) & 0xF;
     field_0x90 &= 3;
     field_0x26c = 0.0f;
@@ -171,12 +174,11 @@ void cls_804A2944::init() {
                 static_cast<LifeMeter_804B174C*>(limit)->fn_8019CEF8(mSerial, -28.0f, field_0x258);
             }
         }
-        JGeometry::TVec3f origin(field_0x280[0].x, field_0x280[0].y, field_0x280[0].z);
         if (mEmitters[0] == NULL) {
-            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &origin, 0x1CA, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, static_cast<const JGeometry::TVec3f*>(&field_0x280[0]), 0x1CA, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitters[1] == NULL) {
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &origin, 0x1CB, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, static_cast<const JGeometry::TVec3f*>(&field_0x280[0]), 0x1CB, 0, 0, NULL, NULL, true, 1.0f);
         }
         mPos.y += 148.0f;
         mPos.x = field_0x280[0].x;
@@ -200,19 +202,17 @@ void cls_804A2944::init() {
         field_0x270 = 255.0f;
         if (mEmitters[0] == NULL) {
             mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 4, NULL, NULL, true, 1.0f);
-            const u8* color = &lbl_804A28C4[field_0x94 * 3];
-            mEmitters[0]->setGlobalEnvColor(color[0], color[1], color[2]);
+            mEmitters[0]->setGlobalEnvColor(lbl_804A28C4[field_0x94][0], lbl_804A28C4[field_0x94][1],
+                                            lbl_804A28C4[field_0x94][2]);
         }
         if (mEmitters[1] == NULL) {
             mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 4, NULL, NULL, true, 1.0f);
-            const u8* color = &lbl_804A28C4[field_0x94 * 3];
-            mEmitters[1]->setGlobalEnvColor(color[0], color[1], color[2]);
+            mEmitters[1]->setGlobalEnvColor(lbl_804A28C4[field_0x94][0], lbl_804A28C4[field_0x94][1],
+                                            lbl_804A28C4[field_0x94][2]);
         }
         mState = 0x4A;
         break;
     case 3:
-        break;
-    default:
         field_0x26c = mPos.z;
         mTimers[0] = 9;
         mState = 0x4F;
@@ -1769,7 +1769,7 @@ static inline void takeToken(cls_804A2944* self, ActorBase_804A5770* actor) {
     deleteEmitter(&self->mEmitters[1]);
 }
 
-// FIXME(shotgun): 92.19 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 95.65 %, missing/extra + reloc-name; behaviour near.
 void cls_804A2944::fn_80197EB0() {
     switch (mState) {
     case 0x46:
@@ -1805,13 +1805,14 @@ void cls_804A2944::fn_80197EB0() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
             field_0x248 = (s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f) + 0x8000;
             field_0x24c = (s32)std::sqrtf(distSq);
             for (int i = 0; i < 13; i++) {
-                if (mEmitters[i] != NULL) {
-                    mEmitters[i]->mGlobalPScl.x = 1.5f;
-                    mEmitters[i]->mGlobalPScl.y = 1.5f;
+                JPABaseEmitter* emitter = mEmitters[i];
+                if (emitter != NULL) {
+                    emitter->mGlobalPScl.x = 1.5f;
+                    emitter->mGlobalPScl.y = 1.5f;
                 }
             }
             mBox.i.x = -10.0f;
@@ -1828,9 +1829,10 @@ void cls_804A2944::fn_80197EB0() {
         if (actor == NULL || field_0x250 == 0) {
             break;
         }
-        dx = actor->mPos.x - mPos.x;
         dy = actor->mPos.y - mPos.y;
-        if (field_0x250 >= 1 && std::sqrtf(dx * dx + dy * dy) <= 80.0f) {
+        dx = actor->mPos.x - mPos.x;
+        f32 dist = std::sqrtf(dx * dx + dy * dy);
+        if (field_0x250 >= 1 && dist <= 80.0f) {
             takeToken(this, actor);
         } else {
             field_0x258 = 0;
@@ -1870,9 +1872,10 @@ void cls_804A2944::fn_80197EB0() {
             if (actor == NULL || field_0x250 == 0) {
                 break;
             }
-            f32 dx = actor->mPos.x - mPos.x;
             f32 dy = actor->mPos.y - mPos.y;
-            if (field_0x250 >= 1 && std::sqrtf(dx * dx + dy * dy) <= 80.0f) {
+            f32 dx = actor->mPos.x - mPos.x;
+            f32 dist = std::sqrtf(dx * dx + dy * dy);
+            if (field_0x250 >= 1 && dist <= 80.0f) {
                 takeToken(this, actor);
             } else {
                 field_0x258 = 0;
@@ -1901,7 +1904,7 @@ void cls_804A2944::fn_80197EB0() {
     }
 }
 
-// FIXME(shotgun): 94.26 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.74 %, scheduling+regalloc; behaviour clean.
 void cls_804A2944::fn_801979C4() {
     for (int i = 0; i < 13; i++) {
         setEmitterPos_8013CB44(mEmitters[i], &mPos, 0, 4, true);
@@ -1923,10 +1926,10 @@ void cls_804A2944::fn_801979C4() {
         break;
     case 0x4C: {
         s16 angle = lbl_804A2880[field_0x94];
-        f32 tx = field_0x280[0].x + 112.0f * JMath::sincosTable_.sinShort(angle);
-        f32 ty = field_0x280[0].y + 112.0f * JMath::sincosTable_.cosShort(angle);
-        f32 dx = tx - mPos.x;
-        f32 dy = ty - (mPos.y - mPos.z);
+        f32 dx = field_0x280[0].x + 112.0f * JMath::sincosTable_.sinShort(angle);
+        f32 dy = field_0x280[0].y + 112.0f * JMath::sincosTable_.cosShort(angle);
+        dx -= mPos.x;
+        dy -= mPos.y - mPos.z;
         field_0x274 = 2.0f * JMath::sincosTable_.sinShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         field_0x278 = 2.0f * JMath::sincosTable_.cosShort((s16)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f));
         if (std::sqrtf(dx * dx + dy * dy) < 2.0f) {
@@ -1935,16 +1938,16 @@ void cls_804A2944::fn_801979C4() {
             field_0x27c = 0.0f;
             field_0x278 = 0.0f;
             field_0x274 = 0.0f;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
         }
         break;
     }
     case 0x4D:
         if (lbl_8053ABA4 == 1) {
-            const u16* ids = &lbl_804A28D8[field_0x94 * 3];
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[0], 0, 5, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[1], 0, 5, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, ids[2], 0, 5, NULL, NULL, true, 1.0f);
+            s32 idx = field_0x94 * 3;
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx], 0, 5, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx + 1], 0, 5, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A28D8[idx + 2], 0, 5, NULL, NULL, true, 1.0f);
             field_0x248 = 0;
             mState = 0x4E;
         }
@@ -2085,19 +2088,18 @@ void cls_804A2944::update() {
     }
 }
 
-// FIXME(shotgun): 86.18 %, different; behaviour near.
-// The original addresses the frame tables and sprite bank names off one .rodata base (r31); here the names are plain literals and the tables extern.
+// FIXME: 99.86 %, same-text; behaviour clean.
 void cls_804A2944::draw() {
     switch (field_0x90) {
     case 0: {
         SpriteParams_801F5AE0 params;
+        s32 frame = 0x9B;
+        s32 flags = 7;
         if (mTimers[2] == 0 || (mTimers[2] & 2)) {
             params.field_0x1f = 0;
-            s32 frame = 0x9B;
             if (field_0x268 == 1) {
                 frame = 0x274;
             }
-            s32 flags = 7;
             if (mState == 0x15) {
                 flags = -1;
             }
@@ -2113,22 +2115,22 @@ void cls_804A2944::draw() {
             fn_801F02BC("enemy_both2_sob.bin", field_0x254 + lbl_80468428[field_0x94], &params, -1, 0, false,
                         1.0f, 1.0f);
             params.field_0x10.a = (u8)field_0x270;
+            s32 frame = field_0x254 + lbl_80468428[field_0x94];
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin",
-                            field_0x254 + lbl_80468428[field_0x94], NULL);
+                fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
             }
         }
         break;
     case 3: {
         SpriteParams_801F5AE0 params;
-        params.field_0x1d = 5;
         params.field_0x1f = 0;
-        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x254 + lbl_80468428[6 + field_0x94], &params, -1,
+        params.field_0x1d = 5;
+        drawSprite_801F06F0("enemy_gc_sob.bin", field_0x254 + lbl_80468440[field_0x94], &params, -1,
                             1.0f, 1.0f);
         params.field_0x10.a = (u8)field_0x270;
+        s32 frame = field_0x254 + lbl_80468440[field_0x94];
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin",
-                        field_0x254 + lbl_80468428[6 + field_0x94], NULL);
+            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
         break;
     }
