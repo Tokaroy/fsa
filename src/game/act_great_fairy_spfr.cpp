@@ -104,7 +104,7 @@ void cls_8049EB8C::init() {
     }
 }
 
-// FIXME: 98.11 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 98.52 %, scheduling+regalloc; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void cls_8049EB8C::update() {
     cls_8049D140::update();
@@ -289,6 +289,7 @@ s32 cls_8049EB8C::vfunc_0x5C() {
 }
 
 // operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
+// FIXME: 99.94 %, operands; behaviour drift.
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
