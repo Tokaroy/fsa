@@ -165,16 +165,21 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
     field_0x194 = 1;
 }
 
-// FIXME: 96.05 %, different; behaviour near.
-// Stack frame size (0x80 vs 0x70) and float temporary layout in inlined launch(), plus switch dispatch ordering in updateAnim().
+// Scheduling of lwz r5/r6 vs psq_l/lfs around fn_8038C678 by-value TVec3f copy.
 void NPCLaunchedByThwomp2_804AD1C8::update() {
     JGeometry::TBox2f box = mBox;
     box.i.x -= 2.0f;
     box.f.x += 2.0f;
     if (field_0x254 == 1 && (field_0x230 == 0 || field_0x230 == 4 || field_0x230 == 1)) {
-        box.addPos(field_0x26c.x, field_0x26c.y);
+        box.i.x += field_0x26c.x;
+        box.i.y += field_0x26c.y;
+        box.f.x += field_0x26c.x;
+        box.f.y += field_0x26c.y;
     } else {
-        box.addPos(mPos.x, mPos.y);
+        box.i.x += mPos.x;
+        box.i.y += mPos.y;
+        box.f.x += mPos.x;
+        box.f.y += mPos.y;
     }
 
     if (field_0x230 != 2) {
@@ -187,6 +192,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
             launch();
+            field_0x230 = 3;
             break;
         }
         fn_8022FEB8(&box, field_0x4, mSerial, 1, 0);
@@ -259,11 +265,12 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
         if (field_0x268 == 0 && fn_8023A30C()) {
             launch();
             field_0x240 = 0;
+            field_0x230 = 3;
             field_0x238 = 0;
             field_0x234 = lbl_80472390[field_0x250].animDelays1[0];
         } else if (field_0x240 <= 0 || (mPos.x == mSpawnPos.x && mPos.y == mSpawnPos.y)) {
             mPos = mSpawnPos;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            field_0x3c.zero();
             field_0x230 = 0;
             field_0x238 = 0;
             field_0x234 = lbl_80472390[field_0x250].animDelays0[0];
@@ -301,7 +308,6 @@ void NPCLaunchedByThwomp2_804AD1C8::launch() {
         4.0f
     );
     field_0x260 = 0.2f;
-    field_0x230 = 3;
 }
 
 void NPCLaunchedByThwomp2_804AD1C8::draw() {
@@ -405,6 +411,11 @@ inline void NPCLaunchedByThwomp2_804AD1C8::updateAnim() {
         case 0:
         case 1:
         case 2:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
             if (field_0x230 == 0 || field_0x230 == 1 || field_0x230 == 3 || field_0x230 == 4) {
                 field_0x238 &= 1;
                 field_0x234 = lbl_80472390[field_0x250].animDelays0[field_0x238];
