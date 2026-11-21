@@ -17,16 +17,15 @@ extern s32 lbl_804C6330[4];
 extern const u32 lbl_804662E8[5];
 extern const u32 lbl_804662FC[4];
 
-// The unit's .data table at 0x804A0530.
-struct ArrowTables_804A0530 {
-    f32 emitterOffset[4][2]; // by direction: where the flame emitter sits relative to mPos
-    s32 turn[4];             // next direction when the arrow spins after a hit
-    s32 frame[4][8];         // sprite frame by direction and spin step
+// The unit's .data tables at 0x804A0530.
+static f32 lbl_804A0530[4][2] = {{12.0f, 0.0f}, {-12.0f, 0.0f}, {0.5f, 12.0f}, {0.5f, -12.0f}};
+static s32 lbl_804A0550[4] = {0, 2, 1, 3};
+static s32 lbl_804A0560[32] = {
+    8, 9, 8, 9, 4, 8, 4, 0,
+    10, 11, 10, 11, 5, 11, 5, 0,
+    12, 13, 12, 13, 6, 12, 6, 0,
+    14, 15, 14, 15, 7, 14, 7, 0,
 };
-ArrowTables_804A0530 lbl_804A0530 = {
-    {{12.0f, 0.0f}, {-12.0f, 0.0f}, {0.5f, 12.0f}, {0.5f, -12.0f}},
-    {0, 2, 1, 3},
-    {{8, 9, 8, 9, 4, 8, 4, 0}, {10, 11, 10, 11, 5, 11, 5, 0}, {12, 13, 12, 13, 6, 12, 6, 0}, {14, 15, 14, 15, 7, 14, 7, 0}}};
 
 // Frees an emitter the arrow owns (the status/frame stores of the original are in
 // the shared JPA emitter code): FIXME(shotgun) stores 1 into the emitter word 0x24 as well.
@@ -218,7 +217,7 @@ ArrowPlayer_804A05E0::~ArrowPlayer_804A05E0() {
 }
 
 // 0x80165730. States: 0 flying, 1 spinning away after a hit, 2/3 burning up, 4 caught by a flame.
-// FIXME(shotgun): 92.10 %, missing/extra + reloc-name; behaviour near.
+// FIXME(shotgun): 99.25 %, different + reloc-name; behaviour clean.
 void ArrowPlayer_804A05E0::update() {
     if (field_0x94 == 3) {
         JGeometry::TBox2f box;
@@ -268,17 +267,18 @@ void ArrowPlayer_804A05E0::update() {
             p.x = mPos.x;
             p.y = mPos.y;
             p.z = mPos.z;
-            p.x += lbl_804A0530.emitterOffset[field_0x98][0];
-            p.y += lbl_804A0530.emitterOffset[field_0x98][1];
+            p.x += lbl_804A0530[field_0x98][0];
+            p.y += lbl_804A0530[field_0x98][1];
             setEmitterPos_8013CB44(mEmitters[0], &p, 0, 2, true);
+            s32 dir = field_0x98;
             s32 rz = 0;
-            if (field_0x98 == 2) {
-                rz = lbl_804662FC[field_0x98];
+            if (dir == 2) {
+                rz = lbl_804662FC[dir];
             }
             JGeometry::TVec3<s16> rot;
             rot.x = -1;
             rot.y = (s16)rz;
-            rot.z = (s16)lbl_804662FC[field_0x98];
+            rot.z = (s16)lbl_804662FC[dir];
             mEmitters[0]->setGlobalRotation(rot);
         }
         setEmitterPos_8013CB44(mEmitters[1], &mPos, 0, 1, true);
@@ -413,11 +413,13 @@ void ArrowPlayer_804A05E0::update() {
         break;
     case 1:
         if (!(field_0x248 & 1)) {
-            field_0x258 = (field_0x258 + 1) & 3;
-            field_0x98 = lbl_804A0530.turn[field_0x258];
+            field_0x258++;
+            field_0x258 &= 3;
+            field_0x98 = lbl_804A0550[field_0x258];
         }
-        freeEmitter(&mEmitters[0]);
-        freeEmitter(&mEmitters[1]);
+        for (s32 i = 0; i < 2; i++) {
+            freeEmitter(&mEmitters[i]);
+        }
         addCalc2_801F71A4(&field_0x234, 0.0f, 0.5f, 10.0f);
         field_0x3c.z -= 0.3f;
         if (mPos.z < 0.0f) {
@@ -447,8 +449,9 @@ void ArrowPlayer_804A05E0::update() {
         break;
     case 4:
         if (field_0x244 == 0) {
-            freeEmitter(&mEmitters[0]);
-            freeEmitter(&mEmitters[1]);
+            for (s32 i = 0; i < 2; i++) {
+                freeEmitter(&mEmitters[i]);
+            }
             mAlive = false;
         }
         break;
@@ -483,18 +486,19 @@ void ArrowPlayer_804A05E0::update() {
                 }
             }
         } else {
-            field_0x268 = lbl_804A0530.frame[field_0x98][field_0x258];
+            field_0x268 = lbl_804A0560[field_0x98 * 8 + field_0x258];
         }
     }
 }
 
 // 0x8016545C.
-// FIXME(shotgun): 99.39 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.94 %, reloc-name; behaviour clean.
 void ArrowPlayer_804A05E0::draw() {
     if (field_0x94 != 3) {
         if (field_0x24c >= 50 || (field_0x24c & 2) == 0) {
             SpriteParams_801F5AE0 params;
             params.field_0x10.a = (u8)(s32)field_0x234;
+            params.field_0x1d = 1;
             if (fn_8022B160() == true) {
                 switch (field_0x90) {
                 case 0:
