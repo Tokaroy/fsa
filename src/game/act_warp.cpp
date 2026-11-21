@@ -113,13 +113,13 @@ void Warp_804A6DC8::init() {
         getActorManager_801F856C()->spawnActor_801F9484('WARP', warpLayer(field_0x90), &field_0x238, param, -1, -1);
         field_0x90 = (field_0x90 & ~0xFF) | 0x18;
     }
-    kind = field_0x90 & 0x7F;
-    if (((field_0x90 >> 7) & 1) == 0 && kind != 0x20) {
+    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0x20) {
         field_0x238.x += 8.0f;
         field_0x238.y += 8.0f;
     }
-    kind = field_0x90 & 0x7F;
-    if (((field_0x90 >> 7) & 1) == 0 && kind != 0xB && kind != 0x1E && kind != 0x1F && kind != 0x20) {
+    if (((field_0x90 >> 7) & 1) == 0 && warpKind(field_0x90) != 0xB && warpKind(field_0x90) != 0x1E &&
+        warpKind(field_0x90) != 0x1F && warpKind(field_0x90) != 0x20)
+    {
         mPos.x += (f32)(s32)(8.0f - (f32)((s32)mPos.x % 8));
         mPos.y += (f32)(s32)(8.0f - (f32)((s32)mPos.y % 8));
     }
@@ -171,8 +171,7 @@ void Warp_804A6DC8::init() {
     } else {
         mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
     }
-    kind = field_0x90 & 0x7F;
-    if (kind == 0x28) {
+    if (warpKind(field_0x90) == 0x28) {
         field_0x90 = (field_0x90 & ~0x7F) | 4;
     }
     mLife = 0;
