@@ -284,21 +284,18 @@ bool TreasureChest_804AA178::vfunc_0x54() {
     return result;
 }
 
-// FIXME: 97.11 %, missing/extra; behaviour clean.
 bool TreasureChest_804AA178::fn_802EB27C() {
-    // FIXME: 97.11 %. The original copies findActorBySerial_801F666C's result through r0
-    // (mr r0, r3; mr. r30, r0) where ours tests it directly (mr. r30, r3).
     s32 serial;
     bool result = false;
     for (s32 i = 0; i < 4; i++) {
         serial = field_0x24c[i];
-        if (serial < 0) {
-            continue;
-        }
-        LiftableItem_804A01D0* item = static_cast<LiftableItem_804A01D0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
-        if (item != NULL && item->fn_801597B8() == 3) {
-            item->fn_801597C0();
-            result = true;
+        if (serial >= 0) {
+            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+            LiftableItem_804A01D0* item = static_cast<LiftableItem_804A01D0*>(actor);
+            if (item != NULL && item->fn_801597B8() == 3) {
+                item->fn_801597C0();
+                result = true;
+            }
         }
     }
     return result;
