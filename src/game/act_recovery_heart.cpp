@@ -5,7 +5,8 @@
 #include "game/ViewLayer.h"
 #include "game/act/act_recovery_heart.h"
 
-// FIXME: 98.31 %. The original stores 0 to field_0x230 with a fresh li r0, 0 in the
+// FIXME: 98.31 %, missing/extra; behaviour clean.
+// The original stores 0 to field_0x230 with a fresh li r0, 0 in the
 // branch; here the zero already in r5 (for field_0x238) is reused. The literals are not
 // yet in the original .sdata2 order.
 void RecoveryHeart_8049F4F0::init() {
@@ -38,6 +39,7 @@ void RecoveryHeart_8049F4F0::vfunc_0x40() {
     field_0x230 = 4;
 }
 
+// FIXME: 99.89 %, operands; behaviour clean.
 // FIXME: stack slots of probe (0x24 vs 0x34) and box (0x30 vs 0x24) are swapped.
 void RecoveryHeart_8049F4F0::update() {
     JGeometry::TVec2f basePos(mPos.x, mPos.y);
