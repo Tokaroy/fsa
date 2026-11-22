@@ -842,7 +842,7 @@ void MovingHouse_804A7AE0::fn_80298C18() {
 }
 
 // FIXME(shotgun): 94.23 %, missing/extra; behaviour near.
-// still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
+// still differs: order of the pos.x/pos.y stores against the mSpawnParam_0x90 load
 void MovingHouse_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
         Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
@@ -850,7 +850,7 @@ void MovingHouse_804A7AE0::fn_80298978() {
         if (warp == NULL) {
             continue;
         }
-        if (!field_0x250.isZero()) {
+        if (field_0x250.isZero() == false) {
             blocked = 1;
         } else {
             for (s32 k = 0; k < 4; k++) {
