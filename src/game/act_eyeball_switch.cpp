@@ -68,7 +68,7 @@ void EyeballSwitch_804AE678::init() {
 // them) and params/table/params >> 27 in r27/r26/r25 (we have r25/r27/r26).
 void EyeballSwitch_804AE678::vfunc_0x10() {
     s32 i;
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (i = 0; i < end; i++) {
         ActorBase_804A5770* monitor = getActorManager_801F856C()->mActors[i];
         if (monitor != NULL && (monitor->mActorId == ACTOR_SWT4 || monitor->mActorId == ACTOR_LOSW) &&

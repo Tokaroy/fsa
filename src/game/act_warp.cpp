@@ -612,7 +612,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
 s32 Warp_804A6DC8::fn_80227290(f32 maxDz, const u32* ids, s32 excludeSerial) {
     s32 found = -1;
     u8 anyZ = viewLayerFlag(field_0x4);
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
         if (other == NULL || !other->mAlive || other->field_0x4 != field_0x4 || excludeSerial == other->mSerial) {

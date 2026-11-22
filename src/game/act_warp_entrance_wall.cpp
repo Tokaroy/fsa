@@ -112,13 +112,10 @@ void WarpEntranceWall_804AE948::update() {
     }
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
-// Only a register swap: the target keeps the loop offset in
-// r30 and the end in r31 (ours the other way round).
 bool WarpEntranceWall_804AE948::fn_803798D0() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         if (i != mSerial && overlapsHouseOrLog(i, box)) {
             return true;

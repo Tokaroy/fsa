@@ -298,7 +298,7 @@ void FlyingTile_804AC100::update() {
             field_0x248 = field_0x244;
             if (field_0x278 == 0) {
                 s32 first = 0xFFF;
-                s32 end = getActorManager_801F856C()->mActorEnd;
+                s32 end = getActorManager_801F856C()->getActorEnd();
                 for (s32 i = 0; i < end; i++) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                     if (actor != NULL && actor->mActorId == ACTOR_FLYO) {

@@ -554,7 +554,7 @@ void cls_804A8638::update() {
         switch (field_0x240) {
         case 0xB: {
             bool found = false;
-            s32 end = getActorManager_801F856C()->mActorEnd;
+            s32 end = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'BPH2') {

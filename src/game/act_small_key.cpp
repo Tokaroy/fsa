@@ -285,7 +285,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 6: {
         field_0x294 = 0;
-        s32 count = getActorManager_801F856C()->mActorEnd;
+        s32 count = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < count; i++) {
             field_0x244 = getActorManager_801F856C()->mActors[i];
             if (field_0x244 != NULL && mSerial != field_0x244->mSerial &&
@@ -935,7 +935,6 @@ void SmallKey_804A8CD8::fn_802C2B64() {
 }
 
 // 0x802C2840.
-// FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2840() {
     if (viewLayerFlag(field_0x4) != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
         field_0x298 = -1;
@@ -992,7 +991,7 @@ void SmallKey_804A8CD8::fn_802C2840() {
         }
     }
     field_0x298 = -1;
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         if (i != mSerial) {
             ActorBase_804A5770* other = getActorManager_801F856C()->getActor(i);

@@ -95,7 +95,7 @@ void BGMChangeNPC_804A9DA0::update() {
             if (field_0x25c >= 0 && fn_80230188(field_0x25c)) {
                 field_0x258 = field_0x24c;
             } else {
-                s32 end = getActorManager_801F856C()->mActorEnd;
+                s32 end = getActorManager_801F856C()->getActorEnd();
                 for (s32 i = 0; i < end; i++) {
                     ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
                     if (other != NULL && other->mActorId == ACTOR_BGMN &&
@@ -131,7 +131,7 @@ void BGMChangeNPC_804A9DA0::update() {
         }
     } else if (field_0x254 != field_0x4) {
         s32 free = 1;
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
             if (other != NULL && i != mSerial && other->mActorId == ACTOR_BGMN &&
@@ -151,7 +151,7 @@ void BGMChangeNPC_804A9DA0::update() {
             field_0x258 = field_0x24c;
         } else {
             JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x25c);
-            s32 end = getActorManager_801F856C()->mActorEnd;
+            s32 end = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
                 if (other != NULL && other->mActorId == ACTOR_BGMN && field_0x254 == other->field_0x4) {

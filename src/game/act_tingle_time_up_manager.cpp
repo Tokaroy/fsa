@@ -126,7 +126,7 @@ void TingleTimeUpManager_804ACBF0::update() {
         if (mTimer <= 0) {
             mTimer = 150;
             mState = 5;
-            s32 count = getActorManager_801F856C()->mActorEnd;
+            s32 count = getActorManager_801F856C()->getActorEnd();
             for (s32 i = 0; i < count; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL) {

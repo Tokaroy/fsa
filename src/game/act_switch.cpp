@@ -83,7 +83,7 @@ void Switch_804A7F38::vfunc_0x10() {
                 }
                 s32 switchBit = field_0x264;
                 if (switchBit < 0) {
-                    s32 end = getActorManager_801F856C()->mActorEnd;
+                    s32 end = getActorManager_801F856C()->getActorEnd();
                     for (int i = 0; i < end; i++) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                         if (!actor) continue;
@@ -213,7 +213,7 @@ void Switch_804A7F38::update() {
                 if (getGameView_802D6A9C()->fn_802D800C(switchBit) == false) {
                     if (gGameRoot_8053AAF8->field_0x7e == 1) {
                         bool found = false;
-                        s32 end = getActorManager_801F856C()->mActorEnd;
+                        s32 end = getActorManager_801F856C()->getActorEnd();
                         for (int i = 0; i < end; i++) {
                             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                             if (actor && actor->mActorId == 'SWTH' && actor->mSerial != mSerial) {

@@ -83,7 +83,7 @@ AllEnemiesDefeated_804A2AB0::~AllEnemiesDefeated_804A2AB0() {
 // FIXME: 97.80 %, regalloc-only. The original keeps count in r31, the i*4 offset in r29 and
 // the actor in r30; ours uses r24, r31 and r22 and shifts the array-base registers to match.
 void AllEnemiesDefeated_804A2AB0::fn_8019DC5C() {
-    s32 count = getActorManager_801F856C()->mActorEnd;
+    s32 count = getActorManager_801F856C()->getActorEnd();
 
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];

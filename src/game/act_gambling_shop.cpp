@@ -63,11 +63,10 @@ void GamblingShop_804AAA70::init() {
     field_0x244 = 0;
 }
 
-// FIXME: 99.51 %, regalloc-only; behaviour clean.
 void GamblingShop_804AAA70::vfunc_0x10() {
     // FIXME: 99.51 %. Regalloc only: the original keeps the chest-slot pointer
     // (this, stored with 0x250(rN)) in r28 and the loop's byte offset in r29.
-    s32 actorEnd = getActorManager_801F856C()->mActorEnd;
+    s32 actorEnd = getActorManager_801F856C()->getActorEnd();
     s32 count = 0;
     for (s32 i = 0; i < actorEnd; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];

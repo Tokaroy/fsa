@@ -38,10 +38,8 @@ void KnightOfHyrule_804AABA8::init() {
     field_0x282 = 0xFF;
 }
 
-// FIXME: 99.73 %, regalloc-only; behaviour clean.
-// (regalloc-only: r29/r30 swap for mActorEnd and the mActors[i] byte offset).
 void KnightOfHyrule_804AABA8::vfunc_0x10() {
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_GNEF) {

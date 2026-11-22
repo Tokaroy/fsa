@@ -48,7 +48,7 @@ void LeafEffectNPCGenerator_804AE288::draw() {}
 // FIXME: 98%. Regalloc only: the original keeps the end in r31, the index in
 // r28, the byte offset in r29 and the actor in r30 (ours r30, r29, r31, r28).
 void LeafEffectNPCGenerator_804AE288::fn_8036D858(JGeometry::TVec3f pos) {
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_LEAF && actor->mAlive == 1 &&

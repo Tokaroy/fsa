@@ -301,6 +301,10 @@ public:
     // mActorEnd down past trailing empty slots.
     void deleteSlot(s32 slot);
     ActorBase_804A5770* getActor(s32 slot) { return mActors[slot]; }
+    // Every game-code loop over the actor list reads its bound through this
+    // (docs/analysis/INLINE_LEADS.md, round 2): the inlined call changes the
+    // loops' registers against reading mActorEnd off getActorManager_801F856C().
+    s32 getActorEnd() { return mActorEnd; }
 
     /* 0x0000 vtable (0x804A5800) */
     /* 0x0004 */ JKRHeap* mHeap; // JKRUnitHeap::create(...) in the

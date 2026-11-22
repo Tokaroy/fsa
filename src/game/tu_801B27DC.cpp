@@ -110,7 +110,7 @@ void cls_804A3698::update() {
     if (field_0x308 == 0 || field_0x2f8 == 7) {
         if (field_0x2f8 == 2 || field_0x2f8 == 6 || field_0x2f8 == 7) {
             if (field_0x314 == 0) {
-                s32 count = getActorManager_801F856C()->mActorEnd;
+                s32 count = getActorManager_801F856C()->getActorEnd();
                 field_0x32c = 0;
                 for (s32 i = 0; i < count; i++) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];

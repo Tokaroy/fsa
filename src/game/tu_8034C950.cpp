@@ -75,7 +75,7 @@ void cls_804AC950::vfunc_0x10() {
         f32 y0 = field_0x80.i.y + mPos.y;
         f32 x1 = field_0x80.f.x + mPos.x;
         f32 y1 = field_0x80.f.y + mPos.y;
-        s32 count = getActorManager_801F856C()->mActorEnd;
+        s32 count = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < count; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor == NULL || mSerial == actor->mSerial || actor->mAlive != 1 || field_0x4 != actor->field_0x4) {

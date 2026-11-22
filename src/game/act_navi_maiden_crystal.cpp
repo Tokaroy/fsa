@@ -12,9 +12,8 @@
 
 using JGeometry::TVec3f;
 
-// FIXME: 99.64 %, regalloc-only: loop registers rotated (target r30/r31 vs ours r31/r30).
 void Navi54MaidenCrystalCutscene_804ADFE8::init() {
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_DCR2) {

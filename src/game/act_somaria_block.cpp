@@ -61,7 +61,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
     JGeometry::TBox2f box = mBox;
     box.addPos(mPos.x, mPos.y);
     if (mState <= 6 && field_0xc4 == 0 && mPos.z <= 0.0f) {
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor == NULL || !actor->mAlive || actor->field_0x4 != field_0x4 ||

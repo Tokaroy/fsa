@@ -78,7 +78,7 @@ void cls_804AA350::init() {
 
 // FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
 void cls_804AA350::vfunc_0x10() {
-    s32 count = getActorManager_801F856C()->mActorEnd;
+    s32 count = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_WARP && field_0x25c == actor->getScreenFlagBit_0x3C()) {

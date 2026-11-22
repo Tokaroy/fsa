@@ -619,8 +619,6 @@ void GameView_804A9950::vfunc_0x10() {
 
 void GameView_804A9950::vfunc_0x14() {}
 
-// FIXME: 99.68 %, regalloc-only; behaviour clean.
-// FIXME: regalloc only: end and the loop offset i*4 are swapped (r24/r25).
 u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     s32 col = field_0x14;
     s32 row = field_0x18;
@@ -628,7 +626,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
     u32 exits = 0xF;
     field_0xc9 = 0;
     if (fn_802DCD0C() == 0) {
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == 'SDSM') {
@@ -950,9 +948,6 @@ void GameView_804A9950::fn_802DA788() {
     }
 }
 
-// FIXME: 98.95 %, regalloc-only; behaviour clean.
-// FIXME: regalloc-only; target assigns i, i * 4, end to r28, r29, r30 (ours: r29, r30, r28).
-// Also reloc-name: -70.0f / 70.0f are pooled after literals of functions not written yet.
 u8 GameView_804A9950::fn_802DA630() {
     u8 busy = fn_802DA000();
     if (busy == 0) {
@@ -969,7 +964,7 @@ u8 GameView_804A9950::fn_802DA630() {
             pos.x += dx;
             fn_80230498(i, &pos, fn_8023CBC0(i), 0xFF, -0x80, -0x80, true);
         }
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         for (i = 0; i < end; i++) {
             cls_804AB528* actor = (cls_804AB528*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_OSIN && actor->field_0x230 == 2) {

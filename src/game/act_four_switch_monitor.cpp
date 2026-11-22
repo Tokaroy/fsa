@@ -135,7 +135,7 @@ void FourSwitchMonitor_804A80A0::update() {
         break;
     case 2:
         if (fn_8023077C()) {
-            s32 end = getActorManager_801F856C()->mActorEnd;
+            s32 end = getActorManager_801F856C()->getActorEnd();
             for (int i = 0; i < 4; i++) {
                 for (s32 j = 0; j < end; j++) {
                     ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[j];

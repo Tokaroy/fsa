@@ -68,7 +68,7 @@ static inline void beginShow(cls_804A7EB0* self, s32 d0, s32 d1, s32 d2) {
         self->mEmitters[4][i] = spawnEmitter_8013CC50(self->field_0x4, &pos, lbl_8046C6C8.showId[self->field_0x254[i]][2], 1, d2, NULL, NULL, true, 1.0f);
         fn_8023EE28(i);
     }
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && (actor->mActorId == 'BOME' || actor->mActorId == 'SMRI')) {

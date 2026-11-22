@@ -93,7 +93,7 @@ void OnOffSwitch_804A8FC8::init() {
 // the byte offset of the array index in r30; we have them the other way round
 // (declaring the count in the for-init made it worse).
 void OnOffSwitch_804A8FC8::vfunc_0x10() {
-    s32 end = getActorManager_801F856C()->mActorEnd;
+    s32 end = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && (actor->mActorId == ACTOR_SWT4 || actor->mActorId == ACTOR_LOSW) &&

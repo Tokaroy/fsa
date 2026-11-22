@@ -339,7 +339,7 @@ void cls_804A18E0::update() {
                 field_0x230 = 8;
                 return;
             }
-            s32 end = getActorManager_801F856C()->mActorEnd;
+            s32 end = getActorManager_801F856C()->getActorEnd();
             s32 found = 0;
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* act = getActorManager_801F856C()->mActors[i];

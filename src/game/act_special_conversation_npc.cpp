@@ -180,7 +180,7 @@ void SpecialConversationNPC_804AAFB8::init() {
 // FIXME: 97.79%. scheduling+regalloc: same instructions modulo registers, different order.
 void SpecialConversationNPC_804AAFB8::vfunc_0x10() {
     if (field_0x238 == 0) {
-        s32 end = getActorManager_801F856C()->mActorEnd;
+        s32 end = getActorManager_801F856C()->getActorEnd();
         for (int i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL) {
