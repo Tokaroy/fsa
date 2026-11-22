@@ -3000,7 +3000,7 @@ void cls_804AF6E4::do_character(int c) {
     }
 }
 
-// FIXME: 99.76 %, missing/extra; behaviour near.
+// FIXME: 99.91 %, scheduling+regalloc; behaviour clean.
 bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     switch (tag) {
@@ -3359,7 +3359,7 @@ void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
 
 cls_804AF6E4::~cls_804AF6E4() {}
 
-// FIXME: 99.93 %, operands; behaviour clean.
+// FIXME: 99.93 %, regalloc-only; behaviour clean.
 // Regalloc + reloc-name: the message font goes
 // through r27 instead of r28 (the eight setFont calls);
 // the string offsets are relative to the section base (lbl_80475768+0x670..)
