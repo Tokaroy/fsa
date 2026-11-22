@@ -345,13 +345,15 @@ void Bee_804AC600::update() {
 // FIXME(shotgun): 93.18 %, missing/extra; behaviour clean.
 void Bee_804AC600::draw() {
     SpriteParams_801F5AE0 params;
+    params.field_0x1d = -1;
+    params.field_0x1c = 1;
     if (field_0x274 == 2) {
         params.field_0x20 = 0;
     }
     if (field_0x230 != 0) {
         for (s32 i = 0; i < 7; i++) {
             if (i > 0) {
-                mPos = field_0x2a4[0] + field_0x2a4[i];
+                mPos = field_0x2a4[i] + field_0x2a4[0];
             }
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.1f;
