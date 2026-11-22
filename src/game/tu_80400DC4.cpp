@@ -61,7 +61,7 @@ struct BmgInf1_80479CA0 {
     /* 0x10 */ u32 mEntries[6];
 };
 
-s32 cls_804B0F90::fn_80401518() {
+s32 DvdErrorScreen_804B0F90::fn_80401518() {
     static BOOL lbl_8053ADE0 = FALSE;
 
     s32 status = DVDGetDriveStatus();
@@ -86,9 +86,9 @@ s32 cls_804B0F90::fn_80401518() {
 
 // Defined below fn_80401518: the original's .sbss has that function's static
 // first (0x8053ADE0) and this object after it (0x8053ADE8).
-cls_804B0F90 lbl_8053ADE8;
+DvdErrorScreen_804B0F90 lbl_8053ADE8;
 
-void cls_804B0F90::fn_80401318(s32 status) {
+void DvdErrorScreen_804B0F90::fn_80401318(s32 status) {
     JFWDisplay::getManager()->beginRender();
     if (lbl_80529DEC.field_0x251 == 0 || lbl_80529DEC.field_0x251 > 0x5A) {
         j3dSys.drawInit();
@@ -117,7 +117,7 @@ void cls_804B0F90::fn_80401318(s32 status) {
     }
 }
 
-void cls_804B0F90::fn_80400DC4(u32 index) {
+void DvdErrorScreen_804B0F90::fn_80400DC4(u32 index) {
     const BmgInf1_80479CA0* inf1 = (const BmgInf1_80479CA0*)&lbl_80479CA0[0x20];
     // The DAT1 block follows INF1; its text starts after its 8-byte header.
     const char* msg = (const char*)inf1 + inf1->mSize + 8 + inf1->mEntries[index];

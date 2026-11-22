@@ -5,7 +5,7 @@
 #include "game/act/tu_800F7FCC.h"
 
 // A minor Shadow Link actor (sub-base ShadowLinkBase_804A6A00) that, after its hop
-// animation, puts a shockwave ring (cls_800F802C) and effects at its feet;
+// animation, puts a shockwave ring (HitRing_800F802C) and effects at its feet;
 // code in game/tu_80221B44.cpp. Not tied to a spawner ID. Named after its
 // vtable (0x804A6AA8). The destructor is fn_80221B44, the constructor
 // fn_80222190.
@@ -25,7 +25,7 @@ public:
 
     // Landings counted in state 7 (the third one goes to state 8).
     /* 0x2B8 */ s32 mLandings;
-    /* 0x2BC */ cls_800F802C mRing;
+    /* 0x2BC */ HitRing_800F802C mRing;
 }; // Size: 0x2D4
 
 #endif

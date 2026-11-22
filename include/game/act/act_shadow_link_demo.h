@@ -42,7 +42,7 @@ public:
     /* 0x25C */ f32 field_0x25c; // cleared by the constructor
     /* 0x260 */ JGeometry::TVec3f field_0x260; // mSpawnPos, saved by fn_8011B878 state 11
     /* 0x26C */ JGeometry::TVec3f field_0x26c; // (mSpawnPos - player 0's position) / 60, state 11
-    /* 0x278 */ cls_800FE8C0 mSequencer; // 0x18 bytes (the size of the spawner's __nw__ ends here)
+    /* 0x278 */ AnimFrameSeq_800FE8C0 mSequencer; // 0x18 bytes (the size of the spawner's __nw__ ends here)
 }; // Size: 0x290
 
 #endif

@@ -77,7 +77,7 @@ public:
     void fn_801C26FC();
     // act_shadow_link_2.cpp (0x801C272C, not written yet): sets the byte at
     // 0x11D, then picks a state by the fn_801C0D70 object (fn_801C11F0 and
-    // its bit 1). Called by cls_801C0D70::fn_801C0DCC.
+    // its bit 1). Called by ShadowLinkFight_801C0D70::fn_801C0DCC.
     void fn_801C272C();
     // act_shadow_link_2.cpp: if the object from fn_801C0D70 has bit 0x80000000
     // at 0x50 and mFlags has bit 0x2000, calls its fn_801C12B8.
@@ -184,15 +184,15 @@ public:
     // alpha ramped by mStateTimer when the tile there is 0x9B or 0x9C.
     void fn_801D41B8() const;
 
-    /* 0x340 */ cls_800FE8C0 field_0x340; // animation sequencer (mIndex at 0x34D, mFlags at 0x354)
+    /* 0x340 */ AnimFrameSeq_800FE8C0 field_0x340; // animation sequencer (mIndex at 0x34D, mFlags at 0x354)
     /* 0x358 */ cls_80214244 field_0x358;
     /* 0x4EC */ cls_802150B8 field_0x4ec; // the destructor destroys it
     /* 0x524 */ cls_802157B8 field_0x524; // bits 0x8, 0x10, 0x20 pick the attack
-    /* 0x528 */ cls_80217128 mHitBox; // mOwner is this actor
-    /* 0x540 */ cls_80218A8C mHelper540;       // fn_801C573C calls its constructor
+    /* 0x528 */ SwordHitBox_80217128 mHitBox; // mOwner is this actor
+    /* 0x540 */ BombDropTimer_80218A8C mHelper540;       // fn_801C573C calls its constructor
     /* 0x548 */ cls_802153A8 field_0x548;
     /* 0x54E */ u8 pad_0x54e[2];
-    /* 0x550 */ cls_80217374 field_0x550;
+    /* 0x550 */ WanderTurnTimer_80217374 field_0x550;
     /* 0x55C */ u8 field_0x55c[0x560 - 0x55C];
     /* 0x560 */ s32 field_0x560;
     /* 0x564 */ s32 field_0x564;

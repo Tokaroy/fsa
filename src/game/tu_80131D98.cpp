@@ -4,29 +4,29 @@
 #include "game/act/act_escort_woman.h"
 #include "game/tu_80131D98.h"
 
-cls_80131F6C* fn_80131F0C() {
-    static cls_80131F6C lbl_804BE514;
+EscortActorList_80131F6C* fn_80131F0C() {
+    static EscortActorList_80131F6C lbl_804BE514;
     return &lbl_804BE514;
 }
 
-void cls_80131F6C::fn_80131EF8() {
+void EscortActorList_80131F6C::fn_80131EF8() {
     mCount = 0;
     mSerials[0] = 0;
     mSerials[1] = 0;
 }
 
-void cls_80131F6C::fn_80131EE4() {
+void EscortActorList_80131F6C::fn_80131EE4() {
     mCount = 0;
     mSerials[0] = 0;
     mSerials[1] = 0;
 }
 
-void cls_80131F6C::fn_80131EC0(const ActorBase_804A5770* actor) {
+void EscortActorList_80131F6C::fn_80131EC0(const ActorBase_804A5770* actor) {
     mSerials[mCount] = actor->mSerial;
     mCount++;
 }
 
-ActorBase_804A5770* cls_80131F6C::fn_80131E30(s32 idx) {
+ActorBase_804A5770* EscortActorList_80131F6C::fn_80131E30(s32 idx) {
     if (idx < 0 || idx >= mCount) {
         return NULL;
     }

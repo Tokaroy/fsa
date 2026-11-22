@@ -15,7 +15,7 @@ static const u64 lbl_80491470[3] = {
 };
 
 // The three rows' colours: the selected one is lit.
-static inline void setRowColors(cls_804B1DA8* self, s32 selected) {
+static inline void setRowColors(PauseScreen_804B1DA8* self, s32 selected) {
     for (s32 i = 0; i < 3; i++) {
         if (i == selected) {
             static_cast<J2DPicture*>(self->mScreen->search(lbl_80491470[i]))->setWhite(JUtility::TColor(0xFF, 0xED, 0xA0, 0xFF));
@@ -28,7 +28,7 @@ static inline void setRowColors(cls_804B1DA8* self, s32 selected) {
 }
 
 // The bounce of the selected row: its two frame panes and its pane controller move by off, the other rows stay.
-static inline void bounceRows(cls_804B1DA8* self, s32 k) {
+static inline void bounceRows(PauseScreen_804B1DA8* self, s32 k) {
     f32 off = 5.0f * (f32)(k * k) / 25.0f;
     self->mScreen->search('Pkenc01')->move(self->field_0x24[self->field_0x1c], self->field_0x30[self->field_0x1c] + off);
     self->mScreen->search('Pkenc02')->move(self->field_0x3c[self->field_0x1c], self->field_0x48[self->field_0x1c] + off);
@@ -41,7 +41,7 @@ static inline void bounceRows(cls_804B1DA8* self, s32 k) {
     }
 }
 
-cls_804B1DA8::cls_804B1DA8() {
+PauseScreen_804B1DA8::PauseScreen_804B1DA8() {
     lbl_8053AF48 = this;
     mScreen = new J2DScreen;
     mScreen->setPriority("pause.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
@@ -87,7 +87,7 @@ cls_804B1DA8::cls_804B1DA8() {
     field_0x54 = 1;
 }
 
-cls_804B1DA8::~cls_804B1DA8() {
+PauseScreen_804B1DA8::~PauseScreen_804B1DA8() {
     gAudioMgr_8053AF80->fn_80459274();
     delete mScreen;
     mScreen = NULL;
@@ -102,7 +102,7 @@ cls_804B1DA8::~cls_804B1DA8() {
     lbl_8053AF48 = NULL;
 }
 
-void cls_804B1DA8::fn_80454A6C() {
+void PauseScreen_804B1DA8::fn_80454A6C() {
     lbl_8053AEC0->fn_804310CC();
     field_0x1c = 0;
     field_0x1e = 2;
@@ -125,7 +125,7 @@ void cls_804B1DA8::fn_80454A6C() {
     field_0x58 = 9;
 }
 
-void cls_804B1DA8::fn_80454A00() {
+void PauseScreen_804B1DA8::fn_80454A00() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x1e == 7 || field_0x1e == 8 || field_0x1e == 9) {
@@ -136,7 +136,7 @@ void cls_804B1DA8::fn_80454A00() {
 // FIXME(shotgun): 97.85 %, missing/extra; behaviour drift.
 // (states 2-13 follow the asm incl. the 13 -> 7 -> 8 -> 9 fallthroughs; the
 // A/B-button chain of state 8 skips the rest on a mismatched flag in the original, ours does not)
-s32 cls_804B1DA8::fn_80453B14() {
+s32 PauseScreen_804B1DA8::fn_80453B14() {
     field_0x58 = 9;
     switch (field_0x1e) {
     case 2:

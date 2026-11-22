@@ -13,10 +13,10 @@ class J2DScreen;
 // object in lbl_8053AF38. tu_801286C0 calls fn_8044C028 through
 // lbl_8053AF38; the object at 0x2B8 of tu_8043A0E8's object gets
 // fn_8044C038 and fn_8044C14C.
-class cls_804B1D20 {
+class PrologueOverlay_804B1D20 {
 public:
-    cls_804B1D20();
-    virtual ~cls_804B1D20();
+    PrologueOverlay_804B1D20();
+    virtual ~PrologueOverlay_804B1D20();
 
     // Sets the shown flag and the offset field_0x14 (f1).
     void fn_8044C028(f32 offset);
@@ -35,6 +35,6 @@ public:
     /* 0x19 */ u8 pad_0x19[3];
 }; // Size: 0x1C
 
-extern cls_804B1D20* lbl_8053AF38;
+extern PrologueOverlay_804B1D20* lbl_8053AF38;
 
 #endif

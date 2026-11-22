@@ -43,8 +43,8 @@ public:
     /* 0x2B4 */ JPABaseEmitter* mEmitters[3]; // effects 0x4B-0x4D (init)
     /* 0x2C0 */ JPABaseEmitter* mEmitters2[5]; // effects 0x3FC-0x400 (fn_801C1768)
     /* 0x2D4 */ void* mTexture; // fn_804032E8('TIMG', "jen_8_3.bti") (init)
-    /* 0x2D8 */ cls_8021C2B4 mPieces; // four thrown pieces (fn_8021C2B4 per frame)
-    /* 0x3F8 */ cls_8021FB44 mSequence; // the three-emitter sequence
+    /* 0x2D8 */ FlyingPieces_8021C2B4 mPieces; // four thrown pieces (fn_8021C2B4 per frame)
+    /* 0x3F8 */ EmitterMoveSeq_8021FB44 mSequence; // the three-emitter sequence
 }; // Size: 0x438
 
 #endif

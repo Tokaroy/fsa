@@ -8,7 +8,7 @@
 // A ring that grows from mPos and hits each player once (no vtable;
 // named after its lowest-address function). StoneArrghus_8049C718 has one at 0x290,
 // ShadowLinkBase_804A6A00 (game/tu_80221B44.cpp) at 0x2BC.
-struct cls_800F802C {
+struct HitRing_800F802C {
     // Grows the ring (by mTimer, 40 or 20 frames by mType) and hits the
     // active players of layer 0 within mRadius (fn_80238548, arg 0xB).
     void fn_800F802C();
@@ -110,7 +110,7 @@ public:
     /* 0x280 */ s32 mAnimPrev;
     /* 0x284 */ s16 mSlotUsed[2];
     /* 0x288 */ s32 mPartner[2];
-    /* 0x290 */ cls_800F802C mRing;
+    /* 0x290 */ HitRing_800F802C mRing;
     /* 0x2A8 */ f32 mRadius;
     /* 0x2AC */ u8 mSlot;
     /* 0x2AD */ u8 mSignal;

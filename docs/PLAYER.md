@@ -36,7 +36,7 @@ Calls out of the Player units (counts): EffectSystem_8049F178 / JPA emitters
 (tu_8022461C) 152, pad object cls_804AA8C8 (tu_803099FC) 149, ActorBase 90,
 cls_804AA8B8 (tu_80301CD0) 75, cls_804AA8D8 (per-player 240x160 view box,
 tu_8030AE84, Player+0xBEC) 29, BgRewrite_804A7C98 27, AudioMgr_8045A080 (audio) 14,
-Camera_804AA9E4 13. Sound otherwise goes through the two cls_804B20F8 sound
+Camera_804AA9E4 13. Sound otherwise goes through the two PlayerSoundObj_804B20F8 sound
 objects at +0x1250/+0x1254.
 
 ## Object layout (proven by the constructor, 0x80255B28)
@@ -51,14 +51,14 @@ objects at +0x1250/+0x1254.
 | 0xBEC | cls_804AA8D8* | new(0x2C0), deleted by the dtor |
 | 0xBF0 | cls_804A71A8* | new(0xC0) cls_804A71A8(this) |
 | 0xCAC | bool mActive | cleared last |
-| 0x1250, 0x1254 | cls_804B20F8* sound objects | new(0x60) (index, &0x1258 / NULL, NULL, 8) |
+| 0x1250, 0x1254 | PlayerSoundObj_804B20F8* sound objects | new(0x60) (index, &0x1258 / NULL, NULL, 8) |
 | 0x1258 | TVec3f sound position | zeroed |
 | 0x1278, 0x1290, 0x12D0, 0x12E8, 0x130C, 0x1330 | cls_804A64A8 particle callbacks (0x14) | inline ctor/dtor |
 | 0x1398, 0x13A8 | cls_8049F140 'PEFF' emitter callbacks (0x10) | inline ctor/dtor |
 
 The destructor (0x802558E4) calls fn_80241E64 (emitter teardown), deletes
 0xBF0, 0xBEC, 0x1254, 0x1250, then destroys the eight callbacks;
-`__dt__12cls_804B20F8Fv` (weak) follows it. Everything else is set by the
+`__dt__23PlayerSoundObj_804B20F8Fv` (weak) follows it. Everything else is set by the
 per-slot reset fn_80254744 (0x11A0 bytes) and fn_80254660; those two prove
 most of the remaining fields.
 

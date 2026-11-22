@@ -30,7 +30,7 @@ cls_804AFAB0::cls_804AFAB0() {
     field_0xec.x = 0.0f;
     field_0xec.y = 0.0f;
     field_0xec.z = 0.0f;
-    field_0x1c = new cls_804B20F8(0, NULL, NULL, 8);
+    field_0x1c = new PlayerSoundObj_804B20F8(0, NULL, NULL, 8);
     field_0x20 = new ActorSoundObj_804578F4(&field_0xec, NULL, 8);
     for (s32 i = 0; i < 10; i++) {
         field_0xf8[i].x = 0.0f;

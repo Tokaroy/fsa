@@ -12,7 +12,7 @@ Baseline: All: 43.52% matched, 19.37% linked (470 / 919 files), 9153 / 11557 fun
 ## Resistant (1/6)
 - `TingleFirstAppearance_804AADD8::update` (0x80317378): 98.00% (`missing/extra`, 487 vs 484 instrs).
   - The original uses a paired-single squared distance (`psq_l`/`ps_sub`/`ps_mul`/`ps_madd`/`ps_sum0`, 9 instrs vs 12 scalar) in `selectNearestPlayer`'s loop (`TVec3f::squared(const TVec3f&)` in `libs/sdk` is absent).
-  - Swaps the stack slots (`0x14(r1)` vs `0x8(r1)`) of the case 5/7 `TVec3f` temporaries passed to `cls_8031709C::fn_80316E50`.
+  - Swaps the stack slots (`0x14(r1)` vs `0x8(r1)`) of the case 5/7 `TVec3f` temporaries passed to `SoundEffectSeq_8031709C::fn_80316E50`.
 
 ## Data & Symbols
 - `.rodata` (100%): `lbl_804715B8`, `lbl_804715DC`, `lbl_804715F8`, `lbl_8047160C` (`Step_804AADC8` cel/frame tables) and `"enemy_both2_sob.bin"`.

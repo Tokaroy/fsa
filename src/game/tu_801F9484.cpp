@@ -622,7 +622,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Stalfos_804A0CD8;
             break;
         case ACTOR_TNGL:
-            mActors[i] = new (mHeap, 0) cls_804B0478;
+            mActors[i] = new (mHeap, 0) Tingle_804B0478;
             break;
         case ACTOR_CKSW:
             mActors[i] = new (mHeap, 0) CheckSwitch_804A8BD0;

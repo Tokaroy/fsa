@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Spawned for 'TNGL'; moved here from game/act/tu_801F9484.h.
-class cls_804B0478 : public ActorBase_804A5770 {
+class Tingle_804B0478 : public ActorBase_804A5770 {
 public:
-    cls_804B0478() {}
-    /* 0x08 */ virtual ~cls_804B0478();
+    Tingle_804B0478() {}
+    /* 0x08 */ virtual ~Tingle_804B0478();
     /* 0x0C */ virtual void init();
     // 0x803D9AA4 (symbol was fn_803D9AA4): the state machine, states 0 to 10.
     /* 0x14 */ virtual void update();

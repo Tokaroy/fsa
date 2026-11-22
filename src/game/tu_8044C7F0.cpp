@@ -56,7 +56,7 @@ static const u16 lbl_80543DE0[4] = {0x1DC, 0x1DF, 0x1E5, 0x1E2};
 static const u16 lbl_80543DE8[4] = {0x1DD, 0x1E0, 0x1E6, 0x1E3};
 static const u16 lbl_80543DF0[4] = {0x1DE, 0x1E1, 0x1E7, 0x1E4};
 
-void fn_80453884(J2DWindow* window, cls_80453830 colors) {
+void fn_80453884(J2DWindow* window, WindowCornerColors_80453830 colors) {
     window->setContentsColor(colors.field_0x0, colors.field_0x4, colors.field_0x8, colors.field_0xc);
 }
 
@@ -76,10 +76,10 @@ bool fn_80453848(JPABaseEmitter* emitter) {
     return emitter->isEnableDeleteEmitter();
 }
 
-cls_80453830::cls_80453830() {}
+WindowCornerColors_80453830::WindowCornerColors_80453830() {}
 
 // FIXME: 97.31 %, missing/extra; behaviour near.
-cls_804B1D58::cls_804B1D58() {
+CollectScreen_804B1D58::CollectScreen_804B1D58() {
     lbl_8053AF40 = this;
     mScreen = new J2DScreen;
     mScreen->setPriority("collect.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
@@ -251,7 +251,7 @@ cls_804B1D58::cls_804B1D58() {
     }
 }
 
-cls_804B1D58::~cls_804B1D58() {
+CollectScreen_804B1D58::~CollectScreen_804B1D58() {
     gAudioMgr_8053AF80->fn_80459274();
     fn_8044C7F0();
     delete mScreen;
@@ -285,7 +285,7 @@ cls_804B1D58::~cls_804B1D58() {
 
 // FIXME: 99.18 %, missing/extra; behaviour clean.
 // register choice in the first loop differs (the original keeps the zero shared with the counter).
-void cls_804B1D58::fn_80452350() {
+void CollectScreen_804B1D58::fn_80452350() {
     lbl_8053AEC0->fn_804310CC();
     field_0xf8 = 0;
     field_0xfe = 0;
@@ -332,12 +332,12 @@ void cls_804B1D58::fn_80452350() {
     field_0x184 = 9;
 }
 
-void cls_804B1D58::fn_80452308() {
+void CollectScreen_804B1D58::fn_80452308() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-void cls_804B1D58::fn_804522C8() {
+void CollectScreen_804B1D58::fn_804522C8() {
     if (field_0xfa == 7 || field_0xfa == 8 || field_0xfa == 9) {
         lbl_8053AEC0->fn_804316EC();
     }
@@ -347,7 +347,7 @@ void cls_804B1D58::fn_804522C8() {
 // cursor between the three tabs, runs the yes/no window, plays the two row-clear sequences;
 // then blinks 'Pswbli' / 'Pcul01', runs the animations and keeps the emitters on their panes.
 // FIXME: 98.54 %, missing/extra; behaviour drift.
-s32 cls_804B1D58::fn_8044F680() {
+s32 CollectScreen_804B1D58::fn_8044F680() {
     field_0x184 = 9;
     s16 start = lbl_8050DB0C.field_0x4c[(0x238 - 0x4C) / 2];
     u8 done = 0;
@@ -980,7 +980,7 @@ s32 fn_8044F664() {
 // Refreshes the screen: recolours the three tabs, shows the rupee count, the players' rows and
 // emitters, the second list's rows, and the total (field_0x11c) or the digits of what is left.
 // FIXME: 97.17 %, missing/extra + reloc-name; behaviour near.
-void cls_804B1D58::fn_8044D894() {
+void CollectScreen_804B1D58::fn_8044D894() {
     for (s32 i = 0; i < 3; i++) {
         if (i == field_0xf8) {
             static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
@@ -1265,7 +1265,7 @@ void cls_804B1D58::fn_8044D894() {
 
 // Selects row `arg` (0-3) of the second list; like fn_8044CB08, with one emitter (field_0xb0).
 // FIXME(shotgun): 99.37 %, same-text; behaviour clean.
-void cls_804B1D58::fn_8044D298(int arg) {
+void CollectScreen_804B1D58::fn_8044D298(int arg) {
     if (arg >= 0 && arg <= 3) {
         gGameRoot_8053AAF8->fn_80134D20(false);
         field_0x140 = 1;
@@ -1311,14 +1311,14 @@ void cls_804B1D58::fn_8044D298(int arg) {
     }
 }
 
-u8 cls_804B1D58::fn_8044D290() {
+u8 CollectScreen_804B1D58::fn_8044D290() {
     return field_0x140;
 }
 
 // Selects row `arg` (0-6): recolours the cursor panes, hides the row's panes and starts its two
 // emitters (stopped at once: the status bits 1, 2 and 4).
 // FIXME(shotgun): 99.38 %, same-text; behaviour clean.
-void cls_804B1D58::fn_8044CB08(int arg) {
+void CollectScreen_804B1D58::fn_8044CB08(int arg) {
     if (arg >= 0 && arg <= 6) {
         gGameRoot_8053AAF8->fn_80134D20(false);
         field_0x140 = 1;
@@ -1367,11 +1367,11 @@ void cls_804B1D58::fn_8044CB08(int arg) {
     }
 }
 
-u8 cls_804B1D58::fn_8044CB00() {
+u8 CollectScreen_804B1D58::fn_8044CB00() {
     return field_0x140;
 }
 
-void cls_804B1D58::fn_8044C968() {
+void CollectScreen_804B1D58::fn_8044C968() {
     for (s32 i = 0; i < 3; i++) {
         field_0x48[i]->moveFromCentre_80402E08(300.0f, 0.0f);
         field_0x60[i]->moveFromCentre_80402E08(300.0f, 0.0f);
@@ -1392,7 +1392,7 @@ void cls_804B1D58::fn_8044C968() {
 }
 
 // Stops the emitters of the three arrays and deletes the two others (the destructor inlines it).
-void cls_804B1D58::fn_8044C7F0() {
+void CollectScreen_804B1D58::fn_8044C7F0() {
     for (s32 i = 0; i < 7; i++) {
         if (field_0x6c[i] != NULL) {
             field_0x6c[i]->becomeInvalidEmitter();

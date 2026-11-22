@@ -11,7 +11,7 @@ static inline bool nearHalfTurn(s16 angle) {
 }
 
 // The body of fn_8021ABC0, inlined into fn_8021A570.
-static inline void pickNext(cls_8021ACE0* self) {
+static inline void pickNext(HeadSway_8021ACE0* self) {
     if (self->field_0xc == 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.9f) {
             self->mState = 1;
@@ -31,7 +31,7 @@ static inline void pickNext(cls_8021ACE0* self) {
     }
 }
 
-cls_8021ACE0::cls_8021ACE0() {
+HeadSway_8021ACE0::HeadSway_8021ACE0() {
     mState = 0;
     mAngle = 0;
     mTimer = 0;
@@ -41,7 +41,7 @@ cls_8021ACE0::cls_8021ACE0() {
     mFlipped = 0;
 }
 
-void cls_8021ACE0::fn_8021ABC0() {
+void HeadSway_8021ACE0::fn_8021ABC0() {
     pickNext(this);
 }
 
@@ -50,7 +50,7 @@ void cls_8021ACE0::fn_8021ABC0() {
 // state/timer2/speed stores and the else branch's timer = 0; we put the bool in
 // r4 and use separate li 0s (so the branch layout and the registers of the
 // stores after it differ).
-bool cls_8021ACE0::fn_8021A570(bool flag) {
+bool HeadSway_8021ACE0::fn_8021A570(bool flag) {
     bool result = false;
     if (mTimer != 0) {
         mTimer--;

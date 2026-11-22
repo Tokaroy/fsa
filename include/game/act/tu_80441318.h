@@ -12,10 +12,10 @@
 // fn_80441730); the constructor is fn_80441778. fn_80441490 steps the state
 // machine below and sets the window; the two empty members are called by the
 // units that own it, once per frame.
-class cls_804B19E0 {
+class PlayerWindowSelect_804B19E0 {
 public:
-    cls_804B19E0();
-    virtual ~cls_804B19E0();
+    PlayerWindowSelect_804B19E0();
+    virtual ~PlayerWindowSelect_804B19E0();
 
     // Draw hook, empty (tu_80418B64 and tu_8042165C call it after the screen draw).
     void fn_8044148C();

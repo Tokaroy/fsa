@@ -8,7 +8,7 @@ fn_803CFFBC, 0x1AC bytes), the file select screen: loads "file_select.blo" /
 "file_select_huuin.blo", stores itself in lbl_8053ADB0, runs a 40-entry
 pointer-to-member state table lbl_804AFD70 (copied by __sinit from @663..@702)
 from fn_803CE9EC each frame, and talks to the memory card manager
-lbl_8051C1A0 (cls_803B9940) and the save rows lbl_8050EC80. Sister unit:
+lbl_8051C1A0 (CardMgr_804AFB48) and the save rows lbl_8050EC80. Sister unit:
 tu_803F0A54 (GBA connect screen), same shape.
 
 ## Matched (100 %)
@@ -54,10 +54,10 @@ object's class?).
 
 ## SHARED-EDITS
 - GameGlobals.h GameRoot field_0xff: u8 (was u8[9]); 0x100 padding.
-- GameGlobals.h cls_803B9940: fn_803B9940(s32)->u32, fn_803B9B8C(), fn_803B9A94(void*,u32,void*,u32,s32)->s32,
+- GameGlobals.h CardMgr_804AFB48: fn_803B9940(s32)->u32, fn_803B9B8C(), fn_803B9A94(void*,u32,void*,u32,s32)->s32,
   fn_803B9BDC()->s32, fn_803B9C5C()->s32, fn_803B9DDC(); fields 0x1FF4 u8
   (card channel), 0x1FF5 u8, 0x1FF8 u64 (CARDGetSerialNo serial).
-- GameGlobals.h cls_804B1634: fn_80431174(u8), fn_804317AC()/fn_80431740() -> BOOL.
+- GameGlobals.h WarningWindow_804B1634: fn_80431174(u8), fn_804317AC()/fn_80431740() -> BOOL.
 - GameState.h PaneCtrl_804AF86C::fn_80402628(s16, u8, u8) -> bool.
 - tu_80379F84.h SaveRow_8050EC80: u64 field_0x8 (row 0: card serial).
 - symbols.txt: renamed the placeholders above to their mangled names.

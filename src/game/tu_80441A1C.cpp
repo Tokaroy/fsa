@@ -7,7 +7,7 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 
-cls_804B19F0::cls_804B19F0() {
+GbaConnectErrorWindow_804B19F0::GbaConnectErrorWindow_804B19F0() {
     lbl_8053AEE0 = this;
     field_0x4 = new J2DScreen();
     field_0x4->setPriority("gba_connect_error_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
@@ -27,7 +27,7 @@ cls_804B19F0::cls_804B19F0() {
     field_0x1c = 0;
 }
 
-cls_804B19F0::~cls_804B19F0() {
+GbaConnectErrorWindow_804B19F0::~GbaConnectErrorWindow_804B19F0() {
     delete field_0x4;
     field_0x4 = NULL;
     delete field_0x8;
@@ -37,7 +37,7 @@ cls_804B19F0::~cls_804B19F0() {
     lbl_8053AEE0 = NULL;
 }
 
-void cls_804B19F0::fn_80442254(s32 arg, s32 index) {
+void GbaConnectErrorWindow_804B19F0::fn_80442254(s32 arg, s32 index) {
     field_0x8->mPane->setAlpha(0);
     field_0x8->field_0x26 = 0;
     field_0xc->moveFromCentre_80402E08(0.0f, -480.0f);
@@ -56,7 +56,7 @@ void cls_804B19F0::fn_80442254(s32 arg, s32 index) {
     }
 }
 
-void cls_804B19F0::fn_80442200() {
+void GbaConnectErrorWindow_804B19F0::fn_80442200() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x18 != 0) {
         field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -66,7 +66,7 @@ void cls_804B19F0::fn_80442200() {
 // FIXME: 95.44 %, missing/extra; behaviour drift.
 // FIXME: the float ratio in the state 2/3 blocks is scheduled differently and
 // the register for `this` drifts after state 3 (0x31C onward).
-s32 cls_804B19F0::fn_80441A1C() {
+s32 GbaConnectErrorWindow_804B19F0::fn_80441A1C() {
     s32 player = field_0x14;
     u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (player * 2)) & 3;
     if (mode == 1) {

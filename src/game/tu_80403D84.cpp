@@ -293,8 +293,8 @@ MapScreen_804B1288::MapScreen_804B1288() {
     OSReport("***** heap check\x81\x40\x98\x41\x91\xb1\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK "
              "\x8e\x63\x82\xe8\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK *****\n",
              heap->getFreeSize() * (1.0f / 1024.0f), heap->getTotalFreeSize() * (1.0f / 1024.0f));
-    field_0x4 = new cls_804B1B60;
-    field_0x8 = new cls_804B0288(lbl_80529DEC.mMapArchive_0x34, false);
+    field_0x4 = new MapYaguraWindow_804B1B60;
+    field_0x8 = new SaveScreen_804B0288(lbl_80529DEC.mMapArchive_0x34, false);
     mMapScreen_0xc = new J2DScreen;
     mMapScreen_0xc->setPriority("map.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
     OSInitFastCast();
@@ -457,7 +457,7 @@ MapScreen_804B1288::MapScreen_804B1288() {
         mMessageWindowPanes_0x240[i]->moveFromCentre_80402E08(0.0f, 100.0f);
     }
     for (s32 i = 0; i < 4; i++) {
-        mPlayerSoundObjs_0x2b8[i] = new cls_804B20F8(i, NULL, NULL, 8);
+        mPlayerSoundObjs_0x2b8[i] = new PlayerSoundObj_804B20F8(i, NULL, NULL, 8);
     }
     mSoundObj_0x2c8 = new ActorSoundObj_804578F4(NULL, NULL, 8);
     const ResTIMG* plan = static_cast<const ResTIMG*>(fn_80403184('TIMG', "w01_01.bti"));

@@ -192,8 +192,8 @@ static inline void joinCue(Player_804A6F38* player, s32 at, s32 off) {
 Player_804A6F38::Player_804A6F38(s32 index) {
     mPlayerNo_0x4 = index;
     mSoundPos_0x1258.set(0.0f, 0.0f, 0.0f);
-    mSoundObj_0x1250 = new cls_804B20F8(index, &mSoundPos_0x1258, NULL, 8);
-    mSoundObj_0x1254 = new cls_804B20F8(index, NULL, NULL, 8);
+    mSoundObj_0x1250 = new PlayerSoundObj_804B20F8(index, &mSoundPos_0x1258, NULL, 8);
+    mSoundObj_0x1254 = new PlayerSoundObj_804B20F8(index, NULL, NULL, 8);
     mViewBox_0xbec = new cls_804AA8D8();
     field_0xbf0 = new cls_804A71A8(this);
     mActive = false;

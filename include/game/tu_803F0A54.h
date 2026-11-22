@@ -7,8 +7,8 @@ class J2DScreen;
 class J2DAnmTransform;
 class J2DPicture;
 class PaneCtrl_804AF86C;
-class cls_804B16A8;
-class cls_804B20F8;
+class RuleScreen_804B16A8;
+class PlayerSoundObj_804B20F8;
 
 // The multiplayer (GameCube + GBA) connect screen: vtable 0x804B0F10,
 // constructor fn_803FCBC4 (game/tu_803F0A54.cpp); 0x354 bytes
@@ -92,12 +92,12 @@ public:
     /* 0x028 */ J2DScreen* mConnectAnimScreens_0x28[4];
     /* 0x038 */ J2DAnmTransform* mArrowAnms_0x38[4]; // "entry_arrow_anim.bck" on mArrowAnimScreens_0x18[i]
     /* 0x048 */ J2DAnmTransform* mConnectAnms_0x48[4]; // "entry_connect_anim.bck" on mConnectAnimScreens_0x28[i]
-    /* 0x058 */ cls_804B16A8* field_0x58;
+    /* 0x058 */ RuleScreen_804B16A8* field_0x58;
     /* 0x05C */ J2DPicture* mFadePicture_0x5c; // full-screen fade
     /* 0x060 */ PaneCtrl_804AF86C* mPthabb07Pane_0x60;
     /* 0x064 */ PaneCtrl_804AF86C* mPstrbPanes_0x64[4];
     /* 0x074 */ PaneCtrl_804AF86C* mButtonGuidePane_0x74; // lbl_8053AED8->mEntryScreen_0x8
-    /* 0x078 */ cls_804B20F8* mPlayerSoundObjs_0x78[4];
+    /* 0x078 */ PlayerSoundObj_804B20F8* mPlayerSoundObjs_0x78[4];
     /* 0x088 */ f32 field_0x88;
     /* 0x08C */ f32 field_0x8c;
     /* 0x090 */ f32 field_0x90;

@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-class cls_804B0B00;
+class AdvEntryScreen_804B0B00;
 class ConnectScreen_804B0F10;
 
 // Vtable 0x804AF878 (one slot, the destructor fn_803A87A8), defined in
@@ -24,7 +24,7 @@ public:
     void fn_803A8664();
     void fn_803A86A4();
 
-    /* 0x04 */ cls_804B0B00* field_0x4;
+    /* 0x04 */ AdvEntryScreen_804B0B00* field_0x4;
     /* 0x08 */ ConnectScreen_804B0F10* field_0x8;
     /* 0x0C */ s32 field_0xc;
 }; // Size: 0x10

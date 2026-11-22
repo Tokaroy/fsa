@@ -2053,7 +2053,7 @@ static inline void tingleHeal(Player_804A6F38* player) {
 void Player_804A6F38::fn_8027776C() {
     if (!gGameRoot_8053AAF8->field_0x7e) {
         s32 serial = getActorManager_801F856C()->fn_801F7A08('TNGL');
-        cls_804B0478* tingle = static_cast<cls_804B0478*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+        Tingle_804B0478* tingle = static_cast<Tingle_804B0478*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (tingle != NULL && !tingle->field_0x251) {
             return;
         }

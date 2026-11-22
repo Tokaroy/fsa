@@ -3,21 +3,21 @@
 G4 baseline (progress.py): total: 6007 / 11557 functions, 1208940 bytes. Earlier: 5820 / 11557 functions, 1165664 bytes. After: 5821 / 11557, 1165780 bytes.
 
 ## Matched
-- `__ct__12cls_8021C5B0Fv` (100 %; first 0x30 bytes are an inlined base ctor, then the cls_8021CBA0 ctor call)
+- `__ct__20FlyingPiece_8021C5B0Fv` (100 %; first 0x30 bytes are an inlined base ctor, then the FrameCountSeq_8021CBA0 ctor call)
 - `__sinit_tu_8021C2B4_cpp` (generated rows removed from gen_game.tsv)
 
 ## Resistant (regalloc-only)
-- `fn_8021C2B4__12cls_8021C2B4Fv` 99.72 %: vel.x/vel.y computation after fn_8021CB18: target does fsubs f3,f4,f3 / fmuls f2,f6,f2 / fmuls f3,f6,f3; ours uses f4, f3, f2.
+- `fn_8021C2B4__21FlyingPieces_8021C2B4Fv` 99.72 %: vel.x/vel.y computation after fn_8021CB18: target does fsubs f3,f4,f3 / fmuls f2,f6,f2 / fmuls f3,f6,f3; ours uses f4, f3, f2.
 
 
 ## SHARED-EDITS
 - gen_game.tsv: tu_8021C2B4 row deleted.
 - symbols.txt: renames of fn_8021C2B4/C468/C5B0 and tu_8021C848's fn_8021C848/C9C4/CA70/CB18/CBA0 to member-mangled names.
-- GameGlobals.h: fn_801C0FEC as a member of cls_801C0D70; symbols.txt renamed to its mangled name (owner tu_801C0D70).
-- New headers cls_8021C2B4.h, cls_8021CBA0.h (cls_8021CBA0 is tu_8021C848's class).
+- GameGlobals.h: fn_801C0FEC as a member of ShadowLinkFight_801C0D70; symbols.txt renamed to its mangled name (owner tu_801C0D70).
+- New headers cls_8021C2B4.h, cls_8021CBA0.h (FrameCountSeq_8021CBA0 is tu_8021C848's class).
 
 ## Next
-Write tu_8021C848 (define cls_8021CBA0 members; header already declares them).
+Write tu_8021C848 (define FrameCountSeq_8021CBA0 members; header already declares them).
 
 ## G4
 - `fn_8021C468` now 100 % via the rules-card radians shape (atan2_ * (32768.0f / RADIAN_DEG180())).

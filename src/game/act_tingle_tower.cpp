@@ -104,7 +104,7 @@ static inline u8 getTowerViewByte(s32 i) {
 }
 
 TinglesTowerTingleAndSign_804AAD60::TinglesTowerTingleAndSign_804AAD60() {
-    field_0x278 = new cls_8031709C;
+    field_0x278 = new SoundEffectSeq_8031709C;
 }
 
 TinglesTowerTingleAndSign_804AAD60::~TinglesTowerTingleAndSign_804AAD60() {

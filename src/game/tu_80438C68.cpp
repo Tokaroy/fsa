@@ -21,7 +21,7 @@ extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
 
 // 0x80439C78
 // FIXME: 99.90 %, same-text; behaviour drift.
-cls_804B17A0::cls_804B17A0() {
+GameOverScreen_804B17A0::GameOverScreen_804B17A0() {
     lbl_8053AEC8 = this;
     field_0x4 = new J2DScreen;
     field_0x4->setPriority("gameover.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
@@ -65,7 +65,7 @@ cls_804B17A0::cls_804B17A0() {
 
 // 0x80439B28
 // FIXME: 98.10 %, regalloc-only; behaviour drift.
-cls_804B17A0::~cls_804B17A0() {
+GameOverScreen_804B17A0::~GameOverScreen_804B17A0() {
     delete field_0x4;
     field_0x4 = NULL;
     delete field_0x8;
@@ -93,7 +93,7 @@ cls_804B17A0::~cls_804B17A0() {
 }
 
 // 0x80439AB0
-void cls_804B17A0::fn_80439AB0() {
+void GameOverScreen_804B17A0::fn_80439AB0() {
     field_0x40 = 0;
     field_0x42 = 0;
     field_0x5d = 0;
@@ -120,7 +120,7 @@ void cls_804B17A0::fn_80439AB0() {
     field_0x5f = 0;
 }
 
-void cls_804B17A0::fn_804399A0() {
+void GameOverScreen_804B17A0::fn_804399A0() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x34->setAlpha((u8)field_0x50);
     field_0x34->draw(-1.0f, -1.0f, 611.0f, 451.0f, false, false, false);
@@ -147,7 +147,7 @@ static inline void sparkEmitter(JPABaseEmitter*& slot, JGeometry::TVec3f& pos, f
 }
 
 // 0x80438E94
-u8 cls_804B17A0::fn_80438E94() {
+u8 GameOverScreen_804B17A0::fn_80438E94() {
     s32 serial = field_0x44;
     if (serial > 0 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) == NULL) {
         field_0x44 = -2;
@@ -338,7 +338,7 @@ u8 cls_804B17A0::fn_80438E94() {
     return field_0x40;
 }
 
-void cls_804B17A0::fn_80438E10(u8 flag) {
+void GameOverScreen_804B17A0::fn_80438E10(u8 flag) {
     field_0x40 = flag;
     if (flag) {
         return;
@@ -348,7 +348,7 @@ void cls_804B17A0::fn_80438E10(u8 flag) {
 
 // FIXME(shotgun): 98.44 %, missing/extra; behaviour clean.
 // 0x80438C68
-void cls_804B17A0::fn_80438C68() {
+void GameOverScreen_804B17A0::fn_80438C68() {
     switch (field_0x58) {
     case 0:
         if (field_0x44 == -1) {

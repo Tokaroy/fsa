@@ -6,10 +6,10 @@
 // A frame-count sequencer over three tables in lbl_8046A688 (types 0, 1, 2
 // pick the table), defined in game/tu_8021C848.cpp. No vtable; named after
 // its constructor (fn_8021CBA0 zeroes every member). Embedded in
-// cls_8021C5B0 (+0x30).
-class cls_8021CBA0 {
+// FlyingPiece_8021C5B0 (+0x30).
+class FrameCountSeq_8021CBA0 {
 public:
-    cls_8021CBA0();
+    FrameCountSeq_8021CBA0();
     // Advances the timer; when the current step's frame count is used up,
     // moves to the next step and finishes (mDone) after the last one.
     // Reloads mFrames and returns mDone.

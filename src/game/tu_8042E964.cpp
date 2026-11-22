@@ -17,17 +17,17 @@ static inline int charWidth(int c) {
     return w.w1;
 }
 
-cls_804B1634* lbl_8053AEC0;
-cls_804B1600* lbl_8053AEC4;
+WarningWindow_804B1634* lbl_8053AEC0;
+StageSelectWindow_804B1600* lbl_8053AEC4;
 
 // Two 4-entry tables read with lhax by byte index (0xEB); used by fn_80431174 / fn_8042F6DC (not written yet).
 static const s16 lbl_80543AE8[4] = {0x8, 0x154, 0x5, 0x0};
 static const s16 lbl_80543AF0[4] = {0x164, 0xA, 0x160, 0x0};
 
-cls_804B1634::cls_804B1634() {
+WarningWindow_804B1634::WarningWindow_804B1634() {
     JUTResFont* font;
     lbl_8053AEC0 = this;
-    field_0x4 = new cls_804B1600;
+    field_0x4 = new StageSelectWindow_804B1600;
     field_0x8 = new J2DScreen;
     field_0x8->setPriority("warning_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0xc = new PaneCtrl_804AF86C;
@@ -66,7 +66,7 @@ cls_804B1634::cls_804B1634() {
     field_0xec = 0;
 }
 
-cls_804B1634::~cls_804B1634() {
+WarningWindow_804B1634::~WarningWindow_804B1634() {
     delete field_0x4;
     field_0x4 = NULL;
     delete field_0x8;
@@ -82,7 +82,7 @@ cls_804B1634::~cls_804B1634() {
     lbl_8053AEC0 = NULL;
 }
 
-bool cls_804B1634::fn_80431A9C(s32 id, u8 value, u8* out) {
+bool WarningWindow_804B1634::fn_80431A9C(s32 id, u8 value, u8* out) {
     if (field_0xec == 0) {
         fn_8042EF9C(((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getStringPtr(), id, value);
         if (out != NULL) {
@@ -106,7 +106,7 @@ bool cls_804B1634::fn_80431A9C(s32 id, u8 value, u8* out) {
     return false;
 }
 
-bool cls_804B1634::fn_80431900(s32 id, u8 value, u8* out) {
+bool WarningWindow_804B1634::fn_80431900(s32 id, u8 value, u8* out) {
     if (field_0xec == 0) {
         fn_8042EF9C(((J2DTextBox*)field_0x8->search(0x0000005477743031ull))->getStringPtr(), id, value);
         if (out != NULL) {
@@ -130,7 +130,7 @@ bool cls_804B1634::fn_80431900(s32 id, u8 value, u8* out) {
     return false;
 }
 
-BOOL cls_804B1634::fn_804317AC() {
+BOOL WarningWindow_804B1634::fn_804317AC() {
     if (field_0xec != 0) {
         field_0xe8++;
         if (field_0xe8 < 10) {
@@ -149,7 +149,7 @@ BOOL cls_804B1634::fn_804317AC() {
     return FALSE;
 }
 
-BOOL cls_804B1634::fn_80431740() {
+BOOL WarningWindow_804B1634::fn_80431740() {
     if (field_0xec != 0) {
         if (field_0xc->fn_80402940(10, 0, 0.0f, 480.0f) == 0) {
             return FALSE;
@@ -160,14 +160,14 @@ BOOL cls_804B1634::fn_80431740() {
     return TRUE;
 }
 
-void cls_804B1634::fn_804316EC() {
+void WarningWindow_804B1634::fn_804316EC() {
     if (field_0xec != 0) {
         gGameRoot2_8053AB10->fn_8013B490();
         field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
 
-bool cls_804B1634::fn_80431174(u8 cursor) {
+bool WarningWindow_804B1634::fn_80431174(u8 cursor) {
     if (field_0x8->search(0x0050776375723031ull)->mIsVisible) {
         field_0xe8--;
         if (field_0xe8 <= 0) {
@@ -209,7 +209,7 @@ bool cls_804B1634::fn_80431174(u8 cursor) {
     return false;
 }
 
-void cls_804B1634::fn_804310CC() {
+void WarningWindow_804B1634::fn_804310CC() {
     field_0x8->search(0x0050776375723031ull)->hide();
     field_0x8->search(0x0050776375723032ull)->hide();
     field_0xc->moveFromCentre_80402E08(0.0f, -480.0f);
@@ -219,13 +219,13 @@ void cls_804B1634::fn_804310CC() {
     field_0xec = 0;
 }
 
-void cls_804B1634::fn_804310BC() {
+void WarningWindow_804B1634::fn_804310BC() {
     field_0xe8 = 0;
     field_0xec = 0;
 }
 
 // The width of the noun fn_80430368 appends (only nouns 1-5; the space is the font's 0xA0).
-f32 cls_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
+f32 WarningWindow_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
     f32 total = 0.0f;
     switch (noun) {
     case 1:
@@ -296,7 +296,7 @@ f32 cls_804B1634::fn_80430518(u8 noun, s32 count, f32 scale) {
 
 // FIXME(shotgun): 99.68 %, same-text; behaviour drift.
 // (string literal pool offsets)
-f32 cls_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
+f32 WarningWindow_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
     switch (noun) {
     case 1:
         if (count != 1) {
@@ -366,8 +366,8 @@ f32 cls_804B1634::fn_80430368(u8 noun, s32 count, char* out) {
 }
 
 // FIXME(shotgun): 99.12 %, scheduling+regalloc; behaviour clean.
-// cls_804B1634
-void cls_804B1634::fn_8042F6DC() {
+// WarningWindow_804B1634
+void WarningWindow_804B1634::fn_8042F6DC() {
     f32 w = field_0xb8[0] + 48.0f;
     f32 lineSpace = static_cast<J2DTextBox*>(field_0x8->search(0x0000005477743031ull))->getLineSpace();
     f32 h = (f32)field_0xe4 * lineSpace + 24.0f;
@@ -499,7 +499,7 @@ void cls_804B1634::fn_8042F6DC() {
 // (tools/pool.py). Scales the edge and centre panes of the two window frames (field_0x24 and
 // field_0x10) to the inner size w x h.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
-void cls_804B1634::scaleFrames(f32 w, f32 h) {
+void WarningWindow_804B1634::scaleFrames(f32 w, f32 h) {
     f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
     field_0x24[0]->fn_80402CE0(sx0, 1.0f);
     field_0x24[1]->fn_80402CE0(sx0, 1.0f);
@@ -525,7 +525,7 @@ void cls_804B1634::scaleFrames(f32 w, f32 h) {
 // Lays message `id` out into `str` with each line centred in 428 (a "\x1BCR[n]" prefix), the
 // 0x1A size-3 commands replaced by the digit `value` and its counted noun; on the way it
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
-void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
+void WarningWindow_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     MessageInf1_804AF070* inf1 =
         &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[id].textOffset + 8);
@@ -677,8 +677,8 @@ void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     strcat(str, ch);
 }
 
-// The window the warning text slides over: inlined by cls_804B1634's constructor and dead-stripped.
-cls_804B1600::cls_804B1600() {
+// The window the warning text slides over: inlined by WarningWindow_804B1634's constructor and dead-stripped.
+StageSelectWindow_804B1600::StageSelectWindow_804B1600() {
     JUTResFont* font;
     lbl_8053AEC4 = this;
     field_0x4 = new J2DScreen;
@@ -695,7 +695,7 @@ cls_804B1600::cls_804B1600() {
     field_0x12 = 0;
 }
 
-cls_804B1600::~cls_804B1600() {
+StageSelectWindow_804B1600::~StageSelectWindow_804B1600() {
     delete field_0x4;
     field_0x4 = NULL;
     delete field_0x8;
@@ -705,7 +705,7 @@ cls_804B1600::~cls_804B1600() {
     lbl_8053AEC4 = NULL;
 }
 
-bool cls_804B1600::fn_8042EDAC(u32 message, u8 value) {
+bool StageSelectWindow_804B1600::fn_8042EDAC(u32 message, u8 value) {
     if (field_0x12 == 0) {
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search(0x0000546d6d743031ull))->getStringPtr(), message, value, NULL, NULL);
         getMessageText_803832BC(((J2DTextBox*)field_0x4->search(0x0000546d6d743032ull))->getStringPtr(), message, value, NULL, NULL);
@@ -720,7 +720,7 @@ bool cls_804B1600::fn_8042EDAC(u32 message, u8 value) {
     return false;
 }
 
-BOOL cls_804B1600::fn_8042EC7C() {
+BOOL StageSelectWindow_804B1600::fn_8042EC7C() {
     if (field_0x12 != 0) {
         field_0x10++;
         if (field_0x10 < 8) {
@@ -741,7 +741,7 @@ BOOL cls_804B1600::fn_8042EC7C() {
     return false;
 }
 
-BOOL cls_804B1600::fn_8042EBEC() {
+BOOL StageSelectWindow_804B1600::fn_8042EBEC() {
     if (field_0x12 != 0) {
         u8 done = field_0x8->fn_80402940(10, 0, 0.0f, -480.0f);
         field_0xc->fn_80402628(10, field_0xc->field_0x28, 0);
@@ -754,14 +754,14 @@ BOOL cls_804B1600::fn_8042EBEC() {
     return true;
 }
 
-void cls_804B1600::fn_8042EB98() {
+void StageSelectWindow_804B1600::fn_8042EB98() {
     if (field_0x12 != 0) {
         gGameRoot2_8053AB10->fn_8013B490();
         field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
 
-void cls_804B1600::fn_8042EB24() {
+void StageSelectWindow_804B1600::fn_8042EB24() {
     field_0x8->moveFromCentre_80402E08(0.0f, -480.0f);
     field_0x8->field_0x22 = 0;
     field_0xc->mPane->setAlpha(0);
@@ -770,7 +770,7 @@ void cls_804B1600::fn_8042EB24() {
     field_0x12 = 0;
 }
 
-void cls_804B1600::fn_8042EB14() {
+void StageSelectWindow_804B1600::fn_8042EB14() {
     field_0x10 = 0;
     field_0x12 = 0;
 }

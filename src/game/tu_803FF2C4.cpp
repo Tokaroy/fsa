@@ -18,7 +18,7 @@ void fn_80139994(int port, void* arg);
 // game/tu_803006E8.cpp: starts the GBA client threads.
 void fn_803007D0();
 
-cls_804B0F50::cls_804B0F50() {
+BootLoader_804B0F50::BootLoader_804B0F50() {
     lbl_8053AAF0 = this;
     if (lbl_80529DEC.mSaveRegion.f.field_0xd == 1) {
         field_0x7a = 1;
@@ -55,7 +55,7 @@ cls_804B0F50::cls_804B0F50() {
     field_0x8 = NULL;
     field_0x10 = 0;
     field_0xc = new cls_804A8578();
-    field_0x14 = new cls_804B1A38();
+    field_0x14 = new AudioResLoader_804B1A38();
     field_0x18 = NULL;
     field_0x1c = NULL;
     field_0x20 = NULL;
@@ -70,7 +70,7 @@ cls_804B0F50::cls_804B0F50() {
     JUTGamePad::setResetCallback(fn_80139994, NULL);
 }
 
-cls_804B0F50::~cls_804B0F50() {
+BootLoader_804B0F50::~BootLoader_804B0F50() {
     lbl_80529DEC.mLogoArchive_0x18->unmount();
     delete field_0xc;
     field_0xc = NULL;
@@ -81,9 +81,9 @@ cls_804B0F50::~cls_804B0F50() {
 }
 
 // FIXME(shotgun): 97.60 %, different; behaviour near.
-void cls_804B0F50::fn_803FFAA8() {
+void BootLoader_804B0F50::fn_803FFAA8() {
     if (field_0x79 == 0) {
-        cls_804B0FC0* cmd = field_0x44;
+        DvdMountMemArchiveCommand_804B0FC0* cmd = field_0x44;
         if (cmd->field_0x4 == 1) {
             lbl_80529DEC.mClientThreadArchive_0x58 = cmd->field_0x14;
             delete cmd;
@@ -104,7 +104,7 @@ void cls_804B0F50::fn_803FFAA8() {
     }
 
     if (field_0x79 == 1) {
-        cls_804B0FC0* cmd = field_0x34;
+        DvdMountMemArchiveCommand_804B0FC0* cmd = field_0x34;
         if (cmd->field_0x4 == 1) {
             lbl_80529DEC.mLogoArchive_0x18 = cmd->field_0x14;
             delete cmd;
@@ -372,7 +372,7 @@ void cls_804B0F50::fn_803FFAA8() {
     }
 }
 
-void cls_804B0F50::fn_803FF420() {
+void BootLoader_804B0F50::fn_803FF420() {
     if (field_0x79 <= 1) {
         return;
     }
@@ -439,7 +439,7 @@ void cls_804B0F50::fn_803FF420() {
 }
 
 // Frees the loader's archives.
-void cls_804B0F50::fn_803FF2C4() {
+void BootLoader_804B0F50::fn_803FF2C4() {
     if (field_0x18 != NULL) {
         delete field_0x18;
         field_0x18 = NULL;

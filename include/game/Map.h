@@ -48,10 +48,10 @@ struct TColor;
 // game/tu_80432638.cpp (owner unit, not written yet). Named after its vtable,
 // lbl_804B1668 (stored by its constructor, 0x8043395C); 0xB0 bytes
 // (TileMap_804AA858's constructor allocates it). Only what TileMap_804AA858 uses.
-class cls_804B1668 {
+class GbaWindow_804B1668 {
 public:
-    cls_804B1668();
-    /* 0x08 */ virtual ~cls_804B1668();
+    GbaWindow_804B1668();
+    /* 0x08 */ virtual ~GbaWindow_804B1668();
     // 0x80432750: called by TileMap_804AA858::fn_802FF0EC with
     // (field_0x230 == -1, the field_0x21c-0x228 rectangle as floats); r4 is
     // tested clrlwi. (bool).
@@ -220,9 +220,9 @@ extern s32 lbl_80506D98[4];
 
 // 4 x 3 at 0x150 / 0x190 / 0x1D0 (__construct_array 0x10 x 4); empty
 // constructor. fn_802FF798 fills the 0x1D0 ones with x, y, w, h words.
-class cls_803004C0 {
+class IntRect_803004C0 {
 public:
-    cls_803004C0();
+    IntRect_803004C0();
     void set(s32 x, s32 y, s32 w, s32 h) {
         field_0x0 = x;
         field_0x4 = y;
@@ -239,15 +239,15 @@ public:
 // 0x100 at 0x2398: a timed sprite effect that fn_802F6800 adds (the first
 // entry with mTimer 0) from params' field_0x30 kind; fn_802FF568 counts
 // mTimer down each frame.
-class cls_803003AC {
+class TimedSpriteEffect_803003AC {
 public:
-    cls_803003AC();
+    TimedSpriteEffect_803003AC();
 
     /* 0x00 */ s32 mTimer;    // the kind's duration, counted down
     /* 0x04 */ s32 mDuration; // mTimer's start value
     /* 0x08 */ f32 mScale;    // per kind; fn_802F6800 gives mMtx an identity when it is not 1.0f
     /* 0x0C */ JGeometry::TVec3f mPos;
-    // The draw arguments of the sprite it came from (cls_8030029C's).
+    // The draw arguments of the sprite it came from (QueuedSprite_8030029C's).
     /* 0x18 */ void* mRes;
     /* 0x1C */ s32 mFrame;
     /* 0x20 */ void* mImage;
@@ -278,9 +278,9 @@ public:
 // 0x20 x 2 at 0xC220 / 0xD324: a queued sprite. fn_802FF3F0 / fn_802FF2D8
 // draw it with fn_802F86CC (mRes, mFrame), else fn_802F745C (mImage), else
 // fn_802F6CF4 (field_0x18), passing &mParams.
-class cls_8030029C {
+class QueuedSprite_8030029C {
 public:
-    cls_8030029C();
+    QueuedSprite_8030029C();
 
     /* 0x00 */ JGeometry::TVec3f mPos;
     /* 0x0C */ void* mRes;
@@ -410,7 +410,7 @@ public:
     // the player, its field_0x11c record, field_0x150 / field_0x190 rects,
     // field_0x210 byte (tested clrlwi.), a count (cmpwi 0, + 1) and an
     // alpha (0xFF - alpha).
-    void fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_803004C0* rect, cls_803004C0* rect2,
+    void fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect, IntRect_803004C0* rect2,
                      u8 flag, s32 count, u8 alpha);
     // 0x802FF3B0 (game/tu_802F5040.cpp): no arguments. Calls fn_802FA3FC
     // when byte 0xE451 is set and gGameRoot_8053AAF8->mTileImages_0x4 is not NULL.
@@ -425,7 +425,7 @@ public:
     // 65 per row) around pos, when mHeightGridEffectNum_0xc21c is positive and pos lies in
     // the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells from mLayerOrigin_0x2368.
     f32 fn_802F5E9C(const JGeometry::TVec3f* pos);
-    // 0x802F6CF4: the third sprite kind of the queues (cls_8030029C::mTilePalettes_0x18),
+    // 0x802F6CF4: the third sprite kind of the queues (QueuedSprite_8030029C::mTilePalettes_0x18),
     // called like fn_802F745C (pos, the resource, &params).
     void fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
     // 0x802F91AC: loads the view matrix of a sprite at pos (fn_802F86CC
@@ -470,7 +470,7 @@ public:
     /* 0x00C8 */ u8* mSpritePalettes_0xc8[12];
     // 0x8000: where fn_802F9714 decodes compressed resources (JKRDecomp::decode).
     /* 0x00F8 */ u8* mDecodeBuf_0xf8;
-    /* 0x00FC */ cls_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
+    /* 0x00FC */ GbaWindow_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
     // 65 x 65 grid points (0x1081 TVec3f / TColor each, __construct_new_array).
     /* 0x0100 */ JGeometry::TVec3f (*mHeightGrid_0x100[2])[65];
     /* 0x0108 */ JUtility::TColor* mHeightGridColors_0x108[2];
@@ -483,9 +483,9 @@ public:
     /* 0x0138 */ s32 field_0x138[4];
     /* 0x0148 */ u8 field_0x148[4];
     /* 0x014C */ u8 field_0x14c[4];
-    /* 0x0150 */ cls_803004C0 field_0x150[4];
-    /* 0x0190 */ cls_803004C0 field_0x190[4];
-    /* 0x01D0 */ cls_803004C0 field_0x1d0[4];
+    /* 0x0150 */ IntRect_803004C0 field_0x150[4];
+    /* 0x0190 */ IntRect_803004C0 field_0x190[4];
+    /* 0x01D0 */ IntRect_803004C0 field_0x1d0[4];
     /* 0x0210 */ u8 field_0x210[4];
     /* 0x0214 */ u8 field_0x214; // 2 units compare it with 1 (act_player_sword_level_check_npc 0x802F1350)
     /* 0x0215 */ u8 field_0x215;
@@ -538,15 +538,15 @@ public:
     /* 0x238C */ u8* mAnimTileData_0x238c; // __nwa(0x100)
     /* 0x2390 */ s32 mAnimTileFrame_0x2390;
     /* 0x2394 */ s32 mAnimTileTimer_0x2394;
-    /* 0x2398 */ cls_803003AC mFadeSprites_0x2398[0x100];
+    /* 0x2398 */ TimedSpriteEffect_803003AC mFadeSprites_0x2398[0x100];
     /* 0xBF98 */ u8 field_0xbf98;
     /* 0xBF9C */ cls_803003A8 mHeightGridEffects_0xbf9c[16];
     /* 0xC21C */ s32 mHeightGridEffectNum_0xc21c; // fn_802F5E9C reads the grid only while it is positive
     // Two sprite queues: fn_802FF3F0 / fn_802FF2D8 draw the mQueuedSpriteNum_0xd320 /
     // mLateQueuedSpriteNum_0xe424 entries and empty them.
-    /* 0xC220 */ cls_8030029C mQueuedSprites_0xc220[0x20];
+    /* 0xC220 */ QueuedSprite_8030029C mQueuedSprites_0xc220[0x20];
     /* 0xD320 */ s32 mQueuedSpriteNum_0xd320;
-    /* 0xD324 */ cls_8030029C mLateQueuedSprites_0xd324[0x20];
+    /* 0xD324 */ QueuedSprite_8030029C mLateQueuedSprites_0xd324[0x20];
     /* 0xE424 */ s32 mLateQueuedSpriteNum_0xe424;
     /* 0xE428 */ JUTTexture* mFilterTex_0xe428[10];
     /* 0xE450 */ u8 mUseFilterTex_0xe450;

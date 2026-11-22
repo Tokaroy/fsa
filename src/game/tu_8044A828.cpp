@@ -32,7 +32,7 @@ static const char* lbl_804B1CD8[10] = {
     "kk_rupyNum_09.bti",
 };
 
-cls_804B1D00::cls_804B1D00() {
+MgVolleyballScreen_804B1D00::MgVolleyballScreen_804B1D00() {
     lbl_8053AF28 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("mg_volleyball.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -46,7 +46,7 @@ cls_804B1D00::cls_804B1D00() {
     field_0x14 = 0;
 }
 
-cls_804B1D00::~cls_804B1D00() {
+MgVolleyballScreen_804B1D00::~MgVolleyballScreen_804B1D00() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 2; i++) {
@@ -56,7 +56,7 @@ cls_804B1D00::~cls_804B1D00() {
     lbl_8053AF28 = NULL;
 }
 
-void cls_804B1D00::fn_8044AFD8() {
+void MgVolleyballScreen_804B1D00::fn_8044AFD8() {
     field_0x14 &= ~1;
     const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CD8[0]));
     static_cast<J2DPicture*>(mScreen->search(lbl_80490DB8[2]))->changeTexture(res, 0);
@@ -79,7 +79,7 @@ void cls_804B1D00::fn_8044AFD8() {
     mScreen->search(lbl_80490E00[12])->hide();
 }
 
-void cls_804B1D00::fn_8044AF90() {
+void MgVolleyballScreen_804B1D00::fn_8044AF90() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
@@ -90,7 +90,7 @@ void cls_804B1D00::fn_8044AF90() {
 // saves r27-r31 where ours saves r26-r31 (our hundreds lives in r29 across
 // the first fn_804030C4 call). The tens of field_0x13 and units of field_0x12
 // are scheduled in other registers too (arg_mismatch rows from 0x4C8).
-void cls_804B1D00::fn_8044A828() {
+void MgVolleyballScreen_804B1D00::fn_8044A828() {
     for (s32 i = 0; i < 2; i++) {
         mPanes[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());
     }

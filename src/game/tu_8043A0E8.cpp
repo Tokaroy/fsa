@@ -32,7 +32,7 @@
 
 // The panel offsets and the box test the panel checks inline (fn_8043D514 / fn_8043D57C /
 // fn_8043DF24 as written out in fn_8043E398).
-static inline f32 topOffset(cls_804B1920* m) {
+static inline f32 topOffset(HudMgr_804B1920* m) {
     f32 result = 0.0f;
     if (m->field_0x10b != 0 && m->field_0x10c == 1) {
         result = -66.0f * (-87.0f - (m->field_0x40[9]->mPane->getBounds()->i.y - 13.0f)) / 100.0f;
@@ -40,7 +40,7 @@ static inline f32 topOffset(cls_804B1920* m) {
     return result;
 }
 
-static inline f32 bottomOffset(cls_804B1920* m) {
+static inline f32 bottomOffset(HudMgr_804B1920* m) {
     f32 result = 0.0f;
     if (m->field_0x10b != 0 && m->field_0x10c == 0) {
         f32 y = m->field_0x40[0]->mPane->getBounds()->i.y - m->field_0x40[0]->field_0xc;
@@ -82,11 +82,11 @@ static const char* lbl_804B1820[] = {
 
 // fn_8043D644's steps, indexed by field_0x10b; built at static init time.
 // Declared here, not at its use, to keep the .data order (0x804B1820, 0x804B18D0, 0x804B1900).
-static void (cls_804B1920::*lbl_804B18D0[4])() = {
-    &cls_804B1920::fn_8043D034,
-    &cls_804B1920::fn_8043CF40,
-    &cls_804B1920::fn_8043CEA0,
-    &cls_804B1920::fn_8043CDA0,
+static void (HudMgr_804B1920::*lbl_804B18D0[4])() = {
+    &HudMgr_804B1920::fn_8043D034,
+    &HudMgr_804B1920::fn_8043CF40,
+    &HudMgr_804B1920::fn_8043CEA0,
+    &HudMgr_804B1920::fn_8043CDA0,
 };
 
 static const char* lbl_804B1900[] = {
@@ -104,7 +104,7 @@ void fn_804408F0(JGeometry::TVec3f* pos) {
 
 // Differs only in the two setFont calls: the original loads lbl_8053AD78->mFont before the search.
 // FIXME: 98.97 %, missing/extra; behaviour clean.
-cls_804B1920::cls_804B1920() {
+HudMgr_804B1920::HudMgr_804B1920() {
     lbl_8053AED0 = this;
     lbl_80529DEC.field_0x24a = 0;
     field_0xdd = 0;
@@ -126,32 +126,32 @@ cls_804B1920::cls_804B1920() {
     field_0x2b8 = NULL;
     field_0x2bc = NULL;
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        field_0x290 = new cls_804B13D4;
+        field_0x290 = new AdventureHud_804B13D4;
         if (lbl_80529DEC.mStage_0x118 == 9 && lbl_80529DEC.mLevel_0x11c == 3) {
-            field_0x298 = new cls_804B1AE8;
+            field_0x298 = new MapEdOverlay_804B1AE8;
         }
         if (lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3) {
-            field_0x2b8 = new cls_804B1D20;
+            field_0x2b8 = new PrologueOverlay_804B1D20;
         }
         if (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 1) {
-            field_0x2b0 = new cls_804B1CC8;
+            field_0x2b0 = new MgFishingScreen_804B1CC8;
         } else if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) {
-            field_0x29c = new cls_804B1BB0;
+            field_0x29c = new MgHorseRaceScreen_804B1BB0;
         } else if (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 1) {
-            field_0x2a8 = new cls_804B1C58;
+            field_0x2a8 = new MgShootingScreen_804B1C58;
         } else if (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 2) {
-            field_0x2a4 = new cls_804B1C20;
+            field_0x2a4 = new MgKokkoScreen_804B1C20;
         } else if (lbl_80529DEC.mStage_0x118 == 2 && lbl_80529DEC.mLevel_0x11c == 2) {
-            field_0x2a0 = new cls_804B1BE8;
+            field_0x2a0 = new MgOniScreen_804B1BE8;
         } else if (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 2) {
-            field_0x2b4 = new cls_804B1D00;
+            field_0x2b4 = new MgVolleyballScreen_804B1D00;
         } else if (lbl_80529DEC.mStage_0x118 == 5 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x2ac = new cls_804B1C90;
         }
     } else {
-        field_0x294 = new cls_804B146C;
+        field_0x294 = new BattleHud_804B146C;
     }
-    field_0x2bc = new cls_804B1E1C;
+    field_0x2bc = new RupeeDigitSprites_804B1E1C;
     field_0x10a = 0;
     field_0xfc = 0;
     field_0xe8 = 0;
@@ -302,7 +302,7 @@ cls_804B1920::cls_804B1920() {
     }
 }
 
-cls_804B1920::~cls_804B1920() {
+HudMgr_804B1920::~HudMgr_804B1920() {
     if (field_0x290 != NULL) {
         delete field_0x290;
         field_0x290 = NULL;
@@ -406,7 +406,7 @@ cls_804B1920::~cls_804B1920() {
     lbl_8053AED0 = NULL;
 }
 
-void cls_804B1920::fn_8043EDF8() {
+void HudMgr_804B1920::fn_8043EDF8() {
     field_0xdd = 0;
     field_0xdc = 0;
     field_0x255 = 0;
@@ -441,13 +441,13 @@ void cls_804B1920::fn_8043EDF8() {
     }
 }
 
-void cls_804B1920::fn_8043EDE8(s32 arg) {
+void HudMgr_804B1920::fn_8043EDE8(s32 arg) {
     field_0xe0 = arg;
     field_0xe4 = 30;
 }
 
 // FIXME(shotgun): 99.99 %, reloc-name; behaviour drift.
-void cls_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, f32 y, f32 scale) {
+void HudMgr_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, f32 y, f32 scale) {
     f32 px;
     f32 py;
     f32 sx;
@@ -525,7 +525,7 @@ void cls_804B1920::fn_8043E80C(u32 digit, u8 alpha, u32 top, u32 bottom, f32 x, 
     }
 }
 
-void cls_804B1920::fn_8043E7CC(JGeometry::TVec3f pos) {
+void HudMgr_804B1920::fn_8043E7CC(JGeometry::TVec3f pos) {
     Vec screen;
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&pos, false, false, &screen);
     fn_80440928(screen.x, screen.y);
@@ -537,7 +537,7 @@ static inline f32 maxf(f32 a, f32 b) {
 
 // FIXME(shotgun): 99.76 %, regalloc-only + reloc-name; behaviour clean.
 // (the cx / cy and box bounds live in fewer float registers)
-void cls_804B1920::fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) {
+void HudMgr_804B1920::fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) {
     Vec screenA;
     Vec screenB;
     gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(&a, false, false, &screenA);
@@ -560,7 +560,7 @@ void cls_804B1920::fn_8043E398(JGeometry::TVec3f a, JGeometry::TVec3f b) {
 }
 
 // FIXME(shotgun): 99.75 %, regalloc-only + reloc-name; behaviour clean.
-void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
+void HudMgr_804B1920::fn_8043DF8C(f32 x, f32 y) {
     Vec screenOrigin;
     Vec screenUnit;
     Vec origin;
@@ -588,7 +588,7 @@ void cls_804B1920::fn_8043DF8C(f32 x, f32 y) {
     }
 }
 
-bool cls_804B1920::fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin) {
+bool HudMgr_804B1920::fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin) {
     f32 x0 = x - 94.0f - margin;
     f32 y0 = y - 61.5f - margin;
     f32 x1 = margin + (94.0f + x);
@@ -599,7 +599,7 @@ bool cls_804B1920::fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 margin) {
     return true;
 }
 
-void cls_804B1920::fn_8043DC98() {
+void HudMgr_804B1920::fn_8043DC98() {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         field_0x290->fn_8041F720();
         if (field_0x2b0 != NULL) {
@@ -658,7 +658,7 @@ void cls_804B1920::fn_8043DC98() {
     }
 }
 
-void cls_804B1920::fn_8043DB58() {
+void HudMgr_804B1920::fn_8043DB58() {
     gGameRoot2_8053AB10->fn_8013B490();
     u8 mode = field_0x256;
     if (mode != 0xFF) {
@@ -682,7 +682,7 @@ void cls_804B1920::fn_8043DB58() {
     }
 }
 
-void cls_804B1920::fn_8043D8B4() {
+void HudMgr_804B1920::fn_8043D8B4() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         for (int i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
@@ -754,7 +754,7 @@ void cls_804B1920::fn_8043D8B4() {
     }
 }
 
-void cls_804B1920::fn_8043D874(s32 id, s32 arg1, u32 arg2) {
+void HudMgr_804B1920::fn_8043D874(s32 id, s32 arg1, u32 arg2) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         field_0x290->fn_8041E708(id, arg1, arg2);
     } else {
@@ -762,7 +762,7 @@ void cls_804B1920::fn_8043D874(s32 id, s32 arg1, u32 arg2) {
     }
 }
 
-void cls_804B1920::fn_8043D834() {
+void HudMgr_804B1920::fn_8043D834() {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         field_0x290->fn_8041E58C();
     } else {
@@ -773,7 +773,7 @@ void cls_804B1920::fn_8043D834() {
 // Original tests the bool of field_0xde & bit against zero (srwi.; ours: srwi + cmplwi 1),
 // and compares the message type byte signed (cmpwi 0x2A; ours: cmplwi).
 // FIXME: 98.18 %, missing/extra; behaviour drift.
-bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
+bool HudMgr_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     if (field_0x10a != 0) {
         return false;
     }
@@ -820,17 +820,17 @@ bool cls_804B1920::fn_8043D67C(s32 id, u32 arg1, u32 arg2) {
     return true;
 }
 
-void cls_804B1920::fn_8043D644() {
+void HudMgr_804B1920::fn_8043D644() {
     (this->*lbl_804B18D0[field_0x10b])();
 }
 
-void cls_804B1920::fn_8043D5F0() {
+void HudMgr_804B1920::fn_8043D5F0() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x4->setScissor(true);
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-f32 cls_804B1920::fn_8043D57C() {
+f32 HudMgr_804B1920::fn_8043D57C() {
     f32 result = 0.0f;
     if (field_0x10b != 0 && field_0x10c == 0) {
         f32 y = field_0x40[0]->mPane->getBounds()->i.y - field_0x40[0]->field_0xc;
@@ -841,7 +841,7 @@ f32 cls_804B1920::fn_8043D57C() {
 
 // FIXME: 98.85 %, regalloc-only; behaviour clean.
 // Registers differ: the original keeps the bounds value in f1 (the 0.0 default is dead there).
-f32 cls_804B1920::fn_8043D514() {
+f32 HudMgr_804B1920::fn_8043D514() {
     f32 result = 0.0f;
     if (field_0x10b != 0 && field_0x10c == 1) {
         result = -66.0f * (-87.0f - (field_0x40[9]->mPane->getBounds()->i.y - 13.0f)) / 100.0f;
@@ -849,7 +849,7 @@ f32 cls_804B1920::fn_8043D514() {
     return result;
 }
 
-void cls_804B1920::fn_8043D39C() {
+void HudMgr_804B1920::fn_8043D39C() {
     if (gGameRoot_8053AAF8->field_0x7f) {
         field_0x290->fn_8041F5FC();
     } else {
@@ -874,7 +874,7 @@ void cls_804B1920::fn_8043D39C() {
 // FIXME: 99.98 %, reloc-name; behaviour clean.
 // The 1.0 / 16.0 / 100.0 / 13.0 literals sit early in our .sdata2 pool because fn_8043A638..fn_8043CB24
 // (the earlier first uses) are unwritten.
-void cls_804B1920::fn_8043D034() {
+void HudMgr_804B1920::fn_8043D034() {
     if (lbl_8053AED0->field_0x10a) {
         Vec originScreen;
         Vec topScreen;
@@ -929,7 +929,7 @@ void cls_804B1920::fn_8043D034() {
     }
 }
 
-void cls_804B1920::fn_8043CF40() {
+void HudMgr_804B1920::fn_8043CF40() {
     f32 x;
     f32 y;
     if (field_0x10c == 0) {
@@ -949,7 +949,7 @@ void cls_804B1920::fn_8043CF40() {
     }
 }
 
-void cls_804B1920::fn_8043CEA0() {
+void HudMgr_804B1920::fn_8043CEA0() {
     field_0x104--;
     if (gGameRoot_8053AAF8->field_0x4c != 7) {
         field_0x104 = 0;
@@ -963,7 +963,7 @@ void cls_804B1920::fn_8043CEA0() {
     field_0x10b = 3;
 }
 
-void cls_804B1920::fn_8043CDA0() {
+void HudMgr_804B1920::fn_8043CDA0() {
     f32 x;
     f32 y;
     if (field_0x10c == 0) {
@@ -978,7 +978,7 @@ void cls_804B1920::fn_8043CDA0() {
         field_0x40[i]->fn_80402940(11, 0, x, y);
     }
     if (done) {
-        cls_804B1920* screen = lbl_8053AED0;
+        HudMgr_804B1920* screen = lbl_8053AED0;
         screen->field_0x10a = 0;
         screen->field_0xfc = 0;
         screen->field_0xe8 = 0;
@@ -988,7 +988,7 @@ void cls_804B1920::fn_8043CDA0() {
 }
 
 // FIXME(shotgun): 99.91 %, reloc-name; behaviour clean.
-bool cls_804B1920::fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag, f32 x, f32 y, f32 scale) {
+bool HudMgr_804B1920::fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag, f32 x, f32 y, f32 scale) {
     if (field_0x252 < 10) {
         field_0x118[field_0x252] = x - 0.5f * (19.0f * (digits % 2) * scale) - 16.0f * (digits >> 1) * scale;
         field_0x140[field_0x252] = y - 0.5f * (19.0f * scale);
@@ -1040,7 +1040,7 @@ bool cls_804B1920::fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag
 }
 
 // FIXME: 99.89 %, reloc-name; behaviour drift.
-void cls_804B1920::fn_8043BB84() {
+void HudMgr_804B1920::fn_8043BB84() {
     static JUtility::TColor lbl_8052C5D8[6] = {
         JUtility::TColor(0xFF, 0xD2, 0x00, 0xFF),
         JUtility::TColor(0xB4, 0xFF, 0x00, 0xFF),
@@ -1163,7 +1163,7 @@ void cls_804B1920::fn_8043BB84() {
     }
 }
 
-void cls_804B1920::fn_8043ACE4() {
+void HudMgr_804B1920::fn_8043ACE4() {
     // Built once, never read.
     static JUtility::TColor lbl_8052C5F0[4] = {
         JUtility::TColor(0xF2, 0x49, 0x12, 0xFF),
@@ -1238,7 +1238,7 @@ void cls_804B1920::fn_8043ACE4() {
     }
 }
 
-void cls_804B1920::fn_8043ABCC(s32 index, s32 unused) {
+void HudMgr_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     index = index < 0 ? 0 : index;
     void* res;
     if (index != 1) {
@@ -1253,7 +1253,7 @@ void cls_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     field_0x10d = 0;
 }
 
-void cls_804B1920::fn_8043A638() {
+void HudMgr_804B1920::fn_8043A638() {
     s16 wait;
     s16 delay;
     f32 dx = 0.0f;
@@ -1309,11 +1309,11 @@ void cls_804B1920::fn_8043A638() {
     field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-void cls_804B1920::fn_8043A608() {
+void HudMgr_804B1920::fn_8043A608() {
     fn_8043A450(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c);
 }
 
-void cls_804B1920::fn_8043A450(s32 stage, s32 sub) {
+void HudMgr_804B1920::fn_8043A450(s32 stage, s32 sub) {
     if ((stage == 0 && sub == 2) || (stage == 1 && sub == 2) || (stage == 2 && sub == 2) ||
         (stage == 3 && sub == 2) || (stage == 4 && sub == 2) || (stage == 5 && sub == 2) ||
         (stage == 6 && sub == 2) || (stage == 7 && sub == 1)) {
@@ -1335,7 +1335,7 @@ void cls_804B1920::fn_8043A450(s32 stage, s32 sub) {
     }
 }
 
-void cls_804B1920::fn_8043A268(s32 stage, s32 sub, s16 value, f32 x, f32 y) {
+void HudMgr_804B1920::fn_8043A268(s32 stage, s32 sub, s16 value, f32 x, f32 y) {
     if ((stage == 0 && sub == 2) || (stage == 1 && sub == 2) || (stage == 2 && sub == 2) ||
         (stage == 3 && sub == 2) || (stage == 4 && sub == 2) || (stage == 5 && sub == 2) ||
         (stage == 6 && sub == 2) || (stage == 7 && sub == 1)) {
@@ -1360,7 +1360,7 @@ void cls_804B1920::fn_8043A268(s32 stage, s32 sub, s16 value, f32 x, f32 y) {
     }
 }
 
-void cls_804B1920::fn_8043A208(u8 alpha, f32 a, f32 b, f32 c, f32 d) {
+void HudMgr_804B1920::fn_8043A208(u8 alpha, f32 a, f32 b, f32 c, f32 d) {
     if (field_0x10 != NULL) {
         field_0x1c0 = a;
         field_0x1c4 = b;

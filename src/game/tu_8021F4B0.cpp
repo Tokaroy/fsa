@@ -9,7 +9,7 @@
 static const u16 lbl_8053FDD0[3] = {0x3CC, 0x3CD, 0x3CE};
 
 // The loop of fn_8021F924, inlined into the end of state 5.
-static inline void deleteEmitters(cls_8021FB44* self) {
+static inline void deleteEmitters(EmitterMoveSeq_8021FB44* self) {
     for (s32 i = 0; i < 3; i++) {
         deleteEmitter(&self->mEmitters[i]);
     }
@@ -33,7 +33,7 @@ static inline void approach(f32& cur, f32 target, f32 remaining) {
     }
 }
 
-cls_8021FB44::cls_8021FB44() {
+EmitterMoveSeq_8021FB44::EmitterMoveSeq_8021FB44() {
     mState = 0;
     mTimer = 0;
     mPos.x = 0.0f;
@@ -52,11 +52,11 @@ cls_8021FB44::cls_8021FB44() {
     mEmitters[2] = NULL;
 }
 
-cls_8021FB44::~cls_8021FB44() {
+EmitterMoveSeq_8021FB44::~EmitterMoveSeq_8021FB44() {
     fn_8021F924();
 }
 
-void cls_8021FB44::fn_8021F9AC(const JGeometry::TVec3f* pos) {
+void EmitterMoveSeq_8021FB44::fn_8021F9AC(const JGeometry::TVec3f* pos) {
     mPos.x = pos->x;
     mPos.y = pos->y;
     mPos.z = pos->z;
@@ -70,7 +70,7 @@ void cls_8021FB44::fn_8021F9AC(const JGeometry::TVec3f* pos) {
     }
 }
 
-void cls_8021FB44::fn_8021F924() {
+void EmitterMoveSeq_8021FB44::fn_8021F924() {
     for (s32 i = 0; i < 3; i++) {
         deleteEmitter(&mEmitters[i]);
     }
@@ -78,12 +78,12 @@ void cls_8021FB44::fn_8021F924() {
     mState = 0;
 }
 
-void cls_8021FB44::fn_8021F914(s32 state) {
+void EmitterMoveSeq_8021FB44::fn_8021F914(s32 state) {
     mTimer = 0;
     mState = state;
 }
 
-bool cls_8021FB44::fn_8021F4B0() {
+bool EmitterMoveSeq_8021FB44::fn_8021F4B0() {
     bool result = false;
     mTimer++;
     if (mTimer < 0) {

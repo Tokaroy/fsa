@@ -59,7 +59,7 @@ Method:
    The inventory takes every non-weak function that exists in ours but not in
    the target. That is 75 units and 168 helpers. Excluded: JGeometry
    template instances (`TVec3<f>` ctor/`set`) and tu_8042E964's
-   `cls_804B1600` ctor. 82 of the helpers have a comment citing
+   `StageSelectWindow_804B1600` ctor. 82 of the helpers have a comment citing
    pool/`.sdata2`. The rest are "dead-stripped, X inlines it" helpers.
 2. None of the 168 is called out of line in ours (no `R_PPC_REL24` to it).
    Every caller inlines it.
@@ -103,7 +103,7 @@ Figures:
 | act_cannon | updateRecoil | `{ static s32 lbl_8053AA70 = 0; static f32 lbl_8053AA78 = 0.0f; lbl_805` | 37 | 1 | 3 | 3 | pool only | - | - | - |  |
 | act_cannon | setBounceHeight | `{ f32 sinv = JMath::sincosTable_.sinDegree(a); self->mPos.y = self->mH` | 4 | 1 | 4 | 3 | pool only | - | - | - |  |
 | act_cloud | isAirborne | `{ return getPlayerPos_8023E724(player)->z > 0.0f; }` | 3 | 1 | 3 | 3 | one statement | - | y | - | rejected |
-| act_eyeball_switch | open | `{ vfunc_0x30(0xFF, true); gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, f` | 6 | 2 | 0 | 0 | 2 call sites | y | y | y |  |
+| act_eyeball_switch | open | `{ setScreenFlag_0x30(0xFF, true); gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, f` | 6 | 2 | 0 | 0 | 2 call sites | y | y | y |  |
 | act_fairy_invincible | setUniformScaleMtx | `{ m[0][3] = 0.0f; m[1][3] = 0.0f; m[2][3] = 0.0f; m[0][0] = scale; m[0` | 14 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_fish | stopSwim | `{ field_0x25c = 0.0f; field_0x258 = 0.0f; field_0x254 = 0.0f; field_0x` | 6 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_force_gem | stopMoving | `{ field_0x3c.z = 0.0f; field_0x3c.y = 0.0f; field_0x3c.x = 0.0f; }` | 5 | 7 | 5 | 5 | 7 call sites | y | y | y |  |
@@ -144,7 +144,7 @@ Figures:
 | act_princess_zelda_demo | showSceneMessage | `{ fn_8038BD08(0, lbl_8053C548[field_0x234], field_0x4, JGeometry::TVec` | 3 | 1 | 2 | 5 | one statement | - | y | - | rejected |
 | act_princess_zelda_demo | lowerPlayers | `{ f32 dz = 2.0f - 0.2f * (fn_8011921C()->field_0x8 - lbl_80464550[33])` | 13 | 1 | 5 | 5 | pool only | - | - | - | rejected |
 | act_princess_zelda_demo | sinkToPlayer | `{ mAnim0.mFrameCtrl.setRate(1.0f); if (fn_801CD950(&mPos.y, getPlayerP` | 8 | 1 | 6 | 5 | pool only | - | - | - | rejected |
-| act_rainbow_bridge | checkActivate | `{ if (vfunc_0x34()) { field_0x238 = 1; // The original stores the stat` | 35 | 2 | 0 | 1 | 2 call sites | y | y | y | accepted |
+| act_rainbow_bridge | checkActivate | `{ if (isScreenFlagSet_0x34()) { field_0x238 = 1; // The original stores the stat` | 35 | 2 | 0 | 1 | 2 call sites | y | y | y | accepted |
 | act_rainbow_bridge | isPlayerOn | `{ if (player < 0) { return false; } if (field_0x4 != getPlayerLayer_80` | 26 | 1 | 1 | 1 | same name in act_extending_lift | - | - | y | accepted |
 | act_room_transfer_lift | isInside | `{ s32 layer = field_0x4; s32 playerLayer = getPlayerLayer_8023DE58(pla` | 14 | 1 | 1 | 1 | pool only | - | - | - | accepted |
 | act_rope | walk | `{ field_0x250 = fn_801CD664(0x29) + 0x3c; mTargetSpeed = 0.4f; if (mSt` | 9 | 3 | 0 | 0 | 3 call sites | y | y | y |  |

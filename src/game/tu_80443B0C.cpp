@@ -8,15 +8,15 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/JUtility/JUTFont.h"
 
-static cls_804B1B60::StateFunc lbl_804B1B30[4] = {
-    &cls_804B1B60::fn_804445E0,
-    &cls_804B1B60::fn_80444590,
-    &cls_804B1B60::fn_80443DAC,
-    &cls_804B1B60::fn_80443D5C,
+static MapYaguraWindow_804B1B60::StateFunc lbl_804B1B30[4] = {
+    &MapYaguraWindow_804B1B60::fn_804445E0,
+    &MapYaguraWindow_804B1B60::fn_80444590,
+    &MapYaguraWindow_804B1B60::fn_80443DAC,
+    &MapYaguraWindow_804B1B60::fn_80443D5C,
 };
 
 // FIXME(shotgun): 92.27 %, missing/extra; behaviour near.
-cls_804B1B60::cls_804B1B60() {
+MapYaguraWindow_804B1B60::MapYaguraWindow_804B1B60() {
     mScreen = new J2DScreen();
     mScreen->setPriority("map_yagura_window.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
 
@@ -76,7 +76,7 @@ cls_804B1B60::cls_804B1B60() {
     field_0x4d = 0;
 }
 
-cls_804B1B60::~cls_804B1B60() {
+MapYaguraWindow_804B1B60::~MapYaguraWindow_804B1B60() {
     delete mScreen;
     mScreen = NULL;
     delete field_0x8;
@@ -93,7 +93,7 @@ cls_804B1B60::~cls_804B1B60() {
     }
 }
 
-void cls_804B1B60::fn_804446F0(s32 arg) {
+void MapYaguraWindow_804B1B60::fn_804446F0(s32 arg) {
     field_0x44 = arg;
     fn_80443B0C(static_cast<J2DTextBox*>(mScreen->search('Tmm01'))->getStringPtr(), 0x241, arg);
     fn_80443B0C(static_cast<J2DTextBox*>(mScreen->search('Tmm02'))->getStringPtr(), 0x241, arg);
@@ -124,7 +124,7 @@ void cls_804B1B60::fn_804446F0(s32 arg) {
     field_0x4d = 0;
 }
 
-bool cls_804B1B60::fn_804446A4() {
+bool MapYaguraWindow_804B1B60::fn_804446A4() {
     if (field_0x4d != 4) {
         (this->*lbl_804B1B30[field_0x4d])();
         return false;
@@ -132,14 +132,14 @@ bool cls_804B1B60::fn_804446A4() {
     return true;
 }
 
-void cls_804B1B60::fn_80444650() {
+void MapYaguraWindow_804B1B60::fn_80444650() {
     if (field_0x4d != 4) {
         gGameRoot2_8053AB10->fn_8013B490();
         mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }
 
-void cls_804B1B60::fn_804445E0() {
+void MapYaguraWindow_804B1B60::fn_804445E0() {
     field_0xc->fn_80402628(0x10, 0, field_0xc->field_0x28);
     if (field_0x8->fn_80402940(0x10, 0, -480.0f, 26.0f)) {
         field_0x8->field_0x22 = 0;
@@ -147,13 +147,13 @@ void cls_804B1B60::fn_804445E0() {
     }
 }
 
-void cls_804B1B60::fn_80444590() {
+void MapYaguraWindow_804B1B60::fn_80444590() {
     if (field_0x8->fn_80402940(5, 0, 26.0f, 0.0f)) {
         field_0x4d = 2;
     }
 }
 
-void cls_804B1B60::fn_80443DAC() {
+void MapYaguraWindow_804B1B60::fn_80443DAC() {
     if (lbl_8053AD30->fn_80309C4C(4, -1)) {
         if (field_0x4c == 0) {
             field_0x4c = 1;
@@ -230,7 +230,7 @@ void cls_804B1B60::fn_80443DAC() {
     }
 }
 
-void cls_804B1B60::fn_80443D5C() {
+void MapYaguraWindow_804B1B60::fn_80443D5C() {
     if (field_0x8->fn_80402940(10, 0, 0.0f, 480.0f)) {
         field_0x4d = 4;
     }
@@ -240,12 +240,12 @@ void cls_804B1B60::fn_80443D5C() {
 // linker dropped: the original's .sdata2 has 11.0f and 1.0f ahead of fn_80443D5C's literals, so it
 // was generated before it (tools/pool.py). Sets the 10 to 20 frames until the cursor's next frame.
 // R2 pool helper (inlined at 3 call sites; one-statement body); was resetCursorTimer.
-void cls_804B1B60::pool_80543D70() {
+void MapYaguraWindow_804B1B60::pool_80543D70() {
     field_0x48 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
 }
 
 // FIXME(shotgun): 85.76 %, missing/extra; behaviour drift.
-void cls_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
+void MapYaguraWindow_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
     MessageInf1_804AF070* inf1 =
         &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[msgId].textOffset + 8);

@@ -8,7 +8,7 @@ field_0x8 when gGameRoot_8053AAF8->field_0x7f is clear. Seven J2DScreens from th
 fn_804031C4 archive, a 13-state machine through three static PMF tables
 (enter lbl_804B0BDC, update lbl_804B0D14, draw lbl_804B0E4C; state 13 runs
 field_0x1c8's entries), a full-screen fade J2DPicture (field_0x5c), four
-cls_804B20F8 sound objects. The tables are copied at boot by __sinit from
+PlayerSoundObj_804B20F8 sound objects. The tables are copied at boot by __sinit from
 their @NNN initializers (MWCC does this for PMF tables of a class with
 virtuals) — that copy is the boot-path code.
 
@@ -44,7 +44,7 @@ a [3][6] array (original overrun into field_0x285).
 ## SHARED-EDITS
 - include/game/GameGlobals.h: cls_804AA8C8::fn_8030A308(s32) -> u8,
   cls_804AA8C8::fn_80309A9C(u32, s32) -> u32; review fix: lbl_8053AEC0 is a
-  cls_804B1634* (vtable 0x804B1634, ctor fn_80431D84, tu_8042E964) with
+  WarningWindow_804B1634* (vtable 0x804B1634, ctor fn_80431D84, tu_8042E964) with
   members fn_804310CC(), fn_804316EC(), fn_80431A9C(s32, u8, void*) (were
   extern "C" void* functions); tu_8044C7F0's caller updated.
 - include/game/GameState.h: GameState_804B0FE0 0x23D u8 field_0x23d (split
@@ -53,12 +53,12 @@ a [3][6] array (original overrun into field_0x285).
 - include/game/cls_804B16A8.h (new): vtable 0x804B16A8, ctor fn_804372C4
   (tu_80434370), fn_80436668 / fn_804366B8 / fn_8043670C(u8).
 - include/game/tu_803F0A54.h: full class layout (+ field_0x335) (used by tu_803A85E4 too).
-- symbols.txt: placeholder renames (members of ConnectScreen_804B0F10 / cls_804B16A8 /
+- symbols.txt: placeholder renames (members of ConnectScreen_804B0F10 / RuleScreen_804B16A8 /
   cls_804AA8C8, __vt__22ConnectScreen_804B0F10, __sinit, __dt__), .data PMF-table
   split (@685-@723 initializers), .bss split.
 
 ## Checkpoint (Opus 5.5 pass 2, twin units, 2026-11-05)
-Baseline total 8416. Twin of game/tu_803E1668.cpp (cls_804B0B00, the 1-4 player
+Baseline total 8416. Twin of game/tu_803E1668.cpp (AdvEntryScreen_804B0B00, the 1-4 player
 version; see its checkpoint for the screen map). Ported both ways:
 fn_803F38A4 99.6 (stack slots), fn_803F35B0 99.2, fn_803F5410 98.7 (operands: the
 original shares one int->float slot), fn_803F8AE4 / fn_803F8FBC 99.9 (reloc-name

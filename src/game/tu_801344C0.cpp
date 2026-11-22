@@ -89,7 +89,7 @@ int main() {
 
     JKRExpHeap* threadHeap = JKRExpHeap::create(0x800, mainHeap, false);
     fn_80401FEC(OSGetThreadPriority(OSGetCurrentThread()) - 1, threadHeap, 0);
-    lbl_8053AAF0 = new (mainHeap, 0) cls_804B0F50();
+    lbl_8053AAF0 = new (mainHeap, 0) BootLoader_804B0F50();
 
     bool flag = false;
     for (;;) {

@@ -7,7 +7,7 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "JSystem/J2D/J2DPicture.h"
 
-cls_804B1D20::cls_804B1D20() {
+PrologueOverlay_804B1D20::PrologueOverlay_804B1D20() {
     lbl_8053AF38 = this;
     mScreen[0] = new J2DScreen();
     mScreen[0]->setPriority("op_prologue.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -32,7 +32,7 @@ cls_804B1D20::cls_804B1D20() {
     field_0x14 = 0.0f;
 }
 
-cls_804B1D20::~cls_804B1D20() {
+PrologueOverlay_804B1D20::~PrologueOverlay_804B1D20() {
     for (s32 i = 0; i < 2; i++) {
         delete mScreen[i];
         mScreen[i] = NULL;
@@ -40,7 +40,7 @@ cls_804B1D20::~cls_804B1D20() {
     lbl_8053AF38 = NULL;
 }
 
-void cls_804B1D20::fn_8044C14C() {
+void PrologueOverlay_804B1D20::fn_8044C14C() {
     if (field_0x18) {
         gGameRoot2_8053AB10->fn_8013B490();
         mScreen[0]->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -50,7 +50,7 @@ void cls_804B1D20::fn_8044C14C() {
     }
 }
 
-void cls_804B1D20::fn_8044C038() {
+void PrologueOverlay_804B1D20::fn_8044C038() {
     if (field_0x18) {
         f32 x = mScreen[1]->search('Tp01')->getBounds()->i.x;
         mScreen[1]->search('Tp01')->move(x, field_0xc - field_0x14);
@@ -59,7 +59,7 @@ void cls_804B1D20::fn_8044C038() {
     }
 }
 
-void cls_804B1D20::fn_8044C028(f32 offset) {
+void PrologueOverlay_804B1D20::fn_8044C028(f32 offset) {
     field_0x18 = true;
     field_0x14 = offset;
 }

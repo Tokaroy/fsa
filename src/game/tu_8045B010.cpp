@@ -7,7 +7,7 @@
 
 static const f32 lbl_80491680[4] = {1.0f, 1.1f, 0.9f, 0.85f};
 
-cls_804B20F8::cls_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
+PlayerSoundObj_804B20F8::PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles)
     : ActorSoundObj_804578F4(pos, heap, numHandles), field_0x5c(kind) {}
 
 // FIXME: 95.7%. (1) The original reads the group byte once into r31 and does clrlwi before each
@@ -15,7 +15,7 @@ cls_804B20F8::cls_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 nu
 // the epilogue (no mr r3, r30); ours folds it into the nested if. (3) kind is in r4 in the original
 // (r0 in ours) and the three pitch constants load in a different order, so the registers of the
 // random pitch expression differ.
-JAISoundHandle* cls_804B20F8::startSound(JAISoundID id) {
+JAISoundHandle* PlayerSoundObj_804B20F8::startSound(JAISoundID id) {
     u8 type = id.mId.mBytes.mGroupId;
     JAISeMgr* seMgr = gAudioMgr_8053AF80->field_0x34;
     switch ((s32)id) {

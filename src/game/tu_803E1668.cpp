@@ -20,30 +20,30 @@
 // Entered when the state changes (index: the new state). The three tables
 // are filled at startup by the unit's static initialiser, as in
 // game/tu_803F0A54.cpp.
-static cls_804B0B00::StateFunc lbl_804B0754[15] = {
-    &cls_804B0B00::fn_803E4610, &cls_804B0B00::fn_803E45FC, &cls_804B0B00::fn_803E4344,
-    &cls_804B0B00::fn_803E4330, &cls_804B0B00::fn_803E4308, &cls_804B0B00::fn_803E3CB0,
-    &cls_804B0B00::fn_803E3C94, &cls_804B0B00::fn_803E3C80, &cls_804B0B00::fn_803E3C00,
-    &cls_804B0B00::fn_803E3564, &cls_804B0B00::fn_803E3548, &cls_804B0B00::fn_803E3320,
-    &cls_804B0B00::fn_803E2A20, &cls_804B0B00::fn_803E2A0C, &cls_804B0B00::fn_803E29C8,
+static AdvEntryScreen_804B0B00::StateFunc lbl_804B0754[15] = {
+    &AdvEntryScreen_804B0B00::fn_803E4610, &AdvEntryScreen_804B0B00::fn_803E45FC, &AdvEntryScreen_804B0B00::fn_803E4344,
+    &AdvEntryScreen_804B0B00::fn_803E4330, &AdvEntryScreen_804B0B00::fn_803E4308, &AdvEntryScreen_804B0B00::fn_803E3CB0,
+    &AdvEntryScreen_804B0B00::fn_803E3C94, &AdvEntryScreen_804B0B00::fn_803E3C80, &AdvEntryScreen_804B0B00::fn_803E3C00,
+    &AdvEntryScreen_804B0B00::fn_803E3564, &AdvEntryScreen_804B0B00::fn_803E3548, &AdvEntryScreen_804B0B00::fn_803E3320,
+    &AdvEntryScreen_804B0B00::fn_803E2A20, &AdvEntryScreen_804B0B00::fn_803E2A0C, &AdvEntryScreen_804B0B00::fn_803E29C8,
 };
 
 // Run each frame (index: the state).
-static cls_804B0B00::StateFunc lbl_804B08BC[15] = {
-    &cls_804B0B00::fn_803ED604, &cls_804B0B00::fn_803ED5B4, &cls_804B0B00::fn_803ECC64,
-    &cls_804B0B00::fn_803EC804, &cls_804B0B00::fn_803EBAA8, &cls_804B0B00::fn_803EAEC8,
-    &cls_804B0B00::fn_803EA3F8, &cls_804B0B00::fn_803E9EE8, &cls_804B0B00::fn_803E9A20,
-    &cls_804B0B00::fn_803E926C, &cls_804B0B00::fn_803E9034, &cls_804B0B00::fn_803E831C,
-    &cls_804B0B00::fn_803E8210, &cls_804B0B00::fn_803E6AB0, &cls_804B0B00::fn_803E6A2C,
+static AdvEntryScreen_804B0B00::StateFunc lbl_804B08BC[15] = {
+    &AdvEntryScreen_804B0B00::fn_803ED604, &AdvEntryScreen_804B0B00::fn_803ED5B4, &AdvEntryScreen_804B0B00::fn_803ECC64,
+    &AdvEntryScreen_804B0B00::fn_803EC804, &AdvEntryScreen_804B0B00::fn_803EBAA8, &AdvEntryScreen_804B0B00::fn_803EAEC8,
+    &AdvEntryScreen_804B0B00::fn_803EA3F8, &AdvEntryScreen_804B0B00::fn_803E9EE8, &AdvEntryScreen_804B0B00::fn_803E9A20,
+    &AdvEntryScreen_804B0B00::fn_803E926C, &AdvEntryScreen_804B0B00::fn_803E9034, &AdvEntryScreen_804B0B00::fn_803E831C,
+    &AdvEntryScreen_804B0B00::fn_803E8210, &AdvEntryScreen_804B0B00::fn_803E6AB0, &AdvEntryScreen_804B0B00::fn_803E6A2C,
 };
 
 // Drawn each frame (index: the state).
-static cls_804B0B00::StateFunc lbl_804B0A24[15] = {
-    &cls_804B0B00::fn_803E4940, &cls_804B0B00::fn_803E6A28, &cls_804B0B00::fn_803E64A0,
-    &cls_804B0B00::fn_803E64A0, &cls_804B0B00::fn_803E64A0, &cls_804B0B00::fn_803E51C4,
-    &cls_804B0B00::fn_803E51C4, &cls_804B0B00::fn_803E51C4, &cls_804B0B00::fn_803E51C4,
-    &cls_804B0B00::fn_803E4940, &cls_804B0B00::fn_803E4940, &cls_804B0B00::fn_803E4940,
-    &cls_804B0B00::fn_803E4650, &cls_804B0B00::fn_803E4650, &cls_804B0B00::fn_803E462C,
+static AdvEntryScreen_804B0B00::StateFunc lbl_804B0A24[15] = {
+    &AdvEntryScreen_804B0B00::fn_803E4940, &AdvEntryScreen_804B0B00::fn_803E6A28, &AdvEntryScreen_804B0B00::fn_803E64A0,
+    &AdvEntryScreen_804B0B00::fn_803E64A0, &AdvEntryScreen_804B0B00::fn_803E64A0, &AdvEntryScreen_804B0B00::fn_803E51C4,
+    &AdvEntryScreen_804B0B00::fn_803E51C4, &AdvEntryScreen_804B0B00::fn_803E51C4, &AdvEntryScreen_804B0B00::fn_803E51C4,
+    &AdvEntryScreen_804B0B00::fn_803E4940, &AdvEntryScreen_804B0B00::fn_803E4940, &AdvEntryScreen_804B0B00::fn_803E4940,
+    &AdvEntryScreen_804B0B00::fn_803E4650, &AdvEntryScreen_804B0B00::fn_803E4650, &AdvEntryScreen_804B0B00::fn_803E462C,
 };
 
 // Cursor y positions by field_0x1c0[i] (.sdata2, lhax).
@@ -254,7 +254,7 @@ static inline s16 nextUnconnected(s16 start, s32 count) {
 // Sets bit `i` of gGameRoot_8053AAF8->mPlayerMask and the 2-bit field `i` of
 // field_0x83 to 1 for the field_0x1bc + 1 players that take part, and clears
 // both for the others.
-static inline void setEntries(cls_804B0B00* self) {
+static inline void setEntries(AdvEntryScreen_804B0B00* self) {
     for (s32 i = 0; i < 4; i++) {
         if (i < self->field_0x1bc + 1) {
             gGameRoot_8053AAF8->mPlayerMask |= (u8)(1 << i);
@@ -292,7 +292,7 @@ static inline void setSingleEntry() {
 
 // Steps the cursor's blink counter (field_0x254[0]) and the frame counter (field_0x220[0]).
 // Shared by fn_803E9034 and fn_803ED604 (the two menu update functions).
-static inline void stepBlink(cls_804B0B00* self) {
+static inline void stepBlink(AdvEntryScreen_804B0B00* self) {
     if (self->field_0x254[0] != 0) {
         self->field_0x254[0]++;
         if (self->field_0x254[0] > 10) {
@@ -305,19 +305,19 @@ static inline void stepBlink(cls_804B0B00* self) {
     }
 }
 
-static inline void setBounce(cls_804B0B00* self, s32 i) {
+static inline void setBounce(AdvEntryScreen_804B0B00* self, s32 i) {
     if (i <= self->field_0x1bc) {
         self->field_0x254[i] = 1;
     }
 }
 
-static inline void setBounceIfReady(cls_804B0B00* self, s32 i) {
+static inline void setBounceIfReady(AdvEntryScreen_804B0B00* self, s32 i) {
     if (i <= self->field_0x1bc && self->field_0x1c0[i] == 4) {
         self->field_0x254[i] = 1;
     }
 }
 
-static inline void updateHandicapCursor(cls_804B0B00* self, s32 i) {
+static inline void updateHandicapCursor(AdvEntryScreen_804B0B00* self, s32 i) {
     if (i <= self->field_0x1bc) {
         if (self->field_0x1c0[i] < 3) {
             self->field_0x10->search(lbl_80478310[i])->hide();
@@ -380,7 +380,7 @@ static inline f32 toEffectY(f32 y) {
 // FIXME: 99.55 %, regalloc-only; behaviour clean.
 // Registers only in the pane-tag loops (e.g. the first loop's
 // array pointers are r24 / r26 in the original, r26 / r27 here).
-cls_804B0B00::cls_804B0B00() {
+AdvEntryScreen_804B0B00::AdvEntryScreen_804B0B00() {
     field_0x1b4 = 0;
     field_0x1bc = lbl_80529DEC.field_0x23c;
     if (field_0x1bc == 0) {
@@ -663,16 +663,16 @@ cls_804B0B00::cls_804B0B00() {
     const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
     lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    field_0x5c = new cls_804B16A8;
+    field_0x5c = new RuleScreen_804B16A8;
     tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
     field_0x60 = new J2DPicture(tex);
     field_0x60->setBlackWhite(JUtility::TColor(0x000000FF), JUtility::TColor(0x00000000));
     for (int i = 0; i < 4; i++) {
-        field_0x7c[i] = new cls_804B20F8(i, NULL, NULL, 8);
+        field_0x7c[i] = new PlayerSoundObj_804B20F8(i, NULL, NULL, 8);
     }
 }
 
-cls_804B0B00::~cls_804B0B00() {
+AdvEntryScreen_804B0B00::~AdvEntryScreen_804B0B00() {
     delete mScreen;
     mScreen = NULL;
     delete field_0x8;
@@ -712,7 +712,7 @@ cls_804B0B00::~cls_804B0B00() {
 // cls_804AF878::fn_803A86A4: `mode` 1 / 2 go straight to state 10 / 9;
 // otherwise field_0x1bc counts the connected controllers and the menu
 // starts in state 2.
-void cls_804B0B00::fn_803EDBF0(u8 mode) {
+void AdvEntryScreen_804B0B00::fn_803EDBF0(u8 mode) {
     lbl_8053AEC0->fn_804310CC();
     switch (mode) {
     case 1:
@@ -745,7 +745,7 @@ void cls_804B0B00::fn_803EDBF0(u8 mode) {
 // cls_804AF878::fn_803A8664: draws field_0x14, the state, then the fade
 // (field_0x60). When the fade-out into state 9 ends, the decide / back
 // button textures of lbl_8053AED8 are set.
-void cls_804B0B00::fn_803EDA2C() {
+void AdvEntryScreen_804B0B00::fn_803EDA2C() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x14->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x1d4 != 15) {
@@ -759,7 +759,7 @@ void cls_804B0B00::fn_803EDA2C() {
 // cls_804AF878::fn_803A8600 each frame: counts the connected controllers
 // into field_0x1d0 and bits 4-7 of gGameRoot_8053AAF8->mPlayerMask (one player:
 // slot 0 through fn_8030A3B0), then runs the state's update.
-void cls_804B0B00::fn_803ED83C() {
+void AdvEntryScreen_804B0B00::fn_803ED83C() {
     field_0x1d0 = 0;
     if (field_0x1bc == 0) {
         if (lbl_8053AD30->fn_8030A3B0(getPlayerInputSlot_8030AAF4(0))) {
@@ -797,7 +797,7 @@ void cls_804B0B00::fn_803ED83C() {
     }
 }
 
-void cls_804B0B00::fn_803ED604() {
+void AdvEntryScreen_804B0B00::fn_803ED604() {
     stepBlink(this);
     if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
         field_0x26c = 255;
@@ -837,7 +837,7 @@ void cls_804B0B00::fn_803ED604() {
     }
 }
 
-void cls_804B0B00::fn_803ED5B4() {
+void AdvEntryScreen_804B0B00::fn_803ED5B4() {
     if (field_0x26e == 0) {
         field_0x1dc = 9;
         field_0x26e = 1;
@@ -850,7 +850,7 @@ void cls_804B0B00::fn_803ED5B4() {
 // 2 fewer instrs (594 vs 596): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable (r30) where the
 // original keeps two (r30 and r28).
-void cls_804B0B00::fn_803ECC64() {
+void AdvEntryScreen_804B0B00::fn_803ECC64() {
     field_0x254[0]++;
     if (field_0x254[0] > 0) {
         if (field_0x254[0] < 25) {
@@ -947,7 +947,7 @@ void cls_804B0B00::fn_803ECC64() {
 // and a changed count resets the players' tables (fn_80403680). Back
 // (0x200) leaves the screen (field_0x360 = 2); right / left (4 / 8) cycle
 // the count.
-void cls_804B0B00::fn_803EC804() {
+void AdvEntryScreen_804B0B00::fn_803EC804() {
     stepBlink(this);
     if (lbl_8053AD30->fn_80309C4C(0x1100, 1)) {
         if (field_0x1bc == 0) {
@@ -1014,7 +1014,7 @@ void cls_804B0B00::fn_803EC804() {
 // 2 fewer instrs (853 vs 855): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, .rodata base load scheduled before others[], and one
 // merged i * 5 induction variable where the original keeps two (r29 and r27).
-void cls_804B0B00::fn_803EBAA8() {
+void AdvEntryScreen_804B0B00::fn_803EBAA8() {
     s32 others[3];
     s32* dst = others;
     for (s32 i = 0; i < 4; i++) {
@@ -1156,7 +1156,7 @@ void cls_804B0B00::fn_803EBAA8() {
 // 2 fewer instrs (758 vs 760): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable where the
 // original keeps two (r30 and r28).
-void cls_804B0B00::fn_803EAEC8() {
+void AdvEntryScreen_804B0B00::fn_803EAEC8() {
     field_0x254[0]++;
     if (field_0x254[0] > 0) {
         if (field_0x254[0] < 25) {
@@ -1281,7 +1281,7 @@ void cls_804B0B00::fn_803EAEC8() {
 // 2 fewer instrs (690 vs 692): extsh. vs cmpwi r0, 0 on
 // field_0x254[0] > 0, and one merged i * 5 induction variable where the
 // original keeps two (r29 and r27).
-void cls_804B0B00::fn_803EA3F8() {
+void AdvEntryScreen_804B0B00::fn_803EA3F8() {
     field_0x254[0]++;
     if (field_0x254[0] > 0) {
         if (field_0x254[0] < 8) {
@@ -1383,7 +1383,7 @@ void cls_804B0B00::fn_803EA3F8() {
 // (0x1100) without every controller connected enters state 8 (fn_803E3C00);
 // decide with all connected reads the players' results and enters state 6
 // (fn_803E3C94); back (0x200) enters state 2.
-void cls_804B0B00::fn_803E9EE8() {
+void AdvEntryScreen_804B0B00::fn_803E9EE8() {
     if (field_0x26c == 255) {
         fn_803E3C00();
     } else if (lbl_8053AD30->fn_80309C4C(0x1100, lbl_80529DEC.field_0x23c + 1)) {
@@ -1451,7 +1451,7 @@ void cls_804B0B00::fn_803E9EE8() {
 // back (0x200) ends it; then each connected player's pane animation
 // (field_0x220[i], 100-129 looping) plays sound 0x10001 at frame 11 and at
 // frame 36 sound 0x2000E and effects 0xCB / 0xCC at the 'Pplli' pane.
-void cls_804B0B00::fn_803E9A20() {
+void AdvEntryScreen_804B0B00::fn_803E9A20() {
     switch (field_0x26c) {
     case 0:
         if (lbl_8053AEC0->fn_804317AC()) {
@@ -1522,7 +1522,7 @@ void cls_804B0B00::fn_803E9A20() {
     }
 }
 
-static inline void fadeInSlide(cls_804B0B00* self, s32 start, s32 duration, f32 dist, f32* pos,
+static inline void fadeInSlide(AdvEntryScreen_804B0B00* self, s32 start, s32 duration, f32 dist, f32* pos,
                                const u64* tags, const u8* alphas, s32 count) {
     if (self->field_0x254[0] > start) {
         if (self->field_0x254[0] < start + duration) {
@@ -1547,7 +1547,7 @@ static inline void fadeInSlide(cls_804B0B00* self, s32 start, s32 duration, f32 
 }
 
 // FIXME: 96.73 %, missing/extra; behaviour near.
-void cls_804B0B00::fn_803E926C() {
+void AdvEntryScreen_804B0B00::fn_803E926C() {
     field_0x254[0]++;
     fadeInSlide(this, 0, 25, -200.0f, &field_0x164, lbl_80477FC0, field_0x322, 17);
     if (field_0x254[0] > 25) {
@@ -1580,7 +1580,7 @@ void cls_804B0B00::fn_803E926C() {
     field_0xc->search('Pscuro02')->move(field_0x1a4, y);
 }
 
-void cls_804B0B00::fn_803E9034() {
+void AdvEntryScreen_804B0B00::fn_803E9034() {
     stepBlink(this);
     if (field_0x1d0 != field_0x1bc + 1 && 0 < field_0x1bc) {
         field_0x26c = 255;
@@ -1621,7 +1621,7 @@ void cls_804B0B00::fn_803E9034() {
 // extsh. vs cmpwi r0, 0 on field_0x254[0] > 0, &others[0] CSE into r29,
 // and callee-saved register rotation (r19/r20/r21).
 // FIXME: 98.66 %, different; behaviour near.
-void cls_804B0B00::fn_803E831C() {
+void AdvEntryScreen_804B0B00::fn_803E831C() {
     if (field_0x1bc != 3) {
         if (field_0x220[0] < 100) {
             field_0x220[0] = 0;
@@ -1809,7 +1809,7 @@ void cls_804B0B00::fn_803E831C() {
 
 // Update state 12: slides field_0x64, field_0x78 and the field_0x1bc + 1
 // player panes field_0x68[] in, then enters state 13.
-void cls_804B0B00::fn_803E8210() {
+void AdvEntryScreen_804B0B00::fn_803E8210() {
     u8 done0 = false;
     u8 done1 = false;
     u8 done2 = false;
@@ -1834,7 +1834,7 @@ void cls_804B0B00::fn_803E8210() {
 // FIXME: 95.41 %, missing/extra; behaviour drift.
 // 4 fewer instrs (1492 vs 1496): register allocation and loop
 // induction pointers across the per-player button and marker loops.
-void cls_804B0B00::fn_803E6AB0() {
+void AdvEntryScreen_804B0B00::fn_803E6AB0() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x254[i] != 0) {
             field_0x254[i]++;
@@ -2007,7 +2007,7 @@ void cls_804B0B00::fn_803E6AB0() {
     }
 }
 
-void cls_804B0B00::fn_803E6A2C() {
+void AdvEntryScreen_804B0B00::fn_803E6A2C() {
     if (field_0x5c->fn_804366B8()) {
         if (field_0x26e == 0) {
             field_0x1dc = 9;
@@ -2022,7 +2022,7 @@ void cls_804B0B00::fn_803E6A2C() {
     }
 }
 
-void cls_804B0B00::fn_803E6A28() {}
+void AdvEntryScreen_804B0B00::fn_803E6A28() {}
 
 // FIXME: 99.17 %, operands; behaviour clean.
 // Stack slots and registers only: the original converts every
@@ -2033,7 +2033,7 @@ void cls_804B0B00::fn_803E6A28() {}
 // 230 over 15 frames, then by (n - 15)^2 / 225), the chosen count's pane
 // (field_0x1bc) bounces with field_0x254[0] and shows its lit version at
 // 80 * the fade; the others show the plain one.
-void cls_804B0B00::fn_803E64A0() {
+void AdvEntryScreen_804B0B00::fn_803E64A0() {
     f32 alpha;
     f32 t;
     if (field_0x1d4 != 4) {
@@ -2095,7 +2095,7 @@ void cls_804B0B00::fn_803E64A0() {
 // FIXME: 97.03 %, missing/extra; behaviour near.
 // 4 fewer instrs (1179 vs 1183): stack slot and induction
 // variable register allocation across the three per-player loops.
-void cls_804B0B00::fn_803E51C4() {
+void AdvEntryScreen_804B0B00::fn_803E51C4() {
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << (i + 4))) {
             u8 alpha;
@@ -2271,7 +2271,7 @@ void cls_804B0B00::fn_803E51C4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-static inline void updateGameSelectPanes(cls_804B0B00* self, f32 offset) {
+static inline void updateGameSelectPanes(AdvEntryScreen_804B0B00* self, f32 offset) {
     if (self->field_0x1b8 == 0) {
         f32 stabX = self->field_0xc->search('Pstab04')->getBounds()->i.x;
         self->field_0xc->search('Pstab04')->move(stabX, self->field_0x150[0] + offset);
@@ -2312,7 +2312,7 @@ static inline void updateGameSelectPanes(cls_804B0B00* self, f32 offset) {
 // and the chosen entry ('Pstab04' / 'Phanb04' / 'Prub04', field_0x1a8)
 // bounces with field_0x254[0]; then the screen, the player sprites
 // (fn_803F0A54) and lbl_8053AED8's buttons.
-void cls_804B0B00::fn_803E4940() {
+void AdvEntryScreen_804B0B00::fn_803E4940() {
     f32 alpha;
     if (field_0x1d4 != 11) {
         f32 t;
@@ -2362,7 +2362,7 @@ void cls_804B0B00::fn_803E4940() {
 // joined ones' 'Paccur' panes with it; outside state 12 the 'Paccur02'
 // pane and field_0x68[i] bounce with field_0x254[i]. Then lbl_8053AED8's
 // buttons.
-void cls_804B0B00::fn_803E4650() {
+void AdvEntryScreen_804B0B00::fn_803E4650() {
     for (s32 i = 0; i < 4; i++) {
         f32 t;
         if (field_0x1e0[i] < 30) {
@@ -2395,25 +2395,25 @@ void cls_804B0B00::fn_803E4650() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-void cls_804B0B00::fn_803E462C() {
+void AdvEntryScreen_804B0B00::fn_803E462C() {
     field_0x5c->fn_80436668();
 }
 
-void cls_804B0B00::fn_803E4610() {
+void AdvEntryScreen_804B0B00::fn_803E4610() {
     field_0x1e0[0] = 0;
     field_0x254[0] = 0;
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 0;
 }
 
-void cls_804B0B00::fn_803E45FC() {
+void AdvEntryScreen_804B0B00::fn_803E45FC() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 1;
 }
 
 // Enter state 2: slides the menu panes off screen (offsets cleared by the
 // update functions as they slide back in). fn_803EDBF0 inlines it.
-void cls_804B0B00::fn_803E4344() {
+void AdvEntryScreen_804B0B00::fn_803E4344() {
     field_0xf8 = -150.0f;
     mScreen->search('Pmadbb07')->move(field_0xf0, field_0xf4 + field_0xf8);
     field_0xfc = -200.0f;
@@ -2438,12 +2438,12 @@ void cls_804B0B00::fn_803E4344() {
     field_0x1d4 = 2;
 }
 
-void cls_804B0B00::fn_803E4330() {
+void AdvEntryScreen_804B0B00::fn_803E4330() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 3;
 }
 
-void cls_804B0B00::fn_803E4308() {
+void AdvEntryScreen_804B0B00::fn_803E4308() {
     field_0x220[0] = 0;
     field_0x254[0] = 0;
     field_0x1e0[0] = 5;
@@ -2456,7 +2456,7 @@ void cls_804B0B00::fn_803E4308() {
 // 'Tkg02', the panes moved off screen to slide in, and per player the
 // 'Pcgbak' / 'Pcca' panes shown (taking part, 'Ppln' opaque, the
 // animation lengths in field_0x230 / field_0x240) or hidden ('Ppln' at 128).
-void cls_804B0B00::fn_803E3CB0() {
+void AdvEntryScreen_804B0B00::fn_803E3CB0() {
     if (field_0x1bc == 1) {
         const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP2_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
@@ -2523,18 +2523,18 @@ void cls_804B0B00::fn_803E3CB0() {
     field_0x1d4 = 5;
 }
 
-void cls_804B0B00::fn_803E3C94() {
+void AdvEntryScreen_804B0B00::fn_803E3C94() {
     field_0x254[0] = 0;
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 6;
 }
 
-void cls_804B0B00::fn_803E3C80() {
+void AdvEntryScreen_804B0B00::fn_803E3C80() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 7;
 }
 
-void cls_804B0B00::fn_803E3C00() {
+void AdvEntryScreen_804B0B00::fn_803E3C00() {
     if (field_0x1bc == 0) {
         lbl_8053AEC0->fn_80431A9C(0xA9, field_0x1bc + 1, NULL);
     } else {
@@ -2549,7 +2549,7 @@ void cls_804B0B00::fn_803E3C00() {
 // 'Tsta01' / 'Than01' / 'Trule01', toggles the 1P vs 2-4P panes, sets the
 // player-count texture in 'Pnop02' / 'Pnop01' (1-4 players), and moves the
 // panes off screen to slide in.
-void cls_804B0B00::fn_803E3564() {
+void AdvEntryScreen_804B0B00::fn_803E3564() {
     char* han = static_cast<J2DTextBox*>(field_0xc->search('Than01'))->getStringPtr();
     char* sta = static_cast<J2DTextBox*>(field_0xc->search('Tsta01'))->getStringPtr();
     char* rule = static_cast<J2DTextBox*>(field_0xc->search('Trule01'))->getStringPtr();
@@ -2608,7 +2608,7 @@ void cls_804B0B00::fn_803E3564() {
     field_0x1d4 = 9;
 }
 
-void cls_804B0B00::fn_803E3548() {
+void AdvEntryScreen_804B0B00::fn_803E3548() {
     field_0x254[0] = 0;
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 10;
@@ -2616,7 +2616,7 @@ void cls_804B0B00::fn_803E3548() {
 
 // Not auto-inlined: fn_803E9034 and fn_803ED604 call fn_803E3320 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void cls_804B0B00::fn_803E3320() {
+void AdvEntryScreen_804B0B00::fn_803E3320() {
     field_0x254[0] = 0;
     field_0x1e0[0] = 5;
     if (field_0x1bc == 0) {
@@ -2644,7 +2644,7 @@ void cls_804B0B00::fn_803E3320() {
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
 // four marker tables, the cursor panes by field_0x1c0[i] (3: joined,
 // 4: not); then the panes start their slide-in.
-static inline void updateRupeeDigits(cls_804B0B00* self, s32 i) {
+static inline void updateRupeeDigits(AdvEntryScreen_804B0B00* self, s32 i) {
     s32 rupees = fn_80403070(self->field_0x1f0[i]);
     const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', lbl_804B0AD8[rupees / 100]);
     static_cast<J2DPicture*>(self->field_0x10->search(lbl_80478410[i]))->changeTexture(tex, 0);
@@ -2657,7 +2657,7 @@ static inline void updateRupeeDigits(cls_804B0B00* self, s32 i) {
     static_cast<J2DPicture*>(self->field_0x10->search(lbl_804783B0[i]))->changeTexture(tex, 0);
 }
 
-static inline void updateMarkerPanes(cls_804B0B00* self, s32 i) {
+static inline void updateMarkerPanes(AdvEntryScreen_804B0B00* self, s32 i) {
     s32 j;
     s32 count = fn_8040305C(self->field_0x200[i]) - 1;
     for (j = 0; j < 6; j++) {
@@ -2680,7 +2680,7 @@ static inline void updateMarkerPanes(cls_804B0B00* self, s32 i) {
     }
 }
 
-void cls_804B0B00::fn_803E2A20() {
+void AdvEntryScreen_804B0B00::fn_803E2A20() {
     for (s32 i = 0; i < 4; i++) {
         if (i >= 1) {
             if (i > field_0x1bc) {
@@ -2743,12 +2743,12 @@ void cls_804B0B00::fn_803E2A20() {
     field_0x1d4 = 12;
 }
 
-void cls_804B0B00::fn_803E2A0C() {
+void AdvEntryScreen_804B0B00::fn_803E2A0C() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 13;
 }
 
-void cls_804B0B00::fn_803E29C8() {
+void AdvEntryScreen_804B0B00::fn_803E29C8() {
     field_0x5c->fn_8043670C(0);
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 14;
@@ -2758,7 +2758,7 @@ void cls_804B0B00::fn_803E29C8() {
 // inlines it; its own copy created the unit's early .rodata ("kk_kettei_01.bti",
 // "kk_modoru_01.bti") and .sdata2 (800.0f, 640.0f) pool entries before fn_803E2A20.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 30-line definition): split out only where the .sdata2 order needs it.
-void cls_804B0B00::drawFade() {
+void AdvEntryScreen_804B0B00::drawFade() {
     if (field_0x26e != 0) {
         switch (field_0x26e) {
         case 1:
@@ -2793,7 +2793,7 @@ void cls_804B0B00::drawFade() {
 // fn_803EA3F8, fn_803EBAA8 and fn_803E6AB0 inline it (lbl_804B0754[15] is NULL);
 // its own copy created the 3.0f .sdata2 literal right after fn_803E1668.
 // R2 pool helper (inlined at 2 call sites); was enterState15.
-void cls_804B0B00::pool_80543680() {
+void AdvEntryScreen_804B0B00::pool_80543680() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 15;
     if (field_0x1bc == 2 && lbl_80529DEC.field_0x64 == -1) {
@@ -2823,7 +2823,7 @@ void cls_804B0B00::pool_80543680() {
 // panes, sliding them between the field_0x1bc + 1 player layout and the
 // 4-player one as field_0x220[0] counts 100-112 and 212-224 (the
 // ConnectScreen_804B0F10::fn_803F0A54 twin, with a 1-player row).
-void cls_804B0B00::fn_803E1668() {
+void AdvEntryScreen_804B0B00::fn_803E1668() {
     f32 ratio = (f32)field_0xc->search(lbl_804780C0[0])->getAlpha() / (f32)field_0x342[0];
     JGeometry::TVec3f pos;
     if (field_0x220[0] < 100) {

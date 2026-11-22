@@ -18,7 +18,7 @@ static const s32 lbl_8046A6B4[4][7] = {
 static const s32 lbl_8046A724[4][2] = {{0xF1, 0x3C}, {0xF9, 0x3D}, {0x101, 0x3E}, {0x109, 0x3F}};
 
 // The frame count of the current step of the current type's table.
-static inline s32 stepFrames(const cls_8021CBA0& seq) {
+static inline s32 stepFrames(const FrameCountSeq_8021CBA0& seq) {
     s32 frames = 0;
     switch (seq.mType) {
     case 0: frames = lbl_8046A6A4[seq.mVariant][seq.mStep]; break;
@@ -28,7 +28,7 @@ static inline s32 stepFrames(const cls_8021CBA0& seq) {
     return frames;
 }
 
-cls_8021CBA0::cls_8021CBA0() {
+FrameCountSeq_8021CBA0::FrameCountSeq_8021CBA0() {
     mType = 0;
     mFrames = 0;
     mStep = 0;
@@ -37,7 +37,7 @@ cls_8021CBA0::cls_8021CBA0() {
     mDone = false;
 }
 
-s32 cls_8021CBA0::fn_8021CB18() {
+s32 FrameCountSeq_8021CBA0::fn_8021CB18() {
     s32 total = 0;
     switch (mType) {
     case 0:
@@ -55,7 +55,7 @@ s32 cls_8021CBA0::fn_8021CB18() {
     return total;
 }
 
-void cls_8021CBA0::fn_8021CA70(int type) {
+void FrameCountSeq_8021CBA0::fn_8021CA70(int type) {
     mType = type;
     mStep = 0;
     mTimer = 0;
@@ -63,7 +63,7 @@ void cls_8021CBA0::fn_8021CA70(int type) {
     mFrames = stepFrames(*this);
 }
 
-void cls_8021CBA0::fn_8021C9C4(int variant) {
+void FrameCountSeq_8021CBA0::fn_8021C9C4(int variant) {
     mVariant = variant;
     mType = 0;
     mStep = 0;
@@ -72,7 +72,7 @@ void cls_8021CBA0::fn_8021C9C4(int variant) {
     mFrames = stepFrames(*this);
 }
 
-u8 cls_8021CBA0::fn_8021C848() {
+u8 FrameCountSeq_8021CBA0::fn_8021C848() {
     if (!mDone) {
         s32 count = 0;
         switch (mType) {

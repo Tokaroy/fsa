@@ -127,10 +127,10 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     field_0x8 = lbl_80529DEC.field_0x5c;
     field_0xc = lbl_80529DEC.field_0x60;
     field_0x10 = new (field_0x98, 0) BlackFade_804A8390();
-    field_0x34 = new (field_0x98, 0) cls_804B04F8();
-    field_0x38 = new (field_0x98, 0) cls_804B19F0();
-    field_0x3c = new (field_0x98, 0) cls_804B1988();
-    field_0x40 = new (field_0x98, 0) cls_804B1634();
+    field_0x34 = new (field_0x98, 0) PressStartOverlay_804B04F8();
+    field_0x38 = new (field_0x98, 0) GbaConnectErrorWindow_804B19F0();
+    field_0x3c = new (field_0x98, 0) ButtonIcons_804B1988();
+    field_0x40 = new (field_0x98, 0) WarningWindow_804B1634();
     field_0xac = NULL;
     field_0xb0 = NULL;
     field_0x4 = NULL;

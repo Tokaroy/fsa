@@ -13,8 +13,8 @@
 // bits. No vtable, ctor or dtor symbol (the constructor is inlined into
 // fn_8021F064; fn_8021F27C is a separate clear); named after its lowest
 // function.
-struct cls_8021F064 {
-    cls_8021F064() : mFlags(0), mCount(0) {}
+struct NaviList_8021F064 {
+    NaviList_8021F064() : mFlags(0), mCount(0) {}
     // True when the list is non-empty and fn_8021D794 holds for every listed
     // actor that still exists.
     bool fn_8021F094() const;
@@ -33,6 +33,6 @@ struct cls_8021F064 {
     /* 0x08 */ s32 mSerials[6];
 }; // Size: 0x20
 
-cls_8021F064* fn_8021F064();
+NaviList_8021F064* fn_8021F064();
 
 #endif

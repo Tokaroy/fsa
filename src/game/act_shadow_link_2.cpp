@@ -82,7 +82,7 @@ void ShadowLink2_804A43E8::init() {
     u32 kind = (mSpawnParam_0x90 >> 5) & 7;
     if (kind == 1 || kind == 2) {
         mFlags |= 0x6000;
-        cls_801C0D70* obj = fn_801C0D70();
+        ShadowLinkFight_801C0D70* obj = fn_801C0D70();
         obj->field_0x54.set(mPos);
         switch (kind) {
         case 1:
@@ -295,7 +295,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             if (viewLayerFlag(mLayer_0x4) != 0) {
                 mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             }
-            cls_801C0D70* p = fn_801C0D70();
+            ShadowLinkFight_801C0D70* p = fn_801C0D70();
             mPos = p->field_0x54;
             mPrevPos = p->field_0x54;
             mVel_0x3c.x = (mSpawnPos.x - mPos.x) * (1.0f / (f32)field_0x250);
@@ -1324,7 +1324,7 @@ void ShadowLink2_804A43E8::vfunc_0xA0() {
 
 void ShadowLink2_804A43E8::fn_801C27F0() {
     bool flag = (mFlags & 0x08000000) != 0;
-    cls_801C0D70* tracker = fn_801C0D70();
+    ShadowLinkFight_801C0D70* tracker = fn_801C0D70();
     tracker->fn_801C1374(flag);
     ActorBase_804A5770::die_0x24();
 }

@@ -37,7 +37,7 @@ static const Step_804AADC8* lbl_804AADC8[] = {
 };
 
 TingleFirstAppearance_804AADD8::TingleFirstAppearance_804AADD8() {
-    field_0x24c = new cls_8031709C;
+    field_0x24c = new SoundEffectSeq_8031709C;
 }
 
 TingleFirstAppearance_804AADD8::~TingleFirstAppearance_804AADD8() {

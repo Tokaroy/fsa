@@ -716,7 +716,7 @@ public:
 }; // Size: 0x274
 
 // Spawned for 'TWTG'.
-class cls_8031709C;
+class SoundEffectSeq_8031709C;
 
 class TinglesTowerTingleAndSign_804AAD60 : public ActorBase_804A5770 {
 public:
@@ -753,7 +753,7 @@ public:
     /* 0x26C */ u8 field_0x26c;
     /* 0x270 */ s32 field_0x270;
     /* 0x274 */ s32 field_0x274;
-    /* 0x278 */ cls_8031709C* field_0x278;
+    /* 0x278 */ SoundEffectSeq_8031709C* field_0x278;
 }; // Size: 0x27C
 
 // Spawned for 'SBAL'. Code: game/tu_80334318.cpp.
@@ -883,7 +883,7 @@ public:
     /* 0x400 */ JPABaseEmitter* field_0x400[5];
 }; // Size: 0x414
 
-class cls_8031709C;
+class SoundEffectSeq_8031709C;
 
 // Spawned for 'JIJI'.
 class OldMan_804AEED0 : public ActorBase_804A5770 {
@@ -937,7 +937,7 @@ public:
     /* 0x271 */ u8 field_0x271;
     /* 0x272 */ u8 field_0x272;
     /* 0x273 */ u8 field_0x273;
-    /* 0x274 */ cls_8031709C* field_0x274;
+    /* 0x274 */ SoundEffectSeq_8031709C* field_0x274;
     /* 0x278 */ JPABaseEmitter* field_0x278;
 }; // Size: 0x27C
 

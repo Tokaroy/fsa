@@ -48,7 +48,7 @@ const char* lbl_804B1C30[10] = {
     "kk_rupyNum_09.bti",
 };
 
-cls_804B1C58::cls_804B1C58() {
+MgShootingScreen_804B1C58::MgShootingScreen_804B1C58() {
     lbl_8053AF10 = this;
     mScreen = new J2DScreen;
     mScreen->setPriority("mg_shooting.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -65,7 +65,7 @@ cls_804B1C58::cls_804B1C58() {
     field_0x2c = 0;
 }
 
-cls_804B1C58::~cls_804B1C58() {
+MgShootingScreen_804B1C58::~MgShootingScreen_804B1C58() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 4; i++) {
@@ -77,7 +77,7 @@ cls_804B1C58::~cls_804B1C58() {
     lbl_8053AF10 = NULL;
 }
 
-void cls_804B1C58::fn_80448334() {
+void MgShootingScreen_804B1C58::fn_80448334() {
     const ResTIMG* zero;
     for (s32 i = 0; i < 4; i++) {
         field_0x2c &= ~(u8)(1 << i);
@@ -91,12 +91,12 @@ void cls_804B1C58::fn_80448334() {
     }
 }
 
-void cls_804B1C58::fn_804482EC() {
+void MgShootingScreen_804B1C58::fn_804482EC() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-void cls_804B1C58::fn_80447FAC() {
+void MgShootingScreen_804B1C58::fn_80447FAC() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
             field_0x8[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());

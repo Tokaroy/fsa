@@ -12,10 +12,10 @@ class ShadowLink2_804A43E8;
 // (fn_80216A8C) places the box in front of Link's sword swing from the
 // animation sequencer at the owner's +0x340, and fn_8021693C asks which
 // players the box overlaps.
-class cls_80217128 {
+class SwordHitBox_80217128 {
 public:
     // Empty box (1, 1)-(-1, -1), no owner, type 0.
-    cls_80217128();
+    SwordHitBox_80217128();
     // Which of the players in `mask` (bit n = player n) have a box on the
     // owner's layer that the hit box overlaps; the bits that do. 0 for an
     // empty mask or an empty box.

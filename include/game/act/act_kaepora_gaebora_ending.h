@@ -87,7 +87,7 @@ public:
     /* 0x295 */ u8 field_0x295[0x3]; // not yet known
     /* 0x298 */ const KaeporaWaypoint* field_0x298; // the path (init, fn_8035F3C0)
     /* 0x29C */ UnknownENDM_804AA0FC* field_0x29C; // the live ENDM actor (init)
-    /* 0x2A0 */ cls_8021ACE0 mSway;
+    /* 0x2A0 */ HeadSway_8021ACE0 mSway;
     /* 0x2B0 */ u8 field_0x2B0;      // gates the sway logic (1 = active)
     /* 0x2B1 */ u8 field_0x2B1[0x3]; // not yet known
     /* 0x2B4 */ JPABaseEmitter* field_0x2B4; // effect emitter, drawn at mPos (update)

@@ -1468,7 +1468,7 @@ s8 fn_800F82CC(JGeometry::TVec3f* cur, const JGeometry::TVec3f* target, f32 step
     return arrived == 3;
 }
 
-void cls_800F802C::fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type) {
+void HitRing_800F802C::fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type) {
     mPos.x = pos.x;
     mPos.y = pos.y;
     mPos.z = pos.z;
@@ -1497,7 +1497,7 @@ void cls_800F802C::fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type) {
     }
 }
 
-void cls_800F802C::fn_800F802C() {
+void HitRing_800F802C::fn_800F802C() {
     if (!mActive) {
         return;
     }

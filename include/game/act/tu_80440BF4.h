@@ -16,10 +16,10 @@ class PaneCtrl_804AF86C;
 // fn_80440FDC, which stores the object in lbl_8053AED8. The panes are the
 // seven 'Pba01'..'Pba04' / 'Pbb01'..'Pbb03' ones; the callers pass textures
 // from main2D.arc (fn_804030C4) to the 'Pba04'/'Pbb02' pictures.
-class cls_804B1988 {
+class ButtonIcons_804B1988 {
 public:
-    cls_804B1988();
-    virtual ~cls_804B1988();
+    ButtonIcons_804B1988();
+    virtual ~ButtonIcons_804B1988();
 
     // Shows or hides the 'Pbb03' pane.
     void fn_80440BF4(bool show);
@@ -41,6 +41,6 @@ public:
     /* 0x13 */ u8 pad_0x13;
 }; // Size: 0x14
 
-extern cls_804B1988* lbl_8053AED8;
+extern ButtonIcons_804B1988* lbl_8053AED8;
 
 #endif

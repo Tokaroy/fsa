@@ -54,7 +54,7 @@ const char* lbl_804B1BF8[10] = {
     "kk_rupyNum_09.bti",
 };
 
-cls_804B1C20::cls_804B1C20() {
+MgKokkoScreen_804B1C20::MgKokkoScreen_804B1C20() {
     lbl_8053AF08 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("mg_kokko.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -69,7 +69,7 @@ cls_804B1C20::cls_804B1C20() {
     }
 }
 
-cls_804B1C20::~cls_804B1C20() {
+MgKokkoScreen_804B1C20::~MgKokkoScreen_804B1C20() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 4; i++) {
@@ -82,7 +82,7 @@ cls_804B1C20::~cls_804B1C20() {
 }
 
 // FIXME(shotgun): 99.50 %, regalloc-only; behaviour clean.
-void cls_804B1C20::fn_804479A0() {
+void MgKokkoScreen_804B1C20::fn_804479A0() {
     for (s32 i = 0; i < 4; i++) {
         field_0x28[4] &= ~(u8)(1 << i);
         const ResTIMG* zero = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1BF8[0]));
@@ -95,13 +95,13 @@ void cls_804B1C20::fn_804479A0() {
     }
 }
 
-void cls_804B1C20::fn_80447958() {
+void MgKokkoScreen_804B1C20::fn_80447958() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
 // FIXME(shotgun): 99.88 %, regalloc-only; behaviour clean.
-void cls_804B1C20::fn_80447618() {
+void MgKokkoScreen_804B1C20::fn_80447618() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
             field_0x8[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());

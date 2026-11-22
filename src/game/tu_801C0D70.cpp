@@ -5,7 +5,7 @@
 #include "game/act/act_shadow_link_generator.h"
 #include "game/act/act_shadow_link_2.h"
 
-inline cls_801C0D70::cls_801C0D70() : field_0x54(0.0f, 0.0f, 0.0f) {
+inline ShadowLinkFight_801C0D70::ShadowLinkFight_801C0D70() : field_0x54(0.0f, 0.0f, 0.0f) {
     field_0x0 = 0;
     field_0x2 = 0;
     field_0x4 = 0;
@@ -16,7 +16,7 @@ inline cls_801C0D70::cls_801C0D70() : field_0x54(0.0f, 0.0f, 0.0f) {
 }
 
 // 0x801C151C
-void cls_801C0D70::fn_801C151C() {
+void ShadowLinkFight_801C0D70::fn_801C151C() {
     field_0x0 = 0;
     field_0x2 = 0;
     field_0x4 = 0;
@@ -27,7 +27,7 @@ void cls_801C0D70::fn_801C151C() {
 }
 
 // 0x801C14A8
-u16 cls_801C0D70::fn_801C14A8(s32 serial) {
+u16 ShadowLinkFight_801C0D70::fn_801C14A8(s32 serial) {
     mSerials[mCount] = serial;
     mCount++;
     field_0x4++;
@@ -41,7 +41,7 @@ u16 cls_801C0D70::fn_801C14A8(s32 serial) {
 // FIXME: 96.54 %, different; behaviour clean.
 // The loop counter in the original starts as a copy of the zero in found's
 // register (mr r5, r6); ours loads a separate zero (li r8, 0) and keeps the counter in r8.
-void cls_801C0D70::fn_801C1440(s32 serial) {
+void ShadowLinkFight_801C0D70::fn_801C1440(s32 serial) {
     bool found = false;
     s32* p = mSerials;
     if (mCount <= 0) {
@@ -66,7 +66,7 @@ void cls_801C0D70::fn_801C1440(s32 serial) {
 // The original materialises the (field_0x50 >> 31) == 0 test once into r3 before
 // the u16 compare and again (srwi, xori, clrlwi.) before fn_8022ADCC; ours keeps it in r5, tests
 // the second read with srwi. alone, and compares field_0x8 with 3 using cmplwi instead of cmpwi.
-void cls_801C0D70::fn_801C1374(bool flag) {
+void ShadowLinkFight_801C0D70::fn_801C1374(bool flag) {
     bool clear = (field_0x50 >> 31) == 0;
     field_0x8++;
     if (field_0x8 == field_0x4 && (!clear || flag)) {
@@ -86,7 +86,7 @@ void cls_801C0D70::fn_801C1374(bool flag) {
 }
 
 // 0x801C1314
-bool cls_801C0D70::fn_801C1314() {
+bool ShadowLinkFight_801C0D70::fn_801C1314() {
     bool result = false;
     if ((s32)field_0x50 >= 0 && !(field_0x0 & 0x40) && !(field_0x0 & 0x80) && field_0x4 != 0
         && mCount > 0 && field_0x6 == field_0x4 && field_0x8 != field_0x4) {
@@ -96,7 +96,7 @@ bool cls_801C0D70::fn_801C1314() {
 }
 
 // 0x801C12B8
-void cls_801C0D70::fn_801C12B8() {
+void ShadowLinkFight_801C0D70::fn_801C12B8() {
     s32 serial = mSerials[fn_801CD664(mCount)];
     ShadowLink2_804A43E8* actor = static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
     if (actor != NULL) {
@@ -105,7 +105,7 @@ void cls_801C0D70::fn_801C12B8() {
 }
 
 // 0x801C1224
-void cls_801C0D70::fn_801C1224(s32 value) const {
+void ShadowLinkFight_801C0D70::fn_801C1224(s32 value) const {
     for (s32 i = 0; i < mCount; i++) {
         ShadowLink2_804A43E8* actor =
             static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
@@ -117,7 +117,7 @@ void cls_801C0D70::fn_801C1224(s32 value) const {
 }
 
 // 0x801C11F0
-bool cls_801C0D70::fn_801C11F0() {
+bool ShadowLinkFight_801C0D70::fn_801C11F0() {
     bool result = false;
     if (mCount > 1) {
         if (mCount != field_0x2) {
@@ -130,7 +130,7 @@ bool cls_801C0D70::fn_801C11F0() {
 }
 
 // 0x801C11A4
-void cls_801C0D70::fn_801C11A4() {
+void ShadowLinkFight_801C0D70::fn_801C11A4() {
     s32 serial = field_0x50;
     if (serial >= 0) {
         ActorBase_804A5770* generator = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -141,7 +141,7 @@ void cls_801C0D70::fn_801C11A4() {
 }
 
 // 0x801C115C
-void cls_801C0D70::fn_801C115C() {
+void ShadowLinkFight_801C0D70::fn_801C115C() {
     s32 serial = field_0x50;
     if (serial >= 0) {
         ActorBase_804A5770* generator = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -152,7 +152,7 @@ void cls_801C0D70::fn_801C115C() {
 }
 
 // 0x801C0FEC
-bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const {
+bool ShadowLinkFight_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const {
     s32 serial = field_0x50;
     bool found = false;
     out->x = pos->x;
@@ -188,7 +188,7 @@ bool cls_801C0D70::fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* 
 // Register allocation (this in r30 vs r31; walk pointer, counters and constant 1 in
 // r27/r29/r31 vs r29/r28/r30) and the counting loop's prologue (original copies 0 from count into
 // the loop index with mr r31, r29 after li r29, 0 / mr r27, r30; ours emits mr / li / li).
-void cls_801C0D70::fn_801C0DCC() {
+void ShadowLinkFight_801C0D70::fn_801C0DCC() {
     if (field_0x0 & 0x100) {
         if (fn_8011921C()->fn_801186B0(0xF)) {
             s32 serial = field_0x50;
@@ -250,7 +250,7 @@ void cls_801C0D70::fn_801C0DCC() {
 }
 
 // 0x801C0D70
-cls_801C0D70* fn_801C0D70() {
-    static cls_801C0D70 lbl_804C7E70;
+ShadowLinkFight_801C0D70* fn_801C0D70() {
+    static ShadowLinkFight_801C0D70 lbl_804C7E70;
     return &lbl_804C7E70;
 }

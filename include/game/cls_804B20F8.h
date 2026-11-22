@@ -8,14 +8,14 @@
 // game/tu_8045B010.cpp). Built on ActorSoundObj_804578F4: the constructor (0x8045B46C) calls
 // the base one and then stores this vtable at 0x8 and vtable + 0x24 at
 // 0x18. Every slot but startSound (0x14) is inherited; the destructor
-// (__dt__12cls_804B20F8Fv, weak, kept by game/tu_8023FBF0.cpp) stores the
+// (__dt__23PlayerSoundObj_804B20F8Fv, weak, kept by game/tu_8023FBF0.cpp) stores the
 // vtable again.
-class cls_804B20F8 : public ActorSoundObj_804578F4 {
+class PlayerSoundObj_804B20F8 : public ActorSoundObj_804578F4 {
 public:
     // 0x8045B46C: r4 = the byte stored at 0x5C (signed: every caller passes
     // it through extsb), r5-r7 = the base
     // constructor's position, heap and handle count.
-    cls_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles);
+    PlayerSoundObj_804B20F8(s8 kind, JGeometry::TVec3f* pos, JKRHeap* heap, u8 numHandles);
 
     // 0x8045B154: stops or retargets some sounds before starting `id`, then
     // starts it and detunes its pitch by the kind in field_0x5c.

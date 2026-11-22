@@ -53,7 +53,7 @@ public:
     /* 0x2B8 */ s32 field_0x2b8;
     /* 0x2BC */ JGeometry::TVec2f field_0x2bc;
     /* 0x2C4 */ JPABaseEmitter* mEmitter;
-    /* 0x2C8 */ cls_8021ACE0 mHead; // swinging head; mHead.mAngle is the head's yaw
+    /* 0x2C8 */ HeadSway_8021ACE0 mHead; // swinging head; mHead.mAngle is the head's yaw
     /* 0x2D8 */ f32 field_0x2d8;
 }; // Size: 0x2DC
 

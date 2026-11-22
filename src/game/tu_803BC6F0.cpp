@@ -860,7 +860,7 @@ void FileSelect_804AFF60::fn_803CE9EC() {
     if (field_0x116 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x114);
     }
-    cls_803B9940* card = &lbl_8051C1A0;
+    CardMgr_804AFB48* card = &lbl_8051C1A0;
     if ((card->field_0x1ff5 == 0 || card->field_0x1ff5 == 1) && !lbl_8053ACA8->fn_802B1DCC() &&
         field_0x113 == 0 && field_0x117 == 0) {
         setState(1);

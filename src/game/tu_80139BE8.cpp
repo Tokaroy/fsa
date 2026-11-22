@@ -44,9 +44,9 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
     field_0x10 = new (heap, 0) BgRewrite_804A7C98();
     heap->getTotalFreeSize();
     heap->getTotalFreeSize();
-    field_0x14 = new (heap, 0) cls_804B1920();
+    field_0x14 = new (heap, 0) HudMgr_804B1920();
     heap->getTotalFreeSize();
-    field_0x18 = new (heap, 0) cls_804B17A0();
+    field_0x18 = new (heap, 0) GameOverScreen_804B17A0();
     heap->getTotalFreeSize();
     field_0x1c = new (heap, 0) cls_804AE9B0();
     heap->getTotalFreeSize();
@@ -67,7 +67,7 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
             OSReport(lbl_80465960);
         }
         heap->becomeCurrentHeap();
-        field_0x2c = new (heap, 0) cls_804B1D10();
+        field_0x2c = new (heap, 0) StaffRollLoader_804B1D10();
     }
 }
 

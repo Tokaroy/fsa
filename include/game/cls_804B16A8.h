@@ -10,10 +10,10 @@ class PaneCtrl_804AF86C;
 // unit); 0x70 bytes (__nw__(0x70) in tu_803F0A54's and
 // tu_803E1668's constructors). A J2DScreen (0x4) with a state machine run
 // through the pointer-to-member table lbl_804B1690 indexed by the byte 0x6B.
-class cls_804B16A8 {
+class RuleScreen_804B16A8 {
 public:
-    cls_804B16A8();
-    /* 0x08 */ virtual ~cls_804B16A8();
+    RuleScreen_804B16A8();
+    /* 0x08 */ virtual ~RuleScreen_804B16A8();
 
     void fn_80434370();
     void fn_80434724();

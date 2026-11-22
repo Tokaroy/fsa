@@ -11,9 +11,9 @@
 // construction. No vtable; named after its destructor fn_8012F64C, which is
 // passed to __register_global_object (0x8012F628). The constructor
 // is inlined into fn_8012F554 and calls fn_8012F494.
-struct cls_8012F64C {
-    cls_8012F64C() : mCount(0) { fn_8012F494(); }
-    ~cls_8012F64C() {}
+struct IceFloorCheckList_8012F64C {
+    IceFloorCheckList_8012F64C() : mCount(0) { fn_8012F494(); }
+    ~IceFloorCheckList_8012F64C() {}
     // Forgets every serial: count 0, all slots -1.
     void fn_8012F494();
     // True once every recorded actor is an 'IFCK' actor whose floor tile changed.
@@ -26,6 +26,6 @@ struct cls_8012F64C {
 }; // Size: 0x104
 
 // Getter of the guarded static at 0x804BDDFC.
-cls_8012F64C* fn_8012F554();
+IceFloorCheckList_8012F64C* fn_8012F554();
 
 #endif

@@ -16,7 +16,7 @@ Unwritten small functions and why:
 - fn_8024ECCC: contains an infinite loop (`b .`) assert; not guessed.
 - fn_80241B44/DD0/E28, fn_80252F50/5C/68/74: use field_0xbec as a cls_804AA8D8* (game/tu_8030AE84.h) but fn_8023FC24 (matched) returns it as s32 via fn_8022BCD4 (tu_8022AD64); needs field type + wrapper return changed together. DD0/E28 also copy a TVec3f to the stack and pass it as a TVec2f*.
 - fn_802422C4, fn_80252F48, fn_8025196C: result types unknown (no callers' evidence).
-- __dt__12cls_804B20F8: defining it out of line removes tu_8045B010's @24@__dt__ thunk (tried, reverted).
+- __dt__23PlayerSoundObj_804B20F8: defining it out of line removes tu_8045B010's @24@__dt__ thunk (tried, reverted).
 
 ## Second pass (Sonnet 5.5)
 Baseline 8093 / 11557. After 8102 (+9: unit 128 -> 137/254). Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok.
@@ -28,9 +28,9 @@ SHARED-EDITS: Player.h (decls fn_80247F58/fn_80248DD8/fn_8024CA20/fn_802517F8/fn
 ## Player architecture + constructor/destructor (Opus 5.5, 2026-11-05)
 Baseline 8372 / 11557 (after rebase on matching 8cf7a05c). After 8379 (+7), structural +8. Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok; no function anywhere drops (per-address compare with the main report).
 docs/PLAYER.md: unit map, per-frame flow, state system (0x1240/0x1244/0x1248, three switch jump tables in fn_802870C8, 82-state handler table), big functions, boot-path coverage, recommended order.
-Matched: __ct__15Player_804A6F38Fl, __dt__15Player_804A6F38Fv, __dt__12cls_804B20F8Fv (now emitted after our dtor), fn_80252F50/5C/68/74 (cls_804AA8D8 0x290-0x29C).
+Matched: __ct__15Player_804A6F38Fl, __dt__15Player_804A6F38Fv, __dt__23PlayerSoundObj_804B20F8Fv (now emitted after our dtor), fn_80252F50/5C/68/74 (cls_804AA8D8 0x290-0x29C).
 Written below 100 %: fn_80254660 99.91 (reloc-name only: lbl_80540098 256/3 is @NNN until earlier literals are in pool order).
-Fields proven by the ctor/dtor: 0xBEC cls_804AA8D8*, 0x1250/0x1254 cls_804B20F8*, 0x1258 TVec3f, cls_804A64A8 at 0x1278/0x1290/0x12D0/0x12E8/0x130C/0x1330, cls_8049F140 at 0x1398/0x13A8 (arrays at 0x38/0x4E0/0x510/0x550/0x5FC confirmed); fn_80254660: 0xB90 f32, 0xC0C s32.
+Fields proven by the ctor/dtor: 0xBEC cls_804AA8D8*, 0x1250/0x1254 PlayerSoundObj_804B20F8*, 0x1258 TVec3f, cls_804A64A8 at 0x1278/0x1290/0x12D0/0x12E8/0x130C/0x1330, cls_8049F140 at 0x1398/0x13A8 (arrays at 0x38/0x4E0/0x510/0x550/0x5FC confirmed); fn_80254660: 0xB90 f32, 0xC0C s32.
 Next: fn_80254744 (per-slot reset, 0x11A0, 646 instrs on the battle path; proves most remaining fields), fn_802544B0, fn_80253E6C, then tu_80285E58 (fn_80285E58 / fn_802870C8).
 SHARED-EDITS: Player.h (fields above; fn_8023FC24 and fn_8022BCD4 return cls_804AA8D8*; includes cls_804A64A8.h + new cls_8049F140.h); cls_804A64A8.h (dtor inline, tu_802144F0's out-of-line definition removed, still 100 %); new include/game/cls_8049F140.h (class moved out of tu_8013C5C8.cpp, ctor/dtor inline); tu_8022AD64.cpp fn_8022BCD4 return type; cls_804A71A8.h comment. symbols.txt: fn_8026F9E8 -> __ct__12cls_804A71A8FP15Player_804A6F38, fn_8018E890 -> __ct__Q29JGeometry8TBox2<f>Fv.
 

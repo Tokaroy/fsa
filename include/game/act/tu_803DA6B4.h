@@ -14,10 +14,10 @@ class J2DPane;
 // fn_803DA6B4 in tu_80134C04 (the main loop), which sets field_0x20 and
 // field_0x21 through lbl_8053ADC8 (act_battle_royale_end_check's draw
 // writes 1 and 3).
-class cls_804B04F8 {
+class PressStartOverlay_804B04F8 {
 public:
-    cls_804B04F8();
-    virtual ~cls_804B04F8();
+    PressStartOverlay_804B04F8();
+    virtual ~PressStartOverlay_804B04F8();
 
     // Draws the screen when field_0x20 is set (and clears it), and advances
     // the pulse timer field_0x1c; called with lbl_8053ADC8 in r3.
@@ -38,6 +38,6 @@ public:
     /* 0x22 */ u8 pad_0x22[2];
 }; // Size: 0x24
 
-extern cls_804B04F8* lbl_8053ADC8;
+extern PressStartOverlay_804B04F8* lbl_8053ADC8;
 
 #endif

@@ -15,10 +15,10 @@
 
 class J2DPicture;
 
-class cls_804B1E1C {
+class RupeeDigitSprites_804B1E1C {
 public:
-    cls_804B1E1C();
-    virtual ~cls_804B1E1C();
+    RupeeDigitSprites_804B1E1C();
+    virtual ~RupeeDigitSprites_804B1E1C();
 
     void fn_8045560C();
     void fn_804556A4();
@@ -41,6 +41,6 @@ public:
     /* 0x30 */ Sprite mSprites[128];
 }; // Size: 0xA30
 
-extern cls_804B1E1C* lbl_8053AF50;
+extern RupeeDigitSprites_804B1E1C* lbl_8053AF50;
 
 #endif

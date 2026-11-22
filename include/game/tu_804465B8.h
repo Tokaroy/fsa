@@ -4,18 +4,18 @@
 // Code: game/tu_804465B8.cpp (the mg_oni.blo screen). Named after its vtable,
 // 0x804B1BE8 (only the virtual destructor, fn_80447190, in the slot at 0x8);
 // the constructor is fn_8044728C, which stores the object in lbl_8053AF00 and
-// builds mScreen and the pane arrays. Same shape as cls_804B1BB0 (tu_804455E0).
-// tu_8043A0E8 keeps the object at cls_804B1920's field 0x2A0 (0x34 bytes).
+// builds mScreen and the pane arrays. Same shape as MgHorseRaceScreen_804B1BB0 (tu_804455E0).
+// tu_8043A0E8 keeps the object at HudMgr_804B1920's field 0x2A0 (0x34 bytes).
 
 #include "types.h"
 
 class J2DScreen;
 class PaneCtrl_804AF86C;
 
-class cls_804B1BE8 {
+class MgOniScreen_804B1BE8 {
 public:
-    cls_804B1BE8();
-    virtual ~cls_804B1BE8();
+    MgOniScreen_804B1BE8();
+    virtual ~MgOniScreen_804B1BE8();
 
     // Per slot: the two panes of each slot get the distance from
     // fn_8043D514 / fn_8043D57C as y, the flag bits of field_0x30 switch the
@@ -42,6 +42,6 @@ public:
 
 // The object at lbl_8053AF00 (game/tu_804465B8.cpp, constructor fn_8044728C;
 // the auto split at 0x8053AF00 defines it).
-extern cls_804B1BE8* lbl_8053AF00;
+extern MgOniScreen_804B1BE8* lbl_8053AF00;
 
 #endif

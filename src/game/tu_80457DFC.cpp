@@ -143,11 +143,11 @@ inline void AudioMgr_8045A080::startSecondSeq_80458F04(u32 id) {
 }
 
 // 0x8045A338 / 0x8045A3D8
-// FIXME(shotgun): 99.16 %, missing/extra + reloc-name (mixChannelOut; ~cls_804B2074 is 100 %)
-class cls_804B2074 : public JAUDopplerAudience<4> {
+// FIXME(shotgun): 99.16 %, missing/extra + reloc-name (mixChannelOut; ~DopplerAudience_804B2074 is 100 %)
+class DopplerAudience_804B2074 : public JAUDopplerAudience<4> {
 public:
-    cls_804B2074() {}
-    virtual ~cls_804B2074() {}
+    DopplerAudience_804B2074() {}
+    virtual ~DopplerAudience_804B2074() {}
     virtual void mixChannelOut(const JASSoundParams& params, JAIAudible* pAudible, int index) {
         JAUDopplerAudible<4>* audible = (JAUDopplerAudible<4>*)pAudible;
         JAUAudibleChannel* channel = audible->getChannel(index);
@@ -273,7 +273,7 @@ void AudioMgr_8045A080::fn_80459AE4(JKRSolidHeap* heap, u32 audioMemSize, void* 
     field_0x30 = new (heap, 0) JAUSoundMgr();
     field_0x34 = &field_0x30->getSeMgr();
     field_0x38 = &field_0x30->getSeqMgr();
-    field_0x3c = new (heap, 0) cls_804B2074();
+    field_0x3c = new (heap, 0) DopplerAudience_804B2074();
     field_0x3c->setting_._04 = lbl_8053A22C;
     field_0x3c->setting_._08 = lbl_8053A230;
     field_0x3c->setting_.minVolume = lbl_8053AF78;

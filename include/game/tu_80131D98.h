@@ -10,12 +10,12 @@
 // the serials of the escort actors. No vtable; named after its destructor
 // fn_80131F6C, which is passed to __register_global_object. The constructor
 // is inlined into fn_80131F0C.
-struct cls_80131F6C {
-    cls_80131F6C() : mCount(0) {
+struct EscortActorList_80131F6C {
+    EscortActorList_80131F6C() : mCount(0) {
         mSerials[0] = 0;
         mSerials[1] = 0;
     }
-    ~cls_80131F6C() { fn_80131EF8(); }
+    ~EscortActorList_80131F6C() { fn_80131EF8(); }
     // The actor at index idx when it is a 'FAZR' or 'OPGL' actor, else NULL.
     ActorBase_804A5770* fn_80131E30(s32 idx);
     // Appends the actor's serial.
@@ -30,6 +30,6 @@ struct cls_80131F6C {
 
 // True when the 'OPGL' actor (escorted woman) exists and its vfunc_0x60 says so.
 bool fn_80131D98();
-cls_80131F6C* fn_80131F0C();
+EscortActorList_80131F6C* fn_80131F0C();
 
 #endif

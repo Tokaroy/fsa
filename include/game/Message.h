@@ -42,7 +42,7 @@ namespace JMessage {
 struct TControl;
 struct TResourceContainer;
 }
-class cls_804B20F8;
+class PlayerSoundObj_804B20F8;
 class MessageReference_804AF6D4;
 class cls_804AF72C;
 class MessageSequenceProcessor_804AF774;
@@ -113,7 +113,7 @@ public:
         }
     }
     /* 0x098 */ JGeometry::TVec3f field_0x98;
-    // The position handed to the constructor's cls_804B20F8 (by pointer).
+    // The position handed to the constructor's PlayerSoundObj_804B20F8 (by pointer).
     /* 0x0A4 */ JGeometry::TVec3f field_0xa4;
     // 'Tm01''s line space as loaded; fn_803944EC stores its scale in 0xB4.
     /* 0x0B0 */ f32 field_0xb0;
@@ -218,7 +218,7 @@ public:
     // The constructor stores its window argument here; the processors test
     // its option flags (field_0x28 bits 0x40 and 0x100).
     /* 0x3B8 */ MessageWindow_804AF490* field_0x3b8;
-    /* 0x3BC */ cls_804B20F8* field_0x3bc; // new'd by the constructor
+    /* 0x3BC */ PlayerSoundObj_804B20F8* field_0x3bc; // new'd by the constructor
     // The constructor stores `this`; handed to the processors (MessageSequenceProcessor_804AF774
     // 0x60, cls_804AF72C 0x2D8).
     /* 0x3C0 */ cls_804AF5A0* field_0x3c0;
@@ -255,7 +255,7 @@ public:
     void fn_803A3078();
     void fn_803A3084(s32 index, s32 value);
     s32 fn_803A3094();
-    cls_804B20F8* fn_803A309C();
+    PlayerSoundObj_804B20F8* fn_803A309C();
     void fn_803A30A4(u8 a, u32 b);
     void fn_803A30B0();
     s32 fn_803A30BC();
@@ -610,7 +610,7 @@ bool fn_80388CAC(s32 player, s32 serial);
 // 0x11/0x12/0x19/0x1A; each stores the width and line count so far in
 // field_0x5c); control code 0x1A size 3 writes '0' + value and fn_8037F580's
 // expansion. Returns the text width summed from mFont's getWidth per character.
-// 0x80382B48 (not written yet; C++ linkage). Used by cls_804B0288::fn_803D4DB0 (game/tu_803D2C34.cpp):
+// 0x80382B48 (not written yet; C++ linkage). Used by SaveScreen_804B0288::fn_803D4DB0 (game/tu_803D2C34.cpp):
 // builds message `id` into dst, given the "yes" / "no" answer texts.
 f32 fn_80382B48(char* dst, u32 id, s32 flag, const char* yes, const char* no);
 f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out3);

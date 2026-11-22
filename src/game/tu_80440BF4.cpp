@@ -13,7 +13,7 @@ static const u64 lbl_8048FAA8[7] = {
     0x5062623033ull, 0x5062623032ull, 0x5062623031ull,
 };
 
-cls_804B1988::cls_804B1988() {
+ButtonIcons_804B1988::ButtonIcons_804B1988() {
     lbl_8053AED8 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("button.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
@@ -24,7 +24,7 @@ cls_804B1988::cls_804B1988() {
     }
 }
 
-cls_804B1988::~cls_804B1988() {
+ButtonIcons_804B1988::~ButtonIcons_804B1988() {
     delete mScreen;
     mScreen = NULL;
     delete field_0x8;
@@ -32,28 +32,28 @@ cls_804B1988::~cls_804B1988() {
     lbl_8053AED8 = NULL;
 }
 
-void cls_804B1988::fn_80440EE8() {
+void ButtonIcons_804B1988::fn_80440EE8() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
-void cls_804B1988::fn_80440E0C(f32 alpha) {
+void ButtonIcons_804B1988::fn_80440E0C(f32 alpha) {
     for (s32 i = 0; i < 7; i++) {
         mScreen->search(lbl_8048FAA8[i])->setAlpha(mAlpha[i] * alpha);
     }
 }
 
-void cls_804B1988::fn_80440D78(const ResTIMG* tex) {
+void ButtonIcons_804B1988::fn_80440D78(const ResTIMG* tex) {
     mScreen->search('Pba04')->show();
     ((J2DPicture*)mScreen->search('Pba02'))->changeTexture(tex, 0);
 }
 
-void cls_804B1988::fn_80440CE4(const ResTIMG* tex) {
+void ButtonIcons_804B1988::fn_80440CE4(const ResTIMG* tex) {
     mScreen->search('Pbb03')->show();
     ((J2DPicture*)mScreen->search('Pbb02'))->changeTexture(tex, 0);
 }
 
-void cls_804B1988::fn_80440C6C(bool show) {
+void ButtonIcons_804B1988::fn_80440C6C(bool show) {
     if (show) {
         mScreen->search('Pba04')->show();
     } else {
@@ -61,7 +61,7 @@ void cls_804B1988::fn_80440C6C(bool show) {
     }
 }
 
-void cls_804B1988::fn_80440BF4(bool show) {
+void ButtonIcons_804B1988::fn_80440BF4(bool show) {
     if (show) {
         mScreen->search('Pbb03')->show();
     } else {

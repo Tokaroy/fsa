@@ -6,7 +6,7 @@
 
 
 // Derives the displayed seconds and hundredths from the frame count.
-static inline void updateDisplay(cls_801ED3DC& timer) {
+static inline void updateDisplay(Stopwatch_801ED3DC& timer) {
     if (!timer.mStopped) {
         u8 seconds = timer.mFrames / 60;
         timer.mSeconds = seconds > 119 ? 119 : seconds;
@@ -16,15 +16,15 @@ static inline void updateDisplay(cls_801ED3DC& timer) {
     }
 }
 
-void cls_801ED828::fn_801ED974() {
+void StartCountdown_801ED828::fn_801ED974() {
     mFrames = 0;
 }
 
-void cls_801ED828::fn_801ED968() {
+void StartCountdown_801ED828::fn_801ED968() {
     mFrames = 180;
 }
 
-void cls_801ED828::fn_801ED8F0() {
+void StartCountdown_801ED828::fn_801ED8F0() {
     if (mFrames != 0) {
         if (mFrames % 60 == 0) {
             gAudioMgr_8053AF80->fn_80458880(0x3f, -1);
@@ -40,7 +40,7 @@ void cls_801ED828::fn_801ED8F0() {
 // FIXME: 90.12. Scheduling and registers only: the target loads efbHeight (lhz 6) before
 // fbWidth (lhz 4), both through r3; ours keeps the RenderModeObj in r8 and loads fbWidth
 // first.
-void cls_801ED828::fn_801ED828() const {
+void StartCountdown_801ED828::fn_801ED828() const {
     if (mFrames != 0) {
         for (int i = 0; i < 3; i++) {
             if (30 + 60 * i <= mFrames && mFrames <= (i + 1) * 60) {
@@ -53,18 +53,18 @@ void cls_801ED828::fn_801ED828() const {
     }
 }
 
-cls_801ED3DC::cls_801ED3DC() {
+Stopwatch_801ED3DC::Stopwatch_801ED3DC() {
     fn_801ED7F0();
 }
 
-void cls_801ED3DC::fn_801ED7F0() {
+void Stopwatch_801ED3DC::fn_801ED7F0() {
     mStopped = true;
     mFrames = 0;
     mSeconds = 0;
     mCentis = 0;
 }
 
-bool cls_801ED3DC::fn_801ED7B0() const {
+bool Stopwatch_801ED3DC::fn_801ED7B0() const {
     bool result = false;
     if (mStopped == true && mFrames == 7200 && mSeconds == 119 && mCentis == 99) {
         result = true;
@@ -72,14 +72,14 @@ bool cls_801ED3DC::fn_801ED7B0() const {
     return result;
 }
 
-void cls_801ED3DC::fn_801ED798() {
+void Stopwatch_801ED3DC::fn_801ED798() {
     mStopped = false;
     mFrames = 0;
     mSeconds = 0;
     mCentis = 0;
 }
 
-void cls_801ED3DC::fn_801ED5C8(f32 fraction) {
+void Stopwatch_801ED3DC::fn_801ED5C8(f32 fraction) {
     if (fraction != 1.0f) {
         mFrames--;
         bool counted = true;
@@ -110,7 +110,7 @@ void cls_801ED3DC::fn_801ED5C8(f32 fraction) {
     mStopped = true;
 }
 
-void cls_801ED3DC::fn_801ED458(u8 jitter) {
+void Stopwatch_801ED3DC::fn_801ED458(u8 jitter) {
     if (!mStopped) {
         mFrames++;
         if (mFrames >= 7200) {
@@ -129,7 +129,7 @@ void cls_801ED3DC::fn_801ED458(u8 jitter) {
 
 // const: the original loads mSeconds and mCentis before the first store through
 // lbl_8053AEF8 (MWCC hoists loads through a const `this` past stores; RULES_CARD).
-void cls_801ED3DC::fn_801ED3DC(s32 slot, s32 rank) const {
+void Stopwatch_801ED3DC::fn_801ED3DC(s32 slot, s32 rank) const {
     lbl_8053AEF8->field_0x44 |= (u8)(1 << slot);
     lbl_8053AEF8->field_0x3c[slot] = mSeconds;
     lbl_8053AEF8->field_0x38[slot] = mCentis;
