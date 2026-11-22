@@ -28,7 +28,7 @@ public:
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     // 0x54, a slot of its own: true when the soldier fell into a hole or water.
-    /* 0x54 */ virtual bool vfunc_0x54();
+    /* 0x54 */ virtual BOOL vfunc_0x54();
 
     /* 0x230 */ s32 mState;
     /* 0x234 */ u8 field_0x234;
@@ -57,9 +57,9 @@ public:
     /* 0x290 */ f32 field_0x290;
     /* 0x294 */ f32 field_0x294;
     /* 0x298 */ f32 field_0x298;
-    /* 0x29C */ s16 field_0x29c;
-    /* 0x29E */ s16 field_0x29e;
-    /* 0x2A0 */ s16 field_0x2a0;
+    /* 0x29C */ u16 field_0x29c;
+    /* 0x29E */ u16 field_0x29e;
+    /* 0x2A0 */ u16 field_0x2a0;
     /* 0x2A4 */ s32 field_0x2a4; // serial of the soldier it follows
     /* 0x2A8 */ s32 field_0x2a8;
     /* 0x2AC */ JGeometry::TVec3f field_0x2ac;
