@@ -8,20 +8,20 @@
 // out-of-line constructor fn_801DAA24, called on this + 0x2A8 at 0x801DA524): word 0x4 is the current value, which
 // fn_801DA904 / fn_801DA938 read. Only the written code's view is known.
 struct Sequencer_801DAA24 {
-    // Constructor __ct__18Sequencer_801DAA24Fv (0x801DAA24, tu_801DA7C0.cpp,
+    // Constructor __ct__18Sequencer_801DAA24Fv (0x801DAA24, sequencer_801DA7C0.cpp,
     // not written yet): zeroes every word but field_0x10, which it sets to 2.
     Sequencer_801DAA24();
-    // 0x801DA938 / 0x801DA904 (tu_801DA7C0.cpp, not written yet). Both read
+    // 0x801DA938 / 0x801DA904 (sequencer_801DA7C0.cpp, not written yet). Both read
     // field_0x4 clamped to 0-47: fn_801DA938 returns that entry of the string
     // table lbl_804A4DA8; fn_801DA904 whether it is 28 or more.
     const char* fn_801DA938();
     bool fn_801DA904();
-    // 0x801DA7C0 / 0x801DA894 / 0x801DA96C / 0x801DA9E8 (tu_801DA7C0.cpp, not written yet).
+    // 0x801DA7C0 / 0x801DA894 / 0x801DA96C / 0x801DA9E8 (sequencer_801DA7C0.cpp, not written yet).
     void fn_801DA7C0();
     bool fn_801DA894();
     s32 fn_801DA96C();
     void start_801DA9E8(s32 a, s32 b);
-    // 0x801DA994 (tu_801DA7C0.cpp, not written yet): like start_801DA9E8 with a second mode.
+    // 0x801DA994 (sequencer_801DA7C0.cpp, not written yet): like start_801DA9E8 with a second mode.
     bool fn_801DA994(s32 a, s32 b);
 
     /* 0x00 */ s32 field_0x0;
@@ -74,7 +74,7 @@ public:
     // queue mPos with the camera and, unless 0x179 is set, set 0x178.
     /* 0xA0 */ virtual void vfunc_0xA0();
 
-    // 0x801D8400 (first function of tu_801D8400, called by tu_801DAC6C): below
+    // 0x801D8400 (first function of tu_801D8400, called by singleton_801DAC6C): below
     // state 8 (mState) calls setState_801D9C58 with 8.
     void fn_801D8400();
     // 0x801D9C58 (tu_801D8400 and tu_801DD1AC call it on this with a state

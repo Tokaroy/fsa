@@ -2,7 +2,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/tu_80215A94.h"
-#include "game/tu_801ED3DC.h"
+#include "game/stopwatch_801ED3DC.h"
 #include "game/tu_803B8C74.h"
 #include "game/GameView.h"
 #include "game/Player.h"

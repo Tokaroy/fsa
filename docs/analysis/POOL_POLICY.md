@@ -167,7 +167,7 @@ Figures:
 | act_snowball | grow | `{ field_0x260 += (0.002f * field_0x264) / 1.6f; if (field_0x260 >= 2.0` | 19 | 1 | 3 | 3 | pool only | - | - | - |  |
 | act_snowball | fallStep | `{ moveToward_801CD950(&field_0x3c.z, -10.0f, -0.15f); mPos += field_0x3c; bool` | 13 | 3 | 3 | 3 | 3 call sites; same name in tu_8028FBA0 | y | y | y |  |
 | act_snowball | dropRupee | `{ s32 kind = 0; if (field_0x270 >= 2.0f) { kind = 2; } else if (field_` | 15 | 1 | 3 | 3 | pool only | - | - | - |  |
-| act_snowball | spawnBurst | `{ JGeometry::TVec3f pos = mPos; pos.y -= 16.0f * field_0x260; spawnEmi` | 7 | 1 | 3 | 3 | same name in tu_801BEDBC | - | - | y |  |
+| act_snowball | spawnBurst | `{ JGeometry::TVec3f pos = mPos; pos.y -= 16.0f * field_0x260; spawnEmi` | 7 | 1 | 3 | 3 | same name in act_unknown_lnbm_801BEDBC | - | - | y |  |
 | act_snowball | updateTrailEmitter | `{ if (field_0x4 == 0) { if (field_0x374 == NULL) { field_0x374 = spawn` | 16 | 3 | 2 | 3 | 3 call sites | y | y | y |  |
 | act_snowball | advance | `{ field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x23` | 6 | 2 | 3 | 3 | 2 call sites | y | y | y |  |
 | act_somaria_block | holdPlayers | `{ for (s32 i = 0; i < 4; i++) { if (field_0x246[i] == 1) { if (!fn_802` | 11 | 2 | 2 | 2 | 2 call sites | y | y | y |  |
@@ -211,7 +211,7 @@ Figures:
 | tu_80118384 | spawnFadeEmitters | `{ JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f); spawnEmitter_8013CC50(0, &p` | 7 | 1 | 3 | 3 | pool only | - | - | - |  |
 | act_after_goal_opening_8011CEC8 | setOverlayRect | `{ Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24; Vec out; Vec` | 21 | 1 | 1 | 2 | pool only | - | - | - |  |
 | act_after_goal_opening_8011CEC8 | startScroll | `{ field_0x23c = 0.0f; field_0x238 = 0.0f; field_0x230 = 0; s32 dir[2];` | 9 | 1 | 2 | 2 | pool only | - | - | - |  |
-| escort_base_801213EC | angleOf | `{ return (s32)(JMath::atanTable_.atan2_(x, y) * (32768.0f / JMath::TAn` | 3 | 3 | 8 | 20 | 3 call sites; one statement; same name in tu_8018A8D8 | y | y | y |  |
+| escort_base_801213EC | angleOf | `{ return (s32)(JMath::atanTable_.atan2_(x, y) * (32768.0f / JMath::TAn` | 3 | 3 | 8 | 20 | 3 call sites; one statement; same name in act_big_poe_2_8018A8D8 | y | y | y |  |
 | escort_base_801213EC | spawnLifeMeters | `{ s32 serial; if (field_0x332) { JGeometry::TVec3f pos(mPos); pos.x -=` | 19 | 2 | 0 | 20 | 2 call sites | y | y | y |  |
 | escort_base_801213EC | respawnLifeMeters | `{ if (field_0x332) { for (s32 i = 0; i < field_0x360; i++) { if (field` | 9 | 1 | 0 | 20 | pool only | - | - | - |  |
 | escort_base_801213EC | spawnLifeMeter | `{ if (field_0x332 && index < field_0x360 && index >= 0) { JGeometry::T` | 14 | 1 | 0 | 20 | pool only | - | - | - |  |
@@ -223,8 +223,8 @@ Figures:
 | effect_system_8013C5C8 | set2DDrawInfo | `{ JPADrawInfo unused; PSMTXCopy(gGameRoot2_8053AB10->field_0x10->mPosM` | 7 | 3 | 5 | 6 | 3 call sites | y | y | y |  |
 | tu_8015F454 | drawLetterbox | `{ J2DFillBox(0.0f, 0.0f, (f32)(s32)JUTVideo::sManager->getFbWidth(), b` | 5 | 1 | 2 | 2 | pool only | - | - | - | rejected |
 | game_root_sub_24_8016A2B4 | getMapTexView | `{ Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24; TileMap_8` | 14 | 12 | 19 | 19 | 12 call sites | y | y | y | accepted |
-| tu_8018A8D8 | angleOf | `{ return JMath::atanTable_.atan2_(x, y) * 10430.378f; }` | 3 | 1 | 1 | 1 | one statement; same name in escort_base_801213EC | - | y | y |  |
-| tu_8018EB94 | setHeading | `{ s16 angle = (s32)(4000.0f * (f32)field_0x98); field_0x27c.x = field_` | 13 | 1 | 0 | 0 | pool only | - | - | - |  |
+| act_big_poe_2_8018A8D8 | angleOf | `{ return JMath::atanTable_.atan2_(x, y) * 10430.378f; }` | 3 | 1 | 1 | 1 | one statement; same name in escort_base_801213EC | - | y | y |  |
+| act_big_moldorm_tail_8018EB94 | setHeading | `{ s16 angle = (s32)(4000.0f * (f32)field_0x98); field_0x27c.x = field_` | 13 | 1 | 0 | 0 | pool only | - | - | - |  |
 | tu_801CB270 | tileCenter | `{ return 8.0f + (u32)((s32)v & ~0xF); }` | 3 | 4 | 5 | 5 | 4 call sites; one statement; same name in tu_80285E58 | y | y | y |  |
 | tu_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { moveByStick_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
 | tu_802E9428 | updateCamera | `{ JGeometry::TVec2f pos(field_0x250.x, field_0x250.y); JGeometry::TVec` | 20 | 4 | 0 | 1 | 4 call sites | y | y | y |  |
@@ -400,7 +400,7 @@ Applied on branch pool-r2 (from grind2 524d2fd3f):
 | effect_system_8013C5C8 | addTrackedEmitter | `inl_8013DDEC` | 25 sites |
 | effect_system_8013C5C8 | set2DDrawInfo | `pool_8053CE10` | 3 sites |
 | game_root_sub_24_8016A2B4 | getMapTexView | `pool_8053D938` | 12 sites |
-| tu_8018A8D8 | angleOf | `pool_8053E1B0` | one statement |
+| act_big_poe_2_8018A8D8 | angleOf | `pool_8053E1B0` | one statement |
 | tu_801CB270 | tileCenter | `pool_8053EF98` | 4 sites; one statement |
 | tu_802E9428 | updateCamera | `pool_805412F8` | 4 sites |
 | tu_8034AA40 | updateFacing | `pool_80542558` | 2 sites |
@@ -426,4 +426,4 @@ Applied on branch pool-r2 (from grind2 524d2fd3f):
 ### Tagged (R2 fails)
 
 99 helpers in 54 units (count in brackets when more than one); the per-helper list
-with the functions each holds is in docs/CRACK_PASS.md: act_block, act_bombchu, act_cannon (4), act_fairy_invincible, act_fish, act_force_gem_winged, act_four_person_pull_switch, act_four_sword_demo (5), act_gambling_shop, act_great_fairy_spfr (3), act_ice_melted_by_four_players, act_ice_wall (3), act_icicle, act_maiden_demo, act_princess_zelda (3), act_princess_zelda_demo (4), act_rainbow_bridge, act_room_transfer_lift, act_score (2), act_seesaw_lift, act_shadow_link_demo (2), act_shovel_old_timer, act_small_key (2), act_snow_wall (2), act_snowball (5), act_strange_block, act_tingle_first, act_vaati_demo, act_vaati_time_up (2), act_warp, act_warp_cannon (8), act_zora_escort (3), act_zora_escort_goal (2), act_whack_a_mole_shop_8010089C, act_crystal_cutscene_80113788 (5), tu_80118384, act_after_goal_opening_8011CEC8 (2), escort_base_801213EC (2), act_escorted_woman_arrival_point_80125B58 (2), act_navi_after_crystal_cutscene_8013394C, tu_8015F454, tu_8018EB94, tu_8027E5BC, tu_802E9428, tu_8030C058, tu_8034AA40, tu_80362634, tu_8036FB60, tu_80376FA0 (4), tu_803B7DCC, tu_803E1668, tu_803F0A54, tu_8042165C, tu_8042E964.
+with the functions each holds is in docs/CRACK_PASS.md: act_block, act_bombchu, act_cannon (4), act_fairy_invincible, act_fish, act_force_gem_winged, act_four_person_pull_switch, act_four_sword_demo (5), act_gambling_shop, act_great_fairy_spfr (3), act_ice_melted_by_four_players, act_ice_wall (3), act_icicle, act_maiden_demo, act_princess_zelda (3), act_princess_zelda_demo (4), act_rainbow_bridge, act_room_transfer_lift, act_score (2), act_seesaw_lift, act_shadow_link_demo (2), act_shovel_old_timer, act_small_key (2), act_snow_wall (2), act_snowball (5), act_strange_block, act_tingle_first, act_vaati_demo, act_vaati_time_up (2), act_warp, act_warp_cannon (8), act_zora_escort (3), act_zora_escort_goal (2), act_whack_a_mole_shop_8010089C, act_crystal_cutscene_80113788 (5), tu_80118384, act_after_goal_opening_8011CEC8 (2), escort_base_801213EC (2), act_escorted_woman_arrival_point_80125B58 (2), act_navi_after_crystal_cutscene_8013394C, tu_8015F454, act_big_moldorm_tail_8018EB94, tu_8027E5BC, tu_802E9428, tu_8030C058, tu_8034AA40, tu_80362634, tu_8036FB60, tu_80376FA0 (4), tu_803B7DCC, tu_803E1668, tu_803F0A54, tu_8042165C, tu_8042E964.

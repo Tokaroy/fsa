@@ -266,7 +266,7 @@ SHARED-EDITS
 - tu_80379F84.h: SaveRow_8050EC80 and `extern lbl_8050EC80[]` deleted.
 - tu_803B8C74.h: SaveFile fields above, getFile / getCurrentFile, isSaveChecksumValid_803BADAC decl.
 - StageFlag.h: includes tu_803B8C74.h, reads getCurrentFile().mFlags.
-- Mechanical switch in act_fairy, act_rank_display, act_treasure_chest, tu_80197070, tu_801DE714,
+- Mechanical switch in act_fairy, act_rank_display, act_treasure_chest, act_princess_zelda_ganon_battle_80197070, tu_801DE714,
   tu_80215A94, tu_8026FC20, tu_802D39B8, tu_80379F84, tu_803944C8, tu_803E1668, tu_80403D84,
   tu_80414F6C, tu_8043A0E8 (includes + field names only).
 - Comments only: GameGlobals.h, GameState.h, GameView.h.

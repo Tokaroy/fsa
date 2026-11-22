@@ -252,7 +252,7 @@ struct cls_804AE9A0 {
     /* 0x1E */ u8 field_0x1e;
 }; // Size: at least 0x1F
 
-// Owner: game/tu_80197070.cpp (0x8019CDE4 / 0x8019CE40). Set / test bit
+// Owner: game/act_princess_zelda_ganon_battle_80197070.cpp (0x8019CDE4 / 0x8019CE40). Set / test bit
 // stage * 4 + sub of the current save file's mFlags (game/tu_803B8C74.h; stage 0-7, sub 0-3;
 // anything else is ignored / false).
 void fn_8019CDE4(s32 stage, s32 sub);

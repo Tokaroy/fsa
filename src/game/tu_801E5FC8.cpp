@@ -3,7 +3,7 @@
 #include "game/GameGlobals.h"
 #include "game/GameState.h"
 #include "game/act/tu_801D8400.h"
-#include "game/act/tu_801DAC6C.h"
+#include "game/act/singleton_801DAC6C.h"
 
 void cls_804A4C58::fn_801E63D8() {
     mEmitter2c[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x25e, 0, 0, NULL, NULL, true, 1.0f);

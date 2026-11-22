@@ -4,7 +4,7 @@
 // The actor manager: owns every live actor (up to 0x400), spawns them by
 // ActorId (spawnActor_801F9484, in game/tu_801F9484.cpp with the actors' inline
 // constructors), updates and draws them, and reads EnemyParam.csv for the
-// spawner. Its own code is game/tu_801F6058.cpp (vtable 0x804A5800,
+// spawner. Its own code is game/actor_manager_801F6058.cpp (vtable 0x804A5800,
 // constructor fn_801F9078). One instance, allocated with
 // __nw__(0x3060, heap, 0) in game/game_root_sub_04_80139BE8.cpp and
 // stored at offset 0x8 of the object gGameRoot_8053AAF8->0x4 points to; reach it
@@ -71,7 +71,7 @@ public:
 
     // 0x80456120 (game/tu_80455CA4.cpp): clears field_0x31, then calls
     // dispose() through the vtable (slot 0xC). ActorManager's release code
-    // calls it on each mSounds entry and on mSharedSound_0x200c (game/tu_801F6058.cpp).
+    // calls it on each mSounds entry and on mSharedSound_0x200c (game/actor_manager_801F6058.cpp).
     void fn_80456120();
 
     // 0x80456154 (game/tu_80455CA4.cpp): points mSoundPos at a copy of
@@ -125,9 +125,9 @@ public:
     virtual ~ActorManager_804A5800();
 
     // Non-virtual members other units call: every export of
-    // game/tu_801F6058.cpp whose callers pass the manager in r3 (the result
+    // game/actor_manager_801F6058.cpp whose callers pass the manager in r3 (the result
     // of getActorManager_801F856C at all but a few calls; game_root_sub_04_80139BE8 loads it from
-    // GameRoot 0x4->0x8, tu_801EE24C from gGameRoot_8053AAF8). "N units / M
+    // GameRoot 0x4->0x8, actor_base_801EE24C from gGameRoot_8053AAF8). "N units / M
     // calls" counts the other game units that call it and their calls.
     // As in ActorBase.h, the names stay dtk's placeholders and symbols.txt
     // carries the mangled name each declaration produces
@@ -203,7 +203,7 @@ public:
     // caller tests r3 with clrlwi 24; the body returns a u8 flag widened
     // (clrlwi r3, r7, 24).
     u8 fn_801F75B4(s32 layer, const JGeometry::TBox2f* box);
-    // 1 unit / 1 call (tu_80184D64, with &mPos). The serial of the live
+    // 1 unit / 1 call (act_chain_chomp_80184D64, with &mPos). The serial of the live
     // "dstr" actor nearest to pos (x, y) within lbl_8053F824, or -1; the
     // squared distance goes to *outDistSq when it is not NULL.
     s32 fn_801F7664(const JGeometry::TVec3f* pos, f32* outDistSq);
@@ -227,7 +227,7 @@ public:
     s32 findNextActorById_801F78F4(u32 id, s32 afterSerial);
     // 18 units / 28 calls. The serial of the first live `id` actor, or -1.
     s32 findSerialByActorId_801F7A08(u32 id);
-    // 1 unit / 1 call (tu_801EE24C). The number of live actors with
+    // 1 unit / 1 call (actor_base_801EE24C). The number of live actors with
     // field_0x1a8 ("dstr") set.
     s32 fn_801F7A6C();
     // 2 units / 2 calls. Clears mAlive of every live `id` actor other than
@@ -297,7 +297,7 @@ public:
     // 0x801F62AC: reads EnemyParam.csv (lbl_8046A048) into mParam* with
     // `heap` (the constructor's parent heap). Only the constructor calls it.
     void fn_801F62AC(JKRHeap* heap);
-    // Inline only (game/tu_801F6058.cpp): deletes mActors[slot] and pulls
+    // Inline only (game/actor_manager_801F6058.cpp): deletes mActors[slot] and pulls
     // mActorEnd down past trailing empty slots.
     void deleteSlot(s32 slot);
     ActorBase_804A5770* getActor(s32 slot) { return mActors[slot]; }
@@ -348,14 +348,14 @@ enum ActorParamColumn {
     ACTOR_PARAM_VOIC = 'voic', // mNextVisibleBox_0x190
 };
 
-// Exports of game/tu_801F6058.cpp that are not manager members (their
+// Exports of game/actor_manager_801F6058.cpp that are not manager members (their
 // callers do not pass the manager in r3).
 //
-// Defined in game/tu_801F6058.cpp (C++ linkage, renamed in symbols.txt).
+// Defined in game/actor_manager_801F6058.cpp (C++ linkage, renamed in symbols.txt).
 // 241 units / 1662 calls. gGameRoot_8053AAF8->0x4->0x8: the actor manager.
 ActorManager_804A5800* getActorManager_801F856C(void);
 
-// Defined in game/tu_801F6058.cpp. 21 units / 38 calls. True when pos (x, y) is outside the view's box
+// Defined in game/actor_manager_801F6058.cpp. 21 units / 38 calls. True when pos (x, y) is outside the view's box
 // (getGameView_802D6A9C 0xCC, or 0xDC for layer 8 and up) grown by `margin` on
 // each side (<= / >= compares). Callers pass &mPos, mViewMtx_0x4 and a
 // literal, and test r3 with clrlwi. 24.
@@ -379,7 +379,7 @@ void addCalcAngle2_801F714C(u16* value, u16 target, u16 step, u16 maxStep);
 // *value), clamped to +-maxStep, to *value.
 void addCalc2_801F71A4(f32* value, f32 target, f32 rate, f32 maxStep);
 
-// Defined in game/tu_801F6058.cpp: extern "C" keeps its dtk placeholder name
+// Defined in game/actor_manager_801F6058.cpp: extern "C" keeps its dtk placeholder name
 // as the link name until its real name is known.
 extern "C" {
 

@@ -35,7 +35,7 @@ public:
     virtual ~Thief_804A5A30();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    // Overrides in game/tu_80206B30.cpp (0x80206B30-0x80207004; slot order).
+    // Overrides in game/act_thief_80206B30.cpp (0x80206B30-0x80207004; slot order).
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x58 */ virtual bool vfunc_0x58();
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
@@ -52,7 +52,7 @@ public:
     // to keep mPos in view, unless the thief is in state 8 or 9.
     /* 0xA0 */ virtual void vfunc_0xA0();
 
-    // 0x802072E4 (tu_80206B30): mBox = (-8, -16)-(8, 8), copied to mBox2.
+    // 0x802072E4 (act_thief_80206B30): mBox = (-8, -16)-(8, 8), copied to mBox2.
     void fn_802072E4();
     // 0x80205E0C (act_thief, not written yet): switches to state `state`.
     void setState_80205E0C(s32 state);

@@ -54,17 +54,17 @@ the measurements below rule out every layout tried and point at a compiler-mode 
   __sinit; and every one of 165 units would need it); key-function emission (no effect); a header-defined switch
   function (would be weak, emitted after ctor); other flags (above).
 - Inlining contradicts deferred, and that is the real blocker: the original inlines only callees that sit EARLIER in
-  .text (act_stop_npc's dtor inlines fn_802ED140; tu_801CDC8C fn_801CF6B8 calls the later isStepBlocked_801CFCF0 and pickNewDir_801CF720
-  out of line). Deferred inlines both directions: tu_801CDC8C reversed under `auto,deferred` inlines isStepBlocked_801CFCF0 and
+  .text (act_stop_npc's dtor inlines fn_802ED140; enemy_base_801CDC8C fn_801CF6B8 calls the later isStepBlocked_801CFCF0 and pickNewDir_801CF720
+  out of line). Deferred inlines both directions: enemy_base_801CDC8C reversed under `auto,deferred` inlines isStepBlocked_801CFCF0 and
   pickNewDir_801CF720 into fn_801CF6B8; `#pragma inline_bottom_up on` changes nothing; `inline_depth(1)` still inlines
   isStepBlocked_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
-  .text (act_stop_npc's dtor inlines fn_802ED140; tu_801CDC8C fn_801CF6B8 calls the later isStepBlocked_801CFCF0 and pickNewDir_801CF720
-  out of line). Deferred inlines both directions: tu_801CDC8C reversed under `auto,deferred` inlines isStepBlocked_801CFCF0 and
+  .text (act_stop_npc's dtor inlines fn_802ED140; enemy_base_801CDC8C fn_801CF6B8 calls the later isStepBlocked_801CFCF0 and pickNewDir_801CF720
+  out of line). Deferred inlines both directions: enemy_base_801CDC8C reversed under `auto,deferred` inlines isStepBlocked_801CFCF0 and
   pickNewDir_801CF720 into fn_801CF6B8; `#pragma inline_bottom_up on` changes nothing; `inline_depth(1)` still inlines
   isStepBlocked_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
-  (deferred WITHOUT auto): tu_801CDC8C/tu_801EDBA4 no longer over-inline, tu_80222CC4 and act_shadow_link_bow
+  (deferred WITHOUT auto): enemy_base_801CDC8C/act_vaati_boss_801EDBA4 no longer over-inline, tu_80222CC4 and act_shadow_link_bow
   updateState_0x90 go 100 %, but auto-inlined callees are lost (act_stop_npc, escort_actor_list_80131D98, tu_8021F4B0 dtors,
-  tu_801D7AFC init, ice_floor_check_list_8012F3E4 fn_8012F554, 4 in tu_80427D2C): game functions 1745 -> 1738. Not adopted.
+  act_unknown_bgbl_801D7AFC init, ice_floor_check_list_8012F3E4 fn_8012F554, 4 in tu_80427D2C): game functions 1745 -> 1738. Not adopted.
 - So FSA shows auto-style inlining (callee generated earlier) with deferred-style data order. No GC/2.0-3.0a5.2
   flag or pragma tested gives both. Unit stays NonMatching; nothing changed in source or flags.
 

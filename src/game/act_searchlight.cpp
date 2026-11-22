@@ -13,7 +13,7 @@
 // destructor-chain objects follow at +0xC in the original .bss).
 f32 lbl_804C0EA0[3];
 
-// Two dummy ids searchlights share with tu_8018A8D8 (both -1 until a searchlight is made).
+// Two dummy ids searchlights share with act_big_poe_2_8018A8D8 (both -1 until a searchlight is made).
 s32 lbl_80539F80 = -1;
 s32 lbl_80539F84 = -1;
 

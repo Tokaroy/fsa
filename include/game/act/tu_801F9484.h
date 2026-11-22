@@ -16,8 +16,8 @@
 #include "game/act/act_wallmaster.h"
 #include "game/act/act_wizzrobe.h"
 #include "game/act/act_zora_fish_herder.h"
-#include "game/act/tu_8018EB94.h"
-#include "game/act/tu_801B6C50.h"
+#include "game/act/act_big_moldorm_tail_8018EB94.h"
+#include "game/act/act_goal_warp_801B6C50.h"
 #include "game/act/tu_803D9944.h"
 #include "game/act/act_princess_zelda_ending.h"
 #include "game/act/demo_actor_base_8010DF44.h"
@@ -390,12 +390,12 @@ class PrincessZeldaGanonBattle_804A2944 : public ActorBase_804A5770 {
 public:
     PrincessZeldaGanonBattle_804A2944() {}
     /* 0x08 */ virtual ~PrincessZeldaGanonBattle_804A2944();
-    // 0x8019C500 (game/tu_80197070.cpp): for each present player on this actor's
+    // 0x8019C500 (game/act_princess_zelda_ganon_battle_80197070.cpp): for each present player on this actor's
     // layer, draws a marker (fn_80230498) at its stored position field_0x2a4[i];
     // the y is this actor's y plus a constant unless `keepY`.
     void fn_8019C500(s32 keepY);
     // 0x80197070 (draw), 0x80197550 (update), 0x8019C8A4 (init), 0x8019C5B8 (vfunc_0x44):
-    // game/tu_80197070.cpp.
+    // game/act_princess_zelda_ganon_battle_80197070.cpp.
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -404,7 +404,7 @@ public:
     void fn_801979C4();
     void fn_80197EB0();
     void fn_80198828();
-    // SHARED-EDIT: carved from field_0x230[0x74] (game/tu_80197070.cpp).
+    // SHARED-EDIT: carved from field_0x230[0x74] (game/act_princess_zelda_ganon_battle_80197070.cpp).
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 mTimers[4]; // update counts them down to 0
     /* 0x244 */ s32 field_0x244;
@@ -428,7 +428,7 @@ public:
     /* 0x280 */ Vec field_0x280[3];
     /* 0x2A4 */ JGeometry::TVec3f field_0x2a4[4];
     /* 0x2D4 */ JGeometry::TVec3f field_0x2d4[4];
-    // SHARED-EDIT: thirteen emitters, each freed by the destructor (game/tu_80197070.cpp).
+    // SHARED-EDIT: thirteen emitters, each freed by the destructor (game/act_princess_zelda_ganon_battle_80197070.cpp).
     /* 0x304 */ JPABaseEmitter* mEmitters[13];
 }; // Size: 0x338
 
@@ -436,9 +436,9 @@ public:
 #include "game/act/act_shooting_gallery.h"
 
 // Spawned for 'TENN'.
-#include "game/act/tu_801A0710.h"
+#include "game/act/act_tennis_shop_801A0710.h"
 
-// Spawned for 'ZLD3'. Code: game/tu_801B0A00.cpp.
+// Spawned for 'ZLD3'. Code: game/act_princess_zelda_spawner_801B0A00.cpp.
 class PrincessZeldaSpawner_804A35AC : public ActorBase_804A5770 {
 public:
     PrincessZeldaSpawner_804A35AC() {}

@@ -55,7 +55,7 @@ public:
     // clearResourceManager, then destroys mHeap).
     virtual ~EffectSystem_8049F178();
 
-    // 2 units (act_all_enemies_defeated, tu_801EE24C). For player 0-3 and a
+    // 2 units (act_all_enemies_defeated, actor_base_801EE24C). For player 0-3 and a
     // non-NULL emitter, copies the colour mColors[player] to the emitter's
     // bytes 0xB8-0xBA.
     void fn_8013C830(s32 player, JPABaseEmitter* emitter);
@@ -133,7 +133,7 @@ u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle);
 u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos, s32 height, s32 depth,
                  bool adjust);
 
-// game/tu_801CB270.cpp (4 caller units: tu_801EE24C,
+// game/tu_801CB270.cpp (4 caller units: actor_base_801EE24C,
 // tu_8021AF28, tu_801E5FC8, tu_8020F798). Moves the emitter in *emitter to pos with
 // setEmitterPos_8013CB44 (adjust true); or, when it is flagged (bit 0x8 of its word
 // 0xF4) and has no particles left (0xD0 + 0xDC == 0), deletes it with
@@ -164,7 +164,7 @@ JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u
 // draw() passes a null matrix. a / b are summed into a depth offset.
 void fn_8013AC90(f32 scale, const Vec* pos, const JUtility::TColor* color, s32 a, s32 b, const Mtx m);
 
-// game/tu_801CB270.cpp (3 caller units: tu_801EE24C, tu_8021AF28,
+// game/tu_801CB270.cpp (3 caller units: actor_base_801EE24C, tu_8021AF28,
 // tu_8020F798). NULL-checks the emitter, then makes it immortal and invalid
 // (status bits 0x40 and 0x1 of word 0xF4, word 0x24 = 1).
 void fn_801CB7A0(JPABaseEmitter* emitter);

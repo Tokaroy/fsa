@@ -15,7 +15,7 @@ void makeAxisRotation_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 angle);
 // sin x, sin y, sin z, cos x, cos y, cos z through the double sin / cos
 // (bl sin; frsp), then the nine products, each multiplied by scale last.
 // The translation column is the caller's. Unproven: no caller is 100 % yet
-// (tu_801A908C fn_801A90D4, act_hardhat_beetle's draw: 99.0 %, regalloc).
+// (act_manhandla_801A908C fn_801A90D4, act_hardhat_beetle's draw: 99.0 %, regalloc).
 inline void setRotScaleMtx(Mtx m, const JGeometry::TVec3f& rot, f32 scale) {
     f32 sx = sin(rot.x);
     f32 sy = sin(rot.y);

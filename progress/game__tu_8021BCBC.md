@@ -24,7 +24,7 @@ weak-dedup trial evidence), flipped to Matching; `gate: ok`.
 A 12-byte class `cls_8021BCBC`, named after its first method because it has no
 vtable. It has a value (0x0 = table[index] + 0x3B5), an index (0x4, u32, 0..3)
 and a counter (0x8). The `.rodata` table {0,1,2,3} is a file static (100 %).
-Callers: tu_801E4D54, act_vaati_boss, tu_801D6CEC.
+Callers: act_vaati_boss_801E4D54, act_vaati_boss, tu_801D6CEC.
 
 Matched: fn_8021BCBC (step: counter wraps at 4, then index wraps at 4),
 `__sinit` (9 JAudio pools, the same stand-ins as tu_802BA334).

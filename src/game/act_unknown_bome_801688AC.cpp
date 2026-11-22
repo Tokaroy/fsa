@@ -86,7 +86,7 @@ void UnknownBOME_804A0738::init() {
     field_0x230 = 0;
 }
 
-// Same box-margin check as isOutsideView_801F6758 (tu_801F6058.cpp), on an arbitrary TBox2f.
+// Same box-margin check as isOutsideView_801F6758 (actor_manager_801F6058.cpp), on an arbitrary TBox2f.
 static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::TBox2f* box, f32 margin) {
     if (pos->x <= box->i.x - margin || pos->x >= box->f.x + margin ||
         pos->y <= box->i.y - margin || pos->y >= box->f.y + margin) {

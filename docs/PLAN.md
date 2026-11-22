@@ -81,7 +81,7 @@ stays OK):
   act_searchlight 0x804C0EA0, act_shooting_gallery 0x804C6330).
   Units are tiled from the owned data; gaps nobody owns go to the
   earlier unit. Check: only one unit's data still points into another unit's
-  `.rodata`/`.sdata2` (act_ganon's table into tu_801902C0, 77 pointers; the
+  `.rodata`/`.sdata2` (act_ganon's table into game_root_sub_20_801902C0, 77 pointers; the
   table itself is never referenced by name), and the tool prints it.
 - Thunks: CodeWarrior emits a vtable's this-adjusting thunks (`subi r3,
   r3, N; b fn`) at the end of the file that emits the vtable, after its

@@ -15,7 +15,7 @@ public:
     /* 0x08 */ virtual ~Ganon_804A25F0();
     // fn_80192038: plays sound 0x40006 and re-issues startBossDeath_0x28 with 2 and (0, 0).
     /* 0x24 */ virtual void die_0x24();
-    // 0x8019CEBC / 0x8019CEC4 (game/tu_80197070.cpp): store a word at 0x28C / 0x2F8.
+    // 0x8019CEBC / 0x8019CEC4 (game/act_princess_zelda_ganon_battle_80197070.cpp): store a word at 0x28C / 0x2F8.
     void fn_8019CEBC(s32 value);
     void fn_8019CEC4(s32 value);
 
@@ -42,7 +42,7 @@ public:
     /* 0x280 */ s32 field_0x280;
     /* 0x284 */ s32 field_0x284;
     /* 0x288 */ s32 field_0x288;
-    // SHARED-EDIT: set by fn_8019CEBC (game/tu_80197070.cpp; the ZLD2 actor's update).
+    // SHARED-EDIT: set by fn_8019CEBC (game/act_princess_zelda_ganon_battle_80197070.cpp; the ZLD2 actor's update).
     /* 0x28C */ s32 field_0x28c;
     /* 0x290 */ s32 field_0x290;
     /* 0x294 */ s32 field_0x294;
@@ -64,7 +64,7 @@ public:
     /* 0x2DC */ JGeometry::TVec3f field_0x2dc;
     /* 0x2E8 */ JGeometry::TVec3f field_0x2e8;
     /* 0x2F4 */ f32 field_0x2f4;
-    // SHARED-EDIT: set by fn_8019CEC4 (game/tu_80197070.cpp).
+    // SHARED-EDIT: set by fn_8019CEC4 (game/act_princess_zelda_ganon_battle_80197070.cpp).
     /* 0x2F8 */ s32 field_0x2f8;
     /* 0x2FC */ s32 field_0x2fc;
     /* 0x300 */ s32 field_0x300;

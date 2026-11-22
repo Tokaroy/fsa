@@ -101,7 +101,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 24 | 1 | `game/tu_803BACF8.cpp` **(no source)** | 4 | 2,660 | 2,660 | 0.0 % |
 | 25 | 1 | `game/tu_803099FC.cpp` **(no source)** | 20 | 2,616 | 2,616 | 0.0 % |
 | 26 | 1 | `game/tu_80434370.cpp` **(no source)** | 3 | 2,224 | 2,224 | 0.0 % |
-| 27 | 1 | `game/tu_801A3C50.cpp` **(no source)** | 12 | 2,080 | 2,080 | 0.0 % |
+| 27 | 1 | `game/actor_base_801A3C50.cpp` **(no source)** | 12 | 2,080 | 2,080 | 0.0 % |
 | 28 | 1 | `game/tu_80401848.cpp` **(no source)** | 12 | 1,996 | 1,996 | 0.0 % |
 | 29 | 1 | `game/tu_80432638.cpp` | 1 | 1,984 | 1,984 | 7.3 % |
 | 30 | 1 | `game/act_old_man.cpp` **(no source)** | 1 | 1,916 | 1,916 | 0.0 % |
@@ -131,7 +131,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 54 | 1 | `game/act_battle_royale_end_check.cpp` | 5 | 520 | 372 | 47.8 % |
 | 55 | 1 | `game/act_special_conversation_npc.cpp` | 1 | 364 | 364 | 9.5 % |
 | 56 | 1 | `game/act_enemy_for_ending_control.cpp` | 1 | 324 | 324 | 19.2 % |
-| 57 | 1 | `game/tu_801C0D70.cpp` **(no source)** | 4 | 308 | 308 | 0.0 % |
+| 57 | 1 | `game/shadow_link_fight_801C0D70.cpp` **(no source)** | 4 | 308 | 308 | 0.0 % |
 | 58 | 1 | `game/zora_escort_goal_list_80127E20.cpp` **(no source)** | 3 | 276 | 276 | 0.0 % |
 | 59 | 1 | `game/act_kaepora_gaebora_ending.cpp` | 1 | 276 | 276 | 4.5 % |
 | 60 | 1 | `game/act_seesaw_lift.cpp` | 1 | 252 | 252 | 0.8 % |
@@ -143,7 +143,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 66 | 1 | `game/act_ganon.cpp` **(no source)** | 1 | 172 | 172 | 0.0 % |
 | 67 | 1 | `game/act_all_enemies_defeated.cpp` **(no source)** | 1 | 144 | 144 | 0.0 % |
 | 68 | 1 | `game/act_phantom_ganon_2.cpp` **(no source)** | 2 | 124 | 124 | 0.0 % |
-| 69 | 1 | `game/tu_8018A8D8.cpp` **(no source)** | 2 | 120 | 120 | 0.0 % |
+| 69 | 1 | `game/act_big_poe_2_8018A8D8.cpp` **(no source)** | 2 | 120 | 120 | 0.0 % |
 | 70 | 1 | `game/act_navi_after_crystal_cutscene_8013394C.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | 71 | 1 | `game/act_searchlight.cpp` | 1 | 116 | 116 | 2.0 % |
 | 72 | 1 | `game/act_shooting_gallery.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
@@ -153,13 +153,13 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 76 | 3 | `game/tu_8023FBF0.cpp` | 102 | 14,004 | 13,844 | 0.9 % |
 | 77 | 3 | `game/tu_8042165C.cpp` | 15 | 13,320 | 13,320 | 2.1 % |
 | 78 | 3 | `game/tu_802D39B8.cpp` | 34 | 13,360 | 13,304 | 2.2 % |
-| 79 | 3 | `game/tu_801EE24C.cpp` | 27 | 7,620 | 7,236 | 6.4 % |
+| 79 | 3 | `game/actor_base_801EE24C.cpp` | 27 | 7,620 | 7,236 | 6.4 % |
 | 80 | 3 | `game/tu_802684A4.cpp` | 8 | 4,644 | 4,528 | 3.8 % |
 | 81 | 3 | `game/act_cucco.cpp` | 13 | 4,252 | 4,252 | 3.7 % |
-| 82 | 3 | `game/tu_801F6058.cpp` | 19 | 4,492 | 4,152 | 9.2 % |
+| 82 | 3 | `game/actor_manager_801F6058.cpp` | 19 | 4,492 | 4,152 | 9.2 % |
 | 83 | 3 | `game/tu_8026FC20.cpp` | 27 | 3,796 | 3,780 | 1.0 % |
 | 84 | 3 | `game/tu_80264998.cpp` | 6 | 2,724 | 2,724 | 3.6 % |
-| 85 | 3 | `game/tu_801902C0.cpp` | 10 | 2,612 | 2,612 | 7.3 % |
+| 85 | 3 | `game/game_root_sub_20_801902C0.cpp` | 10 | 2,612 | 2,612 | 7.3 % |
 | 86 | 3 | `game/act_warp.cpp` | 5 | 2,584 | 2,584 | 6.5 % |
 | 87 | 3 | `game/act_trick_floor.cpp` | 3 | 2,556 | 2,556 | 6.9 % |
 | 88 | 3 | `game/tu_80285E58.cpp` | 6 | 2,552 | 2,552 | 3.8 % |
@@ -194,7 +194,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 117 | 3 | `game/act_thwomp_switch.cpp` | 3 | 92 | 84 | 70.6 % |
 | 118 | 3 | `game/tu_8021F064.cpp` | 3 | 132 | 72 | 72.7 % |
 | 119 | 3 | `game/tu_80379F84.cpp` | 1 | 20 | 20 | 25.0 % |
-| 120 | 3 | `game/tu_801B6C50.cpp` | 1 | 16 | 16 | 19.1 % |
+| 120 | 3 | `game/act_goal_warp_801B6C50.cpp` | 1 | 16 | 16 | 19.1 % |
 
 ### By executed-but-unmatched bytes alone (top 40, whole path)
 
@@ -214,7 +214,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 12 | `game/effect_system_8013C5C8.cpp` **(no source)** | 7,520 | 1 |
 | 13 | `game/game_root_80134C04.cpp` | 7,436 | 1 |
 | 14 | `game/tu_8022AD64.cpp` | 7,364 | 1 |
-| 15 | `game/tu_801EE24C.cpp` | 7,236 | 3 |
+| 15 | `game/actor_base_801EE24C.cpp` | 7,236 | 3 |
 | 16 | `game/tu_8043A0E8.cpp` **(no source)** | 7,224 | 1 |
 | 17 | `game/tu_803A3484.cpp` | 6,160 | 1 |
 | 18 | `game/tu_80427D2C.cpp` | 4,944 | 1 |
@@ -224,7 +224,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 22 | `game/tu_8030C058.cpp` | 4,432 | 1 |
 | 23 | `game/act_cucco.cpp` | 4,252 | 3 |
 | 24 | `game/tu_80457DFC.cpp` | 4,220 | 1 |
-| 25 | `game/tu_801F6058.cpp` | 4,152 | 3 |
+| 25 | `game/actor_manager_801F6058.cpp` | 4,152 | 3 |
 | 26 | `game/tu_8026FC20.cpp` | 3,780 | 3 |
 | 27 | `game/tu_804023D0.cpp` **(no source)** | 3,672 | 1 |
 | 28 | `game/tu_8037DF68.cpp` **(no source)** | 3,480 | 1 |
@@ -235,7 +235,7 @@ Each game unit once, in the wave of the first phase that executes it; inside a w
 | 33 | `game/tu_80264998.cpp` | 2,724 | 3 |
 | 34 | `game/tu_803BACF8.cpp` **(no source)** | 2,660 | 1 |
 | 35 | `game/tu_803099FC.cpp` **(no source)** | 2,616 | 1 |
-| 36 | `game/tu_801902C0.cpp` | 2,612 | 3 |
+| 36 | `game/game_root_sub_20_801902C0.cpp` | 2,612 | 3 |
 | 37 | `game/act_warp.cpp` | 2,584 | 3 |
 | 38 | `game/act_trick_floor.cpp` | 2,556 | 3 |
 | 39 | `game/tu_80285E58.cpp` | 2,552 | 3 |
@@ -311,10 +311,10 @@ Dump(s): `p1_boot_title.bin`. 82 game units executed, 42 of them without source.
 | `game/act_navi_after_crystal_cutscene_8013394C.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | `game/act_searchlight.cpp` | 1 | 116 | 116 | 2.0 % |
 | `game/act_phantom_ganon_2.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
-| `game/tu_8018A8D8.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
+| `game/act_big_poe_2_8018A8D8.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | `game/act_shooting_gallery.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
-| `game/tu_801A3C50.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
-| `game/tu_801C0D70.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
+| `game/actor_base_801A3C50.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
+| `game/shadow_link_fight_801C0D70.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | `game/tu_801E9AFC.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | `game/tu_801F9484.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
 | `game/tu_80204638.cpp` **(no source)** | 1 | 116 | 116 | 0.0 % |
@@ -436,7 +436,7 @@ Dump(s): `p3a_menu_gbaconnect.bin+p3b_connect_battle.bin`. 114 game units execut
 | `game/tu_80414F6C.cpp` **(no source)** | 8 | 9,580 | 9,580 | 0.0 % |
 | `game/game_root_sub_24_8016A2B4.cpp` | 32 | 9,572 | 9,556 | 2.4 % |
 | `game/tu_803E1668.cpp` **(no source)** | 2 | 8,576 | 8,576 | 0.0 % |
-| `game/tu_801EE24C.cpp` | 27 | 7,620 | 7,236 | 6.4 % |
+| `game/actor_base_801EE24C.cpp` | 27 | 7,620 | 7,236 | 6.4 % |
 | `game/tu_8022AD64.cpp` | 100 | 13,004 | 7,224 | 35.2 % |
 | `game/tu_8043A0E8.cpp` **(no source)** | 20 | 6,972 | 6,972 | 0.0 % |
 | `game/effect_system_8013C5C8.cpp` **(no source)** | 11 | 6,780 | 6,780 | 0.0 % |
@@ -446,11 +446,11 @@ Dump(s): `p3a_menu_gbaconnect.bin+p3b_connect_battle.bin`. 114 game units execut
 | `game/tu_802684A4.cpp` | 8 | 4,644 | 4,528 | 3.8 % |
 | `game/tu_8030C058.cpp` | 10 | 4,444 | 4,332 | 10.3 % |
 | `game/act_cucco.cpp` | 13 | 4,252 | 4,252 | 3.7 % |
-| `game/tu_801F6058.cpp` | 19 | 4,492 | 4,152 | 9.2 % |
+| `game/actor_manager_801F6058.cpp` | 19 | 4,492 | 4,152 | 9.2 % |
 | `game/tu_8026FC20.cpp` | 27 | 3,796 | 3,780 | 1.0 % |
 | `game/tu_80264998.cpp` | 6 | 2,724 | 2,724 | 3.6 % |
 | `game/tu_804023D0.cpp` **(no source)** | 18 | 2,640 | 2,640 | 0.0 % |
-| `game/tu_801902C0.cpp` | 10 | 2,612 | 2,612 | 7.3 % |
+| `game/game_root_sub_20_801902C0.cpp` | 10 | 2,612 | 2,612 | 7.3 % |
 | `game/act_warp.cpp` | 5 | 2,584 | 2,584 | 6.5 % |
 | `game/act_trick_floor.cpp` | 3 | 2,556 | 2,556 | 6.9 % |
 | `game/tu_80285E58.cpp` | 6 | 2,552 | 2,552 | 3.8 % |
@@ -464,7 +464,7 @@ Dump(s): `p3a_menu_gbaconnect.bin+p3b_connect_battle.bin`. 114 game units execut
 | `game/act_dropped_item.cpp` | 5 | 2,048 | 2,048 | 9.5 % |
 | `game/tu_80434370.cpp` **(no source)** | 2 | 2,044 | 2,044 | 0.0 % |
 | `game/tu_803006E8.cpp` **(no source)** | 4 | 2,020 | 2,020 | 0.0 % |
-| `game/tu_801A3C50.cpp` **(no source)** | 11 | 1,964 | 1,964 | 0.0 % |
+| `game/actor_base_801A3C50.cpp` **(no source)** | 11 | 1,964 | 1,964 | 0.0 % |
 | `game/tu_8013AAD4.cpp` | 15 | 2,104 | 1,960 | 15.0 % |
 | `game/tu_80256C74.cpp` | 18 | 1,860 | 1,860 | 1.7 % |
 | `game/tu_80455CA4.cpp` | 8 | 2,020 | 1,568 | 16.3 % |
@@ -500,7 +500,7 @@ Dump(s): `p3a_menu_gbaconnect.bin+p3b_connect_battle.bin`. 114 game units execut
 | `game/tu_80204638.cpp` **(no source)** | 2 | 288 | 288 | 0.0 % |
 | `game/tu_80118384.cpp` **(no source)** | 5 | 280 | 280 | 0.0 % |
 | `game/act_pot_2_generator.cpp` | 3 | 220 | 212 | 59.7 % |
-| `game/tu_801C0D70.cpp` **(no source)** | 3 | 192 | 192 | 0.0 % |
+| `game/shadow_link_fight_801C0D70.cpp` **(no source)** | 3 | 192 | 192 | 0.0 % |
 | `game/tu_801344C0.cpp` | 1 | 164 | 164 | 29.5 % |
 | `game/zora_escort_goal_list_80127E20.cpp` **(no source)** | 2 | 160 | 160 | 0.0 % |
 | `game/tu_80441318.cpp` | 4 | 196 | 144 | 50.8 % |
@@ -514,22 +514,22 @@ Dump(s): `p3a_menu_gbaconnect.bin+p3b_connect_battle.bin`. 114 game units execut
 | `game/act_battle_royale_end_check.cpp` | 4 | 220 | 72 | 47.8 % |
 | `game/tu_8021F064.cpp` | 3 | 132 | 72 | 72.7 % |
 | `game/tu_80379F84.cpp` | 1 | 20 | 20 | 25.0 % |
-| `game/tu_801B6C50.cpp` | 1 | 16 | 16 | 19.1 % |
+| `game/act_goal_warp_801B6C50.cpp` | 1 | 16 | 16 | 19.1 % |
 | `game/act_phantom_ganon_2.cpp` **(no source)** | 1 | 8 | 8 | 0.0 % |
-| `game/tu_8018A8D8.cpp` **(no source)** | 1 | 4 | 4 | 0.0 % |
+| `game/act_big_poe_2_8018A8D8.cpp` **(no source)** | 1 | 4 | 4 | 0.0 % |
 | `game/tu_803A85E4.cpp` | 6 | 684 | 0 | 100.0 % |
 | `game/tu_8039003C.cpp` | 7 | 672 | 0 | 100.0 % |
 | `game/ice_floor_check_list_8012F3E4.cpp` | 2 | 400 | 0 | 100.0 % |
 | `game/act_invisible_npc_wall_tomi.cpp` | 2 | 392 | 0 | 100.0 % |
 | `game/tu_80440BF4.cpp` | 3 | 368 | 0 | 100.0 % |
 | `game/tu_802AC8AC.cpp` | 3 | 328 | 0 | 100.0 % |
-| `game/tu_801EAB0C.cpp` | 2 | 244 | 0 | 100.0 % |
+| `game/actor_sub_1_dc_801EAB0C.cpp` | 2 | 244 | 0 | 100.0 % |
 | `game/act_player_start_position.cpp` | 2 | 220 | 0 | 100.0 % |
 | `game/act_off_switch.cpp` | 3 | 212 | 0 | 100.0 % |
 | `game/escort_actor_list_80131D98.cpp` | 3 | 176 | 0 | 100.0 % |
 | `game/tu_8037ACC4.cpp` | 2 | 164 | 0 | 90.7 % |
 | `game/tu_8012FF9C.cpp` | 2 | 104 | 0 | 100.0 % |
-| `game/tu_801DAC6C.cpp` | 2 | 88 | 0 | 64.9 % |
+| `game/singleton_801DAC6C.cpp` | 2 | 88 | 0 | 64.9 % |
 | `game/tu_802242F4.cpp` | 1 | 80 | 0 | 100.0 % |
 | `game/tu_803DA6B4.cpp` | 1 | 64 | 0 | 100.0 % |
 | `game/tu_8045BA84.cpp` | 1 | 60 | 0 | 100.0 % |

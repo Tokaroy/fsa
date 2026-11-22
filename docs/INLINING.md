@@ -40,16 +40,16 @@ docs/RULES_CARD.md ("Source order and inlining").
   .cpp). The generator's sinit units with a destructor (52) did renumber their 9
   `.bss` chain objects (`@408..` → `@409..`); gen_game.py --check pins those
   names, so symbols.txt was updated for them.
-- The tu_801EE24C gains are not register or scheduling fixes: they come from
+- The actor_base_801EE24C gains are not register or scheduling fixes: they come from
   `.sdata2` literal relocations (pool order), i.e. data order.
 - "dont_inline is caller-side only" is incomplete: under deferred
   `#pragma dont_inline on/reset` around a callee's definition also works per
   callee, like `auto_inline off/reset`. The rule uses `auto_inline`.
-- tu_801D3CBC `.sdata2` 86 → 34 %: 0x8053F0B8-0x8053F0C8 (90.0f, 1.7f and two
+- act_shadow_link_2_801D3CBC `.sdata2` 86 → 34 %: 0x8053F0B8-0x8053F0C8 (90.0f, 1.7f and two
   unknown words) are shared constants only other units read. Under deferred,
   file-scope constants always come before the file's function literals, and
-  the original has them after tu_801D3CBC's, so they start act_vaati_boss's
-  `.sdata2` (split moved; tu_801D3CBC back to 90.9 %).
+  the original has them after act_shadow_link_2_801D3CBC's, so they start act_vaati_boss's
+  `.sdata2` (split moved; act_shadow_link_2_801D3CBC back to 90.9 %).
 - tu_80457DFC's volume tables lbl_804B1E60..lbl_804B1ECC: under deferred,
   data defined anywhere in a file is addressed off `...data.0`; the original
   addresses each table on its own (an extern), and the tables lead `.data`
@@ -107,7 +107,7 @@ inlined depends on the **callee**, not on where it sits:
 This explains all four symptoms (a)-(d) from one mechanism. Applied to the whole
 game (sources reversed, `-inline auto,deferred`, `#pragma auto_inline off` at the
 top of 10 units), it scores **3985** functions against 3980 today. It gains 10
-functions (vtable/jump-table `.data` order, the tu_801EE24C register near-misses),
+functions (vtable/jump-table `.data` order, the actor_base_801EE24C register near-misses),
 and nine units' `.data` and act_deadrock's `.rodata` go to 100 %. The only losses
 are the 4 THP functions in tu_80427D2C (see open items). The same build plus one
 `auto_inline off` region in tu_802684A4 recovers fn_8026E68C. On tu_8022AD64 it
@@ -148,12 +148,12 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
 | tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
 | tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
-| tu_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
+| actor_manager_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
 | tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
 | tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
 | act_crystal_ball_generator_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
 | game_root_sub_24_8016A2B4, tu_802F5040, tu_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
-| tu_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), tu_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
+| tu_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), actor_base_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
 | tu_80222CC4, tu_80221B44, act_shadow_link_bow/jump, act_stone_arrghus_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
 | tu_801D2C60 | weak dtor first in .text | D | | progress |
 | act_vaati_demo | (matched) | E | "defined after draw(), above it MWCC inlines it" | src comment |
@@ -163,7 +163,7 @@ unit, `samecalls` below): out-of-line calls to a same-unit callee of ≤ 32
 instructions are rare in the EARLIER direction (61 caller/callee pairs). Most
 small earlier functions are inlined, so auto-inlining is the norm. In the LATER
 direction there are 589 such pairs. Many of those are weak inline copies, and some
-are real "never auto-inline" callees (tu_801CDC8C, act_opening_narration_801286C0).
+are real "never auto-inline" callees (enemy_base_801CDC8C, act_opening_narration_801286C0).
 
 ## Experiments (GC/2.6, game flags)
 
@@ -242,9 +242,9 @@ So under deferred only the callee-side `auto_inline` state is per function, and 
 works in both directions. (Under deferred, `auto` in `-inline` only sets the
 initial `auto_inline` state.)
 
-### 4. tu_801CDC8C probe (the GAME_PLAN "probe 1")
+### 4. enemy_base_801CDC8C probe (the GAME_PLAN "probe 1")
 
-Reversed tu_801CDC8C, `-inline auto,deferred`:
+Reversed enemy_base_801CDC8C, `-inline auto,deferred`:
 
 - No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and pickNewDir_801CF720 (wrong).
 - No pragma: fn_801CF6B8 inlines isStepBlocked_801CFCF0 and pickNewDir_801CF720 (wrong).
@@ -264,7 +264,7 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 | base (`-inline auto`, address order) | 3980 | | |
 | `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, tu_8023FBF0, tu_8026FC20, tu_8037DF68, act_stop_npc dtor, …) |
 | `-inline auto,deferred` | 3970 | 9 | 19 (over-inlining in 11 units, list below) |
-| `auto,deferred` + `#pragma auto_inline off` at file top of tu_801CDC8C, act_shadow_link_bow, tu_801EDBA4, tu_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
+| `auto,deferred` + `#pragma auto_inline off` at file top of enemy_base_801CDC8C, act_shadow_link_bow, act_vaati_boss_801EDBA4, tu_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
 | same + `auto_inline off` region around tu_802684A4's fn_8026EB1C only | fn_8026E68C back to 100 % (unit 13 → 14 / 25) | | |
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
@@ -277,20 +277,20 @@ There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.
 
 Gains under deferred: act_deadrock draw / update; act_shadow_link_bow and
-act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
+act_shadow_link_jump vfunc_0x90; actor_base_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
 fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
-act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
+act_shadow_link_jump vfunc_0x90; actor_base_801EE24C fn_801EE24C, findOverlappingActorOf_801F26CC, findOverlappingActor_801F2718,
 fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
 exact); tu_802EF76C init.
 
 Sections, deferred model vs base (game units):
 
 - `.data`: 13 units better, 9 of them now 100 % (act_force_gem_rain,
-  act_link_ending, act_princess_zelda_ending, act_leever_80182914, tu_801EE24C,
+  act_link_ending, act_princess_zelda_ending, act_leever_80182914, actor_base_801EE24C,
   tu_802EF76C, tu_803DAC3C, tu_80414F6C, tu_804432DC). These are the vtable /
   jump-table order cases.
 - `.rodata`: act_deadrock 46 → 100 %.
-- `.sdata2`: unchanged except tu_801D3CBC (86 → 34 %) and tu_80427D2C (91 → 77 %).
+- `.sdata2`: unchanged except act_shadow_link_2_801D3CBC (86 → 34 %) and tu_80427D2C (91 → 77 %).
   This refutes symptom (d) for reversed sources. tu_8026FC20's "deferred pools the
   literals in reverse" came from compiling deferred **without** reversing: with the
   source reversed, the pool comes out in forward first-use order. tu_8026FC20
@@ -320,7 +320,7 @@ Sections, deferred model vs base (game units):
 | H4. A different global size threshold (`inline_max_size`) | Rejected: kills header inlines (§4); 4-instruction callees stay out of line in the original. |
 | H5. A different global `inline_max_total_size` | Rejected under `-inline auto` (§1, -3..-46 functions). Under deferred the **default** budget already reproduces fn_80232A0C. |
 | H6. `-inline deferred` (no auto) + explicit `inline` keyword on every inlined callee | Fails (c) and the forwarders' positions: under deferred, explicit-`inline` copies go after their first referencer, and the tu_8022AD64 tail (fn_8023DEDC … fn_8023EFEC) is in clean address order at its own positions. |
-| **H7. Deferred codegen + per-callee `auto_inline` (default on) + default budget** | **Explains (a)-(d)**, the `.data` / weak-dtor order, the tu_801EE24C near-misses, and 3985 > 3980 on the first mechanical try. |
+| **H7. Deferred codegen + per-callee `auto_inline` (default on) + default budget** | **Explains (a)-(d)**, the `.data` / weak-dtor order, the actor_base_801EE24C near-misses, and 3985 > 3980 on the first mechanical try. |
 
 Second candidate: H7 with **per-file** `-inline auto,deferred` versus
 `-inline deferred` instead of `#pragma auto_inline` (a makefile per module). It is
@@ -349,7 +349,7 @@ original wrote those callees in a different way, are still needed in a few place
    direction), put `#pragma auto_inline off` before that callee's definition and
    `#pragma auto_inline reset` after it, with a one-line comment naming the
    caller(s) as evidence. Whole-file `off` when every function of the unit is
-   called that way (tu_801CDC8C, act_opening_narration_801286C0, …). Caller-side `dont_inline` /
+   called that way (enemy_base_801CDC8C, act_opening_narration_801286C0, …). Caller-side `dont_inline` /
    `inline_max_*` pragmas do nothing under deferred; don't use them.
 5. **Big callers**: if a big function (≳ 1 KB) calls small callees out of line and
    header inlines get weak copies right after it, that is the default
@@ -381,7 +381,7 @@ original wrote those callees in a different way, are still needed in a few place
   original order looks like `-inline off,deferred` with the wrappers placed
   after THPAudio. It probably needs its own reversal of the `extern "C"` blocks,
   which `reverse_funcs.py` does not reorder. Check before the switch.
-- tu_801D3CBC `.sdata2` 86 → 34 % under deferred: not examined.
+- act_shadow_link_2_801D3CBC `.sdata2` 86 → 34 % under deferred: not examined.
 - fn_80232A0C's `addPos` x8: under any budget, ours keeps them out of line while
   the original inlines them. The original likely used a smaller addPos form (FSA's
   own JGeometry may differ from libs/sdk's three-level `addPos(f32,f32)`).

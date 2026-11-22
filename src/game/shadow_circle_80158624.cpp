@@ -215,7 +215,7 @@ static inline void drawRing(const JGeometry::TVec3f* base, f32 radius, const JUt
 // rest is register choice, the order of a few loads (the int->float constant
 // and pi, base->y/z) and stack slots (the original puts both rings' outputs
 // above both rotated vectors) and the order of the matrix's zero stores.
-// The searchlight beam (act_searchlight, tu_8018A8D8): a fan from `top`
+// The searchlight beam (act_searchlight, act_big_poe_2_8018A8D8): a fan from `top`
 // (alpha 0) to a 32-segment ring of `radius` around `base` (the colour's
 // alpha), then the disc at `base` itself. The ring's y is halved.
 void ShadowCircle_804A0160::fn_80158624(const JGeometry::TVec3f* top, const JGeometry::TVec3f* base,

@@ -6,7 +6,7 @@
 // walks with fn_80215E48 and fn_80215E58.
 
 #include "types.h"
-#include "game/tu_801ED3DC.h"
+#include "game/stopwatch_801ED3DC.h"
 #include "game/cls_8021BFA8.h"
 #include "game/cls_8021C024.h"
 

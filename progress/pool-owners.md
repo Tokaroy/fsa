@@ -8,7 +8,7 @@ that own a unit's first .sdata2 literals so the reloc-name-only functions after 
 - fn_801217EC (life meters): 99.69 %, regalloc-only (+ reloc-name); with dead-stripped plain helpers
   respawnLifeMeters / spawnLifeMeter (proven by the redundant field_0x332 / index tests inlined into it).
   LifeMeter_804B174C::fn_8019CEF8's stores are a file-local copy (followActor): the original inlines a
-  header inline whose out-of-line copy is tu_80197070's; move it to act_life_meter.h once tu_80197070's
+  header inline whose out-of-line copy is act_princess_zelda_ganon_battle_80197070's; move it to act_life_meter.h once act_princess_zelda_ganon_battle_80197070's
   fn_80198828 (its out-of-line caller) is written.
 - Pool now matches from 0x20. Still blocked: slot 0 (8.0f) comes from a function not in the binary that
   is emitted before fn_80121438 (no candidate found: spawnLifeMeter at the bottom pools 16, 8, double);

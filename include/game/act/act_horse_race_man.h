@@ -4,7 +4,7 @@
 // Code: game/act_horse_race_man.cpp.
 
 #include "game/EnemyBase.h"
-#include "game/tu_801ED3DC.h"
+#include "game/stopwatch_801ED3DC.h"
 #include "game/tu_80215A94.h"
 
 // The horse-race man (HRMN in docs/names/actors.tsv). Named after its vtable,

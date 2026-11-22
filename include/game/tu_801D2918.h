@@ -4,7 +4,7 @@
 #include "JSystem/JGeometry.h"
 
 // Timed 2D velocity: frames counter plus a velocity that is damped as it ticks.
-// Provisional name; no owning class known (callers: act_thief 0x80205C28, tu_80206B30 0x80206E7C; no vtable).
+// Provisional name; no owning class known (callers: act_thief 0x80205C28, act_thief_80206B30 0x80206E7C; no vtable).
 struct Damped2D_801D2918 {
     /* 0x0 */ s32 frames;
     /* 0x4 */ JGeometry::TVec2f vel;

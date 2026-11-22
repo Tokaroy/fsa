@@ -151,7 +151,7 @@ below, ~0.5–0.65B.
    below, "Per-actor headers"); move the existing classes out of their .cpp
    files.
 6. Map/Collision, Camera.
-7. EnemyBase.h, with tu_801CDC8C and tu_801D1C18 matched early.
+7. EnemyBase.h, with enemy_base_801CDC8C and sprite_anim_801D1C18 matched early.
 8. Sound, UI2D, Message, Game.
 Then freeze: later header edits go through the coordinator in batches.
 
@@ -213,7 +213,7 @@ Game code builds with `-inline auto`. Two research rounds
   Matching game units at 100 % and the link SHA-1 OK (one explicit dtor
   needed in act_tutorial_old_man; 20 generated sinit units renumber their
   `.bss` `@NNN`). But it inlines calls the original keeps out of line
-  (tu_801CDC8C fn_801CF6B8/pickNewDir_801CF720, tu_801EDBA4 draw), net -2
+  (enemy_base_801CDC8C fn_801CF6B8/pickNewDir_801CF720, act_vaati_boss_801EDBA4 draw), net -2
   functions. Under `auto` a callee defined after its caller is never
   inlined, which is what the original shows there.
 
@@ -242,10 +242,10 @@ More evidence (waves 24–25):
 Building every game unit with `-inline auto,deferred` instead of `-inline auto`: fully matching game units 103 -> 1, game functions at 100 % 1745 -> 1578 (168 lost, 1 gained: tu_80222CC4's vfunc_0x90). tu_801D2C60, act_shadow_link_bow and tu_8021A570 got worse. Caveat: this run did not reverse the sources, and deferred mode reverses function order, so the drop mostly measures the reversal; see "Measured: reversed sources with `-inline deferred`" for the fair comparison (1745 -> 1738). The standing contradiction: FSA's data order looks deferred, but it only inlines callees earlier in .text, as `auto` does. No tested flag or pragma gives both.
 
 ### Measured: reversed sources with `-inline deferred` (no auto) (2026-11-03)
-All game sources reversed and built with `-inline deferred` alone: the deferred over-inlining (tu_801CDC8C, tu_801EDBA4) goes away and tu_80222CC4 / act_shadow_link_bow vfunc_0x90 reach 100 %, but callees the original auto-inlines are lost (act_stop_npc, escort_actor_list_80131D98, tu_8021F4B0 dtors and 5 more): game functions 1745 -> 1738. Under plain `auto` vtables always end the TU (no ctor/dtor/key-function placement or flag changes that); under deferred a vtable comes with its first referencing function, which reproduces act_stone_arrghus_800F7FCC's `vt1, jt, vt2`. FSA's originals combine deferred-style data order with auto-style inlining (only callees earlier in .text); no tested flag or pragma (`defer_codegen`, `inline_bottom_up`, `inline_depth`) gives both. Details: progress/game__tu_80222CC4.md.
+All game sources reversed and built with `-inline deferred` alone: the deferred over-inlining (enemy_base_801CDC8C, act_vaati_boss_801EDBA4) goes away and tu_80222CC4 / act_shadow_link_bow vfunc_0x90 reach 100 %, but callees the original auto-inlines are lost (act_stop_npc, escort_actor_list_80131D98, tu_8021F4B0 dtors and 5 more): game functions 1745 -> 1738. Under plain `auto` vtables always end the TU (no ctor/dtor/key-function placement or flag changes that); under deferred a vtable comes with its first referencing function, which reproduces act_stone_arrghus_800F7FCC's `vt1, jt, vt2`. FSA's originals combine deferred-style data order with auto-style inlining (only callees earlier in .text); no tested flag or pragma (`defer_codegen`, `inline_bottom_up`, `inline_depth`) gives both. Details: progress/game__tu_80222CC4.md.
 
 ### Measured: compiler versions and inline modes (2026-11-03, lead/lead-jumptable)
-Every GC compiler in build/compilers/GC (1.0, 1.1, 1.1p1, 1.2.5, 1.2.5n, 1.3, 1.3.2, 1.3.2r, 2.0, 2.0p1, 2.5, 2.6, 2.7, 3.0a3, 3.0a3.2-3.0a3.4, 3.0a3p1, 3.0a5, 3.0a5.2) against three probes: (1) a caller must NOT inline a later-in-.text callee (tu_801CDC8C fn_801CF6B8), (2) a caller must inline an earlier one (act_stop_npc dtor / fn_802ED140), (3) two-class `vt1, jt, vt2` .data (act_stone_arrghus_800F7FCC). Real units where the version parses the headers (1.3-2.7), a scratch C++ equivalent for all (1.0-1.2.5n fail on JKRThread.h, 3.0a* on an `operator delete` exception-spec mismatch).
+Every GC compiler in build/compilers/GC (1.0, 1.1, 1.1p1, 1.2.5, 1.2.5n, 1.3, 1.3.2, 1.3.2r, 2.0, 2.0p1, 2.5, 2.6, 2.7, 3.0a3, 3.0a3.2-3.0a3.4, 3.0a3p1, 3.0a5, 3.0a5.2) against three probes: (1) a caller must NOT inline a later-in-.text callee (enemy_base_801CDC8C fn_801CF6B8), (2) a caller must inline an earlier one (act_stop_npc dtor / fn_802ED140), (3) two-class `vt1, jt, vt2` .data (act_stone_arrghus_800F7FCC). Real units where the version parses the headers (1.3-2.7), a scratch C++ equivalent for all (1.0-1.2.5n fail on JKRThread.h, 3.0a* on an `operator delete` exception-spec mismatch).
 | Versions | Mode (sources reversed for deferred) | (1) | (2) | (3) |
 |---|---|---|---|---|
 | 1.0-2.7 | `-inline auto` | ok | ok | FAIL (jt, vt2, vt1) |

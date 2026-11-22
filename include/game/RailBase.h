@@ -34,7 +34,7 @@ public:
 // The element class of a 0xC8-byte buffer (0x31 pointer entries). Its method
 // fn_800FE3EC (RailBase.cpp) starts by clearing bytes 2, 3 and 1, as the
 // inline clear() does, and then fills the entries. Users: the pair container
-// in game/tu_80214244.cpp, also reached from tu_801D3320 and tu_8021CDE4
+// in game/tu_80214244.cpp, also reached from act_shadow_link_2_801D3320 and tu_8021CDE4
 // (progress/game__tu_80214244.md). Named after its method until evidence
 // names it.
 class cls_800FE3EC {
@@ -47,7 +47,7 @@ public:
     bool fn_800FD5E8(u8 index);
     // RailBase.cpp (0x800FE2E4, not written yet): the entry index of the
     // point nearest to *pos on `layer`, as getRailPointPos_800FE294 takes it; game/
-    // tu_801C5B08.cpp (fn_801C5B08) calls it on the current buffer.
+    // act_shadow_link_2_801C5B08.cpp (fn_801C5B08) calls it on the current buffer.
     u8 fn_800FE2E4(const JGeometry::TVec3f* pos, s32 layer);
     void fn_800FDE38();
     // RailBase.cpp (0x800FDEA0, not written yet): r3 is the rail buffer; game/
@@ -62,7 +62,7 @@ public:
     bool fn_800FD548(u8 index);
     bool fn_800FD594(u8 index);
     // RailBase.cpp (not written yet): steps the rail in direction dir (1 or -1);
-    // called from fn_801C79A0 (tu_801C71BC.cpp) with the result of fn_80214244.
+    // called from fn_801C79A0 (act_shadow_link_2_801C71BC.cpp) with the result of fn_80214244.
     void fn_800FD818(s32 dir);
     bool fn_800FD4C0(u8 a, u8 b);
     s32 fn_800FE25C(u8 index);

@@ -132,7 +132,7 @@ report_honest.json); 10 functions rise.
 - Tried, no gain: the fn_802DE93C view-reload family with a GameRootSub04 local (`sub->mView->...`) stays 91.0.
 Unwritten: fn_802D3D48 (CSV), fn_802D4CCC (0x1DD0, uses lbl_8046E190), fn_802DED40 / fn_802DEC40 (view-reload family).
 SHARED-EDITS: include/game/GameView.h (fn_802D4CCC(s32) declared as a member; spawnScreenActors_802D8328 parameter names; comments);
-include/game/GameGlobals.h (cls_80204638::fn_80204ABC(bool), owner tu_80204638); include/game/act/tu_801DAC6C.h
-(extern u8 lbl_8053AC30, defined in tu_801DAC6C.cpp); include/game/act/act_small_key.h (field_0x23C u8[4] -> u32
+include/game/GameGlobals.h (cls_80204638::fn_80204ABC(bool), owner tu_80204638); include/game/act/singleton_801DAC6C.h
+(extern u8 lbl_8053AC30, defined in singleton_801DAC6C.cpp); include/game/act/act_small_key.h (field_0x23C u8[4] -> u32
 field_0x23c: stw by spawnScreenActors_802D8328). symbols.txt: fn_802D4CCC -> fn_802D4CCC__17GameView_804A9950Fl, fn_80204ABC ->
 fn_80204ABC__12cls_80204638Fb.

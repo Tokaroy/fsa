@@ -7,7 +7,7 @@
 #include "game/GameView.h"
 #include "game/Player.h"
 #include "game/act/act_on_off_switch.h"
-#include "game/act/tu_801BEDBC.h"
+#include "game/act/act_unknown_lnbm_801BEDBC.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // Stops an emitter (it runs out) and forgets it (as act_rank_display).

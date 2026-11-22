@@ -13,7 +13,7 @@ G4 baseline (progress.py): total: 6007 / 11557 functions, 1208940 bytes. Earlier
 ## SHARED-EDITS
 - gen_game.tsv: tu_8021C2B4 row deleted.
 - symbols.txt: renames of fn_8021C2B4/C468/C5B0 and tu_8021C848's fn_8021C848/C9C4/CA70/CB18/CBA0 to member-mangled names.
-- GameGlobals.h: fn_801C0FEC as a member of ShadowLinkFight_801C0D70; symbols.txt renamed to its mangled name (owner tu_801C0D70).
+- GameGlobals.h: fn_801C0FEC as a member of ShadowLinkFight_801C0D70; symbols.txt renamed to its mangled name (owner shadow_link_fight_801C0D70).
 - New headers cls_8021C2B4.h, cls_8021CBA0.h (FrameCountSeq_8021CBA0 is tu_8021C848's class).
 
 ## Next

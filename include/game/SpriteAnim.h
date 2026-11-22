@@ -3,7 +3,7 @@
 
 // A sprite-cel animation player: a J3DFrameCtrl runs over one of several
 // key tables, and the key the frame falls in gives the current cel.
-// Code: game/tu_801D1C18.cpp. No vtable; named after its constructor
+// Code: game/sprite_anim_801D1C18.cpp. No vtable; named after its constructor
 // (0x801D267C). "SpriteAnim" is descriptive: 34 sites in enemy units load
 // mCel (this + 0x270 + 0x10) and pass it as the frame of a "SOB " sprite
 // draw (ActorBase_804A5770::drawSprite_801F06F0 9 times, drawSpriteScaled_801F02BC 5 times).

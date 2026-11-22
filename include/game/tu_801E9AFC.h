@@ -6,12 +6,12 @@
 // fn_801E9AFC(). cls_801E9B54 is one of its two elements (named after its
 // empty constructor, 0x801E9B54).
 
-#include "game/act/tu_801E801C.h"
+#include "game/act/act_unknown_fsob_801E801C.h"
 #include "dolphin/gx.h"
 #include "JSystem/JGeometry.h"
 
 // Owner: game/tu_801E9AFC.cpp (defined there, 6.0f). Read by
-// game/tu_801E801C.cpp (0x801E9710) and game/tu_801E6D48.cpp (0x801E7030).
+// game/act_unknown_fsob_801E801C.cpp (0x801E9710) and game/act_iron_pot_801E6D48.cpp (0x801E7030).
 extern const f32 lbl_8053F650;
 
 // One tracked actor of an element: the FSOB actor spawned by fn_801EA75C
@@ -95,7 +95,7 @@ cls_801E9AFC* fn_801E9AFC();
 // 0x801E9C00: sets *vec to (0, 4) rotated by angle plus or minus a quarter turn
 // (0x2000, by the angle's sign).
 // Half the side of the square an actor probes with before fn_801E9B58 (6.0f).
-// tu_801E6D48's vfunc_0x60 and tu_801E801C's init load it by this symbol.
+// act_iron_pot_801E6D48's vfunc_0x60 and act_unknown_fsob_801E801C's init load it by this symbol.
 extern const f32 lbl_8053F650;
 
 void fn_801E9C00(s16 angle, JGeometry::TVec2f* vec);

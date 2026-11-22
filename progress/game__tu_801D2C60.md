@@ -17,7 +17,7 @@ All 102 Matching game units are 100 % in every section, so each of these must go
    vfunc_0xA0__18EnemyBase); dtk sized it 0xA8 because the next unit's data starts 8-aligned at 0x804A4958
    (+0xA4 is 0, alignment). Needs an approved_symbol_changes.txt line (coordinator-only), same pattern as
    __vt__7J2DPane / __vt__10JAIAudible: `__vt__12cls_804A48B0  0xA8  0xA4`.
-3. .sdata2 90.9 %: `lbl_8053F078` is -1.0f (4 bytes) + 4 bytes alignment pad before tu_801D3320's .sdata2
+3. .sdata2 90.9 %: `lbl_8053F078` is -1.0f (4 bytes) + 4 bytes alignment pad before act_shadow_link_2_801D3320's .sdata2
    (8-aligned); dtk sized it 0x8. Same kind of approval: `lbl_8053F078  0x8  0x4`.
 Verdict: not flippable under `-inline auto`; 2 and 3 are coordinator resizes with the evidence above.
 

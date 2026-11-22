@@ -8,7 +8,7 @@ Structurally close, with FIXME: fn_801E9B58 97.3 (mr r0 copy), fn_801E9C74 91.0 
 fn_801EA384 99.2 (regalloc only), fn_801EA594 89.9 (shift loop, 1 instr).
 Unwritten: fn_801EA108 (quad draw; original reloads the sin/cos table per vertex, ours 52 %, copy of
 best try in scratchpad u1_with108.cpp).
-.sdata2 / .data stay < 100 %: 6.0f at 0x8053F650 belongs to tu_801E6D48/801E801C's pool.
+.sdata2 / .data stay < 100 %: 6.0f at 0x8053F650 belongs to act_iron_pot_801E6D48/801E801C's pool.
 SHARED-EDITS: GameGlobals.h (stubs cls_801E9B54/cls_801E9AFC, fn_801E9AFC, fn_801EA108 removed ->
-include/game/tu_801E9AFC.h), ActorBase.h (+fn_801E9B58), act/tu_801E801C.h (+4 members, gen_game rows
-removed), act/tu_801E6D48.h comment, tu_801E6D48.cpp (calls the member). Symbols renamed to mangled names.
+include/game/tu_801E9AFC.h), ActorBase.h (+fn_801E9B58), act/act_unknown_fsob_801E801C.h (+4 members, gen_game rows
+removed), act/act_iron_pot_801E6D48.h comment, act_iron_pot_801E6D48.cpp (calls the member). Symbols renamed to mangled names.

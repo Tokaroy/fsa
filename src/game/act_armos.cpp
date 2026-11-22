@@ -6,7 +6,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 #include "game/act/act_armos.h"
-#include "game/act/tu_801BEDBC.h"
+#include "game/act/act_unknown_lnbm_801BEDBC.h"
 
 void Armos_8049F260::init() {
     mBox.i.set(-7.0f, -7.0f);

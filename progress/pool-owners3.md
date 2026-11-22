@@ -16,7 +16,7 @@ units (shadow_circle_80158624 was out of order and is fixed).
   case bodies that hold the literals. Reviewer call.
 
 ## shadow_circle_80158624 (5 -> 7 of 10)
-- fn_80158624 written: the searchlight beam (ShadowCircle member; callers act_searchlight, tu_8018A8D8),
+- fn_80158624 written: the searchlight beam (ShadowCircle member; callers act_searchlight, act_big_poe_2_8018A8D8),
   96.86 % missing/extra (one shared `li` zero; registers, a few load orders, stack slots, the matrix's
   zero-store order). The two rim loops are one static inline drawRing (two identical inlined copies).
   `2.0f * (i * PI) / 32.0f` and the matrix's 1.0f before its zeros give the pool's literal order.

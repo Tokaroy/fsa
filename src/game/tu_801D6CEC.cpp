@@ -3,7 +3,7 @@
 #include "game/GameGlobals.h"
 #include "game/Player.h"
 #include "game/act/act_vaati_boss.h"
-#include "game/act/tu_801D7AFC.h"
+#include "game/act/act_unknown_bgbl_801D7AFC.h"
 #include "JSystem/JMath/JMath.h"
 
 void cls_801D6A88::fn_801D789C() {

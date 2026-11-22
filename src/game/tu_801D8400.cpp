@@ -8,7 +8,7 @@
 #include "game/GameView.h"
 #include "game/Map.h"
 #include "game/Player.h"
-#include "game/act/tu_801DAC6C.h"
+#include "game/act/singleton_801DAC6C.h"
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 

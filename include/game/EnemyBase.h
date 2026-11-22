@@ -6,7 +6,7 @@
 // act_gibdo, act_beamos, act_wallmaster, act_vulture, act_floormaster, the
 // Shadow Link family (sub-base 0x804A6A00), act_vaati_boss; also act_navi,
 // act_kaepora_gaebora, act_horse_race_man and act_tingle_buster.
-// Its code is game/tu_801CDC8C.cpp; its vtable is at 0x804A4808
+// Its code is game/enemy_base_801CDC8C.cpp; its vtable is at 0x804A4808
 // (__vt__18EnemyBase_804A4808). "EnemyBase" is provisional (docs/PLAN.md,
 // "Placeholder names"): its update() runs the hit handling of ActorBase
 // (updateHitReaction_801F3D94, checkPlayerAttacks_801F2FAC, checkActorHit_801F2DB4, damagePlayersInBox_801F2B7C) and a death hook once
@@ -14,7 +14,7 @@
 //
 // Destructor: inline. The vtable's slot 0x08 is __dt__18EnemyBase_804A4808Fv
 // (0x801B7E1C, dtk's dtor_801B7E1C before G1), which lies
-// in act_rope (outside tu_801CDC8C): the weak copy of an inline destructor,
+// in act_rope (outside enemy_base_801CDC8C): the weak copy of an inline destructor,
 // kept from the first object that emitted it. It stores this vtable,
 // destroys mAnim (its J3DFrameCtrl: __vt__12J3DFrameCtrl at 0x294) and calls
 // ActorBase's destructor; derived destructors inline the same code.
@@ -73,7 +73,7 @@ public:
     // 0x11101, mDir_0x98 = randInt_801CD664(4) (a random direction) and
     // mLifeBackup = mLife; 40 derived init()s call it first.
     /* 0x0C */ virtual void init();
-    // 0x801CDD58, the per-frame driver (tu_801D8400 and tu_801E6D48 call it
+    // 0x801CDD58, the per-frame driver (tu_801D8400 and act_iron_pot_801E6D48 call it
     // from their own update()): onFirstUpdate_0x54 once, the hit checks
     // (vfunc_0x58, updateHitReaction_801F3D94, checkHitByPlayer_0x5C/0x6C or checkHitByActor_0x60/0x70),
     // onHitReactionEnd_0x74 when mHitTimer_0xd8 drops from 1 to 0, onDeath_0x78 once mLife
@@ -169,7 +169,7 @@ public:
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // Non-virtual members other units call: the exports of
-    // game/tu_801CDC8C.cpp. Every call passes an enemy in r3 (the caller's
+    // game/enemy_base_801CDC8C.cpp. Every call passes an enemy in r3 (the caller's
     // own `this` in all but tu_802144F0, which passes the enemy it keeps at
     // 0x34). Signatures come from the register use in each body and at the
     // call sites; "N units / M calls" counts the other units and all calls.
@@ -203,7 +203,7 @@ public:
     // mPrevPos.z, mVel_0x3c.z = mPrevVel.z, applyGravity_0x84, then the ground
     // as in move_0x98).
     void fn_801CE5D4();
-    // 1 unit / 1 call (tu_801C9AF8). The landing half of checkFloor_0x80 (map
+    // 1 unit / 1 call (act_shadow_link_2_801C9AF8). The landing half of checkFloor_0x80 (map
     // tile under mMapBox_0x80's box via getTileCollisionCodeAlt_802265FC) without its own tests;
     // sets ENEMY_FLAG_LANDED.
     void fn_801CE800();
@@ -256,7 +256,7 @@ public:
     // It reads only (x, y) of both points, and isWayBlocked_801CF888 passes it 8-byte
     // TVec2f slots: the original's parameters were likely TVec2f (as are
     // getTileCollisionCodeAlt_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
-    // 8-byte slots too). Kept TVec3f for the TVec3f callers (tu_801C5B08).
+    // 8-byte slots too). Kept TVec3f for the TVec3f callers (act_shadow_link_2_801C5B08).
     bool isPathBlocked_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 6 calls (clrlwi.). fn_801CFD68(dir, 6.0f + the box edge on
     // that side): whether a step in direction `dir` is free.
@@ -310,7 +310,7 @@ public:
     // The step bodies move_0x98 / updateBehavior_0x9C share with fn_801CE32C /
     // fn_801CE2BC: the code is repeated in both (each is defined before the
     // other's use only once), so they are inline helpers of
-    // game/tu_801CDC8C.cpp.
+    // game/enemy_base_801CDC8C.cpp.
     void moveStep();
     void stateStep(u8 mapHit);
     // The player search canTargetPlayer_801D0B44 / findNearestPlayer_801D05F8 / getPlayerDistSq_801D0DA0 do, inlined
@@ -345,9 +345,9 @@ public:
     /* 0x270 */ SpriteAnim_801D267C mAnim;
 }; // Size: 0x2A8
 
-// A const bool defined (false) in game/tu_801CDC8C.cpp, first in its
+// A const bool defined (false) in game/enemy_base_801CDC8C.cpp, first in its
 // .sdata2. sweepMap_0x64 passes a literal 0 as sweepMapBox_801F2618's flag (li r5, 0),
-// while overrides in act_thief (0x80204FC0), tu_801C9AF8 and tu_80206B30
+// while overrides in act_thief (0x80204FC0), act_shadow_link_2_801C9AF8 and act_thief_80206B30
 // load this byte for it (lbz r5): they see only this declaration. Its
 // name is unknown.
 extern const bool lbl_8053EFC0;
@@ -411,7 +411,7 @@ s32 fn_801CCF34(s32 player);
 // game/tu_801CB270.cpp (0x801CC350; 1 caller unit, act_terrorpin updateState_0x90). Reflects the 2D
 // velocity *vel off *normal (C_VECReflect, PSVECMag; z is preserved).
 void fn_801CC350(const JGeometry::TVec3f* normal, JGeometry::TVec3f* vel);
-// game/tu_801CB270.cpp (0x801CC9F8; 1 caller unit, tu_801C5B08). Whether pos and the points 7 units
+// game/tu_801CB270.cpp (0x801CC9F8; 1 caller unit, act_shadow_link_2_801C5B08). Whether pos and the points 7 units
 // around it all have tile code 0 on `layer` (with the view's layer flag).
 bool fn_801CC9F8(const JGeometry::TVec3f* pos, s32 layer);
 
@@ -430,7 +430,7 @@ extern "C" {
 bool fn_801CCFE4(s32 player);
 
 // game/tu_801CB270.cpp (owner unit, not written yet; 1 caller unit,
-// tu_80206B30 vfunc_0x58). Each fetches the actor a player's getter
+// act_thief_80206B30 vfunc_0x58). Each fetches the actor a player's getter
 // (fn_8023B2B0 / fn_8023B22C / fn_8023B358) names, with r3 (the player index)
 // forwarded untouched, and tests its kind at 0x1A0 (and that it is alive).
 // 'ARRW' with field_0x108 > 0: *out = its mVel_0x3c, then markDead_801F3668 on
@@ -445,7 +445,7 @@ bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* ou
 // it was found.
 bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel);
 // game/tu_801CB270.cpp (owner unit, not written yet; 0x801CC730, 0xF0 bytes;
-// 1 caller unit, tu_801E3618 fn_801E4348). Like fn_801CC640 with NULL
+// 1 caller unit, act_vaati_boss_801E3618 fn_801E4348). Like fn_801CC640 with NULL
 // outputs: *outPlayer = -1 and *outVel zeroed when given; returns whether it
 // was found.
 bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel);

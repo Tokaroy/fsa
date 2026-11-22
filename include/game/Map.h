@@ -678,7 +678,7 @@ public:
         mLists[1].mCount = 0;
     }
 
-    // 1 unit (tu_801F6058, once a frame). Swaps field_0x0 and field_0x1
+    // 1 unit (actor_manager_801F6058, once a frame). Swaps field_0x0 and field_0x1
     // (xori 1) and empties the new write list.
     void fn_8020D660();
     // 1 unit (tu_802D39B8). Resets field_0x0 / field_0x1 to 0 / 1 and both

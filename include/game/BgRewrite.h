@@ -112,7 +112,7 @@ public:
     void fn_802A3D80();
     // 10 units. Spreads fire over burnable tiles (see above). Callers pass
     // &mPos, a player (-1, or a word field), the layer, an s32 (spawnActor_801F9484 argument; compared with cmpwi) and an s32
-    // (0, 0 in tu_801BEDBC and tu_802233A4, 1, 1 in
+    // (0, 0 in act_unknown_lnbm_801BEDBC and tu_802233A4, 1, 1 in
     // act_spreading_fire); types from the body.
     void fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b);
     // 1 unit (tu_802957CC); body unwritten (tu_8029D898).

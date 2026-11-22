@@ -214,7 +214,7 @@ public:
     // Cleared by GameRootSub04_801F856C's destructor (fn_8013A27C, game/game_root_sub_04_80139BE8.cpp) when set.
     /* 0x24B */ u8 field_0x24b;
     /* 0x24C */ u8 field_0x24c;
-    /* 0x24D */ u8 field_0x24d; // set by fn_8019CEE8 (tu_80197070)
+    /* 0x24D */ u8 field_0x24d; // set by fn_8019CEE8 (act_princess_zelda_ganon_battle_80197070)
     /* 0x24E */ u8 field_0x24e;
     /* 0x24F */ u8 field_0x24f; // 20 units
     /* 0x250 */ u8 field_0x250;

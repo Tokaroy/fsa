@@ -80,9 +80,9 @@ COLUMNS = ("unit", "category", "confidence", "evidence", "source")
 # Units that hold a base class or a game-wide system: Game core whatever the
 # hierarchy rule would say (their classes are the bases the rule looks for).
 BASES = {
-    "tu_801F6058": "ActorBase_804A5770 (ActorBase.h): the base of every actor",
+    "actor_manager_801F6058": "ActorBase_804A5770 (ActorBase.h): the base of every actor",
     "tu_801F9484": "ActorManager_804A5800, spawnActor_801F9484 (ActorManager.h)",
-    "tu_801CDC8C": "EnemyBase_804A4808 (EnemyBase.h): the enemies' base class",
+    "enemy_base_801CDC8C": "EnemyBase_804A4808 (EnemyBase.h): the enemies' base class",
     "effect_system_8013C5C8": "EffectSystem_8049F178, spawnEmitter_8013CC50 (Effect.h): the effect spawner",
 }
 ENEMY_BASE = "EnemyBase_804A4808"

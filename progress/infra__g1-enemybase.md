@@ -8,9 +8,9 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   inline virtual dtor (weak copy in act_rope, dtor_801B7E1C), fields
   0x230-0x26C + `SpriteAnim_801D267C mAnim` at 0x270, size 0x2A8 (spawner
   __nw__(0x2A8) for FSPO), `EnemyFlag_804A4808` bits, 37 exported members of
-  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), isUpperLayer_801CD2F8, moveToward_801CD950.
-  tu_801CDC8C, `lbl_8053EFC0` (extern const bool), isUpperLayer_801CD2F8, moveToward_801CD950.
-- `include/game/SpriteAnim.h`: the 0x270 member (tu_801D1C18), 0x38 bytes.
+  enemy_base_801CDC8C, `lbl_8053EFC0` (extern const bool), isUpperLayer_801CD2F8, moveToward_801CD950.
+  enemy_base_801CDC8C, `lbl_8053EFC0` (extern const bool), isUpperLayer_801CD2F8, moveToward_801CD950.
+- `include/game/SpriteAnim.h`: the 0x270 member (sprite_anim_801D1C18), 0x38 bytes.
 - `libs/sdk/include/JSystem/J3D/J3DFrameCtrl.h` (mkdd): tww's enums and accessors added; one definition.
 - `include/game/act/act_fuse_point.h`: FusePoint_804A54C0.
 
@@ -24,7 +24,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
 - ActorManager.h: declarations of fn_801CC910 / 960 / 9B0 (Force Gem tests).
 
 ## Units
-- tu_801CDC8C 0 -> 23/57; tu_801D1C18 0 -> 5/12; tu_801CB270 5 -> 8 (+
+- enemy_base_801CDC8C 0 -> 23/57; sprite_anim_801D1C18 0 -> 5/12; tu_801CB270 5 -> 8 (+
   fn_801CC910/960/9B0, isUpperLayer_801CD2F8); act_fuse_point 0 -> 4/5.
 - Resistant (FIXMEs in source): update 92.3 (regalloc this/flag, mFlags
   reloads, hit-bit bool test); vfunc_0x98 / fn_801CE32C ~96; fn_801CE5D4
@@ -43,5 +43,5 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   (fn_801CE694 uses 8.0f, fn_801CEA60 32.0f, ...) are in.
 
 ## Next
-Write the 20 remaining tu_801CDC8C functions (list at the top of the
+Write the 20 remaining enemy_base_801CDC8C functions (list at the top of the
 file) in address order, which fixes the literal order; fuse point init.

@@ -2924,7 +2924,7 @@ game/act_leever_80182914.cpp:
 	.bss        start:0x804C13A8 end:0x804C14A8
 	.sdata2     start:0x8053DEC8 end:0x8053DEE0
 
-game/tu_80183544.cpp:
+game/act_geldman_80183544.cpp:
 	extab       start:0x800075E4 end:0x80007614
 	extabindex  start:0x800142FC end:0x80014344
 	.text       start:0x80183544 end:0x80184040
@@ -2944,7 +2944,7 @@ game/act_pengator.cpp:
 	.bss        start:0x804C15A8 end:0x804C16A8
 	.sdata2     start:0x8053DF00 end:0x8053DF40
 
-game/tu_80184D64.cpp:
+game/act_chain_chomp_80184D64.cpp:
 	extab       start:0x80007644 end:0x8000766C
 	extabindex  start:0x8001438C end:0x800143C8
 	.text       start:0x80184D64 end:0x80187144
@@ -2966,7 +2966,7 @@ game/act_phantom_ganon_2.cpp:
 	.sbss       start:0x8053AB78 end:0x8053AB88
 	.sdata2     start:0x8053DFE0 end:0x8053E0C8
 
-game/tu_8018A8D8.cpp:
+game/act_big_poe_2_8018A8D8.cpp:
 	extab       start:0x800076BC end:0x80007724
 	extabindex  start:0x80014440 end:0x800144DC
 	.text       start:0x8018A8D8 end:0x8018EB94
@@ -2977,7 +2977,7 @@ game/tu_8018A8D8.cpp:
 	.sdata      start:0x80539FC8 end:0x80539FD8
 	.sdata2     start:0x8053E0C8 end:0x8053E1C8
 
-game/tu_8018EB94.cpp:
+game/act_big_moldorm_tail_8018EB94.cpp:
 	extab       start:0x80007724 end:0x8000774C
 	extabindex  start:0x800144DC end:0x80014518
 	.text       start:0x8018EB94 end:0x801902C0
@@ -2989,7 +2989,7 @@ game/tu_8018EB94.cpp:
 	.sbss       start:0x8053AB88 end:0x8053AB90
 	.sdata2     start:0x8053E1C8 end:0x8053E208
 
-game/tu_801902C0.cpp:
+game/game_root_sub_20_801902C0.cpp:
 	extab       start:0x8000774C end:0x8000779C
 	extabindex  start:0x80014518 end:0x80014560
 	.text       start:0x801902C0 end:0x80192038
@@ -3010,7 +3010,7 @@ game/act_ganon.cpp:
 	.sbss       start:0x8053AB90 end:0x8053AB98
 	.sdata2     start:0x8053E278 end:0x8053E370
 
-game/tu_80197070.cpp:
+game/act_princess_zelda_ganon_battle_80197070.cpp:
 	extab       start:0x8000784C end:0x800078AC
 	extabindex  start:0x800145F0 end:0x80014680
 	.text       start:0x80197070 end:0x8019D12C
@@ -3042,7 +3042,7 @@ game/act_shooting_gallery.cpp:
 	.bss        start:0x804C6330 end:0x804C6440
 	.sdata2     start:0x8053E460 end:0x8053E4F0
 
-game/tu_801A0710.cpp:
+game/act_tennis_shop_801A0710.cpp:
 	extab       start:0x8000793C end:0x8000798C
 	extabindex  start:0x80014758 end:0x800147D0
 	.text       start:0x801A0710 end:0x801A35AC
@@ -3063,7 +3063,7 @@ game/act_enemy_spawn_area.cpp:
 	.bss        start:0x804C6540 end:0x804C6640
 	.sdata2     start:0x8053E5B0 end:0x8053E5C8
 
-game/tu_801A3C50.cpp:
+game/actor_base_801A3C50.cpp:
 	extab       start:0x800079A4 end:0x80007A0C
 	extabindex  start:0x800147F4 end:0x80014890
 	.text       start:0x801A3C50 end:0x801A6690
@@ -3083,7 +3083,7 @@ game/act_zora_fish_herder.cpp:
 	.bss        start:0x804C6770 end:0x804C6870
 	.sdata2     start:0x8053E628 end:0x8053E690
 
-game/tu_801A8194.cpp:
+game/act_keese_swarm_801A8194.cpp:
 	extab       start:0x80007A3C end:0x80007A5C
 	extabindex  start:0x800148D8 end:0x80014908
 	.text       start:0x801A8194 end:0x801A908C
@@ -3093,7 +3093,7 @@ game/tu_801A8194.cpp:
 	.bss        start:0x804C6870 end:0x804C6970
 	.sdata2     start:0x8053E690 end:0x8053E6E0
 
-game/tu_801A908C.cpp:
+game/act_manhandla_801A908C.cpp:
 	extab       start:0x80007A5C end:0x80007AAC
 	extabindex  start:0x80014908 end:0x80014980
 	.text       start:0x801A908C end:0x801AAC8C
@@ -3128,7 +3128,7 @@ game/act_dodongo.cpp:
 	.sbss       start:0x8053ABE0 end:0x8053AC08
 	.sdata2     start:0x8053E7D0 end:0x8053E838
 
-game/tu_801AE9C4.cpp:
+game/act_okame_san_801AE9C4.cpp:
 	extab       start:0x80007B34 end:0x80007B6C
 	extabindex  start:0x80014A4C end:0x80014AA0
 	.text       start:0x801AE9C4 end:0x801AFB38
@@ -3148,7 +3148,7 @@ game/act_eyegore.cpp:
 	.bss        start:0x804C6D70 end:0x804C6E70
 	.sdata2     start:0x8053E888 end:0x8053E8E0
 
-game/tu_801B0A00.cpp:
+game/act_princess_zelda_spawner_801B0A00.cpp:
 	extab       start:0x80007B94 end:0x80007BC4
 	extabindex  start:0x80014ADC end:0x80014B24
 	.text       start:0x801B0A00 end:0x801B27DC
@@ -3158,7 +3158,7 @@ game/tu_801B0A00.cpp:
 	.bss        start:0x804C6E70 end:0x804C6F70
 	.sdata2     start:0x8053E8E0 end:0x8053E930
 
-game/tu_801B27DC.cpp:
+game/act_princess_zelda_spawner_escape_801B27DC.cpp:
 	extab       start:0x80007BC4 end:0x80007BF4
 	extabindex  start:0x80014B24 end:0x80014B6C
 	.text       start:0x801B27DC end:0x801B3F60
@@ -3177,7 +3177,7 @@ game/act_princess_zelda_motion_spawner.cpp:
 	.bss        start:0x804C7070 end:0x804C7170
 	.sdata2     start:0x8053E9C0 end:0x8053EA10
 
-game/tu_801B4D0C.cpp:
+game/act_tingles_tower_warp_801B4D0C.cpp:
 	extab       start:0x80007C0C end:0x80007C4C
 	extabindex  start:0x80014B90 end:0x80014BF0
 	.text       start:0x801B4D0C end:0x801B6634
@@ -3198,7 +3198,7 @@ game/act_tingle_wallet.cpp:
 	.bss        start:0x804C7270 end:0x804C7370
 	.sdata2     start:0x8053EA98 end:0x8053EAC0
 
-game/tu_801B6C50.cpp:
+game/act_goal_warp_801B6C50.cpp:
 	extab       start:0x80007C6C end:0x80007C8C
 	extabindex  start:0x80014C20 end:0x80014C50
 	.text       start:0x801B6C50 end:0x801B7784
@@ -3287,7 +3287,7 @@ game/act_beamos.cpp:
 	.sbss       start:0x8053AC08 end:0x8053AC10
 	.sdata2     start:0x8053ECA0 end:0x8053ED00
 
-game/tu_801BEDBC.cpp:
+game/act_unknown_lnbm_801BEDBC.cpp:
 	extab       start:0x80007F04 end:0x80007F44
 	extabindex  start:0x80015004 end:0x80015064
 	.text       start:0x801BEDBC end:0x801BF810
@@ -3307,7 +3307,7 @@ game/act_vulture.cpp:
 	.sdata      start:0x8053A128 end:0x8053A130
 	.sdata2     start:0x8053ED28 end:0x8053ED90
 
-game/tu_801C0D70.cpp:
+game/shadow_link_fight_801C0D70.cpp:
 	extab       start:0x80007FB4 end:0x80007FFC
 	extabindex  start:0x8001510C end:0x80015178
 	.text       start:0x801C0D70 end:0x801C1768
@@ -3337,7 +3337,7 @@ game/act_shadow_link_2.cpp:
 	.bss        start:0x804C80D0 end:0x804C81D0
 	.sdata2     start:0x8053EE00 end:0x8053EE68
 
-game/tu_801C5B08.cpp:
+game/act_shadow_link_2_801C5B08.cpp:
 	extab       start:0x80008120 end:0x80008148
 	extabindex  start:0x800152D4 end:0x80015310
 	.text       start:0x801C5B08 end:0x801C6A4C
@@ -3345,7 +3345,7 @@ game/tu_801C5B08.cpp:
 	.bss        start:0x804C81D0 end:0x804C82D0
 	.sdata2     start:0x8053EE68 end:0x8053EEB0
 
-game/tu_801C6A4C.cpp:
+game/act_shadow_link_2_801C6A4C.cpp:
 	extab       start:0x80008148 end:0x80008168
 	extabindex  start:0x80015310 end:0x80015340
 	.text       start:0x801C6A4C end:0x801C71BC
@@ -3353,7 +3353,7 @@ game/tu_801C6A4C.cpp:
 	.bss        start:0x804C82D0 end:0x804C83D0
 	.sdata2     start:0x8053EEB0 end:0x8053EEC8
 
-game/tu_801C71BC.cpp:
+game/act_shadow_link_2_801C71BC.cpp:
 	extab       start:0x80008168 end:0x800081E0
 	extabindex  start:0x80015340 end:0x800153F4
 	.text       start:0x801C71BC end:0x801C9AF8
@@ -3361,7 +3361,7 @@ game/tu_801C71BC.cpp:
 	.bss        start:0x804C83D0 end:0x804C84D0
 	.sdata2     start:0x8053EEC8 end:0x8053EF18
 
-game/tu_801C9AF8.cpp:
+game/act_shadow_link_2_801C9AF8.cpp:
 	extab       start:0x800081E0 end:0x80008220
 	extabindex  start:0x800153F4 end:0x80015454
 	.text       start:0x801C9AF8 end:0x801CB270
@@ -3378,7 +3378,7 @@ game/tu_801CB270.cpp:
 	.bss        start:0x804C85D0 end:0x804C86D0
 	.sdata2     start:0x8053EF58 end:0x8053EFC0
 
-game/tu_801CDC8C.cpp:
+game/enemy_base_801CDC8C.cpp:
 	extab       start:0x80008350 end:0x800084AC
 	extabindex  start:0x8001561C end:0x80015808
 	.text       start:0x801CDC8C end:0x801D11FC
@@ -3395,7 +3395,7 @@ game/tu_801D11FC.cpp:
 	.bss        start:0x804C87D0 end:0x804C88D0
 	.sdata2     start:0x8053F018 end:0x8053F038
 
-game/tu_801D1C18.cpp:
+game/sprite_anim_801D1C18.cpp:
 	extab       start:0x800084E8 end:0x80008540
 	extabindex  start:0x80015844 end:0x800158C8
 	.text       start:0x801D1C18 end:0x801D2918
@@ -3422,7 +3422,7 @@ game/tu_801D2C60.cpp:
 	.sdata      start:0x8053A130 end:0x8053A138
 	.sdata2     start:0x8053F068 end:0x8053F080
 
-game/tu_801D3320.cpp:
+game/act_shadow_link_2_801D3320.cpp:
 	extab       start:0x80008580 end:0x80008590
 	extabindex  start:0x80015928 end:0x80015940
 	.text       start:0x801D3320 end:0x801D3CBC
@@ -3430,7 +3430,7 @@ game/tu_801D3320.cpp:
 	.bss        start:0x804C8BD0 end:0x804C8CD0
 	.sdata2     start:0x8053F080 end:0x8053F0A0
 
-game/tu_801D3CBC.cpp:
+game/act_shadow_link_2_801D3CBC.cpp:
 	extab       start:0x80008590 end:0x800085B0
 	extabindex  start:0x80015940 end:0x80015970
 	.text       start:0x801D3CBC end:0x801D46FC
@@ -3458,7 +3458,7 @@ game/tu_801D6CEC.cpp:
 	.bss        start:0x804C8ED0 end:0x804C8FD0
 	.sdata2     start:0x8053F150 end:0x8053F1A0
 
-game/tu_801D7AFC.cpp:
+game/act_unknown_bgbl_801D7AFC.cpp:
 	extab       start:0x800086FC end:0x8000872C
 	extabindex  start:0x80015ACC end:0x80015B14
 	.text       start:0x801D7AFC end:0x801D8400
@@ -3478,7 +3478,7 @@ game/tu_801D8400.cpp:
 	.bss        start:0x804C90D0 end:0x804C91D0
 	.sdata2     start:0x8053F1C8 end:0x8053F238
 
-game/tu_801DA7C0.cpp:
+game/sequencer_801DA7C0.cpp:
 	extab       start:0x800087C8 end:0x800087D0
 	extabindex  start:0x80015BE0 end:0x80015BEC
 	.text       start:0x801DA7C0 end:0x801DAC6C
@@ -3488,7 +3488,7 @@ game/tu_801DA7C0.cpp:
 	.bss        start:0x804C91D0 end:0x804C92D0
 	.sdata2     start:0x8053F238 end:0x8053F2D8
 
-game/tu_801DAC6C.cpp:
+game/singleton_801DAC6C.cpp:
 	extab       start:0x800087D0 end:0x80008800
 	extabindex  start:0x80015BEC end:0x80015C34
 	.text       start:0x801DAC6C end:0x801DB18C
@@ -3497,7 +3497,7 @@ game/tu_801DAC6C.cpp:
 	.sbss       start:0x8053AC28 end:0x8053AC38
 	.sdata2     start:0x8053F2D8 end:0x8053F2E0
 
-game/tu_801DB18C.cpp:
+game/act_frostare_child_frosteye_801DB18C.cpp:
 	extab       start:0x80008800 end:0x80008860
 	extabindex  start:0x80015C34 end:0x80015CC4
 	.text       start:0x801DB18C end:0x801DC264
@@ -3564,7 +3564,7 @@ game/act_tingle_buster.cpp:
 	.bss        start:0x804C9A58 end:0x804C9B58
 	.sdata2     start:0x8053F508 end:0x8053F510
 
-game/tu_801E3618.cpp:
+game/act_vaati_boss_801E3618.cpp:
 	extab       start:0x80008A08 end:0x80008A50
 	extabindex  start:0x80015F40 end:0x80015FAC
 	.text       start:0x801E3618 end:0x801E4A18
@@ -3580,7 +3580,7 @@ game/tu_801E4A18.cpp:
 	.bss        start:0x804C9C58 end:0x804C9D58
 	.sdata2     start:0x8053F568 end:0x8053F578
 
-game/tu_801E4D54.cpp:
+game/act_vaati_boss_801E4D54.cpp:
 	extab       start:0x80008A60 end:0x80008A80
 	extabindex  start:0x80015FC4 end:0x80015FF4
 	.text       start:0x801E4D54 end:0x801E5FC8
@@ -3606,7 +3606,7 @@ game/tu_801E667C.cpp:
 	.sdata      start:0x8053A158 end:0x8053A168
 	.sdata2     start:0x8053F5B0 end:0x8053F5C0
 
-game/tu_801E6D48.cpp:
+game/act_iron_pot_801E6D48.cpp:
 	extab       start:0x80008AFC end:0x80008B64
 	extabindex  start:0x80016090 end:0x8001612C
 	.text       start:0x801E6D48 end:0x801E7BF4
@@ -3626,7 +3626,7 @@ game/act_fuse_point.cpp:
 	.bss        start:0x804CA158 end:0x804CA258
 	.sdata2     start:0x8053F5F0 end:0x8053F5F8
 
-game/tu_801E801C.cpp:
+game/act_unknown_fsob_801E801C.cpp:
 	extab       start:0x80008B84 end:0x80008C00
 	extabindex  start:0x8001615C end:0x800161F8
 	.text       start:0x801E801C end:0x801E9AFC
@@ -3647,7 +3647,7 @@ game/tu_801E9AFC.cpp:
 	.sbss       start:0x8053AC50 end:0x8053AC58
 	.sdata2     start:0x8053F650 end:0x8053F678
 
-game/tu_801EAB0C.cpp:
+game/actor_sub_1_dc_801EAB0C.cpp:
 	extab       start:0x80008C50 end:0x80008C58
 	extabindex  start:0x80016270 end:0x8001627C
 	.text       start:0x801EAB0C end:0x801EB00C
@@ -3672,7 +3672,7 @@ game/act_horse_race_man.cpp:
 	.bss        start:0x804CA7D8 end:0x804CA8D8
 	.sdata2     start:0x8053F6B8 end:0x8053F6F0
 
-game/tu_801ED3DC.cpp:
+game/stopwatch_801ED3DC.cpp:
 	extab       start:0x80008CFC end:0x80008D24
 	extabindex  start:0x80016354 end:0x80016390
 	.text       start:0x801ED3DC end:0x801EDBA4
@@ -3680,7 +3680,7 @@ game/tu_801ED3DC.cpp:
 	.bss        start:0x804CA8D8 end:0x804CA9D8
 	.sdata2     start:0x8053F6F0 end:0x8053F718
 
-game/tu_801EDBA4.cpp:
+game/act_vaati_boss_801EDBA4.cpp:
 	extab       start:0x80008D24 end:0x80008D44
 	extabindex  start:0x80016390 end:0x800163C0
 	.text       start:0x801EDBA4 end:0x801EE24C
@@ -3690,7 +3690,7 @@ game/tu_801EDBA4.cpp:
 	.bss        start:0x804CA9D8 end:0x804CAAD8
 	.sdata2     start:0x8053F718 end:0x8053F728
 
-game/tu_801EE24C.cpp:
+game/actor_base_801EE24C.cpp:
 	extab       start:0x80008D44 end:0x80008F04
 	extabindex  start:0x800163C0 end:0x80016660
 	.text       start:0x801EE24C end:0x801F6058
@@ -3700,7 +3700,7 @@ game/tu_801EE24C.cpp:
 	.bss        start:0x804CAAD8 end:0x804CABD8
 	.sdata2     start:0x8053F728 end:0x8053F800
 
-game/tu_801F6058.cpp:
+game/actor_manager_801F6058.cpp:
 	extab       start:0x80008F04 end:0x80008FCC
 	extabindex  start:0x80016660 end:0x8001678C
 	.text       start:0x801F6058 end:0x801F9484
@@ -3740,7 +3740,7 @@ game/act_thief.cpp:
 	.sbss       start:0x8053AC60 end:0x8053AC68
 	.sdata2     start:0x8053F840 end:0x8053F8A8
 
-game/tu_80206B30.cpp:
+game/act_thief_80206B30.cpp:
 	extab       start:0x80009CA4 end:0x80009CDC
 	extabindex  start:0x8001765C end:0x800176B0
 	.text       start:0x80206B30 end:0x80207548
@@ -3775,7 +3775,7 @@ game/act_bird_manager.cpp:
 	.bss        start:0x804CB3B0 end:0x804CB4B0
 	.sdata2     start:0x8053F918 end:0x8053F948
 
-game/tu_80209C14.cpp:
+game/act_slime_formation_80209C14.cpp:
 	extab       start:0x80009DC8 end:0x80009E30
 	extabindex  start:0x800177F4 end:0x80017890
 	.text       start:0x80209C14 end:0x8020B354

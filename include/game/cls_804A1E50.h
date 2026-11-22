@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_804A1E50_H
 #define GAME_CLS_804A1E50_H
 
-// Code: game/tu_8018A8D8.cpp.
+// Code: game/act_big_poe_2_8018A8D8.cpp.
 
 #include "game/ActorBase.h"
 
@@ -25,7 +25,7 @@ public:
     bool fn_8018DA6C();
     void fn_8018DC70(s32 side);
 
-    // SHARED-EDIT: carved from field_0x230[] / field_0x270[] (game/tu_8018A8D8.cpp).
+    // SHARED-EDIT: carved from field_0x230[] / field_0x270[] (game/act_big_poe_2_8018A8D8.cpp).
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234; // frame countdown, reloaded from lbl_804A1B70
     /* 0x238 */ s32 field_0x238;

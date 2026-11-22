@@ -1606,7 +1606,7 @@ bool fn_802300EC(s32 player);
 // result on the player, 0 without one.
 bool fn_80230AD4(s32 player);
 // Owner unit: not written yet (0x80230C6C, 0x90 bytes). Called on a player for
-// its result-free state change in fn_801E5754 (game/tu_801E4D54.cpp).
+// its result-free state change in fn_801E5754 (game/act_vaati_boss_801E4D54.cpp).
 void fn_80230C6C(s32 player);
 
 // Per-player queries and setters of the 0x9C-byte family, owner tu_8022AD64
@@ -1862,13 +1862,13 @@ bool startPlayerTransition_802317F0(s32 player, s32 a, const JGeometry::TVec3f* 
 const JGeometry::TVec2f* fn_80238430(s32 player);
 // Whether two boxes overlap (a copy of a clipped to b is not empty). Called by updateScreenChange_80231DE4 and fn_80232A0C.
 bool fn_80233C9C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b);
-// 8, or 16 when the player's byte 0xB9B is set; 0 without the player. 1 unit (tu_801A3C50, subf.).
+// 8, or 16 when the player's byte 0xB9B is set; 0 without the player. 1 unit (actor_base_801A3C50, subf.).
 s32 fn_8023B520(s32 player);
-// -> fn_80274238; 0 without the player. 5 units (act_force_gem*, tu_801EE24C).
+// -> fn_80274238; 0 without the player. 5 units (act_force_gem*, actor_base_801EE24C).
 u8 fn_8023B9CC(s32 player, const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* pos, bool flag);
 // 1 unit (act_seesaw_lift). -> fn_8023FF90 with a stack copy of *pos.
 void fn_8022BE24(s32 player, const JGeometry::TVec3f* pos);
-// 2 units (tu_801CB270, tu_801A3C50; mr. / blt). The serial the player's mArrowSerials_0xb00 /
+// 2 units (tu_801CB270, actor_base_801A3C50; mr. / blt). The serial the player's mArrowSerials_0xb00 /
 // mSlingshotSerials_0xb0c holds at index field_0xb7c / field_0xb80, or -1 (no player, index outside 0-2).
 s32 fn_8023B2B0(s32 player);
 s32 fn_8023B358(s32 player);
@@ -1935,7 +1935,7 @@ void fn_80238E08(s32 serial);
 // of the first present player whose box test (fn_802728AC(player, box, layer,
 // serial)) passes, or -1; 0 without a player manager.
 s32 fn_80239470(const JGeometry::TBox2f* box, s32 layer, s32 serial);
-// Owner unit tu_8022AD64. 1 unit (tu_80206B30 vfunc_0x58).
+// Owner unit tu_8022AD64. 1 unit (act_thief_80206B30 vfunc_0x58).
 // Four sibling probes over the players: each calls a per-player box test
 // (fn_802576CC / fn_80256F44 / fn_802574CC / fn_802575B8: player object,
 // box, layer, out) and the test stores two floats through `out` (callers

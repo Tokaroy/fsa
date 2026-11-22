@@ -24,7 +24,7 @@ fn_801E61C4, fn_801E6234, fn_801E6394, fn_801E63D8 and the generated __sinit.
   tu_801DCC98 give the same try.py numbers).
 - include/game/Effect.h: fn_801CB71C(JPABaseEmitter**, const TVec3f*, s32, s32) (owner tu_801CB270).
 - include/game/GameGlobals.h: fn_801DA938/fn_801DA904 (take Sequencer_801DA7C0*), fn_801DAC6C/fn_801DAD2C
-  (Singleton_801DAC6C), owners tu_801DA7C0 and the unit at 0x801DAC6C.
+  (Singleton_801DAC6C), owners sequencer_801DA7C0 and the unit at 0x801DAC6C.
 - config/G4SE01/gen_game.tsv: the tu_801E5FC8 row removed.
 - config/G4SE01/symbols.txt: the 7 functions renamed to their mangled member names.
 

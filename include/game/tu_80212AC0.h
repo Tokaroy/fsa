@@ -2,7 +2,7 @@
 #define GAME_TU_80212AC0_H
 
 // Exports of game/tu_80212AC0.cpp. Called by the Pengator actors
-// (act_pengator, act_leever_80182914, tu_80183544: fn_80212AF0 on their mPos at 0xC),
+// (act_pengator, act_leever_80182914, act_geldman_80183544: fn_80212AF0 on their mPos at 0xC),
 // tu_801DE714 and tu_802D39B8 (which clears the count).
 
 #include "types.h"

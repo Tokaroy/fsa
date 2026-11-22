@@ -11,7 +11,7 @@
 #include "game/act/act_shadow_link_2.h"
 #include "game/GameGlobals.h"
 
-// 110, the divisor of the fade in game/tu_801D3CBC.cpp (declared in GameGlobals.h). It leads this
+// 110, the divisor of the fade in game/act_shadow_link_2_801D3CBC.cpp (declared in GameGlobals.h). It leads this
 // unit's .sdata2, before the function literals.
 const s32 lbl_8053EE00 = 110;
 

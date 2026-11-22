@@ -31,7 +31,7 @@ public:
     /* 0xA0 */ virtual void vfunc_0xA0();
     // 0x801C50A8: setState_801C3B7C calls it.
     void fn_801C50A8(int state);
-    // game/tu_801C0D70.cpp. Whether a player is near mPos (findNearestPlayer_801D05F8 with
+    // game/shadow_link_fight_801C0D70.cpp. Whether a player is near mPos (findNearestPlayer_801D05F8 with
     // 1.0f, then fn_801D0D50 with `range`); 0 or 1.
     bool fn_801C5348(f32 range);
     // game/tu_8021CDE4.cpp: state change; 1, 2 and 3 set up the members
@@ -43,18 +43,18 @@ public:
     bool fn_8021D020();
     // act_shadow_link_2.cpp: switches the animation/state by number.
     void setState_801C3B7C(int);
-    // game/tu_801C5B08.cpp (0x801C6784): turns field_0x33c to the side of
+    // game/act_shadow_link_2_801C5B08.cpp (0x801C6784): turns field_0x33c to the side of
     // player field_0x590 that mPos is on (0x4000 or -0x4000), or to the
     // angle toward that player (getAngleToPlayer_801D0280) when the layer's view flag is
     // clear or fn_801CC9F8 holds.
     void fn_801C6784();
-    // game/tu_801C5B08.cpp (0x801C5EBC): the turn toward player `player`,
+    // game/act_shadow_link_2_801C5B08.cpp (0x801C5EBC): the turn toward player `player`,
     // called by fn_801C5B08 with its flag argument.
     void fn_801C5EBC(s32 player, bool flag);
-    // game/tu_801C5B08.cpp (0x801C5B08): the per-tick driver of the Shadow
+    // game/act_shadow_link_2_801C5B08.cpp (0x801C5B08): the per-tick driver of the Shadow
     // Link 2 state machine (fn_801C2ED4 calls it).
     void fn_801C5B08(bool flag);
-    // game/tu_801C5B08.cpp (0x801C6260, not written yet): called by fn_801C5B08
+    // game/act_shadow_link_2_801C5B08.cpp (0x801C6260, not written yet): called by fn_801C5B08
     // after field_0x338 is set to the nearest player.
     void fn_801C6260();
     // act_shadow_link_2.cpp: true if mFlags has bit 0x40000 and the byte at
@@ -85,39 +85,39 @@ public:
     // act_shadow_link_2.cpp: if mFlags has bit 0x4000 and mState is 0 or 1,
     // switches to state 2 (setState_801C3B7C).
     void fn_801C27A8();
-    // game/tu_801C6A4C.cpp: per-tick state handlers (field_0x340 anim
+    // game/act_shadow_link_2_801C6A4C.cpp: per-tick state handlers (field_0x340 anim
     // finished flags, then the next setState_801C3B7C state).
     void fn_801C6A4C();
     void fn_801C6BA8();
     void fn_801C6C7C();
-    // game/tu_801C71BC.cpp: for a nonzero flag, sets the byte at 0x55D from
+    // game/act_shadow_link_2_801C71BC.cpp: for a nonzero flag, sets the byte at 0x55D from
     // a rail query (fn_800FD894 on field_0x358) and randInt_801CD664; otherwise
     // from randInt_801CD664(0xC) alone.
     void fn_801C8BC4(u8 flag);
-    // game/tu_801C71BC.cpp: rail step. Clears mFlags 0x2000000, sets or clears
+    // game/act_shadow_link_2_801C71BC.cpp: rail step. Clears mFlags 0x2000000, sets or clears
     // 0x20000 from fn_800FD594 on field_0x358, reads the rail point at 0xFF
     // into field_0x32c, mPos and mPrevPos, steps the rail (fn_800FD818) in the
     // direction of its field_0x1, then fn_801C8BC4(1) and setState_801C3B7C 0x17/0x18.
     void fn_801C79A0();
-    // game/tu_801C71BC.cpp (0x801C7EE4): sets mFlags 0x400000 when the rail point
+    // game/act_shadow_link_2_801C71BC.cpp (0x801C7EE4): sets mFlags 0x400000 when the rail point
     // is out of reach (z too far on view layers with the flag, or isWayBlocked_801CF888 blocked).
     void fn_801C7EE4();
-    // game/tu_801C71BC.cpp (0x801C71BC): picks a neighbouring rail point (fn_800FD4C0), else
+    // game/act_shadow_link_2_801C71BC.cpp (0x801C71BC): picks a neighbouring rail point (fn_800FD4C0), else
     // resets (fn_801C8B50) and turns by a random angle.
     void fn_801C71BC();
-    // game/tu_801C71BC.cpp (0x801C8B50): resets the path and the rail, then turns
+    // game/act_shadow_link_2_801C71BC.cpp (0x801C8B50): resets the path and the rail, then turns
     // toward field_0x32c.
     void fn_801C8B50();
     void fn_801C9420(JGeometry::TVec2f* dir);
     void fn_801C9234(JGeometry::TVec2f* out);
-    // game/tu_801C71BC.cpp: updates field_0x32c and path waypoints.
+    // game/act_shadow_link_2_801C71BC.cpp: updates field_0x32c and path waypoints.
     void fn_801C8C84(s32, s32);
     void fn_801C887C();
     void fn_801C844C();
     void fn_801C7F98();
     u8 fn_801C7BD0();
     void fn_801C7370(u8 flag);
-    // game/tu_801C9AF8.cpp (not written yet): 0 if field_0x560 is 4 or
+    // game/act_shadow_link_2_801C9AF8.cpp (not written yet): 0 if field_0x560 is 4 or
     // `player`, else 1.
     bool fn_801CAED4(int player);
     u8 fn_801C976C();
@@ -161,26 +161,26 @@ public:
         }
     }
     bool fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer);
-    // game/tu_801C9AF8.cpp (0x801CA0F8): hits the actor overlapping this one
+    // game/act_shadow_link_2_801C9AF8.cpp (0x801CA0F8): hits the actor overlapping this one
     // (findOverlappingActor_801F82CC) with takeHit_801F37AC unless it is 'SWBM' or 'FLME'; true if it hit.
     bool fn_801CA0F8();
     bool fn_801CA564();
     u8 fn_801CA274();
     bool fn_801C9EB8();
     u8 fn_801C9CB0();
-    // game/tu_801C9AF8.cpp (0x801C9AF8): whether the tile/box at `pos` on `layer` blocks
+    // game/act_shadow_link_2_801C9AF8.cpp (0x801C9AF8): whether the tile/box at `pos` on `layer` blocks
     // this actor (states 0x11 and 0x17 pass through some tile codes).
     bool fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos);
-    // game/tu_801D3320.cpp: picks the next waypoint of the rail in
+    // game/act_shadow_link_2_801D3320.cpp: picks the next waypoint of the rail in
     // field_0x358 and moves field_0x32c toward it.
     void fn_801D3320();
-    // game/tu_801D3CBC.cpp: per-tick draw by state (mState 0-3, 0xD: none;
+    // game/act_shadow_link_2_801D3CBC.cpp: per-tick draw by state (mState 0-3, 0xD: none;
     // 0x17 calls fn_801D41B8 while field_0x524 has bit 0x200).
     void fn_801D3CBC();
-    // game/tu_801D3CBC.cpp: draws the player sprite (player_sob.bin) at mPos,
+    // game/act_shadow_link_2_801D3CBC.cpp: draws the player sprite (player_sob.bin) at mPos,
     // frame `frame`, faded in states 8 and 9, then the shadow sprite.
     void fn_801D3DAC(s32 frame) const;
-    // game/tu_801D3CBC.cpp: draws a sprite at field_0xc or field_0x570 with an
+    // game/act_shadow_link_2_801D3CBC.cpp: draws a sprite at field_0xc or field_0x570 with an
     // alpha ramped by mStateTimer when the tile there is 0x9B or 0x9C.
     void fn_801D41B8() const;
 

@@ -2,7 +2,7 @@
 #define GAME_ACT_ACT_VAATI_BOSS_H
 
 // Owner: game/act_vaati_boss.cpp (not written yet). The draw helpers are in
-// game/tu_801EDBA4.cpp, the member at 0x568 in game/tu_801E667C.cpp.
+// game/act_vaati_boss_801EDBA4.cpp, the member at 0x568 in game/tu_801E667C.cpp.
 
 #include "types.h"
 #include "game/EnemyBase.h"
@@ -191,7 +191,7 @@ public:
     void fn_801D63D0();
     // 0x801D5B70 (a plain `fn_801D5B70` symbol): picks the next state once mStateTimer reaches field_0x250.
     void fn_801D5B70();
-    // 0x801E4D88 (game/tu_801E4D54.cpp, a plain symbol there, not written): per-frame brain.
+    // 0x801E4D88 (game/act_vaati_boss_801E4D54.cpp, a plain symbol there, not written): per-frame brain.
     void fn_801E4D88();
     void fn_801D4C70();
     void fn_801E4790(bool arg);
@@ -211,9 +211,9 @@ public:
     // uses the emitters at 0x448).
     void setState_801D5D84(s32 state);
     // 0x801E4348: runs the attack-state checks for one player in range and
-    // returns whether it acted (game/tu_801E3618.cpp).
+    // returns whether it acted (game/act_vaati_boss_801E3618.cpp).
     bool fn_801E4348();
-    // Shotgun pass (game/tu_801E3618.cpp), named by address: the area checks, the
+    // Shotgun pass (game/act_vaati_boss_801E3618.cpp), named by address: the area checks, the
     // attack hooks and the hit box setters.
     u8 fn_801E3618(s32 layer, const JGeometry::TVec2f* pos);
     u8 fn_801E3B2C();
@@ -222,18 +222,18 @@ public:
     u8 fn_801E4094();
     u8 fn_801E44CC(const JGeometry::TBox2f* area, JGeometry::TVec3f* pos, JGeometry::TVec3f* outDir);
     void fn_801E4618(JGeometry::TBox2f* out, bool region);
-    // 0x801E4D54 (game/tu_801E4D54.cpp): clears mFlags' 0x4000 bit, zeroes
+    // 0x801E4D54 (game/act_vaati_boss_801E4D54.cpp): clears mFlags' 0x4000 bit, zeroes
     // field_0x5ce and sets the float at 0x4BC (field_0x464's field_0x58) to 0.
     void fn_801E4D54();
     // 0x801E4D74: the same, with 0x32 at 0x5CE and 255.0f at 0x4BC.
     void fn_801E4D74();
-    // 0x801E5BA8 (game/tu_801E4D54.cpp): the first element of field_0x308
+    // 0x801E5BA8 (game/act_vaati_boss_801E4D54.cpp): the first element of field_0x308
     // whose serial is actor's mSerial gets a direction (x, y) and a z. flag 0:
     // dir normalised and doubled, z 1.5. Otherwise a player within 160 units
     // of mPos whose field_0x2a8 entry has field_0x0 clear gives the sin and
     // cos of its angle, else dir is normalised; both are quadrupled, z 3.
     void fn_801E5BA8(const ActorBase_804A5770* actor, const JGeometry::TVec2f* dir, bool flag);
-    // 0x801E5754 (game/tu_801E4D54.cpp): steps the four player records in
+    // 0x801E5754 (game/act_vaati_boss_801E4D54.cpp): steps the four player records in
     // field_0x2a8 (countdowns, the 0x2AC timers) against this boss's layer and
     // the positions of the players.
     void fn_801E5754();

@@ -4,7 +4,7 @@
 #include "game/GameGlobals.h"
 #include "game/Map.h"
 #include "game/ActorManager.h"
-#include "game/act/tu_80209C14.h"
+#include "game/act/act_slime_formation_80209C14.h"
 
 // Steering wrapper: without it the arguments are evaluated after
 // getActorManager_801F856C() (init 97.8 %, updateState_0x90 98.0 %); with it the

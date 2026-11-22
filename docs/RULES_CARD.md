@@ -332,7 +332,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Constant-bound `for` loops count with a plain `int`: an `s32` (signed long) counter makes CW emit a `cmpwi/bge` entry test the original lacks (tu_802F5040 fn_802FF798 87.7 → 99.4 %, tu_80301CD0 fn_80308D0C 93.8 → 100 %).
 - Unfused `fmuls, fmuls, fadds` squared sums: `square(a) + square(b)` (game/GameMath.h).
 - A two-value test compiled as `subi; clrlwi; cmplwi 1` is `(x == 2 || x == 3)` with literal constants; its negation is `!(x == 2 || x == 3)` (act_eyeball_switch init). `x != 2 && x != 3` and `x < 2 || x > 3` don't fold.
-- A position difference that the original routes through an extra stack TVec3f (xy psq_st, z reloaded, then a copy) is `a - b` with JGeometry's `TVec3::operator-` (pikmin2 form), e.g. `from.set(mPos - vel48)` (tu_80206B30 vfunc_0x58). Don't add a redundant named copy instead.
+- A position difference that the original routes through an extra stack TVec3f (xy psq_st, z reloaded, then a copy) is `a - b` with JGeometry's `TVec3::operator-` (pikmin2 form), e.g. `from.set(mPos - vel48)` (act_thief_80206B30 vfunc_0x58). Don't add a redundant named copy instead.
 - An extra unreachable `b` after a switch dispatch: an empty `case N: break;`
   for a state value nothing sets (one-line comment).
 - A bool the original materialises (li 1 / li 0, then `cmplwi 1`):
@@ -385,7 +385,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   aggregate locals slots in REVERSE declaration order (the later one gets
   the lower sp offset; scope doesn't matter). Declare the one the original
   has higher first, e.g. `JGeometry::TBox2f box;` at the top of the block,
-  then `box.set(...)` where it is filled (tu_801EE24C, act_log_monitor_npc
+  then `box.set(...)` where it is filled (actor_base_801EE24C, act_log_monitor_npc
   do this; scratchpad research_stackslots.md).
 - A constant-bound loop over a member array whose unrolled copies bump the base
   register (`lwz 0xN+4(r3); addi r3, r3, 4` per entry) instead of fixed offsets: the
@@ -445,7 +445,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   (tu_8023FBF0); follow-up.
 - UNPROVEN (no 100 % example): sin x/y/z, cos x/y/z (bl sin; frsp) into a
   stack Mtx times a scale: `TVec3f rot(x, y, z); setRotScaleMtx(mtx, rot, scale)`
-  (game/RotMatrix.h; scalar 0.0f angles become lfd doubles). tu_801A908C
+  (game/RotMatrix.h; scalar 0.0f angles become lfd doubles). act_manhandla_801A908C
   fn_801A90D4 and act_hardhat_beetle's draw: 99.0 %, regalloc only.
 - frsqrte + three double Newton steps + NaN/fpclassify tail: `std::sqrtf(x)`
   (std/math.h). Not a counted match: act_sword_soldier sqrtf_80154378 is 99.74 %,
@@ -467,7 +467,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   sound `startSound_801F0E34(id, 0)` (act_coconut.cpp:29-30); actor lookup / spawn
   `getActorManager_801F856C()->findActorBySerial_801F666C(serial)` (act_invisible_npc_wall_tomi.cpp:22),
   `->spawnActor_801F9484(id, layer, &pos, arg, -1, -1)` (act_leaf_effect_npc_generator.cpp:58);
-  random `gGameRoot_8053AAF8->mRandom.get_ufloat_1()` (tu_801C6A4C.cpp:75),
+  random `gGameRoot_8053AAF8->mRandom.get_ufloat_1()` (act_shadow_link_2_801C6A4C.cpp:75),
   `(s32)(k * get_ufloat_1())` (act_sand_crab.cpp:49); resources
   `gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name)` (vtable slot 0x18,
   tu_803536C4.cpp:45).
@@ -499,7 +499,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   tu_80285E58 (8 sites flipped, nothing else changed). For actors: ActorBase_804A5770::getField_0x4()
   (the layer) and getSerial() (ActorBase.h). With the getter the SOURCE operand order is the cmpw
   order: `call() == getField_0x4()` gives `cmpw r3, rS`, `getLayer() != call()` gives `cmpw rS, r3`
-  (tu_8027E5BC getFollowTargetPos_8027FA08). Shape sweep: +7 at 100 % (tu_801CDC8C, tu_8027E5BC x2,
+  (tu_8027E5BC getFollowTargetPos_8027FA08). Shape sweep: +7 at 100 % (enemy_base_801CDC8C, tu_8027E5BC x2,
   act_special_conversation_npc x3, act_block). Use it only where the asm loads the member BEFORE
   the bl: act_princess_zelda update reads field_0x4 after the call (`lwz r0, 0x4; cmpw r0, r3`) and the
   getter drops it (94.02 -> 93.79); act_horse_race_man fn_801EC7B8 reuses one register for a layer read
@@ -517,12 +517,12 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   where ours reuses the saved copy): copy it as a `JGeometry::TVec2f old(mPos);`, not two f32 locals
   (act_bird_manager Path::fn_80209640 92.2 -> 97.8 %, scheduling+regalloc; one example so far).
 - Not the const-this shape: a different order among loads only (no load moved past a store or the
-  prologue) — GameView fn_802D7F40 made const stays 85.2 %. tu_801ED3DC fn_801ED3DC (loads moved above
+  prologue) — GameView fn_802D7F40 made const stays 85.2 %. stopwatch_801ED3DC fn_801ED3DC (loads moved above
   the stores through a global) is: const, 84.0 -> 100 %.
-  Shape sweep 2 (2026-11-06): const to 100 % in tu_801CDC8C fn_801CF0F4, tu_8020CCA8 fn_8020D2AC,
-  tu_801DAC6C fn_801DAD2C / fn_801DACAC. A loop count the original loads above the saves: const AND
+  Shape sweep 2 (2026-11-06): const to 100 % in enemy_base_801CDC8C fn_801CF0F4, tu_8020CCA8 fn_8020D2AC,
+  singleton_801DAC6C fn_801DAD2C / fn_801DACAC. A loop count the original loads above the saves: const AND
   the loop tests the member (`for (i = 0; i < mCount; i++)`); a `s32 count = mCount;` local keeps the
-  load below the saves even under const (tu_801DAC6C fn_801DAE24 86.9 -> 100, tu_80215A94 fn_8021606C
+  load below the saves even under const (singleton_801DAC6C fn_801DAE24 86.9 -> 100, tu_80215A94 fn_8021606C
   91.6 -> 100; const with the local: 87.4, a drop). Did not generalise: a callee made const only so a
   const caller compiles can lose at its own inlined sites — Player fn_80247BD4 const drops fn_8024762C
   99.8 -> 99.2, so fn_80270ABC (100 % const) stays plain; act_icicle fn_8010B284 (mPos.z for a TVec3
@@ -546,7 +546,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   the local where the target materialises it before the tests. getField_0x4() as a later argument of a
   call whose earlier argument is itself a call (act_thief isWayBlocked_801CF888(.., getPlayerPos_8023E724(p),
   layer): no change), or on another object (tu_8021775C `mOwner->getField_0x4()`: no change).
-- A u16 converted to float with the signed form (xoris): `(s32)mode->fbWidth`, as for u8 (tu_801ED3DC
+- A u16 converted to float with the signed form (xoris): `(s32)mode->fbWidth`, as for u8 (stopwatch_801ED3DC
   fn_801ED828 83.8 -> 90.1).
 
 - A u8 global or field tested with `lbz; cmpwi 0` (plain u8 gives cmplwi): `(s32)flag != 0` (reviewed

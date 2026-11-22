@@ -8,14 +8,14 @@
 #include "game/act/act_vaati_boss.h"
 #include "JSystem/JKernel/JKRArchive.h"
 
-// Shared constants (declared in GameGlobals.h): game/tu_801EDBA4.cpp passes the first to
+// Shared constants (declared in GameGlobals.h): game/act_vaati_boss_801EDBA4.cpp passes the first to
 // fn_802F5FF4 and multiplies -12.0f by the second at run time. No function of this unit
 // reads them. They lead this unit's .sdata2 (0x8053F0B8, before 0x8053F0C0 / 0x8053F0C4
 // and the function literals): under deferred codegen file-scope constants are written
-// before every literal of the file, so they cannot end game/tu_801D3CBC.cpp's pool.
+// before every literal of the file, so they cannot end game/act_shadow_link_2_801D3CBC.cpp's pool.
 const f32 lbl_8053F0B8 = 90.0f;
 const f32 lbl_8053F0BC = 1.7f;
-// 0x8053F0C0 / 0x8053F0C4: the words 12 and 0x1E; game/tu_801E3618.cpp reads them (lwz at 0x801E3EB4, lbz at 0x801E3D7C).
+// 0x8053F0C0 / 0x8053F0C4: the words 12 and 0x1E; game/act_vaati_boss_801E3618.cpp reads them (lwz at 0x801E3EB4, lbz at 0x801E3D7C).
 const s32 lbl_8053F0C0 = 12;
 const u8 lbl_8053F0C4 = 0x1E;
 

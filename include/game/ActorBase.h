@@ -2,7 +2,7 @@
 #define GAME_ACTORBASE_H
 
 // The base class of every actor the spawner creates (spawnActor_801F9484, see
-// game/ActorManager.h). Its code is game/tu_801EE24C.cpp; its vtable is at
+// game/ActorManager.h). Its code is game/actor_base_801EE24C.cpp; its vtable is at
 // 0x804A5770 (__vt__18ActorBase_804A5770).
 //
 // Naming (docs/PLAN.md, "Placeholder names"): a provisional descriptive
@@ -15,7 +15,7 @@
 // dolphin's Vec only where a mangled name or a PSMTX/PSVEC call proves it.
 //
 // Layout: from the constructor (0x801F5AE0), the spawner's inline setters
-// (0x801FF630-0x801FF738), the actor manager's loops (game/tu_801F6058.cpp)
+// (0x801FF630-0x801FF738), the actor manager's loops (game/actor_manager_801F6058.cpp)
 // and the destructor (0x801F593C). sizeof == 0x230: the smallest
 // __nw__(size, heap, 0) in the spawner is 0x230, for 11 actors whose inline
 // constructors only call this one and store their own vtable (RAIL, STGN,
@@ -42,7 +42,7 @@ class JPABaseEmitter;
 
 // The member at 0x1DC (named after its constructor, 0x801EAD68; no vtable).
 // Constructor fn_801EAD68, per-frame update
-// fn_801EAB0C (both in game/tu_801EAB0C.cpp), called by the actor manager's
+// fn_801EAB0C (both in game/actor_sub_1_dc_801EAB0C.cpp), called by the actor manager's
 // update loop before the actor's own update. Its purpose is unknown.
 struct ActorSub1DC_801EAD68 {
     ActorSub1DC_801EAD68();
@@ -90,7 +90,7 @@ public:
     // 83 overrides drive J3DFrameCtrl::update/checkPass. Empty here.
     /* 0x14 */ virtual void update();
     // fn_801F5790: box vs. player screens. 3 overrides (act_leever_80182914,
-    // tu_80183544, act_pengator), no arguments read; the update loop calls
+    // act_geldman_80183544, act_pengator), no arguments read; the update loop calls
     // it when field_0xa4 != 0 (0x801F8B94) and ignores r3.
     /* 0x18 */ virtual void checkPlayerContact_0x18();
     // mPrevPos = mPos; never overridden; the update loop calls it right
@@ -139,10 +139,10 @@ public:
     /* 0x3C */ virtual s32 getScreenFlagBit_0x3C();
     // 0x801F470C, empty. 6 overrides, all pickups (act_force_gem,
     // act_magic_jar, act_recovery_heart, act_dropped_item,
-    // act_crystal_ball, act_stone_arrghus_800F7FCC), no arguments read; tu_801A3C50 calls
+    // act_crystal_ball, act_stone_arrghus_800F7FCC), no arguments read; actor_base_801A3C50 calls
     // it on itself (0x801A4BF0, 0x801A4C34, 0x801A4CC8) and ignores r3.
     /* 0x40 */ virtual void vfunc_0x40();
-    // 0x801F4708, empty. 21 overrides, no arguments read; tu_801A3C50
+    // 0x801F4708, empty. 21 overrides, no arguments read; actor_base_801A3C50
     // calls it on itself (0x801A3CE0, 0x801A42D0, ...) and ignores r3.
     /* 0x44 */ virtual void vfunc_0x44();
     // 0x801F4704, empty. 7 overrides, all objects a player can lift or
@@ -163,12 +163,12 @@ public:
     // TVec3f and test r3 with clrlwi 24.
     /* 0x50 */ virtual bool isBlockedOrOutOfView_0x50(s32 layer, const JGeometry::TVec3f* pos);
 
-    // Non-virtual members other units call: every export of game/tu_801EE24C.cpp
+    // Non-virtual members other units call: every export of game/actor_base_801EE24C.cpp
     // whose callers pass an actor in r3 (their own `this` in 2,409 of 2,571
     // calls; in the rest r3 holds another actor, e.g. one of the manager's slots
     // or one found by serial). Signatures come from the register use in each
     // body and at the call sites; "N units / M calls" counts the other game
-    // units that call it and all its calls (tu_801EE24C's own included). The
+    // units that call it and all its calls (actor_base_801EE24C's own included). The
     // names stay dtk's placeholders, and symbols.txt carries the mangled name
     // each declaration produces (fn_XXXXXXXX__18ActorBase_804A5770F...), so a
     // parameter type changed here is a symbols.txt rename too; the return type
@@ -325,18 +325,18 @@ public:
     // manager's list (fn_801F84C4); returns the previous field_0x164
     // (0x801F2B64). Callers pass 0, 5, 6 or 2.
     u8 fn_801F2B20(s32 arg);
-    // 0x801A3CFC (game/tu_801A3C50.cpp, not written yet). The draw pass
+    // 0x801A3CFC (game/actor_base_801A3C50.cpp, not written yet). The draw pass
     // (ActorManager_804A5800::fn_801F8658) calls it on each actor it draws,
     // right before draw(): rebuilds mSpriteParams (r3 is the actor; only its
     // fields from 0x120 on are touched). Result unused.
     void fn_801A3CFC();
-    // game/tu_801A3C50.cpp. The actor was hit by `player`: mLife = 0, mLastAttacker_0x10c /
+    // game/actor_base_801A3C50.cpp. The actor was hit by `player`: mLife = 0, mLastAttacker_0x10c /
     // field_0xa0 = player, field_0x48 = (1.4, 0.4, 0.4), mHitTimer_0xd8 / 0xdc / 0xa4 = 0,
     // fn_801F4694, field_0xa8 = 30 (layer 8 and up) or 35, lbl_8053A100 = player, then
     // vfunc_0x44. tu_802242F4 calls it; fn_801A4D74
     // inlines it.
     void fn_801A3C50(s32 player);
-    // game/tu_801A3C50.cpp: the per-frame damage checks fn_801A6160 runs on the actor's
+    // game/actor_base_801A3C50.cpp: the per-frame damage checks fn_801A6160 runs on the actor's
     // box (field_0x70 moved to the actor's top-down position) and that position; each
     // returns 0 when nothing hit. The extern "C" wrappers below look the actor up by
     // serial and call fn_801A41D8 / fn_801A4754 / fn_801A4D74 / fn_801A5400.
@@ -345,7 +345,7 @@ public:
     s32 fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos);
     s32 fn_801A4FB4();
     s32 fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos);
-    // game/tu_801A3C50.cpp; tu_801F6058 calls it. Runs the damage checks above and
+    // game/actor_base_801A3C50.cpp; actor_manager_801F6058 calls it. Runs the damage checks above and
     // returns 0-3.
     s32 fn_801A6160();
     // 88 units / 153 calls. Hits every player (except skipPlayer; -1 in 138
@@ -429,7 +429,7 @@ public:
     // field_0xc4: field_0xc4 = 1, field_0xc8 = field_0x110 = v, field_0xcc
     // = 0, field_0xd0 = -1, returns 1; else 0.
     u8 fn_801F3744(s32 v);
-    // 1 unit / 3 calls (tu_801A3C50, always 300). field_0xa4 = v and clears
+    // 1 unit / 3 calls (actor_base_801A3C50, always 300). field_0xa4 = v and clears
     // mHitPlayers_0xd5, 0xd8, 0xe4, 0xe8 (and 0xe0 while mLife > 0).
     void fn_801F3780(s32 v);
     // 19 units / 35 calls. Applies one hit (written): attack points (taken
@@ -459,10 +459,10 @@ public:
     // (startSound_801F0E34(lbl_80469F38[voic - 1], 0)) and, if mSparksLeft_0xe8 == 0,
     // sound 0x40002.
     void fn_801F4694() const;
-    // 0x8019CEAC, out of line in game/tu_80197070.cpp: field_0xb0 = v. One
+    // 0x8019CEAC, out of line in game/act_princess_zelda_ganon_battle_80197070.cpp: field_0xb0 = v. One
     // caller (fn_80198828, 0x8019AE20) passes 0x11.
     void fn_8019CEAC(s32 v);
-    // 0x8019CEB4, out of line in game/tu_80197070.cpp: returns field_0xb0.
+    // 0x8019CEB4, out of line in game/act_princess_zelda_ganon_battle_80197070.cpp: returns field_0xb0.
     // Its caller (0x8019AA3C, 0x8019AC40) compares the result with 0xE.
     s32 fn_8019CEB4() const;
     // 0x8017EAF8, out of line in game/act_phantom_ganon_8017C01C.cpp: mVel_0x3c = v (a whole
@@ -498,7 +498,7 @@ public:
     // mSpawnParam_0x90 read as a signed value (act_big_moldorm_80147B50 compares it with cmpwi).
     s32 getField_0x90() const { return mSpawnParam_0x90; }
     // Out-of-line accessors in game/act_sword_soldier.cpp; act_ganon,
-    // act_phantom_ganon_2, tu_80197070, tu_8018A8D8 (and tu_803944C8 for
+    // act_phantom_ganon_2, act_princess_zelda_ganon_battle_80197070, act_big_poe_2_8018A8D8 (and tu_803944C8 for
     // getSpawnParam_801544C8) call them with a bl on actors of other classes.
     u32 getSpawnParam_801544C8() const;               // mSpawnParam_0x90 (0x801544C8)
     void fn_801544D0(s32 value);           // mHitTimer_0xd8 and mHitTimerStart_0xdc (0x801544D0)
@@ -510,7 +510,7 @@ public:
     void fn_80154614(s32 value);           // field_0xb8 (0x80154614)
     s32 getLayer_8015461C() const;               // mLayer_0x4, the layer (0x8015461C)
     // Out-of-line accessors in game/act_phantom_ganon_2.cpp (0x8018A590-0x8018A5B0);
-    // act_ganon and tu_80197070 call them on other actors too.
+    // act_ganon and act_princess_zelda_ganon_battle_80197070 call them on other actors too.
     u16 fn_8018A590() const;               // field_0x94 (0x8018A590)
     void setAlive_8018A598(bool alive);          // mAlive (0x8018A598)
     void fn_8018A5A0(s32 value);           // mDir_0x98 (0x8018A5A0)
@@ -636,7 +636,7 @@ public:
     /* 0x1DC */ ActorSub1DC_801EAD68 field_0x1dc;
 }; // Size: 0x230
 
-// Exports of game/tu_801EE24C.cpp that are not ActorBase_804A5770 members
+// Exports of game/actor_base_801EE24C.cpp that are not ActorBase_804A5770 members
 // (their callers never pass an actor in r3). extern "C" keeps the dtk names
 // as link names until that unit names them.
 // 4 units / 8 calls. A map tile code (callers pass the lhz/clrlwi 16 result
@@ -678,7 +678,7 @@ void drawSobSprite_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec
 
 } // extern "C"
 
-// game/tu_801A3C50.cpp (C linkage, no mangled names): map checks act_deadrock's
+// game/actor_base_801A3C50.cpp (C linkage, no mangled names): map checks act_deadrock's
 // update() makes with its mSerial, its box and its top-down position. Each looks
 // the actor up by serial and returns its ActorBase_804A5770 check's result
 // (fn_801A5400 / fn_801A4754 / fn_801A41D8 / fn_801A4D74).

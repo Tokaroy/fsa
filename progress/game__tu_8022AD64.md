@@ -8,10 +8,10 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
   fn_8022B860 (void setter call, one argument), getPlayerLayer_8023DE58 (field),
   getPlayerPos_8023E724 (field address, fallback &lbl_804CF460).
 - tu_801CB270: fn_801CCF34, fn_801CD228, fn_801CD290.
-- tu_801EE24C: isPlayerOnLowerLayer_801F329C.
+- actor_base_801EE24C: isPlayerOnLowerLayer_801F329C.
 
 ## Resistant
-- tu_801EE24C isPlayerOnLayer_801F320C 94.2 % (scheduling): lwz field_0x4 issued after
+- actor_base_801EE24C isPlayerOnLayer_801F320C 94.2 % (scheduling): lwz field_0x4 issued after
   `mr r28, r3` instead of right after the prologue's `stw r31`; cmpw operands
   swapped. 7 tries (budget 6).
 

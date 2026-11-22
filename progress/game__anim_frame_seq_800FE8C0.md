@@ -12,5 +12,5 @@ Data: .rodata bytes identical; ours is 0xD4 long, the original split 0xD8
 (4 bytes alignment tail). Tables are lbl_<addr> statics.
 SHARED-EDITS: none beyond this unit (gen_game.tsv row removed; symbols.txt
 renamed the two functions; new include/game/cls_800FE8C0.h).
-Callers (not written): act_shadow_link_demo, act_shadow_link_2, tu_801C6A4C
+Callers (not written): act_shadow_link_demo, act_shadow_link_2, act_shadow_link_2_801C6A4C
 (object at +0x278 of the actor).

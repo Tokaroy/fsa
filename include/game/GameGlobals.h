@@ -228,7 +228,7 @@ struct GameRoot_8049EF20 {
     /* 0x4C */ s32 field_0x4c;
     // Set (with field_0x58 = 1) by fn_80136798, fn_8013670C and fn_801365E8 (game/game_root_80134C04.cpp).
     /* 0x50 */ s32 field_0x50;
-    // Stored by fn_8019CDC4 (game/tu_80197070.cpp, 0x8019CDC4, stw of r3).
+    // Stored by fn_8019CDC4 (game/act_princess_zelda_ganon_battle_80197070.cpp, 0x8019CDC4, stw of r3).
     /* 0x54 */ s32 field_0x54;
     // The fade state tested by BlackFade_804A8390::fn_802AC8B4 (tu_802AC8AC): 1 and
     // 5 step the black picture up, 4 steps it down, 6 counts field_0x14 down.
@@ -246,7 +246,7 @@ struct GameRoot_8049EF20 {
     /* 0x68 */ s32 field_0x68; // cleared by resetGameState_80138C9C
     /* 0x6C */ s32 field_0x6c;
     /* 0x70 */ s32 field_0x70; // cleared by resetGameState_80138C9C
-    // Both cleared by fn_8019CDC4 (game/tu_80197070.cpp, stw of 0).
+    // Both cleared by fn_8019CDC4 (game/act_princess_zelda_ganon_battle_80197070.cpp, stw of 0).
     /* 0x74 */ s32 field_0x74;
     /* 0x78 */ s32 field_0x78;
     /* 0x7C */ s16 field_0x7c; // cleared by the constructor (sth)
@@ -278,7 +278,7 @@ struct GameRoot_8049EF20 {
     // controller in slot 0 (fn_8030A308). Cleared by resetGameState_80138C9C.
     /* 0x83 */ u8 field_0x83;
     /* 0x84 */ u8 field_0x84;
-    // Set to 1 by fn_8019CDC4 (game/tu_80197070.cpp, stb of 1).
+    // Set to 1 by fn_8019CDC4 (game/act_princess_zelda_ganon_battle_80197070.cpp, stb of 1).
     /* 0x85 */ u8 field_0x85;
     // Toggled between 0 and 1 by fn_80134DC0 (game/game_root_80134C04.cpp, 0x80134DC0,
     // stb of r3 at 0x86 only).
@@ -311,7 +311,7 @@ struct GameRoot_8049EF20 {
     // code calls it through vtable slot 0x18 = getResource(u32 type,
     // const char* name) with a 4CC and a name ('ENM ' in fn_801F62AC, 'TIMG'
     // in the constructor at 0x801395D8), and through slot 0x30 =
-    // getResSize(const void*) (24 sites, e.g. in tu_801F6058). JKRFileLoader declares
+    // getResSize(const void*) (24 sites, e.g. in actor_manager_801F6058). JKRFileLoader declares
     // both slots too, so the code is the same either way; the game's loaders
     // build JKRAramArchive/JKRMemArchive (fn_80401AC8, fn_80401D20).
     /* 0xA4 */ JKRArchive* field_0xa4;
@@ -389,7 +389,7 @@ struct GameRoot_8049EF20 {
     void fn_80134D20(bool arg);
     // Owner: game/game_root_80134C04.cpp (0x80136320; 8 calls in tu_803099FC).
     bool fn_80136320();
-    // Owner: game/game_root_80134C04.cpp (0x801365E8; called by tu_801B4D0C). Stores
+    // Owner: game/game_root_80134C04.cpp (0x801365E8; called by act_tingles_tower_warp_801B4D0C). Stores
     // 7 at this+0x50, 1 at this+0x58, starts the fade with c, stores a and b
     // in the selected stage and sets this+0x84.
     void fn_801365E8(s32 a, s32 b, s32 c);
@@ -428,7 +428,7 @@ struct GameRoot_8049EF20 {
     // game/tu_8022AD64.cpp (0x8023F98C): whether bit `player` of mPlayerMask is set.
     bool fn_8023F98C(s32 player);
     // Owner: not written yet (0x8013670C, 0x8C bytes). Called by
-    // fn_8019CD9C (game/tu_80197070.cpp) with its s32 argument; r3 is
+    // fn_8019CD9C (game/act_princess_zelda_ganon_battle_80197070.cpp) with its s32 argument; r3 is
     // gGameRoot_8053AAF8 (the only object that unit's call passes).
     void fn_8013670C(s32 value);
     // Owner: game/game_root_80134C04.cpp (0x80136500; called by game_root_sub_04_80139BE8). Counts
@@ -450,7 +450,7 @@ extern GameRoot_8049EF20* gGameRoot_8053AAF8;
 
 // Owner: game/tu_801E667C.cpp (.sdata). Read by tu_80441318 and act_horse_race_man.
 extern s32 lbl_8053A160;
-// .sbss flags: game/tu_80197070.cpp (the ZLD2 actor) and act_dodongo; the
+// .sbss flags: game/act_princess_zelda_ganon_battle_80197070.cpp (the ZLD2 actor) and act_dodongo; the
 // player's state tick hurts the player while either is set.
 extern u8 lbl_8053ABA8;
 extern u8 lbl_8053ABF0;
@@ -600,7 +600,7 @@ f32 randFloat_80154744();          // [0, 1); game/act_sword_soldier.cpp
 // game/act_sword_soldier.cpp: the actor with a serial; spawns actor `id` on a layer at pos.
 ActorBase_804A5770* findActorBySerial_8015445C(s32 serial);
 s32 spawnActor_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
-// game/tu_8018A8D8.cpp: a save flag bit (test, set/clear) and a random pick.
+// game/act_big_poe_2_8018A8D8.cpp: a save flag bit (test, set/clear) and a random pick.
 bool fn_8018E930(s32 bit);
 void setScreenFlag_8018E8DC(s32 bit, bool set, u8 value);
 s32 fn_8018E89C();
@@ -615,8 +615,8 @@ s32 fn_801CD580(s32 except); // [0, 4) except `except`; game/tu_801CB270.cpp
 // wrapper of fn_801CD970; the 0/1 it passes on is unused by all 9 callers).
 void stepAngle_801CD930(s16* angle, s32 target, s32 step);
 
-// act_shadow_link_2.cpp (returns 0, no arguments). Callers (tu_801C5B08,
-// tu_801C71BC) test the result as a byte (clrlwi. 24).
+// act_shadow_link_2.cpp (returns 0, no arguments). Callers (act_shadow_link_2_801C5B08,
+// act_shadow_link_2_801C71BC) test the result as a byte (clrlwi. 24).
 bool fn_801C5340();
 
 // game/tu_801CB270.cpp: the stepper stepAngle_801CD930 wraps; true when *angle
@@ -652,7 +652,7 @@ f32 fn_8033D4AC(f32 pos, f32 center, f32 radius);
 // game/tu_801CB270.cpp; called from game/tu_801E9AFC.cpp.
 f32 fn_801CB270(const char* name, GXTexObj* texObj, GXTlutObj* tlutObj);
 
-// game/tu_801CB270.cpp; called from game/tu_801BEDBC.cpp. Whether the tile at pos
+// game/tu_801CB270.cpp; called from game/act_unknown_lnbm_801BEDBC.cpp. Whether the tile at pos
 // is one of the codes 0x40-0x49.
 bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer);
 
@@ -700,7 +700,7 @@ public:
 
     // 0x80158624 (game/shadow_circle_80158624.cpp): draws a searchlight beam, a fan
     // from `top` to a ring of `radius` around `base`, then the disc at `base`
-    // (act_searchlight, tu_8018A8D8). Skipped when 0xC is 0xFF.
+    // (act_searchlight, act_big_poe_2_8018A8D8). Skipped when 0xC is 0xFF.
     void fn_80158624(const JGeometry::TVec3f* top, const JGeometry::TVec3f* base, JUtility::TColor color, f32 radius);
 
     // 0x80158B3C (owner unit game/shadow_circle_80158624.cpp, not written yet). Resets
@@ -1154,7 +1154,7 @@ public:
     // Returns false when all ten slots (the byte at 0x252) are taken. r5 is
     // stored as a byte at 0x244 + slot, r6 (at most 5) at 0x23A + slot, and r8
     // (`flag`) switches the leading-zero handling. act_digging_game and
-    // act_whack_a_mole_shop_8010089C call it too; tu_801ED3DC passes (n, 255, 0, 1, false).
+    // act_whack_a_mole_shop_8010089C call it too; stopwatch_801ED3DC passes (n, 255, 0, 1, false).
     bool fn_8043CB24(s32 value, u8 arg2, u8 arg3, u8 digits, bool flag, f32 x, f32 y, f32 scale);
 
     // 0x8043E7CC (game/tu_8043A0E8.cpp): act_gba_appear's update calls it with a
@@ -1226,7 +1226,7 @@ public:
     /* 0x5B */ u8 field_0x5b;
     // An alpha: TileMap_804AA858::drawPlayerPanel_802FB69C draws black boxes with it while paused.
     /* 0x5C */ u8 field_0x5c;
-    // SHARED-EDIT: tested by fn_801914C4 (game/tu_801902C0.cpp) through lbl_8053AEC8.
+    // SHARED-EDIT: tested by fn_801914C4 (game/game_root_sub_20_801902C0.cpp) through lbl_8053AEC8.
     /* 0x5D */ u8 field_0x5d;
     // fn_8041E3B4 (game/tu_80418B64.cpp) tests it for 1 and clears it.
     /* 0x5E */ u8 field_0x5e;
@@ -1279,7 +1279,7 @@ void fn_80307AC8(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, s3
 
 // game/tu_80301CD0.cpp. Same leading arguments as showGbaSprite_803075AC (serial, layer,
 // position, sprite id, then d as a byte, e, f and g as a byte masked with 3);
-// returns 0 below layer 8. game/tu_801D3CBC.cpp calls it with (0, 1, 0, player).
+// returns 0 below layer 8. game/act_shadow_link_2_801D3CBC.cpp calls it with (0, 1, 0, player).
 bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8 d, bool e,
                  s32 f, u8 g);
 
@@ -1379,14 +1379,14 @@ struct cls_801192AC {
 // game/tu_80118384.cpp (not written yet). Returns the static cls_801192AC.
 extern "C" cls_801192AC* fn_8011921C();
 
-// game/tu_801C0D70.cpp. The 0x60-byte object in .bss at 0x804C7E70, built on
+// game/shadow_link_fight_801C0D70.cpp. The 0x60-byte object in .bss at 0x804C7E70, built on
 // first use by getShadowLinkFight_801C0D70 (guard byte lbl_8053AC10); named after that
 // function. It tracks the Shadow Link fight: field_0x0 holds state bits, the
 // serials of the 'SLK2' actors it spawned are in mSerials[0..mCount), and
 // field_0x50 is the serial of the generator (-1 when there is none).
 class ShadowLink2_804A43E8;
 struct ShadowLinkFight_801C0D70 {
-    ShadowLinkFight_801C0D70(); // game/tu_801C0D70.cpp (inlined into the getter)
+    ShadowLinkFight_801C0D70(); // game/shadow_link_fight_801C0D70.cpp (inlined into the getter)
     /* 0x00 */ u16 field_0x0;
     /* 0x02 */ u16 field_0x2;
     /* 0x04 */ u16 field_0x4;
@@ -1397,10 +1397,10 @@ struct ShadowLinkFight_801C0D70 {
     // act_shadow_link_2's fn_801C53F8 tests bit 0x80000000.
     /* 0x50 */ u32 field_0x50;
     /* 0x54 */ JGeometry::TVec3f field_0x54;
-    // Owner tu_801C0D70. True when a target for the player at *pos was found;
+    // Owner shadow_link_fight_801C0D70. True when a target for the player at *pos was found;
     // writes its x/y to *out. Called by FlyingPieces_8021C2B4::fn_8021C468 and act_shadow_link_2.
     bool fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const;
-    // Owner tu_801C0D70 (symbol fn_801C12B8). Called by act_shadow_link_2's
+    // Owner shadow_link_fight_801C0D70 (symbol fn_801C12B8). Called by act_shadow_link_2's
     // fn_801C53F8 on the object from getShadowLinkFight_801C0D70: marks one of the actors.
     void fn_801C12B8();
     void fn_801C0DCC();
@@ -1462,11 +1462,11 @@ extern "C" cls_80204638* fn_80204638();
 // .sdata2 (8053EDF0); act_shadow_link_2's helper loads it and subtracts 0.001f at run time.
 extern const f32 lbl_8053EDF0;
 // The next one (64.0f, 8053EDF4), same owner; act_shadow_link_2's
-// game/tu_801C6A4C.cpp loads it and squares it at run time.
+// game/act_shadow_link_2_801C6A4C.cpp loads it and squares it at run time.
 extern const f32 lbl_8053EDF4;
 // The next three (s32 constants at 8053EDF8, 8053EDFC, 8053EE00; owners:
 // act_shadow_link_generator's .sdata2 for the first two, the following unit
-// for the last): act_shadow_link_2's game/tu_801D3CBC.cpp converts each to
+// for the last): act_shadow_link_2's game/act_shadow_link_2_801D3CBC.cpp converts each to
 // float at run time as the divisor of a fade (255 * mStateTimer / value).
 extern const s32 lbl_8053EDF8;
 extern const s32 lbl_8053EDFC;
@@ -1487,16 +1487,16 @@ extern const f32 lbl_8053EFB8;
 extern const f32 lbl_8053EFBC;
 
 // Shared .sdata2 constants defined in game/act_vaati_boss.cpp:
-// 90.0f and 1.7f. game/tu_801EDBA4.cpp passes the first to fn_802F5FF4 and
+// 90.0f and 1.7f. game/act_vaati_boss_801EDBA4.cpp passes the first to fn_802F5FF4 and
 // multiplies -12.0f by the second at run time (fmuls), so neither is a literal.
 extern const f32 lbl_8053F0B8;
 extern const f32 lbl_8053F0BC;
-// The same unit's 12 and 0x1E, read by game/tu_801E3618.cpp.
+// The same unit's 12 and 0x1E, read by game/act_vaati_boss_801E3618.cpp.
 extern const s32 lbl_8053F0C0;
 extern const u8 lbl_8053F0C4;
 
 // Owner: game/tu_802F5040.cpp (defined there). f1 in, f1 out: 192 / (192 -
-// min(x, 96)) (0x802F5FF4); game/tu_801EDBA4.cpp scales by it.
+// min(x, 96)) (0x802F5FF4); game/act_vaati_boss_801EDBA4.cpp scales by it.
 f32 fn_802F5FF4(f32 x);
 
 // Owner: game/tu_80301CD0.cpp
@@ -1921,7 +1921,7 @@ class J3DAnmTevRegKey;
 // load flags) and up to two texture-SRT and two TEV-register animations, each
 // skipped when its name is NULL; the pointers receive the results (an output
 // is set to NULL when its animation is not loaded). Called by
-// GameRootSub20_801902C0's constructor (game/tu_801902C0.cpp).
+// GameRootSub20_801902C0's constructor (game/game_root_sub_20_801902C0.cpp).
 void loadModelWithAnims_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const char* btk2,
                  const char* brk1, const char* brk2, u32 flags, JKRHeap* heap, J3DModel** model,
                  J3DAnmTextureSRTKey** btk1Out, J3DAnmTextureSRTKey** btk2Out,
@@ -2049,7 +2049,7 @@ public:
 };
 extern WarningWindow_804B1634* lbl_8053AEC0;
 
-// game/tu_801A0710.cpp (.sdata 0x8053A100, not written yet; -1 in the
+// game/act_tennis_shop_801A0710.cpp (.sdata 0x8053A100, not written yet; -1 in the
 // original): act_terrorpin's vfunc_0x44 compares its field_0x2a8 with it.
 extern s32 lbl_8053A100;
 
@@ -2075,16 +2075,16 @@ extern u8 lbl_8053ACD0;
 extern u8 lbl_8053ACD8[4];
 // .sbss byte at 0x8053AAA0 (8 bytes), owned by game/act_after_goal_opening_8011CEC8.cpp (its split starts
 // there). Cleared by escort_base_801213EC fn_80121ABC, read with lbz (!= 0) by act_escort_woman,
-// set to 1 by tu_801B6C50 and tu_803D9944.
+// set to 1 by act_goal_warp_801B6C50 and tu_803D9944.
 extern u8 lbl_8053AAA0;
-// .sbss bytes at 0x8053AB98 and 0x8053ABE8 (owner game/tu_80197070.cpp), set to 1 by tu_803D9944.
+// .sbss bytes at 0x8053AB98 and 0x8053ABE8 (owner game/act_princess_zelda_ganon_battle_80197070.cpp), set to 1 by tu_803D9944.
 extern u8 lbl_8053AB98;
 extern u8 lbl_8053ABE8;
 // .sbss byte at 0x8053AB60 (8 bytes). Read with lbz by game/act_chief_soldier.cpp
 // (draw), which skips the draw when it is 1; no writer found yet.
 extern u8 lbl_8053AB60;
 
-// .sbss word at 0x8053AB9C, owned by game/tu_80197070.cpp (not written yet).
+// .sbss word at 0x8053AB9C, owned by game/act_princess_zelda_ganon_battle_80197070.cpp (not written yet).
 // Set to 4 by act_recovery_heart (update) when ZLD2 exists; act_fairy writes it too.
 extern s32 lbl_8053AB9C;
 // .sbss word at 0x8053ABEC, owned by game/act_dodongo.cpp (data not defined yet).
@@ -2181,7 +2181,7 @@ extern s32 lbl_8053AB68;
 extern s16 lbl_8049C3B8[];
 
 // game/act_dodongo.cpp's .sbss (0x8053AC00, size 0x8): a flag act_dodongo does not touch
-// itself; tu_801B6C50 sets it in init() and tests it in update().
+// itself; act_goal_warp_801B6C50 sets it in init() and tests it in update().
 extern u8 lbl_8053AC00;
 
 #endif

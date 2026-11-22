@@ -1012,8 +1012,8 @@ static inline s32 heartIndex(s32 life) {
 }
 
 // LifeMeter_804B174C::fn_8019CEF8's body, which the original inlines into fn_801217EC: it was a
-// header inline (its out-of-line copy sits with tu_80197070's other inline copies at that unit's
-// end). It stays a plain function in tu_80197070 until its out-of-line caller there (fn_80198828)
+// header inline (its out-of-line copy sits with act_princess_zelda_ganon_battle_80197070's other inline copies at that unit's
+// end). It stays a plain function in act_princess_zelda_ganon_battle_80197070 until its out-of-line caller there (fn_80198828)
 // is written; then this copy goes and both call the header inline.
 static inline void followActor(LifeMeter_804B174C* meter, s32 serial, f32 yOffset, s32 index) {
     meter->field_0x250 = serial;

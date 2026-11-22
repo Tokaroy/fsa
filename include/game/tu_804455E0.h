@@ -10,7 +10,7 @@ class PaneCtrl_804AF86C;
 
 // The 0x48-byte object (tu_8043A0E8 allocates 0x48 at 0x8043F678) whose constructor (game/tu_804455E0.cpp, 0x804461D0)
 // stores the vtable 0x804B1BB0 and the object itself in lbl_8053AEF8. Named
-// after that vtable. Only the best-time records fn_801ED3DC (game/tu_801ED3DC.cpp)
+// after that vtable. Only the best-time records fn_801ED3DC (game/stopwatch_801ED3DC.cpp)
 // writes are known.
 class MgHorseRaceScreen_804B1BB0 {
 public:

@@ -61,7 +61,7 @@ public:
     // spawns the time-up actor ('TUTM', or 'TUGF' with gGameRoot_8053AAF8->0x7F
     // clear) at the camera.
     void fn_802D3A18();
-    // 1 unit. field_0x131a8[index] = value (tu_801F6058 reads the four words).
+    // 1 unit. field_0x131a8[index] = value (actor_manager_801F6058 reads the four words).
     void fn_802D39B8(s32 index, s32 value);
     // 1 unit. mScreenX_0x14 == field_0xc && mScreenY_0x18 == field_0x10.
     bool fn_802D39CC();
@@ -390,7 +390,7 @@ public:
     /* 0x13128 */ u32 field_0x13128[8]; // fn_802D6D70's value, -1 when free (compared with addis/cmplwi like field_0x130c8)
     /* 0x13148 */ JGeometry::TVec2f field_0x13148[8]; // fn_802D6D70's b
     /* 0x13188 */ u32 field_0x13188[8]; // ids, -1 when free
-    /* 0x131A8 */ s32 field_0x131a8[4]; // fn_802D39B8; read by tu_801F6058
+    /* 0x131A8 */ s32 field_0x131a8[4]; // fn_802D39B8; read by actor_manager_801F6058
     /* 0x131B8 */ u16 field_0x131b8[0x10]; // bits (fn_802D77BC, testLayerFlags_802D7804)
     /* 0x131D8 */ u8 field_0x131d8[4]; // fn_802D7844
     /* 0x131DC */ u16 field_0x131dc; // fn_802D7870; tu_80432638 reads it

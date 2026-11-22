@@ -3,7 +3,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
-#include "game/act/tu_801E6D48.h"
+#include "game/act/act_iron_pot_801E6D48.h"
 #include <stdlib.h>
 #include "game/tu_801E9AFC.h"
 

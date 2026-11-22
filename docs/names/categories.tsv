@@ -109,35 +109,35 @@ game/act_searchlight.cpp	objects	med	actors.tsv (actor spawner): object SHLT Sea
 game/act_unknown_swbm_8017A44C.cpp	enemies	low	actors.tsv (actor spawner): enemy SWBM unknown (SWBM)	auto
 game/act_cheep_cheep.cpp	enemies	med	actors.tsv (actor spawner): enemy PUKU Cheep-Cheep	auto
 game/act_phantom_ganon_8017C01C.cpp	enemies	low	called only by Ganon, Phantom Ganon	hand
-game/act_helmaroc_king_8017EF40.cpp	enemies	low	called only by act_ganon, tu_80197070	hand
+game/act_helmaroc_king_8017EF40.cpp	enemies	low	called only by act_ganon, act_princess_zelda_ganon_battle_80197070	hand
 game/act_leever_80182914.cpp	objects	low	actor called by the time-up managers	hand
-game/tu_80183544.cpp	objects	low	uses act_leever_80182914	hand
+game/act_geldman_80183544.cpp	objects	low	uses act_leever_80182914	hand
 game/act_pengator.cpp	enemies	med	actors.tsv (actor spawner): enemy FAGN Pengator	auto
-game/tu_80184D64.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_chain_chomp_80184D64.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
 game/act_phantom_ganon_2.cpp	enemies	med	actors.tsv (actor spawner): boss FGN2 Phantom Ganon 2	auto
-game/tu_8018A8D8.cpp	enemies	med	strings 'boss_p_fly_01.bti'...: a boss's textures; called by Ganon	hand
-game/tu_8018EB94.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
-game/tu_801902C0.cpp	stage	low	GameRootSub20_801902C0, called by environment / bg-draw actors	hand
+game/act_big_poe_2_8018A8D8.cpp	enemies	med	strings 'boss_p_fly_01.bti'...: a boss's textures; called by Ganon	hand
+game/act_big_moldorm_tail_8018EB94.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/game_root_sub_20_801902C0.cpp	stage	low	GameRootSub20_801902C0, called by environment / bg-draw actors	hand
 game/act_ganon.cpp	enemies	med	actors.tsv (actor spawner): boss GNON Ganon	auto
-game/tu_80197070.cpp	enemies	med	methods of Ganon_804A25F0 (act_ganon)	hand
+game/act_princess_zelda_ganon_battle_80197070.cpp	enemies	med	methods of Ganon_804A25F0 (act_ganon)	hand
 game/act_all_enemies_defeated.cpp	objects	med	actors.tsv (actor spawner): system ALCE All enemies defeated	auto
 game/act_shooting_gallery.cpp	npcs	med	actors.tsv (actor spawner): npc SYKY Shooting gallery	auto
-game/tu_801A0710.cpp	npcs	low	actors.tsv (actor spawner): npc TENN Tennis shop	auto
+game/act_tennis_shop_801A0710.cpp	npcs	low	actors.tsv (actor spawner): npc TENN Tennis shop	auto
 game/act_enemy_spawn_area.cpp	objects	med	actors.tsv (actor spawner): system ENBZ Enemy spawn area	auto
-game/tu_801A3C50.cpp	objects	low	helper called by act_bomb, act_bumper, act_cucco...	hand
+game/actor_base_801A3C50.cpp	objects	low	helper called by act_bomb, act_bumper, act_cucco...	hand
 game/act_zora_fish_herder.cpp	npcs	med	actors.tsv (actor spawner): npc SAYA Zora (fish-herding)	auto
-game/tu_801A8194.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
-game/tu_801A908C.cpp	enemies	med	strings 'e_tst_paku_green_0.bti': an enemy's textures	hand
+game/act_keese_swarm_801A8194.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_manhandla_801A908C.cpp	enemies	med	strings 'e_tst_paku_green_0.bti': an enemy's textures	hand
 game/act_gohma.cpp	enemies	med	actors.tsv (actor spawner): boss GOMA Gohma	auto
 game/act_dodongo.cpp	enemies	med	actors.tsv (actor spawner): boss DDGO Dodongo	auto
-game/tu_801AE9C4.cpp	npcs	low	actors.tsv (actor spawner): npc OKAM Okame-san	auto
+game/act_okame_san_801AE9C4.cpp	npcs	low	actors.tsv (actor spawner): npc OKAM Okame-san	auto
 game/act_eyegore.cpp	enemies	med	actors.tsv (actor spawner): enemy EGOL Eyegore	auto
-game/tu_801B0A00.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
-game/tu_801B27DC.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_princess_zelda_spawner_801B0A00.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_princess_zelda_spawner_escape_801B27DC.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
 game/act_princess_zelda_motion_spawner.cpp	objects	med	actors.tsv (actor spawner): system ZDCO Princess Zelda motion object spawner	auto
-game/tu_801B4D0C.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_tingles_tower_warp_801B4D0C.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
 game/act_tingle_wallet.cpp	objects	med	actors.tsv (actor spawner): object SAFU Tingle's wallet	auto
-game/tu_801B6C50.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
+game/act_goal_warp_801B6C50.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
 game/act_rope.cpp	enemies	high	EnemyBase subclass (Rope_804A3A68); actors.tsv (actor spawner): enemy ROPE Rope	auto
 game/act_terrorpin.cpp	enemies	high	EnemyBase subclass (Terrorpin_804A3B10); actors.tsv (actor spawner): enemy PAME Terrorpin	auto
 game/act_gibdo.cpp	enemies	high	EnemyBase subclass (Gibdo_804A3BF8); actors.tsv (actor spawner): enemy MIRA Gibdo	auto
@@ -146,60 +146,60 @@ game/act_wallmaster.cpp	enemies	high	EnemyBase subclass (Wallmaster_804A3E44); a
 game/act_fire_bar.cpp	enemies	low	EnemyBase subclass (FireBarManager_804A3F90); but actors.tsv (actor spawner): system FBMR Fire bar (manager)	auto
 game/tu_801BD8C0.cpp	enemies	med	EnemyBase subclass (cls_804A4038); no actors.tsv kind	auto
 game/act_beamos.cpp	enemies	high	EnemyBase subclass (Beamos_804A40E0); actors.tsv (actor spawner): enemy BMST Beamos	auto
-game/tu_801BEDBC.cpp	enemies	low	EnemyBase subclass (UnknownLNBM_804A4188); but actors.tsv (actor spawner): object LNBM unknown (LNBM)	auto
+game/act_unknown_lnbm_801BEDBC.cpp	enemies	low	EnemyBase subclass (UnknownLNBM_804A4188); but actors.tsv (actor spawner): object LNBM unknown (LNBM)	auto
 game/act_vulture.cpp	enemies	high	EnemyBase subclass (Vulture_804A4230); actors.tsv (actor spawner): enemy TNDR Vulture	auto
-game/tu_801C0D70.cpp	enemies	low	called only by act_shadow_link_2 / generator	hand
+game/shadow_link_fight_801C0D70.cpp	enemies	low	called only by act_shadow_link_2 / generator	hand
 game/act_shadow_link_generator.cpp	enemies	low	EnemyBase subclass (ShadowLinkGenerator_804A4310); but actors.tsv (actor spawner): system SLGE Shadow Link generator	auto
 game/act_shadow_link_2.cpp	enemies	high	EnemyBase subclass (ShadowLink2_804A43E8); actors.tsv (actor spawner): enemy SLK2 Shadow Link 2	auto
-game/tu_801C5B08.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
-game/tu_801C6A4C.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
-game/tu_801C71BC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
-game/tu_801C9AF8.cpp	enemies	low	called only by the Shadow Link units	hand
+game/act_shadow_link_2_801C5B08.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
+game/act_shadow_link_2_801C6A4C.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
+game/act_shadow_link_2_801C71BC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
+game/act_shadow_link_2_801C9AF8.cpp	enemies	low	called only by the Shadow Link units	hand
 game/tu_801CB270.cpp	enemies	med	helpers the enemy code shares (EnemyBase.h users; 108 callers)	hand
-game/tu_801CDC8C.cpp	core	high	EnemyBase_804A4808 (EnemyBase.h): the enemies' base class	auto
+game/enemy_base_801CDC8C.cpp	core	high	EnemyBase_804A4808 (EnemyBase.h): the enemies' base class	auto
 game/tu_801D11FC.cpp	enemies	med	EnemyBase subclass (cls_804A46F4); no actors.tsv kind	auto
-game/tu_801D1C18.cpp	core	med	SpriteAnim_801D267C (SpriteAnim.h): sprite-cel animation, called by 57 units	hand
-game/tu_801D2918.cpp	enemies	low	called only by act_thief, tu_80206B30	hand
+game/sprite_anim_801D1C18.cpp	core	med	SpriteAnim_801D267C (SpriteAnim.h): sprite-cel animation, called by 57 units	hand
+game/tu_801D2918.cpp	enemies	low	called only by act_thief, act_thief_80206B30	hand
 game/tu_801D2C60.cpp	enemies	med	EnemyBase subclass (cls_804A48B0); no actors.tsv kind	auto
-game/tu_801D3320.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
-game/tu_801D3CBC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
+game/act_shadow_link_2_801D3320.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
+game/act_shadow_link_2_801D3CBC.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
 game/act_vaati_boss.cpp	enemies	high	EnemyBase subclass (VaatiBoss_804A4958); actors.tsv (actor spawner): boss BOGF Vaati (boss)	auto
 game/tu_801D6CEC.cpp	enemies	med	Vaati's actor-serial table, called by act_vaati_boss	hand
-game/tu_801D7AFC.cpp	enemies	low	EnemyBase subclass (UnknownBGBL_804A4BB0); but actors.tsv (actor spawner): object BGBL unknown (BGBL)	auto
+game/act_unknown_bgbl_801D7AFC.cpp	enemies	low	EnemyBase subclass (UnknownBGBL_804A4BB0); but actors.tsv (actor spawner): object BGBL unknown (BGBL)	auto
 game/tu_801D8400.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
-game/tu_801DA7C0.cpp	enemies	med	strings 'boss_koori_*.bti': a boss's textures	hand
-game/tu_801DAC6C.cpp	enemies	low	called only by the ice boss units (tu_801D8400, act_frostare_tail)	hand
-game/tu_801DB18C.cpp	enemies	med	EnemyBase subclass (FrostareChildFrosteye_804A4EE8); actors.tsv (actor spawner): boss ICHL Frostare child (Frosteye?)	auto
+game/sequencer_801DA7C0.cpp	enemies	med	strings 'boss_koori_*.bti': a boss's textures	hand
+game/singleton_801DAC6C.cpp	enemies	low	called only by the ice boss units (tu_801D8400, act_frostare_tail)	hand
+game/act_frostare_child_frosteye_801DB18C.cpp	enemies	med	EnemyBase subclass (FrostareChildFrosteye_804A4EE8); actors.tsv (actor spawner): boss ICHL Frostare child (Frosteye?)	auto
 game/act_frostare_tail.cpp	enemies	high	EnemyBase subclass (FrostareTail_804A4F90); actors.tsv (actor spawner): boss BOIT Frostare tail	auto
 game/tu_801DCC98.cpp	enemies	low	EnemyBase subclass (cls_804A5038); but actors.tsv (actor spawner): object BOIB unknown (BOIB)	auto
 game/tu_801DD1AC.cpp	enemies	low	called only by tu_801D8400	hand
 game/tu_801DE714.cpp	enemies	med	EnemyBase subclass (cls_804A51E4); no actors.tsv kind	auto
 game/tu_801E2540.cpp	enemies	low	called only by tu_801DE714	hand
 game/act_tingle_buster.cpp	enemies	low	EnemyBase subclass (TingleBuster_804A5370); but actors.tsv (actor spawner): system TINB Tingle Buster	auto
-game/tu_801E3618.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
+game/act_vaati_boss_801E3618.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
 game/tu_801E4A18.cpp	enemies	low	called only by act_vaati_boss	hand
-game/tu_801E4D54.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
+game/act_vaati_boss_801E4D54.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
 game/tu_801E5FC8.cpp	enemies	med	EnemyBase subclass (cls_804A4C58); no actors.tsv kind	auto
 game/tu_801E667C.cpp	enemies	low	called only by act_vaati_boss	hand
-game/tu_801E6D48.cpp	enemies	low	EnemyBase subclass (IronPot_804A5418); but actors.tsv (actor spawner): object IPOT Iron pot	auto
+game/act_iron_pot_801E6D48.cpp	enemies	low	EnemyBase subclass (IronPot_804A5418); but actors.tsv (actor spawner): object IPOT Iron pot	auto
 game/act_fuse_point.cpp	enemies	low	EnemyBase subclass (FusePoint_804A54C0); but actors.tsv (actor spawner): system FSPO Fuse point	auto
-game/tu_801E801C.cpp	enemies	low	EnemyBase subclass (UnknownFSOB_804A5568); but actors.tsv (actor spawner): object FSOB unknown (FSOB)	auto
+game/act_unknown_fsob_801E801C.cpp	enemies	low	EnemyBase subclass (UnknownFSOB_804A5568); but actors.tsv (actor spawner): object FSOB unknown (FSOB)	auto
 game/tu_801E9AFC.cpp	objects	low	fuse sprites ('sen.bti'), called by act_fuse_point, the iron pot	hand
-game/tu_801EAB0C.cpp	core	med	ActorSub1DC_801EAD68 (ActorBase.h): ActorBase member	hand
+game/actor_sub_1_dc_801EAB0C.cpp	core	med	ActorSub1DC_801EAD68 (ActorBase.h): ActorBase member	hand
 game/tu_801EB00C.cpp	enemies	low	called only by the Vaati units	hand
 game/act_horse_race_man.cpp	npcs	low	actors.tsv (actor spawner): npc HRMN Horse-race man; but EnemyBase subclass (HorseRaceMan_804A5630)	auto
-game/tu_801ED3DC.cpp	menus	low	seconds / hundredths timer display, used by the horse race	hand
-game/tu_801EDBA4.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
-game/tu_801EE24C.cpp	core	high	ActorBase_804A5770's methods (ActorBase.h): the actor base class	hand
-game/tu_801F6058.cpp	core	high	ActorBase_804A5770 (ActorBase.h): the base of every actor	auto
+game/stopwatch_801ED3DC.cpp	menus	low	seconds / hundredths timer display, used by the horse race	hand
+game/act_vaati_boss_801EDBA4.cpp	enemies	med	EnemyBase subclass (VaatiBoss_804A4958); no actors.tsv kind	auto
+game/actor_base_801EE24C.cpp	core	high	ActorBase_804A5770's methods (ActorBase.h): the actor base class	hand
+game/actor_manager_801F6058.cpp	core	high	ActorBase_804A5770 (ActorBase.h): the base of every actor	auto
 game/tu_801F9484.cpp	core	high	ActorManager_804A5800, spawnActor_801F9484 (ActorManager.h)	auto
 game/tu_80204638.cpp	enemies	low	called only by act_thief	hand
 game/act_thief.cpp	enemies	high	EnemyBase subclass (Thief_804A5A30); actors.tsv (actor spawner): enemy TZOK Thief	auto
-game/tu_80206B30.cpp	enemies	med	EnemyBase subclass (Thief_804A5A30); no actors.tsv kind	auto
+game/act_thief_80206B30.cpp	enemies	med	EnemyBase subclass (Thief_804A5A30); no actors.tsv kind	auto
 game/tu_80207548.cpp	enemies	med	EnemyBase subclass (cls_804A5B28); no actors.tsv kind	auto
 game/act_slime_manager.cpp	enemies	low	EnemyBase subclass (SlimeManager_804A5BD8); but actors.tsv (actor spawner): system SLMN Slime manager	auto
 game/act_bird_manager.cpp	enemies	low	EnemyBase subclass (BirdManager_804A5C88); but actors.tsv (actor spawner): system BRMN Bird manager	auto
-game/tu_80209C14.cpp	enemies	med	EnemyBase subclass (SlimeFormation_804A5D60); actors.tsv (actor spawner): enemy FOSL Slime (formation)	auto
+game/act_slime_formation_80209C14.cpp	enemies	med	EnemyBase subclass (SlimeFormation_804A5D60); actors.tsv (actor spawner): enemy FOSL Slime (formation)	auto
 game/tu_8020B354.cpp	enemies	med	EnemyBase subclass (BirdFormation_804A5E98); actors.tsv (actor spawner): enemy FOBR Bird (formation)	auto
 game/tu_8020C0A8.cpp	enemies	med	EnemyBase subclass (ZolSmallSlime_804A5F40); actors.tsv (actor spawner): enemy ZASL Zol (small slime)	auto
 game/tu_8020CCA8.cpp	enemies	med	EnemyBase subclass (cls_804A51E4); no actors.tsv kind	auto
@@ -243,7 +243,7 @@ game/tu_80221B44.cpp	enemies	med	EnemyBase subclass (ShadowLinkBase_804A6A00); n
 game/act_shadow_link_bow.cpp	enemies	high	EnemyBase subclass (ShadowLinkBase_804A6A00); actors.tsv (actor spawner): enemy ZSLA Shadow Link (bow, minor)	auto
 game/tu_80222CC4.cpp	enemies	med	EnemyBase subclass (ShadowLinkBase_804A6A00); no actors.tsv kind	auto
 game/tu_802233A4.cpp	enemies	low	spawned; calls the Shadow Link base unit tu_80220F54	hand
-game/tu_802242F4.cpp	core	low	actor/player box-overlap helper, called only by tu_801A3C50	hand
+game/tu_802242F4.cpp	core	low	actor/player box-overlap helper, called only by actor_base_801A3C50	hand
 game/tu_8022461C.cpp	stage	med	tile queries (Map.h cell index; PLAYER.md 'tile queries'), called by 112 units	hand
 game/act_warp.cpp	objects	med	actors.tsv (actor spawner): system WARP Warp	auto
 game/act_player_effect.cpp	objects	med	actors.tsv (actor spawner): effect PEFF Player effect	auto

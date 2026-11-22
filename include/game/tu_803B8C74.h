@@ -122,7 +122,7 @@ public:
     s32 fn_803B93E8(SaveFile_803B950C* files, SaveFileBody_803B950C* bodies, s32 index);
     // Every reader goes through these: with them the save-data tests of
     // fn_803B8CAC / fn_803B8EBC / fn_803B90E4 (here) and fn_8019CE40
-    // (tu_80197070) match; indexing mFiles directly swaps the add's operands.
+    // (act_princess_zelda_ganon_battle_80197070) match; indexing mFiles directly swaps the add's operands.
     SaveFile_803B950C& getFile(s32 file) { return mFiles[file]; }
     SaveFile_803B950C& getCurrentFile() { return mFiles[mCurrentFile]; }
     // FAKEMATCH(crack-pass): the current file as SaveFileRow_CrackPass (above).

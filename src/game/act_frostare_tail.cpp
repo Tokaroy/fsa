@@ -5,7 +5,7 @@
 #include "game/Player.h"
 #include "game/ViewLayer.h"
 #include "game/act/act_frostare_tail.h"
-#include "game/act/tu_801DAC6C.h"
+#include "game/act/singleton_801DAC6C.h"
 
 // Two animations: (cel, duration) pairs, ended by a cel of -1.
 static const s16 lbl_80469AB8[] = {0, 6, 1, 6, 2, 6, 3, 6, -1, -1};

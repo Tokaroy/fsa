@@ -5,7 +5,7 @@
 
 // mkdd's J3DFrameCtrl with tww's enums and inline accessors
 // (zeldaret/tww include/JSystem/J3DGraphAnimator/J3DAnimation.h). FSA's game
-// code (game/tu_801D1C18.cpp, SpriteAnim_801D267C) matches with the
+// code (game/sprite_anim_801D1C18.cpp, SpriteAnim_801D267C) matches with the
 // accessors. The fields stay public as in mkdd.
 struct J3DFrameCtrl {
 	enum Attribute_e {
