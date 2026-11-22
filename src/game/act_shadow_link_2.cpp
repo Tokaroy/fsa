@@ -79,7 +79,7 @@ u32 fn_801C5660(u32 a, u32 b, u32 c, u32 d, u32 e) {
 void ShadowLink2_804A43E8::init() {
     EnemyBase_804A4808::init();
     field_0x94 = fn_801C0D70()->fn_801C14A8(mSerial);
-    u32 kind = (field_0x90 >> 5) & 7;
+    u32 kind = (mSpawnParam_0x90 >> 5) & 7;
     if (kind == 1 || kind == 2) {
         mFlags |= 0x6000;
         cls_801C0D70* obj = fn_801C0D70();
@@ -98,11 +98,11 @@ void ShadowLink2_804A43E8::init() {
     if (mFlags & 0x4000) {
         fn_801C0D70()->field_0x2++;
     }
-    field_0x55c[2] = (field_0x90 >> 20) & 0xFF;
+    field_0x55c[2] = (mSpawnParam_0x90 >> 20) & 0xFF;
     if (field_0x55c[2] == 0) {
         field_0x55c[2] = 10;
     }
-    s32 n = field_0x90 & 0x1F;
+    s32 n = mSpawnParam_0x90 & 0x1F;
     if (n > 8) {
         n = 8;
     } else if (n < 0) {
@@ -111,16 +111,16 @@ void ShadowLink2_804A43E8::init() {
     field_0x524.fn_802157B8(n);
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x50303;
     mFlags |= 0x100;
     mDrawEnabled = false;
     mLife = 1000;
     mLifeBackup = mLife;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     field_0x196 = 1;
     field_0x33c = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -196,7 +196,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
         mFlags &= ~0x100;
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox2.set(mBox);
-        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         break;
     case 0x17:
     case 0x18:
@@ -212,7 +212,7 @@ void ShadowLink2_804A43E8::fn_801C50A8(int state) {
             if (mState == 0x19) {
                 field_0x560 = fn_801CD664(4);
             }
-            field_0x4 = field_0x57c;
+            mLayer_0x4 = field_0x57c;
             mPos = field_0x580;
             mPrevPos = field_0x580;
         }
@@ -257,18 +257,18 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         } else {
             field_0x250 = 0xEB;
         }
-        field_0x4ec.fn_80214740(field_0x4, &mPos, false);
+        field_0x4ec.fn_80214740(mLayer_0x4, &mPos, false);
         break;
     case 4:
         mDrawEnabled = true;
         if ((s32)fn_801C0D70()->field_0x50 >= 0) {
             mPos.y += 32.0f;
         }
-        field_0x3c.z = 4.5f;
+        mVel_0x3c.z = 4.5f;
         field_0x340.fn_800FEB78(4);
         startSound_801F0E34(0x40035, 0);
-        if (viewLayerFlag(field_0x4) != 0) {
-            field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        if (viewLayerFlag(mLayer_0x4) != 0) {
+            mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         }
         break;
     case 5:
@@ -292,21 +292,21 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             field_0x250 = 0x3C;
         }
         if (!(mFlags & 0x4000)) {
-            if (viewLayerFlag(field_0x4) != 0) {
-                field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+            if (viewLayerFlag(mLayer_0x4) != 0) {
+                mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
             }
             cls_801C0D70* p = fn_801C0D70();
             mPos = p->field_0x54;
             mPrevPos = p->field_0x54;
-            field_0x3c.x = (mSpawnPos.x - mPos.x) * (1.0f / (f32)field_0x250);
-            field_0x3c.y = (mSpawnPos.y - mPos.y) * (1.0f / (f32)field_0x250);
+            mVel_0x3c.x = (mSpawnPos.x - mPos.x) * (1.0f / (f32)field_0x250);
+            mVel_0x3c.y = (mSpawnPos.y - mPos.y) * (1.0f / (f32)field_0x250);
             if (fn_801C0D70()->field_0x0 & 2) {
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
                 field_0x33c = 0;
                 field_0x340.fn_800FEB78(0);
             } else if (fn_801C0D70()->field_0x0 & 4) {
-                field_0x3c.z = -lbl_8053EFB8 * (f32)field_0x250 * 0.5f;
-                field_0x33c = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
+                mVel_0x3c.z = -lbl_8053EFB8 * (f32)field_0x250 * 0.5f;
+                field_0x33c = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
                 field_0x340.fn_800FEB78(4);
             }
         }
@@ -318,9 +318,9 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0xB:
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         if (state != 0xB) {
             if ((fn_801C0D70()->field_0x50 >> 31) != 0) {
                 mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
@@ -347,7 +347,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         break;
     case 0xD:
         if (field_0x94 % 4 == 0) {
-            field_0x4ec.fn_80214740(field_0x4, &mPos, true);
+            field_0x4ec.fn_80214740(mLayer_0x4, &mPos, true);
         }
         break;
     case 0xE:
@@ -367,14 +367,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
                     mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mFlags &= ~0x100;
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
             mBox2.set(mBox);
-            field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
-            field_0x358.fn_8021425C(0, (field_0x90 >> 8) & 0xF, mPos, field_0x4);
+            mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+            field_0x358.fn_8021425C(0, (mSpawnParam_0x90 >> 8) & 0xF, mPos, mLayer_0x4);
             field_0x358.fn_80214254(0);
             field_0x250 = fn_801CD664(0x1A) + 5;
             field_0x550.fn_80217484();
@@ -437,11 +437,11 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
-        field_0x3c.x = (field_0x32c.x - mPos.x) * (1.0f / 60.0f);
-        field_0x3c.y = (field_0x32c.y - mPos.y) * (1.0f / 60.0f);
-        field_0x3c.z = 0.5f * (60.0f * -lbl_8053EFB8);
-        field_0x33c = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
+        mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+        mVel_0x3c.x = (field_0x32c.x - mPos.x) * (1.0f / 60.0f);
+        mVel_0x3c.y = (field_0x32c.y - mPos.y) * (1.0f / 60.0f);
+        mVel_0x3c.z = 0.5f * (60.0f * -lbl_8053EFB8);
+        field_0x33c = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
         startSound_801F0E34(0x40036, 0);
         break;
     case 0x17:
@@ -477,7 +477,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x1C:
         mTargetSpeed = 0.0f;
         field_0x340.fn_800FEB78(4);
-        field_0x3c.z = 4.5f;
+        mVel_0x3c.z = 4.5f;
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
@@ -506,14 +506,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
                     mPos.set(mSpawnPos.x, mSpawnPos.y, mSpawnPos.z);
                 }
             }
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mFlags &= ~0x100;
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
             mBox2.set(mBox);
-            field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
-            field_0x358.fn_8021425C(0, (field_0x90 >> 8) & 0xF, mPos, field_0x4);
+            mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+            field_0x358.fn_8021425C(0, (mSpawnParam_0x90 >> 8) & 0xF, mPos, mLayer_0x4);
             field_0x358.fn_80214254(0);
         }
         mSpeed = 0.0f;
@@ -521,7 +521,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mFlags |= 0x100;
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
-        field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+        mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
         field_0x340.fn_800FEB78(4);
         if (mState == 0xD) {
             s16 angle = -((s16)field_0x94 / 4 + 0x2000);
@@ -537,10 +537,10 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
             fn_801D3320();
             startSound_801F0E34(0x40036, 0);
         }
-        field_0x3c.x = (field_0x32c.x - mPos.x) * (1.0f / 60.0f);
-        field_0x3c.y = (field_0x32c.y - mPos.y) * (1.0f / 60.0f);
-        field_0x3c.z = 0.5f * (60.0f * -lbl_8053EFB8);
-        field_0x33c = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
+        mVel_0x3c.x = (field_0x32c.x - mPos.x) * (1.0f / 60.0f);
+        mVel_0x3c.y = (field_0x32c.y - mPos.y) * (1.0f / 60.0f);
+        mVel_0x3c.z = 0.5f * (60.0f * -lbl_8053EFB8);
+        field_0x33c = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
         break;
     case 0x15:
     case 0x1F:
@@ -561,7 +561,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
         mFlags &= ~0x100;
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox2.set(mBox);
-        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         break;
     case 0x16:
         if (fn_801C5348(32.0f)) {
@@ -587,7 +587,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
                 field_0x340.fn_800FEB78(0);
             }
         } else {
-            s16 ang = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) * 10430.378f;
+            s16 ang = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) * 10430.378f;
             field_0x33c = ang - 0x8000;
             field_0x340.fn_800FEB78(5);
         }
@@ -705,9 +705,9 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0x2F:
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         if (field_0x340.mState != 0) {
             field_0x340.fn_800FEB78(0);
         }
@@ -719,14 +719,14 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     }
     mStateTimer = 0;
     mState = state;
-    field_0x98 = fn_801F681C(field_0x33c);
+    mDir_0x98 = fn_801F681C(field_0x33c);
 }
 
 // 0x801C2ED4.
 // FIXME(shotgun): 98.95 %, missing/extra; behaviour drift.
 void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (mapHit) {
-        if (isBlocked_0x4C(field_0x4, &mPos)) {
+        if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
             mPos.x = mPrevPos.x;
             mPos.y = mPrevPos.y;
             JGeometry::TVec2f nudge;
@@ -781,7 +781,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     }
     switch (mState) {
     case 0:
-        if ((mFlags & 0x2000) && fn_801CD228(field_0x4)) {
+        if ((mFlags & 0x2000) && fn_801CD228(mLayer_0x4)) {
             if (fn_801D05F8(&mPos, 16.0f * (f32)field_0x55c[2]) >= 0) {
                 fn_801C3B7C(1);
             }
@@ -873,7 +873,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             }
             fn_801C3B7C(0x11);
         } else {
-            bool hit = fn_801CD2F8(field_0x4);
+            bool hit = fn_801CD2F8(mLayer_0x4);
             if ((!hit && mStateTimer >= field_0x5a0) || (hit == 1 && mStateTimer >= field_0x5a2)) {
                 fn_801C3B7C(0x11);
                 fn_801C8BC4(0);
@@ -911,7 +911,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x14:
         if (field_0x340.mIndex == 7) {
             mFlags &= ~0x100;
-            if (viewLayerFlag(field_0x4) == 0) {
+            if (viewLayerFlag(mLayer_0x4) == 0) {
                 mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
                 mBox2.set(mBox);
             }
@@ -944,13 +944,13 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
                 fn_801C3B7C(0xF);
             } else {
                 JGeometry::TVec3f savedPos = mPos;
-                s32 savedLayer = field_0x4;
-                field_0x4 = field_0x57c;
+                s32 savedLayer = mLayer_0x4;
+                mLayer_0x4 = field_0x57c;
                 mPos.x = field_0x580.x;
                 mPos.y = field_0x580.y;
                 mPos.z = field_0x580.z;
                 s32 p = fn_801D05F8(&mPos, 60.0f);
-                field_0x4 = savedLayer;
+                mLayer_0x4 = savedLayer;
                 mPos.x = savedPos.x;
                 mPos.y = savedPos.y;
                 mPos.z = savedPos.z;
@@ -975,7 +975,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     case 0x1C:
         if (field_0x340.mIndex == 7) {
             mFlags &= ~0x100;
-            if (viewLayerFlag(field_0x4) == 0) {
+            if (viewLayerFlag(mLayer_0x4) == 0) {
                 mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
                 mBox2.set(mBox);
             }
@@ -1052,7 +1052,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
             die_0x24();
         } else {
             if (mFlags & 0x08010000) {
-                getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.5f, false);
+                getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.5f, false);
             }
             if (mStateTimer % 8 == 0) {
                 field_0x33c += 0x4000;
@@ -1102,14 +1102,14 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x100000) {
         fn_801C71BC();
     }
-    field_0x98 = fn_801F681C(field_0x33c);
+    mDir_0x98 = fn_801F681C(field_0x33c);
 }
 
-// Member: copies field_0x98 into the sequencer's direction, advances the
+// Member: copies mDir_0x98 into the sequencer's direction, advances the
 // sequencer unless it is in state 0x13 past its first tick or mFlags has bit
 // 0x80000, then updates the attack hit box.
 void ShadowLink2_804A43E8::fn_801C2E70() {
-    field_0x340.mDir = field_0x98;
+    field_0x340.mDir = mDir_0x98;
     if (mState != 0x13 || mStateTimer <= 1) {
         if (!(mFlags & 0x80000)) {
             field_0x340.fn_800FE8C0();
@@ -1146,15 +1146,15 @@ void ShadowLink2_804A43E8::updateBehavior_0x9C(u8 mapHit) {
 }
 
 // Gravity override (EnemyBase's applyGravity_0x84): z changes by lbl_8053EFB8 per call,
-// skipped while field_0xd8 > 0 and field_0xf8 == 2; clamped at -lbl_8053EFBC.
+// skipped while mHitTimer_0xd8 > 0 and mKnockbackKind_0xf8 == 2; clamped at -lbl_8053EFBC.
 void ShadowLink2_804A43E8::applyGravity_0x84() {
-    if (field_0xd8 > 0 && field_0xf8 == 2) {
+    if (mHitTimer_0xd8 > 0 && mKnockbackKind_0xf8 == 2) {
         return;
     }
     f32 minZ = -lbl_8053EFBC;
-    field_0x3c.z += lbl_8053EFB8;
-    if (field_0x3c.z < minZ) {
-        field_0x3c.z = minZ;
+    mVel_0x3c.z += lbl_8053EFB8;
+    if (mVel_0x3c.z < minZ) {
+        mVel_0x3c.z = minZ;
     }
 }
 
@@ -1165,23 +1165,23 @@ void ShadowLink2_804A43E8::calcVelocity_0x88() {
     case 6:
     case 0x14:
     case 0x1E:
-        field_0x3c.z += lbl_8053EFB8;
+        mVel_0x3c.z += lbl_8053EFB8;
         return;
     }
     f32 speed = mSpeed;
     switch (state) {
     case 0x20:
         if (mPos.z <= 0.0f) {
-            field_0x3c.x *= 0.78f;
-            field_0x3c.y *= 0.78f;
+            mVel_0x3c.x *= 0.78f;
+            mVel_0x3c.y *= 0.78f;
         }
         break;
     case 0x11: {
         s16 angle = field_0x33c;
         f32 s = JMath::sincosTable_.sinShort(angle);
         f32 c = JMath::sincosTable_.cosShort(angle);
-        field_0x3c.x = s * mSpeed;
-        field_0x3c.y = c * mSpeed;
+        mVel_0x3c.x = s * mSpeed;
+        mVel_0x3c.y = c * mSpeed;
         break;
     }
     default: {
@@ -1199,8 +1199,8 @@ void ShadowLink2_804A43E8::calcVelocity_0x88() {
         s16 angle = field_0x33c;
         f32 s = JMath::sincosTable_.sinShort(angle);
         f32 c = JMath::sincosTable_.cosShort(angle);
-        field_0x3c.x = s * speed;
-        field_0x3c.y = c * speed;
+        mVel_0x3c.x = s * speed;
+        mVel_0x3c.y = c * speed;
         break;
     }
     }
@@ -1215,9 +1215,9 @@ void ShadowLink2_804A43E8::move_0x98() {
     case 0x19:
     case 0x1A:
     case 0x2F:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         return;
     }
     if (!isHit()) {
@@ -1227,7 +1227,7 @@ void ShadowLink2_804A43E8::move_0x98() {
     }
     field_0x4ec.fn_80214CE4();
     field_0x4ec.fn_80214994();
-    if ((field_0x524.field_0x0 & 1) && !fn_801CD2F8(field_0x4) && mPos.z <= 0.0f) {
+    if ((field_0x524.field_0x0 & 1) && !fn_801CD2F8(mLayer_0x4) && mPos.z <= 0.0f) {
         switch (mState) {
         case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
         case 0xB: case 0xC: case 0xD: case 0xE:
@@ -1235,8 +1235,8 @@ void ShadowLink2_804A43E8::move_0x98() {
         case 0x29:
             break;
         default:
-            if (fn_8022461C(&mPos, field_0x4) == 0 && fn_80226850(&mPos, field_0x4) != 0xAD) {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0xAD);
+            if (fn_8022461C(&mPos, mLayer_0x4) == 0 && fn_80226850(&mPos, mLayer_0x4) != 0xAD) {
+                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0xAD);
                 startSound_801F0E34(0x3008A, 0);
             }
             break;

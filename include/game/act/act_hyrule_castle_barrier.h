@@ -25,11 +25,11 @@ public:
     const JGeometry::TVec3f* pool_8053C8FC(s32 i) const;
 
     /* 0x230 */ s32 field_0x230;
-    /* 0x234 */ s32 field_0x234; // (field_0x90 >> 4) & 0xF; 1 selects the first box set
-    /* 0x238 */ s32 field_0x238; // (field_0x90 >> 22) & 0x1F
+    /* 0x234 */ s32 field_0x234; // (mSpawnParam_0x90 >> 4) & 0xF; 1 selects the first box set
+    /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 22) & 0x1F
     /* 0x23C */ s32 field_0x23c;
-    /* 0x240 */ bool field_0x240; // field_0x90 bit 0, set in init
-    /* 0x241 */ bool field_0x241; // field_0x90 bit 1, set in init
+    /* 0x240 */ bool field_0x240; // mSpawnParam_0x90 bit 0, set in init
+    /* 0x241 */ bool field_0x241; // mSpawnParam_0x90 bit 1, set in init
     /* 0x244 */ JPABaseEmitter* mEmitters[3]; // released by the destructor
     /* 0x250 */ JPABaseEmitter* field_0x250;
     /* 0x254 */ JPABaseEmitter* field_0x254;

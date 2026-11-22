@@ -56,7 +56,7 @@ void cls_80204638::fn_802048F4() {
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 2; j++) {
             actor = mSlots[i][j];
-            if (actor != NULL && actor->mAlive && actor->field_0x4 == 0) {
+            if (actor != NULL && actor->mAlive && actor->mLayer_0x4 == 0) {
                 bool inside = false;
                 f32 posX = actor->mPos.x;
                 if (posX >= view->mVisibleBox.i.x && actor->mPos.y >= view->mVisibleBox.i.y &&

@@ -73,7 +73,7 @@ cls_8049D740::~cls_8049D740() {
 
 void cls_8049D740::init() {
     cls_8049D140::init();
-    mMode = field_0x90 & 0x1F;
+    mMode = mSpawnParam_0x90 & 0x1F;
     mAnim.fn_801D2608(lbl_8049D710, 12);
     mAnim.startAnim_801D22DC(5, 2, false);
     mAnim.fn_801D1F14(0.0f);
@@ -96,19 +96,19 @@ void cls_8049D740::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x238 == 0 || field_0x238 == 1) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     if (field_0x238 >= 2 && field_0x238 <= 5) {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     }
     switch (field_0x238) {
     case 0: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0 && player < 4 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
             JGeometry::TVec3f pos = mPos;
             pos.y += -32.0f;
-            if (fn_8038AD24(player, 0x23E, mSerial, field_0x4, pos, 0x20)) {
+            if (fn_8038AD24(player, 0x23E, mSerial, mLayer_0x4, pos, 0x20)) {
                 field_0x240 = player;
                 fn_80112654(1);
             }
@@ -116,7 +116,7 @@ void cls_8049D740::update() {
         break;
     }
     case 1:
-        fn_8022FF8C(field_0x240, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x240, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
             field_0x240 = -1;
             fn_80112654(0);
@@ -251,16 +251,16 @@ void cls_8049D740::fn_80112654(s32 kind) {
     case 2:
         break;
     case 3:
-        mEmitter298 = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(0, mMode), 0, 0, NULL, NULL, true, 1.0f);
-        mEmitter29c = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(1, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter298 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(0, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter29c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(1, mMode), 0, 0, NULL, NULL, true, 1.0f);
         mAnim.startAnim_801D22DC(0xA, 0, false);
         mAnim.fn_801D1F14(0.0f);
         break;
     case 4:
-        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(2, mMode), 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(3, mMode), 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(4, mMode), 0, 0, NULL, NULL, true, 1.0f);
-        mEmitter2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, fn_801123C8(5, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(2, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(3, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(4, mMode), 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter2a0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(5, mMode), 0, 0, NULL, NULL, true, 1.0f);
         break;
     case 5:
         mAnim.startAnim_801D22DC(8, 2, false);
@@ -285,7 +285,7 @@ void cls_8049D740::fn_80112654(s32 kind) {
     case 7: {
         JGeometry::TVec3f pos = mPos;
         pos.y += -16.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
         break;
     }
     case 8:
@@ -318,10 +318,10 @@ void cls_8049D740::fn_80112654(s32 kind) {
     case 10:
         mAnim.startAnim_801D22DC(6, 0, false);
         mAnim.fn_801D1F14(0.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC1, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC1, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
         break;
     case 11:
         field_0x230 = 1;
@@ -411,10 +411,10 @@ bool cls_8049D740::moveToGoal() {
     fn_801CD950(&field_0x24c, 2.0f, 0.05f);
     s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
                       10430.378f);
-    field_0x3c.x = field_0x24c * JMath::sincosTable_.sinShort(angle);
-    field_0x3c.y = field_0x24c * JMath::sincosTable_.cosShort(angle);
-    s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, field_0x3c.x);
-    s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, field_0x3c.y);
+    mVel_0x3c.x = field_0x24c * JMath::sincosTable_.sinShort(angle);
+    mVel_0x3c.y = field_0x24c * JMath::sincosTable_.cosShort(angle);
+    s32 doneX = fn_801CD950(&mPos.x, mGoalPos.x, mVel_0x3c.x);
+    s32 doneY = fn_801CD950(&mPos.y, mGoalPos.y, mVel_0x3c.y);
     fn_801CD950(&field_0x250, 0.05f, -0.005f);
     if (doneX == 0 && doneY == 0) {
         return true;

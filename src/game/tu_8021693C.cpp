@@ -109,13 +109,13 @@ u8 cls_80217128::fn_8021693C(u8 mask) {
         JGeometry::TBox2f box(mBox);
         box.addPos(owner->mPos.x, owner->mPos.y - owner->mPos.z);
         for (s32 player = 0; player < 4; player++) {
-            s32 layer = owner->field_0x4;
+            s32 layer = owner->mLayer_0x4;
             if (viewLayerFlag(layer) == 0 &&
                 __fabsf(mOwner->mPos.z - getPlayerPos_8023E724(player)->z) > 32.0f) {
                 continue;
             }
             s32 bit = 1 << player;
-            if ((mask & bit) != 0 && fn_80239B64(player, &box, mOwner->field_0x4, mType, true, true)) {
+            if ((mask & bit) != 0 && fn_80239B64(player, &box, mOwner->mLayer_0x4, mType, true, true)) {
                 result |= bit;
             }
         }

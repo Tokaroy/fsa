@@ -10,14 +10,14 @@
 #include "game/act/tu_802F3B74.h"
 
 void UnknownDMYK_804AA6A0::init() {
-    mMsg = field_0x90 & 0xFFF;
-    field_0x234 = (field_0x90 >> 12) & 0xF;
-    mPlayer = (field_0x90 >> 16) & 0xF;
+    mMsg = mSpawnParam_0x90 & 0xFFF;
+    field_0x234 = (mSpawnParam_0x90 >> 12) & 0xF;
+    mPlayer = (mSpawnParam_0x90 >> 16) & 0xF;
     mEffectSerial = -1;
     if (field_0x234 == mPlayer) {
-        mEffectSerial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, field_0x4, &mPos,
+        mEffectSerial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, mLayer_0x4, &mPos,
                                                    (field_0x234 & 3) | 0x24, -1, -1);
-        open(field_0x4, mPos, 0x21);
+        open(mLayer_0x4, mPos, 0x21);
     } else {
         mAlive = false;
     }

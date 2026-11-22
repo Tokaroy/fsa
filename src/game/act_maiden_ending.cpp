@@ -44,11 +44,11 @@ void MaidenEnding_804AD5B8::init() {
     field_0x244 = 0;
     field_0x248 = 8;
     field_0x24c = 0;
-    field_0x250 = lbl_80472718[field_0x90 & 7];
+    field_0x250 = lbl_80472718[mSpawnParam_0x90 & 7];
     field_0x254 = 1.0f;
     field_0x258 = 85.0f;
     field_0x25c = 55.0f;
-    field_0x260 = sAngles[field_0x90 & 7];
+    field_0x260 = sAngles[mSpawnParam_0x90 & 7];
     field_0x264 = 1280.0f;
     field_0x268 = 1795.0f;
     field_0x26c = 0.0f;
@@ -112,7 +112,7 @@ void MaidenEnding_804AD5B8::draw() {
         }
         s32 frame = field_0x250 + field_0x248;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
@@ -144,7 +144,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     // with cmplwi 1 where a plain test gives clrlwi. (92 % instead of 95.7 % here).
     if (field_0x238 == 0) {
         if (fn_8035C15C(7) == true) {
-            fn_8035C1C4(7, lbl_80472718[field_0x90 & 7]);
+            fn_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
         }
     } else if (field_0x238 == 1) {
         if (fn_8035C15C(9) == true) {
@@ -153,7 +153,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
         }
     } else if (field_0x238 == 2) {
         if (fn_8035C15C(8) == true) {
-            fn_8035C1C4(8, lbl_80472718[field_0x90 & 7]);
+            fn_8035C1C4(8, lbl_80472718[mSpawnParam_0x90 & 7]);
         }
     } else if (field_0x238 == 3) {
         if (field_0x248 < 0x14) {
@@ -170,14 +170,14 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
                 field_0x248 = 8;
                 field_0x24c = 0;
                 mState = 2;
-                field_0x234 = lbl_80472780[field_0x90 & 7] + 0x128;
+                field_0x234 = lbl_80472780[mSpawnParam_0x90 & 7] + 0x128;
                 field_0x238 = 0;
             }
         }
     } else if (field_0x238 == 4) {
         if (field_0x244 == 0) {
             field_0x24c = fn_801CD664(6);
-            fn_8035C1C4(7, lbl_80472718[field_0x90 & 7]);
+            fn_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
             field_0x244 = fn_801CD664(4);
             field_0x238 = 0;
         } else if (field_0x244 == 0x28) {
@@ -196,9 +196,9 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
         field_0x240 = 3;
         JGeometry::TVec3f savedPos = mPos;
         mPos.z += 6.0f;
-        spawnEmitter_8013CC50(field_0x4, &mPos, sEffects1[field_0x90 & 7], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, sEffects1[mSpawnParam_0x90 & 7], 0, 0, NULL, NULL, true, 1.0f);
         mPos.z += 7.0f;
-        spawnEmitter_8013CC50(field_0x4, &mPos, sEffects2[field_0x90 & 7], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, sEffects2[mSpawnParam_0x90 & 7], 0, 0, NULL, NULL, true, 1.0f);
         mPos = savedPos;
         startSound_801F0E34(0x400D9, 0);
     } else if (field_0x234 < 0x100) {
@@ -211,16 +211,16 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
                 setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
             }
             if (fn_8035C15C(10) == true) {
-                fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
+                fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
             }
             mPos.z = 13.0f;
-            field_0x274 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, -1, -1, NULL, NULL, true, 1.0f);
-            field_0x278 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, -1, -1, NULL, NULL, true, 1.0f);
+            field_0x274 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, -1, -1, NULL, NULL, true, 1.0f);
+            field_0x278 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, -1, -1, NULL, NULL, true, 1.0f);
             if (field_0x274 != NULL) {
-                field_0x274->setGlobalEnvColor(sColors[field_0x90 & 7][0], sColors[field_0x90 & 7][1], sColors[field_0x90 & 7][2]);
+                field_0x274->setGlobalEnvColor(sColors[mSpawnParam_0x90 & 7][0], sColors[mSpawnParam_0x90 & 7][1], sColors[mSpawnParam_0x90 & 7][2]);
             }
             field_0x248 = 0;
-            field_0x250 = lbl_80472730[field_0x90 & 7];
+            field_0x250 = lbl_80472730[mSpawnParam_0x90 & 7];
         } else {
             if (field_0x274 != NULL) {
                 setEmitterPos_8013CB44(field_0x274, &mPos, -1, -1, true);
@@ -229,7 +229,7 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
                 setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
             }
             if (fn_8035C15C(10) == true) {
-                fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
+                fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
             }
             if (field_0x238 == 1) {
                 mState = 3;
@@ -261,7 +261,7 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (fn_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
+        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
 
     if ((field_0x270 & 0xC000U) == 0xC000U) {
@@ -283,10 +283,10 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
     moveTowards_inline(target);
 
     if ((field_0x270 & 0xC000U) == 0xC000U) {
-        s16 targetAngle = lbl_80472798[field_0x90 & 7];
+        s16 targetAngle = lbl_80472798[mSpawnParam_0x90 & 7];
         if ((u16)field_0x260 >= (u16)targetAngle && (u16)prevAngle < (u16)targetAngle) {
             mState = 4;
-            field_0x260 = lbl_80472798[field_0x90 & 7];
+            field_0x260 = lbl_80472798[mSpawnParam_0x90 & 7];
             field_0x272 = 0;
         }
     }
@@ -366,7 +366,7 @@ void MaidenEnding_804AD5B8::fn_8035CAF8() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (fn_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
+        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
 
     JGeometry::TVec3f target;
@@ -383,7 +383,7 @@ void MaidenEnding_804AD5B8::fn_8035CAF8() {
         field_0x254 = 0.0f;
         mPos.x = field_0x264 + field_0x258 * JMASCos(field_0x260);
         mPos.y = field_0x268 + field_0x25c * JMASSin(field_0x260);
-        field_0x234 = lbl_804727A4[field_0x90 & 7] + 0x50;
+        field_0x234 = lbl_804727A4[mSpawnParam_0x90 & 7] + 0x50;
         mState = 5;
     }
 }
@@ -396,12 +396,12 @@ void MaidenEnding_804AD5B8::fn_8035C940() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (fn_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[field_0x90 & 7]);
+        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
     if (field_0x234 == 0) {
         mPos.z += 1.5f;
         if (mPos.z >= 350.0f) {
-            if ((field_0x90 & 7) == 0) {
+            if ((mSpawnParam_0x90 & 7) == 0) {
                 EnemyForEndingControl_804AD48C* partner =
                     static_cast<EnemyForEndingControl_804AD48C*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x23c));
                 if (partner != NULL) {

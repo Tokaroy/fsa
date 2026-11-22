@@ -19,8 +19,8 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230; // state: 0 waiting, 1 counting down
-    /* 0x234 */ s32 field_0x234; // field_0x90 bits 22-26; passed to GameView::fn_802D7870; 0x1F arms update
-    /* 0x238 */ s32 field_0x238; // field_0x90 & 0xFFF; the countdown's start
+    /* 0x234 */ s32 field_0x234; // mSpawnParam_0x90 bits 22-26; passed to GameView::fn_802D7870; 0x1F arms update
+    /* 0x238 */ s32 field_0x238; // mSpawnParam_0x90 & 0xFFF; the countdown's start
     /* 0x23C */ s32 field_0x23c; // countdown, one per frame
 }; // Size: 0x240
 

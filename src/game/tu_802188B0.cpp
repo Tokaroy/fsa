@@ -16,7 +16,7 @@ cls_80218A8C::cls_80218A8C() {
 bool cls_80218A8C::fn_802189AC() {
     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
     bool found = false;
-    s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_HBMB, mOwner->field_0x4, actors, -1);
+    s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_HBMB, mOwner->mLayer_0x4, actors, -1);
     for (s32 i = 0; i < count; i++) {
         Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(actors[i]);
         if (bomb != NULL && bomb->mAlive && bomb->field_0x94 != 1 && bomb->field_0x238 < 5) {
@@ -47,7 +47,7 @@ void cls_80218A8C::fn_802188B0() {
         switch (mOwner->mState) {
         case 0x11:
         case 0x1b:
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, mOwner->field_0x4, &mOwner->mPos, 10, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, mOwner->mLayer_0x4, &mOwner->mPos, 10, -1, -1);
             mTimer = fn_801CD664(0x79) + 0xf0;
             break;
         }

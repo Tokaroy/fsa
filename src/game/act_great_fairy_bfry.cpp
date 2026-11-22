@@ -20,7 +20,7 @@ extern const s32 lbl_80475600[];
 GreatFairy_804AF338::~GreatFairy_804AF338() {
     releaseEmitter_801EE434(field_0x2a0[0]);
     releaseEmitter_801EE434(field_0x2a0[1]);
-    if (field_0x90 != 3) {
+    if (mSpawnParam_0x90 != 3) {
         for (s32 i = 0; i < 4; i++) {
             if (field_0x24c[i] == 1) {
                 fn_803037D4(i, 0x12);
@@ -36,7 +36,7 @@ void GreatFairy_804AF338::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x234 = -1;
     field_0x238 = -1;
     field_0x260 = 0;
@@ -49,13 +49,13 @@ void GreatFairy_804AF338::init() {
     field_0x290.z = 0.0f;
     field_0x290.y = 0.0f;
     field_0x290.x = 0.0f;
-    field_0x274[0] = field_0x90 >> 27;
-    field_0x274[1] = (field_0x90 >> 22) & 0x1F;
-    field_0x274[2] = (field_0x90 >> 17) & 0x1F;
-    field_0x274[3] = (field_0x90 >> 12) & 0x1F;
-    if ((field_0x90 & 0xF) == 3) {
-        field_0x29c = (field_0x90 >> 4) & 0xF;
-        field_0x234 = (field_0x90 >> 8) & 3;
+    field_0x274[0] = mSpawnParam_0x90 >> 27;
+    field_0x274[1] = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x274[2] = (mSpawnParam_0x90 >> 17) & 0x1F;
+    field_0x274[3] = (mSpawnParam_0x90 >> 12) & 0x1F;
+    if ((mSpawnParam_0x90 & 0xF) == 3) {
+        field_0x29c = (mSpawnParam_0x90 >> 4) & 0xF;
+        field_0x234 = (mSpawnParam_0x90 >> 8) & 3;
         if (field_0x29c == 0xB) {
             JGeometry::TVec3f p = *getPlayerPos_8023E724(field_0x234);
             field_0x284.x = mPos.x;
@@ -134,7 +134,7 @@ void GreatFairy_804AF338::init() {
     field_0x26c = 0;
     field_0x2a0[0] = NULL;
     field_0x2a0[1] = NULL;
-    field_0x90 = field_0x90 & 0xF;
+    mSpawnParam_0x90 = mSpawnParam_0x90 & 0xF;
 }
 
 // FIXME(shotgun): 93.33 %, missing/extra + reloc-name; behaviour drift.
@@ -144,10 +144,10 @@ void GreatFairy_804AF338::init() {
 void GreatFairy_804AF338::update() {
     if (field_0x248 != 1) {
         JGeometry::TBox2f box;
-        if (field_0x90 != 3) {
-            if (gGameRoot_8053AAF8->fn_80138A30() > 1 && field_0x4 >= 8) {
+        if (mSpawnParam_0x90 != 3) {
+            if (gGameRoot_8053AAF8->fn_80138A30() > 1 && mLayer_0x4 >= 8) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (getPlayerLayer_8023DE58(i) == field_0x4 && !fn_8022F478(i) && !fn_80236B50(i) &&
+                    if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !fn_80236B50(i) &&
                         field_0x24c[fn_8022F340(i)] == 0)
                     {
                         fn_803037D4(fn_8022F340(i), 0x11);
@@ -163,7 +163,7 @@ void GreatFairy_804AF338::update() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_80239914(&box, field_0x4, mSerial);
+            fn_80239914(&box, mLayer_0x4, mSerial);
         }
         JGeometry::TBox2f near(-24.0f, -24.0f, 24.0f, 24.0f);
         JGeometry::TBox2f far(-36.0f, -36.0f, 36.0f, 36.0f);
@@ -184,15 +184,15 @@ void GreatFairy_804AF338::update() {
                     if (!(gGameRoot_8053AAF8->field_0x7f == 0 && fn_80237060(fn_8022F340(i)) >= 2 &&
                           (fn_8023725C(fn_8022F340(i)) >= 2 || fn_8023725C(fn_8022F340(i)) == 0)))
                     {
-                        fn_8022FF8C(i, &near, field_0x4, mSerial, false, true);
+                        fn_8022FF8C(i, &near, mLayer_0x4, mSerial, false, true);
                     }
-                } else if (!fn_8023B0F4(i, &far, field_0x4, false, 500.0f)) {
+                } else if (!fn_8023B0F4(i, &far, mLayer_0x4, false, 500.0f)) {
                     field_0x238 = -1;
                 }
             }
             field_0x234 = fn_8022FD8C(mSerial);
             if (field_0x234 >= 0 && getPlayerPos_8023E724(field_0x234)->z == 0.0f) {
-                switch (field_0x90) {
+                switch (mSpawnParam_0x90) {
                 case 0:
                     field_0x260 = 0x25E;
                     break;
@@ -200,7 +200,7 @@ void GreatFairy_804AF338::update() {
                     field_0x260 = 0x25F;
                     break;
                 }
-                if (fn_8038AD24(field_0x234, field_0x260, mSerial, field_0x4, mPos, 0x2080)) {
+                if (fn_8038AD24(field_0x234, field_0x260, mSerial, mLayer_0x4, mPos, 0x2080)) {
                     field_0x238 = field_0x234;
                     mState = 1;
                 }
@@ -208,13 +208,13 @@ void GreatFairy_804AF338::update() {
             break;
         }
         case 1:
-            fn_8022FEB8(&near, field_0x4, mSerial, false, true);
+            fn_8022FEB8(&near, mLayer_0x4, mSerial, false, true);
             if (fn_803865B8(field_0x234)) {
-                switch (field_0x90) {
+                switch (mSpawnParam_0x90) {
                 case 0:
                     if (fn_80388CAC(field_0x234, mSerial)) {
                         fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
-                        s32 layer = field_0x4;
+                        s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(
                                 'PEFF', layer, &mPos, (field_0x234 & 3) | 4, -1, -1);
@@ -236,7 +236,7 @@ void GreatFairy_804AF338::update() {
                         mState = 2;
                     } else if (fn_80388CAC(field_0x234, mSerial)) {
                         field_0x270 = getActorManager_801F856C()->spawnActor_801F9484(
-                            ACTOR_BFRY, field_0x4, &mPos,
+                            ACTOR_BFRY, mLayer_0x4, &mPos,
                             ((field_0x29c << 4) & 0xF0) | 3 | ((field_0x234 << 8) & 0x300), -1, -1);
                         if (field_0x270 >= 0) {
                             field_0x29c = 0xB;
@@ -252,10 +252,10 @@ void GreatFairy_804AF338::update() {
             fn_80230498(field_0x234, getPlayerPos_8023E724(field_0x234), 0x3F, 0xFF, -0x80, -0x80, true);
             break;
         case 2:
-            fn_8022FEB8(&near, field_0x4, mSerial, false, true);
+            fn_8022FEB8(&near, mLayer_0x4, mSerial, false, true);
             if (fn_80388CAC(field_0x234, mSerial)) {
                 fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(
                         'PEFF', layer, &mPos, (field_0x234 & 3) | 4, -1, -1);
@@ -288,7 +288,7 @@ void GreatFairy_804AF338::update() {
             break;
         case 5:
             if (getActorManager_801F856C()->findActorBySerial_801F666C(field_0x270) == NULL) {
-                if (field_0x90 == 2) {
+                if (mSpawnParam_0x90 == 2) {
                     field_0x240 = 0xB4;
                     mState = 4;
                 } else {
@@ -300,12 +300,12 @@ void GreatFairy_804AF338::update() {
         case 6: {
             for (s32 i = 0; i < 4; i++) {
                 if (i == field_0x234) {
-                    if (!fn_8023B0F4(i, &far, field_0x4, false, 500.0f)) {
+                    if (!fn_8023B0F4(i, &far, mLayer_0x4, false, 500.0f)) {
                         mState = 0;
                         break;
                     }
                 } else {
-                    if (fn_8023B0F4(i, &far, field_0x4, false, 500.0f) && !fn_8022F478(i) &&
+                    if (fn_8023B0F4(i, &far, mLayer_0x4, false, 500.0f) && !fn_8022F478(i) &&
                         (!fn_8022E438(i, field_0x234) || fn_8022CAF8(field_0x234) == 4))
                     {
                         mState = 0;
@@ -316,7 +316,7 @@ void GreatFairy_804AF338::update() {
             break;
         }
         case 7:
-            if (field_0x264 >= 0x3C && field_0x90 == 3) {
+            if (field_0x264 >= 0x3C && mSpawnParam_0x90 == 3) {
                 field_0x284.set(*getPlayerPos_8023E724(field_0x234));
                 field_0x284.y += 4.0f;
                 field_0x284.z = 16.0f;
@@ -348,7 +348,7 @@ void GreatFairy_804AF338::update() {
                 if (field_0x284.z <= 0.0f) {
                     field_0x284.z = 0.0f;
                     field_0x264 = 0;
-                    s32 layer = field_0x4;
+                    s32 layer = mLayer_0x4;
                     if (layer < 8) {
                         spawnEmitter_8013CC50(
                             layer, &field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
@@ -374,7 +374,7 @@ void GreatFairy_804AF338::update() {
             if (field_0x264 >= 0x78) {
                 field_0x264 = 0;
                 if (field_0x29c != 0xB) {
-                    s32 layer = field_0x4;
+                    s32 layer = mLayer_0x4;
                     if (layer < 8) {
                         spawnEmitter_8013CC50(
                             layer, &field_0x284, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
@@ -439,14 +439,14 @@ void GreatFairy_804AF338::update() {
                 field_0x284.z = pos.z;
                 if (field_0x2a0[0] == NULL) {
                     field_0x2a0[0] = spawnEmitter_8013CC50(
-                        field_0x4, &field_0x284, 0x562, 0, 1, NULL, NULL, true, 0.7f);
+                        mLayer_0x4, &field_0x284, 0x562, 0, 1, NULL, NULL, true, 0.7f);
                 }
                 if (field_0x2a0[0] == NULL) {
                     field_0x2a0[1] = spawnEmitter_8013CC50(
-                        field_0x4, &field_0x284, 0x563, 0, 1, NULL, NULL, true, 0.6f);
+                        mLayer_0x4, &field_0x284, 0x563, 0, 1, NULL, NULL, true, 0.6f);
                 }
                 if (field_0x264 >= 100) {
-                    if (fn_8038BD08(field_0x234, field_0x260, field_0x4, mSpawnPos, 0x2022) == 1) {
+                    if (fn_8038BD08(field_0x234, field_0x260, mLayer_0x4, mSpawnPos, 0x2022) == 1) {
                         mState = 12;
                         if (field_0x29c == 10) {
                             fn_80236ED8(fn_8022F340(field_0x234), 2);
@@ -481,7 +481,7 @@ void GreatFairy_804AF338::update() {
                         mState = 13;
                         startSound_801F0E34(0x40090, 0);
                         fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
-                        s32 layer = field_0x4;
+                        s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(
                                 'PEFF', layer, &mPos, (field_0x234 & 3) | 4, -1, -1);
@@ -506,7 +506,7 @@ void GreatFairy_804AF338::update() {
             }
             break;
         }
-        if (field_0x90 != 3) {
+        if (mSpawnParam_0x90 != 3) {
             field_0x23c++;
             if (field_0x23c > lbl_804755E0[field_0x244]) {
                 field_0x244++;
@@ -517,14 +517,14 @@ void GreatFairy_804AF338::update() {
             }
         }
     }
-    if (field_0x90 != 3 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
+    if (mSpawnParam_0x90 != 3 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
         u8 active[4];
         active[0] = 0;
         active[1] = 0;
         active[2] = 0;
         active[3] = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == field_0x4 && !fn_8022F478(i) && !fn_80236B50(i)) {
+            if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !fn_80236B50(i)) {
                 active[fn_8022F340(i)] = 1;
             }
         }
@@ -539,12 +539,12 @@ void GreatFairy_804AF338::update() {
 
 // FIXME(shotgun): 99.55 %, reloc-name; behaviour clean.
 void GreatFairy_804AF338::draw() {
-    if (field_0x248 != 1 && (field_0x240 & 2) && field_0x90 != 3) {
+    if (field_0x248 != 1 && (field_0x240 & 2) && mSpawnParam_0x90 != 3) {
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x244 + 0x61, NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x244 + 0x61, false, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x244 + 0x61, false, 2, -1, 0, 0, 0);
     }
     if (mState == 8 || mState == 10 || mState == 11 || mState == 12) {
-        if (field_0x26c == 0 && field_0x90 == 3) {
+        if (field_0x26c == 0 && mSpawnParam_0x90 == 3) {
             SpriteParams_801F5AE0 params;
             JGeometry::TVec3f savedPos = mPos;
             s32 frame = lbl_80475600[field_0x29c - 1];
@@ -561,7 +561,7 @@ void GreatFairy_804AF338::draw() {
                 flags = -1;
             }
             drawSprite_801F06F0("enemy_both2_sob.bin", frame, &params, flags, 1.0f, 1.0f);
-            fn_803075AC(mSerial, field_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
+            fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 1, 0, 0);
             mPos = savedPos;
         }
     }
@@ -620,7 +620,7 @@ void GreatFairy_804AF338::fn_8038DE74() {
         mState = 2;
     } else if (fn_80388CAC(field_0x234, mSerial) == 1) {
         field_0x270 = getActorManager_801F856C()->spawnActor_801F9484(
-            ACTOR_BFRY, field_0x4, &mPos, ((field_0x29c << 4) & 0xF0) | 3 | ((field_0x234 << 8) & 0x300), -1, -1);
+            ACTOR_BFRY, mLayer_0x4, &mPos, ((field_0x29c << 4) & 0xF0) | 3 | ((field_0x234 << 8) & 0x300), -1, -1);
         if (field_0x270 >= 0) {
             mState = 5;
             if (getFlagBit(field_0x274, field_0x234) != 0) {

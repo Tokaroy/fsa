@@ -9,9 +9,9 @@
 #include "game/act/act_talking_npc_2.h"
 
 void TalkingNpc2_804AFAD8::init() {
-    field_0x234 = field_0x90 & 0xFFFF;
-    field_0x23c = (u32)field_0x90 >> 28;
-    field_0x238 = ((u32)field_0x90 >> 16) & 0xFFF;
+    field_0x234 = mSpawnParam_0x90 & 0xFFFF;
+    field_0x23c = (u32)mSpawnParam_0x90 >> 28;
+    field_0x238 = ((u32)mSpawnParam_0x90 >> 16) & 0xFFF;
     fn_8037F2FC(field_0x234, field_0x238, field_0x23c, mPos.x, mPos.y, mPos.z, mPos.z,
                 JUtility::TColor(0xFF0000FF));
 }

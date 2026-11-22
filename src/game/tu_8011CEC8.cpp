@@ -149,10 +149,10 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
             pos = &(*it)->mSpawnPos;
         }
         JGeometry::TVec3f spawnPos = *pos;
-        spawnEmitter_8013CC50(field_0x4, &spawnPos, 0x33F, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &spawnPos, 0x340, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &spawnPos, 0x341, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &spawnPos, 0x342, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x33F, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x340, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x341, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &spawnPos, 0x342, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30079, 0);
         break;
     }

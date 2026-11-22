@@ -17,28 +17,28 @@ cls_804A5418::cls_804A5418() {
 
 void cls_804A5418::init() {
     EnemyBase_804A4808::init();
-    field_0x98 = field_0x90 & 3;
-    field_0x2b4 = (field_0x90 >> 2) & 0x1F;
-    if ((field_0x90 >> 21) & 1) {
+    mDir_0x98 = mSpawnParam_0x90 & 3;
+    field_0x2b4 = (mSpawnParam_0x90 >> 2) & 0x1F;
+    if ((mSpawnParam_0x90 >> 21) & 1) {
         mFlags |= 0x8000;
-    } else if ((field_0x90 >> 23) & 1) {
+    } else if ((mSpawnParam_0x90 >> 23) & 1) {
         mFlags |= 0x2000;
-    } else if ((field_0x90 >> 22) & 1) {
+    } else if ((mSpawnParam_0x90 >> 22) & 1) {
         mFlags |= 0x4000;
     }
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     if (mFlags & 0x8000) {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         field_0xb0 = 0;
     } else {
-        fn_80210990(field_0x98, &mBox);
+        fn_80210990(mDir_0x98, &mBox);
         field_0xb0 = 0x40004;
     }
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
-    field_0x2b0 = fn_801F6874(field_0x98);
+    field_0x2b0 = fn_801F6874(mDir_0x98);
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -47,7 +47,7 @@ void cls_804A5418::init() {
 }
 
 void cls_804A5418::vfunc_0x10() {
-    u32 flags = field_0x90 >> 24;
+    u32 flags = mSpawnParam_0x90 >> 24;
     s32 serial = mSerial;
     cls_801E9AFC* slots = fn_801E9AFC();
     field_0x2ac = slots->field_0x0[slots->field_0xf0].fn_801EA6D8(flags, serial);
@@ -59,7 +59,7 @@ extern const s32 lbl_80469C40[4][2];
 void cls_804A5418::fn_801E728C(int state) {
     if (state == 1) {
         if ((mFlags & 0x4000) && !(mFlags & 0x10000)) {
-            getActorManager_801F856C()->spawnActor_801F9484('IBBM', field_0x4, &mPos, field_0x90, field_0x16c, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('IBBM', mLayer_0x4, &mPos, mSpawnParam_0x90, field_0x16c, -1);
             mAlive = false;
         } else {
             f32 savedIx = mBox.i.x;
@@ -79,9 +79,9 @@ void cls_804A5418::fn_801E728C(int state) {
             for (s32 j = 0; j < 3; j++) {
                 spot.x = center.x - 16.0f;
                 for (s32 i = 0; i < 3; i++) {
-                    if (fn_801EE3C0(fn_80226998(&spot, field_0x4))) {
+                    if (fn_801EE3C0(fn_80226998(&spot, mLayer_0x4))) {
                         JGeometry::TVec3f at(spot.x, spot.y, 0.0f);
-                        getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &at, 15, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &at, 15, -1, -1);
                     }
                     spot.x += 16.0f;
                 }
@@ -91,33 +91,33 @@ void cls_804A5418::fn_801E728C(int state) {
             mBox.i.y = savedIy;
             mBox.f.x = savedFx;
             mBox.f.y = savedFy;
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 8.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
             gGameRoot_8053AAF8->fn_80134DE4(2, 0);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 2.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x5A, 0, 0, NULL, NULL, true, 2.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x5B, 0, 0, NULL, NULL, true, 2.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x5C, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 2.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 0, 0, NULL, NULL, true, 2.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 0, 0, NULL, NULL, true, 2.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5C, 0, 0, NULL, NULL, true, 1.0f);
             if (mFlags & 0x2000) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x262, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x262, 0, 0, NULL, NULL, true, 1.0f);
                 for (s32 g = 0; g < 4; g++) {
                     s32 count = lbl_80469C40[g][1];
                     for (s32 k = 0; k < count; k++) {
-                        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, lbl_80469C40[g][0]);
+                        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_80469C40[g][0]);
                         if (serial >= 0) {
                             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                             if (gem != NULL) {
                                 f32 z = 6.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 6.0f;
                                 f32 y = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
                                 f32 x = 0.6f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
-                                gem->field_0x3c.x = x;
-                                gem->field_0x3c.y = y;
-                                gem->field_0x3c.z = z;
+                                gem->mVel_0x3c.x = x;
+                                gem->mVel_0x3c.y = y;
+                                gem->mVel_0x3c.z = z;
                             }
                         }
                     }
                 }
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x261, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x261, 0, 0, NULL, NULL, true, 1.0f);
             }
             s32 bit = field_0x2b4;
             if (bit != 0) {
@@ -151,8 +151,8 @@ u8 cls_804A5418::checkHitByActor_0x60() {
         f32 savedIy = mBox.i.y;
         f32 savedFx = mBox.f.x;
         f32 savedFy = mBox.f.y;
-        f32 cx = fn_80210B34(field_0x98);
-        f32 cy = fn_80210AF8(field_0x98);
+        f32 cx = fn_80210B34(mDir_0x98);
+        f32 cy = fn_80210AF8(mDir_0x98);
         mBox.i.x = cx - lbl_8053F650;
         mBox.i.y = cy - lbl_8053F650;
         mBox.f.x = cx + lbl_8053F650;
@@ -182,7 +182,7 @@ u8 cls_804A5418::checkHitByActor_0x60() {
                         fn_801E728C(2);
                     }
                 } else if (other->mActorId == 'SWBM') {
-                    fn_801CB538(field_0x4, &other->mPos, 0, 0);
+                    fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
                 } else if (field_0x1dc.fn_801EAC54(other->mSerial)) {
                     if (other->mActorId == ACTOR_FIRE) {
                         startSound_801F0E34(0x3002E, 0);
@@ -231,8 +231,8 @@ void cls_804A5418::fn_801E6DE8() {
     switch (mState) {
     case 0:
     case 2: {
-        f32 dx = fn_80210B34(field_0x98);
-        f32 dy = fn_80210AF8(field_0x98);
+        f32 dx = fn_80210B34(mDir_0x98);
+        f32 dy = fn_80210AF8(mDir_0x98);
         JGeometry::TVec2f pos(mPos.x + dx, mPos.y + dy);
         fn_801E9AFC()->fn_801EA108(&pos, field_0x2b0, lbl_8053AC38);
         break;

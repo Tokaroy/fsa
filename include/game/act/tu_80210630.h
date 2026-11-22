@@ -21,7 +21,7 @@ public:
     // collision list (fn_8020D8C0).
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
-    // 0x80210630: draws the sprite (fn_802F745C) for direction field_0x98.
+    // 0x80210630: draws the sprite (fn_802F745C) for direction mDir_0x98.
     // arg0 is tested for non-zero; arg1 and arg2 are stored as bytes
     // (0x60, 0x61) and arg3 as a byte at 0x58 of its parameter block
     // (tu_8020FE50's draw passes (int)field_0x2a8 in the state 2).
@@ -38,7 +38,7 @@ public:
     /* 0x2A8 */ f32 field_0x2a8;
 }; // Size: 0x2AC
 
-// Defined in game/tu_80210630.cpp. Called with a direction (0-3, field_0x98) and
+// Defined in game/tu_80210630.cpp. Called with a direction (0-3, mDir_0x98) and
 // multiplied by field_0x58 / field_0x54 into a position offset.
 f32 fn_80210AF8(s32 dir);
 f32 fn_80210B34(s32 dir);

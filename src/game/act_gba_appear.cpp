@@ -33,7 +33,7 @@ void GBAAppear_804B16E0::init() {
         mState[i] = 0xFF;
     }
     field_0x11e = 1;
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 // FIXME: ~86%. The original's frame is 0x80: it makes two extra by-value TVec3f stack copies
@@ -72,11 +72,11 @@ void GBAAppear_804B16E0::update() {
             lbl_80529DEC.field_0x1c4[i].x = pos.x;
             lbl_80529DEC.field_0x1c4[i].y = pos.y;
             lbl_80529DEC.field_0x1c4[i].z = pos.z;
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&lbl_80529DEC.field_0x1c4[i]);
             }
             if (mEmitters[i] == NULL) {
-                mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &lbl_80529DEC.field_0x1c4[i],
+                mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &lbl_80529DEC.field_0x1c4[i],
                                            lbl_80543C00[i], 1, 1, NULL, NULL, true,
                                            lbl_8050DB0C.field_0x30[0]);
                 mEmitters[i]->setStatus(0x40);
@@ -112,13 +112,13 @@ void GBAAppear_804B16E0::draw() {
             params.mMtx = mtx;
             if (mState[i] == 0) {
                 void* res = fn_804030C4('TIMG', lbl_804B16C0[i]);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
                                                          &params);
                 }
             } else if (mState[i] == 1) {
                 void* res = fn_804030C4('TIMG', lbl_804B16D0[i]);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&lbl_80529DEC.field_0x1c4[i], res,
                                                          &params);
                 }

@@ -17,10 +17,10 @@ s32 lbl_80539FE0[2] = {3, 5};
 // the original addresses the 0x2d0 array off the this pointer (mr r5, r3) and has no
 // inner compare; the random/sin part allocates f-registers differently.
 void cls_804A1FA0::init() {
-    field_0x80.i.x = -6.0f;
-    field_0x80.i.y = -6.0f;
-    field_0x80.f.x = 6.0f;
-    field_0x80.f.y = 6.0f;
+    mMapBox_0x80.i.x = -6.0f;
+    mMapBox_0x80.i.y = -6.0f;
+    mMapBox_0x80.f.x = 6.0f;
+    mMapBox_0x80.f.y = 6.0f;
     mBox.i.x = -6.0f;
     mBox.i.y = -6.0f;
     mBox.f.x = 6.0f;
@@ -48,15 +48,15 @@ void cls_804A1FA0::init() {
     mEmitters[0] = NULL;
     mEmitters[1] = NULL;
     mEmitters[2] = NULL;
-    field_0x98 = (s32)(15.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    field_0x25c = field_0x98;
-    field_0x260 = field_0x98;
+    mDir_0x98 = (s32)(15.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    field_0x25c = mDir_0x98;
+    field_0x260 = mDir_0x98;
     field_0x264 = -1;
-    field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort((s32)(4000.0f * (f32)field_0x98));
-    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
+    field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort((s32)(4000.0f * (f32)mDir_0x98));
+    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));
     field_0x27c.z = 0.0f;
     field_0x234[2] = 8;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x268 = 0.3f;
     field_0x26c = 1.0f;
     field_0x270 = 1.0f;
@@ -71,15 +71,15 @@ void cls_804A1FA0::init() {
     lbl_8053AB88 = lbl_8053AB88 & 1;
     field_0xb0 = 0x12202;
     field_0x230 = 0;
-    s16 angle = (s32)(4000.0f * (f32)field_0x98);
+    s16 angle = (s32)(4000.0f * (f32)mDir_0x98);
     field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
-    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
+    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));
     field_0x288[3].set(mPos);
-    angle = (s32)(4000.0f * (f32)((field_0x98 - 2) & 0xF));
+    angle = (s32)(4000.0f * (f32)((mDir_0x98 - 2) & 0xF));
     field_0x288[3].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[3].y += 6.0f * JMath::sincosTable_.cosShort(angle);
     field_0x288[4].set(mPos);
-    angle = (s32)(4000.0f * (f32)((field_0x98 + 2) & 0xF));
+    angle = (s32)(4000.0f * (f32)((mDir_0x98 + 2) & 0xF));
     field_0x288[4].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[4].y += 6.0f * JMath::sincosTable_.cosShort(angle);
 }
@@ -107,7 +107,7 @@ void cls_804A1FA0::vfunc_0x44() {
 void cls_804A1FA0::update() {
     JGeometry::TVec3f savedPos = mPos;
     f32 z0 = mPos.z;
-    JGeometry::TVec3f savedVel = field_0x3c;
+    JGeometry::TVec3f savedVel = mVel_0x3c;
     s32 hit = 0;
     for (s32 i = 0; i < 5; i++) {
         if (field_0x234[i] > 0) {
@@ -126,29 +126,29 @@ void cls_804A1FA0::update() {
         if (!hit) {
             mPos = savedPos;
             mPos.z = z0;
-            addCalc2_801F71A4(&field_0x3c.x, field_0x27c.x, field_0x268, field_0x26c);
-            addCalc2_801F71A4(&field_0x3c.y, field_0x27c.y, field_0x268, field_0x26c);
-            mPos += field_0x3c;
-            fn_801F2B7C(field_0x114, -1, 1);
+            addCalc2_801F71A4(&mVel_0x3c.x, field_0x27c.x, field_0x268, field_0x26c);
+            addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, field_0x268, field_0x26c);
+            mPos += mVel_0x3c;
+            fn_801F2B7C(mParamAtcp_0x114, -1, 1);
             if (fn_801F2618(NULL, false) && field_0x234[1] == 0) {
-                field_0x98 += 8;
-                field_0x98 &= 0xF;
-                if (field_0x264 == field_0x98) {
-                    field_0x98 += field_0x254 * 4;
-                    field_0x98 &= 0xF;
+                mDir_0x98 += 8;
+                mDir_0x98 &= 0xF;
+                if (field_0x264 == mDir_0x98) {
+                    mDir_0x98 += field_0x254 * 4;
+                    mDir_0x98 &= 0xF;
                 }
                 field_0x264 = field_0x260;
-                field_0x260 = field_0x98;
-                field_0x25c = field_0x98;
+                field_0x260 = mDir_0x98;
+                field_0x25c = mDir_0x98;
                 field_0x234[1] = 8;
                 field_0x234[2] = 8;
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                     field_0x254 *= -1;
                 }
                 startSound_801F0E34(0x4000B, 0);
-                field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort((s32)(4000.0f * (f32)field_0x98));
-                field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
-                field_0x3c = field_0x27c;
+                field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort((s32)(4000.0f * (f32)mDir_0x98));
+                field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));
+                mVel_0x3c = field_0x27c;
             }
         }
         for (s32 i = 18; i >= 0; i--) {
@@ -167,7 +167,7 @@ void cls_804A1FA0::update() {
             field_0x288[0].set(field_0x2d0[0]);
         }
         if (mEmitters[1] == NULL) {
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &field_0x288[1], 0x11C, 0, -1, NULL, NULL, true, 0.4f);
+            mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x288[1], 0x11C, 0, -1, NULL, NULL, true, 0.4f);
         } else {
             setEmitterPos_8013CB44(mEmitters[1], &field_0x288[1], 0, -1, true);
         }
@@ -186,9 +186,9 @@ void cls_804A1FA0::update() {
             }
             field_0x25c = idx;
         }
-        if (field_0x25c != field_0x98 && (field_0x234[2] & 3) == 0) {
-            field_0x98 += field_0x254;
-            field_0x98 &= 0xF;
+        if (field_0x25c != mDir_0x98 && (field_0x234[2] & 3) == 0) {
+            mDir_0x98 += field_0x254;
+            mDir_0x98 &= 0xF;
         }
         setHeading();
         field_0x270 += 500.0f;
@@ -251,19 +251,19 @@ void cls_804A1FA0::draw() {
 }
 
 // Not in the binary (update inlines it); the pool has its literals ahead of every other function's.
-// The velocity along heading field_0x98 (sixteenths of a turn) and the two points 6 away, two
+// The velocity along heading mDir_0x98 (sixteenths of a turn) and the two points 6 away, two
 // steps to either side of it.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 void cls_804A1FA0::setHeading() {
-    s16 angle = (s32)(4000.0f * (f32)field_0x98);
+    s16 angle = (s32)(4000.0f * (f32)mDir_0x98);
     field_0x27c.x = field_0x278 * JMath::sincosTable_.sinShort(angle);
-    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)field_0x98));
+    field_0x27c.y = field_0x278 * JMath::sincosTable_.cosShort((s32)(4000.0f * (f32)mDir_0x98));
     field_0x288[3] = mPos;
-    angle = (s32)(4000.0f * (f32)((field_0x98 - 2) & 0xF));
+    angle = (s32)(4000.0f * (f32)((mDir_0x98 - 2) & 0xF));
     field_0x288[3].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[3].y += 6.0f * JMath::sincosTable_.cosShort(angle);
     field_0x288[4] = mPos;
-    angle = (s32)(4000.0f * (f32)((field_0x98 + 2) & 0xF));
+    angle = (s32)(4000.0f * (f32)((mDir_0x98 + 2) & 0xF));
     field_0x288[4].x += 6.0f * JMath::sincosTable_.sinShort(angle);
     field_0x288[4].y += 6.0f * JMath::sincosTable_.cosShort(angle);
 }

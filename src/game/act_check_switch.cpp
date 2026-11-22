@@ -4,21 +4,21 @@
 #include "game/act/act_check_switch.h"
 
 void CheckSwitch_804A8BD0::init() {
-    mMode = field_0x90 & 0x1F;
+    mMode = mSpawnParam_0x90 & 0x1F;
     mState = 0;
     update();
 }
 
 // FIXME: 99.55 %. Only the register allocation of the shift: the original
-// loads the table entry into r0 and field_0x90 into r4 (srw r0, r4, r0);
-// ours loads field_0x90 into r0 and the entry into r3.
+// loads the table entry into r0 and mSpawnParam_0x90 into r4 (srw r0, r4, r0);
+// ours loads mSpawnParam_0x90 into r0 and the entry into r3.
 void CheckSwitch_804A8BD0::update() {
     static const s32 lbl_8046D460[4] = {22, 17, 12, 7};
 
     switch (mState) {
     case 0:
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
-            s32 bit = (field_0x90 >> lbl_8046D460[fn_801CD664(100) & 3]) & 0x1F;
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
+            s32 bit = (mSpawnParam_0x90 >> lbl_8046D460[fn_801CD664(100) & 3]) & 0x1F;
             getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
             if (mMode == 0) {
                 fn_801F3668();

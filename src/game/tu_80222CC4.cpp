@@ -25,7 +25,7 @@ cls_804A6C38::~cls_804A6C38() {
 
 void cls_804A6C38::init() {
     ShadowLinkBase_804A6A00::init();
-    field_0x98 = field_0x90 & 3;
+    mDir_0x98 = mSpawnParam_0x90 & 3;
     mState = 4;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -47,7 +47,7 @@ void cls_804A6C38::updateState_0x90(u8 mapHit) {
         break;
     case 3:
         if (mStateTimer >= 120) {
-            mAnim.startAnim_801D22DC(field_0x98 + 16, 0, false);
+            mAnim.startAnim_801D22DC(mDir_0x98 + 16, 0, false);
             mStateTimer = 0;
             mState = 5;
         }
@@ -56,18 +56,18 @@ void cls_804A6C38::updateState_0x90(u8 mapHit) {
         fn_802216E8(120);
         if (mPos.z <= 0.0f) {
             if (mFlags & CLS_804A6A00_FLAG_0x2000) {
-                mAnim.startAnim_801D22DC(field_0x98 + 16, 0, false);
+                mAnim.startAnim_801D22DC(mDir_0x98 + 16, 0, false);
                 mStateTimer = 0;
                 mState = 5;
             } else {
-                field_0x3c.z = lbl_8053FE70;
+                mVel_0x3c.z = lbl_8053FE70;
             }
         }
         break;
     case 5:
         if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
             JGeometry::TVec3f pos(mPos.x, mPos.y, 0.0f);
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 pos.x += 24.0f;
                 break;
@@ -83,12 +83,12 @@ void cls_804A6C38::updateState_0x90(u8 mapHit) {
                 pos.y -= 26.0f;
                 break;
             }
-            mDDGOSerial = getActorManager_801F856C()->spawnActor_801F9484('DDGO', field_0x4, &pos, 1, -1, -1);
+            mDDGOSerial = getActorManager_801F856C()->spawnActor_801F9484('DDGO', mLayer_0x4, &pos, 1, -1, -1);
             s32 serial = mDDGOSerial;
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x98 = field_0x98;
+                    actor->mDir_0x98 = mDir_0x98;
                 }
             }
             mStateTimer = 0;
@@ -98,7 +98,7 @@ void cls_804A6C38::updateState_0x90(u8 mapHit) {
     case 6:
         if (mStateTimer >= 180) {
             releaseShot(this);
-            mAnim.startAnim_801D22DC(field_0x98, 0, false);
+            mAnim.startAnim_801D22DC(mDir_0x98, 0, false);
             mStateTimer = 0;
             mState = 7;
         }

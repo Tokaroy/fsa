@@ -8,10 +8,10 @@
 void cls_8049CB58::init() {
     static const s32 lbl_80463EE0[4] = {22, 17, 12, 7};
     for (s32 i = 0; i < 4; i++) {
-        field_0x230[i] = (field_0x90 >> lbl_80463EE0[i]) & 0x1F;
+        field_0x230[i] = (mSpawnParam_0x90 >> lbl_80463EE0[i]) & 0x1F;
     }
-    field_0x240 = field_0x90 & 0xF;
-    field_0x244 = field_0x90 & 0x10;
+    field_0x240 = mSpawnParam_0x90 & 0xF;
+    field_0x244 = mSpawnParam_0x90 & 0x10;
     field_0x24c = 0;
     field_0x24d = 0;
     field_0x24f = 0;
@@ -25,7 +25,7 @@ void cls_8049CB58::init() {
 }
 
 bool cls_8049CB58::fn_80104EB0() {
-    if (!(field_0x90 & 0x40)) {
+    if (!(mSpawnParam_0x90 & 0x40)) {
         return true;
     }
     switch (field_0x24f) {
@@ -118,7 +118,7 @@ void cls_8049CB58::update() {
         if (ready) {
             if (fn_80104EB0()) {
                 setScreenFlag_0x30(0xFF, true);
-                if (field_0x90 & 0x20) {
+                if (mSpawnParam_0x90 & 0x20) {
                     field_0x24c = 1;
                 }
                 field_0x24d = 0;

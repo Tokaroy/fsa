@@ -36,12 +36,12 @@ Vulture_804A4230::Vulture_804A4230() {
 
 void Vulture_804A4230::init() {
     EnemyBase_804A4808::init();
-    u8 param = (u8)field_0x90;
+    u8 param = (u8)mSpawnParam_0x90;
     field_0x2b4 = param > 4 ? param : 4;
-    if (field_0x90 >> 31) {
+    if (mSpawnParam_0x90 >> 31) {
         mFlags |= 0x4000;
     }
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox.set(-10.0f, -8.0f, 10.0f, 8.0f);
     if (mFlags & 0x4000) {
         mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
@@ -50,7 +50,7 @@ void Vulture_804A4230::init() {
         mBox2.set(mBox);
         field_0xb0 = 0x50202;
     }
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_FLOOR;
     field_0x194 = 1;
     mPos.z = 1.0f;
@@ -185,8 +185,8 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
             field_0x2c0.x = pPos->x;
             field_0x2c0.y = pPos->y;
         }
-        field_0x2c8.x = field_0x3c.x;
-        field_0x2c8.y = field_0x3c.y;
+        field_0x2c8.x = mVel_0x3c.x;
+        field_0x2c8.y = mVel_0x3c.y;
         break;
     case 6:
         field_0x2a8 = -1;
@@ -310,12 +310,12 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
         if (mPos.z <= 1.0f) {
             mPos.z = 1.0f;
             bool hit = false;
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 JGeometry::TVec2f point;
                 point.x = mPos.x;
                 point.y = 8.0f + (mPos.y - mPos.z);
                 // fn_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
-                if (fn_802265FC((const JGeometry::TVec3f*)&point, field_0x4) == 2) {
+                if (fn_802265FC((const JGeometry::TVec3f*)&point, mLayer_0x4) == 2) {
                     hit = true;
                 }
             }
@@ -331,7 +331,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
 }
 
 void Vulture_804A4230::calcVelocity_0x88() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     JGeometry::TVec2f vel(0.0f, 0.0f);
 
     switch (mState) {
@@ -339,22 +339,22 @@ void Vulture_804A4230::calcVelocity_0x88() {
     case 5:
         // fn_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b8, &vel, FLT_MAX);
-        field_0x3c.x = vel.x;
-        field_0x3c.y = vel.y;
+        mVel_0x3c.x = vel.x;
+        mVel_0x3c.y = vel.y;
         if (mState == 5) {
             f32 remaining = 20 - mStateTimer;
             approach(field_0x2c8.x, 0.0f, remaining);
             approach(field_0x2c8.y, 0.0f, remaining);
-            field_0x3c.x += field_0x2c8.x;
-            field_0x3c.y += field_0x2c8.y;
+            mVel_0x3c.x += field_0x2c8.x;
+            mVel_0x3c.y += field_0x2c8.y;
         }
         break;
 
     case 4:
         vel.x = JMath::sincosTable_.sinShort(field_0x2b2);
         vel.y = JMath::sincosTable_.cosShort(field_0x2b2);
-        field_0x3c.x = mSpeed * vel.x;
-        field_0x3c.y = mSpeed * vel.y;
+        mVel_0x3c.x = mSpeed * vel.x;
+        mVel_0x3c.y = mSpeed * vel.y;
         break;
     }
 
@@ -417,11 +417,11 @@ bool Vulture_804A4230::vfunc_0x58() {
     bool actorC = false;
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
-    player = fn_8023AC74(&box, field_0x4, &probe);
+    player = fn_8023AC74(&box, mLayer_0x4, &probe);
     if (player >= 0) {
         actorC = fn_801CC538(player, &probe, &vel54, &other);
     } else {
-        player = fn_8023AD54(&box, field_0x4, &probe);
+        player = fn_8023AD54(&box, mLayer_0x4, &probe);
         if (player >= 0) {
             fn_801CC640(player, &other, &vel48);
         }
@@ -444,7 +444,7 @@ bool Vulture_804A4230::vfunc_0x58() {
 u8 Vulture_804A4230::checkHitByActor_0x60() {
     u8 hit = 0;
     if (!(mFlags & 0x4000)) {
-        if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f) {
+        if (!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f) {
             hit = fn_801CEA60();
         } else {
             hit = EnemyBase_804A4808::checkHitByActor_0x60();

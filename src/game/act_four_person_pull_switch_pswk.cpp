@@ -22,12 +22,12 @@ static inline void sum(JGeometry::TVec3f& result, const JGeometry::TVec3f& a,
 
 void FourPersonPullSwitchChainVersion_804AE5C8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0x23c = 0;
     field_0x240 = field_0x254 = isScreenFlagSet_0x34();
     field_0x244 = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x248 = 0;
     field_0x24c = -1;
     field_0x250 = 0;
@@ -36,9 +36,9 @@ void FourPersonPullSwitchChainVersion_804AE5C8::init() {
 void FourPersonPullSwitchChainVersion_804AE5C8::update() {
     f32 prev244 = field_0x244;
     f32 rem = field_0x244 - 10.0f * (s32)(field_0x244 / 10.0f);
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     if (field_0x248 > 0) {
         field_0x248--;
     }
@@ -53,7 +53,7 @@ void FourPersonPullSwitchChainVersion_804AE5C8::update() {
 
     s32 i; // declared at function scope: matching-only, a for-local i gives regalloc-only 99.89 % for update
     s32 playerCount = 0;
-    s32 player = fn_80239470(&box, field_0x4, mSerial);
+    s32 player = fn_80239470(&box, mLayer_0x4, mSerial);
     if (player >= 0) {
         playerCount = fn_80238A68(mSerial);
     }
@@ -64,7 +64,7 @@ void FourPersonPullSwitchChainVersion_804AE5C8::update() {
             JGeometry::TVec3f push(dx, 0.0f, 0.0f);
             fn_8023DFF4(player, &push);
         }
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         if (field_0x244 >= 36.0f) {
             field_0x244 += 0.5f;
             if (field_0x244 >= 40.0f) {
@@ -114,7 +114,7 @@ void FourPersonPullSwitchChainVersion_804AE5C8::update() {
         }
     }
 
-    field_0x3c.set(0.0f, field_0x244 - prev244, 0.0f);
+    mVel_0x3c.set(0.0f, field_0x244 - prev244, 0.0f);
     mPos.y = mSpawnPos.y + field_0x244;
 
     if (field_0x244 < 10.0f) {

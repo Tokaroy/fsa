@@ -62,7 +62,7 @@ static const u32 lbl_8046E1CC[32] = {
     0x00000080, 0x00000040, 0x00000020, 0x00000010, 0x00000008, 0x00000004, 0x00000002, 0x00000001,
 };
 
-// Stage names per (stage, level) (field_0x4, field_0x8): fn_802D8128 / fn_802D8228
+// Stage names per (stage, level) (field_0x4, mLevel_0x8): fn_802D8128 / fn_802D8228
 // build the archive names from them; the last row is empty.
 static const char* lbl_804A9530[19][4] = {
     {"010", "011", "200", "013"},
@@ -228,7 +228,7 @@ inline void GameView_804A9950::restartTimeLimit() {
 // Clears the current screen's low 16 flag bits, the per-bit counters and values, and the
 // layer slots. The bit table is cleared a word per 32 bits, as in fn_802D9CD8.
 inline void GameView_804A9950::clearScreenState() {
-    getGameView_802D6A9C()->field_0x178[field_0x18][field_0x14] &= 0xFFFF0000;
+    getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14] &= 0xFFFF0000;
     for (int i = 0; i < 0x10; i++) {
         getGameView_802D6A9C()->field_0x308[i] = 0;
     }
@@ -307,7 +307,7 @@ bool fn_802DEBF8(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    if (getGameView_802D6A9C()->field_0x4 == 8 && getGameView_802D6A9C()->field_0x8 == 3) {
+    if (getGameView_802D6A9C()->mStage_0x4 == 8 && getGameView_802D6A9C()->mLevel_0x8 == 3) {
         return true;
     }
     return false;
@@ -319,8 +319,8 @@ bool fn_802DEBA0(void) {
         return false;
     }
     GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-    if ((sub->mView->field_0x4 == 9 && sub->mView->field_0x8 == 3) ||
-        getGameView_802D6A9C()->field_0x4 >= 13) {
+    if ((sub->mView->mStage_0x4 == 9 && sub->mView->mLevel_0x8 == 3) ||
+        getGameView_802D6A9C()->mStage_0x4 >= 13) {
         return true;
     }
     return false;
@@ -330,7 +330,7 @@ bool fn_802DEB58(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    if (getGameView_802D6A9C()->field_0x4 == 3 && getGameView_802D6A9C()->field_0x8 == 1) {
+    if (getGameView_802D6A9C()->mStage_0x4 == 3 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
         return true;
     }
     return false;
@@ -339,11 +339,11 @@ bool fn_802DEB58(void) {
 bool fn_802DEABC(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-        if (sub->mView->field_0x4 == 7 && sub->mView->field_0x8 == 0) {
+        if (sub->mView->mStage_0x4 == 7 && sub->mView->mLevel_0x8 == 0) {
             return true;
         }
-        if (gGameRoot_8053AAF8->field_0x4->mView->field_0x4 == 7 &&
-            gGameRoot_8053AAF8->field_0x4->mView->field_0x8 == 2) {
+        if (gGameRoot_8053AAF8->field_0x4->mView->mStage_0x4 == 7 &&
+            gGameRoot_8053AAF8->field_0x4->mView->mLevel_0x8 == 2) {
             return true;
         }
         return false;
@@ -358,15 +358,15 @@ bool fn_802DEABC(void) {
 bool fn_802DEA34(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-        if (sub->mView->field_0x4 == 6 && sub->mView->field_0x8 == 0) {
+        if (sub->mView->mStage_0x4 == 6 && sub->mView->mLevel_0x8 == 0) {
             return true;
         }
-        if (gGameRoot_8053AAF8->field_0x4->mView->field_0x4 == 6 &&
-            gGameRoot_8053AAF8->field_0x4->mView->field_0x8 == 1) {
+        if (gGameRoot_8053AAF8->field_0x4->mView->mStage_0x4 == 6 &&
+            gGameRoot_8053AAF8->field_0x4->mView->mLevel_0x8 == 1) {
             return true;
         }
-        if (gGameRoot_8053AAF8->field_0x4->mView->field_0x4 == 6 &&
-            gGameRoot_8053AAF8->field_0x4->mView->field_0x8 == 3) {
+        if (gGameRoot_8053AAF8->field_0x4->mView->mStage_0x4 == 6 &&
+            gGameRoot_8053AAF8->field_0x4->mView->mLevel_0x8 == 3) {
             return true;
         }
         return false;
@@ -379,8 +379,8 @@ bool fn_802DEA34(void) {
 bool fn_802DE9A0(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-        if ((sub->mView->field_0x4 == 2 && sub->mView->field_0x8 == 3) ||
-            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 1)) {
+        if ((sub->mView->mStage_0x4 == 2 && sub->mView->mLevel_0x8 == 3) ||
+            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 1)) {
             return true;
         }
         return false;
@@ -396,8 +396,8 @@ bool fn_802DE9A0(void) {
 bool fn_802DE93C(void) {
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         GameRootSub04_801F856C* sub = gGameRoot_8053AAF8->field_0x4;
-        if ((sub->mView->field_0x4 == 4 && sub->mView->field_0x8 == 0) ||
-            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2)) {
+        if ((sub->mView->mStage_0x4 == 4 && sub->mView->mLevel_0x8 == 0) ||
+            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2)) {
             return true;
         }
         return false;
@@ -429,7 +429,7 @@ bool fn_802DE7CC(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    if (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0) {
+    if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0) {
         return true;
     }
     return false;
@@ -440,17 +440,17 @@ bool fn_802DE764(s32 stage, s32 level, s32 value) {
         return false;
     }
     GameView_804A9950* view = getGameView_802D6A9C();
-    if (stage == view->field_0x4 && level == view->field_0x8 && value == view->field_0x60[view->field_0x18][view->field_0x14]) {
+    if (stage == view->mStage_0x4 && level == view->mLevel_0x8 && value == view->field_0x60[view->mScreenY_0x18][view->mScreenX_0x14]) {
         return true;
     }
     return false;
 }
 
 GameView_804A9950::GameView_804A9950() {
-    field_0x4 = 0;
-    field_0x8 = 0;
-    field_0x14 = 0;
-    field_0x18 = 0;
+    mStage_0x4 = 0;
+    mLevel_0x8 = 0;
+    mScreenX_0x14 = 0;
+    mScreenY_0x18 = 0;
     field_0x34 = 0;
     field_0x38 = 0;
     field_0x3c = 0;
@@ -622,8 +622,8 @@ void GameView_804A9950::vfunc_0x14() {}
 // FIXME: 99.68 %, regalloc-only; behaviour clean.
 // FIXME: regalloc only: end and the loop offset i*4 are swapped (r24/r25).
 u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
-    s32 col = field_0x14;
-    s32 row = field_0x18;
+    s32 col = mScreenX_0x14;
+    s32 row = mScreenY_0x18;
     s32 entered = 0;
     u32 exits = 0xF;
     field_0xc9 = 0;
@@ -632,7 +632,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == 'SDSM') {
-                exits = actor->field_0x90 >> 4;
+                exits = actor->mSpawnParam_0x90 >> 4;
                 break;
             }
         }
@@ -671,16 +671,16 @@ u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
         restartTimeLimit();
         clearScreenState();
         if (dir[0] > 0) {
-            field_0x14++;
+            mScreenX_0x14++;
             field_0xc8 = 1;
         } else if (dir[0] < 0) {
-            field_0x14--;
+            mScreenX_0x14--;
             field_0xc8 = 2;
         } else if (dir[1] > 0) {
-            field_0x18++;
+            mScreenY_0x18++;
             field_0xc8 = 4;
         } else {
-            field_0x18--;
+            mScreenY_0x18--;
             field_0xc8 = 8;
         }
         fn_802D9FBC();
@@ -713,13 +713,13 @@ u8 GameView_804A9950::fn_802DCD1C(const s32* dir) {
     bool moved = false;
     if (fn_802DCD0C() == 0) {
         if (dir[0] > 0) {
-            field_0x14++;
+            mScreenX_0x14++;
         } else if (dir[0] < 0) {
-            field_0x14--;
+            mScreenX_0x14--;
         } else if (dir[1] > 0) {
-            field_0x18++;
+            mScreenY_0x18++;
         } else {
-            field_0x18--;
+            mScreenY_0x18--;
         }
         fn_80231424();
         getActorManager_801F856C()->fn_801F7E88();
@@ -745,8 +745,8 @@ u8 GameView_804A9950::fn_802DCD0C() {
 // the map; with 3 it only resets the shadows. Then it places the players, spawns the
 // 'GLWP' actor at player 0 (field_0x131f9 2 or 3) and re-enters the players' slots.
 void GameView_804A9950::fn_802DBD60() {
-    field_0x14 = field_0x24;
-    field_0x18 = field_0x28;
+    mScreenX_0x14 = field_0x24;
+    mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
     restartTimeLimit();
     clearScreenState();
@@ -778,7 +778,7 @@ void GameView_804A9950::fn_802DBD60() {
         fn_802D92F0();
     } else if (getGameView_802D6A9C()->field_0x131f9 == 3) {
         gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
-        if (getGameView_802D6A9C()->field_0x4 != 7 || getGameView_802D6A9C()->field_0x8 != 3) {
+        if (getGameView_802D6A9C()->mStage_0x4 != 7 || getGameView_802D6A9C()->mLevel_0x8 != 3) {
             fn_8022ADE4();
         }
     }
@@ -842,8 +842,8 @@ void GameView_804A9950::fn_802DBD60() {
 // 1.0f / -1.0f, as in fn_802DA010. The camera corners are stored f.x, i.x, f.y, i.y (chained assignments; TBox2::set
 // stores i first).
 void GameView_804A9950::fn_802DB6F0() {
-    field_0x14 = field_0x24;
-    field_0x18 = field_0x28;
+    mScreenX_0x14 = field_0x24;
+    mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
     restartTimeLimit();
     clearScreenState();
@@ -884,8 +884,8 @@ void GameView_804A9950::fn_802DB6F0() {
 // instruction in clearScreenState's bit-table loop (the target copies the 0 with mr r8, r0
 // where ours loads li r7, 0xFF a slot later). Reloc-name: 1.0f / -1.0f as in fn_802DA010.
 void GameView_804A9950::fn_802DA8DC() {
-    field_0x14 = field_0x24;
-    field_0x18 = field_0x28;
+    mScreenX_0x14 = field_0x24;
+    mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
     clearStageTables();
     clearSlots();
@@ -933,7 +933,7 @@ void GameView_804A9950::fn_802DA8DC() {
 }
 
 void GameView_804A9950::fn_802DA788() {
-    if (field_0x14 < field_0x1c) {
+    if (mScreenX_0x14 < field_0x1c) {
         field_0x2c[0] = 1;
         field_0x2c[1] = 0;
     } else {
@@ -988,8 +988,8 @@ u8 GameView_804A9950::fn_802DA630() {
 // corners as in fn_802DB6F0. Reloc-name: 1.0f / -1.0f are pooled after literals of functions
 // not written yet.
 void GameView_804A9950::fn_802DA010() {
-    field_0x14 = field_0x24;
-    field_0x18 = field_0x28;
+    mScreenX_0x14 = field_0x24;
+    mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
     restartTimeLimit();
     clearScreenState();
@@ -1187,7 +1187,7 @@ static inline TileMap_804AA858* getTileMap() {
 // Structurally close: the target builds the resource type with 'M   ' in a
 // register (lis/addi 0x4D202020, add, then subi 0x20 for the last ' '); ours folds the
 // constant (addis/addi 0x2000) and adds it first; the inlined fn_802DEBA0 reloads the view
-// in the target (as fn_802DEBA0); the int-to-float temporaries of field_0x14 / field_0x18
+// in the target (as fn_802DEBA0); the int-to-float temporaries of mScreenX_0x14 / mScreenY_0x18
 // take each other's stack slots; regalloc follows.
 // Loads the current screen's tile grids: layers 0/1 from the screen's two "mmm" files
 // (resource type 'M' plus the stage name), then, unless fn_802DEBA0(), layers 8-14 and
@@ -1198,11 +1198,11 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     getGameView_802D6A9C()->field_0x5c = 0;
     const char* stage = "001";
     s32 screen = 0;
-    s32 col = field_0x14;
+    s32 col = mScreenX_0x14;
     if (col >= 0 && col < 10) {
-        s32 row = field_0x18;
+        s32 row = mScreenY_0x18;
         if (row >= 0 && row < 10) {
-            stage = fn_802D9C7C(field_0x4, field_0x8);
+            stage = fn_802D9C7C(mStage_0x4, mLevel_0x8);
             screen = field_0x60[row][col];
             if (screen == 0xFF) {
                 screen = 0;
@@ -1235,8 +1235,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
             }
         }
     }
-    f32 y = 384.0f * field_0x18;
-    f32 x = 512.0f * field_0x14;
+    f32 y = 384.0f * mScreenY_0x18;
+    f32 x = 512.0f * mScreenX_0x14;
     mVisibleBox.set(x, y, 512.0f + x, 384.0f + y);
     s32 w = 0.125f * mVisibleBox.getWidth();
     s32 h = 0.125f * mVisibleBox.getHeight();
@@ -1257,10 +1257,10 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
     char name[0x20];
     field_0x131f6 = flag;
     s32 index = 0;
-    if (field_0x14 >= 0 && field_0x14 < 10 && field_0x18 >= 0 && field_0x18 < 10) {
+    if (mScreenX_0x14 >= 0 && mScreenX_0x14 < 10 && mScreenY_0x18 >= 0 && mScreenY_0x18 < 10) {
         getGameView_802D6A9C()->field_0x131dc = 0;
-        const char* stage = fn_802D9C7C(field_0x4, field_0x8);
-        s32 screen = field_0x60[field_0x18][field_0x14];
+        const char* stage = fn_802D9C7C(mStage_0x4, mLevel_0x8);
+        s32 screen = field_0x60[mScreenY_0x18][mScreenX_0x14];
         if (screen == 0xFF) {
             screen = 0;
         }
@@ -1372,7 +1372,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         u32 value = field_0x130c8[i];
         s32 col = (value >> 16) & 0xFF;
         s32 row = (value >> 8) & 0xFF;
-        if (col == field_0x14 && row == field_0x18) {
+        if (col == mScreenX_0x14 && row == mScreenY_0x18) {
             u32 key = field_0x13068[i];
             JGeometry::TVec3f itemPos(field_0x13088[i].x, field_0x13088[i].y, 0.0f);
             getActorManager_801F856C()->spawnActor_801F9484('LSTI', value & 0xFF, &itemPos,
@@ -1383,7 +1383,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         u32 value = field_0x13128[i];
         s32 col = (value >> 16) & 0xFF;
         s32 row = (value >> 8) & 0xFF;
-        if (col == field_0x14 && row == field_0x18) {
+        if (col == mScreenX_0x14 && row == mScreenY_0x18) {
             JGeometry::TVec3f keyPos(field_0x130e8[i].x, field_0x130e8[i].y, 0.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('KEY0', value & 0xFF, &keyPos,
                                                                          ((value >> 24) & 0x3F) | 0x980, -1, -1);
@@ -1400,11 +1400,11 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
 }
 
 const char* GameView_804A9950::fn_802D8228(s32 layer) {
-    s32 col = field_0x14;
+    s32 col = mScreenX_0x14;
     if (col >= 0 && col < 10) {
-        s32 row = field_0x18;
+        s32 row = mScreenY_0x18;
         if (row >= 0 && row < 10) {
-            const char* name = fn_802D9C7C(field_0x4, field_0x8);
+            const char* name = fn_802D9C7C(mStage_0x4, mLevel_0x8);
             s32 screen = field_0x60[row][col];
             if (screen == 0xFF) {
                 screen = 0;
@@ -1417,11 +1417,11 @@ const char* GameView_804A9950::fn_802D8228(s32 layer) {
 }
 
 const char* GameView_804A9950::fn_802D8128(s32 layer) {
-    s32 col = field_0x14;
+    s32 col = mScreenX_0x14;
     if (col >= 0 && col < 10) {
-        s32 row = field_0x18;
+        s32 row = mScreenY_0x18;
         if (row >= 0 && row < 10) {
-            const char* name = fn_802D9C7C(field_0x4, field_0x8);
+            const char* name = fn_802D9C7C(mStage_0x4, mLevel_0x8);
             s32 screen = field_0x60[row][col];
             if (screen == 0xFF) {
                 screen = 0;
@@ -1436,32 +1436,32 @@ const char* GameView_804A9950::fn_802D8128(s32 layer) {
 // `^ -1` (not ~): the target clears with xor+and, not andc (as fn_802D78B4).
 void GameView_804A9950::fn_802D8050(s32 bit, bool set, u8 value) {
     if (set) {
-        getGameView_802D6A9C()->field_0x178[field_0x18][field_0x14] |= 1 << bit;
+        getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14] |= 1 << bit;
         if (getGameView_802D6A9C()->field_0x308[bit] < 0xFF) {
             getGameView_802D6A9C()->field_0x308[bit]++;
         }
         getGameView_802D6A9C()->field_0x328[bit] = value;
     } else {
-        getGameView_802D6A9C()->field_0x178[field_0x18][field_0x14] &= (1 << bit) ^ -1;
+        getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14] &= (1 << bit) ^ -1;
         getGameView_802D6A9C()->field_0x328[bit] = 0xFF;
     }
 }
 
 bool GameView_804A9950::fn_802D800C(s32 bit) {
-    return ((1 << bit) & getGameView_802D6A9C()->field_0x178[field_0x18][field_0x14]) != 0;
+    return ((1 << bit) & getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14]) != 0;
 }
 
 // `^ -1` (not ~): the target clears with xor+and, not andc (as fn_802D78B4).
 void GameView_804A9950::fn_802D7F84(s32 bit, bool set) {
     if (set) {
-        getGameView_802D6A9C()->field_0x348[field_0x4][field_0x8] |= 1 << bit;
+        getGameView_802D6A9C()->field_0x348[mStage_0x4][mLevel_0x8] |= 1 << bit;
     } else {
-        getGameView_802D6A9C()->field_0x348[field_0x4][field_0x8] &= (1 << bit) ^ -1;
+        getGameView_802D6A9C()->field_0x348[mStage_0x4][mLevel_0x8] &= (1 << bit) ^ -1;
     }
 }
 
 bool GameView_804A9950::fn_802D7F40(s32 bit) {
-    if (((1 << bit) & getGameView_802D6A9C()->field_0x348[field_0x4][field_0x8]) != 0) {
+    if (((1 << bit) & getGameView_802D6A9C()->field_0x348[mStage_0x4][mLevel_0x8]) != 0) {
         return true;
     }
     return false;
@@ -1500,16 +1500,16 @@ s32 GameView_804A9950::fn_802D7E04(s32 index) {
 void GameView_804A9950::fn_802D7D00(s32 layer, s32 bit, bool set) {
     s32 slot = layer < 8 ? 0 : layer - 7;
     if (set) {
-        getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][slot] |= 1ULL << bit;
+        getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][slot] |= 1ULL << bit;
     } else {
-        getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][slot] &= (1ULL << bit) ^ -1;
+        getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][slot] &= (1ULL << bit) ^ -1;
     }
 }
 
 void GameView_804A9950::fn_802D7BE8(s32 layer, s32 slot, u32 value) {
     s32 idx = layer < 8 ? 0 : layer - 7;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] &= (0xFULL << (60 - slot * 4)) ^ -1;
-    getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][idx] |= (u64)value << (60 - slot * 4);
+    getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][idx] &= (0xFULL << (60 - slot * 4)) ^ -1;
+    getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][idx] |= (u64)value << (60 - slot * 4);
 }
 
 s32 GameView_804A9950::fn_802D7B34(s32 layer, s32 slot) {
@@ -1518,15 +1518,15 @@ s32 GameView_804A9950::fn_802D7B34(s32 layer, s32 slot) {
     } else {
         layer = layer - 7;
     }
-    return (getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][layer] & (0xFULL << (60 - slot * 4))) >> (60 - slot * 4);
+    return (getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][layer] & (0xFULL << (60 - slot * 4))) >> (60 - slot * 4);
 }
 
 // The screen's 64-bit mask for the layer (fn_802D4768-fn_802D4ADC inline it).
 u64 GameView_804A9950::fn_802D7AC4(s32 layer) {
     if (layer < 8) {
-        return getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][0];
+        return getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][0];
     }
-    return getGameView_802D6A9C()->field_0x1048[field_0x18][field_0x14][layer - 7];
+    return getGameView_802D6A9C()->field_0x1048[mScreenY_0x18][mScreenX_0x14][layer - 7];
 }
 
 void GameView_804A9950::fn_802D79E8(s32 index, f32 a, f32 b, bool flag) {
@@ -1631,14 +1631,14 @@ void GameView_804A9950::fn_802D7790(s32 index, u16 bits) {
 }
 
 void GameView_804A9950::fn_802D7704(s32 bit, bool count, s32 layer) {
-    field_0x3548[field_0x18][field_0x14][bit / 32] |= 1 << (bit % 32);
+    field_0x3548[mScreenY_0x18][mScreenX_0x14][bit / 32] |= 1 << (bit % 32);
     if (count) {
         field_0x6748[layer < 8 ? 0 : layer - 7]++;
     }
 }
 
 bool GameView_804A9950::fn_802D76A8(s32 bit) {
-    return field_0x3548[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
+    return field_0x3548[mScreenY_0x18][mScreenX_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
@@ -1649,22 +1649,22 @@ void GameView_804A9950::fn_802D766C(bool flag, s32 layer) {
 }
 
 void GameView_804A9950::fn_802D7618(s32 bit) {
-    field_0x6768[field_0x18][field_0x14][bit / 32] |= 1 << (bit % 32);
+    field_0x6768[mScreenY_0x18][mScreenX_0x14][bit / 32] |= 1 << (bit % 32);
 }
 
 bool GameView_804A9950::fn_802D75BC(s32 bit) {
-    return field_0x6768[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
+    return field_0x6768[mScreenY_0x18][mScreenX_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D7584(s32 index, u8 value) {
     if (index >= 0 && index < 0x100) {
-        field_0x9968[field_0x18][field_0x14][index] = value;
+        field_0x9968[mScreenY_0x18][mScreenX_0x14][index] = value;
     }
 }
 
 u8 GameView_804A9950::fn_802D7544(s32 index) {
     if (index >= 0 && index < 0x100) {
-        return field_0x9968[field_0x18][field_0x14][index];
+        return field_0x9968[mScreenY_0x18][mScreenX_0x14][index];
     }
     return 0;
 }
@@ -1830,14 +1830,14 @@ void GameView_804A9950::fn_802D6B24(s32 bit, bool set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
     if (set) {
-        field_0xfd68[field_0x18][field_0x14][word] |= 1 << shift;
+        field_0xfd68[mScreenY_0x18][mScreenX_0x14][word] |= 1 << shift;
     } else {
-        field_0xfd68[field_0x18][field_0x14][word] &= (1 << shift) ^ -1;
+        field_0xfd68[mScreenY_0x18][mScreenX_0x14][word] &= (1 << shift) ^ -1;
     }
 }
 
 bool GameView_804A9950::fn_802D6AC4(s32 bit) {
-    return field_0xfd68[field_0x18][field_0x14][bit / 32] & (1 << (bit % 32));
+    return field_0xfd68[mScreenY_0x18][mScreenX_0x14][bit / 32] & (1 << (bit % 32));
 }
 
 void GameView_804A9950::fn_802D6AAC(u8 value) {
@@ -2505,9 +2505,9 @@ void GameView_804A9950::fn_802D3D48() {
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         const u8* str;
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
-            str = (const u8*)fn_80403328(lbl_804A9710[field_0x4][field_0x8]);
+            str = (const u8*)fn_80403328(lbl_804A9710[mStage_0x4][mLevel_0x8]);
         } else {
-            str = (const u8*)fn_80403328(lbl_804A9830[field_0x4][field_0x8]);
+            str = (const u8*)fn_80403328(lbl_804A9830[mStage_0x4][mLevel_0x8]);
         }
         while (true) {
             if (str[i] == (u8)',') {
@@ -2516,11 +2516,11 @@ void GameView_804A9950::fn_802D3D48() {
             i++;
         }
         i++;
-        field_0x14 = str[i] - '0';
-        field_0xc = field_0x14;
+        mScreenX_0x14 = str[i] - '0';
+        field_0xc = mScreenX_0x14;
         i += 2;
-        field_0x18 = str[i] - '0';
-        field_0x10 = field_0x18;
+        mScreenY_0x18 = str[i] - '0';
+        field_0x10 = mScreenY_0x18;
         i += 2;
         field_0x34 = str[i] - '0';
         if (str[i + 1] != (u8)',' && str[i + 1] != (u8)'\r') {
@@ -2646,15 +2646,15 @@ void GameView_804A9950::fn_802D3D48() {
                 controllers++;
             }
         }
-        s32 line = field_0x4 * 4 + field_0x8;
+        s32 line = mStage_0x4 * 4 + mLevel_0x8;
         const u8* str;
         if (controllers != 0) {
             str = (const u8*)fn_80403328("map500_ctrl.csv");
         } else {
             str = (const u8*)fn_80403328("map500.csv");
         }
-        field_0x14 = 1;
-        field_0x18 = 1;
+        mScreenX_0x14 = 1;
+        mScreenY_0x18 = 1;
         s32 pos = 0;
         if (line != col) {
             do {
@@ -2813,11 +2813,11 @@ void GameView_804A9950::fn_802D3A18() {
 }
 
 s32 GameView_804A9950::fn_802D39FC() {
-    return field_0x60[field_0x18][field_0x14];
+    return field_0x60[mScreenY_0x18][mScreenX_0x14];
 }
 
 bool GameView_804A9950::fn_802D39CC() {
-    if (field_0x18 == field_0x10 && field_0x14 == field_0xc) {
+    if (mScreenY_0x18 == field_0x10 && mScreenX_0x14 == field_0xc) {
         return true;
     }
     return false;

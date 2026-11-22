@@ -21,9 +21,9 @@ public:
     void fn_802AC09C();
 
     /* 0x230 */ s32 field_0x230; // state: 0 waiting, 1 waiting for the player to leave
-    /* 0x234 */ s32 field_0x234; // player (bits 16-19 of field_0x90)
+    /* 0x234 */ s32 field_0x234; // player (bits 16-19 of mSpawnParam_0x90)
     /* 0x238 */ s32 field_0x238; // countdown
-    /* 0x23C */ s32 field_0x23c; // bit 4 of field_0x90: stay after use
+    /* 0x23C */ s32 field_0x23c; // bit 4 of mSpawnParam_0x90: stay after use
     /* 0x240 */ s32 field_0x240; // the player's group leader
 }; // Size: 0x244
 

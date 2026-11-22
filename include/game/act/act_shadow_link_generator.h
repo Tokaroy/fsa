@@ -31,7 +31,7 @@ public:
     // each one that is found to its state 0xD.
     void fn_801C186C() const;
 
-    // The slot range comes from the spawn argument field_0x90 (init: bits
+    // The slot range comes from the spawn argument mSpawnParam_0x90 (init: bits
     // 8-15 and 16-23); fn_801C5660 keeps the low nibble of a slot.
     /* 0x2A8 */ u8 mSlotFirst;
     /* 0x2A9 */ u8 mSlotLast;

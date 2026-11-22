@@ -12,15 +12,15 @@ static const s32 lbl_805409D0[2] = {0x80, -0x80};
 
 void RotatingSkull_804A8588::init() {
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
-    field_0x80.set(-7.0f, -7.0f, 7.0f, 7.0f);
+    mMapBox_0x80.set(-7.0f, -7.0f, 7.0f, 7.0f);
     mPos.y += 12.0f;
     field_0x234.set(mPos);
     field_0x250 = 4;
     field_0x254 = 0;
     field_0x258 = 0;
-    field_0x248 = field_0x90 & 0x7F;
-    field_0x24c = (field_0x90 >> 12) & 0x1F;
-    field_0x240 = (field_0x90 >> 7) & 0x1F;
+    field_0x248 = mSpawnParam_0x90 & 0x7F;
+    field_0x24c = (mSpawnParam_0x90 >> 12) & 0x1F;
+    field_0x240 = (mSpawnParam_0x90 >> 7) & 0x1F;
     if (field_0x240 == 0) {
         field_0x25c = 0;
     } else {
@@ -34,19 +34,19 @@ void RotatingSkull_804A8588::init() {
         field_0x26c = 0.75f;
     } else if (field_0x240 == 2) {
         mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
-        field_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
+        mMapBox_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
         switch (field_0x248) {
         case 0:
-            field_0x3c = JGeometry::TVec3f(1.0f, 0.0f, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(1.0f, 0.0f, 0.0f);
             break;
         case 1:
-            field_0x3c = JGeometry::TVec3f(-1.0f, 0.0f, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(-1.0f, 0.0f, 0.0f);
             break;
         case 2:
-            field_0x3c = JGeometry::TVec3f(0.0f, 1.0f, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(0.0f, 1.0f, 0.0f);
             break;
         case 3:
-            field_0x3c = JGeometry::TVec3f(0.0f, -1.0f, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(0.0f, -1.0f, 0.0f);
             break;
         }
     }
@@ -84,14 +84,14 @@ void RotatingSkull_804A8588::update() {
             if (getScreenFlagCount_0x38() >= 3) {
                 field_0x25c = 1;
             }
-            if (getScreenFlagCount_0x38() == 3 && !(field_0x90 & 0xF)) {
+            if (getScreenFlagCount_0x38() == 3 && !(mSpawnParam_0x90 & 0xF)) {
                 field_0x25c = 0;
             }
         }
         if (field_0x254 == 0) {
             if (field_0x25c != 0) {
                 mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
-                if (fn_801F2B7C(field_0x114, -1, 1)) {
+                if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
                     field_0x248 ^= 1;
                     field_0x254 = 0x28;
                 }
@@ -101,10 +101,10 @@ void RotatingSkull_804A8588::update() {
         }
         break;
     case 1: {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x260.x, 0.3f, field_0x26c);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x260.y, 0.3f, field_0x26c);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x260.x, 0.3f, field_0x26c);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x260.y, 0.3f, field_0x26c);
         addCalc2_801F71A4(&field_0x26c, 1.0f, 0.1f, 0.1f);
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         JGeometry::TVec3f hit;
         if (fn_801F2618(&hit, false)) {
             if (hit.x != 0.0f) {
@@ -122,7 +122,7 @@ void RotatingSkull_804A8588::update() {
                 }
             }
         }
-        if (fn_801F2B7C(field_0x114, -1, 1)) {
+        if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
             if (field_0x260.x >= 0.0f) {
                 field_0x260.x = -1.0f;
             } else {
@@ -139,7 +139,7 @@ void RotatingSkull_804A8588::update() {
     case 2:
         if (isScreenFlagSet_0x34() == 1) {
             field_0x260.x = field_0x260.y = field_0x260.z = 0.0f;
-            field_0x260 += field_0x3c;
+            field_0x260 += mVel_0x3c;
             field_0x270.normalize();
             field_0x270.scale(-1.0f);
             field_0x270.z = 0.0f;
@@ -149,13 +149,13 @@ void RotatingSkull_804A8588::update() {
         } else {
             switch (field_0x230) {
             case 0:
-                mPos += field_0x3c;
+                mPos += mVel_0x3c;
                 if (fn_801F2618(&field_0x270, false) == 1) {
                     field_0x230 = 1;
                     field_0x270.normalize();
                     field_0x270.scale(-1.0f);
                     field_0x270.z = 0.0f;
-                    field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
                     f32 speed = 1.0f;
                     if (field_0x24c == 1) {
                         speed = -1.0f;
@@ -163,18 +163,18 @@ void RotatingSkull_804A8588::update() {
                     switch (field_0x248) {
                     case 0:
                     case 1:
-                        field_0x3c.y = speed;
+                        mVel_0x3c.y = speed;
                         break;
                     case 2:
                     case 3:
-                        field_0x3c.x = speed;
+                        mVel_0x3c.x = speed;
                         break;
                     }
                 }
                 break;
             case 1:
                 fn_802B21EC();
-                fn_801F2B7C(field_0x114, -1, 1);
+                fn_801F2B7C(mParamAtcp_0x114, -1, 1);
                 break;
             }
         }
@@ -187,8 +187,8 @@ void RotatingSkull_804A8588::fn_802B2728() {
         SpriteParams_801F5AE0 params;
         params.field_0x1d = 0;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x258 + 0x78, NULL, 1, 1.0f, 1.0f);
-        drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 128), 30.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x258 + 0x78, 0, 2, -1, false, 0, 0);
+        drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 128), 30.0f);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x258 + 0x78, 0, 2, -1, false, 0, 0);
     }
 }
 
@@ -200,10 +200,10 @@ void RotatingSkull_804A8588::fn_802B21EC() {
     JGeometry::TVec3f hitB(0.0f, 0.0f, 0.0f);
     JGeometry::TVec3f hitA(0.0f, 0.0f, 0.0f);
     JGeometry::TVec3f savedPos(mPos);
-    JGeometry::TVec3f savedVel(field_0x3c);
+    JGeometry::TVec3f savedVel(mVel_0x3c);
     JGeometry::TVec3f savedVel2(field_0x270);
     field_0x27c = 0;
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     u8 hit = fn_801F2618(&hitA, false);
     if (field_0x270.x != 0.0f) {
         field_0x27c = 1;
@@ -211,38 +211,38 @@ void RotatingSkull_804A8588::fn_802B21EC() {
         u8 hit2 = fn_801F2618(&hitB, false);
         if (hit == 1 && hitA.y != 0.0f) {
             if (field_0x270.x > 0.0f) {
-                if (!(field_0x3c.y > 0.0f)) {
+                if (!(mVel_0x3c.y > 0.0f)) {
                     sign = -1.0f;
                 }
-            } else if (field_0x3c.y > 0.0f) {
+            } else if (mVel_0x3c.y > 0.0f) {
                 sign = -1.0f;
             }
-            field_0x3c.x = -field_0x3c.y * sign;
+            mVel_0x3c.x = -mVel_0x3c.y * sign;
             field_0x270.y = field_0x270.x * sign;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             field_0x270.x = 0.0f;
         } else if (!hit2 || hitB.x == 0.0f) {
             if (field_0x270.x > 0.0f) {
-                if (field_0x3c.y > 0.0f) {
+                if (mVel_0x3c.y > 0.0f) {
                     sign = -1.0f;
                 }
-            } else if (!(field_0x3c.y > 0.0f)) {
+            } else if (!(mVel_0x3c.y > 0.0f)) {
                 sign = -1.0f;
             }
-            field_0x3c.x = -field_0x3c.y * sign;
+            mVel_0x3c.x = -mVel_0x3c.y * sign;
             field_0x270.y = field_0x270.x * sign;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             field_0x270.x = 0.0f;
             JGeometry::TVec3f prev(mPos);
-            mPos += field_0x3c * 3.0f + field_0x270;
+            mPos += mVel_0x3c * 3.0f + field_0x270;
             JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
             if (fn_801F2618(&hitC, false)) {
                 mPos = prev;
             } else {
                 mPos = savedPos;
-                field_0x3c = savedVel;
+                mVel_0x3c = savedVel;
                 field_0x270 = savedVel2;
-                mPos += field_0x3c;
+                mPos += mVel_0x3c;
             }
         }
     } else if (field_0x270.y != 0.0f) {
@@ -251,44 +251,44 @@ void RotatingSkull_804A8588::fn_802B21EC() {
         u8 hit2 = fn_801F2618(&hitB, false);
         if (hit == 1 && hitA.x != 0.0f) {
             if (field_0x270.y > 0.0f) {
-                if (!(field_0x3c.x > 0.0f)) {
+                if (!(mVel_0x3c.x > 0.0f)) {
                     sign = -1.0f;
                 }
-            } else if (field_0x3c.x > 0.0f) {
+            } else if (mVel_0x3c.x > 0.0f) {
                 sign = -1.0f;
             }
-            field_0x3c.y = -field_0x3c.x * sign;
+            mVel_0x3c.y = -mVel_0x3c.x * sign;
             field_0x270.x = field_0x270.y * sign;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x270.y = 0.0f;
         } else if (!hit2 || hitB.y == 0.0f) {
             if (field_0x270.y > 0.0f) {
-                if (field_0x3c.x > 0.0f) {
+                if (mVel_0x3c.x > 0.0f) {
                     sign = -1.0f;
                 }
-            } else if (!(field_0x3c.x > 0.0f)) {
+            } else if (!(mVel_0x3c.x > 0.0f)) {
                 sign = -1.0f;
             }
-            field_0x3c.y = -field_0x3c.x * sign;
+            mVel_0x3c.y = -mVel_0x3c.x * sign;
             field_0x270.x = field_0x270.y * sign;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x270.y = 0.0f;
             JGeometry::TVec3f prev(mPos);
-            mPos += field_0x3c * 3.0f + field_0x270;
+            mPos += mVel_0x3c * 3.0f + field_0x270;
             JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
             if (fn_801F2618(&hitC, false)) {
                 mPos = prev;
             } else {
                 mPos = savedPos;
-                field_0x3c = savedVel;
+                mVel_0x3c = savedVel;
                 field_0x270 = savedVel2;
-                mPos += field_0x3c;
+                mPos += mVel_0x3c;
             }
         }
     }
     if (field_0x27c == 1) {
         mPos = savedPos;
-        field_0x3c = savedVel;
+        mVel_0x3c = savedVel;
         field_0x270 = savedVel2;
     }
 }

@@ -23,8 +23,8 @@ public:
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;
-    /* 0x238 */ s32 field_0x238; // (field_0x90 >> 4) & 0xF
-    /* 0x23C */ s32 field_0x23c; // (field_0x90 >> 8) & 0xFF
+    /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 4) & 0xF
+    /* 0x23C */ s32 field_0x23c; // (mSpawnParam_0x90 >> 8) & 0xFF
     /* 0x240 */ f32 field_0x240;
     /* 0x244 */ SpriteAnim_801D267C mSprite;
     // The emitter the destructor releases with releaseEmitter_801EE434.

@@ -4,8 +4,8 @@
 #include "game/act/act_off_switch.h"
 
 void OFFSwitch_804A9B70::init() {
-    field_0x234 = field_0x90 & 0x1F;
-    field_0x238 = (field_0x90 >> 22) & 0x1F;
+    field_0x234 = mSpawnParam_0x90 & 0x1F;
+    field_0x238 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (getGameView_802D6A9C()->fn_802D800C(field_0x238)) {
         field_0x23c = true;
     } else {

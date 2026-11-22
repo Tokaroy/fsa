@@ -34,13 +34,13 @@ void cls_8049E8A0::init() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
     mLife = 1000;
     field_0xb8 = 1;
-    field_0xf8 = 2;
+    mKnockbackKind_0xf8 = 2;
     field_0xbc = 3;
     field_0x1a4 = 1;
     field_0xb0 = 0x0a040304;
@@ -48,10 +48,10 @@ void cls_8049E8A0::init() {
         field_0x23c = fn_804032E8('TIMG', lbl_80539F40[0]);
     }
     if (field_0x240 == NULL) {
-        field_0x240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x452, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x240 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x452, 0, 0, NULL, NULL, true, 1.0f);
     }
     if (field_0x244 == NULL) {
-        field_0x244 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x453, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x244 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x453, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -62,7 +62,7 @@ void cls_8049E8A0::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     switch (field_0x230) {
     case 0: {
         startSound_801F0E34(0x50069, 0);
@@ -130,7 +130,7 @@ void cls_8049E8A0::draw() {
         mtx[1][3] = (1.0f - field_0x238) * 32.0f;
         params.mMtx = mtx;
     }
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, field_0x23c, &params);
     }
 }
@@ -166,8 +166,8 @@ void cls_8049E8A0::melt() {
     if (field_0x234 == 0) {
         JGeometry::TVec3f pos = mPos;
         pos.y += 16.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x28d, 0, 0, NULL, NULL, true, field_0x238);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x28e, 0, 0, NULL, NULL, true, field_0x238);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x28d, 0, 0, NULL, NULL, true, field_0x238);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x28e, 0, 0, NULL, NULL, true, field_0x238);
         startSound_801F0E34(0x30061, 0);
     }
     field_0x234++;
@@ -175,9 +175,9 @@ void cls_8049E8A0::melt() {
         field_0x230 = 1;
         releaseEmitter_801EE434(field_0x240);
         releaseEmitter_801EE434(field_0x244);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x44f, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x450, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x451, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x44f, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x450, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x451, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x5006a, 0);
     }
 }

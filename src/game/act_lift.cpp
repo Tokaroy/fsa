@@ -35,7 +35,7 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scale) {
 // FIXME: 99.74 %, regalloc-only; behaviour clean.
 void Lift_804A6F6C::init() {
     if (((getField_0x90() >> 17) & 0x1F) == 0) {
-        field_0x90 |= 0x20000;
+        mSpawnParam_0x90 |= 0x20000;
     }
     field_0x23c = gGameRoot_8053AAF8->field_0xa4->getResource(0x3F3F3F3F /* "????": a char constant would be a trigraph */, lbl_804A6F48[getMode()]);
     ResTIMG* res = static_cast<ResTIMG*>(field_0x23c);
@@ -54,16 +54,16 @@ void Lift_804A6F6C::init() {
         field_0x234 = 0;
     }
     if (getMode() == 7) {
-        field_0x98 = 3;
+        mDir_0x98 = 3;
     } else {
-        field_0x98 = 0;
+        mDir_0x98 = 0;
     }
 }
 
 // FIXME(shotgun): 84.92 %, missing/extra; behaviour drift.
 // the player-position vector arithmetic, the atan2 argument order and the tile-index math are scheduled differently
 bool Lift_804A6F6C::fn_802565BC(s32 index) {
-    if (field_0x4 != getPlayerLayer_8023DE58(index)) {
+    if (mLayer_0x4 != getPlayerLayer_8023DE58(index)) {
         return false;
     }
     for (s32 i = 0; i < 8; i++) {
@@ -124,24 +124,24 @@ void Lift_804A6F6C::fn_80256410() {
         return;
     }
     if (getMode() == 6 || getMode() == 7) {
-        u32 limit = (field_0x90 & 0x3E0000) >> 12;
+        u32 limit = (mSpawnParam_0x90 & 0x3E0000) >> 12;
         if (field_0x230 < limit) {
             field_0x230++;
         } else {
             field_0x234 = 60;
             field_0x230 = 0;
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
-                field_0x98 = 1;
+                mDir_0x98 = 1;
                 break;
             case 1:
-                field_0x98 = 0;
+                mDir_0x98 = 0;
                 break;
             case 2:
-                field_0x98 = 3;
+                mDir_0x98 = 3;
                 break;
             case 3:
-                field_0x98 = 2;
+                mDir_0x98 = 2;
                 break;
             }
         }
@@ -150,14 +150,14 @@ void Lift_804A6F6C::fn_80256410() {
         field_0x238 += 0x40;
     }
     if (getMode() == 6) {
-        if (field_0x98 == 0) {
+        if (mDir_0x98 == 0) {
             mPos.x += 0.5f;
         } else {
             mPos.x -= 0.5f;
         }
     }
     if (getMode() == 7) {
-        if (field_0x98 == 2) {
+        if (mDir_0x98 == 2) {
             mPos.y += 0.5f;
         } else {
             mPos.y -= 0.5f;
@@ -174,14 +174,14 @@ void Lift_804A6F6C::fn_80256410() {
 // Stack slot order and f4/f5 regalloc around sqrt/sincos still differ.
 // FIXME: 99.17 %, operands; behaviour clean.
 void Lift_804A6F6C::update() {
-    if (field_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
+    if (mSpawnParam_0x90 >> 27 == 0 || isScreenFlagSet_0x34() == true) {
         fn_80256410();
     }
     for (s32 i = 0; i < 4; i++) {
         if (!fn_802565BC(i)) {
             continue;
         }
-        if (field_0x90 >> 27 != 0 && isScreenFlagSet_0x34() != true) {
+        if (mSpawnParam_0x90 >> 27 != 0 && isScreenFlagSet_0x34() != true) {
             continue;
         }
         fn_8023DF68(i, &(mPos - mPrevPos));
@@ -211,7 +211,7 @@ void Lift_804A6F6C::draw() {
     params.field_0x21 = 1;
     params.field_0x1d = -2;
     const char* name = lbl_804A6F48[getMode()];
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }

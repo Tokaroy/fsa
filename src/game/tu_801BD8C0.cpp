@@ -22,25 +22,25 @@ void cls_804A4038::init() {
     EnemyBase_804A4808::init();
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     field_0x194 = 1;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     for (s32 i = 0; i < 2; i++) {
-        mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053EC88[i], 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EC88[i], 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
 void cls_804A4038::update() {
-    mPlayersHit = fn_801F2B7C(field_0x114, -1, 1);
-    if (field_0x90 == 0) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x54D, 1, 1, NULL, NULL, true, 1.0f);
+    mPlayersHit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
+    if (mSpawnParam_0x90 == 0) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54D, 1, 1, NULL, NULL, true, 1.0f);
     }
 }
 
 void cls_804A4038::draw() {
-    drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
+    drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
 }
 
 void cls_804A4038::fn_801BD8C0(const JGeometry::TVec3f* pos, s16 angle) {

@@ -21,7 +21,7 @@ public:
     /* 0x20 */ virtual void draw();
 
     // Slot 0x54, overriding cls_8049D140::vfunc_0x54 (0x801174C0, game/act_four_sword_demo.cpp).
-    // Reads field_0x4 and field_0x8 of fn_8011921C()'s object and, when the
+    // Reads mLayer_0x4 and field_0x8 of fn_8011921C()'s object and, when the
     // first is 2, calls fn_80117074 with the index of the matching
     // lbl_80464A7C entry.
     /* 0x54 */ virtual void vfunc_0x54();

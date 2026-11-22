@@ -16,7 +16,7 @@ public:
     cls_804A8638() {}
     // 0x802B51C0 (vtable slot 0x08): the emitters, then the sound object.
     /* 0x08 */ virtual ~cls_804A8638();
-    // 0x802B5360 (slot 0x0C): decodes field_0x90 and starts the preset.
+    // 0x802B5360 (slot 0x0C): decodes mSpawnParam_0x90 and starts the preset.
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();
@@ -48,7 +48,7 @@ public:
     /* 0x24C */ s32 field_0x24c;
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ JGeometry::TVec3f field_0x254; // init(): the camera's 0x10 / 0x20 fields, negated
-    /* 0x260 */ s32 field_0x260; // bits 22..24 of field_0x90
+    /* 0x260 */ s32 field_0x260; // bits 22..24 of mSpawnParam_0x90
     /* 0x264 */ s32 field_0x264; // bit 21
     /* 0x268 */ s32 field_0x268; // bit 20
     /* 0x26C */ s32 field_0x26c;
@@ -75,7 +75,7 @@ public:
     /* 0x2C0 */ f32 field_0x2c0[4];
     /* 0x2D0 */ u8 field_0x2d0[6]; // the saved fog bytes (fn_8016A3AC's 0x1EC..0x1F1)
     /* 0x2D6 */ u8 field_0x2d6[2];
-    /* 0x2D8 */ s32 field_0x2d8; // low nibble of field_0x90: the preset
+    /* 0x2D8 */ s32 field_0x2d8; // low nibble of mSpawnParam_0x90: the preset
     /* 0x2DC */ JUtility::TColor field_0x2dc;
     /* 0x2E0 */ s32 field_0x2e0;
     /* 0x2E4 */ s32 field_0x2e4;

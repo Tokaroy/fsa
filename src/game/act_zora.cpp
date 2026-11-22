@@ -46,13 +46,13 @@ static inline u32 clamp(u32 val, u32 min, u32 max) {
 void ZoraEnemy_804A3D7C::init() {
     EnemyBase_804A4808::init();
     fn_801D0E58();
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.set(-7.999f, -7.999f, 7.999f, 7.999f);
+    mMapBox_0x80.set(-7.999f, -7.999f, 7.999f, 7.999f);
     if (mActorId == 'LTZR') {
         field_0xb0 = 0;
     } else {
@@ -68,7 +68,7 @@ void ZoraEnemy_804A3D7C::init() {
     mAnim.fn_801D2608(lbl_804A3D68, 5);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
-    field_0x90 = clamp(field_0x90, 0U, 15U);
+    mSpawnParam_0x90 = clamp(mSpawnParam_0x90, 0U, 15U);
     vfunc_0xA4();
 }
 
@@ -85,8 +85,8 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
         if (mActorId == 'ZORA') {
             JGeometry::TVec3f probePos;
             JGeometry::TVec3f spawnPos = mSpawnPos;
-            s32 range = field_0x90;
-            if (field_0x90 != 0) {
+            s32 range = mSpawnParam_0x90;
+            if (mSpawnParam_0x90 != 0) {
                 s32 count = 0;
                 cls_801BB1A8 tiles[961];
                 for (s32 dx = -range; dx <= range; dx++) {
@@ -94,7 +94,7 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
                         probePos.set(mSpawnPos);
                         probePos.x += dx * 16.0f;
                         probePos.y += dy * 16.0f;
-                        if (fn_8022461C(&probePos, field_0x4) == 0xD) {
+                        if (fn_8022461C(&probePos, mLayer_0x4) == 0xD) {
                             tiles[count].x = dx;
                             tiles[count].y = dy;
                             count++;
@@ -111,15 +111,15 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
             mPrevPos = spawnPos;
         }
         field_0x54.set(0.0f, 0.0f, 0.0f);
-        field_0x2a8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x555, -1, NULL, NULL, NULL, true, 1.0f);
+        field_0x2a8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x555, -1, NULL, NULL, NULL, true, 1.0f);
         break;
     case 2:
         field_0x250 = -1;
         mAnim.startAnim_801D22DC(1, 0, false);
         releaseEmitter_801EE434(field_0x2a8);
         field_0x2a8 = NULL;
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x15C, -1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15C, -1, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x40050, 0);
         break;
     case 3:
@@ -146,8 +146,8 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
         mFlags |= ENEMY_FLAG_NO_ATTACK;
         field_0x250 = -1;
         mAnim.startAnim_801D22DC(4, 0, false);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x15C, -1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15B, 0, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15C, -1, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x50032, 0);
         break;
     }

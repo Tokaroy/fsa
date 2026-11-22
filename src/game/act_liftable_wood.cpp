@@ -20,14 +20,14 @@ static const f32 lbl_8046CAD0[4][2] = {
 static const u32 lbl_8046CAF0[4] = {4, 3, 3, 3};
 
 void LiftableWood_804A87A8::init() {
-    field_0x238 = (field_0x90 >> 22) & 0x1F;
+    field_0x238 = (mSpawnParam_0x90 >> 22) & 0x1F;
     mPos.x += 8.0f;
     mBox.i.x = -48.0f;
     mBox.i.y = -16.0f;
     mBox.f.x = 48.0f;
     mBox.f.y = 40.0f;
     field_0x1a4 = 1;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         field_0x244 = 1;
     } else {
         field_0x244 = 8;
@@ -38,8 +38,8 @@ void LiftableWood_804A87A8::init() {
     mEmitter230 = NULL;
     mTimer240 = 0;
     if (getGameView_802D6A9C()->fn_802D7544(field_0x16c)) {
-        // FIXME: 89.58% (scheduling+regalloc). The original loads field_0x244/field_0x4 (call args) between the x-8.0f subtraction and the mPos.y/z loads and stores the TVec3f temporary x,y,z; ours loads mPos.z/y first and stores y,x,z.
-        gBgRewrite_8053AC98->fn_8029D8F0(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y, mPos.z), field_0x4, field_0x244, 0);
+        // FIXME: 89.58% (scheduling+regalloc). The original loads field_0x244/mLayer_0x4 (call args) between the x-8.0f subtraction and the mPos.y/z loads and stores the TVec3f temporary x,y,z; ours loads mPos.z/y first and stores y,x,z.
+        gBgRewrite_8053AC98->fn_8029D8F0(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y, mPos.z), mLayer_0x4, field_0x244, 0);
         mAlive = false;
     }
 }
@@ -60,7 +60,7 @@ void LiftableWood_804A87A8::update() {
         JGeometry::TBox2f box = mBox;
         box.addPos(mPos.x, mPos.y);
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, &box, field_0x4)) {
+            if (fn_8023F264(i) && fn_80236E3C(i) && fn_80239C00(i, &box, mLayer_0x4)) {
                 JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 f32 px = playerPos->x;
                 f32 py = playerPos->y;
@@ -92,13 +92,13 @@ void LiftableWood_804A87A8::update() {
     case 2:
         mTimer23c--;
         if (mTimer23c == 0) {
-            // FIXME: 97.70% (scheduling+regalloc). Same TVec3f(mPos.x - 8.0f, mPos.y, mPos.z) temporary scheduling as in init (field_0x244/field_0x4 loads and y/z load order), and mPos.x/y/z are loaded in a different order for setGlobalTranslation.
-            gBgRewrite_8053AC98->fn_8029D8F0(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y, mPos.z), field_0x4, field_0x244, 0);
+            // FIXME: 97.70% (scheduling+regalloc). Same TVec3f(mPos.x - 8.0f, mPos.y, mPos.z) temporary scheduling as in init (field_0x244/mLayer_0x4 loads and y/z load order), and mPos.x/y/z are loaded in a different order for setGlobalTranslation.
+            gBgRewrite_8053AC98->fn_8029D8F0(&JGeometry::TVec3f(mPos.x - 8.0f, mPos.y, mPos.z), mLayer_0x4, field_0x244, 0);
             mState = 3;
             if (field_0x248[0] == 'u') {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &JGeometry::TVec3f(mPos.x, mPos.y, mPos.z), 0x280, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y, mPos.z), 0x280, 0, 0, NULL, NULL, true, 1.0f);
             } else {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &JGeometry::TVec3f(mPos.x, mPos.y, mPos.z), 0x27F, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &JGeometry::TVec3f(mPos.x, mPos.y, mPos.z), 0x27F, 0, 0, NULL, NULL, true, 1.0f);
             }
             mTimer240 = 50;
         }
@@ -122,8 +122,8 @@ void LiftableWood_804A87A8::update() {
                 fn_80230C6C(field_0xc8);
             }
         } else {
-            field_0x3c.z += -0.15f;
-            mPos += field_0x3c;
+            mVel_0x3c.z += -0.15f;
+            mPos += mVel_0x3c;
             if (mPos.z < 0.0f) {
                 die_0x24();
             } else if (fn_801F2B7C(0, field_0xc8, 6) || fn_801F2B20(0)) {
@@ -158,27 +158,27 @@ void LiftableWood_804A87A8::draw() {
 
 void LiftableWood_804A87A8::die_0x24() {
     if (field_0x248[0] == 'r' || field_0x248[0] == 's' || field_0x248[0] == 'y') {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xAD, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xB1, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xB2, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xAD, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xB1, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xB2, 1, 0, NULL, NULL, true, 1.0f);
     } else if (field_0x248[0] == 'u') {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xAE, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xB3, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xB4, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xAE, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xB3, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xB4, 1, 0, NULL, NULL, true, 1.0f);
     } else {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xAD, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xAF, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xB0, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xAD, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xAF, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xB0, 1, 0, NULL, NULL, true, 1.0f);
     }
     startSound_801F0E34(0x30003, 0);
     if (field_0x238 == 0) {
         for (s32 i = 0; i < 4; i++) {
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, lbl_8046CAF0[i]);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, lbl_8046CAF0[i]);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
                     // FIXME: 99.32% (regalloc-only). target->ours r6->r7, f4->f3, r7->r6, f1->f0 in the random velocity construction.
-                    actor->field_0x3c = JGeometry::TVec3f(
+                    actor->mVel_0x3c = JGeometry::TVec3f(
                         2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                         2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                         3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
@@ -187,7 +187,7 @@ void LiftableWood_804A87A8::die_0x24() {
             }
         }
     } else if (field_0x238 == 2) {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, field_0x4, &mPos, 0, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FARY, mLayer_0x4, &mPos, 0, -1, -1);
     }
     mAlive = false;
 }

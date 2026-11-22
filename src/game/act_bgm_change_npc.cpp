@@ -13,11 +13,11 @@
 extern const u32 lbl_8046F1C8[38];
 
 void BGMChangeNPC_804A9DA0::init() {
-    field_0x234 = field_0x90 & 0x7F;
-    field_0x238 = ((field_0x90 >> 22) & 0x1F) + 1;
-    field_0x23c = ((field_0x90 >> 17) & 0x1F) + 1;
-    field_0x240 = (field_0x90 >> 12) & 0x1F;
-    field_0x250 = (field_0x90 >> 7) & 1;
+    field_0x234 = mSpawnParam_0x90 & 0x7F;
+    field_0x238 = ((mSpawnParam_0x90 >> 22) & 0x1F) + 1;
+    field_0x23c = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
+    field_0x240 = (mSpawnParam_0x90 >> 12) & 0x1F;
+    field_0x250 = (mSpawnParam_0x90 >> 7) & 1;
     GameView_804A9950* view = getGameView_802D6A9C();
     field_0x248 = view->field_0x34;
     f32 halfH = 16.0f * field_0x23c;
@@ -38,7 +38,7 @@ void BGMChangeNPC_804A9DA0::update() {
     if (field_0x240 != 2) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             for (s32 i = 0; i < 4; i++) {
-                if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1 && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1 && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                     if (containsPoint(box, pos)) {
                         field_0x258 = i;
@@ -52,7 +52,7 @@ void BGMChangeNPC_804A9DA0::update() {
             }
         } else {
             field_0x25c = fn_8022EA0C(0);
-            if (field_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x25c);
                 if (containsPoint(box, pos)) {
                     field_0x258 = field_0x25c;
@@ -62,7 +62,7 @@ void BGMChangeNPC_804A9DA0::update() {
         }
     } else if (gGameRoot_8053AAF8->field_0x7e == 1) {
         for (s32 i = 0; i < 4; i++) {
-            if (field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 if (containsPoint(box, pos)) {
                     field_0x258 = i;
@@ -73,14 +73,14 @@ void BGMChangeNPC_804A9DA0::update() {
         }
         if (field_0x258 >= 0) {
             field_0x25c = fn_8022EA0C(field_0x258);
-            if (field_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
                 field_0x258 = field_0x25c;
                 field_0x94 = field_0x25c;
             }
         }
     } else {
         field_0x25c = fn_8022EA0C(0);
-        if (field_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
+        if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
             field_0x258 = field_0x25c;
             field_0x94 = field_0x25c;
         }
@@ -99,12 +99,12 @@ void BGMChangeNPC_804A9DA0::update() {
                 for (s32 i = 0; i < end; i++) {
                     ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
                     if (other != NULL && other->mActorId == ACTOR_BGMN &&
-                        (other->field_0x90 & 0x7F) == (u32)field_0x234) {
-                        s32 layer = other->field_0x4;
-                        u32 kind = (other->field_0x90 >> 12) & 0x1F;
+                        (other->mSpawnParam_0x90 & 0x7F) == (u32)field_0x234) {
+                        s32 layer = other->mLayer_0x4;
+                        u32 kind = (other->mSpawnParam_0x90 >> 12) & 0x1F;
                         JGeometry::TVec3f otherPos = other->mPos;
-                        f32 halfW = 16.0f * (s32)(((other->field_0x90 >> 22) & 0x1F) + 1);
-                        f32 halfH = 16.0f * (s32)(((other->field_0x90 >> 17) & 0x1F) + 1);
+                        f32 halfW = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 22) & 0x1F) + 1);
+                        f32 halfH = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 17) & 0x1F) + 1);
                         mBox.set(-halfW, -halfH, halfW, halfH);
                         JGeometry::TBox2f otherBox(mBox);
                         otherBox.addPos(otherPos.x, otherPos.y);
@@ -123,22 +123,22 @@ void BGMChangeNPC_804A9DA0::update() {
                 }
             }
         }
-        if (field_0x258 >= 0 && field_0x4 != getPlayerLayer_8023DE58(field_0x258)) {
+        if (field_0x258 >= 0 && mLayer_0x4 != getPlayerLayer_8023DE58(field_0x258)) {
             field_0x258 = -1;
         }
         if (field_0x250 != 0) {
             field_0x258 = -1;
         }
-    } else if (field_0x254 != field_0x4) {
+    } else if (field_0x254 != mLayer_0x4) {
         s32 free = 1;
         s32 end = getActorManager_801F856C()->mActorEnd;
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
             if (other != NULL && i != mSerial && other->mActorId == ACTOR_BGMN &&
-                field_0x254 == other->field_0x4) {
+                field_0x254 == other->mLayer_0x4) {
                 if (other->field_0x94 != 0xFFFF) {
                     free = 0;
-                } else if ((u32)field_0x234 == (other->field_0x90 & 0x7F)) {
+                } else if ((u32)field_0x234 == (other->mSpawnParam_0x90 & 0x7F)) {
                     free = 0;
                 }
             }
@@ -154,13 +154,13 @@ void BGMChangeNPC_804A9DA0::update() {
             s32 end = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* other = getActorManager_801F856C()->mActors[i];
-                if (other != NULL && other->mActorId == ACTOR_BGMN && field_0x254 == other->field_0x4) {
-                    if (((other->field_0x90 >> 12) & 0x1F) == 2) {
+                if (other != NULL && other->mActorId == ACTOR_BGMN && field_0x254 == other->mLayer_0x4) {
+                    if (((other->mSpawnParam_0x90 >> 12) & 0x1F) == 2) {
                         return;
                     }
-                    if ((other->field_0x90 & 0x7F) == (u32)field_0x234) {
-                        f32 halfW = 16.0f * (s32)(((other->field_0x90 >> 22) & 0x1F) + 1);
-                        f32 halfH = 16.0f * (s32)(((other->field_0x90 >> 17) & 0x1F) + 1);
+                    if ((other->mSpawnParam_0x90 & 0x7F) == (u32)field_0x234) {
+                        f32 halfW = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 22) & 0x1F) + 1);
+                        f32 halfH = 16.0f * (s32)(((other->mSpawnParam_0x90 >> 17) & 0x1F) + 1);
                         mBox.set(-halfW, -halfH, halfW, halfH);
                         JGeometry::TVec3f otherPos = other->mPos;
                         JGeometry::TBox2f otherBox(mBox);
@@ -179,7 +179,7 @@ void BGMChangeNPC_804A9DA0::update() {
     case 0: {
         u8 start = 0;
         if (field_0x240 == 0 || field_0x240 == 3 || field_0x240 == 4) {
-            if (field_0x258 >= 0 || (field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
+            if (field_0x258 >= 0 || (mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 start = 1;
             }
         } else if (field_0x258 >= 0) {

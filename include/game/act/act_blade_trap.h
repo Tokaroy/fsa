@@ -36,7 +36,7 @@ public:
     /* 0x25C */ s32 field_0x25c; // spawn parameter bits 12-15; nonzero: starts in state 3
     /* 0x260 */ s32 field_0x260; // animation frame 0-3 (draw adds 0x17A)
     /* 0x264 */ u8 field_0x264;  // spawn parameter bit 2: turns towards the player
-    /* 0x268 */ JGeometry::TVec3f field_0x268; // target velocity (field_0x3c eases to it)
+    /* 0x268 */ JGeometry::TVec3f field_0x268; // target velocity (mVel_0x3c eases to it)
     /* 0x274 */ JGeometry::TVec3f field_0x274; // home position (mPos in init)
 }; // Size: 0x280
 

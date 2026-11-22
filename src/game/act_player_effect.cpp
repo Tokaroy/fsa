@@ -19,11 +19,11 @@ extern const f32 lbl_8046ACC8[37][2];
 void PlayerEffect_804A6E20::init() {
     if (getKind() != 5) {
         if (getKind() == 1) {
-            if (fn_8022F514(field_0x90 & 3)) {
+            if (fn_8022F514(mSpawnParam_0x90 & 3)) {
                 mAlive = false;
                 return;
             }
-        } else if (getKind() != 6 && getKind() != 7 && getKind() != 8 && getKind() != 9 && field_0x4 < 8) {
+        } else if (getKind() != 6 && getKind() != 7 && getKind() != 8 && getKind() != 9 && mLayer_0x4 < 8) {
             mAlive = false;
             return;
         }
@@ -59,14 +59,14 @@ void PlayerEffect_804A6E20::init() {
         break;
     case 6:
     case 8:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         mPos.x += 10.0f;
         mPos.z += 20.0f;
         field_0x234 = 0x2A3;
         break;
     case 7:
     case 9:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         mPos.x -= 10.0f;
         mPos.z += 20.0f;
         field_0x234 = 0x2A3;
@@ -84,7 +84,7 @@ void PlayerEffect_804A6E20::init() {
         field_0x234 = 0x300;
         break;
     }
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 // 0x80229F1C.
@@ -106,9 +106,9 @@ void PlayerEffect_804A6E20::update() {
         }
         break;
     case 1: {
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         field_0x234 = ((field_0x230 >> 1) & 7) + 0x7D;
-        s32 player = field_0x90 & 3;
+        s32 player = mSpawnParam_0x90 & 3;
         if (fn_80237774(player) == lbl_80529DEC.field_0xd8[player]) {
             mAlive = false;
         }
@@ -137,13 +137,13 @@ void PlayerEffect_804A6E20::update() {
         } else {
             mPos.x += 0.5f;
         }
-        if (mPos.y < mSpawnPos.y - 50.0f || fn_8022461C(&mPos, field_0x4) != 0x3B) {
+        if (mPos.y < mSpawnPos.y - 50.0f || fn_8022461C(&mPos, mLayer_0x4) != 0x3B) {
             mAlive = false;
         }
         break;
     case 4:
     case 14:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         mPos.z += 16.0f;
         if (field_0x230 >= 12) {
             field_0x230 = 0;
@@ -151,10 +151,10 @@ void PlayerEffect_804A6E20::update() {
         field_0x234 = (u16)(field_0x230 / 3) + 0x1C3;
         if (getKind() == 14) {
             mPos.x -= 4.0f;
-            if (fn_80239D38() || !fn_80236B50(field_0x90 & 3) || fn_80236AB4(field_0x90 & 3)) {
+            if (fn_80239D38() || !fn_80236B50(mSpawnParam_0x90 & 3) || fn_80236AB4(mSpawnParam_0x90 & 3)) {
                 mAlive = false;
             }
-        } else if (!fn_80235274(field_0x90 & 3)) {
+        } else if (!fn_80235274(mSpawnParam_0x90 & 3)) {
             mAlive = false;
         }
         break;
@@ -164,51 +164,51 @@ void PlayerEffect_804A6E20::update() {
                 JGeometry::TVec3f pos(mPos);
                 pos.x += lbl_8046ACC8[0 + i][0];
                 pos.y += lbl_8046ACC8[0 + i][1];
-                gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
+                gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
         } else if (field_0x230 == 11) {
             for (s32 i = 0; i < 12; i++) {
                 JGeometry::TVec3f pos(mPos);
                 pos.x += lbl_8046ACC8[9 + i][0];
                 pos.y += lbl_8046ACC8[9 + i][1];
-                gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
+                gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
         } else if (field_0x230 == 21) {
             for (s32 i = 0; i < 16; i++) {
                 JGeometry::TVec3f pos(mPos);
                 pos.x += lbl_8046ACC8[21 + i][0];
                 pos.y += lbl_8046ACC8[21 + i][1];
-                gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x90 & 3, field_0x4, 0, 1);
+                gBgRewrite_8053AC98->fn_802A20F0(&pos, mSpawnParam_0x90 & 3, mLayer_0x4, 0, 1);
             }
             mAlive = false;
         }
         break;
     case 6:
     case 8:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         mPos.x += 10.0f;
         mPos.z += 20.0f;
-        if (fn_8022FA80(field_0x90 & 3) == 1 || getKind() == 8) {
+        if (fn_8022FA80(mSpawnParam_0x90 & 3) == 1 || getKind() == 8) {
             if (field_0x230 >= 2 && field_0x234 == 0x2A3) {
                 field_0x230 = 2;
-                s32 slot = fn_8022F340(field_0x90 & 3);
+                s32 slot = fn_8022F340(mSpawnParam_0x90 & 3);
                 u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
                 if (mode == 2) {
                     field_0x234 = 0x2A5;
-                } else if (fn_8037E694(field_0x90 & 3) == 1) {
-                    if (field_0x4 < 8) {
+                } else if (fn_8037E694(mSpawnParam_0x90 & 3) == 1) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A5;
                     } else {
                         field_0x234 = 0x2A8;
                     }
-                } else if (fn_8037E694(field_0x90 & 3) == 2) {
-                    if (field_0x4 < 8) {
+                } else if (fn_8037E694(mSpawnParam_0x90 & 3) == 2) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A4;
                     } else {
                         field_0x234 = 0x2A5;
                     }
                 } else {
-                    if (field_0x4 < 8) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A5;
                     } else {
                         field_0x234 = 0x2A8;
@@ -221,30 +221,30 @@ void PlayerEffect_804A6E20::update() {
         break;
     case 7:
     case 9:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         mPos.x -= 10.0f;
         mPos.z += 20.0f;
-        if (fn_8022FA80(field_0x90 & 3) == 1 || getKind() == 9) {
+        if (fn_8022FA80(mSpawnParam_0x90 & 3) == 1 || getKind() == 9) {
             if (field_0x230 > 2 && field_0x234 == 0x2A3) {
                 field_0x230 = 2;
-                s32 slot = fn_8022F340(field_0x90 & 3);
+                s32 slot = fn_8022F340(mSpawnParam_0x90 & 3);
                 u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (slot * 2)) & 3;
                 if (mode == 2) {
                     field_0x234 = 0x2A6;
-                } else if (fn_8037E694(field_0x90 & 3) == 1) {
-                    if (field_0x4 < 8) {
+                } else if (fn_8037E694(mSpawnParam_0x90 & 3) == 1) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A6;
                     } else {
                         field_0x234 = 0x2A9;
                     }
-                } else if (fn_8037E694(field_0x90 & 3) == 2) {
-                    if (field_0x4 < 8) {
+                } else if (fn_8037E694(mSpawnParam_0x90 & 3) == 2) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A7;
                     } else {
                         field_0x234 = 0x2A6;
                     }
                 } else {
-                    if (field_0x4 < 8) {
+                    if (mLayer_0x4 < 8) {
                         field_0x234 = 0x2A6;
                     } else {
                         field_0x234 = 0x2A9;
@@ -256,7 +256,7 @@ void PlayerEffect_804A6E20::update() {
         }
         break;
     case 10:
-        mPos = *getPlayerPos_8023E724(field_0x90 & 3);
+        mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         if (field_0x230 <= 2) {
             field_0x234 = 0x2F5;
         } else {
@@ -325,27 +325,27 @@ static inline void drawShadow_802297FC(s32 layer, const JGeometry::TVec3f* pos, 
 // FIXME: 99.78 %, reloc-name; behaviour drift.
 void PlayerEffect_804A6E20::draw() {
     SpriteParams_801F5AE0 params;
-    switch ((field_0x90 >> 2) & 0x3F) {
+    switch ((mSpawnParam_0x90 >> 2) & 0x3F) {
     case 0:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 1:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, false, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, false, 0, 0);
         break;
     case 2:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 3:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 4:
     case 14:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 6:
     case 7:
@@ -353,24 +353,24 @@ void PlayerEffect_804A6E20::draw() {
     case 9:
         params.field_0x1c = 2;
         params.field_0x2d = 1;
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, &params);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, &params);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 10:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 11:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 12:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     case 13:
-        drawShadow_802297FC(field_0x4, getPos(), field_0x234, NULL);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
+        drawShadow_802297FC(mLayer_0x4, getPos(), field_0x234, NULL);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234, 0, 1, -1, true, 0, 0);
         break;
     }
 }

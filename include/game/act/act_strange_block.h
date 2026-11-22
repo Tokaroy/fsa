@@ -33,12 +33,12 @@ public:
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254;
     /* 0x258 */ s32 field_0x258;
-    /* 0x25C */ s32 field_0x25c; // kind: bits 12-15 of field_0x90; act_small_key bounces off it in 0 and 2
+    /* 0x25C */ s32 field_0x25c; // kind: bits 12-15 of mSpawnParam_0x90; act_small_key bounces off it in 0 and 2
     /* 0x260 */ s32 field_0x260; // size (2 or 4)
-    /* 0x264 */ u8 field_0x264; // bit 17 of field_0x90
+    /* 0x264 */ u8 field_0x264; // bit 17 of mSpawnParam_0x90
     /* 0x265 */ u8 field_0x265;
     /* 0x266 */ u8 field_0x266[2]; // not yet known
-    /* 0x268 */ s32 field_0x268; // (field_0x90 & 0xFFF) + 0x12B
+    /* 0x268 */ s32 field_0x268; // (mSpawnParam_0x90 & 0xFFF) + 0x12B
     /* 0x26C */ s32 field_0x26c;
     /* 0x270 */ u8 field_0x270;
     /* 0x271 */ u8 field_0x271;

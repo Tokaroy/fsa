@@ -12,7 +12,7 @@ void TingleBuster_804A5370::init() {
     EnemyBase_804A4808::init();
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
     mFlags |= 0x380;
     mLife = 1000;
@@ -30,9 +30,9 @@ bool fn_801E3250(s32 layer, bool highNibble) {
         if (actor != NULL) {
             u32 kind;
             if (highNibble) {
-                kind = (actor->field_0x90 >> 4) & 0xF;
+                kind = (actor->mSpawnParam_0x90 >> 4) & 0xF;
             } else {
-                kind = actor->field_0x90 & 0xF;
+                kind = actor->mSpawnParam_0x90 & 0xF;
             }
             if (kind == 0) {
                 result = true;

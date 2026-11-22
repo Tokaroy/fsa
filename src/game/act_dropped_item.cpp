@@ -33,34 +33,34 @@ inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::T
 // FIXME: missing/extra (ours has 1 more instruction: mr r29, r4 in the fn_802D6F38 key
 // build, plus hit.x/hit.y vs 0.0f load order in the `!= 0.0f` tests).
 void DroppedItem_804A8C80::init() {
-    field_0x238 = field_0x90 & 0x7F;
+    field_0x238 = mSpawnParam_0x90 & 0x7F;
     // Both arms unpack the same four fields: hoisting them out of the if/else drops init from 96 % to 91 %
     // (the original's code is duplicated per arm).
     if (field_0x238 == 11 || field_0x238 == 22) {
-        field_0x23c = (field_0x90 >> 22) & 0x1F;
-        field_0x234 = (field_0x90 >> 7) & 0x1F;
-        field_0x240 = (field_0x90 >> 12) & 0x1F;
-        field_0x244 = (field_0x90 >> 17) & 0x1F;
+        field_0x23c = (mSpawnParam_0x90 >> 22) & 0x1F;
+        field_0x234 = (mSpawnParam_0x90 >> 7) & 0x1F;
+        field_0x240 = (mSpawnParam_0x90 >> 12) & 0x1F;
+        field_0x244 = (mSpawnParam_0x90 >> 17) & 0x1F;
     } else {
-        field_0x23c = (field_0x90 >> 22) & 0x1F;
-        field_0x234 = (field_0x90 >> 7) & 0x1F;
-        field_0x240 = (field_0x90 >> 12) & 0x1F;
-        field_0x244 = (field_0x90 >> 17) & 0x1F;
+        field_0x23c = (mSpawnParam_0x90 >> 22) & 0x1F;
+        field_0x234 = (mSpawnParam_0x90 >> 7) & 0x1F;
+        field_0x240 = (mSpawnParam_0x90 >> 12) & 0x1F;
+        field_0x244 = (mSpawnParam_0x90 >> 17) & 0x1F;
         if (field_0x244 >= 4) {
             field_0x244 = -1;
         }
     }
 
     field_0xb0 = 0x20000;
-    field_0x264 = field_0x90;
+    field_0x264 = mSpawnParam_0x90;
     field_0x268.set(mPos.x, mPos.y);
 
-    s32 viewRow = getGameView_802D6A9C()->field_0x18;
-    s32 viewCol = getGameView_802D6A9C()->field_0x14;
-    field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
+    s32 viewRow = getGameView_802D6A9C()->mScreenY_0x18;
+    s32 viewCol = getGameView_802D6A9C()->mScreenX_0x14;
+    field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
 
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
+    mMapBox_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
 
     if (field_0x234 == 0 || field_0x234 == 2 || field_0x234 == 3) {
         field_0x230 = 0;
@@ -68,43 +68,43 @@ void DroppedItem_804A8C80::init() {
             field_0x234 = 0;
         }
         if (field_0x234 == 3) {
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 s32 r = fn_801CD664(2) + 1;
-                field_0x3c = JGeometry::TVec3f(0.0f, -(f32)r, 0.0f);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, -(f32)r, 0.0f);
             } else {
                 s32 r = fn_801CD664(3) + 1;
-                field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, (f32)r);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, (f32)r);
             }
         } else {
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 s32 z = fn_801CD664(3) + 1;
                 s32 x = fn_801CD664(5) - 2;
-                field_0x3c = JGeometry::TVec3f(x * 0.5f, 0.0f, (f32)z);
+                mVel_0x3c = JGeometry::TVec3f(x * 0.5f, 0.0f, (f32)z);
             } else {
                 s32 z = fn_801CD664(3) + 2;
                 s32 y = fn_801CD664(5) - 2;
                 s32 x = fn_801CD664(5) - 2;
-                field_0x3c = JGeometry::TVec3f(x * 0.5f, y * 0.5f, (f32)z);
+                mVel_0x3c = JGeometry::TVec3f(x * 0.5f, y * 0.5f, (f32)z);
             }
         }
 
         JGeometry::TVec3f hit;
         if (fn_801F2618(&hit, false)) {
             if (hit.x != 0.0f) {
-                field_0x3c.x *= -1.0f;
+                mVel_0x3c.x *= -1.0f;
             }
             if (hit.y != 0.0f) {
-                field_0x3c.y *= -1.0f;
+                mVel_0x3c.y *= -1.0f;
             }
         }
 
         if (field_0x234 == 0) {
             // The original re-reads the view row/col and rebuilds the key (field_0x270 above) here.
-            viewRow = getGameView_802D6A9C()->field_0x18;
-            viewCol = getGameView_802D6A9C()->field_0x14;
+            viewRow = getGameView_802D6A9C()->mScreenY_0x18;
+            viewCol = getGameView_802D6A9C()->mScreenX_0x14;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
-            s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (field_0x4 & 0xFF);
-            u32 key = field_0x90;
+            s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
+            u32 key = mSpawnParam_0x90;
             getGameView_802D6A9C()->fn_802D6F38(key, pos, packed, true);
         }
         field_0x248 = 150;
@@ -125,18 +125,18 @@ void DroppedItem_804A8C80::init() {
         }
     }
 
-    if (viewLayerFlag(field_0x4) == 1) {
+    if (viewLayerFlag(mLayer_0x4) == 1) {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
-        field_0x3c.y -= field_0x3c.z;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.y -= mVel_0x3c.z;
+        mVel_0x3c.z = 0.0f;
     }
 }
 
 void DroppedItem_804A8C80::vfunc_0x40() {
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x248 = 0;
     if (field_0x254 < 180) {
         field_0x254 = 180;
@@ -151,7 +151,7 @@ void DroppedItem_804A8C80::update() {
     JGeometry::TVec2<f32> p(mPos.x, mPos.y);
     JGeometry::TBox2f box(mBox);
     box.addPos(p);
-    s32 player = fn_8023AF14(&box, field_0x4, false, 0.0f);
+    s32 player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
 
     if (field_0x248 != 0) {
         if (field_0x250 != 0) {
@@ -175,35 +175,35 @@ void DroppedItem_804A8C80::update() {
 
     switch (field_0x230) {
     case 0:
-        mPos += field_0x3c;
-        if (viewLayerFlag(field_0x4) == 0) {
+        mPos += mVel_0x3c;
+        if (viewLayerFlag(mLayer_0x4) == 0) {
             if (mPos.z > 0.0f) {
-                field_0x3c.z -= 0.3f;
+                mVel_0x3c.z -= 0.3f;
                 JGeometry::TVec3f hit(0.0f, 0.0f, 0.0f);
                 if (fn_801F2618(&hit, false)) {
                     if (hit.x != 0.0f) {
-                        field_0x3c.x *= -1.0f;
+                        mVel_0x3c.x *= -1.0f;
                     }
                     if (hit.y != 0.0f) {
-                        field_0x3c.y *= -1.0f;
+                        mVel_0x3c.y *= -1.0f;
                     }
                 }
             } else if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
             }
         } else {
             JGeometry::TVec3f hit;
             if (fn_801F2618(&hit, false) == 1) {
                 if (hit.y != 0.0f) {
-                    field_0x3c.z = 0.0f;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.x = 0.0f;
+                    mVel_0x3c.z = 0.0f;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.x = 0.0f;
                 }
             }
-            field_0x3c.y += 0.15f;
+            mVel_0x3c.y += 0.15f;
         }
 
         fn_802C0570();
@@ -230,12 +230,12 @@ void DroppedItem_804A8C80::update() {
                         }
                         if (gGameRoot_8053AAF8->field_0x7e == 1) {
                             if (fn_802308E0(field_0x260) == 1) {
-                                fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
+                                fn_8022FE80(field_0x25c, mLayer_0x4, mSerial, false, false);
                                 field_0x230 = 2;
                                 break;
                             }
                         } else if (fn_8023077C() == 1) {
-                            fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
+                            fn_8022FE80(field_0x25c, mLayer_0x4, mSerial, false, false);
                             field_0x230 = 2;
                             break;
                         }
@@ -245,20 +245,20 @@ void DroppedItem_804A8C80::update() {
         }
 
         {
-            u16 tile = fn_8022461C(&mPos, field_0x4);
+            u16 tile = fn_8022461C(&mPos, mLayer_0x4);
             if (tile == 3 || tile == 14 || tile == 13) {
                 if (tile == 14) {
                     if (fn_802DE9A0()) {
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5005F, 0);
                     } else if (fn_802DEB58()) {
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
                         startSound_801F0E34(0x5003F, 0);
                     }
                 } else if (tile == 13) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30022, 0);
                 }
                 mAlive = false;
@@ -301,13 +301,13 @@ void DroppedItem_804A8C80::update() {
         break;
 
     case 2:
-        fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
-        talk(field_0x4, mSerial, mPos);
+        fn_8022FE80(field_0x25c, mLayer_0x4, mSerial, false, false);
+        talk(mLayer_0x4, mSerial, mPos);
         field_0x230 = 3;
         break;
 
     case 3:
-        fn_8022FE80(field_0x25c, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x25c, mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(field_0x25c, mSerial)) {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 if (fn_8023061C(field_0x260, false) == 1) {
@@ -342,7 +342,7 @@ void DroppedItem_804A8C80::fn_802C0570() {
                         mPos.x -= (15 - absX) >> 1;
                     }
                 }
-                if (viewLayerFlag(field_0x4) == 0) {
+                if (viewLayerFlag(mLayer_0x4) == 0) {
                     if ((absY >= 0 && absY <= 15 && dir == 3) || dir == 2) {
                         if (mPos.y > playerPos.y) {
                             mPos.y += (15 - absY) >> 1;
@@ -366,7 +366,7 @@ void DroppedItem_804A8C80::draw() {
     if (field_0x230 == 1) {
         return;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (layer == 0) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = field_0x24c;
@@ -390,7 +390,7 @@ void DroppedItem_804A8C80::draw() {
             }
         }
     }
-    drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
+    drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
 }
 
 // FIXME: 95.55 %, missing/extra; behaviour clean.

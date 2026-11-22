@@ -12,7 +12,7 @@
 static const s32 lbl_8046F270[4] = {0, 0x30, 5, 0x36};
 
 void MagicCircleGenerator_804A9FB0::init() {
-    field_0x248 = field_0x90 & 7;
+    field_0x248 = mSpawnParam_0x90 & 7;
     field_0x24c = 0;
     field_0x264 = 0;
     field_0x254 = 0;
@@ -60,13 +60,13 @@ MagicCircleGenerator_804A9FB0::~MagicCircleGenerator_804A9FB0() {
 void MagicCircleGenerator_804A9FB0::update() {
     switch (field_0x244) {
     case 0: {
-        field_0x80.i.x = -9.0f;
-        field_0x80.i.y = -9.0f;
-        field_0x80.f.x = 9.0f;
-        field_0x80.f.y = 9.0f;
+        mMapBox_0x80.i.x = -9.0f;
+        mMapBox_0x80.i.y = -9.0f;
+        mMapBox_0x80.f.x = 9.0f;
+        mMapBox_0x80.f.y = 9.0f;
         JGeometry::TBox2f box;
         JGeometry::TVec3f keyPos;
-        box = field_0x80;
+        box = mMapBox_0x80;
         JGeometry::TVec2f offset(mPos.x, mPos.y);
         box.addPos(offset);
         mBox.i.x = -32.0f;
@@ -75,13 +75,13 @@ void MagicCircleGenerator_804A9FB0::update() {
         mBox.f.y = 32.0f;
         box.set(mBox);
         box.addPos(offset);
-        field_0x250 = fn_8023AF14(&box, field_0x4, false, 0.0f);
+        field_0x250 = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
         if (field_0x250 >= 0) {
             if (mEmitter234 == NULL) {
                 JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z);
-                mEmitter234 = spawnEmitter_8013CC50(field_0x4, &pos, 0x2A7, 1, 0, NULL, NULL, true, 1.0f);
+                mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x2A7, 1, 0, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(9, 0);
-                if (getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 &&
+                if (getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1 &&
                     !getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, false)) {
                     lbl_8053AED0->fn_8043D67C(0x24E, field_0x250, 0);
                     getGameView_802D6A9C()->fn_802D46D8(field_0x250, 0x24E, true);
@@ -107,14 +107,14 @@ void MagicCircleGenerator_804A9FB0::update() {
             box.set(mBox);
             box.addPos(offset);
             for (s32 player = 0; player < 4; player++) {
-                if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
+                if (fn_8023B0F4(player, &box, mLayer_0x4, false, 0.0f) == 1 && fn_8023EEB4(player) == ACTOR_KEY0) {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player)));
                     if (key != NULL && key->field_0x280 == 6) {
                         keyPos = key->mPos;
                         field_0x244 = 1;
                         field_0x24c = 0x14;
-                        s32 layer = field_0x4;
+                        s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &keyPos, 0, -1, -1);
                         } else {
@@ -139,9 +139,9 @@ void MagicCircleGenerator_804A9FB0::update() {
                             mEmitter238 = NULL;
                             mEmitter23c = NULL;
                             mEmitter240 = NULL;
-                            spawnEmitter_8013CC50(field_0x4, &effectPos, 0x85, 0, 0, NULL, NULL, true, 1.0f);
-                            spawnEmitter_8013CC50(field_0x4, &effectPos, 0x86, 0, 0, NULL, NULL, true, 1.0f);
-                            spawnEmitter_8013CC50(field_0x4, &effectPos, 0x87, 0, 0, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x85, 0, 0, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x86, 0, 0, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x87, 0, 0, NULL, NULL, true, 1.0f);
                             startSound_801F0E34(0x30069, 0);
                         }
                         key->fn_802C5284();
@@ -167,8 +167,8 @@ void MagicCircleGenerator_804A9FB0::update() {
     case 2:
         field_0x24c--;
         if (field_0x24c == 0) {
-            u32 param = (field_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CIRC, field_0x4, &mPos, param, -1, -1);
+            u32 param = (mSpawnParam_0x90 & ~0xFF) | lbl_8046F270[field_0x248];
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CIRC, mLayer_0x4, &mPos, param, -1, -1);
             field_0x244 = 3;
             field_0x24c = 0x3C;
         }
@@ -237,13 +237,13 @@ void MagicCircleGenerator_804A9FB0::fn_802E80A0() {
         s32 alpha = (64 - bestDist) * 4;
         pos = key->mPos;
         if (mEmitter238 == NULL) {
-            mEmitter238 = spawnEmitter_8013CC50(field_0x4, &pos, 0x314, 0, 2, NULL, NULL, true, 1.0f);
+            mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x314, 0, 2, NULL, NULL, true, 1.0f);
         }
         if (mEmitter23c == NULL) {
-            mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x312, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter23c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x312, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitter240 == NULL) {
-            mEmitter240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x313, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter240 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x313, 0, 0, NULL, NULL, true, 1.0f);
         }
         if (mEmitter238 != NULL) {
             if (key->field_0xc4) {
@@ -322,9 +322,9 @@ bool MagicCircleGenerator_804A9FB0::fn_802E7DB8() {
         mEmitter238 = NULL;
         mEmitter23c = NULL;
         mEmitter240 = NULL;
-        spawnEmitter_8013CC50(field_0x4, &effectPos, 0x85, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &effectPos, 0x86, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &effectPos, 0x87, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x85, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x86, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &effectPos, 0x87, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30069, 0);
         key->fn_802C5284();
         key->mAlive = false;

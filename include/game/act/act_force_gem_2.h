@@ -29,7 +29,7 @@ public:
     /* 0x258 */ s32 mTimer; // 100 (init), -100 in init's case 3
     /* 0x25C */ s32 field_0x25c;
     /* 0x260 */ s32 field_0x260; // -1 (init)
-    /* 0x264 */ s32 field_0x264; // field_0x90 & 7
+    /* 0x264 */ s32 field_0x264; // mSpawnParam_0x90 & 7
     /* 0x268 */ u16 field_0x268;
     /* 0x26A */ u8 field_0x26a[2];
     /* 0x26C */ JGeometry::TVec3f field_0x26c; // zeroed by init

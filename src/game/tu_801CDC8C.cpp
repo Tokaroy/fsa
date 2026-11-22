@@ -50,27 +50,27 @@ inline void EnemyBase_804A4808::moveStep() {
         fn_801CD950(&mSpeed, mTargetSpeed, step);
     }
     calcVelocity_0x88();
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     onMoved_0x8C();
     if (mPos.z <= 0.0f) {
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             checkFloor_0x80();
         } else if (mFlags & ENEMY_FLAG_BOUNCE) {
             mPos.z = 0.6f * -mPos.z;
-            field_0x3c.z = 0.6f * -field_0x3c.z;
+            mVel_0x3c.z = 0.6f * -mVel_0x3c.z;
             mSpeed *= 0.6f;
             mTargetSpeed *= 0.6f;
-            field_0x3c.x *= 0.6f;
-            field_0x3c.y *= 0.6f;
-            if (__fabsf(field_0x3c.z) < 0.1f) {
+            mVel_0x3c.x *= 0.6f;
+            mVel_0x3c.y *= 0.6f;
+            if (__fabsf(mVel_0x3c.z) < 0.1f) {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
             } else {
                 onBounce_0x7C();
             }
         } else {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
     }
 }
@@ -154,7 +154,7 @@ inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
 
 // fn_801D0DA0's body: the squared (x, y) distance from *pos to the player.
 inline f32 EnemyBase_804A4808::playerDistSq(s32 player, const JGeometry::TVec3f* pos) {
-    JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+    JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     f32 dy = playerPos->y - pos->y;
     f32 dx = playerPos->x - pos->x;
     return square(dx) + square(dy);
@@ -162,7 +162,7 @@ inline f32 EnemyBase_804A4808::playerDistSq(s32 player, const JGeometry::TVec3f*
 
 // fn_801D0D50's body: whether the player is within `dist` of *pos (x, y).
 inline bool EnemyBase_804A4808::isPlayerNear(s32 player, const JGeometry::TVec3f* pos, f32 dist) {
-    JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+    JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     f32 dy = playerPos->y - pos->y;
     f32 dx = playerPos->x - pos->x;
     bool result = false;
@@ -195,7 +195,7 @@ inline s32 EnemyBase_804A4808::nearestPlayer(const JGeometry::TVec3f* pos, f32 r
 // The |dx| <= |dy| test for `axis` is what the target branches on; the
 // ||/&& shape keeps both clauses as the target has them.
 inline s32 EnemyBase_804A4808::directionTo(const JGeometry::TVec3f* pos, s32 player, bool axis) {
-    JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+    JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     f32 dx = playerPos->x - pos->x;
     f32 dy = playerPos->y - pos->y;
     f32 absY = __fabsf(dy);
@@ -237,9 +237,9 @@ EnemyBase_804A4808::EnemyBase_804A4808()
 
 void EnemyBase_804A4808::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0xb0 = 0x11101;
-    field_0x98 = fn_801CD664(4);
+    mDir_0x98 = fn_801CD664(4);
     mLifeBackup = mLife;
 }
 
@@ -258,7 +258,7 @@ void EnemyBase_804A4808::fn_801D0E58() {
 
 // Whether the actor is on the ground.
 bool EnemyBase_804A4808::fn_801D0DD4() const {
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         return (mFlags & (ENEMY_FLAG_LANDED | 0x10)) != 0;
     }
     bool onGround;
@@ -365,7 +365,7 @@ s32 EnemyBase_804A4808::fn_801D0338(const JGeometry::TVec3f* from, s16 angle) {
     s32 nearest = -1;
     for (s32 i = 0; i < 4; i++) {
         if (canTargetPlayer(i)) {
-            JGeometry::TVec3f* playerPos = &field_0x1ac[i];
+            JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[i];
             s32 playerAngle = JMath::atanTable_.atan2_(playerPos->x - from->x, playerPos->y - from->y) *
                               (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
             f32 diff = (1.0f / 32768.0f) * JMAAbs((s16)(angle - playerAngle));
@@ -385,7 +385,7 @@ s32 EnemyBase_804A4808::fn_801D02E0(const JGeometry::TVec3f* pos) const {
 
 // The 16-bit angle from mPos to player `player`.
 s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
-    const JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+    const JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     return JMath::atanTable_.atan2_(playerPos->x - mPos.x, playerPos->y - mPos.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
@@ -401,7 +401,7 @@ void EnemyBase_804A4808::fn_801D01A0(const JGeometry::TVec3f* target, JGeometry:
 // and registers as in fn_801D01A0 (the same body).
 // The velocity (x, y) toward player `player`, at most `speed` long.
 void EnemyBase_804A4808::fn_801D00B4(s32 player, JGeometry::TVec2f* out, f32 speed) {
-    JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+    JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     velocityToward(playerPos, out, speed);
 }
 
@@ -428,7 +428,7 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
         pos.y -= half;
         break;
     }
-    JGeometry::TBox2f box(field_0x80);
+    JGeometry::TBox2f box(mMapBox_0x80);
     switch (dir) {
     case 0:
     case 1:
@@ -450,7 +450,7 @@ bool EnemyBase_804A4808::fn_801CFD68(s32 dir, f32 dist) {
     s32 columns;
     s32 row;
     s32 column;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* viewBox = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     bool inside = false;
@@ -494,16 +494,16 @@ bool EnemyBase_804A4808::fn_801CFCF0(s32 dir) {
     f32 dist = 6.0f;
     switch (dir) {
     case 0:
-        dist += field_0x80.f.x;
+        dist += mMapBox_0x80.f.x;
         break;
     case 1:
-        dist -= field_0x80.i.x;
+        dist -= mMapBox_0x80.i.x;
         break;
     case 2:
-        dist += field_0x80.f.y;
+        dist += mMapBox_0x80.f.y;
         break;
     case 3:
-        dist -= field_0x80.i.y;
+        dist -= mMapBox_0x80.i.y;
         break;
     }
     return fn_801CFD68(dir, dist);
@@ -622,7 +622,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
 // mr r4, r5 in the target before fn_801CFCF0.
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
 // one when there is none): on the dominant axis, or the other one with
-// probability `margin`. With `turn`, a direction equal to field_0x98 is
+// probability `margin`. With `turn`, a direction equal to mDir_0x98 is
 // replaced by another free one (fn_801CF720), and by a third one
 // (fn_801CF798) when that would turn away from the player; without it, a
 // blocked direction (fn_801CFCF0) is swapped for the other axis.
@@ -638,10 +638,10 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
         }
         dir = directionTo(&mPos, player, otherAxis);
         if (turn) {
-            if (dir == field_0x98) {
+            if (dir == mDir_0x98) {
                 dir = fn_801CF720(dir);
                 if (dir == fn_801CD354(directionTo(&mPos, player, false))) {
-                    dir = fn_801CF798(dir, field_0x98);
+                    dir = fn_801CF798(dir, mDir_0x98);
                 }
             }
         } else if (fn_801CFCF0(dir)) {
@@ -664,16 +664,16 @@ bool EnemyBase_804A4808::fn_801CF144() const {
     pos.y = mPos.y - mPos.z - 16.0f;
     pos.z = 0.0f;
     bool blocked = false;
-    if (fn_801CCB1C(&pos, field_0x4)) {
+    if (fn_801CCB1C(&pos, mLayer_0x4)) {
         blocked = true;
     }
     return blocked;
 }
 
-// const: the target loads field_0x3c.x above the prologue's stw r0.
-// The direction of field_0x3c (its 16-bit angle through fn_801F681C).
+// const: the target loads mVel_0x3c.x above the prologue's stw r0.
+// The direction of mVel_0x3c (its 16-bit angle through fn_801F681C).
 s32 EnemyBase_804A4808::fn_801CF0F4() const {
-    s32 angle = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) *
+    s32 angle = JMath::atanTable_.atan2_(mVel_0x3c.x, mVel_0x3c.y) *
                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
     return fn_801F681C(angle);
 }
@@ -690,12 +690,12 @@ bool EnemyBase_804A4808::fn_801CECF4(u32 actorId, f32 speed, f32 range) {
         return false;
     }
     bool spawned = false;
-    s32 serial = getActorManager_801F856C()->spawnActor_801F9484(actorId, field_0x4, &mPos, 0, -1, -1);
+    s32 serial = getActorManager_801F856C()->spawnActor_801F9484(actorId, mLayer_0x4, &mPos, 0, -1, -1);
     if (serial >= 0) {
         cls_804A48B0* shot =
             static_cast<cls_804A48B0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (shot != NULL) {
-            JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+            JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
             JGeometry::TVec2f vel(playerPos->x - mPos.x, playerPos->y - mPos.y);
             if (vel.squared() <= JGeometry::TUtilf::epsilon()) {
                 vel.set(0.0f, speed);
@@ -729,7 +729,7 @@ u8 EnemyBase_804A4808::fn_801CEBD0() {
                 fn_802379E4(i, &mPos);
                 if (flag == 1 && field_0x1dc.fn_801EAC20(i)) {
                     hitPos.set(xy.x, xy.y, 0.0f);
-                    fn_801CB538(field_0x4, &hitPos, 0, 0);
+                    fn_801CB538(mLayer_0x4, &hitPos, 0, 0);
                     hit = 1;
                 }
             }
@@ -764,8 +764,8 @@ bool EnemyBase_804A4808::fn_801CEA60() {
                     hit = false;
                 } else {
                     JGeometry::TVec3f from = mPos;
-                    from -= actor->field_0x3c;
-                    hit = fn_801F37AC(actor->field_0x118, &from, 0, actor->field_0x168,
+                    from -= actor->mVel_0x3c;
+                    hit = fn_801F37AC(actor->mParamAtcn_0x118, &from, 0, actor->field_0x168,
                                       actor->field_0x110);
                 }
             }
@@ -787,8 +787,8 @@ u8 EnemyBase_804A4808::checkHitByActor_0x60() {
 
 u8 EnemyBase_804A4808::sweepMap_0x64() {
     u8 hit = 0;
-    if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && field_0x80.getWidth() > 0.0f &&
-        field_0x80.getHeight() > 0.0f)
+    if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.getWidth() > 0.0f &&
+        mMapBox_0x80.getHeight() > 0.0f)
     {
         hit = fn_801F2618(&mMapHitDir, lbl_8053EFC0);
     }
@@ -798,7 +798,7 @@ u8 EnemyBase_804A4808::sweepMap_0x64() {
 u8 EnemyBase_804A4808::attackPlayers_0x68() {
     u8 hit = 0;
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
-        hit = fn_801F2B7C(field_0x114, -1, 1);
+        hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
     }
     return hit;
 }
@@ -815,15 +815,15 @@ void EnemyBase_804A4808::onBounce_0x7C() {}
 
 #pragma auto_inline reset
 void EnemyBase_804A4808::fn_801CE800() {
-    if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f) {
+    if (mMapBox_0x80.getWidth() > 0.0f && mMapBox_0x80.getHeight() > 0.0f) {
         JGeometry::TVec2f pos;
         JGeometry::TVec2f snapped;
-        f32 bottom = field_0x80.f.y;
+        f32 bottom = mMapBox_0x80.f.y;
         f32 screenY = mPos.y - mPos.z;
         bool onFloor = false;
         pos.x = mPos.x;
         pos.y = bottom + screenY;
-        switch (fn_802265FC((const JGeometry::TVec3f*)&pos, field_0x4)) {
+        switch (fn_802265FC((const JGeometry::TVec3f*)&pos, mLayer_0x4)) {
         case 0:
             if (mPos.z <= 0.0f) {
                 onFloor = true;
@@ -838,9 +838,9 @@ void EnemyBase_804A4808::fn_801CE800() {
         }
         if (onFloor) {
             fn_801CCD34((const JGeometry::TVec3f*)&pos, (JGeometry::TVec3f*)&snapped);
-            mPos.y = snapped.y - 8.0f - field_0x80.f.y;
+            mPos.y = snapped.y - 8.0f - mMapBox_0x80.f.y;
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mFlags |= ENEMY_FLAG_LANDED;
         }
     }
@@ -850,7 +850,7 @@ void EnemyBase_804A4808::fn_801CE800() {
 // kind 2 the height is folded into y and the actor lands (fn_801CE800);
 // elsewhere it just stops at z = 0.
 void EnemyBase_804A4808::checkFloor_0x80() {
-    if (!(mFlags & ENEMY_FLAG_NO_FLOOR) && fn_8022461C(&mPos, field_0x4) == 2) {
+    if (!(mFlags & ENEMY_FLAG_NO_FLOOR) && fn_8022461C(&mPos, mLayer_0x4) == 2) {
         // The lift is read into a local first, as in the original (without it 99.9 -> 98 %).
         f32 lift = -mPos.z;
         mPos.y += lift;
@@ -858,7 +858,7 @@ void EnemyBase_804A4808::checkFloor_0x80() {
         fn_801CE800();
     } else {
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
         mFlags |= ENEMY_FLAG_LANDED;
     }
 }
@@ -868,15 +868,15 @@ void EnemyBase_804A4808::checkFloor_0x80() {
 void EnemyBase_804A4808::fn_801CE5D4() {
     if (mFlags & 7) {
         mPos.z = mPrevPos.z;
-        field_0x3c.z = mPrevVel.z;
+        mVel_0x3c.z = mPrevVel.z;
         applyGravity_0x84();
-        mPos.z += field_0x3c.z;
+        mPos.z += mVel_0x3c.z;
         if (mPos.z <= 0.0f) {
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 checkFloor_0x80();
             } else {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
             }
         }
     }
@@ -884,33 +884,33 @@ void EnemyBase_804A4808::fn_801CE5D4() {
 
 // Gravity.
 void EnemyBase_804A4808::applyGravity_0x84() {
-    if (field_0xd8 > 0 && field_0xf8 == 2) {
+    if (mHitTimer_0xd8 > 0 && mKnockbackKind_0xf8 == 2) {
         return;
     }
-    field_0x3c.z += -0.2f;
-    if (field_0x3c.z < -4.0f) {
-        field_0x3c.z = -4.0f;
+    mVel_0x3c.z += -0.2f;
+    if (mVel_0x3c.z < -4.0f) {
+        mVel_0x3c.z = -4.0f;
     }
 }
 
-// The velocity along field_0x98 (0 +x, 1 -x, 2 +y, 3 -y) at mSpeed.
+// The velocity along mDir_0x98 (0 +x, 1 -x, 2 +y, 3 -y) at mSpeed.
 void EnemyBase_804A4808::calcVelocity_0x88() {
-    switch (field_0x98) {
+    switch (mDir_0x98) {
     case 0:
-        field_0x3c.x = mSpeed;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = mSpeed;
+        mVel_0x3c.y = 0.0f;
         break;
     case 1:
-        field_0x3c.x = -mSpeed;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = -mSpeed;
+        mVel_0x3c.y = 0.0f;
         break;
     case 2:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = mSpeed;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = mSpeed;
         break;
     case 3:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = -mSpeed;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = -mSpeed;
         break;
     }
     applyGravity_0x84();
@@ -948,7 +948,7 @@ void EnemyBase_804A4808::updateBehavior_0x9C(u8 mapHit) {
 // Ours adds one frsp after the fsel.
 // The screen position of the actor, raised to the top of the view box.
 void EnemyBase_804A4808::fn_801CE010(JGeometry::TVec3f* out) {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     out->set(mPos.x, mPos.y - mPos.z, 0.0f);
@@ -974,14 +974,14 @@ void EnemyBase_804A4808::update() {
     if (mFlags & ENEMY_FLAG_NO_HURT) {
         flag = false;
     }
-    mPrevVel.x = field_0x3c.x;
-    mPrevVel.y = field_0x3c.y;
-    mPrevVel.z = field_0x3c.z;
+    mPrevVel.x = mVel_0x3c.x;
+    mPrevVel.y = mVel_0x3c.y;
+    mPrevVel.z = mVel_0x3c.z;
     if (mFlags & ENEMY_FLAG_KEEP_LIFE) {
         mLife = mLifeBackup;
     }
     vfunc_0x58();
-    prevD8 = field_0xd8;
+    prevD8 = mHitTimer_0xd8;
     if (fn_801F3D94(flag)) {
         mFlags |= ENEMY_FLAG_HIT;
     } else if (checkHitByPlayer_0x5C()) {
@@ -991,13 +991,13 @@ void EnemyBase_804A4808::update() {
         mFlags |= ENEMY_FLAG_HIT_ACTOR;
         onHitByActor_0x70();
     }
-    if (!flag && field_0xd8 > 0 && field_0xf8 == 2 && field_0x3c.z > 0.0f) {
-        field_0x3c.z = 0.0f;
+    if (!flag && mHitTimer_0xd8 > 0 && mKnockbackKind_0xf8 == 2 && mVel_0x3c.z > 0.0f) {
+        mVel_0x3c.z = 0.0f;
     }
     if (mFlags & ENEMY_FLAG_KEEP_LIFE) {
         mLife = mLifeBackup;
     }
-    if (prevD8 == 1 && field_0xd8 == 0) {
+    if (prevD8 == 1 && mHitTimer_0xd8 == 0) {
         onHitReactionEnd_0x74();
     }
     if (!checkFlag(ENEMY_FLAG_DEAD) && mLife <= 0) {
@@ -1010,19 +1010,19 @@ void EnemyBase_804A4808::update() {
         mPlayersHit = attackPlayers_0x68();
     }
     updateBehavior_0x9C(mapHit);
-    if (!fn_801CD2F8(field_0x4)) {
+    if (!fn_801CD2F8(mLayer_0x4)) {
         vfunc_0xA0();
     }
 }
 
 // Starts sound `soundId` as if this actor were at *pos on `layer`.
 void EnemyBase_804A4808::fn_801CDCD0(s32 layer, const JGeometry::TVec3f* pos, u32 soundId) {
-    s32 savedLayer = field_0x4;
+    s32 savedLayer = mLayer_0x4;
     JGeometry::TVec3f savedPos = mPos;
-    field_0x4 = layer;
+    mLayer_0x4 = layer;
     mPos.set(*pos);
     startSound_801F0E34(soundId, 0);
-    field_0x4 = savedLayer;
+    mLayer_0x4 = savedLayer;
     mPos.set(savedPos.x, savedPos.y, savedPos.z);
 }
 

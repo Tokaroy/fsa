@@ -10,7 +10,7 @@
 // (spawnActor_801F9484) constructs it with fn_80201E80, which stores this vtable
 // (config/G4SE01/game_units.tsv). Named after its vtable, 0x804A9AC8.
 //
-// init() unpacks field_0x90: bits 0-7 are the mode (field_0x250), bits 12-15
+// init() unpacks mSpawnParam_0x90: bits 0-7 are the mode (field_0x250), bits 12-15
 // go to field_0x258, bits 16-19 to field_0x254 (which init() then sets to 1)
 // and bits 20-23 to field_0x25c. The emitters are spawned in init() when
 // field_0x25c is 0, else in update() once isScreenFlagSet_0x34() holds.
@@ -32,9 +32,9 @@ public:
     /* 0x24C */ f32 field_0x24c; // zeroed by init(), never read
     /* 0x250 */ s32 field_0x250; // mode: the switch index in init() and update()
     /* 0x254 */ s32 field_0x254; // emitter height: 1 from init(), 0 for mode 9 when fn_802DEBA0()
-    /* 0x258 */ s32 field_0x258; // field_0x90 bits 12-15, stored by init() only
-    /* 0x25C */ s32 field_0x25c; // field_0x90 bits 20-23; nonzero skips the spawn in init()
-    /* 0x260 */ bool field_0x260; // field_0x90 bit 26, stored by init() only
+    /* 0x258 */ s32 field_0x258; // mSpawnParam_0x90 bits 12-15, stored by init() only
+    /* 0x25C */ s32 field_0x25c; // mSpawnParam_0x90 bits 20-23; nonzero skips the spawn in init()
+    /* 0x260 */ bool field_0x260; // mSpawnParam_0x90 bit 26, stored by init() only
 }; // Size: unknown (>= 0x261)
 
 #endif

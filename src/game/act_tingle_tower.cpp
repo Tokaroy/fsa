@@ -46,7 +46,7 @@ static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeome
 
 // Starts a message for a player and remembers the player and the message.
 inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
-    if (talk(player, msg, field_0x4, mSerial, mPos, flags)) {
+    if (talk(player, msg, mLayer_0x4, mSerial, mPos, flags)) {
         field_0x254 = player;
         field_0x268 = msg;
         field_0x234 = 1;
@@ -115,10 +115,10 @@ cls_804AAD60::~cls_804AAD60() {
 }
 
 void cls_804AAD60::init() {
-    field_0x230 = field_0x90 & 3;
+    field_0x230 = mSpawnParam_0x90 & 3;
     field_0x234 = 0;
     field_0x240 = 0;
-    field_0x23c = (field_0x90 >> 4) & 7;
+    field_0x23c = (mSpawnParam_0x90 >> 4) & 7;
     if (field_0x230 == 0) {
         mBox.i.x = -8.0f;
         mBox.i.y = -8.0f;
@@ -176,7 +176,7 @@ void cls_804AAD60::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     (this->*lbl_804AACDC[field_0x230])();
 }
 
@@ -197,7 +197,7 @@ void cls_804AAD60::draw() {
             cel = lbl_80471518[field_0x270];
         }
         drawSprite_801F06F0("enemy_both2_sob.bin", cel + 0xC0, NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, cel + 0xC0, 0, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, cel + 0xC0, 0, 2, -1, 0, 0, 0);
     }
 }
 
@@ -227,7 +227,7 @@ void cls_804AAD60::fn_80315EE8() {
             }
         }
         if (found >= 0) {
-            fn_8022FF8C(found, &box, field_0x4, mSerial, 0, 0);
+            fn_8022FF8C(found, &box, mLayer_0x4, mSerial, 0, 0);
             if (startMessage(found, 0x47E, 0x110)) {
                 JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(found);
                 targetPos.y = box.i.y - 1.0f;
@@ -241,7 +241,7 @@ void cls_804AAD60::fn_80315EE8() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             found = fn_8022FD8C(mSerial);
             if (found >= 0 && fn_802300EC(found)) {
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
@@ -259,7 +259,7 @@ void cls_804AAD60::fn_80315EE8() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             if (fn_80388CAC(field_0x254, mSerial)) {
                 field_0x254 = -1;
                 field_0x234 = 0;
@@ -272,7 +272,7 @@ void cls_804AAD60::fn_80315EE8() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FE80(field_0x254, field_0x4, mSerial, true, false);
+            fn_8022FE80(field_0x254, mLayer_0x4, mSerial, true, false);
             if (fn_803865B8(field_0x254)) {
                 if (fn_8037EFB4(field_0x254) == 0) {
                     fn_80384C58(field_0x254, mSerial);
@@ -300,7 +300,7 @@ void cls_804AAD60::fn_80315EE8() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FE80(field_0x254, field_0x4, mSerial, true, false);
+            fn_8022FE80(field_0x254, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(field_0x254, mSerial)) {
                 field_0x254 = -1;
                 field_0x234 = 0;
@@ -314,7 +314,7 @@ void cls_804AAD60::fn_80315EE8() {
             box.i.y += mPos.y;
             box.f.x += mPos.x;
             box.f.y += mPos.y;
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             if (fn_80388CAC(field_0x254, mSerial)) {
                 field_0x254 = -1;
                 field_0x234 = 0;
@@ -333,13 +333,13 @@ void cls_804AAD60::fn_80315C84() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 == 0) {
-        fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
         s32 p = fn_8022FD8C(mSerial);
         if (p >= 0 && fn_802300EC(p)) {
             startMessage(p, 0x480, 0x110);
         }
     } else {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_80388CAC(field_0x254, mSerial)) {
             gGameRoot_8053AAF8->fn_8013665C(10, 2);
             field_0x234 = 2;
@@ -356,7 +356,7 @@ void cls_804AAD60::fn_80315864() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+    fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
     if (field_0x234 == 0) {
         switch (field_0x238) {
         case 0: {
@@ -427,7 +427,7 @@ void cls_804AAD60::fn_80315864() {
         }
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 5) {
                 if (field_0x238 == 0) {
@@ -457,7 +457,7 @@ void cls_804AAD60::fn_80315460() {
         s32 count = gGameRoot_8053AAF8->fn_80138A30();
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x4CE, 0x110);
@@ -465,11 +465,11 @@ void cls_804AAD60::fn_80315460() {
             break;
         }
         case 1:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4CF);
             break;
         case 2: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             s32 i = 0;
             for (; i < count; i++) {
                 if (getTowerViewByte(i) != 0) {
@@ -495,7 +495,7 @@ void cls_804AAD60::fn_80315460() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
@@ -520,7 +520,7 @@ void cls_804AAD60::fn_80315080() {
         s32 count = gGameRoot_8053AAF8->fn_80138A30();
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x4CE, 0x110);
@@ -528,14 +528,14 @@ void cls_804AAD60::fn_80315080() {
             break;
         }
         case 1:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             if (fn_8038470C(field_0x254, 0x4CF)) {
                 field_0x268 = 0x4CF;
                 field_0x234 = 1;
             }
             break;
         case 2: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             s32 idx;
             s32 i = 0;
             for (; i < count; i++) {
@@ -558,7 +558,7 @@ void cls_804AAD60::fn_80315080() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
@@ -583,7 +583,7 @@ void cls_804AAD60::fn_80314B1C() {
         s32 count = gGameRoot_8053AAF8->fn_80138A30();
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x4CE, 0x110);
@@ -591,11 +591,11 @@ void cls_804AAD60::fn_80314B1C() {
             break;
         }
         case 1:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4CF);
             break;
         case 2: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4D3);
             s32 i = 0;
             for (; i < count; i++) {
@@ -612,7 +612,7 @@ void cls_804AAD60::fn_80314B1C() {
         case 4:
         case 5:
         case 6: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             for (; 7 > field_0x238; field_0x238++) {
                 if (getTowerViewByte(field_0x238 - 3) != 0) {
                     break;
@@ -625,7 +625,7 @@ void cls_804AAD60::fn_80314B1C() {
             // fallthrough to case 7
         }
         case 7: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             if (nextMessage(0x4D8)) {
                 for (s32 i = 0; i < 4; i++) {
                     if (getTowerViewByte(i) != 0) {
@@ -637,7 +637,7 @@ void cls_804AAD60::fn_80314B1C() {
             break;
         }
         case 8:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4D9);
             break;
         default:
@@ -648,7 +648,7 @@ void cls_804AAD60::fn_80314B1C() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 8) {
                 field_0x238++;
@@ -672,7 +672,7 @@ void cls_804AAD60::fn_803146DC() {
     if (field_0x234 == 0) {
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x481, 0x110);
@@ -683,7 +683,7 @@ void cls_804AAD60::fn_803146DC() {
         case 2:
         case 3:
         case 4: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             s32 count = fn_80235ACC(field_0x238 - 1);
             fn_8038938C(field_0x254, count);
             if (count != 0) {
@@ -716,7 +716,7 @@ void cls_804AAD60::fn_803146DC() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 >= 1 && field_0x238 <= 4) {
                 s32 count = fn_80235ACC(field_0x238 - 1);
@@ -755,7 +755,7 @@ void cls_804AAD60::fn_803142E4() {
     if (field_0x234 == 0) {
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x4CE, 0x110);
@@ -763,11 +763,11 @@ void cls_804AAD60::fn_803142E4() {
             break;
         }
         case 1:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4CF);
             break;
         case 2: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             s32 maxP = gGameRoot_8053AAF8->fn_80138A30();
             f32 r = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             s32 rnd = (s32)(r * maxP) & 3;
@@ -785,7 +785,7 @@ void cls_804AAD60::fn_803142E4() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
@@ -810,7 +810,7 @@ void cls_804AAD60::fn_80313D7C() {
         s32 count = gGameRoot_8053AAF8->fn_80138A30();
         switch (field_0x238) {
         case 0: {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0 && fn_802300EC(p)) {
                 startMessage(p, 0x4DB, 0x110);
@@ -818,11 +818,11 @@ void cls_804AAD60::fn_80313D7C() {
             break;
         }
         case 1:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4CF);
             break;
         case 2: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4DC);
             s32 i = 0;
             for (; i < count; i++) {
@@ -839,7 +839,7 @@ void cls_804AAD60::fn_80313D7C() {
         case 4:
         case 5:
         case 6: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             for (; 7 > field_0x238; field_0x238++) {
                 if (getTowerViewByte(field_0x238 - 3) != 0) {
                     break;
@@ -852,7 +852,7 @@ void cls_804AAD60::fn_80313D7C() {
             // fallthrough to case 7
         }
         case 7: {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             if (nextMessage(0x4DD)) {
                 for (s32 i = 0; i < count; i++) {
                     if (getTowerViewByte(i) != 0) {
@@ -864,7 +864,7 @@ void cls_804AAD60::fn_80313D7C() {
             break;
         }
         case 8:
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
             nextMessage(0x4DE);
             break;
         default:
@@ -875,7 +875,7 @@ void cls_804AAD60::fn_80313D7C() {
             break;
         }
     } else if (field_0x234 == 1) {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(field_0x254)) {
             if (field_0x238 < 8) {
                 field_0x238++;
@@ -896,13 +896,13 @@ void cls_804AAD60::fn_80313C20() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (field_0x234 != 1) {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 p = fn_8022FD8C(mSerial);
         if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
             startMessage(p, field_0x268, 0x220);
         }
     } else {
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, 1, 0);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
         if (fn_80388CAC(field_0x254, mSerial)) {
             field_0x254 = -1;
             field_0x234 = 0;

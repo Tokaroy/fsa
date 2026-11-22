@@ -19,22 +19,22 @@ Beamos_804A40E0::Beamos_804A40E0() {
 
 void Beamos_804A40E0::init() {
     EnemyBase_804A4808::init();
-    u32 count = field_0x90 & 0xFF;
+    u32 count = mSpawnParam_0x90 & 0xFF;
     if (count > 0xF) {
         count = 0xF;
     } else if (count < 1) {
         count = 1;
     }
     field_0x2ac = count;
-    field_0x2b0 = (field_0x90 >> 22) & 0x1F;
-    field_0x2b4 = field_0x90 >> 27;
+    field_0x2b0 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x2b4 = mSpawnParam_0x90 >> 27;
     if (field_0x2b0 != 0) {
         mFlags |= 0x2000;
     }
     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
     mBox2.set(-8.0f, -20.0f, 8.0f, 8.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x98 = 2;
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_NO_ATTACK;
     field_0x2a8 = fn_801CD664(0x10000);
     mState = 0;
@@ -59,7 +59,7 @@ void Beamos_804A40E0::init() {
 void Beamos_804A40E0::fn_801BE86C() {
     JGeometry::TVec3f pos(mPos.x + 10.0f * JMASinShort(field_0x2a8),
                           -15.0f + (6.0f * JMACosShort(field_0x2a8) + mPos.y), mPos.z);
-    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('LNBM', field_0x4, &pos, mSerial, -1, -1);
+    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('LNBM', mLayer_0x4, &pos, mSerial, -1, -1);
     if (serial < 0) {
         return;
     }
@@ -75,7 +75,7 @@ void Beamos_804A40E0::fn_801BE86C() {
     JGeometry::TVec2f dir(10.0f * JMASinShort(field_0x2a8), 6.0f * JMACosShort(field_0x2a8));
     dir.normalize();
     dir.scale(10.5f);
-    actor->field_0x3c = JGeometry::TVec3f(dir.x, dir.y, 0.0f);
+    actor->mVel_0x3c = JGeometry::TVec3f(dir.x, dir.y, 0.0f);
 }
 
 void Beamos_804A40E0::fn_801BE6C4(s32 state) {
@@ -91,8 +91,8 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
         if (pos.y >= -15.0f + mPos.y) {
             depth = 1;
         }
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x1C, 0, depth, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x1D, 0, depth, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1C, 0, depth, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1D, 0, depth, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30062, 0);
         field_0x2aa = 60;
         break;
@@ -188,10 +188,10 @@ void Beamos_804A40E0::updateBehavior_0x9C(u8 mapHit) {
         field_0x2aa--;
     }
     JGeometry::TBox2f box(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if (field_0x2aa == 0) {
         listBox.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
-        fn_8020D58C()->addBox(&listBox, field_0x4, mSerial);
+        fn_8020D58C()->addBox(&listBox, mLayer_0x4, mSerial);
     }
 }
 
@@ -211,7 +211,7 @@ u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {
                 if (!fn_8023E854(i)) {
                     JGeometry::TVec2f center;
                     fn_801F3128(&center);
-                    if (fn_80238548(i, field_0x114, &center, 10)) {
+                    if (fn_80238548(i, mParamAtcp_0x114, &center, 10)) {
                         hit = 1;
                     }
                 }
@@ -227,9 +227,9 @@ u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {
 }
 
 void Beamos_804A40E0::die_0x24() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x70, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x71, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x72, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x70, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x71, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x72, 0, 0, NULL, NULL, true, 1.0f);
     ActorBase_804A5770::die_0x24();
 }
 

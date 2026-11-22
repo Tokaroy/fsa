@@ -43,9 +43,9 @@ ShopItem_8049CDC0::ShopItem_8049CDC0() {
 void ShopItem_8049CDC0::init() {
     ActorBase_804A5770::init();
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mLife = 0;
-    mKind = field_0x90 & 0xFF;
+    mKind = mSpawnParam_0x90 & 0xFF;
     mMsgPos.x = mPos.x;
     mMsgPos.y = mPos.y;
     mMsgPos.z = mPos.z;
@@ -68,8 +68,8 @@ void ShopItem_8049CDC0::update() {
     box.f.y += mPos.y;
     switch (mState) {
     case 0: {
-        fn_80239914(&box, field_0x4, mSerial);
-        fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+        fn_80239914(&box, mLayer_0x4, mSerial);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player < 0) {
             break;
@@ -84,14 +84,14 @@ void ShopItem_8049CDC0::update() {
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(slot), 0x120) == 0) {
             break;
         }
-        if (showMessage(player, lbl_8046403C[0], mSerial, field_0x4, mMsgPos)) {
+        if (showMessage(player, lbl_8046403C[0], mSerial, mLayer_0x4, mMsgPos)) {
             mPlayer = player;
             mState = 1;
         }
         break;
     }
     case 1: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (!fn_803865B8(mPlayer)) {
             break;
         }
@@ -204,7 +204,7 @@ void ShopItem_8049CDC0::update() {
         flags |= mPlayer << 24;
         flags |= mPlayer << 26;
         JGeometry::TVec3f* pos = getPlayerPos_8023E724(mPlayer);
-        getActorManager_801F856C()->spawnActor_801F9484('IMUP', field_0x4, pos, flags, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, pos, flags, -1, -1);
         break;
     }
     case 3:
@@ -214,14 +214,14 @@ void ShopItem_8049CDC0::update() {
         }
         break;
     case 4:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mState = 0;
             mPlayer = -1;
         }
         break;
     case 5:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mState = 0;
             mPlayer = -1;

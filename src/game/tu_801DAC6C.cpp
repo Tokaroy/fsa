@@ -62,7 +62,7 @@ void Singleton_801DAC6C::fn_801DAE24() const {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mList[i]);
         if (actor != NULL) {
-            actor->field_0x10c = -1;
+            actor->mLastAttacker_0x10c = -1;
             actor->die_0x24();
         }
     }

@@ -3,12 +3,12 @@
 #include "game/GameView.h"
 
 void ChainSwitch_804AA3E8::init() {
-    mDelay = field_0x90 & 0x1FFFF;
-    mCallWhenDone = (field_0x90 >> 17) & 1;
-    mSwitchMode = (field_0x90 >> 18) & 3;
-    mSoundMode = (field_0x90 >> 20) & 3;
-    mSwitchBit = (field_0x90 >> 22) & 0x1F;
-    field_0x242 = field_0x90 >> 27;
+    mDelay = mSpawnParam_0x90 & 0x1FFFF;
+    mCallWhenDone = (mSpawnParam_0x90 >> 17) & 1;
+    mSwitchMode = (mSpawnParam_0x90 >> 18) & 3;
+    mSoundMode = (mSpawnParam_0x90 >> 20) & 3;
+    mSwitchBit = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x242 = mSpawnParam_0x90 >> 27;
     mTimer = 0;
     mWasOn = isScreenFlagSet_0x34();
 }

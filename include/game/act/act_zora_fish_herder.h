@@ -39,7 +39,7 @@ public:
     /* 0x254 */ s32 field_0x254; // sprite frame offset (0x303 + this in draw)
     /* 0x258 */ s32 field_0x258; // fishing time in frames, -1 for none
     /* 0x25C */ s32 field_0x25c; // fish count shown on the HUD
-    /* 0x260 */ s32 mKind;       // field_0x90 & 0xF
+    /* 0x260 */ s32 mKind;       // mSpawnParam_0x90 & 0xF
     /* 0x264 */ s32 field_0x264;
     /* 0x268 */ s32 field_0x268;
     /* 0x26C */ s32 field_0x26c;

@@ -163,7 +163,7 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
                    field_0x23c.y + field_0x254);
 
     mActors[0] = getActorManager_801F856C()->spawnActor_801F9484(
-        ACTOR_EZLD, field_0x4, &(mPos + JGeometry::TVec3f(0.0f, -37.0f, 0.0f)), 0, -1, -1);
+        ACTOR_EZLD, mLayer_0x4, &(mPos + JGeometry::TVec3f(0.0f, -37.0f, 0.0f)), 0, -1, -1);
     s32 zelda = mActors[0];
     if (zelda >= 0) {
         cls_804A5958* actor =
@@ -173,7 +173,7 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
 
     for (s32 i = 0; i < 6; i++) {
         mActors[i + 1] = getActorManager_801F856C()->spawnActor_801F9484(
-            ACTOR_EMIK, field_0x4, &mPos, i, -1, -1);
+            ACTOR_EMIK, mLayer_0x4, &mPos, i, -1, -1);
         s32 serial = mActors[i + 1];
         if (serial >= 0) {
             cls_804A5958* maiden =
@@ -184,7 +184,7 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
 
     s32 zeldaSerial = mActors[0];
     mActors[7] = getActorManager_801F856C()->spawnActor_801F9484(
-        ACTOR_ELNK, field_0x4, &(mPos + JGeometry::TVec3f(-48.0f, 200.0f, 0.0f)), zeldaSerial, -1, -1);
+        ACTOR_ELNK, mLayer_0x4, &(mPos + JGeometry::TVec3f(-48.0f, 200.0f, 0.0f)), zeldaSerial, -1, -1);
     s32 link = mActors[7];
     if (link >= 0) {
         cls_804A5958* actor =
@@ -216,18 +216,18 @@ void EnemyForEndingControl_804AD48C::fn_8035BB20() {
         return;
     }
 
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x405, 0, -1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x406, 0, -1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x407, 0, -1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x408, 0, -1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x409, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x40a, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x40b, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x40c, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x405, 0, -1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x406, 0, -1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x407, 0, -1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x408, 0, -1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x409, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x40a, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x40b, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x40c, 0, 0, NULL, NULL, true, 1.0f);
 
-    mEmitter298 = spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x4a2, 0, 0, NULL, NULL, true, 1.0f);
-    mEmitter29C = spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x4a3, 0, 0, NULL, NULL, true, 1.0f);
-    mEmitter2A0 = spawnEmitter_8013CC50(field_0x4, &field_0x248, 0x46d, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter298 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x4a2, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter29C = spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x4a3, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2A0 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x248, 0x46d, 0, 0, NULL, NULL, true, 1.0f);
 
     field_0x270 = 0x258;
     setActorFlag(0, 1);
@@ -368,7 +368,7 @@ void EnemyForEndingControl_804AD48C::fn_8035B650() {
         }
         mAlive = false;
     } else if (field_0x260 == 1) {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ENDM, field_0x4, &mPos, 0, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ENDM, mLayer_0x4, &mPos, 0, -1, -1);
         JGeometry::TVec3f pos(-100.0f, -100.0f, 0.0f);
         for (s32 i = 0; i < 4; i++) {
             fn_80230498(i, &pos, 0, 0xFF, -0x80, -0x80, true);

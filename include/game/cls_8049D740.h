@@ -30,7 +30,7 @@ public:
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231[3];
-    /* 0x234 */ s32 mMode; // field_0x90 & 0x1F, set by init
+    /* 0x234 */ s32 mMode; // mSpawnParam_0x90 & 0x1F, set by init
     /* 0x238 */ s32 field_0x238; // returned by vfunc_0x58
     /* 0x23C */ s32 field_0x23c;
     /* 0x240 */ s32 field_0x240;

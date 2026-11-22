@@ -25,8 +25,8 @@ static const Vec lbl_804750F0[4] = {
 // FIXME: 99.80 %, regalloc-only; behaviour clean.
 // regalloc-only: r6 <-> r7 swap inside the random colour while loop.
 void ColourBlock1Player_804AE620::init() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
-    if ((s32)((field_0x90 >> 2) & 7) == 5) {
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+    if ((s32)((mSpawnParam_0x90 >> 2) & 7) == 5) {
         u32 mask = 0;
         s32 serial = -1;
         while (true) {
@@ -58,18 +58,18 @@ void ColourBlock1Player_804AE620::init() {
             }
         }
     } else {
-        field_0x240 = (field_0x90 >> 2) & 7;
+        field_0x240 = (mSpawnParam_0x90 >> 2) & 7;
     }
 
     mPos.x = mSpawnPos.x = (f32)(((s32)mPos.x / 16) * 16 + 8);
     mPos.y = mSpawnPos.y = (f32)(((s32)mPos.y / 16) * 16 + 8);
     field_0x230 = mPos;
     mBox.set(-7.5f, -7.5f, 7.5f, 7.5f);
-    field_0x80.set(-7.5f, -7.5f, 7.5f, 7.5f);
+    mMapBox_0x80.set(-7.5f, -7.5f, 7.5f, 7.5f);
     field_0x1a4 = 1;
     field_0xb8 = 2;
     field_0x244 = 0;
-    field_0x248 = (field_0x90 >> 5) & 1;
+    field_0x248 = (mSpawnParam_0x90 >> 5) & 1;
     if (field_0x248 == 0) {
         if (fn_8028D4DC(&mPos, 0, field_0x16c)) {
             field_0x244 = 1;
@@ -77,7 +77,7 @@ void ColourBlock1Player_804AE620::init() {
             field_0x240 = 0;
         }
     }
-    if ((field_0x90 >> 8) & 0xF) {
+    if ((mSpawnParam_0x90 >> 8) & 0xF) {
         field_0x244 = 1;
     }
 }
@@ -103,7 +103,7 @@ void ColourBlock1Player_804AE620::update() {
         box.f.y += 1.0f;
     }
 
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
 
     if (field_0x244 != 0) {
         box.i.x -= -2.0f;
@@ -128,17 +128,17 @@ void ColourBlock1Player_804AE620::update() {
     JGeometry::TVec3f probe;
     if (PSVECDistance(&mPos, &field_0x230) >= 15.9f) {
         if (!fn_801F2618(NULL, false)) {
-            probe = field_0x3c;
+            probe = mVel_0x3c;
             probe.normalize();
             probe.scale(16.0f);
             probe += mPos;
 
-            u16 tileA = fn_8022461C(&probe, field_0x4);
-            u16 tileB = fn_8022461C(&mPos, field_0x4);
+            u16 tileA = fn_8022461C(&probe, mLayer_0x4);
+            u16 tileB = fn_8022461C(&mPos, mLayer_0x4);
             if (tileB == 0x50 && (tileA == 0 || tileA == 0x50)) {
-                JGeometry::TVec3f savedSpeed = field_0x3c;
-                if (fn_80374964(field_0x90 & 3) == 1) {
-                    field_0x3c = savedSpeed;
+                JGeometry::TVec3f savedSpeed = mVel_0x3c;
+                if (fn_80374964(mSpawnParam_0x90 & 3) == 1) {
+                    mVel_0x3c = savedSpeed;
                     field_0x230.x = mPos.x;
                     field_0x230.y = mPos.y;
                     field_0x230.z = mPos.z;
@@ -161,7 +161,7 @@ void ColourBlock1Player_804AE620::update() {
         }
 
         field_0x230 = mPos;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         mPrevPos = mPos;
         setScreenFlag_0x30(0xFF, 1);
         field_0x240 = 0;
@@ -170,8 +170,8 @@ void ColourBlock1Player_804AE620::update() {
     }
 
     JGeometry::TVec3f savedPos = mPos;
-    mPos += field_0x3c;
-    if (!field_0x3c.isZero()) {
+    mPos += mVel_0x3c;
+    if (!mVel_0x3c.isZero()) {
         if (field_0x9c >= 0) {
             mPos = savedPos;
         }
@@ -184,8 +184,8 @@ void ColourBlock1Player_804AE620::update() {
             JGeometry::TVec3f offset;
             JGeometry::TVec3f savedPos = mPos;
             offset.set(lbl_804A79E0[dir][0], lbl_804A79E0[dir][1], lbl_804A79E0[dir][2]);
-            if (field_0x240 == 0 || fn_80239558(&box, field_0x4, mSerial) == field_0x240 - 1) {
-                if (dir == (s32)(field_0x90 & 3)) {
+            if (field_0x240 == 0 || fn_80239558(&box, mLayer_0x4, mSerial) == field_0x240 - 1) {
+                if (dir == (s32)(mSpawnParam_0x90 & 3)) {
                     if (fn_80374964(dir)) {
                         if (field_0x248 == 0) {
                             getGameView_802D6A9C()->fn_802D7584(field_0x16c, dir + 1);
@@ -198,16 +198,16 @@ void ColourBlock1Player_804AE620::update() {
                         mPos = savedPos;
                         if (dir >= 0 && dir < 4) {
                             fn_80238E08(mSerial);
-                            field_0x3c.x = lbl_804750C0[dir].x;
-                            field_0x3c.y = lbl_804750C0[dir].y;
-                            field_0x3c.z = lbl_804750C0[dir].z;
-                            probe = field_0x3c;
+                            mVel_0x3c.x = lbl_804750C0[dir].x;
+                            mVel_0x3c.y = lbl_804750C0[dir].y;
+                            mVel_0x3c.z = lbl_804750C0[dir].z;
+                            probe = mVel_0x3c;
                             probe.normalize();
                             probe.scale(16.0f);
                             probe += mPos;
-                            if (fn_8022461C(&probe, field_0x4) == 0x50) {
-                                field_0x3c.normalize();
-                                field_0x3c.scale(1.0f);
+                            if (fn_8022461C(&probe, mLayer_0x4) == 0x50) {
+                                mVel_0x3c.normalize();
+                                mVel_0x3c.scale(1.0f);
                             }
                             field_0x230.x = mPos.x;
                             field_0x230.y = mPos.y;
@@ -226,10 +226,10 @@ void ColourBlock1Player_804AE620::update() {
 bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
     bool canMove = false;
     JGeometry::TVec3f savedPos = mPos;
-    field_0x3c.x = lbl_804750F0[dir].x;
-    field_0x3c.y = lbl_804750F0[dir].y;
-    field_0x3c.z = lbl_804750F0[dir].z;
-    mPos += field_0x3c;
+    mVel_0x3c.x = lbl_804750F0[dir].x;
+    mVel_0x3c.y = lbl_804750F0[dir].y;
+    mVel_0x3c.z = lbl_804750F0[dir].z;
+    mPos += mVel_0x3c;
     JGeometry::TVec3f probe(0.0f, 0.0f, 0.0f);
     if (fn_801F2618(&probe, false)) {
         switch (dir) {
@@ -265,7 +265,7 @@ bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (int i = 0; i < 4; i++) {
-            if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
+            if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
                 if (fn_8022CAF8(i) != 5 || !fn_8022F478(i)) {
                     s32 serial = mSerial;
                     if (fn_80238CB4(i) != serial) {
@@ -276,7 +276,7 @@ bool ColourBlock1Player_804AE620::fn_80374964(u8 dir) {
         }
     }
     mPos = savedPos;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     return canMove;
 }
 
@@ -288,7 +288,7 @@ void ColourBlock1Player_804AE620::draw() {
     }
     params.field_0x1d = -1;
     drawSprite_801F06F0("enemy_both_sob.bin", frame + 0x45, &params, 0, 1.0f, 1.0f);
-    fn_80307AC8(mSerial, field_0x4, &mPos, frame + 0x45, 0, 0, -1);
+    fn_80307AC8(mSerial, mLayer_0x4, &mPos, frame + 0x45, 0, 0, -1);
 }
 
 ColourBlock1Player_804AE620::~ColourBlock1Player_804AE620() {}

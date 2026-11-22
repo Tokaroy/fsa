@@ -379,7 +379,7 @@ void Ganon_804A25F0::init() {
     field_0x28c = 0;
     field_0x290 = 0;
     field_0x2b8.zero();
-    field_0x3c.zero();
+    mVel_0x3c.zero();
     field_0x298 = 0x1E0;
     field_0x2a0 = 0;
     field_0x2a8 = 0.0f;
@@ -402,11 +402,11 @@ void Ganon_804A25F0::init() {
     }
     field_0x2a4 = 0;
     field_0x2a6 = 1;
-    field_0x118 = 2;
-    if (field_0x90 == 0) {
+    mParamAtcn_0x118 = 2;
+    if (mSpawnParam_0x90 == 0) {
         field_0xb0 = 0xA040004;
         lbl_8053AB91 = 0;
-        lbl_80539FE8 = field_0x4;
+        lbl_80539FE8 = mLayer_0x4;
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
                 lbl_804C1C00[i].set(*getPlayerPos_8023E724(i));
@@ -417,49 +417,49 @@ void Ganon_804A25F0::init() {
         mBox.i.y = -48.0f;
         mBox.f.x = 48.0f;
         mBox.f.y = 48.0f;
-        field_0x80.i.x = -48.0f;
-        field_0x80.i.y = -48.0f;
-        field_0x80.f.x = 48.0f;
-        field_0x80.f.y = 50.0f;
+        mMapBox_0x80.i.x = -48.0f;
+        mMapBox_0x80.i.y = -48.0f;
+        mMapBox_0x80.f.x = 48.0f;
+        mMapBox_0x80.f.y = 50.0f;
         mState = 0;
     }
-    if (field_0x90 == 10 || (field_0x90 - 11) <= 1u || field_0x90 == 13) {
+    if (mSpawnParam_0x90 == 10 || (mSpawnParam_0x90 - 11) <= 1u || mSpawnParam_0x90 == 13) {
         mBox.i.x = -12.0f;
         mBox.i.y = -12.0f;
         mBox.f.x = 12.0f;
         mBox.f.y = 12.0f;
-        field_0x80.i.x = -12.0f;
-        field_0x80.i.y = -12.0f;
-        field_0x80.f.x = 12.0f;
-        field_0x80.f.y = 12.0f;
+        mMapBox_0x80.i.x = -12.0f;
+        mMapBox_0x80.i.y = -12.0f;
+        mMapBox_0x80.f.x = 12.0f;
+        mMapBox_0x80.f.y = 12.0f;
         mState = 0x1F;
     }
-    if (field_0x90 == 20 || (field_0x90 - 21) <= 1u || field_0x90 == 23) {
+    if (mSpawnParam_0x90 == 20 || (mSpawnParam_0x90 - 21) <= 1u || mSpawnParam_0x90 == 23) {
         mBox.i.x = -8.0f;
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
         mBox.f.y = 8.0f;
-        field_0x80.i.x = -8.0f;
-        field_0x80.i.y = -8.0f;
-        field_0x80.f.x = 8.0f;
-        field_0x80.f.y = 8.0f;
-        field_0x114 = 2;
+        mMapBox_0x80.i.x = -8.0f;
+        mMapBox_0x80.i.y = -8.0f;
+        mMapBox_0x80.f.x = 8.0f;
+        mMapBox_0x80.f.y = 8.0f;
+        mParamAtcp_0x114 = 2;
         mState = 0x23;
     }
-    if (field_0x90 == 1 || (field_0x90 - 2) <= 1u || field_0x90 == 4) {
-        field_0x25c = field_0x90 - 1;
-        lbl_804C1BC0[field_0x25c] = field_0x4;
+    if (mSpawnParam_0x90 == 1 || (mSpawnParam_0x90 - 2) <= 1u || mSpawnParam_0x90 == 4) {
+        field_0x25c = mSpawnParam_0x90 - 1;
+        lbl_804C1BC0[field_0x25c] = mLayer_0x4;
         lbl_804C1BD0[field_0x25c].set(mPos);
         lbl_804C1BD0[field_0x25c].y += 48.0f;
         mState = 0x28;
     }
-    if (field_0x90 == 31) {
+    if (mSpawnParam_0x90 == 31) {
         field_0xb0 = 0x5000000;
         mState = 0x2C;
     }
-    if (field_0x90 == 30) {
+    if (mSpawnParam_0x90 == 30) {
         field_0xb0 = 0xA040004;
-        field_0x114 = 4;
+        mParamAtcp_0x114 = 4;
         mBox.i.x = -64.0f;
         mBox.i.y = -64.0f;
         mBox.f.x = 64.0f;
@@ -619,8 +619,8 @@ void Ganon_804A25F0::fn_80196020(s32 player) {
                 mEmitters[i] = NULL;
             }
         }
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, getPlayerPos_8023E724(player), 0x2A6, 0, 0, NULL, NULL, true, 1.0f);
-        mEmitters[1] = spawnEmitter_8013CC50(field_0x4, getPlayerPos_8023E724(player), 0x2A7, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(player), 0x2A6, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(player), 0x2A7, 0, 0, NULL, NULL, true, 1.0f);
     }
     if (fn_8022F3DC(player) >= 0) {
         player = fn_8022F3DC(player);
@@ -643,15 +643,15 @@ void Ganon_804A25F0::update() {
     bool wallHit = false;
     fn_801546BC(&posB);
     mLife = 10000;
-    if (field_0x90 == 31) {
+    if (mSpawnParam_0x90 == 31) {
         fn_80192BD8();
         return;
     }
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         fn_8017ECC0();
     }
     fn_80154718(&mPos);
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         fn_801964AC();
         if (updateBossDeath_0x2C(0.0f, 16.0f, 50.0f)) {
             return;
@@ -679,7 +679,7 @@ void Ganon_804A25F0::update() {
                 } else {
                     startSound_801F0E34(0x50000, 0);
                 }
-                fn_801546BC(&field_0x3c);
+                fn_801546BC(&mVel_0x3c);
             }
         } else if (field_0x2a6 == 0) {
             for (s32 i = 0; i < 4; i++) {
@@ -704,7 +704,7 @@ void Ganon_804A25F0::update() {
                     fn_801544D0(0);
                     lbl_8053AB90 = 1;
                     startSound_801F0E34(0x50005, 0);
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x1CE, 0, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1CE, 0, 3, NULL, NULL, true, 1.0f);
                     hit->fn_8018A5A8(0);
                     field_0x2a6 = 1;
                     if (field_0x298 <= 0) {
@@ -713,7 +713,7 @@ void Ganon_804A25F0::update() {
                         field_0x28c = 15;
                         fn_801964AC();
                     }
-                    fn_801546BC(&field_0x3c);
+                    fn_801546BC(&mVel_0x3c);
                 }
             }
         }
@@ -729,15 +729,15 @@ void Ganon_804A25F0::update() {
         }
         mState = 3;
     }
-    if (field_0x90 != 30) {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2b8.x, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2b8.y, 0.3f, 1.0f);
+    if (mSpawnParam_0x90 != 30) {
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2b8.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b8.y, 0.3f, 1.0f);
     }
-    fn_801545F0(&mPos, &field_0x3c);
-    if (field_0x90 == 0 || field_0x90 == 20 || (field_0x90 - 21) <= 1u || field_0x90 == 23) {
+    fn_801545F0(&mPos, &mVel_0x3c);
+    if (mSpawnParam_0x90 == 0 || mSpawnParam_0x90 == 20 || (mSpawnParam_0x90 - 21) <= 1u || mSpawnParam_0x90 == 23) {
         fn_801F2B20(0);
     }
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         if (mState != 9 && mState != 10 && mState != 12 && mState != 25 && mState != 26 &&
             mState != 27 && field_0x2ac == 255.0f) {
             fn_80154590(&mBox, -32.0f, -32.0f, 32.0f, 32.0f);
@@ -773,10 +773,10 @@ void Ganon_804A25F0::update() {
             }
             if (field_0x94 >= 1 && field_0x26c == 0 && mPos.z < 0.1f) {
                 mPos.z = 0.0f;
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x1C8, 0, 3, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x1C9, 0, 3, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1C8, 0, 3, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1C9, 0, 3, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x50028, 0);
-                fn_80196D8C(field_0x4, false, 3.0f, 0.0f);
+                fn_80196D8C(mLayer_0x4, false, 3.0f, 0.0f);
                 field_0x26c = 1;
             }
         }
@@ -848,7 +848,7 @@ void Ganon_804A25F0::update() {
     case 4:
         field_0x2b8.x = 3.0f * fn_801544FC(field_0x2b6);
         field_0x2b8.y = 3.0f * fn_801544E4(field_0x2b6);
-        if (field_0x2a0 == 3 && mPos.y > 32.0f + field_0x2dc.y && field_0x3c.y > 1.0f && field_0x234[6] == 0) {
+        if (field_0x2a0 == 3 && mPos.y > 32.0f + field_0x2dc.y && mVel_0x3c.y > 1.0f && field_0x234[6] == 0) {
             field_0x234[2] = 0;
             field_0x274 = 1;
         }
@@ -862,7 +862,7 @@ void Ganon_804A25F0::update() {
         }
         if ((wallHit || field_0x234[2] == 0) && field_0x234[7] == 0) {
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             mState = 5;
             break;
         }
@@ -887,7 +887,7 @@ void Ganon_804A25F0::update() {
         field_0x28c = 1;
         field_0x234[2] = 50;
         fn_801546BC(&field_0x2b8);
-        fn_801546BC(&field_0x3c);
+        fn_801546BC(&mVel_0x3c);
         field_0x268 = 0;
         field_0x26c = 0;
         mState = 6;
@@ -948,7 +948,7 @@ void Ganon_804A25F0::update() {
         } else {
             field_0x28c = 1;
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
         }
         break;
     }
@@ -974,7 +974,7 @@ void Ganon_804A25F0::update() {
                 fn_80230C6C(i);
             }
             startSound_801F0E34(0x50005, 0);
-            fn_80196D8C(field_0x4, false, 4.0f, 0.0f);
+            fn_80196D8C(mLayer_0x4, false, 4.0f, 0.0f);
         }
         field_0x298 = 0x140;
         for (s32 i = 0; i < 5; i++) {
@@ -984,7 +984,7 @@ void Ganon_804A25F0::update() {
             }
         }
         fn_801546BC(&field_0x2b8);
-        fn_801546BC(&field_0x3c);
+        fn_801546BC(&mVel_0x3c);
         field_0x28c = 14;
         field_0x2a6 = 1;
         if (field_0x2a0 == 3) {
@@ -1006,11 +1006,11 @@ void Ganon_804A25F0::update() {
             field_0x28c = 12;
             startSound_801F0E34(0x50007, 0);
             startSound_801F0E34(0x50008, 0);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x536, 0, 3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x537, 0, 3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x538, 0, 3, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x536, 0, 3, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x537, 0, 3, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x538, 0, 3, NULL, NULL, true, 1.0f);
             if (mEmitters[0] == NULL) {
-                mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x539, 0, 3, NULL, NULL, true, 1.0f);
+                mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x539, 0, 3, NULL, NULL, true, 1.0f);
             }
             fn_80196D30(2, 0);
             mState = 13;
@@ -1072,7 +1072,7 @@ void Ganon_804A25F0::update() {
         field_0x2a5 = 1;
         fn_80196E00();
         fn_8018A6AC()->fn_80458F9C(60);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x6D, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x6D, 0, 0, NULL, NULL, true, 1.0f);
         field_0x234[1] = 0;
         field_0x264 = 0;
         mState = 14;
@@ -1080,7 +1080,7 @@ void Ganon_804A25F0::update() {
     case 14:
         if (field_0x234[1] == 0) {
             field_0x234[1] = (s32)(20.0f * fn_80154744() + 20.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x488, 1, 5, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x488, 1, 5, NULL, NULL, true, 1.0f);
         }
         addCalc2_801F71A4(&field_0x2ac, 1.0f, 0.2f, 0.6f);
         field_0x264++;
@@ -1120,7 +1120,7 @@ void Ganon_804A25F0::update() {
         addCalc2_801F71A4(&mPos.y, field_0x2dc.y - 80.0f, 1.0f, stepY);
         if (field_0x2a8 >= 0.9f) {
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             field_0x28c = 1;
             mState = 17;
         }
@@ -1162,7 +1162,7 @@ void Ganon_804A25F0::update() {
             field_0x234[3] = 0;
             field_0x264 = 0;
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             field_0x234[2] = 120;
             for (s32 i = 0; i < 5; i++) {
                 if (mEmitters[i] != NULL) {
@@ -1183,10 +1183,10 @@ void Ganon_804A25F0::update() {
             posA.y += -110.0f;
             posA.z = 0.0f;
             if (mEmitters[0] == NULL) {
-                mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &posA, 0x1D1, 1, 7, NULL, NULL, true, 1.0f);
+                mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1D1, 1, 7, NULL, NULL, true, 1.0f);
             }
             if (mEmitters[1] == NULL) {
-                mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &posA, 0x1D2, 1, 7, NULL, NULL, true, 1.0f);
+                mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1D2, 1, 7, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x30053, 0);
             if (field_0x234[2] == 0) {
@@ -1213,10 +1213,10 @@ void Ganon_804A25F0::update() {
                     field_0x28c = 4;
                     mState = 21;
                 } else {
-                    spawnEmitter_8013CC50(field_0x4, &posA, 0x1C5, 1, 7, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &posA, 0x1C6, 1, 7, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1C5, 1, 7, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1C6, 1, 7, NULL, NULL, true, 1.0f);
                     for (s32 i = 0; i < 10; i++) {
-                        spawnEmitter_8013CC50(field_0x4, &posA, 0x1C7, 1, 7, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1C7, 1, 7, NULL, NULL, true, 1.0f);
                     }
                     s32 ang = (s32)(-2048.0f - 8192.0f * fn_80154744());
                     startSound_801F0E34(0x30054, 0);
@@ -1244,7 +1244,7 @@ void Ganon_804A25F0::update() {
             field_0x234[3] = 0;
             field_0x264 = 0;
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             field_0x234[2] = 24;
             field_0x28c = 2;
             mState = 23;
@@ -1296,7 +1296,7 @@ void Ganon_804A25F0::update() {
             }
             field_0x2a6 = 1;
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             field_0x28c = 2;
             mState = 26;
         } else {
@@ -1313,9 +1313,9 @@ void Ganon_804A25F0::update() {
             posA.y += -110.0f;
             fn_801F0D20(0x44);
             startSound_801F0E34(0x400B3, 0);
-            spawnEmitter_8013CC50(field_0x4, &posA, 0x1C5, 1, 7, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1C5, 1, 7, NULL, NULL, true, 1.0f);
             for (s32 i = 0; i < 10; i++) {
-                spawnEmitter_8013CC50(field_0x4, &posA, 0x1C7, 1, 7, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &posA, 0x1C7, 1, 7, NULL, NULL, true, 1.0f);
             }
             fn_80119DD0()->fn_80119998(60, 0, 2, 0, 1, 0, 0);
             field_0x234[2] = 30;
@@ -1417,7 +1417,7 @@ void Ganon_804A25F0::update() {
     case 29: {
         field_0x264 = 0;
         fn_801546BC(&field_0x2b8);
-        fn_801546BC(&field_0x3c);
+        fn_801546BC(&mVel_0x3c);
         JGeometry::TVec3f one;
         fn_80196D60(&one, 1.0f, 1.0f, 1.0f);
         fn_80196D70(&field_0x2d0, &one);
@@ -1434,20 +1434,20 @@ void Ganon_804A25F0::update() {
         break;
     case 31:
         if (mEmitters[0] == NULL) {
-            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1CF, 1, 7, NULL, NULL, true, 1.0f);
+            mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1CF, 1, 7, NULL, NULL, true, 1.0f);
         }
         if (mEmitters[1] == NULL) {
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1D0, 1, 7, NULL, NULL, true, 1.0f);
+            mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1D0, 1, 7, NULL, NULL, true, 1.0f);
         }
         if (mEmitters[0] == NULL || mEmitters[1] == NULL) {
             break;
         }
-        if (field_0x90 != 14) {
-            field_0x2b6 += (s16)((field_0x90 - 10) << 12);
+        if (mSpawnParam_0x90 != 14) {
+            field_0x2b6 += (s16)((mSpawnParam_0x90 - 10) << 12);
         }
-        field_0x3c.x = 10.0f * fn_801544FC(field_0x2b6);
-        field_0x3c.y = 10.0f * fn_801544E4(field_0x2b6);
-        fn_80196D70(&field_0x2b8, &field_0x3c);
+        mVel_0x3c.x = 10.0f * fn_801544FC(field_0x2b6);
+        mVel_0x3c.y = 10.0f * fn_801544E4(field_0x2b6);
+        fn_80196D70(&field_0x2b8, &mVel_0x3c);
         field_0x268 = -1;
         field_0x234[1] = 20;
         field_0x234[0] = 100;
@@ -1456,12 +1456,12 @@ void Ganon_804A25F0::update() {
     case 32:
         setEmitterPos_8013CB44(mEmitters[0], &mPos, 1, 7, true);
         setEmitterPos_8013CB44(mEmitters[1], &mPos, 1, 7, true);
-        if (field_0x90 == 14) {
+        if (mSpawnParam_0x90 == 14) {
             if (fn_801F2B7C(fn_80154510(), -1, 7)) {
                 field_0x234[0] = 0;
             } else if (fn_801F2A10(-1, -1, true, true)) {
                 field_0x234[0] = 0;
-            } else if (fn_801F6758(&mPos, field_0x4, 16.0f)) {
+            } else if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
                 field_0x234[0] = 0;
             }
         }
@@ -1488,9 +1488,9 @@ void Ganon_804A25F0::update() {
                     mEmitters[i] = NULL;
                 }
             }
-            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x57, 1, 7, NULL, NULL, true, 1.0f);
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1CC, 1, 7, NULL, NULL, true, 1.0f);
-            mEmitters[2] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1CD, 1, 7, NULL, NULL, true, 1.0f);
+            mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x57, 1, 7, NULL, NULL, true, 1.0f);
+            mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1CC, 1, 7, NULL, NULL, true, 1.0f);
+            mEmitters[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1CD, 1, 7, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x50002, 0);
             field_0x2a8 = 1.0f;
             field_0x234[0] = 50;
@@ -1524,10 +1524,10 @@ void Ganon_804A25F0::update() {
         }
         break;
     case 35:
-        field_0x264 = field_0x90 - 20;
+        field_0x264 = mSpawnParam_0x90 - 20;
         for (s32 i = 0; i < 4; i++) {
             if (mEmitters[i] == NULL) {
-                mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804A2318[field_0x90 - 20][i], 1, 7, NULL, NULL, true, 1.0f);
+                mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A2318[mSpawnParam_0x90 - 20][i], 1, 7, NULL, NULL, true, 1.0f);
             }
         }
         field_0x234[0] = 40;
@@ -1562,7 +1562,7 @@ void Ganon_804A25F0::update() {
     case 37:
         if (field_0x234[0] == 0 || lbl_8053AB90 == 1) {
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             mState = 39;
             break;
         }
@@ -1573,16 +1573,16 @@ void Ganon_804A25F0::update() {
             if (hitPlayer >= 0) {
                 if (field_0x264 == hitPlayer || (fn_8022F514(hitPlayer) && field_0x264 == fn_8022F3DC(hitPlayer))) {
                     field_0x94 = 1;
-                    field_0x3c.x = 10.0f * fn_801544FC(-0x8000);
-                    field_0x3c.y = 10.0f * fn_801544E4(-0x8000);
-                    fn_80196D70(&field_0x2b8, &field_0x3c);
+                    mVel_0x3c.x = 10.0f * fn_801544FC(-0x8000);
+                    mVel_0x3c.y = 10.0f * fn_801544E4(-0x8000);
+                    fn_80196D70(&field_0x2b8, &mVel_0x3c);
                     startSound_801F0E34(0x30037, 0);
                     field_0x234[0] = 100;
                     mState = 38;
                     break;
                 } else {
                     fn_801546BC(&field_0x2b8);
-                    fn_801546BC(&field_0x3c);
+                    fn_801546BC(&mVel_0x3c);
                     mState = 39;
                     break;
                 }
@@ -1596,7 +1596,7 @@ void Ganon_804A25F0::update() {
                 f32 dy = owner->fn_801544DC()->y - mPos.y;
                 if (fn_80154378(dx * dx + dy * dy) < 8.0f) {
                     fn_801546BC(&field_0x2b8);
-                    fn_801546BC(&field_0x3c);
+                    fn_801546BC(&mVel_0x3c);
                     mState = 39;
                     break;
                 }
@@ -1605,7 +1605,7 @@ void Ganon_804A25F0::update() {
         if (fn_801F2B7C(fn_80154510(), -1, 6)) {
             field_0x234[0] = 0;
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             mState = 39;
             break;
         }
@@ -1624,12 +1624,12 @@ void Ganon_804A25F0::update() {
         }
         if (field_0x94 == 0 || field_0x234[0] == 0 || lbl_8053AB90 == 1) {
             if (field_0x94 == 0) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xFF, 1, 7, NULL, NULL, true, 1.5f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x100, 1, 7, NULL, NULL, true, 1.5f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x101, 1, 7, NULL, NULL, true, 1.5f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xFF, 1, 7, NULL, NULL, true, 1.5f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x100, 1, 7, NULL, NULL, true, 1.5f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x101, 1, 7, NULL, NULL, true, 1.5f);
             }
             fn_801546BC(&field_0x2b8);
-            fn_801546BC(&field_0x3c);
+            fn_801546BC(&mVel_0x3c);
             mState = 39;
         }
         break;
@@ -1717,8 +1717,8 @@ void Ganon_804A25F0::update() {
         field_0x2b4 += 0x900;
         startSound_801F0E34(0x30055, 0);
         fn_801F2B7C(fn_80154510(), -1, 3);
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2b8.x, 0.2f, 2.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2b8.y, 0.2f, 2.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2b8.x, 0.2f, 2.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b8.y, 0.2f, 2.0f);
         posB.x = 5.0f * fn_801544FC(field_0x2b6);
         posB.y = 5.0f * fn_801544E4(field_0x2b6);
         fn_80196D70(&field_0x2b8, &posB);
@@ -1729,8 +1729,8 @@ void Ganon_804A25F0::update() {
         posA.x += 74.0f * fn_801544FC((s16)(field_0x2b4 + 0xA000));
         posA.y += 74.0f * fn_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
-            if (!fn_801F6758(&posA, field_0x4, 16.0f)) {
-                fn_80154310('GNON', field_0x4, &posA, 31, -1, -1);
+            if (!fn_801F6758(&posA, mLayer_0x4, 16.0f)) {
+                fn_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
             }
             field_0x234[1] = 1;
         }
@@ -1746,14 +1746,14 @@ void Ganon_804A25F0::update() {
         posA.x += 74.0f * fn_801544FC((s16)(field_0x2b4 + 0xA000));
         posA.y += 74.0f * fn_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
-            if (!fn_801F6758(&posA, field_0x4, 16.0f)) {
-                fn_80154310('GNON', field_0x4, &posA, 31, -1, -1);
+            if (!fn_801F6758(&posA, mLayer_0x4, 16.0f)) {
+                fn_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
             }
             field_0x234[1] = 1;
         }
         fn_801F2B7C(fn_80154510(), -1, 3);
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2b8.x, 0.2f, 2.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2b8.y, 0.2f, 2.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2b8.x, 0.2f, 2.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b8.y, 0.2f, 2.0f);
         {
             Ganon_804A25F0* owner = static_cast<Ganon_804A25F0*>(fn_8015445C(field_0x294));
             if (owner != NULL) {
@@ -1790,9 +1790,9 @@ void Ganon_804A25F0::fn_80192BD8() {
     switch (mState) {
     case 0x2C:
         field_0x234[0] = 50;
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x359, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x35A, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x35B, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x359, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35A, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35B, 0, 0, NULL, NULL, true, 1.0f);
         mState = 0x2D;
         // fall through
     case 0x2D:
@@ -1818,14 +1818,14 @@ void Ganon_804A25F0::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (field_0x90 == 31) {
+    if (mSpawnParam_0x90 == 31) {
         return;
     }
     f32 savedX = mPos.x;
     f32 savedY = mPos.y;
     f32 savedZ = mPos.z;
-    if (field_0x90 != 0) {
-        if (field_0x90 == 30) {
+    if (mSpawnParam_0x90 != 0) {
+        if (mSpawnParam_0x90 == 30) {
             params.field_0x1f = 0;
             params.field_0x1d = 5;
             mtx[0][3] = 0.0f;

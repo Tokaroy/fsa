@@ -23,13 +23,13 @@ void ForceGemSpawner_804AB660::init() {
     mEmitter24c = NULL;
     mEmitter250 = NULL;
     mEmitter254 = NULL;
-    field_0x238 = field_0x90 & 0xFFFF;
+    field_0x238 = mSpawnParam_0x90 & 0xFFFF;
     field_0x234 = 0;
     field_0x244 = 0.0f;
     field_0x248 = 1.0f;
     field_0x240 = 11;
-    field_0x23c = (field_0x90 >> 20) & 0xF;
-    switch ((field_0x90 >> 16) & 0xF) {
+    field_0x23c = (mSpawnParam_0x90 >> 20) & 0xF;
+    switch ((mSpawnParam_0x90 >> 16) & 0xF) {
     case 0:
     case 5:
     case 6:
@@ -75,7 +75,7 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
     pos.y += 12.0f;
     pos.z = 0.0f;
     u32 kind = (u32)(2.5 * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    s32 idx = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, src->field_0x4, &pos, kind);
+    s32 idx = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, src->mLayer_0x4, &pos, kind);
     if (idx < 0) {
         return;
     }
@@ -89,13 +89,13 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
         f32 vy = 2.0f * JMASCos(angle);
         f32 vz = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         JGeometry::TVec3f vel(vx, vy, vz);
-        gem->field_0x3c = vel;
+        gem->mVel_0x3c = vel;
     } else {
         f32 vz = 3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         f32 vy = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         f32 vx = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         JGeometry::TVec3f vel(vx, vy, vz);
-        gem->field_0x3c = vel;
+        gem->mVel_0x3c = vel;
     }
 }
 
@@ -103,7 +103,7 @@ void fn_8032A4FC(s32 serial, s32 angle, bool flag) {
 void ForceGemSpawner_804AB660::update() {
     switch (field_0x230) {
     case 0: {
-        u16 baseAngle = fn_801F6874(field_0x98);
+        u16 baseAngle = fn_801F6874(mDir_0x98);
         JGeometry::TVec3f vel(0.0f, 0.0f, 0.0f);
         for (s32 i = 0; i < 100 && field_0x238 > 0; i++) {
             s32 idx = field_0x240;
@@ -125,7 +125,7 @@ void ForceGemSpawner_804AB660::update() {
                 continue;
             }
             field_0x238 -= lbl_804AB630[kind];
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, kind);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, kind);
             if (serial < 0) {
                 continue;
             }
@@ -133,25 +133,25 @@ void ForceGemSpawner_804AB660::update() {
             if (gem == NULL) {
                 continue;
             }
-            s32 mode = (field_0x90 >> 16) & 0xF;
+            s32 mode = (mSpawnParam_0x90 >> 16) & 0xF;
             if (mode == 0) {
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
+                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
                     f32 vz = (0.5f * field_0x23c + 1.0f) *
                              (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                     f32 vy = (0.5f * field_0x23c + 1.0f) *
                              (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     f32 vx = (0.5f * field_0x23c + 1.0f) *
                              (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                    gem->field_0x3c = JGeometry::TVec3f(vx, vy, vz);
+                    gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, vz);
                 } else {
                     f32 vy = (0.5f * field_0x23c + 1.0f) *
                              -(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                     f32 vx = (0.5f * field_0x23c + 1.0f) *
                              (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                    gem->field_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                    gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                 }
             } else if (mode == 6) {
-                if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
+                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
                     s32 ang = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                     f32 spd = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.7f;
                     f32 vx = spd * JMASSin(ang);
@@ -160,14 +160,14 @@ void ForceGemSpawner_804AB660::update() {
                     vx *= scale;
                     vy *= scale;
                     f32 vz = scale * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
-                    gem->field_0x3c = JGeometry::TVec3f(vx, vy, vz);
+                    gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, vz);
                 } else {
                     s32 s = 1 - 2 * ((s32)(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 0);
                     f32 vy = (0.5f * field_0x23c + 1.0f) *
                              -(2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f);
                     f32 vx = (0.5f * field_0x23c + 1.0f) *
                              ((f32)s * (0.7f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.8f));
-                    gem->field_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
+                    gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, 0.0f);
                 }
             } else {
                 s32 ang = (s32)((f32)baseAngle + (8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
@@ -177,7 +177,7 @@ void ForceGemSpawner_804AB660::update() {
                 vel.y = vy * JMASCos(ang);
                 vel.z = (0.25f * field_0x23c + 1.0f) *
                         (3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 3.0f;
-                gem->field_0x3c = vel;
+                gem->mVel_0x3c = vel;
             }
         }
         fn_801F3668();
@@ -190,9 +190,9 @@ void ForceGemSpawner_804AB660::update() {
             pos.y += 12.0f;
             field_0x234 = 200;
             gAudioMgr_8053AF80->fn_80458880(0x1D, -1);
-            mEmitter24c = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
-            mEmitter250 = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
-            mEmitter254 = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter254 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
         }
         if (field_0x234 > 0 && (field_0x234 & 7) == 0) {
             fn_8032A4FC(mSerial, 0, false);
@@ -236,16 +236,16 @@ void ForceGemSpawner_804AB660::update() {
         }
         addCalc2_801F71A4(&field_0x248, 1.0f, 0.2f, 0.4f);
         if (fn_801F3D94(1) != 0) {
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
-            if (field_0xe4 != 1 || field_0xe8 == 0) {
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+            if (mSparkTimer_0xe4 != 1 || mSparksLeft_0xe8 == 0) {
                 break;
             }
         }
-        if ((field_0xe4 == 1 && field_0xe8 > 0) || fn_801F305C()) {
+        if ((mSparkTimer_0xe4 == 1 && mSparksLeft_0xe8 > 0) || fn_801F305C()) {
             u16 outAngle = 0;
-            field_0xd8 = 20;
-            field_0xdc = 20;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mHitTimer_0xd8 = 20;
+            mHitTimerStart_0xdc = 20;
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             field_0x248 = 2.0f;
             JGeometry::TVec3f pos(mPos);
             pos.x += 8.0f;
@@ -271,9 +271,9 @@ void ForceGemSpawner_804AB660::update() {
             pos.y += 12.0f;
             field_0x234 = 200;
             gAudioMgr_8053AF80->fn_80458880(0x1D, -1);
-            mEmitter24c = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
-            mEmitter250 = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
-            mEmitter254 = spawnEmitter_8013CC50(field_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D5, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D6, 1, 1, NULL, NULL, true, 1.0f);
+            mEmitter254 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3D7, 1, 1, NULL, NULL, true, 1.0f);
         }
         if (field_0x234 > 0 && (field_0x234 & 7) == 0) {
             fn_8032A4FC(mSerial, 0, false);
@@ -289,14 +289,14 @@ void ForceGemSpawner_804AB660::update() {
     }
     case 5: {
         field_0x238 %= 12;
-        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, field_0x238);
+        s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, field_0x238);
         if (serial >= 0) {
             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (gem != NULL) {
                 f32 vz = 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 2.0f;
                 f32 vy = 1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 f32 vx = 1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                gem->field_0x3c = JGeometry::TVec3f(vx, vy, vz);
+                gem->mVel_0x3c = JGeometry::TVec3f(vx, vy, vz);
             }
         }
         fn_801F3668();
@@ -321,7 +321,7 @@ void ForceGemSpawner_804AB660::draw() {
         mtx[2][2] = field_0x248;
         params.mMtx = mtx;
         JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 8.0f, mPos.z);
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x2a, &params, 1.0f, 1.0f);
         }

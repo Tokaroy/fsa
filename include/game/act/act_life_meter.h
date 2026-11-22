@@ -21,7 +21,7 @@ public:
     /* 0x230 */ s32 field_0x230; // state: 0 starts, 1 follows the player or actor
     /* 0x234 */ s32 mTimers[6]; // update counts the first three down to 0; init zeroes all
     /* 0x24C */ s32 field_0x24c; // index into the five "kk_heart_NN.bti" images; init sets 4
-    /* 0x250 */ s32 field_0x250; // the followed player (field_0x90 & 0xF != 0) or actor serial
+    /* 0x250 */ s32 field_0x250; // the followed player (mSpawnParam_0x90 & 0xF != 0) or actor serial
     /* 0x254 */ f32 field_0x254; // added to the followed position's y
     /* 0x258 */ f32 field_0x258;
     /* 0x25C */ f32 field_0x25c; // draw's x scale

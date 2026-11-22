@@ -16,7 +16,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ u8 field_0x230[0x4]; // not yet known
-    /* 0x234 */ s32 field_0x234; // init: (field_0x90 >> 8) & 0xF; 0 when GameView field_0x131f6 == 0 or field_0x131f9 == 2
+    /* 0x234 */ s32 field_0x234; // init: (mSpawnParam_0x90 >> 8) & 0xF; 0 when GameView field_0x131f6 == 0 or field_0x131f9 == 2
 }; // Size: 0x238
 
 #endif

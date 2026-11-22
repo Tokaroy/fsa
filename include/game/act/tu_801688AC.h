@@ -38,7 +38,7 @@ public:
     /* 0x270 */ s32 field_0x270;
     /* 0x274 */ Elem_80203594 field_0x274[5];
     /* 0x2EC */ Elem_80203594 field_0x2ec[5];
-    /* 0x364 */ JGeometry::TVec3f field_0x364; // the velocity field_0x3c is eased towards (act_warp reads it as a vector)
+    /* 0x364 */ JGeometry::TVec3f field_0x364; // the velocity mVel_0x3c is eased towards (act_warp reads it as a vector)
     // fn_8016890C's result (i.x, i.y, f.x, f.y). Plain floats: a TBox2f member would add
     // construct calls to the inline constructor the spawner (tu_801F9484) emits.
     /* 0x370 */ f32 field_0x370[4];

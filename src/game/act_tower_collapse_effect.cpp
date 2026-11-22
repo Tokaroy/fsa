@@ -9,8 +9,8 @@ void TowerCollapseEffect_8049CA40::init() {
     field_0x230 = 0;
     mMode = 0;
     mEmitter260 = NULL;
-    mMode = field_0x90 & 0xF;
-    field_0x25c = (field_0x90 >> 22) & 0x1F;
+    mMode = mSpawnParam_0x90 & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 22) & 0x1F;
     switch (mMode) {
     case 0:
         field_0x288 = 0;
@@ -25,7 +25,7 @@ void TowerCollapseEffect_8049CA40::init() {
         field_0x238[2] = mPos;
         break;
     case 2:
-        mEmitter260 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x496, 1, 0, NULL, NULL, true, 1.0f);
+        mEmitter260 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x496, 1, 0, NULL, NULL, true, 1.0f);
         break;
     }
 }
@@ -47,8 +47,8 @@ void TowerCollapseEffect_8049CA40::update() {
             if (isScreenFlagSet_0x34()) {
                 field_0x230 = 1;
                 field_0x288 = 0;
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x499, 2, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49a, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x499, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49a, 2, 2, NULL, NULL, true, 1.0f);
             }
             break;
         case 1:
@@ -77,18 +77,18 @@ void TowerCollapseEffect_8049CA40::update() {
             }
             if (field_0x288 == 1) {
                 startSound_801F0E34(0x30071, 0);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49d, 2, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49e, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49d, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49e, 2, 2, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(1, 0);
             } else if (field_0x288 == 0x1E) {
                 startSound_801F0E34(0x30071, 0);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49b, 2, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49c, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49b, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49c, 2, 2, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(1, 0);
             } else if (field_0x288 == 0x3C) {
                 startSound_801F0E34(0x30070, 0);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x49f, 2, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x4a0, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x49f, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4a0, 2, 2, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(3, 0);
             }
             if (field_0x288 == 0x46) {
@@ -112,8 +112,8 @@ void TowerCollapseEffect_8049CA40::update() {
         case 0:
             if (isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xd3, 2, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0xd4, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xd3, 2, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xd4, 2, 2, NULL, NULL, true, 1.0f);
                 gGameRoot_8053AAF8->fn_80134DE4(1, 0);
                 startSound_801F0E34(0x30001, 0);
             }

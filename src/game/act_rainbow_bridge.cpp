@@ -29,14 +29,14 @@ cls_8049E610::~cls_8049E610() {
 
 void cls_8049E610::init() {
     ActorBase_804A5770::init();
-    field_0x230 = (field_0x90 >> 22) & 0x1F;
+    field_0x230 = (mSpawnParam_0x90 >> 22) & 0x1F;
     pool_8053CB48();
     mBox.i.x = -40.0f;
     mBox.i.y = -64.0f;
     mBox.f.x = 40.0f;
     mBox.f.y = 64.0f;
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
 }
 
 // FIXME: 97.88% (missing/extra: one extra instruction, a copy of the player index (mr r27,r26) from the inlined isPlayerOn parameter, which also costs one more saved register (stmw r26 vs r27); the rest is the same register renaming as __dt__ in the emitter loops).
@@ -81,21 +81,21 @@ void cls_8049E610::pool_8053CB48() {
             break;
         case 1:
             if (!getGameView_802D6A9C()->fn_802D800C(field_0x230)) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39f, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39f, 0, -1, NULL, NULL, true, 1.0f);
                 for (int i = 0; i < 5; i++) {
                     if (field_0x23c[i] == NULL) {
-                        field_0x23c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80465098[i], 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x23c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80465098[i], 0, -1, NULL, NULL, true, 1.0f);
                     }
                 }
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x3a0, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39b, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39c, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39d, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39e, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3a0, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39b, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39c, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39d, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39e, 0, -1, NULL, NULL, true, 1.0f);
             } else {
                 for (int i = 0; i < 5; i++) {
                     if (field_0x23c[i] == NULL) {
-                        field_0x23c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804650A4[i], 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x23c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804650A4[i], 0, -1, NULL, NULL, true, 1.0f);
                     }
                 }
             }
@@ -113,7 +113,7 @@ bool cls_8049E610::isPlayerOn(s32 player) {
     if (player < 0) {
         return false;
     }
-    if (field_0x4 != getPlayerLayer_8023DE58(player)) {
+    if (mLayer_0x4 != getPlayerLayer_8023DE58(player)) {
         return false;
     }
     JGeometry::TBox2f box(mBox);

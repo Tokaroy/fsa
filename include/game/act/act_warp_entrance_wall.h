@@ -18,8 +18,8 @@ public:
     // this wall's box, skipping the slot whose index equals mSerial
     // (0x803798D0).
     bool fn_803798D0();
-    /* 0x230 */ s32 field_0x230; // field_0x90 bits 22-26: shape (0 or 1)
-    /* 0x234 */ s32 field_0x234; // field_0x90 >> 27
+    /* 0x230 */ s32 field_0x230; // mSpawnParam_0x90 bits 22-26: shape (0 or 1)
+    /* 0x234 */ s32 field_0x234; // mSpawnParam_0x90 >> 27
 }; // Size: 0x238
 
 #endif

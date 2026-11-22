@@ -32,15 +32,15 @@ HorseRaceMan_804A5630::~HorseRaceMan_804A5630() {
 
 void HorseRaceMan_804A5630::init() {
     EnemyBase_804A4808::init();
-    field_0x2ac = (field_0x90 >> 22) & 0x1F;
+    field_0x2ac = (mSpawnParam_0x90 >> 22) & 0x1F;
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.i.x = mBox.i.x;
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -50,7 +50,7 @@ void HorseRaceMan_804A5630::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A5620, 4);
-    mAnim.startAnim_801D22DC(field_0x98, 2, false);
+    mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
 }
 
 static inline void shuffle(s32 count, s32* order, s32* pool) {
@@ -76,7 +76,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
         break;
     case 1:
     case 2:
-        field_0x98 = fn_801D0020(&mPos, field_0x2b0, false);
+        mDir_0x98 = fn_801D0020(&mPos, field_0x2b0, false);
         break;
     case 6:
         fn_80119DD0()->fn_80119998(0x78, 0, 2, 0, 0, 0, 0);
@@ -93,7 +93,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             }
         }
         fn_8022B064();
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
         s32 count = field_0x2a8;
@@ -114,7 +114,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             fn_80230498(i, &pos, 0x356, 0xff, -0x80, -0x80, true);
             fn_80230BF4(i, 0);
         }
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         mTable.fn_802160F4();
         break;
     }
@@ -163,7 +163,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
     mState = state;
 }
 
-// FIXME: 98.28% (regalloc-only: target r26/r27/r23 vs ours r27/r28/r24 for this, loop counter, and field_0x4)
+// FIXME: 98.28% (regalloc-only: target r26/r27/r23 vs ours r27/r28/r24 for this, loop counter, and mLayer_0x4)
 void HorseRaceMan_804A5630::fn_801EC7B8() {
     u8 crossed[4];
     f32 times[4];
@@ -171,7 +171,7 @@ void HorseRaceMan_804A5630::fn_801EC7B8() {
         crossed[i] = 0;
         times[i] = 1.0f;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 count = 0;
 
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -182,7 +182,7 @@ void HorseRaceMan_804A5630::fn_801EC7B8() {
     for (s32 i = 0; i < field_0x2a8; i++) {
         bool finished = mTable.fn_80215E48(i) >= 0;
         if (!finished) {
-            layer = field_0x4;
+            layer = mLayer_0x4;
             if (getPlayerLayer_8023DE58(i) == layer) {
                 if (getPlayerPos_8023E724(i)->y > finish_y && getPlayerPos_8023E724(i)->x < finish_x) {
                     crossed[i] = 1;
@@ -282,7 +282,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
 
     switch (mState) {
     case 0: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x2b0 = fn_8022FD8C(mSerial);
         if (field_0x2b0 >= 0) {
             s32 msg = 0x364;
@@ -290,7 +290,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
             if (!flag) {
                 msg = 0x35D;
             }
-            if (fn_8038AD24(field_0x2b0, msg, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0)) {
+            if (fn_8038AD24(field_0x2b0, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0)) {
                 if (flag) {
                     fn_801ECB08(1);
                 } else {
@@ -301,15 +301,15 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     }
     case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             fn_801ECB08(0);
         }
         break;
     case 2:
         setCameraScript(mPos);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0)) {
             if (fn_8037EFB4(field_0x2b0) == 0) {
                 if (fn_8038470C(field_0x2b0, 0x35E)) {
@@ -324,7 +324,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     case 3:
         setCameraScript(mPos);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
             if (fn_8023077C()) {
                 fn_801ECB08(6);
@@ -335,9 +335,9 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     case 4:
         setCameraScript(mPos);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             fn_801ECB08(0);
         }
         break;
@@ -403,16 +403,16 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     case 14: {
         setCameraFocus(mPos);
-        fn_8022FE80(field_0x2b0, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b0, mLayer_0x4, mSerial, false, false);
         if (field_0x2b0 == fn_8022FD8C(mSerial)) {
             if (mTable.fn_80215E98() == 0) {
-                if (fn_8038AD24(field_0x2b0, 0x365, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                if (fn_8038AD24(field_0x2b0, 0x365, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     fn_801ECB08(16);
                 }
             } else {
                 s32 rank = mTable.fn_80215E58(0);
                 fn_803894BC(field_0x2b0, rank + 1);
-                if (fn_8038AD24(field_0x2b0, 0x366, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                if (fn_8038AD24(field_0x2b0, 0x366, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     field_0x2b4++;
                     fn_801ECB08(15);
                 }
@@ -422,7 +422,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
     }
     case 15:
         setCameraFocus(mPos);
-        fn_8022FE80(field_0x2b0, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b0, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b0)) {
             mTable.fn_80215B6C(mTable.fn_80215E58(field_0x2b4 - 1));
             if (field_0x2b4 >= mTable.fn_80215E98()) {
@@ -440,7 +440,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     case 16:
         setCameraFocus(mPos);
-        fn_8022FE80(field_0x2b0, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b0, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
             fn_80230534(false);
             for (i = 0; i < 4; i++) {
@@ -461,7 +461,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
 }
 
 void HorseRaceMan_804A5630::updateAnim_0x94() {
-    mAnim.fn_801D2264(field_0x98, 2);
+    mAnim.fn_801D2264(mDir_0x98, 2);
     EnemyBase_804A4808::updateAnim_0x94();
 }
 
@@ -470,9 +470,9 @@ void HorseRaceMan_804A5630::updateBehavior_0x9C(u8 mapHit) {
     mTable.fn_80215F30();
     EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     s32 serial = mSerial;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, layer, serial);
     lbl_8053A160 = mTable.fn_80215A94();
@@ -480,10 +480,10 @@ void HorseRaceMan_804A5630::updateBehavior_0x9C(u8 mapHit) {
 
 void HorseRaceMan_804A5630::draw() {
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, NULL, 0, "kage_sob.bin", 0, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, NULL, 0, "kage_sob.bin", 0, NULL);
     }
     s32 frame = mAnim.mCel + 0x319;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, NULL, 1.0f, 1.0f);
     }

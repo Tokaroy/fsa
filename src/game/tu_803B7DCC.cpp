@@ -20,7 +20,7 @@ cls_804AFAB0::cls_804AFAB0() {
     field_0x290 = -1;
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADA8 = this;
-    gGameRoot_8053AAF8->field_0xa8->getResource('????', "rock_24_20_4i_e.bfn");
+    gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "rock_24_20_4i_e.bfn");
     for (s32 i = 0; i < 50; i++) {
         field_0x24[i] = NULL;
     }

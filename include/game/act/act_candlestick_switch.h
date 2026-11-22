@@ -19,8 +19,8 @@ public:
     /* 0x234 */ JPABaseEmitter* mEmitter234; // effect 0xBD while lit
     /* 0x238 */ JPABaseEmitter* mEmitter238; // effect 0x54A while lit
     /* 0x23C */ JPABaseEmitter* mEmitter23c; // effect 0x57 right after going out
-    /* 0x240 */ s32 mMode;                   // (field_0x90 >> 22) & 0x1F: 1 goes out by itself
-    /* 0x244 */ s32 mLitTime;                // field_0x90 & 0xFFF, frames it stays lit
+    /* 0x240 */ s32 mMode;                   // (mSpawnParam_0x90 >> 22) & 0x1F: 1 goes out by itself
+    /* 0x244 */ s32 mLitTime;                // mSpawnParam_0x90 & 0xFFF, frames it stays lit
     /* 0x248 */ s32 mOutTimer;               // frames the going-out effect runs
     /* 0x24C */ s32 mLitTimer;               // counts down from mLitTime
     /* 0x250 */ s32 mLit;                    // 1 while lit, selects the shadow fade direction

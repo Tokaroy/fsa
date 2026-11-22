@@ -45,11 +45,11 @@ void CollisionBoxList_8020D60C::fn_8020D7D0(s32 serial) {
     if (!actor->mAlive) {
         return;
     }
-    f32 x0 = actor->field_0x80.i.x + actor->mPos.x;
-    f32 x1 = actor->field_0x80.f.x + actor->mPos.x;
-    f32 y0 = actor->field_0x80.i.y + actor->mPos.y;
-    f32 y1 = actor->field_0x80.f.y + actor->mPos.y;
-    s32 layer = actor->field_0x4;
+    f32 x0 = actor->mMapBox_0x80.i.x + actor->mPos.x;
+    f32 x1 = actor->mMapBox_0x80.f.x + actor->mPos.x;
+    f32 y0 = actor->mMapBox_0x80.i.y + actor->mPos.y;
+    f32 y1 = actor->mMapBox_0x80.f.y + actor->mPos.y;
+    s32 layer = actor->mLayer_0x4;
     if (mCount >= 0x50) {
         return;
     }

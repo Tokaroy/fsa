@@ -33,7 +33,7 @@ void ShadowLink2_804A43E8::fn_801D41B8() const {
         params.field_0x30 = 0xE;
         params.field_0x2e = 0;
         params.field_0x10.a = alpha;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (viewLayerFlag(layer)) {
             params.field_0x1f = 0;
         }
@@ -51,7 +51,7 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0xE;
     params.field_0x2e = 0x40;
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         params.field_0x1f = 0;
     }
     if (field_0x560 != 4 && (mState == 8 || mState == 9)) {
@@ -78,13 +78,13 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
         }
         if (mState == 0x10) {
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(field_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
+                fn_801EF830(mLayer_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
             }
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
-            if (field_0x4 == 8) {
+            if (mLayer_0x4 == 8) {
                 JGeometry::TVec3f pos;
                 fn_801CD0D0(&mPos, &pos);
                 fn_801EF574("player_sob.bin", frame, &pos, &params);
@@ -97,7 +97,7 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
     if (mState == 0x29) {
         player = 4;
     }
-    fn_80307830(mSerial, field_0x4, &mPos, frame, false, 1, 0, player);
+    fn_80307830(mSerial, mLayer_0x4, &mPos, frame, false, 1, 0, player);
 }
 
 void ShadowLink2_804A43E8::fn_801D3CBC() {
@@ -119,12 +119,12 @@ void ShadowLink2_804A43E8::fn_801D3CBC() {
         case 0x18:
         case 0x19:
         case 0x1A:
-            frame = field_0x98 + 0x3C;
+            frame = mDir_0x98 + 0x3C;
             break;
         }
         fn_801D3DAC(frame);
         if (mFlags & 0x10000) {
-            if (!fn_801CD2F8(field_0x4)) {
+            if (!fn_801CD2F8(mLayer_0x4)) {
                 JGeometry::TVec3f pos;
                 fn_801CD150(&mPos, &pos);
                 fn_803075AC(mSerial, 8, &pos, 0x176, false, 2, -1, 0, 0, 0);

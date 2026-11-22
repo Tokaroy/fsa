@@ -49,7 +49,7 @@ void VaatiBoss_804A4958::fn_801EDD0C() {
     params.mMtx = mtx;
     if (mState == 5) {
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, flags, NULL, 0, res);
+            fn_801EF830(mLayer_0x4, &mPos, &params, flags, NULL, 0, res);
         }
         f32 k = 1.0f / fn_802F5FF4(lbl_8053F0B8);
         k = fn_802F5FF4(mPos.z) * k;
@@ -76,7 +76,7 @@ void VaatiBoss_804A4958::fn_801EDC0C(s32 frame) {
             mPos.x -= 1.0f;
         }
     }
-    if (fn_801CD2F8(field_0x4)) {
+    if (fn_801CD2F8(mLayer_0x4)) {
         fn_801F02BC("enemy_both_sob.bin", frame, NULL, -1, 0, false, 1.0f, 1.0f);
     } else {
         fn_801EDD0C();

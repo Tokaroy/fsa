@@ -132,7 +132,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from gate import Elf  # noqa: E402  (read-only reuse of the gate's ELF reader)
-from rename import to_current  # noqa: E402  (the names manifest, docs/names/METHOD.md)
+from rename import to_current, fields_to_placeholders  # noqa: E402  (the names manifest, docs/names/METHOD.md)
 
 SYMBOLS = Path("config/G4SE01/symbols.txt")
 SPLITS = Path("config/G4SE01/splits.txt")
@@ -1535,6 +1535,11 @@ def text_problems(u, p, src_before, hdr_before):
             continue
         want, why = render(u, p, old)
         have = path.read_text() if path.exists() else None
+        # Field renames (manifest kind `field`) are scoped by the compiler, so
+        # the pinned blob cannot be brought to them textually; compare both
+        # sides with every applied field name put back to its placeholder.
+        if want is not None and have is not None:
+            want, have = fields_to_placeholders(want), fields_to_placeholders(have)
         if why or have != want:
             bad.append(f"{path}: not exactly the generator's output" + (f" ({why})" if why else
                        first_diff(want or "", have or "")))
@@ -2772,7 +2777,9 @@ def fwd_check(rs, diff):
     if old is None:
         return bad + [f"{src_path(FWD_UNIT)}: its pre-generation blob is not in git"]
     want, why = fwd_edit_source(plan, old)
-    have = src_path(FWD_UNIT).read_text()
+    have = fields_to_placeholders(src_path(FWD_UNIT).read_text())  # see text_problems
+    if want is not None:
+        want = fields_to_placeholders(want)
     if why or want != have:
         bad.append(f"{src_path(FWD_UNIT)}: not exactly the generator's output"
                    + (f" ({why})" if why else first_diff(want or "", have)))

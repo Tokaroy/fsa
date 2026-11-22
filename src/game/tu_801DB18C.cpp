@@ -41,11 +41,11 @@ cls_804A4EE8::~cls_804A4EE8() {
 void cls_804A4EE8::init() {
     EnemyBase_804A4808::init();
     mBox.set(-8.0f, -16.0f, 8.0f, 8.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x10101;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x20;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     field_0x194 = 1;
     if (field_0x16c == -1) {
         s16 a = fn_801CD664(0x3800);
@@ -72,7 +72,7 @@ void cls_804A4EE8::init() {
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.mFrameCtrl.setRate(0.25f);
     mAnim.fn_801D1D60();
-    field_0x2e4 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x258, 1, 0, NULL, NULL, true, 1.0f);
+    field_0x2e4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x258, 1, 0, NULL, NULL, true, 1.0f);
     if (field_0x16c == -1) {
         fn_801DAC6C()->fn_801DAF14(mSerial);
     }
@@ -183,7 +183,7 @@ void cls_804A4EE8::fn_801DB6C8() {
         target.x += field_0x2b4;
         target.y += field_0x2b8;
     } else {
-        JGeometry::TVec3f* p = &field_0x1ac[mTargetPlayer];
+        JGeometry::TVec3f* p = &mPlayerPos_0x1ac[mTargetPlayer];
         JGeometry::TVec2f player(p->x, p->y);
         JGeometry::TVec2f away(mSearchPos.x - player.x, mSearchPos.y - player.y);
         if (away.isZero()) {
@@ -288,12 +288,12 @@ void cls_804A4EE8::calcVelocity_0x88() {
         }
     }
     if (mState == 0) {
-        field_0x3c.set(field_0x2b4, field_0x2b8, 0.0f);
+        mVel_0x3c.set(field_0x2b4, field_0x2b8, 0.0f);
         return;
     }
     f32 sinv = JMath::sincosTable_.sinShort(mAngle) * mRadius;
     f32 cosv = JMath::sincosTable_.cosShort(mAngle) * mRadius;
-    field_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
+    mVel_0x3c.set(mSearchPos.x + sinv - mPos.x, mSearchPos.y + cosv - mPos.y, 0.0f);
 }
 
 u8 cls_804A4EE8::attackPlayers_0x68() {
@@ -318,7 +318,7 @@ u8 cls_804A4EE8::attackPlayers_0x68() {
                     } else {
                         pos = center;
                     }
-                    fn_80238548(player, field_0x114, &pos, 1);
+                    fn_80238548(player, mParamAtcp_0x114, &pos, 1);
                 }
             }
         }

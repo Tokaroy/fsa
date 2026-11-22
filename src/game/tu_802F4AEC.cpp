@@ -11,10 +11,10 @@ void UnknownGSCK_804AA800::init() {
 }
 
 void UnknownGSCK_804AA800::update() {
-    // FIXME: 99.34%. Registers only: the original keeps bit3 (field_0x90 >> 7) in r28,
+    // FIXME: 99.34%. Registers only: the original keeps bit3 (mSpawnParam_0x90 >> 7) in r28,
     // bit1 in r30 and bit2 in r27; here bit3 gets r30, bit1 r28, and the player
     // loop counters get r27 (original r28/r30).
-    u32 args = field_0x90;
+    u32 args = mSpawnParam_0x90;
     u32 bit3 = (args >> 7) & 0x1F;
 
     switch (field_0x230) {

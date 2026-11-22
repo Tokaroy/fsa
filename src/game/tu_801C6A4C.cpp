@@ -74,7 +74,7 @@ void ShadowLink2_804A43E8::fn_801C6BA8() {
             field_0x340.fn_800FEB78(3);
             startSound_801F0E34(0x400C6, 0);
             mSpeed = mTargetSpeed = 2.0f;
-            field_0x33c = fn_801F6874(field_0x98);
+            field_0x33c = fn_801F6874(mDir_0x98);
             break;
         case 3:
             fn_801C3B7C(0x27);

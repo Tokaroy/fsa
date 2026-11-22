@@ -23,11 +23,11 @@ cls_804A6100::~cls_804A6100() {
 
 void cls_804A6100::init() {
     cls_804A61C8::init();
-    field_0x98 = field_0x90 & 3;
-    field_0x2ac = (field_0x90 >> 2) & 0x1F;
-    field_0x2b0 = ((field_0x90 >> 7) & 1) ? 0x1C1 : 0x1A8;
-    fn_80210990(field_0x98, &mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mDir_0x98 = mSpawnParam_0x90 & 3;
+    field_0x2ac = (mSpawnParam_0x90 >> 2) & 0x1F;
+    field_0x2b0 = ((mSpawnParam_0x90 >> 7) & 1) ? 0x1C1 : 0x1A8;
+    fn_80210990(mDir_0x98, &mBox);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x40004;
     mFlags |= 0x380;
     mLife = 1000;
@@ -38,10 +38,10 @@ void cls_804A6100::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     lbl_8053AED0->fn_8043D67C(field_0x2b0, 0, 0);
-    f32 y = mPos.y + field_0x54.y * fn_80210AF8(field_0x98);
-    f32 x = mPos.x + field_0x54.x * fn_80210B34(field_0x98);
+    f32 y = mPos.y + field_0x54.y * fn_80210AF8(mDir_0x98);
+    f32 x = mPos.x + field_0x54.x * fn_80210B34(mDir_0x98);
     JGeometry::TVec3f pos(x, y, 0.0f);
-    mEmitter = spawnEmitter_8013CC50(field_0x4, &pos, 0x260, 0, 2, NULL, NULL, true, 1.0f);
+    mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x260, 0, 2, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A6100::updateState_0x90(u8 mapHit) {
@@ -57,7 +57,7 @@ void cls_804A6100::updateState_0x90(u8 mapHit) {
             fn_801CD950(&field_0x54.x, 3.0f, 0.004f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
-            fn_80210990(field_0x98, &mBox);
+            fn_80210990(mDir_0x98, &mBox);
             mBox2.set(mBox);
         } else {
             mStateTimer = 0;
@@ -66,7 +66,7 @@ void cls_804A6100::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (fn_80210A6C()) {
-            fn_80341CB0(field_0x4, &mPos);
+            fn_80341CB0(mLayer_0x4, &mPos);
             s32 bit = field_0x2ac;
             if (bit != 0) {
                 getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
@@ -76,8 +76,8 @@ void cls_804A6100::updateState_0x90(u8 mapHit) {
         break;
     }
     if (mAlive) {
-        f32 y = mPos.y + field_0x54.y * fn_80210AF8(field_0x98);
-        f32 x = mPos.x + field_0x54.x * fn_80210B34(field_0x98);
+        f32 y = mPos.y + field_0x54.y * fn_80210AF8(mDir_0x98);
+        f32 x = mPos.x + field_0x54.x * fn_80210B34(mDir_0x98);
         JGeometry::TVec3f pos(x, y, 0.0f);
         setEmitterPos_8013CB44(mEmitter, &pos, 0, 2, true);
         startSound_801F0E34(0x50026, 0);
@@ -91,7 +91,7 @@ u8 cls_804A6100::checkHitByActor_0x60() {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL) {
                 if (other->mActorId == ACTOR_SWBM) {
-                    fn_801CB538(field_0x4, &other->mPos, 0, 0);
+                    fn_801CB538(mLayer_0x4, &other->mPos, 0, 0);
                 }
                 other->field_0x164 = 1;
             }

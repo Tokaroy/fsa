@@ -131,22 +131,22 @@ cls_804A5C88::cls_804A5C88() {
 // (regalloc-only). Minor register differences: dir in r30 vs r29, centerX/centerY in f3/f2 vs f2/f4, and loop counters r28/r29 swapped.
 void cls_804A5C88::init() {
     EnemyBase_804A4808::init();
-    field_0x2ac = field_0x90 & 3;
+    field_0x2ac = mSpawnParam_0x90 & 3;
     if (field_0x2ac >= 2 || field_0x2ac < 0) {
         field_0x2ac = fn_801CD664(2);
     }
-    field_0x340 = (field_0x90 >> 4) & 3;
+    field_0x340 = (mSpawnParam_0x90 >> 4) & 3;
     if (field_0x340 >= 2 || field_0x340 < 0) {
         field_0x340 = fn_801CD664(2);
     }
-    field_0x344 = (field_0x90 >> 8) & 1;
-    field_0x348 = (u32)field_0x90 >> 27;
+    field_0x344 = (mSpawnParam_0x90 >> 8) & 1;
+    field_0x348 = (u32)mSpawnParam_0x90 >> 27;
 
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_NO_HURT | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -206,7 +206,7 @@ void cls_804A5C88::init() {
 
     for (s32 i = 0; i < 4; i++) {
         mSlots[i].mSerial = getActorManager_801F856C()->spawnActor_801F9484(
-            'FOBR', field_0x4, &spawnPos, mSerial, -1, -1);
+            'FOBR', mLayer_0x4, &spawnPos, mSerial, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
         if (actor != NULL) {
             actor->field_0x94 = i;
@@ -267,7 +267,7 @@ static inline void updateByState(cls_804A5C88* self) {
         }
         break;
     case 1: {
-        s32 layer = self->field_0x4;
+        s32 layer = self->mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box;
         if (layer < 8) {
@@ -297,13 +297,13 @@ void cls_804A5C88::updateState_0x90(u8 mapHit) {
     updateByState(this);
 }
 
-// field_0x3c handed on to the four slot actors. An inline of its own: its loop registers are
+// mVel_0x3c handed on to the four slot actors. An inline of its own: its loop registers are
 // handed out before calcVelocity_0x88's (docs/REGALLOC.md, rule 4).
 static inline void copyField3cToSlotActors(cls_804A5C88* self) {
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
         if (actor != NULL) {
-            actor->field_0x3c = self->field_0x3c;
+            actor->mVel_0x3c = self->mVel_0x3c;
         }
     }
 }
@@ -313,19 +313,19 @@ void cls_804A5C88::calcVelocity_0x88() {
     case 0:
     case 2:
     case 3:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         break;
     case 1:
         if (field_0x344 == 0) {
             JGeometry::TVec2f delta;
             mPath.fn_80209640(&delta);
-            field_0x3c.set(delta.x, delta.y, 0.0f);
+            mVel_0x3c.set(delta.x, delta.y, 0.0f);
         } else if (field_0x340 == 0) {
-            field_0x3c.set(1.2f, 0.0f, 0.0f);
+            mVel_0x3c.set(1.2f, 0.0f, 0.0f);
         } else {
-            field_0x3c.set(-1.2f, 0.0f, 0.0f);
+            mVel_0x3c.set(-1.2f, 0.0f, 0.0f);
         }
         copyField3cToSlotActors(this);
         break;

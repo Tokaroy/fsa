@@ -16,9 +16,9 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 mState;
-    /* 0x234 */ s32 mKind; // field_0x90 & 0xF
-    /* 0x238 */ s32 mBit1; // GameView bit (field_0x90 bits 22-26)
-    /* 0x23C */ s32 mBit2; // GameView bit (field_0x90 bits 17-21)
+    /* 0x234 */ s32 mKind; // mSpawnParam_0x90 & 0xF
+    /* 0x238 */ s32 mBit1; // GameView bit (mSpawnParam_0x90 bits 22-26)
+    /* 0x23C */ s32 mBit2; // GameView bit (mSpawnParam_0x90 bits 17-21)
     /* 0x240 */ s32 mTimer;
     /* 0x244 */ s32 mSoundState;
     /* 0x248 */ u8 mTriggered;

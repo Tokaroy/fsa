@@ -126,13 +126,13 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
                     fn_80230498(i, &pos, field_0x24c + 0x2E, 0xFF, 2, -0x80, true);
                 } else if (field_0x24c == 8) {
                     fn_80230498(i, &pos, 0x3B9, 0xFF, 2, -0x80, true);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x277, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x278, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x279, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x27A, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x27B, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x27C, 2, 3, NULL, NULL, true, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &pos, 0x27D, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x277, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x278, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x279, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x27A, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x27B, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x27C, 2, 3, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x27D, 2, 3, NULL, NULL, true, 1.0f);
                 } else {
                     fn_80230498(i, &pos, field_0x24c + 0x3BA, 0xFF, 2, -0x80, true);
                 }
@@ -210,7 +210,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
                     fn_80236ED8(i, 2);
                 }
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-                mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &pos, 0x26A, 1, 3, NULL, NULL, true, 1.0f);
+                mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x26A, 1, 3, NULL, NULL, true, 1.0f);
             }
         }
         break;
@@ -295,7 +295,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             if (field_0x25c >= field_0x258) {
                 field_0x25c = field_0x258;
                 if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
-                    fn_8038BD08(0, 0x265, field_0x4, mPos, 0x21);
+                    fn_8038BD08(0, 0x265, mLayer_0x4, mPos, 0x21);
                     field_0x244 = 15;
                 } else {
                     field_0x244 = 9;
@@ -335,7 +335,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             if (field_0x25c >= field_0x258) {
                 field_0x25c = field_0x258;
                 if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
-                    fn_8038BD08(0, 0x265, field_0x4, mPos, 0x21);
+                    fn_8038BD08(0, 0x265, mLayer_0x4, mPos, 0x21);
                     field_0x244 = 16;
                 } else {
                     field_0x244 = 11;
@@ -374,9 +374,9 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
     case 13: {
         gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
         gGameRoot_8053AAF8->fn_80134D14(0);
-        s32 b = lbl_8046F628_DC[getGameView_802D6A9C()->field_0x4][getGameView_802D6A9C()->field_0x8];
+        s32 b = lbl_8046F628_DC[getGameView_802D6A9C()->mStage_0x4][getGameView_802D6A9C()->mLevel_0x8];
         getGameView_802D6A9C()->fn_802D9FF4(
-            lbl_8046F628_5C[getGameView_802D6A9C()->field_0x4][getGameView_802D6A9C()->field_0x8], b);
+            lbl_8046F628_5C[getGameView_802D6A9C()->mStage_0x4][getGameView_802D6A9C()->mLevel_0x8], b);
         gGameRoot_8053AAF8->fn_80136798(0xD, 0);
         getGameView_802D6A9C()->fn_802D6AAC(3);
         gAudioMgr_8053AF80->fn_8045873C(0);

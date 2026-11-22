@@ -26,8 +26,8 @@ public:
 
     /* 0x230 */ u8 field_0x230; // set to 1 by the constructor, not yet known
     /* 0x234 */ s32 field_0x234; // state: vfunc_0x54 switches on it, vfunc_0x58 returns it
-    /* 0x238 */ s32 field_0x238; // init(): field_0x90 & 0xF
-    /* 0x23C */ s32 field_0x23c; // init(): (field_0x90 >> 4) & 0xF
+    /* 0x238 */ s32 field_0x238; // init(): mSpawnParam_0x90 & 0xF
+    /* 0x23C */ s32 field_0x23c; // init(): (mSpawnParam_0x90 >> 4) & 0xF
     /* 0x240 */ s32 field_0x240; // frame countdown: set by vfunc_0x54, counted down by fn_8011A4BC
     // Colour bytes (R, G, B, A of the shadow sprite, then one more byte):
     // the constructor sets 0x9F, 0xAF, 0xFF, 0, 0xFF; fn_8011A4BC fades them.

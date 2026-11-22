@@ -28,8 +28,8 @@ static inline void inflate(JGeometry::TBox2f& box, f32 d) {
 void cls_804AE7D8::init() {
     field_0x244 = 0;
     field_0x264 = 0;
-    field_0x258 = (u8)((u8)field_0x90 + 1);
-    field_0x265 = (field_0x90 >> 16) & 1;
+    field_0x258 = (u8)((u8)mSpawnParam_0x90 + 1);
+    field_0x265 = (mSpawnParam_0x90 >> 16) & 1;
     if (field_0x265 == 0 && fn_8028D4DC(&mPos, 3, field_0x16c)) {
         field_0x244 = 1;
         f32 x = mPos.x;
@@ -47,16 +47,16 @@ void cls_804AE7D8::init() {
             const f32* offset = lbl_80475178;
             for (j = 0; j < 4; j++) {
                 pos.y = y + *offset;
-                gBgRewrite_8053AC98->fn_802A3948(&pos, 0, field_0x4, 0);
+                gBgRewrite_8053AC98->fn_802A3948(&pos, 0, mLayer_0x4, 0);
                 offset++;
             }
             x += 16.0f;
         }
         field_0x264 = 1;
     } else {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x248 = mPos;
         setBoxes();
         field_0x1a4 = 4;
@@ -92,7 +92,7 @@ void cls_804AE7D8::update() {
     switch (field_0x244) {
     case 0: {
         inflate(box, 1.0f);
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         inflate(box, -1.0f);
         fn_8020D58C()->addBox(mSerial);
         if (field_0x264 != 0) {
@@ -124,9 +124,9 @@ void cls_804AE7D8::update() {
             }
 
             field_0x248 = mPos;
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
             if (mEmitter230 != NULL) {
                 releaseEmitter_801EE434(mEmitter230);
                 mEmitter230 = NULL;
@@ -148,13 +148,13 @@ void cls_804AE7D8::update() {
                 }
             }
         } else {
-            // Moving: step by field_0x3c, wait out field_0x254, then, while
+            // Moving: step by mVel_0x3c, wait out field_0x254, then, while
             // standing still, probe for the next push direction.
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
             if (field_0x254 > 0) {
                 field_0x254--;
             } else if (field_0x254 == 0) {
-                if (field_0x3c.isZero()) {
+                if (mVel_0x3c.isZero()) {
                     if (fn_80239108(mSerial) >= 4 && PSVECDistance(&mPos, &mSpawnPos) < 63.9f) {
                         if (field_0x260 < 10) {
                             field_0x260++;
@@ -169,20 +169,20 @@ void cls_804AE7D8::update() {
                                 return;
                             }
                             fn_80238E08(mSerial);
-                            field_0x3c.x = lbl_80475148[index][0];
-                            field_0x3c.y = lbl_80475148[index][1];
-                            field_0x3c.z = lbl_80475148[index][2];
+                            mVel_0x3c.x = lbl_80475148[index][0];
+                            mVel_0x3c.y = lbl_80475148[index][1];
+                            mVel_0x3c.z = lbl_80475148[index][2];
                             field_0x248.set(mPos);
                             startSound_801F0E34(0x30004, 0);
-                            mPos += field_0x3c;
+                            mPos += mVel_0x3c;
                             if (index == 0) {
-                                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31a, 1, 1, NULL, NULL, true, 1.0f);
+                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31a, 1, 1, NULL, NULL, true, 1.0f);
                             } else if (index == 1) {
-                                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31b, 1, 1, NULL, NULL, true, 1.0f);
+                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31b, 1, 1, NULL, NULL, true, 1.0f);
                             } else if (index == 2) {
-                                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x31c, 1, 1, NULL, NULL, true, 1.0f);
+                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31c, 1, 1, NULL, NULL, true, 1.0f);
                             } else {
-                                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
+                                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x319, 1, 1, NULL, NULL, true, 1.0f);
                             }
                         }
                     }
@@ -231,7 +231,7 @@ void cls_804AE7D8::rewriteTiles() {
         const f32* offset = lbl_80475178;
         for (j = 0; j < 4; j++) {
             pos.y = y + *offset;
-            gBgRewrite_8053AC98->fn_802A3948(&pos, 0, field_0x4, 0);
+            gBgRewrite_8053AC98->fn_802A3948(&pos, 0, mLayer_0x4, 0);
             offset++;
         }
         x += 16.0f;
@@ -242,7 +242,7 @@ void cls_804AE7D8::rewriteTiles() {
 // actor's box; only players on the actor's layer count.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
         return false;
@@ -272,10 +272,10 @@ void cls_804AE7D8::setBoxes() {
     mBox.i.y = -31.5f;
     mBox.f.x = 31.5f;
     mBox.f.y = 31.5f;
-    field_0x80.i.x = -31.5f;
-    field_0x80.i.y = -31.5f;
-    field_0x80.f.x = 31.5f;
-    field_0x80.f.y = 31.5f;
+    mMapBox_0x80.i.x = -31.5f;
+    mMapBox_0x80.i.y = -31.5f;
+    mMapBox_0x80.f.x = 31.5f;
+    mMapBox_0x80.f.y = 31.5f;
 }
 
 // The effects of the rock breaking.
@@ -283,23 +283,23 @@ void cls_804AE7D8::setBoxes() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
 void cls_804AE7D8::spawnBreakEmitters() {
     if (mEmitter230 == NULL) {
-        mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter230, &mPos, -1, -1, true);
     }
     if (mEmitter234 == NULL) {
-        mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb7, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xb7, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter234, &mPos, -1, -1, true);
     }
     if (mEmitter238 == NULL) {
-        mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb8, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xb8, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter238, &mPos, 0, 0, true);
     }
     if (mEmitter23c == NULL) {
-        mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0xb9, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter23c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xb9, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter23c, &mPos, 0, 0, true);
     }
     if (mEmitter240 == NULL) {
-        mEmitter240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xba, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter240 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xba, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter240, &mPos, 0, 0, true);
     }
 }
@@ -312,14 +312,14 @@ void cls_804AE7D8::draw() {
     switch (field_0x244) {
     case 0: {
         void* res = fn_804032E8('TIMG', "yy_1_1_iwa1.bti");
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
         }
         break;
     }
     case 1: {
         void* res = fn_804032E8('TIMG', "yy_1_1_iwa2.bti");
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
         }
         break;

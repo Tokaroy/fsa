@@ -10,7 +10,7 @@
 #include "game/act/act_ending_map_skipper.h"
 
 void EndingMapSkipper_804AA498::init() {
-    mIndex = field_0x90 & 0x7F;
+    mIndex = mSpawnParam_0x90 & 0x7F;
     mTimer = 500;
 }
 

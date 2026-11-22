@@ -8,7 +8,7 @@
 #include "game/act/act_blade_trap.h"
 #include "std/math.h"
 
-// Offset of the wall spark from mPos per direction (field_0x98: +x, -x, +y, -y).
+// Offset of the wall spark from mPos per direction (mDir_0x98: +x, -x, +y, -y).
 static const f32 lbl_80466288[4][2] = {
     {8.0f, 0.0f},
     {-8.0f, 0.0f},
@@ -20,7 +20,7 @@ static const f32 lbl_80466288[4][2] = {
 static const u32 lbl_804662A8[5] = {'TOMI', 'IPOT', 'IBBM', 'BMST', 'NULL'};
 
 inline void BladeTrap_804A04D8::setMoveSpeed() {
-    switch (field_0x98) {
+    switch (mDir_0x98) {
     case 0:
         field_0x268.set(3.0f, 0.0f, 0.0f);
         break;
@@ -41,10 +41,10 @@ void BladeTrap_804A04D8::init() {
     mBox.i.y = -6.0f;
     mBox.f.x = 6.0f;
     mBox.f.y = 6.0f;
-    field_0x80.i.x = -3.0f;
-    field_0x80.i.y = -3.0f;
-    field_0x80.f.x = 3.0f;
-    field_0x80.f.y = 3.0f;
+    mMapBox_0x80.i.x = -3.0f;
+    mMapBox_0x80.i.y = -3.0f;
+    mMapBox_0x80.f.x = 3.0f;
+    mMapBox_0x80.f.y = 3.0f;
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -53,24 +53,24 @@ void BladeTrap_804A04D8::init() {
     field_0x238 = 0;
     field_0x23c = 0;
     field_0x268.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
-    field_0x254 = (field_0x90 >> 4) & 1;
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+    field_0x254 = (mSpawnParam_0x90 >> 4) & 1;
     if (field_0x254) {
         mBox.i.x = -12.0f;
         mBox.i.y = -12.0f;
         mBox.f.x = 12.0f;
         mBox.f.y = 12.0f;
     }
-    field_0x98 = field_0x90 & 3;
-    field_0x258 = (field_0x90 >> 8) & 0xF;
-    field_0x25c = (field_0x90 >> 12) & 0xF;
+    mDir_0x98 = mSpawnParam_0x90 & 3;
+    field_0x258 = (mSpawnParam_0x90 >> 8) & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 12) & 0xF;
     field_0x260 = 0;
     if (field_0x258) {
         field_0x260 = (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     }
     field_0x274.set(mPos);
     field_0x264 = 0;
-    if (field_0x90 & 4) {
+    if (mSpawnParam_0x90 & 4) {
         field_0x264 = 1;
     }
     field_0xb8 = 2;
@@ -81,7 +81,7 @@ void BladeTrap_804A04D8::init() {
 }
 
 void BladeTrap_804A04D8::update() {
-    JGeometry::TVec3f vel(field_0x3c);
+    JGeometry::TVec3f vel(mVel_0x3c);
     // Copied and never read again; the original stores this copy too.
     JGeometry::TVec3f prevPos(mPos);
     mLife = 1000;
@@ -97,16 +97,16 @@ void BladeTrap_804A04D8::update() {
         center.x = box.f.x + 0.5f * (box.i.x - box.f.x);
         center.y = box.f.y + 0.5f * (box.i.y - box.f.y);
         if (fn_80237948(player, &center)) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x400D1, 0);
         }
-        field_0x3c.set(vel);
+        mVel_0x3c.set(vel);
     }
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x268.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x268.y, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     fn_801F2B7C(-100, -1, 1);
 
     if (field_0x258 && field_0x238 == 0) {
@@ -123,15 +123,15 @@ void BladeTrap_804A04D8::update() {
     s32 state = field_0x230;
     if (state != 2 && state != 3 && state != 0 && (field_0x9c >= 0 || (state == 1 && hit))) {
         JGeometry::TVec3f pos(mPos);
-        pos.x += lbl_80466288[field_0x98][0];
-        pos.y += lbl_80466288[field_0x98][1];
+        pos.x += lbl_80466288[mDir_0x98][0];
+        pos.y += lbl_80466288[mDir_0x98][1];
         if (field_0x23c == 0) {
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x4A1, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4A1, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30014, 0);
             field_0x23c = 4;
         }
         field_0x268.set(0.0f, 0.0f, 0.0f);
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         field_0x230 = 2;
         return;
     }
@@ -141,7 +141,7 @@ void BladeTrap_804A04D8::update() {
         if (field_0x234 == 0 && player >= 0) {
             f32 dx;
             f32 dy;
-            if (getPlayerLayer_8023DE58(player) < 8 && field_0x4 == 8) {
+            if (getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8) {
                 s32 layer = getPlayerLayer_8023DE58(player);
                 GameView_804A9950* view = getGameView_802D6A9C();
                 const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -155,10 +155,10 @@ void BladeTrap_804A04D8::update() {
             }
             if (field_0x264 == 1) {
                 if ((!(dir & 2) && dy < 22.0f) || ((dir & 2) && dx < 22.0f)) {
-                    field_0x98 = dir;
+                    mDir_0x98 = dir;
                 }
             }
-            if ((!(field_0x98 & 2) && dy < 22.0f) || ((field_0x98 & 2) && dx < 22.0f)) {
+            if ((!(mDir_0x98 & 2) && dy < 22.0f) || ((mDir_0x98 & 2) && dx < 22.0f)) {
                 setMoveSpeed();
                 startSound_801F0E34(0x30013, 0);
                 field_0x230 = 1;
@@ -184,15 +184,15 @@ void BladeTrap_804A04D8::update() {
     case 3:
         if (field_0x9c >= 0 || hit) {
             JGeometry::TVec3f pos(mPos);
-            pos.x += lbl_80466288[field_0x98][0];
-            pos.y += lbl_80466288[field_0x98][1];
+            pos.x += lbl_80466288[mDir_0x98][0];
+            pos.y += lbl_80466288[mDir_0x98][1];
             if (field_0x23c == 0) {
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x4A1, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4A1, 0, 1, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x30014, 0);
                 field_0x23c = 4;
             }
-            field_0x98 ^= 1;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mDir_0x98 ^= 1;
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         }
         setMoveSpeed();
         break;
@@ -216,7 +216,7 @@ void BladeTrap_804A04D8::draw() {
         mode = 1;
     }
     if (field_0x258 == 0) {
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, 0x154, &params, 1.0f, 1.0f);
         }

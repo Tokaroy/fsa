@@ -46,8 +46,8 @@ ZoraEscort_8049DF78::~ZoraEscort_8049DF78() {}
 
 void ZoraEscort_8049DF78::init() {
     fn_80124448();
-    if ((field_0x90 >> 2) & 1) {
-        field_0x344 = (field_0x90 >> 3) & 0xF;
+    if ((mSpawnParam_0x90 >> 2) & 1) {
+        field_0x344 = (mSpawnParam_0x90 >> 3) & 0xF;
         fn_80131F0C()->fn_80131EC0(this);
         vfunc_0x6C(7);
     }
@@ -97,11 +97,11 @@ s32 ZoraEscort_8049DF78::vfunc_0x5C(const s32*) {
 }
 
 void ZoraEscort_8049DF78::vfunc_0x64() {
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         field_0x3c4 = 1;
     }
-    field_0x35c = (field_0x90 >> 8) & 0xFF;
-    field_0x3d0 = (field_0x90 >> 16) & 0xFF;
+    field_0x35c = (mSpawnParam_0x90 >> 8) & 0xFF;
+    field_0x3d0 = (mSpawnParam_0x90 >> 16) & 0xFF;
 }
 
 // FIXME: 99.57% (try.py: scheduling+regalloc). atan2_ argument load order in
@@ -150,7 +150,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
     }
 
     case 1:
-        fn_8022FF8C(field_0x34c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x34c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x34c, mSerial)) {
             vfunc_0x6C(8);
         }
@@ -162,9 +162,9 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             if (fn_80131F0C()->mCount == 1) {
                 vfunc_0x6C(4);
             } else {
-                fn_8022FE80(field_0x3cc, field_0x4, mSerial, false, false);
+                fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
                 if (field_0x3cc == fn_8022FD8C(mSerial)) {
-                    if (fn_8038AD24(field_0x3cc, 0x2B3, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                    if (fn_8038AD24(field_0x3cc, 0x2B3, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                         vfunc_0x6C(3);
                         field_0x3c8 = 0;
                     }
@@ -174,7 +174,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         break;
 
     case 3:
-        fn_8022FE80(field_0x3cc, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(field_0x3cc, mSerial)) {
             vfunc_0x6C(4);
         }
@@ -182,15 +182,15 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
 
     case 4:
         if (!stepToPlayer()) {
-            fn_80122730(field_0x98, false, false);
+            fn_80122730(mDir_0x98, false, false);
         } else {
-            fn_8022FE80(field_0x3cc, field_0x4, mSerial, false, false);
+            fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
             if (field_0x3cc == fn_8022FD8C(mSerial)) {
                 u16 msg = 0x2B7;
                 if (fn_80131F0C()->mCount == 1) {
                     msg = 0x2B4;
                 }
-                if (fn_8038AD24(field_0x3cc, msg, mSerial, field_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
+                if (fn_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     vfunc_0x6C(5);
                 }
             }
@@ -198,7 +198,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         break;
 
     case 5:
-        fn_8022FE80(field_0x3cc, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(field_0x3cc, mSerial)) {
             fn_8023061C(field_0x3cc, false);
             vfunc_0x6C(8);
@@ -237,7 +237,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
     case 9:
         if (fn_8012285C() < 0) {
             vfunc_0x6C(0);
-        } else if (!fn_8022D75C(fn_8012285C()) && field_0x4 == getPlayerLayer_8023DE58(fn_8012285C())) {
+        } else if (!fn_8022D75C(fn_8012285C()) && mLayer_0x4 == getPlayerLayer_8023DE58(fn_8012285C())) {
             vfunc_0x6C(10);
         }
         break;
@@ -259,7 +259,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         break;
 
     case 12:
-        field_0x4 = getPlayerLayer_8023DE58(fn_8012285C());
+        mLayer_0x4 = getPlayerLayer_8023DE58(fn_8012285C());
         if (!fn_8022D75C(fn_8012285C()) && fn_801216D0(fn_8012285C()) < 0) {
             vfunc_0x6C(7);
         } else {
@@ -355,7 +355,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         break;
     case 5:
         field_0x330 = 1;
-        if (viewLayerFlag(field_0x4)) {
+        if (viewLayerFlag(mLayer_0x4)) {
             mAnim.startAnim_801D22DC(6, 2, false);
         } else {
             mAnim.startAnim_801D22DC(7, 2, false);
@@ -366,10 +366,10 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         break;
     case 8: {
         fn_801F3668();
-        u32 arg = field_0x90;
+        u32 arg = mSpawnParam_0x90;
         arg |= 4;
         arg |= fn_8012285C() << 3;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FAZR, field_0x4, &mPos, arg, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FAZR, mLayer_0x4, &mPos, arg, -1, -1);
         break;
     }
     case 9:
@@ -395,7 +395,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
             if (!actor) {
                 break;
             }
-            s32 railId = (actor->field_0x90 >> 8) & 0xFF;
+            s32 railId = (actor->mSpawnParam_0x90 >> 8) & 0xFF;
             if (railId == field_0x35c) {
                 pos1 = actor->mPos;
             } else if (railId == field_0x3d0) {
@@ -442,21 +442,21 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
 bool ZoraEscort_8049DF78::stepToPlayer() {
     JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(field_0x3cc);
     targetPos.z = 0.0f;
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         targetPos.x += 20.0f;
     } else {
         targetPos.y -= 20.0f;
     }
     u16 angle = (s32)(JMath::atanTable_.atan2_(targetPos.x - mPos.x, targetPos.y - mPos.y) *
                       (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-    field_0x98 = fn_801F681C(angle);
+    mDir_0x98 = fn_801F681C(angle);
     f32 stepX = 0.7f * JMath::sincosTable_.sinShort(angle);
     f32 stepY = 0.7f * JMath::sincosTable_.cosShort(angle);
     bool arrived = true;
     if (fn_801CD950(&mPos.x, targetPos.x, stepX) != 0 && stepX != 0.0f) {
         arrived = false;
     }
-    if (!viewLayerFlag(field_0x4)) {
+    if (!viewLayerFlag(mLayer_0x4)) {
         if (fn_801CD950(&mPos.y, targetPos.y, stepY) != 0 && stepY != 0.0f) {
             arrived = false;
         }
