@@ -325,7 +325,7 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
 }
 
 // Remaining: one loop pointer copy in `bakeTiles`.
-// FIXME: 98.66 %, missing/extra; behaviour drift.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
         return;
@@ -505,7 +505,7 @@ void MovingHouse_804A7AE0::fn_80299FB0() {
 }
 
 // Remaining: one loop pointer copy in `bakeTiles`.
-// FIXME: 98.65 %, missing/extra; behaviour drift.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
         return;
@@ -767,8 +767,6 @@ void MovingHouse_804A7AE0::fn_80298FC4() {
     }
 }
 
-// FIXME(shotgun): 98.52 %, different; behaviour drift.
-// layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void MovingHouse_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
         field_0x248++;
@@ -828,7 +826,7 @@ void MovingHouse_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 94.23 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.45 %, scheduling+regalloc; behaviour clean.
 // still differs: order of the pos.x/pos.y stores against the mSpawnParam_0x90 load
 void MovingHouse_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
