@@ -17,7 +17,7 @@ void Bee_804AC600::init() {
         field_0x34c[i].set(0.0f, 0.0f, 0.0f);
         field_0x278[i] = 2.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         field_0x254[i] = 0;
-        field_0x294 = 0;
+        field_0x294[i] = 0;
     }
     field_0x278[0] = 1.5f + 0.5f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
     field_0x2a4[0] = mPos;
@@ -41,10 +41,10 @@ static inline void spreadPieces(Bee_804AC600* self) {
     s32 shift = 0x10000;
     for (s32 i = 1; i < 7; i++) {
         self->field_0x2f8[i] = self->field_0x2f8[0];
-        self->field_0x296[i - 1] = shift / 6;
+        self->field_0x294[i] = shift / 6;
         shift += 0x10000;
-        self->field_0x2f8[i].x += 3.0f * JMath::sincosTable_.sinShort(self->field_0x296[i - 1]);
-        self->field_0x2f8[i].y += 3.0f * JMath::sincosTable_.cosShort(self->field_0x296[i - 1]);
+        self->field_0x2f8[i].x += 3.0f * JMath::sincosTable_.sinShort(self->field_0x294[i]);
+        self->field_0x2f8[i].y += 3.0f * JMath::sincosTable_.cosShort(self->field_0x294[i]);
     }
 }
 
@@ -53,20 +53,20 @@ static inline void spreadPieces(Bee_804AC600* self) {
 static inline void steerPieces(Bee_804AC600* self) {
     for (s32 i = 1; i < 7; i++) {
         if (self->field_0x238 % 10 == 0) {
-            self->field_0x296[i - 1] = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+            self->field_0x294[i] = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
             f32 x;
             f32 y;
             if (self->field_0x230 == 5 || (self->field_0x248 >= 0 && self->field_0x244 < 0)) {
                 x = -self->field_0x2a4[i].x;
                 y = -self->field_0x2a4[i].y;
             } else {
-                x = 12.0f * JMath::sincosTable_.sinShort(self->field_0x296[i - 1]) + -self->field_0x2a4[i].x;
-                y = 12.0f * JMath::sincosTable_.cosShort(self->field_0x296[i - 1]) + -self->field_0x2a4[i].y;
+                x = 12.0f * JMath::sincosTable_.sinShort(self->field_0x294[i]) + -self->field_0x2a4[i].x;
+                y = 12.0f * JMath::sincosTable_.cosShort(self->field_0x294[i]) + -self->field_0x2a4[i].y;
             }
-            self->field_0x296[i - 1] = (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
+            self->field_0x294[i] = (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
         }
-        self->field_0x34c[i].x = self->field_0x278[i] * JMath::sincosTable_.sinShort(self->field_0x296[i - 1]);
-        self->field_0x34c[i].y = self->field_0x278[i] * JMath::sincosTable_.cosShort(self->field_0x296[i - 1]);
+        self->field_0x34c[i].x = self->field_0x278[i] * JMath::sincosTable_.sinShort(self->field_0x294[i]);
+        self->field_0x34c[i].y = self->field_0x278[i] * JMath::sincosTable_.cosShort(self->field_0x294[i]);
     }
 }
 
@@ -132,9 +132,9 @@ void Bee_804AC600::update() {
                         diff.x = field_0x2a4[0].x - getPlayerPos_8023E724(field_0x24c)->x;
                         diff.y = field_0x2a4[0].y - getPlayerPos_8023E724(field_0x24c)->y;
                         field_0x2a2 = (s32)(JMath::atanTable_.atan2_(diff.x, diff.y) * 10430.378f);
-                        field_0x294 = field_0x2a2;
-                        field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294);
-                        field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294);
+                        field_0x294[0] = field_0x2a2;
+                        field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294[0]);
+                        field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294[0]);
                         field_0x2f8[0] = field_0x34c[0];
                         field_0x230 = 4;
                     }
@@ -156,7 +156,7 @@ void Bee_804AC600::update() {
             addCalc2_801F71A4(&field_0x2f8[i].y, field_0x34c[i].y, 0.1f, 0.3f);
             field_0x2a4[i] += field_0x2f8[i];
         }
-        addCalcAngle2_801F714C(&field_0x294, field_0x2a2, 4, 0x400);
+        addCalcAngle2_801F714C(field_0x294, field_0x2a2, 4, 0x400);
         mPos = field_0x2a4[0];
         if (field_0x230 != 4 && field_0x230 - 5 > 1U) {
             if (damagePlayersInBox_801F2B7C(1, -1, 1)) {
@@ -233,8 +233,8 @@ void Bee_804AC600::update() {
                     steerPieces(this);
                     if (PSVECMag(&diff) > 16.0f) {
                         field_0x2a2 = (s32)(JMath::atanTable_.atan2_(diff.x, diff.y) * 10430.378f);
-                        field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294);
-                        field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294);
+                        field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294[0]);
+                        field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294[0]);
                         field_0x238 = 5;
                     } else {
                         diff.scale(0.125f);
@@ -270,8 +270,8 @@ void Bee_804AC600::update() {
         }
         if (field_0x248 < 0) {
             if (field_0x244 >= 0) {
-                field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294);
-                field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294);
+                field_0x34c[0].x = 2.0f * JMath::sincosTable_.sinShort(field_0x294[0]);
+                field_0x34c[0].y = 2.0f * JMath::sincosTable_.cosShort(field_0x294[0]);
                 if (getPlayerPos_8023E724(field_0x244)->x > field_0x2a4[0].x) {
                     field_0x254[0] = 0;
                 } else {
