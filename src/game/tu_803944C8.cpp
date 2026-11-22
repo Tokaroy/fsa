@@ -3000,7 +3000,7 @@ void cls_804AF6E4::do_character(int c) {
     }
 }
 
-// FIXME: 99.76 %, missing/extra; behaviour near.
+// FIXME: 99.91 %, scheduling+regalloc; behaviour clean.
 bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
     f32 ratio = field_0x48 / field_0x38->getCellWidth();
     switch (tag) {
@@ -3174,9 +3174,9 @@ bool cls_804AF6E4::do_tag(u32 tag, const void* data, u32) {
         fn_80398A34(field_0x1e4);
         fn_80398700(*(const u8*)data, field_0x1e4);
         return true;
-    // The original reads the save file through a 0xC8-stride row at lbl_8050EC80 (no addi 0x20).
     case 0x30005:
-        fn_80398EF4(lbl_8050EC80.getCurrentFile().field_0x59, lbl_8050EC80.getCurrentFile().field_0x58);
+        fn_80398EF4(lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59,
+                    lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58);
         return true;
     case 0x30006:
         fn_80398A34(lbl_8050EC80.getCurrentFile().field_0x14);
@@ -3359,10 +3359,9 @@ void cls_804AF6E4::fn_80398700(u8 noun, s32 count) {
 
 cls_804AF6E4::~cls_804AF6E4() {}
 
-// FIXME: 99.93 %, operands; behaviour clean.
-// Regalloc + stack slots + reloc-name: the message font goes
-// through r27 instead of r28 (the eight setFont calls); the random draw's
-// and the two parse_next pointers' stack slots differ (0x8 / 0x10 / 0xC);
+// FIXME: 99.93 %, regalloc-only; behaviour clean.
+// Regalloc + reloc-name: the message font goes
+// through r27 instead of r28 (the eight setFont calls);
 // the string offsets are relative to the section base (lbl_80475768+0x670..)
 // in the original, to the string pool in ours (same addresses).
 // The font is read into a local before each search, as in adv_entry_screen_803E1668.
@@ -3512,7 +3511,7 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0x5c->setBlackWhite(JUtility::TColor(0xFF, 0xFF, 0x8C, 0), JUtility::TColor(0xFF, 0xFF, 0x8C, 0xFF));
     field_0x5c->rotate(9.6f, 9.6f * 1.5f, J2DROTATE_Z, -96.0f);
     field_0x118 = 0.0f;
-    field_0x198 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
+    field_0x198 = (s32)gGameRoot_8053AAF8->mRandom.get_ufloat(11.0f) + 10;
     field_0x19a = -0x60;
     field_0x19c = 0;
 
