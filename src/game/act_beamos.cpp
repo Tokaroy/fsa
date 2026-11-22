@@ -153,7 +153,7 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
                         f32 dy = getPlayerPos_8023E724(i)->y - (-15.0f + mPos.y);
                         f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                         s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * 10430.378f);
-                        if (0.000030517578f * __fabsf((s16)(heading - angle)) <= 0.02f) {
+                        if (0.000030517578f * JMAAbs((s16)(heading - angle)) <= 0.02f) {
                             target = i;
                             break;
                         }
