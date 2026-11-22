@@ -68,7 +68,7 @@ static s32 lbl_804AF948[14] = {6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 76
 extern const char* lbl_804AF980[4];
 extern const char* lbl_804AF990[4];
 
-// FIXME: 99.87 %, operands; behaviour drift.
+// FIXME: 99.89 %, same-text; behaviour clean.
 // Operands + reloc-name only: .rodata string offsets (one addi) and .sdata2
 // names differ (the unit's other .rodata objects, function-local tables of unwritten
 // functions, come first in the original).
