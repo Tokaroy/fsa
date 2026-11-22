@@ -652,7 +652,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                 id = 0x17C;
                 break;
             case 3:
-                if (__fabsf(field_0xec.x) > __fabsf(field_0xec.y)) {
+                if (JMAAbs(field_0xec.x) > JMAAbs(field_0xec.y)) {
                     if (field_0xec.x < 0.0f) {
                         id = 0x176;
                     } else {
@@ -1148,7 +1148,7 @@ bool ActorBase_804A5770::fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b) {
     toScreenBox(&box, mBox, mPos);
     for (s32 i = 0; i < 4; i++) {
         if (!viewLayerFlag(field_0x4) &&
-            __fabsf(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
+            JMAAbs(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
         {
             continue;
         }
@@ -1201,7 +1201,7 @@ s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool
         }
     }
     if (hit != -1 && !viewLayerFlag(field_0x4) &&
-        __fabsf(mPos.z - getPlayerPos_8023E724(hit)->z) > 32.0f)
+        JMAAbs(mPos.z - getPlayerPos_8023E724(hit)->z) > 32.0f)
     {
         hit = -1;
     }
@@ -1231,7 +1231,7 @@ u8 ActorBase_804A5770::fn_801F2740(s32 skipPlayer) const {
             continue;
         }
         if (!viewLayerFlag(field_0x4) &&
-            __fabsf(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
+            JMAAbs(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
         {
             continue;
         }
