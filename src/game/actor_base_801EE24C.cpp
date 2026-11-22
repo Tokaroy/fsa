@@ -509,6 +509,80 @@ void ActorBase_804A5770::fn_801F4694() const {
     }
 }
 
+// The death effect of updateHitReaction_801F3D94 (inlined there): two effects and a
+// sound for a hit of type 1 or 2 by a strong player, else one effect by type.
+inline void ActorBase_804A5770::spawnDeathEffect() {
+    f32 size = getEffectScale_801EE4F0();
+    u16 id = 0xFFFF;
+    switch (mHitType_0xfc) {
+    case 1:
+    case 2:
+        if (mLastAttacker_0x10c >= 0 && mLastAttacker_0x10c < 4 && fn_80237060(mLastAttacker_0x10c) >= 2) {
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17A, 1, 1, NULL, NULL, true, size);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17B, 1, 1, NULL, NULL, true, size);
+            startSound_801F0E34(0x5006B, 0);
+            return;
+        } else {
+            id = 0x174;
+        }
+        break;
+    case 5:
+        id = 0x179;
+        break;
+    case 4:
+        id = 0x17C;
+        break;
+    case 3:
+        if (JMAAbs(mHitDir_0xec.x) > JMAAbs(mHitDir_0xec.y)) {
+            if (mHitDir_0xec.x < 0.0f) {
+                id = 0x176;
+            } else {
+                id = 0x177;
+            }
+        } else if (mHitDir_0xec.y < 0.0f) {
+            id = 0x178;
+        } else {
+            id = 0x175;
+        }
+        break;
+    }
+    if (id != 0xFFFF) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, id, 1, 1, NULL, NULL, true, size);
+    }
+}
+
+// The dust trail of updateHitReaction_801F3D94 (inlined there): on the ground and
+// still moving, effects 0x3D3 (0x3D4 on water-like tiles) every 4 units from `start`.
+inline void ActorBase_804A5770::spawnDustTrail(const JGeometry::TVec3f& start) {
+    if (mPos.z == 0.0f && mVel_0x3c.squared() > 1.0f) {
+        f32 size = mActorId == 'SLK2' ? 1.0f : getEffectScale_801EE4F0();
+        f32 scale = 0.9f * size;
+        if (scale > 0.0f) {
+            JGeometry::TVec3f dir;
+            dir.sub(mPos, start);
+            f32 length = dir.normalize();
+            u16 id;
+            if (fn_802258D4(&mPos, mLayer_0x4) || fn_80225614(&mPos, mLayer_0x4)) {
+                id = 0x3D4;
+            } else {
+                id = 0x3D3;
+            }
+            for (f32 t = 0.0f; t < length; t += 4.0f) {
+                JGeometry::TVec3f pos(dir);
+                pos.scale(t);
+                pos.add(start);
+                JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, id, 0, 0, NULL,
+                                                                NULL, true, 1.0f);
+                if (emitter != NULL) {
+                    emitter->mMaxFrame = 1;
+                    emitter->setRate(2.0f);
+                    emitter->setGlobalParticleScale(scale, scale);
+                }
+            }
+        }
+    }
+}
+
 // Applies one hit (attack points, from the attacker at `from`, strength
 // clamped to 2, `type`, by `player` or -1): ignored while mHitTimer_0xd8 runs
 // unless it comes from a player not yet in mHitPlayers_0xd5; types 5 and 2 are
@@ -526,10 +600,8 @@ void ActorBase_804A5770::fn_801F4694() const {
 // at 0. mSparksLeft_0xe8 more hit sparks every 5 frames. Returns 0 (nothing to
 // do), 1, or -1 when the actor has no life left.
 // FIXME: 99.12 %, missing/extra; behaviour clean.
-// One extra instruction: ours keeps the death effect id in r28
-// across case 1/2's calls and copies it to r5; the original has it in r5
-// (the path with the two effects skips the id test). Literals are @NNN
-// until .sdata2 is in order.
+// Registers and the stack slots of the dust trail's vectors still differ.
+// Literals are @NNN until .sdata2 is in order.
 s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
     s32 result = 0;
     if (mHitTimer_0xd8 != 0) {
@@ -572,33 +644,7 @@ s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
                 }
                 break;
             }
-            if (mPos.z == 0.0f && mVel_0x3c.squared() > 1.0f) {
-                f32 size = mActorId == 'SLK2' ? 1.0f : getEffectScale_801EE4F0();
-                f32 scale = 0.9f * size;
-                if (scale > 0.0f) {
-                    JGeometry::TVec3f dir;
-                    dir.sub(mPos, start);
-                    f32 length = dir.normalize();
-                    u16 id;
-                    if (fn_802258D4(&mPos, mLayer_0x4) || fn_80225614(&mPos, mLayer_0x4)) {
-                        id = 0x3D4;
-                    } else {
-                        id = 0x3D3;
-                    }
-                    for (f32 t = 0.0f; t < length; t += 4.0f) {
-                        JGeometry::TVec3f pos(dir);
-                        pos.scale(t);
-                        pos.add(start);
-                        JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, id, 0, 0, NULL,
-                                                                        NULL, true, 1.0f);
-                        if (emitter != NULL) {
-                            emitter->mMaxFrame = 1;
-                            emitter->setRate(2.0f);
-                            emitter->setGlobalParticleScale(scale, scale);
-                        }
-                    }
-                }
-            }
+            spawnDustTrail(start);
         } else {
             mHitTimer_0xd8--;
         }
@@ -632,42 +678,7 @@ s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
         result = 1;
     } else if (mDeathTimer_0xe0 != 0) {
         if (mDeathTimer_0xe0 == 30) {
-            f32 size = getEffectScale_801EE4F0();
-            u16 id = 0xFFFF;
-            switch (mHitType_0xfc) {
-            case 1:
-            case 2:
-                if (mLastAttacker_0x10c >= 0 && mLastAttacker_0x10c < 4 && fn_80237060(mLastAttacker_0x10c) >= 2) {
-                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17A, 1, 1, NULL, NULL, true, size);
-                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17B, 1, 1, NULL, NULL, true, size);
-                    startSound_801F0E34(0x5006B, 0);
-                } else {
-                    id = 0x174;
-                }
-                break;
-            case 5:
-                id = 0x179;
-                break;
-            case 4:
-                id = 0x17C;
-                break;
-            case 3:
-                if (JMAAbs(mHitDir_0xec.x) > JMAAbs(mHitDir_0xec.y)) {
-                    if (mHitDir_0xec.x < 0.0f) {
-                        id = 0x176;
-                    } else {
-                        id = 0x177;
-                    }
-                } else if (mHitDir_0xec.y < 0.0f) {
-                    id = 0x178;
-                } else {
-                    id = 0x175;
-                }
-                break;
-            }
-            if (id != 0xFFFF) {
-                spawnEmitter_8013CC50(mLayer_0x4, &mPos, id, 1, 1, NULL, NULL, true, size);
-            }
+            spawnDeathEffect();
         }
         mDeathTimer_0xe0--;
         mVel_0x3c.zero();
