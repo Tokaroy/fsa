@@ -297,7 +297,7 @@ void cls_804A4C58::fn_801D9960() {
             f32 dx = getPlayerPos_8023E724(player)->x - from.x;
             s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
                                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-            if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
+            if ((1.0f / 32768.0f) * JMAAbs((s16)(angle - heading)) <= 0.3f) {
                 target = player;
             }
         }
@@ -352,7 +352,7 @@ static inline s32 findTarget_801D95F4(cls_804A4C58* self) {
         f32 dx = getPlayerPos_8023E724(player)->x - from.x;
         s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
+        if ((1.0f / 32768.0f) * JMAAbs((s16)(angle - heading)) <= 0.3f) {
             target = player;
         }
     }
@@ -411,8 +411,8 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
         if (fn_801CD228(field_0x4)) {
             s32 p = 0;
             for (; p < 4; p++) {
-                if (__fabsf(getPlayerPos_8023E724(p)->x - mPos.x) <= 80.0f ||
-                    __fabsf(getPlayerPos_8023E724(p)->y - mPos.y) <= 80.0f) {
+                if (JMAAbs(getPlayerPos_8023E724(p)->x - mPos.x) <= 80.0f ||
+                    JMAAbs(getPlayerPos_8023E724(p)->y - mPos.y) <= 80.0f) {
                     break;
                 }
             }
@@ -568,7 +568,7 @@ void cls_804A4C58::vfunc_0x90(u8 mapHit) {
                 f32 dx = getPlayerPos_8023E724(player)->x - from.x;
                 s32 heading = (s32)(JMath::atanTable_.atan2_(dx, dy) *
                                     (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                if ((1.0f / 32768.0f) * __fabsf((s16)(angle - heading)) <= 0.3f) {
+                if ((1.0f / 32768.0f) * JMAAbs((s16)(angle - heading)) <= 0.3f) {
                     target = player;
                 }
             }
