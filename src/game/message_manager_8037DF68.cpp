@@ -1075,7 +1075,7 @@ u32 findMessageIndex_803846BC(u32 msg) {
     return index;
 }
 
-u16 fn_803846A4(s32 index) {
+u32 fn_803846A4(s32 index) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     return inf1->entries[index].id;
 }
