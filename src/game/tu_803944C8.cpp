@@ -612,17 +612,20 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x20005:
             return true;
-        case 0x20006:
+        case 0x20006: {
+            u32 flag = p[0];
             if (p[1] != 0) {
-                setScreenFlag_8018E8DC(p[0], true, 0xFF);
+                setScreenFlag_8018E8DC(flag, true, 0xFF);
             } else {
-                setScreenFlag_8018E8DC(p[0], false, 0xFF);
+                setScreenFlag_8018E8DC(flag, false, 0xFF);
             }
             return true;
+        }
         case 0x20007: {
+            u8 bit = p[0];
             work[0] = *(const s32*)(p + 1);
             work[1] = *(const s32*)(p + 5);
-            if (fn_8018E930(p[0])) {
+            if (fn_8018E930(bit)) {
                 field_0x60->fn_803A30DC(work[0]);
             } else {
                 field_0x60->fn_803A30DC(work[1]);
@@ -645,7 +648,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x2000D: {
             work[0] = *(const s32*)data;
-            u8 who = p[5];
+            u32 who = p[5];
             u32 add = p[4];
             u32 keep = p[6];
             if (who == 5) {
@@ -831,7 +834,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20015: {
-            u8 b = p[4];
+            u32 b = p[4];
             work[0] = *(const s32*)data;
             if (b == 0) {
                 field_0x60->fn_803A30B0();
@@ -892,9 +895,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20022: {
-            u8 who = p[0];
+            u32 who = p[0];
             s32 bit = *(const u16*)(p + 1);
-            u8 set = p[3];
+            u32 set = p[3];
             if (who == 5) {
                 if (set != 0) {
                     fn_803A31AC(0, bit, true);
@@ -923,11 +926,11 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20023: {
-            u8 who = p[0];
+            u32 who = p[0];
             work[0] = *(const s32*)(p + 3);
             work[1] = *(const s32*)(p + 7);
-            u16 bit = *(const u16*)(p + 1);
-            u8 player;
+            u32 bit = *(const u16*)(p + 1);
+            u32 player;
             if (who >= 1 && who <= 4) {
                 player = who - 1;
             } else {
@@ -941,9 +944,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20024: {
-            u8 who = p[0];
+            u32 who = p[0];
             s32 item = p[1];
-            u8 table = p[2];
+            u32 table = p[2];
             switch (who) {
             case 1:
             case 2:
@@ -1195,17 +1198,20 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         case 0x20005:
             return true;
-        case 0x20006:
+        case 0x20006: {
+            u32 flag = p[0];
             if (p[1] != 0) {
-                setScreenFlag_8018E8DC(p[0], true, 0xFF);
+                setScreenFlag_8018E8DC(flag, true, 0xFF);
             } else {
-                setScreenFlag_8018E8DC(p[0], false, 0xFF);
+                setScreenFlag_8018E8DC(flag, false, 0xFF);
             }
             return true;
+        }
         case 0x20007: {
+            u8 bit = p[0];
             work[0] = *(const s32*)(p + 1);
             work[1] = *(const s32*)(p + 5);
-            if (fn_8018E930(p[0])) {
+            if (fn_8018E930(bit)) {
                 field_0x60->fn_803A30DC(work[0]);
             } else {
                 field_0x60->fn_803A30DC(work[1]);
@@ -1228,7 +1234,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
         }
         case 0x2000D: {
             work[0] = *(const s32*)data;
-            u8 who = p[5];
+            u32 who = p[5];
             u32 add = p[4];
             u32 keep = p[6];
             if (who == 5) {
@@ -1474,9 +1480,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20022: {
-            u8 who = p[0];
+            u32 who = p[0];
             s32 bit = *(const u16*)(p + 1);
-            u8 set = p[3];
+            u32 set = p[3];
             if (who == 5) {
                 if (set != 0) {
                     fn_803A31AC(0, bit, true);
@@ -1505,11 +1511,11 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20023: {
-            u8 who = p[0];
+            u32 who = p[0];
             work[0] = *(const s32*)(p + 3);
             work[1] = *(const s32*)(p + 7);
-            u16 bit = *(const u16*)(p + 1);
-            u8 player;
+            u32 bit = *(const u16*)(p + 1);
+            u32 player;
             if (who >= 1 && who <= 4) {
                 player = who - 1;
             } else {
@@ -1523,9 +1529,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x20024: {
-            u8 who = p[0];
+            u32 who = p[0];
             s32 item = p[1];
-            u8 table = p[2];
+            u32 table = p[2];
             switch (who) {
             case 1:
             case 2:

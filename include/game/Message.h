@@ -579,7 +579,7 @@ s32 fn_8037EE8C(s32 player);
 // 16 units. field_0x114[window]->field_0x2c (callers cmpwi it).
 s32 fn_8037EFB4(s32 player);
 // The halfword at 0x4 of the manager's mBmg entry `index`: its message id.
-u16 fn_803846A4(s32 index);
+u32 fn_803846A4(s32 index);
 // Store a value into the window's field_0x38 / 0x34 (at most 99999), field_0x3e
 // (at most 9999) and field_0x3c (at most 9).
 void fn_8038911C(s32 player, s32 value);
