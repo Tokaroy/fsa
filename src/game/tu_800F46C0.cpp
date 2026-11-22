@@ -114,8 +114,8 @@ void Boulder_8049C4C0::fn_800F5E08() {
             }
             return;
         }
-        for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == field_0x4) {
+        for (s32 i = 0, layer = field_0x4; i < 4; i++) {
+            if (getPlayerLayer_8023DE58(i) == layer) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
@@ -170,11 +170,10 @@ void Boulder_8049C4C0::fn_800F5E08() {
             emitter->mDirSpeed = 0.0f;
         }
         if (field_0x230 == 4) {
-            const f32* offset = lbl_80463678;
-            for (s32 k = 0; k < 4; k++, offset += 2) {
+            for (s32 k = 0; k < 4; k++) {
                 JGeometry::TVec3f p = mPos;
-                p.x += offset[0];
-                p.y += offset[1];
+                p.x += lbl_80463678[k * 2];
+                p.y += lbl_80463678[k * 2 + 1];
                 s32 code = fn_8022461C(&p, field_0x4);
                 if ((code == 3 || code == 0xE || code == 2) && !vfunc_0x34()) {
                     getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
@@ -260,7 +259,7 @@ void Boulder_8049C4C0::fn_800F555C() {
             }
             fn_80238E08(mSerial);
             for (s32 i = 0; i < 4; i++) {
-                if (fn_80238CB4(i) == mSerial) {
+                if (mSerial == fn_80238CB4(i)) {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -273,7 +272,7 @@ void Boulder_8049C4C0::fn_800F555C() {
             field_0x231 = 0;
         }
         field_0x23c = field_0x23c & 3;
-        if (__fabsf(field_0x3c.x) < 1.5f && __fabsf(field_0x3c.y) < 1.5f && __fabsf(field_0x3c.z) == 0.0f) {
+        if (__fabsf(field_0x3c.x) < 1.5f && __fabsf(field_0x3c.y) < 1.5f && 0.0f == __fabsf(field_0x3c.z)) {
             fn_80239914(&box, field_0x4, mSerial);
         } else {
             if (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f) {
@@ -283,8 +282,7 @@ void Boulder_8049C4C0::fn_800F555C() {
         }
         s32 code = fn_8022461C(&mPos, field_0x4);
         if (code == 3 || code == 0xE || code == 2) {
-            JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-            fn_800F82CC(&field_0x3c, &zero, 0.22f);
+            fn_800F82CC(&field_0x3c, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0.22f);
             if (field_0x3c.x == 0.0f && field_0x3c.y == 0.0f) {
                 getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x3CF, 0, 0, NULL, NULL, true, 1.2f);
@@ -293,9 +291,10 @@ void Boulder_8049C4C0::fn_800F555C() {
                 field_0x240 = 2;
                 field_0x232 = -1;
                 for (s32 i = 0; i < 8; i++) {
-                    JGeometry::TVec3f p = mPos;
-                    p.x += (f32)(0x12 - (s32)(32.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-                    p.y += (f32)(0x12 - (s32)(32.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
+                    JGeometry::TVec3f p;
+                    p.set(mPos);
+                    p.x += (f32)(0x12 - (s32)(36.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
+                    p.y += (f32)(0x12 - (s32)(36.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &p, 3, -1, -1);
                 }
             }
@@ -313,7 +312,8 @@ void Boulder_8049C4C0::fn_800F555C() {
             }
         }
         if (field_0x232 == -1 && field_0x3c.z == 0.0f) {
-            if (field_0x234 == 1) {
+            switch (field_0x234) {
+            case 1:
                 switch (field_0x233) {
                 case 0:
                     field_0x232 = 3;
@@ -328,7 +328,8 @@ void Boulder_8049C4C0::fn_800F555C() {
                     field_0x232 = 1;
                     break;
                 }
-            } else {
+                break;
+            default:
                 switch (field_0x233) {
                 case 0:
                     field_0x232 = 2;
@@ -343,11 +344,12 @@ void Boulder_8049C4C0::fn_800F555C() {
                     field_0x232 = 0;
                     break;
                 }
+                break;
             }
         }
     } else {
         for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == field_0x4) {
+            if (field_0x4 == getPlayerLayer_8023DE58(i)) {
                 f32 x0 = mBox.i.x + mPos.x;
                 f32 y0 = mBox.i.y + mPos.y;
                 f32 x1 = mBox.f.x + mPos.x;
@@ -369,6 +371,8 @@ void Boulder_8049C4C0::fn_800F555C() {
         return;
     }
     switch (field_0x232) {
+    case -1:
+        break;
     case 0:
         field_0x3c.x += 0.1f;
         if (field_0x3c.x >= 2.0f) {
@@ -476,6 +480,7 @@ void Boulder_8049C4C0::draw() {
     mtx[2][3] = 0.0f;
     switch (field_0x230) {
     case 0:
+    case 4:
         mtx[0][0] = 1.0f;
         mtx[0][1] = 0.0f;
         mtx[0][2] = 0.0f;
@@ -522,7 +527,7 @@ void Boulder_8049C4C0::draw() {
         mtx[2][0] = 0.0f;
         mtx[2][1] = 0.0f;
         mtx[2][2] = 0.8f;
-        if (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f || field_0x3c.z != 0.0f) {
+        if (field_0x3c.x || field_0x3c.y || field_0x3c.z) {
             flags = 3;
         } else {
             flags = -1;
