@@ -23,6 +23,7 @@ void cls_804A8578::fn_802B1EB0() {}
 // Copies the save region to 0x80700000, the area main registers with
 // OSSetSaveRegion (see GameState.h), so it survives the reset.
 // Registers differ only.
+// FIXME: 96.30 %, regalloc-only; behaviour clean.
 void cls_804A8578::fn_802B1DE8() {
     lbl_80529DEC.mSaveRegion.f.field_0x9 = 0;
     lbl_80529DEC.mSaveRegion.f.field_0xa = 0;
@@ -96,7 +97,7 @@ static inline void copySaveRegion() {
     }
 }
 
-// FIXME(shotgun): 93.09 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 98.28 %, regalloc-only; behaviour clean.
 // 0x802B1BE0
 void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
     __PADDisableRecalibration(FALSE);
@@ -109,7 +110,7 @@ void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
     }
 }
 
-// FIXME(shotgun): 91.45 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 96.81 %, missing/extra; behaviour drift.
 // 0x802B1610
 // Still differs: the original tests save-region byte 0xB with a signed
 // compare (cmpwi) and loads lbl_8053ACA8 once before the port range test.
