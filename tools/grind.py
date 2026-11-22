@@ -979,6 +979,16 @@ def judge(wt, unit, base, focus_addr, full=None, dry=False):
     if unstruct:
         return (f"lost structural match in: {', '.join(unstruct[:3])} (was same instructions up to registers/order; "
                 "now missing/extra or different)"), ev, notes
+    # likewise a "close" one (missing/extra by <= 4 instructions at >= 85 %, tools/structural.py): it must stay
+    # done or missing/extra-only at >= 85 % (an approximation; the merge's regressions() is exact)
+    st = STATUS or structural_status()
+    unclose = [e["name"] for a, e in new.items() if a in old and e["pct"] < 100 and st.get((unit, e["name"])) == "close"
+               and not struct_done_cls(e["cls"]) and not (e["cls"].split(" + ")[0] == "missing/extra"
+               and all(p in STRUCT_DONE for p in e["cls"].split(" + ")[1:]) and e["pct"] >= 85.0
+               and e["pct"] >= old[a]["pct"] - 0.5)]
+    if unclose:
+        return (f"lost structural credit in: {', '.join(unclose[:3])} (it was within 4 instructions of the original; "
+                "keep its instruction count as close or closer)"), ev, notes
     worse = [e["name"] for a, e in new.items() if a in old and e["score"] > old[a]["score"]]
     if worse:  # weigh the unit as a whole: an unwritten function counts as two per instruction
         dist = lambda e: 2 * (e["size"] // 4) if e["cls"] == "missing" else e["score"]
