@@ -1,6 +1,6 @@
 # Pool helpers: dropped plain functions placed by `.sdata2` order
 
-For the owner to decide. Measured on branch `an-pool` (9c16afc25), 2026-11-22.
+Decided 2026-11-22 (R2 + tags, see the end). Measured on branch `an-pool` (9c16afc25), 2026-11-22.
 Scratch work is in `build/scratch/poolexp/` and is not committed.
 
 ## Question
@@ -325,3 +325,105 @@ on names agents invented, so it is not evidence. Its one solid case is
 `setCenter` (act_princess_zelda_demo), whose body is identical in 3 other
 units. That is worth adding to R2 as a third leg: "the same body exists in
 another unit".
+
+## Decision 2026-11-22: R2 + tags
+
+The owner chose **R2** with the third leg added: a helper stays when it is inlined at
+2+ call sites, has a one-statement body, or has a body identical to one in another
+unit (only `setCenter`). Helpers that fail R2 stay in the source as tricks:
+`// FAKEMATCH(crack-pass):` on the definition and a row in docs/CRACK_PASS.md
+("Pool helpers that fail rule R2"), which keeps their units NonMatching. The rule is
+in docs/RULES_CARD.md "Pool helpers (R2)".
+
+Applied on branch pool-r2 (from grind2 524d2fd3f):
+
+- **69 pass** and are renamed `pool_<address of the first literal they create>`
+  (the target `.sdata2` symbol at that pool index, checked equal in value and in the
+  pool prefix up to it). Ten create no literal of their own (their bodies are pinned by
+  their call sites, and they reuse literals other code creates): `inl_<address of an
+  inlining caller>`, `_1`/`_2` when two share a caller. None had name evidence beyond
+  the agents' descriptions, so none kept a descriptive name; each comment names the R2
+  clause and the old name.
+- **99 fail** and are tagged. All sit in NonMatching units, so the "pending owner:
+  Matching units" list is empty and no unit changed status.
+- Net: no function changes (renames and comments only); `ninja` SHA-1 OK,
+  `names_compare.py` 10,346 -> 10,346 at 100 %, `gate.py --all-units` ok.
+
+### Kept (R2 passes)
+
+| unit | old name | new name | R2 clause |
+|---|---|---|---|
+| act_cannon | spawnTakenEffect | `pool_8053C2F4` | one statement |
+| act_cannon | swing | `pool_8053C2F8` | 2 sites |
+| act_cannon | readSwingRange | `pool_8053C300` | one statement |
+| act_cloud | isAirborne | `pool_8053C228` | one statement |
+| act_eyeball_switch | open | `pool_80542F20` | 2 sites |
+| act_force_gem | stopMoving | `pool_80541D88` | 7 sites |
+| act_force_like | spawnKindEmitter | `pool_8053BF30` | 2 sites; one statement |
+| act_hyrule_castle_barrier | getEndPos2 | `inl_8011EEEC` | 3 sites |
+| act_hyrule_castle_barrier | getEndPos1 | `pool_8053C8F8` | 3 sites |
+| act_hyrule_castle_barrier | getMidPos | `pool_8053C8FC` | one statement |
+| act_maiden_demo | shrinkCrystal | `pool_8053C628` | one statement |
+| act_old_man | updateFacing | `pool_80543048` | 3 sites |
+| act_princess_zelda | resetAnimFrame | `pool_8053C3E0` | 5 sites; one statement |
+| act_princess_zelda | spawnEffect33A | `pool_8053C3E4` | 2 sites |
+| act_princess_zelda_demo | faceDir | `inl_8011093C` | 2 sites |
+| act_princess_zelda_demo | showSceneMessage | `pool_8053C570` | one statement |
+| act_princess_zelda_demo | shrinkAway | `pool_8053C574` | one statement |
+| act_princess_zelda_demo | setCenter | `pool_8053C58C` | same body in act_four_sword_demo, act_blizzard_battle, act_wind_environment |
+| act_princess_zelda_demo | flashAtFeet | `pool_8053C590` | 2 sites |
+| act_rainbow_bridge | checkActivate | `pool_8053CB48` | 2 sites |
+| act_rope | walk | `pool_8053EAF4` | 3 sites |
+| act_score | putScoreDigit | `pool_80543188` | 8 sites |
+| act_seesaw_lift | fillTiles | `pool_8054286C` | 9 sites |
+| act_seesaw_lift | spawnSandEmitters | `pool_80542878` | 2 sites |
+| act_small_key | fallOnTile | `inl_802C2C30` | 3 sites |
+| act_snowball | advance | `pool_8053C490` | 2 sites |
+| act_snowball | updateTrailEmitter | `pool_8053C494` | 3 sites |
+| act_snowball | fallStep | `pool_8053C4AC` | 3 sites |
+| act_somaria_block | checkGround | `pool_80541738` | 3 sites |
+| act_somaria_block | holdPlayers | `pool_80541740` | 2 sites |
+| act_thwomp_launch_npc | launch | `pool_80542068` | 2 sites |
+| act_thwomp_launch_npc_2 | addRandomDelay | `pool_805427E0` | one statement |
+| act_thwomp_launch_npc_2 | launch | `pool_805427F0` | 2 sites |
+| act_vaati_demo | updateBobbing | `pool_8053C724` | 2 sites |
+| act_warp_cannon | flyPlayers | `pool_8053CCD0` | 2 sites |
+| act_zora_escort_goal | hover | `pool_8053CAA8` | 2 sites |
+| act_zora_escort_goal | startTalk | `pool_8053CAB4` | 2 sites |
+| tu_800F7FCC | headingOf | `pool_8053C050` | 3 sites; one statement |
+| tu_800F7FCC | randomSlotTime | `pool_8053C094` | 2 sites; one statement |
+| tu_8010089C | spawnSmoke | `pool_8053C140` | 3 sites; one statement |
+| tu_80113788 | spawnCrystal | `pool_8053C678` | 2 sites |
+| tu_801213EC | spawnLifeMeters | `inl_80121ABC` | 2 sites |
+| tu_801213EC | lifeMeterSpacing | `pool_8053C9B0` | one statement |
+| tu_801213EC | angleOf | `pool_8053C9F0` | 3 sites; one statement |
+| tu_8013C5C8 | addTrackedEmitter | `inl_8013DDEC` | 25 sites |
+| tu_8013C5C8 | set2DDrawInfo | `pool_8053CE10` | 3 sites |
+| tu_8016A2B4 | getMapTexView | `pool_8053D938` | 12 sites |
+| tu_8018A8D8 | angleOf | `pool_8053E1B0` | one statement |
+| tu_801CB270 | tileCenter | `pool_8053EF98` | 4 sites; one statement |
+| tu_802E9428 | updateCamera | `pool_805412F8` | 4 sites |
+| tu_8034AA40 | updateFacing | `pool_80542558` | 2 sites |
+| tu_80362634 | isBlocked | `pool_80542B20` | 2 sites |
+| tu_80362634 | chaseOwl | `pool_80542B4C` | 2 sites |
+| tu_80362634 | faceOwl | `pool_80542B58` | 2 sites |
+| tu_8036FB60 | tickPlayer_80371284 | `pool_80542DD8` | 2 sites |
+| tu_803944C8 | drawTextPicture | `pool_805431D8` | one statement |
+| tu_803A60E4 | moveCursorToRow | `pool_80543370` | 2 sites |
+| tu_803A8DFC | setHeaderAlpha | `inl_803AA8F8_1` | 3 sites |
+| tu_803A8DFC | setScoreRowAlpha | `inl_803AA8F8_2` | 3 sites |
+| tu_803A8DFC | setRankRowAlpha | `pool_805433B8` | 5 sites |
+| tu_803BC6F0 | getProgressMsg | `inl_803CE4CC` | 3 sites |
+| tu_803BC6F0 | setFadeStep | `pool_80543458` | 2 sites |
+| tu_803E1668 | enterState15 | `pool_80543680` | 2 sites |
+| tu_803F0A54 | enterState13 | `pool_80543748` | 4 sites |
+| tu_80403D84 | hideStagePanes | `inl_80404D70` | 4 sites |
+| tu_80403D84 | hideSubStagePanes | `inl_80405B10` | 13 sites |
+| tu_80403D84 | slidePane | `pool_80543898` | 2 sites |
+| tu_8042165C | calcHudPos | `pool_80543A58` | 2 sites |
+| tu_80443B0C | resetCursorTimer | `pool_80543D70` | 3 sites; one statement |
+
+### Tagged (R2 fails)
+
+99 helpers in 54 units (count in brackets when more than one); the per-helper list
+with the functions each holds is in docs/CRACK_PASS.md: act_block, act_bombchu, act_cannon (4), act_fairy_invincible, act_fish, act_force_gem_winged, act_four_person_pull_switch, act_four_sword_demo (5), act_gambling_shop, act_great_fairy_spfr (3), act_ice_melted_by_four_players, act_ice_wall (3), act_icicle, act_maiden_demo, act_princess_zelda (3), act_princess_zelda_demo (4), act_rainbow_bridge, act_room_transfer_lift, act_score (2), act_seesaw_lift, act_shadow_link_demo (2), act_shovel_old_timer, act_small_key (2), act_snow_wall (2), act_snowball (5), act_strange_block, act_tingle_first, act_vaati_demo, act_vaati_time_up (2), act_warp, act_warp_cannon (8), act_zora_escort (3), act_zora_escort_goal (2), tu_8010089C, tu_80113788 (5), tu_80118384, tu_8011CEC8 (2), tu_801213EC (2), tu_80125B58 (2), tu_8013394C, tu_8015F454, tu_8018EB94, tu_8027E5BC, tu_802E9428, tu_8030C058, tu_8034AA40, tu_80362634, tu_8036FB60, tu_80376FA0 (4), tu_803B7DCC, tu_803E1668, tu_803F0A54, tu_8042165C, tu_8042E964.

@@ -315,6 +315,13 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   (4) File-scope sequence tables a unit's `.data` pointer tables index (`{cel, frames, ..., -1, -1}` s16 runs in
   `.rodata` / `.sdata2`) lead `.sdata2` before every literal: one missing or wrong table shifts the whole pool
   (act_princess_zelda had the first pointer table's entries in both).
+- Pool helpers (R2, owner decision 2026-11-22; docs/analysis/POOL_POLICY.md): a plain dead-stripped helper placed by the
+  `.sdata2` order is allowed only when its body is pinned: inlined at **2+ call sites**, or a **one-statement** body, or a
+  body **identical to one in another unit** (setCenter). Name it `pool_<address of the first literal it creates>`
+  (`inl_<an inlining caller's address>` when it creates none) unless real name evidence exists (docs/names/METHOD.md,
+  address kept); comment which R2 clause it passes. A helper that fails R2 (one site, more than one statement) is a trick:
+  `// FAKEMATCH(crack-pass): <why>` on its definition and a row in docs/CRACK_PASS.md, so its unit cannot go Matching;
+  a failing helper in a Matching unit waits for the owner (CRACK_PASS "Pending owner: Matching units").
 - Pane-tag tables: J2D pane tags are u64 ASCII names; write them as multi-char constants (`'Pabb10'`), never hex. A real indexed table
   of them that trips gate.py's check_byte_arrays gets an `array` line in config/G4SE01/blobs.txt once a reviewer confirms it
   (real data the code indexes, original symbol sizes, address order) and writes fsa-wt/_reviews/<unit>.review.md; the owner
