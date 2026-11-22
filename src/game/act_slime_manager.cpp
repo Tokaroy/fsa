@@ -82,13 +82,14 @@ inline bool cls_804A5BD8::checkTrigger() {
 }
 
 inline void cls_804A5BD8::calcCenter(f32* outX, f32* outY) {
+    s32 serial;
     JGeometry::TVec2f sum;
     sum.x = 0.0f;
     sum.y = 0.0f;
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (!mSlots[i].mUsed && !mSlots[i].mDone) {
-            s32 serial = mSlots[i].mSerial;
+            serial = mSlots[i].mSerial;
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
@@ -236,7 +237,7 @@ void cls_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* out
     outPos->y = center.y;
 }
 
-// FIXME: 98.24% (missing/extra). 1 fewer instruction (182 vs 183: missing mr r28, r3 for steps in case 3), plus r26-r29 regalloc and stack frame offset swap (0xc vs 0x1c) between chooseDir and case 4.
+// FIXME: r26/r27 regalloc swap in loops and stack frame offset swap (0xc vs 0x1c) between chooseDir and case 4.
 void cls_804A5BD8::fn_80208244(int state) {
     switch (state) {
     case 1:
@@ -246,7 +247,7 @@ void cls_804A5BD8::fn_80208244(int state) {
         break;
     case 3: {
         s32 dir = chooseDir();
-        u8 steps = fn_801CD664(3) + 1;
+        const u8 steps = fn_801CD664(3) + 1;
         field_0x34a += steps;
         for (s32 i = 0; i < 4; i++) {
             if (!mSlots[i].mUsed && !mSlots[i].mDone) {
