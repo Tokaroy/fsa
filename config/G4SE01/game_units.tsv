@@ -2,19 +2,19 @@ unit	text_start	text_end	confidence	sections	name_evidence
 game/tu_80021840.cpp	0x80021840	0x80021D60	med	.text,extab,extabindex,.ctors,.bss	
 game/tu_800F39EC.cpp	0x800F39EC	0x800F3C10	high	.text,extab,extabindex,.ctors,.bss	
 game/act_rat.cpp	0x800F3C10	0x800F46C0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: NZMI (vtable 8049C400 set by ctor 80202EEC); actors.tsv
-game/tu_800F46C0.cpp	0x800F46C0	0x800F6820	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: IWAG (vtable 8049C46C set by ctor 80202E74); OIWA (vtable 8049C4C0 set by ctor 80202EB0); not named (several or low-confidence actors)
+game/act_boulder_800F46C0.cpp	0x800F46C0	0x800F6820	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: IWAG (vtable 8049C46C set by ctor 80202E74); OIWA (vtable 8049C4C0 set by ctor 80202EB0); not named (several or low-confidence actors)
 game/act_force_like.cpp	0x800F6820	0x800F7FCC	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: LPLK (vtable 8049C578 set by ctor 80202E38); actors.tsv
-game/tu_800F7FCC.cpp	0x800F7FCC	0x800FD438	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: WRTC (vtable 8049C678 set by ctor 80202CC8); not named (several or low-confidence actors)
+game/act_stone_arrghus_800F7FCC.cpp	0x800F7FCC	0x800FD438	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: WRTC (vtable 8049C678 set by ctor 80202CC8); not named (several or low-confidence actors)
 game/RailBase.cpp	0x800FD438	0x800FE8C0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	string "RailBase.cpp" referenced by the unit; actors RAIL
-game/tu_800FE8C0.cpp	0x800FE8C0	0x800FEDD0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/anim_frame_seq_800FE8C0.cpp	0x800FE8C0	0x800FEDD0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_boss_display_test_npc.cpp	0x800FEDD0	0x800FF060	high	.text,extab,extabindex,.ctors,.data,.bss	actor spawner fn_801F9484: BOTS (vtable 8049C7F0 set by ctor 802020F0); actors.tsv
-game/tu_800FF060.cpp	0x800FF060	0x8010089C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: HAYA (vtable 8049C858 set by ctor 802017E4); not named (several or low-confidence actors)
-game/tu_8010089C.cpp	0x8010089C	0x80102278	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: MGYA (vtable 8049C8EC set by ctor 802015F4); not named (several or low-confidence actors)
+game/act_hammer_shop_minigame_800FF060.cpp	0x800FF060	0x8010089C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: HAYA (vtable 8049C858 set by ctor 802017E4); not named (several or low-confidence actors)
+game/act_whack_a_mole_shop_8010089C.cpp	0x8010089C	0x80102278	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: MGYA (vtable 8049C8EC set by ctor 802015F4); not named (several or low-confidence actors)
 game/act_digging_game.cpp	0x80102278	0x8010307C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: ANHO (vtable 8049C970 set by ctor 8020148C); actors.tsv
 game/act_debug_warp_settings.cpp	0x8010307C	0x80103348	high	.text,extab,extabindex,.ctors,.data,.bss	actor spawner fn_801F9484: DWAP (vtable 8049C9E8 set by ctor 80200310); actors.tsv
 game/act_tower_collapse_effect.cpp	0x80103348	0x801042D0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: TWEV (vtable 8049CA40 set by ctor 802002D4); actors.tsv
 game/act_temple_bti_display.cpp	0x801042D0	0x80104C3C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: SIBT (vtable 8049CB04 set by ctor 801FFB3C); actors.tsv
-game/tu_80104C3C.cpp	0x80104C3C	0x80105368	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss	
+game/act_logic_switch_control_80104C3C.cpp	0x80104C3C	0x80105368	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss	
 game/act_cloud.cpp	0x80105368	0x80106040	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: CLOD (ctor 80105BEC); actors.tsv
 game/act_room_transfer_lift.cpp	0x80106040	0x80106ADC	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: WLFT (ctor 8010673C); actors.tsv
 game/act_wind_environment.cpp	0x80106ADC	0x80107360	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	actor spawner fn_801F9484: WIND (ctor 801070B4); actors.tsv
@@ -25,50 +25,50 @@ game/act_princess_zelda.cpp	0x80109534	0x8010B284	high	.text,extab,extabindex,.c
 game/act_icicle.cpp	0x8010B284	0x8010C294	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: ICCL (ctor 8010C00C); actors.tsv
 game/act_snowball.cpp	0x8010C294	0x8010DA6C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: SNBL (ctor 8010D7A0); actors.tsv
 game/act_message_check_npc.cpp	0x8010DA6C	0x8010DF44	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: DBMS (ctor 8010DCDC); actors.tsv
-game/tu_8010DF44.cpp	0x8010DF44	0x8010E2D4	med	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
+game/demo_actor_base_8010DF44.cpp	0x8010DF44	0x8010E2D4	med	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
 game/act_princess_zelda_demo.cpp	0x8010E2D4	0x801123C8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: DMZL (ctor 80112070); actors.tsv
 game/act_maiden_demo.cpp	0x801123C8	0x80113788	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: DMMD (ctor 801134DC); actors.tsv
-game/tu_80113788.cpp	0x80113788	0x801158B8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
+game/act_crystal_cutscene_80113788.cpp	0x80113788	0x801158B8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
 game/act_vaati_demo.cpp	0x801158B8	0x80116E8C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	actor spawner fn_801F9484: DMGF (ctor 80116BE8); actors.tsv
 game/act_four_sword_demo.cpp	0x80116E8C	0x80118384	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: DMSW (ctor 801180D0); actors.tsv
 game/tu_80118384.cpp	0x80118384	0x8011A0F8	med	.text,extab,extabindex,.ctors,.rodata,.bss,.sdata,.sbss,.sdata2	
-game/tu_8011A0F8.cpp	0x8011A0F8	0x8011A4BC	high	.text,extab,extabindex,.ctors,.data,.bss	
+game/act_story_demo_control_npc_8011A0F8.cpp	0x8011A0F8	0x8011A4BC	high	.text,extab,extabindex,.ctors,.data,.bss	
 game/act_opening_goal.cpp	0x8011A4BC	0x8011B390	med	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: DMGL (ctor 8011B0DC); actors.tsv
 game/act_shadow_link_demo.cpp	0x8011B390	0x8011CEC8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: DMLK (ctor 8011CC2C); actors.tsv
-game/tu_8011CEC8.cpp	0x8011CEC8	0x8011DA20	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
+game/act_after_goal_opening_8011CEC8.cpp	0x8011CEC8	0x8011DA20	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
 game/act_ice_wall.cpp	0x8011DA20	0x8011E96C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: ICWL (ctor 8011E6E0); actors.tsv
-game/tu_8011E96C.cpp	0x8011E96C	0x8011EEEC	high	.text,extab,extabindex,.ctors,.data,.bss	
+game/act_random_toggle_switch_8011E96C.cpp	0x8011E96C	0x8011EEEC	high	.text,extab,extabindex,.ctors,.data,.bss	
 game/act_hyrule_castle_barrier.cpp	0x8011EEEC	0x8011FFB8	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	actor spawner fn_801F9484: BARI (ctor 8011FD28); actors.tsv
 game/act_zora_escort.cpp	0x8011FFB8	0x801213EC	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: FAZR (ctor 80121164); actors.tsv
-game/tu_801213EC.cpp	0x801213EC	0x80124AD8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/escort_base_801213EC.cpp	0x801213EC	0x80124AD8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_escort_woman.cpp	0x80124AD8	0x80125B58	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: OPGL (ctor 801258D8); actors.tsv
-game/tu_80125B58.cpp	0x80125B58	0x8012679C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_escorted_woman_arrival_point_80125B58.cpp	0x80125B58	0x8012679C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_vaati_buster.cpp	0x8012679C	0x80126A4C	high	.text,extab,extabindex,.ctors,.data,.bss	actor spawner fn_801F9484: GFBS (vtable 8049E3A8 set by ctor 80201630); actors.tsv
 game/act_zora_escort_goal.cpp	0x80126A4C	0x80127E20	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: FZRA (ctor 80127B48); actors.tsv
-game/tu_80127E20.cpp	0x80127E20	0x801286C0	med	.text,extab,extabindex,.ctors,.bss,.sbss,.sdata2	
-game/tu_801286C0.cpp	0x801286C0	0x801291A0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
-game/tu_801291A0.cpp	0x801291A0	0x80129B0C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/zora_escort_goal_list_80127E20.cpp	0x80127E20	0x801286C0	med	.text,extab,extabindex,.ctors,.bss,.sbss,.sdata2	
+game/act_opening_narration_801286C0.cpp	0x801286C0	0x801291A0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
+game/act_crystal_ball_generator_801291A0.cpp	0x801291A0	0x80129B0C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_rainbow_bridge.cpp	0x80129B0C	0x8012A5EC	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: RNBW (ctor 8012A364); actors.tsv
-game/tu_8012A5EC.cpp	0x8012A5EC	0x8012CF5C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
+game/act_tower_appearance_demo_8012A5EC.cpp	0x8012A5EC	0x8012CF5C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
 game/act_blizzard_battle.cpp	0x8012CF5C	0x8012DAC0	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	actor spawner fn_801F9484: BTBZ (ctor 8012D848); actors.tsv
-game/tu_8012DAC0.cpp	0x8012DAC0	0x8012DF70	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_coloured_floor_toggle_8012DAC0.cpp	0x8012DAC0	0x8012DF70	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_snow_wall.cpp	0x8012DF70	0x8012EA00	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: SNWL (ctor 8012E780); actors.tsv
-game/tu_8012EA00.cpp	0x8012EA00	0x8012F008	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
+game/act_room_warp_for_l72_8012EA00.cpp	0x8012EA00	0x8012F008	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
 game/act_ice_floor_check_npc.cpp	0x8012F008	0x8012F3E4	high	.text,extab,extabindex,.ctors,.data,.bss	actor spawner fn_801F9484: IFCK (ctor 8012F178); actors.tsv
-game/tu_8012F3E4.cpp	0x8012F3E4	0x8012F8AC	high	.text,extab,extabindex,.ctors,.bss,.sbss	
-game/tu_8012F8AC.cpp	0x8012F8AC	0x8012FBCC	high	.text,extab,extabindex,.ctors,.data,.bss	
-game/tu_8012FBCC.cpp	0x8012FBCC	0x8012FF9C	high	.text,extab,extabindex,.ctors,.data,.bss	
+game/ice_floor_check_list_8012F3E4.cpp	0x8012F3E4	0x8012F8AC	high	.text,extab,extabindex,.ctors,.bss,.sbss	
+game/act_ice_floor_check_npc_monitor_8012F8AC.cpp	0x8012F8AC	0x8012FBCC	high	.text,extab,extabindex,.ctors,.data,.bss	
+game/act_keeps_escorted_girl_from_going_8012FBCC.cpp	0x8012FBCC	0x8012FF9C	high	.text,extab,extabindex,.ctors,.data,.bss	
 game/tu_8012FF9C.cpp	0x8012FF9C	0x80130310	high	.text,extab,extabindex,.ctors,.bss,.sbss	
-game/tu_80130310.cpp	0x80130310	0x80130FAC	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
+game/act_malon_and_talon_controller_80130310.cpp	0x80130310	0x80130FAC	high	.text,extab,extabindex,.ctors,.data,.bss,.sdata2	
 game/act_warp_cannon.cpp	0x80130FAC	0x80131D98	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	actor spawner fn_801F9484: WPCN (ctor 80131AF0); actors.tsv
-game/tu_80131D98.cpp	0x80131D98	0x801321DC	high	.text,extab,extabindex,.ctors,.bss,.sbss	
+game/escort_actor_list_80131D98.cpp	0x80131D98	0x801321DC	high	.text,extab,extabindex,.ctors,.bss,.sbss	
 game/act_great_fairy_spfr.cpp	0x801321DC	0x8013394C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: SPFR (ctor 801336B4); actors.tsv
-game/tu_8013394C.cpp	0x8013394C	0x801344C0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
+game/act_navi_after_crystal_cutscene_8013394C.cpp	0x8013394C	0x801344C0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
 game/tu_801344C0.cpp	0x801344C0	0x80134C04	high	.text,extab,extabindex,.ctors,.bss	
-game/tu_80134C04.cpp	0x80134C04	0x80139BE8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
-game/tu_80139BE8.cpp	0x80139BE8	0x8013AAD4	med	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
+game/game_root_80134C04.cpp	0x80134C04	0x80139BE8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/game_root_sub_04_80139BE8.cpp	0x80139BE8	0x8013AAD4	med	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
 game/tu_8013AAD4.cpp	0x8013AAD4	0x8013C5C8	med	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
-game/tu_8013C5C8.cpp	0x8013C5C8	0x8013F9A8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
+game/effect_system_8013C5C8.cpp	0x8013C5C8	0x8013F9A8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
 game/act_octorok.cpp	0x8013F9A8	0x80140E24	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	actor spawner fn_801F9484: OKTA (vtable 8049F208 set by ctor 8020425C); actors.tsv
 game/act_armos.cpp	0x80140E24	0x80142624	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: AMOS (vtable 8049F260 set by ctor 80204220); actors.tsv
 game/act_poe.cpp	0x80142624	0x80143874	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: POOH (vtable 8049F330 set by ctor 802041E4); actors.tsv
@@ -77,37 +77,37 @@ game/act_buzz_blob.cpp	0x80144134	0x8014529C	high	.text,extab,extabindex,.ctors,
 game/act_deadrock.cpp	0x8014529C	0x80145F60	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: DDRK (vtable 8049F498 set by ctor 80203F50); actors.tsv
 game/act_recovery_heart.cpp	0x80145F60	0x80146BC8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: HART (vtable 8049F4F0 set by ctor 80203ED8); actors.tsv
 game/act_octorok_rock.cpp	0x80146BC8	0x80147B50	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: OKTM (vtable 8049F5D8 set by ctor 80203E9C); actors.tsv
-game/tu_80147B50.cpp	0x80147B50	0x8014AD2C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
+game/act_big_moldorm_80147B50.cpp	0x80147B50	0x8014AD2C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
 game/act_bomb.cpp	0x8014AD2C	0x8014DCD4	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: HBMB (vtable 8049F784 set by ctor 80203D1C); actors.tsv
 game/act_hinox.cpp	0x8014DCD4	0x8014FD5C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: HINO (vtable 8049F9B4 set by ctor 80203D58); actors.tsv
 game/act_sword_soldier.cpp	0x8014FD5C	0x801549B0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	actor spawner fn_801F9484: SLR1 (vtable 8049FCA0 set by ctor 80203CA4); actors.tsv
 game/act_tektite.cpp	0x801549B0	0x801555D8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: TKTA (vtable 8049FD50 set by ctor 80203C2C); actors.tsv
-game/tu_801555D8.cpp	0x801555D8	0x80158624	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
-game/tu_80158624.cpp	0x80158624	0x801597B8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_bow_soldier_801555D8.cpp	0x801555D8	0x80158624	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
+game/shadow_circle_80158624.cpp	0x80158624	0x801597B8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_liftable_item.cpp	0x801597B8	0x8015B98C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: IMUP (vtable 804A01D0 set by ctor 80203BB4); actors.tsv
 game/act_bumper.cpp	0x8015B98C	0x8015C828	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: BOYO (vtable 804A0260 set by ctor 80203B78); actors.tsv
 game/act_keese.cpp	0x8015C828	0x8015DE10	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: KETH (vtable 804A02B8 set by ctor 80203B3C); actors.tsv
 game/act_flame.cpp	0x8015DE10	0x8015F454	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: FLME (vtable 804A0330 set by ctor 80203B00); actors.tsv
 game/tu_8015F454.cpp	0x8015F454	0x80160650	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_fairy.cpp	0x80160650	0x801618D0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: FARY (vtable 804A03B8 set by ctor 802039D4); actors.tsv
-game/tu_801618D0.cpp	0x801618D0	0x801643C4	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
+game/act_big_poe_801618D0.cpp	0x801618D0	0x801643C4	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sbss,.sdata2	
 game/act_blade_trap.cpp	0x801643C4	0x8016545C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: TRAP (vtable 804A04D8 set by ctor 8020382C); actors.tsv
 game/act_arrow.cpp	0x8016545C	0x80166BD0	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: ARRW (vtable 804A05E0 set by ctor 802037F0); actors.tsv
-game/tu_80166BD0.cpp	0x80166BD0	0x80167938	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: MOZO (vtable 804A0668 set by ctor 8020373C); not named (several or low-confidence actors)
+game/act_mojamoja_unidentified_enemy_80166BD0.cpp	0x80166BD0	0x80167938	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: MOZO (vtable 804A0668 set by ctor 8020373C); not named (several or low-confidence actors)
 game/act_hardhat_beetle.cpp	0x80167938	0x801688AC	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: Poon (vtable 804A06C0 set by ctor 802036C4); actors.tsv
-game/tu_801688AC.cpp	0x801688AC	0x8016A2B4	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
-game/tu_8016A2B4.cpp	0x8016A2B4	0x80170008	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
-game/tu_80170008.cpp	0x80170008	0x80172170	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_unknown_bome_801688AC.cpp	0x801688AC	0x8016A2B4	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/game_root_sub_24_8016A2B4.cpp	0x8016A2B4	0x80170008	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_ball_and_chain_soldier_80170008.cpp	0x80170008	0x80172170	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_popo.cpp	0x80172170	0x80172894	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: POPO (vtable 804A0868 set by ctor 80203234); actors.tsv
 game/act_chief_soldier.cpp	0x80172894	0x80175684	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: SLR4 (vtable 804A0B90 set by ctor 80203090); actors.tsv
 game/act_stalfos.cpp	0x80175684	0x801769D8	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: STAL (vtable 804A0CD8 set by ctor 80202C8C); actors.tsv
 game/act_wizzrobe.cpp	0x801769D8	0x80179150	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: WIZR (vtable 804A0EDC set by ctor 80202B80); actors.tsv
 game/act_searchlight.cpp	0x80179150	0x8017A44C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	actor spawner fn_801F9484: SHLT (vtable 804A0FF8 set by ctor 802028A4); actors.tsv
-game/tu_8017A44C.cpp	0x8017A44C	0x8017B140	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: SWBM (vtable 804A1160 set by ctor 80202550); not named (several or low-confidence actors)
+game/act_unknown_swbm_8017A44C.cpp	0x8017A44C	0x8017B140	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: SWBM (vtable 804A1160 set by ctor 80202550); not named (several or low-confidence actors)
 game/act_cheep_cheep.cpp	0x8017B140	0x8017C01C	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: PUKU (vtable 804A11B8 set by ctor 80202514); actors.tsv
-game/tu_8017C01C.cpp	0x8017C01C	0x8017EF40	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
-game/tu_8017EF40.cpp	0x8017EF40	0x80182914	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
-game/tu_80182914.cpp	0x80182914	0x80183544	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
+game/act_phantom_ganon_8017C01C.cpp	0x8017C01C	0x8017EF40	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sdata2	
+game/act_helmaroc_king_8017EF40.cpp	0x8017EF40	0x80182914	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata,.sbss,.sdata2	
+game/act_leever_80182914.cpp	0x80182914	0x80183544	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/tu_80183544.cpp	0x80183544	0x80184040	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	
 game/act_pengator.cpp	0x80184040	0x80184D64	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	actor spawner fn_801F9484: FAGN (vtable 804A1888 set by ctor 8020221C); actors.tsv
 game/tu_80184D64.cpp	0x80184D64	0x80187144	high	.text,extab,extabindex,.ctors,.rodata,.data,.bss,.sdata2	

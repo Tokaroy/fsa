@@ -1,7 +1,7 @@
 #ifndef GAME_ACT_TU_8044B80C_H
 #define GAME_ACT_TU_8044B80C_H
 
-// Code: game/tu_8044B80C.cpp. Created in game/tu_80139BE8.cpp (0x8013A830),
+// Code: game/tu_8044B80C.cpp. Created in game/game_root_sub_04_80139BE8.cpp (0x8013A830),
 // requested by tu_802E9428 through lbl_8053AF30.
 
 #include "types.h"
@@ -35,7 +35,7 @@ public:
     /* 0x15 */ u8 mPage;                  // 0xFF when none
     /* 0x16 */ u8 mState;                 // 0 idle, 1 load, 2 loading, 3 shown
     /* 0x17 */ u8 pad_0x17;
-}; // Size: 0x18 (tu_80139BE8 allocates 0x18)
+}; // Size: 0x18 (game_root_sub_04_80139BE8 allocates 0x18)
 
 extern StaffRollLoader_804B1D10* lbl_8053AF30;
 

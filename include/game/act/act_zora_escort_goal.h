@@ -23,7 +23,7 @@ public:
     // Returns 1 when the state word at 0x230 is 1 or 0xC, else 0. Only reads
     // the word, so it is const.
     bool fn_80126EF8() const;
-    // 0x80126A4C, not written yet (act_zora_escort_goal's state change; tu_80127E20 calls it with
+    // 0x80126A4C, not written yet (act_zora_escort_goal's state change; zora_escort_goal_list_80127E20 calls it with
     // 0x10, 0xA and 5).
     void setState_80126A4C(s32 arg);
 

@@ -2,7 +2,7 @@
 #define GAME_ACT_TU_80221B44_H
 
 #include "game/cls_804A6A00.h"
-#include "game/act/tu_800F7FCC.h"
+#include "game/act/act_stone_arrghus_800F7FCC.h"
 
 // A minor Shadow Link actor (sub-base ShadowLinkBase_804A6A00) that, after its hop
 // animation, puts a shockwave ring (HitRing_800F802C) and effects at its feet;

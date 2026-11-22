@@ -1,6 +1,6 @@
 // Crystal (cutscene) actor: 'DCR2', spawned by tu_801F9484.cpp.
 // Declared in include/game/act/tu_801F9484.h (CrystalCutscene5464_804AE088).
-// Inherits from DemoActorBase_8049D140 (tu_8010DF44).
+// Inherits from DemoActorBase_8049D140 (demo_actor_base_8010DF44).
 
 #include "game/ActorBase.h"
 #include "game/ActorId.h"
@@ -12,7 +12,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/act/tu_801F9484.h"
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 #include "game/Unk_8045A080.h"
 #include "JSystem/J2D/J2DPicture.h"

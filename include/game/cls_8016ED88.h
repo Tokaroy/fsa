@@ -7,7 +7,7 @@
 class ActorSoundObj_804578F4;
 class JPABaseEmitter;
 
-// A 0x1C-byte entry whose constructor is the empty fn_8016FDE0 (game/tu_8016A2B4.cpp);
+// A 0x1C-byte entry whose constructor is the empty fn_8016FDE0 (game/game_root_sub_24_8016A2B4.cpp);
 // arrays of four are built with __construct_array by GameRootSub24_8016A3AC's constructor (0x8016F0BC, at its
 // this + 0x140) and Title_804AF820's constructor (at 0x90). Named after its
 // constructor. Only the fields the known code touches are declared.
@@ -25,7 +25,7 @@ struct cls_8016FDE0 {
 }; // Size: 0x1C
 
 // Four cls_8016FDE0 entries. No vtable, constructor or destructor of its own:
-// named after its only known function, fn_8016ED88 (game/tu_8016A2B4.cpp),
+// named after its only known function, fn_8016ED88 (game/game_root_sub_24_8016A2B4.cpp),
 // which Title_804AF820::fn_803A5380 calls on its field_0x90.
 struct cls_8016ED88 {
     // Clears field_0x0 and field_0x14 of each entry.

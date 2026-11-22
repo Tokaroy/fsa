@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_8049E350_H
 #define GAME_CLS_8049E350_H
 
-// Code: game/tu_80125B58.cpp. An actor named after its vtable, 0x8049E350
+// Code: game/act_escorted_woman_arrival_point_80125B58.cpp. An actor named after its vtable, 0x8049E350
 // (__vt__34EscortedWomanArrivalPoint_8049E350; its constructor is not written yet). It has two
 // SpriteAnim members: mAnim244 (its J3DFrameCtrl at 0x268) and mAnim27c (its
 // J3DFrameCtrl at 0x2A0). The destructor (0x80125B58) destroys both.
@@ -27,7 +27,7 @@ public:
     // Not in the binary (inlined into update and fn_80125C58).
     bool talkTo(s32 player, u16 msg);
     void startSignAnim();
-    // The state switch of init() and update() (defined inline in tu_80125B58.cpp).
+    // The state switch of init() and update() (defined inline in act_escorted_woman_arrival_point_80125B58.cpp).
     void enterState();
 
     /* 0x230 */ u8 field_0x230; // set by init's state switch (0 or 1)

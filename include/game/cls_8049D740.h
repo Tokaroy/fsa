@@ -6,7 +6,7 @@
 // (0x8011342C) releases three emitters, then the mAnim member and DemoActorBase_8049D140's
 // destructor run. Only the field PrincessZeldaDemo reads is known.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 class MaidenCutscene_8049D740 : public DemoActorBase_8049D140 {

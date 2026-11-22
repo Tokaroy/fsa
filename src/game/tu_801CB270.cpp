@@ -15,7 +15,7 @@
 #include "game/GameMath.h"
 #include "game/Player.h"
 #include "game/act/act_bombchu.h"
-#include "game/act/tu_801688AC.h"
+#include "game/act/act_unknown_bome_801688AC.h"
 #include "game/Map.h"
 #include "game/ViewLayer.h"
 #include "JSystem/JParticle/JPAEmitter.h"

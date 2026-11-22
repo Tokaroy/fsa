@@ -66,14 +66,14 @@ Codegen findings: a shift loop with its test at the top and a plain `b` back (0x
 break; ... }` (while/for get rotated and unrolled); bit-table word clears whose word offset is stepped in a register are
 `for (bit = 0; bit < 1024; bit += 32) t[bit / 32] = 0` (a word loop unrolls by 8 with folded offsets); the camera's
 field_0x844 corners are stored f.x, i.x, f.y, i.y: chained `i.x = f.x = p->x` (TBox2::set stores i first; same
-pattern unmatched in tu_8017C01C fn_8017EC70).
+pattern unmatched in act_phantom_ganon_8017C01C fn_8017EC70).
 Layout proven: field_0x3c8 = u64 [4][10][10] (fn_802DEE2C clears 0x3C8/0x6E8/0xA08/0xD28 + row*0x50 + col*8);
 field_0x2c = s32[2] (the step passed to fn_802DEDFC by fn_802DA788).
 Unwritten: resetStage_802DA8DC — full draft 83.8 % (75 instructions long): the two TVec2f-slot clear loops (0x802DAE38,
 0x802DAF04) unroll by 2 with offsets stepped in registers in the target, fully in ours (u32/s32 counters, zero() do not
 change it); everything else lines up. vfunc_0xC and restartStage_802DBD60 not started (time).
 SHARED-EDITS: include/game/GameView.h (field_0x2c s32 -> s32[2] replacing field_0x30 padding; field_0x3c8 u8[0xC80]
--> u64[4][10][10]; fn_802DA630 bool -> u8 (returns the lbz as is; one caller, unwritten tu_80134C04, clrlwi's);
+-> u64[4][10][10]; fn_802DA630 bool -> u8 (returns the lbz as is; one caller, unwritten game_root_80134C04, clrlwi's);
 declared fn_802D3D48, fn_802D92F0 members, inline screenMask, clearScreen, restartTimeLimit, clearScreenState);
 include/game/tu_80379F84.h (SaveRow 0x7C/0x7D carved from field_0x7a padding); include/game/act/tu_803276C4.h
 (OshinUnidentified_804AB528 s32 field_0x230 carved from padding: lwz/stw in tu_803276C4, tested == 2 by fn_802DA630).

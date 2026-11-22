@@ -409,7 +409,7 @@ public:
 }; // Size: 0x5C
 
 // *lbl_8053AD78. Vtable 0x804AF070 (one slot, the destructor fn_8038D90C).
-// tu_80134C04 allocates it with __nw__(0x158, heap, 0) (0x80139384) and
+// game_root_80134C04 allocates it with __nw__(0x158, heap, 0) (0x80139384) and
 // constructs it with fn_8038DA00.
 class MessageManager_804AF070 {
 public:
@@ -614,7 +614,7 @@ bool fn_80388CAC(s32 player, s32 serial);
 // builds message `id` into dst, given the "yes" / "no" answer texts.
 f32 fn_80382B48(char* dst, u32 id, s32 flag, const char* yes, const char* no);
 f32 getMessageText_803832BC(char* out, u32 msg, s32 value, char* out2, char* out3);
-// 1 unit (tu_80139BE8's fn_80139C5C). Draws the open windows in the order
+// 1 unit (game_root_sub_04_80139BE8's fn_80139C5C). Draws the open windows in the order
 // they were opened (field_0xfc), then the text box when field_0xe4 is set.
 void fn_8038D4A8();
 extern "C" {

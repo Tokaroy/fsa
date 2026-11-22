@@ -516,7 +516,7 @@ public:
     /* 0x024C */ JGeometry::TBox2<u32> mScreenRect_0x24c;
     /* 0x025C */ GXTlutObj mSpriteTluts_0x25c[3][4][16];
     /* 0x0B5C */ GXTexObj mSpriteTexObjs_0xb5c[3][4][16];
-    // Per-player bytes: tu_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC
+    // Per-player bytes: game_root_sub_04_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC
     // and tu_803B7DCC store them; Camera_804AA9E4::fn_8030C85C /
     // setNextVisibleBox_8030C928 copy them to mLayer2Visible_0x2360.
     /* 0x235C */ u8 mLayerVisible_0x235c[4];
@@ -527,10 +527,10 @@ public:
     /* 0x2365 */ u8 field_0x2365;
     // Camera_804AA9E4::setNextVisibleBox_8030C928 moves mLayerOrigin_0x2368 to mLayer2Origin_0x2374 and
     // stores the new box's corner (x0, y0, constant) in mLayerOrigin_0x2368;
-    // tu_8016A2B4 reads it (0x8016E014).
+    // game_root_sub_24_8016A2B4 reads it (0x8016E014).
     /* 0x2368 */ JGeometry::TVec3f mLayerOrigin_0x2368;
     /* 0x2374 */ JGeometry::TVec3f mLayer2Origin_0x2374;
-    // Written by tu_802D39B8 (0x802D92D4), read as ints by tu_8016A2B4
+    // Written by tu_802D39B8 (0x802D92D4), read as ints by game_root_sub_24_8016A2B4
     // (0x8016AE44). The cell counts of getHeightAt_802F5E9C's grid (64 after fn_802FF798).
     /* 0x2380 */ s32 mHeightGridCellsX_0x2380;
     /* 0x2384 */ s32 mHeightGridCellsY_0x2384;
@@ -704,7 +704,7 @@ CollisionBoxes_8020D58C* fn_8020D58C();
 
 // game/tu_802F5040.cpp. The GX setup of a sprite at pos with params (or NULL);
 // writes the draw offset to out. Called by the sprite draws of this unit and
-// by tu_801618D0 (0x801619F4).
+// by act_big_poe_801618D0 (0x801619F4).
 void fn_802F5040(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, JGeometry::TVec3f* out);
 
 #endif

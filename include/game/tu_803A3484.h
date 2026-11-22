@@ -16,11 +16,11 @@ class THPMovie_804B15D0;
 
 // The title screen: vtable 0x804AF820 (one slot, the destructor fn_803A56C4),
 // constructor fn_803A59E0 (game/tu_803A3484.cpp); 0x158 bytes (__nw__(0x158)
-// in tu_80134C04's createModeScreen_80135020 path). The constructor loads "title.blo" /
+// in game_root_80134C04's createModeScreen_80135020 path). The constructor loads "title.blo" /
 // "title.btk" and the pictures ("kk_titleCon_01.bti", the progressive-scan
 // prompt "progressive_*.bti", "kk_black.bti"), builds the six cloud models
 // ("w_kumo*.bmd") in its own solid heap and stores `this` in lbl_8053AD88.
-// tu_80134C04 calls fn_803A34A0 (update), fn_803A44D8 (draw) and fn_803A5380
+// game_root_80134C04 calls fn_803A34A0 (update), fn_803A44D8 (draw) and fn_803A5380
 // (reset) and reads fn_803A3484 each frame.
 //
 // "Title" is a provisional descriptive name (the "title.blo" / "title.arc"
@@ -30,7 +30,7 @@ public:
     Title_804AF820();
     /* 0x08 */ virtual ~Title_804AF820();
 
-    // tu_80134C04 reads it each frame: 1 while no title screen exists, else
+    // game_root_80134C04 reads it each frame: 1 while no title screen exists, else
     // field_0x154.
     static s32 fn_803A3484();
     void fn_803A34A0(); // update

@@ -3,7 +3,7 @@
 
 // Code: game/act_zora_escort.cpp.
 
-#include "game/tu_801213EC.h"
+#include "game/escort_base_801213EC.h"
 
 // The escorted Zora ('FAZR', docs/names/actors.tsv, med confidence). Named
 // after its vtable, 0x8049DF78. Its constructor (fn_80121164) and destructor
@@ -20,7 +20,7 @@ public:
     // (getEscortActorList_80131F0C) and enters state 7.
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    // Slots the escort base (tu_801213EC, not written yet) declares only up
+    // Slots the escort base (escort_base_801213EC, not written yet) declares only up
     // to 0x6C; the zora's own overrides are declared here in slot order.
     // Slots 0x54-0x5C: fn_80121040 (state 7 or 9-12), fn_80120FC0 (state 7, 11 or 12 and
     // the escort within 32 units of the player it names) and fn_80120F68 (3 in state 0 or 0xF,

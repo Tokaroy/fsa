@@ -5,7 +5,7 @@
 #include "JSystem/JGeometry.h"
 #include <math.h>
 
-// game/act_princess_zelda_demo.cpp (owner unit; the callers include tu_8013C5C8's fn_8013CAA4). The rotation of `angle` radians about `axis`
+// game/act_princess_zelda_demo.cpp (owner unit; the callers include effect_system_8013C5C8's fn_8013CAA4). The rotation of `angle` radians about `axis`
 // (normalised inside) into the 3x3 part of `m`; the translation is the caller's.
 void makeAxisRotation_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 angle);
 

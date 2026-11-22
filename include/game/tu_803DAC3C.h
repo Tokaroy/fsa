@@ -11,11 +11,11 @@ class THPMovie_804B15D0;
 
 // The game mode screen: vtable 0x804B0688 (one slot, the destructor
 // fn_803DFC6C), constructor fn_803DFF40 (game/tu_803DAC3C.cpp); 0x120 bytes
-// (__nw__(0x120) in tu_80134C04's createModeScreen_80135020 path). The constructor loads
+// (__nw__(0x120) in game_root_80134C04's createModeScreen_80135020 path). The constructor loads
 // "gamemode.blo" and "gamemode_movie.blo" from lbl_80529DEC's field_0x2c
 // archive, the GBA tile data ("gb_ch_obj_base_sch.szs", "player_sch.szs",
 // ...) into gGameRoot2_8053AB10->field_0x20, and stores `this` in lbl_8053ADD0.
-// tu_80134C04 calls fn_803DF810 (update) and fn_803DF624 (draw) each frame;
+// game_root_80134C04 calls fn_803DF810 (update) and fn_803DF624 (draw) each frame;
 // both run mState through a pointer-to-member table (lbl_804B0568 /
 // lbl_804B0628, 8 entries). State 7 boots "/DOL/framework.dol".
 //
@@ -28,7 +28,7 @@ public:
     GameMode_804B0688();
     /* 0x08 */ virtual ~GameMode_804B0688();
 
-    // tu_80134C04 reads it each frame: 2 while no game mode screen exists,
+    // game_root_80134C04 reads it each frame: 2 while no game mode screen exists,
     // else field_0x68.
     static s32 fn_803DAC3C();
     // Sets the panes' colours for the selected entry (0-2) with alpha
@@ -53,7 +53,7 @@ public:
     void fn_803DEC44(); // 1
     void fn_803DF2B4(); // 0
 
-    // tu_80134C04, each frame.
+    // game_root_80134C04, each frame.
     void fn_803DF624(); // draw
     void fn_803DF810(); // update
     void fn_803DF9E8(); // reset

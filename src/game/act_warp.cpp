@@ -8,7 +8,7 @@
 #include "game/Map.h"
 #include "game/ViewLayer.h"
 #include "game/GameRootSub20.h"
-#include "game/act/tu_801688AC.h"
+#include "game/act/act_unknown_bome_801688AC.h"
 #include "game/VecEpsilon.h"
 #include <float.h>
 

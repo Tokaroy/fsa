@@ -28,10 +28,10 @@
 #include "game/tu_80212AC0.h"
 #include "game/tu_8021F064.h"
 #include "game/act/tu_801DAC6C.h"
-#include "game/tu_80127E20.h"
-#include "game/tu_8012F3E4.h"
+#include "game/zora_escort_goal_list_80127E20.h"
+#include "game/ice_floor_check_list_8012F3E4.h"
 #include "game/tu_8012FF9C.h"
-#include "game/tu_80131D98.h"
+#include "game/escort_actor_list_80131D98.h"
 #include "game/act/act_small_key.h"
 #include <stdio.h>
 

@@ -33,7 +33,7 @@ public:
     /* 0x18 */ s32 field_0x18;           // state; fn_80441A1C switches on it
     /* 0x1C */ s32 field_0x1c;           // frame counter
     /* 0x20 */ u8 field_0x20[0x28 - 0x20];
-}; // Size: 0x28 (GameRoot_8049EF20's constructor, tu_80134C04: __nw__(0x28))
+}; // Size: 0x28 (GameRoot_8049EF20's constructor, game_root_80134C04: __nw__(0x28))
 
 // .sbss pointer the constructor stores `this` in (0x8053AEE0, inside
 // game/tu_8043A0E8.cpp's .sbss range); GameRoot's draw_80136828 / fn_80137300

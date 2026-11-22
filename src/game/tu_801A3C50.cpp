@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
 #include "game/ActorManager.h"
-#include "game/act/tu_801688AC.h"
+#include "game/act/act_unknown_bome_801688AC.h"
 #include "game/act/act_arrow.h"
 #include "game/act/act_octorok_rock.h"
 #include "game/ActorId.h"

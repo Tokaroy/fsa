@@ -3,7 +3,7 @@
 
 // Code: game/act_four_sword_demo.cpp.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 // Named after its vtable, 0x8049DA0C, which derives from DemoActorBase_8049D140. Its
@@ -30,11 +30,11 @@ public:
     // Takes the table index 2..12 found by vfunc_0x54.
     void fn_80117074(s32 index);
 
-    // Slot 0x58, overriding DemoActorBase_8049D140::vfunc_0x58 (game/tu_8010DF44.cpp).
+    // Slot 0x58, overriding DemoActorBase_8049D140::vfunc_0x58 (game/demo_actor_base_8010DF44.cpp).
     // Returns field_0x234.
     /* 0x58 */ virtual s32 vfunc_0x58();
 
-    // Slot 0x5C, overriding DemoActorBase_8049D140::vfunc_0x5C (game/tu_8010DF44.cpp).
+    // Slot 0x5C, overriding DemoActorBase_8049D140::vfunc_0x5C (game/demo_actor_base_8010DF44.cpp).
     // 1 when field_0x234 is 12, else 0.
     /* 0x5C */ virtual s32 vfunc_0x5C();
 

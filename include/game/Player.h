@@ -1261,7 +1261,7 @@ inline ActorBase_804A5770* Player_804A6F38::heldActor() {
 
 // *gPlayerManager_8053AC90. Vtable 0x804A6F28: only the destructor (0x8023F7F8, which
 // deletes the four players and clears gPlayerManager_8053AC90). Constructor 0x8023F8B0
-// (sets gPlayerManager_8053AC90, creates the players, clears 0x68-0x73); tu_80139BE8
+// (sets gPlayerManager_8053AC90, creates the players, clears 0x68-0x73); game_root_sub_04_80139BE8
 // creates it with __nw__(0x74) (0x8013A5A8).
 class PlayerManager_804A6F28 {
 public:
@@ -1631,7 +1631,7 @@ bool hasPlayerLeader_8022F514(s32 player);
 bool fn_8022FA80(s32 player);            // 2 units. -> fn_8024C458 (byte 0xD4C); else false
 bool fn_80230188(s32 player);            // 56 units. -> fn_802413E8 (byte 0x454); else false
 
-// Per-player queries tested with clrlwi 24 (bool) by game/tu_8012EA00.cpp
+// Per-player queries tested with clrlwi 24 (bool) by game/act_room_warp_for_l72_8012EA00.cpp
 // (RoomWarpForL72_8049E8F8::playersInside); owner tu_8022AD64.
 bool fn_8023EA28(s32 player);
 bool fn_8023561C(s32 player);
@@ -1875,9 +1875,9 @@ s32 fn_8023B358(s32 player);
 // 2 units (act_zora_lotus, act_seesaw_lift; they build the vector in the argument slot).
 // -> fn_80242624(pos); false without the player.
 bool fn_802314D8(s32 player, JGeometry::TVec3f pos);
-// 2 units (tu_800F46C0, act_block). fn_8024FF9C(arg) on every present player.
+// 2 units (act_boulder_800F46C0, act_block). fn_8024FF9C(arg) on every present player.
 void fn_80238D50(s32 arg);
-// 1 unit (tu_800FF060). Sets the manager's flag 0x6C, then fn_8026FC8C on every present player.
+// 1 unit (act_hammer_shop_minigame_800FF060). Sets the manager's flag 0x6C, then fn_8026FC8C on every present player.
 void fn_8022B278();
 // 1 unit (act_horse_race_man). Sets the manager's flag 0x71, then fn_8024D98C and fn_80248DD8 on every present player.
 void fn_8022B064();

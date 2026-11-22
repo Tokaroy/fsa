@@ -1,5 +1,5 @@
 // A full-screen picture, "kk_black.bti" from main2D.arc (GameState_804B0FE0
-// field_0x20): a black fade. tu_80134C04 creates the one instance with
+// field_0x20): a black fade. game_root_80134C04 creates the one instance with
 // __nw__(0x1C, heap, 0) (0x801393E4) and the constructor fn_802ACBE8, which
 // stores it in lbl_8053ACA0 (in tu_8022AD64's .sbss). Vtable 0x804A8390:
 // only the destructor.

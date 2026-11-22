@@ -9,7 +9,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "game/Message.h"
 #include "game/Player.h"
-#include "game/tu_80127E20.h"
+#include "game/zora_escort_goal_list_80127E20.h"
 
 // The escort's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
 static const s16 lbl_80464F10[10] = {2, 10, 1, 7, 3, 10, 1, 7, -1, -1};

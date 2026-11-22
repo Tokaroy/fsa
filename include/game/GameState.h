@@ -52,7 +52,7 @@ public:
             /* 0x02 */ u16 magic1; // 0xDC96 when valid
             // [0]: 0xA7 once the game has booted since power-on; [1]: 0xA5
             // starts with the game mode screen (mode 2) instead (GameRoot's
-            // resetGameState_80138C9C, tu_80134C04).
+            // resetGameState_80138C9C, game_root_80134C04).
             /* 0x04 */ u8 field_0x4[0x09 - 0x04];
             /* 0x09 */ u8 field_0x9; // fn_802B1DCC tests it
             /* 0x0A */ u8 field_0xa;
@@ -138,7 +138,7 @@ public:
     /* 0x0E8 */ s32 field_0xe8[4];
     /* 0x0F8 */ s32 field_0xf8[4];
     /* 0x108 */ s32 field_0x108[4];
-    // The selected stage: createModeScreen_80135020 (tu_80134C04) copies 0x118 / 0x11C
+    // The selected stage: createModeScreen_80135020 (game_root_80134C04) copies 0x118 / 0x11C
     // (gGameRoot_8053AAF8->field_0x7f set) or 0x128 / 0x12C (clear) into
     // GameView_804A9950's mSolidHeap_0x4 / field_0x8, the pair that picks the
     // stage's map files. 96 and 94 units read 0x118 / 0x11C.
@@ -211,7 +211,7 @@ public:
     /* 0x248 */ u8 field_0x248; // tu_8039003C's and tu_803A85E4's constructors set it to 1 after fn_80458408
     /* 0x249 */ u8 field_0x249[1];
     /* 0x24A */ u8 field_0x24a; // player bits: counter falling (BattleHud_804B146C::fn_804253E0)
-    // Cleared by GameRootSub04_801F856C's destructor (fn_8013A27C, game/tu_80139BE8.cpp) when set.
+    // Cleared by GameRootSub04_801F856C's destructor (fn_8013A27C, game/game_root_sub_04_80139BE8.cpp) when set.
     /* 0x24B */ u8 field_0x24b;
     /* 0x24C */ u8 field_0x24c;
     /* 0x24D */ u8 field_0x24d; // set by fn_8019CEE8 (tu_80197070)
@@ -220,7 +220,7 @@ public:
     /* 0x250 */ u8 field_0x250;
     /* 0x251 */ u8 field_0x251; // main counts it up from 1 to 0x5B, one per frame
     /* 0x252 */ u8 field_0x252;
-    /* 0x253 */ u8 field_0x253; // stored 0 by fn_8013A1A4 (game/tu_80139BE8.cpp)
+    /* 0x253 */ u8 field_0x253; // stored 0 by fn_8013A1A4 (game/game_root_sub_04_80139BE8.cpp)
     /* 0x254 */ u8 field_0x254[0x258 - 0x254];
 
     // Inline readers (AdventureHud_804B13D4::fn_8041E8B4 loads each before the call it is compared with).

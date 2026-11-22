@@ -3,7 +3,7 @@
 Baseline (matching bd727044): 9112 / 11557 functions. Leverage task: write the unwritten functions
 that own a unit's first .sdata2 literals so the reloc-name-only functions after them flip.
 
-## tu_801213EC (EscortBase_8049E0C8)
+## escort_base_801213EC (EscortBase_8049E0C8)
 - fn_80121438 (circle push, 'CIRC'): 99.76 %, reloc-name only.
 - fn_801217EC (life meters): 99.69 %, regalloc-only (+ reloc-name); with dead-stripped plain helpers
   respawnLifeMeters / spawnLifeMeter (proven by the redundant field_0x332 / index tests inlined into it).

@@ -6,11 +6,11 @@
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/tu_80212AC0.h"
-#include "game/tu_80182914.h"
+#include "game/act_leever_80182914.h"
 #include "game/act/tu_80183544.h"
 
 // Auto-inlining is off for the whole file (docs/INLINING.md, pragma rule 2): the
-// original inlines no same-unit plain function (init calls getShadowColor_8018330C of tu_80182914 out of line).
+// original inlines no same-unit plain function (init calls getShadowColor_8018330C of act_leever_80182914 out of line).
 #pragma auto_inline off
 
 // The emitter's colour comes from field_0x238 while view layer 0x13 is flagged.
@@ -36,7 +36,7 @@ static inline void followHeld(Geldman_804A1790* self) {
     self->sweepMapBox_801F2618(NULL, false);
 }
 
-// Structure after tu_80182914.cpp (Leever_804A1718::init), a sibling actor.
+// Structure after act_leever_80182914.cpp (Leever_804A1718::init), a sibling actor.
 void Geldman_804A1790::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);

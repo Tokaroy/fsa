@@ -13,7 +13,7 @@
 #include "game/cls_804B1A38.h"
 #include <dolphin/os.h>
 
-// game/tu_80134C04.cpp: the C3ButtonReset callback.
+// game/game_root_80134C04.cpp: the C3ButtonReset callback.
 void fn_80139994(int port, void* arg);
 // game/tu_803006E8.cpp: starts the GBA client threads.
 void startGbaClients_803007D0();

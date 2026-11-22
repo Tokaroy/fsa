@@ -4,8 +4,8 @@
 #include "game/GameGlobals.h"
 
 // The mode test on gGameRoot_8053AAF8 (GameRoot_8049EF20) fields 0x7F and 0x4C,
-// inlined in 52 functions of 8 units (tu_8013AAD4, tu_8013C5C8, tu_8016A2B4,
-// tu_801902C0, tu_802F5040, tu_8037DF68, tu_80390818, tu_80134C04). Each set
+// inlined in 52 functions of 8 units (tu_8013AAD4, effect_system_8013C5C8, game_root_sub_24_8016A2B4,
+// tu_801902C0, tu_802F5040, tu_8037DF68, tu_80390818, game_root_80134C04). Each set
 // is compared value by value into a byte (li 0, cmpwi/beq in this order,
 // li 1), turned into a bool, and the caller tests that bool again (clrlwi.).
 // What the modes mean is not known yet; the names only give the values.

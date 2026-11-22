@@ -17,7 +17,7 @@
 static const u16 lbl_8053FB90[4] = {0x0413, 0x0414, 0x0415, 0x0000};
 static const u16 lbl_8053FB98[4] = {0x0418, 0x0419, 0x041A, 0x0000};
 
-// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in tu_8013C5C8.cpp).
+// The depth bias setEmitterPos_8013CB44 and spawnEmitter_8013CC50 also apply (depthPos in effect_system_8013C5C8.cpp).
 static inline f32 depthLift(const JGeometry::TVec3f* pos) {
     s32 height = 0;
     s32 depth = 1;

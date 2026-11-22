@@ -1,7 +1,7 @@
 #ifndef GAME_EFFECT_H
 #define GAME_EFFECT_H
 
-// The particle-effect system of game/tu_8013C5C8.cpp: one instance,
+// The particle-effect system of game/effect_system_8013C5C8.cpp: one instance,
 // allocated with __nw__(0x411C, heap, 0) and built by its constructor
 // fn_8013F3E4 in game/tu_8013AAD4.cpp (0x8013C29C), stored at
 // gGameRoot2_8053AB10->0x28; reach it with getEffectSystem_8013C824(). The constructor creates
@@ -109,7 +109,7 @@ public:
 }; // Size: 0x411C
 
 // Effect callbacks other units embed. Vtable 0x8049F140 derives from
-// JPAEmitterCallBack (0x10 bytes), cls_8049F140 in game/tu_8013C5C8.cpp:
+// JPAEmitterCallBack (0x10 bytes), cls_8049F140 in game/effect_system_8013C5C8.cpp:
 // destructor and execute (every 8 frames, while the stage allows it, spawns a 'PEFF'
 // actor at player field_0x4's position; field_0x8 0 or 1 picks the spawn
 // parameter, field_0xc counts the frames). tu_8023FBF0 holds two at 0x1398

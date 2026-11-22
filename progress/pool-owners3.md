@@ -2,7 +2,7 @@
 
 Base matching fceaffb8: 9133 / 11557. After: 9141 (+8), zero drops by address (no function's % falls);
 SHA-1 OK, gate --all-units / --base matching ok, gen_game --check ok, order_check: none of this branch's
-units (tu_80158624 was out of order and is fixed).
+units (shadow_circle_80158624 was out of order and is fixed).
 
 ## act_icicle (2 -> 5 of 8)
 - fall(): the dead-stripped step update's state 1 inlines (`t += 0.1; y = spawn.y + 0.5 * 9.8 t^2`), a plain
@@ -15,7 +15,7 @@ units (tu_80158624 was out of order and is fixed).
   does not inline (update 17 %). Where the original drew the helpers' edges is not proven: these are the
   case bodies that hold the literals. Reviewer call.
 
-## tu_80158624 (5 -> 7 of 10)
+## shadow_circle_80158624 (5 -> 7 of 10)
 - fn_80158624 written: the searchlight beam (ShadowCircle member; callers act_searchlight, tu_8018A8D8),
   96.86 % missing/extra (one shared `li` zero; registers, a few load orders, stack slots, the matrix's
   zero-store order). The two rim loops are one static inline drawRing (two identical inlined copies).
@@ -31,7 +31,7 @@ units (tu_80158624 was out of order and is fixed).
   update's literals; would need several single-copy helpers (case bodies of fn_8010C294 / update). Not proven.
 - act_sword_soldier: fn_8014FD5C only adds 0.0f / 1.0f; the 4 reloc-name functions sit behind
   fn_80150284 (3276 instr, unwritten). Not a lever.
-- tu_801213EC: the leading 8.0f still has no owner (spawnLifeMeter's double comes after fn_80121438's run).
+- escort_base_801213EC: the leading 8.0f still has no owner (spawnLifeMeter's double comes after fn_80121438's run).
 - tu_80118384: 1.0f at 0x8 could be the 0x3EC four-emitter block (two identical copies, startFade_80119998 case 0
   and fn_80119628 case 2) as a plain helper between fn_80118E20 and fn_801194C4, but 0.05f needs
   fn_80118E20 first (static fade object + TVector erase; JGadget vector template).

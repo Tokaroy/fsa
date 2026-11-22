@@ -111,7 +111,7 @@ static inline bool seedBump(SlingshotSeed_804AB3A8* seed) {
     return false;
 }
 
-// The hit effect at pos (also inlined in tu_8017A44C.cpp): emitter 0x339 on low layers, else HTMK.
+// The hit effect at pos (also inlined in act_unknown_swbm_8017A44C.cpp): emitter 0x339 on low layers, else HTMK.
 static inline void spawnHitEffect(s32 layer, const JGeometry::TVec3f* pos) {
     if (layer < 8) {
         spawnEmitter_8013CC50(layer, pos, 0x339, 0, 1, NULL, NULL, true, 1.0f);

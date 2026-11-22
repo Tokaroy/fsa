@@ -9,10 +9,10 @@
 #include "game/ActorBase.h"
 
 // Owned by other units (not written yet). fn_80128C58 has C++ linkage
-// (fn_80128C58__Fl; game/act/tu_801286C0.h declares it the same way).
-// fn_8013A884 (game/tu_80139BE8.cpp) copies the four bytes at color into the
+// (fn_80128C58__Fl; game/act/act_opening_narration_801286C0.h declares it the same way).
+// fn_8013A884 (game/game_root_sub_04_80139BE8.cpp) copies the four bytes at color into the
 // colour of the object at gGameRoot2_8053AB10->0x2C; fn_801B7550 (game/tu_801B6C50.cpp)
-// returns that object's byte at 0xC. getShadowColor_8018330C is in game/tu_80182914.h.
+// returns that object's byte at 0xC. getShadowColor_8018330C is in game/act_leever_80182914.h.
 void fn_80128C58(s32 value);
 extern "C" {
 void fn_8013A884(u32* color);

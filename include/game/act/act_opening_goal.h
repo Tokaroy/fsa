@@ -5,7 +5,7 @@
 // named after its vtable, 0x8049DB30 (docs/names/actors.tsv). Spawned by
 // spawnActor_801F9484 through its constructor (0x8011B0DC).
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 class GoalOpening_8049DB30 : public DemoActorBase_8049D140 {

@@ -7,7 +7,7 @@ class CollectScreen_804B1D58;
 class PauseScreen_804B1DA8;
 
 // Vtable 0x804AE9B0 (one slot, the destructor fn_8037B000), 0x10 bytes,
-// defined in game/tu_8037ACC4.cpp. tu_80134C04 allocates it with
+// defined in game/tu_8037ACC4.cpp. game_root_80134C04 allocates it with
 // __nw__(0x10) and constructs it with fn_8037B0B8, which stores it in
 // lbl_8053AD70. It holds one of two objects, picked by
 // gGameRoot_8053AAF8->field_0x7f; the member functions below forward to it
@@ -41,7 +41,7 @@ extern cls_804AE9B0* lbl_8053AD70;
 
 // 0x8037AE60 (tu_8037ACC4.cpp): 9 without lbl_8053AD70, else the 0x184 word
 // of the object at lbl_8053AF40 (0x7f set) or the 0x58 word of the one at
-// lbl_8053AF48. Called by tu_80134C04.
+// lbl_8053AF48. Called by game_root_80134C04.
 s32 fn_8037AE60();
 
 #endif

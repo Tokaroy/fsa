@@ -17,7 +17,7 @@ gate ok.
     JUTTexture::storeTIMG(img, 0), returns the old ResTIMG; position after getResource as in tp.
   - fn_800F38C4 -> getResUserWork__18JPAResourceManagerCFUs: inlined getResource (usrIdx at
     0x3C), then pDyn->mData->mResUserWork (0x2C -> 0x0 -> 0xC); last function as in tp.
-  Both are called from game unit tu_8013C5C8.
+  Both are called from game unit effect_system_8013C5C8.
 
 ## SHARED-EDITS
 None.

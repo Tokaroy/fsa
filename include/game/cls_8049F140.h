@@ -4,7 +4,7 @@
 #include "types.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Vtable 0x8049F140: the 'PEFF' spawner (game/tu_8013C5C8.cpp). execute,
+// Vtable 0x8049F140: the 'PEFF' spawner (game/effect_system_8013C5C8.cpp). execute,
 // every 8 frames while the stage allows it, spawns a 'PEFF' actor at player
 // field_0x4's position; field_0x8 (0 or 1) picks the spawn parameter,
 // field_0xc counts the frames. Player_804A6F38 holds two (0x1398, 0x13A8);

@@ -3,7 +3,7 @@
 
 // Code: game/act_vaati_demo.cpp.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/cls_801EB8CC.h"
 #include "game/SpriteAnim.h"
 

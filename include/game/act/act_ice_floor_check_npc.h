@@ -12,7 +12,7 @@ public:
     /* 0x08 */ virtual ~IceFloorCheckNPC_8049E950();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    // Non-virtual, called by game/tu_8012F3E4.cpp: true once mState is 1.
+    // Non-virtual, called by game/ice_floor_check_list_8012F3E4.cpp: true once mState is 1.
     bool fn_8012F008();
 
     /* 0x230 */ s32 mState;   // 0 until update() sees the floor tile change, then 1

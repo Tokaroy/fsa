@@ -2,7 +2,7 @@
 #define GAME_TU_8012FF9C_H
 
 // Exports of game/tu_8012FF9C.cpp. Called by KeepsEscortedGirlFromGoing_8049EA00::init
-// (game/tu_8012FBCC.cpp).
+// (game/act_keeps_escorted_girl_from_going_8012FBCC.cpp).
 
 #include "dolphin/types.h"
 

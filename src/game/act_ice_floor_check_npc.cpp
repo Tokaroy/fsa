@@ -1,13 +1,13 @@
 // The IFCK actor ("Ice-floor check NPC", docs/names/actors.tsv, medium
 // confidence). init() records the collision tile under it (getRawTile_80226850) and
-// registers its serial in the list of tu_8012F3E4; update() watches for the
+// registers its serial in the list of ice_floor_check_list_8012F3E4; update() watches for the
 // tile to change.
 
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
 #include "game/Map.h"
 #include "game/act/act_ice_floor_check_npc.h"
-#include "game/tu_8012F3E4.h"
+#include "game/ice_floor_check_list_8012F3E4.h"
 
 IceFloorCheckNPC_8049E950::IceFloorCheckNPC_8049E950() : mState(0), mTile(0) {}
 

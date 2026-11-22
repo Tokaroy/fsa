@@ -85,7 +85,7 @@ public:
     // gGameRoot2_8053AB10 again). Sets mRequestedBox_0x180 to the box of half-size
     // size * k around center, with y scaled by the video frame's aspect
     // (JUTVideo's height / width), and mUseRequestedBox_0x17e to 1. Reads center 0x0
-    // and 0x4 only (tu_8011CEC8 passes a stack pair, 0x8011D008).
+    // and 0x4 only (act_after_goal_opening_8011CEC8 passes a stack pair, 0x8011D008).
     void requestBox_8030C7C4(const JGeometry::TVec2f* center, f32 size);
     // 1 unit (GameView fn_802D9CB0). Clears mInTransition_0x1e8, zeroes each of the
     // map's bytes 0x2360-0x2363 whose byte 0x235C-0x235F is set, clears the
@@ -134,7 +134,7 @@ public:
     /* 0x0A4 */ Mtx44 mLoadedProjMtx_0xa4; // GXSetProjection (0x8030DEFC)
     // The particle draw info: a copy of the view (PSMTXCopy at 0x8030CC24)
     // and a C_MTXLightOrtho (0x8030CC4C); identity after the constructor
-    // (JPADrawInfo's default constructor). tu_8013C5C8 copies it whole
+    // (JPADrawInfo's default constructor). effect_system_8013C5C8 copies it whole
     // (0x8013D718-0x8013D7CC) and passes it to JPAEmitterManager::draw.
     /* 0x0E4 */ JPADrawInfo mDrawInfo_0xe4;
     // The screen rectangle (x0, y0, x1, y1) as unsigned ints: written by tu_802F5040
@@ -200,7 +200,7 @@ public:
     /* 0x840 */ u8 mBlendBoxOn_0x840;
     /* 0x844 */ JGeometry::TBox2f mBlendBox_0x844;
     /* 0x854 */ f32 mBlendWeight_0x854;
-    /* 0x858 */ f32 mZoom_0x858; // 4 units divide by it (tu_8016A2B4 0x8016AE94)
+    /* 0x858 */ f32 mZoom_0x858; // 4 units divide by it (game_root_sub_24_8016A2B4 0x8016AE94)
 }; // Size: 0x85C
 
 #endif

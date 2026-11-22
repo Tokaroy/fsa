@@ -76,7 +76,7 @@ docs/RULES_CARD.md ("Source order and inlining").
 - More over-inlined callees than the doc found: fn_801BE86C (act_beamos),
   fn_801158B8 (act_vaati_demo, now also at its own address: the unit is in
   address order), fn_8013C394 (tu_8013AAD4), fn_8037AA7C (tu_80379F84),
-  fn_80139958 (tu_80134C04, createModeScreen_80135020's small drop). Each has a region.
+  fn_80139958 (game_root_80134C04, createModeScreen_80135020's small drop). Each has a region.
 - tu_8045A640's namespace block was reversed by hand (reverse_funcs doesn't
   reorder inside namespace / extern "C" blocks).
 
@@ -151,10 +151,10 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
 | tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
 | tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
-| tu_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
-| tu_8016A2B4, tu_802F5040, tu_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
-| tu_8021A570, tu_802F5040, tu_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), tu_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
-| tu_80222CC4, tu_80221B44, act_shadow_link_bow/jump, tu_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
+| act_crystal_ball_generator_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
+| game_root_sub_24_8016A2B4, tu_802F5040, tu_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
+| tu_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), tu_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
+| tu_80222CC4, tu_80221B44, act_shadow_link_bow/jump, act_stone_arrghus_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
 | tu_801D2C60 | weak dtor first in .text | D | | progress |
 | act_vaati_demo | (matched) | E | "defined after draw(), above it MWCC inlines it" | src comment |
 
@@ -163,7 +163,7 @@ unit, `samecalls` below): out-of-line calls to a same-unit callee of ≤ 32
 instructions are rare in the EARLIER direction (61 caller/callee pairs). Most
 small earlier functions are inlined, so auto-inlining is the norm. In the LATER
 direction there are 589 such pairs. Many of those are weak inline copies, and some
-are real "never auto-inline" callees (tu_801CDC8C, tu_801286C0).
+are real "never auto-inline" callees (tu_801CDC8C, act_opening_narration_801286C0).
 
 ## Experiments (GC/2.6, game flags)
 
@@ -264,7 +264,7 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 | base (`-inline auto`, address order) | 3980 | | |
 | `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, tu_8023FBF0, tu_8026FC20, tu_8037DF68, act_stop_npc dtor, …) |
 | `-inline auto,deferred` | 3970 | 9 | 19 (over-inlining in 11 units, list below) |
-| `auto,deferred` + `#pragma auto_inline off` at file top of tu_801CDC8C, act_shadow_link_bow, tu_801EDBA4, tu_8021AF28, tu_8043A0E8, tu_80457DFC, tu_801286C0, tu_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
+| `auto,deferred` + `#pragma auto_inline off` at file top of tu_801CDC8C, act_shadow_link_bow, tu_801EDBA4, tu_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
 | same + `auto_inline off` region around tu_802684A4's fn_8026EB1C only | fn_8026E68C back to 100 % (unit 13 → 14 / 25) | | |
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
@@ -286,7 +286,7 @@ exact); tu_802EF76C init.
 Sections, deferred model vs base (game units):
 
 - `.data`: 13 units better, 9 of them now 100 % (act_force_gem_rain,
-  act_link_ending, act_princess_zelda_ending, tu_80182914, tu_801EE24C,
+  act_link_ending, act_princess_zelda_ending, act_leever_80182914, tu_801EE24C,
   tu_802EF76C, tu_803DAC3C, tu_80414F6C, tu_804432DC). These are the vtable /
   jump-table order cases.
 - `.rodata`: act_deadrock 46 → 100 %.
@@ -349,7 +349,7 @@ original wrote those callees in a different way, are still needed in a few place
    direction), put `#pragma auto_inline off` before that callee's definition and
    `#pragma auto_inline reset` after it, with a one-line comment naming the
    caller(s) as evidence. Whole-file `off` when every function of the unit is
-   called that way (tu_801CDC8C, tu_801286C0, …). Caller-side `dont_inline` /
+   called that way (tu_801CDC8C, act_opening_narration_801286C0, …). Caller-side `dont_inline` /
    `inline_max_*` pragmas do nothing under deferred; don't use them.
 5. **Big callers**: if a big function (≳ 1 KB) calls small callees out of line and
    header inlines get weak copies right after it, that is the default

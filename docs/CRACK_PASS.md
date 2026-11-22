@@ -72,8 +72,8 @@ its vfunc_0x90 is at 100 %.
 Not tricks: patterns no honest form explains yet. Revisit after the
 surrounding code exists, since finishing the rest of a unit may show the cause.
 
-- **Literals pooled before their first visible use.** PARTLY SOLVED 2026-11-05 (tu_8016A2B4): file-scope static const aggregates, and helpers defined early whose out-of-line copy was dead-stripped (see RULES_CARD "Known game-code shapes"); revisit the other units below with that in mind. tu_8016A2B4 (ten GXColor
-  objects then 0.125/1/0.5/0 ahead of drawParallaxModel_8016A7DC's literals), tu_801213EC (8.0f
+- **Literals pooled before their first visible use.** PARTLY SOLVED 2026-11-05 (game_root_sub_24_8016A2B4): file-scope static const aggregates, and helpers defined early whose out-of-line copy was dead-stripped (see RULES_CARD "Known game-code shapes"); revisit the other units below with that in mind. game_root_sub_24_8016A2B4 (ten GXColor
+  objects then 0.125/1/0.5/0 ahead of drawParallaxModel_8016A7DC's literals), escort_base_801213EC (8.0f
   before 0.0f, 10430.378f before -24f), tu_803BC6F0 (0, -200, 200 first, used
   only by later functions) and tu_8027E5BC (1.5f, 3.0f). Literals are created per
   function in compile order, and an inline helper's aggregate initializers when
@@ -82,7 +82,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   checkpoint has the pool layout.
 - **Inlining of later-defined functions.** ANSWERED 2026-11-05: the original was
   compiled with deferred inlining, now the project mode (docs/INLINING.md). The units
-  listed here (tu_803099FC, tu_8043A0E8, tu_80256C74, tu_8016A2B4, tu_802F5040,
+  listed here (tu_803099FC, tu_8043A0E8, tu_80256C74, game_root_sub_24_8016A2B4, tu_802F5040,
   tu_803944C8) can write the callee as a plain function.
 - **Weak destructor emitted first.** ANSWERED 2026-11-05 (deferred inlining):
   tu_8045A640 now emits the weak __dt__Q29GameAudio16CustomSoundTableFv first;
@@ -235,20 +235,20 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_zora_escort | `ZoraEscort_8049DF78::stepToPlayer` | 24 | (none alone; needed jointly with the unit's other helpers) |
 | act_zora_escort_goal | `ZoraEscortGoal_8049E424::spawnEmitters` | 6 | `setState_80126A4C__23ZoraEscortGoal_8049E424Fl`, `draw__23ZoraEscortGoal_8049E424Fv`, `init__23ZoraEscortGoal_8049E424Fv`, `__ct__23ZoraEscortGoal_8049E424Fv` |
 | act_zora_escort_goal | `ZoraEscortGoal_8049E424::walkRail` | 25 | `setState_80126A4C__23ZoraEscortGoal_8049E424Fl`, `init__23ZoraEscortGoal_8049E424Fv` |
-| tu_8010089C | `WhackAMoleShop_8049C8EC::showTimer` | 10 | `draw__23WhackAMoleShop_8049C8ECFv`, `init__23WhackAMoleShop_8049C8ECFv` |
-| tu_80113788 | `CrystalCutscene_8049D83C::positionPlayers` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
-| tu_80113788 | `CrystalCutscene_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__24CrystalCutscene_8049D83CFv` |
-| tu_80113788 | `CrystalCutscene_8049D83C::spawnEmitters` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
-| tu_80113788 | `CrystalCutscene_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
-| tu_80113788 | `CrystalCutscene_8049D83C::updateCameraFocus` | 44 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| act_whack_a_mole_shop_8010089C | `WhackAMoleShop_8049C8EC::showTimer` | 10 | `draw__23WhackAMoleShop_8049C8ECFv`, `init__23WhackAMoleShop_8049C8ECFv` |
+| act_crystal_cutscene_80113788 | `CrystalCutscene_8049D83C::positionPlayers` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| act_crystal_cutscene_80113788 | `CrystalCutscene_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__24CrystalCutscene_8049D83CFv` |
+| act_crystal_cutscene_80113788 | `CrystalCutscene_8049D83C::spawnEmitters` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| act_crystal_cutscene_80113788 | `CrystalCutscene_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| act_crystal_cutscene_80113788 | `CrystalCutscene_8049D83C::updateCameraFocus` | 44 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
 | tu_80118384 | `spawnFadeEmitters` | 7 | `fn_801194C4__12cls_80119E5CFv`, `fn_80119628__12cls_80119E5CFv`, `startFade_80119998__12cls_80119E5CFlllllll` |
-| tu_8011CEC8 | `AfterGoalOpening_8049DD68::setOverlayRect` | 21 | `update__25AfterGoalOpening_8049DD68Fv` |
-| tu_8011CEC8 | `AfterGoalOpening_8049DD68::startScroll` | 9 | `update__25AfterGoalOpening_8049DD68Fv`, `init__25AfterGoalOpening_8049DD68Fv` |
-| tu_801213EC | `EscortBase_8049E0C8::respawnLifeMeters` | 9 | (none alone; needed jointly with the unit's other helpers) |
-| tu_801213EC | `EscortBase_8049E0C8::spawnLifeMeter` | 14 | (none alone; needed jointly with the unit's other helpers) |
-| tu_80125B58 | `EscortedWomanArrivalPoint_8049E350::startSignAnim` | 12 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `fn_80125C58__34EscortedWomanArrivalPoint_8049E350Fb`, `draw__34EscortedWomanArrivalPoint_8049E350Fv`, `init__34EscortedWomanArrivalPoint_8049E350Fv` |
-| tu_80125B58 | `EscortedWomanArrivalPoint_8049E350::talkTo` | 5 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `draw__34EscortedWomanArrivalPoint_8049E350Fv` |
-| tu_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
+| act_after_goal_opening_8011CEC8 | `AfterGoalOpening_8049DD68::setOverlayRect` | 21 | `update__25AfterGoalOpening_8049DD68Fv` |
+| act_after_goal_opening_8011CEC8 | `AfterGoalOpening_8049DD68::startScroll` | 9 | `update__25AfterGoalOpening_8049DD68Fv`, `init__25AfterGoalOpening_8049DD68Fv` |
+| escort_base_801213EC | `EscortBase_8049E0C8::respawnLifeMeters` | 9 | (none alone; needed jointly with the unit's other helpers) |
+| escort_base_801213EC | `EscortBase_8049E0C8::spawnLifeMeter` | 14 | (none alone; needed jointly with the unit's other helpers) |
+| act_escorted_woman_arrival_point_80125B58 | `EscortedWomanArrivalPoint_8049E350::startSignAnim` | 12 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `fn_80125C58__34EscortedWomanArrivalPoint_8049E350Fb`, `draw__34EscortedWomanArrivalPoint_8049E350Fv`, `init__34EscortedWomanArrivalPoint_8049E350Fv` |
+| act_escorted_woman_arrival_point_80125B58 | `EscortedWomanArrivalPoint_8049E350::talkTo` | 5 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `draw__34EscortedWomanArrivalPoint_8049E350Fv` |
+| act_navi_after_crystal_cutscene_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
 | tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
 | tu_8018EB94 | `BigMoldormTail_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
 | tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |

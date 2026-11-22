@@ -14,7 +14,7 @@
 // which the BGWC actor ("BG-rewrite check switch", docs/names/actors.tsv,
 // game/act_bg_rewrite_check_switch.cpp) polls; the per-screen actor masks
 // are updated in the same breath (fn_802D4C10 / setScreenMaskBit_802D7D00). fn_802A3A0C,
-// called once a frame by tu_80139BE8, animates tiles with three (delay,
+// called once a frame by game_root_sub_04_80139BE8, animates tiles with three (delay,
 // frame) counters.
 //
 // The variable gBgRewrite_8053AC98 sits in the .sbss that dtk gives
@@ -39,7 +39,7 @@
 
 class ActorSoundObj_804578F4; // game/ActorManager.h
 
-// Vtable 0x804A7C98: one slot, the destructor. tu_80139BE8 allocates it with
+// Vtable 0x804A7C98: one slot, the destructor. game_root_sub_04_80139BE8 allocates it with
 // __nw__(0x28, heap, 0) (0x8013A60C) and stores it at offset 0x10 of the
 // object gGameRoot_8053AAF8->field_0x4 points to.
 class BgRewrite_804A7C98 {
@@ -102,12 +102,12 @@ public:
     // the bit. `player` as above (0 at 41 sites, 1 at 3, act_gravestone's
     // 0x238 player index).
     void fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
-    // 1 unit (tu_80139BE8, once a frame). Steps the tile animations: every
+    // 1 unit (game_root_sub_04_80139BE8, once a frame). Steps the tile animations: every
     // 10 calls field_0x8 wraps and field_0xc advances by 2 (mod 0x10) and
     // the 'SCH ' resources are redrawn with loadTileImages_802FA160; field_0x18 /
     // field_0x1c likewise (mod 8).
     void fn_802A3A0C();
-    // 1 unit (tu_80139BE8). Resets the counters: 0x8/0x10/0x18 = 10,
+    // 1 unit (game_root_sub_04_80139BE8). Resets the counters: 0x8/0x10/0x18 = 10,
     // 0xc/0x14/0x1c = 0.
     void fn_802A3D80();
     // 10 units. Spreads fire over burnable tiles (see above). Callers pass

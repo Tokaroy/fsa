@@ -8,7 +8,7 @@
 #include "game/tu_802EF76C.h"
 #include "game/ActorManager.h"
 #include "game/Effect.h"
-#include "game/tu_80182914.h"
+#include "game/act_leever_80182914.h"
 #include "game/Camera.h"
 #include "game/EmitterDelete.h"
 #include "JSystem/JParticle/JPAEmitter.h"

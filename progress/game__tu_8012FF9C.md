@@ -13,5 +13,5 @@ Not generator-owned (no gen_game.tsv rows).
 
 ## SHARED-EDITS
 - GameGlobals.h: removed the cls_8012FFF4 / fn_8012FF9C / fn_801300B4 extern "C" block; now in new include/game/tu_8012FF9C.h.
-- src/game/tu_8012FBCC.cpp: call becomes fn_8012FF9C()->fn_801300B4(mSerial) (try.py 4/4 still).
+- src/game/act_keeps_escorted_girl_from_going_8012FBCC.cpp: call becomes fn_8012FF9C()->fn_801300B4(mSerial) (try.py 4/4 still).
 - symbols.txt: renames to mangled names; bss/sbss split into @406/@440-448/lbl chunks, init$407, lbl_8053AAC4$405.

@@ -223,7 +223,7 @@ OBLF	OBJリフト	OBJ lift	object	mt (enemyparam.csv JP label); stages: boss008,
 OCFR	ファイア(マネージャー)	Fire (manager)	system	JP ファイア(マネージャー); mt; stages: boss000, boss022, 4-1 The Field	med	act_fire_manager	
 OFFS	ＯＦＦスィッチ	OFF switch	system	mt (enemyparam.csv JP label); stages: boss001, boss007, 1-1 Lake Hylia (+24)	med	act_off_switch	
 OGST	護衛女の子を行かせない	Keeps escorted girl from going	system	mt (enemyparam.csv JP label); stages: 4-1 The Field	med	act_keeps_escorted_girl_from_going	
-OIWA		Boulder	enemy	no JP name; shares TU tu_800F46C0 with IWAG; ID O-IWA (大岩, big rock?)	low	act_boulder	
+OIWA		Boulder	enemy	no JP name; shares TU act_boulder_800F46C0 with IWAG; ID O-IWA (大岩, big rock?)	low	act_boulder	
 OKAM	おカメさん	Okame-san	npc	JP おカメさん; mt	low	act_okame	
 OKTA	オクタロック	Octorok	enemy	zw:https://zeldawiki.wiki/wiki/Octorok (JP オクタロック); msg#1137 (Octoroks); stages: boss007, boss008, 1-1 Lake Hylia (+3)	high	act_octorok	
 OKTM	オクタロックの玉	Octorok rock	effect	JP オクタロックの玉 (Octorok projectile); mt	med	act_octorok_rock	
@@ -377,7 +377,7 @@ WPCN	ワープ大砲	Warp cannon	object	JP ワープ大砲; msg#556	med	act_warp
 WPPA	ワープ柱でワープ後の処理	Post-warp-pillar handling	system	mt (enemyparam.csv JP label); stages: 7-3 Tower of Winds, 8-2 Cloud Citadel	med	act_post_warp_pillar_handling	
 WPPR	ワープ柱	Warp pillar	object	mt (enemyparam.csv JP label); stages: 7-3 Tower of Winds, 8-2 Cloud Citadel	med	act_warp_pillar	
 WPWL	ワープ入り口壁	Warp entrance wall	object	mt (enemyparam.csv JP label); stages: 1-1 Lake Hylia, 3-2 The Mountain Path	med	act_warp_entrance_wall	
-WRTC		Stone Arrghus child (puff)	boss	shares TU tu_800F7FCC with BWRT; stage boss023 textures wart_child*	low	act_stone_arrghus_child	no JP name; inferred from shared TU + textures
+WRTC		Stone Arrghus child (puff)	boss	shares TU act_stone_arrghus_800F7FCC with BWRT; stage boss023 textures wart_child*	low	act_stone_arrghus_child	no JP name; inferred from shared TU + textures
 WTSW	Ｗａｉｔスィッチ	Wait switch	object	mt (enemyparam.csv JP label); stages: boss000, boss004, boss005 (+33)	med	act_wait_switch	
 YAJI	矢印	Arrow marker	object	msg#410 (矢印/arrows); stages: boss000, boss004, boss005 (+20)	high	act_arrow_marker	
 YASI	椰子の実	Coconut	object	mt (enemyparam.csv JP label)	med	act_coconut	

@@ -6,7 +6,7 @@
 // An ActorBase-derived actor whose vtable is lbl_804A1630 (0x54 bytes, the 21
 // base slots). Its constructor (fn_8020231C, not written yet) stores the vtable
 // and builds its members; named after the vtable, like the other unnamed ones.
-// Its destructor (game/tu_8017EF40.cpp) releases the two emitters at 0x318 and
+// Its destructor (game/act_helmaroc_king_8017EF40.cpp) releases the two emitters at 0x318 and
 // 0x31C and then runs the base destructor.
 class HelmarocKing_804A1630 : public ActorBase_804A5770 {
 public:
@@ -21,7 +21,7 @@ public:
     // position; mode 0 stores the players' positions, mode 1 steps the animation.
     void fn_80181BC8(s32 row, s32 mode);
 
-    // SHARED-EDIT: carved from field_0x230[0x64] / field_0x2f4[0x24] (game/tu_8017EF40.cpp).
+    // SHARED-EDIT: carved from field_0x230[0x64] / field_0x2f4[0x24] (game/act_helmaroc_king_8017EF40.cpp).
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ s32 field_0x238;

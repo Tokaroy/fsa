@@ -89,7 +89,7 @@ public:
     // savePrevPos() and by 18 actor units on themselves; r3 never read.
     // 83 overrides drive J3DFrameCtrl::update/checkPass. Empty here.
     /* 0x14 */ virtual void update();
-    // fn_801F5790: box vs. player screens. 3 overrides (tu_80182914,
+    // fn_801F5790: box vs. player screens. 3 overrides (act_leever_80182914,
     // tu_80183544, act_pengator), no arguments read; the update loop calls
     // it when field_0xa4 != 0 (0x801F8B94) and ignores r3.
     /* 0x18 */ virtual void checkPlayerContact_0x18();
@@ -139,7 +139,7 @@ public:
     /* 0x3C */ virtual s32 getScreenFlagBit_0x3C();
     // 0x801F470C, empty. 6 overrides, all pickups (act_force_gem,
     // act_magic_jar, act_recovery_heart, act_dropped_item,
-    // act_crystal_ball, tu_800F7FCC), no arguments read; tu_801A3C50 calls
+    // act_crystal_ball, act_stone_arrghus_800F7FCC), no arguments read; tu_801A3C50 calls
     // it on itself (0x801A4BF0, 0x801A4C34, 0x801A4CC8) and ignores r3.
     /* 0x40 */ virtual void vfunc_0x40();
     // 0x801F4708, empty. 21 overrides, no arguments read; tu_801A3C50
@@ -465,7 +465,7 @@ public:
     // 0x8019CEB4, out of line in game/tu_80197070.cpp: returns field_0xb0.
     // Its caller (0x8019AA3C, 0x8019AC40) compares the result with 0xE.
     s32 fn_8019CEB4() const;
-    // 0x8017EAF8, out of line in game/tu_8017C01C.cpp: mVel_0x3c = v (a whole
+    // 0x8017EAF8, out of line in game/act_phantom_ganon_8017C01C.cpp: mVel_0x3c = v (a whole
     // TVec3f copy, psq + stfs). Both callers in fn_8017C40C pass the actor
     // from findActorBySerial_801F666C and a stack TVec3f at 0x50(r1).
     void setVel_8017EAF8(const JGeometry::TVec3f& v);
@@ -480,7 +480,7 @@ public:
         mPrevPos = pos;
     }
     void setSpawnPos(const JGeometry::TVec3f& pos) { mSpawnPos = pos; }
-    // 0x80182660, out of line in game/tu_8017EF40.cpp: mPos = pos (a whole
+    // 0x80182660, out of line in game/act_helmaroc_king_8017EF40.cpp: mPos = pos (a whole
     // TVec3f copy, psq + stfs). Called with the actor and a stack TVec3f.
     void fn_80182660(const JGeometry::TVec3f& pos);
     JGeometry::TBox2f* getBox() { return &mBox; }
@@ -495,7 +495,7 @@ public:
     // compared with (lwz into a saved register ahead of the bl; RULES_CARD).
     s32 getField_0x4() const { return mLayer_0x4; }
     s32 getSerial() const { return mSerial; }
-    // mSpawnParam_0x90 read as a signed value (tu_80147B50 compares it with cmpwi).
+    // mSpawnParam_0x90 read as a signed value (act_big_moldorm_80147B50 compares it with cmpwi).
     s32 getField_0x90() const { return mSpawnParam_0x90; }
     // Out-of-line accessors in game/act_sword_soldier.cpp; act_ganon,
     // act_phantom_ganon_2, tu_80197070, tu_8018A8D8 (and tu_803944C8 for

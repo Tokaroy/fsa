@@ -255,7 +255,7 @@ After: `total: 8802 / 11557 functions, 1757340 / 4442032 bytes of code (39.56 %)
   (regalloc of the font pointer, string offsets +0x58, @NNN).
 - refreshFileRows_803CE4CC written: 99.02 missing/extra (1 li). Inlined helper getProgressMsg (three inlined
   copies; two counters in the original's loop: cleared count and stage; out-of-line copy dropped
-  by the linker, as tu_8016A2B4's getMapTexView). isSaveChecksumValid_803BADAC (tu_803BACF8) declared in
+  by the linker, as game_root_sub_24_8016A2B4's getMapTexView). isSaveChecksumValid_803BADAC (tu_803BACF8) declared in
   tu_803B8C74.h. field_0x115's bit is set exactly when isSaveChecksumValid_803BADAC fails, so hasSaveData was
   renamed hasBadChecksum, with setBadChecksum / clearBadChecksum (the original clrlwi's `1 << i`
   at each use).

@@ -284,7 +284,7 @@ tu_80285E58: 80285F44 0x744 96/465 (pre-tick gate; sets state, effects); 8028676
 tu_8028FBA0 (0 instrs run): 8028FC2C 0x444; 80290070 0xce8 (44 Player + 8 cls_804AA8B8); 80290FC0 0x89c (0x32, 20 effect calls); 802929FC 0x494 (0x24);
  80294374 0x54c (0x1D); 80294ADC 0x660 (0x1C enter).
 
-Callee classes used by the Player units (call counts): EffectSystem_8049F178 / JPA emitters (tu_8013C5C8) 347; ActorManager_804A5800 265;
+Callee classes used by the Player units (call counts): EffectSystem_8049F178 / JPA emitters (effect_system_8013C5C8) 347; ActorManager_804A5800 265;
 GameView_804A9950 (stage/map state, tu_802D39B8) 236; tu_8022461C tile/collision queries 152; cls_804AA8C8 (pad object, tu_803099FC) 149;
 cls_804AA8B8 (tu_80301CD0, unknown) 75; ActorBase 90; cls_804AA8D8 (per-player camera box 240x160, tu_8030AE84) 29; BgRewrite_804A7C98 27;
 AudioMgr_8045A080 (JAudio manager, tu_80457DFC) 14; TileMap_804AA858 14; Camera_804AA9E4 13. Sound: only ActorSoundObj_804578F4 (fn_80456154, in
@@ -666,7 +666,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
   (GameView fn_802D79E8), the TV effect of kind 3 aimed along the facing
   (TileMap_804AA858 startHeightGridEffect_802F601C); then 0x344 is added to mPos with gravity 0.25 (to -4)
   until the player lands (state 0).
-- **0x42** (update 8025AED0, requested by fn_8025AA8C(serial) from tu_801688AC):
+- **0x42** (update 8025AED0, requested by fn_8025AA8C(serial) from act_unknown_bome_801688AC):
   the player spins (facing every two frames) and is drawn 6 a frame across the floor
   toward actor 0x11F8, until it is gone / on another layer, 0xAFC is 1 or a side
   flag of 0xBF0 is set (anyFlag48). **0x43** (8025AB00, from act_arrow via
@@ -1651,11 +1651,11 @@ Evidence:
 - **Inlined loops start the slot offset as `mr`** (li count, mr offset), out-of-line copies
   with two `li` (fn_8022BD70 own copy vs inlined in updateScreenChange_80231DE4); a counter shared with an
   earlier loop gives the `mr` too (fn_8023F390).
-- fn_80124600 (tu_801213EC): declared in include/game/tu_801213EC.h with C++ linkage and renamed
+- fn_80124600 (escort_base_801213EC): declared in include/game/escort_base_801213EC.h with C++ linkage and renamed
   `fn_80124600__FPCQ29JGeometry8TVec2<l>`; with no escort list it asks the actor of serial
   lbl_80539F30 (3 if none), else each 'FAZR' escort, through vtable slot 0x5C.
 - SHARED-EDITS: include/game/Player.h (fn_80241B44 / fn_8022B8EC take TBox2f*),
-  include/game/tu_801213EC.h (fn_80124600), config/G4SE01/symbols.txt (3 renames),
+  include/game/escort_base_801213EC.h (fn_80124600), config/G4SE01/symbols.txt (3 renames),
   config/G4SE01/gen_game.tsv (re-pins of tu_8022AD64; gate --base matching flags the protected
   file, as for every re-pin).
 

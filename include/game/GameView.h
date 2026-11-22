@@ -3,7 +3,7 @@
 
 // The stage/screen state of game/tu_802D39B8.cpp: one instance, allocated
 // with __nw__(0x13290, heap, 0) and built by its constructor fn_802DE64C in
-// game/tu_80139BE8.cpp (0x8013A578-0x8013A594), stored at offset 0xC of the
+// game/game_root_sub_04_80139BE8.cpp (0x8013A578-0x8013A594), stored at offset 0xC of the
 // object gGameRoot_8053AAF8->0x4 points to; reach it with getGameView_802D6A9C(). 275 game
 // units use it.
 //
@@ -44,7 +44,7 @@ public:
     // constructor, __ct__Q29JGeometry8TVec2<f>Fv at 0x801546E4) and zeroes the words noted below.
     GameView_804A9950();
 
-    // Virtual table at 0x804A9950: 4 slots. tu_80139BE8 calls 0xC
+    // Virtual table at 0x804A9950: 4 slots. game_root_sub_04_80139BE8 calls 0xC
     // (0x8013A1D0), 0x10 (0x80139E2C) and 0x14 (0x80139CE8) through it; none
     // reads an argument.
     /* 0x08 */ virtual ~GameView_804A9950(); // fn_802DE604
@@ -400,7 +400,7 @@ public:
     /* 0x131DF */ u8 field_0x131df[0x131EF - 0x131DF];
     /* 0x131EF */ u8 field_0x131ef; // fn_802D752C; 2 units read it
     /* 0x131F0 */ u8 field_0x131f0; // fn_802D7440; tu_80301CD0 reads it
-    /* 0x131F1 */ u8 field_0x131f1; // read by tu_8013C5C8 (spawnEmitter_8013CC50) and tu_8022461C
+    /* 0x131F1 */ u8 field_0x131f1; // read by effect_system_8013C5C8 (spawnEmitter_8013CC50) and tu_8022461C
     /* 0x131F2 */ u8 field_0x131f2; // fn_802D6BF8; 5 units read it
     /* 0x131F3 */ u8 field_0x131f3; // fn_802D6BE0
     /* 0x131F4 */ u8 field_0x131f4; // fn_802D6BC8
@@ -421,7 +421,7 @@ public:
     /* 0x1326C */ f32 field_0x1326c[4];
     /* 0x1327C */ u8 field_0x1327c[4];
     /* 0x13280 */ JGeometry::TVec3f field_0x13280; // stored by act_shovel_old_timer
-    /* 0x1328C */ s32 field_0x1328c; // fn_802D7970; act_temple_bti_display, tu_80134C04
+    /* 0x1328C */ s32 field_0x1328c; // fn_802D7970; act_temple_bti_display, game_root_80134C04
 
     void setDigPos(JGeometry::TVec3f pos) {
         field_0x13280.x = pos.x;

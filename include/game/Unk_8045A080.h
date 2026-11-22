@@ -113,7 +113,7 @@ struct AudioMgr_8045A080 {
     // (0x1000021, 1, 0) when field_0x58 differs from 0x1000021; the body
     // compares r4 against 0x1000000+n, tests r5 with clrlwi. 24 (0x8045908C) and
     // stores r6 (a byte) at 0x8d. The third argument is a u8: GameRoot's
-    // startStageMusic_80138B7C (tu_80134C04) passes an s32 count with clrlwi 24.
+    // startStageMusic_80138B7C (game_root_80134C04) passes an s32 count with clrlwi 24.
     void startBgm_80458FF0(s32 id, bool arg1, u8 flag);
     // game/tu_80457DFC.cpp (0x8045A080): the constructor main calls on the
     // 0x90-byte object it allocates in the main heap.

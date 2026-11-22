@@ -28,6 +28,6 @@ SHARED-EDITS: GameGlobals.h (HudMgr_804B1920 fields 0xc, 0x70, 0x78, 0xde, 0xec.
 (fn_8041FC2C, fn_8041EDB0, fn_8041F720), cls_804B146C.h (fn_804263A8, fn_804257E4, fn_80425F6C), tu_80447618.h
 (fn_80447618, fn_804479A0), new cls_804B1C58.h (vtable 0x804B1C58, ctor fn_804485C4; fn_80447FAC, fn_804482EC,
 fn_80448334), new cls_804B1E1C.h (moved from tu_8045560C.cpp, unchanged; that unit still 6/7),
-src/game/tu_80139BE8.cpp (field_0x14->fn_8043EDF8()), symbols.txt renames of those.
+src/game/game_root_sub_04_80139BE8.cpp (field_0x14->fn_8043EDF8()), symbols.txt renames of those.
 Next: fn_8043CB24, fn_8043D39C (needs fn_8043E80C), fn_8043DB58, fn_8043DF8C, fn_8043E398, fn_8043E80C,
 the destructor fn_8043EED8 and constructor fn_8043F504; ACE4/BB84 for the literal pool.

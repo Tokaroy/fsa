@@ -1,7 +1,7 @@
 #ifndef GAME_ACT_TU_80440BF4_H
 #define GAME_ACT_TU_80440BF4_H
 
-// Code: game/tu_80440BF4.cpp. Created in game/tu_80134C04.cpp (0x80139460,
+// Code: game/tu_80440BF4.cpp. Created in game/game_root_80134C04.cpp (0x80139460,
 // __nw__ 0x14 into its field_0x3c), requested through lbl_8053AED8 by
 // tu_803D7098, tu_80403D84, tu_80414F6C, tu_803A60E4 and others.
 

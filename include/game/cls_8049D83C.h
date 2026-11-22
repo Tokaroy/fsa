@@ -1,10 +1,10 @@
 #ifndef GAME_CLS_8049D83C_H
 #define GAME_CLS_8049D83C_H
 
-// Code: game/tu_80113788.cpp. A DemoActorBase_8049D140 subclass named after its vtable,
+// Code: game/act_crystal_cutscene_80113788.cpp. A DemoActorBase_8049D140 subclass named after its vtable,
 // 0x8049D83C. Its constructor (0x80115590) zeroes field_0x23c.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 class JPABaseEmitter;
@@ -26,11 +26,11 @@ public:
     void fn_8011395C();
     void fn_80113B54(s32 arg);
     void pool_8053C678(s32 crystal);
-    void spawnEmitters(); // inlined by init, tu_80113788.cpp
-    void spawnSealEmitters(); // inlined by vfunc_0x60, tu_80113788.cpp
-    void spawnBurstEmitters(); // inlined by vfunc_0x60, tu_80113788.cpp
-    void positionPlayers(); // inlined by vfunc_0x60, tu_80113788.cpp
-    void updateCameraFocus(); // inlined by update, tu_80113788.cpp
+    void spawnEmitters(); // inlined by init, act_crystal_cutscene_80113788.cpp
+    void spawnSealEmitters(); // inlined by vfunc_0x60, act_crystal_cutscene_80113788.cpp
+    void spawnBurstEmitters(); // inlined by vfunc_0x60, act_crystal_cutscene_80113788.cpp
+    void positionPlayers(); // inlined by vfunc_0x60, act_crystal_cutscene_80113788.cpp
+    void updateCameraFocus(); // inlined by update, act_crystal_cutscene_80113788.cpp
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231;

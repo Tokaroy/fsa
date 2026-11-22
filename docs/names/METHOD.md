@@ -94,9 +94,8 @@ only for technical labels), or a role inferred from a single caller.
 
 - Library, SDK and JSystem symbols (real names already), `@NNN` compiler
   symbols, `__sinit_*`, mangled template instantiations.
-- Unit (file) names: `tu_<addr>.cpp` renames touch `splits.txt`,
-  `configure.py`, objdiff units, claims and progress files; left for a
-  separate, coordinator-run step.
+- Unit (file) names, by `rename.py`: they are manifest rows of kind `unit`,
+  applied by the coordinator with `tools/rename_unit.py` (below).
 - Names spelled out in tools or protected files: `tools/**/*.py`,
   `configure.py` code (its `#` comment lines are renamed),
   `config/G4SE01/{config.yml,splits.txt,approved_symbol_changes.txt,
@@ -222,6 +221,55 @@ passes. `--revert` is the same pass backwards, so it is exact too, and two
 unrelated classes may give the same new name. `--kind field` restricts a
 run to field rows. `tools/gen_game.py --check` compares its unit with
 applied field names put back (`rename.fields_to_placeholders`).
+
+## Unit (file) names (kind `unit`)
+
+A `game/tu_<addr>.cpp` unit is named after its main class: the named class
+with the most method definitions in the unit (ties: the class its unit-local
+header declares), in snake_case, with the unit's own address kept:
+`tu_802F5040` -> `tile_map_802F5040` (TileMap_804AA858), `tu_80147B50` ->
+`act_big_moldorm_80147B50`. The address is the unit's .text start, the hex of
+the old name, so the old name is always recoverable and the file sorts as
+before among its neighbours by address; only a proven file name (a `__FILE__`
+string, like `RailBase.cpp`) would drop it, and a proven class name is not
+one, so unit rows are med or low. Style follows the act_* files: a unit whose
+main class is an actor (its names.tsv row names the actor ID, or a vtable
+class declared in an act_* header) takes the `act_` prefix; CamelCase splits
+at case and digit changes (`ShadowLink2` -> `shadow_link_2`, `THPReadThread`
+-> `thp_read_thread`). Several units of one class differ by address
+(`player_8023FBF0`, `player_80256C74`). The grade is the class row's (a class
+named before the manifest, in a reviewed shared header, counts as med).
+Skipped: units with no named class, units whose placeholder classes (`cls_`)
+have as many method definitions as the best named one (the main content is
+unnamed: tu_803944C8's window object is still cls_804AF5A0), and names the
+library calls a problem (GameRoot2_8049F108).
+
+Row: address (the unit's), `unit`, `tu_<addr>`, the new stem, confidence,
+apply, evidence (the class, its method count, where it is declared).
+`python3 tools/rename_unit.py --suggest` prints candidate rows by these
+rules; a reviewed candidate is added to names.tsv by hand. `tools/rename.py`
+ignores unit rows.
+
+`rename_unit.py` (dry run / `--apply` / `--revert` / `--only` / `--verify`,
+as rename.py) renames the token `tu_<addr>` everywhere it is not part of a
+longer word (paths in splits.txt, configure.py's Object lines, game_units.tsv,
+categories.tsv, claims, `#include`s, docs, progress notes and their file
+names, blobs.txt `array` lines, unprotected tools' text, symbols.txt's
+`__sinit_tu_<addr>_cpp`, which MWCC derives from the file name, and the
+`_TU_<addr>_` part of include guards), `git mv`s every tracked path holding
+it (the source, include/game/act/tu_X.h, include/game/tu_X.h, progress/game__tu_X.md),
+and keeps references to things outside the repository as they are (review
+files `_reviews/game__tu_X.review.md`, branches `unit/game__tu_X`, worktrees
+`fsa-wt/...`). Never rewritten: names.tsv, this file, LOW_CONFIDENCE.md,
+tu_map.tsv and lib_map.tsv (address-keyed analysis records), the review
+citations in approved_symbol_changes.txt / provenance_reviewed.txt, site/.
+A row is BLOCKED when its token is in a gate-protected tool or config file
+(gen_game.py's spawner unit tu_801F9484, config.yml's blob headers for
+tu_80400DC4); renaming those needs that file to change first. The new stem
+must not occur anywhere before the rename, so `--revert` is exact. After
+applying: `python3 configure.py && ninja` (SHA-1 OK; the renamed
+`__sinit_..._cpp` keeps its `_<addr>`, so gate.py still sees a placeholder),
+names_compare.py against the report from before, then the checks below.
 
 ## Applying, re-applying, reverting
 

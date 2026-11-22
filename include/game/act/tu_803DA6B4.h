@@ -11,7 +11,7 @@ class J2DPane;
 // A pulsing on-screen overlay built from a J2DScreen. Named after its vtable,
 // 0x804B04F8 (only the destructor, fn_803DA878); the constructor is
 // fn_803DA8FC, which stores the object in lbl_8053ADC8. 7 call sites of
-// fn_803DA6B4 in tu_80134C04 (the main loop), which sets field_0x20 and
+// fn_803DA6B4 in game_root_80134C04 (the main loop), which sets field_0x20 and
 // field_0x21 through lbl_8053ADC8 (act_battle_royale_end_check's draw
 // writes 1 and 3).
 class PressStartOverlay_804B04F8 {

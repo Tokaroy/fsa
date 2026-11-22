@@ -3,7 +3,7 @@
 
 // Code: game/act_princess_zelda_demo.cpp.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 // The DMZL actor ("Princess Zelda (cutscene)", docs/names/actors.tsv). Its

@@ -10,8 +10,8 @@
 #include "game/ViewLayer.h"
 #include "game/act/act_zora_escort.h"
 #include "game/cls_804AE9B0.h"
-#include "game/tu_80127E20.h"
-#include "game/tu_80131D98.h"
+#include "game/zora_escort_goal_list_80127E20.h"
+#include "game/escort_actor_list_80131D98.h"
 
 // The escort's animation keys: (cel, frames) s16 pairs, ended by a cel of -1.
 static const s16 lbl_80464C58[10] = {2, 6, 1, 4, 3, 6, 1, 4, -1, -1};

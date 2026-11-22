@@ -3,10 +3,10 @@
 
 // Code: game/act_great_fairy_spfr.cpp. The class is named after its vtable,
 // 0x8049EB8C (__vt__19GreatFairy_8049EB8C); only the slots the unit defines are declared.
-// Derives from DemoActorBase_8049D140 (game/act/tu_8010DF44.h): its constructor
+// Derives from DemoActorBase_8049D140 (game/act/demo_actor_base_8010DF44.h): its constructor
 // (0x801336B4, __ct__19GreatFairy_8049EB8CFv) calls DemoActorBase_8049D140's first.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/SpriteAnim.h"
 
 class GreatFairy_8049EB8C : public DemoActorBase_8049D140 {

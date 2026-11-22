@@ -117,7 +117,7 @@ build/tools/fnscore A.o B.o SYMBOL             # score 0: the function's code is
   function its callers inlined and the linker dropped), or functions out of
   descending address order (`order_check.py`). `pool.py <unit> --fix` searches
   the early runs' code and writes it as plain functions where the pool wants
-  them (act_cannon: 7 functions, 1 -> 6 of 8 matching; tu_801213EC: 2
+  them (act_cannon: 7 functions, 1 -> 6 of 8 matching; escort_base_801213EC: 2
   functions, +18). Its result is a `.hand.diff`: widen each helper to the
   natural function, name it, keep the comment (bottom of act_cannon.cpp).
 - `clones.py`: blocks of the original that recur up to register names (inlined
@@ -299,9 +299,9 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 ## Known game-code shapes (reviewed; natural source)
 - Library JGeometry methods (e.g. the paired-single `TVec3f::normalize`) are ordinary calls in game code, not an exception: `cflags_game` searches `libs/sdk/include` before `include`, so game units already get the libs `JGeometry.h` -> `JGeometry/Vec.h` (the game-side `include/JSystem/JGeometry.h` is used only by JUTFader.o). An out-of-line copy of such an inline is a small free function calling the member (e.g. `fn_80233C08`); never write asm in game .cpp.
 - Literals before their first visible use: (1) file-scope `static const` aggregates (e.g. GXColor) are emitted before the
-  literal pool in declaration order (tu_802F5040, tu_8016A2B4); (2) a helper the original defined early and inlined into its
+  literal pool in declaration order (tu_802F5040, game_root_sub_24_8016A2B4); (2) a helper the original defined early and inlined into its
   callers creates the pool's first literals even though the linker dead-stripped its out-of-line copy: reconstruct it as a
-  plain function with exactly the body the callers inline, with a comment saying so (tu_8016A2B4 getMapTexView: +16 near-misses
+  plain function with exactly the body the callers inline, with a comment saying so (game_root_sub_24_8016A2B4 getMapTexView: +16 near-misses
   flipped). Never invent a helper only to emit constants: its body must be proven by the inlining callers.
   (3) Pool order = codegen order = emission order (lowest address first), each function's literals in source order;
   an `inline` helper creates nothing of its own (its literals land in each caller's block), a plain one creates them at
@@ -454,7 +454,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   `TUtilf::sqrt` / `inv_sqrt` via `TVec2f::length()`, `TVec3f::normalize()`
   (isZero loads `__float_epsilon`: include libs/sdk's "JSystem/JGeometry.h", not
   a literal epsilon); bare `frsqrte; fmuls` is `JMAFastSqrt`. HitRing_800F802C::fn_800F802C
-  (tu_800F7FCC, 100 %: TVec2f::length / TUtilf::sqrt). normalize / isZero /
+  (act_stone_arrghus_800F7FCC, 100 %: TVec2f::length / TUtilf::sqrt). normalize / isZero /
   inv_sqrt and JMAFastSqrt only in act_quicksand fn_80210E90 (86.6 %, not a
   counted match).
 - A TVec2 stored member by member around calls (stfs x before the second
@@ -478,7 +478,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   (`isGameMode(mode)` in game/GameMode.h).
   A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. tu_80285E58 fn_80286688
   88.7 -> 100 % and the copy inlined in updateState_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
-  sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and tu_80158624 fn_80159330 (mode 0xC, 100 %; read
+  sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and shadow_circle_80158624 fn_80159330 (mode 0xC, 100 %; read
   gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 drawPlayerPanel_802FB69C
   (both mode-11 tests). A file's own byte helper takes the same form: tu_8025EB18 isField0xd64One
   `p.field_0xd64 == 1 ? true : false` (fn_8025EE48, fn_8025F2CC to 100 %). It also holds for a bool
@@ -489,7 +489,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   `beq end`: the tests are ONE condition, `if (a || b || !c) return;`, not separate `if`s
   (tu_80285E58 fn_80286688; separate `if`s or `if (!c) return;` give `beq`). Also under a guard:
   tu_8023FBF0 fn_802416FC `if (!root->field_0x7f && (field_0xbfc <= 0 || isDeadState_80270A8C())) return;`.
-  The `bne +8; b` marks the END of an `||` chain, not always the last early-out: tu_8013C5C8 execute is
+  The `bne +8; b` marks the END of an `||` chain, not always the last early-out: effect_system_8013C5C8 execute is
   `if (!isGameModeSet() || mode == 0xC) return; if (field_0x94) return;` (99.5 %, regalloc); all three
   tests in one `||` give `different` (97.8 %).
 - A member loaded into a saved register BEFORE the calls of the same expression (`lwz r29, 0x3b4(r31)`
@@ -527,7 +527,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   const caller compiles can lose at its own inlined sites — Player fn_80247BD4 const drops fn_8024762C
   99.8 -> 99.2, so fn_80270ABC (100 % const) stays plain; act_icicle fn_8010B284 (mPos.z for a TVec3
   copy above the saves) made const falls 97.4 -> 84.2. A function already at reloc-name-only with the
-  load above the saves needs nothing (tu_80125B58 fn_80125BF4 const: 99.8 -> 48).
+  load above the saves needs nothing (act_escorted_woman_arrival_point_80125B58 fn_80125BF4 const: 99.8 -> 48).
 - The tile-code `isBlocked_0x4C` family (getTileCollisionCode_8022461C code, getRawTile_80226850 tile): act_bombchu's form generalises —
   the never-blocking codes as ONE `!=` chain `if (code != 0 && code != 4 && ...) { ... }` around the
   remaining tests, `return (u8)(view->field_0x171 == 0)` / `== 1` for 0x25 / 0x26 (extrwi), `if (code !=
@@ -537,7 +537,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   locals (clrlwi 16 then cmpwi; a u16 local gives cmplwi). Shape sweep 2: act_octorok_rock 68.7 -> 100,
   act_dropped_item 85.1 -> 100 (its inner tests fall through to the else's shared `return false`),
   act_recovery_heart 61.5 -> 99.96, act_small_key fn_802C1970 85.3 -> 98.5, act_somaria_block 57.5 ->
-  96.8, tu_8017A44C 72.7 -> 99.0, act_two_sword_motion 84.1 -> 92.1 (s32 code).
+  96.8, act_unknown_swbm_8017A44C 72.7 -> 99.0, act_two_sword_motion 84.1 -> 92.1 (s32 code).
 - Resource type codes `u32 type = 'M   '; type += ((s[0] - ' ') << 16) + ((s[1] - ' ') << 8) + (s[2] -
   ' ');` (GameView): also tu_802E2074 EnemyGenerator2_804A9BC8 init ('B   ' set before the sprintf, the add after it;
   86.5 -> 96.2).

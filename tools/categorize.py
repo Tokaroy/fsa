@@ -83,7 +83,7 @@ BASES = {
     "tu_801F6058": "ActorBase_804A5770 (ActorBase.h): the base of every actor",
     "tu_801F9484": "ActorManager_804A5800, spawnActor_801F9484 (ActorManager.h)",
     "tu_801CDC8C": "EnemyBase_804A4808 (EnemyBase.h): the enemies' base class",
-    "tu_8013C5C8": "EffectSystem_8049F178, spawnEmitter_8013CC50 (Effect.h): the effect spawner",
+    "effect_system_8013C5C8": "EffectSystem_8049F178, spawnEmitter_8013CC50 (Effect.h): the effect spawner",
 }
 ENEMY_BASE = "EnemyBase_804A4808"
 ACTOR_BASE = "ActorBase_804A5770"
@@ -105,7 +105,7 @@ def game_units():
 def player_units():
     text = PLAYER_MD.read_text()
     m = re.search(r"^## Units\n(.*?)(?=^## )", text, flags=re.M | re.S)
-    return set(re.findall(r"^\| (tu_[0-9A-F]{8}) \|", m.group(1) if m else "", flags=re.M))
+    return set(re.findall(r"^\| ((?:tu|player)_\w+) \|", m.group(1) if m else "", flags=re.M))
 
 
 def class_graph():

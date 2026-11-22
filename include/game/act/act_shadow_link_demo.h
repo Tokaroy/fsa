@@ -5,7 +5,7 @@
 // (24 slots; draw is not written yet). Only the
 // field vfunc_0x58 returns is known, and vfunc_0x5C tests it.
 
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/cls_800FE8C0.h"
 
 class ShadowLinkCutscene_8049DB90 : public DemoActorBase_8049D140 {

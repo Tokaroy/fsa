@@ -132,6 +132,8 @@ def read_manifest():
         f = line.split("\t")
         if f[0] == "address":
             continue
+        if len(f) == 7 and f[1] == "unit":  # unit (file) rows: tools/rename_unit.py
+            continue
         if len(f) != 7:
             problems.append(f"names.tsv:{n}: expected 7 columns, got {len(f)}")
             continue
@@ -304,7 +306,29 @@ def to_current(text):
         return None
     for a, b, kind in current_renames():
         text, _ = substitute(text, a, b, kind)
+    for a, b in current_unit_renames():
+        text = unit_substitute(text, a, b, True, True)[0]
     return text
+
+
+_units = None
+
+
+def current_unit_renames():
+    """[(tu_<addr>, name)] of the applied unit rows (tools/rename_unit.py):
+    those whose src/game/<name>.cpp is tracked under the new name."""
+    global _units
+    if _units is None:
+        import rename_unit
+        files = set(rename_unit.git_files())
+        rows, _ = rename_unit.read_rows()
+        _units = [(r["old"], r["new"]) for r in rows if f"src/game/{r['new']}.cpp" in files]
+    return _units
+
+
+def unit_substitute(text, a, b, code, forward):
+    import rename_unit
+    return rename_unit.substitute(text, a, b, code, forward)
 
 
 def fields_to_placeholders(text):

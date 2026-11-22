@@ -20,7 +20,7 @@
 #include "game/act/tu_801B6C50.h"
 #include "game/act/tu_803D9944.h"
 #include "game/act/act_princess_zelda_ending.h"
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 #include "game/act/tu_801D2C60.h"
 #include "game/act/act_frostare_tail.h"
 #include "game/act/act_navi.h"
@@ -78,7 +78,7 @@ public:
 }; // Size: 0x2F0
 
 // Spawned for 'DMGA'.
-#include "game/act/tu_8011CEC8.h"
+#include "game/act/act_after_goal_opening_8011CEC8.h"
 
 // Spawned for 'RNBW'.
 #include "game/act/act_rainbow_bridge.h"
@@ -185,11 +185,11 @@ public:
 
 bool fn_80133B58();
 
-#include "game/act/tu_80147B50.h"
+#include "game/act/act_big_moldorm_80147B50.h"
 
 #include "game/act/act_hinox.h"
 
-// Spawned for 'SLR2'. Code: game/tu_801555D8.cpp.
+// Spawned for 'SLR2'. Code: game/act_bow_soldier_801555D8.cpp.
 class BowSoldier_804A00C8 : public ActorBase_804A5770 {
 public:
     BowSoldier_804A00C8() {}
@@ -243,7 +243,7 @@ public:
     /* 0x2B8 */ JGeometry::TVec3f field_0x2b8;
 }; // Size: 0x2C4
 
-// Spawned for 'BPOH'. Code: game/tu_801618D0.cpp.
+// Spawned for 'BPOH'. Code: game/act_big_poe_801618D0.cpp.
 class BigPoe_804A0440 : public ActorBase_804A5770 {
 public:
     BigPoe_804A0440() {}
@@ -291,7 +291,7 @@ public:
     /* 0x2F4 */ JUtility::TColor field_0x2f4[3];
 }; // Size: 0x300
 
-// Spawned for 'SLR3'. Code: game/tu_80170008.cpp.
+// Spawned for 'SLR3'. Code: game/act_ball_and_chain_soldier_80170008.cpp.
 class BallAndChainSoldier_804A0810 : public ActorBase_804A5770 {
 public:
     BallAndChainSoldier_804A0810() {}
@@ -338,7 +338,7 @@ public:
     /* 0x14 */ virtual void update(); // fn_8017C40C
     /* 0x20 */ virtual void draw();   // fn_8017C078
     /* 0x24 */ virtual void die_0x24(); // fn_8017C01C
-    // SHARED-EDIT: carved from field_0x230[0x8A] / field_0x2bb[0x25] (game/tu_8017C01C.cpp).
+    // SHARED-EDIT: carved from field_0x230[0x8A] / field_0x2bb[0x25] (game/act_phantom_ganon_8017C01C.cpp).
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ s32 field_0x238;

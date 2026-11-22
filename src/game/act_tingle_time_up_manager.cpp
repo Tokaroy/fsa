@@ -7,7 +7,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 #include "game/cls_804AE9B0.h"
-#include "game/tu_80182914.h"
+#include "game/act_leever_80182914.h"
 #include "game/tu_802EF76C.h"
 #include "game/act/act_force_gem.h"
 #include "game/act/act_force_gem_buried.h"

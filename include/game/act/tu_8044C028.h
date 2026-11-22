@@ -10,7 +10,7 @@ class J2DScreen;
 // A prologue overlay built from two J2DScreens ("op_prologue.blo" and
 // "op_prologue_m.blo"). Named after its vtable, 0x804B1D20 (only the
 // destructor, fn_8044C1CC); the constructor is fn_8044C260, which stores the
-// object in lbl_8053AF38. tu_801286C0 calls fn_8044C028 through
+// object in lbl_8053AF38. act_opening_narration_801286C0 calls fn_8044C028 through
 // lbl_8053AF38; the object at 0x2B8 of tu_8043A0E8's object gets
 // fn_8044C038 and fn_8044C14C.
 class PrologueOverlay_804B1D20 {

@@ -543,7 +543,7 @@ struct J2DTextBox : public J2DPane
     }
 
     // From zeldaret/tww's J2DTextBox.h (the size passed by value; GameRoot's
-    // draw_80136828, game/tu_80134C04.cpp, copies it to the stack per call).
+    // draw_80136828, game/game_root_80134C04.cpp, copies it to the stack per call).
     inline void setFontSize(TFontSize size) { setFontSize(size.x, size.y); }
 
     inline void setCharSpace(f32 space) { mCharSpacing = space; }

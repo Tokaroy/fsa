@@ -13,7 +13,7 @@
 #include "game/cls_804A71A8.h"
 #include "game/BgRewrite.h"
 #include "game/Camera.h"
-#include "game/tu_80131D98.h"
+#include "game/escort_actor_list_80131D98.h"
 #include "game/tu_8030AE84.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "JSystem/JUtility/JUTGamePad.h"

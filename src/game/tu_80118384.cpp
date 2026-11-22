@@ -6,7 +6,7 @@
 #include "game/GameGlobals.h"
 #include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/JUtility/JUTVideo.h"
-#include "game/act/tu_8010DF44.h"
+#include "game/act/demo_actor_base_8010DF44.h"
 
 void spawnFadeEmitters();
 

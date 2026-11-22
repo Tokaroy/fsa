@@ -4,11 +4,11 @@
 // Code: game/act_escort_woman.cpp (not written yet). Only the slots other
 // units call are declared.
 
-#include "game/tu_801213EC.h"
+#include "game/escort_base_801213EC.h"
 
 // The escorted woman ('OPGL', actors.tsv). "EscortWoman_8049E1D0" is a
 // provisional name carrying its vtable address; the constructor is
-// __ct__20EscortWoman_8049E1D0Fv. It calls the base constructor (tu_801213EC), so its parent is
+// __ct__20EscortWoman_8049E1D0Fv. It calls the base constructor (escort_base_801213EC), so its parent is
 // EscortBase_8049E0C8.
 class EscortWoman_8049E1D0 : public EscortBase_8049E0C8 {
 public:
@@ -21,7 +21,7 @@ public:
     /* 0x54 */ virtual bool vfunc_0x54();
     /* 0x58 */ virtual bool vfunc_0x58();
     /* 0x5C */ virtual s32 vfunc_0x5C(const s32* dir);
-    // fn_80125648 in the vtable; fn_80131D98 (game/tu_80131D98.cpp) calls it
+    // fn_80125648 in the vtable; fn_80131D98 (game/escort_actor_list_80131D98.cpp) calls it
     // and converts the byte result to bool.
     /* 0x60 */ virtual u8 vfunc_0x60();
     // fn_8012562C: copies the low byte of mSpawnParam_0x90 to field_0x35c and bits

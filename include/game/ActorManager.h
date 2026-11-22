@@ -6,7 +6,7 @@
 // constructors), updates and draws them, and reads EnemyParam.csv for the
 // spawner. Its own code is game/tu_801F6058.cpp (vtable 0x804A5800,
 // constructor fn_801F9078). One instance, allocated with
-// __nw__(0x3060, heap, 0) in game/tu_80139BE8.cpp and
+// __nw__(0x3060, heap, 0) in game/game_root_sub_04_80139BE8.cpp and
 // stored at offset 0x8 of the object gGameRoot_8053AAF8->0x4 points to; reach it
 // with getActorManager_801F856C().
 //
@@ -96,7 +96,7 @@ public:
     /* 0x44 */ u8 field_0x44; // stored by fn_804561D8 (its 4th argument)
     /* 0x45 */ u8 field_0x45; // cleared by the constructor
     /* 0x46 */ u8 field_0x46[2];
-    /* 0x48 */ f32 field_0x48; // set by StoneArrghus_8049C718 (game/tu_800F7FCC.cpp)
+    /* 0x48 */ f32 field_0x48; // set by StoneArrghus_8049C718 (game/act_stone_arrghus_800F7FCC.cpp)
     /* 0x4C */ f32 field_0x4c;
     /* 0x50 */ u8 field_0x50; // counter, counted down by fn_80456154
     /* 0x51 */ u8 field_0x51; // counter, counted down by fn_80456154
@@ -110,7 +110,7 @@ public:
 
 class ActorManager_804A5800 {
 public:
-    // 0x801F9078; 1 unit (tu_80139BE8 0x8013A5E8, after __nw__(0x3060,
+    // 0x801F9078; 1 unit (game_root_sub_04_80139BE8 0x8013A5E8, after __nw__(0x3060,
     // heap, 0), passing that heap). Stores the vtable, makes mHeap with
     // JKRUnitHeap::create(...) under `parent` (room for 0x400 actors, 0x200
     // in two UI modes: lbl_80529DEC 0x118/0x11C == 9/3 or 8/2) and clears
@@ -126,7 +126,7 @@ public:
 
     // Non-virtual members other units call: every export of
     // game/tu_801F6058.cpp whose callers pass the manager in r3 (the result
-    // of getActorManager_801F856C at all but a few calls; tu_80139BE8 loads it from
+    // of getActorManager_801F856C at all but a few calls; game_root_sub_04_80139BE8 loads it from
     // GameRoot 0x4->0x8, tu_801EE24C from gGameRoot_8053AAF8). "N units / M
     // calls" counts the other game units that call it and their calls.
     // As in ActorBase.h, the names stay dtk's placeholders and symbols.txt
@@ -268,7 +268,7 @@ public:
     s32 fn_801F84C4(ActorBase_804A5770* actor);
     // spawnActor_801F9484 with arg_0x16c = arg_0x110 = -1. 32 units / 43 calls.
     s32 spawnActorSimple_801F8544(u32 id, s32 arg_0x4, const JGeometry::TVec3f* pos, u32 arg_0x90);
-    // 1 unit / 1 call each (GameRoot, tu_80139BE8), with GameRoot
+    // 1 unit / 1 call each (GameRoot, game_root_sub_04_80139BE8), with GameRoot
     // 0x4->0x8:
     // fn_801F857C deletes every actor (virtual destructor, delete flag 1)
     // and releases its sound object (fn_80456120), then mSharedSound_0x200c's.

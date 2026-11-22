@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/ActorId.h"
 #include "game/ActorManager.h"
-#include "game/act/tu_8012FBCC.h"
+#include "game/act/act_keeps_escorted_girl_from_going_8012FBCC.h"
 #include "game/tu_8012FF9C.h"
 
 void cls_8012FFF4::fn_801300D8() {
