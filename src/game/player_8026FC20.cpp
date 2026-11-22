@@ -1075,7 +1075,7 @@ void Player_804A6F38::fn_8027B304() {
 // 0x3E8. BgRewrite runs at 0x30C (twice) and the probe points; sound 0x20029; the emitter 0x12B8
 // follows the player and 0x12BC circles it at 20 by the angle 0x11C0 (depths by fn_8024EE0C,
 // heights by fn_8024EE14); the step emitters 0x1378 (tile 0x39) / 0x1374.
-// FIXME: 99.60 %, operands; behaviour clean.
+// FIXME: 99.90 %, scheduling+regalloc; behaviour clean.
 // The frame shows the walk-to-spot and probe vectors as locals of this function (0xE0, 0xD4,
 // 0xC8, above the emitter's 0xBC) and the tile-test vectors as temporaries (0xB0 down to 0x2C).
 // Left: the direction step loads y before x.
@@ -2664,6 +2664,7 @@ void Player_804A6F38::fn_802756E4() {
 // state 0, below 168 the spin (9, reason 0x11AC = 1), else the full spin (0x0A); a group
 // member out of step (mode 4) drops to state 0. Then the facing boxes (setFacingBoxes_80276E5C, or
 // fn_80276BB8 at full charge).
+// FIXME: 99.75 %, same-text; behaviour drift.
 void Player_804A6F38::fn_80274CB8() {
     if (mPos.z > 0.0f) {
         if (mWalkAnimCounter_0x3f8 < 4) {
