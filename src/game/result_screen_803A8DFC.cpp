@@ -46,6 +46,8 @@ static const u64 lbl_804762D0[4][2] = {
 static const u64 lbl_80476310[8] = {
     'Ndatar01', 'Ndatar21', 'Ndatar12', 'Ndatar22', 'Ndatar13', 'Ndatar23', 'Ndatar14', 'Ndatar24',
 };
+// No code of the unit reads these (the original keeps them in .rodata at 0x80476350).
+static const f32 lbl_80476350[6] = {53.0f, 66.0f, 86.0f, 50.0f, 62.0f, 87.0f};
 // fn_803B236C: the effects' x / y per corner (field_0x45e).
 static const f32 lbl_80476368[4] = {200.0f, 100.0f, 400.0f, 500.0f};
 static const f32 lbl_80476378[4] = {225.0f, 75.0f, 225.0f, 75.0f};
