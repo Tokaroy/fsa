@@ -324,8 +324,8 @@ void MovingHouse_804A7AE0::vfunc_0x10() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
-// FIXME: 98.66 %, missing/extra; behaviour drift.
+// Remaining: one loop pointer copy in `bakeTiles`.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
         return;
@@ -356,22 +356,22 @@ void MovingHouse_804A7AE0::fn_8029A974() {
     p.y += mBox.i.y;
     p.y -= 8.0f;
     p.z = 0.0f;
-    bool ok = true;
+    u8 ok = 1;
     for (int k = 0; k < 6; k++) {
-        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL)) {
-            ok = false;
+        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL) == 1) {
+            ok = 0;
             break;
         }
         if (!contains(view, p)) {
-            ok = false;
+            ok = 0;
             break;
         }
         p.x += 16.0f;
     }
     if (!fn_802957CC(3)) {
-        ok = false;
+        ok = 0;
     }
-    if (ok) {
+    if (ok == 1) {
         if (dir == 3) {
             fn_80238E08(mSerial);
             mVel_0x3c.y = -0.32f;
@@ -504,8 +504,8 @@ void MovingHouse_804A7AE0::fn_80299FB0() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
-// FIXME: 98.65 %, missing/extra; behaviour drift.
+// Remaining: one loop pointer copy in `bakeTiles`.
+// FIXME: 99.36 %, missing/extra; behaviour clean.
 void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
         return;
@@ -538,7 +538,7 @@ void MovingHouse_804A7AE0::fn_80299AD0() {
     p.z = 0.0f;
     bool ok = true;
     for (int k = 0; k < 6; k++) {
-        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL)) {
+        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL) == 1) {
             ok = false;
             break;
         }
@@ -551,7 +551,7 @@ void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!fn_802957CC(0)) {
         ok = false;
     }
-    if (ok) {
+    if (ok == 1) {
         if (dir == 0) {
             fn_80238E08(mSerial);
             mVel_0x3c.x = 0.32f;
@@ -767,8 +767,6 @@ void MovingHouse_804A7AE0::fn_80298FC4() {
     }
 }
 
-// FIXME(shotgun): 98.52 %, different; behaviour drift.
-// layer expression compiles branch-free (cntlzw) in the original, 4 instructions
 void MovingHouse_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
         field_0x248++;
@@ -793,23 +791,10 @@ void MovingHouse_804A7AE0::fn_80298C18() {
             gBgRewrite_8053AC98->fn_802A1050(&p);
             p.y += 16.0f;
         }
-        JGeometry::TVec3f focus = mPos;
-        s32 idx = 0;
-        if (mSerialCountC > 0 && field_0x2cc == -1) {
-            idx ^= 1;
-        }
-        JGeometry::TVec3f offset(lbl_8046C238[idx].x, lbl_8046C238[idx].y, lbl_8046C238[idx].z);
-        focus.add(offset);
-        gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
+        addCameraFocus(0);
         if (field_0x250.isZero()) {
             JGeometry::TVec3f push(16.0f, 0.0f, 0.0f);
-            for (s32 i = 0; i < mSerialCountD; i++) {
-                Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
-                if (door != NULL) {
-                    door->mPos = door->mPos + push;
-                    door->fn_802C59B0(&push);
-                }
-            }
+            moveDoors(push);
             field_0x248 = 0;
             field_0x2b8 = 0;
             mVel_0x3c.zero();
@@ -841,8 +826,8 @@ void MovingHouse_804A7AE0::fn_80298C18() {
     }
 }
 
-// FIXME(shotgun): 94.23 %, missing/extra; behaviour near.
-// still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
+// FIXME(shotgun): 95.45 %, scheduling+regalloc; behaviour clean.
+// still differs: order of the pos.x/pos.y stores against the mSpawnParam_0x90 load
 void MovingHouse_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
         Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
@@ -850,7 +835,7 @@ void MovingHouse_804A7AE0::fn_80298978() {
         if (warp == NULL) {
             continue;
         }
-        if (!field_0x250.isZero()) {
+        if (field_0x250.isZero() == false) {
             blocked = 1;
         } else {
             for (s32 k = 0; k < 4; k++) {
