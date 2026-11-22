@@ -13,6 +13,14 @@
   python3 tools/grind.py publish [--every N]       # reviewed grind2 work -> matching: verify, site data, push
   touch ../fsa-wt/g2-logs/HALT                     # workers finish their session and exit
 
+Structural push (2026-11-22, --goal structural): workers skip functions already structurally matched
+(tools/structural.py: same instructions up to registers/order), take "close" ones (missing/extra by
+<= 4 instructions) first, are briefed for instructions not registers, and the judge counts a focus
+function becoming structurally matched as progress. Recommended fleet:
+  worker N --tier fable-low|neon-low --any-tier --goal structural --lanes structure,match --max-size 8192
+  worker N --tier opus --any-tier --goal structural --lanes structure,match --min-size 8193 --per-unit 1
+integrate/publish refuse lost structural credit (regressions()), so structural work is never traded away.
+
 What changed from the first grinder (branch `grind`), each from its logs:
   * 33k tokens of fixed context per turn -> about 7k: sessions run with their own short
     system prompt, four tools, no CLAUDE.md, memory, skills or MCP servers.
@@ -182,6 +190,15 @@ LANE_TEXT = {
              "which line; `python3 tools/diag.py {unit} '{fn}'` if it is missing), then run `python3 tools/permute.py "
              "{unit} '{fn}'`.",
 }
+STRUCT_TEXT = ("GOAL: a structural match. Your target is the original's instruction sequence: the same instructions "
+               "in the same shape, apart from register numbers and instruction order, which do NOT count here. Now: {cls}. "
+               "Missing or extra instructions usually mean a different construct: a header or class inline the original "
+               "calls where ours spells the code out (or the other way round; docs/analysis/INLINE_LEADS.md: per-file and "
+               "per-class helpers that cover every copy, never a single-use one), a type or signedness (extsh/extsb/clrlwi, "
+               "an extra compare), a loop or switch form, a temporary the original keeps, a missing or extra call. 'different' "
+               "means another opcode: a wrong operation, type or field. Fix those; as soon as try.py classes the function "
+               "regalloc-only, scheduling or scheduling+regalloc (with or without reloc-name) you are done: stop, do not "
+               "chase registers. ")
 RELOC_TEXT = ("Its instructions are identical to the original; only a relocation names a different symbol (the pairs "
               "are in try.py's output). `lbl_... vs @NNN` means this unit's literals are pooled in a different order "
               "than the original's, or the literal is not split into this unit (config/G4SE01/splits.txt); a named "
@@ -345,6 +362,33 @@ LIBRARY = re.compile(r"^(JAS|JKR|JGeometry|JUtility|JMath|JGadget|J2D|J3D|JPA|JA
 
 
 ANY_TIER = False  # --any-tier: a worker takes functions whatever tier they are at
+GOAL = "bytes"    # --goal structural: work toward structural matches first (docs/analysis/*; 2026-11-22)
+STRUCT_DONE = {"regalloc-only", "scheduling", "scheduling+regalloc", "reloc-name"}  # as tools/structural.py DONE
+
+
+def struct_done_cls(cls):
+    """A try.py class that counts as structurally matched (instructions equal up to registers and order)."""
+    return all(p in STRUCT_DONE for p in cls.split(" + "))
+
+
+def structural_status(wt=None):
+    """{(unit source, function): "done" | "close" | "open"} for every function below 100 %, from
+    structural.json of the integration build (tools/structural.py: done = same instructions up to
+    registers/order and verified literal names; close = missing/extra by <= 4 instructions at >= 85 %)."""
+    try:
+        s = json.loads(((wt or INTEG) / "build/G4SE01/structural.json").read_text())
+    except (OSError, ValueError):
+        return {}
+    wf, out = s.get("weighted_fns", {}), {}
+    for u, fns in s.get("units", {}).items():
+        src = u.split("/", 1)[-1] + ".cpp"
+        for f, (pct, size, cls) in fns.items():
+            credited = f in wf.get(u, {})
+            out[(src, f)] = "done" if credited and struct_done_cls(cls) else "close" if credited else "open"
+    return out
+
+
+STATUS = {}  # refreshed per unit pick by the worker in --goal structural
 TRIED = set()  # with --any-tier: (unit, fn) this worker's tier already had a session on (never twice)
 
 
@@ -359,9 +403,14 @@ def eligible(fns, unit, tier, lanes, lo, hi, hist):
         lane = lane_of(e)
         if lane == "write" and LIBRARY.match(e.get("demangled", "")):
             continue
+        st = STATUS.get((unit, n), "done" if struct_done_cls(e["cls"]) else "open") if GOAL == "structural" else None
+        if st == "done":  # already structurally matched: registers and order are a later, byte-match pass
+            continue
         if lane in lanes and lo <= e["size"] <= hi and ((ANY_TIER and (unit, n) not in TRIED) or tier_index(e["size"], hist.get((unit, n), []), lane) == ORDER.index(canon(tier))):
-            out.append((LANES.index(lane), e["size"], n))
-    return [n for _, _, n in sorted(out)]
+            # structural: close ones first (fewest instructions to fix), then by match %, smallest first
+            key = (0 if st == "close" else 1, -round(e["pct"]), e["size"]) if st else (LANES.index(lane), e["size"])
+            out.append((key, n))
+    return [n for _, n in sorted(out)]
 
 
 def cmd_queue(_):
@@ -677,6 +726,8 @@ def build_packet(wt, unit, fn, ev, note=None):
                 "counter). " + text.split("Don't change behaviour. ", 1)[-1])
     if lane == "write":
         text += " " + WRITE_HINT
+    if GOAL == "structural" and lane != "write":
+        text = STRUCT_TEXT.format(unit=unit, fn=fn, cls=e["cls"]) + (" " + text if e["todo"] else "")
     out = [f"TASK ({lane}): `{fn}` = `{e['demangled']}`, {size} bytes, unit `{unit}` (src/{unit}).",
            f"Now: {e['pct']:.2f} %, {e['cls']}; behaviour {e['grade']}.", text,
            f"Commands: `python3 tools/try.py {unit} '{fn}'`   `python3 tools/grind.py check`", ""]
@@ -937,6 +988,10 @@ def judge(wt, unit, base, focus_addr, full=None, dry=False):
     t0, t1 = totals(base), totals(ev)
     f0, f1 = old.get(focus_addr), new.get(focus_addr)
     focus_better = bool(f0 and f1 and (f1["score"] < f0["score"] or (f1["score"] == f0["score"] and f1["pct"] > f0["pct"] + EPS)))
+    # structural goal: the focus function now has the original's instructions (registers/order aside)
+    focus_struct = bool(GOAL == "structural" and f0 and f1 and f1["score"] <= f0["score"]
+                        and not struct_done_cls(f0["cls"]) and struct_done_cls(f1["cls"]))
+    focus_better = focus_better or focus_struct
     better = (focus_better or t1["n100"] > t0["n100"] or t1["missing"] < t0["missing"]
               or (t1["score"] < t0["score"] and t1["credit"] >= t0["credit"] - 2)
               or (t1["score"] == t0["score"] and t1["credit"] > t0["credit"] + 2))
@@ -1503,8 +1558,8 @@ def stamp_commit(wt, unit):
 
 
 def cmd_worker(args):
-    global ANY_TIER, LEDGER
-    ANY_TIER, LEDGER = args.any_tier, args.ledger
+    global ANY_TIER, LEDGER, GOAL
+    ANY_TIER, LEDGER, GOAL = args.any_tier, args.ledger, args.goal
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(1))
     owner, tier = f"g2-w{args.n}", args.tier
     wt, branch = WT / owner, f"{BRANCH}-w{args.n}"
@@ -1537,6 +1592,9 @@ def cmd_worker(args):
                 notify("FSA grind stopping", f"{owner}: weekly usage {u:.0%}")
                 return
         q, hist = build_queue(), history()
+        if GOAL == "structural":
+            STATUS.clear()
+            STATUS.update(structural_status())
         if ANY_TIER:
             TRIED.clear()
             TRIED.update(tried(tier))
@@ -1552,7 +1610,10 @@ def cmd_worker(args):
                     continue
             else:
                 el = eligible(fns, unit, tier, lanes, args.min_size, args.max_size, hist)
-            if el:  # units with unwritten code first (most bytes), then the ones with most open functions
+            if el and GOAL == "structural":  # most close functions first, then most open bytes
+                nc = sum(STATUS.get((unit, n)) == "close" for n in el)
+                pool.append((-nc, -sum(fns[n]["size"] for n in el), unit))
+            elif el:  # units with unwritten code first (most bytes), then the ones with most open functions
                 wb = sum(fns[n]["size"] for n in el if lane_of(fns[n]) == "write")
                 pool.append((-wb, -len(el), unit))
         unit = next((u for *_, u in sorted(pool) if args.dry or claim(u, owner, wt)), None)
@@ -1909,6 +1970,8 @@ def main():
     p.add_argument("--ledger", default="ledger.tsv", help="experiment: log to this file in g2-logs instead")
     p.add_argument("--review-tier", choices=TIER_NAMES, help="reviewer model (default: one tier above the author)")
     p.add_argument("--usage-stop", type=float, default=0.85, help="stop all workers at this weekly utilization (0 = off)")
+    p.add_argument("--goal", choices=["bytes", "structural"], default="bytes",
+                   help="structural: skip functions already structurally matched, close ones first, brief for instructions not registers")
     p.set_defaults(fn=cmd_worker)
     args = ap.parse_args()
     args.fn(args)
