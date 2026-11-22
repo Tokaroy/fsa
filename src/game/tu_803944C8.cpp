@@ -512,7 +512,7 @@ static const u32 lbl_805431D0[2] = {0, 0x1000007};
 // Counts and acts on a message tag: the window's choices, flags, rupees and
 // item tests, and in the text-image windows (window fn_803A313C) the
 // characters the tag's glyphs take.
-// FIXME: 98.34 %, missing/extra; behaviour near.
+// FIXME: 98.47 %, missing/extra; behaviour near.
 bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
     const u8* p = (const u8*)data;
     s32 work[4];
@@ -969,9 +969,10 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
-                                                           getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
-                                                           (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                    s32 serial = spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
+                                                     getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
+                                                     (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1);
+                    field_0x60->fn_803A3084(i, serial);
                 }
             }
             return true;
@@ -1554,9 +1555,10 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
-                                                           getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
-                                                           (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                    s32 serial = spawnActor_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
+                                                     getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
+                                                     (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1);
+                    field_0x60->fn_803A3084(i, serial);
                 }
             }
             return true;
