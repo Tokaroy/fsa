@@ -128,7 +128,6 @@ bool VaatiBoss_804A4958::fn_801E4348() {
     return result;
 }
 
-// FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
 bool VaatiBoss_804A4958::fn_801E4094() {
     bool result = false;
     bool stateOk = true;
@@ -192,7 +191,7 @@ bool VaatiBoss_804A4958::fn_801E4094() {
 // vtable slot 0x5C. The bomb/player hit test: a player on the boss's layer that is inside its
 // area (and below its head) turns it towards that player; otherwise each player that hit it
 // this frame is run through takeHit_801F37AC.
-// FIXME(shotgun): 99.32 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
 u8 VaatiBoss_804A4958::fn_801E3B2C() {
     u8 result = 0;
     s32 state = mState;
