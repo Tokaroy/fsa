@@ -23,11 +23,11 @@
 <rect x="56.0" y="324.1" width="46.9" height="23.4" rx="1.5" fill="#4aa75c" fill-opacity="0.13"/>
 <rect class="rise" x="56.0" y="326.9" width="46.9" height="20.6" fill="#4aa75c" fill-opacity="0.85"/>
 <rect x="3.75" y="3.75" width="101.9" height="346.5" rx="7.5" fill="none" stroke="#4aa75c" stroke-opacity="0.8" stroke-width="1.5"/>
-<text x="12.5" y="22.5" font-size="11.5" font-weight="600" fill="#eceefb">tu_8023FBF0</text>
+<text x="12.5" y="22.5" font-size="11.5" font-weight="600" fill="#eceefb">player_8023…</text>
 <text x="12.5" y="35.5" class="mono" font-size="10" fill="#eceefb">62.9 %</text>
 <text x="12.5" y="98.8" font-size="11.5" font-weight="600" fill="#eceefb">tu_8022AD64</text>
 <text x="12.5" y="111.8" class="mono" font-size="10" fill="#eceefb">91.5 %</text>
-<text x="12.5" y="170.7" font-size="11.5" font-weight="600" fill="#eceefb">tu_8026FC20</text>
+<text x="12.5" y="170.7" font-size="11.5" font-weight="600" fill="#eceefb">player_8026…</text>
 <text x="12.5" y="183.7" class="mono" font-size="10" fill="#eceefb">68.2 %</text>
 <rect x="27.0" y="324" width="74.4" height="22" rx="11" fill="#0b0d1a" fill-opacity="0.88" stroke="#4aa75c" stroke-opacity="0.7"/>
 <path d="M39.0 329L45.0 335L39.0 341L33.0 335Z" fill="#4aa75c"/>

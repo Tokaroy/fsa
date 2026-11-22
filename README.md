@@ -197,7 +197,7 @@ same symbols too. They are regenerated with every merge; see
 - **Now** (phase 4): **The player.** The Link class (Player_804A6F38, ten units from 0x8022AD64 to 0x802957CC) and the per-player queries. Every function is written and at least structurally matched (2026-11-06): 934 of 1,054 are at 100 %, the rest differ only in registers, scheduling, stack slots or a few instructions (docs/PLAYER.md), and one, the helper's counter/warp function, carries tagged crack-pass gotos (docs/CRACK_PASS.md).
 - **Now** (phase 5): **The naming track.** Real names for game files, classes and functions, from debug and assert strings, Dolphin debug output and the dormant debug menus, reviewed on their own. The first evidence-based sweep ran on 2026-11-05 (docs/names/: names.tsv is applied by tools/rename.py, METHOD.md is the method; names without enough evidence are in LOW_CONFIDENCE.md and keep their provisional address names).
 - **Next** (phase 4): **Screens and menus.** The remaining screens, HUD and menus, after their boot-path owners are written.
-- **Next** (phase 4): **Actors by family.** Enemies, NPCs and objects family by family, sharing base classes and headers. The earlier actor waves matched the small ones; most update and init functions are still ahead. Currently 46.7 % of the code matched.
+- **Next** (phase 4): **Actors by family.** Enemies, NPCs and objects family by family, sharing base classes and headers. The earlier actor waves matched the small ones; most update and init functions are still ahead. Currently 42.9 % of the code matched.
 - **Next** (phase 4): **Map and stage.** Rooms, collision, background rewrites and the stage loader.
 <!-- now:end -->
 

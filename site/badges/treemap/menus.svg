@@ -97,19 +97,19 @@
 <rect x="194.6" y="340.4" width="14.1" height="7.1" rx="1.5" fill="#8c55b4" fill-opacity="0.13"/>
 <rect class="rise" x="194.6" y="340.4" width="14.1" height="7.1" fill="#8c55b4" fill-opacity="0.85"/>
 <rect x="3.75" y="3.75" width="207.7" height="346.5" rx="7.5" fill="none" stroke="#8c55b4" stroke-opacity="0.8" stroke-width="1.5"/>
-<text x="12.5" y="22.5" font-size="11.5" font-weight="600" fill="#eceefb">tu_803BC…</text>
+<text x="12.5" y="22.5" font-size="11.5" font-weight="600" fill="#eceefb">file_sel…</text>
 <text x="12.5" y="35.5" class="mono" font-size="10" fill="#eceefb">53.1 %</text>
-<text x="12.5" y="119.3" font-size="11.5" font-weight="600" fill="#eceefb">tu_803…</text>
+<text x="12.5" y="119.3" font-size="11.5" font-weight="600" fill="#eceefb">adv_en…</text>
 <text x="12.5" y="132.3" class="mono" font-size="10" fill="#eceefb">32.4 %</text>
-<text x="81.0" y="119.3" font-size="11.5" font-weight="600" fill="#eceefb">tu_803…</text>
+<text x="81.0" y="119.3" font-size="11.5" font-weight="600" fill="#eceefb">result…</text>
 <text x="81.0" y="132.3" class="mono" font-size="10" fill="#eceefb">61.4 %</text>
 <text x="148.4" y="119.3" font-size="11.5" font-weight="600" fill="#eceefb">tu_803…</text>
 <text x="148.4" y="132.3" class="mono" font-size="10" fill="#eceefb">44.9 %</text>
-<text x="12.5" y="198.4" font-size="11.5" font-weight="600" fill="#eceefb">tu_803…</text>
+<text x="12.5" y="198.4" font-size="11.5" font-weight="600" fill="#eceefb">connec…</text>
 <text x="12.5" y="211.4" class="mono" font-size="10" fill="#eceefb">30.0 %</text>
-<text x="12.5" y="277.8" font-size="11.5" font-weight="600" fill="#eceefb">tu_804…</text>
+<text x="12.5" y="277.8" font-size="11.5" font-weight="600" fill="#eceefb">advent…</text>
 <text x="12.5" y="290.8" class="mono" font-size="10" fill="#eceefb">82.0 %</text>
-<text x="12.5" y="325.2" font-size="11.5" font-weight="600" fill="#eceefb">tu_804…</text>
+<text x="12.5" y="325.2" font-size="11.5" font-weight="600" fill="#eceefb">collec…</text>
 <text x="12.5" y="338.2" class="mono" font-size="10" fill="#eceefb">20.4 %</text>
 <rect x="14.4" y="324" width="192.8" height="22" rx="11" fill="#0b0d1a" fill-opacity="0.88" stroke="#8c55b4" stroke-opacity="0.7"/>
 <path d="M26.4 329L32.4 335L26.4 341L20.4 335Z" fill="#8c55b4"/>
