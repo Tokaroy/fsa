@@ -44,7 +44,7 @@ static inline void normalize(f32& x, f32& y) {
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 99.51 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
     switch (mState) {
     case 0x0:
@@ -284,7 +284,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
 }
 
 // Whether something hurts the actor through its hit box: the hit box of player attacks.
-// FIXME: 95.93 %, missing/extra; behaviour clean.
+// FIXME: 97.05 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): register allocation and stack slots differ; early returns are laid out differently.
 u8 ShadowLink2_804A43E8::fn_801CA274() {
     u8 ret = 0;
