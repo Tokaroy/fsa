@@ -32,20 +32,29 @@ void cls_8049DD68::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
-// FIXME(shotgun): 79.09 %, missing/extra; behaviour drift.
-// the guarded static (lbl_8053AA98 / lbl_8053AA9C) update() zero-inits is not written
 void cls_8049DD68::update() {
     cls_8049D140::update();
     fn_8011CF48();
+    static s32 lbl_8053AA98 = 0;
     switch (field_0x234) {
     case 0:
         fn_8011D1B8(1);
         break;
+    case 1:
+    case 2:
+        break;
     case 3:
         fn_801CD950(&field_0x238, 255.0f, 10.0f);
         break;
+    case 4:
+        break;
     case 5:
         fn_801CD950(&field_0x238, 0.0f, -10.0f);
+        break;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
         break;
     }
     if (field_0x230) {
@@ -170,13 +179,24 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
 // and centred on the camera's position on the screen, with field_0x238 as the alpha.
 void cls_8049DD68::setOverlayRect() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
-    JGeometry::TVec3f in(-cam->field_0x4[0][3], -cam->field_0x4[1][3], 0.0f);
-    JGeometry::TVec3f out;
-    cam->fn_8030C5F0((Vec*)&in, false, false, (Vec*)&out);
-    f32 size = fn_801365A8() == 2 ? 373.0f : 500.0f;
-    out.x -= size * 0.5f;
+    Vec out;
+    Vec in;
+    in.x = -cam->field_0x4[0][3];
+    in.y = -cam->field_0x4[1][3];
+    in.z = 0.0f;
+    cam->fn_8030C5F0(&in, false, false, &out);
+    f32 size;
+    switch (fn_801365A8()) {
+    case 2:
+        size = 373.0f;
+        break;
+    default:
+        size = 500.0f;
+        break;
+    }
+    out.x -= size / 2.0f;
     out.y -= 20.0f;
-    lbl_8053AED0->fn_8043A208((s32)field_0x238, out.x, out.y, size, 40.0f);
+    lbl_8053AED0->fn_8043A208((u8)field_0x238, out.x, out.y, size, 40.0f);
 }
 
 #pragma auto_inline off
