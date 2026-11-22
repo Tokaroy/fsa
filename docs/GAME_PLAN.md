@@ -213,7 +213,7 @@ Game code builds with `-inline auto`. Two research rounds
   Matching game units at 100 % and the link SHA-1 OK (one explicit dtor
   needed in act_tutorial_old_man; 20 generated sinit units renumber their
   `.bss` `@NNN`). But it inlines calls the original keeps out of line
-  (tu_801CDC8C fn_801CF6B8/fn_801CF720, tu_801EDBA4 draw), net -2
+  (tu_801CDC8C fn_801CF6B8/pickNewDir_801CF720, tu_801EDBA4 draw), net -2
   functions. Under `auto` a callee defined after its caller is never
   inlined, which is what the original shows there.
 

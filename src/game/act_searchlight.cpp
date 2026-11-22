@@ -88,7 +88,7 @@ void Searchlight_804A0FF8::init() {
     if (mSpawnParam_0x90 >= 4 && mSpawnParam_0x90 <= 7) {
         field_0x30c = -100;
     }
-    field_0x340 = fn_801F6874(mDir_0x98);
+    field_0x340 = dirToAngle_801F6874(mDir_0x98);
     if (mSpawnParam_0x90 == 12) {
         field_0x2f8 = 2;
         field_0x2fc = field_0x2f8;

@@ -28,7 +28,7 @@ static JGeometry::TVec3f lbl_804CABD8;
 
 // Whether two boxes overlap (edges touching counts), on a copy of `a`: inlined
 // the same way, with no store back to either box, into fn_801F7F58,
-// fn_801F8108 and fn_801F82CC.
+// fn_801F8108 and findOverlappingActor_801F82CC.
 static inline bool boxesOverlap(const JGeometry::TBox2f& a, const JGeometry::TBox2f& b) {
     JGeometry::TBox2f overlap(a);
     return overlap.intersect(b);
@@ -39,10 +39,10 @@ static inline bool contains(const JGeometry::TBox2f& box, const JGeometry::TVec3
     return p.x >= box.i.x && p.y >= box.i.y && p.x < box.f.x && p.y < box.f.y;
 }
 
-// The angle of each direction (fn_801F6874; fn_801F681C is the inverse).
+// The angle of each direction (dirToAngle_801F6874; fn_801F681C is the inverse).
 static const u16 lbl_8053F800[4] = {0x4000, 0xC000, 0x0000, 0x8000};
 
-// The slot fn_801F78F4 found last.
+// The slot findNextActorById_801F78F4 found last.
 static s32 lbl_8053A168 = -1;
 
 // Deletes the actor in `slot` (releasing its sound object first) and, when it
@@ -351,7 +351,7 @@ s32 ActorManager_804A5800::fn_801F8448(ActorBase_804A5770* actor) {
     return unlinked;
 }
 
-s32 ActorManager_804A5800::fn_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz) {
+s32 ActorManager_804A5800::findOverlappingActor_801F82CC(ActorBase_804A5770* actor, u8 includeArij, f32 maxDz) {
     JGeometry::TBox2f otherBox;
     JGeometry::TBox2f box;
     s32 found = -1;
@@ -553,7 +553,7 @@ s32 ActorManager_804A5800::fn_801F7A08(u32 id) {
     return -1;
 }
 
-s32 ActorManager_804A5800::fn_801F78F4(u32 id, s32 afterSerial) {
+s32 ActorManager_804A5800::findNextActorById_801F78F4(u32 id, s32 afterSerial) {
     s32 start = 0;
     if (afterSerial >= 0) {
         if (lbl_8053A168 >= 0 && mActors[lbl_8053A168] != NULL && mActors[lbl_8053A168]->mAlive &&
@@ -916,7 +916,7 @@ void ActorManager_804A5800::fn_801F6884() {
     lbl_8053AD70->fn_8037AE30();
 }
 
-u16 fn_801F6874(s32 dir) {
+u16 dirToAngle_801F6874(s32 dir) {
     return lbl_8053F800[dir & 3];
 }
 

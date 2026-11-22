@@ -98,7 +98,7 @@ void EnemyGenerator2_804A9BC8::update() {
                 }
                 done = true;
                 if (field_0x24c == 0x40) {
-                    fn_801F3668();
+                    markDead_801F3668();
                 } else {
                     field_0x24e += 8;
                 }
@@ -145,7 +145,7 @@ void EnemyGenerator2_804A9BC8::update() {
                 if (lbl_804D4768[lbl_8053ACB0] >= 0) {
                     lbl_8053ACB0++;
                     if (lbl_8053ACB0 >= 0x50) {
-                        fn_801F3668();
+                        markDead_801F3668();
                         break;
                     }
                 }

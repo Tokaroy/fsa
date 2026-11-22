@@ -131,7 +131,7 @@ void ArrowMarker_804A8470::update() {
         case 0:
             if (player >= 0) {
                 field_0x230 = 1;
-                fn_801F0D20(6);
+                playSe_801F0D20(6);
             }
             break;
         case 1:
@@ -191,7 +191,7 @@ void ArrowMarker_804A8470::draw() {
         s32 frame = field_0x240 + 0x10;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
         break;
@@ -205,7 +205,7 @@ void ArrowMarker_804A8470::draw() {
         s32 frame = field_0x240 + 0x10;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
         break;

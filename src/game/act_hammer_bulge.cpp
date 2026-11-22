@@ -162,7 +162,7 @@ void HammerBulge_804A88E8::update() {
                         }
 
                         if (field_0x24d == 1) {
-                            fn_801F3668();
+                            markDead_801F3668();
                         } else {
                             field_0x230 = 1;
                             setScreenFlag_0x30(0xFF, true);

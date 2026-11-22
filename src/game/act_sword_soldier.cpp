@@ -78,7 +78,7 @@ u8 fn_80154624(s32 layer) {
     return viewLayerFlag(layer);
 }
 
-s32 ActorBase_804A5770::fn_8015461C() const {
+s32 ActorBase_804A5770::getLayer_8015461C() const {
     return mLayer_0x4;
 }
 
@@ -449,8 +449,8 @@ bool SwordSoldier_8049FCA0::vfunc_0x54() {
     field_0x2b8.z = mPos.z;
     field_0x2b8.x = (f32)((s32)field_0x2b8.x & 0xFFF8);
     field_0x2b8.y = (f32)((s32)field_0x2b8.y & 0xFFF8);
-    field_0x2b8.x += -12.0f * JMath::sincosTable_.sinShort((s16)fn_801F6874(mDir_0x98));
-    field_0x2b8.y += -12.0f * JMath::sincosTable_.cosShort((s16)fn_801F6874(mDir_0x98));
+    field_0x2b8.x += -12.0f * JMath::sincosTable_.sinShort((s16)dirToAngle_801F6874(mDir_0x98));
+    field_0x2b8.y += -12.0f * JMath::sincosTable_.cosShort((s16)dirToAngle_801F6874(mDir_0x98));
     s32 tile = fn_8022461C(&field_0x2b8, mLayer_0x4);
     if ((u32)(tile - 2) <= 1 || tile == 0xE) {
         field_0x250 = 10000;
@@ -492,10 +492,10 @@ void SwordSoldier_8049FCA0::update() {
             if (fn_80154698()) {
                 return;
             }
-            field_0x29c = fn_80226998(&mPos, fn_8015461C());
+            field_0x29c = getTileAt_80226998(&mPos, getLayer_8015461C());
             return;
         }
-        if ((u16)field_0x29c == fn_80226998(&mPos, fn_8015461C())) {
+        if ((u16)field_0x29c == getTileAt_80226998(&mPos, getLayer_8015461C())) {
             return;
         }
         field_0x250 = 40;
@@ -753,7 +753,7 @@ void SwordSoldier_8049FCA0::update() {
             }
             mState = 1;
         }
-        if (fn_80154624(fn_8015461C())) {
+        if (fn_80154624(getLayer_8015461C())) {
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
             mVel_0x3c.z = 0.0f;
@@ -845,7 +845,7 @@ void SwordSoldier_8049FCA0::update() {
         break;
 
     case 1:
-        if (moved && field_0x244 == 0 && (!fn_80154624(fn_8015461C()) || moveOut.x != 0.0f)) {
+        if (moved && field_0x244 == 0 && (!fn_80154624(getLayer_8015461C()) || moveOut.x != 0.0f)) {
             fn_801546BC(&mVel_0x3c);
             fn_801546BC(&field_0x2ac);
             field_0x238 = 8;
@@ -939,7 +939,7 @@ void SwordSoldier_8049FCA0::update() {
             field_0x258 &= 3;
             field_0x238 = 15;
             if (field_0x25c <= 0) {
-                if (!fn_80154624(fn_8015461C())) {
+                if (!fn_80154624(getLayer_8015461C())) {
                     if ((mDir_0x98 & 2) == 0) {
                         if (fn_80154744() < 0.5f) {
                             mDir_0x98 = 2;
@@ -1014,7 +1014,7 @@ void SwordSoldier_8049FCA0::update() {
         }
     case 5:
         if (dir != -1) {
-            if (!fn_80154624(fn_8015461C())) {
+            if (!fn_80154624(getLayer_8015461C())) {
                 mDir_0x98 = dir;
             } else if ((dir & 2) == 0) {
                 mDir_0x98 = dir;
@@ -1080,7 +1080,7 @@ void SwordSoldier_8049FCA0::update() {
                 field_0x29e = (s16)((f32)angle + (4096.0f - 8192.0f * fn_80154744()));
             }
             if (dir >= 0) {
-                if (!fn_80154624(fn_8015461C())) {
+                if (!fn_80154624(getLayer_8015461C())) {
                     mDir_0x98 = dir;
                 } else if ((dir & 2) == 0) {
                     mDir_0x98 = dir;
@@ -1116,7 +1116,7 @@ void SwordSoldier_8049FCA0::update() {
                 } else {
                     field_0x2a0 -= 0x100;
                 }
-                u16 pAng = (u16)(fn_801F6874(fn_80230CFC(playerIdx)) + 0x8000);
+                u16 pAng = (u16)(dirToAngle_801F6874(getPlayerFacing_80230CFC(playerIdx)) + 0x8000);
                 if (fn_8015436C((f32)(s32)(field_0x2a0 - pAng)) < 4096.0f) {
                     dist = 0.0f;
                     field_0x2a0 = angle + 0x8000;
@@ -1151,7 +1151,7 @@ void SwordSoldier_8049FCA0::update() {
     case 8:
         if (moved) {
             fn_801546BC(&mVel_0x3c);
-            field_0x29e = (s16)fn_801F6874(mDir_0x98);
+            field_0x29e = (s16)dirToAngle_801F6874(mDir_0x98);
             field_0x24c = 40;
             if (field_0x264 == 0) {
                 if (fn_80154744() < 0.5f) {
@@ -1176,7 +1176,7 @@ void SwordSoldier_8049FCA0::update() {
         fn_80154558(&boxD8.i, &pos70);
         fn_80154558(&boxD8.f, &pos70);
         fn_80154528(&boxD8, &vec68);
-        if (field_0x248 == 0 || isOutsideView_801F6758(&mPos, fn_8015461C(), -24.0f)) {
+        if (field_0x248 == 0 || isOutsideView_801F6758(&mPos, getLayer_8015461C(), -24.0f)) {
             fn_801546BC(&field_0x2ac);
             fn_801546BC(&mVel_0x3c);
             field_0x238 = 2;
@@ -1213,7 +1213,7 @@ void SwordSoldier_8049FCA0::update() {
             addCalc2_801F71A4(&field_0x54.y, 5.0f, 0.3f, 3.0f);
             addCalc2_801F71A4(&field_0x54.x, 0.0f, 0.3f, 0.1f);
             if (field_0x54.x < 0.1f) {
-                fn_801F3668();
+                markDead_801F3668();
             }
         }
         break;
@@ -1230,8 +1230,8 @@ void SwordSoldier_8049FCA0::update() {
             }
         }
         if (field_0x23c == 0) {
-            fn_80154310('HBMB', fn_8015461C(), &mPos, 7, -1, -1);
-            fn_801F3668();
+            fn_80154310('HBMB', getLayer_8015461C(), &mPos, 7, -1, -1);
+            markDead_801F3668();
         }
         break;
 
@@ -1250,7 +1250,7 @@ void SwordSoldier_8049FCA0::update() {
                         if ((s32)mDir_0x98 == dir) {
                             break;
                         }
-                        if (!fn_80154624(fn_8015461C())) {
+                        if (!fn_80154624(getLayer_8015461C())) {
                             mDir_0x98 = dir;
                         } else if ((dir & 2) == 0) {
                             mDir_0x98 = dir;
@@ -1265,7 +1265,7 @@ void SwordSoldier_8049FCA0::update() {
                 }
             }
             if (changeDir) {
-                if (!fn_80154624(fn_8015461C())) {
+                if (!fn_80154624(getLayer_8015461C())) {
                     if ((mDir_0x98 & 2) == 0) {
                         if (fn_80154744() < 0.5f) {
                             mDir_0x98 = 2;
@@ -1353,7 +1353,7 @@ void SwordSoldier_8049FCA0::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30047, 0);
-                    fn_801F3668();
+                    markDead_801F3668();
                     return;
                 }
                 field_0x298 -= 0.02f;
@@ -1365,7 +1365,7 @@ void SwordSoldier_8049FCA0::update() {
                                               1.0f);
                         startSound_801F0E34(0x5005F, 0);
                     }
-                    fn_801F3668();
+                    markDead_801F3668();
                 }
                 break;
             }
@@ -1389,7 +1389,7 @@ void SwordSoldier_8049FCA0::update() {
     case 15:
         {
             ActorBase_804A5770* actors[1024];
-            s32 count = fn_801542AC('SLR4', fn_8015461C(), actors, -1);
+            s32 count = fn_801542AC('SLR4', getLayer_8015461C(), actors, -1);
             for (s32 i = 0; i < count; i++) {
                 ChiefSoldier_804A0B90* chief = (ChiefSoldier_804A0B90*)actors[i];
                 if (chief != NULL && field_0x2a4 == chief->fn_801544AC()) {
@@ -1477,7 +1477,7 @@ void SwordSoldier_8049FCA0::update() {
             fn_8015457C(&tmp40, fn_801546E8(&tmp18, mPos.x, mPos.y));
             fn_80154558(&box78.i, &tmp40);
             fn_80154558(&box78.f, &tmp40);
-            fn_80239914(&box78, fn_8015461C(), getSerial_801545E8());
+            fn_80239914(&box78, getLayer_8015461C(), getSerial_801545E8());
         }
         if (field_0x27c == 0 && field_0x25c != (s32)mDir_0x98) {
             fn_801546BC(&field_0x2ac);
@@ -1541,7 +1541,7 @@ void SwordSoldier_8049FCA0::update() {
     case 17:
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
-                fn_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022D534(i)) {
+                getLayer_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022D534(i)) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                 if (sqrtf_80154378(dx * dx + dy * dy) < 48.0f) {
@@ -1607,13 +1607,13 @@ void SwordSoldier_8049FCA0::update() {
             if (field_0x258 < 0) {
                 field_0x238 = 0;
                 field_0x258 = 0;
-                fn_80154310('HBMB', fn_8015461C(), &mPos, 7, -1, -1);
-                fn_801F3668();
+                fn_80154310('HBMB', getLayer_8015461C(), &mPos, 7, -1, -1);
+                markDead_801F3668();
                 if (field_0x288 == 1) {
-                    fn_80154248('RUPY', fn_8015461C(), &mPos, 0x30000);
+                    fn_80154248('RUPY', getLayer_8015461C(), &mPos, 0x30000);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.0f);
                 } else {
-                    fn_80154248('RUPY', fn_8015461C(), &mPos, 0x30004);
+                    fn_80154248('RUPY', getLayer_8015461C(), &mPos, 0x30004);
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D9, 0, 1, NULL, NULL, true, 1.5f);
                 }
                 field_0x288 = 0;

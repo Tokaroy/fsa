@@ -161,7 +161,7 @@ void Antlion_804A6340::updateState_0x90(u8 mapHit) {
         }
         break;
     case 3:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             if (mFlags & 0x4000) {
                 fn_80213774(6);
             } else {
@@ -188,13 +188,13 @@ void Antlion_804A6340::updateState_0x90(u8 mapHit) {
                     startSound_801F0E34(0x50031, 0);
                 }
             }
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 fn_80213774(6);
             }
         }
         break;
     case 6:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             if (mFlags & 0x4000) {
                 fn_80213774(0);
             } else {
@@ -269,7 +269,7 @@ void Antlion_804A6340::draw() {
         if (mFlags & 0x2000) {
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
         } else {
             s32 flags = -1;

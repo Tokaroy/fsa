@@ -49,7 +49,7 @@ bool ZoraEscortGoalList_80128460::fn_8012824C() {
             if (actor->mActorId != ACTOR_FZRA) {
                 return false;
             }
-            static_cast<ZoraEscortGoal_8049E424*>(actor)->fn_80126A4C(5);
+            static_cast<ZoraEscortGoal_8049E424*>(actor)->setState_80126A4C(5);
         }
     }
     return true;
@@ -63,7 +63,7 @@ void ZoraEscortGoalList_80128460::fn_801281A4() {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA) {
-            static_cast<ZoraEscortGoal_8049E424*>(actor)->fn_80126A4C(0xA);
+            static_cast<ZoraEscortGoal_8049E424*>(actor)->setState_80126A4C(0xA);
         }
     }
 }
@@ -87,7 +87,7 @@ void ZoraEscortGoalList_80128460::fn_80128074() {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA) {
-            static_cast<ZoraEscortGoal_8049E424*>(actor)->fn_80126A4C(0x10);
+            static_cast<ZoraEscortGoal_8049E424*>(actor)->setState_80126A4C(0x10);
         }
     }
 }

@@ -127,7 +127,7 @@ void VaatiCutscene_8049D940::update() {
             break;
         }
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -146,7 +146,7 @@ void VaatiCutscene_8049D940::update() {
     if (field_0x2a8.fn_801EB648()) {
         startSound_801F0E34(0x40051, 0);
     }
-    field_0x238.fn_801D1C18();
+    field_0x238.update_801D1C18();
 }
 
 // FIXME: 98.13 %, scheduling; behaviour clean.
@@ -181,7 +181,7 @@ void VaatiCutscene_8049D940::draw() {
         void* res = field_0x31c[field_0x238.mKey];
         if (res != NULL) {
             if (mLayer_0x4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+                gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
             }
         }
     }
@@ -322,9 +322,9 @@ void VaatiCutscene_8049D940::pool_8053C724() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void VaatiCutscene_8049D940::updateDescent() {
     if (mSpawnPos.y - mPos.y <= 24.0f) {
-        fn_801CD950(&mVel_0x3c.y, 0.4f, 0.002f);
+        moveToward_801CD950(&mVel_0x3c.y, 0.4f, 0.002f);
     } else {
-        fn_801CD950(&mVel_0x3c.y, 0.0f, -0.01f);
+        moveToward_801CD950(&mVel_0x3c.y, 0.0f, -0.01f);
     }
     if (mPos.y - mSpawnPos.y >= 48.0f) {
         fn_8011921C()->fn_801183BC();
@@ -355,7 +355,7 @@ void VaatiCutscene_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry
                 rot.y = 0.1f;
             } else {
                 f32 len = rot.length();
-                fn_801CD950(&len, 20.0f, 0.9f);
+                moveToward_801CD950(&len, 20.0f, 0.9f);
                 rot.normalize();
                 rot.scale(len);
             }
@@ -424,7 +424,7 @@ bool VaatiCutscene_8049D940::fn_80115A7C() {
             fn_8023DFF4(i, &pos);
         }
     }
-    field_0x270.fn_801D1C18();
+    field_0x270.update_801D1C18();
     return true;
 }
 #pragma auto_inline reset
@@ -458,7 +458,7 @@ void VaatiCutscene_8049D940::fn_801158B8() {
     pos = mPos;
     pos.z = 0.0f;
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x32c, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, field_0x32c, &params);
     }
 }
 #pragma auto_inline reset

@@ -26,7 +26,7 @@ public:
     /* 0x320 */ Elem_80200A80 field_0x320[4];
     /* 0x370 */ s32 field_0x370;
     /* 0x374 */ s32 field_0x374;
-    /* 0x378 */ s32 field_0x378; // timer for isBlocked_0x4C (fn_801F132C)
+    /* 0x378 */ s32 field_0x378; // timer for isBlocked_0x4C (isBlockedCommon_801F132C)
     /* 0x37C */ s32 field_0x37c;
     /* 0x380 */ u8 field_0x380[6];
     /* 0x386 */ u8 field_0x386[2];

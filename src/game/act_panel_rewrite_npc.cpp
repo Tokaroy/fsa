@@ -19,9 +19,9 @@ static const u32 lbl_8046D808[4] = {3, 0, 0, 0};
 // code under the actor.
 static inline void writeCell(PanelRewriteNPC_804A8E40* p) {
     if (0x30 == p->field_0x234 || p->field_0x234 == 0x10) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F9974(p->mLayer_0x4 + p->field_0x256, p->field_0x250, p->field_0x234);
+        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(p->mLayer_0x4 + p->field_0x256, p->field_0x250, p->field_0x234);
     } else {
-        u16 tile = fn_80226998(&p->mPos, p->mLayer_0x4);
+        u16 tile = getTileAt_80226998(&p->mPos, p->mLayer_0x4);
         if (tile == 2) {
             gBgRewrite_8053AC98->fn_802A3948(&p->mPos, 0, p->mLayer_0x4 + p->field_0x256, 0xB8);
         } else if (tile == 0xDC) {
@@ -75,7 +75,7 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
     }
 
     JGeometry::TVec2f pos(mPos.x, mPos.y);
-    field_0x250 = fn_80226BC4(&pos, mLayer_0x4);
+    field_0x250 = getCellIndex_80226BC4(&pos, mLayer_0x4);
     if (getGameView_802D6A9C()->fn_802D4ADC(mLayer_0x4, field_0x250) == true && field_0x234 != 0x30) {
         keep = 0;
     }
@@ -102,12 +102,12 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
             getGameView_802D6A9C()->fn_802D4874(mLayer_0x4, field_0x250, &bit, &mask);
             if (getGameView_802D6A9C()->fn_802D4ADC(mLayer_0x4, field_0x250) == true) {
                 field_0x234 = 0x10;
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + field_0x256, field_0x250, field_0x234);
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4 + field_0x256, field_0x250, field_0x234);
                 mAlive = false;
             }
         } else if (field_0x234 >= 0x8B && field_0x234 <= 0x8E) {
             if (getGameView_802D6A9C()->fn_802D49A8(mLayer_0x4, field_0x250) == true) {
-                gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4 + field_0x256, field_0x250, field_0x234);
+                gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4 + field_0x256, field_0x250, field_0x234);
                 field_0x230 = 1;
             }
         } else if (field_0x234 == 0x17 || field_0x234 == 0x16) {
@@ -142,7 +142,7 @@ void PanelRewriteNPC_804A8E40::vfunc_0x10() {
 PanelRewriteNPC_804A8E40::~PanelRewriteNPC_804A8E40() {
     if (field_0x23c == 2) {
         JGeometry::TVec2f pos(mPos.x, mPos.y);
-        s32 cell = fn_80226BC4(&pos, mLayer_0x4);
+        s32 cell = getCellIndex_80226BC4(&pos, mLayer_0x4);
         s32 slot = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, cell);
         if (slot != -1) {
             getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, slot, false);
@@ -240,10 +240,10 @@ void PanelRewriteNPC_804A8E40::vfunc_0x54(u8 arg) {
                 startSound_801F0E34(0x30003, 0);
             }
             if (field_0x240 == 2) {
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
             }
             if (field_0x240 == 3) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
             }
         }
     }
@@ -259,7 +259,7 @@ bool PanelRewriteNPC_804A8E40::vfunc_0x58() {
         return false;
     }
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('KEY0', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('KEY0', serial);
         if (serial < 0) {
             return false;
         }

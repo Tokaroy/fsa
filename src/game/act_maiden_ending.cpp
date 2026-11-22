@@ -144,7 +144,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     // with cmplwi 1 where a plain test gives clrlwi. (92 % instead of 95.7 % here).
     if (field_0x238 == 0) {
         if (stepSequence_8035C15C(7) == true) {
-            fn_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
+            startSequence_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
         }
     } else if (field_0x238 == 1) {
         if (stepSequence_8035C15C(9) == true) {
@@ -153,7 +153,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
         }
     } else if (field_0x238 == 2) {
         if (stepSequence_8035C15C(8) == true) {
-            fn_8035C1C4(8, lbl_80472718[mSpawnParam_0x90 & 7]);
+            startSequence_8035C1C4(8, lbl_80472718[mSpawnParam_0x90 & 7]);
         }
     } else if (field_0x238 == 3) {
         if (field_0x248 < 0x14) {
@@ -177,7 +177,7 @@ void MaidenEnding_804AD5B8::fn_8035D4B8() {
     } else if (field_0x238 == 4) {
         if (field_0x244 == 0) {
             field_0x24c = fn_801CD664(6);
-            fn_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
+            startSequence_8035C1C4(7, lbl_80472718[mSpawnParam_0x90 & 7]);
             field_0x244 = fn_801CD664(4);
             field_0x238 = 0;
         } else if (field_0x244 == 0x28) {
@@ -211,7 +211,7 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
                 setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
             }
             if (stepSequence_8035C15C(10) == true) {
-                fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
+                startSequence_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
             }
             mPos.z = 13.0f;
             field_0x274 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, -1, -1, NULL, NULL, true, 1.0f);
@@ -229,7 +229,7 @@ void MaidenEnding_804AD5B8::fn_8035D1CC() {
                 setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
             }
             if (stepSequence_8035C15C(10) == true) {
-                fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
+                startSequence_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
             }
             if (field_0x238 == 1) {
                 mState = 3;
@@ -261,7 +261,7 @@ void MaidenEnding_804AD5B8::fn_8035CF50() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (stepSequence_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
+        startSequence_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
 
     if ((field_0x270 & 0xC000U) == 0xC000U) {
@@ -366,7 +366,7 @@ void MaidenEnding_804AD5B8::fn_8035CAF8() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (stepSequence_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
+        startSequence_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
 
     JGeometry::TVec3f target;
@@ -396,7 +396,7 @@ void MaidenEnding_804AD5B8::fn_8035C940() {
         setEmitterPos_8013CB44(field_0x278, &mPos, -1, -1, true);
     }
     if (stepSequence_8035C15C(10) == true) {
-        fn_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
+        startSequence_8035C1C4(10, lbl_80472730[mSpawnParam_0x90 & 7]);
     }
     if (field_0x234 == 0) {
         mPos.z += 1.5f;

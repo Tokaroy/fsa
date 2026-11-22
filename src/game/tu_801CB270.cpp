@@ -41,7 +41,7 @@ static inline s32 forceGemKind(ActorBase_804A5770* actor) {
     return kind;
 }
 
-// Not auto-inlined: fn_801CD950 calls fn_801CD9F0 and fn_801CD930 calls fn_801CD970 out of line
+// Not auto-inlined: moveToward_801CD950 calls fn_801CD9F0 and fn_801CD930 calls fn_801CD970 out of line
 // in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Moves *value towards target by at most step; nonzero while it has not
@@ -106,7 +106,7 @@ bool fn_801CD970(s16* angle, s32 target, s32 step) {
 
 // Moves *value toward target by `step`; nonzero while it has not reached the
 // target (see EnemyBase.h).
-s32 fn_801CD950(f32* value, f32 target, f32 step) {
+s32 moveToward_801CD950(f32* value, f32 target, f32 step) {
     return fn_801CD9F0(value, target, step);
 }
 
@@ -426,7 +426,7 @@ void fn_801CCCC4(JGeometry::TVec3f* pos) {
 // Whether the tile at pos is one of the codes 0x40-0x49.
 bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
     bool result = false;
-    switch (fn_80226998(pos, layer)) {
+    switch (getTileAt_80226998(pos, layer)) {
     case 0x40:
     case 0x41:
     case 0x42:
@@ -444,13 +444,13 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer) {
 }
 
 bool fn_801CCBD0(const JGeometry::TVec3f* pos, s32 layer) {
-    // An 8-byte position (frame size); fn_80226998 reads only x and y.
+    // An 8-byte position (frame size); getTileAt_80226998 reads only x and y.
     JGeometry::TVec2f p;
     p.x = pos->x;
     p.y = pos->y;
     bool found = false;
     for (s32 i = 0; i < 2; i++) {
-        switch (fn_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        switch (getTileAt_80226998((const JGeometry::TVec3f*)&p, layer)) {
         case 0x19C:
         case 0x19D:
             found = true;
@@ -570,7 +570,7 @@ bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
                 out->y = actor->mVel_0x3c.y;
                 out->z = actor->mVel_0x3c.z;
             }
-            actor->fn_801F3668();
+            actor->markDead_801F3668();
         }
     }
     return found;

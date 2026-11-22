@@ -133,7 +133,7 @@ void CrystalCutscene5464_804AE088::init() {
     field_0x23c = mSpawnParam_0x90 & 0x1F;
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (field_0x23c != 4 && field_0x23c != 5) {
-        fn_801F3668();
+        markDead_801F3668();
         return;
     }
     if (field_0x23c == 5) {
@@ -389,10 +389,10 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
     }
     case 17: {
         field_0x24c = 0;
-        fn_801F3668();
+        markDead_801F3668();
         s32 bit = field_0x248;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             lbl_8053AD70->fn_8037AD00(4);
         }
         break;
@@ -537,10 +537,10 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 38: {
         field_0x24c = 0;
-        fn_801F3668();
+        markDead_801F3668();
         s32 bit = field_0x248;
         if (bit > 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             lbl_8053AD70->fn_8037AD00(5);
         }
         break;
@@ -588,7 +588,7 @@ void CrystalCutscene5464_804AE088::fn_8036AC58(s32 arg) {
         s32 frame = field_0x264 + 0x1B3;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + 0x1B3, 0, 1, -1, false, 0, 0);
     } else {
@@ -596,7 +596,7 @@ void CrystalCutscene5464_804AE088::fn_8036AC58(s32 arg) {
         s32 frame = arg + field_0x318.mCel;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, arg + field_0x318.mCel, 0, 1, -1, false, 0, 0);
     }
@@ -671,7 +671,7 @@ void CrystalCutscene5464_804AE088::fn_8036A894() {
         pos.z = 0.0f;
         void* res = field_0x310;
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
         }
     }
 }
@@ -738,7 +738,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
             fn_8011921C()->fn_801183BC();
             if (mNaviActor != NULL) {
                 mNaviActor->fn_803676CC();
-                mNaviActor->fn_801F3668();
+                mNaviActor->markDead_801F3668();
                 mNaviActor = NULL;
             }
         }
@@ -792,8 +792,8 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
         }
         break;
     case 4:
-        fn_801CD950(&field_0x284, 0.02f, 0.0004f);
-        fn_801CD950(&field_0x27c, 0.15f, 0.01f);
+        moveToward_801CD950(&field_0x284, 0.02f, 0.0004f);
+        moveToward_801CD950(&field_0x27c, 0.15f, 0.01f);
         mPos.y -= field_0x27c;
         if (mPos.y <= mSpawnPos.y - 48.0f) {
             mPos.y = mSpawnPos.y - 48.0f;
@@ -818,7 +818,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
             }
         } else {
             fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-            if (fn_803865B8(0)) {
+            if (stepMessageWindow_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(6);
             }
@@ -838,7 +838,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
     case 7:
         field_0x24c = 0xE1;
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x60(8);
         }
@@ -868,7 +868,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
             break;
         }
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x60(0xB);
             mNaviActor->mState = 6;
@@ -887,10 +887,10 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
     case 13:
         field_0x24c = 0xE1;
         if (fn_8011921C()->field_0x1 == 0) {
-            fn_801CD950(&field_0x284, 0.0f, -0.0002f);
+            moveToward_801CD950(&field_0x284, 0.0f, -0.0002f);
         }
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -904,7 +904,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
     if (field_0x237 != 0) {
         field_0x280 += field_0x284;
     }
-    field_0x318.fn_801D1C18();
+    field_0x318.update_801D1C18();
     if (field_0x234 != 0) {
         fn_8036AA60();
     }
@@ -1003,8 +1003,8 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
             }
             break;
         case 0x17:
-            fn_801CD950(&field_0x284, 0.02f, 0.0004f);
-            fn_801CD950(&field_0x27c, 0.15f, 0.01f);
+            moveToward_801CD950(&field_0x284, 0.02f, 0.0004f);
+            moveToward_801CD950(&field_0x27c, 0.15f, 0.01f);
             mPos.y -= field_0x27c;
             if (mPos.y <= mSpawnPos.y - 48.0f) {
                 mPos.y = mSpawnPos.y - 48.0f;
@@ -1017,10 +1017,10 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
         case 0x18:
             field_0x24c = 0xE1;
             if (fn_8011921C()->field_0x1 == 0) {
-                fn_801CD950(&field_0x284, 0.0f, -0.0002f);
+                moveToward_801CD950(&field_0x284, 0.0f, -0.0002f);
             }
             fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-            if (fn_803865B8(0)) {
+            if (stepMessageWindow_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(0x19);
                 field_0x25c = 0;
@@ -1071,7 +1071,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
                 fn_8038BD08(0, 0x848, mLayer_0x4, pos, 0x62);
             } else if (field_0x258 == 49) {
                 fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-                if (!fn_803865B8(0)) {
+                if (!stepMessageWindow_803865B8(0)) {
                     field_0x258++;
                 } else {
                     fn_80388EEC(0);
@@ -1105,7 +1105,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
                 }
             } else {
                 fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-                if (fn_803865B8(0)) {
+                if (stepMessageWindow_803865B8(0)) {
                     fn_80388EEC(0);
                     vfunc_0x60(0x20);
                 }
@@ -1123,7 +1123,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
             break;
         case 0x22:
             fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-            if (fn_803865B8(0)) {
+            if (stepMessageWindow_803865B8(0)) {
                 fn_80388EEC(0);
                 vfunc_0x60(0x23);
             }
@@ -1140,7 +1140,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
                 }
             } else {
                 fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-                if (fn_803865B8(0)) {
+                if (stepMessageWindow_803865B8(0)) {
                     fn_80388EEC(0);
                     vfunc_0x60(0x24);
                 }
@@ -1210,7 +1210,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
     if (field_0x237 != 0) {
         field_0x280 += field_0x284;
     }
-    field_0x318.fn_801D1C18();
+    field_0x318.update_801D1C18();
     if (field_0x234 != 0) {
         fn_8036AA60();
     }
@@ -1316,7 +1316,7 @@ void CrystalCutscene5464_804AE088::fn_80368660() {
                     s32 frame = field_0x264 + lbl_80474DC4[i];
                     if (mLayer_0x4 < 8) {
                         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
+                        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
                     }
                     fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x264 + lbl_80474DC4[i], 0, 1, -1, false, 0, 0);
                 } else {
@@ -1387,7 +1387,7 @@ void CrystalCutscene5464_804AE088::fn_80368198() {
             ResTIMG* tex = (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_8053A1C8);
             field_0x314 = new J2DPicture(tex);
         }
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         field_0x314->setBlackWhite(JUtility::TColor(0xFFFFFFFF), JUtility::TColor(0));
         field_0x314->setAlpha(field_0x290);
         field_0x314->draw(0.0f, 0.0f, (s32)JUTVideo::getManager()->getFbWidth(),

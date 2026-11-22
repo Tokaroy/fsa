@@ -67,7 +67,7 @@ void ZoraEnemy_804A3D7C::init() {
     mTargetSpeed = 0.0f;
     mAnim.setKeyTables_801D2608(lbl_804A3D68, 5);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     mSpawnParam_0x90 = clamp(mSpawnParam_0x90, 0U, 15U);
     vfunc_0xA4();
 }
@@ -183,7 +183,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         }
         vfunc_0xA8();
         if (field_0x54.x != 1.5f) {
-            fn_801CD950(&field_0x54.x, 1.5f, 0.05f);
+            moveToward_801CD950(&field_0x54.x, 1.5f, 0.05f);
             field_0x54.y = field_0x54.x;
             field_0x54.z = field_0x54.x;
         } else if (mStateTimer >= field_0x250) {
@@ -195,7 +195,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (mStateTimer > 1) {
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 fn_801BACE8(3);
             }
         }
@@ -216,7 +216,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
                     }
                 }
             }
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 fn_801BACE8(5);
             }
         }
@@ -230,7 +230,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
             mBox2.f.y = mBox.f.y;
         }
         if (mStateTimer > 1) {
-            if (mAnim.fn_801D21F0()) {
+            if (mAnim.isStopped_801D21F0()) {
                 fn_801BACE8(0);
             }
         }

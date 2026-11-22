@@ -56,7 +56,7 @@ static const u16 lbl_80543DE0[4] = {0x1DC, 0x1DF, 0x1E5, 0x1E2};
 static const u16 lbl_80543DE8[4] = {0x1DD, 0x1E0, 0x1E6, 0x1E3};
 static const u16 lbl_80543DF0[4] = {0x1DE, 0x1E1, 0x1E7, 0x1E4};
 
-void fn_80453884(J2DWindow* window, WindowCornerColors_80453830 colors) {
+void setWindowContentsColor_80453884(J2DWindow* window, WindowCornerColors_80453830 colors) {
     window->setContentsColor(colors.field_0x0, colors.field_0x4, colors.field_0x8, colors.field_0xc);
 }
 
@@ -222,12 +222,12 @@ CollectScreen_804B1D58::CollectScreen_804B1D58() {
         if (i == field_0xf8) {
             static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
             static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-            fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+            setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
             mScreen->search(lbl_80490FE0[i])->setAlpha(255);
         } else {
             static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
             static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-            fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+            setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
             mScreen->search(lbl_80490FE0[i])->setAlpha(200);
         }
     }
@@ -333,7 +333,7 @@ void CollectScreen_804B1D58::fn_80452350() {
 }
 
 void CollectScreen_804B1D58::fn_80452308() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
@@ -363,11 +363,11 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 for (s32 i = 0; i < 3; i++) {
                     if (field_0xfe >= start + i * step) {
                         if (i == 2) {
-                            done = field_0x48[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                            done = field_0x48[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         } else {
-                            field_0x48[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                            field_0x48[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         }
-                        field_0x60[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
+                        field_0x60[i]->slideX_80402B10(frames, 0, 300.0f, 0.0f);
                         field_0x48[i]->animateAlpha_80402628(frames, 0, field_0x48[i]->field_0x28);
                         field_0x54[i]->animateAlpha_80402628(frames, 0, field_0x54[i]->field_0x28);
                         field_0x60[i]->animateAlpha_80402628(frames, 0, field_0x60[i]->field_0x28);
@@ -491,12 +491,12 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 if (i == field_0xf8) {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(255);
                 } else {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                 }
             }
@@ -509,12 +509,12 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 if (i == field_0xf8) {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(255);
                 } else {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                 }
             }
@@ -534,12 +534,12 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 if (i == field_0xf8) {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(255);
                 } else {
                     static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
                     static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-                    fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+                    setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
                     mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                 }
             }
@@ -840,12 +840,12 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                     if (i == field_0xf8) {
                         static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
                         static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-                        fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+                        setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
                         mScreen->search(lbl_80490FE0[i])->setAlpha(255);
                     } else {
                         static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
                         static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-                        fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+                        setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
                         mScreen->search(lbl_80490FE0[i])->setAlpha(200);
                     }
                 }
@@ -985,12 +985,12 @@ void CollectScreen_804B1D58::fn_8044D894() {
         if (i == field_0xf8) {
             static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[0], field_0x15c[0]);
             static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[0], field_0x14c[0]);
-            fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
+            setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[0]);
             mScreen->search(lbl_80490FE0[i])->setAlpha(255);
         } else {
             static_cast<J2DPicture*>(mScreen->search(lbl_80490FC8[i]))->setBlackWhite(field_0x154[1], field_0x15c[1]);
             static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i]))->setBlackWhite(field_0x144[1], field_0x14c[1]);
-            fn_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
+            setWindowContentsColor_80453884(static_cast<J2DWindow*>(mScreen->search(lbl_80490FE0[i])), field_0x164[1]);
             mScreen->search(lbl_80490FE0[i])->setAlpha(200);
         }
     }

@@ -189,7 +189,7 @@ void KnightOfHyrule_804AABA8::update() {
     case 8:
         fn_8022FE80(field_0x248, mLayer_0x4, mSerial, false, false);
         if (field_0x248 == fn_8022FD8C(mSerial)) {
-            if (fn_8038AD24(field_0x248, lbl_804714A0[field_0x234], mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
+            if (openMessage_8038AD24(field_0x248, lbl_804714A0[field_0x234], mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
                 mState = 9;
             }
         }
@@ -341,7 +341,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (fn_8038BD08(field_0x248, lbl_804714B0[field_0x234], mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
                 mState = 21;
             }
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             break;
         case 80:
             fn_80230F44(field_0x244, 0x1000002);
@@ -369,7 +369,7 @@ void KnightOfHyrule_804AABA8::update() {
     case 22:
         fn_80230534(false);
         fn_8022CC20(field_0x248);
-        getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 20) & 0x1F, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 20) & 0x1F, true, 0xFF);
         for (s32 i = 0; i < 4; i++) {
             fn_8022CA6C(i, 5, true);
         }

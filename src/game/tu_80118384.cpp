@@ -234,7 +234,7 @@ void cls_80119E5C::fn_80119628() {
 
 void cls_80119E5C::fn_801194C4() {
     if (field_0x0 != 0 && field_0x24 != 2 && field_0x14 != 0.0f) {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         switch (field_0x24) {
         case 1:
             field_0x2c->setBlackWhite(JUtility::TColor(0xFFFFFFFF), JUtility::TColor(0));

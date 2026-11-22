@@ -3,7 +3,7 @@
 // and constructs it with the weak constructor fn_80200310, which calls
 // ActorBase_804A5770's and stores this class's vtable (0x8049C9E8). init
 // unpacks two bytes of the spawn argument at 0x90; update hands the actor
-// to fn_801F3668, which clears mAlive and reports it to the game view.
+// to markDead_801F3668, which clears mAlive and reports it to the game view.
 
 #include "game/GameAudio.h"
 #include "game/ActorBase.h"
@@ -16,7 +16,7 @@ void DebugWarpSettings_8049C9E8::init() {
 }
 
 void DebugWarpSettings_8049C9E8::update() {
-    fn_801F3668();
+    markDead_801F3668();
 }
 
 void DebugWarpSettings_8049C9E8::draw() {}

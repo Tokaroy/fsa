@@ -38,20 +38,20 @@ public:
     bool openMessage(s32 player);
     bool openMessageC678(s32 player);
 
-    // fn_8038AD24 takes the position by value. The original loads the message,
+    // openMessage_8038AD24 takes the position by value. The original loads the message,
     // serial and layer before that copy, so they are parameters here.
     bool talk(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038AD24(player, msg, serial, layer, pos, flags);
+        return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
     }
     bool talkC678(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-        return fn_8038C678(player, msg, serial, layer, pos, flags);
+        return openMessageById_8038C678(player, msg, serial, layer, pos, flags);
     }
     /* 0x230 */ s32 mState; // 0: look for a player, 1: wait for the message to end
     /* 0x234 */ s32 mPlayer; // the player the message is open for; -1 when none
     /* 0x238 */ u32 field_0x238;     // index into the state table (lbl_804AAED4)
     /* 0x23C */ u32 field_0x23c;
     /* 0x240 */ u32 field_0x240;    // 0, 1 or 2: compared against isScreenFlagSet_0x34()
-    /* 0x244 */ u32 field_0x244;    // message for fn_8038AD24
+    /* 0x244 */ u32 field_0x244;    // message for openMessage_8038AD24
     /* 0x248 */ JGeometry::TBox2f field_0x248; // box moved by mPos for fn_8022FEB8 / fn_8022FF8C
     /* 0x258 */ s32 field_0x258;
     /* 0x25C */ s32 field_0x25c;    // 0 or 1 toggled, or an index into lbl_804AAF40

@@ -41,7 +41,7 @@ static void (TinglesTowerTingleAndSign_804AAD60::*lbl_804AACDC[11])() = {
 
 // Passes the position on by value (the original loads the other arguments before its copy).
 static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 // Starts a message for a player and remembers the player and the message.
@@ -214,7 +214,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315EE8() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8023EA28(i) && !fn_8022F478(i) && fn_802300EC(i) && fn_80230CFC(i) == 2) {
+            if (!fn_8023EA28(i) && !fn_8022F478(i) && fn_802300EC(i) && getPlayerFacing_80230CFC(i) == 2) {
                 const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(i);
                 bool inBox = false;
                 if (pPos->x >= box.i.x && pPos->y >= box.i.y && pPos->x < box.f.x && pPos->y < box.f.y) {
@@ -273,7 +273,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315EE8() {
             box.f.x += mPos.x;
             box.f.y += mPos.y;
             fn_8022FE80(field_0x254, mLayer_0x4, mSerial, true, false);
-            if (fn_803865B8(field_0x254)) {
+            if (stepMessageWindow_803865B8(field_0x254)) {
                 if (fn_8037EFB4(field_0x254) == 0) {
                     fn_80384C58(field_0x254, mSerial);
                     if (gGameRoot_8053AAF8->field_0x7e != 0 && lbl_80529DEC.field_0x24e != 0) {
@@ -428,7 +428,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 5) {
                 if (field_0x238 == 0) {
                     field_0x238 = 5 - gGameRoot_8053AAF8->fn_80138A30();
@@ -496,7 +496,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315460() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
                 field_0x234 = 0;
@@ -559,7 +559,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315080() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
                 field_0x234 = 0;
@@ -649,7 +649,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80314B1C() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 8) {
                 field_0x238++;
                 field_0x234 = 0;
@@ -717,7 +717,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_803146DC() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 >= 1 && field_0x238 <= 4) {
                 s32 count = fn_80235ACC(field_0x238 - 1);
                 if (count != 0) {
@@ -786,7 +786,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_803142E4() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 2) {
                 field_0x238++;
                 field_0x234 = 0;
@@ -876,7 +876,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80313D7C() {
         }
     } else if (field_0x234 == 1) {
         fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(field_0x254)) {
+        if (stepMessageWindow_803865B8(field_0x254)) {
             if (field_0x238 < 8) {
                 field_0x238++;
                 field_0x234 = 0;
@@ -898,7 +898,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80313C20() {
     if (field_0x234 != 1) {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 p = fn_8022FD8C(mSerial);
-        if (p >= 0 && fn_802300EC(p) && fn_80230CFC(p) == 3) {
+        if (p >= 0 && fn_802300EC(p) && getPlayerFacing_80230CFC(p) == 3) {
             startMessage(p, field_0x268, 0x220);
         }
     } else {

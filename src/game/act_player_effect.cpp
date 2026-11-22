@@ -109,7 +109,7 @@ void PlayerEffect_804A6E20::update() {
         mPos = *getPlayerPos_8023E724(mSpawnParam_0x90 & 3);
         field_0x234 = ((field_0x230 >> 1) & 7) + 0x7D;
         s32 player = mSpawnParam_0x90 & 3;
-        if (fn_80237774(player) == lbl_80529DEC.field_0xd8[player]) {
+        if (getPlayerLife_80237774(player) == lbl_80529DEC.field_0xd8[player]) {
             mAlive = false;
         }
         break;
@@ -317,7 +317,7 @@ void PlayerEffect_804A6E20::update() {
 static inline void drawShadow_802297FC(s32 layer, const JGeometry::TVec3f* pos, s32 frame, SpriteParams_801F5AE0* params) {
     if (layer < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, params, 1.0f, 1.0f);
     }
 }
 

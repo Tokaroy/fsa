@@ -44,9 +44,9 @@ bool cls_804A51E4::fn_80218538() const {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         bool inView = false;
         JGeometry::TVec3f a(box.i.x, box.i.y, 0.0f);
-        if (camera->fn_8030C2A8(&a)) {
+        if (camera->isOnScreen_8030C2A8(&a)) {
             JGeometry::TVec3f b(box.f.x, box.f.y, 0.0f);
-            if (camera->fn_8030C2A8(&b)) {
+            if (camera->isOnScreen_8030C2A8(&b)) {
                 inView = true;
             }
         }
@@ -77,7 +77,7 @@ void cls_804A51E4::fn_8021835C() {
             visible = true;
         }
     } else {
-        if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&a) && gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&b)) {
+        if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&a) && gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&b)) {
             visible = true;
         }
     }

@@ -769,7 +769,7 @@ void Bomb_8049F784::update() {
                             other = true;
                         }
                         if (other == true) {
-                            fn_801F3128(&mid);
+                            getBoxCenter_801F3128(&mid);
                             hitPlayerGroup_80238548(player, damage, &mid, 5);
                             hit = 1;
                         }

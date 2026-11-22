@@ -48,7 +48,7 @@ static inline void drawSmp(TrickFloor2_804AA628* self, const JGeometry::TVec3f* 
                            SpriteParams_801F5AE0* params) {
     if (self->mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(pos, res, params);
     }
 }
 
@@ -82,7 +82,7 @@ static inline void fillTiles(TrickFloor2_804AA628* self, f32 x, u16 tile) {
         f32 y = self->mPos.y;
         for (s32 j = 0; j < lbl_8046F7A4[self->mType]; j++) {
             s32 ty = (s32)(y - box.i.y);
-            gGameRoot2_8053AB10->field_0x20->fn_802F9974(self->mLayer_0x4, tileIndex(tx, ty), tile);
+            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(self->mLayer_0x4, tileIndex(tx, ty), tile);
             y += 16.0f;
         }
         x += 16.0f;
@@ -297,9 +297,9 @@ void TrickFloor2_804AA628::update() {
                     s32 ty = (s32)(y - vbox.i.y);
                     s32 index = tileIndex(tx, ty);
                     if (mType != 1) {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, field_0x250);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, field_0x250);
                     } else {
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(mLayer_0x4, index, lbl_8046F7C0[i][j]);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(mLayer_0x4, index, lbl_8046F7C0[i][j]);
                     }
                     y += 16.0f;
                 }
@@ -391,7 +391,7 @@ void TrickFloor2_804AA628::draw() {
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
     JGeometry::TVec3f hole(mPos.x + lbl_8046F7E0[mType], mPos.y + lbl_8046F7FC[mType], mPos.z);
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&hole, res, &sp);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&hole, res, &sp);
     }
 
     m[0][3] = 0.0f;

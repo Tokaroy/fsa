@@ -36,7 +36,7 @@ void Merchant_8049CD48::init() {
     mAnim.setFrame_801D1F14(0.0f);
 }
 
-// FIXME: 92.13%, scheduling only. In the fn_8038AD24 call the original loads mSerial, the
+// FIXME: 92.13%, scheduling only. In the openMessage_8038AD24 call the original loads mSerial, the
 // mPos copy address, mLayer_0x4 and the player before the psq_l copy of mPos and the
 // clrlwi of msg; ours copies mPos (psq_l/lfs) first and loads the serial and layer last.
 void Merchant_8049CD48::update() {
@@ -58,7 +58,7 @@ void Merchant_8049CD48::update() {
                 if (!found) {
                     msg = 0x2AA;
                 }
-                if (fn_8038AD24(player, msg, mSerial, mLayer_0x4, mPos, 0x28)) {
+                if (openMessage_8038AD24(player, msg, mSerial, mLayer_0x4, mPos, 0x28)) {
                     mPlayer = player;
                     mState = 1;
                 }
@@ -81,7 +81,7 @@ void Merchant_8049CD48::update() {
         }
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void Merchant_8049CD48::draw() {
@@ -90,7 +90,7 @@ void Merchant_8049CD48::draw() {
     const JGeometry::TVec3f* pos = &mPos;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1AB, false, 1, -1, 0, 0, 0);
 }

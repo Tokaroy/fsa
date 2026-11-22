@@ -112,12 +112,12 @@ void ShadowLinkBase_804A6A00::fn_802216E8(s32 limit) {
 }
 
 // FIXME: 96.83 %. Argument/register order only: fn_801CBB98 is now declared once (shared
-// EnemyBase.h signature: angle before distance), which moves the fn_801F6874 call and swaps r30/r31.
+// EnemyBase.h signature: angle before distance), which moves the dirToAngle_801F6874 call and swaps r30/r31.
 void ShadowLinkBase_804A6A00::fn_80221670() {
     // pos reference: steers the register allocation (without it 81 %)
     const JGeometry::TVec3f& pos = mPos;
     JGeometry::TBox2f* box = layerBox(mLayer_0x4);
-    fn_801CBB98(box, &pos, fn_801F6874(field_0x2a8), 48.0f, &field_0x2b0);
+    fn_801CBB98(box, &pos, dirToAngle_801F6874(field_0x2a8), 48.0f, &field_0x2b0);
 }
 
 void ShadowLinkBase_804A6A00::fn_8022149C(s32 state) {
@@ -190,14 +190,14 @@ void ShadowLinkBase_804A6A00::fn_802212AC() {
         mAnim.fn_801D22A0(mDir_0x98 + 4, 2);
     } else if (mStateTimer > 0x2D) {
         if (__fabsf(field_0x2b0.x - mPos.x) < 0.1f && __fabsf(field_0x2b0.y - mPos.y) < 0.1f) {
-            fn_801F3668();
+            markDead_801F3668();
         }
     }
 }
 
 void ShadowLinkBase_804A6A00::fn_80221250() {
     JGeometry::TVec2f d;
-    fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, mSpeed);
+    calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, mSpeed);
     mVel_0x3c.x = d.x;
     mVel_0x3c.y = d.y;
     applyGravity_0x84();

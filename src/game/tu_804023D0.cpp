@@ -312,7 +312,7 @@ u32 fn_80403284(const char* name) {
     return lbl_80529DEC.mBossArchive_0x10->getResSize(lbl_80529DEC.mBossArchive_0x10->getResource('????', name));
 }
 
-void* fn_80403244(u32 type, const char* name) {
+void* getLogoArchiveResource_80403244(u32 type, const char* name) {
     return lbl_80529DEC.mLogoArchive_0x18->getResource(type, name);
 }
 
@@ -395,7 +395,7 @@ void PaneCtrl_804AF86C::fn_80402CE0(f32 x, f32 y) {
     resizeKeepCentre(this, x, y);
 }
 
-u8 PaneCtrl_804AF86C::fn_80402B10(s16 frames, u8 mode, f32 x, f32 y) {
+u8 PaneCtrl_804AF86C::slideX_80402B10(s16 frames, u8 mode, f32 x, f32 y) {
     if (field_0x20 < frames - 1) {
         field_0x20++;
         f32 t;

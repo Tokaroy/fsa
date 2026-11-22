@@ -27,7 +27,7 @@ Now:      total: 4449 / 11561 functions, 800028 / 4442088 bytes of code (18.01 %
 
 ## Rebase onto headers v2 (3729a91)
 - Local `// TODO(shared)` declarations removed; the unit uses ActorBase.h /
-  GameGlobals.h (fn_801F0D20 and fn_801F3668 are now ActorBase members).
+  GameGlobals.h (playSe_801F0D20 and markDead_801F3668 are now ActorBase members).
 - The former FIXME'd update (setScreenFlag_0x30(u8, bool) / bool isScreenFlagSet_0x34()) now
   matches; the vtable matches with the renamed slot functions.
 

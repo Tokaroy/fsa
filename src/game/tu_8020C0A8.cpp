@@ -31,10 +31,10 @@ void ZolSmallSlime_804A5F40::init() {
     field_0xb0 = 0x31101;
     if (mDir_0x98 == 3) {
         if (fn_801CF144()) {
-            mDir_0x98 = fn_801CF720(3);
+            mDir_0x98 = pickNewDir_801CF720(3);
         }
     }
-    field_0x2ae = fn_801F6874(mDir_0x98);
+    field_0x2ae = dirToAngle_801F6874(mDir_0x98);
     field_0x194 = 1;
     mState = 0;
     mStateTimer = 0;
@@ -43,10 +43,10 @@ void ZolSmallSlime_804A5F40::init() {
     mTargetSpeed = 0.0f;
     mAnim.setKeyTables_801D2608(lbl_8053A178, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     if (mFlags & 0x2000) {
         if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
-            fn_801F3668();
+            markDead_801F3668();
         } else {
             JGeometry::TBox2f* box = layerBox(mLayer_0x4);
             JGeometry::TBox2f bounds(mMapBox_0x80.i.x + mPos.x, mMapBox_0x80.i.y + mPos.y,
@@ -57,7 +57,7 @@ void ZolSmallSlime_804A5F40::init() {
                 inside = true;
             }
             if (!inside) {
-                fn_801F3668();
+                markDead_801F3668();
             }
         }
     }
@@ -127,11 +127,11 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
             field_0x2a8 = -1;
             field_0x2ac = 0;
             if (fn_801CF144()) {
-                mDir_0x98 = fn_801CF720(3);
+                mDir_0x98 = pickNewDir_801CF720(3);
             } else {
                 mDir_0x98 = fn_801CF6B8();
             }
-            field_0x2ae = fn_801F6874(mDir_0x98);
+            field_0x2ae = dirToAngle_801F6874(mDir_0x98);
             mStateTimer = 0;
             mState = 1;
         }
@@ -140,12 +140,12 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
         if (mapHit) {
             if (fn_801CF144()) {
                 if (mDir_0x98 == 3) {
-                    mDir_0x98 = fn_801CF720(3);
+                    mDir_0x98 = pickNewDir_801CF720(3);
                 } else {
                     mDir_0x98 = fn_801CF798(3, mDir_0x98);
                 }
             } else {
-                mDir_0x98 = fn_801CF720(mDir_0x98);
+                mDir_0x98 = pickNewDir_801CF720(mDir_0x98);
             }
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
@@ -162,16 +162,16 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
                 field_0x2a8 = -1;
                 field_0x2ac = 0;
                 if (fn_801CF144()) {
-                    mDir_0x98 = fn_801CF720(3);
+                    mDir_0x98 = pickNewDir_801CF720(3);
                 } else {
                     mDir_0x98 = fn_801CF6B8();
                 }
-                field_0x2ae = fn_801F6874(mDir_0x98);
+                field_0x2ae = dirToAngle_801F6874(mDir_0x98);
                 mStateTimer = 0;
                 mState = 1;
             }
         }
-        field_0x2ae = fn_801F6874(mDir_0x98);
+        field_0x2ae = dirToAngle_801F6874(mDir_0x98);
         break;
     case 2:
         field_0x2ae = getAngleToPlayer_801D0280(field_0x2a8) - 0x8000;

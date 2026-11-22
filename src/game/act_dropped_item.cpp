@@ -26,7 +26,7 @@ static inline void spawnImup(u32 param, s32 i, const JGeometry::TVec3f* pos) {
 }
 
 inline void DroppedItem_804A8C80::talk(s32 layer, s32 serial, const JGeometry::TVec3f& pos) {
-    fn_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
+    openMessage_8038AD24(field_0x25c, 0x151, serial, layer, pos, 4);
 }
 
 // FIXME: 97.66 %, missing/extra; behaviour clean.
@@ -334,7 +334,7 @@ void DroppedItem_804A8C80::fn_802C0570() {
                 s32 absX = FABS(diffX);
                 f32 diffY = mPos.y - playerPos.y;
                 s32 absY = FABS(diffY);
-                s32 dir = fn_80230CFC(player);
+                s32 dir = getPlayerFacing_80230CFC(player);
                 if ((absX >= 0 && absX <= 15 && dir == 0) || dir == 1) {
                     if (mPos.x > playerPos.x) {
                         mPos.x += (15 - absX) >> 1;

@@ -8,7 +8,7 @@ void ForceGemShadowNPC_804ACD18::init() {
 
 void ForceGemShadowNPC_804ACD18::update() {
     if (field_0x230 >= 50) {
-        fn_801F3668();
+        markDead_801F3668();
     } else {
         field_0x230++;
     }

@@ -276,7 +276,7 @@ bool BigMoldorm_8049F6C8::fn_80149AEC() {
         s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
         if (player >= 0) {
             if (player == field_0x278 || getRepresentativePlayer_8022EA0C(player) == field_0x278) {
-                if (fn_801F2FAC() && mLife != 10000) {
+                if (checkPlayerAttacks_801F2FAC() && mLife != 10000) {
                     field_0x270 = 0;
                     hit = 1;
                     mPos.z = 0.0f;

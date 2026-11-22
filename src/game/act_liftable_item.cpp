@@ -353,7 +353,7 @@ void LiftableItem_804A01D0::update() {
     case 1:
         if (field_0x238 <= 0) {
             if (field_0x26c != 0) {
-                if (field_0x25c != 0 || fn_803865B8(field_0x250)) {
+                if (field_0x25c != 0 || stepMessageWindow_803865B8(field_0x250)) {
                     die_0x24();
                 }
                 break;
@@ -515,7 +515,7 @@ void LiftableItem_804A01D0::draw() {
         s32 id = field_0x234 + 0x1d;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234 + 0x1d, false, 2, -1, true, 0, 0);
     } else if (field_0x234 == 0x20) {
@@ -546,7 +546,7 @@ void LiftableItem_804A01D0::draw() {
         s32 id = field_0x234 + 0x11;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234 + 0x11, false, 2, -1, true, 0, 0);
     } else {
@@ -554,7 +554,7 @@ void LiftableItem_804A01D0::draw() {
         s32 id = field_0x234 + 0x1cd;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
         }
         fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x234 + 0x1cd, false, 2, -1, true, 0, 0);
     }

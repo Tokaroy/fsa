@@ -44,12 +44,12 @@ void AfterGoalOpening_8049DD68::update() {
     case 2:
         break;
     case 3:
-        fn_801CD950(&field_0x238, 255.0f, 10.0f);
+        moveToward_801CD950(&field_0x238, 255.0f, 10.0f);
         break;
     case 4:
         break;
     case 5:
-        fn_801CD950(&field_0x238, 0.0f, -10.0f);
+        moveToward_801CD950(&field_0x238, 0.0f, -10.0f);
         break;
     case 6:
     case 7:
@@ -60,7 +60,7 @@ void AfterGoalOpening_8049DD68::update() {
     if (field_0x230) {
         setOverlayRect();
     }
-    field_0x274.fn_801D1C18();
+    field_0x274.update_801D1C18();
 }
 
 void AfterGoalOpening_8049DD68::draw() {
@@ -165,7 +165,7 @@ void AfterGoalOpening_8049DD68::setState_8011D1B8(s32 state) {
     case 9:
         getGameView_802D6A9C()->fn_802D9CB0();
         fn_8011921C()->fn_80118384();
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
     field_0x234 = state;
@@ -209,11 +209,11 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         break;
     case 2:
         if (field_0x240.y - (mSpawnPos.y - 440.0f) >= 116.0f) {
-            fn_801CD950(&field_0x23c, -1.4f, -0.01f);
+            moveToward_801CD950(&field_0x23c, -1.4f, -0.01f);
         } else {
-            fn_801CD950(&field_0x23c, -0.1f, 0.006f);
+            moveToward_801CD950(&field_0x23c, -0.1f, 0.006f);
         }
-        fn_801CD950(&field_0x240.y, mSpawnPos.y - 440.0f, field_0x23c);
+        moveToward_801CD950(&field_0x240.y, mSpawnPos.y - 440.0f, field_0x23c);
         {
             JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
             gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
@@ -256,7 +256,7 @@ void AfterGoalOpening_8049DD68::fn_8011CF48() {
         } else {
             pos = &(*it)->mPos;
         }
-        fn_801CD950(&field_0x240.y, 40.0f + pos->y, 1.8f);
+        moveToward_801CD950(&field_0x240.y, 40.0f + pos->y, 1.8f);
         JGeometry::TVec2f c(field_0x240.x, field_0x240.y);
         gGameRoot2_8053AB10->field_0x24->fn_8030C7C4(&c, field_0x258);
         break;

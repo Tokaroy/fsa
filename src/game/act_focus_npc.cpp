@@ -20,7 +20,7 @@ void FocusNPC_804A8EA0::update() {
         sw = mSwitch;
         if (sw == 0 || getGameView_802D6A9C()->fn_802D800C(sw)) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-            if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
+            if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&mPos) == 1) {
                 if ((mSpawnParam_0x90 >> 27) != 0) {
                     setScreenFlag_0x30(0xFF, true);
                 }
@@ -41,7 +41,7 @@ void FocusNPC_804A8EA0::update() {
         sw = mSwitch;
         if (sw == 0 || getGameView_802D6A9C()->fn_802D800C(sw)) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
-            if (gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == 1) {
+            if (gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&mPos) == 1) {
                 if ((mSpawnParam_0x90 >> 27) != 0) {
                     setScreenFlag_0x30(0xFF, true);
                 }

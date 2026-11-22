@@ -31,7 +31,7 @@ public:
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     void fn_801BC244();
-    void fn_801BC554(s32 state);
+    void setState_801BC554(s32 state);
     u8 computeShadowAlpha();
     bool checkPlayerHit();
 

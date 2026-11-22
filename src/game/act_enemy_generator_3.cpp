@@ -35,7 +35,7 @@ void EnemyGenerator3_804AA1D0::init() {
 
 // FIXME: 97.8 %. The original's 30-iteration search loop falls straight into
 // the "mRemaining = mCount; mState = 4" block when it runs out and branches
-// to the spawn code when fn_801F78F4 returns < 0 (no second count test after
+// to the spawn code when findNextActorById_801F78F4 returns < 0 (no second count test after
 // the loop; it compares r3 before copying it to the serial register); ours
 // re-tests count after the loop and uses mr. Registers for mLayer_0x4 follow
 // (r29 here, r30 in the original).
@@ -54,7 +54,7 @@ void EnemyGenerator3_804AA1D0::update() {
             if (mMode == 1) {
                 s32 found = -1;
                 do {
-                    found = getActorManager_801F856C()->fn_801F78F4(mActorId, found);
+                    found = getActorManager_801F856C()->findNextActorById_801F78F4(mActorId, found);
                     if (found < 0) {
                         break;
                     }

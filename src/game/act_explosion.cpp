@@ -74,7 +74,7 @@ void Explosion_804A7FB8::update() {
             mEmitter238->becomeInvalidEmitter();
             mEmitter238 = NULL;
         }
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
 }

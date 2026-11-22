@@ -52,7 +52,7 @@ void EnvironmentSwitchControl_804A8638::init() {
     field_0x244 = 0;
     switch (field_0x260) {
     case 1:
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         break;
     case 2:
         gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
@@ -418,7 +418,7 @@ void EnvironmentSwitchControl_804A8638::update() {
     case 2:
         switch (field_0x240) {
         case 0:
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             field_0x240 = 0xC;
             break;
         case 0xC:
@@ -859,7 +859,7 @@ void EnvironmentSwitchControl_804A8638::update() {
                     field_0x238->becomeInvalidEmitter();
                     field_0x238 = NULL;
                 }
-                gGameRoot_8053AAF8->fn_80138B7C();
+                gGameRoot_8053AAF8->startStageMusic_80138B7C();
             }
             u32 color = (field_0x2e0 << 24) | (field_0x2e4 << 16) | (field_0x2e8 << 8) | field_0x2ec;
             fn_8013A884(&color);

@@ -128,7 +128,7 @@ void Terrorpin_804A3B10::init() {
     mTargetSpeed = 0.35f;
     mAnim.setKeyTables_801D2608(lbl_8053A120, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 }
 
 void Terrorpin_804A3B10::setState_801B91A8(s32 state) {
@@ -227,7 +227,7 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mapHit) {
-            mDir_0x98 = fn_801CF720(mDir_0x98);
+            mDir_0x98 = pickNewDir_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
             setState_801B91A8(0);
@@ -436,7 +436,7 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
             }
         }
     } else {
-        hit = fn_801F2FAC();
+        hit = checkPlayerAttacks_801F2FAC();
     }
     return hit;
 }
@@ -464,7 +464,7 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
             if (hit != 0 && mState == 5) {
                 for (s32 i = 0; i < 4; i++) {
                     if (hit & (1 << i)) {
-                        fn_80236074(i, 0x64, 0);
+                        dropPlayerForceGems_80236074(i, 0x64, 0);
                     }
                 }
             }

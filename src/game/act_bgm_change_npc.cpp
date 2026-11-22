@@ -216,7 +216,7 @@ void BGMChangeNPC_804A9DA0::update() {
     }
     case 1:
         if (field_0x240 != 0 && field_0x258 < 0) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             field_0x230 = 0;
             field_0x24c = -1;
         } else {

@@ -432,7 +432,7 @@ void Warp_804A6DC8::draw() {
         params.field_0x2c = 0;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "sand2_smp.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(&mPos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(&mPos, res, &params);
         }
         mPos = saved;
     } else {

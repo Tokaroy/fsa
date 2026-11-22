@@ -128,7 +128,7 @@ u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle);
 // 66 units / 197 calls. Moves a non-NULL emitter to pos, lifted by
 // height * 1024 + depth * 128 in y and z (with `adjust`, a positive pos.z
 // raises height below 1 by one and lowers depth by one) and with z taken
-// from the ground under pos (TileMap_804AA858::fn_802F5E9C, game/Map.h, on gGameRoot2_8053AB10->0x20); stores
+// from the ground under pos (TileMap_804AA858::getHeightAt_802F5E9C, game/Map.h, on gGameRoot2_8053AB10->0x20); stores
 // the result in the emitter's translation (0xA4-0xAC). Returns 0 or 1.
 u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos, s32 height, s32 depth,
                  bool adjust);

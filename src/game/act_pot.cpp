@@ -274,7 +274,7 @@ void Pot_804A9428::die_0x24() {
                 pos.x = mPos.x + lbl_8046E070_x5[i];
                 pos.y = mPos.y + lbl_8046E070_y5[i];
                 pos.z = 0.0f;
-                s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
+                s32 tileIdx = getCellIndexVec3_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, tileIdx);
                 fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
@@ -289,7 +289,7 @@ void Pot_804A9428::die_0x24() {
                 pos.x = mPos.x + lbl_8046E070_x13[i];
                 pos.y = mPos.y + lbl_8046E070_y13[i];
                 pos.z = 0.0f;
-                s32 tileIdx = fn_80226AE0(&pos, mLayer_0x4);
+                s32 tileIdx = getCellIndexVec3_80226AE0(&pos, mLayer_0x4);
                 gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, tileIdx);
                 fn_80226CA8(tileIdx, mLayer_0x4, &tilePos);
                 tilePos.x += 8.0f;
@@ -311,7 +311,7 @@ void Pot_804A9428::die_0x24() {
 }
 
 bool Pot_804A9428::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x248);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x248);
 }
 
 void Pot_804A9428::vfunc_0x48() {

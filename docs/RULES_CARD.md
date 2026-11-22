@@ -360,13 +360,13 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   compiler @NNN labels to each includer and renumbers their split symbols.
 - A value kept in one register across a call: a local read once
   (`s32 layer = field_0x4;`) — the original read it once too.
-- Message calls taking the position BY VALUE (`fn_8038AD24`, `fn_8038BD08`,
-  `fn_8038C678`; 338 sites) where the original loads other arguments before
+- Message calls taking the position BY VALUE (`openMessage_8038AD24`, `fn_8038BD08`,
+  `openMessageById_8038C678`; 338 sites) where the original loads other arguments before
   the psq copy of mPos: a class-local inline helper that takes the position
   as `const JGeometry::TVec3f&` and passes it on by value. Arguments loaded
   BEFORE the copy are the helper's parameters; members loaded AFTER it are
   read inside the helper (e.g. `bool talk(u32 player, u32 msg, s32 layer,
-  const TVec3f& pos, u32 flags) { return fn_8038AD24(player, msg,
+  const TVec3f& pos, u32 flags) { return openMessage_8038AD24(player, msg,
   field_0x234, layer, pos, flags); }`). Read the split off the asm; don't
   search parameter orders (scratchpad research_byval.md). Layer before
   serial (fn_8022FE80's order) is a reviewed exception: act_dummy_conversation,
@@ -418,6 +418,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Positions built on the stack as 8-byte objects (y stored with x, frame
   slots of 8): the callee takes `const JGeometry::TVec2f*`
   (hitPlayerGroup_80238548, fn_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
+  (fn_80238548, getCellIndex_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
   callers pass `(const JGeometry::TVec2f*)&mPos` with a one-line comment.
   Check the callee's body reads only +0/+4 first.
 - `cmpw` operands swapped against a call result (`cmpw r3, rN` in the
@@ -476,7 +477,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   an inline returning `u8` with `return x == N ? true : false;`, called in the condition
   (`isGameMode(mode)` in game/GameMode.h).
   A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. tu_80285E58 fn_80286688
-  88.7 -> 100 % and the copy inlined in fn_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
+  88.7 -> 100 % and the copy inlined in updateState_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
   sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and tu_80158624 fn_80159330 (mode 0xC, 100 %; read
   gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 drawPlayerPanel_802FB69C
   (both mode-11 tests). A file's own byte helper takes the same form: tu_8025EB18 isField0xd64One
@@ -498,18 +499,18 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   tu_80285E58 (8 sites flipped, nothing else changed). For actors: ActorBase_804A5770::getField_0x4()
   (the layer) and getSerial() (ActorBase.h). With the getter the SOURCE operand order is the cmpw
   order: `call() == getField_0x4()` gives `cmpw r3, rS`, `getLayer() != call()` gives `cmpw rS, r3`
-  (tu_8027E5BC fn_8027FA08). Shape sweep: +7 at 100 % (tu_801CDC8C, tu_8027E5BC x2,
+  (tu_8027E5BC getFollowTargetPos_8027FA08). Shape sweep: +7 at 100 % (tu_801CDC8C, tu_8027E5BC x2,
   act_special_conversation_npc x3, act_block). Use it only where the asm loads the member BEFORE
   the bl: act_princess_zelda update reads field_0x4 after the call (`lwz r0, 0x4; cmpw r0, r3`) and the
   getter drops it (94.02 -> 93.79); act_horse_race_man fn_801EC7B8 reuses one register for a layer read
   twice into the same local, and the getter drops it (98.28 -> 98.11).
 - Two calls compared, `cmpw r3, r29` with the FIRST call's result in r29: write the call made second
-  on the left, `if (fn_80240888() != fn_80248778())` (MWCC calls the right operand first); a local for
+  on the left, `if (getGroupTurn_80240888() != fn_80248778())` (MWCC calls the right operand first); a local for
   the first result gives `cmpw r29, r3` (tu_80285E58). Same in tu_8027E5BC fn_8027E7E0 (to 100 %) and
   act_princess_zelda `getPlayerLayer_8023DE58(p) == fn_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;
   cmpwi 0x39`): compare the member itself each time (`field_0x1240 == 8 || field_0x1240 == 9 || ...`); a
-  local read once lets MWCC fold 8-10 (tu_80285E58 fn_802870C8). Also tu_8025EB18 fn_8025FCC8 (state
+  local read once lets MWCC fold 8-10 (tu_80285E58 updateState_802870C8). Also tu_8025EB18 fn_8025FCC8 (state
   0x11 on its own before 0x12-0x16: 87.0 -> 100 %).
 - An old position read back after the member was updated (the original reloads mPos.x for `+= k`
   where ours reuses the saved copy): copy it as a `JGeometry::TVec2f old(mPos);`, not two f32 locals

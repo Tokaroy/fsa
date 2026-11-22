@@ -11,7 +11,7 @@
 #include "game/GameMath.h"
 #include "dolphin/mtx.h"
 
-// The point in front of a player, by its facing (fn_80230CFC): (x, y) offsets.
+// The point in front of a player, by its facing (getPlayerFacing_80230CFC): (x, y) offsets.
 static const f32 lbl_80472190[4][2] = {{16.0f, 0.0f}, {-16.0f, 0.0f}, {0.0f, 16.0f}, {0.0f, -16.0f}};
 
 
@@ -141,7 +141,7 @@ void TwoPersonLiftableRock_804AC950::update() {
             const JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
             f32 px = ppos->x;
             f32 py = ppos->y;
-            s32 dir = fn_80230CFC(i);
+            s32 dir = getPlayerFacing_80230CFC(i);
             px += lbl_80472190[dir][0];
             py += lbl_80472190[dir][1];
             field_0x25c[i] = fn_8022C004(i);
@@ -337,7 +337,7 @@ void TwoPersonLiftableRock_804AC950::update() {
         }
         if (field_0x380[0] == 1) {
             if (field_0x380[1] != 1) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
             }
             field_0x380[0] = 0;
         }
@@ -405,7 +405,7 @@ void TwoPersonLiftableRock_804AC950::die_0x24() {
 }
 
 bool TwoPersonLiftableRock_804AC950::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
-    return fn_801F132C(layer, pos, &field_0x378);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x378);
 }
 
 TwoPersonLiftableRock_804AC950::~TwoPersonLiftableRock_804AC950() {}

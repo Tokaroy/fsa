@@ -11,7 +11,7 @@ BeeManager_804AC810::~BeeManager_804AC810() {
     for (int i = 0; i < 14; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x240[i]);
         if (actor != NULL) {
-            actor->fn_801F3668();
+            actor->markDead_801F3668();
         }
     }
 }
@@ -248,10 +248,10 @@ void BeeManager_804AC810::update() {
             for (int i = 0; i < 14; i++) {
                 ActorBase_804A5770* bee = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x240[i]);
                 if (bee != NULL) {
-                    bee->fn_801F3668();
+                    bee->markDead_801F3668();
                 }
             }
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         break;

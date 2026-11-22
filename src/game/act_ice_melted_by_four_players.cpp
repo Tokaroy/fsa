@@ -112,7 +112,7 @@ u8 IceMeltedByFourPlayers_804AE888::fn_80378880() {
     s32 serial = -1;
     u8 playerMask = 0;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('FIRE', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('FIRE', serial);
         if (serial < 0) {
             break;
         }
@@ -143,7 +143,7 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
     ours.addPos(mPos.x, mPos.y);
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('HBMB', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('HBMB', serial);
         if (serial < 0) {
             break;
         }
@@ -227,9 +227,9 @@ u8 IceMeltedByFourPlayers_804AE888::fn_8037845C() {
         }
     } else if (field_0x244 == 0 && fn_80230534(false)) {
         field_0x248 = -1;
-        fn_801F0D20(3);
+        playSe_801F0D20(3);
         setScreenFlag_0x30(0xFF, true);
-        fn_801F3668();
+        markDead_801F3668();
     }
     return true;
 }
@@ -259,6 +259,6 @@ void IceMeltedByFourPlayers_804AE888::draw() {
     }
     void* res = getBossArchiveResource_804032E8('TIMG', "yukikabe.bti");
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
     }
 }

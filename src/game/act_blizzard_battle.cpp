@@ -111,7 +111,7 @@ void BlizzardBattle_8049E7F0::update() {
             field_0x234 = 1;
             runPhase();
             if (field_0x231 != 0) {
-                fn_801F0D20(6);
+                playSe_801F0D20(6);
             }
         }
         break;

@@ -217,7 +217,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
     }
     switch (mState) {
     case 0:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             mBox.i.set(-8.0f, -8.0f);
             mBox.f.set(8.0f, 8.0f);
             mBox2.set(mBox);
@@ -225,7 +225,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 1:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             switch (mAnim.mAnim) {
             case 1:
                 mAnim.startAnim_801D22DC(2, 0, false);
@@ -240,7 +240,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (manager != NULL) {
                 static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207ECC();
@@ -249,17 +249,17 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 3:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             fn_8020AA78(4);
         }
         break;
     case 4:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             fn_8020AA78(5);
         }
         break;
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             switch (mAnim.mAnim) {
             case 1:
                 mAnim.startAnim_801D22DC(2, 0, false);
@@ -291,7 +291,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 7:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             switch (mAnim.mAnim) {
             case 1:
                 mAnim.startAnim_801D22DC(2, 0, false);
@@ -324,7 +324,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 8:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             switch (mAnim.mAnim) {
             case 1:
                 mAnim.startAnim_801D22DC(2, 0, false);
@@ -348,7 +348,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 9:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             switch (mAnim.mAnim) {
             case 1:
                 mAnim.startAnim_801D22DC(6, 0, false);
@@ -364,7 +364,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 10:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             ActorBase_804A5770* manager = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (manager != NULL) {
                 static_cast<SlimeManager_804A5BD8*>(manager)->fn_80207E24();
@@ -373,7 +373,7 @@ void SlimeFormation_804A5D60::updateState_0x90(u8 mapHit) {
         }
         break;
     case 11:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             fn_8020AA78(12);
         }
         break;
@@ -541,7 +541,7 @@ void SlimeFormation_804A5D60::draw() {
         }
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }

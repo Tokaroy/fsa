@@ -44,7 +44,7 @@ void Score_804AF4C0::init() {
         mVel_0x3c.y = -1.0f;
         mVel_0x3c.z = 0.0f;
         mTimer = 90;
-        fn_801F0D20(0x41);
+        playSe_801F0D20(0x41);
     } else if (mState == 2) {
         if (mValue >= 12) {
             mAlive = false;

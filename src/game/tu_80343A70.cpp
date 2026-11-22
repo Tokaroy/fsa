@@ -91,7 +91,7 @@ void Bee_804AC600::update() {
                     }
                 }
                 if (!handled) {
-                    s32 serial2 = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+                    s32 serial2 = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
                     if (serial2 >= 0) {
                         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial2);
                         if (actor != NULL && actor->field_0x168 == 5) {

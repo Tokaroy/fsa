@@ -190,7 +190,7 @@ void GameRootSub04_801F856C::fn_80139D9C() {
         if (!isFrozenRoom()) {
             lbl_80529DEC.field_0x150[i] = v;
         }
-        v = fn_80237774(i);
+        v = getPlayerLife_80237774(i);
         if (!isFrozenRoom()) {
             lbl_80529DEC.field_0x160[i] = v;
         }

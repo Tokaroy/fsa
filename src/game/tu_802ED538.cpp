@@ -190,7 +190,7 @@ void GiantGeneratorEffect_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(mSpawnParam_0x90 & 0x1F, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(mSpawnParam_0x90 & 0x1F, true, 0xFF);
             field_0x250 = 180;
             field_0x24c++;
         }
@@ -237,7 +237,7 @@ void GiantGeneratorEffect_804AA350::update() {
         armFlag();
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(field_0x25c, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x25c, true, 0xFF);
             getActorManager_801F856C()->fn_801F6884();
             for (s32 p = 0; p < 4; p++) {
                 fn_8022CA6C(p, 5, false);
@@ -251,7 +251,7 @@ void GiantGeneratorEffect_804AA350::update() {
     case 7:
         if (field_0x279) {
             if (field_0x276) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x25c, false, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x25c, false, 0xFF);
                 field_0x250 = 0x7C;
                 field_0x24c++;
                 startSound_801F0E34(0x5005C, 0);
@@ -334,7 +334,7 @@ void GiantGeneratorEffect_804AA350::update() {
     case 13:
         field_0x250--;
         if (field_0x250 <= 0) {
-            getGameView_802D6A9C()->fn_802D8050(mSpawnParam_0x90 >> 27, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(mSpawnParam_0x90 >> 27, true, 0xFF);
             field_0x2cc = NULL;
             field_0x24c++;
         }
@@ -369,7 +369,7 @@ void GiantGeneratorEffect_804AA350::update() {
 
 static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     if (layer < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(pos, res, params);
     }
 }
 

@@ -8,7 +8,7 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/act/act_two_sword_motion.h"
 
-// Offsets from the actor's position for each swing phase: row = fn_80230CFC's
+// Offsets from the actor's position for each swing phase: row = getPlayerFacing_80230CFC's
 // result, column = the phase column of fn_80336040.
 static const f32 lbl_80471AE0[16][3] = {
     {16.0f, 0.0f, 0.0f},   {12.0f, 0.0f, 8.0f},   {0.0f, 0.0f, 16.0f},   {16.0f, 0.0f, -1.0f},
@@ -352,7 +352,7 @@ bool TwoSwordMotion_804ABA90::fn_80336040() {
         field_0x260 = 3;
         column = 2;
     }
-    s32 row = fn_80230CFC(field_0x24c);
+    s32 row = getPlayerFacing_80230CFC(field_0x24c);
     if (row == 0) {
         field_0x270 = 0x2b0;
     } else if (row == 1) {

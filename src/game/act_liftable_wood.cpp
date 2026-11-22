@@ -64,7 +64,7 @@ void LiftableWood_804A87A8::update() {
                 JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
                 f32 px = playerPos->x;
                 f32 py = playerPos->y;
-                s32 dir = fn_80230CFC(i);
+                s32 dir = getPlayerFacing_80230CFC(i);
                 px += lbl_8046CAD0[dir][0];
                 py += lbl_8046CAD0[dir][1];
                 // Hand-expanded point-in-box test; this local and `== true` match the original (a contains() helper, with or without `== true`: 97.34 %).

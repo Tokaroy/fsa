@@ -169,7 +169,7 @@ void HardhatBeetle_804A06C0::update() {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x5005F, 0);
                 }
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else if (field_0x234[0] == 0) {
             field_0x234[0] = 3;
@@ -210,7 +210,7 @@ void HardhatBeetle_804A06C0::draw() {
         s32 frame = mFrame + 0x92;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     } else {
         drawSprite_801F06F0("enemy_gc_sob.bin", mFrame + 0x92, NULL, 0, 1.0f, 1.0f);

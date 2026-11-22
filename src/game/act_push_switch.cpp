@@ -32,7 +32,7 @@ void PushSwitch_804A7B38::update() {
     for (s32 i = 0; i < 4; i++) {
         if (getPlayerLayer_8023DE58(i) == getField_0x4() && fn_8022DB04(i)) {
             s32 direction = (mSpawnParam_0x90 >> 17) & 3;
-            if (direction != fn_80230CFC(i)) {
+            if (direction != getPlayerFacing_80230CFC(i)) {
                 continue;
             }
             JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);

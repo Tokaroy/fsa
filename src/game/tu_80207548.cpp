@@ -119,7 +119,7 @@ void cls_804A5B28::fn_80207830(u16 slot, s32 player, s32 arg3, const JGeometry::
 // Marks `slot` done; once its player's slot is active and picked in mMask,
 // aims the actor found by the slot's serial at that player when the player is
 // on the actor's layer and isBlocked_0x4C accepts the position. Reports the actor
-// (fn_801F3668) when every other slot was already done.
+// (markDead_801F3668) when every other slot was already done.
 // FIXME: 99.60 %, regalloc-only; behaviour clean.
 // Only the registers differ: the original keeps the slot
 // offset (mulli) and the layer in r28, the player in r27 (ours: offset r29,
@@ -158,6 +158,6 @@ void cls_804A5B28::fn_802075D8(u16 slot) {
         }
     }
     if (all) {
-        fn_801F3668();
+        markDead_801F3668();
     }
 }

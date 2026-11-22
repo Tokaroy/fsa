@@ -30,7 +30,7 @@ void ColourBlock1Player_804AE620::init() {
         u32 mask = 0;
         s32 serial = -1;
         while (true) {
-            serial = getActorManager_801F856C()->fn_801F78F4('BCK2', serial);
+            serial = getActorManager_801F856C()->findNextActorById_801F78F4('BCK2', serial);
             if (serial < 0) {
                 break;
             }

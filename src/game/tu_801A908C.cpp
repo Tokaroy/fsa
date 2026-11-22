@@ -129,7 +129,7 @@ void Manhandla_804A2FB0::init() {
 Manhandla_804A2FB0::~Manhandla_804A2FB0() {
     releaseEmitter_801EE434(field_0x2b8);
     if (field_0x258 == 0 && gGameRoot_8053AAF8->field_0x4c != 9) {
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
     }
     if (field_0x258 == 5) {
         lbl_8053ABD0--;

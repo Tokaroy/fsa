@@ -170,7 +170,7 @@ void Camera_804AA9E4::fn_8030E150() {}
 
 // Loads the projection / view into the GX state (taking the pending matrices first when copy is
 // set) and sets the viewport and scissor to the screen rect.
-void Camera_804AA9E4::fn_8030DFE8(bool copy) {
+void Camera_804AA9E4::loadGXState_8030DFE8(bool copy) {
     if (copy) {
         JMath::gekko_ps_copy12(mLoadedViewMtx_0x74, mViewMtx_0x4);
         JMath::gekko_ps_copy16(mLoadedProjMtx_0xa4, mProjMtx_0x34);
@@ -183,7 +183,7 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
 }
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
-// size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
+// size, and (when light is set) the light matrices; then the GX state of loadGXState_8030DFE8.
 // FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
 // (the target re-reads i.y, f.x and f.y of the box after the copy; ours keeps all four)
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
@@ -213,7 +213,7 @@ void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
         PSMTXCopy(mLoadedViewMtx_0x74, mDrawInfo_0xe4.mCamMtx);
         C_MTXLightOrtho(mDrawInfo_0xe4.mPrjMtx, halfH, -halfH, -halfW, halfW, 0.5f, 0.5f, 0.5f, 0.5f);
     }
-    fn_8030DFE8(false);
+    loadGXState_8030DFE8(false);
 }
 
 void Camera_804AA9E4::fn_8030DD68() {
@@ -853,7 +853,7 @@ static inline f32 projectRow(const f32* row, f32 x, f32 y, f32 z, f32 w) {
     return x * row[0] + y * row[1] + z * row[2] + w * row[3];
 }
 
-// Not inlined into its caller fn_8030C2A8 in the original (bl fn_8030C5F0).
+// Not inlined into its caller isOnScreen_8030C2A8 in the original (bl fn_8030C5F0).
 #pragma auto_inline off
 // A world position's screen position: normalised (0..1) when normalised is set, else in the
 // screen rect (inRect) or the whole screen. z is cleared.
@@ -899,8 +899,8 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
     fn_8030C4A0(&bottomRight, false, &out[1]);
 }
 
-// A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
-// .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
+// A plain function that loadGXState_8030DFE8 inlines and whose own copy the linker dropped: the original's
+// .sdata2 has 1.0f between isOnScreen_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
@@ -913,7 +913,7 @@ void Camera_804AA9E4::setScreenRectViewport() {
 }
 
 // Whether the point's screen position lies inside the screen rect shrunk by 14 on every side.
-bool Camera_804AA9E4::fn_8030C2A8(const JGeometry::TVec3f* pos) {
+bool Camera_804AA9E4::isOnScreen_8030C2A8(const JGeometry::TVec3f* pos) {
     Vec screen;
     fn_8030C5F0(pos, true, false, &screen);
     return screen.x >= (f32)(mScreenRect_0x144.i.x + 14) && screen.x < (f32)(mScreenRect_0x144.f.x - 14) &&

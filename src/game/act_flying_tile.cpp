@@ -98,7 +98,7 @@ void FlyingTile_804AC100::vfunc_0x10() {
     s32 serial = -1;
     s32 best = 0;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_FLYO, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_FLYO, serial);
         if (serial < 0) {
             break;
         }
@@ -485,7 +485,7 @@ static inline void drawSmp(FlyingTile_804AC100* self, const JGeometry::TVec3f* p
                            SpriteParams_801F5AE0* params) {
     if (self->mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(pos, res, params);
     }
 }
 

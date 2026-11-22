@@ -145,7 +145,7 @@ void FourSwordCutscene_8049DA0C::update() {
         break;
     case 1:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             switch (fn_8037EFB4(0)) {
             case 0:
                 fn_80388CAC(0, mSerial);
@@ -236,7 +236,7 @@ void FourSwordCutscene_8049DA0C::update() {
             startSound_801F0E34(0x3007a, 0);
         }
     }
-    mAnim250.fn_801D1C18();
+    mAnim250.update_801D1C18();
 }
 
 void FourSwordCutscene_8049DA0C::draw() {
@@ -249,7 +249,7 @@ void FourSwordCutscene_8049DA0C::draw() {
     pos.y += 6.0f;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x179, NULL, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x179, NULL, 1.0f, 1.0f);
     }
 }
 
@@ -409,8 +409,8 @@ bool FourSwordCutscene_8049DA0C::spreadPlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-        fn_801CD950(&field_0x23c, 0.3f, 0.03f);
-        fn_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
+        moveToward_801CD950(&field_0x23c, 0.3f, 0.03f);
+        moveToward_801CD950(&pos.x, field_0x244.x + 8.0f * (f32)lbl_80464AB0[i], field_0x23c * (f32)lbl_80464AB0[i]);
         setPlayerFacing_80230BF4(i, 2);
         fn_80230498(i, &pos, mAnim250.mCel, 0xff, -128, -128, true);
         mEmitters288[i]->setGlobalTranslation(pos);
@@ -446,7 +446,7 @@ bool FourSwordCutscene_8049DA0C::checkPlayers() {
             return false;
         }
     }
-    if (fn_80230CFC(0) != 3) {
+    if (getPlayerFacing_80230CFC(0) != 3) {
         return false;
     }
     u16 angle;
@@ -493,7 +493,7 @@ void FourSwordCutscene_8049DA0C::fn_80116E8C() {
     case 9: {
         JGeometry::TVec3f pos = mPos;
         pos.y += field_0x240;
-        fn_801CD950(&field_0x240, mPos.y + 32.0f, 0.5f);
+        moveToward_801CD950(&field_0x240, mPos.y + 32.0f, 0.5f);
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         if (camera->mBlendBoxOn_0x840 == 0) {
             camera->mBlendBoxOn_0x840 = 1;

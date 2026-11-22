@@ -94,7 +94,7 @@ void TowerCollapseEffect_8049CA40::update() {
             if (field_0x288 == 0x46) {
                 u32 bit = field_0x25c;
                 if (bit != 0) {
-                    getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
                     setScreenFlag_0x30(0xFF, false);
                 }
             }

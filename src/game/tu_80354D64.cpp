@@ -132,7 +132,7 @@ void Log_804ACD70::update() {
                     JGeometry::TVec3f* ppos = getPlayerPos_8023E724(i);
                     f32 px = ppos->x;
                     f32 py = ppos->y;
-                    s32 dir = fn_80230CFC(i);
+                    s32 dir = getPlayerFacing_80230CFC(i);
                     px += lbl_804722B0[dir][0];
                     py += lbl_804722B0[dir][1];
                     field_0x264[i] = fn_8022C004(i);
@@ -353,7 +353,7 @@ void Log_804ACD70::die_0x24() {
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, b, 1, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, c, 1, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x30003, 0);
-    fn_801F3668();
+    markDead_801F3668();
 }
 
 bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
@@ -381,7 +381,7 @@ bool Log_804ACD70::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
         }
         return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
     }
-    return fn_801F132C(layer, pos, &field_0x2b8);
+    return isBlockedCommon_801F132C(layer, pos, &field_0x2b8);
 }
 
 static inline s32 getPullDir(const Log_804ACD70* self) {

@@ -34,7 +34,7 @@ public:
 
     // game/tu_80220F54.cpp: the per-state handlers ShadowLinkFireMinor_804A6C38's
     // updateState_0x90 dispatches to (states 0, 1, 2), and the movement step
-    // calcVelocity_0x88 takes in state 2 (fn_801D01A0 toward field_0x2b0, then
+    // calcVelocity_0x88 takes in state 2 (calcVelocityToward_801D01A0 toward field_0x2b0, then
     // vtable slot 0x84).
     void fn_80221408();
     void fn_80221334();

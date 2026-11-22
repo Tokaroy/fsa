@@ -12,7 +12,7 @@ class JPABaseEmitter;
 class Manhandla_804A2FB0 : public ActorBase_804A5770 {
 public:
     // 0x801AA464 (deleting form): frees the emitter at 0x2B8; in state 0 and when the mode
-    // word of GameRoot is not 9 calls GameRoot::fn_80138B7C; in state 5 counts lbl_8053ABD0 down.
+    // word of GameRoot is not 9 calls GameRoot::startStageMusic_80138B7C; in state 5 counts lbl_8053ABD0 down.
     /* 0x08 */ virtual ~Manhandla_804A2FB0();
     /* 0x0C */ virtual void init(); // 0x801AA508
     /* 0x14 */ virtual void update(); // 0x801A961C

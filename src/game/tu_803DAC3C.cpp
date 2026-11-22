@@ -363,12 +363,12 @@ void GameMode_804B0688::fn_803DF810() {
 
 void GameMode_804B0688::fn_803DF624() {
     (lbl_8053ADD0->*lbl_804B0628[mState])();
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mMovieScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (mMovieState == 2) {
         mMovie->draw_80427D2C(50, 159, -356, -283);
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->fn_80440EE8();
     if (mState == 5) {
@@ -416,8 +416,8 @@ void GameMode_804B0688::fn_803DF2B4() {
     field_0x9c++;
     for (s32 i = 0; i < 2; i++) {
         if (field_0x9c > i * 3) {
-            slid = field_0x34[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
-            field_0x44[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            slid = field_0x34[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x44[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
             s32 t = field_0x9c - i * 3;
             if (t > 20) {
                 t = 20;
@@ -593,8 +593,8 @@ void GameMode_804B0688::fn_803DE58C() {
     }
     for (s32 i = 0; i < 1; i++) {
         if (field_0x9c > i) {
-            field_0x34[others[i]]->fn_80402B10(8, 0, 0.0f, 600.0f);
-            field_0x44[others[i]]->fn_80402B10(8, 0, 0.0f, 600.0f);
+            field_0x34[others[i]]->slideX_80402B10(8, 0, 0.0f, 600.0f);
+            field_0x44[others[i]]->slideX_80402B10(8, 0, 0.0f, 600.0f);
             s32 t = field_0x9c - i;
             if (t > 8) {
                 t = 8;
@@ -630,9 +630,9 @@ void GameMode_804B0688::fn_803DE58C() {
         }
     }
     if (field_0x9c > 0) {
-        slid = field_0x14[0]->fn_80402B10(20, 0, 600.0f, 0.0f);
+        slid = field_0x14[0]->slideX_80402B10(20, 0, 600.0f, 0.0f);
         for (s32 i = 1; i < 7; i++) {
-            field_0x14[i]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x14[i]->slideX_80402B10(20, 0, 600.0f, 0.0f);
         }
         s32 t = field_0x9c;
         if (t > 20) {
@@ -813,9 +813,9 @@ void GameMode_804B0688::fn_803DD970() {
         }
     }
     if (field_0x9c > 0) {
-        slid = field_0x14[0]->fn_80402B10(20, 0, 0.0f, 600.0f);
+        slid = field_0x14[0]->slideX_80402B10(20, 0, 0.0f, 600.0f);
         for (s32 i = 1; i < 7; i++) {
-            field_0x14[i]->fn_80402B10(20, 0, 0.0f, 600.0f);
+            field_0x14[i]->slideX_80402B10(20, 0, 0.0f, 600.0f);
         }
         s32 t = field_0x9c;
         if (t > 20) {
@@ -855,8 +855,8 @@ void GameMode_804B0688::fn_803DD970() {
     }
     for (s32 i = 0; i < 1; i++) {
         if (field_0x9c > i + 5) {
-            slid = field_0x34[others[i]]->fn_80402B10(20, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402B10(20, 0, 600.0f, 0.0f);
+            slid = field_0x34[others[i]]->slideX_80402B10(20, 0, 600.0f, 0.0f);
+            field_0x44[others[i]]->slideX_80402B10(20, 0, 600.0f, 0.0f);
             s32 t = field_0x9c - (i + 5);
             if (t > 20) {
                 t = 20;

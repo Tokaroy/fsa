@@ -49,7 +49,7 @@ fn_8013DA10). Structural +2
   once it is found, setEmitterPos_8013CB44, spawnEmitter_8013CC50 and draw should all reach 100 %. (The draw passes
   convert fbWidth / efbHeight signed: xoris, i.e. through int.)
 - fn_8013D5D4 / D6E4 / DB2C unwritten: each default-constructs a JPADrawInfo (identity x2),
-  calls fn_8013B490, default-constructs a SECOND JPADrawInfo that is never used (sp8/sp38), then
+  calls setPort_8013B490, default-constructs a SECOND JPADrawInfo that is never used (sp8/sp38), then
   PSMTXCopy(field_0x10->0x80 = J2DOrthoGraph posMtx, first.mCamMtx) and
   C_MTXLightOrtho(first.mPrjMtx, 0, efbHeight, 0, fbWidth, 0.5 x4). The unused second object
   points at an inline (a JPADrawInfo or GameRoot2 helper) not identified yet; writing a dead local

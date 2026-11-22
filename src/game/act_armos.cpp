@@ -192,7 +192,7 @@ void Armos_8049F260::update() {
                 bool away = false;
                 if (outPlayer < 0) {
                     away = true;
-                } else if (outDir != fn_80230CFC(outPlayer)) {
+                } else if (outDir != getPlayerFacing_80230CFC(outPlayer)) {
                     away = true;
                 }
                 if (away) {
@@ -319,13 +319,13 @@ void Armos_8049F260::update() {
         s32 dir = -1;
         field_0x310 = fn_80239558(&moved, mLayer_0x4, mSerial);
         if (field_0x310 >= 0) {
-            dir = fn_80230CFC(field_0x310);
+            dir = getPlayerFacing_80230CFC(field_0x310);
             field_0x314 = -1;
         } else {
             field_0x314 = fn_80239470(&moved, mLayer_0x4, mSerial);
             if (field_0x314 >= 0) {
                 field_0x310 = -1;
-                dir = fn_80230CFC(field_0x314);
+                dir = getPlayerFacing_80230CFC(field_0x314);
                 if (dir == 0) {
                     dir = 1;
                 } else if (dir == 1) {
@@ -377,7 +377,7 @@ void Armos_8049F260::update() {
             s32 layer = mLayer_0x4;
             u16 angle;
             JGeometry::TVec3f pos = mPos;
-            field_0x230.fn_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
+            field_0x230.stepAlongRail_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
             mVel_0x3c.x = step.x;
             mVel_0x3c.y = step.y;
             mVel_0x3c.z = 2.0f;

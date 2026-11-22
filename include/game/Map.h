@@ -5,8 +5,8 @@
 //
 // * game/tu_802F5040.cpp: TileMap_804AA858, the object at gGameRoot2_8053AB10->0x20
 //   (124 consumer units). It holds the screen's tile layers (u16 tile codes
-//   on a 32 x 32 grid of 16-unit cells, fn_802F9908 / fn_802F9974) and
-//   draws the "SOB " sprites (fn_802F86CC, fn_802F745C).
+//   on a 32 x 32 grid of 16-unit cells, fn_802F9908 / setTile_802F9974) and
+//   draws the "SOB " sprites (drawSobSprite_802F86CC, drawTimgImage_802F745C).
 // * game/tu_8022461C.cpp: the tile queries for a position (112 consumer
 //   units): the position, relative to the view's visible box
 //   (GameView_804A9950::mVisibleBox, or field_0xdc for layers 8 and up), is
@@ -276,8 +276,8 @@ public:
 }; // Size: 0x28
 
 // 0x20 x 2 at 0xC220 / 0xD324: a queued sprite. fn_802FF3F0 / fn_802FF2D8
-// draw it with fn_802F86CC (mRes, mFrame), else fn_802F745C (mImage), else
-// fn_802F6CF4 (field_0x18), passing &mParams.
+// draw it with drawSobSprite_802F86CC (mRes, mFrame), else drawTimgImage_802F745C (mImage), else
+// drawBlockMap_802F6CF4 (field_0x18), passing &mParams.
 class QueuedSprite_8030029C {
 public:
     QueuedSprite_8030029C();
@@ -311,14 +311,14 @@ public:
     // a byte-based format: void* (callers pass getResource's result
     // unchanged, act_arrow 0x8016564C) is a guess. Callers pass the same
     // float twice (fmr f2, f1).
-    void fn_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
+    void drawSobSprite_802F86CC(const JGeometry::TVec3f* pos, void* res, s32 frame,
                      SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY);
     // Draws the sprite `res` (a "TIMG" resource, act_life_meter's heart image
     // from fn_804030C4) at pos with the stack SpriteParams_801F5AE0 `params`
     // (drawShadow_801EF830 calls it the same way, 0x801EFC74).
-    void fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
+    void drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
     // 0x802F6298 / 0x802F654C: queue a sprite (pos, the "SOB " resource and
-    // frame, or the image of fn_802F745C, or the fn_802F6CF4 resource) with a
+    // frame, or the image of drawTimgImage_802F745C, or the drawBlockMap_802F6CF4 resource) with a
     // copy of params (field_0x22 / field_0x21 cleared so the queued draw does
     // not queue again; its matrix copied into the entry) on mLateQueuedSprites_0xd324 /
     // mQueuedSprites_0xc220; false when the queue's 0x20 entries are taken. The draws
@@ -353,7 +353,7 @@ public:
     // player `slot` in field_0x11c[slot] and hands it to fn_803068D0.
     void fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record);
     // 0x802F5570: the position (out) and parameters (*outParams: params, or
-    // tmp with mtx) a sprite at pos is drawn with (fn_802F86CC 0x802F8944).
+    // tmp with mtx) a sprite at pos is drawn with (drawSobSprite_802F86CC 0x802F8944).
     void fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params,
                      JGeometry::TVec3f* out, SpriteParams_801F5AE0** outParams, Mtx mtx,
                      SpriteParams_801F5AE0* tmp);
@@ -390,7 +390,7 @@ public:
     u16 fn_802F9908(s32 layer, s32 index);
     // 9 units / 198 calls. Sets it (sthx; callers clrlwi 16 the value,
     // act_panel_rewrite_npc 0x802C8AC4).
-    void fn_802F9974(s32 layer, s32 index, u16 value);
+    void setTile_802F9974(s32 layer, s32 index, u16 value);
     // 0x802F6BBC: copies the 0x1000 tiles of layer src to layer dst (the
     // same layer branches); tu_802D39B8 passes (0, 4) and (1, 5).
     void fn_802F6BBC(s32 src, s32 dst);
@@ -424,11 +424,11 @@ public:
     // the z of the four mHeightGrid_0x100[mHeightGridIndex_0x2388] grid points (8-unit cells,
     // 65 per row) around pos, when mHeightGridEffectNum_0xc21c is positive and pos lies in
     // the mHeightGridCellsX_0x2380 x mHeightGridCellsY_0x2384 cells from mLayerOrigin_0x2368.
-    f32 fn_802F5E9C(const JGeometry::TVec3f* pos);
+    f32 getHeightAt_802F5E9C(const JGeometry::TVec3f* pos);
     // 0x802F6CF4: the third sprite kind of the queues (QueuedSprite_8030029C::mTilePalettes_0x18),
-    // called like fn_802F745C (pos, the resource, &params).
-    void fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
-    // 0x802F91AC: loads the view matrix of a sprite at pos (fn_802F86CC
+    // called like drawTimgImage_802F745C (pos, the resource, &params).
+    void drawBlockMap_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
+    // 0x802F91AC: loads the view matrix of a sprite at pos (drawSobSprite_802F86CC
     // passes its frame offset); *loaded is set when it is the sprite's own.
     void fn_802F91AC(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, bool* loaded, f32 offset);
     // 0x802F8F0C: the GX state of a sprite quad drawn with params (or the
@@ -456,7 +456,7 @@ public:
     /* 0x000C */ u8* mTilePalettesRaw_0xc[3];   // 0x200
     /* 0x0018 */ u8* mTilePalettes_0x18[3];  // 0x200
     /* 0x0024 */ u16* mTileDefs_0x24;    // 0x1000 (fn_802F9BE8 stores u16s)
-    // The u16 tile grids of layers 0-3 and 4-7 (fn_802F9908 / fn_802F9974
+    // The u16 tile grids of layers 0-3 and 4-7 (fn_802F9908 / setTile_802F9974
     // test the two ranges separately; 32 x 32 cells). 0x2000 each.
     /* 0x0028 */ u16* mLayerGrid[4];
     /* 0x0038 */ u16* mLayerGrid2[4];
@@ -521,7 +521,7 @@ public:
     // setNextVisibleBox_8030C928 copy them to mLayer2Visible_0x2360.
     /* 0x235C */ u8 mLayerVisible_0x235c[4];
     /* 0x2360 */ u8 mLayer2Visible_0x2360[4];
-    // fn_802F86CC draws nothing while it is 0; 6 units set it to 1
+    // drawSobSprite_802F86CC draws nothing while it is 0; 6 units set it to 1
     // (tu_802D39B8 0x802D9BFC).
     /* 0x2364 */ u8 mDrawSprites_0x2364;
     /* 0x2365 */ u8 field_0x2365;
@@ -531,17 +531,17 @@ public:
     /* 0x2368 */ JGeometry::TVec3f mLayerOrigin_0x2368;
     /* 0x2374 */ JGeometry::TVec3f mLayer2Origin_0x2374;
     // Written by tu_802D39B8 (0x802D92D4), read as ints by tu_8016A2B4
-    // (0x8016AE44). The cell counts of fn_802F5E9C's grid (64 after fn_802FF798).
+    // (0x8016AE44). The cell counts of getHeightAt_802F5E9C's grid (64 after fn_802FF798).
     /* 0x2380 */ s32 mHeightGridCellsX_0x2380;
     /* 0x2384 */ s32 mHeightGridCellsY_0x2384;
-    /* 0x2388 */ s32 mHeightGridIndex_0x2388; // which mHeightGrid_0x100 grid fn_802F5E9C reads
+    /* 0x2388 */ s32 mHeightGridIndex_0x2388; // which mHeightGrid_0x100 grid getHeightAt_802F5E9C reads
     /* 0x238C */ u8* mAnimTileData_0x238c; // __nwa(0x100)
     /* 0x2390 */ s32 mAnimTileFrame_0x2390;
     /* 0x2394 */ s32 mAnimTileTimer_0x2394;
     /* 0x2398 */ TimedSpriteEffect_803003AC mFadeSprites_0x2398[0x100];
     /* 0xBF98 */ u8 field_0xbf98;
     /* 0xBF9C */ cls_803003A8 mHeightGridEffects_0xbf9c[16];
-    /* 0xC21C */ s32 mHeightGridEffectNum_0xc21c; // fn_802F5E9C reads the grid only while it is positive
+    /* 0xC21C */ s32 mHeightGridEffectNum_0xc21c; // getHeightAt_802F5E9C reads the grid only while it is positive
     // Two sprite queues: fn_802FF3F0 / fn_802FF2D8 draw the mQueuedSpriteNum_0xd320 /
     // mLateQueuedSpriteNum_0xe424 entries and empty them.
     /* 0xC220 */ QueuedSprite_8030029C mQueuedSprites_0xc220[0x20];
@@ -583,11 +583,11 @@ u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer);
 // box; callers clrlwi 16 the result.
 u16 fn_80226850(const JGeometry::TVec3f* pos, s32 layer);
 // 13 units. The same as fn_80226850 (only the register allocation differs).
-u16 fn_80226998(const JGeometry::TVec3f* pos, s32 layer);
+u16 getTileAt_80226998(const JGeometry::TVec3f* pos, s32 layer);
 // 7 units each. The packed cell index of pos (no lookup; clamped like the
-// queries, no outside test in fn_80226AE0).
-s32 fn_80226AE0(const JGeometry::TVec3f* pos, s32 layer);
-s32 fn_80226BC4(const JGeometry::TVec2f* pos, s32 layer); // reads only x, y
+// queries, no outside test in getCellIndexVec3_80226AE0).
+s32 getCellIndexVec3_80226AE0(const JGeometry::TVec3f* pos, s32 layer);
+s32 getCellIndex_80226BC4(const JGeometry::TVec2f* pos, s32 layer); // reads only x, y
 // 5 units. The inverse: out = the corner of cell `index` (box corner + the
 // unpacked x, y) with a constant z (psq_st/stfs to out 0/8, 0x80226D88).
 void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out);
@@ -620,10 +620,10 @@ bool fn_802252F4(const JGeometry::TVec3f* pos, int layer);
 
 // tu_8022461C (not written yet): whether the raw tile at the x/y of pos (0xF
 // outside the box of `layer`) is one of the codes listed in lbl_8046AAB0.
-// Player_804A6F38::fn_802527B0 calls it with layer 0.
+// Player_804A6F38::checkScreenExit_802527B0 calls it with layer 0.
 bool fn_80225EF4(const JGeometry::TVec3f* pos, s32 layer);
 
-// Forwards to fn_802252F4 (tu_8022461C); a C++ name in symbols.txt. Player_804A6F38::fn_802870C8
+// Forwards to fn_802252F4 (tu_8022461C); a C++ name in symbols.txt. Player_804A6F38::updateState_802870C8
 // tests it for the 0xD7 trail emitter.
 bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer);
 

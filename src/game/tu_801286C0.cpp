@@ -64,18 +64,18 @@ void OpeningNarration_8049E500::update() {
         }
         break;
     case 1:
-        fn_801CD950(&field_0x238, 300.0f, 0.4f);
+        moveToward_801CD950(&field_0x238, 300.0f, 0.4f);
         if (fn_80119DD0()->field_0x0 == 0) {
             fn_80128728(2);
         }
         break;
     case 2:
-        if (fn_801CD950(&field_0x238, 1340.0f, 0.4f) == 0) {
+        if (moveToward_801CD950(&field_0x238, 1340.0f, 0.4f) == 0) {
             fn_80128728(3);
         }
         break;
     case 3:
-        fn_801CD950(&field_0x238, 1640.0f, 0.4f);
+        moveToward_801CD950(&field_0x238, 1640.0f, 0.4f);
         if (fn_80119DD0()->field_0x4 >= 0xB3) {
             fn_8011921C()->fn_801183BC();
             fn_80119DD0()->field_0x1 = 1;
@@ -88,17 +88,17 @@ void OpeningNarration_8049E500::update() {
         break;
     case 5:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
         break;
     case 6:
-        fn_801CD950(&field_0x234, 255.0f, -2.125f);
+        moveToward_801CD950(&field_0x234, 255.0f, -2.125f);
         break;
     case 7:
         fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
@@ -209,7 +209,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->fn_801F3668();
+                actor->markDead_801F3668();
             }
         }
         break;

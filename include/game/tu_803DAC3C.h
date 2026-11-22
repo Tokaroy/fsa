@@ -11,7 +11,7 @@ class THPMovie_804B15D0;
 
 // The game mode screen: vtable 0x804B0688 (one slot, the destructor
 // fn_803DFC6C), constructor fn_803DFF40 (game/tu_803DAC3C.cpp); 0x120 bytes
-// (__nw__(0x120) in tu_80134C04's fn_80135020 path). The constructor loads
+// (__nw__(0x120) in tu_80134C04's createModeScreen_80135020 path). The constructor loads
 // "gamemode.blo" and "gamemode_movie.blo" from lbl_80529DEC's field_0x2c
 // archive, the GBA tile data ("gb_ch_obj_base_sch.szs", "player_sch.szs",
 // ...) into gGameRoot2_8053AB10->field_0x20, and stores `this` in lbl_8053ADD0.

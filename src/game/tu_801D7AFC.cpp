@@ -96,7 +96,7 @@ void UnknownBGBL_804A4BB0::update() {
                 mAlive = false;
             } else {
                 if (fn_801CD2F8(mLayer_0x4)) {
-                    mAnim.fn_801D1C18();
+                    mAnim.update_801D1C18();
                 }
                 mPos += mVel_0x3c;
             }

@@ -21,7 +21,7 @@ void OshinUnidentified_804AB528::init() {
     field_0x25a = (mSpawnParam_0x90 >> 12) & 1;
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4(ACTOR_OSIN, serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4(ACTOR_OSIN, serial);
         if (serial < 0) {
             break;
         }
@@ -114,7 +114,7 @@ void OshinUnidentified_804AB528::update() {
             if (fn_80230188(i) && field_0x259 == 1) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
                 pos += mVel_0x3c;
-                fn_80230498(i, &pos, fn_80230CFC(i) + 0x3C, 0xFF, -0x80, -0x80, true);
+                fn_80230498(i, &pos, getPlayerFacing_80230CFC(i) + 0x3C, 0xFF, -0x80, -0x80, true);
             }
         }
     }
@@ -314,7 +314,7 @@ void OshinUnidentified_804AB528::draw() {
     if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804AB518[field_0x250]);
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, NULL);
         }
         return;
     }
@@ -335,7 +335,7 @@ void OshinUnidentified_804AB528::draw() {
     s32 frame = field_0x234 + 0x141;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
 }

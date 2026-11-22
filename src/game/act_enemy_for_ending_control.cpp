@@ -122,7 +122,7 @@ void EnemyForEndingControl_804AD48C::draw() {
 
 // Restarts the sequencer on table `seq`: stores `arg` (0x250), clears the
 // timer and the step index, then runs the first step (stepSequence_8035C15C inlined).
-void EndingActorBase_804A5958::fn_8035C1C4(s32 seq, s32 arg) {
+void EndingActorBase_804A5958::startSequence_8035C1C4(s32 seq, s32 arg) {
     field_0x250 = arg;
     field_0x244 = 0;
     field_0x24c = 0;

@@ -57,7 +57,7 @@ void GbaConnectErrorWindow_804B19F0::fn_80442254(s32 arg, s32 index) {
 }
 
 void GbaConnectErrorWindow_804B19F0::fn_80442200() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (field_0x18 != 0) {
         field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }

@@ -202,14 +202,14 @@ void SpawnerGenerator_804A9328::draw() {
     JGeometry::TVec3f pos(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
     }
     params.field_0x10.a = field_0x270;
     s32 frame2 = lbl_8046DFD0[field_0x264] + 0x175;
     JGeometry::TVec3f pos2(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos2, res, frame2, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos2, res, frame2, &params, 1.0f, 1.0f);
     }
     JGeometry::TVec3f shadowPos(mPos.x + 8.0f, mPos.y + 24.0f, mPos.z);
     JUtility::TColor color(0, 0, 0, 128);

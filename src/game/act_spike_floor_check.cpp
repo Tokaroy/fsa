@@ -35,7 +35,7 @@ void SpikeFloorCheck_804A8170::update() {
         switch (mType) {
         case 0:
             if (isScreenFlagSet_0x34()) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 mState = 2;
                 mTimer = 8;
             }
@@ -43,7 +43,7 @@ void SpikeFloorCheck_804A8170::update() {
         case 1:
         default:
             if (getActorManager_801F856C()->mAllDefeated_0x305c == 1) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 mTimer = 8;
                 mState = 2;
             }

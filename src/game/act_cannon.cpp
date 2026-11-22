@@ -92,7 +92,7 @@ void Cannon_8049CCF0::update() {
             if (field_0x269 == 0) {
                 pool_8053C2F4(this);
                 startSound_801F0E34(0x30003, 0);
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
             }
             field_0x269 = 1;
         }
@@ -184,7 +184,7 @@ void Cannon_8049CCF0::update() {
         updateRecoil(this);
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void Cannon_8049CCF0::draw() {
@@ -201,7 +201,7 @@ void Cannon_8049CCF0::draw() {
     JGeometry::TVec3f* pos = &mPos;
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
     }
     fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }

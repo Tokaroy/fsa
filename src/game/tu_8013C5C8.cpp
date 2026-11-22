@@ -55,7 +55,7 @@ static inline void depthPos(JGeometry::TVec3f& p, const JGeometry::TVec3f* pos, 
     }
     f32 offset = height * 1024 + depth * 128;
     p.set(pos->x, pos->y + offset, pos->z + offset);
-    p.z += gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(pos) - pos->z;
+    p.z += gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(pos) - pos->z;
 }
 
 // The unit's projecting emitter callback (spawnEmitter_8013CC50 picks it for ids
@@ -215,7 +215,7 @@ void EffectSystem_8049F178::fn_8013DC1C() {
 void EffectSystem_8049F178::fn_8013DB2C() {
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
         JPADrawInfo info;
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         pool_8053CE10(info);
         mEmitterManager->draw(&info, 4);
     }
@@ -244,7 +244,7 @@ void EffectSystem_8049F178::fn_8013D6E4() {
         mEmitterManager->draw(&info, 0);
         mEmitterManager->draw(&info, 3);
         gGameRoot2_8053AB10->field_0x34->capture(0, 0);
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         pool_8053CE10(info2d);
         mEmitterManager->draw(&info2d, 5);
         gGameRoot2_8053AB10->fn_8013B438();
@@ -255,7 +255,7 @@ void EffectSystem_8049F178::fn_8013D6E4() {
 
 void EffectSystem_8049F178::fn_8013D5D4() {
     JPADrawInfo info;
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     pool_8053CE10(info);
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
         mEmitterManager->draw(&info, 2);
@@ -269,7 +269,7 @@ void EffectSystem_8049F178::fn_8013D5B0() {
 }
 
 // FIXME: 99.95. Regalloc only, in the inlined depthPos tail (p.z += height - pos->z after
-// fn_802F5E9C): the original loads pos->z into f0 and p.z into f2, ours the other way round
+// getHeightAt_802F5E9C): the original loads pos->z into f0 and p.z into f2, ours the other way round
 // (setEmitterPos_8013CB44, which keeps p in registers, matches with the same inline).
 JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth,
                             JPAEmitterCallBack* emitterCB, JPAParticleCallBack* particleCB, bool adjust,
@@ -523,7 +523,7 @@ u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos,
 // Fills `info` for drawing particles in screen space: the J2DOrthoGraph's
 // position matrix and a light-ortho projection over the frame buffer. The
 // linker dead-stripped this copy; fn_8013D5D4, fn_8013D6E4 and fn_8013DB2C
-// inline it (right after gGameRoot2_8053AB10->fn_8013B490()), and its 0.5f
+// inline it (right after gGameRoot2_8053AB10->setPort_8013B490()), and its 0.5f
 // is the pool literal before the int-to-float double (0.0, 1.0, pi, -1.0,
 // 0.5, double, ...), ahead of setEmitterPos_8013CB44. All three callers also
 // default-construct a second JPADrawInfo here that nothing reads (two

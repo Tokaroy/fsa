@@ -15,37 +15,37 @@ void ShadowLink2_804A43E8::fn_801C6C7C() {
                 switch (fn_801CD664(6)) {
                 case 0:
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-                        fn_801C3B7C(0x23);
+                        setState_801C3B7C(0x23);
                     } else {
-                        fn_801C3B7C(0x24);
+                        setState_801C3B7C(0x24);
                     }
                     break;
                 case 1:
                 case 2:
-                    fn_801C3B7C(0x25);
+                    setState_801C3B7C(0x25);
                     break;
                 default:
-                    fn_801C3B7C(0x26);
+                    setState_801C3B7C(0x26);
                     break;
                 }
             } else if (field_0x524.field_0x0 & 0x10) {
                 switch (fn_801CD664(3)) {
                 case 0:
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-                        fn_801C3B7C(0x23);
+                        setState_801C3B7C(0x23);
                     } else {
-                        fn_801C3B7C(0x24);
+                        setState_801C3B7C(0x24);
                     }
                     break;
                 default:
-                    fn_801C3B7C(0x25);
+                    setState_801C3B7C(0x25);
                     break;
                 }
             } else if (field_0x524.field_0x0 & 0x8) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
-                    fn_801C3B7C(0x23);
+                    setState_801C3B7C(0x23);
                 } else {
-                    fn_801C3B7C(0x24);
+                    setState_801C3B7C(0x24);
                 }
             }
         } else if (dist > square(lbl_8053EDF4)) {
@@ -60,9 +60,9 @@ void ShadowLink2_804A43E8::fn_801C6C7C() {
     }
     if (done) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.7f) {
-            fn_801C3B7C(0xF);
+            setState_801C3B7C(0xF);
         } else {
-            fn_801C3B7C(0x11);
+            setState_801C3B7C(0x11);
         }
     }
 }
@@ -71,20 +71,20 @@ void ShadowLink2_804A43E8::fn_801C6BA8() {
     if (field_0x340.mFlags & 0x20) {
         switch (field_0x340.mState) {
         case 9:
-            field_0x340.fn_800FEB78(3);
+            field_0x340.setState_800FEB78(3);
             startSound_801F0E34(0x400C6, 0);
             mSpeed = mTargetSpeed = 2.0f;
-            field_0x33c = fn_801F6874(mDir_0x98);
+            field_0x33c = dirToAngle_801F6874(mDir_0x98);
             break;
         case 3:
-            fn_801C3B7C(0x27);
+            setState_801C3B7C(0x27);
             break;
         case 2:
             field_0x340.mFlags &= ~0x20;
             field_0x340.mIndex = 0;
             field_0x594++;
             if (field_0x594 >= 2) {
-                fn_801C3B7C(0x27);
+                setState_801C3B7C(0x27);
             }
             break;
         }
@@ -94,7 +94,7 @@ void ShadowLink2_804A43E8::fn_801C6BA8() {
 void ShadowLink2_804A43E8::fn_801C6A4C() {
     if (field_0x340.mState == 9) {
         if (field_0x340.mFlags & 0x20) {
-            field_0x340.fn_800FEB78(6);
+            field_0x340.setState_800FEB78(6);
             switch (mState) {
             case 0x25:
                 startSound_801F0E34(0x400CF, 0);
@@ -120,7 +120,7 @@ void ShadowLink2_804A43E8::fn_801C6A4C() {
             }
         }
         if (field_0x594 >= limit) {
-            fn_801C3B7C(0x28);
+            setState_801C3B7C(0x28);
         }
     }
 }

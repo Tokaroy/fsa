@@ -1,7 +1,7 @@
 
 ## 2026-11-05 small-function pass (Sonnet 5.5)
 Baseline progress.py: 7622 / 11557. After: 7669 (unit 7 -> 54 of 120).
-Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the fn_8024F0E8 argument setup),
+Resistant: fn_8027CAA8 78.55 % (scheduling: original stores the float / li 8 before the playSound_8024F0E8 argument setup),
 fn_802729F0 81.51 % (72-entry compare loop: original unrolls 8 trips of 9 with a pointer bump).
 Left unwritten on purpose:
 - fn_80276538, fn_8027A0D4-style literal users (fn_80279FE8): new float literals (7, -15, 15, 6) enter our .sdata2 pool
@@ -54,7 +54,7 @@ New 100 %: fn_8027439C, fn_802756E4, fn_80276078, fn_80276538 (literal pool), fn
 fn_802775C8, fn_8027A178, fn_802796B8, fn_80279FE8, fn_8027A0D4, fn_8027CBB0, fn_8027A908,
 fn_8027C4FC, fn_8027D320, fn_8027BC90, fn_8027BA2C, fn_80276E5C, fn_80276BB8, fn_80279CFC,
 fn_8027B304, fn_80277220.
-Structural (FIXMEs in source): fn_80273FB8 98.59 missing/extra, fn_80275D9C 98.61 regalloc,
+Structural (FIXMEs in source): fn_80273FB8 98.59 missing/extra, checkAttackInput_80275D9C 98.61 regalloc,
 fn_8027C6C4 99.88 regalloc, fn_8027B648 96.22 missing/extra (materialised lifeFull).
 Data: lbl_8046BCA8 (0xA0 struct), lbl_8046BB48 f32[4][3], lbl_8046BD88 f32[4][2].
 SHARED-EDITS: include/game/Player.h only (0x12A4 / 0x1320 TVec3f from u8 padding, size

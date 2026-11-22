@@ -761,7 +761,7 @@ s32 FourGirlsControl_804AE4B0::fn_80370200() {
                 continue;
             }
         }
-        if (lbl_80474F4C[field_0x340[i]] == fn_80230CFC(idx)) {
+        if (lbl_80474F4C[field_0x340[i]] == getPlayerFacing_80230CFC(idx)) {
             any = true;
             hit[i] = 1;
         }

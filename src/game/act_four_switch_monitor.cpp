@@ -87,11 +87,11 @@ void FourSwitchMonitor_804A80A0::update() {
                     fn_8022E2D8(0xF);
                     setScreenFlag_0x30(0xFF, true);
                     for (s32 i = 0; i < 4; i++) {
-                        getGameView_802D6A9C()->fn_802D8050(field_0x244[i], true, 0xFF);
+                        getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x244[i], true, 0xFF);
                     }
                     if (field_0x234 != 0) {
                         if (field_0x234 == 2) {
-                            fn_801F0D20(3);
+                            playSe_801F0D20(3);
                         }
                         mAlive = false;
                     } else {
@@ -208,12 +208,12 @@ void FourSwitchMonitor_804A80A0::update() {
         if (field_0x23c == 0) {
             setScreenFlag_0x30(0xFF, true);
             for (s32 i = 0; i < 4; i++) {
-                getGameView_802D6A9C()->fn_802D8050(field_0x244[i], true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x244[i], true, 0xFF);
             }
             field_0x230 = 5;
             field_0x23c = 0xF;
             if (field_0x234 == 2) {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
             }
         } else {
             field_0x23c--;

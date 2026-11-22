@@ -44,7 +44,7 @@ u8 lbl_80539F88[8] = {2, 6, 1, 5, 11, 0, 0, 0};
 u16 lbl_80539F90[4] = {0x37D, 0x37F, 0x37C, 0x37E}; // emitter id per player
 
 // Not auto-inlined: update (0x8017C40C) calls every helper from fn_8017ED08 down to
-// fn_8017EAB4 out of line in the original (docs/INLINING.md, pragma rule 1).
+// invalidateEmitter_8017EAB4 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Sets the map's field_0x216 flag (gGameRoot2_8053AB10->0x20, TileMap_804AA858; 9 units
 // set it to 1). Takes no arguments; the caller is the fn_8017C4C8 branch of
@@ -116,9 +116,9 @@ bool fn_8017EB94(const JGeometry::TBox2f* box) {
     bool result = false;
     JGeometry::TVec3f corner2;
     JGeometry::TVec3f corner(box->i.x, box->i.y, 0.0f);
-    if (camera->fn_8030C2A8(&corner)) {
+    if (camera->isOnScreen_8030C2A8(&corner)) {
         corner2.set(box->f.x, box->f.y, 0.0f);
-        if (camera->fn_8030C2A8(&corner2)) {
+        if (camera->isOnScreen_8030C2A8(&corner2)) {
             result = true;
         }
     }
@@ -165,7 +165,7 @@ void ActorBase_804A5770::fn_8017EAF8(const JGeometry::TVec3f& v) {
 }
 
 // Out-of-line copy of TVec3<f32>::set(const TVec3&).
-void fn_8017EADC(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
+void setVec3_8017EADC(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
@@ -175,7 +175,7 @@ void fn_8017EACC(JPABaseEmitter* emitter, u8 r, u8 g, u8 b) {
 }
 
 // Out-of-line copy of JPABaseEmitter::becomeInvalidEmitter().
-void fn_8017EAB4(JPABaseEmitter* emitter) {
+void invalidateEmitter_8017EAB4(JPABaseEmitter* emitter) {
     emitter->becomeInvalidEmitter();
 }
 #pragma auto_inline reset
@@ -347,7 +347,7 @@ void PhantomGanon_804A1318::update() {
         mLife = 10000;
     }
     JGeometry::TVec3f pos;
-    fn_8017EADC(&pos, &mPos);
+    setVec3_8017EADC(&pos, &mPos);
     pos.y -= 16.0f;
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&pos);
     if (field_0x234 > 0) {
@@ -379,7 +379,7 @@ void PhantomGanon_804A1318::update() {
             mState = 0x15;
             return;
         }
-        if (fn_801F2FAC()) {
+        if (checkPlayerAttacks_801F2FAC()) {
             if (mPos.z == 0.0f && field_0x254 != 0) {
                 field_0x268 = 0;
                 field_0x254 = 0;
@@ -470,7 +470,7 @@ void PhantomGanon_804A1318::update() {
         addCalc2_801F71A4(&field_0x2ac.x, 1.0f, 0.3f, 0.1f);
         if (field_0x2ac.x >= 0.99f && field_0x290 >= 254.0f) {
             JGeometry::TVec3f one;
-            fn_8017EADC(&field_0x2ac, fn_8017EB0C(&one, 1.0f, 1.0f, 1.0f));
+            setVec3_8017EADC(&field_0x2ac, fn_8017EB0C(&one, 1.0f, 1.0f, 1.0f));
             field_0x290 = 255.0f;
             field_0x238 = 100;
             mState = 3;
@@ -599,7 +599,7 @@ void PhantomGanon_804A1318::update() {
         fn_801546BC(&mVel_0x3c);
         field_0x268 = 0;
         field_0x234 += 30;
-        fn_8017EADC(&pos, &mPos);
+        setVec3_8017EADC(&pos, &mPos);
         pos.x -= 20.0f;
         pos.y -= 70.0f;
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xCB, 1, 5, NULL, NULL, true, 2.0f);
@@ -634,11 +634,11 @@ void PhantomGanon_804A1318::update() {
             }
         }
         if (field_0x27c == 1) {
-            fn_8017EADC(&pos, &mPos);
+            setVec3_8017EADC(&pos, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
             fn_801F2B7C(mParamAtcp_0x114, -1, 6);
-            fn_8017EADC(&mPos, &pos);
+            setVec3_8017EADC(&mPos, &pos);
         }
         break;
     case 10:
@@ -689,7 +689,7 @@ void PhantomGanon_804A1318::update() {
         field_0x2b8 = 0;
         mState = 13;
     case 13: {
-        fn_8017EADC(&pos, &mPos);
+        setVec3_8017EADC(&pos, &mPos);
         pos.x -= 20.0f;
         pos.y -= 110.0f;
         pos.z = 0.0f;
@@ -723,9 +723,9 @@ void PhantomGanon_804A1318::update() {
             startSound_801F0E34(0x40043, 0);
             if (child != NULL) {
                 JGeometry::TVec3f savedPos = mPos;
-                fn_8017EADC(&mPos, &child->mPos);
+                setVec3_8017EADC(&mPos, &child->mPos);
                 findTargetPlayer_801EEC98(mSerial, &angle, &dir, NULL, NULL, 0, 2);
-                fn_8017EADC(&mPos, &savedPos);
+                setVec3_8017EADC(&mPos, &savedPos);
                 if (gGameRoot_8053AAF8->fn_80138A30() <= 1) {
                     if (field_0x258 == 0) {
                         angle += field_0x2b8;
@@ -804,9 +804,9 @@ void PhantomGanon_804A1318::update() {
     case 18:
         field_0x268 = 0;
         field_0x234 = lbl_804A1210.frames127C[field_0x268];
-        fn_8017EADC(&pos, &mPos);
+        setVec3_8017EADC(&pos, &mPos);
         if (mEmitter2dc != NULL) {
-            fn_8017EAB4(mEmitter2dc);
+            invalidateEmitter_8017EAB4(mEmitter2dc);
             mEmitter2dc = NULL;
         }
         if (getActorManager_801F856C()->fn_801F68E0() == 0) {
@@ -822,7 +822,7 @@ void PhantomGanon_804A1318::update() {
         field_0x27c = 3;
         mState = 19;
     case 19:
-        fn_8017EADC(&pos, &mPos);
+        setVec3_8017EADC(&pos, &mPos);
         pos.y -= 16.0f;
         fn_8017EC70(&pos, 1.0f);
         if (field_0x234 != 0) {
@@ -1082,7 +1082,7 @@ void PhantomGanon_804A1318::update() {
     case 23:
         if (FABS(mPos.z - field_0x288) <= 1.0f) {
             if (mEmitter2dc != NULL) {
-                fn_8017EAB4(mEmitter2dc);
+                invalidateEmitter_8017EAB4(mEmitter2dc);
                 mEmitter2dc = NULL;
             }
             getActorManager_801F856C()->fn_801F6884();

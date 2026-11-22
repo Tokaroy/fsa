@@ -27,7 +27,7 @@ static inline void setState(NaviAfterCrystalCutscene_8049ED30* self, s32 state) 
             releaseEmitter_801EE434(self->mEmitters[i]);
             self->mEmitters[i] = NULL;
         }
-        self->fn_801F3668();
+        self->markDead_801F3668();
         break;
     }
 }
@@ -46,7 +46,7 @@ static inline s32 checkTalk(NaviAfterCrystalCutscene_8049ED30* self, u32 msg) {
     if (!fn_802300EC(p)) {
         return -1;
     }
-    if (fn_8038AD24(p, msg, self->mSerial, self->mLayer_0x4, self->mPos, 0x28)) {
+    if (openMessage_8038AD24(p, msg, self->mSerial, self->mLayer_0x4, self->mPos, 0x28)) {
         return p;
     }
     return -1;
@@ -95,8 +95,8 @@ void NaviAfterCrystalCutscene_8049ED30::update() {
         }
         break;
     case 2:
-        fn_801CD950(&field_0x23c, 2.0f, 0.02f);
-        fn_801CD950(&mPos.z, 500.0f, field_0x23c);
+        moveToward_801CD950(&field_0x23c, 2.0f, 0.02f);
+        moveToward_801CD950(&mPos.z, 500.0f, field_0x23c);
         fn_801339EC();
         if (mPos.z >= 150.0f) {
             setState(this, 3);
@@ -106,7 +106,7 @@ void NaviAfterCrystalCutscene_8049ED30::update() {
         break;
     }
     fn_80239914(&box, mLayer_0x4, mSerial);
-    field_0x240.fn_801D1C18();
+    field_0x240.update_801D1C18();
 }
 
 // 0x80133C6C.
@@ -137,7 +137,7 @@ bool fn_80133B58() {
         if (!ok) {
             res = false;
         }
-        serial = getActorManager_801F856C()->fn_801F78F4('CRNV', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('CRNV', serial);
     }
     return res;
 }

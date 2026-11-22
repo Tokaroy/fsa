@@ -257,7 +257,7 @@ void TowerAppearanceDemo_8049E770::fn_8012C030() {
 void TowerAppearanceDemo_8049E770::fn_8012BE2C() {
     fn_8012A5EC();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-    if (fn_803865B8(0)) {
+    if (stepMessageWindow_803865B8(0)) {
         fn_80388EEC(0);
         fn_8011921C()->fn_801183BC();
         field_0x230 += 2;
@@ -467,7 +467,7 @@ void TowerAppearanceDemo_8049E770::fn_8012B0D8() {
 void TowerAppearanceDemo_8049E770::fn_8012B02C() {
     fn_8012A5EC();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-    if (fn_803865B8(0)) {
+    if (stepMessageWindow_803865B8(0)) {
         fn_80388EEC(0);
         fn_8011921C()->fn_801183BC();
         field_0x250 = 1540;
@@ -553,7 +553,7 @@ void TowerAppearanceDemo_8049E770::fn_8012AA84() {
     if (field_0x250 == 400) {
         field_0x400 = 0.0f;
         field_0x3fc = 0.0f;
-        getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
+        getGameView_802D6A9C()->setSwitchBit_802D8050(1, true, 0xFF);
         field_0x2c0 = 19;
         field_0x2bc = 4;
     } else if (field_0x250 == 30) {
@@ -597,7 +597,7 @@ void TowerAppearanceDemo_8049E770::fn_8012A9A0() {
     fn_8012A5EC();
     if (field_0x404 == 0) {
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             field_0x250 = 40;
             field_0x404 = 1;

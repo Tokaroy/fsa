@@ -41,7 +41,7 @@ void GamblingShopChest_804AAAE8::update() {
         box.f.y += mPos.y;
         s32 player = getRepresentativePlayer_8022EA0C(field_0x234);
         if (player == fn_8023AF14(&box, mLayer_0x4, false, 0.0f)) {
-            if (fn_80230CFC(player) == 3 && !fn_8023EFEC(player)) {
+            if (getPlayerFacing_80230CFC(player) == 3 && !fn_8023EFEC(player)) {
                 if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F340(player)), 0x100) != 0 &&
                     fn_802300EC(player) == true) {
                     field_0x234 = player;

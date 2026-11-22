@@ -24,7 +24,7 @@ public:
     void setEmitterColor();
     void onHit();
     void fn_8020EB08();
-    void fn_8020ED5C(s32 state);
+    void setState_8020ED5C(s32 state);
     inline void updateGrabbedPlayer_8020EB08();
     /* 0x2A8 */ f32 field_0x2a8;
     /* 0x2AC */ f32 field_0x2ac;

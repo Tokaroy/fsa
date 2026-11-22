@@ -14,7 +14,7 @@ void BgRewriteCheckSwitch_804A8998::init() {}
 void BgRewriteCheckSwitch_804A8998::update() {
     if (getGameView_802D6A9C()->field_0x131de) {
         setScreenFlag_0x30(0xFF, true);
-        fn_801F3668();
+        markDead_801F3668();
     }
 }
 

@@ -177,7 +177,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -199,7 +199,7 @@ void MojamojaUnidentifiedEnemy_804A0668::draw() {
         s32 frame = field_0x250 + 0x9d;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     } else {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x250 + 0x9d, NULL, 0, 1.0f, 1.0f);

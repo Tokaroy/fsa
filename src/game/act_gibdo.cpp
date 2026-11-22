@@ -48,7 +48,7 @@ void Gibdo_804A3BF8::init() {
     mTargetSpeed = 0.0f;
     mAnim.setKeyTables_801D2608(lbl_804A3BB8, 0x10);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 }
 
 // FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.
@@ -235,7 +235,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 1:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             bool turn = false;
             if (mFlags & 0x2000) {
                 mFlags &= ~0x2000;
@@ -251,7 +251,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             s32 dir = 0;
             switch (mAnim.mAnim) {
             case 0:

@@ -146,7 +146,7 @@ void KeeseSwarm_804A2EC0::update() {
                 continue;
             }
             if (gGameRoot_8053AAF8->fn_80138A30() > 1 || fn_8022CAF8(hitter) == 1 || fn_8022CAF8(hitter) == 0) {
-                if (fn_801F2FAC()) {
+                if (checkPlayerAttacks_801F2FAC()) {
                     field_0x264 -= 10000 - mLife;
                     if (field_0x264 <= 0) {
                         startSound_801F0E34(0x40003, 0);

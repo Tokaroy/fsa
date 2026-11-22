@@ -146,7 +146,7 @@ TennisShop_804A2BF4::~TennisShop_804A2BF4() {
     if (field_0x274 == 0 && (field_0x230 == 5 || field_0x230 == 6)) {
         fn_8022AF2C();
         if (gGameRoot_8053AAF8->field_0x4c != 9) {
-            gGameRoot_8053AAF8->fn_80138B7C();
+            gGameRoot_8053AAF8->startStageMusic_80138B7C();
             gAudioMgr_8053AF80->fn_80458508(0);
         }
     }
@@ -169,7 +169,7 @@ static inline void setCameraScript(const JGeometry::TVec3f& pos) {
 }
 
 static inline bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
-    return fn_8038AD24(player, msg, serial, layer, pos, flags);
+    return openMessage_8038AD24(player, msg, serial, layer, pos, flags);
 }
 
 static inline void bumpCount999(s32* count) {
@@ -296,7 +296,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     case 2:
         setCameraScript(camPos);
         fn_8022FE80(field_0x278, mLayer_0x4, mSerial, false, false);
-        if (!fn_803865B8(field_0x278)) {
+        if (!stepMessageWindow_803865B8(field_0x278)) {
             break;
         }
         switch (fn_8037EFB4(field_0x278)) {
@@ -316,7 +316,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         if (fn_80388CAC(field_0x278, mSerial)) {
             fn_80230534(false);
             field_0x2c4 = 3600;
-            fn_801F0D20(0x3A);
+            playSe_801F0D20(0x3A);
             gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             fn_8022AF44();
             field_0x230 = 4;
@@ -354,7 +354,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             field_0x2c4 = 0;
         }
         if (field_0x2c4 / 60 <= 11 && field_0x2c4 % 60 == 0 && field_0x2c4 > 60) {
-            fn_801F0D20(0x3F);
+            playSe_801F0D20(0x3F);
             gAudioMgr_8053AF80->fn_80458508(1);
         }
         if (field_0x2c8[field_0x318] > field_0x31c) {
@@ -362,7 +362,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
         }
         if (field_0x2c4 == 0) {
             if (field_0x238[1] > 2 || lbl_8053ABC0 == 1) {
-                fn_801F0D20(0x3B);
+                playSe_801F0D20(0x3B);
                 gAudioMgr_8053AF80->fn_80458508(0);
                 s32 serial = field_0x320;
                 if (serial >= 0) {
@@ -487,11 +487,11 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     case 8:
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
-        if (!fn_803865B8(0)) {
+        if (!stepMessageWindow_803865B8(0)) {
             break;
         }
         field_0x24c[1] = 0;
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         fn_8022AF2C();
         if (field_0x26c == 0) {
             fn_8038470C(0, 0x35B);
@@ -514,7 +514,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     case 9: {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
-        if (!fn_803865B8(0) || !fn_80384C58(0, mSerial)) {
+        if (!stepMessageWindow_803865B8(0) || !fn_80384C58(0, mSerial)) {
             break;
         }
         if (field_0x26c == 0) {

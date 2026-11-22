@@ -65,7 +65,7 @@ void ShadowLinkFireMinor_804A6C38::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5:
-        if (mStateTimer > 1 && mAnim.fn_801D21F0()) {
+        if (mStateTimer > 1 && mAnim.isStopped_801D21F0()) {
             JGeometry::TVec3f pos(mPos.x, mPos.y, 0.0f);
             switch (mDir_0x98) {
             case 0:

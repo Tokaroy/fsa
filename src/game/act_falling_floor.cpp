@@ -220,7 +220,7 @@ void FallingFloor_804A9078::update() {
             JGeometry::TVec3f p;
             p.x = mPos.x;
             p.y = mPos.y;
-            if (fn_80226998(&p, mLayer_0x4) == 1) {
+            if (getTileAt_80226998(&p, mLayer_0x4) == 1) {
                 gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, mLayer_0x4, 0x3E0);
                 startSound_801F0E34(0x50045, 0);
                 if (mLayer_0x4 >= 8) {

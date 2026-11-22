@@ -7,7 +7,7 @@
 #include "game/act/act_obj_lift.h"
 #include "game/act/act_somaria_block.h"
 
-// Offsets (x, y, z) that init walks mPos along; the index is fn_80230CFC ^ 1.
+// Offsets (x, y, z) that init walks mPos along; the index is getPlayerFacing_80230CFC ^ 1.
 static const f32 lbl_80471368[4][3] = {
     {0.5f, 0.0f, 0.0f}, {-0.5f, 0.0f, 0.0f}, {0.0f, 0.5f, 0.0f}, {0.0f, -0.5f, 0.0f},
 };
@@ -40,7 +40,7 @@ void CaneOfSomariaBlock_804AA9F0::init() {
 
     s32 count = 0;
     while (sweepMapBox_801F2618(NULL, false)) {
-        s32 dir = fn_80230CFC(field_0x110) ^ 1;
+        s32 dir = getPlayerFacing_80230CFC(field_0x110) ^ 1;
         count++;
         mPos.x += 2.0f * lbl_80471368[dir][0];
         mPos.y += 2.0f * lbl_80471368[dir][1];
@@ -80,7 +80,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 continue;
             }
             for (s32 serial = -1;;) {
-                serial = getActorManager_801F856C()->fn_801F78F4('SMRI', serial);
+                serial = getActorManager_801F856C()->findNextActorById_801F78F4('SMRI', serial);
                 if (serial < 0) {
                     break;
                 }

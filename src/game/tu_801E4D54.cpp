@@ -114,7 +114,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
             if (mFlags & 0x4000) {
                 field_0x2a8[i].field_0x8++;
                 if (field_0x2a8[i].field_0x8 % 40 == 0) {
-                    fn_80236074(i, 10, 0);
+                    dropPlayerForceGems_80236074(i, 10, 0);
                 }
             }
         }
@@ -124,7 +124,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 fn_80230C6C(i);
                 fn_80230AD4(i);
                 field_0x2a8[i].field_0x0 = 1;
-                field_0x2a8[i].field_0xc.fn_8021BD18(fn_80230CFC(i));
+                field_0x2a8[i].field_0xc.fn_8021BD18(getPlayerFacing_80230CFC(i));
             }
             if (!fn_80230188(i)) {
                 if (mFlags & 0x4000) {

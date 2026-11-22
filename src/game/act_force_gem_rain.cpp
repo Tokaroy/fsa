@@ -54,7 +54,7 @@ void ForceGemRain_804A8010::update() {
     switch (field_0x230) {
     case 0: {
         if (field_0x244 == 3 || field_0x244 == 0xC) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x230 = 1;
             break;
         }
@@ -89,7 +89,7 @@ void ForceGemRain_804A8010::update() {
             case 0:
             case 6:
             case 7:
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 field_0x230 = 1;
                 break;
             case 5:
@@ -360,7 +360,7 @@ void ForceGemRain_804A8010::update() {
             }
         }
         if (field_0x248 == 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -381,8 +381,8 @@ void ForceGemRain_804A8010::update() {
         return;
     }
     GameView_804A9950* v = getGameView_802D6A9C();
-    v->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
-    fn_801F3668();
+    v->setSwitchBit_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
+    markDead_801F3668();
 }
 
 void ForceGemRain_804A8010::draw() {}

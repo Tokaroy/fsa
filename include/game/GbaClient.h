@@ -11,15 +11,15 @@ struct GbaPacket_80300A8C {
     /* 0x01 */ u8 mPort;       // the client's mPort
     /* 0x02 */ u8 field_0x2;   // the client's mPacket.field_0x2
     /* 0x03 */ u8 field_0x3;
-    /* 0x04 */ OSTick field_0x4; // lbl_8053ACC8 (OSGetTick at fn_803007D0)
+    /* 0x04 */ OSTick field_0x4; // lbl_8053ACC8 (OSGetTick at startGbaClients_803007D0)
     /* 0x08 */ OSTick field_0x8; // the client's field_0x48 (OSGetTick)
     /* 0x0C */ u32 field_0xc;
     /* 0x10 */ u8 field_0x10[0x20 - 0x10];
 }; // Size: 0x20
 
-// One GBA client per port (lbl_804DB798[4], set up by fn_803007D0: memset 0xE0,
+// One GBA client per port (lbl_804DB798[4], set up by startGbaClients_803007D0: memset 0xE0,
 // the queue with its one message slot, the callback fn_80300A8C, the program
-// and its length). Named after fn_803007D0, the first function that fills one.
+// and its length). Named after startGbaClients_803007D0, the first function that fills one.
 // fn_80304FB0 (tu_80301CD0) and fn_8030A258 (tu_803099FC) read the array by name.
 struct GbaClient_803007D0 {
     /* 0x00 */ OSMessageQueue mQueue;
@@ -45,7 +45,7 @@ struct GbaClient_803007D0 {
     /* 0xD7 */ u8 field_0xd7;
     /* 0xD8 */ u8 field_0xd8;
     /* 0xD9 */ u8 field_0xd9;
-    /* 0xDA */ u8 field_0xda; // 0x1A from fn_803007D0
+    /* 0xDA */ u8 field_0xda; // 0x1A from startGbaClients_803007D0
     /* 0xDB */ u8 field_0xdb;
     /* 0xDC */ u8 field_0xdc; // tested by cls_804AA8C8::fn_8030A258 (game/tu_803099FC.cpp)
     /* 0xDD */ u8 field_0xdd;

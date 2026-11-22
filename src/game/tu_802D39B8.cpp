@@ -149,7 +149,7 @@ static inline bool epsilonEquals(const JGeometry::TVec2f& a, const JGeometry::TV
     return equal;
 }
 
-// resetStage_802DA8DC, fn_802DBD60 and vfunc_0xC inline these two instruction for instruction
+// resetStage_802DA8DC, restartStage_802DBD60 and vfunc_0xC inline these two instruction for instruction
 // (no out-of-line copy). Clears the screen masks (fn_802DEE2C), the per-screen layer
 // masks, the layer slot lists and the per-screen bit tables.
 inline void GameView_804A9950::clearStageTables() {
@@ -478,7 +478,7 @@ GameView_804A9950::~GameView_804A9950() {}
 // test; ours hoists the row's address + 0x28 once (also with the masks written out
 // instead of isStageFlagSet).
 // Enters the stage: clears every table, rebuilds the map (fn_802D3D48, fn_802D92F0,
-// fn_802D8D50), places the players, spawns the 'RANK' and 'GBAO' actors, sets the camera
+// loadScreenTiles_802D8D50), places the players, spawns the 'RANK' and 'GBAO' actors, sets the camera
 // and the time limit, and reads the save row's flags.
 void GameView_804A9950::vfunc_0xC() {
     getGameView_802D6A9C()->field_0x1328c = 0;
@@ -514,7 +514,7 @@ void GameView_804A9950::vfunc_0xC() {
     getGameView_802D6A9C()->field_0x131f5 = 0;
     gGameRoot_8053AAF8->fn_80134D14(0);
     fn_802D92F0();
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     placePlayers();
     fn_802D8328(true, true);
     JGeometry::TVec3f rankPos(0.0f, 0.0f, 0.0f);
@@ -684,7 +684,7 @@ u8 GameView_804A9950::fn_802DCE5C(const s32* dir) {
         fn_802D9FBC();
         fn_80231424();
         getActorManager_801F856C()->fn_801F7E88();
-        fn_802D8D50(true);
+        loadScreenTiles_802D8D50(true);
         fn_802D6BE0(0);
         fn_802D6BC8(0);
         fn_802D8328(false, false);
@@ -721,7 +721,7 @@ u8 GameView_804A9950::stepScreen_802DCD1C(const s32* dir) {
         }
         fn_80231424();
         getActorManager_801F856C()->fn_801F7E88();
-        fn_802D8D50(true);
+        loadScreenTiles_802D8D50(true);
         fn_802D8328(false, false);
         gGameRoot2_8053AB10->field_0x24->setNextVisibleBox_8030C928(&mVisibleBox);
         moved = true;
@@ -742,7 +742,7 @@ u8 GameView_804A9950::fn_802DCD0C() {
 // field_0x131f9 == 2 it first clears every stage table, resets the players and rebuilds
 // the map; with 3 it only resets the shadows. Then it places the players, spawns the
 // 'GLWP' actor at player 0 (field_0x131f9 2 or 3) and re-enters the players' slots.
-void GameView_804A9950::fn_802DBD60() {
+void GameView_804A9950::restartStage_802DBD60() {
     mScreenX_0x14 = field_0x24;
     mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
@@ -770,7 +770,7 @@ void GameView_804A9950::fn_802DBD60() {
         }
         getGameView_802D6A9C()->field_0x1328c = 0;
         fn_802D7970(getGameView_802D6A9C()->field_0x38);
-        gGameRoot_8053AAF8->fn_80138B7C();
+        gGameRoot_8053AAF8->startStageMusic_80138B7C();
         fn_8022ADCC();
         fn_8016A3AC()->fn_8016A330();
         fn_802D92F0();
@@ -780,7 +780,7 @@ void GameView_804A9950::fn_802DBD60() {
             fn_8022ADE4();
         }
     }
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     getActorManager_801F856C()->fn_801F7B18();
     getActorManager_801F856C()->setAllDefeated_801F6204(0);
     fn_80308D0C();
@@ -846,7 +846,7 @@ void GameView_804A9950::fn_802DB6F0() {
     restartTimeLimit();
     clearScreenState();
     fn_8038D454();
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     getActorManager_801F856C()->fn_801F7B18();
     getActorManager_801F856C()->setAllDefeated_801F6204(0);
     fn_80308D0C();
@@ -878,7 +878,7 @@ void GameView_804A9950::fn_802DB6F0() {
 
 // FIXME: 98.63 %, different; behaviour clean.
 // Structurally close: regalloc in clearStageTables' first loop (the target's
-// zero and row counters are r3 / r4, ours r4 / r3, as in fn_802DBD60 and vfunc_0xC) and one
+// zero and row counters are r3 / r4, ours r4 / r3, as in restartStage_802DBD60 and vfunc_0xC) and one
 // instruction in clearScreenState's bit-table loop (the target copies the 0 with mr r8, r0
 // where ours loads li r7, 0xFF a slot later). Reloc-name: 1.0f / -1.0f as in fn_802DA010.
 void GameView_804A9950::resetStage_802DA8DC() {
@@ -900,7 +900,7 @@ void GameView_804A9950::resetStage_802DA8DC() {
     fn_802D6BE0(0);
     clearScreenState();
     fn_8038D454();
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     getActorManager_801F856C()->fn_801F7B18();
     getActorManager_801F856C()->setAllDefeated_801F6204(0);
     fn_80308D0C();
@@ -989,7 +989,7 @@ void GameView_804A9950::fn_802DA010() {
     restartTimeLimit();
     clearScreenState();
     fn_8038D454();
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     getActorManager_801F856C()->fn_801F7B18();
     getActorManager_801F856C()->setAllDefeated_801F6204(0);
     fn_80308D0C();
@@ -1060,7 +1060,7 @@ void GameView_804A9950::fn_802D9CD8() {
     fn_8016A3AC()->fn_8016A330();
     gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
     fn_802D92F0();
-    fn_802D8D50(false);
+    loadScreenTiles_802D8D50(false);
     fn_802D8328(true, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
     gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
@@ -1173,7 +1173,7 @@ void GameView_804A9950::fn_802D92F0() {
 // The tile map, gGameRoot2_8053AB10->0x20, through an inlined accessor (no out-of-line copy is
 // left): the original loads it before the resource lookup that is its call's first argument,
 // as MWCC orders an inlined call with the other calls (RULES_CARD "inlined getter"); written
-// out, the load comes after the lookup (fn_802D8D50 92.7 -> 87.7).
+// out, the load comes after the lookup (loadScreenTiles_802D8D50 92.7 -> 87.7).
 static inline TileMap_804AA858* getTileMap() {
     return gGameRoot2_8053AB10->field_0x20;
 }
@@ -1187,7 +1187,7 @@ static inline TileMap_804AA858* getTileMap() {
 // Loads the current screen's tile grids: layers 0/1 from the screen's two "mmm" files
 // (resource type 'M' plus the stage name), then, unless fn_802DEBA0(), layers 8-14 and
 // 16-22 from the per-layer files of fn_802D8228 / fn_802D8128, and sets the visible box.
-void GameView_804A9950::fn_802D8D50(bool reload) {
+void GameView_804A9950::loadScreenTiles_802D8D50(bool reload) {
     char name1[0x20];
     char name2[0x20];
     getGameView_802D6A9C()->field_0x5c = 0;
@@ -1259,7 +1259,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         if (screen == 0xFF) {
             screen = 0;
         }
-        // Resource type 'B' plus the stage characters, as in fn_802D8D50.
+        // Resource type 'B' plus the stage characters, as in loadScreenTiles_802D8D50.
         u32 type = 'B   ';
         sprintf(name, "d_enemy_map%s_%d%d.bin", stage, screen / 10, screen % 10);
         type += ((stage[0] - ' ') << 16) + ((stage[1] - ' ') << 8) + (stage[2] - ' ');
@@ -1429,7 +1429,7 @@ const char* GameView_804A9950::fn_802D8128(s32 layer) {
 }
 
 // `^ -1` (not ~): the target clears with xor+and, not andc (as fn_802D78B4).
-void GameView_804A9950::fn_802D8050(s32 bit, bool set, u8 value) {
+void GameView_804A9950::setSwitchBit_802D8050(s32 bit, bool set, u8 value) {
     if (set) {
         getGameView_802D6A9C()->field_0x178[mScreenY_0x18][mScreenX_0x14] |= 1 << bit;
         if (getGameView_802D6A9C()->field_0x308[bit] < 0xFF) {
@@ -1904,26 +1904,26 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 if ((mask & bit) != 0) {
                     switch (tile) {
                     case 0x30:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x10);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x10);
                         break;
                     case 0xaa:
-                        gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0xbc, 0xbd);
+                        gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0xbc, 0xbd);
                         break;
                     case 0x68:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x12);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x12);
                         break;
                     case 0x19c:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19e);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x19e);
                         break;
                     case 0x19d:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19f);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x19f);
                         break;
                     case 0x80:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9e);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9e);
                         break;
                     case 0x81:
                     case 0xe5:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9d);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9d);
                         break;
                     case 0x9b: {
                         s32 up = cell - 0x10;
@@ -1934,16 +1934,16 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                         break;
                     }
                     case 0xfa:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x5a);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x5a);
                         break;
                     case 0xdc:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9e);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9e);
                         break;
                     case 0xdd:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x20);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x20);
                         break;
                     case 0x3eb:
-                        gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x3e0);
+                        gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x3e0);
                         break;
                     }
                 }
@@ -2032,9 +2032,9 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                 }
                 getGameView_802D6A9C()->field_0x2948[slot][i + 1] = other;
                 if ((mask & bit) != 0) {
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(
+                    gGameRoot2_8053AB10->field_0x20->setTile_802F9974(
                         layer, cell, gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, other));
-                    gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, other, 0x20);
+                    gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, other, 0x20);
                 }
                 bit <<= 2;
                 i += 2;
@@ -2135,144 +2135,144 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                         case 0x6b:
                         case 0x70:
                         case 0x75:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x79);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x79);
                             break;
                         case 0x68:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x12);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x12);
                             break;
                         case 0x6a:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x50);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x50);
                             break;
                         case 0x71:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x7b);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x7b);
                             break;
                         case 0x72:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x7c);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x7c);
                             break;
                         case 0x5f:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x83);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x83);
                             break;
                         case 0xfa:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x5a);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x5a);
                             break;
                         case 0x74:
                         case 0x146:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x7d);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x7d);
                             break;
                         case 0xae:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0xaf);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0xaf);
                             break;
                         case 0x19c:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19e);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x19e);
                             break;
                         case 0x19d:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19f);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x19f);
                             break;
                         case 0x30:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x10);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x10);
                             break;
                         case 0x10:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x10);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x10);
                             break;
                         case 0xaa:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0xbc, 0xbd);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0xbc, 0xbd);
                             break;
                         case 0x40:
                         case 0x42:
                         case 0x44:
                         case 0x4e:
                         case 0x4f:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x11);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x11);
                             break;
                         case 0x43:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x50);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x50);
                             break;
                         case 0x45:
                         case 0x47:
                         case 0x49:
                         case 0x99:
                         case 0x9a:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x15);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x15);
                             break;
                         case 0x46:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x14);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x14);
                             break;
                         case 0x48:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x52);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x52);
                             break;
                         case 0x1:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x3e0);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x3e0);
                             break;
                         case 0x20:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x20);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x20);
                             break;
                         case 0x12:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x13);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x13);
                             break;
                         case 0x14:
                         case 0x52:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x15);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x15);
                             break;
                         case 0x50:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x51);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x51);
                             break;
                         case 0x76:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x77);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x77);
                             break;
                         case 0x3a:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x3b);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x3b);
                             break;
                         case 0x3f:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x3e);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x3e);
                             break;
                         case 0xbf:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0xbe);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0xbe);
                             break;
                         case 0xac:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x35);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x35);
                             break;
                         case 0x2:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0xb8);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0xb8);
                             break;
                         case 0x81:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9d);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9d);
                             break;
                         case 0x80:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9e);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9e);
                             break;
                         case 0xdc:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x9e);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x9e);
                             break;
                         case 0xdd:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x20);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x20);
                             break;
                         case 0xea:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x252);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x252);
                             break;
                         case 0xeb:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x253);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x253);
                             break;
                         case 0xec:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x254);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x254);
                             break;
                         case 0xf9:
-                            gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x25b);
+                            gGameRoot2_8053AB10->field_0x20->setTile_802F9974(layer, cell, 0x25b);
                             break;
                         case 0x2e0:
                         case 0x348:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x350, 0x351);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x350, 0x351);
                             break;
                         case 0x2f0:
                         case 0x358:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x342, 0x343);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x342, 0x343);
                             break;
                         case 0x2e2:
                         case 0x34a:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x345, 0x355);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x345, 0x355);
                             break;
                         case 0x2e3:
                         case 0x34b:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x346, 0x356);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x346, 0x356);
                             break;
                         case 0x300:
                         case 0x304:
@@ -2307,20 +2307,20 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                             gBgRewrite_8053AC98->fn_8029DB2C(layer, cell, 2, 0x2ed, 0x2ff, 0x2ff, 0x2ff, 0x2ff, 0x2fd);
                             break;
                         case 0x330:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x338, 0x339);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, up, 0, 0x328, 0x329);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x338, 0x339);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, up, 0, 0x328, 0x329);
                             break;
                         case 0x322:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x32a, 0x32b);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, down, 0, 0x33a, 0x33b);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x32a, 0x32b);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, down, 0, 0x33a, 0x33b);
                             break;
                         case 0x325:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x32d, 0x33d);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, left, 1, 0x32c, 0x33c);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x32d, 0x33d);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, left, 1, 0x32c, 0x33c);
                             break;
                         case 0x326:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x32e, 0x33e);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, right, 1, 0x32f, 0x33f);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x32e, 0x33e);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, right, 1, 0x32f, 0x33f);
                             break;
                         case 0x30e:
                             gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 0, 0x2ca, 0x2ce, 0x2ce, 0x2cb);
@@ -2339,32 +2339,32 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                             gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer + step, right, 1, 0x2d7, 0x2d8, 0x2d8, 0x2d9);
                             break;
                         case 0x3a8:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x3b0, 0x3b1);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x3b0, 0x3b1);
                             break;
                         case 0x3b8:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x3a2, 0x3a3);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x3a2, 0x3a3);
                             break;
                         case 0x3aa:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x3a5, 0x3b5);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x3a5, 0x3b5);
                             break;
                         case 0x3ab:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x3a6, 0x3b6);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x3a6, 0x3b6);
                             break;
                         case 0x390:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x398, 0x399);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, up, 0, 0x388, 0x389);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x398, 0x399);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, up, 0, 0x388, 0x389);
                             break;
                         case 0x382:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x38a, 0x38b);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, down, 0, 0x39a, 0x39b);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 0, 0x38a, 0x38b);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, down, 0, 0x39a, 0x39b);
                             break;
                         case 0x385:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x38d, 0x39d);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, left, 1, 0x38c, 0x39c);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x38d, 0x39d);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, left, 1, 0x38c, 0x39c);
                             break;
                         case 0x386:
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 1, 0x38e, 0x39e);
-                            gBgRewrite_8053AC98->fn_8029DEBC(layer + step, right, 1, 0x38f, 0x39f);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer, cell, 1, 0x38e, 0x39e);
+                            gBgRewrite_8053AC98->writeTilePair_8029DEBC(layer + step, right, 1, 0x38f, 0x39f);
                             break;
                         default:
                             getGameView_802D6A9C()->setScreenMaskBit_802D7D00(layer, i, false);
@@ -2757,7 +2757,7 @@ void GameView_804A9950::fn_802D3A18() {
     if (gGameRoot_8053AAF8->field_0x96 != 0) {
         paused = 1;
     }
-    if (gGameRoot_8053AAF8->field_0x7e == 0 && fn_8037F1E4(0)) {
+    if (gGameRoot_8053AAF8->field_0x7e == 0 && getMessageWindowState_8037F1E4(0)) {
         paused = 1;
     }
     if (getGameView_802D6A9C()->field_0x131f0 == 1 && field_0xc4 != 0 && !paused) {

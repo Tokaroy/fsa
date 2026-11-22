@@ -215,7 +215,7 @@ void IronBallHoming_804AB9C0::update() {
             if (field_0x240 < 0.1f) {
                 mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
                 if (vfunc_0x54() < 0) {
-                    fn_801F3668();
+                    markDead_801F3668();
                 } else {
                     field_0x240 = 1.0f;
                     mPos.z = 1000.0f;
@@ -262,13 +262,13 @@ void IronBallHoming_804AB9C0::draw() {
             JGeometry::TVec3f pos(mPos.x, 3.0f + mPos.y, 0.0f);
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0, &shadow, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0, &shadow, 1.0f, 1.0f);
             }
         }
         s32 frame = field_0x24c + 0x25;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x24c + 0x25, 0, 0, -1);
     } else {
@@ -276,13 +276,13 @@ void IronBallHoming_804AB9C0::draw() {
             JGeometry::TVec3f pos(mPos.x, 12.0f + mPos.y, 0.0f);
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "kage_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 3, &shadow, 2.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 3, &shadow, 2.0f, 1.0f);
             }
         }
         s32 frame = field_0x24c + 0x27;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x24c + 0x27, 0, 0, -1);
     }
@@ -292,7 +292,7 @@ void IronBallHoming_804AB9C0::draw() {
 s32 IronBallHoming_804AB9C0::vfunc_0x54() {
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('WARP', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('WARP', serial);
         if (serial < 0) {
             break;
         }

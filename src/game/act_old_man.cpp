@@ -465,7 +465,7 @@ void OldMan_804AEED0::update() {
             }
             if (field_0x244 >= 0 && getPlayerPos_8023E724(field_0x244)->z == 0.0f &&
                 fn_802300EC(field_0x244) &&
-                fn_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
+                openMessageById_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
                 field_0x24c = 0;
                 pool_80543048(field_0x244 + 1);
                 field_0x230 = 5;

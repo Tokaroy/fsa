@@ -125,7 +125,7 @@ void ForceGem_804AB6D8::init() {
     case 0xF:
     case 0x1F:
         if (isScreenFlagSet_0x34()) {
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         field_0x24c = 0;
@@ -144,7 +144,7 @@ void ForceGem_804AB6D8::init() {
     case 7:
     case 0x1D:
         if (isScreenFlagSet_0x34()) {
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
     case 8:
@@ -168,7 +168,7 @@ void ForceGem_804AB6D8::init() {
         break;
     case 0x10:
         if (isScreenFlagSet_0x34()) {
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         mPos.z = 400.0f;
@@ -231,7 +231,7 @@ void ForceGem_804AB6D8::init() {
         field_0x230 = 0x11;
     }
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        fn_801F3668();
+        markDead_801F3668();
     } else {
         field_0x194 = 1;
     }
@@ -319,7 +319,7 @@ void ForceGem_804AB6D8::update() {
             sweepMapBox_801F2618(NULL, false);
         }
         if (field_0x17d == 1 && field_0x280 == 1) {
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x280 = 0;
         }
         if (!fn_8032B3F8() || field_0x27d != 0) {
@@ -341,7 +341,7 @@ void ForceGem_804AB6D8::update() {
             field_0x260 = 1;
         }
         if (field_0x24c <= 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 0xF:
@@ -372,7 +372,7 @@ void ForceGem_804AB6D8::update() {
     case 2:
         tickTimer();
         if (sweepMapBox_801F2618(NULL, false) || field_0x24c <= 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 3:
@@ -414,11 +414,11 @@ void ForceGem_804AB6D8::update() {
     case 6:
         tickTimer();
         if (field_0x24c <= 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     case 5:
-        fn_801F3668();
+        markDead_801F3668();
         break;
     case 7:
     case 8:
@@ -439,7 +439,7 @@ void ForceGem_804AB6D8::update() {
         break;
     case 9:
         if (field_0x280 == 1) {
-            fn_801F0D20(0x42);
+            playSe_801F0D20(0x42);
             field_0x280 = 0;
         }
         if (fn_8032B0A4()) {
@@ -516,7 +516,7 @@ void ForceGem_804AB6D8::update() {
                         wizz->field_0x2c0++;
                     }
                 }
-                fn_801F3668();
+                markDead_801F3668();
                 break;
             }
             field_0x258 += (s32)(256.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x200;
@@ -536,7 +536,7 @@ void ForceGem_804AB6D8::update() {
         }
         tickTimer();
         if (field_0x24c <= 0) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -616,7 +616,7 @@ void ForceGem_804AB6D8::draw() {
         s32 frame = field_0x254 + lbl_80471948[field_0x268];
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
         return;
     }
@@ -679,7 +679,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
             JGeometry::TVec3f* p = fn_8023A478(i);
             f32 dx = p->x - mPos.x;
             f32 dy = p->y - mPos.y;
-            if (!(square(dx) + square(dy) > 6400.0f) && gGameRoot2_8053AB10->field_0x24->fn_8030C2A8(&mPos) == true) {
+            if (!(square(dx) + square(dy) > 6400.0f) && gGameRoot2_8053AB10->field_0x24->isOnScreen_8030C2A8(&mPos) == true) {
                 mPos.z = 5.0f;
                 if (field_0x230 == 7 || field_0x248 != 0) {
                     u32 id = ACTOR_RUPY;
@@ -723,7 +723,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                             break;
                         }
                     }
-                    fn_801F3668();
+                    markDead_801F3668();
                 } else {
                     s32 dir;
                     if (field_0x94 == 0x1f) {
@@ -872,7 +872,7 @@ bool ForceGem_804AB6D8::fn_8032B3F8() {
         } else if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             if (field_0x280 == 1) {
-                fn_801F0D20(0x42);
+                playSe_801F0D20(0x42);
                 field_0x280 = 0;
             }
             if (fn_8032B0A4()) {
@@ -916,7 +916,7 @@ bool ForceGem_804AB6D8::fn_8032B3F8() {
             }
             if (field_0x284.y != 0.0f) {
                 if (field_0x280 == 1) {
-                    fn_801F0D20(0x42);
+                    playSe_801F0D20(0x42);
                     field_0x280 = 0;
                 }
                 if (field_0x260 == 0) {
@@ -1085,7 +1085,7 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
                 }
                 getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &spawnPos,
                                                                field_0x268 + (found << 24) + (found << 26) + 0xA00000, -1, -1);
-                fn_801F3668();
+                markDead_801F3668();
             }
         } else {
             lbl_8053AED0->fn_8043D874(found, lbl_804719D8[field_0x268], 0);

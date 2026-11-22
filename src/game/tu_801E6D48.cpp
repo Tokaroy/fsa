@@ -38,7 +38,7 @@ void IronPot_804A5418::init() {
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
-    field_0x2b0 = fn_801F6874(mDir_0x98);
+    field_0x2b0 = dirToAngle_801F6874(mDir_0x98);
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -73,13 +73,13 @@ void IronPot_804A5418::fn_801E728C(int state) {
             mBox.f.y *= 1.5f;
             fn_801F2B7C(4, -1, 0x16);
             JGeometry::TVec2f center;
-            fn_801F3128(&center);
+            getBoxCenter_801F3128(&center);
             JGeometry::TVec3f spot;
             spot.y = center.y - 16.0f;
             for (s32 j = 0; j < 3; j++) {
                 spot.x = center.x - 16.0f;
                 for (s32 i = 0; i < 3; i++) {
-                    if (fn_801EE3C0(fn_80226998(&spot, mLayer_0x4))) {
+                    if (fn_801EE3C0(getTileAt_80226998(&spot, mLayer_0x4))) {
                         JGeometry::TVec3f at(spot.x, spot.y, 0.0f);
                         getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &at, 15, -1, -1);
                     }
@@ -121,10 +121,10 @@ void IronPot_804A5418::fn_801E728C(int state) {
             }
             s32 bit = field_0x2b4;
             if (bit != 0) {
-                getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+                getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
             }
             startSound_801F0E34(0x30001, 0);
-            fn_801F3668();
+            markDead_801F3668();
         }
     }
     mStateTimer = 0;
@@ -173,7 +173,7 @@ u8 IronPot_804A5418::checkHitByActor_0x60() {
         mBox.f.y = savedFy;
     }
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial && serial != skip) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (other != NULL) {
@@ -215,9 +215,9 @@ void IronPot_804A5418::fn_801E6EAC() {
     if (mFlags & 0x8000) {
         s32 bit = field_0x2b4;
         if (bit != 0) {
-            getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(bit, true, 0xFF);
         }
-        fn_801F3668();
+        markDead_801F3668();
     } else if (mState != 1) {
         fn_801E728C(1);
     }

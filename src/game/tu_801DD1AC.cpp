@@ -229,14 +229,14 @@ bool cls_804A4C58::fn_801DDBE4() {
         mBox.i.y = -16.0f;
         mBox.f.x = 40.0f;
         mBox.f.y = 50.0f;
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             fn_801D9C58(5);
         }
         mBox.set(saved);
     }
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
-        s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
+        s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             bool touched = false;

@@ -134,7 +134,7 @@ bool MapYaguraWindow_804B1B60::fn_804446A4() {
 
 void MapYaguraWindow_804B1B60::fn_80444650() {
     if (field_0x4d != 4) {
-        gGameRoot2_8053AB10->fn_8013B490();
+        gGameRoot2_8053AB10->setPort_8013B490();
         mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     }
 }

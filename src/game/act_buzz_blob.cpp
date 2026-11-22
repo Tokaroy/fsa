@@ -89,7 +89,7 @@ void BuzzBlob_8049F444::update() {
                             field_0x230 = 3;
                         }
                     } else {
-                        fn_801F2FAC();
+                        checkPlayerAttacks_801F2FAC();
                     }
                 }
             }
@@ -217,7 +217,7 @@ void BuzzBlob_8049F444::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
@@ -252,7 +252,7 @@ void BuzzBlob_8049F444::draw() {
         s32 frame = lbl_8049F408[field_0x244] + 0x10;
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params2, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&mPos, res, frame, &params2, 1.0f, 1.0f);
         }
     } else if (field_0x230 != 3) {
         mtx[0][0] = field_0x258.x;

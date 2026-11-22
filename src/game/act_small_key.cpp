@@ -184,7 +184,7 @@ void SmallKey_804A8CD8::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30072, 0);
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x240 = 2;
             fn_801F355C();
             field_0xb0 = 0x20000;
@@ -316,7 +316,7 @@ void SmallKey_804A8CD8::update() {
                 }
                 mPos.set(field_0x248);
             } else {
-                fn_801F0D20(3);
+                playSe_801F0D20(3);
                 field_0x28c = -1;
                 mVel_0x3c.z = 7.0f;
             }
@@ -402,7 +402,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 11:
         fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, true, false);
-        fn_8038AD24(field_0x2a4, 0x168, mSerial, mLayer_0x4, mPos, 4);
+        openMessage_8038AD24(field_0x2a4, 0x168, mSerial, mLayer_0x4, mPos, 4);
         field_0x240 = 12;
         return;
     case 12:
@@ -489,7 +489,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
             JGeometry::TVec2f pos(field_0x230.x, field_0x230.y);
             s32 layer = field_0x238;
             getGameView_802D6A9C()->fn_802D6C10(pos, layer);
-            fn_801F3668();
+            markDead_801F3668();
             return;
         }
         if (fn_8022F9E4(i, mSerial, true, false)) {
@@ -550,7 +550,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                 JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(i);
                 s32 dx = (s32)(f32)fabs(mPos.x - playerPos.x);
                 s32 dy = (s32)(f32)fabs(mPos.y - playerPos.y);
-                s32 dir = fn_80230CFC(i);
+                s32 dir = getPlayerFacing_80230CFC(i);
                 if ((dx >= 0 && dx <= 15 && dir == 0) || dir == 1) {
                     if (mPos.x > playerPos.x) {
                         mPos.x += (15 - dx) >> 1;
@@ -778,7 +778,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
     if (mPos.z < 0.0f || field_0x298 != -1) {
         bool moving = (0.0f != mVel_0x3c.x || 0.0f != mVel_0x3c.y);
         if (field_0x2b1 == 1) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
             field_0x2b1 = 0;
         }
         mPos.z = 0.0f;
@@ -1036,7 +1036,7 @@ void SmallKey_804A8CD8::fn_802C24A8() {
     ours.addPos(mPos.x, mPos.y);
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('STBL', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('STBL', serial);
         if (serial < 0) {
             return;
         }
@@ -1150,7 +1150,7 @@ bool SmallKey_804A8CD8::fn_802C2154() {
     ours.f.y += mPos.y;
     s32 serial = -1;
     while (true) {
-        serial = getActorManager_801F856C()->fn_801F78F4('WARP', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('WARP', serial);
         if (serial < 0) {
             return false;
         }

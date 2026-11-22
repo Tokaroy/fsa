@@ -55,7 +55,7 @@ void SpecialBGDrawObject_804AC760::update() {
         case 0:
             if (mTimer >= 120) {
                 if (!getGameView_802D6A9C()->fn_802D800C(mBit1)) {
-                    getGameView_802D6A9C()->fn_802D8050(mBit1, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(mBit1, true, 0xFF);
                 }
                 mTimer = 120;
             }
@@ -63,7 +63,7 @@ void SpecialBGDrawObject_804AC760::update() {
                 mTimer++;
                 if (mTimer == 120) {
                     if (!fn_802DEBA0()) {
-                        fn_801F0D20(3);
+                        playSe_801F0D20(3);
                     }
                 }
             }
@@ -71,7 +71,7 @@ void SpecialBGDrawObject_804AC760::update() {
         case 1:
             if (mTimer >= 30) {
                 if (!getGameView_802D6A9C()->fn_802D800C(mBit1)) {
-                    getGameView_802D6A9C()->fn_802D8050(mBit1, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050(mBit1, true, 0xFF);
                 }
                 mTimer = 30;
             }
@@ -79,7 +79,7 @@ void SpecialBGDrawObject_804AC760::update() {
                 mTimer++;
                 if (mTimer == 30) {
                     if (!fn_802DEBA0()) {
-                        fn_801F0D20(3);
+                        playSe_801F0D20(3);
                     }
                 }
             }
@@ -93,7 +93,7 @@ void SpecialBGDrawObject_804AC760::update() {
                     }
                     mTimer++;
                     if (mTimer >= 60 && mTriggered == 0) {
-                        fn_801F0D20(3);
+                        playSe_801F0D20(3);
                         mTriggered = 1;
                     }
                     if (mTimer >= 120) {

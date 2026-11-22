@@ -122,7 +122,7 @@ void GoalWarp_804A39DC::update() {
             pos.set(0.0f, 0.0f, 0.0f);
             pos.y = -10.0f;
             fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-            if (fn_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x240, mSerial, mLayer_0x4, pos, 0x4102)) {
+            if (openMessage_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x240, mSerial, mLayer_0x4, pos, 0x4102)) {
                 field_0x230 = 2;
             }
         }
@@ -130,7 +130,7 @@ void GoalWarp_804A39DC::update() {
     case 2:
         takeCamera();
         fn_8022FE80(getRepresentativePlayer_8022EA0C(0), mLayer_0x4, mSerial, false, false);
-        if (fn_803865B8(getRepresentativePlayer_8022EA0C(0))) {
+        if (stepMessageWindow_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             for (s32 i = 0; i < 4; i++) {
                 deleteEmitter(&mEmitters[i]);
             }

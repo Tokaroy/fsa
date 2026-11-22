@@ -245,7 +245,7 @@ void cls_804AA8B8::fn_803085A4(s32 player) {
     lbl_80506DE8[player].f.mMode = lbl_80506D48[player];
     if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
         if (gGameRoot_8053AAF8->field_0x4c == 9 || gGameRoot_8053AAF8->field_0x80 != 0
-            || (lbl_8053ACD8[player] && (fn_8037F1E4(player) < 1 || fn_8037F1E4(player) > 5))) {
+            || (lbl_8053ACD8[player] && (getMessageWindowState_8037F1E4(player) < 1 || getMessageWindowState_8037F1E4(player) > 5))) {
             lbl_80506DE8[player].f.field_0x2_5 = 1;
         } else {
             lbl_80506DE8[player].f.field_0x2_5 = 0;
@@ -403,8 +403,8 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     s32 layer = getRepresentativePlayer_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
         u8 flag = 0;
-        if (fn_8037F1E4(player) >= 1) {
-            if (fn_8037F1E4(player) <= 5) {
+        if (getMessageWindowState_8037F1E4(player) >= 1) {
+            if (getMessageWindowState_8037F1E4(player) <= 5) {
                 flag = 1;
             }
         }
@@ -493,7 +493,7 @@ void cls_804AA8B8::fn_80307B58(s32 player, bool flag) {
     s32 i;
     for (i = 0; i < count; i++) {
         lbl_805071E8[player][start + i] = fn_8037F0CC(player);
-        if (fn_8037F1E4(player) != 3) {
+        if (getMessageWindowState_8037F1E4(player) != 3) {
             lbl_8053AD24[player] = 1;
             lbl_8053AD1C[player] = 0;
             lbl_80506DE8[player].f.mKind = 12;
@@ -781,7 +781,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
     lbl_80506DE8[player].f.mEntries[2].mScrollBit = (fn_8023CD74(layer) >> 4) & 1;
     lbl_80506DE8[player].f.mEntries[3].mScroll = fn_8023CD74(layer);
     u8 near = 0;
-    if (fn_8037F1E4(player) >= 1 && fn_8037F1E4(player) <= 5) {
+    if (getMessageWindowState_8037F1E4(player) >= 1 && getMessageWindowState_8037F1E4(player) <= 5) {
         near = 1;
     }
     lbl_80506DE8[player].f.mEntries[1].mScrollBit = near ? true : false;
@@ -1094,7 +1094,7 @@ void cls_804AA8B8::fn_80304FB0() {
                 } else {
                     do {
                         lbl_805071E8[player][lbl_8053AD0C[player]++] = fn_8037F0CC(player);
-                    } while (fn_8037F1E4(player) == 3);
+                    } while (getMessageWindowState_8037F1E4(player) == 3);
                     lbl_8053AD24[player] = 1;
                     lbl_8053AD1C[player] = 60;
                 }
@@ -1256,7 +1256,7 @@ void cls_804AA8B8::fn_80304FB0() {
                 } else {
                     fn_80307B58(player, false);
                 }
-            } else if (fn_8037F1E4(player) == 3 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
+            } else if (getMessageWindowState_8037F1E4(player) == 3 && isPlayerBitSet(gGameRoot_8053AAF8, player)) {
                 lbl_8053AD20[player] = 1;
                 lbl_8053AD24[player] = 0;
                 lbl_8053AD28[player] = 0;
@@ -1683,16 +1683,16 @@ void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set)
             id -= 3;
         }
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     } else if (sprite->f.mKind == 2) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     } else {
         if (sprite->f.mKind & 4) {
             params.field_0x0[7] = (sprite->f.mKind & 3) + 12;
         }
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     }
 }
 
@@ -1744,7 +1744,7 @@ void fn_80302C34(const GbaSprite_80506F88* sprite, s32 record, s32 player, u8 ma
         params.field_0x38 = 0;
         params.mMtx = scale;
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-        gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
+        gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, id, &params, 1.0f, 1.0f);
     }
 }
 

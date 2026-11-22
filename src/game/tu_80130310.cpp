@@ -32,7 +32,7 @@ inline void MalonAndTalonController_8049EA88::setState(s32 state) {
         break;
     case 5:
         fn_80230534(false);
-        fn_801F3668();
+        markDead_801F3668();
         break;
     }
 }
@@ -67,7 +67,7 @@ void MalonAndTalonController_8049EA88::vfunc_0x10() {
         } else {
             field_0x234 = actor->mSerial;
         }
-        serial = getActorManager_801F856C()->fn_801F78F4('OPGA', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('OPGA', serial);
     }
     ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
     mPos = target->mPos;
@@ -146,7 +146,7 @@ void MalonAndTalonController_8049EA88::update() {
         }
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         bool done = false;
-        if (fn_803865B8(0)) {
+        if (stepMessageWindow_803865B8(0)) {
             fn_80388EEC(0);
             s32 serial = 0;
             switch (lbl_8049EA58[field_0x244].mode) {
@@ -242,13 +242,13 @@ bool MalonAndTalonController_8049EA88::fn_80130370() {
         bool yDone;
         f32 sn = sincos.sinShort(angle);
         f32 cs = sincos.cosShort(angle);
-        if (fn_801CD950(&p.x, pos.x, sn)) {
+        if (moveToward_801CD950(&p.x, pos.x, sn)) {
             done = false;
             xDone = false;
         } else {
             xDone = true;
         }
-        if (fn_801CD950(&p.y, pos.y, cs)) {
+        if (moveToward_801CD950(&p.y, pos.y, cs)) {
             done = false;
             yDone = false;
         } else {

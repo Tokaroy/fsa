@@ -304,7 +304,7 @@ void FireRodFire_804A89F0::update() {
             if (field_0x293 == 1) {
                 field_0x28c -= 0.03f;
                 if (field_0x28c < 0.05f) {
-                    fn_801F3668();
+                    markDead_801F3668();
                     return;
                 }
                 mEmitter230->mGlobalPScl.set(field_0x28c, field_0x28c);
@@ -606,7 +606,7 @@ bool FireRodFire_804A89F0::fn_802BACE4() {
 
     s32 serial = -1;
     for (;;) {
-        serial = getActorManager_801F856C()->fn_801F78F4('ICEB', serial);
+        serial = getActorManager_801F856C()->findNextActorById_801F78F4('ICEB', serial);
         if (serial < 0) {
             return false;
         }
@@ -723,7 +723,7 @@ bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x254 == 0) {
             JGeometry::TVec3f tmp;
-            const s32 cell = fn_80226AE0(pos, mLayer_0x4);
+            const s32 cell = getCellIndexVec3_80226AE0(pos, mLayer_0x4);
             field_0x288 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, cell);
             if (fn_801EE3C0(field_0x288) == 1) {
                 fn_80226CA8(cell, mLayer_0x4, &tmp);

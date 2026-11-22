@@ -817,7 +817,7 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
 }
 
 void MapScreen_804B1288::draw_80411230() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     if (mStage_0x340 < 7 && !isStageFlagSet(mStage_0x340, 3) && (isCursorState() || mState_0x350 == 0x13)) {
         if (!mMapAreaScreen_0x10->search('Pphu01')->mIsVisible) {
             mMapAreaScreen_0x10->search('Pphu01')->show();
@@ -882,7 +882,7 @@ void MapScreen_804B1288::fn_804111C4() {
     if (mState_0x350 == 0x15) {
         fn_8037AA7C();
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mMessageWindowScreen_0x18->setScissor(true);
     mMessageWindowScreen_0x18->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->fn_80440EE8();
@@ -1738,24 +1738,24 @@ void MapScreen_804B1288::fn_8040BC1C() {
     } else {
         if (mStage_0x340 < 7) {
             if (field_0x41e >= 15) {
-                mTestMapPane_0xc8->fn_80402B10(30, 0, 0.0f, lbl_8048C86C[mStage_0x340]);
+                mTestMapPane_0xc8->slideX_80402B10(30, 0, 0.0f, lbl_8048C86C[mStage_0x340]);
                 mTestMapPane_0xc8->animateMoveY_80402940(30, 0, 0.0f, lbl_8048C87C[mStage_0x340]);
                 faded = mTestMapPane_0xc8->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 f32 scale = lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18 - 1.0f;
                 f32 dx = scale * (mTowerPane_0xcc->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 f32 dy = scale * (mTowerPane_0xcc->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                mTowerPane_0xcc->fn_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
+                mTowerPane_0xcc->slideX_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
                 mTowerPane_0xcc->animateMoveY_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
                 mTowerPane_0xcc->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 dx = scale * (field_0xd0->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 dy = scale * (field_0xd0->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                field_0xd0->fn_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
+                field_0xd0->slideX_80402B10(30, 0, 0.0f, dx + lbl_8048C86C[mStage_0x340]);
                 field_0xd0->animateMoveY_80402940(30, 0, 0.0f, dy + lbl_8048C87C[mStage_0x340]);
                 field_0xd0->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 for (int i = 0; i < 18; i++) {
                     dx = scale * mRoutePanes_0xd4[i]->field_0x10;
                     dy = scale * mRoutePanes_0xd4[i]->field_0x14;
-                    mRoutePanes_0xd4[i]->fn_80402B10(30, 0, 0.0f, dx);
+                    mRoutePanes_0xd4[i]->slideX_80402B10(30, 0, 0.0f, dx);
                     mRoutePanes_0xd4[i]->animateMoveY_80402940(30, 0, 0.0f, dy);
                     mRoutePanes_0xd4[i]->animateScale_8040271C(30, 1.0f, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18);
                 }
@@ -1797,7 +1797,7 @@ void MapScreen_804B1288::fn_8040BC1C() {
     if (field_0x41e >= 0 && field_0x41e <= rows * 5 + 20) {
         for (int i = 0; i < rows + 1; i++) {
             if (field_0x41e >= i * 5) {
-                mLevelRowPanes_0x28[rows - i][0]->fn_80402B10(20, 0, 0.0f, -150.0f);
+                mLevelRowPanes_0x28[rows - i][0]->slideX_80402B10(20, 0, 0.0f, -150.0f);
                 for (int j = 0; j < 3; j++) {
                     mLevelRowPanes_0x28[rows - i][j]->animateAlpha_80402628(20, mLevelRowPanes_0x28[rows - i][j]->field_0x28, 0);
                 }
@@ -2212,25 +2212,25 @@ void MapScreen_804B1288::fn_804096E8() {
     } else {
         if (mStage_0x340 < 7) {
             if (field_0x41e >= 0) {
-                mTestMapPane_0xc8->fn_80402B10(20, 0, lbl_8048C86C[mStage_0x340], 0.0f);
+                mTestMapPane_0xc8->slideX_80402B10(20, 0, lbl_8048C86C[mStage_0x340], 0.0f);
                 mTestMapPane_0xc8->animateMoveY_80402940(20, 0, lbl_8048C87C[mStage_0x340], 0.0f);
                 faded = mTestMapPane_0xc8->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 f32 scale = lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18 - 1.0f;
                 f32 dx = scale * (mTowerPane_0xcc->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 f32 dy = scale * (mTowerPane_0xcc->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                mTowerPane_0xcc->fn_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
+                mTowerPane_0xcc->slideX_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
                 mTowerPane_0xcc->animateMoveY_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
                 mTowerPane_0xcc->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 dx = scale * (field_0xd0->field_0x10 - mTestMapPane_0xc8->field_0x10);
                 dy = scale * (field_0xd0->field_0x14 - mTestMapPane_0xc8->field_0x14);
-                field_0xd0->fn_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
+                field_0xd0->slideX_80402B10(20, 0, dx + lbl_8048C86C[mStage_0x340], 0.0f);
                 field_0xd0->animateMoveY_80402940(20, 0, dy + lbl_8048C87C[mStage_0x340], 0.0f);
                 field_0xd0->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
                 for (int i = 0; i < 18; i++) {
                     dx = mRoutePanes_0xd4[i]->field_0x10;
                     dy = scale * mRoutePanes_0xd4[i]->field_0x14;
                     mRoutePanes_0xd4[i]->animateScale_8040271C(20, lbl_8048C850[mStage_0x340] / mTestMapPane_0xc8->field_0x18, 1.0f);
-                    mRoutePanes_0xd4[i]->fn_80402B10(20, 0, scale * dx, 0.0f);
+                    mRoutePanes_0xd4[i]->slideX_80402B10(20, 0, scale * dx, 0.0f);
                     mRoutePanes_0xd4[i]->animateMoveY_80402940(20, 0, dy, 0.0f);
                 }
             }
@@ -2250,7 +2250,7 @@ void MapScreen_804B1288::fn_804096E8() {
     if (field_0x41e >= 0 && field_0x41e <= rows * 2 + 16) {
         for (int i = 0; i < rows + 1; i++) {
             if (field_0x41e >= i * 2) {
-                mLevelRowPanes_0x28[i][0]->fn_80402B10(16, 0, -150.0f, 0.0f);
+                mLevelRowPanes_0x28[i][0]->slideX_80402B10(16, 0, -150.0f, 0.0f);
                 for (int j = 0; j < 3; j++) {
                     mLevelRowPanes_0x28[i][j]->animateAlpha_80402628(16, 0, mLevelRowPanes_0x28[i][j]->field_0x28);
                 }
@@ -2693,18 +2693,18 @@ void MapScreen_804B1288::fn_80406F68(f32 x, f32 y) {
     params.field_0x0[2] = 2;
     JGeometry::TVec3f bob(pos.x, pos.y + JMath::sincosTable_.sinShort((counter % 128) * 0x800), pos.z);
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&bob, res, 0xC6, &params, 1.0f, 1.0f);
     pos.x -= 16.0f;
     pos.y += 3.0f;
     params.field_0x0[2] = 3;
     s32 celLeft = lbl_8048CB58[frame] + 0xC0;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celLeft, &params, 1.0f, 1.0f);
     pos.x += 32.0f;
     params.field_0x0[2] = 4;
     s32 celRight = lbl_8048CB58[frame] + 0xC3;
     res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, celRight, &params, 1.0f, 1.0f);
 }
 
 // FIXME(shotgun): 96.30 %, different; behaviour near.
@@ -2764,11 +2764,11 @@ void MapScreen_804B1288::fn_804069E8() {
                 }
                 if (field_0x35c <= 10) {
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x25B, &params, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x25B, &params, 1.0f, 1.0f);
                 }
             } else {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x25A, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0x25A, &params, 1.0f, 1.0f);
             }
         }
     }
@@ -2811,7 +2811,7 @@ void MapScreen_804B1288::fn_80406634(s32 stage, bool raised) {
     }
     s32 frame = field_0x432 % 6 + lbl_8048CB68[stage];
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
-    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
 }
 
 // FIXME: 99.98 %, regalloc-only; behaviour clean.
@@ -2850,7 +2850,7 @@ void MapScreen_804B1288::fn_80405FC0() {
             s32 frame = field_0x41e / 2;
             if (frame <= 13) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame + 0xDB, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame + 0xDB, &params, 1.0f, 1.0f);
                 if (field_0x41e == 26) {
                     if (field_0x2cc[i] == NULL) {
                         JGeometry::TVec3f p(7.0f + pos.x, pos.y - 27.0f, pos.z);
@@ -2865,23 +2865,23 @@ void MapScreen_804B1288::fn_80405FC0() {
                 }
             } else {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
             }
         } else if (mState_0x350 == 2) {
             s32 frame = lbl_8048CC0C[(field_0x358 / 5) % 4];
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         } else if (mState_0x350 == 4) {
             params.field_0x10.a = field_0x665;
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, 0xE8, &params, 1.0f, 1.0f);
         } else {
             if (field_0x358 >= 30) {
                 field_0x358 = 0;
             }
             s32 frame = field_0x360 + lbl_8048CB94[field_0x358];
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+            gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
         }
     }
 }

@@ -105,7 +105,7 @@ void WarpCannon_8049EAE0::update() {
     case 8:
         break;
     }
-    mAnim.fn_801D1C18();
+    mAnim.update_801D1C18();
 }
 
 void WarpCannon_8049EAE0::draw() {
@@ -217,7 +217,7 @@ bool WarpCannon_8049EAE0::allPlayersIn() {
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void WarpCannon_8049EAE0::movePlayers() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
         pos.y -= field_0x27c;
@@ -228,10 +228,10 @@ void WarpCannon_8049EAE0::movePlayers() {
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
 // R2 pool helper (inlined at 2 call sites); was flyPlayers.
 void WarpCannon_8049EAE0::pool_8053CCD0() {
-    fn_801CD950(&field_0x27c, -10.0f, -0.002f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.002f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        fn_801CD950(&pos.y, 1000.0f, field_0x27c);
+        moveToward_801CD950(&pos.y, 1000.0f, field_0x27c);
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);
     }
 }
@@ -261,10 +261,10 @@ void WarpCannon_8049EAE0::liftPlayers() {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::landPlayers() {
     bool all = false;
-    fn_801CD950(&field_0x27c, -10.0f, -0.2f);
+    moveToward_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
-        if (fn_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
+        if (moveToward_801CD950(&pos.y, 0.0f, field_0x27c) == 0) {
             all = true;
         }
         fn_80230498(p, &pos, 0xB0, 0xFF, -0x80, -0x80, true);

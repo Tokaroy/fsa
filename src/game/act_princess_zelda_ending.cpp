@@ -54,35 +54,35 @@ void PrincessZeldaEnding_804AD6F0::draw() {
     }
 }
 
-// State 0: starts the first step (fn_8035C1C4 with id 0) once field_0x238 is set.
+// State 0: starts the first step (startSequence_8035C1C4 with id 0) once field_0x238 is set.
 void PrincessZeldaEnding_804AD6F0::fn_8035E394() {
     if (field_0x238 != 0) {
         mState = 1;
-        fn_8035C1C4(0, 0x274);
+        startSequence_8035C1C4(0, 0x274);
         field_0x238 = 0;
     }
 }
 
 // State 1: a sequence of steps on field_0x238, each waiting for stepSequence_8035C15C
-// (the sequencer) before it starts its fn_8035C1C4 action.
+// (the sequencer) before it starts its startSequence_8035C1C4 action.
 void PrincessZeldaEnding_804AD6F0::fn_8035E274() {
     if (field_0x238 == 0) {
         if (stepSequence_8035C15C(0) == 1) {
-            fn_8035C1C4(1, 0x21b);
+            startSequence_8035C1C4(1, 0x21b);
             field_0x240 = 0;
             field_0x238 = 4;
         }
     } else if (field_0x238 == 4) {
         if (stepSequence_8035C15C(1) == 1) {
-            fn_8035C1C4(1, 0x21b);
+            startSequence_8035C1C4(1, 0x21b);
         }
     } else if (field_0x238 == 1) {
-        fn_8035C1C4(3, 0x274);
+        startSequence_8035C1C4(3, 0x274);
         field_0x240 = 1;
         field_0x238 = 2;
     } else if (field_0x238 == 2) {
         if (stepSequence_8035C15C(2) == 1) {
-            fn_8035C1C4(2, 0x274);
+            startSequence_8035C1C4(2, 0x274);
         }
     } else if (field_0x238 == 3) {
         field_0x248 = 3;
@@ -111,43 +111,43 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E070() {
     if (field_0x234 != 0) {
         if (field_0x234 == 1) {
             if (field_0x238 == 0) {
-                fn_8035C1C4(5, 0x9b);
+                startSequence_8035C1C4(5, 0x9b);
             }
         }
     } else {
         if (field_0x238 == 0) {
             if (stepSequence_8035C15C(5) == 1) {
-                fn_8035C1C4(5, 0x9b);
+                startSequence_8035C1C4(5, 0x9b);
             }
             if (mPos.x >= 1234.0f) {
                 mPos.x -= 0.31f;
             } else {
                 mPos.x = 1234.0f;
-                fn_8035C1C4(6, 0x9b);
+                startSequence_8035C1C4(6, 0x9b);
                 field_0x238++;
                 field_0x234 = 0x10;
             }
         } else if (field_0x238 == 1) {
             if (stepSequence_8035C15C(6) == 1) {
-                fn_8035C1C4(6, 0x9b);
+                startSequence_8035C1C4(6, 0x9b);
             }
             if (mPos.y < 1810.0f) {
                 mPos.y += 0.31f;
             } else {
                 mPos.y = 1810.0f;
-                fn_8035C1C4(4, 0x9b);
+                startSequence_8035C1C4(4, 0x9b);
                 field_0x238++;
                 field_0x234 = 0x10;
             }
         } else {
             if (stepSequence_8035C15C(4) == 1) {
-                fn_8035C1C4(4, 0x9b);
+                startSequence_8035C1C4(4, 0x9b);
             }
             if (mPos.x < 1260.0f) {
                 mPos.x += 0.31f;
             } else {
                 mPos.y = 1810.0f;
-                fn_8035C1C4(4, 0x9b);
+                startSequence_8035C1C4(4, 0x9b);
                 field_0x238 = 0;
                 mState++;
                 field_0x234 = 0x16f;
@@ -168,7 +168,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035DFE4() {
                 partner->field_0x234 = 1;
             }
         } else {
-            fn_8035C1C4(6, 0x9b);
+            startSequence_8035C1C4(6, 0x9b);
             mState++;
         }
     } else if (field_0x234 < 0xF0) {
@@ -181,7 +181,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035DFE4() {
 void PrincessZeldaEnding_804AD6F0::fn_8035DF48() {
     if (mPos.y < 1966.0f) {
         if (stepSequence_8035C15C(6) == 1) {
-            fn_8035C1C4(6, 0x9b);
+            startSequence_8035C1C4(6, 0x9b);
         }
         mPos.y += 0.23f;
     } else {

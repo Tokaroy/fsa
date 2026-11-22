@@ -128,7 +128,7 @@ void GameRoot2_8049F108::fn_8013BBBC() {
 }
 
 void GameRoot2_8049F108::fn_8013BB64() {
-    field_0x24->fn_8030DFE8(false);
+    field_0x24->loadGXState_8030DFE8(false);
     j3dSys.mDrawBuffer[0] = field_0x8;
     j3dSys.mDrawBuffer[1] = field_0xc;
     PSMTXCopy(field_0x24->mViewMtx_0x4, j3dSys.mViewMtx);
@@ -148,7 +148,7 @@ void GameRoot2_8049F108::fn_8013BAF4() {
 
 void GameRoot2_8049F108::fn_8013B71C() {
     if (field_0x39 == 0 || gGameRoot_8053AAF8->field_0x4c == 4 || gGameRoot_8053AAF8->field_0x4c == 6) {
-        gGameRoot2_8053AB10->field_0x24->fn_8030DFE8(false);
+        gGameRoot2_8053AB10->field_0x24->loadGXState_8030DFE8(false);
         j3dSys.drawInit();
         j3dSys.reinitGX();
         GXSetColorUpdate(GX_TRUE);
@@ -159,7 +159,7 @@ void GameRoot2_8049F108::fn_8013B71C() {
         if (isGameModeSet() && gGameRoot_8053AAF8->field_0x4c != GAME_MODE_C) {
             field_0x20->fn_802FF3B0();
         }
-        gGameRoot2_8053AB10->field_0x24->fn_8030DFE8(false);
+        gGameRoot2_8053AB10->field_0x24->loadGXState_8030DFE8(false);
         j3dSys.drawInit();
         j3dSys.reinitGX();
         GXSetColorUpdate(GX_TRUE);
@@ -210,7 +210,7 @@ void GameRoot2_8049F108::fn_8013B4C0() {
     field_0x20->fn_802FF548();
 }
 
-void GameRoot2_8049F108::fn_8013B490() {
+void GameRoot2_8049F108::setPort_8013B490() {
     field_0x10->setPort();
 }
 
@@ -219,7 +219,7 @@ void GameRoot2_8049F108::fn_8013B460() {
 }
 
 void GameRoot2_8049F108::fn_8013B438() {
-    field_0x24->fn_8030DFE8(false);
+    field_0x24->loadGXState_8030DFE8(false);
 }
 
 void GameRoot2_8049F108::fn_8013B414(const JGeometry::TBox2f* box, bool light) {
@@ -349,7 +349,7 @@ void fn_8013AC90(f32 scale, const Vec* pos, const JUtility::TColor* color, s32 a
     rot[0][3] += x;
     rot[1][3] += y;
     rot[2][3] += z;
-    gGameRoot2_8053AB10->field_0x24->fn_8030DFE8(false);
+    gGameRoot2_8053AB10->field_0x24->loadGXState_8030DFE8(false);
     gGameRoot2_8053AB10->field_0x24->fn_8030DD20(rot);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -387,7 +387,7 @@ void fn_8013AC54(Mtx view) {
     j3dSys.setViewMtx(view);
 }
 
-void fn_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx) {
+void calcAndEntryModel_8013ABCC(J3DModel* model, const Vec& scale, Mtx mtx) {
     model->setBaseScale(scale);
     PSMTXCopy(mtx, model->mPosMtx);
     model->calc();

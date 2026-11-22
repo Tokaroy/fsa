@@ -315,7 +315,7 @@ void SeesawLift_804AD348::fn_8035A210() {
         }
     }
     if ((field_0x24a[0] | field_0x24a[1] | field_0x24a[2] | field_0x24a[3]) != 0 && field_0x240 != 0.0f) {
-        fn_801F0D20(3);
+        playSe_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
         pushPlayer(p);
@@ -415,7 +415,7 @@ void SeesawLift_804AD348::draw() {
     const char* name = lbl_8053A1B8[getMode()];
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
     }
     if (getKind() < 2) {
         params.field_0x1c = -1;
@@ -428,7 +428,7 @@ void SeesawLift_804AD348::draw() {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
         JGeometry::TVec3f pos(mPos.x, mPos.y, 0.0f);
         if (mLayer_0x4 < 8) {
-            gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&pos, res, &params);
         }
     }
 }
@@ -440,7 +440,7 @@ void SeesawLift_804AD348::fn_803597EC() {
     if (field_0x254 != 0) {
         field_0x254--;
         if (field_0x254 == 0) {
-            fn_801F0D20(3);
+            playSe_801F0D20(3);
         }
     }
     for (s32 p = 0; p < 4; p++) {
@@ -520,7 +520,7 @@ void SeesawLift_804AD348::fn_80358F98() {
         }
     }
     if ((field_0x24a[0] | field_0x24a[1] | field_0x24a[2] | field_0x24a[3]) != 0 && field_0x240 != 0.0f) {
-        fn_801F0D20(3);
+        playSe_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
         pushPlayer(p);
@@ -650,7 +650,7 @@ void SeesawLift_804AD348::fn_803584C0() {
         }
     }
     if ((field_0x24a[0] | field_0x24a[1] | field_0x24a[2] | field_0x24a[3]) != 0 && field_0x240 != 0.0f) {
-        fn_801F0D20(3);
+        playSe_801F0D20(3);
     }
     for (s32 p = 0; p < 4; p++) {
         pushPlayer(p);

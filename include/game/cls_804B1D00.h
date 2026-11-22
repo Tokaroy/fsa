@@ -17,7 +17,7 @@ public:
     MgVolleyballScreen_804B1D00();
     virtual ~MgVolleyballScreen_804B1D00();
 
-    // Draws the screen: gGameRoot2_8053AB10->fn_8013B490(), then mScreen at (0, 0)
+    // Draws the screen: gGameRoot2_8053AB10->setPort_8013B490(), then mScreen at (0, 0)
     // with gGameRoot2_8053AB10's J2DOrthoGraph as the grafcontext.
     void fn_8044AF90();
     // Clears bits 0 and 1 of field_0x14, sets the 'Pf' and 'Pt' digit pictures

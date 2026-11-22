@@ -102,7 +102,7 @@ public:
     // 0x80400364 and 0x803FFBF0):
     /* 0x010 */ JKRArchive* mBossArchive_0x10; // applyRequestedMode_80135494 (mode 7); getBossArchiveResource_804032E8
     /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
-    /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
+    /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; getLogoArchiveResource_80403244
     /* 0x01C */ JKRArchive* mMsgArchive_0x1c; // "/GC4Sword_usa/msgus.arc"
     /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
     /* 0x024 */ JKRArchive* mTitleArchive_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
@@ -138,7 +138,7 @@ public:
     /* 0x0E8 */ s32 field_0xe8[4];
     /* 0x0F8 */ s32 field_0xf8[4];
     /* 0x108 */ s32 field_0x108[4];
-    // The selected stage: fn_80135020 (tu_80134C04) copies 0x118 / 0x11C
+    // The selected stage: createModeScreen_80135020 (tu_80134C04) copies 0x118 / 0x11C
     // (gGameRoot_8053AAF8->field_0x7f set) or 0x128 / 0x12C (clear) into
     // GameView_804A9950's mSolidHeap_0x4 / field_0x8, the pair that picks the
     // stage's map files. 96 and 94 units read 0x118 / 0x11C.
@@ -234,7 +234,7 @@ extern GameState_804B0FE0 lbl_80529DEC;
 // game/tu_804023D0.cpp: getResource(type, name) on one of the archives
 // above (vtable slot 0x18, the arguments passed through).
 void* getBossArchiveResource_804032E8(u32 type, const char* name); // field_0x10; 29 units (also in GameGlobals.h)
-void* fn_80403244(u32 type, const char* name); // field_0x18
+void* getLogoArchiveResource_80403244(u32 type, const char* name); // field_0x18
 void* fn_804030C4(u32 type, const char* name); // field_0x20; 36 units
 void* fn_80403204(u32 type, const char* name); // field_0x24
 void* getEntryArchiveResource_804031C4(u32 type, const char* name); // field_0x28
@@ -283,13 +283,13 @@ public:
     // 2 units. Calls pane's vtable slot 0x24 (setAlpha) with
     // alpha * mPane's 0xB2 byte / field_0x28.
     void setAlpha_804023D0(J2DPane* pane, u8 alpha);
-    // animateMoveY_80402940 (16 units) and fn_80402B10 (5) step field_0x22 / field_0x20
+    // animateMoveY_80402940 (16 units) and slideX_80402B10 (5) step field_0x22 / field_0x20
     // up to frames (r4) with a mode byte in r5; the two floats are the
     // targets' coordinates (the f1 one is 0.0 in game/tu_804432DC.cpp).
     // SHARED-EDIT (tu_803F0A54 fn_803F715C): returns 1 once the steps are
     // done, else 0 (li r3, 1 / li r3, 0); callers test it with clrlwi. 24.
     u8 animateMoveY_80402940(s16 frames, u8 mode, f32 x, f32 y);
-    u8 fn_80402B10(s16 frames, u8 mode, f32 x, f32 y);
+    u8 slideX_80402B10(s16 frames, u8 mode, f32 x, f32 y);
     // 3 units. Steps field_0x26 / field_0x24 up to frames, toward (x, y).
     u8 animateScale_8040271C(s16 frames, f32 x, f32 y);
     // 5 units. Resizes by (x, y).

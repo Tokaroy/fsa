@@ -10,9 +10,9 @@ fn_80383E2C 87.0 (scheduling+regalloc, jump table ok), fn_8038D570 98.8 (li vs m
 fn_80389964 97.7 (1 instr), fn_803895EC 99.3 (1 instr), fn_8038A42C 99.7 / fn_8038A984 99.7 / fn_8038B8A8 99.98 (regalloc only).
 Unwritten: fn_8037F2FC (mTextBox is a bigger class than J2DTextBox, fields 0x104-0x120 unknown),
 fn_8038D4A8 (vtable slot 0x94 call on mTextBox: no such virtual in J2DPane/J2DTextBox), fn_8038C60C
-(81.7 %: the inlined fn_803846BC loop comes out in another order), fn_8038AD24 / BD08 / C678 (openers
+(81.7 %: the inlined findMessageIndex_803846BC loop comes out in another order), openMessage_8038AD24 / BD08 / C678 (openers
 that inline several of the above), the big message functions (> 1200 B).
-Notes: auto-inlining of earlier functions works (fn_80388CAC/EEC inline fn_8037F1E4). Loop counters:
+Notes: auto-inlining of earlier functions works (fn_80388CAC/EEC inline getMessageWindowState_8037F1E4). Loop counters:
 `int i` unrolls constant-count loops, `s32 i` (long) does not (found in tu_80403D84).
 SHARED-EDITS: Message.h (BMG structs, window/manager fields carved, C++ declarations moved out of
 the extern "C" block, fn_803837A4 / fn_80385960 / fn_80390EBC / fn_80390C6C / reset_80391678 declared),
@@ -38,7 +38,7 @@ Written (7 of the 19 unwritten):
 - MessageManager_804AF070 ctor: 98.8, missing/extra + reloc-name (the font resource goes
   through r0 into a saved register; act_giant_bomb has the same getResource shape). Strings
   "rock_24_20_4i_e.bfn" / "gc_four_swords_text_e.bmg" now come from source (.rodata 85 %:
-  the first string, "====>%d, %d\n", belongs to unwritten fn_803865B8).
+  the first string, "====>%d, %d\n", belongs to unwritten stepMessageWindow_803865B8).
 - fn_8038D4A8__Fv (draws the windows in field_0xfc order, then mTextBox->draw(0x70, 0x74):
   vtable 0x94 is J2DTextBox::draw(f32, f32) in the libs J2DPane.h): 99.3 regalloc.
 - fn_8037F2FC__FUllUcffffQ28JUtility6TColor (the manager's ticker text box: msg, frames,
@@ -50,8 +50,8 @@ Written (7 of the 19 unwritten):
   entries[i].textOffset]` gives the original's add order.
 
 Tried and left unwritten:
-- fn_8038C60C 81.7 (different): the inlined fn_803846BC folds inf1 + 8 into lhz 0x28(bmg) and
-  sets i = 0 later; standalone fn_803846BC stays 100 %. Three loop forms tried, no change.
+- fn_8038C60C 81.7 (different): the inlined findMessageIndex_803846BC folds inf1 + 8 into lhz 0x28(bmg) and
+  sets i = 0 later; standalone findMessageIndex_803846BC stays 100 %. Three loop forms tried, no change.
 - fn_803837A4 81.75 missing/extra (attempt kept in the coordinator scratchpad,
   tu_8037DF68_fn_803837A4_attempt.cpp): lines centred with "\x1BCR[%d]"; params (out, msg,
   player, number, f32 width, f32 scale). Misses: (f32)(lines - 1) / (f32)pad conversions not

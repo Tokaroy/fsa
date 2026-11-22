@@ -155,7 +155,7 @@ void Blindfold_804A8EF8::draw() {
     params.mMtx = mtx;
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "black.bti");
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, res, &params);
     }
 }
 

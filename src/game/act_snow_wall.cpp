@@ -131,7 +131,7 @@ void SnowWall_8049E8A0::draw() {
         params.mMtx = mtx;
     }
     if (mLayer_0x4 < 8) {
-        gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, field_0x23c, &params);
+        gGameRoot2_8053AB10->field_0x20->drawTimgImage_802F745C(&mPos, field_0x23c, &params);
     }
 }
 
@@ -147,17 +147,17 @@ void SnowWall_8049E8A0::draw() {
 void SnowWall_8049E8A0::shrink() {
     mDrawEnabled = false;
     bool done;
-    if (field_0x238 >= 0.5f && fn_801CD950(&field_0x238, 0.5f, -0.005f) != 0) {
+    if (field_0x238 >= 0.5f && moveToward_801CD950(&field_0x238, 0.5f, -0.005f) != 0) {
         done = false;
-    } else if (fn_801CD950(&field_0x238, 0.1f, -0.05f) == 0) {
+    } else if (moveToward_801CD950(&field_0x238, 0.1f, -0.05f) == 0) {
         done = true;
     } else {
         done = false;
     }
     if (done) {
         field_0x230 = 2;
-        fn_801F0D20(3);
-        fn_801F3668();
+        playSe_801F0D20(3);
+        markDead_801F3668();
     }
 }
 

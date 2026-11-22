@@ -29,20 +29,20 @@ public:
     /* 0x98 */ virtual void move_0x98();
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
-    // 0x801C50A8: fn_801C3B7C calls it.
+    // 0x801C50A8: setState_801C3B7C calls it.
     void fn_801C50A8(int state);
     // game/tu_801C0D70.cpp. Whether a player is near mPos (findNearestPlayer_801D05F8 with
     // 1.0f, then fn_801D0D50 with `range`); 0 or 1.
     bool fn_801C5348(f32 range);
     // game/tu_8021CDE4.cpp: state change; 1, 2 and 3 set up the members
-    // below and call fn_801C3B7C. The old state ends up in field_0x564.
+    // below and call setState_801C3B7C. The old state ends up in field_0x564.
     void fn_8021CDE4(int state);
     // Whether field_0x564 is 3 and the timer field_0x59e ran out.
     bool fn_8021CFF8();
     // Whether the life lost since init is at least field_0x568.
     bool fn_8021D020();
     // act_shadow_link_2.cpp: switches the animation/state by number.
-    void fn_801C3B7C(int);
+    void setState_801C3B7C(int);
     // game/tu_801C5B08.cpp (0x801C6784): turns field_0x33c to the side of
     // player field_0x590 that mPos is on (0x4000 or -0x4000), or to the
     // angle toward that player (getAngleToPlayer_801D0280) when the layer's view flag is
@@ -68,7 +68,7 @@ public:
     // sequencer's mDir, advances the sequencer unless it is in state 0x13 past
     // its first tick or mFlags has bit 0x80000, then updates the hit box.
     void fn_801C2E70();
-    // act_shadow_link_2.cpp: switches to state 0xD (fn_801C3B7C only).
+    // act_shadow_link_2.cpp: switches to state 0xD (setState_801C3B7C only).
     void fn_801C26D8();
     // act_shadow_link_2.cpp (0x801C27F0): passes mFlags bit 0x08000000 to the fn_801C0D70 object's
     // fn_801C1374, then die_0x24.
@@ -83,10 +83,10 @@ public:
     // at 0x50 and mFlags has bit 0x2000, calls its fn_801C12B8.
     void fn_801C53F8();
     // act_shadow_link_2.cpp: if mFlags has bit 0x4000 and mState is 0 or 1,
-    // switches to state 2 (fn_801C3B7C).
+    // switches to state 2 (setState_801C3B7C).
     void fn_801C27A8();
     // game/tu_801C6A4C.cpp: per-tick state handlers (field_0x340 anim
-    // finished flags, then the next fn_801C3B7C state).
+    // finished flags, then the next setState_801C3B7C state).
     void fn_801C6A4C();
     void fn_801C6BA8();
     void fn_801C6C7C();
@@ -97,7 +97,7 @@ public:
     // game/tu_801C71BC.cpp: rail step. Clears mFlags 0x2000000, sets or clears
     // 0x20000 from fn_800FD594 on field_0x358, reads the rail point at 0xFF
     // into field_0x32c, mPos and mPrevPos, steps the rail (fn_800FD818) in the
-    // direction of its field_0x1, then fn_801C8BC4(1) and fn_801C3B7C 0x17/0x18.
+    // direction of its field_0x1, then fn_801C8BC4(1) and setState_801C3B7C 0x17/0x18.
     void fn_801C79A0();
     // game/tu_801C71BC.cpp (0x801C7EE4): sets mFlags 0x400000 when the rail point
     // is out of reach (z too far on view layers with the flag, or fn_801CF888 blocked).
@@ -162,7 +162,7 @@ public:
     }
     bool fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer);
     // game/tu_801C9AF8.cpp (0x801CA0F8): hits the actor overlapping this one
-    // (fn_801F82CC) with takeHit_801F37AC unless it is 'SWBM' or 'FLME'; true if it hit.
+    // (findOverlappingActor_801F82CC) with takeHit_801F37AC unless it is 'SWBM' or 'FLME'; true if it hit.
     bool fn_801CA0F8();
     bool fn_801CA564();
     u8 fn_801CA274();

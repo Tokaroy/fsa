@@ -147,7 +147,7 @@ void ShadowLinkJumpMinor_804A68D0::updateState_0x90(u8 mapHit) {
         break;
     case 6:
         if (mStateTimer >= 120) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }

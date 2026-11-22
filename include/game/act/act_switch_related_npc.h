@@ -22,7 +22,7 @@ public:
     /* 0x240 */ s32 mTable;       // (mSpawnParam_0x90 >> 14) & 0xF: index into the 2nd/3rd tile tables
     /* 0x244 */ s32 mSound;       // (mSpawnParam_0x90 >> 18) & 0xF: selects the sound played in update()
     /* 0x248 */ s32 mDelay;       // frames to wait before acting (set to 0x32 by init() for type 3 / sound 0)
-    /* 0x24C */ s32 mCell;        // fn_80226BC4's packed cell index of (mPos.x, mPos.y)
+    /* 0x24C */ s32 mCell;        // getCellIndex_80226BC4's packed cell index of (mPos.x, mPos.y)
     // Out-parameter of GameView::fn_802D4874 (mBit, type 0) or fn_802D4768
     // (mSlot, type 2); update() passes its low word (0x254) as the slot.
     /* 0x250 */ union {

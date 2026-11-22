@@ -116,7 +116,7 @@ public:
     // 0x8017C4B0, 0x8017FBB4, ...) set f1-f3 and test r3 with clrlwi. 24.
     /* 0x2C */ virtual bool updateBossDeath_0x2C(f32 x, f32 y, f32 scale);
     // 0x801F47CC: if getScreenFlagBit_0x3C(), passes (view, getScreenFlagBit_0x3C(), arg2, arg1)
-    // to fn_802D8050, which tests arg2 with clrlwi. and stores arg1 with stb
+    // to setSwitchBit_802D8050, which tests arg2 with clrlwi. and stores arg1 with stb
     // (0xFF when cleared). Never overridden; 121 calls in 53 units pass
     // r4 = li 0xFF (114) or a clrlwi 24 value (6, e.g. act_switch narrowing
     // an int), r5 = li 0 or 1, and ignore r3. With (s32, s32) neither the
@@ -178,7 +178,7 @@ public:
     // members are below the class (fn_801EE3C0, releaseEmitter_801EE434 C++; fn_801EF574,
     // drawShadow_801EF830 extern "C").
 
-    // 1 unit / 4 calls. Looks for a 'WARP' actor (fn_801F78F4) on this
+    // 1 unit / 4 calls. Looks for a 'WARP' actor (findNextActorById_801F78F4) on this
     // layer whose (mSpawnParam_0x90 & 0xFF) == 8, moves mPos by the view boxes'
     // offset to the destination layer and sets mLayer_0x4; returns 0 or 1
     // (0x801EE374, 0x801EE3A0; act_small_key tests it with clrlwi).
@@ -235,7 +235,7 @@ public:
                      f32 scaleX, f32 scaleY) const;
     // 53 units / 107 calls. id compared unsigned with 3 and 0x42; uses
     // mLayer_0x4 and mPos.
-    void fn_801F0D20(u32 id);
+    void playSe_801F0D20(u32 id);
     // 222 units / 964 calls. Starts sound `soundId` on this actor's sound
     // object: fn_80456334(fn_801F6644(mgr, mSlot), &soundId, arg)
     // (0x801F1150), gated by the layer (mLayer_0x4 against 8) and player
@@ -266,7 +266,7 @@ public:
     // 0x10-0x13 / 0x140-0x15F start it at 0x78. Otherwise the base isBlocked_0x4C's
     // tests (containsPointOfOther_8020D6AC, then the tile codes of fn_8022461C/fn_80226850);
     // returns 0 or 1.
-    bool fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer);
+    bool isBlockedCommon_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer);
     // 1 call (fn_801F23BC). Probes the four edges of `box` at *pos on
     // `layer` with isBlockedOrOutOfView_0x50 every 8 units and pushes *pos out to the next
     // 8-unit cell line (stfs 0/4); with `out`, writes the normalised push
@@ -289,7 +289,7 @@ public:
     // box, ...)), moves mPos to the result and stores a vector in *out
     // (0x801F2670-0x801F2688); returns 0 or 1. Callers pass 0 or a stack
     // TVec3f for out and 0 for `flag` (197 of 201).
-    // u8, as fn_801F23BC / fn_801F2DB4 / fn_801F2FAC / checkHits_801F305C: each
+    // u8, as fn_801F23BC / fn_801F2DB4 / checkPlayerAttacks_801F2FAC / checkHits_801F305C: each
     // narrows its bool local at the return (clrlwi r3, rN, 24) and the
     // callers keep r3 raw (EnemyBase vfunc_0x5C/0x60/0x64 and their
     // overrides return it with mr; update()s keep it in a u8 local, tested
@@ -354,7 +354,7 @@ public:
     // (EnemyParam "atcp", 0x801F2D60). Returns the bitmask of players hit.
     u8 fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg);
     // 27 units / 41 calls. Takes a hit from an overlapping actor
-    // (fn_801F82CC) whose mActorId is includeId (or any, 'NULL'), is not
+    // (findOverlappingActor_801F82CC) whose mActorId is includeId (or any, 'NULL'), is not
     // excludeId and is not in the 'NULL'-ended list excludeIds (or NULL):
     // takeHit_801F37AC(this, attacker->mParamAtcn_0x118, ...) (0x801F2ECC). Returns
     // 0 or 1.
@@ -362,13 +362,13 @@ public:
     // 20 units / 22 calls. For each player overlapping this actor
     // (findOverlappingPlayer_801F285C), takeHit_801F37AC(this, fn_8023B6CC(i), getPlayerPos_8023E724(i), 0,
     // flag, i); returns whether any hit landed.
-    u8 fn_801F2FAC();
-    // 22 units / 25 calls. fn_801F2FAC(), else fn_801F2DB4(this, 'NULL',
+    u8 checkPlayerAttacks_801F2FAC();
+    // 22 units / 25 calls. checkPlayerAttacks_801F2FAC(), else fn_801F2DB4(this, 'NULL',
     // 'NULL', NULL) (0x801F30F0-0x801F3104).
     u8 checkHits_801F305C();
     // 9 units / 9 calls. The centre of mBox around mPos in screen space
     // (x, y - z): two floats only (0x801F3128-0x801F3174).
-    void fn_801F3128(JGeometry::TVec2f* out);
+    void getBoxCenter_801F3128(JGeometry::TVec2f* out);
     // 9 units / 12 calls. mBox2 around mPos in screen space (x, y - z);
     // callers pass a stack box; not NULL-checked.
     void fn_801F317C(JGeometry::TBox2f* out) const;
@@ -404,12 +404,12 @@ public:
     void fn_801F355C();
     // 9 units / 16 calls. mAlive = false, then fn_801F355C's report.
     void fn_801F35AC();
-    // 13 units / 16 calls. fn_801F3668's report without clearing mAlive.
+    // 13 units / 16 calls. markDead_801F3668's report without clearing mAlive.
     void fn_801F3604();
     // 78 units / 153 calls. Clears mAlive, then reports the actor to the
     // view: fn_802D7704(view, field_0x16c, mParamDstr_0x1a8, mLayer_0x4) when
     // field_0x16c != -1, else fn_802D766C(view, mParamDstr_0x1a8, mLayer_0x4).
-    void fn_801F3668();
+    void markDead_801F3668();
     // 1 unit / 3 calls (tu_80204638, on actors from the manager's lists).
     // Returns 1 if field_0x94 == 1 or field_0xc4 is set, else 0. Defined in
     // game/act_thief.cpp.
@@ -508,7 +508,7 @@ public:
     s32 fn_801545E0() const;               // field_0x9c (0x801545E0)
     s32 getSerial_801545E8() const;               // mSerial (0x801545E8)
     void fn_80154614(s32 value);           // field_0xb8 (0x80154614)
-    s32 fn_8015461C() const;               // mLayer_0x4, the layer (0x8015461C)
+    s32 getLayer_8015461C() const;               // mLayer_0x4, the layer (0x8015461C)
     // Out-of-line accessors in game/act_phantom_ganon_2.cpp (0x8018A590-0x8018A5B0);
     // act_ganon and tu_80197070 call them on other actors too.
     u16 fn_8018A590() const;               // field_0x94 (0x8018A590)
@@ -600,7 +600,7 @@ public:
     /* 0x118 */ s32 mParamAtcn_0x118; // EnemyParam.csv column "atcn"
     // mAlive: the manager's update pass deletes the actor (virtual dtor)
     // when it is false, and its collision queries (fn_801F8108,
-    // fn_801F82CC, ...) and draw pass skip it; fn_801F3668 clears it. Some
+    // findOverlappingActor_801F82CC, ...) and draw pass skip it; markDead_801F3668 clears it. Some
     // actors clear it in init() (TMI2), which removes them at once.
     /* 0x11C */ bool mAlive;
     /* 0x11D */ bool mDrawEnabled; // the draw loop skips the actor when false
@@ -659,7 +659,7 @@ void releaseEmitter_801EE434(JPABaseEmitter* emitter);
 // layer `layer` (none for flags -1, layers 8 and up, or a hidden layer):
 // "kage_sob.bin" frame `kind` scaled per kind, for kind 7 a flattened copy
 // of the "SOB " sprite `name` frame `frame` (or, when name is NULL, the
-// loaded `res`, fn_802F745C), on tile 0x39 an "enemy_both2_sob.bin" frame.
+// loaded `res`, drawTimgImage_802F745C), on tile 0x39 an "enemy_both2_sob.bin" frame.
 // params (or NULL) gives the alpha (flag 0x400), 0x1C/0x1D and the matrix.
 // Callers pass an actor's field_0x4 and &mPos. Defined in this unit, so a
 // C++ name (drawShadow_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv).
@@ -671,7 +671,7 @@ extern "C" {
 // 7 units / 8 calls. Loads the "SOB " resource `sobName` (a .rodata string)
 // through the archive at gGameRoot_8053AAF8->0xA4 (vtable slot 0x18,
 // 0x801EF7B4-0x801EF7F4) and hands it with pos, arg1 and params (a
-// SpriteParams_801F5AE0 or NULL, then defaults are used) to fn_802F86CC
+// SpriteParams_801F5AE0 or NULL, then defaults are used) to drawSobSprite_802F86CC
 // (gGameRoot2_8053AB10->0x20).
 void fn_801EF574(const char* sobName, s32 arg1, const JGeometry::TVec3f* pos,
                  const SpriteParams_801F5AE0* params);

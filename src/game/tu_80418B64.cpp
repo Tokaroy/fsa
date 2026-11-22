@@ -567,7 +567,7 @@ void AdventureHud_804B13D4::fn_8041FC2C() {
     s32 i;
     for (i = 0; i < 4; i++) {
         fn_8041E3B4(i);
-        lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+        lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
         lbl_80529DEC.field_0xe8[i] = fn_80236100(i);
         lbl_80529DEC.field_0x108[i] = fn_802375B0(i);
         field_0x188[i] = 0x180;
@@ -711,7 +711,7 @@ void AdventureHud_804B13D4::fn_8041F720() {
             }
         }
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
@@ -723,7 +723,7 @@ void AdventureHud_804B13D4::fn_8041F5FC() {
         (mode == 10 && lbl_80529DEC.mLevel_0x11c == 2)) {
         return;
     }
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     field_0x18->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     if (field_0x50 != NULL) {
         field_0x50->fn_8044148C();
@@ -744,7 +744,7 @@ void AdventureHud_804B13D4::fn_8041EDB0() {
         if (gGameRoot2_8053AB10->field_0x20->field_0x14c[0] != 0) {
             gGameRoot2_8053AB10->field_0x20->field_0x217[0] = 1;
         }
-        if (gGameRoot_8053AAF8->field_0x4c != 11 && isPlayerDead_80236B50(0) && fn_80237774(0) == 0) {
+        if (gGameRoot_8053AAF8->field_0x4c != 11 && isPlayerDead_80236B50(0) && getPlayerLife_80237774(0) == 0) {
             if (field_0x292 >= 2) {
                 if (lbl_8053AEC8->field_0x5d == 0) {
                     lbl_8053AEC8->field_0x5d = 1;
@@ -871,7 +871,7 @@ void AdventureHud_804B13D4::fn_8041EDB0() {
 
 void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
     if (lbl_80529DEC.isField0x239(player)) {
-        lbl_80529DEC.field_0xd8[player] = fn_80237774(player);
+        lbl_80529DEC.field_0xd8[player] = getPlayerLife_80237774(player);
         for (s32 i = 0; i < 4; i++) {
             if (i != player && hasPlayerLeader_8022F514(i) && player == getPlayerLeader_8022F3DC(i)) {
                 lbl_80529DEC.field_0xd8[i] = lbl_80529DEC.field_0xd8[player];
@@ -884,7 +884,7 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
         field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
         field_0x1f8[player] = fn_80237810(player);
         lbl_80529DEC.field_0x239 &= ~(u8)(1 << player);
-    } else if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) < getPlayerLife_80237774(player)) {
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
             lbl_80529DEC.field_0xd8[player]++;
@@ -903,7 +903,7 @@ void AdventureHud_804B13D4::fn_8041E8B4(s32 player) {
             field_0x1d8[player] = lbl_80529DEC.field_0xd8[player];
             field_0x1f8[player] = fn_80237810(player);
         }
-    } else if (lbl_80529DEC.getField0xd8(player) > fn_80237774(player)) {
+    } else if (lbl_80529DEC.getField0xd8(player) > getPlayerLife_80237774(player)) {
         lbl_80529DEC.field_0x24a |= (u8)(1 << player);
         field_0x198[player]++;
         if (field_0x198[player] >= 10) {
@@ -1013,7 +1013,7 @@ void AdventureHud_804B13D4::fn_8041E708(s32 id, s32 arg1, u32 arg2) {
 void AdventureHud_804B13D4::fn_8041E58C() {
     for (s32 i = 0; i < 4; i++) {
         if (isMaskBitSet(gGameRoot_8053AAF8->mPlayerMask, i)) {
-            lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
+            lbl_80529DEC.field_0xd8[i] = getPlayerLife_80237774(i);
             for (s32 j = 0; j < 4; j++) {
                 if (j != i && hasPlayerLeader_8022F514(j) && i == getPlayerLeader_8022F3DC(j)) {
                     lbl_80529DEC.field_0xd8[j] = lbl_80529DEC.field_0xd8[i];
@@ -1859,7 +1859,7 @@ void AdventureHud_804B13D4::fn_80419C38(s32 player, bool arg) {
 
 void AdventureHud_804B13D4::fn_80419570(s32 player) {
     if (field_0x21a[player] == 0) {
-        field_0x1d8[player] = fn_80237774(player);
+        field_0x1d8[player] = getPlayerLife_80237774(player);
         field_0x1f8[player] = fn_80237810(player);
         return;
     }

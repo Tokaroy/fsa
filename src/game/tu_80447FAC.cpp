@@ -92,7 +92,7 @@ void MgShootingScreen_804B1C58::fn_80448334() {
 }
 
 void MgShootingScreen_804B1C58::fn_804482EC() {
-    gGameRoot2_8053AB10->fn_8013B490();
+    gGameRoot2_8053AB10->setPort_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 

@@ -248,24 +248,24 @@ void Block_804A7A10::update() {
             mPos += mVel_0x3c;
             if ((mSpawnParam_0x90 >> 8) & 1) {
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.x > 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 12) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.x < 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 17) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.y > 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 22) & 0x1F, false, 0xFF);
                 }
                 if (PSVECDistance(&mPos, &field_0x230) < 4.0f && mVel_0x3c.y < 0.0f) {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, true, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, true, 0xFF);
                 } else {
-                    getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, false, 0xFF);
+                    getGameView_802D6A9C()->setSwitchBit_802D8050((mSpawnParam_0x90 >> 27) & 0x1F, false, 0xFF);
                 }
             }
 

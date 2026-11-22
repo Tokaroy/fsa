@@ -207,7 +207,7 @@ void Goal_804A7EB0::update() {
                     }
                 }
             }
-            getGameView_802D6A9C()->fn_802D8050(field_0x240, true, 0xFF);
+            getGameView_802D6A9C()->setSwitchBit_802D8050(field_0x240, true, 0xFF);
             field_0x230 = 2;
             field_0x31c = 0xE6;
             field_0x244 = 300;
@@ -503,7 +503,7 @@ void Goal_804A7EB0::draw() {
             pos.z = mPos.z;
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
             }
         }
         for (s32 i = 0; i < 4; i++) {
@@ -516,7 +516,7 @@ void Goal_804A7EB0::draw() {
                 pos.z = field_0x264[i].z;
                 if (mLayer_0x4 < 8) {
                     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
-                    gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
+                    gGameRoot2_8053AB10->field_0x20->drawSobSprite_802F86CC(&pos, res, frame, &params, 1.0f, 1.0f);
                 }
             }
         }

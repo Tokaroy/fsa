@@ -70,7 +70,7 @@ void Tektite_8049FD50::init() {
 // FIXME: regalloc r4/r5 swap between 0x19660d and gGameRoot_8053AAF8 in mRandom.get_ufloat_1().
 void Tektite_8049FD50::update() {
     if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
-        // fn_80226998 (declared with TVec3f in Map.h) reads only the x and y of
+        // getTileAt_80226998 (declared with TVec3f in Map.h) reads only the x and y of
         // its position, so the 8-byte stack TVec2f is passed as a TVec3f.
         if (field_0x254 == 0xFFFF) {
             if (getGameView_802D6A9C()->fn_802DCD0C()) {
@@ -78,12 +78,12 @@ void Tektite_8049FD50::update() {
             }
             s32 layer = mLayer_0x4;
             JGeometry::TVec2f p(mPos.x, mPos.y);
-            field_0x254 = fn_80226998((const JGeometry::TVec3f*)&p, layer);
+            field_0x254 = getTileAt_80226998((const JGeometry::TVec3f*)&p, layer);
             return;
         }
         s32 layer = mLayer_0x4;
         JGeometry::TVec2f p(mPos.x, mPos.y);
-        if (field_0x254 == fn_80226998((const JGeometry::TVec3f*)&p, layer)) {
+        if (field_0x254 == getTileAt_80226998((const JGeometry::TVec3f*)&p, layer)) {
             return;
         }
         mSpawnParam_0x90 &= 1;

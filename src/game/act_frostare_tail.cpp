@@ -40,7 +40,7 @@ void FrostareTail_804A4F90::init() {
     mTargetSpeed = 0.0f;
     mAnim.setKeyTables_801D2608(lbl_8053A150, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     fn_801DAC6C()->fn_801DAF3C(mSerial);
 }
 
@@ -61,7 +61,7 @@ void FrostareTail_804A4F90::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (mStateTimer >= 120) {
-            fn_801F3668();
+            markDead_801F3668();
         }
         break;
     }
