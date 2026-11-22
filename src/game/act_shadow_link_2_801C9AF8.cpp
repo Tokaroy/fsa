@@ -31,10 +31,20 @@ bool ShadowLink2_804A43E8::fn_801CAED4(int player) {
 // game/tu_801CB270.cpp: hit spark at `pos` on `layer`.
 void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 
+static inline void normalize(f32& x, f32& y) {
+    f32 sq = x * x + y * y;
+    if (sq <= 32.0f * FLT_EPSILON) {
+        return;
+    }
+    f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
+    x *= norm;
+    y *= norm;
+}
+
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
-// FIXME(shotgun): 99.51 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.63 %, regalloc-only; behaviour drift.
 bool ShadowLink2_804A43E8::fn_801CA564() {
     switch (mState) {
     case 0x0:
@@ -92,12 +102,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             s32 player = field_0x338;
             f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            f32 sq = dx * dx + dy * dy;
-            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= sq;
-                dy *= sq;
-            }
+            normalize(dx, dy);
             dx *= 3.0f;
             dy *= 3.0f;
             mVel_0x3c.x = dx;
@@ -205,12 +210,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             s32 player = field_0x338;
             f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            f32 sq = dx * dx + dy * dy;
-            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= sq;
-                dy *= sq;
-            }
+            normalize(dx, dy);
             dx *= 3.0f;
             dy *= 3.0f;
             mVel_0x3c.x = dx;
@@ -284,7 +284,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
 }
 
 // Whether something hurts the actor through its hit box: the hit box of player attacks.
-// FIXME: 95.93 %, missing/extra; behaviour clean.
+// FIXME: 97.05 %, scheduling+regalloc; behaviour clean.
 // FIXME(shotgun): register allocation and stack slots differ; early returns are laid out differently.
 u8 ShadowLink2_804A43E8::fn_801CA274() {
     u8 ret = 0;
@@ -293,6 +293,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
         if (field_0x560 != 4) {
             mask = 1 << field_0x560;
         }
+        u8 remaining = mask;
         if (mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f) {
             u8 hits = mHitBox.fn_8021693C(mask);
             if (hits != 0) {
@@ -305,12 +306,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             done = true;
                             f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                             f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
-                            f32 sq = dx * dx + dy * dy;
-                            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                                dx *= sq;
-                                dy *= sq;
-                            }
+                            normalize(dx, dy);
                             dx *= 3.0f;
                             dy *= 3.0f;
                             mVel_0x3c.x = dx;
@@ -318,7 +314,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             setState_801C3B7C(0x20);
                             mFlags |= 0x80000;
                         }
-                        mask &= ~bit;
+                        remaining &= ~bit;
                     }
                 }
             }
@@ -332,7 +328,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
             mBox.f.x = mHitBox.mBox.f.x;
             mBox.f.y = mHitBox.mBox.f.y;
             u8 result;
-            if (mask == 0) {
+            if (remaining == 0) {
                 result = 0;
             } else {
                 result = getPlayersInBox_801F2740(-1);
@@ -343,7 +339,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                     for (s32 j = 0; j < 4; j++) {
                         u32 bit = 1 << j;
                         if (result & bit) {
-                            if (mask & bit) {
+                            if (remaining & bit) {
                                 if (isPlayerOnLowerLayer_801F329C(j)) {
                                     JGeometry::TVec3f in(out.x, out.y, 0.0f);
                                     JGeometry::TVec3f res;
@@ -466,7 +462,6 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
 // Moves the actor along the map; lifts the z-offset into the ground plane for the sweep when the
 // actor is in the air (state 0x1C) and lands it when it touches ground.
 // FIXME: 98.35 %, missing/extra; behaviour near.
-// FIXME(shotgun): the airborne test is materialised as a bool in the original (mfcr/extrwi).
 u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     u8 hit = 0;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f && mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
@@ -474,7 +469,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
         JGeometry::TVec3f savedPos = mPos;
         u8 floorLayer = viewLayerFlag(mLayer_0x4);
         bool lifted = false;
-        if (mState == 0x1C && !(mPos.z <= 0.0f) && floorLayer != 0) {
+        if (mState == 0x1C && !isOnGround() && floorLayer != 0) {
             lifted = true;
             mPrevPos.y = mPrevPos.y - mPrevPos.z;
             mPrevPos.z = 0.0f;
