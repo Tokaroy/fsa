@@ -350,7 +350,6 @@ void fn_80196CF4(JPABaseEmitter* emitter, const JGeometry::TVec3f* scale) {
     emitter->setGlobalScale(*scale);
 }
 
-// FIXME(shotgun): 99.25 %, scheduling; behaviour clean.
 void Ganon_804A25F0::init() {
     field_0x25c = 0;
     field_0x260 = 0;
@@ -636,7 +635,7 @@ void Ganon_804A25F0::fn_80196020(s32 player) {
     }
 }
 
-// FIXME(shotgun): 94.83 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.82 %, missing/extra + reloc-name; behaviour drift.
 void Ganon_804A25F0::update() {
     JGeometry::TVec3f posA;
     JGeometry::TVec3f posB;
