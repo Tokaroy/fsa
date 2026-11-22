@@ -843,8 +843,8 @@ def name_map(wt):
 
 
 def credit_map(wt):
-    """{(unit, function): (credited bytes, match %, size)}: a 100 % function's credit is its size, a
-    structurally matched one's its partial credit (structural.json weighted_fns), else 0. Keyed by name."""
+    """{(unit, address): (credited bytes, match %, size, name)}: a 100 % function's credit is its size, a
+    structurally matched one's its partial credit (structural.json weighted_fns), else 0."""
     try:
         rep = json.loads((wt / "build/G4SE01/report_honest.json").read_text())
         wf = json.loads((wt / "build/G4SE01/structural.json").read_text()).get("weighted_fns", {})
@@ -854,7 +854,9 @@ def credit_map(wt):
     for u in rep["units"]:
         for f in u.get("functions", []):
             pct, size = float(f.get("fuzzy_match_percent") or 0), int(f.get("size") or 0)
-            out[(u["name"], f["name"])] = (size if pct >= 100 else float(wf.get(u["name"], {}).get(f["name"], 0)), pct, size)
+            va = (f.get("metadata") or {}).get("virtual_address")
+            key = (u["name"], hex(int(va)) if va else f["name"])  # by address, as report_map: renames are not losses
+            out[key] = (size if pct >= 100 else float(wf.get(u["name"], {}).get(f["name"], 0)), pct, size, f["name"])
     return out
 
 
@@ -867,14 +869,14 @@ PCT_DROP = 2.0             # points of match %, for a function of 64 bytes or mo
 
 def regressions(before, after, allow=()):
     bad = []
-    for k, (c0, p0, size) in before.items():
-        c1, p1, _ = after.get(k, (0.0, 0.0, size))
-        if k[1] in allow:
+    for k, (c0, p0, size, name) in before.items():
+        c1, p1 = after.get(k, (0.0, 0.0))[:2]
+        if name in allow or k[1] in allow:
             continue
         if c0 - c1 > CREDIT_DROP[0] and c0 - c1 > CREDIT_DROP[1] * size:
-            bad.append(f"{k[1]} credit {c0:.0f} -> {c1:.0f} B")
+            bad.append(f"{name} credit {c0:.0f} -> {c1:.0f} B")
         elif size >= 64 and p0 - p1 > PCT_DROP:
-            bad.append(f"{k[1]} {p0:.2f} -> {p1:.2f} %")
+            bad.append(f"{name} {p0:.2f} -> {p1:.2f} %")
     return bad
 
 
