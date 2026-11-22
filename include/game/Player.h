@@ -32,6 +32,7 @@
 
 #include "types.h"
 #include "JSystem/JGeometry.h"
+#include "game/ActorManager.h"
 #include "game/cls_804A64A8.h"
 #include "game/cls_8049F140.h"
 
@@ -300,6 +301,8 @@ public:
     void fn_80259660(); // tu_80256C74
     void fn_80283D2C(); // tu_8027E5BC
     bool fn_8025F484() const; // field_0xd68 is a living actor (field_0x1a4 > 0)
+    // The held actor (serial field_0xd68), or NULL; inline, defined below the class.
+    ActorBase_804A5770* heldActor();
     void fn_80277100(); // tu_8026FC20; empty, called by the same dispatch
     void fn_802791AC(); // tu_8026FC20; empty, called by the same dispatch
     void fn_80264410(); // byte at 0x458 = 0 (stb r0)
@@ -1245,6 +1248,16 @@ public:
     bool fn_80244630(); // tu_8023FBF0 (0x80244630)
     s32 fn_8027218C();
 }; // Size: 0x13BC
+
+// The actor the player holds or carries (serial field_0xd68), or NULL. Every
+// lookup of field_0xd68 goes through here (14 in tu_8023FBF0, tu_8025EB18,
+// tu_80256C74, tu_8026FC20). The named local is what the registers show: in
+// fn_80273518 the actor is coloured before toView's layer (docs/REGALLOC.md
+// rules 1-2), which a plain local in the caller is not.
+inline ActorBase_804A5770* Player_804A6F38::heldActor() {
+    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+    return actor;
+}
 
 // *gPlayerManager_8053AC90. Vtable 0x804A6F28: only the destructor (0x8023F7F8, which
 // deletes the four players and clears gPlayerManager_8053AC90). Constructor 0x8023F8B0

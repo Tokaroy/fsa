@@ -4102,7 +4102,7 @@ bool Player_804A6F38::fn_80242624(JGeometry::TVec3f pos) {
 // then field_0x3b0 = 3.
 void Player_804A6F38::fn_80242560() {
     if (fn_8025F500() && field_0xd6c == ACTOR_KEY0) {
-        ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+        ActorBase_804A5770* held = heldActor();
         if (held != NULL) {
             static_cast<SmallKey_804A8CD8*>(held)->fn_802C1778();
         }
@@ -4150,7 +4150,7 @@ void Player_804A6F38::fn_802422D0() {
     field_0xd54 = 10;
     fn_80248604();
     if (fn_8025F500() && field_0xd6c == ACTOR_KEY0) {
-        ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+        ActorBase_804A5770* held = heldActor();
         if (held != NULL) {
             static_cast<SmallKey_804A8CD8*>(held)->fn_802C1D30(JGeometry::TVec3f(mPos), field_0x3b4);
         }

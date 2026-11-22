@@ -144,7 +144,7 @@ void Player_804A6F38::fn_80264768() {
 void Player_804A6F38::fn_8026441C() {
     s32 pose = 0;
     field_0x3fc++;
-    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+    ActorBase_804A5770* actor = heldActor();
     if (fn_8025F590()) {
         if (field_0x3fc < 8) {
             field_0x3fd = 0;
@@ -252,7 +252,7 @@ void Player_804A6F38::fn_80263C64() {
     if (0.0f == stick.z && 0.0f != mPos.z && !field_0x434) {
         mPos.z = 0.0f;
     }
-    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+    ActorBase_804A5770* actor = heldActor();
     if (fn_8022C13C(field_0x4)) {
         if (fn_802416C4() != 7) {
             if (!fn_8024B24C()
@@ -301,7 +301,7 @@ void Player_804A6F38::fn_80263BA0() {
     if (fn_8025F590()) {
         fn_8027221C(4);
     } else {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+        ActorBase_804A5770* actor = heldActor();
         if (actor != 0) {
             fn_8027221C(actor->field_0x118);
         } else {
@@ -327,7 +327,7 @@ void Player_804A6F38::fn_80263860() {
     } else if (field_0x3fc < 18) {
         field_0x3fd = 3;
         if (field_0x3fc == 11 && field_0xd6c == ACTOR_TZOK) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = heldActor();
             if (actor != 0) {
                 static_cast<Thief_804A5A30*>(actor)->fn_80206168();
             }
@@ -345,7 +345,7 @@ void Player_804A6F38::fn_80263860() {
         JGeometry::TVec3f pos(field_0x2f4);
         pos.z = 0.0f;
         if (gBgRewrite_8053AC98->fn_802A3164(&pos, field_0x4, field_0x3b4)) {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = heldActor();
             if (actor != 0) {
                 actor->vfunc_0x48();
             }
@@ -460,7 +460,7 @@ void Player_804A6F38::fn_802632A8() {
                 field_0x3fd = 4;
             } else {
                 field_0x3fd = 3;
-                ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+                ActorBase_804A5770* actor = heldActor();
                 if (actor != 0) {
                     JGeometry::TVec3f speed(0.0f, 0.0f, 0.0f);
                     actor->fn_801F3708(&speed);
@@ -499,7 +499,7 @@ void Player_804A6F38::fn_80263078() {
     fn_8028414C();
     if (field_0xd6c == ACTOR_NIWA && !field_0x441) {
         Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(
-            getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68));
+            heldActor());
         // (s32) on the u8 byte: the original compares it with cmpwi here (plain u8 gives cmplwi).
         if (cucco != 0 && (s32)cucco->field_0x2a1 == 1) {
             JGeometry::TVec2f pos;
@@ -910,7 +910,7 @@ void Player_804A6F38::fn_80261750() {
                 fn_80230C6C(field_0xd70);
             }
         } else {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = heldActor();
             if (actor != 0) {
                 // Per-field copies: the original moves floats (lfs / stfs), not words.
                 mPos.x = field_0x300.x;
@@ -1567,7 +1567,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
             field_0xd70 = -1;
             fn_8024F0E8(0x20014);
         } else {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = heldActor();
             if (actor != 0) {
                 JGeometry::TVec3f speed;
                 const Vec& dir = lbl_8046B92C[field_0x3dc];
@@ -1864,7 +1864,7 @@ bool Player_804A6F38::fn_8025EB18() {
                 return true;
             }
         } else {
-            ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+            ActorBase_804A5770* actor = heldActor();
             if (actor != 0 && actor->vfunc_0x4C(field_0x3b4, &field_0x2f4)) {
                 field_0x2f4.x = mPos.x;
                 field_0x2f4.y = mPos.y;

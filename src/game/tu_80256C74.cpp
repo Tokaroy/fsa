@@ -2643,7 +2643,7 @@ inline void Player_804A6F38::requestFlame_8025785C() {
 // layers, or the player is in the air elsewhere.
 inline void Player_804A6F38::requestJump_8025785C() {
     if (fn_8025F500()) {
-        ActorBase_804A5770* held = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+        ActorBase_804A5770* held = heldActor();
         if (held != NULL && held->field_0x1a4 != 0) {
             return;
         }
