@@ -206,9 +206,9 @@ static inline void followLeader(cls_804A71A8* p) {
             return;
         }
     }
-    if (fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos)) {
+    if (fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, p->field_0x4->getPos())) {
         fn_802381B8(p->field_0x4->getLeader_80240644());
-        fn_802348C4(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
+        fn_802348C4(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, p->field_0x4->getPos());
     }
 }
 
@@ -220,12 +220,13 @@ static inline void checkSlowFloor(cls_804A71A8* p) {
         above += p->field_0x4->mPos;
         above.z += 2.0f;
         u16 tile = getRawTile_80226850(&above, p->field_0x4->mLayer_0x3b4);
-        if (tile == 0x3EB || tile == 0x34) {
-            p->field_0xb7 = 1;
+        if (tile != 0x3EB && tile != 0x34) {
+            return;
         }
-    } else if (getTileCollisionCode_8022461C(&p->field_0x4->mPos, p->field_0x4->mLayer_0x3b4) == 0x50) {
-        p->field_0xb7 = 1;
+    } else if (getTileCollisionCode_8022461C(&p->field_0x4->mPos, p->field_0x4->mLayer_0x3b4) != 0x50) {
+        return;
     }
+    p->field_0xb7 = 1;
 }
 
 // Closed in on all sides by field_0x78 / 0x38: request state 0x4B (flagged
@@ -333,7 +334,7 @@ static inline void askLeader(cls_804A71A8* p) {
             return;
         }
     }
-    fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos);
+    fn_8022BC38(p->field_0x4->getLeader_80240644(), p->field_0x4->mLayer_0x3b4, p->field_0x4->getPos());
 }
 
 // A direction marked in field_0x60 (tile 0x60): unless one of its states
@@ -1419,13 +1420,11 @@ void cls_804A71A8::fn_8026B81C(u16 tile) {
     }
 }
 
-// FIXME: 98.83 %, missing/extra; behaviour near.
-// Ours is 4 instructions shorter (2214 vs 2218). The gotos at
+// FIXME: 99.30 %, missing/extra; behaviour clean.
+// Ours is 3 instructions shorter. The gotos at
 // blockMarked50, liftOn60, the counter and the near-'WARP' exit are
-// FAKEMATCH(crack-pass) (docs/CRACK_PASS.md). Left: &mPos kept in a saved
-// register across getLeader_80240644 (followLeader x2, askLeader), the type-4 'WARP'
-// turn test (field_0x4->field_0x4 loaded before getFollowerIndex_80248778), the near-'WARP'
-// TVec2f's two stack stores, the 0xB7 store (one shared stb in the original),
+// FAKEMATCH(crack-pass) (docs/CRACK_PASS.md). Left: the near-'WARP'
+// TVec2f's two stack stores, the branch polarity of the 0xB7 tile test,
 // the four-sides test before the box marks (the original's last test is
 // `beq block; b skip`, the same unrolled-exit shape over 4: a goto there gives
 // 98.90 / -3, not adopted), one scheduled lwz of field_0xb0, and register numbers.
@@ -1497,7 +1496,7 @@ warp: // the counter runs: look for a 'WARP' actor
                     continue;
                 }
                 if (!hasPlayerLeader_8022F514(field_0x4->mPlayerNo_0x4) && fn_8022CAF8(field_0x4->mPlayerNo_0x4) == 4 &&
-                    fn_80234004(field_0x4->mPlayerNo_0x4) != field_0x4->getFollowerIndex_80248778())
+                    fn_80234004(field_0x4->getIndex()) != field_0x4->getFollowerIndex_80248778())
                 {
                     continue;
                 }
