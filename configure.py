@@ -1551,7 +1551,7 @@ config.libs = [
         Object(NonMatching, "game/tu_803A8DFC.cpp"),
         Object(NonMatching, "game/tu_803B7DCC.cpp"),
         Object(Matching, "game/act_talking_npc_2.cpp"),
-        Object(NonMatching, "game/tu_803B8C74.cpp"),
+        Object(Matching, "game/tu_803B8C74.cpp"),
         Object(NonMatching, "game/tu_803B9940.cpp"),
         Object(NonMatching, "game/tu_803BACF8.cpp"),
         Object(NonMatching, "game/tu_803BC6F0.cpp"),

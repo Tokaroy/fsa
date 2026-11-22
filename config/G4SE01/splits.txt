@@ -6421,7 +6421,7 @@ game/tu_803B9940.cpp:
 	.ctors      start:0x8045C558 end:0x8045C55C
 	.rodata     start:0x80476568 end:0x80476578
 	.data       start:0x804AFB48 end:0x804AFB90
-	.bss        start:0x80510E60 end:0x8051E2C0
+	.bss        start:0x80510E60 end:0x8051E2C0 align:32
 
 game/tu_803BACF8.cpp:
 	extab       start:0x8000F704 end:0x8000F724

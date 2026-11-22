@@ -11,9 +11,6 @@
 cls_804AFB30 lbl_8050EC80 ATTRIBUTE_ALIGN(32);
 cls_804AFB3C lbl_80510C6C;
 
-// lbl_80476548 (.rodata, 8 x 10000: the initial value of cls_804AFB3C's two word
-// tables) belongs to its constructor, fn_803B9160.
-
 // Bit stage * 4 + sub of save file `file`'s flag word (stage 0-7, sub 0-3,
 // else false): isStageFlagSet (game/StageFlag.h) for any file. fn_803B8CAC
 // inlines it three times, fn_803B90E4 once.
@@ -67,7 +64,8 @@ s32 cls_804AFB30::fn_803B933C(SaveFile_803B950C* files, s32 index) {
     return 0;
 }
 
-extern const s32 lbl_80476548[8];
+// Initial value of field_0x4c / field_0x6c: 10000 each.
+const s32 lbl_80476548[8] = {10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000};
 
 // 0x803B9160
 cls_804AFB3C::cls_804AFB3C() {
