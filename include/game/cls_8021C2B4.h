@@ -6,7 +6,7 @@
 #include "game/cls_8021CBA0.h"
 
 // One flying piece aimed at a player (shadow Link's thrown object), defined
-// in game/tu_8021C2B4.cpp. No vtable; named after its constructor
+// in game/flying_pieces_8021C2B4.cpp. No vtable; named after its constructor
 // (fn_8021C5B0, the element constructor act_shadow_link_generator passes to
 // __construct_array).
 class FlyingPiece_8021C5B0 {

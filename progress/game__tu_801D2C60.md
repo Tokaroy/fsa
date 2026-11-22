@@ -8,7 +8,7 @@ Next: coordinator flips Matching after trial link.
 ## Data re-check (2026-11-03): matched_data 48 % (308/640: only .bss/.ctors/.rodata/.sdata count)
 All 102 Matching game units are 100 % in every section, so each of these must go:
 1. extab/extabindex 52 % and .text placement: the original emits `__dt__12cls_804A48B0Fv` FIRST
-   (0x801D2C60, first extab entry). The dtor is an inline (weak) one: tu_802201D8's derived dtor inlines it
+   (0x801D2C60, first extab entry). The dtor is an inline (weak) one: act_unknown_fbal_802201D8's derived dtor inlines it
    (stores __vt__12cls_804A48B0, then EnemyBase/J3DFrameCtrl vtables, bl __dt__18ActorBase). Under
    `-inline auto` weak functions go after the ctor (ours: fn_801D2CF0, draw, update, init, ctor, weak
    EnemyBase/J3DFrameCtrl/cls dtors, __sinit). Only `-inline auto,deferred` puts it first (GAME_PLAN section).
@@ -23,7 +23,7 @@ Verdict: not flippable under `-inline auto`; 2 and 3 are coordinator resizes wit
 
 Source-organisation re-check (2026-11-03, research/abs-jumptable): under `-inline auto` weak (inline) functions are
 always emitted after the strong ones, so the leading inline dtor needs deferred codegen, like the jump-table units'
-vtable order; see progress/game__tu_80222CC4.md for why deferred itself is ruled out (it inlines later callees the
+vtable order; see progress/game__act_shadow_link_fire_minor_80222CC4.md for why deferred itself is ruled out (it inlines later callees the
 original keeps out of line). The resizes in item 2/3 above still need coordinator approval (not added by me).
 
 Compiler sweep (2026-11-03, lead/lead-jumptable): no GC 1.0-3.0a5.2 version/flag gives deferred layout with auto

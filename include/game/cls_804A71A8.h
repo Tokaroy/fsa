@@ -6,7 +6,7 @@
 // A heap object of 0xC0 bytes owned by a Player (vtable 0x804A71A8, defined
 // in game/tu_802684A4.cpp). Its constructor (0x8026F9E8) stores the
 // Player at 0x4; the destructor clears it. The Player's
-// constructor (game/tu_8023FBF0.cpp) allocates it and keeps it in
+// constructor (game/player_8023FBF0.cpp) allocates it and keeps it in
 // field_0xbf0.
 class cls_804A71A8 {
 public:
@@ -25,7 +25,7 @@ public:
     // fn_8026C350 or fn_8026B81C, then runs fn_80269574 (and fn_8026E1E0 on
     // the first pass), repeating while fn_80269574 asks (field_0x9a).
     void fn_80268BC4();
-    // tu_8023FBF0's fn_8024B274 / fn_8024B298 forward to them.
+    // player_8023FBF0's fn_8024B274 / fn_8024B298 forward to them.
     void fn_80269420();
     void fn_8026942C(s32 index, JGeometry::TVec3f* out);
     // 0x80269574: run after each probe pass (docs/PLAYER.md, cls_804A71A8).
@@ -46,7 +46,7 @@ public:
     // pushing (field_0xa4, up to 5, which clears the owner's 0xD94-0xD9C).
     void fn_8026E1E0();
     // 0x8026E464: the start-of-frame reset (inlined in fn_80268BC4 and
-    // fn_8026F710); the owner's fn_80261750 (tu_8025EB18) calls it.
+    // fn_8026F710); the owner's fn_80261750 (player_8025EB18) calls it.
     void fn_8026E464();
     // 0x8026E68C (fn_8026C350, tiles 0x10-0x17): a one-way ledge. When
     // the owner may take it (fn_8026EB1C, or the other cases below), scans
@@ -81,8 +81,8 @@ public:
     void fn_8026F710();
     // Whether any of the eight flags at 0x48 (only the first four without
     // `all`) is 1, flags 2, 4 and 5 not counting while field_0xb4 is set.
-    // Inlined by the owner's update B fn_80252FC0 (tu_8023FBF0) and in
-    // tu_80256C74, tu_8025EB18 and tu_8026FC20 (an 8-pass loop unrolled by
+    // Inlined by the owner's update B fn_80252FC0 (player_8023FBF0) and in
+    // player_80256C74, player_8025EB18 and player_8026FC20 (an 8-pass loop unrolled by
     // 4); the owner's fn_8025197C(all) is the call with the argument (the
     // `i >= 4` test stays in its unrolled loop).
     bool anyFlag48(bool all = true) const {
@@ -102,7 +102,7 @@ public:
 
     // Whether the owner was pushed along x (field_0x48 at -x or +x). No
     // out-of-line copy: tu_802684A4 and the owner's fn_80261750
-    // (tu_8025EB18) inline it.
+    // (player_8025EB18) inline it.
     bool pushedAlongX() const {
         if (field_0x48[1] == 1) {
             return true;
@@ -161,7 +161,7 @@ public:
     /* 0x8 */ JGeometry::TVec3f field_0x8;
     // Zeroed by the owner's update update_80253E6C each frame; fn_80268BC4 sets
     // it to how far the owner's mPos x / y moved during it. A TVec2f: the
-    // owner's fn_802422C4 (tu_8023FBF0) returns its address as the
+    // owner's fn_802422C4 (player_8023FBF0) returns its address as the
     // `const TVec2f*` of fn_8022DFD4.
     /* 0x14 */ JGeometry::TVec2f field_0x14;
     // The direction fn_80268BC4 is probing (0-7), the index into the
@@ -179,7 +179,7 @@ public:
     // and 0x30).
     /* 0x40 */ u8 field_0x40[8];
     // Bytes tested for 1 by the owner's fn_802517F8, fn_802518AC and
-    // fn_8025190C (tu_8023FBF0), and in a loop by anyFlag48 (the owner's
+    // fn_8025190C (player_8023FBF0), and in a loop by anyFlag48 (the owner's
     // update B, lbzx 0x48 + i, i < 8).
     /* 0x48 */ u8 field_0x48[8];
     /* 0x50 */ u8 field_0x50[8];
@@ -198,7 +198,7 @@ public:
     // fn_80268BC4 repeats its probe pass while this is 1 (at most 100 passes).
     /* 0x9A */ u8 field_0x9a;
     /* 0x9B */ u8 field_0x9b[0xA0 - 0x9B]; // not yet known
-    // Tested for 0 by the owner's fn_8027EEB4 (tu_8027E5BC) before it resets
+    // Tested for 0 by the owner's fn_8027EEB4 (player_8027E5BC) before it resets
     // the walk-animation counter.
     /* 0xA0 */ s32 field_0xa0;
     /* 0xA4 */ s32 field_0xa4;
@@ -209,10 +209,10 @@ public:
     // Returned by the owner's fn_8024F630 (lbz; blr). fn_80268BC4 moves it
     // into 0xB5 at the start of each frame.
     /* 0xB4 */ bool field_0xb4;
-    // Tested for 1 by the owner's fn_80285F44 (tu_80285E58), with field_0xb4 clear.
+    // Tested for 1 by the owner's fn_80285F44 (player_80285E58), with field_0xb4 clear.
     /* 0xB5 */ u8 field_0xb5;
     /* 0xB6 */ u8 field_0xb6;
-    // Byte the owner's fn_8027EEB4 (tu_8027E5BC) tests for 0.
+    // Byte the owner's fn_8027EEB4 (player_8027E5BC) tests for 0.
     /* 0xB7 */ u8 field_0xb7;
     /* 0xB8 */ u8 field_0xb8;
     /* 0xB9 */ u8 field_0xb9;

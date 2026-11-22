@@ -70,7 +70,7 @@ public:
     // 0x802C1D30: takes a position and a layer (the caller's player layer,
     // Player field_0x3b4). Copies the position to 0x260, the layer to 0x26C
     // and the view's current screen column/row (GameView field_0x14/0x18)
-    // to 0x2AA. Called by tu_8023FBF0 with the key from findActorBySerial_801F666C.
+    // to 0x2AA. Called by player_8023FBF0 with the key from findActorBySerial_801F666C.
     void fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer);
     // 0x803A3220 (game/tu_803944C8.cpp, the message tag processor's unit):
     // returns field_0x280. fn_8039FE78 calls it on the key the player holds

@@ -144,8 +144,8 @@ public:
     // tu_802D39B8 writes it (0x802D9F64), fn_8030C85C resets it from
     // mNextVisibleBox_0x190.
     /* 0x154 */ JGeometry::TBox2f mVisibleBox_0x154;
-    // 3 units copy it word by word to the stack (tu_8029C584 0x8029C5CC);
-    // tu_8023FBF0 reads its floats.
+    // 3 units copy it word by word to the stack (act_unknown_form_8029C584 0x8029C5CC);
+    // player_8023FBF0 reads its floats.
     /* 0x164 */ JGeometry::TBox2f mViewBox_0x164;
     /* 0x174 */ s32 mEntryIndex_0x174; // index of the 0x24-byte table entry at lbl_804AA8E8 (fn_8030C9E4)
     // Request flags, each set to 1 by actors (stb) and polled by the unit:

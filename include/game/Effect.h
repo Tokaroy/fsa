@@ -112,7 +112,7 @@ public:
 // JPAEmitterCallBack (0x10 bytes), cls_8049F140 in game/effect_system_8013C5C8.cpp:
 // destructor and execute (every 8 frames, while the stage allows it, spawns a 'PEFF'
 // actor at player field_0x4's position; field_0x8 0 or 1 picks the spawn
-// parameter, field_0xc counts the frames). tu_8023FBF0 holds two at 0x1398
+// parameter, field_0xc counts the frames). player_8023FBF0 holds two at 0x1398
 // and 0x13A8 and inlines their constructor (both vtables stored, field_0xc
 // zeroed). Declare it once JPAEmitterCallBack is in the JParticle headers.
 
@@ -134,7 +134,7 @@ u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos,
                  bool adjust);
 
 // game/tu_801CB270.cpp (4 caller units: actor_base_801EE24C,
-// tu_8021AF28, tu_801E5FC8, tu_8020F798). Moves the emitter in *emitter to pos with
+// act_kaepora_gaebora_8021AF28, tu_801E5FC8, act_thief_8020F798). Moves the emitter in *emitter to pos with
 // setEmitterPos_8013CB44 (adjust true); or, when it is flagged (bit 0x8 of its word
 // 0xF4) and has no particles left (0xD0 + 0xDC == 0), deletes it with
 // JPAEmitterManager::forceDeleteEmitter and sets *emitter to NULL. Does
@@ -164,8 +164,8 @@ JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u
 // draw() passes a null matrix. a / b are summed into a depth offset.
 void fn_8013AC90(f32 scale, const Vec* pos, const JUtility::TColor* color, s32 a, s32 b, const Mtx m);
 
-// game/tu_801CB270.cpp (3 caller units: actor_base_801EE24C, tu_8021AF28,
-// tu_8020F798). NULL-checks the emitter, then makes it immortal and invalid
+// game/tu_801CB270.cpp (3 caller units: actor_base_801EE24C, act_kaepora_gaebora_8021AF28,
+// act_thief_8020F798). NULL-checks the emitter, then makes it immortal and invalid
 // (status bits 0x40 and 0x1 of word 0xF4, word 0x24 = 1).
 void fn_801CB7A0(JPABaseEmitter* emitter);
 

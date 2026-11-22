@@ -294,7 +294,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   live, never with dummy functions. Game code is `-sym off`: one section, in
   emission order.
 - A 4-byte zero gap before an 8-aligned `.rodata` object marks the start of
-  the next unit's data (tu_8021C848 / tu_8021CDE4).
+  the next unit's data (frame_count_seq_8021C848 / act_shadow_link_2_8021CDE4).
 
 ## Known game-code shapes (reviewed; natural source)
 - Library JGeometry methods (e.g. the paired-single `TVec3f::normalize`) are ordinary calls in game code, not an exception: `cflags_game` searches `libs/sdk/include` before `include`, so game units already get the libs `JGeometry.h` -> `JGeometry/Vec.h` (the game-side `include/JSystem/JGeometry.h` is used only by JUTFader.o). An out-of-line copy of such an inline is a small free function calling the member (e.g. `fn_80233C08`); never write asm in game .cpp.
@@ -389,10 +389,10 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   do this; scratchpad research_stackslots.md).
 - A constant-bound loop over a member array whose unrolled copies bump the base
   register (`lwz 0xN+4(r3); addi r3, r3, 4` per entry) instead of fixed offsets: the
-  method is `const` (tu_8026FC20 fn_802729F0, tu_801EB00C fn_801EB648). Count the
+  method is `const` (player_8026FC20 fn_802729F0, tu_801EB00C fn_801EB648). Count the
   entries per trip from the loads, not from the dead counter's step.
 - A u8 local holding u8 call results (raw `mr`), returned from a u8 function with
-  `clrlwi r3, rN, 24`: `return (s32)hit;` with a one-line comment (tu_8026FC20
+  `clrlwi r3, rN, 24`: `return (s32)hit;` with a one-line comment (player_8026FC20
   fn_80274238 / fn_80273E7C); `return hit` gives `mr`.
 - `clrlwi` then `neg/or/srwi` on a call result returned as bool: the callee
   returns a byte (`u8`), converted to bool by the caller; declare it `u8`,
@@ -434,7 +434,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   `this` past stores; through a plain `this`, a local, a cast or an inlined
   const accessor it never does. Callees on `this` must be const too (only if
   they just read, e.g. startSound_801F0E34, fn_80219E04); rename the symbols to `...CFv`.
-  tu_8020CCA8, tu_801E5FC8, tu_8021AF28 fn_8021B668.
+  tu_8020CCA8, tu_801E5FC8, act_kaepora_gaebora_8021AF28 fn_8021B668.
 - `getGameView_802D6A9C()->field_0x131df[layer]`: `viewLayerFlag(layer)` (game/ViewLayer.h;
   the view in a local, else the index add swaps). act_magic_jar, tu_802242F4.
 - Player bytes 0xC80 / 0xCEE / 0x1215 / 0xCA0 / 0xCE9 tested in a row:
@@ -442,7 +442,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   out-of-line copy, Player_804A6F38::fn_802413F0; inlined sites still differ at
   0xCE9 (cmplwi / bne there, neg / or / srwi here; fn_80246F28 94.8 %). Under
   deferred inlining fn_802413F0 can be the plain function in its unit
-  (tu_8023FBF0); follow-up.
+  (player_8023FBF0); follow-up.
 - UNPROVEN (no 100 % example): sin x/y/z, cos x/y/z (bl sin; frsp) into a
   stack Mtx times a scale: `TVec3f rot(x, y, z); setRotScaleMtx(mtx, rot, scale)`
   (game/RotMatrix.h; scalar 0.0f angles become lfd doubles). act_manhandla_801A908C
@@ -476,19 +476,19 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - A compare materialised as a byte and tested (`subfic rX, rX, N; cntlzw; extrwi. rX, rX, 8, 19; bne`):
   an inline returning `u8` with `return x == N ? true : false;`, called in the condition
   (`isGameMode(mode)` in game/GameMode.h).
-  A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. tu_80285E58 fn_80286688
-  88.7 -> 100 % and the copy inlined in updateState_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
+  A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. player_80285E58 fn_80286688
+  88.7 -> 100 % and the copy inlined in updateState_802870C8; player_8026FC20 isGameMode(7) (fn_8027057C). Shape
   sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and shadow_circle_80158624 fn_80159330 (mode 0xC, 100 %; read
   gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 drawPlayerPanel_802FB69C
-  (both mode-11 tests). A file's own byte helper takes the same form: tu_8025EB18 isField0xd64One
+  (both mode-11 tests). A file's own byte helper takes the same form: player_8025EB18 isField0xd64One
   `p.field_0xd64 == 1 ? true : false` (fn_8025EE48, fn_8025F2CC to 100 %). It also holds for a bool
   ARGUMENT of an inlined helper (`cntlzw; extrwi.` for `== 0`, `neg; or; srwi.` for `!= 0`):
   act_bird_manager `stepLine(this, mDirection == 0 ? true : false)`. Not this shape: `subfic; cntlzw;
   srwi 5` (the whole word kept, act_fire_rod_fire draw) — a bool, int or u32 local gives extrwi there.
 - Early-out tests ending `bne +8; b end` (the last test jumps over a `b` to the epilogue) instead of
   `beq end`: the tests are ONE condition, `if (a || b || !c) return;`, not separate `if`s
-  (tu_80285E58 fn_80286688; separate `if`s or `if (!c) return;` give `beq`). Also under a guard:
-  tu_8023FBF0 fn_802416FC `if (!root->field_0x7f && (field_0xbfc <= 0 || isDeadState_80270A8C())) return;`.
+  (player_80285E58 fn_80286688; separate `if`s or `if (!c) return;` give `beq`). Also under a guard:
+  player_8023FBF0 fn_802416FC `if (!root->field_0x7f && (field_0xbfc <= 0 || isDeadState_80270A8C())) return;`.
   The `bne +8; b` marks the END of an `||` chain, not always the last early-out: effect_system_8013C5C8 execute is
   `if (!isGameModeSet() || mode == 0xC) return; if (field_0x94) return;` (99.5 %, regalloc); all three
   tests in one `||` give `different` (97.8 %).
@@ -496,10 +496,10 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   ahead of the bl's for the other arguments; `lwz r29, 0x4(r31); bl fn_X; cmpw r3, r29`): the original
   read it through an inlined getter (MWCC orders an inlined call with the other calls; a plain member
   read comes after them). Player_804A6F38::getIndex() / getLayer() (Player.h), used for every read in
-  tu_80285E58 (8 sites flipped, nothing else changed). For actors: ActorBase_804A5770::getField_0x4()
+  player_80285E58 (8 sites flipped, nothing else changed). For actors: ActorBase_804A5770::getField_0x4()
   (the layer) and getSerial() (ActorBase.h). With the getter the SOURCE operand order is the cmpw
   order: `call() == getField_0x4()` gives `cmpw r3, rS`, `getLayer() != call()` gives `cmpw rS, r3`
-  (tu_8027E5BC getFollowTargetPos_8027FA08). Shape sweep: +7 at 100 % (enemy_base_801CDC8C, tu_8027E5BC x2,
+  (player_8027E5BC getFollowTargetPos_8027FA08). Shape sweep: +7 at 100 % (enemy_base_801CDC8C, player_8027E5BC x2,
   act_special_conversation_npc x3, act_block). Use it only where the asm loads the member BEFORE
   the bl: act_princess_zelda update reads field_0x4 after the call (`lwz r0, 0x4; cmpw r0, r3`) and the
   getter drops it (94.02 -> 93.79); act_horse_race_man fn_801EC7B8 reuses one register for a layer read
@@ -507,11 +507,11 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Two calls compared, `cmpw r3, r29` with the FIRST call's result in r29: write the call made second
   on the left, `if (getGroupTurn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
   on the left, `if (getGroupTurn_80240888() != getFollowerIndex_80248778())` (MWCC calls the right operand first); a local for
-  the first result gives `cmpw r29, r3` (tu_80285E58). Same in tu_8027E5BC fn_8027E7E0 (to 100 %) and
+  the first result gives `cmpw r29, r3` (player_80285E58). Same in player_8027E5BC fn_8027E7E0 (to 100 %) and
   act_princess_zelda `getPlayerLayer_8023DE58(p) == getPlayerDestLayer_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;
   cmpwi 0x39`): compare the member itself each time (`field_0x1240 == 8 || field_0x1240 == 9 || ...`); a
-  local read once lets MWCC fold 8-10 (tu_80285E58 updateState_802870C8). Also tu_8025EB18 fn_8025FCC8 (state
+  local read once lets MWCC fold 8-10 (player_80285E58 updateState_802870C8). Also player_8025EB18 fn_8025FCC8 (state
   0x11 on its own before 0x12-0x16: 87.0 -> 100 %).
 - An old position read back after the member was updated (the original reloads mPos.x for `+= k`
   where ours reuses the saved copy): copy it as a `JGeometry::TVec2f old(mPos);`, not two f32 locals
@@ -522,7 +522,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   Shape sweep 2 (2026-11-06): const to 100 % in enemy_base_801CDC8C fn_801CF0F4, tu_8020CCA8 fn_8020D2AC,
   singleton_801DAC6C fn_801DAD2C / fn_801DACAC. A loop count the original loads above the saves: const AND
   the loop tests the member (`for (i = 0; i < mCount; i++)`); a `s32 count = mCount;` local keeps the
-  load below the saves even under const (singleton_801DAC6C fn_801DAE24 86.9 -> 100, tu_80215A94 fn_8021606C
+  load below the saves even under const (singleton_801DAC6C fn_801DAE24 86.9 -> 100, horse_race_table_80215A94 fn_8021606C
   91.6 -> 100; const with the local: 87.4, a drop). Did not generalise: a callee made const only so a
   const caller compiles can lose at its own inlined sites — Player fn_80247BD4 const drops fn_8024762C
   99.8 -> 99.2, so fn_80270ABC (100 % const) stays plain; act_icicle fn_8010B284 (mPos.z for a TVec3
@@ -545,14 +545,14 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   target sets `result = true` first, li r31 1) 92.3 -> 81.2, EnemyBase fn_801D08B4 99.7 -> 91.1; keep
   the local where the target materialises it before the tests. getField_0x4() as a later argument of a
   call whose earlier argument is itself a call (act_thief isWayBlocked_801CF888(.., getPlayerPos_8023E724(p),
-  layer): no change), or on another object (tu_8021775C `mOwner->getField_0x4()`: no change).
+  layer): no change), or on another object (vaati_emitters_8021775C `mOwner->getField_0x4()`: no change).
 - A u16 converted to float with the signed form (xoris): `(s32)mode->fbWidth`, as for u8 (stopwatch_801ED3DC
   fn_801ED828 83.8 -> 90.1).
 
 - A u8 global or field tested with `lbz; cmpwi 0` (plain u8 gives cmplwi): `(s32)flag != 0` (reviewed
-  form, tu_8025EB18 fn_80263078's cucco 0x2A1 `== 1`; tu_80285E58 lbl_8053ABA8 / lbl_8053ABF0).
+  form, player_8025EB18 fn_80263078's cucco 0x2A1 `== 1`; player_80285E58 lbl_8053ABA8 / lbl_8053ABF0).
 - A vector copied on through the first copy's address (`addi r4, rB, A; addi r3, rB, B`, store to r4,
-  reload from r4, store to r3): a chained assignment `b = a = v;` (tu_80285E58 0xD1C / 0xCBC); two
+  reload from r4, store to r3): a chained assignment `b = a = v;` (player_80285E58 0xD1C / 0xCBC); two
   statements `a = v; b = a;` swap r3 / r4.
 - A big caller (rule 5) that calls same-unit callees out of line which smaller callers inline: before
   any auto_inline region, check whether the budget gives the original's call list. Inline call sites

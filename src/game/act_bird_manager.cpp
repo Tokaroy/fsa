@@ -1,7 +1,7 @@
 #include "game/GameAudio.h"
 #include "game/GameGlobals.h"
 #include "game/act/act_bird_manager.h"
-#include "game/act/tu_8020B354.h"
+#include "game/act/act_bird_formation_8020B354.h"
 #include "game/ActorManager.h"
 #include "game/GameView.h"
 #include "JSystem/JMath/JMath.h"

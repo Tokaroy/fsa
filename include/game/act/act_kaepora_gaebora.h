@@ -2,15 +2,15 @@
 #define GAME_ACT_ACT_KAEPORA_GAEBORA_H
 
 // Kaepora Gaebora. Code: game/act_kaepora_gaebora.cpp (partly written),
-// and its drawing and effect helpers in game/tu_8021AF28.cpp.
+// and its drawing and effect helpers in game/act_kaepora_gaebora_8021AF28.cpp.
 
 #include "game/EnemyBase.h"
-#include "game/tu_8021A570.h"
+#include "game/head_sway_8021A570.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 // Named after its vtable, 0x804A6550 (an EnemyBase_804A4808 descendant).
 // The overrides below are the vtable slots that differ from EnemyBase's;
-// init and updateState_0x90 are not written yet (draw() is in tu_8021AF28).
+// init and updateState_0x90 are not written yet (draw() is in act_kaepora_gaebora_8021AF28).
 class KaeporaGaebora_804A6550 : public EnemyBase_804A4808 {
 public:
     KaeporaGaebora_804A6550();
@@ -25,7 +25,7 @@ public:
     /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
-    // tu_8021AF28 (the sprite and effect helpers draw() and the actor's
+    // act_kaepora_gaebora_8021AF28 (the sprite and effect helpers draw() and the actor's
     // states call).
     // 0x80219AFC (act_kaepora_gaebora): switches to `state`: the exit and entry
     // actions of the old and new state, then mStateTimer = 0 and mState = state.

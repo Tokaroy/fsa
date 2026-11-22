@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from reverse_funcs import reverse_source  # noqa: E402
 
 # Sources that were in deferred order before the switch (not reversed by it).
-DEFERRED_ALREADY = {"src/game/tu_80427D2C.cpp", "src/game/tu_80222CC4.cpp", "src/game/tu_80221B44.cpp"}
+DEFERRED_ALREADY = {"src/game/tu_80427D2C.cpp", "src/game/act_shadow_link_fire_minor_80222CC4.cpp", "src/game/act_shadow_link_hammer_minor_80221B44.cpp"}
 
 
 def git(*args, check=True, input=None):

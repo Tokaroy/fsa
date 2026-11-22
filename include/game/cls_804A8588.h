@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_804A8588_H
 #define GAME_CLS_804A8588_H
 
-// Code: game/tu_802B214C.cpp. An ActorBase whose vtable is lbl_804A8588 (the
+// Code: game/act_rotating_skull_802B214C.cpp. An ActorBase whose vtable is lbl_804A8588 (the
 // spawner's constructor, 0x802033B8, stores it; game_units.tsv names it SKUL,
 // low confidence). Named after its vtable.
 #include "game/ActorBase.h"

@@ -1,0 +1,50 @@
+# game/player_80256C74 checkpoint
+Baseline progress: total 7849 / 11557 (unit 1/63). Now 38/63 after review (fn_80259784, 8025A0B0, 8025A9C0, 8025C7BC written; fn_802577E0/fn_8023B484 bool) in the unit.
+Matched (100%): small Player members, fn_8025B368, fn_8025BDD8 (emitter ends), actor-slot trackers 8025819C/80258384/80258470/8025851C/802585F4,
+box tests 80256DCC/80256F44/802573E0/802574CC/802575B8/802576CC, fn_80257FF4, fn_80258070, fn_8025A04C, fn_8025AA24/8C.
+Not matched: fn_80259778, 80258BBC, 8025C79C, 8025D090 differ only by the sdata2 literal names (reloc-name, data fix when the unit's literals are split/renamed);
+SHARED-EDITS: include/game/Player.h (field carving + member declarations), include/game/GameGlobals.h (extern "C" fn_802BAA00, owner act_fire_rod_fire), src/game/tu_8022AD64.cpp (fn_8023B484 returns bool); config/G4SE01/gen_game.tsv row player_80256C74 removed.
+Next: 802570BC, 8025785C and the larger functions; sdata2 renames once all functions are in.
+
+## Round 5 (agent H, Opus 5.5, 2026-11-05)
+Baseline 8468 (matching c13ba094). fn_80256F44 / fwd fn_8023AAF8 -> u8 (+2: player_8026FC20 fn_80273C30 / fn_80273D44 100 %).
+Unit 38 -> 44 / 63: + fn_80256C74, fn_80257DB4, fn_802580E0, fn_8025825C, fn_802586D0, fn_8025D9FC.
+Structural (FIXME in source): fn_8025785C 90.4 missing/extra (early exits as flags), fn_8025B22C 95.6 sched+regalloc,
+fn_8025D7E4 96.4 missing/extra (table read lfsx), fn_8025E79C 89.9 missing/extra (unused table+mPos via stack copy),
+fn_8025AED0 99.8 regalloc (f30/f31), fn_80258890 99.97 (rodata placement), fn_8025D6AC 99.9 (literal names).
+SHARED-EDITS: Player.h (fn_80256F44 / fn_8023AAF8 u8; decl fn_80256C74, fn_80257DB4, fn_80241618, fn_8022B334);
+GameGlobals.h (extern u8 lbl_8053ABB8[8], owner act_all_enemies_defeated); BgRewrite.h (fn_802A1844 member);
+tu_8022AD64.cpp fn_8023AAF8 u8 + gen_game.tsv pin e669c594 (fb95f1 with that one line);
+symbols.txt renames fn_80256C74, fn_80257DB4, fn_80241618, fn_8022B334, fn_802A1844; lbl_8046AF00 split 0x30 + lbl_8046AF30 0xB0.
+Fields needed (agent G): Player 0x580 TBox2f (fn_802570BC); ArrowPlayer_804A05E0 (act_arrow) 0x230 s32 (fn_8025AB00).
+Next: fn_802570BC, fn_8025AB00 once fields exist; fn_8025D0B0; big handlers (rodata tables first).
+
+## Round 9 (agent P, Opus 5.5, 2026-11-05)
+Baseline 8623 (matching 023522f5) -> 8628 (+5, no drops by address against the main report).
+Unit 44 -> 50 / 63: + fn_802570BC, fn_80259660, fn_80259778, fn_8025AB00, fn_8025D6AC (fn_80258890 now 100 in try.py too).
+Structural (FIXME in source): fn_80258BE8 99.69 sched+regalloc (&field_0x344 hoisted), fn_80259830 99.29 sched+regalloc,
+fn_8025D0B0 99.89 reloc-name (literal order until the handlers are in). .rodata 100 % (all tables written).
+SHARED-EDITS: Player.h (decl fn_8025D0B0, inline gatherOthers); act/act_arrow.h (0x230 s32 + 0x234 pad);
+act/tu_801F9484.h (FireRodFire_804A89F0::fn_802BAA0C decl); new game/VecEpsilon.h (player_8027E5BC's epsilonEquals shape;
+player_8027E5BC now includes it too; its file-local copy is gone, reviewer); symbols.txt renames fn_8025D0B0 -> Player member,
+fn_802BAA0C -> FireRodFire member; splits lbl_8046AF30 (0x20/0x60/0x30) and lbl_8046B070 (11 tables).
+Next: fn_8025A15C (0x44, close to fn_80259830 but frame 11 / no block), fn_8025B3F0, fn_8025BEB0, fn_8025C894, fn_8025DACC.
+
+## Round 11 (agent S, Opus 5.5, 2026-11-05)
+Baseline 8666 (matching 6dc99bdf) -> 8668 (+2, no drops by address against the main report).
+Unit 50 -> 52 / 63: + fn_8025D0B0 (literal order), fn_8025E79C (component copy of the table entry).
+Structural (FIXME in source): fn_8025A15C 99.24 sched+regalloc, fn_8025B3F0 99.95 regalloc-only,
+fn_8025BEB0 98.83 missing/extra (1), fn_8025C894 98.89 (one rlwimi/clrlslwi pair), fn_8025DACC 98.90 missing/extra (2);
+fn_8025D7E4 96.49 -> 98.29. Every function of the unit is now written; .sdata2 bytes equal the original.
+SHARED-EDITS: Player.h (0x12FC carved to TVec3f); BgRewrite.h (fn_802A1D44 member decl); symbols.txt rename
+fn_802A1D44 -> BgRewrite member; new game/BoxTest.h (containsPoint / growBox moved from player_8026FC20.cpp, which
+now includes it).
+Next: the "T pos = a + b" extra copy (fn_8025DACC, fn_8025D7E4), the rlwimi operand order of the charged shot
+argument (fn_8025BEB0, fn_8025C894), fn_8025785C's early exits.
+
+## Structural push (Opus 5.5, 2026-11-06)
+Baseline (matching 9c62f288): 9092 -> 9093. fn_8025C894 99.06 -> 100 (charged arrow argument
+operand order); fn_8025BEB0 98.98 -> 99.82 (same); fn_8025785C 90.40 missing/extra -> 95.14
+(block order + r30/r31 only): inline members requestFlame_8025785C / requestJump_8025785C
+(SHARED-EDIT: two declarations in include/game/Player.h). Details: docs/PLAYER.md
+"Structural push" (on branch unit/game__tu_8025EB18).

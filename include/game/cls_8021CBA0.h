@@ -4,7 +4,7 @@
 #include "types.h"
 
 // A frame-count sequencer over three tables in lbl_8046A688 (types 0, 1, 2
-// pick the table), defined in game/tu_8021C848.cpp. No vtable; named after
+// pick the table), defined in game/frame_count_seq_8021C848.cpp. No vtable; named after
 // its constructor (fn_8021CBA0 zeroes every member). Embedded in
 // FlyingPiece_8021C5B0 (+0x30).
 class FrameCountSeq_8021CBA0 {

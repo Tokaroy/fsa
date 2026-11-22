@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-// A wandering-direction steering timer, defined in game/tu_8021B904.cpp.
+// A wandering-direction steering timer, defined in game/wander_steer_timer_8021B904.cpp.
 // No vtable; named after its first method (fn_8021BA30 initialises it).
 // Size: at least 0x12 (the size of the embedding actors' slot is unknown).
 class WanderSteerTimer_8021B904 {

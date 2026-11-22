@@ -34,7 +34,7 @@ public:
 // The element class of a 0xC8-byte buffer (0x31 pointer entries). Its method
 // fn_800FE3EC (RailBase.cpp) starts by clearing bytes 2, 3 and 1, as the
 // inline clear() does, and then fills the entries. Users: the pair container
-// in game/tu_80214244.cpp, also reached from act_shadow_link_2_801D3320 and tu_8021CDE4
+// in game/tu_80214244.cpp, also reached from act_shadow_link_2_801D3320 and act_shadow_link_2_8021CDE4
 // (progress/game__tu_80214244.md). Named after its method until evidence
 // names it.
 class cls_800FE3EC {

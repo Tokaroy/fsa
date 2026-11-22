@@ -94,7 +94,7 @@ Real layout (constructor, initSaveFile_803B950C, fn_803B9A94 sizes 0x258 / 0x1D4
 @0x20); pad; u8 blocks[3][0x9C4] @0x280}, size 0x21E0; old row fields shift
 by -0x20 (0x28 -> 0x8 etc.); first method fn_803B93E8 (this = lbl_8050EC80).
 Tried it with every user converted (tu_803944C8, tu_80379F84, tu_8043A0E8,
-tu_801DE714, act_fairy, act_rank_display, tu_80215A94, act_treasure_chest):
+tu_801DE714, act_fairy, act_rank_display, horse_race_table_80215A94, act_treasure_chest):
 all still match except tu_801DE714 __dt__12cls_804A51E4Fv (100 -> 98.6:
 `SaveRow& row = lbl_8050EC80.mRows[cur]` adds `addi r3, r3, 0x20` where the
 original folds 0x20 into the field offset; direct member access gives lwzx/
@@ -267,7 +267,7 @@ SHARED-EDITS
 - tu_803B8C74.h: SaveFile fields above, getFile / getCurrentFile, isSaveChecksumValid_803BADAC decl.
 - StageFlag.h: includes tu_803B8C74.h, reads getCurrentFile().mFlags.
 - Mechanical switch in act_fairy, act_rank_display, act_treasure_chest, act_princess_zelda_ganon_battle_80197070, tu_801DE714,
-  tu_80215A94, tu_8026FC20, tu_802D39B8, tu_80379F84, tu_803944C8, tu_803E1668, tu_80403D84,
+  horse_race_table_80215A94, player_8026FC20, tu_802D39B8, tu_80379F84, tu_803944C8, tu_803E1668, tu_80403D84,
   tu_80414F6C, tu_8043A0E8 (includes + field names only).
 - Comments only: GameGlobals.h, GameState.h, GameView.h.
 - symbols.txt: isSaveChecksumValid_803BADAC -> isSaveChecksumValid_803BADAC__FP17SaveFile_803B950C, fn_803BD5E0 ->

@@ -32,7 +32,7 @@ docs/RULES_CARD.md ("Source order and inlining").
 **Corrections to the research below** (verifier, then the switch itself):
 - tu_80427D2C's "−4" was an artifact: reverse_funcs re-reversed a file already
   in deferred order. Excluded from the reversal, it loses nothing. Likewise
-  tu_80222CC4 / tu_80221B44 (their `defer_codegen` crack-pass pragmas are gone;
+  act_shadow_link_fire_minor_80222CC4 / act_shadow_link_hammer_minor_80221B44 (their `defer_codegen` crack-pass pragmas are gone;
   they stay at their percentages under the project flag).
 - No `@NNN` pass is needed for extab: the 105 "extab drops" came from a broken
   link (act_tutorial_old_man: deferred writes an implicit destructor first; fixed
@@ -133,28 +133,28 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 | tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to fn_8023F264 / fn_8018A614 | r11 |
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
-| tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
+| player_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
 | tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
-| tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
+| player_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | getScreenLayerMask_802D7AC4 | progress |
 | tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
-| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
-| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| player_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
+| player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
 | tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, playSystemSound_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | setVolumeMode_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
-| tu_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
-| tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
+| player_8026FC20 | fn_8027057C | L | addLife_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
+| player_8023FBF0 | endFormActor_80248FF0 | L | fn_80249070 | progress |
+| player_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
 | actor_manager_801F6058 | findOverlappingActorById_801F8108 | L | fn_801F7F58 | progress |
 | tu_8043A0E8 | fn_804408F0 | E | fn_8043E7CC (16 instr) out of line | progress |
 | tu_803E1668 | fn_803E3320 (unwritten) | E | out of line in fn_803E9034 / fn_803ED604 | progress |
 | act_crystal_ball_generator_801291A0 | update (80.6 %) | E | fn_8012952C (27 instr) out of line x3 | GAME_PLAN |
-| game_root_sub_24_8016A2B4, tu_802F5040, tu_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
-| tu_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, tu_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), tu_8026FC20 (isDown), actor_base_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
-| tu_80222CC4, tu_80221B44, act_shadow_link_bow/jump, act_stone_arrghus_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
+| game_root_sub_24_8016A2B4, tu_802F5040, player_80256C74, tu_8043A0E8 | fn_8016DA6C, fn_802F5570, … | L | listed in CRACK_PASS "open questions" | CRACK_PASS |
+| head_sway_8021A570, tu_802F5040, game_root_sub_24_8016A2B4, player_8023FBF0 (follows_80240670, fn_802486A0, getFollowerIndex_80248778), player_8026FC20 (isDown), actor_base_801EE24C, tu_80457DFC (moveMusicTempo …), set2DDrawInfo, screenMask | (matched) | L, worked around | a file/header inline plus an out-of-line wrapper | RULES_CARD, PLAYER.md |
+| act_shadow_link_fire_minor_80222CC4, act_shadow_link_hammer_minor_80221B44, act_shadow_link_bow/jump, act_stone_arrghus_800F7FCC + 160 jump-table units | vfunc_0x90 etc. | D | vtable before jump table | CRACK_PASS, GAME_PLAN |
 | tu_801D2C60 | weak dtor first in .text | D | | progress |
 | act_vaati_demo | (matched) | E | "defined after draw(), above it MWCC inlines it" | src comment |
 
@@ -262,9 +262,9 @@ Reversed enemy_base_801CDC8C, `-inline auto,deferred`:
 | build | at 100 % | gained | lost |
 |---|---|---|---|
 | base (`-inline auto`, address order) | 3980 | | |
-| `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, tu_8023FBF0, tu_8026FC20, tu_8037DF68, act_stop_npc dtor, …) |
+| `-inline deferred` (no auto) | 3932 | 11 | 59 (callers that need auto-inlined callees: tu_8022AD64 forwarders, player_8023FBF0, player_8026FC20, tu_8037DF68, act_stop_npc dtor, …) |
 | `-inline auto,deferred` | 3970 | 9 | 19 (over-inlining in 11 units, list below) |
-| `auto,deferred` + `#pragma auto_inline off` at file top of enemy_base_801CDC8C, act_shadow_link_bow, act_vaati_boss_801EDBA4, tu_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
+| `auto,deferred` + `#pragma auto_inline off` at file top of enemy_base_801CDC8C, act_shadow_link_bow, act_vaati_boss_801EDBA4, act_kaepora_gaebora_8021AF28, tu_8043A0E8, tu_80457DFC, act_opening_narration_801286C0, act_leever_80182914, tu_801CB270, tu_80427D2C | **3985** | 10 | 5 (fn_8026E68C, 4 THP functions in tu_80427D2C) |
 | same + `auto_inline off` region around tu_802684A4's fn_8026EB1C only | fn_8026E68C back to 100 % (unit 13 → 14 / 25) | | |
 
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
@@ -291,22 +291,22 @@ Sections, deferred model vs base (game units):
   jump-table order cases.
 - `.rodata`: act_deadrock 46 → 100 %.
 - `.sdata2`: unchanged except act_shadow_link_2_801D3CBC (86 → 34 %) and tu_80427D2C (91 → 77 %).
-  This refutes symptom (d) for reversed sources. tu_8026FC20's "deferred pools the
+  This refutes symptom (d) for reversed sources. player_8026FC20's "deferred pools the
   literals in reverse" came from compiling deferred **without** reversing: with the
-  source reversed, the pool comes out in forward first-use order. tu_8026FC20
+  source reversed, the pool comes out in forward first-use order. player_8026FC20
   scores 97/120 both ways.
 - extab / extabindex: 105 units drop below 100 %. The bytes are identical (checked
   act_magic_jar); only the compiler's `@NNN` label numbers change, which
   symbols.txt pins. This is renaming work, not a layout problem.
 
-### 6. Real-function checks on tu_8022AD64 and tu_8026FC20 (deferred, reversed)
+### 6. Real-function checks on tu_8022AD64 and player_8026FC20 (deferred, reversed)
 
 - tu_8022AD64: replace the header inline `isPlayerActive` with the plain function
   `fn_8023F264` (its body at its own address, every call site calling
   `fn_8023F264`). Result: 349 → **352**/373. fn_8023434C, fn_8023BEA8 and
   fn_8023C36C reach 100 % (their depth-limit call is now `bl fn_8023F264`), and
   nothing is lost. Patch: scratchpad `inl/tu_8022AD64_deferred.diff`.
-- tu_8026FC20: delete the `isDown()` workaround inline, give isDeadState_80270A8C the body
+- player_8026FC20: delete the `isDown()` workaround inline, give isDeadState_80270A8C the body
   and call isDeadState_80270A8C everywhere. Still 97/120. The workaround is not needed
   under the model.
 
@@ -326,7 +326,7 @@ Second candidate: H7 with **per-file** `-inline auto,deferred` versus
 `-inline deferred` instead of `#pragma auto_inline` (a makefile per module). It is
 indistinguishable except where one unit needs both states. tu_802684A4 does
 (fn_8026E68C needs some callees auto-inlined but not fn_8026EB1C), and so
-probably does tu_8023FBF0 (fn_8024FEFC's callees). So region pragmas, or the
+probably does player_8023FBF0 (fn_8024FEFC's callees). So region pragmas, or the
 original wrote those callees in a different way, are still needed in a few places.
 
 ## Recommended rules (if the owner adopts H7)
@@ -341,7 +341,7 @@ original wrote those callees in a different way, are still needed in a few place
    with its real body. Callers inline it in either direction. Drop the
    "file inline + out-of-line wrapper" and "static inline copy" workarounds as
    units are touched: isDown / isDeadState_80270A8C, follows_80240670, playerFlags_802413F0,
-   tu_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → fn_8023F264.
+   head_sway_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → fn_8023F264.
    Header `inline` stays for real header inlines (JGeometry, accessors used across
    units whose copy is placed after a caller).
 4. **Never-inlined callees**: when the original calls a small same-unit function
@@ -368,8 +368,8 @@ original wrote those callees in a different way, are still needed in a few place
 - Allow `#pragma auto_inline off` / `reset` regions as natural source (Metrowerks
   pragmas, like the `cats off` already in the flags), with the evidence comment
   of rule 4. Alternative: per-module flags, which the rules currently ban.
-- CRACK_PASS: the `defer_codegen` + reversal "trick" for tu_80222CC4 /
-  tu_80221B44 stops being a trick under H7 (it becomes the project mode). Retire
+- CRACK_PASS: the `defer_codegen` + reversal "trick" for act_shadow_link_fire_minor_80222CC4 /
+  act_shadow_link_hammer_minor_80221B44 stops being a trick under H7 (it becomes the project mode). Retire
   those entries once adopted.
 - Symbols: deferred renumbers compiler `@NNN` labels (extab, jump tables, sinit
   chains). symbols.txt / blobs pins need a regeneration pass after the switch.

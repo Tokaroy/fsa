@@ -14,10 +14,10 @@
 #include "game/Player.h"
 #include "game/cls_804AE9B0.h"
 #include "game/tu_801E9AFC.h"
-#include "game/act/tu_8028DD78.h"
+#include "game/act/act_spiral_staircase_8028DD78.h"
 #include "game/PlayerBit.h"
 #include "game/Map.h"
-#include "game/tu_8021F064.h"
+#include "game/navi_list_8021F064.h"
 
 // game/actor_base_801A3C50.cpp (not written yet): nonzero while the actor is held (it then only
 // runs checkPlayerContact_0x18 when its 0xA4 is set). Name and return type from the call in fn_801F871C.

@@ -37,14 +37,14 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
   warning "return value expected"), never `return 0;` or void.
 - The getter must be a Player_804A6F38 member renamed in symbols.txt
   (`fn_X__15Player_804A6F38Fv`, s32 args mangle `l`).
-- Getters live in tu_8023FBF0 and the units up to 0x8027E5BC; 100 queries
+- Getters live in player_8023FBF0 and the units up to 0x8027E5BC; 100 queries
   call getters on sub-objects or in other units (call-other).
 - MWCC (-inline auto) does not inline functions defined later in the TU:
   anything the target inlines from later in the file is a header/static
   inline (isPlayerActive, the flag getters in fn_8022ADFC).
 - Not done: gPlayerManager_8053AC90 is not defined here; the .sbss stanza
   0x8053AC90-0x8053ACB0 also holds gBgRewrite_8053AC98/ACA0/ACA8, which other units
-  (tu_8029D898, tu_802ACBE8, tu_802B1558) assign; check the split before
+  (bg_rewrite_8029D898, tu_802ACBE8, tu_802B1558) assign; check the split before
   defining them. __sinit (fn_8023F9B8) is left to the sinit generator.
 
 ## SHARED-EDITS (this branch owns Player.h; listed for the record)
@@ -95,7 +95,7 @@ extern s32 lbl_8053A190).
 Baseline (progress.py): total 8571 / 11557; unit 283/373. Now (rebased on matching 778a3b5c): total 8620 (this unit +48, matching's own commits +1); unit 331/373.
 
 ## Done
-- fn_8022C5EC / fn_8022C52C return u32 (all callers cmplwi). tu_8027E5BC (not edited): fn_80285690
+- fn_8022C5EC / fn_8022C52C return u32 (all callers cmplwi). player_8027E5BC (not edited): fn_80285690
   98.27 -> 99.81 (regalloc-only + reloc-name: `cmpw r3, r31` operands swapped, literal pool name),
   fn_802859C4 99.54 -> 99.93 (regalloc-only, the same cmpw).
 - Player.h: field_0x1268 is a TVec3f (fn_8024C378 / fn_8024E0A0 copy mPos into it, add a view
@@ -144,7 +144,7 @@ structural 9129. .bss 100 % (sinit split).
 - fn_8023D4F8 / fn_8023D9B0: screen y / x of a TVec3f against the player's fn_8023CD74 /
   fn_8023CE10, 0xE0 / 0x180 off screen (u16; tu_80301CD0 keeps 8 / 9 bits: OAM-style).
 - fn_80238430 returns `const TVec2f*` (&field_0x324; the TVec3f fallback cast with a comment,
-  RULES_CARD's TVec2f-probe shape); its tu_8023FBF0 caller's local follows.
+  RULES_CARD's TVec2f-probe shape); its player_8023FBF0 caller's local follows.
 - fn_8023F088 99.88 % reloc-name only (4.0f / 1.0f pooled after unwritten functions' literals):
   start-entry shuffle with GameRoot::mRandom.get_ufloat_1().
 - Recursive leader queries fn_8023434C / fn_8023BEA8 / fn_8023C36C 99.95 % (reloc-name only)
@@ -255,16 +255,16 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
   no game-root 0x96, no 0x73) a long chain of inline queries on each player, checkScreenExit_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
-  isDeadState_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
+  isDeadState_80270A8C and the free fn_802520C0(player, &point) (player_8023FBF0: declare as a Player member).
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
-  isDeadState_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
+  isDeadState_80270A8C and the free fn_802520C0(player, &point) (player_8023FBF0: declare as a Player member).
 - fn_80235B68, fn_8023F390 unchanged.
 
 ## SHARED-EDITS
-- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
+- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (player_8023FBF0;
   symbols.txt renamed to checkScreenExit_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
   fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_80231A50, fn_80237A80, hitPlayerGroup_80238548, fn_80239108 leave
-- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
+- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (player_8023FBF0;
   symbols.txt renamed to checkScreenExit_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
   fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_80231A50, fn_80237A80, hitPlayerGroup_80238548, fn_80239108 leave
   the extern "C" block (C++ names; the empty nested extern "C" block is gone).

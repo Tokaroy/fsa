@@ -13,7 +13,7 @@ class cls_804AA8D8 {
 public:
     // Constructor (fn_8030BDF8, now __ct__12cls_804AA8D8Fv): stores the
     // vtable, then sets the fields below to their initial values. Built by
-    // a plain `new` in game/tu_8023FBF0.cpp.
+    // a plain `new` in game/player_8023FBF0.cpp.
     cls_804AA8D8();
     /* 0x08 */ virtual ~cls_804AA8D8();
 
@@ -28,7 +28,7 @@ public:
     // Code in this unit (mangled fn_8030B97C__12cls_804AA8D8Fv).
     void fn_8030B97C();
     // Mangled fn_8030B084__12cls_804AA8D8FlQ29JGeometry8TVec3<f> (this unit).
-    // The position is passed by value: every caller (tu_8023FBF0) copies a
+    // The position is passed by value: every caller (player_8023FBF0) copies a
     // whole TVec3f (psq x/y + z) to its stack and passes its address; only
     // x and y are read.
     bool fn_8030B084(s32 index, JGeometry::TVec3f pos);

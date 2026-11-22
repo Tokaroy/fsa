@@ -13,7 +13,7 @@
 //   clamped to [0, 0x200) and packed into a cell index, x & 0x100 |
 //   (y & 0x100) << 1 | y & 0xF0 | x >> 4 & 0xF, whose tile comes from
 //   getTile_802F9908; positions outside the box give 0xF.
-// * game/tu_8020D58C.cpp: the actor collision boxes (42 consumer units),
+// * game/collision_box_list_8020D58C.cpp: the actor collision boxes (42 consumer units),
 //   double-buffered lists of boxes that actors register each frame and
 //   ActorBase_804A5770::isBlocked_0x4C tests a position against after the tile
 //   check.
@@ -334,7 +334,7 @@ public:
     u8 addFadeSprite_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
                      SpriteParams_801F5AE0* params);
     // 5 units (act_shutter, act_red_blue_switch, act_spike_floor_check,
-    // tu_802D39B8, tu_8029D898) plus BgRewrite's tile animation. Decodes
+    // tu_802D39B8, bg_rewrite_8029D898) plus BgRewrite's tile animation. Decodes
     // the 'SCH ' resource `res` (JKRDecomp::checkCompressed / decode, size
     // from getResSize when `size` is 0) and rewrites the 4-bit tile data
     // at this + 4 + slot * 4 + dstOffset from res + srcOffset (0x802FA160).
@@ -573,7 +573,7 @@ bool fn_8022486C(const JGeometry::TVec3f* pos, s32 layer);
 // the result.
 u16 getTileCollisionCode_8022461C(const JGeometry::TVec3f* pos, s32 layer);
 // The tile code -> collision code table (0x800 bytes; .rodata of
-// game/act_fire_rod_fire.cpp). Also read directly by tu_8029D898 (fn_802A1490, fn_802A1554).
+// game/act_fire_rod_fire.cpp). Also read directly by bg_rewrite_8029D898 (fn_802A1490, fn_802A1554).
 extern const u16 lbl_8046CB88[0x400];
 // 15 units. The same result as getTileCollisionCode_8022461C; its 0x61 -> 0 case compiles
 // branch-free (0x80226770), so the source differs. Callers compare it with
@@ -609,7 +609,7 @@ bool fn_80224B88(const JGeometry::TVec3f* pos, s32 layer);
 bool fn_80224E88(const JGeometry::TVec3f* pos, s32 layer);
 // 1 unit (Player_804A6F38::fn_80285F44 picks the splash effects by it).
 bool fn_80225BE4(const JGeometry::TVec3f* pos, s32 layer);
-// 1 unit (tu_80221B44 picks effect 0x3d0 or 0x3cf by them). Position in r3,
+// 1 unit (act_shadow_link_hammer_minor_80221B44 picks effect 0x3d0 or 0x3cf by them). Position in r3,
 // layer in r4; return a byte.
 bool fn_802258D4(const JGeometry::TVec3f* pos, s32 layer);
 bool fn_80225614(const JGeometry::TVec3f* pos, s32 layer);
@@ -627,13 +627,13 @@ bool fn_80225EF4(const JGeometry::TVec3f* pos, s32 layer);
 // tests it for the 0xD7 trail emitter.
 bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer);
 
-// --- actor collision boxes (game/tu_8020D58C.cpp) ---
+// --- actor collision boxes (game/collision_box_list_8020D58C.cpp) ---
 
 // One registered box. Its empty out-of-line constructor is
 // __ct__21CollisionBox_8020D65C (the list constructor's __construct_array,
 // 0x50 x 0x18), hence the name.
 struct CollisionBox_8020D65C {
-    CollisionBox_8020D65C(); // out-of-line, empty (game/tu_8020D58C.cpp)
+    CollisionBox_8020D65C(); // out-of-line, empty (game/collision_box_list_8020D58C.cpp)
 
     /* 0x00 */ JGeometry::TBox2f mBox;
     /* 0x10 */ s32 mLayer;  // the actor's field_0x4 (fn_8020D7D0)
@@ -644,7 +644,7 @@ struct CollisionBox_8020D65C {
 // __construct_array of the boxes).
 class CollisionBoxList_8020D60C {
 public:
-    CollisionBoxList_8020D60C(); // out-of-line (game/tu_8020D58C.cpp)
+    CollisionBoxList_8020D60C(); // out-of-line (game/collision_box_list_8020D58C.cpp)
 
     // 20 units / 22 calls. Whether pos (x, y) lies in a box on `layer`
     // registered by an actor other than `serial`; with ignoreIds (a list

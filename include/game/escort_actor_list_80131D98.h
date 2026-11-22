@@ -2,7 +2,7 @@
 #define GAME_ESCORT_ACTOR_LIST_80131D98_H
 
 // Exports of game/escort_actor_list_80131D98.cpp. Called by the escort units (act_zora_escort
-// and others) and by game/tu_80285E58.cpp.
+// and others) and by game/player_80285E58.cpp.
 
 #include "game/ActorBase.h"
 

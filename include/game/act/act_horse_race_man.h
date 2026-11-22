@@ -5,7 +5,7 @@
 
 #include "game/EnemyBase.h"
 #include "game/stopwatch_801ED3DC.h"
-#include "game/tu_80215A94.h"
+#include "game/horse_race_table_80215A94.h"
 
 // The horse-race man (HRMN in docs/names/actors.tsv). Named after its vtable,
 // 0x804A5630; its overrides are in the unit's vtable at 0x90-0xA0.

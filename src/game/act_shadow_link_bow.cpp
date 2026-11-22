@@ -90,7 +90,7 @@ void ShadowLinkBowMinor_804A6B70::fn_80222668(s32 state) {
 }
 
 // FIXME: 99.85%. Only the jump table relocation (jumptable_804A6C14 vs @NNN)
-// and the .data order differ, as in tu_80221B44's updateState_0x90.
+// and the .data order differ, as in act_shadow_link_hammer_minor_80221B44's updateState_0x90.
 void ShadowLinkBowMinor_804A6B70::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:

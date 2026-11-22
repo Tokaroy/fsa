@@ -2,7 +2,7 @@
 #define GAME_ACT_ACT_SHADOW_LINK_2_H
 
 // Code: game/act_shadow_link_2.cpp (not written yet). Only the members that
-// game/tu_802188B0.cpp and game/tu_8021CDE4.cpp use are declared.
+// game/bomb_drop_timer_802188B0.cpp and game/act_shadow_link_2_8021CDE4.cpp use are declared.
 
 #include "game/cls_800FE8C0.h"
 #include "game/cls_804A46F4.h"
@@ -34,7 +34,7 @@ public:
     // game/shadow_link_fight_801C0D70.cpp. Whether a player is near mPos (findNearestPlayer_801D05F8 with
     // 1.0f, then fn_801D0D50 with `range`); 0 or 1.
     bool fn_801C5348(f32 range);
-    // game/tu_8021CDE4.cpp: state change; 1, 2 and 3 set up the members
+    // game/act_shadow_link_2_8021CDE4.cpp: state change; 1, 2 and 3 set up the members
     // below and call setState_801C3B7C. The old state ends up in field_0x564.
     void fn_8021CDE4(int state);
     // Whether field_0x564 is 3 and the timer field_0x59e ran out.

@@ -230,7 +230,7 @@ struct GameRoot_8049EF20 {
     /* 0x50 */ s32 field_0x50;
     // Stored by fn_8019CDC4 (game/act_princess_zelda_ganon_battle_80197070.cpp, 0x8019CDC4, stw of r3).
     /* 0x54 */ s32 field_0x54;
-    // The fade state tested by BlackFade_804A8390::fn_802AC8B4 (tu_802AC8AC): 1 and
+    // The fade state tested by BlackFade_804A8390::fn_802AC8B4 (black_fade_802AC8AC): 1 and
     // 5 step the black picture up, 4 steps it down, 6 counts field_0x14 down.
     /* 0x58 */ s32 field_0x58;
     // A frame count: Title_804AF820::fn_803A44D8 (game/tu_803A3484.cpp)
@@ -378,8 +378,8 @@ struct GameRoot_8049EF20 {
     void fn_80134FC4(u8 value);
     // Owner: game/game_root_80134C04.cpp (0x80134FE0, not written yet). Stores r4 at
     // this+0x94 (stb), reads it back, and calls fn_80458658 on gAudioMgr_8053AF80 when
-    // it is 1, else sets this+0x95 to 1. Callers: game/tu_8029C584.cpp
-    // (UnknownFORM_804A7BE8's destructor, with 0), game/tu_8023FBF0.cpp and game/tu_802D39B8.cpp.
+    // it is 1, else sets this+0x95 to 1. Callers: game/act_unknown_form_8029C584.cpp
+    // (UnknownFORM_804A7BE8's destructor, with 0), game/player_8023FBF0.cpp and game/tu_802D39B8.cpp.
     void fn_80134FE0(u8 value);
     // Owner: game/game_root_80134C04.cpp (0x80134CC8). Whether the game is paused
     // (field_0x4c == 11 or field_0x88 == 2) and the fade object gGameRoot2_8053AB10->0x2C
@@ -457,7 +457,7 @@ extern u8 lbl_8053ABF0;
 // .sdata word in act_navi's data (0x8053A188-0x8053A198): fn_8023F78C stores -1 to it.
 extern s32 lbl_8053A190;
 // .sbss bytes (8) of game/act_all_enemies_defeated.cpp (unwritten), indexed by player
-// in tu_80256C74 fn_8025785C (item 4 is refused while the player's byte is set).
+// in player_80256C74 fn_8025785C (item 4 is refused while the player's byte is set).
 extern u8 lbl_8053ABB8[8];
 
 // The object fn_801902C0 returns: see game/GameRootSub20.h.
@@ -510,7 +510,7 @@ cls_80119E5C* fn_80119DD0();
 // connected (cls_804AA8C8::fn_8030A308).
 bool fn_80138AB0();
 
-// fn_80212ECC is Antlion_804A6340::fn_80212ECC (game/act/tu_80212E3C.h) and
+// fn_80212ECC is Antlion_804A6340::fn_80212ECC (game/act/act_antlion_80212E3C.h) and
 // fn_802AC09C is ItemPedestal_804A82A8::fn_802AC09C (game/act/act_item_pedestal.h).
 
 // AudioMgr_8045A080, the audio manager gAudioMgr_8053AF80 points to, is declared in
@@ -662,7 +662,7 @@ bool fn_801CCC78(const JGeometry::TVec3f* pos, s32 layer);
 void fn_801CB538(s32 layer, const JGeometry::TVec3f* pos, s32 arg3, s32 arg4);
 
 // game/tu_801CB270.cpp; called from game/tu_80207548.cpp and
-// game/tu_80220F54.cpp. Forwards to ActorManager_804A5800::spawnActorSimple_801F8544 with
+// game/shadow_link_base_80220F54.cpp. Forwards to ActorManager_804A5800::spawnActorSimple_801F8544 with
 // 'RUPY' and the layer and pos; the flag selects 4 or 5 in the low bits of
 // its last argument. Returns the result (an actor serial).
 s32 fn_801CB434(s32 layer, const JGeometry::TVec3f* pos, bool flag);
@@ -710,7 +710,7 @@ public:
 
     // 0x80158B5C (owner unit game/shadow_circle_80158624.cpp, not written yet). Draws a
     // shadow-like sprite on `layer` (< 8) at *pos with a colour and scale;
-    // `this` is gGameRoot2_8053AB10->0x2C. Called by tu_802201D8's draw (colour
+    // `this` is gGameRoot2_8053AB10->0x2C. Called by act_unknown_fbal_802201D8's draw (colour
     // 0,0,0,0x80; scale 24.0f). The colour is a TColor passed by value (a
     // stack copy, its address in r6).
     void drawShadow_80158B5C(s32 layer, const JGeometry::TVec3f* pos, JUtility::TColor color, f32 scale);
@@ -1088,7 +1088,7 @@ public:
     /* 0x2BC */ RupeeDigitSprites_804B1E1C* field_0x2bc; // also lbl_8053AF50
 
     // 0x8043D67C (game/tu_8043A0E8.cpp): 27 units call it with *lbl_8053AED0
-    // in r3, an id in r4 (tu_8020FE50's actor passes 0x1A8 or 0x1C1) and two
+    // in r3, an id in r4 (act_unknown_ibbm_8020FE50's actor passes 0x1A8 or 0x1C1) and two
     // more arguments (0 in most calls). Starts message `id` unless one is
     // showing (field_0x10a) or it was shown once already; returns whether it
     // did (li r3, 0 / 1; no caller reads it).
@@ -1098,7 +1098,7 @@ public:
     // floats at 0x1C0, sets its alpha (vtable slot 0x24) and flags 0x254.
     void fn_8043A208(u8 alpha, f32 a, f32 b, f32 c, f32 d);
     // 0x8043ABCC (game/tu_8043A0E8.cpp): shows the rank picture `index` (0-3, clamped
-    // at 0) on the pane "Pdf01" of field_0x8. tu_8028DD78's update passes 0 in r5 for
+    // at 0) on the pane "Pdf01" of field_0x8. act_spiral_staircase_8028DD78's update passes 0 in r5 for
     // `unused`, which the body never reads.
     void fn_8043ABCC(s32 index, s32 unused);
     // 0x8043CEA0 (game/tu_8043A0E8.cpp): counts field_0x104 down; at 0 (or when
@@ -1241,7 +1241,7 @@ extern GameOverScreen_804B17A0* lbl_8053AEC8;
 extern JKRHeap* lbl_8053AB00;
 
 // game/act_giant_bomb.cpp (0x80341CB0, not written yet); called from
-// game/tu_8020FE50.cpp. Spawns a 'BBMB' actor (spawnActor_801F9484) on `layer` at
+// game/act_unknown_ibbm_8020FE50.cpp. Spawns a 'BBMB' actor (spawnActor_801F9484) on `layer` at
 // *pos.
 extern "C" {
 void fn_80341CB0(s32 layer, const JGeometry::TVec3f* pos);
@@ -1265,7 +1265,7 @@ bool showGbaSprite_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos,
                  s32 player, bool g, u8 h, u8 i);
 
 // game/tu_80301CD0.cpp (0x80301CD0, written there with C++ linkage): whether the
-// GBA linked to the player on `layer` (fn_8022F340) is still busy. tu_8028FBA0's
+// GBA linked to the player on `layer` (fn_8022F340) is still busy. player_8028FBA0's
 // fn_80291D28 waits on it.
 bool fn_80301CD0(s32 layer);
 
@@ -2093,10 +2093,10 @@ extern s32 lbl_8053ABEC;
 
 // game/tu_80301CD0.cpp (0x8030381C, not written yet). Takes a layer; returns a
 // byte (0 when fn_8030A308 on lbl_8053AD30 fails, else a per-layer table entry).
-// Called by game/tu_8023FBF0.cpp (fn_8024F54C).
+// Called by game/player_8023FBF0.cpp (fn_8024F54C).
 u8 fn_8030381C(s32 layer);
 // game/tu_80301CD0.cpp (0x803037D4, not written yet). Raises a per-layer
-// maximum to the value (unsigned compare). Called by game/tu_8023FBF0.cpp
+// maximum to the value (unsigned compare). Called by game/player_8023FBF0.cpp
 // (fn_8024F54C).
 void fn_803037D4(s32 layer, u32 value);
 // game/tu_80301CD0.cpp (0x80308D0C, not written yet). Takes no arguments;

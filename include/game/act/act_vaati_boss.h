@@ -90,7 +90,7 @@ public:
     /* 0x10 */ SpriteAnim_801D267C mAnim;
 }; // Size: 0x48
 
-// The member at 0x448 of Vaati, defined in game/tu_8021775C.cpp. Six particle
+// The member at 0x448 of Vaati, defined in game/vaati_emitters_8021775C.cpp. Six particle
 // emitters from spawnEmitter_8013CC50, freed with releaseEmitter_801EE434, and the owner (Vaati) at
 // 0x18. The constructor (0x80218020) clears all seven words; named after the
 // destructor 0x80217F80, as there is no vtable.

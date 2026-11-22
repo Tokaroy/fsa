@@ -51,7 +51,7 @@ struct SaveFile_803B950C {
     // GameRoot's field_0x7f is set, else field_0x5d; 1 lets the time limit run.
     /* 0x5C */ u8 field_0x5c;
     /* 0x5D */ u8 field_0x5d;
-    // Read by Player::fn_802710C8 (tu_8026FC20): 0x5E while GameRoot's field_0x7f is set,
+    // Read by Player::fn_802710C8 (player_8026FC20): 0x5E while GameRoot's field_0x7f is set,
     // else 0x5F; a value of 1 there calls fn_8024E500 on a hit of 4 or more.
     /* 0x5E */ u8 field_0x5e;
     /* 0x5F */ u8 field_0x5f;

@@ -536,10 +536,10 @@ public:
 #include "game/act/act_bird_manager.h"
 
 
-// Spawned for 'ZSLD': ShadowLinkThwompMinor_804A6D00, game/act/tu_802233A4.h.
-#include "game/act/tu_802233A4.h"
+// Spawned for 'ZSLD': ShadowLinkThwompMinor_804A6D00, game/act/act_shadow_link_thwomp_minor_802233A4.h.
+#include "game/act/act_shadow_link_thwomp_minor_802233A4.h"
 
-// Spawned for 'GOAL'. Code: game/tu_802A4654.cpp.
+// Spawned for 'GOAL'. Code: game/act_goal_802A4654.cpp.
 class Goal_804A7EB0 : public ActorBase_804A5770 {
 public:
     Goal_804A7EB0() {}

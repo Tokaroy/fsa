@@ -15,7 +15,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
 
-    // 0x8036D858; the only caller is tu_802233A4 (0x80223CD0), which passes
+    // 0x8036D858; the only caller is act_shadow_link_thwomp_minor_802233A4 (0x80223CD0), which passes
     // the 'LFGN' actor in r3 (unused here) and a position. Flags the first
     // live 'LEAF' actor within 57 units of pos (and 42 in x) by setting its
     // byte at 0x230.

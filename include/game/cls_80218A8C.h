@@ -7,7 +7,7 @@ class ShadowLink2_804A43E8;
 
 // An 8-byte helper embedded in the Shadow Link 2 actor (act_shadow_link_2,
 // +0x540; its constructor fn_801C573C calls this class's constructor
-// fn_80218A8C), defined in game/tu_802188B0.cpp. No vtable; named after its
+// fn_80218A8C), defined in game/bomb_drop_timer_802188B0.cpp. No vtable; named after its
 // constructor. Its owner is the actor itself.
 class BombDropTimer_80218A8C {
 public:

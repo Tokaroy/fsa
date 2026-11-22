@@ -12,7 +12,7 @@ class Navi_804A6708 : public EnemyBase_804A4808 {
 public:
     // 0x8021EDC0.
     Navi_804A6708();
-    // 0x8021ED04: releases emitters and unlists serial from tu_8021F064 list.
+    // 0x8021ED04: releases emitters and unlists serial from navi_list_8021F064 list.
     /* 0x08 */ virtual ~Navi_804A6708();
     // 0x8021E8D0.
     /* 0x0C */ virtual void init();

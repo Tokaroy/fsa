@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    // 1 caller (tu_802957CC): called on a door the block moved; adds the push vector's x, y.
+    // 1 caller (act_moving_house_802957CC): called on a door the block moved; adds the push vector's x, y.
     void fn_802C59B0(const JGeometry::TVec3f* delta);
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ s32 field_0x234; // type, spawn parameter bits 0-6

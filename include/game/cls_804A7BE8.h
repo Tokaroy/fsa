@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_804A7BE8_H
 #define GAME_CLS_804A7BE8_H
 
-// Code: game/tu_8029C584.cpp. An actor whose vtable is at 0x804A7BE8
+// Code: game/act_unknown_form_8029C584.cpp. An actor whose vtable is at 0x804A7BE8
 // (__vt__20UnknownFORM_804A7BE8; the spawner's FORM case, docs/names/actors.tsv,
 // low confidence, so no real name yet). Named after its vtable. Its
 // constructor is not in this unit (set by 0x8020130C); the destructor,
@@ -21,7 +21,7 @@ public:
     // the player and view state; no arguments read.
     virtual void init();
 
-    // 0x8029C584 (game/tu_8029C584.cpp): vtable slot 0x20. Keeps the sprite position on screen
+    // 0x8029C584 (game/act_unknown_form_8029C584.cpp): vtable slot 0x20. Keeps the sprite position on screen
     // (clamped to the view box), then draws the sprite and the shadow.
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

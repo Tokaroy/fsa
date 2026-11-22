@@ -23,7 +23,7 @@
 inline f32 square(f32 x) { return x * x; }
 
 // PSVECMag on a const vector; the original's operator- temporary is passed by
-// reference (shared by tu_8027E5BC and tu_80285E58).
+// reference (shared by player_8027E5BC and player_80285E58).
 inline f32 magnitude(const JGeometry::TVec3f& v) { return PSVECMag(&v); }
 
 #endif

@@ -8,7 +8,7 @@
 // game/tu_8045B010.cpp). Built on ActorSoundObj_804578F4: the constructor (0x8045B46C) calls
 // the base one and then stores this vtable at 0x8 and vtable + 0x24 at
 // 0x18. Every slot but startSound (0x14) is inherited; the destructor
-// (__dt__23PlayerSoundObj_804B20F8Fv, weak, kept by game/tu_8023FBF0.cpp) stores the
+// (__dt__23PlayerSoundObj_804B20F8Fv, weak, kept by game/player_8023FBF0.cpp) stores the
 // vtable again.
 class PlayerSoundObj_804B20F8 : public ActorSoundObj_804578F4 {
 public:

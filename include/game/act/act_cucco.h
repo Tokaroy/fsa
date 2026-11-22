@@ -61,7 +61,7 @@ public:
     /* 0x29C */ u16 field_0x29c; // a random angle
     /* 0x29E */ u16 field_0x29e;
     /* 0x2A0 */ u8 field_0x2a0;
-    // Tested == 1 by the player's cucco glide (Player_804A6F38::fn_80263078, tu_8025EB18).
+    // Tested == 1 by the player's cucco glide (Player_804A6F38::fn_80263078, player_8025EB18).
     /* 0x2A1 */ u8 field_0x2a1;
     /* 0x2A2 */ u8 field_0x2a2; // not yet known
     /* 0x2A3 */ u8 field_0x2a3;

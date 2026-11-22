@@ -5,7 +5,7 @@
 
 // Bit (stage * 4 + sub) of the current save file's mFlags (stage 0-7,
 // sub 0-3, else FALSE): the body of fn_8019CE40 (act_princess_zelda_ganon_battle_80197070), which the
-// player's reset (tu_8023FBF0), ActorBase's death (die_0x24) and the save
+// player's reset (player_8023FBF0), ActorBase's death (die_0x24) and the save
 // data's fn_803B8EBC / fn_803B9120 (tu_803B8C74) inline.
 // BOOL: every caller tests the result with cmpwi (fn_8019CE40's callers,
 // 0x80254744's and 0x801F5030's inlined copies), not clrlwi.

@@ -6,7 +6,7 @@
 
 class ShadowLink2_804A43E8;
 
-// A 0x18-byte attack hit box, defined in game/tu_8021693C.cpp. No vtable;
+// A 0x18-byte attack hit box, defined in game/sword_hit_box_8021693C.cpp. No vtable;
 // named after its constructor (fn_80217128). Embedded in the shadow Link
 // (act_shadow_link_2, +0x528), which points mOwner back at itself; its update
 // (fn_80216A8C) places the box in front of Link's sword swing from the

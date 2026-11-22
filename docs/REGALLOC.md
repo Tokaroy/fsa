@@ -5,7 +5,7 @@ For functions whose instructions are right but sit in other registers (`regalloc
 is a decompilation of GC 2.6 build 107, the compiler of FSA's game code (`src/backend/CodeGen.c`
 `allocate_local_vregs`, `src/backend/Coloring.c` `simplifygraph` / `colorgraph`,
 `src/backend/Registers.c`, `src/frontend/CInline.c` `CInline_Expand` / `CInline_NewLocalObject`).
-They were checked on `game/tu_8023FBF0.cpp`: they predict our build's registers value by value, and
+They were checked on `game/player_8023FBF0.cpp`: they predict our build's registers value by value, and
 applying them made 28 functions match at once (commit "the group loops read the leader through an
 inline accessor").
 

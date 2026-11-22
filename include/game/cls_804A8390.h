@@ -9,7 +9,7 @@ class J2DPicture;
 // field_0x20): a black fade. game_root_80134C04 creates the one instance with
 // __nw__(0x1C, heap, 0) (0x801393E4) and the constructor fn_802ACBE8, which
 // stores it in lbl_8053ACA0 (in tu_8022AD64's .sbss). Vtable 0x804A8390:
-// only the destructor. Defined in game/tu_802AC8AC.cpp.
+// only the destructor. Defined in game/black_fade_802AC8AC.cpp.
 class BlackFade_804A8390 {
 public:
     BlackFade_804A8390();

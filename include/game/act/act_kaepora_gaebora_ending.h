@@ -4,7 +4,7 @@
 // Code: game/act_kaepora_gaebora_ending.cpp.
 
 #include "game/ActorBase.h"
-#include "game/tu_8021A570.h"
+#include "game/head_sway_8021A570.h"
 
 class JPABaseEmitter;
 class UnknownENDM_804AA0FC;

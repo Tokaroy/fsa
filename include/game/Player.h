@@ -2,7 +2,7 @@
 #define GAME_PLAYER_H
 
 // The players. *gPlayerManager_8053AC90 (PlayerManager_804A6F28, game/tu_8022AD64.cpp)
-// owns the four Player_804A6F38 objects (code in game/tu_8023FBF0.cpp and
+// owns the four Player_804A6F38 objects (code in game/player_8023FBF0.cpp and
 // the units after it up to 0x8027E5BC); tu_8022AD64 is mostly free
 // functions that take a player index (0-3), check it and forward to that
 // player. 325 game units call into it.
@@ -40,7 +40,7 @@
 // 0x80255B28 (this, index), called by PlayerManager_804A6F28's constructor
 // for indices 0-3. Size 0x13BC: the manager's __nw__(0x13BC) (0x8023F904).
 // Fields only where code outside the player's own units reads them inline;
-// the player's getters (tu_8023FBF0) read the rest.
+// the player's getters (player_8023FBF0) read the rest.
 class cls_804A71A8;
 class cls_804AA8D8;
 class PlayerSoundObj_804B20F8;
@@ -57,7 +57,7 @@ public:
     // __sinit); dtk marks it global, as it does every game function.
     bool fn_8023F984() { return mActive; }
     // Inline getters of the player's index (0x4) and layer (0x3B4). Evidence:
-    // tu_80285E58's state tick reads both before the calls they are compared
+    // player_80285E58's state tick reads both before the calls they are compared
     // with or passed next to (`lwz r29, 0x3b4` before fn_8024EE0C/EE14 for
     // spawnEmitter_8013CC50, `lwz r29, 0x4` before fn_80239040), which MWCC
     // does for an inlined call but never for a plain member read; used for
@@ -70,9 +70,9 @@ public:
     // getFacing()` gets the original's registers; plain reads do neither (86-90 -> 99.9-100 %).
     s32 getFacing() const { return mFacing_0x3dc; }
 
-    // tu_8023FBF0 getters and setters the queries forward to.
-    void fn_80254660(); // tu_8023FBF0; the player's reset, run per slot by fn_8023F6C4
-    void fn_80252FBC(); // tu_8023FBF0; empty, called per player slot from tu_8022AD64 (0x8023F504)
+    // player_8023FBF0 getters and setters the queries forward to.
+    void fn_80254660(); // player_8023FBF0; the player's reset, run per slot by fn_8023F6C4
+    void fn_80252FBC(); // player_8023FBF0; empty, called per player slot from tu_8022AD64 (0x8023F504)
     bool fn_8023FC08();          // byte at 0x42C
     void fn_8023FC10(s32 value); // 0xCA8 = max(0xCA8, value)
     // Getters and setters the generated queries forward to (tools/gen_game.py).
@@ -92,7 +92,7 @@ public:
     s32 getLeader_80240644(); // via getPlayerLeader_8022F3DC
     bool fn_80240670() const; // via fn_8022F478
     bool hasLeader_80240808() const; // via hasPlayerLeader_8022F514
-    bool fn_80247C0C(); // tu_8023FBF0 (li 1 / li 0); via fn_8023C830 (on the leader, getPlayerLeader_8022F3DC, of a follower)
+    bool fn_80247C0C(); // player_8023FBF0 (li 1 / li 0); via fn_8023C830 (on the leader, getPlayerLeader_8022F3DC, of a follower)
     bool fn_80240818() const; // via fn_8022DCD8
     bool fn_80240840(s32 arg); // via fn_8022E39C
     bool fn_80240860(); // byte at 0x436
@@ -174,8 +174,8 @@ public:
     bool fn_80273D44(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out, bool flag); // via fn_8023BB50
     u8 fn_80273FB8(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023A7BC
     u8 fn_80274238(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* pos, bool flag); // via fn_8023B8E4
-    // tu_80256C74 / tu_8025EB18 call it with the player in r3; 0.0f unless
-    // playerFlags_802413F0 and the team checks pass (game/tu_8023FBF0.cpp).
+    // player_80256C74 / player_8025EB18 call it with the player in r3; 0.0f unless
+    // playerFlags_802413F0 and the team checks pass (game/player_8023FBF0.cpp).
     f32 fn_80246F28();
     bool fn_80241478(); // via fn_8022D930
     void fn_8024148C(); // via fn_80236C88
@@ -194,8 +194,8 @@ public:
     s32 fn_802418E8(); // via fn_80236100
     s32 fn_80241920(); // via fn_80236228
     s32 fn_8024322C(); // via fn_8023697C
-    bool fn_80244FFC(); // tu_8023FBF0 (0x80244FFC): pad trigger 0x100 or 0x20 (gated)
-    bool fn_80245238(); // tu_8023FBF0 (0x80245238): pad hold 0x100 / 0x20, or 0x200 on a flagged layer (gated)
+    bool fn_80244FFC(); // player_8023FBF0 (0x80244FFC): pad trigger 0x100 or 0x20 (gated)
+    bool fn_80245238(); // player_8023FBF0 (0x80245238): pad hold 0x100 / 0x20, or 0x200 on a flagged layer (gated)
     bool fn_802454C0(); // via fn_8022BF68
     bool fn_802456FC(); // via fn_8022C004
     bool fn_80245938(); // via fn_8022C0A0
@@ -247,7 +247,7 @@ public:
     // field_0x1030[i] is `layer`; it then copies field_0xdb0[i] into
     // field_0xef0[i]. cls_804A71A8::fn_80268BC4 has it inlined twice.
     bool fn_802684A4(const JGeometry::TVec3f* pos, s32 layer);
-    // tu_8023FBF0 (0x80247330 / 0x8024712C): the pad axes fn_80309FCC /
+    // player_8023FBF0 (0x80247330 / 0x8024712C): the pad axes fn_80309FCC /
     // fn_80309F20 of the player's slot behind the input gate, else 0; f32 results
     // that cls_804A71A8::fn_8026E1E0 compares with 0.0f for facings 0 / 1
     // (0x80247330) and 2 / 3 (0x8024712C).
@@ -257,22 +257,22 @@ public:
     void fn_80268B3C(); // tu_802684A4; holds mPos.z at 0 across fn_802685D4
     bool fn_80250ACC(); // via fn_8022DA68
     bool isPushing_80250D30(); // via fn_8022DB04
-    bool fn_80250FD4(); // tu_8023FBF0 (0x80250FD4), called by isPushing_80250D30
+    bool fn_80250FD4(); // player_8023FBF0 (0x80250FD4), called by isPushing_80250D30
     u8 fn_802517E4(); // via fn_8022D894
     bool canRequestState_80251BFC(s32 arg); // via fn_802319B4
-    // tu_8023FBF0. Whether the player may walk off the screen (state 0x1B) at an edge of
+    // player_8023FBF0. Whether the player may walk off the screen (state 0x1B) at an edge of
     // the visible box; writes the direction (-1 / 1 in x or y, else 0, 0) to *out.
     // fn_80231A50 / updateScreenChange_80231DE4 call it.
     bool checkScreenExit_802527B0(JGeometry::TVec2<s32>* out);
-    // tu_8023FBF0. Starts walking off the screen (state 0x1B) in the direction checkScreenExit_802527B0
+    // player_8023FBF0. Starts walking off the screen (state 0x1B) in the direction checkScreenExit_802527B0
     // found; updateScreenChange_80231DE4 calls it.
     void fn_802520C0(JGeometry::TVec2<s32>* dir);
-    bool requestState_80251AEC(s32 arg); // tu_8023FBF0 (0x80251AEC); called by fn_8026E5F8
+    bool requestState_80251AEC(s32 arg); // player_8023FBF0 (0x80251AEC); called by fn_8026E5F8
     bool fn_8026E5F8(const JGeometry::TVec2f* pos); // tu_802684A4 (0x8026E5F8)
     void fn_80252F14(const JGeometry::TVec3f* offset); // via fn_8023DFF4
     void fn_80252F40(s32 arg); // via fn_8023E080
     void fn_80252F50(s32 arg); // via fn_8023CC5C
-    // tu_8026FC20 (0x8027A698) passes mFacing_0x3dc and tests r3 (clrlwi.).
+    // player_8026FC20 (0x8027A698) passes mFacing_0x3dc and tests r3 (clrlwi.).
     u8 fn_8025196C(s32 index);
     void fn_80252F5C(s32 arg); // via fn_8023CCE8
     s32 fn_80252F68(); // via fn_8023CD74
@@ -290,21 +290,21 @@ public:
     s32 fn_8025F668(); // via fn_8023EF50
     bool isLifting_8025F684(); // via fn_8023EFEC
     void fn_802635D4(); // empty; the dispatch in updateState_802870C8 calls it
-    void fn_802636D0(); // tu_8025EB18; empty, called by the same dispatch
-    // Called by the same dispatch (tu_80285E58 updateState_802870C8) with the player in r3.
+    void fn_802636D0(); // player_8025EB18; empty, called by the same dispatch
+    // Called by the same dispatch (player_80285E58 updateState_802870C8) with the player in r3.
     void fn_802632A4(); // empty
     void fn_80262234(); // forwards to fn_80258BBC
     void fn_80262B6C(); // forwards to fn_80259660
     void fn_80262B8C(); // forwards to fn_80283D2C
     void fn_8026173C(); // clears field_0x121c, field_0xd84 = 20
     void fn_80261468(); // counts field_0xd74 down to 0
-    void fn_80259660(); // tu_80256C74
-    void fn_80283D2C(); // tu_8027E5BC
+    void fn_80259660(); // player_80256C74
+    void fn_80283D2C(); // player_8027E5BC
     bool fn_8025F484() const; // mHeldActorSerial_0xd68 is a living actor (field_0x1a4 > 0)
     // The held actor (serial mHeldActorSerial_0xd68), or NULL; inline, defined below the class.
     ActorBase_804A5770* heldActor();
-    void fn_80277100(); // tu_8026FC20; empty, called by the same dispatch
-    void fn_802791AC(); // tu_8026FC20; empty, called by the same dispatch
+    void fn_80277100(); // player_8026FC20; empty, called by the same dispatch
+    void fn_802791AC(); // player_8026FC20; empty, called by the same dispatch
     void fn_80264410(); // byte at 0x458 = 0 (stb r0)
     void fn_80264768(); // byte at 0x458 = 0 (stb r0)
     void fn_802636C4(); // byte at 0x458 = 0 (stb r0)
@@ -323,10 +323,10 @@ public:
     // Copies 0xCB0 (TVec3f), lowers its y by 16 unless 0xCF2 is set, then calls
     // startTransition_80290070(0, &mPos, &copy, 5); on success clears 0xBDC and returns true.
     bool fn_8028FBA0();
-    // Starts the screen / layer transition `kind` to `to` on `layer` (tu_8028FBA0);
+    // Starts the screen / layer transition `kind` to `to` on `layer` (player_8028FBA0);
     // callers pass &mPos as `from`.
     bool startTransition_80290070(s32 layer, const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 kind);
-    // Not written yet (tu_8028FBA0's fn_80290E90 is 0x90 bytes): fn_80301D54(mPlayerNo_0x4) unless
+    // Not written yet (player_8028FBA0's fn_80290E90 is 0x90 bytes): fn_80301D54(mPlayerNo_0x4) unless
     // fn_80240670(), clears 0x400, then setMusicSlow_8045815C on gAudioMgr_8053AF80 (0 below 8, 1 at 8) by 0xCE4.
     void fn_80290E90();
     void fn_80295584(); // 0x124D = 1, 0x3FD = 1 (stb), 0x458 = 0 (stb); 0x3DC = 2, 0x3E8 = 2 (stw)
@@ -342,17 +342,17 @@ public:
     s32 fn_8026FC68(); // called by fn_8023A2C8 (tu_8022AD64)
     void fn_8026FC8C(); // called by fn_8022B030 and fn_8022B300 (tu_8022AD64)
     JGeometry::TVec3f* fn_8026FCC4(); // called by fn_8023A4F4 (tu_8022AD64)
-    void fn_8027023C(); // called by fn_80255250 (tu_8023FBF0)
-    void fn_802702A4(); // called by tu_8025EB18
-    void fn_802702C4(); // called by tu_8023FBF0
+    void fn_8027023C(); // called by fn_80255250 (player_8023FBF0)
+    void fn_802702A4(); // called by player_8025EB18
+    void fn_802702C4(); // called by player_8023FBF0
     void fn_80270D34(s32 amount); // called by tu_8022AD64; subtracted from mLife_0xbfc
     // Damage / hit from player `attacker` at `pos` with hit kind `kind` (0x1B, 0xD-0xF, 0x16,
     // 0x18 ...): knockback (field_0x350 / mPushVel_0x35c), facing, state request. Called by
     // hitPlayerGroup_80238548 (tu_8022AD64) for each player.
     bool fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVec2f* pos, s32 kind);
-    void fn_80277104(); // called by tu_80285E58
-    void fn_802771BC(); // field_0x458 = 0; called by tu_80285E58
-    // tu_80256C74
+    void fn_80277104(); // called by player_80285E58
+    void fn_802771BC(); // field_0x458 = 0; called by player_80285E58
+    // player_80256C74
     void fn_80257FF4(); // drops field_0xb30 serials with no actor
     void fn_80258070(); // drops field_0xb2c if its actor is gone or not a live Somaria block
     void fn_8025819C(); // tracks the actor field_0xb3c: its layer and box (+ position) into 0xb70 / 0x5a0
@@ -382,9 +382,9 @@ public:
     void fn_8025C7BC(); // same body as fn_8025BDD8
     void fn_8025D090(); // clears 0x458, mVel_0x344 and 0x40c
     void fn_8025D6A0(); // field_0xb9c = 0
-    // tu_8027E5BC (dispatch targets of tu_80285E58); fn_80248604, fn_8024D134 and fn_8024E3D8 are tu_8023FBF0 (r3 = Player)
+    // player_8027E5BC (dispatch targets of player_80285E58); fn_80248604, fn_8024D134 and fn_8024E3D8 are player_8023FBF0 (r3 = Player)
     void fn_8027EE84();
-    void updateCarryWalk_8026152C(bool arg); // tu_8025EB18; mHeldPos_0x2f4 from mPos (carry), called by fn_802948C0
+    void updateCarryWalk_8026152C(bool arg); // player_8025EB18; mHeldPos_0x2f4 from mPos (carry), called by fn_802948C0
     void fn_8027F16C();
     void fn_80281E84();
     void fn_8028211C();
@@ -412,7 +412,7 @@ public:
     void updateFacing_8027EB04();
     void fn_80284294();
     void fn_80282A24();
-    // tu_80285E58: the update (fn_80285E58, from update_80253E6C), the state tick
+    // player_80285E58: the update (fn_80285E58, from update_80253E6C), the state tick
     // updateState_802870C8 and the helpers it calls.
     void fn_80285E58();
     void fn_80285F44();
@@ -427,8 +427,8 @@ public:
     void fn_8025A15C(); void fn_8025AB00(); void fn_8025AED0(); void fn_8025B22C();
     void fn_8025B3F0(); void fn_8025BEB0(); void fn_8025C894(); void fn_8025D6AC();
     void fn_8025D7E4(); void fn_8025D9FC(); void fn_8025DACC(); void fn_8025E79C();
-    void fn_8025D0B0(); // tu_80256C74; the step of state 0x39's update fn_8025DACC (pad-driven slide)
-    // tu_80256C74 inline (fn_80259660, three times in fn_80258BE8): in mode 5 (fn_802486A0)
+    void fn_8025D0B0(); // player_80256C74; the step of state 0x39's update fn_8025DACC (pad-driven slide)
+    // player_80256C74 inline (fn_80259660, three times in fn_80258BE8): in mode 5 (fn_802486A0)
     // and not following (hasLeader_80240808), every other present player to mPos (fn_8023E690), then resetPosHistory_8024BAEC.
     void gatherOthers();
     void fn_80261750(); void fn_80262188(); void fn_80262254(); void fn_80262BAC();
@@ -457,21 +457,21 @@ public:
     void fn_80293FE4(); void fn_80294374(); void fn_802948C0(); void fn_80294ADC();
     void fn_8029513C(); void fn_80295268(); void fn_80295334(); void fn_802953A0();
     void fn_802954DC();
-    // tu_8028FBA0 inline (the enters of 0x23 and 0x25): carried actor to mPos + 16 up.
+    // player_8028FBA0 inline (the enters of 0x23 and 0x25): carried actor to mPos + 16 up.
     void raiseHeldActor();
-    // tu_8028FBA0 inline (the updates of 0x2A and 0x2B): facing turns with the counter 0x3FC.
+    // player_8028FBA0 inline (the updates of 0x2A and 0x2B): facing turns with the counter 0x3FC.
     void spinFacing();
-    // tu_8028FBA0 inlines: the 0x3F8/0x3F9 walk cycle; mHeldPos_0x2f4 = mPos raised 16.
+    // player_8028FBA0 inlines: the 0x3F8/0x3F9 walk cycle; mHeldPos_0x2f4 = mPos raised 16.
     void stepWalkCycle();
     void setHeldPos();
-    void stepTransitionAnim(); // tu_8028FBA0 inline: walk / push / carry animation step
-    void spawnEffect17D(); // tu_8028FBA0 inline: effect 0x17D above the player
-    void followCamera();  // tu_8028FBA0 inline: camera on mPos - (0, 150) on the TV
-    bool requestArrival(); // tu_8028FBA0 inline: 0x33 / 0x3E / 0x12 / 0 after an arrival
-    void spawnEffect15B(); // tu_8028FBA0 inline: effects 0x15B, 0x15C at the player
-    s32 life(); // tu_8028FBA0 inline: getPlayerLife_80237774(getLeader_80240644()) if hasLeader_80240808(), else getLife_8024189C()
-    void fallStep(); // tu_8028FBA0 inline: gravity on 0x344, then mPos += 0x344
-    void riseToTarget(s32 state); // tu_8028FBA0 inline: rise above 128, then request `state`
+    void stepTransitionAnim(); // player_8028FBA0 inline: walk / push / carry animation step
+    void spawnEffect17D(); // player_8028FBA0 inline: effect 0x17D above the player
+    void followCamera();  // player_8028FBA0 inline: camera on mPos - (0, 150) on the TV
+    bool requestArrival(); // player_8028FBA0 inline: 0x33 / 0x3E / 0x12 / 0 after an arrival
+    void spawnEffect15B(); // player_8028FBA0 inline: effects 0x15B, 0x15C at the player
+    s32 life(); // player_8028FBA0 inline: getPlayerLife_80237774(getLeader_80240644()) if hasLeader_80240808(), else getLife_8024189C()
+    void fallStep(); // player_8028FBA0 inline: gravity on 0x344, then mPos += 0x344
+    void riseToTarget(s32 state); // player_8028FBA0 inline: rise above 128, then request `state`
     // Called by updateState_802870C8 after the state update (r3 = this; results unused
     // unless typed).
     void fn_80242940();
@@ -492,8 +492,8 @@ public:
     void fn_80265D8C();
     void fn_80265DB0();
     void fn_80280B30();
-    void fn_80265E88(); // tu_80264998 (skeleton / animation), called by fn_80285E58
-    // tu_80264998: the frame functions fn_80265E88 calls per state (r3 = this).
+    void fn_80265E88(); // player_80264998 (skeleton / animation), called by fn_80285E58
+    // player_80264998: the frame functions fn_80265E88 calls per state (r3 = this).
     void fn_80267018();
     void fn_802670CC();
     void fn_802671C8();
@@ -513,23 +513,23 @@ public:
     void fn_80267E18();
     void fn_80267ECC();
     void setStandingFrame_80268194();
-    JGeometry::TVec3f* fn_80252F48(); // returns &mSpinCenter_0x11b4 (tu_8023FBF0)
-    bool checkAttackInput_80275D9C(); // tu_8026FC20 (li r3, 1 / 0); true ends the state updates of tu_8027E5BC early
+    JGeometry::TVec3f* fn_80252F48(); // returns &mSpinCenter_0x11b4 (player_8023FBF0)
+    bool checkAttackInput_80275D9C(); // player_8026FC20 (li r3, 1 / 0); true ends the state updates of player_8027E5BC early
     void followStep();
-    void getFollowTargetPos_8027FA08(JGeometry::TVec3f* out); // tu_8027E5BC; called by update B and fn_8028676C
-    // tu_8023FBF0 (0x80242DAC): tile pushes on 0x414 / 0x418 by the tile under mPos (getRawTile_80226850);
+    void getFollowTargetPos_8027FA08(JGeometry::TVec3f* out); // player_8027E5BC; called by update B and fn_8028676C
+    // player_8023FBF0 (0x80242DAC): tile pushes on 0x414 / 0x418 by the tile under mPos (getRawTile_80226850);
     // called by the state 0x4A / 0x4B updates.
     void fn_80242DAC();
-    void fn_80280074(); // tu_8027E5BC: the 0x4B movement (follow step 4.5 or the 0x3FF dash)
-    void fn_802804E0(); // tu_8027E5BC: the 0x4A movement (fn_80280074 with lbl_8046BED8)
-    void moveByStick_802808E8(f32 speed); // tu_8027E5BC: the stick walk step (states 2 / 3)
-    bool fn_8025197C(bool all); // tu_8023FBF0: field_0xbf0->anyFlag48(all)
+    void fn_80280074(); // player_8027E5BC: the 0x4B movement (follow step 4.5 or the 0x3FF dash)
+    void fn_802804E0(); // player_8027E5BC: the 0x4A movement (fn_80280074 with lbl_8046BED8)
+    void moveByStick_802808E8(f32 speed); // player_8027E5BC: the stick walk step (states 2 / 3)
+    bool fn_8025197C(bool all); // player_8023FBF0: field_0xbf0->anyFlag48(all)
     void fn_80284430();
     void fn_8028447C();
     void fn_80247F58();
     void fn_80248604();
     void fn_80248DD8();
-    void resetTrail_8024B2E0(); // tu_8023FBF0 (0x708 bytes, unwritten); r3 = Player
+    void resetTrail_8024B2E0(); // player_8023FBF0 (0x708 bytes, unwritten); r3 = Player
     void fn_8024D134();
     void fn_8028414C();
     void fn_8027E7E0();
@@ -538,10 +538,10 @@ public:
     void fn_8027EEB4(); // steps the walk-animation counter mWalkAnimCounter_0x3f8 (frame mWalkFrame_0x3f9)
     void fn_8027F1C8(); // places or spawns the effect in mGroupSpotEmitter_0x1388 (ids 0x35E-0x361)
     void fn_8027F854(JGeometry::TVec3f* out, s32 player); // player's position plus an offset by fn_802486A0
-    s32 fn_802487FC() const; // tu_8023FBF0 (0x802487FC); a count of players (r3 only)
-    bool fn_80248A24(); // tu_8023FBF0; called by tu_8027E5BC (0x802846E4); sets 0x43f / 0x440
-    bool fn_80248B9C(); // tu_8023FBF0; called by tu_8022AD64 (0x80237F4C, 0x80238184); sets 0x43f / 0x440 / 0x444
-    bool fn_80241964(); // tu_8023FBF0; called by tu_8022AD64 (0x802347B0-0x802347F8)
+    s32 fn_802487FC() const; // player_8023FBF0 (0x802487FC); a count of players (r3 only)
+    bool fn_80248A24(); // player_8023FBF0; called by player_8027E5BC (0x802846E4); sets 0x43f / 0x440
+    bool fn_80248B9C(); // player_8023FBF0; called by tu_8022AD64 (0x80237F4C, 0x80238184); sets 0x43f / 0x440 / 0x444
+    bool fn_80241964(); // player_8023FBF0; called by tu_8022AD64 (0x802347B0-0x802347F8)
     void fn_80283848();
     void fn_8028434C();
     void fn_8024E344();
@@ -551,24 +551,24 @@ public:
     void fn_802810E4();
     void fn_802828A8();
     void fn_80282958();
-    void fn_8027769C(); // called by tu_80285E58
-    void fn_80277E18(); // called by tu_80285E58
-    void fn_8027AA10(); // called by tu_80285E58
-    bool fn_80272B4C(const JGeometry::TVec3f* pos); // called by tu_8025EB18
-    void fn_802790C0(); // called by tu_80285E58
-    void fn_8027D4F4(); // called by tu_80285E58
+    void fn_8027769C(); // called by player_80285E58
+    void fn_80277E18(); // called by player_80285E58
+    void fn_8027AA10(); // called by player_80285E58
+    bool fn_80272B4C(const JGeometry::TVec3f* pos); // called by player_8025EB18
+    void fn_802790C0(); // called by player_80285E58
+    void fn_8027D4F4(); // called by player_80285E58
     bool fn_80270ABC() const; // bool: its body only returns li 1 / li 0 and a neg/andc/srwi test; fn_80270C88 returns it unchanged as its bool
-    void fn_802709C8(); // BgRewrite fn_802A20F0 on mFrontPos_0x30c; called by tu_80256C74
-    void fn_80270D08(); // counts field_0x464 and field_0x468 down; called by tu_8023FBF0 and tu_80285E58
+    void fn_802709C8(); // BgRewrite fn_802A20F0 on mFrontPos_0x30c; called by player_80256C74
+    void fn_80270D08(); // counts field_0x464 and field_0x468 down; called by player_8023FBF0 and player_80285E58
     bool hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg); // hitPlayerGroup_80238548 on this player; called with (0, &mPos, 0x12)
     void fn_8027221C(s32 value); // field_0xbf4 = value
-    // tu_8026FC20, not written yet; called by the reset resetSlot_80254744 and update A.
+    // player_8026FC20, not written yet; called by the reset resetSlot_80254744 and update A.
     void fn_80276538(); // sets the box field_0x4c0 around mPos
     void fn_80276078();
     // The per-frame calls of the player's update A (update_80253E6C), all on
-    // this player: tu_8023FBF0 fn_802490A8 (input and actions), fn_80251D50,
-    // fn_8024BDBC (not written yet), fn_8024E0A0; tu_8026FC20
-    // fn_8026FD14; tu_80264998 fn_80265E88 and tu_80285E58 fn_80285E58 /
+    // this player: player_8023FBF0 fn_802490A8 (input and actions), fn_80251D50,
+    // fn_8024BDBC (not written yet), fn_8024E0A0; player_8026FC20
+    // fn_8026FD14; player_80264998 fn_80265E88 and player_80285E58 fn_80285E58 /
     // fn_80286688 (declared above).
     void update_80253E6C();
     void fn_802490A8();
@@ -582,27 +582,27 @@ public:
     void fn_80274988(); // called by fn_8027B648 (update of state 0x09)
     void fn_802756E4(); // called by fn_8027D5F0 (update of state 0x0E)
     void fn_80276BB8(); // boxes of the opposite facing (fn_80274CB8)
-    void fn_80274CB8(); // charge step (tu_8026FC20); called by the 0x08 update fn_8027BE74
+    void fn_80274CB8(); // charge step (player_8026FC20); called by the 0x08 update fn_8027BE74
     void setFacingBoxes_80276E5C(); // boxes of the facing 0x3DC
     void fn_8027439C(); // called by fn_8027A1E0 (update of state 0x0B): pose 0x3FA / 0x3FB, boxes 0x4A0 / 0x4B0
     void fn_802765C0();
     u8 fn_802738F0(const JGeometry::TBox2f* box, JGeometry::TVec2f* out, bool flag, bool center);
     u8 fn_80273E7C(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out, bool flag); // called by tu_8022AD64
     // The manager's other per-player calls (fn_8023F390 / fn_8023F2BC):
-    // update B (tu_8023FBF0, not written yet) and the draw (tu_80264998).
+    // update B (player_8023FBF0, not written yet) and the draw (player_80264998).
     void fn_80252FC0();
     void fn_80264998();
-    void fn_80277580(); // called by tu_80285E58
-    void fn_8027761C(); // called by tu_80285E58
-    void fn_8027774C(); // called by tu_80285E58
-    void fn_8027966C(); // called by tu_80285E58
-    void fn_80279F94(); // called by tu_80285E58
-    void fn_8027B5F0(); // called by tu_80285E58
-    void fn_8027C6B8(); // called by tu_80285E58
-    void fn_8027CAA8(); // called by tu_80285E58
-    void fn_8027CB24(); // called by tu_80285E58
-    void fn_8027CB44(); // called by tu_80285E58
-    void fn_8027CB9C(); // called by tu_80285E58
+    void fn_80277580(); // called by player_80285E58
+    void fn_8027761C(); // called by player_80285E58
+    void fn_8027774C(); // called by player_80285E58
+    void fn_8027966C(); // called by player_80285E58
+    void fn_80279F94(); // called by player_80285E58
+    void fn_8027B5F0(); // called by player_80285E58
+    void fn_8027C6B8(); // called by player_80285E58
+    void fn_8027CAA8(); // called by player_80285E58
+    void fn_8027CB24(); // called by player_80285E58
+    void fn_8027CB44(); // called by player_80285E58
+    void fn_8027CB9C(); // called by player_80285E58
     void fn_802708D0(); // via fn_80236350
     void fn_802708E8(); // via fn_802363DC
     bool fn_80270A04(); // via fn_80236A18
@@ -616,7 +616,7 @@ public:
     void fn_802422D0(); // via fn_80231368 (tu_8022AD64)
     const JGeometry::TVec2f* fn_802422C4(); // &field_0xbf0->mLastPos_0x14; via fn_8022DFD4 (tu_8022AD64)
     void fn_80248E94(bool flag); // via fn_8022AF78 (tu_8022AD64); clrlwi 24, compared with 1
-    void fn_80270948(const JGeometry::TVec3f* pos); // called by tu_8023FBF0 fn_802422D0; 0xD10 = pos (mPos if NULL) once while down
+    void fn_80270948(const JGeometry::TVec3f* pos); // called by player_8023FBF0 fn_802422D0; 0xD10 = pos (mPos if NULL) once while down
     void fn_8027057C(); // called by fn_80277F98 (update of state 0x33): revive (inlines addLife_80270DDC)
     bool fn_80271098(const JGeometry::TVec3f* pos); // via fn_802379E4
     s32 fn_80272184(); // via fn_8023B630
@@ -659,7 +659,7 @@ public:
     /* 0x0338 */ JGeometry::TVec3f field_0x338;
     // Zeroed by fn_802954B8 (three stfs of 0.0f).
     /* 0x0344 */ JGeometry::TVec3f mVel_0x344;
-    /* 0x0350 */ JGeometry::TVec3f field_0x350; // psq_l by tu_8026FC20 (0x80279844)
+    /* 0x0350 */ JGeometry::TVec3f field_0x350; // psq_l by player_8026FC20 (0x80279844)
     /* 0x035C */ JGeometry::TVec3f mPushVel_0x35c;
     /* 0x0368 */ JGeometry::TVec3f mKeptVel_0x368;
     /* 0x0374 */ JGeometry::TVec3f field_0x374;
@@ -683,14 +683,14 @@ public:
     /* 0x03C3 */ u8 field_0x3c3[0x3C4 - 0x3C3];
     /* 0x03C4 */ u16 mCel_0x3c4;
     /* 0x03C6 */ u16 mPrevCel_0x3c6; // resetSlot_80254744: copy of mCel_0x3c4
-    /* 0x03C8 */ u16 mFloorCel_0x3c8; // lhz in tu_80264998
+    /* 0x03C8 */ u16 mFloorCel_0x3c8; // lhz in player_80264998
     /* 0x03CA */ u16 mFloorCel_0x3ca;
     /* 0x03CC */ s32 field_0x3cc;
     /* 0x03D0 */ s32 field_0x3d0;
     /* 0x03D4 */ s32 field_0x3d4;
-    // Signed count read by fn_8024EE14 (tu_8023FBF0) and fn_8023CA88.
+    // Signed count read by fn_8024EE14 (player_8023FBF0) and fn_8023CA88.
     /* 0x03D8 */ s8 field_0x3d8;
-    // Signed count read by fn_8024EE0C (tu_8023FBF0) and fn_8023CB24.
+    // Signed count read by fn_8024EE0C (player_8023FBF0) and fn_8023CB24.
     /* 0x03D9 */ s8 field_0x3d9;
     /* 0x03DA */ u8 field_0x3da[0x3DC - 0x3DA];
     /* 0x03DC */ s32 mFacing_0x3dc; // getPlayerFacing_80230CFC (2 without a player)
@@ -723,7 +723,7 @@ public:
     // Offset added to mPos at the end of fn_802685D4 (ps_add). Zeroed while
     // mPos.z > 0; otherwise its x and y decay under the tile code.
     /* 0x0420 */ JGeometry::TVec3f field_0x420;
-    // Read by fn_8023FC08 (tu_8023FBF0); fn_8023FBF0 sets the byte after it.
+    // Read by fn_8023FC08 (player_8023FBF0); fn_8023FBF0 sets the byte after it.
     /* 0x042C */ bool field_0x42c;
     /* 0x042D */ u8 field_0x42d;
     /* 0x042E */ u8 field_0x42e[0x430 - 0x42E];
@@ -748,14 +748,14 @@ public:
     /* 0x0444 */ f32 mSavedVelZ_0x444;
     /* 0x0448 */ s32 field_0x448;
     /* 0x044C */ s32 field_0x44c;
-    /* 0x0450 */ u16 field_0x450; // lhz at 0x8024DA2C and in tu_80264998
+    /* 0x0450 */ u16 field_0x450; // lhz at 0x8024DA2C and in player_80264998
     /* 0x0452 */ u16 field_0x452;
     // Returned by fn_802413E8 (lbz; blr), read through fn_80230188.
     /* 0x0454 */ bool field_0x454;
     /* 0x0455 */ u8 field_0x455;
     /* 0x0456 */ u8 field_0x456;
     /* 0x0457 */ u8 field_0x457;
-    // Returned by fn_802412C4 (a byte, read by its caller in tu_80256C74).
+    // Returned by fn_802412C4 (a byte, read by its caller in player_80256C74).
     /* 0x0458 */ u8 field_0x458;
     // Cleared by fn_80263854 (stb r0).
     /* 0x0459 */ u8 field_0x459;
@@ -801,7 +801,7 @@ public:
     /* 0x05B0 */ JGeometry::TBox2f field_0x5b0;
     /* 0x05C0 */ JGeometry::TVec3f field_0x5c0;
     /* 0x05CC */ JGeometry::TBox2f field_0x5cc;
-    /* 0x05DC */ JGeometry::TBox2f field_0x5dc; // set by tu_8026FC20 fn_80277F98, read by tu_80256C74
+    /* 0x05DC */ JGeometry::TBox2f field_0x5dc; // set by player_8026FC20 fn_80277F98, read by player_80256C74
     // The 8x16 box in front of the player for direction field_0x3ec (fn_80276078).
     /* 0x05EC */ JGeometry::TBox2f field_0x5ec;
     /* 0x05FC */ JGeometry::TBox2f field_0x5fc[0x50];
@@ -891,17 +891,17 @@ public:
     /* 0x0C10 */ s32 field_0xc10;
     /* 0x0C14 */ s32 field_0xc14;
     /* 0x0C18 */ s32 field_0xc18;
-    /* 0x0C1C */ s32 field_0xc1c[13]; // zeroed in a loop by fn_802544B0; indexed by tu_8026FC20
+    /* 0x0C1C */ s32 field_0xc1c[13]; // zeroed in a loop by fn_802544B0; indexed by player_8026FC20
     /* 0x0C50 */ s32 field_0xc50;
     /* 0x0C54 */ s32 field_0xc54;
     /* 0x0C58 */ s32 field_0xc58;
     /* 0x0C5C */ s32 field_0xc5c;
     /* 0x0C60 */ s32 field_0xc60;
-    // Word returned by fn_80270350 (tu_8026FC20).
+    // Word returned by fn_80270350 (player_8026FC20).
     /* 0x0C64 */ s32 field_0xc64;
     /* 0x0C68 */ s32 field_0xc68;
     /* 0x0C6C */ s32 field_0xc6c;
-    // Words returned by fn_80270310 and fn_802702E4 (tu_8026FC20).
+    // Words returned by fn_80270310 and fn_802702E4 (player_8026FC20).
     /* 0x0C70 */ s32 field_0xc70;
     /* 0x0C74 */ s32 field_0xc74;
     /* 0x0C78 */ s32 field_0xc78;
@@ -1023,7 +1023,7 @@ public:
     /* 0x1170 */ s32 field_0x1170;
     /* 0x1174 */ u8 field_0x1174;
     /* 0x1175 */ u8 field_0x1175[0x1178 - 0x1175];
-    /* 0x1178 */ s32 field_0x1178; // stw in tu_8023FBF0 (0x8024B1A0); 0-2 pick the frames of state 0x49 (fn_80265E88)
+    /* 0x1178 */ s32 field_0x1178; // stw in player_8023FBF0 (0x8024B1A0); 0-2 pick the frames of state 0x49 (fn_80265E88)
     /* 0x117C */ s32 mInputTimers_0x117c[8]; // zeroed by fn_8027023C
     /* 0x119C */ u8 mPressHistory_0x119c[4][4]; // zeroed by fn_8027023C
     /* 0x11AC */ s32 field_0x11ac;
@@ -1174,11 +1174,11 @@ public:
     bool fn_80247594(s32 arg); // via fn_80237488
     bool fn_80271038(const JGeometry::TVec2f* pos); // via fn_802378AC
     bool fn_80271068(const JGeometry::TVec2f* pos); // via fn_80237948
-    bool fn_80256C74(const JGeometry::TBox2f* box, s32 layer); // tu_80256C74; box test on field_0x5dc, called by fn_8023A6CC
-    // tu_8023FBF0 (0x80241618): field_0xc10 = item, field_0xc14 = level (kept at 2 or more
+    bool fn_80256C74(const JGeometry::TBox2f* box, s32 layer); // player_80256C74; box test on field_0x5dc, called by fn_8023A6CC
+    // player_8023FBF0 (0x80241618): field_0xc10 = item, field_0xc14 = level (kept at 2 or more
     // unless level >= 2), sets the player's bit in lbl_8053AED0 0x255; returns true. Result unused.
     bool fn_80241618(s32 item, s32 level);
-    bool fn_80257DB4(); // tu_80256C74; false if any of 21 state / flag tests holds, else field_0xd3c < 0; called by tu_8022AD64
+    bool fn_80257DB4(); // player_80256C74; false if any of 21 state / flag tests holds, else field_0xd3c < 0; called by tu_8022AD64
     bool fn_80256DCC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023A97C
     u8 fn_80256F44(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023AAF8
     bool fn_80273518(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023B848
@@ -1187,7 +1187,7 @@ public:
     s32 fn_8025F55C(); // via getPlayerHeldPlayer_8023ECF0
     s32 fn_80240628(); // via fn_8022F340
     bool fn_8025EDD4(s32 a, const JGeometry::TVec3f* pos); // via fn_8022F784
-    // tu_8025EB18 (round 6): put-down check (callers: the carry state updates),
+    // player_8025EB18 (round 6): put-down check (callers: the carry state updates),
     // the request filter startTransition_80290070 asks before a screen change, and the
     // pick-up checks run by fn_80261480 (from the states 0-3 updates).
     bool fn_8025EB18();
@@ -1211,7 +1211,7 @@ public:
     void fn_8025F698(bool arg); // via fn_80230C6C
     void fn_802544B0(); // via fn_8023F728
     void resetSlot_80254744(); // via fn_8023F78C
-    // tu_8023FBF0 members without a generated query (SHARED-EDIT: added with the small-function pass).
+    // player_8023FBF0 members without a generated query (SHARED-EDIT: added with the small-function pass).
     void fn_8023FF90(const JGeometry::TVec3f* arg);
     s32 fn_8024064C() const;
     bool fn_80240B34();
@@ -1243,15 +1243,15 @@ public:
     bool fn_8025190C(bool a);
     void fn_80252F80(const JGeometry::TVec3f* pos, s32 a, s32 b, u8 c);
     bool fn_8024F63C();
-    bool fn_80243234(); // tu_8023FBF0 (0x80243234)
+    bool fn_80243234(); // player_8023FBF0 (0x80243234)
     bool fn_80243C64();
-    bool fn_80244630(); // tu_8023FBF0 (0x80244630)
+    bool fn_80244630(); // player_8023FBF0 (0x80244630)
     s32 fn_8027218C();
 }; // Size: 0x13BC
 
 // The actor the player holds or carries (serial mHeldActorSerial_0xd68), or NULL. Every
-// lookup of mHeldActorSerial_0xd68 goes through here (14 in tu_8023FBF0, tu_8025EB18,
-// tu_80256C74, tu_8026FC20). The named local is what the registers show: in
+// lookup of mHeldActorSerial_0xd68 goes through here (14 in player_8023FBF0, player_8025EB18,
+// player_80256C74, player_8026FC20). The named local is what the registers show: in
 // fn_80273518 the actor is coloured before toView's layer (docs/REGALLOC.md
 // rules 1-2), which a plain local in the caller is not.
 inline ActorBase_804A5770* Player_804A6F38::heldActor() {
@@ -1326,7 +1326,7 @@ void fn_8022B260(void); // 0x6C = false
 bool fn_8023F264(s32 player);
 
 // Per-player queries, by address. "N units": other units that call it;
-// "->": the player's getter (tu_8023FBF0 unless said) or field it returns.
+// "->": the player's getter (player_8023FBF0 unless said) or field it returns.
 bool fn_8022B7C4(s32 player);            // 7 units. -> fn_8023FC08 (byte 0x42C); else false
 void fn_8022B860(s32 player, s32 value); // 1 unit. -> fn_8023FC10(value)
 f32 fn_8022C6AC(s32 player);             // -> fn_80246F28; else lbl_80540008
@@ -1352,11 +1352,11 @@ s32 fn_8023B004(const JGeometry::TBox2f* a, s32 b); // -> the first active playe
 // update, always with 0xF); the return is unused.
 void fn_8022E2D8(s32 index);
 
-// Owner: tu_8022AD64 (0x80239B64, defined there). 1 unit (tu_8021693C). The
+// Owner: tu_8022AD64 (0x80239B64, defined there). 1 unit (sword_hit_box_8021693C). The
 // per-player box test of fn_8022FF8C's family: if the player is present
 // (byte 0xCAC set) it forwards (player object, box, layer, serial, a, b) to
 // fn_80272224 and returns its 0/1 result (clrlwi 24 / test in the caller).
-// tu_8021693C passes its hit box, the actor's mPlayerNo_0x4, a type word, 1, 1.
+// sword_hit_box_8021693C passes its hit box, the actor's mPlayerNo_0x4, a type word, 1, 1.
 bool fn_80239B64(s32 player, const JGeometry::TBox2f* box, s32 layer, s32 type, bool a, bool b);
 
 // game/tu_8022AD64.cpp (0x8022BB48): whether any active player's
@@ -1396,11 +1396,11 @@ void fn_8022CB94(s32 player); // -> fn_8024B9E8
 void fn_8022CC20(s32 player); // -> resetPosHistory_8024BAEC
 void fn_8022CD48(s32 player); // -> endFormActor_80248FF0
 // Owner: game/tu_8022AD64.cpp. Called with a player index by UnknownFORM_804A7BE8
-// (game/tu_8029C584.cpp): the destructor calls fn_8022CDD4, init fn_8022CF08.
+// (game/act_unknown_form_8029C584.cpp): the destructor calls fn_8022CDD4, init fn_8022CF08.
 void fn_8022CDD4(s32 player);
 void fn_8022CF08(s32 player);
 // The largest distance from a follower of `player`'s group to its getFollowTargetPos_8027FA08 point
-// (0.0f for none); compared with 0.0f by fn_802859C4 (tu_8027E5BC).
+// (0.0f for none); compared with 0.0f by fn_802859C4 (player_8027E5BC).
 f32 fn_8022CFE8(s32 player);
 // A per-player test (false without the manager): fn_8022D75C of the player, or of
 // getRepresentativePlayer_8022EA0C's player when fn_8022F478 holds. ActorBase_804A5770::getNearestPlayerDir_801EE558 skips
@@ -1409,7 +1409,7 @@ bool fn_8022D534(s32 player);
 // A per-player test; cls_804A71A8::fn_8026C350 blocks tile 0x3E unless it holds
 // (clrlwi. of r3).
 bool fn_80237A80(s32 player);
-// fn_8024BB88 on the present players of `player`'s group. 1 unit (tu_8028FBA0).
+// fn_8024BB88 on the present players of `player`'s group. 1 unit (player_8028FBA0).
 void fn_8022D36C(s32 player);
 s32 fn_8022D498(s32 player); // -> fn_8024BB94; else 0
 s32 fn_8022D7F8(s32 player); // -> fn_8024FF6C; else 0
@@ -1528,11 +1528,11 @@ bool fn_802354E4(s32 player); // -> fn_802411EC; else false
 bool fn_80235580(s32 player); // -> fn_80241200; else false
 void fn_802356B8(s32 player); // -> fn_802412D4
 bool fn_80235744(s32 player); // -> fn_802413C8; else false
-s32 fn_802357E0(s32 player);             // 2 units. -> fn_802702E4 (word 0xC74, tu_8026FC20); else 0
-s32 fn_8023587C(s32 player);             // 1 unit. -> fn_80270310 (word 0xC70, tu_8026FC20); else 0
+s32 fn_802357E0(s32 player);             // 2 units. -> fn_802702E4 (word 0xC74, player_8026FC20); else 0
+s32 fn_8023587C(s32 player);             // 1 unit. -> fn_80270310 (word 0xC70, player_8026FC20); else 0
 void fn_80235918(s32 player); // -> fn_802702EC
-s32 fn_80235A30(s32 player);             // 1 unit. -> fn_80270350 (word 0xC64, tu_8026FC20); else 0
-s32 fn_80235ACC(s32 player);             // 2 units. -> fn_80270358 (word 0xC50, tu_8026FC20); else 0
+s32 fn_80235A30(s32 player);             // 1 unit. -> fn_80270350 (word 0xC64, player_8026FC20); else 0
+s32 fn_80235ACC(s32 player);             // 2 units. -> fn_80270358 (word 0xC50, player_8026FC20); else 0
 void fn_80235FE8(s32 player); // -> fn_8024E500
 s32 fn_80236100(s32 player); // -> fn_802418E8; else 0
 void fn_80236350(s32 player); // -> fn_802708D0
@@ -1557,7 +1557,7 @@ s32 fn_80238EDC(s32 player); // -> fn_8024FF54; else -1
 s32 fn_8023A1A4(s32 player); // -> fn_8026FC20; else 0
 bool fn_8023A3DC(s32 player); // -> fn_8026FCB0; else false
 bool fn_8023A51C(s32 player);            // 5+ units. -> player slot present, else false
-bool fn_8023A5B8(s32 player);            // 1 unit. -> fn_8026FC84 (byte 0xB9B, tu_8026FC20); else false
+bool fn_8023A5B8(s32 player);            // 1 unit. -> fn_8026FC84 (byte 0xB9B, player_8026FC20); else false
 bool fn_8023B484(s32 player); // -> fn_802577E0; else false
 s32 fn_8023B630(s32 player); // -> fn_80272184; else 0
 s32 fn_8023B6CC(s32 player); // -> fn_802721A8; else 0
@@ -1641,7 +1641,7 @@ bool fn_8023561C(s32 player);
 // queue is busy, else a per-player flag.
 u8 fn_80303750(s32 layer);
 // Not written yet (tu_80301CD0, 0x80301D54): called with a player index (mPlayerNo_0x4) by
-// fn_80290E90 and tu_8028FBA0's fn_802901DC path.
+// fn_80290E90 and player_8028FBA0's fn_802901DC path.
 extern "C" void fn_80301D54(s32 player);
 // Not written yet (tu_80301CD0, 0x803020C8): (player, from layer, to layer, mode) for the
 // player's GBA link; startTransition_80290070 passes the mode 0 / 1 / 2 as a byte (clrlwi 24).
@@ -1723,7 +1723,7 @@ s8 fn_8023CB24(s32 player);              // 19 units. -> fn_8024EE0C (byte 0x3D9
 u16 fn_8023CBC0(s32 player);             // 10 units. -> fn_8024EE1C (halfword 0x3C4); else 0x121
 
 // Owner unit tu_8022AD64. 5 units (act_quicksand, act_switch,
-// act_warp, act_gravestone, tu_8023FBF0). Bool-tested (clrlwi 24) result of
+// act_warp, act_gravestone, player_8023FBF0). Bool-tested (clrlwi 24) result of
 // fn_80240F28 on the player; false without a player.
 bool fn_8023513C(s32 player);
 
@@ -1827,7 +1827,7 @@ bool fn_80236ED8(s32 player, s32 value);
 // Whether every present player passes fn_8024E060, then fn_8024DCD0; then fn_8037AE00 on
 // lbl_8053AD70. False without a manager. 8+ units (act_zoom, act_small_key, ...).
 // fn_80241964 on the player or, while it follows one (hasPlayerLeader_8022F514), on its leader
-// (getPlayerLeader_8022F3DC), recursively. tu_8026FC20 fn_80274728 tests it (clrlwi.) for this player
+// (getPlayerLeader_8022F3DC), recursively. player_8026FC20 fn_80274728 tests it (clrlwi.) for this player
 // while fn_802486A0() == 3.
 bool fn_8023434C(s32 player);
 bool fn_8023077C();
@@ -1855,10 +1855,10 @@ bool fn_80230498(s32 player, const JGeometry::TVec3f* pos, s32 id, u8 a, s8 b, s
 // player falls off the end with r3 still the index (the source has no final
 // return); the caller uses the result (mr r26, r3 at 0x80306B44).
 s32 fn_802340A0(s32 player);
-// -> startTransition_80290070; false without the player. 3 units (act_warp, act_magic_circle, tu_802957CC; clrlwi 24).
+// -> startTransition_80290070; false without the player. 3 units (act_warp, act_magic_circle, act_moving_house_802957CC; clrlwi 24).
 bool fn_802316C8(s32 player, s32 layer, const JGeometry::TVec3f* pos);
 bool startPlayerTransition_802317F0(s32 player, s32 a, const JGeometry::TVec3f* b, const JGeometry::TVec3f* c, s32 d);
-// 1 unit (tu_8023FBF0). -> &mGlideTarget_0x324 (TVec2f); else &lbl_804CF460 (a TVec3f, its x / y).
+// 1 unit (player_8023FBF0). -> &mGlideTarget_0x324 (TVec2f); else &lbl_804CF460 (a TVec3f, its x / y).
 const JGeometry::TVec2f* fn_80238430(s32 player);
 // Whether two boxes overlap (a copy of a clipped to b is not empty). Called by updateScreenChange_80231DE4 and fn_80232A0C.
 bool fn_80233C9C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b);
@@ -1882,14 +1882,14 @@ void fn_8022B278();
 // 1 unit (act_horse_race_man). Sets the manager's flag 0x71, then fn_8024D98C and fn_80248DD8 on every present player.
 void fn_8022B064();
 // The index of the first present player whose fn_8024FF6C / fn_8024FF84 equals serial, else -1.
-// tu_80285E58 compares the result with mPlayerNo_0x4; act_block / act_somaria_block pass their 0x198.
+// player_80285E58 compares the result with mPlayerNo_0x4; act_block / act_somaria_block pass their 0x198.
 s32 fn_80238F78(s32 serial);
 s32 fn_80239040(s32 serial);
 // 1 unit (act_force_gem; compared with 2). The first present player's non-negative fn_8026FC68, else -1.
 s32 fn_8023A240();
-// 3 units (act_thwomp_launch_npc, act_thwomp_launch_npc_2, tu_802957CC). Whether fn_8026FCE0 is true for any present player.
+// 3 units (act_thwomp_launch_npc, act_thwomp_launch_npc_2, act_moving_house_802957CC). Whether fn_8026FCE0 is true for any present player.
 bool fn_8023A30C();
-// 2 units (act_horse_race_man, tu_8026FC20). Clears the manager's flag 0x71, then fn_8024D98C,
+// 2 units (act_horse_race_man, player_8026FC20). Clears the manager's flag 0x71, then fn_8024D98C,
 // resetPosHistory_8024BAEC, fn_80248E94(false) and fn_8026FC8C on every present player.
 void fn_8022AF78();
 // act_shop_item's update() calls it after paying for kinds 4-7, with 9, 4, 3 or 6 as the
@@ -1905,7 +1905,7 @@ s32 fn_8022FD8C(s32 serial);
 // manager). act_zoom passes (&box, mPlayerNo_0x4, false, 0.0f); tested against 0 with cmpwi.
 s32 fn_8023AF14(const JGeometry::TBox2f* box, s32 layer, bool flag, f32 margin);
 // Owner: tu_8022AD64 (0x8022C76C / 0x8022C82C). Forwarders like fn_8022C6AC:
-// the player's fn_8024712C / fn_80247330, lbl_80540008 without a player. tu_8027E5BC fn_80281A90
+// the player's fn_8024712C / fn_80247330, lbl_80540008 without a player. player_8027E5BC fn_80281A90
 // subtracts the first from mPos.y and adds the second to mPos.x.
 f32 fn_8022C76C(s32 player);
 f32 fn_8022C82C(s32 player);
@@ -1945,7 +1945,7 @@ s32 fn_80239470(const JGeometry::TBox2f* box, s32 layer, s32 serial);
 s32 fn_8023AE34(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out);
 s32 fn_8023AD54(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out);
 // Owner: tu_8022AD64 (0x80236468). (player, amount): fn_80270D34(amount) on every present
-// player of `player`'s group (arePlayersInSameGroup_8022E438). Called by tu_8026FC20 fn_802710C8.
+// player of `player`'s group (arePlayersInSameGroup_8022E438). Called by player_8026FC20 fn_802710C8.
 void fn_80236468(s32 player, s32 amount);
 // 34+ units. Takes a flag (clrlwi 24), not a player: loops all four players;
 // every caller passes 0. Result tested against 1.
@@ -1955,9 +1955,9 @@ bool fn_80230534(bool flag);
 // fn_80250030(player object, serial) passes, or -1 (fn_80239108 not positive).
 s32 fn_80238BC4(s32 serial);
 // The number of present players whose fn_8022D7F8 is `serial`, or 0 when they face
-// different ways (0x3DC). 4 units (tu_802957CC, tu_80354D64, the pull switches; cmpwi 4).
+// different ways (0x3DC). 4 units (act_moving_house_802957CC, tu_80354D64, the pull switches; cmpwi 4).
 s32 fn_80238A68(s32 serial);
-// Owner unit tu_8022AD64 (not declared by it). 1 unit (tu_802957CC): the index (0-3) of a player
+// Owner unit tu_8022AD64 (not declared by it). 1 unit (act_moving_house_802957CC): the index (0-3) of a player
 // facing the actor `serial`, or -1.
 s32 fn_8023885C(s32 serial);
 
@@ -2020,7 +2020,7 @@ void fn_8023E690(s32 player, const JGeometry::TVec3f* pos);
 void setPlayerFacing_80230BF4(s32 player, s32 mode);  // 18 units. act_post_warp_pillar_handling passes 2
 
 // Owner: tu_8022AD64's area (not written yet). The per-player queries the
-// small getters of game/tu_8023FBF0.cpp forward to when a team index is set.
+// small getters of game/player_8023FBF0.cpp forward to when a team index is set.
 bool fn_80230E1C(s32 player, bool arg); // -> fn_8024EFA0
 s32 fn_8023BEA8(s32 player);            // -> fn_80247B9C
 s32 fn_8023C36C(s32 player);            // -> fn_80247BD4

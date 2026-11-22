@@ -3,7 +3,7 @@
 
 // *gBgRewrite_8053AC98 (53 units): the object that rewrites the stage's background
 // tiles when actors change them (doors opening, blocks and walls bombed,
-// grass burnt, switches pressed), from game/tu_8029D898.cpp.
+// grass burnt, switches pressed), from game/bg_rewrite_8029D898.cpp.
 //
 // "BgRewrite_804A7C98" is a provisional descriptive name carrying its
 // vtable address (docs/PLAN.md, "Placeholder names"). Evidence for "BG
@@ -61,7 +61,7 @@ public:
     // indexed by pattern * 0x28 around pos. this unused.
     void fn_8029D8F0(const JGeometry::TVec3f* pos, s32 layer, s32 layerOffset, s32 pattern);
     // 4 units (Player_804A6F38::updateState_802870C8, act_block, act_somaria_block,
-    // tu_8028FBA0). Reads pos x/y; player and layer follow.
+    // player_8028FBA0). Reads pos x/y; player and layer follow.
     bool fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     // 15 units / 78 calls. Writes tile code `tile` into the cell at pos on
     // `layer` (getCellIndex_80226BC4(pos', layer & 0xFE), then setTile_802F9974(layer,
@@ -87,7 +87,7 @@ public:
     void writeTileMarkView_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
     // Shared body of writeTileMarkView_802A3884 / fn_802A3948, inlined into both and into their callers.
     void writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set);
-    // 1 unit besides tu_8029D898 (act_gravestone). Writes the four tile
+    // 1 unit besides bg_rewrite_8029D898 (act_gravestone). Writes the four tile
     // codes a..d (u16, clrlwi 16 / lhz) into the cells at and after pos on
     // `layer` (two setTile_802F9974 calls per pair, like fn_802A3948).
     void fn_8029E050(const JGeometry::TVec3f* pos, s32 layer, u16 a, u16 b, u16 c, u16 d);
@@ -112,19 +112,19 @@ public:
     void fn_802A3D80();
     // 10 units. Spreads fire over burnable tiles (see above). Callers pass
     // &mPos, a player (-1, or a word field), the layer, an s32 (spawnActor_801F9484 argument; compared with cmpwi) and an s32
-    // (0, 0 in act_unknown_lnbm_801BEDBC and tu_802233A4, 1, 1 in
+    // (0, 0 in act_unknown_lnbm_801BEDBC and act_shadow_link_thwomp_minor_802233A4, 1, 1 in
     // act_spreading_fire); types from the body.
     void fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b);
-    // 1 unit (tu_802957CC); body unwritten (tu_8029D898).
+    // 1 unit (act_moving_house_802957CC); body unwritten (bg_rewrite_8029D898).
     void fn_802A1050(const JGeometry::TVec3f* pos);
-    // 1 unit (tu_80256C74, the dig of state 0x47 at frame 12). Reads the map tile
+    // 1 unit (player_80256C74, the dig of state 0x47 at frame 12). Reads the map tile
     // under pos (getCellIndex_80226BC4 into field_0x20, getTile_802F9908 into field_0x24) and
     // returns a result code that the caller tests for 1-4 and 8.
     s32 fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s32 layer);
-    // 1 unit (tu_80256C74, the ground smash of state 0x3C). Reads the tile under pos
+    // 1 unit (player_80256C74, the ground smash of state 0x3C). Reads the tile under pos
     // like fn_802A1844 (fields 0x20 / 0x24); returns li 1 / li 0 (the caller ignores it).
     bool fn_802A1D44(const JGeometry::TVec3f* pos, s32 player, s32 layer);
-    // 1 unit (tu_8025EB18 fn_80260C08, the pick-up in front). Read the tile
+    // 1 unit (player_8025EB18 fn_80260C08, the pick-up in front). Read the tile
     // under pos like fn_802A1844 (fields 0x20 / 0x24); fn_8029E888 returns the
     // tile code == 0x30 as a u8 (subfic / cntlzw / extrwi; the caller tests 1),
     // fn_802A01F0 1 for code 0x71 or fn_802A0800's result for 0x16 / 0x17
@@ -133,7 +133,7 @@ public:
     u8 fn_8029E888(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     bool fn_802A01F0(const JGeometry::TVec3f* pos, s32 player, s32 layer);
     s32 fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s32 layer);
-    // 1 unit (tu_8025EB18 fn_80263860, the held thing's position with z 0 in
+    // 1 unit (player_8025EB18 fn_80263860, the held thing's position with z 0 in
     // state 0x15). Reads the tile under pos like the above; returns 0 or 1 (li
     // into r30), tested with clrlwi.
     bool fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s32 layer);
@@ -153,15 +153,15 @@ public:
     // this unused.
     void fn_8029E928(const JGeometry::TVec3f* pos, s32 layer, s32 tile);
     // 1 unit (act_block, init). Stores the tile it reads into this+0x20 / +0x24.
-    // 0x8029E248 (game/tu_8029D898.cpp): the tile on pos is 0x19C / 0x19D (a pair of halves); rewrites it to 0x19E / 0x19F.
+    // 0x8029E248 (game/bg_rewrite_8029D898.cpp): the tile on pos is 0x19C / 0x19D (a pair of halves); rewrites it to 0x19E / 0x19F.
     bool fn_8029E248(const JGeometry::TVec3f* pos, s32 layer);
     void fn_8029E9EC(const JGeometry::TVec3f* pos, s32 layer, u16 tile, s32 arg4, u8 dir);
-    // 1 unit (tu_802957CC, 2 calls each). Read the tile under pos on layer 0
+    // 1 unit (act_moving_house_802957CC, 2 calls each). Read the tile under pos on layer 0
     // into fields 0x20 / 0x24; true when its lbl_8046CB88 collision code is 0
     // or getTileCollisionCode_8022461C gives 0x22 while GameView field_0x170 is clear
     // (fn_802A1554 also for a list of tile codes and the codes 0xE / 3).
     bool fn_802A1490(const JGeometry::TVec3f* pos);
-    // 0x802A1688 (game/tu_8029D898.cpp): the tile on pos is 0x81: unless tag is 'SBAL', rewrites it to 0x9D and spawns
+    // 0x802A1688 (game/bg_rewrite_8029D898.cpp): the tile on pos is 0x81: unless tag is 'SBAL', rewrites it to 0x9D and spawns
     // a 'KMRI' actor (layers 8 and up) or two emitters; plays sound 0x50045. Returns fn_802A3164(pos, -1, layer).
     bool fn_802A1688(const JGeometry::TVec3f* pos, s32 layer, u32 tag);
     bool fn_802A1554(const JGeometry::TVec3f* pos);

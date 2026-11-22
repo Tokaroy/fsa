@@ -6,7 +6,7 @@
 // own functions (0x801D2C60-0x801D30FC) override the destructor
 // (dtor_801D2C60), init (0x801D2FEC), update (0x801D2E70) and draw
 // (0x801D2D38); the constructor is 0x801D30B8. Derived classes
-// (tu_802201D8's 0x804A6828, two more in tu_801F9484's spawner) call these
+// (act_unknown_fbal_802201D8's 0x804A6828, two more in tu_801F9484's spawner) call these
 // qualified and inline its destructor.
 
 #include "game/EnemyBase.h"

@@ -10,7 +10,7 @@
 #include "game/Player.h"
 #include "game/SpriteParams.h"
 #include "game/StageFlag.h"
-#include "game/tu_8021F064.h"
+#include "game/navi_list_8021F064.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 #include <float.h>

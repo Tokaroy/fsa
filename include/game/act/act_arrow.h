@@ -15,7 +15,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x230 */ s32 field_0x230; // lwz / stw in act_arrow (tested 0, 4); 0 lets the player's state 0x43 go on (tu_80256C74 fn_8025AB00)
+    /* 0x230 */ s32 field_0x230; // lwz / stw in act_arrow (tested 0, 4); 0 lets the player's state 0x43 go on (player_80256C74 fn_8025AB00)
     /* 0x234 */ f32 field_0x234; // 255.0f after init
     /* 0x238 */ u8 field_0x238;
     /* 0x239 */ u8 field_0x239[3]; // not yet known

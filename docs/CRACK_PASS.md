@@ -58,7 +58,7 @@ trick is replaced by an honest fix (or the project decides to accept it).
 - **Verification (2026-11-06):** unit NonMatching; full `ninja` and `sha1sum -c
   config/G4SE01/build.sha1` OK; `tools/gate.py --all-units` and `--base matching` pass.
 
-## Retired 2026-11-05: tu_80222CC4, tu_80221B44 (`defer_codegen`) and act_shadow_link_bow
+## Retired 2026-11-05: act_shadow_link_fire_minor_80222CC4, act_shadow_link_hammer_minor_80221B44 (`defer_codegen`) and act_shadow_link_bow
 
 Game code is now compiled `-inline auto,deferred` project-wide (docs/INLINING.md),
 which is what the `#pragma defer_codegen on` + reversed-functions trick reproduced
@@ -75,14 +75,14 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 - **Literals pooled before their first visible use.** PARTLY SOLVED 2026-11-05 (game_root_sub_24_8016A2B4): file-scope static const aggregates, and helpers defined early whose out-of-line copy was dead-stripped (see RULES_CARD "Known game-code shapes"); revisit the other units below with that in mind. game_root_sub_24_8016A2B4 (ten GXColor
   objects then 0.125/1/0.5/0 ahead of drawParallaxModel_8016A7DC's literals), escort_base_801213EC (8.0f
   before 0.0f, 10430.378f before -24f), tu_803BC6F0 (0, -200, 200 first, used
-  only by later functions) and tu_8027E5BC (1.5f, 3.0f). Literals are created per
+  only by later functions) and player_8027E5BC (1.5f, 3.0f). Literals are created per
   function in compile order, and an inline helper's aggregate initializers when
   the inline is first read. Candidates: early inline helpers, dead code the
   optimizer removed, or a deferred/reordered codegen mode. Each unit's
   checkpoint has the pool layout.
 - **Inlining of later-defined functions.** ANSWERED 2026-11-05: the original was
   compiled with deferred inlining, now the project mode (docs/INLINING.md). The units
-  listed here (tu_803099FC, tu_8043A0E8, tu_80256C74, game_root_sub_24_8016A2B4, tu_802F5040,
+  listed here (tu_803099FC, tu_8043A0E8, player_80256C74, game_root_sub_24_8016A2B4, tu_802F5040,
   tu_803944C8) can write the callee as a plain function.
 - **Weak destructor emitted first.** ANSWERED 2026-11-05 (deferred inlining):
   tu_8045A640 now emits the weak __dt__Q29GameAudio16CustomSoundTableFv first;
@@ -107,13 +107,13 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   the title's strings, and 0.5f / 120.0f lead its .sdata2, but no surviving function references them; the table's tail {3,4,5,4}
   matches tu_803536C4's lbl_80472260, also followed by that string. Likely a function the linker dropped (dead code or a weak
   duplicate). Keeps fn_803A5380 and the ctor at 99.78 %. Same family as the leading-literal items above.
-- **Overflow trap on the player life word (tu_8026FC20 addLife_80270DDC).** The original
+- **Overflow trap on the player life word (player_8026FC20 addLife_80270DDC).** The original
   does `old = x; x++; if (x == old) for (;;); x = old;` on Player 0xBFC (stw, reload,
   `b .` self-branch, restore) before healing. It is written literally with a comment; no
   assert macro, busy-wait or donor idiom (grep of src/ and donors) yields it. Not a
   FAKEMATCH (nothing is steered), but the source form is unknown; revisit if another
   function shows the same increment-compare-spin shape. It now appears a second time:
-  tu_8023FBF0 addCounter_8024ED4C (fn_8024ED4C, Player 0xC04), preceded there by an
+  player_8023FBF0 addCounter_8024ED4C (fn_8024ED4C, Player 0xC04), preceded there by an
   `if (c > 9999) for (;;)` check that fn_8024ECCC also has; the same unexplained assert-like
   halts, fields differ, so no shared inline is written.
 - **The 11 units still out of address order** (tools/order_check.py; 12 before the
@@ -251,8 +251,8 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_navi_after_crystal_cutscene_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
 | tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
 | act_big_moldorm_tail_8018EB94 | `BigMoldormTail_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
-| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
-| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
+| player_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
+| player_8027E5BC | `Player_804A6F38::followStep` | 26 | `getFollowTargetPos_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
 | tu_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
 | tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |
 | tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `worldToScreen_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `requestBox_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `loadGXState_8030DFE8__15Camera_804AA9E4Fb` |

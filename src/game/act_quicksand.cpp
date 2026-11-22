@@ -4,7 +4,7 @@
 #include "game/ActorManager.h"
 #include "game/GameMath.h"
 #include "game/act/act_quicksand.h"
-#include "game/act/tu_80212E3C.h"
+#include "game/act/act_antlion_80212E3C.h"
 #include "game/tu_80212AC0.h"
 
 // Releases the held view and partner on leaving a state: state 1 hands the

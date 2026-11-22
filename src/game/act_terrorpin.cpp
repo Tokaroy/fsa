@@ -18,7 +18,7 @@ static const s16 lbl_8046918C[6] = {2, 10, 3, 10, -1, -1};
 static const s16* lbl_8053A120[2] = {lbl_80469180, lbl_8046918C};
 
 // The scale part of m (its translation column is the caller's). The draw
-// loads the three scales z first, as arguments of an inline call (cf. tu_80264998.cpp).
+// loads the three scales z first, as arguments of an inline call (cf. player_80264998.cpp).
 static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
     m[0][0] = x;
     m[0][1] = 0.0f;

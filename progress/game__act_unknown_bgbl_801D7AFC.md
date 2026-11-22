@@ -5,7 +5,7 @@ Unit before: 1/7 functions; after: 6/7 (draw, fn_801D7DB4, init, dtor, ctor, __s
 
 ## Matched
 UnknownBGBL_804A4BB0 (vtable 0x804A4BB0): draw, fn_801D7DB4(f32) (out-of-line scale setter, inlined twice in init), init, dtor, ctor.
-`32.0f * FLT_EPSILON` as a file-local bool inline `isTiny` (tu_8020FE50 precedent). Emitter scale: `setGlobalScale(field_0x54)`.
+`32.0f * FLT_EPSILON` as a file-local bool inline `isTiny` (act_unknown_ibbm_8020FE50 precedent). Emitter scale: `setGlobalScale(field_0x54)`.
 
 ## Resistant
 - update 99.47 % regalloc-only: target keeps layer/mode in r27 and the loop counter in r28; ours counter r27, mode r28, layer r29.

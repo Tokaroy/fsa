@@ -206,7 +206,7 @@ Game code builds with `-inline auto`. Two research rounds
 - For `deferred`: in all 165 original game units with a switch jump table,
   other `.data` (the class vtable) comes before the first jump table. Under
   `auto`, MWCC emits a jump table with its function and the vtable at the end
-  of the TU, so no source order gives the original layout (tu_80222CC4
+  of the TU, so no source order gives the original layout (act_shadow_link_fire_minor_80222CC4
   vfunc_0x90 stays at 99.91 %). `deferred` also puts tu_801D2C60's weak
   inline dtor first, as in the original.
 - For `auto`: with every function reversed, `auto,deferred` keeps all 84
@@ -225,7 +225,7 @@ look for what keeps those callees out of line under `deferred` (pragmas,
 
 More evidence (waves 24–25):
 
-- tu_8021A570: the original inlines fn_8021ABC0's body into fn_8021A570
+- head_sway_8021A570: the original inlines fn_8021ABC0's body into fn_8021A570
   although fn_8021ABC0 comes later in `.text`. Plain `auto` can't do that
   without an earlier inline body (written as a file-static helper that the
   out-of-line fn_8021ABC0 wraps). This points to `deferred`.
@@ -239,10 +239,10 @@ More evidence (waves 24–25):
   "callee X stays out of line" is not by itself proof of a flag.
 
 ### Measured: whole-project `-inline auto,deferred` (2026-11-03)
-Building every game unit with `-inline auto,deferred` instead of `-inline auto`: fully matching game units 103 -> 1, game functions at 100 % 1745 -> 1578 (168 lost, 1 gained: tu_80222CC4's vfunc_0x90). tu_801D2C60, act_shadow_link_bow and tu_8021A570 got worse. Caveat: this run did not reverse the sources, and deferred mode reverses function order, so the drop mostly measures the reversal; see "Measured: reversed sources with `-inline deferred`" for the fair comparison (1745 -> 1738). The standing contradiction: FSA's data order looks deferred, but it only inlines callees earlier in .text, as `auto` does. No tested flag or pragma gives both.
+Building every game unit with `-inline auto,deferred` instead of `-inline auto`: fully matching game units 103 -> 1, game functions at 100 % 1745 -> 1578 (168 lost, 1 gained: act_shadow_link_fire_minor_80222CC4's vfunc_0x90). tu_801D2C60, act_shadow_link_bow and head_sway_8021A570 got worse. Caveat: this run did not reverse the sources, and deferred mode reverses function order, so the drop mostly measures the reversal; see "Measured: reversed sources with `-inline deferred`" for the fair comparison (1745 -> 1738). The standing contradiction: FSA's data order looks deferred, but it only inlines callees earlier in .text, as `auto` does. No tested flag or pragma gives both.
 
 ### Measured: reversed sources with `-inline deferred` (no auto) (2026-11-03)
-All game sources reversed and built with `-inline deferred` alone: the deferred over-inlining (enemy_base_801CDC8C, act_vaati_boss_801EDBA4) goes away and tu_80222CC4 / act_shadow_link_bow vfunc_0x90 reach 100 %, but callees the original auto-inlines are lost (act_stop_npc, escort_actor_list_80131D98, tu_8021F4B0 dtors and 5 more): game functions 1745 -> 1738. Under plain `auto` vtables always end the TU (no ctor/dtor/key-function placement or flag changes that); under deferred a vtable comes with its first referencing function, which reproduces act_stone_arrghus_800F7FCC's `vt1, jt, vt2`. FSA's originals combine deferred-style data order with auto-style inlining (only callees earlier in .text); no tested flag or pragma (`defer_codegen`, `inline_bottom_up`, `inline_depth`) gives both. Details: progress/game__tu_80222CC4.md.
+All game sources reversed and built with `-inline deferred` alone: the deferred over-inlining (enemy_base_801CDC8C, act_vaati_boss_801EDBA4) goes away and act_shadow_link_fire_minor_80222CC4 / act_shadow_link_bow vfunc_0x90 reach 100 %, but callees the original auto-inlines are lost (act_stop_npc, escort_actor_list_80131D98, emitter_move_seq_8021F4B0 dtors and 5 more): game functions 1745 -> 1738. Under plain `auto` vtables always end the TU (no ctor/dtor/key-function placement or flag changes that); under deferred a vtable comes with its first referencing function, which reproduces act_stone_arrghus_800F7FCC's `vt1, jt, vt2`. FSA's originals combine deferred-style data order with auto-style inlining (only callees earlier in .text); no tested flag or pragma (`defer_codegen`, `inline_bottom_up`, `inline_depth`) gives both. Details: progress/game__act_shadow_link_fire_minor_80222CC4.md.
 
 ### Measured: compiler versions and inline modes (2026-11-03, lead/lead-jumptable)
 Every GC compiler in build/compilers/GC (1.0, 1.1, 1.1p1, 1.2.5, 1.2.5n, 1.3, 1.3.2, 1.3.2r, 2.0, 2.0p1, 2.5, 2.6, 2.7, 3.0a3, 3.0a3.2-3.0a3.4, 3.0a3p1, 3.0a5, 3.0a5.2) against three probes: (1) a caller must NOT inline a later-in-.text callee (enemy_base_801CDC8C fn_801CF6B8), (2) a caller must inline an earlier one (act_stop_npc dtor / fn_802ED140), (3) two-class `vt1, jt, vt2` .data (act_stone_arrghus_800F7FCC). Real units where the version parses the headers (1.3-2.7), a scratch C++ equivalent for all (1.0-1.2.5n fail on JKRThread.h, 3.0a* on an `operator delete` exception-spec mismatch).
@@ -253,4 +253,4 @@ Every GC compiler in build/compilers/GC (1.0, 1.1, 1.1p1, 1.2.5, 1.2.5n, 1.3, 1.
 | 1.0-2.7 | `-inline deferred` (noauto) / `smart,deferred` | ok | FAIL (inlines none) | ok |
 | 1.0-2.7 | `auto,deferred,level=1`; `-inline deferred` + `#pragma auto_inline on` | FAIL | ok | ok |
 | 3.0a3-3.0a5.2 | `auto,deferred`, `-ipa file`, `-ipa file` + `bottomup`/`nobottomup`, `-ipa function` | FAIL or ok (ipa function = auto) | ok | FAIL in every mode (vtables always last) |
-No version or flag satisfies all three, so no whole-game build was run. Behaviour is identical across 1.0-2.7; 3.0 never gives the deferred .data order. The original's data order is still only reproducible with deferred codegen, whose inliner sees every body in the file. Crack-pass workaround (`#pragma defer_codegen on` + reversed functions, FAKEMATCH, verified SHA-1 OK on tu_80222CC4): docs/CRACK_PASS.md; it suits the 90 of 165 jump-table units with no call to a later function of their own unit.
+No version or flag satisfies all three, so no whole-game build was run. Behaviour is identical across 1.0-2.7; 3.0 never gives the deferred .data order. The original's data order is still only reproducible with deferred codegen, whose inliner sees every body in the file. Crack-pass workaround (`#pragma defer_codegen on` + reversed functions, FAKEMATCH, verified SHA-1 OK on act_shadow_link_fire_minor_80222CC4): docs/CRACK_PASS.md; it suits the 90 of 165 jump-table units with no call to a later function of their own unit.

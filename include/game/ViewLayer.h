@@ -15,8 +15,8 @@ inline u8 viewLayerFlag(s32 layer) {
 }
 
 // The view's box for `layer`: mVisibleBox below layer 8, else field_0xdc.
-// Inlined by actor_base_801EE24C and the Player units (tu_8023FBF0, tu_8025EB18,
-// tu_8026FC20, tu_802684A4).
+// Inlined by actor_base_801EE24C and the Player units (player_8023FBF0, player_8025EB18,
+// player_8026FC20, tu_802684A4).
 inline JGeometry::TBox2f* layerBox(s32 layer) {
     GameView_804A9950* view = getGameView_802D6A9C();
     return layer < 8 ? &view->mVisibleBox : &view->field_0xdc;

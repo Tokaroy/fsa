@@ -7,14 +7,14 @@
 
 // A ring that grows from mPos and hits each player once (no vtable;
 // named after its lowest-address function). StoneArrghus_8049C718 has one at 0x290,
-// ShadowLinkBase_804A6A00 (game/tu_80221B44.cpp) at 0x2BC.
+// ShadowLinkBase_804A6A00 (game/act_shadow_link_hammer_minor_80221B44.cpp) at 0x2BC.
 struct HitRing_800F802C {
     // Grows the ring (by mTimer, 40 or 20 frames by mType) and hits the
     // active players of layer 0 within mRadius (hitPlayerGroup_80238548, arg 0xB).
     void fn_800F802C();
     // 0x800F8210 (game/act_stone_arrghus_800F7FCC.cpp, not written yet): starts the ring at
     // pos on `layer`; type 0-2 as in fn_800F802C. Called with 2 by
-    // ShadowLinkHammerMinor_804A6AA8 (game/tu_80221B44.cpp).
+    // ShadowLinkHammerMinor_804A6AA8 (game/act_shadow_link_hammer_minor_80221B44.cpp).
     void fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type);
 
     /* 0x00 */ JGeometry::TVec3f mPos;

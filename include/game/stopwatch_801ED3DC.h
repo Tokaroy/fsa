@@ -2,7 +2,7 @@
 #define GAME_STOPWATCH_801ED3DC_H
 
 // Exports of game/stopwatch_801ED3DC.cpp. The stopwatch is embedded 0x18 bytes into
-// the 0x24-byte entries of the table game/tu_80215A94.cpp walks (fn_801ED3DC,
+// the 0x24-byte entries of the table game/horse_race_table_80215A94.cpp walks (fn_801ED3DC,
 // fn_801ED458, fn_801ED5C8, fn_801ED798, fn_801ED7B0, fn_801ED7F0 and
 // fn_801ED80C are called with &entry->field_0x18); the countdown is embedded
 // at 0x2B6 of the horse-race man actor (game/act_horse_race_man.cpp: fn_801ED828,

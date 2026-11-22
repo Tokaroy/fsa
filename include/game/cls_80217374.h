@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-// A 0xC-byte wandering-direction timer, defined in game/tu_80217374.cpp.
+// A 0xC-byte wandering-direction timer, defined in game/wander_turn_timer_80217374.cpp.
 // No vtable or constructor; named after its first method. Embedded in the
 // shadow Link (act_shadow_link_2, +0x550) and thief (act_thief, +0x368)
 // actors, which pass their facing angle (s16 at 0x33C) through fn_80217374

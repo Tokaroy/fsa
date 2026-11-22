@@ -2,9 +2,9 @@
 #define GAME_ACT_ACT_THIEF_H
 
 // Code: game/act_thief.cpp (not written yet; the members below are in
-// game/tu_8020F798.cpp). Actor TZOK ("Thief" in docs/names/actors.tsv): an
+// game/act_thief_8020F798.cpp). Actor TZOK ("Thief" in docs/names/actors.tsv): an
 // EnemyBase_804A4808 whose spawner (ctor 0x80206810) allocates 0x388 bytes.
-// Only the fields tu_8020F798 uses are named; the rest of the class is
+// Only the fields act_thief_8020F798 uses are named; the rest of the class is
 // padding until act_thief is written.
 
 #include "game/cls_804A46F4.h"

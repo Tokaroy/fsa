@@ -2,7 +2,7 @@
 2026-11-05 pass (Sonnet 5.5): baseline 8112 -> 8119 (11 -> 18 of 36).
 Written: fn_80134CC8, fn_80134D20, fn_80134FE0 (93.1 %), fn_80136320 (85.9 %), fn_801365E8, fn_8013670C, fn_80136798, fn_801367E0, getPlayerCount_80138A30.
 Resistant: fn_80134FE0: target reloads field_0x94 into r4 and passes it on unconverted (no li r4,1). fn_80136320: target tests mode == 0 then folds 1-6 (subi; cmplwi 5) reusing r3; ours folds 0-6 or compares 1/6 separately.
-SHARED-EDITS: include/game/GameGlobals.h (GameRoot fields 0x50/0x60/0x64/0xa0/0x10c carved, new members, AudioMgr_8045A080::fn_804593D4, fn_801367E0 free decl removed); new include/game/cls_804A8390.h (class moved out of src/game/tu_802AC8AC.cpp); src/game/act_battle_royale_end_check.cpp (caller of fn_801367E0 now a member call); symbols.txt renames.
+SHARED-EDITS: include/game/GameGlobals.h (GameRoot fields 0x50/0x60/0x64/0xa0/0x10c carved, new members, AudioMgr_8045A080::fn_804593D4, fn_801367E0 free decl removed); new include/game/cls_804A8390.h (class moved out of src/game/black_fade_802AC8AC.cpp); src/game/act_battle_royale_end_check.cpp (caller of fn_801367E0 now a member call); symbols.txt renames.
 Next: fn_80134C04 (0xBC), fn_80136500, fn_80138AB0, then the big ones.
 
 2026-11-05 pass 2 (Opus 5.5): unit 18 -> 23 of 36 (+5 honest); total 8368 -> 8373 on matching e8f327ee.

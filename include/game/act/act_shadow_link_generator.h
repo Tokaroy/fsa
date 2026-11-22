@@ -8,7 +8,7 @@
 
 #include "game/EnemyBase.h"
 #include "game/cls_8021C2B4.h"
-#include "game/tu_8021F4B0.h"
+#include "game/emitter_move_seq_8021F4B0.h"
 
 class JPABaseEmitter;
 

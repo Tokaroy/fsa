@@ -2,9 +2,9 @@
 #define GAME_ACT_TU_80210630_H
 
 // Code: game/tu_80210630.cpp.
-// The shared base of the actor in game/tu_8020FE50.cpp: vtable 0x804A61C8.
+// The shared base of the actor in game/act_unknown_ibbm_8020FE50.cpp: vtable 0x804A61C8.
 // Its constructor fn_80210AB4 calls EnemyBase's, stores this vtable and sets
-// 0x2A8; the destructor is inline (tu_8020FE50's stores this vtable, then
+// 0x2A8; the destructor is inline (act_unknown_ibbm_8020FE50's stores this vtable, then
 // EnemyBase's). Named after its vtable.
 
 #include "game/EnemyBase.h"
@@ -24,7 +24,7 @@ public:
     // 0x80210630: draws the sprite (drawTimgImage_802F745C) for direction mDir_0x98.
     // arg0 is tested for non-zero; arg1 and arg2 are stored as bytes
     // (0x60, 0x61) and arg3 as a byte at 0x58 of its parameter block
-    // (tu_8020FE50's draw passes (int)field_0x2a8 in the state 2).
+    // (act_unknown_ibbm_8020FE50's draw passes (int)field_0x2a8 in the state 2).
     void fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3);
     // 0x80210990: writes the four floats of the box for direction `dir`
     // (0-3) to *out, from field_0x54 / field_0x58.

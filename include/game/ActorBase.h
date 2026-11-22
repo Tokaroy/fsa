@@ -148,7 +148,7 @@ public:
     // 0x801F4704, empty. 7 overrides, all objects a player can lift or
     // throw (act_pot, act_grass, act_stone, act_sign, act_coconut,
     // act_bomb, act_bombchu), no arguments read; called on actors found by
-    // serial (tu_8025EB18 0x80263A04) and by act_warp (0x8022713C) and
+    // serial (player_8025EB18 0x80263A04) and by act_warp (0x8022713C) and
     // act_seesaw_lift (0x803587F0); r3 never read.
     /* 0x48 */ virtual void vfunc_0x48();
     // 0x801F15BC: the layer (cmpwi 8 in 0x801F165C) and a position go to
@@ -418,14 +418,14 @@ public:
     // its 20-value table. r3 (the actor) is never read; callers pass the
     // actor and (mSpawnParam_0x90 & 0xFF) (act_thief, tu_801DE714).
     s32 fn_8032D564(s32 index);
-    // 1 unit / 2 calls (tu_8025EB18, on an actor found by serial). If
+    // 1 unit / 2 calls (player_8025EB18, on an actor found by serial). If
     // neither field_0xcc nor field_0xc4: field_0xcc = 1, field_0xd0 = v,
     // returns 1; else 0.
     u8 fn_801F36D4(s32 v);
-    // 1 unit / 2 calls (tu_8025EB18). If field_0xc4: clears it, mVel_0x3c =
+    // 1 unit / 2 calls (player_8025EB18). If field_0xc4: clears it, mVel_0x3c =
     // *v, returns 1; else 0.
     u8 fn_801F3708(const JGeometry::TVec3f* v);
-    // 1 unit / 9 calls (tu_8025EB18; callers pass a mLayer_0x4). If not
+    // 1 unit / 9 calls (player_8025EB18; callers pass a mLayer_0x4). If not
     // field_0xc4: field_0xc4 = 1, field_0xc8 = field_0x110 = v, field_0xcc
     // = 0, field_0xd0 = -1, returns 1; else 0.
     u8 fn_801F3744(s32 v);
