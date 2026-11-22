@@ -300,8 +300,8 @@ public:
     void fn_80261468(); // counts field_0xd74 down to 0
     void fn_80259660(); // tu_80256C74
     void fn_80283D2C(); // tu_8027E5BC
-    bool fn_8025F484() const; // field_0xd68 is a living actor (field_0x1a4 > 0)
-    // The held actor (serial field_0xd68), or NULL; inline, defined below the class.
+    bool fn_8025F484() const; // mHeldActorSerial_0xd68 is a living actor (field_0x1a4 > 0)
+    // The held actor (serial mHeldActorSerial_0xd68), or NULL; inline, defined below the class.
     ActorBase_804A5770* heldActor();
     void fn_80277100(); // tu_8026FC20; empty, called by the same dispatch
     void fn_802791AC(); // tu_8026FC20; empty, called by the same dispatch
@@ -371,20 +371,20 @@ public:
     void fn_8025A04C(); // clears 0x458; field_0xb84 = fn_80241794() > 0; 0xb88, 0xb8c = 0, 0xb28 = -1
     void fn_8025A9C0(); // same body as fn_8025A04C
     void fn_8025AAF4(); // field_0x11f8 = -1
-    void fn_8025AEB0(); // field_0x124d = 1, field_0x458 = 0
+    void fn_8025AEB0(); // mStateLocked_0x124d = 1, field_0x458 = 0
     void fn_8025AEC4(); // field_0x11f8 = -1
-    void fn_8025B218(); // field_0x124d = 1, field_0x458 = 0
+    void fn_8025B218(); // mStateLocked_0x124d = 1, field_0x458 = 0
     void fn_8025B35C(); // field_0x458 = 0
     void fn_8025B368(); // clears 0xb99-0xb9b, ends the emitters at 0x1274 and 0x128c, clears 0x40c
     void fn_8025BDD8(); // ends the emitters at 0x12cc and 0x12e4, kills the actor field_0x12c0, clears 0x40c
     void fn_8025BDC8(); // clears 0x458 and 0x40c
-    void fn_8025C79C(); // clears 0x458, field_0x344 and 0x40c
+    void fn_8025C79C(); // clears 0x458, mVel_0x344 and 0x40c
     void fn_8025C7BC(); // same body as fn_8025BDD8
-    void fn_8025D090(); // clears 0x458, field_0x344 and 0x40c
+    void fn_8025D090(); // clears 0x458, mVel_0x344 and 0x40c
     void fn_8025D6A0(); // field_0xb9c = 0
     // tu_8027E5BC (dispatch targets of tu_80285E58); fn_80248604, fn_8024D134 and fn_8024E3D8 are tu_8023FBF0 (r3 = Player)
     void fn_8027EE84();
-    void fn_8026152C(bool arg); // tu_8025EB18; field_0x2f4 from mPos (carry), called by fn_802948C0
+    void fn_8026152C(bool arg); // tu_8025EB18; mHeldPos_0x2f4 from mPos (carry), called by fn_802948C0
     void fn_8027F16C();
     void fn_80281E84();
     void fn_8028211C();
@@ -461,7 +461,7 @@ public:
     void raiseHeldActor();
     // tu_8028FBA0 inline (the updates of 0x2A and 0x2B): facing turns with the counter 0x3FC.
     void spinFacing();
-    // tu_8028FBA0 inlines: the 0x3F8/0x3F9 walk cycle; field_0x2f4 = mPos raised 16.
+    // tu_8028FBA0 inlines: the 0x3F8/0x3F9 walk cycle; mHeldPos_0x2f4 = mPos raised 16.
     void stepWalkCycle();
     void setHeldPos();
     void stepTransitionAnim(); // tu_8028FBA0 inline: walk / push / carry animation step
@@ -535,7 +535,7 @@ public:
     void fn_8027E7E0();
     void fn_8027E5BC(f32 speed);
     void fn_8027EDDC();
-    void fn_8027EEB4(); // steps the walk-animation counter mWalkAnimCounter_0x3f8 (frame field_0x3f9)
+    void fn_8027EEB4(); // steps the walk-animation counter mWalkAnimCounter_0x3f8 (frame mWalkFrame_0x3f9)
     void fn_8027F1C8(); // places or spawns the effect in field_0x1388 (ids 0x35E-0x361)
     void fn_8027F854(JGeometry::TVec3f* out, s32 player); // player's position plus an offset by fn_802486A0
     s32 fn_802487FC() const; // tu_8023FBF0 (0x802487FC); a count of players (r3 only)
@@ -614,7 +614,7 @@ public:
     // the group's, fn_802376D8), capped at 0xBF8; once per 0xD35, which is set to `flag`.
     void fn_80270DDC(s32 amount, bool flag);
     void fn_802422D0(); // via fn_80231368 (tu_8022AD64)
-    const JGeometry::TVec2f* fn_802422C4(); // &field_0xbf0->field_0x14; via fn_8022DFD4 (tu_8022AD64)
+    const JGeometry::TVec2f* fn_802422C4(); // &field_0xbf0->mLastPos_0x14; via fn_8022DFD4 (tu_8022AD64)
     void fn_80248E94(bool flag); // via fn_8022AF78 (tu_8022AD64); clrlwi 24, compared with 1
     void fn_80270948(const JGeometry::TVec3f* pos); // called by tu_8023FBF0 fn_802422D0; 0xD10 = pos (mPos if NULL) once while down
     void fn_8027057C(); // called by fn_80277F98 (update of state 0x33): revive (inlines fn_80270DDC)
@@ -632,8 +632,8 @@ public:
     /* 0x0004 */ s32 mPlayerNo_0x4;
     /* 0x0008 */ JGeometry::TVec3f mPos; // getPlayerPos_8023E724 (193 units)
     // Address returned by fn_8023E578.
-    /* 0x0014 */ JGeometry::TVec3f field_0x14;
-    /* 0x0020 */ JGeometry::TVec3f field_0x20; // fn_80254744: copy of field_0x14
+    /* 0x0014 */ JGeometry::TVec3f mLastPos_0x14;
+    /* 0x0020 */ JGeometry::TVec3f field_0x20; // fn_80254744: copy of mLastPos_0x14
     // fn_802685D4's step is mPos - mPrevPos_0x2c; it copies mPos here at the end.
     /* 0x002C */ JGeometry::TVec3f mPrevPos_0x2c;
     // 0x31 positions (fn_80252CF0 shifts them up one, last store at 0x278); read by fn_8023E4E4.
@@ -644,11 +644,11 @@ public:
     // fn_8024E020 stores a TVec3 here; fn_8024E018 returns its address.
     /* 0x02B8 */ JGeometry::TVec3f field_0x2b8;
     // Address returned by fn_8023E604.
-    /* 0x02C4 */ JGeometry::TVec3f field_0x2c4;
+    /* 0x02C4 */ JGeometry::TVec3f mReturnPos_0x2c4;
     /* 0x02D0 */ JGeometry::TVec3f field_0x2d0;
     /* 0x02DC */ JGeometry::TVec3f field_0x2dc;
     /* 0x02E8 */ JGeometry::TVec3f field_0x2e8;
-    /* 0x02F4 */ JGeometry::TVec3f field_0x2f4;
+    /* 0x02F4 */ JGeometry::TVec3f mHeldPos_0x2f4;
     /* 0x0300 */ JGeometry::TVec3f field_0x300; // fn_8025EE0C stores its argument
     /* 0x030C */ JGeometry::TVec3f field_0x30c;
     /* 0x0318 */ JGeometry::TVec3f field_0x318;
@@ -658,17 +658,17 @@ public:
     // fn_80254744: mPos, or (battle mode) mPos moved 16 along the facing mFacing_0x3dc.
     /* 0x0338 */ JGeometry::TVec3f field_0x338;
     // Zeroed by fn_802954B8 (three stfs of 0.0f).
-    /* 0x0344 */ JGeometry::TVec3f field_0x344;
+    /* 0x0344 */ JGeometry::TVec3f mVel_0x344;
     /* 0x0350 */ JGeometry::TVec3f field_0x350; // psq_l by tu_8026FC20 (0x80279844)
     /* 0x035C */ JGeometry::TVec3f field_0x35c;
-    /* 0x0368 */ JGeometry::TVec3f field_0x368;
+    /* 0x0368 */ JGeometry::TVec3f mKeptVel_0x368;
     /* 0x0374 */ JGeometry::TVec3f field_0x374;
     /* 0x0380 */ JGeometry::TVec3f field_0x380;
     /* 0x038C */ f32 field_0x38c;
     /* 0x0390 */ f32 field_0x390;
     /* 0x0394 */ s32 field_0x394;
-    /* 0x0398 */ JGeometry::TVec3f field_0x398;
-    /* 0x03A4 */ JGeometry::TVec3f field_0x3a4;
+    /* 0x0398 */ JGeometry::TVec3f mWalkStart_0x398;
+    /* 0x03A4 */ JGeometry::TVec3f mWalkTarget_0x3a4;
     /* 0x03B0 */ s32 field_0x3b0;
     // The player's layer: compared with ActorBase_804A5770::mPlayerNo_0x4 by
     // fn_801F320C and fn_801F5790; fn_801F329C tests it against 8.
@@ -681,8 +681,8 @@ public:
     /* 0x03C1 */ bool field_0x3c1;
     /* 0x03C2 */ bool field_0x3c2;
     /* 0x03C3 */ u8 field_0x3c3[0x3C4 - 0x3C3];
-    /* 0x03C4 */ u16 field_0x3c4;
-    /* 0x03C6 */ u16 field_0x3c6; // fn_80254744: copy of field_0x3c4
+    /* 0x03C4 */ u16 mCel_0x3c4;
+    /* 0x03C6 */ u16 mPrevCel_0x3c6; // fn_80254744: copy of mCel_0x3c4
     /* 0x03C8 */ u16 field_0x3c8; // lhz in tu_80264998
     /* 0x03CA */ u16 field_0x3ca;
     /* 0x03CC */ s32 field_0x3cc;
@@ -696,24 +696,24 @@ public:
     /* 0x03DC */ s32 mFacing_0x3dc; // fn_80230CFC (2 without a player)
     /* 0x03E0 */ s32 field_0x3e0;
     /* 0x03E4 */ s32 field_0x3e4;
-    /* 0x03E8 */ s32 field_0x3e8; // fn_80230B70 (2 without a player)
+    /* 0x03E8 */ s32 mMoveDir_0x3e8; // fn_80230B70 (2 without a player)
     /* 0x03EC */ s32 field_0x3ec;
     /* 0x03F0 */ s32 field_0x3f0;
     /* 0x03F4 */ s32 field_0x3f4;
     /* 0x03F8 */ u8 mWalkAnimCounter_0x3f8;
     // Cleared by fn_802922D0 (stb r0); 0x3FB set by it (stb r4).
-    /* 0x03F9 */ u8 field_0x3f9;
-    /* 0x03FA */ u8 field_0x3fa;
-    /* 0x03FB */ u8 field_0x3fb;
-    /* 0x03FC */ u8 field_0x3fc;
-    /* 0x03FD */ u8 field_0x3fd; // set to 1 by fn_80295584 (stb)
+    /* 0x03F9 */ u8 mWalkFrame_0x3f9;
+    /* 0x03FA */ u8 mAnimTimer_0x3fa;
+    /* 0x03FB */ u8 mPose_0x3fb;
+    /* 0x03FC */ u8 mStateTimer_0x3fc;
+    /* 0x03FD */ u8 mSubPose_0x3fd; // set to 1 by fn_80295584 (stb)
     /* 0x03FE */ u8 field_0x3fe;
-    /* 0x03FF */ u8 field_0x3ff;
+    /* 0x03FF */ u8 mDashCount_0x3ff;
     // Cleared (stb 0) by fn_80290E90 before it checks gGameRoot_8053AAF8->field_0x7e.
     /* 0x0400 */ u8 field_0x400;
     /* 0x0401 */ u8 field_0x401;
     /* 0x0402 */ u8 field_0x402;
-    /* 0x0403 */ u8 field_0x403;
+    /* 0x0403 */ u8 mSwordCharge_0x403;
     /* 0x0404 */ u8 field_0x404;
     /* 0x0405 */ u8 field_0x405[0x408 - 0x405];
     /* 0x0408 */ s32 field_0x408;
@@ -732,8 +732,8 @@ public:
     /* 0x0435 */ u8 field_0x435;
     // Returned by fn_80240860 (lbz; blr).
     /* 0x0436 */ bool field_0x436;
-    /* 0x0437 */ u8 field_0x437;
-    /* 0x0438 */ u8 field_0x438;
+    /* 0x0437 */ u8 mSavedWalkAnimCounter_0x437;
+    /* 0x0438 */ u8 mSavedWalkFrame_0x438;
     /* 0x0439 */ u8 field_0x439;
     /* 0x043A */ u8 field_0x43a;
     /* 0x043B */ u8 field_0x43b;
@@ -745,7 +745,7 @@ public:
     /* 0x0440 */ bool field_0x440;
     /* 0x0441 */ bool field_0x441;
     /* 0x0442 */ u8 field_0x442[0x444 - 0x442];
-    /* 0x0444 */ f32 field_0x444;
+    /* 0x0444 */ f32 mSavedVelZ_0x444;
     /* 0x0448 */ s32 field_0x448;
     /* 0x044C */ s32 field_0x44c;
     /* 0x0450 */ u16 field_0x450; // lhz at 0x8024DA2C and in tu_80264998
@@ -876,7 +876,7 @@ public:
     /* 0x0BE9 */ u8 field_0xbe9[0xBEC - 0xBE9];
     // Allocated by the constructor (new, 0x2C0 bytes), deleted by the
     // destructor; returned by fn_8023FC24 (via fn_8022BCD4).
-    /* 0x0BEC */ cls_804AA8D8* field_0xbec;
+    /* 0x0BEC */ cls_804AA8D8* mViewBox_0xbec;
     // The player's cls_804A71A8 (allocated by the constructor); fn_802685D4
     // calls its fn_80268BC4.
     /* 0x0BF0 */ cls_804A71A8* field_0xbf0;
@@ -911,8 +911,8 @@ public:
     /* 0x0C80 */ u8 field_0xc80;
     /* 0x0C81 */ u8 field_0xc81[0xC84 - 0xC81];
     // Set to (1, 1, 1) by fn_8026FC8C; fn_8023FBF0's code ramps z up to 1.0f.
-    /* 0x0C84 */ JGeometry::TVec3f field_0xc84;
-    /* 0x0C90 */ JGeometry::TVec3f field_0xc90;
+    /* 0x0C84 */ JGeometry::TVec3f mSquashScale_0xc84;
+    /* 0x0C90 */ JGeometry::TVec3f mDrawScale_0xc90;
     /* 0x0C9C */ s32 field_0xc9c;
     /* 0x0CA0 */ u8 field_0xca0;
     /* 0x0CA1 */ u8 field_0xca1;
@@ -920,23 +920,23 @@ public:
     /* 0x0CA3 */ s8 field_0xca3; // fn_80254744 stores -0x80
     /* 0x0CA4 */ s8 field_0xca4;
     /* 0x0CA5 */ u8 field_0xca5[0xCA8 - 0xCA5];
-    /* 0x0CA8 */ s32 field_0xca8;
+    /* 0x0CA8 */ s32 mFlashTimer_0xca8;
     // Tested by every per-player query before it touches the player.
     /* 0x0CAC */ bool mActive;
     /* 0x0CAD */ bool field_0xcad;
     /* 0x0CAE */ u8 field_0xcae;
     /* 0x0CAF */ u8 field_0xcaf;
     // Read by fn_8023E32C (5 units); copied by fn_8028FBA0 and passed to fn_80290070.
-    /* 0x0CB0 */ JGeometry::TVec3f field_0xcb0;
-    /* 0x0CBC */ JGeometry::TVec3f field_0xcbc;
+    /* 0x0CB0 */ JGeometry::TVec3f mLastTvPos_0xcb0;
+    /* 0x0CBC */ JGeometry::TVec3f mRespawnPos_0xcbc;
     // Address returned by fn_8023E2A0.
-    /* 0x0CC8 */ JGeometry::TVec3f field_0xcc8;
+    /* 0x0CC8 */ JGeometry::TVec3f mDepartPos_0xcc8;
     // Address returned by fn_8023E214.
-    /* 0x0CD4 */ JGeometry::TVec3f field_0xcd4;
+    /* 0x0CD4 */ JGeometry::TVec3f mDestPos_0xcd4;
     // Returned by fn_8023E190.
-    /* 0x0CE0 */ s32 field_0xce0;
+    /* 0x0CE0 */ s32 mDepartLayer_0xce0;
     // Compared with 8 (lwz; cmpwi) by fn_80292454 before it calls fn_8024EFA0.
-    /* 0x0CE4 */ s32 field_0xce4;
+    /* 0x0CE4 */ s32 mDestLayer_0xce4;
     // A bool: fn_8024BBB0 returns it as loaded (lbz; blr).
     /* 0x0CE8 */ bool field_0xce8;
     // A u8: fn_802413F0 converts it to its bool result (neg / or / srwi).
@@ -953,7 +953,7 @@ public:
     /* 0x0CF2 */ u8 field_0xcf2;
     /* 0x0CF3 */ u8 field_0xcf3;
     // Compared with 0x1D (lwz; cmpwi) by fn_802938B8 before it calls fn_8024F0E8.
-    /* 0x0CF4 */ s32 field_0xcf4;
+    /* 0x0CF4 */ s32 mTransitionKind_0xcf4;
     /* 0x0CF8 */ s32 field_0xcf8;
     /* 0x0CFC */ u8 field_0xcfc;
     /* 0x0CFD */ u8 field_0xcfd;
@@ -977,7 +977,7 @@ public:
     /* 0x0D34 */ bool field_0xd34;
     /* 0x0D35 */ u8 field_0xd35;
     /* 0x0D36 */ u8 field_0xd36[0xD38 - 0xD36];
-    /* 0x0D38 */ s32 field_0xd38;
+    /* 0x0D38 */ s32 mJoinTimer_0xd38;
     /* 0x0D3C */ s32 field_0xd3c;
     /* 0x0D40 */ s32 field_0xd40;
     /* 0x0D44 */ s32 field_0xd44;
@@ -995,13 +995,13 @@ public:
     // Another player's index, or negative for none: fn_80246F28 asks the
     // per-player queries about it (fn_8022CAF8, fn_80234004) and reads its
     // own field_0x120c / field_0x1224 instead when it is negative.
-    /* 0x0D60 */ s32 field_0xd60;
-    /* 0x0D64 */ u8 field_0xd64;
+    /* 0x0D60 */ s32 mLeader_0xd60;
+    /* 0x0D64 */ u8 mLifting_0xd64;
     /* 0x0D65 */ u8 field_0xd65[0xD68 - 0xD65];
-    /* 0x0D68 */ s32 field_0xd68; // fn_8025EDD4 (-1 until set); fn_8025EE34 compares it
-    /* 0x0D6C */ s32 field_0xd6c; // fn_8025F648 returns it when field_0xd64 == 1, else 'NULL'
+    /* 0x0D68 */ s32 mHeldActorSerial_0xd68; // fn_8025EDD4 (-1 until set); fn_8025EE34 compares it
+    /* 0x0D6C */ s32 mHeldActorId_0xd6c; // fn_8025F648 returns it when mLifting_0xd64 == 1, else 'NULL'
     // Passed to fn_8022D75C (lwz r3) by fn_802685D4.
-    /* 0x0D70 */ s32 field_0xd70;
+    /* 0x0D70 */ s32 mHeldPlayer_0xd70;
     /* 0x0D74 */ s32 field_0xd74;
     /* 0x0D78 */ JGeometry::TVec3f field_0xd78; // fn_8025EDD4 stores its position
     /* 0x0D84 */ s32 field_0xd84; // fn_8026173C sets it to 20
@@ -1030,7 +1030,7 @@ public:
     /* 0x11B0 */ s32 field_0x11b0;
     // Copied as the effect position by fn_8027F1C8 when fn_80241284 is true.
     /* 0x11B4 */ JGeometry::TVec3f field_0x11b4;
-    /* 0x11C0 */ s16 field_0x11c0;
+    /* 0x11C0 */ s16 mSpinAngle_0x11c0;
     /* 0x11C2 */ u8 field_0x11c2[0x11C4 - 0x11C2];
     /* 0x11C4 */ s32 field_0x11c4;
     /* 0x11C8 */ s32 field_0x11c8;
@@ -1047,9 +1047,9 @@ public:
     /* 0x11E9 */ u8 field_0x11e9;
     /* 0x11EA */ u8 field_0x11ea;
     /* 0x11EB */ u8 field_0x11eb;
-    /* 0x11EC */ s32 field_0x11ec; // a player index for getPlayerInputSlot_8030AAF4
+    /* 0x11EC */ s32 mPadPlayer_0x11ec; // a player index for getPlayerInputSlot_8030AAF4
     /* 0x11F0 */ s32 field_0x11f0;
-    /* 0x11F4 */ s32 field_0x11f4;
+    /* 0x11F4 */ s32 mFreezeTimer_0x11f4;
     /* 0x11F8 */ s32 field_0x11f8;
     /* 0x11FC */ s32 field_0x11fc;
     // A bool: fn_8023FF88 returns it as loaded (lbz; blr).
@@ -1084,18 +1084,18 @@ public:
     /* 0x1234 */ s32 field_0x1234;
     /* 0x1238 */ s32 field_0x1238;
     /* 0x123C */ s32 field_0x123c;
-    /* 0x1240 */ s32 field_0x1240;
-    /* 0x1244 */ s32 field_0x1244;
-    /* 0x1248 */ s32 field_0x1248;
-    /* 0x124C */ bool field_0x124c; // fn_80248DD8 sets it (stb 1)
+    /* 0x1240 */ s32 mState_0x1240;
+    /* 0x1244 */ s32 mRequestedState_0x1244;
+    /* 0x1248 */ s32 mPrevState_0x1248;
+    /* 0x124C */ bool mStateRequested_0x124c; // fn_80248DD8 sets it (stb 1)
     // Set to 1 by fn_80293760 (stb r4); stored to by other Player functions too (stb r0 / stb r3).
-    /* 0x124D */ u8 field_0x124d;
+    /* 0x124D */ u8 mStateLocked_0x124d;
     /* 0x124E */ u8 field_0x124e[0x1250 - 0x124E];
     // The player's two sound objects (constructor: new cls_804B20F8(index,
-    // pos, NULL, 8)); 0x1250 plays at field_0x1258, 0x1254 has no position.
-    /* 0x1250 */ cls_804B20F8* field_0x1250;
-    /* 0x1254 */ cls_804B20F8* field_0x1254;
-    /* 0x1258 */ JGeometry::TVec3f field_0x1258; // zeroed by the constructor
+    // pos, NULL, 8)); 0x1250 plays at mSoundPos_0x1258, 0x1254 has no position.
+    /* 0x1250 */ cls_804B20F8* mSoundObj_0x1250;
+    /* 0x1254 */ cls_804B20F8* mSoundObj_0x1254;
+    /* 0x1258 */ JGeometry::TVec3f mSoundPos_0x1258; // zeroed by the constructor
     /* 0x1264 */ s32 field_0x1264;
     /* 0x1268 */ JGeometry::TVec3f field_0x1268; // fn_8024C378 / fn_8024E0A0: mPos plus a view offset, returned as TVec3f*
     /* 0x1274 */ JPABaseEmitter* field_0x1274;
@@ -1104,7 +1104,7 @@ public:
     /* 0x128C */ JPABaseEmitter* field_0x128c;
     /* 0x1290 */ cls_804A64A8 field_0x1290;
     // Position of the emitters 0x12B0 / 0x12B4 (spawnEmitter_8013CC50 argument; stfs x).
-    /* 0x12A4 */ JGeometry::TVec3f field_0x12a4;
+    /* 0x12A4 */ JGeometry::TVec3f mChargeEffectPos_0x12a4;
     // 0x1274-0x1394: emitters, deleted in address order by fn_80241E64.
     /* 0x12B0 */ JPABaseEmitter* field_0x12b0;
     /* 0x12B4 */ JPABaseEmitter* field_0x12b4;
@@ -1153,7 +1153,7 @@ public:
     /* 0x13B8 */ u8 field_0x13b8;
     /* 0x13B9 */ u8 field_0x13b9[0x13BC - 0x13B9];
     // Copies the visible box: the camera's field_0x164 below layer 8, else
-    // field_0xbec->fn_8030AE84 (the GBA screen box).
+    // mViewBox_0xbec->fn_8030AE84 (the GBA screen box).
     void fn_80241B44(JGeometry::TBox2f* out); // via fn_8022B8EC
     s32 fn_80246904(u32 arg); // via fn_8022C46C
     bool fn_8028FC2C(); // via fn_8022DC3C
@@ -1249,13 +1249,13 @@ public:
     s32 fn_8027218C();
 }; // Size: 0x13BC
 
-// The actor the player holds or carries (serial field_0xd68), or NULL. Every
-// lookup of field_0xd68 goes through here (14 in tu_8023FBF0, tu_8025EB18,
+// The actor the player holds or carries (serial mHeldActorSerial_0xd68), or NULL. Every
+// lookup of mHeldActorSerial_0xd68 goes through here (14 in tu_8023FBF0, tu_8025EB18,
 // tu_80256C74, tu_8026FC20). The named local is what the registers show: in
 // fn_80273518 the actor is coloured before toView's layer (docs/REGALLOC.md
 // rules 1-2), which a plain local in the caller is not.
 inline ActorBase_804A5770* Player_804A6F38::heldActor() {
-    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xd68);
+    ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mHeldActorSerial_0xd68);
     return actor;
 }
 
