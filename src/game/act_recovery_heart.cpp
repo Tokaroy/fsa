@@ -38,10 +38,7 @@ void RecoveryHeart_8049F4F0::vfunc_0x40() {
     field_0x230 = 4;
 }
 
-// FIXME: 96.63 %. Landing in state 1 (z <= 0) matches. From the probe in state 3 on, the
-// original stores mPos.x and reloads it for the probe at 0x24(r1) (ours keeps it in f0 and
-// uses 0x34(r1)), stores probe.y twice (mPos.y, then mPos.y + 4), and its sway add result
-// is in f1, not f0; three instructions are missing.
+// FIXME: stack slots of probe (0x24 vs 0x34) and box (0x30 vs 0x24) are swapped.
 void RecoveryHeart_8049F4F0::update() {
     JGeometry::TVec2f basePos(mPos.x, mPos.y);
     if (field_0x240 == 0) {
@@ -102,7 +99,11 @@ void RecoveryHeart_8049F4F0::update() {
             field_0x23c -= 0x700;
         }
         mPos.x += JMath::sincosTable_.sinShort(field_0x23c);
-        JGeometry::TVec3f probe(mPos.x, mPos.y + 4.0f, mPos.z);
+        JGeometry::TVec3f probe;
+        probe.x = mPos.x;
+        probe.y = mPos.y;
+        probe.z = mPos.z;
+        probe.y += 4.0f;
         if (vfunc_0x4C(field_0x4, &probe) == true) {
             field_0x3c.x = 0.0f;
             field_0x3c.y = 0.0f;
@@ -113,21 +114,25 @@ void RecoveryHeart_8049F4F0::update() {
     case 4: {
         JGeometry::TBox2f box(mBox);
         box.addPos(basePos);
-        s32 player = fn_8023AF14(&box, field_0x4, gGameRoot_8053AAF8->field_0x7f == 0, 0.0f);
+        bool flag = true;
+        if (gGameRoot_8053AAF8->field_0x7f != 0) {
+            flag = false;
+        }
+        s32 player = fn_8023AF14(&box, field_0x4, flag, 0.0f);
         s32 hitPlayer = fn_8023B8E4(&box, field_0x4, &basePos, true);
         if (hitPlayer < 0) {
             fn_8023B768(&box, field_0x4, &basePos);
         }
         if (player >= 0) {
             s32 owner = fn_80237810(player);
-            if (fn_80237774(player) == owner) {
+            if (owner == fn_80237774(player)) {
                 fn_80230EB8(player, 9);
             }
             fn_80236554(player, 4, 0);
             mAlive = false;
         } else if (hitPlayer >= 0) {
             s32 owner = fn_80237810(hitPlayer);
-            if (fn_80237774(hitPlayer) == owner) {
+            if (owner == fn_80237774(hitPlayer)) {
                 fn_80230EB8(hitPlayer, 9);
             }
             fn_80236554(hitPlayer, 4, 0);
@@ -163,8 +168,6 @@ void RecoveryHeart_8049F4F0::draw() {
 // The ignore list is the multi-character tags 'TOMI' and 'NULL'.
 // Same shape as act_bombchu's vfunc_0x4C (the blocking tile codes as a != chain, the 0x25 /
 // 0x26 results narrowed as bytes).
-// FIXME: 99.96. Reloc-name only: the ignore list's initialiser is one 8-byte literal here,
-// two 4-byte placeholders (lbl_8053D040 / lbl_8053D044) in symbols.txt.
 bool RecoveryHeart_8049F4F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     const u32 ignoreIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
