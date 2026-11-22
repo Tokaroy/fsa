@@ -817,17 +817,17 @@ void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
 void Camera_804AA9E4::fn_8030C928(const JGeometry::TBox2f* box) {
     mNextVisibleBox_0x190.set(box->i.x, box->i.y, box->f.x, box->f.y);
     for (s32 i = 0; i < 4; i++) {
-        gGameRoot2_8053AB10->field_0x20->field_0x2360[i] = gGameRoot2_8053AB10->field_0x20->field_0x235c[i];
+        gGameRoot2_8053AB10->field_0x20->mLayer2Visible_0x2360[i] = gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[i];
     }
-    gGameRoot2_8053AB10->field_0x20->field_0x2374 = gGameRoot2_8053AB10->field_0x20->field_0x2368;
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(box->i.x, box->i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayer2Origin_0x2374 = gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368;
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(box->i.x, box->i.y, 0.0f);
 }
 
 void Camera_804AA9E4::fn_8030C85C() {
     mInTransition_0x1e8 = 0;
     for (s32 i = 0; i < 4; i++) {
-        if (gGameRoot2_8053AB10->field_0x20->field_0x235c[i]) {
-            gGameRoot2_8053AB10->field_0x20->field_0x2360[i] = 0;
+        if (gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[i]) {
+            gGameRoot2_8053AB10->field_0x20->mLayer2Visible_0x2360[i] = 0;
         }
     }
     getGameView_802D6A9C()->fn_802DCDF4();

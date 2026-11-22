@@ -112,7 +112,8 @@ class Tree:
         return None
 
     def declared(self, cls, name):
-        """Is `name` a data member declared in cls's body (not in an inline body)?"""
+        """Is `name` a data member declared in cls's body (not in an inline body)?
+        A pointer-to-array declarator (`T (*name[2])[65];`) counts."""
         b = self.class_body(cls)
         if not b:
             return False
@@ -123,7 +124,7 @@ class Tree:
             if body2 == body:
                 break
             body = body2
-        return re.search(r"(?<![\w.>])" + re.escape(name) + r"\s*(\[[^\]]*\]\s*)*(:\s*\d+\s*)?[;,]", body) is not None
+        return re.search(r"(?<![\w.>])" + re.escape(name) + r"\s*(\[[^\]]*\]\s*)*(\)\s*(\[[^\]]*\]\s*)+)?(:\s*\d+\s*)?[;,]", body) is not None
 
     # ------------------------------------------------------------ compiler
     def commands(self):

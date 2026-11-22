@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-58 rows: 58 applied, 0 not applied.
+60 rows: 60 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -58,6 +58,8 @@ See METHOD.md.
 | `InvisibleNPCWallForLink_804AE780` | 804AE780 | class | `cls_804AE780` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `HorseRaceEndArea_804AE830` | 804AE830 | class | `cls_804AE830` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `mWalkAnimCounter_0x3f8` | 804A6F38 | field | `field_0x3f8` | yes | tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function | evidence that proves the role or the name |
+| `mUseScreenRect_0x248` | 804AA858 | field | `field_0x248` | yes | tu_802F5040 fn_802FF3F0 only: when set (and field_0x24c.f.x != 0) the camera's mScreenRect_0x144 = field_0x24c, else the full screen; fn_802FF798 / fn_802FCE74 clear it. Role read from one function, no writer of 1 seen | evidence that proves the role or the name |
+| `mScreenRect_0x24c` | 804AA858 | field | `field_0x24c` | yes | tu_802F5040 fn_802FF3F0 only: copied to Camera_804AA9E4's mScreenRect_0x144 while field_0x248 is set (TBox2<u32>); no writer seen | evidence that proves the role or the name |
 | `mWidenBounds_0x17c` | 804AA9E4 | field | `field_0x17c` | yes | tu_8030C058 fn_8030E154 only: when set, the bounds box grows by its width / height on every side for this frame, then the flag is cleared; 3 units set it to 1 (act_princess_zelda_demo 646). Role read from one function | evidence that proves the role or the name |
 | `mSkipUpdate_0x17d` | 804AA9E4 | field | `field_0x17d` | yes | tu_8030C058 fn_8030E154 only: when set the whole target / view computation of the frame is skipped, then the flag is cleared; set to 1 by act_great_fairy_spfr (457), tu_803D9944. Role read from one function | evidence that proves the role or the name |
 | `mShrinkDelay_0x1c4` | 804AA9E4 | field | `field_0x1c4` | yes | tu_8030C058 fn_8030CD18 only: per box side, raised to entry 0x18 while that side grows and counted down otherwise; a side whose counter is not 0 does not move inwards. Role read from one function | evidence that proves the role or the name |

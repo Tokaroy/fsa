@@ -268,9 +268,9 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
 
         if (field_0x1d1) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-            JGeometry::TVec3f pos = map->field_0x2368;
-            pos.x += 0.5f * (8.0f * map->field_0x2380);
-            pos.y += 0.5f * (8.0f * map->field_0x2384);
+            JGeometry::TVec3f pos = map->mLayerOrigin_0x2368;
+            pos.x += 0.5f * (8.0f * map->mHeightGridCellsX_0x2380);
+            pos.y += 0.5f * (8.0f * map->mHeightGridCellsY_0x2384);
             if (field_0x130 != NULL) {
                 field_0x130->setGlobalTranslation(pos);
                 field_0x134->setGlobalTranslation(pos);
@@ -296,8 +296,8 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
             f32 camY = -camera->mViewMtx_0x4[1][3];
             f32 halfX = 0.5f * camX;
             f32 halfY = 0.5f * camY;
-            f32 width = 8.0f * map->field_0x2380;
-            f32 height = 8.0f * map->field_0x2384;
+            f32 width = 8.0f * map->mHeightGridCellsX_0x2380;
+            f32 height = 8.0f * map->mHeightGridCellsY_0x2384;
             JGeometry::TVec3f pos(width * (s32)(halfX / width) + (camX - halfX),
                                   height * (s32)(halfY / height) + (camY - halfY), 0.0f);
             if (field_0x138 != NULL) {
@@ -312,9 +312,9 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
 
         if (field_0x1d3) {
             TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-            JGeometry::TVec3f pos = map->field_0x2368;
-            pos.x += 0.5f * (8.0f * map->field_0x2380);
-            pos.y += 0.5f * (8.0f * map->field_0x2384);
+            JGeometry::TVec3f pos = map->mLayerOrigin_0x2368;
+            pos.x += 0.5f * (8.0f * map->mHeightGridCellsX_0x2380);
+            pos.y += 0.5f * (8.0f * map->mHeightGridCellsY_0x2384);
             if (field_0x13c != NULL) {
                 setEmitterPos_8013CB44(field_0x13c, &pos, -1, 0, true);
             } else {
@@ -1241,8 +1241,8 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
 void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
-    f32 sx = 0.125f / (f32)map->field_0x2380;
-    f32 sy = 0.125f / (f32)map->field_0x2384;
+    f32 sx = 0.125f / (f32)map->mHeightGridCellsX_0x2380;
+    f32 sy = 0.125f / (f32)map->mHeightGridCellsY_0x2384;
     f32 inv = 1.0f / camera->mZoom_0x858;
     JUTVideo* video = JUTVideo::getManager();
     half.x = inv * (0.5f * (sx * (s32)video->getFbWidth()));

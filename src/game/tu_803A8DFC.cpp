@@ -326,10 +326,10 @@ void ResultScreen_804AF9A0::fn_803B6768() {
     } else {
         gAudioMgr_8053AF80->fn_80458FF0(0x1000005, true, 0);
     }
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[0] = 0;
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[1] = 0;
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[2] = 0;
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[3] = 0;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 0;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 0;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[2] = 0;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[3] = 0;
     fn_80128C58(0xFF);
     u32 color = 0xFFFFFF00;
     fn_8013A884(&color);
@@ -3071,10 +3071,10 @@ void ResultScreen_804AF9A0::fn_803A9830() {
             field_0x4c2 = 255;
             field_0x4c0 = 2;
             field_0x4c1 = 1;
-            gGameRoot2_8053AB10->field_0x20->field_0x235c[0] = 0;
-            gGameRoot2_8053AB10->field_0x20->field_0x235c[1] = 0;
-            gGameRoot2_8053AB10->field_0x20->field_0x235c[2] = 0;
-            gGameRoot2_8053AB10->field_0x20->field_0x235c[3] = 0;
+            gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 0;
+            gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 0;
+            gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[2] = 0;
+            gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[3] = 0;
             fn_80128C58(0xFF);
             u32 color = 0xFFFFFF00;
             fn_8013A884(&color);

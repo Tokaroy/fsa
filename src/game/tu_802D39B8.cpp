@@ -522,7 +522,7 @@ void GameView_804A9950::vfunc_0xC() {
     JGeometry::TVec3f gbaoPos(0.0f, 0.0f, 0.0f);
     getActorManager_801F856C()->spawnActor_801F9484('GBAO', 0, &gbaoPos, 0, -1, -1);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         field_0xc4 = 36000;
     } else {
@@ -801,7 +801,7 @@ void GameView_804A9950::fn_802DBD60() {
         getActorManager_801F856C()->spawnActor_801F9484('GLWP', 0, &pos, 0x100, -1, -1);
     }
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         field_0xc4 = 36000;
     } else {
@@ -858,7 +858,7 @@ void GameView_804A9950::fn_802DB6F0() {
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
     for (int i = 0; i < 4; i++) {
         fn_80230498(i, fn_8023E604(i), fn_8023CBC0(i), fn_8023BCD4(i), -0x80, -0x80, true);
@@ -915,7 +915,7 @@ void GameView_804A9950::fn_802DA8DC() {
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     fn_802D9FBC();
     fn_8023F78C();
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
@@ -1001,7 +1001,7 @@ void GameView_804A9950::fn_802DA010() {
     lbl_8053AD70->fn_8037AE30();
     fn_802D8328(false, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
     JGeometry::TVec3f* pos = getPlayerPos_8023E724(0);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->mBlendBoxOn_0x840 == 0) {
@@ -1063,7 +1063,7 @@ void GameView_804A9950::fn_802D9CD8() {
     fn_802D8D50(false);
     fn_802D8328(true, false);
     gGameRoot2_8053AB10->field_0x24->mVisibleBox_0x154.set(mVisibleBox);
-    gGameRoot2_8053AB10->field_0x20->field_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
+    gGameRoot2_8053AB10->field_0x20->mLayerOrigin_0x2368 = JGeometry::TVec3f(mVisibleBox.i.x, mVisibleBox.i.y, 0.0f);
 }
 
 void GameView_804A9950::fn_802D9CB0() {
@@ -1167,7 +1167,7 @@ void GameView_804A9950::fn_802D92F0() {
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 10, 0, 0, false);
     gGameRoot2_8053AB10->field_0x20->fn_802F93F4(
         gGameRoot_8053AAF8->field_0xa4->getResource('SCL ', "gb_cl_obj_base_scl.szs"), 0, 11, 0, 0, false);
-    gGameRoot2_8053AB10->field_0x20->field_0x2364 = 1;
+    gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
 }
 
 // The tile map, gGameRoot2_8053AB10->0x20, through an inlined accessor (no out-of-line copy is
@@ -1216,8 +1216,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     }
     getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, name1), 0, 0, 0, 0);
     getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, name2), 0, 1, 0, 0);
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[0] = 1;
-    gGameRoot2_8053AB10->field_0x20->field_0x235c[1] = 1;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 1;
+    gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 1;
     fn_802D4CCC(0);
     if (!fn_802DEBA0()) {
         for (s32 i = 0; i < 7; i++) {
@@ -1236,8 +1236,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
     s32 w = 0.125f * mVisibleBox.getWidth();
     s32 h = 0.125f * mVisibleBox.getHeight();
     TileMap_804AA858* map = getTileMap();
-    map->field_0x2380 = w;
-    map->field_0x2384 = h;
+    map->mHeightGridCellsX_0x2380 = w;
+    map->mHeightGridCellsY_0x2384 = h;
 }
 
 // FIXME: 99.27 %, different + reloc-name; behaviour clean.
