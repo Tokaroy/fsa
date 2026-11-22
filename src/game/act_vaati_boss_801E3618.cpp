@@ -129,8 +129,8 @@ bool VaatiBoss_804A4958::fn_801E4348() {
 }
 
 // FIXME(shotgun): 98.09 %, missing/extra; behaviour near.
-u8 VaatiBoss_804A4958::fn_801E4094() {
-    u8 result = 0;
+bool VaatiBoss_804A4958::fn_801E4094() {
+    bool result = false;
     bool stateOk = true;
     switch (mState) {
     case 0:
@@ -150,14 +150,13 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
         stateOk = false;
         break;
     }
-    if (stateOk && !(mFlags & 0x2000) && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
-        JGeometry::TVec2f savedI(mBox.i);
-        JGeometry::TVec2f savedF(mBox.f);
+    if (stateOk && !(mFlags & 0x2000) && mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
+        JGeometry::TBox2f saved;
+        saved.set(mBox);
         mBox.i.scale(1.5f);
         mBox.f.scale(1.5f);
         s32 serial = getActorManager_801F856C()->findOverlappingActor_801F82CC(this, field_0x195, 48.0f);
-        mBox.i = savedI;
-        mBox.f = savedF;
+        mBox.set(saved);
         if (serial >= 0 && serial != mSerial) {
             ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (bomb != NULL && bomb->mActorId == 'HBMB' && bomb->field_0x94 == 1) {
@@ -180,7 +179,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
                     JGeometry::TVec2f shake(center.x - bomb->mPos.x, center.y - (bomb->mPos.y - bomb->mPos.z));
                     field_0x52c.fn_801D6D38(&shake);
                     field_0x5cd++;
-                    if (field_0x5cd >= field_0x5cc) {
+                    if ((s32)field_0x5cd >= field_0x5cc) {
                         setState_801D5D84(6);
                     }
                 }
