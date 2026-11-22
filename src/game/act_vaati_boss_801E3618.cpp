@@ -196,8 +196,9 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
 // FIXME(shotgun): 99.32 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E3B2C() {
     u8 result = 0;
+    s32 state = mState;
     bool stateOk = true;
-    switch (mState) {
+    switch (state) {
     case 0:
     case 1:
     case 2:
@@ -215,7 +216,7 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         stateOk = false;
         break;
     }
-    if (stateOk && mState != 0x13 && (mFlags & 0x2000) && mBox.f.x - mBox.i.x > 0.0f &&
+    if (stateOk && state != 0x13 && (mFlags & 0x2000) && mBox.f.x - mBox.i.x > 0.0f &&
         mBox.f.y - mBox.i.y > 0.0f) {
         // one hit type for both loops below: the original keeps it in a single stack slot (0x8)
         s32 type;
