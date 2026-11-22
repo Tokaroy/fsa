@@ -6,7 +6,7 @@
 #include "game/Player.h"
 #include "game/act/tu_8033F448.h"
 
-void cls_804AC388::init() {
+void Blizzard_804AC388::init() {
     field_0x230 = 300;
     field_0x234 = (mSpawnParam_0x90 >> 4) & 0xF;
     field_0x238 = (mSpawnParam_0x90 >> 8) & 0xF;
@@ -24,7 +24,7 @@ void cls_804AC388::init() {
 // with lfs; here the copy is elided and the lfs read the view directly. (3) The
 // spawned flag is r28 and the second loop's i r29 in the original, the reverse
 // here (the frame is 0x10 bytes larger in the original for (1) and (2)).
-void cls_804AC388::update() {
+void Blizzard_804AC388::update() {
     bool spawned = false;
     if (field_0x23c == true) {
         getGameView_802D6A9C()->fn_802D9FF4(field_0x234, field_0x238);
@@ -69,6 +69,6 @@ void cls_804AC388::update() {
     }
 }
 
-void cls_804AC388::draw() {}
+void Blizzard_804AC388::draw() {}
 
-cls_804AC388::~cls_804AC388() {}
+Blizzard_804AC388::~Blizzard_804AC388() {}

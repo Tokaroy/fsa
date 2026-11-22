@@ -189,7 +189,7 @@ public:
     /* 0x236 */ u8 field_0x236; // bit per player; fn_80402FBC
     /* 0x237 */ u8 field_0x237; // 24 units
     /* 0x238 */ u8 field_0x238; // 0xFF after fn_8040384C; fn_803FFAA8
-    /* 0x239 */ u8 field_0x239; // bit per player; cls_804AC388::update ORs it
+    /* 0x239 */ u8 field_0x239; // bit per player; Blizzard_804AC388::update ORs it
     /* 0x23A */ u8 field_0x23a[0x23C - 0x23A];
     // SHARED-EDIT (tu_803E1668 fn_803ED604): input slot 1 + this is polled by
     // the menu's update functions (fn_80309C4C / fn_80309A9C).

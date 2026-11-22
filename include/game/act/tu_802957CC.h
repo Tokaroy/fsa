@@ -6,11 +6,11 @@
 
 #include "game/ActorBase.h"
 
-// Named after its vtable, 0x804A7AE0 (__vt__12cls_804A7AE0). Its size is
+// Named after its vtable, 0x804A7AE0 (__vt__20MovingHouse_804A7AE0). Its size is
 // 0x3F8: the spawner allocates 0x3F8 bytes for it.
-class cls_804A7AE0 : public ActorBase_804A5770 {
+class MovingHouse_804A7AE0 : public ActorBase_804A5770 {
 public:
-    /* 0x08 */ virtual ~cls_804A7AE0();
+    /* 0x08 */ virtual ~MovingHouse_804A7AE0();
 
     bool fn_802957CC(u8 dir);
     virtual void die_0x24(); // fn_80295C40

@@ -966,7 +966,7 @@ u8 GameView_804A9950::fn_802DA630() {
         }
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (i = 0; i < end; i++) {
-            cls_804AB528* actor = (cls_804AB528*)getActorManager_801F856C()->mActors[i];
+            OshinUnidentified_804AB528* actor = (OshinUnidentified_804AB528*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_OSIN && actor->field_0x230 == 2) {
                 pos = actor->mPos;
                 pos.x += dx;

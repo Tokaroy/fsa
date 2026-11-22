@@ -2,7 +2,7 @@
 #include "game/act/tu_802E6EC4.h"
 #include "game/GameGlobals.h"
 
-void cls_804A9E50::init() {
+void DamageNPC_804A9E50::init() {
     mMode = mSpawnParam_0x90 & 0x7F;
     mFlag = (mSpawnParam_0x90 >> 7) & 0x1F;
     mStep = 0;
@@ -14,7 +14,7 @@ void cls_804A9E50::init() {
     }
 }
 
-void cls_804A9E50::update() {
+void DamageNPC_804A9E50::update() {
     mTimer--;
     if (mTimer != 0) {
         return;
@@ -38,7 +38,7 @@ void cls_804A9E50::update() {
     }
 }
 
-void cls_804A9E50::draw() {
+void DamageNPC_804A9E50::draw() {
     s32 flag = 0;
     if (mFlag != 0) {
         flag = 1;
@@ -46,4 +46,4 @@ void cls_804A9E50::draw() {
     fn_803075AC(mSerial, mLayer_0x4, &mPos, mStep + 0x26D, flag != 0, 2, -1, 1, 0, 0);
 }
 
-cls_804A9E50::~cls_804A9E50() {}
+DamageNPC_804A9E50::~DamageNPC_804A9E50() {}

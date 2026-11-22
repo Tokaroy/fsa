@@ -1455,7 +1455,7 @@ extern "C" cls_80204638* fn_80204638();
 
 
 // Sequencer_801DAA24::fn_801DA938 / fn_801DA904 are in game/act/tu_801D8400.h;
-// FrostareTail_804A4F90::fn_801DC264 (BOIT) and cls_804A6708::fn_8021D734 / fn_8021D764 /
+// FrostareTail_804A4F90::fn_801DC264 (BOIT) and Navi_804A6708::fn_8021D734 / fn_8021D764 /
 // fn_8021D794 (NAVI) in game/act/tu_801F9484.h.
 
 // A shared .sdata2 constant (1.0f), owned by game/act_shadow_link_generator's
@@ -2055,7 +2055,7 @@ extern s32 lbl_8053A100;
 
 // SHARED-EDIT (act_battle_royale_end_check fn_803D6BDC): the only caller
 // known so far. Owner: game/tu_8022AD64.cpp (0x80239F10). (fn_802B3A48 is
-// cls_804A8638::fn_802B3A48, game/cls_804A8638.h.)
+// EnvironmentSwitchControl_804A8638::fn_802B3A48, game/cls_804A8638.h.)
 bool fn_80239F10();
 
 // game/tu_803006E8.cpp (0x803007A0, not written yet). Takes no arguments; calls

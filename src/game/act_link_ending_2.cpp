@@ -146,7 +146,7 @@ void Link2Ending_804AE338::update() {
         if (field_0x238 < 0) {
             s32 end = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < end; i++) {
-                cls_804ADF28* actor = (cls_804ADF28*)getActorManager_801F856C()->mActors[i];
+                OtherCharactersEnding_804ADF28* actor = (OtherCharactersEnding_804ADF28*)getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == ACTOR_EETC && actor->field_0x234 == 4 &&
                     (actor->field_0x238 == 0x26 || actor->field_0x238 == 0x27 || actor->field_0x238 == 0x28 ||
                      actor->field_0x238 == 0x29)) {

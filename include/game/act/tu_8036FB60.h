@@ -5,13 +5,13 @@
 
 #include "game/ActorBase.h"
 
-class cls_804AEED0;
+class OldMan_804AEED0;
 
 // Named after its vtable, 0x804AE4B0.
-class cls_804AE4B0 : public ActorBase_804A5770 {
+class FourGirlsControl_804AE4B0 : public ActorBase_804A5770 {
 public:
-    cls_804AE4B0() {}
-    /* 0x08 */ virtual ~cls_804AE4B0();
+    FourGirlsControl_804AE4B0() {}
+    /* 0x08 */ virtual ~FourGirlsControl_804AE4B0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -77,7 +77,7 @@ public:
     /* 0x3A4 */ s32 field_0x3a4;
     /* 0x3A8 */ u8 field_0x3a8;
     /* 0x3AC */ s32 field_0x3ac;
-    /* 0x3B0 */ cls_804AEED0* field_0x3b0[4];
+    /* 0x3B0 */ OldMan_804AEED0* field_0x3b0[4];
 }; // Size: 0x3C0
 
 #endif

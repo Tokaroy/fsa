@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x804ACC68.
-class cls_804ACC68 : public ActorBase_804A5770 {
+class TingleTimeUp_804ACC68 : public ActorBase_804A5770 {
 public:
-    cls_804ACC68() {}
-    /* 0x08 */ virtual ~cls_804ACC68();
+    TingleTimeUp_804ACC68() {}
+    /* 0x08 */ virtual ~TingleTimeUp_804ACC68();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

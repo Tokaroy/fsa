@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x804A9E50.
-class cls_804A9E50 : public ActorBase_804A5770 {
+class DamageNPC_804A9E50 : public ActorBase_804A5770 {
 public:
-    cls_804A9E50() {}
-    /* 0x08 */ virtual ~cls_804A9E50();
+    DamageNPC_804A9E50() {}
+    /* 0x08 */ virtual ~DamageNPC_804A9E50();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

@@ -55,7 +55,7 @@ s32 lbl_8053A190 = -1;
 
 static const u8 lbl_8053FD50[] = "xi<P_s";
 
-cls_804A6708::cls_804A6708() {
+Navi_804A6708::Navi_804A6708() {
     field_0x2a8 = 0;
     field_0x2ac = 0;
     field_0x2ad = 0;
@@ -71,7 +71,7 @@ cls_804A6708::cls_804A6708() {
     mEmitter2D4 = NULL;
 }
 
-cls_804A6708::~cls_804A6708() {
+Navi_804A6708::~Navi_804A6708() {
     releaseEmitter_801EE434(mEmitter2D0);
     releaseEmitter_801EE434(mEmitter2D4);
     if (mFlags & 0x4000) {
@@ -79,7 +79,7 @@ cls_804A6708::~cls_804A6708() {
     }
 }
 
-void cls_804A6708::init() {
+void Navi_804A6708::init() {
     EnemyBase_804A4808::init();
     field_0x2a8 = (mSpawnParam_0x90 & 0xFFFF) + 0x12b;
     s32 param = (mSpawnParam_0x90 >> 16) & 7;
@@ -181,7 +181,7 @@ void cls_804A6708::init() {
 
 // FIXME: 90.50 %, missing/extra; behaviour near.
 // Still differs: the original keeps the local TVec2fs in stack slots (dead stores), ours in registers.
-void cls_804A6708::fn_8021E4F8() {
+void Navi_804A6708::fn_8021E4F8() {
     switch (mState) {
     case 4: {
         f32 d = (f32)(0x78 - mStateTimer);
@@ -250,7 +250,7 @@ void cls_804A6708::fn_8021E4F8() {
 }
 
 // FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
-void cls_804A6708::fn_8021DFAC(s32 newState) {
+void Navi_804A6708::fn_8021DFAC(s32 newState) {
     s32 p;
     switch (newState) {
     case 1:
@@ -370,7 +370,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
     mState = newState;
 }
 
-void cls_804A6708::updateState_0x90(u8 mapHit) {
+void Navi_804A6708::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= 5) {
@@ -483,7 +483,7 @@ void cls_804A6708::updateState_0x90(u8 mapHit) {
 
 // FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
 // Registers only; the .sdata2 literals are not split.
-void cls_804A6708::updateBehavior_0x9C(u8 mapHit) {
+void Navi_804A6708::updateBehavior_0x9C(u8 mapHit) {
     EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     if (mState == 9) {
         f32 alpha = (mPos.z - 268.0f) * -0.004901961f;
@@ -507,7 +507,7 @@ void cls_804A6708::updateBehavior_0x9C(u8 mapHit) {
     }
 }
 
-void cls_804A6708::calcVelocity_0x88() {
+void Navi_804A6708::calcVelocity_0x88() {
     mVel_0x3c.x = 0.0f;
     mVel_0x3c.y = 0.0f;
     mVel_0x3c.z = 0.0f;
@@ -542,14 +542,14 @@ void cls_804A6708::calcVelocity_0x88() {
     }
 }
 
-void cls_804A6708::move_0x98() {
+void Navi_804A6708::move_0x98() {
     EnemyBase_804A4808::move_0x98();
     if (mState == 9 && mPos.z > 350.0f) {
         mPos.z = 350.0f;
     }
 }
 
-void cls_804A6708::vfunc_0xA0() {
+void Navi_804A6708::vfunc_0xA0() {
     if (mState == 3) {
         return;
     }
@@ -568,7 +568,7 @@ void cls_804A6708::vfunc_0xA0() {
 
 // FIXME: 92.15 %, missing/extra; behaviour clean.
 // the flag's 0 shares the constructor's zero register in the original (ours loads a second one)
-void cls_804A6708::draw() {
+void Navi_804A6708::draw() {
     if (mState != 3 && field_0x2b8 > 0.0f) {
         SpriteParams_801F5AE0 params;
         params.field_0x10.a = (s32)field_0x2b8;
@@ -583,17 +583,17 @@ void cls_804A6708::draw() {
     }
 }
 
-bool cls_804A6708::fn_8021D794() {
+bool Navi_804A6708::fn_8021D794() {
     return mState == 5;
 }
 
-void cls_804A6708::fn_8021D764() {
+void Navi_804A6708::fn_8021D764() {
     if (mState != 6) {
         fn_8021DFAC(6);
     }
 }
 
-void cls_804A6708::fn_8021D734() {
+void Navi_804A6708::fn_8021D734() {
     if (mState != 8) {
         fn_8021DFAC(8);
     }

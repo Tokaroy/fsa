@@ -116,7 +116,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->field_0x276 = 1;
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->field_0x276 = 1;
                 }
             }
             field_0x27e = 1;
@@ -217,7 +217,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->field_0x277 = 1;
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->field_0x277 = 1;
                 }
             }
             mState = 13;
@@ -237,7 +237,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                if (static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z)) {
+                if (static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7F0(mPos.z)) {
                     mPos.z += mVel_0x3c.z;
                     addCalc2_801F71A4(&mVel_0x3c.z, 0.01f, 0.008f, 0.005f);
                     field_0x27c = 1;
@@ -253,7 +253,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->field_0x278 = 1;
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->field_0x278 = 1;
                 }
             }
             mState = 15;
@@ -283,7 +283,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7F0(mPos.z);
                 }
             }
             if (mTimer <= 0) {
@@ -299,7 +299,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
+                static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7F0(mPos.z);
             }
         }
         if (mPos.z <= 2.0f) {
@@ -310,7 +310,7 @@ void KnightOfHyrule_804AABA8::update() {
             if (slot2 >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot2);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->fn_802ED7D8();
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7D8();
                     field_0x27d = 1;
                 }
             }
@@ -382,7 +382,7 @@ void KnightOfHyrule_804AABA8::update() {
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
+                static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7F0(mPos.z);
             }
         }
     }
@@ -482,7 +482,7 @@ void KnightOfHyrule_804AABA8::draw() {
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
                 if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
-                    static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z);
+                    static_cast<GiantGeneratorEffect_804AA350*>(actor)->fn_802ED7F0(mPos.z);
                 }
             }
         }

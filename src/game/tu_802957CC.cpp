@@ -32,7 +32,7 @@ static inline s32 warpLayer(u32 param) {
     return layer + 7;
 }
 
-static inline s32 getPushDir(cls_804A7AE0* self) {
+static inline s32 getPushDir(MovingHouse_804A7AE0* self) {
     if (fn_80239108(self->mSerial) >= 4 && getPlayerLayer_8023DE58(0) == self->getField_0x4()) {
         s32 dir = fn_80238BC4(self->mSerial);
         if (dir >= 0 && dir < 4) {
@@ -43,7 +43,7 @@ static inline s32 getPushDir(cls_804A7AE0* self) {
     return -1;
 }
 
-static inline s32 getPullDir(cls_804A7AE0* self) {
+static inline s32 getPullDir(MovingHouse_804A7AE0* self) {
     JGeometry::TBox2f box(self->mMapBox_0x80);
     box.i.x += self->mPos.x;
     box.i.y += self->mPos.y;
@@ -70,7 +70,7 @@ static inline s32 getPullDir(cls_804A7AE0* self) {
 
 // Kills the actors registered in both serial lists.
 // Inlined by fn_802961AC and update.
-inline void cls_804A7AE0::killSerialActors() {
+inline void MovingHouse_804A7AE0::killSerialActors() {
     for (s32 i = 0; i < mSerialCountB; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsB[i]);
         if (actor != NULL) {
@@ -87,7 +87,7 @@ inline void cls_804A7AE0::killSerialActors() {
 
 // Snapshots the 6x6 tiles under the actor and clears them from the map (once).
 // Inlined by fn_802961AC, fn_80299AD0 and its three siblings.
-inline void cls_804A7AE0::bakeTiles() {
+inline void MovingHouse_804A7AE0::bakeTiles() {
     if (!field_0x24c) {
         field_0x24c = 1;
         JGeometry::TVec3f origin = mPos;
@@ -122,7 +122,7 @@ static const Vec lbl_8046C298[4] = {
     {16.0f, 0.0f, 0.0f}, {-16.0f, 0.0f, 0.0f}, {0.0f, 16.0f, 0.0f}, {0.0f, -16.0f, 0.0f},
 };
 
-cls_804A7AE0::~cls_804A7AE0() {
+MovingHouse_804A7AE0::~MovingHouse_804A7AE0() {
     for (s32 i = 0; i < 2; i++) {
         for (s32 j = 0; j < 2; j++) {
             releaseEmitter_801EE434(mEmitters[i][j]);
@@ -133,7 +133,7 @@ cls_804A7AE0::~cls_804A7AE0() {
     }
 }
 
-void cls_804A7AE0::init() {
+void MovingHouse_804A7AE0::init() {
     mBox.i.x = -48.0f;
     mBox.i.y = -48.0f;
     mBox.f.x = 48.0f;
@@ -203,7 +203,7 @@ void cls_804A7AE0::init() {
 
 // FIXME(shotgun): 98.87 %, operands; behaviour clean.
 // initial position/box arithmetic is scheduled differently, 5 instructions
-void cls_804A7AE0::vfunc_0x10() {
+void MovingHouse_804A7AE0::vfunc_0x10() {
     JGeometry::TVec3f origin = mPos;
     origin.x += mBox.i.x;
     origin.y += mBox.i.y;
@@ -326,7 +326,7 @@ void cls_804A7AE0::vfunc_0x10() {
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.66 %, missing/extra; behaviour drift.
-void cls_804A7AE0::fn_8029A974() {
+void MovingHouse_804A7AE0::fn_8029A974() {
     if (!field_0x250.isZero()) {
         return;
     }
@@ -386,7 +386,7 @@ void cls_804A7AE0::fn_8029A974() {
 
 // Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 99.01 %, different; behaviour near.
-void cls_804A7AE0::fn_8029A494() {
+void MovingHouse_804A7AE0::fn_8029A494() {
     if (!field_0x250.isZero()) {
         return;
     }
@@ -446,7 +446,7 @@ void cls_804A7AE0::fn_8029A494() {
 
 // Remaining: one `cmplwi 1` bool test on `testBox` and one loop pointer copy in `bakeTiles`.
 // FIXME: 99.01 %, different; behaviour near.
-void cls_804A7AE0::fn_80299FB0() {
+void MovingHouse_804A7AE0::fn_80299FB0() {
     if (!field_0x250.isZero()) {
         return;
     }
@@ -506,7 +506,7 @@ void cls_804A7AE0::fn_80299FB0() {
 
 // Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
 // FIXME: 98.65 %, missing/extra; behaviour drift.
-void cls_804A7AE0::fn_80299AD0() {
+void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
         return;
     }
@@ -567,7 +567,7 @@ void cls_804A7AE0::fn_80299AD0() {
 // The camera focus point: mPos moved 128 units in direction `idx` of lbl_8046C238 (the opposite
 // one while field_0x2cc is -1). No copy of its own: fn_80299720 inlines it (its two vectors lie
 // below the caller's on the stack, in reverse order).
-inline void cls_804A7AE0::addCameraFocus(s32 idx) {
+inline void MovingHouse_804A7AE0::addCameraFocus(s32 idx) {
     JGeometry::TVec3f focus = mPos;
     if (mSerialCountC > 0 && field_0x2cc == -1) {
         idx ^= 1;
@@ -583,7 +583,7 @@ inline void cls_804A7AE0::addCameraFocus(s32 idx) {
 
 // Moves every door of mSerialsD by `delta`. No copy of its own: fn_80299720 inlines it (its
 // counter and the caller's vector take the registers and stack slots of an inlined body).
-inline void cls_804A7AE0::moveDoors(const JGeometry::TVec3f& delta) {
+inline void MovingHouse_804A7AE0::moveDoors(const JGeometry::TVec3f& delta) {
     for (s32 i = 0; i < mSerialCountD; i++) {
         Door_804A8D88* door = (Door_804A8D88*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsD[i]);
         if (door != NULL) {
@@ -593,7 +593,7 @@ inline void cls_804A7AE0::moveDoors(const JGeometry::TVec3f& delta) {
     }
 }
 
-void cls_804A7AE0::fn_80299720() {
+void MovingHouse_804A7AE0::fn_80299720() {
     if (field_0x250.y < 0.0f) {
         field_0x248++;
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -651,7 +651,7 @@ void cls_804A7AE0::fn_80299720() {
     }
 }
 
-void cls_804A7AE0::fn_80299374() {
+void MovingHouse_804A7AE0::fn_80299374() {
     if (field_0x250.y > 0.0f) {
         field_0x248++;
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -709,7 +709,7 @@ void cls_804A7AE0::fn_80299374() {
     }
 }
 
-void cls_804A7AE0::fn_80298FC4() {
+void MovingHouse_804A7AE0::fn_80298FC4() {
     if (field_0x250.x < 0.0f) {
         field_0x248++;
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -769,7 +769,7 @@ void cls_804A7AE0::fn_80298FC4() {
 
 // FIXME(shotgun): 98.52 %, different; behaviour drift.
 // layer expression compiles branch-free (cntlzw) in the original, 4 instructions
-void cls_804A7AE0::fn_80298C18() {
+void MovingHouse_804A7AE0::fn_80298C18() {
     if (field_0x250.x > 0.0f) {
         field_0x248++;
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -843,7 +843,7 @@ void cls_804A7AE0::fn_80298C18() {
 
 // FIXME(shotgun): 94.23 %, missing/extra; behaviour near.
 // still differs: the original materialises isZero() as a bool (mfcr; extrwi.) before testing it
-void cls_804A7AE0::fn_80298978() {
+void MovingHouse_804A7AE0::fn_80298978() {
     for (s32 i = 0; i < mSerialCountA; i++) {
         Warp_804A6DC8* warp = (Warp_804A6DC8*)getActorManager_801F856C()->findActorBySerial_801F666C(mSerialsA[i]);
         s32 blocked = 0;
@@ -883,7 +883,7 @@ void cls_804A7AE0::fn_80298978() {
 }
 
 // Registers a collision box (given relative to mPos) for this actor.
-inline void registerBox_802984B0(cls_804A7AE0* actor, JGeometry::TBox2f& box, f32 x0, f32 y0, f32 x1, f32 y1) {
+inline void registerBox_802984B0(MovingHouse_804A7AE0* actor, JGeometry::TBox2f& box, f32 x0, f32 y0, f32 x1, f32 y1) {
     box.i.x = x0;
     box.i.y = y0;
     box.f.x = x1;
@@ -895,7 +895,7 @@ inline void registerBox_802984B0(cls_804A7AE0* actor, JGeometry::TBox2f& box, f3
     fn_80239914(&box, actor->mLayer_0x4, actor->mSerial);
 }
 
-void cls_804A7AE0::fn_802984B0() {
+void MovingHouse_804A7AE0::fn_802984B0() {
     JGeometry::TBox2f box1;
     JGeometry::TBox2f box2;
     switch (field_0x2b0) {
@@ -946,7 +946,7 @@ void cls_804A7AE0::fn_802984B0() {
 }
 
 // FIXME(shotgun): 75.60 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A7AE0::update() {
+void MovingHouse_804A7AE0::update() {
     mPos.set(field_0x238.x, field_0x238.y, field_0x238.z);
     for (s32 i = 0; i < 4; i++) {
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;
@@ -1428,7 +1428,7 @@ inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpritePara
     }
 }
 
-void cls_804A7AE0::draw() {
+void MovingHouse_804A7AE0::draw() {
     if (field_0x24c == 0 && field_0x2ac == 0) {
         return;
     }
@@ -1486,7 +1486,7 @@ void cls_804A7AE0::draw() {
     }
 }
 
-void cls_804A7AE0::fn_802961AC() {
+void MovingHouse_804A7AE0::fn_802961AC() {
     s32 serial = fn_801F2718('SLR3');
     if (serial < 0) {
         return;
@@ -1523,7 +1523,7 @@ void cls_804A7AE0::fn_802961AC() {
     field_0x2ba = 1;
 }
 
-void cls_804A7AE0::fn_80295EE8() {
+void MovingHouse_804A7AE0::fn_80295EE8() {
     if (mTimer <= 0) {
         die_0x24();
         return;
@@ -1564,7 +1564,7 @@ void cls_804A7AE0::fn_80295EE8() {
     mTimer--;
 }
 
-void cls_804A7AE0::die_0x24() {
+void MovingHouse_804A7AE0::die_0x24() {
     s32 v;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8022F514(i)) {
@@ -1606,7 +1606,7 @@ void cls_804A7AE0::die_0x24() {
     field_0x2bb = 1;
 }
 
-bool cls_804A7AE0::fn_802957CC(u8 dir) {
+bool MovingHouse_804A7AE0::fn_802957CC(u8 dir) {
     JGeometry::TVec3f oldPos = mPos;
     bool ok = true;
     mVel_0x3c.set(JGeometry::TVec3f(lbl_8046C268[dir].x, lbl_8046C268[dir].y, lbl_8046C268[dir].z));

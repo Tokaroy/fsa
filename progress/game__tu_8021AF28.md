@@ -19,9 +19,9 @@ draw (fn_8021AF28), fn_8021B548, fn_8021B5A0, fn_8021B5C4, __sinit.
 ## SHARED-EDITS
 - config/G4SE01/gen_game.tsv: removed the tu_8021AF28 row.
 - config/G4SE01/symbols.txt: placeholder renames only (draw/fn_8021AFB8/fn_8021B1AC/
-  fn_8021B548/fn_8021B5A0/fn_8021B5C4/fn_8021B668/fn_80219E04 -> __12cls_804A6550Fv).
+  fn_8021B548/fn_8021B5A0/fn_8021B5C4/fn_8021B668/fn_80219E04 -> __23KaeporaGaebora_804A6550Fv).
 - New include/game/act/act_kaepora_gaebora.h (owner act_kaepora_gaebora; class
-  cls_804A6550 named after its vtable 0x804A6550, EnemyBase_804A4808 descendant).
+  KaeporaGaebora_804A6550 named after its vtable 0x804A6550, EnemyBase_804A4808 descendant).
   fn_80219E04 is declared there as a member (defined in the unwritten owner unit).
 
 ## Next

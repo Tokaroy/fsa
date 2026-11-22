@@ -8,7 +8,7 @@
 
 // 0x803450AC.
 // FIXME(shotgun): 95.32 %, missing/extra + reloc-name; behaviour near.
-void cls_804AC600::init() {
+void Bee_804AC600::init() {
     field_0x270 = mSpawnParam_0x90 & 1;
     mLife = 1;
     for (s32 i = 0; i < 7; i++) {
@@ -37,7 +37,7 @@ void cls_804AC600::init() {
 }
 
 // The six trailing pieces fly off the head in a ring (update, states 0).
-static inline void spreadPieces(cls_804AC600* self) {
+static inline void spreadPieces(Bee_804AC600* self) {
     s32 shift = 0x10000;
     for (s32 i = 1; i < 7; i++) {
         self->field_0x2f8[i] = self->field_0x2f8[0];
@@ -50,7 +50,7 @@ static inline void spreadPieces(cls_804AC600* self) {
 
 // The six trailing pieces pick a new heading every tenth frame of field_0x238 and
 // move at their own speed (update, states 2-5).
-static inline void steerPieces(cls_804AC600* self) {
+static inline void steerPieces(Bee_804AC600* self) {
     for (s32 i = 1; i < 7; i++) {
         if (self->field_0x238 % 10 == 0) {
             self->field_0x296[i - 1] = (s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -72,7 +72,7 @@ static inline void steerPieces(cls_804AC600* self) {
 
 // 0x80343D90.
 // FIXME(shotgun): 98.04 %, missing/extra; behaviour near.
-void cls_804AC600::update() {
+void Bee_804AC600::update() {
     JGeometry::TVec3f diff;
     diff.x = diff.y = diff.z = 0.0f;
     if (field_0x230 != 0) {
@@ -331,7 +331,7 @@ void cls_804AC600::update() {
 
 // 0x80343B48.
 // FIXME(shotgun): 93.18 %, missing/extra; behaviour clean.
-void cls_804AC600::draw() {
+void Bee_804AC600::draw() {
     SpriteParams_801F5AE0 params;
     if (field_0x274 == 2) {
         params.field_0x20 = 0;
@@ -355,7 +355,7 @@ void cls_804AC600::draw() {
 
 // 0x80343AD0.
 // FIXME(shotgun): 96.67 %, missing/extra; behaviour clean.
-void cls_804AC600::die_0x24() {
+void Bee_804AC600::die_0x24() {
     s32 kind = 0;
     if (field_0x274 == 1) {
         kind = 3;
@@ -367,4 +367,4 @@ void cls_804AC600::die_0x24() {
 }
 
 // Destructor at 0x80343A70.
-cls_804AC600::~cls_804AC600() {}
+Bee_804AC600::~Bee_804AC600() {}

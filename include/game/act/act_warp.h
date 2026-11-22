@@ -18,7 +18,7 @@ public:
     /* 0x230 */ u8 field_0x230[0x4]; // not yet known
     /* 0x234 */ u8 field_0x234[4]; // per player: 1 while the player stands on the warp
     /* 0x238 */ JGeometry::TVec3f field_0x238; // Bomb's fn_8014D868 spawns a bomb here (0x8014D9C4)
-    /* 0x244 */ s32 field_0x244; // compared with GameView field_0x14 by cls_804A7AE0::vfunc_0x10
+    /* 0x244 */ s32 field_0x244; // compared with GameView field_0x14 by MovingHouse_804A7AE0::vfunc_0x10
     /* 0x248 */ s32 field_0x248; // compared with GameView field_0x18
     /* 0x24C */ JPABaseEmitter* mEmitter24c; // released by the destructor
     /* 0x250 */ JPABaseEmitter* mEmitter250; // released by the destructor

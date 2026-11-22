@@ -7,10 +7,10 @@
 // actor and releases it again; code in game/tu_80222CC4.cpp. Not tied to a
 // spawner ID. Named after its vtable (0x804A6C38). The constructor is
 // fn_8022313C.
-class cls_804A6C38 : public ShadowLinkBase_804A6A00 {
+class ShadowLinkFireMinor_804A6C38 : public ShadowLinkBase_804A6A00 {
 public:
-    cls_804A6C38();
-    virtual ~cls_804A6C38();
+    ShadowLinkFireMinor_804A6C38();
+    virtual ~ShadowLinkFireMinor_804A6C38();
     /* 0x0C */ virtual void init();
     // Releases the 'DDGO' actor after the base's work.
     /* 0x6C */ virtual void onHitByPlayer_0x6C();

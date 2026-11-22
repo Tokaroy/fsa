@@ -464,7 +464,7 @@ void ActorManager_804A5800::fn_801F7CAC() {
             continue;
         }
         if (mActors[i]->mActorId == ACTOR_RASN) {
-            if (static_cast<cls_804A7A68*>(mActors[i])->field_0x230 == 0) {
+            if (static_cast<SpiralStaircase_804A7A68*>(mActors[i])->field_0x230 == 0) {
                 mActors[i]->mAlive = false;
             }
         } else {
@@ -507,7 +507,7 @@ void ActorManager_804A5800::fn_801F7B18() {
             continue;
         }
         if (actor->mActorId == ACTOR_RASN) {
-            if (static_cast<cls_804A7A68*>(actor)->field_0x230 == 0) {
+            if (static_cast<SpiralStaircase_804A7A68*>(actor)->field_0x230 == 0) {
                 actor->mAlive = false;
             }
         } else {

@@ -7,10 +7,10 @@
 #include "game/Message.h"
 
 // Named after its vtable, 0x804AC8C0.
-class cls_804AC8C0 : public ActorBase_804A5770 {
+class CuccoHerdingNPC_804AC8C0 : public ActorBase_804A5770 {
 public:
-    cls_804AC8C0() {}
-    /* 0x08 */ virtual ~cls_804AC8C0();
+    CuccoHerdingNPC_804AC8C0() {}
+    /* 0x08 */ virtual ~CuccoHerdingNPC_804AC8C0();
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();

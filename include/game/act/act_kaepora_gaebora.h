@@ -11,10 +11,10 @@
 // Named after its vtable, 0x804A6550 (an EnemyBase_804A4808 descendant).
 // The overrides below are the vtable slots that differ from EnemyBase's;
 // init and updateState_0x90 are not written yet (draw() is in tu_8021AF28).
-class cls_804A6550 : public EnemyBase_804A4808 {
+class KaeporaGaebora_804A6550 : public EnemyBase_804A4808 {
 public:
-    cls_804A6550();
-    /* 0x08 */ virtual ~cls_804A6550();
+    KaeporaGaebora_804A6550();
+    /* 0x08 */ virtual ~KaeporaGaebora_804A6550();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();

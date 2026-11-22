@@ -25,7 +25,7 @@ static inline void inflate(JGeometry::TBox2f& box, f32 d) {
 
 // The tile loop is written out here: with rewriteTiles() inlined the registers of x/z and of
 // the counters come out swapped (99.29 %), so init's copy is its own code or a differently cut helper.
-void cls_804AE7D8::init() {
+void RockDroppedIntoTheRiver11_804AE7D8::init() {
     field_0x244 = 0;
     field_0x264 = 0;
     field_0x258 = (u8)((u8)mSpawnParam_0x90 + 1);
@@ -77,7 +77,7 @@ void cls_804AE7D8::init() {
 // touchesPlayer, whose layer, counter and sums sit in r30/f27-f30 instead of
 // r28/f27-f30 in another order), the field_0x260 < 10 test branches to the
 // increment instead of falling into it.
-void cls_804AE7D8::update() {
+void RockDroppedIntoTheRiver11_804AE7D8::update() {
     // Stack slots: the box (highest), then the position and the probe
     // result, as the original's frame lays them out.
     JGeometry::TBox2f box(mBox);
@@ -215,7 +215,7 @@ void cls_804AE7D8::update() {
 // helpers here, between update and draw, in this order (the unit's literals 1.0f, -31.5f,
 // 31.5f, 0.0f, 24.0f, 16.0f come before update's own).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
-void cls_804AE7D8::rewriteTiles() {
+void RockDroppedIntoTheRiver11_804AE7D8::rewriteTiles() {
     f32 x = mPos.x;
     x -= 24.0f;
     f32 y = mPos.y;
@@ -241,7 +241,7 @@ void cls_804AE7D8::rewriteTiles() {
 // Whether one of the player's eight probe points (fn_8022E088) lies in the
 // actor's box; only players on the actor's layer count.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
-bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
+bool RockDroppedIntoTheRiver11_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
     s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
@@ -267,7 +267,7 @@ bool cls_804AE7D8::touchesPlayer(s32 player, JGeometry::TVec3f& point) {
 
 // Not in the binary: a plain function that init inlines.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
-void cls_804AE7D8::setBoxes() {
+void RockDroppedIntoTheRiver11_804AE7D8::setBoxes() {
     mBox.i.x = -31.5f;
     mBox.i.y = -31.5f;
     mBox.f.x = 31.5f;
@@ -281,7 +281,7 @@ void cls_804AE7D8::setBoxes() {
 // The effects of the rock breaking.
 // Not in the binary: a plain function that update inlines.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
-void cls_804AE7D8::spawnBreakEmitters() {
+void RockDroppedIntoTheRiver11_804AE7D8::spawnBreakEmitters() {
     if (mEmitter230 == NULL) {
         mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x542, 0, 0, NULL, NULL, true, 1.0f);
         setEmitterPos_8013CB44(mEmitter230, &mPos, -1, -1, true);
@@ -304,7 +304,7 @@ void cls_804AE7D8::spawnBreakEmitters() {
     }
 }
 
-void cls_804AE7D8::draw() {
+void RockDroppedIntoTheRiver11_804AE7D8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1c = 0;
     params.field_0x1d = -1;
@@ -327,4 +327,4 @@ void cls_804AE7D8::draw() {
     }
 }
 
-cls_804AE7D8::~cls_804AE7D8() {}
+RockDroppedIntoTheRiver11_804AE7D8::~RockDroppedIntoTheRiver11_804AE7D8() {}

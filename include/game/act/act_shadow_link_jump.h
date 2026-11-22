@@ -8,10 +8,10 @@
 // wanders off. Code in game/act_shadow_link_jump.cpp. Named after its vtable
 // (0x804A68D0). The constructor is at 0x80220C48, the deleting destructor
 // at 0x802205E0.
-class cls_804A68D0 : public ShadowLinkBase_804A6A00 {
+class ShadowLinkJumpMinor_804A68D0 : public ShadowLinkBase_804A6A00 {
 public:
-    cls_804A68D0();
-    virtual ~cls_804A68D0();
+    ShadowLinkJumpMinor_804A68D0();
+    virtual ~ShadowLinkJumpMinor_804A68D0();
     /* 0x0C */ virtual void init();
     // 0x80220680: the movement step. State 2 calls ShadowLinkBase_804A6A00's
     // fn_80221250; states 4 and 6 add lbl_8053EFB8 to mVel_0x3c.z;

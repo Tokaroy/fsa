@@ -6,8 +6,8 @@ After: total: 5985 / 11557 functions, 1202140 / 4442032 bytes of code (27.06 %)
 Status: NonMatching. 6/7 functions at 100 % (__sinit generated); updateState_0x90 is 99.7 % (reloc-name only).
 
 ## Matched
-- cls_804A6C38 (vtable 0x804A6C38, sub-base ShadowLinkBase_804A6A00): ctor, dtor, init, onHitByPlayer_0x6C, calcVelocity_0x88 (the DDGO shot release is an inline helper with the serial read once).
-- vtable __vt__12cls_804A6C38 is 100 %.
+- ShadowLinkFireMinor_804A6C38 (vtable 0x804A6C38, sub-base ShadowLinkBase_804A6A00): ctor, dtor, init, onHitByPlayer_0x6C, calcVelocity_0x88 (the DDGO shot release is an inline helper with the serial read once).
+- vtable __vt__28ShadowLinkFireMinor_804A6C38 is 100 %.
 
 ## Resistant
 - updateState_0x90 (0x80222D5C): instructions identical; remaining gap is .data order (ours jump table, weak J3DFrameCtrl vtable, vtable; original vtable at 0, jump table at 0xA4). Names: jumptable_804A6CDC vs @544, and the float literals (lbl_8053FE70 = 2.5f is a named external constant, now declared extern in cls_804A6A00.h). .sdata2 83.3 %, extab/extabindex 56 %: weak-dedup tooling, .data 83.7 % (our object also emits __vt__12J3DFrameCtrl and the jumptable under another name).

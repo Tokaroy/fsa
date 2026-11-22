@@ -36,18 +36,18 @@ static const Step_804AADC8* lbl_804AADC8[] = {
     lbl_8047160C,
 };
 
-cls_804AADD8::cls_804AADD8() {
+TingleFirstAppearance_804AADD8::TingleFirstAppearance_804AADD8() {
     field_0x24c = new cls_8031709C;
 }
 
-cls_804AADD8::~cls_804AADD8() {
+TingleFirstAppearance_804AADD8::~TingleFirstAppearance_804AADD8() {
     if (field_0x24c != NULL) {
         delete field_0x24c;
         field_0x24c = NULL;
     }
 }
 
-void cls_804AADD8::init() {
+void TingleFirstAppearance_804AADD8::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -24.0f;
     mBox.f.x = 24.0f;
@@ -73,7 +73,7 @@ void cls_804AADD8::init() {
 // distance (psq_l/ps_sub/ps_mul/ps_madd/ps_sum0, 9 instrs vs 12 scalar) in
 // selectNearestPlayer's loop, and swaps the stack slots of the case 5/7
 // TVec3f temporaries.
-void cls_804AADD8::update() {
+void TingleFirstAppearance_804AADD8::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -265,7 +265,7 @@ void cls_804AADD8::update() {
     }
 }
 
-void cls_804AADD8::draw() {
+void TingleFirstAppearance_804AADD8::draw() {
     if (field_0x230 == 0xC || field_0x230 == 0xB) {
         return;
     }
@@ -278,7 +278,7 @@ void cls_804AADD8::draw() {
 // (lbl_805418C4), so the code using it sat in a plain function below draw
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
-void cls_804AADD8::selectNearestPlayer() {
+void TingleFirstAppearance_804AADD8::selectNearestPlayer() {
     s32 count = gGameRoot_8053AAF8->fn_80138A30();
     s32 bestPlayer = 0;
     f32 bestDist = 65536.0f;

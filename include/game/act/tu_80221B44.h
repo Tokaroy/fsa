@@ -9,10 +9,10 @@
 // code in game/tu_80221B44.cpp. Not tied to a spawner ID. Named after its
 // vtable (0x804A6AA8). The destructor is fn_80221B44, the constructor
 // fn_80222190.
-class cls_804A6AA8 : public ShadowLinkBase_804A6A00 {
+class ShadowLinkHammerMinor_804A6AA8 : public ShadowLinkBase_804A6A00 {
 public:
-    cls_804A6AA8();
-    virtual ~cls_804A6AA8();
+    ShadowLinkHammerMinor_804A6AA8();
+    virtual ~ShadowLinkHammerMinor_804A6AA8();
     /* 0x0C */ virtual void init();
     /* 0x88 */ virtual void calcVelocity_0x88();
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);

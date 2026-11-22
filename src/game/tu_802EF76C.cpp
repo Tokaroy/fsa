@@ -6,7 +6,7 @@
 
 // Steps colour channel i toward its end value; it lands on the end when the
 // step would pass it.
-static inline void stepChannel(cls_804AA4F0* actor, s32 i) {
+static inline void stepChannel(LightEnvironmentControl_804AA4F0* actor, s32 i) {
     if (actor->mColorCur[i] > actor->mColorEnd[i]) {
         actor->mColorCur[i] += actor->mColorStep[i];
     } else {
@@ -15,7 +15,7 @@ static inline void stepChannel(cls_804AA4F0* actor, s32 i) {
 }
 
 // Passes the frame counter (u8) to fn_80128C58 and the packed colour word to fn_8013A884.
-static inline void applyColor(cls_804AA4F0* actor) {
+static inline void applyColor(LightEnvironmentControl_804AA4F0* actor) {
     fn_80128C58((u8)actor->mCounter);
     u32 packed = (actor->mColorCur[0] << 24) | (actor->mColorCur[1] << 16) | (actor->mColorCur[2] << 8) |
                  actor->mColorCur[3];
@@ -25,7 +25,7 @@ static inline void applyColor(cls_804AA4F0* actor) {
 // FIXME: 99.95 %. The only difference left is the switch's jump table: the
 // original's relocation names it jumptable_804AA548 (dtk's split of .data),
 // ours is MWCC's anonymous @NNN table, which the honest report compares by name.
-void cls_804AA4F0::init() {
+void LightEnvironmentControl_804AA4F0::init() {
     if (!fn_802DEBA0()) {
         field_0x244 = mSpawnParam_0x90 & 0xFF;
     } else {
@@ -113,9 +113,9 @@ void cls_804AA4F0::init() {
     mUpdateWhilePaused_0x11f = 1;
 }
 
-cls_804AA4F0::~cls_804AA4F0() {}
+LightEnvironmentControl_804AA4F0::~LightEnvironmentControl_804AA4F0() {}
 
-void cls_804AA4F0::update() {
+void LightEnvironmentControl_804AA4F0::update() {
     switch (mState) {
     case 0:
         mCounter -= 4;
@@ -169,9 +169,9 @@ void cls_804AA4F0::update() {
     }
 }
 
-void cls_804AA4F0::draw() {}
+void LightEnvironmentControl_804AA4F0::draw() {}
 
-void cls_804AA4F0::vfunc_0x54(s32 r, s32 g, s32 b, s32 a, s32 frames, s32 state) {
+void LightEnvironmentControl_804AA4F0::vfunc_0x54(s32 r, s32 g, s32 b, s32 a, s32 frames, s32 state) {
     mState = state;
     if (state == 0) {
         mColorEnd[0] = r;

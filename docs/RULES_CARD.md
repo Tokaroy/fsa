@@ -537,7 +537,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   act_recovery_heart 61.5 -> 99.96, act_small_key fn_802C1970 85.3 -> 98.5, act_somaria_block 57.5 ->
   96.8, tu_8017A44C 72.7 -> 99.0, act_two_sword_motion 84.1 -> 92.1 (s32 code).
 - Resource type codes `u32 type = 'M   '; type += ((s[0] - ' ') << 16) + ((s[1] - ' ') << 8) + (s[2] -
-  ' ');` (GameView): also tu_802E2074 cls_804A9BC8 init ('B   ' set before the sprintf, the add after it;
+  ' ');` (GameView): also tu_802E2074 EnemyGenerator2_804A9BC8 init ('B   ' set before the sprintf, the add after it;
   86.5 -> 96.2).
 - Did not generalise (shape sweep 2): `return a() || b();` for a bool local — Player fn_80240DCC (the
   target sets `result = true` first, li r31 1) 92.3 -> 81.2, EnemyBase fn_801D08B4 99.7 -> 91.1; keep

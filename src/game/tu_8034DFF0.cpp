@@ -14,7 +14,7 @@ static const s32 lbl_804721D4[15] = {30, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 10,
 // The zeroing loop's store order differs (the original stores
 // each field_0x254 vector as z, y, x, this build x, y, z).
 // 0x8034EAB4.
-void cls_804AC9A8::init() {
+void FourPersonSwitch_804AC9A8::init() {
     mMapBox_0x80.set(-15.0f, -15.0f, 15.0f, 15.0f);
     mBox.set(-15.0f, -15.0f, 15.0f, 15.0f);
     field_0x238 = 0;
@@ -36,7 +36,7 @@ void cls_804AC9A8::init() {
 
 // 0x8034E49C.
 // FIXME(shotgun): 90.40 %, missing/extra; behaviour near.
-void cls_804AC9A8::update() {
+void FourPersonSwitch_804AC9A8::update() {
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
     box.i.y += -2.5f;
@@ -180,7 +180,7 @@ void cls_804AC9A8::update() {
 }
 
 // 0x8034E2F0.
-void cls_804AC9A8::draw() {
+void FourPersonSwitch_804AC9A8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1d = -3;
     params.field_0x1c = 0;
@@ -193,7 +193,7 @@ void cls_804AC9A8::draw() {
 }
 
 
-void cls_804AC9A8::fn_8034E050() {
+void FourPersonSwitch_804AC9A8::fn_8034E050() {
     JGeometry::TVec3f players[4];
     u8 taken[4];
     for (s32 i = 0; i < 4; i++) {
@@ -229,4 +229,4 @@ void cls_804AC9A8::fn_8034E050() {
 }
 
 // Destructor at 0x8034DFF0.
-cls_804AC9A8::~cls_804AC9A8() {}
+FourPersonSwitch_804AC9A8::~FourPersonSwitch_804AC9A8() {}

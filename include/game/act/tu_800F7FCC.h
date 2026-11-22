@@ -14,7 +14,7 @@ struct cls_800F802C {
     void fn_800F802C();
     // 0x800F8210 (game/tu_800F7FCC.cpp, not written yet): starts the ring at
     // pos on `layer`; type 0-2 as in fn_800F802C. Called with 2 by
-    // cls_804A6AA8 (game/tu_80221B44.cpp).
+    // ShadowLinkHammerMinor_804A6AA8 (game/tu_80221B44.cpp).
     void fn_800F8210(s32 layer, JGeometry::TVec3f pos, u8 type);
 
     /* 0x00 */ JGeometry::TVec3f mPos;

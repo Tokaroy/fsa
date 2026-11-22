@@ -4,7 +4,7 @@
 #include "game/GameGlobals.h"
 #include "game/cls_804AE9B0.h"
 
-void cls_804A7A68::init() {
+void SpiralStaircase_804A7A68::init() {
     switch (mSpawnParam_0x90 & 0xF) {
     case 0:
     case 1:
@@ -90,7 +90,7 @@ static inline s32 kind(u32 f) {
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
 // tile offset in mSpawnParam_0x90 (kinds 4-7), scrolls the view and sets the music; 3 fades back in
 // and walks them on; 4 hands control back.
-void cls_804A7A68::update() {
+void SpiralStaircase_804A7A68::update() {
     switch (field_0x230) {
     case 0: {
         if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
@@ -425,12 +425,12 @@ void cls_804A7A68::update() {
     }
 }
 
-void cls_804A7A68::draw() {}
+void SpiralStaircase_804A7A68::draw() {}
 
 // 0x8028DDD8. Orders the players for the four marker slots: out[] gets the player indices
 // sorted by their x (y for the vertical variants 6 and 7), grouped by team for two players.
 // FIXME(shotgun): 97.34 %, missing/extra; behaviour drift.
-void cls_804A7A68::fn_8028DDD8(s32* out) {
+void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
         if ((mSpawnParam_0x90 & 0xF) == 6 || (mSpawnParam_0x90 & 0xF) == 7) {
@@ -532,4 +532,4 @@ void cls_804A7A68::fn_8028DDD8(s32* out) {
     }
 }
 
-cls_804A7A68::~cls_804A7A68() {}
+SpiralStaircase_804A7A68::~SpiralStaircase_804A7A68() {}

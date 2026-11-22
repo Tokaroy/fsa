@@ -22,7 +22,7 @@ static const s32 lbl_80542510[2] = {20, 15};
 static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 
 // 0x8034C464.
-void cls_804AC8C0::init() {
+void CuccoHerdingNPC_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
     mVel_0x3c.x = 0.0f;
@@ -72,7 +72,7 @@ void cls_804AC8C0::init() {
 
 static void markRandomCucco(s32* serials, s32 count);
 
-void cls_804AC8C0::vfunc_0x10() {
+void CuccoHerdingNPC_804AC8C0::vfunc_0x10() {
     s32 serials[30];
     s32 serial = -1;
     s32 count = 0;
@@ -91,7 +91,7 @@ void cls_804AC8C0::vfunc_0x10() {
 }
 
 // FIXME(shotgun): 95.91 %, missing/extra + reloc-name; behaviour near.
-void cls_804AC8C0::update() {
+void CuccoHerdingNPC_804AC8C0::update() {
     s32 found = 0;
     if (field_0x230 == 6 || field_0x230 == 7) {
         for (s32 i = 0; i < 4; i++) {
@@ -505,7 +505,7 @@ void cls_804AC8C0::update() {
 // Not in the binary (init and update inline it); the pool has its 100.0f and 10430.378f ahead of
 // update's literals. Faces the nearest player within 100, else left in state 13 and down otherwise.
 // R2 pool helper (inlined at 2 call sites); was updateFacing.
-void cls_804AC8C0::pool_80542558() {
+void CuccoHerdingNPC_804AC8C0::pool_80542558() {
     JGeometry::TVec3f dir;
     f32 dist;
     fn_801EE558(&dir, &dist, 0);
@@ -530,7 +530,7 @@ void cls_804AC8C0::pool_80542558() {
 
 // 0x8034AFE8.
 // FIXME(shotgun): 99.25 %, same-text; behaviour clean.
-void cls_804AC8C0::draw() {
+void CuccoHerdingNPC_804AC8C0::draw() {
     const char* name;
     s32 frame;
     switch (field_0x244) {
@@ -551,7 +551,7 @@ static const s32 lbl_80472158[3] = {10, 5, 1};
 
 // The box is built in a temporary and copied, as in the original. Literal pool names differ.
 // FIXME: 99.26 %, missing/extra; behaviour near.
-void cls_804AC8C0::fn_8034ACF4() {
+void CuccoHerdingNPC_804AC8C0::fn_8034ACF4() {
     JGeometry::TBox2f box;
     JGeometry::TBox2f src(9.0f, -7.0f, 103.0f, 87.0f);
     box = src;
@@ -599,7 +599,7 @@ void cls_804AC8C0::fn_8034ACF4() {
     }
 }
 
-s32 cls_804AC8C0::fn_8034AAA0() {
+s32 CuccoHerdingNPC_804AC8C0::fn_8034AAA0() {
     JGeometry::TBox2f box;
     box = JGeometry::TBox2f(24.0f, 8.0f, 88.0f, 72.0f);
     box.i.x += mPos.x;
@@ -650,4 +650,4 @@ static void markRandomCucco(s32* serials, s32 count) {
 }
 
 // Destructor at 0x8034AA40.
-cls_804AC8C0::~cls_804AC8C0() {}
+CuccoHerdingNPC_804AC8C0::~CuccoHerdingNPC_804AC8C0() {}

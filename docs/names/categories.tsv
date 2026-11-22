@@ -222,9 +222,9 @@ game/tu_80217374.cpp	enemies	low	called only by act_shadow_link_2, act_thief	han
 game/tu_8021775C.cpp	enemies	low	called only by act_vaati_boss	hand
 game/tu_8021827C.cpp	enemies	med	EnemyBase subclass (cls_804A51E4); no actors.tsv kind	auto
 game/tu_802188B0.cpp	enemies	low	called only by act_shadow_link_2	hand
-game/act_kaepora_gaebora.cpp	npcs	med	actors.tsv (actor spawner): npc KEPO Kaepora Gaebora; but EnemyBase subclass (cls_804A6550)	auto
+game/act_kaepora_gaebora.cpp	npcs	med	actors.tsv (actor spawner): npc KEPO Kaepora Gaebora; but EnemyBase subclass (KaeporaGaebora_804A6550)	auto
 game/tu_8021A570.cpp	npcs	low	called only by act_kaepora_gaebora	hand
-game/tu_8021AF28.cpp	enemies	med	EnemyBase subclass (cls_804A6550); no actors.tsv kind	auto
+game/tu_8021AF28.cpp	enemies	med	EnemyBase subclass (KaeporaGaebora_804A6550); no actors.tsv kind	auto
 game/tu_8021B904.cpp	enemies	low	called only by act_thief	hand
 game/tu_8021BCBC.cpp	enemies	low	called only by the Vaati units	hand
 game/tu_8021BFA8.cpp	npcs	low	called only by the horse race units	hand
@@ -232,7 +232,7 @@ game/tu_8021C2B4.cpp	enemies	low	called only by the Shadow Link generator	hand
 game/tu_8021C848.cpp	enemies	low	called only by tu_8021C2B4 (Shadow Link generator)	hand
 game/tu_8021CDE4.cpp	enemies	med	EnemyBase subclass (ShadowLink2_804A43E8); no actors.tsv kind	auto
 game/act_fireball_generator.cpp	enemies	low	EnemyBase subclass (FireballGenerator_804A6660); but actors.tsv (actor spawner): system FBGE Fireball generator	auto
-game/act_navi.cpp	npcs	med	actors.tsv (actor spawner): npc NAVI Navi; but EnemyBase subclass (cls_804A6708)	auto
+game/act_navi.cpp	npcs	med	actors.tsv (actor spawner): npc NAVI Navi; but EnemyBase subclass (Navi_804A6708)	auto
 game/tu_8021F064.cpp	npcs	low	called only by act_navi	hand
 game/tu_8021F4B0.cpp	enemies	low	called only by act_shadow_link_generator	hand
 game/tu_8021FDB8.cpp	enemies	med	EnemyBase subclass (cls_804A51E4); no actors.tsv kind	auto
@@ -261,9 +261,9 @@ game/act_extending_lift.cpp	objects	med	actors.tsv (actor spawner): object LIF2 
 game/act_pull_switch.cpp	objects	med	actors.tsv (actor spawner): object PLSW Pull switch	auto
 game/act_magic_circle.cpp	objects	med	actors.tsv (actor spawner): object CIRC Magic circle	auto
 game/act_block.cpp	objects	high	actors.tsv (actor spawner): object BLCK Block	auto
-game/tu_8028DD78.cpp	objects	low	cls_804A7A68 actor inside the Player text range, not a Player unit	hand
+game/tu_8028DD78.cpp	objects	low	SpiralStaircase_804A7A68 actor inside the Player text range, not a Player unit	hand
 game/tu_8028FBA0.cpp	player	high	Player unit (PLAYER.md)	auto
-game/tu_802957CC.cpp	objects	low	cls_804A7AE0 actor right after the Player range	hand
+game/tu_802957CC.cpp	objects	low	MovingHouse_804A7AE0 actor right after the Player range	hand
 game/act_push_switch.cpp	objects	med	actors.tsv (actor spawner): object PSSW Push switch	auto
 game/act_burning_block.cpp	objects	med	actors.tsv (actor spawner): object BRBL Burning block (wooden crate)	auto
 game/tu_8029C584.cpp	enemies	low	actors.tsv (actor spawner): enemy FORM unknown (FORM)	auto
@@ -290,7 +290,7 @@ game/act_torch.cpp	objects	high	actors.tsv (actor spawner): object TRCH Torch	au
 game/tu_802B1558.cpp	core	med	copies the save region to 0x80700000 (OSSetSaveRegion, GameState.h)	hand
 game/tu_802B214C.cpp	enemies	low	actors.tsv (actor spawner): enemy SKUL Rotating skull	auto
 game/act_spotlight_se.cpp	objects	med	actors.tsv (actor spawner): system SLSD Spotlight SE	auto
-game/tu_802B3674.cpp	objects	low	cls_804A8638, called by act_blizzard_battle and demos	hand
+game/tu_802B3674.cpp	objects	low	EnvironmentSwitchControl_804A8638, called by act_blizzard_battle and demos	hand
 game/act_stone_disguised_npc.cpp	npcs	med	actors.tsv (actor spawner): npc SSTN NPC disguised as a stone	auto
 game/act_liftable_wood.cpp	objects	med	actors.tsv (actor spawner): object WOOD Liftable wood	auto
 game/act_switch_or.cpp	objects	med	actors.tsv (actor spawner): system SWOR Switch OR	auto

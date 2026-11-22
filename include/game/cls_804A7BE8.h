@@ -35,7 +35,7 @@ public:
     /* 0x248 */ s32 field_0x248; // mSpawnParam_0x90 & 3
     /* 0x24C */ bool field_0x24c; // 1 when fn_8022F514 is true for exactly three players
     /* 0x250 */ s32 field_0x250; // 0 after init
-    /* 0x254 */ cls_804AE4B0* field_0x254; // the FGAL actor (alive) in the manager
+    /* 0x254 */ FourGirlsControl_804AE4B0* field_0x254; // the FGAL actor (alive) in the manager
 };
 
 #endif

@@ -1,5 +1,5 @@
 // The old man (actor JIJI, "Old Man" in docs/names/actors.tsv). The class is
-// cls_804AEED0 (its vtable, set by the constructor at 0x8037CE00); its
+// OldMan_804AEED0 (its vtable, set by the constructor at 0x8037CE00); its
 // declaration is in game/act/tu_801F9484.h with the spawner.
 
 #include "JSystem/JMath/JMath.h"
@@ -83,32 +83,32 @@ static u8 lbl_8053A204[2][4] = {{0, 1, 0, 1}, {0, 1, 0, 2}};
 static u8 lbl_8053A20C[3] = {60, 10, 0};
 
 // Not const, so its initialiser (lbl_804AE9C0) is copied into it by __sinit_act_old_man_cpp.
-static void (cls_804AEED0::*lbl_804AEC48[54])() = {
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B6C4, &cls_804AEED0::fn_8037B78C,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B67C, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B634, &cls_804AEED0::fn_8037B78C, &cls_804AEED0::fn_8037B5FC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B5B4, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B744, &cls_804AEED0::fn_8037B554, &cls_804AEED0::fn_8037B7EC,
-    &cls_804AEED0::fn_8037B744, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B67C,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B634, &cls_804AEED0::fn_8037B4D0,
-    &cls_804AEED0::fn_8037B488, &cls_804AEED0::fn_8037B3E0, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B70C,
-    &cls_804AEED0::fn_8037B70C, &cls_804AEED0::fn_8037B3A8, &cls_804AEED0::fn_8037B7EC,
-    &cls_804AEED0::fn_8037B7EC, &cls_804AEED0::fn_8037B7EC, &cls_804AEED0::fn_8037B7EC,
-    &cls_804AEED0::fn_8037B7EC, &cls_804AEED0::fn_8037B7EC, &cls_804AEED0::fn_8037B7EC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
-    &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC, &cls_804AEED0::fn_8037B7BC,
+static void (OldMan_804AEED0::*lbl_804AEC48[54])() = {
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B6C4, &OldMan_804AEED0::fn_8037B78C,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B67C, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B634, &OldMan_804AEED0::fn_8037B78C, &OldMan_804AEED0::fn_8037B5FC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B5B4, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B744, &OldMan_804AEED0::fn_8037B554, &OldMan_804AEED0::fn_8037B7EC,
+    &OldMan_804AEED0::fn_8037B744, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B67C,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B634, &OldMan_804AEED0::fn_8037B4D0,
+    &OldMan_804AEED0::fn_8037B488, &OldMan_804AEED0::fn_8037B3E0, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B70C,
+    &OldMan_804AEED0::fn_8037B70C, &OldMan_804AEED0::fn_8037B3A8, &OldMan_804AEED0::fn_8037B7EC,
+    &OldMan_804AEED0::fn_8037B7EC, &OldMan_804AEED0::fn_8037B7EC, &OldMan_804AEED0::fn_8037B7EC,
+    &OldMan_804AEED0::fn_8037B7EC, &OldMan_804AEED0::fn_8037B7EC, &OldMan_804AEED0::fn_8037B7EC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
+    &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC, &OldMan_804AEED0::fn_8037B7BC,
 };
 
-cls_804AEED0::cls_804AEED0() {
+OldMan_804AEED0::OldMan_804AEED0() {
     field_0x274 = new cls_8031709C;
 }
 
-cls_804AEED0::~cls_804AEED0() {
+OldMan_804AEED0::~OldMan_804AEED0() {
     if (field_0x274 != NULL) {
         delete field_0x274;
     }
@@ -117,7 +117,7 @@ cls_804AEED0::~cls_804AEED0() {
     }
 }
 
-void cls_804AEED0::init() {
+void OldMan_804AEED0::init() {
     field_0x230 = 0;
     field_0x250 = (mSpawnParam_0x90 & 0xFFF) + 0x12B;
     field_0x254 = (mSpawnParam_0x90 >> 24) & 1;
@@ -363,7 +363,7 @@ void cls_804AEED0::init() {
     field_0x278 = NULL;
 }
 
-void cls_804AEED0::update() {
+void OldMan_804AEED0::update() {
     s32 readyCount = 0;
     s32 activeCount = 0;
     JGeometry::TBox2f box1;
@@ -574,7 +574,7 @@ void cls_804AEED0::update() {
 }
 
 // FIXME: 99.56%. regalloc-only: target->ours r8->r7, r7->r8, r7->r0, r0->r8.
-void cls_804AEED0::draw() {
+void OldMan_804AEED0::draw() {
     if (field_0x230 == 5 && field_0x274 != NULL) {
         u32 sfx = field_0x274->fn_80316E74(field_0x244);
         if (sfx != -1U) {
@@ -629,11 +629,11 @@ void cls_804AEED0::draw() {
     }
 }
 
-void cls_804AEED0::fn_8037B7EC() {
+void OldMan_804AEED0::fn_8037B7EC() {
     field_0x238 = 0;
 }
 
-void cls_804AEED0::fn_8037B7BC() {
+void OldMan_804AEED0::fn_8037B7BC() {
     if (field_0x234 > 0) {
         return;
     }
@@ -642,7 +642,7 @@ void cls_804AEED0::fn_8037B7BC() {
     field_0x238 &= 1;
 }
 
-void cls_804AEED0::fn_8037B78C() {
+void OldMan_804AEED0::fn_8037B78C() {
     if (field_0x234 > 0) {
         return;
     }
@@ -651,7 +651,7 @@ void cls_804AEED0::fn_8037B78C() {
     field_0x238 &= 7;
 }
 
-void cls_804AEED0::fn_8037B744() {
+void OldMan_804AEED0::fn_8037B744() {
     if (field_0x234 > 0) {
         return;
     }
@@ -661,7 +661,7 @@ void cls_804AEED0::fn_8037B744() {
     field_0x238 = lbl_8053A1D4[field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B70C() {
+void OldMan_804AEED0::fn_8037B70C() {
     if (field_0x234 > 0) {
         return;
     }
@@ -670,7 +670,7 @@ void cls_804AEED0::fn_8037B70C() {
     field_0x234 = lbl_8053A1D8[field_0x238];
 }
 
-void cls_804AEED0::fn_8037B6C4() {
+void OldMan_804AEED0::fn_8037B6C4() {
     if (field_0x234 > 0) {
         return;
     }
@@ -680,7 +680,7 @@ void cls_804AEED0::fn_8037B6C4() {
     field_0x238 = lbl_8053A1E0[field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B67C() {
+void OldMan_804AEED0::fn_8037B67C() {
     if (field_0x234 > 0) {
         return;
     }
@@ -690,7 +690,7 @@ void cls_804AEED0::fn_8037B67C() {
     field_0x238 = lbl_8053A1E8[field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B634() {
+void OldMan_804AEED0::fn_8037B634() {
     if (field_0x234 > 0) {
         return;
     }
@@ -700,7 +700,7 @@ void cls_804AEED0::fn_8037B634() {
     field_0x238 = lbl_8053A1F0[field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B5FC() {
+void OldMan_804AEED0::fn_8037B5FC() {
     if (field_0x234 > 0) {
         return;
     }
@@ -709,7 +709,7 @@ void cls_804AEED0::fn_8037B5FC() {
     field_0x234 = lbl_8053A1F4[field_0x238];
 }
 
-void cls_804AEED0::fn_8037B5B4() {
+void OldMan_804AEED0::fn_8037B5B4() {
     if (field_0x234 > 0) {
         return;
     }
@@ -719,7 +719,7 @@ void cls_804AEED0::fn_8037B5B4() {
     field_0x238 = lbl_8053A1FC[field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B554() {
+void OldMan_804AEED0::fn_8037B554() {
     if (field_0x234 > 0) {
         return;
     }
@@ -729,7 +729,7 @@ void cls_804AEED0::fn_8037B554() {
     field_0x238 = lbl_8053A204[field_0x248 / 2][field_0x23c];
 }
 
-void cls_804AEED0::fn_8037B4D0() {
+void OldMan_804AEED0::fn_8037B4D0() {
     if (field_0x234 == 35) {
         field_0x238 = 1;
     } else if (field_0x234 == 20) {
@@ -746,7 +746,7 @@ void cls_804AEED0::fn_8037B4D0() {
     }
 }
 
-void cls_804AEED0::fn_8037B488() {
+void OldMan_804AEED0::fn_8037B488() {
     if (field_0x234 == 25) {
         field_0x238 = 1;
     } else if (field_0x234 == 10) {
@@ -757,7 +757,7 @@ void cls_804AEED0::fn_8037B488() {
     }
 }
 
-void cls_804AEED0::fn_8037B3E0() {
+void OldMan_804AEED0::fn_8037B3E0() {
     if (field_0x248 < 3) {
         if (field_0x234 == 10) {
             field_0x238 = 1;
@@ -771,7 +771,7 @@ void cls_804AEED0::fn_8037B3E0() {
     }
 }
 
-void cls_804AEED0::fn_8037B3A8() {
+void OldMan_804AEED0::fn_8037B3A8() {
     if (field_0x234 > 0) {
         return;
     }
@@ -780,7 +780,7 @@ void cls_804AEED0::fn_8037B3A8() {
     field_0x234 = lbl_8053A20C[field_0x238];
 }
 
-void cls_804AEED0::fn_8037B374(JGeometry::TVec3f pos, s32 arg) {
+void OldMan_804AEED0::fn_8037B374(JGeometry::TVec3f pos, s32 arg) {
     mPos = pos;
     field_0x248 = arg / 3;
     field_0x273 = 1;
@@ -794,7 +794,7 @@ void cls_804AEED0::fn_8037B374(JGeometry::TVec3f pos, s32 arg) {
 // both init (0x8037C8F0) and update (0x8037C090, 0x8037C2B8); nothing else is
 // proven.
 // R2 pool helper (inlined at 3 call sites); was updateFacing.
-void cls_804AEED0::pool_80543048(s32 target) {
+void OldMan_804AEED0::pool_80543048(s32 target) {
     if (field_0x24c != 0) {
         field_0x24c--;
         return;

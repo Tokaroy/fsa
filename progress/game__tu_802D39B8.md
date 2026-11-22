@@ -72,7 +72,7 @@ SHARED-EDITS: include/game/GameView.h (field_0x2c s32 -> s32[2] replacing field_
 -> u64[4][10][10]; fn_802DA630 bool -> u8 (returns the lbz as is; one caller, unwritten tu_80134C04, clrlwi's);
 declared fn_802D3D48, fn_802D92F0 members, inline screenMask, clearScreen, restartTimeLimit, clearScreenState);
 include/game/tu_80379F84.h (SaveRow 0x7C/0x7D carved from field_0x7a padding); include/game/act/tu_803276C4.h
-(cls_804AB528 s32 field_0x230 carved from padding: lwz/stw in tu_803276C4, tested == 2 by fn_802DA630).
+(OshinUnidentified_804AB528 s32 field_0x230 carved from padding: lwz/stw in tu_803276C4, tested == 2 by fn_802DA630).
 symbols.txt: fn_802D3D48 / fn_802D92F0 -> __17GameView_804A9950Fv member names; lbl_8053A1A8 size 0x8 -> 0x4 (the f32
 step 0.2f; the other 4 bytes are section padding): .sdata 100 %.
 

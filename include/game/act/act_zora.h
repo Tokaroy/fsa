@@ -26,7 +26,7 @@ public:
     // the position outright; anything else falls to ActorBase's test.
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // Slots 0xA4-0xB0, the four this class appends. ZoraEnemy's own are
-    // empty (0xAC returns false); the lotus Zora (cls_804AC3E0,
+    // empty (0xAC returns false); the lotus Zora (ZoraLotus_804AC3E0,
     // act_zora_lotus.cpp) overrides all four.
     /* 0xA4 */ virtual void vfunc_0xA4();
     /* 0xA8 */ virtual void vfunc_0xA8();

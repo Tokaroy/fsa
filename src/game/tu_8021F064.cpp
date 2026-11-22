@@ -45,10 +45,10 @@ void cls_8021F064::fn_8021F130() {
             actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
             if (actor) {
                 if (mFlags & 1) {
-                    static_cast<cls_804A6708*>(actor)->fn_8021D764();
+                    static_cast<Navi_804A6708*>(actor)->fn_8021D764();
                 }
                 if (mFlags & 2) {
-                    static_cast<cls_804A6708*>(actor)->fn_8021D734();
+                    static_cast<Navi_804A6708*>(actor)->fn_8021D734();
                 }
             }
         }
@@ -64,7 +64,7 @@ bool cls_8021F064::fn_8021F094() const {
     bool result = true;
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
-        if (actor != NULL && !static_cast<cls_804A6708*>(actor)->fn_8021D794()) {
+        if (actor != NULL && !static_cast<Navi_804A6708*>(actor)->fn_8021D794()) {
             result = false;
             break;
         }

@@ -14,7 +14,7 @@ static const char* const lbl_804AB518[4] = {"said_a.bti", "said_b.bti", "said_c.
 
 // FIXME: 95.00 %, missing/extra; behaviour drift.
 // FIXME(shotgun): the found actor is kept in r3 instead of r4 (null test as cmplwi, not mr.)
-void cls_804AB528::init() {
+void OshinUnidentified_804AB528::init() {
     field_0x94 = mSpawnParam_0x90 & 0xF;
     field_0x240 = (mSpawnParam_0x90 >> 4) & 0xF;
     field_0x248 = (mSpawnParam_0x90 >> 8) & 0xF;
@@ -28,7 +28,7 @@ void cls_804AB528::init() {
         if (serial == mSerial) {
             continue;
         }
-        cls_804AB528* other = static_cast<cls_804AB528*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+        OshinUnidentified_804AB528* other = static_cast<OshinUnidentified_804AB528*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
         if (other == NULL) {
             continue;
         }
@@ -80,7 +80,7 @@ void cls_804AB528::init() {
 }
 
 // FIXME(shotgun): 93.02 %, missing/extra; behaviour near.
-void cls_804AB528::update() {
+void OshinUnidentified_804AB528::update() {
     if (field_0x25c < 1.0f) {
         if (isScreenFlagSet_0x34() == 1 && field_0x25a == 1) {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, (f32)(field_0x240 + 1));
@@ -307,7 +307,7 @@ void cls_804AB528::update() {
 
 // FIXME(shotgun): 70.24 %, missing/extra + reloc-name; behaviour near.
 // the Mtx diagonal setup and the sprite call order
-void cls_804AB528::draw() {
+void OshinUnidentified_804AB528::draw() {
     if (field_0x25c == 0.0f) {
         return;
     }
@@ -340,4 +340,4 @@ void cls_804AB528::draw() {
     fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, 0, 2, -1, field_0x240 != 0, 0, 0);
 }
 
-cls_804AB528::~cls_804AB528() {}
+OshinUnidentified_804AB528::~OshinUnidentified_804AB528() {}

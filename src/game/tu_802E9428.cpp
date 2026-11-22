@@ -404,7 +404,7 @@ void UnknownENDM_804AA0FC::update() {
                         static_cast<KaeporaGaeboraEnding_804ADAC8*>(actor)->fn_803613D0();
                         actor->mAlive = false;
                     } else if (actor->mActorId == 'EETC') {
-                        static_cast<cls_804ADF28*>(actor)->fn_80362634();
+                        static_cast<OtherCharactersEnding_804ADF28*>(actor)->fn_80362634();
                         actor->mAlive = false;
                     } else if (actor->mActorId == 'ELK2') {
                         static_cast<Link2Ending_804AE338*>(actor)->fn_8036E544();

@@ -536,14 +536,14 @@ public:
 #include "game/act/act_bird_manager.h"
 
 
-// Spawned for 'ZSLD': cls_804A6D00, game/act/tu_802233A4.h.
+// Spawned for 'ZSLD': ShadowLinkThwompMinor_804A6D00, game/act/tu_802233A4.h.
 #include "game/act/tu_802233A4.h"
 
 // Spawned for 'GOAL'. Code: game/tu_802A4654.cpp.
-class cls_804A7EB0 : public ActorBase_804A5770 {
+class Goal_804A7EB0 : public ActorBase_804A5770 {
 public:
-    cls_804A7EB0() {}
-    /* 0x08 */ virtual ~cls_804A7EB0();
+    Goal_804A7EB0() {}
+    /* 0x08 */ virtual ~Goal_804A7EB0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -656,10 +656,10 @@ public:
 }; // Size: 0x258
 
 // Spawned for 'GOL2'.
-class cls_804A9C20 : public ActorBase_804A5770 {
+class Goal2_804A9C20 : public ActorBase_804A5770 {
 public:
-    cls_804A9C20() {}
-    /* 0x08 */ virtual ~cls_804A9C20();
+    Goal2_804A9C20() {}
+    /* 0x08 */ virtual ~Goal2_804A9C20();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -718,10 +718,10 @@ public:
 // Spawned for 'TWTG'.
 class cls_8031709C;
 
-class cls_804AAD60 : public ActorBase_804A5770 {
+class TinglesTowerTingleAndSign_804AAD60 : public ActorBase_804A5770 {
 public:
-    cls_804AAD60();
-    /* 0x08 */ virtual ~cls_804AAD60();
+    TinglesTowerTingleAndSign_804AAD60();
+    /* 0x08 */ virtual ~TinglesTowerTingleAndSign_804AAD60();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -790,10 +790,10 @@ public:
 #include "game/act/act_bee_manager.h"
 
 // Spawned for 'MRTA'.
-class cls_804ACD70 : public ActorBase_804A5770 {
+class Log_804ACD70 : public ActorBase_804A5770 {
 public:
-    cls_804ACD70() {}
-    /* 0x08 */ virtual ~cls_804ACD70();
+    Log_804ACD70() {}
+    /* 0x08 */ virtual ~Log_804ACD70();
     /* 0x230 */ u8 field_0x230[0x38];
     /* 0x268 */ Elem_801FFCDC field_0x268[4];
     /* 0x2B8 */ u8 field_0x2b8[0x2C];
@@ -810,10 +810,10 @@ public:
 // Spawned for 'DCR2'.
 class Navi54MaidenCrystalCutscene_804ADFE8;
 class J2DPicture;
-class cls_804AE088 : public cls_8049D140 {
+class CrystalCutscene5464_804AE088 : public cls_8049D140 {
 public:
-    cls_804AE088();
-    /* 0x08 */ virtual ~cls_804AE088();
+    CrystalCutscene5464_804AE088();
+    /* 0x08 */ virtual ~CrystalCutscene5464_804AE088();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -863,7 +863,7 @@ public:
     /* 0x294 */ s32 field_0x294[5];
     /* 0x2A8 */ JGeometry::TVec3f field_0x2a8[6];
     /* 0x2F0 */ s32 field_0x2f0;
-    /* 0x2F4 */ cls_804A9C20* field_0x2f4;
+    /* 0x2F4 */ Goal2_804A9C20* field_0x2f4;
     /* 0x2F8 */ s32 field_0x2f8[6];
     /* 0x310 */ void* field_0x310;
     /* 0x314 */ J2DPicture* field_0x314;
@@ -886,10 +886,10 @@ public:
 class cls_8031709C;
 
 // Spawned for 'JIJI'.
-class cls_804AEED0 : public ActorBase_804A5770 {
+class OldMan_804AEED0 : public ActorBase_804A5770 {
 public:
-    cls_804AEED0();
-    /* 0x08 */ virtual ~cls_804AEED0();
+    OldMan_804AEED0();
+    /* 0x08 */ virtual ~OldMan_804AEED0();
     /* 0x0C */ virtual void init();   // fn_8037C788
     /* 0x14 */ virtual void update(); // fn_8037BC30
     /* 0x20 */ virtual void draw();   // fn_8037B7F8

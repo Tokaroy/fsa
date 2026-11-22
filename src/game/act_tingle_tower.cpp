@@ -25,18 +25,18 @@ static const s32 lbl_80471518[4] = {
     19, 20, 21, 22,
 };
 
-static void (cls_804AAD60::*lbl_804AACDC[11])() = {
-    &cls_804AAD60::fn_80315EE8,
-    &cls_804AAD60::fn_80315C84,
-    &cls_804AAD60::fn_80315C80,
-    &cls_804AAD60::fn_80313C20,
-    &cls_804AAD60::fn_80315864,
-    &cls_804AAD60::fn_80315460,
-    &cls_804AAD60::fn_80315080,
-    &cls_804AAD60::fn_80314B1C,
-    &cls_804AAD60::fn_803146DC,
-    &cls_804AAD60::fn_803142E4,
-    &cls_804AAD60::fn_80313D7C,
+static void (TinglesTowerTingleAndSign_804AAD60::*lbl_804AACDC[11])() = {
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315EE8,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315C84,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315C80,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80313C20,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315864,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315460,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80315080,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80314B1C,
+    &TinglesTowerTingleAndSign_804AAD60::fn_803146DC,
+    &TinglesTowerTingleAndSign_804AAD60::fn_803142E4,
+    &TinglesTowerTingleAndSign_804AAD60::fn_80313D7C,
 };
 
 // Passes the position on by value (the original loads the other arguments before its copy).
@@ -45,7 +45,7 @@ static inline bool talk(s32 player, u32 msg, s32 layer, s32 serial, const JGeome
 }
 
 // Starts a message for a player and remembers the player and the message.
-inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
+inline bool TinglesTowerTingleAndSign_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
     if (talk(player, msg, mLayer_0x4, mSerial, mPos, flags)) {
         field_0x254 = player;
         field_0x268 = msg;
@@ -56,7 +56,7 @@ inline bool cls_804AAD60::startMessage(s32 player, u32 msg, u32 flags) {
 }
 
 // Shows the next message to the player already talking and remembers it.
-inline bool cls_804AAD60::nextMessage(u32 msg) {
+inline bool TinglesTowerTingleAndSign_804AAD60::nextMessage(u32 msg) {
     if (fn_8038470C(field_0x254, msg)) {
         field_0x268 = msg;
         field_0x234 = 1;
@@ -65,7 +65,7 @@ inline bool cls_804AAD60::nextMessage(u32 msg) {
     return false;
 }
 
-inline void cls_804AAD60::updateFacing() {
+inline void TinglesTowerTingleAndSign_804AAD60::updateFacing() {
     if (field_0x274 <= 0) {
         field_0x274 = 20;
         JGeometry::TVec3f dir;
@@ -103,18 +103,18 @@ static inline u8 getTowerViewByte(s32 i) {
     return 0;
 }
 
-cls_804AAD60::cls_804AAD60() {
+TinglesTowerTingleAndSign_804AAD60::TinglesTowerTingleAndSign_804AAD60() {
     field_0x278 = new cls_8031709C;
 }
 
-cls_804AAD60::~cls_804AAD60() {
+TinglesTowerTingleAndSign_804AAD60::~TinglesTowerTingleAndSign_804AAD60() {
     if (field_0x278 != NULL) {
         delete field_0x278;
         field_0x278 = NULL;
     }
 }
 
-void cls_804AAD60::init() {
+void TinglesTowerTingleAndSign_804AAD60::init() {
     field_0x230 = mSpawnParam_0x90 & 3;
     field_0x234 = 0;
     field_0x240 = 0;
@@ -170,7 +170,7 @@ void cls_804AAD60::init() {
     field_0x278->fn_80316E50(getField_0x4(), JGeometry::TVec3f(mPos));
 }
 
-void cls_804AAD60::update() {
+void TinglesTowerTingleAndSign_804AAD60::update() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -180,7 +180,7 @@ void cls_804AAD60::update() {
     (this->*lbl_804AACDC[field_0x230])();
 }
 
-void cls_804AAD60::draw() {
+void TinglesTowerTingleAndSign_804AAD60::draw() {
     if (field_0x230 != 3) {
         s32 cel;
         if (field_0x234 == 1 && field_0x254 >= 0) {
@@ -203,7 +203,7 @@ void cls_804AAD60::draw() {
 
 // FIXME: 99.94 %, regalloc-only; behaviour clean.
 // FIXME: regalloc-only (f1/f2 swapped in box check).
-void cls_804AAD60::fn_80315EE8() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80315EE8() {
     updateFacing();
     JGeometry::TBox2f box;
     if (field_0x234 == 0) {
@@ -325,7 +325,7 @@ void cls_804AAD60::fn_80315EE8() {
     }
 }
 
-void cls_804AAD60::fn_80315C84() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80315C84() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -347,10 +347,10 @@ void cls_804AAD60::fn_80315C84() {
     }
 }
 
-void cls_804AAD60::fn_80315C80() {}
+void TinglesTowerTingleAndSign_804AAD60::fn_80315C80() {}
 
 // FIXME(shotgun): 98.10 %, different; behaviour clean.
-void cls_804AAD60::fn_80315864() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80315864() {
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -446,7 +446,7 @@ void cls_804AAD60::fn_80315864() {
     }
 }
 
-void cls_804AAD60::fn_80315460() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80315460() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -509,7 +509,7 @@ void cls_804AAD60::fn_80315460() {
     }
 }
 
-void cls_804AAD60::fn_80315080() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80315080() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -572,7 +572,7 @@ void cls_804AAD60::fn_80315080() {
     }
 }
 
-void cls_804AAD60::fn_80314B1C() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80314B1C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -662,7 +662,7 @@ void cls_804AAD60::fn_80314B1C() {
     }
 }
 
-void cls_804AAD60::fn_803146DC() {
+void TinglesTowerTingleAndSign_804AAD60::fn_803146DC() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -745,7 +745,7 @@ void cls_804AAD60::fn_803146DC() {
     }
 }
 
-void cls_804AAD60::fn_803142E4() {
+void TinglesTowerTingleAndSign_804AAD60::fn_803142E4() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -799,7 +799,7 @@ void cls_804AAD60::fn_803142E4() {
     }
 }
 
-void cls_804AAD60::fn_80313D7C() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80313D7C() {
     updateFacing();
     JGeometry::TBox2f box(field_0x258);
     box.i.x += mPos.x;
@@ -889,7 +889,7 @@ void cls_804AAD60::fn_80313D7C() {
     }
 }
 
-void cls_804AAD60::fn_80313C20() {
+void TinglesTowerTingleAndSign_804AAD60::fn_80313C20() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;

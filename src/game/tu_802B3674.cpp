@@ -20,7 +20,7 @@ u8 lbl_8053A1A0[8] = {10, 60, 80, 100, 210, 0, 0, 0};
 // and mVolumeType at 0x2A, so no float field at 0x28 is identifiable; the two stfs are
 // omitted, a behaviour difference until the real field is known).
 // FIXME(shotgun): 95.64 %, missing/extra; behaviour drift.
-void cls_804A8638::init() {
+void EnvironmentSwitchControl_804A8638::init() {
     field_0x234 = NULL;
     field_0x238 = NULL;
     mEmitter = NULL;
@@ -264,7 +264,7 @@ void cls_804A8638::init() {
 }
 
 // 0x802B5284.
-void cls_804A8638::vfunc_0x10() {
+void EnvironmentSwitchControl_804A8638::vfunc_0x10() {
     if (field_0x288 != 4) {
         return;
     }
@@ -280,7 +280,7 @@ void cls_804A8638::vfunc_0x10() {
 }
 
 // FIXME(shotgun): 87.08 %, missing/extra; behaviour near.
-cls_804A8638::~cls_804A8638() {
+EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
     fn_8016A3AC()->field_0x1ee = 0;
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
@@ -299,7 +299,7 @@ cls_804A8638::~cls_804A8638() {
 // and JPABaseEmitter's 0x28 float / 0xF4 status word differ from include/JSystem/JParticle/JPAEmitter.h,
 // so those stores are omitted or call JPA's methods.
 // FIXME(shotgun): 94.06 %, missing/extra; behaviour drift.
-void cls_804A8638::update() {
+void EnvironmentSwitchControl_804A8638::update() {
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 &&
          (fn_80236B50(0) && fn_80236B50(1) && fn_80236B50(2) && fn_80236B50(3) ||
@@ -901,11 +901,11 @@ void cls_804A8638::update() {
 }
 
 // 0x802B3AB4.
-void cls_804A8638::draw() {}
+void EnvironmentSwitchControl_804A8638::draw() {}
 
 // 0x802B3A48.
 // FIXME(shotgun): 84.07 %, missing/extra; behaviour clean.
-void cls_804A8638::fn_802B3A48() {
+void EnvironmentSwitchControl_804A8638::fn_802B3A48() {
     fn_8016A3AC()->field_0x1ee = 0;
     if (field_0x234 != NULL) {
         releaseEmitter_801EE434(field_0x234);
@@ -920,18 +920,18 @@ void cls_804A8638::fn_802B3A48() {
 }
 
 // 0x802B3A3C.
-void cls_804A8638::fn_802B3A3C() {
+void EnvironmentSwitchControl_804A8638::fn_802B3A3C() {
     field_0x2b8 = 0;
 }
 
 // 0x802B39E8.
-void cls_804A8638::fn_802B39E8() {
+void EnvironmentSwitchControl_804A8638::fn_802B39E8() {
     field_0x290 = 0;
     deleteEmitter(&mEmitter);
 }
 
 // 0x802B394C.
-void cls_804A8638::vfunc_0x54(s32 a, s32 b, s32 c, s32 d, s32 e, s32 state) {
+void EnvironmentSwitchControl_804A8638::vfunc_0x54(s32 a, s32 b, s32 c, s32 d, s32 e, s32 state) {
     field_0x240 = state;
     if (state == 9) {
         field_0x2e0 = a;
@@ -956,7 +956,7 @@ void cls_804A8638::vfunc_0x54(s32 a, s32 b, s32 c, s32 d, s32 e, s32 state) {
 }
 
 // 0x802B3838.
-void cls_804A8638::vfunc_0x58() {
+void EnvironmentSwitchControl_804A8638::vfunc_0x58() {
     field_0x310 -= 4;
     if (field_0x2e0 > field_0x2f0) {
         field_0x2e0 += field_0x318;
@@ -985,7 +985,7 @@ void cls_804A8638::vfunc_0x58() {
     fn_8013A884(&color);
 }
 
-void cls_804A8638::vfunc_0x5C() {
+void EnvironmentSwitchControl_804A8638::vfunc_0x5C() {
     field_0x310 += 4;
     if (field_0x2e0 > field_0x2f0) {
         field_0x2e0 += field_0x318;
@@ -1016,7 +1016,7 @@ void cls_804A8638::vfunc_0x5C() {
 
 // Starts BGM 0x100000E unless one of these is already the current music (id - 0x1000000).
 // 0x802B3674.
-void cls_804A8638::vfunc_0x60() {
+void EnvironmentSwitchControl_804A8638::vfunc_0x60() {
     u32 current = gAudioMgr_8053AF80->field_0x60;
     if (!fn_802DEBF8() && current != 0) {
         u32 id = current - 0x1000000;

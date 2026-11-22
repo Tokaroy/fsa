@@ -400,7 +400,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) HeartContainer_804A7E58;
             break;
         case ACTOR_GOAL:
-            mActors[i] = new (mHeap, 0) cls_804A7EB0;
+            mActors[i] = new (mHeap, 0) Goal_804A7EB0;
             break;
         case ACTOR_HINO:
             mActors[i] = new (mHeap, 0) Hinox_8049F9B4;
@@ -436,7 +436,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Flame_804A0330;
             break;
         case ACTOR_JIJI:
-            mActors[i] = new (mHeap, 0) cls_804AEED0;
+            mActors[i] = new (mHeap, 0) OldMan_804AEED0;
             break;
         case ACTOR_TKYU:
             mActors[i] = new (mHeap, 0) IronBallManager_804ABA38;
@@ -463,7 +463,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) IronBall_804AB968;
             break;
         case ACTOR_SWEV:
-            mActors[i] = new (mHeap, 0) cls_804A8638;
+            mActors[i] = new (mHeap, 0) EnvironmentSwitchControl_804A8638;
             break;
         case ACTOR_THRN:
             mActors[i] = new (mHeap, 0) SpikeFloorCheck_804A8170;
@@ -748,7 +748,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) CheepCheep_804A11B8;
             break;
         case ACTOR_OSIN:
-            mActors[i] = new (mHeap, 0) cls_804AB528;
+            mActors[i] = new (mHeap, 0) OshinUnidentified_804AB528;
             break;
         case ACTOR_BMST:
             mActors[i] = new (mHeap, 0) Beamos_804A40E0;
@@ -859,7 +859,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) PhantomGanon2_804A1A98;
             break;
         case ACTOR_RASN:
-            mActors[i] = new (mHeap, 0) cls_804A7A68;
+            mActors[i] = new (mHeap, 0) SpiralStaircase_804A7A68;
             break;
         case ACTOR_PRTC:
             mActors[i] = new (mHeap, 0) ParticleNpc_804A9AC8;
@@ -922,13 +922,13 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) IceWall_8049DE18;
             break;
         case 'BLZD':
-            mActors[i] = new (mHeap, 0) cls_804AC388;
+            mActors[i] = new (mHeap, 0) Blizzard_804AC388;
             break;
         case ACTOR_BOIT:
             mActors[i] = new (mHeap, 0) FrostareTail_804A4F90;
             break;
         case ACTOR_LTZR:
-            mActors[i] = new (mHeap, 0) cls_804AC3E0;
+            mActors[i] = new (mHeap, 0) ZoraLotus_804AC3E0;
             break;
         case ACTOR_OFFS:
             mActors[i] = new (mHeap, 0) OFFSwitch_804A9B70;
@@ -940,7 +940,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) cls_804A5038;
             break;
         case 'GEN2':
-            mActors[i] = new (mHeap, 0) cls_804A9BC8;
+            mActors[i] = new (mHeap, 0) EnemyGenerator2_804A9BC8;
             break;
         case ACTOR_BBSL:
             mActors[i] = new (mHeap, 0) ShadowLinkGiantBomb_804AC4D0;
@@ -955,22 +955,22 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) PrincessZeldaGanonBattle_804A2944;
             break;
         case ACTOR_HOUS:
-            mActors[i] = new (mHeap, 0) cls_804A7AE0;
+            mActors[i] = new (mHeap, 0) MovingHouse_804A7AE0;
             break;
         case ACTOR_PSSW:
             mActors[i] = new (mHeap, 0) PushSwitch_804A7B38;
             break;
         case ACTOR_BEEE:
-            mActors[i] = new (mHeap, 0) cls_804AC600;
+            mActors[i] = new (mHeap, 0) Bee_804AC600;
             break;
         case ACTOR_GOL2:
-            mActors[i] = new (mHeap, 0) cls_804A9C20;
+            mActors[i] = new (mHeap, 0) Goal2_804A9C20;
             break;
         case ACTOR_NAVI:
-            mActors[i] = new (mHeap, 0) cls_804A6708;
+            mActors[i] = new (mHeap, 0) Navi_804A6708;
             break;
         case ACTOR_KEPO:
-            mActors[i] = new (mHeap, 0) cls_804A6550;
+            mActors[i] = new (mHeap, 0) KaeporaGaebora_804A6550;
             break;
         case ACTOR_LIMT:
             mActors[i] = new (mHeap, 0) LifeMeter_804B174C;
@@ -1036,7 +1036,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Fish_804AC658;
             break;
         case 'DMGE':
-            mActors[i] = new (mHeap, 0) cls_804A9E50;
+            mActors[i] = new (mHeap, 0) DamageNPC_804A9E50;
             break;
         case ACTOR_ANHO:
             mActors[i] = new (mHeap, 0) DiggingGameKeeper_8049C970;
@@ -1114,7 +1114,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) ZoraFishHerding_804A2E30;
             break;
         case ACTOR_NWOK:
-            mActors[i] = new (mHeap, 0) cls_804AC8C0;
+            mActors[i] = new (mHeap, 0) CuccoHerdingNPC_804AC8C0;
             break;
         case ACTOR_HBB2:
             mActors[i] = new (mHeap, 0) KeeseSwarm_804A2EC0;
@@ -1171,13 +1171,13 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) KaeporaGaeboraEnding_804ADAC8;
             break;
         case ACTOR_RCK2:
-            mActors[i] = new (mHeap, 0) cls_804AC950;
+            mActors[i] = new (mHeap, 0) TwoPersonLiftableRock_804AC950;
             break;
         case ACTOR_EETC:
-            mActors[i] = new (mHeap, 0) cls_804ADF28;
+            mActors[i] = new (mHeap, 0) OtherCharactersEnding_804ADF28;
             break;
         case ACTOR_TWTG:
-            mActors[i] = new (mHeap, 0) cls_804AAD60;
+            mActors[i] = new (mHeap, 0) TinglesTowerTingleAndSign_804AAD60;
             break;
         case ACTOR_GMBL:
             mActors[i] = new (mHeap, 0) GamblingShop_804AAA70;
@@ -1189,7 +1189,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Floormaster_804A6004;
             break;
         case ACTOR_YNSW:
-            mActors[i] = new (mHeap, 0) cls_804AC9A8;
+            mActors[i] = new (mHeap, 0) FourPersonSwitch_804AC9A8;
             break;
         case ACTOR_EGOL:
             mActors[i] = new (mHeap, 0) Eyegore_804A3548;
@@ -1219,7 +1219,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Navi54MaidenCrystalCutscene_804ADFE8;
             break;
         case ACTOR_DCR2:
-            mActors[i] = new (mHeap, 0) cls_804AE088;
+            mActors[i] = new (mHeap, 0) CrystalCutscene5464_804AE088;
             break;
         case ACTOR_SVTG:
             mActors[i] = new (mHeap, 0) ShovelOldTimer_804AAB40;
@@ -1246,7 +1246,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) StopNPC_804AA2D8;
             break;
         case ACTOR_GNEF:
-            mActors[i] = new (mHeap, 0) cls_804AA350;
+            mActors[i] = new (mHeap, 0) GiantGeneratorEffect_804AA350;
             break;
         case ACTOR_PSW2:
             mActors[i] = new (mHeap, 0) FourPersonPullSwitch_804AE230;
@@ -1303,7 +1303,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) VaatiTimeUp_804ACCC0;
             break;
         case 'TUTL':
-            mActors[i] = new (mHeap, 0) cls_804ACC68;
+            mActors[i] = new (mHeap, 0) TingleTimeUp_804ACC68;
             break;
         case ACTOR_TUTM:
             mActors[i] = new (mHeap, 0) TingleTimeUpManager_804ACBF0;
@@ -1324,7 +1324,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) ForceGemShadowNPC_804ACD18;
             break;
         case ACTOR_LTEV:
-            mActors[i] = new (mHeap, 0) cls_804AA4F0;
+            mActors[i] = new (mHeap, 0) LightEnvironmentControl_804AA4F0;
             break;
         case ACTOR_MRMT:
             mActors[i] = new (mHeap, 0) MalonAndTalonController_8049EA88;
@@ -1333,7 +1333,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) FireballGenerator_804A6660;
             break;
         case ACTOR_FBAL:
-            mActors[i] = new (mHeap, 0) cls_804A6828;
+            mActors[i] = new (mHeap, 0) UnknownFBAL_804A6828;
             break;
         case ACTOR_PTMI:
             mActors[i] = new (mHeap, 0) InvisibleNPCWallForLink_804AE780;
@@ -1342,13 +1342,13 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) Link2Ending_804AE338;
             break;
         case 'FGAL':
-            mActors[i] = new (mHeap, 0) cls_804AE4B0;
+            mActors[i] = new (mHeap, 0) FourGirlsControl_804AE4B0;
             break;
         case 'RCK3':
-            mActors[i] = new (mHeap, 0) cls_804AE7D8;
+            mActors[i] = new (mHeap, 0) RockDroppedIntoTheRiver11_804AE7D8;
             break;
         case ACTOR_FTGL:
-            mActors[i] = new (mHeap, 0) cls_804AADD8;
+            mActors[i] = new (mHeap, 0) TingleFirstAppearance_804AADD8;
             break;
         case ACTOR_SWDL:
             mActors[i] = new (mHeap, 0) PlayerSwordLevelCheckNPC_804AA590;
@@ -1357,7 +1357,7 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) WarpCannon_8049EAE0;
             break;
         case ACTOR_MRTA:
-            mActors[i] = new (mHeap, 0) cls_804ACD70;
+            mActors[i] = new (mHeap, 0) Log_804ACD70;
             break;
         case ACTOR_TJIJ:
             mActors[i] = new (mHeap, 0) TutorialOldMan_804AE508;
@@ -1408,19 +1408,19 @@ s32 ActorManager_804A5800::spawnActor_801F9484(u32 id, s32 arg_0x4, const JGeome
             mActors[i] = new (mHeap, 0) NaviAfterCrystalCutscene_8049ED30;
             break;
         case ACTOR_ZSLJ:
-            mActors[i] = new (mHeap, 0) cls_804A68D0;
+            mActors[i] = new (mHeap, 0) ShadowLinkJumpMinor_804A68D0;
             break;
         case 'ZSLH':
-            mActors[i] = new (mHeap, 0) cls_804A6AA8;
+            mActors[i] = new (mHeap, 0) ShadowLinkHammerMinor_804A6AA8;
             break;
         case ACTOR_ZSLA:
-            mActors[i] = new (mHeap, 0) cls_804A6B70;
+            mActors[i] = new (mHeap, 0) ShadowLinkBowMinor_804A6B70;
             break;
         case 'ZSLF':
-            mActors[i] = new (mHeap, 0) cls_804A6C38;
+            mActors[i] = new (mHeap, 0) ShadowLinkFireMinor_804A6C38;
             break;
         case 'ZSLD':
-            mActors[i] = new (mHeap, 0) cls_804A6D00;
+            mActors[i] = new (mHeap, 0) ShadowLinkThwompMinor_804A6D00;
             break;
         case ACTOR_PSS2:
             mActors[i] = new (mHeap, 0) PushSwitchInPyramid_804AE8F4;

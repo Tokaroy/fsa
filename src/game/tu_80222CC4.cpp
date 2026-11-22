@@ -4,7 +4,7 @@
 #include "game/act/tu_80222CC4.h"
 
 // Zeroes the life of the 'DDGO' actor spawned in state 5 and forgets it.
-static inline void releaseShot(cls_804A6C38* self) {
+static inline void releaseShot(ShadowLinkFireMinor_804A6C38* self) {
     s32 serial = self->mDDGOSerial;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -15,15 +15,15 @@ static inline void releaseShot(cls_804A6C38* self) {
     }
 }
 
-cls_804A6C38::cls_804A6C38() {
+ShadowLinkFireMinor_804A6C38::ShadowLinkFireMinor_804A6C38() {
     mDDGOSerial = -1;
 }
 
-cls_804A6C38::~cls_804A6C38() {
+ShadowLinkFireMinor_804A6C38::~ShadowLinkFireMinor_804A6C38() {
     releaseShot(this);
 }
 
-void cls_804A6C38::init() {
+void ShadowLinkFireMinor_804A6C38::init() {
     ShadowLinkBase_804A6A00::init();
     mDir_0x98 = mSpawnParam_0x90 & 3;
     mState = 4;
@@ -34,7 +34,7 @@ void cls_804A6C38::init() {
     mAnim.startAnim_801D22DC(2, 0, false);
 }
 
-void cls_804A6C38::updateState_0x90(u8 mapHit) {
+void ShadowLinkFireMinor_804A6C38::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -111,7 +111,7 @@ void cls_804A6C38::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6C38::calcVelocity_0x88() {
+void ShadowLinkFireMinor_804A6C38::calcVelocity_0x88() {
     if (mState == 2) {
         fn_80221250();
     } else {
@@ -119,7 +119,7 @@ void cls_804A6C38::calcVelocity_0x88() {
     }
 }
 
-void cls_804A6C38::onHitByPlayer_0x6C() {
+void ShadowLinkFireMinor_804A6C38::onHitByPlayer_0x6C() {
     ShadowLinkBase_804A6A00::onHitByPlayer_0x6C();
     releaseShot(this);
 }

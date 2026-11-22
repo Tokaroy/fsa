@@ -13,7 +13,7 @@
 // fn_801FFC84, which stores the vtable at 0x804ACD70 (lbl_804ACD70; there
 // is no symbol for it yet, so the class is named after the address). Only
 // the members act_npc_ride_switch reads are declared.
-// One per player (Elem_801FFCDC: __ct__12cls_804ACD70Fv at 0x801FFC84 calls __construct_array on
+// One per player (Elem_801FFCDC: __ct__12Log_804ACD70Fv at 0x801FFC84 calls __construct_array on
 // 0x268 with 4 elements of 0x14 bytes, proving the TVec3f member).
 struct LogSlot_804ACD70 {
     /* 0x00 */ u8 field_0x0;

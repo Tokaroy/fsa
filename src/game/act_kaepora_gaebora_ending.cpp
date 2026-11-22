@@ -1231,7 +1231,7 @@ inline bool KaeporaGaeboraEnding_804ADAC8::fireWaypoint() {
         s32 i;
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (i = 0; i < end; i++) {
-            cls_804ADF28* actor = (cls_804ADF28*)getActorManager_801F856C()->mActors[i];
+            OtherCharactersEnding_804ADF28* actor = (OtherCharactersEnding_804ADF28*)getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_EETC && id == actor->field_0x230) {
                 actor->field_0x230 = 0;
                 break;

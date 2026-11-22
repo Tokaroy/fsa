@@ -66,7 +66,7 @@ void UnknownFORM_804A7BE8::init() {
     for (s32 i = 0; i < actorEnd; i++) {
         actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == 'FGAL' && actor->mAlive == true) {
-            field_0x254 = static_cast<cls_804AE4B0*>(actor);
+            field_0x254 = static_cast<FourGirlsControl_804AE4B0*>(actor);
         }
     }
 }

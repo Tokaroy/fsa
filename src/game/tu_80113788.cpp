@@ -363,7 +363,7 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
         s32 swevSerial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SWEV);
         ActorBase_804A5770* swev = getActorManager_801F856C()->findActorBySerial_801F666C(swevSerial);
         if (swev != NULL) {
-            static_cast<cls_804A8638*>(swev)->fn_802B3A3C();
+            static_cast<EnvironmentSwitchControl_804A8638*>(swev)->fn_802B3A3C();
         }
         s32 sev2Serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SEV2);
         ActorBase_804A5770* sev2 = getActorManager_801F856C()->findActorBySerial_801F666C(sev2Serial);

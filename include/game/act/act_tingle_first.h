@@ -10,10 +10,10 @@ class cls_8031709C;
 
 // Named after its vtable, 0x804AADD8. The slots it overrides: 0x08 the
 // destructor, 0x0C init, 0x14 update, 0x20 draw.
-class cls_804AADD8 : public ActorBase_804A5770 {
+class TingleFirstAppearance_804AADD8 : public ActorBase_804A5770 {
 public:
-    cls_804AADD8();
-    /* 0x08 */ virtual ~cls_804AADD8();
+    TingleFirstAppearance_804AADD8();
+    /* 0x08 */ virtual ~TingleFirstAppearance_804AADD8();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

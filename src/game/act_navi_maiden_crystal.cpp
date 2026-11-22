@@ -18,7 +18,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::init() {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_DCR2) {
             field_0x250 = i;
-            field_0x254 = static_cast<cls_804AE088*>(actor);
+            field_0x254 = static_cast<CrystalCutscene5464_804AE088*>(actor);
             field_0x258 = actor->mPos;
             break;
         }
@@ -144,7 +144,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
                        JMath::sincosTable_.sinShort(field_0x240) * radius,
                        0.0f);
             if (field_0x23c >= 30.0f) {
-                cls_804AE088* dcr2 = field_0x254;
+                CrystalCutscene5464_804AE088* dcr2 = field_0x254;
                 dcr2->vfunc_0x60(12);
                 fn_803676CC();
                 dcr2->mNaviActor = NULL;

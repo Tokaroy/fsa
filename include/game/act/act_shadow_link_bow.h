@@ -8,10 +8,10 @@
 // view; code in game/act_shadow_link_bow.cpp. Not tied to a spawner ID.
 // Named after its vtable (0x804A6B70). The destructor is fn_802223FC, the
 // constructor fn_80222A58.
-class cls_804A6B70 : public ShadowLinkBase_804A6A00 {
+class ShadowLinkBowMinor_804A6B70 : public ShadowLinkBase_804A6A00 {
 public:
-    cls_804A6B70();
-    virtual ~cls_804A6B70();
+    ShadowLinkBowMinor_804A6B70();
+    virtual ~ShadowLinkBowMinor_804A6B70();
     /* 0x0C */ virtual void init();
     /* 0x88 */ virtual void calcVelocity_0x88();
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);

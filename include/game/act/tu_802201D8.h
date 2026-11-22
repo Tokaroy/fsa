@@ -9,11 +9,11 @@
 
 class JPABaseEmitter;
 
-class cls_804A6828 : public cls_804A48B0 {
+class UnknownFBAL_804A6828 : public cls_804A48B0 {
 public:
     // Out of line in tu_802201D8 (0x80220378); the spawner calls it.
-    cls_804A6828();
-    virtual ~cls_804A6828();
+    UnknownFBAL_804A6828();
+    virtual ~UnknownFBAL_804A6828();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

@@ -23,9 +23,9 @@ static const s32 lbl_80474F4C[4] = {1, 0, 3, 2};
 static const s32 lbl_80474F5C[4] = {0x403F3, 0x403F6, 0x403F9, 0x403FA};
 
 
-cls_804AE4B0::~cls_804AE4B0() {}
+FourGirlsControl_804AE4B0::~FourGirlsControl_804AE4B0() {}
 
-void cls_804AE4B0::init() {
+void FourGirlsControl_804AE4B0::init() {
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         fn_8036FDAC();
         return;
@@ -82,13 +82,13 @@ void cls_804AE4B0::init() {
 
 // FIXME(shotgun): the original copies this table at run time from a constant one
 // (lbl_804AE390 -> lbl_804AE420, __sinit_tu_8036FB60_cpp); here it is initialised.
-static void (cls_804AE4B0::*lbl_804AE420[12])() = {
-    &cls_804AE4B0::fn_803717CC, &cls_804AE4B0::fn_80371284, &cls_804AE4B0::fn_803711F0, &cls_804AE4B0::fn_8037100C,
-    &cls_804AE4B0::fn_80370C84, &cls_804AE4B0::fn_80370C18, &cls_804AE4B0::fn_80370A7C, &cls_804AE4B0::fn_80370764,
-    &cls_804AE4B0::fn_803706AC, &cls_804AE4B0::fn_803705A0, &cls_804AE4B0::fn_80370508, &cls_804AE4B0::fn_803704E8,
+static void (FourGirlsControl_804AE4B0::*lbl_804AE420[12])() = {
+    &FourGirlsControl_804AE4B0::fn_803717CC, &FourGirlsControl_804AE4B0::fn_80371284, &FourGirlsControl_804AE4B0::fn_803711F0, &FourGirlsControl_804AE4B0::fn_8037100C,
+    &FourGirlsControl_804AE4B0::fn_80370C84, &FourGirlsControl_804AE4B0::fn_80370C18, &FourGirlsControl_804AE4B0::fn_80370A7C, &FourGirlsControl_804AE4B0::fn_80370764,
+    &FourGirlsControl_804AE4B0::fn_803706AC, &FourGirlsControl_804AE4B0::fn_803705A0, &FourGirlsControl_804AE4B0::fn_80370508, &FourGirlsControl_804AE4B0::fn_803704E8,
 };
 
-void cls_804AE4B0::update() {
+void FourGirlsControl_804AE4B0::update() {
     if (mTimer != 0) {
         mTimer--;
     }
@@ -150,7 +150,7 @@ void cls_804AE4B0::update() {
     (this->*lbl_804AE420[mState])();
 }
 
-void cls_804AE4B0::draw() {
+void FourGirlsControl_804AE4B0::draw() {
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
         return;
     }
@@ -170,7 +170,7 @@ void cls_804AE4B0::draw() {
 
 // Not auto-inlined: update-side callers (fn_8037100C, fn_80370764, fn_803704E8) use a plain bl.
 #pragma auto_inline off
-void cls_804AE4B0::fn_803721F4() {
+void FourGirlsControl_804AE4B0::fn_803721F4() {
     s32 i;
     s32 j;
     bool close = false;
@@ -218,7 +218,7 @@ void cls_804AE4B0::fn_803721F4() {
 
 // Starts the next lane pattern `arg` (0-3): the four sprites slide in from their start offsets.
 // FIXME(shotgun): 97.29 %, missing/extra; behaviour drift.
-void cls_804AE4B0::fn_80371D50(s32 arg) {
+void FourGirlsControl_804AE4B0::fn_80371D50(s32 arg) {
     mTimer = 0x80;
     field_0x398 = 0;
     switch (arg) {
@@ -277,7 +277,7 @@ void cls_804AE4B0::fn_80371D50(s32 arg) {
 
 // Turns the sprites towards the nearest player, and lets the player pick one up.
 // FIXME(shotgun): 94.40 %, scheduling+regalloc + reloc-name; behaviour clean.
-void cls_804AE4B0::fn_80371A2C() {
+void FourGirlsControl_804AE4B0::fn_80371A2C() {
     f32 nearest[4];
     for (s32 i = 0; i < 4; i++) {
         nearest[i] = 49.0f;
@@ -379,7 +379,7 @@ static inline void camRange(f32 x0, f32 y0, f32 x1, f32 y1) {
 
 // The first state: the lanes finish sliding in; the player standing on the start tile starts it.
 // FIXME(shotgun): 98.95 %, operands; behaviour clean.
-void cls_804AE4B0::fn_803717CC() {
+void FourGirlsControl_804AE4B0::fn_803717CC() {
     fn_803721F4();
     if (contains(&field_0x264[field_0x39c], JGeometry::TBox2f(2288.0f, 1712.0f, 2320.0f, 1728.0f))) {
         for (s32 i = 0; i < 4; i++) {
@@ -413,7 +413,7 @@ void cls_804AE4B0::fn_803717CC() {
 }
 
 // The second state: the camera pans to the lane tile; when it has arrived the message is shown.
-void cls_804AE4B0::fn_80371284() {
+void FourGirlsControl_804AE4B0::fn_80371284() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
             fn_80230AD4(i);
@@ -444,7 +444,7 @@ void cls_804AE4B0::fn_80371284() {
     }
 }
 
-void cls_804AE4B0::fn_803711F0() {
+void FourGirlsControl_804AE4B0::fn_803711F0() {
     fn_803703C8();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_80388EEC(0)) {
@@ -459,7 +459,7 @@ void cls_804AE4B0::fn_803711F0() {
     }
 }
 
-void cls_804AE4B0::fn_8037100C() {
+void FourGirlsControl_804AE4B0::fn_8037100C() {
     fn_803703C8();
     fn_803721F4();
     fn_80370020();
@@ -493,7 +493,7 @@ void cls_804AE4B0::fn_8037100C() {
 }
 
 // FIXME(shotgun): 98.29 %, scheduling; behaviour clean.
-void cls_804AE4B0::fn_80370C84() {
+void FourGirlsControl_804AE4B0::fn_80370C84() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230188(i) && fn_802300EC(i)) {
             fn_80230AD4(i);
@@ -537,7 +537,7 @@ void cls_804AE4B0::fn_80370C84() {
     }
 }
 
-void cls_804AE4B0::fn_80370C18() {
+void FourGirlsControl_804AE4B0::fn_80370C18() {
     fn_803703C8();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_80388EEC(0)) {
@@ -547,7 +547,7 @@ void cls_804AE4B0::fn_80370C18() {
     }
 }
 
-void cls_804AE4B0::fn_80370A7C() {
+void FourGirlsControl_804AE4B0::fn_80370A7C() {
     fn_803703C8();
     if (field_0x240 != 0) {
         if (field_0x240 == 1) {
@@ -576,7 +576,7 @@ void cls_804AE4B0::fn_80370A7C() {
 }
 
 // The first half of fn_80370764: returns out of the player loop past the fn_8022CAF8 check.
-inline void cls_804AE4B0::guideOrRelease_80370764() {
+inline void FourGirlsControl_804AE4B0::guideOrRelease_80370764() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023E854(i)) {
             guidePlayer_80370764();
@@ -588,7 +588,7 @@ inline void cls_804AE4B0::guideOrRelease_80370764() {
     }
 }
 
-void cls_804AE4B0::fn_80370764() {
+void FourGirlsControl_804AE4B0::fn_80370764() {
     fn_803703C8();
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023ED8C(i)) {
@@ -627,7 +627,7 @@ void cls_804AE4B0::fn_80370764() {
     }
 }
 
-void cls_804AE4B0::fn_803706AC() {
+void FourGirlsControl_804AE4B0::fn_803706AC() {
     fn_803703C8();
     fn_8023077C();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -649,7 +649,7 @@ void cls_804AE4B0::fn_803706AC() {
 }
 
 // FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
-void cls_804AE4B0::fn_803705A0() {
+void FourGirlsControl_804AE4B0::fn_803705A0() {
     fn_803703C8();
     if (field_0x324.y > 1680.0f) {
         field_0x324.y -= 0.5f;
@@ -665,7 +665,7 @@ void cls_804AE4B0::fn_803705A0() {
     }
 }
 
-void cls_804AE4B0::fn_80370508() {
+void FourGirlsControl_804AE4B0::fn_80370508() {
     fn_803703C8();
     if (field_0x240 != 0) {
         if (field_0x240 == 1) {
@@ -682,13 +682,13 @@ void cls_804AE4B0::fn_80370508() {
     }
 }
 
-void cls_804AE4B0::fn_803704E8() {
+void FourGirlsControl_804AE4B0::fn_803704E8() {
     fn_803721F4();
 }
 
 // Not auto-inlined: the original state handlers call it with a plain bl (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void cls_804AE4B0::fn_803703C8() {
+void FourGirlsControl_804AE4B0::fn_803703C8() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     f32 a = -cam->mViewMtx_0x4[0][3];
     f32 b = -cam->mViewMtx_0x4[1][3];
@@ -725,7 +725,7 @@ void cls_804AE4B0::fn_803703C8() {
 // A plain function between fn_803703C8 and fn_80370200, inlined at both sites in fn_80370764
 // (its out-of-line copy was dead-stripped by the linker); pools 2232.0f, 1624.0f, 2.0f here.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 6-line definition): split out only where the .sdata2 order needs it.
-void cls_804AE4B0::guidePlayer_80370764() {
+void FourGirlsControl_804AE4B0::guidePlayer_80370764() {
     JGeometry::TVec3f d = JGeometry::TVec3f(2232.0f, 1624.0f, 0.0f) - *getPlayerPos_8023E724(0);
     if (PSVECMag(&d) > 2.0f) {
         fn_8023DFF4(0, &d);
@@ -733,7 +733,7 @@ void cls_804AE4B0::guidePlayer_80370764() {
 }
 
 // FIXME: 99.96 %, reloc-name; behaviour clean.
-s32 cls_804AE4B0::fn_80370200() {
+s32 FourGirlsControl_804AE4B0::fn_80370200() {
     s32 i;
     s32 idx = field_0x39c;
     u8 hit[4] = {0, 0, 0, 0};
@@ -784,7 +784,7 @@ s32 cls_804AE4B0::fn_80370200() {
 // Not auto-inlined: fn_8037100C calls it with a plain bl.
 #pragma auto_inline off
 // FIXME(shotgun): 96.17 %, scheduling; behaviour clean.
-void cls_804AE4B0::fn_80370020() {
+void FourGirlsControl_804AE4B0::fn_80370020() {
     JGeometry::TBox2f box;
     if (field_0x3a8 == 0) {
         if (field_0x3ac == 0) {
@@ -829,7 +829,7 @@ void cls_804AE4B0::fn_80370020() {
 // A plain function between fn_80370020 and fn_8036FDAC, inlined into both loops of fn_80371284
 // (its out-of-line copy was dead-stripped by the linker); pools 0.3f here.
 // R2 pool helper (inlined at 2 call sites); was tickPlayer_80371284.
-void cls_804AE4B0::pool_80542DD8() {
+void FourGirlsControl_804AE4B0::pool_80542DD8() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x374[i] != 0) {
             field_0x374[i]--;
@@ -857,12 +857,12 @@ void cls_804AE4B0::pool_80542DD8() {
 
 // Spawns the i-th 'JIJI' and keeps the actor. An inline of its own: the serial gets its register
 // before fn_8036FDAC's values (docs/REGALLOC.md, rule 4).
-static inline void spawnJiji(cls_804AE4B0* self, s32 i) {
+static inline void spawnJiji(FourGirlsControl_804AE4B0* self, s32 i) {
     s32 serial = getActorManager_801F856C()->spawnActor_801F9484('JIJI', self->mLayer_0x4, &self->field_0x294[i], lbl_80474F5C[i], -1, -1);
-    self->field_0x3b0[i] = (cls_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+    self->field_0x3b0[i] = (OldMan_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
 }
 
-void cls_804AE4B0::fn_8036FDAC() {
+void FourGirlsControl_804AE4B0::fn_8036FDAC() {
     mTimer = 0x50;
     static JGeometry::TVec3f offsets[4] = {
         JGeometry::TVec3f(0.0f, 0.0f, 0.0f),
@@ -908,7 +908,7 @@ void cls_804AE4B0::fn_8036FDAC() {
     }
 }
 
-void cls_804AE4B0::fn_8036FB60() {
+void FourGirlsControl_804AE4B0::fn_8036FB60() {
     s32 i;
     s32 j;
     bool close = false;

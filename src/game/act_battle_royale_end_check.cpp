@@ -87,7 +87,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6BDC() {
         for (s32 i = 0; i < actorEnd; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == 'SWEV') {
-                static_cast<cls_804A8638*>(actor)->fn_802B3A48();
+                static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A48();
             }
         }
         getGameView_802D6A9C()->fn_802D7440(false);

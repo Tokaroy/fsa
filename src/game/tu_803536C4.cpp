@@ -7,7 +7,7 @@
 static const s32 lbl_80472240[8] = {1, 5, 9, 13, 17, 21, 25, 29};
 static const s32 lbl_80472260[4] = {3, 4, 5, 4};
 
-void cls_804ACC68::init() {
+void TingleTimeUp_804ACC68::init() {
     field_0x23c = 0;
     field_0x234 = 9;
     field_0x238 = 300;
@@ -24,7 +24,7 @@ void cls_804ACC68::init() {
     field_0x230 = 0;
 }
 
-void cls_804ACC68::update() {
+void TingleTimeUp_804ACC68::update() {
     mPos += mVel_0x3c;
     if (field_0x254.x - 32.0f > mPos.x) {
         fn_801F3668();
@@ -48,7 +48,7 @@ void cls_804ACC68::update() {
     }
 }
 
-void cls_804ACC68::draw() {
+void TingleTimeUp_804ACC68::draw() {
     // The original copies mPos to 0x14(r1) and never reads it back (a dead local).
     JGeometry::TVec3f pos(mPos);
     SpriteParams_801F5AE0 params;
@@ -106,4 +106,4 @@ void cls_804ACC68::draw() {
     }
 }
 
-cls_804ACC68::~cls_804ACC68() {}
+TingleTimeUp_804ACC68::~TingleTimeUp_804ACC68() {}

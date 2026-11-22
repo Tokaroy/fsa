@@ -8,7 +8,7 @@ static inline bool contains(f32 x, f32 y, f32 x0, f32 y0, f32 x1, f32 y1) {
 }
 
 // Does one of player `i`'s 8 outline points lie inside the lotus's box? The first one inside is reported (fn_8022DF48).
-static inline bool outlineInBox(cls_804AC3E0* self, s32 i) {
+static inline bool outlineInBox(ZoraLotus_804AC3E0* self, s32 i) {
     for (int j = 0; j < 8; j++) {
         JGeometry::TVec3f point;
         fn_8022E088(i, j, &point);
@@ -29,18 +29,18 @@ static inline bool outlineInBox(cls_804AC3E0* self, s32 i) {
 }
 
 // An LTZR's mBox is a fixed 24 x 24 square, copied to mBox2.
-static inline void resetBoxes(cls_804AC3E0* self) {
+static inline void resetBoxes(ZoraLotus_804AC3E0* self) {
     if (self->mActorId == 'LTZR') {
         self->mBox.set(-12.0f, -12.0f, 12.0f, 12.0f);
         self->mBox2.set(self->mBox);
     }
 }
 
-cls_804AC3E0::cls_804AC3E0() {
+ZoraLotus_804AC3E0::ZoraLotus_804AC3E0() {
     field_0x2b8 = 0;
 }
 
-void cls_804AC3E0::init() {
+void ZoraLotus_804AC3E0::init() {
     ZoraEnemy_804A3D7C::init();
     mPos.x -= 8.0f;
     mSpawnPos.x -= 8.0f;
@@ -50,7 +50,7 @@ void cls_804AC3E0::init() {
     field_0x2b1 = 1;
 }
 
-void cls_804AC3E0::vfunc_0xA4() {
+void ZoraLotus_804AC3E0::vfunc_0xA4() {
     for (int i = 0; i < 4; i++) {
         field_0x2ac[i] = 0;
     }
@@ -61,7 +61,7 @@ void cls_804AC3E0::vfunc_0xA4() {
 
 // FIXME: 97.52 %, missing/extra + reloc-name; behaviour clean.
 // missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs; the original keeps them in registers), plus register order and the JMath table addresses formed in the other order (reloc-name).
-void cls_804AC3E0::vfunc_0xA8() {
+void ZoraLotus_804AC3E0::vfunc_0xA8() {
     if (field_0x2b0 != 0) {
         field_0x2b2 += 0x800;
         mPos.y = mSpawnPos.y + JMath::sincosTable_.sinShort(field_0x2b2);
@@ -100,7 +100,7 @@ void cls_804AC3E0::vfunc_0xA8() {
     }
 }
 
-bool cls_804AC3E0::vfunc_0xAC() {
+bool ZoraLotus_804AC3E0::vfunc_0xAC() {
     bool flag = false;
     if (mSpawnParam_0x90 & 1) {
         for (s32 i = 0; i < 4; i++) {
@@ -135,7 +135,7 @@ bool cls_804AC3E0::vfunc_0xAC() {
     return flag;
 }
 
-void cls_804AC3E0::vfunc_0xB0() {
+void ZoraLotus_804AC3E0::vfunc_0xB0() {
     bool flag = false;
     for (int i = 0; i < 4; i++) {
         if (field_0x2ac[i] != 0) {
@@ -149,21 +149,21 @@ void cls_804AC3E0::vfunc_0xB0() {
     }
 }
 
-u8 cls_804AC3E0::checkHitByPlayer_0x5C() {
+u8 ZoraLotus_804AC3E0::checkHitByPlayer_0x5C() {
     return 0;
 }
 
-u8 cls_804AC3E0::checkHitByActor_0x60() {
+u8 ZoraLotus_804AC3E0::checkHitByActor_0x60() {
     return 0;
 }
 
-u8 cls_804AC3E0::attackPlayers_0x68() {
+u8 ZoraLotus_804AC3E0::attackPlayers_0x68() {
     return 0;
 }
 
 // FIXME: 99.75 %, scheduling+regalloc; behaviour clean.
 // missing/extra: ours reloads mBox.i.y/f.x/f.y in every outline-point test (3 more lfs each; the original keeps them in registers), plus register order.
-void cls_804AC3E0::updateState_0x90(u8 mapHit) {
+void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 2:
     case 3:
@@ -264,7 +264,7 @@ void cls_804AC3E0::updateState_0x90(u8 mapHit) {
     vfunc_0xAC();
 }
 
-// Not auto-inlined: cls_804AC3E0::draw calls fn_8033FC4C out of line in the original (docs/INLINING.md, pragma rule 1).
+// Not auto-inlined: ZoraLotus_804AC3E0::draw calls fn_8033FC4C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME: 99.50 %, regalloc-only; behaviour clean.
 // regalloc-only: the original keeps cos(rot.z) in f24, cx*sz in f26 and cx*cz in f25
@@ -307,7 +307,7 @@ void fn_8033FC4C(Mtx m, const JGeometry::TVec3f& scale, const JGeometry::TVec3f&
 }
 #pragma auto_inline reset
 
-void cls_804AC3E0::draw() {
+void ZoraLotus_804AC3E0::draw() {
     ZoraEnemy_804A3D7C::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x20 = 0;
@@ -358,5 +358,5 @@ void cls_804AC3E0::draw() {
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x173, &params, -1, 1.0f, 1.0f);
 }
 
-cls_804AC3E0::~cls_804AC3E0() {
+ZoraLotus_804AC3E0::~ZoraLotus_804AC3E0() {
 }

@@ -32,7 +32,7 @@ public:
     // 0x80221114.
     /* 0xA0 */ virtual void vfunc_0xA0();
 
-    // game/tu_80220F54.cpp: the per-state handlers cls_804A6C38's
+    // game/tu_80220F54.cpp: the per-state handlers ShadowLinkFireMinor_804A6C38's
     // updateState_0x90 dispatches to (states 0, 1, 2), and the movement step
     // calcVelocity_0x88 takes in state 2 (fn_801D01A0 toward field_0x2b0, then
     // vtable slot 0x84).
@@ -59,7 +59,7 @@ public:
 // tu_80221B44, act_shadow_link_bow, tu_80222CC4 and tu_802233A4.
 extern const f32 lbl_8053FE70;
 
-// mFlags bit fn_802216E8 sets, tested by cls_804A6C38's updateState_0x90.
+// mFlags bit fn_802216E8 sets, tested by ShadowLinkFireMinor_804A6C38's updateState_0x90.
 #define CLS_804A6A00_FLAG_0x2000 0x2000
 
 #endif

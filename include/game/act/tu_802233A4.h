@@ -10,10 +10,10 @@ class JPABaseEmitter;
 // Spawned for 'ZSLD' (a Shadow Link shield bearer, by its sub-base): named
 // after its vtable (0x804A6D00); moved here from tu_801F9484.h in the shotgun
 // pass. Field names come from the asm only.
-class cls_804A6D00 : public ShadowLinkBase_804A6A00 {
+class ShadowLinkThwompMinor_804A6D00 : public ShadowLinkBase_804A6A00 {
 public:
-    cls_804A6D00();
-    /* 0x08 */ virtual ~cls_804A6D00();
+    ShadowLinkThwompMinor_804A6D00();
+    /* 0x08 */ virtual ~ShadowLinkThwompMinor_804A6D00();
     /* 0x0C */ virtual void init();
     /* 0x68 */ virtual u8 attackPlayers_0x68();
     /* 0x6C */ virtual void onHitByPlayer_0x6C();

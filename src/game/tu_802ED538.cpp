@@ -32,7 +32,7 @@ void fn_802EEA24(u8 value) {
 }
 #pragma auto_inline reset
 
-void cls_804AA350::init() {
+void GiantGeneratorEffect_804AA350::init() {
     mEmitter230 = NULL;
     mEmitter234 = NULL;
     mEmitter238 = NULL;
@@ -77,7 +77,7 @@ void cls_804AA350::init() {
 }
 
 // FIXME(shotgun): 98.40 %, regalloc-only; behaviour clean.
-void cls_804AA350::vfunc_0x10() {
+void GiantGeneratorEffect_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->getActorEnd();
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
@@ -101,7 +101,7 @@ void cls_804AA350::vfunc_0x10() {
     }
 }
 
-cls_804AA350::~cls_804AA350() {
+GiantGeneratorEffect_804AA350::~GiantGeneratorEffect_804AA350() {
     if (mEmitter230 != NULL) {
         releaseEmitter_801EE434(mEmitter230);
     }
@@ -164,7 +164,7 @@ static inline void notifySlr4(s32 slot, u8 arg) {
 }
 
 // FIXME(shotgun): 98.45 %, missing/extra; behaviour drift.
-void cls_804AA350::update() {
+void GiantGeneratorEffect_804AA350::update() {
     switch (field_0x24c) {
     case 0:
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
@@ -373,7 +373,7 @@ static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, void* res
     }
 }
 
-void cls_804AA350::draw() {
+void GiantGeneratorEffect_804AA350::draw() {
     if (field_0x2cc != NULL) {
         SpriteParams_801F5AE0 params;
         params.field_0x1c = 0;
@@ -385,7 +385,7 @@ void cls_804AA350::draw() {
     }
 }
 
-u8 cls_804AA350::fn_802ED7F0(f32 value) {
+u8 GiantGeneratorEffect_804AA350::fn_802ED7F0(f32 value) {
     if (field_0x24c < 11) {
         return 0;
     }
@@ -397,14 +397,14 @@ u8 cls_804AA350::fn_802ED7F0(f32 value) {
     return field_0x274;
 }
 
-void cls_804AA350::fn_802ED7D8() {
+void GiantGeneratorEffect_804AA350::fn_802ED7D8() {
     field_0x275 = 0xFF;
     field_0x24c++;
 }
 
 // FIXME: 82.43 %, missing/extra + reloc-name; behaviour drift.
 // FIXME(shotgun): missing/extra + reloc-name (TUtilf::sqrt tests x > 0 in the original, not x <= 0; fn_802303FC's flag is passed as 0xFF there; mLayer_0x4 is loaded late)
-bool cls_804AA350::fn_802ED538() {
+bool GiantGeneratorEffect_804AA350::fn_802ED538() {
     bool result = true;
     for (s32 p = 0; p < 4; p++) {
         if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == mLayer_0x4) {

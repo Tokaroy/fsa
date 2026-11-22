@@ -12,13 +12,13 @@ static inline void setBox(JGeometry::TBox2f& box, f32 lo, f32 hi) {
     box.f.y = hi;
 }
 
-cls_804A68D0::cls_804A68D0() {
+ShadowLinkJumpMinor_804A68D0::ShadowLinkJumpMinor_804A68D0() {
     mKind = 0;
     mHops = 0;
     field_0x2c0 = fn_801CD664(1) + 3;
 }
 
-void cls_804A68D0::init() {
+void ShadowLinkJumpMinor_804A68D0::init() {
     ShadowLinkBase_804A6A00::init();
     mKind = mSpawnParam_0x90 & 3;
     mDir_0x98 = 2;
@@ -30,7 +30,7 @@ void cls_804A68D0::init() {
     mAnim.startAnim_801D22DC(2, 0, false);
 }
 
-void cls_804A68D0::fn_8022089C(s32 state) {
+void ShadowLinkJumpMinor_804A68D0::fn_8022089C(s32 state) {
     switch (state) {
     case 3:
         setBox(mBox, -8.0f, 8.0f);
@@ -102,7 +102,7 @@ void cls_804A68D0::fn_8022089C(s32 state) {
 
 // FIXME: 99.86%. Only the jump table relocation differs (jumptable_804A6974 vs
 // @NNN), as in act_shadow_link_bow's updateState_0x90.
-void cls_804A68D0::updateState_0x90(u8 mapHit) {
+void ShadowLinkJumpMinor_804A68D0::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -153,7 +153,7 @@ void cls_804A68D0::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A68D0::calcVelocity_0x88() {
+void ShadowLinkJumpMinor_804A68D0::calcVelocity_0x88() {
     switch (mState) {
     case 2:
         fn_80221250();
@@ -170,4 +170,4 @@ void cls_804A68D0::calcVelocity_0x88() {
     }
 }
 
-cls_804A68D0::~cls_804A68D0() {}
+ShadowLinkJumpMinor_804A68D0::~ShadowLinkJumpMinor_804A68D0() {}

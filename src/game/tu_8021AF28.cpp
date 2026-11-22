@@ -12,7 +12,7 @@
 
 // The second pass of each sprite draw: the same frame again, translucent,
 // unless the actor's own sprite matrix is set.
-static inline void drawSecond(cls_804A6550* self, SpriteParams_801F5AE0& params, s32 frame) {
+static inline void drawSecond(KaeporaGaebora_804A6550* self, SpriteParams_801F5AE0& params, s32 frame) {
     params.field_0x10.a = 200;
     params.field_0x1d = 0;
     if (self->mSpriteParams.mMtx == NULL) {
@@ -20,7 +20,7 @@ static inline void drawSecond(cls_804A6550* self, SpriteParams_801F5AE0& params,
     }
 }
 
-void cls_804A6550::fn_8021B668() const {
+void KaeporaGaebora_804A6550::fn_8021B668() const {
     s32 layer = mLayer_0x4;
     s8 shift = 0;
     if (fn_80219E04()) {
@@ -29,7 +29,7 @@ void cls_804A6550::fn_8021B668() const {
     spawnEmitter_8013CC50(layer, &mPos, 0x343, 0, shift, NULL, NULL, true, 1.0f);
 }
 
-void cls_804A6550::fn_8021B5C4() {
+void KaeporaGaebora_804A6550::fn_8021B5C4() {
     deleteEmitter(&mEmitter);
     s32 layer = mLayer_0x4;
     s8 shift = 0;
@@ -39,11 +39,11 @@ void cls_804A6550::fn_8021B5C4() {
     mEmitter = spawnEmitter_8013CC50(layer, &mPos, 0x344, 0, shift, NULL, NULL, true, 1.0f);
 }
 
-void cls_804A6550::fn_8021B5A0() {
+void KaeporaGaebora_804A6550::fn_8021B5A0() {
     fn_801CB7A0(mEmitter);
 }
 
-void cls_804A6550::fn_8021B548() {
+void KaeporaGaebora_804A6550::fn_8021B548() {
     s8 shift = 0;
     if (fn_80219E04()) {
         shift = -6;
@@ -53,7 +53,7 @@ void cls_804A6550::fn_8021B548() {
 
 // FIXME: 98.9%. Same as fn_8021AFB8: the SpriteParams reset's zero stores use
 // r6 here, the original shares r30 (the `shift` register) and has one li less.
-void cls_804A6550::fn_8021B1AC() {
+void KaeporaGaebora_804A6550::fn_8021B1AC() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1f = 0;
@@ -103,7 +103,7 @@ void cls_804A6550::fn_8021B1AC() {
 // SpriteParams reset in r30 (the saved register that also holds `shift`
 // across the fn_80219E04 call) and loads it once (li r30, 0 before the first
 // zero store); here the reset stores use r6 and `shift` gets its own li r30, 0.
-void cls_804A6550::fn_8021AFB8() {
+void KaeporaGaebora_804A6550::fn_8021AFB8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1f = 0;
@@ -131,7 +131,7 @@ void cls_804A6550::fn_8021AFB8() {
     drawSecond(this, params, mAnim.mCel + 0x25C);
 }
 
-void cls_804A6550::draw() {
+void KaeporaGaebora_804A6550::draw() {
     mPos.y += 6.0f;
     if (fn_80219E04()) {
         fn_8021B1AC();

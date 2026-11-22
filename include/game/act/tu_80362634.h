@@ -13,12 +13,12 @@
 class EndingOwl_804ADF28 : public ActorBase_804A5770 {
 public:
     /* 0x230 */ u8 pad_0x230[0x278 - 0x230];
-    /* 0x278 */ s32 field_0x278; // tested by cls_804ADF28::fn_80363880 (0 to be a landing spot)
+    /* 0x278 */ s32 field_0x278; // tested by OtherCharactersEnding_804ADF28::fn_80363880 (0 to be a landing spot)
     /* 0x27C */ u8 pad_0x27c[0x294 - 0x27C];
     /* 0x294 */ u8 field_0x294;
 };
 
-class cls_804ADF28 : public ActorBase_804A5770 {
+class OtherCharactersEnding_804ADF28 : public ActorBase_804A5770 {
 public:
     // state step: wanders near field_0x27c[0].
     void fn_80363360();
@@ -40,8 +40,8 @@ public:
     void fn_80365274();
     // state step: hop.
     void fn_80364900();
-    cls_804ADF28() {}
-    /* 0x08 */ virtual ~cls_804ADF28();
+    OtherCharactersEnding_804ADF28() {}
+    /* 0x08 */ virtual ~OtherCharactersEnding_804ADF28();
     // 0x80365B5C: decodes mSpawnParam_0x90 (state, sub-state, direction, frame) and sets up the state.
     /* 0x0C */ virtual void init();
 

@@ -123,46 +123,46 @@ static const s8 lbl_80542AD8[8] = {10, 7, 10, 7, -1, 0, 0, 0};
 static const s8 lbl_80542AE0[8] = {3, 2, 9, 4, 22, 1, 2, 4};
 static const u16 lbl_80542AE8[4] = {0x1bd, 0x1be, 0x1bf, 0x1c0};
 
-void (cls_804ADF28::*lbl_804ADC38[18])() = {
-    &cls_804ADF28::fn_803653EC,
-    &cls_804ADF28::fn_80365274,
-    &cls_804ADF28::fn_80365220,
-    &cls_804ADF28::fn_8036509C,
-    &cls_804ADF28::fn_80364F60,
-    &cls_804ADF28::fn_80364D0C,
-    &cls_804ADF28::fn_80364A88,
-    &cls_804ADF28::fn_80364900,
-    &cls_804ADF28::fn_803645B4,
-    &cls_804ADF28::fn_80364340,
-    &cls_804ADF28::fn_80363FFC,
-    &cls_804ADF28::fn_80363F7C,
-    &cls_804ADF28::fn_80363880,
-    &cls_804ADF28::fn_80363664,
-    &cls_804ADF28::fn_80363360,
-    &cls_804ADF28::fn_8036335C,
-    &cls_804ADF28::fn_80362C44,
-    &cls_804ADF28::fn_80364F00,
+void (OtherCharactersEnding_804ADF28::*lbl_804ADC38[18])() = {
+    &OtherCharactersEnding_804ADF28::fn_803653EC,
+    &OtherCharactersEnding_804ADF28::fn_80365274,
+    &OtherCharactersEnding_804ADF28::fn_80365220,
+    &OtherCharactersEnding_804ADF28::fn_8036509C,
+    &OtherCharactersEnding_804ADF28::fn_80364F60,
+    &OtherCharactersEnding_804ADF28::fn_80364D0C,
+    &OtherCharactersEnding_804ADF28::fn_80364A88,
+    &OtherCharactersEnding_804ADF28::fn_80364900,
+    &OtherCharactersEnding_804ADF28::fn_803645B4,
+    &OtherCharactersEnding_804ADF28::fn_80364340,
+    &OtherCharactersEnding_804ADF28::fn_80363FFC,
+    &OtherCharactersEnding_804ADF28::fn_80363F7C,
+    &OtherCharactersEnding_804ADF28::fn_80363880,
+    &OtherCharactersEnding_804ADF28::fn_80363664,
+    &OtherCharactersEnding_804ADF28::fn_80363360,
+    &OtherCharactersEnding_804ADF28::fn_8036335C,
+    &OtherCharactersEnding_804ADF28::fn_80362C44,
+    &OtherCharactersEnding_804ADF28::fn_80364F00,
 };
 
-void (cls_804ADF28::*lbl_804ADDE8[18])() = {
-    &cls_804ADF28::fn_80362B74,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362B14,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_803628D4,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
-    &cls_804ADF28::fn_80362680,
+void (OtherCharactersEnding_804ADF28::*lbl_804ADDE8[18])() = {
+    &OtherCharactersEnding_804ADF28::fn_80362B74,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362B14,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_803628D4,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
+    &OtherCharactersEnding_804ADF28::fn_80362680,
 };
 
 // .data 0x804ADEC0..0x804ADF28 (the tail of the original's lbl_804ADDE8).
@@ -193,7 +193,7 @@ static JGeometry::TVec3f lbl_8050C088[4] = {
 
 // Destructor at 0x80366D44.
 // FIXME(shotgun): 97.82 %, regalloc-only; behaviour clean.
-cls_804ADF28::~cls_804ADF28() {
+OtherCharactersEnding_804ADF28::~OtherCharactersEnding_804ADF28() {
     if (field_0x234 == 3) {
         deleteEmitter(&field_0x300);
     }
@@ -208,7 +208,7 @@ cls_804ADF28::~cls_804ADF28() {
 
 // The original reaches the tables from one .rodata/.data base and keeps 0 and -1 in saved registers across the switch.
 // FIXME: 97.56 %, missing/extra + reloc-name; behaviour drift.
-void cls_804ADF28::init() {
+void OtherCharactersEnding_804ADF28::init() {
     field_0x234 = mSpawnParam_0x90 & 0x1f;
     field_0x238 = (mSpawnParam_0x90 >> 5) & 0x7f;
     field_0x23c = (mSpawnParam_0x90 >> 12) & 3;
@@ -514,7 +514,7 @@ void cls_804ADF28::init() {
     }
 }
 
-void cls_804ADF28::fn_80365AF0() {
+void OtherCharactersEnding_804ADF28::fn_80365AF0() {
     if (field_0x230 == 0) {
         if (field_0x248 != 0) {
             field_0x248--;
@@ -526,11 +526,11 @@ void cls_804ADF28::fn_80365AF0() {
     }
 }
 
-void cls_804ADF28::fn_80365AB8() {
+void OtherCharactersEnding_804ADF28::fn_80365AB8() {
     (this->*lbl_804ADDE8[field_0x234])();
 }
 
-void cls_804ADF28::fn_803653EC() {
+void OtherCharactersEnding_804ADF28::fn_803653EC() {
     if (field_0x238 < 0) {
         if (field_0x248 >= 0x80) {
             if (field_0x25c == 0) {
@@ -636,7 +636,7 @@ void cls_804ADF28::fn_803653EC() {
     }
 }
 
-void cls_804ADF28::fn_80365274() {
+void OtherCharactersEnding_804ADF28::fn_80365274() {
     mPos.add(mVel_0x3c);
     switch (field_0x238) {
     case 0:
@@ -682,7 +682,7 @@ void cls_804ADF28::fn_80365274() {
     }
 }
 
-void cls_804ADF28::fn_80365220() {
+void OtherCharactersEnding_804ADF28::fn_80365220() {
     if (field_0x248 == 0) {
         field_0x248 = 0x40;
         field_0x238++;
@@ -694,7 +694,7 @@ void cls_804ADF28::fn_80365220() {
     }
 }
 
-void cls_804ADF28::fn_8036509C() {
+void OtherCharactersEnding_804ADF28::fn_8036509C() {
     if (field_0x248 != 0) {
         if (field_0x248 <= 14) {
             if (field_0x248 == 14) {
@@ -731,7 +731,7 @@ void cls_804ADF28::fn_8036509C() {
     }
 }
 
-void cls_804ADF28::fn_80364F60() {
+void OtherCharactersEnding_804ADF28::fn_80364F60() {
     if (field_0x238 != 5) {
         s32 oldAnim = field_0x264;
         if (field_0x25c == 0) {
@@ -761,7 +761,7 @@ void cls_804ADF28::fn_80364F60() {
     }
 }
 
-void cls_804ADF28::fn_80364F00() {
+void OtherCharactersEnding_804ADF28::fn_80364F00() {
     if (field_0x25c == 0) {
         field_0x268++;
         if (field_0x270[field_0x268] < 0) {
@@ -773,7 +773,7 @@ void cls_804ADF28::fn_80364F00() {
 }
 
 // FIXME(shotgun): 99.92 %, regalloc-only; behaviour clean.
-void cls_804ADF28::fn_80364D0C() {
+void OtherCharactersEnding_804ADF28::fn_80364D0C() {
     ActorBase_804A5770* owl;
     s32 slot = field_0x24c;
     if (slot < 0) {
@@ -805,7 +805,7 @@ void cls_804ADF28::fn_80364D0C() {
 }
 
 // FIXME(shotgun): 99.38 %, same-text; behaviour clean.
-void cls_804ADF28::fn_80364A88() {
+void OtherCharactersEnding_804ADF28::fn_80364A88() {
     if (field_0x248 == 0) {
         f32 speed = PSVECMag(&mVel_0x3c);
         mPos.add(mVel_0x3c);
@@ -867,7 +867,7 @@ void cls_804ADF28::fn_80364A88() {
     }
 }
 
-void cls_804ADF28::fn_80364900() {
+void OtherCharactersEnding_804ADF28::fn_80364900() {
     if (field_0x238 == 0) {
         mPos.add(mVel_0x3c);
         if (field_0x25c != 0) {
@@ -914,7 +914,7 @@ void cls_804ADF28::fn_80364900() {
 }
 
 // FIXME(shotgun): 99.79 %, regalloc-only; behaviour clean.
-void cls_804ADF28::fn_803645B4() {
+void OtherCharactersEnding_804ADF28::fn_803645B4() {
     JGeometry::TVec3f target;
     if (field_0x248 == 0 || field_0x238 != 0) {
         if (field_0x238 == 0) {
@@ -988,7 +988,7 @@ void cls_804ADF28::fn_803645B4() {
     }
 }
 
-void cls_804ADF28::fn_80364340() {
+void OtherCharactersEnding_804ADF28::fn_80364340() {
     if (field_0x248 == 0) {
         JGeometry::TVec3f off;
         JGeometry::TVec3f oldPos = mPos;
@@ -1010,7 +1010,7 @@ void cls_804ADF28::fn_80364340() {
 }
 
 // FIXME: 99.71 %, regalloc-only; behaviour clean.
-void cls_804ADF28::fn_80363FFC() {
+void OtherCharactersEnding_804ADF28::fn_80363FFC() {
     s32 tileX;
     s32 tileY;
     if (mVel_0x3c.x == 0.0f) {
@@ -1081,7 +1081,7 @@ void cls_804ADF28::fn_80363FFC() {
     }
 }
 
-void cls_804ADF28::fn_80363F7C() {
+void OtherCharactersEnding_804ADF28::fn_80363F7C() {
     if (field_0x25c == 0) {
         field_0x268++;
         if (field_0x268 >= 6) {
@@ -1094,7 +1094,7 @@ void cls_804ADF28::fn_80363F7C() {
 }
 
 // FIXME(shotgun): 98.47 %, different; behaviour near.
-void cls_804ADF28::fn_80363880() {
+void OtherCharactersEnding_804ADF28::fn_80363880() {
     s32 slot = field_0x24c;
     if (slot >= 0) {
         ActorBase_804A5770* owl = getActorManager_801F856C()->mActors[slot];
@@ -1195,7 +1195,7 @@ void cls_804ADF28::fn_80363880() {
     }
 }
 
-void cls_804ADF28::fn_80363664() {
+void OtherCharactersEnding_804ADF28::fn_80363664() {
     if (field_0x248 == 0) {
         if (mVel_0x3c.squared() <= 32.0f * FLT_EPSILON) {
             s32 oldFrame = field_0x26c;
@@ -1230,7 +1230,7 @@ void cls_804ADF28::fn_80363664() {
     }
 }
 
-void cls_804ADF28::fn_80363360() {
+void OtherCharactersEnding_804ADF28::fn_80363360() {
     if (field_0x248 == 0) {
         s32 r = fn_801CD664(3);
         if (r == 0) {
@@ -1283,7 +1283,7 @@ void cls_804ADF28::fn_80363360() {
     }
 }
 
-void cls_804ADF28::fn_8036335C() {}
+void OtherCharactersEnding_804ADF28::fn_8036335C() {}
 
 // The first non-zero fn_80309D6C result over the four players, else 0: fn_80362C44's
 // loop leaves with the result in r3 and loads 0 after the last player.
@@ -1300,7 +1300,7 @@ static inline u32 anyPlayerInput(u32 mask) {
 // Still differs: the original keeps the 0 that clears field_0x30c[i] in r26 (shared with case 6's
 // player counter) and colours i before the two loop pointers; the jump table's name.
 // FIXME: 97.78 %, different + reloc-name; behaviour drift.
-void cls_804ADF28::fn_80362C44() {
+void OtherCharactersEnding_804ADF28::fn_80362C44() {
     s32 i;
     s32 skip = 0;
     JGeometry::TVec3f pos = mPos;
@@ -1449,7 +1449,7 @@ void cls_804ADF28::fn_80362C44() {
     }
 }
 
-void cls_804ADF28::fn_80362B74() {
+void OtherCharactersEnding_804ADF28::fn_80362B74() {
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x264, NULL, 7, 1.0f, 1.0f);
     JGeometry::TVec3f savedPos = mPos;
     for (int i = 0; i < 3; i++) {
@@ -1459,14 +1459,14 @@ void cls_804ADF28::fn_80362B74() {
     mPos = savedPos;
 }
 
-void cls_804ADF28::fn_80362B14() {
+void OtherCharactersEnding_804ADF28::fn_80362B14() {
     void* res = fn_804032E8('TIMG', "fune.bti");
     if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);
     }
 }
 
-void cls_804ADF28::fn_803628D4() {
+void OtherCharactersEnding_804ADF28::fn_803628D4() {
     JGeometry::TVec3f savedPos = mPos;
     Mtx identity;
     SpriteParams_801F5AE0 params;
@@ -1505,7 +1505,7 @@ void cls_804ADF28::fn_803628D4() {
     }
 }
 
-void cls_804ADF28::fn_80362680() {
+void OtherCharactersEnding_804ADF28::fn_80362680() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x1f = 0;
@@ -1552,7 +1552,7 @@ void cls_804ADF28::fn_80362680() {
 
 // Faces the owl when it is nearer than 80, else down (init's state 5 and fn_80364D0C).
 // R2 pool helper (inlined at 2 call sites); was faceOwl.
-void cls_804ADF28::pool_80542B58(ActorBase_804A5770* owl) {
+void OtherCharactersEnding_804ADF28::pool_80542B58(ActorBase_804A5770* owl) {
     if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
         field_0x23c = 0;
     } else {
@@ -1573,7 +1573,7 @@ void cls_804ADF28::pool_80542B58(ActorBase_804A5770* owl) {
 // Takes the owl in actor slot i as the target when it is nearer than 100 and starts walking to it
 // at speed 0.8 (init's state 12 and fn_80363880).
 // R2 pool helper (inlined at 2 call sites); was chaseOwl.
-void cls_804ADF28::pool_80542B4C(s32 i, EndingOwl_804ADF28* actor) {
+void OtherCharactersEnding_804ADF28::pool_80542B4C(s32 i, EndingOwl_804ADF28* actor) {
     if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
         field_0x24c = i;
         JGeometry::TVec3f target = actor->mPos;
@@ -1602,7 +1602,7 @@ void cls_804ADF28::pool_80542B4C(s32 i, EndingOwl_804ADF28* actor) {
 // Whether mPos lies outside the area the rupees may land in: its bounds, the two cut corners and
 // the two circles of radius 78 (init's state 9 and fn_80364340).
 // R2 pool helper (inlined at 2 call sites); was isBlocked.
-bool cls_804ADF28::pool_80542B20() {
+bool OtherCharactersEnding_804ADF28::pool_80542B20() {
     if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
         return true;
     }
@@ -1628,7 +1628,7 @@ bool cls_804ADF28::pool_80542B20() {
 
 // The four emitters of lbl_80542AE8 at the centre of the room (init's state 16).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
-void cls_804ADF28::spawnRoomEmitters() {
+void OtherCharactersEnding_804ADF28::spawnRoomEmitters() {
     // the centre of the room (512 x 384) the actor is in
     JGeometry::TVec3f center((s32)(mPos.x / 512.0f) * 512.0f + 256.0f,
                              (s32)(mPos.y / 384.0f) * 384.0f + 192.0f, 0.0f);
@@ -1637,6 +1637,6 @@ void cls_804ADF28::spawnRoomEmitters() {
     }
 }
 
-void cls_804ADF28::fn_80362634() {
+void OtherCharactersEnding_804ADF28::fn_80362634() {
     deleteEmitter(&field_0x300);
 }

@@ -67,7 +67,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             JGeometry::TVec3f pos(32.0f + field_0x288.x, (field_0x27c.y + field_0x288.y) * 0.5f + 32.0f, 32.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, 0x40, -1, -1);
             if (serial >= 0) {
-                cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                TingleTimeUp_804ACC68* child = static_cast<TingleTimeUp_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.0f, 0.0f, 0.0f);
                     child->mVel_0x3c = vel;
@@ -92,7 +92,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             JGeometry::TVec3f pos(32.0f + field_0x288.x, (field_0x27c.y + field_0x288.y) * 0.5f + 54.0f, 32.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, param, -1, -1);
             if (serial >= 0) {
-                cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                TingleTimeUp_804ACC68* child = static_cast<TingleTimeUp_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.2f, -0.2f, 0.0f);
                     child->mVel_0x3c = vel;
@@ -110,7 +110,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             JGeometry::TVec3f pos(32.0f + field_0x288.x, (field_0x27c.y + field_0x288.y) * 0.5f + 8.0f, 32.0f);
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, param, -1, -1);
             if (serial >= 0) {
-                cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                TingleTimeUp_804ACC68* child = static_cast<TingleTimeUp_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.3f, 0.3f, 0.0f);
                     child->mVel_0x3c = vel;
@@ -184,7 +184,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('TUTL', 0, &pos, param | 0x100, -1, -1);
             field_0x238++;
             if (serial >= 0) {
-                cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+                TingleTimeUp_804ACC68* child = static_cast<TingleTimeUp_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(
                         -2.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),

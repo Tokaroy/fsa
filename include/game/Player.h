@@ -1610,7 +1610,7 @@ bool fn_80230AD4(s32 player);
 void fn_80230C6C(s32 player);
 
 // Per-player queries and setters of the 0x9C-byte family, owner tu_8022AD64
-// (cls_804AC388::update, game/tu_8033F448.cpp). Results are tested with
+// (Blizzard_804AC388::update, game/tu_8033F448.cpp). Results are tested with
 // clrlwi 24 (bool); fn_80237810 is compared as a word and the value
 // minus 4 goes to fn_8023764C.
 bool fn_8022F478(s32 player);

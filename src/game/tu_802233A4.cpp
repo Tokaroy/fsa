@@ -9,13 +9,13 @@
 #include "game/act/act_leaf_effect_npc_generator.h"
 #include "game/act/tu_802233A4.h"
 
-cls_804A6D00::cls_804A6D00() {
+ShadowLinkThwompMinor_804A6D00::ShadowLinkThwompMinor_804A6D00() {
     field_0x2b8 = NULL;
     field_0x2bc = NULL;
     field_0x2c0 = NULL;
 }
 
-cls_804A6D00::~cls_804A6D00() {
+ShadowLinkThwompMinor_804A6D00::~ShadowLinkThwompMinor_804A6D00() {
     deleteEmitter(&field_0x2b8);
     fn_801CDC8C(0x4000E);
     releaseEmitter_801EE434(field_0x2bc);
@@ -24,7 +24,7 @@ cls_804A6D00::~cls_804A6D00() {
     field_0x2c0 = NULL;
 }
 
-void cls_804A6D00::init() {
+void ShadowLinkThwompMinor_804A6D00::init() {
     ShadowLinkBase_804A6A00::init();
     mDir_0x98 = mSpawnParam_0x90 & 3;
     mFlags &= ~0x100;
@@ -39,7 +39,7 @@ void cls_804A6D00::init() {
 // Not auto-inlined: updateState_0x90 calls it with a plain bl in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME(shotgun): 94.95 %, missing/extra; behaviour near.
-void cls_804A6D00::fn_80223AD8(s32 state) {
+void ShadowLinkThwompMinor_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
         mTargetSpeed = 2.5f;
@@ -110,7 +110,7 @@ static inline void moveBox(f32& x0, f32& y0, f32& x1, f32& y1, f32 dx, f32 dy) {
 
 // The rectangle (in front of the actor while it charges in state 5) as (x0, y0, x1, y1);
 // empty (1, 1, -1, -1) in the other states.
-static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1) {
+static inline void attackBox(ShadowLinkThwompMinor_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1) {
     x0 = 1.0f;
     x1 = -1.0f;
     y0 = x0;
@@ -140,7 +140,7 @@ static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1
 // Not auto-inlined: updateState_0x90 calls it with a plain bl in the original.
 #pragma auto_inline off
 // FIXME(shotgun): 82.92 %, scheduling+regalloc; behaviour clean.
-void cls_804A6D00::fn_802238CC() {
+void ShadowLinkThwompMinor_804A6D00::fn_802238CC() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
     if (x1 - x0 > 0.0f && y1 - y0 > 0.0f) {
@@ -160,7 +160,7 @@ void cls_804A6D00::fn_802238CC() {
 }
 #pragma auto_inline reset
 
-void cls_804A6D00::updateState_0x90(u8 mapHit) {
+void ShadowLinkThwompMinor_804A6D00::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -229,13 +229,13 @@ void cls_804A6D00::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6D00::updateBehavior_0x9C(u8 mapHit) {
+void ShadowLinkThwompMinor_804A6D00::updateBehavior_0x9C(u8 mapHit) {
     ShadowLinkBase_804A6A00::updateBehavior_0x9C(mapHit);
     setEmitterPos_8013CB44(field_0x2bc, &mPos, 0, 0, true);
     setEmitterPos_8013CB44(field_0x2c0, &mPos, 0, 0, true);
 }
 
-void cls_804A6D00::calcVelocity_0x88() {
+void ShadowLinkThwompMinor_804A6D00::calcVelocity_0x88() {
     switch (mState) {
     case 2:
         fn_80221250();
@@ -249,7 +249,7 @@ void cls_804A6D00::calcVelocity_0x88() {
     }
 }
 
-void cls_804A6D00::onHitByPlayer_0x6C() {
+void ShadowLinkThwompMinor_804A6D00::onHitByPlayer_0x6C() {
     ShadowLinkBase_804A6A00::onHitByPlayer_0x6C();
     deleteEmitter(&field_0x2b8);
     fn_801CDC8C(0x4000E);
@@ -261,7 +261,7 @@ void cls_804A6D00::onHitByPlayer_0x6C() {
 
 // FIXME(shotgun): 97.95 %, scheduling+regalloc; behaviour clean.
 // (the li r3, 0 of the return sits before the state test)
-u8 cls_804A6D00::attackPlayers_0x68() {
+u8 ShadowLinkThwompMinor_804A6D00::attackPlayers_0x68() {
     f32 x0, y0, x1, y1;
     attackBox(this, x0, y0, x1, y1);
     if (x1 - x0 > 0.0f && y1 - y0 > 0.0f) {

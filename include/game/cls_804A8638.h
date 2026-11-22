@@ -11,11 +11,11 @@
 class JPABaseEmitter;
 class ActorSoundObj_804578F4;
 
-class cls_804A8638 : public ActorBase_804A5770 {
+class EnvironmentSwitchControl_804A8638 : public ActorBase_804A5770 {
 public:
-    cls_804A8638() {}
+    EnvironmentSwitchControl_804A8638() {}
     // 0x802B51C0 (vtable slot 0x08): the emitters, then the sound object.
-    /* 0x08 */ virtual ~cls_804A8638();
+    /* 0x08 */ virtual ~EnvironmentSwitchControl_804A8638();
     // 0x802B5360 (slot 0x0C): decodes mSpawnParam_0x90 and starts the preset.
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();

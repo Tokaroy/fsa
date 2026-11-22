@@ -18,12 +18,12 @@ static inline f32 spread(f32 range) {
     return range * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
 }
 
-cls_804A6B70::cls_804A6B70() {
+ShadowLinkBowMinor_804A6B70::ShadowLinkBowMinor_804A6B70() {
     mRounds = 0;
     mShots = 0;
 }
 
-void cls_804A6B70::init() {
+void ShadowLinkBowMinor_804A6B70::init() {
     ShadowLinkBase_804A6A00::init();
     mDir_0x98 = 2;
     mState = 4;
@@ -39,7 +39,7 @@ void cls_804A6B70::init() {
 // x and y swapped in the pairs), so two gGameRoot_8053AAF8 loads use r4/r5 the
 // other way round; it also loads box.f.y before box.i.y. The .sdata2 pool
 // order differs too (32.0f before 64.0f here).
-void cls_804A6B70::fn_80222730() {
+void ShadowLinkBowMinor_804A6B70::fn_80222730() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
@@ -68,7 +68,7 @@ void cls_804A6B70::fn_80222730() {
     }
 }
 
-void cls_804A6B70::fn_80222668(s32 state) {
+void ShadowLinkBowMinor_804A6B70::fn_80222668(s32 state) {
     switch (state) {
     case 3:
         field_0x250 = 120;
@@ -91,7 +91,7 @@ void cls_804A6B70::fn_80222668(s32 state) {
 
 // FIXME: 99.85%. Only the jump table relocation (jumptable_804A6C14 vs @NNN)
 // and the .data order differ, as in tu_80221B44's updateState_0x90.
-void cls_804A6B70::updateState_0x90(u8 mapHit) {
+void ShadowLinkBowMinor_804A6B70::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -146,7 +146,7 @@ void cls_804A6B70::updateState_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6B70::calcVelocity_0x88() {
+void ShadowLinkBowMinor_804A6B70::calcVelocity_0x88() {
     if (mState == 2) {
         fn_80221250();
     } else {
@@ -154,4 +154,4 @@ void cls_804A6B70::calcVelocity_0x88() {
     }
 }
 
-cls_804A6B70::~cls_804A6B70() {}
+ShadowLinkBowMinor_804A6B70::~ShadowLinkBowMinor_804A6B70() {}

@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x804AC600.
-class cls_804AC600 : public ActorBase_804A5770 {
+class Bee_804AC600 : public ActorBase_804A5770 {
 public:
-    cls_804AC600() {}
-    /* 0x08 */ virtual ~cls_804AC600();
+    Bee_804AC600() {}
+    /* 0x08 */ virtual ~Bee_804AC600();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

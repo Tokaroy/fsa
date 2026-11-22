@@ -8,12 +8,12 @@ class JPABaseEmitter;
 
 // Code: game/act_navi.cpp. The Navi actor ('NAVI', docs/names/actors.tsv),
 // an EnemyBase_804A4808 named after its vtable, 0x804A6708.
-class cls_804A6708 : public EnemyBase_804A4808 {
+class Navi_804A6708 : public EnemyBase_804A4808 {
 public:
     // 0x8021EDC0.
-    cls_804A6708();
+    Navi_804A6708();
     // 0x8021ED04: releases emitters and unlists serial from tu_8021F064 list.
-    /* 0x08 */ virtual ~cls_804A6708();
+    /* 0x08 */ virtual ~Navi_804A6708();
     // 0x8021E8D0.
     /* 0x0C */ virtual void init();
     // 0x8021D7A8: draws SOB sprite "enemy_both2_sob.bin".

@@ -16,7 +16,7 @@ s32 lbl_8053ACB0;
 // accessor) and copies the tile byte from r0 to r9 after the 0xFF test; the format string
 // waits for the unit's .rodata split (lbl_8046E9F8). The archive type is 'B   ' plus the
 // stage name's chars less ' ', added after the sprintf (GameView fn_802D8328's form).
-void cls_804A9BC8::init() {
+void EnemyGenerator2_804A9BC8::init() {
     for (int i = 0; i < 0x50; i++) {
         lbl_804D4768[i] = -1;
     }
@@ -49,7 +49,7 @@ extern const u16 lbl_8046E9D8[4][4]; // FIXME(shotgun): not defined in the sourc
 
 // FIXME: 90.72 %, missing/extra + reloc-name; behaviour near.
 // FIXME(shotgun): one instr short; float literals not split into this unit (lbl_805411B8/BC), loop index in r29 not r30
-void cls_804A9BC8::update() {
+void EnemyGenerator2_804A9BC8::update() {
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
@@ -70,7 +70,7 @@ void cls_804A9BC8::update() {
                         s32 count = getActorManager_801F856C()->fn_801F7818('GEN2', mLayer_0x4, list, -1);
                         for (s32 k = 0; k < count; k++) {
                             if (list[k] != NULL) {
-                                static_cast<cls_804A9BC8*>(list[k])->field_0x230 = 1;
+                                static_cast<EnemyGenerator2_804A9BC8*>(list[k])->field_0x230 = 1;
                             }
                         }
                         field_0x230 = 1;
@@ -165,6 +165,6 @@ void cls_804A9BC8::update() {
     }
 }
 
-void cls_804A9BC8::draw() {}
+void EnemyGenerator2_804A9BC8::draw() {}
 
-cls_804A9BC8::~cls_804A9BC8() {}
+EnemyGenerator2_804A9BC8::~EnemyGenerator2_804A9BC8() {}

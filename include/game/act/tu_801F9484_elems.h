@@ -13,7 +13,7 @@ struct Elem_801FFCDC {
     u8 data[0x14];
 };
 
-// One per player of cls_804AA350 (tu_802ED538).
+// One per player of GiantGeneratorEffect_804AA350 (tu_802ED538).
 struct Elem_80200544 {
     Elem_80200544() {}
     /* 0x00 */ JGeometry::TVec3f mPos;
@@ -25,18 +25,18 @@ struct Elem_80200544 {
 
 struct Elem_80200A80 {
     Elem_80200A80() {}
-    u8 field_0x0; // 1 after cls_804AC950::init
+    u8 field_0x0; // 1 after TwoPersonLiftableRock_804AC950::init
     u8 field_0x1[3];
-    JGeometry::TVec3f field_0x4; // a player's position (cls_804AC950::update copies it whole)
+    JGeometry::TVec3f field_0x4; // a player's position (TwoPersonLiftableRock_804AC950::update copies it whole)
     s32 field_0x10;
 };
 
 struct Elem_80200A84 {
     Elem_80200A84() {}
     s32 field_0x0;
-    JGeometry::TVec3f field_0x4; // spawn position (cls_804AC950::update hands it to spawnActor_801F9484)
+    JGeometry::TVec3f field_0x4; // spawn position (TwoPersonLiftableRock_804AC950::update hands it to spawnActor_801F9484)
     s32 field_0x10;
-    s32 field_0x14; // -1 after cls_804AC950::init
+    s32 field_0x14; // -1 after TwoPersonLiftableRock_804AC950::init
 };
 
 // A recorded chaser trail point (UnknownBOME_804A0738): two (x, y) records and their layers.

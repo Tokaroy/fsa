@@ -1,5 +1,5 @@
 // Crystal (cutscene) actor: 'DCR2', spawned by tu_801F9484.cpp.
-// Declared in include/game/act/tu_801F9484.h (cls_804AE088).
+// Declared in include/game/act/tu_801F9484.h (CrystalCutscene5464_804AE088).
 // Inherits from cls_8049D140 (tu_8010DF44).
 
 #include "game/ActorBase.h"
@@ -38,12 +38,12 @@
 
 // Functions are listed in descending address order (highest first, lowest last).
 
-s32 cls_804AE088::vfunc_0x58() {
+s32 CrystalCutscene5464_804AE088::vfunc_0x58() {
     return field_0x240;
 }
 
 // FIXME: 99.95 %, reloc-name; behaviour clean.
-cls_804AE088::cls_804AE088()
+CrystalCutscene5464_804AE088::CrystalCutscene5464_804AE088()
     : mNaviActor(NULL), field_0x234(1), field_0x235(1), field_0x236(0), field_0x237(0), field_0x238(1),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
       field_0x254(0), field_0x258(0), field_0x25c(-1), field_0x26c(0), field_0x270(0), field_0x274(0),
@@ -77,7 +77,7 @@ cls_804AE088::cls_804AE088()
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
-cls_804AE088::~cls_804AE088() {
+CrystalCutscene5464_804AE088::~CrystalCutscene5464_804AE088() {
     if (field_0x314 != NULL) {
         delete field_0x314;
     }
@@ -85,7 +85,7 @@ cls_804AE088::~cls_804AE088() {
     fn_8036A65C();
 }
 
-void (cls_804AE088::*lbl_804AE070[2])() = {&cls_804AE088::fn_80369DDC, &cls_804AE088::fn_80368CD8};
+void (CrystalCutscene5464_804AE088::*lbl_804AE070[2])() = {&CrystalCutscene5464_804AE088::fn_80369DDC, &CrystalCutscene5464_804AE088::fn_80368CD8};
 
 static const s16 lbl_80542C48[4] = {0, 9, -1, -1};
 static const s16 lbl_80542C50[4] = {0, 9, -1, -1};
@@ -128,7 +128,7 @@ static const u8 lbl_80474E34[6][3] = {
 };
 
 // FIXME: 96.54 %, scheduling+regalloc + reloc-name; behaviour clean.
-void cls_804AE088::init() {
+void CrystalCutscene5464_804AE088::init() {
     cls_8049D140::init();
     field_0x23c = mSpawnParam_0x90 & 0x1F;
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
@@ -183,13 +183,13 @@ void cls_804AE088::init() {
     for (i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_GOL2) {
-            field_0x2f4 = (cls_804A9C20*)actor;
+            field_0x2f4 = (Goal2_804A9C20*)actor;
             break;
         }
     }
 }
 
-void cls_804AE088::update() {
+void CrystalCutscene5464_804AE088::update() {
     if (field_0x2f0 != 0) {
         field_0x2f0--;
         if (field_0x2f0 == 0xE1) {
@@ -202,7 +202,7 @@ void cls_804AE088::update() {
     (this->*lbl_804AE070[field_0x23c - 4])();
 }
 
-void cls_804AE088::draw() {
+void CrystalCutscene5464_804AE088::draw() {
     JGeometry::TVec3f savedPos = mPos;
     if (field_0x23c == 5 && field_0x240 >= 0x24 && field_0x240 != 0x26) {
         fn_803683AC();
@@ -217,7 +217,7 @@ void cls_804AE088::draw() {
     mPos = savedPos;
 }
 
-void cls_804AE088::vfunc_0x54() {
+void CrystalCutscene5464_804AE088::vfunc_0x54() {
     s32 v = fn_8011921C()->field_0x8;
     s32 arg;
     if (field_0x270 == 1) {
@@ -269,7 +269,7 @@ void cls_804AE088::vfunc_0x54() {
 
 // FIXME: 94.57 %, missing/extra + reloc-name; behaviour drift.
 // regalloc and stack-slot order differ.
-void cls_804AE088::vfunc_0x60(s32 arg) {
+void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
     JGeometry::TVec3f pos;
     switch (arg) {
     case 2:
@@ -292,7 +292,7 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         for (s32 i = 0; i < count; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_SWEV) {
-                static_cast<cls_804A8638*>(actor)->fn_802B3A3C();
+                static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A3C();
                 break;
             }
         }
@@ -417,7 +417,7 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
         for (s32 i = 0; i < count; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_SWEV) {
-                static_cast<cls_804A8638*>(actor)->fn_802B3A3C();
+                static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A3C();
                 break;
             }
         }
@@ -549,7 +549,7 @@ void cls_804AE088::vfunc_0x60(s32 arg) {
     field_0x240 = arg;
 }
 
-s32 cls_804AE088::vfunc_0x5C() {
+s32 CrystalCutscene5464_804AE088::vfunc_0x5C() {
     s32 s = field_0x240;
     if (s == 0x11 || s == 0x26)
         return 1;
@@ -558,7 +558,7 @@ s32 cls_804AE088::vfunc_0x5C() {
 
 // differs: regalloc-only (pos and frame registers swapped) + reloc-name (unit literal pool order).
 // FIXME: 99.58 %, regalloc-only + reloc-name; behaviour clean.
-void cls_804AE088::fn_8036AC58(s32 arg) {
+void CrystalCutscene5464_804AE088::fn_8036AC58(s32 arg) {
     if (field_0x270 == 1 && field_0x274 < 0x80)
         return;
     SpriteParams_801F5AE0 params;
@@ -607,7 +607,7 @@ void cls_804AE088::fn_8036AC58(s32 arg) {
 #pragma auto_inline off
 // differs: .sdata2 literal pool order.
 // FIXME: 99.80 %, reloc-name; behaviour clean.
-void cls_804AE088::fn_8036AA60() {
+void CrystalCutscene5464_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
@@ -649,7 +649,7 @@ void cls_804AE088::fn_8036AA60() {
 }
 
 // FIXME: 99.87 %, reloc-name; behaviour clean.
-void cls_804AE088::fn_8036A894() {
+void CrystalCutscene5464_804AE088::fn_8036A894() {
     if (field_0x24c > 0) {
         SpriteParams_801F5AE0 params;
         Mtx mtx;
@@ -677,7 +677,7 @@ void cls_804AE088::fn_8036A894() {
 }
 #pragma auto_inline reset
 
-void cls_804AE088::fn_8036A65C() {
+void CrystalCutscene5464_804AE088::fn_8036A65C() {
     deleteEmitter(&field_0x350);
     deleteEmitter(&field_0x354);
     deleteEmitter(&field_0x358);
@@ -717,7 +717,7 @@ static inline void setCameraBox(const JGeometry::TBox2f& box) {
 
 // differs: register choice for the camera box and the message position.
 // FIXME: 98.78 %, scheduling + reloc-name; behaviour drift.
-void cls_804AE088::fn_80369DDC() {
+void CrystalCutscene5464_804AE088::fn_80369DDC() {
     if (field_0x258 != 0) {
         field_0x258--;
     }
@@ -911,7 +911,7 @@ void cls_804AE088::fn_80369DDC() {
 }
 
 // FIXME: 96.75 %, different + reloc-name; behaviour near.
-void cls_804AE088::fn_80368CD8() {
+void CrystalCutscene5464_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
     }
@@ -1217,7 +1217,7 @@ void cls_804AE088::fn_80368CD8() {
 }
 
 // FIXME: 99.83 %, reloc-name; behaviour clean.
-void cls_804AE088::fn_80368660() {
+void CrystalCutscene5464_804AE088::fn_80368660() {
     SpriteParams_801F5AE0 params;
     if (field_0x23c == 5 && (field_0x270 != 1 || field_0x274 >= 0x80) && field_0x25c >= 0) {
         if (field_0x260 != 0) {
@@ -1334,7 +1334,7 @@ void cls_804AE088::fn_80368660() {
 }
 
 // FIXME: 99.83 %, reloc-name; behaviour clean.
-void cls_804AE088::fn_803683AC() {
+void CrystalCutscene5464_804AE088::fn_803683AC() {
     SpriteParams_801F5AE0 params;
     JGeometry::TVec3f savedPos = mPos;
     if (field_0x260 != 0) {
@@ -1371,7 +1371,7 @@ void cls_804AE088::fn_803683AC() {
 }
 
 // FIXME: 98.98 %, missing/extra + reloc-name; behaviour clean.
-void cls_804AE088::fn_80368198() {
+void CrystalCutscene5464_804AE088::fn_80368198() {
     if (field_0x270 != 0) {
         if (field_0x274 < 0x80) {
             field_0x290 -= 2.0f;

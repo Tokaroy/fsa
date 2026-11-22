@@ -48,7 +48,7 @@ static inline void invalidateEmitter(JPABaseEmitter*& emitter) {
 
 // Ends the player-gathering state: the mourning effects at the four shake offsets, and the
 // bombs and mirrors in the world are switched off.
-static inline void beginShow(cls_804A7EB0* self, s32 d0, s32 d1, s32 d2) {
+static inline void beginShow(Goal_804A7EB0* self, s32 d0, s32 d1, s32 d2) {
     JGeometry::TVec3f pos;
     self->field_0x248 = 0;
     self->field_0x244 = 400;
@@ -80,7 +80,7 @@ static inline void beginShow(cls_804A7EB0* self, s32 d0, s32 d1, s32 d2) {
 }
 
 // The four burst effects at each shake offset; the actor then waits 10 frames in state 1.
-static inline void burst(cls_804A7EB0* self) {
+static inline void burst(Goal_804A7EB0* self) {
     JGeometry::TVec3f pos;
     pos.z = self->mPos.z;
     for (s32 i = 0; i < 4; i++) {
@@ -101,7 +101,7 @@ static inline void burst(cls_804A7EB0* self) {
 // FIXME(shotgun): 71.57 %, missing/extra; behaviour drift.
 // the player-mask test needs a bool form and the
 // 1000-subtraction loop is unrolled here but not in the original
-void cls_804A7EB0::init() {
+void Goal_804A7EB0::init() {
     mBox.set(-3.0f, -3.0f, 3.0f, 3.0f);
     field_0x230 = 0;
     mVel_0x3c.z = 0.0f;
@@ -148,7 +148,7 @@ void cls_804A7EB0::init() {
 }
 
 // 0x802A64E8.
-cls_804A7EB0::~cls_804A7EB0() {
+Goal_804A7EB0::~Goal_804A7EB0() {
     for (s32 i = 0; i < 4; i++) {
         deleteEmitterKeep(&mEmitters[0][i]);
         deleteEmitterKeep(&mEmitters[1][i]);
@@ -161,7 +161,7 @@ cls_804A7EB0::~cls_804A7EB0() {
 // 0x802A4A4C.
 // FIXME(shotgun): 80.73 %, missing/extra + reloc-name; behaviour drift.
 // (states 0-2 only), missing/extra + reloc-name
-void cls_804A7EB0::update() {
+void Goal_804A7EB0::update() {
     switch (field_0x230) {
     case 0:
         switch (field_0x238) {
@@ -491,7 +491,7 @@ void cls_804A7EB0::update() {
 
 // 0x802A4780.
 // FIXME(shotgun): 92.17 %, scheduling+regalloc; behaviour clean.
-void cls_804A7EB0::draw() {
+void Goal_804A7EB0::draw() {
     if (field_0x230 >= 2 && field_0x230 < 9) {
         SpriteParams_801F5AE0 params;
         for (s32 i = 0; i < 4; i++) {
@@ -524,7 +524,7 @@ void cls_804A7EB0::draw() {
 }
 
 // 0x802A4654.
-void cls_804A7EB0::vfunc_0x54() {
+void Goal_804A7EB0::vfunc_0x54() {
     f32 x = mPos.x;
     f32 y = mPos.y;
     f32 z = mPos.z;

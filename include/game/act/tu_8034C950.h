@@ -7,10 +7,10 @@
 #include "game/act/tu_801F9484_elems.h"
 
 // Named after its vtable, 0x804AC950.
-class cls_804AC950 : public ActorBase_804A5770 {
+class TwoPersonLiftableRock_804AC950 : public ActorBase_804A5770 {
 public:
-    cls_804AC950() {}
-    /* 0x08 */ virtual ~cls_804AC950();
+    TwoPersonLiftableRock_804AC950() {}
+    /* 0x08 */ virtual ~TwoPersonLiftableRock_804AC950();
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();

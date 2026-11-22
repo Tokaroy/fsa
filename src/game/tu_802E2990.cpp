@@ -209,7 +209,7 @@ static const GoalTables_8046EA10 lbl_8046EA10 = {
 
 // 0x802E3B2C.
 // FIXME(shotgun): 84.33 %, missing/extra; behaviour drift.
-void cls_804A9C20::init() {
+void Goal2_804A9C20::init() {
     field_0x238 = mSpawnParam_0x90 & 0x1F;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x244 = (mSpawnParam_0x90 >> 7) & 1;
@@ -268,7 +268,7 @@ void cls_804A9C20::init() {
 }
 
 // 0x802E3A48.
-cls_804A9C20::~cls_804A9C20() {
+Goal2_804A9C20::~Goal2_804A9C20() {
     for (s32 i = 0; i < 4; i++) {
         if (mEmitters2c8[i] != NULL) {
             releaseEmitter_801EE434(mEmitters2c8[i]);
@@ -290,7 +290,7 @@ cls_804A9C20::~cls_804A9C20() {
 
 // 0x802E2C28.
 // FIXME(shotgun): 94.24 %, missing/extra; behaviour drift.
-void cls_804A9C20::update() {
+void Goal2_804A9C20::update() {
     if (field_0x230 < 1) {
         field_0x248++;
     }
@@ -564,7 +564,7 @@ void cls_804A9C20::update() {
 }
 
 // 0x802E2998.
-void cls_804A9C20::draw() {
+void Goal2_804A9C20::draw() {
     if (field_0x230 <= 3) {
         f32 savedX = mPos.x;
         f32 savedY = mPos.y;
@@ -593,6 +593,6 @@ void cls_804A9C20::draw() {
 }
 
 // 0x802E2990.
-void cls_804A9C20::fn_802E2990(u8 value) {
+void Goal2_804A9C20::fn_802E2990(u8 value) {
     field_0x2f4 = value;
 }
