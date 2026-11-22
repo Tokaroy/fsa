@@ -461,7 +461,6 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
 // Moves the actor along the map; lifts the z-offset into the ground plane for the sweep when the
 // actor is in the air (state 0x1C) and lands it when it touches ground.
 // FIXME: 98.35 %, missing/extra; behaviour near.
-// FIXME(shotgun): the airborne test is materialised as a bool in the original (mfcr/extrwi).
 u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     u8 hit = 0;
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f && mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
@@ -469,7 +468,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
         JGeometry::TVec3f savedPos = mPos;
         u8 floorLayer = viewLayerFlag(mLayer_0x4);
         bool lifted = false;
-        if (mState == 0x1C && !(mPos.z <= 0.0f) && floorLayer != 0) {
+        if (mState == 0x1C && !isOnGround() && floorLayer != 0) {
             lifted = true;
             mPrevPos.y = mPrevPos.y - mPrevPos.z;
             mPrevPos.z = 0.0f;
