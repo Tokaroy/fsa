@@ -1340,7 +1340,7 @@ void cls_804ADF28::fn_80362C44() {
             field_0x264++;
             field_0x264 &= 7;
         }
-        field_0x2f8 = __fabsf(field_0x3c.y) + field_0x2f8;
+        field_0x2f8 = JMAAbs(field_0x3c.y) + field_0x2f8;
         if (field_0x2f8 >= 160.0f) {
             field_0x238++;
             field_0x3c.z = 0.0f;
@@ -1379,7 +1379,7 @@ void cls_804ADF28::fn_80362C44() {
                 field_0x264 &= 7;
             }
             skip = 1;
-            field_0x2f8 = __fabsf(field_0x3c.y) + field_0x2f8;
+            field_0x2f8 = JMAAbs(field_0x3c.y) + field_0x2f8;
             if (field_0x2f8 >= 80.0f) {
                 field_0x248 = 300;
                 field_0x250 = (f32)gGameRoot2_8053AB10->field_0x2c->field_0xc;
