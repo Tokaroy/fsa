@@ -280,7 +280,7 @@ void SeesawLift_804AD348::fn_8035AA54() {
 void SeesawLift_804AD348::fn_8035A860(f32 weight, s32 player) {
     if (isPlayerInside(player)) {
         f32 slide = 0.3f * __fabsf(JMath::sincosTable_.sinShort(field_0x230)) *
-                    (__fabsf(weight) / (mBox.f.y * __fabsf(JMath::sincosTable_.cosShort(field_0x230))));
+                    (JMAAbs(weight) / (mBox.f.y * __fabsf(JMath::sincosTable_.cosShort(field_0x230))));
         if (slide > 0.3f) {
             slide = 0.3f;
         }
