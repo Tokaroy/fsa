@@ -23,6 +23,7 @@ public:
     void fn_8033D4CC();
     // Inlined by update; no copy of its own in the binary.
     bool blockedAtFullReach(f32 reach);
+    inline void checkTalk();
     /* 0x230 */ JPABaseEmitter* field_0x230; // 0 from init; the emitter of a kind-4 push (fn_8033D4CC)
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ JGeometry::TVec3f field_0x238; // copy of mPos made by init
@@ -44,5 +45,8 @@ public:
     /* 0x272 */ u8 field_0x272;
     /* 0x273 */ u8 field_0x273; // not yet known
 }; // Size: 0x274
+
+// Code: game/act_strange_block.cpp (0x8033D4AC).
+f32 fn_8033D4AC(f32 value, f32 center, f32 margin);
 
 #endif
