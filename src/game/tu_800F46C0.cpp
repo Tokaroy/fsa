@@ -272,7 +272,7 @@ void Boulder_8049C4C0::fn_800F555C() {
             field_0x231 = 0;
         }
         field_0x23c = field_0x23c & 3;
-        if (__fabsf(field_0x3c.x) < 1.5f && __fabsf(field_0x3c.y) < 1.5f && 0.0f == __fabsf(field_0x3c.z)) {
+        if (JMAAbs(field_0x3c.x) < 1.5f && JMAAbs(field_0x3c.y) < 1.5f && 0.0f == JMAAbs(field_0x3c.z)) {
             fn_80239914(&box, field_0x4, mSerial);
         } else {
             if (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f) {
