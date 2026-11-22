@@ -267,7 +267,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.57 %, missing/extra + reloc-name; behaviour drift.
+// FIXME: 95.75 %, missing/extra + reloc-name; behaviour near.
 // case 3 loads the loop's 0 twice (original copies it from i); case 16 lacks the
 // original's copy of fn_8023CBC0's result; regalloc and stack-slot order differ.
 void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
@@ -912,7 +912,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.75 %, different + reloc-name; behaviour near.
+// FIXME: 96.85 %, different + reloc-name; behaviour near.
 void CrystalCutscene5464_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
