@@ -502,9 +502,8 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
             setState_801BC554(9);
         } else {
             mDir_0x98 = mParam.mTarget;
-            s32 p = findNearestPlayer_801D05F8(&mPos, 48.0f);
-            field_0x2b8 = p;
-            if (p >= 0) {
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
+            if (field_0x2b8 >= 0) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {
                         mDir_0x98 = 2;
