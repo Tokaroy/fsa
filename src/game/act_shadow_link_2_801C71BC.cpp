@@ -111,7 +111,6 @@ void ShadowLink2_804A43E8::fn_801C9234(JGeometry::TVec2f* out) {
 // FIXME(shotgun): 98.34 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
     if ((u8)arg1 == 0) {
-        JGeometry::TVec3f saved;
         JGeometry::TVec3f railPos;
         getRailPointPos_800FE294(&railPos, field_0x358.fn_80214244(), 0xFF);
         field_0x32c.x = railPos.x;
@@ -150,7 +149,7 @@ void ShadowLink2_804A43E8::fn_801C8C84(s32 arg1, s32 arg2) {
             }
         }
         if (!skip) {
-            saved = field_0x32c;
+            JGeometry::TVec3f saved = field_0x32c;
             field_0x32c.x += 16.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
             field_0x32c.y += 16.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f);
             if (fn_801CAEF4(&field_0x32c, mLayer_0x4)) {
@@ -284,8 +283,6 @@ void ShadowLink2_804A43E8::fn_801C887C() {
 
 // FIXME(shotgun): 98.91 %, missing/extra; behaviour near.
 void ShadowLink2_804A43E8::fn_801C844C() {
-    JGeometry::TVec3f copy1;
-    JGeometry::TVec3f copy0;
     JGeometry::TVec3f pos = mPos;
     field_0x358.fn_80214244()->fn_800FE2E4(&pos, mLayer_0x4);
     if (mFlags & 0x2000000) {
@@ -310,7 +307,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
             if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(prev)) {
                 JGeometry::TVec3f p1;
                 getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), prev);
-                copy1 = p1;
+                JGeometry::TVec3f copy1 = p1;
                 if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy1, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(prev);
                 }
@@ -319,7 +316,7 @@ void ShadowLink2_804A43E8::fn_801C844C() {
             if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(next)) {
                 JGeometry::TVec3f p0;
                 getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), next);
-                copy0 = p0;
+                JGeometry::TVec3f copy0 = p0;
                 if (!isWayBlocked_801CF888((const JGeometry::TVec2f*)&mPos, &copy0, mLayer_0x4)) {
                     field_0x358.fn_80214244()->setIndex(next);
                 }

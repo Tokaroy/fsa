@@ -77,10 +77,8 @@ public:
         field_0x3 = 0;
         field_0x1 = 0;
     }
-    // The original truncates the index again at the compare (clrlwi before cmplw at every
-    // inlined copy whose argument is not a fresh byte load) and stores the untruncated value.
     void setIndex(u8 index) {
-        if ((u8)index < field_0x2) {
+        if (index < field_0x2) {
             field_0x3 = index;
         }
     }
