@@ -26,7 +26,12 @@ KaeporaGaebora_804A6550::~KaeporaGaebora_804A6550() {
     releaseEmitter_801EE434(mEmitter);
 }
 
-extern const s16* lbl_804A6540[4]; // the sprite animation tables (.data of this unit)
+// The sprite animation tables: (frame, duration) pairs ending in -1.
+static const s16 lbl_8046A5B0[] = {0, 15, 1, 15, -1, -1};
+static const s16 lbl_8046A5BC[] = {2, 7, 3, 4, 4, 4, 5, 7, 2, 7, 3, 4, 4, 4, 5, 7, 2, 7, 3, 4, 4, 4, 5, 7, -1, -1};
+static const s16 lbl_8046A5F0[] = {6, 4, 7, 4, 8, 7, 9, 5, 10, 4, 11, 5, 12, 4, 13, 4, 14, 10, -1, -1};
+static const s16 lbl_8046A618[] = {14, 10, 13, 4, 12, 4, 11, 5, 10, 4, 9, 5, 8, 7, 7, 4, 6, 4, -1, -1};
+static const s16* lbl_804A6540[4] = {lbl_8046A5B0, lbl_8046A5BC, lbl_8046A5F0, lbl_8046A618};
 
 // FIXME(shotgun): 99.14 %, missing/extra; behaviour near.
 void KaeporaGaebora_804A6550::init() {
@@ -269,7 +274,8 @@ void KaeporaGaebora_804A6550::setState_80219AFC(s32 state) {
     mState = state;
 }
 
-extern const f32 lbl_8046A640[4][2]; // x, y offsets (about +-16) by facing, .rodata of this unit
+// x, y offsets by facing
+static const f32 lbl_8046A640[4][2] = {{15.999f, 0.0f}, {-15.999f, 0.0f}, {0.0f, 15.999f}, {0.0f, -15.999f}};
 
 // FIXME(shotgun): 98.88 %, missing/extra + reloc-name; behaviour drift.
 void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {

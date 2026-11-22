@@ -11,7 +11,8 @@
 #include "game/Message.h"
 #include "game/Map.h"
 
-extern s32 lbl_804A39A0[]; // per-mode (field_0x258) item argument of fn_802372F8
+// The item argument of fn_802372F8 by mode (field_0x258).
+static s32 lbl_804A39A0[15] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 extern u8 lbl_8053AB98;
 extern u8 lbl_8053ABE8;
 

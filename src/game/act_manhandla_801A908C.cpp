@@ -10,8 +10,46 @@
 
 // A counter of the live instances in state 5 (.sbss, this unit).
 s32 lbl_8053ABD0;
-extern const u16 lbl_804A2F18[10];
-extern const u16 lbl_8053A108[4];
+// Emitter ids.
+u16 lbl_804A2F18[10] = {0x47C, 0x47D, 0x480, 0x481, 0x47A, 0x47B, 0x47E, 0x47F, 0x482, 0x483};
+u16 lbl_8053A108[4] = {0x484, 0x485, 0x486, 0x487};
+
+// The sprite textures: open / closed mouth by colour, then the shell.
+const char* lbl_804A2F2C[33] = {
+    "e_tst_paku_green_0.bti",
+    "e_tst_paku_green_1.bti",
+    "e_tst_paku_green_2.bti",
+    "e_tst_paku_green_3.bti",
+    "e_tst_toji_green_0.bti",
+    "e_tst_toji_green_1.bti",
+    "e_tst_toji_green_2.bti",
+    "e_tst_toji_green_3.bti",
+    "e_tst_paku_red_0.bti",
+    "e_tst_paku_red_1.bti",
+    "e_tst_paku_red_2.bti",
+    "e_tst_paku_red_3.bti",
+    "e_tst_toji_red_0.bti",
+    "e_tst_toji_red_1.bti",
+    "e_tst_toji_red_2.bti",
+    "e_tst_toji_red_3.bti",
+    "e_tst_paku_blue_0.bti",
+    "e_tst_paku_blue_1.bti",
+    "e_tst_paku_blue_2.bti",
+    "e_tst_paku_blue_3.bti",
+    "e_tst_toji_blue_0.bti",
+    "e_tst_toji_blue_1.bti",
+    "e_tst_toji_blue_2.bti",
+    "e_tst_toji_blue_3.bti",
+    "e_tst_paku_purple_0.bti",
+    "e_tst_paku_purple_1.bti",
+    "e_tst_paku_purple_2.bti",
+    "e_tst_paku_purple_3.bti",
+    "e_tst_toji_purple_0.bti",
+    "e_tst_toji_purple_1.bti",
+    "e_tst_toji_purple_2.bti",
+    "e_tst_toji_purple_3.bti",
+    "e_tst_kara.bti",
+};
 
 void Manhandla_804A2FB0::fn_801AA8F4() {
     if (field_0x234[0] == 0) {

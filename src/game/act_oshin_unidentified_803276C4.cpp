@@ -10,7 +10,7 @@
 #include "dolphin/mtx.h"
 
 // The "TIMG" texture names (by field_0x250).
-static const char* const lbl_804AB518[4] = {"said_a.bti", "said_b.bti", "said_c.bti", "said_d.bti"};
+static const char* lbl_804AB518[4] = {"said_a.bti", "said_b.bti", "said_c.bti", "said_d.bti"};
 
 // FIXME: 95.00 %, missing/extra; behaviour drift.
 // FIXME(shotgun): the found actor is kept in r3 instead of r4 (null test as cmplwi, not mr.)

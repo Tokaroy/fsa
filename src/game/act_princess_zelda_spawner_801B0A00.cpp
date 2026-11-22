@@ -13,7 +13,7 @@
 #include <math.h>
 
 // Sprite frames of the third step, .data at 0x804A35A0.
-static const s32 lbl_804A35A0[3] = {2, 1, 0};
+static s32 lbl_804A35A0[3] = {2, 1, 0};
 
 // The scripted camera move towards pos (mode 4).
 static inline void setCameraTarget(const JGeometry::TVec3f& pos) {

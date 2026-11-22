@@ -12,14 +12,17 @@
 
 // The 'ZLD4' actor, PrincessZeldaSpawnerEscape_804A3698.
 
-// FIXME(shotgun): table not written out (gate.py literal tripwire); extern-declared, size
-// from symbols.txt (0x38). update indexes it.
+// update indexes it.
 struct Tables_804A3660 {
     /* 0x00 */ s32 mDirs[4];   // the turn order of states 0xD and 0xE
     /* 0x10 */ s32 mFrames[5]; // states 0xF-0x13: field_0x320 by field_0x30c
     /* 0x24 */ s32 mTimes[5];  // and field_0x300
 }; // Size: 0x38
-extern Tables_804A3660 lbl_804A3660;
+static Tables_804A3660 lbl_804A3660 = {
+    {0, 2, 1, 3},
+    {0x20, 0x21, 0x22, 0x23, 0x24},
+    {3, 5, 6, 7, 30},
+};
 
 // 0x801B3CD0.
 PrincessZeldaSpawnerEscape_804A3698::~PrincessZeldaSpawnerEscape_804A3698() {

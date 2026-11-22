@@ -8,8 +8,12 @@
 #include "game/SpriteParams.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
-// Sprite frame tables of the actor (.data 0x804A6330, not written as source here).
-extern const s16* lbl_804A6330[];
+// Sprite frame tables of the actor: (frame, duration) pairs ending in -1.
+static const s16 lbl_8046A520[] = {0, 4, 1, 4, 2, 4, 3, 8, -1, -1};
+static const s16 lbl_8046A534[] = {1, 2, 2, 10, 3, 10, -1, -1};
+static const s16 lbl_8046A544[] = {2, 6, 3, 20, -1, -1};
+static const s16 lbl_8046A550[] = {3, 8, 2, 4, 1, 4, 0, 4, -1, -1};
+static const s16* lbl_804A6330[] = {lbl_8046A520, lbl_8046A534, lbl_8046A544, lbl_8046A550};
 
 // The dust puff both the mode-3 setup and the last frames of mState 6 start: scaled like the
 // actor and tinted like the shadow circle.

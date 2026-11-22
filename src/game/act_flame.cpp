@@ -252,7 +252,8 @@ struct Tables_80466110 {
     /* 0x60 */ JGeometry::TBox2f mHitBoxes[4]; // mMapBox_0x80
 }; // Size: 0xA0
 extern const Tables_80466110 lbl_80466110;
-extern JGeometry::TVec2f lbl_804A0310[4]; // the emitter offset from mPos
+// The emitter offset (x, y) from mPos.
+static f32 lbl_804A0310[4][2] = {{3.0f, 0.0f}, {-3.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, -3.0f}};
 
 // 0x8015DF7C.
 // FIXME(shotgun): 94.63 %, missing/extra; behaviour drift.
@@ -341,8 +342,8 @@ void Flame_804A0330::fn_8015DF7C() {
     if (field_0x94 != 4 && field_0x94 != 5) {
         JGeometry::TVec3f pos;
         pos.set(mPos);
-        pos.x += lbl_804A0310[mDir_0x98].x;
-        pos.y += lbl_804A0310[mDir_0x98].y;
+        pos.x += lbl_804A0310[mDir_0x98][0];
+        pos.y += lbl_804A0310[mDir_0x98][1];
         if (field_0x260 < 0.1f) {
             if (mEmitters[0] != NULL) {
                 mEmitters[0]->becomeInvalidEmitter();

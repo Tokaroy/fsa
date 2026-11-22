@@ -85,7 +85,8 @@ void WhackAMoleShop_8049C8EC::update() {
 }
 
 extern const u8 lbl_80539EB0[2]; // frames per animation step (.sdata of this unit)
-extern const s32 lbl_8049C8D8[]; // frames before the next mole, by player count (.data of this unit)
+// Frames before the next mole, by player count.
+static s32 lbl_8049C8D8[5] = {0, 40, 40, 25, 18};
 
 // Points the scripted camera at `pos` unless a move is already running.
 static inline void focusCamera(const JGeometry::TVec3f& pos) {
