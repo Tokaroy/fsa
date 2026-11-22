@@ -17,11 +17,11 @@ static inline bool takeCamera(Camera_804AA9E4* cam) {
 }
 
 void Zoom_804A9DF8::init() {
-    field_0x234 = (field_0x90 >> 23) & 3;
-    field_0x238 = (field_0x90 >> 22) & 1;
-    mDuration = field_0x90 & 0xFFF;
-    mHalfWidth = ((field_0x90 >> 17) & 0x1F) + 1;
-    mHalfHeight = ((field_0x90 >> 12) & 0x1F) + 1;
+    field_0x234 = (mSpawnParam_0x90 >> 23) & 3;
+    field_0x238 = (mSpawnParam_0x90 >> 22) & 1;
+    mDuration = mSpawnParam_0x90 & 0xFFF;
+    mHalfWidth = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
+    mHalfHeight = ((mSpawnParam_0x90 >> 12) & 0x1F) + 1;
     mTimer = 0;
     mPos.x += 8.0f;
     mPos.y += 8.0f;
@@ -40,9 +40,9 @@ void Zoom_804A9DF8::update() {
         JGeometry::TVec2<f32> p(mPos.x, mPos.y);
         JGeometry::TBox2f box(mBox);
         box.addPos(p);
-        if (fn_8023AF14(&box, field_0x4, false, 0.0f) >= 0) {
+        if (fn_8023AF14(&box, mLayer_0x4, false, 0.0f) >= 0) {
             if (takeCamera(gGameRoot2_8053AB10->field_0x24) == 1) {
-                if (field_0x90 >> 27) {
+                if (mSpawnParam_0x90 >> 27) {
                     setScreenFlag_0x30(0xFF, true);
                 }
                 mState = 1;

@@ -42,13 +42,13 @@ void cls_804A5D60::init() {
     mBox.i.set(1.0f, 1.0f);
     mBox.f.set(-1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.i.set(1.0f, 1.0f);
-    field_0x80.f.set(-1.0f, -1.0f);
+    mMapBox_0x80.i.set(1.0f, 1.0f);
+    mMapBox_0x80.f.set(-1.0f, -1.0f);
     field_0xb0 = 0x50303;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT;
     field_0x194 = 1;
-    mTargetSerial = field_0x90;
+    mTargetSerial = mSpawnParam_0x90;
     cls_804A5BD8* manager = static_cast<cls_804A5BD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial));
     mAnim.fn_801D2608(lbl_804A5D38, 10);
     switch (manager->field_0x340) {
@@ -77,7 +77,7 @@ void cls_804A5D60::init() {
             angle = fn_801CD664(0x10000);
         }
         mVel.set(JMASSin(angle) * 1.5f, JMASCos(angle) * 1.5f, 0.5f * (50.0f * (0.3f * -lbl_8053EFB8)));
-        field_0x3c.set(mVel);
+        mVel_0x3c.set(mVel);
         break;
     }
     }
@@ -129,11 +129,11 @@ void cls_804A5D60::fn_8020AA78(s32 state) {
         break;
     case 7:
         mFlags &= ~0x4000;
-        field_0x98 = field_0x2ac;
+        mDir_0x98 = field_0x2ac;
         mAnim.startAnim_801D22DC(1, 0, false);
         mVel.x = 0.0f;
         mVel.y = 0.0f;
-        switch (field_0x98) {
+        switch (mDir_0x98) {
         case 0:
             mVel.x = 1.4f;
             mVel.y = 0.0f;
@@ -401,7 +401,7 @@ void cls_804A5D60::updateState_0x90(u8 mapHit) {
 void cls_804A5D60::calcVelocity_0x88() {
     switch (mState) {
     case 3:
-        field_0x3c.z += 0.3f * lbl_8053EFB8;
+        mVel_0x3c.z += 0.3f * lbl_8053EFB8;
         break;
     case 1:
     case 5:
@@ -411,19 +411,19 @@ void cls_804A5D60::calcVelocity_0x88() {
         switch (mAnim.mAnim) {
         case 2:
         case 6:
-            field_0x3c.x = mVel.x;
-            field_0x3c.y = mVel.y;
+            mVel_0x3c.x = mVel.x;
+            mVel_0x3c.y = mVel.y;
             break;
         default:
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
             break;
         }
-        field_0x3c.z += lbl_8053EFB8;
+        mVel_0x3c.z += lbl_8053EFB8;
         break;
     default:
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
         applyGravity_0x84();
         break;
     }
@@ -440,19 +440,19 @@ bool cls_804A5D60::vfunc_0x58() {
     JGeometry::TBox2f box;
     JGeometry::TVec2f probe;
     fn_801F317C(&box);
-    player = fn_8023AE34(&box, field_0x4, &probe);
+    player = fn_8023AE34(&box, mLayer_0x4, &probe);
     if (player >= 0) {
         arrow = fn_801CC820(player, NULL);
     } else {
-        player = fn_8023AA18(&box, field_0x4, &probe);
+        player = fn_8023AA18(&box, mLayer_0x4, &probe);
         if (player >= 0) {
             blocked = true;
         } else {
-            player = fn_8023AC74(&box, field_0x4, &probe);
+            player = fn_8023AC74(&box, mLayer_0x4, &probe);
             if (player >= 0) {
                 fn_801CC538(player, &probe, NULL, &id);
             } else {
-                player = fn_8023AD54(&box, field_0x4, &probe);
+                player = fn_8023AD54(&box, mLayer_0x4, &probe);
                 if (player >= 0) {
                     fn_801CC640(player, &id, NULL);
                 }
@@ -470,7 +470,7 @@ bool cls_804A5D60::vfunc_0x58() {
         }
         if (hit) {
             JGeometry::TVec3f at(probe.x, probe.y, 0.1f);
-            fn_801CB538(field_0x4, &at, 0, 0);
+            fn_801CB538(mLayer_0x4, &at, 0, 0);
         }
     }
     return hit;
@@ -537,9 +537,9 @@ void cls_804A5D60::draw() {
         drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
     } else {
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+            fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
         }
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }

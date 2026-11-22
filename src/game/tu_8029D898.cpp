@@ -183,7 +183,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 actor = getActorManager_801F856C()->mActors[i];
-                if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
+                if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->mLayer_0x4) {
                     JGeometry::TVec3f actorPos = actor->mPos;
                     JGeometry::TVec2f q(actorPos.x, actorPos.y);
                     if (field_0x20 == fn_80226BC4(&q, layer)) {
@@ -877,7 +877,7 @@ s32 BgRewrite_804A7C98::fn_802A02A8(const JGeometry::TVec3f* pos, s32 player, s3
             count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 actor = getActorManager_801F856C()->mActors[i];
-                if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
+                if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->mLayer_0x4) {
                     JGeometry::TVec3f actorPos = actor->mPos;
                     JGeometry::TVec2f q(actorPos.x, actorPos.y);
                     if (field_0x20 == fn_80226BC4(&q, layer)) {
@@ -949,7 +949,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                         s32 count = getActorManager_801F856C()->mActorEnd;
                         for (s32 k = 0; k < count; k++) {
                             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[k];
-                            if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->field_0x4) {
+                            if (actor != NULL && actor->mActorId == 'TBO2' && layer == actor->mLayer_0x4) {
                                 JGeometry::TVec3f actorPos = actor->mPos;
                                 JGeometry::TVec2f q(actorPos.x, actorPos.y);
                                 if (cell == fn_80226BC4(&q, layer)) {

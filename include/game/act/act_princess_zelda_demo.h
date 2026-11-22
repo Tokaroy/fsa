@@ -17,7 +17,7 @@ public:
     // with releaseEmitter_801EE434, then the members and cls_8049D140's destructor run.
     /* 0x08 */ virtual ~PrincessZeldaDemo_8049D208();
     // 0x10: copies the Goal (DMGL) and Maiden (DMMD) actors' positions.
-    // 0x0C: reads the actor's parameter word (field_0x90) into the fields below.
+    // 0x0C: reads the actor's parameter word (mSpawnParam_0x90) into the fields below.
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();
@@ -53,11 +53,11 @@ public:
     /* 0x238 */ s32 field_0x238;
     /* 0x23C */ s32 field_0x23c; // -1 after the ctor
     /* 0x240 */ s32 field_0x240; // zero after the ctor
-    /* 0x244 */ s32 field_0x244; // bits 8..11 of field_0x90 (init)
-    /* 0x248 */ s32 field_0x248; // bits 12..15 of field_0x90
+    /* 0x244 */ s32 field_0x244; // bits 8..11 of mSpawnParam_0x90 (init)
+    /* 0x248 */ s32 field_0x248; // bits 12..15 of mSpawnParam_0x90
     /* 0x24C */ s32 field_0x24c; // zero after the ctor
-    /* 0x250 */ s32 field_0x250; // bits 22..26 of field_0x90: a GameView bit (fn_802D800C)
-    /* 0x254 */ s32 field_0x254; // bits 17..21 of field_0x90
+    /* 0x250 */ s32 field_0x250; // bits 22..26 of mSpawnParam_0x90: a GameView bit (fn_802D800C)
+    /* 0x254 */ s32 field_0x254; // bits 17..21 of mSpawnParam_0x90
     /* 0x258 */ s32 field_0x258; // zero after the ctor
     /* 0x25C */ s32 field_0x25c; // -1 after the ctor
     /* 0x260 */ s32 field_0x260; // zero after the ctor

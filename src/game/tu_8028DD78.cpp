@@ -5,7 +5,7 @@
 #include "game/cls_804AE9B0.h"
 
 void cls_804A7A68::init() {
-    switch (field_0x90 & 0xF) {
+    switch (mSpawnParam_0x90 & 0xF) {
     case 0:
     case 1:
     case 4:
@@ -58,7 +58,7 @@ static inline void scrollTo(JGeometry::TVec2f pos) {
     getGameView_802D6A9C()->fn_802D9FF4(col, row);
 }
 
-// The signed 7-bit offsets of field_0x90 (bits 16-22 with sign bit 23, bits 8-14 with sign
+// The signed 7-bit offsets of mSpawnParam_0x90 (bits 16-22 with sign bit 23, bits 8-14 with sign
 // bit 15), in tiles.
 static inline s32 offsetX(u32 f) {
     s32 v = (f >> 16) & 0x7F;
@@ -75,7 +75,7 @@ static inline s32 offsetY(u32 f) {
     return v;
 }
 
-// The signed 4-bit value at bits 4-7 of field_0x90.
+// The signed 4-bit value at bits 4-7 of mSpawnParam_0x90.
 static inline s32 field4(u32 f) {
     return (f & 0x80) ? (s32)((f >> 4) & 7) - 8 : (s32)((f >> 4) & 7);
 }
@@ -88,7 +88,7 @@ static inline s32 kind(u32 f) {
 // The four-player gate sequence: 0 waits until every player stands in mBox (on this layer),
 // then lines them up (fn_8028DDD8) at 16-unit spacing; 1 fades field_0x268 out and walks them
 // half a unit per frame for 64 (40) frames; 2 sends them 384 units on (kinds 0 / 1) or to the
-// tile offset in field_0x90 (kinds 4-7), scrolls the view and sets the music; 3 fades back in
+// tile offset in mSpawnParam_0x90 (kinds 4-7), scrolls the view and sets the music; 3 fades back in
 // and walks them on; 4 hands control back.
 void cls_804A7A68::update() {
     switch (field_0x230) {
@@ -104,7 +104,7 @@ void cls_804A7A68::update() {
             if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                 return;
             }
-            if (field_0x4 != getPlayerLayer_8023DE58(i)) {
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
                 return;
             }
             JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -131,7 +131,7 @@ void cls_804A7A68::update() {
                 if (getPlayerPos_8023E724(i)->z > 0.0f && !fn_8023EA28(i)) {
                     return;
                 }
-                if (field_0x4 != getPlayerLayer_8023DE58(i)) {
+                if (mLayer_0x4 != getPlayerLayer_8023DE58(i)) {
                     return;
                 }
                 JGeometry::TVec3f* p = getPlayerPos_8023E724(i);
@@ -159,7 +159,7 @@ void cls_804A7A68::update() {
                 lbl_8053AD70->fn_8037AE00();
                 fn_80230AD4(order[i]);
                 JGeometry::TVec3f p;
-                switch (kind(field_0x90)) {
+                switch (kind(mSpawnParam_0x90)) {
                 case 0:
                 case 1:
                 case 4:
@@ -201,7 +201,7 @@ void cls_804A7A68::update() {
         break;
     }
     case 1:
-        if (!(field_0x90 & 0x1000000)) {
+        if (!(mSpawnParam_0x90 & 0x1000000)) {
             field_0x268 -= 7;
             if (field_0x268 < 0) {
                 field_0x268 = 0;
@@ -212,19 +212,19 @@ void cls_804A7A68::update() {
                 JGeometry::TVec3f start = *getPlayerPos_8023E724(i);
                 JGeometry::TVec3f pos = start;
                 JGeometry::TVec3f ahead;
-                switch (kind(field_0x90)) {
+                switch (kind(mSpawnParam_0x90)) {
                 case 0:
                 case 1:
                     pos.y -= 0.5f;
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
                         pos.y -= 0.5f;
                     }
                     fn_8022E088(i, 3, &ahead);
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] == 0) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0) {
                         pos.y += 0.5f;
                     }
                     fn_8022E088(i, 2, &ahead);
@@ -238,14 +238,14 @@ void cls_804A7A68::update() {
                     fn_8022E088(i, 1, &ahead);
                     break;
                 }
-                if (kind(field_0x90) >= 4 && fn_802265DC(&ahead, getPlayerLayer_8023DE58(i), true)) {
+                if (kind(mSpawnParam_0x90) >= 4 && fn_802265DC(&ahead, getPlayerLayer_8023DE58(i), true)) {
                     pos.set(start);
                 }
                 fn_802303FC(i, &pos, field_0x268);
             }
         }
         field_0x234++;
-        if (kind(field_0x90) >= 4) {
+        if (kind(mSpawnParam_0x90) >= 4) {
             if (field_0x234 >= 0x28) {
                 field_0x234 = 0;
                 field_0x230 = 2;
@@ -256,7 +256,7 @@ void cls_804A7A68::update() {
         }
         break;
     case 2:
-        switch (kind(field_0x90)) {
+        switch (kind(mSpawnParam_0x90)) {
         case 0:
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
@@ -283,65 +283,65 @@ void cls_804A7A68::update() {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-                    p.x = 16.0f * offsetX(field_0x90) + field_0x238[i].x;
-                    p.y = 16.0f + (16.0f * offsetY(field_0x90) + field_0x238[i].y);
+                    p.x = 16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x;
+                    p.y = 16.0f + (16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y);
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
                     fn_80230BF4(i, 3);
                 }
             }
-            scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
+            scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
+                                       16.0f * offsetY(mSpawnParam_0x90) + field_0x238[0].y));
             break;
         case 5:
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-                    p.x = 16.0f * offsetX(field_0x90) + field_0x238[i].x;
-                    p.y = (16.0f * offsetY(field_0x90) + field_0x238[i].y) - 16.0f;
+                    p.x = 16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x;
+                    p.y = (16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y) - 16.0f;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
                     fn_80230BF4(i, 2);
                 }
             }
-            scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
+            scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
+                                       16.0f * offsetY(mSpawnParam_0x90) + field_0x238[0].y));
             break;
         case 6:
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-                    p.x = (16.0f * offsetX(field_0x90) + field_0x238[i].x) - 16.0f;
-                    p.y = 16.0f * offsetY(field_0x90) + field_0x238[i].y;
+                    p.x = (16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x) - 16.0f;
+                    p.y = 16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
                     fn_80230BF4(i, 0);
                 }
             }
-            scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
+            scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
+                                       16.0f * offsetY(mSpawnParam_0x90) + field_0x238[0].y));
             break;
         case 7:
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80230188(i)) {
                     JGeometry::TVec3f p = *getPlayerPos_8023E724(i);
-                    p.x = 16.0f + (16.0f * offsetX(field_0x90) + field_0x238[i].x);
-                    p.y = 16.0f * offsetY(field_0x90) + field_0x238[i].y;
+                    p.x = 16.0f + (16.0f * offsetX(mSpawnParam_0x90) + field_0x238[i].x);
+                    p.y = 16.0f * offsetY(mSpawnParam_0x90) + field_0x238[i].y;
                     fn_80230498(i, &p, fn_8023CBC0(i), 0, -0x80, -0x80, true);
                     fn_80230BF4(i, 1);
                 }
             }
-            scrollTo(JGeometry::TVec2f(16.0f * offsetX(field_0x90) + field_0x238[0].x,
-                                       16.0f * offsetY(field_0x90) + field_0x238[0].y));
+            scrollTo(JGeometry::TVec2f(16.0f * offsetX(mSpawnParam_0x90) + field_0x238[0].x,
+                                       16.0f * offsetY(mSpawnParam_0x90) + field_0x238[0].y));
             break;
         }
-        if (field4(field_0x90) == -8) {
+        if (field4(mSpawnParam_0x90) == -8) {
             lbl_8053AED0->fn_8043A608();
-        } else if (field4(field_0x90) != 0) {
-            lbl_8053AED0->fn_8043ABCC(field4(field_0x90), 0);
+        } else if (field4(mSpawnParam_0x90) != 0) {
+            lbl_8053AED0->fn_8043ABCC(field4(mSpawnParam_0x90), 0);
         }
         gGameRoot_8053AAF8->fn_80136798(0x13, 0);
         field_0x230 = 3;
         break;
     case 3:
-        if (!(field_0x90 & 0x1000000)) {
+        if (!(mSpawnParam_0x90 & 0x1000000)) {
             field_0x268 += 7;
             if (field_0x268 > 0xFF) {
                 field_0x268 = 0xFF;
@@ -350,10 +350,10 @@ void cls_804A7A68::update() {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
-                switch (field_0x90 & 0xF) {
+                switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
                 case 1:
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
@@ -362,7 +362,7 @@ void cls_804A7A68::update() {
                     }
                     break;
                 case 4:
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
                         if (field_0x234 == 0) {
                             pos.y -= 8.0f;
                         }
@@ -371,7 +371,7 @@ void cls_804A7A68::update() {
                     }
                     break;
                 case 5:
-                    if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
                         if (field_0x234 == 0) {
                             pos.y += 8.0f;
                         }
@@ -390,7 +390,7 @@ void cls_804A7A68::update() {
             }
         }
         field_0x234++;
-        if (kind(field_0x90) >= 4) {
+        if (kind(mSpawnParam_0x90) >= 4) {
             if (field_0x234 >= 0x28) {
                 field_0x234 = 0;
                 field_0x230 = 4;
@@ -404,7 +404,7 @@ void cls_804A7A68::update() {
         fn_80231368();
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i)) {
-                switch (field_0x90 & 0xF) {
+                switch (mSpawnParam_0x90 & 0xF) {
                 case 0:
                 case 1:
                 case 4:
@@ -433,7 +433,7 @@ void cls_804A7A68::draw() {}
 void cls_804A7A68::fn_8028DDD8(s32* out) {
     f32 key[4];
     for (s32 i = 0; i < 4; i++) {
-        if ((field_0x90 & 0xF) == 6 || (field_0x90 & 0xF) == 7) {
+        if ((mSpawnParam_0x90 & 0xF) == 6 || (mSpawnParam_0x90 & 0xF) == 7) {
             key[i] = getPlayerPos_8023E724(i)->y;
         } else {
             key[i] = getPlayerPos_8023E724(i)->x;

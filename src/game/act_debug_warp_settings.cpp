@@ -10,8 +10,8 @@
 #include "game/act/act_debug_warp_settings.h"
 
 void DebugWarpSettings_8049C9E8::init() {
-    field_0x238 = (field_0x90 >> 16) & 0xFF;
-    field_0x23c = (field_0x90 >> 8) & 0xFF;
+    field_0x238 = (mSpawnParam_0x90 >> 16) & 0xFF;
+    field_0x23c = (mSpawnParam_0x90 >> 8) & 0xFF;
     field_0x230 = 0;
 }
 

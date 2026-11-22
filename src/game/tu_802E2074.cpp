@@ -21,8 +21,8 @@ void cls_804A9BC8::init() {
         lbl_804D4768[i] = -1;
     }
     lbl_8053ACB0 = 0;
-    field_0x234 = (field_0x90 >> 23) & 0xF;
-    field_0x238 = (field_0x90 >> 19) & 0xF;
+    field_0x234 = (mSpawnParam_0x90 >> 23) & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 19) & 0xF;
 
     s32 stage = getGameView_802D6A9C()->field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -37,7 +37,7 @@ void cls_804A9BC8::init() {
     type += ((name[0] - ' ') << 16) + ((name[1] - ' ') << 8) + (name[2] - ' ');
     field_0x244 = (u8*)fn_804032E8(type, buf);
     field_0x248 = 0;
-    field_0x23c = (field_0x90 >> 16) & 7;
+    field_0x23c = (mSpawnParam_0x90 >> 16) & 7;
     field_0x24c = 0;
     field_0x24e = 8;
     field_0x240 = 0;
@@ -50,7 +50,7 @@ extern const u16 lbl_8046E9D8[4][4]; // FIXME(shotgun): not defined in the sourc
 // FIXME: 90.72 %, missing/extra + reloc-name; behaviour near.
 // FIXME(shotgun): one instr short; float literals not split into this unit (lbl_805411B8/BC), loop index in r29 not r30
 void cls_804A9BC8::update() {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f* src = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     JGeometry::TBox2f box;
@@ -67,7 +67,7 @@ void cls_804A9BC8::update() {
                     lbl_8053ACB0--;
                     if (lbl_8053ACB0 == 0) {
                         ActorBase_804A5770* list[ACTOR_MANAGER_MAX_ACTORS];
-                        s32 count = getActorManager_801F856C()->fn_801F7818('GEN2', field_0x4, list, -1);
+                        s32 count = getActorManager_801F856C()->fn_801F7818('GEN2', mLayer_0x4, list, -1);
                         for (s32 k = 0; k < count; k++) {
                             if (list[k] != NULL) {
                                 static_cast<cls_804A9BC8*>(list[k])->field_0x230 = 1;
@@ -158,7 +158,7 @@ void cls_804A9BC8::update() {
         field_0x230 = 0;
         break;
     case 2:
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             field_0x230 = 1;
         }
         break;

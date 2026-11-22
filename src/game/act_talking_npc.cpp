@@ -13,16 +13,16 @@ void TalkingNPC_804AF548::init() {
     mState = 0;
     field_0x238 = 0x78;
     field_0x234 = mSerial;
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
     field_0x11e = 1;
 }
 
 void TalkingNPC_804AF548::update() {
-    u32 player = field_0x90 >> 28;
-    u32 msg = field_0x90 & 0x0FFFFFFF;
+    u32 player = mSpawnParam_0x90 >> 28;
+    u32 msg = mSpawnParam_0x90 & 0x0FFFFFFF;
     switch (mState) {
     case 0:
-        if (talk(player, msg, field_0x4, mPos, 0x1004)) {
+        if (talk(player, msg, mLayer_0x4, mPos, 0x1004)) {
             mState = 1;
         } else {
             mAlive = false;

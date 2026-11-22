@@ -13,7 +13,7 @@
 // FIXME(shotgun): 95.31 %, missing/extra
 void cls_804A18E0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
     field_0x24c = 0;
     field_0x250 = 0;
@@ -26,9 +26,9 @@ void cls_804A18E0::init() {
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
-    field_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    field_0x272 = fn_801F6874(field_0x98);
-    field_0x264 = field_0x98 * 2 + field_0x24c;
+    mDir_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    field_0x272 = fn_801F6874(mDir_0x98);
+    field_0x264 = mDir_0x98 * 2 + field_0x24c;
     field_0x288[2] = 0.0f;
     field_0x288[1] = 0.0f;
     field_0x288[0] = 0.0f;
@@ -55,7 +55,7 @@ void cls_804A18E0::init() {
     field_0x26c = 0.0f;
     field_0x268 = 3;
     field_0x260 = -1;
-    field_0x118 = 4;
+    mParamAtcn_0x118 = 4;
     field_0xb0 = 0xA040004;
     field_0x230 = 0;
 }
@@ -63,10 +63,10 @@ void cls_804A18E0::init() {
 // 0x80184FC0.
 // FIXME(shotgun): 95.20 %, missing/extra
 void cls_804A18E0::update() {
-    f32 box80_ix = field_0x80.i.x;
-    f32 box80_iy = field_0x80.i.y;
-    f32 box80_fx = field_0x80.f.x;
-    f32 box80_fy = field_0x80.f.y;
+    f32 box80_ix = mMapBox_0x80.i.x;
+    f32 box80_iy = mMapBox_0x80.i.y;
+    f32 box80_fx = mMapBox_0x80.f.x;
+    f32 box80_fy = mMapBox_0x80.f.y;
     f32 posY = mPos.y;
     f32 posX = mPos.x;
     f32 outDist = 0.0f;
@@ -78,14 +78,14 @@ void cls_804A18E0::update() {
             JGeometry::TVec3f p;
             p.x = field_0x384[0];
             p.y = field_0x384[1];
-            field_0x270 = fn_80226998(&p, field_0x4);
+            field_0x270 = fn_80226998(&p, mLayer_0x4);
         }
         return;
     }
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x288[0], 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x288[1], 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x288[0], 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x288[1], 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     fn_801EF510();
 
     for (int i = 0; i < 4; i++) {
@@ -97,20 +97,20 @@ void cls_804A18E0::update() {
             f32 x1 = mBox.f.x + mPos.x;
             JGeometry::TVec2f center(0.5f * (x0 - x1) + x1, 0.5f * (y0 - y1) + y1);
             if (fn_80237948(hitPlayer, &center)) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x400D1, 0);
             }
         }
     }
 
-    if (fn_801F2B7C(field_0x114, field_0x260, 6) && field_0x230 == 8 && field_0x238 == 0) {
-        field_0x3c.x *= -1.0f;
-        field_0x3c.y *= -1.0f;
+    if (fn_801F2B7C(mParamAtcp_0x114, field_0x260, 6) && field_0x230 == 8 && field_0x238 == 0) {
+        mVel_0x3c.x *= -1.0f;
+        mVel_0x3c.y *= -1.0f;
         field_0x288[2] = 0.0f;
         field_0x288[1] = 0.0f;
         field_0x288[0] = 0.0f;
-        field_0x3c.z = 10.0f;
+        mVel_0x3c.z = 10.0f;
         field_0x238 = 20;
         if (field_0x268 > 0) {
             field_0x268--;
@@ -128,12 +128,12 @@ void cls_804A18E0::update() {
         box.i.y += origin.y;
         box.f.x += origin.x;
         box.f.y += origin.y;
-        field_0x260 = fn_8023AA18(&box, field_0x4, &origin);
+        field_0x260 = fn_8023AA18(&box, mLayer_0x4, &origin);
         if (field_0x260 >= 0) {
             JGeometry::TVec3f p;
             p.x = field_0x384[0];
             p.y = field_0x384[1];
-            if (field_0x270 == fn_80226998(&p, field_0x4)) {
+            if (field_0x270 == fn_80226998(&p, mLayer_0x4)) {
                 field_0x260 = -1;
             } else {
                 field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
@@ -160,9 +160,9 @@ void cls_804A18E0::update() {
             mPos.x = field_0x294[9].x;
             mPos.y = field_0x294[9].y;
             mPos.z = field_0x294[9].z;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x288[2] = 0.0f;
             field_0x288[1] = 0.0f;
             field_0x288[0] = 0.0f;
@@ -179,9 +179,9 @@ void cls_804A18E0::update() {
         }
         if (field_0x238 == 0 && field_0x23c == 0) {
             field_0x23c = (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x288[2] = 0.0f;
             field_0x288[1] = 0.0f;
             field_0x288[0] = 0.0f;
@@ -192,22 +192,22 @@ void cls_804A18E0::update() {
             startSound_801F0E34(0x400B0, 0);
         }
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             if (field_0x23c == 0) {
-                field_0x3c.z = 3.0f;
+                mVel_0x3c.z = 3.0f;
             }
         }
         if (field_0x23c == 0) {
             field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
             field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
-            field_0x98 = fn_801F681C(field_0x272);
+            mDir_0x98 = fn_801F681C(field_0x272);
         }
         if (field_0x240 == 0 && field_0x23c != 0) {
             for (int i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
                     if (diff.squared() < 4096.0f) {
                         fn_801EEC98(mSerial, &field_0x272, NULL, NULL, NULL, i, 2);
@@ -222,23 +222,23 @@ void cls_804A18E0::update() {
     case 2:
         field_0x288[0] = 4.0f * JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = 4.0f * JMath::sincosTable_.cosShort(field_0x272);
-        field_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = fn_801F681C(field_0x272);
         startSound_801F0E34(0x400B0, 0);
         field_0x26c = 12.0f;
-        field_0x264 = field_0x98 * 2;
-        if (field_0x98 != 3) {
+        field_0x264 = mDir_0x98 * 2;
+        if (mDir_0x98 != 3) {
             field_0x264++;
         }
-        field_0x3c.z = 7.0f;
+        mVel_0x3c.z = 7.0f;
         field_0x230 = 3;
         break;
     case 3: {
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         f32 dy = mPos.y - field_0x384[1];
         f32 dx = mPos.x - field_0x384[0];
@@ -248,20 +248,20 @@ void cls_804A18E0::update() {
         field_0x288[2] = 0.0f;
         field_0x288[1] = 0.0f;
         field_0x288[0] = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         field_0x238 = 30;
         field_0x230 = 4;
     }
         // fallthrough
     case 4:
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         if (field_0x238 != 0) {
             break;
@@ -277,13 +277,13 @@ void cls_804A18E0::update() {
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         field_0x288[0] = JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = JMath::sincosTable_.cosShort(field_0x272);
-        field_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = fn_801F681C(field_0x272);
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.z = 3.0f;
         }
         if (std::sqrtf(dx * dx + dy * dy) < 24.0f) {
             field_0x240 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
@@ -296,7 +296,7 @@ void cls_804A18E0::update() {
         f32 dy = mPos.y - field_0x384[1];
         field_0x272 = (s16)(JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        field_0x98 = fn_801F681C(field_0x272);
+        mDir_0x98 = fn_801F681C(field_0x272);
         f32 distSq = dx * dx + dy * dy;
         field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
         field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
@@ -312,7 +312,7 @@ void cls_804A18E0::update() {
         if (field_0x248 == 0 && gGameRoot_8053AAF8->fn_80138A30() > 1) {
             for (int i = 0; i < 4; i++) {
                 if (i != field_0x260 && fn_8023F264(i) && !fn_8022F478(i) &&
-                    field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                     JGeometry::TVec3f diff = *getPlayerPos_8023E724(i) - mPos;
                     if (diff.squared() < 6400.0f) {
                         field_0x254 = i;
@@ -330,7 +330,7 @@ void cls_804A18E0::update() {
         if (field_0x240 == 0 && field_0x25c == 0) {
             field_0x254 = getActorManager_801F856C()->fn_801F7664(&mPos, NULL);
             if (field_0x254 >= 0 &&
-                field_0x4 == getActorManager_801F856C()->findActorBySerial_801F666C(field_0x254)->field_0x4) {
+                mLayer_0x4 == getActorManager_801F856C()->findActorBySerial_801F666C(field_0x254)->mLayer_0x4) {
                 field_0x258 = 1;
                 field_0x25c = 0;
                 field_0x238 = 0;
@@ -343,13 +343,13 @@ void cls_804A18E0::update() {
             s32 found = 0;
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* act = getActorManager_801F856C()->mActors[i];
-                if (act != NULL && act->field_0x4 == field_0x4 && act->field_0x1a8 == true) {
+                if (act != NULL && act->mLayer_0x4 == mLayer_0x4 && act->mParamDstr_0x1a8 == true) {
                     found = 1;
                     break;
                 }
             }
             if (found == 0) {
-                field_0x272 = fn_801F6874(field_0x98);
+                field_0x272 = fn_801F6874(mDir_0x98);
                 field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
                 field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
                 field_0x258 = 0;
@@ -369,9 +369,9 @@ void cls_804A18E0::update() {
             field_0x288[2] = 0.0f;
             field_0x288[1] = 0.0f;
             field_0x288[0] = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
         }
         if (field_0x23c == 1) {
             field_0x272 += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -380,7 +380,7 @@ void cls_804A18E0::update() {
             field_0x238 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 50;
         }
         if (outDir != -1) {
-            field_0x98 = outDir;
+            mDir_0x98 = outDir;
         }
         break;
     case 8:
@@ -401,10 +401,10 @@ void cls_804A18E0::update() {
             if (outDir >= 0) {
                 field_0x288[0] = 3.0f * JMath::sincosTable_.sinShort(field_0x272);
                 field_0x288[1] = 3.0f * JMath::sincosTable_.cosShort(field_0x272);
-                field_0x98 = outDir;
+                mDir_0x98 = outDir;
             } else if (field_0x258 == 0) {
                 for (int i = 0; i < 4; i++) {
-                    if (i != field_0x260 && fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (i != field_0x260 && fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         field_0x238 = 0;
                         field_0x254 = i;
                     }
@@ -430,7 +430,7 @@ void cls_804A18E0::update() {
         JGeometry::TVec3f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (fn_802265FC(&center, field_0x4) == 0xC || fn_801F6758(&mPos, field_0x4, -16.0f)) {
+        if (fn_802265FC(&center, mLayer_0x4) == 0xC || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;
@@ -438,32 +438,32 @@ void cls_804A18E0::update() {
                 field_0x288[2] = 0.0f;
                 field_0x288[1] = 0.0f;
                 field_0x288[0] = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
             }
         }
         if (field_0x258 != 0) {
             if (mPos.z > 0.0f) {
-                field_0x3c.z -= 1.0f;
+                mVel_0x3c.z -= 1.0f;
             }
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
             }
             fn_801EEC98(mSerial, NULL, &outDir, NULL, NULL, field_0x260, 2);
             if (outDir >= 0) {
-                field_0x98 = outDir;
+                mDir_0x98 = outDir;
             }
             if (field_0x238 == 0) {
                 field_0x258 = 2;
                 field_0x288[0] = 2.0f * JMath::sincosTable_.sinShort(field_0x272);
                 field_0x288[1] = 2.0f * JMath::sincosTable_.cosShort(field_0x272);
                 if (outDir >= 0) {
-                    field_0x98 = outDir ^ 1;
+                    mDir_0x98 = outDir ^ 1;
                 }
             }
         }
-        if (field_0x258 == 2 && fn_801F6758(&mPos, field_0x4, 16.0f)) {
+        if (field_0x258 == 2 && fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             mAlive = false;
         }
         break;
@@ -472,10 +472,10 @@ void cls_804A18E0::update() {
 
     if (field_0x230 == 1 || (field_0x230 >= 5 && field_0x230 <= 8) || field_0x230 == 9) {
         if (field_0x23c == 0 && field_0x234 == 0) {
-            if (field_0x98 == 3) {
+            if (mDir_0x98 == 3) {
                 field_0x24c = 0;
             }
-            field_0x264 = field_0x98 * 2 + field_0x24c;
+            field_0x264 = mDir_0x98 * 2 + field_0x24c;
             field_0x24c++;
             field_0x24c &= 1;
             field_0x234 = 6;
@@ -485,26 +485,26 @@ void cls_804A18E0::update() {
     if (field_0x230 == 6 || (field_0x230 >= 7 && field_0x230 <= 8) || field_0x230 == 9) {
         fn_801F2B20(0);
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            if ((field_0x3c.x != 0.0f || field_0x3c.y != 0.0f) && field_0x23c == 0) {
+            if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && field_0x23c == 0) {
                 if (field_0x230 == 7) {
-                    field_0x3c.z = 3.0f;
+                    mVel_0x3c.z = 3.0f;
                 } else {
-                    field_0x3c.z = 5.0f;
+                    mVel_0x3c.z = 5.0f;
                     startSound_801F0E34(0x400B0, 0);
                 }
             }
         }
-        if (field_0x244 == 0 && (field_0x230 != 7 || field_0x3c.x != 0.0f || field_0x3c.y != 0.0f)) {
+        if (field_0x244 == 0 && (field_0x230 != 7 || mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
             field_0x30c[9].x = mPos.x;
             field_0x30c[9].y = mPos.y;
         }
         field_0x30c[9].z = mPos.z;
         for (int i = 1; i < 9; i++) {
-            if (field_0x244 == 0 && (field_0x230 != 7 || field_0x3c.x != 0.0f || field_0x3c.y != 0.0f)) {
+            if (field_0x244 == 0 && (field_0x230 != 7 || mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
                 field_0x30c[i].x = field_0x30c[i + 1].x;
                 field_0x30c[i].y = field_0x30c[i + 1].y;
             }

@@ -30,19 +30,19 @@ bool Thief_804A5A30::vfunc_0x58() {
     other = -1;
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
-    player = fn_8023AE34(&box, field_0x4, &probe);
+    player = fn_8023AE34(&box, mLayer_0x4, &probe);
     if (player >= 0) {
         arrow = fn_801CC820(player, &vel48);
     } else {
-        player = fn_8023AA18(&box, field_0x4, &probe);
+        player = fn_8023AA18(&box, mLayer_0x4, &probe);
         if (player >= 0) {
             actorB = true;
         } else {
-            player = fn_8023AC74(&box, field_0x4, &probe);
+            player = fn_8023AC74(&box, mLayer_0x4, &probe);
             if (player >= 0) {
                 actorC = fn_801CC538(player, &probe, &vel54, &other);
             } else {
-                player = fn_8023AD54(&box, field_0x4, &probe);
+                player = fn_8023AD54(&box, mLayer_0x4, &probe);
                 if (player >= 0) {
                     fn_801CC640(player, &other, &vel48);
                 }
@@ -150,7 +150,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
             break;
         default: {
             fn_801F31C4(&box);
-            fn_802397B4(&box, field_0x4, mSerial);
+            fn_802397B4(&box, mLayer_0x4, mSerial);
             break;
         }
         }
@@ -160,8 +160,8 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
 
 u8 Thief_804A5A30::sweepMap_0x64() {
     u8 hit = 0;
-    if (!fn_8020609C() && !(mFlags & ENEMY_FLAG_NO_MAP_HIT) && field_0x80.getWidth() > 0.0f &&
-        field_0x80.getHeight() > 0.0f) {
+    if (!fn_8020609C() && !(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.getWidth() > 0.0f &&
+        mMapBox_0x80.getHeight() > 0.0f) {
         hit = fn_801F2618(&mMapHitDir, lbl_8053EFC0);
     }
     return hit;

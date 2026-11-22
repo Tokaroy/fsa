@@ -18,14 +18,14 @@ WarpPillar_804AC0A8::~WarpPillar_804AC0A8() {
 }
 
 void WarpPillar_804AC0A8::init() {
-    field_0x94 = field_0x90 & 0xF;
+    field_0x94 = mSpawnParam_0x90 & 0xF;
     mLife = 10000;
     field_0x230 = 0;
     field_0x234 = 0;
     field_0x240 = 0;
     field_0x244 = 0;
-    field_0x238 = (field_0x90 >> 4) & 0xF;
-    field_0x23c = (field_0x90 >> 8) & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x23c = (mSpawnParam_0x90 >> 8) & 0xF;
     field_0x258 = 0.0f;
     mEmitter264 = NULL;
     mEmitter268 = NULL;
@@ -38,11 +38,11 @@ void WarpPillar_804AC0A8::init() {
 
     if (mEmitter264 == NULL) {
         JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
-        mEmitter264 = spawnEmitter_8013CC50(field_0x4, &pos, 0x4E0, 1, 2, NULL, NULL, true, 1.0f);
+        mEmitter264 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4E0, 1, 2, NULL, NULL, true, 1.0f);
     }
     if (mEmitter268 == NULL) {
         JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
-        mEmitter268 = spawnEmitter_8013CC50(field_0x4, &pos, 0x4E1, 1, 2, NULL, NULL, true, 1.0f);
+        mEmitter268 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4E1, 1, 2, NULL, NULL, true, 1.0f);
     }
 
     mBox.i.x = -47.0f;
@@ -81,7 +81,7 @@ void WarpPillar_804AC0A8::update() {
         if (field_0x230 == 2 || field_0x230 == 3) {
             JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
             if (field_0x230 != 1) {
-                pos += field_0x3c;
+                pos += mVel_0x3c;
                 addCalc2_801F71A4(&pos.x, mPos.x - 24.0f + 16.0f * field_0x248[i], 0.02f, 10.0f);
             }
             if (field_0x230 == 3) {
@@ -93,7 +93,7 @@ void WarpPillar_804AC0A8::update() {
     }
 
     if (field_0x230 != 0 && field_0x230 != 1) {
-        field_0x3c.y -= 0.05f;
+        mVel_0x3c.y -= 0.05f;
     }
 
     field_0x234 = 0;
@@ -110,7 +110,7 @@ void WarpPillar_804AC0A8::update() {
                 field_0x234++;
                 if (mEmitter26c[i] == NULL) {
                     JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
-                    mEmitter26c[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_805420A0[i], 1, 2, NULL, NULL, true, 1.0f);
+                    mEmitter26c[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_805420A0[i], 1, 2, NULL, NULL, true, 1.0f);
                 }
             } else if (mEmitter26c[i] != NULL) {
                 mEmitter26c[i]->becomeInvalidEmitter();
@@ -157,7 +157,7 @@ void WarpPillar_804AC0A8::update() {
             for (s32 k = 0; k < 4; k++) {
                 field_0x248[order[k]] = k;
             }
-            field_0x3c.y = -0.5f;
+            mVel_0x3c.y = -0.5f;
             field_0x230 = 2;
         } else {
             for (s32 i = 0; i < 4; i++) {

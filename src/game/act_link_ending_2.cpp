@@ -67,9 +67,9 @@ void Link2Ending_804AE338::init() {
     field_0x254 = NULL;
     field_0x250 = NULL;
     field_0x230 = 0;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = -0.35f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = -0.35f;
+    mVel_0x3c.z = 0.0f;
     field_0x24C = 0x18;
     field_0x240 = 10;
     field_0x23C = 10;
@@ -83,7 +83,7 @@ void Link2Ending_804AE338::init() {
     pos.z = 0.0f;
     pos.y = 384.0f * (s32)(mPos.y / 384.0f) + 192.0f;
     pos.x = 512.0f * (s32)(mPos.x * 0.001953125f) + 256.0f;
-    field_0x2A8 = spawnEmitter_8013CC50(field_0x4, &pos, 0x274, 0, 0, NULL, NULL, true, 1.0f);
+    field_0x2A8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x274, 0, 0, NULL, NULL, true, 1.0f);
     s32 end = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < end; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
@@ -135,7 +135,7 @@ void Link2Ending_804AE338::update() {
     JGeometry::TVec3f pos;
     switch (field_0x230) {
     case 0: {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         if (field_0x23C == 0) {
             field_0x23C = field_0x240;
             field_0x244++;

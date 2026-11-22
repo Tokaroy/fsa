@@ -32,12 +32,12 @@ public:
     // Copy of mPos made by init(); update() takes its distance to mPos.
     /* 0x248 */ JGeometry::TVec3f field_0x248;
     /* 0x254 */ s32 field_0x254;
-    // init(): (field_0x90 & 0xFF) + 1, stored as a word.
+    // init(): (mSpawnParam_0x90 & 0xFF) + 1, stored as a word.
     /* 0x258 */ s32 field_0x258;
     /* 0x25C */ s32 field_0x25c;
     /* 0x260 */ s32 field_0x260;
     /* 0x264 */ u8 field_0x264;
-    // init(): bit 16 of field_0x90.
+    // init(): bit 16 of mSpawnParam_0x90.
     /* 0x265 */ u8 field_0x265;
     /* 0x266 */ u8 field_0x266[0x268 - 0x266];
 }; // Size: 0x268

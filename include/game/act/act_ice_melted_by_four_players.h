@@ -25,7 +25,7 @@ public:
     // layer whose box overlaps this one; returns true when all four are set.
     u8 fn_80378880();
     // Scans the 'HBMB' actors on this layer whose box overlaps this one: one
-    // with a zero field_0x3c.xy gets its y moved 16 above or below this one,
+    // with a zero mVel_0x3c.xy gets its y moved 16 above or below this one,
     // any other gets mLife 0. Always returns false.
     bool fn_80378680();
     // Not in the binary: a plain function that update inlines.

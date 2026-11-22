@@ -30,7 +30,7 @@ public:
     /* 0x245 */ u8 field_0x245;
     /* 0x246 */ u8 field_0x246;
     /* 0x247 */ u8 field_0x247;
-    /* 0x248 */ u8 field_0x248; // bits 22..26 of field_0x90
+    /* 0x248 */ u8 field_0x248; // bits 22..26 of mSpawnParam_0x90
     /* 0x249 */ u8 field_0x249[3]; // not yet known
     /* 0x24C */ f32 field_0x24c; // the position after init's offset
     /* 0x250 */ f32 field_0x250;

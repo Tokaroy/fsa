@@ -42,7 +42,7 @@ public:
     void fn_80364900();
     cls_804ADF28() {}
     /* 0x08 */ virtual ~cls_804ADF28();
-    // 0x80365B5C: decodes field_0x90 (state, sub-state, direction, frame) and sets up the state.
+    // 0x80365B5C: decodes mSpawnParam_0x90 (state, sub-state, direction, frame) and sets up the state.
     /* 0x0C */ virtual void init();
 
     // 0x80362680: draws the boat sprite.
@@ -55,7 +55,7 @@ public:
     void fn_80362C44();
     // 0x80365AB8: calls the member function of table lbl_804ADDE8[field_0x234].
     /* 0x20 */ virtual void fn_80365AB8();
-    // 0x80364A88: walks along field_0x3c, turning when a leg length is reached.
+    // 0x80364A88: walks along mVel_0x3c, turning when a leg length is reached.
     void fn_80364A88();
     // 0x80363880: follows the 'EOWL' owl, else wanders near field_0x27c[0].
     void fn_80363880();
@@ -75,7 +75,7 @@ public:
     void faceOwl(ActorBase_804A5770* owl);
     // 0x8036335C: empty.
     void fn_8036335C();
-    // 0x80363F7C: steps the pattern index when its counter ran out, then moves by field_0x3c.
+    // 0x80363F7C: steps the pattern index when its counter ran out, then moves by mVel_0x3c.
     void fn_80363F7C();
     // 0x80364F00: like fn_80363F7C with the pattern read from the byte tables at 0x270 / 0x274.
     void fn_80364F00();

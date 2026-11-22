@@ -5,8 +5,8 @@
 
 void AttackHitboxWhenPlayerIsThrown_804A7C40::init() {
     mBox.set(-10.0f, -10.0f, 10.0f, 10.0f);
-    field_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
-    field_0x230 = field_0x90 & 3;
+    mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
+    field_0x230 = mSpawnParam_0x90 & 3;
 }
 
 void AttackHitboxWhenPlayerIsThrown_804A7C40::update() {
@@ -16,12 +16,12 @@ void AttackHitboxWhenPlayerIsThrown_804A7C40::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    s32 damage = gGameRoot_8053AAF8->field_0x7f ? 0 : field_0x114;
+    s32 damage = gGameRoot_8053AAF8->field_0x7f ? 0 : mParamAtcp_0x114;
     for (s32 i = 0; i < 4; i++) {
         if (fn_80236BEC(i) || fn_8022E438(field_0x110, i) || fn_8022E438(field_0x230, i)) {
             continue;
         }
-        if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
+        if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
             // fn_80238548 reads only x and y of the position.
             fn_80238548(i, damage, (const JGeometry::TVec2f*)&mPos, 4);
             die_0x24();

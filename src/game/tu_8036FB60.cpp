@@ -51,7 +51,7 @@ void cls_804AE4B0::init() {
         field_0x330[i] = 0;
         field_0x340[i] = 1;
     }
-    field_0x3c = field_0x2f4[0];
+    mVel_0x3c = field_0x2f4[0];
     field_0x360 = 8;
     field_0x364 = 0;
     field_0x324 = field_0x294[0];
@@ -138,14 +138,14 @@ void cls_804AE4B0::update() {
         work.i.y += field_0x294[i].y;
         work.f.x += field_0x294[i].x;
         work.f.y += field_0x294[i].y;
-        fn_80239914(&work, field_0x4, mSerial);
+        fn_80239914(&work, mLayer_0x4, mSerial);
         work = box;
     }
     work.i.x += field_0x324.x;
     work.i.y += field_0x324.y;
     work.f.x += field_0x324.x;
     work.f.y += field_0x324.y;
-    fn_80239914(&work, field_0x4, mSerial);
+    fn_80239914(&work, mLayer_0x4, mSerial);
     work = box;
     (this->*lbl_804AE420[mState])();
 }
@@ -326,11 +326,11 @@ void cls_804AE4B0::fn_80371A2C() {
                 box.i.y += pos.y;
                 box.f.x += pos.x;
                 box.f.y += pos.y;
-                fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+                fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
                 s32 player = fn_8022FD8C(mSerial);
                 if (player >= 0) {
                     if (fn_802300EC(player)) {
-                        if (fn_8038BD08(player, lbl_80474F00[idx], field_0x4, pos, 0x22)) {
+                        if (fn_8038BD08(player, lbl_80474F00[idx], mLayer_0x4, pos, 0x22)) {
                             field_0x3a4 = player;
                             field_0x3a8 = 1;
                             field_0x3a0 = idx;
@@ -348,7 +348,7 @@ void cls_804AE4B0::fn_80371A2C() {
             box.i.y += pos.y;
             box.f.x += pos.x;
             box.f.y += pos.y;
-            fn_8022FF8C(field_0x3a4, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(field_0x3a4, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(field_0x3a4, mSerial)) {
                 field_0x3a4 = -1;
                 field_0x3a8 = 0;
@@ -433,7 +433,7 @@ void cls_804AE4B0::fn_80371284() {
     }
     JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                           (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_8038BD08(0, 0x50F, getField_0x4(), pos, 0x22)) {
         mState = 2;
         tickPlayer_80371284();
@@ -446,7 +446,7 @@ void cls_804AE4B0::fn_80371284() {
 
 void cls_804AE4B0::fn_803711F0() {
     fn_803703C8();
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_80388EEC(0)) {
         if (fn_80230534(false)) {
             mState = 3;
@@ -509,7 +509,7 @@ void cls_804AE4B0::fn_80370C84() {
             field_0x330[i] = 0;
             field_0x340[i] = 2;
         }
-        field_0x3c = field_0x2f4[0];
+        mVel_0x3c = field_0x2f4[0];
         field_0x398 = 1;
         mTimer = 0x80;
     }
@@ -529,8 +529,8 @@ void cls_804AE4B0::fn_80370C84() {
     if (field_0x240 == 0) {
         JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                               (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x502, field_0x4, pos, 0x22)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, 0x502, mLayer_0x4, pos, 0x22)) {
             mState = 5;
             lbl_8053AD70->fn_8037AE30();
         }
@@ -539,7 +539,7 @@ void cls_804AE4B0::fn_80370C84() {
 
 void cls_804AE4B0::fn_80370C18() {
     fn_803703C8();
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_80388EEC(0)) {
         field_0x240 = 0x1E;
         mState = 6;
@@ -553,13 +553,13 @@ void cls_804AE4B0::fn_80370A7C() {
         if (field_0x240 == 1) {
             JGeometry::TVec3f pos((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                                   (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
             if (fn_8038BD08(0, lbl_80474F10[field_0x394], getField_0x4(), pos, 0x22)) {
                 return;
             }
         }
     } else {
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_80388EEC(0)) {
             fn_80230534(false);
             fn_8022CA6C(0, 5, false);
@@ -608,7 +608,7 @@ void cls_804AE4B0::fn_80370764() {
                fn_802300EC(0)) {
         pos.set((s32)JUTVideo::sManager->getFbWidth() / 2.0f,
                 (s32)JUTVideo::sManager->getEfbHeight() / 2.0f, 0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         s32 msg;
         if (field_0x394 < 3) {
             msg = lbl_80474F40[field_0x394];
@@ -630,7 +630,7 @@ void cls_804AE4B0::fn_80370764() {
 void cls_804AE4B0::fn_803706AC() {
     fn_803703C8();
     fn_8023077C();
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_80388EEC(0)) {
         if (field_0x394 >= 4) {
             if (field_0x394 == 4) {
@@ -657,7 +657,7 @@ void cls_804AE4B0::fn_803705A0() {
             field_0x324.y = 1680.0f;
             u8 count = field_0x23c <= 0xB4 ? 3 : 2;
             const JGeometry::TVec3f& pos = field_0x324 - JGeometry::TVec3f(0.0f, 32.0f, 0.0f);
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, field_0x4, &pos, count | 0x30000, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_RUPY, mLayer_0x4, &pos, count | 0x30000, -1, -1);
             field_0x240 = 0x1E;
             mState = 10;
             field_0x368 = 0x108;
@@ -792,12 +792,12 @@ void cls_804AE4B0::fn_80370020() {
             box.i.y += field_0x324.y;
             box.f.x += field_0x324.x;
             box.f.y += field_0x324.y;
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             const s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
                     if (PSVECDistance(&field_0x264[player], &field_0x324) <= 20.0f) {
-                        if (fn_8038BD08(player, 0x510, field_0x4, field_0x324, 0x22)) {
+                        if (fn_8038BD08(player, 0x510, mLayer_0x4, field_0x324, 0x22)) {
                             field_0x3a4 = player;
                             field_0x3a8 = 1;
                             field_0x3a0 = 4;
@@ -813,7 +813,7 @@ void cls_804AE4B0::fn_80370020() {
         box.i.y += field_0x324.y;
         box.f.x += field_0x324.x;
         box.f.y += field_0x324.y;
-        fn_8022FF8C(field_0x3a4, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x3a4, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x3a4, mSerial)) {
             field_0x3a4 = -1;
             field_0x3a8 = 0;
@@ -856,7 +856,7 @@ void cls_804AE4B0::tickPlayer_80371284() {
 // Spawns the i-th 'JIJI' and keeps the actor. An inline of its own: the serial gets its register
 // before fn_8036FDAC's values (docs/REGALLOC.md, rule 4).
 static inline void spawnJiji(cls_804AE4B0* self, s32 i) {
-    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('JIJI', self->field_0x4, &self->field_0x294[i], lbl_80474F5C[i], -1, -1);
+    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('JIJI', self->mLayer_0x4, &self->field_0x294[i], lbl_80474F5C[i], -1, -1);
     self->field_0x3b0[i] = (cls_804AEED0*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
 }
 
@@ -877,7 +877,7 @@ void cls_804AE4B0::fn_8036FDAC() {
         spawnJiji(this, i);
         field_0x340[i] = 1;
     }
-    field_0x3c = field_0x2f4[0];
+    mVel_0x3c = field_0x2f4[0];
     field_0x360 = 8;
     field_0x364 = 0;
     field_0x324 = field_0x294[0];

@@ -74,7 +74,7 @@ bool EscortWoman_8049E1D0::vfunc_0x58() {
     return false;
 }
 
-// FIXME: 99.85%, scheduling: mSerial (0x198) and field_0x4 (0x4) are loaded in the reverse order before the talk call.
+// FIXME: 99.85%, scheduling: mSerial (0x198) and mLayer_0x4 (0x4) are loaded in the reverse order before the talk call.
 s32 EscortWoman_8049E1D0::vfunc_0x5C(const s32* dir) {
     if (field_0x33c == 17) {
         return 3;
@@ -88,10 +88,10 @@ s32 EscortWoman_8049E1D0::vfunc_0x5C(const s32* dir) {
         case 3:
             break;
         default:
-            fn_8022FE80(fn_8022EA0C(fn_8012285C()), field_0x4, mSerial, false, false);
+            fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
-                if (talk(player, 0x442, mSerial, field_0x4, mPos, 0x28)) {
+                if (talk(player, 0x442, mSerial, mLayer_0x4, mPos, 0x28)) {
                     field_0x3d0 = field_0x33c;
                     vfunc_0x6C(3);
                 }
@@ -118,8 +118,8 @@ u8 EscortWoman_8049E1D0::vfunc_0x60() {
 }
 
 void EscortWoman_8049E1D0::vfunc_0x64() {
-    field_0x35c = field_0x90 & 0xFF;
-    field_0x3cc = (field_0x90 >> 22) & 0x1F;
+    field_0x35c = mSpawnParam_0x90 & 0xFF;
+    field_0x3cc = (mSpawnParam_0x90 >> 22) & 0x1F;
 }
 
 void EscortWoman_8049E1D0::vfunc_0x68() {
@@ -149,7 +149,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
     }
 
     case 1:
-        fn_8022FF8C(field_0x34c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x34c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x34c, mSerial)) {
             vfunc_0x6C(4);
         }
@@ -172,7 +172,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
         }
-        fn_8022FE80(fn_8022EA0C(fn_8012285C()), field_0x4, mSerial, false, false);
+        fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(fn_8022EA0C(fn_8012285C()), mSerial)) {
             vfunc_0x6C(field_0x3d0);
         }
@@ -212,7 +212,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
     case 5:
         if (fn_8012285C() < 0) {
             vfunc_0x6C(0);
-        } else if (!fn_8022D75C(fn_8012285C()) && field_0x4 == getPlayerLayer_8023DE58(fn_8012285C())) {
+        } else if (!fn_8022D75C(fn_8012285C()) && mLayer_0x4 == getPlayerLayer_8023DE58(fn_8012285C())) {
             vfunc_0x6C(6);
         }
         break;
@@ -234,7 +234,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 8:
-        field_0x4 = getPlayerLayer_8023DE58(fn_8012285C());
+        mLayer_0x4 = getPlayerLayer_8023DE58(fn_8012285C());
         fn_80122148();
         if (!fn_8022D75C(fn_8012285C()) && fn_801216D0(fn_8012285C()) < 0) {
             vfunc_0x6C(4);
@@ -243,9 +243,9 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
 
     case 9:
         if (fn_80121E40() && mAnim.fn_801D208C()) {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x3c8++;
             if (field_0x3c8 >= 30) {
                 field_0x3c8 = 0;
@@ -282,10 +282,10 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 15:
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         field_0x3c4++;
         if (field_0x3c4 >= 90) {
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (fn_8038BD08(0, 0x4BA, layer, mPos, 0x22)) {
                 field_0x3c4 = 0;
                 vfunc_0x6C(16);
@@ -294,7 +294,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 16:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             vfunc_0x6C(13);
@@ -351,7 +351,7 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
         mAnim.startAnim_801D22DC(fn_80230CFC(fn_8012285C()), 2, false);
         break;
     case 9:
-        mAnim.startAnim_801D22DC(field_0x98 + 10, 0, false);
+        mAnim.startAnim_801D22DC(mDir_0x98 + 10, 0, false);
         field_0x333 = 1;
         startSound_801F0E34(0x40071, 0);
         field_0x3c8 = 0;

@@ -38,7 +38,7 @@ ShadowLinkGiantBomb_804AC4D0::~ShadowLinkGiantBomb_804AC4D0() {
 // lbl_805422E0 and lbl_805422C4 in the original, unnamed (@NNN) in ours; the
 // literal split of this unit, not the code.
 void ShadowLinkGiantBomb_804AC4D0::init() {
-    field_0x240 = (field_0x90 >> 12) & 0xFF;
+    field_0x240 = (mSpawnParam_0x90 >> 12) & 0xFF;
     field_0x23c = 0;
     field_0x244 = -1;
     if (field_0x240 == 0) {
@@ -47,18 +47,18 @@ void ShadowLinkGiantBomb_804AC4D0::init() {
         field_0x254 = 0;
         field_0x240--;
     }
-    field_0x248 = (field_0x90 >> 22) & 0x1F;
-    if (field_0x90 >> 27) {
+    field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    if (mSpawnParam_0x90 >> 27) {
         mState = 0;
         field_0x238 = 0;
         mStateTimer = 0;
     } else {
         mState = 1;
         field_0x238 = 0;
-        mStateTimer = field_0x90 & 0x7F;
+        mStateTimer = mSpawnParam_0x90 & 0x7F;
     }
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (viewLayerFlag(layer) == 1) {
             mPos.y += 4.0f;
             mSpawnPos = mPos;
@@ -76,7 +76,7 @@ void ShadowLinkGiantBomb_804AC4D0::init() {
 
 // FIXME(shotgun): 98.8 %, scheduling+regalloc
 void ShadowLinkGiantBomb_804AC4D0::update() {
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     if (field_0x255 == 1 && mState > 1) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
         if (sub->field_0x284 == 0) {
@@ -100,7 +100,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         if (isScreenFlagSet_0x34()) {
             mState = 1;
             field_0x238 = 0;
-            mStateTimer = field_0x90 & 0x7F;
+            mStateTimer = mSpawnParam_0x90 & 0x7F;
         }
         break;
     case 1:
@@ -123,9 +123,9 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         if (mStateTimer <= 0) {
             mState = 3;
             mStateTimer = 0x73;
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x418, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x419, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x41A, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x418, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x419, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x41A, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x4004E, 0);
         }
         break;
@@ -133,17 +133,17 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         if (mStateTimer <= 0) {
             startSound_801F0E34(0x40035, 0);
             mState = 4;
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.z = 3.0f;
             mStateTimer = lbl_804AC4B8[0];
         }
         break;
     case 4:
-        if (field_0x3c.z <= 0.0f) {
+        if (mVel_0x3c.z <= 0.0f) {
             mState = 5;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mStateTimer = 60;
         } else {
-            field_0x3c.z -= 0.1f;
+            mVel_0x3c.z -= 0.1f;
             if (mStateTimer <= 0 && field_0x238 < 9) {
                 field_0x238++;
                 mStateTimer = lbl_804AC4B8[field_0x238];
@@ -157,7 +157,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             JGeometry::TVec3f pos = mPos;
             pos.z = mPos.z + 24.0f;
             field_0x244 = getActorManager_801F856C()->spawnActor_801F9484(
-                ACTOR_BBMB, field_0x4, &pos, ((field_0x90 >> 8) & 0x1000) | 0x50, -1, -1);
+                ACTOR_BBMB, mLayer_0x4, &pos, ((mSpawnParam_0x90 >> 8) & 0x1000) | 0x50, -1, -1);
             startSound_801F0E34(0x50085, 0);
         }
         break;
@@ -231,7 +231,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             mStateTimer = 0x50;
             JGeometry::TVec3f pos = mPos;
             pos.z = mPos.z + 24.0f;
-            field_0x244 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BBMB, field_0x4, &pos, 0x2050, -1, -1);
+            field_0x244 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BBMB, mLayer_0x4, &pos, 0x2050, -1, -1);
             startSound_801F0E34(0x50085, 0);
         } else {
             field_0x250 += 0.016666668f;

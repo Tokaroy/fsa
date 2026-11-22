@@ -3,20 +3,20 @@
 #include "game/GameView.h"
 
 
-// Four 5-bit switch ids packed into field_0x90 above the count (bits 7-26).
+// Four 5-bit switch ids packed into mSpawnParam_0x90 above the count (bits 7-26).
 static const u32 lbl_8046CB40[4] = {0x07C00000, 0x003E0000, 0x0001F000, 0x00000F80};
 static const s32 lbl_8046CB50[4] = {22, 17, 12, 7};
 
 void SwitchOR_804A8800::init() {
     mState = 0;
-    mCount = field_0x90 & 0x1F;
+    mCount = mSpawnParam_0x90 & 0x1F;
 }
 
 void SwitchOR_804A8800::update() {
     switch (mState) {
     case 0: {
         for (s32 i = 0; i < mCount; i++) {
-            if (getGameView_802D6A9C()->fn_802D800C((field_0x90 & lbl_8046CB40[i]) >> lbl_8046CB50[i])) {
+            if (getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 & lbl_8046CB40[i]) >> lbl_8046CB50[i])) {
                 setScreenFlag_0x30(0xFF, true);
                 mState = 1;
             }
@@ -27,7 +27,7 @@ void SwitchOR_804A8800::update() {
     default: {
         s32 on = 0;
         for (s32 i = 0; i < mCount; i++) {
-            if (getGameView_802D6A9C()->fn_802D800C((field_0x90 & lbl_8046CB40[i]) >> lbl_8046CB50[i])) {
+            if (getGameView_802D6A9C()->fn_802D800C((mSpawnParam_0x90 & lbl_8046CB40[i]) >> lbl_8046CB50[i])) {
                 on++;
             }
         }

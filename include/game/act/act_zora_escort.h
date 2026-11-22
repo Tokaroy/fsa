@@ -15,8 +15,8 @@ public:
     ZoraEscort_8049DF78();
     // fn_80121104: the destructor (calls the base's).
     /* 0x08 */ virtual ~ZoraEscort_8049DF78();
-    // fn_801210A0: the base's fn_80124448; when field_0x90 bit 2 (mask 4) is set, takes bits 3-6
-    // of field_0x90 as the state word field_0x344, registers itself with the escort list
+    // fn_801210A0: the base's fn_80124448; when mSpawnParam_0x90 bit 2 (mask 4) is set, takes bits 3-6
+    // of mSpawnParam_0x90 as the state word field_0x344, registers itself with the escort list
     // (fn_80131F0C) and enters state 7.
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
@@ -30,8 +30,8 @@ public:
     /* 0x5C */ virtual s32 vfunc_0x5C(const s32* dir);
     // 0x8011FFB8: returns 0 (the base slot's u8 result).
     /* 0x60 */ virtual u8 vfunc_0x60();
-    // fn_80120F38: sets field_0x3c4 to 1 when field_0x90 bit 0 is set; field_0x35c and field_0x3d0
-    // get bits 8-15 and 16-23 of field_0x90.
+    // fn_80120F38: sets field_0x3c4 to 1 when mSpawnParam_0x90 bit 0 is set; field_0x35c and field_0x3d0
+    // get bits 8-15 and 16-23 of mSpawnParam_0x90.
     /* 0x64 */ virtual void vfunc_0x64();
     /* 0x68 */ virtual void vfunc_0x68();
     /* 0x6C */ virtual s32 vfunc_0x6C(s32 state);
@@ -63,10 +63,10 @@ public:
     bool hasNearbyBari();
     bool stepToPlayer();
 
-    /* 0x3C4 */ u8 field_0x3c4; // set by vfunc_0x64 from field_0x90 bit 0
+    /* 0x3C4 */ u8 field_0x3c4; // set by vfunc_0x64 from mSpawnParam_0x90 bit 0
     /* 0x3C8 */ s32 field_0x3c8; // 0
     /* 0x3CC */ s32 field_0x3cc; // -1
-    /* 0x3D0 */ s32 field_0x3d0; // field_0x90 bits 16-23, set by vfunc_0x64
+    /* 0x3D0 */ s32 field_0x3d0; // mSpawnParam_0x90 bits 16-23, set by vfunc_0x64
 }; // Size: 0x3D4
 
 #endif

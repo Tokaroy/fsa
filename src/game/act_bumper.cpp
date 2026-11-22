@@ -21,9 +21,9 @@ void Bumper_804A0260::init() {
     field_0x264 = 0.0f;
     field_0x260 = 0.0f;
     field_0x94 = 0;
-    field_0x98 = (field_0x90 >> 8) & 3;
-    field_0x238 = (field_0x90 >> 16) & 1;
-    field_0x90 &= 7;
+    mDir_0x98 = (mSpawnParam_0x90 >> 8) & 3;
+    field_0x238 = (mSpawnParam_0x90 >> 16) & 1;
+    mSpawnParam_0x90 &= 7;
     field_0x25c = 0;
     mSpawnPos.x = mPos.x;
     mSpawnPos.y = mPos.y;
@@ -31,20 +31,20 @@ void Bumper_804A0260::init() {
     field_0xb8 = 2;
     field_0x258 = 0;
     field_0x26c = mPos;
-    field_0x24c = fn_801F6874(field_0x98);
+    field_0x24c = fn_801F6874(mDir_0x98);
     field_0x250 = 100;
     field_0x234 = 0.0f;
-    if (field_0x90 == 2 || field_0x90 == 3) {
+    if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
         field_0x234 = 30.0f;
         mPos.x = field_0x26c.x + field_0x234 * JMath::sincosTable_.sinShort(field_0x24c);
         mPos.y = field_0x26c.y + field_0x234 * JMath::sincosTable_.cosShort(field_0x24c);
     }
-    if (field_0x90 == 4 || field_0x90 == 5) {
+    if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5) {
         field_0x234 = 80.0f;
         mPos.x = field_0x26c.x + field_0x234 * JMath::sincosTable_.sinShort(field_0x24c);
         mPos.y = field_0x26c.y + field_0x234 * JMath::sincosTable_.cosShort(field_0x24c);
     }
-    if (field_0x90 == 2 || field_0x90 == 4) {
+    if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 4) {
         field_0x250 = -100;
     }
     if (field_0x238 != 0) {
@@ -64,14 +64,14 @@ void Bumper_804A0260::update() {
     mBox.i.y = -17.0f;
     mBox.f.x = 17.0f;
     mBox.f.y = 17.0f;
-    field_0x80.i.x = -10.0f;
-    field_0x80.i.y = -10.0f;
-    field_0x80.f.x = 10.0f;
-    field_0x80.f.y = 10.0f;
+    mMapBox_0x80.i.x = -10.0f;
+    mMapBox_0x80.i.y = -10.0f;
+    mMapBox_0x80.f.x = 10.0f;
+    mMapBox_0x80.f.y = 10.0f;
     mLife = 1000;
     field_0x25c -= 0x100;
 
-    JGeometry::TBox2f boxA(field_0x80);
+    JGeometry::TBox2f boxA(mMapBox_0x80);
     JGeometry::TBox2f boxB(mBox);
     f32 dist[4];
     s32 idx[4];
@@ -81,7 +81,7 @@ void Bumper_804A0260::update() {
     boxA.addPos(mPos.x, mPos.y);
     pos.x = mPos.x;
     pos.y = mPos.y;
-    fn_80239914(&boxA, field_0x4, mSerial);
+    fn_80239914(&boxA, mLayer_0x4, mSerial);
     boxB.addPos(pos);
 
     for (s32 i = 0; i < 4; i++) {
@@ -121,7 +121,7 @@ void Bumper_804A0260::update() {
         } else {
             ok = true;
         }
-        if (ok == true && fn_8023B0F4(idx[k], &boxB, field_0x4, false, 0.0f)) {
+        if (ok == true && fn_8023B0F4(idx[k], &boxB, mLayer_0x4, false, 0.0f)) {
             found = idx[k];
             break;
         }
@@ -154,12 +154,12 @@ void Bumper_804A0260::update() {
     }
     field_0xb0 = 0x2000;
 
-    s32 state = field_0x90;
+    s32 state = mSpawnParam_0x90;
     switch (state) {
     case 1:
         if (field_0x240 == 0) {
             f32 speed = 0.3f * (2.0f * (f32)field_0x238) + 0.3f;
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x260 = speed;
                 field_0x264 = 0.0f;
@@ -185,11 +185,11 @@ void Bumper_804A0260::update() {
             if (field_0x238 != 0) {
                 field_0x240 = 0xa5;
             }
-            field_0x98 ^= 1;
+            mDir_0x98 ^= 1;
         }
-        addCalc2_801F71A4(&field_0x3c.x, field_0x260, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x264, 0.3f, 1.0f);
-        mPos += field_0x3c;
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x260, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x264, 0.3f, 1.0f);
+        mPos += mVel_0x3c;
         break;
     case 2:
     case 3:

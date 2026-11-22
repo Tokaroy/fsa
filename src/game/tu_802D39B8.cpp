@@ -632,7 +632,7 @@ u8 GameView_804A9950::fn_802DD3D4(const s32* dir) {
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == 'SDSM') {
-                exits = actor->field_0x90 >> 4;
+                exits = actor->mSpawnParam_0x90 >> 4;
                 break;
             }
         }

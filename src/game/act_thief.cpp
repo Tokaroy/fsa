@@ -125,29 +125,29 @@ Thief_804A5A30::~Thief_804A5A30() {
 void Thief_804A5A30::init() {
     EnemyBase_804A4808::init();
 
-    u32 valA = field_0x90 & 0xF;
+    u32 valA = mSpawnParam_0x90 & 0xF;
     field_0x34a = valA > 9 ? 9 : valA;
 
-    u32 valB = (field_0x90 >> 8) & 0xFF;
+    u32 valB = (mSpawnParam_0x90 >> 8) & 0xFF;
     field_0x34b = valB <= 3 ? 3 : valB;
 
-    u32 valC = (field_0x90 >> 16) & 0xFF;
+    u32 valC = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x34c = valC <= 3 ? 3 : valC;
 
     if (field_0x34c <= field_0x34b) {
         field_0x34c = field_0x34b + 1;
     }
 
-    s32 valD = (field_0x90 >> 24) & 3;
+    s32 valD = (mSpawnParam_0x90 >> 24) & 3;
     mType = valD >= 3 ? 3 : valD;
 
-    field_0x354 = field_0x90 >> 27;
+    field_0x354 = mSpawnParam_0x90 >> 27;
     fn_802072E4();
 
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     field_0xb0 = 0x51303;
     mFlags |= ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
@@ -155,14 +155,14 @@ void Thief_804A5A30::init() {
     field_0x32c.x = mPos.x;
     field_0x32c.y = mPos.y;
     field_0x32c.z = mPos.z;
-    field_0x33c = fn_801F6874(field_0x98);
+    field_0x33c = fn_801F6874(mDir_0x98);
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A59B0 + mType * 8, 8);
-    mAnim.startAnim_801D22DC(field_0x98, 2, false);
+    mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
     mAnim.fn_801D1D60();
     fn_80204638()->fn_80204A20(this);
     if (fn_802064E0()) {
@@ -190,7 +190,7 @@ s32 Thief_804A5A30::fn_802063FC() {
     JGeometry::TVec2f from;
     from.x = mPos.x;
     from.y = mPos.y;
-    s32 count = getActorManager_801F856C()->fn_801F7274(field_0x4, actors, -1);
+    s32 count = getActorManager_801F856C()->fn_801F7274(mLayer_0x4, actors, -1);
     if (count >= 2) {
         lbl_8053AC60 = from;
         qsort(actors, count, 4, fn_802068A0);
@@ -199,7 +199,7 @@ s32 Thief_804A5A30::fn_802063FC() {
     ActorBase_804A5770** p = actors;
     s32 end = count > 0x14 ? 0x14 : count;
     for (s32 i = 0; i < end; i++, p++) {
-        if (!fn_801CF888(&from, &(*p)->mPos, field_0x4)) {
+        if (!fn_801CF888(&from, &(*p)->mPos, mLayer_0x4)) {
             result = (*p)->mSerial;
             break;
         }
@@ -213,7 +213,7 @@ void Thief_804A5A30::fn_80206168() {
     if (field_0x344 == 0) {
         return;
     }
-    bool inDark = fn_801CD2F8(field_0x4);
+    bool inDark = fn_801CD2F8(mLayer_0x4);
     u32 max = fn_801CD664(31) + 20;
     u32 count = field_0x344;
     if (count >= max) {
@@ -239,11 +239,11 @@ void Thief_804A5A30::fn_80206168() {
             gemType = 0;
             toDrop -= 1;
         }
-        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, gemType);
+        s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, gemType);
         if (serial >= 0) {
             ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (gem != NULL) {
-                gem->field_0x3c = JGeometry::TVec3f(
+                gem->mVel_0x3c = JGeometry::TVec3f(
                     1.5f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                     1.5f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                     -0.5f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
@@ -259,8 +259,8 @@ bool Thief_804A5A30::fn_8020609C() const {
     s32 layer;
     bool result = false;
     if (field_0x94 == 1) {
-        if (!fn_801CD2F8(field_0x4)) {
-            layer = field_0x4;
+        if (!fn_801CD2F8(mLayer_0x4)) {
+            layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
             if (!contains(box, mPos)) {
@@ -311,9 +311,9 @@ void Thief_804A5A30::fn_80205E0C(s32 newState) {
         field_0x338 = -1;
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         mPathCount = 0;
         mFlags |= ENEMY_FLAG_NO_MAP_HIT;
         break;
@@ -372,7 +372,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         switch (mState) {
         case 1:
         case 2:
-            if (isBlocked_0x4C(field_0x4, &mPos)) {
+            if (isBlocked_0x4C(mLayer_0x4, &mPos)) {
                 mPos.x = mPrevPos.x;
                 mPos.y = mPrevPos.y;
                 fn_80205E0C(0);
@@ -398,7 +398,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             if (serial >= 0) {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (target != NULL && fn_801CC9B0(target) &&
-                    !fn_801CF888((const JGeometry::TVec2f*)&mPos, &target->mPos, field_0x4)) {
+                    !fn_801CF888((const JGeometry::TVec2f*)&mPos, &target->mPos, mLayer_0x4)) {
                     findNew = false;
                 }
             }
@@ -435,7 +435,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         if (field_0x340 >= 0) {
             fn_80205E0C(1);
         } else if (field_0x338 >= 0) {
-            if (fn_801CCF34(field_0x338) <= 0 && !fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), field_0x4)) {
+            if (fn_801CCF34(field_0x338) <= 0 && !fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
                 fn_80205E0C(6);
             } else if (fn_801D183C(0.0f)) {
                 fn_80205E0C(2);
@@ -467,7 +467,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             f32 dy = field_0x32c.y - mPos.y;
             if (square(dx) + square(dy) <= 100.0f) {
                 startSound_801F0E34(0x4009F, 0);
-                s32 value = target->fn_8032D564(target->field_0x90 & 0xFF);
+                s32 value = target->fn_8032D564(target->mSpawnParam_0x90 & 0xFF);
                 s32 amount = (value > 3000) ? 3000 : ((value < 1) ? 1 : value);
                 field_0x344 += amount;
                 ForceGem_804AB6D8* gem = static_cast<ForceGem_804AB6D8*>(target);
@@ -509,11 +509,11 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
                     }
                 }
                 JGeometry::TVec3f spawnPos(mPos.x, mPos.y, mPos.z + 24.0f);
-                s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &spawnPos, gemType);
+                s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &spawnPos, gemType);
                 if (serial >= 0) {
                     ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (gem != NULL) {
-                        gem->field_0x3c = JGeometry::TVec3f(
+                        gem->mVel_0x3c = JGeometry::TVec3f(
                             1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                             1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                             6.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
@@ -534,7 +534,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
             fn_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !fn_801D0B44(field_0x338) ||
                    !fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ||
-                   fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), field_0x4)) {
+                   fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), mLayer_0x4)) {
             fn_80205E0C(0);
         } else if (mapHit) {
             fn_801D11FC();
@@ -562,7 +562,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
     case 6:
     case 8:
     case 9:
-        field_0x98 = fn_801F681C((u16)field_0x33c);
+        mDir_0x98 = fn_801F681C((u16)field_0x33c);
         break;
     case 3:
     case 4:
@@ -571,7 +571,7 @@ void Thief_804A5A30::updateState_0x90(u8 mapHit) {
         break;
     default:
         field_0x33c = fn_801D02E0(&field_0x32c);
-        field_0x98 = fn_801F681C((u16)field_0x33c);
+        mDir_0x98 = fn_801F681C((u16)field_0x33c);
         break;
     }
 }
@@ -584,17 +584,17 @@ void Thief_804A5A30::updateAnim_0x94() {
         return;
     }
     if (mType == 2) {
-        mAnim.fn_801D22A0(field_0x98, 2);
+        mAnim.fn_801D22A0(mDir_0x98, 2);
     } else if (state == 0) {
         switch (mAnim.mAnim) {
         case 0:
         case 1:
         case 2:
         case 3:
-            mAnim.fn_801D2264(field_0x98, 2);
+            mAnim.fn_801D2264(mDir_0x98, 2);
             break;
         default:
-            mAnim.startAnim_801D22DC(field_0x98, 2, false);
+            mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
             break;
         }
     } else {
@@ -603,13 +603,13 @@ void Thief_804A5A30::updateAnim_0x94() {
         case 1:
         case 2:
         case 3:
-            mAnim.startAnim_801D22DC(field_0x98 + 4, 2, false);
+            mAnim.startAnim_801D22DC(mDir_0x98 + 4, 2, false);
             break;
         default:
             if (mType == 0) {
-                mAnim.fn_801D22A0(field_0x98 + 4, 2);
+                mAnim.fn_801D22A0(mDir_0x98 + 4, 2);
             } else {
-                mAnim.fn_801D2264(field_0x98 + 4, 2);
+                mAnim.fn_801D2264(mDir_0x98 + 4, 2);
             }
             break;
         }
@@ -658,7 +658,7 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_801CCFE4(i)) {
                     if (getPlayerLayer_8023DE58(i) == getField_0x4() &&
-                        fn_80239C00(i, &box, field_0x4) &&
+                        fn_80239C00(i, &box, mLayer_0x4) &&
                         fn_8022F9E4(i, mSerial, true, false)) {
                         fn_80205E0C(3);
                         break;
@@ -675,35 +675,35 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
 void Thief_804A5A30::calcVelocity_0x88() {
     applyGravity_0x84();
     if (fn_8020609C()) {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
     } else {
         JGeometry::TVec2f dir;
         switch (mState) {
         case 3:
         case 7:
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
             break;
         case 4:
             break;
         case 5:
             dir = field_0x35c.vel;
-            field_0x3c.x = dir.x;
-            field_0x3c.y = dir.y;
+            mVel_0x3c.x = dir.x;
+            mVel_0x3c.y = dir.y;
             break;
         case 6:
         case 8:
         case 9:
             dir.x = JMath::sincosTable_.sinShort(field_0x33c);
             dir.y = JMath::sincosTable_.cosShort(field_0x33c);
-            field_0x3c.x = dir.x * mSpeed;
-            field_0x3c.y = dir.y * mSpeed;
+            mVel_0x3c.x = dir.x * mSpeed;
+            mVel_0x3c.y = dir.y * mSpeed;
             break;
         default:
             fn_801D01A0(&field_0x32c, &dir, mSpeed);
-            field_0x3c.x = dir.x;
-            field_0x3c.y = dir.y;
+            mVel_0x3c.x = dir.x;
+            mVel_0x3c.y = dir.y;
             break;
         }
     }
@@ -716,7 +716,7 @@ void Thief_804A5A30::onMoved_0x8C() {
         case 2:
         case 6:
         case 8:
-            if (fn_80204638()->fn_802046FC(&field_0x3c, &mPos)) {
+            if (fn_80204638()->fn_802046FC(&mVel_0x3c, &mPos)) {
                 if (mFlags & ENEMY_FLAG_NO_MAP_HIT) {
                     fn_801F2618(&mMapHitDir, lbl_8053EFC0);
                 }
@@ -729,17 +729,17 @@ void Thief_804A5A30::onMoved_0x8C() {
 void Thief_804A5A30::move_0x98() {
     if (mState == 3) {
         if (field_0xc4 != 0) {
-            field_0x98 = fn_80230CFC(field_0xc8);
-            field_0x33c = fn_801F6874(field_0x98);
+            mDir_0x98 = fn_80230CFC(field_0xc8);
+            field_0x33c = fn_801F6874(mDir_0x98);
             JGeometry::TVec3f* pos = fn_8023E7B0(field_0xc8);
             mPos.x = pos->x;
             mPos.y = pos->y;
             mPos.z = pos->z;
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
-            if (field_0x4 != getPlayerLayer_8023DE58(field_0xc8)) {
-                field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0xc8)) {
+                mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
                 mPathCount = 0;
                 s32 player = field_0xc8;
                 if (fn_8022F514(player)) {

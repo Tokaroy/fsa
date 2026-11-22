@@ -28,7 +28,7 @@ public:
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254; // draw's frame
     /* 0x258 */ s32 field_0x258;
-    /* 0x25C */ s32 field_0x25c; // init: bit 8 of field_0x90
+    /* 0x25C */ s32 field_0x25c; // init: bit 8 of mSpawnParam_0x90
     /* 0x260 */ u16 field_0x260; // angle
     /* 0x262 */ u8 field_0x262[2];
     /* 0x264 */ JGeometry::TVec3f field_0x264;

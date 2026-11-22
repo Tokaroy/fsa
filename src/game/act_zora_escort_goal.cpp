@@ -67,14 +67,14 @@ ZoraEscortGoal_8049E424::~ZoraEscortGoal_8049E424() {
 
 void ZoraEscortGoal_8049E424::init() {
     ActorBase_804A5770::init();
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         field_0x258 = 1;
     }
-    field_0x234 = (field_0x90 >> 22) & 0x1F;
-    field_0x238 = (field_0x90 >> 8) & 0xFF;
+    field_0x234 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x238 = (mSpawnParam_0x90 >> 8) & 0xFF;
     mBox.set(-10.0f, -8.0f, 10.0f, 8.0f);
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
     mAnim27c.fn_801D2608(lbl_8049E400, 9);
     mAnim27c.startAnim_801D22DC(6, 2, false);
     mAnim27c.fn_801D1F14(0.0f);
@@ -124,13 +124,13 @@ void ZoraEscortGoal_8049E424::update() {
         }
         break;
     case 2:
-        fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             fn_80126A4C(1);
         }
         break;
     case 3:
-        fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             fn_80126A4C(4);
         }
@@ -168,7 +168,7 @@ void ZoraEscortGoal_8049E424::update() {
     }
     case 9: {
         hover();
-        fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             fn_801283E8()->fn_801281A4();
         }
@@ -210,7 +210,7 @@ void ZoraEscortGoal_8049E424::update() {
     }
 
     if (field_0x259) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     mAnim27c.mFrameCtrl.setRate(field_0x260);
     mAnim27c.fn_801D1C18();
@@ -252,7 +252,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         fn_801283E8()->fn_8012824C();
         break;
     case 5:
-        mRail.fn_800FE3EC(field_0x238, mPos, field_0x4);
+        mRail.fn_800FE3EC(field_0x238, mPos, mLayer_0x4);
         break;
     case 6:
         mAnim27c.startAnim_801D22DC(6, 2, false);
@@ -269,7 +269,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         mAnim27c.startAnim_801D22DC(8, 2, false);
         mBox.set(-20.0f, -8.0f, 20.0f, 8.0f);
         mBox2.set(mBox);
-        field_0x80.set(mBox);
+        mMapBox_0x80.set(mBox);
         if (field_0x258) {
             spawnEmitters();
         }
@@ -287,13 +287,13 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         startSound_801F0E34(0x40090, 0);
         break;
     case 11: {
-        mRail.fn_800FE3EC(field_0x238, mPos, field_0x4);
+        mRail.fn_800FE3EC(field_0x238, mPos, mLayer_0x4);
         JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
         field_0x260 = 1.0f;
         u8 count = mRail.fn_800FD894(-1, NULL, 0) - 1;
         step = mRail.fn_800FDC70(mPos, 1, count);
-        field_0x3c.set(step);
-        mPos += field_0x3c;
+        mVel_0x3c.set(step);
+        mPos += mVel_0x3c;
         field_0x264 = mPos.x;
         field_0x268 = mPos.y;
         field_0x26c = mPos.z;
@@ -318,7 +318,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
     case 15:
         if (getActorManager_801F856C()->fn_801F7A08('SPFR') < 0) {
             u32 arg = getScreenFlagBit_0x3C() << 27;
-            getActorManager_801F856C()->spawnActor_801F9484('SPFR', field_0x4, &field_0x270, arg, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('SPFR', mLayer_0x4, &field_0x270, arg, -1, -1);
             fn_801283E8()->fn_80128074();
         }
         break;
@@ -346,7 +346,7 @@ s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
     s32 player = fn_8022FD8C(mSerial);
     if (player < 0) {
         return -1;
@@ -356,7 +356,7 @@ s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
     }
     JGeometry::TVec3f msgPos(mPos);
     msgPos.y -= 64.0f;
-    if (fn_8038AD24(player, msg, mSerial, field_0x4, msgPos, 0x28)) {
+    if (fn_8038AD24(player, msg, mSerial, mLayer_0x4, msgPos, 0x28)) {
         return player;
     }
     return -1;
@@ -372,13 +372,13 @@ bool ZoraEscortGoal_8049E424::walkRail() {
         JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
         field_0x260 = 1.0f;
         u16 angle = 0;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         JGeometry::TVec3f pos(mPos);
         if (mRail.fn_800FDEA0(&pos, 0.5f, &step, &layer, &angle, 0x200) == 3) {
             flag = true;
         } else {
-            field_0x3c.set(step);
-            mPos += field_0x3c;
+            mVel_0x3c.set(step);
+            mPos += mVel_0x3c;
             s32 anim = fn_801F681C(angle);
             if (anim != mAnim27c.mAnim) {
                 mAnim27c.startAnim_801D22DC(anim, 2, false);
@@ -411,6 +411,6 @@ void ZoraEscortGoal_8049E424::hover() {
 void ZoraEscortGoal_8049E424::spawnEmitters() {
     JGeometry::TVec3f pos(mPos);
     pos.x += 8.0f;
-    field_0x37c = spawnEmitter_8013CC50(field_0x4, &pos, 0x183, 0, -1, 0, 0, true, 1.0f);
-    field_0x380 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, 0, 0, true, 1.0f);
+    field_0x37c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x183, 0, -1, 0, 0, true, 1.0f);
+    field_0x380 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, 0, 0, true, 1.0f);
 }

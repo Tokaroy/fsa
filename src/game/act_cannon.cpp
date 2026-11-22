@@ -31,7 +31,7 @@ Cannon_8049CCF0::Cannon_8049CCF0() {
 Cannon_8049CCF0::~Cannon_8049CCF0() {}
 
 f32 Cannon_8049CCF0::fn_801080B8() const {
-    if (field_0x4 == 0) {
+    if (mLayer_0x4 == 0) {
         return 8.0f;
     }
     if (field_0x26a != 0) {
@@ -43,19 +43,19 @@ f32 Cannon_8049CCF0::fn_801080B8() const {
 void readSwingRange(Cannon_8049CCF0* self);
 
 void Cannon_8049CCF0::init() {
-    if ((field_0x90 & 0xF) == 1) {
+    if ((mSpawnParam_0x90 & 0xF) == 1) {
         field_0x274 = 1;
     }
-    field_0x27c = field_0x90 >> 4 & 0xF;
+    field_0x27c = mSpawnParam_0x90 >> 4 & 0xF;
     readSwingRange(this);
-    if ((field_0x90 >> 16 & 1) == 1) {
+    if ((mSpawnParam_0x90 >> 16 & 1) == 1) {
         field_0x26a = 1;
     } else {
         field_0x26a = 0;
     }
     mBox.set(-8.0f, -8.0f, 8.0f, -6.0f);
     mBox2.set(mBox);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
     mAnim.fn_801D2608(lbl_80539ED0, 1);
@@ -152,20 +152,20 @@ void Cannon_8049CCF0::update() {
             JGeometry::TVec2f p(mPos.x, mPos.y - mPos.z);
             box.addPos(p);
             bool hit = false;
-            if (fn_8023AA18(&box, field_0x4, &out) >= 0) {
+            if (fn_8023AA18(&box, mLayer_0x4, &out) >= 0) {
                 hit = true;
             } else {
-                s32 player = fn_8023AE34(&box, field_0x4, &out);
+                s32 player = fn_8023AE34(&box, mLayer_0x4, &out);
                 if (player >= 0) {
                     fn_801CC820(player, NULL);
                     hit = true;
                 } else {
-                    player = fn_8023AC74(&box, field_0x4, &out);
+                    player = fn_8023AC74(&box, mLayer_0x4, &out);
                     if (player >= 0) {
                         fn_801CC538(player, &out, &vec, NULL);
                         hit = true;
                     } else {
-                        player = fn_8023AD54(&box, field_0x4, &out);
+                        player = fn_8023AD54(&box, mLayer_0x4, &out);
                         if (player >= 0) {
                             fn_801CC640(player, NULL, NULL);
                             hit = true;
@@ -199,11 +199,11 @@ void Cannon_8049CCF0::draw() {
     params.field_0x1d = 1;
     s32 frame = mAnim.mCel + 0x14C;
     JGeometry::TVec3f* pos = &mPos;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x14C, false, 1, -1, 0, 0, 0);
 }
 
 // FIXME: 98.39 %, missing/extra; behaviour clean.
@@ -214,8 +214,8 @@ bool Cannon_8049CCF0::fn_80107360() {
     mPos.y = mHomePos.y;
     JGeometry::TVec3f pos = mPos;
     pos.y -= 16.0f;
-    if (field_0x4 == 0) {
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x5A, 0, 1, NULL, NULL, true, 1.0f);
+    if (mLayer_0x4 == 0) {
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5A, 0, 1, NULL, NULL, true, 1.0f);
     }
     fn_80230FD0(field_0x26c, 0x20036);
     gGameRoot_8053AAF8->fn_80134DE4(1, 0);
@@ -240,7 +240,7 @@ bool Cannon_8049CCF0::fn_80107360() {
 // dropped. The original's .sdata2 has their literals ahead of fn_80107360's, in the order of these
 // functions from the bottom of the file up, so they were generated before it (tools/pool.py).
 void readSwingRange(Cannon_8049CCF0* self) {
-    self->field_0x280 = (f32)(self->field_0x90 >> 8 & 0x1F);
+    self->field_0x280 = (f32)(self->mSpawnParam_0x90 >> 8 & 0x1F);
 }
 
 // The swing (state 0 and 2): moves mPos.x between mHomePos.x +- 8 * field_0x280
@@ -266,15 +266,15 @@ void swing(Cannon_8049CCF0* c) {
         speed -= rate * (dist - 0.8f);
     }
     if (c->field_0x268 != 0) {
-        c->field_0x3c.x = speed;
-        c->field_0x3c.y = 0.0f;
-        c->field_0x3c.z = 0.0f;
+        c->mVel_0x3c.x = speed;
+        c->mVel_0x3c.y = 0.0f;
+        c->mVel_0x3c.z = 0.0f;
     } else {
-        c->field_0x3c.x = -speed;
-        c->field_0x3c.y = 0.0f;
-        c->field_0x3c.z = 0.0f;
+        c->mVel_0x3c.x = -speed;
+        c->mVel_0x3c.y = 0.0f;
+        c->mVel_0x3c.z = 0.0f;
     }
-    c->mPos += c->field_0x3c;
+    c->mPos += c->mVel_0x3c;
     if (c->mPos.x >= c->mHomePos.x + 8.0f * c->field_0x280) {
         c->mPos.x = c->mHomePos.x + 8.0f * c->field_0x280;
         c->field_0x268 = 0;
@@ -285,7 +285,7 @@ void swing(Cannon_8049CCF0* c) {
 }
 
 void spawnTakenEffect(Cannon_8049CCF0* self) {
-    spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x503, 0, 0, NULL, NULL, true, 1.5f);
+    spawnEmitter_8013CC50(self->mLayer_0x4, &self->mPos, 0x503, 0, 0, NULL, NULL, true, 1.5f);
 }
 
 // Returns the first player that can take the cannon, or -1.
@@ -293,7 +293,7 @@ s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box) {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = 1 << i;
         if ((gGameRoot_8053AAF8->mPlayerMask & bit) != 0 || fn_8022CAF8(i) == 4) {
-            if (fn_8023B0F4(i, box, c->field_0x4, false, 1000.0f)) {
+            if (fn_8023B0F4(i, box, c->mLayer_0x4, false, 1000.0f)) {
                 if (c->field_0x26c < 0) {
                     if (fn_8023162C(i, c->mSerial)) {
                         return i;

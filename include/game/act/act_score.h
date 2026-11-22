@@ -25,7 +25,7 @@ public:
     /* 0x230 */ s32 mTimer;
     /* 0x234 */ s32 mState;
     /* 0x238 */ s32 mPlayer;
-    /* 0x23C */ s32 mValue; // low 16 bits of field_0x90
+    /* 0x23C */ s32 mValue; // low 16 bits of mSpawnParam_0x90
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ f32 field_0x248;

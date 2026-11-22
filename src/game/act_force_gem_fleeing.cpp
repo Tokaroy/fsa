@@ -21,8 +21,8 @@ static const s32 lbl_804AB130[] = {0x11, 0x15, 0x19, 0x1D, 0x11, 0x15, 0x19, 0x1
 static const s32 lbl_804AB160[] = {100, 150, 200, 300};
 
 void FleeingForceGem_804AB170::init() {
-    field_0x268 = field_0x90 & 3;
-    field_0x94 = (field_0x90 >> 16) & 0xFF;
+    field_0x268 = mSpawnParam_0x90 & 3;
+    field_0x94 = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x254 = 0;
     field_0x258 = 0;
     field_0x25c = 0;
@@ -34,7 +34,7 @@ void FleeingForceGem_804AB170::init() {
     field_0x276 = field_0x274;
     mLife = 10000;
     field_0x264 = -1;
-    field_0x98 = 0;
+    mDir_0x98 = 0;
     field_0x288.x = mPos.x;
     field_0x288.y = mPos.y;
     field_0x288.z = mPos.z;
@@ -42,7 +42,7 @@ void FleeingForceGem_804AB170::init() {
     field_0x238 = 1.0f;
     field_0x23c = 0.0f;
     field_0x278 = 0;
-    field_0x270 = field_0x4;
+    field_0x270 = mLayer_0x4;
     field_0x234 = 30.0f;
     field_0x25c = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 65535.0f);
     field_0xb0 = 0x2000A;
@@ -52,12 +52,12 @@ void FleeingForceGem_804AB170::init() {
     field_0x26c = 0;
     switch (field_0x94) {
     case 0:
-        field_0x268 = field_0x90 & 3;
+        field_0x268 = mSpawnParam_0x90 & 3;
         field_0x230 = 0;
         field_0x278 = 1;
         break;
     case 1:
-        field_0x268 = field_0x90 & 3;
+        field_0x268 = mSpawnParam_0x90 & 3;
         field_0x230 = 4;
         break;
     case 2:
@@ -67,14 +67,14 @@ void FleeingForceGem_804AB170::init() {
     field_0x27c.x = 0.0f;
     field_0x27c.y = 0.0f;
     field_0x27c.z = 0.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     field_0xb8 = 1;
-    field_0x80.i.x = -6.0f;
-    field_0x80.i.y = -6.0f;
-    field_0x80.f.x = 6.0f;
-    field_0x80.f.y = 6.0f;
+    mMapBox_0x80.i.x = -6.0f;
+    mMapBox_0x80.i.y = -6.0f;
+    mMapBox_0x80.f.x = 6.0f;
+    mMapBox_0x80.f.y = 6.0f;
     mBox.i.x = -6.0f;
     mBox.i.y = -6.0f;
     mBox.f.x = 6.0f;
@@ -90,9 +90,9 @@ void FleeingForceGem_804AB170::init() {
 bool FleeingForceGem_804AB170::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = (u16)fn_8022461C(pos, layer);
     if (tile == 3) {
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         field_0x230 = 5;
         return false;
     }
@@ -173,18 +173,18 @@ void FleeingForceGem_804AB170::update() {
     JGeometry::TBox2f box = mBox;
     box.addPos(pos2);
     if (field_0x94 != 1 && field_0x240[4] == 0) {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x27c.x, 0.1f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x27c.y, 0.1f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x27c.x, 0.1f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, 0.1f, 1.0f);
     }
     if (field_0x94 != 0) {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
     }
     if (field_0x94 == 3 && field_0x230 != 7 && field_0x230 != 6) {
         fn_801F2618(NULL, false);
     }
     if (field_0x230 == 0 || field_0x230 == 3 || field_0x230 == 4 || field_0x230 == 10) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023A51C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* playerPos = fn_8023A478(i);
                 f32 dx = playerPos->x - mPos.x;
                 f32 dy = playerPos->y - mPos.y;
@@ -194,45 +194,45 @@ void FleeingForceGem_804AB170::update() {
                 }
             }
         }
-        if (near && field_0x3c.z <= 0.0f && mPos.z <= 0.0f) {
-            field_0x3c.z = 5.0f;
+        if (near && mVel_0x3c.z <= 0.0f && mPos.z <= 0.0f) {
+            mVel_0x3c.z = 5.0f;
             switch (fn_8023A240()) {
             case 0:
-                field_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, field_0x3c.z);
+                mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, mVel_0x3c.z);
                 break;
             case 1:
-                field_0x3c = JGeometry::TVec3f(2.0f, 0.0f, field_0x3c.z);
+                mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, mVel_0x3c.z);
                 break;
             case 2:
-                field_0x3c = JGeometry::TVec3f(0.0f, -2.0f, field_0x3c.z);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, mVel_0x3c.z);
                 break;
             case 3:
-                field_0x3c = JGeometry::TVec3f(0.0f, 2.0f, field_0x3c.z);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, mVel_0x3c.z);
                 break;
             }
-            field_0x27c = field_0x3c;
+            field_0x27c = mVel_0x3c;
             field_0x94 = 3;
         }
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 0.5f;
-        } else if (mPos.z <= 0.0f && field_0x3c.z < 0.0f) {
+            mVel_0x3c.z -= 0.5f;
+        } else if (mPos.z <= 0.0f && mVel_0x3c.z < 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x94 = 0;
             if (field_0x278 == 1) {
                 fn_801F0D20(0x42);
                 field_0x278 = 0;
             }
         }
-        s32 hit = fn_8023AF14(&box, field_0x4, false, mPos.z);
+        s32 hit = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (hit < 0) {
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_80230188(i) && !fn_8023EA28(i)) {
-                    if (fn_8023B9CC(i, &box, field_0x4, &pos2, true) == 1 ||
-                        fn_8023B848(i, &box, field_0x4, &pos2) == 1) {
+                    if (fn_8023B9CC(i, &box, mLayer_0x4, &pos2, true) == 1 ||
+                        fn_8023B848(i, &box, mLayer_0x4, &pos2) == 1) {
                         hit = i;
                         break;
                     }
@@ -255,7 +255,7 @@ void FleeingForceGem_804AB170::update() {
                             fn_80230498(hit, &playerPos, 0xED, 0xFF, -0x80, -0x80, true);
                         }
                         getActorManager_801F856C()->spawnActor_801F9484(
-                            'IMUP', field_0x4, &effectPos, (field_0x90 & 3) + 0xA00000 + (hit << 24) + (hit << 26) + 4, -1, -1);
+                            'IMUP', mLayer_0x4, &effectPos, (mSpawnParam_0x90 & 3) + 0xA00000 + (hit << 24) + (hit << 26) + 4, -1, -1);
                         fn_801F3668();
                         return;
                     }
@@ -269,8 +269,8 @@ void FleeingForceGem_804AB170::update() {
     }
     if (field_0x17d != 0) {
         field_0x240[4] = 20;
-        field_0x270 = field_0x4;
-        field_0x27c = field_0x3c;
+        field_0x270 = mLayer_0x4;
+        field_0x27c = mVel_0x3c;
     }
     if (player >= 0 || field_0x240[4] != 0) {
         switch (field_0x230) {
@@ -281,12 +281,12 @@ void FleeingForceGem_804AB170::update() {
             }
             break;
         case 1:
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             mPos.z = 0.0f;
             field_0x240[1] = 30;
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.z = 3.0f;
             field_0x230 = 2;
             {
                 s32 target = field_0x264;
@@ -295,17 +295,17 @@ void FleeingForceGem_804AB170::update() {
                 }
                 lbl_8053AED0->fn_8043D874(target, lbl_804AB160[field_0x268], 0);
                 if (getPlayerLayer_8023DE58(target) >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
-                    lbl_8053AED0->fn_8043D67C(0x194 - (field_0x90 & 3), target, 0);
+                    lbl_8053AED0->fn_8043D67C(0x194 - (mSpawnParam_0x90 & 3), target, 0);
                 }
             }
             fn_801F3604();
             // fall through: the original continues with state 2 (0x8031CCB4)
         case 2:
-            field_0x3c.z -= 0.5f;
-            if (mPos.z <= 0.0f && field_0x3c.z < 0.0f) {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+            mVel_0x3c.z -= 0.5f;
+            if (mPos.z <= 0.0f && mVel_0x3c.z < 0.0f) {
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 mPos.z = 0.0f;
             }
             if (fn_8023F264(field_0x264)) {
@@ -323,28 +323,28 @@ void FleeingForceGem_804AB170::update() {
                 field_0x240[1] = 0;
                 field_0x230 = 4;
             }
-            if (field_0x3c.squared() > 0.1f) {
-                mPos += field_0x3c;
+            if (mVel_0x3c.squared() > 0.1f) {
+                mPos += mVel_0x3c;
             } else {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
             }
             fn_801F2618(NULL, false);
             break;
         case 4:
             bobForceGem(this);
-            if (mPos.z <= 0.0f && field_0x3c.z <= 0.0f) {
-                s32 layer = field_0x4;
+            if (mPos.z <= 0.0f && mVel_0x3c.z <= 0.0f) {
+                s32 layer = mLayer_0x4;
                 if (getGameView_802D6A9C()->field_0x131df[layer] == 0) {
                     if (field_0x94 == 1) {
                         field_0x94 = 0;
                     }
                     mPos.z = 0.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.z = 0.0f;
                     if (dist < 100.0f || field_0x240[4] != 0) {
                         field_0x274 = field_0x276;
-                        s32 curLayer = field_0x4;
+                        s32 curLayer = mLayer_0x4;
                         GameView_804A9950* view = getGameView_802D6A9C();
                         const JGeometry::TBox2f* boxPtr;
                         if (curLayer < 8) {
@@ -389,8 +389,8 @@ void FleeingForceGem_804AB170::update() {
                         fn_801F2618(NULL, false);
                     }
                 } else {
-                    if (field_0x270 != field_0x4) {
-                        field_0x270 = field_0x4;
+                    if (field_0x270 != mLayer_0x4) {
+                        field_0x270 = mLayer_0x4;
                         field_0x27c.x = 0.0f;
                         field_0x27c.y = 2.0f * JMath::sincosTable_.cosShort(field_0x276);
                     }
@@ -398,7 +398,7 @@ void FleeingForceGem_804AB170::update() {
                         field_0x94 = 0;
                     }
                     mPos.z = 0.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.z = 0.0f;
                     if (dist < 100.0f || field_0x174 != 0) {
                         field_0x274 = field_0x276;
                         mPos += field_0x27c;
@@ -432,9 +432,9 @@ void FleeingForceGem_804AB170::update() {
             mPos += field_0x27c;
             fn_801F2618(NULL, false);
             if (field_0x240[2] <= 0) {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x27c.z = 0.0f;
                 field_0x27c.y = 0.0f;
                 field_0x27c.x = 0.0f;
@@ -458,11 +458,11 @@ void FleeingForceGem_804AB170::update() {
                     }
                     if (splash == true) {
                         field_0x238 = 0.0f;
-                        spawnEmitter_8013CC50(field_0x4, &mPos, effect1, -1, 1, NULL, NULL, true, 1.0f);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, effect2, 0, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, effect1, -1, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, effect2, 0, 0, NULL, NULL, true, 1.0f);
                     }
                 } else if (field_0x230 == 6) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
                     startSound_801F0E34(0x30022, 0);
                 }
             }
@@ -484,7 +484,7 @@ void FleeingForceGem_804AB170::update() {
             break;
         case 9:
             if (field_0x240[3] <= 0) {
-                field_0x268 = field_0x90 & 3;
+                field_0x268 = mSpawnParam_0x90 & 3;
                 field_0x230 = 10;
                 field_0x240[3] = 30;
                 fn_801F0D20(0x42);
@@ -492,7 +492,7 @@ void FleeingForceGem_804AB170::update() {
             break;
         case 10:
             if (field_0x240[3] <= 0) {
-                field_0x268 = field_0x90 & 3;
+                field_0x268 = mSpawnParam_0x90 & 3;
                 field_0x230 = 0;
             }
             break;
@@ -501,15 +501,15 @@ void FleeingForceGem_804AB170::update() {
         field_0x27c.x = 0.0f;
         field_0x27c.y = 0.0f;
         if (field_0x230 == 4) {
-            field_0x268 = field_0x90 & 3;
+            field_0x268 = mSpawnParam_0x90 & 3;
             field_0x230 = 3;
         }
         fn_801F2618(NULL, false);
     }
-    if (field_0x3c.squared() > 0.1f) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x345, 0, 0, NULL, NULL, true, 0.15f);
+    if (mVel_0x3c.squared() > 0.1f) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x345, 0, 0, NULL, NULL, true, 0.15f);
     }
-    if (field_0x230 != 8 && field_0x230 != 9 && field_0x4 < 8) {
+    if (field_0x230 != 8 && field_0x230 != 9 && mLayer_0x4 < 8) {
         JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     }
@@ -552,7 +552,7 @@ void FleeingForceGem_804AB170::draw() {
         setRotScaleMtx(mtx, rot, field_0x238);
         params.mMtx = mtx;
         s32 frame = field_0x254 + lbl_804AB130[field_0x268];
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
@@ -567,7 +567,7 @@ void FleeingForceGem_804AB170::draw() {
         JGeometry::TVec3f savedPos = mPos;
         mPos += field_0x294;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x254 + lbl_804AB130[field_0x268], &params, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
         mPos = savedPos;
     } else {
         if (field_0x264 >= 0 && field_0x264 <= 3) {
@@ -576,11 +576,11 @@ void FleeingForceGem_804AB170::draw() {
         }
         params.field_0x2d = 1;
         s32 frame = field_0x254 + lbl_804AB130[field_0x268];
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + lbl_804AB130[field_0x268], 0, 2, -1, 0, 0, 0);
     }
 }
 

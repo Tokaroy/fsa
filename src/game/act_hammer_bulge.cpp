@@ -11,9 +11,9 @@
 
 void HammerBulge_804A88E8::init() {
     mBox.set(-50.0f, -50.0f, 50.0f, 50.0f);
-    field_0x234 = field_0x90 & 0xF;
-    field_0x238 = (field_0x90 >> 4) & 0xFFFF;
-    field_0x24d = (field_0x90 >> 20) & 1;
+    field_0x234 = mSpawnParam_0x90 & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 4) & 0xFFFF;
+    field_0x24d = (mSpawnParam_0x90 >> 20) & 1;
     field_0x23c = 0;
     field_0x240 = 0;
     field_0x244 = 0.0f;
@@ -28,7 +28,7 @@ void HammerBulge_804A88E8::init() {
                 if (field_0x234 != 5) {
                     msg = 0x389;
                 }
-                getActorManager_801F856C()->spawnActor_801F9484('JIJI', field_0x4, &mPos, ((msg - 0x12b) | 0x00110000), -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('JIJI', mLayer_0x4, &mPos, ((msg - 0x12b) | 0x00110000), -1, -1);
             }
         }
         mAlive = false;
@@ -41,7 +41,7 @@ void HammerBulge_804A88E8::update() {
     case 0: {
         int j;
         if (field_0x244 > 0.0f || field_0x248 > 0.0f) {
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 5, NULL, field_0x244, field_0x248);
             }
         }
@@ -84,7 +84,7 @@ void HammerBulge_804A88E8::update() {
                 box.addPos(mPos.x, mPos.y);
 
                 JGeometry::TVec2f out;
-                if (fn_8023AAF8(j, &box, field_0x4, &out) == 1) {
+                if (fn_8023AAF8(j, &box, mLayer_0x4, &out) == 1) {
                     field_0x240 = 5;
                     f32 dx = out.x - mPos.x;
                     f32 dy = out.y - mPos.y;
@@ -105,18 +105,18 @@ void HammerBulge_804A88E8::update() {
                                 if (kind < 5) {
                                     arg = kind + 3;
                                 }
-                                serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &pos, arg);
+                                serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &pos, arg);
                             } else if (kind == 5 || kind == 6) {
-                                serial = getActorManager_801F856C()->spawnActor_801F9484('KEY0', field_0x4, &pos, ((kind - 5) * 6) | 0x300, -1, -1);
+                                serial = getActorManager_801F856C()->spawnActor_801F9484('KEY0', mLayer_0x4, &pos, ((kind - 5) * 6) | 0x300, -1, -1);
                             } else {
-                                serial = getActorManager_801F856C()->spawnActor_801F9484('BHRT', field_0x4, &pos, 0, -1, -1);
+                                serial = getActorManager_801F856C()->spawnActor_801F9484('BHRT', mLayer_0x4, &pos, 0, -1, -1);
                             }
 
                             if (serial >= 0) {
                                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                                 if (actor != NULL) {
                                     if (actor->mActorId == 'KEY0') {
-                                        actor->field_0x3c = JGeometry::TVec3f(
+                                        actor->mVel_0x3c = JGeometry::TVec3f(
                                             0.35f - 0.7f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                             0.35f - 0.7f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                             5.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
@@ -124,13 +124,13 @@ void HammerBulge_804A88E8::update() {
                                     } else if (actor->mActorId == 'BHRT') {
                                         s16 angle = 65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                                         f32 speed = 0.15f + 0.35f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                                        actor->field_0x3c = JGeometry::TVec3f(
+                                        actor->mVel_0x3c = JGeometry::TVec3f(
                                             speed * JMath::sincosTable_.sinShort(angle),
                                             speed * JMath::sincosTable_.cosShort(angle),
                                             5.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
                                         );
                                     } else {
-                                        actor->field_0x3c = JGeometry::TVec3f(
+                                        actor->mVel_0x3c = JGeometry::TVec3f(
                                             0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                             0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                             5.0f + 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
@@ -139,8 +139,8 @@ void HammerBulge_804A88E8::update() {
                                 }
                             }
 
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x291, 0, 0, NULL, NULL, true, 0.4f);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x5c, 0, 0, NULL, NULL, true, 0.5f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x291, 0, 0, NULL, NULL, true, 0.4f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5c, 0, 0, NULL, NULL, true, 0.5f);
 
                             if (getGameView_802D6A9C()->field_0x4 == 2 && getGameView_802D6A9C()->field_0x8 == 1) {
                                 pos.x += 16.0f;
@@ -148,7 +148,7 @@ void HammerBulge_804A88E8::update() {
                                 if (field_0x234 != 5) {
                                     msg = 0x389;
                                 }
-                                getActorManager_801F856C()->spawnActor_801F9484('JIJI', field_0x4, &pos, ((msg - 0x12b) | 0x02110000), -1, -1);
+                                getActorManager_801F856C()->spawnActor_801F9484('JIJI', mLayer_0x4, &pos, ((msg - 0x12b) | 0x02110000), -1, -1);
                             }
                         } else {
                             s32 tkta;
@@ -157,8 +157,8 @@ void HammerBulge_804A88E8::update() {
                             } else if (field_0x234 == 9) {
                                 tkta = 5;
                             }
-                            getActorManager_801F856C()->spawnActor_801F9484('TKTA', field_0x4, &mPos, tkta, -1, -1);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x240, 0, 0, NULL, NULL, true, 1.0f);
+                            getActorManager_801F856C()->spawnActor_801F9484('TKTA', mLayer_0x4, &mPos, tkta, -1, -1);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x240, 0, 0, NULL, NULL, true, 1.0f);
                         }
 
                         if (field_0x24d == 1) {

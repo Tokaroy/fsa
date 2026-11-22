@@ -63,17 +63,17 @@ WindEnvironment_8049CC98::~WindEnvironment_8049CC98() {
 // f0 where the original has f0 and f1 (the box copy, with its stack slot, matches).
 void WindEnvironment_8049CC98::init() {
     ActorBase_804A5770::init();
-    mKind = field_0x90 & 0xF;
-    mCondition = (field_0x90 >> 4) & 0xF;
+    mKind = mSpawnParam_0x90 & 0xF;
+    mCondition = (mSpawnParam_0x90 >> 4) & 0xF;
     s32 kind = mKind;
     JGeometry::TVec3f pos;
     setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
     switch (kind) {
     case 0:
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &pos, 0x505, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x505, 0, 0, NULL, NULL, true, 1.0f);
         break;
     case 1:
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &pos, 0x504, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x504, 0, 0, NULL, NULL, true, 1.0f);
         break;
     }
     if (mEmitter != NULL) {
@@ -147,7 +147,7 @@ void WindEnvironment_8049CC98::fn_80106ADC(s32 state) {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (field_0x4 == getPlayerLayer_8023DE58(i) && fn_8023F264(i) && !fn_80234D94(i) && !fn_8022D75C(i) &&
+        if (mLayer_0x4 == getPlayerLayer_8023DE58(i) && fn_8023F264(i) && !fn_80234D94(i) && !fn_8022D75C(i) &&
             !fn_80230188(i) && (fn_8022CAF8(i) != 4 || !fn_8022F478(i))) {
             u16 tile = fn_80226850(getPlayerPos_8023E724(i), getPlayerLayer_8023DE58(i));
             if (tile < 0x3EE || tile > 0x3EF) {

@@ -41,13 +41,13 @@ ShadowLinkGenerator_804A4310::~ShadowLinkGenerator_804A4310() {
 
 void ShadowLinkGenerator_804A4310::init() {
     EnemyBase_804A4808::init();
-    mSlotFirst = (field_0x90 >> 8) & 0xFF;
-    mSlotLast = (field_0x90 >> 16) & 0xFF;
+    mSlotFirst = (mSpawnParam_0x90 >> 8) & 0xFF;
+    mSlotLast = (mSpawnParam_0x90 >> 16) & 0xFF;
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -61,9 +61,9 @@ void ShadowLinkGenerator_804A4310::init() {
     if (isScreenFlagSet_0x34()) {
         mState = 0xB;
     } else {
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4F, 0, 0, NULL, NULL, true, 1.0f);
         for (s32 i = 0; i < 3; i++) {
-            mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053EDA8[i], 0, 0, NULL, NULL, true, 1.0f);
+            mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDA8[i], 0, 0, NULL, NULL, true, 1.0f);
         }
     }
     fn_801C0D70()->field_0x50 = mSerial;
@@ -129,7 +129,7 @@ void ShadowLinkGenerator_804A4310::update() {
         if (fn_801C0D70()->field_0x0 & 0x80) {
             setScreenFlag_0x30(0xFF, true);
             for (s32 i = 0; i < 3; i++) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053EDB0[i], 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDB0[i], 0, 0, NULL, NULL, true, 1.0f);
             }
             mStateTimer = 0;
             mState = 6;
@@ -152,7 +152,7 @@ void ShadowLinkGenerator_804A4310::update() {
             for (s32 i = 0; i < 5; i++) {
                 deleteEmitter(&mEmitters2[i]);
             }
-            s32 serial = getActorManager_801F856C()->fn_801F7884('DMZL', field_0x4);
+            s32 serial = getActorManager_801F856C()->fn_801F7884('DMZL', mLayer_0x4);
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
@@ -192,7 +192,7 @@ void ShadowLinkGenerator_804A4310::update() {
         if (mStateTimer >= 0x5A) {
             mSequence.fn_8021F924();
             for (s32 i = 0; i < 5; i++) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80469418[i], 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80469418[i], 0, 0, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x5006F, 0);
             mStateTimer = 0;
@@ -231,7 +231,7 @@ void ShadowLinkGenerator_804A4310::draw() {
     if (mState != 0xB) {
         SpriteParams_801F5AE0 params;
         params.field_0x1d = -2;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         void* res = mTexture;
         if (layer < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
@@ -248,7 +248,7 @@ void ShadowLinkGenerator_804A4310::fn_801C186C() const {
     for (s32 i = 0; i < 4; i++) {
         u8 first = mSlotFirst;
         s32 slot = first + fn_801CD664(mSlotLast - first + 1);
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLK2, field_0x4, &mPos, fn_801C5660(8, 0, slot, 0, 0), -1, -1);
+        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLK2, mLayer_0x4, &mPos, fn_801C5660(8, 0, slot, 0, 0), -1, -1);
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
@@ -263,10 +263,10 @@ void ShadowLinkGenerator_804A4310::fn_801C186C() const {
 void ShadowLinkGenerator_804A4310::fn_801C1768() {
     s32 i;
     for (i = 0; i < 5; i++) {
-        mEmitters2[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80469424[i], 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters2[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80469424[i], 0, 0, NULL, NULL, true, 1.0f);
     }
     for (i = 0; i < 4; i++) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053EDB8[i], 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053EDB8[i], 0, 0, NULL, NULL, true, 1.0f);
     }
     releaseEmitter_801EE434(mEmitter);
     mEmitter = NULL;

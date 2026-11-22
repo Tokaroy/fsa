@@ -6,8 +6,8 @@
 #include "game/act/tu_801DAC6C.h"
 
 void cls_804A4C58::fn_801E63D8() {
-    mEmitter2c[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x25e, 0, 0, NULL, NULL, true, 1.0f);
-    mEmitter2c[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x25f, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2c[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x25e, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2c[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x25f, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A4C58::fn_801E6394() {
@@ -18,18 +18,18 @@ void cls_804A4C58::fn_801E6394() {
 }
 
 void cls_804A4C58::fn_801E631C() const {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x25a, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x25b, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x25a, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x25b, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A4C58::fn_801E62D4() const {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x259, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x259, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A4C58::fn_801E6234() {
     JGeometry::TVec3f pos(mPos.x, -40.0f + mPos.y, mPos.z);
-    mEmitter2c[2] = spawnEmitter_8013CC50(field_0x4, &pos, 0x25c, 0, 0, NULL, NULL, true, 1.0f);
-    mEmitter2c[3] = spawnEmitter_8013CC50(field_0x4, &pos, 0x25d, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2c[2] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x25c, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2c[3] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x25d, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A4C58::fn_801E61C4() {

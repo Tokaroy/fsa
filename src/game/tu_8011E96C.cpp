@@ -6,11 +6,11 @@
 
 // Whether the actor's layer is 0 or any player's layer (getPlayerLayer_8023DE58).
 static inline bool isOnPlayerLayer(const ActorBase_804A5770* actor) {
-    if (actor->field_0x4 == 0) {
+    if (actor->mLayer_0x4 == 0) {
         return true;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (actor->field_0x4 == getPlayerLayer_8023DE58(i)) {
+        if (actor->mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
             return true;
         }
     }
@@ -18,13 +18,13 @@ static inline bool isOnPlayerLayer(const ActorBase_804A5770* actor) {
 }
 
 void cls_8049DE90::init() {
-    mDuration = field_0x90 & 0x3F;
+    mDuration = mSpawnParam_0x90 & 0x3F;
     mDuration *= 10;
-    mCycle = (field_0x90 >> 6) & 1;
-    mTable[0] = (field_0x90 >> 7) & 0x1F;
-    mTable[1] = (field_0x90 >> 12) & 0x1F;
-    mTable[2] = (field_0x90 >> 17) & 0x1F;
-    mTable[3] = (field_0x90 >> 22) & 0x1F;
+    mCycle = (mSpawnParam_0x90 >> 6) & 1;
+    mTable[0] = (mSpawnParam_0x90 >> 7) & 0x1F;
+    mTable[1] = (mSpawnParam_0x90 >> 12) & 0x1F;
+    mTable[2] = (mSpawnParam_0x90 >> 17) & 0x1F;
+    mTable[3] = (mSpawnParam_0x90 >> 22) & 0x1F;
     bool empty = true;
     for (s32 i = 0; i < 4; i++) {
         if (mTable[i] != 0) {

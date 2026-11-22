@@ -17,7 +17,7 @@ public:
     // 0x801DB2C8 (EnemyBase's player-hit hook): hits every player whose box
     // overlaps mBox (fn_801F2740(-1)), at the centre of mBox (fn_801F3128)
     // or, for a player for whom fn_801F329C holds, that centre converted by
-    // fn_801CD0D0, with fn_80238548(player, field_0x114, &pos, 1). Returns
+    // fn_801CD0D0, with fn_80238548(player, mParamAtcp_0x114, &pos, 1). Returns
     // the bitmask of the players overlapping mBox (0 when mBox is empty).
     /* 0x68 */ virtual u8 attackPlayers_0x68();
     /* 0x94 */ virtual void updateAnim_0x94();

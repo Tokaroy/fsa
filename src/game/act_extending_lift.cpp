@@ -49,17 +49,17 @@ inline bool ExtendingLift_804A78B0::isPlayerOn(s32 player) {
 // FIXME: 97.85 %, missing/extra; behaviour near.
 // FIXME: The flags test loads 0x90 into r3 and reuses it; the original loads it into r0 for the test and reloads 0x90(r31) for ori/oris.
 void ExtendingLift_804A78B0::init() {
-    if (!((field_0x90 >> 7) & 0x1F)) {
-        field_0x90 |= 0x80;
+    if (!((mSpawnParam_0x90 >> 7) & 0x1F)) {
+        mSpawnParam_0x90 |= 0x80;
     }
-    if (!((field_0x90 >> 17) & 0x1F)) {
-        field_0x90 |= 0x20000;
+    if (!((mSpawnParam_0x90 >> 17) & 0x1F)) {
+        mSpawnParam_0x90 |= 0x20000;
     }
 
     field_0x240 = static_cast<const ResTIMG*>(gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8053A198[0]));
     mLife = 0;
 
-    switch ((field_0x90 >> 12) & 0x1F) {
+    switch ((mSpawnParam_0x90 >> 12) & 0x1F) {
     case 0:
         break;
     case 1:
@@ -72,10 +72,10 @@ void ExtendingLift_804A78B0::init() {
         break;
     }
 
-    if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
-        field_0x238.set(0.0f, 16.0f * (s32)((field_0x90 >> 7) & 0x1F));
+    if ((s32)((mSpawnParam_0x90 >> 12) & 0x1F) < 2) {
+        field_0x238.set(0.0f, 16.0f * (s32)((mSpawnParam_0x90 >> 7) & 0x1F));
     } else {
-        field_0x238.set(16.0f * (s32)((field_0x90 >> 7) & 0x1F), 0.0f);
+        field_0x238.set(16.0f * (s32)((mSpawnParam_0x90 >> 7) & 0x1F), 0.0f);
     }
 
     field_0x230.set(field_0x238.x / field_0x240->mSizeX, field_0x238.y / field_0x240->mSizeY);
@@ -91,7 +91,7 @@ void ExtendingLift_804A78B0::update() {
         }
         field_0x244 = 1;
     } else {
-        if (!(field_0x90 & 0x7F)) {
+        if (!(mSpawnParam_0x90 & 0x7F)) {
             if (field_0x244 == 1) {
                 startSound_801F0E34(0x30041, 0);
             }
@@ -100,19 +100,19 @@ void ExtendingLift_804A78B0::update() {
     }
 
     if (field_0x244) {
-        if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
+        if ((s32)((mSpawnParam_0x90 >> 12) & 0x1F) < 2) {
             field_0x238.x += 1.0f;
-            if (field_0x238.x >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
-                field_0x238.x = 16 * (s32)((field_0x90 >> 17) & 0x1F);
+            if (field_0x238.x >= 16 * (s32)((mSpawnParam_0x90 >> 17) & 0x1F)) {
+                field_0x238.x = 16 * (s32)((mSpawnParam_0x90 >> 17) & 0x1F);
             }
         } else {
             field_0x238.y += 1.0f;
-            if (field_0x238.y >= 16 * (s32)((field_0x90 >> 17) & 0x1F)) {
-                field_0x238.y = 16 * (s32)((field_0x90 >> 17) & 0x1F);
+            if (field_0x238.y >= 16 * (s32)((mSpawnParam_0x90 >> 17) & 0x1F)) {
+                field_0x238.y = 16 * (s32)((mSpawnParam_0x90 >> 17) & 0x1F);
             }
         }
     } else {
-        if ((s32)((field_0x90 >> 12) & 0x1F) < 2) {
+        if ((s32)((mSpawnParam_0x90 >> 12) & 0x1F) < 2) {
             field_0x238.x -= 1.0f;
             if (field_0x238.x <= 0.0f) {
                 field_0x238.x = 0.0f;
@@ -130,7 +130,7 @@ void ExtendingLift_804A78B0::update() {
     oldCenter.y = (mBox.i.y - mBox.f.y) * 0.5f + mBox.f.y;
     oldCenter.z = 0.0f;
 
-    switch ((field_0x90 >> 12) & 0x1F) {
+    switch ((mSpawnParam_0x90 >> 12) & 0x1F) {
     case 0:
         mBox.set(0.0f, 3.0f, field_0x238.x, field_0x238.y - 3.0f);
         break;
@@ -169,7 +169,7 @@ void ExtendingLift_804A78B0::draw() {
     params.field_0x1d = -1;
 
     Mtx mtx;
-    switch ((field_0x90 >> 12) & 0x1F) {
+    switch ((mSpawnParam_0x90 >> 12) & 0x1F) {
     case 0:
         PSMTXTrans(mtx,
                    (field_0x240->mSizeX * field_0x230.x) / 2.0f,
@@ -208,7 +208,7 @@ void ExtendingLift_804A78B0::draw() {
     params.field_0x1d = -2;
 
     const char* name = lbl_8053A198[0];
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }

@@ -21,10 +21,10 @@ void Eyegore_804A3548::init() {
     mBox.i.y = -22.0f;
     mBox.f.x = 12.0f;
     mBox.f.y = 2.0f;
-    field_0x80.i.x = -12.0f;
-    field_0x80.i.y = -22.0f;
-    field_0x80.f.x = 12.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -12.0f;
+    mMapBox_0x80.i.y = -22.0f;
+    mMapBox_0x80.f.x = 12.0f;
+    mMapBox_0x80.f.y = 8.0f;
     mBox2.i.x = -16.0f;
     mBox2.i.y = -24.0f;
     mBox2.f.x = 16.0f;
@@ -37,15 +37,15 @@ void Eyegore_804A3548::init() {
     mTimers[2] = 0;
     mTimers[3] = 0;
     field_0xb8 = 1;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     field_0x250 = 0x12;
     field_0xbc = 4;
     field_0x25c.z = 0.0f;
     field_0x25c.y = 0.0f;
     field_0x25c.x = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     mLife = 0x3EF;
     field_0x258 = 2;
     field_0x254 = mLife;
@@ -68,7 +68,7 @@ void Eyegore_804A3548::vfunc_0x44() {
         }
         mTimers[0] = 0;
         field_0x244 = 0;
-        field_0x250 = field_0x98 + 0x10;
+        field_0x250 = mDir_0x98 + 0x10;
         mTimers[2] = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x3C;
         field_0x230 = 0;
     }
@@ -93,9 +93,9 @@ void Eyegore_804A3548::update() {
     }
 
     fn_801EF510();
-    addCalc2_801F71A4(&field_0x3c.x, field_0x25c.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x25c.y, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x25c.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x25c.y, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
 
     for (s32 i = 0; i < 4; i++) {
         s32 player = fn_801F285C(NULL, NULL, false, i);
@@ -109,8 +109,8 @@ void Eyegore_804A3548::update() {
         center.x = box.f.x + 0.5f * (box.i.x - box.f.x);
         center.y = box.f.y + 0.5f * (box.i.y - box.f.y);
         if (fn_80237948(player, &center)) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x400D1, 0);
         }
     }
@@ -124,19 +124,19 @@ void Eyegore_804A3548::update() {
         field_0x25c.z = 0.0f;
         field_0x25c.y = 0.0f;
         field_0x25c.x = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         field_0xb0 = 0x0A040004;
-        field_0x98 = 2;
-        field_0x250 = field_0x98 * 4;
+        mDir_0x98 = 2;
+        field_0x250 = mDir_0x98 * 4;
         mTimers[0] = 12;
         field_0xbc = 4;
         field_0x230 = 1;
         // fall through
     case 1:
         if (mTimers[0] == 0) {
-            field_0x250 = field_0x98 + 0x10;
+            field_0x250 = mDir_0x98 + 0x10;
         }
         if (mTimers[2] != 0) {
             break;
@@ -154,12 +154,12 @@ void Eyegore_804A3548::update() {
             break;
         }
         if (field_0x244 == 0) {
-            field_0x250 = field_0x98 * 4;
+            field_0x250 = mDir_0x98 * 4;
         } else {
-            field_0x250 = field_0x98 + 0x10;
+            field_0x250 = mDir_0x98 + 0x10;
             field_0x248++;
             if (field_0x248 > 2) {
-                field_0x250 = field_0x98 * 4;
+                field_0x250 = mDir_0x98 * 4;
                 field_0x230 = 3;
                 break;
             }
@@ -180,16 +180,16 @@ void Eyegore_804A3548::update() {
         break;
     case 4:
         if (mTimers[3] == 0 && dir >= 0) {
-            if (field_0x98 != dir) {
+            if (mDir_0x98 != dir) {
                 mTimers[0] = 0;
                 field_0x244 = 0;
             }
-            field_0x98 = dir;
+            mDir_0x98 = dir;
         }
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
-        switch (field_0x98) {
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        switch (mDir_0x98) {
         case 0:
             field_0x25c.x = 1.4f;
             field_0x25c.y = 0.0f;
@@ -218,17 +218,17 @@ void Eyegore_804A3548::update() {
         // fall through
     case 5:
         if (hit) {
-            field_0x98 ^= 2;
+            mDir_0x98 ^= 2;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
             f32 savedX = mPos.x;
             f32 savedY = mPos.y;
             f32 savedZ = mPos.z;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
-            switch (field_0x98) {
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            switch (mDir_0x98) {
             case 0:
                 field_0x25c.x = 16.0f;
                 field_0x25c.y = 0.0f;
@@ -252,7 +252,7 @@ void Eyegore_804A3548::update() {
             }
             mPos += field_0x25c;
             if (fn_801F2618(NULL, false)) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
             mPos.x = savedX;
             mPos.y = savedY;
@@ -260,15 +260,15 @@ void Eyegore_804A3548::update() {
             field_0x25c.z = 0.0f;
             field_0x25c.y = 0.0f;
             field_0x25c.x = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             mTimers[3] = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
             mTimers[0] = 0;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
-            switch (field_0x98) {
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            switch (mDir_0x98) {
             case 0:
                 field_0x25c.x = 1.4f;
                 field_0x25c.y = 0.0f;
@@ -294,12 +294,12 @@ void Eyegore_804A3548::update() {
             if (mTimers[2] == 0) {
                 mTimers[0] = 0;
                 field_0x244 = 0;
-                field_0x250 = field_0x98 + 0x10;
+                field_0x250 = mDir_0x98 + 0x10;
                 mTimers[2] = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
                 field_0x230 = 0;
             } else {
                 if (mTimers[0] == 0) {
-                    field_0x250 = field_0x98 * 4 + field_0x244;
+                    field_0x250 = mDir_0x98 * 4 + field_0x244;
                     mTimers[0] = 6;
                     field_0x244++;
                     field_0x244 &= 3;
@@ -327,7 +327,7 @@ void Eyegore_804A3548::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     f32 flip = 1.0f;
-    if (field_0x98 == 0) {
+    if (mDir_0x98 == 0) {
         flip = -1.0f;
     }
     mtx[0][0] = flip;

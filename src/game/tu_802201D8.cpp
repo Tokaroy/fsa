@@ -14,7 +14,7 @@ cls_804A6828::~cls_804A6828() {
 
 void cls_804A6828::init() {
     cls_804A48B0::init();
-    mEmitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x290, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x290, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 void cls_804A6828::update() {
@@ -23,5 +23,5 @@ void cls_804A6828::update() {
 }
 
 void cls_804A6828::draw() {
-    drawShadow(field_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 24.0f);
+    drawShadow(mLayer_0x4, &mPos, JUtility::TColor(0, 0, 0, 0x80), 24.0f);
 }

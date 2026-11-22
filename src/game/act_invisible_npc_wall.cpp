@@ -4,10 +4,10 @@
 #include "game/act/act_invisible_npc_wall.h"
 
 void InvisibleNPCWallForLink_804AE780::init() {
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
-    f32 w = ((field_0x90 & 0xFF) + 1) * 8;
-    f32 h = (((field_0x90 >> 8) & 0xFF) + 1) * 8;
-    if ((field_0x90 >> 16) & 1) {
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+    f32 w = ((mSpawnParam_0x90 & 0xFF) + 1) * 8;
+    f32 h = (((mSpawnParam_0x90 >> 8) & 0xFF) + 1) * 8;
+    if ((mSpawnParam_0x90 >> 16) & 1) {
         mPos.x += w;
         mPos.y += h;
     } else {
@@ -15,8 +15,8 @@ void InvisibleNPCWallForLink_804AE780::init() {
         mPos.y = h + (s32)mPos.y / 16 * 16;
     }
     mBox.set(-w, -h, w, h);
-    field_0x80.set(-w, -h, w, h);
-    field_0x230 = field_0x90 >> 27;
+    mMapBox_0x80.set(-w, -h, w, h);
+    field_0x230 = mSpawnParam_0x90 >> 27;
 }
 
 void InvisibleNPCWallForLink_804AE780::update() {
@@ -26,7 +26,7 @@ void InvisibleNPCWallForLink_804AE780::update() {
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 }
 

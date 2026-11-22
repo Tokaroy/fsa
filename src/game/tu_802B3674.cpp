@@ -24,27 +24,27 @@ void cls_804A8638::init() {
     field_0x234 = NULL;
     field_0x238 = NULL;
     mEmitter = NULL;
-    field_0x260 = (field_0x90 >> 22) & 7;
-    field_0x264 = (field_0x90 >> 21) & 1;
-    field_0x268 = (field_0x90 >> 20) & 1;
-    field_0x270 = (field_0x90 >> 19) & 1;
-    field_0x274 = (field_0x90 >> 18) & 1;
-    field_0x278 = (field_0x90 >> 17) & 1;
-    field_0x27c = (field_0x90 >> 16) & 1;
-    field_0x280 = (field_0x90 >> 15) & 1;
-    field_0x288 = (field_0x90 >> 13) & 3;
-    field_0x28c = (field_0x90 >> 12) & 1;
-    field_0x290 = (field_0x90 >> 11) & 1;
-    field_0x294 = (field_0x90 >> 10) & 1;
-    field_0x298 = (field_0x90 >> 9) & 1;
-    field_0x29c = (field_0x90 >> 8) & 1;
-    field_0x2a0 = (field_0x90 >> 7) & 1;
-    field_0x2a4 = (field_0x90 >> 6) & 1;
-    field_0x2a8 = (field_0x90 >> 5) & 1;
-    field_0x2ac = (field_0x90 >> 4) & 1;
-    field_0x2b4 = (field_0x90 >> 26) & 1;
-    field_0x2b8 = (field_0x90 >> 25) & 1;
-    field_0x2d8 = field_0x90 & 0xF;
+    field_0x260 = (mSpawnParam_0x90 >> 22) & 7;
+    field_0x264 = (mSpawnParam_0x90 >> 21) & 1;
+    field_0x268 = (mSpawnParam_0x90 >> 20) & 1;
+    field_0x270 = (mSpawnParam_0x90 >> 19) & 1;
+    field_0x274 = (mSpawnParam_0x90 >> 18) & 1;
+    field_0x278 = (mSpawnParam_0x90 >> 17) & 1;
+    field_0x27c = (mSpawnParam_0x90 >> 16) & 1;
+    field_0x280 = (mSpawnParam_0x90 >> 15) & 1;
+    field_0x288 = (mSpawnParam_0x90 >> 13) & 3;
+    field_0x28c = (mSpawnParam_0x90 >> 12) & 1;
+    field_0x290 = (mSpawnParam_0x90 >> 11) & 1;
+    field_0x294 = (mSpawnParam_0x90 >> 10) & 1;
+    field_0x298 = (mSpawnParam_0x90 >> 9) & 1;
+    field_0x29c = (mSpawnParam_0x90 >> 8) & 1;
+    field_0x2a0 = (mSpawnParam_0x90 >> 7) & 1;
+    field_0x2a4 = (mSpawnParam_0x90 >> 6) & 1;
+    field_0x2a8 = (mSpawnParam_0x90 >> 5) & 1;
+    field_0x2ac = (mSpawnParam_0x90 >> 4) & 1;
+    field_0x2b4 = (mSpawnParam_0x90 >> 26) & 1;
+    field_0x2b8 = (mSpawnParam_0x90 >> 25) & 1;
+    field_0x2d8 = mSpawnParam_0x90 & 0xF;
     if (fn_802DEBA0() == true && field_0x2d8 != 0xF && field_0x2d8 != 0xD) {
         field_0x2d8 = 0;
     }
@@ -113,11 +113,11 @@ void cls_804A8638::init() {
     }
     if (field_0x288 != 0) {
         field_0x310 = fn_801B7550();
-        if (field_0x288 == 2 && (field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
+        if (field_0x288 == 2 && (mSpawnParam_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
             field_0x288 = 1;
         }
         if (field_0x288 == 1) {
-            if (((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34() == true) || getGameView_802D6A9C()->field_0x131f2 != 0) {
+            if (((mSpawnParam_0x90 >> 27) != 0 && isScreenFlagSet_0x34() == true) || getGameView_802D6A9C()->field_0x131f2 != 0) {
                 field_0x288 = 2;
             }
         }
@@ -145,8 +145,8 @@ void cls_804A8638::init() {
             field_0x2c0[3] = 0.5f;
             field_0x24c = fn_801CD664(100);
             field_0x250 = 0;
-            field_0x234 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
-            field_0x238 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
+            field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
+            field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
             getGameView_802D6A9C()->fn_802D6BF8(1);
             vfunc_0x60();
         } else {
@@ -162,16 +162,16 @@ void cls_804A8638::init() {
             field_0x2c0[3] = 0.5f;
             field_0x24c = fn_801CD664(100);
             field_0x250 = 0;
-            field_0x234 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
-            field_0x238 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
+            field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
+            field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
             getGameView_802D6A9C()->fn_802D6BF8(1);
             vfunc_0x60();
         }
     }
     if (field_0x290 != 0) {
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x449, 1, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x449, 1, 0, NULL, NULL, true, 1.0f);
     } else if (field_0x294 != 0) {
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x58, 1, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x58, 1, 0, NULL, NULL, true, 1.0f);
     } else if (mEmitter != NULL) {
         mEmitter->becomeInvalidEmitter();
         mEmitter = NULL;
@@ -260,7 +260,7 @@ void cls_804A8638::init() {
     JGeometry::TVec3f saved = mPos;
     update();
     mPos = saved;
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 // 0x802B5284.
@@ -558,7 +558,7 @@ void cls_804A8638::update() {
             for (s32 i = 0; i < end; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                 if (actor != NULL && actor->mActorId == 'BPH2') {
-                    u32 p = actor->field_0x90;
+                    u32 p = actor->mSpawnParam_0x90;
                     found = true;
                     field_0x324[0] = p >> 27;
                     field_0x324[1] = (p >> 22) & 0x1F;
@@ -624,7 +624,7 @@ void cls_804A8638::update() {
     case 11: {
         switch (field_0x240) {
         case 0: {
-            if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
+            if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 vfunc_0x54(0xFF, 0xFF, 0xFF, 0, 0xFF, 0);
                 field_0x240 = 1;
             }
@@ -653,7 +653,7 @@ void cls_804A8638::update() {
     case 12: {
         switch (field_0x240) {
         case 0:
-            if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
+            if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 field_0x240 = 1;
             }
             break;
@@ -674,14 +674,14 @@ void cls_804A8638::update() {
 
     if (field_0x288 != 0) {
         mPos = *getPlayerPos_8023E724(0);
-        if (field_0x288 != 1 || (field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+        if (field_0x288 != 1 || (mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             if (!paused) {
                 field_0x24c--;
                 if (field_0x24c == 0) {
                     if (gGameRoot_8053AAF8->field_0x4c != 0xB) {
                         mSoundObj->startSound(0x30031);
                     }
-                    spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x488, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x488, 1, 0, NULL, NULL, true, 1.0f);
                     field_0x24c = fn_801CD664(0x97) + 50;
                     if (fn_802DEBF8()) {
                         field_0x24c += fn_801CD664(0xDD) + 80;
@@ -693,15 +693,15 @@ void cls_804A8638::update() {
 
     switch (field_0x288) {
     case 1:
-        if ((field_0x90 >> 27) != 0 && isScreenFlagSet_0x34() != true) {
+        if ((mSpawnParam_0x90 >> 27) != 0 && isScreenFlagSet_0x34() != true) {
             break;
         }
         if (field_0x250 == 0) {
             field_0x250 = 20;
             if (!paused) {
                 if (field_0x234 == NULL) {
-                    field_0x234 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
-                    field_0x238 = spawnEmitter_8013CC50(field_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
+                    field_0x234 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A1, 1, 0, NULL, NULL, true, 1.0f);
+                    field_0x238 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x254, 0x3A2, 1, 0, NULL, NULL, true, 1.0f);
                     getGameView_802D6A9C()->fn_802D6BF8(1);
                     vfunc_0x60();
                 }
@@ -784,7 +784,7 @@ void cls_804A8638::update() {
         }
         break;
     case 3:
-        if (field_0x250 == 0 && ((field_0x90 >> 27) == 0 || !isScreenFlagSet_0x34())) {
+        if (field_0x250 == 0 && ((mSpawnParam_0x90 >> 27) == 0 || !isScreenFlagSet_0x34())) {
             field_0x250 = 20;
             if (field_0x2c0[0] > 1.0f) {
                 field_0x2c0[0] -= field_0x2c0[2];

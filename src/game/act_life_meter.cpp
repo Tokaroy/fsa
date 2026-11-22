@@ -16,8 +16,8 @@ void LifeMeter_804B174C::init() {
         mTimers[i] = 0;
     }
     field_0x250 = mSerial;
-    if ((field_0x90 & 0xF) != 0) {
-        field_0x250 = field_0x90 - 1;
+    if ((mSpawnParam_0x90 & 0xF) != 0) {
+        field_0x250 = mSpawnParam_0x90 - 1;
     }
     field_0x24c = 4;
     field_0x258 = 0.0f;
@@ -41,7 +41,7 @@ void LifeMeter_804B174C::update() {
             mTimers[i]--;
         }
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     switch (field_0x230) {
     case 0:
         field_0x230 = 1;
@@ -49,7 +49,7 @@ void LifeMeter_804B174C::update() {
     case 1: {
         JGeometry::TVec3f pos;
         ActorBase_804A5770* actor;
-        if ((field_0x90 & 0xF) == 0) {
+        if ((mSpawnParam_0x90 & 0xF) == 0) {
             actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x250);
             if (!actor || field_0x24c < 0) {
                 mAlive = false;
@@ -62,7 +62,7 @@ void LifeMeter_804B174C::update() {
                 break;
             }
         }
-        if ((field_0x90 & 0xF) == 0) {
+        if ((mSpawnParam_0x90 & 0xF) == 0) {
             pos.x = actor->mPos.x;
             pos.y = actor->mPos.y;
             pos.z = actor->mPos.z;
@@ -127,7 +127,7 @@ void LifeMeter_804B174C::draw() {
     mtx[2][2] = sy;
     params.mMtx = mtx;
     void* res = fn_804030C4('TIMG', lbl_804B1738[field_0x24c]);
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
 }

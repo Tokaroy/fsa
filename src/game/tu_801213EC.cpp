@@ -120,10 +120,10 @@ void EscortBase_8049E0C8::fn_80124448() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
     field_0xb8 = 2;
     vfunc_0x70();
     vfunc_0x74();
@@ -160,7 +160,7 @@ void EscortBase_8049E0C8::update() {
     }
     vfunc_0x68();
     if (field_0x330) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     JGeometry::TVec3f out;
     if (field_0x331) {
@@ -259,7 +259,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
     if (actor != NULL) {
         switch (actor->mActorId) {
         case ACTOR_FIRE: {
-            s32 kind = (actor->field_0x90 >> 6) & 0xF;
+            s32 kind = (actor->mSpawnParam_0x90 >> 6) & 0xF;
             if (kind == 0 || kind == 1 || kind == 5 || kind == 6) {
                 return 0;
             }
@@ -279,7 +279,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (target != NULL) {
                 JGeometry::TVec3f pos = target->mPos;
-                field_0x98 = fn_801F681C(angleOf(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
+                mDir_0x98 = fn_801F681C(angleOf(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
             }
         }
         vfunc_0x94();
@@ -343,7 +343,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
             vfunc_0x88();
             return;
         }
-        field_0x4 = getPlayerLayer_8023DE58(player);
+        mLayer_0x4 = getPlayerLayer_8023DE58(player);
         field_0x331 = 0;
         vfunc_0x8C();
         return;
@@ -361,15 +361,15 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
     } else {
         fn_801CD950(&field_0x380, 0.0f, arg3);
     }
-    field_0x3c.x = field_0x380 * JMath::sincosTable_.sinShort(angle);
-    field_0x3c.y = field_0x380 * JMath::sincosTable_.cosShort(angle);
-    mPos.add(field_0x3c);
+    mVel_0x3c.x = field_0x380 * JMath::sincosTable_.sinShort(angle);
+    mVel_0x3c.y = field_0x380 * JMath::sincosTable_.cosShort(angle);
+    mPos.add(mVel_0x3c);
     mPos.z = 0.0f;
-    field_0x37c = PSVECMag(&field_0x3c) / arg4;
+    field_0x37c = PSVECMag(&mVel_0x3c) / arg4;
     if (field_0x37c >= 1.0f) {
         field_0x37c = 1.0f;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (getGameView_802D6A9C()->field_0x131df[layer]) {
         s32 offset = 0;
         if (vfunc_0xC4()) {
@@ -412,7 +412,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
             }
             if (field_0x364[4] >= 10) {
                 field_0x364[4] = 0;
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 if (dir + 5 != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir + 5, 2, false);
                     mAnim.fn_801D1F14(0.0f);
@@ -426,7 +426,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         }
         if (field_0x364[4] >= 10) {
             field_0x364[4] = 0;
-            field_0x98 = dir;
+            mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
                 mAnim.fn_801D1F14(0.0f);
@@ -631,10 +631,10 @@ bool EscortBase_8049E0C8::vfunc_0xBC() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     JGeometry::TVec2f pt(0.0f, 0.0f);
-    if (fn_8023AE34(&box, field_0x4, &pt) >= 0) {
+    if (fn_8023AE34(&box, mLayer_0x4, &pt) >= 0) {
         return true;
     }
-    if (fn_8023AB94(&box, field_0x4, &pt) >= 0) {
+    if (fn_8023AB94(&box, mLayer_0x4, &pt) >= 0) {
         return true;
     }
     return false;
@@ -648,7 +648,7 @@ s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
     box.f.y += mPos.y;
     JGeometry::TVec3f pos(mPos);
     pos.y -= 32.0f;
-    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
     s32 player = fn_8022FD8C(mSerial);
     if (player < 0 || player >= 4) {
         field_0x34c = -1;
@@ -658,7 +658,7 @@ s32 EscortBase_8049E0C8::fn_80122898(u16 msg) {
         field_0x34c = -1;
         return -1;
     }
-    if (talk(player, msg, field_0x4, mSerial, pos, 0x28)) {
+    if (talk(player, msg, mLayer_0x4, mSerial, pos, 0x28)) {
         field_0x34c = player;
         return player;
     }
@@ -710,7 +710,7 @@ void EscortBase_8049E0C8::fn_80122730(s32 anim, bool shifted, bool throttled) {
             }
             field_0x364[4] = 0;
         }
-        field_0x98 = anim;
+        mDir_0x98 = anim;
         if (shifted) {
             anim += 5;
         }
@@ -725,8 +725,8 @@ void EscortBase_8049E0C8::fn_80122548() {
     if (fn_8012285C() >= 0) {
         field_0x331 = 0;
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(fn_8012285C());
-        field_0x98 = fn_80230CFC(fn_8012285C());
-        switch (field_0x98) {
+        mDir_0x98 = fn_80230CFC(fn_8012285C());
+        switch (mDir_0x98) {
         case 0:
             pos.x -= 16.0f;
             break;
@@ -751,7 +751,7 @@ void EscortBase_8049E0C8::fn_80122548() {
             }
             if (field_0x364[4] >= 10) {
                 field_0x364[4] = 0;
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
                     mAnim.fn_801D1F14(0.0f);
@@ -799,8 +799,8 @@ void EscortBase_8049E0C8::fn_80122148() {
         if (found >= 0 && found != fn_8012285C()) {
             pos.z = getPlayerPos_8023E724(found)->z;
         }
-        field_0x98 = fn_80230CFC(fn_8012285C());
-        switch (field_0x98) {
+        mDir_0x98 = fn_80230CFC(fn_8012285C());
+        switch (mDir_0x98) {
         case 0:
             pos.x -= 16.0f;
             break;
@@ -833,7 +833,7 @@ void EscortBase_8049E0C8::fn_80122148() {
             }
             if (field_0x364[4] >= 10) {
                 field_0x364[4] = 0;
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
                     mAnim.fn_801D1F14(0.0f);
@@ -846,14 +846,14 @@ void EscortBase_8049E0C8::fn_80122148() {
 void EscortBase_8049E0C8::fn_801220C4() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x400ED, 0);
 }
 
 void EscortBase_8049E0C8::fn_8012202C() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x400ED, 0);
     mAnim.startAnim_801D22DC(9, 0, false);
 }
@@ -861,7 +861,7 @@ void EscortBase_8049E0C8::fn_8012202C() {
 void EscortBase_8049E0C8::fn_80121FA8() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
     startSound_801F0E34(0x400ED, 0);
 }
 
@@ -873,41 +873,41 @@ u16 angleOf(f32 x, f32 y) {
 }
 
 void EscortBase_8049E0C8::fn_80121F34() {
-    field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
-    switch (field_0x98) {
+    mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
+    switch (mDir_0x98) {
     case 0:
-        field_0x3c.x = -2.5f;
+        mVel_0x3c.x = -2.5f;
         break;
     case 1:
-        field_0x3c.x = 2.5f;
+        mVel_0x3c.x = 2.5f;
         break;
     case 2:
-        field_0x3c.y = -2.5f;
+        mVel_0x3c.y = -2.5f;
         break;
     case 3:
-        field_0x3c.y = 2.5f;
+        mVel_0x3c.y = 2.5f;
         break;
     }
-    field_0x3c.z = 3.0f;
+    mVel_0x3c.z = 3.0f;
 }
 
 bool EscortBase_8049E0C8::fn_80121E40() {
-    switch (field_0x98) {
+    switch (mDir_0x98) {
     case 0:
-        fn_801CD950(&field_0x3c.x, 0.0f, 0.1f);
+        fn_801CD950(&mVel_0x3c.x, 0.0f, 0.1f);
         break;
     case 1:
-        fn_801CD950(&field_0x3c.x, 0.0f, -0.1f);
+        fn_801CD950(&mVel_0x3c.x, 0.0f, -0.1f);
         break;
     case 2:
-        fn_801CD950(&field_0x3c.y, 0.0f, 0.1f);
+        fn_801CD950(&mVel_0x3c.y, 0.0f, 0.1f);
         break;
     case 3:
-        fn_801CD950(&field_0x3c.y, 0.0f, -0.1f);
+        fn_801CD950(&mVel_0x3c.y, 0.0f, -0.1f);
         break;
     }
-    field_0x3c.z -= 0.2f;
-    mPos += field_0x3c;
+    mVel_0x3c.z -= 0.2f;
+    mPos += mVel_0x3c;
     if (mPos.z <= 0.0f) {
         mPos.z = 0.0f;
         return true;
@@ -926,7 +926,7 @@ s32 EscortBase_8049E0C8::fn_80121DB0() {
 }
 
 s32 EscortBase_8049E0C8::fn_80121D68() {
-    mRail.fn_800FE3EC(field_0x35c, mPos, field_0x4);
+    mRail.fn_800FE3EC(field_0x35c, mPos, mLayer_0x4);
     return 1;
 }
 
@@ -937,16 +937,16 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     s16 angle = 0;
     JGeometry::TVec3f step;
     step.set(0.0f, 0.0f, 0.0f);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     JGeometry::TVec3f tmp(mPos);
     tmp.x += vec.x;
     tmp.y += vec.y;
     JGeometry::TVec3f pos(tmp);
     s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
-    field_0x3c.x = step.x;
-    field_0x3c.y = step.y;
-    field_0x3c.z = step.z;
-    mPos.add(field_0x3c);
+    mVel_0x3c.x = step.x;
+    mVel_0x3c.y = step.y;
+    mVel_0x3c.z = step.z;
+    mPos.add(mVel_0x3c);
     s32 dir = fn_801F681C(angle);
     if (dir >= 0) {
         field_0x364[4]++;
@@ -955,7 +955,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
         }
         if (field_0x364[4] >= 10) {
             field_0x364[4] = 0;
-            field_0x98 = dir;
+            mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
                 mAnim.fn_801D1F14(0.0f);
@@ -985,7 +985,7 @@ void EscortBase_8049E0C8::spawnLifeMeters() {
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
             pos.x += lifeMeterSpacing();
-            field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
+            field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, mLayer_0x4, &pos, 0, -1, -1);
             serial = field_0x364[i];
             if (serial < 0) {
                 break;
@@ -1079,7 +1079,7 @@ void EscortBase_8049E0C8::spawnLifeMeter(s32 index) {
     if (field_0x332 && index < field_0x360 && index >= 0) {
         JGeometry::TVec3f pos(mPos);
         pos.x -= 8.0f * index + 16.0f;
-        field_0x364[index] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
+        field_0x364[index] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, mLayer_0x4, &pos, 0, -1, -1);
         s32 serial = field_0x364[index];
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -1133,7 +1133,7 @@ bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
     if (!circle->mAlive) {
         return false;
     }
-    if (field_0x4 != circle->field_0x4) {
+    if (mLayer_0x4 != circle->mLayer_0x4) {
         return false;
     }
     JGeometry::TBox2f box;

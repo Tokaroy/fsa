@@ -303,7 +303,7 @@ void Player_804A6F38::fn_80263BA0() {
     } else {
         ActorBase_804A5770* actor = heldActor();
         if (actor != 0) {
-            fn_8027221C(actor->field_0x118);
+            fn_8027221C(actor->mParamAtcn_0x118);
         } else {
             fn_8027221C(0);
         }

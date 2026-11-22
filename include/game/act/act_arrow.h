@@ -30,7 +30,7 @@ public:
     /* 0x25C */ s32 field_0x25c;
     /* 0x260 */ s32 field_0x260;
     /* 0x264 */ s32 field_0x264;
-    /* 0x268 */ s32 field_0x268; // direction (bits 4-5 of field_0x90)
+    /* 0x268 */ s32 field_0x268; // direction (bits 4-5 of mSpawnParam_0x90)
     // SHARED-EDIT: tested by the ZLD2 actor's vfunc_0x44 (game/tu_80197070.cpp).
     /* 0x26C */ s32 field_0x26c;
     /* 0x270 */ s32 field_0x270;

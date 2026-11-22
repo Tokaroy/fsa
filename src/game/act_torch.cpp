@@ -11,8 +11,8 @@ static inline void drawTorchShadow(s32 layer, const JGeometry::TVec3f* pos, u8 a
 }
 
 void Torch_804A8520::init() {
-    mType = field_0x90 & 0x7F;
-    mViewBit = field_0x90 >> 27;
+    mType = mSpawnParam_0x90 & 0x7F;
+    mViewBit = mSpawnParam_0x90 >> 27;
     field_0x24c = 0;
     mShadowScale = 0.0f;
     if (mType == 0 || mType == 2) {
@@ -27,9 +27,9 @@ void Torch_804A8520::init() {
     if (bit == 0 || getGameView_802D6A9C()->fn_802D800C(bit)) {
         mOn = 1;
         if (mType == 0 || mType == 2 || mType == 4) {
-            mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
             if (mType != 4) {
-                mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
             }
         }
         field_0xb0 = 12;
@@ -57,9 +57,9 @@ void Torch_804A8520::update() {
         if (getGameView_802D6A9C()->fn_802D800C(mViewBit) || field_0x94 != 0) {
             mOn = 1;
             if (mType == 0 || mType == 2 || mType == 4) {
-                mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
                 if (mType != 4) {
-                    mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
+                    mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
                 }
             }
             startSound_801F0E34(0x30005, 0);
@@ -117,13 +117,13 @@ void Torch_804A8520::draw() {
         if (mOn == 1) {
             f32 scale = mShadowScale;
             JGeometry::TVec3f pos(8.0f + mPos.x, 8.0f + mPos.y, 0.0f);
-            drawTorchShadow(field_0x4, &pos, 0x80, scale);
+            drawTorchShadow(mLayer_0x4, &pos, 0x80, scale);
         }
         break;
     case 1: {
         f32 scale = mShadowScale;
         JGeometry::TVec3f pos(mPos.x, mPos.y - 4.0f, mPos.z);
-        drawTorchShadow(field_0x4, &pos, 0xC8, scale);
+        drawTorchShadow(mLayer_0x4, &pos, 0xC8, scale);
         break;
     }
     case 2:
@@ -131,14 +131,14 @@ void Torch_804A8520::draw() {
             gGameRoot2_8053AB10->field_0x2c->field_0xd[0] = 1;
             f32 scale = mShadowScale;
             JGeometry::TVec3f pos(8.0f + mPos.x, 8.0f + mPos.y, 0.0f);
-            drawTorchShadow(field_0x4, &pos, 0x80, scale);
+            drawTorchShadow(mLayer_0x4, &pos, 0x80, scale);
         }
         break;
     case 3: {
         gGameRoot2_8053AB10->field_0x2c->field_0xd[0] = 1;
         f32 scale = mShadowScale;
         JGeometry::TVec3f pos(mPos.x, mPos.y - 4.0f, mPos.z);
-        drawTorchShadow(field_0x4, &pos, 0xC8, scale);
+        drawTorchShadow(mLayer_0x4, &pos, 0xC8, scale);
         break;
     }
     }

@@ -5,7 +5,7 @@
 #include "game/ActorManager.h"
 #include "game/act/act_enemy_generator_3.h"
 
-// Actor ids indexed by field_0x90 & 0x7F. SLR2 and SLR3 are not in ActorId.h.
+// Actor ids indexed by mSpawnParam_0x90 & 0x7F. SLR2 and SLR3 are not in ActorId.h.
 static const u32 lbl_8046F398[46] = {
     ACTOR_STAL, ACTOR_KETH, ACTOR_SLR1, ACTOR_SLR1, ACTOR_DDGO, ACTOR_GOMA, ACTOR_DDRK, ACTOR_BZBR, 'SLR2', ACTOR_PAME,
     ACTOR_LPLK, ACTOR_MIRA, ACTOR_SLR4, ACTOR_RIVR, ACTOR_GDMN, ACTOR_MOZO, ACTOR_PEAC, ACTOR_ROPE, ACTOR_NZMI, ACTOR_OKTA,
@@ -14,7 +14,7 @@ static const u32 lbl_8046F398[46] = {
     ACTOR_PAME, ACTOR_PAME, ACTOR_PAME, ACTOR_HART, ACTOR_DDGO, ACTOR_KETH,
 };
 
-// Spawn parameter (the spawned actor's field_0x90) by the same index.
+// Spawn parameter (the spawned actor's mSpawnParam_0x90) by the same index.
 static const u32 lbl_8046F450[46] = {
     0, 0, 0x100000, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     4, 3, 0, 0x102, 0x1000004, 0x1000000, 0x1008800, 0, 5, 0, 4, 0, 0, 6, 4, 3, 5,
@@ -22,12 +22,12 @@ static const u32 lbl_8046F450[46] = {
 };
 
 void EnemyGenerator3_804AA1D0::init() {
-    mTypeIndex = field_0x90 & 0x7F;
+    mTypeIndex = mSpawnParam_0x90 & 0x7F;
     mActorId = lbl_8046F398[mTypeIndex];
-    mInterval = (field_0x90 >> 7) & 0x1FF;
-    mCount = (field_0x90 >> 16) & 0xF;
-    mMode = (field_0x90 >> 20) & 0xF;
-    mFlag = (field_0x90 >> 24) & 1;
+    mInterval = (mSpawnParam_0x90 >> 7) & 0x1FF;
+    mCount = (mSpawnParam_0x90 >> 16) & 0xF;
+    mMode = (mSpawnParam_0x90 >> 20) & 0xF;
+    mFlag = (mSpawnParam_0x90 >> 24) & 1;
     mRemaining = mCount;
     mTimer = 1;
     mState = 0;
@@ -37,7 +37,7 @@ void EnemyGenerator3_804AA1D0::init() {
 // the "mRemaining = mCount; mState = 4" block when it runs out and branches
 // to the spawn code when fn_801F78F4 returns < 0 (no second count test after
 // the loop; it compares r3 before copying it to the serial register); ours
-// re-tests count after the loop and uses mr. Registers for field_0x4 follow
+// re-tests count after the loop and uses mr. Registers for mLayer_0x4 follow
 // (r29 here, r30 in the original).
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
@@ -66,7 +66,7 @@ void EnemyGenerator3_804AA1D0::update() {
                     break;
                 }
             }
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (layer >= 8) {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &mPos, 3, -1, -1);
             } else {
@@ -80,7 +80,7 @@ void EnemyGenerator3_804AA1D0::update() {
         mTimer--;
         if (mTimer == 0) {
             u32 param = lbl_8046F450[mTypeIndex];
-            getActorManager_801F856C()->spawnActor_801F9484(mActorId, field_0x4, &mPos, param, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(mActorId, mLayer_0x4, &mPos, param, -1, -1);
             if (gAudioMgr_8053AF80->field_0x58 != 0x1000021 && gGameRoot_8053AAF8->field_0x7f == 1 &&
                 mFlag == 0) {
                 gAudioMgr_8053AF80->fn_80458FF0(0x1000021, 1, false);

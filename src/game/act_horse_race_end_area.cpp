@@ -8,9 +8,9 @@ static inline bool contains(const JGeometry::TBox2f& box, f32 x, f32 y) {
 }
 
 void HorseRaceEndArea_804AE830::init() {
-    f32 halfW = ((field_0x90 & 0xFF) + 1) * 8;
-    f32 halfH = (((field_0x90 >> 8) & 0xFF) + 1) * 8;
-    if ((field_0x90 >> 16) & 1) {
+    f32 halfW = ((mSpawnParam_0x90 & 0xFF) + 1) * 8;
+    f32 halfH = (((mSpawnParam_0x90 >> 8) & 0xFF) + 1) * 8;
+    if ((mSpawnParam_0x90 >> 16) & 1) {
         mPos.x += halfW;
         mPos.y += halfH;
     } else {

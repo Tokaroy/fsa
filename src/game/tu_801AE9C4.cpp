@@ -17,7 +17,7 @@ static const char* lbl_804A33D0[] = {
     "e_tes_nobi_tate_3.bti",   "e_tes_nobi_tate_2.bti",   "e_tes_nobi_tate_1.bti",
 };
 
-// Actor type ids and spawn arguments by field_0x90 bits 8-11 (0-2).
+// Actor type ids and spawn arguments by mSpawnParam_0x90 bits 8-11 (0-2).
 static u32 lbl_804A33B8[] = {'OKTA', 'PEAC', 'STAL'};
 static u32 lbl_804A33C4[] = {0, 0, 2};
 
@@ -164,7 +164,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
         } else {
             mBox.set(-7.0f + field_0x26c, -18.0f + field_0x270, 7.0f + field_0x26c, 18.0f + field_0x270);
         }
-        field_0x80 = mBox;
+        mMapBox_0x80 = mBox;
         fn_801F2B7C(-100, -1, 1);
         break;
     case 2:
@@ -181,7 +181,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
         // falls through
     case 1:
         mBox.set(-28.0f + field_0x26c, -7.0f + field_0x270, 28.0f + field_0x26c, 7.0f + field_0x270);
-        field_0x80 = mBox;
+        mMapBox_0x80 = mBox;
         fn_801F2B7C(-100, -1, 1);
         break;
     case 3:
@@ -200,7 +200,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
         // falls through
     case 5:
         mBox.set(-7.0f + field_0x26c, -28.0f + field_0x270, 7.0f + field_0x26c, 28.0f + field_0x270);
-        field_0x80 = mBox;
+        mMapBox_0x80 = mBox;
         fn_801F2B7C(-100, -1, 1);
         break;
     }
@@ -214,8 +214,8 @@ void OkameSan_804A3448::fn_801AF1EC() {
             center.x = 0.5f * (box.i.x - box.f.x) + box.f.x;
             center.y = 0.5f * (box.i.y - box.f.y) + box.f.y;
             if (fn_80237948(hit, &center)) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x400D1, 0);
             }
         }
@@ -224,7 +224,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
 
 void OkameSan_804A3448::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -233,7 +233,7 @@ void OkameSan_804A3448::init() {
     field_0x23c = 0;
 
     if (gGameRoot_8053AAF8->fn_80138A30() <= 1) {
-        s32 k = (field_0x90 >> 8) & 0xF;
+        s32 k = (mSpawnParam_0x90 >> 8) & 0xF;
         if (k > 2) {
             k = 0;
         }
@@ -241,7 +241,7 @@ void OkameSan_804A3448::init() {
         u32 arg;
         arg = lbl_804A33C4[k];
         id = lbl_804A33B8[k];
-        if (getActorManager_801F856C()->spawnActor_801F9484(id, field_0x4, &mPos, arg, -1, -1) >= 0) {
+        if (getActorManager_801F856C()->spawnActor_801F9484(id, mLayer_0x4, &mPos, arg, -1, -1) >= 0) {
             mAlive = false;
         }
     } else {
@@ -254,18 +254,18 @@ void OkameSan_804A3448::init() {
         field_0x254 = 0;
         field_0x258 = -1;
         field_0x25c = 0;
-        field_0x250 = field_0x90 & 1;
+        field_0x250 = mSpawnParam_0x90 & 1;
         if (field_0x250 == 0) {
-            field_0x98 = 0;
+            mDir_0x98 = 0;
             fn_801AF7D0(0);
         } else {
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             fn_801AF7D0(4);
         }
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
         field_0x260 = 0.0f;
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         field_0xb0 = 0x0A042004;
         field_0x230 = 0;
     }
@@ -277,11 +277,11 @@ void OkameSan_804A3448::update() {
         fn_801F2618(NULL, false);
         return;
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x260, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x264, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x260, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x264, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x26c, field_0x278, 0.5f, 1.0f);
     addCalc2_801F71A4(&field_0x270, field_0x27c, 0.5f, 1.0f);
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     fn_801AF1EC();
     bool hit = fn_801F2618(NULL, false);
 
@@ -291,7 +291,7 @@ void OkameSan_804A3448::update() {
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
         field_0x260 = 0.0f;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         field_0x238 = 0;
         field_0x230 = 1;
         // fall through
@@ -302,20 +302,20 @@ void OkameSan_804A3448::update() {
             }
             field_0x260 *= -1.0f;
             field_0x264 *= -1.0f;
-            field_0x3c.x *= -1.0f;
-            field_0x3c.y *= -1.0f;
+            mVel_0x3c.x *= -1.0f;
+            mVel_0x3c.y *= -1.0f;
             break;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && field_0x4 == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
+            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_80235580(i) && !fn_8022F478(i) &&
                 !fn_80230188(i) && !fn_8022DCD8(i)) {
                 f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
                 f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
-                s32 vertical = (field_0x98 & 2) != 0;
+                s32 vertical = (mDir_0x98 & 2) != 0;
                 if ((!vertical && dy < 16.0f) || (vertical && dx < 16.0f)) {
                     JGeometry::TVec3f out1;
                     JGeometry::TVec3f out2;
-                    if (!fn_801F23BC(field_0x4, &mPos, getPlayerPos_8023E724(i), &mBox2, &out1, &out2, false)) {
+                    if (!fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(i), &mBox2, &out1, &out2, false)) {
                         if (field_0x244 < 0 || field_0x244 == i) {
                             if (field_0x238 != 0) {
                                 break;
@@ -365,7 +365,7 @@ void OkameSan_804A3448::update() {
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
         field_0x260 = 0.0f;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         field_0x230 = 3;
         // fall through
     case 3:

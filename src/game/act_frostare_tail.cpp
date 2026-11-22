@@ -25,13 +25,13 @@ cls_804A4F90::~cls_804A4F90() {
 void cls_804A4F90::init() {
     EnemyBase_804A4808::init();
     mBox.set(-12.0f, -16.0f, 8.0f, 8.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x40004;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x2A0;
     mLife = 1000;
     mLifeBackup = mLife;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     field_0x196 = 1;
     mState = 0;
     mStateTimer = 0;
@@ -49,7 +49,7 @@ void cls_804A4F90::updateState_0x90(u8 mapHit) {
     case 0:
         break;
     case 1:
-        getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.5f, false);
+        getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.5f, false);
         gGameRoot_8053AAF8->fn_80134DE4(1, 0);
         if (mStateTimer >= 60) {
             startSound_801F0E34(0x40055, 0);
@@ -77,14 +77,14 @@ void cls_804A4F90::updateBehavior_0x9C(u8 mapHit) {
 
 // FIXME: 97.86 %, regalloc-only; behaviour clean.
 // Register swap only: the original loads lbl_8053EFB8 into f1 and
-// field_0x3c.y into f0 (fadds f0, f0, f1); ours uses f0 / f1.
+// mVel_0x3c.y into f0 (fadds f0, f0, f1); ours uses f0 / f1.
 void cls_804A4F90::calcVelocity_0x88() {
-    field_0x3c.x = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
     if (mState == 2) {
-        field_0x3c.y += JMAAbs(lbl_8053EFB8);
+        mVel_0x3c.y += JMAAbs(lbl_8053EFB8);
     } else {
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.y = 0.0f;
     }
 }
 
@@ -115,20 +115,20 @@ u8 cls_804A4F90::checkHitByPlayer_0x5C() {
                 if (fn_801F37AC(0, getPlayerPos_8023E724(i), 0, flag, i)) {
                     hit = 1;
                     mHitCount++;
-                    u8 upper = viewLayerFlag(field_0x4);
+                    u8 upper = viewLayerFlag(mLayer_0x4);
                     s32 serial =
-                        getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, 2);
+                        getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 2);
                     if (serial >= 0) {
                         ActorBase_804A5770* rupee =
                             getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                         if (rupee != NULL) {
                             if (upper) {
-                                rupee->field_0x3c = JGeometry::TVec3f(
+                                rupee->mVel_0x3c = JGeometry::TVec3f(
                                     1.5f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                                     -4.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                     0.0f);
                             } else {
-                                rupee->field_0x3c = JGeometry::TVec3f(
+                                rupee->mVel_0x3c = JGeometry::TVec3f(
                                     1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                                     1.2f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                                     3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -139,8 +139,8 @@ u8 cls_804A4F90::checkHitByPlayer_0x5C() {
             }
         }
         if (hit) {
-            field_0xf8 = 0;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mKnockbackKind_0xf8 = 0;
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             mPos.z = 0.0f;
             mAnim.startAnim_801D22DC(1, 0, false);
             startSound_801F0E34(0x40054, 0);
@@ -158,8 +158,8 @@ u8 cls_804A4F90::checkHitByActor_0x60() {
 }
 
 void cls_804A4F90::draw() {
-    if (fn_801CD2F8(field_0x4)) {
-        fn_80307AC8(mSerial, field_0x4, &mPos, mAnim.mCel + 0xE3, 0, 0, -1);
+    if (fn_801CD2F8(mLayer_0x4)) {
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0xE3, 0, 0, -1);
     } else {
         fn_801F02BC("enemy_both_sob.bin", mAnim.mCel + 0xE3, NULL, -1, 0, false, 1.0f, 1.0f);
     }
@@ -169,8 +169,8 @@ u8 cls_804A4F90::fn_801DC264() {
     s32 length;
     u8 alpha = 0;
     if (mAnim.mAnim == 1) {
-        length = field_0xdc;
-        s32 time = field_0xd8;
+        length = mHitTimerStart_0xdc;
+        s32 time = mHitTimer_0xd8;
         s32 fadeStart = length - 25;
         if (time > fadeStart || length < 25) {
             if (length < 25) {

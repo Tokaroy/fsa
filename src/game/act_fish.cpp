@@ -15,8 +15,8 @@
 // FIXME: 97.32 %, different + reloc-name; behaviour clean.
 // FIXME(shotgun): different + reloc-name (register order and literal placement in the spawn loop)
 void Fish_804AC658::init() {
-    u32 param = field_0x90;
-    field_0x90 = param & 0xFFF;
+    u32 param = mSpawnParam_0x90;
+    mSpawnParam_0x90 = param & 0xFFF;
     mLife = 10000;
     s32 base = (param >> 12) & 0xFF;
     s32 spread = (param >> 20) & 0xFF;
@@ -24,10 +24,10 @@ void Fish_804AC658::init() {
     mBox.i.y = -4.0f;
     mBox.f.x = 4.0f;
     mBox.f.y = 4.0f;
-    field_0x80.i.x = -4.0f;
-    field_0x80.i.y = -4.0f;
-    field_0x80.f.x = 4.0f;
-    field_0x80.f.y = 4.0f;
+    mMapBox_0x80.i.x = -4.0f;
+    mMapBox_0x80.i.y = -4.0f;
+    mMapBox_0x80.f.x = 4.0f;
+    mMapBox_0x80.f.y = 4.0f;
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -38,11 +38,11 @@ void Fish_804AC658::init() {
     field_0x268 = 0;
     field_0x26c = -1;
     field_0x270 = -1;
-    fn_801F6758(&mPos, field_0x4, 0.0f);
-    if (field_0x90 != 0) {
-        s32 count = field_0x90;
+    fn_801F6758(&mPos, mLayer_0x4, 0.0f);
+    if (mSpawnParam_0x90 != 0) {
+        s32 count = mSpawnParam_0x90;
         u16 tiles[0x2C9];
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
         f32 x0 = box->i.x;
@@ -57,7 +57,7 @@ void Fish_804AC658::init() {
                 JGeometry::TVec3f p;
                 p.x = x + x0;
                 p.y = y + y0;
-                s32 tile = fn_802265FC(&p, field_0x4);
+                s32 tile = fn_802265FC(&p, mLayer_0x4);
                 if (tile == 0xD || tile == 0x3A) {
                     if (n >= 0x2C9) {
                         return;
@@ -88,7 +88,7 @@ void Fish_804AC658::init() {
                     f32 ry = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     f32 rx = gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     JGeometry::TVec3f pos(16.0f * rx + cx, 16.0f * ry + cy, 0.0f);
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FISH, field_0x4, &pos, 0, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FISH, mLayer_0x4, &pos, 0, -1, -1);
                     spawned++;
                 }
             }
@@ -147,18 +147,18 @@ s32 Fish_804AC658::fn_80346330() {
 static inline void swimVelocity(Fish_804AC658* fish, f32 speed) {
     fish->field_0x254 = speed * JMath::sincosTable_.sinShort(fish->field_0x250);
     fish->field_0x258 = speed * JMath::sincosTable_.cosShort(fish->field_0x250);
-    fish->field_0x3c.x = fish->field_0x254;
-    fish->field_0x3c.y = fish->field_0x258;
-    fish->field_0x3c.z = fish->field_0x25c;
+    fish->mVel_0x3c.x = fish->field_0x254;
+    fish->mVel_0x3c.y = fish->field_0x258;
+    fish->mVel_0x3c.z = fish->field_0x25c;
 }
 
 // FIXME(shotgun): 99.43 %, regalloc-only; behaviour clean.
 // (states follow the asm's switch (0 falls into 1, 2 into 3); the hit-avoid branch of state 1 and the wall-bounce
 // heading draws of state 5 are the asm's, written with plain field stores; the original's vector-add temporaries are not matched)
 void Fish_804AC658::update() {
-    addCalc2_801F71A4(&field_0x3c.x, field_0x254, 0.1f, field_0x260);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x258, 0.1f, field_0x260);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x254, 0.1f, field_0x260);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x258, 0.1f, field_0x260);
+    mPos += mVel_0x3c;
     JGeometry::TVec3f hitDir;
     hitDir.zero();
     u8 hit = fn_801F2618(&hitDir, false);
@@ -167,15 +167,15 @@ void Fish_804AC658::update() {
         field_0x260 = 0.007f;
         field_0x250 += (s32)(8192.0f - 16384.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         f32 speed = 0.4f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.4f;
-        field_0x3c.x = speed * JMath::sincosTable_.sinShort(field_0x250);
-        field_0x3c.y = speed * JMath::sincosTable_.cosShort(field_0x250);
+        mVel_0x3c.x = speed * JMath::sincosTable_.sinShort(field_0x250);
+        mVel_0x3c.y = speed * JMath::sincosTable_.cosShort(field_0x250);
         field_0x238 = (s32)(75.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x41;
         field_0x230 = 1;
     }
     case 1:
         if (hit) {
             s32 angle = field_0x250;
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             f32 savedX = mPos.x;
             f32 savedY = mPos.y;
             f32 savedZ = mPos.z;
@@ -188,7 +188,7 @@ void Fish_804AC658::update() {
                 step.x = 16.0f * JMath::sincosTable_.sinShort(angle);
                 step.y = 16.0f * JMath::sincosTable_.cosShort(angle);
                 mPos += step;
-                if (!fn_802265DC(&mPos, field_0x4, false)) {
+                if (!fn_802265DC(&mPos, mLayer_0x4, false)) {
                     break;
                 }
                 angle += 0x1000;
@@ -199,8 +199,8 @@ void Fish_804AC658::update() {
             mPos.y = savedY;
             mPos.z = savedZ;
             f32 speed = 0.4f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 0.4f;
-            field_0x3c.x = speed * JMath::sincosTable_.sinShort(field_0x250);
-            field_0x3c.y = speed * JMath::sincosTable_.cosShort(field_0x250);
+            mVel_0x3c.x = speed * JMath::sincosTable_.sinShort(field_0x250);
+            mVel_0x3c.y = speed * JMath::sincosTable_.cosShort(field_0x250);
         } else {
             field_0x252 = field_0x250 + 0x4000;
             if (fn_80346330()) {

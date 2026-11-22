@@ -59,7 +59,7 @@ void cls_8049D940::init() {
     // '????' (escaped: "??'" would be a trigraph).
     field_0x32c = gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "kk_black.bti");
     mPos.z = 20.0f;
-    field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+    mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
     mDrawEnabled = false;
     field_0x238.fn_801D2608(lbl_80539F08, 1);
     field_0x238.startAnim_801D22DC(0, 2, false);
@@ -126,7 +126,7 @@ void cls_8049D940::update() {
             startSound_801F0E34(0x4006B, 0);
             break;
         }
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -136,7 +136,7 @@ void cls_8049D940::update() {
     case 11:
         break;
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     if (field_0x230 <= 6) {
         field_0x308.x = mPos.x;
         field_0x308.y = mPos.y;
@@ -180,7 +180,7 @@ void cls_8049D940::draw() {
     if (field_0x238.mKey < 4) {
         void* res = field_0x31c[field_0x238.mKey];
         if (res != NULL) {
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
             }
         }
@@ -235,7 +235,7 @@ s32 cls_8049D940::vfunc_0x5C() {
 void cls_8049D940::fn_80115F9C(s32 index) {
     switch (index) {
     case 1:
-        field_0x2a8.fn_801EB710(field_0x4, &field_0x308);
+        field_0x2a8.fn_801EB710(mLayer_0x4, &field_0x308);
         break;
     case 2:
         field_0x2a8.field_0x58 = 255.0f;
@@ -245,15 +245,15 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         fn_8011921C()->fn_80118454();
         break;
     case 4:
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.y = 0.0f;
         for (s32 i = 0; i < 4; i++) {
             fn_80230FD0(i, 0x10003);
         }
         break;
     case 6:
         mDrawEnabled = true;
-        field_0x314 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x228, 1, 1, NULL, NULL, true, 1.0f);
-        field_0x318 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x229, 1, 1, NULL, NULL, true, 1.0f);
+        field_0x314 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x228, 1, 1, NULL, NULL, true, 1.0f);
+        field_0x318 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x229, 1, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x40089, 0);
         break;
     case 7:
@@ -284,8 +284,8 @@ void cls_8049D940::fn_80115F9C(s32 index) {
         pos.z = 0.0f;
         pos.y = (s32)JUTVideo::getManager()->getRenderMode()->efbHeight * 0.5f - 100.0f;
         pos.x = (s32)JUTVideo::getManager()->getRenderMode()->fbWidth * 0.5f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, 0x4B4, field_0x4, pos, 0x62)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, 0x4B4, mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
             startSound_801F0E34(0x4006C, 0);
         }
@@ -320,9 +320,9 @@ void cls_8049D940::updateBobbing() {
 
 void cls_8049D940::updateDescent() {
     if (mSpawnPos.y - mPos.y <= 24.0f) {
-        fn_801CD950(&field_0x3c.y, 0.4f, 0.002f);
+        fn_801CD950(&mVel_0x3c.y, 0.4f, 0.002f);
     } else {
-        fn_801CD950(&field_0x3c.y, 0.0f, -0.01f);
+        fn_801CD950(&mVel_0x3c.y, 0.0f, -0.01f);
     }
     if (mPos.y - mSpawnPos.y >= 48.0f) {
         fn_8011921C()->fn_801183BC();
@@ -455,7 +455,7 @@ void cls_8049D940::fn_801158B8() {
     params.field_0x2d = 1;
     pos = mPos;
     pos.z = 0.0f;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, field_0x32c, &params);
     }
 }

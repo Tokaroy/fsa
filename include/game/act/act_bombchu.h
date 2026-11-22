@@ -41,13 +41,13 @@ public:
     /* 0x260 */ s32 field_0x260;
     /* 0x264 */ s32 field_0x264;
     /* 0x268 */ s32 field_0x268;
-    /* 0x26C */ s32 field_0x26c; // player (bits 16-17 of the spawn field_0x90)
-    /* 0x270 */ s32 field_0x270; // bits 8-11 of the spawn field_0x90
+    /* 0x26C */ s32 field_0x26c; // player (bits 16-17 of the spawn mSpawnParam_0x90)
+    /* 0x270 */ s32 field_0x270; // bits 8-11 of the spawn mSpawnParam_0x90
     /* 0x274 */ u8 field_0x274;
     /* 0x275 */ u8 field_0x275;
     /* 0x276 */ u8 field_0x276; // 1: moving along x first
     /* 0x277 */ u8 field_0x277;
-    /* 0x278 */ u8 field_0x278; // bit 4 of the spawn field_0x90
+    /* 0x278 */ u8 field_0x278; // bit 4 of the spawn mSpawnParam_0x90
     /* 0x27C */ f32 field_0x27c; // facing angle (radians), drawn as a y rotation
     /* 0x280 */ f32 field_0x280;
 }; // Size: 0x284 (the spawner's __nw__)

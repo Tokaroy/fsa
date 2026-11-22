@@ -18,7 +18,7 @@ static inline void normalize(JGeometry::TVec2f& v) {
 
 void NPCDisguisedAsAStone_804A8750::init() {
     mBox.set(-40.0f, -40.0f, 40.0f, 40.0f);
-    field_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
+    mMapBox_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
     field_0x234 = field_0x238 = field_0x23c = 0.0f;
     field_0x240 = 0.75f;
     mState = 0;
@@ -29,7 +29,7 @@ void NPCDisguisedAsAStone_804A8750::update() {
     case 0: {
         JGeometry::TBox2f box = mBox;
         box.addPos(mPos.x, mPos.y);
-        field_0x24c = fn_8023AF14(&box, field_0x4, false, 0.0f);
+        field_0x24c = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
         if (field_0x24c >= 0) {
             field_0x234 = field_0x238 = field_0x23c = 0.0f;
             JGeometry::TVec3f playerPos = *getPlayerPos_8023E724(field_0x24c);
@@ -48,18 +48,18 @@ void NPCDisguisedAsAStone_804A8750::update() {
                     field_0x238 = -2.0f;
                 }
             }
-            field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
-            field_0x3c.z = 4.0f;
+            mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
+            mVel_0x3c.z = 4.0f;
             mState = 1;
         }
         break;
     }
     case 1:
-        addCalc2_801F71A4(&field_0x3c.x, field_0x234, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x238, 0.3f, 1.0f);
-        mPos.add(field_0x3c);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x234, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x238, 0.3f, 1.0f);
+        mPos.add(mVel_0x3c);
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 0.3f;
+            mVel_0x3c.z -= 0.3f;
         } else if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             field_0x248 = 20;
@@ -71,8 +71,8 @@ void NPCDisguisedAsAStone_804A8750::update() {
         if (field_0x248 == 0) {
             mState = 3;
             field_0x244 = 4.0f;
-            field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
-            field_0x3c.z = 2.0f;
+            mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
+            mVel_0x3c.z = 2.0f;
             mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         }
         break;
@@ -85,11 +85,11 @@ void NPCDisguisedAsAStone_804A8750::update() {
         normalize(dir);
         field_0x234 = dir.x * field_0x244;
         field_0x238 = dir.y * field_0x244;
-        addCalc2_801F71A4(&field_0x3c.x, field_0x234, 0.3f, field_0x240);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x238, 0.3f, field_0x240);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x234, 0.3f, field_0x240);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x238, 0.3f, field_0x240);
         addCalc2_801F71A4(&field_0x240, 1.0f, 0.1f, 0.1f);
-        field_0x3c.z -= 0.1f;
-        mPos.add(field_0x3c);
+        mVel_0x3c.z -= 0.1f;
+        mPos.add(mVel_0x3c);
         JGeometry::TVec3f savedPos(mPos);
         if (fn_801F3D94(true) || fn_801F305C()) {
             die_0x24();
@@ -98,7 +98,7 @@ void NPCDisguisedAsAStone_804A8750::update() {
             die_0x24();
         } else if (mPos.z < 0.0f) {
             die_0x24();
-        } else if (fn_801F2B7C(field_0x114, -1, 4) || fn_801F2B20(0)) {
+        } else if (fn_801F2B7C(mParamAtcp_0x114, -1, 4) || fn_801F2B20(0)) {
             die_0x24();
         }
         break;
@@ -111,15 +111,15 @@ void NPCDisguisedAsAStone_804A8750::draw() {
 }
 
 void NPCDisguisedAsAStone_804A8750::die_0x24() {
-    if (field_0x4 >= 8) {
+    if (mLayer_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, field_0x4, &pos, 0, -1, -1);
-    } else if (mPos.z < 0.0f && fn_8022461C(&mPos, field_0x4) == 0xD) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, mLayer_0x4, &pos, 0, -1, -1);
+    } else if (mPos.z < 0.0f && fn_8022461C(&mPos, mLayer_0x4) == 0xD) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
     } else {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x8C, 1, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x8D, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x8C, 1, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x8D, 1, 0, NULL, NULL, true, 1.0f);
     }
     startSound_801F0E34(0x30003, 0);
     mAlive = false;

@@ -1484,10 +1484,10 @@ warp: // the counter runs: look for a 'WARP' actor
                 break;
             }
             ActorBase_804A5770* warp = getActorManager_801F856C()->findActorBySerial_801F666C(found);
-            if (warp == NULL || field_0x4->field_0x3b4 != warp->field_0x4) {
+            if (warp == NULL || field_0x4->field_0x3b4 != warp->mLayer_0x4) {
                 continue;
             }
-            u32 type = warp->field_0x90;
+            u32 type = warp->mSpawnParam_0x90;
             if ((type & 0xFF) == 4) {
                 if (fn_8022F514(field_0x4->field_0x4)) {
                     continue;

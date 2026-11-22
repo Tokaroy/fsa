@@ -78,7 +78,7 @@ void cls_804AC3E0::vfunc_0xA8() {
         }
         if (fn_80233E40(i)) {
             if ((1 << i) & fn_801F2740(-1)) {
-                if (field_0x90 & 1) {
+                if (mSpawnParam_0x90 & 1) {
                     fn_8022DC3C(i);
                 }
             }
@@ -92,7 +92,7 @@ void cls_804AC3E0::vfunc_0xA8() {
                 touching = false;
             }
             if (touching != field_0x2ac[i]) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x54e, -1, -2, NULL, NULL, true, 1.2f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54e, -1, -2, NULL, NULL, true, 1.2f);
                 field_0x2b0 = 1;
             }
             field_0x2ac[i] = touching;
@@ -102,7 +102,7 @@ void cls_804AC3E0::vfunc_0xA8() {
 
 bool cls_804AC3E0::vfunc_0xAC() {
     bool flag = false;
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_80233E40(i)) {
                 f32 diffX = mPos.x - getPlayerPos_8023E724(i)->x;
@@ -123,7 +123,7 @@ bool cls_804AC3E0::vfunc_0xAC() {
         }
         if (flag) {
             if (field_0x2b8 == NULL) {
-                field_0x2b8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x553, -1, -2, NULL, NULL, true, 2.0f);
+                field_0x2b8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x553, -1, -2, NULL, NULL, true, 2.0f);
             }
         } else {
             if (field_0x2b8 != NULL) {
@@ -176,13 +176,13 @@ void cls_804AC3E0::updateState_0x90(u8 mapHit) {
             box.addPos(mPos.x, mPos.y);
             for (s32 i = 0; i < 4; i++) {
                 if (fn_80233E40(i) == 1) {
-                    fn_802399D8(i, &box, field_0x4, mSerial);
-                } else if (fn_8023B0F4(i, &box, field_0x4, false, 8.0f) == 1) {
+                    fn_802399D8(i, &box, mLayer_0x4, mSerial);
+                } else if (fn_8023B0F4(i, &box, mLayer_0x4, false, 8.0f) == 1) {
                     if (!fn_8022F478(i) || fn_8022CAF8(i) != 5) {
                         if (mState != 5) {
                             startSound_801F0E34(0x50032, 0);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x15b, 0, -2, NULL, NULL, true, 1.0f);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x15c, -1, 0, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15b, 0, -2, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x15c, -1, 0, NULL, NULL, true, 1.0f);
                         }
                         fn_801BACE8(0);
                     }

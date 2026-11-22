@@ -129,7 +129,7 @@ void cls_801D7730::fn_801D72C0(const JGeometry::TVec3f* pos) {
                 d.sub(field_0x48);
                 d.normalize();
                 d.scale(10.0f);
-                a->field_0x3c = JGeometry::TVec3f(d.x, d.y, 0.0f);
+                a->mVel_0x3c = JGeometry::TVec3f(d.x, d.y, 0.0f);
             }
         }
     }
@@ -163,7 +163,7 @@ void cls_801D7730::fn_801D70BC(const JGeometry::TVec3f* pos, s32 player) {
                 v.set(JMath::sincosTable_.sinShort(ang), JMath::sincosTable_.cosShort(ang));
             }
             v.scale(5.0f);
-            a->field_0x3c = JGeometry::TVec3f(v.x, v.y, 0.0f);
+            a->mVel_0x3c = JGeometry::TVec3f(v.x, v.y, 0.0f);
         }
     }
     field_0x44 = 4;

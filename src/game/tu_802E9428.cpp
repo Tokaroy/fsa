@@ -229,8 +229,8 @@ void UnknownENDM_804AA0FC::update() {
             for (s32 i = 0; i < count; i++) {
                 field_0x240 = getActorManager_801F856C()->mActors[i];
                 if (field_0x240 != NULL && field_0x240->mActorId == 'EOWL' && field_0x240->mAlive == true &&
-                    (field_0x240->field_0x90 & 0x100) == 0 &&
-                    (field_0x230 < 4 || field_0x230 > 6 || (field_0x240->field_0x90 & 7) != 0)) {
+                    (field_0x240->mSpawnParam_0x90 & 0x100) == 0 &&
+                    (field_0x230 < 4 || field_0x230 > 6 || (field_0x240->mSpawnParam_0x90 & 7) != 0)) {
                     field_0x23c = 5;
                     field_0x244 = field_0x240->mPos;
                     field_0x250 = lbl_804D5730[field_0x230];
@@ -367,7 +367,7 @@ void UnknownENDM_804AA0FC::update() {
                 ActorBase_804A5770* owl = field_0x240;
                 JGeometry::TVec3f owlPos = owl->mPos;
                 JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-                if ((owl->field_0x90 & 7) == 0) {
+                if ((owl->mSpawnParam_0x90 & 7) == 0) {
                     view.i.x -= 16.0f;
                     view.i.y -= 16.0f;
                     view.f.x += 16.0f;
@@ -508,7 +508,7 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
         field_0x250.x = tx;
         field_0x250.y = ty;
     } else {
-        JGeometry::TVec3f vel = field_0x240->field_0x3c;
+        JGeometry::TVec3f vel = field_0x240->mVel_0x3c;
         f32 dx = field_0x250.x - tx;
         f32 dy = field_0x250.y - ty;
         f32 dist = JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy));

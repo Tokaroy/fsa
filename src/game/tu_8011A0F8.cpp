@@ -8,7 +8,7 @@ cls_8049DAD8::~cls_8049DAD8() {}
 
 void cls_8049DAD8::init() {
     ActorBase_804A5770::init();
-    field_0x230 = field_0x90 & 0x1F;
+    field_0x230 = mSpawnParam_0x90 & 0x1F;
 }
 
 void cls_8049DAD8::update() {
@@ -26,7 +26,7 @@ void cls_8049DAD8::update() {
                 field_0x239 = true;
             }
         }
-        if ((field_0x90 & 0xF8000000) && isScreenFlagSet_0x34()) {
+        if ((mSpawnParam_0x90 & 0xF8000000) && isScreenFlagSet_0x34()) {
             field_0x238 = true;
         }
     }

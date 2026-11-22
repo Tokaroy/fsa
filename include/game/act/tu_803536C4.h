@@ -19,9 +19,9 @@ public:
     /* 0x23C */ s32 field_0x23c; // 0..3, advanced by update
     /* 0x240 */ s32 field_0x240; // 60 after init; counts down, advances field_0x244
     /* 0x244 */ s32 field_0x244; // 0..3
-    /* 0x248 */ s32 field_0x248; // field_0x90 & 3
-    /* 0x24C */ s32 field_0x24c; // field_0x90 >> 4 & 0xF
-    /* 0x250 */ bool field_0x250; // field_0x90 >> 8 & 3 is nonzero
+    /* 0x248 */ s32 field_0x248; // mSpawnParam_0x90 & 3
+    /* 0x24C */ s32 field_0x24c; // mSpawnParam_0x90 >> 4 & 0xF
+    /* 0x250 */ bool field_0x250; // mSpawnParam_0x90 >> 8 & 3 is nonzero
     /* 0x254 */ JGeometry::TVec3f field_0x254;
     /* 0x260 */ JGeometry::TVec3f field_0x260;
 }; // Size: 0x26C

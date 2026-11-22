@@ -45,7 +45,7 @@ public:
     // the fn_80224B88 / fn_8022517C / fn_80224E88 tile tests).
     void fn_8020D16C() const;
     // tu_8020CCA8 (0x8020D2AC): an effect (id 0x33A) beside mPos, 26 below
-    // it in y and 6 to the side the actor faces (field_0x98).
+    // it in y and 6 to the side the actor faces (mDir_0x98).
     void fn_8020D2AC() const;
     // tu_801DE714 (0x801DE714, vtable slot 0x80): calls EnemyBase's
     // checkFloor_0x80 (the floor check) only while mState is 0xA.
@@ -85,8 +85,8 @@ public:
     // 0x801E2F40: whether the tile under mPos is 3, 13 or 14.
     bool fn_801E2F40();
     // tu_8021FDB8 (0x8021FDB8): moves the actor found by mTargetSerial next
-    // to this one, offset by mAnim.mCel (z) and the target's field_0x90 and
-    // our direction field_0x98 (x).
+    // to this one, offset by mAnim.mCel (z) and the target's mSpawnParam_0x90 and
+    // our direction mDir_0x98 (x).
     void fn_8021FDB8() const;
 
     /* 0x2A8 */ s32 field_0x2a8;

@@ -5,10 +5,10 @@
 
 void EnemyCountWipeOutCheck_804A8250::init() {
     field_0x230 = 0;
-    field_0x234 = (field_0x90 >> 22) & 0x1F;
-    field_0x238 = field_0x90 & 0xFF;
+    field_0x234 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x238 = mSpawnParam_0x90 & 0xFF;
     field_0x244 = gAudioMgr_8053AF80->field_0x58;
-    field_0x240 = (field_0x90 >> 21) & 1;
+    field_0x240 = (mSpawnParam_0x90 >> 21) & 1;
 }
 
 void EnemyCountWipeOutCheck_804A8250::update() {
@@ -19,7 +19,7 @@ void EnemyCountWipeOutCheck_804A8250::update() {
             count += getGameView_802D6A9C()->field_0x6748[i];
         }
     } else {
-        layer = field_0x4;
+        layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         count = view->field_0x6748[layer < 8 ? 0 : layer - 7];
     }

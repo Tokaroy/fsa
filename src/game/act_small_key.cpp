@@ -21,13 +21,13 @@ static const f32 lbl_8046D560[8] = {0.5f, 0.0f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f, -
 // 0x802C52DC.
 // FIXME(shotgun): 98.69 %, missing/extra; behaviour drift.
 void SmallKey_804A8CD8::init() {
-    field_0x280 = field_0x90 & 0x1F;
-    field_0x27c = (field_0x90 >> 7) & 0xF;
-    field_0x278 = (field_0x90 >> 12) & 0x1F;
-    field_0x270 = (field_0x90 >> 22) & 0x1F;
-    field_0x274 = (field_0x90 >> 17) & 0x1F;
-    u32 held = (field_0x90 >> 5) & 1;
-    field_0x26c = field_0x4;
+    field_0x280 = mSpawnParam_0x90 & 0x1F;
+    field_0x27c = (mSpawnParam_0x90 >> 7) & 0xF;
+    field_0x278 = (mSpawnParam_0x90 >> 12) & 0x1F;
+    field_0x270 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x274 = (mSpawnParam_0x90 >> 17) & 0x1F;
+    u32 held = (mSpawnParam_0x90 >> 5) & 1;
+    field_0x26c = mLayer_0x4;
     field_0x290 = -1;
     field_0x28c = -1;
     if (field_0x27c != 1) {
@@ -36,12 +36,12 @@ void SmallKey_804A8CD8::init() {
     field_0x284 = 2;
     field_0x2b1 = 0;
     field_0x2b5 = 0;
-    if ((field_0x90 & 0x800) == 0) {
+    if ((mSpawnParam_0x90 & 0x800) == 0) {
         field_0x230.set(mPos.x, mPos.y);
         s32 row = getGameView_802D6A9C()->field_0x18;
         s32 col = getGameView_802D6A9C()->field_0x14;
         field_0x238 = ((field_0x280 << 24) & 0x1F000000) | ((col & 0xFF) << 16) | ((row & 0xFF) << 8) |
-                      (field_0x4 & 0xFF);
+                      (mLayer_0x4 & 0xFF);
         field_0x23c = 0;
     } else if (held != 0) {
         field_0x2b5 = 1;
@@ -84,7 +84,7 @@ void SmallKey_804A8CD8::init() {
         field_0x240 = 4;
         field_0x2b1 = 1;
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
-                    (field_0x4 & 0xFF);
+                    (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
             s32 col = getGameView_802D6A9C()->field_0x14;
@@ -115,7 +115,7 @@ void SmallKey_804A8CD8::init() {
     field_0x2ad = 0xFF;
     field_0x2b4 = 1;
     field_0x260 = mPos;
-    field_0x26c = field_0x4;
+    field_0x26c = mLayer_0x4;
     if (field_0x280 == 0) {
         mBox.i.x = -4.0f;
         mBox.i.y = -6.0f;
@@ -132,10 +132,10 @@ void SmallKey_804A8CD8::init() {
         mBox.f.x = 8.0f;
         mBox.f.y = 8.0f;
     }
-    field_0x80.i.x = -6.0f;
-    field_0x80.i.y = -6.0f;
-    field_0x80.f.x = 6.0f;
-    field_0x80.f.y = 6.0f;
+    mMapBox_0x80.i.x = -6.0f;
+    mMapBox_0x80.i.y = -6.0f;
+    mMapBox_0x80.f.x = 6.0f;
+    mMapBox_0x80.f.y = 6.0f;
     field_0x288 = 0;
     field_0x2b2 = 0;
     field_0x2b3 = 0;
@@ -180,9 +180,9 @@ void SmallKey_804A8CD8::update() {
     switch (field_0x240) {
     case 0:
         field_0x294 = 0;
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30072, 0);
             fn_801F0D20(3);
             field_0x240 = 2;
@@ -192,13 +192,13 @@ void SmallKey_804A8CD8::update() {
         break;
     case 1:
         field_0x294 = 0;
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             mPos.z = 200.0f;
             field_0x240 = 4;
-            getActorManager_801F856C()->spawnActor_801F9484('SEN2', field_0x4, &mPos, 0x3C00, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('SEN2', mLayer_0x4, &mPos, 0x3C00, -1, -1);
             fn_801F355C();
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (field_0x4 & 0xFF);
+                        (mLayer_0x4 & 0xFF);
             if (!getGameView_802D6A9C()->fn_802DCD0C()) {
                 s32 row = getGameView_802D6A9C()->field_0x18;
                 s32 col = getGameView_802D6A9C()->field_0x14;
@@ -214,18 +214,18 @@ void SmallKey_804A8CD8::update() {
         break;
     case 2:
         fn_802C2840();
-        if (viewLayerFlag(field_0x4) != 0) {
+        if (viewLayerFlag(mLayer_0x4) != 0) {
             if (field_0x2b2 == 0) {
-                field_0x3c.y += 0.5f;
-                if (field_0x3c.y > 10.0f) {
-                    field_0x3c.y = 10.0f;
+                mVel_0x3c.y += 0.5f;
+                if (mVel_0x3c.y > 10.0f) {
+                    mVel_0x3c.y = 10.0f;
                 }
-                mPos.add(field_0x3c);
+                mPos.add(mVel_0x3c);
                 if (fn_801F2618(NULL, false)) {
                     field_0x2b2 = 1;
-                    field_0x3c.z = 0.0f;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.x = 0.0f;
+                    mVel_0x3c.z = 0.0f;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.x = 0.0f;
                 }
             }
         } else {
@@ -238,7 +238,7 @@ void SmallKey_804A8CD8::update() {
         if (field_0x284 == 0) {
             field_0x240 = 4;
             field_0x2b2 = 0;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
         }
         break;
     case 4:
@@ -248,7 +248,7 @@ void SmallKey_804A8CD8::update() {
             field_0xb0 = 0;
             field_0x294 = 0;
             mPos.set(*fn_8023E7B0(field_0xc8));
-            field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+            mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             field_0x2ad = fn_8023BCD4(field_0xc8);
             field_0x290 = field_0xc8;
             if (fn_8022D75C(field_0x290)) {
@@ -258,7 +258,7 @@ void SmallKey_804A8CD8::update() {
                     s32 state = fn_8022D498(field_0x290);
                     if (state == 4 || state == 7 || state == 8 || state == 9) {
                         field_0x2b4 = 0;
-                    } else if ((state == 6 || state == 11 || state == 20) && field_0x4 >= 8) {
+                    } else if ((state == 6 || state == 11 || state == 20) && mLayer_0x4 >= 8) {
                         field_0x2b4 = 0;
                     }
                 }
@@ -272,13 +272,13 @@ void SmallKey_804A8CD8::update() {
         }
         break;
     case 5:
-        field_0x3c.z += -0.2f;
-        mPos.add(field_0x3c);
+        mVel_0x3c.z += -0.2f;
+        mPos.add(mVel_0x3c);
         if (mPos.z < 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x240 = 2;
             startSound_801F0E34(0x30072, 0);
         }
@@ -289,7 +289,7 @@ void SmallKey_804A8CD8::update() {
         for (s32 i = 0; i < count; i++) {
             field_0x244 = getActorManager_801F856C()->mActors[i];
             if (field_0x244 != NULL && mSerial != field_0x244->mSerial &&
-                field_0x244->field_0x4 == field_0x4 &&
+                field_0x244->mLayer_0x4 == mLayer_0x4 &&
                 (f32)fabs(field_0x244->mPos.x - mPos.x) < 8.0f &&
                 (f32)fabs(field_0x244->mPos.y - mPos.y) < 8.0f) {
                 field_0x2ad = 0xB4;
@@ -307,8 +307,8 @@ void SmallKey_804A8CD8::update() {
             field_0x244 = getActorManager_801F856C()->mActors[field_0x28c];
             if (field_0x244 != NULL) {
                 field_0x248.set(field_0x244->mPos);
-                s32 otherLayer = field_0x244->field_0x4;
-                if (otherLayer < 8 && field_0x4 == 8) {
+                s32 otherLayer = field_0x244->mLayer_0x4;
+                if (otherLayer < 8 && mLayer_0x4 == 8) {
                     JGeometry::TBox2f viewBox;
                     viewBox = *layerBox(otherLayer);
                     field_0x248.x = field_0x244->mPos.x - viewBox.i.x;
@@ -318,21 +318,21 @@ void SmallKey_804A8CD8::update() {
             } else {
                 fn_801F0D20(3);
                 field_0x28c = -1;
-                field_0x3c.z = 7.0f;
+                mVel_0x3c.z = 7.0f;
             }
         }
         if (field_0x28c < 0) {
-            mPos.add(field_0x3c);
+            mPos.add(mVel_0x3c);
             if (mPos.z > 0.0f) {
-                field_0x3c.z -= 1.0f;
+                mVel_0x3c.z -= 1.0f;
             } else if (field_0x280 < 16) {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
                 field_0x27c = 0;
                 field_0x2ad = 0xFF;
                 field_0x240 = 2;
             } else {
-                getActorManager_801F856C()->spawnActor_801F9484('LSTI', field_0x4, &mPos,
+                getActorManager_801F856C()->spawnActor_801F9484('LSTI', mLayer_0x4, &mPos,
                                                                 ((field_0x280 - 15) | 0x880100), -1, -1);
                 mAlive = false;
             }
@@ -347,26 +347,26 @@ void SmallKey_804A8CD8::update() {
     case 9:
         field_0x294 = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023A51C(i) == true && field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (fn_8023A51C(i) == true && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 JGeometry::TVec3f* p = fn_8023A478(i);
                 f32 dx = p->x - mPos.x;
                 f32 dy = p->y - mPos.y;
                 if (!(square(dx) + square(dy) > 5184.0f)) {
                     switch (fn_8023A240() ^ 1) {
                     case 0:
-                        field_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 3.0f);
+                        mVel_0x3c = JGeometry::TVec3f(2.0f, 0.0f, 3.0f);
                         break;
                     case 1:
-                        field_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 3.0f);
+                        mVel_0x3c = JGeometry::TVec3f(-2.0f, 0.0f, 3.0f);
                         break;
                     case 2:
-                        field_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 3.0f);
+                        mVel_0x3c = JGeometry::TVec3f(0.0f, 2.0f, 3.0f);
                         break;
                     case 3:
-                        field_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 3.0f);
+                        mVel_0x3c = JGeometry::TVec3f(0.0f, -2.0f, 3.0f);
                         break;
                     default:
-                        field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 3.0f);
+                        mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 3.0f);
                         break;
                     }
                     field_0xb0 = 0x20000;
@@ -386,11 +386,11 @@ void SmallKey_804A8CD8::update() {
         field_0x294 = 0;
         if (field_0xcc != 0) {
             mPos.set(*getPlayerPos_8023E724(field_0xd0));
-            field_0x4 = getPlayerLayer_8023DE58(field_0xd0);
+            mLayer_0x4 = getPlayerLayer_8023DE58(field_0xd0);
             field_0x2ad = fn_8023BCD4(field_0xd0);
             if (gGameRoot_8053AAF8->fn_80138A30() == 1 && field_0x29c >= 1 &&
                 fn_8022F514(field_0x29c) == true) {
-                u16 tile = fn_8022461C(&mPos, field_0x4);
+                u16 tile = fn_8022461C(&mPos, mLayer_0x4);
                 if (tile != 0xD && tile != 0x3B && fn_8022F9E4(field_0x29c, mSerial, false, false)) {
                     field_0x29c = -1;
                     field_0x240 = 4;
@@ -401,12 +401,12 @@ void SmallKey_804A8CD8::update() {
         }
         break;
     case 11:
-        fn_8022FE80(field_0x2a4, field_0x4, mSerial, true, false);
-        fn_8038AD24(field_0x2a4, 0x168, mSerial, field_0x4, mPos, 4);
+        fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, true, false);
+        fn_8038AD24(field_0x2a4, 0x168, mSerial, mLayer_0x4, mPos, 4);
         field_0x240 = 12;
         return;
     case 12:
-        fn_8022FE80(field_0x2a4, field_0x4, mSerial, true, false);
+        fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x2a4, mSerial)) {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 if (fn_8023061C(field_0x2a0, false) == true) {
@@ -420,7 +420,7 @@ void SmallKey_804A8CD8::update() {
         }
         return;
     }
-    if (field_0x240 >= 2 && field_0x240 != 9 && field_0x4 < 8) {
+    if (field_0x240 >= 2 && field_0x240 != 9 && mLayer_0x4 < 8) {
         JGeometry::TVec3f focus(mPos.x, mPos.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&focus);
     }
@@ -435,7 +435,7 @@ void SmallKey_804A8CD8::update() {
                 getGameView_802D6A9C()->fn_802D6C10(pos, layer);
             }
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                        (field_0x4 & 0xFF);
+                        (mLayer_0x4 & 0xFF);
             if (!getGameView_802D6A9C()->fn_802DCD0C()) {
                 s32 row = getGameView_802D6A9C()->field_0x18;
                 s32 col = getGameView_802D6A9C()->field_0x14;
@@ -460,31 +460,31 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         return;
     }
     if (field_0x280 == 6) {
-        mPos.add(field_0x3c);
-        if (field_0x3c.x > 0.05f) {
-            field_0x3c.x -= 0.05f;
-        } else if (field_0x3c.x < -0.05f) {
-            field_0x3c.x += 0.05f;
+        mPos.add(mVel_0x3c);
+        if (mVel_0x3c.x > 0.05f) {
+            mVel_0x3c.x -= 0.05f;
+        } else if (mVel_0x3c.x < -0.05f) {
+            mVel_0x3c.x += 0.05f;
         } else {
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.x = 0.0f;
         }
-        if (field_0x3c.y > 0.05f) {
-            field_0x3c.y -= 0.05f;
-        } else if (field_0x3c.y < -0.05f) {
-            field_0x3c.y += 0.05f;
+        if (mVel_0x3c.y > 0.05f) {
+            mVel_0x3c.y -= 0.05f;
+        } else if (mVel_0x3c.y < -0.05f) {
+            mVel_0x3c.y += 0.05f;
         } else {
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
         }
     }
     JGeometry::TBox2f box = mBox;
     box.addPos(mPos.x, mPos.y);
     for (s32 i = 0; i < 4; i++) {
-        if (!fn_8023F264(i) || !fn_80239C00(i, &box, field_0x4)) {
+        if (!fn_8023F264(i) || !fn_80239C00(i, &box, mLayer_0x4)) {
             continue;
         }
         s32 kind = field_0x280;
         if (kind == 3 || kind == 4 || kind == 5) {
-            getActorManager_801F856C()->spawnActor_801F9484('TKRA', field_0x4, &mPos,
+            getActorManager_801F856C()->spawnActor_801F9484('TKRA', mLayer_0x4, &mPos,
                                                             0x210 + kind + (i << 12), -1, -1);
             JGeometry::TVec2f pos(field_0x230.x, field_0x230.y);
             s32 layer = field_0x238;
@@ -506,7 +506,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (field_0x240 != 2) {
         return;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 step = 1;
     if (layer >= 8) {
         step = 8;
@@ -529,7 +529,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
             return;
         }
         field_0x2b5 = 1;
-        u16 tile = fn_8022461C(&mPos, field_0x4);
+        u16 tile = fn_8022461C(&mPos, mLayer_0x4);
         if (tile == 0xD || tile == 0x3B) {
             s32 player;
             for (player = 0; player < 4; player++, bit <<= 1) {
@@ -560,7 +560,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                         field_0x2ae = 2;
                     }
                 }
-                if (viewLayerFlag(field_0x4) != 0) {
+                if (viewLayerFlag(mLayer_0x4) != 0) {
                     if (mPos.x > playerPos.x) {
                         mPos.x += (15 - dx) >> 1;
                     } else {
@@ -575,7 +575,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
                         field_0x2ae = 4;
                     }
                 }
-                if (viewLayerFlag(field_0x4) != 0) {
+                if (viewLayerFlag(mLayer_0x4) != 0) {
                     field_0x2ae = 0;
                 }
                 field_0x23c = i;
@@ -583,8 +583,8 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         }
     } else if (field_0x280 == 6 && field_0x2ae != 0) {
         u8 index = (field_0x2ae - 1) * 2;
-        field_0x3c.x = lbl_8046D560[index];
-        field_0x3c.y = lbl_8046D560[index + 1];
+        mVel_0x3c.x = lbl_8046D560[index];
+        mVel_0x3c.y = lbl_8046D560[index + 1];
         field_0x2ae = 0;
     }
     JGeometry::TVec3f wall(0.0f, 0.0f, 0.0f);
@@ -605,7 +605,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     }
     if (field_0x240 != 10) {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
-        value |= field_0x4 & 0xFF;
+        value |= mLayer_0x4 & 0xFF;
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
             s32 col = getGameView_802D6A9C()->field_0x14;
@@ -618,14 +618,14 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         JGeometry::TVec2f pos(mPos.x, mPos.y);
         getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
     }
-    u16 tile = fn_8022461C(&mPos, field_0x4);
+    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
     if (field_0x298 != -1) {
         tile = 0;
     }
     if (fallOnTile(tile) == true) {
         return;
     }
-    if (viewLayerFlag(field_0x4) != 0) {
+    if (viewLayerFlag(mLayer_0x4) != 0) {
         field_0x2b2 = 0;
         fn_802C2154();
     }
@@ -636,32 +636,32 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 void SmallKey_804A8CD8::fn_802C2C30() {
     JGeometry::TVec3f wall;
     fn_802C24A8();
-    if (viewLayerFlag(field_0x4) != 0) {
+    if (viewLayerFlag(mLayer_0x4) != 0) {
         if (field_0x2b3 == 1) {
             field_0x2b3 = 0;
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            if (field_0x3c.y >= 3.0f) {
-                field_0x3c.y = 3.0f;
-            } else if (field_0x3c.y <= -3.0f) {
-                field_0x3c.y = -3.0f;
+            mVel_0x3c.z = 0.0f;
+            if (mVel_0x3c.y >= 3.0f) {
+                mVel_0x3c.y = 3.0f;
+            } else if (mVel_0x3c.y <= -3.0f) {
+                mVel_0x3c.y = -3.0f;
             }
-            if (field_0x280 == 6 && (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f)) {
-                field_0x3c.x = 0.4f * field_0x3c.x;
-                field_0x3c.y = 0.4f * field_0x3c.y;
+            if (field_0x280 == 6 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
+                mVel_0x3c.x = 0.4f * mVel_0x3c.x;
+                mVel_0x3c.y = 0.4f * mVel_0x3c.y;
             }
         }
         field_0x248.set(mPos);
-        mPos.add(field_0x3c);
-        field_0x3c.y += 0.15f;
-        if (field_0x3c.y > 10.0f) {
-            field_0x3c.y = 10.0f;
+        mPos.add(mVel_0x3c);
+        mVel_0x3c.y += 0.15f;
+        if (mVel_0x3c.y > 10.0f) {
+            mVel_0x3c.y = 10.0f;
         }
         wall.set(0.0f, 0.0f, 0.0f);
         if (fn_801F2618(&wall, false)) {
             if (field_0x280 == 7) {
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 if (layer < 8) {
                     getActorManager_801F856C()->spawnActor_801F9484('ALCE', layer, &mPos,
                                                                     (field_0x290 << 4) | 2, -1, -1);
@@ -670,7 +670,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 }
             }
             if (field_0x280 == 8) {
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 if (layer < 8) {
                     getActorManager_801F856C()->spawnActor_801F9484('ALCE', layer, &mPos,
                                                                     (field_0x290 << 4) | 1, -1, -1);
@@ -679,14 +679,14 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 }
             }
             if (wall.y != 0.0f) {
-                if (field_0x280 == 6 && field_0x3c.y > 0.8f) {
-                    field_0x3c.x /= 3.0f;
-                    field_0x3c.y = -(field_0x3c.y / 3.0f);
+                if (field_0x280 == 6 && mVel_0x3c.y > 0.8f) {
+                    mVel_0x3c.x /= 3.0f;
+                    mVel_0x3c.y = -(mVel_0x3c.y / 3.0f);
                     return;
                 }
                 if (wall.y > 0.0f) {
-                    if (field_0x3c.y < 0.0f) {
-                        field_0x3c.y = 0.0f;
+                    if (mVel_0x3c.y < 0.0f) {
+                        mVel_0x3c.y = 0.0f;
                     }
                     return;
                 }
@@ -697,16 +697,16 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                     return;
                 }
                 field_0x2b2 = 0;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x240 = 2;
                 if (field_0x27c == 2) {
                     field_0x27c = 3;
                 }
                 mPos.set(field_0x248);
                 u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                            (field_0x4 & 0xFF);
+                            (mLayer_0x4 & 0xFF);
                 if (!getGameView_802D6A9C()->fn_802DCD0C()) {
                     s32 row = getGameView_802D6A9C()->field_0x18;
                     s32 col = getGameView_802D6A9C()->field_0x14;
@@ -721,7 +721,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 return;
             }
             if (wall.x != 0.0f) {
-                field_0x3c.x *= -0.5f;
+                mVel_0x3c.x *= -0.5f;
                 if ((wall.x > 0.0f && mPos.x <= field_0x248.x) ||
                     (wall.x < 0.0f && mPos.x >= field_0x248.x)) {
                     mPos.set(field_0x248);
@@ -729,14 +729,14 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             }
             return;
         }
-        if ((field_0x3c.x != 0.0f || field_0x3c.y != 0.0f || field_0x3c.z != 0.0f) && field_0x280 != 2) {
+        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && field_0x280 != 2) {
             fn_801F2B20(0);
         }
         return;
     }
     if (field_0x2af != 0) {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                    (field_0x4 & 0xFF);
+                    (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
             s32 col = getGameView_802D6A9C()->field_0x14;
@@ -749,15 +749,15 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         JGeometry::TVec2f pos(mPos.x, mPos.y);
         getGameView_802D6A9C()->fn_802D6D70(pos, home, value, layer);
         field_0x2af = 0;
-        if (field_0x280 == 6 && (field_0x3c.x != 0.0f || field_0x3c.y != 0.0f)) {
-            field_0x3c.x = 0.4f * field_0x3c.x;
-            field_0x3c.y = 0.4f * field_0x3c.y;
-            field_0x3c.z = 0.3f;
+        if (field_0x280 == 6 && (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f)) {
+            mVel_0x3c.x = 0.4f * mVel_0x3c.x;
+            mVel_0x3c.y = 0.4f * mVel_0x3c.y;
+            mVel_0x3c.z = 0.3f;
         }
     }
-    mPos.add(field_0x3c);
-    field_0x3c.z += -0.2f;
-    u16 tile = fn_8022461C(&mPos, field_0x4);
+    mPos.add(mVel_0x3c);
+    mVel_0x3c.z += -0.2f;
+    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
     if (field_0x298 != -1) {
         tile = 0;
     }
@@ -766,25 +766,25 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             return;
         }
         if (tile != 0xD && tile != 0x39) {
-            if (field_0x3c.z < -0.8f) {
-                field_0x3c.x /= 3.0f;
-                field_0x3c.y /= 3.0f;
-                field_0x3c.z = -(field_0x3c.z / 3.0f);
+            if (mVel_0x3c.z < -0.8f) {
+                mVel_0x3c.x /= 3.0f;
+                mVel_0x3c.y /= 3.0f;
+                mVel_0x3c.z = -(mVel_0x3c.z / 3.0f);
                 mPos.z = 0.0f;
             }
             startSound_801F0E34(0x30072, 0);
         }
     }
     if (mPos.z < 0.0f || field_0x298 != -1) {
-        bool moving = (0.0f != field_0x3c.x || 0.0f != field_0x3c.y);
+        bool moving = (0.0f != mVel_0x3c.x || 0.0f != mVel_0x3c.y);
         if (field_0x2b1 == 1) {
             fn_801F0D20(3);
             field_0x2b1 = 0;
         }
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         field_0x240 = 2;
         if (field_0x27c == 2) {
             field_0x27c = 3;
@@ -795,11 +795,11 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         if (tile == 0xD || tile == 0x39) {
             JGeometry::TVec3f splashPos = mPos;
             splashPos.z -= 4.0f;
-            spawnEmitter_8013CC50(field_0x4, &splashPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &splashPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30022, 0);
         }
         if (field_0x280 == 7 || field_0x280 == 8) {
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (layer < 8 && moving == true) {
                 if (field_0x280 == 7) {
                     getActorManager_801F856C()->spawnActor_801F9484('ALCE', layer, &mPos,
@@ -814,7 +814,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         }
         fn_802C5284();
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                    (field_0x4 & 0xFF);
+                    (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             s32 row = getGameView_802D6A9C()->field_0x18;
             s32 col = getGameView_802D6A9C()->field_0x14;
@@ -833,22 +833,22 @@ void SmallKey_804A8CD8::fn_802C2C30() {
             return;
         }
         if (wall.x != 0.0f) {
-            field_0x3c.x *= -0.5f;
-            if (field_0x3c.x < -0.5f) {
-                field_0x3c.x = -0.5f;
-            } else if (field_0x3c.x > 0.5f) {
-                field_0x3c.x = 0.5f;
+            mVel_0x3c.x *= -0.5f;
+            if (mVel_0x3c.x < -0.5f) {
+                mVel_0x3c.x = -0.5f;
+            } else if (mVel_0x3c.x > 0.5f) {
+                mVel_0x3c.x = 0.5f;
             }
         }
         if (wall.y != 0.0f) {
-            field_0x3c.y *= -0.5f;
-            if (field_0x3c.y < -0.5f) {
-                field_0x3c.y = -0.5f;
-            } else if (field_0x3c.y > 0.5f) {
-                field_0x3c.y = 0.5f;
+            mVel_0x3c.y *= -0.5f;
+            if (mVel_0x3c.y < -0.5f) {
+                mVel_0x3c.y = -0.5f;
+            } else if (mVel_0x3c.y > 0.5f) {
+                mVel_0x3c.y = 0.5f;
             }
         }
-    } else if ((field_0x3c.x != 0.0f || field_0x3c.y != 0.0f || field_0x3c.z != 0.0f) && field_0x280 != 2) {
+    } else if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && field_0x280 != 2) {
         fn_801F2B20(0);
     }
 }
@@ -863,12 +863,12 @@ bool SmallKey_804A8CD8::fallOnTile(u16 tile) {
         }
     } else if (tile == 0xE) {
         if (fn_802DE9A0()) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
         } else if (fn_802DEB58()) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45E, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45F, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5003F, 0);
         }
     } else {
@@ -891,11 +891,11 @@ bool SmallKey_804A8CD8::dropAtPlayer() {
     if (fn_8022D75C(field_0x23c) == true) {
         return false;
     }
-    if (!fn_8022BC38(field_0x23c, field_0x4, &mPos)) {
+    if (!fn_8022BC38(field_0x23c, mLayer_0x4, &mPos)) {
         if (!fn_802DE764(1, 1, 2)) {
             return false;
         }
-        if (field_0x4 != 10) {
+        if (mLayer_0x4 != 10) {
             return false;
         }
         if (getPlayerLayer_8023DE58(field_0x23c) != 8) {
@@ -903,13 +903,13 @@ bool SmallKey_804A8CD8::dropAtPlayer() {
         }
     }
     mPos.set(*getPlayerPos_8023E724(field_0x23c));
-    field_0x4 = getPlayerLayer_8023DE58(field_0x23c);
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mLayer_0x4 = getPlayerLayer_8023DE58(field_0x23c);
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x240 = 5;
     mPos.z = 0.0f;
-    u16 tile = fn_8022461C(&mPos, field_0x4);
+    u16 tile = fn_8022461C(&mPos, mLayer_0x4);
     mPos.z = 400.0f;
     if (tile == 3 && !fn_801EE24C()) {
         return false;
@@ -937,7 +937,7 @@ void SmallKey_804A8CD8::fn_802C2B64() {
 // 0x802C2840.
 // FIXME(shotgun): 99.68 %, regalloc-only; behaviour clean.
 void SmallKey_804A8CD8::fn_802C2840() {
-    if (viewLayerFlag(field_0x4) != 0 || mPos.z > 2.0f || field_0x3c.z > 0.0f) {
+    if (viewLayerFlag(mLayer_0x4) != 0 || mPos.z > 2.0f || mVel_0x3c.z > 0.0f) {
         field_0x298 = -1;
         return;
     }
@@ -975,7 +975,7 @@ void SmallKey_804A8CD8::fn_802C2840() {
         mBox.f.y = 8.0f;
     }
     box.addPos(mPos.x, mPos.y);
-    JGeometry::TBox2f* screen = layerBox(field_0x4);
+    JGeometry::TBox2f* screen = layerBox(mLayer_0x4);
     f32 screenX = screen->i.x;
     f32 screenY = screen->i.y;
     box.addPos(-screenX, -screenY);
@@ -1016,7 +1016,7 @@ bool SmallKey_804A8CD8::fn_802C2684(ActorBase_804A5770* other, JGeometry::TBox2f
         (id == ACTOR_SSLF && (static_cast<SeesawLift_804AD348*>(other)->field_0x230 & 0x7FFF) == 0)) {
         JGeometry::TBox2f theirs(other->mBox);
         theirs.addPos(other->mPos.x, other->mPos.y);
-        s32 layer = other->field_0x4;
+        s32 layer = other->mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f* screen = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
         f32 scrollX = screen->i.x;
@@ -1040,7 +1040,7 @@ void SmallKey_804A8CD8::fn_802C24A8() {
             return;
         }
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (other == NULL || field_0x4 != other->field_0x4) {
+        if (other == NULL || mLayer_0x4 != other->mLayer_0x4) {
             continue;
         }
         s32 state = static_cast<StrangeBlock_804AC2D8*>(other)->field_0x25c;
@@ -1052,11 +1052,11 @@ void SmallKey_804A8CD8::fn_802C24A8() {
         f32 otherY = other->mPos.y;
         theirs.addPos(otherX, otherY);
         if (theirs.intersect(ours)) {
-            field_0x3c.x = -field_0x3c.x;
-            field_0x3c.y = -field_0x3c.y;
-            mPos.add(field_0x3c);
-            field_0x3c.x /= 3.0f;
-            field_0x3c.y /= 3.0f;
+            mVel_0x3c.x = -mVel_0x3c.x;
+            mVel_0x3c.y = -mVel_0x3c.y;
+            mPos.add(mVel_0x3c);
+            mVel_0x3c.x /= 3.0f;
+            mVel_0x3c.y /= 3.0f;
             return;
         }
     }
@@ -1069,15 +1069,15 @@ bool SmallKey_804A8CD8::bounceOffTile() {
     checkPos.x = mPos.x + 6.0f;
     checkPos.y = mPos.y + 8.0f;
     checkPos.z = 0.0f;
-    u16 t1 = fn_80226850(&checkPos, field_0x4);
+    u16 t1 = fn_80226850(&checkPos, mLayer_0x4);
     checkPos.x = mPos.x - 6.0f;
-    u16 t2 = fn_80226850(&checkPos, field_0x4);
+    u16 t2 = fn_80226850(&checkPos, mLayer_0x4);
     if (t1 == 0x16 || t2 == 0x16) {
-        field_0x3c.y = -2.0f;
+        mVel_0x3c.y = -2.0f;
         if (getPlayerPos_8023E724(field_0x23c)->x > mPos.x) {
-            field_0x3c.x = 1.0f;
+            mVel_0x3c.x = 1.0f;
         } else {
-            field_0x3c.x = -1.0f;
+            mVel_0x3c.x = -1.0f;
         }
         return true;
     }
@@ -1123,11 +1123,11 @@ bool SmallKey_804A8CD8::fn_802C2300(u8 playerBits) {
     if (!getGameView_802D6A9C()->fn_802D46D8(field_0x2a0, 0x168, false)) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             if (fn_802308E0(field_0x2a0) == true) {
-                fn_8022FE80(field_0x2a4, field_0x4, mSerial, 0, 0);
+                fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, 0, 0);
             }
         } else {
             if (fn_8023077C() == true) {
-                fn_8022FE80(field_0x2a4, field_0x4, mSerial, 0, 0);
+                fn_8022FE80(field_0x2a4, mLayer_0x4, mSerial, 0, 0);
             }
         }
         return true;
@@ -1153,10 +1153,10 @@ bool SmallKey_804A8CD8::fn_802C2154() {
             return false;
         }
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (other == NULL || field_0x4 != other->field_0x4) {
+        if (other == NULL || mLayer_0x4 != other->mLayer_0x4) {
             continue;
         }
-        s32 kind = other->field_0x90 & 0x7F;
+        s32 kind = other->mSpawnParam_0x90 & 0x7F;
         if (kind != 4) {
             continue;
         }
@@ -1224,7 +1224,7 @@ void SmallKey_804A8CD8::draw() {
 }
 
 void SmallKey_804A8CD8::fn_802C1DFC() {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (layer >= 8) {
         getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &mPos, 0, -1, -1);
     } else {
@@ -1278,7 +1278,7 @@ bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
         (rawCode == 0x1A8 || rawCode == 0x1A9 || rawCode == 0x1AA)) {
         return true;
     }
-    if (viewLayerFlag(field_0x4) && rawCode == 0x14) {
+    if (viewLayerFlag(mLayer_0x4) && rawCode == 0x14) {
         return false;
     }
     if (tileCode != 0 && tileCode != 4 && tileCode != 5 && tileCode != 6 && tileCode != 7 &&
@@ -1292,7 +1292,7 @@ bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
             if (field_0x280 == 7 || field_0x280 == 8) {
                 return false;
             }
-            if (mPos.z > 15.0f && !field_0x3c.x) {
+            if (mPos.z > 15.0f && !mVel_0x3c.x) {
                 field_0x288 = 300;
                 if (mPos.z < 18.0f) {
                     mPos.z = 18.0f;
@@ -1339,7 +1339,7 @@ bool SmallKey_804A8CD8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) 
 // flag, state, id and layer.
 // FIXME(shotgun): 87.85 %, missing/extra; behaviour clean.
 void SmallKey_804A8CD8::fn_802C1778() {
-    if (field_0x4 >= 8 && field_0x2a8 != 0xFFFF) {
+    if (mLayer_0x4 >= 8 && field_0x2a8 != 0xFFFF) {
         if (fn_8022F478(field_0x23c) == true) {
             s32 serial = mSerial;
             if (fn_8023EF50(field_0x23c) != serial) {
@@ -1355,7 +1355,7 @@ void SmallKey_804A8CD8::fn_802C1778() {
         JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
         JGeometry::TVec2f b(mPos.x, mPos.y);
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
-                    (field_0x2a8 << 8) | (field_0x4 & 0xFF);
+                    (field_0x2a8 << 8) | (mLayer_0x4 & 0xFF);
         s32 layer = field_0x238;
         getGameView_802D6A9C()->fn_802D6D70(b, a, value, layer);
         field_0x2a8 = 0xFFFF;
@@ -1369,7 +1369,7 @@ void SmallKey_804A8CD8::fn_802C1674() {
     }
     if (field_0x2a8 != 0xFFFF) {
         u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
-                    (field_0x2a8 << 8) | (field_0x4 & 0xFF);
+                    (field_0x2a8 << 8) | (mLayer_0x4 & 0xFF);
         JGeometry::TVec2f a(field_0x230.x, field_0x230.y);
         JGeometry::TVec2f b(mPos.x, mPos.y);
         s32 layer = field_0x238;

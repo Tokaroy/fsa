@@ -13,11 +13,11 @@ void CheepCheep_804A11B8::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
-    field_0x258 = field_0x90 & 1;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
+    field_0x258 = mSpawnParam_0x90 & 1;
     field_0x244 = 0;
     field_0x248 = 0;
     field_0x24c = 0;
@@ -28,37 +28,37 @@ void CheepCheep_804A11B8::init() {
     field_0x250 = 0;
     field_0x254 = 0;
     field_0x25c = 0;
-    field_0x260 = 8.0f * (f32)((field_0x90 >> 8) & 0xFF);
+    field_0x260 = 8.0f * (f32)((mSpawnParam_0x90 >> 8) & 0xFF);
     field_0x26c = 0.0f;
     field_0x268 = 0.0f;
     field_0x264 = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x270.x = mPos.x;
     field_0x270.y = mPos.y;
     field_0x270.z = mPos.z;
-    field_0x98 = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    mDir_0x98 = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     if (field_0x258 == 1) {
         field_0x254 = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-        field_0x114 = 4;
+        mParamAtcp_0x114 = 4;
         mBox.i.x = -16.0f;
         mBox.i.y = -16.0f;
         mBox.f.x = 16.0f;
         mBox.f.y = 16.0f;
-        field_0x80.i.x = -16.0f;
-        field_0x80.i.y = -10.0f;
-        field_0x80.f.x = 16.0f;
-        field_0x80.f.y = 10.0f;
+        mMapBox_0x80.i.x = -16.0f;
+        mMapBox_0x80.i.y = -10.0f;
+        mMapBox_0x80.f.x = 16.0f;
+        mMapBox_0x80.f.y = 10.0f;
     }
     field_0x230 = 0;
-    if ((field_0x90 >> 4) & 0xFF) {
+    if ((mSpawnParam_0x90 >> 4) & 0xFF) {
         if (field_0x260 == 0.0f) {
             field_0x260 = 16.0f;
         }
-        field_0x98 = (field_0x90 >> 4) & 0xF;
-        field_0x98--;
-        field_0x98 &= 3;
+        mDir_0x98 = (mSpawnParam_0x90 >> 4) & 0xF;
+        mDir_0x98--;
+        mDir_0x98 &= 3;
         field_0x230 = 4;
     }
 }
@@ -77,9 +77,9 @@ void CheepCheep_804A11B8::update() {
     u8 turnAround = 0;
     f32 outDist = 0.0f;
     s32 outPlayer = -1;
-    addCalc2_801F71A4(&field_0x3c.x, field_0x264, 0.1f, 0.1f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x268, 0.1f, 0.1f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x264, 0.1f, 0.1f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x268, 0.1f, 0.1f);
+    mPos += mVel_0x3c;
     hitVec.z = 0.0f;
     hitVec.y = 0.0f;
     hitVec.x = 0.0f;
@@ -87,7 +87,7 @@ void CheepCheep_804A11B8::update() {
     if (field_0x258 == 1 && hitVec.y != 0.0f) {
         hit = 0;
     }
-    if (fn_801F2B7C(field_0x114, -1, 1)) {
+    if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
         if (field_0x258 == 1 && field_0x230 == 3) {
             turnAround = 1;
         }
@@ -95,7 +95,7 @@ void CheepCheep_804A11B8::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x258 == 1) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x264 = 0.9f;
                 field_0x268 = 0.0f;
@@ -108,7 +108,7 @@ void CheepCheep_804A11B8::update() {
                 break;
             }
         } else {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x264 = 0.4f;
                 field_0x268 = 0.0f;
@@ -130,19 +130,19 @@ void CheepCheep_804A11B8::update() {
         }
         field_0x25c += 300;
         if (field_0x238 == 0 || hit) {
-            if (hit || fn_801F6758(&mPos, field_0x4, 16.0f) || turnAround == 1) {
-                s32 oldDir = field_0x98;
-                field_0x98 = 0;
+            if (hit || fn_801F6758(&mPos, mLayer_0x4, 16.0f) || turnAround == 1) {
+                s32 oldDir = mDir_0x98;
+                mDir_0x98 = 0;
                 if (field_0x270.x < mPos.x) {
-                    field_0x98 = 1;
+                    mDir_0x98 = 1;
                 }
-                if (oldDir != field_0x98) {
+                if (oldDir != mDir_0x98) {
                     field_0x26c = 0.0f;
                     field_0x268 = 0.0f;
                     field_0x264 = 0.0f;
-                    field_0x3c.z = 0.0f;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.x = 0.0f;
+                    mVel_0x3c.z = 0.0f;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.x = 0.0f;
                 }
                 field_0x238 = 20;
                 field_0x230 = 0;
@@ -151,7 +151,7 @@ void CheepCheep_804A11B8::update() {
         if (field_0x23c == 0) {
             s32 outDir;
             fn_801EEC98(mSerial, NULL, &outDir, &outDist, &outPlayer, 0, 0);
-            if (outPlayer >= 0 && field_0x98 == outDir) {
+            if (outPlayer >= 0 && mDir_0x98 == outDir) {
                 if (field_0x258 == 0) {
                     if (outDist < 96.0f) {
                         if (FABS(getPlayerPos_8023E724(outPlayer)->y - mPos.y) < 32.0f) {
@@ -173,11 +173,11 @@ void CheepCheep_804A11B8::update() {
         field_0x26c = 0.0f;
         field_0x268 = 0.0f;
         field_0x264 = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         if (field_0x258 == 1) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x264 = 1.7f;
                 field_0x268 = 0.0f;
@@ -190,7 +190,7 @@ void CheepCheep_804A11B8::update() {
                 break;
             }
         } else {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x264 = 0.9f;
                 field_0x268 = 0.0f;
@@ -215,14 +215,14 @@ void CheepCheep_804A11B8::update() {
             margin = -24.0f;
             hit = turnAround;
         }
-        if (hit || fn_801F6758(&mPos, field_0x4, margin) || field_0x238 == 0) {
-            field_0x98 ^= 1;
+        if (hit || fn_801F6758(&mPos, mLayer_0x4, margin) || field_0x238 == 0) {
+            mDir_0x98 ^= 1;
             field_0x26c = 0.0f;
             field_0x268 = 0.0f;
             field_0x264 = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x23c = 160;
             field_0x238 = 20;
             field_0x230 = 0;
@@ -230,7 +230,7 @@ void CheepCheep_804A11B8::update() {
         break;
     }
     case 4:
-        switch (field_0x98) {
+        switch (mDir_0x98) {
         case 0:
             field_0x264 = 0.4f;
             field_0x268 = 0.0f;
@@ -260,13 +260,13 @@ void CheepCheep_804A11B8::update() {
         f32 dy = field_0x270.y - mPos.y;
         if (field_0x238 == 0) {
             if (hit || std::sqrtf(dx * dx + dy * dy) > field_0x260) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
                 field_0x26c = 0.0f;
                 field_0x268 = 0.0f;
                 field_0x264 = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x230 = 4;
             }
         }
@@ -280,7 +280,7 @@ void CheepCheep_804A11B8::update() {
         }
         field_0x244++;
         field_0x244 &= 1;
-        field_0x250 = ((field_0x98 & 1) << 1) + field_0x244;
+        field_0x250 = ((mDir_0x98 & 1) << 1) + field_0x244;
     }
     if (field_0x234 > 0) {
         field_0x234--;
@@ -317,11 +317,11 @@ void CheepCheep_804A11B8::draw() {
         params.mMtx = mtx;
     }
     s32 frame = field_0x250 + 0x143;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x143, hasMtx != 0, 2, -1, false, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x143, hasMtx != 0, 2, -1, false, 0, 0);
 }
 
 CheepCheep_804A11B8::~CheepCheep_804A11B8() {}

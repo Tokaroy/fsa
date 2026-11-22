@@ -27,13 +27,13 @@ public:
     /* 0x5C */ virtual bool vfunc_0x5C(f32 a, f32 b, f32 c);
 
     /* 0x230 */ s32 field_0x230; // state: 0 (waiting), 1 (written), 3 (reset); set by vfunc_0x10 / update
-    /* 0x234 */ s32 field_0x234; // type / tile code, field_0x90 & 0x3FF (init)
-    /* 0x238 */ s32 field_0x238; // (field_0x90 >> 16) & 0xF (init); nonzero: a layer tile write
-    /* 0x23C */ s32 field_0x23c; // (field_0x90 >> 20) & 7 (init); 2 keeps the panel live
-    /* 0x240 */ s32 field_0x240; // (field_0x90 >> 23) & 7 (init); 2 / 3 select the vfunc_0x54 sound
-    /* 0x244 */ s32 field_0x244; // (field_0x90 >> 12) & 0xF (init); indexes the effect tables
-    /* 0x248 */ s32 field_0x248; // (field_0x90 >> 10) & 3 (init); gates by the game flag
-    /* 0x24C */ bool field_0x24c; // field_0x90 bit 26 (vfunc_0x10); gates vfunc_0x54
+    /* 0x234 */ s32 field_0x234; // type / tile code, mSpawnParam_0x90 & 0x3FF (init)
+    /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 16) & 0xF (init); nonzero: a layer tile write
+    /* 0x23C */ s32 field_0x23c; // (mSpawnParam_0x90 >> 20) & 7 (init); 2 keeps the panel live
+    /* 0x240 */ s32 field_0x240; // (mSpawnParam_0x90 >> 23) & 7 (init); 2 / 3 select the vfunc_0x54 sound
+    /* 0x244 */ s32 field_0x244; // (mSpawnParam_0x90 >> 12) & 0xF (init); indexes the effect tables
+    /* 0x248 */ s32 field_0x248; // (mSpawnParam_0x90 >> 10) & 3 (init); gates by the game flag
+    /* 0x24C */ bool field_0x24c; // mSpawnParam_0x90 bit 26 (vfunc_0x10); gates vfunc_0x54
     /* 0x250 */ s32 field_0x250; // map cell index (fn_80226BC4), passed as u16
     /* 0x254 */ u16 field_0x254; // tile code of the cell (fn_802F9908)
     /* 0x256 */ u8 field_0x256;  // layer offset for the tile writes: 0, 1 or 8

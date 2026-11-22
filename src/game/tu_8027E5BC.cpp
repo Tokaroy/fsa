@@ -364,7 +364,7 @@ void Player_804A6F38::fn_80284E04() {
     } else {
         ActorBase_804A5770* grabbed = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8024FF84());
         if (grabbed != NULL && magnitude(grabbed->mPos - grabbed->mPrevPos) >= 0.1f) {
-            mPos += grabbed->field_0x3c;
+            mPos += grabbed->mVel_0x3c;
             field_0x3f8++;
             if (field_0x3f8 >= 128) {
                 field_0x3f8 = 0;
@@ -437,7 +437,7 @@ void Player_804A6F38::fn_80284978() {
             if (pushed != NULL) {
                 if (magnitude(pushed->mPos - pushed->mPrevPos) >= 0.1f) {
                     carried = true;
-                    mPos += pushed->field_0x3c;
+                    mPos += pushed->mVel_0x3c;
                 } else if (!fn_802456FC()) {
                     fn_80251AEC(0);
                 } else if (fn_802456FC() && fn_80246D1C(lbl_8046BE08[field_0x3dc])) {

@@ -29,12 +29,12 @@ s32 lbl_804A0CC8[4] = {2, 10, 2, 10};
 void Stalfos_804A0CD8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-4.0f, -4.0f, 4.0f, 4.0f);
-    field_0x80.set(-8.0f, 0.0f, 8.0f, 8.0f);
-    field_0x264 = (field_0x90 >> 4) & 1;
+    mMapBox_0x80.set(-8.0f, 0.0f, 8.0f, 8.0f);
+    field_0x264 = (mSpawnParam_0x90 >> 4) & 1;
     if (field_0x264 != 0) {
         mBox.set(-12.0f, -12.0f, 12.0f, 12.0f);
     }
-    field_0x90 &= 0xF;
+    mSpawnParam_0x90 &= 0xF;
     field_0x94 = 0;
     field_0x24c = 0;
     field_0x250 = 0;
@@ -50,35 +50,35 @@ void Stalfos_804A0CD8::init() {
     field_0x278.y = 1.0f;
     field_0x278.z = 1.0f;
     field_0xb0 = 0x42205;
-    field_0x98 = 3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    if (viewLayerFlag(field_0x4)) {
-        field_0x98 &= 1;
+    mDir_0x98 = 3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+    if (viewLayerFlag(mLayer_0x4)) {
+        mDir_0x98 &= 1;
     }
-    field_0x250 = field_0x98;
+    field_0x250 = mDir_0x98;
     field_0x26c.x = 0.0f;
     field_0x26c.y = 0.0f;
     field_0x26c.z = 0.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     field_0x260 = mLife;
     field_0x25c = field_0x260;
-    switch (field_0x90) {
+    switch (mSpawnParam_0x90) {
     case 3:
         mTimers[2] = 30;
         field_0xb0 = 0;
-        field_0x90 = 0;
+        mSpawnParam_0x90 = 0;
         break;
     case 5: {
         field_0x260 = 4;
         field_0x25c = 4;
-        field_0x190 = 0;
+        mParamVoic_0x190 = 0;
         mLife = 1000;
         ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-        s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, field_0x4, actors, -1);
+        s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1);
         for (int i = 0; i < count; i++) {
             ActorBase_804A5770* actor = actors[i];
-            if (actor != NULL && actor->field_0x90 == 1) {
+            if (actor != NULL && actor->mSpawnParam_0x90 == 1) {
                 field_0x230 = 0;
                 return;
             }
@@ -103,34 +103,34 @@ void Stalfos_804A0CD8::update() {
     f32 dist = 0.0f;
     JGeometry::TVec3f push;
 
-    if (field_0x90 == 4 || (field_0x90 == 5 && mLife == 1000)) {
+    if (mSpawnParam_0x90 == 4 || (mSpawnParam_0x90 == 5 && mLife == 1000)) {
         if (mPos.z > 0.0f) {
-            if (field_0x3c.z == 0.0f) {
+            if (mVel_0x3c.z == 0.0f) {
                 return;
             }
-            field_0x3c.z -= 1.0f;
-            if (field_0x3c.z < -10.0f) {
-                field_0x3c.z = -10.0f;
+            mVel_0x3c.z -= 1.0f;
+            if (mVel_0x3c.z < -10.0f) {
+                mVel_0x3c.z = -10.0f;
             }
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
             return;
         }
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
-        if (field_0x90 == 4) {
-            field_0x90 = 0;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        if (mSpawnParam_0x90 == 4) {
+            mSpawnParam_0x90 = 0;
         } else {
             mLife = 10000;
         }
     }
 
-    if (field_0x90 == 5 && mLife != 1000) {
+    if (mSpawnParam_0x90 == 5 && mLife != 1000) {
         mLife = 10000;
     }
 
-    if (field_0x90 == 5 && field_0x94 != 0 && field_0x230 != 8) {
+    if (mSpawnParam_0x90 == 5 && field_0x94 != 0 && field_0x230 != 8) {
         field_0x230 = 7;
     }
 
@@ -144,8 +144,8 @@ void Stalfos_804A0CD8::update() {
         if ((u32)field_0xb0 == 0) {
             field_0xb0 = 0x42205;
         }
-        if ((field_0x90 == 0 || field_0x230 != 4) && mPos.z == 0.0f && fn_801F305C()) {
-            if (field_0x90 == 5) {
+        if ((mSpawnParam_0x90 == 0 || field_0x230 != 4) && mPos.z == 0.0f && fn_801F305C()) {
+            if (mSpawnParam_0x90 == 5) {
                 field_0x25c -= 10000 - mLife;
                 if (field_0x25c <= 0) {
                     field_0x26c.z = 0.0f;
@@ -164,12 +164,12 @@ void Stalfos_804A0CD8::update() {
         }
     }
 
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         field_0x26c.y = 3.0f;
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x26c.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x26c.y, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x26c.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x26c.y, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
 
     if (mTimers[2] == 0 && field_0x230 != 4 && field_0x230 != 8) {
         fn_801F2B7C(-100, -1, 1);
@@ -178,7 +178,7 @@ void Stalfos_804A0CD8::update() {
     u8 blocked = fn_801F2618(&push, false);
     fn_801EEC98(mSerial, &angle, &dir, &dist, &playerIdx, 0, 0);
 
-    if ((field_0x90 == 1 || field_0x90 == 2) && field_0x230 == 1 && dist < 50.0f) {
+    if ((mSpawnParam_0x90 == 1 || mSpawnParam_0x90 == 2) && field_0x230 == 1 && dist < 50.0f) {
         for (int i = 0; i < 4; i++) {
             if (fn_8023F264(i) && getField_0x4() == getPlayerLayer_8023DE58(i) &&
                 !fn_80230188(i) && getPlayerLayer_8023DE58(i) != 8 && fn_8022C3AC(i)) {
@@ -190,9 +190,9 @@ void Stalfos_804A0CD8::update() {
 
     switch (field_0x230) {
     case 0: {
-        if (field_0x90 == 5) {
+        if (mSpawnParam_0x90 == 5) {
             ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-            if (getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, field_0x4, actors, -1) == 0) {
+            if (getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1) == 0) {
                 field_0x230 = 7;
                 break;
             }
@@ -200,33 +200,33 @@ void Stalfos_804A0CD8::update() {
         if (mTimers[1] == 0) {
             mTimers[1] = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
         }
-        if (viewLayerFlag(field_0x4) && blocked && push.y != 0.0f) {
+        if (viewLayerFlag(mLayer_0x4) && blocked && push.y != 0.0f) {
             blocked = 0;
         }
         if (blocked || gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.3f || dir < 0) {
-            if (!viewLayerFlag(field_0x4)) {
-                field_0x98 ^= 2;
+            if (!viewLayerFlag(mLayer_0x4)) {
+                mDir_0x98 ^= 2;
             }
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
         } else {
-            if (!viewLayerFlag(field_0x4)) {
-                field_0x98 = dir;
+            if (!viewLayerFlag(mLayer_0x4)) {
+                mDir_0x98 = dir;
             } else if ((dir & 2) == 0) {
-                field_0x98 = dir;
+                mDir_0x98 = dir;
             } else if (angle < 0x8000) {
-                field_0x98 = 0;
+                mDir_0x98 = 0;
             } else {
-                field_0x98 = 1;
+                mDir_0x98 = 1;
             }
         }
-        if (field_0x250 != field_0x98) {
+        if (field_0x250 != mDir_0x98) {
             mTimers[0] = 0;
             field_0x24c = 0;
         }
-        field_0x250 = field_0x98;
-        switch (field_0x98) {
+        field_0x250 = mDir_0x98;
+        switch (mDir_0x98) {
         case 0:
             field_0x26c.x = 0.7f;
             field_0x26c.y = 0.0f;
@@ -253,7 +253,7 @@ void Stalfos_804A0CD8::update() {
     }
     case 1:
         if (mTimers[0] == 0) {
-            field_0x258 = lbl_804A0C10[field_0x98 * 6 + field_0x24c];
+            field_0x258 = lbl_804A0C10[mDir_0x98 * 6 + field_0x24c];
             mTimers[0] = lbl_804A0C70[field_0x24c];
             field_0x24c++;
             if (field_0x24c > 5) {
@@ -274,22 +274,22 @@ void Stalfos_804A0CD8::update() {
         break;
     case 3:
         if (dir >= 0) {
-            if (!viewLayerFlag(field_0x4)) {
-                field_0x98 = dir;
+            if (!viewLayerFlag(mLayer_0x4)) {
+                mDir_0x98 = dir;
             } else if ((dir & 2) == 0) {
-                field_0x98 = dir;
+                mDir_0x98 = dir;
             } else if (angle < 0x8000) {
-                field_0x98 = 0;
+                mDir_0x98 = 0;
             } else {
-                field_0x98 = 1;
+                mDir_0x98 = 1;
             }
         }
         field_0x26c.x = 2.0f * JMASinShort(angle + 0x8000);
-        if (!viewLayerFlag(field_0x4)) {
-            field_0x3c.z = 5.0f;
+        if (!viewLayerFlag(mLayer_0x4)) {
+            mVel_0x3c.z = 5.0f;
             field_0x26c.y = 2.0f * JMACosShort(angle + 0x8000);
         } else {
-            field_0x3c.y = -7.0f;
+            mVel_0x3c.y = -7.0f;
         }
         mTimers[0] = 0;
         field_0x24c = 0;
@@ -297,27 +297,27 @@ void Stalfos_804A0CD8::update() {
         field_0x230 = 4;
         break;
     case 4:
-        if (!viewLayerFlag(field_0x4)) {
-            field_0x3c.z -= 0.4f;
+        if (!viewLayerFlag(mLayer_0x4)) {
+            mVel_0x3c.z -= 0.4f;
         }
         if (field_0x24c < 4 && mTimers[0] == 0) {
-            field_0x258 = lbl_804A0C88[field_0x24c + field_0x98 * 4];
+            field_0x258 = lbl_804A0C88[field_0x24c + mDir_0x98 * 4];
             mTimers[0] = lbl_804A0CC8[field_0x24c];
             field_0x24c++;
         }
-        if ((!viewLayerFlag(field_0x4) && mPos.z < 0.0f) || (viewLayerFlag(field_0x4) && push.y < 0.0f)) {
-            if (field_0x90 == 2) {
+        if ((!viewLayerFlag(mLayer_0x4) && mPos.z < 0.0f) || (viewLayerFlag(mLayer_0x4) && push.y < 0.0f)) {
+            if (mSpawnParam_0x90 == 2) {
                 ActorBase_804A5770* rock = getActorManager_801F856C()->findActorBySerial_801F666C(
-                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OKTM, field_0x4, &mPos, 2, -1, -1));
+                    getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OKTM, mLayer_0x4, &mPos, 2, -1, -1));
                 if (rock != NULL) {
                     JGeometry::TVec3f vel;
                     vel.x = 1.8f * JMASinShort(angle);
                     vel.y = 1.8f * JMACosShort(angle);
-                    rock->field_0x3c = vel;
+                    rock->mVel_0x3c = vel;
                 }
             }
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             field_0x26c.z = 0.0f;
             field_0x26c.y = 0.0f;
             field_0x26c.x = 0.0f;
@@ -332,19 +332,19 @@ void Stalfos_804A0CD8::update() {
         mTimers[1] = 0;
         mTimers[3] = 750;
         field_0x25c = field_0x260;
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         field_0xb0 = 0;
         field_0x230 = 6;
         // fallthrough
     case 6:
         switch (field_0x250) {
         case 0:
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
             mTimers[4] = 690;
             field_0x250 = 1;
             break;
         case 1:
-            field_0x258 = field_0x98 + 28;
+            field_0x258 = mDir_0x98 + 28;
             if (mTimers[4] <= 30) {
                 if (mPos.z <= 0.0f) {
                     mPos.z = 0.0f;
@@ -352,21 +352,21 @@ void Stalfos_804A0CD8::update() {
                         field_0x26c.z = 0.0f;
                         field_0x26c.y = 0.0f;
                         field_0x26c.x = 0.0f;
-                        field_0x3c.z = 0.0f;
-                        field_0x3c.y = 0.0f;
-                        field_0x3c.x = 0.0f;
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                        mVel_0x3c.z = 0.0f;
+                        mVel_0x3c.y = 0.0f;
+                        mVel_0x3c.x = 0.0f;
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
                         field_0x250 = 0;
                         field_0x230 = 0;
                     } else {
                         s32 randAngle = 65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                        field_0x3c.z = 4.0f;
+                        mVel_0x3c.z = 4.0f;
                         field_0x26c.x = 1.3f * JMASinShort(randAngle);
                         field_0x26c.y = 1.3f * JMACosShort(randAngle);
-                        field_0x98 = fn_801F681C(randAngle);
+                        mDir_0x98 = fn_801F681C(randAngle);
                     }
                 } else {
-                    field_0x3c.z -= 1.0f;
+                    mVel_0x3c.z -= 1.0f;
                 }
             }
             break;
@@ -379,21 +379,21 @@ void Stalfos_804A0CD8::update() {
         field_0x26c.z = 0.0f;
         field_0x26c.y = 0.0f;
         field_0x26c.x = 0.0f;
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
-        field_0x98 = 2;
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x35C, 1, 1, NULL, NULL, true, fn_801EE4F0());
+        mDir_0x98 = 2;
         field_0xb0 = 0;
         field_0x230 = 8;
         // fallthrough
     case 8:
-        field_0x258 = field_0x98 + 28;
+        field_0x258 = mDir_0x98 + 28;
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
-            if (field_0x3c.z < -10.0f) {
-                field_0x3c.z = -10.0f;
+            mVel_0x3c.z -= 1.0f;
+            if (mVel_0x3c.z < -10.0f) {
+                mVel_0x3c.z = -10.0f;
             }
         } else {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         if (mTimers[4] == 0) {
             die_0x24();

@@ -9,15 +9,15 @@
 // in r4/r5 after the 0x10000 constant; here the RNG multiplier is built
 // first (r4 -> r6) and the zero lands in r7.
 void Popo_804A0868::init() {
-    field_0x90 = field_0x90 & 0xFF;
+    mSpawnParam_0x90 = mSpawnParam_0x90 & 0xFF;
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -28,13 +28,13 @@ void Popo_804A0868::init() {
     field_0x250 = 0.0f;
     field_0x254 = 0.0f;
     field_0x258 = 0.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     field_0xb0 = 0x11101;
     field_0x240 = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     mTimers[1] = (s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
-    if (field_0x90 == 1) {
+    if (mSpawnParam_0x90 == 1) {
         field_0xb0 = 0;
     }
     field_0x230 = 0;
@@ -45,29 +45,29 @@ void Popo_804A0868::init() {
 // the original; here the multiplier is r0 and the value r3 (and the sincos
 // table base is r5 instead of r4).
 void Popo_804A0868::update() {
-    if (field_0x90 == 1) {
+    if (mSpawnParam_0x90 == 1) {
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 1.0f;
-            if (field_0x3c.z < -10.0f) {
-                field_0x3c.z = -10.0f;
+            mVel_0x3c.z -= 1.0f;
+            if (mVel_0x3c.z < -10.0f) {
+                mVel_0x3c.z = -10.0f;
             }
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
             return;
         }
         mPos.z = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0xb0 = 0x11101;
-        field_0x90 = 0;
+        mSpawnParam_0x90 = 0;
     }
     if (fn_801F3D94(1) != 0 || fn_801F305C()) {
         fn_801F2618(NULL, false);
         return;
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x250, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x254, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x250, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x254, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     fn_801F2B7C(-100, -1, 1);
     fn_801F2618(NULL, false);
     switch (field_0x230) {

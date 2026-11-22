@@ -53,7 +53,7 @@ void VaatiTimeUp_804ACCC0::init() {
     field_0x2e8 = -(0.4f * field_0x2d8) / 60.0f;
     field_0x2ec = -(0.4f * field_0x2dc) / 60.0f;
     field_0x2f0 = -(0.4f * field_0x2e0) / 60.0f;
-    field_0x3c.x = -2.0f;
+    mVel_0x3c.x = -2.0f;
     field_0x2b8 = 1;
 }
 
@@ -82,13 +82,13 @@ void VaatiTimeUp_804ACCC0::update() {
         field_0x2b8 = 1;
         break;
     case 1:
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         if (field_0x2c0 <= 0) {
             startSound_801F0E34(0x4003F, 0);
             field_0x230.field_0x58 = 255.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x2c0 = 0;
             field_0x2b8 = 2;
             field_0x2d8 = 0.6f * (f32)(field_0x2d4 >> 24);
@@ -118,7 +118,7 @@ void VaatiTimeUp_804ACCC0::update() {
     case 3:
         steer();
         field_0x2c4--;
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         field_0x230.fn_801EB418(&mPos);
         if (field_0x2c0 <= 0) {
             if (mViewBox.i.x - 192.0f > mPos.x) {
@@ -182,8 +182,8 @@ void VaatiTimeUp_804ACCC0::steer() {
     addCalcAngle2_801F714C(&field_0x2cc, field_0x2d0, 20, 0x1000);
     field_0x2a0 = 6.0f * JMath::sincosTable_.sinShort(field_0x2cc);
     field_0x2a4 = 6.0f * JMath::sincosTable_.cosShort(field_0x2cc);
-    addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.1f, 0.2f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.1f, 0.2f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0, 0.1f, 0.2f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a4, 0.1f, 0.2f);
 }
 
 // With the timer up the target becomes the point 192 left of the view box; else tells whether the

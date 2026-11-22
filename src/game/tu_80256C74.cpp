@@ -1423,7 +1423,7 @@ void Player_804A6F38::fn_8025AED0() {
     fn_80268B3C();
     if (field_0xafc != 1 && !field_0xbf0->anyFlag48()) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x11f8);
-        if (actor != NULL && actor->field_0x4 == field_0x3b4) {
+        if (actor != NULL && actor->mLayer_0x4 == field_0x3b4) {
             JGeometry::TVec3f dir = actor->mPos - mPos;
             dir.z = 0.0f;
             dir.normalize();
@@ -2308,7 +2308,7 @@ void Player_804A6F38::fn_802585F4() {
             JGeometry::TVec2<f32> pos;
             pos.x = actor->mPos.x;
             pos.y = actor->mPos.y;
-            field_0xb40[i] = actor->field_0x4;
+            field_0xb40[i] = actor->mLayer_0x4;
             field_0x4e0[i].set(actor->mBox);
             field_0x4e0[i].addPos(pos);
         }
@@ -2325,7 +2325,7 @@ void Player_804A6F38::fn_8025851C() {
             JGeometry::TVec2<f32> pos;
             pos.x = actor->mPos.x;
             pos.y = actor->mPos.y;
-            field_0xb4c[i] = actor->field_0x4;
+            field_0xb4c[i] = actor->mLayer_0x4;
             field_0x510[i].set(actor->mBox);
             field_0x510[i].addPos(pos);
         }
@@ -2341,7 +2341,7 @@ void Player_804A6F38::fn_80258470() {
         JGeometry::TVec2<f32> pos;
         pos.x = actor->mPos.x;
         pos.y = actor->mPos.y;
-        field_0xb58 = actor->field_0x4;
+        field_0xb58 = actor->mLayer_0x4;
         field_0x540.set(actor->mBox);
         field_0x540.addPos(pos);
     }
@@ -2360,7 +2360,7 @@ void Player_804A6F38::fn_80258384() {
                 JGeometry::TVec2<f32> pos;
                 pos.x = actor->mPos.x;
                 pos.y = actor->mPos.y;
-                field_0xb5c[i] = actor->field_0x4;
+                field_0xb5c[i] = actor->mLayer_0x4;
                 field_0x550[i].set(actor->mBox);
                 field_0x550[i].addPos(pos);
             }
@@ -2381,7 +2381,7 @@ void Player_804A6F38::fn_8025825C() {
         field_0xb6c = -1;
         return;
     }
-    if (actor->field_0x3c.isZero()) {
+    if (actor->mVel_0x3c.isZero()) {
         field_0xb68 = 0;
     } else {
         field_0xb68 = 1;
@@ -2389,7 +2389,7 @@ void Player_804A6F38::fn_8025825C() {
     JGeometry::TVec2<f32> pos;
     pos.x = actor->mPos.x;
     pos.y = actor->mPos.y;
-    field_0xb6c = actor->field_0x4;
+    field_0xb6c = actor->mLayer_0x4;
     field_0x590.set(actor->mBox);
     field_0x590.addPos(pos);
 }
@@ -2405,7 +2405,7 @@ void Player_804A6F38::fn_8025819C() {
             JGeometry::TVec2<f32> pos;
             pos.x = actor->mPos.x;
             pos.y = actor->mPos.y;
-            field_0xb70 = actor->field_0x4;
+            field_0xb70 = actor->mLayer_0x4;
             field_0x5a0.set(actor->mBox);
             field_0x5a0.addPos(pos);
         }

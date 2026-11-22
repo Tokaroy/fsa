@@ -4,7 +4,7 @@
 #include "game/Player.h"
 #include "game/act/act_warp_entrance_wall.h"
 
-// Boxes (x0, y0, x1, y1) relative to the actor, one per field_0x90 & 3.
+// Boxes (x0, y0, x1, y1) relative to the actor, one per mSpawnParam_0x90 & 3.
 // lbl_804752C0 and lbl_80475300 are init()'s mBox for shape 0 and 1.
 static const f32 lbl_804752C0[4][4] = {
     {-7.5f, -23.5f, 7.5f, 7.5f},
@@ -47,7 +47,7 @@ static inline bool overlapsHouseOrLog(s32 i, const JGeometry::TBox2f& box) {
 }
 
 void WarpEntranceWall_804AE948::init() {
-    u32 param = field_0x90;
+    u32 param = mSpawnParam_0x90;
     u8 shape = param & 3;
     field_0x230 = (param >> 22) & 0x1F;
     switch (field_0x230) {
@@ -60,14 +60,14 @@ void WarpEntranceWall_804AE948::init() {
         break;
     }
     }
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
-    field_0x234 = field_0x90 >> 27;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
+    field_0x234 = mSpawnParam_0x90 >> 27;
     if (field_0x230 == 1) {
         mPos.x = (s32)mPos.x / 16 * 16 + 8;
         mPos.y = (s32)mPos.y / 16 * 16 + 8;
@@ -101,14 +101,14 @@ void WarpEntranceWall_804AE948::update() {
             break;
         }
         }
-        u8 index = (field_0x90 & 3) + field_0x230 * 4;
+        u8 index = (mSpawnParam_0x90 & 3) + field_0x230 * 4;
         box.set(lbl_80475340[index][0], lbl_80475340[index][1], lbl_80475340[index][2],
                 lbl_80475340[index][3]);
         box.i.x += mPos.x;
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 }
 

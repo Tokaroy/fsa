@@ -721,7 +721,7 @@ bool fn_80388CAC(s32 player, s32 serial) {
     return false;
 }
 
-// The window of window index `index` (field_0x114, mapped once more by windowIndex).
+// The window of window index `index` (mParamAtcp_0x114, mapped once more by windowIndex).
 static inline MessageWindow_804AF490* mappedWindow(s32 index) {
     return lbl_8053AD78->mWindows[windowIndex(index)];
 }
@@ -1188,7 +1188,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
                 if (fn_8023EEB4(player) == 'TUBO') {
                     ActorBase_804A5770* pot =
                         getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(player));
-                    u32 type = (pot->field_0x90 >> 7) & 0x1F;
+                    u32 type = (pot->mSpawnParam_0x90 >> 7) & 0x1F;
                     if ((type == 0 && kind == 10) || (type == 1 && kind == 8) || (type == 2 && kind == 9)) {
                         next = target;
                         if (consume) {

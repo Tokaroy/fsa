@@ -33,8 +33,8 @@ public:
     /* 0x250 */ s32 field_0x250; // sprite frame 0..2, 0 at init; the draw adds 0x5E to it
     /* 0x254 */ s16 field_0x254; // aim angle, 0 at init; set in state 1
     /* 0x256 */ u8 field_0x256[2];
-    /* 0x258 */ f32 field_0x258; // target for field_0x3c.x; 0.0f at init
-    /* 0x25C */ f32 field_0x25c; // target for field_0x3c.y; 0.0f at init
+    /* 0x258 */ f32 field_0x258; // target for mVel_0x3c.x; 0.0f at init
+    /* 0x25C */ f32 field_0x25c; // target for mVel_0x3c.y; 0.0f at init
     /* 0x260 */ f32 field_0x260; // target for mPos.z; 10.0f at init, 7 + 2 sin in state 0
     /* 0x264 */ JPABaseEmitter* mEmitter264; // released by the destructor
     /* 0x268 */ JPABaseEmitter* mEmitter268; // released by the destructor

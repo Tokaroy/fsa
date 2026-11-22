@@ -33,11 +33,11 @@ public:
     /* 0x54 */ virtual void vfunc_0x54(s32 r, s32 g, s32 b, s32 a, s32 frames, s32 state);
 
     /* 0x230 */ s32 mState; // 0..5, the update's state machine; set by vfunc_0x54
-    /* 0x234 */ f32 field_0x234; // -x of the camera's view translation (gGameRoot2_8053AB10->field_0x24->field_0x4[0][3]), set in init
+    /* 0x234 */ f32 field_0x234; // -x of the camera's view translation (gGameRoot2_8053AB10->field_0x24->mLayer_0x4[0][3]), set in init
     /* 0x238 */ f32 field_0x238; // -y of the same translation ([1][3]), set in init
     /* 0x23C */ f32 field_0x23c; // 0.0f, set in init
-    /* 0x240 */ s32 field_0x240; // field_0x90 bits 22-26
-    /* 0x244 */ s32 field_0x244; // field_0x90 & 0xFF, or -1; the switch index in init
+    /* 0x240 */ s32 field_0x240; // mSpawnParam_0x90 bits 22-26
+    /* 0x244 */ s32 field_0x244; // mSpawnParam_0x90 & 0xFF, or -1; the switch index in init
     /* 0x248 */ SpriteParamsColor_801F5AE0 mColor; // written by fn_8018330C; its four bytes are split below
     /* 0x24C */ s32 mColorCur[4]; // r, g, b, a of mColor (0x258 is also set by vfunc_0x54)
     /* 0x25C */ s32 mColorEnd[3]; // end colour r, g, b (vfunc_0x54, state 0)

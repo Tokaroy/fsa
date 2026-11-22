@@ -23,11 +23,11 @@ public:
     /* 0x230 */ ActorSoundObj_804578F4* mSound; // own sound object, made in init
     /* 0x234 */ JPABaseEmitter* mEmitter;       // the sandstorm effect
     /* 0x238 */ u8 field_0x238[0x4];            // not used here
-    /* 0x23C */ s32 mKind; // field_0x90 & 0xF: lowest set bit 0, 1, 2 picks the effect id
+    /* 0x23C */ s32 mKind; // mSpawnParam_0x90 & 0xF: lowest set bit 0, 1, 2 picks the effect id
     /* 0x240 */ s32 mTimer; // 100 after the effect is switched, counts down to the stage change
     /* 0x244 */ JGeometry::TVec3f mPos244; // minus the camera's view translation, z 0
     /* 0x250 */ s32 mStarted; // set once the view reports field_0xc9
-    /* 0x254 */ s32 field_0x254; // (field_0x90 >> 4) & 0xF; not read here
+    /* 0x254 */ s32 field_0x254; // (mSpawnParam_0x90 >> 4) & 0xF; not read here
 }; // Size: 0x258
 
 #endif

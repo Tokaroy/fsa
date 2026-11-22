@@ -13,13 +13,13 @@ static const s32 lbl_80474E70[15] = {
 
 // FIXME: 99.17 %, regalloc-only; behaviour clean.
 void FourPersonPullSwitch_804AE230::init() {
-    if (((field_0x90 >> 4) & 3) == 0) {
+    if (((mSpawnParam_0x90 >> 4) & 3) == 0) {
         for (s32 i = 0; i < 3; i++) {
             field_0x234[i] = -1;
             s32 idx = i + 1;
-            u32 param = (field_0x90 & 0xF800000F) | (idx << 4);
+            u32 param = (mSpawnParam_0x90 & 0xF800000F) | (idx << 4);
             field_0x234[i] = getActorManager_801F856C()->spawnActor_801F9484(
-                ACTOR_PSW2, field_0x4, &(mPos + JGeometry::TVec3f((f32)idx * 16.0f, 0.0f, 0.0f)), param, -1, -1);
+                ACTOR_PSW2, mLayer_0x4, &(mPos + JGeometry::TVec3f((f32)idx * 16.0f, 0.0f, 0.0f)), param, -1, -1);
             s32 serial = field_0x234[i];
             if (serial >= 0) {
                 FourPersonPullSwitch_804AE230* child =
@@ -34,10 +34,10 @@ void FourPersonPullSwitch_804AE230::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = 0.0f;
-    field_0x80.i.y = 0.0f;
-    field_0x80.f.x = 0.0f;
-    field_0x80.f.y = 0.0f;
+    mMapBox_0x80.i.x = 0.0f;
+    mMapBox_0x80.i.y = 0.0f;
+    mMapBox_0x80.f.x = 0.0f;
+    mMapBox_0x80.f.y = 0.0f;
     mLife = 0;
     field_0x24c = 0;
     field_0x250 = isScreenFlagSet_0x34();
@@ -47,7 +47,7 @@ void FourPersonPullSwitch_804AE230::init() {
     } else {
         field_0x254 = 0.0f;
     }
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x258 = 0;
     field_0x25c = -1;
     field_0x260 = 0;
@@ -59,16 +59,16 @@ void FourPersonPullSwitch_804AE230::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     if (field_0x258 > 0) {
         field_0x258--;
     }
     fn_8036CBBC();
-    s32 player = fn_80239470(&box, field_0x4, mSerial);
+    s32 player = fn_80239470(&box, mLayer_0x4, mSerial);
     if (player >= 0) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         if (__fabsf(dx) >= 2.0f) {
             fn_8023DFF4(player, &JGeometry::TVec3f(dx, 0.0f, 0.0f));
@@ -84,9 +84,9 @@ void FourPersonPullSwitch_804AE230::update() {
                     field_0x250 = 1;
                     startSound_801F0E34(0x3004B, 0);
                     mPos.y = mSpawnPos.y + field_0x254;
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = 4.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = 4.0f;
+                    mVel_0x3c.z = 0.0f;
                     if (fn_8023077C()) {
                         field_0x258 = 50;
                         field_0x25c = 4;
@@ -110,9 +110,9 @@ void FourPersonPullSwitch_804AE230::update() {
                 fn_8023DFF4(player, &(field_0x240 - playerPos));
             }
             field_0x254 += 0.25f;
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.25f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.25f;
+            mVel_0x3c.z = 0.0f;
             mPos.y = mSpawnPos.y + field_0x254;
         }
     } else if (field_0x250) {
@@ -123,9 +123,9 @@ void FourPersonPullSwitch_804AE230::update() {
         if (field_0x254 < 0.0f) {
             field_0x254 = 0.0f;
         }
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = -0.25f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = -0.25f;
+        mVel_0x3c.z = 0.0f;
         mPos.y = mSpawnPos.y + field_0x254;
     }
     if (field_0x254 < 1.0f) {
@@ -141,18 +141,18 @@ void FourPersonPullSwitch_804AE230::update() {
 
 void FourPersonPullSwitch_804AE230::draw() {
     s32 frame = field_0x24c + 0x147;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mSpawnPos, res, frame, NULL, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mSpawnPos, field_0x24c + 0x147, false, 1, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mSpawnPos, field_0x24c + 0x147, false, 1, -1, 0, 0, 0);
 }
 
 // A plain function at its place between fn_8036CBBC and draw, inlined into update; the
 // linker dropped its out-of-line copy. Compiled there it pools 8.0f between fn_8036CBBC's
 // 0 / 7 and draw's 1.0f, as in the original.
 bool FourPersonPullSwitch_804AE230::checkAllPulled() {
-    if (((field_0x90 >> 4) & 3) != 0) {
+    if (((mSpawnParam_0x90 >> 4) & 3) != 0) {
         return false;
     }
     s32 i;

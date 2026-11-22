@@ -8,8 +8,8 @@
 #include "game/act/act_candlestick_switch.h"
 
 void CandlestickSwitch_804A8B78::init() {
-    mMode = (field_0x90 >> 22) & 0x1F;
-    mLitTime = field_0x90 & 0xFFF;
+    mMode = (mSpawnParam_0x90 >> 22) & 0x1F;
+    mLitTime = mSpawnParam_0x90 & 0xFFF;
     field_0xb0 = 13;
     field_0x94 = 0;
     mState = 0;
@@ -54,12 +54,12 @@ void CandlestickSwitch_804A8B78::update() {
     box.addPos(p);
     switch (mState) {
     case 0:
-        if (field_0x94 == 0 && fn_8023AB94(&box, field_0x4, &p) < 0 && fn_801F2718(ACTOR_FIRE) < 0) {
+        if (field_0x94 == 0 && fn_8023AB94(&box, mLayer_0x4, &p) < 0 && fn_801F2718(ACTOR_FIRE) < 0) {
             break;
         }
-        if (fn_80226998(&mPos, field_0x4) == 0x3D || fn_80226998(&mPos, field_0x4) == 0x1DE) {
-            mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
-            mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
+        if (fn_80226998(&mPos, mLayer_0x4) == 0x3D || fn_80226998(&mPos, mLayer_0x4) == 0x1DE) {
+            mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
             setScreenFlag_0x30(0xFF, true);
             startSound_801F0E34(0x30005, 0);
             field_0xb0 = 12;
@@ -78,7 +78,7 @@ void CandlestickSwitch_804A8B78::update() {
             mLitTimer--;
         }
         if (!isScreenFlagSet_0x34() || (mMode == 1 && mLitTimer == 0)) {
-            mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x57, 1, 0, NULL, NULL, true, 1.0f);
+            mEmitter23c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x57, 1, 0, NULL, NULL, true, 1.0f);
             mOutTimer = 40;
             if (mEmitter234 != NULL) {
                 mEmitter234->becomeInvalidEmitter();
@@ -114,5 +114,5 @@ void CandlestickSwitch_804A8B78::draw() {
     }
     f32 scale = mShadowScale;
     JGeometry::TVec3f pos(8.0f + mPos.x, 8.0f + mPos.y, 0.0f);
-    drawShadow(field_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), scale);
+    drawShadow(mLayer_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), scale);
 }

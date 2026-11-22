@@ -29,7 +29,7 @@ Merchant_8049CD48::Merchant_8049CD48() : mState(0), mPlayer(-1) {}
 void Merchant_8049CD48::init() {
     ActorBase_804A5770::init();
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     mAnim.fn_801D2608(lbl_80539ED8, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
@@ -37,7 +37,7 @@ void Merchant_8049CD48::init() {
 }
 
 // FIXME: 92.13%, scheduling only. In the fn_8038AD24 call the original loads mSerial, the
-// mPos copy address, field_0x4 and the player before the psq_l copy of mPos and the
+// mPos copy address, mLayer_0x4 and the player before the psq_l copy of mPos and the
 // clrlwi of msg; ours copies mPos (psq_l/lfs) first and loads the serial and layer last.
 void Merchant_8049CD48::update() {
     ActorBase_804A5770::update();
@@ -46,10 +46,10 @@ void Merchant_8049CD48::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     switch (mState) {
     case 0:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
@@ -58,7 +58,7 @@ void Merchant_8049CD48::update() {
                 if (!found) {
                     msg = 0x2AA;
                 }
-                if (fn_8038AD24(player, msg, mSerial, field_0x4, mPos, 0x28)) {
+                if (fn_8038AD24(player, msg, mSerial, mLayer_0x4, mPos, 0x28)) {
                     mPlayer = player;
                     mState = 1;
                 }
@@ -66,7 +66,7 @@ void Merchant_8049CD48::update() {
         }
         break;
     case 1:
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -88,11 +88,11 @@ void Merchant_8049CD48::draw() {
     ActorBase_804A5770::draw();
     s32 frame = mAnim.mCel + 0x1AB;
     const JGeometry::TVec3f* pos = &mPos;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(pos, res, frame, NULL, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, mAnim.mCel + 0x1AB, false, 1, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, mAnim.mCel + 0x1AB, false, 1, -1, 0, 0, 0);
 }
 
 Merchant_8049CD48::~Merchant_8049CD48() {}

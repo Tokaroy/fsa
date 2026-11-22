@@ -13,17 +13,17 @@ void Cactus_804AB580::init() {
     field_0x23c = 0;
     field_0x238 = 0;
     field_0x230 = 0;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     field_0xb8 = 2;
     field_0xb0 = 0x1042304;
-    field_0x80.set(-5.0f, -5.0f, 5.0f, 5.0f);
+    mMapBox_0x80.set(-5.0f, -5.0f, 5.0f, 5.0f);
     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
     mBox2.set(-9.0f, -9.0f, 9.0f, 9.0f);
 }
 
 void Cactus_804AB580::update() {
-    if ((field_0x90 & 1) == 1 && isScreenFlagSet_0x34() == 1) {
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+    if ((mSpawnParam_0x90 & 1) == 1 && isScreenFlagSet_0x34() == 1) {
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
         mAlive = false;
         return;
     }
@@ -35,10 +35,10 @@ void Cactus_804AB580::update() {
     switch (field_0x230) {
     case 0:
     case 1: {
-        fn_80239914(&box, field_0x4, mSerial);
-        s32 hit = fn_801F2B7C(field_0x114, -1, 1);
+        fn_80239914(&box, mLayer_0x4, mSerial);
+        s32 hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);
         s32 player = fn_801F285C(NULL, NULL, true, -1);
-        if (hit > 0 || player >= 0 || field_0x9c >= 0 || fn_8023BB50(&hitBox, field_0x4, &pos, true) >= 0) {
+        if (hit > 0 || player >= 0 || field_0x9c >= 0 || fn_8023BB50(&hitBox, mLayer_0x4, &pos, true) >= 0) {
             if (field_0x230 == 0) {
                 startSound_801F0E34(0x50080, 0);
             }

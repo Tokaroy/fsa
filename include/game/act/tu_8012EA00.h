@@ -13,8 +13,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x230 */ s32 field_0x230; // state: 0 waiting for the players, 1 timed, 2 done
-    /* 0x234 */ s32 field_0x234; // (field_0x90 >> 8) & 0xF; first argument of GameView::fn_802D9FF4
-    /* 0x238 */ s32 field_0x238; // (field_0x90 >> 12) & 0xF; second argument of GameView::fn_802D9FF4
+    /* 0x234 */ s32 field_0x234; // (mSpawnParam_0x90 >> 8) & 0xF; first argument of GameView::fn_802D9FF4
+    /* 0x238 */ s32 field_0x238; // (mSpawnParam_0x90 >> 12) & 0xF; second argument of GameView::fn_802D9FF4
     /* 0x23C */ s32 field_0x23c; // frame counter of state 1 (ends at 0x78)
 
     // Switches to `state` and runs the entry action of states 1 and 2.

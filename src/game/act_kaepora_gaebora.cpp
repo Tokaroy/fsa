@@ -33,15 +33,15 @@ void cls_804A6550::init() {
     EnemyBase_804A4808::init();
     bool cleared = isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) != FALSE;
     bool viewFlag = getGameView_802D6A9C()->field_0x131f9 != 0;
-    field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12B;
-    u32 t = (field_0x90 >> 20) & 0x1F;
+    field_0x2a8 = (mSpawnParam_0x90 & 0xFFFF) + 0x12B;
+    u32 t = (mSpawnParam_0x90 >> 20) & 0x1F;
     f32 minTime = 1.5f;
     field_0x2ac = __fsel((f32)t - minTime, (f32)t, minTime);
-    field_0x2b0 = (field_0x90 >> 25) & 0x1F;
-    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && (field_0x90 >> 31) != 0) {
+    field_0x2b0 = (mSpawnParam_0x90 >> 25) & 0x1F;
+    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && (mSpawnParam_0x90 >> 31) != 0) {
         mFlags |= 0x10000;
     }
-    if ((field_0x90 >> 19) & 1) {
+    if ((mSpawnParam_0x90 >> 19) & 1) {
         field_0x2b4 = 2;
     } else if (cleared || viewFlag || (field_0x2b0 != 0 && getGameView_802D6A9C()->fn_802D800C(field_0x2b0))) {
         field_0x2b4 = 1;
@@ -58,7 +58,7 @@ void cls_804A6550::init() {
     switch (field_0x2b4) {
     case 0:
     case 3:
-        if ((field_0x90 >> 30) & 1) {
+        if ((mSpawnParam_0x90 >> 30) & 1) {
             mFlags |= 0x8000;
         }
         break;
@@ -71,19 +71,19 @@ void cls_804A6550::init() {
     mBox2.i.y = 1.0f;
     mBox2.f.x = -1.0f;
     mBox2.f.y = -1.0f;
-    field_0x80.i.x = 1.0f;
-    field_0x80.i.y = 1.0f;
-    field_0x80.f.x = -1.0f;
-    field_0x80.f.y = -1.0f;
+    mMapBox_0x80.i.x = 1.0f;
+    mMapBox_0x80.i.y = 1.0f;
+    mMapBox_0x80.f.x = -1.0f;
+    mMapBox_0x80.f.y = -1.0f;
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;
     field_0x194 = 1;
     fn_801D0E58();
     mPos.z = 16.0f;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     if (mPos.x <= 0.5f * (box->i.x + box->f.x)) {
@@ -209,7 +209,7 @@ void cls_804A6550::fn_80219AFC(s32 state) {
         break;
     case 4: {
         mTargetSpeed = 1.5f;
-        JGeometry::TBox2f* box = layerBox(field_0x4);
+        JGeometry::TBox2f* box = layerBox(mLayer_0x4);
         // spawn is taken before the angle is chosen (the original's addi r4 comes first), and py/px are both
         // loaded before either store; without them this drops to 94.99 %.
         const JGeometry::TVec3f* spawn = &mSpawnPos;
@@ -250,7 +250,7 @@ void cls_804A6550::fn_80219AFC(s32 state) {
     case 12: {
         mTargetSpeed = 1.5f;
         mAnim.startAnim_801D22DC(1, 0, false);
-        JGeometry::TBox2f* box = layerBox(field_0x4);
+        JGeometry::TBox2f* box = layerBox(mLayer_0x4);
         s32 angle;
         if (checkFlag(0x10000)) {
             angle = -0x3556;
@@ -282,15 +282,15 @@ void cls_804A6550::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         field_0x2b8 = 0;
-        fn_8022FE80(field_0x2b8, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (field_0x2b8 == fn_8022FD8C(mSerial)) {
-            if (fn_8038BD08(field_0x2b8, 0x150, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 2)) {
+            if (fn_8038BD08(field_0x2b8, 0x150, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 2)) {
                 fn_80219AFC(1);
             }
         }
         break;
     case 1:
-        fn_8022FE80(field_0x2b8, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
             fn_80219AFC(4);
         }
@@ -306,7 +306,7 @@ void cls_804A6550::updateState_0x90(u8 mapHit) {
         }
         break;
     case 3: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         JGeometry::TBox2f hit;
         hit.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
         bool found = false;
@@ -364,17 +364,17 @@ void cls_804A6550::updateState_0x90(u8 mapHit) {
         break;
     case 6:
         if (getActorManager_801F856C()->field_0x3041 == 0) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x2b8 = fn_8022FD8C(mSerial);
             if (field_0x2b8 >= 0) {
-                if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0)) {
+                if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0)) {
                     fn_80219AFC(7);
                 }
             }
         }
         break;
     case 7:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x2b8, mSerial)) {
             if (mFlags & 0x4000) {
                 fn_80219AFC(10);
@@ -384,9 +384,9 @@ void cls_804A6550::updateState_0x90(u8 mapHit) {
         }
         break;
     case 8:
-        fn_8022FE80(field_0x2b8, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (field_0x2b8 == fn_8022FD8C(mSerial)) {
-            if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
+            if (fn_8038C678(field_0x2b8, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
                 if (mFlags & 0x10000) {
                     gGameRoot_8053AAF8->fn_80138B7C();
                     s32 count = gGameRoot_8053AAF8->fn_80138A30();
@@ -401,7 +401,7 @@ void cls_804A6550::updateState_0x90(u8 mapHit) {
         }
         break;
     case 9:
-        fn_8022FE80(field_0x2b8, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b8, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b8) && fn_80384C58(field_0x2b8, mSerial)) {
             if (mFlags & 0x10000) {
                 s32 count = gGameRoot_8053AAF8->fn_80138A30();
@@ -499,26 +499,26 @@ void cls_804A6550::updateBehavior_0x9C(u8 mapHit) {
 
 void cls_804A6550::calcVelocity_0x88() {
     JGeometry::TVec2f vel;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     switch (mState) {
     case 4:
         fn_801D01A0(&mSpawnPos, &vel, mSpeed);
-        field_0x3c.x = vel.x;
-        field_0x3c.y = vel.y;
+        mVel_0x3c.x = vel.x;
+        mVel_0x3c.y = vel.y;
         break;
     case 5:
-        field_0x3c.z = -0.5f;
+        mVel_0x3c.z = -0.5f;
         break;
     case 11:
         if (mAnim.mCel >= 15 || mAnim.mCel < 11) {
-            field_0x3c.z = 0.8f;
+            mVel_0x3c.z = 0.8f;
         }
         break;
     case 12:
         // (const JGeometry::TVec3f*)&field_0x2bc: 2D target position at +0x2BC passed to 3D query
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x2bc, &vel, mSpeed);
-        field_0x3c.x = vel.x;
-        field_0x3c.y = vel.y;
+        mVel_0x3c.x = vel.x;
+        mVel_0x3c.y = vel.y;
         break;
     }
 }
@@ -568,7 +568,7 @@ void cls_804A6550::vfunc_0xA0() {
         case 5:
         case 8:
         case 9: {
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
             JGeometry::TVec3f pos(mPos.x, mPos.y - mPos.z, 0.0f);

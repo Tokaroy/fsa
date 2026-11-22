@@ -70,7 +70,7 @@ void TingleTimeUpManager_804ACBF0::update() {
                 cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.0f, 0.0f, 0.0f);
-                    child->field_0x3c = vel;
+                    child->mVel_0x3c = vel;
                     mTimer = 150;
                     child->field_0x254 = field_0x27c;
                     child->field_0x260 = field_0x288;
@@ -95,7 +95,7 @@ void TingleTimeUpManager_804ACBF0::update() {
                 cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.2f, -0.2f, 0.0f);
-                    child->field_0x3c = vel;
+                    child->mVel_0x3c = vel;
                     mTimer = 15;
                     child->field_0x254 = field_0x27c;
                     child->field_0x260 = field_0x288;
@@ -113,7 +113,7 @@ void TingleTimeUpManager_804ACBF0::update() {
                 cls_804ACC68* child = static_cast<cls_804ACC68*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                 if (child != NULL) {
                     JGeometry::TVec3f vel(-2.3f, 0.3f, 0.0f);
-                    child->field_0x3c = vel;
+                    child->mVel_0x3c = vel;
                     mTimer = 45;
                     child->field_0x254 = field_0x27c;
                     child->field_0x260 = field_0x288;
@@ -191,7 +191,7 @@ void TingleTimeUpManager_804ACBF0::update() {
                         0.5f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 0.25f,
                         0.0f
                     );
-                    child->field_0x3c = vel;
+                    child->mVel_0x3c = vel;
                     child->field_0x254 = field_0x27c;
                     child->field_0x260 = field_0x288;
                 }

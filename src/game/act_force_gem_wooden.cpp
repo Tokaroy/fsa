@@ -16,17 +16,17 @@ WoodenForceGem_804AB1F0::~WoodenForceGem_804AB1F0() {
 }
 
 void WoodenForceGem_804AB1F0::init() {
-    field_0x258 = field_0x90 & 0xF;
-    field_0x248 = (field_0x90 >> 16) & 0xF;
+    field_0x258 = mSpawnParam_0x90 & 0xF;
+    field_0x248 = (mSpawnParam_0x90 >> 16) & 0xF;
     mEmitter268 = NULL;
-    field_0x260 = (field_0x90 >> 22) & 0x1F;
+    field_0x260 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0xb0 = 0x2300;
     field_0x230 = 0;
     field_0x264 = 0;
     mLife = 10000;
     field_0x244 = 0;
     field_0x254 = -1;
-    field_0x98 = 0;
+    mDir_0x98 = 0;
     field_0x238 = 1.0f;
     field_0x23c = 0.0f;
     field_0x25c = 0;
@@ -42,13 +42,13 @@ void WoodenForceGem_804AB1F0::init() {
         return;
     }
     field_0x234 = 30.0f;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x80.i.x = -6.0f;
-    field_0x80.i.y = -6.0f;
-    field_0x80.f.x = 6.0f;
-    field_0x80.f.y = 6.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mMapBox_0x80.i.x = -6.0f;
+    mMapBox_0x80.i.y = -6.0f;
+    mMapBox_0x80.f.x = 6.0f;
+    mMapBox_0x80.f.y = 6.0f;
     mBox.i.x = -7.0f;
     mBox.i.y = -7.0f;
     mBox.f.x = 7.0f;
@@ -61,18 +61,18 @@ void WoodenForceGem_804AB1F0::init() {
 bool WoodenForceGem_804AB1F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = fn_8022461C(pos, layer);
     if (tile == 0xC || tile == 3 || tile == 0xE) {
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         field_0x230 = 2;
         return false;
     }
     if (tile == 0xD) {
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         if (mEmitter268 == NULL) {
-            mEmitter268 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
+            mEmitter268 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30022, 0);
         }
         field_0x230 = 3;
@@ -94,18 +94,18 @@ void WoodenForceGem_804AB1F0::update() {
     box.addPos(p);
     switch (field_0x230) {
     case 0: {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         s32 serial = mSerial;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
         boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, layer, serial);
-        if (fn_8023AB94(&box, field_0x4, &p) >= 0 || fn_801F26CC(lbl_80471708) >= 0) {
+        if (fn_8023AB94(&box, mLayer_0x4, &p) >= 0 || fn_801F26CC(lbl_80471708) >= 0) {
             if (field_0x248 == 0) {
                 startSound_801F0E34(0x30005, 0);
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &mPos, 0, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &mPos, 0, -1, -1);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x28D, 0, 0, NULL, NULL, true, 1.25f * field_0x240);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x28E, 0, 0, NULL, NULL, true, 1.25f * field_0x240);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28D, 0, 0, NULL, NULL, true, 1.25f * field_0x240);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28E, 0, 0, NULL, NULL, true, 1.25f * field_0x240);
                 startSound_801F0E34(0x30061, 0);
             }
             field_0x230 = 1;
@@ -114,7 +114,7 @@ void WoodenForceGem_804AB1F0::update() {
         break;
     }
     case 1: {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         field_0x25c--;
         if (field_0x25c <= 0) {
             s32 kind = field_0x258;
@@ -124,7 +124,7 @@ void WoodenForceGem_804AB1F0::update() {
             } else {
                 arg = kind + 4;
             }
-            s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, arg);
+            s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, arg);
             s32 bit = field_0x260;
             if (bit > 0) {
                 getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
@@ -133,10 +133,10 @@ void WoodenForceGem_804AB1F0::update() {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
                     JGeometry::TVec3f v(0.0f, 0.0f, 3.0f);
-                    actor->field_0x3c = v;
+                    actor->mVel_0x3c = v;
                 }
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 0.1f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, 0.1f);
             fn_801F3668();
         }
         break;
@@ -189,7 +189,7 @@ void WoodenForceGem_804AB1F0::draw() {
         PSMTXIdentity(mtxA);
         setRotScaleMtx(mtxA, JGeometry::TVec3f(0.0f, field_0x23c, 0.0f), scale);
         params.mMtx = mtxA;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
@@ -207,11 +207,11 @@ void WoodenForceGem_804AB1F0::draw() {
         saved = mPos;
         mPos.y -= 1.0f;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 7, name, frame, NULL);
+            fn_801EF830(mLayer_0x4, &mPos, &params, 7, name, frame, NULL);
         }
         mPos = saved;
     } else {
         drawSprite_801F06F0(name, frame, &params, 7, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, frame, false, 2, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, frame, false, 2, -1, 0, 0, 0);
 }

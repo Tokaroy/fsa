@@ -21,13 +21,13 @@ extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
 // 0x80169DCC.
 // FIXME(shotgun): 99.86 %, regalloc-only; behaviour clean.
 void cls_804A0738::init() {
-    field_0x98 = (field_0x90 >> 4) & 7;
-    field_0x25c = (field_0x90 >> 8) & 1;
-    field_0x90 = field_0x90 & 3;
-    field_0x80.i.x = -4.0f;
-    field_0x80.i.y = -4.0f;
-    field_0x80.f.x = 4.0f;
-    field_0x80.f.y = 4.0f;
+    mDir_0x98 = (mSpawnParam_0x90 >> 4) & 7;
+    field_0x25c = (mSpawnParam_0x90 >> 8) & 1;
+    mSpawnParam_0x90 = mSpawnParam_0x90 & 3;
+    mMapBox_0x80.i.x = -4.0f;
+    mMapBox_0x80.i.y = -4.0f;
+    mMapBox_0x80.f.x = 4.0f;
+    mMapBox_0x80.f.y = 4.0f;
     field_0x244 = 0;
     field_0x248 = 0;
     field_0x24c = 0;
@@ -38,13 +38,13 @@ void cls_804A0738::init() {
     for (s32 i = 0; i < 5; i++) {
         field_0x274[i].p0.x = mPos.x;
         field_0x274[i].p0.y = mPos.y;
-        field_0x274[i].layer0 = field_0x4;
+        field_0x274[i].layer0 = mLayer_0x4;
     }
     for (s32 i = 0; i < 5; i++) {
-        JGeometry::TVec3f* pos = getPlayerPos_8023E724(field_0x90);
+        JGeometry::TVec3f* pos = getPlayerPos_8023E724(mSpawnParam_0x90);
         field_0x2ec[i].p1.x = pos->x;
         field_0x2ec[i].p1.y = pos->y;
-        field_0x2ec[i].layer1 = getPlayerLayer_8023DE58(field_0x90);
+        field_0x2ec[i].layer1 = getPlayerLayer_8023DE58(mSpawnParam_0x90);
     }
     field_0x264 = 0;
     field_0x268 = 0;
@@ -54,28 +54,28 @@ void cls_804A0738::init() {
     field_0x364.z = 0.0f;
     field_0x364.y = 0.0f;
     field_0x364.x = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
-    fn_8016890C(&mPos, field_0x4, (JGeometry::TBox2f*)field_0x370);
-    s32 angle = lbl_804A0718[field_0x98];
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    fn_8016890C(&mPos, mLayer_0x4, (JGeometry::TBox2f*)field_0x370);
+    s32 angle = lbl_804A0718[mDir_0x98];
     JGeometry::TVec2f dir;
     dir.x = JMASinShort(angle);
     dir.y = JMACosShort(angle);
     dir.scale(1000.0f);
     dir.normalize();
     if (field_0x25c) {
-        field_0x3c.x = 9.0f * dir.x;
-        field_0x3c.y = 9.0f * dir.y;
+        mVel_0x3c.x = 9.0f * dir.x;
+        mVel_0x3c.y = 9.0f * dir.y;
     } else {
-        field_0x3c.x = 6.0f * dir.x;
-        field_0x3c.y = 6.0f * dir.y;
+        mVel_0x3c.x = 6.0f * dir.x;
+        mVel_0x3c.y = 6.0f * dir.y;
     }
     field_0x94 = 0;
     field_0x23c = 4;
-    if (field_0x98 > 3) {
-        field_0x3c.x *= 1.2f;
-        field_0x3c.y *= 1.2f;
+    if (mDir_0x98 > 3) {
+        mVel_0x3c.x *= 1.2f;
+        mVel_0x3c.y *= 1.2f;
     }
     field_0x254 = 0;
     field_0x260 = 0;
@@ -100,11 +100,11 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
     do {                            \
         (d).normalize();            \
         if (fast) {                 \
-            field_0x3c.x = 9.0f * (d).x; \
-            field_0x3c.y = 9.0f * (d).y; \
+            mVel_0x3c.x = 9.0f * (d).x; \
+            mVel_0x3c.y = 9.0f * (d).y; \
         } else {                    \
-            field_0x3c.x = 6.0f * (d).x; \
-            field_0x3c.y = 6.0f * (d).y; \
+            mVel_0x3c.x = 6.0f * (d).x; \
+            mVel_0x3c.y = 6.0f * (d).y; \
         }                           \
     } while (0)
 
@@ -113,23 +113,23 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
 // player, and is caught by the player (state 1) or lost when it leaves the room.
 // FIXME(shotgun): 92.43 %, missing/extra; behaviour clean.
 void cls_804A0738::update() {
-    s32 target = field_0x90;
-    if (fn_8022F478(field_0x90) == 1 && fn_8022F514(field_0x90) == 1) {
-        target = fn_8022F3DC(field_0x90);
+    s32 target = mSpawnParam_0x90;
+    if (fn_8022F478(mSpawnParam_0x90) == 1 && fn_8022F514(mSpawnParam_0x90) == 1) {
+        target = fn_8022F3DC(mSpawnParam_0x90);
     }
     if (field_0x23c == 0) {
-        if (std::fabsf(field_0x3c.x - field_0x364.x) > 0.01f) {
-            addCalc2_801F71A4(&field_0x3c.x, field_0x364.x, 0.1f, 0.2f);
+        if (std::fabsf(mVel_0x3c.x - field_0x364.x) > 0.01f) {
+            addCalc2_801F71A4(&mVel_0x3c.x, field_0x364.x, 0.1f, 0.2f);
         } else {
-            field_0x364.x = field_0x3c.x;
+            field_0x364.x = mVel_0x3c.x;
         }
-        if (std::fabsf(field_0x3c.y - field_0x364.y) > 0.01f) {
-            addCalc2_801F71A4(&field_0x3c.y, field_0x364.y, 0.1f, 0.2f);
+        if (std::fabsf(mVel_0x3c.y - field_0x364.y) > 0.01f) {
+            addCalc2_801F71A4(&mVel_0x3c.y, field_0x364.y, 0.1f, 0.2f);
         } else {
-            field_0x364.y = field_0x3c.y;
+            field_0x364.y = mVel_0x3c.y;
         }
     }
-    if (fn_801F6758(&mPos, field_0x4, 300.0f)) {
+    if (fn_801F6758(&mPos, mLayer_0x4, 300.0f)) {
         mAlive = false;
     }
     if (field_0x268 < 5) {
@@ -150,19 +150,19 @@ void cls_804A0738::update() {
             }
         }
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     switch (field_0x230) {
     case 0:
-        if (std::fabsf(field_0x3c.x - field_0x364.x) <= 1.0f && std::fabsf(field_0x3c.y - field_0x364.y) <= 1.0f) {
+        if (std::fabsf(mVel_0x3c.x - field_0x364.x) <= 1.0f && std::fabsf(mVel_0x3c.y - field_0x364.y) <= 1.0f) {
             field_0x174 = field_0x180;
-            field_0x3c.x = field_0x364.x;
-            field_0x3c.y = field_0x364.y;
-            field_0x3c.z = field_0x364.z;
+            mVel_0x3c.x = field_0x364.x;
+            mVel_0x3c.y = field_0x364.y;
+            mVel_0x3c.z = field_0x364.z;
             if (field_0x244) {
                 field_0x26c = field_0x264;
                 field_0x230 = 1;
                 field_0x174 = 0;
-                if (field_0x4 != getPlayerLayer_8023DE58(field_0x90)) {
+                if (mLayer_0x4 != getPlayerLayer_8023DE58(mSpawnParam_0x90)) {
                     JGeometry::TVec2f d;
                     if (field_0x264 > 0) {
                         d = field_0x274[field_0x264 - 1].p1 - xy(mPos);
@@ -177,9 +177,9 @@ void cls_804A0738::update() {
                 }
                 break;
             }
-            JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(field_0x90)) - xy(mPos);
+            JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(mSpawnParam_0x90)) - xy(mPos);
             if (d.squared() < 240.0f) {
-                const JGeometry::TVec3f* pp = getPlayerPos_8023E724(field_0x90);
+                const JGeometry::TVec3f* pp = getPlayerPos_8023E724(mSpawnParam_0x90);
                 mPos = *pp;
                 mPos.z = 0.0f;
                 mAlive = false;
@@ -189,19 +189,19 @@ void cls_804A0738::update() {
             if (!field_0x17d) {
                 field_0x274[field_0x264].p0 = xy(mPos);
             } else {
-                field_0x274[field_0x264].layer1 = field_0x4;
+                field_0x274[field_0x264].layer1 = mLayer_0x4;
                 field_0x274[field_0x264].p1 = xy(mPos);
                 field_0x264++;
                 if (field_0x264 < 5) {
-                    field_0x274[field_0x264].layer0 = field_0x4;
+                    field_0x274[field_0x264].layer0 = mLayer_0x4;
                     field_0x274[field_0x264].p0 = xy(mPos);
                 }
-                fn_8016890C(&mPos, field_0x4, (JGeometry::TBox2f*)field_0x370);
+                fn_8016890C(&mPos, mLayer_0x4, (JGeometry::TBox2f*)field_0x370);
             }
         }
-        if ((field_0x4 == 0 && fn_801F6758(&mPos, field_0x4, -16.0f) == 1) ||
-            (field_0x4 >= 8 && isOutsideBox(&mPos, (const JGeometry::TBox2f*)field_0x370, -9.0f) == 1)) {
-            field_0x3c.zero();
+        if ((mLayer_0x4 == 0 && fn_801F6758(&mPos, mLayer_0x4, -16.0f) == 1) ||
+            (mLayer_0x4 >= 8 && isOutsideBox(&mPos, (const JGeometry::TBox2f*)field_0x370, -9.0f) == 1)) {
+            mVel_0x3c.zero();
             field_0x364.z = 0.0f;
             field_0x364.y = 0.0f;
             field_0x364.x = 0.0f;
@@ -209,18 +209,18 @@ void cls_804A0738::update() {
         if (!fn_8022C274(target)) {
             field_0x244 = 1;
         }
-        if (!(field_0x8 == getPlayerLayer_8023DE58(field_0x90) && fn_802373EC(field_0x90) == 3)) {
+        if (!(field_0x8 == getPlayerLayer_8023DE58(mSpawnParam_0x90) && fn_802373EC(mSpawnParam_0x90) == 3)) {
             field_0x244 = 1;
         }
-        if (fn_8022CAF8(field_0x90) == 4 && fn_8022F478(field_0x90) == 1) {
+        if (fn_8022CAF8(mSpawnParam_0x90) == 4 && fn_8022F478(mSpawnParam_0x90) == 1) {
             field_0x244 = 1;
         }
         if (fn_80168C38() == 1 || field_0x254 != 0) {
-            field_0x3c.scale(-1.0f);
+            mVel_0x3c.scale(-1.0f);
             if (field_0x254 == 0) {
                 field_0x254 = 1;
             }
-            if (field_0x4 != getPlayerLayer_8023DE58(field_0x90)) {
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(mSpawnParam_0x90)) {
                 JGeometry::TVec2f d;
                 if (field_0x264 > 0) {
                     d = field_0x274[field_0x264 - 1].p1 - xy(mPos);
@@ -240,13 +240,13 @@ void cls_804A0738::update() {
         }
         break;
     case 1:
-        if (fn_8022BC38(field_0x90, field_0x4, &mPos) == 1 &&
-            (fn_8022D75C(target) != 1 || (fn_8022CAF8(field_0x90) == 4 && target != (s32)field_0x90))) {
-            JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(field_0x90)) - xy(mPos);
+        if (fn_8022BC38(mSpawnParam_0x90, mLayer_0x4, &mPos) == 1 &&
+            (fn_8022D75C(target) != 1 || (fn_8022CAF8(mSpawnParam_0x90) == 4 && target != (s32)mSpawnParam_0x90))) {
+            JGeometry::TVec2f d = xy(*getPlayerPos_8023E724(mSpawnParam_0x90)) - xy(mPos);
             if (field_0x260 == 1) {
                 mAlive = false;
             } else if (d.squared() < 240.0f) {
-                const JGeometry::TVec3f* pp = getPlayerPos_8023E724(field_0x90);
+                const JGeometry::TVec3f* pp = getPlayerPos_8023E724(mSpawnParam_0x90);
                 mPos = *pp;
                 mPos.z = 0.0f;
                 field_0x260 = 1;
@@ -260,7 +260,7 @@ void cls_804A0738::update() {
             } else if (field_0x270 < field_0x268) {
                 d = field_0x2ec[field_0x270].p1 - xy(mPos);
             } else {
-                if (field_0x4 != getPlayerLayer_8023DE58(target)) {
+                if (mLayer_0x4 != getPlayerLayer_8023DE58(target)) {
                     break;
                 }
                 d = xy(*getPlayerPos_8023E724(target)) - xy(mPos);
@@ -281,7 +281,7 @@ void cls_804A0738::update() {
                     p.set(0.0f, 0.0f, 0.0f);
                     p.x = pt->p0.x;
                     p.y = pt->p0.y;
-                    field_0x4 = pt->layer0;
+                    mLayer_0x4 = pt->layer0;
                     mPos = p;
                     if (fromFirst == 1) {
                         field_0x26c--;
@@ -324,8 +324,8 @@ void cls_804A0738::update() {
             startSound_801F0E34(0x3008D, 0);
         }
     }
-    if (!fn_801F6758(&mPos, field_0x4, 0.0f)) {
-        gBgRewrite_8053AC98->fn_802A20F0(&mPos, field_0x90, field_0x4, 0, 0);
+    if (!fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        gBgRewrite_8053AC98->fn_802A20F0(&mPos, mSpawnParam_0x90, mLayer_0x4, 0, 0);
     }
 }
 
@@ -334,11 +334,11 @@ void cls_804A0738::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0x11;
     s32 frame = field_0x250 + 0x69;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x69, 0, 2, -1, false, 0, 0);
 }
 
 
@@ -346,7 +346,7 @@ void cls_804A0738::draw() {
 // player is then pushed along.
 // FIXME(shotgun): 87.06 %, missing/extra; behaviour drift.
 bool cls_804A0738::fn_80168C38() {
-    const JGeometry::TVec3f* first = getPlayerPos_8023E724(field_0x90);
+    const JGeometry::TVec3f* first = getPlayerPos_8023E724(mSpawnParam_0x90);
     s32 found = -1;
     JGeometry::TVec2f d = xy(*first) - xy(mPos);
     JGeometry::TBox2f box(mBox);
@@ -357,9 +357,9 @@ bool cls_804A0738::fn_80168C38() {
     box.f.y += 4.0f;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
-            if (!fn_8022E438(i, field_0x90) ||
-                (fn_8022E438(i, field_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
-                if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f)) {
+            if (!fn_8022E438(i, mSpawnParam_0x90) ||
+                (fn_8022E438(i, mSpawnParam_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
+                if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
                     found = i;
                 }
             }

@@ -18,11 +18,11 @@ public:
     /* 0x08 */ virtual ~cls_804A6270();
     // 0x80212170 (vtable slot 0x54, over EnemyBase's empty onFirstUpdate_0x54): if
     // mFlags has bit 0x8000 and field_0x2bc is set, the rail at field_0x2c0
-    // is called with field_0x2bc, mPos and field_0x4.
-    // 0x80212288 (slot 0x0C, a plain `fn_80212288` symbol): decodes the spawn parameter field_0x90.
+    // is called with field_0x2bc, mPos and mLayer_0x4.
+    // 0x80212288 (slot 0x0C, a plain `fn_80212288` symbol): decodes the spawn parameter mSpawnParam_0x90.
     /* 0x0C */ virtual void init();
     /* 0x54 */ virtual void onFirstUpdate_0x54();
-    // 0x80211078: zeroes field_0x3c, then calls fn_802110A8. Its only caller
+    // 0x80211078: zeroes mVel_0x3c, then calls fn_802110A8. Its only caller
     // is the vtable (slot 0x88, over EnemyBase's calcVelocity_0x88).
     /* 0x88 */ virtual void calcVelocity_0x88();
     // 0x80211354 (vtable slot 0x9C, over EnemyBase's updateBehavior_0x9C): calls

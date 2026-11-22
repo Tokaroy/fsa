@@ -25,16 +25,16 @@ static const s32 lbl_80472138[4][2] = {{0, 1}, {2, 3}, {4, 5}, {6, 7}};
 void cls_804AC8C0::init() {
     field_0x230 = 0;
     field_0xb0 = 0x1000;
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     mLife = 10000;
     field_0x238 = 0;
     field_0x234 = 0;
     field_0x2c0 = 0;
-    field_0x244 = field_0x90 & 0xF;
+    field_0x244 = mSpawnParam_0x90 & 0xF;
     field_0x248 = 0;
-    field_0x24c = (field_0x90 >> 4) & 0xFF;
+    field_0x24c = (mSpawnParam_0x90 >> 4) & 0xFF;
     field_0x270 = 0;
     field_0x250 = 60;
     field_0x254 = -1;
@@ -107,9 +107,9 @@ void cls_804AC8C0::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     s32 serial = mSerial;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     boxes->mLists[boxes->field_0x0].fn_8020D8C0(&box, layer, serial);
     fn_8034ACF4();
@@ -130,7 +130,7 @@ void cls_804AC8C0::update() {
                 break;
             }
             Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
-            if (c != NULL && field_0x4 == c->field_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
+            if (c != NULL && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f && containsPoint(area, c->mPos) == true &&
                 !c->field_0xc4) {
                 any = true;
                 break;
@@ -140,17 +140,17 @@ void cls_804AC8C0::update() {
             field_0x230 = 4;
             break;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
-            if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
+            if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
                 field_0x230 = 1;
             }
         }
         break;
     }
     case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x240)) {
             switch (fn_8037EFB4(field_0x240)) {
             case 0:
@@ -188,12 +188,12 @@ void cls_804AC8C0::update() {
     case 5:
     case 12:
         if (field_0x230 == 5) {
-            s32 layer5 = field_0x4;
+            s32 layer5 = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* src = (layer5 < 8) ? &view->mVisibleBox : &view->field_0xdc;
             box = *src;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x240, mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
             switch (field_0x230) {
@@ -216,7 +216,7 @@ void cls_804AC8C0::update() {
                 field_0x230 = 0;
                 break;
             case 12:
-                fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+                fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
                 if (fn_80388CAC(field_0x240, mSerial)) {
                     getActorManager_801F856C()->fn_801F6884();
                     field_0x230 = 11;
@@ -227,15 +227,15 @@ void cls_804AC8C0::update() {
         break;
     case 4:
         if (getActorManager_801F856C()->fn_801F68E0() == 1) {
-            s32 layer4 = field_0x4;
+            s32 layer4 = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* src = (layer4 < 8) ? &view->mVisibleBox : &view->field_0xdc;
             box = *src;
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0) {
                 fn_8038938C(field_0x240, field_0x24c);
-                if (talk(field_0x240, 0x42f, mSerial, field_0x4, mPos, 0x112)) {
+                if (talk(field_0x240, 0x42f, mSerial, mLayer_0x4, mPos, 0x112)) {
                     field_0x230 = 5;
                 }
             }
@@ -262,7 +262,7 @@ void cls_804AC8C0::update() {
                     break;
                 }
                 Cucco_804AB8C0* c = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(cucco));
-                if (c != NULL && c->field_0x25c >= 0 && field_0x4 == c->field_0x4 && c->mPos.z < 8.0f &&
+                if (c != NULL && c->field_0x25c >= 0 && mLayer_0x4 == c->mLayer_0x4 && c->mPos.z < 8.0f &&
                     containsPoint(area, c->mPos) == true) {
                     if (c->field_0x2a3 == 1) {
                         field_0x284[c->field_0x25c] = 1;
@@ -305,7 +305,7 @@ void cls_804AC8C0::update() {
         } else {
             field_0x270 = found;
             field_0x248++;
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x240 = fn_8022FD8C(mSerial);
             if (field_0x240 >= 0 && fn_802300EC(field_0x240)) {
                 fn_8038938C(field_0x240, field_0x270);
@@ -318,7 +318,7 @@ void cls_804AC8C0::update() {
                     break;
                 }
                 if (fn_802300EC(field_0x240)) {
-                    if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 1)) {
+                    if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 1)) {
                         field_0x230 = 7;
                     }
                 }
@@ -330,7 +330,7 @@ void cls_804AC8C0::update() {
         if (found < field_0x24c) {
             field_0x248++;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x240)) {
             switch (field_0x230) {
             case 7:
@@ -363,16 +363,16 @@ void cls_804AC8C0::update() {
         if (field_0x250 > 0) {
             field_0x250--;
         } else if (field_0x28f) {
-            s32 layer9 = field_0x4;
+            s32 layer9 = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* src = (layer9 < 8) ? &view->mVisibleBox : &view->field_0xdc;
             box = *src;
             switch (field_0x244) {
             case 0:
-                fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+                fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
                 break;
             case 1:
-                fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, false, false);
+                fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, false, false);
                 break;
             }
             field_0x240 = fn_8022FD8C(mSerial);
@@ -386,7 +386,7 @@ void cls_804AC8C0::update() {
                     fn_803894BC(field_0x240, field_0x254);
                     break;
                 }
-                if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0x112)) {
+                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0x112)) {
                     field_0x230 = 10;
                 }
             }
@@ -395,13 +395,13 @@ void cls_804AC8C0::update() {
     case 10: {
         bool flag = true;
         if (field_0x244 == 0) {
-            s32 layer10 = field_0x4;
+            s32 layer10 = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* src = (layer10 < 8) ? &view->mVisibleBox : &view->field_0xdc;
             box = *src;
             flag = false;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, flag, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, flag, false);
         if (fn_803865B8(field_0x240)) {
             switch (field_0x244) {
             case 0:
@@ -434,11 +434,11 @@ void cls_804AC8C0::update() {
                         for (s32 i = 0; i < 4; i++) {
                             if (field_0x254 == i) {
                                 getActorManager_801F856C()->spawnActor_801F9484(
-                                    ACTOR_IMUP, field_0x4, getPlayerPos_8023E724(field_0x254),
+                                    ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(field_0x254),
                                     (field_0x254 << 26) | (field_0x254 << 24) | 0x1000A, -1, -1);
                             } else if (!fn_80236B50(i) && fn_8022F514(i) == 1 && field_0x254 == fn_8022F3DC(i)) {
                                 getActorManager_801F856C()->spawnActor_801F9484(
-                                    ACTOR_IMUP, field_0x4, getPlayerPos_8023E724(i),
+                                    ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(i),
                                     (field_0x254 << 26) | 0x10000000 | (i << 24) | 0x1000A, -1, -1);
                             }
                         }
@@ -452,7 +452,7 @@ void cls_804AC8C0::update() {
         break;
     }
     case 11:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x240 = fn_8022FD8C(mSerial);
         if (field_0x240 >= 0) {
             switch (field_0x244) {
@@ -464,7 +464,7 @@ void cls_804AC8C0::update() {
                 break;
             }
             if (fn_802300EC(field_0x240)) {
-                if (talk(field_0x240, field_0x2c0, mSerial, field_0x4, mPos, 0)) {
+                if (talk(field_0x240, field_0x2c0, mSerial, mLayer_0x4, mPos, 0)) {
                     field_0x230 = 12;
                 }
             }
@@ -617,7 +617,7 @@ s32 cls_804AC8C0::fn_8034AAA0() {
             break;
         }
         Cucco_804AB8C0* cucco = static_cast<Cucco_804AB8C0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
-        if (cucco != NULL && field_0x4 == cucco->field_0x4 && cucco->mPos.z < 8.0f &&
+        if (cucco != NULL && mLayer_0x4 == cucco->mLayer_0x4 && cucco->mPos.z < 8.0f &&
             containsPoint(box, cucco->mPos) == true && !cucco->field_0xc4) {
             cucco->field_0x2a8 = 1;
             count++;

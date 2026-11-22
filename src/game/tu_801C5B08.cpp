@@ -10,8 +10,8 @@
 // the player mPos is on, or the angle to the player when the view flag
 // holds and fn_801CC9F8 does not.
 void ShadowLink2_804A43E8::fn_801C6784() {
-    if (viewLayerFlag(field_0x4) && !fn_801CC9F8(&mPos, field_0x4)) {
-        const JGeometry::TVec3f* playerPos = &field_0x1ac[field_0x590];
+    if (viewLayerFlag(mLayer_0x4) && !fn_801CC9F8(&mPos, mLayer_0x4)) {
+        const JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[field_0x590];
         if (mPos.x < playerPos->x) {
             field_0x33c = 0x4000;
         } else {
@@ -37,9 +37,9 @@ void ShadowLink2_804A43E8::fn_801C6260() {
         if (field_0x59a == 0 && fn_801D0DD4() && !(field_0x524.field_0x0 & 0x40) &&
             (!notTarget || gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f)) {
             s32 player = field_0x338;
-            s32 layer = field_0x4;
-            if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
-                const JGeometry::TVec3f* playerPos = &field_0x1ac[player];
+            s32 layer = mLayer_0x4;
+            if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
+                const JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
                 if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
                     !fn_801CFCF0(1)) {
                     if (mPos.x < playerPos->x) {
@@ -100,11 +100,11 @@ void ShadowLink2_804A43E8::fn_801C6260() {
 // (or fn_801D11FC) and the counter field_0x595 restarts; otherwise the
 // counter counts up to field_0x596 before the turn is redone.
 void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
-    u8 viewFlag = viewLayerFlag(field_0x4);
+    u8 viewFlag = viewLayerFlag(mLayer_0x4);
     if (flag) {
         field_0x595 = 0;
-        if (viewFlag != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
-            switch (field_0x98) {
+        if (viewFlag != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x33c = -0x4000;
                 return;
@@ -128,15 +128,15 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     }
     field_0x595 = 0;
     field_0x596 = fn_801CD664(0x15) + 0x14;
-    JGeometry::TVec3f* playerPos = &field_0x1ac[player];
-    if (viewFlag != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
+    JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
+    if (viewFlag != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
         if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-            fn_801CFA70(&mPos, playerPos, field_0x4) == true) {
+            fn_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
             field_0x33c = -0x4000;
             return;
         }
         if (JMAAbs((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-            fn_801CFA70(&mPos, playerPos, field_0x4) == true) {
+            fn_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
             field_0x33c = 0x4000;
             return;
         }
@@ -196,8 +196,8 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         return;
     }
     if (field_0x59a == 0 && mStateTimer >= 0xF0 && fn_801D0DD4() && !(field_0x524.field_0x0 & 0x40)) {
-        s32 layer = field_0x4;
-        if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
+        s32 layer = mLayer_0x4;
+        if (viewLayerFlag(layer) != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                 field_0x33c = 0x4000;
             } else {
@@ -218,7 +218,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         JGeometry::TVec3f pos;
         u8 entry = field_0x358.fn_80214244()->field_0x3;
         pos = mPos;
-        u8 index = field_0x358.fn_80214244()->fn_800FE2E4(&pos, field_0x4);
+        u8 index = field_0x358.fn_80214244()->fn_800FE2E4(&pos, mLayer_0x4);
         cls_800FE3EC* rail = field_0x358.fn_80214244();
         if (entry < rail->field_0x2) {
             rail->field_0x3 = entry;

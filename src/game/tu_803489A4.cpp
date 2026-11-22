@@ -9,7 +9,7 @@
 // FIXME(shotgun): 99.76 %, scheduling; behaviour clean.
 void BeeFormation_804AC7B8::init() {
     mLife = 8;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x298.set(0.0f, 0.0f, 0.0f);
     field_0x268.set(0.0f, 0.0f, 0.0f);
     field_0x274.set(0.0f, 0.0f, 0.0f);
@@ -52,7 +52,7 @@ void BeeFormation_804AC7B8::update() {
             field_0x264 = 1;
             field_0x240 = 10;
             if (field_0x230 != 4) {
-                field_0x3c.zero();
+                mVel_0x3c.zero();
                 field_0x230 = 4;
             }
             return;
@@ -82,12 +82,12 @@ void BeeFormation_804AC7B8::update() {
         return;
     }
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x298.x, 0.4f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x298.y, 0.4f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.z, field_0x298.z, 0.3f, 0.5f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x298.x, 0.4f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x298.y, 0.4f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.z, field_0x298.z, 0.3f, 0.5f);
 
     if (field_0x230 != 2 && field_0x230 != 3) {
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
     }
 
     if (field_0x230 != 4) {
@@ -178,8 +178,8 @@ void BeeFormation_804AC7B8::update() {
     if (field_0x230 == 2 || field_0x230 == 3) {
         addCalc2_801F71A4(&mPos.x, field_0x280.x, 0.4f, 5.0f);
         addCalc2_801F71A4(&mPos.y, field_0x280.y, 0.4f, 5.0f);
-        if (field_0x3c.squared() < 0.01f) {
-            field_0x3c.zero();
+        if (mVel_0x3c.squared() < 0.01f) {
+            mVel_0x3c.zero();
         }
     }
 
@@ -272,7 +272,7 @@ void BeeFormation_804AC7B8::update() {
         }
         break;
     case 4:
-        if (fn_801F6758(&mPos, field_0x4, 16.0f) != 0 && fn_801F6758(&mPos, field_0x4, 16.0f) == 1) {
+        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f) != 0 && fn_801F6758(&mPos, mLayer_0x4, 16.0f) == 1) {
             field_0x262 = 1;
         }
         break;

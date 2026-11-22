@@ -60,7 +60,7 @@ inline void SeesawLift_804AD348::checkContactBox(s32 p) {
     box.f.y = (box.f.y - centerY) * JGeometry::TUtilf::abs(cosVal) + centerY;
     JGeometry::TVec2f out;
     s8 side;
-    if (fn_8023AAF8(p, &box, field_0x4, &out)) {
+    if (fn_8023AAF8(p, &box, mLayer_0x4, &out)) {
         f32 d = centerY - out.y;
         if (field_0x24e && d == 0.0f) {
             d = 0.1f;
@@ -101,7 +101,7 @@ inline void SeesawLift_804AD348::pushPlayer(s32 p) {
 
 void SeesawLift_804AD348::init() {
     field_0x234 = static_cast<const ResTIMG*>(
-        gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8053A1B8[field_0x90 & 0x7F]));
+        gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8053A1B8[mSpawnParam_0x90 & 0x7F]));
     mBox.set(-field_0x234->mSizeX / 2, -field_0x234->mSizeY / 2, field_0x234->mSizeX / 2, field_0x234->mSizeY / 2);
     mLife = 0;
     field_0x230 = 0;
@@ -133,7 +133,7 @@ s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
         return 0;
@@ -181,7 +181,7 @@ s32 SeesawLift_804AD348::fn_8035AC84(s32 player) {
     if (fn_80230188(player)) {
         return 0;
     }
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
         return 0;
@@ -356,7 +356,7 @@ void SeesawLift_804AD348::fn_8035A210() {
 }
 
 void SeesawLift_804AD348::update() {
-    (this->*lbl_804AD30C[(field_0x90 >> 7) & 0x1F])();
+    (this->*lbl_804AD30C[(mSpawnParam_0x90 >> 7) & 0x1F])();
 }
 
 // The rotation of game/RotMatrix.h's setRotScaleMtx, with the angles as s16
@@ -413,7 +413,7 @@ void SeesawLift_804AD348::draw() {
         params.field_0x24 = 1;
     }
     const char* name = lbl_8053A1B8[getMode()];
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
@@ -427,7 +427,7 @@ void SeesawLift_804AD348::draw() {
         params.mMtx = mtx;
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', "otosiana_bg_s.bti");
         JGeometry::TVec3f pos(mPos.x, mPos.y, 0.0f);
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
@@ -618,8 +618,8 @@ void SeesawLift_804AD348::fn_803584C0() {
             } else if (!field_0x25c[p]->mAlive) {
                 field_0x25c[p] = NULL;
             } else if (field_0x230 == 0) {
-                if (!field_0x25c[p]->field_0x3c.isZero() &&
-                    field_0x25c[p]->mPos.z + field_0x25c[p]->field_0x3c.z < 1.0f) {
+                if (!field_0x25c[p]->mVel_0x3c.isZero() &&
+                    field_0x25c[p]->mPos.z + field_0x25c[p]->mVel_0x3c.z < 1.0f) {
                     JGeometry::TBox2f box = mBox;
                     JGeometry::TVec3f diff = field_0x25c[p]->mPos;
                     diff.sub(mPos);
@@ -719,10 +719,10 @@ SeesawLift_804AD348::~SeesawLift_804AD348() {}
 // file), their out-of-line copies emitted the leading .sdata2 literals (0.0f,
 // 16.0f, 7.0f, 1.0f) ahead of fn_803584C0's block, as in the original.
 void SeesawLift_804AD348::spawnSandEmitters() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3E1, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
@@ -743,7 +743,7 @@ void SeesawLift_804AD348::fillTiles(s32 state) {
     field_0x258 = state;
     for (int row = 0; row < 6; row++) {
         for (int col = 0; col < 6; col++) {
-            gBgRewrite_8053AC98->fn_802A381C(&p, field_0x4, lbl_80542868[state]);
+            gBgRewrite_8053AC98->fn_802A381C(&p, mLayer_0x4, lbl_80542868[state]);
             p.y += 16.0f;
         }
         p.y = base.y;

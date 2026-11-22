@@ -47,7 +47,7 @@ inline void cls_8049E7F0::spawnPuff() {
     pos.x = -camera->field_0x4[0][3];
     pos.y = -camera->field_0x4[1][3];
     startSound_801F0E34(0x30036, 0);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
     field_0x238 = 0;
 }
 
@@ -85,12 +85,12 @@ cls_8049E7F0::~cls_8049E7F0() {
 // (we use f3/f0), and the 0.5f literal's relocation is named differently.
 void cls_8049E7F0::init() {
     ActorBase_804A5770::init();
-    field_0x230 = field_0x90 & 1;
-    field_0x231 = (field_0x90 >> 1) & 1;
+    field_0x230 = mSpawnParam_0x90 & 1;
+    field_0x231 = (mSpawnParam_0x90 >> 1) & 1;
     if (mEmitter == NULL) {
         JGeometry::TVec3f pos;
         setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
-        mEmitter = spawnEmitter_8013CC50(field_0x4, &pos, 0x58, 1, 0, NULL, NULL, true, 1.0f);
+        mEmitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x58, 1, 0, NULL, NULL, true, 1.0f);
     }
     if (mEmitter != NULL) {
         mEmitter->stopCreateParticle();
@@ -130,7 +130,7 @@ void cls_8049E7F0::update() {
     case 2:
         startSound_801F0E34(0x30032, 0);
         for (s32 i = 0; i < 4; i++) {
-            if (field_0x4 != getPlayerLayer_8023DE58(i) || !fn_8023F264(i) || fn_80230188(i) || fn_8022F478(i) ||
+            if (mLayer_0x4 != getPlayerLayer_8023DE58(i) || !fn_8023F264(i) || fn_80230188(i) || fn_8022F478(i) ||
                 fn_80236D14(i))
             {
                 continue;

@@ -15,7 +15,7 @@ public:
     // vector at v points the wrong way for a flag in mFlags (fn_80130030
     // calls it with an actor of this class).
     bool fn_8012FC2C(const s32* v);
-    /* 0x230 */ u32 mFlags; // field_0x90 & 0xF; bit 0/1: v[0] must be
+    /* 0x230 */ u32 mFlags; // mSpawnParam_0x90 & 0xF; bit 0/1: v[0] must be
                             // positive/negative, bit 2/3: v[1] must be
                             // positive/negative (else fn_8012FC2C is true)
 }; // Size: 0x234

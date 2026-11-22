@@ -16,10 +16,10 @@
 // 0x80171AF8.
 // FIXME(shotgun): 90.23 %, missing/extra + reloc-name; behaviour near.
 void cls_804A0810::init() {
-    field_0x94 = field_0x90 & 0xFF;
-    field_0x270 = (field_0x90 >> 8) & 1;
+    field_0x94 = mSpawnParam_0x90 & 0xFF;
+    field_0x270 = (mSpawnParam_0x90 >> 8) & 1;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x248 = 0;
     field_0x24c = 0;
     field_0x250 = 0;
@@ -35,9 +35,9 @@ void cls_804A0810::init() {
     field_0x290[2] = 0.0f;
     field_0x290[1] = 0.0f;
     field_0x290[0] = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x280 = 0.3f;
     field_0x278 = 0.0f;
     field_0x27c = 1.5f;
@@ -55,7 +55,7 @@ void cls_804A0810::init() {
     field_0x258 = 0;
     field_0x284 = 0.0f;
     field_0x288 = 70.0f;
-    field_0x118 = 0x10;
+    mParamAtcn_0x118 = 0x10;
     field_0x32c[0] = mPos.x;
     field_0x32c[1] = mPos.y;
     field_0x32c[2] = mPos.z;
@@ -65,7 +65,7 @@ void cls_804A0810::init() {
     }
     field_0x260 = 0;
     field_0x25c = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     field_0x250 = 0x47E;
     mTimers[2] = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 100;
     field_0x274 = 8;
@@ -98,15 +98,15 @@ void cls_804A0810::init() {
         field_0x230 = 3;
         break;
     case 5:
-        field_0x114 = 4;
+        mParamAtcp_0x114 = 4;
         mLife = 10000;
-        field_0x1a8 = false;
+        mParamDstr_0x1a8 = false;
         break;
     }
-    if ((field_0x90 >> 27) != 0) {
+    if ((mSpawnParam_0x90 >> 27) != 0) {
         field_0xb0 = 0;
     } else if (field_0x94 != 5) {
-        field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', field_0x4, &mPos, 5, -1, -1);
+        field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', mLayer_0x4, &mPos, 5, -1, -1);
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
             gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
         }
@@ -167,7 +167,7 @@ void cls_804A0810::update() {
         fn_801F2B7C(2, -1, 3);
         return;
     }
-    if ((field_0x90 >> 27) != 0) {
+    if ((mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34()) {
             return;
         }
@@ -175,7 +175,7 @@ void cls_804A0810::update() {
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
                 gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
             }
-            field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', field_0x4, &mPos, 5, -1, -1);
+            field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', mLayer_0x4, &mPos, 5, -1, -1);
         }
         if (field_0xb0 == 0) {
             startSound_801F0E34(0x40087, 0);
@@ -244,8 +244,8 @@ void cls_804A0810::update() {
                 center.x = right + 0.5f * (left - right);
                 center.y = bottom + 0.5f * (top - bottom);
                 if (fn_80237948(player, &center)) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, false, 1.0f);
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, false, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, false, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, false, 1.0f);
                     startSound_801F0E34(0x400D1, 0);
                 }
             }
@@ -293,15 +293,15 @@ void cls_804A0810::update() {
         field_0x32c[1] = pos->y;
         field_0x32c[2] = pos->z;
     }
-    if (getGameView_802D6A9C()->field_0x131df[field_0x4] != 0) {
+    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] != 0) {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
         field_0x290[1] = 3.0f;
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x290[0], 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x290[1], 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x290[0], 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x290[1], 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     if (field_0x230 != 4) {
         bool hit = false;
         if (field_0x270 == 0 && dir == -1) {
@@ -349,15 +349,15 @@ void cls_804A0810::update() {
         }
         if (gGameRoot_8053AAF8->field_0x7f == 0) {
             s32 life = mLife;
-            f32 vx = field_0x3c.x;
-            f32 vy = field_0x3c.y;
-            f32 vz = field_0x3c.z;
+            f32 vx = mVel_0x3c.x;
+            f32 vy = mVel_0x3c.y;
+            f32 vz = mVel_0x3c.z;
             if (fn_801F2DB4('HBMB', 'NULL', NULL) && life != mLife) {
-                field_0x3c.x = vx;
-                field_0x3c.y = vy;
-                field_0x3c.z = vz;
-                field_0xd8 = 0;
-                field_0xdc = 0;
+                mVel_0x3c.x = vx;
+                mVel_0x3c.y = vy;
+                mVel_0x3c.z = vz;
+                mHitTimer_0xd8 = 0;
+                mHitTimerStart_0xdc = 0;
             }
         }
     }
@@ -459,7 +459,7 @@ void cls_804A0810::update() {
             f32 stepY = 0.1f * FABS(field_0x314.y - field_0x320.y);
             addCalc2_801F71A4(&field_0x314.x, field_0x320.x, 0.1f, stepX);
             addCalc2_801F71A4(&field_0x314.y, field_0x320.y, 0.1f, stepY);
-            gBgRewrite_8053AC98->fn_802A1688(&field_0x314, field_0x4, 'NULL');
+            gBgRewrite_8053AC98->fn_802A1688(&field_0x314, mLayer_0x4, 'NULL');
             f32 ddx = field_0x314.x - field_0x320.x;
             f32 ddy = field_0x314.y - field_0x320.y;
             addCalc2_801F71A4(&field_0x27c, 2.0f, 0.1f, 0.1f);
@@ -505,11 +505,11 @@ void cls_804A0810::update() {
             field_0x288 = 70.0f;
             if (mTimers[2] == 0) {
                 if (field_0x28c == NULL) {
-                    field_0x28c = spawnEmitter_8013CC50(field_0x4, &field_0x314, 0x19F, 0, 2, NULL, NULL, true, 0.3f);
+                    field_0x28c = spawnEmitter_8013CC50(mLayer_0x4, &field_0x314, 0x19F, 0, 2, NULL, NULL, true, 0.3f);
                 } else {
                     field_0x28c->setGlobalTranslation(field_0x314.x, field_0x314.y + 16.0f, field_0x314.z);
                 }
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &field_0x314, 0xE0C0, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &field_0x314, 0xE0C0, -1, -1);
                 mTimers[2] = 2;
             }
         }
@@ -578,7 +578,7 @@ void cls_804A0810::draw() {
     f32 y = mPos.y;
     f32 z = mPos.z;
     if (field_0x94 != 5) {
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
             params.field_0x0[8] = field_0x274;
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x258 + 0x7F, &params, 7, 1.0f, 1.0f);
             if (mTimers[4] == 0) {

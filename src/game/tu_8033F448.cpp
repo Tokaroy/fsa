@@ -8,9 +8,9 @@
 
 void cls_804AC388::init() {
     field_0x230 = 300;
-    field_0x234 = (field_0x90 >> 4) & 0xF;
-    field_0x238 = (field_0x90 >> 8) & 0xF;
-    field_0x114 = 1;
+    field_0x234 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 8) & 0xF;
+    mParamAtcp_0x114 = 1;
     field_0x23c = false;
 }
 
@@ -58,7 +58,7 @@ void cls_804AC388::update() {
             f32 y = box.f.y + 0.5f * (box.i.y - box.f.y);
             startSound_801F0E34(0x30036, 0);
             JGeometry::TVec3f pos(x, y, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
         }
         for (s32 i = 0; i < 4; i++) {
             if (!fn_8022F514(i) && fn_80236A18(i) && fn_8023F264(i)) {

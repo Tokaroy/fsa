@@ -101,10 +101,10 @@ public:
     s32 fn_80121D68();
     // fn_80121DC8 (tu_801213EC): the xy distance from the player's position to the escort's.
     f32 fn_80121DC8(s32 player);
-    // fn_80121E40 (tu_801213EC): eases field_0x3c toward zero on the axis field_0x98 selects, pulls
+    // fn_80121E40 (tu_801213EC): eases mVel_0x3c toward zero on the axis mDir_0x98 selects, pulls
     // its z down by 0.2, moves mPos by it; true (and z = 0) once mPos.z is at or below 0.
     bool fn_80121E40();
-    // fn_80121F34 (tu_801213EC): sets field_0x3c by field_0x98 (0-3: an axis, 2.5 either way).
+    // fn_80121F34 (tu_801213EC): sets mVel_0x3c by mDir_0x98 (0-3: an axis, 2.5 either way).
     void fn_80121F34();
     // fn_80121FA8, fn_8012202C, fn_801220C4 (tu_801213EC): an effect (0x33A) 24 units below the
     // escort and a sound; fn_8012202C also starts animation 9.
@@ -150,7 +150,7 @@ public:
     /* 0x350 */ s32 field_0x350; // a frame counter (fn_801227D4)
     /* 0x354 */ s32 field_0x354;
     /* 0x358 */ s32 field_0x358; // a frame counter (fn_80122804)
-    /* 0x35C */ s32 field_0x35c; // the low byte of field_0x90, set by the escort woman's vfunc_0x64
+    /* 0x35C */ s32 field_0x35c; // the low byte of mSpawnParam_0x90, set by the escort woman's vfunc_0x64
     /* 0x360 */ s32 field_0x360; // 1 after construction
     /* 0x364 */ s32 field_0x364[5]; // -1 after construction (0x364-0x374)
     /* 0x378 */ s32 field_0x378;

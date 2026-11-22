@@ -27,8 +27,8 @@ public:
     /* 0x250 */ s32 field_0x250; // sprite frame offset, added to 0x5E
     /* 0x254 */ s32 field_0x254; // -1 after init
     /* 0x258 */ s32 field_0x258; // state: 2 draws the second sprite, 3 sets the sprite's byte 0x23
-    /* 0x25C */ s32 field_0x25c; // countdown from field_0x90's low nibble
-    /* 0x260 */ s32 field_0x260; // field_0x90 bits 22-26
+    /* 0x25C */ s32 field_0x25c; // countdown from mSpawnParam_0x90's low nibble
+    /* 0x260 */ s32 field_0x260; // mSpawnParam_0x90 bits 22-26
     /* 0x264 */ s32 field_0x264;
     /* 0x268 */ u8 field_0x268;
     /* 0x269 */ u8 field_0x269[0x3]; // not yet known

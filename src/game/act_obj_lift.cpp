@@ -100,17 +100,17 @@ static JGeometry::TBox2f lbl_8050AE38[5][2] = {
 // 0x803513C0.
 // FIXME(shotgun): 99.91 %, scheduling+regalloc; behaviour drift.
 void OBJLift_804ACA00::init() {
-    field_0x258 = (field_0x90 & 0xF) + ((field_0x90 >> 12) & 0xF0);
-    field_0x260 = (field_0x90 >> 4) & 0xF;
-    field_0x264 = (field_0x90 >> 8) & 0xF;
-    field_0x25c = (field_0x90 >> 12) & 0xF;
+    field_0x258 = (mSpawnParam_0x90 & 0xF) + ((mSpawnParam_0x90 >> 12) & 0xF0);
+    field_0x260 = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x264 = (mSpawnParam_0x90 >> 8) & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 12) & 0xF;
     field_0x268 = field_0x264;
     field_0x26c = 0;
     field_0x244 = 0;
     field_0x248 = 10;
     field_0x254 = 0;
     field_0x240 = field_0x258;
-    field_0x287 = (field_0x90 >> 24) & 1;
+    field_0x287 = (mSpawnParam_0x90 >> 24) & 1;
     field_0x230 = 0;
     field_0x270 = 0;
     field_0x280 = 0;
@@ -132,55 +132,55 @@ void OBJLift_804ACA00::init() {
     field_0x234 = mPos;
     switch (field_0x258) {
     case 0:
-        field_0x80.i.x = -31.0f;
-        field_0x80.i.y = -31.0f;
-        field_0x80.f.x = 31.0f;
-        field_0x80.f.y = 31.0f;
+        mMapBox_0x80.i.x = -31.0f;
+        mMapBox_0x80.i.y = -31.0f;
+        mMapBox_0x80.f.x = 31.0f;
+        mMapBox_0x80.f.y = 31.0f;
         break;
     case 1:
-        field_0x80.i.x = -15.0f;
-        field_0x80.i.y = -15.0f;
-        field_0x80.f.x = 15.0f;
-        field_0x80.f.y = 15.0f;
+        mMapBox_0x80.i.x = -15.0f;
+        mMapBox_0x80.i.y = -15.0f;
+        mMapBox_0x80.f.x = 15.0f;
+        mMapBox_0x80.f.y = 15.0f;
         break;
     case 2:
-        field_0x80.i.x = -15.0f;
-        field_0x80.i.y = -31.0f;
-        field_0x80.f.x = 15.0f;
-        field_0x80.f.y = 31.0f;
+        mMapBox_0x80.i.x = -15.0f;
+        mMapBox_0x80.i.y = -31.0f;
+        mMapBox_0x80.f.x = 15.0f;
+        mMapBox_0x80.f.y = 31.0f;
         break;
     case 3:
-        field_0x80.i.x = -31.0f;
-        field_0x80.i.y = -15.0f;
-        field_0x80.f.x = 31.0f;
-        field_0x80.f.y = 15.0f;
+        mMapBox_0x80.i.x = -31.0f;
+        mMapBox_0x80.i.y = -15.0f;
+        mMapBox_0x80.f.x = 31.0f;
+        mMapBox_0x80.f.y = 15.0f;
         break;
     case 4:
-        field_0x80.i.x = -31.0f;
-        field_0x80.i.y = -31.0f;
-        field_0x80.f.x = 31.0f;
-        field_0x80.f.y = 31.0f;
+        mMapBox_0x80.i.x = -31.0f;
+        mMapBox_0x80.i.y = -31.0f;
+        mMapBox_0x80.f.x = 31.0f;
+        mMapBox_0x80.f.y = 31.0f;
         break;
     case 5:
-        field_0x80.i.x = -39.0f;
-        field_0x80.i.y = -39.0f;
-        field_0x80.f.x = 39.0f;
-        field_0x80.f.y = 39.0f;
+        mMapBox_0x80.i.x = -39.0f;
+        mMapBox_0x80.i.y = -39.0f;
+        mMapBox_0x80.f.x = 39.0f;
+        mMapBox_0x80.f.y = 39.0f;
         break;
     case 6:
     case 7:
     case 8:
     case 9:
-        field_0x80.i.x = -7.0f;
-        field_0x80.i.y = -7.0f;
-        field_0x80.f.x = 7.0f;
-        field_0x80.f.y = 7.0f;
+        mMapBox_0x80.i.x = -7.0f;
+        mMapBox_0x80.i.y = -7.0f;
+        mMapBox_0x80.f.x = 7.0f;
+        mMapBox_0x80.f.y = 7.0f;
         break;
     case 10: {
-        field_0x80.i.x = -7.0f;
-        field_0x80.i.y = -7.0f;
-        field_0x80.f.x = 7.0f;
-        field_0x80.f.y = 7.0f;
+        mMapBox_0x80.i.x = -7.0f;
+        mMapBox_0x80.i.y = -7.0f;
+        mMapBox_0x80.f.x = 7.0f;
+        mMapBox_0x80.f.y = 7.0f;
         bool free[4];
         free[0] = true;
         free[1] = true;
@@ -204,7 +204,7 @@ void OBJLift_804ACA00::init() {
                 continue;
             }
             s32 state = other->field_0x258;
-            if (field_0x4 != other->field_0x4) {
+            if (mLayer_0x4 != other->mLayer_0x4) {
                 continue;
             }
             if (state < 6 || state > 9) {
@@ -233,10 +233,10 @@ void OBJLift_804ACA00::init() {
         break;
     }
     case 11:
-        field_0x80.i.x = -23.0f;
-        field_0x80.i.y = -23.0f;
-        field_0x80.f.x = 23.0f;
-        field_0x80.f.y = 23.0f;
+        mMapBox_0x80.i.x = -23.0f;
+        mMapBox_0x80.i.y = -23.0f;
+        mMapBox_0x80.f.x = 23.0f;
+        mMapBox_0x80.f.y = 23.0f;
         mBox.i.x = -23.0f;
         mBox.i.y = -23.0f;
         mBox.f.x = 23.0f;
@@ -244,10 +244,10 @@ void OBJLift_804ACA00::init() {
         field_0x230 = 7;
         break;
     case 12: {
-        field_0x80.i.x = -23.0f;
-        field_0x80.i.y = -23.0f;
-        field_0x80.f.x = 23.0f;
-        field_0x80.f.y = 23.0f;
+        mMapBox_0x80.i.x = -23.0f;
+        mMapBox_0x80.i.y = -23.0f;
+        mMapBox_0x80.f.x = 23.0f;
+        mMapBox_0x80.f.y = 23.0f;
         mBox.i.x = -23.0f;
         mBox.i.y = -23.0f;
         mBox.f.x = 23.0f;
@@ -258,25 +258,25 @@ void OBJLift_804ACA00::init() {
     }
     case 16:
     case 17:
-        field_0x80.i.x = -15.0f;
-        field_0x80.i.y = -23.0f;
-        field_0x80.f.x = 15.0f;
-        field_0x80.f.y = 23.0f;
+        mMapBox_0x80.i.x = -15.0f;
+        mMapBox_0x80.i.y = -23.0f;
+        mMapBox_0x80.f.x = 15.0f;
+        mMapBox_0x80.f.y = 23.0f;
         field_0x240 = field_0x258 - 3;
         break;
     case 18:
     case 19:
-        field_0x80.i.x = -23.0f;
-        field_0x80.i.y = -15.0f;
-        field_0x80.f.x = 23.0f;
-        field_0x80.f.y = 15.0f;
+        mMapBox_0x80.i.x = -23.0f;
+        mMapBox_0x80.i.y = -15.0f;
+        mMapBox_0x80.f.x = 23.0f;
+        mMapBox_0x80.f.y = 15.0f;
         field_0x240 = field_0x258 - 3;
         break;
     case 20:
-        field_0x80.i.x = -15.0f;
-        field_0x80.i.y = -23.0f;
-        field_0x80.f.x = 15.0f;
-        field_0x80.f.y = 23.0f;
+        mMapBox_0x80.i.x = -15.0f;
+        mMapBox_0x80.i.y = -23.0f;
+        mMapBox_0x80.f.x = 15.0f;
+        mMapBox_0x80.f.y = 23.0f;
         field_0x240 = 14;
         break;
     }
@@ -290,14 +290,14 @@ void OBJLift_804ACA00::init() {
 }
 
 void OBJLift_804ACA00::fn_803513C0() {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (layer >= 8) {
         showBreakEffect(layer);
         startSound_801F0E34(0x30003, 0);
     } else {
         spawnEmitter_8013CC50(layer, &mPos, 0x459, 0, -3, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x45A, 0, -3, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x45B, 0, -3, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45A, 0, -3, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x45B, 0, -3, NULL, NULL, true, 1.0f);
     }
     startSound_801F0E34(0x30065, 0);
     field_0x254 = 30;
@@ -308,8 +308,8 @@ void OBJLift_804ACA00::fn_803513C0() {
 
 // 0x803511F0.
 void OBJLift_804ACA00::fn_803511F0() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
     field_0x258 = 11;
     field_0x282 = 0;
     field_0x24c = 0;
@@ -320,7 +320,7 @@ void OBJLift_804ACA00::fn_803511F0() {
     field_0x268 = field_0x264;
     if (distanceXY(mPos, mSpawnPos) > 48.0f) {
         mPos = mSpawnPos;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (layer >= 8) {
             getActorManager_801F856C()->spawnActor_801F9484('KMRI', layer, &mPos, 0x83, -1, -1);
             field_0x28c = 1.0f;
@@ -331,7 +331,7 @@ void OBJLift_804ACA00::fn_803511F0() {
     } else {
         mPos = mSpawnPos;
     }
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         field_0x28c = 0.0f;
     }
 }
@@ -342,7 +342,7 @@ void OBJLift_804ACA00::fn_803511F0() {
 // FIXME(shotgun): 96.72 %, scheduling+regalloc; behaviour clean.
 // float register assignment differs (the box test is probably an inline).
 bool OBJLift_804ACA00::fn_80351020(s32 player) {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (getPlayerLayer_8023DE58(player) != layer) {
         return false;
     }
@@ -356,10 +356,10 @@ bool OBJLift_804ACA00::fn_80351020(s32 player) {
         v.z = 0.0f;
         v.x = dist * JMath::sincosTable_.cosShort(angle);
         v.y = dist * JMath::sincosTable_.sinShort(angle);
-        f32 minX = field_0x80.i.x - -2.0f;
-        f32 minY = field_0x80.i.y - -2.0f;
-        f32 maxX = field_0x80.f.x + -2.0f;
-        f32 maxY = field_0x80.f.y + -2.0f;
+        f32 minX = mMapBox_0x80.i.x - -2.0f;
+        f32 minY = mMapBox_0x80.i.y - -2.0f;
+        f32 maxX = mMapBox_0x80.f.x + -2.0f;
+        f32 maxY = mMapBox_0x80.f.y + -2.0f;
         bool inside = v.x >= minX && v.y >= minY && v.x < maxX && v.y < maxY;
         if (inside) {
             fn_8022DF48(player);
@@ -389,9 +389,9 @@ s32 OBJLift_804ACA00::fn_80350974() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x258 == 4) {
             JGeometry::TBox2f saved;
-            saved.set(field_0x80);
+            saved.set(mMapBox_0x80);
             for (s32 j = 0; j < 4; j++) {
-                field_0x80.set(lbl_8050ADF8[j]);
+                mMapBox_0x80.set(lbl_8050ADF8[j]);
                 bool hit = fn_80351020(i);
                 field_0x283[i] = hit;
                 if (hit == 1 && getPlayerPos_8023E724(i)->z <= 0.0f) {
@@ -399,12 +399,12 @@ s32 OBJLift_804ACA00::fn_80350974() {
                     break;
                 }
             }
-            field_0x80.set(saved);
+            mMapBox_0x80.set(saved);
         } else if (field_0x258 >= 0x10 && field_0x258 <= 0x14) {
             JGeometry::TBox2f saved;
-            saved.set(field_0x80);
+            saved.set(mMapBox_0x80);
             for (s32 j = 0; j < 2; j++) {
-                field_0x80.set(lbl_8050AE38[field_0x258 - 0x10][j]);
+                mMapBox_0x80.set(lbl_8050AE38[field_0x258 - 0x10][j]);
                 bool hit = fn_80351020(i);
                 field_0x283[i] = hit;
                 if (hit == 1 && getPlayerPos_8023E724(i)->z <= 0.0f) {
@@ -412,7 +412,7 @@ s32 OBJLift_804ACA00::fn_80350974() {
                     break;
                 }
             }
-            field_0x80.set(saved);
+            mMapBox_0x80.set(saved);
         } else if (field_0x258 >= 6 && field_0x258 <= 9) {
             bool hit = fn_80351020(i);
             field_0x283[i] = hit;
@@ -429,10 +429,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
     }
 
     if (field_0x258 >= 6 && field_0x258 <= 9) {
-        push = field_0x3c;
+        push = mVel_0x3c;
     } else if (field_0x230 == 1 || field_0x230 == 3 ||
-               ((field_0x258 == 5 || field_0x258 == 0xC) && PSVECMag(&field_0x3c) > 0.0f)) {
-        push = field_0x3c;
+               ((field_0x258 == 5 || field_0x258 == 0xC) && PSVECMag(&mVel_0x3c) > 0.0f)) {
+        push = mVel_0x3c;
     } else if (field_0x230 == 5) {
         push.y = 0.1f;
     } else if (field_0x230 == 6) {
@@ -449,10 +449,10 @@ s32 OBJLift_804ACA00::fn_80350974() {
         (mPos.x - mSpawnPos.x) * (mPos.x - mSpawnPos.x) + (mPos.y - mSpawnPos.y) * (mPos.y - mSpawnPos.y) > 8.0f) {
         field_0x250++;
         if (field_0x250 > 0xF0) {
-            showBreakEffect(field_0x4);
+            showBreakEffect(mLayer_0x4);
             mPos = mSpawnPos;
             field_0x28c = 0.0f;
-            showBreakEffect(field_0x4);
+            showBreakEffect(mLayer_0x4);
             startSound_801F0E34(0x30003, 0);
         }
     } else {
@@ -602,39 +602,39 @@ s32 OBJLift_804ACA00::fn_80350530() {
 // Still differs: the second loop's index is computed with one counter register; the original keeps a separate one.
 u8 OBJLift_804ACA00::fn_803502CC() {
     JGeometry::TBox2f saved;
-    saved.set(field_0x80);
+    saved.set(mMapBox_0x80);
     if (field_0x258 == 4) {
         for (s32 i = 0; i < 4; i++) {
-            field_0x80.set(lbl_8050ADF8[i]);
+            mMapBox_0x80.set(lbl_8050ADF8[i]);
             if (field_0x268 == 0 || field_0x268 == 1) {
-                field_0x80.f.y -= 3.0f;
+                mMapBox_0x80.f.y -= 3.0f;
             } else {
-                field_0x80.i.y += field_0x290;
-                field_0x80.f.y += field_0x290;
+                mMapBox_0x80.i.y += field_0x290;
+                mMapBox_0x80.f.y += field_0x290;
             }
             if (fn_801F2618(NULL, false) == 1) {
-                field_0x80.set(saved);
+                mMapBox_0x80.set(saved);
                 return 1;
             }
         }
     } else if (field_0x258 >= 16 && field_0x258 <= 20) {
         for (s32 j = 0; j < 2; j++) {
-            field_0x80.set(lbl_8050AE38[field_0x258 - 16][j]);
+            mMapBox_0x80.set(lbl_8050AE38[field_0x258 - 16][j]);
             if (field_0x268 == 0 || field_0x268 == 1) {
-                field_0x80.f.y -= 3.0f;
+                mMapBox_0x80.f.y -= 3.0f;
             } else {
-                field_0x80.i.y += field_0x290;
-                field_0x80.f.y += field_0x290;
+                mMapBox_0x80.i.y += field_0x290;
+                mMapBox_0x80.f.y += field_0x290;
             }
             if (fn_801F2618(NULL, false) == 1) {
-                field_0x80.set(saved);
+                mMapBox_0x80.set(saved);
                 return 1;
             }
         }
     } else {
         return fn_801F2618(NULL, false);
     }
-    field_0x80.set(saved);
+    mMapBox_0x80.set(saved);
     return 0;
 }
 
@@ -654,31 +654,31 @@ bool OBJLift_804ACA00::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
 void OBJLift_804ACA00::fn_8035001C(u32 dir) {
     switch (dir) {
     case 0:
-        field_0x3c.set(0.5f * field_0x260, 0.0f, 0.0f);
+        mVel_0x3c.set(0.5f * field_0x260, 0.0f, 0.0f);
         break;
     case 1:
-        field_0x3c.set(0.5f * -(f32)field_0x260, 0.0f, 0.0f);
+        mVel_0x3c.set(0.5f * -(f32)field_0x260, 0.0f, 0.0f);
         break;
     case 2:
-        field_0x3c.set(0.0f, 0.5f * field_0x260, 0.0f);
+        mVel_0x3c.set(0.0f, 0.5f * field_0x260, 0.0f);
         break;
     case 3:
-        field_0x3c.set(0.0f, 0.5f * -(f32)field_0x260, 0.0f);
+        mVel_0x3c.set(0.0f, 0.5f * -(f32)field_0x260, 0.0f);
         break;
     case 4:
-        field_0x3c.set(0.5f * field_0x260, 0.5f * field_0x260, 0.0f);
+        mVel_0x3c.set(0.5f * field_0x260, 0.5f * field_0x260, 0.0f);
         break;
     case 5:
-        field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * field_0x260, 0.0f);
+        mVel_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * field_0x260, 0.0f);
         break;
     case 6:
-        field_0x3c.set(0.5f * field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
+        mVel_0x3c.set(0.5f * field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
     case 7:
-        field_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
+        mVel_0x3c.set(0.5f * -(f32)field_0x260, 0.5f * -(f32)field_0x260, 0.0f);
         break;
     default:
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         break;
     }
 }
@@ -688,7 +688,7 @@ void OBJLift_804ACA00::fn_8035001C(u32 dir) {
 void OBJLift_804ACA00::update() {
     if (field_0x230 == 4) {
         if (isScreenFlagSet_0x34() == 1) {
-            showBreakEffect(field_0x4);
+            showBreakEffect(mLayer_0x4);
             startSound_801F0E34(0x30003, 0);
             fn_801F0D20(0x42);
             field_0x25c = 0;
@@ -702,7 +702,7 @@ void OBJLift_804ACA00::update() {
     }
     BOOL present = FALSE;
     for (s32 i = 0; i < 4; i++) {
-        if (field_0x4 == getPlayerLayer_8023DE58(i) && !fn_8022F478(i)) {
+        if (mLayer_0x4 == getPlayerLayer_8023DE58(i) && !fn_8022F478(i)) {
             present = TRUE;
             break;
         }
@@ -717,8 +717,8 @@ void OBJLift_804ACA00::update() {
         }
         field_0x24c--;
         if (field_0x24c <= 0) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x97, 0, -3, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x98, 0, -3, NULL, NULL, true, 1.0f);
             field_0x258 = 11;
             field_0x282 = 0;
             field_0x24c = 0;
@@ -729,12 +729,12 @@ void OBJLift_804ACA00::update() {
             field_0x268 = field_0x264;
             if (distanceXY(mPos, mSpawnPos) > 48.0f) {
                 mPos = mSpawnPos;
-                showBreakEffect(field_0x4);
+                showBreakEffect(mLayer_0x4);
                 startSound_801F0E34(0x30003, 0);
             } else {
                 mPos = mSpawnPos;
             }
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 field_0x28c = 0.0f;
             }
             return;
@@ -752,8 +752,8 @@ void OBJLift_804ACA00::update() {
     field_0x26c = fn_80350974();
     if (field_0x288 == 0 &&
         (field_0x230 == 1 || field_0x230 == 3 ||
-         ((field_0x258 == 5 || field_0x258 == 0xC) && PSVECMag(&field_0x3c) > 0.0f))) {
-        mPos += field_0x3c;
+         ((field_0x258 == 5 || field_0x258 == 0xC) && PSVECMag(&mVel_0x3c) > 0.0f))) {
+        mPos += mVel_0x3c;
     }
 
     switch (field_0x230) {
@@ -761,11 +761,11 @@ void OBJLift_804ACA00::update() {
         fn_8035001C(checkPushDir());
         if (field_0x268 != -1) {
             JGeometry::TVec3f saved = mPos;
-            mPos += field_0x3c;
+            mPos += mVel_0x3c;
             if (fn_803502CC() == 1) {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x230 = 0;
                 if (field_0x258 != 0xC) {
                     field_0x244 = 0;
@@ -803,9 +803,9 @@ void OBJLift_804ACA00::update() {
     case 1:
     case 3:
         if (fn_803502CC() == 1) {
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             mPos = field_0x234;
             if (field_0x258 <= 4 || (field_0x258 >= 0x10 && field_0x258 <= 0x14)) {
                 field_0x230 = 6;
@@ -910,13 +910,13 @@ void OBJLift_804ACA00::update() {
         }
     }
     if (present == TRUE && field_0x288 == 0 && (field_0x258 == 5 || field_0x258 == 0xC)) {
-        if (isTiny(field_0x3c) == false) {
+        if (isTiny(mVel_0x3c) == false) {
             startSound_801F0E34(0x30066, 0);
         } else if (isTiny(field_0x294) == false) {
             startSound_801F0E34(0x30067, 0);
         }
     }
-    field_0x294 = field_0x3c;
+    field_0x294 = mVel_0x3c;
 }
 
 // FIXME(shotgun): 99.08 %, regalloc-only; behaviour clean.
@@ -935,7 +935,7 @@ void OBJLift_804ACA00::draw() {
         return;
     }
     if (field_0x250 > 0x78) {
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             s32 phase = field_0x250 % 40;
             if (phase > 20) {
                 alpha = (s32)(255.0f * (((f32)phase - 20.0f) / 20.0f));
@@ -1021,7 +1021,7 @@ void OBJLift_804ACA00::draw() {
         params.field_0x1d = -4;
     }
     drawSprite_801F06F0("enemy_both_sob.bin", field_0x240 + 0x14, &params, -1, 1.0f, 1.0f);
-    fn_80307AC8(mSerial, field_0x4, &mPos, field_0x240 + 0x14, 0, 0, -1);
+    fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x14, 0, 0, -1);
 }
 
 OBJLift_804ACA00::~OBJLift_804ACA00() {}
