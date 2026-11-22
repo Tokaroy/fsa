@@ -2500,7 +2500,7 @@ static inline s32 countPlayerBits() {
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
 // Still differs: registers only (the player count and gGameRoot swap r5/r6).
-// FIXME: 99.49 %, missing/extra; behaviour clean.
+// FIXME: 99.86 %, regalloc-only; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
     for (u32 row = 0; row < 10; row++) {
