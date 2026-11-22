@@ -22,18 +22,15 @@ void cls_804A8578::fn_802B1EB0() {}
 
 // Copies the save region to 0x80700000, the area main registers with
 // OSSetSaveRegion (see GameState.h), so it survives the reset.
-// FIXME: 87.54 %, missing/extra; behaviour drift.
-// Same unrolled loop (mtctr 2, eight byte copies twice per
-// pass); the original re-adds the index to the GameState base for every
-// source pass (add r4, r5, r12), ours steps a source pointer by 0x10, and the
-// registers differ.
+// Registers differ only.
 void cls_804A8578::fn_802B1DE8() {
     lbl_80529DEC.mSaveRegion.f.field_0x9 = 0;
     lbl_80529DEC.mSaveRegion.f.field_0xa = 0;
     field_0x4 = 0;
     field_0x5 = 0;
-    for (u32 i = 0; i < sizeof(lbl_80529DEC.mSaveRegion); i++) {
-        ((u8*)0x80700000)[i] = lbl_80529DEC.mSaveRegion.bytes[i];
+    GameState_804B0FE0* state = &lbl_80529DEC;
+    for (u32 i = 0; i < sizeof(state->mSaveRegion); i++) {
+        ((u8*)0x80700000)[i] = state->mSaveRegion.bytes[i];
     }
 }
 
@@ -93,8 +90,9 @@ static inline void shutdownForReset() {
 
 // The save region goes to the area OSSetSaveRegion registered, so it survives the reset.
 static inline void copySaveRegion() {
-    for (u32 i = 0; i < sizeof(lbl_80529DEC.mSaveRegion); i++) {
-        ((u8*)0x80700000)[i] = lbl_80529DEC.mSaveRegion.bytes[i];
+    GameState_804B0FE0* state = &lbl_80529DEC;
+    for (u32 i = 0; i < sizeof(state->mSaveRegion); i++) {
+        ((u8*)0x80700000)[i] = state->mSaveRegion.bytes[i];
     }
 }
 
@@ -113,6 +111,8 @@ void cls_804A8578::fn_802B1BE0(s32 reset, u32 code, bool menu) {
 
 // FIXME(shotgun): 91.45 %, missing/extra; behaviour drift.
 // 0x802B1610
+// Still differs: the original tests save-region byte 0xB with a signed
+// compare (cmpwi) and loads lbl_8053ACA8 once before the port range test.
 void cls_804A8578::fn_802B1610(s32 port, void* arg) {
     if (lbl_80529DEC.mSaveRegion.f.field_0x9 != 0) {
         return;
@@ -130,9 +130,10 @@ void cls_804A8578::fn_802B1610(s32 port, void* arg) {
         }
         lbl_80529DEC.mSaveRegion.f.field_0xb = 1;
         lbl_8053ACA8->field_0x6 = 1;
-        if (port >= 0 && port <= 3) {
-            lbl_80529DEC.mSaveRegion.f.field_0xc = port;
-            lbl_8053ACA8->field_0x7 = port;
+        s32 pad = (u8)port;
+        if (pad >= 0 && pad <= 3) {
+            lbl_80529DEC.mSaveRegion.f.field_0xc = pad;
+            lbl_8053ACA8->field_0x7 = pad;
         } else {
             lbl_80529DEC.mSaveRegion.f.field_0xc = 0xFF;
             lbl_8053ACA8->field_0x7 = 0xFF;
@@ -166,7 +167,7 @@ void cls_804A8578::fn_802B1610(s32 port, void* arg) {
         lbl_80529DEC.mSaveRegion.f.field_0xe = 1;
     }
     lbl_80529DEC.mSaveRegion.f.field_0x9 = 1;
-    field_0x4 = 1;
+    lbl_8053ACA8->field_0x4 = 1;
     if (lbl_8053AAF0->field_0x79 != 0) {
         s32 connected = 0;
         s32 idle = 0;
