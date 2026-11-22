@@ -157,7 +157,7 @@ void Navi_804A6708::init() {
 
     mAnim.fn_801D2608(lbl_8053A188, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 
     if (mFlags & 0x4000) {
         fn_8021F064()->fn_8021F25C(mSerial);
@@ -250,7 +250,7 @@ void Navi_804A6708::fn_8021E4F8() {
 }
 
 // FIXME(shotgun): 96.86 %, missing/extra; behaviour drift.
-void Navi_804A6708::fn_8021DFAC(s32 newState) {
+void Navi_804A6708::setState_8021DFAC(s32 newState) {
     s32 p;
     switch (newState) {
     case 1:
@@ -374,12 +374,12 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= 5) {
-            fn_8021DFAC(1);
+            setState_8021DFAC(1);
         }
         break;
     case 1:
         if (mStateTimer >= 45) {
-            fn_8021DFAC(2);
+            setState_8021DFAC(2);
         }
         break;
     case 2:
@@ -388,7 +388,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
             if (field_0x2b4 < 0) {
                 field_0x2b4 = 0;
             }
-            fn_8021DFAC(5);
+            setState_8021DFAC(5);
         }
         break;
     case 3: {
@@ -406,13 +406,13 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
             flag = true;
         }
         if (flag && fn_8023077C()) {
-            fn_8021DFAC(4);
+            setState_8021DFAC(4);
         }
         break;
     }
     case 4:
         if (mStateTimer >= 120) {
-            fn_8021DFAC(5);
+            setState_8021DFAC(5);
         } else {
             fn_8021E4F8();
         }
@@ -430,7 +430,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
                 if (mFlags & 0x4000) {
                     fn_8021F064()->mFlags |= 1;
                 } else {
-                    fn_8021DFAC(6);
+                    setState_8021DFAC(6);
                 }
             }
         }
@@ -445,22 +445,22 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
             if (mFlags & 0x4000) {
                 fn_8021F064()->mFlags |= 2;
             } else if (mFlags & 0x8000) {
-                fn_8021DFAC(10);
+                setState_8021DFAC(10);
             } else {
-                fn_8021DFAC(7);
+                setState_8021DFAC(7);
             }
         }
         break;
     case 7:
         if (mStateTimer >= 120) {
-            fn_8021DFAC(3);
+            setState_8021DFAC(3);
         } else {
             fn_8021E4F8();
         }
         break;
     case 10:
         if (mStateTimer >= 240) {
-            fn_8021DFAC(3);
+            setState_8021DFAC(3);
         } else if (mStateTimer == 120) {
             if (!(mFlags & 0x40000) && (mFlags & 0x2000)) {
                 fn_80230534(false);
@@ -470,12 +470,12 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
         break;
     case 8:
         if (mStateTimer >= field_0x250) {
-            fn_8021DFAC(9);
+            setState_8021DFAC(9);
         }
         break;
     case 9:
         if (mPos.z >= 350.0f) {
-            fn_8021DFAC(3);
+            setState_8021DFAC(3);
         }
         break;
     }
@@ -589,12 +589,12 @@ bool Navi_804A6708::fn_8021D794() {
 
 void Navi_804A6708::fn_8021D764() {
     if (mState != 6) {
-        fn_8021DFAC(6);
+        setState_8021DFAC(6);
     }
 }
 
 void Navi_804A6708::fn_8021D734() {
     if (mState != 8) {
-        fn_8021DFAC(8);
+        setState_8021DFAC(8);
     }
 }

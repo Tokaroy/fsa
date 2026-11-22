@@ -273,7 +273,7 @@ JGeometry::TBox2f* fn_801826A4(s32 layer);
 AudioMgr_8045A080* fn_8018A6AC();
 s32 fn_8018A660();
 void fn_8018A63C();
-JPAEmitterManager* fn_8018A5F0();
+JPAEmitterManager* getEmitterManager_8018A5F0();
 s32 fn_8018E89C();
 
 // The scale part of m (its translation column is the caller's); the callers load the
@@ -686,7 +686,7 @@ void Ganon_804A25F0::update() {
                 s32 hitPlayer = fn_801F285C(NULL, NULL, true, i);
                 if (hitPlayer >= 0) {
                     JGeometry::TVec2f dir;
-                    fn_801F3128(&dir);
+                    getBoxCenter_801F3128(&dir);
                     fn_80238548(hitPlayer, 0, &dir, 3);
                 }
             }
@@ -1093,7 +1093,7 @@ void Ganon_804A25F0::update() {
             fn_80196D70(&mPos, &field_0x2dc);
             field_0x94 = 6;
             if (mEmitters[0] != NULL) {
-                fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
+                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
                 mEmitters[0] = NULL;
             }
             fn_80196DF0();
@@ -1197,11 +1197,11 @@ void Ganon_804A25F0::update() {
                     field_0x234[3] = 0;
                     field_0x264 = 0;
                     if (mEmitters[0] != NULL) {
-                        fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
+                        getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
                         mEmitters[0] = NULL;
                     }
                     if (mEmitters[1] != NULL) {
-                        fn_8018A5F0()->forceDeleteEmitter(mEmitters[1]);
+                        getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[1]);
                         mEmitters[1] = NULL;
                     }
                     for (s32 i = 0; i < 5; i++) {
@@ -1374,11 +1374,11 @@ void Ganon_804A25F0::update() {
                 }
             }
             if (mEmitters[0] != NULL) {
-                fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
+                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
                 mEmitters[0] = NULL;
             }
             if (mEmitters[1] != NULL) {
-                fn_8018A5F0()->forceDeleteEmitter(mEmitters[1]);
+                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[1]);
                 mEmitters[1] = NULL;
             }
         }
@@ -1771,7 +1771,7 @@ void Ganon_804A25F0::update() {
                 if (fn_80154378(dx * dx + dy * dy) <= 7.0f && owner->mState == 30) {
                     owner->field_0x264 = 1;
                     if (mEmitters[0] != NULL) {
-                        fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
+                        getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
                         mEmitters[0] = NULL;
                     }
                     owner->field_0x25c = 3;

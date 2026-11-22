@@ -75,7 +75,7 @@ public:
     // 0x1DD0 bytes; this unit only (loadScreenTiles_802D8D50 passes 0 and 8-14). Rebuilds the
     // layer's slot list (field_0x131b8[layer], field_0x131df[layer] cleared first).
     void fn_802D4CCC(s32 layer);
-    // 0x92C bytes; this unit only (fn_802D9CD8, fn_802DBD60, vfunc_0xC). Loads
+    // 0x92C bytes; this unit only (fn_802D9CD8, restartStage_802DBD60, vfunc_0xC). Loads
     // the background ('bg_%s_*' from fn_802D9C4C) and object tile images and
     // palettes into the tile map; sets field_0x131f1 for the 'u' backgrounds.
     void fn_802D92F0();
@@ -129,7 +129,7 @@ public:
     // (game/tu_802D39B8.cpp).
     inline void restartTimeLimit();
     inline void clearScreenState();
-    // Inlined by fn_802DA8DC, fn_802DBD60 and vfunc_0xC; no out-of-line copy.
+    // Inlined by fn_802DA8DC, restartStage_802DBD60 and vfunc_0xC; no out-of-line copy.
     inline void clearStageTables();
     inline void clearSlots();
     inline void placePlayers();
@@ -148,7 +148,7 @@ public:
     // 1 unit. 0x670 bytes; no arguments.
     void fn_802DB6F0();
     // 3 units / 6 calls. 0xFAC bytes; no arguments.
-    void fn_802DBD60();
+    void restartStage_802DBD60();
     // 31 units / 42 calls (this unused). gGameRoot2_8053AB10->0x24's byte at 0x1E8.
     u8 fn_802DCD0C();
     // 2 units / 5 calls. Unless fn_802DCD0C(), steps mScreenX_0x14 by the sign
@@ -467,7 +467,7 @@ u8 fn_802DEDFC(const s32* dir);
 // 1 unit. Stage (6, 0), (6, 1) or (6, 3).
 bool fn_802DEA34(void);
 
-// Called by fn_802DA8DC, fn_802DBD60 and vfunc_0xC with r3 unset. Clears the
+// Called by fn_802DA8DC, restartStage_802DBD60 and vfunc_0xC with r3 unset. Clears the
 // four 64-bit masks per screen (field_0x3c8) of every screen.
 void fn_802DEE2C(void);
 

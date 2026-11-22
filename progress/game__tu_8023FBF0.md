@@ -27,11 +27,11 @@ SHARED-EDITS: Player.h (decls fn_80247F58/fn_80248DD8/fn_8024CA20/fn_802517F8/fn
 
 ## Player architecture + constructor/destructor (Opus 5.5, 2026-11-05)
 Baseline 8372 / 11557 (after rebase on matching 8cf7a05c). After 8379 (+7), structural +8. Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok; no function anywhere drops (per-address compare with the main report).
-docs/PLAYER.md: unit map, per-frame flow, state system (0x1240/0x1244/0x1248, three switch jump tables in fn_802870C8, 82-state handler table), big functions, boot-path coverage, recommended order.
+docs/PLAYER.md: unit map, per-frame flow, state system (0x1240/0x1244/0x1248, three switch jump tables in updateState_802870C8, 82-state handler table), big functions, boot-path coverage, recommended order.
 Matched: __ct__15Player_804A6F38Fl, __dt__15Player_804A6F38Fv, __dt__23PlayerSoundObj_804B20F8Fv (now emitted after our dtor), fn_80252F50/5C/68/74 (cls_804AA8D8 0x290-0x29C).
 Written below 100 %: fn_80254660 99.91 (reloc-name only: lbl_80540098 256/3 is @NNN until earlier literals are in pool order).
 Fields proven by the ctor/dtor: 0xBEC cls_804AA8D8*, 0x1250/0x1254 PlayerSoundObj_804B20F8*, 0x1258 TVec3f, cls_804A64A8 at 0x1278/0x1290/0x12D0/0x12E8/0x130C/0x1330, cls_8049F140 at 0x1398/0x13A8 (arrays at 0x38/0x4E0/0x510/0x550/0x5FC confirmed); fn_80254660: 0xB90 f32, 0xC0C s32.
-Next: fn_80254744 (per-slot reset, 0x11A0, 646 instrs on the battle path; proves most remaining fields), fn_802544B0, fn_80253E6C, then tu_80285E58 (fn_80285E58 / fn_802870C8).
+Next: fn_80254744 (per-slot reset, 0x11A0, 646 instrs on the battle path; proves most remaining fields), fn_802544B0, fn_80253E6C, then tu_80285E58 (fn_80285E58 / updateState_802870C8).
 SHARED-EDITS: Player.h (fields above; fn_8023FC24 and fn_8022BCD4 return cls_804AA8D8*; includes cls_804A64A8.h + new cls_8049F140.h); cls_804A64A8.h (dtor inline, tu_802144F0's out-of-line definition removed, still 100 %); new include/game/cls_8049F140.h (class moved out of tu_8013C5C8.cpp, ctor/dtor inline); tu_8022AD64.cpp fn_8022BCD4 return type; cls_804A71A8.h comment. symbols.txt: fn_8026F9E8 -> __ct__12cls_804A71A8FP15Player_804A6F38, fn_8018E890 -> __ct__Q29JGeometry8TBox2<f>Fv.
 
 ## Player track, agent A (Opus 5.5, 2026-11-05): reset, update A, state request, layout
@@ -88,17 +88,17 @@ SHARED-EDITS: Player.h (fn_80240F28 const; decl fn_80250FD4; free fn_8022AD88; u
 Rebased on matching 2f6a1710. Unit 174 -> 181/254 (+7 honest); total 8803 -> 8810, structural 9270.
 Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok; per-address compare with the main report: 0 drops, 13 gains.
 100 %: fn_80248970 (was 97.3: `s32 leader;` declared first, self stays in its branch), fn_8024DCD0 (fn_8024E060's tail written `if (field_0x1216 == 1) return false; return true;`, still 100 %, so the inlined copy branches), fn_80242DAC (conveyor tiles; JGeometry TVec3f::normalize() replaces the normalizeVec file inline, fn_80252FC0 99.16 -> 99.73), fn_80241E64 (30 deleteEmitter, 0x135C-0x1370 in the original's order), playSound_8024F0E8 (cue: pad rumble or the sound objects 0x1250 / 0x1254); fn_80248A24 / fn_80248B9C reach 100 % through the literal pool.
-Below 100 % (FIXME): fn_8024CD20 99.64 (regalloc: the group loop's leader / own index), fn_802527B0 99.92 (literal name 20.0f only), fn_802520C0 97.09 (scheduling+regalloc + literal name).
+Below 100 % (FIXME): fn_8024CD20 99.64 (regalloc: the group loop's leader / own index), checkScreenExit_802527B0 99.92 (literal name 20.0f only), fn_802520C0 97.09 (scheduling+regalloc + literal name).
 Data: lbl_8046AE78 (Vec[4], +-15.999 by facing) as file-scope data; .rodata 46 % until fn_8024F63C / fn_80250090 write the three tables in front of it.
 Group loop (two registers): measured 24 declaration orders and 6 shapes across the unit. Only `leader` first (fn_80248970 alone) is clean (+1). Declaring both leader and self first gives fn_802486A0 / fn_8024051C / fn_80240670 / fn_80240B84 100 % (+5) but drops ~36 gated functions 99.5 -> 98.7: in the inlined copies the original colours leader lowest (r27) and self highest (r30), the standalone copy leader highest; no source shape found that gives both. Not taken.
-Not written: fn_802487FC (94.95 "different": the direct inlined copy zeroes li / li in the original, li / mr here; six shapes incl. ternary, declarations at the top), fn_80241B44 (unchanged reason), the big ones (fn_8024BDBC, fn_8024E694, fn_8024B2E0, fn_80250FD4, fn_8024F63C, fn_8024D134, fn_80250090).
-SHARED-EDITS: Player.h (decl fn_802520C0(const TVec2<s32>*), fn_802527B0 comment); Map.h (bool fn_80225EF4(const TVec3f*, s32), C++). symbols.txt: fn_80225EF4 -> fn_80225EF4__FPCQ29JGeometry8TVec3<f>l, fn_802520C0 -> fn_802520C0__15Player_804A6F38FPCQ29JGeometry8TVec2<l>.
+Not written: fn_802487FC (94.95 "different": the direct inlined copy zeroes li / li in the original, li / mr here; six shapes incl. ternary, declarations at the top), fn_80241B44 (unchanged reason), the big ones (fn_8024BDBC, dropForceGems_8024E694, fn_8024B2E0, fn_80250FD4, fn_8024F63C, fn_8024D134, fn_80250090).
+SHARED-EDITS: Player.h (decl fn_802520C0(const TVec2<s32>*), checkScreenExit_802527B0 comment); Map.h (bool fn_80225EF4(const TVec3f*, s32), C++). symbols.txt: fn_80225EF4 -> fn_80225EF4__FPCQ29JGeometry8TVec3<f>l, fn_802520C0 -> fn_802520C0__15Player_804A6F38FPCQ29JGeometry8TVec2<l>.
 
 ## Player track wave 16 (Opus 5.5, 2026-11-06): the seven big functions
 On matching 831c008b. Unit 181 -> 189/254 (+8 honest: total 8920 -> 8928); structural 9439 -> 9446.
 Full ninja sha ok; gate --all-units / --base matching ok; gen_game --check ok; order_check ok for tu_8023FBF0 (10 other units out of order, untouched here); per-address compare with the main report: 0 drops, 22 gains.
-Written: fn_8024BDBC 99.53 (regalloc), fn_8024E694 99.82 (regalloc), fn_8024B2E0 92.26 (missing/extra -4), fn_8024D134 99.65 (regalloc), fn_8024F63C 99.07 (scheduling+regalloc), fn_80250090 99.21 (regalloc), fn_80250FD4 99.86 (regalloc), fn_802487FC 94.95 (different: li/li vs li/mr, needed as the plain function fn_8024D134 inlines). fn_802408C8 96.0 -> 99.05 (`int` loop index).
-100 % through the literal pool: fn_80254660, fn_802544B0, fn_80253E6C, fn_802527B0, fn_8024E344, fn_8024E3D8, fn_8024E46C, fn_8024DC00.
+Written: fn_8024BDBC 99.53 (regalloc), dropForceGems_8024E694 99.82 (regalloc), fn_8024B2E0 92.26 (missing/extra -4), fn_8024D134 99.65 (regalloc), fn_8024F63C 99.07 (scheduling+regalloc), fn_80250090 99.21 (regalloc), fn_80250FD4 99.86 (regalloc), fn_802487FC 94.95 (different: li/li vs li/mr, needed as the plain function fn_8024D134 inlines). fn_802408C8 96.0 -> 99.05 (`int` loop index).
+100 % through the literal pool: fn_80254660, fn_802544B0, fn_80253E6C, checkScreenExit_802527B0, fn_8024E344, fn_8024E3D8, fn_8024E46C, fn_8024DC00.
 Data: .rodata 100 % (lbl_8046AE08, lbl_8046AE28, lbl_8046AE58 as source data).
 Not written: fn_80241B44 (reason unchanged).
-SHARED-EDITS: Player.h (fn_8024E694 parameter name). Details: docs/PLAYER.md "Round 16 (tu_8023FBF0)".
+SHARED-EDITS: Player.h (dropForceGems_8024E694 parameter name). Details: docs/PLAYER.md "Round 16 (tu_8023FBF0)".

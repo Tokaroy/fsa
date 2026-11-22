@@ -210,7 +210,7 @@ u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {
                 fn_8023B6CC(i);
                 if (!fn_8023E854(i)) {
                     JGeometry::TVec2f center;
-                    fn_801F3128(&center);
+                    getBoxCenter_801F3128(&center);
                     if (fn_80238548(i, mParamAtcp_0x114, &center, 10)) {
                         hit = 1;
                     }

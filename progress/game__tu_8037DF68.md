@@ -10,7 +10,7 @@ fn_80383E2C 87.0 (scheduling+regalloc, jump table ok), fn_8038D570 98.8 (li vs m
 fn_80389964 97.7 (1 instr), fn_803895EC 99.3 (1 instr), fn_8038A42C 99.7 / fn_8038A984 99.7 / fn_8038B8A8 99.98 (regalloc only).
 Unwritten: fn_8037F2FC (mTextBox is a bigger class than J2DTextBox, fields 0x104-0x120 unknown),
 fn_8038D4A8 (vtable slot 0x94 call on mTextBox: no such virtual in J2DPane/J2DTextBox), fn_8038C60C
-(81.7 %: the inlined fn_803846BC loop comes out in another order), openMessage_8038AD24 / BD08 / C678 (openers
+(81.7 %: the inlined findMessageIndex_803846BC loop comes out in another order), openMessage_8038AD24 / BD08 / C678 (openers
 that inline several of the above), the big message functions (> 1200 B).
 Notes: auto-inlining of earlier functions works (fn_80388CAC/EEC inline getMessageWindowState_8037F1E4). Loop counters:
 `int i` unrolls constant-count loops, `s32 i` (long) does not (found in tu_80403D84).
@@ -50,8 +50,8 @@ Written (7 of the 19 unwritten):
   entries[i].textOffset]` gives the original's add order.
 
 Tried and left unwritten:
-- fn_8038C60C 81.7 (different): the inlined fn_803846BC folds inf1 + 8 into lhz 0x28(bmg) and
-  sets i = 0 later; standalone fn_803846BC stays 100 %. Three loop forms tried, no change.
+- fn_8038C60C 81.7 (different): the inlined findMessageIndex_803846BC folds inf1 + 8 into lhz 0x28(bmg) and
+  sets i = 0 later; standalone findMessageIndex_803846BC stays 100 %. Three loop forms tried, no change.
 - fn_803837A4 81.75 missing/extra (attempt kept in the coordinator scratchpad,
   tu_8037DF68_fn_803837A4_attempt.cpp): lines centred with "\x1BCR[%d]"; params (out, msg,
   player, number, f32 width, f32 scale). Misses: (f32)(lines - 1) / (f32)pad conversions not

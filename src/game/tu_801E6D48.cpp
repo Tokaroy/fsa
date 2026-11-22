@@ -73,7 +73,7 @@ void IronPot_804A5418::fn_801E728C(int state) {
             mBox.f.y *= 1.5f;
             fn_801F2B7C(4, -1, 0x16);
             JGeometry::TVec2f center;
-            fn_801F3128(&center);
+            getBoxCenter_801F3128(&center);
             JGeometry::TVec3f spot;
             spot.y = center.y - 16.0f;
             for (s32 j = 0; j < 3; j++) {

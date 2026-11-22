@@ -447,7 +447,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         field_0x244--;
         if (field_0x244 < 0) {
             getGameView_802D6A9C()->fn_802D9FF4(8, 0);
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             mAlive = false;
         }
         break;
@@ -499,7 +499,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             break;
         }
         getGameView_802D6A9C()->fn_802D9FF4(9, 0);
-        getGameView_802D6A9C()->fn_802DBD60();
+        getGameView_802D6A9C()->restartStage_802DBD60();
         mAlive = false;
         break;
     case 20:
@@ -563,7 +563,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
             getActorManager_801F856C()->fn_801F6884();
             gAudioMgr_8053AF80->fn_80458FF0(0x1000022, false, 0);
             getGameView_802D6A9C()->fn_802D9FF4(9, 2);
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             mAlive = false;
         } else {
             setCameraFocus(field_0x264);

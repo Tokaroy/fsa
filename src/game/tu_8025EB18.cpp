@@ -1105,7 +1105,7 @@ bool Player_804A6F38::fn_80260C08() {
     }
     if (fn_8022C0A0(mPlayerNo_0x4)) {
         s32 kind = gBgRewrite_8053AC98->fn_802A02A8(&pos, mPlayerNo_0x4, mLayer_0x3b4);
-        s32 cell = fn_80226AE0(&pos, mLayer_0x3b4);
+        s32 cell = getCellIndexVec3_80226AE0(&pos, mLayer_0x3b4);
         switch (kind) {
         case 0:
         case 1:

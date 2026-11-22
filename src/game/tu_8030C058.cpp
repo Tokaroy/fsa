@@ -170,7 +170,7 @@ void Camera_804AA9E4::fn_8030E150() {}
 
 // Loads the projection / view into the GX state (taking the pending matrices first when copy is
 // set) and sets the viewport and scissor to the screen rect.
-void Camera_804AA9E4::fn_8030DFE8(bool copy) {
+void Camera_804AA9E4::loadGXState_8030DFE8(bool copy) {
     if (copy) {
         JMath::gekko_ps_copy12(mLoadedViewMtx_0x74, mViewMtx_0x4);
         JMath::gekko_ps_copy16(mLoadedProjMtx_0xa4, mProjMtx_0x34);
@@ -183,7 +183,7 @@ void Camera_804AA9E4::fn_8030DFE8(bool copy) {
 }
 
 // The 2D view of the box: the view matrix straight into the GX one, the projection from the box's
-// size, and (when light is set) the light matrices; then the GX state of fn_8030DFE8.
+// size, and (when light is set) the light matrices; then the GX state of loadGXState_8030DFE8.
 // FIXME(shotgun): 82.01 %, missing/extra + reloc-name; behaviour drift.
 // (the target re-reads i.y, f.x and f.y of the box after the copy; ours keeps all four)
 void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
@@ -213,7 +213,7 @@ void Camera_804AA9E4::fn_8030DD8C(const JGeometry::TBox2f* box, bool light) {
         PSMTXCopy(mLoadedViewMtx_0x74, mDrawInfo_0xe4.mCamMtx);
         C_MTXLightOrtho(mDrawInfo_0xe4.mPrjMtx, halfH, -halfH, -halfW, halfW, 0.5f, 0.5f, 0.5f, 0.5f);
     }
-    fn_8030DFE8(false);
+    loadGXState_8030DFE8(false);
 }
 
 void Camera_804AA9E4::fn_8030DD68() {
@@ -899,7 +899,7 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
     fn_8030C4A0(&bottomRight, false, &out[1]);
 }
 
-// A plain function that fn_8030DFE8 inlines and whose own copy the linker dropped: the original's
+// A plain function that loadGXState_8030DFE8 inlines and whose own copy the linker dropped: the original's
 // .sdata2 has 1.0f between isOnScreen_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.

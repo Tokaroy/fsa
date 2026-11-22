@@ -240,7 +240,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = getCellIndex_80226BC4(&p, layer);
     field_0x24 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(layer, field_0x20);
-    s32 bit = fn_80226AE0(pos, layer);
+    s32 bit = getCellIndexVec3_80226AE0(pos, layer);
     if (field_0x24 == 0x69) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7A);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a, -1, -1);

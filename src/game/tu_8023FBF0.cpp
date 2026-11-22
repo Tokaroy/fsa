@@ -1164,7 +1164,7 @@ void Player_804A6F38::fn_80252BAC(const JGeometry::TVec3f* offset) {
 // demo mode, or on a tile fn_80225EF4 lists), with the tile 8 beyond the edge
 // free (not collision code 1, nor 0x22 while GameView field_0x170 is 1).
 // Writes the direction (-1 / 1 in x or y) to *out, else 0, 0.
-bool Player_804A6F38::fn_802527B0(JGeometry::TVec2<s32>* out) {
+bool Player_804A6F38::checkScreenExit_802527B0(JGeometry::TVec2<s32>* out) {
     out->x = 0;
     out->y = 0;
     if (!fn_80251BFC(0x1b)) {
@@ -1276,7 +1276,7 @@ void Player_804A6F38::fn_8025250C() {
 }
 
 // Starts walking off the screen (state 0x1B) in direction *dir (from
-// fn_802527B0), unless isGrabbing_8025F448. A player taking part that does not act
+// checkScreenExit_802527B0), unless isGrabbing_8025F448. A player taking part that does not act
 // on its own (fn_80240670) first moves onto the acting player (position,
 // layer, mPrevPos_0x2c); then the group goes to mode 5 and the trail is reset.
 // A player not taking part moves onto its leader. When the request is
@@ -2082,7 +2082,7 @@ void Player_804A6F38::fn_8024ECCC(s32 value) {
 // rounded down to a gem value (1, 5, 20, 50, 100, 150, 200, 300, 1000, 1500,
 // 2000, 3000) spawned as one gem of that kind (param kind | 0x40000, 0x70000
 // in state 0x51); otherwise the amount itself (| 0x60000 in state 0x51).
-void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
+void Player_804A6F38::dropForceGems_8024E694(s32 value, s32 single) {
     JGeometry::TVec3f pos = mPos;
     s32 layer = mLayer_0x3b4;
     if (fn_802486A0() == 4 && getGroupTurn_80240888() != fn_80248778()) {
@@ -2128,7 +2128,7 @@ void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
         single = true;
     }
     // The original tests the low byte (clrlwi.): `single` is a bool there,
-    // but the forwarder fn_80236074 (tu_8022AD64, generator-pinned) and the
+    // but the forwarder dropPlayerForceGems_80236074 (tu_8022AD64, generator-pinned) and the
     // symbol (Fll) declare it s32.
     if ((u8)single) {
         s32 kind;
@@ -2220,25 +2220,25 @@ void Player_804A6F38::fn_8024E500() {
 
 void Player_804A6F38::fn_8024E46C() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 5, 0);
+        dropForceGems_8024E694((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 5, 0);
     } else {
-        fn_8024E694(5, 0);
+        dropForceGems_8024E694(5, 0);
     }
 }
 
 void Player_804A6F38::fn_8024E3D8() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x14, 0);
+        dropForceGems_8024E694((s32)(10.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x14, 0);
     } else {
-        fn_8024E694(0x14, 0);
+        dropForceGems_8024E694(0x14, 0);
     }
 }
 
 void Player_804A6F38::fn_8024E344() {
     if (mLayer_0x3b4 < 8) {
-        fn_8024E694((s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32, 0);
+        dropForceGems_8024E694((s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x32, 0);
     } else {
-        fn_8024E694(0x32, 0);
+        dropForceGems_8024E694(0x32, 0);
     }
 }
 
@@ -4286,7 +4286,7 @@ s32 Player_804A6F38::fn_80241920() {
         return fn_80236228(team);
     }
     s32 value = field_0xc04;
-    // An if, not `?:`: fn_8024E694's inlined copies branch (cmpwi / blt);
+    // An if, not `?:`: dropForceGems_8024E694's inlined copies branch (cmpwi / blt);
     // this copy is branchless either way.
     if (value >= 0) {
         return value;

@@ -476,7 +476,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   an inline returning `u8` with `return x == N ? true : false;`, called in the condition
   (`isGameMode(mode)` in game/GameMode.h).
   A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. tu_80285E58 fn_80286688
-  88.7 -> 100 % and the copy inlined in fn_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
+  88.7 -> 100 % and the copy inlined in updateState_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
   sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and tu_80158624 fn_80159330 (mode 0xC, 100 %; read
   gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 fn_802FB69C
   (both mode-11 tests). A file's own byte helper takes the same form: tu_8025EB18 isField0xd64One
@@ -509,7 +509,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   act_princess_zelda `getPlayerLayer_8023DE58(p) == fn_8023E10C(p)`.
 - A `||` chain on one member that the original folds only partly (`cmpwi 8; beq; subi 9; cmplwi 1; ble;
   cmpwi 0x39`): compare the member itself each time (`field_0x1240 == 8 || field_0x1240 == 9 || ...`); a
-  local read once lets MWCC fold 8-10 (tu_80285E58 fn_802870C8). Also tu_8025EB18 fn_8025FCC8 (state
+  local read once lets MWCC fold 8-10 (tu_80285E58 updateState_802870C8). Also tu_8025EB18 fn_8025FCC8 (state
   0x11 on its own before 0x12-0x16: 87.0 -> 100 %).
 - An old position read back after the member was updated (the original reloads mPos.x for `+= k`
   where ours reuses the saved copy): copy it as a `JGeometry::TVec2f old(mPos);`, not two f32 locals

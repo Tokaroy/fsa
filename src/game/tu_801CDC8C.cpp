@@ -26,8 +26,8 @@
 // Auto-inlining is off for the whole file (docs/INLINING.md, pragma rule 2): the
 // original inlines no same-unit plain function. Checked: built with inlining off,
 // every written function's calls to this unit's functions equal the original's
-// `bl`s. The callers that need it: fn_801CF1B0, fn_801CF6B8, fn_801CF720 and fn_801CF798 call fn_801CF6B8,
-// fn_801CF720, fn_801CF798 and fn_801CFCF0 out of line.
+// `bl`s. The callers that need it: fn_801CF1B0, fn_801CF6B8, pickNewDir_801CF720 and fn_801CF798 call fn_801CF6B8,
+// pickNewDir_801CF720, fn_801CF798 and fn_801CFCF0 out of line.
 #pragma auto_inline off
 
 const bool lbl_8053EFC0 = false;
@@ -516,7 +516,7 @@ bool EnemyBase_804A4808::fn_801CFCF0(s32 dir) {
 // Whether the way from *from to *to is blocked: either point outside the
 // view's box for `layer` (0xCC, or 0xDC for the upper layers), or the map
 // (isBlocked_0x4C) blocking a point every 8 units along the line or the end.
-bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer) {
+bool EnemyBase_804A4808::isPathBlocked_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer) {
     JGeometry::TVec3f pos;
     JGeometry::TBox2f* box = layerBox(layer);
     if (from->x < box->i.x || from->y < box->i.y || from->x >= box->f.x || from->y >= box->f.y ||
@@ -550,12 +550,12 @@ bool EnemyBase_804A4808::fn_801CFA70(const JGeometry::TVec3f* from, const JGeome
     return blocked;
 }
 
-// Whether the way from *from to *to is blocked (fn_801CFA70): along the line
+// Whether the way from *from to *to is blocked (isPathBlocked_801CFA70): along the line
 // between them, then along the two lines 7 units to either side of it.
 bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer) {
-    // fn_801CFA70 reads only (x, y) of both points; the side points are
+    // isPathBlocked_801CFA70 reads only (x, y) of both points; the side points are
     // 8-byte TVec2f slots, as `from` is.
-    bool blocked = fn_801CFA70((const JGeometry::TVec3f*)from, to, layer);
+    bool blocked = isPathBlocked_801CFA70((const JGeometry::TVec3f*)from, to, layer);
     if (!blocked) {
         JGeometry::TVec2f dir(to->x - from->x, to->y - from->y);
         bool isZero = dir.isZero();
@@ -570,7 +570,7 @@ bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeome
             JGeometry::TVec2f b(xy(*to));
             a.add(side);
             b.add(side);
-            blocked = fn_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
+            blocked = isPathBlocked_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
             if (!blocked) {
                 side.x = -side.x;
                 side.y = -side.y;
@@ -578,7 +578,7 @@ bool EnemyBase_804A4808::fn_801CF888(const JGeometry::TVec2f* from, const JGeome
                 b.set(xy(*to));
                 a.add(side);
                 b.add(side);
-                blocked = fn_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
+                blocked = isPathBlocked_801CFA70((const JGeometry::TVec3f*)&a, (const JGeometry::TVec3f*)&b, layer);
             }
         }
     }
@@ -600,7 +600,7 @@ s32 EnemyBase_804A4808::fn_801CF798(s32 dir, s32 except) {
 }
 
 // A random direction other than `dir`, or another free one when blocked.
-s32 EnemyBase_804A4808::fn_801CF720(s32 dir) {
+s32 EnemyBase_804A4808::pickNewDir_801CF720(s32 dir) {
     s32 newDir = fn_801CD580(dir);
     if (fn_801CFCF0(newDir)) {
         newDir = fn_801CF798(dir, newDir);
@@ -612,7 +612,7 @@ s32 EnemyBase_804A4808::fn_801CF720(s32 dir) {
 s32 EnemyBase_804A4808::fn_801CF6B8() {
     s32 dir = fn_801CD664(4);
     if (fn_801CFCF0(dir)) {
-        dir = fn_801CF720(dir);
+        dir = pickNewDir_801CF720(dir);
     }
     return dir;
 }
@@ -623,7 +623,7 @@ s32 EnemyBase_804A4808::fn_801CF6B8() {
 // A direction toward the nearest player within `range` (fn_801CF6B8's random
 // one when there is none): on the dominant axis, or the other one with
 // probability `margin`. With `turn`, a direction equal to mDir_0x98 is
-// replaced by another free one (fn_801CF720), and by a third one
+// replaced by another free one (pickNewDir_801CF720), and by a third one
 // (fn_801CF798) when that would turn away from the player; without it, a
 // blocked direction (fn_801CFCF0) is swapped for the other axis.
 s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
@@ -639,7 +639,7 @@ s32 EnemyBase_804A4808::fn_801CF1B0(bool turn, f32 range, f32 margin) {
         dir = directionTo(&mPos, player, otherAxis);
         if (turn) {
             if (dir == mDir_0x98) {
-                dir = fn_801CF720(dir);
+                dir = pickNewDir_801CF720(dir);
                 if (dir == fn_801CD354(directionTo(&mPos, player, false))) {
                     dir = fn_801CF798(dir, mDir_0x98);
                 }

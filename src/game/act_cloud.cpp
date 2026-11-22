@@ -74,7 +74,7 @@ static bool pool_8053C228(s32 player);
 // 0x801056E4.
 // Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
 // assignment is inside `if (field_0x354 > 0)` in the original), and stack slot of `at`
-// (fn_800FDEA0 took pos by value in the original; RailBase.h declares it as a pointer).
+// (stepAlongRail_800FDEA0 took pos by value in the original; RailBase.h declares it as a pointer).
 // FIXME: 94.02 %, scheduling+regalloc; behaviour clean.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
@@ -112,7 +112,7 @@ void Cloud_8049CBE0::update() {
             u16 angle;
             JGeometry::TVec3f at = mPos;
             f32 speed = 0.2f * field_0x358 + 0.5f;
-            s32 result = mRail.fn_800FDEA0(&at, speed, &step, &railLayer, &angle, 0x200);
+            s32 result = mRail.stepAlongRail_800FDEA0(&at, speed, &step, &railLayer, &angle, 0x200);
             mVel_0x3c.x = step.x;
             mVel_0x3c.y = step.y;
             mVel_0x3c.z = step.z;

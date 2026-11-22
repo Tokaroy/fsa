@@ -102,7 +102,7 @@ public:
     // 0x80400364 and 0x803FFBF0):
     /* 0x010 */ JKRArchive* mBossArchive_0x10; // fn_80135494 (mode 7); fn_804032E8
     /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
-    /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
+    /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; getLogoArchiveResource_80403244
     /* 0x01C */ JKRArchive* mMsgArchive_0x1c; // "/GC4Sword_usa/msgus.arc"
     /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
     /* 0x024 */ JKRArchive* mTitleArchive_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
@@ -234,7 +234,7 @@ extern GameState_804B0FE0 lbl_80529DEC;
 // game/tu_804023D0.cpp: getResource(type, name) on one of the archives
 // above (vtable slot 0x18, the arguments passed through).
 void* fn_804032E8(u32 type, const char* name); // field_0x10; 29 units (also in GameGlobals.h)
-void* fn_80403244(u32 type, const char* name); // field_0x18
+void* getLogoArchiveResource_80403244(u32 type, const char* name); // field_0x18
 void* fn_804030C4(u32 type, const char* name); // field_0x20; 36 units
 void* fn_80403204(u32 type, const char* name); // field_0x24
 void* fn_804031C4(u32 type, const char* name); // field_0x28

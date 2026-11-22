@@ -416,7 +416,7 @@ void GameRootSub20_801902C0::fn_801902D0() {
             params.field_0x1d = 0xFF;
             calcAndEntryModel_8013ABCC(s.mModel, scale, mtx);
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', "rock6_smp.bin");
-            gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(&pos, res, &params);
+            gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(&pos, res, &params);
         }
     }
     if (field_0x7ac != NULL && field_0x7a8 != 0) {

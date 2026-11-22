@@ -34,9 +34,9 @@ fn_80282094 99.41, fn_8028538C 99.90 (stack slots), fn_80283D2C 99.38 (regs), fn
 fn_80285690 98.27 (fn_8022C5EC / fn_8022C52C declared s32, return u32; fix lives in generator-owned tu_8022AD64).
 Pool blocker: 1.5 / 0.5 / 3.0 sit before getFollowTargetPos_8027FA08's 4.0 (likely a dead-stripped function with the state-3
 walk's literal order); every later literal user stays reloc-name until it is found. Details: docs/PLAYER.md Round 7.
-SHARED-EDITS: include/game/Player.h (0x580 TBox2f carved; members fn_80252F48 (tu_8023FBF0), fn_80275D9C
+SHARED-EDITS: include/game/Player.h (0x580 TBox2f carved; members fn_80252F48 (tu_8023FBF0), checkAttackInput_80275D9C
 (tu_8026FC20), fn_802808E8; extern "C" fn_8022CFE8, fn_8022C76C, fn_8022C82C (tu_8022AD64, unwritten));
-config/G4SE01/symbols.txt renames fn_80252F48__15Player_804A6F38Fv, fn_80275D9C__15Player_804A6F38Fv,
+config/G4SE01/symbols.txt renames fn_80252F48__15Player_804A6F38Fv, checkAttackInput_80275D9C__15Player_804A6F38Fv,
 fn_802808E8__15Player_804A6F38Ff.
 
 ## 2026-11-05 Opus 5.5 round 12 (agent U)

@@ -117,7 +117,7 @@ int main() {
         if (lbl_8053AAF0->mState >= 4) {
             JFWDisplay::getManager()->beginRender();
             if (lbl_80529DEC.field_0x251 == 0) {
-                gGameRoot_8053AAF8->fn_80136828();
+                gGameRoot_8053AAF8->draw_80136828();
             }
             JFWDisplay::getManager()->endRender();
             gGameRoot_8053AAF8->fn_80137300();

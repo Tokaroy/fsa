@@ -377,7 +377,7 @@ void Armos_8049F260::update() {
             s32 layer = mLayer_0x4;
             u16 angle;
             JGeometry::TVec3f pos = mPos;
-            field_0x230.fn_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
+            field_0x230.stepAlongRail_800FDEA0(&pos, 0.3f, &step, &layer, &angle, 0x200);
             mVel_0x3c.x = step.x;
             mVel_0x3c.y = step.y;
             mVel_0x3c.z = 2.0f;

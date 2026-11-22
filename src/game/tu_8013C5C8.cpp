@@ -55,7 +55,7 @@ static inline void depthPos(JGeometry::TVec3f& p, const JGeometry::TVec3f* pos, 
     }
     f32 offset = height * 1024 + depth * 128;
     p.set(pos->x, pos->y + offset, pos->z + offset);
-    p.z += gGameRoot2_8053AB10->field_0x20->fn_802F5E9C(pos) - pos->z;
+    p.z += gGameRoot2_8053AB10->field_0x20->getHeightAt_802F5E9C(pos) - pos->z;
 }
 
 // The unit's projecting emitter callback (spawnEmitter_8013CC50 picks it for ids
@@ -269,7 +269,7 @@ void EffectSystem_8049F178::fn_8013D5B0() {
 }
 
 // FIXME: 99.95. Regalloc only, in the inlined depthPos tail (p.z += height - pos->z after
-// fn_802F5E9C): the original loads pos->z into f0 and p.z into f2, ours the other way round
+// getHeightAt_802F5E9C): the original loads pos->z into f0 and p.z into f2, ours the other way round
 // (setEmitterPos_8013CB44, which keeps p in registers, matches with the same inline).
 JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u16 id, s32 height, s32 depth,
                             JPAEmitterCallBack* emitterCB, JPAParticleCallBack* particleCB, bool adjust,

@@ -149,7 +149,7 @@ static inline bool epsilonEquals(const JGeometry::TVec2f& a, const JGeometry::TV
     return equal;
 }
 
-// fn_802DA8DC, fn_802DBD60 and vfunc_0xC inline these two instruction for instruction
+// fn_802DA8DC, restartStage_802DBD60 and vfunc_0xC inline these two instruction for instruction
 // (no out-of-line copy). Clears the screen masks (fn_802DEE2C), the per-screen layer
 // masks, the layer slot lists and the per-screen bit tables.
 inline void GameView_804A9950::clearStageTables() {
@@ -742,7 +742,7 @@ u8 GameView_804A9950::fn_802DCD0C() {
 // field_0x131f9 == 2 it first clears every stage table, resets the players and rebuilds
 // the map; with 3 it only resets the shadows. Then it places the players, spawns the
 // 'GLWP' actor at player 0 (field_0x131f9 2 or 3) and re-enters the players' slots.
-void GameView_804A9950::fn_802DBD60() {
+void GameView_804A9950::restartStage_802DBD60() {
     mScreenX_0x14 = field_0x24;
     mScreenY_0x18 = field_0x28;
     getActorManager_801F856C()->fn_801F7E88();
@@ -878,7 +878,7 @@ void GameView_804A9950::fn_802DB6F0() {
 
 // FIXME: 98.63 %, different; behaviour clean.
 // Structurally close: regalloc in clearStageTables' first loop (the target's
-// zero and row counters are r3 / r4, ours r4 / r3, as in fn_802DBD60 and vfunc_0xC) and one
+// zero and row counters are r3 / r4, ours r4 / r3, as in restartStage_802DBD60 and vfunc_0xC) and one
 // instruction in clearScreenState's bit-table loop (the target copies the 0 with mr r8, r0
 // where ours loads li r7, 0xFF a slot later). Reloc-name: 1.0f / -1.0f as in fn_802DA010.
 void GameView_804A9950::fn_802DA8DC() {

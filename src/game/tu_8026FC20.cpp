@@ -137,7 +137,7 @@ static const Vec lbl_8046BC38[8] = {
 // Facing -> emitter yaw (s16 angle in a word; fn_80279824).
 static const s32 lbl_8046BC98[4] = {0x4000, 0xC000, 0x0000, 0x8000};
 
-// lbl_8046BCA8 (0xA0 bytes, one symbol): the push per facing (fn_80275D9C reads it by name),
+// lbl_8046BCA8 (0xA0 bytes, one symbol): the push per facing (checkAttackInput_80275D9C reads it by name),
 // then the charge poses and the charge emitter offsets, which fn_80274CB8 reads off its
 // .rodata base (0x8046BB48 + 0x180 / + 0x1A0): u8 [facing][8] by the pose counter 0x3F8 (the
 // up / down facings have their own last four), f32 [full charge][facing][3].
@@ -413,12 +413,12 @@ void Player_804A6F38::fn_8027DEA0() {
     field_0x3f0 = mFacing_0x3dc;
 }
 
-// Update of state 0x04 (the sword attack): the attack-input check (fn_80275D9C), the pose step
+// Update of state 0x04 (the sword attack): the attack-input check (checkAttackInput_80275D9C), the pose step
 // fn_802756E4, BgRewrite at 0x30C. Attacks 0, 1 and 3 fire the sword beam at frame 4, attack 2
 // at frame 2; the lunge (4) moves by 0x344 with gravity 0.25 and fires it on landing, its body
 // hits (0x458) running from frame 6 to 15.
 void Player_804A6F38::fn_8027D5F0() {
-    fn_80275D9C();
+    checkAttackInput_80275D9C();
     fn_802756E4();
     fn_802709C8();
     fn_80268B3C();
@@ -788,7 +788,7 @@ void Player_804A6F38::fn_8027C4FC() {
 // frames to full), 0x404 the frames. In the air the push 0x344 with gravity 0.25 lands into
 // 0x368 (0x43D = 3 frames of landing lag); on the ground pad 0x20 hops (0x344 = 2.5 times the
 // stick, or 0x368 again while the stick is centred and cls_804A71A8 0xB7 is set; z 1.5, sound
-// 0x10002), else the stick walk at 1.125, then the attack-input check fn_80275D9C. Before
+// 0x10002), else the stick walk at 1.125, then the attack-input check checkAttackInput_80275D9C. Before
 // full charge a push into a wall (cls_804A71A8 0x48 by facing) starts state 0x37 with
 // 0x350 = lbl_8046BBA8[facing], BgRewrite at 0x30C and the sound 0x20062 / 0x20061 by
 // fn_8022486C. The charge emitters 0x12B0 (the blade, moving out with the charge), 0x12B4 and
@@ -828,7 +828,7 @@ void Player_804A6F38::fn_8027BE74() {
         } else {
             fn_802808E8(1.125f);
         }
-        fn_80275D9C();
+        checkAttackInput_80275D9C();
         fn_80274CB8();
         fn_80268B3C();
         if (mSwordCharge_0x403 < 168 && field_0xbf0->field_0x48[mFacing_0x3dc] && requestState_80251AEC(0x37)) {
@@ -917,7 +917,7 @@ void Player_804A6F38::fn_8027BE74() {
     }
 }
 
-// Exit of state 0x08 (from the state switch in fn_802870C8): stops its emitters and the
+// Exit of state 0x08 (from the state switch in updateState_802870C8): stops its emitters and the
 // 'PEFF' actor 0x12C0; with 0xCAE it calls fn_802356B8 for the rest of the group.
 void Player_804A6F38::fn_8027BC90() {
     if (mChargeEmitter_0x1274 != NULL) {
@@ -969,7 +969,7 @@ void Player_804A6F38::fn_8027BC90() {
     field_0x40c = 0;
 }
 
-// Enter of state 0x09 (fn_80275D9C requests it): 0xBF4 by the reason 0x11AC, three sounds,
+// Enter of state 0x09 (checkAttackInput_80275D9C requests it): 0xBF4 by the reason 0x11AC, three sounds,
 // the input history cleared, the spin centre 0x11B4 (setSpinCenter), the emitter 0x26A.
 void Player_804A6F38::fn_8027BA2C() {
     switch (field_0x11ac) {
@@ -1684,7 +1684,7 @@ void Player_804A6F38::fn_802790C0() {
 // Update of state 0x33 (down, no life left). A fall into tile 3 / 0xE / 0x3A puts the player
 // back at its respawn point (0x2C4, 0xCBC on GBA layers); the camera follows it. Frames 0-71
 // the collapse poses, 72-135 lying down: at frame 106 the counter fn_80241920 is halved (at
-// most 2000 lost, fn_8024E694) with the message 0x198 (amount) or 0x19A. Then, in battle mode
+// most 2000 lost, dropForceGems_8024E694) with the message 0x198 (amount) or 0x19A. Then, in battle mode
 // 7, the revive wait 0x494 by the player's rank (600 / 420 / 300 / 180 frames), a helper actor
 // by rank (fn_801F6718 kind 3 / 5 / 6 / 7, not during a 'BLZD' blizzard), the emitter 0x565
 // and a 'PEFF'; the dig-up wiggle (pad 0x100: 0x3FA = 24, sound 0x20032, the 0x5DC box at frame
@@ -1737,7 +1737,7 @@ void Player_804A6F38::fn_80277F98() {
                         lost = 2000;
                     }
                     s32 before = fn_80241920();
-                    fn_8024E694(lost, 0);
+                    dropForceGems_8024E694(lost, 0);
                     s32 diff = before - fn_80241920();
                     if (diff == 0) {
                         lbl_8053AED0->fn_8043D67C(0x19a, mPlayerNo_0x4, 0);
@@ -2405,7 +2405,7 @@ void Player_804A6F38::fn_80276078() {
 // presses in the history 0x117C[4..7] / 0x119C -> state 9 (3); 0x11D4 running -> state 9 (4);
 // else with cls_804A71A8 0xB4 set state 7 (pushed by 1.5 along the facing, z -4) under
 // fn_80243234, otherwise state 5; without it state 4.
-bool Player_804A6F38::fn_80275D9C() {
+bool Player_804A6F38::checkAttackInput_80275D9C() {
     if (field_0xc9c > 0) {
         return false;
     }
@@ -3894,7 +3894,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
         }
     } else if (kind == 0x1b) {
         if (field_0xc9c <= 0) {
-            fn_8024E694(100, 1);
+            dropForceGems_8024E694(100, 1);
         }
         requested = requestState_80251AEC(0x10);
         field_0x464 = 60;

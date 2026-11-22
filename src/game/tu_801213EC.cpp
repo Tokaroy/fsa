@@ -943,7 +943,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
     tmp.x += vec.x;
     tmp.y += vec.y;
     JGeometry::TVec3f pos(tmp);
-    s32 result = mRail.fn_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
+    s32 result = mRail.stepAlongRail_800FDEA0(&pos, speed, &step, &layer, (u16*)&angle, 0x200);
     mVel_0x3c.x = step.x;
     mVel_0x3c.y = step.y;
     mVel_0x3c.z = step.z;

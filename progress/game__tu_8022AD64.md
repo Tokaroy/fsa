@@ -244,16 +244,16 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 
 ## Not done
 - fn_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
-  Shape: loop over players with fn_802527B0 + fn_8022E438 -> fn_80248DB8; then (no manager flag,
-  no game-root 0x96, no 0x73) a long chain of inline queries on each player, fn_802527B0 points
+  Shape: loop over players with checkScreenExit_802527B0 + fn_8022E438 -> fn_80248DB8; then (no manager flag,
+  no game-root 0x96, no 0x73) a long chain of inline queries on each player, checkScreenExit_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then isLiftingPlayer_8025F590 / fn_8025F418 /
   fn_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
 - fn_80235B68, fn_8023F390 unchanged.
 
 ## SHARED-EDITS
-- include/game/Player.h: Player::fn_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
-  symbols.txt renamed to fn_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
+- include/game/Player.h: Player::checkScreenExit_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
+  symbols.txt renamed to checkScreenExit_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
   fn_8022D534, fn_8022E438, fn_8022EA0C, fn_80231A50, fn_80237A80, fn_80238548, fn_80239108 leave
   the extern "C" block (C++ names; the empty nested extern "C" block is gone).
 - config/G4SE01/symbols.txt: the written functions renamed to the names our object emits.

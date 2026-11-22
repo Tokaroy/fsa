@@ -2085,12 +2085,12 @@ s32 fn_80236100(s32 player) {
     return 0;
 }
 
-void fn_80236074(s32 player, s32 value, s32 arg) {
+void dropPlayerForceGems_80236074(s32 player, s32 value, s32 arg) {
     if (gPlayerManager_8053AC90 == NULL) {
         return;
     }
     if (fn_8023F264(player)) {
-        gPlayerManager_8053AC90->mPlayers[player]->fn_8024E694(value, arg);
+        gPlayerManager_8053AC90->mPlayers[player]->dropForceGems_8024E694(value, arg);
     }
 }
 
@@ -2861,7 +2861,7 @@ void fn_80232A0C() {
 }
 
 // The screen change of a Shadow Battle / multiplayer stage (fn_8023F390, with
-// gGameRoot_8053AAF8->0x7F): players standing on an exit (fn_802527B0 gives
+// gGameRoot_8053AAF8->0x7F): players standing on an exit (checkScreenExit_802527B0 gives
 // its direction) pull their group along (fn_80248DB8); when every present
 // player able to (not fn_8022F478, fn_80251BFC(0x1B)) points the same way and
 // none is busy, the escort check fn_80124600 lets it through, the view
@@ -2873,7 +2873,7 @@ void fn_80231DE4() {
         Player_804A6F38* player = gPlayerManager_8053AC90->mPlayers[i];
         if (player != NULL && fn_8023F264(i)) {
             JGeometry::TVec2<s32> dir(0, 0);
-            if (player->fn_802527B0(&dir)) {
+            if (player->checkScreenExit_802527B0(&dir)) {
                 for (s32 j = 0; j < 4; j++) {
                     if (fn_8022E438(i, j)) {
                         fn_802381B8(j);
@@ -2931,7 +2931,7 @@ void fn_80231DE4() {
             continue;
         }
         JGeometry::TVec2<s32> point;
-        if (!player->fn_802527B0(&point)) {
+        if (!player->checkScreenExit_802527B0(&point)) {
             return;
         }
         if (first.x * first.x + first.y * first.y <= (s32)(32.0f * FLT_EPSILON)) {
@@ -2976,7 +2976,7 @@ void fn_80231DE4() {
     }
 }
 
-// The one present player (not fn_8022F478) for which fn_802527B0 fails, provided
+// The one present player (not fn_8022F478) for which checkScreenExit_802527B0 fails, provided
 // all the others report the same point and it is on layer 8 or up; -1 otherwise,
 // and while any manager flag (fn_8022ADFC, fn_8022ADB0) is set.
 s32 fn_80231A50() {
@@ -2992,7 +2992,7 @@ s32 fn_80231A50() {
         Player_804A6F38* player = gPlayerManager_8053AC90->mPlayers[i];
         if (player != NULL && fn_8023F264(i) && !fn_8022F478(i)) {
             JGeometry::TVec2<s32> point;
-            if (!player->fn_802527B0(&point)) {
+            if (!player->checkScreenExit_802527B0(&point)) {
                 if (found == -1) {
                     found = i;
                 } else {

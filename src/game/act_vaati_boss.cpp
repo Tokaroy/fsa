@@ -154,7 +154,7 @@ void VaatiBoss_804A4958::init() {
 
     mAnim.fn_801D2608(lbl_8053A138, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 
     getGameView_802D6A9C()->fn_802D7440(0);
 

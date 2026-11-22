@@ -67,7 +67,7 @@ void ZoraEnemy_804A3D7C::init() {
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3D68, 5);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     mSpawnParam_0x90 = clamp(mSpawnParam_0x90, 0U, 15U);
     vfunc_0xA4();
 }

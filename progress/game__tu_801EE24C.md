@@ -20,8 +20,8 @@ Next: the remaining ~95 functions of the unit (die_0x24..0x50 first),
 then the .sdata2 order resolves the ctor.
 
 ## 2026-11-05 pass (Sonnet 5.5)
-Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, markDead_801F3668, fn_801F4694 (const).
-Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / fn_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
+Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, getBoxCenter_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, markDead_801F3668, fn_801F4694 (const).
+Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / getBoxCenter_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
 SHARED-EDITS: include/game/ActorBase.h (fn_801EE3C0 moved out of extern "C"; fn_801F4694 / fn_801F317C const); symbols.txt renames fn_801EE3C0__FUs, fn_801F4694...CFv, fn_801F317C...CF....
 Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, checkPlayerAttacks_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
 

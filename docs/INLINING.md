@@ -235,7 +235,7 @@ initial `auto_inline` state.)
 
 Reversed tu_801CDC8C, `-inline auto,deferred`:
 
-- No pragma: fn_801CF6B8 inlines fn_801CFCF0 and fn_801CF720 (wrong).
+- No pragma: fn_801CF6B8 inlines fn_801CFCF0 and pickNewDir_801CF720 (wrong).
 - Global `inline_max_size(5..40)`: fn_801CF6B8's calls match. But the same flag on
   the whole game destroys header inlining (N=10 → 2884, 40 → 3267, 100 → 3814
   functions): the draws inline large header inlines. **Rejected**: a callee-size
@@ -258,13 +258,13 @@ Reversed tu_801CDC8C, `-inline auto,deferred`:
 The over-inlined callees under plain `auto,deferred` (orig = out of line):
 fn_80222668 (50 instr), fn_801EDC0C (64), fn_8021AFB8 (125), fn_8026EB1C (91),
 fn_8043E7CC (16), setVolumeMode_80458744 (79), fn_80128C58 (4), fn_8018330C (5),
-fn_801CF6B8 / fn_801CF720 / fn_801CFCF0 / fn_801CF798 (26-60), fn_801CD930/950.
+fn_801CF6B8 / pickNewDir_801CF720 / fn_801CFCF0 / fn_801CF798 (26-60), fn_801CD930/950.
 There is no size pattern. Ten of the fourteen are member functions, but so are
 callees the original auto-inlines elsewhere.
 
 Gains under deferred: act_deadrock draw / update; act_shadow_link_bow and
 act_shadow_link_jump vfunc_0x90; tu_801EE24C fn_801EE24C, fn_801F26CC, fn_801F2718,
-fn_801F2A10, fn_801F3128 (99.5-99.9 % register / scheduling near-misses that become
+fn_801F2A10, getBoxCenter_801F3128 (99.5-99.9 % register / scheduling near-misses that become
 exact); tu_802EF76C init.
 
 Sections, deferred model vs base (game units):

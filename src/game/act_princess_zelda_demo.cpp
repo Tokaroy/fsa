@@ -429,7 +429,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         }
         break;
     case 21:
-        if (mAnim0.fn_801D208C()) {
+        if (mAnim0.isAnimEnd_801D208C()) {
             mAnim0.startAnim_801D22DC(0x13, 2, false);
             mAnim0.fn_801D1F14(0.0f);
         }
@@ -530,7 +530,7 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
     case 0x2C:
         moveToward_801CD950(&mPos.z, 24.0f, 0.15f);
         moveToward_801CD950(&field_0x274, 162.0f, 0.2f);
-        if (mAnim0.fn_801D208C()) {
+        if (mAnim0.isAnimEnd_801D208C()) {
             mAnim0.startAnim_801D22DC(0x13, 2, false);
             mAnim0.fn_801D1F14(0.0f);
         }
@@ -554,7 +554,7 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
             mAnim0.startAnim_801D22DC(0x17, 0, false);
             mAnim0.fn_801D1F14(0.0f);
         }
-        if (mAnim0.fn_801D208C() && mAnim0.mAnim == 0x17) {
+        if (mAnim0.isAnimEnd_801D208C() && mAnim0.mAnim == 0x17) {
             mAnim0.startAnim_801D22DC(0x19, 0, false);
             mAnim0.fn_801D1F14(0.0f);
         }

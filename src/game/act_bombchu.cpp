@@ -146,7 +146,7 @@ void Bombchu_804AB464::vfunc_0x54() {
     if (hit > 0) {
         for (int i = 0; i < 4; i++) {
             if ((hit >> i) & 1) {
-                fn_80236074(i, 100, 0);
+                dropPlayerForceGems_80236074(i, 100, 0);
             }
         }
     }
@@ -228,7 +228,7 @@ void Bombchu_804AB464::update() {
                 if (hit > 0) {
                     for (i = 0; i < 4; i++) {
                         if ((hit >> i) & 1) {
-                            fn_80236074(i, 100, 0);
+                            dropPlayerForceGems_80236074(i, 100, 0);
                         }
                     }
                 }
@@ -251,7 +251,7 @@ void Bombchu_804AB464::update() {
                 if (hit > 0) {
                     for (i = 0; i < 4; i++) {
                         if ((hit >> i) & 1) {
-                            fn_80236074(i, 100, 0);
+                            dropPlayerForceGems_80236074(i, 100, 0);
                         }
                     }
                 }
@@ -268,7 +268,7 @@ void Bombchu_804AB464::update() {
         if (hit > 0) {
             for (i = 0; i < 4; i++) {
                 if ((hit >> i) & 1) {
-                    fn_80236074(i, 100, 0);
+                    dropPlayerForceGems_80236074(i, 100, 0);
                 }
             }
         }

@@ -135,7 +135,7 @@ bool fn_8018A614(s32 player) {
 }
 
 // The effect system's particle emitter manager, fetched through a getter.
-JPAEmitterManager* fn_8018A5F0() {
+JPAEmitterManager* getEmitterManager_8018A5F0() {
     return getEffectSystem_8013C824()->mEmitterManager;
 }
 
@@ -1125,11 +1125,11 @@ void PhantomGanon2_804A1A98::update() {
                     if (mSpawnParam_0x90 == 10 && field_0x2f0 != 0) {
                         for (s32 i = 0; i < 4; i++) {
                             if (mEmitters2f4[i] != NULL) {
-                                fn_8018A5F0()->forceDeleteEmitter(mEmitters2f4[i]);
+                                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters2f4[i]);
                                 mEmitters2f4[i] = NULL;
                             }
                             if (mEmitters304[i] != NULL) {
-                                fn_8018A5F0()->forceDeleteEmitter(mEmitters304[i]);
+                                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters304[i]);
                                 mEmitters304[i] = NULL;
                             }
                         }
@@ -1210,11 +1210,11 @@ void PhantomGanon2_804A1A98::update() {
                     PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
                     for (s32 i = 0; i < 4; i++) {
                         if (mEmitters2f4[i] != NULL) {
-                            fn_8018A5F0()->forceDeleteEmitter(mEmitters2f4[i]);
+                            getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters2f4[i]);
                             mEmitters2f4[i] = NULL;
                         }
                         if (mEmitters304[i] != NULL) {
-                            fn_8018A5F0()->forceDeleteEmitter(mEmitters304[i]);
+                            getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters304[i]);
                             mEmitters304[i] = NULL;
                         }
                     }
@@ -1252,11 +1252,11 @@ void PhantomGanon2_804A1A98::update() {
         }
         if (fn_801F2B7C(-100, -1, 1)) {
             if (mEmitters2f4[0] != NULL) {
-                fn_8018A5F0()->forceDeleteEmitter(mEmitters2f4[0]);
+                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters2f4[0]);
                 mEmitters2f4[0] = NULL;
             }
             if (mEmitters304[0] != NULL) {
-                fn_8018A5F0()->forceDeleteEmitter(mEmitters304[0]);
+                getEmitterManager_8018A5F0()->forceDeleteEmitter(mEmitters304[0]);
                 mEmitters304[0] = NULL;
             }
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x36E, 1, 2, NULL, NULL, true, 0.5f);

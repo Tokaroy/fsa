@@ -163,7 +163,7 @@ void Thief_804A5A30::init() {
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A59B0 + mType * 8, 8);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     fn_80204638()->fn_80204A20(this);
     if (fn_802064E0()) {
         mBox.i.x = 1.0f;

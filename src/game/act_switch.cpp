@@ -13,7 +13,7 @@ static const u32 lbl_8046C838[5] = { 'AMOS', 'BRBL', 'BLCK', 'BCK2', 'SMRI' };
 
 // Looks up the tile under the switch (inlined four times in update and vfunc_0x10).
 inline void Switch_804A7F38::readTileId() {
-    field_0x244 = fn_80226AE0(&mPos, mLayer_0x4);
+    field_0x244 = getCellIndexVec3_80226AE0(&mPos, mLayer_0x4);
     field_0x258 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x244) & 0x3FF;
 }
 

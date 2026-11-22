@@ -171,7 +171,7 @@ void CrystalBall_804AB308::vfunc_0x54() {
     if (mask > 0) {
         for (s32 i = 0; i < 4; i++) {
             if ((mask >> i) & 1) {
-                fn_80236074(i, 100, 1);
+                dropPlayerForceGems_80236074(i, 100, 1);
             }
         }
     }

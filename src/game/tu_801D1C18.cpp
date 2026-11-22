@@ -141,7 +141,7 @@ bool SpriteAnim_801D267C::fn_801D217C() {
 // bool (cntlzw; extrwi.) and compares it again inside the inlined
 // isStopped with cmplwi; ours compares with cmplwi first and clrlwi. inside.
 // `!getAttribute()` gave the same code.
-bool SpriteAnim_801D267C::fn_801D208C() {
+bool SpriteAnim_801D267C::isAnimEnd_801D208C() {
     bool result = false;
     if (mFrameCtrl.getAttribute() == J3DFrameCtrl::EMode_NONE) {
         result = isStopped();
@@ -155,7 +155,7 @@ void SpriteAnim_801D267C::fn_801D1F14(f32 frame) {
     setFrameInline(frame);
 }
 
-void SpriteAnim_801D267C::fn_801D1D60() {
+void SpriteAnim_801D267C::setRandomFrame_801D1D60() {
     setFrameInline(fn_801CD664(mLength + 1));
 }
 

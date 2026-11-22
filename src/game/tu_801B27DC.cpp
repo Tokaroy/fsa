@@ -92,7 +92,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
     if (field_0x2f8 != 0) {
         JGeometry::TVec3f pos = mPos;
         u16 angle;
-        mRail.fn_800FDEA0(&pos, 20.0f, &step, &railLayer, &angle, 0x200);
+        mRail.stepAlongRail_800FDEA0(&pos, 20.0f, &step, &railLayer, &angle, 0x200);
     }
     fn_801F3D94(1);
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x334, 0.3f, 1.0f);

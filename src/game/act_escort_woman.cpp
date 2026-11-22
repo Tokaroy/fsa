@@ -242,7 +242,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 9:
-        if (fn_80121E40() && mAnim.fn_801D208C()) {
+        if (fn_80121E40() && mAnim.isAnimEnd_801D208C()) {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.x = 0.0f;
@@ -255,7 +255,7 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
         break;
 
     case 10:
-        if (getActorManager_801F856C()->fn_801F68E0() && mAnim.fn_801D208C() && fn_801227D4()) {
+        if (getActorManager_801F856C()->fn_801F68E0() && mAnim.isAnimEnd_801D208C() && fn_801227D4()) {
             vfunc_0x6C(11);
         }
         break;

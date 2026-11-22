@@ -131,12 +131,12 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     if (viewFlag != 0 && !fn_801CC9F8(&mPos, mLayer_0x4)) {
         if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-            fn_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
+            isPathBlocked_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
             field_0x33c = -0x4000;
             return;
         }
         if (JMAAbs((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
-            fn_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
+            isPathBlocked_801CFA70(&mPos, playerPos, mLayer_0x4) == true) {
             field_0x33c = 0x4000;
             return;
         }

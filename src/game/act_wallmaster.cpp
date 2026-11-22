@@ -394,7 +394,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
         field_0x2c0++;
         if (field_0x2c0 >= 120) {
             if (fn_80236228(field_0x2b8) >= 20) {
-                fn_80236074(field_0x2b8, 20, 1);
+                dropPlayerForceGems_80236074(field_0x2b8, 20, 1);
             }
             field_0x2c0 = 0;
         }

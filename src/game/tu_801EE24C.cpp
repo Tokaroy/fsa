@@ -1005,7 +1005,7 @@ void ActorBase_804A5770::fn_801F317C(JGeometry::TBox2f* out) const {
 }
 
 // The centre of mBox in screen space.
-void ActorBase_804A5770::fn_801F3128(JGeometry::TVec2f* out) {
+void ActorBase_804A5770::getBoxCenter_801F3128(JGeometry::TVec2f* out) {
     JGeometry::TBox2f box;
     toScreenBox(&box, mBox, mPos);
     out->x = box.f.x + (box.i.x - box.f.x) * 0.5f;

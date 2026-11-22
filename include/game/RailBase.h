@@ -58,7 +58,7 @@ public:
     // point and writes that point to *out; returns 0 (walking), 1 (at the first), 2 (reached),
     // 3 (at the last).
     s32 fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out);
-    s32 fn_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer, u16* outAngle, s32 arg);
+    s32 stepAlongRail_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec3f* outStep, s32* layer, u16* outAngle, s32 arg);
     bool fn_800FD548(u8 index);
     bool fn_800FD594(u8 index);
     // RailBase.cpp (not written yet): steps the rail in direction dir (1 or -1);

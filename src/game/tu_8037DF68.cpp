@@ -246,7 +246,7 @@ void fn_8038D454() {
 
 // fn_8038A42C for message id `msg`.
 static inline bool openById(s32 window, s32 player, u32 msg, s32 serial, JGeometry::TVec3f pos, u16 flags) {
-    return lbl_8053AD78->fn_8038A42C(window, player, fn_803846BC(msg), serial, pos, flags);
+    return lbl_8053AD78->fn_8038A42C(window, player, findMessageIndex_803846BC(msg), serial, pos, flags);
 }
 
 static inline void syncOtherPlayers(s32 player, s32 serial, u16 flags) {
@@ -273,7 +273,7 @@ bool openMessageById_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeome
     if (gGameRoot_8053AAF8->field_0x7f == 0 && !(flags & 0x2000)) {
         return false;
     }
-    u32 index = fn_80383EB0(window, fn_803846BC(msg));
+    u32 index = fn_80383EB0(window, findMessageIndex_803846BC(msg));
     msg = lbl_8053AD78->mBmg->inf1.entries[index].id;
     if (getGameView_802D6A9C()->fn_802D46D8(window, index, false) == 1) {
         s32 w = windowIndex(window);
@@ -301,8 +301,8 @@ bool openMessageById_8038C678(s32 player, u32 msg, s32 serial, s32 layer, JGeome
         }
         return lbl_8053AD78->fn_8038C60C(window, player, msg, serial, flags);
     }
-    if (checkSync(window, fn_803846BC(msg))) {
-        if (lbl_8053AD78->fn_80389964(window, fn_803846BC(msg), flags) &&
+    if (checkSync(window, findMessageIndex_803846BC(msg))) {
+        if (lbl_8053AD78->fn_80389964(window, findMessageIndex_803846BC(msg), flags) &&
             openById(window, player, msg, serial, pos, flags)) {
             syncOtherPlayers(player, serial, flags);
             return true;
@@ -1059,7 +1059,7 @@ bool fn_8038470C(s32 player, u32 msg) {
     return false;
 }
 
-u32 fn_803846BC(u32 msg) {
+u32 findMessageIndex_803846BC(u32 msg) {
     MessageInf1_804AF070* inf1 = &lbl_8053AD78->mBmg->inf1;
     u32 i = 0;
     u32 index;
@@ -1224,7 +1224,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
             if (pick > count) {
                 pick = count;
             }
-            index = fn_803846BC(lbl_8053AD78->mBmg->inf1.entries[index].id + pick);
+            index = findMessageIndex_803846BC(lbl_8053AD78->mBmg->inf1.entries[index].id + pick);
             break;
         }
         case 0x18: {

@@ -40,7 +40,7 @@ static inline void invalidateEmitter(JPABaseEmitter*& emitter) {
 // then while no layer change is pending the three state switches (exit of the
 // current state and the commit when a request is pending, enter of the new
 // one, update), then the per-frame helpers and the trail emitters.
-void Player_804A6F38::fn_802870C8() {
+void Player_804A6F38::updateState_802870C8() {
     if (fn_802413E8()) {
         mPos = field_0x32c;
         if (field_0x455) {
@@ -1451,7 +1451,7 @@ void Player_804A6F38::fn_80285E58() {
             field_0x1030[i] = -1;
         }
     } else {
-        fn_802870C8();
+        updateState_802870C8();
     }
     fn_80265E88();
     fn_8024CA20();

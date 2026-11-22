@@ -67,7 +67,7 @@ Layout proven: field_0x3c8 = u64 [4][10][10] (fn_802DEE2C clears 0x3C8/0x6E8/0xA
 field_0x2c = s32[2] (the step passed to fn_802DEDFC by fn_802DA788).
 Unwritten: fn_802DA8DC — full draft 83.8 % (75 instructions long): the two TVec2f-slot clear loops (0x802DAE38,
 0x802DAF04) unroll by 2 with offsets stepped in registers in the target, fully in ours (u32/s32 counters, zero() do not
-change it); everything else lines up. vfunc_0xC and fn_802DBD60 not started (time).
+change it); everything else lines up. vfunc_0xC and restartStage_802DBD60 not started (time).
 SHARED-EDITS: include/game/GameView.h (field_0x2c s32 -> s32[2] replacing field_0x30 padding; field_0x3c8 u8[0xC80]
 -> u64[4][10][10]; fn_802DA630 bool -> u8 (returns the lbz as is; one caller, unwritten tu_80134C04, clrlwi's);
 declared fn_802D3D48, fn_802D92F0 members, inline screenMask, clearScreen, restartTimeLimit, clearScreenState);
@@ -85,15 +85,15 @@ order_check OK; no function anywhere drops (by address against the baseline and 
   clearScreenState stay inline members (no out-of-line copy exists; as plain functions they would emit extra copies).
 - getGameView_802D6A9C(): the whole file now reaches the view through this unit's accessor (inlined under deferred).
   Proof: with gGameRoot->field_0x4->mView written out, the TVec2f-slot loop unrolls fully (75 extra instructions in
-  fn_802DA8DC / fn_802DBD60 / vfunc_0xC); through the accessor's inline nodes it unrolls by two as in the target.
+  fn_802DA8DC / restartStage_802DBD60 / vfunc_0xC); through the accessor's inline nodes it unrolls by two as in the target.
   The global switch lost nothing and brought fn_802D46D8 to 100 % (78.3 before).
 - fn_802D7440's flag is u8 (inlined, (byte == 1) is narrowed with extrwi 8 and compared with 1 again; a bool folds it):
   the "2 instructions short" FIXMEs are gone (fn_802DA010 / fn_802DB6F0 now regalloc-only, fn_802DCE5C one li).
 - Shared inlines without a copy (each proven by identical instruction runs): clearStageTables (fn_802DEE2C + tables)
-  and clearSlots (447 instructions identical in fn_802DA8DC, fn_802DBD60, vfunc_0xC; as a single inline it is too
+  and clearSlots (447 instructions identical in fn_802DA8DC, restartStage_802DBD60, vfunc_0xC; as a single inline it is too
   large to be inlined), placePlayers (fn_802DA010, DA788, DA8DC, DB6F0, vfunc_0xC; it also fixed the stack layout:
   fn_802DA788 100 %).
-- New: fn_802DA8DC 98.6, fn_802DBD60 98.8, vfunc_0xC 97.6 (structurally close, FIXMEs), fn_802DEE2C 100 %.
+- New: fn_802DA8DC 98.6, restartStage_802DBD60 98.8, vfunc_0xC 97.6 (structurally close, FIXMEs), fn_802DEE2C 100 %.
 - Unwritten: fn_802DED40 / fn_802DEC40 = view->fn_802D7B34 / fn_802D7BE8 inlined into free functions, 78 / 80 %
   as forwards (the fn_802DE9A0 view-reload family); fn_802D3D48, fn_802D4CCC, fn_802D8328, loadScreenTiles_802D8D50, fn_802D92F0.
 SHARED-EDITS: include/game/GameView.h (fn_802D7440 bool -> u8; removed screenMask / clearScreen inline decls; added

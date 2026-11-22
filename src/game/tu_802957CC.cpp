@@ -1424,7 +1424,7 @@ void MovingHouse_804A7AE0::update() {
 inline void drawSmp_802965BC(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, const char* name) {
     if (layer < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(pos, res, params);
     }
 }
 

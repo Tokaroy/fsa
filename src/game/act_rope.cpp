@@ -38,7 +38,7 @@ void Rope_804A3A68::init() {
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3A58, 4);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 }
 
 // FIXME: 97.84 %, different; behaviour clean.
@@ -115,7 +115,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
     case 1:
     case 2:
         if (mapHit) {
-            mDir_0x98 = fn_801CF720(mDir_0x98);
+            mDir_0x98 = pickNewDir_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
             if (mState == 1) {

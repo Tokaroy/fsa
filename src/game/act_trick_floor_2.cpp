@@ -48,7 +48,7 @@ static inline void drawSmp(TrickFloor2_804AA628* self, const JGeometry::TVec3f* 
                            SpriteParams_801F5AE0* params) {
     if (self->mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SMP ', name);
-        gGameRoot2_8053AB10->field_0x20->fn_802F6CF4(pos, res, params);
+        gGameRoot2_8053AB10->field_0x20->drawBlockMap_802F6CF4(pos, res, params);
     }
 }
 

@@ -28,7 +28,7 @@ The prose in the rounds below was written along the way and keeps its own
 | tu_802684A4 | 802684A4-8026FC20 | 25 | 20 | 13,284 | cls_804A71A8 (helper object at Player+0xBF0) |
 | tu_8026FC20 | 8026FC20-8027E5BC | 120 | 97 | 34,272 | state handlers 0x04-0x10, 0x33-0x37; movement helpers |
 | tu_8027E5BC | 8027E5BC-80285E58 | 73 | 67 | 7,024 | state handlers 0x00-0x03, 0x0D-0x0E, 0x1A-0x1B, 0x38, 0x3E-0x40, 0x49-0x51 |
-| tu_80285E58 | 80285E58-80289648 | 8 | 3 | 11,676 | Player update fn_80285E58 + state tick fn_802870C8 (three switch jump tables) |
+| tu_80285E58 | 80285E58-80289648 | 8 | 3 | 11,676 | Player update fn_80285E58 + state tick updateState_802870C8 (three switch jump tables) |
 | tu_8028FBA0 | 8028FBA0-802957CC | 53 | 51 | 5,508 | state handlers 0x1C-0x32 |
 
 Calls out of the Player units (counts): EffectSystem_8049F178 / JPA emitters
@@ -147,13 +147,13 @@ Update (GameRootSub04 fn_80139D9C -> **fn_8023F390**, PlayerManager update):
 
 **fn_80285E58** (Player update): while the freeze counter 0x11F4 > 0,
 count it down and reset the 0xDB0 / 0x1030 word arrays to -1; otherwise
-**fn_802870C8** (state tick). Then fn_80265E88 (skeleton) and fn_8024CA20.
+**updateState_802870C8** (state tick). Then fn_80265E88 (skeleton) and fn_8024CA20.
 
-Draw (GameRoot fn_80136828 -> fn_80139CC4 -> **fn_8023F2BC**): players 3..0
+Draw (GameRoot draw_80136828 -> fn_80139CC4 -> **fn_8023F2BC**): players 3..0
 in two passes split by bit i of gGameRoot_8053AAF8+0x82, each **fn_80264998(player)**.
 
 Reset: fn_8023F78C -> **fn_80254744** (scene enter, GameRootSub04
-fn_8013A1A4; stage change, fn_802DA8DC / fn_802DBD60); fn_8023F728 ->
+fn_8013A1A4; stage change, fn_802DA8DC / restartStage_802DBD60); fn_8023F728 ->
 fn_802544B0; fn_8023F6C4 -> fn_80254660; fn_8023F088 -> fn_80252F80 when
 gGameRoot_8053AAF8+0x7e == 1.
 
@@ -174,7 +174,7 @@ states, 0x00-0x51.
   fn_80242624 (0x4D), fn_80242704 (0x4C), fn_8024B108 (0x49), fn_8024BBB8
   (0x3F), fn_8024F63C (0x1A), fn_802520C0 (0x1B), fn_8024762C / fn_80247C0C
   (0x0B), fn_80248DD8, fn_80248E94 (3).
-- **fn_802870C8** (0x235C) runs, in order: an EXIT switch on (0x1240 - 3)
+- **updateState_802870C8** (0x235C) runs, in order: an EXIT switch on (0x1240 - 3)
   (jump table 0x804A7770, 79 entries); the commit `0x1248 = 0x1240; 0x1240 =
   0x1244` followed by fn_8025F698(true); an ENTER switch (0x804A7628, 82
   entries); and an UPDATE switch (0x804A74E0, 82 entries). Outside
@@ -296,7 +296,7 @@ executed unmatched functions are:
 - tu_8023FBF0: fn_80254744 646, fn_80253E6C 188, fn_802490A8 180, fn_8024F63C 113, fn_80251D50 101, fn_80252FC0 100, fn_8025250C 81, fn_8024762C 80, fn_802544B0 80.
 - tu_8022AD64: fn_80232A0C 370, fn_8023F390 121, fn_8022B334 86, fn_80239F10 86, fn_8023F088 79.
 - tu_802684A4: fn_80269574 474, fn_80268BC4 274, fn_8026F710 162, fn_802685D4 121.
-- tu_80285E58: fn_802870C8 362, fn_80285F44 96, fn_80286E10 76, fn_80286B74 67.
+- tu_80285E58: updateState_802870C8 362, fn_80285F44 96, fn_80286E10 76, fn_80286B74 67.
 - tu_8026FC20: fn_8026FD14 101, fn_80273518 87, fn_802732C4 86, fn_802730D8 81.
 
 Only state 0's update (fn_802859C4) ran, so 81 of the 82 states are not on
@@ -309,7 +309,7 @@ the boot path. tu_8028FBA0 (states 0x1C-0x32) executes nothing there.
    most of the fields that are still unnamed, so they finish the layout the
    constructor started.
 2. **The update spine.** fn_80253E6C (update A); then fn_80285E58 and
-   fn_802870C8 (tu_80285E58: three switches with literal cases, after
+   updateState_802870C8 (tu_80285E58: three switches with literal cases, after
    fn_80285F44, fn_8028676C, fn_80286B74 and fn_80286E10); then fn_8023F390
    and fn_8023F2BC (manager update and draw, tu_8022AD64). Write them
    structure-first: every callee they name becomes a declared member.
@@ -327,7 +327,7 @@ the Haiku/Sonnet passes have taken most of them already.
 
 ## tu_80285E58: state tick details (agent B, 2026-11-05)
 
-Proven from the asm of fn_802870C8 and its three jump tables (generated
+Proven from the asm of updateState_802870C8 and its three jump tables (generated
 from the tables' relocations, so every case below is the table entry):
 
 - The exit table (0x804A7770) is indexed by `state - 3` (`subi 3; cmplwi
@@ -360,12 +360,12 @@ from the tables' relocations, so every case below is the table entry):
   toggle on pad trigger 0x10), fn_80286B74, fn_8028676C, and the three
   emitters at 0x138C / 0x1390 / 0x1394 (ids 0x4FF-0x502 by 0x3DC, 0xD7,
   0x1B1).
-- fn_80285E58 and fn_802870C8 share the reset loop of the s32[0x50]
+- fn_80285E58 and updateState_802870C8 share the reset loop of the s32[0x50]
   arrays at 0xDB0 / 0x1030 (`for (int i = 0; i < 0x50; i++)`; an `s32`
   counter adds a bound check the original lacks).
 
 Round 2 (all eight functions written): fn_80285E58 and fn_80285F44 100 %,
-fn_802870C8 98.3 % (missing/extra, every call and branch in place; FIXME in
+updateState_802870C8 98.3 % (missing/extra, every call and branch in place; FIXME in
 the source), fn_8028676C / fn_80286E10 / fn_80286B74 99 % (registers /
 scheduling), fn_80286688 88.7 % (the mode-0xB byte test). The jump tables
 are compiler `@NNN` symbols. Each switch groups the case labels of states
@@ -718,7 +718,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
   12 / 16 in front by facing, tables lbl_8046BD68 / BD48 as `static const f32
   [4][2]`, serial into 0xD94 / 0xDA4): 100 %. fn_80272C20: 97.24 %, extra `i >= 8`.
 - Next .sdata2 users before fn_80276078 / fn_80276538 can flip: fn_8027439C (0.2,
-  20, 12), fn_802756E4 (-16, 16; 0x6B8, effects), fn_80275D9C (-4).
+  20, 12), fn_802756E4 (-16, 16; 0x6B8, effects), checkAttackInput_80275D9C (-4).
 
 ## Round 6 (tu_8025EB18) (agent I, Opus 5.5, 2026-11-05)
 
@@ -971,11 +971,11 @@ fn_8025D0B0 99.89 (literal names only).
 ## Round 9 (tu_8026FC20) (agent O, Opus 5.5, 2026-11-05)
 
 76 -> 97 of 120 at 100 % (+21 honest: 8628 -> 8649 on matching 3a0cfee0), structural +4
-more (fn_80273FB8, fn_80275D9C, fn_8027B648, fn_8027C6C4). No drops in any unit.
+more (fn_80273FB8, checkAttackInput_80275D9C, fn_8027B648, fn_8027C6C4). No drops in any unit.
 
 - **Literal pool unblocked**: fn_8027439C (0.2, 20, 12), fn_802756E4 (-16, 16) and
-  fn_80275D9C (-4) written in order, so fn_80276078 / fn_80276538 are 100 % (reloc-name gone).
-- **State handlers** (enter / update / exit from the three switches of fn_802870C8):
+  checkAttackInput_80275D9C (-4) written in order, so fn_80276078 / fn_80276538 are 100 % (reloc-name gone).
+- **State handlers** (enter / update / exit from the three switches of updateState_802870C8):
   - 0x05: enter fn_8027D320 (push 0x344 = (0, 0, -4), at least 0.5 high on flagged layers,
     sounds 0x10001 / 0x20001 / 0x2000E, immortal emitters 0xCB / 0xCC with callbacks
     0x1278 / 0x1290 and a 'PEFF' actor (serial 0x12C0) at 0x12A4 = mPos + lbl_8046BB48[facing]);
@@ -1005,7 +1005,7 @@ more (fn_80273FB8, fn_80275D9C, fn_8027B648, fn_8027C6C4). No drops in any unit.
     pose into an s16 angle and put 0x30C 16 away in that 8-way direction.
   - 0x0F: enter fn_80279CFC (hit kinds 7-9 / 0x1C start emitters 0x135C / 0x132C by facing).
   - 0x36: update fn_80277220 (moves by 0x350, step emitters 0x3D4 on tile 0x39 else 0x3D3).
-- **fn_80275D9C** (98.61 %, regalloc): the attack-input check of the move updates. With
+- **checkAttackInput_80275D9C** (98.61 %, regalloc): the attack-input check of the move updates. With
   fn_802466B4 pressed: all four hold timers 0x117C[0..3] running -> state 9 (0x11AC = 2);
   3+ consecutive entries in the press history (0x117C[4 + i] running and a column of
   0x119C[i] set) -> 9 (3); 0x11D4 running -> 9 (4); else cls_804A71A8 0xB4 -> 7 (pushed
@@ -1019,7 +1019,7 @@ more (fn_80273FB8, fn_80275D9C, fn_8027B648, fn_8027C6C4). No drops in any unit.
   takes its result as a bool and the original's test chain is an inline; as a static inline
   returning u8 it is 100 % but then -inline auto inlines all of fn_80273FB8 into fn_80274238
   (the original calls it). Written with the chain assigning `hit` directly.
-- **lbl_8046BCA8 is one 0xA0 object** (only its start is referenced, by fn_80275D9C): the push
+- **lbl_8046BCA8 is one 0xA0 object** (only its start is referenced, by checkAttackInput_80275D9C): the push
   table f32[4][2], then 8 rows of 4 bytes and 8 float triples, typed by content only.
 - Fields: 0x12A4 TVec3f (emitter position of 0x12B0 / 0x12B4 and 0x1274 / 0x128C, also stfs /
   addi in tu_80256C74), 0x1320 TVec3f (callback point). Members: fn_8027439C, fn_802756E4,
@@ -1070,7 +1070,7 @@ State names stay provisional (evidence: the state requested, the tables, the act
 
 - **Counter 0xC04** (with a leader, the leader's: fn_8023619C / fn_802362C4): fn_8024ECCC adds
   and clamps to -5000..9999; fn_8024ED4C (file inline addCounter_8024ED4C, inlined twice with
-  -count by fn_8024E694, the 'GOLD' drop) adds up to 9999, a negative value stops at 0. Both
+  -count by dropForceGems_8024E694, the 'GOLD' drop) adds up to 9999, a negative value stops at 0. Both
   start with halt checks: `if (c > 9999) { for (;;) {} }` gives the original's `ble; b .` and
   fn_8024ED4C also writes c + 1, reads it back and halts if unchanged, then restores it (the same
   check guards 0xBFC in tu_8026FC20). Written as plain code; no assert macro is proven.
@@ -1270,12 +1270,12 @@ reproduces both).
 - Helpers: **fn_80280074 / fn_802804E0** (now members) = the 0x4B / 0x4A movement: a follower steps
   4.5 toward getFollowTargetPos_8027FA08's target, else a run along 0x3E8 whose speed 0x344 is shaped by the dash
   count 0x3FF (started by fn_80245238, sound 0x20039). **fn_80280B30** = ice sliding (cls_804A71A8
-  0xB7), called by fn_802870C8. **fn_80242DAC** (tu_8023FBF0) renamed to a Player member: tile
+  0xB7), called by updateState_802870C8. **fn_80242DAC** (tu_8023FBF0) renamed to a Player member: tile
   pushes on 0x414 / 0x418 by the tile under mPos.
 
 ## Round 14 (tu_8023FBF0) (agent Y, Opus 5.5, 2026-11-05)
 
-- **Off-screen exit**: fn_802527B0 (99.9 %) finds an edge of the visible box within 20
+- **Off-screen exit**: checkScreenExit_802527B0 (99.9 %) finds an edge of the visible box within 20
   (layer < 8, z <= 16 unless isGrabbing_8025F448, moving towards it by fn_8022C82C / fn_8022C76C, or demo
   mode, or a tile fn_80225EF4 lists) whose tile 8 beyond is not code 1 (or 0x22 with GameView
   0x170); fn_802520C0 (now a Player member) moves a follower onto the acting player / leader,
@@ -1302,9 +1302,9 @@ reproduces both).
 | fn_80279824 | 0x0F update | 99.32 scheduling | **knocked back by a hit**: push 0x350 with gravity 0.25 (to -4), poses 0-3 (0 / 1 by 0x488), lands from frame 20 (0x33 without life, back to a previous 0x4A / 0x4B, else 0); hit kind 3 keeps to the view, the others slide (fn_802808E8(1.5)); hit emitters 0x135C / 0x132C turned by facing (s32 yaw table lbl_8046BC98) |
 | fn_8027A1E0 | 0x0B update | 97.20 scheduling+regalloc | **the dash** (Pegasus-boots like): pose 1 runs along 0x3E8 (eight unit steps lbl_8046BC38, 0.7 diagonals) at 0xBBC, pad 0x100 hops (z 2, gravity 0.1), dust 0x24E / 0x24F (sand 0x250 / 0x251 on tile 0x39) restarted on a turn, BgRewrite at 0x30C and the eight probe points pushed out x2, 0xBC4 = 40x40 box (Player.h TBox2f); into a wall (fn_8025196C) it bounces (pose 2, sound 0x20010, view shake, 0x344 = 2.5 back, z 2) or, under fn_8022AF5C's alternative, turns the group (fn_80230BF4) |
 | fn_8027AAD0 | 0x0A update | 99.60 stack offsets | **the spin attack**: fn_80274728 / fn_8027EB04; group spin (mode 3) moves the centre 0x11B4 2 a frame by the stick unless one of three tiles 24 ahead blocks (fn_802265DC), walks to the group spot from frame 11; else drifts 2 along 0x3E8 (lbl_8046BBD8); sound 0x20029; emitters 0x12B8 / 0x12BC (circling at 20 by 0x11C0) with depth / height from fn_8024EE0C / fn_8024EE14 |
-| fn_8027BE74 | 0x08 update | **100** | **the sword charge**: 0x403 charge, 0x404 frames, hop with pad 0x20 (0x344 = 2.5 * stick or 0x368), walk 1.125, attack check fn_80275D9C, wall push -> 0x37 (0x350 = lbl_8046BBA8 0.25 per facing, sound 0x20062 / 0x20061 by fn_8022486C), blade emitter 0x12B0 moving out `0x403 * 14 / 48 + 6`, 0x12B4 / 0x12B8, camera 0x7F5 after 30 frames, group cancel 0xCAE / 0xCAF |
+| fn_8027BE74 | 0x08 update | **100** | **the sword charge**: 0x403 charge, 0x404 frames, hop with pad 0x20 (0x344 = 2.5 * stick or 0x368), walk 1.125, attack check checkAttackInput_80275D9C, wall push -> 0x37 (0x350 = lbl_8046BBA8 0.25 per facing, sound 0x20062 / 0x20061 by fn_8022486C), blade emitter 0x12B0 moving out `0x403 * 14 / 48 + 6`, 0x12B4 / 0x12B8, camera 0x7F5 after 30 frames, group cancel 0xCAE / 0xCAF |
 | fn_8027CC90 | 0x05 update | 99.37 scheduling | **the ground pound**: from frame 11 falls (gravity 0.25 to -6.5; on flagged layers drawn up the screen); frame 11 on the ground: tiles 3 / 0xE without fn_8024B24C cancel, else shake, rumble (fn_80134DE4(1, 0)), TV effect 1, sound 0x20024, emitters 0x23D-0x23F, 0x3D0 + 'PEFF' at 0x5C0 on tiles 0x39 / 0xD (else 0x3CF); state 6 at frame 20; emitter point 0x12A4 = mPos + lbl_8046BB78[facing] |
-| fn_8027D5F0 | 0x04 update | **100** | **the sword attack**: fn_80275D9C, fn_802756E4, BgRewrite; attacks 0 / 1 / 3 fire the sword beam ('SWBM') at frame 4, 2 at frame 2, the lunge (4) on landing (body hits 0x458 frames 6-15) |
+| fn_8027D5F0 | 0x04 update | **100** | **the sword attack**: checkAttackInput_80275D9C, fn_802756E4, BgRewrite; attacks 0 / 1 / 3 fire the sword beam ('SWBM') at frame 4, 2 at frame 2, the lunge (4) on landing (body hits 0x458 frames 6-15) |
 | fn_8027DEA0 | 0x04 enter | 99.04 regalloc | **attack pick**: 3+ presses in a row or window 0x11C4 -> lunge 4 (history cleared, 0x344 = 4 along the facing, z 1, sound 0x1000B, 0xBF4 = 8); window 0x11CC with the stick toward 0x11D0 -> 3; else combo step 2 / 0 / 1 by the history depth (0x117C[4..7]) |
 | fn_80274CB8 | (charge step, from 0x08) | 95.40 missing/extra | the charge: air poses, walk counter 0x3F8 (reset while epsilonEquals(mPos, 0x14)), poses 0x3F9 (lbl_8046BCA8.chargePose[facing][step] before full charge), emitter point 0x12A4 = mPos + chargeOffset[full][facing]; 0x403 counts (past 48 only at sword level >= 2); 48: emitters 0xCB / 0xCC (immortal), 0x270-0x273, 'PEFF', sound 0x2000D; 168 (full): 0xCB / 0xCC below layer 8, 'PEFF', sound 0x20027; afterwards 0x26B-0x26E by player; spent immortal emitters deleted (isEnableDeleteEmitter); release (fn_80246464 false): < 48 state 0, < 168 spin 9 (0x11AC = 1), else spin 0x0A |
 
@@ -1312,7 +1312,7 @@ reproduces both).
 set, not held) puts the player back at 0x2C4 (0xCBC on GBA layers) with effect 0x503; the
 camera follows (Camera 0x7F4 / 0x7F8 / 0x7F6 unless 0x7F5). Frames 0-71 collapse ((frame / 6) %
 4), 72-75 pose 4, 76-135 pose 6; at frame 106 (player taking part) **fn_80241920 (word 0xC04)
-is halved, at most 2000 lost (fn_8024E694)** with message 0x198 (the amount) or 0x19A (nothing
+is halved, at most 2000 lost (dropForceGems_8024E694)** with message 0x198 (the amount) or 0x19A (nothing
 lost): this is the Force Gem loss on defeat (behaviour only; the counter's name stays
 provisional). From frame 136, in battle mode 7 with GameRoot 0x7E / 0x7F, the revive wait 0x494
 by rank among the taking-part players by fn_80236228 (600 / 420 / 300 / 180), a helper actor
@@ -1361,12 +1361,12 @@ Evidence and fixes:
 9439 -> 9446. All seven big unwritten functions are written, plus fn_802487FC (their shared
 inline); .rodata is 100 % (the three tables in front of lbl_8046AE78 are source data at their
 original sizes). The +8 are literal-pool order gains (fn_80254660, fn_802544B0, fn_80253E6C,
-fn_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still unwritten.
+checkScreenExit_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still unwritten.
 
 | function | % / try.py class | what it is |
 |---|---|---|
 | fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (fn_80458880, extsb index). Not in 0x454 mode |
-| fn_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, fn_80236074 |
+| dropForceGems_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, dropPlayerForceGems_80236074 |
 | fn_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (resetPosHistory_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (fn_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
 | fn_8024D134 | 99.65 regalloc | **group-spot marker restart** (leader, not GameRoot 0x7E, modes 0-3): clears 0x121D, deletes 0x1388 and spawns 0x35E / 0x360 / 0x35F / 0x361 by mode at fn_8027F1C8's spot (8 a place beside the group in modes 0 / 1 via fn_802487FC, (8, 8) in mode 2, 0x11B4 in states 9 / 0xA else 16 toward the player's side in mode 3) |
 | fn_8024F63C | 99.07 scheduling+regalloc | **join a push** (state 0x1A): with pad 0x20 held (fn_802456FC), the partner 0xDAC's pushed actor (its 0xDA4) still alive, or a fresh press (fn_80245938), not a follower in mode 5, the point lbl_8046AE28[facing] (10 behind) free of fn_802265DC / fn_802684A4: a present player inside the box +-1 at mPos + lbl_8046AE58[facing], facing the same way and held by nobody (fn_80238EDC), is taken: from states 0 / 2 / 3 (0x11 unless fn_8025F500 / isLiftingPlayer_8025F590) the push 0x1A is requested, else 0xDAC = it, 0xDA4 = its pushed actor, 0xDA8 = 3 frames; returns 0xDA8 > 0. Callers: fn_8024FE78, state 0x1A, tu_80285E58 |
@@ -1379,20 +1379,20 @@ Evidence and fixes:
   bge) before the 7x-unrolled ctr loop, which the original never has. fn_802408C8 96.0 ->
   99.05 (regalloc only) with `int i`, fn_8024B2E0 likewise.
 - fn_80241920 as an `if` (`value >= 0` return value, else 0): its own copy stays branchless
-  (100 %), the inlined copies in fn_8024E694 branch (cmpwi / blt) as in the original; `?:`
+  (100 %), the inlined copies in dropForceGems_8024E694 branch (cmpwi / blt) as in the original; `?:`
   made them branchless.
 - The box `TBox2f(-1, -1, 1, 1)` moved by mPos is written field by field (i.x, f.x, i.y,
   f.y): the original adds x to both corners first; addPos(x, y) adds by corner and loses two
   instructions.
-- fn_8024E694's flag is tested by its low byte (clrlwi.): a bool in the original, but the
-  forwarder fn_80236074 (tu_8022AD64, generator-pinned) and the symbol (Fll) have s32, so the
+- dropForceGems_8024E694's flag is tested by its low byte (clrlwi.): a bool in the original, but the
+  forwarder dropPlayerForceGems_80236074 (tu_8022AD64, generator-pinned) and the symbol (Fll) have s32, so the
   test is `(u8)single` with a comment.
 - fn_8024F63C: `s32 facing = field_0x3dc;` before getPlayerFacing_80230CFC(i) (the original loads the field
   first into a saved register); `if (field_0xda8 > 0) return true; return false;` branches,
   fn_80250090's `return field_0xd98 > 0;` does not, as in the original.
 - .rodata: lbl_8046AE08 / lbl_8046AE58 f32[4][2] (+-10 along the facing), lbl_8046AE28
   Vec[4] (10 behind the facing).
-- SHARED-EDITS: include/game/Player.h (fn_8024E694's parameter named `single`).
+- SHARED-EDITS: include/game/Player.h (dropForceGems_8024E694's parameter named `single`).
 
 ## Round 17 (tu_8025EB18) (Opus 5.5, 2026-11-06)
 
@@ -1441,12 +1441,12 @@ Corrections and evidence:
 
 3 -> 5 of 8 at 100 % (+2 honest: 9000 -> 9002 on matching 1b96d7eb, no drops or lower
 percentages anywhere by address). .text 98.67 -> 99.90 %, .data (the three jump tables) 50 ->
-100 %. The state tick fn_802870C8 (9 KB, exit / commit / enter / update switches) is 100 %, so
+100 %. The state tick updateState_802870C8 (9 KB, exit / commit / enter / update switches) is 100 %, so
 the three switches, their case groupings and every handler call are proven as written.
 
 | function | before | after / class | what flipped it |
 |---|---|---|---|
-| fn_802870C8 (state tick) | 98.34 missing/extra | 100 | the five fixes below |
+| updateState_802870C8 (state tick) | 98.34 missing/extra | 100 | the five fixes below |
 | fn_80286688 (0x13B8 Z toggle) | 88.68 | 100 | u8 mode inline + one early-out condition |
 | fn_80286E10 | 99.20 | 99.20 regalloc-only | unchanged (loop counter / player / start share r27 in the original) |
 | fn_80286B74 | 99.17 scheduling+regalloc | 99.28 regalloc-only | `target.set(mPos)` in the plain branch (x, y, z stored in order); normalize f-registers left |
@@ -1579,7 +1579,7 @@ now written; the remaining sub-100 % ones are structurally done or close.
 
 | function | before -> after (try.py class) | what changed / what it proved |
 |---|---|---|
-| fn_80231DE4 | unwritten -> **100** | **multiplayer screen change** (fn_8023F390 with GameRoot 0x7F): players with an exit direction (fn_802527B0) pull their group (fn_802381B8 -> fn_80248DB8); unless a manager flag (fn_8022ADFC / fn_8022ADB0) or GameRoot 0x96 is set, every present player able to (not fn_8022F478, fn_80251BFC(0x1B), not fn_80236A18 without 0xD2D) must report the same direction (lbl_8053A190 = the first one) and none may be busy (fn_80230188, fn_8022DCD8, fn_8022CCAC, fn_80234134, fn_80236AB4, fn_8022D75C unless 0x43F at stage (0, 0)); then the escort check fn_80124600 (0 / 1 refuse), the view's fn_802DD3D4, audio fn_80457F60, fn_8022BD70, fn_802DCE5C, and per player 0xD70 = -1 with 0xD64 / 0xD6C = 'NULL' (fn_8023ED8C) or z = 0 (fn_8023E98C), fn_802520C0(dir) unless fn_80236B50. The five forwarders only it inlines take the inverted form (Round 11). |
+| fn_80231DE4 | unwritten -> **100** | **multiplayer screen change** (fn_8023F390 with GameRoot 0x7F): players with an exit direction (checkScreenExit_802527B0) pull their group (fn_802381B8 -> fn_80248DB8); unless a manager flag (fn_8022ADFC / fn_8022ADB0) or GameRoot 0x96 is set, every present player able to (not fn_8022F478, fn_80251BFC(0x1B), not fn_80236A18 without 0xD2D) must report the same direction (lbl_8053A190 = the first one) and none may be busy (fn_80230188, fn_8022DCD8, fn_8022CCAC, fn_80234134, fn_80236AB4, fn_8022D75C unless 0x43F at stage (0, 0)); then the escort check fn_80124600 (0 / 1 refuse), the view's fn_802DD3D4, audio fn_80457F60, fn_8022BD70, fn_802DCE5C, and per player 0xD70 = -1 with 0xD64 / 0xD6C = 'NULL' (fn_8023ED8C) or z = 0 (fn_8023E98C), fn_802520C0(dir) unless fn_80236B50. The five forwarders only it inlines take the inverted form (Round 11). |
 | fn_8023F390 | 99.71 different -> **100** | the last two loops share one counter (`s32 i;`): the audio loop's slot offset then starts as `mr r30, r31`. A loop counter reused from an earlier loop gives the copy, a fresh `for (s32 i = 0; ...)` gives `li`. |
 | fn_80232A0C | 97.25 missing/extra (-9) -> 99.40 scheduling+regalloc | the three pushes by -dir pass `&negated(dir)`, a file-local inline returning the negation by value (libs' JGeometry has no unary TVec3 operator-): one stack TVec3f for the negation, one for the returned copy (z through frsp), as in the original; frame 0x190. Left: the boxes' addPos loads i.y before i.x. |
 | fn_80238548 | 91.52 missing/extra (-5), unchanged | `offset` stays in registers (the original stores it twice to the stack); a u8 return gives the original's clrlwi but breaks the four bool wrappers fn_80271038 / 68 / 98 / fn_80272160 (100 -> 55-67 %), so it stays bool. |

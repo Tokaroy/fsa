@@ -354,7 +354,7 @@ s32 GameRoot_8049EF20::fn_80138A30() {
     return count;
 }
 
-// The per-frame update (the counterpart of fn_80136828): polls the pads, then runs the screen of the current
+// The per-frame update (the counterpart of draw_80136828): polls the pads, then runs the screen of the current
 // mode (field_0x4c) and, once it asks for another one (field_0x50), the fade and load sequence of field_0x58.
 //
 // FIXME(shotgun): 96.42 %, missing/extra + reloc-name; behaviour drift.
@@ -772,14 +772,14 @@ void GameRoot_8049EF20::fn_80137300() {
             }
             break;
         case 13:
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
             field_0x84 = 0;
             break;
         case 14:
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
             field_0xa0->fn_80458880(0x38, -1);
             startStageMusic_80138B7C();
             field_0x50 = 7;
@@ -938,7 +938,7 @@ void GameRoot_8049EF20::fn_80137300() {
 
 // main calls it each frame between beginRender and endRender: draws the screen
 // of the current mode (field_0x4c), then the fade objects.
-void GameRoot_8049EF20::fn_80136828() {
+void GameRoot_8049EF20::draw_80136828() {
     j3dSys.drawInit();
     if (field_0x58 != 8 && field_0xfd != 2) {
         switch (field_0x4c) {

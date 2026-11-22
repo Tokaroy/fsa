@@ -117,8 +117,8 @@ public:
     // 0x8030DFE8 (game/tu_8030C058.cpp, not written yet). Loads the
     // projection, position matrix 0x74 and viewport / scissor from mScreenRect_0x144;
     // `copy` first copies the matrices from 0x4 / 0x34 into 0x74 / 0xA4.
-    void fn_8030DFE8(bool copy);
-    // Not in the binary: a plain function that fn_8030DFE8 inlines.
+    void loadGXState_8030DFE8(bool copy);
+    // Not in the binary: a plain function that loadGXState_8030DFE8 inlines.
     void setScreenRectViewport();
     void fn_8030E150(); // empty
     void fn_8030E154();

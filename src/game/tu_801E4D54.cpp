@@ -114,7 +114,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
             if (mFlags & 0x4000) {
                 field_0x2a8[i].field_0x8++;
                 if (field_0x2a8[i].field_0x8 % 40 == 0) {
-                    fn_80236074(i, 10, 0);
+                    dropPlayerForceGems_80236074(i, 10, 0);
                 }
             }
         }

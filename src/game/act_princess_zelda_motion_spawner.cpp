@@ -261,7 +261,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
                 }
             }
             getGameView_802D6A9C()->fn_802D9FF4(0, 9);
-            getGameView_802D6A9C()->fn_802DBD60();
+            getGameView_802D6A9C()->restartStage_802DBD60();
         }
         break;
     }

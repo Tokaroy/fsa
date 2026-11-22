@@ -170,7 +170,7 @@ inline bool PrincessZelda_8049CEE0::stepRail() {
     JGeometry::TVec3f moveVec(0.0f, 0.0f, 0.0f);
     s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
-    if (mRail.fn_800FDEA0(&pos, 1.0f, &moveVec, &layer, &angle, 0x200) == 3) {
+    if (mRail.stepAlongRail_800FDEA0(&pos, 1.0f, &moveVec, &layer, &angle, 0x200) == 3) {
         return true;
     }
     mVel_0x3c.x = moveVec.x;
@@ -426,13 +426,13 @@ void PrincessZelda_8049CEE0::update() {
         break;
 
     case 11:
-        if (mSpriteAnim.fn_801D208C()) {
+        if (mSpriteAnim.isAnimEnd_801D208C()) {
             setState_801096C8(field_0x32c);
         }
         break;
 
     case 12:
-        if (mSpriteAnim.fn_801D208C()) {
+        if (mSpriteAnim.isAnimEnd_801D208C()) {
             field_0x308++;
             if (field_0x308 >= 90) {
                 setState_801096C8(13);

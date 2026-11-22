@@ -121,7 +121,7 @@ void Player_804A6F38::fn_802859C4() {
     if (mPos.z != 0.0f && !field_0x434) {
         mPos.z = 0.0f;
     }
-    if (!fn_80275D9C()) {
+    if (!checkAttackInput_80275D9C()) {
         if (fn_80240808()) {
             if (fn_802486A0() == 4 && getGroupTurn_80240888() != fn_80248778()) {
                 if (fn_80246F28() != 0.0f) {
@@ -218,7 +218,7 @@ void Player_804A6F38::fn_802857C8() {
 // leader moves; then the stick walk step at 1.5, the facing, the walk cycle, pick-ups, body frame.
 // The follow target (getFollowTargetPos_8027FA08) is computed and not used.
 void Player_804A6F38::fn_80285690() {
-    if (!fn_80275D9C() && fn_80240808()) {
+    if (!checkAttackInput_80275D9C() && fn_80240808()) {
         JGeometry::TVec3f target;
         getFollowTargetPos_8027FA08(&target);
         if (fn_8022C5EC(fn_80240644(), 0x40)) {
@@ -260,7 +260,7 @@ void Player_804A6F38::fn_8028538C() {
         mPos = *getPlayerPos_8023E724(fn_80240644());
         return;
     }
-    fn_80275D9C();
+    checkAttackInput_80275D9C();
     followStep();
     fn_8027EB04();
     fn_8027EEB4();
@@ -297,7 +297,7 @@ void Player_804A6F38::fn_80285098() {
             requestState_80251AEC(0xe);
         } else {
             field_0xd94 = -1;
-            fn_80275D9C();
+            checkAttackInput_80275D9C();
             if (!fn_80246B10(0x40)) {
                 if (mFacing_0x3dc == 0 || mFacing_0x3dc == 1) {
                     mPos.x += 1.5f * fn_8022C82C(mPlayerNo_0x4);
@@ -1897,7 +1897,7 @@ void Player_804A6F38::fn_80280DD8() {
     field_0x464 = 60;
 }
 
-// Ice sliding (called by fn_802870C8 after the state update): stopped while pushing (isPushing_80250D30) or with
+// Ice sliding (called by updateState_802870C8 after the state update): stopped while pushing (isPushing_80250D30) or with
 // fn_80240B5C; on slippery ground (cls_804A71A8 0xB7) the stick (0x38C / 0x390) pushes the slide
 // speed 0x368 by 0.05 on the floor (sound 0x20059 when it slows down), the speed loses 0.02 a frame
 // and is capped at 1.5, and mPos moves by it in x / y; elsewhere the speed is cleared unless mLastPos_0x14 is on tile 3.

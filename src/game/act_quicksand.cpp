@@ -439,7 +439,7 @@ void Quicksand_804A6270::fn_802110A8() {
     if ((mFlags & 0x8000) && mState != 0) {
         if (field_0x2bc != 0) {
             JGeometry::TVec3f pos(mPos);
-            field_0x2c0.fn_800FDEA0(&pos, 1.0f, &mVel_0x3c, NULL, NULL, 0x200);
+            field_0x2c0.stepAlongRail_800FDEA0(&pos, 1.0f, &mVel_0x3c, NULL, NULL, 0x200);
         } else {
             s32 i;
             bool inside = false;

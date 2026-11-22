@@ -339,7 +339,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                 if (result != 0) {
                     JGeometry::TVec2f v;
                     JGeometry::TVec2f out;
-                    fn_801F3128(&out);
+                    getBoxCenter_801F3128(&out);
                     for (s32 j = 0; j < 4; j++) {
                         u32 bit = 1 << j;
                         if (result & bit) {

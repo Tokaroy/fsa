@@ -30,7 +30,7 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   99.8 regalloc; fn_801D0DA0 / fn_801D0D50 (target does not fuse
   dx*dx + dy*dy into fmadds); fn_801D0280 / 02E0 (atan2 operand order);
   fn_801D0DD4; fn_801CDCD0 / fn_801CE010; SpriteAnim calcCel regalloc
-  (four functions at ~98.5), fn_801D208C 94.4, isStopped_801D21F0 86.2,
+  (four functions at ~98.5), isAnimEnd_801D208C 94.4, isStopped_801D21F0 86.2,
   fn_801D2608 91.7. init / ctor / vfunc_0x84 / fn_801CFCF0 differ only in
   .sdata2 literal order, which completes once the unwritten functions
   (fn_801CE694 uses 8.0f, fn_801CEA60 32.0f, ...) are in.

@@ -7,7 +7,7 @@
 #include "game/GameState.h"
 #include <string.h>
 
-// The GBA client threads: fn_803007D0 loads "client_thread.bin" (the GBA program
+// The GBA client threads: startGbaClients_803007D0 loads "client_thread.bin" (the GBA program
 // sent with GBAJoyBoot) and starts one thread per controller port, each running
 // fn_80300E1C on its client's message queue.
 //
@@ -15,16 +15,16 @@
 // the original's order, and the JAudio pool __sinit (game/GameAudio.h).
 
 GbaPacket_80300A8C lbl_804D6AB8[4];
-// The client threads and their 0x1000-byte stacks (OSCreateThread in fn_803007D0:
+// The client threads and their 0x1000-byte stacks (OSCreateThread in startGbaClients_803007D0:
 // stack top lbl_804D7798[i] + 0x1000, priority 8).
 OSThread lbl_804D6B38[4];
 u8 lbl_804D7798[4][0x1000];
 GbaClient_803007D0 lbl_804DB798[4];
 
-// The archive the client program is loaded from (lbl_80529DEC + 0x58); fn_803007D0 sets it.
+// The archive the client program is loaded from (lbl_80529DEC + 0x58); startGbaClients_803007D0 sets it.
 JKRArchive* lbl_8053ACB8;
 // The client program image ("client_thread.bin"), a GBA multiboot ROM:
-// fn_803007D0 patches header bytes 0xAC-0xAF (game code), 0xBD (header
+// startGbaClients_803007D0 patches header bytes 0xAC-0xAF (game code), 0xBD (header
 // checksum over 0xA0-0xBC) and the word at 0xC8.
 struct GbaProgram_8053ACBC {
     /* 0x00 */ u8 mBytes[0xC8];
@@ -33,7 +33,7 @@ struct GbaProgram_8053ACBC {
 GbaProgram_8053ACBC* lbl_8053ACBC;
 s32 lbl_8053ACC0;        // its size
 DVDDiskID* lbl_8053ACC4; // the current disc's id
-OSTick lbl_8053ACC8;     // OSGetTick at fn_803007D0
+OSTick lbl_8053ACC8;     // OSGetTick at startGbaClients_803007D0
 
 const u8 lbl_80541618[4] = { 0x1A, 0x18, 0x10, 0x0C };
 static const s8 lbl_8054161C[4] = { 2, 4, 0, 6 };
@@ -550,7 +550,7 @@ void fn_80300A8C(GbaClient_803007D0* client, OSMessage msg) {
 // thread per port.
 // FIXME(shotgun): 89.26 %, missing/extra + reloc-name; behaviour near.
 // (the port loop's register use)
-void fn_803007D0() {
+void startGbaClients_803007D0() {
     lbl_8053ACC4 = DVDGetCurrentDiskID();
     GBAInit();
     lbl_8053ACB8 = lbl_80529DEC.mClientThreadArchive_0x58;

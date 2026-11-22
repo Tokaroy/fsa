@@ -368,7 +368,7 @@ public:
     u8 fn_801F305C();
     // 9 units / 9 calls. The centre of mBox around mPos in screen space
     // (x, y - z): two floats only (0x801F3128-0x801F3174).
-    void fn_801F3128(JGeometry::TVec2f* out);
+    void getBoxCenter_801F3128(JGeometry::TVec2f* out);
     // 9 units / 12 calls. mBox2 around mPos in screen space (x, y - z);
     // callers pass a stack box; not NULL-checked.
     void fn_801F317C(JGeometry::TBox2f* out) const;

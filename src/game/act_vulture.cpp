@@ -314,7 +314,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 JGeometry::TVec2f point;
                 point.x = mPos.x;
                 point.y = 8.0f + (mPos.y - mPos.z);
-                // fn_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
+                // fn_802265FC reads only (x, y); the original passes this 8-byte TVec2f slot (EnemyBase.h, isPathBlocked_801CFA70).
                 if (fn_802265FC((const JGeometry::TVec3f*)&point, mLayer_0x4) == 2) {
                     hit = true;
                 }
@@ -337,7 +337,7 @@ void Vulture_804A4230::calcVelocity_0x88() {
     switch (mState) {
     case 2:
     case 5:
-        // calcVelocityToward_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot (EnemyBase.h, fn_801CFA70).
+        // calcVelocityToward_801D01A0 reads only (x, y) of its target; the original passes this 8-byte TVec2f slot (EnemyBase.h, isPathBlocked_801CFA70).
         calcVelocityToward_801D01A0((const JGeometry::TVec3f*)&field_0x2b8, &vel, FLT_MAX);
         mVel_0x3c.x = vel.x;
         mVel_0x3c.y = vel.y;

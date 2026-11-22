@@ -148,7 +148,7 @@ public:
     bool fn_80242624(JGeometry::TVec3f pos);
     bool fn_80242704(s32 arg); // via fn_8023162C
     bool fn_802466B4(); // via fn_8022C3AC
-    u32 fn_80246B10(u32 arg); // via fn_8022C52C; tested with cmplwi by fn_802870C8
+    u32 fn_80246B10(u32 arg); // via fn_8022C52C; tested with cmplwi by updateState_802870C8
     u32 fn_80246D1C(u32 arg); // via fn_8022C5EC
     u8 fn_80247534(); // via fn_8022C8EC
     bool fn_80247564(); // via fn_8022C9AC
@@ -263,8 +263,8 @@ public:
     // tu_8023FBF0. Whether the player may walk off the screen (state 0x1B) at an edge of
     // the visible box; writes the direction (-1 / 1 in x or y, else 0, 0) to *out.
     // fn_80231A50 / fn_80231DE4 call it.
-    bool fn_802527B0(JGeometry::TVec2<s32>* out);
-    // tu_8023FBF0. Starts walking off the screen (state 0x1B) in the direction fn_802527B0
+    bool checkScreenExit_802527B0(JGeometry::TVec2<s32>* out);
+    // tu_8023FBF0. Starts walking off the screen (state 0x1B) in the direction checkScreenExit_802527B0
     // found; fn_80231DE4 calls it.
     void fn_802520C0(JGeometry::TVec2<s32>* dir);
     bool requestState_80251AEC(s32 arg); // tu_8023FBF0 (0x80251AEC); called by fn_8026E5F8
@@ -289,9 +289,9 @@ public:
     s32 fn_8025F648(); // via fn_8023EEB4
     s32 fn_8025F668(); // via fn_8023EF50
     bool fn_8025F684(); // via fn_8023EFEC
-    void fn_802635D4(); // empty; the dispatch in fn_802870C8 calls it
+    void fn_802635D4(); // empty; the dispatch in updateState_802870C8 calls it
     void fn_802636D0(); // tu_8025EB18; empty, called by the same dispatch
-    // Called by the same dispatch (tu_80285E58 fn_802870C8) with the player in r3.
+    // Called by the same dispatch (tu_80285E58 updateState_802870C8) with the player in r3.
     void fn_802632A4(); // empty
     void fn_80262234(); // forwards to fn_80258BBC
     void fn_80262B6C(); // forwards to fn_80259660
@@ -413,15 +413,15 @@ public:
     void fn_80284294();
     void fn_80282A24();
     // tu_80285E58: the update (fn_80285E58, from fn_80253E6C), the state tick
-    // fn_802870C8 and the helpers it calls.
+    // updateState_802870C8 and the helpers it calls.
     void fn_80285E58();
     void fn_80285F44();
     void fn_80286688();
     void fn_8028676C();
     void fn_80286B74();
     void fn_80286E10();
-    void fn_802870C8();
-    // State handlers (update / enter / exit) the three switches of fn_802870C8
+    void updateState_802870C8();
+    // State handlers (update / enter / exit) the three switches of updateState_802870C8
     // call, in address order; tables in docs/PLAYER.md. Not written yet.
     void fn_802586D0(); void fn_80258890(); void fn_80258BE8(); void fn_80259830();
     void fn_8025A15C(); void fn_8025AB00(); void fn_8025AED0(); void fn_8025B22C();
@@ -472,7 +472,7 @@ public:
     s32 life(); // tu_8028FBA0 inline: getPlayerLife_80237774(fn_80240644()) if fn_80240808(), else fn_8024189C()
     void fallStep(); // tu_8028FBA0 inline: gravity on 0x344, then mPos += 0x344
     void riseToTarget(s32 state); // tu_8028FBA0 inline: rise above 128, then request `state`
-    // Called by fn_802870C8 after the state update (r3 = this; results unused
+    // Called by updateState_802870C8 after the state update (r3 = this; results unused
     // unless typed).
     void fn_80242940();
     void fn_80242BC0();
@@ -514,7 +514,7 @@ public:
     void fn_80267ECC();
     void fn_80268194();
     JGeometry::TVec3f* fn_80252F48(); // returns &mSpinCenter_0x11b4 (tu_8023FBF0)
-    bool fn_80275D9C(); // tu_8026FC20 (li r3, 1 / 0); true ends the state updates of tu_8027E5BC early
+    bool checkAttackInput_80275D9C(); // tu_8026FC20 (li r3, 1 / 0); true ends the state updates of tu_8027E5BC early
     void followStep();
     void getFollowTargetPos_8027FA08(JGeometry::TVec3f* out); // tu_8027E5BC; called by update B and fn_8028676C
     // tu_8023FBF0 (0x80242DAC): tile pushes on 0x414 / 0x418 by the tile under mPos (fn_80226850);
@@ -1168,7 +1168,7 @@ public:
     bool fn_802600A0(s32 arg); // via fn_802312CC
     bool fn_802426E0(s32 serial); // via fn_80231590
     void fn_80270318(s32 value); // via fn_802359A4; the body never reads r4, but the forwarder keeps value live (mgr in r5)
-    void fn_8024E694(s32 value, s32 single); // via fn_80236074; Force Gem drop
+    void dropForceGems_8024E694(s32 value, s32 single); // via dropPlayerForceGems_80236074; Force Gem drop
     void fn_8024ECCC(s32 value); // via fn_8023619C
     void fn_8024ED4C(s32 value); // via fn_802362C4
     bool fn_80247594(s32 arg); // via fn_80237488
@@ -1802,7 +1802,7 @@ void fn_8022FF8C(s32 player, const JGeometry::TBox2f* box, s32 layer, s32 serial
 // act_blindfold, act_gambling_chest: maps a player index to the index whose position
 // getPlayerPos_8023E724 is then asked for (its leader's, recursively; -1 without the manager).
 s32 fn_8022EA0C(s32 player);
-// tu_80441318. The one present player (layer 8 and up) whose fn_802527B0 fails while
+// tu_80441318. The one present player (layer 8 and up) whose checkScreenExit_802527B0 fails while
 // every other one reports the same screen point; -1 otherwise or while a manager flag
 // is set (the caller maps a result through fn_8022F340).
 s32 fn_80231A50();
@@ -1984,7 +1984,7 @@ bool fn_80237948(s32 player, const JGeometry::TVec2f* pos);
 void fn_8022E114(s32 player, JGeometry::TVec3f* out);
 s32 fn_8022F340(s32 player);
 bool fn_80230E1C(s32 player, bool flag);
-void fn_80236074(s32 player, s32 value, s32 arg);
+void dropPlayerForceGems_80236074(s32 player, s32 value, s32 arg);
 void fn_802362C4(s32 player, s32 value);
 bool fn_802378AC(s32 player, const JGeometry::TVec2f* pos);
 bool fn_8022F784(s32 player, s32 a, const JGeometry::TVec3f* pos);

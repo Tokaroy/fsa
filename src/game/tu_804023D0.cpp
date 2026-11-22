@@ -312,7 +312,7 @@ u32 fn_80403284(const char* name) {
     return lbl_80529DEC.mBossArchive_0x10->getResSize(lbl_80529DEC.mBossArchive_0x10->getResource('????', name));
 }
 
-void* fn_80403244(u32 type, const char* name) {
+void* getLogoArchiveResource_80403244(u32 type, const char* name) {
     return lbl_80529DEC.mLogoArchive_0x18->getResource(type, name);
 }
 

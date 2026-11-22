@@ -344,7 +344,7 @@ static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
         } else if (sprite->mImage != NULL) {
             self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->drawBlockMap_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
     self->mQueuedSpriteNum_0xd320 = 0;
@@ -379,7 +379,7 @@ static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
         } else if (sprite->mImage != NULL) {
             self->drawTimgImage_802F745C(&sprite->mPos, sprite->mImage, &sprite->mParams);
         } else if (sprite->field_0x18 != NULL) {
-            self->fn_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
+            self->drawBlockMap_802F6CF4(&sprite->mPos, sprite->field_0x18, &sprite->mParams);
         }
     }
     self->mLateQueuedSpriteNum_0xe424 = 0;
@@ -473,7 +473,7 @@ void TileMap_804AA858::fn_802FEE68() {
             } else if (effect->mImage != NULL) {
                 drawTimgImage_802F745C(&effect->mPos, effect->mImage, &effect->mParams);
             } else if (effect->field_0x24 != NULL) {
-                fn_802F6CF4(&effect->mPos, effect->field_0x24, &effect->mParams);
+                drawBlockMap_802F6CF4(&effect->mPos, effect->field_0x24, &effect->mParams);
             }
             if (effect->mScale != 1.0f) {
                 effect->mParams.mMtx = mtx;
@@ -1305,7 +1305,7 @@ void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRe
         JUtility::TColor color(0, 0, 0, 0xFF - alpha);
         fn_8013B004(&fill, &color);
     }
-    gGameRoot2_8053AB10->field_0x24->fn_8030DFE8(true);
+    gGameRoot2_8053AB10->field_0x24->loadGXState_8030DFE8(true);
 }
 
 // Draws the panel tile grid field_0x48[layer] (2 x 2 blocks of 16 x 16) scrolled
@@ -2742,7 +2742,7 @@ void TileMap_804AA858::drawTimgImage_802F745C(const JGeometry::TVec3f* pos, void
 // time (field_0x18[0]) as 8 x 8 quads; with mUseFilterTex_0xe450 a second TEV stage
 // multiplies in the player's mFilterTex_0xe428 texture. params' bytes 0x21 / 0x22
 // queue it instead; field_0x30 adds the effect of fn_802F6800.
-void TileMap_804AA858::fn_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
+void TileMap_804AA858::drawBlockMap_802F6CF4(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params) {
     static const GXTlut lbl_80471020[16] = {
         GX_TLUT0, GX_TLUT1, GX_TLUT2,  GX_TLUT3,  GX_TLUT4,  GX_TLUT5,  GX_TLUT6,  GX_TLUT7,
         GX_TLUT8, GX_TLUT9, GX_TLUT10, GX_TLUT11, GX_TLUT12, GX_TLUT13, GX_TLUT14, GX_TLUT15,
@@ -3105,7 +3105,7 @@ f32 fn_802F5FF4(f32 z) {
 
 // FIXME: 99.01 %, regalloc-only; behaviour clean.
 // Register allocation only: the 8.0f literal and mLayerOrigin_0x2368.y swap f5/f6 (and fy is in f6, not f7).
-f32 TileMap_804AA858::fn_802F5E9C(const JGeometry::TVec3f* pos) {
+f32 TileMap_804AA858::getHeightAt_802F5E9C(const JGeometry::TVec3f* pos) {
     f32 z = pos->z;
     if (mHeightGridEffectNum_0xc21c > 0 && pos->x >= mLayerOrigin_0x2368.x &&
         pos->x < mLayerOrigin_0x2368.x + 8.0f * mHeightGridCellsX_0x2380 && pos->y >= mLayerOrigin_0x2368.y &&
@@ -3192,11 +3192,11 @@ bool TileMap_804AA858::fn_802F58A8(const JGeometry::TVec3f* pos, Mtx mtx) {
 }
 
 // FIXME: 99.34 %, regalloc-only; behaviour clean.
-// Register allocation only, as in fn_802F5E9C (inlined here):
+// Register allocation only, as in getHeightAt_802F5E9C (inlined here):
 // 8.0f and pos->x swap f5/f6.
 // The position (out) and parameters (*outParams) a sprite at pos is drawn
 // with: on the height grid's tilt (fn_802F58A8, params' matrix concatenated
-// into tmp) for field_0x38 2 or no params, raised by the height (fn_802F5E9C)
+// into tmp) for field_0x38 2 or no params, raised by the height (getHeightAt_802F5E9C)
 // for 1, else unchanged.
 void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params,
                                     JGeometry::TVec3f* out, SpriteParams_801F5AE0** outParams, Mtx mtx,
@@ -3216,7 +3216,7 @@ void TileMap_804AA858::fn_802F5570(const JGeometry::TVec3f* pos, SpriteParams_80
         }
         out->set(*pos);
     } else if (params->field_0x38 == 1) {
-        out->set(pos->x, pos->y, pos->z + fn_802F5E9C(pos));
+        out->set(pos->x, pos->y, pos->z + getHeightAt_802F5E9C(pos));
         *outParams = params;
     } else {
         out->set(*pos);

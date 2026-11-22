@@ -149,7 +149,7 @@ struct GameRootSub04_801F856C {
     void fn_80139D3C();
 
     // 0x80139C5C (game/tu_80139BE8.cpp): fn_8043D5F0 on lbl_8053AED0, then
-    // fn_8038D4A8. It reads no field, but GameRoot's fn_80136828 loads its
+    // fn_8038D4A8. It reads no field, but GameRoot's draw_80136828 loads its
     // field_0x4 into r3 for the call.
     void fn_80139C5C();
 };
@@ -240,7 +240,7 @@ struct GameRoot_8049EF20 {
     // Cleared by fn_8013670C (game/tu_80134C04.cpp, stw of 0).
     /* 0x60 */ s32 field_0x60;
     /* 0x64 */ s32 field_0x64;
-    // Alphas (clrlwi 24 into J2DPicture/J2DTextBox::setAlpha in fn_80136828):
+    // Alphas (clrlwi 24 into J2DPicture/J2DTextBox::setAlpha in draw_80136828):
     // field_0x68 for the rival picture field_0xb8 and the text boxes,
     // field_0x6c for field_0xbc.
     /* 0x68 */ s32 field_0x68; // cleared by fn_80138C9C
@@ -288,7 +288,7 @@ struct GameRoot_8049EF20 {
     // Stored by fn_80134D14 (game/tu_80134C04.cpp, 0x80134D14, stb of r4).
     /* 0x88 */ u8 field_0x88;
     /* 0x89 */ u8 field_0x89[0x8C - 0x89];
-    // Scales fn_80136828 multiplies the picture / font sizes by (lfs):
+    // Scales draw_80136828 multiplies the picture / font sizes by (lfs):
     // field_0x8c for field_0xb8 (413 x 38) and the text boxes (30 x 60),
     // field_0x90 for field_0xbc (256 x 128).
     /* 0x8C */ f32 field_0x8c;
@@ -419,7 +419,7 @@ struct GameRoot_8049EF20 {
     // game/tu_80134C04.cpp (0x80136828 and 0x80137300): main calls them each
     // frame once the loader is done, between beginRender / endRender and
     // endRender / endFrame; the first only while lbl_80529DEC's byte 0x251 is 0.
-    void fn_80136828();
+    void draw_80136828();
     void fn_80137300();
     // Owner: game/tu_80134C04.cpp (0x80138A30; not written yet). 107 units.
     // The number of players that take part: the set bits 0-3 of
@@ -499,7 +499,7 @@ public:
     void fn_80119D48();
     // 0x80119628 / 0x801194C4 (game/tu_80118384.cpp): the fade's frame step (not in
     // game modes 9 and 0x16) and its draw (the picture over the screen, alpha
-    // field_0x14). GameRoot's fn_80136828 calls both, in this order, on fn_80119DD0().
+    // field_0x14). GameRoot's draw_80136828 calls both, in this order, on fn_80119DD0().
     void fn_80119628();
     void fn_801194C4();
 }; // Size: 0x30
@@ -839,7 +839,7 @@ struct GameRoot2_8049F108 {
     // 0x8013BB18: unless field_0x39, field_0x20->fn_802FF3F0() and
     // field_0x24->fn_8030E150(); then fn_80158E88().
     void fn_8013BB18();
-    // 0x8013BB64: field_0x24->fn_8030DFE8(false), the draw buffers into
+    // 0x8013BB64: field_0x24->loadGXState_8030DFE8(false), the draw buffers into
     // j3dSys, and the camera matrix as j3dSys's view matrix.
     void fn_8013BB64();
     // 0x8013BBBC: field_0x28->fn_8013DC1C().
@@ -857,7 +857,7 @@ struct GameRoot2_8049F108 {
     void fn_8013AB00();
 
     // game/tu_8013AAD4.cpp (owner unit, not written yet). Calls
-    // field_0x24->fn_8030DFE8(0); `this` is gGameRoot2_8053AB10. Called twice by
+    // field_0x24->loadGXState_8030DFE8(0); `this` is gGameRoot2_8053AB10. Called twice by
     // fn_80139CC4 (game/tu_80139BE8.cpp).
     void fn_8013B438();
     // 0x8013B460 (between fn_8013B438 and setPort_8013B490; body not yet known).
@@ -999,7 +999,7 @@ public:
     // Virtual destructor first: the vtable pointer goes where it is declared.
     virtual ~HudMgr_804B1920(); // owner game/tu_8043A0E8.cpp (not written yet)
     // 0x8043D39C / 0x8043DB58 (tu_8043A0E8.cpp, not written yet): GameRoot's
-    // per-frame draw (fn_80136828) calls both on lbl_8053AED0 after the game
+    // per-frame draw (draw_80136828) calls both on lbl_8053AED0 after the game
     // view; the first tests gGameRoot_8053AAF8->field_0x7f, the second sets the
     // ortho context (setPort_8013B490) and switches on the byte at 0x256.
     void fn_8043D39C();
@@ -1194,7 +1194,7 @@ public:
     /* 0x000 */ // vtable, whose one slot is the destructor below
     virtual ~GameOverScreen_804B17A0(); // owner game/tu_80438C68.cpp (not written yet)
     // 0x804399A0 (not written yet): sets the ortho context (setPort_8013B490) and
-    // draws; GameRoot's fn_80136828 calls it in screen mode 11.
+    // draws; GameRoot's draw_80136828 calls it in screen mode 11.
     void fn_804399A0();
     // 0x80439AB0 (game/tu_80438C68.cpp): the state reset; also what fn_80438E10(flag = 0) does.
     void fn_80439AB0();
@@ -1939,7 +1939,7 @@ void fn_8023F088();
 void fn_8023F728();
 void fn_8023F78C();
 // game/tu_8022AD64.cpp (0x8023F6C4): runs each player's reset (fn_80254660);
-// called by GameView_804A9950::fn_802DBD60 (game/tu_802D39B8.cpp).
+// called by GameView_804A9950::restartStage_802DBD60 (game/tu_802D39B8.cpp).
 void fn_8023F6C4();
 // Owner: game/tu_8022AD64.cpp. The player manager's draw (0x8023F2BC, called
 // by fn_80139CC4 between the two fn_8013B438 calls) and update (0x8023F390,
@@ -2120,7 +2120,7 @@ public:
     cls_804AF860(); // fn_803A7898
     virtual ~cls_804AF860();
     // 0x803A71F0 (not written yet): starts by setting the display's clear colour;
-    // GameRoot's fn_80136828 calls it on lbl_8053AD90 in screen mode 5.
+    // GameRoot's draw_80136828 calls it on lbl_8053AD90 in screen mode 5.
     void fn_803A71F0();
     // 0x803A60E4: the wobble and slide of the two arrow panes (Par01 / Par02).
     void fn_803A60E4();

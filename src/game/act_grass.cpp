@@ -75,7 +75,7 @@ void Grass_804A92D0::update() {
     } else {
         field_0x240 -= 1;
         if (field_0x240 == 0) {
-            s32 tile = fn_80226AE0(&mPos, mLayer_0x4);
+            s32 tile = getCellIndexVec3_80226AE0(&mPos, mLayer_0x4);
             getGameView_802D6A9C()->fn_802D7310(tile, false);
             mAlive = false;
         }

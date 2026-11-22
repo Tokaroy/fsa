@@ -223,7 +223,7 @@ inline bool Cucco_804AB8C0::checkActorHit() {
         }
         if (isFlame) {
             JGeometry::TVec3f from(0.0f, 0.0f, 0.0f);
-            other->fn_801F3128((JGeometry::TVec2f*)&from);
+            other->getBoxCenter_801F3128((JGeometry::TVec2f*)&from);
             from -= other->mVel_0x3c;
             hit = fn_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110);
         }

@@ -71,7 +71,7 @@ void FrostareChildFrosteye_804A4EE8::init() {
     mAnim.fn_801D2608(lbl_8053A148, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.mFrameCtrl.setRate(0.25f);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
     field_0x2e4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x258, 1, 0, NULL, NULL, true, 1.0f);
     if (field_0x16c == -1) {
         fn_801DAC6C()->fn_801DAF14(mSerial);
@@ -305,7 +305,7 @@ u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
             JGeometry::TVec3f center3;
             JGeometry::TVec2f center;
             JGeometry::TVec2f pos;
-            fn_801F3128(&center);
+            getBoxCenter_801F3128(&center);
             for (s32 player = 0; player < 4; player++) {
                 if (hitPlayers & (1 << player)) {
                     if (fn_801F329C(player)) {

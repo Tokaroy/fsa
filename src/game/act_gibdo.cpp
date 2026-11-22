@@ -48,7 +48,7 @@ void Gibdo_804A3BF8::init() {
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3BB8, 0x10);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
-    mAnim.fn_801D1D60();
+    mAnim.setRandomFrame_801D1D60();
 }
 
 // FIXME(shotgun): 99.47 %, missing/extra; behaviour drift.

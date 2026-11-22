@@ -419,7 +419,7 @@ void Snowball_8049D020::followRail() {
     JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
     s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
-    mRail.fn_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
+    mRail.stepAlongRail_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
     mVel_0x3c.x = outStep.x;
     mVel_0x3c.y = outStep.y;
     mVel_0x3c.z = outStep.z;

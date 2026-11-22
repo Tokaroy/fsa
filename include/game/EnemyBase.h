@@ -237,17 +237,17 @@ public:
     // with mDir_0x98.
     s32 fn_801CF1B0(bool turn, f32 range, f32 margin);
     // 3 units / 7 calls (stored to mDir_0x98). A random direction
-    // (fn_801CD664(4)), or fn_801CF720's when blocked (fn_801CFCF0).
+    // (fn_801CD664(4)), or pickNewDir_801CF720's when blocked (fn_801CFCF0).
     s32 fn_801CF6B8();
     // 3 units / 9 calls (callers pass mDir_0x98 or li 3; stored to
     // mDir_0x98). A random direction other than `dir` (fn_801CD580),
     // or fn_801CF798's when that one is blocked.
-    s32 fn_801CF720(s32 dir);
+    s32 pickNewDir_801CF720(s32 dir);
     // 1 unit / 3 calls (cmpw against both arguments). The first direction
     // that is neither `dir` nor `except` and not blocked.
     s32 fn_801CF798(s32 dir, s32 except);
     // 4 units / 15 calls (clrlwi.). Whether the way from `from` to `to`
-    // (x, y) on `layer` is clear, tested with fn_801CFA70 at the ends and
+    // (x, y) on `layer` is clear, tested with isPathBlocked_801CFA70 at the ends and
     // in between.
     bool fn_801CF888(const JGeometry::TVec2f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 5 calls (clrlwi; cmplwi 1). Both points inside the view's
@@ -257,7 +257,7 @@ public:
     // TVec2f slots: the original's parameters were likely TVec2f (as are
     // fn_802265FC's and fn_801CCD34's: checkFloor_0x80 / fn_801CE800 pass them
     // 8-byte slots too). Kept TVec3f for the TVec3f callers (tu_801C5B08).
-    bool fn_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
+    bool isPathBlocked_801CFA70(const JGeometry::TVec3f* from, const JGeometry::TVec3f* to, s32 layer);
     // 1 unit / 6 calls (clrlwi.). fn_801CFD68(dir, 6.0f + the box edge on
     // that side): whether a step in direction `dir` is free.
     bool fn_801CFCF0(s32 dir);

@@ -850,7 +850,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             work[0] = fn_803846A4(field_0x60->fn_803A3094());
             work[0] += pick;
-            work[1] = fn_803846BC(work[0]);
+            work[1] = findMessageIndex_803846BC(work[0]);
             field_0x60->fn_803A30DC(work[1]);
             return true;
         }
@@ -1432,7 +1432,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             work[0] = fn_803846A4(field_0x60->fn_803A3094());
             work[0] += pick;
-            work[1] = fn_803846BC(work[0]);
+            work[1] = findMessageIndex_803846BC(work[0]);
             field_0x60->fn_803A30DC(work[1]);
             return true;
         }

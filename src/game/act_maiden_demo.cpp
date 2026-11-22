@@ -123,13 +123,13 @@ void MaidenCutscene_8049D740::update() {
         }
         break;
     case 3:
-        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+        if (mAnim.isAnimEnd_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
             mAnim.fn_801D1F14(0.0f);
         }
         break;
     case 4:
-        if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
+        if (mAnim.isAnimEnd_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
             mAnim.fn_801D1F14(0.0f);
         }

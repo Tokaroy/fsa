@@ -292,7 +292,7 @@ public:
 // what the game code reads is declared.
 struct MessageEntry_804AF070 {
     /* 0x0 */ u32 textOffset; // into the DAT1 text
-    /* 0x4 */ u16 id;         // the message id fn_803846BC looks up
+    /* 0x4 */ u16 id;         // the message id findMessageIndex_803846BC looks up
     /* 0x6 */ u8 field_0x6[2];
 }; // Size: 0x8
 struct MessageInf1_804AF070 {
@@ -427,7 +427,7 @@ public:
     bool fn_80389964(s32 exclude, u32 msg, u16 flags);
     // (this is the manager and is unused.)
 
-    // 0x8038C60C (the fn_803846BC loop inlined by hand, 100 %): fn_8038A984 with
+    // 0x8038C60C (the findMessageIndex_803846BC loop inlined by hand, 100 %): fn_8038A984 with
     // msg turned into its INF1 index.
     bool fn_8038C60C(s32 player, s32 actor, u32 msg, s32 serial, u16 flags);
     // 0x8038B8A8 (this unused; callers pass the manager): the variant without a
@@ -598,7 +598,7 @@ u8 getMessageWindowState_8037F1E4(s32 player);
 const char* fn_80383E2C(u32 index, u8* out);
 // The index of the message whose id is `msg` in the INF1 entries, 0x12B when
 // there is none.
-u32 fn_803846BC(u32 msg);
+u32 findMessageIndex_803846BC(u32 msg);
 
 // 41 units. Returns 0 or 1.
 bool fn_80388CAC(s32 player, s32 serial);

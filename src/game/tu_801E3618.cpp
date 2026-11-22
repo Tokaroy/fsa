@@ -176,7 +176,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
                     fn_801E4D54();
                     field_0x448.fn_80217A74();
                     JGeometry::TVec2f center;
-                    fn_801F3128(&center);
+                    getBoxCenter_801F3128(&center);
                     JGeometry::TVec2f shake(center.x - bomb->mPos.x, center.y - (bomb->mPos.y - bomb->mPos.z));
                     field_0x52c.fn_801D6D38(&shake);
                     field_0x5cd++;
