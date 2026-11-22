@@ -120,8 +120,7 @@ Thief_804A5A30::~Thief_804A5A30() {
     fn_80204638()->fn_802049E0(this);
 }
 
-// FIXME: 99.74 %, regalloc-only + reloc-name; behaviour clean.
-// (regalloc-only + reloc-name). Register allocation; its 1.0f is vfunc_0x90's (see there).
+// Its 1.0f is vfunc_0x90's (see there).
 void Thief_804A5A30::init() {
     EnemyBase_804A4808::init();
 
@@ -181,14 +180,8 @@ void Thief_804A5A30::init() {
 }
 
 bool Thief_804A5A30::fn_802064E0() {
-    bool result = false;
-    s32 bit = field_0x354;
-    if (bit != 0) {
-        if (getGameView_802D6A9C()->fn_802D7F40(bit)) {
-            result = true;
-        }
-    }
-    return result;
+    s32 bit = getField_0x354();
+    return bit != 0 && getGameView_802D6A9C()->fn_802D7F40(bit);
 }
 
 s32 Thief_804A5A30::fn_802063FC() {
@@ -372,9 +365,6 @@ void Thief_804A5A30::fn_80205E0C(s32 newState) {
 // getPlayerPos_8023E724 in the original) and literal relocations (the original pools 1.0f before
 // 1.2f / 2.0f; ours pools it last).
 void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
-    // Declared at function scope (not in the state 4 loop) for the original's register assignment.
-    u32 gemType = 0;
-
     if (mapHit) {
         fn_801F11B4();
     } else {
@@ -463,11 +453,12 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
             field_0x33c = field_0x374.fn_8021B904(field_0x33c, mapHit);
         }
         break;
-    case 1:
-        if (field_0x340 < 0) {
+    case 1: {
+        s32 serial = field_0x340;
+        if (serial < 0) {
             fn_80205E0C(0);
         } else {
-            ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x340);
+            ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             field_0x32c.x = target->mPos.x;
             field_0x32c.y = target->mPos.y;
             field_0x32c.z = target->mPos.z;
@@ -475,12 +466,8 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
             f32 dy = field_0x32c.y - mPos.y;
             if (square(dx) + square(dy) <= 100.0f) {
                 startSound_801F0E34(0x4009F, 0);
-                s32 amount = target->fn_8032D564(target->field_0x90 & 0xFF);
-                if (amount > 3000) {
-                    amount = 3000;
-                } else if (amount < 1) {
-                    amount = 1;
-                }
+                s32 value = target->fn_8032D564(target->field_0x90 & 0xFF);
+                s32 amount = (value > 3000) ? 3000 : ((value < 1) ? 1 : value);
                 field_0x344 += amount;
                 ForceGem_804AB6D8* gem = static_cast<ForceGem_804AB6D8*>(target);
                 gem->field_0x94 = 1;
@@ -491,6 +478,7 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
             }
         }
         break;
+    }
     case 2:
         if (field_0x340 >= 0) {
             fn_80205E0C(1);
@@ -511,7 +499,7 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
     case 4:
         if (mPos.z <= 0.0f) {
             while (field_0x344 != 0) {
-                gemType = 0;
+                u32 gemType;
                 for (s32 i = 11; i >= 0; i--) {
                     if (field_0x344 >= lbl_8046A288[i].amount) {
                         gemType = lbl_8046A288[i].type;
@@ -544,7 +532,7 @@ void Thief_804A5A30::vfunc_0x90(u8 mapHit) {
         if (field_0x340 >= 0) {
             fn_80205E0C(1);
         } else if (field_0x338 < 0 || fn_801CCF34(field_0x338) > 0 || !fn_801D0B44(field_0x338) ||
-                   fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) != 0 ||
+                   !fn_801D08B4(field_0x338, &mPos, (f32)field_0x34c * 16.0f) ||
                    fn_801CF888((const JGeometry::TVec2f*)&mPos, getPlayerPos_8023E724(field_0x338), field_0x4)) {
             fn_80205E0C(0);
         } else if (mapHit) {
@@ -628,8 +616,6 @@ void Thief_804A5A30::vfunc_0x94() {
     EnemyBase_804A4808::vfunc_0x94();
 }
 
-// FIXME: 99.69 %, regalloc-only; behaviour clean.
-// (regalloc-only). The field_0x354 pointer and the loop counter swap r28 / r29.
 void Thief_804A5A30::vfunc_0x9C(u8 mapHit) {
     if (field_0xc4 != 0 && field_0xc8 >= 0 && field_0xc8 < 4) {
         if (fn_80204638()->field_0x0 != 0 || fn_802064E0()) {

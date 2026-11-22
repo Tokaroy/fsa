@@ -60,6 +60,7 @@ public:
     // the hit overrides make; roles unknown.
     bool fn_8020609C() const;
     bool fn_802064E0();
+    s32 getField_0x354() const { return field_0x354; }
     // 0x80206168 (act_thief, not written yet): called by a player lifting the
     // thief ('TZOK', Player_804A6F38::fn_80263860 at frame 11 of state 0x15);
     // the caller ignores r3.
