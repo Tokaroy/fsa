@@ -60,16 +60,6 @@ void JUTDbPrint::enter(int x, int y, int duration, const char *txt, int len)
     }
 }
 
-// NOTE: doesn't match TP debug, likely fakematch
-// https://decomp.me/scratch/6OLsB
-inline void enter_(int x, int y, int duration, const char *txt, int n)
-{
-    if (n >= 0)
-    {
-        JUTDbPrint::getManager()->enter(x, y, duration, txt, n < 256 ? n : 255);
-    }
-}
-
 void JUTDbPrint::flush() { flush(0, 0, JUTVideo::sManager->getFbWidth(), JUTVideo::sManager->getEfbHeight()); }
 
 void JUTDbPrint::flush(int left, int top, int right, int bottom)
@@ -119,8 +109,13 @@ void JUTReport(int x, int y, const char *fmt, ...)
     va_list vl;
     va_start(vl, fmt);
     char buf[256];
-    enter_(x, y, 1, buf, vsnprintf(buf, sizeof(buf), fmt, vl));
-    va_end();
+    int len = vsnprintf(buf, sizeof(buf), fmt, vl);
+    va_end(vl);
+
+    if (len < 0) {
+        return;
+    }
+    JUTDbPrint::getManager()->enter(x, y, 1, buf, len < 256 ? len : 255);
 }
 
 void JUTReport(int x, int y, int duration, const char *fmt, ...)
@@ -128,6 +123,11 @@ void JUTReport(int x, int y, int duration, const char *fmt, ...)
     va_list vl;
     va_start(vl, fmt);
     char buf[256];
-    enter_(x, y, duration, buf, vsnprintf(buf, sizeof(buf), fmt, vl));
+    int len = vsnprintf(buf, sizeof(buf), fmt, vl);
     va_end(vl);
+
+    if (len < 0) {
+        return;
+    }
+    JUTDbPrint::getManager()->enter(x, y, duration, buf, len < 256 ? len : 255);
 }
