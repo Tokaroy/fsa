@@ -599,7 +599,7 @@ inline void ActorBase_804A5770::spawnDustTrail(const JGeometry::TVec3f& start) {
 // mDeathTimer_0xe0 runs: the death effect for mHitType_0xfc at 30, then die_0x24
 // at 0. mSparksLeft_0xe8 more hit sparks every 5 frames. Returns 0 (nothing to
 // do), 1, or -1 when the actor has no life left.
-// FIXME: 99.12 %, missing/extra; behaviour clean.
+// FIXME: 99.78 %, regalloc-only; behaviour clean.
 // Registers and the stack slots of the dust trail's vectors still differ.
 // Literals are @NNN until .sdata2 is in order.
 s32 ActorBase_804A5770::updateHitReaction_801F3D94(u8 flag) {
