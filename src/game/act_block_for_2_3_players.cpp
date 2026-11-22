@@ -19,8 +19,8 @@ void BlockFor2Or3Players_804AE728::init() {
 }
 
 void BlockFor2Or3Players_804AE728::update() {
-    if (fn_80226850(&mPos, field_0x4) == 0x12) {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BCK2, field_0x4, &mPos, 0x100, -1, -1);
+    if (fn_80226850(&mPos, mLayer_0x4) == 0x12) {
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BCK2, mLayer_0x4, &mPos, 0x100, -1, -1);
         mAlive = false;
     }
 }

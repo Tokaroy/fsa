@@ -6,9 +6,9 @@
 #include "game/act/act_spotlight.h"
 
 void Spotlight_804A84C8::init() {
-    mViewBit0 = (field_0x90 >> 22) & 0x1F;
-    mViewBit1 = (field_0x90 >> 17) & 0x1F;
-    mViewBit2 = (field_0x90 >> 12) & 0x1F;
+    mViewBit0 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    mViewBit1 = (mSpawnParam_0x90 >> 17) & 0x1F;
+    mViewBit2 = (mSpawnParam_0x90 >> 12) & 0x1F;
     mBox.i.x = 1.0f;
     mBox.i.y = 1.0f;
     mBox.f.x = -1.0f;
@@ -48,19 +48,19 @@ void Spotlight_804A84C8::update() {
             getGameView_802D6A9C()->fn_802D800C(mViewBit1) || getGameView_802D6A9C()->fn_802D800C(mViewBit2)) {
             mOn = 1;
             if (mEmitter238 == NULL) {
-                mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBE, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBE, 0, 0, NULL, NULL, true, 1.0f);
             }
             if (mEmitter23c == NULL) {
-                mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBF, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter23c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBF, 0, 0, NULL, NULL, true, 1.0f);
             }
             if (mEmitter240 == NULL) {
-                mEmitter240 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xC0, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter240 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC0, 0, 0, NULL, NULL, true, 1.0f);
             }
             if (mEmitter234 == NULL) {
-                mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter234 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
             }
             if (mEmitter244 == NULL) {
-                mEmitter244 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter244 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x30005, 0);
             startSound_801F0E34(0x30023, 0);
@@ -124,5 +124,5 @@ void Spotlight_804A84C8::draw() {
     }
     f32 scale = mShadowScale;
     JGeometry::TVec3f pos(8.0f + mPos.x, 8.0f + mPos.y, 0.0f);
-    drawShadow(field_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), scale);
+    drawShadow(mLayer_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), scale);
 }

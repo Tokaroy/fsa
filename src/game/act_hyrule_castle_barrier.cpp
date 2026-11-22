@@ -27,14 +27,14 @@ HyruleCastleBarrier_8049DEE8::~HyruleCastleBarrier_8049DEE8() {
 
 void HyruleCastleBarrier_8049DEE8::init() {
     ActorBase_804A5770::init();
-    if ((field_0x90 & 1) == 1) {
+    if ((mSpawnParam_0x90 & 1) == 1) {
         field_0x240 = true;
     }
-    if ((field_0x90 >> 1 & 1) == 1) {
+    if ((mSpawnParam_0x90 >> 1 & 1) == 1) {
         field_0x241 = true;
     }
-    field_0x234 = field_0x90 >> 4 & 0xF;
-    field_0x238 = field_0x90 >> 22 & 0x1F;
+    field_0x234 = mSpawnParam_0x90 >> 4 & 0xF;
+    field_0x238 = mSpawnParam_0x90 >> 22 & 0x1F;
     switch (field_0x234) {
     case 1:
         mBox.i.x = -16.0f;
@@ -45,10 +45,10 @@ void HyruleCastleBarrier_8049DEE8::init() {
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
-        field_0x80.i.x = -14.0f;
-        field_0x80.i.y = -40.0f;
-        field_0x80.f.x = 14.0f;
-        field_0x80.f.y = 40.0f;
+        mMapBox_0x80.i.x = -14.0f;
+        mMapBox_0x80.i.y = -40.0f;
+        mMapBox_0x80.f.x = 14.0f;
+        mMapBox_0x80.f.y = 40.0f;
         break;
     // Case 0 is written out with the default: the original's dispatch sends
     // both sides of the test against 1 to this block.
@@ -62,14 +62,14 @@ void HyruleCastleBarrier_8049DEE8::init() {
         mBox2.i.y = mBox.i.y;
         mBox2.f.x = mBox.f.x;
         mBox2.f.y = mBox.f.y;
-        field_0x80.i.x = -40.0f;
-        field_0x80.i.y = -14.0f;
-        field_0x80.f.x = 40.0f;
-        field_0x80.f.y = 14.0f;
+        mMapBox_0x80.i.x = -40.0f;
+        mMapBox_0x80.i.y = -14.0f;
+        mMapBox_0x80.f.x = 40.0f;
+        mMapBox_0x80.f.y = 14.0f;
         break;
     }
-    field_0x114 = 2;
-    field_0x118 = 2;
+    mParamAtcp_0x114 = 2;
+    mParamAtcn_0x118 = 2;
     field_0xb8 = 1;
     field_0xbc = 3;
     field_0xb0 = 0x0A040304;
@@ -81,7 +81,7 @@ void HyruleCastleBarrier_8049DEE8::init() {
 
 void HyruleCastleBarrier_8049DEE8::update() {
     ActorBase_804A5770::update();
-    JGeometry::TBox2f box(field_0x80);
+    JGeometry::TBox2f box(mMapBox_0x80);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
@@ -98,11 +98,11 @@ void HyruleCastleBarrier_8049DEE8::update() {
             break;
         }
         if (fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
-            field_0xd8 = 0;
+            mHitTimer_0xd8 = 0;
         }
-        u8 hitMask = fn_801F2B7C(field_0x114, -1, 10);
+        u8 hitMask = fn_801F2B7C(mParamAtcp_0x114, -1, 10);
         if (hitMask == 0) {
-            fn_80239914(&box, field_0x4, mSerial);
+            fn_80239914(&box, mLayer_0x4, mSerial);
         } else {
             for (s32 i = 0; i < 4; i++) {
                 if (hitMask & (1 << i)) {
@@ -215,10 +215,10 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F5C0(s32 arg) {
 void HyruleCastleBarrier_8049DEE8::fn_8011F314() {
     s32 i;
     for (i = 0; i < 3; i++) {
-        mEmitters[i] = spawnEmitter_8013CC50(field_0x4, &mPos, 0xC8, 0, 0, NULL, NULL, true, 1.0f);
+        mEmitters[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC8, 0, 0, NULL, NULL, true, 1.0f);
     }
-    field_0x250 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xC9, 0, 0, NULL, NULL, true, 1.0f);
-    field_0x254 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xC9, 0, 0, NULL, NULL, true, 1.0f);
+    field_0x250 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC9, 0, 0, NULL, NULL, true, 1.0f);
+    field_0x254 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC9, 0, 0, NULL, NULL, true, 1.0f);
     JGeometry::TVec3f pos1(mPos);
     JGeometry::TVec3f pos2(mPos);
     switch (field_0x234) {
@@ -252,8 +252,8 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F314() {
 void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
     switch (field_0x234) {
     case 1: {
-        JPABaseEmitter* e1 = spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
-        JPABaseEmitter* e2 = spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+        JPABaseEmitter* e1 = spawnEmitter_8013CC50(mLayer_0x4, pool_8053C8F8(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+        JPABaseEmitter* e2 = spawnEmitter_8013CC50(mLayer_0x4, inl_8011EEEC(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
         if (e1 != NULL) {
             fn_8013CAA4(e1, 1.5707964f);
         }
@@ -265,13 +265,13 @@ void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
     default:
         if (field_0x241) {
             for (s32 i = 0; i < 3; i++) {
-                spawnEmitter_8013CC50(field_0x4, getMidPos(i), 0x125, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, pool_8053C8FC(i), 0x125, 0, 0, NULL, NULL, true, 1.0f);
             }
-            spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, pool_8053C8F8(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, inl_8011EEEC(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
         } else {
-            spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, pool_8053C8F8(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, inl_8011EEEC(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
         }
         break;
     }
@@ -282,11 +282,13 @@ void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
 // unit's .sdata2 (32.0f, then 16.0f / 0.0f / the int-to-float double) ahead of
 // fn_8011EEEC's own 1.0f and pi / 2 (docs/RULES_CARD.md, "Literals before their
 // first visible use" (3)).
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getMidPos(s32 i) const {
+// R2 pool helper (one-statement body); was getMidPos.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::pool_8053C8FC(s32 i) const {
     return &JGeometry::TVec3f(mPos.x, mPos.y + 16.0f * (i - 1), 0.0f); // FAKEMATCH(crack-pass): address of a temporary returned (dangling); see docs/CRACK_PASS.md
 }
 
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos2() const {
+// R2 pool helper (inlined at 3 call sites); was getEndPos2.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::inl_8011EEEC() const {
     const JGeometry::TVec3f* p;
     switch (field_0x234) {
     case 1:
@@ -299,7 +301,8 @@ const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos2() const {
     return p;
 }
 
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos1() const {
+// R2 pool helper (inlined at 3 call sites); was getEndPos1.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::pool_8053C8F8() const {
     const JGeometry::TVec3f* p;
     switch (field_0x234) {
     case 1:

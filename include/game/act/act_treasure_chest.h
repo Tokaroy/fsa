@@ -25,10 +25,10 @@ public:
     bool fn_802EB27C();
 
     // The fields below are set in init() from the spawn flags (the actor's
-    // field_0x90 word): bits 0-7 are field_0x234, bits 8-11 field_0x238 and
+    // mSpawnParam_0x90 word): bits 0-7 are field_0x234, bits 8-11 field_0x238 and
     // bits 12-15 field_0x244 (-1 from 4 up).
     /* 0x230 */ s32 field_0x230; // 0, 2 or 3 by field_0x238
-    /* 0x234 */ s32 field_0x234; // the low byte of field_0x90, zeroed for some kinds
+    /* 0x234 */ s32 field_0x234; // the low byte of mSpawnParam_0x90, zeroed for some kinds
     /* 0x238 */ s32 field_0x238;
     /* 0x23C */ s32 mCell;       // fn_80226BC4's packed cell index of (mPos.x, mPos.y)
     /* 0x240 */ s32 field_0x240; // not yet known

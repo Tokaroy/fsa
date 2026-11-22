@@ -38,7 +38,7 @@ static const GXColor lbl_8053D930 = {0x36, 0x61, 0x82, 0xFF}; // fn_8016B910
 static const GXColor lbl_8053D934 = {0xCF, 0xE7, 0xE7, 0xFF}; // fn_8016B910
 
 // Forward declarations.
-void getMapTexView(JGeometry::TVec3f& center, JGeometry::TVec3f& half);
+void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half);
 
 cls_8016FDE0::cls_8016FDE0() {}
 
@@ -645,7 +645,7 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
         f32 scrollC = 0.0009765625f * (f32)(field_0x1c0 & 0x3FF);
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         JGeometry::TVec3f centerB(center);
         JGeometry::TVec3f centerC(center);
         JGeometry::TVec3f halfB(half);
@@ -738,7 +738,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
@@ -756,7 +756,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         GXEnd();
 
         f32 scroll = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.x -= scroll;
         center.y -= scroll;
         half.mul(JGeometry::TVec3f(3.0f, 2.25f, 3.0f));
@@ -780,7 +780,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
 
         f32 scrollX = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
         f32 scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.5f, 1.875f, 2.5f));
@@ -798,7 +798,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
 
         scrollX = 0.00024414063f * (f32)((field_0x1c0 + 3100) & 0xFFF);
         scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.x -= scrollX;
         center.y -= scrollY;
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
@@ -823,7 +823,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.mul(JGeometry::TVec3f(0.1f, 0.1f, 1.0f));
         center.add(JGeometry::TVec3f(0.2f, 0.2f, 0.0f));
         half.mul(JGeometry::TVec3f(0.7f, 0.525f, 1.0f));
@@ -847,7 +847,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
         GXEnd();
 
         f32 scroll = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.mul(JGeometry::TVec3f(0.1f, 0.1f, 1.0f));
         center.x -= scroll;
         center.y -= scroll;
@@ -872,7 +872,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
 
         f32 scrollX = 0.00024414063f * (f32)(field_0x1c0 & 0xFFF);
         f32 scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.mul(JGeometry::TVec3f(0.2f, 0.2f, 1.0f));
         center.x -= scrollX;
         center.y -= scrollY;
@@ -895,7 +895,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
 
         scrollX = 0.00024414063f * (f32)((field_0x1c0 + 3100) & 0xFFF);
         scrollY = 0.00024414063f * (f32)((field_0x1c0 + 1300) & 0xFFF);
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.mul(JGeometry::TVec3f(0.3f, 0.3f, 1.0f));
         center.x -= scrollX;
         center.y -= scrollY;
@@ -935,7 +935,7 @@ void GameRootSub24_8016A3AC::fn_8016B4D4() {
         JGeometry::TVec3f center2;
         JGeometry::TVec3f half1;
         JGeometry::TVec3f half2;
-        getMapTexView(center1, half1);
+        pool_8053D938(center1, half1);
         center2.set(center1);
         half2.set(half1);
         center1.mul(JGeometry::TVec3f(1.0f, 3.0f, 1.0f));
@@ -992,7 +992,7 @@ void GameRootSub24_8016A3AC::fn_8016B248() {
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.x -= 1.5f;
         center.y -= 0.5f;
         center.mul(JGeometry::TVec3f(0.5f, 0.5f, 1.0f));
@@ -1080,7 +1080,7 @@ void GameRootSub24_8016A3AC::fn_8016ADE0() {
         f32 scroll = 0.00048828125f * (f32)(field_0x1c0 & 0x7FF);
         JGeometry::TVec3f center;
         JGeometry::TVec3f half;
-        getMapTexView(center, half);
+        pool_8053D938(center, half);
         center.x -= scroll;
         center.y -= scroll;
         gGameRoot2_8053AB10->fn_8013B460();
@@ -1237,7 +1237,8 @@ void GameRootSub24_8016A3AC::fn_8016A7DC(J3DModel* model, const JGeometry::TVec3
 // fn_8016B910, fn_8016C2FC and fn_8016CB14 inline it. Its own copy created the
 // unit's first pool literals (0.125, 1, 0.5, 0, then the int-to-float double),
 // which come before fn_8016A7DC's 1.5 in the original .sdata2.
-void getMapTexView(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
+// R2 pool helper (inlined at 12 call sites); was getMapTexView.
+void pool_8053D938(JGeometry::TVec3f& center, JGeometry::TVec3f& half) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     TileMap_804AA858* map = gGameRoot2_8053AB10->field_0x20;
     f32 sx = 0.125f / (f32)map->field_0x2380;

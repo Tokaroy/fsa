@@ -88,8 +88,8 @@ void cls_804A61C8::updateBehavior_0x9C(u8 mapHit) {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
-    addBox(mSerial, &box, field_0x4);
+    fn_80239914(&box, mLayer_0x4, mSerial);
+    addBox(mSerial, &box, mLayer_0x4);
 }
 
 u8 cls_804A61C8::checkHitByPlayer_0x5C() {
@@ -104,7 +104,7 @@ u8 cls_804A61C8::checkHitByPlayer_0x5C() {
 // this code needs only r28-r31 and schedules the loads and the stores of the sprite parameters
 // after each other.
 void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
-    ResTIMG* res = (ResTIMG*)fn_804032E8('TIMG', lbl_804A61A8[field_0x98 + (arg0 ? 4 : 0)]);
+    ResTIMG* res = (ResTIMG*)fn_804032E8('TIMG', lbl_804A61A8[mDir_0x98 + (arg0 ? 4 : 0)]);
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos(mPos);
@@ -124,9 +124,9 @@ void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
     params.field_0x1c = arg1;
     params.field_0x1d = arg2;
     params.mMtx = mtx;
-    pos.x += mtx[0][0] * (0.5f * res->mSizeX - lbl_8046A470[field_0x98]);
-    pos.y += mtx[1][1] * (0.5f * res->mSizeY - lbl_8046A480[field_0x98]);
-    if (field_0x4 < 8) {
+    pos.x += mtx[0][0] * (0.5f * res->mSizeX - lbl_8046A470[mDir_0x98]);
+    pos.y += mtx[1][1] * (0.5f * res->mSizeY - lbl_8046A480[mDir_0x98]);
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
     }
 }

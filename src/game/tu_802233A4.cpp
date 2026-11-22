@@ -26,7 +26,7 @@ cls_804A6D00::~cls_804A6D00() {
 
 void cls_804A6D00::init() {
     ShadowLinkBase_804A6A00::init();
-    field_0x98 = field_0x90 & 3;
+    mDir_0x98 = mSpawnParam_0x90 & 3;
     mFlags &= ~0x100;
     mState = 4;
     mStateTimer = 0;
@@ -43,21 +43,21 @@ void cls_804A6D00::fn_80223AD8(s32 state) {
     switch (state) {
     case 5:
         mTargetSpeed = 2.5f;
-        mAnim.fn_801D22A0(field_0x98 + 0x14, 2);
-        field_0x2bc = spawnEmitter_8013CC50(field_0x4, &mPos, 0x116, 0, 0, NULL, NULL, true, 1.0f);
-        field_0x2c0 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x115, 0, 0, NULL, NULL, true, 1.0f);
+        mAnim.fn_801D22A0(mDir_0x98 + 0x14, 2);
+        field_0x2bc = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x116, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x2c0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x115, 0, 0, NULL, NULL, true, 1.0f);
         break;
     case 6: {
         mTargetSpeed = 0.0f;
-        field_0x3c.x = -field_0x3c.x;
-        field_0x3c.y = -field_0x3c.y;
-        field_0x3c.z = 0.0f;
-        field_0x3c.normalize();
-        field_0x3c.scale(1.2f);
-        field_0x3c.z = 4.0f;
-        mAnim.startAnim_801D22DC(field_0x98 + 0xC, 0, false);
-        if (!fn_801CD2F8(field_0x4)) {
-            s32 serial = getActorManager_801F856C()->fn_801F7884('LFGN', field_0x4);
+        mVel_0x3c.x = -mVel_0x3c.x;
+        mVel_0x3c.y = -mVel_0x3c.y;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.normalize();
+        mVel_0x3c.scale(1.2f);
+        mVel_0x3c.z = 4.0f;
+        mAnim.startAnim_801D22DC(mDir_0x98 + 0xC, 0, false);
+        if (!fn_801CD2F8(mLayer_0x4)) {
+            s32 serial = getActorManager_801F856C()->fn_801F7884('LFGN', mLayer_0x4);
             if (serial >= 0) {
                 ActorBase_804A5770* gen = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (gen != NULL) {
@@ -67,17 +67,17 @@ void cls_804A6D00::fn_80223AD8(s32 state) {
         }
         startSound_801F0E34(0x400EB, 0);
         JGeometry::TVec3f off(0.0f, 0.0f, 0.0f);
-        if (field_0x98 < 2 && field_0x98 >= 0) {
+        if (mDir_0x98 < 2 && mDir_0x98 >= 0) {
             off.set(0.0f, -8.0f, 0.0f);
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 0.0f, 4.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 0.0f, 4.0f, false);
         } else {
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
         }
         gGameRoot_8053AAF8->fn_80134DE4(1, 0);
-        JGeometry::TVec3f n(-field_0x3c.y, -field_0x3c.x, 0.0f);
+        JGeometry::TVec3f n(-mVel_0x3c.y, -mVel_0x3c.x, 0.0f);
         n.normalize();
         JGeometry::TVec3f at = mPos + off;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F601C(&at, 3, &n, 1.0f, 1.0f);
         }
         break;
@@ -86,11 +86,11 @@ void cls_804A6D00::fn_80223AD8(s32 state) {
     case 8:
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        mAnim.fn_801D22A0(field_0x98, 0);
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mAnim.fn_801D22A0(mDir_0x98, 0);
         if (state == 7) {
-            field_0x2b8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x565, 0, 1, NULL, NULL, true, 0.5f);
+            field_0x2b8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x565, 0, 1, NULL, NULL, true, 0.5f);
             startSound_801F0E34(0x4000E, 0);
         }
         break;
@@ -120,7 +120,7 @@ static inline void attackBox(cls_804A6D00* a, f32& x0, f32& y0, f32& x1, f32& y1
         x1 = 8.0f;
         y0 = x0;
         y1 = x1;
-        switch (a->field_0x98) {
+        switch (a->mDir_0x98) {
         case 0:
             moveBox(x0, y0, x1, y1, 16.0f, 0.0f);
             break;
@@ -149,13 +149,13 @@ void cls_804A6D00::fn_802238CC() {
         x1 += mPos.x;
         y1 += mPos.y;
         JGeometry::TVec3f p(x0, y0, 0.0f);
-        gBgRewrite_8053AC98->fn_802A20F0(&p, -1, field_0x4, 0, 0);
+        gBgRewrite_8053AC98->fn_802A20F0(&p, -1, mLayer_0x4, 0, 0);
         JGeometry::TVec3f q(x1, y0, 0.0f);
-        gBgRewrite_8053AC98->fn_802A20F0(&q, -1, field_0x4, 0, 0);
+        gBgRewrite_8053AC98->fn_802A20F0(&q, -1, mLayer_0x4, 0, 0);
         JGeometry::TVec3f r(x1, y1, 0.0f);
-        gBgRewrite_8053AC98->fn_802A20F0(&r, -1, field_0x4, 0, 0);
+        gBgRewrite_8053AC98->fn_802A20F0(&r, -1, mLayer_0x4, 0, 0);
         JGeometry::TVec3f t(x0, y1, 0.0f);
-        gBgRewrite_8053AC98->fn_802A20F0(&t, -1, field_0x4, 0, 0);
+        gBgRewrite_8053AC98->fn_802A20F0(&t, -1, mLayer_0x4, 0, 0);
     }
 }
 #pragma auto_inline reset
@@ -182,17 +182,17 @@ void cls_804A6D00::updateState_0x90(u8 mapHit) {
             if (mFlags & CLS_804A6A00_FLAG_0x2000) {
                 fn_80223AD8(5);
             } else {
-                field_0x3c.z = lbl_8053FE70;
+                mVel_0x3c.z = lbl_8053FE70;
             }
         }
         break;
     case 5: {
         u32 sound = 0x400E7;
-        if (fn_8022461C(&mPos, field_0x4) == 0x39) {
+        if (fn_8022461C(&mPos, mLayer_0x4) == 0x39) {
             sound = 0x400E8;
-        } else if (fn_80224B88(&mPos, field_0x4)) {
+        } else if (fn_80224B88(&mPos, mLayer_0x4)) {
             sound = 0x400E9;
-        } else if (fn_80224E88(&mPos, field_0x4)) {
+        } else if (fn_80224E88(&mPos, mLayer_0x4)) {
             sound = 0x400EA;
         }
         startSound_801F0E34(sound, 0);
@@ -217,8 +217,8 @@ void cls_804A6D00::updateState_0x90(u8 mapHit) {
             fn_801CDC8C(0x4000E);
             fn_80223AD8(8);
         } else if (mStateTimer % 6 == 0) {
-            field_0x98 = fn_801CD30C(field_0x98);
-            mAnim.startAnim_801D22DC(field_0x98, 0, false);
+            mDir_0x98 = fn_801CD30C(mDir_0x98);
+            mAnim.startAnim_801D22DC(mDir_0x98, 0, false);
         }
         break;
     case 8:
@@ -241,7 +241,7 @@ void cls_804A6D00::calcVelocity_0x88() {
         fn_80221250();
         break;
     case 6:
-        field_0x3c.z += lbl_8053EFB8;
+        mVel_0x3c.z += lbl_8053EFB8;
         break;
     default:
         EnemyBase_804A4808::calcVelocity_0x88();
@@ -273,7 +273,7 @@ u8 cls_804A6D00::attackPlayers_0x68() {
         mBox.i.y = y0;
         mBox.f.x = x1;
         mBox.f.y = y1;
-        fn_801F2B7C(field_0x114, -1, 1);
+        fn_801F2B7C(mParamAtcp_0x114, -1, 1);
         mBox.i.x = s0;
         mBox.i.y = s1;
         mBox.f.x = s2;

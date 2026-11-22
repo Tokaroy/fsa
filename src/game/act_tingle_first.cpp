@@ -59,7 +59,7 @@ void cls_804AADD8::init() {
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos(mPos);
     field_0x24c->fn_80316E50(layer, pos);
     field_0x260.i.x = -20.0f;
@@ -81,7 +81,7 @@ void cls_804AADD8::update() {
     box.f.y += mPos.y;
 
     if (field_0x230 < 9) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 
     switch (field_0x230) {
@@ -121,14 +121,14 @@ void cls_804AADD8::update() {
         break;
 
     case 5:
-        fn_8022FE80(field_0x234, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x234, mLayer_0x4, mSerial, false, false);
         {
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 s32 serial = mSerial;
-                if (talk(player, 0x50D, serial, field_0x4, mPos, 0x102)) {
+                if (talk(player, 0x50D, serial, mLayer_0x4, mPos, 0x102)) {
                     field_0x230 = 6;
-                    s32 layer = field_0x4;
+                    s32 layer = mLayer_0x4;
                     JGeometry::TVec3f effectPos(mPos);
                     field_0x24c->fn_80316E50(layer, effectPos);
                 }
@@ -137,24 +137,24 @@ void cls_804AADD8::update() {
         break;
 
     case 6:
-        fn_8022FE80(field_0x234, field_0x4, mSerial, true, false);
+        fn_8022FE80(field_0x234, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x234)) {
             field_0x230 = 7;
         }
         break;
 
     case 7:
-        fn_8022FE80(field_0x234, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x234, mLayer_0x4, mSerial, false, false);
         if (fn_8038470C(field_0x234, 0x50E)) {
             field_0x230 = 8;
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             JGeometry::TVec3f pos(mPos);
             field_0x24c->fn_80316E50(layer, pos);
         }
         break;
 
     case 8:
-        fn_8022FE80(field_0x234, field_0x4, mSerial, true, false);
+        fn_8022FE80(field_0x234, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x234, mSerial)) {
             field_0x230 = 9;
             field_0x234 = -1;
@@ -166,23 +166,23 @@ void cls_804AADD8::update() {
 
     case 9:
         if (field_0x240 >= 2) {
-            field_0x3c.x = 0.4f;
-            field_0x3c.z = 0.3f;
+            mVel_0x3c.x = 0.4f;
+            mVel_0x3c.z = 0.3f;
             field_0x230 = 10;
             getActorManager_801F856C()->fn_801F6884();
         }
         /* fallthrough */
     case 10:
         if (mPos.z >= 30.0f) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         box.set(field_0x260);
         box.i.x += mPos.x;
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        if (!fn_8022B978(field_0x4, &box, true)) {
+        if (!fn_8022B978(mLayer_0x4, &box, true)) {
             field_0x238 = 60;
             field_0x230 = 11;
         }
@@ -192,9 +192,9 @@ void cls_804AADD8::update() {
         mPos.x = 1364.0f;
         mPos.y = 920.0f;
         mPos.z = 0.0f;
-        field_0x4 = 0;
-        field_0x3c.x = 0.6f;
-        field_0x3c.z = 0.3f;
+        mLayer_0x4 = 0;
+        mVel_0x3c.x = 0.6f;
+        mVel_0x3c.z = 0.3f;
         field_0x230 = 12;
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         gGameRoot_8053AAF8->fn_80138B7C();
@@ -211,15 +211,15 @@ void cls_804AADD8::update() {
 
     case 13:
         if (mPos.z >= 30.0f) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         box.set(field_0x260);
         box.i.x += mPos.x;
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        if (!fn_8022B978(field_0x4, &box, true)) {
+        if (!fn_8022B978(mLayer_0x4, &box, true)) {
             fn_801F35AC();
         } else {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -269,7 +269,7 @@ void cls_804AADD8::draw() {
     if (field_0x230 == 0xC || field_0x230 == 0xB) {
         return;
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, field_0x23c + 0xC0, false, 2, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x23c + 0xC0, false, 2, -1, 0, 0, 0);
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x23c + 0xC0, NULL, 7, 1.0f, 1.0f);
 }
 
@@ -277,6 +277,7 @@ void cls_804AADD8::draw() {
 // 65536.0f (lbl_805418C0) leads the unit's .sdata2 pool ahead of draw's 1.0f
 // (lbl_805418C4), so the code using it sat in a plain function below draw
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 void cls_804AADD8::selectNearestPlayer() {
     s32 count = gGameRoot_8053AAF8->fn_80138A30();
     s32 bestPlayer = 0;

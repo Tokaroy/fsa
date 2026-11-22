@@ -78,18 +78,18 @@ void cls_804A4C58::init() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = 1.0f;
-    field_0x80.i.y = 1.0f;
-    field_0x80.f.x = -1.0f;
-    field_0x80.f.y = -1.0f;
+    mMapBox_0x80.i.x = 1.0f;
+    mMapBox_0x80.i.y = 1.0f;
+    mMapBox_0x80.f.x = -1.0f;
+    mMapBox_0x80.f.y = -1.0f;
     field_0xb0 = 0x40004;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x2A0;
     mLife = 140;
     mLifeBackup = mLife;
-    field_0x114 = 0;
+    mParamAtcp_0x114 = 0;
     field_0x196 = 1;
-    s32 room = field_0x4;
+    s32 room = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box;
     if (room < 8) {
@@ -100,7 +100,7 @@ void cls_804A4C58::init() {
     JGeometry::TVec2f p(mPos.x, mPos.y);
     while (p.y < box->f.y) {
         JGeometry::TVec3f probe(p.x, p.y, 0.0f);
-        if (isBlocked_0x4C(field_0x4, &probe)) {
+        if (isBlocked_0x4C(mLayer_0x4, &probe)) {
             // p is 8 bytes on the original's stack; fn_801CCCC4 only touches x and y.
             fn_801CCCC4((JGeometry::TVec3f*)&p);
             p.y += -24.0f;
@@ -268,9 +268,9 @@ void cls_804A4C58::fn_801D9C58(int state) {
         mBox2.set(mBox);
         mTargetSpeed = 0.0f;
         mSpeed = 0.0f;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
-        field_0xd8 = 0x10;
-        field_0xdc = 0x10;
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+        mHitTimer_0xd8 = 0x10;
+        mHitTimerStart_0xdc = 0x10;
         startSound_801F0E34(0x4005A, 0);
         break;
     case 20:
@@ -372,7 +372,7 @@ bool cls_804A4C58::fn_801D95F4() {
     } else {
         pos.set(-30.0f + mPos.x, -6.0f + mPos.y, 0.0f);
     }
-    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('BOIB', field_0x4, &pos, 0, -1, -1);
+    s32 serial = getActorManager_801F856C()->spawnActor_801F9484('BOIB', mLayer_0x4, &pos, 0, -1, -1);
     if (serial >= 0) {
         ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (bomb != NULL) {
@@ -400,7 +400,7 @@ bool cls_804A4C58::fn_801D95F4() {
             dir.set(dir.x * c - dir.y * s, dir.x * s + dir.y * c);
             dir.scale(2.4f);
             JGeometry::TVec3f vel(dir.x, dir.y, 0.0f);
-            bomb->field_0x3c = vel;
+            bomb->mVel_0x3c = vel;
             spawned = true;
         }
     }
@@ -412,7 +412,7 @@ bool cls_804A4C58::fn_801D95F4() {
 void cls_804A4C58::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
-        if (fn_801CD228(field_0x4)) {
+        if (fn_801CD228(mLayer_0x4)) {
             s32 p = 0;
             for (; p < 4; p++) {
                 if (JMAAbs(getPlayerPos_8023E724(p)->x - mPos.x) <= 80.0f ||
@@ -452,7 +452,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                 if (count > 0) {
                     JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
                     for (s32 i = 0; i < count; i++) {
-                        getActorManager_801F856C()->spawnActor_801F9484('ICHL', field_0x4, &pos, 0, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('ICHL', mLayer_0x4, &pos, 0, -1, -1);
                     }
                     startSound_801F0E34(0x40053, 0);
                 }
@@ -491,7 +491,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
                 if (count > 0) {
                     JGeometry::TVec3f pos(mPos.x, 16.0f + mPos.y, mPos.z);
                     for (s32 i = 0; i < count; i++) {
-                        getActorManager_801F856C()->spawnActor_801F9484('ICHL', field_0x4, &pos, 0, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('ICHL', mLayer_0x4, &pos, 0, -1, -1);
                     }
                     startSound_801F0E34(0x40053, 0);
                 }
@@ -501,7 +501,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
     case 8:
         if (mPos.y >= field_0x2d0) {
             mPos.y = field_0x2d0;
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 12.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 12.0f, 0.0f, false);
             gGameRoot_8053AAF8->fn_80134DE4(2, 0);
             fn_801D9C58(9);
         }
@@ -623,7 +623,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         startSound_801F0E34(0x40059, 0);
         if (mPos.y >= field_0x2d0) {
             mPos.y = field_0x2d0;
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 6.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 6.0f, 0.0f, false);
             gGameRoot_8053AAF8->fn_80134DE4(2, 0);
             fn_801D9C58(17);
         }
@@ -723,7 +723,7 @@ void cls_804A4C58::updateBehavior_0x9C(u8 mapHit) {
 void cls_804A4C58::checkFloor_0x80() {
     if (mPos.y > field_0x2d0) {
         mPos.y = field_0x2d0;
-        field_0x3c.y = 0.0f;
+        mVel_0x3c.y = 0.0f;
     }
     EnemyBase_804A4808::checkFloor_0x80();
 }
@@ -734,25 +734,25 @@ void cls_804A4C58::calcVelocity_0x88() {
         JGeometry::TVec2f dir(field_0x2d4[field_0x334].x - mPos.x, field_0x2d4[field_0x334].y - mPos.y);
         dir.normalize();
         dir.scale(mSpeed);
-        addCalc2_801F71A4(&field_0x3c.x, dir.x, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, dir.y, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, dir.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, dir.y, 0.3f, 1.0f);
         break;
     }
     default:
     {
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.x = 0.0f;
         switch (mState) {
         case 0x10:
         case 8:
-            field_0x3c.y += JMAAbs(lbl_8053EFB8);
+            mVel_0x3c.y += JMAAbs(lbl_8053EFB8);
             break;
         default:
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.y = 0.0f;
             break;
         }
     }
     }
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.z = 0.0f;
 }
 
 

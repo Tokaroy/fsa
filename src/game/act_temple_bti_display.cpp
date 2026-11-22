@@ -60,8 +60,8 @@ static const u32 sSoundTable[9] = {
 };
 
 void TempleBTIDisplay_8049CB04::init() {
-    field_0x238 = field_0x90 & 0xF;
-    field_0x234 = (field_0x90 >> 8) & 0xF;
+    field_0x238 = mSpawnParam_0x90 & 0xF;
+    field_0x234 = (mSpawnParam_0x90 >> 8) & 0xF;
     field_0x240 = 0.0f;
     field_0x23c = 0;
     field_0x244 = 0;
@@ -128,7 +128,7 @@ void TempleBTIDisplay_8049CB04::update() {
                 field_0x240 = -40.0f;
                 field_0x245 = 2;
             }
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 1.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 1.0f, 0.0f, false);
             gGameRoot_8053AAF8->fn_80134DE4(1, 0);
         } else {
             field_0x240 = -40.0f;
@@ -139,7 +139,7 @@ void TempleBTIDisplay_8049CB04::update() {
 
     if (field_0x244 != 0) {
         JGeometry::TBox2f box(mPos.x - 32.0f, y - 32.0f, mPos.x + 32.0f, y + 32.0f);
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 
     if (field_0x246 != 0) {

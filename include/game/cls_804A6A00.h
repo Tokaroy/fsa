@@ -16,14 +16,14 @@ public:
     ShadowLinkBase_804A6A00();
     virtual ~ShadowLinkBase_804A6A00() {}
     // 0x802217C8: EnemyBase::init, then the boxes, mFlags |= 0x300, mLife
-    // 1000 and the fields below from field_0x90.
+    // 1000 and the fields below from mSpawnParam_0x90.
     /* 0x0C */ virtual void init();
     // 0x80220F54.
     /* 0x20 */ virtual void draw();
     // 0x80221158.
     /* 0x60 */ virtual u8 checkHitByActor_0x60();
-    // 0x80221184: field_0x98 from the angle of field_0x3c, animation
-    // field_0x98 + 0xC, then sound 0x400C2.
+    // 0x80221184: mDir_0x98 from the angle of mVel_0x3c, animation
+    // mDir_0x98 + 0xC, then sound 0x400C2.
     /* 0x6C */ virtual void onHitByPlayer_0x6C();
     // 0x80221160.
     /* 0x74 */ virtual void onHitReactionEnd_0x74();
@@ -41,7 +41,7 @@ public:
     void fn_802212AC();
     void fn_80221250();
     // 0x80221670 (game/tu_80220F54.cpp, not written yet): called by
-    // act_shadow_link_jump's fn_8022089C before it aims field_0x3c.
+    // act_shadow_link_jump's fn_8022089C before it aims mVel_0x3c.
     void fn_80221670();
     // Sets the sprite animation and sound of `state` (0, 1, 2 ...).
     void fn_8022149C(s32 state);
@@ -49,9 +49,9 @@ public:
     // or a player is near (kinds 1, 2), or the timer reaches field_0x2ad.
     void fn_802216E8(s32 limit);
 
-    /* 0x2A8 */ s32 field_0x2a8; // bits 4-5 of field_0x90
-    /* 0x2AC */ u8 field_0x2ac;  // bits 8-9 of field_0x90: the kind
-    /* 0x2AD */ u8 field_0x2ad;  // bits 12-19 of field_0x90
+    /* 0x2A8 */ s32 field_0x2a8; // bits 4-5 of mSpawnParam_0x90
+    /* 0x2AC */ u8 field_0x2ac;  // bits 8-9 of mSpawnParam_0x90: the kind
+    /* 0x2AD */ u8 field_0x2ad;  // bits 12-19 of mSpawnParam_0x90
     /* 0x2B0 */ JGeometry::TVec2f field_0x2b0; // mPos.xy at init; fn_801CBB98's out point
 }; // Size: 0x2B8
 

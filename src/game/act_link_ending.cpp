@@ -111,7 +111,7 @@ static inline void spawnEmitters(LinkEnding_804AD858* self) {
     pos.y = 1728.0f;
     pos.z = 0.0f;
     for (s32 i = 0; i < 0x11; i++) {
-        spawnEmitter_8013CC50(self->field_0x4, &pos, lbl_80472820[i], 1, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(self->mLayer_0x4, &pos, lbl_80472820[i], 1, 1, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -190,7 +190,7 @@ void LinkEnding_804AD858::fn_8035EA48() {
 // to state 7 with base frame 0x10.
 void LinkEnding_804AD858::fn_8035E9A0() {
     cls_804A5958* partner =
-        static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x90));
+        static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSpawnParam_0x90));
     if (partner != NULL && partner->mPos.y >= 1810.0f) {
         field_0x248 = 0;
         field_0x250 = 0x3d;

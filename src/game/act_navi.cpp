@@ -81,8 +81,8 @@ cls_804A6708::~cls_804A6708() {
 
 void cls_804A6708::init() {
     EnemyBase_804A4808::init();
-    field_0x2a8 = (field_0x90 & 0xFFFF) + 0x12b;
-    s32 param = (field_0x90 >> 16) & 7;
+    field_0x2a8 = (mSpawnParam_0x90 & 0xFFFF) + 0x12b;
+    s32 param = (mSpawnParam_0x90 >> 16) & 7;
     if (param > 5) {
         param = 5;
     } else if (param < 0) {
@@ -90,30 +90,30 @@ void cls_804A6708::init() {
     }
     field_0x2ac = param;
 
-    if (!((field_0x90 >> 19) & 1)) {
+    if (!((mSpawnParam_0x90 >> 19) & 1)) {
         mFlags |= 0x10000;
     }
 
-    field_0x2ad = (field_0x90 >> 20) & 0x3F;
+    field_0x2ad = (mSpawnParam_0x90 >> 20) & 0x3F;
     if (field_0x2ad < 1) {
         field_0x2ad = 1;
     }
 
-    field_0x2b0 = (field_0x90 >> 26) & 0x1F;
+    field_0x2b0 = (mSpawnParam_0x90 >> 26) & 0x1F;
 
-    if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 0 && (field_0x90 >> 31)) {
+    if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 0 && (mSpawnParam_0x90 >> 31)) {
         mFlags |= 0x4000;
         if (field_0x2ac == 0) {
             mFlags |= 0x2000;
         }
-    } else if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 1 && (field_0x90 >> 31)) {
+    } else if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 1 && (mSpawnParam_0x90 >> 31)) {
         mFlags |= 0xA000;
         mFlags &= ~0x10000;
     } else {
         mFlags |= 0x2000;
     }
 
-    if ((field_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0) {
+    if ((mSpawnParam_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0) {
         switch (lbl_80529DEC.field_0x118) {
         case 1:
         case 2:
@@ -129,9 +129,9 @@ void cls_804A6708::init() {
 
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT | ENEMY_FLAG_NO_ATTACK | ENEMY_FLAG_KEEP_LIFE;
     mLife = 1000;
     mLifeBackup = mLife;
@@ -260,7 +260,7 @@ void cls_804A6708::fn_8021DFAC(s32 newState) {
                 if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == getField_0x4()) {
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     for (s32 j = 0; j < 4; j++) {
-                        spawnEmitter_8013CC50(field_0x4, &pos, lbl_8046A78C[p][j], 0, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8046A78C[p][j], 0, 0, NULL, NULL, true, 1.0f);
                     }
                     fn_80230FD0(p, 0x20063);
                 }
@@ -384,7 +384,7 @@ void cls_804A6708::updateState_0x90(u8 mapHit) {
         break;
     case 2:
         if (mStateTimer >= 45) {
-            field_0x2b4 = fn_801CCE3C(&mPos, field_0x4);
+            field_0x2b4 = fn_801CCE3C(&mPos, mLayer_0x4);
             if (field_0x2b4 < 0) {
                 field_0x2b4 = 0;
             }
@@ -424,9 +424,9 @@ void cls_804A6708::updateState_0x90(u8 mapHit) {
         if ((mFlags & 0x4000) && !fn_8021F064()->fn_8021F094()) {
             break;
         }
-        fn_8022FE80(field_0x2b4, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b4, mLayer_0x4, mSerial, false, false);
         if (field_0x2b4 == fn_8022FD8C(mSerial)) {
-            if (fn_8038C678(field_0x2b4, field_0x2a8, mSerial, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
+            if (fn_8038C678(field_0x2b4, field_0x2a8, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4002)) {
                 if (mFlags & 0x4000) {
                     fn_8021F064()->mFlags |= 1;
                 } else {
@@ -440,7 +440,7 @@ void cls_804A6708::updateState_0x90(u8 mapHit) {
         if (!(mFlags & 0x2000)) {
             break;
         }
-        fn_8022FE80(field_0x2b4, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x2b4, mLayer_0x4, mSerial, false, false);
         if (fn_803865B8(field_0x2b4) && fn_80384C58(field_0x2b4, mSerial)) {
             if (mFlags & 0x4000) {
                 fn_8021F064()->mFlags |= 2;
@@ -508,18 +508,18 @@ void cls_804A6708::updateBehavior_0x9C(u8 mapHit) {
 }
 
 void cls_804A6708::calcVelocity_0x88() {
-    field_0x3c.x = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.x = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.z = 0.0f;
     switch (mState) {
     case 4:
-        field_0x3c.z = 0.15f;
+        mVel_0x3c.z = 0.15f;
         break;
     case 7:
-        field_0x3c.z = -0.15f;
+        mVel_0x3c.z = -0.15f;
         break;
     case 9:
-        field_0x3c.z = 0.75f;
+        mVel_0x3c.z = 0.75f;
         break;
     }
     switch (mState) {
@@ -528,16 +528,16 @@ void cls_804A6708::calcVelocity_0x88() {
         JGeometry::TVec2f out;
         // fn_801D01A0 reads only (x, y) of its target, typed TVec3f* in EnemyBase.
         fn_801D01A0((const JGeometry::TVec3f*)&field_0x2c0, &out, FLT_MAX);
-        field_0x3c.x = out.x;
-        field_0x3c.y = out.y;
+        mVel_0x3c.x = out.x;
+        mVel_0x3c.y = out.y;
         break;
     }
     case 10:
-        field_0x3c.x = 0.116666675f;
-        field_0x3c.y = -0.40000004f;
+        mVel_0x3c.x = 0.116666675f;
+        mVel_0x3c.y = -0.40000004f;
         break;
     case 9:
-        field_0x3c.y = -0.75f;
+        mVel_0x3c.y = -0.75f;
         break;
     }
 }

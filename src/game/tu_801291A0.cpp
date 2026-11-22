@@ -6,12 +6,12 @@
 #include "game/ViewLayer.h"
 #include "game/act/tu_801291A0.h"
 
-// The 11 bits of field_0x90 that select an item, the bit each sets in
+// The 11 bits of mSpawnParam_0x90 that select an item, the bit each sets in
 // field_0x280 and the item id it adds to mItems.
 static const s32 lbl_80465000[11] = {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 static const s32 lbl_8046502C[11] = {18, 19, 20, 21, 22, 23, 24, 25, 26, 4, 4};
 static const s32 lbl_80465058[11] = {10, 3, 4, 8, 6, 5, 7, 1, 9, 2, 11};
-// The bits of field_0x90 that add kind 0..3 to mKinds.
+// The bits of mSpawnParam_0x90 that add kind 0..3 to mKinds.
 static const s32 lbl_80465084[4] = {16, 17, 18, 19};
 
 // Whether the actor is NOT one of the item actors this one spawns (false for
@@ -27,7 +27,7 @@ static inline bool isNotSpawnedItem(u32 id) {
 }
 
 void cls_8049E5B8::init() {
-    mKind = field_0x90 & 0xF;
+    mKind = mSpawnParam_0x90 & 0xF;
     field_0x280 |= 2;
     // 11 entries, one more than mItems holds: the last lands on mKinds[0],
     // which is set again below.
@@ -36,7 +36,7 @@ void cls_8049E5B8::init() {
         mItems[i] = 10;
     }
     for (i = 0; i < 11; i++) {
-        if (((field_0x90 >> lbl_80465000[i]) & 1) == 1) {
+        if (((mSpawnParam_0x90 >> lbl_80465000[i]) & 1) == 1) {
             field_0x280 |= 1 << lbl_8046502C[i];
             mItems[mItemCount] = lbl_80465058[i];
             mItemCount++;
@@ -47,7 +47,7 @@ void cls_8049E5B8::init() {
     mKinds[2] = 1;
     mKinds[3] = 1;
     for (i = 0; i < 4; i++) {
-        if (((field_0x90 >> lbl_80465084[i]) & 1) == 1) {
+        if (((mSpawnParam_0x90 >> lbl_80465084[i]) & 1) == 1) {
             mKinds[mKindCount] = i;
             mKindCount++;
         }
@@ -125,7 +125,7 @@ void cls_8049E5B8::fn_8012952C(s32 state) {
 // ordered 1.0f, 10.0f, 0.8f in the original (ours 10.0f, 1.0f, 0.8f).
 bool cls_8049E5B8::fn_80129200() {
     JGeometry::TVec3f pos = mPos;
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (viewLayerFlag(layer) == 0) {
         pos.z = 10.0f;
     }
@@ -139,7 +139,7 @@ bool cls_8049E5B8::fn_80129200() {
     }
     switch (kind) {
     case 0:
-        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, field_0x4, &pos, field_0x280, -1, -1);
+        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, mLayer_0x4, &pos, field_0x280, -1, -1);
         break;
     case 2: {
         s32 item = mItems[(s32)(mItemCount * gGameRoot_8053AAF8->mRandom.get_ufloat_1())];
@@ -152,15 +152,15 @@ bool cls_8049E5B8::fn_80129200() {
         } else {
             arg = item | 0x400180;
         }
-        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LSTI, field_0x4, &pos, arg, -1, -1);
+        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LSTI, mLayer_0x4, &pos, arg, -1, -1);
         startSound_801F0E34(0x3004A, 0);
         break;
     }
     case 3:
-        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NNJN, field_0x4, &pos, 1, -1, -1);
+        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NNJN, mLayer_0x4, &pos, 1, -1, -1);
         break;
     default:
-        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, field_0x4, &pos, 0, -1, -1);
+        mSpawned = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, mLayer_0x4, &pos, 0, -1, -1);
         break;
     }
     mTimer = 0;

@@ -26,7 +26,7 @@ public:
     // Not in the binary: plain functions that update and fn_802C2C30 inline.
     bool dropAtPlayer();
     bool bounceOffTile();
-    bool fallOnTile(u16 tile);
+    bool inl_802C2C30(u16 tile);
     // 0x802C1674 / 0x802C1778 (act_small_key's range, not written yet): no
     // arguments besides the key; Player_804A6F38::fn_80242560 calls them on
     // every 'KEY0' actor (fn_802C1778 also on the key a player holds).
@@ -52,7 +52,7 @@ public:
     // 0x802C1D90: passes the key's (0x230, 0x234) position and 0x238 layer to
     // GameView's fn_802D6C10 (view from getGameView_802D6A9C()), then clears mAlive.
     void fn_802C1D90();
-    // 0x802C1DFC: at the key's own layer (field_0x4 < 8) plays effect 0x503
+    // 0x802C1DFC: at the key's own layer (mLayer_0x4 < 8) plays effect 0x503
     // at mPos; from layer 8 up spawns a KMRI actor there instead. Then passes
     // the (0x230, 0x234) position and 0x238 layer to GameView's fn_802D6C10
     // and clears mAlive.

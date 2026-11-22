@@ -17,9 +17,9 @@ public:
     /* 0x20 */ virtual void draw();
 
     void fn_8035680C();
-    void launch();
+    void pool_805427F0();
     void updateAnim();
-    void addRandomDelay();
+    void pool_805427E0();
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;

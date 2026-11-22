@@ -566,7 +566,7 @@ static const KaeporaStep* lbl_804ADA98[12] = {
 
 // FIXME(shotgun): 99.58 %, regalloc-only; behaviour drift.
 void KaeporaGaeboraEnding_804ADAC8::init() {
-    field_0x3c.zero();
+    mVel_0x3c.zero();
     field_0x230 = 0;
     field_0x234 = 0;
     field_0x238 = 0;
@@ -579,9 +579,9 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x260 = field_0x264 = 0;
     field_0x268 = 0.0f;
     field_0x26C = 0.0f;
-    field_0x270 = field_0x90 & 7;
+    field_0x270 = mSpawnParam_0x90 & 7;
     field_0x274 = 0;
-    field_0x250 = (field_0x90 >> 3) & 0x1F;
+    field_0x250 = (mSpawnParam_0x90 >> 3) & 0x1F;
     field_0x2B0 = 1;
     field_0x280 = 0;
     field_0x288.x = field_0x288.y = field_0x288.z = 0.0f;
@@ -589,10 +589,10 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
     field_0x2B4 = NULL;
     field_0x2B8 = NULL;
     field_0x29C = NULL;
-    if (!(field_0x90 & 0x100)) {
+    if (!(mSpawnParam_0x90 & 0x100)) {
         if (lbl_80474290[field_0x250] == 1) {
             field_0x2B0 = 0;
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EOWL, field_0x4, &mPos, field_0x90 | 0x100, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EOWL, mLayer_0x4, &mPos, mSpawnParam_0x90 | 0x100, -1, -1);
             field_0x298 = lbl_804AD9B0[field_0x250];
             field_0x284 = lbl_804AD958[field_0x250];
         } else {
@@ -610,19 +610,19 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
     } else {
         field_0x238 = lbl_80474008[field_0x270 - 1];
         fn_80360914();
-        if (field_0x90 & 0x100) {
-            field_0x2B4 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, mHeight, mDepth, NULL, NULL, true, 1.0f);
-            field_0x2B8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x171, mHeight, mDepth, NULL, NULL, true, 1.0f);
+        if (mSpawnParam_0x90 & 0x100) {
+            field_0x2B4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, mHeight, mDepth, NULL, NULL, true, 1.0f);
+            field_0x2B8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x171, mHeight, mDepth, NULL, NULL, true, 1.0f);
             if (field_0x2B4 != NULL) {
                 field_0x2B4->setGlobalEnvColor(lbl_804742E0[field_0x270 - 1][0], lbl_804742E0[field_0x270 - 1][1],
                                                lbl_804742E0[field_0x270 - 1][2]);
             }
         }
     }
-    if (!(field_0x90 & 0x100)) {
+    if (!(mSpawnParam_0x90 & 0x100)) {
         s32 i;
         if (field_0x250 == 0x12) {
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ELK2, field_0x4, &mPos, 0, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_ELK2, mLayer_0x4, &mPos, 0, -1, -1);
             static JGeometry::TVec3f offsets[4] = {
                 JGeometry::TVec3f(-18.0f, -126.0f, 0.0f),
                 JGeometry::TVec3f(18.0f, -126.0f, 0.0f),
@@ -630,11 +630,11 @@ void KaeporaGaeboraEnding_804ADAC8::init() {
                 JGeometry::TVec3f(26.0f, -156.0f, 0.0f),
             };
             for (i = 0; i < 4; i++) {
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &(mPos + offsets[i]),
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, mLayer_0x4, &(mPos + offsets[i]),
                                                                 (((i + 0x26) << 5) | 4) | 0x80000000, -1, -1);
             }
         } else if (field_0x250 == 0x13) {
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, field_0x4, &mPos, 0x10, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_EETC, mLayer_0x4, &mPos, 0x10, -1, -1);
             field_0x230 = 1;
             fn_80230498(0, &JGeometry::TVec3f(0.0f, 0.0f, 0.0f), field_0x238 + field_0x23C, 0xFF, -0x80, -0x80, true);
         }
@@ -683,7 +683,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::drawOther() {
     params.field_0x10.a = 200;
     s32 frame = field_0x23C + 0x25C;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 
@@ -710,7 +710,7 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
         }
         s32 frame = field_0x238 + field_0x23C;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
@@ -723,7 +723,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x279, &params, -1, 1.0f, 1.0f);
     params.field_0x10.a = 200;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
     }
     params.reset();
     params.field_0x1f = 0;
@@ -747,7 +747,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     params.field_0x10.a = 200;
     mPos.y += -10.5f;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
     }
     mPos.y -= -10.5f;
     mPos = savedPos;
@@ -801,7 +801,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
         params.field_0x1d = -1;
         s32 frame = field_0x23C + 0x3E0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
     }
 }
@@ -845,9 +845,9 @@ inline void KaeporaGaeboraEnding_804ADAC8::resetStep(s32 idx) {
 }
 
 
-// The facing (0-3) of the velocity field_0x3c (fn_80360914, fn_8036003C).
+// The facing (0-3) of the velocity mVel_0x3c (fn_80360914, fn_8036003C).
 inline void KaeporaGaeboraEnding_804ADAC8::updateFacing() {
-    u16 a = (s32)(JMath::atanTable_.atan2_(field_0x3c.y, field_0x3c.x) * 10430.378f);
+    u16 a = (s32)(JMath::atanTable_.atan2_(mVel_0x3c.y, mVel_0x3c.x) * 10430.378f);
     if (a >= 0x2000 && a < 0x6000) {
         field_0x274 = 3;
     } else if (a >= 0x6000 && a < 0xa000) {
@@ -894,7 +894,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     field_0x25C = 0.0f;
     if (field_0x270 != 0 && field_0x27C == 6 && field_0x2B8 != NULL) {
         field_0x2B8->becomeInvalidEmitter();
-        field_0x2B8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x171, mHeight, mDepth, NULL, NULL, true, 1.0f);
+        field_0x2B8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x171, mHeight, mDepth, NULL, NULL, true, 1.0f);
     }
     field_0x27C = (s32)*field_0x284++;
     switch (field_0x27C) {
@@ -955,9 +955,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
             mSway.fn_8021ABC0();
         } else if (field_0x2B8 != NULL) {
             field_0x2B8->becomeInvalidEmitter();
-            field_0x2B8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, mHeight, mDepth, NULL, NULL, true, 1.0f);
+            field_0x2B8 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, mHeight, mDepth, NULL, NULL, true, 1.0f);
         }
-        field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+        mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
         field_0x254 = 0;
         return;
     case 7:
@@ -1027,8 +1027,8 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80360914() {
     default:
         return;
     }
-    field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
-    field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
+    mVel_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
+    mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
     field_0x248 = field_0x244;
     if (field_0x270 == 0) {
         updateFacing();
@@ -1078,15 +1078,15 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         }
     }
     if (field_0x27C == 0) {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
         if (fabs(field_0x288.x - mPos.x) < field_0x268 && fabs(field_0x288.y - mPos.y) < field_0x268) {
             mPos = field_0x288;
             fn_80360914();
             return;
         }
     } else if (field_0x27C == 1) {
-        mPos += field_0x3c;
-        field_0x25C += PSVECMag(&field_0x3c);
+        mPos += mVel_0x3c;
+        field_0x25C += PSVECMag(&mVel_0x3c);
         if (field_0x25C >= field_0x258) {
             field_0x25C = 0.0f;
             fn_80360914();
@@ -1100,9 +1100,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         } else {
             field_0x254 -= step;
         }
-        field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
-        field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
-        mPos += field_0x3c;
+        mVel_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
+        mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
+        mPos += mVel_0x3c;
         field_0x264 += (s16)step;
         if (field_0x264 >= field_0x260) {
             s16 over = field_0x264 - field_0x260;
@@ -1112,9 +1112,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
             if (over != 0) {
                 mPos = savedPos;
                 field_0x254 += over;
-                field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
-                field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
-                mPos += field_0x3c;
+                mVel_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
+                mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
+                mPos += mVel_0x3c;
             }
             fn_80360914();
             return;
@@ -1126,9 +1126,9 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8036003C() {
         } else {
             field_0x254 -= step;
         }
-        field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
-        field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
-        mPos += field_0x3c;
+        mVel_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
+        mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
+        mPos += mVel_0x3c;
         field_0x264 += (s16)step;
         if (field_0x264 >= field_0x260) {
             fn_80360914();
@@ -1166,8 +1166,8 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FD6C() {
         mPtmfIndex = 0;
         field_0x27C = 0;
         field_0x254 = (s32)(JMath::atanTable_.atan2_(field_0x288.y - mPos.y, field_0x288.x - mPos.x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-        field_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
-        field_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
+        mVel_0x3c.x = field_0x268 * JMath::sincosTable_.cosShort(field_0x254);
+        mVel_0x3c.y = field_0x268 * JMath::sincosTable_.sinShort(field_0x254);
         u16 a = field_0x254;
         if (a >= 0x2000 && a < 0x6000) {
             field_0x274 = 3;
@@ -1205,14 +1205,14 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035FB64() {
     s16 prev = field_0x254;
     s32 step = (s32)(65536.0f * (JMath::fastReciprocal(6.283184f * field_0x26C) * 1.75f));
     field_0x254 = prev - step;
-    field_0x3c.x = 1.75f * JMath::sincosTable_.cosShort(field_0x254);
-    field_0x3c.y = 1.75f * JMath::sincosTable_.sinShort(field_0x254);
-    field_0x3c.z = 0.2f;
-    mPos += field_0x3c;
+    mVel_0x3c.x = 1.75f * JMath::sincosTable_.cosShort(field_0x254);
+    mVel_0x3c.y = 1.75f * JMath::sincosTable_.sinShort(field_0x254);
+    mVel_0x3c.z = 0.2f;
+    mPos += mVel_0x3c;
     field_0x264 += (s16)step;
     if (field_0x26C >= 16.0f) {
         fn_80360914();
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
     }
 }
 
@@ -1262,10 +1262,10 @@ void KaeporaGaeboraEnding_804ADAC8::fn_8035F9C8() {
     s16 prev = field_0x254;
     s32 step = (s32)(65536.0f * (JMAFastReciprocal(6.283184f * field_0x26C) * 1.3f));
     field_0x254 = prev - step;
-    field_0x3c.x = 1.3f * JMath::sincosTable_.cosShort(field_0x254);
-    field_0x3c.y = 1.3f * JMath::sincosTable_.sinShort(field_0x254);
-    field_0x3c.z = -0.2f;
-    mPos += field_0x3c;
+    mVel_0x3c.x = 1.3f * JMath::sincosTable_.cosShort(field_0x254);
+    mVel_0x3c.y = 1.3f * JMath::sincosTable_.sinShort(field_0x254);
+    mVel_0x3c.z = -0.2f;
+    mPos += mVel_0x3c;
     field_0x264 += (s16)step;
     if (field_0x26C < 3.0f) {
         fn_803613D0();

@@ -32,7 +32,7 @@ public:
     void fn_80443DAC();
     void fn_80443D5C();
     // Not in the binary (inlined everywhere): field_0x48 = 10 to 20 frames, at random.
-    void resetCursorTimer();
+    void pool_80543D70();
     void fn_80443B0C(char* dst, s32 msgId, s32 value);
 
     /* 0x00 */ // vtable

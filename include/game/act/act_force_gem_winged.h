@@ -33,7 +33,7 @@ public:
     /* 0x264 */ s32 field_0x264; // circling angle (sincosTable_ index)
     /* 0x268 */ s32 field_0x268; // circling step (100, or -100 for kind 3)
     /* 0x26C */ s32 field_0x26c;
-    /* 0x270 */ s32 field_0x270; // bits 0-2 of field_0x90
+    /* 0x270 */ s32 field_0x270; // bits 0-2 of mSpawnParam_0x90
     /* 0x274 */ s32 field_0x274; // bit 12
     /* 0x278 */ s32 field_0x278;
     /* 0x27C */ s32 field_0x27c;

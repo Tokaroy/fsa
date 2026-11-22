@@ -46,16 +46,16 @@ inline s32 LogMonitorNpc_804AD278::findLog() {
 }
 
 void LogMonitorNpc_804AD278::init() {
-    mMode = field_0x90 & 0xF;
+    mMode = mSpawnParam_0x90 & 0xF;
     switch (mMode) {
     case 0:
     case 2:
     case 3:
-        field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+        mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
         break;
     case 1:
-        field_0x80.set(-16.0f, -16.0f, 16.0f, 16.0f);
+        mMapBox_0x80.set(-16.0f, -16.0f, 16.0f, 16.0f);
         mBox.set(-16.0f, -16.0f, 16.0f, 16.0f);
         break;
     }

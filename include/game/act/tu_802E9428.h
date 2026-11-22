@@ -16,7 +16,7 @@ public:
     bool fn_802E948C(f32 target, s32 frames);
     void fn_802E94F4();
     // Not in the binary: plain functions that fn_802E94F4 and update inline.
-    void updateCamera();
+    void pool_805412F8();
     void stepZoom();
     u8 tickTimer();
     bool fn_802E9884(JGeometry::TVec3f pos);
@@ -26,7 +26,7 @@ public:
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ u8 field_0x238[4];
     /* 0x23C */ s32 field_0x23c;
-    /* 0x240 */ ActorBase_804A5770* field_0x240; // the actor the camera follows (its field_0x3c is read as a vector)
+    /* 0x240 */ ActorBase_804A5770* field_0x240; // the actor the camera follows (its mVel_0x3c is read as a vector)
     /* 0x244 */ JGeometry::TVec3f field_0x244; // target focus
     /* 0x250 */ JGeometry::TVec2f field_0x250; // current focus
     /* 0x258 */ JGeometry::TVec2f field_0x258;
@@ -39,7 +39,7 @@ public:
     /* 0x278 */ f32 field_0x278; // step per frame
     /* 0x27C */ s32 field_0x27c;
     /* 0x280 */ s32 field_0x280; // level within the stage (GameView field_0x8)
-    /* 0x284 */ s32 field_0x284; // stage (GameView field_0x4)
+    /* 0x284 */ s32 field_0x284; // stage (GameView mLayer_0x4)
     /* 0x288 */ u16 field_0x288;
     /* 0x28A */ u16 field_0x28a;
     /* 0x28C */ u8 field_0x28c;

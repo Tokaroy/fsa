@@ -1,6 +1,6 @@
 // cls_804A48B0 (game/act/tu_801D2C60.h): the sub-base of EnemyBase_804A4808
 // whose draw shows the "enemy_gc_sob.bin" cels 0x10-0x13 (a projectile that
-// moves by field_0x3c, hits a player and vanishes after two more frames).
+// moves by mVel_0x3c, hits a player and vanishes after two more frames).
 
 #include "game/GameAudio.h"
 
@@ -25,13 +25,13 @@ void cls_804A48B0::init() {
     EnemyBase_804A4808::init();
     mBox.set(-2.0f, -2.0f, 2.0f, 2.0f);
     mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
     mFlags |= 0x280;
     mLife = 1000;
     mLifeBackup = mLife;
     field_0x194 = 1;
-    field_0x114 = 2;
+    mParamAtcp_0x114 = 2;
     mAnim.fn_801D2608(lbl_8053A130, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
@@ -42,23 +42,23 @@ void cls_804A48B0::update() {
         mTimer--;
         if (mTimer == 0) {
             startSound_801F0E34(0x400D1, 0);
-            fn_801CB538(field_0x4, &mPos, 0, 0);
+            fn_801CB538(mLayer_0x4, &mPos, 0, 0);
             mAlive = false;
         }
     } else {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
         if (!contains(box, mPos)) {
             mAlive = false;
-        } else if (fn_801F2A10(-1, field_0x98, false, false)) {
+        } else if (fn_801F2A10(-1, mDir_0x98, false, false)) {
             mTimer = 2;
-        } else if (fn_801F2B7C(field_0x114, -1, 1)) {
+        } else if (fn_801F2B7C(mParamAtcp_0x114, -1, 1)) {
             mAlive = false;
         }
     }
     if (mAlive) {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
     }
     EnemyBase_804A4808::updateAnim_0x94();
 }
@@ -71,8 +71,8 @@ void cls_804A48B0::draw() {
 }
 
 void cls_804A48B0::fn_801D2CF0(const JGeometry::TVec2f* v) {
-    field_0x3c.x = v->x;
-    field_0x3c.y = v->y;
-    field_0x3c.z = 0.0f;
-    field_0x98 = fn_801CF0F4();
+    mVel_0x3c.x = v->x;
+    mVel_0x3c.y = v->y;
+    mVel_0x3c.z = 0.0f;
+    mDir_0x98 = fn_801CF0F4();
 }

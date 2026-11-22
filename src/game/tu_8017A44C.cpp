@@ -12,7 +12,7 @@
 static const u32 lbl_80466880[5] = {'TOMI', 'BMST', 'IPOT', 'IBBM', 'NULL'};
 
 // .data: the 3-entry-per-direction frame tables update() reads (index
-// field_0x98 * 3 + field_0x248).
+// mDir_0x98 * 3 + field_0x248).
 s32 lbl_804A10A0[24] = {3, 4, 0, 8, 9, 5, 0xD, 0xE, 0xA, 0x12, 0x13, 0xF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 s32 lbl_804A1100[24] = {0, 1, 2, 5, 6, 7, 0xA, 0xB, 0xC, 0xF, 0x10, 0x11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -26,10 +26,10 @@ static inline void spawnHitEffect(s32 layer, const JGeometry::TVec3f* pos) {
 }
 
 void UnknownSWBM_804A1160::init() {
-    field_0x80.i.x = -2.0f;
-    field_0x80.i.y = -2.0f;
-    field_0x80.f.x = 2.0f;
-    field_0x80.f.y = 2.0f;
+    mMapBox_0x80.i.x = -2.0f;
+    mMapBox_0x80.i.y = -2.0f;
+    mMapBox_0x80.f.x = 2.0f;
+    mMapBox_0x80.f.y = 2.0f;
     mBox.i.x = -4.0f;
     mBox.i.y = -4.0f;
     mBox.f.x = 4.0f;
@@ -37,9 +37,9 @@ void UnknownSWBM_804A1160::init() {
 
     // The 0x90 word of the spawner's parameters: bits 4-5 go to 0x98, bits 0-3
     // to the player (0x258) and bits 8-11 to 0x25C.
-    field_0x98 = (field_0x90 >> 4) & 3;
-    field_0x258 = field_0x90 & 0xF;
-    field_0x25c = (field_0x90 >> 8) & 0xF;
+    mDir_0x98 = (mSpawnParam_0x90 >> 4) & 3;
+    field_0x258 = mSpawnParam_0x90 & 0xF;
+    field_0x25c = (mSpawnParam_0x90 >> 8) & 0xF;
 
     field_0x248 = 0;
     field_0x24c = 0;
@@ -56,8 +56,8 @@ void UnknownSWBM_804A1160::init() {
     field_0x234 = 0;
     field_0x238 = 0;
     field_0x254 = 0;
-    field_0x118 = fn_8023B630(field_0x258);
-    field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+    mParamAtcn_0x118 = fn_8023B630(field_0x258);
+    mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
     field_0x23c = 2;
     field_0x230 = 0;
     startSound_801F0E34(0x30026, 0);
@@ -138,10 +138,10 @@ bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
 }
 
 void UnknownSWBM_804A1160::update() {
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
 
     if (field_0x25c == 1) {
-        s16 angle = fn_801F6874(field_0x98);
+        s16 angle = fn_801F6874(mDir_0x98);
         angle += 0x2000;
         const JMath::TSinCosTable<11, f32>& sincos = JMath::sincosTable_;
         for (s32 i = 0; i < 2; i++) {
@@ -149,7 +149,7 @@ void UnknownSWBM_804A1160::update() {
             pos.set(mPos);
             pos.x += 8.0f * sincos.sinShort(angle);
             pos.y += 8.0f * sincos.cosShort(angle);
-            gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x258, field_0x4, 0, 0);
+            gBgRewrite_8053AC98->fn_802A20F0(&pos, field_0x258, mLayer_0x4, 0, 0);
             angle -= 0x4000;
         }
     }
@@ -160,7 +160,7 @@ void UnknownSWBM_804A1160::update() {
             mAlive = false;
             return;
         }
-        spawnHitEffect(field_0x4, &mPos);
+        spawnHitEffect(mLayer_0x4, &mPos);
         field_0x240 = 0;
         field_0x244 = 0x24;
         field_0x230 = 2;
@@ -177,26 +177,26 @@ void UnknownSWBM_804A1160::update() {
                 field_0x248 = 0;
                 field_0x240 = 100;
                 field_0x244 = 0x88;
-                switch (field_0x98) {
+                switch (mDir_0x98) {
                 case 0:
-                    field_0x3c.x = 5.0f;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = 5.0f;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.z = 0.0f;
                     break;
                 case 1:
-                    field_0x3c.x = -5.0f;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = -5.0f;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.z = 0.0f;
                     break;
                 case 2:
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = 5.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = 5.0f;
+                    mVel_0x3c.z = 0.0f;
                     break;
                 case 3:
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = -5.0f;
-                    field_0x3c.z = 0.0f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = -5.0f;
+                    mVel_0x3c.z = 0.0f;
                     break;
                 }
                 field_0x230 = 1;
@@ -204,8 +204,8 @@ void UnknownSWBM_804A1160::update() {
         }
         break;
     case 1:
-        if (fn_801F2A10(field_0x258, field_0x98, true, true)) {
-            spawnHitEffect(field_0x4, &mPos);
+        if (fn_801F2A10(field_0x258, mDir_0x98, true, true)) {
+            spawnHitEffect(mLayer_0x4, &mPos);
             mAlive = false;
             return;
         }
@@ -219,21 +219,21 @@ void UnknownSWBM_804A1160::update() {
         // fall through
     case 2:
         if (field_0x240 == 0) {
-            field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+            mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         }
         if (field_0x244 == 0) {
             mAlive = false;
         }
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         }
         break;
     }
 
     if (field_0x230 == 0) {
-        field_0x254 = lbl_804A10A0[field_0x98 * 3 + field_0x248];
+        field_0x254 = lbl_804A10A0[mDir_0x98 * 3 + field_0x248];
     } else {
-        field_0x254 = lbl_804A1100[field_0x98 * 3 + field_0x248];
+        field_0x254 = lbl_804A1100[mDir_0x98 * 3 + field_0x248];
     }
     if (field_0x23c > 0) {
         field_0x23c--;
@@ -256,12 +256,12 @@ void UnknownSWBM_804A1160::draw() {
         params.field_0x30 = 0x11;
     }
     s32 frame = field_0x254 + 0x12d;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f,
                                               1.0f);
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, field_0x254 + 0x12d, false, 2, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x254 + 0x12d, false, 2, -1, 0, 0, 0);
 }
 
 UnknownSWBM_804A1160::~UnknownSWBM_804A1160() {}

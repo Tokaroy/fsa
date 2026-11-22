@@ -1053,7 +1053,7 @@ void ConnectScreen_804B0F10::fn_803FAA88() {
     if (field_0x240[0] >= 28) {
         if (field_0x1cc == 13) {
             if (field_0x1c0 == field_0x1ac + 2) {
-                enterState13();
+                pool_80543748();
             } else {
                 fn_803F2B78();
             }
@@ -1296,7 +1296,7 @@ void ConnectScreen_804B0F10::fn_803F943C() {
     if (field_0x240[0] >= 23) {
         setEntries(this);
         if (field_0x1c0 == field_0x1ac + 2) {
-            enterState13();
+            pool_80543748();
         } else {
             fn_803F2B78();
         }
@@ -1713,9 +1713,9 @@ void ConnectScreen_804B0F10::fn_803F726C() {
     }
     if (field_0x240[0] >= 48) {
         if (field_0x1cc == 0) {
-            enterState13();
+            pool_80543748();
         } else if (field_0x1a8 == 0) {
-            enterState13();
+            pool_80543748();
         } else if (field_0x1a8 == 1) {
             if (field_0x25e == 0) {
                 field_0x1cc = 10;
@@ -2564,6 +2564,7 @@ void ConnectScreen_804B0F10::fn_803F1C70() {
 // generated before it (tools/pool.py).
 // fn_803FC46C's fade overlay: steps the alpha (field_0x25d) up, runs the screen change at full
 // black, steps it down again, and draws field_0x5c over the screen.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void ConnectScreen_804B0F10::drawFade() {
     if (field_0x25e != 0) {
         switch (field_0x25e) {
@@ -2593,7 +2594,8 @@ void ConnectScreen_804B0F10::drawFade() {
 
 // Enters state 13 like fn_803F1C5C and fn_803F1C18 below enter 11 and 12; when field_0x1ac is 1 it also
 // draws lbl_80529DEC.field_0x64 (0 to 2) at random when it is unset.
-void ConnectScreen_804B0F10::enterState13() {
+// R2 pool helper (inlined at 4 call sites); was enterState13.
+void ConnectScreen_804B0F10::pool_80543748() {
     field_0x1c8 = field_0x1c4;
     field_0x1c4 = 13;
     field_0x350 = 6;

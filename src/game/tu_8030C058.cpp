@@ -903,6 +903,7 @@ void Camera_804AA9E4::fn_8030C380(JGeometry::TVec3f* out) {
 // .sdata2 has 1.0f between fn_8030C2A8's unsigned int -> float bias and fn_8030C380's signed one,
 // so it was generated here (tools/pool.py). The viewport and scissor of the screen rect, with the
 // default depth range.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void Camera_804AA9E4::setScreenRectViewport() {
     u32 w = field_0x144.f.x - field_0x144.i.x;
     u32 h = field_0x144.f.y - field_0x144.i.y;

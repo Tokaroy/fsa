@@ -11,7 +11,7 @@
 static const u16 lbl_80542D38[4] = {0xFB, 0xFC, 0xFD, 0xFE};
 
 inline void LeafEffectNPC_804AE2E0::spawnLeaves() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80542D38[field_0x234], 0, 2, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80542D38[field_0x234], 0, 2, NULL, NULL, true, 1.0f);
     if (field_0x23c != 0xFFFFFFFF) {
         startSound_801F0E34(field_0x23c, 0);
     }
@@ -19,12 +19,12 @@ inline void LeafEffectNPC_804AE2E0::spawnLeaves() {
 
 // The tile code under pos on the actor's layer.
 static inline u16 tileCodeAt(LeafEffectNPC_804AE2E0* self, const JGeometry::TVec2f* pos) {
-    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->field_0x4, fn_80226BC4(pos, self->field_0x4)) &
+    return gGameRoot2_8053AB10->field_0x20->fn_802F9908(self->mLayer_0x4, fn_80226BC4(pos, self->mLayer_0x4)) &
            0x3FF;
 }
 
 void LeafEffectNPC_804AE2E0::init() {
-    u32 type = field_0x90 & 0x3FF;
+    u32 type = mSpawnParam_0x90 & 0x3FF;
     if (type == 0x1E1) {
         field_0x244 = mPos;
         mPos.x += 16.0f;

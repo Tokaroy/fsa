@@ -37,17 +37,17 @@ cls_8049DB90::cls_8049DB90() {
 
 void cls_8049DB90::init() {
     cls_8049D140::init();
-    field_0x234 = field_0x90 & 0xF;
-    field_0x98 = (s8)((field_0x90 >> 4) & 3);
+    field_0x234 = mSpawnParam_0x90 & 0xF;
+    mDir_0x98 = (s8)((mSpawnParam_0x90 >> 4) & 3);
     switch (field_0x234) {
     case 1:
         fn_8011B878(0xD);
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.fn_800FEB78(0);
         break;
     case 2:
         fn_8011B878(0x16);
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.fn_800FEB78(1);
         mPos.y += 80.0f;
         break;
@@ -55,17 +55,17 @@ void cls_8049DB90::init() {
         mSequencer.fn_800FEB78(0);
         break;
     }
-    mSequencer.mDir = field_0x98;
+    mSequencer.mDir = mDir_0x98;
 }
 
-// The hop that update's states share: field_0x3c gets (vx, vy, base - 0.2 * t);
+// The hop that update's states share: mVel_0x3c gets (vx, vy, base - 0.2 * t);
 // once t > 1 and the actor is back at z <= 0, it stops and the hop is over.
 static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
-    self->field_0x3c.z = base - 0.2f * t;
-    self->field_0x3c.y = vy;
-    self->field_0x3c.x = vx;
+    self->mVel_0x3c.z = base - 0.2f * t;
+    self->mVel_0x3c.y = vy;
+    self->mVel_0x3c.x = vx;
     if (t > 1 && self->mPos.z <= 0.0f) {
-        self->mPos.z = self->field_0x3c.x = self->field_0x3c.y = self->field_0x3c.z = 0.0f;
+        self->mPos.z = self->mVel_0x3c.x = self->mVel_0x3c.y = self->mVel_0x3c.z = 0.0f;
         return true;
     }
     return false;
@@ -200,8 +200,8 @@ void cls_8049DB90::update() {
     case 34: // the original's jump table runs to state 34; nothing is done there
         break;
     }
-    mPos.add(field_0x3c);
-    mSequencer.mDir = field_0x98;
+    mPos.add(mVel_0x3c);
+    mSequencer.mDir = mDir_0x98;
     if (field_0x238 == 16) {
         if (field_0x230) {
             mSequencer.fn_800FE8C0();
@@ -217,7 +217,7 @@ void cls_8049DB90::update() {
 static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s32 frame,
                                  SpriteParams_801F5AE0* params, s32 flags) {
     if (actor->mSpriteParams.mMtx == NULL) {
-        fn_801EF830(actor->field_0x4, &actor->mPos, params, flags, name, frame, NULL);
+        fn_801EF830(actor->mLayer_0x4, &actor->mPos, params, flags, name, frame, NULL);
     }
 }
 
@@ -233,8 +233,8 @@ void cls_8049DB90::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
     drawShadowSob(this, "player_sob.bin", mSequencer.mFrame, &params, 7);
-    drawSob(field_0x4, getPos(), "player_sob.bin", mSequencer.mFrame);
-    fn_803075AC(mSerial, field_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
+    drawSob(mLayer_0x4, getPos(), "player_sob.bin", mSequencer.mFrame);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
 
 void cls_8049DB90::vfunc_0x54() {
@@ -330,10 +330,10 @@ static inline void setupMoveToPlayer(cls_8049DB90* self) {
 
 static inline void spawnAppearEmitters(cls_8049DB90* self) {
     JGeometry::TVec3f pos(self->mPos);
-    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41D, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41E, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x41F, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(self->field_0x4, &pos, 0x420, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x41D, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x41E, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x41F, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x420, 0, 0, NULL, NULL, true, 1.0f);
     self->startSound_801F0E34(0x30091, 0);
 }
 
@@ -386,32 +386,32 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         mDrawEnabled = true;
         break;
     case 16:
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.mState = 1;
         mSequencer.mDir = 3;
         break;
     case 17:
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         mSequencer.mState = 0;
         mSequencer.mDir = 2;
         break;
     case 18:
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         mSequencer.mState = 0;
         mSequencer.mDir = 2;
         spawnFlash();
         break;
     case 20:
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.fn_800FEB78(1);
         break;
     case 21:
         mSequencer.fn_800FEB78(0);
         break;
     case 22:
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.fn_800FEB78(1);
-        field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         break;
     case 23:
         mSequencer.fn_800FEB78(4);
@@ -421,7 +421,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         }
         break;
     case 24:
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         mSequencer.fn_800FEB78(0);
         field_0x23c = 0;
         break;
@@ -438,7 +438,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         break;
     case 27:
         mSequencer.fn_800FEB78(0);
-        mPos.z = field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
         break;
     case 28:
         startSound_801F0E34(0x400C7, 0);
@@ -448,14 +448,14 @@ void cls_8049DB90::fn_8011B878(s32 index) {
         mPos.z = 0.0f;
         break;
     case 30:
-        field_0x98 = 3;
+        mDir_0x98 = 3;
         mSequencer.fn_800FEB78(0);
         break;
     case 31:
         startSound_801F0E34(0x400C7, 0);
         break;
     case 32:
-        field_0x98 = 2;
+        mDir_0x98 = 2;
         mSequencer.fn_800FEB78(1);
         break;
     case 33:
@@ -469,19 +469,21 @@ void cls_8049DB90::fn_8011B878(s32 index) {
 // between fn_8011B3F0's and fn_8011B878's.
 
 // Effect 0x33B at mPos with y offset by -8.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DB90::spawnFlash() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -8.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-// State 9 of update: the hop of state 4 with field_0x3c.y -0.5 and field_0x3c.x left alone.
+// State 9 of update: the hop of state 4 with mVel_0x3c.y -0.5 and mVel_0x3c.x left alone.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DB90::hopDown() {
     s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9];
-    field_0x3c.z = 4.5f - 0.2f * t;
-    field_0x3c.y = -0.5f;
+    mVel_0x3c.z = 4.5f - 0.2f * t;
+    mVel_0x3c.y = -0.5f;
     if (t > 1 && mPos.z <= 0.0f) {
-        mPos.z = field_0x3c.x = field_0x3c.y = field_0x3c.z = 0.0f;
+        mPos.z = mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
     }
 }
 

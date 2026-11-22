@@ -61,10 +61,10 @@ public:
     // 0x55C is at most 0x14.
     bool fn_801C53C4();
     // act_shadow_link_2.cpp: gravity, EnemyBase's applyGravity_0x84 override. Unless
-    // field_0xd8 > 0 && field_0xf8 == 2, field_0x3c.z += lbl_8053EFB8, clamped
+    // mHitTimer_0xd8 > 0 && mKnockbackKind_0xf8 == 2, mVel_0x3c.z += lbl_8053EFB8, clamped
     // at -lbl_8053EFBC from below.
     /* 0x84 */ virtual void applyGravity_0x84();
-    // act_shadow_link_2.cpp: copies field_0x98 (direction) into the animation
+    // act_shadow_link_2.cpp: copies mDir_0x98 (direction) into the animation
     // sequencer's mDir, advances the sequencer unless it is in state 0x13 past
     // its first tick or mFlags has bit 0x80000, then updates the hit box.
     void fn_801C2E70();

@@ -21,9 +21,9 @@ public:
     // field_0x264 at field_0x238[i] (called by draw).
     void fn_80103348();
     /* 0x230 */ s32 field_0x230;
-    /* 0x234 */ s32 mMode; // field_0x90 & 0xF; init() branches on it
+    /* 0x234 */ s32 mMode; // mSpawnParam_0x90 & 0xF; init() branches on it
     /* 0x238 */ Vec field_0x238[3]; // copies of mPos (init)
-    /* 0x25C */ s32 field_0x25c; // (field_0x90 >> 22) & 0x1F
+    /* 0x25C */ s32 field_0x25c; // (mSpawnParam_0x90 >> 22) & 0x1F
     /* 0x260 */ JPABaseEmitter* mEmitter260; // released by the destructor
     /* 0x264 */ s32 field_0x264[3];
     /* 0x270 */ u8 field_0x270[0x18]; // not yet known

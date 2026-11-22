@@ -23,14 +23,14 @@ public:
     void fn_80112654(s32 kind);
     // No address (dead-stripped; update inlines both in cases 12 and 13).
     bool moveToGoal();
-    void shrinkCrystal();
+    void pool_8053C628();
     /* 0x54 */ virtual void vfunc_0x54(); // checks the Maiden's state against the compare table and calls fn_80112654
     /* 0x58 */ virtual s32 vfunc_0x58();
     /* 0x5C */ virtual s32 vfunc_0x5C();
 
     /* 0x230 */ u8 field_0x230;
     /* 0x231 */ u8 field_0x231[3];
-    /* 0x234 */ s32 mMode; // field_0x90 & 0x1F, set by init
+    /* 0x234 */ s32 mMode; // mSpawnParam_0x90 & 0x1F, set by init
     /* 0x238 */ s32 field_0x238; // returned by vfunc_0x58
     /* 0x23C */ s32 field_0x23c;
     /* 0x240 */ s32 field_0x240;

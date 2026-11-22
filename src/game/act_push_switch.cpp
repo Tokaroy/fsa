@@ -3,7 +3,7 @@
 #include "game/act/act_push_switch.h"
 
 void PushSwitch_804A7B38::init() {
-    switch ((field_0x90 >> 17) & 3) {
+    switch ((mSpawnParam_0x90 >> 17) & 3) {
     case 0:
         mBox.set(-15.0f, 0.0f, 0.0f, 16.0f * getLength());
         break;
@@ -17,7 +17,7 @@ void PushSwitch_804A7B38::init() {
         mBox.set(0.0f, 16.0f, 16.0f * getLength(), 31.0f);
         break;
     }
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
 }
 
 // FIXME: 99.37%. regalloc-only: the player-position x / y loads take f1 / f0 in the
@@ -31,7 +31,7 @@ void PushSwitch_804A7B38::update() {
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (getPlayerLayer_8023DE58(i) == getField_0x4() && fn_8022DB04(i)) {
-            s32 direction = (field_0x90 >> 17) & 3;
+            s32 direction = (mSpawnParam_0x90 >> 17) & 3;
             if (direction != fn_80230CFC(i)) {
                 continue;
             }
@@ -47,8 +47,8 @@ void PushSwitch_804A7B38::update() {
         }
     }
     s32 needed = 1;
-    if ((field_0x90 >> 22) & 0x1F) {
-        needed = (field_0x90 >> 22) & 0x1F;
+    if ((mSpawnParam_0x90 >> 22) & 0x1F) {
+        needed = (mSpawnParam_0x90 >> 22) & 0x1F;
     }
     if (count >= needed) {
         setScreenFlag_0x30(0xFF, true);

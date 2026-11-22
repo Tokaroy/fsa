@@ -14,8 +14,8 @@ public:
     /* 0x08 */ virtual ~InvisibleNPCWall_804AE6D0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    /* 0x230 */ s32 field_0x230; // top 5 bits of field_0x90
-    /* 0x234 */ s32 field_0x234; // mode, (field_0x90 >> 22) & 0x1F; 0 and 1 seen
+    /* 0x230 */ s32 field_0x230; // top 5 bits of mSpawnParam_0x90
+    /* 0x234 */ s32 field_0x234; // mode, (mSpawnParam_0x90 >> 22) & 0x1F; 0 and 1 seen
 }; // Size: 0x238
 
 #endif

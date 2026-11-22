@@ -538,7 +538,7 @@ void cls_804B146C::fn_804263A8() {
     field_0xf0->fn_8044172C();
 }
 
-static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y);
+static void pool_80543A58(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y);
 
 static inline bool isPaused() {
     if (gGameRoot_8053AAF8->field_0x4c == 11) {
@@ -561,14 +561,14 @@ void cls_804B146C::fn_80425F6C() {
         f32 y;
         if (field_0x1e8[i] > 0 && lbl_8050EC80.getCurrentFile().field_0x69 != 0) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            calcHudPos(screen, sx, sy, &x, &y);
+            pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x8[i]->draw(x, y, field_0x4c);
             field_0x208[i] = 0;
         } else if (!isPaused() && fn_802366CC(fn_8022EA0C(i)) > 0 && fn_802366CC(fn_8022EA0C(i)) < 300) {
             gGameRoot2_8053AB10->field_0x24->fn_8030C5F0(getPlayerPos_8023E724(fn_8022EA0C(i)), false, false, &screen);
-            calcHudPos(screen, sx, sy, &x, &y);
+            pool_80543A58(screen, sx, sy, &x, &y);
             field_0x4c->setOrtho(0.0f, 0.0f, sx, sy, -10000.0f, 10000.0f);
             field_0x4c->setPort();
             field_0x2c[i]->draw(x, y, field_0x4c);
@@ -1434,6 +1434,7 @@ void cls_804B146C::fn_80421D78(s32 player) {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
 void cls_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
     if (val >= 0x60) {
         field_0x4->search(lbl_8048E300[player][bar])->resize(field_0xf4, field_0x4->search(lbl_8048E300[player][bar])->getHeight());
@@ -1445,7 +1446,8 @@ void cls_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
 }
 
 // A projected screen position in the HUD's ortho space, relative to the centre (both callers inline it).
-static void calcHudPos(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y) {
+// R2 pool helper (inlined at 2 call sites); was calcHudPos.
+static void pool_80543A58(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y) {
     f32 px = sx * (screen.x / JFWDisplay::getManager()->getEfbWidth());
     f32 py = sy * (screen.y / JFWDisplay::getManager()->getEfbHeight());
     *x = px - JFWDisplay::getManager()->getEfbWidth() / 2.0f;

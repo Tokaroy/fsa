@@ -25,7 +25,7 @@ public:
     /* 0x23C */ JPABaseEmitter* mEmitter23c; // released by the destructor
     /* 0x240 */ JPABaseEmitter* mEmitter240; // released by the destructor
     /* 0x244 */ s32 field_0x244; // 1 while the circle is active, 0 when the view hides it
-    /* 0x248 */ s32 field_0x248; // field_0x90 & 7 (set by init)
+    /* 0x248 */ s32 field_0x248; // mSpawnParam_0x90 & 7 (set by init)
     /* 0x24C */ s32 field_0x24c; // countdown, 0x14 when init activates the circle
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254;

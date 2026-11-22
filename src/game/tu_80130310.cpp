@@ -47,16 +47,16 @@ void cls_8049EA88::init() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
-    field_0x23c = (field_0x90 >> 22) & 0x1F;
-    field_0x240 = (field_0x90 >> 17) & 0x1F;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
+    field_0x23c = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x240 = (mSpawnParam_0x90 >> 17) & 0x1F;
 }
 
 void cls_8049EA88::vfunc_0x10() {
-    s32 serial = getActorManager_801F856C()->fn_801F7884('OPGA', field_0x4);
+    s32 serial = getActorManager_801F856C()->fn_801F7884('OPGA', mLayer_0x4);
     while (serial != -1) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor == NULL) {
@@ -97,8 +97,8 @@ void cls_8049EA88::update() {
         field_0x24c++;
         if (field_0x24c >= 120) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
-            if (a != NULL && a->field_0x98 != 1) {
-                a->field_0x98 = 1;
+            if (a != NULL && a->mDir_0x98 != 1) {
+                a->mDir_0x98 = 1;
                 static_cast<cls_8049E350*>(a)->fn_80125BF4();
             }
         }
@@ -144,7 +144,7 @@ void cls_8049EA88::update() {
             sub->field_0x284 = 1;
             sub->field_0x28c = 0.05f;
         }
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         bool done = false;
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
@@ -184,13 +184,13 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
     if (mode == 1) {
         serial = field_0x234;
     }
-    fn_8022FE80(0, field_0x4, serial, true, false);
+    fn_8022FE80(0, mLayer_0x4, serial, true, false);
     if (fn_8038BD08(0, msg, getField_0x4(), mPos, 0x22)) {
         switch (mode) {
         case 0: {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234);
             if (a != NULL) {
-                a->field_0x98 = value;
+                a->mDir_0x98 = value;
                 static_cast<cls_8049E350*>(a)->fn_80125C58(true);
             }
             break;
@@ -198,7 +198,7 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
         case 1: {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
             if (a != NULL) {
-                a->field_0x98 = value;
+                a->mDir_0x98 = value;
                 static_cast<cls_8049E350*>(a)->fn_80125C58(true);
             }
             break;
@@ -206,11 +206,11 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
         case 2: {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
             if (a != NULL) {
-                a->field_0x98 = value;
+                a->mDir_0x98 = value;
                 static_cast<cls_8049E350*>(a)->fn_80125C58(true);
                 ActorBase_804A5770* b = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234);
                 if (b != NULL) {
-                    b->field_0x98 = value;
+                    b->mDir_0x98 = value;
                 }
             }
             break;

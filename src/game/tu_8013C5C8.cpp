@@ -63,7 +63,7 @@ static inline void depthPos(JGeometry::TVec3f& p, const JGeometry::TVec3f* pos, 
 cls_8049F184 lbl_8053AB18;
 
 // Forward declarations.
-void set2DDrawInfo(JPADrawInfo& info);
+void pool_8053CE10(JPADrawInfo& info);
 
 cls_8049F184::~cls_8049F184() {}
 
@@ -127,31 +127,31 @@ EffectSystem_8049F178::~EffectSystem_8049F178() {
 void EffectSystem_8049F178::fn_8013DDEC() {
     mEmitterManager->forceDeleteAllEmitter();
     mEmitterNum = 0;
-    addTrackedEmitter(0x347, 0, 0);
-    addTrackedEmitter(0x346, 0, 0);
-    addTrackedEmitter(0x345, 0, 0);
-    addTrackedEmitter(0x357, 0, 0);
-    addTrackedEmitter(0x358, 0, 0);
-    addTrackedEmitter(0x348, 0, 0);
-    addTrackedEmitter(0x35C, 0, 0);
-    addTrackedEmitter(0x54D, 1, 0);
-    addTrackedEmitter(0x349, 0, 0);
-    addTrackedEmitter(0x34A, 0, 0);
-    addTrackedEmitter(0x34B, 0, 0);
-    addTrackedEmitter(0x34C, 0, 1);
-    addTrackedEmitter(0x34D, 0, 1);
-    addTrackedEmitter(0x354, 0, 0);
-    addTrackedEmitter(0x355, 0, 0);
-    addTrackedEmitter(0x356, 0, 0);
-    addTrackedEmitter(0x351, 0, 0);
-    addTrackedEmitter(0x352, 0, 0);
-    addTrackedEmitter(0x353, 0, 0);
-    addTrackedEmitter(0x34E, 0, 0);
-    addTrackedEmitter(0x34F, 0, 0);
-    addTrackedEmitter(0x350, 0, 0);
-    addTrackedEmitter(0x359, 0, 0);
-    addTrackedEmitter(0x35A, 0, 0);
-    addTrackedEmitter(0x35B, 0, 0);
+    inl_8013DDEC(0x347, 0, 0);
+    inl_8013DDEC(0x346, 0, 0);
+    inl_8013DDEC(0x345, 0, 0);
+    inl_8013DDEC(0x357, 0, 0);
+    inl_8013DDEC(0x358, 0, 0);
+    inl_8013DDEC(0x348, 0, 0);
+    inl_8013DDEC(0x35C, 0, 0);
+    inl_8013DDEC(0x54D, 1, 0);
+    inl_8013DDEC(0x349, 0, 0);
+    inl_8013DDEC(0x34A, 0, 0);
+    inl_8013DDEC(0x34B, 0, 0);
+    inl_8013DDEC(0x34C, 0, 1);
+    inl_8013DDEC(0x34D, 0, 1);
+    inl_8013DDEC(0x354, 0, 0);
+    inl_8013DDEC(0x355, 0, 0);
+    inl_8013DDEC(0x356, 0, 0);
+    inl_8013DDEC(0x351, 0, 0);
+    inl_8013DDEC(0x352, 0, 0);
+    inl_8013DDEC(0x353, 0, 0);
+    inl_8013DDEC(0x34E, 0, 0);
+    inl_8013DDEC(0x34F, 0, 0);
+    inl_8013DDEC(0x350, 0, 0);
+    inl_8013DDEC(0x359, 0, 0);
+    inl_8013DDEC(0x35A, 0, 0);
+    inl_8013DDEC(0x35B, 0, 0);
     JKRArchive* archive = lbl_80529DEC.field_0x10;
     if (archive != NULL) {
         for (s32 i = 0; i < 5; i++) {
@@ -171,7 +171,8 @@ void EffectSystem_8049F178::fn_8013DDEC() {
 // `group` at the origin with the queue callback (cls_8049F15C, whose
 // executeAfter emits the queued positions), held (continuous, not creating)
 // in the next tracked slot with `word`.
-void EffectSystem_8049F178::addTrackedEmitter(u16 id, u8 group, s32 word) {
+// R2 pool helper (inlined at 25 call sites); was addTrackedEmitter.
+void EffectSystem_8049F178::inl_8013DDEC(u16 id, u8 group, s32 word) {
     static cls_8049F15C callback;
     JPABaseEmitter*& emitter = mEmitters[mEmitterNum];
     emitter = mEmitterManager->createSimpleEmitterID(JGeometry::TVec3f(0.0f, 0.0f, 0.0f), id, group, 0, &callback, NULL);
@@ -215,7 +216,7 @@ void EffectSystem_8049F178::fn_8013DB2C() {
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
         JPADrawInfo info;
         gGameRoot2_8053AB10->fn_8013B490();
-        set2DDrawInfo(info);
+        pool_8053CE10(info);
         mEmitterManager->draw(&info, 4);
     }
 }
@@ -244,7 +245,7 @@ void EffectSystem_8049F178::fn_8013D6E4() {
         mEmitterManager->draw(&info, 3);
         gGameRoot2_8053AB10->field_0x34->capture(0, 0);
         gGameRoot2_8053AB10->fn_8013B490();
-        set2DDrawInfo(info2d);
+        pool_8053CE10(info2d);
         mEmitterManager->draw(&info2d, 5);
         gGameRoot2_8053AB10->fn_8013B438();
         GXSetAlphaUpdate(GX_FALSE);
@@ -255,7 +256,7 @@ void EffectSystem_8049F178::fn_8013D6E4() {
 void EffectSystem_8049F178::fn_8013D5D4() {
     JPADrawInfo info;
     gGameRoot2_8053AB10->fn_8013B490();
-    set2DDrawInfo(info);
+    pool_8053CE10(info);
     if (!gGameRoot_8053AAF8->fn_80134CC8()) {
         mEmitterManager->draw(&info, 2);
     }
@@ -527,7 +528,8 @@ u8 setEmitterPos_8013CB44(JPABaseEmitter* emitter, const JGeometry::TVec3f* pos,
 // 0.5, double, ...), ahead of setEmitterPos_8013CB44. All three callers also
 // default-construct a second JPADrawInfo here that nothing reads (two
 // PSMTXIdentity calls on its own stack slot); it is the `unused` below.
-void set2DDrawInfo(JPADrawInfo& info) {
+// R2 pool helper (inlined at 3 call sites); was set2DDrawInfo.
+void pool_8053CE10(JPADrawInfo& info) {
     JPADrawInfo unused;
     PSMTXCopy(gGameRoot2_8053AB10->field_0x10->mPosMtx, info.mCamMtx);
     int width = JUTVideo::getManager()->getFbWidth();

@@ -109,8 +109,8 @@ JGeometry::TVec2f lbl_804D5730[17] = {
 };
 
 void UnknownENDM_804AA0FC::init() {
-    field_0x284 = getGameView_802D6A9C()->field_0x4;
-    field_0x280 = getGameView_802D6A9C()->field_0x8;
+    field_0x284 = getGameView_802D6A9C()->mStage_0x4;
+    field_0x280 = getGameView_802D6A9C()->mLevel_0x8;
     field_0x23c = 0;
     field_0x230 = 0;
     field_0x28d = 0;
@@ -217,20 +217,20 @@ void UnknownENDM_804AA0FC::update() {
             s32 stage = lbl_8046F280_AC[field_0x28c];
             s32 level = lbl_8046F280_AC[field_0x28c + 1];
             GameView_804A9950* view = getGameView_802D6A9C();
-            view->field_0x4 = stage;
-            view->field_0x8 = level;
+            view->mStage_0x4 = stage;
+            view->mLevel_0x8 = level;
             getGameView_802D6A9C()->fn_802D9CD8();
             s32 prevLevel = field_0x280;
             s32 prevStage = field_0x284;
             view = getGameView_802D6A9C();
-            view->field_0x4 = prevStage;
-            view->field_0x8 = prevLevel;
+            view->mStage_0x4 = prevStage;
+            view->mLevel_0x8 = prevLevel;
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 field_0x240 = getActorManager_801F856C()->mActors[i];
                 if (field_0x240 != NULL && field_0x240->mActorId == 'EOWL' && field_0x240->mAlive == true &&
-                    (field_0x240->field_0x90 & 0x100) == 0 &&
-                    (field_0x230 < 4 || field_0x230 > 6 || (field_0x240->field_0x90 & 7) != 0)) {
+                    (field_0x240->mSpawnParam_0x90 & 0x100) == 0 &&
+                    (field_0x230 < 4 || field_0x230 > 6 || (field_0x240->mSpawnParam_0x90 & 7) != 0)) {
                     field_0x23c = 5;
                     field_0x244 = field_0x240->mPos;
                     field_0x250 = lbl_804D5730[field_0x230];
@@ -272,7 +272,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x297 = 1;
         } else {
             field_0x298 = 0;
-            updateCamera();
+            pool_805412F8();
             break;
         }
         field_0x28d = *field_0x290;
@@ -283,8 +283,8 @@ void UnknownENDM_804AA0FC::update() {
         s32 stage = lbl_8046F280_AC[field_0x28c];
         s32 level = lbl_8046F280_AC[field_0x28c + 1];
         GameView_804A9950* view = getGameView_802D6A9C();
-        view->field_0x4 = stage;
-        view->field_0x8 = level;
+        view->mStage_0x4 = stage;
+        view->mLevel_0x8 = level;
         if (field_0x28d == 0) {
             s32 dir[2];
             dir[0] = 0;
@@ -309,8 +309,8 @@ void UnknownENDM_804AA0FC::update() {
         s32 prevLevel = field_0x280;
         s32 prevStage = field_0x284;
         view = getGameView_802D6A9C();
-        view->field_0x4 = prevStage;
-        view->field_0x8 = prevLevel;
+        view->mStage_0x4 = prevStage;
+        view->mLevel_0x8 = prevLevel;
         field_0x23c = 6;
         field_0x288 = (s32)(field_0x244.x / 512.0f);
         field_0x28a = (s32)(field_0x244.y / 384.0f);
@@ -361,13 +361,13 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 200;
             }
         } else {
-            updateCamera();
+            pool_805412F8();
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
                 JGeometry::TVec3f owlPos = owl->mPos;
                 JGeometry::TBox2f view = gGameRoot2_8053AB10->field_0x24->field_0x164;
-                if ((owl->field_0x90 & 7) == 0) {
+                if ((owl->mSpawnParam_0x90 & 7) == 0) {
                     view.i.x -= 16.0f;
                     view.i.y -= 16.0f;
                     view.f.x += 16.0f;
@@ -416,7 +416,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x231 = 0;
         } else {
-            updateCamera();
+            pool_805412F8();
         }
         break;
     }
@@ -508,7 +508,7 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
         field_0x250.x = tx;
         field_0x250.y = ty;
     } else {
-        JGeometry::TVec3f vel = field_0x240->field_0x3c;
+        JGeometry::TVec3f vel = field_0x240->mVel_0x3c;
         f32 dx = field_0x250.x - tx;
         f32 dy = field_0x250.y - ty;
         f32 dist = JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy));
@@ -529,12 +529,13 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
             field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
-    updateCamera();
+    pool_805412F8();
 }
 
 // Not in the binary: a plain function that fn_802E94F4 and update inline. The pool puts it here:
 // its -30.0f comes after fn_802E948C's conversion constant and before fn_802E94F4's literals.
-void UnknownENDM_804AA0FC::updateCamera() {
+// R2 pool helper (inlined at 4 call sites); was updateCamera.
+void UnknownENDM_804AA0FC::pool_805412F8() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
     JGeometry::TVec2f focus = pos + offset;
@@ -572,6 +573,7 @@ bool UnknownENDM_804AA0FC::fn_802E948C(f32 target, s32 frames) {
 // Moves the zoom one step (field_0x278) towards its target (field_0x274).
 // Not in the binary: a plain function that updateCamera inlines. The pool puts it below
 // fn_802E948C: its 0.0f is the unit's first literal.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void UnknownENDM_804AA0FC::stepZoom() {
 if (field_0x270 != field_0x274) {
     field_0x270 += field_0x278;

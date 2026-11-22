@@ -25,7 +25,7 @@ s32 ActorBase_804A5770::fn_801A6160() {
             if (scale < 1.0f) {
                 scale = 1.0f;
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x17C, 0, 1, NULL, NULL, true, scale);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17C, 0, 1, NULL, NULL, true, scale);
         }
         if (timer - 1 <= 0) {
             die_0x24();
@@ -60,7 +60,7 @@ s32 ActorBase_804A5770::fn_801A6160() {
     if (field_0xa4 != 0) {
         s32 count = field_0xa4;
         if (mPos.z > 0.0f) {
-            field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y, 0.0f);
             mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z - 1.0f);
         } else {
             mPos = JGeometry::TVec3f(mPos.x, mPos.y, 0.0f);
@@ -69,7 +69,7 @@ s32 ActorBase_804A5770::fn_801A6160() {
         result = 1;
         if (fn_801F305C()) {
             if (field_0xbc == 3) {
-                field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
             }
             result = 2;
             fn_801F2618(NULL, false);
@@ -98,7 +98,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         return 0;
     }
     s32 result = 0;
-    s32 player = fn_8023AE34(box, field_0x4, pos);
+    s32 player = fn_8023AE34(box, mLayer_0x4, pos);
     if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] == 0 && mPos.z > 32.0f) {
         return 0;
     }
@@ -122,11 +122,11 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             field_0xa0 = -1;
             return 0;
         }
-        field_0x10c = player;
+        mLastAttacker_0x10c = player;
         if (kind == 9) {
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            s32 face = field_0x98;
+            s32 face = mDir_0x98;
             if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
                                           10430.378f))) {
                 kind = 5;
@@ -137,7 +137,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         }
         if (kind == 16) {
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            s32 face = field_0x98;
+            s32 face = mDir_0x98;
             if (face != fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y)) *
                                           10430.378f))) {
                 kind = 4;
@@ -158,9 +158,9 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         switch (kind) {
         case 1:
             static_cast<ArrowPlayer_804A05E0*>(arrow)->field_0x270++;
-            field_0xd8 = 0;
-            field_0xdc = 0;
-            field_0x10c = player;
+            mHitTimer_0xd8 = 0;
+            mHitTimerStart_0xdc = 0;
+            mLastAttacker_0x10c = player;
             // fall through
         case 8:
             if (field_0xc4) {
@@ -168,7 +168,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                 result = 0xFF;
                 break;
             }
-            if (kind == 8 && (mPos.z != 0.0f || field_0x3c.z != 0.0f)) {
+            if (kind == 8 && (mPos.z != 0.0f || mVel_0x3c.z != 0.0f)) {
                 field_0xa0 = -1;
                 result = 0xFF;
                 break;
@@ -181,7 +181,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         case 0:
         case 9:
         default:
-            if (!(arrow->field_0x98 & 2)) {
+            if (!(arrow->mDir_0x98 & 2)) {
                 field_0x48 = JGeometry::TVec3f(0.5f, 1.4f, 0.0f);
             } else {
                 field_0x48 = JGeometry::TVec3f(1.4f, 0.5f, 0.0f);
@@ -190,18 +190,18 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         case 16:
             mLife = mLife - fn_8023B5B4(player);
             if (mLife < 1000) {
-                switch (arrow->field_0x98) {
+                switch (arrow->mDir_0x98) {
                 case 0:
-                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x177, 1, 1, NULL, NULL, true, fn_801EE4F0());
                     break;
                 case 1:
-                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x176, 1, 1, NULL, NULL, true, fn_801EE4F0());
                     break;
                 case 2:
-                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x175, 1, 1, NULL, NULL, true, fn_801EE4F0());
                     break;
                 case 3:
-                    spawnEmitter_8013CC50(arrow->field_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, fn_801EE4F0());
+                    spawnEmitter_8013CC50(arrow->mLayer_0x4, &mPos, 0x178, 1, 1, NULL, NULL, true, fn_801EE4F0());
                     break;
                 }
             }
@@ -232,17 +232,17 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             }
             arrow->mAlive = false;
             if (kind == 5 || kind == 16 || kind == 11 || kind == 18 || kind == 15) {
-                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('OKTM', arrow->field_0x4, &arrow->mPos, 1, -1, -1);
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('OKTM', arrow->mLayer_0x4, &arrow->mPos, 1, -1, -1);
                 if (serial >= 0) {
                     OctorokRock_8049F5D8* rock =
                         static_cast<OctorokRock_8049F5D8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
                     if (rock != NULL && rock->field_0x230 != 4) {
-                        u16 dir = fn_801F6874(field_0x98);
+                        u16 dir = fn_801F6874(mDir_0x98);
                         f32 dx = 0.8f * (mPos.x - rock->mPos.x);
                         f32 dy = 0.8f * (mPos.y - rock->mPos.y);
                         rock->field_0x254 = std::sqrtf(dx * dx + dy * dy);
                         u16 angle = JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f;
-                        u16 target = fn_801F6874(arrow->field_0x98) + 0x8000;
+                        u16 target = fn_801F6874(arrow->mDir_0x98) + 0x8000;
                         while (fn_801F681C(angle) != fn_801F681C(target)) {
                             addCalcAngle2_801F714C(&angle, target, 1, 0x1000);
                         }
@@ -260,8 +260,8 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             }
             field_0xa0 = -1;
             result = 10;
-            field_0xd8 = 0;
-            field_0xdc = 0;
+            mHitTimer_0xd8 = 0;
+            mHitTimerStart_0xdc = 0;
             if (kind == 15) {
                 result = 0xFF;
             }
@@ -273,8 +273,8 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             result = 10;
             break;
         case 6:
-            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
             // fall through
         case 4:
             for (s32 i = 0; i < 4; i++) {
@@ -296,8 +296,8 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             // fall through
         case 14:
             field_0xa0 = -1;
-            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(arrow->field_0x4, &arrow->mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(arrow->mLayer_0x4, &arrow->mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
             arrow->mAlive = false;
             result = 0xFF;
             break;
@@ -328,10 +328,10 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
         if (result != 0) {
             if (kind == 1 || kind == 2 || kind == 5 || kind == 16) {
                 JGeometry::TVec3f from = mPos;
-                from -= arrow->field_0x3c;
+                from -= arrow->mVel_0x3c;
                 fn_801F37AC(0, &from, 0, 3, -1);
                 if (field_0xbc == 3 || kind == 5) {
-                    field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+                    mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
                 }
             }
             return result;
@@ -359,12 +359,12 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                     p.y -= 3.5f - (s32)(mSerial & 7);
                 }
                 mPos = p;
-                field_0x4 = holder->field_0x4;
+                mLayer_0x4 = holder->mLayer_0x4;
                 vfunc_0x44();
                 break;
             }
             case 8:
-                if (field_0xc4 || mPos.z != 0.0f || field_0x3c.z != 0.0f) {
+                if (field_0xc4 || mPos.z != 0.0f || mVel_0x3c.z != 0.0f) {
                     field_0xa0 = -1;
                     result = 0xFF;
                     break;
@@ -375,7 +375,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                     field_0xb0 = 0;
                 }
                 mPos = holder->mPos + mSpawnPos;
-                field_0x4 = holder->field_0x4;
+                mLayer_0x4 = holder->mLayer_0x4;
                 vfunc_0x44();
                 if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
                     die_0x24();
@@ -384,7 +384,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                 break;
             case 1:
                 mPos = holder->mPos + mSpawnPos;
-                field_0x4 = holder->field_0x4;
+                mLayer_0x4 = holder->mLayer_0x4;
                 if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
                     die_0x24();
                     result = 20;
@@ -461,14 +461,14 @@ s32 ActorBase_804A5770::fn_801A4FB4() {
             field_0xd4 = 0;
             break;
         }
-        field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y, z);
+        mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y, z);
         field_0xd4 = 2;
     }
     if (field_0xd4 == 2) {
-        mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + field_0x3c.z);
-        field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y, field_0x3c.z - 0.5f);
+        mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + mVel_0x3c.z);
+        mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y, mVel_0x3c.z - 0.5f);
         if (mPos.z <= 0.0f) {
-            field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y, 0.0f);
+            mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y, 0.0f);
             mPos = JGeometry::TVec3f(mPos.x, mPos.y, 0.0f);
             field_0xd4 = 0;
             s32 type = (field_0xb0 >> 16) & 0xFF;
@@ -499,17 +499,17 @@ s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVe
     if (kind == 0) {
         return 0;
     }
-    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(mLayer_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
-    s32 player = fn_8023AA18(box, field_0x4, pos);
+    s32 player = fn_8023AA18(box, mLayer_0x4, pos);
     if (player < 0) {
         return 0;
     }
     if (kind != 3) {
-        if (field_0xd8 == 0) {
+        if (mHitTimer_0xd8 == 0) {
             s32 life = mLife - fn_8023B520(player);
-            field_0x10c = player;
+            mLastAttacker_0x10c = player;
             if (life <= 0) {
                 life = 0;
                 if (field_0xbc != 3) {
@@ -520,7 +520,7 @@ s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVe
             mLife = life;
             fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
             if (field_0xbc == 3) {
-                field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+                mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
             }
             if (player >= 0) {
                 lbl_8053A100 = player;
@@ -557,12 +557,12 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         ActorBase_804A5770* holder = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (holder != NULL) {
             JGeometry::TVec3f p = holder->mPos;
-            s32 hit = fn_8023AC74(box, field_0x4, pos);
+            s32 hit = fn_8023AC74(box, mLayer_0x4, pos);
             if (hit >= 0) {
                 lbl_8053A100 = hit;
             }
             vfunc_0x44();
-            if (kind == 8 && holder->field_0x4 != 0) {
+            if (kind == 8 && holder->mLayer_0x4 != 0) {
                 field_0xb0 = field_0xb4;
                 field_0xa0 = -1;
                 return 0;
@@ -575,7 +575,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
                 p.y -= 3.5f - (s32)(mSerial & 7);
             }
             mPos = p;
-            field_0x4 = holder->field_0x4;
+            mLayer_0x4 = holder->mLayer_0x4;
             if (kind == 2) {
                 return 50;
             }
@@ -591,7 +591,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
     if (getGameView_802D6A9C()->field_0x131df[getField_0x4()] == 0 && mPos.z > 32.0f) {
         return 0;
     }
-    s32 player = fn_8023AC74(box, field_0x4, pos);
+    s32 player = fn_8023AC74(box, mLayer_0x4, pos);
     if (player < 0) {
         return 0;
     }
@@ -604,7 +604,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         bool turned = false;
         kind = 4;
         f32 rad = JMath::atanTable_.atan2_(-(mPos.x - other->mPos.x), -(mPos.y - other->mPos.y));
-        s32 face = field_0x98;
+        s32 face = mDir_0x98;
         if ((face ^ 1) != fn_801F681C((s32)(rad * 10430.378f))) {
             turned = true;
         }
@@ -632,16 +632,16 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         if (other != NULL) {
             static_cast<cls_804A0738*>(other)->field_0x254 = 1;
         }
-        field_0xd8 = 0;
-        field_0xdc = 0;
+        mHitTimer_0xd8 = 0;
+        mHitTimerStart_0xdc = 0;
         // fall through
     case 5:
         result = 0xFF;
         if (kind == 1) {
             if (mPos.z == 0.0f) {
-                field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y,
+                mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y,
                                                4.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-                mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + field_0x3c.z);
+                mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + mVel_0x3c.z);
             }
             fn_801F3780(300);
             result = 50;
@@ -689,7 +689,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         result = 0xFF;
         break;
     case 3:
-        field_0x10c = player;
+        mLastAttacker_0x10c = player;
         fn_801F4694();
         die_0x24();
         break;
@@ -710,11 +710,11 @@ s32 fn_801A46FC(s32 serial, const JGeometry::TBox2f* box, JGeometry::TVec2f* pos
 // FIXME(shotgun): 98.25 %, missing/extra; behaviour drift.
 s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVec2f* pos) {
     ActorBase_804A5770* weapon;
-    s32 player = fn_8023AD54(box, field_0x4, pos);
+    s32 player = fn_8023AD54(box, mLayer_0x4, pos);
     if (player < 0) {
         return 0;
     }
-    if (viewLayerFlag(field_0x4) == 0 && mPos.z > 32.0f) {
+    if (viewLayerFlag(mLayer_0x4) == 0 && mPos.z > 32.0f) {
         return 0;
     }
     weapon = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023B358(player));
@@ -742,7 +742,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             bool turned = false;
             kind = 4;
             f32 angle = JMath::atanTable_.atan2_(-(mPos.x - weapon->mPos.x), -(mPos.y - weapon->mPos.y));
-            s32 face = field_0x98;
+            s32 face = mDir_0x98;
             if ((face ^ 1) != fn_801F681C((s32)(angle * 10430.378f))) {
                 turned = true;
             }
@@ -774,12 +774,12 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             break;
         case 1:
             if (mPos.z == 0.0f) {
-                field_0x3c = JGeometry::TVec3f(field_0x3c.x, field_0x3c.y,
+                mVel_0x3c = JGeometry::TVec3f(mVel_0x3c.x, mVel_0x3c.y,
                                                4.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-                mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + field_0x3c.z);
+                mPos = JGeometry::TVec3f(mPos.x, mPos.y, mPos.z + mVel_0x3c.z);
             }
-            field_0xd8 = 0;
-            field_0xdc = 0;
+            mHitTimer_0xd8 = 0;
+            mHitTimerStart_0xdc = 0;
             weapon->mLife = 0;
             fn_801F3780(300);
             startSound_801F0E34(0x30021, 0);
@@ -792,7 +792,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             break;
         case 3:
             weapon->mAlive = false;
-            field_0x10c = player;
+            mLastAttacker_0x10c = player;
             fn_801F4694();
             die_0x24();
             break;
@@ -802,7 +802,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             kind = 4;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
             f32 angle = JMath::atanTable_.atan2_(-dx, -(mPos.y - getPlayerPos_8023E724(player)->y));
-            s32 face = field_0x98;
+            s32 face = mDir_0x98;
             if (face != fn_801F681C((s32)(angle * 10430.378f))) {
                 kind = 5;
             }
@@ -820,7 +820,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             if (life <= 0) {
                 mLife = 0;
                 fn_80235B68(player, mSerial);
-                field_0x10c = player;
+                mLastAttacker_0x10c = player;
                 result = 20;
             } else {
                 mLife = life;
@@ -856,8 +856,8 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             result = 0xFF;
             break;
         case 7:
-            spawnEmitter_8013CC50(weapon->field_0x4, &weapon->mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(weapon->field_0x4, &weapon->mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(weapon->mLayer_0x4, &weapon->mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(weapon->mLayer_0x4, &weapon->mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
             result = 0xFF;
             weapon->mAlive = false;
             mAlive = false;
@@ -865,7 +865,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         }
         if (result != 0 && (kind == 1 || kind == 2 || kind == 5)) {
             JGeometry::TVec3f from = mPos;
-            from -= weapon->field_0x3c;
+            from -= weapon->mVel_0x3c;
             fn_801F37AC(0, &from, 3, 0, -1);
         }
     }
@@ -906,14 +906,14 @@ void ActorBase_804A5770::fn_801A3CFC() {
 // 0x801A3C50.
 void ActorBase_804A5770::fn_801A3C50(s32 player) {
     mLife = 0;
-    field_0x10c = player;
+    mLastAttacker_0x10c = player;
     field_0xa0 = player;
     field_0x48 = JGeometry::TVec3f(1.4f, 0.4f, 0.4f);
-    field_0xd8 = 0;
-    field_0xdc = 0;
+    mHitTimer_0xd8 = 0;
+    mHitTimerStart_0xdc = 0;
     field_0xa4 = 0;
     fn_801F4694();
-    if (field_0x4 >= 8) {
+    if (mLayer_0x4 >= 8) {
         field_0xa8 = 30;
     } else {
         field_0xa8 = 35;

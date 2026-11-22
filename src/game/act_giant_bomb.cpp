@@ -30,26 +30,26 @@ GiantBomb_804AC588::~GiantBomb_804AC588() {
 }
 
 void GiantBomb_804AC588::init() {
-    field_0x244 = field_0x90 & 0xFFF;
-    field_0x118 = 0x80;
+    field_0x244 = mSpawnParam_0x90 & 0xFFF;
+    mParamAtcn_0x118 = 0x80;
     mState = 0;
     field_0x23c = 0;
     field_0x240 = 0;
     mTimer = 0;
     field_0x260 = 0;
     field_0x238 = 0;
-    field_0x248 = (field_0x90 >> 12) & 3;
-    field_0x24c = (field_0x90 >> 16) & 0xF;
+    field_0x248 = (mSpawnParam_0x90 >> 12) & 3;
+    field_0x24c = (mSpawnParam_0x90 >> 16) & 0xF;
     field_0x261 = 0;
     field_0x250 = 0x0100000D;
     mLife = 10000;
-    field_0x80.set(-24.0f, -24.0f, 24.0f, 24.0f);
+    mMapBox_0x80.set(-24.0f, -24.0f, 24.0f, 24.0f);
     mBox.set(-24.0f, -24.0f, 24.0f, 24.0f);
     mBox2.set(-24.0f, -24.0f, 24.0f, 24.0f);
     field_0x254.set(0.75f, 0.75f, 0.75f);
     switch (field_0x24c) {
     case 0:
-        field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+        mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
         mBox.set(0.0f, 0.0f, 0.0f, 0.0f);
         mBox2.set(0.0f, 0.0f, 0.0f, 0.0f);
         field_0x254.z = 0.0f;
@@ -70,7 +70,7 @@ void GiantBomb_804AC588::init() {
         }
         break;
     case 3:
-        fn_8034335C(field_0x4, &mPos);
+        fn_8034335C(mLayer_0x4, &mPos);
         mState = 7;
         mTimer = 3;
         break;
@@ -130,7 +130,7 @@ void GiantBomb_804AC588::update() {
     box.addPos(pos2);
     mLife = 10000;
     if (mState == 4) {
-        mPos += field_0x3c;
+        mPos += mVel_0x3c;
     }
     if (mTimer > 0) {
         mTimer--;
@@ -147,7 +147,7 @@ void GiantBomb_804AC588::update() {
         lbl_8053AED0->fn_8043E398(corner0, corner1);
     }
     if (mState == 6 && mTimer > 0) {
-        fn_802397B4(&box, field_0x4, mSerial);
+        fn_802397B4(&box, mLayer_0x4, mSerial);
         if (field_0x238 > 0) {
             field_0x238--;
         }
@@ -167,7 +167,7 @@ void GiantBomb_804AC588::update() {
     } else if (mState == 5) {
         s32 q = (15 - mTimer) / 15;
         JGeometry::TBox2f scaled(mBox.i.x * q, mBox.i.y * q, mBox.f.x * q, mBox.f.y * q);
-        fn_802397B4(&scaled, field_0x4, mSerial);
+        fn_802397B4(&scaled, mLayer_0x4, mSerial);
     }
     switch (mState) {
     case 0:
@@ -186,19 +186,19 @@ void GiantBomb_804AC588::update() {
             mTimer = 8;
             mState = 1;
         }
-        field_0x80 = mBox;
+        mMapBox_0x80 = mBox;
         mBox2 = mBox;
         break;
     case 1:
         if (mTimer <= 0) {
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.z = 3.0f;
             mState = 4;
         }
         break;
     case 2:
         if (isScreenFlagSet_0x34() == 1 || getScreenFlagBit_0x3C() == 0) {
-            if (field_0x24c == 1 && getGameView_802D6A9C()->field_0x4 == 1 &&
-                getGameView_802D6A9C()->field_0x8 == 0) {
+            if (field_0x24c == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 &&
+                getGameView_802D6A9C()->mLevel_0x8 == 0) {
                 fn_801F3604();
             }
             mState = 4;
@@ -209,15 +209,15 @@ void GiantBomb_804AC588::update() {
         break;
     case 4:
         if (mPos.z <= 0.0f) {
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 8.0f, 0.0f, false);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
             JGeometry::TVec3f pos = mPos;
             pos.y += 16.0f;
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x3CF, 0, -1, NULL, NULL, true, 2.5f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3CF, 0, -1, NULL, NULL, true, 2.5f);
             startSound_801F0E34(0x3000F, 0);
             if (field_0x261 == 1) {
                 gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
             }
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mTimer = 15;
             if (field_0x248 == 0) {
                 lbl_8053AED0->fn_8043D67C(0x1A8, 0, 0);
@@ -226,7 +226,7 @@ void GiantBomb_804AC588::update() {
             }
             mState = 5;
         } else {
-            field_0x3c.z -= 0.2f;
+            mVel_0x3c.z -= 0.2f;
             if (field_0x24c != 2) {
                 fn_801F2B7C(1, -1, 2);
                 fn_801F2B20(0);
@@ -239,10 +239,10 @@ void GiantBomb_804AC588::update() {
             JGeometry::TVec3f pos = mPos;
             pos.y -= 14.0f;
             if (mEmitter264 == NULL) {
-                mEmitter264 = spawnEmitter_8013CC50(field_0x4, &pos, 0x39, 1, 1, NULL, NULL, true, 1.0f);
+                mEmitter264 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x39, 1, 1, NULL, NULL, true, 1.0f);
             }
             if (mEmitter268 == NULL) {
-                mEmitter268 = spawnEmitter_8013CC50(field_0x4, &pos, 0x3A, 1, 1, NULL, NULL, true, 1.0f);
+                mEmitter268 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3A, 1, 1, NULL, NULL, true, 1.0f);
             }
             field_0x254.x = 0.75f;
             field_0x254.y = 0.75f;
@@ -268,7 +268,7 @@ void GiantBomb_804AC588::update() {
         if (mTimer <= 0) {
             releaseEmitter_801EE434(mEmitter264);
             releaseEmitter_801EE434(mEmitter268);
-            fn_8034335C(field_0x4, &mPos);
+            fn_8034335C(mLayer_0x4, &mPos);
             mState = 7;
             mTimer = 3;
         } else {
@@ -288,8 +288,8 @@ void GiantBomb_804AC588::update() {
         mBox.addPos(off);
         fn_801F2B20(5);
         if (mTimer <= 0) {
-            if (field_0x24c == 1 && getGameView_802D6A9C()->field_0x4 == 1 &&
-                getGameView_802D6A9C()->field_0x8 == 0) {
+            if (field_0x24c == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 &&
+                getGameView_802D6A9C()->mLevel_0x8 == 0) {
                 fn_801F3668();
             } else {
                 mAlive = false;
@@ -376,7 +376,7 @@ void GiantBomb_804AC588::draw() {
         params.mMtx = mtx;
         params.field_0x2c = 0;
         void* numberRes = fn_804030C4('TIMG', lbl_804AC558[count]);
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, numberRes, &params);
         }
     }
@@ -386,29 +386,29 @@ void GiantBomb_804AC588::draw() {
 // (the SpriteParams copy is field-wise in the original, one block per branch)
 void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 offsetX, f32 offsetY,
                                     f32 offsetZ) {
-    if (field_0x4 != 0) {
+    if (mLayer_0x4 != 0) {
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, params, flags, NULL, 0, res);
+        fn_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
     }
     SpriteParams_801F5AE0 sp;
-    if (field_0xd8 > 0) {
+    if (mHitTimer_0xd8 > 0) {
         if (params != NULL) {
             sp = *params;
         }
-        s32 total = field_0xdc;
+        s32 total = mHitTimerStart_0xdc;
         s32 excess = total - 25;
-        if (field_0xd8 > excess || total < 25) {
+        if (mHitTimer_0xd8 > excess || total < 25) {
             s32 delta;
             if (total < 25) {
-                delta = field_0xd8 * 150 / total;
+                delta = mHitTimer_0xd8 * 150 / total;
             } else {
-                delta = (field_0xd8 - excess) * 150 / 25;
+                delta = (mHitTimer_0xd8 - excess) * 150 / 25;
             }
             sp.field_0x14.r += delta;
         }
-        if (field_0x3c.squared() > 1.0f) {
+        if (mVel_0x3c.squared() > 1.0f) {
             sp.field_0x30 = 8;
         }
     } else if (field_0x238 > 0) {
@@ -416,7 +416,7 @@ void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s3
             sp = *params;
         }
         sp.field_0x14.r += field_0x238 * 150 / 15;
-        if (field_0x3c.squared() > 1.0f) {
+        if (mVel_0x3c.squared() > 1.0f) {
             sp.field_0x30 = 8;
         }
     } else {
@@ -433,7 +433,7 @@ void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s3
     pos.x += offsetX;
     pos.y += offsetY;
     pos.z = mPos.z + offsetZ;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &sp);
     }
 }

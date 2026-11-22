@@ -114,9 +114,9 @@ static inline u16 rawTileAt(const V* pos, int layer) {
 // field_0x60[row][col] == value for the current screen.
 static inline bool screenValueIs(s32 value) {
     // The original reads the column, fetches the view for the row, then the view for the table.
-    s32 col = getGameView_802D6A9C()->field_0x14;
+    s32 col = getGameView_802D6A9C()->mScreenX_0x14;
     GameView_804A9950* view = getGameView_802D6A9C();
-    return getGameView_802D6A9C()->field_0x60[view->field_0x18][col] == value;
+    return getGameView_802D6A9C()->field_0x60[view->mScreenY_0x18][col] == value;
 }
 
 // The tile's collision code: the raw tile code (as fn_80226850) through lbl_8046CB88, adjusted
@@ -133,8 +133,8 @@ static inline u16 collisionCodeAt(const V* pos, int layer) {
         }
         return code;
     } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) ||
-            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 3 &&
+        if ((getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) ||
+            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3 &&
              screenValueIs(0x10) &&
              pos->y > 2470.0f)) {
             return 0x51;
@@ -206,8 +206,8 @@ u16 fn_802265FC(const JGeometry::TVec3f* pos, s32 layer) {
         }
         return code == 0x61 ? 0 : code;
     } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) ||
-            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 3 &&
+        if ((getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) ||
+            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3 &&
              screenValueIs(0x10) &&
              pos->y > 2470.0f)) {
             return 0x51;
@@ -306,10 +306,10 @@ bool fn_802255F4(const JGeometry::TVec3f* pos, s32 layer) {
 bool fn_802252F4(const JGeometry::TVec3f* pos, int layer) {
     u16 raw = rawTileAt(pos, layer);
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 0) {
+        if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 0) {
             return inList(raw, lbl_8046AAE8, 13);
         }
-        if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
+        if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) {
             if (viewLayerFlag(layer) != 0) {
                 // Both loops are written out: a miss in either shares the `return false` below.
                 for (s32 i = 0; i < 5; i++) {
@@ -403,8 +403,8 @@ u16 fn_8022461C(const JGeometry::TVec3f* pos, s32 layer) {
             return 0;
         }
     } else if (code == 0xE && gGameRoot_8053AAF8->field_0x7f != 0) {
-        if ((getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) ||
-            (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 3 &&
+        if ((getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) ||
+            (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3 &&
              screenValueIs(0x10) &&
              pos->y > 2470.0f)) {
             return 0x51;

@@ -13,7 +13,7 @@
 #include "JSystem/JMath/JMath.h"
 
 // Tables of the SLR4 actor (.data 0x804A08C0.., not written as source here): per heading
-// (field_0x98) hit-box offsets and animation timings / frames (.data 0x804A08C0 pairs, 0x20 frames,
+// (mDir_0x98) hit-box offsets and animation timings / frames (.data 0x804A08C0 pairs, 0x20 frames,
 // 0x70 / 0x80 / 0x180 timings, 0x120 frames), boxes and life values.
 extern const f32 lbl_804A08C0[][2];
 extern const s32 lbl_804A08E0[][4];
@@ -27,7 +27,7 @@ extern const s32 lbl_804A0AF8[];
 extern const f32 lbl_804A0B10[][4];
 extern const u8 lbl_80539F78[];
 
-// Starts with the per-heading (field_0x98) frame shown when the chief bumps into a wall.
+// Starts with the per-heading (mDir_0x98) frame shown when the chief bumps into a wall.
 s32 lbl_804A0920[78] = {
     6, 9, 3, 0, 8, 12, 8, 12,
     12, 13, 14, 13, 12, 15, 16, 15,
@@ -62,7 +62,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
     s32 gone;
     s32 serial;
     s32 spawned;
-    if (field_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
+    if (mLayer_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
         for (i = 0, gone = 0; i < 4; i++) {
             serial = field_0x2c0[i];
             if (serial < 0) {
@@ -82,10 +82,10 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
             field_0x260 = 900;
         }
         if (field_0x260 == 0 && gone == 4) {
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (layer == getPlayerLayer_8023DE58(0)) {
                 for (i = 0, spawned = 0; i < 4; i++) {
-                    field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', field_0x4, &mPos, 4, -1, -1);
+                    field_0x2c0[i] = getActorManager_801F856C()->spawnActor_801F9484('KETH', mLayer_0x4, &mPos, 4, -1, -1);
                     serial = field_0x2c0[i];
                     if (serial >= 0) {
                         Keese_804A02B8* keese = static_cast<Keese_804A02B8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -116,7 +116,7 @@ void ChiefSoldier_804A0B90::fn_80175024() {
     cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
     if (partner == NULL) {
         s32 type = 7;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (layer >= 8) {
             type = 8;
             layer = 0;
@@ -126,7 +126,7 @@ void ChiefSoldier_804A0B90::fn_80175024() {
         if (serial >= 0) {
             partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (partner != NULL) {
-                partner->field_0x114 = field_0x114;
+                partner->mParamAtcp_0x114 = mParamAtcp_0x114;
                 partner->field_0x238 = mSerial;
                 partner->field_0x23c = field_0x23c;
             }
@@ -136,10 +136,10 @@ void ChiefSoldier_804A0B90::fn_80175024() {
     switch (field_0x29c) {
     case 2:
         if (field_0x264 >= 4) {
-            if (field_0x3c.x < 0.1f && field_0x3c.y < 0.1f) {
+            if (mVel_0x3c.x < 0.1f && mVel_0x3c.y < 0.1f) {
                 partner->field_0x94 = 0;
-                if (field_0x4 >= 8 && field_0x23c == 1) {
-                    const f32* box = lbl_804A0A58[field_0x98];
+                if (mLayer_0x4 >= 8 && field_0x23c == 1) {
+                    const f32* box = lbl_804A0A58[mDir_0x98];
                     mBox.set(JGeometry::TVec2f(box[0], box[1]), JGeometry::TVec2f(box[2], box[3]));
                 }
                 fn_801F2B7C(-100, -1, 1);
@@ -161,10 +161,10 @@ void ChiefSoldier_804A0B90::fn_80175024() {
             partner->field_0x94 = 1;
         }
         JGeometry::TVec3f pos;
-        if (partner->field_0x90 == 7) {
+        if (partner->mSpawnParam_0x90 == 7) {
             pos.set(mPos);
         } else {
-            s32 layer = partner->field_0x4;
+            s32 layer = partner->mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxp = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
             JGeometry::TBox2f box;
@@ -174,10 +174,10 @@ void ChiefSoldier_804A0B90::fn_80175024() {
             pos.y += box.i.y;
         }
         partner->mPos = pos;
-        partner->field_0x98 = field_0x98;
+        partner->mDir_0x98 = mDir_0x98;
         break;
     }
-    if (partner->field_0x90 == 8) {
+    if (partner->mSpawnParam_0x90 == 8) {
         partner->field_0x280 = field_0x280;
     }
 }
@@ -188,10 +188,10 @@ void ChiefSoldier_804A0B90::init() {
     mBox.i.y = -20.0f;
     mBox.f.x = 12.0f;
     mBox.f.y = 4.0f;
-    field_0x80.i.x = -10.0f;
-    field_0x80.i.y = -10.0f;
-    field_0x80.f.x = 10.0f;
-    field_0x80.f.y = 10.0f;
+    mMapBox_0x80.i.x = -10.0f;
+    mMapBox_0x80.i.y = -10.0f;
+    mMapBox_0x80.f.x = 10.0f;
+    mMapBox_0x80.f.y = 10.0f;
     field_0x264 = 0;
     field_0x268 = 0;
     field_0x26c = 0;
@@ -212,18 +212,18 @@ void ChiefSoldier_804A0B90::init() {
         field_0x2c0[i] = -1;
     }
     field_0x278 = 3;
-    field_0x298 = ((field_0x90 >> 8) & 0xF) * 20;
-    field_0x294 = ((field_0x90 >> 12) & 0xF) * 20;
+    field_0x298 = ((mSpawnParam_0x90 >> 8) & 0xF) * 20;
+    field_0x294 = ((mSpawnParam_0x90 >> 12) & 0xF) * 20;
     field_0x2a5 = 0;
     field_0x29c = 0;
     field_0x2a0 = 0;
-    field_0x23c = (field_0x90 >> 16) & 0xFF;
+    field_0x23c = (mSpawnParam_0x90 >> 16) & 0xFF;
     if (field_0x23c != 0) {
         field_0x196 = 1;
-        field_0x190 = 0;
+        mParamVoic_0x190 = 0;
     }
     field_0x2a4 = 0;
-    field_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3;
+    mDir_0x98 = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) & 3;
     field_0x2b4.set(mPos);
     field_0x284 = 10000;
     field_0x238 = -1;
@@ -231,12 +231,12 @@ void ChiefSoldier_804A0B90::init() {
         if (getType() != 2 && getType() != 3 && field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
             gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
         }
-        mLife = lbl_804A0AF8[field_0x90 & 0xFF] * 2;
+        mLife = lbl_804A0AF8[mSpawnParam_0x90 & 0xFF] * 2;
         if (fn_802DE814() == 1) {
-            mLife = lbl_804A0AF8[field_0x90 & 0xFF];
+            mLife = lbl_804A0AF8[mSpawnParam_0x90 & 0xFF];
         }
         s32 type = 7;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (layer >= 8) {
             type = 8;
             layer = 0;
@@ -246,14 +246,14 @@ void ChiefSoldier_804A0B90::init() {
         if (serial >= 0) {
             cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (partner != NULL) {
-                partner->field_0x114 = field_0x114;
+                partner->mParamAtcp_0x114 = mParamAtcp_0x114;
                 partner->field_0x238 = mSerial;
                 partner->field_0x23c = field_0x23c;
             }
         }
     }
     if (getType() != 7 && getType() != 8 && getType() != 6) {
-        if (field_0x4 >= 8) {
+        if (mLayer_0x4 >= 8) {
             mLife = 50;
             if (field_0x23c == 1) {
                 mBox.i.x = -14.0f;
@@ -266,25 +266,25 @@ void ChiefSoldier_804A0B90::init() {
                 mBox.i.y = -7.0f;
                 mBox.f.x = 7.0f;
                 mBox.f.y = 7.0f;
-                field_0x80.i.x = -7.0f;
-                field_0x80.i.y = -7.0f;
-                field_0x80.f.x = 7.0f;
-                field_0x80.f.y = 7.0f;
+                mMapBox_0x80.i.x = -7.0f;
+                mMapBox_0x80.i.y = -7.0f;
+                mMapBox_0x80.f.x = 7.0f;
+                mMapBox_0x80.f.y = 7.0f;
             }
         }
     }
     field_0x284 = mLife;
-    if (getType() != 6 && field_0x4 >= 8 && field_0x23c == 1) {
+    if (getType() != 6 && mLayer_0x4 >= 8 && field_0x23c == 1) {
         mLife = 10000;
     }
     field_0x280 = 0;
     field_0x288 = 0;
-    field_0x28c = field_0x90 >> 24;
+    field_0x28c = mSpawnParam_0x90 >> 24;
     if (field_0x28c == 0) {
         field_0x28c = -1;
     }
-    field_0x90 &= 0xFF;
-    field_0x234 = lbl_80539F78[field_0x90 >> 1];
+    mSpawnParam_0x90 &= 0xFF;
+    field_0x234 = lbl_80539F78[mSpawnParam_0x90 >> 1];
     field_0x2b0 = 0.0f;
     field_0x2ac = 0.0f;
     field_0x2a8 = 0.0f;
@@ -293,18 +293,18 @@ void ChiefSoldier_804A0B90::init() {
     field_0x236 = 0;
     field_0xb0 = 0xA042209;
     field_0xb8 = 1;
-    if (field_0x90 == 2 || field_0x90 == 3) {
-        field_0x98 = 3;
+    if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
+        mDir_0x98 = 3;
     }
     field_0x230 = 0;
     fn_801746DC();
-    field_0xc0 = 3;
+    mParamEfsz_0xc0 = 3;
     field_0xbc = 3;
-    if (field_0x90 == 4 || field_0x90 == 5 || field_0x90 == 6) {
+    if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5 || mSpawnParam_0x90 == 6) {
         field_0x230 = 2;
     }
     if (getType() == 7 || getType() == 8) {
-        field_0x1a8 = false;
+        mParamDstr_0x1a8 = false;
         field_0xb0 = 0xA040004;
         mLife = 10000;
         field_0xb8 = 0;
@@ -312,10 +312,10 @@ void ChiefSoldier_804A0B90::init() {
         mBox.i.y = -8.0f;
         mBox.f.x = 8.0f;
         mBox.f.y = 8.0f;
-        field_0x80.i.x = 1.0f;
-        field_0x80.i.y = 1.0f;
-        field_0x80.f.x = -1.0f;
-        field_0x80.f.y = -1.0f;
+        mMapBox_0x80.i.x = 1.0f;
+        mMapBox_0x80.i.y = 1.0f;
+        mMapBox_0x80.f.x = -1.0f;
+        mMapBox_0x80.f.y = -1.0f;
         field_0x230 = 10;
     }
 }
@@ -337,7 +337,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
     case 0:
         if (field_0x240 == 0) {
             field_0x240 = lbl_804A0930[field_0x264];
-            field_0x280 = lbl_804A08E0[field_0x98][field_0x264];
+            field_0x280 = lbl_804A08E0[mDir_0x98][field_0x264];
             field_0x264++;
             field_0x264 &= 3;
         }
@@ -345,7 +345,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
     case 1:
         if (field_0x240 == 0) {
             field_0x240 = lbl_804A0940[field_0x264];
-            field_0x280 = lbl_804A0940[field_0x98 * 8 + field_0x264];
+            field_0x280 = lbl_804A0940[mDir_0x98 * 8 + field_0x264];
             field_0x264++;
             field_0x264 &= 7;
             if (field_0x264 == 0) {
@@ -360,19 +360,19 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
                 break;
             }
             field_0x240 = lbl_804A0A40[field_0x264];
-            if (field_0x4 >= 8 && field_0x23c == 1) {
+            if (mLayer_0x4 >= 8 && field_0x23c == 1) {
                 field_0x240 = (s32)(0.5f * field_0x240);
             }
             if (field_0x264 == 1) {
                 field_0x240 += 10;
                 JGeometry::TVec3f pos;
                 pos.set(mPos);
-                pos.x += lbl_804A08C0[field_0x98][0];
-                pos.y += lbl_804A08C0[field_0x98][1];
-                spawnEmitter_8013CC50(field_0x4, &pos, 0xCB, 0, 3, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0xCC, 0, 3, NULL, NULL, true, 1.0f);
+                pos.x += lbl_804A08C0[mDir_0x98][0];
+                pos.y += lbl_804A08C0[mDir_0x98][1];
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xCB, 0, 3, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xCC, 0, 3, NULL, NULL, true, 1.0f);
             }
-            field_0x280 = lbl_804A09E0[field_0x98][field_0x264];
+            field_0x280 = lbl_804A09E0[mDir_0x98][field_0x264];
             field_0x264++;
             if (field_0x264 == 6) {
                 field_0x240 += 15;
@@ -380,18 +380,18 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
             if (field_0x264 == 4) {
                 startSound_801F0E34(0x4008B, 0);
                 f32 speed = 13.0f;
-                switch (field_0x98) {
+                switch (mDir_0x98) {
                 case 0:
-                    field_0x3c.set(speed, 0.0f, 0.0f);
+                    mVel_0x3c.set(speed, 0.0f, 0.0f);
                     break;
                 case 1:
-                    field_0x3c.set(-speed, 0.0f, 0.0f);
+                    mVel_0x3c.set(-speed, 0.0f, 0.0f);
                     break;
                 case 2:
-                    field_0x3c.set(0.0f, speed, 0.0f);
+                    mVel_0x3c.set(0.0f, speed, 0.0f);
                     break;
                 case 3:
-                    field_0x3c.set(0.0f, -speed, 0.0f);
+                    mVel_0x3c.set(0.0f, -speed, 0.0f);
                     break;
                 }
             }
@@ -411,7 +411,7 @@ void ChiefSoldier_804A0B90::fn_801746DC() {
                 break;
             }
             field_0x240 = lbl_804A0A40[field_0x264];
-            field_0x280 = lbl_804A09E0[field_0x98][field_0x264];
+            field_0x280 = lbl_804A09E0[mDir_0x98][field_0x264];
             field_0x264--;
         }
         if (field_0x25c == 0) {
@@ -444,8 +444,8 @@ ChiefSoldier_804A0B90::~ChiefSoldier_804A0B90() {
 }
 
 void ChiefSoldier_804A0B90::vfunc_0x44() {
-    if (field_0x90 == 2 || field_0x90 == 3) {
-        field_0x90 += 2;
+    if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
+        mSpawnParam_0x90 += 2;
         field_0x240 = 0;
         field_0x264 = 0;
         field_0x250 = 0x14;
@@ -473,7 +473,7 @@ void ChiefSoldier_804A0B90::vfunc_0x44() {
 // FIXME(shotgun): 96.01 %, missing/extra; behaviour near.
 // The original reads mPos.x twice (once for the +=, once for the save) and loads all four box floats before storing them.
 void ChiefSoldier_804A0B90::fn_80174220() {
-    s32 dir = field_0x98;
+    s32 dir = mDir_0x98;
     s32 index = dir;
     if (getType() == 8 && field_0x23c != 0) {
         index = dir + 4;
@@ -486,16 +486,16 @@ void ChiefSoldier_804A0B90::fn_80174220() {
         y = mPos.y;
         z = mPos.z;
         mPos.x += lbl_804A0AD8[dir][0];
-        mPos.y += lbl_804A0AD8[field_0x98][1];
+        mPos.y += lbl_804A0AD8[mDir_0x98][1];
     }
     mBox.set(lbl_804A0B10[index][0], lbl_804A0B10[index][1], lbl_804A0B10[index][2], lbl_804A0B10[index][3]);
     if (field_0x94 == 0 || field_0x94 == 2) {
         s32 serial = field_0x238;
         if (serial >= 0) {
             ActorBase_804A5770* partner = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-            if (partner != NULL && partner->field_0xd8 == 0) {
+            if (partner != NULL && partner->mHitTimer_0xd8 == 0) {
                 if (field_0x94 == 0) {
-                    fn_801F2B7C(field_0x114, -1, 1);
+                    fn_801F2B7C(mParamAtcp_0x114, -1, 1);
                 } else {
                     fn_801F2B7C(4, -1, 3);
                 }
@@ -523,8 +523,8 @@ void ChiefSoldier_804A0B90::fn_80174220() {
                     ActorBase_804A5770* partner = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (partner != NULL) {
                         partner->field_0x94 = player + 1;
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x473, 0, 1, NULL, NULL, true, 1.0f);
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x474, 0, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x473, 0, 1, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x474, 0, 1, NULL, NULL, true, 1.0f);
                     }
                 }
             }
@@ -565,7 +565,7 @@ void ChiefSoldier_804A0B90::update() {
         field_0x254 = 1;
         field_0x250 = 60;
     }
-    if (field_0x230 != 8 && field_0x230 != 9 && field_0xd8 == 0) {
+    if (field_0x230 != 8 && field_0x230 != 9 && mHitTimer_0xd8 == 0) {
         for (s32 i = 0; i < 4; i++) {
             s32 player = fn_801F285C(NULL, NULL, true, i);
             if (field_0x94 != 0) {
@@ -578,7 +578,7 @@ void ChiefSoldier_804A0B90::update() {
                 f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
                 s16 heading = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                if (field_0x98 == fn_801F681C((u16)heading)) {
+                if (mDir_0x98 == fn_801F681C((u16)heading)) {
                     field_0x254 = 1;
                     f32 y0 = mBox.i.y + mPos.y;
                     f32 y1 = mBox.f.y + mPos.y;
@@ -588,22 +588,22 @@ void ChiefSoldier_804A0B90::update() {
                     if (field_0x94 != 0 || (field_0x94 == 0 && fn_80237948(player, &center))) {
                         startSound_801F0E34(0x400D1, 0);
                         if (field_0x94 == 0) {
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-                            spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                         }
                         field_0x2b0 = 0.0f;
                         field_0x2ac = 0.0f;
                         field_0x2a8 = 0.0f;
                         field_0x258 = 40;
                         field_0x24c = 0;
-                        if (field_0x90 != 4 && field_0x90 != 5 && field_0x90 != 6 && field_0x230 == 0) {
+                        if (mSpawnParam_0x90 != 4 && mSpawnParam_0x90 != 5 && mSpawnParam_0x90 != 6 && field_0x230 == 0) {
                             field_0x230 = 1;
                         }
-                        if (field_0x90 == 2 || field_0x90 == 3) {
+                        if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
                             if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
                                 gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
                             }
-                            field_0x90 += 2;
+                            mSpawnParam_0x90 += 2;
                             field_0x240 = 0;
                             field_0x264 = 0;
                             field_0x250 = 20;
@@ -616,18 +616,18 @@ void ChiefSoldier_804A0B90::update() {
                         field_0x2b0 = 0.0f;
                         field_0x2ac = 0.0f;
                         field_0x2a8 = 0.0f;
-                        switch (field_0x98 ^ 1) {
+                        switch (mDir_0x98 ^ 1) {
                         case 0:
-                            field_0x3c.set(10.0f, 0.0f, 0.0f);
+                            mVel_0x3c.set(10.0f, 0.0f, 0.0f);
                             break;
                         case 1:
-                            field_0x3c.set(-10.0f, 0.0f, 0.0f);
+                            mVel_0x3c.set(-10.0f, 0.0f, 0.0f);
                             break;
                         case 2:
-                            field_0x3c.set(0.0f, 10.0f, 0.0f);
+                            mVel_0x3c.set(0.0f, 10.0f, 0.0f);
                             break;
                         case 3:
-                            field_0x3c.set(0.0f, -10.0f, 0.0f);
+                            mVel_0x3c.set(0.0f, -10.0f, 0.0f);
                             break;
                         }
                     }
@@ -637,10 +637,10 @@ void ChiefSoldier_804A0B90::update() {
         }
         field_0x94 = 0;
         s32 life = mLife;
-        if (field_0xd8 == 0) {
+        if (mHitTimer_0xd8 == 0) {
             if ((field_0x254 == 0 && fn_801F2FAC()) || fn_801F2DB4('NULL', 'NULL', NULL)) {
                 if (life != mLife) {
-                    if (getType() != 6 && field_0x4 >= 8 && field_0x23c == 1) {
+                    if (getType() != 6 && mLayer_0x4 >= 8 && field_0x23c == 1) {
                         field_0x284 -= 10000 - mLife;
                         if (field_0x284 < 0) {
                             field_0x284 = 0;
@@ -649,11 +649,11 @@ void ChiefSoldier_804A0B90::update() {
                         mLife = 10000;
                         field_0x29c = 0;
                         if (dir >= 0) {
-                            field_0x98 = dir;
+                            mDir_0x98 = dir;
                             field_0x240 = 0;
                             field_0x264 = 0;
                         }
-                        if (field_0x90 == 4 || field_0x90 == 5 || field_0x90 == 6) {
+                        if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5 || mSpawnParam_0x90 == 6) {
                             field_0x230 = 2;
                         } else {
                             field_0x248 = 0;
@@ -674,7 +674,7 @@ void ChiefSoldier_804A0B90::update() {
                             }
                         }
                         field_0x238 = -1;
-                        if (field_0x4 >= 8 && field_0x23c == 1) {
+                        if (mLayer_0x4 >= 8 && field_0x23c == 1) {
                             for (s32 i = 0; i < 4; i++) {
                                 s32 keese = field_0x2c0[i];
                                 if (keese >= 0) {
@@ -691,14 +691,14 @@ void ChiefSoldier_804A0B90::update() {
                     }
                 }
                 field_0x24c = 0;
-                if (field_0x90 != 4 && field_0x90 != 5 && field_0x90 != 6 && field_0x230 == 0) {
+                if (mSpawnParam_0x90 != 4 && mSpawnParam_0x90 != 5 && mSpawnParam_0x90 != 6 && field_0x230 == 0) {
                     field_0x230 = 1;
                 }
-                if (field_0x90 == 2 || field_0x90 == 3) {
+                if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
                     if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
                         gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
                     }
-                    field_0x90 += 2;
+                    mSpawnParam_0x90 += 2;
                     field_0x240 = 0;
                     field_0x264 = 0;
                     field_0x250 = 20;
@@ -714,9 +714,9 @@ void ChiefSoldier_804A0B90::update() {
                     return;
                 }
             }
-            addCalc2_801F71A4(&field_0x3c.x, field_0x2a8, 0.3f, 1.0f);
-            addCalc2_801F71A4(&field_0x3c.y, field_0x2ac, 0.3f, 1.0f);
-            mPos += field_0x3c;
+            addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a8, 0.3f, 1.0f);
+            addCalc2_801F71A4(&mVel_0x3c.y, field_0x2ac, 0.3f, 1.0f);
+            mPos += mVel_0x3c;
             fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 0, 0);
             if (field_0x29c != 2 || field_0x264 < 4) {
                 fn_801F2B7C(-100, -1, 1);
@@ -735,18 +735,18 @@ void ChiefSoldier_804A0B90::update() {
             field_0x240 = 0;
             field_0x264 = 0;
             field_0x250 = 20;
-            if ((field_0x90 == 2 || field_0x90 == 3) && field_0x290 == -1 && field_0x2a5 == 1) {
+            if ((mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) && field_0x290 == -1 && field_0x2a5 == 1) {
                 field_0x288 = 2;
                 startSound_801F0E34(0x5001F, 0);
             }
             if (field_0x23c == 0 && gGameRoot_8053AAF8->field_0x7f == 1) {
                 gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
             }
-            field_0x90 = 4;
+            mSpawnParam_0x90 = 4;
             field_0x230 = 2;
             break;
         }
-        if (field_0x90 == 2 || field_0x90 == 3) {
+        if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
             field_0x230 = 0;
             if (field_0x294 == 0 && field_0x298 == 0) {
                 field_0x288 = 3;
@@ -754,8 +754,8 @@ void ChiefSoldier_804A0B90::update() {
             }
         }
         if (dir >= 0) {
-            if ((field_0x90 != 2 && field_0x90 != 3) || field_0x2a5 == 0) {
-                field_0x98 = dir;
+            if ((mSpawnParam_0x90 != 2 && mSpawnParam_0x90 != 3) || field_0x2a5 == 0) {
+                mDir_0x98 = dir;
             }
             field_0x29c = 0;
         } else {
@@ -782,7 +782,7 @@ void ChiefSoldier_804A0B90::update() {
                     startSound_801F0E34(0x4008F, 0);
                 }
             }
-            if (field_0x90 != 2 && field_0x90 != 3) {
+            if (mSpawnParam_0x90 != 2 && mSpawnParam_0x90 != 3) {
                 field_0x230 = 1;
             }
         }
@@ -798,18 +798,18 @@ void ChiefSoldier_804A0B90::update() {
                 field_0x2b0 = 0.0f;
                 field_0x2ac = 0.0f;
                 field_0x2a8 = 0.0f;
-                field_0x3c.zero();
+                mVel_0x3c.zero();
                 field_0x29c = 1;
                 break;
             }
-            field_0x98 = dir;
+            mDir_0x98 = dir;
             if (field_0x288 == 1) {
                 angle += 0x8000;
             }
             if (field_0x258 == 0) {
                 field_0x2a8 = 0.9f * JMASinShort(angle);
                 field_0x2ac = 0.9f * JMACosShort(angle);
-                if (field_0x4 >= 8 && field_0x23c == 1) {
+                if (mLayer_0x4 >= 8 && field_0x23c == 1) {
                     field_0x2a8 = 1.17f * JMASinShort(angle);
                     field_0x2ac = 1.17f * JMACosShort(angle);
                 }
@@ -833,11 +833,11 @@ void ChiefSoldier_804A0B90::update() {
             field_0x244 = 40;
             fn_801EEC98(mSerial, &angle, &dir, &dist, NULL, 1, 0);
             if (dir >= 0) {
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 if (field_0x258 == 0) {
                     field_0x2a8 = 1.1f * JMASinShort(angle);
                     field_0x2ac = 1.1f * JMACosShort(angle);
-                    if (field_0x4 >= 8 && field_0x23c == 1) {
+                    if (mLayer_0x4 >= 8 && field_0x23c == 1) {
                         field_0x2a8 = 1.43f * JMASinShort(angle);
                         field_0x2ac = 1.43f * JMACosShort(angle);
                     }
@@ -864,43 +864,43 @@ void ChiefSoldier_804A0B90::update() {
         // fall through
     case 4:
         if (hit) {
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             field_0x2b0 = 0.0f;
             field_0x2ac = 0.0f;
             field_0x2a8 = 0.0f;
             field_0x240 = 8;
-            field_0x98 ^= 1;
-            field_0x280 = lbl_804A0920[field_0x98];
+            mDir_0x98 ^= 1;
+            field_0x280 = lbl_804A0920[mDir_0x98];
             field_0x29c = 0;
             break;
         }
         if (field_0x244 == 0) {
             field_0x29c = 1;
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             field_0x2b0 = 0.0f;
             field_0x2ac = 0.0f;
             field_0x2a8 = 0.0f;
             if (field_0x2a4 == 1) {
                 field_0x244 = (s32)(50.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1())) + 50;
                 field_0x29c = 0;
-                if ((field_0x98 & 2) == 0) {
+                if ((mDir_0x98 & 2) == 0) {
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                        field_0x98 = 2;
+                        mDir_0x98 = 2;
                     } else {
-                        field_0x98 = 3;
+                        mDir_0x98 = 3;
                     }
                 } else {
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                        field_0x98 = 0;
+                        mDir_0x98 = 0;
                     } else {
-                        field_0x98 = 1;
+                        mDir_0x98 = 1;
                     }
                 }
             }
             break;
         }
         if (field_0x258 == 0) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x2a8 = 0.7f;
                 field_0x2ac = 0.0f;
@@ -924,16 +924,16 @@ void ChiefSoldier_804A0B90::update() {
             }
         }
         if (dir >= 0) {
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             field_0x2b0 = 0.0f;
             field_0x2ac = 0.0f;
             field_0x2a8 = 0.0f;
             pos.set(mPos);
             pos.y += 24.0f;
             startSound_801F0E34(0x40088, 0);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
             field_0x29c = 0;
-            if (field_0x90 == 4 || field_0x90 == 5 || field_0x90 == 6) {
+            if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5 || mSpawnParam_0x90 == 6) {
                 field_0x230 = 2;
             } else {
                 field_0x248 = 0;
@@ -942,7 +942,7 @@ void ChiefSoldier_804A0B90::update() {
         }
         break;
     case 5:
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         field_0x2b0 = 0.0f;
         field_0x2ac = 0.0f;
         field_0x2a8 = 0.0f;
@@ -958,16 +958,16 @@ void ChiefSoldier_804A0B90::update() {
             if (field_0x2a4 == 1) {
                 field_0x26c++;
                 s32 limit = 70;
-                if ((s32)field_0x90 > 1) {
+                if ((s32)mSpawnParam_0x90 > 1) {
                     limit = 42;
                 }
-                field_0x3c.zero();
+                mVel_0x3c.zero();
                 field_0x2b0 = 0.0f;
                 field_0x2ac = 0.0f;
                 field_0x2a8 = 0.0f;
                 if (field_0x26c > limit) {
                     field_0x250 = 120;
-                    if (field_0x4 >= 8 && field_0x23c == 1) {
+                    if (mLayer_0x4 >= 8 && field_0x23c == 1) {
                         mBox.i.x = -14.0f;
                         mBox.i.y = -14.0f;
                         mBox.f.x = 14.0f;
@@ -982,7 +982,7 @@ void ChiefSoldier_804A0B90::update() {
     case 7:
         if (field_0x2a4 == 1) {
             field_0x29c = 0;
-            if (field_0x90 == 4 || field_0x90 == 5 || field_0x90 == 6) {
+            if (mSpawnParam_0x90 == 4 || mSpawnParam_0x90 == 5 || mSpawnParam_0x90 == 6) {
                 field_0x230 = 2;
             } else {
                 field_0x248 = 0;
@@ -1000,7 +1000,7 @@ void ChiefSoldier_804A0B90::update() {
                 pos.set(mPos);
                 pos.x += 32.0f - 64.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1());
                 pos.y += 32.0f - 64.0f * (gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, field_0x4, &pos, 7, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HBMB, mLayer_0x4, &pos, 7, -1, -1);
             }
         } else {
             ActorBase_804A5770::die_0x24();
@@ -1045,14 +1045,14 @@ void ChiefSoldier_804A0B90::fn_80172BC8() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (field_0x90 != 7) {
+    if (mSpawnParam_0x90 != 7) {
         setScaleMtx(mtx, 2.0f);
         if (field_0x23c == 0) {
             setScaleMtx(mtx, 1.0f);
         }
         params.mMtx = mtx;
         s32 frame = field_0x280 + 0x3FD;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
@@ -1074,7 +1074,7 @@ void ChiefSoldier_804A0B90::draw() {
             if (field_0x230 == 6 && field_0x264 >= 3) {
                 params.field_0x30 = 0x11;
             }
-            if (field_0x4 >= 8) {
+            if (mLayer_0x4 >= 8) {
                 if (field_0x23c == 1) {
                     setScaleMtx(mtx, 2.0f);
                     hasMtx = 1;
@@ -1089,7 +1089,7 @@ void ChiefSoldier_804A0B90::draw() {
                 if (getType() != 6) {
                     fn_801EF574("enemy_gc_sob.bin", field_0x280 + 0x226, &pos, &params);
                 }
-                fn_803075AC(mSerial, field_0x4, &mPos, field_0x280 + 0x318, hasMtx != 0, 2, -1, 0, 0, 0);
+                fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x280 + 0x318, hasMtx != 0, 2, -1, 0, 0, 0);
             } else {
                 fn_801F02BC("enemy_gc_sob.bin", field_0x280 + 0x226, &params, 7, 0, false, 1.0f,
                             1.0f);
@@ -1100,8 +1100,8 @@ void ChiefSoldier_804A0B90::draw() {
 
 void ChiefSoldier_804A0B90::die_0x24() {
     if (getType() == 6) {
-        field_0x18c = 0;
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
+        mParamDasu_0x18c = 0;
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
     }
     ActorBase_804A5770::die_0x24();
 }

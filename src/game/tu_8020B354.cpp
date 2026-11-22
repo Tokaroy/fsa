@@ -21,12 +21,12 @@ void cls_804A5E98::init() {
     EnemyBase_804A4808::init();
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0x50003;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= ENEMY_FLAG_NO_HURT;
     field_0x194 = 1;
-    mTargetSerial = field_0x90;
+    mTargetSerial = mSpawnParam_0x90;
     mState = 0;
     mStateTimer = 0;
     field_0x250 = -1;
@@ -34,7 +34,7 @@ void cls_804A5E98::init() {
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_8053A170, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
     mPos.set(0.5f * (box->i.x + box->f.x), 0.5f * (box->i.y + box->f.y), 0.0f);
@@ -51,7 +51,7 @@ void cls_804A5E98::updateState_0x90(u8 mapHit) {
     case 1: // state 1 does nothing here
         break;
     case 2: {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
         if (mPos.x < box->i.x - 32.0f || mPos.y < box->i.y - 32.0f || mPos.x > 32.0f + box->f.x ||
@@ -79,15 +79,15 @@ bool cls_804A5E98::vfunc_0x58() {
     bool actorC = false;
     vel48.set(0.0f, 0.0f, 0.0f);
     fn_801F317C(&box);
-    player = fn_8023AE34(&box, field_0x4, &probe);
+    player = fn_8023AE34(&box, mLayer_0x4, &probe);
     if (player >= 0) {
         arrow = fn_801CC820(player, &vel48);
     } else {
-        player = fn_8023AC74(&box, field_0x4, &probe);
+        player = fn_8023AC74(&box, mLayer_0x4, &probe);
         if (player >= 0) {
             actorC = fn_801CC538(player, &probe, &vel54, NULL);
         } else {
-            player = fn_8023AD54(&box, field_0x4, &probe);
+            player = fn_8023AD54(&box, mLayer_0x4, &probe);
             if (player >= 0) {
                 fn_801CC640(player, NULL, &vel48);
             }
@@ -119,13 +119,13 @@ u8 cls_804A5E98::checkHitByActor_0x60() {
         s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (other >= 0 && other != mSerial) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(other);
-            if (actor != NULL && !(!viewLayerFlag(field_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor))) {
+            if (actor != NULL && !(!viewLayerFlag(mLayer_0x4) && mPos.z > 16.0f && fn_801CC8E4(actor))) {
                 ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
                 if (target != NULL) {
                     JGeometry::TVec3f from(mPos);
-                    from.sub(actor->field_0x3c);
+                    from.sub(actor->mVel_0x3c);
                     static_cast<cls_804A5B28*>(target)->fn_80207830(
-                        field_0x94, actor->field_0x110, actor->field_0x118, &from, actor->field_0x168);
+                        field_0x94, actor->field_0x110, actor->mParamAtcn_0x118, &from, actor->field_0x168);
                 }
                 actor->field_0x164 = 1;
             }
@@ -159,7 +159,7 @@ void cls_804A5E98::onHitReactionEnd_0x74() {
 // taking the out pointer were inlined), ours loads the camera pointer last and has 3 more moves.
 void cls_804A5E98::vfunc_0xA0() {
     if (mState != 0) {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f* box = layer < 8 ? &view->mVisibleBox : &view->field_0xdc;
         JGeometry::TVec3f pos(mPos.x, mPos.y - mPos.z, 0.0f);
@@ -190,9 +190,9 @@ void cls_804A5E98::draw() {
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
     }
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }
@@ -216,7 +216,7 @@ void cls_804A5E98::fn_8020B434() {
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.set(mBox);
         s16 angle = (field_0x94 & 3) * 0x4000 - 0x6000;
-        field_0x3c.set(JMath::sincosTable_.sinShort(angle) * 2.4f,
+        mVel_0x3c.set(JMath::sincosTable_.sinShort(angle) * 2.4f,
                        JMath::sincosTable_.cosShort(angle) * 2.4f, 0.0f);
         mStateTimer = 0;
         mState = 2;

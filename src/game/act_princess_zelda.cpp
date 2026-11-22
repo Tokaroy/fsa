@@ -124,9 +124,9 @@ cls_8049CEE0::~cls_8049CEE0() {
 
 void cls_8049CEE0::init() {
     ActorBase_804A5770::init();
-    field_0x320 = field_0x90 & 0x1F;
-    field_0x324 = (field_0x90 >> 4) & 0x1F;
-    field_0x2fc = (field_0x90 >> 8) & 0xFF;
+    field_0x320 = mSpawnParam_0x90 & 0x1F;
+    field_0x324 = (mSpawnParam_0x90 >> 4) & 0x1F;
+    field_0x2fc = (mSpawnParam_0x90 >> 8) & 0xFF;
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
@@ -135,10 +135,10 @@ void cls_8049CEE0::init() {
     mBox2.i.y = -8.0f;
     mBox2.f.x = 8.0f;
     mBox2.f.y = 8.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     mLife = 4;
     field_0xb8 = 2;
     field_0x11e = 1;
@@ -148,9 +148,9 @@ void cls_8049CEE0::init() {
         mSpriteAnim.fn_801D2608(lbl_8049CE70, 14);
     }
     mSpriteAnim.startAnim_801D22DC(2, 2, 0);
-    resetAnimFrame();
+    pool_8053C3E0();
     getGameView_802D6A9C()->fn_802D7440(0);
-    field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', field_0x4, &mPos, 0, -1, -1);
+    field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
 }
 
 static inline bool checkTile(u16 code) {
@@ -168,19 +168,19 @@ inline bool cls_8049CEE0::stepRail() {
     }
     u16 angle = 0;
     JGeometry::TVec3f moveVec(0.0f, 0.0f, 0.0f);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
     if (mRail.fn_800FDEA0(&pos, 1.0f, &moveVec, &layer, &angle, 0x200) == 3) {
         return true;
     }
-    field_0x3c.x = moveVec.x;
-    field_0x3c.y = moveVec.y;
-    field_0x3c.z = moveVec.z;
-    mPos += field_0x3c;
+    mVel_0x3c.x = moveVec.x;
+    mVel_0x3c.y = moveVec.y;
+    mVel_0x3c.z = moveVec.z;
+    mPos += mVel_0x3c;
     s32 dir = fn_801F681C(angle);
     if (dir >= 0 && dir != mSpriteAnim.mAnim) {
         mSpriteAnim.startAnim_801D22DC(dir, 2, false);
-        resetAnimFrame();
+        pool_8053C3E0();
     }
     return false;
 }
@@ -218,7 +218,7 @@ void cls_8049CEE0::update() {
         searchBox.f.x += mPos.x;
         searchBox.f.y += mPos.y;
 
-        fn_8022FEB8(&searchBox, field_0x4, mSerial, false, false);
+        fn_8022FEB8(&searchBox, mLayer_0x4, mSerial, false, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player < 0) {
             player = -1;
@@ -226,7 +226,7 @@ void cls_8049CEE0::update() {
             player = -1;
         } else if (!fn_8022C5EC(player, 0x120)) {
             player = -1;
-        } else if (!talk(player, 0x170, mSerial, field_0x4, mPos, 0x20)) {
+        } else if (!talk(player, 0x170, mSerial, mLayer_0x4, mPos, 0x20)) {
             player = -1;
         }
         if (player >= 0) {
@@ -246,7 +246,7 @@ void cls_8049CEE0::update() {
     switch (field_0x328) {
     case 0:
         if (field_0x2fc > 0 && field_0x320 == 1) {
-            mRail.fn_800FE3EC(field_0x2fc, mPos, field_0x4);
+            mRail.fn_800FE3EC(field_0x2fc, mPos, mLayer_0x4);
         }
         fn_801096C8(1);
         break;
@@ -254,9 +254,9 @@ void cls_8049CEE0::update() {
     case 1:
         if (lbl_8053AA81 != 0) {
             if (field_0x328 == 1) {
-                fn_8022FE80(0, field_0x4, mSerial, false, false);
+                fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
                 if (fn_8022FD8C(mSerial) >= 0) {
-                    if (talk(0, 0x170, mSerial, field_0x4, mPos, 0x28)) {
+                    if (talk(0, 0x170, mSerial, mLayer_0x4, mPos, 0x28)) {
                         lbl_8053AA81 = 0;
                         fn_801096C8(4);
                     }
@@ -272,16 +272,16 @@ void cls_8049CEE0::update() {
                 if (field_0x328 == 1) {
                     if (dir >= 0 && dir + 5 != mSpriteAnim.mAnim) {
                         mSpriteAnim.startAnim_801D22DC(dir + 5, 2, false);
-                        resetAnimFrame();
+                        pool_8053C3E0();
                     }
                 }
             }
             switch (field_0x320) {
             case 0: {
-                fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+                fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
                 s32 player = fn_8022FD8C(mSerial);
                 if (player >= 0 && !fn_8022F514(player)) {
-                    if (talk(player, 0x230, mSerial, field_0x4, mPos, 0x28)) {
+                    if (talk(player, 0x230, mSerial, mLayer_0x4, mPos, 0x28)) {
                         field_0x300 = player;
                         fn_801096C8(2);
                     }
@@ -295,14 +295,14 @@ void cls_8049CEE0::update() {
         break;
 
     case 2:
-        fn_8022FF8C(field_0x300, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x300, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x300, mSerial)) {
             fn_801096C8(5);
         }
         break;
 
     case 3:
-        fn_8022FF8C(field_0x304, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x304, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x304, mSerial)) {
             fn_801096C8(field_0x32c);
         }
@@ -322,7 +322,7 @@ void cls_8049CEE0::update() {
             camera->field_0x1d4 = -1.0f;
             camera->field_0x1d8 = -1.0f;
         }
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         if (fn_80388CAC(0, mSerial)) {
             lbl_8053AA81 = 0;
             fn_801096C8(1);
@@ -351,7 +351,7 @@ void cls_8049CEE0::update() {
             if (fn_8023E10C(player) == 8) {
                 fn_801096C8(7);
             } else {
-                field_0x4 = getPlayerLayer_8023DE58(player);
+                mLayer_0x4 = getPlayerLayer_8023DE58(player);
                 field_0x339 = 0;
                 fn_801096C8(10);
             }
@@ -363,16 +363,16 @@ void cls_8049CEE0::update() {
         s32 unk = 0;
         fn_801EEC98(mSerial, &angle, &dir, &dist, &unk, player, 2);
         stepSpeed(dist);
-        field_0x3c.x = field_0x334 * JMath::sincosTable_.sinShort(angle);
-        field_0x3c.y = field_0x334 * JMath::sincosTable_.cosShort(angle);
-        mPos += field_0x3c;
-        field_0x330 = magnitude(field_0x3c) / 1.1f;
+        mVel_0x3c.x = field_0x334 * JMath::sincosTable_.sinShort(angle);
+        mVel_0x3c.y = field_0x334 * JMath::sincosTable_.cosShort(angle);
+        mPos += mVel_0x3c;
+        field_0x330 = magnitude(mVel_0x3c) / 1.1f;
         if (field_0x330 >= 1.0f) {
             field_0x330 = 1.0f;
         }
         if (dir >= 0 && dir != mSpriteAnim.mAnim) {
             mSpriteAnim.startAnim_801D22DC(dir, 2, false);
-            resetAnimFrame();
+            pool_8053C3E0();
         }
         break;
     }
@@ -384,7 +384,7 @@ void cls_8049CEE0::update() {
         if (field_0x300 < 0) {
             fn_801096C8(1);
         }
-        if (!fn_8022D75C(field_0x300) && field_0x4 == getPlayerLayer_8023DE58(field_0x300)) {
+        if (!fn_8022D75C(field_0x300) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x300)) {
             fn_801096C8(8);
         }
         break;
@@ -404,7 +404,7 @@ void cls_8049CEE0::update() {
         if (field_0x300 >= 0) {
             field_0x339 = 0;
             JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            field_0x98 = fn_80230CFC(field_0x300);
+            mDir_0x98 = fn_80230CFC(field_0x300);
             approachPlayerSide(ppos);
         }
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
@@ -413,11 +413,11 @@ void cls_8049CEE0::update() {
         break;
 
     case 10:
-        field_0x4 = getPlayerLayer_8023DE58(field_0x300);
+        mLayer_0x4 = getPlayerLayer_8023DE58(field_0x300);
         if (field_0x300 >= 0) {
             field_0x339 = 0;
             JGeometry::TVec3f ppos = *getPlayerPos_8023E724(field_0x300);
-            field_0x98 = fn_80230CFC(field_0x300);
+            mDir_0x98 = fn_80230CFC(field_0x300);
             followPlayerSide(ppos);
         }
         if (!fn_8022D75C(field_0x300)) {
@@ -465,17 +465,17 @@ void cls_8049CEE0::update() {
         break;
 
     case 16:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x31c = fn_8022FD8C(mSerial);
         if (field_0x31c >= 0 && (gGameRoot_8053AAF8->mPlayerMask & (1 << field_0x31c))) {
-            if (talk(field_0x31c, 0x16E, mSerial, field_0x4, mPos, 0x28)) {
+            if (talk(field_0x31c, 0x16E, mSerial, mLayer_0x4, mPos, 0x28)) {
                 fn_801096C8(17);
             }
         }
         break;
 
     case 17:
-        fn_8022FF8C(field_0x31c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x31c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x31c, mSerial)) {
             fn_801096C8(16);
         }
@@ -483,12 +483,12 @@ void cls_8049CEE0::update() {
     }
 
     if (field_0x338 != 0) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 
     if (field_0x339 != 0) {
         if (!fn_8022C52C(field_0x300, 0x400)) {
-            if (!checkTile(fn_8022461C(&mPos, field_0x4))) {
+            if (!checkTile(fn_8022461C(&mPos, mLayer_0x4))) {
                 JGeometry::TVec3f pos;
                 fn_801F2618(&pos, false);
             }
@@ -547,7 +547,7 @@ bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
     if (!circle->mAlive) {
         return false;
     }
-    if (field_0x4 != circle->field_0x4) {
+    if (mLayer_0x4 != circle->mLayer_0x4) {
         return false;
     }
     JGeometry::TBox2f box1;
@@ -571,6 +571,7 @@ bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
 // field_0x334 (the speed) towards 1.1 when `dist` is 32 or more, towards 0 below.
 // No copy of its own in the original: update inlines it and the linker dropped the body.
 // A plain function at this place: its literals stand in front of fn_80109AE0's in .sdata2.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::stepSpeed(f32 dist) {
     if (dist >= 32.0f) {
         fn_801CD950(&field_0x334, 1.1f, 0.02f);
@@ -599,7 +600,7 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
     case 5: {
         s32 viewId = field_0x16c;
         if (viewId != -1) {
-            getGameView_802D6A9C()->fn_802D7704(viewId, field_0x1a8, field_0x4);
+            getGameView_802D6A9C()->fn_802D7704(viewId, mParamDstr_0x1a8, mLayer_0x4);
         }
         mSpriteAnim.startAnim_801D22DC(2, 2, false);
         break;
@@ -608,12 +609,12 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
         mSpriteAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 7: {
-        spawnEffect33A();
+        pool_8053C3E4();
         mSpriteAnim.startAnim_801D22DC(9, 0, false);
         break;
     }
     case 8: {
-        spawnEffect33A();
+        pool_8053C3E4();
         mSpriteAnim.startAnim_801D22DC(2, 2, false);
         break;
     }
@@ -624,7 +625,7 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
         mSpriteAnim.startAnim_801D22DC(fn_80230CFC(field_0x300), 2, false);
         break;
     case 11:
-        mSpriteAnim.startAnim_801D22DC(field_0x98 + 10, 0, false);
+        mSpriteAnim.startAnim_801D22DC(mDir_0x98 + 10, 0, false);
         field_0x2f8 = 1;
         break;
     case 12:
@@ -659,17 +660,17 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
         mLife = 4;
         field_0x2f8 = 1;
         field_0x30c = 0;
-        field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', field_0x4, &mPos, 0, -1, -1);
+        field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
         break;
     case 15:
         if (field_0x2fc > 0 && field_0x320 == 0) {
-            mRail.fn_800FE3EC(field_0x2fc, mPos, field_0x4);
+            mRail.fn_800FE3EC(field_0x2fc, mPos, mLayer_0x4);
         }
         fn_8023077C();
         {
             JGeometry::TVec3f pos = mPos;
             pos.y += -24.0f;
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
         }
         break;
     case 16:
@@ -684,7 +685,7 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
     default:
         return false;
     }
-    resetAnimFrame();
+    pool_8053C3E0();
     return true;
 }
 
@@ -696,7 +697,7 @@ static inline void setLifeMeter(LifeMeter_804B174C* meter, s32 serial, f32 yOffs
 
 void cls_8049CEE0::fn_80109534() {
     if (field_0x310 < 0) {
-        field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', field_0x4, &mPos, 0, -1, -1);
+        field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
         if (field_0x310 < 0) {
             return;
         }
@@ -745,9 +746,10 @@ void cls_8049CEE0::fn_80109534() {
 // generated before fn_80109534, in this order from the bottom, which is the order of
 // 0, -24, 1, 16, 0.5, 5, 2 in the original's .sdata2.
 
-// State 9: `ppos` (the player's position) moved 16 to the side field_0x98, mPos towards it by 2.
+// State 9: `ppos` (the player's position) moved 16 to the side mDir_0x98, mPos towards it by 2.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
-    switch (field_0x98) {
+    switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
         break;
@@ -767,8 +769,9 @@ void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
 }
 
 // The same side position; mPos jumps to it on the player's layer, else moves towards it by 5.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 25-line definition): split out only where the .sdata2 order needs it.
 void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
-    switch (field_0x98) {
+    switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
         break;
@@ -794,13 +797,15 @@ void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
 }
 
 // Effect 0x33A 24 above mPos (states 7 and 8).
-void cls_8049CEE0::spawnEffect33A() {
+// R2 pool helper (inlined at 2 call sites); was spawnEffect33A.
+void cls_8049CEE0::pool_8053C3E4() {
     JGeometry::TVec3f pos = mPos;
     pos.y += -24.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // mSpriteAnim.fn_801D1F14(0.0f).
-void cls_8049CEE0::resetAnimFrame() {
+// R2 pool helper (inlined at 5 call sites; one-statement body); was resetAnimFrame.
+void cls_8049CEE0::pool_8053C3E0() {
     mSpriteAnim.fn_801D1F14(0.0f);
 }

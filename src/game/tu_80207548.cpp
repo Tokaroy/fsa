@@ -139,19 +139,19 @@ void cls_804A5B28::fn_802075D8(u16 slot) {
         if (a) {
             pos.set(a->mPos);
         }
-        s32 handle = fn_801CB434(field_0x4, &pos, true);
+        s32 handle = fn_801CB434(mLayer_0x4, &pos, true);
         s32 player = mSlots[slot].mPlayer;
         if (player >= 0 && player < 4) {
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             if (layer == getPlayerLayer_8023DE58(player)) {
-                if (isBlocked_0x4C(field_0x4, &pos)) {
+                if (isBlocked_0x4C(mLayer_0x4, &pos)) {
                     ActorBase_804A5770* b = getActorManager_801F856C()->findActorBySerial_801F666C(handle);
                     if (b) {
                         JGeometry::TVec2f d(getPlayerPos_8023E724(player)->x - pos.x, getPlayerPos_8023E724(player)->y - pos.y);
                         normalize(d);
                         d.scale(2.0f);
-                        v.set(d.x, d.y, b->field_0x3c.z);
-                        b->field_0x3c = v;
+                        v.set(d.x, d.y, b->mVel_0x3c.z);
+                        b->mVel_0x3c = v;
                     }
                 }
             }

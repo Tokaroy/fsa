@@ -11,11 +11,11 @@ void cls_804ACC68::init() {
     field_0x23c = 0;
     field_0x234 = 9;
     field_0x238 = 300;
-    field_0x248 = field_0x90 & 3;
+    field_0x248 = mSpawnParam_0x90 & 3;
     field_0x240 = 60;
     field_0x244 = 0;
-    field_0x24c = field_0x90 >> 4 & 0xF;
-    field_0x250 = (field_0x90 >> 8 & 3) != 0;
+    field_0x24c = mSpawnParam_0x90 >> 4 & 0xF;
+    field_0x250 = (mSpawnParam_0x90 >> 8 & 3) != 0;
     if (!field_0x250) {
         startSound_801F0E34(0x50050, 0);
     } else {
@@ -25,7 +25,7 @@ void cls_804ACC68::init() {
 }
 
 void cls_804ACC68::update() {
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     if (field_0x254.x - 32.0f > mPos.x) {
         fn_801F3668();
     }
@@ -80,7 +80,7 @@ void cls_804ACC68::draw() {
             break;
         }
         s32 frame = lbl_80472240[field_0x24c] + field_0x244;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&p, res, frame, &params, 1.0f, 1.0f);
         }
@@ -100,7 +100,7 @@ void cls_804ACC68::draw() {
         break;
     }
     s32 frame = lbl_80472260[field_0x23c] + 0xC0;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }

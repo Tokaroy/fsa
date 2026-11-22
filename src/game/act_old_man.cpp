@@ -119,11 +119,11 @@ cls_804AEED0::~cls_804AEED0() {
 
 void cls_804AEED0::init() {
     field_0x230 = 0;
-    field_0x250 = (field_0x90 & 0xFFF) + 0x12B;
-    field_0x254 = (field_0x90 >> 24) & 1;
-    field_0x258 = (field_0x90 >> 16) & 0xFF;
-    field_0x271 = (field_0x90 >> 25) & 1;
-    field_0x268 = (field_0x90 >> 12) & 3;
+    field_0x250 = (mSpawnParam_0x90 & 0xFFF) + 0x12B;
+    field_0x254 = (mSpawnParam_0x90 >> 24) & 1;
+    field_0x258 = (mSpawnParam_0x90 >> 16) & 0xFF;
+    field_0x271 = (mSpawnParam_0x90 >> 25) & 1;
+    field_0x268 = (mSpawnParam_0x90 >> 12) & 3;
     field_0x272 = 1;
     field_0x26c = 0;
     field_0x270 = 0;
@@ -138,16 +138,16 @@ void cls_804AEED0::init() {
     } else {
         mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     }
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     if (field_0x271 == 1) {
-        field_0x3c.z = 4.0f;
+        mVel_0x3c.z = 4.0f;
     }
     mLife = 1;
     field_0x238 = 0;
     field_0x240 = 0;
     field_0x248 = 2;
     field_0x24c = 0;
-    updateFacing(0);
+    pool_80543048(0);
     field_0x244 = -1;
     field_0x25c = lbl_804753C0[field_0x258].mFrame;
     field_0x260 = lbl_804753C0[field_0x258].mKind;
@@ -373,7 +373,7 @@ void cls_804AEED0::update() {
     box1.f.x += mPos.x;
     box1.f.y += mPos.y;
     if (field_0x230 != 3 && field_0x230 != 4) {
-        fn_80239914(&box1, field_0x4, mSerial);
+        fn_80239914(&box1, mLayer_0x4, mSerial);
     }
     if (field_0x258 == 4 && field_0x273 == 1) {
         field_0x273 = 0;
@@ -404,18 +404,18 @@ void cls_804AEED0::update() {
     box2.f.x += mPos.x;
     box2.f.y += mPos.y;
     if (field_0x230 == 2) {
-        mPos.add(field_0x3c);
-        field_0x3c.z -= 0.2f;
+        mPos.add(mVel_0x3c);
+        mVel_0x3c.z -= 0.2f;
     }
     switch (field_0x230) {
     case 0:
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             field_0x230 = 1;
         } else {
             field_0x230 = 3;
         }
         if (field_0x258 == 18 || field_0x258 == 19 || field_0x258 == 20) {
-            field_0x278 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1FE, 0, 0, NULL, NULL, true, 1.0f);
+            field_0x278 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1FE, 0, 0, NULL, NULL, true, 1.0f);
         }
         break;
     case 3:
@@ -432,27 +432,27 @@ void cls_804AEED0::update() {
         }
         break;
     case 4:
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             JGeometry::TVec3f effPos;
             effPos.x = mPos.x;
             effPos.y = mPos.y;
             effPos.z = mPos.z;
             effPos.y += 32.0f;
             effPos.z += 16.0f;
-            spawnEmitter_8013CC50(field_0x4, &effPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
-            gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(field_0x4, &effPos, 3);
+            spawnEmitter_8013CC50(mLayer_0x4, &effPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
+            gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(mLayer_0x4, &effPos, 3);
         }
         field_0x230 = 1;
         break;
     case 1:
-        updateFacing(0);
+        pool_80543048(0);
         if (!fn_8022B160()) {
             if (field_0x268 == 0) {
-                fn_8022FEB8(&box1, field_0x4, mSerial, true, false);
+                fn_8022FEB8(&box1, mLayer_0x4, mSerial, true, false);
             } else if (field_0x272 == 1) {
-                fn_8022FEB8(&box2, field_0x4, mSerial, false, false);
+                fn_8022FEB8(&box2, mLayer_0x4, mSerial, false, false);
             } else {
-                if (fn_8023AF14(&box2, field_0x4, false, 500.0f) == -1) {
+                if (fn_8023AF14(&box2, mLayer_0x4, false, 500.0f) == -1) {
                     field_0x272 = 1;
                 }
                 break;
@@ -467,7 +467,7 @@ void cls_804AEED0::update() {
                 fn_802300EC(field_0x244) &&
                 fn_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
                 field_0x24c = 0;
-                updateFacing(field_0x244 + 1);
+                pool_80543048(field_0x244 + 1);
                 field_0x230 = 5;
                 field_0x240 = 0;
                 if (field_0x258 == 18 || field_0x258 == 19 || field_0x258 == 20) {
@@ -479,19 +479,19 @@ void cls_804AEED0::update() {
     case 2:
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
             field_0x230 = 1;
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3CF, 0, -1, NULL, NULL, true, 1.5f);
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3CF, 0, -1, NULL, NULL, true, 1.5f);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
         }
         break;
     case 5:
         if (field_0x268 == 0) {
-            fn_8022FF8C(field_0x244, &box1, field_0x4, mSerial, true, false);
+            fn_8022FF8C(field_0x244, &box1, mLayer_0x4, mSerial, true, false);
         } else {
-            fn_8022FF8C(field_0x244, &box2, field_0x4, mSerial, false, false);
+            fn_8022FF8C(field_0x244, &box2, mLayer_0x4, mSerial, false, false);
         }
         if (fn_80388CAC(field_0x244, mSerial)) {
             field_0x240 = 0;
@@ -514,15 +514,15 @@ void cls_804AEED0::update() {
     case 6:
         field_0x240++;
         if (field_0x240 >= 150) {
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 JGeometry::TVec3f effPos;
                 effPos.x = mPos.x;
                 effPos.y = mPos.y;
                 effPos.z = mPos.z;
                 effPos.y += 32.0f;
                 effPos.z += 16.0f;
-                spawnEmitter_8013CC50(field_0x4, &effPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
-                gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(field_0x4, &mPos, 3);
+                spawnEmitter_8013CC50(mLayer_0x4, &effPos, 0x17D, 1, 0, NULL, NULL, true, 1.0f);
+                gGameRoot2_8053AB10->field_0x30->fn_8015F8FC(mLayer_0x4, &mPos, 3);
             }
             deleteEmitter(&field_0x278);
             startSound_801F0E34(0x40017, 0);
@@ -603,7 +603,7 @@ void cls_804AEED0::draw() {
         drawSprite_801F06F0("enemy_both2_sob.bin",
                             field_0x25c + field_0x274->fn_80316E34(),
                             NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos,
+        fn_803075AC(mSerial, mLayer_0x4, &mPos,
                     field_0x25c + field_0x274->fn_80316E34(),
                     0, 2, -1, false, 0, 0);
         return;
@@ -616,14 +616,14 @@ void cls_804AEED0::draw() {
         drawSprite_801F06F0("enemy_both_sob.bin",
                             field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                             NULL, 7, 1.0f, 1.0f);
-        fn_80307AC8(mSerial, field_0x4, &mPos,
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos,
                     field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                     0, 0, -1);
     } else {
         drawSprite_801F06F0("enemy_both2_sob.bin",
                             field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                             NULL, 7, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos,
+        fn_803075AC(mSerial, mLayer_0x4, &mPos,
                     field_0x25c + lbl_80475498[field_0x264][field_0x248] + field_0x238,
                     0, 2, -1, false, 0, 0);
     }
@@ -793,7 +793,8 @@ void cls_804AEED0::fn_8037B374(JGeometry::TVec3f pos, s32 arg) {
 // The helper boundary is inferred from that pool order and from inlining into
 // both init (0x8037C8F0) and update (0x8037C090, 0x8037C2B8); nothing else is
 // proven.
-void cls_804AEED0::updateFacing(s32 target) {
+// R2 pool helper (inlined at 3 call sites); was updateFacing.
+void cls_804AEED0::pool_80543048(s32 target) {
     if (field_0x24c != 0) {
         field_0x24c--;
         return;

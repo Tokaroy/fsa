@@ -25,26 +25,26 @@ FireBarManager_804A3F90::FireBarManager_804A3F90() {
 // second getSpeed()) and the sin/cos table base and angle take r3/r4 swapped.
 void FireBarManager_804A3F90::init() {
     EnemyBase_804A4808::init();
-    if (!((field_0x90 >> 17) & 1)) {
+    if (!((mSpawnParam_0x90 >> 17) & 1)) {
         fn_801D0E58();
     }
-    mFlag = (field_0x90 >> 31) ^ 1;
-    mFlagBit = (field_0x90 >> 26) & 0x1F;
-    s32 speedSel = (field_0x90 >> 24) & 3;
+    mFlag = (mSpawnParam_0x90 >> 31) ^ 1;
+    mFlagBit = (mSpawnParam_0x90 >> 26) & 0x1F;
+    s32 speedSel = (mSpawnParam_0x90 >> 24) & 3;
     if (speedSel > 2) {
         speedSel = 2;
     } else if (speedSel < 0) {
         speedSel = 0;
     }
-    mStep = ((field_0x90 >> 20) & 0xF) + 1;
-    s32 dir = (field_0x90 >> 8) & 0xFF;
-    bool forward = (field_0x90 >> 16) & 1;
+    mStep = ((mSpawnParam_0x90 >> 20) & 0xF) + 1;
+    s32 dir = (mSpawnParam_0x90 >> 8) & 0xFF;
+    bool forward = (mSpawnParam_0x90 >> 16) & 1;
     if (dir > 3) {
         dir = 3;
     } else if (dir < 0) {
         dir = 0;
     }
-    s32 count = field_0x90 & 0xFF;
+    s32 count = mSpawnParam_0x90 & 0xFF;
     if (count > 16) {
         count = 16;
     } else if (count < 1) {
@@ -68,9 +68,9 @@ void FireBarManager_804A3F90::init() {
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     if (getSpeed() < 0) {
         mTangent = mAngle - 0x4000;
     } else {
@@ -82,7 +82,7 @@ void FireBarManager_804A3F90::init() {
     pos.x += mStep * dx;
     pos.y += mStep * dy;
     for (s32 i = 0; i < mCount; i++) {
-        mBars[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FBOB, field_0x4, &pos, !mFlag, -1, -1);
+        mBars[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FBOB, mLayer_0x4, &pos, !mFlag, -1, -1);
         static_cast<cls_804A4038*>(getActorManager_801F856C()->findActorBySerial_801F666C(mBars[i]))->fn_801BD8C0(&pos, mTangent);
         pos.x += dx;
         pos.y += dy;

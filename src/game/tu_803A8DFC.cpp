@@ -912,7 +912,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
             f32 offset = (200.0f + (f32)c) * (1.0f - (f32)((timer - t0) * (timer - t0)) / (f32)(a * a));
             field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c - 200.0f + offset);
             f32 rate = 1.0f - (f32)(field_0x440 - t0) / (f32)a;
-            setHeaderAlpha(rate);
+            inl_803AA8F8_1(rate);
         } else if (timer >= t1) {
             f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
             f32 offset = (f32)c * ((f32)((timer - t1) * (timer - t1)) / (f32)(b * b));
@@ -928,7 +928,7 @@ void ResultScreen_804AF9A0::fn_803B1B60() {
                     x = field_0x10[field_0x450]->search(lbl_80476270[i][2])->getBounds()->i.x;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 - 40.0f + offset);
                     rate = 1.0f - (f32)(field_0x440 - t3) / (f32)e;
-                    setScoreRowAlpha(i, rate);
+                    inl_803AA8F8_2(i, rate);
                 }
             } else if (field_0x440 >= t4) {
                 f32 offset = (f32)h * ((f32)((field_0x440 - t4) * (field_0x440 - t4)) / (f32)(g * g));
@@ -969,7 +969,7 @@ void ResultScreen_804AF9A0::fn_803B14F8() {
                     offset = dy * rate;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
                     f32 alpha = (f32)field_0x460[i] / (f32)t1;
-                    setRankRowAlpha(i, alpha);
+                    pool_805433B8(i, alpha);
                 } else if (field_0x460[i] <= t1 + t2) {
                     s32 rem = (t1 + t2) - field_0x460[i];
                     f32 offset = dy * ((f32)(rem * rem) / (f32)(t2 * t2));
@@ -1024,7 +1024,7 @@ void ResultScreen_804AF9A0::fn_803B0FD4() {
                 x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
                 field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 + dy - offset);
                 rate = 1.0f - (f32)(field_0x440 - t1) / (f32)t2;
-                setRankRowAlpha(i, rate);
+                pool_805433B8(i, rate);
             }
         }
     }
@@ -1092,7 +1092,7 @@ void ResultScreen_804AF9A0::fn_803B0978() {
                     offset = dy * rate;
                     field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
                     rate = (f32)field_0x460[i] / (f32)t1;
-                    setRankRowAlpha(i, rate);
+                    pool_805433B8(i, rate);
                 } else if (field_0x460[i] <= t1 + t2) {
                     s32 rem = (t1 + t2) - field_0x460[i];
                     f32 offset = dy * ((f32)(rem * rem) / (f32)(t2 * t2));
@@ -1141,7 +1141,7 @@ void ResultScreen_804AF9A0::fn_803B03E8() {
         f32 x = field_0x10[field_0x450]->search('Pmmwk02')->getBounds()->i.x;
         f32 offset = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         field_0x10[field_0x450]->search('Pmmwk02')->move(x, field_0x41c - offset);
-        setHeaderAlpha(1.0f - (f32)d / (f32)t1);
+        inl_803AA8F8_1(1.0f - (f32)d / (f32)t1);
     }
     if (field_0x440 > t2 && field_0x440 <= t3 + t2 + t4 * (field_0x454 - 1)) {
         for (s32 i = 0; i < field_0x454; i++) {
@@ -1152,8 +1152,8 @@ void ResultScreen_804AF9A0::fn_803B03E8() {
                 field_0x10[field_0x450]->search(lbl_80476270[i][2])->move(x, field_0x420 + offset);
                 x = field_0x10[field_0x450]->search(lbl_804762D0[i][1])->getBounds()->i.x;
                 field_0x10[field_0x450]->search(lbl_804762D0[i][1])->move(x, field_0x424 + offset);
-                setScoreRowAlpha(i, 1.0f - (f32)d / (f32)t3);
-                setRankRowAlpha(i, 1.0f - (f32)d / (f32)t3);
+                inl_803AA8F8_2(i, 1.0f - (f32)d / (f32)t3);
+                pool_805433B8(i, 1.0f - (f32)d / (f32)t3);
             }
         }
     }
@@ -2658,10 +2658,10 @@ void ResultScreen_804AF9A0::fn_803AA8F8() {
                 field_0x10[field_0x450]->search('Ndata01')->show();
                 field_0x10[field_0x450]->search('Ndata02')->show();
                 field_0x10[field_0x450]->search('Pmmwk02')->show();
-                setHeaderAlpha(0.0f);
+                inl_803AA8F8_1(0.0f);
                 for (s32 i = 0; i < field_0x454; i++) {
-                    setScoreRowAlpha(i, 0.0f);
-                    setRankRowAlpha(i, 0.0f);
+                    inl_803AA8F8_2(i, 0.0f);
+                    pool_805433B8(i, 0.0f);
                     field_0x4b8[i] = 0xFF;
                     field_0x460[i] = 0;
                 }
@@ -3326,7 +3326,8 @@ s32 ResultScreen_804AF9A0::fn_803A8DFC(s32 player) {
 // conversion's constant stands at the head of the unit's .sdata2 literals.
 
 // Fades the header panes (lbl_80476208) of the 4P / 3P layouts: alpha field_0x4c9 * rate.
-void ResultScreen_804AF9A0::setHeaderAlpha(f32 rate) {
+// R2 pool helper (inlined at 3 call sites); was setHeaderAlpha.
+void ResultScreen_804AF9A0::inl_803AA8F8_1(f32 rate) {
     if (field_0x450 < 2) {
         for (int i = 0; i < 13; i++) {
             field_0x10[field_0x450]->search(lbl_80476208[i])->setAlpha(field_0x4c9[i] * rate);
@@ -3335,7 +3336,8 @@ void ResultScreen_804AF9A0::setHeaderAlpha(f32 rate) {
 }
 
 // The same for player `player`'s three lbl_80476270 panes (alpha field_0x4d6).
-void ResultScreen_804AF9A0::setScoreRowAlpha(s32 player, f32 rate) {
+// R2 pool helper (inlined at 3 call sites); was setScoreRowAlpha.
+void ResultScreen_804AF9A0::inl_803AA8F8_2(s32 player, f32 rate) {
     if (field_0x450 < 2) {
         for (int j = 0; j < 3; j++) {
             field_0x10[field_0x450]->search(lbl_80476270[player][j])->setAlpha(field_0x4d6[j] * rate);
@@ -3344,7 +3346,8 @@ void ResultScreen_804AF9A0::setScoreRowAlpha(s32 player, f32 rate) {
 }
 
 // The same for player `player`'s two lbl_804762D0 panes (alpha field_0x4d9).
-void ResultScreen_804AF9A0::setRankRowAlpha(s32 player, f32 rate) {
+// R2 pool helper (inlined at 5 call sites); was setRankRowAlpha.
+void ResultScreen_804AF9A0::pool_805433B8(s32 player, f32 rate) {
     if (field_0x450 < 2) {
         for (int j = 0; j < 2; j++) {
             field_0x10[field_0x450]->search(lbl_804762D0[player][j])->setAlpha(field_0x4d9[j] * rate);

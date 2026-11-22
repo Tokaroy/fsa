@@ -18,9 +18,9 @@ static const u32 lbl_80471398[4] = {2, 1, 4, 8};
 void CaneOfSomariaBlock_804AA9F0::init() {
     // FIXME: 99.59 %. Same instructions; the sdata2 literals are @486-@492 here
     // (lbl_ in the original, a literal-split issue).
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
-    field_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
+    mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
     field_0x1a4 = 0;
     field_0xb8 = 2;
     mState = 0;
@@ -48,7 +48,7 @@ void CaneOfSomariaBlock_804AA9F0::init() {
             break;
         }
     }
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
 }
 
 // FIXME(shotgun): 95.92 %, missing/extra; behaviour drift.
@@ -64,7 +64,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         s32 end = getActorManager_801F856C()->getActorEnd();
         for (s32 i = 0; i < end; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-            if (actor == NULL || !actor->mAlive || actor->field_0x4 != field_0x4 ||
+            if (actor == NULL || !actor->mAlive || actor->mLayer_0x4 != mLayer_0x4 ||
                 actor->mActorId != 'OBLF')
             {
                 continue;
@@ -99,8 +99,8 @@ void CaneOfSomariaBlock_804AA9F0::update() {
     }
     switch (mState) {
     case 0:
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x457, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x458, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x457, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x458, 0, 0, NULL, NULL, true, 1.0f);
         mState = 1;
         field_0x238 = 0x14;
         startSound_801F0E34(0x30064, 0);
@@ -112,12 +112,12 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         }
         break;
     case 2: {
-        if (!checkGround()) {
+        if (!pool_80541738()) {
             break;
         }
         JGeometry::TBox2f here = mBox;
         here.addPos(mPos.x, mPos.y);
-        holdPlayers(&here);
+        pool_80541740(&here);
         s32 dir = fn_80238BC4(mSerial);
         if (dir >= 0 && dir < 4) {
             JGeometry::TVec3f saved = mPos;
@@ -128,22 +128,22 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 break;
             }
             mPos = saved;
-            if (fn_80239558(&box, field_0x4, mSerial) < 0) {
+            if (fn_80239558(&box, mLayer_0x4, mSerial) < 0) {
                 break;
             }
             if (fn_80233DA4(fn_80239040(mSerial))) {
                 break;
             }
-            field_0x3c.x = lbl_80471368[dir][0];
-            field_0x3c.y = lbl_80471368[dir][1];
-            field_0x3c.z = lbl_80471368[dir][2];
+            mVel_0x3c.x = lbl_80471368[dir][0];
+            mVel_0x3c.y = lbl_80471368[dir][1];
+            mVel_0x3c.z = lbl_80471368[dir][2];
             mState = 3;
             field_0x234 = dir;
             field_0x238 = 1;
             field_0x244 = 0;
         } else {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && fn_80239C00(i, &box, field_0x4) &&
+                if (fn_8023F264(i) && fn_80239C00(i, &box, mLayer_0x4) &&
                     fn_8022F9E4(i, mSerial, true, false))
                 {
                     mState = 4;
@@ -159,16 +159,16 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         break;
     }
     case 3: {
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         box.set(mBox);
         box.addPos(mPos.x, mPos.y);
         JGeometry::TBox2f here = box;
-        holdPlayers(&here);
+        pool_80541740(&here);
         if ((field_0x244 & 0x1F) == 0) {
             startSound_801F0E34(0x30004, 0);
         }
         field_0x244++;
-        if (!checkGround()) {
+        if (!pool_80541738()) {
             break;
         }
         if (!fn_801F2618(NULL, false)) {
@@ -184,9 +184,9 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 break;
             }
         }
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         mState = 2;
         field_0x238 = 0;
         field_0x244 = 0;
@@ -198,37 +198,37 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             mPos.x = pos->x;
             mPos.y = pos->y;
             mPos.z = pos->z;
-            field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+            mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
             break;
         }
-        field_0x3c.x *= 0.4f;
-        field_0x3c.y *= 0.4f;
-        field_0x3c.z = 2.0f;
+        mVel_0x3c.x *= 0.4f;
+        mVel_0x3c.y *= 0.4f;
+        mVel_0x3c.z = 2.0f;
         mState = 5;
         // fall through
     case 5:
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         if (field_0x238 == 0) {
-            field_0x3c.z -= 0.2f;
+            mVel_0x3c.z -= 0.2f;
         } else {
-            field_0x3c.z -= 0.8f;
+            mVel_0x3c.z -= 0.8f;
         }
         fn_801F2618(NULL, false);
-        if (mPos.z < 0.0f && field_0x3c.z < 0.0f) {
-            if (!checkGround()) {
+        if (mPos.z < 0.0f && mVel_0x3c.z < 0.0f) {
+            if (!pool_80541738()) {
                 break;
             }
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.x *= 0.3f;
-            field_0x3c.y *= 0.3f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.x *= 0.3f;
+            mVel_0x3c.y *= 0.3f;
             if (field_0x238 == 0) {
-                field_0x3c.z = 3.0f;
+                mVel_0x3c.z = 3.0f;
                 field_0x238++;
             } else {
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 mState = 2;
                 field_0x238 = 0;
             }
@@ -237,7 +237,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         }
         break;
     case 6:
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         if (mPos.z < -4.0f) {
             if (field_0x23c == 0xE && fn_802DE9A0() == true) {
                 startSound_801F0E34(0x5005F, 0);
@@ -250,17 +250,17 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             }
             mAlive = false;
         } else {
-            field_0x3c.z -= 0.15f;
+            mVel_0x3c.z -= 0.15f;
         }
         break;
     case 7:
         for (u32 i = 0; i < 4; i++) {
-            getActorManager_801F856C()->spawnActor_801F9484('FIRE', field_0x4, &mPos,
+            getActorManager_801F856C()->spawnActor_801F9484('FIRE', mLayer_0x4, &mPos,
                                                             (i << 4) | 0x1000 | (field_0x110 & 3),
                                                             -1, field_0x110);
         }
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x95, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x96, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x95, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x96, 0, 0, NULL, NULL, true, 1.0f);
         mAlive = false;
         break;
     case 8:
@@ -288,7 +288,7 @@ void CaneOfSomariaBlock_804AA9F0::draw() {
         params.field_0x1c = fn_8023CA88(field_0xc8);
     }
     drawSprite_801F06F0("enemy_both2_sob.bin", field_0x24c + 0x2FF, &params, 0, 1.0f, 1.0f);
-    fn_803075AC(mSerial, field_0x4, &mPos, 0x2FF, false, 2, -1, field_0xc4, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2FF, false, 2, -1, field_0xc4, 0, 0);
 }
 
 // Same shape as act_bombchu's isBlocked_0x4C (the blocking tile codes as a != chain, the 0x25 /
@@ -340,29 +340,31 @@ void CaneOfSomariaBlock_804AA9F0::fn_8030EA00() {
 
 // Per player: one that is marked is handed the box (fn_80239878); one that is not gets marked once
 // fn_8023B0F4 fails for it.
-void CaneOfSomariaBlock_804AA9F0::holdPlayers(JGeometry::TBox2f* here) {
+// R2 pool helper (inlined at 2 call sites); was holdPlayers.
+void CaneOfSomariaBlock_804AA9F0::pool_80541740(JGeometry::TBox2f* here) {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x246[i] == 1) {
             if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
-                fn_80239878(i, here, field_0x4, mSerial);
+                fn_80239878(i, here, mLayer_0x4, mSerial);
             }
-        } else if (!fn_8023B0F4(i, here, field_0x4, false, 8.0f)) {
+        } else if (!fn_8023B0F4(i, here, mLayer_0x4, false, 8.0f)) {
             field_0x246[i] = 1;
         }
     }
 }
 
-bool CaneOfSomariaBlock_804AA9F0::checkGround() {
-    JGeometry::TBox2f box = field_0x80;
+// R2 pool helper (inlined at 3 call sites); was checkGround.
+bool CaneOfSomariaBlock_804AA9F0::pool_80541738() {
+    JGeometry::TBox2f box = mMapBox_0x80;
     box.addPos(mPos.x, mPos.y);
     JGeometry::TVec3f centre;
     centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
-    s32 tile = fn_802265FC(&centre, field_0x4);
+    s32 tile = fn_802265FC(&centre, mLayer_0x4);
     if (tile == 3 || tile == 0xD || tile == 0xE || tile == 0x3B) {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.z = 0.0f;
         mState = 6;
         field_0x23c = tile;
         return false;

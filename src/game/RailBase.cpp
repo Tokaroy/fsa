@@ -18,7 +18,7 @@ bool cls_800FE3EC::fn_800FE3EC(int group, JGeometry::TVec3f pos, int layer) {
         return false;
     }
     for (s32 i = 0; i < field_0x2; i++) {
-        u8 index = (found[i]->field_0x90 >> 16) & 0xFF;
+        u8 index = (found[i]->mSpawnParam_0x90 >> 16) & 0xFF;
         if (index >= field_0x2 || field_0x4[index] != NULL) {
             return false;
         }
@@ -60,16 +60,16 @@ void fn_800FE294(JGeometry::TVec3f* out, cls_800FE3EC* buffer, u8 index) {
 
 s32 cls_800FE3EC::fn_800FE25C(u8 index) {
     if (index == 0xFF) {
-        return field_0x4[field_0x3]->field_0x4;
+        return field_0x4[field_0x3]->mLayer_0x4;
     }
-    return field_0x4[index]->field_0x4;
+    return field_0x4[index]->mLayer_0x4;
 }
 
 u32 cls_800FE3EC::fn_800FE21C(u8 index) {
     if (index == 0xFF) {
-        return field_0x4[field_0x3]->field_0x90 >> 24;
+        return field_0x4[field_0x3]->mSpawnParam_0x90 >> 24;
     }
-    return field_0x4[index]->field_0x90 >> 24;
+    return field_0x4[index]->mSpawnParam_0x90 >> 24;
 }
 
 // FIXME(shotgun): 88.9 %, missing/extra + reloc-name (the original has one shared tail for the *out copy)
@@ -83,12 +83,12 @@ s32 cls_800FE3EC::fn_800FE090(const JGeometry::TVec3f* pos, JGeometry::TVec3f* o
     f32 dy = field_0x4[field_0x3]->mPos.y - pos->y;
     if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) < 10.0f) {
         u8 cur = field_0x3;
-        u32 mode = field_0x4[cur]->field_0x90 & 3;
+        u32 mode = field_0x4[cur]->mSpawnParam_0x90 & 3;
         result = 2;
         bool advance = true;
         if (cur == 0) {
             result = 1;
-            if ((field_0x4[field_0x2 - 1]->field_0x90 & 3) == 2 && field_0x1 == 1) {
+            if ((field_0x4[field_0x2 - 1]->mSpawnParam_0x90 & 3) == 2 && field_0x1 == 1) {
                 field_0x1 = 0;
             }
         } else if (cur == field_0x2 - 1) {
@@ -131,13 +131,13 @@ s32 cls_800FE3EC::fn_800FDEA0(JGeometry::TVec3f* pos, f32 speed, JGeometry::TVec
     f32 dx = target.x - pos->x;
     f32 dy = target.y - pos->y;
     s32 angle = (s32)(JMath::atanTable_.atan2_(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-    if (layer != NULL && *layer != field_0x4[field_0x3]->field_0x4) {
-        *layer = field_0x4[field_0x3]->field_0x4;
+    if (layer != NULL && *layer != field_0x4[field_0x3]->mLayer_0x4) {
+        *layer = field_0x4[field_0x3]->mLayer_0x4;
         outStep->x = dx;
         outStep->y = dy;
         return 4;
     }
-    if (outStep->x == 0.0f && outStep->y == 0.0f && !((field_0x4[field_0x3]->field_0x90 >> 2) & 1)) {
+    if (outStep->x == 0.0f && outStep->y == 0.0f && !((field_0x4[field_0x3]->mSpawnParam_0x90 >> 2) & 1)) {
         // keep the angle to the point
     } else {
         s32 current = (s32)(JMath::atanTable_.atan2_(outStep->x, outStep->y) *
@@ -260,7 +260,7 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
     u8 count = field_0x2;
     s16 pos = field_0x3;
     pos += (s8)dir;
-    u32 mode = field_0x4[count - 1]->field_0x90 & 3;
+    u32 mode = field_0x4[count - 1]->mSpawnParam_0x90 & 3;
     if (pos < 0) {
         if (mode == 1) {
             field_0x3 = count + pos;
@@ -285,7 +285,7 @@ void cls_800FE3EC::fn_800FD818(s32 dir) {
 // 0x800FD5E8
 bool cls_800FE3EC::fn_800FD5E8(u8 index) {
     u8 count = field_0x2;
-    u32 mode = field_0x4[count - 1]->field_0x90 & 3;
+    u32 mode = field_0x4[count - 1]->mSpawnParam_0x90 & 3;
     if (index == 0xFF) {
         u8 cur = field_0x3;
         s16 next = cur;
@@ -340,9 +340,9 @@ bool cls_800FE3EC::fn_800FD594(u8 index) {
     // Both arms feed one shared test; the original merges them the same way.
     u32 flag;
     if (index == 0xFF) {
-        flag = field_0x4[field_0x3]->field_0x90 & 0x4;
+        flag = field_0x4[field_0x3]->mSpawnParam_0x90 & 0x4;
     } else {
-        flag = field_0x4[index]->field_0x90 & 0x4;
+        flag = field_0x4[index]->mSpawnParam_0x90 & 0x4;
     }
     if (flag != 0) {
         return false;
@@ -355,22 +355,22 @@ bool cls_800FE3EC::fn_800FD548(u8 index) {
         index = field_0x3;
     }
     if (field_0x1 != 0) {
-        return (field_0x4[index]->field_0x90 & 0x8) != 0;
+        return (field_0x4[index]->mSpawnParam_0x90 & 0x8) != 0;
     }
-    return (field_0x4[index]->field_0x90 & 0x10) != 0;
+    return (field_0x4[index]->mSpawnParam_0x90 & 0x10) != 0;
 }
 
 // 0x800FD4C0
 bool cls_800FE3EC::fn_800FD4C0(u8 a, u8 b) {
     u8 first = 0;
     u8 second = 0;
-    u32 flags = field_0x4[a]->field_0x90;
+    u32 flags = field_0x4[a]->mSpawnParam_0x90;
     if (flags & 0x8) {
         first = 1;
     } else if (flags & 0x10) {
         second = 1;
     }
-    flags = field_0x4[b]->field_0x90;
+    flags = field_0x4[b]->mSpawnParam_0x90;
     if (flags & 0x8) {
         first = 1;
     } else if (flags & 0x10) {

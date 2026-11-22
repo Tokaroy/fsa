@@ -14,9 +14,9 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x230 */ s32 field_0x230;
-    /* 0x234 */ s32 field_0x234; // grid column: field_0x90 bits 23-26
-    /* 0x238 */ s32 field_0x238; // grid row: field_0x90 bits 19-22
-    /* 0x23C */ s32 field_0x23c; // field_0x90 bits 16-18
+    /* 0x234 */ s32 field_0x234; // grid column: mSpawnParam_0x90 bits 23-26
+    /* 0x238 */ s32 field_0x238; // grid row: mSpawnParam_0x90 bits 19-22
+    /* 0x23C */ s32 field_0x23c; // mSpawnParam_0x90 bits 16-18
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ u8* field_0x244; // resource from fn_804032E8
     /* 0x248 */ s32 field_0x248;

@@ -161,10 +161,10 @@ void cls_8049C718::init() {
     field_0x257 = 0;
     mSlotUsed[0] = 0;
     mSlotUsed[1] = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     getGameView_802D6A9C()->fn_802D7440(0);
     field_0x196 = 1;
-    if (field_0x90 == 1) {
+    if (mSpawnParam_0x90 == 1) {
         mFlags |= 8;
     }
     if (mFlags & 8) {
@@ -177,7 +177,7 @@ void cls_8049C718::init() {
     f32 y0 = -50.0f * mScale;
     f32 x1 = 26.0f * mScale;
     mBox.set(x0, y0, x1, 0.0f);
-    field_0x80.set(x0, y0, x1, 0.0f);
+    mMapBox_0x80.set(x0, y0, x1, 0.0f);
     mAnimState = 0;
     startSound_801F0E34(0x40026, 0);
     mAnimPrev = 9;
@@ -185,12 +185,12 @@ void cls_8049C718::init() {
     gAudioMgr_8053AF80->fn_80458F9C(0x3C);
     u32 low = mSerial & 0xFFFF;
     for (s32 i = 0; i < 0x18; i++) {
-        getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos, low + (i << 16) + 0x1000000, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('WRTC', mLayer_0x4, &mPos, low + (i << 16) + 0x1000000, -1, -1);
         mSlot++;
     }
     if (mFlags & 8) {
         for (s32 i = 0; i < 2; i++) {
-            mPartner[i] = getActorManager_801F856C()->spawnActor_801F9484('WRTC', field_0x4, &mPos,
+            mPartner[i] = getActorManager_801F856C()->spawnActor_801F9484('WRTC', mLayer_0x4, &mPos,
                                                                          low + (i << 16) + 0x2000000, -1, -1);
         }
     }
@@ -276,8 +276,8 @@ static inline bool stepWobble(cls_8049C718* p) {
 }
 
 // Plain functions without a copy of their own in the original (see their definitions).
-f32 randomSlotTime();
-s32 headingOf(f32 x, f32 y);
+f32 pool_8053C094();
+s32 pool_8053C050(f32 x, f32 y);
 
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
@@ -306,8 +306,8 @@ void cls_8049C718::fn_800FC984() {
         if ((mFlags & 8) && mSlot <= 12) {
             mState = 4;
             mTimer = 0;
-            mSlotUsed[0] = randomSlotTime();
-            mSlotUsed[1] = randomSlotTime();
+            mSlotUsed[0] = pool_8053C094();
+            mSlotUsed[1] = pool_8053C094();
             mAngleA = 0x3000;
             mAngleB = 0x5000;
         } else {
@@ -412,7 +412,8 @@ void cls_8049C718::fn_800FC4A8() {
 // A slot's time (mSlotUsed): 400 to 499 frames. No copy of its own in the original: both
 // callers in fn_800FC984 inline it and the linker dropped the body. It was a plain function
 // generated before fn_800FC984 (below it here), which is where the .sdata2 literal 400.0f stands.
-f32 randomSlotTime() {
+// R2 pool helper (inlined at 2 call sites; one-statement body); was randomSlotTime.
+f32 pool_8053C094() {
     return 400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
@@ -423,8 +424,8 @@ void cls_8049C718::fn_800FC128() {
         JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
         ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(mPartner[0]);
         ActorBase_804A5770* b = getActorManager_801F856C()->findActorBySerial_801F666C(mPartner[1]);
-        a->field_0x3c = zero;
-        b->field_0x3c = zero;
+        a->mVel_0x3c = zero;
+        b->mVel_0x3c = zero;
         return;
     }
     if (mCooldown != 0) {
@@ -495,14 +496,14 @@ void cls_8049C718::fn_800FBD90() {
     mFlags &= ~0x10;
     f32 s = mScale;
     mBox.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
-    field_0x80.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
+    mMapBox_0x80.set(-26.0f * s, -50.0f * s, 26.0f * s, 0.0f);
     if (fn_801F2FAC()) {
-        field_0xd8 = 10;
-        field_0xdc = 10;
+        mHitTimer_0xd8 = 10;
+        mHitTimerStart_0xdc = 10;
         mState = 9;
         mFlags |= 1;
         mFlags &= ~4;
-        field_0x3c.set(0.0f, 0.0f, 5.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 5.0f);
         mWobble = 0;
         field_0x264 = 0;
         mBox.set(-26.0f * mScale, -50.0f * mScale, 26.0f * mScale, 0.0f);
@@ -526,7 +527,7 @@ void cls_8049C718::fn_800FBD90() {
             mFlags |= 1;
             mFlags |= 4;
             field_0xb0 = 4;
-            field_0x3c.set(0.0f, 0.0f, 10.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 10.0f);
             mState = 6;
             mWobble = 1;
             field_0x264 = 0;
@@ -540,14 +541,14 @@ void cls_8049C718::fn_800FBD90() {
             startSound_801F0E34(0x4002B, 0);
         }
     } else {
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         startSound_801F0E34(0x4002E, 0);
         JGeometry::TVec3f n;
         if (fn_801F2618(&n, false)) {
-            f32 k = 2.0f * (field_0x3c.x * n.x + field_0x3c.y * n.y + field_0x3c.z * n.z);
-            field_0x3c.x -= k * n.x;
-            field_0x3c.y -= k * n.y;
-            field_0x3c.z -= k * n.z;
+            f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
+            mVel_0x3c.x -= k * n.x;
+            mVel_0x3c.y -= k * n.y;
+            mVel_0x3c.z -= k * n.z;
             startSound_801F0E34(0x4002D, 0);
         }
     }
@@ -555,7 +556,7 @@ void cls_8049C718::fn_800FBD90() {
 
 void cls_8049C718::fn_800FBA14() {
     if (fn_801F3D94(1) == 1) {
-        field_0x3c.set(0.0f, 0.0f, 10.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 10.0f);
         return;
     }
     if (mWobble != 0) {
@@ -572,7 +573,7 @@ void cls_8049C718::fn_800FBA14() {
     s32 dir = 0;
     s32 player = 0;
     fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
-    if (field_0x3c.z > -0.5f) {
+    if (mVel_0x3c.z > -0.5f) {
         if (player >= 0) {
             mPos.x += JMath::sincosTable_.sinShort((s16)angle);
             mPos.y += JMath::sincosTable_.cosShort((s16)angle);
@@ -581,26 +582,26 @@ void cls_8049C718::fn_800FBA14() {
         mFlags &= ~1;
         mFlags |= 0x10;
     }
-    field_0x3c.z -= 0.1f;
-    mPos += field_0x3c;
+    mVel_0x3c.z -= 0.1f;
+    mPos += mVel_0x3c;
     if (mPos.z <= 0.0f) {
         if (mFlags & 8) {
             field_0x257 = 0;
             fn_800FB6E0(0);
         } else {
-            field_0x3c.set((f32)field_0x257, -1.0f * field_0x257, 0.0f);
+            mVel_0x3c.set((f32)field_0x257, -1.0f * field_0x257, 0.0f);
             mPos.z = 0.0f;
             mState = 5;
             mTimer = 0x19;
         }
-        mRing.fn_800F8210(field_0x4, mPos, 1);
-        getGameView_802D6A9C()->fn_802D79E8(field_0x4, 8.0f, 0.0f, false);
+        mRing.fn_800F8210(mLayer_0x4, mPos, 1);
+        getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 8.0f, 0.0f, false);
         startSound_801F0E34(0x4002C, 0);
         gGameRoot_8053AAF8->fn_80134DE4(2, 0);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E9, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E9, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -626,9 +627,9 @@ void cls_8049C718::fn_800FB6E0(s32 mode) {
             f32 lenA = PSVECMag((Vec*)&da);
             f32 lenB = PSVECMag((Vec*)&db);
             if (lenA < lenB) {
-                angle = headingOf(-da.x, -da.y);
+                angle = pool_8053C050(-da.x, -da.y);
             } else {
-                angle = headingOf(-db.x, -db.y);
+                angle = pool_8053C050(-db.x, -db.y);
             }
         }
         if (dist < 70.0f) {
@@ -637,14 +638,14 @@ void cls_8049C718::fn_800FB6E0(s32 mode) {
             field_0x262 += (s16)(0x2000 - (s32)(8192.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
         }
     }
-    field_0x3c.x = 1.5f * JMath::sincosTable_.sinShort((s16)field_0x262);
-    field_0x3c.y = 1.5f * JMath::sincosTable_.cosShort((s16)field_0x262);
+    mVel_0x3c.x = 1.5f * JMath::sincosTable_.sinShort((s16)field_0x262);
+    mVel_0x3c.y = 1.5f * JMath::sincosTable_.cosShort((s16)field_0x262);
     if (mode == 1) {
-        field_0x3c.z = 8.0f;
+        mVel_0x3c.z = 8.0f;
         field_0x257 = 0;
         startSound_801F0E34(0x4002B, 0);
     } else {
-        field_0x3c.z = 5.0f;
+        mVel_0x3c.z = 5.0f;
         field_0x257++;
         startSound_801F0E34(0x400CA, 0);
     }
@@ -680,38 +681,38 @@ void cls_8049C718::fn_800FB32C() {
             mWobble = 0;
         }
     }
-    field_0x3c.z -= 0.25f;
-    mPos.add(field_0x3c);
+    mVel_0x3c.z -= 0.25f;
+    mPos.add(mVel_0x3c);
     if (mPos.z <= 0.0f) {
         if (field_0x257 == 0) {
             fn_800FB6E0(0);
             startSound_801F0E34(0x4002C, 0);
-            mRing.fn_800F8210(field_0x4, mPos, 0);
-            getGameView_802D6A9C()->fn_802D79E8(field_0x4, 5.0f, 0.0f, false);
+            mRing.fn_800F8210(mLayer_0x4, mPos, 0);
+            getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 5.0f, 0.0f, false);
             gGameRoot_8053AAF8->fn_80134DE4(2, 0);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4E9, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E6, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E7, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E8, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E9, 0, 0, NULL, NULL, true, 1.0f);
         } else {
             if (field_0x257 == 4) {
                 fn_800FB6E0(1);
             } else {
                 fn_800FB6E0(0);
             }
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4ED, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4ED, 0, 0, NULL, NULL, true, 1.0f);
         }
         mPos.z = 0.0f;
     }
     JGeometry::TVec3f n;
     if (fn_801F2618(&n, false)) {
-        f32 k = 2.0f * (field_0x3c.x * n.x + field_0x3c.y * n.y + field_0x3c.z * n.z);
-        field_0x3c.x -= k * n.x;
-        field_0x3c.y -= k * n.y;
-        field_0x3c.z -= k * n.z;
-        field_0x262 = headingOf(field_0x3c.x, field_0x3c.y);
+        f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
+        mVel_0x3c.x -= k * n.x;
+        mVel_0x3c.y -= k * n.y;
+        mVel_0x3c.z -= k * n.z;
+        field_0x262 = pool_8053C050(mVel_0x3c.x, mVel_0x3c.y);
     }
-    if (field_0x3c.z > 0.0f) {
+    if (mVel_0x3c.z > 0.0f) {
         mFlags |= 1;
     } else {
         mFlags &= ~1;
@@ -719,11 +720,11 @@ void cls_8049C718::fn_800FB32C() {
 }
 
 void cls_8049C718::fn_800FB070() {
-    field_0x3c.z -= 0.3f;
-    mPos.add(field_0x3c);
+    mVel_0x3c.z -= 0.3f;
+    mPos.add(mVel_0x3c);
     if (mPos.z <= 0.0f) {
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
     }
     if (mCooldown != 0) {
         mCooldown--;
@@ -738,7 +739,7 @@ void cls_8049C718::fn_800FB070() {
     f32 y0 = -50.0f * scale;
     f32 x1 = 26.0f * scale;
     mBox.set(x0, y0, x1, 0.0f);
-    field_0x80.set(x0, y0, x1, 0.0f);
+    mMapBox_0x80.set(x0, y0, x1, 0.0f);
     if (mWobble != 0) {
         mWobble += 0x2000;
         if (mWobble > 0x10000) {
@@ -752,7 +753,7 @@ void cls_8049C718::fn_800FB070() {
             mFlags |= 1;
             mFlags |= 4;
             field_0xb0 = 4;
-            field_0x3c.set(0.0f, 0.0f, 10.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 10.0f);
             mState = 6;
             mWobble = 1;
             field_0x264 = 0;
@@ -765,13 +766,13 @@ void cls_8049C718::fn_800FB070() {
             }
             startSound_801F0E34(0x4002B, 0);
         } else if (fn_801F2FAC()) {
-            field_0xd8 = 20;
-            field_0xdc = 20;
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mHitTimer_0xd8 = 20;
+            mHitTimerStart_0xdc = 20;
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             mWobble = 1;
             startSound_801F0E34(0x40005, 0);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EB, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x4EC, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4EB, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4EC, 0, 0, NULL, NULL, true, 1.0f);
             if (mLife <= 10) {
                 die_0x24();
             }
@@ -860,7 +861,7 @@ void cls_8049C718::update() {
             mFlags |= 1;
             mFlags |= 4;
             field_0xb0 = 4;
-            field_0x3c.set(0.0f, 0.0f, 10.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 10.0f);
             mState = 6;
             mWobble = 1;
             field_0x264 = 0;
@@ -873,11 +874,11 @@ void cls_8049C718::update() {
             }
             startSound_801F0E34(0x4002B, 0);
         } else {
-            field_0x3c.z -= 0.2f;
-            mPos.z += field_0x3c.z;
+            mVel_0x3c.z -= 0.2f;
+            mPos.z += mVel_0x3c.z;
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
+                mVel_0x3c.z = 0.0f;
             }
             mTimer++;
         }
@@ -917,7 +918,7 @@ void cls_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
         return;
     }
-    if (field_0xd8 == 0) {
+    if (mHitTimer_0xd8 == 0) {
         field_0x255++;
         mCooldown = 0x32;
         if (mWobble == 0) {
@@ -925,7 +926,7 @@ void cls_8049C718::vfunc_0x44() {
         }
         fn_801F37AC(0, &mPos, 3, 0, -1);
         startSound_801F0E34(0x40005, 0);
-        field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+        mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
     }
     if (mSignal != 0) {
         if (mState == 9) {
@@ -934,7 +935,7 @@ void cls_8049C718::vfunc_0x44() {
         mState = 9;
         mFlags |= 1;
         mFlags &= ~4;
-        field_0x3c.set(0.0f, 0.0f, 5.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 5.0f);
         mWobble = 0;
         field_0x264 = 0;
         f32 scale = mScale;
@@ -954,7 +955,8 @@ void cls_8049C718::vfunc_0x44() {
 // atan2 as a 16-bit angle. No copy of its own in the original either (inlined into
 // fn_800FB6E0 and fn_800FB32C, body dropped): a plain function at this place, which puts
 // 10430.378f in front of vfunc_0x44's literals as in the original's .sdata2.
-s32 headingOf(f32 x, f32 y) {
+// R2 pool helper (inlined at 3 call sites; one-statement body); was headingOf.
+s32 pool_8053C050(f32 x, f32 y) {
     return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
 }
 
@@ -1042,10 +1044,10 @@ void cls_8049C718::fn_800FA1A4() {
     JGeometry::TVec3f d = posA;
     d.sub(posB);
     if (PSVECMag((Vec*)&d) < 20.0f) {
-        JGeometry::TVec3f tA = a->field_0x3c;
-        JGeometry::TVec3f tB = b->field_0x3c;
-        a->field_0x3c = tB;
-        b->field_0x3c = tA;
+        JGeometry::TVec3f tA = a->mVel_0x3c;
+        JGeometry::TVec3f tB = b->mVel_0x3c;
+        a->mVel_0x3c = tB;
+        b->mVel_0x3c = tA;
         JGeometry::TVec3f off;
         JGeometry::TVec3f mid = posA;
         mid.add(posB);
@@ -1066,14 +1068,14 @@ void cls_8049C718::fn_800FA1A4() {
         if (PSVECMag((Vec*)&d) < 50.0f) {
             d.normalize();
             d.scale(-5.0f);
-            a->field_0x3c = d;
+            a->mVel_0x3c = d;
         }
         d.set(mPos.x, mPos.y - 20.0f, mPos.z);
         d.sub(posB);
         if (PSVECMag((Vec*)&d) < 50.0f) {
             d.normalize();
             d.scale(-5.0f);
-            b->field_0x3c = d;
+            b->mVel_0x3c = d;
         }
     }
 }
@@ -1124,10 +1126,10 @@ void StoneArrghusChildPuff_8049C678::init() {
     mPhase = 0;
     mAngle = 0;
     mFlag249 = 0;
-    mIndex = (field_0x90 >> 16) & 0xFF;
-    mFlag248 = field_0x90 >> 24;
+    mIndex = (mSpawnParam_0x90 >> 16) & 0xFF;
+    mFlag248 = mSpawnParam_0x90 >> 24;
     if (mFlag248 == 2) {
-        field_0x80.set(-13.0f, -14.0f, 13.0f, 8.0f);
+        mMapBox_0x80.set(-13.0f, -14.0f, 13.0f, 8.0f);
         mBox.set(-13.0f, -14.0f, 13.0f, 8.0f);
         mPos.x += (f32)lbl_804638C0[mIndex * 2];
         mPos.y += (f32)lbl_804638C0[mIndex * 2 + 1];
@@ -1163,7 +1165,7 @@ void StoneArrghusChildPuff_8049C678::init() {
 // FIXME(shotgun): 92.16 %, missing/extra; behaviour clean.
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
-    field_0x1a8 = true;
+    mParamDstr_0x1a8 = true;
     cls_8049C718* parent = mParent;
     JGeometry::TVec3f target;
     f32 speed;
@@ -1228,8 +1230,8 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     if (mPos.z < 10.0f || mCount >= 0x50) {
         v.zero();
     }
-    field_0x3c.set(v);
-    mPos.add(field_0x3c);
+    mVel_0x3c.set(v);
+    mPos.add(mVel_0x3c);
     mAngle += 0x480;
     mPos.z = 25.0f * JMAAbs(JMath::sincosTable_.sinShort((s16)mAngle));
     if (mPos.z <= 1.5f) {
@@ -1259,25 +1261,25 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
                                    10.0f + parent->mPos.z);
         f32 speed = 0.36f - 0.032f * (f32)((parent->mSlot >> 1) + 1);
         mFlag249 = 1;
-        field_0x3c.set(mPos.x, mPos.y, mPos.z);
+        mVel_0x3c.set(mPos.x, mPos.y, mPos.z);
         moveToward(mPos, target, speed);
-        field_0x3c.sub(mPos);
-        field_0x3c.scale(-0.5f);
+        mVel_0x3c.sub(mPos);
+        mVel_0x3c.scale(-0.5f);
     } else {
-        field_0x3c.z -= 0.2f;
-        mPos.add(field_0x3c);
+        mVel_0x3c.z -= 0.2f;
+        mPos.add(mVel_0x3c);
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.x *= 0.99f;
-            field_0x3c.y *= 0.99f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.x *= 0.99f;
+            mVel_0x3c.y *= 0.99f;
         }
         JGeometry::TVec3f n;
         if (fn_801F2618(&n, false)) {
-            f32 k = 2.0f * (field_0x3c.x * n.x + field_0x3c.y * n.y + field_0x3c.z * n.z);
-            field_0x3c.x -= k * n.x;
-            field_0x3c.y -= k * n.y;
-            field_0x3c.z -= k * n.z;
+            f32 k = 2.0f * (mVel_0x3c.x * n.x + mVel_0x3c.y * n.y + mVel_0x3c.z * n.z);
+            mVel_0x3c.x -= k * n.x;
+            mVel_0x3c.y -= k * n.y;
+            mVel_0x3c.z -= k * n.z;
             if (mSoundTimer == 0) {
                 startSound_801F0E34(0x4002D, 0);
                 mSoundTimer = 1;
@@ -1290,17 +1292,17 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mSoundTimer = 0;
         }
     }
-    if (JMAAbs(field_0x3c.x) < 1.0f && JMAAbs(field_0x3c.y) < 1.0f) {
+    if (JMAAbs(mVel_0x3c.x) < 1.0f && JMAAbs(mVel_0x3c.y) < 1.0f) {
         JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         if (fn_801F2740(-1)) {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
         }
     } else {
         fn_801F2B7C(2, -1, 1);
     }
-    if (JMAAbs(field_0x3c.x) < 1.0f && JMAAbs(field_0x3c.y) < 1.0f) {
+    if (JMAAbs(mVel_0x3c.x) < 1.0f && JMAAbs(mVel_0x3c.y) < 1.0f) {
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             JGeometry::TVec3f d(0.0f, 0.0f, 0.0f);
@@ -1308,8 +1310,8 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             d.y = getPlayerPos_8023E724(player)->y - mPos.y;
             d.normalize();
             d.scale(-1.0f);
-            field_0x3c.x = 1.5f * d.x;
-            field_0x3c.y = 1.5f * d.y;
+            mVel_0x3c.x = 1.5f * d.x;
+            mVel_0x3c.y = 1.5f * d.y;
             JGeometry::TVec2f xy(mPos.x, mPos.y);
             fn_80238548(player, 0, &xy, 0x10);
         }
@@ -1318,7 +1320,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
 
 void StoneArrghusChildPuff_8049C678::update() {
     if (mFrame == 0) {
-        mParent = (cls_8049C718*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x90 & 0xFFFF);
+        mParent = (cls_8049C718*)getActorManager_801F856C()->findActorBySerial_801F666C(mSpawnParam_0x90 & 0xFFFF);
     }
     mFrame++;
     if (mFlag248 == 1) {
@@ -1373,7 +1375,7 @@ void StoneArrghusChildPuff_8049C678::die_0x24() {
     } else {
         count = (u32)(1.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 1;
     }
-    s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, count);
+    s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &mPos, count);
     if (serial >= 0) {
         ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         JGeometry::TVec3f vel(
@@ -1381,12 +1383,12 @@ void StoneArrghusChildPuff_8049C678::die_0x24() {
             2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
             3.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()
         );
-        gem->field_0x3c = vel;
+        gem->mVel_0x3c = vel;
     }
     if ((s32)(5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) == 3) {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
     }
-    field_0x18c = 0;
+    mParamDasu_0x18c = 0;
     ActorBase_804A5770::die_0x24();
 }
 

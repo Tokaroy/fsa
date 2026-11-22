@@ -43,7 +43,7 @@ inline void SpecialConversationNPC_804AAFB8::setPartnerFacing(s32 facing) {
 inline bool SpecialConversationNPC_804AAFB8::openMessage(s32 player) {
     u32 msg = field_0x244;
     s32 serial = mSerial;
-    if (talk(player, msg, serial, field_0x4, mPos, 0x10)) {
+    if (talk(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
         mPlayer = player;
         mState = 1;
         return true;
@@ -54,7 +54,7 @@ inline bool SpecialConversationNPC_804AAFB8::openMessage(s32 player) {
 inline bool SpecialConversationNPC_804AAFB8::openMessageC678(s32 player) {
     u32 msg = field_0x244;
     s32 serial = mSerial;
-    if (talkC678(player, msg, serial, field_0x4, mPos, 0x10)) {
+    if (talkC678(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
         mPlayer = player;
         mState = 1;
         return true;
@@ -65,13 +65,13 @@ inline bool SpecialConversationNPC_804AAFB8::openMessageC678(s32 player) {
 void SpecialConversationNPC_804AAFB8::init() {
     mState = 0;
     mPlayer = -1;
-    field_0x244 = (field_0x90 & 0xFFF) + 0x12b;
+    field_0x244 = (mSpawnParam_0x90 & 0xFFF) + 0x12b;
     field_0x258 = -1;
     field_0x25c = 0;
     field_0x260 = 0;
     field_0x264 = 2;
     field_0x268 = 0;
-    switch ((field_0x90 >> 16) & 0xF) {
+    switch ((mSpawnParam_0x90 >> 16) & 0xF) {
     case 0:
         field_0x238 = 0;
         field_0x23c = 0;
@@ -116,7 +116,7 @@ void SpecialConversationNPC_804AAFB8::init() {
     case 7: {
         JGeometry::TVec3f spawnPos = mPos;
         spawnPos.x += 48.0f;
-        field_0x258 = getActorManager_801F856C()->spawnActor_801F9484('SNPC', field_0x4, &spawnPos, 0x80000, -1, -1);
+        field_0x258 = getActorManager_801F856C()->spawnActor_801F9484('SNPC', mLayer_0x4, &spawnPos, 0x80000, -1, -1);
         s32 serial = field_0x258;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -163,8 +163,8 @@ void SpecialConversationNPC_804AAFB8::init() {
         field_0x248.set(-8.0f, -8.0f, 8.0f, 8.0f);
         mBox = field_0x248;
     }
-    if ((field_0x90 >> 27) != 0) {
-        field_0x240 = (field_0x90 >> 24) & 3;
+    if ((mSpawnParam_0x90 >> 27) != 0) {
+        field_0x240 = (mSpawnParam_0x90 >> 24) & 3;
         bool done = isScreenFlagSet_0x34();
         if ((field_0x240 == 1 && done == true) || (field_0x240 == 2 && done == false)) {
             field_0x270 = 0;
@@ -185,10 +185,10 @@ void SpecialConversationNPC_804AAFB8::vfunc_0x10() {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL) {
                 if (actor->mActorId == 'JIJI') {
-                    if (actor->field_0x4 == field_0x4) {
-                        if (((actor->field_0x90 >> 16) & 0xFF) == 0x2A) {
+                    if (actor->mLayer_0x4 == mLayer_0x4) {
+                        if (((actor->mSpawnParam_0x90 >> 16) & 0xFF) == 0x2A) {
                             field_0x258 = getActorManager_801F856C()->spawnActor_801F9484(
-                                'SNPC', field_0x4, &actor->mPos, 0x90000 | (actor->field_0x90 & 0xFFF), -1, -1);
+                                'SNPC', mLayer_0x4, &actor->mPos, 0x90000 | (actor->mSpawnParam_0x90 & 0xFFF), -1, -1);
                             s32 serial = field_0x258;
                             if (serial >= 0) {
                                 ActorBase_804A5770* spawned = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -224,11 +224,11 @@ void SpecialConversationNPC_804AAFB8::draw() {
         switch (field_0x23c & 3) {
         case 1:
             drawSprite_801F06F0("enemy_both_sob.bin", field_0x26c + field_0x25c, NULL, 7, 1.0f, 1.0f);
-            fn_80307AC8(mSerial, field_0x4, &mPos, field_0x26c + field_0x25c, 0, 0, -1);
+            fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x26c + field_0x25c, 0, 0, -1);
             break;
         case 2:
             drawSprite_801F06F0("enemy_both2_sob.bin", field_0x26c + field_0x25c, NULL, 7, 1.0f, 1.0f);
-            fn_803075AC(mSerial, field_0x4, &mPos, field_0x26c + field_0x25c, 0, 2, -1, false, 0, 0);
+            fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x26c + field_0x25c, 0, 2, -1, false, 0, 0);
             break;
         case 3:
             drawSprite_801F06F0("enemy_gc_sob.bin", field_0x26c + field_0x25c, NULL, 7, 1.0f, 1.0f);
@@ -245,7 +245,7 @@ void SpecialConversationNPC_804AAFB8::fn_80319658() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (mState != 1) {
-            fn_8022FEB8(&box, field_0x4, mSerial, false, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, false, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
@@ -257,7 +257,7 @@ void SpecialConversationNPC_804AAFB8::fn_80319658() {
                 }
             }
         } else {
-            fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(mPlayer, mSerial)) {
                 setPartnerFacing(2);
                 fn_801F35AC();
@@ -272,7 +272,7 @@ void SpecialConversationNPC_804AAFB8::fn_803193B4() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if (field_0x264 == 2) {
         box = field_0x248;
         box.i.x += mPos.x;
@@ -280,7 +280,7 @@ void SpecialConversationNPC_804AAFB8::fn_803193B4() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (mState != 1) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
@@ -290,7 +290,7 @@ void SpecialConversationNPC_804AAFB8::fn_803193B4() {
                 }
             }
         } else {
-            fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(mPlayer, mSerial)) {
                 mPlayer = -1;
                 mState = 0;
@@ -342,27 +342,27 @@ void SpecialConversationNPC_804AAFB8::fn_803190E0() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     box = field_0x248;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (mState != 1) {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
                 u32 msg = field_0x244;
                 s32 serial = mSerial;
-                if (talkC678(player, msg, serial, field_0x4, mPos, 0x10)) {
+                if (talkC678(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
                     mPlayer = player;
                     mState = 1;
                 }
             }
         }
     } else {
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -380,7 +380,7 @@ void SpecialConversationNPC_804AAFB8::fn_80318D74() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     box = field_0x248;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -391,20 +391,20 @@ void SpecialConversationNPC_804AAFB8::fn_80318D74() {
             mAlive = false;
             return;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
                 u32 msg = field_0x244;
                 s32 serial = mSerial;
-                if (talkC678(player, msg, serial, field_0x4, mPos, 0x10)) {
+                if (talkC678(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
                     mPlayer = player;
                     mState = 1;
                 }
             }
         }
     } else {
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -433,27 +433,27 @@ void SpecialConversationNPC_804AAFB8::fn_80318B84() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     box = field_0x248;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (mState != 1) {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
                 u32 msg = field_0x244;
                 s32 serial = mSerial;
-                if (talkC678(player, msg, serial, field_0x4, mPos, 0x10)) {
+                if (talkC678(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
                     mPlayer = player;
                     mState = 1;
                 }
             }
         }
     } else {
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -472,7 +472,7 @@ void SpecialConversationNPC_804AAFB8::fn_803187F4() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     box = field_0x248;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -481,7 +481,7 @@ void SpecialConversationNPC_804AAFB8::fn_803187F4() {
     if (mState != 1) {
         updateFacing();
         if (field_0x264 != 3) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
@@ -502,7 +502,7 @@ void SpecialConversationNPC_804AAFB8::fn_803187F4() {
             field_0x268 = 0;
         }
     } else {
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -525,27 +525,27 @@ void SpecialConversationNPC_804AAFB8::fn_803185A8() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     box = field_0x248;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (mState != 1) {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
                 u32 msg = field_0x244;
                 s32 serial = mSerial;
-                if (talk(player, msg, serial, field_0x4, mPos, 0x10)) {
+                if (talk(player, msg, serial, mLayer_0x4, mPos, 0x10)) {
                     mPlayer = player;
                     mState = 1;
                 }
             }
         }
     } else {
-        fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(mPlayer, mSerial)) {
             mPlayer = -1;
             mState = 0;
@@ -573,7 +573,7 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if ((!getGameView_802D6A9C()->fn_802D800C(0x1F) && field_0x264 == 2) ||
         getGameView_802D6A9C()->fn_802D800C(0x1F) == true) {
         box = field_0x248;
@@ -582,7 +582,7 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (mState != 1) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
@@ -594,7 +594,7 @@ void SpecialConversationNPC_804AAFB8::fn_8031825C() {
                 }
             }
         } else {
-            fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(mPlayer, mSerial)) {
                 mPlayer = -1;
                 mState = 0;
@@ -625,7 +625,7 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     if ((!getGameView_802D6A9C()->fn_802D800C(0x1E) && field_0x264 == 2) ||
         getGameView_802D6A9C()->fn_802D800C(0x1E) == true) {
         box = field_0x248;
@@ -634,7 +634,7 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         if (mState != 1) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (fn_802300EC(player)) {
@@ -646,7 +646,7 @@ void SpecialConversationNPC_804AAFB8::fn_80317F18() {
                 }
             }
         } else {
-            fn_8022FF8C(mPlayer, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(mPlayer, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(mPlayer, mSerial)) {
                 mPlayer = -1;
                 mState = 0;

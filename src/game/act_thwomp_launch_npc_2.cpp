@@ -112,7 +112,7 @@ static const NPCLaunchSpriteInfo lbl_80472440[11] = {
 void NPCLaunchedByThwomp2_804AD1C8::init() {
     field_0x230 = 0;
     field_0xb0 = 0;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     mLife = 10000;
     field_0x23c = 0;
     field_0x26c = mSpawnPos;
@@ -126,31 +126,31 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
     field_0x244 = 0;
     field_0x248 = 3;
 
-    field_0x258 = (field_0x90 >> 22) & 7;
-    if ((field_0x90 >> 25) & 1) {
+    field_0x258 = (mSpawnParam_0x90 >> 22) & 7;
+    if ((mSpawnParam_0x90 >> 25) & 1) {
         field_0x258 = -field_0x258;
     }
     field_0x278.x = mSpawnPos.x + field_0x258 * 16.0f;
 
-    field_0x25c = (field_0x90 >> 18) & 7;
-    if ((field_0x90 >> 21) & 1) {
+    field_0x25c = (mSpawnParam_0x90 >> 18) & 7;
+    if ((mSpawnParam_0x90 >> 21) & 1) {
         field_0x25c = -field_0x25c;
     }
     field_0x278.y = mSpawnPos.y + field_0x25c * 16.0f;
     field_0x278.z = 0.0f;
 
     field_0x24c = -1;
-    field_0x264 = (field_0x90 & 0xFFF) + 0x12b;
-    field_0x250 = (field_0x90 >> 12) & 0xF;
+    field_0x264 = (mSpawnParam_0x90 & 0xFFF) + 0x12b;
+    field_0x250 = (mSpawnParam_0x90 >> 12) & 0xF;
     field_0x240 = 0;
     field_0x260 = 0.0f;
     field_0x254 = 1;
 
-    field_0x268 = (field_0x90 >> 26) & 1;
+    field_0x268 = (mSpawnParam_0x90 >> 26) & 1;
     if (field_0x268 == 1) {
         field_0x230 = 2;
         field_0x254 = 0;
-        if (!fn_801F6758(&field_0x278, field_0x4, 0.0f)) {
+        if (!fn_801F6758(&field_0x278, mLayer_0x4, 0.0f)) {
             field_0x230 = 1;
             mPos = field_0x278;
         }
@@ -158,7 +158,7 @@ void NPCLaunchedByThwomp2_804AD1C8::init() {
 
     fn_8035680C();
 
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
 
     field_0x234 = lbl_80472390[field_0x250].animDelays0[0];
@@ -184,24 +184,24 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
     }
 
     if (field_0x230 != 2) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
 
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
 
     switch (field_0x230) {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_805427F0();
             field_0x230 = 3;
             break;
         }
-        fn_8022FEB8(&box, field_0x4, mSerial, 1, 0);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, 1, 0);
         field_0x24c = fn_8022FD8C(mSerial);
         if (field_0x24c >= 0) {
             if (getPlayerPos_8023E724(field_0x24c)->z == 0.0f) {
                 if (fn_802300EC(field_0x24c)) {
-                    if (fn_8038C678(field_0x24c, field_0x264, mSerial, field_0x4, mPos, 0)) {
+                    if (fn_8038C678(field_0x24c, field_0x264, mSerial, mLayer_0x4, mPos, 0)) {
                         field_0x230 = 4;
                     }
                 }
@@ -210,7 +210,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
         break;
 
     case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, 1, 0);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, 1, 0);
         field_0x24c = fn_8022FD8C(mSerial);
         if (field_0x24c >= 0) {
             if (getPlayerPos_8023E724(field_0x24c)->z != 0.0f) {
@@ -219,7 +219,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
             if (!fn_802300EC(field_0x24c)) {
                 break;
             }
-            if (fn_8038C678(field_0x24c, field_0x264, mSerial, field_0x4, mPos, 0)) {
+            if (fn_8038C678(field_0x24c, field_0x264, mSerial, mLayer_0x4, mPos, 0)) {
                 field_0x230 = 4;
                 break;
             }
@@ -229,9 +229,9 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
     case 2:
         if (isScreenFlagSet_0x34() == 1 && !getGameView_802D6A9C()->fn_802DCD0C()) {
             field_0x254 = 1;
-            field_0x23c = ((field_0x90 >> 16) & 3) * 70 + 30;
+            field_0x23c = ((mSpawnParam_0x90 >> 16) & 3) * 70 + 30;
             mPos = field_0x278;
-            field_0x3c = JGeometry::TVec3f(
+            mVel_0x3c = JGeometry::TVec3f(
                 (mSpawnPos.x - mPos.x) / (f32)field_0x23c,
                 (mSpawnPos.y - mPos.y) / (f32)field_0x23c,
                 0.0f
@@ -245,12 +245,12 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
 
     case 3:
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= field_0x260;
-        } else if (mPos.z <= 0.0f && field_0x3c.z < 0.0f) {
+            mVel_0x3c.z -= field_0x260;
+        } else if (mPos.z <= 0.0f && mVel_0x3c.z < 0.0f) {
             mPos.z = 0.0f;
-            field_0x23c = ((field_0x90 >> 16) & 3) * 70 + 30;
+            field_0x23c = ((mSpawnParam_0x90 >> 16) & 3) * 70 + 30;
             mPos = field_0x278;
-            field_0x3c = JGeometry::TVec3f(
+            mVel_0x3c = JGeometry::TVec3f(
                 (mSpawnPos.x - mPos.x) / (f32)field_0x23c,
                 (mSpawnPos.y - mPos.y) / (f32)field_0x23c,
                 0.0f
@@ -264,14 +264,14 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
 
     case 5:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_805427F0();
             field_0x240 = 0;
             field_0x230 = 3;
             field_0x238 = 0;
             field_0x234 = lbl_80472390[field_0x250].animDelays1[0];
         } else if (field_0x240 <= 0 || (mPos.x == mSpawnPos.x && mPos.y == mSpawnPos.y)) {
             mPos = mSpawnPos;
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             field_0x230 = 0;
             field_0x238 = 0;
             field_0x234 = lbl_80472390[field_0x250].animDelays0[0];
@@ -279,7 +279,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
         break;
 
     case 4:
-        fn_8022FEB8(&box, field_0x4, mSerial, 1, 0);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, 1, 0);
         if (fn_80388CAC(field_0x24c, mSerial)) {
             if (field_0x254 == 1) {
                 field_0x230 = 0;
@@ -302,8 +302,9 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
 // Plain function whose out-of-line copy the linker dropped (inlined into update).
 // Compiled between draw (unwritten, see below) and update, it pools 40.0f / 4.0f / 0.2f before update's 2.0f
 // as in the original (docs/RULES_CARD.md (3)).
-void NPCLaunchedByThwomp2_804AD1C8::launch() {
-    field_0x3c = JGeometry::TVec3f(
+// R2 pool helper (inlined at 2 call sites); was launch.
+void NPCLaunchedByThwomp2_804AD1C8::pool_805427F0() {
+    mVel_0x3c = JGeometry::TVec3f(
         (field_0x278.x - mPos.x) / 40.0f,
         (field_0x278.y - mPos.y) / 40.0f,
         4.0f
@@ -330,7 +331,7 @@ void NPCLaunchedByThwomp2_804AD1C8::draw() {
     }
     drawSprite_801F06F0(name, frame, NULL, 0, 1.0f, 1.0f);
     if (field_0x250 == 5) {
-        fn_80307AC8(mSerial, field_0x4, &mPos, frame, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, frame, 0, 0, -1);
     }
 }
 
@@ -345,7 +346,7 @@ void NPCLaunchedByThwomp2_804AD1C8::fn_8035680C() {
         return;
     case 1:
     case 3:
-        if (field_0x268 == 1 && getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1) {
+        if (field_0x268 == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
             field_0x248 = 0;
             return;
         }
@@ -440,7 +441,7 @@ inline void NPCLaunchedByThwomp2_804AD1C8::updateAnim() {
         }
 
         if (field_0x238 == 0) {
-            addRandomDelay();
+            pool_805427E0();
         }
     }
 }
@@ -450,6 +451,7 @@ NPCLaunchedByThwomp2_804AD1C8::~NPCLaunchedByThwomp2_804AD1C8() {}
 // Plain function whose out-of-line copy the linker dropped (inlined into updateAnim/update).
 // Compiled first (the bottom of the file), it gives the .sdata2 pool its leading 3.0f and 1.0f
 // ahead of fn_8035680C's 100.0f / 10430.378f, as in the original (docs/RULES_CARD.md (3)).
-void NPCLaunchedByThwomp2_804AD1C8::addRandomDelay() {
+// R2 pool helper (one-statement body); was addRandomDelay.
+void NPCLaunchedByThwomp2_804AD1C8::pool_805427E0() {
     field_0x234 += (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }

@@ -7,7 +7,7 @@
 
 void cls_8049EA00::init() {
     ActorBase_804A5770::init();
-    mFlags = field_0x90 & 0xF;
+    mFlags = mSpawnParam_0x90 & 0xF;
     fn_8012FF9C()->fn_801300B4(mSerial);
 }
 

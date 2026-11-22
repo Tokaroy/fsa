@@ -32,12 +32,12 @@ Cloud_8049CBE0::Cloud_8049CBE0()
 // 0x80105A34.
 void Cloud_8049CBE0::init() {
     ActorBase_804A5770::init();
-    field_0x354 = field_0x90 & 0xFF;
-    field_0x358 = field_0x90 >> 12 & 0x1F;
-    field_0x36c = field_0x90 >> 17 & 0x1F;
-    field_0x364 = field_0x90 >> 22 & 0x1F;
-    field_0x368 = field_0x90 >> 22 & 0x1F;
-    field_0x35c = field_0x90 >> 27;
+    field_0x354 = mSpawnParam_0x90 & 0xFF;
+    field_0x358 = mSpawnParam_0x90 >> 12 & 0x1F;
+    field_0x36c = mSpawnParam_0x90 >> 17 & 0x1F;
+    field_0x364 = mSpawnParam_0x90 >> 22 & 0x1F;
+    field_0x368 = mSpawnParam_0x90 >> 22 & 0x1F;
+    field_0x35c = mSpawnParam_0x90 >> 27;
     for (s32 i = 0; i < 4; i++) {
         field_0x2f8[i] = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_8049CBB0[field_0x36c][i]);
     }
@@ -63,13 +63,13 @@ void Cloud_8049CBE0::init() {
         break;
     }
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
     mSprite.fn_801D2608(lbl_80539EC0, 1);
     mSprite.startAnim_801D22DC(0, 2, false);
     mSprite.fn_801D1F14(0.0f);
 }
 
-static bool isAirborne(s32 player);
+static bool pool_8053C228(s32 player);
 
 // 0x801056E4.
 // Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
@@ -78,13 +78,13 @@ static bool isAirborne(s32 player);
 // FIXME: 94.02 %, scheduling+regalloc; behaviour clean.
 void Cloud_8049CBE0::update() {
     ActorBase_804A5770::update();
-    if (viewLayerFlag(field_0x4) != 0) {
+    if (viewLayerFlag(mLayer_0x4) != 0) {
         JGeometry::TBox2f box(mBox);
         box.i.x += mPos.x;
         box.f.x += mPos.x;
         box.i.y += mPos.y;
         box.f.y += mPos.y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     s32 bit = field_0x368;
     if (bit > 0 && getGameView_802D6A9C()->fn_802D800C(bit)) {
@@ -94,7 +94,7 @@ void Cloud_8049CBE0::update() {
     switch (field_0x370) {
     case 0:
         if (field_0x354 > 0) {
-            mRail.fn_800FE3EC(field_0x354, mPos, field_0x4);
+            mRail.fn_800FE3EC(field_0x354, mPos, mLayer_0x4);
             if (field_0x354 > 0 && field_0x364 > 0) {
                 u8 count = mRail.fn_800FD894(-1, NULL, 0);
                 if (field_0x364 <= count) {
@@ -108,18 +108,18 @@ void Cloud_8049CBE0::update() {
     case 1:
         if (field_0x354 > 0) {
             JGeometry::TVec3f step(0.0f, 0.0f, 0.0f);
-            s32 railLayer = field_0x4;
+            s32 railLayer = mLayer_0x4;
             u16 angle;
             JGeometry::TVec3f at = mPos;
             f32 speed = 0.2f * field_0x358 + 0.5f;
             s32 result = mRail.fn_800FDEA0(&at, speed, &step, &railLayer, &angle, 0x200);
-            field_0x3c.x = step.x;
-            field_0x3c.y = step.y;
-            field_0x3c.z = step.z;
-            mPos.add(field_0x3c);
+            mVel_0x3c.x = step.x;
+            mVel_0x3c.y = step.y;
+            mVel_0x3c.z = step.z;
+            mPos.add(mVel_0x3c);
             if (result != 0 && mRail.fn_800FE21C(0xFF) != 0) {
                 field_0x360 = 0;
-                field_0x3c.zero();
+                mVel_0x3c.zero();
                 field_0x370 = 2;
             }
         }
@@ -133,7 +133,7 @@ void Cloud_8049CBE0::update() {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !isAirborne(i)) {
+        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !pool_8053C228(i)) {
             const JGeometry::TVec3f& d = mPos - mPrevPos;
             fn_8023DF68(i, &d);
         }
@@ -150,7 +150,7 @@ void Cloud_8049CBE0::draw() {
         pos.y -= 4.0f;
     }
     void* res = field_0x2f8[key];
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &mParams);
     }
 }
@@ -162,17 +162,17 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
     if (player < 0) {
         return false;
     }
-    if (field_0x4 != getPlayerLayer_8023DE58(player)) {
+    if (mLayer_0x4 != getPlayerLayer_8023DE58(player)) {
         return false;
     }
     JGeometry::TBox2f box(mBox);
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         box.i.x += mPos.x;
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
         box.i.y -= 2.0f;
-        if (fn_8023B0F4(player, &box, field_0x4, false, 0.0f)) {
+        if (fn_8023B0F4(player, &box, mLayer_0x4, false, 0.0f)) {
             fn_8022DF48(player);
             return true;
         }
@@ -201,7 +201,8 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
 
 // Not in the binary: a plain function that update inlines. The pool puts it below fn_801053E8:
 // its 0.0f is the unit's first literal.
-static bool isAirborne(s32 player) {
+// R2 pool helper (one-statement body); was isAirborne.
+static bool pool_8053C228(s32 player) {
     return getPlayerPos_8023E724(player)->z > 0.0f;
 }
 

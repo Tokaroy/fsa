@@ -60,7 +60,7 @@ static inline void requestSpot() {
 // 0x801B2394.
 void cls_804A35AC::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x248 = 0;
@@ -70,7 +70,7 @@ void cls_804A35AC::init() {
     field_0x250 = 0;
     field_0x254 = -1;
     gAudioMgr_8053AF80->fn_80458F9C(0x3c);
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     fn_801B2138(field_0x250);
     field_0x264.x = mPos.x;
     field_0x264.y = mPos.y;
@@ -101,12 +101,12 @@ void cls_804A35AC::init() {
     field_0x260 = 0.0f;
     getGameView_802D6A9C()->fn_802D7440(false);
     s32 fade = 200;
-    switch (field_0x90) {
+    switch (mSpawnParam_0x90) {
     case 0:
         if (!getGameView_802D6A9C()->fn_802D800C(0x10)) {
             field_0x230 = 0;
         } else {
-            field_0x90 = 2;
+            mSpawnParam_0x90 = 2;
             getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
             field_0x230 = 0x14;
         }
@@ -116,7 +116,7 @@ void cls_804A35AC::init() {
         fade = 100;
         break;
     }
-    if (mAlive == true && field_0x90 != 2) {
+    if (mAlive == true && mSpawnParam_0x90 != 2) {
         fn_80119DD0()->fn_80119998(fade, 0, 0, 0, 0, 0, 0);
     }
 }
@@ -143,10 +143,10 @@ void cls_804A35AC::fn_801B2138(s32 arg) {
     }
     switch (field_0x250) {
     case 0:
-        field_0x24c = field_0x98 << 3;
+        field_0x24c = mDir_0x98 << 3;
     // fall through
     case 1:
-        field_0x24c = (field_0x98 << 3) + field_0x240;
+        field_0x24c = (mDir_0x98 << 3) + field_0x240;
         field_0x234 = 5;
         field_0x240++;
         field_0x240 &= 7;
@@ -169,18 +169,18 @@ void cls_804A35AC::fn_801B2138(s32 arg) {
         field_0x254 = field_0x250;
     // fall through
     case 4:
-        switch (field_0x98) {
+        switch (mDir_0x98) {
         case 0:
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             break;
         case 1:
-            field_0x98 = 3;
+            mDir_0x98 = 3;
             break;
         case 2:
-            field_0x98 = 1;
+            mDir_0x98 = 1;
             break;
         case 3:
-            field_0x98 = 0;
+            mDir_0x98 = 0;
             break;
         }
         field_0x240++;
@@ -191,7 +191,7 @@ void cls_804A35AC::fn_801B2138(s32 arg) {
             field_0x250 = 0;
             field_0x254 = field_0x250;
         }
-        field_0x24c = field_0x98 << 3;
+        field_0x24c = mDir_0x98 << 3;
         break;
     }
 }
@@ -205,7 +205,7 @@ void cls_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
     f32 y = mPos.y - yOffset;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
-            if (field_0x4 == getPlayerLayer_8023DE58(i)) {
+            if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 const JGeometry::TVec3f* pos = getPlayerPos_8023E724(i);
                 field_0x288[i].x = pos->x;
                 field_0x288[i].y = pos->y;
@@ -234,10 +234,10 @@ void cls_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
 void cls_804A35AC::update() {
     JGeometry::TBox2f box;
     JGeometry::TVec3f pos;
-    box = *layerBox(field_0x4);
+    box = *layerBox(mLayer_0x4);
     if (field_0x230 != 0 && field_0x230 != 1 && field_0x230 != 2 && field_0x230 != 3 && field_0x230 != 4 &&
         field_0x230 != 5) {
-        getGameView_802D6A9C()->fn_802D79E8(field_0x4, 1.0f, 0.0f, false);
+        getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 1.0f, 0.0f, false);
         pos.set(mPos);
         mPos.zero();
         mPos.set(pos);
@@ -253,7 +253,7 @@ void cls_804A35AC::update() {
         if (getActorManager_801F856C()->fn_801F68E0()) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i)) {
-                    if (field_0x4 == getPlayerLayer_8023DE58(i)) {
+                    if (mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                         pos.set(*getPlayerPos_8023E724(i));
                         pos.x = 16.0f * i + 4840.0f;
                         fn_80230498(i, &pos, 0x3E, 0xFF, -128, -128, true);
@@ -289,7 +289,7 @@ void cls_804A35AC::update() {
             pos.set(mPos);
             pos.y -= 16.0f;
             startSound_801F0E34(0x400B5, 0);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
             gAudioMgr_8053AF80->fn_80458FF0(0x100000F, false, 0);
             field_0x250 = 3;
         }
@@ -321,8 +321,8 @@ void cls_804A35AC::update() {
         field_0x244 = 60;
         pos.zero();
         pos.y = -10.0f;
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D6, mSerial, field_0x4, pos, 0x4102)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
+        if (fn_8038AD24(0, 0x2D6, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 4;
         }
         break;
@@ -331,7 +331,7 @@ void cls_804A35AC::update() {
         pos.y -= 8.0f;
         setCameraFocus(pos);
         requestSpot();
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         if (!fn_80388CAC(0, mSerial)) {
             break;
         }
@@ -348,7 +348,7 @@ void cls_804A35AC::update() {
         }
         field_0x244 = 0;
         startSound_801F0E34(0x400B5, 0);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 1, NULL, NULL, true, 1.0f);
         getGameView_802D6A9C()->fn_802D8050(1, true, 0xFF);
         field_0x230 = 6;
     case 6:
@@ -381,14 +381,14 @@ void cls_804A35AC::update() {
         field_0x244 = 120;
         pos.zero();
         pos.y = -10.0f;
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2D7, mSerial, field_0x4, pos, 0x4102)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
+        if (fn_8038AD24(0, 0x2D7, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x244 = 0;
             field_0x230 = 9;
         }
         break;
     case 9:
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         if (!fn_80388CAC(0, mSerial)) {
             break;
         }
@@ -473,8 +473,8 @@ void cls_804A35AC::update() {
         }
         pos.zero();
         pos.y = -10.0f;
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
-        if (fn_8038AD24(0, 0x2E1, mSerial, field_0x4, pos, 0x4102)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
+        if (fn_8038AD24(0, 0x2E1, mSerial, mLayer_0x4, pos, 0x4102)) {
             field_0x230 = 18;
         }
         break;
@@ -483,7 +483,7 @@ void cls_804A35AC::update() {
         pos.y += 100.0f;
         setCameraFocus(pos);
         requestSpot();
-        fn_8022FE80(0, field_0x4, mSerial, false, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, false, false);
         if (!fn_80388CAC(0, mSerial)) {
             break;
         }
@@ -519,10 +519,10 @@ void cls_804A35AC::update() {
         field_0x27c.y += 24.0f;
         field_0x25c = 1.0f;
         if (mEmitters[0] == NULL) {
-            mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &field_0x27c, 0x224, 0, 0, NULL, NULL, true, 0.1f);
+            mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x27c, 0x224, 0, 0, NULL, NULL, true, 0.1f);
         }
         if (mEmitters[1] == NULL) {
-            mEmitters[1] = spawnEmitter_8013CC50(field_0x4, &field_0x27c, 0x225, 0, 0, NULL, NULL, true, 0.1f);
+            mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x27c, 0x225, 0, 0, NULL, NULL, true, 0.1f);
         }
         if (mEmitters[0] == NULL || mEmitters[1] == NULL) {
             break;
@@ -585,10 +585,10 @@ void cls_804A35AC::update() {
 
 // 0x801B0A00.
 // FIXME(shotgun): 97.31 %, different + reloc-name; behaviour drift.
-// field_0x90 compare is cmplwi (u32), original cmpwi
+// mSpawnParam_0x90 compare is cmplwi (u32), original cmpwi
 void cls_804A35AC::draw() {
     s32 frame = 0x9B;
-    if (field_0x90 == 0) {
+    if (mSpawnParam_0x90 == 0) {
         if (field_0x250 == 2 || field_0x250 == 3) {
             frame = 0x274;
         }

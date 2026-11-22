@@ -29,7 +29,7 @@ public:
     /* 0x31C */ s32 field_0x31c;
     /* 0x320 */ s32 field_0x320;
     /* 0x324 */ s32 field_0x324;
-    /* 0x328 */ s32 field_0x328; // bits 4-7 of field_0x90
+    /* 0x328 */ s32 field_0x328; // bits 4-7 of mSpawnParam_0x90
     /* 0x32C */ s32 field_0x32c; // bits 8-11
     /* 0x330 */ s32 field_0x330; // bits 12-15
     /* 0x334 */ s32 field_0x334; // bits 16-23

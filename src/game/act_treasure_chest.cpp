@@ -16,22 +16,22 @@
 #include "game/StageFlag.h"
 
 void TreasureChest_804AA178::init() {
-    field_0x234 = field_0x90 & 0xFF;
-    field_0x238 = (field_0x90 >> 8) & 0xF;
-    field_0x244 = (field_0x90 >> 12) & 0xF;
+    field_0x234 = mSpawnParam_0x90 & 0xFF;
+    field_0x238 = (mSpawnParam_0x90 >> 8) & 0xF;
+    field_0x244 = (mSpawnParam_0x90 >> 12) & 0xF;
     if (field_0x244 >= 4) {
         field_0x244 = -1;
     }
     if ((field_0x234 >= 0x1A && field_0x234 < 0x20) || (field_0x234 >= 0x26 && field_0x234 < 0x2A) ||
         (field_0x234 >= 0x3B && field_0x234 < 0x40) || field_0x234 >= 0x4B ||
-        (field_0x234 == 0x2E && field_0x4 >= 8)) {
+        (field_0x234 == 0x2E && mLayer_0x4 >= 8)) {
         field_0x234 = 0;
     }
 
     field_0x25c = mPos;
     mPos.x += 8.0f;
     mPos.y += 12.0f;
-    if (viewLayerFlag(field_0x4)) {
+    if (viewLayerFlag(mLayer_0x4)) {
         mBox.i.x = -10.0f;
         mBox.i.y = 4.0f;
         mBox.f.x = 10.0f;
@@ -44,8 +44,8 @@ void TreasureChest_804AA178::init() {
     }
 
     JGeometry::TVec2f cell(field_0x25c.x, field_0x25c.y);
-    mCell = fn_80226BC4(&cell, field_0x4);
-    if (getGameView_802D6A9C()->fn_802D49A8(field_0x4, (u16)mCell) == true) {
+    mCell = fn_80226BC4(&cell, mLayer_0x4);
+    if (getGameView_802D6A9C()->fn_802D49A8(mLayer_0x4, (u16)mCell) == true) {
         mAlive = false;
     }
 
@@ -69,7 +69,7 @@ void TreasureChest_804AA178::init() {
 // field_0x234 off r28), and the literals are @NNN, not lbl_805413C0 onwards.
 void TreasureChest_804AA178::update() {
     JGeometry::TVec2f pos(mPos.x, mPos.y);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     if (viewLayerFlag(layer)) {
         mBox.i.x = -10.0f;
         mBox.i.y = 2.0f;
@@ -83,18 +83,18 @@ void TreasureChest_804AA178::update() {
     }
     JGeometry::TBox2f box(mBox);
     box.addPos(pos);
-    field_0x240 = fn_8023AF14(&box, field_0x4, false, 0.0f);
+    field_0x240 = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
 
     switch (field_0x230) {
     case 0:
-        if (gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, mCell) == 0x30) {
+        if (gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, mCell) == 0x30) {
             field_0x230 = 1;
         }
         break;
     case 1: {
         bool result = false;
         if (field_0x240 >= 0) {
-            if (viewLayerFlag(field_0x4)) {
+            if (viewLayerFlag(mLayer_0x4)) {
                 if (fn_80230CFC(field_0x240) == 3 || fn_80230CFC(field_0x240) == 0 || fn_80230CFC(field_0x240) == 1) {
                     result = true;
                 }
@@ -108,7 +108,7 @@ void TreasureChest_804AA178::update() {
                 mBox.f.y = 18.0f;
                 box.set(mBox);
                 box.addPos(pos);
-                fn_8022FEB8(&box, field_0x4, mSerial, true, true);
+                fn_8022FEB8(&box, mLayer_0x4, mSerial, true, true);
             }
             field_0x248 = field_0x240;
             if (fn_8022F514(field_0x240)) {
@@ -267,15 +267,15 @@ bool TreasureChest_804AA178::vfunc_0x54() {
 
         if (field_0x238 == 0) {
             fn_80230FD0(field_0x240, 0x20013);
-            gBgRewrite_8053AC98->fn_802A3948(&field_0x25c, 0, field_0x4, 0x10);
-            s32 bit = getGameView_802D6A9C()->fn_802D4C10(field_0x4, (u16)mCell);
+            gBgRewrite_8053AC98->fn_802A3948(&field_0x25c, 0, mLayer_0x4, 0x10);
+            s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, (u16)mCell);
             if (bit != -1) {
-                getGameView_802D6A9C()->fn_802D7D00(field_0x4, bit, true);
+                getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, true);
             }
             JGeometry::TVec3f fxA(field_0x25c.x + 8.0f, field_0x25c.y + 8.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &fxA, 0xD0, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &fxA, 0xD0, 0, 0, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f fxB(field_0x25c.x + 8.0f, field_0x25c.y + 8.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &fxB, 0xD1, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &fxB, 0xD1, 0, 1, NULL, NULL, true, 1.0f);
         }
         result = true;
     }

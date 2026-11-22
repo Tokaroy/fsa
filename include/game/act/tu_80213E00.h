@@ -16,7 +16,7 @@ public:
     virtual ~cls_804A6400();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    // Zeroes field_0x3c (the base turns mSpeed into a velocity here).
+    // Zeroes mVel_0x3c (the base turns mSpeed into a velocity here).
     /* 0x88 */ virtual void calcVelocity_0x88();
     // Empty (the base's runs the per-state behaviour).
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);

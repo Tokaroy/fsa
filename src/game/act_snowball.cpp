@@ -53,15 +53,15 @@ cls_8049D020::~cls_8049D020() {
 
 void cls_8049D020::init() {
     ActorBase_804A5770::init();
-    field_0x234 = field_0x90 & 0xF;
-    switch ((s32)((field_0x90 >> 4) & 0xF)) {
+    field_0x234 = mSpawnParam_0x90 & 0xF;
+    switch ((s32)((mSpawnParam_0x90 >> 4) & 0xF)) {
     case 1:
         field_0x260 = 2.0f;
         field_0x54.set(field_0x260, field_0x260, field_0x260);
         break;
     }
-    field_0x258 = (field_0x90 >> 8) & 0xFF;
-    field_0x25c = (field_0x90 >> 16) & 0xFF;
+    field_0x258 = (mSpawnParam_0x90 >> 8) & 0xFF;
+    field_0x25c = (mSpawnParam_0x90 >> 16) & 0xFF;
     if (field_0x258 > 0 && field_0x260 == 2.0f) {
         mBox.i.x = -16.0f;
         mBox.i.y = -16.0f;
@@ -77,18 +77,18 @@ void cls_8049D020::init() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
     mLife = 1000;
     field_0xb8 = 1;
-    field_0xf8 = 2;
+    mKnockbackKind_0xf8 = 2;
     field_0xbc = 3;
     field_0x1a4 = 1;
-    field_0x118 = 2;
-    field_0x114 = 2;
-    field_0x240 = field_0x98;
+    mParamAtcn_0x118 = 2;
+    mParamAtcp_0x114 = 2;
+    field_0x240 = mDir_0x98;
     field_0xb0 = 0x0A040304;
     mSprite.fn_801D2608(lbl_80539EE8, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
@@ -108,7 +108,7 @@ void cls_8049D020::update() {
     box.f.y += mPos.y;
     if (field_0x238 != 12 && field_0x238 != 13) {
         JGeometry::TVec2<f32> playerPos;
-        if (fn_8023AB94(&box, field_0x4, &playerPos) >= 0) {
+        if (fn_8023AB94(&box, mLayer_0x4, &playerPos) >= 0) {
             fn_8010C294(12);
         }
     }
@@ -151,7 +151,7 @@ void cls_8049D020::update() {
         }
         break;
     case 3:
-        mRail.fn_800FE3EC(field_0x258, mPos, field_0x4);
+        mRail.fn_800FE3EC(field_0x258, mPos, mLayer_0x4);
         fn_8010C294(4);
         break;
     case 4:
@@ -162,7 +162,7 @@ void cls_8049D020::update() {
         fn_801F2B7C(-100, -1, 1);
         break;
     case 5: {
-        if (fallStep()) {
+        if (pool_8053C4AC()) {
             fn_8010C294(6);
         }
         break;
@@ -170,7 +170,7 @@ void cls_8049D020::update() {
     case 6:
         field_0x26c = 0.0f;
         fn_801F2DB4('NULL', 'NULL', NULL);
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         field_0x244++;
         if (field_0x244 >= 180) {
             fn_8010C294(0);
@@ -190,8 +190,8 @@ void cls_8049D020::update() {
         if (fn_801CD950(&field_0x264, 0.1f, 0.015f) == 0) {
             fn_8010C294(2);
         }
-        advance();
-        updateTrailEmitter();
+        pool_8053C490();
+        pool_8053C494();
         break;
     }
     case 8:
@@ -201,37 +201,37 @@ void cls_8049D020::update() {
             mPos.x = pPos->x;
             mPos.y = pPos->y;
             mPos.z = pPos->z;
-            field_0x4 = getPlayerLayer_8023DE58(field_0xc8);
+            mLayer_0x4 = getPlayerLayer_8023DE58(field_0xc8);
         } else {
             fn_8010C294(9);
         }
         break;
     case 9: {
         JGeometry::TVec3f unkVec;
-        if (fn_801F2B7C(field_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
+        if (fn_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
             fn_8010C294(10);
             break;
         }
-        if (fallStep()) {
+        if (pool_8053C4AC()) {
             fn_8010C294(10);
         }
         break;
     }
     case 10: {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         if (mSprite.fn_801D21F0()) {
-            if (fallStep()) {
+            if (pool_8053C4AC()) {
                 fn_8010C294(11);
             }
         }
         break;
     }
     case 11:
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         break;
     case 12:
         mDrawEnabled = false;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         field_0x250++;
         if (field_0x250 >= 90) {
             fn_8010C294(13);
@@ -270,8 +270,8 @@ void cls_8049D020::draw() {
         params.mMtx = mtx2;
     }
     params.field_0x10.a = 0x80;
-    fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
-    drawSprite(field_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
+    fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
+    drawSprite(mLayer_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
 }
 
 // -v by value, as a unary TVec3 operator- would give it.
@@ -317,9 +317,9 @@ bool cls_8049D020::fn_8010C294(s32 state) {
         }
         break;
     case 5:
-        field_0x3c = negated(field_0x3c);
-        field_0x3c.z = 1.0f;
-        getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
+        mVel_0x3c = negated(mVel_0x3c);
+        mVel_0x3c.z = 1.0f;
+        getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, 4.0f, 0.0f, false);
         if (field_0x374 != NULL) {
             field_0x374->stopCreateParticle();
         }
@@ -334,17 +334,17 @@ bool cls_8049D020::fn_8010C294(s32 state) {
     case 8:
         field_0x23c = field_0xc8;
         field_0x264 = 0.0f;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         break;
     case 10:
-        field_0x3c.x *= -0.1f;
-        field_0x3c.y *= -0.1f;
-        field_0x3c.z = 0.0f;
-        field_0xd8 = 0;
+        mVel_0x3c.x *= -0.1f;
+        mVel_0x3c.y *= -0.1f;
+        mVel_0x3c.z = 0.0f;
+        mHitTimer_0xd8 = 0;
         mSprite.startAnim_801D22DC(1, 0, false);
-        if (field_0x4 == 0) {
-            field_0x378 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x93, 0, -1, NULL, NULL, true, field_0x260);
-            field_0x37c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x94, 1, 0, NULL, NULL, true, field_0x260);
+        if (mLayer_0x4 == 0) {
+            field_0x378 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x93, 0, -1, NULL, NULL, true, field_0x260);
+            field_0x37c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x94, 1, 0, NULL, NULL, true, field_0x260);
         }
         break;
     case 12: {
@@ -359,12 +359,12 @@ bool cls_8049D020::fn_8010C294(s32 state) {
         break;
     }
     case 13:
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         mPos.z = 0.0f;
         switch (field_0x234) {
         case 1:
             fn_801F0D20(3);
-            getActorManager_801F856C()->spawnActor_801F9484('KEY0', field_0x4, &mPos, 0x60000000, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484('KEY0', mLayer_0x4, &mPos, 0x60000000, -1, -1);
             break;
         case 0:
         default: {
@@ -384,6 +384,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
 // their literals before fn_8010C294's, in this order from the bottom of the file up.
 
 // Turns towards the player, picks the speed by the distance and rolls on.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::chase(s32 target) {
     u16 angle = 0;
     s32 dir = 0;
@@ -402,31 +403,33 @@ void cls_8049D020::chase(s32 target) {
     } else {
         fn_801CD950(&field_0x264, 1.2f, 0.03f);
     }
-    advance();
-    field_0x26c = PSVECMag(&field_0x3c) / 1.6f;
+    pool_8053C490();
+    field_0x26c = PSVECMag(&mVel_0x3c) / 1.6f;
     if (field_0x26c >= 1.0f) {
         field_0x26c = 1.0f;
     }
-    updateTrailEmitter();
+    pool_8053C494();
     startSound_801F0E34(0x3007B, 0);
 }
 
 // Moves along the rail and updates the trail emitter.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::followRail() {
     u16 angle = 0;
     JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     JGeometry::TVec3f pos = mPos;
     mRail.fn_800FDEA0(&pos, 1.5f, &outStep, &layer, &angle, 0x200);
-    field_0x3c.x = outStep.x;
-    field_0x3c.y = outStep.y;
-    field_0x3c.z = outStep.z;
-    mPos += field_0x3c;
-    updateTrailEmitter();
+    mVel_0x3c.x = outStep.x;
+    mVel_0x3c.y = outStep.y;
+    mVel_0x3c.z = outStep.z;
+    mPos += mVel_0x3c;
+    pool_8053C494();
     startSound_801F0E34(0x3007B, 0);
 }
 
 // Grows with the distance rolled, up to twice the size; the boxes follow.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::grow() {
     field_0x260 += (0.002f * field_0x264) / 1.6f;
     if (field_0x260 >= 2.0f) {
@@ -441,20 +444,21 @@ void cls_8049D020::grow() {
     mBox2.i.y = mBox.i.y;
     mBox2.f.x = mBox.f.x;
     mBox2.f.y = mBox.f.y;
-    field_0x80.i.x = mBox.i.x;
-    field_0x80.i.y = mBox.i.y;
-    field_0x80.f.x = mBox.f.x;
-    field_0x80.f.y = mBox.f.y;
+    mMapBox_0x80.i.x = mBox.i.x;
+    mMapBox_0x80.i.y = mBox.i.y;
+    mMapBox_0x80.f.x = mBox.f.x;
+    mMapBox_0x80.f.y = mBox.f.y;
 }
 
 // Applies gravity to the velocity and moves; true once landed.
-bool cls_8049D020::fallStep() {
-    fn_801CD950(&field_0x3c.z, -10.0f, -0.15f);
-    mPos += field_0x3c;
+// R2 pool helper (inlined at 3 call sites); was fallStep.
+bool cls_8049D020::pool_8053C4AC() {
+    fn_801CD950(&mVel_0x3c.z, -10.0f, -0.15f);
+    mPos += mVel_0x3c;
     bool atGround;
     if (mPos.z <= 0.0f) {
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
         atGround = true;
     } else {
         atGround = false;
@@ -463,6 +467,7 @@ bool cls_8049D020::fallStep() {
 }
 
 // The rupee a destroyed snowball leaves, by its size.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::dropRupee() {
     s32 kind = 0;
     if (field_0x270 >= 2.0f) {
@@ -473,26 +478,28 @@ void cls_8049D020::dropRupee() {
     if (field_0x258 >= 1) {
         kind = 1;
     }
-    s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, lbl_80464328[kind]);
+    s32 serial = getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, lbl_80464328[kind]);
     if (serial >= 0) {
         getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     }
 }
 
 // The three burst emitters, at the snowball's foot.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D020::spawnBurst() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 16.0f * field_0x260;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x44A, 0, 1, NULL, NULL, true, field_0x260);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x44B, 0, 1, NULL, NULL, true, field_0x260);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x44C, 0, 1, NULL, NULL, true, field_0x260);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x44A, 0, 1, NULL, NULL, true, field_0x260);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x44B, 0, 1, NULL, NULL, true, field_0x260);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x44C, 0, 1, NULL, NULL, true, field_0x260);
 }
 
 // Emits and updates the trail emitter.
-void cls_8049D020::updateTrailEmitter() {
-    if (field_0x4 == 0) {
+// R2 pool helper (inlined at 3 call sites); was updateTrailEmitter.
+void cls_8049D020::pool_8053C494() {
+    if (mLayer_0x4 == 0) {
         if (field_0x374 == NULL) {
-            field_0x374 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
+            field_0x374 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
         }
         JGeometry::TVec3f emitterPos = mPos;
         emitterPos.y = mPos.y + -2.0f * field_0x260;
@@ -507,9 +514,10 @@ void cls_8049D020::updateTrailEmitter() {
 }
 
 // Moves along the heading at the current speed.
-void cls_8049D020::advance() {
-    field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
-    field_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
-    field_0x3c.z = 0.0f;
-    mPos += field_0x3c;
+// R2 pool helper (inlined at 2 call sites); was advance.
+void cls_8049D020::pool_8053C490() {
+    mVel_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
+    mVel_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
+    mVel_0x3c.z = 0.0f;
+    mPos += mVel_0x3c;
 }

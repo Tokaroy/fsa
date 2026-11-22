@@ -20,7 +20,7 @@ public:
     // 0x8034ACF4: per player, the facing they left by and the push into the area.
     void fn_8034ACF4();
     // Not in the binary: a plain function that init and update inline.
-    void updateFacing();
+    void pool_80542558();
     bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
         return fn_8038AD24(player, msg, serial, layer, pos, flags);
     }
@@ -29,9 +29,9 @@ public:
     /* 0x238 */ s32 field_0x238;
     /* 0x23C */ s32 field_0x23c; // facing (0-3)
     /* 0x240 */ s32 field_0x240; // the player index of the message partner (update)
-    /* 0x244 */ s32 field_0x244; // kind (low nibble of field_0x90)
+    /* 0x244 */ s32 field_0x244; // kind (low nibble of mSpawnParam_0x90)
     /* 0x248 */ s32 field_0x248;
-    /* 0x24C */ s32 field_0x24c; // bits 4-11 of field_0x90
+    /* 0x24C */ s32 field_0x24c; // bits 4-11 of mSpawnParam_0x90
     /* 0x250 */ s32 field_0x250;
     /* 0x254 */ s32 field_0x254;
     /* 0x258 */ s32 field_0x258;

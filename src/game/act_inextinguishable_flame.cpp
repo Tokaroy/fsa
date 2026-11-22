@@ -36,11 +36,11 @@ static inline void invalidateEmitter(JPABaseEmitter*& emitter) {
 // reuses for the state-0 store (`li r28, 0`) before the first loop's
 // float literal load, ours has it later.
 void InextinguishableFlame_804A9D28::init() {
-    mCountX = ((field_0x90 >> 22) & 0x1F) + 1;
-    mCountY = ((field_0x90 >> 17) & 0x1F) + 1;
-    mKind = field_0x90 & 0xF;
-    mFlag300 = (field_0x90 >> 4) & 1;
-    mViewBit = (field_0x90 >> 12) & 0x1F;
+    mCountX = ((mSpawnParam_0x90 >> 22) & 0x1F) + 1;
+    mCountY = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
+    mKind = mSpawnParam_0x90 & 0xF;
+    mFlag300 = (mSpawnParam_0x90 >> 4) & 1;
+    mViewBit = (mSpawnParam_0x90 >> 12) & 0x1F;
 
     for (int i = 0; i < 16; i++) {
         mEmitters[0][i] = NULL;
@@ -53,9 +53,9 @@ void InextinguishableFlame_804A9D28::init() {
         s32 n = 0;
         for (s32 i = 0; i < mCountX; i++) {
             for (s32 j = 0; j < mCountY; j++) {
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
-                mEmitters[2][n] = spawnEmitter_8013CC50(field_0x4, &pos, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitters[2][n] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
                 pos.y += 16.0f;
                 n++;
             }
@@ -73,11 +73,11 @@ void InextinguishableFlame_804A9D28::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = -7.0f;
-    field_0x80.i.y = -7.0f;
-    field_0x80.f.x = 7.0f;
-    field_0x80.f.y = 7.0f;
-    field_0x114 = 1;
+    mMapBox_0x80.i.x = -7.0f;
+    mMapBox_0x80.i.y = -7.0f;
+    mMapBox_0x80.f.x = 7.0f;
+    mMapBox_0x80.f.y = 7.0f;
+    mParamAtcp_0x114 = 1;
 }
 
 InextinguishableFlame_804A9D28::~InextinguishableFlame_804A9D28() {
@@ -113,9 +113,9 @@ void InextinguishableFlame_804A9D28::update() {
             s32 n = 0;
             for (s32 i = 0; i < mCountX; i++) {
                 for (s32 j = 0; j < mCountY; j++) {
-                    mEmitters[0][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
-                    mEmitters[1][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
-                    mEmitters[2][n] = spawnEmitter_8013CC50(field_0x4, &grid, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[0][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[1][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[2][n] = spawnEmitter_8013CC50(mLayer_0x4, &grid, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
                     grid.y += 16.0f;
                     n++;
                 }
@@ -139,8 +139,8 @@ void InextinguishableFlame_804A9D28::update() {
             tile.x = mPos.x + lbl_8046F0C8[i];
             tile.y = mPos.y + lbl_8046F108[i];
             tile.z = mPos.z;
-            if (fn_801EE3C0(fn_80226850(&tile, field_0x4)) == true) {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &tile, (field_0x98 << 4) | 0xF, -1, -1);
+            if (fn_801EE3C0(fn_80226850(&tile, mLayer_0x4)) == true) {
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &tile, (mDir_0x98 << 4) | 0xF, -1, -1);
                 mActorId = 'BLZE';
                 mState = 4;
                 mTimer = 40;
@@ -155,7 +155,7 @@ void InextinguishableFlame_804A9D28::update() {
             s32 n = 0;
             for (s32 i = 0; i < mCountX; i++) {
                 for (s32 j = 0; j < mCountY; j++) {
-                    mEmitters[0][n] = spawnEmitter_8013CC50(field_0x4, &pos, 0x4f2, 1, 0, NULL, NULL, true, 1.0f);
+                    mEmitters[0][n] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x4f2, 1, 0, NULL, NULL, true, 1.0f);
                     pos.y += 16.0f;
                     n++;
                 }
@@ -178,10 +178,10 @@ void InextinguishableFlame_804A9D28::update() {
                     }
                     JGeometry::TBox2f box(mBox);
                     box.addPos(mPos.x, mPos.y);
-                    fn_801F2B7C(field_0x114, -1, 7);
-                    box = field_0x80;
+                    fn_801F2B7C(mParamAtcp_0x114, -1, 7);
+                    box = mMapBox_0x80;
                     box.addPos(mPos.x, mPos.y);
-                    fn_80239914(&box, field_0x4, mSerial);
+                    fn_80239914(&box, mLayer_0x4, mSerial);
                     mPos.y += 16.0f;
                 }
                 mPos.y = origin.y;
@@ -196,7 +196,7 @@ void InextinguishableFlame_804A9D28::update() {
         vfunc_0x54();
         for (s32 i = 0; i < mCountX; i++) {
             for (s32 j = 0; j < mCountY; j++) {
-                getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &pos, (field_0x98 << 4) | 0xF, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &pos, (mDir_0x98 << 4) | 0xF, -1, -1);
                 mActorId = 'BLZE';
                 pos.y += 16.0f;
             }
@@ -221,7 +221,7 @@ void InextinguishableFlame_804A9D28::update() {
         }
         break;
     case 6:
-        if (fn_801F2B7C(field_0x114, -1, 7)) {
+        if (fn_801F2B7C(mParamAtcp_0x114, -1, 7)) {
             if (!fn_80234CF8(0)) {
                 mTimer = 1;
             } else {
@@ -244,10 +244,10 @@ void InextinguishableFlame_804A9D28::draw() {
     if (mState >= 1) {
         for (s32 i = 0; i < mCountX; i++) {
             for (s32 j = 0; j < mCountY; j++) {
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
-                drawShadow(field_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34c, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x34d, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x54d, 1, 0, NULL, NULL, true, 1.0f);
+                drawShadow(mLayer_0x4, &pos, JUtility::TColor(0, 0, 0, 0x80), 32.0f);
                 pos.y += 16.0f;
             }
             pos.y = mPos.y;
@@ -281,7 +281,7 @@ bool InextinguishableFlame_804A9D28::vfunc_0x58(JGeometry::TVec3f* pos) {
         f32 y = pos->y + lbl_8046F188[i];
         f32 x = pos->x + lbl_8046F148[i];
         JGeometry::TVec3f p(x, y, pos->z);
-        s32 tile = fn_80226850(&p, field_0x4);
+        s32 tile = fn_80226850(&p, mLayer_0x4);
         if (fn_801EE3C0(tile) == true) {
             result = true;
             break;

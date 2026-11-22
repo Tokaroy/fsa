@@ -24,12 +24,12 @@ void cls_804A51E4::fn_8021FDB8() const {
         break;
     }
     JGeometry::TVec3f pos(mPos.x, mPos.y, mPos.z + dz);
-    switch (target->field_0x90 & 0xFF) {
+    switch (target->mSpawnParam_0x90 & 0xFF) {
     case 0:
     case 1:
         pos.z -= 3.0f;
         if (!fn_801E1D9C()) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 pos.x += 3.0f;
                 break;
@@ -43,7 +43,7 @@ void cls_804A51E4::fn_8021FDB8() const {
     case 3:
         pos.z -= 5.0f;
         if (!fn_801E1D9C()) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 pos.x += 3.0f;
                 break;
@@ -59,7 +59,7 @@ void cls_804A51E4::fn_8021FDB8() const {
     case 7:
         pos.z -= 13.0f;
         if (!fn_801E1D9C()) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 pos.x += 3.0f;
                 break;

@@ -13,7 +13,7 @@ static inline bool takeCamera(Camera_804AA9E4* cam) {
 }
 
 void ZoomOutNPC_804AA228::init() {
-    mDuration = field_0x90 & 0xFFF;
+    mDuration = mSpawnParam_0x90 & 0xFFF;
     mTimer = 0;
     mState = 0;
 }

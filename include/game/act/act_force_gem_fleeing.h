@@ -26,9 +26,9 @@ public:
     /* 0x25C */ s32 field_0x25c; // random angle 0..65535 (init)
     /* 0x260 */ s32 field_0x260; // 100 (init)
     /* 0x264 */ s32 field_0x264; // -1 (init)
-    /* 0x268 */ s32 field_0x268; // field_0x90 & 3
+    /* 0x268 */ s32 field_0x268; // mSpawnParam_0x90 & 3
     /* 0x26C */ s32 field_0x26c;
-    /* 0x270 */ s32 field_0x270; // the layer (field_0x4) at init
+    /* 0x270 */ s32 field_0x270; // the layer (mLayer_0x4) at init
     /* 0x274 */ u16 field_0x274;
     /* 0x276 */ u16 field_0x276;
     /* 0x278 */ u8 field_0x278;

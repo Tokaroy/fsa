@@ -12,9 +12,9 @@
 
 // FIXME(shotgun): 98.99 %, scheduling; behaviour clean.
 void Score_804AF4C0::init() {
-    mValue = field_0x90 & 0xFFFF;
-    mPlayer = (field_0x90 >> 16) & 0xFF;
-    mState = field_0x90 >> 24;
+    mValue = mSpawnParam_0x90 & 0xFFFF;
+    mPlayer = (mSpawnParam_0x90 >> 16) & 0xFF;
+    mState = mSpawnParam_0x90 >> 24;
     field_0x248 = mPos.x - getPlayerPos_8023E724(mPlayer)->x;
     field_0x24c = mPos.y - getPlayerPos_8023E724(mPlayer)->y - 24.0f;
     field_0x240 = mValue;
@@ -29,29 +29,29 @@ void Score_804AF4C0::init() {
             mValue = 100;
         }
         if (mState == 0) {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = -0.2f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = -0.2f;
+            mVel_0x3c.z = 0.0f;
         } else {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         mTimer = 90;
         lbl_80529DEC.field_0x1f4[mPlayer] = field_0x240;
     } else if (mState == 1) {
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = -1.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = -1.0f;
+        mVel_0x3c.z = 0.0f;
         mTimer = 90;
         fn_801F0D20(0x41);
     } else if (mState == 2) {
         if (mValue >= 12) {
             mAlive = false;
         }
-        field_0x3c.x = 0.0f;
-        field_0x3c.y = -0.2f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        mVel_0x3c.y = -0.2f;
+        mVel_0x3c.z = 0.0f;
         mTimer = 90;
     } else if (mState == 3) {
         mTimer = 0x257;
@@ -119,8 +119,8 @@ void Score_804AF4C0::fn_80393514() {
     if (mTimer == 90) {
         // The original copies this 12-entry table (rodata 0x80475738) to the stack and passes entry 0.
         const f32 emitScale[12] = {0.3f, 0.3f, 0.3f, 0.35f, 0.35f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.6f, 0.6f};
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xCB, 0, 0, NULL, NULL, true, emitScale[0]);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0xCC, 0, 0, NULL, NULL, true, emitScale[0]);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xCB, 0, 0, NULL, NULL, true, emitScale[0]);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xCC, 0, 0, NULL, NULL, true, emitScale[0]);
         s32 idx = 9;
         if (mValue < 10) {
             idx = mValue - 1;
@@ -129,8 +129,8 @@ void Score_804AF4C0::fn_80393514() {
     }
     s16 angle = (mTimer % 60) << 10;
     if (mState == 0) {
-        field_0x3c.x = 0.2f * JMASSin(angle);
-        mPos += field_0x3c;
+        mVel_0x3c.x = 0.2f * JMASSin(angle);
+        mPos += mVel_0x3c;
     } else {
         field_0x248 += 0.2f * JMASSin(angle);
         field_0x24c -= 0.2f;
@@ -149,36 +149,36 @@ void Score_804AF4C0::fn_80393514() {
                 case 1:
                 case 2: {
                     JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &p, 2);
+                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
                     break;
                 }
                 case 3:
                 case 4:
                 case 5: {
                     JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &p, 3);
+                    serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 3);
                     break;
                 }
                 default: {
                     JGeometry::TVec3f* pos = getPlayerPos_8023E724(mPlayer);
-                    getActorManager_801F856C()->spawnActor_801F9484('FARY', field_0x4, pos, 0, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484('FARY', mLayer_0x4, pos, 0, -1, -1);
                 }
                 }
                 if (serial >= 0) {
                     ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (gem != NULL) {
-                        gem->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
+                        gem->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
                     }
                 }
             }
         }
         if (field_0x240 >= 15 && field_0x244 < 15) {
             JGeometry::TVec3f p(getPlayerPos_8023E724(mPlayer)->x, getPlayerPos_8023E724(mPlayer)->y, 300.0f);
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &p, 2);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &p, 2);
             if (serial >= 0) {
                 ActorBase_804A5770* gem = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (gem != NULL) {
-                    gem->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
+                    gem->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, -1.0f);
                 }
             }
         }
@@ -196,22 +196,22 @@ static inline void putTimeDigit(f32 scale, s32 digit, JGeometry::TVec3f v, JUtil
 void Score_804AF4C0::fn_80393228() {
     f32 fade = 255.0f * ((f32)mTimer / 90.0f);
     if (mValue < 10) {
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, mValue, mPos,
                          JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
     } else if (mValue < 100) {
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, mValue / 10, JGeometry::TVec3f(mPos.x - 8.333f, mPos.y, mPos.z),
                          JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
         fade = 255.0f * ((f32)mTimer / 90.0f);
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, mValue % 10, JGeometry::TVec3f(8.333f + mPos.x, mPos.y, mPos.z),
                          JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
     } else {
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, 10, mPos,
                          JUtility::TColor(lbl_80543170[mPlayer], lbl_80543174[mPlayer], lbl_80543178[mPlayer], fade));
         }
@@ -220,20 +220,22 @@ void Score_804AF4C0::fn_80393228() {
 #pragma auto_inline reset
 
 // Auto-inlined into update(); placed here to match the original .sdata2 literal pool order.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
 void Score_804AF4C0::updateState1() {
     if (mTimer >= 0x50) {
         s32 d = 90 - mTimer;
-        field_0x3c.y = -3.0f * (1.0f - (f32)(d * d / 100));
-        mPos.add(field_0x3c);
+        mVel_0x3c.y = -3.0f * (1.0f - (f32)(d * d / 100));
+        mPos.add(mVel_0x3c);
     }
     if (mTimer-- == 0) {
         mAlive = false;
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void Score_804AF4C0::updateState2() {
-    field_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << 10);
-    mPos.add(field_0x3c);
+    mVel_0x3c.x = 0.2f * JMath::sincosTable_.sinShort((mTimer % 60) << 10);
+    mPos.add(mVel_0x3c);
     if (mTimer-- == 0) {
         mAlive = false;
     }
@@ -241,28 +243,28 @@ void Score_804AF4C0::updateState2() {
 
 #pragma auto_inline off
 // Draws one digit of the gem value at x, in the gem-yellow colour.
-static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
+static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
 
 // Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
 static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
-    if (self->field_0x4 < 8) {
+    if (self->mLayer_0x4 < 8) {
         JGeometry::TVec3f pos = JGeometry::TVec3f(self->mPos);
         lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
     }
 }
 
 #define SCORE_2(a, b) \
-    putScoreDigit(this, fade, mPos.x - 5.0f, a); \
-    putScoreDigit(this, fade, mPos.x + 5.0f, b)
+    pool_80543188(this, fade, mPos.x - 5.0f, a); \
+    pool_80543188(this, fade, mPos.x + 5.0f, b)
 #define SCORE_3(a, b, c) \
-    putScoreDigit(this, fade, mPos.x - 10.0f, a); \
+    pool_80543188(this, fade, mPos.x - 10.0f, a); \
     putScoreDigitMid(this, fade, b); \
-    putScoreDigit(this, fade, mPos.x + 10.0f, c)
+    pool_80543188(this, fade, mPos.x + 10.0f, c)
 #define SCORE_4(a, b, c, d) \
-    putScoreDigit(this, fade, mPos.x - 5.0f - 10.0f, a); \
-    putScoreDigit(this, fade, mPos.x - 5.0f, b); \
-    putScoreDigit(this, fade, mPos.x + 5.0f, c); \
-    putScoreDigit(this, fade, 10.0f + (mPos.x + 5.0f), d)
+    pool_80543188(this, fade, mPos.x - 5.0f - 10.0f, a); \
+    pool_80543188(this, fade, mPos.x - 5.0f, b); \
+    pool_80543188(this, fade, mPos.x + 5.0f, c); \
+    pool_80543188(this, fade, 10.0f + (mPos.x + 5.0f), d)
 
 // FIXME: 96.72 %, operands; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
@@ -290,7 +292,7 @@ void Score_804AF4C0::fn_80391D44() {
         v.x = mPos.x;
         v.y = mPos.y;
         v.z = mPos.z;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, n, v,
                          JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
@@ -299,7 +301,7 @@ void Score_804AF4C0::fn_80391D44() {
         v.y = mPos.y;
         v.z = mPos.z;
         v.x -= 10.0f;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, 1, v,
                          JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
@@ -307,7 +309,7 @@ void Score_804AF4C0::fn_80391D44() {
         v.y = mPos.y;
         v.z = mPos.z;
         v.x += 10.0f;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             putTimeDigit(0.5f, 0, v,
                          JUtility::TColor(lbl_8054317C[mPlayer], lbl_80543180[mPlayer], lbl_80543184[mPlayer], 255));
         }
@@ -315,12 +317,13 @@ void Score_804AF4C0::fn_80391D44() {
 }
 #pragma auto_inline reset
 
-static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
+// R2 pool helper (inlined at 8 call sites); was putScoreDigit.
+static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
     Vec v;
     v.x = x;
     v.y = self->mPos.y;
     v.z = self->mPos.z;
-    if (self->field_0x4 < 8) {
+    if (self->mLayer_0x4 < 8) {
         JGeometry::TVec3f pos = JGeometry::TVec3f(v);
         lbl_8053AF50->fn_80455770(0.3f, digit, &pos, JUtility::TColor(255, 0xD2, 0, (s32)fade));
     }

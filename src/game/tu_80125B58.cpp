@@ -19,12 +19,12 @@ static const s16* lbl_8049E340[4] = {lbl_80464ED0, lbl_80464EDC, lbl_80464ED0, l
 
 void cls_8049E350::init() {
     ActorBase_804A5770::init();
-    field_0x238 = field_0x90 & 1;
-    field_0x240 = (field_0x90 >> 22) & 0x1F;
+    field_0x238 = mSpawnParam_0x90 & 1;
+    field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(mBox);
-    field_0x80.set(mBox);
-    field_0x98 = 2;
+    mMapBox_0x80.set(mBox);
+    mDir_0x98 = 2;
     mAnim244.fn_801D2608(lbl_8049E330, 4);
     mAnim244.startAnim_801D22DC(2, 2, false);
     mAnim244.fn_801D1F14(0.0f);
@@ -90,7 +90,7 @@ void cls_8049E350::update() {
     case 0:
         if (getScreenFlagBit_0x3C() > 0 && isScreenFlagSet_0x34()) {
             if (field_0x238 == 0) {
-                field_0x98 = 0;
+                mDir_0x98 = 0;
             }
             field_0x234 = 1;
             enterState();
@@ -109,7 +109,7 @@ void cls_8049E350::update() {
         }
         JGeometry::TBox2f talkBox(mBox);
         talkBox.addPos(mPos.x, mPos.y);
-        fn_8022FEB8(&talkBox, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&talkBox, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player < 0) {
             player = -1;
@@ -127,7 +127,7 @@ void cls_8049E350::update() {
         break;
     }
     case 2:
-        fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             field_0x234 = 1;
             enterState();
@@ -138,11 +138,11 @@ void cls_8049E350::update() {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
     }
     if (field_0x230 != 0) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
-    s32 anim = field_0x98;
+    s32 anim = mDir_0x98;
     if (anim >= 0) {
-        field_0x98 = anim;
+        mDir_0x98 = anim;
         if (anim != mAnim244.mAnim) {
             mAnim244.startAnim_801D22DC(anim, 2, false);
             mAnim244.fn_801D1F14(0.0f);
@@ -182,7 +182,7 @@ void cls_8049E350::draw() {
             pos.x += -10.0f;
         }
         s32 frame = mAnim27c.mCel + 0x2A3;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, frame, NULL, 1.0f, 1.0f);
         }
@@ -199,7 +199,7 @@ void cls_8049E350::fn_80125C58(bool flag) {
 void cls_8049E350::fn_80125BF4() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // From here down: plain functions that update and fn_80125C58 inline and whose own copies the
@@ -207,13 +207,15 @@ void cls_8049E350::fn_80125BF4() {
 // fn_80125BF4's, in the order of these functions from the bottom of the file up, so they were
 // generated before it (tools/pool.py).
 // Opens message `msg` for `player`, 64 units above the actor.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049E350::talkTo(s32 player, u16 msg) {
     JGeometry::TVec3f pos(mPos);
     pos.y -= 64.0f;
-    return fn_8038AD24(player, msg, mSerial, field_0x4, pos, 0x28);
+    return fn_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28);
 }
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049E350::startSignAnim() {
     switch (field_0x238) {
     case 1:

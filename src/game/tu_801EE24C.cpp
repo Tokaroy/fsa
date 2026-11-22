@@ -89,21 +89,21 @@ void releaseEmitter_801EE434(JPABaseEmitter* emitter);
 // lbl_8053F7F8's size in symbols.txt corrected (0x8 there: 40.0f plus a zero
 // word that is probably padding) before a 4-byte literal can pair with it.
 ActorBase_804A5770::ActorBase_804A5770()
-    : field_0x4(0),
+    : mLayer_0x4(0),
       field_0x8(0),
       mPos(0.0f, 0.0f, 0.0f),
       mPrevPos(0.0f, 0.0f, 0.0f),
       mSpawnPos(0.0f, 0.0f, 0.0f),
       field_0x30(0.0f, 0.0f, 0.0f),
-      field_0x3c(0.0f, 0.0f, 0.0f),
+      mVel_0x3c(0.0f, 0.0f, 0.0f),
       field_0x48(1.0f, 1.0f, 1.0f),
       field_0x54(1.0f, 1.0f, 1.0f),
       mBox(-8.0f, -8.0f, 8.0f, 8.0f),
       mBox2(0.0f, 0.0f, 0.0f, 0.0f),
-      field_0x80(0.0f, 0.0f, 0.0f, 0.0f),
-      field_0x90(0),
+      mMapBox_0x80(0.0f, 0.0f, 0.0f, 0.0f),
+      mSpawnParam_0x90(0),
       field_0x94(0),
-      field_0x98(0),
+      mDir_0x98(0),
       field_0x9c(-1),
       field_0xa0(-1),
       field_0xa4(0),
@@ -113,32 +113,32 @@ ActorBase_804A5770::ActorBase_804A5770()
       field_0xb4(0),
       field_0xb8(0),
       field_0xbc(1),
-      field_0xc0(1),
+      mParamEfsz_0xc0(1),
       field_0xc4(0),
       field_0xc8(-1),
       field_0xcc(0),
       field_0xd0(-1),
       field_0xd4(0),
-      field_0xd5(0),
-      field_0xd8(0),
-      field_0xdc(0x18),
-      field_0xe0(0),
-      field_0xe4(0),
-      field_0xe8(0),
-      field_0xec(0.0f, 0.0f, 0.0f),
-      field_0xf8(0),
-      field_0xfc(0),
+      mHitPlayers_0xd5(0),
+      mHitTimer_0xd8(0),
+      mHitTimerStart_0xdc(0x18),
+      mDeathTimer_0xe0(0),
+      mSparkTimer_0xe4(0),
+      mSparksLeft_0xe8(0),
+      mHitDir_0xec(0.0f, 0.0f, 0.0f),
+      mKnockbackKind_0xf8(0),
+      mHitType_0xfc(0),
       mEmitter100(NULL),
       mEmitter104(NULL),
       mLife(4),
-      field_0x10c(-1),
+      mLastAttacker_0x10c(-1),
       field_0x110(-1),
-      field_0x114(0),
-      field_0x118(0),
+      mParamAtcp_0x114(0),
+      mParamAtcn_0x118(0),
       mAlive(true),
       mDrawEnabled(true),
       field_0x11e(0),
-      field_0x11f(0),
+      mUpdateWhilePaused_0x11f(0),
       mSpriteParams(),
       mListPrev(NULL),
       mListNext(NULL),
@@ -152,9 +152,9 @@ ActorBase_804A5770::ActorBase_804A5770()
       field_0x17d(0),
       field_0x180(20),
       field_0x184(40.0f),
-      field_0x188(-1),
-      field_0x18c(0),
-      field_0x190(0),
+      mBossDeathTimer_0x188(-1),
+      mParamDasu_0x18c(0),
+      mParamVoic_0x190(0),
       field_0x194(0),
       field_0x195(0),
       field_0x196(0),
@@ -162,10 +162,10 @@ ActorBase_804A5770::ActorBase_804A5770()
       mSlot(0),
       mActorId('NULL'),
       field_0x1a4(0),
-      field_0x1a8(false)
+      mParamDstr_0x1a8(false)
 {
     for (int i = 0; i < 4; i++) {
-        field_0x1ac[i].set(0.0f, 0.0f, 0.0f);
+        mPlayerPos_0x1ac[i].set(0.0f, 0.0f, 0.0f);
     }
 }
 
@@ -215,12 +215,12 @@ void ActorBase_804A5770::draw() {}
 // 4-byte objects (lbl_8053F728/72C 'NULL' at the very start of .sdata2,
 // lbl_80543F40-4C zero in .sbss2); MWCC makes one 8-byte @NNN per array here.
 // Drops items when the actor dies: with the chance lbl_80469D48[dasu]
-// (EnemyParam "dasu", field_0x18c), one of the eight drops in row dasu of
+// (EnemyParam "dasu", mParamDasu_0x18c), one of the eight drops in row dasu of
 // lbl_80469D78 (0 none, 1-2 hearts, 3-13 rupees: count and kind), spawned
 // at the actor's top-down position; several of one kind are fanned out 16
 // units around it.
 void ActorBase_804A5770::fn_801F52A4() {
-    s32 dasu = field_0x18c;
+    s32 dasu = mParamDasu_0x18c;
     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < lbl_80469D48[dasu]) {
         u32 ids[2] = {'NULL', 'NULL'};
         u32 params[2] = {0, 0};
@@ -297,7 +297,7 @@ void ActorBase_804A5770::fn_801F52A4() {
             params[i] |= 0x261E00;
             for (u32 j = 0; j < counts[i]; j++) {
                 JGeometry::TVec3f pos(x, y, 0.0f);
-                s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ids[i], field_0x4, &pos,
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ids[i], mLayer_0x4, &pos,
                                                                              params[i], -1, -1);
                 if (serial >= 0 && counts[i] > 1) {
                     ActorBase_804A5770* actor =
@@ -326,36 +326,36 @@ void ActorBase_804A5770::fn_801F52A4() {
 void ActorBase_804A5770::die_0x24() {
     s32 bit;
     s32 player;
-    if (gGameRoot_8053AAF8->field_0x7e != 0 && field_0x1a8 == true &&
+    if (gGameRoot_8053AAF8->field_0x7e != 0 && mParamDstr_0x1a8 == true &&
         getActorManager_801F856C()->fn_801F7A6C() == 1)
     {
-        fn_801CB434(field_0x4, &mPos, false);
-    } else if (field_0x18c != 0 && gGameRoot_8053AAF8->field_0x7e != 0 &&
+        fn_801CB434(mLayer_0x4, &mPos, false);
+    } else if (mParamDasu_0x18c != 0 && gGameRoot_8053AAF8->field_0x7e != 0 &&
                gGameRoot_8053AAF8->field_0x7f != 0 && !fn_802DE814() &&
                isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) &&
-               gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f && field_0x10c >= 0 &&
-               field_0x10c < 4 && fn_8022F340(field_0x10c) == fn_801CCDA4() &&
+               gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f && mLastAttacker_0x10c >= 0 &&
+               mLastAttacker_0x10c < 4 && fn_8022F340(mLastAttacker_0x10c) == fn_801CCDA4() &&
                getActorManager_801F856C()->fn_801F7A08(ACTOR_CRTL) < 0)
     {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, field_0x4, &mPos, 0, -1, -1);
-    } else if (field_0x18c != 0) {
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_CRTL, mLayer_0x4, &mPos, 0, -1, -1);
+    } else if (mParamDasu_0x18c != 0) {
         fn_801F52A4();
     }
     JPABaseEmitter* emitter =
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true, fn_801EE4F0());
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, fn_801EE4F0());
-    player = field_0x10c;
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x172, 1, 1, NULL, NULL, true, fn_801EE4F0());
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x173, 1, 1, NULL, NULL, true, fn_801EE4F0());
+    player = mLastAttacker_0x10c;
     if (player >= 0 && player < 4) {
         getEffectSystem_8013C824()->fn_8013C830(player, emitter);
-        if (fn_8022F514(field_0x10c)) {
-            field_0x10c = fn_8022F3DC(field_0x10c);
+        if (fn_8022F514(mLastAttacker_0x10c)) {
+            mLastAttacker_0x10c = fn_8022F3DC(mLastAttacker_0x10c);
         }
-        if (field_0xfc == 1) {
-            fn_802359A4(field_0x10c, fn_802357E0(field_0x10c));
-            s32 count = fn_802357E0(field_0x10c);
-            getActorManager_801F856C()->fn_801F6718(field_0x10c, field_0x4, &mPos, count, 0);
+        if (mHitType_0xfc == 1) {
+            fn_802359A4(mLastAttacker_0x10c, fn_802357E0(mLastAttacker_0x10c));
+            s32 count = fn_802357E0(mLastAttacker_0x10c);
+            getActorManager_801F856C()->fn_801F6718(mLastAttacker_0x10c, mLayer_0x4, &mPos, count, 0);
         }
-        fn_80235B68(field_0x10c, mSerial);
+        fn_80235B68(mLastAttacker_0x10c, mSerial);
     }
     if (field_0xbc == 3 || field_0xbc == 4) {
         startSound_801F0E34(0x400F0, 0);
@@ -365,26 +365,26 @@ void ActorBase_804A5770::die_0x24() {
     mAlive = false;
     bit = field_0x16c;
     if (bit != -1) {
-        getGameView_802D6A9C()->fn_802D7704(bit, field_0x1a8, field_0x4);
+        getGameView_802D6A9C()->fn_802D7704(bit, mParamDstr_0x1a8, mLayer_0x4);
     } else {
-        getGameView_802D6A9C()->fn_802D766C(field_0x1a8, field_0x4);
+        getGameView_802D6A9C()->fn_802D766C(mParamDstr_0x1a8, mLayer_0x4);
     }
 }
 
 void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
-    field_0xd8 = 0;
-    field_0x188 = 300;
+    mHitTimer_0xd8 = 0;
+    mBossDeathTimer_0x188 = 300;
     JGeometry::TVec3f pos = mPos;
     pos.x += x;
     pos.y += y;
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x6D, height, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x6A, height, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x6B, height, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &pos, 0x6C, height, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x6D, height, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x6A, height, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x6B, height, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x6C, height, 0, NULL, NULL, true, 1.0f);
     gGameRoot_8053AAF8->fn_80134DE4(300, 0);
 }
 
-// The boss's death explosion, one frame of it while field_0x188 counts
+// The boss's death explosion, one frame of it while mBossDeathTimer_0x188 counts
 // down (-1: not running, returns false): every 8 frames two blasts (0x68,
 // 0x69) at a random point within `scale` around mPos + (x, y), every 32 a
 // sound; at 0 the final blast, the view's counters, a Force Gem spawner
@@ -396,34 +396,34 @@ void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
 // generator's scratch registers r5-r12); literals are @NNN until .sdata2 is
 // in order.
 bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
-    if (field_0x188 == -1) {
+    if (mBossDeathTimer_0x188 == -1) {
         return false;
     }
-    field_0x188--;
-    if ((field_0x188 & 7) == 0) {
+    mBossDeathTimer_0x188--;
+    if ((mBossDeathTimer_0x188 & 7) == 0) {
         JGeometry::TVec3f pos(mPos);
         f32 half = 0.5f * scale;
         pos.x += x + (scale * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - half);
         pos.y += y + (scale * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - half);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x68, 2, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x69, 2, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x68, 2, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x69, 2, 0, NULL, NULL, true, 1.0f);
     }
-    if ((field_0x188 & 0x1F) == 0) {
+    if ((mBossDeathTimer_0x188 & 0x1F) == 0) {
         startSound_801F0E34(0x30001, 0);
     }
-    if (field_0x188 == 0) {
-        if (field_0x4 < 8) {
+    if (mBossDeathTimer_0x188 == 0) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F601C(&mPos, 2, NULL, 1.0f, 1.0f);
         }
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 0.3f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x5A, 1, 0, NULL, NULL, true, 0.375f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x5B, 1, 0, NULL, NULL, true, 0.375f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x59, 0, 0, NULL, NULL, true, 0.3f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5A, 1, 0, NULL, NULL, true, 0.375f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5B, 1, 0, NULL, NULL, true, 0.375f);
         startSound_801F0E34(0x30001, 0);
         getActorManager_801F856C()->fn_801F6884();
         JGeometry::TVec3f pos(mPos);
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_GOLD, field_0x4, &mPos, 0x50, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_GOLD, mLayer_0x4, &mPos, 0x50, -1, -1);
         s32 first = 0;
-        if (mActorId == ACTOR_BWRT && field_0x90 == 1) {
+        if (mActorId == ACTOR_BWRT && mSpawnParam_0x90 == 1) {
             first = 2;
         }
         for (s32 i = first; i < 5; i++) {
@@ -432,7 +432,7 @@ bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
             if (i < 1) {
                 kind = 7;
             }
-            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &pos, kind);
+            s32 serial = getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, mLayer_0x4, &pos, kind);
             if (serial < 0) {
                 continue;
             }
@@ -441,26 +441,26 @@ bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
                 JGeometry::TVec3f v(2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                     0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                     3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f);
-                gem->field_0x3c = v;
+                gem->mVel_0x3c = v;
             } else if (mActorId == 'BOIC') {
                 JGeometry::TVec3f v(2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(), 0.0f,
                                     -5.0f);
-                gem->field_0x3c = v;
+                gem->mVel_0x3c = v;
             } else {
                 JGeometry::TVec3f v(2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                     2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                                     3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f);
-                gem->field_0x3c = v;
+                gem->mVel_0x3c = v;
             }
         }
         mAlive = false;
         s32 bit = field_0x16c;
         if (bit != -1) {
-            getGameView_802D6A9C()->fn_802D7704(bit, field_0x1a8, field_0x4);
+            getGameView_802D6A9C()->fn_802D7704(bit, mParamDstr_0x1a8, mLayer_0x4);
         } else {
-            getGameView_802D6A9C()->fn_802D766C(field_0x1a8, field_0x4);
+            getGameView_802D6A9C()->fn_802D766C(mParamDstr_0x1a8, mLayer_0x4);
         }
-        if ((mActorId == ACTOR_BWRT && field_0x90 == 1) || mActorId == ACTOR_GROK) {
+        if ((mActorId == ACTOR_BWRT && mSpawnParam_0x90 == 1) || mActorId == ACTOR_GROK) {
             gGameRoot_8053AAF8->fn_80138B7C();
         } else {
             gAudioMgr_8053AF80->fn_80458F9C(60);
@@ -487,9 +487,9 @@ s32 ActorBase_804A5770::getScreenFlagCount_0x38() {
 }
 
 // The actor's bit in the screen and stage tables of the view (game/GameView.h):
-// the top five bits of field_0x90, 0 for none.
+// the top five bits of mSpawnParam_0x90, 0 for none.
 s32 ActorBase_804A5770::getScreenFlagBit_0x3C() {
-    return field_0x90 >> 27;
+    return mSpawnParam_0x90 >> 27;
 }
 
 void ActorBase_804A5770::vfunc_0x40() {}
@@ -498,32 +498,32 @@ void ActorBase_804A5770::vfunc_0x44() {}
 
 void ActorBase_804A5770::vfunc_0x48() {}
 
-// Plays the actor's "voic" sound (if it has one) and, unless field_0xe8 is
+// Plays the actor's "voic" sound (if it has one) and, unless mSparksLeft_0xe8 is
 // set, the sound 0x40002.
 void ActorBase_804A5770::fn_801F4694() const {
-    if (field_0x190 > 0) {
-        startSound_801F0E34(lbl_80469F38[field_0x190 - 1], 0);
+    if (mParamVoic_0x190 > 0) {
+        startSound_801F0E34(lbl_80469F38[mParamVoic_0x190 - 1], 0);
     }
-    if (field_0xe8 == 0) {
+    if (mSparksLeft_0xe8 == 0) {
         startSound_801F0E34(0x40002, 0);
     }
 }
 
 // Applies one hit (attack points, from the attacker at `from`, strength
-// clamped to 2, `type`, by `player` or -1): ignored while field_0xd8 runs
-// unless it comes from a player not yet in field_0xd5; types 5 and 2 are
+// clamped to 2, `type`, by `player` or -1): ignored while mHitTimer_0xd8 runs
+// unless it comes from a player not yet in mHitPlayers_0xd5; types 5 and 2 are
 // ignored or absorbed (returns 1 at once) by field_0xb0's bits. Otherwise
-// sets the knock-back direction (field_0xec, field_0x3c), effects, the
+// sets the knock-back direction (mHitDir_0xec, mVel_0x3c), effects, the
 // timers and mLife, plays the hurt or death voice; returns 1. Returns 0
 // when ignored.
 // The hit reaction, once per frame (`flag`: move this frame). While
-// field_0xd8 runs: the knock-back by field_0x3c (kind field_0xf8: 0 and 1
+// mHitTimer_0xd8 runs: the knock-back by mVel_0x3c (kind mKnockbackKind_0xf8: 0 and 1
 // slide with friction 0.78 / 0.88, 2 is thrown up and bounces, effect 0x3CF),
 // a dust trail along the way on the ground (0x3D3, or 0x3D4 on water-like
-// tiles), and when it ends with no life left the death timer field_0xe0 (1,
+// tiles), and when it ends with no life left the death timer mDeathTimer_0xe0 (1,
 // or 30 for a typed hit; a burning actor leaves a fire, ACTOR_BLZE). While
-// field_0xe0 runs: the death effect for field_0xfc at 30, then die_0x24
-// at 0. field_0xe8 more hit sparks every 5 frames. Returns 0 (nothing to
+// mDeathTimer_0xe0 runs: the death effect for mHitType_0xfc at 30, then die_0x24
+// at 0. mSparksLeft_0xe8 more hit sparks every 5 frames. Returns 0 (nothing to
 // do), 1, or -1 when the actor has no life left.
 // FIXME: 99.12 %, missing/extra; behaviour clean.
 // One extra instruction: ours keeps the death effect id in r28
@@ -532,47 +532,47 @@ void ActorBase_804A5770::fn_801F4694() const {
 // until .sdata2 is in order.
 s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
     s32 result = 0;
-    if (field_0xd8 != 0) {
+    if (mHitTimer_0xd8 != 0) {
         bool done = false;
         if (flag && !field_0xc4) {
             JGeometry::TVec3f start(mPos);
-            switch (field_0xf8) {
+            switch (mKnockbackKind_0xf8) {
             case 0:
-                field_0xd8--;
-                field_0x3c.scale(0.78f);
-                mPos.add(field_0x3c);
+                mHitTimer_0xd8--;
+                mVel_0x3c.scale(0.78f);
+                mPos.add(mVel_0x3c);
                 break;
             case 1:
-                field_0xd8--;
-                field_0x3c.scale(0.88f);
-                mPos.add(field_0x3c);
+                mHitTimer_0xd8--;
+                mVel_0x3c.scale(0.88f);
+                mPos.add(mVel_0x3c);
                 break;
             case 2:
                 if (mPos.z > 0.0f) {
-                    field_0x3c.z += -1.0f;
-                    field_0x3c.scale(0.96f);
+                    mVel_0x3c.z += -1.0f;
+                    mVel_0x3c.scale(0.96f);
                 } else {
-                    field_0xd8--;
+                    mHitTimer_0xd8--;
                 }
-                mPos.add(field_0x3c);
+                mPos.add(mVel_0x3c);
                 if (mPos.z <= 0.0f) {
                     mPos.z = 0.0f;
-                    if (field_0x3c.z < -2.0f) {
-                        field_0x3c.z *= -0.6f;
-                        field_0x3c.x *= 0.8f;
-                        field_0x3c.y *= 0.8f;
-                        spawnEmitter_8013CC50(field_0x4, &mPos, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
+                    if (mVel_0x3c.z < -2.0f) {
+                        mVel_0x3c.z *= -0.6f;
+                        mVel_0x3c.x *= 0.8f;
+                        mVel_0x3c.y *= 0.8f;
+                        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
                     } else {
-                        field_0x3c.zero();
+                        mVel_0x3c.zero();
                     }
                 }
-                if (field_0xd8 == 0) {
-                    field_0x3c.zero();
+                if (mHitTimer_0xd8 == 0) {
+                    mVel_0x3c.zero();
                     mPos.z = 0.0f;
                 }
                 break;
             }
-            if (mPos.z == 0.0f && field_0x3c.squared() > 1.0f) {
+            if (mPos.z == 0.0f && mVel_0x3c.squared() > 1.0f) {
                 f32 size = mActorId == 'SLK2' ? 1.0f : fn_801EE4F0();
                 f32 scale = 0.9f * size;
                 if (scale > 0.0f) {
@@ -580,7 +580,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                     dir.sub(mPos, start);
                     f32 length = dir.normalize();
                     u16 id;
-                    if (fn_802258D4(&mPos, field_0x4) || fn_80225614(&mPos, field_0x4)) {
+                    if (fn_802258D4(&mPos, mLayer_0x4) || fn_80225614(&mPos, mLayer_0x4)) {
                         id = 0x3D4;
                     } else {
                         id = 0x3D3;
@@ -589,7 +589,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                         JGeometry::TVec3f pos(dir);
                         pos.scale(t);
                         pos.add(start);
-                        JPABaseEmitter* emitter = spawnEmitter_8013CC50(field_0x4, &pos, id, 0, 0, NULL,
+                        JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &pos, id, 0, 0, NULL,
                                                                         NULL, true, 1.0f);
                         if (emitter != NULL) {
                             emitter->mMaxFrame = 1;
@@ -600,29 +600,29 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                 }
             }
         } else {
-            field_0xd8--;
+            mHitTimer_0xd8--;
         }
-        if (mLife <= 0 && field_0xe0 == 0 &&
-            field_0xd8 <= (field_0xdc - 8 <= 0 ? 0 : field_0xdc - 8))
+        if (mLife <= 0 && mDeathTimer_0xe0 == 0 &&
+            mHitTimer_0xd8 <= (mHitTimerStart_0xdc - 8 <= 0 ? 0 : mHitTimerStart_0xdc - 8))
         {
-            if (field_0xfc == 0) {
-                field_0xe0 = 1;
+            if (mHitType_0xfc == 0) {
+                mDeathTimer_0xe0 = 1;
             } else {
-                field_0xe0 = 30;
+                mDeathTimer_0xe0 = 30;
             }
-            field_0xd8 = 0;
+            mHitTimer_0xd8 = 0;
             done = true;
-            field_0x3c.zero();
+            mVel_0x3c.zero();
             if (mEmitter100 != NULL) {
-                s32 player = field_0x10c;
+                s32 player = mLastAttacker_0x10c;
                 s32 owner = 15;
                 if (player >= 0 && player < 4) {
                     owner = player;
                 }
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, field_0x4, &mPos, owner, -1,
+                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLZE, mLayer_0x4, &mPos, owner, -1,
                                                                player);
             }
-        } else if (field_0xd8 == 0) {
+        } else if (mHitTimer_0xd8 == 0) {
             done = true;
         }
         if (done) {
@@ -630,16 +630,16 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
             fn_801CB7A0(mEmitter104);
         }
         result = 1;
-    } else if (field_0xe0 != 0) {
-        if (field_0xe0 == 30) {
+    } else if (mDeathTimer_0xe0 != 0) {
+        if (mDeathTimer_0xe0 == 30) {
             f32 size = fn_801EE4F0();
             u16 id = 0xFFFF;
-            switch (field_0xfc) {
+            switch (mHitType_0xfc) {
             case 1:
             case 2:
-                if (field_0x10c >= 0 && field_0x10c < 4 && fn_80237060(field_0x10c) >= 2) {
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x17A, 1, 1, NULL, NULL, true, size);
-                    spawnEmitter_8013CC50(field_0x4, &mPos, 0x17B, 1, 1, NULL, NULL, true, size);
+                if (mLastAttacker_0x10c >= 0 && mLastAttacker_0x10c < 4 && fn_80237060(mLastAttacker_0x10c) >= 2) {
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17A, 1, 1, NULL, NULL, true, size);
+                    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x17B, 1, 1, NULL, NULL, true, size);
                     startSound_801F0E34(0x5006B, 0);
                 } else {
                     id = 0x174;
@@ -652,13 +652,13 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                 id = 0x17C;
                 break;
             case 3:
-                if (JMAAbs(field_0xec.x) > JMAAbs(field_0xec.y)) {
-                    if (field_0xec.x < 0.0f) {
+                if (JMAAbs(mHitDir_0xec.x) > JMAAbs(mHitDir_0xec.y)) {
+                    if (mHitDir_0xec.x < 0.0f) {
                         id = 0x176;
                     } else {
                         id = 0x177;
                     }
-                } else if (field_0xec.y < 0.0f) {
+                } else if (mHitDir_0xec.y < 0.0f) {
                     id = 0x178;
                 } else {
                     id = 0x175;
@@ -666,35 +666,35 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
                 break;
             }
             if (id != 0xFFFF) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, id, 1, 1, NULL, NULL, true, size);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, id, 1, 1, NULL, NULL, true, size);
             }
         }
-        field_0xe0--;
-        field_0x3c.zero();
-        if (field_0xe0 == 0) {
+        mDeathTimer_0xe0--;
+        mVel_0x3c.zero();
+        if (mDeathTimer_0xe0 == 0) {
             die_0x24();
         }
         result = 1;
     } else {
-        field_0xd5 = 0;
+        mHitPlayers_0xd5 = 0;
     }
-    if (field_0xe8 > 0) {
-        if (field_0xe4 > 0) {
-            field_0xe4--;
+    if (mSparksLeft_0xe8 > 0) {
+        if (mSparkTimer_0xe4 > 0) {
+            mSparkTimer_0xe4--;
         } else {
             JGeometry::TVec3f pos(mPos.x + 8.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                                   mPos.y + 8.0f * (2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() - 1.0f),
                                   mPos.z);
-            if (field_0xfc == 5) {
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x19D, 0, 2, NULL, NULL, true, 1.0f);
+            if (mHitType_0xfc == 5) {
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x19D, 0, 2, NULL, NULL, true, 1.0f);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x24A, 0, 2, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &pos, 0x24B, 0, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x24A, 0, 2, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x24B, 0, 2, NULL, NULL, true, 1.0f);
             }
             startSound_801F0E34(0x40002, 0);
-            field_0xe8--;
-            if (field_0xe8 > 0) {
-                field_0xe4 = 5;
+            mSparksLeft_0xe8--;
+            if (mSparksLeft_0xe8 > 0) {
+                mSparkTimer_0xe4 = 5;
             }
         }
     }
@@ -721,7 +721,7 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
         strength = 2;
         depth = 2;
     }
-    if (field_0xd8 == 0 || (player >= 0 && !(field_0xd5 & (1 << player)))) {
+    if (mHitTimer_0xd8 == 0 || (player >= 0 && !(mHitPlayers_0xd5 & (1 << player)))) {
         ignored = false;
         if (type == 5) {
             if (field_0xb0 & 0x01000000) {
@@ -741,44 +741,44 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
     if (!ignored) {
         JGeometry::TVec3f dir(mPos.x - from->x, (mPos.y - mPos.z) - (from->y - from->z), 0.0f);
         dir.normalize();
-        field_0xec.set(dir);
+        mHitDir_0xec.set(dir);
         field_0xa4 = 0;
-        if (field_0xdc - field_0xd8 > 5) {
+        if (mHitTimerStart_0xdc - mHitTimer_0xd8 > 5) {
             if (type == 5) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, strength, depth, NULL, NULL, true,
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, strength, depth, NULL, NULL, true,
                                       1.0f);
             } else if (attack > 4 && type == 1) {
-                fn_801CB5CC(field_0x4, &mPos, strength, depth);
+                fn_801CB5CC(mLayer_0x4, &mPos, strength, depth);
             } else {
-                fn_801CB688(field_0x4, &mPos, strength, depth);
+                fn_801CB688(mLayer_0x4, &mPos, strength, depth);
             }
             if (attack > 4 && (type == 0 || type == 1)) {
                 if (mPos.z != 0.0f || gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                    field_0xf8 = 1;
+                    mKnockbackKind_0xf8 = 1;
                     dir.scale(16.0f);
                 } else {
-                    field_0xf8 = 2;
+                    mKnockbackKind_0xf8 = 2;
                     dir.z += 0.5f + gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                     dir.scale(8.0f);
                 }
             } else {
-                field_0xf8 = 0;
+                mKnockbackKind_0xf8 = 0;
                 dir.scale(16.0f);
             }
-            if (field_0xfc != 6) {
-                field_0x3c.add(dir);
+            if (mHitType_0xfc != 6) {
+                mVel_0x3c.add(dir);
             }
         } else {
-            if (field_0xe8 == 0) {
-                field_0xe4 = 5;
+            if (mSparksLeft_0xe8 == 0) {
+                mSparkTimer_0xe4 = 5;
             }
-            field_0xe8++;
+            mSparksLeft_0xe8++;
         }
         if (player >= 0) {
-            field_0xd5 |= 1 << player;
+            mHitPlayers_0xd5 |= 1 << player;
         }
-        field_0xfc = type;
-        if (field_0xfc == 5) {
+        mHitType_0xfc = type;
+        if (mHitType_0xfc == 5) {
             switch (mActorId) {
             case 'TZOK':
             case 'SLK2':
@@ -788,34 +788,34 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
                     deleteEmitter(&mEmitter100);
                     deleteEmitter(&mEmitter104);
                     f32 scale = fn_801EE4F0();
-                    mEmitter100 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBB, 0, -1, NULL, NULL,
+                    mEmitter100 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBB, 0, -1, NULL, NULL,
                                                         true, scale);
-                    mEmitter104 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBC, 0, 1, NULL, NULL,
+                    mEmitter104 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xBC, 0, 1, NULL, NULL,
                                                         true, scale);
                 } else {
-                    fn_801CB5CC(field_0x4, &mPos, strength, depth);
+                    fn_801CB5CC(mLayer_0x4, &mPos, strength, depth);
                 }
                 break;
             }
         }
-        if (field_0xfc == 6) {
-            field_0xe0 = 1;
+        if (mHitType_0xfc == 6) {
+            mDeathTimer_0xe0 = 1;
         } else {
-            field_0xd8 = 24;
-            field_0xdc = 24;
+            mHitTimer_0xd8 = 24;
+            mHitTimerStart_0xdc = 24;
         }
         if (attack > 0) {
-            field_0x10c = player;
+            mLastAttacker_0x10c = player;
         }
         mLife -= attack;
         if (mLife <= 0) {
             mLife = 0;
             fn_801F4694();
         } else {
-            if (field_0x190 > 0) {
-                startSound_801F0E34(lbl_80469EF8[field_0x190 - 1], 0);
+            if (mParamVoic_0x190 > 0) {
+                startSound_801F0E34(lbl_80469EF8[mParamVoic_0x190 - 1], 0);
             }
-            if (field_0xe8 == 0) {
+            if (mSparksLeft_0xe8 == 0) {
                 startSound_801F0E34(0x40002, 0);
             }
         }
@@ -824,16 +824,16 @@ bool ActorBase_804A5770::fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, 
     return result;
 }
 
-// Sets field_0xa4 and clears the per-hit and timer state; field_0xe0 is only
+// Sets field_0xa4 and clears the per-hit and timer state; mDeathTimer_0xe0 is only
 // cleared while the actor has life left.
 void ActorBase_804A5770::fn_801F3780(s32 v) {
     field_0xa4 = v;
-    field_0xd8 = 0;
-    field_0xd5 = 0;
-    field_0xe4 = 0;
-    field_0xe8 = 0;
+    mHitTimer_0xd8 = 0;
+    mHitPlayers_0xd5 = 0;
+    mSparkTimer_0xe4 = 0;
+    mSparksLeft_0xe8 = 0;
     if (mLife > 0) {
-        field_0xe0 = 0;
+        mDeathTimer_0xe0 = 0;
     }
 }
 
@@ -852,12 +852,12 @@ u8 ActorBase_804A5770::fn_801F3744(s32 v) {
     return result;
 }
 
-// If field_0xc4 is set: clears it, field_0x3c = *v, returns 1; else 0.
+// If field_0xc4 is set: clears it, mVel_0x3c = *v, returns 1; else 0.
 u8 ActorBase_804A5770::fn_801F3708(const JGeometry::TVec3f* v) {
     s32 result = 0;
     if (field_0xc4 != 0) {
         field_0xc4 = 0;
-        field_0x3c.set(*v);
+        mVel_0x3c.set(*v);
         result = 1;
     }
     return result;
@@ -882,13 +882,13 @@ void ActorBase_804A5770::fn_801F3668() {
 }
 
 // Reports field_0x16c (or, if it is -1, just the layer count) to the view
-// with field_0x1a8.
+// with mParamDstr_0x1a8.
 void ActorBase_804A5770::fn_801F3604() {
     s32 bit = field_0x16c;
     if (bit != -1) {
-        getGameView_802D6A9C()->fn_802D7704(bit, field_0x1a8, field_0x4);
+        getGameView_802D6A9C()->fn_802D7704(bit, mParamDstr_0x1a8, mLayer_0x4);
     } else {
-        getGameView_802D6A9C()->fn_802D766C(field_0x1a8, field_0x4);
+        getGameView_802D6A9C()->fn_802D766C(mParamDstr_0x1a8, mLayer_0x4);
     }
 }
 
@@ -902,7 +902,7 @@ void ActorBase_804A5770::fn_801F35AC() {
 void ActorBase_804A5770::fn_801F355C() {
     s32 bit = field_0x16c;
     if (bit != -1) {
-        getGameView_802D6A9C()->fn_802D7704(bit, false, field_0x4);
+        getGameView_802D6A9C()->fn_802D7704(bit, false, mLayer_0x4);
     }
 }
 
@@ -951,14 +951,14 @@ void ActorBase_804A5770::fn_801F33C4() {
     } else if (field_0x17c) {
         mPos.x = field_0x30.x;
         mPos.y = field_0x30.y;
-        field_0x4 = field_0x178;
+        mLayer_0x4 = field_0x178;
         field_0x17c = 0;
         field_0x17d = 1;
         field_0x174 = field_0x180;
     }
 }
 
-// Copies each player's position (getPlayerPos_8023E724) into field_0x1ac[], moved
+// Copies each player's position (getPlayerPos_8023E724) into mPlayerPos_0x1ac[], moved
 // into this layer's view space (fn_801CD150) for a player below layer 8
 // while this is on 8.
 void ActorBase_804A5770::fn_801F32F4() {
@@ -966,9 +966,9 @@ void ActorBase_804A5770::fn_801F32F4() {
         if (fn_801F329C(i)) {
             JGeometry::TVec3f pos;
             fn_801CD150(getPlayerPos_8023E724(i), &pos);
-            field_0x1ac[i].set(pos);
+            mPlayerPos_0x1ac[i].set(pos);
         } else {
-            field_0x1ac[i].set(*getPlayerPos_8023E724(i));
+            mPlayerPos_0x1ac[i].set(*getPlayerPos_8023E724(i));
         }
     }
 }
@@ -976,7 +976,7 @@ void ActorBase_804A5770::fn_801F32F4() {
 // Whether `player` is on a layer below 8 while this actor is on layer 8.
 bool ActorBase_804A5770::fn_801F329C(s32 player) const {
     bool result = false;
-    if (getPlayerLayer_8023DE58(player) < 8 && field_0x4 == 8) {
+    if (getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8) {
         result = true;
     }
     return result;
@@ -985,7 +985,7 @@ bool ActorBase_804A5770::fn_801F329C(s32 player) const {
 // Whether `player` is on this actor's layer (getPlayerLayer_8023DE58), or counts as on
 // it through fn_801F329C.
 bool ActorBase_804A5770::fn_801F320C(s32 player) const {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     bool result = false;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer == layer || fn_801F329C(player)) {
@@ -1071,19 +1071,19 @@ u8 ActorBase_804A5770::fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excl
         }
         if (accept) {
             JGeometry::TVec3f from(mPos);
-            from.sub(attacker->field_0x3c);
-            hit = fn_801F37AC(attacker->field_0x118, &from, 0, attacker->field_0x168,
+            from.sub(attacker->mVel_0x3c);
+            hit = fn_801F37AC(attacker->mParamAtcn_0x118, &from, 0, attacker->field_0x168,
                               attacker->field_0x110);
         } else if (excludeId != 'HBMB') {
             hit = true;
             switch (attacker->mActorId) {
             case 'SWBM':
-                fn_801CB538(field_0x4, &attacker->mPos, 0, 0);
+                fn_801CB538(mLayer_0x4, &attacker->mPos, 0, 0);
                 break;
             case 'FIRE':
                 if (field_0x1dc.fn_801EAC54(attacker->mSerial)) {
-                    fn_801CB538(field_0x4, &attacker->mPos, 0, 0);
-                    spawnEmitter_8013CC50(field_0x4, &attacker->mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
+                    fn_801CB538(mLayer_0x4, &attacker->mPos, 0, 0);
+                    spawnEmitter_8013CC50(mLayer_0x4, &attacker->mPos, 0x19D, 0, 0, NULL, NULL, true, 1.0f);
                 }
                 break;
             }
@@ -1100,7 +1100,7 @@ u8 ActorBase_804A5770::fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excl
 // Hits every player but skipPlayer whose box (fn_8023B190) overlaps mBox
 // on this layer, with fn_80238548 at the box's centre (moved through
 // fn_801CD0D0 for a player below layer 8 while this is on 8); damage -100
-// means field_0x114 ("atcp"). Returns the bits of the players hit.
+// means mParamAtcp_0x114 ("atcp"). Returns the bits of the players hit.
 // FIXME: 99.12 %, regalloc-only; behaviour clean.
 u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
     u32 result = fn_801F2740(skipPlayer);
@@ -1125,7 +1125,7 @@ u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
                 pos.y = cy;
             }
             if (damage == -100) {
-                damage = field_0x114;
+                damage = mParamAtcp_0x114;
             }
             fn_80238548(i, damage, &pos, arg);
         }
@@ -1147,12 +1147,12 @@ bool ActorBase_804A5770::fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b) {
     JGeometry::TBox2f box;
     toScreenBox(&box, mBox, mPos);
     for (s32 i = 0; i < 4; i++) {
-        if (!viewLayerFlag(field_0x4) &&
+        if (!viewLayerFlag(mLayer_0x4) &&
             JMAAbs(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
         {
             continue;
         }
-        if (!fn_8022E438(i, skipPlayer) && fn_80239B64(i, &box, field_0x4, type, a, b)) {
+        if (!fn_8022E438(i, skipPlayer) && fn_80239B64(i, &box, mLayer_0x4, type, a, b)) {
             return true;
         }
     }
@@ -1176,19 +1176,19 @@ s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool
     JGeometry::TVec2f xy;
     s32 hit = -1;
     if (player >= 0) {
-        if (fn_8023B9CC(player, &box, field_0x4, &xy, arg)) {
+        if (fn_8023B9CC(player, &box, mLayer_0x4, &xy, arg)) {
             hit = player;
         }
     } else {
-        hit = fn_8023B8E4(&box, field_0x4, &xy, arg);
+        hit = fn_8023B8E4(&box, mLayer_0x4, &xy, arg);
     }
     if (hit == -1) {
         if (player >= 0) {
-            if (fn_8023B848(player, &box, field_0x4, &xy)) {
+            if (fn_8023B848(player, &box, mLayer_0x4, &xy)) {
                 hit = player;
             }
         } else {
-            hit = fn_8023B768(&box, field_0x4, &xy);
+            hit = fn_8023B768(&box, mLayer_0x4, &xy);
         }
         if (hit != -1 && outFlag != NULL) {
             *outFlag = 0;
@@ -1200,7 +1200,7 @@ s32 ActorBase_804A5770::fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool
             *outFlag = 1;
         }
     }
-    if (hit != -1 && !viewLayerFlag(field_0x4) &&
+    if (hit != -1 && !viewLayerFlag(mLayer_0x4) &&
         JMAAbs(mPos.z - getPlayerPos_8023E724(hit)->z) > 32.0f)
     {
         hit = -1;
@@ -1230,12 +1230,12 @@ u8 ActorBase_804A5770::fn_801F2740(s32 skipPlayer) const {
         if (i == skipPlayer) {
             continue;
         }
-        if (!viewLayerFlag(field_0x4) &&
+        if (!viewLayerFlag(mLayer_0x4) &&
             JMAAbs(mPos.z - getPlayerPos_8023E724(i)->z) > 32.0f)
         {
             continue;
         }
-        if (!fn_8022E438(i, skipPlayer) && !fn_8022D75C(i) && fn_8023B190(i, &box, field_0x4)) {
+        if (!fn_8022E438(i, skipPlayer) && !fn_8022D75C(i) && fn_8023B190(i, &box, mLayer_0x4)) {
             hits |= 1 << i;
         }
     }
@@ -1253,7 +1253,7 @@ s32 ActorBase_804A5770::fn_801F26CC(const u32* ids) {
 }
 
 // Unless a warp is running (field_0x174 > 0), sweeps the map box
-// (field_0x80) from mPrevPos to mPos (fn_801F23BC); on a hit moves mPos to
+// (mMapBox_0x80) from mPrevPos to mPos (fn_801F23BC); on a hit moves mPos to
 // the result and passes the other vector out. Returns whether it hit.
 // u8 (clrlwi r3, r31, 24 at the return): EnemyBase / Thief vfunc_0x64 and
 // fn_801545C0 return it raw, the update()s keep it in a u8 local.
@@ -1262,7 +1262,7 @@ u8 ActorBase_804A5770::fn_801F2618(JGeometry::TVec3f* out, bool flag) {
     if (field_0x174 <= 0) {
         JGeometry::TVec3f pos;
         JGeometry::TVec3f vec;
-        if (fn_801F23BC(field_0x4, &mPos, &mPrevPos, &field_0x80, &pos, &vec, flag)) {
+        if (fn_801F23BC(mLayer_0x4, &mPos, &mPrevPos, &mMapBox_0x80, &pos, &vec, flag)) {
             mPos.set(pos);
             if (out != NULL) {
                 out->set(vec);
@@ -1602,28 +1602,28 @@ bool ActorBase_804A5770::fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s3
     return false;
 }
 
-// With a map box (field_0x80) and blocked on its layer (isBlocked_0x4C): steps
-// back to mPrevPos's x/y and 8 further along the reverse of field_0x98's
+// With a map box (mMapBox_0x80) and blocked on its layer (isBlocked_0x4C): steps
+// back to mPrevPos's x/y and 8 further along the reverse of mDir_0x98's
 // direction; if that is outside the view's box for the layer, respawns at
 // mSpawnPos on layer field_0x8. Returns whether it was blocked.
 bool ActorBase_804A5770::fn_801F11B4() {
     bool blocked = false;
-    if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f &&
-        isBlocked_0x4C(field_0x4, &mPos))
+    if (mMapBox_0x80.getWidth() > 0.0f && mMapBox_0x80.getHeight() > 0.0f &&
+        isBlocked_0x4C(mLayer_0x4, &mPos))
     {
         mPos.x = mPrevPos.x;
         mPos.y = mPrevPos.y;
-        s16 angle = fn_801F6874(field_0x98);
+        s16 angle = fn_801F6874(mDir_0x98);
         JGeometry::TVec2f dir(JMath::sincosTable_.sinShort(angle - 0x8000),
                               JMath::sincosTable_.cosShort(angle - 0x8000));
         dir.scale(8.0f);
         mPos.x += dir.x;
         mPos.y += dir.y;
-        JGeometry::TBox2f* box = layerBox(field_0x4);
+        JGeometry::TBox2f* box = layerBox(mLayer_0x4);
         bool inView = mPos.x >= box->i.x && mPos.y >= box->i.y && mPos.x < box->f.x &&
                       mPos.y < box->f.y;
         if (!inView) {
-            field_0x4 = field_0x8;
+            mLayer_0x4 = field_0x8;
             mPos = mSpawnPos;
             mPrevPos = mSpawnPos;
         }
@@ -1643,15 +1643,15 @@ ActorSoundObj_804578F4* ActorBase_804A5770::fn_801F1184() const {
 // and passes fn_8030381C. The four loops are written out and the sound object
 // comes from fn_801F1184 (inlined): the counters are coloured after `sound` (r28).
 JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTime) const {
-    if (field_0x4 >= 8 && !fn_8022BB48(field_0x4, &mPos)) {
+    if (mLayer_0x4 >= 8 && !fn_8022BB48(mLayer_0x4, &mPos)) {
         return NULL;
     }
-    if (field_0x4 >= 8 &&
+    if (mLayer_0x4 >= 8 &&
         (gGameRoot_8053AAF8->field_0x7e != 0 || (gGameRoot_8053AAF8->field_0x83 & 3U) != 2))
     {
         if (soundId == 0x30009) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                if (fn_8022BC38(i, mLayer_0x4, &mPos) && fn_8030381C(i) &&
                     (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
                 {
                     fn_803037D4(i, 8);
@@ -1660,7 +1660,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
             return NULL;
         } else if (soundId == 0x30004) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                if (fn_8022BC38(i, mLayer_0x4, &mPos) && fn_8030381C(i) &&
                     (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
                 {
                     fn_803037D4(i, 0xB);
@@ -1669,7 +1669,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
             return NULL;
         } else if (soundId == 0x30022) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                if (fn_8022BC38(i, mLayer_0x4, &mPos) && fn_8030381C(i) &&
                     (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
                 {
                     fn_803037D4(i, 7);
@@ -1678,7 +1678,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
             return NULL;
         } else if (soundId == 0x3004B) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i) &&
+                if (fn_8022BC38(i, mLayer_0x4, &mPos) && fn_8030381C(i) &&
                     (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)))
                 {
                     fn_803037D4(i, 8);
@@ -1688,11 +1688,11 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
         }
     }
     ActorSoundObj_804578F4* sound = fn_801F1184();
-    sound->field_0x44 = field_0x4 >= 8;
-    if (getGameView_802D6A9C()->fn_802D7804(field_0x4, 0x800)) {
+    sound->field_0x44 = mLayer_0x4 >= 8;
+    if (getGameView_802D6A9C()->fn_802D7804(mLayer_0x4, 0x800)) {
         sound->field_0x45 = 0;
     } else {
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (layer < 8) {
             if (getGameView_802D6A9C()->fn_802D7948() == 1) {
                 sound->field_0x45 = 2;
@@ -1703,7 +1703,7 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
             sound->field_0x45 = 3;
         } else {
             GameView_804A9950* view = getGameView_802D6A9C();
-            if (field_0x4 < view->field_0x54) {
+            if (mLayer_0x4 < view->field_0x54) {
                 if (getGameView_802D6A9C()->fn_802D7948() == 1) {
                     sound->field_0x45 = 2;
                 } else {
@@ -1722,13 +1722,13 @@ JAISoundHandle* ActorBase_804A5770::startSound_801F0E34(u32 soundId, u32 fadeTim
 // actor instead, and only fall back to the sound when none was.
 void ActorBase_804A5770::fn_801F0D20(u32 id) {
     if (id == 3 || id == 0x42) {
-        if (field_0x4 >= 8 && !fn_8022BB48(field_0x4, &mPos)) {
+        if (mLayer_0x4 >= 8 && !fn_8022BB48(mLayer_0x4, &mPos)) {
             return;
         }
         bool raised = false;
         for (s32 i = 0; i < 4; i++) {
-            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) && field_0x4 >= 8 &&
-                fn_8022BC38(i, field_0x4, &mPos) && fn_8030381C(i))
+            if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) && mLayer_0x4 >= 8 &&
+                fn_8022BC38(i, mLayer_0x4, &mPos) && fn_8030381C(i))
             {
                 if (id == 3) {
                     fn_803037D4(i, 0xF);
@@ -1749,38 +1749,38 @@ void ActorBase_804A5770::fn_801F0D20(u32 id) {
 // (the hit-colour and params copies are scheduled differently)
 // Draws frame `frame` of the "SOB " bank `name` at mPos: the shadow (fn_801EF830) unless
 // mSpriteParams.mMtx is set, then the sprite with a copy of params. While the hit timer
-// field_0xd8 runs (its last 25 frames, or all of it when shorter) the copy's 0x14 colour is
+// mHitTimer_0xd8 runs (its last 25 frames, or all of it when shorter) the copy's 0x14 colour is
 // raised by the fade (minus 6 * mPos.z for a thrown actor, kind 2; red and half green for hit
 // type 5); otherwise the actor's own matrix is applied. Layer 8 draws through fn_801EF574
 // offset by the view box (not for names with 'g' at [6]).
 void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
                                              SpriteParams_801F5AE0* params, s32 flags, f32 scaleX,
                                              f32 scaleY) const {
-    if (field_0x4 > 8) {
+    if (mLayer_0x4 > 8) {
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, params, flags, name, frame, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, params, flags, name, frame, NULL);
     }
     SpriteParams_801F5AE0 sp;
-    if (field_0xd8 > 0) {
+    if (mHitTimer_0xd8 > 0) {
         if (params != NULL) {
             sp = *params;
         }
-        s32 total = field_0xdc;
+        s32 total = mHitTimerStart_0xdc;
         s32 excess = total - 0x19;
-        if (field_0xd8 > excess || total < 0x19) {
+        if (mHitTimer_0xd8 > excess || total < 0x19) {
             s32 v;
             if (total < 0x19) {
-                v = field_0xd8 * 0xFF / total;
+                v = mHitTimer_0xd8 * 0xFF / total;
             } else {
-                v = (field_0xd8 - excess) * 0xFF / 25;
+                v = (mHitTimer_0xd8 - excess) * 0xFF / 25;
             }
-            if (field_0xf8 == 2) {
+            if (mKnockbackKind_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
                 v = v <= 0 ? 0 : v;
             }
-            if (field_0xfc == 5) {
+            if (mHitType_0xfc == 5) {
                 sp.field_0x14.r += v;
                 sp.field_0x14.g += v >> 1;
             } else {
@@ -1809,10 +1809,10 @@ void ActorBase_804A5770::drawSprite_801F06F0(const char* name, s32 frame,
             }
         }
     }
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* r = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', name);
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, r, frame, &sp, scaleX, scaleY);
-    } else if (field_0x4 == 8 && name[6] != 'g') {
+    } else if (mLayer_0x4 == 8 && name[6] != 'g') {
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TVec3f pos = mPos;
         pos.x += view->mVisibleBox.i.x;
@@ -1828,7 +1828,7 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
     if (params != NULL && params->field_0x10.a == 0) {
         return;
     }
-    if (field_0x4 <= 8) {
+    if (mLayer_0x4 <= 8) {
         if (mode != 0) {
             Mtx m;
             switch (mode) {
@@ -1856,28 +1856,28 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
             drawSprite_801F06F0(name, frame, params, flags, scaleX, scaleY);
         }
     }
-    if (field_0x4 >= 8) {
+    if (mLayer_0x4 >= 8) {
         JGeometry::TVec3f pos = mPos;
         bool visible = true;
         u8 dying = 0;
-        if (field_0xd8 > 0) {
-            if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
-                if (field_0xd8 & 2) {
+        if (mHitTimer_0xd8 > 0) {
+            if (mHitTimer_0xd8 > mHitTimerStart_0xdc - 0x19 || mHitTimerStart_0xdc < 0x19) {
+                if (mHitTimer_0xd8 & 2) {
                     visible = false;
-                } else if (field_0xd8 & 4) {
+                } else if (mHitTimer_0xd8 & 4) {
                     pos.x += 1.0f;
                 } else {
                     pos.x -= 1.0f;
                 }
             }
-        } else if (field_0xe0 > 0) {
+        } else if (mDeathTimer_0xe0 > 0) {
             dying = 1;
         }
         if (visible) {
             if (name[10] == '2') {
-                fn_803075AC(mSerial, field_0x4, &pos, frame, mode != 0, 2, -1, arg, dying, 0);
+                fn_803075AC(mSerial, mLayer_0x4, &pos, frame, mode != 0, 2, -1, arg, dying, 0);
             } else {
-                fn_80307AC8(mSerial, field_0x4, &pos, frame, mode, dying, -1);
+                fn_80307AC8(mSerial, mLayer_0x4, &pos, frame, mode, dying, -1);
             }
         }
     }
@@ -1885,33 +1885,33 @@ void ActorBase_804A5770::fn_801F02BC(const char* name, s32 frame, SpriteParams_8
 
 // FIXME(shotgun): 58.62 %, missing/extra; behaviour near.
 // drawSprite_801F06F0 for a loaded resource `res` (fn_802F745C) at mPos + (x, y, z), below
-// layer 8. During the hit flash a fast knock-back (|field_0x3c|^2 > 1) sets the copy's 0x30 to 8;
-// otherwise the actor's matrix is used and the death countdown field_0x188 tints it (200, 0x41).
+// layer 8. During the hit flash a fast knock-back (|mVel_0x3c|^2 > 1) sets the copy's 0x30 to 8;
+// otherwise the actor's matrix is used and the death countdown mBossDeathTimer_0x188 tints it (200, 0x41).
 void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX,
                                      f32 scaleY, f32 arg_f3) {
-    if (field_0x4 >= 8) {
+    if (mLayer_0x4 >= 8) {
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, params, flags, NULL, 0, res);
+        fn_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
     }
     SpriteParams_801F5AE0 sp;
-    if (field_0xd8 > 0) {
+    if (mHitTimer_0xd8 > 0) {
         if (params != NULL) {
             sp = *params;
         }
-        if (field_0xd8 > field_0xdc - 0x19 || field_0xdc < 0x19) {
+        if (mHitTimer_0xd8 > mHitTimerStart_0xdc - 0x19 || mHitTimerStart_0xdc < 0x19) {
             s32 v;
-            if (field_0xdc < 0x19) {
-                v = field_0xd8 * 0xFF / field_0xdc;
+            if (mHitTimerStart_0xdc < 0x19) {
+                v = mHitTimer_0xd8 * 0xFF / mHitTimerStart_0xdc;
             } else {
-                v = (field_0xd8 - (field_0xdc - 0x19)) * 0xFF / 25;
+                v = (mHitTimer_0xd8 - (mHitTimerStart_0xdc - 0x19)) * 0xFF / 25;
             }
-            if (field_0xf8 == 2) {
+            if (mKnockbackKind_0xf8 == 2) {
                 v = (s32)((f32)v - 6.0f * mPos.z);
                 v = v <= 0 ? 0 : v;
             }
-            if (field_0xfc == 5) {
+            if (mHitType_0xfc == 5) {
                 sp.field_0x14.r += v;
                 sp.field_0x14.g += v >> 1;
             } else {
@@ -1920,7 +1920,7 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
                 sp.field_0x14.b += v;
             }
         }
-        if (field_0x3c.squared() > 1.0f) {
+        if (mVel_0x3c.squared() > 1.0f) {
             sp.field_0x30 = 8;
         }
     } else {
@@ -1932,7 +1932,7 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
         if (mSpriteParams.mMtx != NULL) {
             sp.mMtx = mSpriteParams.mMtx;
         }
-        if (field_0x188 > 0) {
+        if (mBossDeathTimer_0x188 > 0) {
             sp.field_0x14.r = 200;
             sp.field_0x14.g = 0x41;
         }
@@ -1941,7 +1941,7 @@ void ActorBase_804A5770::fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s
     pos.x += scaleX;
     pos.y += scaleY;
     pos.z += arg_f3;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &sp);
     }
 }
@@ -2208,7 +2208,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
             !fn_8022F478(i) && !fn_80236B50(i) &&
             !fn_8022D534(i))
         {
-            diff.sub(field_0x1ac[i], pos);
+            diff.sub(mPlayerPos_0x1ac[i], pos);
             if (first) {
                 first = false;
                 bestDist = diff.squared();
@@ -2243,7 +2243,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
 // unit's .sdata2 is in order.
 // The nearest player (all four, or only player - 1): the direction from
 // this actor's top-down position (x, y - z) to the player's position in
-// field_0x1ac[] goes normalised to *outDir (z 0), the distance to *outDist.
+// mPlayerPos_0x1ac[] goes normalised to *outDir (z 0), the distance to *outDist.
 // With no player found the direction is (0, 512, 0).
 void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best(0.0f, 512.0f, 0.0f);
@@ -2260,7 +2260,7 @@ void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s3
         if (fn_8023F264(i) && fn_801F320C(i) && !fn_8022F478(i) && !fn_80236B50(i) &&
             !fn_8022D534(i))
         {
-            diff.sub(field_0x1ac[i], pos);
+            diff.sub(mPlayerPos_0x1ac[i], pos);
             if (first) {
                 first = false;
                 bestDist = diff.squared();
@@ -2295,13 +2295,13 @@ void ActorBase_804A5770::fn_801EE508() {
     fn_801CB71C(&mEmitter104, &mPos, 0, 1);
 }
 
-// Five floats indexed by field_0xc0 (EnemyParam "efsz").
+// Five floats indexed by mParamEfsz_0xc0 (EnemyParam "efsz").
 static const f32 lbl_8046A00C[5] = {
     0.0f, 1.0f, 1.3f, 1.6f, 2.0f,
 };
 
 f32 ActorBase_804A5770::fn_801EE4F0() {
-    return lbl_8046A00C[field_0xc0];
+    return lbl_8046A00C[mParamEfsz_0xc0];
 }
 
 // Lets an emitter that is still on screen finish its particles; deletes one
@@ -2340,7 +2340,7 @@ bool fn_801EE3C0(s32 tile) {
     return false;
 }
 
-// Finds a 'WARP' actor on this layer with type 8 (field_0x90's low byte)
+// Finds a 'WARP' actor on this layer with type 8 (mSpawnParam_0x90's low byte)
 // and moves the actor through it: to the layer in the warp's bits 24-26
 // (0 stays 0, n goes to n + 7), at the same place relative to that layer's
 // view box, with z 200. Returns whether a warp was found.
@@ -2352,21 +2352,21 @@ bool ActorBase_804A5770::fn_801EE24C() {
             break;
         }
         ActorBase_804A5770* warp = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
-        if (warp == NULL || field_0x4 != warp->field_0x4 || (warp->field_0x90 & 0xFF) != 8) {
+        if (warp == NULL || mLayer_0x4 != warp->mLayer_0x4 || (warp->mSpawnParam_0x90 & 0xFF) != 8) {
             continue;
         }
         JGeometry::TVec3f pos = mPos;
-        s32 layer = (warp->field_0x90 >> 24) & 7;
+        s32 layer = (warp->mSpawnParam_0x90 >> 24) & 7;
         if (layer != 0) {
             layer += 7;
         }
-        pos.x -= layerBox(field_0x4)->i.x;
-        pos.y -= layerBox(field_0x4)->i.y;
+        pos.x -= layerBox(mLayer_0x4)->i.x;
+        pos.y -= layerBox(mLayer_0x4)->i.y;
         pos.x += layerBox(layer)->i.x;
         pos.y += layerBox(layer)->i.y;
         pos.z = 200.0f;
         mPos = pos;
-        field_0x4 = layer;
+        mLayer_0x4 = layer;
         return true;
     }
     return false;

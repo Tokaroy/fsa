@@ -42,7 +42,7 @@ public:
     virtual void draw();   // 0x20: 0x800F6AB4
     virtual void die_0x24(); // 0x800F6820
     // Not in the binary: a plain function that die_0x24 and update inline (game/act_force_like.cpp).
-    void spawnKindEmitter();
+    void pool_8053BF30();
     // SHARED-EDIT: carved from field_0x230[0x38] (game/act_force_like.cpp).
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 field_0x234;
@@ -271,9 +271,9 @@ public:
     /* 0x25C */ s32 field_0x25c;
     /* 0x260 */ s32 field_0x260;
     /* 0x264 */ u8 field_0x264[4]; // not yet known
-    /* 0x268 */ s32 field_0x268; // kind (low 2 bits of field_0x90)
+    /* 0x268 */ s32 field_0x268; // kind (low 2 bits of mSpawnParam_0x90)
     /* 0x26C */ s32 field_0x26c;
-    /* 0x270 */ s32 field_0x270; // GameView bit set by die_0x24 (bits 2-6 of field_0x90)
+    /* 0x270 */ s32 field_0x270; // GameView bit set by die_0x24 (bits 2-6 of mSpawnParam_0x90)
     /* 0x274 */ f32 field_0x274;
     /* 0x278 */ f32 field_0x278;
     /* 0x27C */ f32 field_0x27c;
@@ -312,7 +312,7 @@ public:
     /* 0x264 */ s32 field_0x264;
     /* 0x268 */ s32 field_0x268; // the life at init
     /* 0x26C */ s32 field_0x26c; // serial of the 'SLR3' helper actor, 0 for none
-    /* 0x270 */ s32 field_0x270; // bit 8 of field_0x90
+    /* 0x270 */ s32 field_0x270; // bit 8 of mSpawnParam_0x90
     /* 0x274 */ u8 field_0x274;
     /* 0x275 */ u8 field_0x275[3]; // not yet known
     /* 0x278 */ f32 field_0x278;
@@ -498,9 +498,9 @@ public:
     /* 0x32C */ u8 field_0x32c;
     /* 0x32D */ u8 field_0x32d;
     /* 0x32E */ u8 field_0x32e[2]; // not yet known
-    /* 0x330 */ s32 field_0x330; // init: field_0x90 & 7
-    /* 0x334 */ f32 field_0x334; // update eases field_0x3c.x towards it
-    /* 0x338 */ f32 field_0x338; // update eases field_0x3c.y towards it
+    /* 0x330 */ s32 field_0x330; // init: mSpawnParam_0x90 & 7
+    /* 0x334 */ f32 field_0x334; // update eases mVel_0x3c.x towards it
+    /* 0x338 */ f32 field_0x338; // update eases mVel_0x3c.y towards it
     /* 0x33C */ f32 field_0x33c;
     /* 0x340 */ f32 field_0x340; // init: mPos.z
 }; // Size: 0x344
@@ -522,8 +522,8 @@ public:
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
     /* 0x24C */ s32 field_0x24c;
-    /* 0x250 */ s32 field_0x250; // bits 4-7 of field_0x90: update runs fn_801B56A0 at 0, fn_801B5228 at 1-3
-    /* 0x254 */ s32 field_0x254; // bits 0-3 of field_0x90
+    /* 0x250 */ s32 field_0x250; // bits 4-7 of mSpawnParam_0x90: update runs fn_801B56A0 at 0, fn_801B5228 at 1-3
+    /* 0x254 */ s32 field_0x254; // bits 0-3 of mSpawnParam_0x90
     /* 0x258 */ f32 field_0x258;
     /* 0x25C */ f32 field_0x25c; // init: 1.0f
     /* 0x260 */ u16 field_0x260;
@@ -550,7 +550,7 @@ public:
     // Slot 0x54: shakes the actor over four steps (a camera focus point each) and restores mPos.
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x230 */ s32 field_0x230; // state
-    /* 0x234 */ s32 field_0x234; // bits 12-16 of field_0x90: index into the shake tables
+    /* 0x234 */ s32 field_0x234; // bits 12-16 of mSpawnParam_0x90: index into the shake tables
     /* 0x238 */ s32 field_0x238; // bits 0-4
     /* 0x23C */ s32 field_0x23c; // bits 17-21
     /* 0x240 */ s32 field_0x240; // bits 22-26
@@ -669,8 +669,8 @@ public:
     /* 0x234 */ s32 field_0x234;
     /* 0x238 */ s32 field_0x238; // mode; 5 draws the shikimono.bti tile (the destructor skips the audio call)
     /* 0x23C */ s32 field_0x23c; // the player count
-    /* 0x240 */ s32 field_0x240; // bits 12-16 of field_0x90
-    /* 0x244 */ s32 field_0x244; // bit 7 of field_0x90
+    /* 0x240 */ s32 field_0x240; // bits 12-16 of mSpawnParam_0x90
+    /* 0x244 */ s32 field_0x244; // bit 7 of mSpawnParam_0x90
     /* 0x248 */ s32 field_0x248;
     // mPos at init. Plain floats: a TVec3f member would add construct calls to the inline
     // constructor the spawner (tu_801F9484) emits, which has none.
@@ -776,7 +776,7 @@ public:
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
     /* 0x24C */ s32 field_0x24c;
-    /* 0x250 */ s32 field_0x250; // bit 0 of field_0x90: the big ball
+    /* 0x250 */ s32 field_0x250; // bit 0 of mSpawnParam_0x90: the big ball
     /* 0x254 */ s32 field_0x254;
     /* 0x258 */ s32 field_0x258;
     /* 0x25C */ s32 field_0x25c;
@@ -915,7 +915,7 @@ public:
 
     // No address (dead-stripped; init and update inline it): updates field_0x248
     // towards the nearest player (or player + 1) every 20 frames.
-    void updateFacing(s32 target);
+    void pool_80543048(s32 target);
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;

@@ -135,8 +135,8 @@ cls_8049D83C::~cls_8049D83C() {
 // FIXME(shotgun): 96.72 %, scheduling; behaviour clean.
 void cls_8049D83C::init() {
     cls_8049D140::init();
-    field_0x238 = field_0x90 & 0xFF;
-    field_0x244 = (field_0x90 >> 22) & 0x1F;
+    field_0x238 = mSpawnParam_0x90 & 0xFF;
+    field_0x244 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x260 = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_80539F00);
     mAnim.fn_801D2608(lbl_8049D820, 7);
     switch (field_0x238) {
@@ -183,7 +183,7 @@ void cls_8049D83C::update() {
             gAudioMgr_8053AF80->fn_80458F9C(0x3C);
         }
         if (fn_8016A3AC()->field_0x1ef == 0 && field_0x2e4 == NULL) {
-            field_0x2e4 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54C, 0, 0, NULL, NULL, true, 1.0f);
+            field_0x2e4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 0, NULL, NULL, true, 1.0f);
         }
         break;
     case 4: {
@@ -208,7 +208,7 @@ void cls_8049D83C::update() {
         if (fn_8011921C()->field_0x1 == 0) {
             fn_801CD950(&field_0x25c, 0.0f, -0.0002f);
         }
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -234,7 +234,7 @@ void cls_8049D83C::update() {
         fn_801CD950(&mPos.y, mSpawnPos.y, 0.3f);
         break;
     case 13:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -356,10 +356,10 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         field_0x234 = 1;
         field_0x240 = 1;
         field_0x24c = lbl_804648B4[1];
-        field_0x2c4[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AE, 0, 2, NULL, NULL, true, 0.5f);
-        field_0x2c4[1] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464938[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
-        field_0x2c4[2] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464948[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
-        field_0x2a4 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464958[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
+        field_0x2c4[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AE, 0, 2, NULL, NULL, true, 0.5f);
+        field_0x2c4[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464938[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
+        field_0x2c4[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464948[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
+        field_0x2a4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464958[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
         s32 swevSerial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SWEV);
         ActorBase_804A5770* swev = getActorManager_801F856C()->findActorBySerial_801F666C(swevSerial);
         if (swev != NULL) {
@@ -390,8 +390,8 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         pos.y = (s32)JUTVideo::getManager()->getRenderMode()->efbHeight / 2.0f;
         pos.z = 0.0f;
         pos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (fn_8038BD08(0, lbl_80464850[field_0x238], field_0x4, pos, 0x62)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (fn_8038BD08(0, lbl_80464850[field_0x238], mLayer_0x4, pos, 0x62)) {
             fn_8011921C()->fn_80118454();
         }
         break;
@@ -455,7 +455,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         }
         s32 crystal = field_0x238;
         if (crystal != 0 && crystal < 6) {
-            spawnCrystal(crystal);
+            pool_8053C678(crystal);
         }
         break;
     }
@@ -480,9 +480,9 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         mAnim.fn_801D1F14(0.0f);
         break;
     case 13:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
-        fn_8038BD08(0, 0x14B, field_0x4, JGeometry::TVec3f(0.0f, -16.0f, 0.0f), 0x4022);
+        fn_8038BD08(0, 0x14B, mLayer_0x4, JGeometry::TVec3f(0.0f, -16.0f, 0.0f), 0x4022);
         fn_8011921C()->fn_80118454();
         break;
     case 15:
@@ -493,8 +493,8 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         break;
     case 16:
         mDrawEnabled = true;
-        field_0x2e8[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
-        field_0x2e8[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x2e8[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x2e8[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
         mAnim.startAnim_801D22DC(2, 2, false);
         mAnim.fn_801D1F14(0.0f);
         break;
@@ -514,7 +514,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
             getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
             s32 crystal = field_0x238;
             if (crystal < 6) {
-                spawnCrystal(crystal);
+                pool_8053C678(crystal);
             }
         }
         break;
@@ -554,11 +554,11 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
     JGeometry::TVec3f pos(mPos);
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
-        fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(field_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
+        fn_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
+        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
-        fn_801EF830(field_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
-        drawSob_80113B54(field_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
+        fn_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
+        drawSob_80113B54(mLayer_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }
 
@@ -627,7 +627,7 @@ void cls_8049D83C::fn_80113790() {
         JGeometry::TVec3f pos = mPos;
         pos.z = 0.0f;
         void* res = field_0x260;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
         }
     }
@@ -641,6 +641,7 @@ s32 cls_8049D83C::vfunc_0x58() {
 
 // Plain function init inlines (the linker dropped its own copy): its literals 80.0f and 0.0f
 // are pooled before those of fn_80113790.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnEmitters() {
     JGeometry::TVec3f pos[5] = {
         mPos,
@@ -650,25 +651,28 @@ void cls_8049D83C::spawnEmitters() {
         JGeometry::TVec3f(mSpawnPos.x + 80.0f, mSpawnPos.y + 48.0f, 0.0f),
     };
     for (s32 i = 0; i < 5; i++) {
-        field_0x2d0[i] = spawnEmitter_8013CC50(field_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
+        field_0x2d0[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos[i], lbl_804648E8[i], 0, lbl_804648F4[i], NULL, NULL, true, 1.0f);
     }
 }
 
 // Plain functions inlined by their callers (the linker dropped their out-of-line copies);
 // their order below spawnEmitters sets the .sdata2 float-literal pool order.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnSealEmitters() {
     for (s32 i = 0; i < 7; i++) {
-        field_0x2a8[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
+        field_0x2a8[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
     }
-    field_0x29c = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464918[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
-    field_0x2a0 = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
+    field_0x29c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464918[field_0x238], 0, 2, NULL, NULL, true, 0.5f);
+    field_0x2a0 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464928[field_0x238], 0, 2, NULL, NULL, true, 1.0f);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::spawnBurstEmitters() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(field_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::positionPlayers() {
     JGeometry::TVec3f pos = mSpawnPos;
     pos.y += 48.0f;
@@ -682,6 +686,7 @@ void cls_8049D83C::positionPlayers() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 44-line definition): split out only where the .sdata2 order needs it.
 void cls_8049D83C::updateCameraFocus() {
     switch (field_0x23c) {
     case 0:
@@ -727,8 +732,9 @@ void cls_8049D83C::updateCameraFocus() {
     }
 }
 
-void cls_8049D83C::spawnCrystal(s32 crystal) {
+// R2 pool helper (inlined at 2 call sites); was spawnCrystal.
+void cls_8049D83C::pool_8053C678(s32 crystal) {
     JGeometry::TVec3f spawnPos = mSpawnPos;
     spawnPos.z = 20.0f;
-    getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, crystal, -1, -1);
+    getActorManager_801F856C()->spawnActor_801F9484('CRNV', mLayer_0x4, &spawnPos, crystal, -1, -1);
 }

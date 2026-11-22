@@ -11,11 +11,11 @@
 // FIXME: 99.36 %. regalloc-only: target->ours r6->r5, r5->r6 (the seed constant 0x19660D and gGameRoot_8053AAF8 pointer swap r5/r6).
 void Keese_804A02B8::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
-    field_0x260 = (field_0x90 >> 4) & 1;
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    field_0x260 = (mSpawnParam_0x90 >> 4) & 1;
     if (field_0x260 != 0) {
         mBox.set(-12.0f, -12.0f, 12.0f, 12.0f);
-        field_0xc0 = 2;
+        mParamEfsz_0xc0 = 2;
     }
     field_0x240 = 0;
     field_0x244 = 0;
@@ -28,11 +28,11 @@ void Keese_804A02B8::init() {
     field_0x23c = 0;
     field_0x25c = 0;
     field_0x25e = 0;
-    if (field_0x90 & 0x100) {
+    if (mSpawnParam_0x90 & 0x100) {
         field_0x25e = 1;
         field_0x25c = 0x8000;
     }
-    field_0x264 = field_0x90 & 0xF;
+    field_0x264 = mSpawnParam_0x90 & 0xF;
     if (field_0x264 == 3) {
         field_0x24c = (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
@@ -52,12 +52,12 @@ void Keese_804A02B8::init() {
     field_0x274 = 0.0f;
     field_0x278 = 0.0f;
     field_0x27c = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x258 = 2;
     field_0x268 = 0;
     field_0x26a = 0xFFFF;
     mPos.z = 1.0f;
-    if (field_0x90 >> 27) {
+    if (mSpawnParam_0x90 >> 27) {
         field_0xb0 = 0;
     }
     if (field_0x264 == 4) {
@@ -72,7 +72,7 @@ void Keese_804A02B8::init() {
 }
 
 void Keese_804A02B8::update() {
-    if (field_0x90 >> 27) {
+    if (mSpawnParam_0x90 >> 27) {
         if (!isScreenFlagSet_0x34()) {
             return;
         }
@@ -84,12 +84,12 @@ void Keese_804A02B8::update() {
                 return;
             }
             // fn_80226998 reads only x and y of its position; the 8-byte stack TVec2f is passed as TVec3f.
-            s32 layer = field_0x4;
+            s32 layer = mLayer_0x4;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
             field_0x26a = fn_80226998((const JGeometry::TVec3f*)&pos, layer);
             return;
         }
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         JGeometry::TVec2f pos(mPos.x, mPos.y);
         if (field_0x26a == fn_80226998((const JGeometry::TVec3f*)&pos, layer)) {
             return;
@@ -101,11 +101,11 @@ void Keese_804A02B8::update() {
     }
     if (fn_801F2FAC()) {
         if (field_0x25e == 1 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
         }
         return;
     }
-    if ((s32)fn_8022461C(&mPos, field_0x4) == 0x3B) {
+    if ((s32)fn_8022461C(&mPos, mLayer_0x4) == 0x3B) {
         die_0x24();
         return;
     }
@@ -122,7 +122,7 @@ void Keese_804A02B8::update() {
     }
     if (bmtySerial < 0 && fn_801F2DB4(ACTOR_NULL, ACTOR_NULL, NULL)) {
         if (field_0x25e == 1 && gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, field_0x4, &mPos, 0, -1, -1);
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_HART, mLayer_0x4, &mPos, 0, -1, -1);
         }
         return;
     }
@@ -131,9 +131,9 @@ void Keese_804A02B8::update() {
     s32 dir = 0;
     s32 player = -1;
     fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
-    addCalc2_801F71A4(&field_0x3c.x, field_0x274, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x278, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x274, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x278, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
     fn_801F2B7C(-100, -1, 1);
     switch (field_0x230) {
     case 0: {
@@ -153,7 +153,7 @@ void Keese_804A02B8::update() {
                 field_0x234 = 6;
             }
         }
-        if (!viewLayerFlag(field_0x4) && field_0x25e == 0) {
+        if (!viewLayerFlag(mLayer_0x4) && field_0x25e == 0) {
             if (field_0x238 == 0 && dir >= 0 && dist < 60.0f) {
                 field_0x268 = angle + 0x8000;
                 started = true;
@@ -198,7 +198,7 @@ void Keese_804A02B8::update() {
                 field_0x258 = 0;
             }
             field_0x234 = 6;
-            if (field_0x238 == 0 && field_0x258 == 2 && !isBlocked_0x4C(field_0x4, &mPos)) {
+            if (field_0x238 == 0 && field_0x258 == 2 && !isBlocked_0x4C(mLayer_0x4, &mPos)) {
                 field_0x238 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
                 field_0x274 = 0.0f;
                 field_0x278 = 0.0f;
@@ -229,7 +229,7 @@ void Keese_804A02B8::update() {
             }
             field_0x234 = 6;
         }
-        if (field_0x23c == 0 && isBlocked_0x4C(field_0x4, &mPos) == true) {
+        if (field_0x23c == 0 && isBlocked_0x4C(mLayer_0x4, &mPos) == true) {
             field_0x238 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
             field_0x274 = 0.0f;
             field_0x278 = 0.0f;
@@ -270,7 +270,7 @@ void Keese_804A02B8::update() {
 
 // FIXME: 98.70 %. regalloc-only: target->ours f30->f31, f31->f27, f29->f27, f27->f31 (setRotScaleMtx saved-FPR assignment across the sin/cos calls).
 void Keese_804A02B8::draw() {
-    if ((field_0x90 >> 27) && !isScreenFlagSet_0x34()) {
+    if ((mSpawnParam_0x90 >> 27) && !isScreenFlagSet_0x34()) {
         return;
     }
     SpriteParams_801F5AE0 params;
@@ -289,12 +289,12 @@ void Keese_804A02B8::draw() {
     if (field_0x260 != 0) {
         mode = 1;
     }
-    if (field_0x4 == 8 && field_0x260 != 0) {
+    if (mLayer_0x4 == 8 && field_0x260 != 0) {
         JGeometry::TVec3f rot2(0.0f, (f32)field_0x25c / -10430.228f, 0.0f);
         setRotScaleMtx(mtx, rot2, 2.0f);
         params.mMtx = mtx;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x258 + 0x155, &params, -1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, 0x176, 0, 2, -1, false, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x176, 0, 2, -1, false, 0, 0);
     } else {
         fn_801F02BC("enemy_both2_sob.bin", field_0x258 + 0x155, &params, -1, mode, false, 1.0f, 1.0f);
     }

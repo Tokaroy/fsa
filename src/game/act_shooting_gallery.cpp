@@ -28,13 +28,13 @@ static inline void facePlayer(ShootingGallery_804A2B18* self, s32 player) {
         u32 angle = (u16)(JMath::atanTable_.atan2_(-diff.x, -diff.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
         if (angle < 0x2000 || angle >= 0xe000) {
-            self->field_0x98 = 3;
+            self->mDir_0x98 = 3;
         } else if (angle >= 0x2000 && angle < 0x6000) {
-            self->field_0x98 = 1;
+            self->mDir_0x98 = 1;
         } else if (angle >= 0x6000 && angle <= 0xa000) {
-            self->field_0x98 = 2;
+            self->mDir_0x98 = 2;
         } else {
-            self->field_0x98 = 0;
+            self->mDir_0x98 = 0;
         }
     }
 }
@@ -51,7 +51,7 @@ static inline void setCameraScriptBox(const JGeometry::TBox2f& box) {
 
 void ShootingGallery_804A2B18::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(-10.0f, -10.0f, 10.0f, 10.0f);
 
     field_0x248 = 0;
@@ -67,7 +67,7 @@ void ShootingGallery_804A2B18::init() {
     mTimers[2] = 0;
     mTimers[3] = 0;
 
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     field_0x264 = 0;
     field_0x290 = 1.0f;
     field_0x294 = 0.0f;
@@ -76,12 +76,12 @@ void ShootingGallery_804A2B18::init() {
     field_0x2a8 = 0.0f;
     field_0x2a4 = 0.0f;
     field_0x2a0 = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x29c = mPos.y;
 
-    field_0x268 = field_0x90 & 0xF;
+    field_0x268 = mSpawnParam_0x90 & 0xF;
     switch (field_0x268) {
     case 0:
         lbl_8053ABB8[0] = 0;
@@ -156,7 +156,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
     box.f.y += mPos.y;
     JGeometry::TBox2f visibleBox;
 
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
 
     box = mBox2;
     box.i.x += mPos.x;
@@ -174,7 +174,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             }
         }
         if (notSameLayer != 0) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x250 = fn_8022FD8C(mSerial);
             if (field_0x250 < 0) {
                 break;
@@ -182,18 +182,18 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             if (!fn_802300EC(field_0x250)) {
                 break;
             }
-            if (!talk(field_0x250, 0x342, mSerial, field_0x4, pos, 0)) {
+            if (!talk(field_0x250, 0x342, mSerial, mLayer_0x4, pos, 0)) {
                 break;
             }
             facePlayer(this, field_0x250 + 1);
             mState = 8;
         } else {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             field_0x250 = fn_8022FD8C(mSerial);
             if (field_0x250 < 0) {
                 break;
             }
-            if (!talk(field_0x250, 0x334, mSerial, field_0x4, pos, 0)) {
+            if (!talk(field_0x250, 0x334, mSerial, mLayer_0x4, pos, 0)) {
                 break;
             }
             facePlayer(this, field_0x250 + 1);
@@ -202,7 +202,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         break;
     }
     case 1:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (!fn_803865B8(field_0x250)) {
             break;
         }
@@ -218,13 +218,13 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         }
         break;
     case 2:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x250, mSerial)) {
             fn_80230534(false);
             fn_801F0D20(0x3a);
             gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
             fn_8022B194();
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             field_0x24c = 0;
             field_0x250 = 0;
             field_0x254 = 0;
@@ -248,7 +248,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         mPos.x = savedPos.x;
         mPos.y = savedPos.y;
         mPos.z = savedPos.z;
@@ -292,7 +292,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
                     }
                     fn_801F0D20(0x3b);
                     gAudioMgr_8053AF80->fn_80458508(0);
-                    field_0x98 = 2;
+                    mDir_0x98 = 2;
                     field_0x24c = 0;
                     field_0x250 = 0;
                     field_0x254 = 0;
@@ -336,7 +336,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x98 = dir;
+                    actor->mDir_0x98 = dir;
                 }
             }
             mTimers[1] = 120;
@@ -349,7 +349,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x98 = 1;
+                    actor->mDir_0x98 = 1;
                 }
             }
             mTimers[2] = 60;
@@ -367,7 +367,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x98 = 0;
+                    actor->mDir_0x98 = 0;
                 }
             }
             mTimers[3] = 100;
@@ -392,7 +392,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             }
             fn_8022FE80(field_0x2ac, getPlayerLayer_8023DE58(field_0x2ac), mSerial, false, false);
             if (field_0x2ac == fn_8022FD8C(mSerial)) {
-                talk(field_0x2ac, 0x337, mSerial, field_0x4, pos, 2);
+                talk(field_0x2ac, 0x337, mSerial, mLayer_0x4, pos, 2);
                 mState = 5;
             }
         }
@@ -413,7 +413,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         }
         break;
     case 6:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x250 = fn_8022FD8C(mSerial);
         if (field_0x250 < 0) {
             break;
@@ -421,21 +421,21 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         if (!fn_802300EC(field_0x250)) {
             break;
         }
-        if (!talk(field_0x250, 0x338, mSerial, field_0x4, pos, 0)) {
+        if (!talk(field_0x250, 0x338, mSerial, mLayer_0x4, pos, 0)) {
             break;
         }
         facePlayer(this, field_0x250 + 1);
         mState = 7;
         break;
     case 7:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x250, mSerial)) {
-            field_0x98 = 2;
+            mDir_0x98 = 2;
             mState = 6;
         }
         break;
     case 8:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x250, mSerial)) {
             mState = 0;
         }
@@ -468,16 +468,16 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
     box.i.y += mPos.y;
     box.f.y += mPos.y;
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.3f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a4, 0.3f, 1.0f);
+    mPos += mVel_0x3c;
 
     switch (mState) {
     case 9:
         mTimers[0] = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 60;
         mTimers[1] = (s32)(80.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 80;
         field_0x2a0 = 0.7f;
-        if (field_0x98 != 0) {
+        if (mDir_0x98 != 0) {
             field_0x2a0 = -0.7f;
         }
         mState = 10;
@@ -489,7 +489,7 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
         } else if (mTimers[2] == 0) {
             if (fn_801A6108(mSerial, &box, &p)) {
                 field_0xb0 = 7;
-                field_0x248 = fn_8023AE34(&box, field_0x4, &p);
+                field_0x248 = fn_8023AE34(&box, mLayer_0x4, &p);
                 if (field_0x268 == 1) {
                     lbl_8053AED0->fn_8043D874(field_0x248, 300, 0);
                     for (int i = 0; i < 20; i++) {
@@ -499,7 +499,7 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
                         spawnPos.z = mPos.z;
                         spawnPos.x += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                         spawnPos.y += 8.0f - 16.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                        getActorManager_801F856C()->spawnActor_801F9484('SYKY', field_0x4, &spawnPos, 4, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('SYKY', mLayer_0x4, &spawnPos, 4, -1, -1);
                     }
                 } else {
                     lbl_8053AED0->fn_8043D874(field_0x248, 20, 0);
@@ -516,16 +516,16 @@ void ShootingGallery_804A2B18::fn_8019EE74() {
         if (mTimers[1] != 0) {
             if (mTimers[1] == 1) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.8f) {
-                    field_0x98 ^= 1;
+                    mDir_0x98 ^= 1;
                     field_0x2a0 = 0.7f;
-                    if (field_0x98 != 0) {
+                    if (mDir_0x98 != 0) {
                         field_0x2a0 = -0.7f;
                     }
                 }
             }
         }
     } else {
-        if (field_0x98 == 0) {
+        if (mDir_0x98 == 0) {
             if (mPos.x > 360.0f) {
                 mAlive = false;
             }
@@ -563,12 +563,12 @@ void ShootingGallery_804A2B18::vfunc_0x44() {
 }
 
 void ShootingGallery_804A2B18::fn_8019EC04() {
-    addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a4, 0.3f, 1.0f);
     mLife = 10000;
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
 
-    if (field_0x98 == 0) {
+    if (mDir_0x98 == 0) {
         if (mPos.x > 360.0f) {
             mAlive = false;
         }
@@ -581,7 +581,7 @@ void ShootingGallery_804A2B18::fn_8019EC04() {
     switch (mState) {
     case 14:
         field_0x2a0 = 0.7f;
-        if (field_0x98 != 0) {
+        if (mDir_0x98 != 0) {
             field_0x2a0 = -0.7f;
         }
         field_0x29c = mPos.y;
@@ -628,9 +628,9 @@ void ShootingGallery_804A2B18::update() {
         fn_8019EC04();
         break;
     case 4:
-        addCalc2_801F71A4(&field_0x3c.x, field_0x2a0, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x2a4, 0.3f, 1.0f);
-        mPos += field_0x3c;
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x2a0, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x2a4, 0.3f, 1.0f);
+        mPos += mVel_0x3c;
         if ((mSerial & 1) == 0) {
             field_0x294 += 4096.0f;
         } else {
@@ -640,20 +640,20 @@ void ShootingGallery_804A2B18::update() {
         case 11:
             field_0x2a0 = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             field_0x2a4 = 2.0f - 4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-            field_0x3c.z = 10.0f + 5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+            mVel_0x3c.z = 10.0f + 5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             field_0x290 = 0.5f + 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
             mState = 12;
             break;
         case 12:
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
-                field_0x3c.z = 2.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                mVel_0x3c.z = 2.0f + 3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 mState = 13;
             }
             break;
         case 13:
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
             if (mPos.z <= 0.0f) {
                 mPos.z = 0.0f;
                 mAlive = false;
@@ -720,7 +720,7 @@ void ShootingGallery_804A2B18::fn_8019E480() {
     params.field_0x10.a = field_0x298;
 
     frame += field_0x264;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
     }

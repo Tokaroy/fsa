@@ -52,7 +52,7 @@ inline void InvincibilityFairy_804AB4C0::clearWork() {
     field_0x258 = 0.0f;
     field_0x25c = 0.0f;
     field_0x260 = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
 }
 
 InvincibilityFairy_804AB4C0::~InvincibilityFairy_804AB4C0() {
@@ -78,15 +78,15 @@ void InvincibilityFairy_804AB4C0::init() {
     field_0x248 = (s32)(gGameRoot_8053AAF8->mRandom.get_ufloat_1() * 32768.0f);
     field_0x230 = 0;
     field_0xb0 = 0x20000;
-    mEmitter264 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.5f);
-    mEmitter268 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.5f);
+    mEmitter264 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.5f);
+    mEmitter268 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, 0, 0, NULL, NULL, true, 1.5f);
 }
 
 void InvincibilityFairy_804AB4C0::update() {
-    addCalc2_801F71A4(&field_0x3c.x, field_0x258, 0.1f, 0.5f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x25c, 0.1f, 0.5f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x258, 0.1f, 0.5f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x25c, 0.1f, 0.5f);
     addCalc2_801F71A4(&mPos.z, field_0x260, 0.3f, 0.5f);
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     followEmitters();
 
     switch (field_0x230) {
@@ -111,12 +111,12 @@ void InvincibilityFairy_804AB4C0::update() {
 
             JGeometry::TBox2f box(mBox);
             box.addPos(mPos.x, mPos.y);
-            s32 player = fn_8023AF14(&box, field_0x4, true, 0.0f);
+            s32 player = fn_8023AF14(&box, mLayer_0x4, true, 0.0f);
             if (player >= 0) {
                 clearTracking();
                 mCounters[0] = 0x1f4;
                 field_0x244 = player;
-                s32 layer = field_0x4;
+                s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, layer, &mPos, (player & 3) | 4, -1, -1);
                 }
@@ -175,12 +175,13 @@ void InvincibilityFairy_804AB4C0::draw() {
     if (mCounters[0] >= 0x100 || (mCounters[0] & 2) == 0) {
         params.field_0x2d = 1;
         drawSprite_801F06F0("enemy_both2_sob.bin", field_0x250 + 0x5E, &params, 0, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x250 + 0x5E, false, 2, -1, 0, 0, 0);
     }
 }
 
 // A uniform scale as a 3x4 matrix (zero translation, then diagonal scale).
 // Below every other function: the pool has its 0.0f ahead of draw's 1.5f.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 void setUniformScaleMtx(Mtx m, f32 scale) {
     m[0][3] = 0.0f;
     m[1][3] = 0.0f;

@@ -8,20 +8,20 @@
 // exponent) before `lis r4, 0x19` (the RNG multiplier); here they are swapped.
 void FireManager_804AB2B0::init() {
     field_0x24c = 0;
-    field_0x250 = field_0x90 & 0xF;
+    field_0x250 = mSpawnParam_0x90 & 0xF;
     if (field_0x250 < 3) {
         field_0x250 = 3;
     }
     mBasePos = mPos;
     field_0x23c = 0.5f;
-    field_0x244 = (field_0x90 >> 8) & 0xFF;
-    field_0x245 = (field_0x90 >> 16) & 0xFF;
+    field_0x244 = (mSpawnParam_0x90 >> 8) & 0xFF;
+    field_0x245 = (mSpawnParam_0x90 >> 16) & 0xFF;
     field_0x240 = field_0x245 * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    field_0x254 = (field_0x90 >> 24) & 1;
-    field_0x255 = (field_0x90 >> 25) & 1;
-    field_0x24c = ((field_0x90 & 0x30) ^ 0x20) | 0xF | (field_0x250 << 6) |
-                  (field_0x90 & 0xF8000000) | (field_0x255 << 16);
-    field_0x248 = ((field_0x90 >> 4) & 3) ^ 2;
+    field_0x254 = (mSpawnParam_0x90 >> 24) & 1;
+    field_0x255 = (mSpawnParam_0x90 >> 25) & 1;
+    field_0x24c = ((mSpawnParam_0x90 & 0x30) ^ 0x20) | 0xF | (field_0x250 << 6) |
+                  (mSpawnParam_0x90 & 0xF8000000) | (field_0x255 << 16);
+    field_0x248 = ((mSpawnParam_0x90 >> 4) & 3) ^ 2;
 }
 
 void FireManager_804AB2B0::update() {
@@ -57,7 +57,7 @@ void FireManager_804AB2B0::update() {
                     pos.y += 8.0f;
                 }
             }
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FIRE, field_0x4, &pos, field_0x24c & 0xF80101FF, -1,
+            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_FIRE, mLayer_0x4, &pos, field_0x24c & 0xF80101FF, -1,
                                        -1);
         }
         if (field_0x240 <= 0) {

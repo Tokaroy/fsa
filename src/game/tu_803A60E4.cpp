@@ -218,14 +218,14 @@ void cls_804AF860::fn_803A6608() {
         if (field_0x64 > 1) {
             field_0x64 = 0;
         }
-        moveCursorToRow();
+        pool_80543370();
     } else if (lbl_8053AD30->fn_80309A9C(8, 1)) {
         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
         field_0x64--;
         if (field_0x64 < 0) {
             field_0x64 = 1;
         }
-        moveCursorToRow();
+        pool_80543370();
     } else if (lbl_8053AD30->fn_80309A9C(1, 1)) {
         gAudioMgr_8053AF80->fn_80458880(0x26, -1);
         field_0x6e = -1;
@@ -325,7 +325,8 @@ void cls_804AF860::fn_803A6608() {
 // dropped: the original's .sdata2 has its 0.0f and int -> float bias ahead of the literals of
 // fn_803A6608 and the functions above it, so it was generated here (tools/pool.py). Moves the six
 // cursor panes and the two arrows to the chosen row.
-void cls_804AF860::moveCursorToRow() {
+// R2 pool helper (inlined at 2 call sites); was moveCursorToRow.
+void cls_804AF860::pool_80543370() {
     for (s32 i = 0; i < 6; i++) {
         field_0xc[i]->moveFromCentre_80402E08(0.0f, field_0x60 * (f32)field_0x64);
     }

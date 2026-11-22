@@ -20,12 +20,12 @@ static s32 lbl_804AAB98[4] = { 2, 0, 1, 3 };
 // Updates the Knight of Hyrule cutscene state machine.
 void KnightOfHyrule_804AABA8::init() {
     mPos.z = 34.0f;
-    field_0x3c.z = 0.0f;
+    mVel_0x3c.z = 0.0f;
     field_0x284 = 0.002f;
     mState = 0;
-    field_0x234 = field_0x90 & 3;
+    field_0x234 = mSpawnParam_0x90 & 3;
     mTimer = 120;
-    field_0x23c = field_0x90 >> 27;
+    field_0x23c = mSpawnParam_0x90 >> 27;
     field_0x244 = -1;
     field_0x248 = -1;
     field_0x240 = 0;
@@ -53,13 +53,13 @@ void KnightOfHyrule_804AABA8::vfunc_0x10() {
     field_0x24c.i.y += mPos.y;
     field_0x24c.f.x += mPos.x;
     field_0x24c.f.y += mPos.y;
-    s8 dx = (field_0x90 >> 12) & 0xFF;
+    s8 dx = (mSpawnParam_0x90 >> 12) & 0xFF;
     if (dx == 0) {
         field_0x25c.x = mPos.x - 24.0f;
     } else {
         field_0x25c.x = mPos.x + dx;
     }
-    s8 dy = (field_0x90 >> 4) & 0xFF;
+    s8 dy = (mSpawnParam_0x90 >> 4) & 0xFF;
     if (dy == 0) {
         field_0x25c.y = 100.0f + mPos.y + 8.0f;
     } else {
@@ -187,15 +187,15 @@ void KnightOfHyrule_804AABA8::update() {
         }
         break;
     case 8:
-        fn_8022FE80(field_0x248, field_0x4, mSerial, false, false);
+        fn_8022FE80(field_0x248, mLayer_0x4, mSerial, false, false);
         if (field_0x248 == fn_8022FD8C(mSerial)) {
-            if (fn_8038AD24(field_0x248, lbl_804714A0[field_0x234], mSerial, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
+            if (fn_8038AD24(field_0x248, lbl_804714A0[field_0x234], mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
                 mState = 9;
             }
         }
         break;
     case 9:
-        fn_8022FE80(field_0x248, field_0x4, mSerial, true, false);
+        fn_8022FE80(field_0x248, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x248, mSerial)) {
             mState = 10;
             mTimer = 40;
@@ -223,7 +223,7 @@ void KnightOfHyrule_804AABA8::update() {
             mState = 13;
             mPos.y -= 32.0f;
             mPos.z = 0.0f;
-            field_0x3c.z = 0.4f;
+            mVel_0x3c.z = 0.4f;
         }
         break;
     case 13: {
@@ -231,15 +231,15 @@ void KnightOfHyrule_804AABA8::update() {
             mPos.z = 40.0f;
             mState = 14;
             mTimer = 90;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         s32 slot = field_0x278;
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
             if (actor != NULL && actor->mActorId == ACTOR_GNEF) {
                 if (static_cast<cls_804AA350*>(actor)->fn_802ED7F0(mPos.z)) {
-                    mPos.z += field_0x3c.z;
-                    addCalc2_801F71A4(&field_0x3c.z, 0.01f, 0.008f, 0.005f);
+                    mPos.z += mVel_0x3c.z;
+                    addCalc2_801F71A4(&mVel_0x3c.z, 0.01f, 0.008f, 0.005f);
                     field_0x27c = 1;
                 }
             }
@@ -277,8 +277,8 @@ void KnightOfHyrule_804AABA8::update() {
             fn_802303FC(field_0x244, &pos, true);
         }
         if (mTimer < 60) {
-            addCalc2_801F71A4(&field_0x3c.z, -0.2f, 0.02f, 0.01f);
-            mPos.z += field_0x3c.z;
+            addCalc2_801F71A4(&mVel_0x3c.z, -0.2f, 0.02f, 0.01f);
+            mPos.z += mVel_0x3c.z;
             s32 slot = field_0x278;
             if (slot >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
@@ -294,7 +294,7 @@ void KnightOfHyrule_804AABA8::update() {
         break;
     }
     case 18: {
-        mPos.z += field_0x3c.z;
+        mPos.z += mVel_0x3c.z;
         s32 slot = field_0x278;
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
@@ -316,9 +316,9 @@ void KnightOfHyrule_804AABA8::update() {
             }
         }
         if (field_0x27d == 1) {
-            addCalc2_801F71A4(&field_0x3c.z, -0.01f, 0.02f, 0.05f);
+            addCalc2_801F71A4(&mVel_0x3c.z, -0.01f, 0.02f, 0.05f);
         } else {
-            addCalc2_801F71A4(&field_0x3c.z, -0.2f, 0.02f, 0.01f);
+            addCalc2_801F71A4(&mVel_0x3c.z, -0.2f, 0.02f, 0.01f);
         }
         break;
     }
@@ -338,7 +338,7 @@ void KnightOfHyrule_804AABA8::update() {
     case 20:
         switch (mTimer) {
         case 0:
-            if (fn_8038BD08(field_0x248, lbl_804714B0[field_0x234], field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
+            if (fn_8038BD08(field_0x248, lbl_804714B0[field_0x234], mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4102)) {
                 mState = 21;
             }
             gGameRoot_8053AAF8->fn_80138B7C();
@@ -369,7 +369,7 @@ void KnightOfHyrule_804AABA8::update() {
     case 22:
         fn_80230534(false);
         fn_8022CC20(field_0x248);
-        getGameView_802D6A9C()->fn_802D8050((field_0x90 >> 20) & 0x1F, true, 0xFF);
+        getGameView_802D6A9C()->fn_802D8050((mSpawnParam_0x90 >> 20) & 0x1F, true, 0xFF);
         for (s32 i = 0; i < 4; i++) {
             fn_8022CA6C(i, 5, true);
         }
@@ -377,7 +377,7 @@ void KnightOfHyrule_804AABA8::update() {
         fn_801F35AC();
         break;
     case 17: {
-        mPos.z += field_0x3c.z;
+        mPos.z += mVel_0x3c.z;
         s32 slot = field_0x278;
         if (slot >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(slot);
@@ -460,9 +460,9 @@ void KnightOfHyrule_804AABA8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x1f = 0;
     if (mState >= 6 && mState < 13) {
-        mPos.z += field_0x3c.z;
-        field_0x3c.z += field_0x284;
-        if (field_0x3c.z <= -0.05f || field_0x3c.z >= 0.05f) {
+        mPos.z += mVel_0x3c.z;
+        mVel_0x3c.z += field_0x284;
+        if (mVel_0x3c.z <= -0.05f || mVel_0x3c.z >= 0.05f) {
             field_0x284 = -field_0x284;
         }
         params.field_0x10.a = field_0x28c;
@@ -473,9 +473,9 @@ void KnightOfHyrule_804AABA8::draw() {
         drawSprite_801F06F0("enemy_gc_sob.bin", field_0x234 + 0x27B, &params, -1, 1.0f, 1.0f);
     } else if (mState >= 13 && field_0x27c == 1) {
         if ((mState >= 14 && mState < 16) || (mState == 16 && mTimer > 60)) {
-            mPos.z += field_0x3c.z;
-            field_0x3c.z += field_0x284;
-            if (field_0x3c.z <= -0.04f || field_0x3c.z >= 0.04f) {
+            mPos.z += mVel_0x3c.z;
+            mVel_0x3c.z += field_0x284;
+            if (mVel_0x3c.z <= -0.04f || mVel_0x3c.z >= 0.04f) {
                 field_0x284 = -field_0x284;
             }
             s32 slot = field_0x278;

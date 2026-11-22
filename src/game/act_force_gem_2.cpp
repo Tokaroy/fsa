@@ -19,8 +19,8 @@ ForceGem2_804AB850::~ForceGem2_804AB850() {
 
 // FIXME: 99.57 %, regalloc-only; behaviour clean.
 void ForceGem2_804AB850::init() {
-    field_0x94 = (field_0x90 >> 16) & 0xFF;
-    field_0x264 = field_0x90 & 7;
+    field_0x94 = (mSpawnParam_0x90 >> 16) & 0xFF;
+    field_0x264 = mSpawnParam_0x90 & 7;
     mEmitter284 = NULL;
     field_0x24c = 0;
     field_0x250 = 0;
@@ -33,7 +33,7 @@ void ForceGem2_804AB850::init() {
     mLife = 10000;
     field_0x25c = 0;
     field_0x260 = -1;
-    field_0x98 = 0;
+    mDir_0x98 = 0;
     field_0x278.x = mPos.x;
     field_0x278.y = mPos.y;
     field_0x278.z = mPos.z;
@@ -52,12 +52,12 @@ void ForceGem2_804AB850::init() {
     switch (field_0x94) {
     case 1:
         mPos.z = 24.0f;
-        field_0x98 = 2;
-        field_0x98 |= (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+        mDir_0x98 = 2;
+        mDir_0x98 |= (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         break;
     case 2:
         mPos.z = 24.0f;
-        field_0x98 |= (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+        mDir_0x98 |= (s32)(1.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         break;
     case 3:
         mTimer = -100;
@@ -75,21 +75,21 @@ void ForceGem2_804AB850::init() {
         break;
     }
     field_0x26c.set(0.0f, 0.0f, 0.0f);
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
 }
 
 bool ForceGem2_804AB850::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     if (code == 0xC || code == 0x3 || code == 0xE) {
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         mState = 5;
         return false;
     }
     if (code == 0xD) {
         field_0x248 = 0;
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         mState = 6;
         return false;
     }
@@ -106,14 +106,14 @@ void ForceGem2_804AB850::update() {
     u8 moved = 0;
     JGeometry::TVec2f p(mPos.x, mPos.y);
     if (field_0x94 != 6) {
-        addCalc2_801F71A4(&field_0x3c.x, field_0x26c.x, 0.3f, 1.0f);
-        addCalc2_801F71A4(&field_0x3c.y, field_0x26c.y, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.x, field_0x26c.x, 0.3f, 1.0f);
+        addCalc2_801F71A4(&mVel_0x3c.y, field_0x26c.y, 0.3f, 1.0f);
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     JGeometry::TBox2f box(mBox.i, mBox.f);
     box.addPos(p);
     if (mState == 0 || mState == 3 || mState == 4) {
-        s32 idx = fn_8023AF14(&box, field_0x4, false, mPos.z);
+        s32 idx = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (mState != 0) {
             fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (field_0x94 != 6 || mPos.z == 0.0f) {
@@ -137,7 +137,7 @@ void ForceGem2_804AB850::update() {
         case 1:
         case 2:
             if (field_0x244 == 0) {
-                switch (field_0x98) {
+                switch (mDir_0x98) {
                 case 0:
                     field_0x26c.set(0.3f, 0.0f, 0.0f);
                     break;
@@ -152,7 +152,7 @@ void ForceGem2_804AB850::update() {
                     break;
                 }
                 field_0x244 = 500;
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
             break;
         case 3:
@@ -165,18 +165,18 @@ void ForceGem2_804AB850::update() {
         break;
     }
     case 1:
-        field_0x3c.zero();
+        mVel_0x3c.zero();
         mPos.z = 0.0f;
         field_0x240 = 0;
         field_0x244 = 30;
-        field_0x3c.z = 3.0f;
+        mVel_0x3c.z = 3.0f;
         mState = 2;
         // fall through
     case 2:
-        field_0x3c.z -= 0.5f;
+        mVel_0x3c.z -= 0.5f;
         if (mPos.z <= 0.0f) {
-            if (field_0x3c.z < 0.0f) {
-                field_0x3c.zero();
+            if (mVel_0x3c.z < 0.0f) {
+                mVel_0x3c.zero();
                 mPos.z = 0.0f;
             }
         }
@@ -197,14 +197,14 @@ void ForceGem2_804AB850::update() {
         break;
     case 4:
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 0.3f;
+            mVel_0x3c.z -= 0.3f;
             break;
         }
         if (field_0x94 == 6) {
             field_0x94 = 5;
         }
         mPos.z = 0.0f;
-        field_0x3c.z = 0.0f;
+        mVel_0x3c.z = 0.0f;
         if (dist < 120.0f) {
             if (field_0x244 == 0) {
                 if (moved) {
@@ -223,7 +223,7 @@ void ForceGem2_804AB850::update() {
         break;
     case 6:
         if (field_0x248 <= 0 && mEmitter284 == NULL) {
-            mEmitter284 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
+            mEmitter284 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D0, 0, 1, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30022, 0);
         }
         // fall through
@@ -278,7 +278,7 @@ void ForceGem2_804AB850::draw() {
         setRotScaleMtx(mtx, rot, scale);
         params.mMtx = mtx;
         s32 frame = field_0x24c + lbl_804AB810[field_0x264];
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
@@ -298,10 +298,10 @@ void ForceGem2_804AB850::draw() {
     } else {
         params.field_0x2d = 1;
         s32 frame = field_0x24c + lbl_804AB810[field_0x264];
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
     }
-    fn_803075AC(mSerial, field_0x4, &mPos, field_0x24c + lbl_804AB810[field_0x264], false, 2, -1, 0, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, field_0x24c + lbl_804AB810[field_0x264], false, 2, -1, 0, 0, 0);
 }

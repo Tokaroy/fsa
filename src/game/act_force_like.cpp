@@ -48,23 +48,23 @@ static inline void stepFrame(ForceLike_8049C578* self) {
 
 void ForceLike_8049C578::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x235 = 0;
     field_0x240 = 0;
     field_0x230 = 0;
     field_0x244 = 0;
-    field_0x234 = field_0x90 & 0xF;
+    field_0x234 = mSpawnParam_0x90 & 0xF;
     field_0x23c = 1;
     field_0x238 = 0;
     field_0x264 = 0.0f;
     field_0x260 = 0.0f;
-    if (field_0x90 & 0x100) {
+    if (mSpawnParam_0x90 & 0x100) {
         field_0x230 = 1;
     }
     if (getScreenFlagBit_0x3C()) {
         field_0x230 = 4;
     }
-    if (field_0x90 & 0x400) {
+    if (mSpawnParam_0x90 & 0x400) {
         field_0x23c = 0;
         mPos.z = 400.0f;
     }
@@ -93,21 +93,21 @@ void ForceLike_8049C578::update() {
         break;
     case 0: {
         bool landed = false;
-        field_0x3c.z -= 0.3f;
+        mVel_0x3c.z -= 0.3f;
         if (mPos.z < 0.0f) {
             if (field_0x23c == 0) {
                 startSound_801F0E34(0x3000A, 0);
                 mPos.z = 0.0f;
-                field_0x3c.z = 2.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-                field_0x3c.x = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-                field_0x3c.y = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                mVel_0x3c.z = 2.0f + (1.0f - 2.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+                mVel_0x3c.x = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
+                mVel_0x3c.y = 0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
                 field_0x23c = 1;
             } else {
-                field_0x3c.zero();
+                mVel_0x3c.zero();
                 landed = true;
             }
         }
-        mPos.add(field_0x3c);
+        mPos.add(mVel_0x3c);
         field_0x240--;
         if (field_0x240 <= 0) {
             field_0x235++;
@@ -121,8 +121,8 @@ void ForceLike_8049C578::update() {
         if (player != -1 && dist < 40.0f && landed == true) {
             field_0x230 = 1;
             field_0x240 = 0;
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DC, 0, 0, NULL, NULL, true, 1.0f);
-            spawnKindEmitter();
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3DC, 0, 0, NULL, NULL, true, 1.0f);
+            pool_8053BF30();
             startSound_801F0E34(0x50023, 0);
         }
         break;
@@ -158,7 +158,7 @@ void ForceLike_8049C578::update() {
                     ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     s32 idx = -1;
                     if (target->field_0x94 == 0 || target->field_0x94 == 3) {
-                        idx = target->field_0x90 & 0xFF;
+                        idx = target->mSpawnParam_0x90 & 0xFF;
                     }
                     if (idx != -1) {
                         field_0x244 += lbl_8049C558[idx];
@@ -188,7 +188,7 @@ void ForceLike_8049C578::update() {
             mLife = life;
             if (fn_80236228(target) > 20) {
                 fn_802362C4(target, -20);
-                getActorManager_801F856C()->spawnActor_801F9484('GOLD', field_0x4, &mPos, 20, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 20, -1, -1);
             }
         }
         if (field_0x248 > 20) {
@@ -221,15 +221,15 @@ void ForceLike_8049C578::update() {
         }
         mPos.x += 0.4f * field_0x254.x;
         mPos.y += 0.4f * field_0x254.y;
-        field_0x3c.z -= 0.21f;
-        mPos.z += field_0x3c.z;
+        mVel_0x3c.z -= 0.21f;
+        mPos.z += mVel_0x3c.z;
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 2.0f;
+            mVel_0x3c.z = 2.0f;
             startSound_801F0E34(0x50024, 0);
             if (fn_80236228(target) > 5) {
                 fn_802362C4(target, -5);
-                getActorManager_801F856C()->spawnActor_801F9484('GOLD', field_0x4, &mPos, 5, -1, -1);
+                getActorManager_801F856C()->spawnActor_801F9484('GOLD', mLayer_0x4, &mPos, 5, -1, -1);
             }
         }
         field_0x264 = 0.0f;
@@ -246,15 +246,15 @@ void ForceLike_8049C578::update() {
         break;
     }
     case 3: {
-        f32 z = field_0x3c.z;
+        f32 z = mVel_0x3c.z;
         if (fn_801F3D94(1) != 0 || fn_801F305C()) {
-            field_0x3c.z = z;
+            mVel_0x3c.z = z;
         } else {
             fn_801F2B7C(-100, -1, 1);
             stepFrame(this);
             if (field_0x235 != 0) {
                 if (mPos.z == 0.0f && field_0x235 != 0) {
-                    field_0x3c.z = 2.78f;
+                    mVel_0x3c.z = 2.78f;
                     startSound_801F0E34(0x50025, 0);
                     if ((s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) < 1) {
                         field_0x254.x = 2.0f - gGameRoot_8053AAF8->mRandom.get_ufloat_1();
@@ -270,11 +270,11 @@ void ForceLike_8049C578::update() {
                 mPos.y += 0.8f * field_0x254.y;
             }
         }
-        field_0x3c.z -= 0.21f;
-        mPos.z += field_0x3c.z;
+        mVel_0x3c.z -= 0.21f;
+        mPos.z += mVel_0x3c.z;
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             field_0x235 = 0;
         }
         break;
@@ -326,14 +326,14 @@ void ForceLike_8049C578::draw() {
 
 // FIXME(shotgun): 99.15 %, regalloc-only; behaviour clean.
 void ForceLike_8049C578::die_0x24() {
-    int layer = field_0x4;
+    int layer = mLayer_0x4;
     s32 pick;
     if (fn_8022DCD8(field_0x238)) {
         fn_8022DD74(field_0x238);
     }
     JGeometry::TVec3f pos;
     s32 flag;
-    if (field_0x90 & 0x1000) {
+    if (mSpawnParam_0x90 & 0x1000) {
         flag = 1;
         fn_801CD150(&mPos, &pos);
         layer = 8;
@@ -372,19 +372,20 @@ void ForceLike_8049C578::die_0x24() {
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->field_0x3c = JGeometry::TVec3f(
+                actor->mVel_0x3c = JGeometry::TVec3f(
                     0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                     0.5f - gGameRoot_8053AAF8->mRandom.get_ufloat_1(),
                     3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 3.0f);
             }
         }
     }
-    spawnKindEmitter();
-    field_0x18c = 0;
+    pool_8053BF30();
+    mParamDasu_0x18c = 0;
     ActorBase_804A5770::die_0x24();
 }
 
 // Not in the binary (die_0x24 and update inline it); the pool has its 1.0f ahead of die_0x24's literals.
-void ForceLike_8049C578::spawnKindEmitter() {
-    spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
+// R2 pool helper (inlined at 2 call sites; one-statement body); was spawnKindEmitter.
+void ForceLike_8049C578::pool_8053BF30() {
+    spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
 }

@@ -13,20 +13,20 @@ static const u32 lbl_8046C838[5] = { 'AMOS', 'BRBL', 'BLCK', 'BCK2', 'SMRI' };
 
 // Looks up the tile under the switch (inlined four times in update and vfunc_0x10).
 inline void Switch_804A7F38::readTileId() {
-    field_0x244 = fn_80226AE0(&mPos, field_0x4);
-    field_0x258 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(field_0x4, field_0x244) & 0x3FF;
+    field_0x244 = fn_80226AE0(&mPos, mLayer_0x4);
+    field_0x258 = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, field_0x244) & 0x3FF;
 }
 
 void Switch_804A7F38::init() {
-    field_0x238 = ((field_0x90 >> 22) & 0x1F) + 1;
-    field_0x23c = ((field_0x90 >> 17) & 0x1F) + 1;
-    field_0x240 = field_0x90 & 0x3E0;
-    field_0x234 = field_0x90 & 0x1F;
-    field_0x264 = (field_0x90 >> 12) & 0x1F;
+    field_0x238 = ((mSpawnParam_0x90 >> 22) & 0x1F) + 1;
+    field_0x23c = ((mSpawnParam_0x90 >> 17) & 0x1F) + 1;
+    field_0x240 = mSpawnParam_0x90 & 0x3E0;
+    field_0x234 = mSpawnParam_0x90 & 0x1F;
+    field_0x264 = (mSpawnParam_0x90 >> 12) & 0x1F;
     if (field_0x264 == 0) {
         field_0x264 = -1;
     }
-    field_0x25c = (u32)field_0x90 >> 27;
+    field_0x25c = (u32)mSpawnParam_0x90 >> 27;
 
     if (field_0x234 == 8 && field_0x240 == 0) {
         field_0x240 = 60;
@@ -89,7 +89,7 @@ void Switch_804A7F38::vfunc_0x10() {
                         if (!actor) continue;
                         if (actor->mActorId != 'SWT4' && actor->mActorId != 'LOSW') continue;
                         if (field_0x170 != actor->field_0x170) continue;
-                        u32 param = actor->field_0x90;
+                        u32 param = actor->mSpawnParam_0x90;
                         if ((param & 0x1F) == 1 || (param & 0x1F) == 2) {
                             for (int j = 0; j < 4; j++) {
                                 if (field_0x25c == ((param >> lbl_8046C828[j]) & 0x1F)) {
@@ -105,7 +105,7 @@ void Switch_804A7F38::vfunc_0x10() {
                                                 field_0x258 = 0x51;
                                             }
                                             setScreenFlag_0x30(0xFF, false);
-                                            gBgRewrite_8053AC98->fn_802A3884(&mPos, -1, field_0x4, field_0x258);
+                                            gBgRewrite_8053AC98->fn_802A3884(&mPos, -1, mLayer_0x4, field_0x258);
                                         }
                                     }
                                     break;
@@ -150,7 +150,7 @@ void Switch_804A7F38::update() {
         return;
     }
 
-    s32 player = fn_8023AF14(&box, field_0x4, true, 0.0f);
+    s32 player = fn_8023AF14(&box, mLayer_0x4, true, 0.0f);
     s32 blockKind = 0;
     s32 blockSerial = -1;
 
@@ -217,7 +217,7 @@ void Switch_804A7F38::update() {
                         for (int i = 0; i < end; i++) {
                             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
                             if (actor && actor->mActorId == 'SWTH' && actor->mSerial != mSerial) {
-                                u32 param = actor->field_0x90;
+                                u32 param = actor->mSpawnParam_0x90;
                                 if (player == getGameView_802D6A9C()->fn_802D7E1C(param >> 27)) {
                                     u32 kind = param & 0x3F;
                                     if (kind == 0 || kind == 5) {
@@ -322,16 +322,16 @@ void Switch_804A7F38::update() {
                 }
                 if (field_0x234 == 0 || field_0x234 == 5) {
                     setScreenFlag_0x30(0xFF, false);
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
+                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 } else {
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
+                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 }
             } else {
                 if (field_0x234 == 2 || field_0x234 == 6) {
                     setScreenFlag_0x30(0xFF, false);
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
+                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 } else {
-                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
+                    gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
                 }
             }
             mState = 2;
@@ -351,7 +351,7 @@ void Switch_804A7F38::update() {
     case 5:
         if (field_0x24c == 0) {
             setScreenFlag_0x30(0xFF, false);
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, player, field_0x4, field_0x258);
+            gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, field_0x258);
             mState = 2;
         } else {
             field_0x24c--;
@@ -374,15 +374,15 @@ void Switch_804A7F38::update() {
         if (field_0x234 == 0 || field_0x234 == 1 || field_0x234 == 5 || field_0x234 == 8) {
             if (field_0x234 == 0 || field_0x234 == 5) {
                 setScreenFlag_0x30(0xFF, false);
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
+                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
             } else {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
+                gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
             }
         } else {
             if (field_0x234 == 2 || field_0x234 == 6) {
                 setScreenFlag_0x30(0xFF, false);
             }
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, field_0x4, field_0x258);
+            gBgRewrite_8053AC98->fn_802A3884(&mPos, field_0x250, mLayer_0x4, field_0x258);
         }
         mState = 2;
         break;
@@ -397,19 +397,19 @@ void Switch_804A7F38::vfunc_0x54(s32 arg) {
     case 0x12:
     case 0x41:
     case 0x68:
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, field_0x4, 0x13);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, mLayer_0x4, 0x13);
         break;
     case 0x43:
     case 0x50:
     case 0x6a:
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, field_0x4, 0x51);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, mLayer_0x4, 0x51);
         break;
     case 0x14:
     case 0x52:
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, field_0x4, 0x15);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, mLayer_0x4, 0x15);
         break;
     case 0x15a:
-        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, field_0x4, 0x360);
+        gBgRewrite_8053AC98->fn_802A3948(&mPos, arg, mLayer_0x4, 0x360);
         break;
     }
 }

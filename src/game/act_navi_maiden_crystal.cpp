@@ -28,8 +28,8 @@ void Navi54MaidenCrystalCutscene_804ADFE8::init() {
     field_0x23c = 0.0f;
     field_0x240 = 0;
     field_0x264 = 0x1ee;
-    mEmitter270 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32c, 0, -1, NULL, NULL, true, 1.0f);
-    mEmitter274 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+    mEmitter270 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32c, 0, -1, NULL, NULL, true, 1.0f);
+    mEmitter274 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
     if (mEmitter270 != NULL) {
         mEmitter270->setGlobalEnvColor(0x1e, 0xa0, 0xbe);
     }
@@ -91,7 +91,7 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
         mPos = field_0x244 + TVec3f(40.0f * JMath::sincosTable_.sinShort(field_0x240),
                                     12.0f * JMath::sincosTable_.sinShort(field_0x240 * 2),
                                     0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             mState++;
@@ -112,14 +112,14 @@ void Navi54MaidenCrystalCutscene_804ADFE8::update() {
             pos.y = (s32)renderMode->efbHeight * 0.5f;
             pos.x = (s32)renderMode->fbWidth * 0.5f;
             pos.y -= 16.0f;
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
-            fn_8038BD08(0, 0x83a, field_0x4, pos, 0x62);
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+            fn_8038BD08(0, 0x83a, mLayer_0x4, pos, 0x62);
             mState++;
         }
         break;
 
     case 4:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             field_0x254->vfunc_0x60(10);

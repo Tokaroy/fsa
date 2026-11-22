@@ -24,7 +24,7 @@ public:
     /* 0x244 */ s32 field_0x244; // zeroed by init, not yet read
     /* 0x248 */ s32 field_0x248; // zeroed by init, not yet read
     /* 0x24C */ u8 field_0x24c[4]; // not yet known
-    /* 0x250 */ s32 field_0x250; // toggles 0 / 1 in update; draw adds it to 0x49 + 3 * field_0x90
+    /* 0x250 */ s32 field_0x250; // toggles 0 / 1 in update; draw adds it to 0x49 + 3 * mSpawnParam_0x90
     /* 0x254 */ u16 field_0x254; // tile code of mPos (fn_80226998), 0xFFFF until first looked up
     /* 0x258 */ JGeometry::TVec3f field_0x258; // (x, y) = 2 * (sin, cos) of the angle in init and update
 }; // Size: 0x264

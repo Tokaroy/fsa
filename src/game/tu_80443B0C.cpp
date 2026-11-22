@@ -71,7 +71,7 @@ cls_804B1B60::cls_804B1B60() {
     f32 y3 = mScreen->search('Tmm03')->getBounds()->i.y;
     field_0x40 = y3 - y5;
     field_0x44 = 0;
-    resetCursorTimer();
+    pool_80543D70();
     field_0x4c = 0;
     field_0x4d = 0;
 }
@@ -109,7 +109,7 @@ void cls_804B1B60::fn_804446F0(s32 arg) {
 
     field_0x10[0]->mPane->show();
     field_0x10[1]->mPane->show();
-    resetCursorTimer();
+    pool_80543D70();
     field_0x4c = 0;
 
     static_cast<J2DTextBox*>(mScreen->search('Tmm03'))->setBlackWhite(field_0x30, field_0x34);
@@ -204,7 +204,7 @@ void cls_804B1B60::fn_80443DAC() {
     }
 
     if (--field_0x48 <= 0) {
-        resetCursorTimer();
+        pool_80543D70();
         if (mScreen->search('Pocur01')->isVisible()) {
             mScreen->search('Pocur01')->hide();
             mScreen->search('Pocur02')->hide();
@@ -239,14 +239,15 @@ void cls_804B1B60::fn_80443D5C() {
 // A plain function that the constructor, fn_804446F0 and fn_80443DAC inline and whose own copy the
 // linker dropped: the original's .sdata2 has 11.0f and 1.0f ahead of fn_80443D5C's literals, so it
 // was generated before it (tools/pool.py). Sets the 10 to 20 frames until the cursor's next frame.
-void cls_804B1B60::resetCursorTimer() {
+// R2 pool helper (inlined at 3 call sites; one-statement body); was resetCursorTimer.
+void cls_804B1B60::pool_80543D70() {
     field_0x48 = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
 }
 
 // FIXME(shotgun): 85.76 %, missing/extra; behaviour drift.
 void cls_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
     MessageInf1_804AF070* inf1 =
-        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->field_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
+        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[msgId].textOffset + 8);
     s32 i = 0;
     s32 j = 0;

@@ -35,11 +35,11 @@ Gibdo_804A3BF8::Gibdo_804A3BF8() {}
 
 void Gibdo_804A3BF8::init() {
     EnemyBase_804A4808::init();
-    if (field_0x90 == 1) {
+    if (mSpawnParam_0x90 == 1) {
         mFlags |= 0x4000;
     }
     mBox.set(-8.0f, -24.0f, 8.0f, 8.0f);
-    field_0x80.set(-10.0f, -10.0f, 10.0f, 10.0f);
+    mMapBox_0x80.set(-10.0f, -10.0f, 10.0f, 10.0f);
     mFlags |= ENEMY_FLAG_NO_HURT;
     mState = 0;
     mStateTimer = 0;
@@ -47,7 +47,7 @@ void Gibdo_804A3BF8::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3BB8, 0x10);
-    mAnim.startAnim_801D22DC(field_0x98, 2, false);
+    mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
     mAnim.fn_801D1D60();
 }
 
@@ -63,18 +63,18 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
             mTargetSpeed = 0.0f;
         }
         field_0x250 = fn_801CD664(0x3D) + 0x3C;
-        mAnim.fn_801D22A0(field_0x98, 2);
+        mAnim.fn_801D22A0(mDir_0x98, 2);
         break;
     case 1:
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        mAnim.startAnim_801D22DC(field_0x98 + 4, 0, false);
+        mAnim.startAnim_801D22DC(mDir_0x98 + 4, 0, false);
         break;
     case 2: {
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
         s32 kind = 0;
-        s32 dir = field_0x98;
+        s32 dir = mDir_0x98;
         switch (mAnim.mAnim) {
         case 0:
         case 4:
@@ -161,21 +161,21 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
     case 3: {
         mSpeed = 0.0f;
         mTargetSpeed = 0.0f;
-        field_0x3c.set(0.0f, 0.0f, 0.0f);
+        mVel_0x3c.set(0.0f, 0.0f, 0.0f);
         mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
         mBox2.i = mBox.i;
         mBox2.f = mBox.f;
-        field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+        mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
         field_0xb0 = 0;
         mFlags |= 0x300;
         mLife = 1;
         JUtility::TColor color = gGameRoot2_8053AB10->field_0x2c->field_0x4;
         JPABaseEmitter* emitters[3];
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x329, 0, 0, NULL, NULL, true, 1.0f);
-        emitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32A, 0, 0, NULL, NULL, true, 1.0f);
-        emitters[1] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x41B, 0, 0, NULL, NULL, true, 1.0f);
-        emitters[2] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x41C, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x54F, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x329, 0, 0, NULL, NULL, true, 1.0f);
+        emitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32A, 0, 0, NULL, NULL, true, 1.0f);
+        emitters[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x41B, 0, 0, NULL, NULL, true, 1.0f);
+        emitters[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x41C, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54F, 0, 0, NULL, NULL, true, 1.0f);
         for (s32 i = 0; i < 3; i++) {
             if (emitters[i] != NULL) {
                 emitters[i]->setColorRGB(color.r, color.g, color.b);
@@ -206,13 +206,13 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
         }
         if (mapHit) {
             s32 dir = fn_801CF1B0(true, 120.0f, 0.1f);
-            if (dir == field_0x98) {
+            if (dir == mDir_0x98) {
                 field_0x250 += 10;
             } else if (fn_801D05F8(&mPos, 120.0f) < 0) {
                 mFlags |= 0x2000;
                 fn_801B9DD4(1);
             } else {
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 fn_801B9DD4(2);
             }
         } else if (mStateTimer >= field_0x250) {
@@ -225,10 +225,10 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                     turn = true;
                 }
                 s32 dir = fn_801CF1B0(turn, 120.0f, 0.1f);
-                if (dir == field_0x98) {
+                if (dir == mDir_0x98) {
                     fn_801B9DD4(0);
                 } else {
-                    field_0x98 = dir;
+                    mDir_0x98 = dir;
                     fn_801B9DD4(2);
                 }
             }
@@ -242,10 +242,10 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 turn = true;
             }
             s32 dir = fn_801CF1B0(turn, 120.0f, 0.1f);
-            if (dir == field_0x98) {
+            if (dir == mDir_0x98) {
                 fn_801B9DD4(0);
             } else {
-                field_0x98 = dir;
+                mDir_0x98 = dir;
                 fn_801B9DD4(2);
             }
         }
@@ -279,7 +279,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 dir = 3;
                 break;
             }
-            if (field_0x98 == dir) {
+            if (mDir_0x98 == dir) {
                 fn_801B9DD4(0);
             } else {
                 fn_801B9DD4(2);
@@ -294,7 +294,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->field_0x98 = 2;
+                    actor->mDir_0x98 = 2;
                 }
             }
             mAlive = false;
@@ -328,7 +328,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
 void Gibdo_804A3BF8::die_0x24() {
     if (mFlags & 0x4000) {
         ActorBase_804A5770::die_0x24();
-        JPABaseEmitter* emitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32B, 1, 1, NULL, NULL, true, 1.0f);
+        JPABaseEmitter* emitter = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32B, 1, 1, NULL, NULL, true, 1.0f);
         if (emitter != NULL) {
             JUtility::TColor color = gGameRoot2_8053AB10->field_0x2c->field_0x4;
             emitter->setColorRGB(color.r, color.g, color.b);
@@ -341,7 +341,7 @@ void Gibdo_804A3BF8::die_0x24() {
 void Gibdo_804A3BF8::move_0x98() {
     bool step = false;
     const u32 hits = ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR;
-    if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || field_0xfc != 5))) {
+    if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || mHitType_0xfc != 5))) {
         step = true;
     }
     if (step) {
@@ -352,7 +352,7 @@ void Gibdo_804A3BF8::move_0x98() {
 void Gibdo_804A3BF8::updateBehavior_0x9C(u8 mapHit) {
     bool step = false;
     const u32 hits = ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR;
-    if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || field_0xfc != 5))) {
+    if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || mHitType_0xfc != 5))) {
         step = true;
     }
     if (step) {

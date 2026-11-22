@@ -23,7 +23,7 @@ public:
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
-    /* 0x24C */ s32 field_0x24c; // draw's frame base: field_0x98 * 4 (init), then a table value (update)
+    /* 0x24C */ s32 field_0x24c; // draw's frame base: mDir_0x98 * 4 (init), then a table value (update)
     /* 0x250 */ f32 field_0x250;
     /* 0x254 */ f32 field_0x254;
     /* 0x258 */ f32 field_0x258;

@@ -86,11 +86,11 @@ cls_8049EB8C::~cls_8049EB8C() {
 
 void cls_8049EB8C::init() {
     cls_8049D140::init();
-    field_0x238 = field_0x90 & 1;
-    field_0x248 = (field_0x90 >> 22) & 0x1f;
+    field_0x238 = mSpawnParam_0x90 & 1;
+    field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1f;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
     mAnim.fn_801D2608(lbl_8049EB80, 3);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1F14(0.0f);
@@ -99,7 +99,7 @@ void cls_8049EB8C::init() {
     if (field_0x238 == 1 && isScreenFlagSet_0x34()) {
         mDrawEnabled = true;
         JGeometry::TVec3f pos = mPos;
-        field_0x288 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+        field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
         fn_80132454(2);
     }
 }
@@ -132,7 +132,7 @@ void cls_8049EB8C::update() {
         field_0x244++;
         if (field_0x244 >= 40) {
             JGeometry::TVec3f pos = mPos;
-            field_0x288 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+            field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
             mDrawEnabled = true;
             startSound_801F0E34(0x40090, 0);
             fn_80132454(2);
@@ -153,13 +153,13 @@ void cls_8049EB8C::update() {
         }
         break;
     case 3:
-        fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             fn_80132454(2);
         }
         break;
     case 6:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -173,7 +173,7 @@ void cls_8049EB8C::update() {
         }
         break;
     case 9:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -183,14 +183,14 @@ void cls_8049EB8C::update() {
         lbl_8053AD70->fn_8037AE00();
         break;
     case 15:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
         }
         break;
     case 19:
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             fn_8011921C()->fn_801183BC();
@@ -201,7 +201,7 @@ void cls_8049EB8C::update() {
     }
     setEmitterPos_8013CB44(field_0x288, &mPos, 0, -1, true);
     if (field_0x230 != 0) {
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
     }
     mAnim.fn_801D1C18();
     if (mDrawEnabled) {
@@ -293,33 +293,33 @@ s32 cls_8049EB8C::vfunc_0x5C() {
 void cls_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D9, 0);
         break;
     case 2:
         field_0x23c = -1;
         break;
     case 4:
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D9, 0);
         break;
     case 5: {
         JGeometry::TVec3f pos = mPos;
-        field_0x288 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
+        field_0x288 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
         mDrawEnabled = true;
         startSound_801F0E34(0x40090, 0);
         break;
     }
     case 6: {
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
         u16 msg = 0x2B5;
         if (field_0x238 == 1) {
             msg = 0x2B6;
         }
-        fn_8038BD08(0, msg, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
+        fn_8038BD08(0, msg, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
         fn_8011921C()->fn_80118454();
         break;
     }
@@ -330,9 +330,9 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         gAudioMgr_8053AF80->fn_80458FF0(0x01000021, 0, 0);
         break;
     case 9: {
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
-        fn_8038BD08(0, 0x2B0, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
+        fn_8038BD08(0, 0x2B0, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
         fn_8011921C()->fn_80118454();
         break;
     }
@@ -344,7 +344,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     case 12: {
         JGeometry::TVec3f pos = mPos;
         pos.y -= 20.0f;
-        getActorManager_801F856C()->spawnActor_801F9484('ALCE', field_0x4, &pos, 3, -1, -1);
+        getActorManager_801F856C()->spawnActor_801F9484('ALCE', mLayer_0x4, &pos, 3, -1, -1);
         break;
     }
     case 13:
@@ -359,9 +359,9 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         break;
     }
     case 15: {
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
-        fn_8038BD08(0, 0x2B8, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
+        fn_8038BD08(0, 0x2B8, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
         fn_8011921C()->fn_80118454();
         break;
     }
@@ -382,9 +382,9 @@ void cls_8049EB8C::fn_80132454(s32 index) {
     case 19: {
         mAnim.startAnim_801D22DC(0, 2, false);
         mAnim.fn_801D1F14(0.0f);
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
-        fn_8038BD08(0, 0x2B9, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
+        fn_8038BD08(0, 0x2B9, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
         fn_8011921C()->fn_80118454();
         break;
     }
@@ -392,8 +392,8 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         if (field_0x288 != NULL) {
             field_0x288->becomeInvalidEmitter();
         }
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32, 0, 0, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D9, 0);
         mDrawEnabled = false;
         startSound_801F0E34(0x40090, 0);
@@ -508,13 +508,14 @@ void cls_8049EB8C::fn_801321E4() {
 // the order of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py).
 // Checks for a talking player and opens message 0x2B6 for `player`, 64 units above the fairy.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 s32 cls_8049EB8C::talkTo() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+    fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
     s32 player = fn_8022FD8C(mSerial);
     if (player < 0) {
         return -1;
@@ -524,7 +525,7 @@ s32 cls_8049EB8C::talkTo() {
     }
     JGeometry::TVec3f pos = mPos;
     pos.y -= 64.0f;
-    if (fn_8038AD24(player, 0x2B6, mSerial, field_0x4, pos, 0x28)) {
+    if (fn_8038AD24(player, 0x2B6, mSerial, mLayer_0x4, pos, 0x28)) {
         return player;
     }
     return -1;
@@ -532,6 +533,7 @@ s32 cls_8049EB8C::talkTo() {
 
 // State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
 // in a row 20 units apart at y + 64.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 20-line definition): split out only where the .sdata2 order needs it.
 void cls_8049EB8C::placeAtBarrier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
@@ -554,6 +556,7 @@ void cls_8049EB8C::placeAtBarrier() {
 }
 
 // Spawns a soldier ('SLR1') at a random place in an 80 x 32 box, y + 180 from the barrier.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 void cls_8049EB8C::spawnSoldier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
@@ -567,7 +570,7 @@ void cls_8049EB8C::spawnSoldier() {
     pos.y += 180.0f;
     pos.x += 80.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
     pos.y += 32.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
-    getActorManager_801F856C()->spawnActor_801F9484('SLR1', field_0x4, &pos, 0x102, -1, -1);
+    getActorManager_801F856C()->spawnActor_801F9484('SLR1', mLayer_0x4, &pos, 0x102, -1, -1);
 }
 
 s32 cls_8049EB8C::vfunc_0x58() {

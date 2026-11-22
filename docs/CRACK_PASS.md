@@ -140,3 +140,129 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 - **Verification:** unit NonMatching; full link SHA-1 OK; reviewed 2026-11-07
   (pool-owners round 2). The pattern came in with the Argon act_hyrule_castle_barrier
   merge (e8647783) and was tagged when it was moved to the bottom of the file.
+
+## Pool helpers that fail rule R2 (owner decision 2026-11-22)
+
+- **Trick:** 99 plain helper functions, each inlined at one call site and longer
+  than one statement, written where the original's `.sdata2` order says code was
+  generated (docs/analysis/POOL_POLICY.md). The pool proves a dropped function
+  existed there; it does not fix where that function's body starts and ends, so
+  these bodies are code split out where the pool needs it. Each definition carries
+  `// FAKEMATCH(crack-pass): pool helper failing R2 ...` (docs/RULES_CARD.md
+  "Pool helpers (R2)").
+- **Why:** turning one into `inline` moves its literals into its caller's block and
+  shifts the pool; the functions in the table's last column (measured alone, on
+  an-pool 9c16afc25, `functionRelocDiffs=all`) leave 100 %. All of them together
+  hold about 171 functions (POOL_POLICY section 3; the per-helper figures overlap).
+- **Honest fix would need:** evidence that fixes the body's extent: a second inlined
+  copy of the same code in the asm, a one-statement body that creates the run by
+  itself, or the identical body in another unit. Failing that, the helper becomes
+  `inline` (or is folded into its caller) and the functions listed drop until the
+  pool order has another explanation.
+- **Pending owner: Matching units.** None: all 99 sit in NonMatching units
+  (configure.py, 2026-11-22), so all are tagged and no unit had to change status.
+- **Verification (2026-11-22):** `python3 configure.py && ninja` SHA-1 OK;
+  `tools/names_compare.py` against the report before the tags: no drops (10,346 at
+  100 %); `tools/gate.py --all-units` ok.
+
+| unit | helper | lines | functions it holds at 100 % alone |
+|---|---|---:|---|
+| act_block | `Block_804A7A10::keepsMoving` | 11 | `fn_8028D4DC` |
+| act_bombchu | `Bombchu_804AB464::faceMoveDirection` | 15 | `fn_8032506C__16Bombchu_804AB464Fv`, `draw__16Bombchu_804AB464Fv`, `vfunc_0x54__16Bombchu_804AB464Fv`, `init__16Bombchu_804AB464Fv` |
+| act_cannon | `findOwner` | 15 | `init__15Cannon_8049CCF0Fv`, `fn_801080B8__15Cannon_8049CCF0CFv` |
+| act_cannon | `setBounceHeight` | 4 | `draw__15Cannon_8049CCF0Fv`, `init__15Cannon_8049CCF0Fv`, `fn_801080B8__15Cannon_8049CCF0CFv`, `__ct__15Cannon_8049CCF0Fv` |
+| act_cannon | `updateRecoil` | 37 | `draw__15Cannon_8049CCF0Fv`, `init__15Cannon_8049CCF0Fv`, `fn_801080B8__15Cannon_8049CCF0CFv` |
+| act_cannon | `updateRise` | 8 | `init__15Cannon_8049CCF0Fv`, `fn_801080B8__15Cannon_8049CCF0CFv` |
+| act_fairy_invincible | `setUniformScaleMtx` | 14 | (none alone; needed jointly with the unit's other helpers) |
+| act_fish | `Fish_804AC658::stopSwim` | 6 | (none alone; needed jointly with the unit's other helpers) |
+| act_force_gem_winged | `WingedForceGem_804AB098::updateRise` | 32 | (none alone; needed jointly with the unit's other helpers) |
+| act_four_person_pull_switch | `FourPersonPullSwitch_804AE230::checkAllPulled` | 19 | `draw__29FourPersonPullSwitch_804AE230Fv`, `update__29FourPersonPullSwitch_804AE230Fv` |
+| act_four_sword_demo | `cls_8049DA0C::checkPlayers` | 22 | (none alone; needed jointly with the unit's other helpers) |
+| act_four_sword_demo | `cls_8049DA0C::raisePlayers` | 13 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
+| act_four_sword_demo | `cls_8049DA0C::showMessage` | 7 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv`, `__ct__12cls_8049DA0CFv` |
+| act_four_sword_demo | `cls_8049DA0C::spawnPlayerEffects` | 11 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
+| act_four_sword_demo | `cls_8049DA0C::spreadPlayers` | 16 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
+| act_gambling_shop | `GamblingShop_804AAA70::swapTwoChests` | 23 | (none alone; needed jointly with the unit's other helpers) |
+| act_great_fairy_spfr | `cls_8049EB8C::placeAtBarrier` | 20 | `fn_801321E4__12cls_8049EB8CFv`, `init__12cls_8049EB8CFv` |
+| act_great_fairy_spfr | `cls_8049EB8C::spawnSoldier` | 15 | `fn_801321E4__12cls_8049EB8CFv`, `draw__12cls_8049EB8CFv`, `init__12cls_8049EB8CFv` |
+| act_great_fairy_spfr | `cls_8049EB8C::talkTo` | 21 | `fn_801321E4__12cls_8049EB8CFv` |
+| act_ice_melted_by_four_players | `IceMeltedByFourPlayers_804AE888::spawnMeltEmitter` | 5 | `fn_80378680__31IceMeltedByFourPlayers_804AE888Fv`, `update__31IceMeltedByFourPlayers_804AE888Fv`, `init__31IceMeltedByFourPlayers_804AE888Fv` |
+| act_ice_wall | `IceWall_8049DE18::hitByFire` | 14 | (none alone; needed jointly with the unit's other helpers) |
+| act_ice_wall | `IceWall_8049DE18::hitByWeapon` | 30 | (none alone; needed jointly with the unit's other helpers) |
+| act_ice_wall | `IceWall_8049DE18::startMelting` | 15 | `draw__16IceWall_8049DE18Fv`, `init__16IceWall_8049DE18Fv`, `__ct__16IceWall_8049DE18Fv` |
+| act_icicle | `Icicle_8049CFC8::fall` | 4 | `fn_8010B284__15Icicle_8049CFC8Fv`, `fn_8010B40C__15Icicle_8049CFC8Fl`, `draw__15Icicle_8049CFC8Fv`, `init__15Icicle_8049CFC8Fv`, `__ct__15Icicle_8049CFC8Fv` |
+| act_maiden_demo | `cls_8049D740::moveToGoal` | 15 | `fn_80112654__12cls_8049D740Fl`, `draw__12cls_8049D740Fv` |
+| act_princess_zelda | `cls_8049CEE0::approachPlayerSide` | 19 | `fn_80109534__12cls_8049CEE0Fv`, `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
+| act_princess_zelda | `cls_8049CEE0::followPlayerSide` | 25 | `fn_80109534__12cls_8049CEE0Fv`, `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
+| act_princess_zelda | `cls_8049CEE0::stepSpeed` | 7 | `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
+| act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::flyToGoal` | 24 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
+| act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::lowerPlayers` | 13 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_8010F7EC__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
+| act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::sinkToPlayer` | 8 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_8010F7EC__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `init__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
+| act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::standBelow` | 5 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
+| act_rainbow_bridge | `cls_8049E610::isPlayerOn` | 26 | `init__12cls_8049E610Fv` |
+| act_room_transfer_lift | `cls_8049CC40::isInside` | 14 | `update__12cls_8049CC40Fv` |
+| act_score | `Score_804AF4C0::updateState1` | 10 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
+| act_score | `Score_804AF4C0::updateState2` | 7 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
+| act_seesaw_lift | `SeesawLift_804AD348::isPlayerInside` | 9 | `fn_80358F98__19SeesawLift_804AD348Fv`, `fn_803597EC__19SeesawLift_804AD348Fv`, `fn_8035A210__19SeesawLift_804AD348Fv`, `fn_8035AC84__19SeesawLift_804AD348Fl`, `fn_8035AE9C__19SeesawLift_804AD348Fl` |
+| act_shadow_link_demo | `cls_8049DB90::hopDown` | 8 | `fn_8011B878__12cls_8049DB90Fl` |
+| act_shadow_link_demo | `cls_8049DB90::spawnFlash` | 5 | `fn_8011B878__12cls_8049DB90Fl` |
+| act_shovel_old_timer | `ShovelOldTimer_804AAB40::findDigSpot` | 31 | `draw__23ShovelOldTimer_804AAB40Fv`, `init__23ShovelOldTimer_804AAB40Fv` |
+| act_small_key | `SmallKey_804A8CD8::bounceOffTile` | 19 | `fn_802C24A8__17SmallKey_804A8CD8Fv` |
+| act_small_key | `SmallKey_804A8CD8::dropAtPlayer` | 37 | (none alone; needed jointly with the unit's other helpers) |
+| act_snow_wall | `cls_8049E8A0::melt` | 19 | `update__12cls_8049E8A0Fv`, `init__12cls_8049E8A0Fv`, `__ct__12cls_8049E8A0Fv` |
+| act_snow_wall | `cls_8049E8A0::shrink` | 16 | `update__12cls_8049E8A0Fv`, `init__12cls_8049E8A0Fv` |
+| act_snowball | `cls_8049D020::chase` | 26 | `update__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
+| act_snowball | `cls_8049D020::dropRupee` | 15 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
+| act_snowball | `cls_8049D020::followRail` | 13 | (none alone; needed jointly with the unit's other helpers) |
+| act_snowball | `cls_8049D020::grow` | 19 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
+| act_snowball | `cls_8049D020::spawnBurst` | 7 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
+| act_strange_block | `StrangeBlock_804AC2D8::blockedAtFullReach` | 10 | `fn_8033D4AC`, `init__21StrangeBlock_804AC2D8Fv` |
+| act_tingle_first | `cls_804AADD8::selectNearestPlayer` | 23 | `draw__12cls_804AADD8Fv` |
+| act_vaati_demo | `cls_8049D940::updateDescent` | 10 | `update__12cls_8049D940Fv` |
+| act_vaati_time_up | `VaatiTimeUp_804ACCC0::pickTarget` | 10 | `draw__20VaatiTimeUp_804ACCC0Fv` |
+| act_vaati_time_up | `VaatiTimeUp_804ACCC0::steer` | 12 | `draw__20VaatiTimeUp_804ACCC0Fv` |
+| act_warp | `updateSandHole` | 18 | `draw__13Warp_804A6DC8Fv` |
+| act_warp_cannon | `WarpCannon_8049EAE0::allPlayersIn` | 8 | (none alone; needed jointly with the unit's other helpers) |
+| act_warp_cannon | `WarpCannon_8049EAE0::findPlayer` | 15 | (none alone; needed jointly with the unit's other helpers) |
+| act_warp_cannon | `WarpCannon_8049EAE0::fireRecoil` | 26 | `draw__19WarpCannon_8049EAE0Fv`, `__ct__19WarpCannon_8049EAE0Fv` |
+| act_warp_cannon | `WarpCannon_8049EAE0::landPlayers` | 12 | (none alone; needed jointly with the unit's other helpers) |
+| act_warp_cannon | `WarpCannon_8049EAE0::liftPlayers` | 7 | (none alone; needed jointly with the unit's other helpers) |
+| act_warp_cannon | `WarpCannon_8049EAE0::movePlayers` | 8 | (none alone; needed jointly with the unit's other helpers) |
+| act_warp_cannon | `WarpCannon_8049EAE0::recoil` | 13 | `draw__19WarpCannon_8049EAE0Fv` |
+| act_warp_cannon | `WarpCannon_8049EAE0::resetIfAllPlayersReady` | 8 | (none alone; needed jointly with the unit's other helpers) |
+| act_zora_escort | `ZoraEscort_8049DF78::findNearbyPlayer` | 17 | (none alone; needed jointly with the unit's other helpers) |
+| act_zora_escort | `ZoraEscort_8049DF78::hasNearbyBari` | 21 | (none alone; needed jointly with the unit's other helpers) |
+| act_zora_escort | `ZoraEscort_8049DF78::stepToPlayer` | 24 | (none alone; needed jointly with the unit's other helpers) |
+| act_zora_escort_goal | `ZoraEscortGoal_8049E424::spawnEmitters` | 6 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `draw__23ZoraEscortGoal_8049E424Fv`, `init__23ZoraEscortGoal_8049E424Fv`, `__ct__23ZoraEscortGoal_8049E424Fv` |
+| act_zora_escort_goal | `ZoraEscortGoal_8049E424::walkRail` | 25 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `init__23ZoraEscortGoal_8049E424Fv` |
+| tu_8010089C | `WhackAMoleShop_8049C8EC::showTimer` | 10 | `draw__23WhackAMoleShop_8049C8ECFv`, `init__23WhackAMoleShop_8049C8ECFv` |
+| tu_80113788 | `cls_8049D83C::positionPlayers` | 12 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
+| tu_80113788 | `cls_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__12cls_8049D83CFv` |
+| tu_80113788 | `cls_8049D83C::spawnEmitters` | 12 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
+| tu_80113788 | `cls_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
+| tu_80113788 | `cls_8049D83C::updateCameraFocus` | 44 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
+| tu_80118384 | `spawnFadeEmitters` | 7 | `fn_801194C4__12cls_80119E5CFv`, `fn_80119628__12cls_80119E5CFv`, `fn_80119998__12cls_80119E5CFlllllll` |
+| tu_8011CEC8 | `cls_8049DD68::setOverlayRect` | 21 | `update__12cls_8049DD68Fv` |
+| tu_8011CEC8 | `cls_8049DD68::startScroll` | 9 | `update__12cls_8049DD68Fv`, `init__12cls_8049DD68Fv` |
+| tu_801213EC | `EscortBase_8049E0C8::respawnLifeMeters` | 9 | (none alone; needed jointly with the unit's other helpers) |
+| tu_801213EC | `EscortBase_8049E0C8::spawnLifeMeter` | 14 | (none alone; needed jointly with the unit's other helpers) |
+| tu_80125B58 | `cls_8049E350::startSignAnim` | 12 | `fn_80125BF4__12cls_8049E350Fv`, `fn_80125C58__12cls_8049E350Fb`, `draw__12cls_8049E350Fv`, `init__12cls_8049E350Fv` |
+| tu_80125B58 | `cls_8049E350::talkTo` | 5 | `fn_80125BF4__12cls_8049E350Fv`, `draw__12cls_8049E350Fv` |
+| tu_8013394C | `cls_8049ED30::spawnEmitters` | 8 | `init__12cls_8049ED30Fv` |
+| tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
+| tu_8018EB94 | `cls_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
+| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `fn_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `fn_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
+| tu_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
+| tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `fn_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `fn_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `fn_8030DFE8__15Camera_804AA9E4Fb` |
+| tu_8034AA40 | `markRandomCucco` | 8 | `fn_8034AAA0__12cls_804AC8C0Fv`, `vfunc_0x10__12cls_804AC8C0Fv`, `init__12cls_804AC8C0Fv` |
+| tu_80362634 | `cls_804ADF28::spawnRoomEmitters` | 8 | `fn_80362680__12cls_804ADF28Fv`, `fn_803628D4__12cls_804ADF28Fv`, `fn_80362B74__12cls_804ADF28Fv`, `fn_80363360__12cls_804ADF28Fv`, `fn_80363664__12cls_804ADF28Fv`, `fn_80364340__12cls_804ADF28Fv`, `fn_80364900__12cls_804ADF28Fv`, `fn_80364F60__12cls_804ADF28Fv`, `fn_8036509C__12cls_804ADF28Fv`, `fn_80365220__12cls_804ADF28Fv`, `fn_80365274__12cls_804ADF28Fv`, `fn_803653EC__12cls_804ADF28Fv` |
+| tu_8036FB60 | `cls_804AE4B0::guidePlayer_80370764` | 6 | `fn_803703C8__12cls_804AE4B0Fv`, `fn_80370508__12cls_804AE4B0Fv`, `fn_80370764__12cls_804AE4B0Fv`, `fn_80370A7C__12cls_804AE4B0Fv`, `fn_8037100C__12cls_804AE4B0Fv`, `fn_80371284__12cls_804AE4B0Fv` |
+| tu_80376FA0 | `cls_804AE7D8::rewriteTiles` | 22 | `init__12cls_804AE7D8Fv` |
+| tu_80376FA0 | `cls_804AE7D8::setBoxes` | 10 | `init__12cls_804AE7D8Fv` |
+| tu_80376FA0 | `cls_804AE7D8::spawnBreakEmitters` | 22 | `init__12cls_804AE7D8Fv` |
+| tu_80376FA0 | `cls_804AE7D8::touchesPlayer` | 23 | `init__12cls_804AE7D8Fv` |
+| tu_803B7DCC | `setFrameBufferOrtho` | 5 | `fn_803B7DCC__12cls_804AFAB0Fv`, `fn_803B7E64__12cls_804AFAB0Fv` |
+| tu_803E1668 | `cls_804B0B00::drawFade` | 30 | `fn_803E2A20__12cls_804B0B00Fv`, `fn_803E3564__12cls_804B0B00Fv`, `fn_803E3CB0__12cls_804B0B00Fv`, `fn_803E4344__12cls_804B0B00Fv`, `fn_803E4650__12cls_804B0B00Fv`, `fn_803E4940__12cls_804B0B00Fv`, `fn_803E8210__12cls_804B0B00Fv`, `fn_803E9A20__12cls_804B0B00Fv`, `fn_803E9EE8__12cls_804B0B00Fv`, `fn_803EDA2C__12cls_804B0B00Fv`, `fn_803EDBF0__12cls_804B0B00FUc` |
+| tu_803F0A54 | `ConnectScreen_804B0F10::drawFade` | 26 | `fn_803F1C70__22ConnectScreen_804B0F10Fv`, `fn_803F267C__22ConnectScreen_804B0F10Fv`, `fn_803F2B78__22ConnectScreen_804B0F10Fv`, `fn_803F3324__22ConnectScreen_804B0F10Fv`, `fn_803F35B0__22ConnectScreen_804B0F10Fv`, `fn_803F38A4__22ConnectScreen_804B0F10Fv`, `fn_803F715C__22ConnectScreen_804B0F10Fv`, `fn_803F8AE4__22ConnectScreen_804B0F10Fv`, `fn_803F8FBC__22ConnectScreen_804B0F10Fv`, `fn_803FC46C__22ConnectScreen_804B0F10Fv`, `fn_803FC5E4__22ConnectScreen_804B0F10FUc` |
+| tu_8042165C | `cls_804B146C::updateGaugeBar` | 9 | `fn_80424148__12cls_804B146CFlb` |
+| tu_8042E964 | `cls_804B1634::scaleFrames` | 21 | `fn_80431174__12cls_804B1634FUc`, `fn_804317AC__12cls_804B1634Fv` |

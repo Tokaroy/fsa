@@ -73,7 +73,7 @@ void cls_802150B8::fn_80214E50() {
     field_0x4.field_0x4.x = x;
     field_0x4.field_0x4.y = y;
     field_0x4.field_0x4.z = z;
-    field_0x0 = spawnEmitter_8013CC50(mOwner->field_0x4, &pos, 0x33B, 0, 1, NULL, &field_0x4, true, 1.0f);
+    field_0x0 = spawnEmitter_8013CC50(mOwner->mLayer_0x4, &pos, 0x33B, 0, 1, NULL, &field_0x4, true, 1.0f);
     if (field_0x0 != NULL) {
         field_0x0->setStatus(JPAEMIT_Immortal);
     }
@@ -113,8 +113,8 @@ void cls_802150B8::fn_80214AF8() {
     static_cast<EnemyBase_804A4808*>(mOwner)->fn_801CDC8C(0x4000E);
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
-    if (fn_801CD2F8(mOwner->field_0x4)) {
-        field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->field_0x4, &pos, 0, -1, -1);
+    if (fn_801CD2F8(mOwner->mLayer_0x4)) {
+        field_0x30 = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_SLEF, mOwner->mLayer_0x4, &pos, 0, -1, -1);
     } else {
         f32 lift = depthLift(&pos);
         f32 x = pos.x;
@@ -125,7 +125,7 @@ void cls_802150B8::fn_80214AF8() {
         field_0x1c.field_0x4.x = x;
         field_0x1c.field_0x4.y = y;
         field_0x1c.field_0x4.z = z;
-        field_0x18 = spawnEmitter_8013CC50(mOwner->field_0x4, &pos, 0x565, 0, 1, NULL, &field_0x1c, true, 0.5f);
+        field_0x18 = spawnEmitter_8013CC50(mOwner->mLayer_0x4, &pos, 0x565, 0, 1, NULL, &field_0x1c, true, 0.5f);
     }
     mOwner->startSound_801F0E34(0x4000E, 0);
 }
@@ -133,7 +133,7 @@ void cls_802150B8::fn_80214AF8() {
 void cls_802150B8::fn_80214994() {
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += -16.0f;
-    if (fn_801CD2F8(mOwner->field_0x4)) {
+    if (fn_801CD2F8(mOwner->mLayer_0x4)) {
         s32 serial = field_0x30;
         if (serial >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -210,7 +210,7 @@ void cls_802150B8::fn_802146A4() const {
 
 void cls_802150B8::fn_80214578() {
     JGeometry::TVec3f pos = mOwner->mPos;
-    switch (mOwner->field_0x98) {
+    switch (mOwner->mDir_0x98) {
     case 0:
         pos.x -= 24.0f;
         break;
@@ -226,13 +226,13 @@ void cls_802150B8::fn_80214578() {
         pos.y += 18.0f;
         break;
     }
-    spawnEmitter_8013CC50(mOwner->field_0x4, &pos, 0xCB, 0, 1, NULL, NULL, true, 1.0f);
-    spawnEmitter_8013CC50(mOwner->field_0x4, &pos, 0xCC, 0, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mOwner->mLayer_0x4, &pos, 0xCB, 0, 1, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mOwner->mLayer_0x4, &pos, 0xCC, 0, 1, NULL, NULL, true, 1.0f);
 }
 
 void cls_802150B8::fn_802144F0() {
     mOwner->startSound_801F0E34(0x400C3, 0);
     JGeometry::TVec3f pos = mOwner->mPos;
     pos.y += 6.0f;
-    spawnEmitter_8013CC50(mOwner->field_0x4, &pos, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
+    spawnEmitter_8013CC50(mOwner->mLayer_0x4, &pos, 0x3CF, 0, 0, NULL, NULL, true, 1.0f);
 }

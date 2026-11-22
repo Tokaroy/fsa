@@ -100,11 +100,11 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             }
             dx *= 3.0f;
             dy *= 3.0f;
-            field_0x3c.x = dx;
-            field_0x3c.y = dy;
+            mVel_0x3c.x = dx;
+            mVel_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 fn_80230FD0(player, 0x20002);
-                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
+                fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             mFlags |= 0x80000;
@@ -128,7 +128,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
     case 0x26:
     case 0x27:
     case 0x28:
-        switch (field_0x98) {
+        switch (mDir_0x98) {
         case 0:
             x0 = 7.0f;
             y0 = -8.0f;
@@ -171,7 +171,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         mBox.set(x0, y0, x1, y1);
         for (p = 0; p < 4; p++) {
             if (p == fn_801F285C(&where, NULL, true, p)) {
-                if (fn_801D0020(&mPos, p, false) == field_0x98) {
+                if (fn_801D0020(&mPos, p, false) == mDir_0x98) {
                     if (locked) {
                         fn_8023B6CC(p);
                         fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
@@ -188,7 +188,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         }
         mBox.set(savedX0, savedY0, savedX1, savedY1);
         if (hit) {
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 hitX = 8.0f + mPos.x;
                 break;
@@ -213,11 +213,11 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             }
             dx *= 3.0f;
             dy *= 3.0f;
-            field_0x3c.x = dx;
-            field_0x3c.y = dy;
+            mVel_0x3c.x = dx;
+            mVel_0x3c.y = dy;
             if (field_0x1dc.fn_801EAC20(player)) {
                 startSound_801F0E34(0x400D1, 0);
-                fn_801CB4A4(field_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
+                fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
             fn_801C3B7C(0x20);
             return false;
@@ -247,7 +247,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             return false;
         }
         if (!locked) {
-            JGeometry::TVec3f savedVel = field_0x3c;
+            JGeometry::TVec3f savedVel = mVel_0x3c;
             for (p = 0; p < 4; p++) {
                 s32 flag;
                 if (p == fn_801F285C(NULL, &flag, true, p)) {
@@ -262,19 +262,19 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x338)->x;
                 JGeometry::TVec3f d(dx, dy, 0.0f);
                 d.normalize();
-                field_0x3c.set(savedVel);
+                mVel_0x3c.set(savedVel);
                 d.scale(16.0f);
-                field_0x3c.add(d);
-                field_0x3c.z = 0.0f;
-                field_0xf8 = 0;
+                mVel_0x3c.add(d);
+                mVel_0x3c.z = 0.0f;
+                mKnockbackKind_0xf8 = 0;
                 if (fn_8021D020() && field_0x564 == 2) {
                     mFlags |= 0x4000000;
-                    field_0xd8 = 0x30;
-                    field_0xdc = 0x30;
+                    mHitTimer_0xd8 = 0x30;
+                    mHitTimerStart_0xdc = 0x30;
                 } else {
                     mFlags &= ~0x4000000;
-                    field_0xd8 = 0x18;
-                    field_0xdc = 0x18;
+                    mHitTimer_0xd8 = 0x18;
+                    mHitTimerStart_0xdc = 0x18;
                 }
                 fn_801C3B7C(0x21);
             }
@@ -313,8 +313,8 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             }
                             dx *= 3.0f;
                             dy *= 3.0f;
-                            field_0x3c.x = dx;
-                            field_0x3c.y = dy;
+                            mVel_0x3c.x = dx;
+                            mVel_0x3c.y = dy;
                             fn_801C3B7C(0x20);
                             mFlags |= 0x80000;
                         }
@@ -354,7 +354,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                                     v.x = out.x;
                                     v.y = out.y;
                                 }
-                                fn_80238548(j, field_0x114, &v, 2);
+                                fn_80238548(j, mParamAtcp_0x114, &v, 2);
                             } else {
                                 result &= ~bit;
                             }
@@ -388,7 +388,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
                     return false;
             }
             JGeometry::TVec3f from(mPos);
-            from -= other->field_0x3c;
+            from -= other->mVel_0x3c;
             hit = fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
             if (hit) {
                 other->field_0x164 = 1;
@@ -418,19 +418,19 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
     JGeometry::TBox2f box;
     fn_801F317C(&box);
     JGeometry::TVec2f pos2;
-    player = fn_8023AE34(&box, field_0x4, &pos2);
+    player = fn_8023AE34(&box, mLayer_0x4, &pos2);
     if (player >= 0) {
         arrow = fn_801CC820(player, &arrowVel);
     } else {
-        player = fn_8023AA18(&box, field_0x4, &pos2);
+        player = fn_8023AA18(&box, mLayer_0x4, &pos2);
         if (player >= 0) {
             direct = true;
         } else {
-            player = fn_8023AC74(&box, field_0x4, &pos2);
+            player = fn_8023AC74(&box, mLayer_0x4, &pos2);
             if (player >= 0) {
                 bomb = fn_801CC538(player, &pos2, &bombVel, &outPlayer);
             } else {
-                player = fn_8023AD54(&box, field_0x4, &pos2);
+                player = fn_8023AD54(&box, mLayer_0x4, &pos2);
                 if (player >= 0) {
                     fn_801CC640(player, &outPlayer, &arrowVel);
                 }
@@ -469,10 +469,10 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
 // FIXME(shotgun): the airborne test is materialised as a bool in the original (mfcr/extrwi).
 u8 ShadowLink2_804A43E8::fn_801C9CB0() {
     u8 hit = 0;
-    if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && field_0x80.f.x - field_0x80.i.x > 0.0f && field_0x80.f.y - field_0x80.i.y > 0.0f) {
+    if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.f.x - mMapBox_0x80.i.x > 0.0f && mMapBox_0x80.f.y - mMapBox_0x80.i.y > 0.0f) {
         JGeometry::TVec3f savedPrev = mPrevPos;
         JGeometry::TVec3f savedPos = mPos;
-        u8 floorLayer = viewLayerFlag(field_0x4);
+        u8 floorLayer = viewLayerFlag(mLayer_0x4);
         bool lifted = false;
         if (mState == 0x1C && !(mPos.z <= 0.0f) && floorLayer != 0) {
             lifted = true;
@@ -498,7 +498,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
         } else if (hit && floorLayer != 0 && !(mFlags & ENEMY_FLAG_LANDED) && mPos.z <= 0.0f &&
                    __fabsf(mMapHitDir.y - -1.0f) < 0.001f && __fabsf(mPos.y - mPrevPos.y) < 0.001f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mFlags |= 0x10;
         }
     }

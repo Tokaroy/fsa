@@ -10,9 +10,9 @@
 static const u32 lbl_80541250[] = {3};
 
 void PlaySpecifiedSe_804A9F00::init() {
-    field_0x230 = ((u32)field_0x90 >> 26) & 1;
-    field_0x234 = field_0x90 & 0xFF;
-    field_0x238 = ((u32)field_0x90 >> 8) & 0xFFF;
+    field_0x230 = ((u32)mSpawnParam_0x90 >> 26) & 1;
+    field_0x234 = mSpawnParam_0x90 & 0xFF;
+    field_0x238 = ((u32)mSpawnParam_0x90 >> 8) & 0xFFF;
 }
 
 // Counts field_0x238 down, then (unless field_0x230 is set) calls

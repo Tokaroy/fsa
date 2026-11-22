@@ -22,8 +22,8 @@ public:
     // on a pit / water tile (3, 0xD, 0xE, 0x3B) it stops the block, sets mState 6 (sinking) and
     // records the tile in field_0x23c, returning false.
     // Not in the binary: plain functions that update inlines.
-    void holdPlayers(JGeometry::TBox2f* here);
-    bool checkGround();
+    void pool_80541740(JGeometry::TBox2f* here);
+    bool pool_80541738();
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234; // 0 at init
     /* 0x238 */ s32 field_0x238; // 0 at init

@@ -154,7 +154,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
                     hit = fn_80238548(i, 0, &v, 0x19);
                 } else if (sum.z > field_0x464.field_0xc.field_0x8) {
                     queued = true;
-                    hit = fn_80238548(i, field_0x114, &v, 0x17);
+                    hit = fn_80238548(i, mParamAtcp_0x114, &v, 0x17);
                 }
                 if (started || queued) {
                     fn_80230224(i, false);
@@ -183,7 +183,7 @@ void VaatiBoss_804A4958::fn_801E5754() {
 // FIXME(shotgun): written from asm
 void VaatiBoss_804A4958::fn_801E4D88() {
     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-    s32 count = getActorManager_801F856C()->fn_801F7818('HBMB', field_0x4, actors, -1);
+    s32 count = getActorManager_801F856C()->fn_801F7818('HBMB', mLayer_0x4, actors, -1);
 
     for (s32 i = 0; i < 0x10; i++) {
         cls_801D6A58* e = &field_0x308[i];
@@ -197,7 +197,7 @@ void VaatiBoss_804A4958::fn_801E4D88() {
                 if (act == NULL) {
                     e->fn_801D7874();
                     e->field_0x4 = 0;
-                } else if (!act->mAlive || act->field_0x4 != field_0x4 || act->field_0x94 == 1 || act->field_0x90 != 0) {
+                } else if (!act->mAlive || act->mLayer_0x4 != mLayer_0x4 || act->field_0x94 == 1 || act->mSpawnParam_0x90 != 0) {
                     e->fn_801D7874();
                     e->field_0x4 = 0;
                 } else {
@@ -218,11 +218,11 @@ void VaatiBoss_804A4958::fn_801E4D88() {
 
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = actors[i];
-        if (actor == NULL || !actor->mAlive || actor->field_0x94 == 1 || actor->field_0x90 != 0) {
+        if (actor == NULL || !actor->mAlive || actor->field_0x94 == 1 || actor->mSpawnParam_0x90 != 0) {
             continue;
         }
         if (hasBombEntry4(this, actor) && hasBombEntry5(this, actor)) {
-            actor->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+            actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
             for (s32 j = 0; j < 0x10; j++) {
                 if (field_0x308[j].field_0x0 == actor->mSerial && field_0x308[j].field_0x4 != 0 &&
                     field_0x308[j].field_0x5 != 0) {
@@ -263,7 +263,7 @@ void VaatiBoss_804A4958::fn_801E4D88() {
                 }
             } else if (!out.isZero()) {
                 if (out.z > 0.0f) {
-                    actor->field_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
+                    actor->mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
                     if (!hasBombEntry4(this, actor)) {
                         for (s32 j = 0; j < 0x10; j++) {
                             if (field_0x308[j].field_0x4 == 0) {

@@ -107,7 +107,7 @@ void cls_8049DA0C::init() {
     mAnim250.fn_801D1F14(0.0f);
     JGeometry::TVec3f pos;
     setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
-    mEmitter2a8 = spawnEmitter_8013CC50(field_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
+    mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // FIXME: 98.48 %, missing/extra; behaviour drift.
@@ -127,13 +127,13 @@ void cls_8049DA0C::update() {
     switch (field_0x234) {
     case 0:
         if (fn_8011921C()->field_0x0 == 0) {
-            fn_80239914(&box, field_0x4, mSerial);
+            fn_80239914(&box, mLayer_0x4, mSerial);
             if (checkPlayers()) {
                 if (field_0x231 != 0) {
                     break;
                 }
                 fn_8023077C();
-                fn_8022FE80(0, field_0x4, mSerial, 1, 0);
+                fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
                 fn_8022FD8C(mSerial);
                 if (showMessage()) {
                     fn_80117074(1);
@@ -144,7 +144,7 @@ void cls_8049DA0C::update() {
         }
         break;
     case 1:
-        fn_8022FE80(0, field_0x4, mSerial, 1, 0);
+        fn_8022FE80(0, mLayer_0x4, mSerial, 1, 0);
         if (fn_803865B8(0)) {
             switch (fn_8037EFB4(0)) {
             case 0:
@@ -214,9 +214,9 @@ void cls_8049DA0C::update() {
         if (fn_8011921C()->field_0x8 == lbl_80464A7C[9] - 30) {
             JGeometry::TVec3f pos;
             setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x102, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x103, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &pos, 0x104, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x102, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x103, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x104, 0, 0, NULL, NULL, true, 1.0f);
             field_0x238 = 0;
         }
         break;
@@ -243,11 +243,11 @@ void cls_8049DA0C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
     }
     JGeometry::TVec3f pos = mPos;
     pos.y += 6.0f;
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
         gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&pos, res, 0x179, NULL, 1.0f, 1.0f);
     }
@@ -296,8 +296,8 @@ inline void cls_8049DA0C::startState5() {
     s32 i;
     for (i = 0; i < 4; i++) {
         pos = *getPlayerPos_8023E724(i);
-        mEmitters288[i] = spawnEmitter_8013CC50(field_0x4, &pos, lbl_8053C740[i], 0, -1, NULL, NULL, true, 1.0f);
-        mEmitters298[i] = spawnEmitter_8013CC50(field_0x4, &pos, 0x475, 0, -1, NULL, NULL, true, 1.0f);
+        mEmitters288[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_8053C740[i], 0, -1, NULL, NULL, true, 1.0f);
+        mEmitters298[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x475, 0, -1, NULL, NULL, true, 1.0f);
     }
     for (i = 0; i < 4; i++) {
         fn_80230FD0(i, 0x20048);
@@ -326,8 +326,8 @@ inline void cls_8049DA0C::startState7() {
         pos = *getPlayerPos_8023E724(i);
         pos.x += 6.0f;
         pos.y += -29.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &pos, 0xcc, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0xcc, 0, 0, NULL, NULL, true, 1.0f);
     }
     releaseEmitters();
 }
@@ -390,6 +390,7 @@ void cls_8049DA0C::fn_80117074(s32 index) {
 // whose own copies the linker dropped. The original's .sdata2 has their literals ahead of
 // fn_80117074's, in the order of these functions from the bottom up (tools/pool.py).
 // Entering state 11: effect 0x33a 16 above each player.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 11-line definition): split out only where the .sdata2 order needs it.
 void cls_8049DA0C::spawnPlayerEffects() {
     JGeometry::TVec3f pos = mPos;
     for (s32 i = 0; i < 4; i++) {
@@ -398,11 +399,12 @@ void cls_8049DA0C::spawnPlayerEffects() {
         pos.y = playerPos->y;
         pos.z = playerPos->z;
         pos.y += -16.0f;
-        spawnEmitter_8013CC50(field_0x4, &pos, 0x33a, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33a, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
 // State 5: the players move apart sideways from field_0x244. True once the first is 24 away.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 16-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::spreadPlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
@@ -421,6 +423,7 @@ bool cls_8049DA0C::spreadPlayers() {
 }
 
 // State 9: the players rise to 80 above the actor. True once they are there.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::raisePlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
@@ -436,6 +439,7 @@ bool cls_8049DA0C::raisePlayers() {
 }
 
 // State 0: whether all four players stand in front of the actor, facing it.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::checkPlayers() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_8023561C(i)) {
@@ -460,12 +464,13 @@ bool cls_8049DA0C::checkPlayers() {
 }
 
 // State 0: opens the message (0x4b2 the first time, 0x4b3 after a "no").
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049DA0C::showMessage() {
     u32 msg = 0x4b2;
     if (field_0x230 != 0) {
         msg = 0x4b3;
     }
-    return fn_8038BD08(0, (u16)msg, field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
+    return fn_8038BD08(0, (u16)msg, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
 }
 
 void cls_8049DA0C::fn_80116E8C() {

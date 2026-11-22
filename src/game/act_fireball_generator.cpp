@@ -12,19 +12,19 @@ FireballGenerator_804A6660::FireballGenerator_804A6660() {
 void FireballGenerator_804A6660::init() {
     EnemyBase_804A4808::init();
     if (gGameRoot_8053AAF8->field_0x7e != 0) {
-        if ((field_0x90 >> 1) & 1) {
+        if ((mSpawnParam_0x90 >> 1) & 1) {
             mAlive = false;
             return;
         }
-    } else if (field_0x90 & 1) {
+    } else if (mSpawnParam_0x90 & 1) {
         mAlive = false;
         return;
     }
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
     mBox2.set(mBox);
-    field_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
+    mMapBox_0x80.set(1.0f, 1.0f, -1.0f, -1.0f);
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x380;
     mLife = 1000;
     mLifeBackup = mLife;

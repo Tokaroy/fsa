@@ -31,10 +31,10 @@ void Icicle_8049CFC8::init() {
     mBox2.i.y = -8.0f;
     mBox2.f.x = 8.0f;
     mBox2.f.y = 8.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
     mSprite.fn_801D2608(lbl_80539EE0, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
     mSprite.fn_801D1F14(0.0f);
@@ -51,16 +51,16 @@ inline bool Icicle_8049CFC8::checkAttack() {
     JGeometry::TBox2f box(mBox2);
     box.addPos(p);
     JGeometry::TVec3f out;
-    s32 player = fn_8023AA18(&box, field_0x4, &pt);
+    s32 player = fn_8023AA18(&box, mLayer_0x4, &pt);
     if (player >= 0) {
         return true;
-    } else if ((player = fn_8023AE34(&box, field_0x4, &pt)) >= 0) {
+    } else if ((player = fn_8023AE34(&box, mLayer_0x4, &pt)) >= 0) {
         fn_801CC820(player, NULL);
         return true;
-    } else if ((player = fn_8023AC74(&box, field_0x4, &pt)) >= 0) {
+    } else if ((player = fn_8023AC74(&box, mLayer_0x4, &pt)) >= 0) {
         fn_801CC538(player, &pt, &out, NULL);
         return true;
-    } else if ((player = fn_8023AD54(&box, field_0x4, &pt)) >= 0) {
+    } else if ((player = fn_8023AD54(&box, mLayer_0x4, &pt)) >= 0) {
         fn_801CC640(player, NULL, NULL);
         return true;
     }
@@ -74,7 +74,7 @@ inline bool Icicle_8049CFC8::checkPlayer() {
     box.i.y += mPos.y;
     box.f.y += mPos.y;
     JGeometry::TVec2f out;
-    if (fn_8023AB94(&box, field_0x4, &out) >= 0) {
+    if (fn_8023AB94(&box, mLayer_0x4, &out) >= 0) {
         return true;
     }
     return false;
@@ -103,7 +103,7 @@ void Icicle_8049CFC8::update() {
         break;
     case 1:
         fall();
-        if (fn_801F2B7C(field_0x114, -1, 0x18)) {
+        if (fn_801F2B7C(mParamAtcp_0x114, -1, 0x18)) {
             fn_8010B40C(3);
             break;
         }
@@ -112,9 +112,9 @@ void Icicle_8049CFC8::update() {
             if (fn_801F2618(&hitDir, false)) {
                 JGeometry::TVec3f probe = mPos;
                 probe.y += 16.0f;
-                u16 tile = fn_80226850(&probe, field_0x4);
+                u16 tile = fn_80226850(&probe, mLayer_0x4);
                 if (tile >= 0x3F0 || (tile >= 0x250 && tile <= 0x26F) || tile == 0x3ED) {
-                    gBgRewrite_8053AC98->fn_802A381C(&probe, field_0x4, 0x34);
+                    gBgRewrite_8053AC98->fn_802A381C(&probe, mLayer_0x4, 0x34);
                 }
                 fn_8010B40C(3);
                 break;
@@ -207,16 +207,16 @@ bool Icicle_8049CFC8::fn_8010B40C(s32 state) {
     case 2:
         deleteEmitter(&mEmitter100);
         deleteEmitter(&mEmitter104);
-        if (field_0x4 == 0) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x28D, 0, 0, NULL, NULL, true, 0.6f);
-            field_0x27c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x28E, 0, 0, NULL, NULL, true, 0.6f);
+        if (mLayer_0x4 == 0) {
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28D, 0, 0, NULL, NULL, true, 0.6f);
+            field_0x27c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28E, 0, 0, NULL, NULL, true, 0.6f);
         }
         field_0x23c = 0.0f;
         startSound_801F0E34(0x30061, 0);
         break;
     case 3:
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x28B, 0, 0, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x28C, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28B, 0, 0, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x28C, 0, 0, NULL, NULL, true, 1.0f);
         mSprite.startAnim_801D22DC(1, 0, false);
         field_0x23c = 0.0f;
         startSound_801F0E34(0x3007D, 0);
@@ -229,7 +229,7 @@ bool Icicle_8049CFC8::fn_8010B40C(s32 state) {
         mPos.y = mSpawnPos.y - 8.0f;
         break;
     case 5:
-        field_0xd8 = 0;
+        mHitTimer_0xd8 = 0;
         field_0x238 = 0;
         break;
     }
@@ -249,7 +249,7 @@ bool Icicle_8049CFC8::fn_8010B284() {
     JGeometry::TVec3f probe = mPos;
     for (s32 i = 0; i < 4; i++) {
         playerPos = *getPlayerPos_8023E724(i);
-        if (field_0x4 == 8 && getPlayerLayer_8023DE58(i) == 0) {
+        if (mLayer_0x4 == 8 && getPlayerLayer_8023DE58(i) == 0) {
             fn_801CD150(&playerPos, &playerPos);
         }
         if (mPos.y > playerPos.y || mPos.x - 40.0f > playerPos.x ||
@@ -263,7 +263,7 @@ bool Icicle_8049CFC8::fn_8010B284() {
             if (probe.y >= playerPos.y) {
                 break;
             }
-            u16 tile = fn_80226850(&probe, field_0x4);
+            u16 tile = fn_80226850(&probe, mLayer_0x4);
             if (tile >= 0x3E7 || (tile >= 0x250 && tile <= 0x26F)) {
                 blocked = true;
                 break;
@@ -278,6 +278,7 @@ bool Icicle_8049CFC8::fn_8010B284() {
 // Its literals 0.1f, 0.5f and 9.8f lead the unit's .sdata2 pool, ahead of
 // fn_8010B284's
 // (docs/RULES_CARD.md, literals before their first visible use (3)).
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
 void Icicle_8049CFC8::fall() {
     field_0x23c += 0.1f;
     mPos.y = mSpawnPos.y + 0.5f * (9.8f * square(field_0x23c));

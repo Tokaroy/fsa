@@ -86,7 +86,7 @@ void DiggingGameKeeper_8049C970::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
 
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
 
     field_0x234++;
     if (field_0x234 == lbl_80539EB8[field_0x238]) {
@@ -99,7 +99,7 @@ void DiggingGameKeeper_8049C970::update() {
 
     switch (field_0x230) {
     case 0: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x23c = fn_8022FD8C(mSerial);
         if (field_0x23c < 0) {
             break;
@@ -109,7 +109,7 @@ void DiggingGameKeeper_8049C970::update() {
         }
         // Both branches are the same message here; the original still tests field_0x236 == 1.
         u32 msg = (field_0x236 == 1) ? 0x32e : 0x32e;
-        if (!talk(field_0x23c, msg, mSerial, field_0x4, pos, 0)) {
+        if (!talk(field_0x23c, msg, mSerial, mLayer_0x4, pos, 0)) {
             break;
         }
         for (s32 i = 0; i < 4; i++) {
@@ -123,7 +123,7 @@ void DiggingGameKeeper_8049C970::update() {
     }
     case 1: {
         setCameraScript(camPos);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (!fn_803865B8(field_0x23c)) {
             break;
         }
@@ -164,7 +164,7 @@ void DiggingGameKeeper_8049C970::update() {
     }
     case 2:
         setCameraScript(camPos);
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             field_0x230 = 0;
             field_0x244 = 0;
@@ -212,7 +212,7 @@ void DiggingGameKeeper_8049C970::update() {
         if (field_0x244 > 50 && field_0x250 == 1) {
             fn_8022FE80(0, getPlayerLayer_8023DE58(0), mSerial, false, false);
             if (fn_8022FD8C(mSerial) == 0) {
-                talk(0, 0x331, mSerial, field_0x4, pos, 2);
+                talk(0, 0x331, mSerial, mLayer_0x4, pos, 2);
                 field_0x230 = 6;
                 field_0x244 = 0;
                 fn_8022B130();
@@ -252,12 +252,12 @@ void DiggingGameKeeper_8049C970::update() {
         break;
     }
     case 7: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         field_0x23c = fn_8022FD8C(mSerial);
         if (field_0x23c < 0) {
             break;
         }
-        if (!talk(field_0x23c, 0x332, mSerial, field_0x4, pos, 0)) {
+        if (!talk(field_0x23c, 0x332, mSerial, mLayer_0x4, pos, 0)) {
             break;
         }
         field_0x230 = 8;
@@ -267,7 +267,7 @@ void DiggingGameKeeper_8049C970::update() {
         break;
     }
     case 8:
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             field_0x230 = 7;
             field_0x244 = 0;

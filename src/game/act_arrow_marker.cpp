@@ -9,9 +9,9 @@
 static const s32 lbl_80540968[2] = {4, -4};
 
 void ArrowMarker_804A8470::init() {
-    field_0x240 = field_0x90 & 0xF;
-    field_0x244 = (field_0x90 >> 7) & 0x1F;
-    field_0x248 = (field_0x90 >> 4) & 1;
+    field_0x240 = mSpawnParam_0x90 & 0xF;
+    field_0x244 = (mSpawnParam_0x90 >> 7) & 0x1F;
+    field_0x248 = (mSpawnParam_0x90 >> 4) & 1;
     field_0x230 = 0;
     field_0x250 = 0;
     field_0x24c = 8;
@@ -19,7 +19,7 @@ void ArrowMarker_804A8470::init() {
     field_0x258 = 0;
     field_0x25c = 0;
 
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
     const JGeometry::TBox2f& box = layer < 8 ? view->mVisibleBox : view->field_0xdc;
     field_0x23c = mPos.z;
@@ -66,7 +66,7 @@ void ArrowMarker_804A8470::update() {
     JGeometry::TVec2<f32> p(field_0x234, field_0x238);
     JGeometry::TBox2f box(mBox);
     box.addPos(p);
-    s32 player = fn_8023AF14(&box, field_0x4, false, 0.0f);
+    s32 player = fn_8023AF14(&box, mLayer_0x4, false, 0.0f);
     switch (field_0x244) {
     case 0:
         field_0x24c = field_0x24c - 1;
@@ -189,11 +189,11 @@ void ArrowMarker_804A8470::draw() {
     case 0: {
         params.field_0x10.a = 0x60;
         s32 frame = field_0x240 + 0x10;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
         break;
     }
     case 1:
@@ -203,11 +203,11 @@ void ArrowMarker_804A8470::draw() {
         }
         params.field_0x10.a = field_0x254;
         s32 frame = field_0x240 + 0x10;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x10, 0, 0, -1);
         break;
     }
     }

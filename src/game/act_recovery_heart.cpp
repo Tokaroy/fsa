@@ -11,20 +11,20 @@
 // yet in the original .sdata2 order.
 void RecoveryHeart_8049F4F0::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
+    mMapBox_0x80.set(-4.0f, -4.0f, 4.0f, 4.0f);
     field_0x238 = 0;
     field_0x234 = 0x3FF;
-    field_0x240 = field_0x90 & 3;
+    field_0x240 = mSpawnParam_0x90 & 3;
     field_0xb0 = 0x21000;
     if (field_0x240 != 1) {
-        field_0x3c.z = 1.5f;
+        mVel_0x3c.z = 1.5f;
         field_0x230 = 0;
-        s32 layer = field_0x4;
+        s32 layer = mLayer_0x4;
         if (viewLayerFlag(layer)) {
             mPos.y = mPos.y - mPos.z;
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = -1.5f;
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = -1.5f;
             field_0x230 = 2;
         }
     } else {
@@ -33,9 +33,9 @@ void RecoveryHeart_8049F4F0::init() {
 }
 
 void RecoveryHeart_8049F4F0::vfunc_0x40() {
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     field_0x230 = 4;
 }
 
@@ -50,12 +50,12 @@ void RecoveryHeart_8049F4F0::update() {
             return;
         }
     }
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
 
     switch (field_0x230) {
     case 0:
-        field_0x3c.z -= 0.1f;
-        if (field_0x3c.z < 0.0f) {
+        mVel_0x3c.z -= 0.1f;
+        if (mVel_0x3c.z < 0.0f) {
             field_0x238 = 0;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                 field_0x238 = 1;
@@ -65,7 +65,7 @@ void RecoveryHeart_8049F4F0::update() {
         }
         break;
     case 1:
-        field_0x3c.z -= 0.02f;
+        mVel_0x3c.z -= 0.02f;
         if (field_0x238 == 0) {
             field_0x23c += 0x700;
         } else {
@@ -73,15 +73,15 @@ void RecoveryHeart_8049F4F0::update() {
         }
         mPos.x += JMath::sincosTable_.sinShort(field_0x23c);
         if (mPos.z <= 0.0f) {
-            field_0x3c.x = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             field_0x230 = 4;
         }
         break;
     case 2:
-        field_0x3c.y += 0.1f;
-        if (field_0x3c.y > 0.0f) {
+        mVel_0x3c.y += 0.1f;
+        if (mVel_0x3c.y > 0.0f) {
             field_0x238 = 0;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                 field_0x238 = 1;
@@ -91,9 +91,9 @@ void RecoveryHeart_8049F4F0::update() {
         }
         break;
     case 3: {
-        field_0x3c.y += 0.02f;
-        if (field_0x3c.y > 5.0f) {
-            field_0x3c.y = 5.0f;
+        mVel_0x3c.y += 0.02f;
+        if (mVel_0x3c.y > 5.0f) {
+            mVel_0x3c.y = 5.0f;
         }
         if (field_0x238 == 0) {
             field_0x23c += 0x700;
@@ -104,9 +104,9 @@ void RecoveryHeart_8049F4F0::update() {
         JGeometry::TVec3f probe;
         probe.set(mPos);
         probe.y += 4.0f;
-        if (isBlocked_0x4C(field_0x4, &probe) == true) {
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
+        if (isBlocked_0x4C(mLayer_0x4, &probe) == true) {
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
             field_0x230 = 4;
         }
         break;
@@ -118,10 +118,10 @@ void RecoveryHeart_8049F4F0::update() {
         if (gGameRoot_8053AAF8->field_0x7f != 0) {
             flag = false;
         }
-        s32 player = fn_8023AF14(&box, field_0x4, flag, 0.0f);
-        s32 hitPlayer = fn_8023B8E4(&box, field_0x4, &basePos, true);
+        s32 player = fn_8023AF14(&box, mLayer_0x4, flag, 0.0f);
+        s32 hitPlayer = fn_8023B8E4(&box, mLayer_0x4, &basePos, true);
         if (hitPlayer < 0) {
-            fn_8023B768(&box, field_0x4, &basePos);
+            fn_8023B768(&box, mLayer_0x4, &basePos);
         }
         if (player >= 0) {
             s32 owner = fn_80237810(player);
@@ -150,7 +150,7 @@ void RecoveryHeart_8049F4F0::update() {
     }
     }
 
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         JGeometry::TVec3f camPos(mPos.x, mPos.y - mPos.z, 0.0f);
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&camPos);
     }
@@ -161,7 +161,7 @@ void RecoveryHeart_8049F4F0::draw() {
     params.field_0x2d = 1;
     if (field_0x234 >= 0x100 || (field_0x234 & 2) == 0) {
         drawSprite_801F06F0("enemy_both2_sob.bin", 0x2C, &params, 1, 1.0f, 1.0f);
-        fn_803075AC(mSerial, field_0x4, &mPos, 0x2C, false, 2, -1, 0, 0, 0);
+        fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x2C, false, 2, -1, 0, 0, 0);
     }
 }
 

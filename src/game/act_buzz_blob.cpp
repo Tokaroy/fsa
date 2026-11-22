@@ -9,8 +9,8 @@ s32 lbl_8049F418[11] = {4, 8, 6, 7, 5, 9, 4, 7, 8, 7, 9};
 
 void BuzzBlob_8049F444::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x90 &= 1;
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mSpawnParam_0x90 &= 1;
     field_0x234 = 0;
     field_0x238 = 0;
     field_0x23c = 0;
@@ -48,10 +48,10 @@ void BuzzBlob_8049F444::update() {
         field_0x240--;
     }
 
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
     u8 landed = 0;
     if (field_0x230 != 4) {
-        s32 code = fn_8022461C(&mPos, field_0x4);
+        s32 code = fn_8022461C(&mPos, mLayer_0x4);
         if (code == 0xe) {
             startSound_801F0E34(0x4001A, 0);
             field_0x230 = 4;
@@ -59,7 +59,7 @@ void BuzzBlob_8049F444::update() {
             JGeometry::TBox2f box(mBox);
             JGeometry::TVec2f pos(mPos.x, mPos.y);
             box.addPos(pos);
-            s32 player = fn_8023B004(&box, field_0x4);
+            s32 player = fn_8023B004(&box, mLayer_0x4);
             if (player >= 0 && !fn_8023E854(player)) {
                 JGeometry::TVec2f center(box.f.x + 0.5f * (box.i.x - box.f.x),
                                          box.f.y + 0.5f * (box.i.y - box.f.y));
@@ -69,7 +69,7 @@ void BuzzBlob_8049F444::update() {
                 field_0x258.set(1.0f, 1.0f, 1.0f);
                 field_0x244 = 0;
                 field_0x23c = 4;
-                field_0x3c.set(0.0f, 0.0f, 0.0f);
+                mVel_0x3c.set(0.0f, 0.0f, 0.0f);
                 field_0x258.set(1.0f, 1.0f, 1.0f);
                 field_0x230 = 3;
             }
@@ -83,8 +83,8 @@ void BuzzBlob_8049F444::update() {
                         if (field_0x230 != 3) {
                             field_0x244 = 0;
                             field_0x23c = 4;
-                            field_0x3c.x = 0.0f;
-                            field_0x3c.y = 0.0f;
+                            mVel_0x3c.x = 0.0f;
+                            mVel_0x3c.y = 0.0f;
                             field_0x258.set(1.0f, 1.0f, 1.0f);
                             field_0x230 = 3;
                         }
@@ -105,16 +105,16 @@ void BuzzBlob_8049F444::update() {
             JGeometry::TVec3f dir;
             fn_801EE8F4(&dir, NULL, 0);
             dir.scale(0.3f);
-            field_0x3c.x = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + dir.x;
+            mVel_0x3c.x = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + dir.x;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                field_0x3c.x *= -1.0f;
+                mVel_0x3c.x *= -1.0f;
             }
-            field_0x3c.y = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + dir.y;
+            mVel_0x3c.y = 0.3f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + dir.y;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                field_0x3c.y *= -1.0f;
+                mVel_0x3c.y *= -1.0f;
             }
         }
-        if (field_0x90 == 1 && field_0x240 == 0) {
+        if (mSpawnParam_0x90 == 1 && field_0x240 == 0) {
             u16 angle = 0;
             f32 dist = 0.0f;
             s32 player = -1;
@@ -123,18 +123,18 @@ void BuzzBlob_8049F444::update() {
             if (dir >= 0 && (FABS(getPlayerPos_8023E724(player)->y - mPos.y) < 24.0f ||
                              FABS(getPlayerPos_8023E724(player)->x - mPos.x) < 24.0f))
             {
-                if (!fn_801F23BC(field_0x4, &mPos, getPlayerPos_8023E724(player), &field_0x80, NULL, NULL, false)) {
-                    field_0x98 = dir;
+                if (!fn_801F23BC(mLayer_0x4, &mPos, getPlayerPos_8023E724(player), &mMapBox_0x80, NULL, NULL, false)) {
+                    mDir_0x98 = dir;
                     field_0x230 = 1;
                 }
             }
         }
         break;
     case 1:
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
-        switch (field_0x98) {
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        switch (mDir_0x98) {
         case 0:
             field_0x244 = 0;
             break;
@@ -155,26 +155,26 @@ void BuzzBlob_8049F444::update() {
             if (field_0x240 == 1) {
                 // One 3.0f negated with fneg for the -x cases, as in the original; separate literals miss.
                 f32 speed = 3.0f;
-                switch (field_0x98) {
+                switch (mDir_0x98) {
                 case 0:
-                    field_0x3c.x = speed;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.z = 5.0f;
+                    mVel_0x3c.x = speed;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.z = 5.0f;
                     break;
                 case 1:
-                    field_0x3c.x = -speed;
-                    field_0x3c.y = 0.0f;
-                    field_0x3c.z = 5.0f;
+                    mVel_0x3c.x = -speed;
+                    mVel_0x3c.y = 0.0f;
+                    mVel_0x3c.z = 5.0f;
                     break;
                 case 2:
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = speed;
-                    field_0x3c.z = 5.0f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = speed;
+                    mVel_0x3c.z = 5.0f;
                     break;
                 case 3:
-                    field_0x3c.x = 0.0f;
-                    field_0x3c.y = -speed;
-                    field_0x3c.z = 5.0f;
+                    mVel_0x3c.x = 0.0f;
+                    mVel_0x3c.y = -speed;
+                    mVel_0x3c.z = 5.0f;
                     break;
                 }
             }
@@ -182,12 +182,12 @@ void BuzzBlob_8049F444::update() {
             addCalc2_801F71A4(&field_0x258.x, 1.0f, 0.1f, 0.2f);
             addCalc2_801F71A4(&field_0x258.y, 1.0f, 0.1f, 0.2f);
             if (mPos.z > 0.0f) {
-                field_0x3c.z -= 0.5f;
+                mVel_0x3c.z -= 0.5f;
             } else {
                 mPos.z = 0.0f;
-                field_0x3c.z = 0.0f;
-                field_0x3c.y = 0.0f;
-                field_0x3c.x = 0.0f;
+                mVel_0x3c.z = 0.0f;
+                mVel_0x3c.y = 0.0f;
+                mVel_0x3c.x = 0.0f;
                 field_0x258.set(1.0f, 1.0f, 1.0f);
                 field_0x240 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
                 field_0x230 = 0;
@@ -196,10 +196,10 @@ void BuzzBlob_8049F444::update() {
         break;
     case 3:
         if (mPos.z > 0.0f) {
-            field_0x3c.z -= 0.5f;
+            mVel_0x3c.z -= 0.5f;
         } else {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         }
         if (field_0x23c == 0) {
             field_0x244++;
@@ -214,8 +214,8 @@ void BuzzBlob_8049F444::update() {
         field_0x254 += 0.1f;
         field_0x250 -= 0.02f;
         if (field_0x250 < 0.1f) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
             fn_801F3668();
         }
@@ -250,7 +250,7 @@ void BuzzBlob_8049F444::draw() {
         setRotScaleMtx(mtx2, rot, field_0x250);
         params2.mMtx = mtx2;
         s32 frame = lbl_8049F408[field_0x244] + 0x10;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params2, 1.0f, 1.0f);
         }

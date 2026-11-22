@@ -23,7 +23,7 @@ public:
     void fn_8032ABE0();
     bool fn_8032B0A4();
     // Not in the binary: a plain function that its callers inline.
-    void stopMoving();
+    void pool_80541D88();
     // 0x8032B3F8: the fall and bounce; returns false when a tile reaction took over.
     bool fn_8032B3F8();
     // 0x8032B7C0: a player nearby kicks it away.
@@ -51,7 +51,7 @@ public:
     /* 0x26C */ s32 field_0x26c;
     /* 0x270 */ s32 field_0x270;
     /* 0x274 */ s32 field_0x274;
-    /* 0x278 */ s32 field_0x278; // bits 8-15 of field_0x90
+    /* 0x278 */ s32 field_0x278; // bits 8-15 of mSpawnParam_0x90
     /* 0x27C */ u8 field_0x27c;
     /* 0x27D */ u8 field_0x27d;
     /* 0x27E */ u8 field_0x27e;

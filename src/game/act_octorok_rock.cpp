@@ -18,7 +18,7 @@ static s32 lbl_8049F558[32] = {
 
 void OctorokRock_8049F5D8::init() {
     mBox.set(-2.0f, -2.0f, 2.0f, 2.0f);
-    field_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
+    mMapBox_0x80.set(-2.0f, -2.0f, 2.0f, 2.0f);
     field_0x240 = 0;
     field_0x244 = 0;
     field_0x234 = 0;
@@ -26,15 +26,15 @@ void OctorokRock_8049F5D8::init() {
     field_0x23c = 0;
     field_0x250 = 0;
     field_0x234 = 300;
-    field_0x98 = 0;
+    mDir_0x98 = 0;
     field_0x24c = 0;
     field_0x248 = 0xFF;
-    s32 mode = field_0x90;
+    s32 mode = mSpawnParam_0x90;
     if (mode == 3) {
         mBox.set(-6.0f, -6.0f, 6.0f, 6.0f);
-        field_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
+        mMapBox_0x80.set(-6.0f, -6.0f, 6.0f, 6.0f);
     }
-    switch (field_0x90) {
+    switch (mSpawnParam_0x90) {
     case 5:
         field_0x234 = 10000;
         field_0x23c = 300;
@@ -90,43 +90,43 @@ bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
 void OctorokRock_8049F5D8::update() {
     s32 facing;
     u8 blocked = 0;
-    mPos += field_0x3c;
-    facing = field_0x98;
-    // FIXME: The original compares field_0x90 signed (cmpwi) in the
+    mPos += mVel_0x3c;
+    facing = mDir_0x98;
+    // FIXME: The original compares mSpawnParam_0x90 signed (cmpwi) in the
     // state 0 tests and the final switch, unsigned elsewhere; the tail's `li 0`
     // and the sprite target's register (r29 here, r30) differ too.
     switch (field_0x230) {
     case 0:
         if (field_0x23c == 0) {
-            if (field_0x90 == 5) {
+            if (mSpawnParam_0x90 == 5) {
                 mAlive = false;
                 break;
             }
             blocked = fn_801F2618(NULL, false);
         }
-        if (field_0x90 == 2 || field_0x90 == 3) {
+        if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
             facing = -1;
         }
         if (fn_801F2A10(-1, facing, true, true)) {
             field_0x230 = 1;
             break;
         }
-        if (!blocked && !fn_801F2B7C(field_0x114, -1, true)) {
+        if (!blocked && !fn_801F2B7C(mParamAtcp_0x114, -1, true)) {
             break;
         }
-        if ((field_0x90 != 1 && field_0x90 != 5) || !blocked) {
+        if ((mSpawnParam_0x90 != 1 && mSpawnParam_0x90 != 5) || !blocked) {
             if (!blocked) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x24A, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x24B, 0, 1, NULL, NULL, true, 1.0f);
             } else {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x339, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x339, 0, 1, NULL, NULL, true, 1.0f);
             }
             mAlive = false;
         } else {
             startSound_801F0E34(0x30000, 0);
-            field_0x3c.x = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.z = 0.0f;
             field_0x240 = 0;
             field_0x234 = 0;
             field_0x230 = 3;
@@ -134,9 +134,9 @@ void OctorokRock_8049F5D8::update() {
         break;
     case 1:
         startSound_801F0E34(0x400D1, 0);
-        if (field_0x90 == 1) {
+        if (mSpawnParam_0x90 == 1) {
             field_0x238 = 100;
-            switch (field_0x98) {
+            switch (mDir_0x98) {
             case 0:
                 field_0x240 = 3;
                 break;
@@ -150,30 +150,30 @@ void OctorokRock_8049F5D8::update() {
                 field_0x240 = 2;
                 break;
             }
-            field_0x3c.x *= -0.7f;
-            field_0x3c.y *= -0.7f;
-            field_0x3c.z = 5.0f;
+            mVel_0x3c.x *= -0.7f;
+            mVel_0x3c.y *= -0.7f;
+            mVel_0x3c.z = 5.0f;
         } else {
-            field_0x3c.x *= -0.3f;
-            field_0x3c.y *= -0.3f;
-            field_0x3c.z = 3.0f;
+            mVel_0x3c.x *= -0.3f;
+            mVel_0x3c.y *= -0.3f;
+            mVel_0x3c.z = 3.0f;
         }
         mLife = 0;
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-        spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+        spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
         field_0x230 = 2;
         break;
     case 2:
-        if (field_0x90 == 1 && (field_0x238 & 1) == 0) {
+        if (mSpawnParam_0x90 == 1 && (field_0x238 & 1) == 0) {
             field_0x240++;
             field_0x240 &= 3;
-            field_0x98 = lbl_8049F548[field_0x240];
+            mDir_0x98 = lbl_8049F548[field_0x240];
         }
         field_0x248 -= 10;
         if (field_0x248 < 0) {
             field_0x248 = 0;
         }
-        field_0x3c.z -= 0.3f;
+        mVel_0x3c.z -= 0.3f;
         if (mPos.z < 0.0f) {
             mAlive = false;
         }
@@ -197,8 +197,8 @@ void OctorokRock_8049F5D8::update() {
         if (target >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(target);
             if (actor != NULL) {
-                mPos.x = field_0x254 * JMASinShort(fn_801F6874(actor->field_0x98) - field_0x25c);
-                mPos.y = field_0x254 * JMACosShort(fn_801F6874(actor->field_0x98) - field_0x25c);
+                mPos.x = field_0x254 * JMASinShort(fn_801F6874(actor->mDir_0x98) - field_0x25c);
+                mPos.y = field_0x254 * JMACosShort(fn_801F6874(actor->mDir_0x98) - field_0x25c);
                 mPos.x += actor->mPos.x;
                 mPos.y += actor->mPos.y;
                 mPos.z = actor->mPos.z;
@@ -207,7 +207,7 @@ void OctorokRock_8049F5D8::update() {
                 f32 angle = JMath::atanTable_.atan2_(-dx, -dy) *
                             (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
                 // Through s32 (fctiwz), then the u16 argument (clrlwi 16).
-                field_0x98 = fn_801F681C(static_cast<u16>(static_cast<s32>(angle)));
+                mDir_0x98 = fn_801F681C(static_cast<u16>(static_cast<s32>(angle)));
                 if (field_0x240 < 6) {
                     field_0x240 = field_0x240 + 1;
                 } else if (field_0x230 == 6) {
@@ -220,7 +220,7 @@ void OctorokRock_8049F5D8::update() {
             }
         }
         if (field_0x230 == 4) {
-            getActorManager_801F856C()->fn_801F8544('RUPY', field_0x4, &mPos, 1);
+            getActorManager_801F856C()->fn_801F8544('RUPY', mLayer_0x4, &mPos, 1);
         }
         mAlive = false;
         break;
@@ -244,7 +244,7 @@ void OctorokRock_8049F5D8::update() {
             mAlive = false;
         }
     }
-    switch (field_0x90) {
+    switch (mSpawnParam_0x90) {
     case 2:
     case 4:
         if (field_0x238 == 0) {
@@ -256,9 +256,9 @@ void OctorokRock_8049F5D8::update() {
     case 1:
     case 5:
         if (field_0x230 == 0 || field_0x230 == 2) {
-            field_0x24c = field_0x98;
+            field_0x24c = mDir_0x98;
         } else {
-            field_0x24c = lbl_8049F558[field_0x98 * 8 + field_0x240];
+            field_0x24c = lbl_8049F558[mDir_0x98 * 8 + field_0x240];
         }
         break;
     }
@@ -268,10 +268,10 @@ void OctorokRock_8049F5D8::update() {
 void OctorokRock_8049F5D8::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x10.a = field_0x248;
-    s32 state = field_0x90;
+    s32 state = mSpawnParam_0x90;
     switch (state) {
     case 0:
-        if (field_0x4 == 8) {
+        if (mLayer_0x4 == 8) {
             GameView_804A9950* view = getGameView_802D6A9C();
             // FIXME: 94.3 %. The original loads the four words of the view's box
             // (0xCC-0xDB) into registers before storing them to the stack copy;
@@ -294,7 +294,7 @@ void OctorokRock_8049F5D8::draw() {
     case 5:
         {
             s32 frame = field_0x24c + 0x4c;
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }

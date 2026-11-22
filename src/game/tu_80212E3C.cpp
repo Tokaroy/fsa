@@ -14,7 +14,7 @@ extern const s16* lbl_804A6330[];
 // The dust puff both the mode-3 setup and the last frames of mState 6 start: scaled like the
 // actor and tinted like the shadow circle.
 static inline void spawnDust(cls_804A6340* self) {
-    JPABaseEmitter* emitter = spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x1DA, 0, 0, NULL, NULL, true, 1.0f);
+    JPABaseEmitter* emitter = spawnEmitter_8013CC50(self->mLayer_0x4, &self->mPos, 0x1DA, 0, 0, NULL, NULL, true, 1.0f);
     if (emitter != NULL) {
         emitter->setGlobalScale(self->field_0x54);
         JUtility::TColor color = gGameRoot2_8053AB10->field_0x2c->field_0x4;
@@ -34,12 +34,12 @@ void cls_804A6340::init() {
     mBox2.i.y = -8.0f;
     mBox2.f.x = 8.0f;
     mBox2.f.y = 8.0f;
-    field_0x80.i.x = 1.0f;
-    field_0x80.i.y = 1.0f;
-    field_0x80.f.x = -1.0f;
-    field_0x80.f.y = -1.0f;
+    mMapBox_0x80.i.x = 1.0f;
+    mMapBox_0x80.i.y = 1.0f;
+    mMapBox_0x80.f.x = -1.0f;
+    mMapBox_0x80.f.y = -1.0f;
     field_0xb0 = 0;
-    field_0x98 = 2;
+    mDir_0x98 = 2;
     mFlags |= 0x80;
     mPos.y -= 2.0f;
     mSpawnPos.x = mPos.x;
@@ -267,7 +267,7 @@ void cls_804A6340::draw() {
         mtx[2][2] = field_0x54.z;
         params.mMtx = mtx;
         if (mFlags & 0x2000) {
-            if (field_0x4 < 8) {
+            if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
                 gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
             }
@@ -288,8 +288,8 @@ void cls_804A6340::vfunc_0x44() {
 }
 
 void cls_804A6340::die_0x24() {
-    if ((s32)field_0x90 >= 0) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C((s32)field_0x90);
+    if ((s32)mSpawnParam_0x90 >= 0) {
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C((s32)mSpawnParam_0x90);
         if (actor != NULL) {
             static_cast<cls_804A6270*>(actor)->fn_80210D90();
         }

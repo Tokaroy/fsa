@@ -498,6 +498,7 @@ void cls_804B1634::fn_8042F6DC() {
 // .sdata2 has 1.0f between fn_8042EF9C's literals and fn_8042F6DC's 48.0f, so it was generated here
 // (tools/pool.py). Scales the edge and centre panes of the two window frames (field_0x24 and
 // field_0x10) to the inner size w x h.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 void cls_804B1634::scaleFrames(f32 w, f32 h) {
     f32 sx0 = (w + (field_0x24[0]->field_0x18 - field_0x24[4]->field_0x18)) / field_0x24[0]->field_0x18;
     field_0x24[0]->fn_80402CE0(sx0, 1.0f);
@@ -526,7 +527,7 @@ void cls_804B1634::scaleFrames(f32 w, f32 h) {
 // measures the lines and the two choices (0x1A size-2 commands) into field_0xb8-field_0xe4.
 void cls_804B1634::fn_8042EF9C(char* str, s32 id, u8 value) {
     MessageInf1_804AF070* inf1 =
-        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->field_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
+        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[id].textOffset + 8);
     // The font width of the text box 'Twt01' (J2DTextBox::mFontSize at 0x11C).
     f32 fontSize = static_cast<J2DTextBox*>(field_0x8->search('Twt01'))->mFontSize.x;

@@ -143,3 +143,44 @@ address	kind	old	new	confidence	apply	evidence
 804A4808	member	vfunc_0x94	updateAnim_0x94	med	yes	EnemyBase base 0x801CE4BC (include/game/EnemyBase.h): mAnim.fn_801D1C18() (advances the sprite animation); vfunc_0x9C calls it after vfunc_0x90; 13 overrides, 11 units call the base
 804A4808	member	vfunc_0x98	move_0x98	med	yes	EnemyBase base 0x801CE120 (include/game/EnemyBase.h): the movement step unless a hit bit is set: mSpeed toward mTargetSpeed, vfunc_0x88, mPos += field_0x3c, vfunc_0x8C, then floor (vfunc_0x80), bounce (vfunc_0x7C) or stop at z = 0; update() calls it; 7 overrides
 804A4808	member	vfunc_0x9C	updateBehavior_0x9C	med	yes	EnemyBase base 0x801CE0A4 (include/game/EnemyBase.h): unless a hit bit is set, mStateTimer++, vfunc_0x90(mapHit), vfunc_0x94; update() passes vfunc_0x64's result; 22 overrides
+804A5770	field	field_0x4	mLayer_0x4	med	yes	ActorBase.h 0x004 + shadow fn_801EF830 (layer arg = an actor field_0x4); every spawnEmitter_8013CC50 / map test (fn_802258D4) call passes it as the layer; spawnActor_801F9484 hands it to children (tu_801EE24C fn_801F3D94)
+804A5770	field	field_0x3c	mVel_0x3c	med	yes	EnemyBase move_0x98 does mPos += field_0x3c each frame, calcVelocity_0x88 sets its xy from mSpeed, applyGravity_0x84 adds -0.2 to z, mPrevVel (EnemyBase 0x234) copies it; the hit code sets it as knock-back (fn_801F37AC / fn_801F3D94)
+804A5770	field	field_0x80	mMapBox_0x80	med	yes	ActorBase.h 0x080: fn_801F2618 sweeps this box against the map (passes &field_0x80 to fn_801F23BC), fn_801F11B4 tests it; EnemyBase init sets it with mBox (0x801D0ED0)
+804A5770	field	field_0x90	mSpawnParam_0x90	med	yes	ActorBase.h 0x090: the spawner's 5th argument, a bit field each actor decodes (getScreenFlagBit_0x3C srwi 0x801F4710, act_rat cmplwi 0x800F3D7C)
+804A5770	field	field_0x98	mDir_0x98	med	yes	EnemyBase.h: direction 0-3 (calcVelocity_0x88 0x801CE4E8: 0 +x, 1 -x, 2 +y, 3 -y); random-direction helpers store to it; fn_801F6874(field_0x98) turns it into an angle (tu_801EE24C fn at its line 1616, act_arrow, act_bumper)
+804A5770	field	field_0xc0	mParamEfsz_0xc0	med	yes	ActorBase.h 0x0C0: EnemyParam.csv column "efsz" (the loader stores it here)
+804A5770	field	field_0xd5	mHitPlayers_0xd5	med	yes	tu_801EE24C fn_801F37AC: bitmask 1 << player of players that hit while the hit timer runs; fn_801F3D94 clears it when no timer runs
+804A5770	field	field_0xd8	mHitTimer_0xd8	med	yes	tu_801EE24C fn_801F37AC sets 24 per hit; fn_801F3D94 counts it down while knock-back runs, death timer starts when it ends with mLife <= 0
+804A5770	field	field_0xdc	mHitTimerStart_0xdc	med	yes	ActorBase.h 0x0DC: the start value of the hit timer; fn_801F3D94 compares mHitTimer with it - 8
+804A5770	field	field_0xe0	mDeathTimer_0xe0	med	yes	tu_801EE24C fn_801F3D94: set to 1 or 30 when life runs out, counted down, die_0x24() at 0; death effect at 30
+804A5770	field	field_0xe4	mSparkTimer_0xe4	med	yes	tu_801EE24C fn_801F3D94: frames to the next hit spark (counted down, reset to 5)
+804A5770	field	field_0xe8	mSparksLeft_0xe8	med	yes	tu_801EE24C fn_801F3D94: hit sparks left (decremented per spark, effects 0x24A/0x24B or 0x19D); fn_801F4694 skips sound 0x40002 while set
+804A5770	field	field_0xec	mHitDir_0xec	med	yes	ActorBase.h 0x0EC: direction of the last hit (attacker to actor); fn_801F3D94 picks the type-3 death effect from its sign/axis
+804A5770	field	field_0xf8	mKnockbackKind_0xf8	med	yes	tu_801EE24C fn_801F3D94 switch: 0 slide (friction 0.78), 1 slide (0.88), 2 thrown (gravity, bounce); EnemyBase applyGravity_0x84 tests == 2
+804A5770	field	field_0xfc	mHitType_0xfc	med	yes	ActorBase.h 0x0FC: type of the last hit; fn_801F3D94 switches the death effect on it (1/2, 3, 4, 5) and the death timer (0 -> 1 else 30)
+804A5770	field	field_0x10c	mLastAttacker_0x10c	med	yes	tu_801EE24C ctor -1; fn_801F37AC stores the attacking player; fn_801F3D94 checks 0-3 and credits it (owner of ACTOR_BLZE, fn_80237060)
+804A5770	field	field_0x114	mParamAtcp_0x114	med	yes	ActorBase.h 0x114: EnemyParam.csv column "atcp"; EnemyBase attackPlayers_0x68 passes it to fn_801F2B7C
+804A5770	field	field_0x118	mParamAtcn_0x118	med	yes	ActorBase.h 0x118: EnemyParam.csv column "atcn"
+804A5770	field	field_0x11f	mUpdateWhilePaused_0x11f	med	yes	ActorBase.h 0x11F: the manager's draw/update loops keep drawing/updating the actor while the game is paused (fn_80134CC8)
+804A5770	field	field_0x188	mBossDeathTimer_0x188	med	yes	ActorBase.h 0x188: death-explosion countdown, -1 when idle (updateBossDeath_0x2C)
+804A5770	field	field_0x18c	mParamDasu_0x18c	med	yes	ActorBase.h 0x18C: EnemyParam.csv column "dasu"
+804A5770	field	field_0x190	mParamVoic_0x190	med	yes	ActorBase.h 0x190: EnemyParam.csv column "voic"; fn_801F4694 plays lbl_80469F38[voic - 1] when > 0
+804A5770	field	field_0x1a8	mParamDstr_0x1a8	med	yes	ActorBase.h 0x1A8: EnemyParam.csv column "dstr" != 0
+804A5770	field	field_0x1ac	mPlayerPos_0x1ac	med	yes	tu_801EE24C fn_801F32F4: each player's position (getPlayerPos_8023E724, moved into this layer's view space by fn_801CD150); EnemyBase fn_801D0280 / fn_801D0DA0 measure from mPos to field_0x1ac[player]
+804A6F38	field	field_0x4	mPlayerNo_0x4	med	yes	Player.h 0x0004: the player index 0-3, the constructor's argument; used as the player index in isPlayerBitSet(gGameRoot_8053AAF8, field_0x4) and fn_8022C6AC(field_0x4) (tu_8026FC20, tu_8027E5BC)
+804A6F38	field	field_0x2c	mPrevPos_0x2c	med	yes	Player.h 0x002C: fn_802685D4's step is mPos - field_0x2c and it copies mPos here at the end of the frame
+804A6F38	field	field_0x38	mPosHistory_0x38	med	yes	Player.h 0x0038: 0x31 positions, fn_80252CF0 shifts them up one each frame (last store at 0x278); read by fn_8023E4E4
+804A6F38	field	field_0x3b4	mLayer_0x3b4	med	yes	Player.h getLayer() returns it; getPlayerLayer_8023DE58 (134 units) reads it; fn_801F320C / fn_801F5790 compare it with ActorBase mLayer_0x4
+804A6F38	field	field_0x3dc	mFacing_0x3dc	med	yes	Player.h getFacing() returns it; fn_80254744 moves mPos 16 along it (battle mode); fn_80230CFC returns it (2 without a player)
+804A6F38	field	field_0x3f8	mWalkAnimCounter_0x3f8	low	yes	tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function
+804A6F38	field	field_0xbfc	mLife_0xbfc	med	yes	tu_8026FC20 fn_80270DDC: heals by `amount` (act_recovery_heart passes 4), capped at field_0xbf8; fn_80270D34 subtracts its argument; > 0 tested with the down state fn_80270A8C
+804A6F38	field	field_0xbf8	mMaxLife_0xbf8	med	yes	tu_8026FC20 fn_80270DDC: the cap of the life mLife_0xbfc after healing
+804A9950	field	field_0x4	mStage_0x4	med	yes	GameView.h 0x00004 and its top comment: the stage number (21 units read it)
+804A9950	field	field_0x8	mLevel_0x8	med	yes	GameView.h 0x00008: the level within the stage (20 units read it)
+804A9950	field	field_0x14	mScreenX_0x14	med	yes	GameView.h 0x00014: current screen column 0-9, the first index of the [10][10] per-screen tables
+804A9950	field	field_0x18	mScreenY_0x18	med	yes	GameView.h 0x00018: current screen row 0-9
+8049EF20	field	field_0x18	mMessageManager_0x18	med	yes	GameGlobals.h GameRoot 0x18: MessageManager_804AF070* the constructor news (0x158 bytes)
+8049EF20	field	field_0x20	mTitle_0x20	med	yes	GameGlobals.h GameRoot 0x20: Title_804AF820*, the object of mode 1 (0x158 bytes)
+8049EF20	field	field_0x24	mFileSelect_0x24	med	yes	GameGlobals.h GameRoot 0x24: FileSelect_804AFF60*, the object of mode 3 (0x1AC bytes)
+8049EF20	field	field_0x28	mGameMode_0x28	med	yes	GameGlobals.h GameRoot 0x28: GameMode_804B0688*, the object of modes 2 and 5 (0x120 bytes)
+8049EF20	field	field_0xa8	mMsgArchive_0xa8	med	yes	GameGlobals.h GameRoot 0xA8: JKRArchive* of msgus.arc (lbl_80529DEC's field_0x1c)

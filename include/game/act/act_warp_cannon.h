@@ -23,7 +23,7 @@ public:
     s32 findPlayer();
     bool allPlayersIn();
     void movePlayers();
-    void flyPlayers();
+    void pool_8053CCD0();
     void liftPlayers();
     void resetIfAllPlayersReady();
     bool landPlayers();

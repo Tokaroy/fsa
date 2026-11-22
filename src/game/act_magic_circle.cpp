@@ -60,27 +60,27 @@ void MagicCircle_804A7960::init() {
     mEmitter274 = NULL;
     mEmitter278 = NULL;
 
-    JGeometry::TBox2f* destBox = layerBox(getTargetLayer(field_0x90));
+    JGeometry::TBox2f* destBox = layerBox(getTargetLayer(mSpawnParam_0x90));
     f32 destMinX = destBox->i.x;
     f32 destMinY = destBox->i.y;
 
     f32 srcMinX;
     f32 srcMinY;
-    if (getTargetLayer(field_0x90) != 0) {
-        JGeometry::TBox2f* srcBox = layerBox(field_0x4);
+    if (getTargetLayer(mSpawnParam_0x90) != 0) {
+        JGeometry::TBox2f* srcBox = layerBox(mLayer_0x4);
         srcMinX = srcBox->i.x;
         srcMinY = srcBox->i.y;
     } else {
         srcMinX = srcMinY = 0.0f;
     }
 
-    if (getTargetX(field_0x90) == 0 && getTargetY(field_0x90) == 0) {
+    if (getTargetX(mSpawnParam_0x90) == 0 && getTargetY(mSpawnParam_0x90) == 0) {
         field_0x268.x = destMinX + (mPos.x - srcMinX);
         field_0x268.y = destMinY + (mPos.y - srcMinY);
         field_0x268.z = 0.0f;
     } else {
-        f32 targetX = getTargetX(field_0x90);
-        f32 targetY = getTargetY(field_0x90);
+        f32 targetX = getTargetX(mSpawnParam_0x90);
+        f32 targetY = getTargetY(mSpawnParam_0x90);
         field_0x268.set(8.0f + (targetX + destMinX),
                         8.0f + (targetY + destMinY),
                         0.0f);
@@ -96,8 +96,8 @@ void MagicCircle_804A7960::init() {
     field_0x262 = 0;
     field_0x263 = 1;
     field_0x264 = 0;
-    field_0x24c = (field_0x90 >> 4) & 0xF;
-    field_0x25c = field_0x90 & 7;
+    field_0x24c = (mSpawnParam_0x90 >> 4) & 0xF;
+    field_0x25c = mSpawnParam_0x90 & 7;
     if (field_0x25c == 6) {
         s32 playerCount = gGameRoot_8053AAF8->fn_80138A30();
         if (playerCount >= 2) {
@@ -151,7 +151,7 @@ bool MagicCircle_804A7960::fn_8028B850() {
         field_0x258++;
         return 0;
     }
-    if ((field_0x90 >> 27) != 0) {
+    if ((mSpawnParam_0x90 >> 27) != 0) {
         if (!isScreenFlagSet_0x34() && field_0x24c != 0 && field_0x24c != 2 && field_0x24c != 3) {
             return 0;
         }
@@ -220,7 +220,7 @@ void MagicCircle_804A7960::update() {
             if (field_0x240 >= 1.0f) {
                 field_0x240 = 1.0f;
                 field_0x248 = 10;
-                if (((field_0x90 >> 3) & 1) == 1) {
+                if (((mSpawnParam_0x90 >> 3) & 1) == 1) {
                     fn_801F0D20(3);
                 }
             }
@@ -237,7 +237,7 @@ void MagicCircle_804A7960::update() {
             addCircle(this, colorIdx);
             startSound_801F0E34(0x3002D, 0);
             if (mEmitter274 == NULL) {
-                mEmitter274 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A6, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter274 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A6, 0, 0, NULL, NULL, true, 1.0f);
                 if (mEmitter274 != NULL) {
                     if (field_0x25c == 0 || field_0x25c == 5) {
                         mEmitter274->setGlobalPrmColor(0x5A, 0xF3, 0xE9);
@@ -258,7 +258,7 @@ void MagicCircle_804A7960::update() {
                 }
             }
             if (mEmitter278 == NULL) {
-                mEmitter278 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A7, 0, 0, NULL, NULL, true, 1.0f);
+                mEmitter278 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A7, 0, 0, NULL, NULL, true, 1.0f);
                 if (mEmitter278 != NULL) {
                     if (field_0x25c == 0 || field_0x25c == 5) {
                         mEmitter278->setGlobalPrmColor(0xFF, 0xFF, 0xFF);
@@ -328,14 +328,14 @@ void MagicCircle_804A7960::update() {
             continue;
         }
         if (gGameRoot_8053AAF8->field_0x7e && !fn_8022C8EC(i)) {
-            if (getPlayerLayer_8023DE58(i) != getTargetLayer(field_0x90)) {
+            if (getPlayerLayer_8023DE58(i) != getTargetLayer(mSpawnParam_0x90)) {
                 continue;
             }
         }
         if (field_0x25c >= 1 && field_0x25c <= 4 && field_0x25c != i + 1) {
             continue;
         }
-        if (fn_8023B0F4(i, &box, field_0x4, false, 0.0f) && !field_0x251) {
+        if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f) && !field_0x251) {
             if (field_0x252[i] == 1) {
                 continue;
             }
@@ -344,7 +344,7 @@ void MagicCircle_804A7960::update() {
             if (field_0x25c == 5) {
                 warpType = 20;
             }
-            if (fn_802317F0(i, getTargetLayer(field_0x90), &mPos, &field_0x268, warpType)) {
+            if (fn_802317F0(i, getTargetLayer(mSpawnParam_0x90), &mPos, &field_0x268, warpType)) {
                 field_0x238 = 180;
                 if ((field_0x24c >= 6 && field_0x24c <= 9) || (field_0x25c == 5 && field_0x24c == 0)) {
                     field_0x23c++;
@@ -362,7 +362,7 @@ void MagicCircle_804A7960::update() {
             box.i.y -= 1.0f;
             box.f.x += 1.0f;
             box.f.y += 1.0f;
-            if (getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_8023B0F4(i, &box, field_0x4, false, 100.0f)) {
+            if (getField_0x4() == getPlayerLayer_8023DE58(i) && !fn_8023B0F4(i, &box, mLayer_0x4, false, 100.0f)) {
                 field_0x252[i] = 0;
             }
         }
@@ -374,19 +374,19 @@ void MagicCircle_804A7960::update() {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         f32 viewX;
         f32 viewY;
-        if (getTargetLayer(field_0x90) == 0) {
-            JGeometry::TBox2f* viewBox = layerBox(getTargetLayer(field_0x90));
+        if (getTargetLayer(mSpawnParam_0x90) == 0) {
+            JGeometry::TBox2f* viewBox = layerBox(getTargetLayer(mSpawnParam_0x90));
             viewX = viewBox->i.x;
             viewY = viewBox->i.y;
         } else {
             viewX = viewY = 0.0f;
         }
-        if (actor != NULL && (actor->mActorId != ACTOR_FIRE || ((actor->field_0x90 >> 6) & 3) != 1) && !actor->field_0xc4) {
+        if (actor != NULL && (actor->mActorId != ACTOR_FIRE || ((actor->mSpawnParam_0x90 >> 6) & 3) != 1) && !actor->field_0xc4) {
             JGeometry::TVec3f dest;
-            dest.x = (f32)getTargetX(field_0x90) + viewX + 8.0f;
-            dest.y = (f32)getTargetY(field_0x90) + viewY + 8.0f;
+            dest.x = (f32)getTargetX(mSpawnParam_0x90) + viewX + 8.0f;
+            dest.y = (f32)getTargetY(mSpawnParam_0x90) + viewY + 8.0f;
             dest.z = 0.0f;
-            actor->fn_801F349C(getTargetLayer(field_0x90), &dest);
+            actor->fn_801F349C(getTargetLayer(mSpawnParam_0x90), &dest);
         }
     }
 }

@@ -38,7 +38,7 @@ public:
     void fn_803F1C18(); // 12
     void fn_803F1C5C(); // 11
     // Not in the binary (inlined into their callers).
-    void enterState13();
+    void pool_80543748();
     void drawFade();
     void setRupeeDigits(s32 i);
     void setMarkers(s32 i);

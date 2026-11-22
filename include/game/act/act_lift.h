@@ -21,8 +21,8 @@ public:
     // Tests lift `index` (fn_802565BC); clrlwi 24 by its caller.
     bool fn_802565BC(s32 index);
 
-    // The mode is the low 7 bits of field_0x90, compared as signed.
-    s32 getMode() { return field_0x90 & 0x7F; }
+    // The mode is the low 7 bits of mSpawnParam_0x90, compared as signed.
+    s32 getMode() { return mSpawnParam_0x90 & 0x7F; }
 
     /* 0x230 */ u32 field_0x230; // step counter; limit is 0x90 bits 17-21, times 32
     /* 0x234 */ u32 field_0x234; // frames to wait; 60 after each step

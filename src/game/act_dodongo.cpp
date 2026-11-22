@@ -26,7 +26,7 @@ void Dodongo_804A3334::fn_801AE5AC() {
     case 0:
         mTimers[0] = 6;
         field_0x258 = field_0x28c;
-        field_0x258 += field_0x98 * 3 + field_0x24c;
+        field_0x258 += mDir_0x98 * 3 + field_0x24c;
         field_0x24c++;
         if (field_0x24c > 2) {
             field_0x24c = 0;
@@ -36,7 +36,7 @@ void Dodongo_804A3334::fn_801AE5AC() {
     case 1:
         mTimers[0] = 9;
         field_0x258 = field_0x28c;
-        field_0x258 += field_0x98 * 3 + field_0x24c;
+        field_0x258 += mDir_0x98 * 3 + field_0x24c;
         if (field_0x24c == 0) {
             startSound_801F0E34(0x5002A, 0);
         }
@@ -49,7 +49,7 @@ void Dodongo_804A3334::fn_801AE5AC() {
     case 2:
         mTimers[0] = 9;
         field_0x258 = field_0x28c;
-        field_0x258 += field_0x98 * 2 + field_0x24c;
+        field_0x258 += mDir_0x98 * 2 + field_0x24c;
         field_0x24c++;
         if (field_0x24c > 1) {
             field_0x24c = 1;
@@ -58,7 +58,7 @@ void Dodongo_804A3334::fn_801AE5AC() {
         break;
     case 3:
         field_0x258 = field_0x28c;
-        field_0x258 += field_0x98;
+        field_0x258 += mDir_0x98;
         break;
     case 4:
         if (field_0x24c > 2) {
@@ -79,13 +79,13 @@ void Dodongo_804A3334::init() {
     mBox.i.y = -8.0f;
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
-    field_0x80.i.x = -8.0f;
-    field_0x80.i.y = -8.0f;
-    field_0x80.f.x = 8.0f;
-    field_0x80.f.y = 8.0f;
+    mMapBox_0x80.i.x = -8.0f;
+    mMapBox_0x80.i.y = -8.0f;
+    mMapBox_0x80.f.x = 8.0f;
+    mMapBox_0x80.f.y = 8.0f;
 
-    field_0x234 = field_0x90 & 0xF;
-    field_0x294 = (field_0x90 >> 4) & 0xF;
+    field_0x234 = mSpawnParam_0x90 & 0xF;
+    field_0x294 = (mSpawnParam_0x90 >> 4) & 0xF;
 
     field_0x24c = 0;
     field_0x250 = 0;
@@ -109,8 +109,8 @@ void Dodongo_804A3334::init() {
     mTargetSerial = -1;
     field_0x298 = 0;
 
-    field_0x98 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
-    field_0x98 &= 3;
+    mDir_0x98 = (s32)(4.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
+    mDir_0x98 &= 3;
 
     setAnim(0);
 
@@ -119,9 +119,9 @@ void Dodongo_804A3334::init() {
     field_0x268.z = 0.0f;
     field_0x268.y = 0.0f;
     field_0x268.x = 0.0f;
-    field_0x3c.z = 0.0f;
-    field_0x3c.y = 0.0f;
-    field_0x3c.x = 0.0f;
+    mVel_0x3c.z = 0.0f;
+    mVel_0x3c.y = 0.0f;
+    mVel_0x3c.x = 0.0f;
     mLife = 10000;
     field_0x25c = 3;
 
@@ -169,19 +169,19 @@ void Dodongo_804A3334::fn_801ACFF4() {
         scale = 1.75f;
     }
 
-    const f32* boxData = &data[16 + field_0x98 * 4];
+    const f32* boxData = &data[16 + mDir_0x98 * 4];
     mBox.i.x = scale * boxData[0];
     mBox.i.y = scale * boxData[1];
     mBox.f.x = scale * boxData[2];
     mBox.f.y = scale * boxData[3];
-    field_0x80 = mBox;
+    mMapBox_0x80 = mBox;
 
-    addCalc2_801F71A4(&field_0x3c.x, field_0x268.x, 0.3f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x268.y, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x268.x, 0.3f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x268.y, 0.3f, 1.0f);
     addCalc2_801F71A4(&field_0x274[0], field_0x274[3], 0.1f, 0.1f);
     fn_801F3D94(0);
     field_0x274[1] = field_0x274[0];
-    mPos += field_0x3c;
+    mPos += mVel_0x3c;
 
     if (mTimers[3] == 0) {
         if (field_0x230 == 2 || field_0x230 == 5) {
@@ -198,8 +198,8 @@ void Dodongo_804A3334::fn_801ACFF4() {
         if (fn_801F285C(NULL, NULL, NULL, i) >= 0) {
             JGeometry::TVec2f center(centerX, centerY);
             if (fn_80237948(0, &center)) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x118, 0, 1, NULL, NULL, true, 1.0f);
                 startSound_801F0E34(0x400D1, 0);
             }
         }
@@ -211,10 +211,10 @@ void Dodongo_804A3334::fn_801ACFF4() {
         field_0x230 = 1;
         // fallthrough
     case 1:
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
-        switch (field_0x98) {
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
+        switch (mDir_0x98) {
         case 0:
             field_0x268.x = 0.7f;
             field_0x268.y = 0.0f;
@@ -246,7 +246,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
             if (field_0x250 > 3) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                     s32 dir = -1;
-                    s32 r28 = field_0x98;
+                    s32 r28 = mDir_0x98;
                     field_0x250 = 0;
                     if (field_0x294 == 1) {
                         r28 = 3;
@@ -262,17 +262,17 @@ void Dodongo_804A3334::fn_801ACFF4() {
                     }
                     fn_801EEC98(mSerial, 0, &dir, 0, 0, 0, 0);
                     if (dir >= 0) {
-                        field_0x98 = dir;
+                        mDir_0x98 = dir;
                         mTimers[0] = 2;
                     }
-                    if (field_0x294 == 0 || field_0x98 != 3) {
+                    if (field_0x294 == 0 || mDir_0x98 != 3) {
                         field_0x230 = 4;
                     } else {
                         field_0x230 = 10;
                         break;
                     }
                     if (field_0x294 == 1) {
-                        if ((r28 == 1 && field_0x98 == 0) || (r28 == 0 && field_0x98 == 1)) {
+                        if ((r28 == 1 && mDir_0x98 == 0) || (r28 == 0 && mDir_0x98 == 1)) {
                             setAnim(4);
                             field_0x230 = 3;
                             break;
@@ -290,18 +290,18 @@ void Dodongo_804A3334::fn_801ACFF4() {
         // fallthrough
     case 2:
         if (hitWall != 0 || mTimers[1] == 0) {
-            field_0x98 ^= 2;
+            mDir_0x98 ^= 2;
             if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
             JGeometry::TVec3f savedPos;
             savedPos.x = mPos.x;
             savedPos.y = mPos.y;
             savedPos.z = mPos.z;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
-            switch (field_0x98) {
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            switch (mDir_0x98) {
             case 0:
                 field_0x268.x = 16.0f;
                 field_0x268.y = 0.0f;
@@ -325,7 +325,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
             }
             mPos += field_0x268;
             if (fn_801F2618(NULL, false)) {
-                field_0x98 ^= 1;
+                mDir_0x98 ^= 1;
             }
             mPos.x = savedPos.x;
             mPos.y = savedPos.y;
@@ -341,17 +341,17 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 if (field_0x258 >= 6 && field_0x258 <= 8) {
                     r3 = 2;
                 }
-                if ((r3 == 1 && field_0x98 == 0) || (r3 == 0 && field_0x98 == 1)) {
+                if ((r3 == 1 && mDir_0x98 == 0) || (r3 == 0 && mDir_0x98 == 1)) {
                     setAnim(4);
                     field_0x230 = 3;
                     break;
                 }
             }
             mTimers[0] = 2;
-            field_0x3c.z = 0.0f;
-            field_0x3c.y = 0.0f;
-            field_0x3c.x = 0.0f;
-            switch (field_0x98) {
+            mVel_0x3c.z = 0.0f;
+            mVel_0x3c.y = 0.0f;
+            mVel_0x3c.x = 0.0f;
+            switch (mDir_0x98) {
             case 0:
                 field_0x268.x = 0.7f;
                 field_0x268.y = 0.0f;
@@ -381,9 +381,9 @@ void Dodongo_804A3334::fn_801ACFF4() {
         field_0x268.z = 0.0f;
         field_0x268.y = 0.0f;
         field_0x268.x = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         if (field_0x298 == 0) {
             break;
         }
@@ -393,9 +393,9 @@ void Dodongo_804A3334::fn_801ACFF4() {
         field_0x268.z = 0.0f;
         field_0x268.y = 0.0f;
         field_0x268.x = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         setAnim(1);
         if (field_0x298 == 0) {
             break;
@@ -412,19 +412,19 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 spawnPos.z = mPos.z;
                 if (field_0x294 == 1) {
                     const f32* p = &data[8];
-                    spawnPos.x += p[field_0x98 * 2];
-                    spawnPos.y += p[field_0x98 * 2 + 1];
+                    spawnPos.x += p[mDir_0x98 * 2];
+                    spawnPos.y += p[mDir_0x98 * 2 + 1];
                 } else {
                     const f32* p = &data[0];
-                    spawnPos.x += p[field_0x98 * 2];
-                    spawnPos.y += p[field_0x98 * 2 + 1];
+                    spawnPos.x += p[mDir_0x98 * 2];
+                    spawnPos.y += p[mDir_0x98 * 2 + 1];
                 }
-                mTargetSerial = getActorManager_801F856C()->spawnActor_801F9484('DDGO', field_0x4, &spawnPos, (field_0x294 << 4) | 1, -1, -1);
+                mTargetSerial = getActorManager_801F856C()->spawnActor_801F9484('DDGO', mLayer_0x4, &spawnPos, (field_0x294 << 4) | 1, -1, -1);
                 if (mTargetSerial >= 0) {
                     ActorBase_804A5770* child = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
                     if (child != NULL) {
                         mTimers[2] = 120;
-                        child->field_0x98 = field_0x98;
+                        child->mDir_0x98 = mDir_0x98;
                     } else {
                         mTargetSerial = -1;
                     }
@@ -435,7 +435,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 if (field_0x294 == 1) {
                     f4 = 1.2f;
                 }
-                const f32* p = &data[32 + field_0x98 * 4];
+                const f32* p = &data[32 + mDir_0x98 * 4];
                 mBox.i.x = f4 * p[0];
                 mBox.i.y = f4 * p[1];
                 mBox.f.x = f4 * p[2];
@@ -444,11 +444,11 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 if (field_0x264 >= 0) {
                     ActorBase_804A5770* bombBase = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x264);
                     if (bombBase != NULL && bombBase->field_0x94 == 0) {
-                        if (field_0x294 != 1 || bombBase->field_0x90 == 8 || bombBase->field_0x90 == 9) {
+                        if (field_0x294 != 1 || bombBase->mSpawnParam_0x90 == 8 || bombBase->mSpawnParam_0x90 == 9) {
                             f32 dx = bombBase->mPos.x - mPos.x;
                             f32 dy = bombBase->mPos.y - mPos.y;
                             s16 angle = (s16)(JMath::atanTable_.atan2_(dx, dy) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
-                            if (fn_801F681C((u16)angle) == field_0x98) {
+                            if (fn_801F681C((u16)angle) == mDir_0x98) {
                                 Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(bombBase);
                                 bomb->field_0x280 = 1;
                                 field_0x230 = 6;
@@ -495,10 +495,10 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 if (field_0x294 == 1) {
                     f4 = 1.5f;
                 }
-                const f32* p = &data[field_0x98 * 2];
+                const f32* p = &data[mDir_0x98 * 2];
                 mouthPos.x += f4 * p[0];
                 mouthPos.y += f4 * p[1];
-                if ((field_0x98 & 1) == 0) {
+                if ((mDir_0x98 & 1) == 0) {
                     mouthPos.y += 12.0f * f4;
                 }
                 addCalc2_801F71A4(&bombPos.x, mouthPos.x, 0.3f, 2.0f);
@@ -534,7 +534,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 if (field_0x294 == 1) {
                     type = 13;
                 }
-                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('HBMB', field_0x4, &mPos, type, -1, -1);
+                s32 serial = getActorManager_801F856C()->spawnActor_801F9484('HBMB', mLayer_0x4, &mPos, type, -1, -1);
                 if (serial >= 0) {
                     ActorBase_804A5770* bombBase = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (bombBase != NULL) {
@@ -554,7 +554,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
         if (mTimers[1] == 0) {
             f32 targetScale = (field_0x294 == 1) ? 2.0f : 1.0f;
             if (field_0x274[0] < 1.1f) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053A110[field_0x98], 0, 0, NULL, NULL, true, targetScale);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_8053A110[mDir_0x98], 0, 0, NULL, NULL, true, targetScale);
                 if (field_0x25c > 0) {
                     field_0x250 = 0;
                     field_0x230 = 11;
@@ -579,9 +579,9 @@ void Dodongo_804A3334::fn_801ACFF4() {
         field_0x268.z = 0.0f;
         field_0x268.y = 0.0f;
         field_0x268.x = 0.0f;
-        field_0x3c.z = 0.0f;
-        field_0x3c.y = 0.0f;
-        field_0x3c.x = 0.0f;
+        mVel_0x3c.z = 0.0f;
+        mVel_0x3c.y = 0.0f;
+        mVel_0x3c.x = 0.0f;
         mTimers[1] = 30;
         setAnim(0);
         fn_801AE5AC();
@@ -611,7 +611,7 @@ void Dodongo_804A3334::fn_801ACCF0() {
 
     switch (field_0x230) {
     case 12:
-        mEmitters[0] = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1ac, 1, 1, NULL, NULL, true, scale);
+        mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x1ac, 1, 1, NULL, NULL, true, scale);
         if (mEmitters[0] == NULL) {
             return;
         }
@@ -621,21 +621,21 @@ void Dodongo_804A3334::fn_801ACCF0() {
     case 13:
         if (mEmitters[0] != NULL) {
             s32 rotX = 0;
-            if (field_0x98 == 2) {
+            if (mDir_0x98 == 2) {
                 rotX = 0x4000;
             }
             setEmitterPos_8013CB44(mEmitters[0], &mPos, 1, 1, true);
-            JPAGetXYZRotateMtx(rotX, lbl_804689C0[field_0x98], -0x8000, mEmitters[0]->mGlobalRot);
+            JPAGetXYZRotateMtx(rotX, lbl_804689C0[mDir_0x98], -0x8000, mEmitters[0]->mGlobalRot);
             startSound_801F0E34(0x30011, 0);
         }
 
         if (mTimers[0] == 0) {
-            const f32* boxData = &lbl_804A31C8[field_0x98 * 4];
+            const f32* boxData = &lbl_804A31C8[mDir_0x98 * 4];
             mBox.i.x = boxData[0] * scale;
             mBox.i.y = boxData[1] * scale;
             mBox.f.x = boxData[2] * scale;
             mBox.f.y = boxData[3] * scale;
-            fn_801F2B7C(field_0x114, -1, 9);
+            fn_801F2B7C(mParamAtcp_0x114, -1, 9);
             fn_801F2B20(5);
 
             JGeometry::TVec3f pos = mPos;
@@ -647,8 +647,8 @@ void Dodongo_804A3334::fn_801ACCF0() {
                 for (s32 i = 0; i < 8; i++) {
                     pos.y = mPos.y + mBox.i.y;
                     for (s32 j = 0; j < 8; j++) {
-                        if ((s32)fn_8022461C(&pos, field_0x4) == 0x21 || fn_8022517C(&pos, field_0x4) == 1) {
-                            getActorManager_801F856C()->spawnActor_801F9484('BLZE', field_0x4, &pos, 0xE0C0, -1, -1);
+                        if ((s32)fn_8022461C(&pos, mLayer_0x4) == 0x21 || fn_8022517C(&pos, mLayer_0x4) == 1) {
+                            getActorManager_801F856C()->spawnActor_801F9484('BLZE', mLayer_0x4, &pos, 0xE0C0, -1, -1);
                         }
                         pos.y += stepY;
                     }

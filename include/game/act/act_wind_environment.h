@@ -29,8 +29,8 @@ public:
     bool shouldBlow();
 
     /* 0x230 */ s32 mState; // 0 or 1: whether the effect emits (update toggles it)
-    /* 0x234 */ s32 mKind; // field_0x90 & 0xF: wind direction, 0 right, 1 left, 2 up, 3 down
-    /* 0x238 */ s32 mCondition; // (field_0x90 >> 4) & 0xF: which test toggles the effect
+    /* 0x234 */ s32 mKind; // mSpawnParam_0x90 & 0xF: wind direction, 0 right, 1 left, 2 up, 3 down
+    /* 0x238 */ s32 mCondition; // (mSpawnParam_0x90 >> 4) & 0xF: which test toggles the effect
     /* 0x23C */ s32 mTimer; // counts frames; not read here
     /* 0x240 */ JPABaseEmitter* mEmitter; // the wind effect, made in init
     /* 0x244 */ ActorSoundObj_804578F4* mSound; // own sound object, made in the constructor

@@ -23,9 +23,9 @@ public:
     /* 0x230 */ JPABaseEmitter* mEmitters[4];
     /* 0x240 */ s32 field_0x240; // state: 0-7, 6 draws the sprite instead of the fire
     /* 0x244 */ u8 field_0x244[0x250 - 0x244];
-    /* 0x250 */ s32 field_0x250; // bits 22-25 of field_0x90
-    /* 0x254 */ s32 field_0x254; // bits 16-19 of field_0x90, doubled (30 when 0)
-    /* 0x258 */ s32 field_0x258; // bits 28-31 of field_0x90 (15 -> -1)
+    /* 0x250 */ s32 field_0x250; // bits 22-25 of mSpawnParam_0x90
+    /* 0x254 */ s32 field_0x254; // bits 16-19 of mSpawnParam_0x90, doubled (30 when 0)
+    /* 0x258 */ s32 field_0x258; // bits 28-31 of mSpawnParam_0x90 (15 -> -1)
     /* 0x25C */ JGeometry::TBox2f field_0x25c; // the view layer's box (view 0xCC / 0xDC)
     /* 0x26C */ s32 mViewBit;    // GameView bit index, cleared when the actor goes
     /* 0x270 */ s32 field_0x270; // mPos.x - box.i.x, clamped to 0..0x1FF

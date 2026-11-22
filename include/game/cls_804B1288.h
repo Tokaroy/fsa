@@ -64,7 +64,7 @@ public:
     void fn_80404D70();
     // Dead-stripped (fn_80404D70 inlines it twice): hides field_0xc's panes
     // P21-P23, P31-P34, P41-P43, P51-P53, P61-P62 or P71-P73 of `stage` 1-6.
-    void hideStagePanes(s32 stage);
+    void inl_80404D70(s32 stage);
     // 0x80404270: false while lbl_80529DEC's byte 0x23F or field_0x656 is set,
     // outside GameRoot's 0x7E mode, or when fn_804045F8(stage) is set; else
     // stage flag 1 of stages 0-6 (isStageFlagSet), flag 2 of stage 7.
@@ -113,7 +113,7 @@ public:
     // 0x804111C4: draws the screen.
     void fn_804111C4();
     void fn_80411230(); // 0x80411230
-    void slidePane(s16 frame, s16 frames);
+    void pool_80543898(s16 frame, s16 frames);
     // State functions not written yet, lbl_804B10F8[state] (index in the comment;
     // fn_804108B4 calls lbl_804B10F8[field_0x350] through lbl_8053ADF8).
     void fn_8040F16C(); // 3
@@ -151,7 +151,7 @@ public:
     void fn_80405B10(s32 dir);
     // Dead-stripped (fn_80405D00, fn_80405B10 and fn_8040B388 inline it): resets the
     // field_0x120 panes if field_0x65e is set.
-    void hideSubStagePanes();
+    void inl_80405B10();
     // 0x80405FC0 (called by fn_80411230): draws the four players (player_sob.bin)
     // around the cursor field_0x394 / field_0x398, the frame picked by the state, and
     // starts the emitters 0xCB / 0xCC of field_0x2cc / field_0x2dc at frame 26 of state 0x14.

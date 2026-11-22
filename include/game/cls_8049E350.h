@@ -34,9 +34,9 @@ public:
     /* 0x231 */ bool field_0x231; // set by fn_80125C58
     /* 0x232 */ u8 field_0x232[0x234 - 0x232]; // not yet known
     /* 0x234 */ s32 field_0x234; // state: init sets 1, then switches on it
-    /* 0x238 */ s32 field_0x238; // field_0x90 & 1; 1 selects animation 0 of mAnim27c in fn_80125C58
+    /* 0x238 */ s32 field_0x238; // mSpawnParam_0x90 & 1; 1 selects animation 0 of mAnim27c in fn_80125C58
     /* 0x23C */ s32 field_0x23c; // -1 after state 1
-    /* 0x240 */ s32 field_0x240; // (field_0x90 >> 22) & 0x1F: the view bit of state 2
+    /* 0x240 */ s32 field_0x240; // (mSpawnParam_0x90 >> 22) & 0x1F: the view bit of state 2
 
     /* 0x244 */ SpriteAnim_801D267C mAnim244; // mCel (0x254) is the frame in fn_80125CDC
     /* 0x27C */ SpriteAnim_801D267C mAnim27c;

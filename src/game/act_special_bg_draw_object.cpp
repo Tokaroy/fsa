@@ -4,9 +4,9 @@
 #include "game/act/act_special_bg_draw_object.h"
 
 void SpecialBGDrawObject_804AC760::init() {
-    mKind = field_0x90 & 0xF;
-    mBit1 = (field_0x90 >> 22) & 0x1F;
-    mBit2 = (field_0x90 >> 17) & 0x1F;
+    mKind = mSpawnParam_0x90 & 0xF;
+    mBit1 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    mBit2 = (mSpawnParam_0x90 >> 17) & 0x1F;
     mSoundState = 0;
     mTriggered = 0;
     mTimer = 0;

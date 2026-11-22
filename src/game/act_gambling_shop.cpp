@@ -32,7 +32,7 @@ void GamblingShop_804AAA70::init() {
     mState = 0;
     field_0x234 = 0;
     field_0x248 = -1;
-    field_0x264 = field_0x90 >> 31;
+    field_0x264 = mSpawnParam_0x90 >> 31;
     if (field_0x264 != 0) {
         field_0x260 = 0x12C;
     } else {
@@ -42,11 +42,11 @@ void GamblingShop_804AAA70::init() {
     field_0x250[0] = -1;
     field_0x250[1] = -1;
     field_0x250[2] = -1;
-    field_0x26c = field_0x90 & 0xF;
-    field_0x270 = field_0x26c + ((field_0x90 >> 4) & 0xF);
-    field_0x274 = field_0x270 + ((field_0x90 >> 8) & 0xF);
+    field_0x26c = mSpawnParam_0x90 & 0xF;
+    field_0x270 = field_0x26c + ((mSpawnParam_0x90 >> 4) & 0xF);
+    field_0x274 = field_0x270 + ((mSpawnParam_0x90 >> 8) & 0xF);
     field_0x25c = -1;
-    field_0x268 = (field_0x90 >> 24) & 0xF;
+    field_0x268 = (mSpawnParam_0x90 >> 24) & 0xF;
     field_0x278[0] = 0;
     field_0x278[1] = 0;
     field_0x278[2] = 0;
@@ -133,7 +133,7 @@ void GamblingShop_804AAA70::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
 
     if (field_0x288) {
         field_0x244 += 1;
@@ -183,7 +183,7 @@ void GamblingShop_804AAA70::update() {
 
     switch (mState) {
     case 0: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player < 0) {
             break;
@@ -201,13 +201,13 @@ void GamblingShop_804AAA70::update() {
             } else {
                 msg = 0x6FF;
             }
-            if (talkAt(player, msg, mSerial, field_0x4, mPos)) {
+            if (talkAt(player, msg, mSerial, mLayer_0x4, mPos)) {
                 field_0x248 = player;
                 mState = 1;
             }
         } else {
             u32 msg = field_0x288 ? 0x5AF : 0x6FB;
-            if (talkAt(player, msg, mSerial, field_0x4, mPos)) {
+            if (talkAt(player, msg, mSerial, mLayer_0x4, mPos)) {
                 field_0x248 = player;
                 mState = 8;
             }
@@ -215,7 +215,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 1: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (!fn_803865B8(field_0x248)) {
             break;
         }
@@ -248,7 +248,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 2: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x248, mSerial)) {
             field_0x248 = -1;
             mState = 0;
@@ -256,7 +256,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 3: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (!fn_80388CAC(field_0x248, mSerial)) {
             break;
         }
@@ -299,7 +299,7 @@ void GamblingShop_804AAA70::update() {
             mState = 0;
             break;
         }
-        fn_8022FF8C(player, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(player, &box, mLayer_0x4, mSerial, true, false);
         if (fn_8022FD8C(mSerial) != player) {
             break;
         }
@@ -307,14 +307,14 @@ void GamblingShop_804AAA70::update() {
             break;
         }
         u32 msg = field_0x288 ? 0x5AC : 0x700;
-        if (talkAt(player, msg, mSerial, field_0x4, mPos)) {
+        if (talkAt(player, msg, mSerial, mLayer_0x4, mPos)) {
             field_0x248 = player;
             mState = 5;
         }
         break;
     }
     case 5: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (!fn_80388CAC(field_0x248, mSerial)) {
             break;
         }
@@ -363,7 +363,7 @@ void GamblingShop_804AAA70::update() {
             }
         }
         s32 player = fn_8022EA0C(field_0x248);
-        if (talkAtFlags21(player, msg, field_0x4, mPos)) {
+        if (talkAtFlags21(player, msg, mLayer_0x4, mPos)) {
             for (s32 k = 0; k < field_0x24c; k++) {
                 s32 actorSlot = field_0x250[k];
                 ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[actorSlot];
@@ -378,7 +378,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 7: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (field_0x234 > 0) {
             field_0x234 -= 1;
             break;
@@ -399,7 +399,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 8: {
-        fn_8022FF8C(field_0x248, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x248, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x248, mSerial)) {
             field_0x248 = -1;
             mState = 0;
@@ -413,18 +413,19 @@ void GamblingShop_804AAA70::update() {
 void GamblingShop_804AAA70::draw() {
     if (field_0x288) {
         drawSprite_801F06F0("enemy_both_sob.bin", field_0x240 + 0x12C, NULL, 0, 1.0f, 1.0f);
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x240 + 0x12C, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x240 + 0x12C, 0, 0, -1);
     } else {
         // FIXME: 82.02 %. The true branch matches; here the frame index is
         // scheduled differently (the original loads field_0x240 before field_0x238 * 2).
         drawSprite_801F06F0("enemy_both_sob.bin", field_0x238 * 2 + field_0x240 + 0xEC, NULL, 0, 1.0f,
                     1.0f);
-        fn_80307AC8(mSerial, field_0x4, &mPos, field_0x238 * 2 + field_0x240 + 0xEC, 0, 0, -1);
+        fn_80307AC8(mSerial, mLayer_0x4, &mPos, field_0x238 * 2 + field_0x240 + 0xEC, 0, 0, -1);
     }
 }
 
 // Not in the binary (update inlines it); the pool has its 3.0f ahead of draw's 1.0f.
 // Swaps two of the three chest slots at random.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 23-line definition): split out only where the .sdata2 order needs it.
 void GamblingShop_804AAA70::swapTwoChests() {
     s32 roll = (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
     switch (roll) {

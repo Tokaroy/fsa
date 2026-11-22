@@ -1121,7 +1121,7 @@ void cls_804B0B00::fn_803EBAA8() {
     if (field_0x254[0] >= 28) {
         if (field_0x1dc == 15) {
             if (field_0x1d0 == field_0x1bc + 1 || field_0x1bc == 0) {
-                enterState15();
+                pool_80543680();
             } else {
                 fn_803E3CB0();
             }
@@ -1363,7 +1363,7 @@ void cls_804B0B00::fn_803EA3F8() {
     if (field_0x254[0] >= 23) {
         setEntries(this);
         if (field_0x1d0 == field_0x1bc + 1) {
-            enterState15();
+            pool_80543680();
         } else {
             fn_803E3CB0();
         }
@@ -2757,6 +2757,7 @@ void cls_804B0B00::fn_803E29C8() {
 // Updates and draws the fade overlay field_0x60. Dead-stripped: fn_803EDA2C
 // inlines it; its own copy created the unit's early .rodata ("kk_kettei_01.bti",
 // "kk_modoru_01.bti") and .sdata2 (800.0f, 640.0f) pool entries before fn_803E2A20.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 30-line definition): split out only where the .sdata2 order needs it.
 void cls_804B0B00::drawFade() {
     if (field_0x26e != 0) {
         switch (field_0x26e) {
@@ -2791,7 +2792,8 @@ void cls_804B0B00::drawFade() {
 // Enter state 15 (the terminal state after a slide-out completes). Dead-stripped:
 // fn_803EA3F8, fn_803EBAA8 and fn_803E6AB0 inline it (lbl_804B0754[15] is NULL);
 // its own copy created the 3.0f .sdata2 literal right after fn_803E1668.
-void cls_804B0B00::enterState15() {
+// R2 pool helper (inlined at 2 call sites); was enterState15.
+void cls_804B0B00::pool_80543680() {
     field_0x1d8 = field_0x1d4;
     field_0x1d4 = 15;
     if (field_0x1bc == 2 && lbl_80529DEC.field_0x64 == -1) {

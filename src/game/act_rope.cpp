@@ -37,7 +37,7 @@ void Rope_804A3A68::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
     mAnim.fn_801D2608(lbl_804A3A58, 4);
-    mAnim.startAnim_801D22DC(field_0x98, 2, false);
+    mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
     mAnim.fn_801D1D60();
 }
 
@@ -100,7 +100,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
                 mTargetSpeed = 1.5f;
                 mStateTimer = 0;
                 mState = 2;
-                field_0x98 = dir;
+                mDir_0x98 = dir;
             }
         }
         break;
@@ -109,23 +109,23 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
-            walk();
+            pool_8053EAF4();
         }
         break;
     case 1:
     case 2:
         if (mapHit) {
-            field_0x98 = fn_801CF720(field_0x98);
+            mDir_0x98 = fn_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
             if (mState == 1) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.35f) {
                     idle();
                 } else {
-                    walk();
+                    pool_8053EAF4();
                 }
             } else {
-                walk();
+                pool_8053EAF4();
             }
         }
         break;
@@ -143,7 +143,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
 // Regalloc only: the original loads mSpeed into f2 and the
 // 0.9090909f constant into f1 (ours the reverse).
 void Rope_804A3A68::updateAnim_0x94() {
-    mAnim.fn_801D2264(field_0x98, 2);
+    mAnim.fn_801D2264(mDir_0x98, 2);
     f32 t = (mSpeed - 0.4f) * 0.9090909f;
     if (t > 1.0f) {
         t = 1.0f;
@@ -156,11 +156,12 @@ void Rope_804A3A68::updateAnim_0x94() {
 
 // Not in the binary (updateState_0x90 inlines it at each call); the pool has its 0.4f ahead of
 // updateAnim_0x94's 0.9090909f, so it is a plain function generated before updateAnim_0x94.
-void Rope_804A3A68::walk() {
+// R2 pool helper (inlined at 3 call sites); was walk.
+void Rope_804A3A68::pool_8053EAF4() {
     field_0x250 = fn_801CD664(0x29) + 0x3c;
     mTargetSpeed = 0.4f;
     if (mState != 2) {
-        field_0x98 = fn_801CF6B8();
+        mDir_0x98 = fn_801CF6B8();
     }
     mStateTimer = 0;
     mState = 1;

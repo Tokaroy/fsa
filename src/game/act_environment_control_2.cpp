@@ -9,22 +9,22 @@
 #include "game/act/act_environment_control_2.h"
 
 void EnvironmentControl2_804A9CD0::init() {
-    field_0x234 = (field_0x90 >> 26) & 1;
-    field_0x238 = (field_0x90 >> 25) & 1;
-    field_0x23c = (field_0x90 >> 24) & 1;
-    field_0x240 = (field_0x90 >> 23) & 1;
-    field_0x248 = (field_0x90 >> 22) & 1;
-    field_0x24c = (field_0x90 >> 21) & 1;
-    field_0x250 = (field_0x90 >> 20) & 1;
-    field_0x254 = (field_0x90 >> 19) & 1;
-    field_0x25c = (field_0x90 >> 18) & 1;
-    field_0x260 = (field_0x90 >> 17) & 1;
-    field_0x264 = (field_0x90 >> 16) & 1;
-    field_0x268 = (field_0x90 >> 15) & 1;
-    field_0x270 = (field_0x90 >> 14) & 1;
-    field_0x278 = (field_0x90 >> 13) & 1;
-    field_0x27c = (field_0x90 >> 12) & 1;
-    field_0x280 = (field_0x90 >> 11) & 1;
+    field_0x234 = (mSpawnParam_0x90 >> 26) & 1;
+    field_0x238 = (mSpawnParam_0x90 >> 25) & 1;
+    field_0x23c = (mSpawnParam_0x90 >> 24) & 1;
+    field_0x240 = (mSpawnParam_0x90 >> 23) & 1;
+    field_0x248 = (mSpawnParam_0x90 >> 22) & 1;
+    field_0x24c = (mSpawnParam_0x90 >> 21) & 1;
+    field_0x250 = (mSpawnParam_0x90 >> 20) & 1;
+    field_0x254 = (mSpawnParam_0x90 >> 19) & 1;
+    field_0x25c = (mSpawnParam_0x90 >> 18) & 1;
+    field_0x260 = (mSpawnParam_0x90 >> 17) & 1;
+    field_0x264 = (mSpawnParam_0x90 >> 16) & 1;
+    field_0x268 = (mSpawnParam_0x90 >> 15) & 1;
+    field_0x270 = (mSpawnParam_0x90 >> 14) & 1;
+    field_0x278 = (mSpawnParam_0x90 >> 13) & 1;
+    field_0x27c = (mSpawnParam_0x90 >> 12) & 1;
+    field_0x280 = (mSpawnParam_0x90 >> 11) & 1;
 
     field_0x284 = fn_8016A3AC()->field_0x1f2;
     if (field_0x240 != 0) {
@@ -68,16 +68,16 @@ EnvironmentControl2_804A9CD0::~EnvironmentControl2_804A9CD0() {
 
 void EnvironmentControl2_804A9CD0::update() {
     JGeometry::TVec3f pos = mPos;
-    if (field_0x90 & 8) {
+    if (mSpawnParam_0x90 & 8) {
         pos.x += 512.0f;
     }
-    if (field_0x90 & 4) {
+    if (mSpawnParam_0x90 & 4) {
         pos.x -= 512.0f;
     }
-    if (field_0x90 & 2) {
+    if (mSpawnParam_0x90 & 2) {
         pos.y += 384.0f;
     }
-    if (field_0x90 & 1) {
+    if (mSpawnParam_0x90 & 1) {
         pos.y -= 384.0f;
     }
 

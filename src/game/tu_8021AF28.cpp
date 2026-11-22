@@ -16,12 +16,12 @@ static inline void drawSecond(cls_804A6550* self, SpriteParams_801F5AE0& params,
     params.field_0x10.a = 200;
     params.field_0x1d = 0;
     if (self->mSpriteParams.mMtx == NULL) {
-        fn_801EF830(self->field_0x4, &self->mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        fn_801EF830(self->mLayer_0x4, &self->mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 
 void cls_804A6550::fn_8021B668() const {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s8 shift = 0;
     if (fn_80219E04()) {
         shift = -6;
@@ -31,7 +31,7 @@ void cls_804A6550::fn_8021B668() const {
 
 void cls_804A6550::fn_8021B5C4() {
     deleteEmitter(&mEmitter);
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s8 shift = 0;
     if (fn_80219E04()) {
         shift = -6;
@@ -94,7 +94,7 @@ void cls_804A6550::fn_8021B1AC() {
     params.field_0x1d = 0;
     mPos.y += -10.5f;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(field_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
+        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
     }
     mPos.y -= -10.5f;
 }

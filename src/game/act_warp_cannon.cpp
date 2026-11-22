@@ -30,11 +30,11 @@ WarpCannon_8049EAE0::~WarpCannon_8049EAE0() {}
 
 // FIXME: 99.83 %, reloc-name; behaviour clean.
 void WarpCannon_8049EAE0::init() {
-    field_0x274 = field_0x90 >> 8 & 0xFF;
-    field_0x270 = field_0x90 >> 16 & 0xFF;
+    field_0x274 = mSpawnParam_0x90 >> 8 & 0xFF;
+    field_0x270 = mSpawnParam_0x90 >> 16 & 0xFF;
     mBox.set(-16.0f, -16.0f, 16.0f, -12.0f);
     mBox2.set(mBox);
-    field_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
+    mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
     mAnim.fn_801D2608(lbl_80539F48, 1);
@@ -82,13 +82,13 @@ void WarpCannon_8049EAE0::update() {
         }
         break;
     case 4:
-        flyPlayers();
+        pool_8053CCD0();
         if (getPlayerPos_8023E724(0)->z >= 90.0f) {
             fn_80130FAC(6);
         }
         break;
     case 5:
-        flyPlayers();
+        pool_8053CCD0();
         if (fn_80119DD0()->field_0x14 >= 250.0f) {
             fn_80130FAC(6);
         }
@@ -188,6 +188,7 @@ void WarpCannon_8049EAE0::fn_80130FAC(s32 state) {
 // of these functions from the bottom of the file up, so they were generated before it
 // (tools/pool.py). One more is still missing: the original creates a 16.0f after flyPlayers'
 // literals and before fn_80130FAC's 13.0f, which leaves init's literals one slot off.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
 s32 WarpCannon_8049EAE0::findPlayer() {
     JGeometry::TBox2f probe = mBox;
     f32 dy = mPos.y - mPos.z;
@@ -196,7 +197,7 @@ s32 WarpCannon_8049EAE0::findPlayer() {
     probe.f.x += mPos.x;
     probe.f.y += dy;
     for (s32 p = 0; p < 4; p++) {
-        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, field_0x4, false, 1000.0f) &&
+        if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p)) && fn_8023B0F4(p, &probe, mLayer_0x4, false, 1000.0f) &&
             !fn_80230188(p) && field_0x26c < 0) {
             return p;
         }
@@ -204,6 +205,7 @@ s32 WarpCannon_8049EAE0::findPlayer() {
     return -1;
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::allPlayersIn() {
     for (s32 p = 0; p < 4; p++) {
         if (!fn_80230188(p)) {
@@ -213,6 +215,7 @@ bool WarpCannon_8049EAE0::allPlayersIn() {
     return true;
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void WarpCannon_8049EAE0::movePlayers() {
     fn_801CD950(&field_0x27c, -10.0f, -0.2f);
     for (s32 p = 0; p < 4; p++) {
@@ -223,7 +226,8 @@ void WarpCannon_8049EAE0::movePlayers() {
 }
 
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
-void WarpCannon_8049EAE0::flyPlayers() {
+// R2 pool helper (inlined at 2 call sites); was flyPlayers.
+void WarpCannon_8049EAE0::pool_8053CCD0() {
     fn_801CD950(&field_0x27c, -10.0f, -0.002f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);
@@ -233,6 +237,7 @@ void WarpCannon_8049EAE0::flyPlayers() {
 }
 
 // Entering state 3: reset field_0x278 if all players pass fn_80230360.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
 void WarpCannon_8049EAE0::resetIfAllPlayersReady() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_80230360(i)) {
@@ -243,6 +248,7 @@ void WarpCannon_8049EAE0::resetIfAllPlayersReady() {
 }
 
 // Entering state 7: the players at z = 90.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
 void WarpCannon_8049EAE0::liftPlayers() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
@@ -252,6 +258,7 @@ void WarpCannon_8049EAE0::liftPlayers() {
 }
 
 // State 7: the players come down towards y = 0. True once one has arrived.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::landPlayers() {
     bool all = false;
     fn_801CD950(&field_0x27c, -10.0f, -0.2f);
@@ -266,6 +273,7 @@ bool WarpCannon_8049EAE0::landPlayers() {
 }
 
 // State 1: the cannon's kick when a player gets in (field_0x280 runs 0 to 1). True at the end.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::recoil() {
     field_0x280 += 0.05f;
     JGeometry::TVec3f step(0.0f, 2.0f * (0.5f - field_0x280), 0.0f);
@@ -282,6 +290,7 @@ bool WarpCannon_8049EAE0::recoil() {
 
 // State 2: the stronger kick of the shot, on its own static phase, held for 30 frames. True at
 // the end.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 bool WarpCannon_8049EAE0::fireRecoil() {
     static s32 counter = 0;
     static f32 phase = 0.0f;

@@ -24,7 +24,7 @@
 #include "JSystem/JMath/JMath.h"
 
 // Forward declaration (defined at its place below fn_801CC9F8).
-f32 tileCenter(f32 v);
+f32 pool_8053EF98(f32 v);
 
 
 
@@ -36,7 +36,7 @@ f32 tileCenter(f32 v);
 static inline s32 forceGemKind(ActorBase_804A5770* actor) {
     s32 kind = -1;
     if (actor->field_0x94 == 0 || actor->field_0x94 == 3) {
-        kind = actor->field_0x90 & 0xFF;
+        kind = actor->mSpawnParam_0x90 & 0xFF;
     }
     return kind;
 }
@@ -412,15 +412,15 @@ s32 fn_801CCDA4() {
 
 // Like fn_801CCCC4 but the snapped (x, y) of `in` goes to `out`.
 void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
-    out->x = tileCenter(in->x);
-    out->y = tileCenter(in->y);
+    out->x = pool_8053EF98(in->x);
+    out->y = pool_8053EF98(in->y);
 }
 
 // Snaps pos (x, y) down to a multiple of 16 and adds 8 (the centre of a 16x16
 // tile).
 void fn_801CCCC4(JGeometry::TVec3f* pos) {
-    pos->x = tileCenter(pos->x);
-    pos->y = tileCenter(pos->y);
+    pos->x = pool_8053EF98(pos->x);
+    pos->y = pool_8053EF98(pos->y);
 }
 
 // Whether the tile at pos is one of the codes 0x40-0x49.
@@ -549,7 +549,8 @@ bool fn_801CC8E4(ActorBase_804A5770* actor) {
 // copies are inlined in fn_801CCD34 and fn_801CCCC4, and its 8.0f sits in .sdata2 between
 // fn_801CC350's literals and fn_801CC9F8's, where its own copy was emitted (RULES_CARD,
 // "Literals before their first visible use" 2-3).
-f32 tileCenter(f32 v) {
+// R2 pool helper (inlined at 4 call sites; one-statement body); was tileCenter.
+f32 pool_8053EF98(f32 v) {
     return 8.0f + (u32)((s32)v & ~0xF);
 }
 
@@ -565,9 +566,9 @@ bool fn_801CC820(s32 player, JGeometry::TVec3f* out) {
         if (actor != NULL && actor->mAlive && actor->mActorId == ACTOR_ARRW && actor->mLife > 0) {
             found = true;
             if (out != NULL) {
-                out->x = actor->field_0x3c.x;
-                out->y = actor->field_0x3c.y;
-                out->z = actor->field_0x3c.z;
+                out->x = actor->mVel_0x3c.x;
+                out->y = actor->mVel_0x3c.y;
+                out->z = actor->mVel_0x3c.z;
             }
             actor->fn_801F3668();
         }
@@ -593,9 +594,9 @@ bool fn_801CC730(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
                 *outPlayer = serial;
             }
             if (outVel != NULL) {
-                outVel->x = actor->field_0x3c.x;
-                outVel->y = actor->field_0x3c.y;
-                outVel->z = actor->field_0x3c.z;
+                outVel->x = actor->mVel_0x3c.x;
+                outVel->y = actor->mVel_0x3c.y;
+                outVel->z = actor->mVel_0x3c.z;
             }
             actor->mLife = 0;
         }
@@ -621,9 +622,9 @@ bool fn_801CC640(s32 player, s32* outPlayer, JGeometry::TVec3f* outVel) {
                 *outPlayer = serial;
             }
             if (outVel != NULL) {
-                outVel->x = actor->field_0x3c.x;
-                outVel->y = actor->field_0x3c.y;
-                outVel->z = actor->field_0x3c.z;
+                outVel->x = actor->mVel_0x3c.x;
+                outVel->y = actor->mVel_0x3c.y;
+                outVel->z = actor->mVel_0x3c.z;
             }
             actor->mLife = 0;
         }
@@ -647,7 +648,7 @@ bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* ou
             }
             ((cls_804A0738*)actor)->field_0x254 = 1;
             if (out != NULL) {
-                JGeometry::TVec3f d = actor->field_0x3c;
+                JGeometry::TVec3f d = actor->mVel_0x3c;
                 d.scale(3.0f);
                 out->sub(JGeometry::TVec3f(pos->x, pos->y, 0.0f), d);
             }

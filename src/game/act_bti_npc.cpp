@@ -133,17 +133,17 @@ static inline void setRotScaleMtxS16(Mtx m, s16 x, s16 y, s16 z, f32 scaleX, f32
 }
 
 void BTINPC_804A927C::init() {
-    field_0x234 = field_0x90 & 0xFFF;
-    field_0x23c = (field_0x90 >> 12) & 0xF;
-    field_0x238 = (field_0x90 >> 16) & 0xF;
-    field_0x240 = (field_0x90 >> 20) & 0xF;
-    field_0x244 = (field_0x90 >> 25) & 1;
+    field_0x234 = mSpawnParam_0x90 & 0xFFF;
+    field_0x23c = (mSpawnParam_0x90 >> 12) & 0xF;
+    field_0x238 = (mSpawnParam_0x90 >> 16) & 0xF;
+    field_0x240 = (mSpawnParam_0x90 >> 20) & 0xF;
+    field_0x244 = (mSpawnParam_0x90 >> 25) & 1;
     if (field_0x244 != 0) {
         field_0x259 = 1;
     } else {
         field_0x259 = 0;
     }
-    if ((field_0x90 & 0x4000000) != 0) {
+    if ((mSpawnParam_0x90 & 0x4000000) != 0) {
         field_0x258 = 1;
     } else {
         field_0x258 = 0;
@@ -179,23 +179,23 @@ void BTINPC_804A927C::init() {
         field_0x248 = 0;
     }
     update();
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 void BTINPC_804A927C::update() {
     JGeometry::TVec3f pos;
     switch (field_0x230) {
     case 0:
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             if (field_0x258 != 0) {
-                if (field_0x4 >= 8) {
+                if (mLayer_0x4 >= 8) {
                     pos.x = mPos.x + 8.0f;
                     pos.y = mPos.y + 8.0f;
                     pos.z = 0.0f;
-                    getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4 + field_0x259, &pos, 0, -1, -1);
+                    getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4 + field_0x259, &pos, 0, -1, -1);
                 } else {
-                    spawnEmitter_8013CC50(field_0x4 + field_0x259, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
-                    spawnEmitter_8013CC50(field_0x4 + field_0x259, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+                    spawnEmitter_8013CC50(mLayer_0x4 + field_0x259, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
+                    spawnEmitter_8013CC50(mLayer_0x4 + field_0x259, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                 }
                 startSound_801F0E34(0x30003, 0);
             }
@@ -206,14 +206,14 @@ void BTINPC_804A927C::update() {
         if (field_0x240 == 2 || field_0x240 == 3) {
             if (!isScreenFlagSet_0x34()) {
                 if (field_0x258 != 0) {
-                    if (field_0x4 >= 8) {
+                    if (mLayer_0x4 >= 8) {
                         pos.x = mPos.x + 8.0f;
                         pos.y = mPos.y + 8.0f;
                         pos.z = 0.0f;
-                        getActorManager_801F856C()->spawnActor_801F9484('KMRI', field_0x4 + field_0x259, &pos, 0, -1, -1);
+                        getActorManager_801F856C()->spawnActor_801F9484('KMRI', mLayer_0x4 + field_0x259, &pos, 0, -1, -1);
                     } else {
-                        spawnEmitter_8013CC50(field_0x4 + field_0x259, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
-                        spawnEmitter_8013CC50(field_0x4 + field_0x259, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
+                        spawnEmitter_8013CC50(mLayer_0x4 + field_0x259, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
+                        spawnEmitter_8013CC50(mLayer_0x4 + field_0x259, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                     }
                     startSound_801F0E34(0x30003, 0);
                 }
@@ -251,18 +251,18 @@ void BTINPC_804A927C::draw() {
         if (field_0x234 == 0x22) {
             if (isScreenFlagSet_0x34() == true) {
                 void* res = fn_804032E8('TIMG', "en_8_3_koware.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
                 }
             } else {
                 void* res = fn_804032E8('TIMG', lbl_804A90F0[field_0x234]);
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
                 }
             }
         } else {
             void* res = fn_804032E8('TIMG', lbl_804A90F0[field_0x234]);
-            if (field_0x4 + field_0x259 < 8) {
+            if (mLayer_0x4 + field_0x259 < 8) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
             }
             params.reset();
@@ -274,54 +274,54 @@ void BTINPC_804A927C::draw() {
                 params.field_0x2c = 0;
                 params.field_0x24 = 0;
                 void* res2 = fn_804032E8('TIMG', lbl_804A90F0[0x51 + field_0x234]);
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x15) {
                 params.field_0x2d = 1;
                 void* res2 = fn_804032E8('TIMG', "rouya_a.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x31) {
                 void* res2 = fn_804032E8('TIMG', "tent_a.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x33) {
                 params.field_0x24 = 1;
                 void* res2 = fn_804032E8('TIMG', "kairo_ue.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 144.0f, 0.0f);
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res2, &params);
                 }
             } else if (field_0x234 == 0x34) {
                 void* res2 = fn_804032E8('TIMG', "naporu_tent_a.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 >= 0x37 && field_0x234 <= 0x39) {
                 params.field_0x2c = 0;
                 params.field_0x24 = 1;
                 void* res2 = fn_804032E8('TIMG', lbl_804A90F0[0x60 + field_0x234 - 0x37]);
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x3E) {
                 void* res2 = fn_804032E8('TIMG', "piramid_s_kabuse.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x42) {
                 params.field_0x24 = 1;
                 void* res2 = fn_804032E8('TIMG', "kanban_hidari_a.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x43) {
                 params.field_0x24 = 1;
                 void* res2 = fn_804032E8('TIMG', "kanban_migi_a.bti");
-                if (field_0x4 + field_0x259 < 8) {
+                if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             }

@@ -14,9 +14,9 @@ static const s32 lbl_804751A8[15] = {
 void IceMeltedByFourPlayers_804AE888::init() {
     mBox.set(-92.0f, -16.0f, 92.0f, 16.0f);
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
     field_0xb8 = 1;
-    field_0xf8 = 2;
+    mKnockbackKind_0xf8 = 2;
     field_0xbc = 3;
     field_0x1a4 = 1;
     field_0xb0 = 0x0A040304;
@@ -54,7 +54,7 @@ void IceMeltedByFourPlayers_804AE888::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     fn_8020D58C()->addBox(mSerial);
     fn_80378680();
     switch (field_0x234) {
@@ -120,7 +120,7 @@ u8 IceMeltedByFourPlayers_804AE888::fn_80378880() {
         if (other == NULL) {
             continue;
         }
-        if (field_0x4 != other->field_0x4) {
+        if (mLayer_0x4 != other->mLayer_0x4) {
             continue;
         }
         JGeometry::TBox2f theirs;
@@ -151,7 +151,7 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
         if (other == NULL) {
             continue;
         }
-        if (field_0x4 != other->field_0x4) {
+        if (mLayer_0x4 != other->mLayer_0x4) {
             continue;
         }
         JGeometry::TBox2f theirs;
@@ -160,7 +160,7 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
         if (!theirs.intersect(ours)) {
             continue;
         }
-        JGeometry::TVec3f offset = other->field_0x3c;
+        JGeometry::TVec3f offset = other->mVel_0x3c;
         if (offset.x || offset.y) {
             other->mLife = 0;
             continue;
@@ -179,9 +179,10 @@ bool IceMeltedByFourPlayers_804AE888::fn_80378680() {
 // A plain function that update inlines and whose own copy the linker dropped: the original's
 // .sdata2 starts with 1.0f, ahead of fn_80378680's 0.0f and 16.0f, so it was generated before it
 // (tools/pool.py). Spawns the emitter of the melting ice unless it is there already.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
 void IceMeltedByFourPlayers_804AE888::spawnMeltEmitter() {
     if (mEmitter230 == NULL) {
-        mEmitter230 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x456, 0, 1, NULL, NULL, true, 1.0f);
+        mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x456, 0, 1, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -257,7 +258,7 @@ void IceMeltedByFourPlayers_804AE888::draw() {
         params.mMtx = mtx;
     }
     void* res = fn_804032E8('TIMG', "yukikabe.bti");
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }
 }

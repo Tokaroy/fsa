@@ -70,7 +70,7 @@ void RankDisplay_804A8F74::init() {
         field_0x27c[i] = 0;
         field_0x28c[i] = 0;
     }
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 // FIXME: 99.2 %. Register allocation only: the loop counters and the read-once
@@ -225,7 +225,7 @@ void RankDisplay_804A8F74::draw() {
             {
                 void* res = fn_804030C4('TIMG', lbl_804A8F50[field_0x244[i]]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
                 }
             }
@@ -255,7 +255,7 @@ void RankDisplay_804A8F74::draw() {
             {
                 void* res = fn_804030C4('TIMG', "kk_noItem_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
                 }
             }
@@ -285,7 +285,7 @@ void RankDisplay_804A8F74::draw() {
             {
                 void* res = fn_804030C4('TIMG', "kk_noMagic_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
                 }
             }
@@ -319,7 +319,7 @@ void RankDisplay_804A8F74::draw() {
             {
                 void* res = fn_804030C4('TIMG', lbl_804A8F60[field_0x28c[i] - 4]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
-                if (field_0x4 < 8) {
+                if (mLayer_0x4 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
                 }
             }

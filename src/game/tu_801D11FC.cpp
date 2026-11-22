@@ -56,7 +56,7 @@ bool cls_804A46F4::fn_801D183C(f32 range) {
         }
         if (range == 0.0f || square(pos.x - mPos.x) + square(pos.y - mPos.y) <= square(range)) {
             // fn_801CF888 reads only (x, y) of its first position (8-byte slots).
-        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, field_0x4)) {
+        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
                 result = true;
             }
         }
@@ -87,8 +87,8 @@ bool cls_804A46F4::fn_801D12CC() {
             pos.set(playerPos.x, playerPos.y, playerPos.z);
         }
         probe.set(pos.x, pos.y, 0.0f);
-        if (isBlocked_0x4C(field_0x4, &probe)) {
-            s32 code = fn_802265FC(&pos, field_0x4);
+        if (isBlocked_0x4C(mLayer_0x4, &probe)) {
+            s32 code = fn_802265FC(&pos, mLayer_0x4);
             if (code >= 0x2C || code < 0x27) {
                 mPathCount = 0;
                 return false;
@@ -96,7 +96,7 @@ bool cls_804A46F4::fn_801D12CC() {
         }
         result = true;
         // fn_801CF888 reads only (x, y) of its first position (8-byte slots).
-        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, field_0x4)) {
+        if (!fn_801CF888((const JGeometry::TVec2f*)&mPos, &pos, mLayer_0x4)) {
             mPathCount = 0;
             field_0x32c.set(pos.x, pos.y, 0.0f);
         } else {
@@ -120,7 +120,7 @@ bool cls_804A46F4::fn_801D12CC() {
             } else {
                 JGeometry::TVec2f from;
                 waypoint(*this, mPathCount - 1, from);
-                if (fn_801CF888(&from, &pos, field_0x4)) {
+                if (fn_801CF888(&from, &pos, mLayer_0x4)) {
                     clear = true;
                 } else {
                     f32 ey = pos.y - from.y;
@@ -130,7 +130,7 @@ bool cls_804A46F4::fn_801D12CC() {
                         if (mPathCount >= 2) {
                             JGeometry::TVec2f prev;
                             waypoint(*this, mPathCount - 2, prev);
-                            if (!fn_801CF888(&prev, &pos, field_0x4)) {
+                            if (!fn_801CF888(&prev, &pos, mLayer_0x4)) {
                                 if (mPathCount > 0) {
                                     mPathCount--;
                                 }

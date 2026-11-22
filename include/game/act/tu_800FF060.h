@@ -23,7 +23,7 @@ public:
     /* 0x236 */ u8 field_0x236;
     /* 0x237 */ s8 field_0x237;
     /* 0x238 */ u8 field_0x238;
-    /* 0x239 */ u8 field_0x239; // bits 22..26 of field_0x90
+    /* 0x239 */ u8 field_0x239; // bits 22..26 of mSpawnParam_0x90
     /* 0x23A */ u8 field_0x23a[2]; // not yet known
     /* 0x23C */ s32 field_0x23c;
     /* 0x240 */ s32 field_0x240;

@@ -55,27 +55,27 @@ void ShovelOldTimer_804AAB40::update() {
     box.i.y += mPos.y;
     box.f.x += mPos.x;
     box.f.y += mPos.y;
-    fn_80239914(&box, field_0x4, mSerial);
+    fn_80239914(&box, mLayer_0x4, mSerial);
     switch (mState) {
     case 0: {
-        fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+        fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         s32 player = fn_8022FD8C(mSerial);
         if (player >= 0) {
             if (fn_802300EC(player)) {
                 if (getGameView_802D6A9C()->fn_802D800C(0x14)) {
-                    if (talk(player, 0x834, field_0x4, mSerial, mPos, 0x28)) {
+                    if (talk(player, 0x834, mLayer_0x4, mSerial, mPos, 0x28)) {
                         field_0x254 = player;
                         mState = 3;
                     }
                 } else {
                     bool found = findDigSpot();
                     if (!found) {
-                        if (talk(player, 0x84F, field_0x4, mSerial, mPos, 0x28)) {
+                        if (talk(player, 0x84F, mLayer_0x4, mSerial, mPos, 0x28)) {
                             field_0x254 = player;
                             mState = 3;
                         }
                     } else {
-                        if (talk(player, 0x835, field_0x4, mSerial, mPos, 8)) {
+                        if (talk(player, 0x835, mLayer_0x4, mSerial, mPos, 8)) {
                             field_0x250 = player;
                             mState = 1;
                         }
@@ -86,7 +86,7 @@ void ShovelOldTimer_804AAB40::update() {
         break;
     }
     case 1:
-        fn_8022FF8C(field_0x250, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x250, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x250, mSerial)) {
             field_0x240.x += 8.0f;
             field_0x240.y += 8.0f;
@@ -104,7 +104,7 @@ void ShovelOldTimer_804AAB40::update() {
             field_0x25a = true;
         }
         if (!field_0x258) {
-            fn_8022FEB8(&box, field_0x4, mSerial, true, false);
+            fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
             s32 p = fn_8022FD8C(mSerial);
             if (p >= 0) {
                 if (fn_802300EC(p)) {
@@ -118,14 +118,14 @@ void ShovelOldTimer_804AAB40::update() {
                     } else {
                         msg = 0x833;
                     }
-                    if (talk(p, msg, field_0x4, mSerial, mPos, 8)) {
+                    if (talk(p, msg, mLayer_0x4, mSerial, mPos, 8)) {
                         field_0x254 = p;
                         field_0x258 = true;
                     }
                 }
             }
         } else {
-            fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, true, false);
+            fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, true, false);
             if (fn_80388CAC(field_0x254, mSerial)) {
                 field_0x254 = -1;
                 field_0x258 = false;
@@ -133,7 +133,7 @@ void ShovelOldTimer_804AAB40::update() {
         }
         break;
     case 3:
-        fn_8022FF8C(field_0x254, &box, field_0x4, mSerial, true, false);
+        fn_8022FF8C(field_0x254, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x254, mSerial)) {
             field_0x254 = -1;
             mState = 0;
@@ -144,11 +144,12 @@ void ShovelOldTimer_804AAB40::update() {
 
 void ShovelOldTimer_804AAB40::draw() {
     drawSprite_801F06F0("enemy_both2_sob.bin", 0x386, NULL, 0, 1.0f, 1.0f);
-    fn_803075AC(mSerial, field_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
+    fn_803075AC(mSerial, mLayer_0x4, &mPos, 0x386, 0, 2, -1, false, 0, 0);
 }
 
 // Picks a random start in the visible box, then scans the tiles in 16-unit steps for the
 // dig-spot tile code 0x1B0; on a hit it records the spot (field_0x240) and the view's marker.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 31-line definition): split out only where the .sdata2 order needs it.
 bool ShovelOldTimer_804AAB40::findDigSpot() {
     JGeometry::TBox2f box = field_0x230;
     box.i.x += 64.0f;

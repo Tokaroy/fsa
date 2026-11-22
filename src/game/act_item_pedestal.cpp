@@ -7,8 +7,8 @@
 
 // 0x802AC2F4.
 void ItemPedestal_804A82A8::init() {
-    field_0x234 = (field_0x90 >> 12) & 0xF;
-    field_0x23c = (field_0x90 >> 4) & 1;
+    field_0x234 = (mSpawnParam_0x90 >> 12) & 0xF;
+    field_0x23c = (mSpawnParam_0x90 >> 4) & 1;
     field_0x230 = 0;
     field_0x238 = 0x28;
     field_0x240 = field_0x234;
@@ -23,48 +23,48 @@ void ItemPedestal_804A82A8::update() {
     case 0:
         if (field_0x238 == 0) {
             if (fn_80388EEC(field_0x234)) {
-                u32 param = field_0x90;
+                u32 param = mSpawnParam_0x90;
                 s32 cell = param >> 16;
                 s32 offset = (param >> 8) & 0xF;
                 switch (param & 0xF) {
                 case 1:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x18, 0x28);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x18, 0x28);
                     break;
                 case 2:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x19, 0x29);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x19, 0x29);
                     break;
                 case 3:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1A, 0x2A);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1A, 0x2A);
                     break;
                 case 4:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1B, 0x2B);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1B, 0x2B);
                     break;
                 case 5:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1C, 0x2C);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1C, 0x2C);
                     break;
                 case 6:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1D, 0x2D);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1D, 0x2D);
                     break;
                 case 7:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1E, 0x2E);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1E, 0x2E);
                     break;
                 case 8:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0x1F, 0x2F);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0x1F, 0x2F);
                     break;
                 case 9:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0xA0, 0xB0);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0xA0, 0xB0);
                     break;
                 case 10:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0xA1, 0xB1);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0xA1, 0xB1);
                     break;
                 case 11:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0xA2, 0xB2);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0xA2, 0xB2);
                     break;
                 case 12:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0xA3, 0xB3);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0xA3, 0xB3);
                     break;
                 case 13:
-                    gBgRewrite_8053AC98->fn_8029EC84(cell, field_0x4, offset, 0xFFF, 0x100F);
+                    gBgRewrite_8053AC98->fn_8029EC84(cell, mLayer_0x4, offset, 0xFFF, 0x100F);
                     break;
                 }
                 if (field_0x23c != 0) {

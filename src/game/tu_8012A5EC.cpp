@@ -227,8 +227,8 @@ void cls_8049E770::fn_8012C170() {
         msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (talk(field_0x4, msgPos)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (talk(mLayer_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230 += 2;
@@ -245,8 +245,8 @@ void cls_8049E770::fn_8012C030() {
         msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (talk(field_0x4, msgPos)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (talk(mLayer_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -256,7 +256,7 @@ void cls_8049E770::fn_8012C030() {
 
 void cls_8049E770::fn_8012BE2C() {
     fn_8012A5EC();
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_803865B8(0)) {
         fn_80388EEC(0);
         fn_8011921C()->fn_801183BC();
@@ -292,9 +292,9 @@ void cls_8049E770::fn_8012BC40() {
 
 inline void cls_8049E770::spawnEmitters() {
     for (s32 i = 0; i < 4; i++) {
-        field_0x328[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C0 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
-        field_0x328[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C1 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
-        field_0x328[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], 0x3C2 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3C0 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3C1 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
+        field_0x328[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3C2 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
     }
 }
 
@@ -370,9 +370,9 @@ void cls_8049E770::fn_8012B218() {
                 s32 id1 = 0x3B5;
                 s32 id2 = 0x3B6;
                 for (s32 i = 0; i < 4; i++) {
-                    field_0x358[0][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
-                    field_0x358[1][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
-                    field_0x358[2][i] = spawnEmitter_8013CC50(field_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x358[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id0, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x358[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id1, 0, 0, NULL, NULL, true, 1.0f);
+                    field_0x358[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], id2, 0, 0, NULL, NULL, true, 1.0f);
                     id0 += 3;
                     id1 += 3;
                     id2 += 3;
@@ -403,11 +403,11 @@ void cls_8049E770::fn_8012B218() {
             s32 id2 = 0x463;
             for (s32 i = 0; i < 4; i++) {
                 JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[0][i] = spawnEmitter_8013CC50(field_0x4, &p0, id0, 1, 2, NULL, NULL, true, 1.0f);
+                field_0x388[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &p0, id0, 1, 2, NULL, NULL, true, 1.0f);
                 JGeometry::TVec3f p1(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[1][i] = spawnEmitter_8013CC50(field_0x4, &p1, id1, 1, 2, NULL, NULL, true, 1.0f);
+                field_0x388[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &p1, id1, 1, 2, NULL, NULL, true, 1.0f);
                 JGeometry::TVec3f p2(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-                field_0x388[2][i] = spawnEmitter_8013CC50(field_0x4, &p2, id2, 1, 2, NULL, NULL, true, 1.0f);
+                field_0x388[2][i] = spawnEmitter_8013CC50(mLayer_0x4, &p2, id2, 1, 2, NULL, NULL, true, 1.0f);
                 id0 += 3;
                 id1 += 3;
                 id2 += 3;
@@ -423,8 +423,8 @@ void cls_8049E770::fn_8012B218() {
             msgPos.y = (s32)rm->efbHeight * 0.5f;
             msgPos.x = (s32)rm->fbWidth * 0.5f;
             msgPos.y += -16.0f;
-            fn_8022FE80(0, field_0x4, mSerial, true, false);
-            if (!talk(field_0x4, msgPos)) {
+            fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+            if (!talk(mLayer_0x4, msgPos)) {
                 return;
             }
             field_0x254++;
@@ -455,8 +455,8 @@ void cls_8049E770::fn_8012B0D8() {
         msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (talk(field_0x4, msgPos)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (talk(mLayer_0x4, msgPos)) {
             field_0x254++;
             fn_8011921C()->fn_80118454();
             field_0x230++;
@@ -466,7 +466,7 @@ void cls_8049E770::fn_8012B0D8() {
 
 void cls_8049E770::fn_8012B02C() {
     fn_8012A5EC();
-    fn_8022FE80(0, field_0x4, mSerial, true, false);
+    fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_803865B8(0)) {
         fn_80388EEC(0);
         fn_8011921C()->fn_801183BC();
@@ -482,15 +482,15 @@ void cls_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
             JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &p0, 0x460, 0, -1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &p0, 0x460, 0, -1, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f p1(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &p1, 0x46F, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &p1, 0x46F, 0, 0, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f p2(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &p2, 0x470, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &p2, 0x470, 0, 1, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f p3(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
-            spawnEmitter_8013CC50(field_0x4, &p3, 0x46E, 0, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &field_0x238, 0x471, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &field_0x238, 0x472, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &p3, 0x46E, 0, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x471, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &field_0x238, 0x472, 0, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x50063, 0);
             field_0x2c0 = 0;
         } else if (field_0x250 == 1309) {
@@ -566,8 +566,8 @@ void cls_8049E770::fn_8012AA84() {
         msgPos.y = (s32)rm->efbHeight / 2.0f;
         msgPos.z = 0.0f;
         msgPos.y += -16.0f;
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
-        if (!talk(field_0x4, msgPos)) {
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
+        if (!talk(mLayer_0x4, msgPos)) {
             return;
         }
         field_0x254++;
@@ -596,7 +596,7 @@ void cls_8049E770::fn_8012AA84() {
 void cls_8049E770::fn_8012A9A0() {
     fn_8012A5EC();
     if (field_0x404 == 0) {
-        fn_8022FE80(0, field_0x4, mSerial, true, false);
+        fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
             field_0x250 = 40;
@@ -622,7 +622,7 @@ void cls_8049E770::fn_8012A8C0() {
         box.i.y += field_0x25c[i].y;
         box.f.x += field_0x25c[i].x;
         box.f.y += field_0x25c[i].y;
-        fn_80239914(&box, field_0x4, mSerial);
+        fn_80239914(&box, mLayer_0x4, mSerial);
         box = baseBox;
     }
 }

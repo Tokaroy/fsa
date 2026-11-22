@@ -27,11 +27,11 @@ static inline void applyColor(cls_804AA4F0* actor) {
 // ours is MWCC's anonymous @NNN table, which the honest report compares by name.
 void cls_804AA4F0::init() {
     if (!fn_802DEBA0()) {
-        field_0x244 = field_0x90 & 0xFF;
+        field_0x244 = mSpawnParam_0x90 & 0xFF;
     } else {
         field_0x244 = -1;
     }
-    s32 index = (field_0x90 >> 22) & 0x1F;
+    s32 index = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x240 = index;
     mState = 0;
     mColor.mColor = fn_8018330C();
@@ -110,7 +110,7 @@ void cls_804AA4F0::init() {
     JGeometry::TVec3f savedPos = mPos;
     update();
     mPos = savedPos;
-    field_0x11f = 1;
+    mUpdateWhilePaused_0x11f = 1;
 }
 
 cls_804AA4F0::~cls_804AA4F0() {}
@@ -161,7 +161,7 @@ void cls_804AA4F0::update() {
         applyColor(this);
         break;
     case 5:
-        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
+        if ((mSpawnParam_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
             mState = 2;
         }
         applyColor(this);

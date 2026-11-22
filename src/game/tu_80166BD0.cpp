@@ -25,7 +25,7 @@ void MojamojaUnidentifiedEnemy_804A0668::vfunc_0x44() {
 
 void MojamojaUnidentifiedEnemy_804A0668::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
-    field_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
+    mMapBox_0x80.set(-8.0f, -8.0f, 8.0f, 8.0f);
     field_0x244 = 0;
     field_0x248 = 0;
     field_0x24c = 0;
@@ -40,7 +40,7 @@ void MojamojaUnidentifiedEnemy_804A0668::init() {
     field_0x260 = 0.0f;
     field_0x264 = 0.0f;
     field_0x268 = 0.0f;
-    field_0x3c.set(0.0f, 0.0f, 0.0f);
+    mVel_0x3c.set(0.0f, 0.0f, 0.0f);
     field_0x254 = 255.0f;
     mEmitter26c = NULL;
     field_0xb0 = 0x11101;
@@ -74,15 +74,15 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
     if (field_0x240 > 0) {
         field_0x240--;
     }
-    addCalc2_801F71A4(&field_0x3c.x, field_0x260, 0.5f, 1.0f);
-    addCalc2_801F71A4(&field_0x3c.y, field_0x264, 0.5f, 1.0f);
-    mPos += field_0x3c;
+    addCalc2_801F71A4(&mVel_0x3c.x, field_0x260, 0.5f, 1.0f);
+    addCalc2_801F71A4(&mVel_0x3c.y, field_0x264, 0.5f, 1.0f);
+    mPos += mVel_0x3c;
     u8 hitWall = 0;
     if (field_0x230 != 3) {
-        s32 code = fn_8022461C(&mPos, field_0x4);
+        s32 code = fn_8022461C(&mPos, mLayer_0x4);
         if (code == 0xE) {
             startSound_801F0E34(0x4001A, 0);
-            field_0x3c.set(0.0f, 0.0f, 0.0f);
+            mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             field_0x260 = 0.0f;
             field_0x264 = 0.0f;
             field_0x268 = 0.0f;
@@ -107,11 +107,11 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
     case 1:
         if (mPos.z <= 0.0f) {
             mPos.z = 0.0f;
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
             if (field_0x238 == 0) {
                 field_0x260 = JMath::sincosTable_.sinShort((s16)(s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
                 field_0x264 = JMath::sincosTable_.cosShort((s16)(s32)(65536.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()));
-                field_0x3c.z = 5.0f;
+                mVel_0x3c.z = 5.0f;
             } else {
                 if (field_0x260 != 0.0f || field_0x264 != 0.0f) {
                     startSound_801F0E34(0x40018, 0);
@@ -123,7 +123,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
             if (field_0x23c == 0) {
                 JGeometry::TVec3f pos(mPos);
                 pos.y -= 8.0f;
-                mEmitter26c = spawnEmitter_8013CC50(field_0x4, &pos, 0x170, 0, 1, NULL, NULL, true, 0.3f);
+                mEmitter26c = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x170, 0, 1, NULL, NULL, true, 0.3f);
                 field_0x254 = 255.0f;
                 startSound_801F0E34(0x40019, 0);
                 field_0x244 = 0;
@@ -135,7 +135,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
                 break;
             }
         } else {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
             field_0x238 = 0x14;
         }
         if (hitWall) {
@@ -153,9 +153,9 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
         break;
     case 2:
         if (mPos.z <= 0.0f) {
-            field_0x3c.z = 0.0f;
+            mVel_0x3c.z = 0.0f;
         } else {
-            field_0x3c.z -= 1.0f;
+            mVel_0x3c.z -= 1.0f;
         }
         if (field_0x234 == 0) {
             field_0x234 = 4;
@@ -174,8 +174,8 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
         field_0x25c += 0.1f;
         field_0x258 -= 0.02f;
         if (field_0x258 < 0.1f) {
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2A9, -1, 1, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x2AA, -1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x5005F, 0);
             fn_801F3668();
         }
@@ -197,7 +197,7 @@ void MojamojaUnidentifiedEnemy_804A0668::draw() {
         setRotScaleMtx(mtx, rot, field_0x258);
         params.mMtx = mtx;
         s32 frame = field_0x250 + 0x9d;
-        if (field_0x4 < 8) {
+        if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
             gGameRoot2_8053AB10->field_0x20->fn_802F86CC(&mPos, res, frame, &params, 1.0f, 1.0f);
         }

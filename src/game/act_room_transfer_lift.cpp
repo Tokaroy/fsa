@@ -27,8 +27,8 @@ void cls_8049CC40::init() {
     // 0x3F3F3F3F is the resource type the original passes here for both lookups ('????').
     field_0x230 = gGameRoot_8053AAF8->field_0xa4->getResource(0x3F3F3F3F, lbl_80539EC8[0]);
     field_0x234 = gGameRoot_8053AAF8->field_0xa4->getResource(0x3F3F3F3F, "black.bti");
-    field_0x29c = field_0x90 & 0xF;
-    field_0x2a0 = (field_0x90 >> 4) & 0xF;
+    field_0x29c = mSpawnParam_0x90 & 0xF;
+    field_0x2a0 = (mSpawnParam_0x90 >> 4) & 0xF;
     mBox.set(-24.0f, -24.0f, 24.0f, 24.0f);
     mBox.set(-30.0f, -30.0f, 30.0f, 30.0f);
     field_0xb8 = 1;
@@ -120,7 +120,7 @@ void cls_8049CC40::draw() {
     setRotScaleMtx(mtx2, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), sx2, 1.0f, sz2);
     params.mMtx = mtx2;
 
-    if (field_0x4 < 8) {
+    if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_80539EC8[0]);
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &mSpriteParams);
     }
@@ -131,8 +131,9 @@ cls_8049CC40::~cls_8049CC40() {}
 // A plain function whose out-of-line copy the linker dropped (update inlines it).
 // Compiled first (the bottom of the file), it gives the .sdata2 pool its leading
 // 8.0f ahead of draw's 0.0f / 1.0f, as in the original.
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 14-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049CC40::isInside(s32 player) const {
-    s32 layer = field_0x4;
+    s32 layer = mLayer_0x4;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
     if (playerLayer != layer) {
         return false;

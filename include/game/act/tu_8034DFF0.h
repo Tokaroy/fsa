@@ -16,7 +16,7 @@ public:
     // fn_8034E050 (game/tu_8034DFF0.cpp): not yet named after its role.
     void fn_8034E050();
     /* 0x230 */ s32 field_0x230; // 4 once init() has seen field_0x234 == 1 and isScreenFlagSet_0x34() true
-    /* 0x234 */ s32 field_0x234; // field_0x90 & 0xF, set by init()
+    /* 0x234 */ s32 field_0x234; // mSpawnParam_0x90 & 0xF, set by init()
     /* 0x238 */ s32 field_0x238; // 2 when init() takes its second path
     /* 0x23C */ s32 field_0x23c; // copy of field_0x238 made in init()
     /* 0x240 */ s32 field_0x240;

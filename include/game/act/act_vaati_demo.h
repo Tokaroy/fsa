@@ -20,7 +20,7 @@ public:
     /* 0x08 */ virtual ~cls_8049D940();
 
     // Slot 0x54, overriding cls_8049D140::vfunc_0x54 (0x801162E0, game/act_vaati_demo.cpp).
-    // Reads field_0x4 and field_0x8 of fn_8011921C()'s object and, when the
+    // Reads mLayer_0x4 and field_0x8 of fn_8011921C()'s object and, when the
     // first is 2, calls fn_80115F9C with the index of the matching
     // lbl_804649A4 entry.
     /* 0x54 */ virtual void vfunc_0x54();
@@ -54,7 +54,7 @@ public:
     void fn_80115F9C(s32 index);
 
     // Not in the binary: plain functions that update inlines.
-    void updateBobbing();
+    void pool_8053C724();
     void updateDescent();
 
     // Named after its vtable, 0x8049D940, slot 0x0C. __ct__12cls_8049D940Fv

@@ -6,10 +6,10 @@
 void WaitSwitch_804A8B20::init() {
     static const f32 lbl_8046D448[6] = {0.0f, 2.0f, 4.0f, 5.0f, 1.0f, 5.0f};
 
-    mCount = field_0x90 & 0x3FFFF;
-    mMode = (field_0x90 >> 19) & 7;
-    mBit = (field_0x90 >> 22) & 0x1F;
-    field_0x254 = (field_0x90 >> 18) & 1;
+    mCount = mSpawnParam_0x90 & 0x3FFFF;
+    mMode = (mSpawnParam_0x90 >> 19) & 7;
+    mBit = (mSpawnParam_0x90 >> 22) & 0x1F;
+    field_0x254 = (mSpawnParam_0x90 >> 18) & 1;
     mToggle = 0;
     mTimer = mCount;
     mValue = lbl_8046D448[mMode];
@@ -37,7 +37,7 @@ void WaitSwitch_804A8B20::update() {
     case 1:
         if (!getGameView_802D6A9C()->fn_802D75BC(field_0x16c)) {
             if (mMode >= 1 && mMode <= 5) {
-                getGameView_802D6A9C()->fn_802D79E8(field_0x4, mValue, 0.0f, false);
+                getGameView_802D6A9C()->fn_802D79E8(mLayer_0x4, mValue, 0.0f, false);
                 mStepTimer--;
                 if (mStepTimer == 0) {
                     mStepTimer = mStepPeriod;

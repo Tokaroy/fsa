@@ -29,14 +29,14 @@ cls_8049E610::~cls_8049E610() {
 
 void cls_8049E610::init() {
     ActorBase_804A5770::init();
-    field_0x230 = (field_0x90 >> 22) & 0x1F;
-    checkActivate();
+    field_0x230 = (mSpawnParam_0x90 >> 22) & 0x1F;
+    pool_8053CB48();
     mBox.i.x = -40.0f;
     mBox.i.y = -64.0f;
     mBox.f.x = 40.0f;
     mBox.f.y = 64.0f;
     mBox2.set(mBox);
-    field_0x80.set(mBox);
+    mMapBox_0x80.set(mBox);
 }
 
 // FIXME: 97.88% (missing/extra: one extra instruction, a copy of the player index (mr r27,r26) from the inlined isPlayerOn parameter, which also costs one more saved register (stmw r26 vs r27); the rest is the same register renaming as __dt__ in the emitter loops).
@@ -44,7 +44,7 @@ void cls_8049E610::update() {
     ActorBase_804A5770::update();
     switch (field_0x238) {
     case 0:
-        checkActivate();
+        pool_8053CB48();
         break;
     case 1:
         for (int i = 0; i < 4; i++) {
@@ -71,7 +71,8 @@ void cls_8049E610::update() {
 // first (the bottom of the file), isPlayerOn then checkActivate, they give the
 // .sdata2 pool its original order: 0, 32768/pi, 0.5, 3 (isPlayerOn), 1.0
 // (checkActivate), then init's box literals.
-void cls_8049E610::checkActivate() {
+// R2 pool helper (inlined at 2 call sites); was checkActivate.
+void cls_8049E610::pool_8053CB48() {
     if (isScreenFlagSet_0x34()) {
         field_0x238 = 1;
         // The original stores the state and then switches on it (a state setter inlined here, asm 0x8012A058).
@@ -80,21 +81,21 @@ void cls_8049E610::checkActivate() {
             break;
         case 1:
             if (!getGameView_802D6A9C()->fn_802D800C(field_0x230)) {
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39f, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39f, 0, -1, NULL, NULL, true, 1.0f);
                 for (int i = 0; i < 5; i++) {
                     if (field_0x23c[i] == NULL) {
-                        field_0x23c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80465098[i], 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x23c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80465098[i], 0, -1, NULL, NULL, true, 1.0f);
                     }
                 }
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x3a0, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39b, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39c, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39d, 0, -1, NULL, NULL, true, 1.0f);
-                spawnEmitter_8013CC50(field_0x4, &mPos, 0x39e, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3a0, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39b, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39c, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39d, 0, -1, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x39e, 0, -1, NULL, NULL, true, 1.0f);
             } else {
                 for (int i = 0; i < 5; i++) {
                     if (field_0x23c[i] == NULL) {
-                        field_0x23c[i] = spawnEmitter_8013CC50(field_0x4, &mPos, lbl_804650A4[i], 0, -1, NULL, NULL, true, 1.0f);
+                        field_0x23c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804650A4[i], 0, -1, NULL, NULL, true, 1.0f);
                     }
                 }
             }
@@ -107,11 +108,12 @@ void cls_8049E610::checkActivate() {
     }
 }
 
+// FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 bool cls_8049E610::isPlayerOn(s32 player) {
     if (player < 0) {
         return false;
     }
-    if (field_0x4 != getPlayerLayer_8023DE58(player)) {
+    if (mLayer_0x4 != getPlayerLayer_8023DE58(player)) {
         return false;
     }
     JGeometry::TBox2f box(mBox);
