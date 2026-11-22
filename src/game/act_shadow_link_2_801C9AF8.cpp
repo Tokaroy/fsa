@@ -31,6 +31,16 @@ bool ShadowLink2_804A43E8::fn_801CAED4(int player) {
 // game/tu_801CB270.cpp: hit spark at `pos` on `layer`.
 void fn_801CB4A4(s32 layer, const JGeometry::TVec3f* pos, s32 a, s32 b);
 
+static inline void normalize(f32& x, f32& y) {
+    f32 sq = x * x + y * y;
+    if (sq <= 32.0f * FLT_EPSILON) {
+        return;
+    }
+    f32 norm = JGeometry::TUtil<f32>::inv_sqrt(sq);
+    x *= norm;
+    y *= norm;
+}
+
 // The contact checks of the shadow's body: a player touching the hit box (or a side box in the
 // wall states) knocks the player back and starts the matching reaction state; a player touching
 // the body box when the actor is not locked starts state 0x21.
@@ -92,12 +102,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             s32 player = field_0x338;
             f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            f32 sq = dx * dx + dy * dy;
-            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= sq;
-                dy *= sq;
-            }
+            normalize(dx, dy);
             dx *= 3.0f;
             dy *= 3.0f;
             mVel_0x3c.x = dx;
@@ -205,12 +210,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             s32 player = field_0x338;
             f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
             f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
-            f32 sq = dx * dx + dy * dy;
-            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                dx *= sq;
-                dy *= sq;
-            }
+            normalize(dx, dy);
             dx *= 3.0f;
             dy *= 3.0f;
             mVel_0x3c.x = dx;
@@ -305,12 +305,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             done = true;
                             f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
                             f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
-                            f32 sq = dx * dx + dy * dy;
-                            if (!(sq <= 32.0f * FLT_EPSILON)) {
-                                sq = JGeometry::TUtil<f32>::inv_sqrt(sq);
-                                dx *= sq;
-                                dy *= sq;
-                            }
+                            normalize(dx, dy);
                             dx *= 3.0f;
                             dy *= 3.0f;
                             mVel_0x3c.x = dx;
