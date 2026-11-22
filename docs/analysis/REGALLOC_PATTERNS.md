@@ -31,7 +31,7 @@ About 40 functions were read by hand (fdiff/diag) to pick the tags. A full run t
 | ra:float-only-volatile | 67 | 48728 | tu_8020C0A8 vfunc_0x88, act_rope vfunc_0x94, tu_801F6058 fn_801F7664 | operand objects of a header inline (abs, square ...) vs a bare intrinsic/expression | yes: **recipe fabs-inline** |
 | ra:mixed-int-float | 29 | 39456 | act_vaati_boss fn_801D63D0, act_push_switch update | mixed; often fabs/inline as above plus saved swaps | partly |
 | ra:float-only-saved | 25 | 28464 | tu_804023D0 fn_80402CE0, act_zora_lotus fn_8033FC4C | float locals' declaration order / inline copies | likely (decl order) |
-| ra:rotate-saved | 16 | 15080 | tu_8020C0A8 vfunc_0x4C, tu_8021775C fn_80217ED4 | a group coloured in another order: declaration order or one value from a nested inline | yes (REGALLOC rules 2, 4) |
+| ra:rotate-saved | 16 | 15080 | tu_8020C0A8 isBlocked_0x4C, tu_8021775C fn_80217ED4 | a group coloured in another order: declaration order or one value from a nested inline | yes (REGALLOC rules 2, 4) |
 | ra:swap2-saved | 9 | 3592 | tu_801D6CEC __dt__12cls_801D7730, tu_801213EC fn_80121ABC | two compiler temporaries of an inlined helper; the same helper matches in another caller | yes, but needs the helper's shape |
 | ra:multi-saved / other | 4 | 2512 | act_eyeball_switch vfunc_0x10 | as rotate | yes |
 | ra:with-order (sched+regalloc) | 193 | 242440 | | order differences first; registers usually follow | - |

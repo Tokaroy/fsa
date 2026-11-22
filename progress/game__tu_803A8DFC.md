@@ -3,7 +3,7 @@
 Baseline (progress.py): 9057 / 11557. After: 9062 / 11557 (+5, unit 1 -> 6 of 47); no drops by address.
 
 Identified: the results screen (result_{4,3,2}P.blo, result_score_*, result_back, result_title,
-result_*.btk, kk_1st..4th rank textures). cls_804AF9A0 -> ResultScreen_804AF9A0 (names.tsv, med).
+result_*.btk, kk_1st..4th rank textures). ResultScreen_804AF9A0 -> ResultScreen_804AF9A0 (names.tsv, med).
 Class moved to include/game/tu_803A8DFC.h (layout from the ctor/dtor, size 0x4E0).
 
 100 %: __dt__, fn_803B2FB0, fn_803AF604, fn_803A8DFC, cls_803B7B90 ctor (fn_803B7B90).
