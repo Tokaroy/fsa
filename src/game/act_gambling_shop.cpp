@@ -51,8 +51,8 @@ void GamblingShop_804AAA70::init() {
     field_0x278[1] = 0;
     field_0x278[2] = 0;
     field_0x278[3] = 0;
-    if (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.field_0x118 == 1 &&
-        lbl_80529DEC.field_0x11c == 1) {
+    if (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.mStage_0x118 == 1 &&
+        lbl_80529DEC.mLevel_0x11c == 1) {
         field_0x288 = true;
     } else {
         field_0x288 = false;

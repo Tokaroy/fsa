@@ -438,20 +438,20 @@ ConnectScreen_804B0F10::ConnectScreen_804B0F10() {
     field_0x350 = 4;
 
     mScreen = new J2DScreen;
-    mScreen->setPriority("bat_n_player.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mScreen->setPriority("bat_n_player.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     mEntryScreen_0x8 = new J2DScreen;
-    mEntryScreen_0x8->setPriority("bat_entry.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mEntryScreen_0x8->setPriority("bat_entry.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     mEntryConScreen_0xc = new J2DScreen;
-    mEntryConScreen_0xc->setPriority("bat_entry_con.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mEntryConScreen_0xc->setPriority("bat_entry_con.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     mHandicapScreen_0x10 = new J2DScreen;
-    mHandicapScreen_0x10->setPriority("handicap.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mHandicapScreen_0x10->setPriority("handicap.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     mBackScreen_0x14 = new J2DScreen;
-    mBackScreen_0x14->setPriority("bat_back.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mBackScreen_0x14->setPriority("bat_back.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     for (int i = 0; i < 4; i++) {
         mArrowAnimScreens_0x18[i] = new J2DScreen;
-        mArrowAnimScreens_0x18[i]->setPriority("entry_arrow_anim.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        mArrowAnimScreens_0x18[i]->setPriority("entry_arrow_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
         mConnectAnimScreens_0x28[i] = new J2DScreen;
-        mConnectAnimScreens_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        mConnectAnimScreens_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
         static_cast<J2DPicture*>(mConnectAnimScreens_0x28[i]->search('Pccaa00'))
             ->setBlackWhite(JUtility::TColor(0x82, 0x82, 0xA0, 0xFF), JUtility::TColor(0x82, 0x82, 0xA0, 0x00));
     }

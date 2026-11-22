@@ -294,8 +294,8 @@ void cls_8049D940::fn_80115F9C(s32 index) {
     case 11:
         lbl_8050EC80.getCurrentFile().field_0x65 |= 1;
         lbl_80529DEC.field_0x237 = 6;
-        lbl_80529DEC.field_0x118 = 0;
-        lbl_80529DEC.field_0x11c = 0;
+        lbl_80529DEC.mStage_0x118 = 0;
+        lbl_80529DEC.mLevel_0x11c = 0;
         gGameRoot_8053AAF8->fn_80136798(6, 0);
         break;
     case 0:

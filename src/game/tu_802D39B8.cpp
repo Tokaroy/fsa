@@ -409,16 +409,16 @@ bool fn_802DE814(void) {
     if (gGameRoot_8053AAF8->field_0x7f == 0) {
         return false;
     }
-    s32 stage = lbl_80529DEC.field_0x118;
-    if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 2 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 4 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 5 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 6 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 7 && lbl_80529DEC.field_0x11c == 1) ||
-        (stage == 10 && lbl_80529DEC.field_0x11c == 2))
+    s32 stage = lbl_80529DEC.mStage_0x118;
+    if ((stage == 0 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 2 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 4 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 6 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+        (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2))
     {
         return true;
     }
@@ -491,7 +491,7 @@ void GameView_804A9950::vfunc_0xC() {
     for (int i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) == true &&
             lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(i)) == 1) {
-            if (gGameRoot_8053AAF8->field_0x7f == 0 || lbl_80529DEC.field_0x118 != 10 || lbl_80529DEC.field_0x11c != 2) {
+            if (gGameRoot_8053AAF8->field_0x7f == 0 || lbl_80529DEC.mStage_0x118 != 10 || lbl_80529DEC.mLevel_0x11c != 2) {
                 fn_80303870(i);
             }
         }
@@ -1214,8 +1214,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
         gGameRoot2_8053AB10->field_0x20->fn_802F6BBC(0, 4);
         gGameRoot2_8053AB10->field_0x20->fn_802F6BBC(1, 5);
     }
-    getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, name1), 0, 0, 0, 0);
-    getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, name2), 0, 1, 0, 0);
+    getTileMap()->fn_802F99DC(lbl_80529DEC.mBossArchive_0x10->getResource(type, name1), 0, 0, 0, 0);
+    getTileMap()->fn_802F99DC(lbl_80529DEC.mBossArchive_0x10->getResource(type, name2), 0, 1, 0, 0);
     gGameRoot2_8053AB10->field_0x20->field_0x235c[0] = 1;
     gGameRoot2_8053AB10->field_0x20->field_0x235c[1] = 1;
     fn_802D4CCC(0);
@@ -1224,8 +1224,8 @@ void GameView_804A9950::fn_802D8D50(bool reload) {
             const char* tiles1 = fn_802D8228(i + 8);
             const char* tiles2 = fn_802D8128(i + 8);
             if (tiles1 != NULL) {
-                getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, tiles1), 0, i + 8, 0, 0);
-                getTileMap()->fn_802F99DC(lbl_80529DEC.field_0x10->getResource(type, tiles2), 0, i + 0x10, 0, 0);
+                getTileMap()->fn_802F99DC(lbl_80529DEC.mBossArchive_0x10->getResource(type, tiles1), 0, i + 8, 0, 0);
+                getTileMap()->fn_802F99DC(lbl_80529DEC.mBossArchive_0x10->getResource(type, tiles2), 0, i + 0x10, 0, 0);
                 fn_802D4CCC(i + 8);
             }
         }
@@ -1335,20 +1335,20 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         cls_801E9AFC* sprites = fn_801E9AFC();
         sprites->field_0x0[sprites->field_0xf0].fn_801EA594();
         if (gGameRoot_8053AAF8->field_0x7f != 0 && !fn_802DEBA0()) {
-            s32 stage = lbl_80529DEC.field_0x118;
-            if (!((stage == 0 && lbl_80529DEC.field_0x11c == 1) ||
-                  (stage == 0 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 1 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 2 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 3 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 4 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 5 && lbl_80529DEC.field_0x11c == 1) ||
-                  (stage == 5 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 6 && lbl_80529DEC.field_0x11c == 1) ||
-                  (stage == 6 && lbl_80529DEC.field_0x11c == 3) ||
-                  (stage == 7 && lbl_80529DEC.field_0x11c == 0) ||
-                  (stage == 7 && lbl_80529DEC.field_0x11c == 2) ||
-                  (stage == 7 && lbl_80529DEC.field_0x11c == 3)))
+            s32 stage = lbl_80529DEC.mStage_0x118;
+            if (!((stage == 0 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                  (stage == 0 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 1 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 2 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 3 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 4 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 5 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                  (stage == 5 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 6 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                  (stage == 6 && lbl_80529DEC.mLevel_0x11c == 3) ||
+                  (stage == 7 && lbl_80529DEC.mLevel_0x11c == 0) ||
+                  (stage == 7 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                  (stage == 7 && lbl_80529DEC.mLevel_0x11c == 3)))
             {
                 JGeometry::TVec3f pos(100.0f + mVisibleBox.i.x, 100.0f + mVisibleBox.i.y, 0.0f);
                 getActorManager_801F856C()->spawnActor_801F9484('TINK', 0, &pos, 0, -1, -1);

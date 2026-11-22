@@ -101,9 +101,9 @@ GameMode_804B0688::GameMode_804B0688() {
     field_0x60 = new cls_804AF860;
     mMovie = new THPMovie_804B15D0;
     mScreen = new J2DScreen;
-    mScreen->setPriority("gamemode.blo", 0x1100000, lbl_80529DEC.field_0x2c);
+    mScreen->setPriority("gamemode.blo", 0x1100000, lbl_80529DEC.mGameModeArchive_0x2c);
     mMovieScreen = new J2DScreen;
-    mMovieScreen->setPriority("gamemode_movie.blo", 0x1100000, lbl_80529DEC.field_0x2c);
+    mMovieScreen->setPriority("gamemode_movie.blo", 0x1100000, lbl_80529DEC.mGameModeArchive_0x2c);
     field_0x14[0] = new PaneCtrl_804AF86C;
     field_0x14[0]->setPane_80402F04(mMovieScreen->search('Pmov01'));
     field_0x14[1] = new PaneCtrl_804AF86C;
@@ -280,7 +280,7 @@ GameMode_804B0688::~GameMode_804B0688() {
     field_0x58 = NULL;
     delete field_0x10;
     field_0x10 = NULL;
-    lbl_80529DEC.field_0x2c->unmount();
+    lbl_80529DEC.mGameModeArchive_0x2c->unmount();
     lbl_8053ADD0 = NULL;
 }
 

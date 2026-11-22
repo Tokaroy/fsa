@@ -553,7 +553,7 @@ void fn_80300A8C(GbaClient_803007D0* client, OSMessage msg) {
 void fn_803007D0() {
     lbl_8053ACC4 = DVDGetCurrentDiskID();
     GBAInit();
-    lbl_8053ACB8 = lbl_80529DEC.field_0x58;
+    lbl_8053ACB8 = lbl_80529DEC.mClientThreadArchive_0x58;
     lbl_8053ACBC = (GbaProgram_8053ACBC*)lbl_8053ACB8->getResource('????', "client_thread.bin");
     lbl_8053ACC0 = lbl_8053ACB8->getResSize(lbl_8053ACB8->getResource('????', "client_thread.bin"));
     lbl_8053ACC8 = OSGetTick();

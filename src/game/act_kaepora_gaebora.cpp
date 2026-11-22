@@ -31,14 +31,14 @@ extern const s16* lbl_804A6540[4]; // the sprite animation tables (.data of this
 // FIXME(shotgun): 99.14 %, missing/extra; behaviour near.
 void cls_804A6550::init() {
     EnemyBase_804A4808::init();
-    bool cleared = isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) != FALSE;
+    bool cleared = isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) != FALSE;
     bool viewFlag = getGameView_802D6A9C()->field_0x131f9 != 0;
     field_0x2a8 = (mSpawnParam_0x90 & 0xFFFF) + 0x12B;
     u32 t = (mSpawnParam_0x90 >> 20) & 0x1F;
     f32 minTime = 1.5f;
     field_0x2ac = __fsel((f32)t - minTime, (f32)t, minTime);
     field_0x2b0 = (mSpawnParam_0x90 >> 25) & 0x1F;
-    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && (mSpawnParam_0x90 >> 31) != 0) {
+    if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 0 && (mSpawnParam_0x90 >> 31) != 0) {
         mFlags |= 0x10000;
     }
     if ((mSpawnParam_0x90 >> 19) & 1) {

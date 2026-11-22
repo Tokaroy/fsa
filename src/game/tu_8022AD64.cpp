@@ -1655,7 +1655,7 @@ bool fn_80237A80(s32 player) {
     if (fn_8023EA28(player)) {
         return false;
     }
-    if (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0) {
+    if (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 0) {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && !fn_802349EC(i)) {
                 if (fn_8022CCAC(i)) {

@@ -71,7 +71,7 @@ cls_804B0F50::cls_804B0F50() {
 }
 
 cls_804B0F50::~cls_804B0F50() {
-    lbl_80529DEC.field_0x18->unmount();
+    lbl_80529DEC.mLogoArchive_0x18->unmount();
     delete field_0xc;
     field_0xc = NULL;
     delete field_0x14;
@@ -85,7 +85,7 @@ void cls_804B0F50::fn_803FFAA8() {
     if (field_0x79 == 0) {
         cls_804B0FC0* cmd = field_0x44;
         if (cmd->field_0x4 == 1) {
-            lbl_80529DEC.field_0x58 = cmd->field_0x14;
+            lbl_80529DEC.mClientThreadArchive_0x58 = cmd->field_0x14;
             delete cmd;
             fn_803007D0();
             field_0x4 = new cls_804AA8C8();
@@ -106,10 +106,10 @@ void cls_804B0F50::fn_803FFAA8() {
     if (field_0x79 == 1) {
         cls_804B0FC0* cmd = field_0x34;
         if (cmd->field_0x4 == 1) {
-            lbl_80529DEC.field_0x18 = cmd->field_0x14;
+            lbl_80529DEC.mLogoArchive_0x18 = cmd->field_0x14;
             delete cmd;
             field_0x18 = new J2DScreen();
-            field_0x18->setPriority("ZelPac_NIN_logo.blo", 0, lbl_80529DEC.field_0x18);
+            field_0x18->setPriority("ZelPac_NIN_logo.blo", 0, lbl_80529DEC.mLogoArchive_0x18);
             ((J2DPicture*)field_0x18->search('NIN_Logo'))->setBlackWhite(JUtility::TColor(0, 0, 0, 0), JUtility::TColor(0xDC, 0, 0, 0xFF));
             const ResTIMG* tex = (const ResTIMG*)fn_80403244('TIMG', "progressive_choice.bti");
             field_0x1c = new J2DPicture(tex);
@@ -161,7 +161,7 @@ void cls_804B0F50::fn_803FFAA8() {
         field_0x4->fn_8030A43C();
         field_0x8->fn_80304FB0();
     }
-    if (field_0x14->field_0x4 != 0 && lbl_80529DEC.field_0xc->fn_804580DC(0) && lbl_80529DEC.field_0xc->fn_804580DC(1) && field_0x79 == 2) {
+    if (field_0x14->field_0x4 != 0 && lbl_80529DEC.mAudioMgr_0xc->fn_804580DC(0) && lbl_80529DEC.mAudioMgr_0xc->fn_804580DC(1) && field_0x79 == 2) {
         OSReport("archive load\n");
         field_0x38 = fn_80401E10("/GC4Sword_usa/data.arc", 0, lbl_80529DEC.mHeap);
         field_0x3c = fn_80401E10("/GC4Sword_usa/msgus.arc", 0, lbl_80529DEC.mHeap);
@@ -245,13 +245,13 @@ void cls_804B0F50::fn_803FFAA8() {
 
     if (field_0x79 == 3 && field_0x38->field_0x4 == 1 && field_0x3c->field_0x4 == 1 && field_0x40->field_0x4 == 1 &&
         field_0x48->field_0x4 == 1 && field_0x54->field_0x4 == 1 && field_0x58->field_0x4 == 1 && field_0x5c->field_0x4 == 1) {
-        lbl_80529DEC.field_0x14 = field_0x38->field_0x14;
-        lbl_80529DEC.field_0x1c = field_0x3c->field_0x14;
-        lbl_80529DEC.field_0x20 = field_0x40->field_0x14;
-        lbl_80529DEC.field_0x24 = field_0x48->mArchive;
-        lbl_80529DEC.field_0x38 = field_0x54->mArchive;
-        lbl_80529DEC.field_0x40 = field_0x58->mArchive;
-        lbl_80529DEC.field_0x44 = field_0x5c->mArchive;
+        lbl_80529DEC.mDataArchive_0x14 = field_0x38->field_0x14;
+        lbl_80529DEC.mMsgArchive_0x1c = field_0x3c->field_0x14;
+        lbl_80529DEC.mMain2DArchive_0x20 = field_0x40->field_0x14;
+        lbl_80529DEC.mTitleArchive_0x24 = field_0x48->mArchive;
+        lbl_80529DEC.mResultArchive_0x38 = field_0x54->mArchive;
+        lbl_80529DEC.mResult1Archive_0x40 = field_0x58->mArchive;
+        lbl_80529DEC.mResult2Archive_0x44 = field_0x5c->mArchive;
         delete field_0x38;
         delete field_0x40;
         delete field_0x3c;

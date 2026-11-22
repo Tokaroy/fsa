@@ -65,62 +65,62 @@ static inline JUTTexture* loadTexture(JKRArchive* archive, const char* name, JKR
 GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
     field_0x0 = JKRSolidHeap::create(-1, heap, false);
     field_0x0->becomeCurrentHeap();
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, field_0x0,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, field_0x0,
                 &field_0x4, &field_0x8, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "doku_yougan.bmd", "doku_yougan.btk", NULL, NULL, NULL, 0x240000,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "doku_yougan.bmd", "doku_yougan.btk", NULL, NULL, NULL, 0x240000,
                 field_0x0, &field_0xc, &field_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "yami_yougan.bmd", "yami_yougan.btk", NULL, NULL, NULL, 0x240000,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yami_yougan.bmd", "yami_yougan.btk", NULL, NULL, NULL, 0x240000,
                 field_0x0, &field_0x14, &field_0x18, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, field_0x0,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, field_0x0,
                 &field_0x1c, &field_0x20, NULL, &field_0x24, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", NULL,
                 0x11240000, field_0x0, &field_0x28, &field_0x2c, NULL, &field_0x30, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", NULL,
                 0x11240000, field_0x0, &field_0x90, &field_0x94, NULL, &field_0x98, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "cloudShadowFilter00.bmd", "cloudShadowFilter00.btk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "cloudShadowFilter00.bmd", "cloudShadowFilter00.btk", NULL,
                 "cloudShadowFilter00.brk", NULL, 0x11240000, field_0x0, &field_0x9c, &field_0xa0, NULL,
                 &field_0xa4, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "poisonSwamp00.bmd", "poisonSwamp00.btk", NULL, "poisonSwamp00.brk",
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "poisonSwamp00.bmd", "poisonSwamp00.btk", NULL, "poisonSwamp00.brk",
                 NULL, 0x11240000, field_0x0, &field_0xa8, &field_0xac, NULL, &field_0xb0, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "blackCloudFilter.bmd", "blackCloudFilter.btk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "blackCloudFilter.bmd", "blackCloudFilter.btk", NULL,
                 "blackCloudFilter.brk", NULL, 0x11240000, field_0x0, &field_0xb4, &field_0xb8, NULL, &field_0xbc,
                 NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, field_0x0,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, field_0x0,
                 &field_0x34, &field_0x38, NULL, NULL, NULL);
 
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0, &field_0xec,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0, &field_0xec,
                 NULL, NULL, NULL, NULL);
     field_0xf0 = NULL;
     if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
                     &field_0xec, NULL, NULL, NULL, NULL);
     }
     if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, field_0x0,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, field_0x0,
                     &field_0xec, &field_0xf0, NULL, NULL, NULL);
     }
     if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
                     &field_0xec, NULL, NULL, NULL, NULL);
     }
     if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
                     &field_0xec, NULL, NULL, NULL, NULL);
     }
 
     for (int i = 0; i < 6; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, lbl_804A0790[i][0], lbl_804A0790[i][1], NULL, lbl_804A0790[i][2],
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, lbl_804A0790[i][0], lbl_804A0790[i][1], NULL, lbl_804A0790[i][2],
                     NULL, 0x10240000, field_0x0, &field_0x3c[i], &field_0x54[i], NULL, &field_0x6c[i], NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk",
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk",
                 NULL, 0x11240000, field_0x0, &field_0x84, &field_0x88, NULL, &field_0x8c, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "morningLight00.bmd", "morningLight00.btk", NULL, "morningLight00.brk",
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "morningLight00.bmd", "morningLight00.btk", NULL, "morningLight00.brk",
                 NULL, 0x240000, field_0x0, &field_0xc0, &field_0xc4, NULL, &field_0xc8, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "nagarekumo.bmd", "nagarekumo.btk", NULL, NULL, NULL, 0x240000,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "nagarekumo.bmd", "nagarekumo.btk", NULL, NULL, NULL, 0x240000,
                 field_0x0, &field_0xcc, &field_0xd0, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", NULL,
                 0x11240000, field_0x0, &field_0xd4, &field_0xd8, NULL, &field_0xdc, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x14, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", NULL, 0x240000,
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", NULL, 0x240000,
                 field_0x0, &field_0xe0, &field_0xe4, NULL, &field_0xe8, NULL);
     field_0x0->adjustSize();
     heap->becomeCurrentHeap();
@@ -133,14 +133,14 @@ GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
         static_cast<const ResTIMG*>(gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "kawazoko.bti")), 0);
     field_0x100 = new (heap, 0) JUTTexture(static_cast<const ResTIMG*>(
         gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "noize_kawazoko_1.bti")), 0);
-    field_0x104 = loadTexture(lbl_80529DEC.field_0x10, "bg_mori.bti", heap);
-    field_0x108 = loadTexture(lbl_80529DEC.field_0x10, "enkei.bti", heap);
-    field_0x10c = loadTexture(lbl_80529DEC.field_0x10, "enkei_dark.bti", heap);
-    field_0x110 = loadTexture(lbl_80529DEC.field_0x10, "wall.bti", heap);
-    field_0x114 = loadTexture(lbl_80529DEC.field_0x10, "sky.bti", heap);
-    field_0x118 = loadTexture(lbl_80529DEC.field_0x10, "wall_koware.bti", heap);
-    field_0x11c = loadTexture(lbl_80529DEC.field_0x10, "sky_koware.bti", heap);
-    field_0x120 = loadTexture(lbl_80529DEC.field_0x10, "bg_piramid.bti", heap);
+    field_0x104 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_mori.bti", heap);
+    field_0x108 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei.bti", heap);
+    field_0x10c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei_dark.bti", heap);
+    field_0x110 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall.bti", heap);
+    field_0x114 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky.bti", heap);
+    field_0x118 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall_koware.bti", heap);
+    field_0x11c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky_koware.bti", heap);
+    field_0x120 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_piramid.bti", heap);
 
     for (int i = 0; i < 4; i++) {
         field_0x140.mEntries[i].field_0x18 = new ActorSoundObj_804578F4(NULL, NULL, 8);

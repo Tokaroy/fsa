@@ -167,7 +167,7 @@ BattleStageSelect_804B1378::BattleStageSelect_804B1378() {
     lbl_8053AE00 = this;
     field_0xe4[0] = 0;
     mScreen = new J2DScreen;
-    mScreen->setPriority("bat_stage_select.blo", 0x1100000, lbl_80529DEC.field_0x34);
+    mScreen->setPriority("bat_stage_select.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
     JUTResFont* font = lbl_8053AD78->mFont;
     static_cast<J2DTextBox*>(mScreen->search('Tom01'))->setFont(font);
     font = lbl_8053AD78->mFont;

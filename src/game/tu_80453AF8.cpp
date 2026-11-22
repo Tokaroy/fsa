@@ -44,7 +44,7 @@ static inline void bounceRows(cls_804B1DA8* self, s32 k) {
 cls_804B1DA8::cls_804B1DA8() {
     lbl_8053AF48 = this;
     mScreen = new J2DScreen;
-    mScreen->setPriority("pause.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+    mScreen->setPriority("pause.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     field_0x24[0] = mScreen->search('Pkenc01')->getBounds()->i.x;
     field_0x30[0] = mScreen->search('Pkenc01')->getBounds()->i.y;
     field_0x3c[0] = mScreen->search('Pkenc02')->getBounds()->i.x;

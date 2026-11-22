@@ -33,7 +33,7 @@ cls_804AE9A0::cls_804AE9A0() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053AD68 = this;
     gGameRoot2_8053AB10->field_0x2c->fn_80158B3C();
-    field_0x14 = lbl_80529DEC.field_0x38;
+    field_0x14 = lbl_80529DEC.mResultArchive_0x38;
     field_0x18 = NULL;
     field_0x1d = 0;
     field_0x1e = 0;
@@ -42,12 +42,12 @@ cls_804AE9A0::cls_804AE9A0() {
     field_0xc = NULL;
     if (gGameRoot_8053AAF8->field_0x7f) {
         if (gGameRoot_8053AAF8->field_0x7e) {
-            field_0x18 = lbl_80529DEC.field_0x44;
-            lbl_80529DEC.field_0x3c = field_0x18;
+            field_0x18 = lbl_80529DEC.mResult2Archive_0x44;
+            lbl_80529DEC.mActiveResultArchive_0x3c = field_0x18;
             field_0x4 = new ResultScreen_804AF9A0;
         } else {
-            field_0x18 = lbl_80529DEC.field_0x40;
-            lbl_80529DEC.field_0x3c = field_0x18;
+            field_0x18 = lbl_80529DEC.mResult1Archive_0x40;
+            lbl_80529DEC.mActiveResultArchive_0x3c = field_0x18;
             field_0x8 = new cls_804AFAB0;
         }
     } else {
@@ -154,15 +154,15 @@ void cls_804AE9A0::fn_8037A174() {
             fn_8037AA34();
             if (fn_8037AA28() == 0x1A) {
                 lbl_8053ADA0->mMode_0x4c0 = 8;
-                s32 stage = lbl_80529DEC.field_0x118;
-                if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
-                    (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
-                    (stage == 4 && lbl_80529DEC.field_0x11c == 2) || (stage == 5 && lbl_80529DEC.field_0x11c == 2) ||
-                    (stage == 6 && lbl_80529DEC.field_0x11c == 2) || (stage == 7 && lbl_80529DEC.field_0x11c == 1) ||
-                    (stage == 10 && lbl_80529DEC.field_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
-                    if (stage == 10 && lbl_80529DEC.field_0x11c == 2) {
-                        lbl_80529DEC.field_0x118 = lbl_80529DEC.field_0x120;
-                        lbl_80529DEC.field_0x11c = lbl_80529DEC.field_0x124;
+                s32 stage = lbl_80529DEC.mStage_0x118;
+                if ((stage == 0 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                    (stage == 2 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                    (stage == 4 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                    (stage == 6 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                    (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
+                    if (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
+                        lbl_80529DEC.mStage_0x118 = lbl_80529DEC.field_0x120;
+                        lbl_80529DEC.mLevel_0x11c = lbl_80529DEC.field_0x124;
                     }
                 } else {
                     fn_80379FF4();
@@ -174,15 +174,15 @@ void cls_804AE9A0::fn_8037A174() {
         field_0x1c = lbl_8053ADA0->mMode_0x4c0;
         lbl_8053ADA0->fn_803A9830();
         if (lbl_8053ADA0->mMode_0x4c0 == 9) {
-            s32 stage = lbl_80529DEC.field_0x118;
-            if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
-                (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
-                (stage == 4 && lbl_80529DEC.field_0x11c == 2) || (stage == 5 && lbl_80529DEC.field_0x11c == 2) ||
-                (stage == 6 && lbl_80529DEC.field_0x11c == 2) || (stage == 7 && lbl_80529DEC.field_0x11c == 1) ||
-                (stage == 10 && lbl_80529DEC.field_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
-                if (stage == 10 && lbl_80529DEC.field_0x11c == 2) {
-                    lbl_80529DEC.field_0x118 = lbl_80529DEC.field_0x120;
-                    lbl_80529DEC.field_0x11c = lbl_80529DEC.field_0x124;
+            s32 stage = lbl_80529DEC.mStage_0x118;
+            if ((stage == 0 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                (stage == 2 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                (stage == 4 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                (stage == 6 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
+                if (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
+                    lbl_80529DEC.mStage_0x118 = lbl_80529DEC.field_0x120;
+                    lbl_80529DEC.mLevel_0x11c = lbl_80529DEC.field_0x124;
                 }
             } else {
                 fn_80379FF4();
@@ -227,8 +227,8 @@ u8 fn_8037A120(void) {
 }
 
 void fn_80379FF4(void) {
-    s32 stage = lbl_80529DEC.field_0x118;
-    s32 sub = lbl_80529DEC.field_0x11c;
+    s32 stage = lbl_80529DEC.mStage_0x118;
+    s32 sub = lbl_80529DEC.mLevel_0x11c;
     if (stage < 8 && sub < 4 && stage >= 0 && stage <= 7 && sub >= 0 && sub <= 3) {
         lbl_8050EC80.getCurrentFile().mFlags |= 1 << (stage * 4 + sub);
     }
@@ -242,13 +242,13 @@ void fn_80379FF4(void) {
         if (nextStage >= 8) {
             nextStage = 0;
         }
-        lbl_80529DEC.field_0x118 = nextStage;
+        lbl_80529DEC.mStage_0x118 = nextStage;
     } else if ((stage == 0 && next == 2) || (stage == 1 && next == 2) || (stage == 2 && next == 2) ||
                (stage == 3 && next == 2) || (stage == 4 && next == 2) || (stage == 5 && next == 2) ||
                (stage == 6 && next == 2) || (stage == 7 && next == 1)) {
         next++;
     }
-    lbl_80529DEC.field_0x11c = next;
+    lbl_80529DEC.mLevel_0x11c = next;
 }
 
 bool cls_804AE9A0::fn_80379F84() {

@@ -87,7 +87,7 @@ void cls_804B19E0::fn_80441490() {
         if (field_0x4 >= 0) {
             setWindow(field_0x4, lbl_8053AD78->field_0xee, x, y);
         }
-    } else if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) {
+    } else if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) {
         field_0x4 = lbl_8053A160;
         if (field_0x4 >= 0) {
             setWindow(field_0x4, 0);

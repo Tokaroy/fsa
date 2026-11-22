@@ -68,7 +68,7 @@ static const char* lbl_804B1BA0[4] = {
 cls_804B1BB0::cls_804B1BB0() {
     lbl_8053AEF8 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("mg_horse_race.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("mg_horse_race.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     for (s32 i = 0; i < 4; i++) {
         field_0x8[i] = new PaneCtrl_804AF86C();
         field_0x8[i]->setPane_80402F04(mScreen->search(lbl_8048FC08[i][1]));

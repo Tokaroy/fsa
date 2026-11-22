@@ -71,9 +71,9 @@ ActorManager_804A5800* getActorManager_801F856C(void);
 ActorManager_804A5800::ActorManager_804A5800(JKRHeap* parent) {
     // Half the room in two UI modes.
     bool small = false;
-    s32 mode = lbl_80529DEC.field_0x118;
-    if ((mode == 9 && lbl_80529DEC.field_0x11c == 3) ||
-        (mode == 8 && lbl_80529DEC.field_0x11c == 2))
+    s32 mode = lbl_80529DEC.mStage_0x118;
+    if ((mode == 9 && lbl_80529DEC.mLevel_0x11c == 3) ||
+        (mode == 8 && lbl_80529DEC.mLevel_0x11c == 2))
     {
         small = true;
     }

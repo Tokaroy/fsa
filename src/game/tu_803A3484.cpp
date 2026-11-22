@@ -121,9 +121,9 @@ Title_804AF820::Title_804AF820() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053AD88 = this;
     mScreen = new J2DScreen;
-    mScreen->setPriority("title.blo", 0x1100000, lbl_80529DEC.field_0x24);
+    mScreen->setPriority("title.blo", 0x1100000, lbl_80529DEC.mTitleArchive_0x24);
     mAnm = static_cast<J2DAnmTextureSRTKey*>(
-        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("title.btk", lbl_80529DEC.field_0x24)));
+        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("title.btk", lbl_80529DEC.mTitleArchive_0x24)));
     mScreen->setAnimation(mAnm);
     mScreen->search('Pcmark')->hide();
     field_0x14e = mScreen->search('prsstrt1')->getAlpha();
@@ -154,7 +154,7 @@ Title_804AF820::Title_804AF820() {
     mHeap = JKRSolidHeap::create(0x80000, parent, false);
     mHeap->becomeCurrentHeap();
     for (int i = 0; i < 6; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
+        fn_8016A3BC(lbl_80529DEC.mTitleArchive_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
                     NULL, 0x10240000, mHeap, &field_0x104[i], &field_0x11c[i], NULL, &field_0x134[i], NULL);
         if (field_0x11c[i] != NULL) {
             field_0x11c[i]->setFrame(0.0f);
@@ -239,7 +239,7 @@ Title_804AF820::~Title_804AF820() {
     field_0x1c = NULL;
     delete field_0x20;
     field_0x20 = NULL;
-    lbl_80529DEC.field_0x24->removeResourceAll();
+    lbl_80529DEC.mTitleArchive_0x24->removeResourceAll();
     lbl_8053AD88 = NULL;
 }
 

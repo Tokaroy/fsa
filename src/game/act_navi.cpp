@@ -101,20 +101,20 @@ void cls_804A6708::init() {
 
     field_0x2b0 = (mSpawnParam_0x90 >> 26) & 0x1F;
 
-    if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 0 && (mSpawnParam_0x90 >> 31)) {
+    if (lbl_80529DEC.mStage_0x118 == 6 && lbl_80529DEC.mLevel_0x11c == 0 && (mSpawnParam_0x90 >> 31)) {
         mFlags |= 0x4000;
         if (field_0x2ac == 0) {
             mFlags |= 0x2000;
         }
-    } else if (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 1 && (mSpawnParam_0x90 >> 31)) {
+    } else if (lbl_80529DEC.mStage_0x118 == 6 && lbl_80529DEC.mLevel_0x11c == 1 && (mSpawnParam_0x90 >> 31)) {
         mFlags |= 0xA000;
         mFlags &= ~0x10000;
     } else {
         mFlags |= 0x2000;
     }
 
-    if ((mSpawnParam_0x90 >> 31) && lbl_80529DEC.field_0x11c == 0) {
-        switch (lbl_80529DEC.field_0x118) {
+    if ((mSpawnParam_0x90 >> 31) && lbl_80529DEC.mLevel_0x11c == 0) {
+        switch (lbl_80529DEC.mStage_0x118) {
         case 1:
         case 2:
         case 3:
@@ -166,7 +166,7 @@ void cls_804A6708::init() {
     if (getGameView_802D6A9C()->field_0x131f9 == 2) {
         fn_801F3668();
     } else if (mFlags & 0x20000) {
-        if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
+        if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
             fn_801F3668();
         } else {
             mEmitter2D0 = spawnEmitter_8013CC50(getField_0x4(), &mPos, 0x32C, 0, -1, NULL, NULL, isState9(), 1.0f);

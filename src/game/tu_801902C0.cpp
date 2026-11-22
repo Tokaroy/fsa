@@ -22,50 +22,50 @@ GameRootSub20_801902C0::GameRootSub20_801902C0(JKRHeap* parent) {
         sprintf(bmd, "suisyo_%d.bmd", i + 1);
         sprintf(btk, "suisyo_%d.btk", i + 1);
         sprintf(brk, "suisyo_%d.brk", i + 1);
-        if (lbl_80529DEC.field_0x10->getResource('J3D ', bmd) == NULL) {
+        if (lbl_80529DEC.mBossArchive_0x10->getResource('J3D ', bmd) == NULL) {
             sprintf(bmd, "suisyo_op.bmd");
             sprintf(btk, "suisyo_op.btk");
             sprintf(brk, "suisyo_op.brk");
         }
-        fn_8016A3BC(lbl_80529DEC.field_0x10, bmd, btk, NULL, brk, NULL, 0x20240000, mHeap,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, bmd, btk, NULL, brk, NULL, 0x20240000, mHeap,
                     &mCrystals[i].mModel, &mCrystals[i].mBtk, NULL, &mCrystals[i].mBrk, NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "taki_a.bmd", "taki_a.btk", NULL, NULL, NULL, 0x20240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_a.bmd", "taki_a.btk", NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[0].field_0xc, &mSmallRequests[0].field_0x14, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "niji_a.bmd", NULL, NULL, NULL, NULL, 0x20240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "niji_a.bmd", NULL, NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[0].field_0x10, NULL, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "taki_b.bmd", "taki_b.btk", NULL, NULL, NULL, 0x20240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "taki_b.bmd", "taki_b.btk", NULL, NULL, NULL, 0x20240000, mHeap,
                 &mSmallRequests[1].field_0xc, &mSmallRequests[1].field_0x14, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "osiro_mon.bmd", "osiro_mon.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mon.bmd", "osiro_mon.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[0].field_0xc, &mRequests[0].field_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "osiro_tobira.bmd", "osiro_tobira.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_tobira.bmd", "osiro_tobira.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[1].field_0xc, &mRequests[1].field_0x10, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "osiro_mado.bmd", "osiro_mado.btk", NULL, NULL, NULL, 0x240000, mHeap,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "osiro_mado.bmd", "osiro_mado.btk", NULL, NULL, NULL, 0x240000, mHeap,
                 &mRequests[2].field_0xc, &mRequests[2].field_0x10, NULL, NULL, NULL);
     for (s32 i = 0; i < 10; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "suna.bmd", "suna.btk", NULL, "suna.brk", NULL, 0x240000, mHeap,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "suna.bmd", "suna.btk", NULL, "suna.brk", NULL, 0x240000, mHeap,
                     &mQuicksandEntries[i].mModel, &mQuicksandEntries[i].mBtk, NULL,
                     &mQuicksandEntries[i].mBrk, NULL);
     }
     for (s32 i = 0; i < 8; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x14, "ak_magicCircle.bmd", "ak_magicCircle.btk",
+        fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "ak_magicCircle.bmd", "ak_magicCircle.btk",
                     "ak_magicCircleApp.btk", "ak_magicCircle.brk", "ak_magicCircleColor.brk", 0x20240000,
                     mHeap, &mMagicCircles[i].mModel, &mMagicCircles[i].mBtk, &mMagicCircles[i].mBtkApp,
                     &mMagicCircles[i].mBrk, &mMagicCircles[i].mBrkColor);
     }
     for (s32 i = 0; i < 2; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mHeap,
+        fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mHeap,
                     &mQueuedPos[i].mModel, &mQueuedPos[i].mBtk, NULL, NULL, NULL);
     }
     for (s32 i = 0; i < 16; i++) {
-        fn_8016A3BC(lbl_80529DEC.field_0x10, "SandFall00.bmd", "SandFall00.btk", NULL, NULL, NULL, 0x240000, mHeap,
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "SandFall00.bmd", "SandFall00.btk", NULL, NULL, NULL, 0x240000, mHeap,
                     &mSandFalls[i].mModel, &mSandFalls[i].mBtk, NULL, NULL, NULL);
     }
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "saidanDark00.bmd", "saidanDark00.btk", NULL, "saidanDark00.brk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanDark00.bmd", "saidanDark00.btk", NULL, "saidanDark00.brk", NULL,
                 0x240000, mHeap, &field_0x7ac, &field_0x7b0, NULL, &field_0x7b4, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "saidanFlash00.bmd", NULL, NULL, "saidanFlash00.brk", NULL, 0x10220000,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "saidanFlash00.bmd", NULL, NULL, "saidanFlash00.brk", NULL, 0x10220000,
                 mHeap, &field_0x7c4, NULL, NULL, &field_0x7c8, NULL);
-    fn_8016A3BC(lbl_80529DEC.field_0x10, "snowWall00.bmd", "snowWall00.btk", NULL, "snowWall00.brk", NULL,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "snowWall00.bmd", "snowWall00.btk", NULL, "snowWall00.brk", NULL,
                 0x10240000, mHeap, &mIceRequest.field_0x10, &mIceRequest.field_0x14, NULL,
                 &mIceRequest.field_0x18, NULL);
     mHeap->adjustSize();
@@ -309,8 +309,8 @@ void GameRootSub20_801902C0::fn_801902D0() {
         JGeometry::TVec3f scale(1.0f, 1.0f, -1.0f);
         Mtx mtx;
         PSMTXTrans(mtx, mSmallRequests[1].mPos.x, mSmallRequests[1].mPos.y, mSmallRequests[1].mPos.z);
-        if (!(lbl_80529DEC.field_0x118 == 9 && lbl_80529DEC.field_0x11c == 3) &&
-            !(lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 2)) {
+        if (!(lbl_80529DEC.mStage_0x118 == 9 && lbl_80529DEC.mLevel_0x11c == 3) &&
+            !(lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 2)) {
             mtx[1][3] += 1024.0f;
             mtx[2][3] += 1024.0f;
         }

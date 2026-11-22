@@ -458,7 +458,7 @@ void cls_804AEED0::update() {
                 break;
             }
             field_0x244 = fn_8022FD8C(mSerial);
-            if (lbl_80529DEC.field_0x118 >= 8 && lbl_80529DEC.field_0x11c == 0) {
+            if (lbl_80529DEC.mStage_0x118 >= 8 && lbl_80529DEC.mLevel_0x11c == 0) {
                 field_0x250 = fn_8037E54C(field_0x244);
             } else if (lbl_8050DB0C.field_0x4 != 0) {
                 field_0x250 = lbl_8050DB0C.field_0x6;

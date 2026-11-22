@@ -82,7 +82,7 @@ cls_80453830::cls_80453830() {}
 cls_804B1D58::cls_804B1D58() {
     lbl_8053AF40 = this;
     mScreen = new J2DScreen;
-    mScreen->setPriority("collect.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+    mScreen->setPriority("collect.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     OSInitFastCast();
     for (s32 i = 0; i < 4; i++) {
         field_0xd4 = fn_80403084('SCRN', "collect.btk");
@@ -314,14 +314,14 @@ void cls_804B1D58::fn_80452350() {
         field_0xc[i]->field_0x22 = 0;
     }
     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
-        ((lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 2 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 3 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 4 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 5 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 2) ||
-         (lbl_80529DEC.field_0x118 == 7 && lbl_80529DEC.field_0x11c == 1))) {
+        ((lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 2 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 6 && lbl_80529DEC.mLevel_0x11c == 2) ||
+         (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 1))) {
         const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     } else {
@@ -806,11 +806,11 @@ s32 cls_804B1D58::fn_8044F680() {
                     gAudioMgr_8053AF80->fn_80459274();
                     s32 mode;
                     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
-                        (((mode = lbl_80529DEC.field_0x118) == 0 && lbl_80529DEC.field_0x11c == 2) ||
-                         (mode == 1 && lbl_80529DEC.field_0x11c == 2) || (mode == 2 && lbl_80529DEC.field_0x11c == 2) ||
-                         (mode == 3 && lbl_80529DEC.field_0x11c == 2) || (mode == 4 && lbl_80529DEC.field_0x11c == 2) ||
-                         (mode == 5 && lbl_80529DEC.field_0x11c == 2) || (mode == 6 && lbl_80529DEC.field_0x11c == 2) ||
-                         (mode == 7 && lbl_80529DEC.field_0x11c == 1))) {
+                        (((mode = lbl_80529DEC.mStage_0x118) == 0 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (mode == 1 && lbl_80529DEC.mLevel_0x11c == 2) || (mode == 2 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (mode == 3 && lbl_80529DEC.mLevel_0x11c == 2) || (mode == 4 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (mode == 5 && lbl_80529DEC.mLevel_0x11c == 2) || (mode == 6 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (mode == 7 && lbl_80529DEC.mLevel_0x11c == 1))) {
                         fn_8044C7F0();
                         field_0x184 = 7;
                         field_0x137 = 0;
@@ -819,9 +819,9 @@ s32 cls_804B1D58::fn_8044F680() {
                     } else {
                         field_0x184 = 6;
                         if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                            if (lbl_80529DEC.field_0x118 == 10 && lbl_80529DEC.field_0x11c == 2) {
-                                lbl_80529DEC.field_0x118 = lbl_80529DEC.field_0x120;
-                                lbl_80529DEC.field_0x11c = lbl_80529DEC.field_0x124;
+                            if (lbl_80529DEC.mStage_0x118 == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
+                                lbl_80529DEC.mStage_0x118 = lbl_80529DEC.field_0x120;
+                                lbl_80529DEC.mLevel_0x11c = lbl_80529DEC.field_0x124;
                             }
                             lbl_80529DEC.field_0x237 = 7;
                         }
@@ -1023,8 +1023,8 @@ void cls_804B1D58::fn_8044D894() {
     fn_8044C7F0();
 
     s32 row = -1;
-    if (lbl_80529DEC.field_0x118 < 7 && lbl_80529DEC.field_0x11c == 3) {
-        row = lbl_80529DEC.field_0x118;
+    if (lbl_80529DEC.mStage_0x118 < 7 && lbl_80529DEC.mLevel_0x11c == 3) {
+        row = lbl_80529DEC.mStage_0x118;
     } else {
         s16 stage = lbl_8050DB0C.field_0x4c[(0x2EC - 0x4C) / 2];
         if (stage > 0 && stage <= 7) {
@@ -1074,14 +1074,14 @@ void cls_804B1D58::fn_8044D894() {
     }
 
     row = -1;
-    s32 mode = lbl_80529DEC.field_0x118;
-    if (mode == 3 && lbl_80529DEC.field_0x11c == 0) {
+    s32 mode = lbl_80529DEC.mStage_0x118;
+    if (mode == 3 && lbl_80529DEC.mLevel_0x11c == 0) {
         row = 0;
-    } else if (mode == 4 && lbl_80529DEC.field_0x11c == 1) {
+    } else if (mode == 4 && lbl_80529DEC.mLevel_0x11c == 1) {
         row = 1;
-    } else if (mode == 5 && lbl_80529DEC.field_0x11c == 0) {
+    } else if (mode == 5 && lbl_80529DEC.mLevel_0x11c == 0) {
         row = 2;
-    } else if (mode == 6 && lbl_80529DEC.field_0x11c == 0) {
+    } else if (mode == 6 && lbl_80529DEC.mLevel_0x11c == 0) {
         row = 3;
     } else if (lbl_8050DB0C.field_0x4c[(0x2EC - 0x4C) / 2] >= 8) {
         row = lbl_8050DB0C.field_0x4c[(0x2EC - 0x4C) / 2] - 8;

@@ -167,9 +167,9 @@ ResultScreen_804AF9A0::ResultScreen_804AF9A0() {
         field_0x250[i].z = 0.0f;
         field_0x2c8[i] = -1;
     }
-    if (lbl_80529DEC.field_0x118 == 9 && lbl_80529DEC.field_0x11c == 3) {
-        lbl_80529DEC.field_0x118 = 7;
-        lbl_80529DEC.field_0x11c = 3;
+    if (lbl_80529DEC.mStage_0x118 == 9 && lbl_80529DEC.mLevel_0x11c == 3) {
+        lbl_80529DEC.mStage_0x118 = 7;
+        lbl_80529DEC.mLevel_0x11c = 3;
     }
 }
 
@@ -307,19 +307,19 @@ void ResultScreen_804AF9A0::fn_803B6768() {
     field_0x4c8 = 0xFF;
     field_0x4c7 = 0;
     field_0x434 = 1200;
-    s32 stage = lbl_80529DEC.field_0x118;
-    if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 4 && lbl_80529DEC.field_0x11c == 2) || (stage == 5 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 6 && lbl_80529DEC.field_0x11c == 2) || (stage == 7 && lbl_80529DEC.field_0x11c == 1) ||
-        (stage == 10 && lbl_80529DEC.field_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
+    s32 stage = lbl_80529DEC.mStage_0x118;
+    if ((stage == 0 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 2 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 4 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 6 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+        (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) || lbl_80529DEC.field_0x237 == 8) {
         mMode_0x4c0 = 5;
     } else {
         mMode_0x4c0 = 2;
     }
     mState_0x4c1 = 1;
     mStateTimer_0x440 = 128;
-    if (lbl_80529DEC.field_0x118 == 7 && lbl_80529DEC.field_0x11c == 3) {
+    if (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 3) {
         gAudioMgr_8053AF80->fn_80458F9C(60);
     } else if (mMode_0x4c0 == 5) {
         gAudioMgr_8053AF80->fn_80458FF0(0x100002F, false, 0);
@@ -710,12 +710,12 @@ void ResultScreen_804AF9A0::fn_803B3358(s32 index) {
 }
 
 void ResultScreen_804AF9A0::fn_803B31AC() {
-    s32 stage = lbl_80529DEC.field_0x118;
-    if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 4 && lbl_80529DEC.field_0x11c == 2) || (stage == 5 && lbl_80529DEC.field_0x11c == 2) ||
-        (stage == 6 && lbl_80529DEC.field_0x11c == 2) || (stage == 7 && lbl_80529DEC.field_0x11c == 1) ||
-        (stage == 8 && lbl_80529DEC.field_0x11c == 3) || (stage == 10 && lbl_80529DEC.field_0x11c == 2) ||
+    s32 stage = lbl_80529DEC.mStage_0x118;
+    if ((stage == 0 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 2 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 4 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+        (stage == 6 && lbl_80529DEC.mLevel_0x11c == 2) || (stage == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+        (stage == 8 && lbl_80529DEC.mLevel_0x11c == 3) || (stage == 10 && lbl_80529DEC.mLevel_0x11c == 2) ||
         lbl_80529DEC.field_0x237 == 8) {
         return;
     }
@@ -2397,8 +2397,8 @@ void ResultScreen_804AF9A0::fn_803ABCEC() {
                 mPlayerSpriteFrame_0x3c0[i] = 0xBD;
             }
         }
-        s32 stage = lbl_80529DEC.field_0x118;
-        s32 sub = lbl_80529DEC.field_0x11c;
+        s32 stage = lbl_80529DEC.mStage_0x118;
+        s32 sub = lbl_80529DEC.mLevel_0x11c;
         s32 level = sub;
         switch (stage) {
         case 0:
@@ -2425,8 +2425,8 @@ void ResultScreen_804AF9A0::fn_803ABCEC() {
             lbl_80529DEC.field_0x130[field_0x4ac[0]]++;
             lbl_80529DEC.field_0x243[0] = 0;
             lbl_80529DEC.field_0x243[0] = 1 << field_0x4ac[0];
-            if (lbl_80529DEC.field_0x118 >= 0 && lbl_80529DEC.field_0x118 < 8 && level >= 0 && level < 3) {
-                lbl_80529DEC.field_0x1fc[lbl_80529DEC.field_0x118][level] = field_0x4ac[0];
+            if (lbl_80529DEC.mStage_0x118 >= 0 && lbl_80529DEC.mStage_0x118 < 8 && level >= 0 && level < 3) {
+                lbl_80529DEC.field_0x1fc[lbl_80529DEC.mStage_0x118][level] = field_0x4ac[0];
             }
             if (field_0x4c8 != 0xFF) {
                 gAudioMgr_8053AF80->fn_80458880(0x11, -1);
@@ -2594,8 +2594,8 @@ void ResultScreen_804AF9A0::fn_803AB494() {
             }
             field_0x444 = 240;
         }
-        s32 stage = lbl_80529DEC.field_0x118;
-        s32 sub = lbl_80529DEC.field_0x11c;
+        s32 stage = lbl_80529DEC.mStage_0x118;
+        s32 sub = lbl_80529DEC.mLevel_0x11c;
         s32 flagStage = stage < 8 ? stage : 0;
         s32 flagSub = sub < 4 ? sub : 0;
         setStageFlag(flagStage, flagSub);

@@ -24,7 +24,7 @@ extern const s32 lbl_8048F6D0[3] = { 100, 200, 300 };
 cls_804B17A0::cls_804B17A0() {
     lbl_8053AEC8 = this;
     field_0x4 = new J2DScreen;
-    field_0x4->setPriority("gameover.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+    field_0x4->setPriority("gameover.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     OSInitFastCast();
     field_0x8 = J2DAnmLoaderDataBase::load(fn_80403084('SCRN', "gameover.bck"));
     field_0x4->search('Ndata01')->setAnimation(static_cast<J2DAnmTransform*>(field_0x8));

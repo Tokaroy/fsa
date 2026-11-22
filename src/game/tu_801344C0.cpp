@@ -81,9 +81,9 @@ int main() {
     JKRExpHeap* mainHeap = JKRExpHeap::create(0xFFFFFFFF, JKRHeap::getRootHeap(), false);
     AudioMgr_8045A080* audio = new (mainHeap, 0) AudioMgr_8045A080();
     mainHeap->becomeCurrentHeap();
-    lbl_80529DEC.field_0x4 = solidHeap;
+    lbl_80529DEC.mSolidHeap_0x4 = solidHeap;
     lbl_80529DEC.mHeap = mainHeap;
-    lbl_80529DEC.field_0xc = audio;
+    lbl_80529DEC.mAudioMgr_0xc = audio;
     JUTProcBar::getManager()->setVisible(false);
     JUTProcBar::getManager()->setHeapBarVisible(false);
 

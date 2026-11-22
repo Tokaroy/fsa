@@ -666,7 +666,7 @@ void cls_804A71A8::fn_8026E68C(u16 tile) {
         setDir(this, field_0x38);
     } else if (!field_0x4->fn_80240670() &&
                (fn_8026EB1C(tile) || field_0x4->fn_8024F5E4() || field_0x4->fn_80240F28() ||
-                (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.field_0x118 == 2 && lbl_80529DEC.field_0x11c == 1)))
+                (gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.mStage_0x118 == 2 && lbl_80529DEC.mLevel_0x11c == 1)))
     {
         JGeometry::TVec2f pos;
         pos.x = field_0x8.x;

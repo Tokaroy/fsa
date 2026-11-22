@@ -53,8 +53,8 @@ GameRootSub04_801F856C::GameRootSub04_801F856C(JKRHeap* heap) {
     field_0x20 = new (heap, 0) GameRootSub20_801902C0(heap);
     heap->getTotalFreeSize();
     field_0x24 = new (heap, 0) GameRootSub24_8016A3AC(heap);
-    if ((lbl_80529DEC.field_0x118 == 9 && lbl_80529DEC.field_0x11c == 3) ||
-        (lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 2)) {
+    if ((lbl_80529DEC.mStage_0x118 == 9 && lbl_80529DEC.mLevel_0x11c == 3) ||
+        (lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 2)) {
         field_0x30 = JKRExpHeap::create(0x86470, heap, false);
         if (field_0x30 == NULL) {
             static s32 reported = 0;
@@ -113,13 +113,13 @@ GameRootSub04_801F856C::~GameRootSub04_801F856C() {
     lbl_8053AB00->getTotalFreeSize();
     delete mView;
     mView = NULL;
-    if (lbl_80529DEC.field_0x10 != NULL) {
-        lbl_80529DEC.field_0x10->unmount();
-        lbl_80529DEC.field_0x10 = NULL;
+    if (lbl_80529DEC.mBossArchive_0x10 != NULL) {
+        lbl_80529DEC.mBossArchive_0x10->unmount();
+        lbl_80529DEC.mBossArchive_0x10 = NULL;
     }
-    if (lbl_80529DEC.field_0x4c != NULL) {
-        lbl_80529DEC.field_0x4c->unmount();
-        lbl_80529DEC.field_0x4c = NULL;
+    if (lbl_80529DEC.mGame2DArchive_0x4c != NULL) {
+        lbl_80529DEC.mGame2DArchive_0x4c->unmount();
+        lbl_80529DEC.mGame2DArchive_0x4c = NULL;
     }
 }
 
@@ -151,8 +151,8 @@ void GameRootSub04_801F856C::fn_8013A1A4() {
 
 // The stage-9 sub-stage-3 room with field_0x7f set: the per-player tables below stay as they are.
 static inline bool isFrozenRoom() {
-    if (gGameRoot_8053AAF8->field_0x7f != 0 && lbl_80529DEC.field_0x118 == 9 &&
-        lbl_80529DEC.field_0x11c == 3) {
+    if (gGameRoot_8053AAF8->field_0x7f != 0 && lbl_80529DEC.mStage_0x118 == 9 &&
+        lbl_80529DEC.mLevel_0x11c == 3) {
         return true;
     }
     return false;

@@ -294,22 +294,22 @@ MapScreen_804B1288::MapScreen_804B1288() {
              "\x8e\x63\x82\xe8\x8b\xf3\x82\xab\x97\x65\x97\xca\x81\x40%fK *****\n",
              heap->getFreeSize() * (1.0f / 1024.0f), heap->getTotalFreeSize() * (1.0f / 1024.0f));
     field_0x4 = new cls_804B1B60;
-    field_0x8 = new cls_804B0288(lbl_80529DEC.field_0x34, false);
+    field_0x8 = new cls_804B0288(lbl_80529DEC.mMapArchive_0x34, false);
     mMapScreen_0xc = new J2DScreen;
-    mMapScreen_0xc->setPriority("map.blo", 0x1100000, lbl_80529DEC.field_0x34);
+    mMapScreen_0xc->setPriority("map.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
     OSInitFastCast();
     mMapAnmTransform_0x1c = static_cast<J2DAnmTransform*>(
-        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("map.bck", lbl_80529DEC.field_0x34)));
+        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("map.bck", lbl_80529DEC.mMapArchive_0x34)));
     mMapScreen_0xc->search('Ndata08')->setAnimation(mMapAnmTransform_0x1c);
     mMapAnmColor_0x20 = static_cast<J2DAnmColor*>(
-        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("map.bpk", lbl_80529DEC.field_0x34)));
+        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("map.bpk", lbl_80529DEC.mMapArchive_0x34)));
     mMapScreen_0xc->setAnimation(mMapAnmColor_0x20);
     mMapAreaScreen_0x10 = new J2DScreen;
-    mMapAreaScreen_0x10->setPriority("map_area.blo", 0x1100000, lbl_80529DEC.field_0x34);
+    mMapAreaScreen_0x10->setPriority("map_area.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
     mMapTenScreen_0x14 = new J2DScreen;
-    mMapTenScreen_0x14->setPriority("map_ten.blo", 0x1100000, lbl_80529DEC.field_0x34);
+    mMapTenScreen_0x14->setPriority("map_ten.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
     mMessageWindowScreen_0x18 = new J2DScreen;
-    mMessageWindowScreen_0x18->setPriority("main_message_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    mMessageWindowScreen_0x18->setPriority("main_message_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     mMapAreaScreen_0x10->search('Ndata10')->hide();
     mMapAreaScreen_0x10->search('Pli01')->hide();
     mMapAreaScreen_0x10->search('Pli02')->hide();
@@ -509,8 +509,8 @@ MapScreen_804B1288::MapScreen_804B1288() {
     for (s32 i = 0; i < 2; i++) {
         mCursorEmitters_0x308[i] = NULL;
     }
-    mLevel_0x348 = lbl_80529DEC.field_0x11c;
-    mStage_0x340 = lbl_80529DEC.field_0x118;
+    mLevel_0x348 = lbl_80529DEC.mLevel_0x11c;
+    mStage_0x340 = lbl_80529DEC.mStage_0x118;
     mStageName_0x438[0] = 0;
     field_0x456[0] = 0;
     field_0x3a8 = 1.0f;
@@ -1077,8 +1077,8 @@ void MapScreen_804B1288::fn_8040F480() {
     switch (lbl_80529DEC.field_0x237) {
     case 5:
     case 9:
-        mLevel_0x348 = lbl_80529DEC.field_0x11c;
-        mStage_0x340 = lbl_80529DEC.field_0x118;
+        mLevel_0x348 = lbl_80529DEC.mLevel_0x11c;
+        mStage_0x340 = lbl_80529DEC.mStage_0x118;
         if (!(lbl_8050EC80.getCurrentFile().field_0x65 & 2)) {
             mode = 2;
         } else {
@@ -1087,13 +1087,13 @@ void MapScreen_804B1288::fn_8040F480() {
         break;
     case 6:
         mode = 2;
-        mLevel_0x348 = lbl_80529DEC.field_0x11c;
-        mStage_0x340 = lbl_80529DEC.field_0x118;
+        mLevel_0x348 = lbl_80529DEC.mLevel_0x11c;
+        mStage_0x340 = lbl_80529DEC.mStage_0x118;
         break;
     case 7:
         mode = 1;
-        mLevel_0x348 = lbl_80529DEC.field_0x11c;
-        mStage_0x340 = lbl_80529DEC.field_0x118;
+        mLevel_0x348 = lbl_80529DEC.mLevel_0x11c;
+        mStage_0x340 = lbl_80529DEC.mStage_0x118;
         break;
     }
     if (!lbl_80529DEC.field_0x23e[1]) {
@@ -1613,8 +1613,8 @@ void MapScreen_804B1288::fn_8040D3D0() {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             lbl_80529DEC.field_0x237 = 3;
             field_0x668 = 4;
-            lbl_80529DEC.field_0x118 = mStage_0x340;
-            lbl_80529DEC.field_0x11c = mLevel_0x348;
+            lbl_80529DEC.mStage_0x118 = mStage_0x340;
+            lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
             gAudioMgr_8053AF80->fn_80458880(0xb, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x200, -1)) {
@@ -2051,8 +2051,8 @@ void MapScreen_804B1288::fn_80409FDC() {
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 lbl_80529DEC.field_0x237 = 4;
                 field_0x668 = 4;
-                lbl_80529DEC.field_0x118 = mStage_0x340;
-                lbl_80529DEC.field_0x11c = mLevel_0x348;
+                lbl_80529DEC.mStage_0x118 = mStage_0x340;
+                lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
                 gAudioMgr_8053AF80->fn_80458880(0xb, -1);
             }
         } else if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -2138,8 +2138,8 @@ void MapScreen_804B1288::fn_80409FDC() {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
             lbl_80529DEC.field_0x237 = 4;
             field_0x668 = 4;
-            lbl_80529DEC.field_0x118 = mStage_0x340;
-            lbl_80529DEC.field_0x11c = mLevel_0x348;
+            lbl_80529DEC.mStage_0x118 = mStage_0x340;
+            lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
             gAudioMgr_8053AF80->fn_80458880(0xb, -1);
         }
     } else if (lbl_8053AD30->fn_80309C4C(0x100, -1)) {
@@ -2324,8 +2324,8 @@ void MapScreen_804B1288::fn_80409450() {
             mLevel_0x348 = 2;
             lbl_80529DEC.field_0x24b = 0;
         }
-        lbl_80529DEC.field_0x118 = mStage_0x340;
-        lbl_80529DEC.field_0x11c = mLevel_0x348;
+        lbl_80529DEC.mStage_0x118 = mStage_0x340;
+        lbl_80529DEC.mLevel_0x11c = mLevel_0x348;
         if (isStageFlagSet(mStage_0x340, mLevel_0x348)) {
             lbl_80529DEC.field_0x254[0] = 1;
         } else {

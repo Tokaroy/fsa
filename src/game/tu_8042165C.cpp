@@ -275,15 +275,15 @@ cls_804B146C::cls_804B146C()
     );
     field_0xf0 = new cls_804B19E0();
     field_0x4 = new J2DScreen();
-    field_0x4->setPriority("main_bat.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+    field_0x4->setPriority("main_bat.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     for (s32 i = 0; i < 4; i++) {
         field_0x8[i] = new J2DScreen();
-        field_0x8[i]->setPriority("main_hubuki.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+        field_0x8[i]->setPriority("main_hubuki.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
         field_0x2c[i] = new J2DScreen();
-        field_0x2c[i]->setPriority("main_diving.blo", 0x1100000, lbl_80529DEC.field_0x20);
+        field_0x2c[i]->setPriority("main_diving.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     }
     mScreen = new J2DScreen();
-    mScreen->setPriority("main_bat_ranking.blo", 0x1100000, lbl_80529DEC.field_0x4c);
+    mScreen->setPriority("main_bat_ranking.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     field_0x4->search('Pp1li01')->hide();
     field_0x4->search('Pp2li01')->hide();
     field_0x4->search('Pp3li01')->hide();

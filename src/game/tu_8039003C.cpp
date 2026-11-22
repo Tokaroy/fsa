@@ -47,7 +47,7 @@ cls_804AF480::cls_804AF480() {
         gAudioMgr_8053AF80->fn_80458408(0x100001A, true);
         lbl_80529DEC.field_0x248 = 1;
     }
-    if (!lbl_80529DEC.field_0xc->fn_804580DC(3)) {
+    if (!lbl_80529DEC.mAudioMgr_0xc->fn_804580DC(3)) {
         gAudioMgr_8053AF80->fn_80458090();
     }
 }
@@ -66,7 +66,7 @@ cls_804AF480::~cls_804AF480() {
         delete field_0x8;
         field_0x8 = NULL;
     }
-    lbl_80529DEC.field_0x34->unmount();
+    lbl_80529DEC.mMapArchive_0x34->unmount();
     lbl_8053AD80 = NULL;
 }
 

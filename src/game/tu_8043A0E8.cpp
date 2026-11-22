@@ -127,25 +127,25 @@ cls_804B1920::cls_804B1920() {
     field_0x2bc = NULL;
     if (gGameRoot_8053AAF8->field_0x7f != 0) {
         field_0x290 = new cls_804B13D4;
-        if (lbl_80529DEC.field_0x118 == 9 && lbl_80529DEC.field_0x11c == 3) {
+        if (lbl_80529DEC.mStage_0x118 == 9 && lbl_80529DEC.mLevel_0x11c == 3) {
             field_0x298 = new cls_804B1AE8;
         }
-        if (lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 3) {
+        if (lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3) {
             field_0x2b8 = new cls_804B1D20;
         }
-        if (lbl_80529DEC.field_0x118 == 4 && lbl_80529DEC.field_0x11c == 1) {
+        if (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 1) {
             field_0x2b0 = new cls_804B1CC8;
-        } else if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) {
+        } else if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x29c = new cls_804B1BB0;
-        } else if (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 1) {
+        } else if (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 1) {
             field_0x2a8 = new cls_804B1C58;
-        } else if (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 2) {
+        } else if (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x2a4 = new cls_804B1C20;
-        } else if (lbl_80529DEC.field_0x118 == 2 && lbl_80529DEC.field_0x11c == 2) {
+        } else if (lbl_80529DEC.mStage_0x118 == 2 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x2a0 = new cls_804B1BE8;
-        } else if (lbl_80529DEC.field_0x118 == 4 && lbl_80529DEC.field_0x11c == 2) {
+        } else if (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x2b4 = new cls_804B1D00;
-        } else if (lbl_80529DEC.field_0x118 == 5 && lbl_80529DEC.field_0x11c == 2) {
+        } else if (lbl_80529DEC.mStage_0x118 == 5 && lbl_80529DEC.mLevel_0x11c == 2) {
             field_0x2ac = new cls_804B1C90;
         }
     } else {
@@ -158,11 +158,11 @@ cls_804B1920::cls_804B1920() {
     field_0x100 = 0;
 
     field_0x4 = new J2DScreen;
-    field_0x4->setPriority("main_message_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x4->setPriority("main_message_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x8 = new J2DScreen;
-    field_0x8->setPriority("dungeon_floor.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x8->setPriority("dungeon_floor.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0xc = new J2DScreen;
-    field_0xc->setPriority("op_zelda.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0xc->setPriority("op_zelda.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0xc->search('Tm02')->hide();
     field_0xc->search('Tm01')->hide();
     field_0xc->search('P1b02')->hide();
@@ -284,7 +284,7 @@ cls_804B1920::cls_804B1920() {
     }
     field_0x253 = 0;
 
-    if (gGameRoot_8053AAF8->field_0x7f != 0 && lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 3) {
+    if (gGameRoot_8053AAF8->field_0x7f != 0 && lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3) {
         img = (const ResTIMG*)fn_804032E8('TIMG', "kk_op4sbase_01.bti");
         field_0x10 = new J2DPicture(img);
     } else {
@@ -1282,7 +1282,7 @@ void cls_804B1920::fn_8043A638() {
         } else {
             field_0x106 = 0;
         }
-        if (lbl_80529DEC.field_0x118 == 8 && lbl_80529DEC.field_0x11c == 3) {
+        if (lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3) {
             dy = 8.0f;
         }
         dx += lbl_8050DB0C.field_0x4c[(0x2E2 - 0x4C) / 2];
@@ -1310,7 +1310,7 @@ void cls_804B1920::fn_8043A638() {
 }
 
 void cls_804B1920::fn_8043A608() {
-    fn_8043A450(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c);
+    fn_8043A450(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c);
 }
 
 void cls_804B1920::fn_8043A450(s32 stage, s32 sub) {
@@ -1373,10 +1373,10 @@ void cls_804B1920::fn_8043A208(u8 alpha, f32 a, f32 b, f32 c, f32 d) {
 
 void fn_8043A170(s32 player, bool force) {
     if (gGameRoot_8053AAF8->field_0x7f != 0 && (lbl_8050EC80.getCurrentFile().mFlags & 1) == 0 &&
-        lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && !force) {
+        lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 0 && !force) {
         return;
     }
-    if (lbl_80529DEC.field_0x118 == 10 && lbl_80529DEC.field_0x11c == 2) {
+    if (lbl_80529DEC.mStage_0x118 == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
         return;
     }
     lbl_8053AED0->field_0xdd |= (u8)(1 << player);
@@ -1384,10 +1384,10 @@ void fn_8043A170(s32 player, bool force) {
 
 void fn_8043A0E8(bool force) {
     if (gGameRoot_8053AAF8->field_0x7f != 0 && (lbl_8050EC80.getCurrentFile().mFlags & 1) == 0 &&
-        lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0 && !force) {
+        lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 0 && !force) {
         return;
     }
-    if (lbl_80529DEC.field_0x118 == 10 && lbl_80529DEC.field_0x11c == 2) {
+    if (lbl_80529DEC.mStage_0x118 == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
         return;
     }
     lbl_8053AED0->field_0xdd = 0xF;

@@ -62,7 +62,7 @@ static const char* lbl_804B1BC0[10] = {
 cls_804B1BE8::cls_804B1BE8() {
     lbl_8053AF00 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("mg_oni.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("mg_oni.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     for (s32 i = 0; i < 4; i++) {
         field_0x8[i] = new PaneCtrl_804AF86C();
         field_0x8[i]->setPane_80402F04(mScreen->search(lbl_80490038[i][6]));

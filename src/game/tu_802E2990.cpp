@@ -491,7 +491,7 @@ void cls_804A9C20::update() {
                     setScreenFlag_0x30(0xFF, true);
                 }
                 if (fn_802DE7CC()) {
-                    if (!isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
+                    if (!isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
                         lbl_8053AED0->fn_8043D67C(0x341, 0, 0);
                     }
                 }

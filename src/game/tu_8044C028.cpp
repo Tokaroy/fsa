@@ -10,9 +10,9 @@
 cls_804B1D20::cls_804B1D20() {
     lbl_8053AF38 = this;
     mScreen[0] = new J2DScreen();
-    mScreen[0]->setPriority("op_prologue.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen[0]->setPriority("op_prologue.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     mScreen[1] = new J2DScreen();
-    mScreen[1]->setPriority("op_prologue_m.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen[1]->setPriority("op_prologue_m.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     JUTResFont* font = lbl_8053AD78->mFont;
     ((J2DTextBox*)mScreen[1]->search('Tp01'))->setFont(font);
     font = lbl_8053AD78->mFont;

@@ -294,7 +294,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x25c += field_0x254;
             if (field_0x25c >= field_0x258) {
                 field_0x25c = field_0x258;
-                if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
+                if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
                     fn_8038BD08(0, 0x265, mLayer_0x4, mPos, 0x21);
                     field_0x244 = 15;
                 } else {
@@ -334,7 +334,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
             field_0x25c += field_0x254;
             if (field_0x25c >= field_0x258) {
                 field_0x25c = field_0x258;
-                if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
+                if (fn_802DE7CC() && !isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
                     fn_8038BD08(0, 0x265, mLayer_0x4, mPos, 0x21);
                     field_0x244 = 16;
                 } else {

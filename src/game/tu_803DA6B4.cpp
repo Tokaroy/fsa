@@ -8,7 +8,7 @@
 cls_804B04F8::cls_804B04F8() {
     lbl_8053ADC8 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("pressstart.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    mScreen->setPriority("pressstart.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     mPane1 = mScreen->search(0x7072737374727431ull /* "prsstrt1" */);
     mPane2 = mScreen->search(0x7072737374727432ull /* "prsstrt2" */);
     field_0x10 = mPane2->getBounds()->i.x;

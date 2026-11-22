@@ -314,3 +314,24 @@ address	kind	old	new	confidence	apply	evidence
 804B0F10	field	field_0x194	mConPlibkk03Y_0x194	med	yes	tu_803F0A54 ctor: = bat_entry_con.blo search('Plibkk03')->getBounds()->i.y
 804B0F10	field	field_0x19c	mPaccur02X_0x19c	med	yes	tu_803F0A54 ctor: = handicap.blo search('Paccur02')->getBounds()->i.x
 804B0F10	field	field_0x1a0	mPaccur02Y_0x1a0	med	yes	tu_803F0A54 ctor: = handicap.blo search('Paccur02')->getBounds()->i.y
+804B0FE0	field	field_0x4	mSolidHeap_0x4	med	yes	tu_801344C0 main: = JKRSolidHeap::create(0x180000, root heap), stored next to mHeap
+804B0FE0	field	field_0xc	mAudioMgr_0xc	med	yes	tu_801344C0 main: = new (mainHeap) AudioMgr_8045A080(), the object gAudioMgr_8053AF80 also holds
+804B0FE0	field	field_0x10	mBossArchive_0x10	med	yes	tu_80134C04 fn_80135494 mode 7: = the loader's archive of "/GC4Sword_usa/Boss/" + lbl_8049ED88[stage][level] ("boss010.arc"..) or boss500.arc; fn_804032E8 getResource's it
+804B0FE0	field	field_0x14	mDataArchive_0x14	med	yes	tu_803FF2C4: = the archive of the loader of "/GC4Sword_usa/data.arc" (lines 166 / 248)
+804B0FE0	field	field_0x18	mLogoArchive_0x18	med	yes	tu_803FF2C4 fn_803FFAA8: = the archive of the loader of "/GC4Sword_usa/logo.arc"; ZelPac_NIN_logo.blo is read from it
+804B0FE0	field	field_0x1c	mMsgArchive_0x1c	med	yes	tu_803FF2C4: = the archive of the loader of "/GC4Sword_usa/msgus.arc" (lines 167 / 249)
+804B0FE0	field	field_0x20	mMain2DArchive_0x20	med	yes	tu_803FF2C4: = the archive of the loader of "/GC4Sword_usa/main2D.arc" (lines 168 / 250); fn_804030C4 getResource's it (kk_black.bti, main_message_window.blo)
+804B0FE0	field	field_0x24	mTitleArchive_0x24	med	yes	tu_803FF2C4: = the archive mounted from "/GC4Sword_usa/title.arc" (lines 169 / 251); fn_80403204
+804B0FE0	field	field_0x28	mEntryArchive_0x28	med	yes	tu_80134C04 fn_80135494 mode 4: = the loader's archive of "/GC4Sword_usa/entry.arc"; ConnectScreen loads bat_entry.blo from it
+804B0FE0	field	field_0x2c	mGameModeArchive_0x2c	med	yes	tu_80134C04 fn_80135494 modes 2 / 5: = the loader's archive of "/GC4Sword_usa/gamemode.arc"
+804B0FE0	field	field_0x30	mFileArchive_0x30	med	yes	tu_80134C04 fn_80135494 mode 3: = the loader's archive of "/GC4Sword_usa/file.arc"
+804B0FE0	field	field_0x34	mMapArchive_0x34	med	yes	tu_80134C04 fn_80135494 mode 6: = the loader's archive of "/GC4Sword_usa/map1.arc" or map2.arc; MapScreen loads map.blo from it
+804B0FE0	field	field_0x38	mResultArchive_0x38	med	yes	tu_803FF2C4: = the archive mounted from "/GC4Sword_usa/result.arc" (lines 170 / 252); fn_80403144
+804B0FE0	field	field_0x3c	mActiveResultArchive_0x3c	med	yes	tu_80379F84 ctor: = field_0x44 (result2.arc) when GameRoot field_0x7e is set, else field_0x40 (result1.arc); fn_80403104 getResource's it (result_4P.btk)
+804B0FE0	field	field_0x40	mResult1Archive_0x40	med	yes	tu_803FF2C4: = the archive mounted from "/GC4Sword_usa/result1.arc" (lines 171 / 253)
+804B0FE0	field	field_0x44	mResult2Archive_0x44	med	yes	tu_803FF2C4: = the archive mounted from "/GC4Sword_usa/result2.arc" (lines 172 / 254)
+804B0FE0	field	field_0x4c	mGame2DArchive_0x4c	med	yes	tu_80134C04 fn_80135494 mode 7: = the second loader's archive, "/GC4Sword_usa/game2D.arc"; fn_80403084
+804B0FE0	field	field_0x58	mClientThreadArchive_0x58	med	yes	tu_803FF2C4 fn_803FFAA8: = the archive of the loader its constructor starts on "/GC4Sword_usa/agb/client_thread.arc" (line 67 / 88)
+804B0FE0	field	field_0x118	mStage_0x118	med	yes	tu_80134C04 fn_80135020 copies it into GameView::mStage_0x4; it is the first index of the boss archive table lbl_8049ED88[stage][level]; MapScreen's selected stage is read from it
+804B0FE0	field	field_0x11c	mLevel_0x11c	med	yes	tu_80134C04 fn_80135020 copies it into GameView::mLevel_0x8; second index of lbl_8049ED88[stage][level]
+804B0FE0	field	field_0x245	mSoundMode_0x245	med	yes	tu_80442810 ctor: 0 when OSGetSoundMode() == 0, else 1 (with gAudioMgr fn_804594E4(0 / 1))

@@ -152,7 +152,7 @@ void EffectSystem_8049F178::fn_8013DDEC() {
     inl_8013DDEC(0x359, 0, 0);
     inl_8013DDEC(0x35A, 0, 0);
     inl_8013DDEC(0x35B, 0, 0);
-    JKRArchive* archive = lbl_80529DEC.field_0x10;
+    JKRArchive* archive = lbl_80529DEC.mBossArchive_0x10;
     if (archive != NULL) {
         for (s32 i = 0; i < 5; i++) {
             ResTIMG* texture = (ResTIMG*)archive->getResource('TIMG', lbl_8049F118[i * 2]);

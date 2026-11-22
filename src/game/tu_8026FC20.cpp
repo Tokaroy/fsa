@@ -3642,7 +3642,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
     if (damage >= 4 && !gGameRoot_8053AAF8->field_0x7f && saveRowFlag() == 1) {
         fn_8024E500();
     }
-    if (kind == 0x1b && gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) {
+    if (kind == 0x1b && gGameRoot_8053AAF8->field_0x7f && lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) {
         return false;
     }
     if (kind != 0x11 && !(kind == 0x12 || kind == 0x13)) {

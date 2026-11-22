@@ -84,7 +84,7 @@ public:
     // field_0x78[i] = 1, field_0x88[i] = 2, ...), clears 0x118-0x12C, sets
     // field_0x64 and field_0x1a8 to -1 and resets most byte flags.
     void fn_80403680();
-    // 1 unit (tu_803BC6F0). Clears field_0x118/field_0x11c, then picks them
+    // 1 unit (tu_803BC6F0). Clears mStage_0x118/mLevel_0x11c, then picks them
     // from the save files of lbl_8050EC80 (game/tu_803B8C74.h).
     void fn_80403514();
 
@@ -93,34 +93,34 @@ public:
     // JKRSolidHeap and the JKRExpHeap made from the root heap (the game's
     // main heap: 54 reads in 41 units pass it to __nw__ and the loaders),
     // and the 0x90-byte object fn_8045A080 builds in that heap.
-    /* 0x004 */ JKRSolidHeap* field_0x4;
+    /* 0x004 */ JKRSolidHeap* mSolidHeap_0x4;
     /* 0x008 */ JKRExpHeap* mHeap;
-    /* 0x00C */ AudioMgr_8045A080* field_0xc; // the object gAudioMgr_8053AF80 also holds (calls fn_80459AE4)
+    /* 0x00C */ AudioMgr_8045A080* mAudioMgr_0xc; // the object gAudioMgr_8053AF80 also holds (calls fn_80459AE4)
     // Resource archives (the loader object's 0x14, an archive fn_80401AC8 /
     // fn_80401D20 create as JKRAramArchive or JKRMemArchive). The ones set
     // in fn_803FFAA8 (tu_803FF2C4) come from these paths (0x80400334-
     // 0x80400364 and 0x803FFBF0):
-    /* 0x010 */ JKRArchive* field_0x10; // fn_80135494 (mode 7); fn_804032E8
-    /* 0x014 */ JKRArchive* field_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
-    /* 0x018 */ JKRArchive* field_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
-    /* 0x01C */ JKRArchive* field_0x1c; // "/GC4Sword_usa/msgus.arc"
-    /* 0x020 */ JKRArchive* field_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
-    /* 0x024 */ JKRArchive* field_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
-    /* 0x028 */ JKRArchive* field_0x28; // fn_80135494 (mode 4); fn_804031C4
-    /* 0x02C */ JKRArchive* field_0x2c; // fn_80135494 (modes 2, 5)
-    /* 0x030 */ JKRArchive* field_0x30; // fn_80135494 (mode 3)
-    /* 0x034 */ JKRArchive* field_0x34; // fn_80135494 (mode 6); fn_80403184
-    /* 0x038 */ JKRArchive* field_0x38; // "/GC4Sword_usa/result.arc"; fn_80403144
-    /* 0x03C */ JKRArchive* field_0x3c; // fn_8037A8D4 (tu_80379F84); fn_80403104
-    /* 0x040 */ JKRArchive* field_0x40; // "/GC4Sword_usa/result1.arc"
-    /* 0x044 */ JKRArchive* field_0x44; // "/GC4Sword_usa/result2.arc"
+    /* 0x010 */ JKRArchive* mBossArchive_0x10; // fn_80135494 (mode 7); fn_804032E8
+    /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
+    /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
+    /* 0x01C */ JKRArchive* mMsgArchive_0x1c; // "/GC4Sword_usa/msgus.arc"
+    /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
+    /* 0x024 */ JKRArchive* mTitleArchive_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
+    /* 0x028 */ JKRArchive* mEntryArchive_0x28; // fn_80135494 (mode 4); fn_804031C4
+    /* 0x02C */ JKRArchive* mGameModeArchive_0x2c; // fn_80135494 (modes 2, 5)
+    /* 0x030 */ JKRArchive* mFileArchive_0x30; // fn_80135494 (mode 3)
+    /* 0x034 */ JKRArchive* mMapArchive_0x34; // fn_80135494 (mode 6); fn_80403184
+    /* 0x038 */ JKRArchive* mResultArchive_0x38; // "/GC4Sword_usa/result.arc"; fn_80403144
+    /* 0x03C */ JKRArchive* mActiveResultArchive_0x3c; // fn_8037A8D4 (tu_80379F84); fn_80403104
+    /* 0x040 */ JKRArchive* mResult1Archive_0x40; // "/GC4Sword_usa/result1.arc"
+    /* 0x044 */ JKRArchive* mResult2Archive_0x44; // "/GC4Sword_usa/result2.arc"
     /* 0x048 */ void* field_0x48; // zeroed by the constructor and fn_8040384C's reset
-    /* 0x04C */ JKRArchive* field_0x4c; // fn_80135494 (mode 7, second archive); fn_80403084
+    /* 0x04C */ JKRArchive* mGame2DArchive_0x4c; // fn_80135494 (mode 7, second archive); fn_80403084
     /* 0x050 */ void* field_0x50;
     /* 0x054 */ void* field_0x54;
     // fn_803FFAA8: the archive of the loader at its +0x44, the 0xEC-byte
     // object of fn_8030AC4C and the 4-byte object of fn_8030905C.
-    /* 0x058 */ JKRArchive* field_0x58;
+    /* 0x058 */ JKRArchive* mClientThreadArchive_0x58;
     /* 0x05C */ cls_804AA8C8* field_0x5c; // GameRoot's destructor deletes it (vtable slot 0x8)
     /* 0x060 */ cls_804AA8B8* field_0x60; // the same
     /* 0x064 */ s32 field_0x64; // -1 after fn_80403680; 15 units
@@ -140,10 +140,10 @@ public:
     /* 0x108 */ s32 field_0x108[4];
     // The selected stage: fn_80135020 (tu_80134C04) copies 0x118 / 0x11C
     // (gGameRoot_8053AAF8->field_0x7f set) or 0x128 / 0x12C (clear) into
-    // GameView_804A9950's field_0x4 / field_0x8, the pair that picks the
+    // GameView_804A9950's mSolidHeap_0x4 / field_0x8, the pair that picks the
     // stage's map files. 96 and 94 units read 0x118 / 0x11C.
-    /* 0x118 */ s32 field_0x118;
-    /* 0x11C */ s32 field_0x11c;
+    /* 0x118 */ s32 mStage_0x118;
+    /* 0x11C */ s32 mLevel_0x11c;
     /* 0x120 */ s32 field_0x120;
     /* 0x124 */ s32 field_0x124;
     /* 0x128 */ s32 field_0x128;
@@ -205,7 +205,7 @@ public:
     /* 0x242 */ u8 field_0x242; // 19 units
     /* 0x243 */ u8 field_0x243[1];
     /* 0x244 */ u8 field_0x244; // fn_803BAE68: byte 3 of the save image just read
-    /* 0x245 */ u8 field_0x245; // 0 if OSGetSoundMode() is 0 else 1; tu_80442810's constructor
+    /* 0x245 */ u8 mSoundMode_0x245; // 0 if OSGetSoundMode() is 0 else 1; tu_80442810's constructor
     /* 0x246 */ u8 field_0x246; // fn_803BAE68: byte 4 of the save image just read; 1 in the constructor
     /* 0x247 */ u8 field_0x247;
     /* 0x248 */ u8 field_0x248; // tu_8039003C's and tu_803A85E4's constructors set it to 1 after fn_80458408
@@ -238,10 +238,10 @@ void* fn_80403244(u32 type, const char* name); // field_0x18
 void* fn_804030C4(u32 type, const char* name); // field_0x20; 36 units
 void* fn_80403204(u32 type, const char* name); // field_0x24
 void* fn_804031C4(u32 type, const char* name); // field_0x28
-void* fn_80403184(u32 type, const char* name); // field_0x34
-void* fn_80403144(u32 type, const char* name); // field_0x38
-void* fn_80403104(u32 type, const char* name); // field_0x3c
-void* fn_80403084(u32 type, const char* name); // field_0x4c
+void* fn_80403184(u32 type, const char* name); // mMapArchive_0x34
+void* fn_80403144(u32 type, const char* name); // mResultArchive_0x38
+void* fn_80403104(u32 type, const char* name); // mActiveResultArchive_0x3c
+void* fn_80403084(u32 type, const char* name); // mGame2DArchive_0x4c
 // field_0x10's getResSize(getResource('????', name)); getResource('????', name).
 u32 fn_80403284(const char* name);
 void* fn_80403328(const char* name);

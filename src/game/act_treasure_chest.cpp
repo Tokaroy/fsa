@@ -193,7 +193,7 @@ bool TreasureChest_804AA178::vfunc_0x54() {
     }
     if (ok == true) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
-            BOOL open = isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c);
+            BOOL open = isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c);
             if (open && (field_0x234 <= 2 || field_0x234 == 0x2F)) {
                 s32 count = gGameRoot_8053AAF8->fn_80138A30();
                 if (getActorManager_801F856C()->fn_801F6058(count - 1) == field_0x240) {

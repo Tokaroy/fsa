@@ -729,7 +729,7 @@ void cls_804AE088::fn_80369DDC() {
         }
     }
     cls_8049D140::update();
-    if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) && field_0x240 >= 5 &&
+    if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) && field_0x240 >= 5 &&
         field_0x240 <= 13) {
         gGameRoot_8053AAF8->field_0x85 = 2;
         if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {
@@ -940,7 +940,7 @@ void cls_804AE088::fn_80368CD8() {
         }
     }
     cls_8049D140::update();
-    if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) && field_0x270 == 0 &&
+    if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) && field_0x270 == 0 &&
         field_0x240 >= 0x18 && field_0x240 <= 0x23) {
         gGameRoot_8053AAF8->field_0x85 = 2;
         if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {

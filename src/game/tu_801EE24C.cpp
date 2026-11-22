@@ -332,7 +332,7 @@ void ActorBase_804A5770::die_0x24() {
         fn_801CB434(mLayer_0x4, &mPos, false);
     } else if (mParamDasu_0x18c != 0 && gGameRoot_8053AAF8->field_0x7e != 0 &&
                gGameRoot_8053AAF8->field_0x7f != 0 && !fn_802DE814() &&
-               isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) &&
+               isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) &&
                gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.2f && mLastAttacker_0x10c >= 0 &&
                mLastAttacker_0x10c < 4 && fn_8022F340(mLastAttacker_0x10c) == fn_801CCDA4() &&
                getActorManager_801F856C()->fn_801F7A08(ACTOR_CRTL) < 0)
@@ -1042,7 +1042,7 @@ u8 ActorBase_804A5770::fn_801F2FAC() {
 
 // Takes a hit from an overlapping actor (fn_801F82CC) whose id is includeId
 // (any for 'NULL'), is not excludeId and is not in the 'NULL'-ended list
-// excludeIds: fn_801F37AC with the attacker's "atcn" (field_0x118), its
+// excludeIds: fn_801F37AC with the attacker's "atcn" (mStage_0x118), its
 // direction to this actor and its field_0x168 / field_0x110. An actor the
 // filter leaves out still counts as a hit unless excludeId is 'HBMB'; an
 // 'SWBM' one then gets fn_801CB538 at its position, a 'FIRE' one (once per

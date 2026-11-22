@@ -28,9 +28,9 @@ static inline void rotateArrowPane(J2DPane* pane, f32 angle) {
 cls_804B16A8::cls_804B16A8() {
     mScreen = new J2DScreen;
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
-        mScreen->setPriority("rule.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        mScreen->setPriority("rule.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     } else {
-        mScreen->setPriority("rule_bat.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        mScreen->setPriority("rule_bat.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     }
     field_0x8 = new PaneCtrl_804AF86C;
     field_0x8->setPane_80402F04(mScreen->search('Popbbk03'));

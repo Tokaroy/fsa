@@ -51,28 +51,28 @@ static inline void moveX(PaneCtrl_804AF86C* self, f32 centreX) {
 }
 
 GameState_804B0FE0::GameState_804B0FE0() {
-    field_0x4 = NULL;
+    mSolidHeap_0x4 = NULL;
     mHeap = NULL;
-    field_0xc = NULL;
-    field_0x10 = NULL;
-    field_0x14 = NULL;
-    field_0x18 = NULL;
-    field_0x1c = NULL;
-    field_0x20 = NULL;
-    field_0x24 = NULL;
-    field_0x28 = NULL;
-    field_0x2c = NULL;
-    field_0x30 = NULL;
-    field_0x34 = NULL;
-    field_0x38 = NULL;
-    field_0x3c = NULL;
-    field_0x40 = NULL;
-    field_0x44 = NULL;
+    mAudioMgr_0xc = NULL;
+    mBossArchive_0x10 = NULL;
+    mDataArchive_0x14 = NULL;
+    mLogoArchive_0x18 = NULL;
+    mMsgArchive_0x1c = NULL;
+    mMain2DArchive_0x20 = NULL;
+    mTitleArchive_0x24 = NULL;
+    mEntryArchive_0x28 = NULL;
+    mGameModeArchive_0x2c = NULL;
+    mFileArchive_0x30 = NULL;
+    mMapArchive_0x34 = NULL;
+    mResultArchive_0x38 = NULL;
+    mActiveResultArchive_0x3c = NULL;
+    mResult1Archive_0x40 = NULL;
+    mResult2Archive_0x44 = NULL;
     field_0x48 = NULL;
-    field_0x4c = NULL;
+    mGame2DArchive_0x4c = NULL;
     field_0x50 = NULL;
     field_0x54 = NULL;
-    field_0x58 = NULL;
+    mClientThreadArchive_0x58 = NULL;
     field_0x5c = NULL;
     field_0x60 = NULL;
     field_0x1b0 = 0;
@@ -107,8 +107,8 @@ GameState_804B0FE0::GameState_804B0FE0() {
     field_0x64 = -1;
     field_0x1a8 = -1;
     field_0x236 = 0;
-    field_0x118 = 0;
-    field_0x11c = 0;
+    mStage_0x118 = 0;
+    mLevel_0x11c = 0;
     field_0x120 = 0;
     field_0x124 = 0;
     field_0x128 = 0;
@@ -141,7 +141,7 @@ GameState_804B0FE0::GameState_804B0FE0() {
     field_0x23e[1] = 0;
     field_0x240 = 0;
     field_0x244 = 0;
-    field_0x245 = 0;
+    mSoundMode_0x245 = 0;
     field_0x246 = 1;
     field_0x247 = 0;
     field_0x249[0] = 0;
@@ -194,8 +194,8 @@ void GameState_804B0FE0::fn_80403680() {
     field_0x1a8 = -1;
     field_0x1a4 = -1;
     field_0x236 = 0;
-    field_0x118 = 0;
-    field_0x11c = 0;
+    mStage_0x118 = 0;
+    mLevel_0x11c = 0;
     field_0x120 = 0;
     field_0x124 = 0;
     field_0x128 = 0;
@@ -233,18 +233,18 @@ static inline BOOL isFileFlagSet(s32 file, s32 stage, s32 sub) {
 }
 
 void GameState_804B0FE0::fn_80403514() {
-    field_0x118 = 0;
-    field_0x11c = 0;
+    mStage_0x118 = 0;
+    mLevel_0x11c = 0;
     for (s32 stage = 0; stage < 8; stage++) {
         for (s32 sub = 0; sub < 4; sub++) {
             if (isFileFlagSet(lbl_8050EC80.mCurrentFile, stage, sub) == FALSE) {
-                field_0x118 = stage;
-                field_0x11c = sub;
-                if ((field_0x118 == 0 && field_0x11c == 2) || (field_0x118 == 1 && field_0x11c == 2) ||
-                    (field_0x118 == 2 && field_0x11c == 2) || (field_0x118 == 3 && field_0x11c == 2) ||
-                    (field_0x118 == 4 && field_0x11c == 2) || (field_0x118 == 5 && field_0x11c == 2) ||
-                    (field_0x118 == 6 && field_0x11c == 2) || (field_0x118 == 7 && field_0x11c == 1)) {
-                    field_0x11c++;
+                mStage_0x118 = stage;
+                mLevel_0x11c = sub;
+                if ((mStage_0x118 == 0 && mLevel_0x11c == 2) || (mStage_0x118 == 1 && mLevel_0x11c == 2) ||
+                    (mStage_0x118 == 2 && mLevel_0x11c == 2) || (mStage_0x118 == 3 && mLevel_0x11c == 2) ||
+                    (mStage_0x118 == 4 && mLevel_0x11c == 2) || (mStage_0x118 == 5 && mLevel_0x11c == 2) ||
+                    (mStage_0x118 == 6 && mLevel_0x11c == 2) || (mStage_0x118 == 7 && mLevel_0x11c == 1)) {
+                    mLevel_0x11c++;
                 }
                 return;
             }
@@ -292,7 +292,7 @@ s32 fn_804033D4(s32 player) {
 
 s32 fn_8040336C(s32 player) {
     if (gGameRoot_8053AAF8->field_0x7f) {
-        if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 0) {
+        if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 0) {
             return 0;
         }
         return lbl_80529DEC.field_0x88[player];
@@ -301,47 +301,47 @@ s32 fn_8040336C(s32 player) {
 }
 
 void* fn_80403328(const char* name) {
-    return lbl_80529DEC.field_0x10->getResource('????', name);
+    return lbl_80529DEC.mBossArchive_0x10->getResource('????', name);
 }
 
 void* fn_804032E8(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x10->getResource(type, name);
+    return lbl_80529DEC.mBossArchive_0x10->getResource(type, name);
 }
 
 u32 fn_80403284(const char* name) {
-    return lbl_80529DEC.field_0x10->getResSize(lbl_80529DEC.field_0x10->getResource('????', name));
+    return lbl_80529DEC.mBossArchive_0x10->getResSize(lbl_80529DEC.mBossArchive_0x10->getResource('????', name));
 }
 
 void* fn_80403244(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x18->getResource(type, name);
+    return lbl_80529DEC.mLogoArchive_0x18->getResource(type, name);
 }
 
 void* fn_80403204(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x24->getResource(type, name);
+    return lbl_80529DEC.mTitleArchive_0x24->getResource(type, name);
 }
 
 void* fn_804031C4(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x28->getResource(type, name);
+    return lbl_80529DEC.mEntryArchive_0x28->getResource(type, name);
 }
 
 void* fn_80403184(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x34->getResource(type, name);
+    return lbl_80529DEC.mMapArchive_0x34->getResource(type, name);
 }
 
 void* fn_80403144(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x38->getResource(type, name);
+    return lbl_80529DEC.mResultArchive_0x38->getResource(type, name);
 }
 
 void* fn_80403104(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x3c->getResource(type, name);
+    return lbl_80529DEC.mActiveResultArchive_0x3c->getResource(type, name);
 }
 
 void* fn_804030C4(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x20->getResource(type, name);
+    return lbl_80529DEC.mMain2DArchive_0x20->getResource(type, name);
 }
 
 void* fn_80403084(u32 type, const char* name) {
-    return lbl_80529DEC.field_0x4c->getResource(type, name);
+    return lbl_80529DEC.mGame2DArchive_0x4c->getResource(type, name);
 }
 
 s32 fn_80403070(s32 index) {

@@ -116,7 +116,7 @@ void cls_8049E770::update() {
         obj->field_0x28c = 0.05f;
     }
     gGameRoot2_8053AB10->field_0x24->field_0x17c = 1;
-    if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c) &&
+    if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) &&
         field_0x230 >= 3 && field_0x230 <= 9) {
         gGameRoot_8053AAF8->field_0x85 = 2;
         if (lbl_8053AD30->fn_80309C4C(0x1000, -1) != 0) {

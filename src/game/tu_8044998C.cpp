@@ -35,7 +35,7 @@ static const char* lbl_804B1CA0[10] = {
 cls_804B1CC8::cls_804B1CC8() {
     lbl_8053AF20 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("mg_fishing.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("mg_fishing.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     mPanes[0] = new PaneCtrl_804AF86C();
     mPanes[0]->setPane_80402F04(mScreen->search(0x004E646174613030ull /* "Ndata00" */));
     mPanes[1] = new PaneCtrl_804AF86C();

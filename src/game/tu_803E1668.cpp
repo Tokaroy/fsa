@@ -412,20 +412,20 @@ cls_804B0B00::cls_804B0B00() {
     field_0x360 = 4;
 
     mScreen = new J2DScreen;
-    mScreen->setPriority("adv_n_player.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    mScreen->setPriority("adv_n_player.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     field_0x8 = new J2DScreen;
-    field_0x8->setPriority("adv_entry.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    field_0x8->setPriority("adv_entry.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     field_0xc = new J2DScreen;
-    field_0xc->setPriority("adv_entry_con.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    field_0xc->setPriority("adv_entry_con.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     field_0x10 = new J2DScreen;
-    field_0x10->setPriority("handicap.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    field_0x10->setPriority("handicap.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     field_0x14 = new J2DScreen;
-    field_0x14->setPriority("adv_back.blo", 0x1100000, lbl_80529DEC.field_0x28);
+    field_0x14->setPriority("adv_back.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     for (int i = 0; i < 4; i++) {
         field_0x18[i] = new J2DScreen;
-        field_0x18[i]->setPriority("entry_arrow_anim.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        field_0x18[i]->setPriority("entry_arrow_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
         field_0x28[i] = new J2DScreen;
-        field_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.field_0x28);
+        field_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     }
     OSInitFastCast();
     void* arrowAnm = fn_804031C4('SCRN', "entry_arrow_anim.bck");
@@ -2807,8 +2807,8 @@ void cls_804B0B00::pool_80543680() {
         lbl_80529DEC.field_0x237 = 5;
         field_0x360 = 6;
     } else {
-        lbl_80529DEC.field_0x118 = 8;
-        lbl_80529DEC.field_0x11c = 3;
+        lbl_80529DEC.mStage_0x118 = 8;
+        lbl_80529DEC.mLevel_0x11c = 3;
         field_0x360 = 7;
         lbl_80529DEC.field_0x242 = 0;
     }

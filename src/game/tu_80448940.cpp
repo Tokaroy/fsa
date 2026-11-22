@@ -61,7 +61,7 @@ static const char* lbl_804B1C68[10] = {
 cls_804B1C90::cls_804B1C90() {
     lbl_8053AF18 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("mg_geldman.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("mg_geldman.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     field_0x8 = new PaneCtrl_804AF86C();
     field_0x8->setPane_80402F04(mScreen->search(0x004E646174613030ull /* "Ndata00" */));
     for (s32 i = 0; i < 4; i++) {

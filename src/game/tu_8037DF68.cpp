@@ -1281,7 +1281,7 @@ u32 fn_80383EB0(s32 window, u32 msg) {
         case 0x21: {
             u32 yes = operand(p, 5);
             u32 no = operand(p, 9);
-            if (isStageFlagSet(lbl_80529DEC.field_0x118, lbl_80529DEC.field_0x11c)) {
+            if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c)) {
                 index = yes;
             } else {
                 index = no;
@@ -2322,7 +2322,7 @@ u8 fn_8037E694(s32 player) {
 s32 fn_8037E54C(s32 player) {
     if (player >= 0 && player < 4) {
         s32 index = windowIndex(player);
-        if (lbl_80529DEC.field_0x118 >= 8 && lbl_80529DEC.field_0x11c == 0) {
+        if (lbl_80529DEC.mStage_0x118 >= 8 && lbl_80529DEC.mLevel_0x11c == 0) {
             return lbl_8053AD78->field_0x4c[index];
         }
     }

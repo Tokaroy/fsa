@@ -130,11 +130,11 @@ s32 SmallKey_804A8CD8::fn_803A3220() {
 }
 
 s32 fn_803A3210() {
-    return lbl_80529DEC.field_0x118;
+    return lbl_80529DEC.mStage_0x118;
 }
 
 s32 fn_803A3200() {
-    return lbl_80529DEC.field_0x11c;
+    return lbl_80529DEC.mLevel_0x11c;
 }
 
 void fn_803A31AC(u8 index, s32 bit, bool set) {
@@ -3413,13 +3413,13 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0x3bc = new cls_804B20F8(index, &field_0xa4, NULL, 8);
 
     field_0x20[0] = new J2DScreen;
-    field_0x20[0]->setPriority("hukidashi.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x20[0]->setPriority("hukidashi.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x20[1] = new J2DScreen;
-    field_0x20[1]->setPriority("hukidashi_wood.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x20[1]->setPriority("hukidashi_wood.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x20[2] = new J2DScreen;
-    field_0x20[2]->setPriority("hukidashi_stone.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x20[2]->setPriority("hukidashi_stone.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x20[3] = new J2DScreen;
-    field_0x20[3]->setPriority("op_zelda.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x20[3]->setPriority("op_zelda.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
 
     timg = (const ResTIMG*)fn_804030C4('TIMG', "kk_linkGr_01.bti");
     field_0x30[0] = new J2DPicture(timg);

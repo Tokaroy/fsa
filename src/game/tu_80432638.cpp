@@ -39,9 +39,9 @@ static const char* lbl_804B1640[10] = {
 // (the vtable symbol name)
 cls_804B1668::cls_804B1668() {
     field_0x4[0] = new J2DScreen;
-    field_0x4[0]->setPriority("main_gba_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x4[0]->setPriority("main_gba_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x10[0] = static_cast<J2DAnmTextureSRTKey*>(
-        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("main_gba_window.btk", lbl_80529DEC.field_0x20)));
+        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("main_gba_window.btk", lbl_80529DEC.mMain2DArchive_0x20)));
     field_0x4[0]->setAnimation(field_0x10[0]);
     field_0x18[0] = new PaneCtrl_804AF86C;
     field_0x18[0]->setPane_80402F04(field_0x4[0]->search('Psp01'));
@@ -71,9 +71,9 @@ cls_804B1668::cls_804B1668() {
     field_0x80[0] = field_0x18[0]->mPane->getWidth();
     field_0x80[2] = field_0x18[0]->mPane->getHeight();
     field_0x4[1] = new J2DScreen;
-    field_0x4[1]->setPriority("main_gba_window_s.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x4[1]->setPriority("main_gba_window_s.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x10[1] = static_cast<J2DAnmTextureSRTKey*>(
-        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("main_gba_window_s.btk", lbl_80529DEC.field_0x20)));
+        J2DAnmLoaderDataBase::load(JKRFileLoader::getGlbResource("main_gba_window_s.btk", lbl_80529DEC.mMain2DArchive_0x20)));
     field_0x4[1]->setAnimation(field_0x10[1]);
     field_0x28[0] = new PaneCtrl_804AF86C;
     field_0x28[0]->setPane_80402F04(field_0x4[1]->search('Psp01'));
@@ -98,7 +98,7 @@ cls_804B1668::cls_804B1668() {
     field_0x80[1] = field_0x28[0]->mPane->getWidth();
     field_0x80[3] = field_0x28[0]->mPane->getHeight();
     field_0xc = new J2DScreen;
-    field_0xc->setPriority("main_diving.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0xc->setPriority("main_diving.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x3c = new PaneCtrl_804AF86C;
     field_0x3c->setPane_80402F04(field_0xc->search('Ndata00'));
     field_0x90 = 0;

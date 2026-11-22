@@ -16,7 +16,7 @@ static const u64 lbl_8048FAA8[7] = {
 cls_804B1988::cls_804B1988() {
     lbl_8053AED8 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("button.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    mScreen->setPriority("button.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x8 = new PaneCtrl_804AF86C();
     field_0x8->setPane_80402F04(mScreen->search(0x4e646174613031ull /* "Ndata01" */));
     for (s32 i = 0; i < 7; i++) {

@@ -18,7 +18,7 @@ static cls_804B1B60::StateFunc lbl_804B1B30[4] = {
 // FIXME(shotgun): 92.27 %, missing/extra; behaviour near.
 cls_804B1B60::cls_804B1B60() {
     mScreen = new J2DScreen();
-    mScreen->setPriority("map_yagura_window.blo", 0x1100000, lbl_80529DEC.field_0x34);
+    mScreen->setPriority("map_yagura_window.blo", 0x1100000, lbl_80529DEC.mMapArchive_0x34);
 
     field_0x8 = new PaneCtrl_804AF86C();
     field_0x8->setPane_80402F04(mScreen->search('Nda01'));

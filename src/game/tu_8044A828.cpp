@@ -35,7 +35,7 @@ static const char* lbl_804B1CD8[10] = {
 cls_804B1D00::cls_804B1D00() {
     lbl_8053AF28 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("mg_volleyball.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("mg_volleyball.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     mPanes[0] = new PaneCtrl_804AF86C();
     mPanes[0]->setPane_80402F04(mScreen->search(0x004E646174613030ull /* "Ndata00" */));
     mPanes[1] = new PaneCtrl_804AF86C();

@@ -10,7 +10,7 @@
 cls_804B19F0::cls_804B19F0() {
     lbl_8053AEE0 = this;
     field_0x4 = new J2DScreen();
-    field_0x4->setPriority("gba_connect_error_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x4->setPriority("gba_connect_error_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     JUTResFont* font = lbl_8053AD78->mFont;
     ((J2DTextBox*)field_0x4->search(0x0000005477743031ull))->setFont(font);
     field_0x8 = new PaneCtrl_804AF86C();

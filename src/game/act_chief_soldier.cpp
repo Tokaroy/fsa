@@ -62,7 +62,7 @@ void ChiefSoldier_804A0B90::fn_801752D8() {
     s32 gone;
     s32 serial;
     s32 spawned;
-    if (mLayer_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.field_0x118 == 6) {
+    if (mLayer_0x4 >= 8 && field_0x23c == 1 && lbl_80529DEC.mStage_0x118 == 6) {
         for (i = 0, gone = 0; i < 4; i++) {
             serial = field_0x2c0[i];
             if (serial < 0) {

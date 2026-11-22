@@ -31,7 +31,7 @@
 void fn_80139958();
 void fn_80139D70(); // game/tu_80139BE8.cpp
 
-// The boss archive names (by lbl_80529DEC's field_0x118 / field_0x11c;
+// The boss archive names (by lbl_80529DEC's mStage_0x118 / mLevel_0x11c;
 // fn_80135A04) and the pad rumble patterns.
 static const char* lbl_8049ED88[13][4] = {
     {"boss010.arc", "boss011.arc", "boss200.arc", "boss013.arc"},
@@ -116,11 +116,11 @@ void fn_80139958() {
 
 GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     gGameRoot_8053AAF8 = this;
-    field_0x9c = lbl_80529DEC.field_0x4;
+    field_0x9c = lbl_80529DEC.mSolidHeap_0x4;
     field_0x98 = lbl_80529DEC.mHeap;
-    field_0xa0 = lbl_80529DEC.field_0xc;
-    field_0xa4 = lbl_80529DEC.field_0x14;
-    mMsgArchive_0xa8 = lbl_80529DEC.field_0x1c;
+    field_0xa0 = lbl_80529DEC.mAudioMgr_0xc;
+    field_0xa4 = lbl_80529DEC.mDataArchive_0x14;
+    mMsgArchive_0xa8 = lbl_80529DEC.mMsgArchive_0x1c;
     field_0x98->becomeCurrentHeap();
     mMessageManager_0x18 = new (field_0x98, 0) MessageManager_804AF070();
     gGameRoot2_8053AB10 = new (field_0x98, 0) GameRoot2_8049F108(field_0x98);
@@ -230,10 +230,10 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
         field_0x1c = NULL;
     }
     // These four archives are JKRAramArchives (the unmountFixed the original calls).
-    static_cast<JKRAramArchive*>(lbl_80529DEC.field_0x24)->unmountFixed();
-    static_cast<JKRAramArchive*>(lbl_80529DEC.field_0x38)->unmountFixed();
-    static_cast<JKRAramArchive*>(lbl_80529DEC.field_0x40)->unmountFixed();
-    static_cast<JKRAramArchive*>(lbl_80529DEC.field_0x44)->unmountFixed();
+    static_cast<JKRAramArchive*>(lbl_80529DEC.mTitleArchive_0x24)->unmountFixed();
+    static_cast<JKRAramArchive*>(lbl_80529DEC.mResultArchive_0x38)->unmountFixed();
+    static_cast<JKRAramArchive*>(lbl_80529DEC.mResult1Archive_0x40)->unmountFixed();
+    static_cast<JKRAramArchive*>(lbl_80529DEC.mResult2Archive_0x44)->unmountFixed();
     delete field_0x34;
     field_0x34 = NULL;
     delete field_0x38;
@@ -244,7 +244,7 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
     field_0x40 = NULL;
     field_0xa4->unmount();
     mMsgArchive_0xa8->unmount();
-    lbl_80529DEC.field_0x20->unmount();
+    lbl_80529DEC.mMain2DArchive_0x20->unmount();
     fn_803007A0();
     delete field_0xa0;
     field_0x9c->destroy();
@@ -658,8 +658,8 @@ void GameRoot_8049EF20::fn_80137300() {
             gGameRoot2_8053AB10->fn_8013BBE0();
             fn_803B8C74(lbl_80529DEC.field_0x24f);
             if (gGameRoot_8053AAF8->field_0x7f != 0 && gGameRoot_8053AAF8->field_0x7e == 0) {
-                s32 a = lbl_80529DEC.field_0x118;
-                s32 b = lbl_80529DEC.field_0x11c;
+                s32 a = lbl_80529DEC.mStage_0x118;
+                s32 b = lbl_80529DEC.mLevel_0x11c;
                 if (a < 8 && b < 4) {
                     setStageFlag(a, b);
                 }
@@ -671,13 +671,13 @@ void GameRoot_8049EF20::fn_80137300() {
                         if (nextRow >= 8) {
                             nextRow = 0;
                         }
-                        lbl_80529DEC.field_0x118 = nextRow;
+                        lbl_80529DEC.mStage_0x118 = nextRow;
                     } else if ((a == 0 && next == 2) || (a == 1 && next == 2) || (a == 2 && next == 2) ||
                                (a == 3 && next == 2) || (a == 4 && next == 2) || (a == 5 && next == 2) ||
                                (a == 6 && next == 2) || (a == 7 && next == 1)) {
                         next++;
                     }
-                    lbl_80529DEC.field_0x11c = next;
+                    lbl_80529DEC.mLevel_0x11c = next;
                 }
                 lbl_80529DEC.field_0x237 = 6;
                 field_0x50 = 6;
@@ -730,8 +730,8 @@ void GameRoot_8049EF20::fn_80137300() {
                     field_0x50 = 7;
                     field_0x58 = 1;
                     lbl_8053ACA0->fn_802AC8AC(0);
-                    lbl_80529DEC.field_0x118 = 9;
-                    lbl_80529DEC.field_0x11c = 3;
+                    lbl_80529DEC.mStage_0x118 = 9;
+                    lbl_80529DEC.mLevel_0x11c = 3;
                     field_0x84 = 1;
                 } else {
                     field_0x50 = 1;
@@ -744,15 +744,15 @@ void GameRoot_8049EF20::fn_80137300() {
             } else if (fn_8037A120() == 8 || fn_8037A120() == 9) {
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
                     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
-                        ((lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 1 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 2 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 3 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 4 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 5 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 6 && lbl_80529DEC.field_0x11c == 2) ||
-                         (lbl_80529DEC.field_0x118 == 7 && lbl_80529DEC.field_0x11c == 1) ||
-                         (lbl_80529DEC.field_0x118 == 0xA && lbl_80529DEC.field_0x11c == 2) ||
+                        ((lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 1 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 2 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 3 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 4 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 5 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 6 && lbl_80529DEC.mLevel_0x11c == 2) ||
+                         (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 1) ||
+                         (lbl_80529DEC.mStage_0x118 == 0xA && lbl_80529DEC.mLevel_0x11c == 2) ||
                          lbl_80529DEC.field_0x237 == 8)) {
                         lbl_80529DEC.field_0x237 = 7;
                     } else {
@@ -1213,9 +1213,9 @@ void GameRoot_8049EF20::fn_80136798(s32 a, s32 b) {
 void GameRoot_8049EF20::fn_8013670C(s32 value) {
     field_0x60 = 0;
     field_0x64 = 0;
-    if (lbl_80529DEC.field_0x118 == 10 && lbl_80529DEC.field_0x11c == 2) {
-        lbl_80529DEC.field_0x118 = lbl_80529DEC.field_0x120;
-        lbl_80529DEC.field_0x11c = lbl_80529DEC.field_0x124;
+    if (lbl_80529DEC.mStage_0x118 == 10 && lbl_80529DEC.mLevel_0x11c == 2) {
+        lbl_80529DEC.mStage_0x118 = lbl_80529DEC.field_0x120;
+        lbl_80529DEC.mLevel_0x11c = lbl_80529DEC.field_0x124;
         lbl_80529DEC.field_0x237 = 7;
     }
     field_0x50 = value;
@@ -1240,8 +1240,8 @@ void GameRoot_8049EF20::fn_801365E8(s32 a, s32 b, s32 c) {
     field_0x50 = 7;
     field_0x58 = 1;
     lbl_8053ACA0->fn_802AC8AC(c);
-    lbl_80529DEC.field_0x118 = a;
-    lbl_80529DEC.field_0x11c = b;
+    lbl_80529DEC.mStage_0x118 = a;
+    lbl_80529DEC.mLevel_0x11c = b;
     field_0x84 = 1;
 }
 
@@ -1289,8 +1289,8 @@ void GameRoot_8049EF20::fn_80136364() {
                     field_0x50 = 7;
                     field_0x58 = 1;
                     lbl_8053ACA0->fn_802AC8AC(0);
-                    lbl_80529DEC.field_0x118 = stage;
-                    lbl_80529DEC.field_0x11c = sub;
+                    lbl_80529DEC.mStage_0x118 = stage;
+                    lbl_80529DEC.mLevel_0x11c = sub;
                     field_0x84 = 1;
                 } else {
                     field_0x50 = field_0x54;
@@ -1350,7 +1350,7 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
                 } else if (fn_80021840() == 0 || fn_80021840() == 1) {
                     strcpy(path, "/GC4Sword_usa/Boss/");
                 }
-                strcat(path, lbl_8049ED88[lbl_80529DEC.field_0x118][lbl_80529DEC.field_0x11c]);
+                strcat(path, lbl_8049ED88[lbl_80529DEC.mStage_0x118][lbl_80529DEC.mLevel_0x11c]);
                 field_0xac = fn_80401E10(path, 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 2) {
                 field_0xac = fn_80401E10("/GC4Sword/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
@@ -1504,27 +1504,27 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
         }
         switch (mode) {
         case 7:
-            lbl_80529DEC.field_0x10 = field_0xac->field_0x14;
-            lbl_80529DEC.field_0x4c = field_0xb0->field_0x14;
+            lbl_80529DEC.mBossArchive_0x10 = field_0xac->field_0x14;
+            lbl_80529DEC.mGame2DArchive_0x4c = field_0xb0->field_0x14;
             fn_80135020(7);
             break;
         case 2:
         case 5:
             if (field_0x4c != 2 && field_0x4c != 5) {
-                lbl_80529DEC.field_0x2c = field_0xac->field_0x14;
+                lbl_80529DEC.mGameModeArchive_0x2c = field_0xac->field_0x14;
                 fn_80135020(2);
             }
             break;
         case 3:
-            lbl_80529DEC.field_0x30 = field_0xac->field_0x14;
+            lbl_80529DEC.mFileArchive_0x30 = field_0xac->field_0x14;
             fn_80135020(3);
             break;
         case 4:
-            lbl_80529DEC.field_0x28 = field_0xac->field_0x14;
+            lbl_80529DEC.mEntryArchive_0x28 = field_0xac->field_0x14;
             fn_80135020(4);
             break;
         case 6:
-            lbl_80529DEC.field_0x34 = field_0xac->field_0x14;
+            lbl_80529DEC.mMapArchive_0x34 = field_0xac->field_0x14;
             fn_80135020(6);
             lbl_8053AD80->fn_80390088();
             break;
@@ -1639,8 +1639,8 @@ void GameRoot_8049EF20::fn_80135020(s32 mode) {
             gGameRoot2_8053AB10->fn_8013BE04();
             // The original loads both values before getGameView_802D6A9C() (level first).
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                s32 level = lbl_80529DEC.field_0x11c;
-                s32 stage = lbl_80529DEC.field_0x118;
+                s32 level = lbl_80529DEC.mLevel_0x11c;
+                s32 stage = lbl_80529DEC.mStage_0x118;
                 GameView_804A9950* view = getGameView_802D6A9C();
                 view->mStage_0x4 = stage;
                 view->mLevel_0x8 = level;

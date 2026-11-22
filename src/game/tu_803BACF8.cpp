@@ -113,8 +113,8 @@ s32 fn_803BBF08(CARDFileInfo* file, void* src, void* bodySrc, u32 size, u32 body
     memcpy(img2->mData, src, size);
     memcpy(img1->mBodies, lbl_805242C0, 0x1D4C);
     memcpy(img2->mBodies, lbl_80526020, 0x1D4C);
-    img2->field_0x2 = lbl_80529DEC.field_0x245;
-    img1->field_0x2 = lbl_80529DEC.field_0x245;
+    img2->field_0x2 = lbl_80529DEC.mSoundMode_0x245;
+    img1->field_0x2 = lbl_80529DEC.mSoundMode_0x245;
     img2->field_0x3 = lbl_80529DEC.field_0x244;
     img1->field_0x3 = lbl_80529DEC.field_0x244;
     img2->field_0x4 = lbl_80529DEC.field_0x246;

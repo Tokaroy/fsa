@@ -94,7 +94,7 @@ void cls_804A00C8::init() {
         field_0xb0 = 0x4000000;
     }
     field_0x290 = 0;
-    if (mSpawnParam_0x90 == 2 && lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 3) {
+    if (mSpawnParam_0x90 == 2 && lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 3) {
         mLife = 1;
         for (s32 i = 0; i < 6; i++) {
             if ((s32)(0.1f * mPos.x) == lbl_8049FFD8.tiles[i][0] && (s32)(0.1f * mPos.y) == lbl_8049FFD8.tiles[i][1]) {
@@ -951,7 +951,7 @@ void cls_804A00C8::update() {
                 ActorBase_804A5770* bomb = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x284);
                 f32 speed = 1.4f + fn_80154744();
                 if (bomb != NULL) {
-                    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 3) {
+                    if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 3) {
                         JGeometry::TVec3f vel;
                         vel.x = lbl_8049FFD8.vel[field_0x290][mDir_0x98][0];
                         if (777.0f == vel.x) {
@@ -1076,7 +1076,7 @@ void cls_804A00C8::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 3 && mSpawnParam_0x90 == 2) {
+    if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 3 && mSpawnParam_0x90 == 2) {
         params.field_0x0[2] = 4;
     }
     if (mState == 0xD) {

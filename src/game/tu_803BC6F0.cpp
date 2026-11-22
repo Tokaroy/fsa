@@ -476,9 +476,9 @@ FileSelect_804AFF60::FileSelect_804AFF60() {
     }
 
     mScreen = new J2DScreen;
-    mScreen->setPriority("file_select.blo", 0x1100000, lbl_80529DEC.field_0x30);
+    mScreen->setPriority("file_select.blo", 0x1100000, lbl_80529DEC.mFileArchive_0x30);
     mScreenHuuin = new J2DScreen;
-    mScreenHuuin->setPriority("file_select_huuin.blo", 0x1100000, lbl_80529DEC.field_0x30);
+    mScreenHuuin->setPriority("file_select_huuin.blo", 0x1100000, lbl_80529DEC.mFileArchive_0x30);
     mScreenHuuin->search('Paccur02')->setAlpha(0x9C);
     mScreenHuuin->search('Pfcur05')->setAlpha(0x9C);
 
@@ -717,7 +717,7 @@ FileSelect_804AFF60::~FileSelect_804AFF60() {
     field_0x50 = NULL;
     delete field_0x54;
     field_0x54 = NULL;
-    lbl_80529DEC.field_0x30->unmount();
+    lbl_80529DEC.mFileArchive_0x30->unmount();
     lbl_8053ADB0 = NULL;
 }
 

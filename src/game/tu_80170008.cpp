@@ -48,7 +48,7 @@ void cls_804A0810::init() {
     if (fn_802DE814() == true) {
         mLife = 0x10;
     }
-    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 3) {
+    if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 3) {
         mLife = 0x18;
     }
     field_0x268 = mLife;
@@ -59,7 +59,7 @@ void cls_804A0810::init() {
     field_0x32c[0] = mPos.x;
     field_0x32c[1] = mPos.y;
     field_0x32c[2] = mPos.z;
-    if (lbl_80529DEC.field_0x118 == 0 && lbl_80529DEC.field_0x11c == 3 && getGameView_802D6A9C()->mScreenY_0x18 == 3 &&
+    if (lbl_80529DEC.mStage_0x118 == 0 && lbl_80529DEC.mLevel_0x11c == 3 && getGameView_802D6A9C()->mScreenY_0x18 == 3 &&
         getGameView_802D6A9C()->mScreenX_0x14 == 1) {
         mTimers[4] = 100;
     }

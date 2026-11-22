@@ -29,7 +29,7 @@ cls_804B1634::cls_804B1634() {
     lbl_8053AEC0 = this;
     field_0x4 = new cls_804B1600;
     field_0x8 = new J2DScreen;
-    field_0x8->setPriority("warning_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x8->setPriority("warning_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0xc = new PaneCtrl_804AF86C;
     field_0xc->setPane_80402F04(field_0x8->search('Ndata01'));
     field_0x10[0] = new PaneCtrl_804AF86C;
@@ -682,7 +682,7 @@ cls_804B1600::cls_804B1600() {
     JUTResFont* font;
     lbl_8053AEC4 = this;
     field_0x4 = new J2DScreen;
-    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.field_0x20);
+    field_0x4->setPriority("bat_stage_select_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x8 = new PaneCtrl_804AF86C;
     field_0x8->setPane_80402F04(field_0x4->search('Pmmwk02'));
     field_0xc = new PaneCtrl_804AF86C;

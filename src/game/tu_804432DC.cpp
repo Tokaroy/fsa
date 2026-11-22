@@ -27,7 +27,7 @@ static void (cls_804B1AE8::*lbl_804B1AC4[3])() = {
 cls_804B1AE8::cls_804B1AE8() {
     lbl_8053AEF0 = this;
     mScreen = new J2DScreen();
-    mScreen->setPriority("map_ed.blo", 0x1100000, lbl_80529DEC.field_0x10);
+    mScreen->setPriority("map_ed.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
     mPtestmap = new PaneCtrl_804AF86C();
     mPtestmap->setPane_80402F04(mScreen->search(0x50746573746d6170ull /* "Ptestmap" */));
     mPmapten = new PaneCtrl_804AF86C();
