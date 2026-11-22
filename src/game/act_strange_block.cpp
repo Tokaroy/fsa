@@ -106,6 +106,7 @@ inline void StrangeBlock_804AC2D8::checkTalk() {
 }
 
 // 0x8033DA78. States of field_0x234: 0 the block waits to be pushed or slides, 1 a player's
+// message is open, then back to 0.
 // FIXME(shotgun): 93.83 %, missing/extra; behaviour near.
 void StrangeBlock_804AC2D8::update() {
     JGeometry::TBox2f box(mBox);
@@ -336,8 +337,8 @@ f32 fn_8033D4AC(f32 value, f32 center, f32 margin) {
 
 // A plain function that update inlines and whose own copy the linker dropped: the original's
 // .sdata2 has its literals (19.9f, 8f) ahead of fn_8033D4AC's, so it was generated before it
-// (tools/pool.py). True when a size-2 block at its full reach, 8 or more away from where it
-// started, cannot go on in its direction.
+// (tools/pool.py). False when a size-2 block at its full reach, 8 or more away from where it
+// started, cannot go on in its direction; otherwise puts field_0x3c back and returns true.
 bool StrangeBlock_804AC2D8::blockedAtFullReach(f32 reach) {
     JGeometry::TVec3f saved = field_0x3c;
     if (field_0x260 == 2 && reach == 19.9f &&
