@@ -98,7 +98,7 @@ void Boulder_8049C4C0::init() {
     }
 }
 
-// FIXME(shotgun): 98.18 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.56 %, different + reloc-name; behaviour clean.
 void Boulder_8049C4C0::fn_800F5E08() {
     if (field_0x240 != 0) {
         field_0x244++;
@@ -198,7 +198,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
     }
 }
 
-// FIXME(shotgun): 95.66 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 97.37 %, missing/extra; behaviour clean.
 void Boulder_8049C4C0::fn_800F555C() {
     JGeometry::TBox2f box(mPos.x - 16.0f, mPos.y - 16.0f, mPos.x + 16.0f, mPos.y + 16.0f);
     s32 anyPlayer = 0;
@@ -468,7 +468,7 @@ bool Boulder_8049C4C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, false);
 }
 
-// FIXME(shotgun): 97.40 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 99.45 %, regalloc-only + reloc-name; behaviour clean.
 void Boulder_8049C4C0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
