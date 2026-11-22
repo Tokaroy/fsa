@@ -37,7 +37,7 @@ static const char* lbl_804B1640[10] = {
 
 // FIXME(shotgun): 99.96 %, regalloc-only; behaviour near.
 // (the vtable symbol name)
-cls_804B1668::cls_804B1668() {
+GbaWindow_804B1668::GbaWindow_804B1668() {
     field_0x4[0] = new J2DScreen;
     field_0x4[0]->setPriority("main_gba_window.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
     field_0x10[0] = static_cast<J2DAnmTextureSRTKey*>(
@@ -117,7 +117,7 @@ cls_804B1668::cls_804B1668() {
     }
 }
 
-cls_804B1668::~cls_804B1668() {
+GbaWindow_804B1668::~GbaWindow_804B1668() {
     for (s32 i = 0; i < 2; i++) {
         delete field_0x4[i];
         field_0x4[i] = NULL;
@@ -140,7 +140,7 @@ cls_804B1668::~cls_804B1668() {
     field_0x3c = NULL;
 }
 
-void cls_804B1668::fn_80433718() {
+void GbaWindow_804B1668::fn_80433718() {
     if (field_0xa0 != getGameView_802D6A9C()->get_0x131dc()) {
         field_0xa0 = getGameView_802D6A9C()->get_0x131dc();
         field_0x9e = getGameView_802D6A9C()->get_0x131dc();
@@ -155,7 +155,7 @@ void cls_804B1668::fn_80433718() {
 }
 
 // FIXME(shotgun): 99.41 %, missing/extra; behaviour clean.
-void cls_804B1668::fn_80432AF8() {
+void GbaWindow_804B1668::fn_80432AF8() {
     field_0x90++;
     field_0x94++;
     if (field_0x90 >= field_0x10[0]->getFrameMax()) {
@@ -276,7 +276,7 @@ void cls_804B1668::fn_80432AF8() {
 }
 
 // FIXME(shotgun): 99.49 %, regalloc-only; behaviour clean.
-void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
+void GbaWindow_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0xa4 == 0) {
         f32 scaleX = w / field_0x18[2]->field_0x18;
@@ -333,7 +333,7 @@ void cls_804B1668::fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h) {
     }
 }
 
-void cls_804B1668::fn_80432638() {
+void GbaWindow_804B1668::fn_80432638() {
     if (field_0xac != 0) {
         f32 x = field_0x18[0]->mPane->getBounds()->i.x;
         f32 left = field_0x18[0]->field_0x8;

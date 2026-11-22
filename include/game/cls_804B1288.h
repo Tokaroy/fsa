@@ -6,9 +6,9 @@
 
 class J2DScreen;
 class PaneCtrl_804AF86C;
-class cls_804B1B60;
-class cls_804B0288;
-class cls_804B20F8;
+class MapYaguraWindow_804B1B60;
+class SaveScreen_804B0288;
+class PlayerSoundObj_804B20F8;
 class ActorSoundObj_804578F4;
 class JPABaseEmitter;
 class J2DAnmTransform;
@@ -188,8 +188,8 @@ public:
     void loadStageInfo();
 
 
-    /* 0x004 */ cls_804B1B60* field_0x4; // __nw__(0x50), fn_80444B68
-    /* 0x008 */ cls_804B0288* field_0x8; // __nw__(0x2180), fn_803D58E0
+    /* 0x004 */ MapYaguraWindow_804B1B60* field_0x4; // __nw__(0x50), fn_80444B68
+    /* 0x008 */ SaveScreen_804B0288* field_0x8; // __nw__(0x2180), fn_803D58E0
     /* 0x00C */ J2DScreen* mMapScreen_0xc;    // "map.blo"
     /* 0x010 */ J2DScreen* mMapAreaScreen_0x10; // the screen fn_80411A94 fades
     /* 0x014 */ J2DScreen* mMapTenScreen_0x14; // the screen whose panes fn_80408F38 fades
@@ -215,7 +215,7 @@ public:
     /* 0x270 */ PaneCtrl_804AF86C* mMessageTextPanes_0x270[2]; // text panes
     /* 0x278 */ PaneCtrl_804AF86C* field_0x278[15]; // three groups of five panes
     /* 0x2B4 */ PaneCtrl_804AF86C* field_0x2b4; // the pane fn_804108B4 slides in and out
-    /* 0x2B8 */ cls_804B20F8* mPlayerSoundObjs_0x2b8[4]; // sound objects (__nw__(0x60))
+    /* 0x2B8 */ PlayerSoundObj_804B20F8* mPlayerSoundObjs_0x2b8[4]; // sound objects (__nw__(0x60))
     /* 0x2C8 */ ActorSoundObj_804578F4* mSoundObj_0x2c8;
     /* 0x2CC */ JPABaseEmitter* field_0x2cc[4];
     /* 0x2DC */ JPABaseEmitter* field_0x2dc[4];

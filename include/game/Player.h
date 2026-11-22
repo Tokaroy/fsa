@@ -43,7 +43,7 @@
 // the player's getters (tu_8023FBF0) read the rest.
 class cls_804A71A8;
 class cls_804AA8D8;
-class cls_804B20F8;
+class PlayerSoundObj_804B20F8;
 class JPABaseEmitter;
 
 class Player_804A6F38 {
@@ -1091,10 +1091,10 @@ public:
     // Set to 1 by fn_80293760 (stb r4); stored to by other Player functions too (stb r0 / stb r3).
     /* 0x124D */ u8 mStateLocked_0x124d;
     /* 0x124E */ u8 field_0x124e[0x1250 - 0x124E];
-    // The player's two sound objects (constructor: new cls_804B20F8(index,
+    // The player's two sound objects (constructor: new PlayerSoundObj_804B20F8(index,
     // pos, NULL, 8)); 0x1250 plays at mSoundPos_0x1258, 0x1254 has no position.
-    /* 0x1250 */ cls_804B20F8* mSoundObj_0x1250;
-    /* 0x1254 */ cls_804B20F8* mSoundObj_0x1254;
+    /* 0x1250 */ PlayerSoundObj_804B20F8* mSoundObj_0x1250;
+    /* 0x1254 */ PlayerSoundObj_804B20F8* mSoundObj_0x1254;
     /* 0x1258 */ JGeometry::TVec3f mSoundPos_0x1258; // zeroed by the constructor
     /* 0x1264 */ s32 field_0x1264;
     /* 0x1268 */ JGeometry::TVec3f field_0x1268; // fn_8024C378 / fn_8024E0A0: mPos plus a view offset, returned as TVec3f*

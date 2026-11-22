@@ -30,7 +30,7 @@ cls_804AF878::cls_804AF878() {
         gGameRoot2_8053AB10->field_0x20->fn_802F93F4(res, 0, 3, 0, 0, false);
         gGameRoot2_8053AB10->field_0x20->mDrawSprites_0x2364 = 1;
     }
-    field_0x4 = new cls_804B0B00();
+    field_0x4 = new AdvEntryScreen_804B0B00();
     field_0x8 = new ConnectScreen_804B0F10();
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001A) {
         gAudioMgr_8053AF80->fn_80458FF0(0x100001A, false, false);

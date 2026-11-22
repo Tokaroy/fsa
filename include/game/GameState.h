@@ -210,7 +210,7 @@ public:
     /* 0x247 */ u8 field_0x247;
     /* 0x248 */ u8 field_0x248; // tu_8039003C's and tu_803A85E4's constructors set it to 1 after fn_80458408
     /* 0x249 */ u8 field_0x249[1];
-    /* 0x24A */ u8 field_0x24a; // player bits: counter falling (cls_804B146C::fn_804253E0)
+    /* 0x24A */ u8 field_0x24a; // player bits: counter falling (BattleHud_804B146C::fn_804253E0)
     // Cleared by GameRootSub04_801F856C's destructor (fn_8013A27C, game/tu_80139BE8.cpp) when set.
     /* 0x24B */ u8 field_0x24b;
     /* 0x24C */ u8 field_0x24c;
@@ -223,7 +223,7 @@ public:
     /* 0x253 */ u8 field_0x253; // stored 0 by fn_8013A1A4 (game/tu_80139BE8.cpp)
     /* 0x254 */ u8 field_0x254[0x258 - 0x254];
 
-    // Inline readers (cls_804B13D4::fn_8041E8B4 loads each before the call it is compared with).
+    // Inline readers (AdventureHud_804B13D4::fn_8041E8B4 loads each before the call it is compared with).
     bool isField0x239(s32 player) const { return (field_0x239 & (u8)(1 << player)) != 0 ? true : false; }
     s32 getField0xd8(s32 player) const { return field_0xd8[player]; }
     s32 getField0xe8(s32 player) const { return field_0xe8[player]; }

@@ -32,7 +32,7 @@ static const char* lbl_804B1CA0[10] = {
     "kk_rupyNum_09.bti",
 };
 
-cls_804B1CC8::cls_804B1CC8() {
+MgFishingScreen_804B1CC8::MgFishingScreen_804B1CC8() {
     lbl_8053AF20 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("mg_fishing.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -46,7 +46,7 @@ cls_804B1CC8::cls_804B1CC8() {
     field_0x13 = 0;
 }
 
-cls_804B1CC8::~cls_804B1CC8() {
+MgFishingScreen_804B1CC8::~MgFishingScreen_804B1CC8() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 2; i++) {
@@ -58,7 +58,7 @@ cls_804B1CC8::~cls_804B1CC8() {
 
 // Sets the digit pictures to the 'TIMG' name lbl_804B1CA0[0] and hides the
 // panes 'Ndata01' and 'Ndata00'.
-void cls_804B1CC8::fn_8044A06C() {
+void MgFishingScreen_804B1CC8::fn_8044A06C() {
     field_0x13 &= ~1;
     const ResTIMG* res = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1CA0[0]));
     static_cast<J2DPicture*>(mScreen->search(lbl_80490C40[2]))->changeTexture(res, 0);
@@ -79,7 +79,7 @@ void cls_804B1CC8::fn_8044A06C() {
     mScreen->search(lbl_80490C78[12])->hide();
 }
 
-void cls_804B1CC8::fn_8044A024() {
+void MgFishingScreen_804B1CC8::fn_8044A024() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
@@ -89,7 +89,7 @@ void cls_804B1CC8::fn_8044A024() {
 // field_0x12 in r31 and its tens in r30, ours in r30 and r28. The lis/addi
 // loads of lbl_804B1CA0 sit at other points in our schedule, so those reloc
 // rows differ too.
-void cls_804B1CC8::fn_8044998C() {
+void MgFishingScreen_804B1CC8::fn_8044998C() {
     for (s32 i = 0; i < 2; i++) {
         mPanes[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());
     }

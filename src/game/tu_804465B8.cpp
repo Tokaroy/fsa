@@ -59,7 +59,7 @@ static const char* lbl_804B1BC0[10] = {
     "kk_rupyNum_09.bti",
 };
 
-cls_804B1BE8::cls_804B1BE8() {
+MgOniScreen_804B1BE8::MgOniScreen_804B1BE8() {
     lbl_8053AF00 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("mg_oni.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -76,7 +76,7 @@ cls_804B1BE8::cls_804B1BE8() {
     field_0x30 = 0;
 }
 
-cls_804B1BE8::~cls_804B1BE8() {
+MgOniScreen_804B1BE8::~MgOniScreen_804B1BE8() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 4; i++) {
@@ -88,7 +88,7 @@ cls_804B1BE8::~cls_804B1BE8() {
     lbl_8053AF00 = NULL;
 }
 
-void cls_804B1BE8::fn_80446DB0() {
+void MgOniScreen_804B1BE8::fn_80446DB0() {
     for (s32 i = 0; i < 4; i++) {
         field_0x30 &= ~(u8)(1 << i);
         field_0x30 &= ~(u8)(1 << (i + 4));
@@ -115,7 +115,7 @@ void cls_804B1BE8::fn_80446DB0() {
     }
 }
 
-void cls_804B1BE8::fn_80446D68() {
+void MgOniScreen_804B1BE8::fn_80446D68() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
@@ -125,7 +125,7 @@ void cls_804B1BE8::fn_80446D68() {
 // lbl_804B1BC0 (a second srawi/srwi pair on the quotient, after the seconds).
 // Ours shares one quotient. The field byte sits in r7 where the original has
 // r8, and lis/addi of lbl_804B1BC0 are scheduled before the 0x6666 constant.
-void cls_804B1BE8::fn_804465B8() {
+void MgOniScreen_804B1BE8::fn_804465B8() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
             field_0x8[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());

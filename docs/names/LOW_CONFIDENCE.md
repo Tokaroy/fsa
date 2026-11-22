@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-98 rows: 98 applied, 0 not applied.
+101 rows: 101 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -57,6 +57,9 @@ See METHOD.md.
 | `EyeballSwitch_804AE678` | 804AE678 | class | `cls_804AE678` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `InvisibleNPCWallForLink_804AE780` | 804AE780 | class | `cls_804AE780` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
 | `HorseRaceEndArea_804AE830` | 804AE830 | class | `cls_804AE830` | yes | only evidence is a machine-translated Japanese label (actors.tsv `mt`); nothing in the unit corroborates the role | the in-game English text (msg#) or a resource / string the unit loads naming the actor, or the same class in a donor game (TWW/TP); then med |
+| `HudMgr_804B1920` | 804B1920 | class | `cls_804B1920` | yes | include/game/GameGlobals.h + game/tu_8043A0E8.cpp: the singleton *lbl_8053AED0 that GameRoot draws after the game view; it owns the adventure / battle HUD (0x290 / 0x294), the minigame screens (0x298..0x2BC) and loads "dungeon_floor.blo", "main_message_window.blo", "op_zelda.blo". Low: "Hud" is a summary of what it owns, most of the class is unwritten; vtable 0x804B1920 | evidence that proves the role or the name |
+| `PlayerWindowSelect_804B19E0` | 804B19E0 | class | `cls_804B19E0` | yes | include/game/act/tu_80441318.h: picks the window (TileMap field_0x22c) one player's screen shows; fn_80441490 steps its state machine once per frame from the two HUD units. Low: role read from one setter, no resource names it; vtable 0x804B19E0 | evidence that proves the role or the name |
+| `PlayerSoundObj_804B20F8` | 804B20F8 | class | `cls_804B20F8` | yes | include/game/cls_804B20F8.h + game/tu_8045B010.cpp: a sound object derived from ActorSoundObj_804578F4 that overrides startSound (slot 0x14); its constructor takes a signed byte that MapScreen and ConnectScreen pass as the player index 0-3 (new cls_804B20F8(i, NULL, NULL, 8)). Low: "player" is read from those callers only; vtable 0x804B20F8 | evidence that proves the role or the name |
 | `mWalkAnimCounter_0x3f8` | 804A6F38 | field | `field_0x3f8` | yes | tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function | evidence that proves the role or the name |
 | `mLastPos_0x14` | 804A6F38 | field | `field_0x14` | yes | tu_8023FBF0 fn_80251D50 stores mPos here each frame (then field_0x20 = it); state updates test epsilonEquals(mPos, field_0x14) for "has not moved" (fn_80259830, fn_80274CB8); fn_802870C8 move = mPos - field_0x14. mPrevPos_0x2c is a second previous position, the frame relation between the two is open | evidence that proves the role or the name |
 | `mReturnPos_0x2c4` | 804A6F38 | field | `field_0x2c4` | yes | fn_80254744 sets it to the leader's position plus 16 per place and mPos = it; mPos.set(field_0x2c4) in fn_802857F0 (state 1 back to the return point, PLAYER.md), fn_80277F98, fn_80290D58; fn_80252F80 stores its argument | evidence that proves the role or the name |

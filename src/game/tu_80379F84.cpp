@@ -51,10 +51,10 @@ cls_804AE9A0::cls_804AE9A0() {
             field_0x8 = new cls_804AFAB0;
         }
     } else {
-        field_0xc = new cls_804B03D8;
+        field_0xc = new TotalScreen_804B03D8;
     }
     lbl_80529DEC.mHeap->getTotalFreeSize();
-    field_0x10 = new cls_804B0288(lbl_8053AD68->field_0x14, true);
+    field_0x10 = new SaveScreen_804B0288(lbl_8053AD68->field_0x14, true);
     field_0x1c = 0;
 }
 

@@ -10,7 +10,7 @@
 #include "game/act/tu_803D9944.h"
 
 // FIXME(shotgun): 97.43 %, missing/extra + reloc-name; behaviour drift.
-void cls_804B0478::init() {
+void Tingle_804B0478::init() {
     mBox.i.x = -1280.0f;
     mBox.i.y = -1280.0f;
     mBox.f.x = 1280.0f;
@@ -62,7 +62,7 @@ void cls_804B0478::init() {
     }
 }
 
-cls_804B0478::~cls_804B0478() {
+Tingle_804B0478::~Tingle_804B0478() {
     for (int i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters[i]);
     }
@@ -88,7 +88,7 @@ struct {
 s32 lbl_8053A210[2] = {0, 1}; // state 5
 
 // FIXME(shotgun): 94.67 %, missing/extra; behaviour drift.
-void cls_804B0478::update() {
+void Tingle_804B0478::update() {
     switch (mState) {
     case 0:
         if (field_0x240 < 60) {
@@ -293,7 +293,7 @@ void cls_804B0478::update() {
 }
 
 // FIXME(shotgun): 93.18 %, different; behaviour drift.
-void cls_804B0478::draw() {
+void Tingle_804B0478::draw() {
     if (field_0x248 != 0) {
         return;
     }

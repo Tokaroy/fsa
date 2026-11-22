@@ -9,10 +9,10 @@ class PaneCtrl_804AF86C;
 // Named after its vtable, 0x804B19F0 (one virtual, the destructor).
 // Defined in game/tu_80441A1C.cpp; the constructor stores `this` in a
 // file-static pointer of that unit. The state machine is fn_80441A1C.
-class cls_804B19F0 {
+class GbaConnectErrorWindow_804B19F0 {
 public:
-    cls_804B19F0();
-    /* 0x08 */ virtual ~cls_804B19F0();
+    GbaConnectErrorWindow_804B19F0();
+    /* 0x08 */ virtual ~GbaConnectErrorWindow_804B19F0();
 
     // Owner: game/tu_80441A1C.cpp. Draws field_0x4 at the origin with the
     // ortho context of gGameRoot2_8053AB10, when field_0x18 is not 0.
@@ -38,6 +38,6 @@ public:
 // .sbss pointer the constructor stores `this` in (0x8053AEE0, inside
 // game/tu_8043A0E8.cpp's .sbss range); GameRoot's fn_80136828 / fn_80137300
 // call fn_80442200 through it.
-extern cls_804B19F0* lbl_8053AEE0;
+extern GbaConnectErrorWindow_804B19F0* lbl_8053AEE0;
 
 #endif

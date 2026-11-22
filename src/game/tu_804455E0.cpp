@@ -65,7 +65,7 @@ static const char* lbl_804B1BA0[4] = {
     "kk_mainRank_04.bti",
 };
 
-cls_804B1BB0::cls_804B1BB0() {
+MgHorseRaceScreen_804B1BB0::MgHorseRaceScreen_804B1BB0() {
     lbl_8053AEF8 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("mg_horse_race.blo", 0x1100000, lbl_80529DEC.mBossArchive_0x10);
@@ -85,7 +85,7 @@ cls_804B1BB0::cls_804B1BB0() {
     field_0x44 = 0;
 }
 
-cls_804B1BB0::~cls_804B1BB0() {
+MgHorseRaceScreen_804B1BB0::~MgHorseRaceScreen_804B1BB0() {
     delete mScreen;
     mScreen = NULL;
     for (s32 i = 0; i < 4; i++) {
@@ -99,7 +99,7 @@ cls_804B1BB0::~cls_804B1BB0() {
     lbl_8053AEF8 = NULL;
 }
 
-void cls_804B1BB0::fn_80445D24() {
+void MgHorseRaceScreen_804B1BB0::fn_80445D24() {
     for (s32 i = 0; i < 4; i++) {
         field_0x44 &= ~(u8)(1 << i);
         field_0x44 &= ~(u8)(1 << (i + 4));
@@ -123,7 +123,7 @@ void cls_804B1BB0::fn_80445D24() {
     }
 }
 
-void cls_804B1BB0::fn_80445CDC() {
+void MgHorseRaceScreen_804B1BB0::fn_80445CDC() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
@@ -134,7 +134,7 @@ void cls_804B1BB0::fn_80445CDC() {
 // 0x6667 constant; it keeps the minutes picture in r23 (a ninth callee-saved
 // register), while ours stores it in r25. Tried: separate minutes, seconds and
 // centiseconds texture locals (90.9-91.05 %), a minutes local for the division.
-void cls_804B1BB0::fn_804455E0() {
+void MgHorseRaceScreen_804B1BB0::fn_804455E0() {
     for (s32 i = 0; i < 4; i++) {
         if (i < 2) {
             field_0x8[i]->moveFromCentre_80402E08(0.0f, lbl_8053AED0->fn_8043D514());

@@ -5,7 +5,7 @@
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 
-cls_804B04F8::cls_804B04F8() {
+PressStartOverlay_804B04F8::PressStartOverlay_804B04F8() {
     lbl_8053ADC8 = this;
     mScreen = new J2DScreen();
     mScreen->setPriority("pressstart.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);
@@ -21,13 +21,13 @@ cls_804B04F8::cls_804B04F8() {
     field_0x21 = 0;
 }
 
-cls_804B04F8::~cls_804B04F8() {
+PressStartOverlay_804B04F8::~PressStartOverlay_804B04F8() {
     delete mScreen;
     mScreen = NULL;
     lbl_8053ADC8 = NULL;
 }
 
-void cls_804B04F8::fn_803DA6B4() {
+void PressStartOverlay_804B04F8::fn_803DA6B4() {
     static const f32 lbl_804774A0[5] = {0.0f, 60.0f, 47.0f, -42.0f, 40.0f};
     field_0x18 = 0.0f;
     if (field_0x20 != 0) {

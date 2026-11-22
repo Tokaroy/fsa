@@ -158,7 +158,7 @@ ResultScreen_804AF9A0::ResultScreen_804AF9A0() {
     field_0x244.y = 0.0f;
     field_0x244.z = 0.0f;
     for (int i = 0; i < 4; i++) {
-        mPlayerSoundObjs_0x174[i] = new cls_804B20F8(i, NULL, NULL, 8);
+        mPlayerSoundObjs_0x174[i] = new PlayerSoundObj_804B20F8(i, NULL, NULL, 8);
     }
     mSoundObj_0x184 = new ActorSoundObj_804578F4(&field_0x244, NULL, 8);
     for (int i = 0; i < 10; i++) {

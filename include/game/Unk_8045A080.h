@@ -142,7 +142,7 @@ struct AudioMgr_8045A080 {
     // 0x58-0x68.
     void fn_80458F9C(s32 frames);
     // game/tu_80457DFC.cpp (0x80459274, same unit). Called on gAudioMgr_8053AF80
-    // by cls_804B19F0::fn_80441A1C (game/tu_80441A1C.cpp) after the 0x0 call.
+    // by GbaConnectErrorWindow_804B19F0::fn_80441A1C (game/tu_80441A1C.cpp) after the 0x0 call.
     void fn_80459274();
     // game/tu_80457DFC.cpp (0x80458090): loads wave archives 2, 3 and 4 of
     // the JAUSection at 0x44 (loadWaveArc). Called by tu_8039003C's

@@ -27,10 +27,10 @@ struct cls_80453830 {
 // game/tu_8044C7F0.cpp (not written yet). The constructor fn_80452A80 stores
 // `this` in lbl_8053AF40; tu_8037ACC4 allocates it with __nw__(0x188) when
 // gGameRoot_8053AAF8->field_0x7f is set.
-class cls_804B1D58 {
+class CollectScreen_804B1D58 {
 public:
-    cls_804B1D58(); // fn_80452A80
-    /* 0x08 */ virtual ~cls_804B1D58();
+    CollectScreen_804B1D58(); // fn_80452A80
+    /* 0x08 */ virtual ~CollectScreen_804B1D58();
 
     u8 fn_8044CB00(); // 0x8044CB00: field_0x140
     void fn_8044CB08(int arg); // 0x8044CB08
@@ -111,7 +111,7 @@ public:
 bool fn_80453848(JPABaseEmitter* emitter);
 
 // Data of game/tu_8044C7F0.cpp.
-extern cls_804B1D58* lbl_8053AF40;
+extern CollectScreen_804B1D58* lbl_8053AF40;
 
 // 0x8044F664 (game/tu_8044C7F0.cpp): 9 without lbl_8053AF40, else its
 // field_0x184.

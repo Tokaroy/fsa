@@ -15,9 +15,9 @@ cls_804AE9B0::cls_804AE9B0() {
     field_0x8 = NULL;
     field_0xc = 0;
     if (gGameRoot_8053AAF8->field_0x7f) {
-        field_0x4 = new cls_804B1D58;
+        field_0x4 = new CollectScreen_804B1D58;
     } else {
-        field_0x8 = new cls_804B1DA8;
+        field_0x8 = new PauseScreen_804B1DA8;
     }
 }
 

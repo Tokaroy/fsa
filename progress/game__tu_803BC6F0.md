@@ -57,7 +57,7 @@ object's class?).
 - GameGlobals.h cls_803B9940: fn_803B9940(s32)->u32, fn_803B9B8C(), fn_803B9A94(void*,u32,void*,u32,s32)->s32,
   fn_803B9BDC()->s32, fn_803B9C5C()->s32, fn_803B9DDC(); fields 0x1FF4 u8
   (card channel), 0x1FF5 u8, 0x1FF8 u64 (CARDGetSerialNo serial).
-- GameGlobals.h cls_804B1634: fn_80431174(u8), fn_804317AC()/fn_80431740() -> BOOL.
+- GameGlobals.h WarningWindow_804B1634: fn_80431174(u8), fn_804317AC()/fn_80431740() -> BOOL.
 - GameState.h PaneCtrl_804AF86C::fn_80402628(s16, u8, u8) -> bool.
 - tu_80379F84.h SaveRow_8050EC80: u64 field_0x8 (row 0: card serial).
 - symbols.txt: renamed the placeholders above to their mangled names.

@@ -11,7 +11,7 @@
 // Message ids of the staff-roll text pages.
 static const u32 lbl_80490F48[8] = {0x85B, 0x85C, 0x85D, 0x85E, 0x85F, 0x860, 0x862, 0x863};
 
-cls_804B1D10::cls_804B1D10() {
+StaffRollLoader_804B1D10::StaffRollLoader_804B1D10() {
     lbl_8053AF30 = this;
     field_0x4 = NULL;
     mScreen = NULL;
@@ -22,7 +22,7 @@ cls_804B1D10::cls_804B1D10() {
     mState = 0;
 }
 
-cls_804B1D10::~cls_804B1D10() {
+StaffRollLoader_804B1D10::~StaffRollLoader_804B1D10() {
     if (field_0x4 != NULL) {
         JKRHeap* saved = JKRHeap::sCurrentHeap;
         gGameRoot_8053AAF8->field_0x4->field_0x30->becomeCurrentHeap();
@@ -42,7 +42,7 @@ cls_804B1D10::~cls_804B1D10() {
     lbl_8053AF30 = NULL;
 }
 
-void cls_804B1D10::fn_8044B960() {
+void StaffRollLoader_804B1D10::fn_8044B960() {
     if (mState == 1 || mState == 2) {
         char path[0x1F];
         char name[0x11];
@@ -79,7 +79,7 @@ void cls_804B1D10::fn_8044B960() {
     }
 }
 
-void cls_804B1D10::fn_8044B8EC() {
+void StaffRollLoader_804B1D10::fn_8044B8EC() {
     if (mDraw && mState == 3 && mScreen != NULL) {
         gGameRoot2_8053AB10->fn_8013B490();
         mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -87,7 +87,7 @@ void cls_804B1D10::fn_8044B8EC() {
     }
 }
 
-bool cls_804B1D10::fn_8044B80C(u8 idx) {
+bool StaffRollLoader_804B1D10::fn_8044B80C(u8 idx) {
     if (idx >= 8) {
         return false;
     }

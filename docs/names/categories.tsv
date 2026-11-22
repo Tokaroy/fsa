@@ -527,6 +527,6 @@ game/tu_80455CA4.cpp	media	med	ActorSoundObj_804578F4: actor sound objects	hand
 game/tu_80457C08.cpp	media	med	AudioMgr's __sinit (GameAudioBase.h) and its music volumes	hand
 game/tu_80457DFC.cpp	media	med	AudioMgr_8045A080 (names.tsv): the sound system	hand
 game/tu_8045A640.cpp	media	low	no source; between the audio units by address	hand
-game/tu_8045B010.cpp	media	med	cls_804B20F8 sound objects (PLAYER.md)	hand
+game/tu_8045B010.cpp	media	med	PlayerSoundObj_804B20F8 sound objects (PLAYER.md)	hand
 game/tu_8045B6F0.cpp	media	med	sound IDs indexed by tu_8045B010	hand
 game/tu_8045BA84.cpp	media	low	sound position projection, called only by ActorSoundObj (tu_80455CA4)	hand

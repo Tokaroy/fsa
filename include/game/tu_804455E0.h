@@ -12,14 +12,14 @@ class PaneCtrl_804AF86C;
 // stores the vtable 0x804B1BB0 and the object itself in lbl_8053AEF8. Named
 // after that vtable. Only the best-time records fn_801ED3DC (game/tu_801ED3DC.cpp)
 // writes are known.
-class cls_804B1BB0 {
+class MgHorseRaceScreen_804B1BB0 {
 public:
     // Constructor (game/tu_804455E0.cpp). Stores itself in lbl_8053AEF8 and
     // builds mScreen and the pane arrays.
-    cls_804B1BB0();
+    MgHorseRaceScreen_804B1BB0();
     // Virtual destructor (game/tu_804455E0.cpp): deletes mScreen and the pane
     // arrays below.
-    virtual ~cls_804B1BB0();
+    virtual ~MgHorseRaceScreen_804B1BB0();
 
     // Calls gGameRoot2_8053AB10->fn_8013B490(), then draws mScreen at (0, 0) with
     // gGameRoot2_8053AB10's J2DOrthoGraph as the grafcontext.
@@ -44,6 +44,6 @@ public:
     /* 0x044 */ u8 field_0x44;    // bit n: slot n has a time; bit n + 4: slot n has a rank
     /* 0x045 */ u8 pad_0x45[0x48 - 0x45];
 }; // Size: 0x48
-extern cls_804B1BB0* lbl_8053AEF8;
+extern MgHorseRaceScreen_804B1BB0* lbl_8053AEF8;
 
 #endif

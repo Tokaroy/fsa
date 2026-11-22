@@ -4,17 +4,17 @@
 // Code: game/tu_8044998C.cpp. Named after its vtable, 0x804B1CC8 (only the
 // virtual destructor, fn_8044A418, in the slot at 0x8); the constructor is
 // fn_8044A4D4, which stores the object in lbl_8053AF20 and builds the
-// "mg_fishing.blo" screen. Same shape as cls_804B1C20 (tu_80447618).
+// "mg_fishing.blo" screen. Same shape as MgKokkoScreen_804B1C20 (tu_80447618).
 
 #include "types.h"
 
 class J2DScreen;
 class PaneCtrl_804AF86C;
 
-class cls_804B1CC8 {
+class MgFishingScreen_804B1CC8 {
 public:
-    cls_804B1CC8();
-    virtual ~cls_804B1CC8();
+    MgFishingScreen_804B1CC8();
+    virtual ~MgFishingScreen_804B1CC8();
 
     // Draws the screen: gGameRoot2_8053AB10->fn_8013B490(), then mScreen at (0, 0)
     // with gGameRoot2_8053AB10's J2DOrthoGraph as the grafcontext.
@@ -38,6 +38,6 @@ public:
 
 // The object at lbl_8053AF20 (game/tu_8044998C.cpp, constructor fn_8044A4D4;
 // the auto split at 0x8053AF20 defines it).
-extern cls_804B1CC8* lbl_8053AF20;
+extern MgFishingScreen_804B1CC8* lbl_8053AF20;
 
 #endif

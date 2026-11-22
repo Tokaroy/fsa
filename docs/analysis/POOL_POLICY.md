@@ -59,7 +59,7 @@ Method:
    The inventory takes every non-weak function that exists in ours but not in
    the target. That is 75 units and 168 helpers. Excluded: JGeometry
    template instances (`TVec3<f>` ctor/`set`) and tu_8042E964's
-   `cls_804B1600` ctor. 82 of the helpers have a comment citing
+   `StageSelectWindow_804B1600` ctor. 82 of the helpers have a comment citing
    pool/`.sdata2`. The rest are "dead-stripped, X inlines it" helpers.
 2. None of the 168 is called out of line in ours (no `R_PPC_REL24` to it).
    Every caller inlines it.

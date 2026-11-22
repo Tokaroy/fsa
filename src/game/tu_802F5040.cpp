@@ -187,7 +187,7 @@ TileMap_804AA858::TileMap_804AA858(JKRHeap* heap) {
     }
     mCircleTex_0xe454 = new (heap, 0) JUTTexture(
         (ResTIMG*)gGameRoot_8053AAF8->field_0xa4->getResource('????', "circle2.bti"), 0);
-    field_0xfc = new (heap, 0) cls_804B1668();
+    field_0xfc = new (heap, 0) GbaWindow_804B1668();
     mAnimTileData_0x238c = new (heap, 0x20) u8[0x100];
 }
 
@@ -938,7 +938,7 @@ void TileMap_804AA858::fn_802FCE74() {
     if (field_0x214) {
         field_0xfc->fn_80432AF8();
     } else {
-        cls_804B1668* sub = field_0xfc;
+        GbaWindow_804B1668* sub = field_0xfc;
         sub->field_0xa0 = 0xFFFF;
         sub->field_0xa4 = 0;
     }

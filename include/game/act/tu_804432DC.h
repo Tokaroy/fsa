@@ -10,10 +10,10 @@
 class J2DScreen;
 class PaneCtrl_804AF86C;
 
-class cls_804B1AE8 {
+class MapEdOverlay_804B1AE8 {
 public:
-    cls_804B1AE8();
-    virtual ~cls_804B1AE8();
+    MapEdOverlay_804B1AE8();
+    virtual ~MapEdOverlay_804B1AE8();
 
     // Starts a window animation of kind 0-7 (a pane offset and scale from
     // the tables in the .cpp) with timer a and hold time b. Only while the
@@ -42,6 +42,6 @@ public:
     /* 0x15 */ u8 mState; // 0-2 running, 3 idle
 };
 
-extern cls_804B1AE8* lbl_8053AEF0;
+extern MapEdOverlay_804B1AE8* lbl_8053AEF0;
 
 #endif

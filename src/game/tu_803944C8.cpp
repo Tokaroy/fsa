@@ -204,7 +204,7 @@ void cls_804AF5A0::fn_803A30A4(u8 a, u32 b) {
 }
 
 
-cls_804B20F8* cls_804AF5A0::fn_803A309C() {
+PlayerSoundObj_804B20F8* cls_804AF5A0::fn_803A309C() {
     return field_0x3bc;
 }
 
@@ -3410,7 +3410,7 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0xa4.x = 0.0f;
     field_0xa4.y = 0.0f;
     field_0xa4.z = 0.0f;
-    field_0x3bc = new cls_804B20F8(index, &field_0xa4, NULL, 8);
+    field_0x3bc = new PlayerSoundObj_804B20F8(index, &field_0xa4, NULL, 8);
 
     field_0x20[0] = new J2DScreen;
     field_0x20[0]->setPriority("hukidashi.blo", 0x1100000, lbl_80529DEC.mMain2DArchive_0x20);

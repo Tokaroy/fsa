@@ -4,7 +4,7 @@
 // Code: game/tu_8044A828.cpp. Named after its vtable, 0x804B1D00 (only the
 // virtual destructor, fn_8044B3FC, in the slot at 0x8). The constructor
 // fn_8044B4B8 stores the object in lbl_8053AF28 and builds the
-// "mg_volleyball.blo" screen with two panes. Same shape as cls_804B1CC8
+// "mg_volleyball.blo" screen with two panes. Same shape as MgFishingScreen_804B1CC8
 // (game/tu_8044998C.cpp).
 
 #include "types.h"
@@ -12,10 +12,10 @@
 class J2DScreen;
 class PaneCtrl_804AF86C;
 
-class cls_804B1D00 {
+class MgVolleyballScreen_804B1D00 {
 public:
-    cls_804B1D00();
-    virtual ~cls_804B1D00();
+    MgVolleyballScreen_804B1D00();
+    virtual ~MgVolleyballScreen_804B1D00();
 
     // Draws the screen: gGameRoot2_8053AB10->fn_8013B490(), then mScreen at (0, 0)
     // with gGameRoot2_8053AB10's J2DOrthoGraph as the grafcontext.
@@ -40,6 +40,6 @@ public:
 
 // The object at lbl_8053AF28 (game/tu_8044A828.cpp, constructor fn_8044B4B8;
 // the auto split at 0x8053AF28 defines it).
-extern cls_804B1D00* lbl_8053AF28;
+extern MgVolleyballScreen_804B1D00* lbl_8053AF28;
 
 #endif

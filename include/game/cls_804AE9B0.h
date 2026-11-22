@@ -3,8 +3,8 @@
 
 #include "types.h"
 
-class cls_804B1D58;
-class cls_804B1DA8;
+class CollectScreen_804B1D58;
+class PauseScreen_804B1DA8;
 
 // Vtable 0x804AE9B0 (one slot, the destructor fn_8037B000), 0x10 bytes,
 // defined in game/tu_8037ACC4.cpp. tu_80134C04 allocates it with
@@ -31,8 +31,8 @@ public:
     void fn_8037AF80();
     void fn_8037AFC0();
 
-    /* 0x4 */ cls_804B1D58* field_0x4; // when 0x7f is set
-    /* 0x8 */ cls_804B1DA8* field_0x8; // when 0x7f is clear
+    /* 0x4 */ CollectScreen_804B1D58* field_0x4; // when 0x7f is set
+    /* 0x8 */ PauseScreen_804B1DA8* field_0x8; // when 0x7f is clear
     /* 0xC */ u8 field_0xc;
 }; // Size: 0x10
 

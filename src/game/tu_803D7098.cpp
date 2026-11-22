@@ -40,7 +40,7 @@ static const u64 lbl_804773E8[4] = { 'Pp1i03', 'Pp2i03', 'Pp3i03', 'Pp4i03' };
 static const u64 lbl_80477408[4] = { 'Ndata11', 'Ndata12', 'Ndata13', 'Ndata14' };
 
 // FIXME(shotgun): 99.94 %, same-text; behaviour drift.
-cls_804B03D8::cls_804B03D8() {
+TotalScreen_804B03D8::TotalScreen_804B03D8() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADC0 = this;
     field_0x4 = new J2DScreen;
@@ -113,7 +113,7 @@ cls_804B03D8::cls_804B03D8() {
     field_0x81 = 0;
 }
 
-cls_804B03D8::~cls_804B03D8() {
+TotalScreen_804B03D8::~TotalScreen_804B03D8() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     if (field_0x4c[0] != NULL) {
         field_0x4c[0]->becomeInvalidEmitter();
@@ -154,7 +154,7 @@ cls_804B03D8::~cls_804B03D8() {
 // Resets the screen for a new round: shows the rows of the players that take part and slides the
 // remaining panes out of view.
 // FIXME(shotgun): 97.86 %, missing/extra; behaviour near.
-void cls_804B03D8::fn_803D87C0() {
+void TotalScreen_804B03D8::fn_803D87C0() {
     lbl_8053AEC0->fn_804310CC();
     for (s32 i = 0; i < 3; i++) {
         if (i >= gGameRoot_8053AAF8->fn_80138A30() - 1) {
@@ -221,7 +221,7 @@ void cls_804B03D8::fn_803D87C0() {
     gAudioMgr_8053AF80->fn_80458FF0(0x1000005, true, 0);
 }
 
-void cls_804B03D8::fn_803D8718() {
+void TotalScreen_804B03D8::fn_803D8718() {
     switch (field_0x76) {
     case 6:
         if (field_0x77 >= 245) {
@@ -246,7 +246,7 @@ void cls_804B03D8::fn_803D8718() {
     }
 }
 
-void cls_804B03D8::fn_803D8670() {
+void TotalScreen_804B03D8::fn_803D8670() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x4->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     field_0x8->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
@@ -254,7 +254,7 @@ void cls_804B03D8::fn_803D8670() {
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
-void cls_804B03D8::fn_803D8364() {
+void TotalScreen_804B03D8::fn_803D8364() {
     f32 bounce;
     f32 alpha;
     if (field_0x7f == 1 || (u8)(field_0x7f - 2) <= 1 || field_0x7f == 4) {
@@ -306,14 +306,14 @@ void cls_804B03D8::fn_803D8364() {
     }
 }
 
-void cls_804B03D8::fn_803D82EC() {
+void TotalScreen_804B03D8::fn_803D82EC() {
     gGameRoot2_8053AB10->fn_8013B490();
     field_0x1c->setAlpha(field_0x77);
     field_0x1c->draw(0.0f, 0.0f, 800.0f, 640.0f, false, false, false);
 }
 
 // FIXME(shotgun): 99.72 %, missing/extra; behaviour near.
-void cls_804B03D8::fn_803D75B0() {
+void TotalScreen_804B03D8::fn_803D75B0() {
     if (field_0x80 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x78);
     }
@@ -505,7 +505,7 @@ void cls_804B03D8::fn_803D75B0() {
 
 // Slides the panes in (the first frames of the screen); once all four have arrived, places the
 // cursor (field_0x44) over the pane of the selected row.
-void cls_804B03D8::fn_803D7098() {
+void TotalScreen_804B03D8::fn_803D7098() {
     u8 a = false;
     u8 b = false;
     u8 c = false;

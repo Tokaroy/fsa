@@ -11,7 +11,7 @@ class J2DTextBox;
 class J2DAnmTextureSRTKey;
 class JPABaseEmitter;
 class ActorSoundObj_804578F4;
-class cls_804B20F8;
+class PlayerSoundObj_804B20F8;
 
 // The results screen (game/tu_803A8DFC.cpp): vtable 0x804AF9A0 (only the
 // destructor, fn_803B6D04), constructor fn_803B6FD8, 0x4E0 bytes
@@ -160,7 +160,7 @@ public:
     /* 0x168 */ J2DPane* field_0x168;
     /* 0x16C */ J2DPane* mResultBgPane_0x16c;
     /* 0x170 */ J2DPicture* mFadePicture_0x170; // "kk_black.bti", the fade
-    /* 0x174 */ cls_804B20F8* mPlayerSoundObjs_0x174[4]; // one sound object per player
+    /* 0x174 */ PlayerSoundObj_804B20F8* mPlayerSoundObjs_0x174[4]; // one sound object per player
     /* 0x184 */ ActorSoundObj_804578F4* mSoundObj_0x184; // at field_0x244
     // Emitters the destructor lets run out (becomeInvalidEmitter).
     /* 0x188 */ JPABaseEmitter* field_0x188[4];

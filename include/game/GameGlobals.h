@@ -58,26 +58,26 @@ class JKRSolidHeap;
 
 // The object at offset 0x4 of *gGameRoot_8053AAF8 (type unknown; named after
 // getActorManager_801F856C, the first function seen reading it).
-class cls_804B1D10;
+class StaffRollLoader_804B1D10;
 class BgRewrite_804A7C98;
 class cls_804AE9B0;
-class cls_804B1920;
-class cls_804B13D4;
-class cls_804B146C;
-class cls_804B1AE8;
-class cls_804B1BB0;
-class cls_804B1BE8;
-class cls_804B1C20;
-class cls_804B1C58;
+class HudMgr_804B1920;
+class AdventureHud_804B13D4;
+class BattleHud_804B146C;
+class MapEdOverlay_804B1AE8;
+class MgHorseRaceScreen_804B1BB0;
+class MgOniScreen_804B1BE8;
+class MgKokkoScreen_804B1C20;
+class MgShootingScreen_804B1C58;
 class cls_804B1C90;
-class cls_804B1CC8;
-class cls_804B1D00;
-class cls_804B1D20;
-class cls_804B1E1C;
+class MgFishingScreen_804B1CC8;
+class MgVolleyballScreen_804B1D00;
+class PrologueOverlay_804B1D20;
+class RupeeDigitSprites_804B1E1C;
 struct J2DScreen;
 class PaneCtrl_804AF86C;
 class JAISoundID; // JSystem/JAudio/Interface/JAISound.h (AudioMgr_8045A080::fn_80457F80)
-class cls_804B17A0;
+class GameOverScreen_804B17A0;
 class JPABaseEmitter;
 struct J2DAnmBase;
 class PlayerManager_804A6F28;
@@ -97,11 +97,11 @@ struct GameRootSub04_801F856C {
     // fn_802A3D80 is called on it by fn_8013A1A4 (game/tu_80139BE8.cpp).
     /* 0x10 */ BgRewrite_804A7C98* field_0x10;
     // fn_8043EDF8 is called with it by fn_8013A1A4 (game/tu_80139BE8.cpp); the
-    // object fn_8043F504 builds (cls_804B1920).
-    /* 0x14 */ cls_804B1920* field_0x14;
+    // object fn_8043F504 builds (HudMgr_804B1920).
+    /* 0x14 */ HudMgr_804B1920* field_0x14;
     // fn_80439AB0 is called with it by fn_8013A1A4 (game/tu_80139BE8.cpp); the
-    // object fn_80439C78 builds (cls_804B17A0).
-    /* 0x18 */ cls_804B17A0* field_0x18;
+    // object fn_80439C78 builds (GameOverScreen_804B17A0).
+    /* 0x18 */ GameOverScreen_804B17A0* field_0x18;
     // fn_8037AFC0 is called on it by fn_8013A1A4 (game/tu_80139BE8.cpp).
     /* 0x1C */ cls_804AE9B0* field_0x1c;
     // Passed to fn_801902D0 by fn_80139CC4 (game/tu_80139BE8.cpp).
@@ -110,7 +110,7 @@ struct GameRootSub04_801F856C {
     /* 0x24 */ struct GameRootSub24_8016A3AC* field_0x24;
     /* 0x28 */ u8 field_0x28[0x2C - 0x28];
     // The staff-roll page loader (game/act/tu_8044B80C.h); fn_80139C84 draws it.
-    /* 0x2C */ cls_804B1D10* field_0x2c;
+    /* 0x2C */ StaffRollLoader_804B1D10* field_0x2c;
     // A heap: game/tu_8044B80C.cpp makes it current, frees its J2DScreens
     // and calls freeAll on it (becomeCurrentHeap / freeAll calls on r3).
     /* 0x30 */ JKRHeap* field_0x30;
@@ -180,13 +180,13 @@ public:
 // player's GBA link state and transfer queue (0x80303CE4).
 void fn_80304D64();
 void fn_80303CE4(s32 player);
-class cls_804B0FC0;
+class DvdMountMemArchiveCommand_804B0FC0;
 class J2DTextBox;
 class MessageManager_804AF070;
-class cls_804B04F8;
-class cls_804B19F0;
-class cls_804B1988;
-class cls_804B1634;
+class PressStartOverlay_804B04F8;
+class GbaConnectErrorWindow_804B19F0;
+class ButtonIcons_804B1988;
+class WarningWindow_804B1634;
 class Title_804AF820;
 class FileSelect_804AFF60;
 class GameMode_804B0688;
@@ -217,10 +217,10 @@ struct GameRoot_8049EF20 {
     /* 0x2C */ cls_804AF878* field_0x2c;         // mode 4 (0x10 bytes)
     /* 0x30 */ cls_804AF480* field_0x30;         // mode 6 (0x10 bytes)
     // Made by the constructor (0x24, 0x28, 0x14 and 0xF0 bytes).
-    /* 0x34 */ cls_804B04F8* field_0x34;
-    /* 0x38 */ cls_804B19F0* field_0x38;
-    /* 0x3C */ cls_804B1988* field_0x3c;
-    /* 0x40 */ cls_804B1634* field_0x40;
+    /* 0x34 */ PressStartOverlay_804B04F8* field_0x34;
+    /* 0x38 */ GbaConnectErrorWindow_804B19F0* field_0x38;
+    /* 0x3C */ ButtonIcons_804B1988* field_0x3c;
+    /* 0x40 */ WarningWindow_804B1634* field_0x40;
     /* 0x44 */ u8 field_0x44[0x4C - 0x44];
     // The screen mode: fn_801367E0 stores it (10 also resets the fade object);
     // fn_80134CC8 tests 11 (paused), act_sandstorm compares it with 11 and
@@ -252,14 +252,14 @@ struct GameRoot_8049EF20 {
     /* 0x7C */ s16 field_0x7c; // cleared by the constructor (sth)
     // A flag (lbz; cmplwi 0 at ~180 sites): set to 1 by fn_80138C9C and by
     // ConnectScreen_804B0F10::fn_803FB6F4 once its controllers are connected,
-    // cleared by cls_804B0B00::fn_803EC804 when it enters player 0 alone
+    // cleared by AdvEntryScreen_804B0B00::fn_803EC804 when it enters player 0 alone
     // (mPlayerMask 0x11). While set, fn_80138AB0 checks the input slots of all
     // four players instead of player 0's only. Its meaning is not proven, so
     // it keeps its offset name.
     /* 0x7E */ u8 field_0x7e;
     // A flag (lbz at ~420 sites): set to 1 by fn_80138C9C; the game mode
     // screen (GameMode_804B0688::fn_803DE05C) stores 1 for menu entry 0 and 0
-    // for entry 1. cls_804AF878 shows cls_804B0B00 while it is set and
+    // for entry 1. cls_804AF878 shows AdvEntryScreen_804B0B00 while it is set and
     // ConnectScreen_804B0F10 while it is clear; isGameModeSet (game/GameMode.h)
     // picks its mode set by it. Its meaning is not proven (the menu entries
     // aren't), so it keeps its offset name.
@@ -269,12 +269,12 @@ struct GameRoot_8049EF20 {
     // Per-player bits (lbz; and. with 1 << player at ~200 sites). Bits 0-3:
     // player i takes part (fn_80138A30 counts them, fn_8023F98C tests one,
     // fn_801F6068); bits 4-7: player i's controller is connected (the connect
-    // screens cls_804B0B00::fn_803ED83C and ConnectScreen_804B0F10 set them).
+    // screens AdvEntryScreen_804B0B00::fn_803ED83C and ConnectScreen_804B0F10 set them).
     // Cleared by fn_80138C9C.
     /* 0x82 */ u8 mPlayerMask;
     // Four 2-bit fields, player i's at bits 2i-2i+1 ((x >> 2 * i) & 3 at ~25
     // sites): the connect screens store 1 for a taking-part player and 0 for
-    // the others; cls_804B0B00 stores 2 for player 0 alone without a
+    // the others; AdvEntryScreen_804B0B00 stores 2 for player 0 alone without a
     // controller in slot 0 (fn_8030A308). Cleared by fn_80138C9C.
     /* 0x83 */ u8 field_0x83;
     /* 0x84 */ u8 field_0x84;
@@ -319,8 +319,8 @@ struct GameRoot_8049EF20 {
     // The archives fn_80135A04 starts loading for a game mode (fn_80401E10;
     // the boss archive, game2D.arc, gamemode.arc, ...); fn_80135494 waits for
     // their byte 0x4 and deletes them.
-    /* 0xAC */ cls_804B0FC0* field_0xac;
-    /* 0xB0 */ cls_804B0FC0* field_0xb0;
+    /* 0xAC */ DvdMountMemArchiveCommand_804B0FC0* field_0xac;
+    /* 0xB0 */ DvdMountMemArchiveCommand_804B0FC0* field_0xb0;
     // Constructed with __ct__Q25JMath13TRandom_fast_FUl at this+0xB4 by the
     // constructor fn_80139300 (0x8013932C-0x80139338). 132 units inline
     // TRandom_fast_::get()/get_ufloat_1() on it (lwz 0xB4, mullw 0x19660D,
@@ -523,25 +523,25 @@ extern AudioMgr_8045A080* gAudioMgr_8053AF80;
 // command's vfunc_0xC once. They are named after their vtables (the base
 // 0x804B0FD0 is stored first, then the command's own).
 // Base class (vtable 0x804B0FD0; vfunc_0xC is 0 there).
-class cls_804B0FD0 {
+class DvdCommand_804B0FD0 {
 public:
-    /* 0x00 */ cls_804B0FD0* mNext; // the thread's command queue
+    /* 0x00 */ DvdCommand_804B0FD0* mNext; // the thread's command queue
     /* 0x04 */ u8 field_0x4;        // 1 once vfunc_0xC has run
 
     // The members come first: MWCC puts the vtable pointer where the first
     // virtual function is declared (0x8 in the original).
-    inline cls_804B0FD0();
-    /* 0x08 */ virtual ~cls_804B0FD0();
+    inline DvdCommand_804B0FD0();
+    /* 0x08 */ virtual ~DvdCommand_804B0FD0();
     /* 0x0C */ virtual BOOL vfunc_0xC() = 0;
     static inline void* operator new(size_t size);
     static inline void operator delete(void* p);
 }; // Size: 0xC
 
 // Loads a file into main RAM (JKRDvdRipper::loadToMainRAM).
-class cls_804B0FA0 : public cls_804B0FD0 {
+class DvdToMainRamCommand_804B0FA0 : public DvdCommand_804B0FD0 {
 public:
-    inline cls_804B0FA0(u8 direction);
-    /* 0x08 */ virtual ~cls_804B0FA0();
+    inline DvdToMainRamCommand_804B0FA0(u8 direction);
+    /* 0x08 */ virtual ~DvdToMainRamCommand_804B0FA0();
     /* 0x0C */ virtual BOOL vfunc_0xC();
 
     /* 0x0C */ u8 mDirection; // 1: allocate from the head, else the tail; 0: lbl_8053A218
@@ -552,10 +552,10 @@ public:
 }; // Size: 0x20
 
 // Mounts a file as a JKRAramArchive (the given one, or a new one).
-class cls_804B0FB0 : public cls_804B0FD0 {
+class DvdMountAramArchiveCommand_804B0FB0 : public DvdCommand_804B0FD0 {
 public:
-    inline cls_804B0FB0(u8 direction, JKRAramArchive* archive);
-    /* 0x08 */ virtual ~cls_804B0FB0();
+    inline DvdMountAramArchiveCommand_804B0FB0(u8 direction, JKRAramArchive* archive);
+    /* 0x08 */ virtual ~DvdMountAramArchiveCommand_804B0FB0();
     /* 0x0C */ virtual BOOL vfunc_0xC();
 
     /* 0x0C */ u8 mDirection;
@@ -565,10 +565,10 @@ public:
 }; // Size: 0x1C
 
 // Mounts a file as a JKRMemArchive.
-class cls_804B0FC0 : public cls_804B0FD0 {
+class DvdMountMemArchiveCommand_804B0FC0 : public DvdCommand_804B0FD0 {
 public:
-    inline cls_804B0FC0(u8 direction);
-    /* 0x08 */ virtual ~cls_804B0FC0();
+    inline DvdMountMemArchiveCommand_804B0FC0(u8 direction);
+    /* 0x08 */ virtual ~DvdMountMemArchiveCommand_804B0FC0();
     /* 0x0C */ virtual BOOL vfunc_0xC();
 
     /* 0x0C */ u8 mDirection;
@@ -579,9 +579,9 @@ public:
 
 // Owner: game/tu_80401848.cpp. (path, direction byte, heap); NULL when the
 // path doesn't exist.
-cls_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap);
-cls_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 direction, JKRHeap* heap);
-cls_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap);
+DvdToMainRamCommand_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap);
+DvdMountAramArchiveCommand_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 direction, JKRHeap* heap);
+DvdMountMemArchiveCommand_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap);
 
 extern "C" {
 // JSystem/JMath/JMath.cpp: fast vector magnitude
@@ -950,12 +950,12 @@ public:
     // at 4 + 4*slot); Player_804A6F38::fn_80246F28 returns it.
     f32 fn_80309D90(s32 slot);
     // Owner: game/tu_803099FC.cpp (0x80309C4C, same unit). Called by
-    // cls_804B19F0::fn_80441A1C with mask 0x1300 and slot -1; returns a
+    // GbaConnectErrorWindow_804B19F0::fn_80441A1C with mask 0x1300 and slot -1; returns a
     // pointer-sized word that is tested for zero.
     u32 fn_80309C4C(u32 mask, s32 slot);
     // Owner: game/tu_803099FC.cpp (0x8030A258 / 0x8030A2E4 / 0x8030A364 /
     // 0x8030A388, same unit). Each takes an input slot from getPlayerInputSlot_8030AAF4 and
-    // returns a bool (byte) that cls_804B19F0::fn_80441A1C tests.
+    // returns a bool (byte) that GbaConnectErrorWindow_804B19F0::fn_80441A1C tests.
     u8 fn_8030A258(s32 slot);
     u8 fn_8030A2E4(s32 slot);
     u8 fn_8030A364(s32 slot);
@@ -993,11 +993,11 @@ s32 getPlayerInputSlot_8030AAF4(s32 player);
 // named after its vtable, 0x804B1920 (constructor fn_8043F504, which stores
 // it in lbl_8053AED0). Only the bytes at 0x1F0 are known (act_dummy_conversation
 // stores 2 at 0x1F0 + player); its size and the rest are unknown.
-class cls_804B1920 {
+class HudMgr_804B1920 {
 public:
-    cls_804B1920(); // fn_8043F504 (game/tu_8043A0E8.cpp)
+    HudMgr_804B1920(); // fn_8043F504 (game/tu_8043A0E8.cpp)
     // Virtual destructor first: the vtable pointer goes where it is declared.
-    virtual ~cls_804B1920(); // owner game/tu_8043A0E8.cpp (not written yet)
+    virtual ~HudMgr_804B1920(); // owner game/tu_8043A0E8.cpp (not written yet)
     // 0x8043D39C / 0x8043DB58 (tu_8043A0E8.cpp, not written yet): GameRoot's
     // per-frame draw (fn_80136828) calls both on lbl_8053AED0 after the game
     // view; the first tests gGameRoot_8053AAF8->field_0x7f, the second sets the
@@ -1072,20 +1072,20 @@ public:
     /* 0x257 */ u8 field_0x257; // gGameRoot_8053AAF8->field_0x85 != 0, set by fn_8043D8B4
     /* 0x258 */ J2DPicture* field_0x258[10]; // the digit pictures fn_8043E80C draws
     /* 0x280 */ J2DPicture* field_0x280[4];
-    /* 0x290 */ cls_804B13D4* field_0x290; // used when gGameRoot_8053AAF8->field_0x7f is set
-    /* 0x294 */ cls_804B146C* field_0x294; // used otherwise
+    /* 0x290 */ AdventureHud_804B13D4* field_0x290; // used when gGameRoot_8053AAF8->field_0x7f is set
+    /* 0x294 */ BattleHud_804B146C* field_0x294; // used otherwise
     // The objects fn_8043F504 allocates (by constructor); fn_8043EDF8 resets
     // each one that exists.
-    /* 0x298 */ cls_804B1AE8* field_0x298; // also lbl_8053AEF0
-    /* 0x29C */ cls_804B1BB0* field_0x29c;
-    /* 0x2A0 */ cls_804B1BE8* field_0x2a0;
-    /* 0x2A4 */ cls_804B1C20* field_0x2a4;
-    /* 0x2A8 */ cls_804B1C58* field_0x2a8;
+    /* 0x298 */ MapEdOverlay_804B1AE8* field_0x298; // also lbl_8053AEF0
+    /* 0x29C */ MgHorseRaceScreen_804B1BB0* field_0x29c;
+    /* 0x2A0 */ MgOniScreen_804B1BE8* field_0x2a0;
+    /* 0x2A4 */ MgKokkoScreen_804B1C20* field_0x2a4;
+    /* 0x2A8 */ MgShootingScreen_804B1C58* field_0x2a8;
     /* 0x2AC */ cls_804B1C90* field_0x2ac;
-    /* 0x2B0 */ cls_804B1CC8* field_0x2b0;
-    /* 0x2B4 */ cls_804B1D00* field_0x2b4;
-    /* 0x2B8 */ cls_804B1D20* field_0x2b8; // also lbl_8053AF38
-    /* 0x2BC */ cls_804B1E1C* field_0x2bc; // also lbl_8053AF50
+    /* 0x2B0 */ MgFishingScreen_804B1CC8* field_0x2b0;
+    /* 0x2B4 */ MgVolleyballScreen_804B1D00* field_0x2b4;
+    /* 0x2B8 */ PrologueOverlay_804B1D20* field_0x2b8; // also lbl_8053AF38
+    /* 0x2BC */ RupeeDigitSprites_804B1E1C* field_0x2bc; // also lbl_8053AF50
 
     // 0x8043D67C (game/tu_8043A0E8.cpp): 27 units call it with *lbl_8053AED0
     // in r3, an id in r4 (tu_8020FE50's actor passes 0x1A8 or 0x1C1) and two
@@ -1182,17 +1182,17 @@ public:
     // the object; GameRootSub04_801F856C::fn_80139C84 calls it first.
     void fn_8043DC98();
 };
-extern cls_804B1920* lbl_8053AED0;
+extern HudMgr_804B1920* lbl_8053AED0;
 
 // The 0x60-byte object fn_80439C78 builds (game/tu_80438C68.cpp, not written
 // yet), stored at GameRootSub04_801F856C::field_0x18. Named after its vtable,
 // 0x804B17A0; it keeps a J2DScreen at 0x4 and its layout is not known beyond
 // the destructor.
-class cls_804B17A0 {
+class GameOverScreen_804B17A0 {
 public:
-    cls_804B17A0(); // fn_80439C78 (game/tu_80438C68.cpp)
+    GameOverScreen_804B17A0(); // fn_80439C78 (game/tu_80438C68.cpp)
     /* 0x000 */ // vtable, whose one slot is the destructor below
-    virtual ~cls_804B17A0(); // owner game/tu_80438C68.cpp (not written yet)
+    virtual ~GameOverScreen_804B17A0(); // owner game/tu_80438C68.cpp (not written yet)
     // 0x804399A0 (not written yet): sets the ortho context (fn_8013B490) and
     // draws; GameRoot's fn_80136828 calls it in screen mode 11.
     void fn_804399A0();
@@ -1232,8 +1232,8 @@ public:
     /* 0x5E */ u8 field_0x5e;
     /* 0x5F */ u8 field_0x5f;
 };
-// .sbss pointer set by cls_804B17A0's constructor fn_80439C78 (0x80439CAC).
-extern cls_804B17A0* lbl_8053AEC8;
+// .sbss pointer set by GameOverScreen_804B17A0's constructor fn_80439C78 (0x80439CAC).
+extern GameOverScreen_804B17A0* lbl_8053AEC8;
 
 // The 4-byte pointer at .sbss lbl_8053AB00: the heap GameRootSub04_801F856C's
 // constructor (fn_8013A538, game/tu_80139BE8.cpp) stores, which the destructor
@@ -1511,21 +1511,21 @@ bool fn_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4);
 // fn_803FF2C4 (which frees its archives) once it reaches 4.
 class JKRArchive;
 class cls_804A8578;
-class cls_804B1A38;
-class cls_804B0FB0;
-class cls_804B0FC0;
+class AudioResLoader_804B1A38;
+class DvdMountAramArchiveCommand_804B0FB0;
+class DvdMountMemArchiveCommand_804B0FC0;
 struct J2DScreen;
 struct J2DPicture;
-class cls_804B0F50 {
+class BootLoader_804B0F50 {
 public:
     // 0x804009CC: sets lbl_8053AAF0, takes the boot flags from the save
     // region (bytes 0xD-0xF), sets the render mode, creates field_0xc and
     // field_0x14 and starts loading the GBA client archive (field_0x44).
-    cls_804B0F50();
+    BootLoader_804B0F50();
     // 0x804007C4 (vtable 0x804B0F50, its only slot): unmounts
     // lbl_80529DEC.field_0x18, deletes field_0xc, field_0x14 and the seven
     // 2D objects (fn_803FF2C4, inlined) and clears save-region byte 0xF.
-    virtual ~cls_804B0F50();
+    virtual ~BootLoader_804B0F50();
     void fn_803FF2C4();
     void fn_803FF420();
     void fn_803FFAA8();
@@ -1534,7 +1534,7 @@ public:
     /* 0x08 */ cls_804AA8B8* field_0x8;
     /* 0x0C */ cls_804A8578* field_0xc;
     /* 0x10 */ u32 field_0x10;
-    /* 0x14 */ cls_804B1A38* field_0x14;
+    /* 0x14 */ AudioResLoader_804B1A38* field_0x14;
     // The loader's screen and six pictures; fn_803FF2C4 (and the destructor) delete them.
     /* 0x18 */ J2DScreen* field_0x18;
     /* 0x1C */ J2DPicture* field_0x1c;
@@ -1543,16 +1543,16 @@ public:
     /* 0x28 */ J2DPicture* field_0x28;
     /* 0x2C */ J2DPicture* field_0x2c;
     /* 0x30 */ J2DPicture* field_0x30;
-    /* 0x34 */ cls_804B0FC0* field_0x34;
-    /* 0x38 */ cls_804B0FC0* field_0x38;
-    /* 0x3C */ cls_804B0FC0* field_0x3c;
-    /* 0x40 */ cls_804B0FC0* field_0x40;
-    /* 0x44 */ cls_804B0FC0* field_0x44; // fn_80401E10("/GC4Sword_usa/agb/client_thread.arc")
-    /* 0x48 */ cls_804B0FB0* field_0x48;
+    /* 0x34 */ DvdMountMemArchiveCommand_804B0FC0* field_0x34;
+    /* 0x38 */ DvdMountMemArchiveCommand_804B0FC0* field_0x38;
+    /* 0x3C */ DvdMountMemArchiveCommand_804B0FC0* field_0x3c;
+    /* 0x40 */ DvdMountMemArchiveCommand_804B0FC0* field_0x40;
+    /* 0x44 */ DvdMountMemArchiveCommand_804B0FC0* field_0x44; // fn_80401E10("/GC4Sword_usa/agb/client_thread.arc")
+    /* 0x48 */ DvdMountAramArchiveCommand_804B0FB0* field_0x48;
     /* 0x4C */ u8 field_0x4c[0x54 - 0x4C];
-    /* 0x54 */ cls_804B0FB0* field_0x54;
-    /* 0x58 */ cls_804B0FB0* field_0x58;
-    /* 0x5C */ cls_804B0FB0* field_0x5c;
+    /* 0x54 */ DvdMountAramArchiveCommand_804B0FB0* field_0x54;
+    /* 0x58 */ DvdMountAramArchiveCommand_804B0FB0* field_0x58;
+    /* 0x5C */ DvdMountAramArchiveCommand_804B0FB0* field_0x5c;
     /* 0x60 */ u8 field_0x60; // tested by cls_804AA8C8::fn_8030A43C
     /* 0x61 */ u8 field_0x61[0x64 - 0x61];
     /* 0x64 */ f32 field_0x64;
@@ -1569,7 +1569,7 @@ public:
     /* 0x7A */ u8 field_0x7a; // set by the constructor from the save-region boot flags
     /* 0x7B */ u8 field_0x7b;
 }; // Size: 0x7C
-extern cls_804B0F50* lbl_8053AAF0;
+extern BootLoader_804B0F50* lbl_8053AAF0;
 
 // The memory card manager, owner game/tu_803B9940.cpp (0x2020 bytes at
 // lbl_8051C1A0, 0x2020 bytes, vtable 0x804AFB48 holds only the destructor): fn_803BA980
@@ -1706,10 +1706,10 @@ s32 fn_801365A8();
 // the 0xC-byte vtable is followed by the 4 bytes of padding before
 // tu_80401848's first vtable); main polls fn_80401518 each frame (it watches the
 // DVD drive status) and goes on once it returns 0.
-class cls_804B0F90 {
+class DvdErrorScreen_804B0F90 {
 public:
     // Inline: emitted after the unit's __sinit, as a header inline is.
-    virtual ~cls_804B0F90() {}
+    virtual ~DvdErrorScreen_804B0F90() {}
     // Draws message `index` of the screen's message file (the error texts;
     // tp d_error_msg.cpp messageSet).
     void fn_80400DC4(u32 index);
@@ -1718,7 +1718,7 @@ public:
     s32 fn_80401518();
     s32 field_0x4;
 };
-extern cls_804B0F90 lbl_8053ADE8;
+extern DvdErrorScreen_804B0F90 lbl_8053ADE8;
 
 // game/tu_80401848.cpp (0x80401FEC): creates and resumes the DVD loader
 // thread with the given priority. The heaps: the commands' (main passes an
@@ -1977,16 +1977,16 @@ extern cls_804AE9A0* lbl_8053AD68;
 // Size and most fields unknown.
 class J2DScreen;
 class PaneCtrl_804AF86C;
-class cls_804B1600;
-class cls_804B1634 {
+class StageSelectWindow_804B1600;
+class WarningWindow_804B1634 {
 public:
     // fn_80431D84 (game/tu_8042E964.cpp, not written yet); GameRoot's
     // constructor makes it with __nw__(0xF0).
-    cls_804B1634();
+    WarningWindow_804B1634();
     // Slot 0x8 of the vtable 0x804B1634 (fn_80431C38, game/tu_8042E964.cpp).
-    virtual ~cls_804B1634();
+    virtual ~WarningWindow_804B1634();
     // 0x804316EC: draws field_0x8 with gGameRoot2_8053AB10's grafcontext unless
-    // the byte 0xEC is 0. Called by cls_804B1D58::fn_804522C8 (tu_8044C7F0).
+    // the byte 0xEC is 0. Called by CollectScreen_804B1D58::fn_804522C8 (tu_8044C7F0).
     void fn_804316EC();
     // 0x804310CC: no arguments besides `this` (lwz 8(r3), J2DPane search at
     // vtable 0x3C, stores at 0xC and 0xEB). ConnectScreen_804B0F10::fn_803FC5E4.
@@ -2021,7 +2021,7 @@ public:
     // 0x804310BC: clears field_0xe8 and field_0xec (owner game/tu_8042E964.cpp).
     void fn_804310BC();
 
-    /* 0x04 */ cls_804B1600* field_0x4;  // new in fn_80431D84, a 0x14-byte object
+    /* 0x04 */ StageSelectWindow_804B1600* field_0x4;  // new in fn_80431D84, a 0x14-byte object
     /* 0x08 */ J2DScreen* field_0x8;     // "warning_window.blo", drawn by fn_804316EC
     /* 0x0C */ PaneCtrl_804AF86C* field_0xc;  // pane wrapper
     /* 0x10 */ PaneCtrl_804AF86C* field_0x10[5];  // panes "bb01".."bb05" (fn_80431D84)
@@ -2047,7 +2047,7 @@ public:
     /* 0xEB */ u8 field_0xeb;
     /* 0xEC */ u8 field_0xec;            // window shown / animating
 };
-extern cls_804B1634* lbl_8053AEC0;
+extern WarningWindow_804B1634* lbl_8053AEC0;
 
 // game/tu_801A0710.cpp (.sdata 0x8053A100, not written yet; -1 in the
 // original): act_terrorpin's vfunc_0x44 compares its field_0x2a8 with it.

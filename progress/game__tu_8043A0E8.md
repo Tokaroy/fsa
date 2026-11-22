@@ -6,7 +6,7 @@ Resistant (FIXME in source): A450 99.0 (stage-7 test `bne; b` vs our `beq`), CEA
 D514 98.1 / D57C 97.8 (float regalloc), DF24 96.0 (float regalloc; TBox2f form).
 Unwritten: fn_804408F0 (fn_8043E7CC auto-inlines into it; original calls it out of line; would need -inline deferred),
 all others (>128 B, not reached). Float-literal functions only match fully once the unit's sdata2 first-use order is complete.
-SHARED-EDITS: include/game/GameGlobals.h (cls_804B1920 fields/members), include/game/cls_804B13D4.h (fn_8041E58C, fn_8041E708),
+SHARED-EDITS: include/game/GameGlobals.h (HudMgr_804B1920 fields/members), include/game/cls_804B13D4.h (fn_8041E58C, fn_8041E708),
 new include/game/cls_804B146C.h (vtable 0x804B146C, the 0x294 object; fn_80425128, fn_80425234); symbols.txt renames of those.
 Next: CDA0/CF40/D034 (ptmf table at 0x804B18A0), A268, D39C, DB58, EDF8 (needs classes of the 0x29c..0x2b8 members).
 
@@ -23,7 +23,7 @@ Data: lbl_804B1810 (kk_mainRank table) written; lbl_804B1820 split to 0x80 + @76
 fn_8044094C renamed __sinit_tu_8043A0E8_cpp (99.7: bss offsets of unwritten statics).
 Literal pool: CDA0/CF40/D034/D514/D57C/DF24 reach 100 only once fn_8043ACE4 (0xEA0) and fn_8043BB84 (0xFA0)
 and fn_8043CB24 are written (first uses of C8C..CC0).
-SHARED-EDITS: GameGlobals.h (cls_804B1920 fields 0xc, 0x70, 0x78, 0xde, 0xec..0xf8, 0x108, 0x110/0x114, 0x255,
+SHARED-EDITS: GameGlobals.h (HudMgr_804B1920 fields 0xc, 0x70, 0x78, 0xde, 0xec..0xf8, 0x108, 0x110/0x114, 0x255,
 0x257, 0x298..0x2bc, members; fn_8043D67C returns bool; removed extern "C" fn_8043EDF8), cls_804B13D4.h
 (fn_8041FC2C, fn_8041EDB0, fn_8041F720), cls_804B146C.h (fn_804263A8, fn_804257E4, fn_80425F6C), tu_80447618.h
 (fn_80447618, fn_804479A0), new cls_804B1C58.h (vtable 0x804B1C58, ctor fn_804485C4; fn_80447FAC, fn_804482EC,

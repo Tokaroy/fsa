@@ -10,10 +10,10 @@ class PaneCtrl_804AF86C;
 // game/tu_80453AF8.cpp (not written yet). The constructor fn_80454DEC stores
 // `this` in lbl_8053AF48; tu_8037ACC4 allocates it with __nw__(0x5C) when
 // gGameRoot_8053AAF8->field_0x7f is clear.
-class cls_804B1DA8 {
+class PauseScreen_804B1DA8 {
 public:
-    cls_804B1DA8(); // fn_80454DEC
-    /* 0x08 */ virtual ~cls_804B1DA8();
+    PauseScreen_804B1DA8(); // fn_80454DEC
+    /* 0x08 */ virtual ~PauseScreen_804B1DA8();
 
     s32 fn_80453B14(); // 0x80453B14
     void fn_80454A00(); // 0x80454A00
@@ -39,7 +39,7 @@ public:
 };
 
 // Data of game/tu_80453AF8.cpp.
-extern cls_804B1DA8* lbl_8053AF48;
+extern PauseScreen_804B1DA8* lbl_8053AF48;
 
 // 0x80453AF8 (game/tu_80453AF8.cpp): 9 without lbl_8053AF48, else its
 // field_0x58.

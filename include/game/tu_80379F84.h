@@ -10,7 +10,7 @@ class JKRArchive;
 class J2DScreen;
 class J2DPicture;
 class J2DTextBox;
-class cls_804B20F8;
+class PlayerSoundObj_804B20F8;
 class ActorSoundObj_804578F4;
 class JPABaseEmitter;
 class PaneCtrl_804AF86C;
@@ -38,7 +38,7 @@ public:
 
     /* 0x004 */ J2DPicture* field_0x4; // the screen's picture
     /* 0x008 */ u8 field_0x8[0x1C - 0x8];
-    /* 0x01C */ cls_804B20F8* field_0x1c; // sound object
+    /* 0x01C */ PlayerSoundObj_804B20F8* field_0x1c; // sound object
     /* 0x020 */ ActorSoundObj_804578F4* field_0x20;
     /* 0x024 */ JPABaseEmitter* field_0x24[50];
     /* 0x0EC */ JGeometry::TVec3f field_0xec; // the sound object's position
@@ -82,10 +82,10 @@ public:
 
 // Vtable 0x804B03D8; constructor fn_803D901C, destructor fn_803D8D74
 // (game/tu_803D7098.cpp). The constructor stores the object in lbl_8053ADC0.
-class cls_804B03D8 {
+class TotalScreen_804B03D8 {
 public:
-    cls_804B03D8(); // fn_803D901C
-    /* 0x08 */ virtual ~cls_804B03D8();
+    TotalScreen_804B03D8(); // fn_803D901C
+    /* 0x08 */ virtual ~TotalScreen_804B03D8();
     // game/tu_803D7098.cpp, not written yet; no other arguments.
     void fn_803D82EC();
     void fn_803D8364();
@@ -139,10 +139,10 @@ public:
 
 // Vtable 0x804B0288; constructor fn_803D58E0, destructor fn_803D5710
 // (game/tu_803D2C34.cpp). The constructor stores the object in lbl_8053ADB8.
-class cls_804B0288 {
+class SaveScreen_804B0288 {
 public:
-    cls_804B0288(JKRArchive* archive, bool flag); // fn_803D58E0
-    /* 0x08 */ virtual ~cls_804B0288();
+    SaveScreen_804B0288(JKRArchive* archive, bool flag); // fn_803D58E0
+    /* 0x08 */ virtual ~SaveScreen_804B0288();
     // game/tu_803D2C34.cpp, not written yet; no other arguments.
     void fn_803D5090();
     void fn_803D521C();
@@ -243,8 +243,8 @@ struct cls_804AE9A0 {
 
     /* 0x04 */ ResultScreen_804AF9A0* field_0x4;
     /* 0x08 */ cls_804AFAB0* field_0x8;
-    /* 0x0C */ cls_804B03D8* field_0xc;
-    /* 0x10 */ cls_804B0288* field_0x10; // the fourth screen (always made)
+    /* 0x0C */ TotalScreen_804B03D8* field_0xc;
+    /* 0x10 */ SaveScreen_804B0288* field_0x10; // the fourth screen (always made)
     /* 0x14 */ JKRArchive* field_0x14; // lbl_80529DEC's result archive; its resources are dropped by the destructor
     /* 0x18 */ JKRArchive* field_0x18; // the result screen's .blo/.btk archive (ResultScreen_804AF9A0's constructor)
     /* 0x1C */ u8 field_0x1c; // cleared by fn_8037A708
@@ -260,9 +260,9 @@ BOOL fn_8019CE40(s32 stage, s32 sub);
 
 // .sbss 0x8053ADB8, 0x8053ADA0, 0x8053ADA8, 0x8053ADC0 (auto split, 8 bytes
 // each; stored by the constructors above, in units not written yet).
-extern cls_804B0288* lbl_8053ADB8;
+extern SaveScreen_804B0288* lbl_8053ADB8;
 extern cls_804AFAB0* lbl_8053ADA8;
-extern cls_804B03D8* lbl_8053ADC0;
+extern TotalScreen_804B03D8* lbl_8053ADC0;
 
 extern "C" {
 // Owner: game/tu_80379F84.cpp.

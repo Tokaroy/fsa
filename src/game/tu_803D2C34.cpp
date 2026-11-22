@@ -15,14 +15,14 @@
 #include "JSystem/J2D/J2DGrafContext.h"
 #include "game/act/tu_80440BF4.h"
 
-typedef void (cls_804B0288::*StateFunc_804B0288)();
+typedef void (SaveScreen_804B0288::*StateFunc_804B0288)();
 StateFunc_804B0288 lbl_804B0168[24] = {
-    &cls_804B0288::fn_803D4770, &cls_804B0288::fn_803D4484, &cls_804B0288::fn_803D4298, &cls_804B0288::fn_803D4068,
-    &cls_804B0288::fn_803D3EC8, &cls_804B0288::fn_803D3D50, &cls_804B0288::fn_803D3C90, &cls_804B0288::fn_803D3B38,
-    &cls_804B0288::fn_803D39C8, &cls_804B0288::fn_803D3928, &cls_804B0288::fn_803D3898, &cls_804B0288::fn_803D373C,
-    &cls_804B0288::fn_803D35F0, &cls_804B0288::fn_803D35C4, &cls_804B0288::fn_803D3460, &cls_804B0288::fn_803D335C,
-    &cls_804B0288::fn_803D3214, &cls_804B0288::fn_803D3180, &cls_804B0288::fn_803D3108, &cls_804B0288::fn_803D3060,
-    &cls_804B0288::fn_803D2FFC, &cls_804B0288::fn_803D2E10, &cls_804B0288::fn_803D2C9C, &cls_804B0288::fn_803D2C34,
+    &SaveScreen_804B0288::fn_803D4770, &SaveScreen_804B0288::fn_803D4484, &SaveScreen_804B0288::fn_803D4298, &SaveScreen_804B0288::fn_803D4068,
+    &SaveScreen_804B0288::fn_803D3EC8, &SaveScreen_804B0288::fn_803D3D50, &SaveScreen_804B0288::fn_803D3C90, &SaveScreen_804B0288::fn_803D3B38,
+    &SaveScreen_804B0288::fn_803D39C8, &SaveScreen_804B0288::fn_803D3928, &SaveScreen_804B0288::fn_803D3898, &SaveScreen_804B0288::fn_803D373C,
+    &SaveScreen_804B0288::fn_803D35F0, &SaveScreen_804B0288::fn_803D35C4, &SaveScreen_804B0288::fn_803D3460, &SaveScreen_804B0288::fn_803D335C,
+    &SaveScreen_804B0288::fn_803D3214, &SaveScreen_804B0288::fn_803D3180, &SaveScreen_804B0288::fn_803D3108, &SaveScreen_804B0288::fn_803D3060,
+    &SaveScreen_804B0288::fn_803D2FFC, &SaveScreen_804B0288::fn_803D2E10, &SaveScreen_804B0288::fn_803D2C9C, &SaveScreen_804B0288::fn_803D2C34,
 };
 
 // The three load/save results all stamp the current save file the same way.
@@ -43,7 +43,7 @@ static inline void touchCurrentFile() {
 static const u64 lbl_80476F20[8] = {'Psl01', 'Psl02', 'Psl03', 'Psl04', 'Psl05', 'Psl06', 'Psl07', 'Psl08'};
 
 // FIXME(shotgun): 97.11 %, missing/extra; behaviour drift.
-cls_804B0288::cls_804B0288(JKRArchive* archive, bool flag) {
+SaveScreen_804B0288::SaveScreen_804B0288(JKRArchive* archive, bool flag) {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     lbl_8053ADB8 = this;
     field_0x2176 = flag;
@@ -116,7 +116,7 @@ cls_804B0288::cls_804B0288(JKRArchive* archive, bool flag) {
     field_0x86 = 0;
 }
 
-cls_804B0288::~cls_804B0288() {
+SaveScreen_804B0288::~SaveScreen_804B0288() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     delete mScreen;
     mScreen = NULL;
@@ -141,7 +141,7 @@ cls_804B0288::~cls_804B0288() {
     lbl_8053ADB8 = NULL;
 }
 
-void cls_804B0288::fn_803D5554() {
+void SaveScreen_804B0288::fn_803D5554() {
     lbl_8053AEC0->fn_804310CC();
     field_0x54 = 0;
     field_0x50 = 0;
@@ -186,7 +186,7 @@ void cls_804B0288::fn_803D5554() {
     lbl_80529DEC.field_0x243[0] = 0;
 }
 
-void cls_804B0288::fn_803D521C() {
+void SaveScreen_804B0288::fn_803D521C() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (field_0x216f == 3) {
         f32 bounce = 0.0f;
@@ -241,7 +241,7 @@ void cls_804B0288::fn_803D521C() {
     }
 }
 
-void cls_804B0288::fn_803D5090() {
+void SaveScreen_804B0288::fn_803D5090() {
     if (field_0x2174 == 1) {
         lbl_8053AEC0->fn_80431174(field_0x2170);
     }
@@ -283,7 +283,7 @@ void cls_804B0288::fn_803D5090() {
     }
 }
 
-void cls_804B0288::fn_803D4DB0() {
+void SaveScreen_804B0288::fn_803D4DB0() {
     if (field_0x54 == field_0x50) {
         return;
     }
@@ -360,7 +360,7 @@ static inline f32 paneH(PaneCtrl_804AF86C* c) {
 }
 
 // FIXME(shotgun): 96.98 %, missing/extra; behaviour near.
-void cls_804B0288::fn_803D49A4() {
+void SaveScreen_804B0288::fn_803D49A4() {
     f32 w0 = field_0x2c[0]->field_0x18;
     f32 wide = paneW(field_0x2c[0]);
     field_0x2c[0]->moveFromCentre_80402E08(-(0.5f * (wide - w0)), -(0.5f * (paneH(field_0x2c[0]) - field_0x2c[0]->field_0x1c)));
@@ -387,7 +387,7 @@ void cls_804B0288::fn_803D49A4() {
 }
 
 // FIXME(shotgun): 98.76 %, regalloc-only; behaviour clean.
-void cls_804B0288::fn_803D4770() {
+void SaveScreen_804B0288::fn_803D4770() {
     bool done1 = false;
     u8 done2 = 0;
     u8 done3 = 0;
@@ -440,7 +440,7 @@ void cls_804B0288::fn_803D4770() {
     }
 }
 
-void cls_804B0288::fn_803D4484() {
+void SaveScreen_804B0288::fn_803D4484() {
     s16 fadeStart = lbl_8050DB0C.field_0x4c[(0xE4 - 0x4C) / 2];
     s16 fadeLength = lbl_8050DB0C.field_0x4c[(0xE6 - 0x4C) / 2];
     s16 start = lbl_8050DB0C.field_0x4c[(0xE8 - 0x4C) / 2];
@@ -497,7 +497,7 @@ void cls_804B0288::fn_803D4484() {
     }
 }
 
-void cls_804B0288::fn_803D4298() {
+void SaveScreen_804B0288::fn_803D4298() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -550,7 +550,7 @@ void cls_804B0288::fn_803D4298() {
     }
 }
 
-void cls_804B0288::fn_803D4068() {
+void SaveScreen_804B0288::fn_803D4068() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -598,7 +598,7 @@ void cls_804B0288::fn_803D4068() {
     }
 }
 
-void cls_804B0288::fn_803D3EC8() {
+void SaveScreen_804B0288::fn_803D3EC8() {
     s16 t0 = lbl_8050DB0C.field_0x4c[(0xEE - 0x4C) / 2];
     s16 t1 = lbl_8050DB0C.field_0x4c[(0xF0 - 0x4C) / 2];
     s16 t2 = lbl_8050DB0C.field_0x4c[(0xF2 - 0x4C) / 2];
@@ -635,7 +635,7 @@ void cls_804B0288::fn_803D3EC8() {
     }
 }
 
-void cls_804B0288::fn_803D3D50() {
+void SaveScreen_804B0288::fn_803D3D50() {
     switch (lbl_8051C1A0.fn_803B9940(0)) {
     case 0:
         field_0x54 = 0x6B;
@@ -693,7 +693,7 @@ void cls_804B0288::fn_803D3D50() {
     }
 }
 
-void cls_804B0288::fn_803D3C90() {
+void SaveScreen_804B0288::fn_803D3C90() {
     if (lbl_8053AD30->fn_80309C4C(0x1300, -1)) {
         if (field_0x50 == 0x70) {
             field_0x54 = 0x85;
@@ -714,7 +714,7 @@ void cls_804B0288::fn_803D3C90() {
     }
 }
 
-void cls_804B0288::fn_803D3B38() {
+void SaveScreen_804B0288::fn_803D3B38() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -747,7 +747,7 @@ void cls_804B0288::fn_803D3B38() {
     }
 }
 
-void cls_804B0288::fn_803D39C8() {
+void SaveScreen_804B0288::fn_803D39C8() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -782,7 +782,7 @@ void cls_804B0288::fn_803D39C8() {
     }
 }
 
-void cls_804B0288::fn_803D3928() {
+void SaveScreen_804B0288::fn_803D3928() {
     s32 result = lbl_8051C1A0.fn_803B9C5C();
     if (result == 1) {
         field_0x54 = 0x74;
@@ -800,7 +800,7 @@ void cls_804B0288::fn_803D3928() {
     }
 }
 
-void cls_804B0288::fn_803D3898() {
+void SaveScreen_804B0288::fn_803D3898() {
     if (field_0x7c > 0) {
         field_0x7c--;
     }
@@ -813,7 +813,7 @@ void cls_804B0288::fn_803D3898() {
     }
 }
 
-void cls_804B0288::fn_803D373C() {
+void SaveScreen_804B0288::fn_803D373C() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -847,7 +847,7 @@ void cls_804B0288::fn_803D373C() {
     }
 }
 
-void cls_804B0288::fn_803D35F0() {
+void SaveScreen_804B0288::fn_803D35F0() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -879,11 +879,11 @@ void cls_804B0288::fn_803D35F0() {
     }
 }
 
-void cls_804B0288::fn_803D35C4() {
+void SaveScreen_804B0288::fn_803D35C4() {
     OSResetSystem(1, 1, 1);
 }
 
-void cls_804B0288::fn_803D3460() {
+void SaveScreen_804B0288::fn_803D3460() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -919,7 +919,7 @@ void cls_804B0288::fn_803D3460() {
 
 // FIXME(shotgun): 93.54 %, missing/extra; behaviour near.
 // (the three save-file index setups)
-void cls_804B0288::fn_803D335C() {
+void SaveScreen_804B0288::fn_803D335C() {
     lbl_8050EC80.fn_803B93E8(field_0x1c0, field_0x420, 0);
     fn_803BACF8(field_0x1c0, 0);
     lbl_8050EC80.fn_803B93E8(field_0x1c0, field_0x420, 1);
@@ -936,7 +936,7 @@ void cls_804B0288::fn_803D335C() {
 }
 
 // FIXME(shotgun): 97.39 %, missing/extra; behaviour drift.
-void cls_804B0288::fn_803D3214() {
+void SaveScreen_804B0288::fn_803D3214() {
     s32 result = lbl_8051C1A0.fn_803B9BDC();
     if (result == 1) {
         field_0x54 = 0x7A;
@@ -959,7 +959,7 @@ void cls_804B0288::fn_803D3214() {
     }
 }
 
-void cls_804B0288::fn_803D3180() {
+void SaveScreen_804B0288::fn_803D3180() {
     if (field_0x7c > 0) {
         field_0x7c--;
     }
@@ -973,14 +973,14 @@ void cls_804B0288::fn_803D3180() {
     }
 }
 
-void cls_804B0288::fn_803D3108() {
+void SaveScreen_804B0288::fn_803D3108() {
     memcpy(field_0x1c0, lbl_8050EC80.mFiles, 0x258);
     fn_803BACF8(field_0x1c0, lbl_8050EC80.mCurrentFile);
     lbl_8051C1A0.fn_803B9CCC(field_0x1c0, 0x258, 0);
     field_0x216c = 0x13;
 }
 
-void cls_804B0288::fn_803D3060() {
+void SaveScreen_804B0288::fn_803D3060() {
     s32 result = lbl_8051C1A0.fn_803B9BDC();
     if (result == 1) {
         field_0x54 = 0x80;
@@ -999,7 +999,7 @@ void cls_804B0288::fn_803D3060() {
     }
 }
 
-void cls_804B0288::fn_803D2FFC() {
+void SaveScreen_804B0288::fn_803D2FFC() {
     if (field_0x7c > 0) {
         field_0x7c--;
     }
@@ -1017,7 +1017,7 @@ void cls_804B0288::fn_803D2FFC() {
 }
 
 // FIXME(shotgun): 98.26 %, missing/extra; behaviour drift.
-void cls_804B0288::fn_803D2E10() {
+void SaveScreen_804B0288::fn_803D2E10() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
             field_0x2170--;
@@ -1056,7 +1056,7 @@ void cls_804B0288::fn_803D2E10() {
 
 // FIXME(shotgun): 98.48 %, missing/extra; behaviour near.
 // the flag bytes are reached through an extra addi 0x20 (the row view of the save file)
-void cls_804B0288::fn_803D2C9C() {
+void SaveScreen_804B0288::fn_803D2C9C() {
     s32 result = lbl_8051C1A0.fn_803B9A94(field_0x1c0, 0x258, field_0x420, 0x1D4C, 0);
     if (result == 0) {
         return;
@@ -1088,7 +1088,7 @@ void cls_804B0288::fn_803D2C9C() {
     }
 }
 
-void cls_804B0288::fn_803D2C34() {
+void SaveScreen_804B0288::fn_803D2C34() {
     if (lbl_8053AD30->fn_80309C4C(0x1300, -1)) {
         field_0x54 = 0;
         field_0x216c = 5;

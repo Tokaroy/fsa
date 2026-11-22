@@ -12,10 +12,10 @@
 
 void* fn_804030C4(u32 type, const char* name);
 
-typedef void (cls_804B16A8::*StateFunc)();
+typedef void (RuleScreen_804B16A8::*StateFunc)();
 StateFunc lbl_804B1690[2] = {
-    &cls_804B16A8::fn_8043651C,
-    &cls_804B16A8::fn_804361A8,
+    &RuleScreen_804B16A8::fn_8043651C,
+    &RuleScreen_804B16A8::fn_804361A8,
 };
 
 static inline void rotateArrowPane(J2DPane* pane, f32 angle) {
@@ -25,7 +25,7 @@ static inline void rotateArrowPane(J2DPane* pane, f32 angle) {
 }
 
 // FIXME(shotgun): 99.90 %, scheduling; behaviour clean.
-cls_804B16A8::cls_804B16A8() {
+RuleScreen_804B16A8::RuleScreen_804B16A8() {
     mScreen = new J2DScreen;
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         mScreen->setPriority("rule.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
@@ -95,7 +95,7 @@ cls_804B16A8::cls_804B16A8() {
     field_0x6c = 0;
 }
 
-cls_804B16A8::~cls_804B16A8() {
+RuleScreen_804B16A8::~RuleScreen_804B16A8() {
     delete mScreen;
     mScreen = NULL;
     delete field_0x8;
@@ -119,7 +119,7 @@ cls_804B16A8::~cls_804B16A8() {
 }
 
 // FIXME(shotgun): 96.84 %, missing/extra + reloc-name; behaviour drift.
-void cls_804B16A8::fn_8043670C(u8 arg) {
+void RuleScreen_804B16A8::fn_8043670C(u8 arg) {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Tq01'))->mFontSize.x;
     field_0x58 = 0;
     field_0x5a = 0;
@@ -224,7 +224,7 @@ void cls_804B16A8::fn_8043670C(u8 arg) {
     }
 }
 
-s32 cls_804B16A8::fn_804366B8() {
+s32 RuleScreen_804B16A8::fn_804366B8() {
     (this->*lbl_804B1690[field_0x6b])();
     if (field_0x6b != 2) {
         return 0;
@@ -232,13 +232,13 @@ s32 cls_804B16A8::fn_804366B8() {
     return 1;
 }
 
-void cls_804B16A8::fn_80436668() {
+void RuleScreen_804B16A8::fn_80436668() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
     lbl_8053AED8->fn_80440EE8();
 }
 
-void cls_804B16A8::fn_8043651C() {
+void RuleScreen_804B16A8::fn_8043651C() {
     u8 a = 0;
     u8 b = 0;
     u8 c = 0;
@@ -262,7 +262,7 @@ void cls_804B16A8::fn_8043651C() {
     }
 }
 
-void cls_804B16A8::fn_804361A8() {
+void RuleScreen_804B16A8::fn_804361A8() {
     if (lbl_8053AD30->fn_80309C4C(0x1100, field_0x54)) {
         if (field_0x6c == 0) {
             if (field_0x68 != 0) {
@@ -337,7 +337,7 @@ void cls_804B16A8::fn_804361A8() {
     fn_80435E20();
 }
 
-void cls_804B16A8::fn_80435E20() {
+void RuleScreen_804B16A8::fn_80435E20() {
     if (field_0x60 == 0) {
         if (--field_0x5e <= 0) {
             field_0x5e = (s32)(11.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 10;
@@ -390,7 +390,7 @@ void cls_804B16A8::fn_80435E20() {
 
 
 // FIXME: 99.77 %, scheduling+regalloc; behaviour clean.
-void cls_804B16A8::fn_80434724() {
+void RuleScreen_804B16A8::fn_80434724() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
     f32 scale = fontSizeW / lbl_8053AD78->mFont->getCellWidth();
 
@@ -479,7 +479,7 @@ void cls_804B16A8::fn_80434724() {
     field_0x60 = 0;
 }
 
-void cls_804B16A8::fn_80434370() {
+void RuleScreen_804B16A8::fn_80434370() {
     f32 fontSizeW = ((J2DTextBox*)mScreen->search('Ta01'))->mFontSize.x;
     f32 cellW = lbl_8053AD78->mFont->getCellWidth();
     f32 scale = fontSizeW / cellW;

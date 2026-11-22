@@ -20,7 +20,7 @@ static const char* lbl_804B1DF0[11] = {
 
 // FIXME: 99%. Regalloc only: the loop counter is r27 and the ResTIMG r28 in
 // the original; swapped here.
-cls_804B1E1C::cls_804B1E1C() {
+RupeeDigitSprites_804B1E1C::RupeeDigitSprites_804B1E1C() {
     for (int i = 0; i < 11; i++) {
         const ResTIMG* timg = static_cast<const ResTIMG*>(fn_804030C4('TIMG', lbl_804B1DF0[i]));
         mDigits[i] = new J2DPicture(timg);
@@ -29,7 +29,7 @@ cls_804B1E1C::cls_804B1E1C() {
     lbl_8053AF50 = this;
 }
 
-cls_804B1E1C::~cls_804B1E1C() {
+RupeeDigitSprites_804B1E1C::~RupeeDigitSprites_804B1E1C() {
     for (int i = 0; i < 11; i++) {
         delete mDigits[i];
         mDigits[i] = NULL;
@@ -37,7 +37,7 @@ cls_804B1E1C::~cls_804B1E1C() {
     lbl_8053AF50 = NULL;
 }
 
-void cls_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* pos, JUtility::TColor color) {
+void RupeeDigitSprites_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* pos, JUtility::TColor color) {
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     f32 baseSize = 48.0f * camera->mZoom_0x858;
     Vec screen;
@@ -55,7 +55,7 @@ void cls_804B1E1C::fn_80455770(f32 scale, s32 digit, const Vec* pos, JUtility::T
     }
 }
 
-void cls_804B1E1C::fn_804556A4() {
+void RupeeDigitSprites_804B1E1C::fn_804556A4() {
     gGameRoot2_8053AB10->fn_8013B490();
     for (int i = 0; i < 128; i++) {
         Sprite& s = mSprites[i];
@@ -66,7 +66,7 @@ void cls_804B1E1C::fn_804556A4() {
     }
 }
 
-void cls_804B1E1C::fn_8045560C() {
+void RupeeDigitSprites_804B1E1C::fn_8045560C() {
     for (int i = 0; i < 128; i++) {
         mSprites[i].active = 0;
     }

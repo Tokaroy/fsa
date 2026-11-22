@@ -256,7 +256,7 @@ static const u8 lbl_8048F1D8[4][10] = {
 };
 
 // FIXME(shotgun): 99.97 %, operands; behaviour near.
-cls_804B146C::cls_804B146C()
+BattleHud_804B146C::BattleHud_804B146C()
     : field_0x210(0xFFFFFFFF)
     , field_0x214(0xFFFFFFFF)
 {
@@ -273,7 +273,7 @@ cls_804B146C::cls_804B146C()
         JFWDisplay::getManager()->getEfbHeight(),
         -10000.0f, 10000.0f
     );
-    field_0xf0 = new cls_804B19E0();
+    field_0xf0 = new PlayerWindowSelect_804B19E0();
     field_0x4 = new J2DScreen();
     field_0x4->setPriority("main_bat.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     for (s32 i = 0; i < 4; i++) {
@@ -374,7 +374,7 @@ cls_804B146C::cls_804B146C()
     }
 }
 
-cls_804B146C::~cls_804B146C() {
+BattleHud_804B146C::~BattleHud_804B146C() {
     delete field_0x4c;
     field_0x4c = NULL;
     delete field_0xf0;
@@ -428,7 +428,7 @@ static inline void clearBit(u8& mask, s32 bit) {
     mask &= ~b;
 }
 
-static inline void call_80421A34_forActivePlayers(cls_804B146C* self, bool force) {
+static inline void call_80421A34_forActivePlayers(BattleHud_804B146C* self, bool force) {
     for (s32 i = 0; i < 4; i++) {
         if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
             self->fn_80421A34(i, force);
@@ -436,7 +436,7 @@ static inline void call_80421A34_forActivePlayers(cls_804B146C* self, bool force
     }
 }
 
-void cls_804B146C::fn_804263A8() {
+void BattleHud_804B146C::fn_804263A8() {
     for (s32 i = 0; i < 4; i++) {
         bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
         if (!takesPart) {
@@ -547,7 +547,7 @@ static inline bool isPaused() {
     return gGameRoot_8053AAF8->field_0x88 == 2;
 }
 
-void cls_804B146C::fn_80425F6C() {
+void BattleHud_804B146C::fn_80425F6C() {
     f32 zoom = gGameRoot2_8053AB10->field_0x24->mZoom_0x858;
     f32 scale = lbl_8050DB0C.field_0x30[4];
     f32 sx = scale * (JFWDisplay::getManager()->getEfbWidth() / zoom);
@@ -579,13 +579,13 @@ void cls_804B146C::fn_80425F6C() {
     field_0xf0->fn_8044148C();
 }
 
-void cls_804B146C::fn_80425F24() {
+void BattleHud_804B146C::fn_80425F24() {
     gGameRoot2_8053AB10->fn_8013B490();
     mScreen->draw(0.0f, 0.0f, gGameRoot2_8053AB10->field_0x10);
 }
 
 // FIXME(shotgun): 97.86 %, regalloc-only; behaviour clean.
-void cls_804B146C::fn_804257E4() {
+void BattleHud_804B146C::fn_804257E4() {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = (u8)(1 << i);
         bool takesPart = checkBit(gGameRoot_8053AAF8->mPlayerMask, i);
@@ -698,7 +698,7 @@ void cls_804B146C::fn_804257E4() {
     field_0x257 = 0;
 }
 
-void cls_804B146C::fn_804253E0(s32 player) {
+void BattleHud_804B146C::fn_804253E0(s32 player) {
     if (lbl_80529DEC.getField0xd8(player) < fn_80237774(player)) {
         field_0x168[player]++;
         if (field_0x168[player] >= 10) {
@@ -778,7 +778,7 @@ void cls_804B146C::fn_804253E0(s32 player) {
     }
 }
 
-void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
+void BattleHud_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     s32 target;
     if (fn_8022F514(id)) {
         target = fn_8022F3DC(id);
@@ -821,7 +821,7 @@ void cls_804B146C::fn_80425234(s32 id, s32 arg1, u32 arg2) {
     field_0x257 |= (u8)(1 << target);
 }
 
-void cls_804B146C::fn_80425128() {
+void BattleHud_804B146C::fn_80425128() {
     for (s32 i = 0; i < 4; i++) {
         if (isPlayerBitSet(gGameRoot_8053AAF8, i) != 0) {
             lbl_80529DEC.field_0xd8[i] = fn_80237774(i);
@@ -839,7 +839,7 @@ void cls_804B146C::fn_80425128() {
     }
 }
 
-void cls_804B146C::fn_80424148(s32 player, bool force) {
+void BattleHud_804B146C::fn_80424148(s32 player, bool force) {
     f32 prevA = field_0x108[player];
     f32 prevB = field_0x128[player];
     f32 prevC = field_0x138[player];
@@ -994,7 +994,7 @@ void cls_804B146C::fn_80424148(s32 player, bool force) {
     field_0x4->search(lbl_8048F0E0[player])->setAlpha(field_0x23b * field_0x108[player]);
 }
 
-void cls_804B146C::fn_80423DF0(s32 player) {
+void BattleHud_804B146C::fn_80423DF0(s32 player) {
     s32 item = -1;
     bool active = checkBit(field_0x259, player);
     if (!active && !fn_80230188(player)) {
@@ -1071,7 +1071,7 @@ void cls_804B146C::fn_80423DF0(s32 player) {
     }
 }
 
-void cls_804B146C::fn_80423804(s32 player) {
+void BattleHud_804B146C::fn_80423804(s32 player) {
     if (!(field_0x256 & (u8)(1 << player))) {
         return;
     }
@@ -1145,7 +1145,7 @@ void cls_804B146C::fn_80423804(s32 player) {
 }
 
 // FIXME(shotgun): 99.96 %, operands; behaviour near.
-void cls_804B146C::fn_80423248(s32 player) {
+void BattleHud_804B146C::fn_80423248(s32 player) {
     if (!(field_0x257 & (u8)(1 << player))) {
         return;
     }
@@ -1204,7 +1204,7 @@ void cls_804B146C::fn_80423248(s32 player) {
     static_cast<J2DPicture*>(field_0x4->search(lbl_8048EC80[player][start]))->changeTexture(tex, 0);
 }
 
-void cls_804B146C::fn_80422824() {
+void BattleHud_804B146C::fn_80422824() {
     s32 tied;
     s32 count = 0;
     s32 ranked = 0;
@@ -1313,7 +1313,7 @@ void cls_804B146C::fn_80422824() {
     }
 }
 
-void cls_804B146C::fn_8042215C(s32 player) {
+void BattleHud_804B146C::fn_8042215C(s32 player) {
     if (field_0x1e8[player] == 0) {
         field_0x1a8[player] = fn_80237774(player);
         field_0x1c8[player] = fn_80237810(player);
@@ -1394,7 +1394,7 @@ void cls_804B146C::fn_8042215C(s32 player) {
     field_0x1e8[player]--;
 }
 
-void cls_804B146C::fn_80421D78(s32 player) {
+void BattleHud_804B146C::fn_80421D78(s32 player) {
     if (fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
         s32 sec = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
         if (sec != field_0x25e[player]) {
@@ -1435,7 +1435,7 @@ void cls_804B146C::fn_80421D78(s32 player) {
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
-void cls_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
+void BattleHud_804B146C::updateGaugeBar(s32 player, s32 bar, s32& val) {
     if (val >= 0x60) {
         field_0x4->search(lbl_8048E300[player][bar])->resize(field_0xf4, field_0x4->search(lbl_8048E300[player][bar])->getHeight());
         val -= 0x60;
@@ -1454,7 +1454,7 @@ static void pool_80543A58(const Vec& screen, f32 sx, f32 sy, f32* x, f32* y) {
     *y = lbl_8050DB0C.field_0x4c[1] + (py - JFWDisplay::getManager()->getEfbHeight() / 2.0f);
 }
 
-void cls_804B146C::fn_80421A34(s32 player, bool force) {
+void BattleHud_804B146C::fn_80421A34(s32 player, bool force) {
     u8 bit = (u8)(1 << player);
     f32 prev = field_0x118[player];
     if (!(field_0x25d & bit)) {
@@ -1497,7 +1497,7 @@ void cls_804B146C::fn_80421A34(s32 player, bool force) {
     }
 }
 
-void cls_804B146C::fn_8042165C() {
+void BattleHud_804B146C::fn_8042165C() {
     field_0x1f0[0] = 0;
     field_0x1f0[1] = 0;
     field_0x1f0[2] = 0;

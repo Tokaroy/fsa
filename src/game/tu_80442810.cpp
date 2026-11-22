@@ -4,10 +4,10 @@
 #include "dolphin/os.h"
 #include "game/cls_804B1A38.h"
 
-static cls_804B0FA0* lbl_8053AEE8;
-static cls_804B0FC0* lbl_8053AEEC;
+static DvdToMainRamCommand_804B0FA0* lbl_8053AEE8;
+static DvdMountMemArchiveCommand_804B0FC0* lbl_8053AEEC;
 
-cls_804B1A38::cls_804B1A38() {
+AudioResLoader_804B1A38::AudioResLoader_804B1A38() {
     lbl_8053ADD8 = this;
     field_0x4 = 0;
     if (OSGetSoundMode() == 0) {
@@ -19,10 +19,10 @@ cls_804B1A38::cls_804B1A38() {
     }
 }
 
-cls_804B1A38::~cls_804B1A38() {}
+AudioResLoader_804B1A38::~AudioResLoader_804B1A38() {}
 
 // Called each frame until both files are loaded.
-void cls_804B1A38::fn_80442810() {
+void AudioResLoader_804B1A38::fn_80442810() {
     if (field_0x4 == 0) {
         if (lbl_8053AEE8 == NULL) {
             lbl_8053AEE8 = fn_804019A8("/GC4Sword_usa/AudioRes/JaiInit.baa", 2, lbl_80529DEC.mSolidHeap_0x4);

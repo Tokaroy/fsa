@@ -7,20 +7,20 @@ class J2DScreen;
 class J2DAnmTransform;
 class J2DPicture;
 class PaneCtrl_804AF86C;
-class cls_804B16A8;
-class cls_804B20F8;
+class RuleScreen_804B16A8;
+class PlayerSoundObj_804B20F8;
 
 // Vtable 0x804B0B00, constructor fn_803EE254, destructor fn_803EDF94
 // (game/tu_803E1668.cpp); 0x364 bytes (__nw__(0x364) in fn_803A8884). The
 // sister screen of ConnectScreen_804B0F10 (game/tu_803F0A54.h): seven J2DScreens and a
 // 15-state machine run through three pointer-to-member tables (enter,
 // update, draw).
-class cls_804B0B00 {
+class AdvEntryScreen_804B0B00 {
 public:
-    typedef void (cls_804B0B00::*StateFunc)();
+    typedef void (AdvEntryScreen_804B0B00::*StateFunc)();
 
-    cls_804B0B00();
-    /* 0x08 */ virtual ~cls_804B0B00();
+    AdvEntryScreen_804B0B00();
+    /* 0x08 */ virtual ~AdvEntryScreen_804B0B00();
     // Draws the four player sprites over field_0xc's player panes.
     void fn_803E1668();
     void fn_803ED83C();
@@ -85,12 +85,12 @@ public:
     /* 0x038 */ J2DAnmTransform* field_0x38[4];
     /* 0x048 */ J2DAnmTransform* field_0x48[4];
     /* 0x058 */ u8 field_0x58[0x5C - 0x58];
-    /* 0x05C */ cls_804B16A8* field_0x5c;
+    /* 0x05C */ RuleScreen_804B16A8* field_0x5c;
     /* 0x060 */ J2DPicture* field_0x60;
     /* 0x064 */ PaneCtrl_804AF86C* field_0x64;
     /* 0x068 */ PaneCtrl_804AF86C* field_0x68[4];
     /* 0x078 */ PaneCtrl_804AF86C* field_0x78;
-    /* 0x07C */ cls_804B20F8* field_0x7c[4];
+    /* 0x07C */ PlayerSoundObj_804B20F8* field_0x7c[4];
     // The effect position fn_803E9A20 / fn_803E9EE8 compute from a player
     // pane ('Pplli01'-'04') at its 36th frame.
     /* 0x08C */ f32 field_0x8c;

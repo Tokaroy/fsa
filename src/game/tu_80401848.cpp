@@ -1,4 +1,4 @@
-// The DVD loader thread: a queue of commands (cls_804B0FD0) that a thread
+// The DVD loader thread: a queue of commands (DvdCommand_804B0FD0) that a thread
 // of its own runs one after another. The command layout and the queue follow
 // TWW's m_Do_dvd_thread.cpp (mDoDvdThd_param_c, mDoDvdThd_command_c and its
 // toMainRam / mountArchive commands; structure only).
@@ -24,9 +24,9 @@ public:
 
     void kick() { OSSendMessage(&mQueue, NULL, OS_MESSAGE_NOBLOCK); }
     BOOL waitForKick() { return OSReceiveMessage(&mQueue, NULL, OS_MESSAGE_BLOCK); }
-    cls_804B0FD0* getFirstCommand() { return mHead; }
+    DvdCommand_804B0FD0* getFirstCommand() { return mHead; }
 
-    void addition(cls_804B0FD0* cmd) {
+    void addition(DvdCommand_804B0FD0* cmd) {
         OSLockMutex(&mMutex);
         cmd->mNext = NULL;
         if (mTail == NULL) {
@@ -40,10 +40,10 @@ public:
         kick();
     }
 
-    void cut(cls_804B0FD0* cmd) {
+    void cut(DvdCommand_804B0FD0* cmd) {
         OSLockMutex(&mMutex);
-        cls_804B0FD0* prev = NULL;
-        for (cls_804B0FD0* node = mHead; node != NULL; node = node->mNext) {
+        DvdCommand_804B0FD0* prev = NULL;
+        for (DvdCommand_804B0FD0* node = mHead; node != NULL; node = node->mNext) {
             if (node == cmd) {
                 if (prev != NULL) {
                     prev->mNext = node->mNext;
@@ -66,14 +66,14 @@ public:
     /* 0x00 */ OSMessageQueue mQueue;
     /* 0x20 */ OSMessage mMessages[1];
     /* 0x24 */ OSMutex mMutex;
-    /* 0x3C */ cls_804B0FD0* mHead;
-    /* 0x40 */ cls_804B0FD0* mTail;
+    /* 0x3C */ DvdCommand_804B0FD0* mHead;
+    /* 0x40 */ DvdCommand_804B0FD0* mTail;
 }; // Size: 0x44
 
 // Runs one command; TWW's cb(void*), called with &cmd as there (the original
 // keeps cmd in a stack slot for this call).
 inline BOOL cb(void* userData) {
-    cls_804B0FD0** cmd = (cls_804B0FD0**)userData;
+    DvdCommand_804B0FD0** cmd = (DvdCommand_804B0FD0**)userData;
     return (*cmd)->vfunc_0xC();
 }
 
@@ -84,29 +84,29 @@ static JKRHeap* lbl_8053ADF0; // the commands are allocated here
 static JKRHeap* lbl_8053ADF4; // commands without a heap of their own load here
 static u8 lbl_8053A218 = 1;   // direction for commands created with 0
 
-inline void* cls_804B0FD0::operator new(size_t size) {
+inline void* DvdCommand_804B0FD0::operator new(size_t size) {
     return JKRHeap::alloc(size, -4, lbl_8053ADF0);
 }
 
 // The deleting destructors inline this. The compiler also emits an unreferenced
 // weak copy, which the link dead-strips (map: UNUSED).
-inline void cls_804B0FD0::operator delete(void* p) {
+inline void DvdCommand_804B0FD0::operator delete(void* p) {
     JKRHeap::free(p, NULL);
 }
 
-inline cls_804B0FD0::cls_804B0FD0() {
+inline DvdCommand_804B0FD0::DvdCommand_804B0FD0() {
     field_0x4 = 0;
     mNext = NULL;
 }
 
-inline cls_804B0FA0::cls_804B0FA0(u8 direction) {
+inline DvdToMainRamCommand_804B0FA0::DvdToMainRamCommand_804B0FA0(u8 direction) {
     mDirection = direction;
     if (direction == 0) {
         mDirection = lbl_8053A218;
     }
 }
 
-inline cls_804B0FB0::cls_804B0FB0(u8 direction, JKRAramArchive* archive) {
+inline DvdMountAramArchiveCommand_804B0FB0::DvdMountAramArchiveCommand_804B0FB0(u8 direction, JKRAramArchive* archive) {
     mDirection = direction;
     mEntryNum = -1;
     mArchive = archive;
@@ -116,7 +116,7 @@ inline cls_804B0FB0::cls_804B0FB0(u8 direction, JKRAramArchive* archive) {
     }
 }
 
-inline cls_804B0FC0::cls_804B0FC0(u8 direction) {
+inline DvdMountMemArchiveCommand_804B0FC0::DvdMountMemArchiveCommand_804B0FC0(u8 direction) {
     mDirection = direction;
     mEntryNum = -1;
     field_0x14 = NULL;
@@ -133,7 +133,7 @@ void* fn_80402054(void* param) {
     { JKRThread thread(OSGetCurrentThread(), 0); }
     cls_80402054* queue = (cls_80402054*)param;
     while (queue->waitForKick()) {
-        while (cls_804B0FD0* cmd = queue->getFirstCommand()) {
+        while (DvdCommand_804B0FD0* cmd = queue->getFirstCommand()) {
             queue->cut(cmd);
             cb(&cmd);
         }
@@ -149,17 +149,17 @@ void fn_80401FEC(s32 priority, JKRHeap* commandHeap, JKRHeap* loadHeap) {
     OSResumeThread(&lbl_80528980);
 }
 
-cls_804B0FD0::~cls_804B0FD0() {}
+DvdCommand_804B0FD0::~DvdCommand_804B0FD0() {}
 
-cls_804B0FC0::~cls_804B0FC0() {}
+DvdMountMemArchiveCommand_804B0FC0::~DvdMountMemArchiveCommand_804B0FC0() {}
 
-cls_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap) {
+DvdMountMemArchiveCommand_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap) {
     s32 entryNum = DVDConvertPathToEntrynum(path);
-    cls_804B0FC0* cmd;
+    DvdMountMemArchiveCommand_804B0FC0* cmd;
     if (entryNum == -1) {
         cmd = NULL;
     } else {
-        cmd = new cls_804B0FC0(direction);
+        cmd = new DvdMountMemArchiveCommand_804B0FC0(direction);
         if (cmd != NULL) {
             cmd->mEntryNum = entryNum;
             cmd->mHeap = heap;
@@ -169,7 +169,7 @@ cls_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap) {
     return cmd;
 }
 
-BOOL cls_804B0FC0::vfunc_0xC() {
+BOOL DvdMountMemArchiveCommand_804B0FC0::vfunc_0xC() {
     JKRHeap* heap = mHeap != NULL ? mHeap : lbl_8053ADF4;
     JKRMemArchive* archive;
     if (mDirection == JKRArchive::MOUNT_DIRECTION_HEAD) {
@@ -186,15 +186,15 @@ BOOL cls_804B0FC0::vfunc_0xC() {
     return field_0x14 != NULL;
 }
 
-cls_804B0FB0::~cls_804B0FB0() {}
+DvdMountAramArchiveCommand_804B0FB0::~DvdMountAramArchiveCommand_804B0FB0() {}
 
-cls_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 direction, JKRHeap* heap) {
+DvdMountAramArchiveCommand_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 direction, JKRHeap* heap) {
     s32 entryNum = DVDConvertPathToEntrynum(path);
-    cls_804B0FB0* cmd;
+    DvdMountAramArchiveCommand_804B0FB0* cmd;
     if (entryNum == -1) {
         cmd = NULL;
     } else {
-        cmd = new cls_804B0FB0(direction, archive);
+        cmd = new DvdMountAramArchiveCommand_804B0FB0(direction, archive);
         if (cmd != NULL) {
             cmd->mEntryNum = entryNum;
             cmd->mHeap = heap;
@@ -204,7 +204,7 @@ cls_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 directio
     return cmd;
 }
 
-BOOL cls_804B0FB0::vfunc_0xC() {
+BOOL DvdMountAramArchiveCommand_804B0FB0::vfunc_0xC() {
     JKRHeap* heap = mHeap != NULL ? mHeap : lbl_8053ADF4;
     BOOL result = FALSE;
     if (mArchive == NULL) {
@@ -223,13 +223,13 @@ BOOL cls_804B0FB0::vfunc_0xC() {
     return result;
 }
 
-cls_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap) {
+DvdToMainRamCommand_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap) {
     s32 entryNum = DVDConvertPathToEntrynum(path);
-    cls_804B0FA0* cmd;
+    DvdToMainRamCommand_804B0FA0* cmd;
     if (entryNum == -1) {
         cmd = NULL;
     } else {
-        cmd = new cls_804B0FA0(direction);
+        cmd = new DvdToMainRamCommand_804B0FA0(direction);
         if (cmd != NULL) {
             cmd->mEntryNum = entryNum;
             cmd->mHeap = heap;
@@ -239,7 +239,7 @@ cls_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap) {
     return cmd;
 }
 
-BOOL cls_804B0FA0::vfunc_0xC() {
+BOOL DvdToMainRamCommand_804B0FA0::vfunc_0xC() {
     JKRHeap* heap;
     if (mHeap != NULL) {
         heap = mHeap;
@@ -258,4 +258,4 @@ BOOL cls_804B0FA0::vfunc_0xC() {
     return field_0x14 != NULL;
 }
 
-cls_804B0FA0::~cls_804B0FA0() {}
+DvdToMainRamCommand_804B0FA0::~DvdToMainRamCommand_804B0FA0() {}

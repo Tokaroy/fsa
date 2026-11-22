@@ -48,10 +48,10 @@ struct TColor;
 // game/tu_80432638.cpp (owner unit, not written yet). Named after its vtable,
 // lbl_804B1668 (stored by its constructor, 0x8043395C); 0xB0 bytes
 // (TileMap_804AA858's constructor allocates it). Only what TileMap_804AA858 uses.
-class cls_804B1668 {
+class GbaWindow_804B1668 {
 public:
-    cls_804B1668();
-    /* 0x08 */ virtual ~cls_804B1668();
+    GbaWindow_804B1668();
+    /* 0x08 */ virtual ~GbaWindow_804B1668();
     // 0x80432750: called by TileMap_804AA858::fn_802FF0EC with
     // (field_0x230 == -1, the field_0x21c-0x228 rectangle as floats); r4 is
     // tested clrlwi. (bool).
@@ -470,7 +470,7 @@ public:
     /* 0x00C8 */ u8* mSpritePalettes_0xc8[12];
     // 0x8000: where fn_802F9714 decodes compressed resources (JKRDecomp::decode).
     /* 0x00F8 */ u8* mDecodeBuf_0xf8;
-    /* 0x00FC */ cls_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
+    /* 0x00FC */ GbaWindow_804B1668* field_0xfc; // new(0xB0); deleted through its vtable
     // 65 x 65 grid points (0x1081 TVec3f / TColor each, __construct_new_array).
     /* 0x0100 */ JGeometry::TVec3f (*mHeightGrid_0x100[2])[65];
     /* 0x0108 */ JUtility::TColor* mHeightGridColors_0x108[2];

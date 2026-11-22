@@ -58,7 +58,7 @@ public:
     // 0x80456334 (game/tu_80455CA4.cpp): r3 is this, r4 the id (copied to the
     // stack by the caller), r5 a fade time (fn_804561D8 passes its own);
     // returns the handle the sound was started on, or NULL. Called by
-    // cls_804B20F8::startSound (game/tu_8045B010.cpp) with 0.
+    // PlayerSoundObj_804B20F8::startSound (game/tu_8045B010.cpp) with 0.
     JAISoundHandle* fn_80456334(JAISoundID id, u32 fade);
 
     void setField_0x48(f32 value) { field_0x48 = value; }

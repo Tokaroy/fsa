@@ -50,7 +50,7 @@ static const s16 lbl_80543710[4] = {-25, 25, 77, 77};
 
 // .rodata: the unit's tables in address order (the functions address them
 // off one base); u64 tables are J2DPane::search tags. Same table set and
-// layout as the twin game/tu_803E1668.cpp (cls_804B0B00), here for 2-4
+// layout as the twin game/tu_803E1668.cpp (AdvEntryScreen_804B0B00), here for 2-4
 // players.
 static const f32 lbl_80478A60[16] = {
     50.0f, 206.0f, 50.0f, 206.0f, 60.0f, 60.0f, 132.0f, 132.0f, 87.0f, 464.0f, 87.0f, 464.0f, 159.0f, 159.0f, 327.0f, 327.0f,
@@ -409,7 +409,7 @@ static inline f32 toEffectY(f32 y) {
 // Registers only, in most loops (e.g. the first loop's array
 // pointers are r24 / r27 in the original, r27 / r28 here).
 // Builds the seven screens and their panes' start state (structure as the
-// twin cls_804B0B00::cls_804B0B00, game/tu_803E1668.cpp).
+// twin AdvEntryScreen_804B0B00::AdvEntryScreen_804B0B00, game/tu_803E1668.cpp).
 ConnectScreen_804B0F10::ConnectScreen_804B0F10() {
     field_0x1a4 = 0;
     field_0x1a8 = 0;
@@ -691,7 +691,7 @@ ConnectScreen_804B0F10::ConnectScreen_804B0F10() {
     const ResTIMG* tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_kettei_01.bti");
     lbl_8053AED8->fn_80440D78(tex);
     lbl_8053AED8->fn_80440CE4((const ResTIMG*)fn_804030C4('TIMG', "kk_modoru_01.bti"));
-    field_0x58 = new cls_804B16A8;
+    field_0x58 = new RuleScreen_804B16A8;
     tex = (const ResTIMG*)fn_804030C4('TIMG', "kk_black.bti");
     mFadePicture_0x5c = new J2DPicture(tex);
     mFadePicture_0x5c->setBlackWhite(JUtility::TColor(0x000000FF), JUtility::TColor(0x00000000));
@@ -699,7 +699,7 @@ ConnectScreen_804B0F10::ConnectScreen_804B0F10() {
     field_0x8c = 0.0f;
     field_0x90 = 0.0f;
     for (int i = 0; i < 4; i++) {
-        mPlayerSoundObjs_0x78[i] = new cls_804B20F8(i, NULL, NULL, 8);
+        mPlayerSoundObjs_0x78[i] = new PlayerSoundObj_804B20F8(i, NULL, NULL, 8);
     }
 }
 
@@ -2256,7 +2256,7 @@ void ConnectScreen_804B0F10::fn_803F38A4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-// (twin cls_804B0B00::fn_803E4650)
+// (twin AdvEntryScreen_804B0B00::fn_803E4650)
 // Draws states 10 and 11 (the results screen field_0x10): each taking
 // player's cursor 'Pscur' fades with field_0x1d0[i] (60 frames), the
 // joined ones' 'Paccur' panes with it; outside state 10 the 'Paccur02'
@@ -2494,7 +2494,7 @@ void ConnectScreen_804B0F10::fn_803F2580() {
 // (fn_80403070) as three digit textures, the fn_8040305C - 1 markers of the
 // four marker tables, the cursor panes by field_0x1b0[i] (3: joined,
 // 4: not); then the panes start their slide-in (twin of
-// cls_804B0B00::fn_803E2A20).
+// AdvEntryScreen_804B0B00::fn_803E2A20).
 void ConnectScreen_804B0F10::fn_803F1C70() {
     for (s32 i = 0; i < 4; i++) {
         if (i >= 1) {
@@ -2625,7 +2625,7 @@ void ConnectScreen_804B0F10::fn_803F1C18() {
 // split yet: the tables above sit at other offsets from the file's base), and
 // in the 112-212 and 212+ phases the i / 2 + (i % 2) * 2 index is scheduled
 // differently (the original computes i % 2 first, then i / 2). The twin
-// cls_804B0B00::fn_803E1668 (rodata split) shows the same index scheduling.
+// AdvEntryScreen_804B0B00::fn_803E1668 (rodata split) shows the same index scheduling.
 void ConnectScreen_804B0F10::fn_803F0A54() {
     f32 ratio = (f32)mEntryConScreen_0xc->search(lbl_80479168[0])->getAlpha() / (f32)field_0x335[0];
     JGeometry::TVec3f pos;
