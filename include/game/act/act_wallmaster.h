@@ -34,6 +34,29 @@ public:
     void setState_801BC554(s32 state);
     u8 computeShadowAlpha();
     bool checkPlayerHit();
+    bool isState4Or6To8() const {
+        bool b = false;
+        switch (mState) {
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+            b = true;
+            break;
+        }
+        return b;
+    }
+    bool isState6To8() const {
+        bool b = false;
+        switch (mState) {
+        case 6:
+        case 7:
+        case 8:
+            b = true;
+            break;
+        }
+        return b;
+    }
 
     /* 0x2A8 */ s32 field_0x2a8;
     /* 0x2AC */ s32 field_0x2ac;
