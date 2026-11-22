@@ -64,6 +64,10 @@ public:
     // every read in that unit, they flip those 8 sites and change nothing else.
     s32 getIndex() const { return mPlayerNo_0x4; }
     s32 getLayer() const { return mLayer_0x3b4; }
+    // &mPos, the same getter as ActorBase::getPos. Evidence: tu_802684A4 fn_80269574
+    // computes `addi rX, owner, 8` into a saved register before getLeader_80240644 at
+    // all three fn_8022BC38 / fn_802348C4 calls, as MWCC does for an inlined call only.
+    JGeometry::TVec3f* getPos() { return &mPos; }
     // The facing (0x3DC, 0-3: +x, -x, +y, -y), the same kind of getter. Evidence: tu_802684A4's
     // block pushes (fn_8026EE60, fn_8026EC88, and inlined in fn_8026F000-F54C) load it into a
     // saved register ahead of getActorManager_801F856C, and canPush's `field_0x1c ==
