@@ -282,8 +282,7 @@ static inline void walkToGroupSpot(Player_804A6F38* player) {
 }
 
 // Whether the tile at (x, y, z) blocks (fn_802265DC with flag 1).
-static inline bool blockedAt(f32 x, f32 y, f32 z, s32 layer) {
-    JGeometry::TVec3f pos(x, y, z);
+static inline bool blockedAt(const JGeometry::TVec3f& pos, s32 layer) {
     return fn_802265DC(&pos, layer, true);
 }
 
@@ -1081,50 +1080,67 @@ void Player_804A6F38::fn_8027B304() {
 // follows the player and 0x12BC circles it at 20 by the angle 0x11C0 (depths by fn_8024EE0C,
 // heights by fn_8024EE14); the step emitters 0x1378 (tile 0x39) / 0x1374.
 // FIXME: 99.60 %, operands; behaviour clean.
-// Stack offsets only: every temporary sits 0x18 higher in ours (the original
-// puts the probe and emitter vectors above the tile-test vectors).
+// The frame shows the walk-to-spot and probe vectors as locals of this function (0xE0, 0xD4,
+// 0xC8, above the emitter's 0xBC) and the tile-test vectors as temporaries (0xB0 down to 0x2C).
+// Left: the direction step loads y before x.
 void Player_804A6F38::fn_8027AAD0() {
     fn_80274728();
     updateFacing_8027EB04();
     if (fn_802486A0() == 3 && !fn_8023434C(mPlayerNo_0x4)) {
         if (fn_8022C82C(mPlayerNo_0x4) > 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.x += 2.0f;
             }
         } else if (fn_8022C82C(mPlayerNo_0x4) < 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.x -= 2.0f;
             }
         }
         if (fn_8022C76C(mPlayerNo_0x4) < 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y + 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.y += 2.0f;
             }
         } else if (fn_8022C76C(mPlayerNo_0x4) > 0.0f) {
-            if (!blockedAt(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4) &&
-                !blockedAt(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z, mLayer_0x3b4)) {
+            if (!blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x + 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4) &&
+                !blockedAt(JGeometry::TVec3f(mSpinCenter_0x11b4.x - 24.0f, mSpinCenter_0x11b4.y - 24.0f, mSpinCenter_0x11b4.z), mLayer_0x3b4)) {
                 mSpinCenter_0x11b4.y -= 2.0f;
             }
         }
         if (mAnimTimer_0x3fa >= 11) {
-            walkToGroupSpot(this);
+            JGeometry::TVec3f to;
+            getFollowTargetPos_8027FA08(&to);
+            JGeometry::TVec3f dir = to - mPos;
+            dir.z = 0.0f;
+            if (magnitude(dir) >= 6.0f) {
+                dir.normalize();
+                dir.scale(6.0f);
+                mPos += dir;
+            } else {
+                mPos.set(to);
+            }
         }
     } else {
         const Vec& dirStep = lbl_8046BBD8[mMoveDir_0x3e8];
-        JGeometry::TVec3f step(dirStep.x, dirStep.y, dirStep.z);
-        mPos.add(step);
+        mPos.add(JGeometry::TVec3f(dirStep.x, dirStep.y, dirStep.z));
     }
     fn_802709C8();
     fn_802709C8();
     fn_80268B3C();
-    rewriteProbes(this);
+    for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec3f pos;
+        fn_8024B298(i, &pos);
+        pos.sub(mPos);
+        pos.scale(2.0f);
+        pos.add(mPos);
+        gBgRewrite_8053AC98->fn_802A20F0(&pos, mPlayerNo_0x4, mLayer_0x3b4, 0, 1);
+    }
     playSound_8024F0E8(0x20029);
     if (field_0x12b8 != NULL) {
         setEmitterPos_8013CB44(field_0x12b8, &mPos, fn_8024EE14(), fn_8024EE0C() - 1, false);
