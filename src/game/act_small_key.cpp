@@ -38,8 +38,8 @@ void SmallKey_804A8CD8::init() {
     field_0x2b5 = 0;
     if ((mSpawnParam_0x90 & 0x800) == 0) {
         field_0x230.set(mPos.x, mPos.y);
-        s32 row = getGameView_802D6A9C()->field_0x18;
-        s32 col = getGameView_802D6A9C()->field_0x14;
+        s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+        s32 col = getGameView_802D6A9C()->mScreenX_0x14;
         field_0x238 = ((field_0x280 << 24) & 0x1F000000) | ((col & 0xFF) << 16) | ((row & 0xFF) << 8) |
                       (mLayer_0x4 & 0xFF);
         field_0x23c = 0;
@@ -86,8 +86,8 @@ void SmallKey_804A8CD8::init() {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 & 0x1F) << 24) |
                     (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+            s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col & 0xFF) << 16) | ((row & 0xFF) << 8);
         } else {
             value = field_0x2aa << 8;
@@ -146,8 +146,8 @@ void SmallKey_804A8CD8::init() {
     field_0x2a8 = 0xFFFF;
     field_0x298 = -1;
     field_0x29c = -1;
-    s32 row = getGameView_802D6A9C()->field_0x18;
-    s32 col = getGameView_802D6A9C()->field_0x14;
+    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+    s32 col = getGameView_802D6A9C()->mScreenX_0x14;
     field_0x2aa = ((col << 8) & 0xFF00) | (row & 0xFF);
     field_0x2a0 = -1;
     if (held == 0) {
@@ -171,8 +171,8 @@ void SmallKey_804A8CD8::update() {
         return;
     }
     if (field_0xc4 != 0 || (field_0xcc != 0 && field_0xd0 != 0)) {
-        s32 row = getGameView_802D6A9C()->field_0x18;
-        s32 col = getGameView_802D6A9C()->field_0x14;
+        s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+        s32 col = getGameView_802D6A9C()->mScreenX_0x14;
         field_0x2a8 = ((col << 8) & 0xFF00) | (row & 0xFF);
     } else {
         field_0x2a8 = 0xFFFF;
@@ -200,8 +200,8 @@ void SmallKey_804A8CD8::update() {
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                         (mLayer_0x4 & 0xFF);
             if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->field_0x18;
-                s32 col = getGameView_802D6A9C()->field_0x14;
+                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                 value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
             } else {
                 value = field_0x2aa << 8;
@@ -437,8 +437,8 @@ void SmallKey_804A8CD8::update() {
             u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                         (mLayer_0x4 & 0xFF);
             if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-                s32 row = getGameView_802D6A9C()->field_0x18;
-                s32 col = getGameView_802D6A9C()->field_0x14;
+                s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+                s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                 value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
             } else {
                 value = field_0x2aa << 8;
@@ -607,8 +607,8 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000);
         value |= mLayer_0x4 & 0xFF;
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+            s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
         } else {
             value = field_0x2aa << 8;
@@ -708,8 +708,8 @@ void SmallKey_804A8CD8::fn_802C2C30() {
                 u32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                             (mLayer_0x4 & 0xFF);
                 if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-                    s32 row = getGameView_802D6A9C()->field_0x18;
-                    s32 col = getGameView_802D6A9C()->field_0x14;
+                    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+                    s32 col = getGameView_802D6A9C()->mScreenX_0x14;
                     value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
                 } else {
                     value = field_0x2aa << 8;
@@ -738,8 +738,8 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+            s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
         } else {
             value = field_0x2aa << 8;
@@ -816,8 +816,8 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         s32 value = (field_0x23c << 30) | (field_0x2b5 << 29) | ((field_0x280 << 24) & 0x1F000000) |
                     (mLayer_0x4 & 0xFF);
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
-            s32 row = getGameView_802D6A9C()->field_0x18;
-            s32 col = getGameView_802D6A9C()->field_0x14;
+            s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+            s32 col = getGameView_802D6A9C()->mScreenX_0x14;
             value |= ((col << 16) & 0xFF0000) | ((row & 0xFF) << 8);
         } else {
             value = field_0x2aa << 8;
@@ -1246,8 +1246,8 @@ void SmallKey_804A8CD8::fn_802C1D90() {
 void SmallKey_804A8CD8::fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer) {
     field_0x260 = pos;
     field_0x26c = layer;
-    s32 row = getGameView_802D6A9C()->field_0x18;
-    s32 col = getGameView_802D6A9C()->field_0x14;
+    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+    s32 col = getGameView_802D6A9C()->mScreenX_0x14;
     field_0x2aa = ((col & 0xFF) << 8) | (row & 0xFF);
 }
 

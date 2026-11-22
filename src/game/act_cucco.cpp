@@ -260,7 +260,7 @@ void Cucco_804AB8C0::fn_80332A60() {
                 } else {
                     field_0x240 = (s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x64;
                 }
-                if (!(getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 2)) {
+                if (!(getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 2)) {
                     field_0x268--;
                 }
                 if (field_0x2a1 == 0) {

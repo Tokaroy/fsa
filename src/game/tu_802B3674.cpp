@@ -96,14 +96,14 @@ void cls_804A8638::init() {
     fn_8016A3AC()->field_0x1ef = field_0x2d0[5];
     if (field_0x288 == 0) {
         if (getGameView_802D6A9C()->field_0x131f2 != 0) {
-            if (getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 3) {
+            if (getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 3) {
                 field_0x288 = 4;
             } else {
                 field_0x288 = 3;
             }
         }
     }
-    if (field_0x288 == 2 && getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 &&
+    if (field_0x288 == 2 && getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1 &&
         isScreenFlagSet_0x34()) {
         if (getGameView_802D6A9C()->field_0x131f2 != 0) {
             field_0x288 = 3;
@@ -866,7 +866,7 @@ void cls_804A8638::update() {
         }
         break;
     case 2: {
-        if ((getGameView_802D6A9C()->field_0x4 != 4 || getGameView_802D6A9C()->field_0x8 != 1) && isScreenFlagSet_0x34()) {
+        if ((getGameView_802D6A9C()->mStage_0x4 != 4 || getGameView_802D6A9C()->mLevel_0x8 != 1) && isScreenFlagSet_0x34()) {
             field_0x288 = 3;
             field_0x244 = 0;
         }

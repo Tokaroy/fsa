@@ -214,8 +214,8 @@ void Pot_804A9428::die_0x24() {
         }
         if (field_0x240 <= 1) {
             s32 r = fn_801CD664(100);
-            if ((getGameView_802D6A9C()->field_0x4 == 5 && getGameView_802D6A9C()->field_0x8 == 3) ||
-                (getGameView_802D6A9C()->field_0x4 == 3 && getGameView_802D6A9C()->field_0x8 == 3)) {
+            if ((getGameView_802D6A9C()->mStage_0x4 == 5 && getGameView_802D6A9C()->mLevel_0x8 == 3) ||
+                (getGameView_802D6A9C()->mStage_0x4 == 3 && getGameView_802D6A9C()->mLevel_0x8 == 3)) {
                 s32 type;
                 if (r < 25) {
                     type = 0;

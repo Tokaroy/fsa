@@ -459,10 +459,10 @@ s32 BgRewrite_804A7C98::fn_802A1844(const JGeometry::TVec3f* pos, s32 player, s3
         }
         return 1;
     }
-    if (getGameView_802D6A9C()->field_0x4 == 4 && getGameView_802D6A9C()->field_0x8 == 3) {
+    if (getGameView_802D6A9C()->mStage_0x4 == 4 && getGameView_802D6A9C()->mLevel_0x8 == 3) {
         return 8;
     }
-    if ((getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1 && field_0x24 == 0x270) ||
+    if ((getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1 && field_0x24 == 0x270) ||
         field_0x24 == 0x271 || field_0x24 == 0x361) {
         return 8;
     }

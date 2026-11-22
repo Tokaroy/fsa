@@ -246,7 +246,7 @@ void cls_804B1B60::resetCursorTimer() {
 // FIXME(shotgun): 85.76 %, missing/extra; behaviour drift.
 void cls_804B1B60::fn_80443B0C(char* dst, s32 msgId, s32 value) {
     MessageInf1_804AF070* inf1 =
-        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->field_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
+        &static_cast<MessageFile_804AF070*>(gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg"))->inf1;
     const char* text = (const char*)inf1 + (inf1->size + inf1->entries[msgId].textOffset + 8);
     s32 i = 0;
     s32 j = 0;

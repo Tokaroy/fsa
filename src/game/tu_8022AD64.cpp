@@ -414,7 +414,7 @@ void fn_8023E690(s32 player, const JGeometry::TVec3f* pos) {
     if (fn_8023F264(player)) {
         Player_804A6F38* p = gPlayerManager_8053AC90->mPlayers[player];
         p->mPos.set(*pos);
-        p->field_0x2c.set(*pos);
+        p->mPrevPos_0x2c.set(*pos);
     }
 }
 
@@ -443,7 +443,7 @@ JGeometry::TVec3f* fn_8023E4E4(s32 player, s32 index) {
         return &lbl_804CF460;
     }
     if (fn_8023F264(player)) {
-        return &gPlayerManager_8053AC90->mPlayers[player]->field_0x38[index];
+        return &gPlayerManager_8053AC90->mPlayers[player]->mPosHistory_0x38[index];
     }
     return &lbl_804CF460;
 }
@@ -561,7 +561,7 @@ s32 getPlayerLayer_8023DE58(s32 player) {
     if (!fn_8023F264(player)) {
         return 0;
     }
-    return gPlayerManager_8053AC90->mPlayers[player]->field_0x3b4;
+    return gPlayerManager_8053AC90->mPlayers[player]->mLayer_0x3b4;
 }
 
 // fn_8023D9B0 of player `player`'s position plus its field_0x2b8, as seen by `viewer`.
@@ -1426,18 +1426,18 @@ s32 fn_80239470(const JGeometry::TBox2f* box, s32 layer, s32 serial) {
 
 // Counts the present players for which fn_80239718(serial) or fn_8022D9CC holds,
 // fn_8022DB04 holds, fn_80235744 does not, and that stand on the ground (z <= 0);
-// 0 as soon as two of them face differently (field_0x3dc, as fn_80238A68).
+// 0 as soon as two of them face differently (mFacing_0x3dc, as fn_80238A68).
 s32 fn_80239108(s32 serial) {
     s32 facing = -1;
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && (fn_80239718(i, serial) || fn_8022D9CC(i)) && fn_8022DB04(i) &&
             !fn_80235744(i) && !(getPlayerPos_8023E724(i)->z > 0.0f)) {
-            if (facing != -1 && facing != gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc) {
+            if (facing != -1 && facing != gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc) {
                 return 0;
             }
             count++;
-            facing = gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc;
+            facing = gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc;
         }
     }
     return count;
@@ -1503,30 +1503,30 @@ s32 fn_80238BC4(s32 serial) {
     }
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && gPlayerManager_8053AC90->mPlayers[i]->fn_80250030(serial)) {
-            return gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc;
+            return gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc;
         }
     }
     return -1;
 }
 
 // How many present players have fn_8022D7F8 equal to `serial`, all facing the same way
-// (field_0x3dc); 0 as soon as two of them face differently.
+// (mFacing_0x3dc); 0 as soon as two of them face differently.
 s32 fn_80238A68(s32 serial) {
     s32 facing = -1;
     s32 count = 0;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && serial == fn_8022D7F8(i)) {
-            if (facing != -1 && facing != gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc) {
+            if (facing != -1 && facing != gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc) {
                 return 0;
             }
             count++;
-            facing = gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc;
+            facing = gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc;
         }
     }
     return count;
 }
 
-// The facing (field_0x3dc) of the first present player for which
+// The facing (mFacing_0x3dc) of the first present player for which
 // fn_8024FFC8(serial) holds, when fn_80238A68 finds such players at all; else -1.
 s32 fn_8023885C(s32 serial) {
     if (fn_80238A68(serial) <= 0) {
@@ -1534,7 +1534,7 @@ s32 fn_8023885C(s32 serial) {
     }
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && gPlayerManager_8053AC90->mPlayers[i]->fn_8024FFC8(serial)) {
-            return gPlayerManager_8053AC90->mPlayers[i]->field_0x3dc;
+            return gPlayerManager_8053AC90->mPlayers[i]->mFacing_0x3dc;
         }
     }
     return -1;
@@ -2799,11 +2799,11 @@ void fn_80232A0C() {
             }
 
             JGeometry::TVec2f hit;
-            if (a->fn_80273E7C(&b->field_0x4c0, b->field_0x3b4, &hit, true)) {
+            if (a->fn_80273E7C(&b->field_0x4c0, b->mLayer_0x3b4, &hit, true)) {
                 JGeometry::TBox2f box;
                 fn_80233BA0(&box, &b->field_0x5ec);
-                if (b->fn_80272224(&box, a->field_0x3b4,
-                                   a->field_0x458 == 1 ? a->field_0x3f0 : a->field_0x3dc, true,
+                if (b->fn_80272224(&box, a->mLayer_0x3b4,
+                                   a->field_0x458 == 1 ? a->field_0x3f0 : a->mFacing_0x3dc, true,
                                    true)) {
                     a->field_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(i), *getPlayerPos_8023E724(j)));
                     fn_80233C08(&a->field_0x35c);
@@ -2818,32 +2818,32 @@ void fn_80232A0C() {
                 } else {
                     fn_80238548(j, fn_8023B6CC(i) / 2, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 1);
                 }
-            } else if (!(a->fn_8025F590() && fn_8022E438(a->fn_8025F55C(), b->field_0x4)) &&
-                       a->fn_80273518(&b->field_0x4c0, b->field_0x3b4, &hit)) {
+            } else if (!(a->fn_8025F590() && fn_8022E438(a->fn_8025F55C(), b->mPlayerNo_0x4)) &&
+                       a->fn_80273518(&b->field_0x4c0, b->mLayer_0x3b4, &hit)) {
                 JGeometry::TBox2f box;
                 fn_80233BA0(&box, &b->field_0x5ec);
-                if (b->fn_80272224(&box, a->field_0x3b4, a->field_0x3dc, true, false)) {
+                if (b->fn_80272224(&box, a->mLayer_0x3b4, a->mFacing_0x3dc, true, false)) {
                     b->fn_8024F0E8(0x20003);
                     // fn_802379E4 reads only x / y (its callers store just those).
                     fn_802379E4(i, (const JGeometry::TVec3f*)&hit);
                 } else {
                     fn_80238548(j, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0xB);
                 }
-            } else if (a->field_0xb68 == 1 && a->fn_802573E0(&b->field_0x4c0, b->field_0x3b4, &hit)) {
+            } else if (a->field_0xb68 == 1 && a->fn_802573E0(&b->field_0x4c0, b->mLayer_0x3b4, &hit)) {
                 if (gGameRoot_8053AAF8->field_0x7f) {
                     fn_80238548(j, 0, &hit, 1);
                 } else {
                     fn_80238548(j, fn_8023B630(i) / 2, &hit, 1);
                 }
             } else if (!fn_8022AF5C() && !fn_8023A3DC(j) &&
-                       a->fn_80273FB8(&b->field_0x4c0, b->field_0x3b4, &hit)) {
+                       a->fn_80273FB8(&b->field_0x4c0, b->mLayer_0x3b4, &hit)) {
                 if (gGameRoot_8053AAF8->field_0x7f) {
                     fn_80238548(j, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0x1B);
                 } else {
                     fn_80238548(j, 2, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0x1B);
                 }
             } else if (!fn_8022AF5C() && !fn_8023A3DC(j) &&
-                       a->fn_80256F44(&b->field_0x4c0, b->field_0x3b4, &hit)) {
+                       a->fn_80256F44(&b->field_0x4c0, b->mLayer_0x3b4, &hit)) {
                 if (gGameRoot_8053AAF8->field_0x7f) {
                     if (fn_8023A5B8(i)) {
                         fn_80238548(j, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 0x15);
@@ -2905,8 +2905,8 @@ void fn_80231DE4() {
         if (fn_8022DCD8(i)) {
             return;
         }
-        if (fn_8022D75C(i) && !(fn_80233D20(i) && getGameView_802D6A9C()->field_0x4 == 0 &&
-                                getGameView_802D6A9C()->field_0x8 == 0)) {
+        if (fn_8022D75C(i) && !(fn_80233D20(i) && getGameView_802D6A9C()->mStage_0x4 == 0 &&
+                                getGameView_802D6A9C()->mLevel_0x8 == 0)) {
             return;
         }
         if (fn_8022CCAC(i)) {
@@ -3226,7 +3226,7 @@ s32 fn_80230CFC(s32 player) {
     if (fn_8023F264(player) == false) {
         return 2;
     }
-    return gPlayerManager_8053AC90->mPlayers[player]->field_0x3dc;
+    return gPlayerManager_8053AC90->mPlayers[player]->mFacing_0x3dc;
 }
 
 void fn_80230C6C(s32 player) {
@@ -3245,7 +3245,7 @@ void fn_80230BF4(s32 player, s32 mode) {
     if (fn_8023F264(player)) {
         Player_804A6F38* p = gPlayerManager_8053AC90->mPlayers[player];
         p->field_0x3e8 = mode;
-        p->field_0x3dc = mode;
+        p->mFacing_0x3dc = mode;
     }
 }
 

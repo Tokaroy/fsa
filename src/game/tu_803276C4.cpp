@@ -239,14 +239,14 @@ void cls_804AB528::update() {
             field_0x244--;
             if (field_0x94 == 2) {
                 if (mPos.x - getGameView_802D6A9C()->mVisibleBox.f.x > 40.0f) {
-                    s32 row = getGameView_802D6A9C()->field_0x18;
-                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->field_0x14 + 1, row);
+                    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->mScreenX_0x14 + 1, row);
                     gGameRoot_8053AAF8->fn_80136798(0x11, 0);
                 }
             } else if (field_0x94 == 3) {
                 if (mPos.x - getGameView_802D6A9C()->mVisibleBox.i.x < -40.0f) {
-                    s32 row = getGameView_802D6A9C()->field_0x18;
-                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->field_0x14 - 1, row);
+                    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
+                    getGameView_802D6A9C()->fn_802D9FE8(getGameView_802D6A9C()->mScreenX_0x14 - 1, row);
                     gGameRoot_8053AAF8->fn_80136798(0x11, 0);
                 }
             }
@@ -311,7 +311,7 @@ void cls_804AB528::draw() {
     if (field_0x25c == 0.0f) {
         return;
     }
-    if (getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 2) {
+    if (getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 2) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804AB518[field_0x250]);
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);

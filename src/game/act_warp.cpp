@@ -191,8 +191,8 @@ void Warp_804A6DC8::init() {
         mEmitter24c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x553, -1, -1, NULL, NULL, true, 1.0f);
         mEmitter250 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4EE, 0, 0, NULL, NULL, true, 1.0f);
     }
-    field_0x244 = getGameView_802D6A9C()->field_0x14;
-    field_0x248 = getGameView_802D6A9C()->field_0x18;
+    field_0x244 = getGameView_802D6A9C()->mScreenX_0x14;
+    field_0x248 = getGameView_802D6A9C()->mScreenY_0x18;
     for (s32 i = 0; i < 4; i++) {
         field_0x258[i] = 0.0f;
         field_0x268[i] = 0.0f;

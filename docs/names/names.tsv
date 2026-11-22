@@ -167,3 +167,20 @@ address	kind	old	new	confidence	apply	evidence
 804A5770	field	field_0x190	mParamVoic_0x190	med	yes	ActorBase.h 0x190: EnemyParam.csv column "voic"; fn_801F4694 plays lbl_80469F38[voic - 1] when > 0
 804A5770	field	field_0x1a8	mParamDstr_0x1a8	med	yes	ActorBase.h 0x1A8: EnemyParam.csv column "dstr" != 0
 804A5770	field	field_0x1ac	mPlayerPos_0x1ac	med	yes	tu_801EE24C fn_801F32F4: each player's position (getPlayerPos_8023E724, moved into this layer's view space by fn_801CD150); EnemyBase fn_801D0280 / fn_801D0DA0 measure from mPos to field_0x1ac[player]
+804A6F38	field	field_0x4	mPlayerNo_0x4	med	yes	Player.h 0x0004: the player index 0-3, the constructor's argument; used as the player index in isPlayerBitSet(gGameRoot_8053AAF8, field_0x4) and fn_8022C6AC(field_0x4) (tu_8026FC20, tu_8027E5BC)
+804A6F38	field	field_0x2c	mPrevPos_0x2c	med	yes	Player.h 0x002C: fn_802685D4's step is mPos - field_0x2c and it copies mPos here at the end of the frame
+804A6F38	field	field_0x38	mPosHistory_0x38	med	yes	Player.h 0x0038: 0x31 positions, fn_80252CF0 shifts them up one each frame (last store at 0x278); read by fn_8023E4E4
+804A6F38	field	field_0x3b4	mLayer_0x3b4	med	yes	Player.h getLayer() returns it; getPlayerLayer_8023DE58 (134 units) reads it; fn_801F320C / fn_801F5790 compare it with ActorBase mLayer_0x4
+804A6F38	field	field_0x3dc	mFacing_0x3dc	med	yes	Player.h getFacing() returns it; fn_80254744 moves mPos 16 along it (battle mode); fn_80230CFC returns it (2 without a player)
+804A6F38	field	field_0x3f8	mWalkAnimCounter_0x3f8	low	yes	tu_8027E5BC fn_8027EEB4: cleared when standing, stepped by 1 (or 2 on multiples of 3) while moving; Player.h calls it the walk-animation counter. Role read from one function
+804A6F38	field	field_0xbfc	mLife_0xbfc	med	yes	tu_8026FC20 fn_80270DDC: heals by `amount` (act_recovery_heart passes 4), capped at field_0xbf8; fn_80270D34 subtracts its argument; > 0 tested with the down state fn_80270A8C
+804A6F38	field	field_0xbf8	mMaxLife_0xbf8	med	yes	tu_8026FC20 fn_80270DDC: the cap of the life mLife_0xbfc after healing
+804A9950	field	field_0x4	mStage_0x4	med	yes	GameView.h 0x00004 and its top comment: the stage number (21 units read it)
+804A9950	field	field_0x8	mLevel_0x8	med	yes	GameView.h 0x00008: the level within the stage (20 units read it)
+804A9950	field	field_0x14	mScreenX_0x14	med	yes	GameView.h 0x00014: current screen column 0-9, the first index of the [10][10] per-screen tables
+804A9950	field	field_0x18	mScreenY_0x18	med	yes	GameView.h 0x00018: current screen row 0-9
+8049EF20	field	field_0x18	mMessageManager_0x18	med	yes	GameGlobals.h GameRoot 0x18: MessageManager_804AF070* the constructor news (0x158 bytes)
+8049EF20	field	field_0x20	mTitle_0x20	med	yes	GameGlobals.h GameRoot 0x20: Title_804AF820*, the object of mode 1 (0x158 bytes)
+8049EF20	field	field_0x24	mFileSelect_0x24	med	yes	GameGlobals.h GameRoot 0x24: FileSelect_804AFF60*, the object of mode 3 (0x1AC bytes)
+8049EF20	field	field_0x28	mGameMode_0x28	med	yes	GameGlobals.h GameRoot 0x28: GameMode_804B0688*, the object of modes 2 and 5 (0x120 bytes)
+8049EF20	field	field_0xa8	mMsgArchive_0xa8	med	yes	GameGlobals.h GameRoot 0xA8: JKRArchive* of msgus.arc (lbl_80529DEC's field_0x1c)

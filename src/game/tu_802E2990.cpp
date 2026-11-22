@@ -528,7 +528,7 @@ void cls_804A9C20::update() {
                 } else {
                     kind = 0;
                 }
-                if (!(getGameView_802D6A9C()->field_0x4 == 7 && getGameView_802D6A9C()->field_0x8 == 3)) {
+                if (!(getGameView_802D6A9C()->mStage_0x4 == 7 && getGameView_802D6A9C()->mLevel_0x8 == 3)) {
                     getActorManager_801F856C()->spawnActor_801F9484(
                         'GOAL', mLayer_0x4, &mPos, (kind << 17) + ((field_0x238 + 1) << 12) + 2, -1, -1);
                 }

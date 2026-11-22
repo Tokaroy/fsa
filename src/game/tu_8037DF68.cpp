@@ -91,9 +91,9 @@ cls_804AF32C::~cls_804AF32C() {}
 // (act_giant_bomb has the same two-mr getResource shape).
 MessageManager_804AF070::MessageManager_804AF070() {
     lbl_8053AD78 = this;
-    const ResFONT* font = (const ResFONT*)gGameRoot_8053AAF8->field_0xa8->getResource('????', "rock_24_20_4i_e.bfn");
+    const ResFONT* font = (const ResFONT*)gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "rock_24_20_4i_e.bfn");
     mFont = new JUTResFont(font, NULL);
-    mBmg = (MessageFile_804AF070*)gGameRoot_8053AAF8->field_0xa8->getResource('????', "gc_four_swords_text_e.bmg");
+    mBmg = (MessageFile_804AF070*)gGameRoot_8053AAF8->mMsgArchive_0xa8->getResource('????', "gc_four_swords_text_e.bmg");
     for (s32 i = 0; i < 4; i++) {
         mWindows[i] = new MessageWindow_804AF490(i);
         field_0xc[i].x = 0.0f;

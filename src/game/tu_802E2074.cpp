@@ -24,9 +24,9 @@ void cls_804A9BC8::init() {
     field_0x234 = (mSpawnParam_0x90 >> 23) & 0xF;
     field_0x238 = (mSpawnParam_0x90 >> 19) & 0xF;
 
-    s32 stage = getGameView_802D6A9C()->field_0x4;
+    s32 stage = getGameView_802D6A9C()->mStage_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
-    const char* name = getGameView_802D6A9C()->fn_802D9C7C(stage, view->field_0x8);
+    const char* name = getGameView_802D6A9C()->fn_802D9C7C(stage, view->mLevel_0x8);
     s32 tile = getGameView_802D6A9C()->field_0x60[field_0x238][field_0x234];
     if (tile == 0xFF) {
         tile = 0;

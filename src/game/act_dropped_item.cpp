@@ -55,8 +55,8 @@ void DroppedItem_804A8C80::init() {
     field_0x264 = mSpawnParam_0x90;
     field_0x268.set(mPos.x, mPos.y);
 
-    s32 viewRow = getGameView_802D6A9C()->field_0x18;
-    s32 viewCol = getGameView_802D6A9C()->field_0x14;
+    s32 viewRow = getGameView_802D6A9C()->mScreenY_0x18;
+    s32 viewCol = getGameView_802D6A9C()->mScreenX_0x14;
     field_0x270 = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
 
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -100,8 +100,8 @@ void DroppedItem_804A8C80::init() {
 
         if (field_0x234 == 0) {
             // The original re-reads the view row/col and rebuilds the key (field_0x270 above) here.
-            viewRow = getGameView_802D6A9C()->field_0x18;
-            viewCol = getGameView_802D6A9C()->field_0x14;
+            viewRow = getGameView_802D6A9C()->mScreenY_0x18;
+            viewCol = getGameView_802D6A9C()->mScreenX_0x14;
             JGeometry::TVec2f pos(mPos.x, mPos.y);
             s32 packed = (field_0x244 << 24) | ((viewCol & 0xFF) << 16) | ((viewRow & 0xFF) << 8) | (mLayer_0x4 & 0xFF);
             u32 key = mSpawnParam_0x90;

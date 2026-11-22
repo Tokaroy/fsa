@@ -47,7 +47,7 @@ static inline void fixKind(WingedForceGem_804AB098* self) {
 
 // The "force gem got" message, once per view.
 static inline void showMessage(s32 who) {
-    if (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0 &&
+    if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
         !getGameView_802D6A9C()->fn_802D7F40(0)) {
         lbl_8053AED0->fn_8043D67C(0x13F, who, 0);
         getGameView_802D6A9C()->fn_802D7F84(0, true);

@@ -345,7 +345,7 @@ void NPCLaunchedByThwomp2_804AD1C8::fn_8035680C() {
         return;
     case 1:
     case 3:
-        if (field_0x268 == 1 && getGameView_802D6A9C()->field_0x4 == 1 && getGameView_802D6A9C()->field_0x8 == 1) {
+        if (field_0x268 == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
             field_0x248 = 0;
             return;
         }

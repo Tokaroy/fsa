@@ -23,7 +23,7 @@ void HammerBulge_804A88E8::init() {
 
     if (isScreenFlagSet_0x34()) {
         if (field_0x234 > 0) {
-            if (getGameView_802D6A9C()->field_0x4 == 2 && getGameView_802D6A9C()->field_0x8 == 1) {
+            if (getGameView_802D6A9C()->mStage_0x4 == 2 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
                 u32 msg = 0x388;
                 if (field_0x234 != 5) {
                     msg = 0x389;
@@ -94,7 +94,7 @@ void HammerBulge_804A88E8::update() {
                         (fn_8023A5B8(j) == 1 && dist < 50.0f * scale)) {
                         if (field_0x234 > 0 && field_0x234 <= 8) {
                             JGeometry::TVec3f pos = mPos;
-                            if (getGameView_802D6A9C()->field_0x4 == 2 && getGameView_802D6A9C()->field_0x8 == 1) {
+                            if (getGameView_802D6A9C()->mStage_0x4 == 2 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
                                 pos.x -= 8.0f;
                             }
 
@@ -142,7 +142,7 @@ void HammerBulge_804A88E8::update() {
                             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x291, 0, 0, NULL, NULL, true, 0.4f);
                             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x5c, 0, 0, NULL, NULL, true, 0.5f);
 
-                            if (getGameView_802D6A9C()->field_0x4 == 2 && getGameView_802D6A9C()->field_0x8 == 1) {
+                            if (getGameView_802D6A9C()->mStage_0x4 == 2 && getGameView_802D6A9C()->mLevel_0x8 == 1) {
                                 pos.x += 16.0f;
                                 s32 msg = 0x388;
                                 if (field_0x234 != 5) {

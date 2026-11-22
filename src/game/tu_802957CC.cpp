@@ -244,8 +244,8 @@ void cls_804A7AE0::vfunc_0x10() {
         if (warp == NULL) {
             continue;
         }
-        if (getGameView_802D6A9C()->field_0x14 != warp->field_0x244 ||
-            getGameView_802D6A9C()->field_0x18 != warp->field_0x248) {
+        if (getGameView_802D6A9C()->mScreenX_0x14 != warp->field_0x244 ||
+            getGameView_802D6A9C()->mScreenY_0x18 != warp->field_0x248) {
             continue;
         }
         s32 v = (mSpawnParam_0x90 >> 7) & 0x1F;

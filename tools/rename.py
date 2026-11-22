@@ -307,6 +307,17 @@ def to_current(text):
     return text
 
 
+def fields_to_placeholders(text):
+    """text with every field row's new name put back to its `field_0x..`
+    placeholder (plain: a new field name keeps its offset, so it maps to one
+    placeholder whatever class it is in). For comparing generator output."""
+    rows, _ = read_manifest()
+    for r in rows:
+        if r["kind"] == "field" and r["new"] in text:
+            text, _ = substitute(text, r["new"], r["old"], "function")
+    return text
+
+
 # ---------------------------------------------------------------- member rows (virtual slots)
 
 CODE_SUFFIX = (".h", ".hpp", ".cpp", ".cp", ".c", ".inc")

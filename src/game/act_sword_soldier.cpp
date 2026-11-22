@@ -309,8 +309,8 @@ void SwordSoldier_8049FCA0::init() {
         // fall through
     default:
         mState = 1;
-        if (lbl_80529DEC[0x46] == 0 && lbl_80529DEC[0x47] == 0 && getGameView_802D6A9C()->field_0x18 == 2 &&
-            getGameView_802D6A9C()->field_0x14 == 2) {
+        if (lbl_80529DEC[0x46] == 0 && lbl_80529DEC[0x47] == 0 && getGameView_802D6A9C()->mScreenY_0x18 == 2 &&
+            getGameView_802D6A9C()->mScreenX_0x14 == 2) {
             if ((s32)(0.1f * mPos.x) == 0x68 && (s32)(0.1f * mPos.y) == 0x57) {
                 field_0x23c = (s32)(40.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x6E;
                 field_0x290 = 1.4f;

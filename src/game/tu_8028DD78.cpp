@@ -41,8 +41,8 @@ void cls_804A7A68::init() {
 
 // Moves the view one screen towards pos when it lies outside the visible box.
 static inline void scrollTo(JGeometry::TVec2f pos) {
-    s32 col = getGameView_802D6A9C()->field_0x14;
-    s32 row = getGameView_802D6A9C()->field_0x18;
+    s32 col = getGameView_802D6A9C()->mScreenX_0x14;
+    s32 row = getGameView_802D6A9C()->mScreenY_0x18;
     JGeometry::TBox2f box;
     box = getGameView_802D6A9C()->mVisibleBox;
     if (pos.x < box.i.x) {

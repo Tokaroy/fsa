@@ -1068,7 +1068,7 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
     if (fn_8022F514(found) == true) {
         other = fn_8022F3DC(found);
     }
-    if (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0 &&
+    if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
         !getGameView_802D6A9C()->fn_802D7F40(0)) {
         lbl_8053AED0->fn_8043D67C(0x13f, other, 0);
         getGameView_802D6A9C()->fn_802D7F84(0, true);

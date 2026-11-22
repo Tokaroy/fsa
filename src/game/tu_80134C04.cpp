@@ -120,9 +120,9 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     field_0x98 = lbl_80529DEC.mHeap;
     field_0xa0 = lbl_80529DEC.field_0xc;
     field_0xa4 = lbl_80529DEC.field_0x14;
-    field_0xa8 = lbl_80529DEC.field_0x1c;
+    mMsgArchive_0xa8 = lbl_80529DEC.field_0x1c;
     field_0x98->becomeCurrentHeap();
-    field_0x18 = new (field_0x98, 0) MessageManager_804AF070();
+    mMessageManager_0x18 = new (field_0x98, 0) MessageManager_804AF070();
     gGameRoot2_8053AB10 = new (field_0x98, 0) GameRoot2_8049F108(field_0x98);
     field_0x8 = lbl_80529DEC.field_0x5c;
     field_0xc = lbl_80529DEC.field_0x60;
@@ -135,8 +135,8 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     field_0xb0 = NULL;
     field_0x4 = NULL;
     field_0x1c = NULL;
-    field_0x28 = NULL;
-    field_0x24 = NULL;
+    mGameMode_0x28 = NULL;
+    mFileSelect_0x24 = NULL;
     field_0x2c = NULL;
     field_0x30 = NULL;
     field_0xfd = 0;
@@ -154,7 +154,7 @@ GameRoot_8049EF20::GameRoot_8049EF20() : mRandom(0) {
     field_0x108 = 0;
     field_0x7c = 0;
     u8 group = field_0x98->changeGroupID(1);
-    field_0x20 = new (field_0x98, 0) Title_804AF820();
+    mTitle_0x20 = new (field_0x98, 0) Title_804AF820();
     field_0x98->changeGroupID(group);
     field_0x87 = 0;
     ResTIMG* img = (ResTIMG*)fn_804030C4('TIMG', "kk_rival_01.bti");
@@ -199,23 +199,23 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
         delete field_0x4;
         field_0x4 = NULL;
     }
-    delete field_0x18;
-    field_0x18 = NULL;
+    delete mMessageManager_0x18;
+    mMessageManager_0x18 = NULL;
     delete gGameRoot2_8053AB10;
     delete field_0x8;
     delete field_0xc;
     delete field_0x10;
-    if (field_0x20 != NULL) {
-        delete field_0x20;
-        field_0x20 = NULL;
+    if (mTitle_0x20 != NULL) {
+        delete mTitle_0x20;
+        mTitle_0x20 = NULL;
     }
-    if (field_0x28 != NULL) {
-        delete field_0x28;
-        field_0x28 = NULL;
+    if (mGameMode_0x28 != NULL) {
+        delete mGameMode_0x28;
+        mGameMode_0x28 = NULL;
     }
-    if (field_0x24 != NULL) {
-        delete field_0x24;
-        field_0x28 = NULL; // sic: the original clears field_0x28 here, not field_0x24
+    if (mFileSelect_0x24 != NULL) {
+        delete mFileSelect_0x24;
+        mGameMode_0x28 = NULL; // sic: the original clears mGameMode_0x28 here, not mFileSelect_0x24
     }
     if (field_0x2c != NULL) {
         delete field_0x2c;
@@ -243,7 +243,7 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
     delete field_0x40;
     field_0x40 = NULL;
     field_0xa4->unmount();
-    field_0xa8->unmount();
+    mMsgArchive_0xa8->unmount();
     lbl_80529DEC.field_0x20->unmount();
     fn_803007A0();
     delete field_0xa0;
@@ -895,19 +895,19 @@ void GameRoot_8049EF20::fn_80137300() {
                 }
                 delete field_0x1c;
                 field_0x1c = NULL;
-                delete field_0x28;
-                field_0x28 = NULL;
-                delete field_0x24;
-                field_0x24 = NULL;
+                delete mGameMode_0x28;
+                mGameMode_0x28 = NULL;
+                delete mFileSelect_0x24;
+                mFileSelect_0x24 = NULL;
                 delete field_0x2c;
                 field_0x2c = NULL;
                 delete field_0x30;
                 field_0x30 = NULL;
-                delete field_0x20;
-                field_0x20 = NULL;
-                if (field_0x20 == NULL) {
+                delete mTitle_0x20;
+                mTitle_0x20 = NULL;
+                if (mTitle_0x20 == NULL) {
                     u8 group = field_0x98->changeGroupID(1);
-                    field_0x20 = new (field_0x98, 0) Title_804AF820();
+                    mTitle_0x20 = new (field_0x98, 0) Title_804AF820();
                     field_0x98->changeGroupID(group);
                     field_0x87 = 0;
                 }
@@ -1568,8 +1568,8 @@ void GameRoot_8049EF20::fn_80135494(s32 mode) {
             return;
         }
         field_0x60 = 4;
-        if (getGameView_802D6A9C()->field_0x4 != 0 || getGameView_802D6A9C()->field_0x8 != 0 ||
-            (getGameView_802D6A9C()->field_0x4 == 0 && getGameView_802D6A9C()->field_0x8 == 0 &&
+        if (getGameView_802D6A9C()->mStage_0x4 != 0 || getGameView_802D6A9C()->mLevel_0x8 != 0 ||
+            (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
              (lbl_8050EC80.getCurrentFile().mFlags & 1))) {
             playStageMusic(this);
         }
@@ -1596,22 +1596,22 @@ void GameRoot_8049EF20::fn_801352F4(s32 mode) {
         }
         break;
     case 1:
-        if (field_0x20 != NULL) {
-            delete field_0x20;
-            field_0x20 = NULL;
+        if (mTitle_0x20 != NULL) {
+            delete mTitle_0x20;
+            mTitle_0x20 = NULL;
         }
         break;
     case 2:
     case 5:
-        if (field_0x28 != NULL) {
-            delete field_0x28;
-            field_0x28 = NULL;
+        if (mGameMode_0x28 != NULL) {
+            delete mGameMode_0x28;
+            mGameMode_0x28 = NULL;
         }
         break;
     case 3:
-        if (field_0x24 != NULL) {
-            delete field_0x24;
-            field_0x24 = NULL;
+        if (mFileSelect_0x24 != NULL) {
+            delete mFileSelect_0x24;
+            mFileSelect_0x24 = NULL;
         }
         break;
     case 4:
@@ -1642,14 +1642,14 @@ void GameRoot_8049EF20::fn_80135020(s32 mode) {
                 s32 level = lbl_80529DEC.field_0x11c;
                 s32 stage = lbl_80529DEC.field_0x118;
                 GameView_804A9950* view = getGameView_802D6A9C();
-                view->field_0x4 = stage;
-                view->field_0x8 = level;
+                view->mStage_0x4 = stage;
+                view->mLevel_0x8 = level;
             } else {
                 s32 level = lbl_80529DEC.field_0x12c;
                 s32 stage = lbl_80529DEC.field_0x128;
                 GameView_804A9950* view = getGameView_802D6A9C();
-                view->field_0x4 = stage;
-                view->field_0x8 = level;
+                view->mStage_0x4 = stage;
+                view->mLevel_0x8 = level;
             }
             field_0x4->fn_8013A1A4();
         }
@@ -1663,25 +1663,25 @@ void GameRoot_8049EF20::fn_80135020(s32 mode) {
         }
         break;
     case 1:
-        if (field_0x20 == NULL) {
+        if (mTitle_0x20 == NULL) {
             u8 group = field_0x98->changeGroupID(1);
-            field_0x20 = new (field_0x98, 0) Title_804AF820();
+            mTitle_0x20 = new (field_0x98, 0) Title_804AF820();
             field_0x98->changeGroupID(group);
             field_0x87 = 0;
         }
         break;
     case 2:
     case 5:
-        if (field_0x28 == NULL) {
+        if (mGameMode_0x28 == NULL) {
             u8 group = field_0x98->changeGroupID(1);
-            field_0x28 = new (field_0x98, 0) GameMode_804B0688();
+            mGameMode_0x28 = new (field_0x98, 0) GameMode_804B0688();
             field_0x98->changeGroupID(group);
         }
         break;
     case 3:
-        if (field_0x24 == NULL) {
+        if (mFileSelect_0x24 == NULL) {
             u8 group = field_0x98->changeGroupID(1);
-            field_0x24 = new (field_0x98, 0) FileSelect_804AFF60();
+            mFileSelect_0x24 = new (field_0x98, 0) FileSelect_804AFF60();
             field_0x98->changeGroupID(group);
         }
         break;

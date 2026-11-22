@@ -374,9 +374,9 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
     case 13: {
         gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
         gGameRoot_8053AAF8->fn_80134D14(0);
-        s32 b = lbl_8046F628_DC[getGameView_802D6A9C()->field_0x4][getGameView_802D6A9C()->field_0x8];
+        s32 b = lbl_8046F628_DC[getGameView_802D6A9C()->mStage_0x4][getGameView_802D6A9C()->mLevel_0x8];
         getGameView_802D6A9C()->fn_802D9FF4(
-            lbl_8046F628_5C[getGameView_802D6A9C()->field_0x4][getGameView_802D6A9C()->field_0x8], b);
+            lbl_8046F628_5C[getGameView_802D6A9C()->mStage_0x4][getGameView_802D6A9C()->mLevel_0x8], b);
         gGameRoot_8053AAF8->fn_80136798(0xD, 0);
         getGameView_802D6A9C()->fn_802D6AAC(3);
         gAudioMgr_8053AF80->fn_8045873C(0);

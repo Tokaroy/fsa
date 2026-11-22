@@ -197,8 +197,8 @@ void GiantBomb_804AC588::update() {
         break;
     case 2:
         if (isScreenFlagSet_0x34() == 1 || getScreenFlagBit_0x3C() == 0) {
-            if (field_0x24c == 1 && getGameView_802D6A9C()->field_0x4 == 1 &&
-                getGameView_802D6A9C()->field_0x8 == 0) {
+            if (field_0x24c == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 &&
+                getGameView_802D6A9C()->mLevel_0x8 == 0) {
                 fn_801F3604();
             }
             mState = 4;
@@ -288,8 +288,8 @@ void GiantBomb_804AC588::update() {
         mBox.addPos(off);
         fn_801F2B20(5);
         if (mTimer <= 0) {
-            if (field_0x24c == 1 && getGameView_802D6A9C()->field_0x4 == 1 &&
-                getGameView_802D6A9C()->field_0x8 == 0) {
+            if (field_0x24c == 1 && getGameView_802D6A9C()->mStage_0x4 == 1 &&
+                getGameView_802D6A9C()->mLevel_0x8 == 0) {
                 fn_801F3668();
             } else {
                 mAlive = false;

@@ -10,10 +10,10 @@
 // "GameView_804A9950" is a provisional name carrying its vtable address
 // (docs/PLAN.md, "Placeholder names"; it was GameView_802D6A9C, after the
 // getter, until the vtable was found). The 10 x 10 grid below is the stage's
-// screens: field_0x14/field_0x18 are the current column/row (both checked
+// screens: mScreenX_0x14/mScreenY_0x18 are the current column/row (both checked
 // against [0, 10) by fn_802D8128 and stepped by fn_802DCD1C's direction), and
-// most per-screen tables are indexed [field_0x18][field_0x14]. field_0x4 and
-// field_0x8 select the stage: fn_802D8128 indexes the 16-byte rows of the
+// most per-screen tables are indexed [mScreenY_0x18][mScreenX_0x14]. mStage_0x4 and
+// mLevel_0x8 select the stage: fn_802D8128 indexes the 16-byte rows of the
 // string table lbl_804A9530 with them to build "d_map%s_%d%d_mmm_2_%d.szs",
 // and the free predicates at the end (fn_802DEB58, ...) compare them with
 // pairs such as (3, 1).
@@ -25,7 +25,7 @@
 // mangled names these declarations produce, so a changed parameter type is a
 // symbols.txt rename too (the return type is not part of the name).
 // "N units" counts the other game units calling the function. "layer" is an
-// actor layer (ActorBase_804A5770::field_0x4): the tables indexed by it fold
+// actor layer (ActorBase_804A5770::mStage_0x4): the tables indexed by it fold
 // layers 0-8 into slot 0 and layer n > 8 into n - 7 (the subfc/subfe/andc
 // clamp). Parameter types beyond the register class (u8 for a plain stb, s32
 // for a word) are the narrowest the asm shows; where a body only stores a
@@ -63,10 +63,10 @@ public:
     void fn_802D3A18();
     // 1 unit. field_0x131a8[index] = value (tu_801F6058 reads the four words).
     void fn_802D39B8(s32 index, s32 value);
-    // 1 unit. field_0x14 == field_0xc && field_0x18 == field_0x10.
+    // 1 unit. mScreenX_0x14 == field_0xc && mScreenY_0x18 == field_0x10.
     bool fn_802D39CC();
     // 1 unit (the spawner, into ActorBase_804A5770::field_0x170).
-    // field_0x60[field_0x18][field_0x14]. s32: the spawner passes the result
+    // field_0x60[mScreenY_0x18][mScreenX_0x14]. s32: the spawner passes the result
     // on to its s32 setter without a clrlwi.
     s32 fn_802D39FC();
     // 0x990 bytes; this unit only (fn_802D9CD8, vfunc_0xC). Reads the map
@@ -151,8 +151,8 @@ public:
     void fn_802DBD60();
     // 31 units / 42 calls (this unused). gGameRoot2_8053AB10->0x24's byte at 0x1E8.
     u8 fn_802DCD0C();
-    // 2 units / 5 calls. Unless fn_802DCD0C(), steps field_0x14 by the sign
-    // of dir[0] or field_0x18 by that of dir[1], reloads the screen
+    // 2 units / 5 calls. Unless fn_802DCD0C(), steps mScreenX_0x14 by the sign
+    // of dir[0] or mScreenY_0x18 by that of dir[1], reloads the screen
     // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
     // is a guess, a two-int struct passed by value would look the same.
@@ -246,7 +246,7 @@ public:
     // (index clrlwi 24): tests / sets or clears bit `bit`.
     bool fn_802D7E5C(u8 index, s32 bit);
     void fn_802D7EB0(u8 index, s32 bit, bool set);
-    // 6 units / 18 calls. Tests bit `bit` of field_0x348[field_0x4][field_0x8]
+    // 6 units / 18 calls. Tests bit `bit` of field_0x348[mStage_0x4][mLevel_0x8]
     // (the word read through gGameRoot_8053AAF8, the stage from this).
     bool fn_802D7F40(s32 bit);
     // 4 units. Sets or clears it.
@@ -321,12 +321,12 @@ public:
     void fn_802D79E8(s32 index, f32 a, f32 b, bool flag);
 
     /* 0x00000 vtable */
-    /* 0x00004 */ s32 field_0x4; // stage (see the top comment); 21 units read it
-    /* 0x00008 */ s32 field_0x8; // level within the stage; 20 units read it
+    /* 0x00004 */ s32 mStage_0x4; // stage (see the top comment); 21 units read it
+    /* 0x00008 */ s32 mLevel_0x8; // level within the stage; 20 units read it
     /* 0x0000C */ s32 field_0xc;
     /* 0x00010 */ s32 field_0x10;
-    /* 0x00014 */ s32 field_0x14; // current screen column, 0-9 (zeroed by the constructor)
-    /* 0x00018 */ s32 field_0x18; // current screen row, 0-9 (zeroed by the constructor)
+    /* 0x00014 */ s32 mScreenX_0x14; // current screen column, 0-9 (zeroed by the constructor)
+    /* 0x00018 */ s32 mScreenY_0x18; // current screen row, 0-9 (zeroed by the constructor)
     /* 0x0001C */ s32 field_0x1c;
     /* 0x00020 */ s32 field_0x20;
     /* 0x00024 */ s32 field_0x24;
@@ -435,7 +435,7 @@ extern "C" GameView_804A9950* getGameView_802D6A9C(void);
 
 // Free functions of game/tu_802D39B8.cpp: no view argument (callers leave r3
 // unset). Each returns 0 or 1 from the stage numbers of getGameView_802D6A9C() (the
-// view's field_0x4 / field_0x8), and returns 0 at once when
+// view's mStage_0x4 / mLevel_0x8), and returns 0 at once when
 // gGameRoot_8053AAF8->0x7F is 0, except where said.
 //
 // Defined in game/tu_802D39B8.cpp (C++ linkage, renamed in symbols.txt).
@@ -448,7 +448,7 @@ bool fn_802DE9A0(void);
 // 0x128 * 4 is 4 or 9.
 bool fn_802DEABC(void);
 
-// 2 units. (field_0x4, field_0x8) == (stage, level) and
+// 2 units. (mStage_0x4, mLevel_0x8) == (stage, level) and
 // field_0x60[row][col] == value.
 bool fn_802DE764(s32 stage, s32 level, s32 value);
 // 4 units. Stage (0, 0).
