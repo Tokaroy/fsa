@@ -100,9 +100,7 @@ void RecoveryHeart_8049F4F0::update() {
         }
         mPos.x += JMath::sincosTable_.sinShort(field_0x23c);
         JGeometry::TVec3f probe;
-        probe.x = mPos.x;
-        probe.y = mPos.y;
-        probe.z = mPos.z;
+        probe.set(mPos);
         probe.y += 4.0f;
         if (vfunc_0x4C(field_0x4, &probe) == true) {
             field_0x3c.x = 0.0f;
