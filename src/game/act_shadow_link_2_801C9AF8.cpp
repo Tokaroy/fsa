@@ -293,6 +293,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
         if (field_0x560 != 4) {
             mask = 1 << field_0x560;
         }
+        u8 remaining = mask;
         if (mHitBox.mBox.f.x - mHitBox.mBox.i.x > 0.0f && mHitBox.mBox.f.y - mHitBox.mBox.i.y > 0.0f) {
             u8 hits = mHitBox.fn_8021693C(mask);
             if (hits != 0) {
@@ -313,7 +314,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                             setState_801C3B7C(0x20);
                             mFlags |= 0x80000;
                         }
-                        mask &= ~bit;
+                        remaining &= ~bit;
                     }
                 }
             }
@@ -327,7 +328,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
             mBox.f.x = mHitBox.mBox.f.x;
             mBox.f.y = mHitBox.mBox.f.y;
             u8 result;
-            if (mask == 0) {
+            if (remaining == 0) {
                 result = 0;
             } else {
                 result = getPlayersInBox_801F2740(-1);
@@ -338,7 +339,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                     for (s32 j = 0; j < 4; j++) {
                         u32 bit = 1 << j;
                         if (result & bit) {
-                            if (mask & bit) {
+                            if (remaining & bit) {
                                 if (isPlayerOnLowerLayer_801F329C(j)) {
                                     JGeometry::TVec3f in(out.x, out.y, 0.0f);
                                     JGeometry::TVec3f res;
