@@ -491,15 +491,8 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
     }
-    if (code == 0x17) {
-        if (mVel_0x3c.x <= 0.0f) {
-            return;
-        }
-    }
-    if (code == 0x18) {
-        if (mVel_0x3c.x >= 0.0f) {
-            return;
-        }
+    if ((code == 0x17 && mVel_0x3c.x <= 0.0f) || (code == 0x18 && mVel_0x3c.x >= 0.0f)) {
+        return;
     }
     mPos = target;
     mLayer_0x4 = newLayer;
