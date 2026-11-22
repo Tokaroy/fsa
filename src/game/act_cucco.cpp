@@ -6,6 +6,7 @@
 #include "game/GameAudio.h"
 #include "game/Map.h"
 #include "game/Player.h"
+#include "game/PlayerBit.h"
 #include "game/SpriteParams.h"
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
@@ -30,7 +31,7 @@ Cucco_804AB8C0::~Cucco_804AB8C0() {
     releaseEmitter_801EE434(mEmitter300);
 }
 
-// FIXME(shotgun): 91.10 %, missing/extra; behaviour near.
+// FIXME(shotgun): 94.60 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::init() {
     u16 angle = 0;
     mBox.i.x = -7.0f;
@@ -81,7 +82,7 @@ void Cucco_804AB8C0::init() {
     field_0x278 = 0;
     field_0x27c = 0x32;
     field_0x280 = 0;
-    setVec(field_0x2dc, mPos);
+    field_0x2dc = mPos;
     field_0x294 = mLayer_0x4;
     field_0x268 = 10;
     mEmitter2f4 = NULL;
@@ -113,7 +114,7 @@ void Cucco_804AB8C0::init() {
     field_0x2c4.z = 0.0f;
     field_0x184 = 20.0f;
     field_0x284 = 0;
-    setVec(field_0x2e8, mPos);
+    field_0x2e8 = mPos;
     switch (field_0x290) {
     case 1: {
         s32 player;
@@ -412,7 +413,7 @@ u8 Cucco_804AB8C0::fn_80332378() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 98.74 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 99.08 %, scheduling+regalloc; behaviour clean.
 void Cucco_804AB8C0::fn_80331E6C() {
     if (field_0x2a4[0] == 1) {
     s32 count;
@@ -491,15 +492,8 @@ void Cucco_804AB8C0::fn_80331E6C() {
             return;
         }
     }
-    if (code == 0x17) {
-        if (mVel_0x3c.x <= 0.0f) {
-            return;
-        }
-    }
-    if (code == 0x18) {
-        if (mVel_0x3c.x >= 0.0f) {
-            return;
-        }
+    if ((code == 0x17 && mVel_0x3c.x <= 0.0f) || (code == 0x18 && mVel_0x3c.x >= 0.0f)) {
+        return;
     }
     mPos = target;
     mLayer_0x4 = newLayer;
@@ -714,7 +708,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// FIXME(shotgun): 98.09 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 98.34 %, missing/extra + reloc-name; behaviour drift.
 void Cucco_804AB8C0::update() {
     if (field_0x230 == 2) {
         if (fn_8022F9E4(field_0x25c, mSerial, false, false) == 1) {
@@ -821,7 +815,7 @@ void Cucco_804AB8C0::update() {
                     if (field_0x2a3 == 1) {
                         speed = 2.0f;
                     }
-                    if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0 || field_0x2b4 == 0.0f) {
+                    if (viewLayerFlag(mLayer_0x4) == 0 || field_0x2b4 == 0.0f) {
                         field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                         field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
                     } else {
@@ -847,7 +841,7 @@ void Cucco_804AB8C0::update() {
                 }
             }
             s32 layer = mLayer_0x4;
-            if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
+            if (viewLayerFlag(layer) == 1) {
                 if (field_0x23c <= 0) {
                     field_0x2b8.y += field_0x2b4;
                 }
@@ -922,7 +916,7 @@ void Cucco_804AB8C0::update() {
                 if (field_0x2a3 == 1) {
                     speed = 4.0f;
                 }
-                if (getGameView_802D6A9C()->field_0x131df[mLayer_0x4] == 0 || field_0x2b4 == 0.0f) {
+                if (viewLayerFlag(mLayer_0x4) == 0 || field_0x2b4 == 0.0f) {
                     field_0x2b8.x = speed * JMath::sincosTable_.sinShort(outAngle);
                     field_0x2b8.y = speed * JMath::sincosTable_.cosShort(outAngle);
                 } else {
@@ -966,7 +960,7 @@ void Cucco_804AB8C0::update() {
                 getActorManager_801F856C()->spawnActor_801F9484(ACTOR_NIWA, 0, &spawnPos, (field_0x2a1 << 12) | 1, -1, -1);
             }
             s32 layer = mLayer_0x4;
-            if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
+            if (viewLayerFlag(layer) == 1) {
                 field_0x2b8.y += field_0x2b4;
                 if (field_0x2b4 == 0.0f) {
                     field_0x2a9 = 0;
@@ -982,13 +976,14 @@ void Cucco_804AB8C0::update() {
     case 3:
         if (!field_0xc4) {
             switch (field_0x290) {
+            // The original dispatches 0..8 through a jump table (0, 1, 4-7 and above 8 come here).
             default: {
                 field_0x23c = 0x12;
                 field_0x2b8.x = mVel_0x3c.x;
                 field_0x2b8.y = mVel_0x3c.y;
                 field_0x2b8.z = mVel_0x3c.z;
                 s32 layer = mLayer_0x4;
-                if (getGameView_802D6A9C()->field_0x131df[layer] == 1) {
+                if (viewLayerFlag(layer) == 1) {
                     mPos.y -= mPos.z;
                     mPos.z = 0.0f;
                     field_0x2b8.y -= field_0x2b8.z;
@@ -1045,7 +1040,7 @@ void Cucco_804AB8C0::update() {
             field_0x94 = 0xFFFF;
             for (s32 i = 0; i < 4; i++) {
                 if (isPlayerActive_8023F264(i) && i != field_0x25c && !arePlayersInSameGroup_8022E438(i, field_0x25c) && !hasPlayerLeader_8022F514(i) &&
-                    ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) &&
+                    isPlayerBitSet(gGameRoot_8053AAF8, i) == 1 &&
                     (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !isPlayerDead_80236B50(i))
                 {
                     if (gGameRoot_8053AAF8->field_0x7f == 1) {
