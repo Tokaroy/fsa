@@ -179,14 +179,13 @@ void cls_8049EA88::update() {
 
 // Not auto-inlined: update calls fn_8013056C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-// FIXME(shotgun): 94.52 %, scheduling; behaviour clean.
 s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
     s32 serial = field_0x238;
     if (mode == 1) {
         serial = field_0x234;
     }
     fn_8022FE80(0, field_0x4, serial, true, false);
-    if (fn_8038BD08(0, msg, field_0x4, mPos, 0x22)) {
+    if (fn_8038BD08(0, msg, getField_0x4(), mPos, 0x22)) {
         switch (mode) {
         case 0: {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234);
