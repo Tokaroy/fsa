@@ -81,7 +81,7 @@ void Cucco_804AB8C0::init() {
     field_0x278 = 0;
     field_0x27c = 0x32;
     field_0x280 = 0;
-    setVec(field_0x2dc, mPos);
+    field_0x2dc = mPos;
     field_0x294 = mLayer_0x4;
     field_0x268 = 10;
     mEmitter2f4 = NULL;
@@ -113,7 +113,7 @@ void Cucco_804AB8C0::init() {
     field_0x2c4.z = 0.0f;
     field_0x184 = 20.0f;
     field_0x284 = 0;
-    setVec(field_0x2e8, mPos);
+    field_0x2e8 = mPos;
     switch (field_0x290) {
     case 1: {
         s32 player;
