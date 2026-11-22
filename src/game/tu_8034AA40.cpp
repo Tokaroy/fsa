@@ -53,7 +53,7 @@ void cls_804AC8C0::init() {
     }
     mPos.x = 16.0f * (f32)((s32)mPos.x / 16) + 8.0f;
     mPos.y = 16.0f * (f32)((s32)mPos.y / 16) + 8.0f;
-    updateFacing();
+    pool_80542558();
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     switch (field_0x244) {
     case 0:
@@ -481,7 +481,7 @@ void cls_804AC8C0::update() {
         }
         break;
     }
-    updateFacing();
+    pool_80542558();
     field_0x234--;
     if (field_0x234 <= 0) {
         field_0x238++;
@@ -504,7 +504,8 @@ void cls_804AC8C0::update() {
 
 // Not in the binary (init and update inline it); the pool has its 100.0f and 10430.378f ahead of
 // update's literals. Faces the nearest player within 100, else left in state 13 and down otherwise.
-void cls_804AC8C0::updateFacing() {
+// R2 pool helper (inlined at 2 call sites); was updateFacing.
+void cls_804AC8C0::pool_80542558() {
     JGeometry::TVec3f dir;
     f32 dist;
     fn_801EE558(&dir, &dist, 0);

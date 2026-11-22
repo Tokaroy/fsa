@@ -18,7 +18,7 @@ public:
     /* 0x94 */ virtual void updateAnim_0x94();
 
     // Not in the binary: a plain function that updateState_0x90 inlines.
-    void walk(); // start walking: new length, speed 0.4, a random direction
+    void pool_8053EAF4(); // start walking: new length, speed 0.4, a random direction
     void idle(); // start standing: new length, speed 0 (inline)
 }; // Size: 0x2A8
 

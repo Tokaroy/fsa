@@ -115,7 +115,7 @@ void ZoraEscortGoal_8049E424::update() {
             if (fn_801283E8()->fn_801282E0()) {
                 fn_80126A4C(12);
             } else {
-                s32 player = startTalk(0x2B7);
+                s32 player = pool_8053CAB4(0x2B7);
                 if (player >= 0) {
                     field_0x23c = player;
                     fn_80126A4C(2);
@@ -156,9 +156,9 @@ void ZoraEscortGoal_8049E424::update() {
         break;
     }
     case 8: {
-        hover();
+        pool_8053CAA8();
         if (!fn_801283E8()->fn_801280F8()) {
-            s32 player = startTalk(0x3FB);
+            s32 player = pool_8053CAB4(0x3FB);
             if (player >= 0) {
                 field_0x23c = player;
                 fn_80126A4C(9);
@@ -167,7 +167,7 @@ void ZoraEscortGoal_8049E424::update() {
         break;
     }
     case 9: {
-        hover();
+        pool_8053CAA8();
         fn_8022FF8C(field_0x23c, &box, field_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
             fn_801283E8()->fn_801281A4();
@@ -340,7 +340,8 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
 // (tools/pool.py).
 // Shared by update's states 1 and 8, which differ only in the message: the player who
 // started the talk, or -1.
-s32 ZoraEscortGoal_8049E424::startTalk(u32 msg) {
+// R2 pool helper (inlined at 2 call sites); was startTalk.
+s32 ZoraEscortGoal_8049E424::pool_8053CAB4(u32 msg) {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -391,7 +392,8 @@ bool ZoraEscortGoal_8049E424::walkRail() {
 }
 
 // The bobbing of states 8 and 9: z follows a sine of field_0x248, and the emitters follow mPos.
-void ZoraEscortGoal_8049E424::hover() {
+// R2 pool helper (inlined at 2 call sites); was hover.
+void ZoraEscortGoal_8049E424::pool_8053CAA8() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     field_0x248 += 600;
     if (field_0x248 >= 0x10000) {

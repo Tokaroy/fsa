@@ -241,7 +241,7 @@ void Score_804AF4C0::updateState2() {
 
 #pragma auto_inline off
 // Draws one digit of the gem value at x, in the gem-yellow colour.
-static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
+static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit);
 
 // Digits are drawn left to right; the middle digit of a 3-digit value is drawn at mPos itself.
 static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 digit) {
@@ -252,17 +252,17 @@ static inline void putScoreDigitMid(const Score_804AF4C0* self, f32 fade, u8 dig
 }
 
 #define SCORE_2(a, b) \
-    putScoreDigit(this, fade, mPos.x - 5.0f, a); \
-    putScoreDigit(this, fade, mPos.x + 5.0f, b)
+    pool_80543188(this, fade, mPos.x - 5.0f, a); \
+    pool_80543188(this, fade, mPos.x + 5.0f, b)
 #define SCORE_3(a, b, c) \
-    putScoreDigit(this, fade, mPos.x - 10.0f, a); \
+    pool_80543188(this, fade, mPos.x - 10.0f, a); \
     putScoreDigitMid(this, fade, b); \
-    putScoreDigit(this, fade, mPos.x + 10.0f, c)
+    pool_80543188(this, fade, mPos.x + 10.0f, c)
 #define SCORE_4(a, b, c, d) \
-    putScoreDigit(this, fade, mPos.x - 5.0f - 10.0f, a); \
-    putScoreDigit(this, fade, mPos.x - 5.0f, b); \
-    putScoreDigit(this, fade, mPos.x + 5.0f, c); \
-    putScoreDigit(this, fade, 10.0f + (mPos.x + 5.0f), d)
+    pool_80543188(this, fade, mPos.x - 5.0f - 10.0f, a); \
+    pool_80543188(this, fade, mPos.x - 5.0f, b); \
+    pool_80543188(this, fade, mPos.x + 5.0f, c); \
+    pool_80543188(this, fade, 10.0f + (mPos.x + 5.0f), d)
 
 // FIXME: 96.72 %, operands; behaviour drift.
 void Score_804AF4C0::fn_80391F58() {
@@ -315,7 +315,8 @@ void Score_804AF4C0::fn_80391D44() {
 }
 #pragma auto_inline reset
 
-static void putScoreDigit(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
+// R2 pool helper (inlined at 8 call sites); was putScoreDigit.
+static void pool_80543188(const Score_804AF4C0* self, f32 fade, f32 x, u8 digit) {
     Vec v;
     v.x = x;
     v.y = self->mPos.y;

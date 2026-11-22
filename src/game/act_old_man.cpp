@@ -147,7 +147,7 @@ void cls_804AEED0::init() {
     field_0x240 = 0;
     field_0x248 = 2;
     field_0x24c = 0;
-    updateFacing(0);
+    pool_80543048(0);
     field_0x244 = -1;
     field_0x25c = lbl_804753C0[field_0x258].mFrame;
     field_0x260 = lbl_804753C0[field_0x258].mKind;
@@ -445,7 +445,7 @@ void cls_804AEED0::update() {
         field_0x230 = 1;
         break;
     case 1:
-        updateFacing(0);
+        pool_80543048(0);
         if (!fn_8022B160()) {
             if (field_0x268 == 0) {
                 fn_8022FEB8(&box1, field_0x4, mSerial, true, false);
@@ -467,7 +467,7 @@ void cls_804AEED0::update() {
                 fn_802300EC(field_0x244) &&
                 fn_8038C678(field_0x244, field_0x250, getSerial(), getField_0x4(), mPos, 0x10)) {
                 field_0x24c = 0;
-                updateFacing(field_0x244 + 1);
+                pool_80543048(field_0x244 + 1);
                 field_0x230 = 5;
                 field_0x240 = 0;
                 if (field_0x258 == 18 || field_0x258 == 19 || field_0x258 == 20) {
@@ -793,7 +793,8 @@ void cls_804AEED0::fn_8037B374(JGeometry::TVec3f pos, s32 arg) {
 // The helper boundary is inferred from that pool order and from inlining into
 // both init (0x8037C8F0) and update (0x8037C090, 0x8037C2B8); nothing else is
 // proven.
-void cls_804AEED0::updateFacing(s32 target) {
+// R2 pool helper (inlined at 3 call sites); was updateFacing.
+void cls_804AEED0::pool_80543048(s32 target) {
     if (field_0x24c != 0) {
         field_0x24c--;
         return;

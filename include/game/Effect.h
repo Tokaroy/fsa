@@ -88,7 +88,7 @@ public:
     // Inlined into fn_8013DDEC (25 calls); its out-of-line copy was
     // dead-stripped. Creates a held emitter for `id` (draw group `group`) in
     // the next tracked slot, with `word` beside it.
-    void addTrackedEmitter(u16 id, u8 group, s32 word);
+    void inl_8013DDEC(u16 id, u8 group, s32 word);
 
     /* 0x0000 vtable */
     /* 0x0004 */ JKRSolidHeap* mHeap; // JKRSolidHeap::create(-1, heap)

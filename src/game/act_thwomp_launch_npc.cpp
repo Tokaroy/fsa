@@ -226,7 +226,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_80542068();
             field_0x230 = 3;
         } else {
             fn_8022FEB8(&box, field_0x4, mSerial, true, false);
@@ -308,7 +308,7 @@ void NPCLaunchedByThwomp_804AC010::update() {
         break;
     case 5:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_80542068();
             field_0x240 = 0;
             field_0x230 = 3;
             field_0x238 = 0;
@@ -343,7 +343,8 @@ void NPCLaunchedByThwomp_804AC010::update() {
 
 // Not in the binary (update inlines it twice); the pool has its literals between fn_80337A08's and
 // update's. The jump that reaches field_0x278 in 40 frames: 4 up, falling by 0.2 a frame.
-void NPCLaunchedByThwomp_804AC010::launch() {
+// R2 pool helper (inlined at 2 call sites); was launch.
+void NPCLaunchedByThwomp_804AC010::pool_80542068() {
     field_0x3c = JGeometry::TVec3f((field_0x278.x - mPos.x) / 40.0f,
                                    (field_0x278.y - mPos.y) / 40.0f, 4.0f);
     field_0x260 = 0.2f;

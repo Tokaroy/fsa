@@ -109,7 +109,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
-            walk();
+            pool_8053EAF4();
         }
         break;
     case 1:
@@ -122,10 +122,10 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
                 if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.35f) {
                     idle();
                 } else {
-                    walk();
+                    pool_8053EAF4();
                 }
             } else {
-                walk();
+                pool_8053EAF4();
             }
         }
         break;
@@ -156,7 +156,8 @@ void Rope_804A3A68::updateAnim_0x94() {
 
 // Not in the binary (updateState_0x90 inlines it at each call); the pool has its 0.4f ahead of
 // updateAnim_0x94's 0.9090909f, so it is a plain function generated before updateAnim_0x94.
-void Rope_804A3A68::walk() {
+// R2 pool helper (inlined at 3 call sites); was walk.
+void Rope_804A3A68::pool_8053EAF4() {
     field_0x250 = fn_801CD664(0x29) + 0x3c;
     mTargetSpeed = 0.4f;
     if (mState != 2) {

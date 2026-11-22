@@ -3970,7 +3970,7 @@ void cls_804AF5A0::fn_80395480(J2DPane* pane) {
     pane->move(field_0x108 + field_0x110 / 2.0f - w / 2.0f, (field_0x10c + field_0x114) - h);
 }
 
-void drawTextPicture(cls_804AF5A0* self, int i, f32 px, f32 py);
+void pool_805431D8(cls_804AF5A0* self, int i, f32 px, f32 py);
 
 void cls_804AF5A0::fn_8039499C(bool flag) {
     if (field_0x1aa == 0) {
@@ -4027,7 +4027,7 @@ void cls_804AF5A0::fn_8039499C(bool flag) {
                 } else if (field_0x164 == 2) {
                     py -= 13.0f;
                 }
-                drawTextPicture(this, i, px, py);
+                pool_805431D8(this, i, px, py);
             }
         }
 
@@ -4158,7 +4158,8 @@ void cls_804AF5A0::fn_803944EC(f32 scale) {
 // Draws picture `i` of the text at (px, py), 29 x 29. A plain function that fn_8039499C inlines
 // and whose own copy the linker dropped: its 29.0f stands in the original's .sdata2 where a
 // function defined here puts it (tools/pool.py).
-void drawTextPicture(cls_804AF5A0* self, int i, f32 px, f32 py) {
+// R2 pool helper (one-statement body); was drawTextPicture.
+void pool_805431D8(cls_804AF5A0* self, int i, f32 px, f32 py) {
     self->field_0x30[self->field_0x68[i]->field_0x8]->draw(px, py, 29.0f, 29.0f, false, false, false);
 }
 

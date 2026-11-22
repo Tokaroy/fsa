@@ -82,13 +82,13 @@ void WarpCannon_8049EAE0::update() {
         }
         break;
     case 4:
-        flyPlayers();
+        pool_8053CCD0();
         if (getPlayerPos_8023E724(0)->z >= 90.0f) {
             fn_80130FAC(6);
         }
         break;
     case 5:
-        flyPlayers();
+        pool_8053CCD0();
         if (fn_80119DD0()->field_0x14 >= 250.0f) {
             fn_80130FAC(6);
         }
@@ -223,7 +223,8 @@ void WarpCannon_8049EAE0::movePlayers() {
 }
 
 // States 4 and 5: the players fly off, accelerating towards y = 1000.
-void WarpCannon_8049EAE0::flyPlayers() {
+// R2 pool helper (inlined at 2 call sites); was flyPlayers.
+void WarpCannon_8049EAE0::pool_8053CCD0() {
     fn_801CD950(&field_0x27c, -10.0f, -0.002f);
     for (s32 p = 0; p < 4; p++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(p);

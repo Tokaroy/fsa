@@ -622,7 +622,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
     if (field_0x298 != -1) {
         tile = 0;
     }
-    if (fallOnTile(tile) == true) {
+    if (inl_802C2C30(tile) == true) {
         return;
     }
     if (viewLayerFlag(field_0x4) != 0) {
@@ -762,7 +762,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         tile = 0;
     }
     if (field_0x280 == 6 && (mPos.z < 0.0f || field_0x298 != -1)) {
-        if (fallOnTile(tile) == true) {
+        if (inl_802C2C30(tile) == true) {
             return;
         }
         if (tile != 0xD && tile != 0x39) {
@@ -789,7 +789,7 @@ void SmallKey_804A8CD8::fn_802C2C30() {
         if (field_0x27c == 2) {
             field_0x27c = 3;
         }
-        if (fallOnTile(tile)) {
+        if (inl_802C2C30(tile)) {
             return;
         }
         if (tile == 0xD || tile == 0x39) {
@@ -855,7 +855,8 @@ void SmallKey_804A8CD8::fn_802C2C30() {
 
 // Not in the binary (update, fn_802C3AE4 and fn_802C2C30 inline it).
 // The key over a pit (tile 3) or water/lava (tile 0xE): true when it falls in.
-bool SmallKey_804A8CD8::fallOnTile(u16 tile) {
+// R2 pool helper (inlined at 3 call sites); was fallOnTile.
+bool SmallKey_804A8CD8::inl_802C2C30(u16 tile) {
     if (tile == 3) {
         if (fn_801EE24C() == true) {
             field_0x240 = 4;

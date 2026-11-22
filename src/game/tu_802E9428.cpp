@@ -272,7 +272,7 @@ void UnknownENDM_804AA0FC::update() {
             field_0x297 = 1;
         } else {
             field_0x298 = 0;
-            updateCamera();
+            pool_805412F8();
             break;
         }
         field_0x28d = *field_0x290;
@@ -361,7 +361,7 @@ void UnknownENDM_804AA0FC::update() {
                 field_0x27c = 200;
             }
         } else {
-            updateCamera();
+            pool_805412F8();
             field_0x27c--;
             if (field_0x27c != 0) {
                 ActorBase_804A5770* owl = field_0x240;
@@ -416,7 +416,7 @@ void UnknownENDM_804AA0FC::update() {
             }
             field_0x231 = 0;
         } else {
-            updateCamera();
+            pool_805412F8();
         }
         break;
     }
@@ -529,12 +529,13 @@ void UnknownENDM_804AA0FC::fn_802E94F4() {
             field_0x250.y = 2.5f * JMath::sincosTable_.sinShort(angle) + field_0x250.y;
         }
     }
-    updateCamera();
+    pool_805412F8();
 }
 
 // Not in the binary: a plain function that fn_802E94F4 and update inline. The pool puts it here:
 // its -30.0f comes after fn_802E948C's conversion constant and before fn_802E94F4's literals.
-void UnknownENDM_804AA0FC::updateCamera() {
+// R2 pool helper (inlined at 4 call sites); was updateCamera.
+void UnknownENDM_804AA0FC::pool_805412F8() {
     JGeometry::TVec2f pos(field_0x250.x, field_0x250.y);
     JGeometry::TVec2f offset(0.0f, -30.0f);
     JGeometry::TVec2f focus = pos + offset;

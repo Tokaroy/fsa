@@ -162,7 +162,7 @@ void cls_8049D020::update() {
         fn_801F2B7C(-100, -1, 1);
         break;
     case 5: {
-        if (fallStep()) {
+        if (pool_8053C4AC()) {
             fn_8010C294(6);
         }
         break;
@@ -190,8 +190,8 @@ void cls_8049D020::update() {
         if (fn_801CD950(&field_0x264, 0.1f, 0.015f) == 0) {
             fn_8010C294(2);
         }
-        advance();
-        updateTrailEmitter();
+        pool_8053C490();
+        pool_8053C494();
         break;
     }
     case 8:
@@ -212,7 +212,7 @@ void cls_8049D020::update() {
             fn_8010C294(10);
             break;
         }
-        if (fallStep()) {
+        if (pool_8053C4AC()) {
             fn_8010C294(10);
         }
         break;
@@ -220,7 +220,7 @@ void cls_8049D020::update() {
     case 10: {
         fn_80239914(&box, field_0x4, mSerial);
         if (mSprite.fn_801D21F0()) {
-            if (fallStep()) {
+            if (pool_8053C4AC()) {
                 fn_8010C294(11);
             }
         }
@@ -402,12 +402,12 @@ void cls_8049D020::chase(s32 target) {
     } else {
         fn_801CD950(&field_0x264, 1.2f, 0.03f);
     }
-    advance();
+    pool_8053C490();
     field_0x26c = PSVECMag(&field_0x3c) / 1.6f;
     if (field_0x26c >= 1.0f) {
         field_0x26c = 1.0f;
     }
-    updateTrailEmitter();
+    pool_8053C494();
     startSound_801F0E34(0x3007B, 0);
 }
 
@@ -422,7 +422,7 @@ void cls_8049D020::followRail() {
     field_0x3c.y = outStep.y;
     field_0x3c.z = outStep.z;
     mPos += field_0x3c;
-    updateTrailEmitter();
+    pool_8053C494();
     startSound_801F0E34(0x3007B, 0);
 }
 
@@ -448,7 +448,8 @@ void cls_8049D020::grow() {
 }
 
 // Applies gravity to the velocity and moves; true once landed.
-bool cls_8049D020::fallStep() {
+// R2 pool helper (inlined at 3 call sites); was fallStep.
+bool cls_8049D020::pool_8053C4AC() {
     fn_801CD950(&field_0x3c.z, -10.0f, -0.15f);
     mPos += field_0x3c;
     bool atGround;
@@ -489,7 +490,8 @@ void cls_8049D020::spawnBurst() {
 }
 
 // Emits and updates the trail emitter.
-void cls_8049D020::updateTrailEmitter() {
+// R2 pool helper (inlined at 3 call sites); was updateTrailEmitter.
+void cls_8049D020::pool_8053C494() {
     if (field_0x4 == 0) {
         if (field_0x374 == NULL) {
             field_0x374 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
@@ -507,7 +509,8 @@ void cls_8049D020::updateTrailEmitter() {
 }
 
 // Moves along the heading at the current speed.
-void cls_8049D020::advance() {
+// R2 pool helper (inlined at 2 call sites); was advance.
+void cls_8049D020::pool_8053C490() {
     field_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
     field_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
     field_0x3c.z = 0.0f;

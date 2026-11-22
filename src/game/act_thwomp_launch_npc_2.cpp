@@ -192,7 +192,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_805427F0();
             field_0x230 = 3;
             break;
         }
@@ -264,7 +264,7 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
 
     case 5:
         if (field_0x268 == 0 && fn_8023A30C()) {
-            launch();
+            pool_805427F0();
             field_0x240 = 0;
             field_0x230 = 3;
             field_0x238 = 0;
@@ -302,7 +302,8 @@ void NPCLaunchedByThwomp2_804AD1C8::update() {
 // Plain function whose out-of-line copy the linker dropped (inlined into update).
 // Compiled between draw (unwritten, see below) and update, it pools 40.0f / 4.0f / 0.2f before update's 2.0f
 // as in the original (docs/RULES_CARD.md (3)).
-void NPCLaunchedByThwomp2_804AD1C8::launch() {
+// R2 pool helper (inlined at 2 call sites); was launch.
+void NPCLaunchedByThwomp2_804AD1C8::pool_805427F0() {
     field_0x3c = JGeometry::TVec3f(
         (field_0x278.x - mPos.x) / 40.0f,
         (field_0x278.y - mPos.y) / 40.0f,
@@ -440,7 +441,7 @@ inline void NPCLaunchedByThwomp2_804AD1C8::updateAnim() {
         }
 
         if (field_0x238 == 0) {
-            addRandomDelay();
+            pool_805427E0();
         }
     }
 }
@@ -450,6 +451,7 @@ NPCLaunchedByThwomp2_804AD1C8::~NPCLaunchedByThwomp2_804AD1C8() {}
 // Plain function whose out-of-line copy the linker dropped (inlined into updateAnim/update).
 // Compiled first (the bottom of the file), it gives the .sdata2 pool its leading 3.0f and 1.0f
 // ahead of fn_8035680C's 100.0f / 10430.378f, as in the original (docs/RULES_CARD.md (3)).
-void NPCLaunchedByThwomp2_804AD1C8::addRandomDelay() {
+// R2 pool helper (one-statement body); was addRandomDelay.
+void NPCLaunchedByThwomp2_804AD1C8::pool_805427E0() {
     field_0x234 += (s32)(3.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }

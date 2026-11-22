@@ -140,7 +140,7 @@ void cls_8049D740::update() {
         }
         break;
     case 13:
-        shrinkCrystal();
+        pool_8053C628();
         break;
     case 15:
         mDrawEnabled = false;
@@ -421,6 +421,7 @@ bool cls_8049D740::moveToGoal() {
     return false;
 }
 
-void cls_8049D740::shrinkCrystal() {
+// R2 pool helper (one-statement body); was shrinkCrystal.
+void cls_8049D740::pool_8053C628() {
     fn_801CD950(&field_0x250, 0.0f, -0.02f);
 }

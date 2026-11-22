@@ -20,9 +20,9 @@ public:
 
     // fn_8011EEEC's particle positions: plain functions of the .cpp (dead-stripped;
     // every caller inlines them).
-    const JGeometry::TVec3f* getEndPos1() const;
-    const JGeometry::TVec3f* getEndPos2() const;
-    const JGeometry::TVec3f* getMidPos(s32 i) const;
+    const JGeometry::TVec3f* pool_8053C8F8() const;
+    const JGeometry::TVec3f* inl_8011EEEC() const;
+    const JGeometry::TVec3f* pool_8053C8FC(s32 i) const;
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234; // (field_0x90 >> 4) & 0xF; 1 selects the first box set

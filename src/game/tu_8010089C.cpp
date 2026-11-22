@@ -68,13 +68,13 @@ void WhackAMoleShop_8049C8EC::update() {
         field_0x234++;
         if (field_0x234 < 40) {
             if ((field_0x234 & 3) == 0) {
-                spawnSmoke();
+                pool_8053C140();
             }
         } else {
             field_0x240 = 1;
             field_0xb0 = 0x1100;
             if (field_0x234 == 160) {
-                spawnSmoke();
+                pool_8053C140();
                 fn_801F3668();
             }
             fn_801F3D94(1);
@@ -464,7 +464,7 @@ void WhackAMoleShop_8049C8EC::fn_80100A90() {
             field_0x244 = 5;
         }
     }
-    spawnSmoke();
+    pool_8053C140();
 }
 
 // FIXME(shotgun): 99.80 %, regalloc-only; behaviour clean.
@@ -502,7 +502,8 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
 
 // A plain function that update and fn_80100A90 inline; the linker dropped its own copy. Its 1.0f is
 // the first literal of the pool.
-void WhackAMoleShop_8049C8EC::spawnSmoke() {
+// R2 pool helper (inlined at 3 call sites; one-statement body); was spawnSmoke.
+void WhackAMoleShop_8049C8EC::pool_8053C140() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x1DA, 0, 1, NULL, NULL, true, 1.0f);
 }
 

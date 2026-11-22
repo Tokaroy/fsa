@@ -20,7 +20,7 @@ public:
     // 0x8034ACF4: per player, the facing they left by and the push into the area.
     void fn_8034ACF4();
     // Not in the binary: a plain function that init and update inline.
-    void updateFacing();
+    void pool_80542558();
     bool talk(s32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {
         return fn_8038AD24(player, msg, serial, layer, pos, flags);
     }

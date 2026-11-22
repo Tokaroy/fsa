@@ -271,7 +271,7 @@ s32 ActorBase_804A5770::fn_8032D564(s32 index) { return lbl_804719D8[index]; }
 
 // 0x8032D534.
 void ForceGem_804AB6D8::vfunc_0x40() {
-    stopMoving();
+    pool_80541D88();
     if (field_0x24c < 0x320) {
         field_0x24c = 0x320;
     }
@@ -376,7 +376,7 @@ void ForceGem_804AB6D8::update() {
         }
         break;
     case 3:
-        stopMoving();
+        pool_80541D88();
         if (field_0x268 >= 4 && field_0x264 >= 0 && field_0x4 >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
             lbl_8053AED0->fn_8043D67C(lbl_80471A08[field_0x268 - 4], fn_8022F340(field_0x264), 0);
         }
@@ -530,7 +530,7 @@ void ForceGem_804AB6D8::update() {
             field_0x3c.x = 5.0f * JMath::sincosTable_.sinShort(field_0x240);
             field_0x3c.y = 5.0f * JMath::sincosTable_.cosShort(field_0x240);
         } else {
-            stopMoving();
+            pool_80541D88();
             field_0x230 = 0;
             field_0x94 = 0;
         }
@@ -892,7 +892,7 @@ bool ForceGem_804AB6D8::fn_8032B3F8() {
                     field_0x27f = 0;
                 }
             } else {
-                stopMoving();
+                pool_80541D88();
                 if (field_0x27d != 0) {
                     field_0x230 = 9;
                 } else {
@@ -953,12 +953,12 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
     s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 3) {
         field_0x24c = 0x3ff;
-        stopMoving();
+        pool_80541D88();
         field_0x230 = 5;
         return true;
     } else if (tile == 0xe) {
         field_0x24c = 0x3ff;
-        stopMoving();
+        pool_80541D88();
         field_0x238 = 0.0f;
         if (field_0x230 != 5) {
             field_0x230 = 5;
@@ -988,7 +988,7 @@ bool ForceGem_804AB6D8::fn_8032B0A4() {
         }
         return true;
     } else if (tile == 0xd) {
-        stopMoving();
+        pool_80541D88();
         field_0x3c.z = -0.1f;
         field_0x238 = 1.0f;
         if (field_0x230 != 6) {
@@ -1108,7 +1108,8 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
 
 // A plain function that its callers inline; the linker dropped its own copy. Its 0.0f is the first
 // literal of the pool.
-void ForceGem_804AB6D8::stopMoving() {
+// R2 pool helper (inlined at 7 call sites); was stopMoving.
+void ForceGem_804AB6D8::pool_80541D88() {
     field_0x3c.z = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.x = 0.0f;

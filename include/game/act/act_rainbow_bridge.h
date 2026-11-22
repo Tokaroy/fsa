@@ -16,7 +16,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
 
-    void checkActivate();
+    void pool_8053CB48();
     bool isPlayerOn(s32 player);
 
     /* 0x230 */ s32 field_0x230;

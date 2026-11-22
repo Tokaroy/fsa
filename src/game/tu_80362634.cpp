@@ -314,7 +314,7 @@ void cls_804ADF28::init() {
                 if (owl == NULL) {
                     field_0x24c = -1;
                 } else {
-                    faceOwl(owl);
+                    pool_80542B58(owl);
                 }
                 field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
                 field_0x260 = field_0x25c = lbl_80474450[field_0x238 * 2];
@@ -371,7 +371,7 @@ void cls_804ADF28::init() {
             off.y = (f32)fn_801CD664(280) - 140.0f;
             off.z = 0.0f;
             mPos.add(off);
-            if (isBlocked()) {
+            if (pool_80542B20()) {
                 mPos = oldPos;
                 i--;
             } else {
@@ -411,7 +411,7 @@ void cls_804ADF28::init() {
         for (s32 i = 0; i < end; i++) {
             EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
             if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive && actor->field_0x278 == 0) {
-                chaseOwl(i, actor);
+                pool_80542B4C(i, actor);
                 break;
             }
         }
@@ -791,7 +791,7 @@ void cls_804ADF28::fn_80364D0C() {
         if (owl == NULL) {
             field_0x24c = -1;
         } else {
-            faceOwl(owl);
+            pool_80542B58(owl);
         }
         if (field_0x23c != oldDir) {
             field_0x26c = lbl_80474320[field_0x238 * 4 + field_0x23c];
@@ -996,7 +996,7 @@ void cls_804ADF28::fn_80364340() {
         off.y = (f32)fn_801CD664(380) - 140.0f;
         off.z = 0.0f;
         mPos.add(off);
-        if (isBlocked()) {
+        if (pool_80542B20()) {
             mPos = oldPos;
         } else {
             field_0x248 = fn_801CD664(50) + 60;
@@ -1137,7 +1137,7 @@ void cls_804ADF28::fn_80363880() {
         for (s32 i = 0; i < end; i++) {
             EndingOwl_804ADF28* actor = static_cast<EndingOwl_804ADF28*>(getActorManager_801F856C()->mActors[i]);
             if (actor != NULL && actor->mActorId == ACTOR_EOWL && actor->mAlive == true && actor->field_0x278 == 0) {
-                chaseOwl(i, actor);
+                pool_80542B4C(i, actor);
                 break;
             }
         }
@@ -1551,7 +1551,8 @@ void cls_804ADF28::fn_80362680() {
 // (tools/pool.py).
 
 // Faces the owl when it is nearer than 80, else down (init's state 5 and fn_80364D0C).
-void cls_804ADF28::faceOwl(ActorBase_804A5770* owl) {
+// R2 pool helper (inlined at 2 call sites); was faceOwl.
+void cls_804ADF28::pool_80542B58(ActorBase_804A5770* owl) {
     if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) {
         field_0x23c = 0;
     } else {
@@ -1571,7 +1572,8 @@ void cls_804ADF28::faceOwl(ActorBase_804A5770* owl) {
 
 // Takes the owl in actor slot i as the target when it is nearer than 100 and starts walking to it
 // at speed 0.8 (init's state 12 and fn_80363880).
-void cls_804ADF28::chaseOwl(s32 i, EndingOwl_804ADF28* actor) {
+// R2 pool helper (inlined at 2 call sites); was chaseOwl.
+void cls_804ADF28::pool_80542B4C(s32 i, EndingOwl_804ADF28* actor) {
     if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) {
         field_0x24c = i;
         JGeometry::TVec3f target = actor->mPos;
@@ -1599,7 +1601,8 @@ void cls_804ADF28::chaseOwl(s32 i, EndingOwl_804ADF28* actor) {
 
 // Whether mPos lies outside the area the rupees may land in: its bounds, the two cut corners and
 // the two circles of radius 78 (init's state 9 and fn_80364340).
-bool cls_804ADF28::isBlocked() {
+// R2 pool helper (inlined at 2 call sites); was isBlocked.
+bool cls_804ADF28::pool_80542B20() {
     if (mPos.x < 2600.0f || mPos.x > 3016.0f) {
         return true;
     }

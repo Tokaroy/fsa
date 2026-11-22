@@ -54,7 +54,7 @@ public:
     void fn_80115F9C(s32 index);
 
     // Not in the binary: plain functions that update inlines.
-    void updateBobbing();
+    void pool_8053C724();
     void updateDescent();
 
     // Named after its vtable, 0x8049D940, slot 0x0C. __ct__12cls_8049D940Fv

@@ -2127,7 +2127,7 @@ public:
     // Rotates the pane `tag` about its centre by base + field_0x74 (inlined in fn_803A60E4).
     void rotateArrow(u64 tag, s16 base);
     // Not in the binary: a plain function that fn_803A6608 inlines.
-    void moveCursorToRow();
+    void pool_80543370();
     // 0x803A7280: puts the arrow and text panes back in place.
     void fn_803A7280();
     // 0x803A6608: the options screen (per-frame).

@@ -28,8 +28,8 @@ public:
     void fn_80126A4C(s32 arg);
 
     // Not in the binary: plain functions that update and fn_80126A4C inline.
-    s32 startTalk(u32 msg);
-    void hover();
+    s32 pool_8053CAB4(u32 msg);
+    void pool_8053CAA8();
     bool walkRail();
     void spawnEmitters();
 

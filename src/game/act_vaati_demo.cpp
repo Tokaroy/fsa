@@ -105,10 +105,10 @@ void cls_8049D940::update() {
                 field_0x234 = 0xFE;
             }
         }
-        updateBobbing();
+        pool_8053C724();
         break;
     case 7:
-        updateBobbing();
+        pool_8053C724();
         break;
     case 8:
         if (field_0x234 != 0) {
@@ -306,7 +306,8 @@ void cls_8049D940::fn_80115F9C(s32 index) {
 
 // Two plain functions that update inlines; the linker dropped their own copies. Their literals stand
 // in the pool between fn_80115D8C's and fn_80115F9C's, so they are defined here.
-void cls_8049D940::updateBobbing() {
+// R2 pool helper (inlined at 2 call sites); was updateBobbing.
+void cls_8049D940::pool_8053C724() {
     static s16 lbl_8053AA88 = 0;
     mPos.z = 4.0f * JMath::sincosTable_.sinShort(lbl_8053AA88) + 20.0f;
     lbl_8053AA88 += 500;

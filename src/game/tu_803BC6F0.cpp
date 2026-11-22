@@ -320,7 +320,7 @@ inline void FileSelect_804AFF60::resetButtonColors() {
     ((J2DPicture*)mScreenHuuin->search('Pdelb02'))->setBlackWhite(field_0xe4, field_0xe0);
 }
 
-static void setFadeStep(FileSelect_804AFF60* self, s16 frames);
+static void pool_80543458(FileSelect_804AFF60* self, s16 frames);
 
 // Run each frame by fn_803CE9EC (index: mState).
 static FileSelect_804AFF60::StateFunc lbl_804AFD70[40] = {
@@ -903,7 +903,7 @@ void FileSelect_804AFF60::fn_803CE9EC() {
         s16 frames = lbl_8050DB0C.field_0x4c[0x8A];
         field_0xde++;
         if (field_0xde < frames) {
-            setFadeStep(this, frames);
+            pool_80543458(this, frames);
         } else {
             field_0xde = frames;
             field_0x58->moveFromCentre_80402E08(0.0f, 0.0f);
@@ -916,7 +916,7 @@ void FileSelect_804AFF60::fn_803CE9EC() {
         s16 frames = lbl_8050DB0C.field_0x4c[0x8A];
         field_0xde--;
         if (field_0xde > 0) {
-            setFadeStep(this, frames);
+            pool_80543458(this, frames);
         } else {
             field_0xde = 0;
             field_0x58->moveFromCentre_80402E08(0.0f, -200.0f);
@@ -977,7 +977,8 @@ void FileSelect_804AFF60::fn_803CE9EC() {
 // The progress message of save file `file`: the first stage (0-7) it has not
 // finished, or the last one's when all are done. fn_803CE4CC inlines it three
 // times; the linker dropped its out-of-line copy.
-static s32 getProgressMsg(s32 file) {
+// R2 pool helper (inlined at 3 call sites); was getProgressMsg.
+static s32 inl_803CE4CC(s32 file) {
     int cleared = 0;
     for (int stage = 0; stage < 8; stage++) {
         if (fn_803B8CAC(file, stage)) {
@@ -1009,11 +1010,11 @@ void FileSelect_804AFF60::fn_803CE4CC() {
                     mScreenHuuin->search(lbl_804765E8[i])->hide();
                     mScreenHuuin->search(lbl_80476600[i])->show();
                     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search('Tf1lv'))->getStringPtr(),
-                                            getProgressMsg(0), 0, NULL, NULL);
+                                            inl_803CE4CC(0), 0, NULL, NULL);
                     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search('Tf2lv'))->getStringPtr(),
-                                            getProgressMsg(1), 0, NULL, NULL);
+                                            inl_803CE4CC(1), 0, NULL, NULL);
                     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search('Tf3lv'))->getStringPtr(),
-                                            getProgressMsg(2), 0, NULL, NULL);
+                                            inl_803CE4CC(2), 0, NULL, NULL);
                 } else {
                     getMessageText_803832BC(((J2DTextBox*)mScreenHuuin->search(lbl_804765E8[i]))->getStringPtr(), 0x6A,
                                             0, NULL, NULL);
@@ -3771,7 +3772,8 @@ void FileSelect_804AFF60::fn_803BC6F0(s32 file, f32 alpha) {
 // linker (as getProgressMsg); it is compiled first (the bottom of the file),
 // which is where the unit's .sdata2 pool gets its leading 0, -200, 200 and
 // the two conversion doubles (with it, every literal is the original's).
-static void setFadeStep(FileSelect_804AFF60* self, s16 frames) {
+// R2 pool helper (inlined at 2 call sites); was setFadeStep.
+static void pool_80543458(FileSelect_804AFF60* self, s16 frames) {
     f32 t = (f32)(self->field_0xde * self->field_0xde) / (f32)(frames * frames);
     self->field_0x58->moveFromCentre_80402E08(0.0f, 200.0f * t + -200.0f);
     self->field_0x58->mPane->setAlpha(t * self->field_0x58->field_0x28);

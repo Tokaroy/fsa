@@ -24,11 +24,11 @@ public:
     void chase(s32 target);
     void followRail();
     void grow();
-    bool fallStep();
+    bool pool_8053C4AC();
     void dropRupee();
     void spawnBurst();
-    void updateTrailEmitter();
-    void advance();
+    void pool_8053C494();
+    void pool_8053C490();
 
     /* 0x230 */ s16 field_0x230;
     /* 0x232 */ u8 field_0x232[2];

@@ -40,14 +40,14 @@ f32 Cannon_8049CCF0::fn_801080B8() const {
     return 13.0f;
 }
 
-void readSwingRange(Cannon_8049CCF0* self);
+void pool_8053C300(Cannon_8049CCF0* self);
 
 void Cannon_8049CCF0::init() {
     if ((field_0x90 & 0xF) == 1) {
         field_0x274 = 1;
     }
     field_0x27c = field_0x90 >> 4 & 0xF;
-    readSwingRange(this);
+    pool_8053C300(this);
     if ((field_0x90 >> 16 & 1) == 1) {
         field_0x26a = 1;
     } else {
@@ -69,7 +69,7 @@ void Cannon_8049CCF0::init() {
     }
 }
 
-void swing(Cannon_8049CCF0* c);
+void pool_8053C2F8(Cannon_8049CCF0* c);
 
 s32 findOwner(Cannon_8049CCF0* c, const JGeometry::TBox2f* box);
 
@@ -79,7 +79,7 @@ void updateRecoil(Cannon_8049CCF0* self);
 
 void updateRise(Cannon_8049CCF0* self);
 
-void spawnTakenEffect(Cannon_8049CCF0* self);
+void pool_8053C2F4(Cannon_8049CCF0* self);
 
 // FIXME: 95.41 %, missing/extra + reloc-name; behaviour drift.
 void Cannon_8049CCF0::update() {
@@ -90,7 +90,7 @@ void Cannon_8049CCF0::update() {
                 return;
             }
             if (field_0x269 == 0) {
-                spawnTakenEffect(this);
+                pool_8053C2F4(this);
                 startSound_801F0E34(0x30003, 0);
                 fn_801F0D20(0x42);
             }
@@ -121,10 +121,10 @@ void Cannon_8049CCF0::update() {
     }
     switch (field_0x274) {
     case 0:
-        swing(this);
+        pool_8053C2F8(this);
         break;
     case 2:
-        swing(this);
+        pool_8053C2F8(this);
         updateRise(this);
         if (mPos.y < mHomePos.y) {
             mPos.y = mHomePos.y;
@@ -239,13 +239,15 @@ bool Cannon_8049CCF0::fn_80107360() {
 // From here down: plain functions that update and init inline and whose own copies the linker
 // dropped. The original's .sdata2 has their literals ahead of fn_80107360's, in the order of these
 // functions from the bottom of the file up, so they were generated before it (tools/pool.py).
-void readSwingRange(Cannon_8049CCF0* self) {
+// R2 pool helper (one-statement body); was readSwingRange.
+void pool_8053C300(Cannon_8049CCF0* self) {
     self->field_0x280 = (f32)(self->field_0x90 >> 8 & 0x1F);
 }
 
 // The swing (state 0 and 2): moves mPos.x between mHomePos.x +- 8 * field_0x280
 // with a speed that falls off near the ends.
-void swing(Cannon_8049CCF0* c) {
+// R2 pool helper (inlined at 2 call sites); was swing.
+void pool_8053C2F8(Cannon_8049CCF0* c) {
     if (c->field_0x280 <= 0.0f) {
         return;
     }
@@ -284,7 +286,8 @@ void swing(Cannon_8049CCF0* c) {
     }
 }
 
-void spawnTakenEffect(Cannon_8049CCF0* self) {
+// R2 pool helper (one-statement body); was spawnTakenEffect.
+void pool_8053C2F4(Cannon_8049CCF0* self) {
     spawnEmitter_8013CC50(self->field_0x4, &self->mPos, 0x503, 0, 0, NULL, NULL, true, 1.5f);
 }
 

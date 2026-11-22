@@ -30,7 +30,7 @@ cls_8049E610::~cls_8049E610() {
 void cls_8049E610::init() {
     ActorBase_804A5770::init();
     field_0x230 = (field_0x90 >> 22) & 0x1F;
-    checkActivate();
+    pool_8053CB48();
     mBox.i.x = -40.0f;
     mBox.i.y = -64.0f;
     mBox.f.x = 40.0f;
@@ -44,7 +44,7 @@ void cls_8049E610::update() {
     ActorBase_804A5770::update();
     switch (field_0x238) {
     case 0:
-        checkActivate();
+        pool_8053CB48();
         break;
     case 1:
         for (int i = 0; i < 4; i++) {
@@ -71,7 +71,8 @@ void cls_8049E610::update() {
 // first (the bottom of the file), isPlayerOn then checkActivate, they give the
 // .sdata2 pool its original order: 0, 32768/pi, 0.5, 3 (isPlayerOn), 1.0
 // (checkActivate), then init's box literals.
-void cls_8049E610::checkActivate() {
+// R2 pool helper (inlined at 2 call sites); was checkActivate.
+void cls_8049E610::pool_8053CB48() {
     if (isScreenFlagSet_0x34()) {
         field_0x238 = 1;
         // The original stores the state and then switches on it (a state setter inlined here, asm 0x8012A058).

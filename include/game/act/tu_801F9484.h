@@ -42,7 +42,7 @@ public:
     virtual void draw();   // 0x20: 0x800F6AB4
     virtual void die_0x24(); // 0x800F6820
     // Not in the binary: a plain function that die_0x24 and update inline (game/act_force_like.cpp).
-    void spawnKindEmitter();
+    void pool_8053BF30();
     // SHARED-EDIT: carved from field_0x230[0x38] (game/act_force_like.cpp).
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ u8 field_0x234;
@@ -915,7 +915,7 @@ public:
 
     // No address (dead-stripped; init and update inline it): updates field_0x248
     // towards the nearest player (or player + 1) every 20 frames.
-    void updateFacing(s32 target);
+    void pool_80543048(s32 target);
 
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234;

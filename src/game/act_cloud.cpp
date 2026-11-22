@@ -69,7 +69,7 @@ void Cloud_8049CBE0::init() {
     mSprite.fn_801D1F14(0.0f);
 }
 
-static bool isAirborne(s32 player);
+static bool pool_8053C228(s32 player);
 
 // 0x801056E4.
 // Remaining diffs: box offset scheduling/regalloc, case 0 ble target (field_0x360/field_0x370
@@ -133,7 +133,7 @@ void Cloud_8049CBE0::update() {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !isAirborne(i)) {
+        if (fn_801053E8(i) && !fn_8022D75C(i) && !fn_80230188(i) && !pool_8053C228(i)) {
             const JGeometry::TVec3f& d = mPos - mPrevPos;
             fn_8023DF68(i, &d);
         }
@@ -201,7 +201,8 @@ bool Cloud_8049CBE0::fn_801053E8(s32 player) {
 
 // Not in the binary: a plain function that update inlines. The pool puts it below fn_801053E8:
 // its 0.0f is the unit's first literal.
-static bool isAirborne(s32 player) {
+// R2 pool helper (one-statement body); was isAirborne.
+static bool pool_8053C228(s32 player) {
     return getPlayerPos_8023E724(player)->z > 0.0f;
 }
 

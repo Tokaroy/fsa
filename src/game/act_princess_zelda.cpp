@@ -148,7 +148,7 @@ void cls_8049CEE0::init() {
         mSpriteAnim.fn_801D2608(lbl_8049CE70, 14);
     }
     mSpriteAnim.startAnim_801D22DC(2, 2, 0);
-    resetAnimFrame();
+    pool_8053C3E0();
     getGameView_802D6A9C()->fn_802D7440(0);
     field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', field_0x4, &mPos, 0, -1, -1);
 }
@@ -180,7 +180,7 @@ inline bool cls_8049CEE0::stepRail() {
     s32 dir = fn_801F681C(angle);
     if (dir >= 0 && dir != mSpriteAnim.mAnim) {
         mSpriteAnim.startAnim_801D22DC(dir, 2, false);
-        resetAnimFrame();
+        pool_8053C3E0();
     }
     return false;
 }
@@ -272,7 +272,7 @@ void cls_8049CEE0::update() {
                 if (field_0x328 == 1) {
                     if (dir >= 0 && dir + 5 != mSpriteAnim.mAnim) {
                         mSpriteAnim.startAnim_801D22DC(dir + 5, 2, false);
-                        resetAnimFrame();
+                        pool_8053C3E0();
                     }
                 }
             }
@@ -372,7 +372,7 @@ void cls_8049CEE0::update() {
         }
         if (dir >= 0 && dir != mSpriteAnim.mAnim) {
             mSpriteAnim.startAnim_801D22DC(dir, 2, false);
-            resetAnimFrame();
+            pool_8053C3E0();
         }
         break;
     }
@@ -608,12 +608,12 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
         mSpriteAnim.startAnim_801D22DC(2, 2, false);
         break;
     case 7: {
-        spawnEffect33A();
+        pool_8053C3E4();
         mSpriteAnim.startAnim_801D22DC(9, 0, false);
         break;
     }
     case 8: {
-        spawnEffect33A();
+        pool_8053C3E4();
         mSpriteAnim.startAnim_801D22DC(2, 2, false);
         break;
     }
@@ -684,7 +684,7 @@ bool cls_8049CEE0::fn_801096C8(s32 state) {
     default:
         return false;
     }
-    resetAnimFrame();
+    pool_8053C3E0();
     return true;
 }
 
@@ -794,13 +794,15 @@ void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
 }
 
 // Effect 0x33A 24 above mPos (states 7 and 8).
-void cls_8049CEE0::spawnEffect33A() {
+// R2 pool helper (inlined at 2 call sites); was spawnEffect33A.
+void cls_8049CEE0::pool_8053C3E4() {
     JGeometry::TVec3f pos = mPos;
     pos.y += -24.0f;
     spawnEmitter_8013CC50(field_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // mSpriteAnim.fn_801D1F14(0.0f).
-void cls_8049CEE0::resetAnimFrame() {
+// R2 pool helper (inlined at 5 call sites; one-statement body); was resetAnimFrame.
+void cls_8049CEE0::pool_8053C3E0() {
     mSpriteAnim.fn_801D1F14(0.0f);
 }

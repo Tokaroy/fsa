@@ -19,8 +19,8 @@
 
 // Plain functions that their callers inline and whose own copies the linker dropped; each stands
 // where the original's .sdata2 order puts it (tools/pool.py), see their definitions.
-u16 angleOf(f32 x, f32 y);
-f32 lifeMeterSpacing();
+u16 pool_8053C9F0(f32 x, f32 y);
+f32 pool_8053C9B0();
 
 // Passes the position on by value (the original loads the other arguments before its copy);
 // layer before serial, as fn_8022FEB8 takes them.
@@ -130,7 +130,7 @@ void EscortBase_8049E0C8::fn_80124448() {
     getGameView_802D6A9C()->fn_802D7440(0);
     if (field_0x332) {
         vfunc_0x7C();
-        spawnLifeMeters();
+        inl_80121ABC();
     }
 }
 
@@ -279,7 +279,7 @@ s32 EscortBase_8049E0C8::vfunc_0x80() {
             ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (target != NULL) {
                 JGeometry::TVec3f pos = target->mPos;
-                field_0x98 = fn_801F681C(angleOf(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
+                field_0x98 = fn_801F681C(pool_8053C9F0(pos.x - mPos.x, (pos.y - pos.z) - (mPos.y - mPos.z)));
             }
         }
         vfunc_0x94();
@@ -394,7 +394,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
         }
         f32 dx = mPos.x - getPlayerPos_8023E724(player)->x;
         f32 dy = mPos.y - getPlayerPos_8023E724(player)->y;
-        dir = fn_801F681C(angleOf(-dx, -dy));
+        dir = fn_801F681C(pool_8053C9F0(-dx, -dy));
         JGeometry::TVec3f moved = mPos - mPrevPos;
         if (PSVECMag(&moved) >= 1.0f) {
             field_0x380 = 0.5f;
@@ -467,7 +467,7 @@ void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, 
         f32 dx = mPos.x - (x + getPlayerPos_8023E724(who)->x);
         f32 dy = mPos.y - (y + getPlayerPos_8023E724(who)->y);
         *outDist = std::sqrtf(dx * dx + dy * dy);
-        *outAngle = angleOf(-dx, -dy);
+        *outAngle = pool_8053C9F0(-dx, -dy);
         *outDir = fn_801F681C(*outAngle);
         *outPlayer = player;
     }
@@ -868,7 +868,8 @@ void EscortBase_8049E0C8::fn_80121FA8() {
 // A plain function that its three callers inline and whose own copy the linker dropped: the
 // original's .sdata2 has 10430.378f between fn_80121F34's literals and fn_80121FA8's, so it was
 // generated here (tools/pool.py). The 16-bit angle of the direction (x, y).
-u16 angleOf(f32 x, f32 y) {
+// R2 pool helper (inlined at 3 call sites; one-statement body); was angleOf.
+u16 pool_8053C9F0(f32 x, f32 y) {
     return (s32)(JMath::atanTable_.atan2_(x, y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));
 }
 
@@ -973,18 +974,19 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
 void EscortBase_8049E0C8::fn_80121ABC() {
     lbl_8053AAA0 = 0;
     vfunc_0x7C();
-    spawnLifeMeters();
+    inl_80121ABC();
 }
 
 // Dead-stripped helper inlined into fn_80124448 and fn_80121ABC: when field_0x332 is set, spawns
 // field_0x360 life-meter actors ('LIMT') in a row at the escort, hidden.
-void EscortBase_8049E0C8::spawnLifeMeters() {
+// R2 pool helper (inlined at 2 call sites); was spawnLifeMeters.
+void EscortBase_8049E0C8::inl_80121ABC() {
     s32 serial;
     if (field_0x332) {
         JGeometry::TVec3f pos(mPos);
         pos.x -= 16.0f;
         for (s32 i = 0; i < field_0x360; i++) {
-            pos.x += lifeMeterSpacing();
+            pos.x += pool_8053C9B0();
             field_0x364[i] = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_LIMT, field_0x4, &pos, 0, -1, -1);
             serial = field_0x364[i];
             if (serial < 0) {
@@ -1158,7 +1160,8 @@ bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
 // A plain function that fn_80124448 and fn_80121ABC inline and whose own copy the linker dropped:
 // the original's .sdata2 starts with 8.0f alone, ahead of fn_80121438's literals, so it was
 // generated before it (tools/pool.py). The x distance between two life meters.
-f32 lifeMeterSpacing() {
+// R2 pool helper (one-statement body); was lifeMeterSpacing.
+f32 pool_8053C9B0() {
     return 8.0f;
 }
 

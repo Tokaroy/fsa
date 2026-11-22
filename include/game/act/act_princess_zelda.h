@@ -24,8 +24,8 @@ public:
     void stepSpeed(f32 dist);
     void approachPlayerSide(JGeometry::TVec3f& ppos);
     void followPlayerSide(JGeometry::TVec3f& ppos);
-    void spawnEffect33A();
-    void resetAnimFrame();
+    void pool_8053C3E4();
+    void pool_8053C3E0();
 
     // fn_8038AD24 takes the position by value; serial and layer are loaded before that copy.
     bool talk(u32 player, u32 msg, s32 serial, s32 layer, const JGeometry::TVec3f& pos, u32 flags) {

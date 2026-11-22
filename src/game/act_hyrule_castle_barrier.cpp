@@ -252,8 +252,8 @@ void HyruleCastleBarrier_8049DEE8::fn_8011F314() {
 void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
     switch (field_0x234) {
     case 1: {
-        JPABaseEmitter* e1 = spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
-        JPABaseEmitter* e2 = spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+        JPABaseEmitter* e1 = spawnEmitter_8013CC50(field_0x4, pool_8053C8F8(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+        JPABaseEmitter* e2 = spawnEmitter_8013CC50(field_0x4, inl_8011EEEC(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
         if (e1 != NULL) {
             fn_8013CAA4(e1, 1.5707964f);
         }
@@ -265,13 +265,13 @@ void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
     default:
         if (field_0x241) {
             for (s32 i = 0; i < 3; i++) {
-                spawnEmitter_8013CC50(field_0x4, getMidPos(i), 0x125, 0, 0, NULL, NULL, true, 1.0f);
+                spawnEmitter_8013CC50(field_0x4, pool_8053C8FC(i), 0x125, 0, 0, NULL, NULL, true, 1.0f);
             }
-            spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, pool_8053C8F8(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, inl_8011EEEC(), 0x126, 0, 0, NULL, NULL, true, 1.0f);
         } else {
-            spawnEmitter_8013CC50(field_0x4, getEndPos1(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
-            spawnEmitter_8013CC50(field_0x4, getEndPos2(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, pool_8053C8F8(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
+            spawnEmitter_8013CC50(field_0x4, inl_8011EEEC(), 0xCA, 0, 0, NULL, NULL, true, 1.0f);
         }
         break;
     }
@@ -282,11 +282,13 @@ void HyruleCastleBarrier_8049DEE8::fn_8011EEEC() {
 // unit's .sdata2 (32.0f, then 16.0f / 0.0f / the int-to-float double) ahead of
 // fn_8011EEEC's own 1.0f and pi / 2 (docs/RULES_CARD.md, "Literals before their
 // first visible use" (3)).
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getMidPos(s32 i) const {
+// R2 pool helper (one-statement body); was getMidPos.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::pool_8053C8FC(s32 i) const {
     return &JGeometry::TVec3f(mPos.x, mPos.y + 16.0f * (i - 1), 0.0f); // FAKEMATCH(crack-pass): address of a temporary returned (dangling); see docs/CRACK_PASS.md
 }
 
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos2() const {
+// R2 pool helper (inlined at 3 call sites); was getEndPos2.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::inl_8011EEEC() const {
     const JGeometry::TVec3f* p;
     switch (field_0x234) {
     case 1:
@@ -299,7 +301,8 @@ const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos2() const {
     return p;
 }
 
-const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::getEndPos1() const {
+// R2 pool helper (inlined at 3 call sites); was getEndPos1.
+const JGeometry::TVec3f* HyruleCastleBarrier_8049DEE8::pool_8053C8F8() const {
     const JGeometry::TVec3f* p;
     switch (field_0x234) {
     case 1:

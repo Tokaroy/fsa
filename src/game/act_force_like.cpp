@@ -122,7 +122,7 @@ void ForceLike_8049C578::update() {
             field_0x230 = 1;
             field_0x240 = 0;
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DC, 0, 0, NULL, NULL, true, 1.0f);
-            spawnKindEmitter();
+            pool_8053BF30();
             startSound_801F0E34(0x50023, 0);
         }
         break;
@@ -379,12 +379,13 @@ void ForceLike_8049C578::die_0x24() {
             }
         }
     }
-    spawnKindEmitter();
+    pool_8053BF30();
     field_0x18c = 0;
     ActorBase_804A5770::die_0x24();
 }
 
 // Not in the binary (die_0x24 and update inline it); the pool has its 1.0f ahead of die_0x24's literals.
-void ForceLike_8049C578::spawnKindEmitter() {
+// R2 pool helper (inlined at 2 call sites; one-statement body); was spawnKindEmitter.
+void ForceLike_8049C578::pool_8053BF30() {
     spawnEmitter_8013CC50(field_0x4, &mPos, lbl_80539E70[field_0x234], 0, 0, NULL, NULL, true, 1.0f);
 }

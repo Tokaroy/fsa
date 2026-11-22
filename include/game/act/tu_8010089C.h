@@ -19,7 +19,7 @@ public:
     void fn_80100D28();
     // Not in the binary: plain functions that draw, update and fn_80100A90 inline.
     void showTimer();
-    void spawnSmoke();
+    void pool_8053C140();
 
     /* 0x230 */ s32 field_0x230; // state
     /* 0x234 */ s32 field_0x234; // frame counter

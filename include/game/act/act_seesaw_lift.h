@@ -27,10 +27,10 @@ public:
     s32 fn_8035AE9C(s32 player);
     void checkContactBox(s32 player);
     void pushPlayer(s32 player);
-    void spawnSandEmitters();
+    void pool_80542878();
     bool isClearOfPlayers();
     u8 isPlayerInside(s32 player) const;
-    void fillTiles(s32 state);
+    void pool_8054286C(s32 state);
 
     s32 getMode() const { return field_0x90 & 0x7F; }
     s32 getKind() const { return (field_0x90 >> 7) & 0x1F; }

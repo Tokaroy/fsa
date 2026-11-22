@@ -276,8 +276,8 @@ static inline bool stepWobble(cls_8049C718* p) {
 }
 
 // Plain functions without a copy of their own in the original (see their definitions).
-f32 randomSlotTime();
-s32 headingOf(f32 x, f32 y);
+f32 pool_8053C094();
+s32 pool_8053C050(f32 x, f32 y);
 
 void cls_8049C718::fn_800FC984() {
     if (trySwap(this)) {
@@ -306,8 +306,8 @@ void cls_8049C718::fn_800FC984() {
         if ((mFlags & 8) && mSlot <= 12) {
             mState = 4;
             mTimer = 0;
-            mSlotUsed[0] = randomSlotTime();
-            mSlotUsed[1] = randomSlotTime();
+            mSlotUsed[0] = pool_8053C094();
+            mSlotUsed[1] = pool_8053C094();
             mAngleA = 0x3000;
             mAngleB = 0x5000;
         } else {
@@ -412,7 +412,8 @@ void cls_8049C718::fn_800FC4A8() {
 // A slot's time (mSlotUsed): 400 to 499 frames. No copy of its own in the original: both
 // callers in fn_800FC984 inline it and the linker dropped the body. It was a plain function
 // generated before fn_800FC984 (below it here), which is where the .sdata2 literal 400.0f stands.
-f32 randomSlotTime() {
+// R2 pool helper (inlined at 2 call sites; one-statement body); was randomSlotTime.
+f32 pool_8053C094() {
     return 400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
@@ -626,9 +627,9 @@ void cls_8049C718::fn_800FB6E0(s32 mode) {
             f32 lenA = PSVECMag((Vec*)&da);
             f32 lenB = PSVECMag((Vec*)&db);
             if (lenA < lenB) {
-                angle = headingOf(-da.x, -da.y);
+                angle = pool_8053C050(-da.x, -da.y);
             } else {
-                angle = headingOf(-db.x, -db.y);
+                angle = pool_8053C050(-db.x, -db.y);
             }
         }
         if (dist < 70.0f) {
@@ -709,7 +710,7 @@ void cls_8049C718::fn_800FB32C() {
         field_0x3c.x -= k * n.x;
         field_0x3c.y -= k * n.y;
         field_0x3c.z -= k * n.z;
-        field_0x262 = headingOf(field_0x3c.x, field_0x3c.y);
+        field_0x262 = pool_8053C050(field_0x3c.x, field_0x3c.y);
     }
     if (field_0x3c.z > 0.0f) {
         mFlags |= 1;
@@ -954,7 +955,8 @@ void cls_8049C718::vfunc_0x44() {
 // atan2 as a 16-bit angle. No copy of its own in the original either (inlined into
 // fn_800FB6E0 and fn_800FB32C, body dropped): a plain function at this place, which puts
 // 10430.378f in front of vfunc_0x44's literals as in the original's .sdata2.
-s32 headingOf(f32 x, f32 y) {
+// R2 pool helper (inlined at 3 call sites; one-statement body); was headingOf.
+s32 pool_8053C050(f32 x, f32 y) {
     return (s32)(JMath::atanTable_.atan2_(x, y) * 10430.378f);
 }
 

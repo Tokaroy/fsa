@@ -422,7 +422,7 @@ void cls_804AE4B0::fn_80371284() {
     fn_803703C8();
     if (field_0x324.y > 1720.0f) {
         field_0x324.y -= 0.5f;
-        tickPlayer_80371284();
+        pool_80542DD8();
         if (field_0x324.y > 1720.0f) {
             return;
         }
@@ -436,7 +436,7 @@ void cls_804AE4B0::fn_80371284() {
     fn_8022FE80(0, field_0x4, mSerial, true, false);
     if (fn_8038BD08(0, 0x50F, getField_0x4(), pos, 0x22)) {
         mState = 2;
-        tickPlayer_80371284();
+        pool_80542DD8();
         field_0x3a4 = 0;
         field_0x3a8 = 1;
         field_0x3a0 = 4;
@@ -827,7 +827,8 @@ void cls_804AE4B0::fn_80370020() {
 
 // A plain function between fn_80370020 and fn_8036FDAC, inlined into both loops of fn_80371284
 // (its out-of-line copy was dead-stripped by the linker); pools 0.3f here.
-void cls_804AE4B0::tickPlayer_80371284() {
+// R2 pool helper (inlined at 2 call sites); was tickPlayer_80371284.
+void cls_804AE4B0::pool_80542DD8() {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x374[i] != 0) {
             field_0x374[i]--;

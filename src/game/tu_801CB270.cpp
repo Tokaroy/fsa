@@ -24,7 +24,7 @@
 #include "JSystem/JMath/JMath.h"
 
 // Forward declaration (defined at its place below fn_801CC9F8).
-f32 tileCenter(f32 v);
+f32 pool_8053EF98(f32 v);
 
 
 
@@ -412,15 +412,15 @@ s32 fn_801CCDA4() {
 
 // Like fn_801CCCC4 but the snapped (x, y) of `in` goes to `out`.
 void fn_801CCD34(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
-    out->x = tileCenter(in->x);
-    out->y = tileCenter(in->y);
+    out->x = pool_8053EF98(in->x);
+    out->y = pool_8053EF98(in->y);
 }
 
 // Snaps pos (x, y) down to a multiple of 16 and adds 8 (the centre of a 16x16
 // tile).
 void fn_801CCCC4(JGeometry::TVec3f* pos) {
-    pos->x = tileCenter(pos->x);
-    pos->y = tileCenter(pos->y);
+    pos->x = pool_8053EF98(pos->x);
+    pos->y = pool_8053EF98(pos->y);
 }
 
 // Whether the tile at pos is one of the codes 0x40-0x49.
@@ -549,7 +549,8 @@ bool fn_801CC8E4(ActorBase_804A5770* actor) {
 // copies are inlined in fn_801CCD34 and fn_801CCCC4, and its 8.0f sits in .sdata2 between
 // fn_801CC350's literals and fn_801CC9F8's, where its own copy was emitted (RULES_CARD,
 // "Literals before their first visible use" 2-3).
-f32 tileCenter(f32 v) {
+// R2 pool helper (inlined at 4 call sites; one-statement body); was tileCenter.
+f32 pool_8053EF98(f32 v) {
     return 8.0f + (u32)((s32)v & ~0xF);
 }
 

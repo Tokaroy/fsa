@@ -248,7 +248,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
             s32 dir;
             fn_801EEC98(mSerial, &angle, &dir, &dist, &other, 0, 2);
             if (dir >= 0 && !(dist > 80.0f)) {
-                faceDir(dir);
+                inl_8011093C(dir);
             }
         } else {
             talkFlag = true;
@@ -479,7 +479,7 @@ void PrincessZeldaDemo_8049D208::fn_80110E9C() {
         break;
     }
     case 36:
-        shrinkAway();
+        pool_8053C574();
         break;
     case 62:
         mDrawEnabled = false;
@@ -580,7 +580,7 @@ void PrincessZeldaDemo_8049D208::fn_8011093C() {
         s32 dir;
         fn_801EEC98(mSerial, &angle, &dir, &dist, &other, 0, 2);
         if (dir >= 0 && !(dist > 80.0f)) {
-            faceDir(dir);
+            inl_8011093C(dir);
         }
         s32 player = startTalk(0x2D2, false);
         if (player >= 0) {
@@ -1055,7 +1055,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F478(s32 arg) {
 }
 #pragma auto_inline reset
 
-void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
+void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box);
 
 // Enters demo state `arg` (3-0x25) of the second scene set.
 // FIXME: 99.87 %, operands; behaviour drift.
@@ -1074,7 +1074,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         mAnim0.fn_801D1F14(0.0f);
         fn_8022FE80(0, field_0x4, mSerial, true, false);
         fn_8022FD8C(mSerial);
-        showSceneMessage();
+        pool_8053C570();
         fn_8011921C()->fn_80118454();
         break;
     case 6:
@@ -1235,12 +1235,12 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         fn_8011921C()->fn_80118454();
         break;
     case 28:
-        flashAtFeet();
+        pool_8053C590();
         mAnim0.startAnim_801D22DC(0xD, 0, false);
         mAnim0.fn_801D1F14(0.0f);
         break;
     case 30:
-        flashAtFeet();
+        pool_8053C590();
         break;
     case 31:
         fn_8022FE80(0, field_0x4, mSerial, true, false);
@@ -1256,7 +1256,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         spawnEmitter_8013CC50(field_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(field_0x4, &mPos, 0xC4, 0, 0, NULL, NULL, true, 1.0f);
         JGeometry::TVec3f pos;
-        setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
+        pool_8053C58C(pos, getGameView_802D6A9C()->mVisibleBox);
         spawnEmitter_8013CC50(field_0x4, &pos, 0xC5, 0, 0, NULL, NULL, true, 1.0f);
         break;
     }
@@ -1399,7 +1399,8 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
 // pool has their literals ahead of fn_8010E2D4's, so they stand at the bottom of the file.
 
 // Turns the maiden to a direction (0..3) and starts that direction's standing animation.
-void PrincessZeldaDemo_8049D208::faceDir(s32 dir) {
+// R2 pool helper (inlined at 2 call sites); was faceDir.
+void PrincessZeldaDemo_8049D208::inl_8011093C(s32 dir) {
     if (dir >= 0) {
         field_0x98 = dir;
         if (dir + 6 != mAnim0.mAnim) {
@@ -1443,7 +1444,8 @@ inline s32 PrincessZeldaDemo_8049D208::startTalk(u32 msg, bool talkFlag) {
 }
 
 // Effect 0x33B and its sound, 16 above mPos.
-void PrincessZeldaDemo_8049D208::flashAtFeet() {
+// R2 pool helper (inlined at 2 call sites); was flashAtFeet.
+void PrincessZeldaDemo_8049D208::pool_8053C590() {
     JGeometry::TVec3f pos = mPos;
     pos.y += -16.0f;
     spawnEmitter_8013CC50(field_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
@@ -1451,7 +1453,8 @@ void PrincessZeldaDemo_8049D208::flashAtFeet() {
 }
 
 // The centre of the camera's visible box, at z 0.
-void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
+// R2 pool helper (body identical to setCenter in act_four_sword_demo, act_blizzard_battle, act_wind_environment); was setCenter.
+void pool_8053C58C(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.x = box.f.x + 0.5f * (box.i.x - box.f.x);
     pos.y = box.f.y + 0.5f * (box.i.y - box.f.y);
     pos.z = 0.0f;
@@ -1490,12 +1493,14 @@ void PrincessZeldaDemo_8049D208::flyToGoal() {
 }
 
 // State 36: the draw scale (field_0x270) runs down to 0.
-void PrincessZeldaDemo_8049D208::shrinkAway() {
+// R2 pool helper (one-statement body); was shrinkAway.
+void PrincessZeldaDemo_8049D208::pool_8053C574() {
     fn_801CD950(&field_0x270, 0.0f, -0.02f);
 }
 
 // Opens the scene set's message 10 above the maiden.
-void PrincessZeldaDemo_8049D208::showSceneMessage() {
+// R2 pool helper (one-statement body); was showSceneMessage.
+void PrincessZeldaDemo_8049D208::pool_8053C570() {
     fn_8038BD08(0, lbl_8053C548[field_0x234], field_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x4022);
 }
 

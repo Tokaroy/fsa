@@ -25,7 +25,7 @@ public:
     void fn_80113790();
     void fn_8011395C();
     void fn_80113B54(s32 arg);
-    void spawnCrystal(s32 crystal);
+    void pool_8053C678(s32 crystal);
     void spawnEmitters(); // inlined by init, tu_80113788.cpp
     void spawnSealEmitters(); // inlined by vfunc_0x60, tu_80113788.cpp
     void spawnBurstEmitters(); // inlined by vfunc_0x60, tu_80113788.cpp

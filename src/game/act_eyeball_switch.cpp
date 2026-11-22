@@ -129,7 +129,7 @@ void EyeballSwitch_804AE678::update() {
                         getGameView_802D6A9C()->fn_802D78B4(field_0x248, field_0x244);
                     }
                     if (field_0x23c == 0 || field_0x23c == 4) {
-                        open();
+                        pool_80542F20();
                         field_0x234 = 2;
                     } else {
                         if (field_0x23c == 2) {
@@ -142,7 +142,7 @@ void EyeballSwitch_804AE678::update() {
                             setScreenFlag_0x30(0xFF, false);
                             gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, field_0x4, 0xAC);
                         } else {
-                            open();
+                            pool_80542F20();
                         }
                     }
                 }
@@ -174,7 +174,8 @@ void EyeballSwitch_804AE678::update() {
 }
 
 // Not in the binary (update inlines it twice); the pool has its 1.0f ahead of update's 32.0f.
-void EyeballSwitch_804AE678::open() {
+// R2 pool helper (inlined at 2 call sites); was open.
+void EyeballSwitch_804AE678::pool_80542F20() {
     setScreenFlag_0x30(0xFF, true);
     gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x35);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x181, 0, 0, NULL, NULL, true, 1.0f);

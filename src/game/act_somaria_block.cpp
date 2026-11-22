@@ -112,12 +112,12 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         }
         break;
     case 2: {
-        if (!checkGround()) {
+        if (!pool_80541738()) {
             break;
         }
         JGeometry::TBox2f here = mBox;
         here.addPos(mPos.x, mPos.y);
-        holdPlayers(&here);
+        pool_80541740(&here);
         s32 dir = fn_80238BC4(mSerial);
         if (dir >= 0 && dir < 4) {
             JGeometry::TVec3f saved = mPos;
@@ -163,12 +163,12 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         box.set(mBox);
         box.addPos(mPos.x, mPos.y);
         JGeometry::TBox2f here = box;
-        holdPlayers(&here);
+        pool_80541740(&here);
         if ((field_0x244 & 0x1F) == 0) {
             startSound_801F0E34(0x30004, 0);
         }
         field_0x244++;
-        if (!checkGround()) {
+        if (!pool_80541738()) {
             break;
         }
         if (!fn_801F2618(NULL, false)) {
@@ -215,7 +215,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         }
         fn_801F2618(NULL, false);
         if (mPos.z < 0.0f && field_0x3c.z < 0.0f) {
-            if (!checkGround()) {
+            if (!pool_80541738()) {
                 break;
             }
             mPos.z = 0.0f;
@@ -340,7 +340,8 @@ void CaneOfSomariaBlock_804AA9F0::fn_8030EA00() {
 
 // Per player: one that is marked is handed the box (fn_80239878); one that is not gets marked once
 // fn_8023B0F4 fails for it.
-void CaneOfSomariaBlock_804AA9F0::holdPlayers(JGeometry::TBox2f* here) {
+// R2 pool helper (inlined at 2 call sites); was holdPlayers.
+void CaneOfSomariaBlock_804AA9F0::pool_80541740(JGeometry::TBox2f* here) {
     for (s32 i = 0; i < 4; i++) {
         if (field_0x246[i] == 1) {
             if (!fn_8022DB04(i) || fn_80238CB4(i) == mSerial) {
@@ -352,7 +353,8 @@ void CaneOfSomariaBlock_804AA9F0::holdPlayers(JGeometry::TBox2f* here) {
     }
 }
 
-bool CaneOfSomariaBlock_804AA9F0::checkGround() {
+// R2 pool helper (inlined at 3 call sites); was checkGround.
+bool CaneOfSomariaBlock_804AA9F0::pool_80541738() {
     JGeometry::TBox2f box = field_0x80;
     box.addPos(mPos.x, mPos.y);
     JGeometry::TVec3f centre;

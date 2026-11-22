@@ -46,7 +46,7 @@ public:
     void fn_803ED5B4();
     void fn_803E3320();
     void drawFade();
-    void enterState15();
+    void pool_80543680();
 
     // Enter functions, lbl_804B0754[state].
     void fn_803E2A20(); // 12

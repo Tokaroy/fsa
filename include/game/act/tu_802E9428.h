@@ -16,7 +16,7 @@ public:
     bool fn_802E948C(f32 target, s32 frames);
     void fn_802E94F4();
     // Not in the binary: plain functions that fn_802E94F4 and update inline.
-    void updateCamera();
+    void pool_805412F8();
     void stepZoom();
     u8 tickTimer();
     bool fn_802E9884(JGeometry::TVec3f pos);

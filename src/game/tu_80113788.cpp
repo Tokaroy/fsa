@@ -455,7 +455,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
         }
         s32 crystal = field_0x238;
         if (crystal != 0 && crystal < 6) {
-            spawnCrystal(crystal);
+            pool_8053C678(crystal);
         }
         break;
     }
@@ -514,7 +514,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
             getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
             s32 crystal = field_0x238;
             if (crystal < 6) {
-                spawnCrystal(crystal);
+                pool_8053C678(crystal);
             }
         }
         break;
@@ -727,7 +727,8 @@ void cls_8049D83C::updateCameraFocus() {
     }
 }
 
-void cls_8049D83C::spawnCrystal(s32 crystal) {
+// R2 pool helper (inlined at 2 call sites); was spawnCrystal.
+void cls_8049D83C::pool_8053C678(s32 crystal) {
     JGeometry::TVec3f spawnPos = mSpawnPos;
     spawnPos.z = 20.0f;
     getActorManager_801F856C()->spawnActor_801F9484('CRNV', field_0x4, &spawnPos, crystal, -1, -1);

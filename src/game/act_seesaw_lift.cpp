@@ -123,7 +123,7 @@ void SeesawLift_804AD348::init() {
     for (int i = 0; i < 8; i++) {
         field_0x25c[i] = NULL;
     }
-    fillTiles(0);
+    pool_8054286C(0);
 }
 
 s32 SeesawLift_804AD348::fn_8035AE9C(s32 player) {
@@ -339,7 +339,7 @@ void SeesawLift_804AD348::fn_8035A210() {
         field_0x23a = (field_0x240 - 0.15f * (f32)field_0x238 - 0.008f * (f32)mirrored) / 15.0f;
     }
     if (field_0x238 == 0 && field_0x23a != 0) {
-        fillTiles(1);
+        pool_8054286C(1);
     }
     field_0x238 += field_0x23a;
     s16 oldAngle = field_0x230;
@@ -459,7 +459,7 @@ void SeesawLift_804AD348::fn_803597EC() {
     if (mask != 0) {
         if (field_0x238 == 0 && field_0x240 != 0.0f) {
             field_0x254 = 30;
-            fillTiles(1);
+            pool_8054286C(1);
         }
         if (field_0x240 > 0.0f) {
             field_0x238 = 0x200;
@@ -492,7 +492,7 @@ void SeesawLift_804AD348::fn_803597EC() {
     }
     if (field_0x230 == 0 || field_0x230 == -0x8000) {
         if (field_0x238 != 0) {
-            fillTiles(0);
+            pool_8054286C(0);
         }
         field_0x238 = 0;
     }
@@ -563,7 +563,7 @@ void SeesawLift_804AD348::fn_80358F98() {
             field_0x238 = 0;
             field_0x23a = 0;
             field_0x245 = 0;
-            fillTiles(0);
+            pool_8054286C(0);
         }
     } else {
         if (field_0x230 >= 0x3E00) {
@@ -575,13 +575,13 @@ void SeesawLift_804AD348::fn_80358F98() {
             field_0x238 = 0;
             field_0x23a = 0;
             field_0x245 = 0;
-            fillTiles(0);
+            pool_8054286C(0);
         }
     }
     if (oldAngle == 0 && field_0x230 != 0) {
-        spawnSandEmitters();
+        pool_80542878();
         field_0x245 = 1;
-        fillTiles(1);
+        pool_8054286C(1);
     }
 }
 
@@ -683,15 +683,15 @@ void SeesawLift_804AD348::fn_803584C0() {
         field_0x238 = 0;
         field_0x23a = 0;
         field_0x245 = 0;
-        fillTiles(0);
+        pool_8054286C(0);
         if (field_0x250 == 0) {
             field_0x250 = -1;
         }
     }
     if (oldAngle == 0 && field_0x230 != 0) {
-        spawnSandEmitters();
+        pool_80542878();
         field_0x245 = 1;
-        fillTiles(1);
+        pool_8054286C(1);
     }
     if (field_0x230 != 0) {
         field_0x250 = 0;
@@ -718,7 +718,8 @@ SeesawLift_804AD348::~SeesawLift_804AD348() {}
 // Dead-stripped helpers inlined into their callers; compiled first (bottom of the
 // file), their out-of-line copies emitted the leading .sdata2 literals (0.0f,
 // 16.0f, 7.0f, 1.0f) ahead of fn_803584C0's block, as in the original.
-void SeesawLift_804AD348::spawnSandEmitters() {
+// R2 pool helper (inlined at 2 call sites); was spawnSandEmitters.
+void SeesawLift_804AD348::pool_80542878() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DE, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3DF, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x3E0, 0, 0, NULL, NULL, true, 1.0f);
@@ -735,7 +736,8 @@ u8 SeesawLift_804AD348::isPlayerInside(s32 player) const {
     return (rel.x >= box.i.x && rel.y >= box.i.y && rel.x < box.f.x && rel.y < box.f.y) ? true : false;
 }
 
-void SeesawLift_804AD348::fillTiles(s32 state) {
+// R2 pool helper (inlined at 9 call sites); was fillTiles.
+void SeesawLift_804AD348::pool_8054286C(s32 state) {
     JGeometry::TVec3f p;
     JGeometry::TVec3f base;
     p = mPos + JGeometry::TVec3f(mBox.i.x, mBox.i.y, 0.0f);
