@@ -237,7 +237,7 @@ void cls_804A51E4::init() {
 
 // tu_801DE714 (0x801E2004, vtable slot 0x54, EnemyBase's start hook): see the
 // declaration in act/tu_801DE714.h.
-void cls_804A51E4::vfunc_0x54() {
+void cls_804A51E4::onFirstUpdate_0x54() {
     getActorManager_801F856C()->fn_801F7AB8(mActorId, mSerial);
     s32 layer = field_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -915,7 +915,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
 }
 
 // FIXME(shotgun): 97.62 %, missing/extra; behaviour drift.
-void cls_804A51E4::vfunc_0x90(u8 mapHit) {
+void cls_804A51E4::updateState_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
     }
@@ -1178,7 +1178,7 @@ void cls_804A51E4::vfunc_0x90(u8 mapHit) {
     fn_801E2D88();
 }
 
-void cls_804A51E4::vfunc_0x94() {
+void cls_804A51E4::updateAnim_0x94() {
     if (field_0x2ce != 0) {
         field_0x2ce--;
     }
@@ -1191,20 +1191,20 @@ void cls_804A51E4::vfunc_0x94() {
                 return;
             }
         }
-        EnemyBase_804A4808::vfunc_0x94();
+        EnemyBase_804A4808::updateAnim_0x94();
     }
 }
 
 
 // tu_801DE714 (0x801DE9C0): vtable slot 0x9C. The step is EnemyBase's
 // fn_801CE2BC (a plain bl), then the view check.
-void cls_804A51E4::vfunc_0x9C(u8 mapHit) {
+void cls_804A51E4::updateBehavior_0x9C(u8 mapHit) {
     EnemyBase_804A4808::fn_801CE2BC(mapHit);
     fn_8021835C();
 }
 
 // FIXME(shotgun): 97.22 %, scheduling+regalloc; behaviour drift.
-void cls_804A51E4::vfunc_0x88() {
+void cls_804A51E4::calcVelocity_0x88() {
     bool blocked = fn_801CCF7C();
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
@@ -1275,7 +1275,7 @@ void cls_804A51E4::vfunc_0x88() {
     }
 }
 
-void cls_804A51E4::vfunc_0x8C() {
+void cls_804A51E4::onMoved_0x8C() {
     if (fn_801E1D7C()) {
         if (!fn_801CD2F8(field_0x4)) {
             fn_80212AC0()->fn_80212AF0(&mPos);
@@ -1286,8 +1286,8 @@ void cls_804A51E4::vfunc_0x8C() {
 
 // tu_801DE714 (0x801DE714): vtable slot 0x80. In state 0xA the floor check
 // is EnemyBase's, called directly (a plain bl, not through the vtable).
-void cls_804A51E4::vfunc_0x80() {
+void cls_804A51E4::checkFloor_0x80() {
     if (mState == 0xA) {
-        EnemyBase_804A4808::vfunc_0x80();
+        EnemyBase_804A4808::checkFloor_0x80();
     }
 }

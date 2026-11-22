@@ -355,7 +355,7 @@ void cls_804AC600::draw() {
 
 // 0x80343AD0.
 // FIXME(shotgun): 96.67 %, missing/extra; behaviour clean.
-void cls_804AC600::vfunc_0x24() {
+void cls_804AC600::die_0x24() {
     s32 kind = 0;
     if (field_0x274 == 1) {
         kind = 3;
@@ -363,7 +363,7 @@ void cls_804AC600::vfunc_0x24() {
         kind = 1;
     }
     getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &mPos, kind | 0x261E00);
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 // Destructor at 0x80343A70.

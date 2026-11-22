@@ -33,13 +33,13 @@ void FireballGenerator_804A6660::init() {
     mStateTimer = 0;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         fn_801F3668();
     }
 }
 
-void FireballGenerator_804A6660::vfunc_0x90(u8 mapHit) {
-    if (vfunc_0x34()) {
+void FireballGenerator_804A6660::updateState_0x90(u8 mapHit) {
+    if (isScreenFlagSet_0x34()) {
         fn_801F3668();
     } else {
         switch (mState) {

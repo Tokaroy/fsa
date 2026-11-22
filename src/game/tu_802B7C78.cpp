@@ -59,7 +59,7 @@ static inline bool playerInGame(s32 player) {
 // FIXME(shotgun): 95.87 %, missing/extra; behaviour drift.
 void ReaperShinigami_804A886C::update() {
     if (gGameRoot_8053AAF8->field_0xfe == 0) {
-        vfunc_0x24();
+        die_0x24();
         return;
     }
     switch (field_0x230) {
@@ -211,7 +211,7 @@ void ReaperShinigami_804A886C::draw() {
     drawSprite_801F06F0("enemy_gc_sob.bin", lbl_8046CB60[field_0x24c] + 0x466, &params, 7, 1.0f, 1.0f);
 }
 
-void ReaperShinigami_804A886C::vfunc_0x24() {
+void ReaperShinigami_804A886C::die_0x24() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x173, 1, 0, NULL, NULL, true, 1.0f);
     mAlive = false;
     startSound_801F0E34(0x40041, 0);
@@ -347,7 +347,7 @@ void ReaperShinigami_804A886C::fn_802B7D1C(s32 idx, s32 arg) {
 
 void fn_802B7CD8(ActorBase_804A5770* actor) {
     getGameView_802D6A9C()->fn_802D9FBC();
-    actor->vfunc_0x24();
+    actor->die_0x24();
 }
 
 ReaperShinigami_804A886C::~ReaperShinigami_804A886C() {}

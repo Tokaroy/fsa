@@ -73,7 +73,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
     switch (mState) {
     case 0:
         if (field_0x25c != 0) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 setViewBit(field_0x254);
                 field_0x94 = 1;
             } else {
@@ -94,13 +94,13 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         break;
     case 1:
         if (field_0x25c != 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             mState = 10;
         }
         break;
     case 2:
         if (field_0x25c != 0) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 setViewBit(field_0x254);
                 field_0x94 = 1;
             } else {
@@ -223,9 +223,9 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
             getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
             fn_801F0D20(0x50);
             if (field_0x234 == 1) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
-        } else if (!vfunc_0x34()) {
+        } else if (!isScreenFlagSet_0x34()) {
             getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
             fn_801F0D20(0x50);
             getActorManager_801F856C()->fn_801F6884();

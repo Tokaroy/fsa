@@ -497,7 +497,7 @@ void cls_804A1E50::fn_8018DC70(s32 mode) {
                 if (fire != NULL && ((fire->field_0x90 >> 6) & 3) == 0) {
                     if (std::fabsf(fire->mPos.x - mPos.x) < 80.0f && mPos.y - 16.0f < fire->mPos.y &&
                         std::fabsf(fire->mPos.y - mPos.y) < 120.0f) {
-                        fire->vfunc_0x24();
+                        fire->die_0x24();
                     }
                 }
             }
@@ -589,7 +589,7 @@ void cls_804A1E50::update() {
     if (field_0x26c == 0) {
         fn_8017ECC0();
     }
-    if (vfunc_0x2C(0.0f, 16.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(0.0f, 16.0f, 50.0f)) {
         field_0x24c++;
         field_0x24c &= 0xF;
         if (field_0x24c == 0) {
@@ -790,7 +790,7 @@ void cls_804A1E50::update() {
             for (s32 i = 0; i < 4; i++) {
                 ActorBase_804A5770* sw = switches[i];
                 if (sw != NULL && sw->fn_8018A5B0()) {
-                    field_0x2e8[i] = sw->vfunc_0x3C();
+                    field_0x2e8[i] = sw->getScreenFlagBit_0x3C();
                     fn_8018E8C0(&field_0x2f8[i], sw->fn_801544DC());
                 }
             }
@@ -1331,7 +1331,7 @@ void cls_804A1E50::update() {
             if (lbl_80539FD0 > 0) {
                 mState = 15;
             } else {
-                vfunc_0x24();
+                die_0x24();
                 mState = 25;
             }
         }
@@ -1642,8 +1642,8 @@ void cls_804A1E50::draw() {
     }
 }
 
-void cls_804A1E50::vfunc_0x24() {
+void cls_804A1E50::die_0x24() {
     startSound_801F0E34(0x40015, 0);
-    vfunc_0x28(2, 0.0f, 16.0f);
+    startBossDeath_0x28(2, 0.0f, 16.0f);
 }
 

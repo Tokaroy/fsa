@@ -155,7 +155,7 @@ void ZoraEnemy_804A3D7C::fn_801BACE8(s32 state) {
     mState = state;
 }
 
-void ZoraEnemy_804A3D7C::vfunc_0x90(u8 mapHit) {
+void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mActorId == 'LTZR') {
@@ -258,11 +258,11 @@ void ZoraEnemy_804A3D7C::vfunc_0x90(u8 mapHit) {
     }
 }
 
-bool ZoraEnemy_804A3D7C::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ZoraEnemy_804A3D7C::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (fn_8022461C(pos, layer) == 0xD) {
         return false;
     }
-    return ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    return ActorBase_804A5770::isBlocked_0x4C(layer, pos);
 }
 
 void ZoraEnemy_804A3D7C::vfunc_0xA0() {

@@ -27,8 +27,8 @@ public:
     virtual void init();                                              // 0x0C: fn_80356268
     virtual void update();                                            // 0x14: fn_803558A4
     virtual void draw();                                              // 0x20: fn_80355610
-    virtual void vfunc_0x24();                                        // fn_803554B8
-    virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos); // fn_8035533C
+    virtual void die_0x24();                                        // fn_803554B8
+    virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos); // fn_8035533C
     bool fn_80354D64(u8 dir);
     void fn_80354FE8();
     bool isAtRest() const {

@@ -184,7 +184,7 @@ void ActorBase_804A5770::update() {}
 // FIXME: 99.47 %, regalloc-only; behaviour clean.
 // FIXME: float registers differ (the player's z lands in f7, the target uses
 // f5; the overlap box's max in f5/f6 instead of f6/f7); the rest matches.
-void ActorBase_804A5770::vfunc_0x18() {
+void ActorBase_804A5770::checkPlayerContact_0x18() {
     if (mPos.z <= 16.0f && mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         JGeometry::TBox2f box;
         toScreenBox(&box, mBox, mPos);
@@ -323,7 +323,7 @@ void ActorBase_804A5770::fn_801F52A4() {
 // "dasu" drop (fn_801F52A4). Then the death effects (0x172, 0x173; the
 // killer's effect slot gets the first), the killer's score updates,
 // the death sound, and the view's counters (fn_802D7704 / fn_802D766C).
-void ActorBase_804A5770::vfunc_0x24() {
+void ActorBase_804A5770::die_0x24() {
     s32 bit;
     s32 player;
     if (gGameRoot_8053AAF8->field_0x7e != 0 && field_0x1a8 == true &&
@@ -371,7 +371,7 @@ void ActorBase_804A5770::vfunc_0x24() {
     }
 }
 
-void ActorBase_804A5770::vfunc_0x28(s32 height, f32 x, f32 y) {
+void ActorBase_804A5770::startBossDeath_0x28(s32 height, f32 x, f32 y) {
     field_0xd8 = 0;
     field_0x188 = 300;
     JGeometry::TVec3f pos = mPos;
@@ -395,7 +395,7 @@ void ActorBase_804A5770::vfunc_0x28(s32 height, f32 x, f32 y) {
 // Register allocation only (the inlined random number
 // generator's scratch registers r5-r12); literals are @NNN until .sdata2 is
 // in order.
-bool ActorBase_804A5770::vfunc_0x2C(f32 x, f32 y, f32 scale) {
+bool ActorBase_804A5770::updateBossDeath_0x2C(f32 x, f32 y, f32 scale) {
     if (field_0x188 == -1) {
         return false;
     }
@@ -469,26 +469,26 @@ bool ActorBase_804A5770::vfunc_0x2C(f32 x, f32 y, f32 scale) {
     return true;
 }
 
-void ActorBase_804A5770::vfunc_0x30(u8 value, bool set) {
-    if (vfunc_0x3C()) {
-        getGameView_802D6A9C()->fn_802D8050(vfunc_0x3C(), set, value);
+void ActorBase_804A5770::setScreenFlag_0x30(u8 value, bool set) {
+    if (getScreenFlagBit_0x3C()) {
+        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), set, value);
     }
 }
 
-bool ActorBase_804A5770::vfunc_0x34() {
-    if (vfunc_0x3C()) {
-        return getGameView_802D6A9C()->fn_802D800C(vfunc_0x3C());
+bool ActorBase_804A5770::isScreenFlagSet_0x34() {
+    if (getScreenFlagBit_0x3C()) {
+        return getGameView_802D6A9C()->fn_802D800C(getScreenFlagBit_0x3C());
     }
     return false;
 }
 
-s32 ActorBase_804A5770::vfunc_0x38() {
-    return getGameView_802D6A9C()->fn_802D7E04(vfunc_0x3C());
+s32 ActorBase_804A5770::getScreenFlagCount_0x38() {
+    return getGameView_802D6A9C()->fn_802D7E04(getScreenFlagBit_0x3C());
 }
 
 // The actor's bit in the screen and stage tables of the view (game/GameView.h):
 // the top five bits of field_0x90, 0 for none.
-s32 ActorBase_804A5770::vfunc_0x3C() {
+s32 ActorBase_804A5770::getScreenFlagBit_0x3C() {
     return field_0x90 >> 27;
 }
 
@@ -522,7 +522,7 @@ void ActorBase_804A5770::fn_801F4694() const {
 // a dust trail along the way on the ground (0x3D3, or 0x3D4 on water-like
 // tiles), and when it ends with no life left the death timer field_0xe0 (1,
 // or 30 for a typed hit; a burning actor leaves a fire, ACTOR_BLZE). While
-// field_0xe0 runs: the death effect for field_0xfc at 30, then vfunc_0x24
+// field_0xe0 runs: the death effect for field_0xfc at 30, then die_0x24
 // at 0. field_0xe8 more hit sparks every 5 frames. Returns 0 (nothing to
 // do), 1, or -1 when the actor has no life left.
 // FIXME: 99.12 %, missing/extra; behaviour clean.
@@ -672,7 +672,7 @@ s32 ActorBase_804A5770::fn_801F3D94(u8 flag) {
         field_0xe0--;
         field_0x3c.zero();
         if (field_0xe0 == 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         result = 1;
     } else {
@@ -1334,7 +1334,7 @@ u8 ActorBase_804A5770::fn_801F23BC(s32 layer, const JGeometry::TVec3f* to,
     return hit;
 }
 
-// Pushes `box` at *pos out of whatever blocks it on `layer` (vfunc_0x50).
+// Pushes `box` at *pos out of whatever blocks it on `layer` (isBlockedOrOutOfView_0x50).
 // Each edge of the box is probed every 8 units and at its far end; the
 // hits are counted as [start, middle, end] per edge, and a hit gives the
 // distance to the next 8-unit cell line. An edge whose middle is blocked
@@ -1368,14 +1368,14 @@ u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
     s32 hitsL[3] = {0, 0, 0};
     i = 0;
     for (p.y = pos->y + top; p.y < pos->y + bottom; p.y += 8.0f) {
-        if (vfunc_0x50(layer, &p)) {
+        if (isBlockedOrOutOfView_0x50(layer, &p)) {
             hitsL[i != 0]++;
             dxL = (s32)(0.125f * p.x + 1.0f) * 8 - p.x;
         }
         i++;
     }
     p.y = pos->y + bottom;
-    if (vfunc_0x50(layer, &p)) {
+    if (isBlockedOrOutOfView_0x50(layer, &p)) {
         hitsL[2]++;
         dxL = (s32)(0.125f * p.x + 1.0f) * 8 - p.x;
     }
@@ -1386,14 +1386,14 @@ u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
     s32 hitsR[3] = {0, 0, 0};
     i = 0;
     for (p.y = pos->y + top; p.y < pos->y + bottom; p.y += 8.0f) {
-        if (vfunc_0x50(layer, &p)) {
+        if (isBlockedOrOutOfView_0x50(layer, &p)) {
             hitsR[i != 0]++;
             dxR = (pos->x + box->f.x) - (s32)(0.125f * p.x) * 8;
         }
         i++;
     }
     p.y = pos->y + bottom;
-    if (vfunc_0x50(layer, &p)) {
+    if (isBlockedOrOutOfView_0x50(layer, &p)) {
         hitsR[2]++;
         p.x = pos->x + box->f.x;
         dxR = p.x - (s32)(0.125f * p.x) * 8;
@@ -1405,14 +1405,14 @@ u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
     s32 hitsT[3] = {0, 0, 0};
     i = 0;
     for (p.x = pos->x + left; p.x < pos->x + right; p.x += 8.0f) {
-        if (vfunc_0x50(layer, &p)) {
+        if (isBlockedOrOutOfView_0x50(layer, &p)) {
             hitsT[i != 0]++;
             dyT = (s32)(0.125f * p.y + 1.0f) * 8 - p.y;
         }
         i++;
     }
     p.x = pos->x + right;
-    if (vfunc_0x50(layer, &p)) {
+    if (isBlockedOrOutOfView_0x50(layer, &p)) {
         hitsT[2]++;
         dyT = (s32)(0.125f * p.y + 1.0f) * 8 - p.y;
     }
@@ -1423,14 +1423,14 @@ u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
     s32 hitsB[3] = {0, 0, 0};
     i = 0;
     for (p.x = pos->x + left; p.x < pos->x + right; p.x += 8.0f) {
-        if (vfunc_0x50(layer, &p)) {
+        if (isBlockedOrOutOfView_0x50(layer, &p)) {
             hitsB[i != 0]++;
             dyB = (pos->y + box->f.y) - (s32)(0.125f * p.y) * 8;
         }
         i++;
     }
     p.x = pos->x + right;
-    if (vfunc_0x50(layer, &p)) {
+    if (isBlockedOrOutOfView_0x50(layer, &p)) {
         hitsB[2]++;
         p.y = pos->y + box->f.y;
         dyB = p.y - (s32)(0.125f * p.y) * 8;
@@ -1520,11 +1520,11 @@ u8 ActorBase_804A5770::fn_801F172C(s32 layer, JGeometry::TVec3f* pos,
     return moved;
 }
 
-// Whether pos is blocked on layer (vfunc_0x4C) or outside the view's box
+// Whether pos is blocked on layer (isBlocked_0x4C) or outside the view's box
 // for that layer.
-bool ActorBase_804A5770::vfunc_0x50(s32 layer, const JGeometry::TVec3f* pos) {
+bool ActorBase_804A5770::isBlockedOrOutOfView_0x50(s32 layer, const JGeometry::TVec3f* pos) {
     JGeometry::TBox2f* box = layerBox(layer);
-    return vfunc_0x4C(layer, pos) || pos->x < box->i.x || pos->y < box->i.y ||
+    return isBlocked_0x4C(layer, pos) || pos->x < box->i.x || pos->y < box->i.y ||
            pos->x >= box->f.x || pos->y >= box->f.y;
 }
 
@@ -1534,7 +1534,7 @@ bool ActorBase_804A5770::vfunc_0x50(s32 layer, const JGeometry::TVec3f* pos) {
 // Same instructions; the target keeps layer in r29 and pos
 // in r28, this code the other way round (so the two argument moves before
 // fn_802265DC are scheduled differently).
-bool ActorBase_804A5770::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ActorBase_804A5770::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     bool blocked = true;
     if (!fn_802265DC(pos, layer, false)) {
         s32 serial = mSerial;
@@ -1546,7 +1546,7 @@ bool ActorBase_804A5770::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return blocked;
 }
 
-// The shared body of eight actors' vfunc_0x4C overrides (act_pot, act_rock,
+// The shared body of eight actors' isBlocked_0x4C overrides (act_pot, act_rock,
 // act_grass, act_stone, act_sign, act_coconut, tu_8034C950, tu_80354D64; each
 // passes its own countdown word): blocked by another actor's collision box, or by the tile at pos. While
 // *timer runs it counts down and nothing blocks; stepping onto a tile of
@@ -1586,7 +1586,7 @@ bool ActorBase_804A5770::fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s3
                 return false;
             }
             if (code == 0x25) {
-                // (u8): the result is narrowed as a byte (extrwi), as in act_bombchu's vfunc_0x4C.
+                // (u8): the result is narrowed as a byte (extrwi), as in act_bombchu's isBlocked_0x4C.
                 return (u8)(getGameView_802D6A9C()->field_0x171 == 0);
             }
             if (code == 0x26) {
@@ -1602,14 +1602,14 @@ bool ActorBase_804A5770::fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s3
     return false;
 }
 
-// With a map box (field_0x80) and blocked on its layer (vfunc_0x4C): steps
+// With a map box (field_0x80) and blocked on its layer (isBlocked_0x4C): steps
 // back to mPrevPos's x/y and 8 further along the reverse of field_0x98's
 // direction; if that is outside the view's box for the layer, respawns at
 // mSpawnPos on layer field_0x8. Returns whether it was blocked.
 bool ActorBase_804A5770::fn_801F11B4() {
     bool blocked = false;
     if (field_0x80.getWidth() > 0.0f && field_0x80.getHeight() > 0.0f &&
-        vfunc_0x4C(field_0x4, &mPos))
+        isBlocked_0x4C(field_0x4, &mPos))
     {
         mPos.x = mPrevPos.x;
         mPos.y = mPrevPos.y;

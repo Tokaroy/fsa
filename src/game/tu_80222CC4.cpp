@@ -34,7 +34,7 @@ void cls_804A6C38::init() {
     mAnim.startAnim_801D22DC(2, 0, false);
 }
 
-void cls_804A6C38::vfunc_0x90(u8 mapHit) {
+void cls_804A6C38::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -111,15 +111,15 @@ void cls_804A6C38::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6C38::vfunc_0x88() {
+void cls_804A6C38::calcVelocity_0x88() {
     if (mState == 2) {
         fn_80221250();
     } else {
-        EnemyBase_804A4808::vfunc_0x88();
+        EnemyBase_804A4808::calcVelocity_0x88();
     }
 }
 
-void cls_804A6C38::vfunc_0x6C() {
-    ShadowLinkBase_804A6A00::vfunc_0x6C();
+void cls_804A6C38::onHitByPlayer_0x6C() {
+    ShadowLinkBase_804A6A00::onHitByPlayer_0x6C();
     releaseShot(this);
 }

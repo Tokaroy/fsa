@@ -10,19 +10,19 @@
 
 // Named after its vtable, 0x804A6550 (an EnemyBase_804A4808 descendant).
 // The overrides below are the vtable slots that differ from EnemyBase's;
-// init and vfunc_0x90 are not written yet (draw() is in tu_8021AF28).
+// init and updateState_0x90 are not written yet (draw() is in tu_8021AF28).
 class cls_804A6550 : public EnemyBase_804A4808 {
 public:
     cls_804A6550();
     /* 0x08 */ virtual ~cls_804A6550();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // tu_8021AF28 (the sprite and effect helpers draw() and the actor's

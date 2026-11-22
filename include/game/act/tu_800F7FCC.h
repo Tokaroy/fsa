@@ -35,7 +35,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x40 */ virtual void vfunc_0x40();
     // 0x800F8BAC / 0x800F9170 / 0x800F953C: the three ways a puff moves
     // (shotgun pass, named from the asm only).
@@ -69,9 +69,9 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x44 */ virtual void vfunc_0x44();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
 
     void fn_800FA6B0(); // steps the animation tables (mAnimState)
     void fn_800FA1A4(); // keeps the two partner actors apart

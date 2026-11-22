@@ -37,7 +37,7 @@ inline void cls_804A4188::moveEmitter() {
 // Whether the point (dx, dy) from the actor is blocked.
 inline bool cls_804A4188::blockedAt(f32 dx, f32 dy) {
     JGeometry::TVec3f p(mPos.x + dx, mPos.y + dy, mPos.z);
-    return vfunc_0x4C(field_0x4, &p);
+    return isBlocked_0x4C(field_0x4, &p);
 }
 
 // Burns the tiles under the box (a 2x2 grid of points over it).
@@ -77,7 +77,7 @@ void cls_804A4188::init() {
     mStateTimer = 0;
 }
 
-void cls_804A4188::vfunc_0x54() {
+void cls_804A4188::onFirstUpdate_0x54() {
     mEmitter2a8 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x1B, 0, field_0x94, NULL, NULL, true, 1.0f);
     moveEmitter();
 }
@@ -98,7 +98,7 @@ void cls_804A4188::update() {
     }
     if (!(mFlags & ENEMY_FLAG_STARTED)) {
         mFlags |= ENEMY_FLAG_STARTED;
-        vfunc_0x54();
+        onFirstUpdate_0x54();
         return;
     }
     mPos += field_0x3c;
@@ -119,11 +119,11 @@ void cls_804A4188::update() {
     }
 }
 
-// FIXME: 91.0 %. Same instructions as ActorBase_804A5770::vfunc_0x4C (tu_801EE24C); only the saved
+// FIXME: 91.0 %. Same instructions as ActorBase_804A5770::isBlocked_0x4C (tu_801EE24C); only the saved
 // registers differ: the target keeps this in r31, the result in r30, layer in r29 and pos in r28
 // (this code: result r31, this r30, pos r29, layer r28), so the prologue stores and the argument
 // moves are ordered differently.
-bool cls_804A4188::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool cls_804A4188::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     switch (fn_8022461C(pos, layer)) {
     case 3:
     case 0xD:

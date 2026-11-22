@@ -40,9 +40,9 @@ void Rock_804A9480::update() {
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x92);
                 }
             }
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(0, field_0xc8, 5) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
     }
 }
@@ -52,7 +52,7 @@ void Rock_804A9480::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, 0x2B, false, 2, -1, 1, 0, 0);
 }
 
-void Rock_804A9480::vfunc_0x24() {
+void Rock_804A9480::die_0x24() {
     s32 tile = fn_8022461C(&mPos, field_0x4);
     if (tile == 0xD || tile == 0x3B || tile == 0x39) {
         mPos.z = 0.0f;
@@ -81,7 +81,7 @@ void Rock_804A9480::vfunc_0x24() {
     }
 }
 
-bool Rock_804A9480::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Rock_804A9480::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x234);
 }
 

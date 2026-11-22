@@ -13,9 +13,9 @@ public:
     virtual ~cls_804A6C38();
     /* 0x0C */ virtual void init();
     // Releases the 'DDGO' actor after the base's work.
-    /* 0x6C */ virtual void vfunc_0x6C();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x6C */ virtual void onHitByPlayer_0x6C();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
 
     // The 'DDGO' actor spawned in state 5 (-1 when none): its serial.
     /* 0x2B8 */ s32 mDDGOSerial;

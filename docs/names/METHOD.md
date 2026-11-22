@@ -138,6 +138,50 @@ The rename changes text only; the DOL SHA-1 must stay equal.
   file, LOW_CONFIDENCE.md and names.tsv are not (they cite the old names on purpose).
   `site/` (generated) and `config/` other than symbols.txt are left alone.
 
+## Virtual slots (kind `member`)
+
+A virtual slot is named once, at the class that declares it, and every
+override takes that name (C++ needs the same name for an override). The
+row's address is the declaring class's vtable (`804A5770` ActorBase,
+`804A4808` EnemyBase); `old` is the slot placeholder `vfunc_0xNN`, whose NN
+is the offset into the vtable (two header words, the first slot at +0x8).
+
+Convention: a member name has no address of its own, so below high the
+**slot offset** stays in the name as a trailing `_0xNN` spelled as in the
+old name (`vfunc_0x24` -> `die_0x24`, `vfunc_0xC` -> `..._0xC`); only a
+proven (high) name drops it. The suffix keeps the placeholder recoverable,
+marks the name as provisional to the reader, and makes every new name unique
+in the tree, so `--revert` is a plain rename. symbols.txt follows: the
+member is the part of `name__<n>Class...` before `__`; the class keeps its
+`_<vtable>` address, so `gate.py` still sees a placeholder and needs no
+`approved_symbol_changes.txt` line (a member of a class with a real,
+address-free name would need one).
+
+Evidence for a slot: what the base implementation does (its body, or the
+base's driver that calls it: EnemyBase::update() calls each hook under one
+documented condition), the overrides (a sample, and their counts in the
+header comment) and the callers. A hook named after the condition its
+driver calls it under (`onDeath_0x78`: once, when mLife <= 0) is med, as
+that condition is read from the asm; a role read only from the overrides'
+shape is low. A slot whose base is empty and whose callers say nothing
+(ActorBase 0x10, 0x40, 0x44, 0x48, EnemyBase 0x58, 0xA0) keeps
+`vfunc_0xNN`.
+
+Scope. The same placeholder is a different slot in another hierarchy
+(EnemyBase's vfunc_0x54 against EscortBase_8049E0C8's, GameView's
+vfunc_0x10 against ActorBase's), so `rename.py` renames a member only for
+the declaring class and its descendants (bases from the `class X : public
+Y` declarations in include/ and src/): `Cls::old`, mangled `old__<n>Cls`,
+and the class body or `Cls::fn` body an occurrence sits in decide it; an
+occurrence without such context (a comment, a `p->old()` call in a free
+function, a doc line) follows its file when every class the file resolves
+is a descendant (for `progress/game__<unit>.md`, the classes of that unit's
+source), else it is left as is and counted ("N left" in the dry run). When
+no class outside the hierarchy has the member, the rename is plain. In code
+a wrong scope cannot pass: the compiler (no such member) and the link fail.
+`tools/gen_game.py` reads ActorBase's slot declarations from ActorBase.h, so
+it follows member renames.
+
 ## Applying, re-applying, reverting
 
 ```sh
@@ -156,7 +200,7 @@ row's old name; symbols.txt places the old or new name at the row's address
 whole run.
 
 `rename.py` takes the manifest's `apply` column (7 columns:
-address, kind, old, new, confidence, apply, evidence) and nothing else decides
+address, kind (class | function | global | member), old, new, confidence, apply, evidence) and nothing else decides
 whether a row is applied; `to_current()` follows symbols.txt for those rows.
 
 Verification for an applied sweep: `ninja` (SHA-1 OK), `python3

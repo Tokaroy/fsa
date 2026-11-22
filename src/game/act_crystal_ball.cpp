@@ -27,7 +27,7 @@ static const s32 lbl_80471784[6][7] = {
 
 
 // The item shown / dropped for ball state `item`; inlined by draw (0x80320D18) and
-// vfunc_0x24 (0x80320374).
+// die_0x24 (0x80320374).
 inline s32 adjustItem_80320374(CrystalBall_804AB308* ball, s32 item) {
     if (gGameRoot_8053AAF8->field_0x7f == 1) {
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
@@ -149,7 +149,7 @@ void CrystalBall_804AB308::init() {
         field_0xb0 = 0;
         field_0x230 = 7;
     }
-    if (field_0x230 == 0 && vfunc_0x4C(field_0x4, &mPos) == 1) {
+    if (field_0x230 == 0 && isBlocked_0x4C(field_0x4, &mPos) == 1) {
         mAlive = false;
     }
 }
@@ -423,7 +423,7 @@ void CrystalBall_804AB308::fn_803226EC() {
 
 // FIXME(shotgun): 99.04 %, scheduling+regalloc; behaviour clean.
 // layer and pos sit in each other's saved register (r30/r28)
-bool CrystalBall_804AB308::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool CrystalBall_804AB308::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u16 effectA;
     u16 effectB;
     s32 code = fn_8022461C(pos, layer);
@@ -661,7 +661,7 @@ void CrystalBall_804AB308::update() {
                 field_0x3c.z += -0.1f;
                 mPos += field_0x3c;
                 if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             }
         } else if (field_0xc4) {
@@ -682,7 +682,7 @@ void CrystalBall_804AB308::update() {
             }
             mPos += field_0x3c;
             if (fn_801F2618(NULL, false)) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
         if (field_0x24c <= 0 && field_0x294 == field_0x264 && field_0x248 <= 1) {
@@ -705,7 +705,7 @@ void CrystalBall_804AB308::update() {
                 field_0x3c.z += -0.1f;
                 mPos += field_0x3c;
                 if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             }
         } else if (field_0xc4) {
@@ -726,7 +726,7 @@ void CrystalBall_804AB308::update() {
             }
             mPos += field_0x3c;
             if (fn_801F2618(NULL, false)) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
         if (field_0x248 % 30 == 29) {
@@ -912,7 +912,7 @@ void CrystalBall_804AB308::draw() {
 
 // FIXME(shotgun): 96.33 %, missing/extra + reloc-name; behaviour drift.
 // item switch / spawn sequences are laid out differently
-void CrystalBall_804AB308::vfunc_0x24() {
+void CrystalBall_804AB308::die_0x24() {
     s32 code = fn_8022461C(&mPos, field_0x4);
     if (code == 3 && mPos.z < 0.1f) {
         field_0x2b8.x = 8.0f + (f32)((s32)mPos.x & 0xFFF0);

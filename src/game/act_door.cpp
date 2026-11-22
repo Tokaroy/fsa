@@ -372,7 +372,7 @@ void Door_804A8D88::update() {
     case 2:
         switch (field_0x234) {
         case 0:
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 break;
             }
             if (field_0x4 < 8 && field_0x24c != 0 && field_0x240 == 0) {
@@ -465,7 +465,7 @@ void Door_804A8D88::update() {
                     layer = raw;
                 }
                 getActorManager_801F856C()->spawnActor_801F9484('HBMB', layer, spawnPos, 0xC, -1, -1);
-            } else if (vfunc_0x34()) {
+            } else if (isScreenFlagSet_0x34()) {
                 field_0x230 = 3;
             }
             break;
@@ -505,7 +505,7 @@ void Door_804A8D88::update() {
         }
         break;
     case 4: {
-        if (field_0x234 == 0 && vfunc_0x34()) {
+        if (field_0x234 == 0 && isScreenFlagSet_0x34()) {
             field_0x230 = 6;
             break;
         }
@@ -580,7 +580,7 @@ void Door_804A8D88::update() {
     case 6:
         switch (field_0x234) {
         case 0:
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 field_0x230 = 4;
             }
             break;

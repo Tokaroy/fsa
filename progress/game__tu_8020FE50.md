@@ -3,7 +3,7 @@
 Baseline: total: 6046 / 11557 functions, 1220300 / 4442032 bytes of code (27.47 %)
 After: total: 6053 / 11557 functions, 1221768 / 4442032 bytes of code (27.50 %)
 
-Matched (8/8, code and data 100 %): draw, vfunc_0xA0, vfunc_0x60, vfunc_0x90, init, ~dtor, ctor of
+Matched (8/8, code and data 100 %): draw, vfunc_0xA0, checkHitByActor_0x60, updateState_0x90, init, ~dtor, ctor of
 cls_804A6100 (vtable 0x804A6100, IBBM), and the generated __sinit.
 Resistant: none. extab/extabindex show 59.26 % in try.py (weak-duplicate entries only).
 

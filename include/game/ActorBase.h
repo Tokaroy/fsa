@@ -92,7 +92,7 @@ public:
     // fn_801F5790: box vs. player screens. 3 overrides (tu_80182914,
     // tu_80183544, act_pengator), no arguments read; the update loop calls
     // it when field_0xa4 != 0 (0x801F8B94) and ignores r3.
-    /* 0x18 */ virtual void vfunc_0x18();
+    /* 0x18 */ virtual void checkPlayerContact_0x18();
     // mPrevPos = mPos; never overridden; the update loop calls it right
     // before update() (0x801F88F4, 0x801F8B54).
     /* 0x1C */ virtual void savePrevPos();
@@ -103,40 +103,40 @@ public:
     /* 0x20 */ virtual void draw();
     // 0x801F4F28. 43 overrides, no arguments read; 81 calls in 37 units, r3
     // never read.
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     // 0x801F4E0C: the int goes to spawnEmitter_8013CC50's 4th argument (all four
     // calls), the floats are added to mPos.x and mPos.y. Never overridden;
     // 8 calls in 8 units (e.g. 0x8017EF80, 0x801D95BC) set r4 (li, or extsb
     // of an s8, so the parameter is a full int), f1 and f2, and ignore r3.
-    /* 0x28 */ virtual void vfunc_0x28(s32, f32, f32);
+    /* 0x28 */ virtual void startBossDeath_0x28(s32, f32, f32);
     // 0x801F4850 (written): one frame of a boss's death explosion while
     // field_0x188 counts down (false when it is -1): blasts at mPos + (x, y)
     // within `scale`, then at 0 the Force Gems (ACTOR_GOLD, ACTOR_RUPY) and
     // the end of the boss music. Never overridden; all 8 calls (fn_801D8430,
     // 0x8017C4B0, 0x8017FBB4, ...) set f1-f3 and test r3 with clrlwi. 24.
-    /* 0x2C */ virtual bool vfunc_0x2C(f32 x, f32 y, f32 scale);
-    // 0x801F47CC: if vfunc_0x3C(), passes (view, vfunc_0x3C(), arg2, arg1)
+    /* 0x2C */ virtual bool updateBossDeath_0x2C(f32 x, f32 y, f32 scale);
+    // 0x801F47CC: if getScreenFlagBit_0x3C(), passes (view, getScreenFlagBit_0x3C(), arg2, arg1)
     // to fn_802D8050, which tests arg2 with clrlwi. and stores arg1 with stb
     // (0xFF when cleared). Never overridden; 121 calls in 53 units pass
     // r4 = li 0xFF (114) or a clrlwi 24 value (6, e.g. act_switch narrowing
     // an int), r5 = li 0 or 1, and ignore r3. With (s32, s32) neither the
     // callers' clrlwi nor the missing bool conversion in 0x801F47CC would
     // come out.
-    /* 0x30 */ virtual void vfunc_0x30(u8, bool);
-    // 0x801F4760: vfunc_0x3C() ? fn_802D800C(view, vfunc_0x3C()) (a bit
+    /* 0x30 */ virtual void setScreenFlag_0x30(u8, bool);
+    // 0x801F4760: getScreenFlagBit_0x3C() ? fn_802D800C(view, getScreenFlagBit_0x3C()) (a bit
     // test, 0 or 1) : 0. Never overridden; 196 calls in 118 units, 190 of
     // them test r3 with clrlwi 24 (the rest store it with stb).
-    /* 0x34 */ virtual bool vfunc_0x34();
-    // 0x801F471C: returns fn_802D7E04(view, vfunc_0x3C()) (an lbz) without
+    /* 0x34 */ virtual bool isScreenFlagSet_0x34();
+    // 0x801F471C: returns fn_802D7E04(view, getScreenFlagBit_0x3C()) (an lbz) without
     // narrowing it. Never overridden; its 3 calls (fn_802B28E4: 0x802B2A5C,
     // 0x802B2A84, 0x802B2AA8) compare r3 with cmpwi 6 / cmpwi 3 and no
     // clrlwi, which a u8 return would need, so the result is a full int
     // (it was declared u8 before G1; the return type is not in the
     // mangled name, so the symbol is unchanged).
-    /* 0x38 */ virtual s32 vfunc_0x38();
+    /* 0x38 */ virtual s32 getScreenFlagCount_0x38();
     // 0x801F4710: the top 5 bits of field_0x90 (srwi 27). Never overridden;
     // 38 calls in 22 units, 32 of them cmpwi r3, 0.
-    /* 0x3C */ virtual s32 vfunc_0x3C();
+    /* 0x3C */ virtual s32 getScreenFlagBit_0x3C();
     // 0x801F470C, empty. 6 overrides, all pickups (act_force_gem,
     // act_magic_jar, act_recovery_heart, act_dropped_item,
     // act_crystal_ball, tu_800F7FCC), no arguments read; tu_801A3C50 calls
@@ -156,12 +156,12 @@ public:
     // overrides (48 functions; 30 read r4 and r5, 9 only r5, 9 neither, all
     // return 0/1); 17 calls in 12 units pass r4 = an lwz (the layer), r5 = a
     // stack or member TVec3f, and test r3 with clrlwi 24.
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    // 0x801F165C: vfunc_0x4C(layer, pos), or pos (x, y) outside the
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    // 0x801F165C: isBlocked_0x4C(layer, pos), or pos (x, y) outside the
     // view's box (0xCC, or 0xDC for layer 8 and up); returns 0 or 1. Never
     // overridden; its 8 calls (fn_801F172C) pass a layer and a stack
     // TVec3f and test r3 with clrlwi 24.
-    /* 0x50 */ virtual bool vfunc_0x50(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x50 */ virtual bool isBlockedOrOutOfView_0x50(s32 layer, const JGeometry::TVec3f* pos);
 
     // Non-virtual members other units call: every export of game/tu_801EE24C.cpp
     // whose callers pass an actor in r3 (their own `this` in 2,409 of 2,571
@@ -254,21 +254,21 @@ public:
     // 4 units / 5 calls. The actor's sound object: fn_801F6644(mgr, mSlot)
     // (0x801F118C-0x801F11A0), mSounds[mSlot] or the manager's shared one.
     ActorSoundObj_804578F4* fn_801F1184() const;
-    // 2 units / 2 calls. If the box at 0x80 is not empty and vfunc_0x4C(
+    // 2 units / 2 calls. If the box at 0x80 is not empty and isBlocked_0x4C(
     // field_0x4, &mPos) (0x801F11FC-0x801F1210): pushes mPos back from
     // mPrevPos along field_0x98's angle, or respawns at mSpawnPos when out
     // of view; returns 0 or 1.
     bool fn_801F11B4();
-    // 8 units / 8 calls, all from vfunc_0x4C overrides (act_pot, act_rock, act_grass,
+    // 8 units / 8 calls, all from isBlocked_0x4C overrides (act_pot, act_rock, act_grass,
     // act_stone, act_sign 0x802D3210, act_coconut 0x802DF4E4, tu_8034C950, tu_80354D64)
     // passing their own (layer, pos) and a member
     // (this + 0x230), a countdown: while *timer runs nothing blocks; tiles
-    // 0x10-0x13 / 0x140-0x15F start it at 0x78. Otherwise the base vfunc_0x4C's
+    // 0x10-0x13 / 0x140-0x15F start it at 0x78. Otherwise the base isBlocked_0x4C's
     // tests (fn_8020D6AC, then the tile codes of fn_8022461C/fn_80226850);
     // returns 0 or 1.
     bool fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer);
     // 1 call (fn_801F23BC). Probes the four edges of `box` at *pos on
-    // `layer` with vfunc_0x50 every 8 units and pushes *pos out to the next
+    // `layer` with isBlockedOrOutOfView_0x50 every 8 units and pushes *pos out to the next
     // 8-unit cell line (stfs 0/4); with `out`, writes the normalised push
     // direction there (`flag`: bent by the diagonal tiles 8-0xB at the
     // corners). Returns whether it moved: u8 (a bool local narrowed with
@@ -444,13 +444,13 @@ public:
     // 48 units / 63 calls. The per-frame hit reaction (written): moves by
     // the knock-back field_0x3c while field_0xd8 runs (when `flag`), starts
     // the death timer field_0xe0 when life is out, runs it down to
-    // vfunc_0x24, and emits field_0xe8 hit sparks. Returns 0 (idle), 1, or
+    // die_0x24, and emits field_0xe8 hit sparks. Returns 0 (idle), 1, or
     // -1 with no life left (0x801F4630).
     // u8, not bool: EnemyBase_804A4808::update() passes a bool local with
     // clrlwi r4, r31, 24 (0x801CDE0C), which MWCC emits for a bool going to
     // an unsigned char parameter (a bool one takes it with mr).
     s32 fn_801F3D94(u8 flag);
-    // 0x801F52A4, called by vfunc_0x24 (0x801F50FC). Drops items by
+    // 0x801F52A4, called by die_0x24 (0x801F50FC). Drops items by
     // EnemyParam "dasu" (field_0x18c): a chance per dasu, then one of eight
     // drops ('HART' / 'RUPY', count and spawn parameter) spawned at the
     // actor's top-down position.
@@ -559,7 +559,7 @@ public:
     // to the same values as mBox).
     /* 0x080 */ JGeometry::TBox2f field_0x80;
     // The spawner's 5th argument, a bit field each actor decodes. Unsigned:
-    // vfunc_0x3C takes its top 5 bits with srwi (0x801F4710), act_rat's draw
+    // getScreenFlagBit_0x3C takes its top 5 bits with srwi (0x801F4710), act_rat's draw
     // tests it with cmplwi (0x800F3D7C), and the written units shift it as
     // u32.
     /* 0x090 */ u32 field_0x90;
@@ -585,7 +585,7 @@ public:
     /* 0x0D5 */ u8 field_0xd5; // players that hit during field_0xd8 (1 << player; fn_801F37AC)
     /* 0x0D8 */ s32 field_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / fn_801F3D94)
     /* 0x0DC */ s32 field_0xdc; // its start value
-    /* 0x0E0 */ s32 field_0xe0; // death timer (1 or 30; vfunc_0x24 at 0)
+    /* 0x0E0 */ s32 field_0xe0; // death timer (1 or 30; die_0x24 at 0)
     /* 0x0E4 */ s32 field_0xe4; // frames to the next hit spark
     /* 0x0E8 */ s32 field_0xe8; // hit sparks left
     /* 0x0EC */ JGeometry::TVec3f field_0xec; // direction of the last hit (attacker to actor)
@@ -594,7 +594,7 @@ public:
     /* 0x100 */ JPABaseEmitter* mEmitter100; // released by the destructor
     /* 0x104 */ JPABaseEmitter* mEmitter104; // released by the destructor
     /* 0x108 */ s32 mLife;       // EnemyParam.csv column "life"
-    /* 0x10C */ s32 field_0x10c; // the last attacking player (fn_801F37AC; vfunc_0x24 credits it)
+    /* 0x10C */ s32 field_0x10c; // the last attacking player (fn_801F37AC; die_0x24 credits it)
     /* 0x110 */ s32 field_0x110; // spawner's 7th argument (default -1)
     /* 0x114 */ s32 field_0x114; // EnemyParam.csv column "atcp"
     /* 0x118 */ s32 field_0x118; // EnemyParam.csv column "atcn"
@@ -621,7 +621,7 @@ public:
     /* 0x17D */ u8 field_0x17d;
     /* 0x180 */ s32 field_0x180; // 20
     /* 0x184 */ f32 field_0x184; // 40.0f
-    /* 0x188 */ s32 field_0x188; // death-explosion countdown, -1 when idle (vfunc_0x2C)
+    /* 0x188 */ s32 field_0x188; // death-explosion countdown, -1 when idle (updateBossDeath_0x2C)
     /* 0x18C */ s32 field_0x18c; // EnemyParam.csv column "dasu"
     /* 0x190 */ s32 field_0x190; // EnemyParam.csv column "voic"
     /* 0x194 */ u8 field_0x194;

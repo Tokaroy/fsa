@@ -12,7 +12,7 @@ void PointCheckNPC_804A81C8::init() {
     field_0x234 = field_0x90 & 0x1F;
     mBox.set(-1.0f, -1.0f, 1.0f, 1.0f);
     field_0x230 = 0;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         field_0x230 = 4;
     }
 }
@@ -53,7 +53,7 @@ void PointCheckNPC_804A81C8::update() {
         }
         switch (field_0x234) {
         case 5:
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             // fallthrough
         case 0:
         case 10:
@@ -72,7 +72,7 @@ void PointCheckNPC_804A81C8::update() {
             field_0x230 = 2;
             break;
         case 3:
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             mAlive = false;
             break;
         case 4:
@@ -187,10 +187,10 @@ void PointCheckNPC_804A81C8::update() {
     case 4:
         switch (field_0x234) {
         case 5:
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             break;
         case 3:
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             break;
         }
         mAlive = false;

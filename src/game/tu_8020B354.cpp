@@ -40,13 +40,13 @@ void cls_804A5E98::init() {
     mPos.set(0.5f * (box->i.x + box->f.x), 0.5f * (box->i.y + box->f.y), 0.0f);
 }
 
-void cls_804A5E98::vfunc_0x54() {
+void cls_804A5E98::onFirstUpdate_0x54() {
     mPos.x = mSpawnPos.x;
     mPos.y = mSpawnPos.y;
     mPos.z = mSpawnPos.z;
 }
 
-void cls_804A5E98::vfunc_0x90(u8 mapHit) {
+void cls_804A5E98::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 1: // state 1 does nothing here
         break;
@@ -63,7 +63,7 @@ void cls_804A5E98::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5E98::vfunc_0x88() {}
+void cls_804A5E98::calcVelocity_0x88() {}
 
 bool cls_804A5E98::vfunc_0x58() {
     if (mBox2.getWidth() <= 0.0f || mBox2.getHeight() <= 0.0f) {
@@ -114,7 +114,7 @@ bool cls_804A5E98::vfunc_0x58() {
     return hit;
 }
 
-u8 cls_804A5E98::vfunc_0x60() {
+u8 cls_804A5E98::checkHitByActor_0x60() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         s32 other = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (other >= 0 && other != mSerial) {
@@ -134,7 +134,7 @@ u8 cls_804A5E98::vfunc_0x60() {
     return 0;
 }
 
-u8 cls_804A5E98::vfunc_0x5C() {
+u8 cls_804A5E98::checkHitByPlayer_0x5C() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         s32 flag;
         s32 player = fn_801F285C(NULL, &flag, true, -1);
@@ -149,7 +149,7 @@ u8 cls_804A5E98::vfunc_0x5C() {
     return 0;
 }
 
-void cls_804A5E98::vfunc_0x74() {
+void cls_804A5E98::onHitReactionEnd_0x74() {
     mFlags |= ENEMY_FLAG_NO_HURT;
 }
 
@@ -169,12 +169,12 @@ void cls_804A5E98::vfunc_0xA0() {
     }
 }
 
-void cls_804A5E98::vfunc_0x24() {
+void cls_804A5E98::die_0x24() {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
     if (actor != NULL) {
         static_cast<cls_804A5B28*>(actor)->fn_802075D8(field_0x94);
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 void cls_804A5E98::draw() {

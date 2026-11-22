@@ -357,7 +357,7 @@ void cls_804A1630::update() {
     if (field_0x90 == 0) {
         fn_8017ECC0();
     }
-    if (vfunc_0x2C(0.0f, -24.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(0.0f, -24.0f, 50.0f)) {
         fn_8017ED08();
         if (field_0x188 == 1) {
             lbl_8053AB74 = 1;
@@ -898,7 +898,7 @@ void cls_804A1630::update() {
             field_0x26c++;
             if (field_0x26c == 6) {
                 field_0x234 = 280;
-                vfunc_0x24();
+                die_0x24();
             } else if (field_0x26c == 7) {
                 field_0x308 = 0.0f;
                 field_0x314 = 0.1f;
@@ -1339,7 +1339,7 @@ void cls_804A1630::draw() {
     fn_801EFD34(res, &params, -1, 0.0f, -8.0f + offset, 0.0f);
 }
 
-void cls_804A1630::vfunc_0x24() {
+void cls_804A1630::die_0x24() {
     startSound_801F0E34(0x40038, 0);
-    vfunc_0x28(2, 0.0f, -24.0f);
+    startBossDeath_0x28(2, 0.0f, -24.0f);
 }

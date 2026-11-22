@@ -73,7 +73,7 @@ void Keese_804A02B8::init() {
 
 void Keese_804A02B8::update() {
     if (field_0x90 >> 27) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         field_0xb0 = 0x31201;
@@ -106,7 +106,7 @@ void Keese_804A02B8::update() {
         return;
     }
     if ((s32)fn_8022461C(&mPos, field_0x4) == 0x3B) {
-        vfunc_0x24();
+        die_0x24();
         return;
     }
     s32 bmtySerial = fn_801F2718(ACTOR_BMTY);
@@ -198,7 +198,7 @@ void Keese_804A02B8::update() {
                 field_0x258 = 0;
             }
             field_0x234 = 6;
-            if (field_0x238 == 0 && field_0x258 == 2 && !vfunc_0x4C(field_0x4, &mPos)) {
+            if (field_0x238 == 0 && field_0x258 == 2 && !isBlocked_0x4C(field_0x4, &mPos)) {
                 field_0x238 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
                 field_0x274 = 0.0f;
                 field_0x278 = 0.0f;
@@ -229,7 +229,7 @@ void Keese_804A02B8::update() {
             }
             field_0x234 = 6;
         }
-        if (field_0x23c == 0 && vfunc_0x4C(field_0x4, &mPos) == true) {
+        if (field_0x23c == 0 && isBlocked_0x4C(field_0x4, &mPos) == true) {
             field_0x238 = (s32)(20.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 20;
             field_0x274 = 0.0f;
             field_0x278 = 0.0f;
@@ -270,7 +270,7 @@ void Keese_804A02B8::update() {
 
 // FIXME: 98.70 %. regalloc-only: target->ours f30->f31, f31->f27, f29->f27, f27->f31 (setRotScaleMtx saved-FPR assignment across the sin/cos calls).
 void Keese_804A02B8::draw() {
-    if ((field_0x90 >> 27) && !vfunc_0x34()) {
+    if ((field_0x90 >> 27) && !isScreenFlagSet_0x34()) {
         return;
     }
     SpriteParams_801F5AE0 params;
@@ -300,7 +300,7 @@ void Keese_804A02B8::draw() {
     }
 }
 
-bool Keese_804A02B8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Keese_804A02B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, false);
 }
 

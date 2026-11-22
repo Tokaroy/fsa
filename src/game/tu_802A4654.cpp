@@ -171,7 +171,7 @@ void cls_804A7EB0::update() {
             }
             break;
         case 1:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 burst(this);
             }
             break;

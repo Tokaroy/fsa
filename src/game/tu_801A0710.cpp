@@ -109,7 +109,7 @@ void TennisShop_804A2BF4::init() {
         lbl_8053ABC5 = 0;
         lbl_8053ABC4 = 0;
         lbl_8053A0F8[0] = 2.0f;
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x230 = 0xB;
         } else {
             field_0x230 = 0;
@@ -630,7 +630,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             vel.z = 5.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1() + 5.0f;
             rupee->field_0x3c = vel;
         }
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         field_0x230 = 0xB;
         break;
     }

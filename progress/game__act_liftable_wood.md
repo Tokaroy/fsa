@@ -4,7 +4,7 @@ Baseline: 9000 / 11557 functions, 1846220 bytes (41.56 %); 2/6 matched in unit.
 After: 9001 / 11557 functions (+3 structural), 1846884 bytes (41.58 %); 3/6 at 100%, 3 structural.
 
 Functions:
-- `vfunc_0x24__21LiftableWood_804A87A8Fv`: 99.32% (828 bytes, regalloc-only: target->ours r6->r7, f4->f3, r7->r6, f1->f0 in random velocity construction)
+- `die_0x24__21LiftableWood_804A87A8Fv`: 99.32% (828 bytes, regalloc-only: target->ours r6->r7, f4->f3, r7->r6, f1->f0 in random velocity construction)
 - `draw__21LiftableWood_804A87A8Fv`: 100.00% (664 bytes)
 - `update__21LiftableWood_804A87A8Fv`: 97.70% (1200 bytes, scheduling+regalloc: inline TVec3f(mPos.x - 8.0f, mPos.y, mPos.z) temporary load order and setGlobalTranslation load order)
 - `__dt__21LiftableWood_804A87A8Fv`: 100.00% (116 bytes)

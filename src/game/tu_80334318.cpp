@@ -79,7 +79,7 @@ void IronBallHoming_804AB9C0::init() {
 
 // 0x80335688.
 // FIXME(shotgun): 99.68 %, different; behaviour clean.
-bool IronBallHoming_804AB9C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool IronBallHoming_804AB9C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = fn_8022461C(pos, layer);
     if (field_0x230 != 3 && (tile == 0xC || tile == 3 || tile == 0xE)) {
         if (field_0x230 != 7) {
@@ -184,7 +184,7 @@ void IronBallHoming_804AB9C0::update() {
         }
         break;
     case 5:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mPos.z = 100.0f;
             field_0x230 = 6;
         }

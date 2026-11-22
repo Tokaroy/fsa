@@ -45,7 +45,7 @@ void Lotus_804AC330::init() {
     field_0x234.x = 0.0f;
     field_0x240 = 1.0f;
     field_0x230 = 0;
-    if (vfunc_0x3C() > 0) {
+    if (getScreenFlagBit_0x3C() > 0) {
         field_0x230 = 2;
         field_0x240 = 0.0f;
     }
@@ -67,7 +67,7 @@ void Lotus_804AC330::update() {
     if (field_0x230 == 1) {
         mPos += field_0x3c;
     }
-    if (vfunc_0x3C() > 0 && !vfunc_0x34()) {
+    if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
         field_0x230 = 2;
     }
     switch (field_0x230) {
@@ -106,7 +106,7 @@ void Lotus_804AC330::update() {
         }
         break;
     case 2:
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             if (field_0x240 < 1.0f) {
                 field_0x240 += 0.02f;
                 if (field_0x240 >= 1.0f) {

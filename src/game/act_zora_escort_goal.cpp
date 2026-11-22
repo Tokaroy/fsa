@@ -82,7 +82,7 @@ void ZoraEscortGoal_8049E424::init() {
     mDrawEnabled = false;
     fn_801283E8()->fn_80128398(this);
     if (field_0x234 > 0) {
-        if (!vfunc_0x34() && getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
+        if (!isScreenFlagSet_0x34() && getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
             fn_80126A4C(1);
         }
     }
@@ -102,7 +102,7 @@ void ZoraEscortGoal_8049E424::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x234 > 0) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 fn_80126A4C(1);
                 fn_80126A4C(11);
             } else if (getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
@@ -273,7 +273,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         if (field_0x258) {
             spawnEmitters();
         }
-        getGameView_802D6A9C()->fn_802D8050(vfunc_0x3C(), true, 0xFF);
+        getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
         fn_801283E8()->fn_80128228();
         break;
     }
@@ -317,7 +317,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         break;
     case 15:
         if (getActorManager_801F856C()->fn_801F7A08('SPFR') < 0) {
-            u32 arg = vfunc_0x3C() << 27;
+            u32 arg = getScreenFlagBit_0x3C() << 27;
             getActorManager_801F856C()->spawnActor_801F9484('SPFR', field_0x4, &field_0x270, arg, -1, -1);
             fn_801283E8()->fn_80128074();
         }

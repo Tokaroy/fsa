@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // 0x802C1970 (act_small_key's range): the key's own check after the
     // collision list finds nothing (layer, pos); returns 0 or 1.
     bool fn_802C1970(s32 layer, const JGeometry::TVec3f* pos);
@@ -92,7 +92,7 @@ public:
     /* 0x27C */ s32 field_0x27c; // kind: 8 hides the key, 2 draws it as held
     /* 0x280 */ s32 field_0x280; // 6 is tested by act_magic_circle_generator fn_802E7DB8 (word compare)
     /* 0x284 */ s32 field_0x284;
-    /* 0x288 */ s32 field_0x288; // countdown: while nonzero, vfunc_0x4C decrements it and returns 0
+    /* 0x288 */ s32 field_0x288; // countdown: while nonzero, isBlocked_0x4C decrements it and returns 0
     /* 0x28C */ s32 field_0x28c;
     /* 0x290 */ s32 field_0x290;
     /* 0x294 */ s32 field_0x294; // a counter; its thresholds pick which of the bits 2/4/8/0x10 hides the key

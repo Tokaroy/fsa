@@ -101,8 +101,8 @@ void cls_804A68D0::fn_8022089C(s32 state) {
 }
 
 // FIXME: 99.86%. Only the jump table relocation differs (jumptable_804A6974 vs
-// @NNN), as in act_shadow_link_bow's vfunc_0x90.
-void cls_804A68D0::vfunc_0x90(u8 mapHit) {
+// @NNN), as in act_shadow_link_bow's updateState_0x90.
+void cls_804A68D0::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -153,7 +153,7 @@ void cls_804A68D0::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A68D0::vfunc_0x88() {
+void cls_804A68D0::calcVelocity_0x88() {
     switch (mState) {
     case 2:
         fn_80221250();
@@ -165,7 +165,7 @@ void cls_804A68D0::vfunc_0x88() {
     default:
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
-        vfunc_0x84();
+        applyGravity_0x84();
         break;
     }
 }

@@ -24,7 +24,7 @@ void cls_8049E848::init() {
 void cls_8049E848::update() {
     switch (field_0x230) {
     case 0: {
-        if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
             field_0x230 = 1;
             break;
         }
@@ -60,9 +60,9 @@ void cls_8049E848::update() {
         break;
     }
     case 1:
-        if (vfunc_0x3C() == 0) {
+        if (getScreenFlagBit_0x3C() == 0) {
             field_0x230 = 0;
-        } else if (vfunc_0x34()) {
+        } else if (isScreenFlagSet_0x34()) {
             field_0x230 = 0;
         }
         break;

@@ -124,7 +124,7 @@ void ForceGem_804AB6D8::init() {
     case 0xE:
     case 0xF:
     case 0x1F:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             fn_801F3668();
             return;
         }
@@ -143,7 +143,7 @@ void ForceGem_804AB6D8::init() {
     case 6:
     case 7:
     case 0x1D:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             fn_801F3668();
             return;
         }
@@ -161,13 +161,13 @@ void ForceGem_804AB6D8::init() {
         field_0x238 = 0.0f;
         field_0x280 = 1;
         field_0x274 = 10;
-        if (vfunc_0x34() && field_0x94 == 0x1A) {
+        if (isScreenFlagSet_0x34() && field_0x94 == 0x1A) {
             field_0x238 = 1.0f;
         }
         field_0x230 = 0xA;
         break;
     case 0x10:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             fn_801F3668();
             return;
         }
@@ -239,7 +239,7 @@ void ForceGem_804AB6D8::init() {
 
 void ForceGem_804AB6D8::vfunc_0x10() {
     if (field_0x94 == 0x19 || field_0x94 == 0x1a) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x280 = 0;
         }
     }
@@ -247,7 +247,7 @@ void ForceGem_804AB6D8::vfunc_0x10() {
 
 // 0x8032D578.
 // FIXME(shotgun): 98.19 %, missing/extra + reloc-name; behaviour near.
-bool ForceGem_804AB6D8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ForceGem_804AB6D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 skipIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
@@ -457,14 +457,14 @@ void ForceGem_804AB6D8::update() {
         }
         break;
     case 0xA:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x24c = 0x30C;
             field_0x27d = 1;
             field_0x230 = 0xF;
         }
         break;
     case 0xC:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             if (field_0x268 >= 4) {
                 s32 layer = field_0x4;
                 if (layer >= 8) {
@@ -758,7 +758,7 @@ void ForceGem_804AB6D8::fn_8032BB90() {
                 }
                 if ((field_0x94 >= 4 && field_0x94 <= 7) || (field_0x94 >= 0xc && field_0x94 <= 0xf) ||
                     field_0x94 == 0x1d || field_0x94 == 0x1f) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 break;
             }

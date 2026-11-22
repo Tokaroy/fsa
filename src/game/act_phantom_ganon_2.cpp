@@ -403,7 +403,7 @@ void PhantomGanon2_804A1A98::update() {
         mLife = 10000;
         fn_8017ECC0();
     }
-    if (vfunc_0x2C(8.0f, -16.0f, 50.0f)) {
+    if (updateBossDeath_0x2C(8.0f, -16.0f, 50.0f)) {
         fn_8017EC70(&mPos, 1.0f);
         fn_8017ED08();
         return;
@@ -1293,7 +1293,7 @@ void PhantomGanon2_804A1A98::update() {
                 mEmitter314 = NULL;
             }
             fn_8018A63C();
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 28:
@@ -1453,9 +1453,9 @@ void PhantomGanon2_804A1A98::draw() {
 }
 
 // 0x80187144 (vtable slot 0x24): plays sound 0x40047 and re-issues the actor's
-// vfunc_0x28 with the s8 at 0x2EE and (8.0, -16.0).
-void PhantomGanon2_804A1A98::vfunc_0x24() {
+// startBossDeath_0x28 with the s8 at 0x2EE and (8.0, -16.0).
+void PhantomGanon2_804A1A98::die_0x24() {
     startSound_801F0E34(0x40047, 0);
-    vfunc_0x28(field_0x2ee, 8.0f, -16.0f);
+    startBossDeath_0x28(field_0x2ee, 8.0f, -16.0f);
 }
 

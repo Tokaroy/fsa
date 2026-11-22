@@ -28,7 +28,7 @@ s32 ActorBase_804A5770::fn_801A6160() {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x17C, 0, 1, NULL, NULL, true, scale);
         }
         if (timer - 1 <= 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         field_0xa8 = timer - 1;
         return 1;
@@ -378,7 +378,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                 field_0x4 = holder->field_0x4;
                 vfunc_0x44();
                 if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
-                    vfunc_0x24();
+                    die_0x24();
                     result = 20;
                 }
                 break;
@@ -386,7 +386,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
                 mPos = holder->mPos + mSpawnPos;
                 field_0x4 = holder->field_0x4;
                 if (static_cast<ArrowPlayer_804A05E0*>(holder)->field_0x26c == 2) {
-                    vfunc_0x24();
+                    die_0x24();
                     result = 20;
                 }
                 break;
@@ -402,7 +402,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             case 17:
                 break;
             default:
-                vfunc_0x24();
+                die_0x24();
                 break;
             }
             field_0xa0 = -1;
@@ -691,7 +691,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
     case 3:
         field_0x10c = player;
         fn_801F4694();
-        vfunc_0x24();
+        die_0x24();
         break;
     }
     return result;
@@ -794,7 +794,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
             weapon->mAlive = false;
             field_0x10c = player;
             fn_801F4694();
-            vfunc_0x24();
+            die_0x24();
             break;
         }
     } else {

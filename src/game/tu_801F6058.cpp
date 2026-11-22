@@ -20,7 +20,7 @@
 #include "game/tu_8021F064.h"
 
 // game/tu_801A3C50.cpp (not written yet): nonzero while the actor is held (it then only
-// runs vfunc_0x18 when its 0xA4 is set). Name and return type from the call in fn_801F871C.
+// runs checkPlayerContact_0x18 when its 0xA4 is set). Name and return type from the call in fn_801F871C.
 s32 fn_801A6160(ActorBase_804A5770* actor);
 
 // The position every per-slot sound object starts at (the constructor zeroes it).
@@ -127,7 +127,7 @@ void ActorManager_804A5800::fn_801F8E4C() {
 // flagged for it (0x11E / 0xC4 / 0xCC); otherwise all of them unless paused (0x11F keeps them
 // going; 'SWDL' in GameRoot 0x88 mode 2), and while GameRoot 0x94 / 0x96 holds only the
 // listed actor ids. Dead actors are deleted, the others checked against the collision boxes
-// (vfunc_0x24). Then fn_801F6A4C, the list pass (actors not re-linked this frame are unlinked)
+// (die_0x24). Then fn_801F6A4C, the list pass (actors not re-linked this frame are unlinked)
 // and field_0x305c when no countable actor is left.
 void ActorManager_804A5800::fn_801F871C() {
     s32 count = 0;
@@ -214,7 +214,7 @@ void ActorManager_804A5800::fn_801F871C() {
                             mActors[i]->fn_801F33C4();
                             mActors[i]->update();
                         } else if (mActors[i]->field_0xa4 != 0) {
-                            mActors[i]->vfunc_0x18();
+                            mActors[i]->checkPlayerContact_0x18();
                         }
                         mActors[i]->fn_801EE508();
                     }
@@ -242,7 +242,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 s32 layer = actor->field_0x4;
                 CollisionBoxes_8020D58C* boxes = fn_8020D58C();
                 if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, &actor->mPos, serial, NULL)) {
-                    mActors[i]->vfunc_0x24();
+                    mActors[i]->die_0x24();
                 }
             }
         }

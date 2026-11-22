@@ -40,8 +40,8 @@ public:
     /* 0x0C */ virtual void init(); // game/act_force_like.cpp (0x800F7CC8)
     virtual void update(); // 0x14: 0x800F6D80
     virtual void draw();   // 0x20: 0x800F6AB4
-    virtual void vfunc_0x24(); // 0x800F6820
-    // Not in the binary: a plain function that vfunc_0x24 and update inline (game/act_force_like.cpp).
+    virtual void die_0x24(); // 0x800F6820
+    // Not in the binary: a plain function that die_0x24 and update inline (game/act_force_like.cpp).
     void spawnKindEmitter();
     // SHARED-EDIT: carved from field_0x230[0x38] (game/act_force_like.cpp).
     /* 0x230 */ s32 field_0x230;
@@ -251,7 +251,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     // 0x80161F98: switches to colour set `set` (fading over `frames`; keeps fading when called again).
     void fn_80161F98(s32 set, s32 frames);
     // 0x801618D0: draws the ghost quad (obake_*.bti, four TEV stages) at pos; the colours
@@ -273,7 +273,7 @@ public:
     /* 0x264 */ u8 field_0x264[4]; // not yet known
     /* 0x268 */ s32 field_0x268; // kind (low 2 bits of field_0x90)
     /* 0x26C */ s32 field_0x26c;
-    /* 0x270 */ s32 field_0x270; // GameView bit set by vfunc_0x24 (bits 2-6 of field_0x90)
+    /* 0x270 */ s32 field_0x270; // GameView bit set by die_0x24 (bits 2-6 of field_0x90)
     /* 0x274 */ f32 field_0x274;
     /* 0x278 */ f32 field_0x278;
     /* 0x27C */ f32 field_0x27c;
@@ -337,7 +337,7 @@ public:
     /* 0x0C */ virtual void init();   // fn_8017E770
     /* 0x14 */ virtual void update(); // fn_8017C40C
     /* 0x20 */ virtual void draw();   // fn_8017C078
-    /* 0x24 */ virtual void vfunc_0x24(); // fn_8017C01C
+    /* 0x24 */ virtual void die_0x24(); // fn_8017C01C
     // SHARED-EDIT: carved from field_0x230[0x8A] / field_0x2bb[0x25] (game/tu_8017C01C.cpp).
     /* 0x230 */ s32 mState;
     /* 0x234 */ s32 field_0x234;
@@ -479,7 +479,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x230 */ cls_800FE3EC mRail; // update steps it (fn_800FDEA0) while field_0x2f8 != 0
     /* 0x2F8 */ s32 field_0x2f8; // state
     /* 0x2FC */ u8 field_0x2fc;
@@ -610,8 +610,8 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x24 */ virtual void die_0x24();
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x54 */ virtual void vfunc_0x54(const JGeometry::TVec3f* pos, bool arg2);
     /* 0x58 */ virtual void vfunc_0x58();
 
@@ -764,7 +764,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // Slot 0x54 (an extra virtual of this class). Looks for a 'WARP' actor with
     // (param & 0xFF) == 7 and moves the ball there with fn_801F349C; returns its serial or -1.
     /* 0x54 */ virtual s32 vfunc_0x54();

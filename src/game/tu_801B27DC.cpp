@@ -556,7 +556,7 @@ void cls_804A3698::draw() {
 
 // 0x801B27DC.
 // FIXME(shotgun): 94.59 %, scheduling+regalloc; behaviour clean.
-bool cls_804A3698::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool cls_804A3698::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     s32 tile = fn_80226850(pos, layer);
     if (tile == 0x230 || tile == 0x231 || tile == 0x234) {

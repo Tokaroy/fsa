@@ -59,7 +59,7 @@ void SwitchRelatedNpc_804A8C28::update() {
         {0x1D, 0x2D}, {0x1E, 0x2E}, {0x1F, 0x2F}, {0xA0, 0xB0}, {0xA1, 0xB1},
         {0xA2, 0xB2}, {0xA3, 0xB3}, {0xFFF, 0x100F}};
 
-    if ((field_0x90 >> 27) == 0 || vfunc_0x34() == 1) {
+    if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == 1) {
         if (mDelay == 0) {
             switch (mType) {
             case 0:

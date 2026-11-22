@@ -3,18 +3,18 @@
 Baseline (progress.py first line at start): total: 5980 / 11557 functions, 1201588 / 4442032 bytes of code (27.05 %)
 After: total: 5985 / 11557 functions, 1202140 / 4442032 bytes of code (27.06 %)
 
-Status: NonMatching. 6/7 functions at 100 % (__sinit generated); vfunc_0x90 is 99.7 % (reloc-name only).
+Status: NonMatching. 6/7 functions at 100 % (__sinit generated); updateState_0x90 is 99.7 % (reloc-name only).
 
 ## Matched
-- cls_804A6C38 (vtable 0x804A6C38, sub-base ShadowLinkBase_804A6A00): ctor, dtor, init, vfunc_0x6C, vfunc_0x88 (the DDGO shot release is an inline helper with the serial read once).
+- cls_804A6C38 (vtable 0x804A6C38, sub-base ShadowLinkBase_804A6A00): ctor, dtor, init, onHitByPlayer_0x6C, calcVelocity_0x88 (the DDGO shot release is an inline helper with the serial read once).
 - vtable __vt__12cls_804A6C38 is 100 %.
 
 ## Resistant
-- vfunc_0x90 (0x80222D5C): instructions identical; remaining gap is .data order (ours jump table, weak J3DFrameCtrl vtable, vtable; original vtable at 0, jump table at 0xA4). Names: jumptable_804A6CDC vs @544, and the float literals (lbl_8053FE70 = 2.5f is a named external constant, now declared extern in cls_804A6A00.h). .sdata2 83.3 %, extab/extabindex 56 %: weak-dedup tooling, .data 83.7 % (our object also emits __vt__12J3DFrameCtrl and the jumptable under another name).
+- updateState_0x90 (0x80222D5C): instructions identical; remaining gap is .data order (ours jump table, weak J3DFrameCtrl vtable, vtable; original vtable at 0, jump table at 0xA4). Names: jumptable_804A6CDC vs @544, and the float literals (lbl_8053FE70 = 2.5f is a named external constant, now declared extern in cls_804A6A00.h). .sdata2 83.3 %, extab/extabindex 56 %: weak-dedup tooling, .data 83.7 % (our object also emits __vt__12J3DFrameCtrl and the jumptable under another name).
 
 ## SHARED-EDITS
 - include/game/cls_804A6A00.h (new): the sub-base of tu_80220F54 / tu_80221B44 / act_shadow_link_* / tu_802233A4 (vtable 0x804A6A00; ctor 0x802218C8 stores it and 0x2A8-0x2B4).
-- symbols.txt placeholder renames: fn_802218C8 -> __ct__23ShadowLinkBase_804A6A00Fv, fn_802217C8 -> init__, fn_80221184 -> vfunc_0x6C__, fn_80220F54 -> draw__, fn_80221158 -> vfunc_0x60__, fn_80221160 -> vfunc_0x74__, fn_80221210 -> vfunc_0x9C__...FUc, fn_80221114 -> vfunc_0xA0__, fn_80221250/802212AC/80221334/80221408 -> ..__23ShadowLinkBase_804A6A00Fv, fn_8022149C/fn_802216E8 -> ..Fl, lbl_804A6A00 -> __vt__23ShadowLinkBase_804A6A00 (all __23ShadowLinkBase_804A6A00).
+- symbols.txt placeholder renames: fn_802218C8 -> __ct__23ShadowLinkBase_804A6A00Fv, fn_802217C8 -> init__, fn_80221184 -> onHitByPlayer_0x6C__, fn_80220F54 -> draw__, fn_80221158 -> checkHitByActor_0x60__, fn_80221160 -> onHitReactionEnd_0x74__, fn_80221210 -> updateBehavior_0x9C__...FUc, fn_80221114 -> vfunc_0xA0__, fn_80221250/802212AC/80221334/80221408 -> ..__23ShadowLinkBase_804A6A00Fv, fn_8022149C/fn_802216E8 -> ..Fl, lbl_804A6A00 -> __vt__23ShadowLinkBase_804A6A00 (all __23ShadowLinkBase_804A6A00).
 - gen_game.tsv: the tu_80222CC4 row deleted.
 
 ## Next
@@ -26,7 +26,7 @@ tu_80220F54 should adopt cls_804A6A00.h (its names are already in symbols.txt).
   gives with the functions in reverse order (scratchpad research_jtorder.md; docs/GAME_PLAN.md "-inline auto vs deferred").
 - Ruled out (new measurement, scratch TU jtorder/a.cpp, switch fn defined before ctor/dtor): GC/2.0, 2.5, 2.6, 2.7,
   3.0a3, 3.0a5.2 all put the jump table at .data 0 and the vtable after it under `-inline auto`; the compiler
-  version is not the cause. vfunc_0x90 can't be an inline (weak) function either: it sits between strong
+  version is not the cause. updateState_0x90 can't be an inline (weak) function either: it sits between strong
   functions in the original .text (0x80222D5C), before init/dtor/ctor.
 - Reloc-name: not a separate problem. Matching units with switches (JASChannel, J2DPrint, vi) keep `@NNN` vs
   `jumptable_8...` and still score 100 %: objdiff pairs local data by position. Fixing the order fixes the name.
@@ -59,7 +59,7 @@ the measurements below rule out every layout tried and point at a compiler-mode 
   fn_801CF720 into fn_801CF6B8; `#pragma inline_bottom_up on` changes nothing; `inline_depth(1)` still inlines
   fn_801CFCF0. Whole-game measurement with all game sources reversed (reverse_funcs.py) and `-inline deferred`
   (deferred WITHOUT auto): tu_801CDC8C/tu_801EDBA4 no longer over-inline, tu_80222CC4 and act_shadow_link_bow
-  vfunc_0x90 go 100 %, but auto-inlined callees are lost (act_stop_npc, tu_80131D98, tu_8021F4B0 dtors,
+  updateState_0x90 go 100 %, but auto-inlined callees are lost (act_stop_npc, tu_80131D98, tu_8021F4B0 dtors,
   tu_801D7AFC init, tu_8012F3E4 fn_8012F554, 4 in tu_80427D2C): game functions 1745 -> 1738. Not adopted.
 - So FSA shows auto-style inlining (callee generated earlier) with deferred-style data order. No GC/2.0-3.0a5.2
   flag or pragma tested gives both. Unit stays NonMatching; nothing changed in source or flags.

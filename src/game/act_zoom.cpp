@@ -43,7 +43,7 @@ void Zoom_804A9DF8::update() {
         if (fn_8023AF14(&box, field_0x4, false, 0.0f) >= 0) {
             if (takeCamera(gGameRoot2_8053AB10->field_0x24) == 1) {
                 if (field_0x90 >> 27) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                 }
                 mState = 1;
                 mTimer = mDuration;

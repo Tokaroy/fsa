@@ -16,7 +16,7 @@ public:
     virtual ~FireballGenerator_804A6660();
     /* 0x0C */ virtual void init();
     // Slot 0x90 (the per-state behaviour; mapHit is not read).
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
 
     /* 0x2A8 */ u16 mCooldown; // frames until the next shot; 0x78 at start
 }; // Size: 0x2AC

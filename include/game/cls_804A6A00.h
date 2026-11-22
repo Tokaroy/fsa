@@ -21,20 +21,20 @@ public:
     // 0x80220F54.
     /* 0x20 */ virtual void draw();
     // 0x80221158.
-    /* 0x60 */ virtual u8 vfunc_0x60();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
     // 0x80221184: field_0x98 from the angle of field_0x3c, animation
     // field_0x98 + 0xC, then sound 0x400C2.
-    /* 0x6C */ virtual void vfunc_0x6C();
+    /* 0x6C */ virtual void onHitByPlayer_0x6C();
     // 0x80221160.
-    /* 0x74 */ virtual void vfunc_0x74();
+    /* 0x74 */ virtual void onHitReactionEnd_0x74();
     // 0x80221210.
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     // 0x80221114.
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // game/tu_80220F54.cpp: the per-state handlers cls_804A6C38's
-    // vfunc_0x90 dispatches to (states 0, 1, 2), and the movement step
-    // vfunc_0x88 takes in state 2 (fn_801D01A0 toward field_0x2b0, then
+    // updateState_0x90 dispatches to (states 0, 1, 2), and the movement step
+    // calcVelocity_0x88 takes in state 2 (fn_801D01A0 toward field_0x2b0, then
     // vtable slot 0x84).
     void fn_80221408();
     void fn_80221334();
@@ -59,7 +59,7 @@ public:
 // tu_80221B44, act_shadow_link_bow, tu_80222CC4 and tu_802233A4.
 extern const f32 lbl_8053FE70;
 
-// mFlags bit fn_802216E8 sets, tested by cls_804A6C38's vfunc_0x90.
+// mFlags bit fn_802216E8 sets, tested by cls_804A6C38's updateState_0x90.
 #define CLS_804A6A00_FLAG_0x2000 0x2000
 
 #endif

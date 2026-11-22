@@ -13,7 +13,7 @@ public:
     /* 0x08 */ virtual ~cls_804A1790();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
-    /* 0x18 */ virtual void vfunc_0x18();
+    /* 0x18 */ virtual void checkPlayerContact_0x18();
     /* 0x20 */ virtual void draw();
     /* 0x44 */ virtual void vfunc_0x44();
     /* 0x230 */ s32 field_0x230; // state: switch in update()

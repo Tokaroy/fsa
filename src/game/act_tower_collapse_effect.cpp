@@ -44,7 +44,7 @@ void TowerCollapseEffect_8049CA40::update() {
     case 0:
         switch (field_0x230) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x230 = 1;
                 field_0x288 = 0;
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0x499, 2, 2, NULL, NULL, true, 1.0f);
@@ -95,7 +95,7 @@ void TowerCollapseEffect_8049CA40::update() {
                 u32 bit = field_0x25c;
                 if (bit != 0) {
                     getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
-                    vfunc_0x30(0xFF, false);
+                    setScreenFlag_0x30(0xFF, false);
                 }
             }
             if (field_0x288 > 0x12C) {
@@ -110,7 +110,7 @@ void TowerCollapseEffect_8049CA40::update() {
     case 1:
         switch (field_0x230) {
         case 0:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0xd3, 2, 2, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(field_0x4, &mPos, 0xd4, 2, 2, NULL, NULL, true, 1.0f);

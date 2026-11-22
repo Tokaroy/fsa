@@ -373,7 +373,7 @@ void Bombchu_804AB464::draw() {
     }
 }
 
-bool Bombchu_804AB464::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Bombchu_804AB464::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {

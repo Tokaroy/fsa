@@ -79,7 +79,7 @@ void cls_804A2EC0::init() {
 void cls_804A2EC0::update() {
     s32 player = -1;
     if (field_0x258 == 0 && (field_0x90 >> 27) != 0) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         field_0x258 = 1;
@@ -202,7 +202,7 @@ void cls_804A2EC0::update() {
                 for (s32 i = 0; i < 40; i++) {
                     getActorManager_801F856C()->fn_801F8544(ACTOR_RUPY, field_0x4, &field_0x294[i], 0);
                 }
-                vfunc_0x24();
+                die_0x24();
             }
             break;
         }
@@ -226,7 +226,7 @@ void cls_804A2EC0::draw() {
     mtx[0][3] = 0.0f;
     mtx[1][3] = 0.0f;
     mtx[2][3] = 0.0f;
-    if (field_0x258 == 0 && (field_0x90 >> 27) != 0 && !vfunc_0x34()) {
+    if (field_0x258 == 0 && (field_0x90 >> 27) != 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     params.field_0x0[4] = 3;

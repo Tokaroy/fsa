@@ -60,7 +60,7 @@ void cls_804A48B0::update() {
     if (mAlive) {
         mPos += field_0x3c;
     }
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
 void cls_804A48B0::draw() {

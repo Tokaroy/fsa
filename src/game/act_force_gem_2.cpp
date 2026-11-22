@@ -40,7 +40,7 @@ void ForceGem2_804AB850::init() {
     mTimer = 100;
     field_0x238 = 1.0f;
     field_0x23c = 0.0f;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         fn_801F3668();
         return;
     }
@@ -80,7 +80,7 @@ void ForceGem2_804AB850::init() {
     mBox.set(-4.0f, -4.0f, 4.0f, 4.0f);
 }
 
-bool ForceGem2_804AB850::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool ForceGem2_804AB850::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     if (code == 0xC || code == 0x3 || code == 0xE) {
         field_0x3c.zero();
@@ -185,7 +185,7 @@ void ForceGem2_804AB850::update() {
             mPos.y = getPlayerPos_8023E724(field_0x260)->y - 24.0f;
         }
         if (field_0x244 == 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             fn_801F3668();
         }
         break;

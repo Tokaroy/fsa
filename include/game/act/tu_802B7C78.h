@@ -13,7 +13,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
 
     // Game/tu_802B7C78.cpp. idx (0 or 1) selects field_0x260 / field_0x268;
     // arg is stored to field_0x230 on the paths that set it.

@@ -87,7 +87,7 @@ void cls_804A5D60::init() {
     mTargetSpeed = 0.0f;
 }
 
-void cls_804A5D60::vfunc_0x54() {
+void cls_804A5D60::onFirstUpdate_0x54() {
     JGeometry::TVec2f offset(mSpawnPos.x - mPos.x, mSpawnPos.y - mPos.y);
     field_0x2c0 = offset;
 }
@@ -194,9 +194,9 @@ void cls_804A5D60::fn_8020AA78(s32 state) {
     mState = state;
 }
 
-// The animation steps of the box-shrinking state machine; vfunc_0x90 is its per-frame step.
+// The animation steps of the box-shrinking state machine; updateState_0x90 is its per-frame step.
 // FIXME(shotgun): 99.42 %, missing/extra; behaviour drift.
-void cls_804A5D60::vfunc_0x90(u8 mapHit) {
+void cls_804A5D60::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         switch (mState) {
         case 8:
@@ -398,7 +398,7 @@ void cls_804A5D60::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A5D60::vfunc_0x88() {
+void cls_804A5D60::calcVelocity_0x88() {
     switch (mState) {
     case 3:
         field_0x3c.z += 0.3f * lbl_8053EFB8;
@@ -424,7 +424,7 @@ void cls_804A5D60::vfunc_0x88() {
     default:
         field_0x3c.x = 0.0f;
         field_0x3c.y = 0.0f;
-        vfunc_0x84();
+        applyGravity_0x84();
         break;
     }
 }
@@ -476,12 +476,12 @@ bool cls_804A5D60::vfunc_0x58() {
     return hit;
 }
 
-u8 cls_804A5D60::vfunc_0x60() {
+u8 cls_804A5D60::checkHitByActor_0x60() {
     fn_801F2DB4(mActorId, 'NULL', NULL);
     return 0;
 }
 
-u8 cls_804A5D60::vfunc_0x5C() {
+u8 cls_804A5D60::checkHitByPlayer_0x5C() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 flag;
         s32 player = fn_801F285C(NULL, &flag, true, -1);
@@ -495,16 +495,16 @@ u8 cls_804A5D60::vfunc_0x5C() {
     return 0;
 }
 
-void cls_804A5D60::vfunc_0x74() {
+void cls_804A5D60::onHitReactionEnd_0x74() {
     mFlags |= ENEMY_FLAG_NO_HURT;
 }
 
-void cls_804A5D60::vfunc_0x24() {
+void cls_804A5D60::die_0x24() {
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
     if (actor != NULL) {
         static_cast<cls_804A5B28*>(actor)->fn_802075D8(field_0x94);
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 // FIXME: 95.97 %, missing/extra; behaviour near.

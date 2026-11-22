@@ -36,18 +36,18 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     // Overrides in game/tu_80206B30.cpp (0x80206B30-0x80207004; slot order).
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x58 */ virtual bool vfunc_0x58();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x64 */ virtual u8 vfunc_0x64();
-    /* 0x68 */ virtual u8 vfunc_0x68();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x8C */ virtual void vfunc_0x8C();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
-    /* 0x98 */ virtual void vfunc_0x98();
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x64 */ virtual u8 sweepMap_0x64();
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x8C */ virtual void onMoved_0x8C();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
+    /* 0x98 */ virtual void move_0x98();
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     // 0x80204D6C (act_thief): the last slot of the vtable. Tells the camera
     // to keep mPos in view, unless the thief is in state 8 or 9.
     /* 0xA0 */ virtual void vfunc_0xA0();
@@ -85,7 +85,7 @@ public:
     /* 0x350 */ s32 mType;            // index into lbl_8046A238
     /* 0x354 */ s32 field_0x354;
     /* 0x358 */ JPABaseEmitter* mEmitter358;
-    /* 0x35C */ Damped2D_801D2918 field_0x35c; // a hit player pushes it (vfunc_0x68)
+    /* 0x35C */ Damped2D_801D2918 field_0x35c; // a hit player pushes it (attackPlayers_0x68)
     /* 0x368 */ cls_80217374 field_0x368;      // wandering direction timer
     /* 0x374 */ cls_8021B904 field_0x374;      // steering timer
 }; // Size: 0x388

@@ -5,7 +5,7 @@
 // docs/names/actors.tsv, med confidence). Named after its vtable (0x804A8A50,
 // the spawner stores it in game/tu_801F9484.cpp). Its vtable adds one slot
 // (0x54) to ActorBase_804A5770's 0x54 bytes; it releases its four emitters
-// and is itself released by vfunc_0x24.
+// and is itself released by die_0x24.
 
 #include "game/ActorBase.h"
 
@@ -16,7 +16,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     // Releases the four emitters (mEmitters) and clears the array.
     /* 0x54 */ virtual void vfunc_0x54();
 

@@ -9,7 +9,7 @@
 // Auto-inlining is off for the whole file (docs/INLINING.md, pragma rule 2): the
 // original inlines no same-unit plain function. Checked: built with inlining off,
 // every written function's calls to this unit's functions equal the original's
-// `bl`s. The callers that need it: vfunc_0x90 calls fn_80222668 (six times) and fn_80222668 calls
+// `bl`s. The callers that need it: updateState_0x90 calls fn_80222668 (six times) and fn_80222668 calls
 // fn_80222730 out of line.
 #pragma auto_inline off
 
@@ -90,8 +90,8 @@ void cls_804A6B70::fn_80222668(s32 state) {
 }
 
 // FIXME: 99.85%. Only the jump table relocation (jumptable_804A6C14 vs @NNN)
-// and the .data order differ, as in tu_80221B44's vfunc_0x90.
-void cls_804A6B70::vfunc_0x90(u8 mapHit) {
+// and the .data order differ, as in tu_80221B44's updateState_0x90.
+void cls_804A6B70::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         fn_80221408();
@@ -146,11 +146,11 @@ void cls_804A6B70::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6B70::vfunc_0x88() {
+void cls_804A6B70::calcVelocity_0x88() {
     if (mState == 2) {
         fn_80221250();
     } else {
-        EnemyBase_804A4808::vfunc_0x88();
+        EnemyBase_804A4808::calcVelocity_0x88();
     }
 }
 

@@ -58,7 +58,7 @@ void ShadowLinkGenerator_804A4310::init() {
     mTargetSpeed = 0.0f;
     static const char* lbl_8053AC18 = "jen_8_3.bti";
     mTexture = fn_804032E8('TIMG', lbl_8053AC18);
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         mState = 0xB;
     } else {
         mEmitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x4F, 0, 0, NULL, NULL, true, 1.0f);
@@ -127,7 +127,7 @@ void ShadowLinkGenerator_804A4310::update() {
             startSound_801F0E34(0x5004B, 0);
         }
         if (fn_801C0D70()->field_0x0 & 0x80) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             for (s32 i = 0; i < 3; i++) {
                 spawnEmitter_8013CC50(field_0x4, &mPos, lbl_8053EDB0[i], 0, 0, NULL, NULL, true, 1.0f);
             }

@@ -15,11 +15,11 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x58 */ virtual bool vfunc_0x58();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
     /* 0xA0 */ virtual void vfunc_0xA0();
     void setEmitterColor();
     void onHit();

@@ -37,7 +37,7 @@ void WoodenForceGem_804AB1F0::init() {
     } else {
         field_0x240 = 1.0f;
     }
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         fn_801F3668();
         return;
     }
@@ -58,7 +58,7 @@ void WoodenForceGem_804AB1F0::init() {
     }
 }
 
-bool WoodenForceGem_804AB1F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool WoodenForceGem_804AB1F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = fn_8022461C(pos, layer);
     if (tile == 0xC || tile == 3 || tile == 0xE) {
         field_0x3c.z = 0.0f;

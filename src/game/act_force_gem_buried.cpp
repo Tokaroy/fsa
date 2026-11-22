@@ -62,7 +62,7 @@ void BuriedForceGem_804AB258::update() {
     switch (field_0x230) {
     case 0: {
         if (field_0x94 == 2) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
                 break;
             }
@@ -113,7 +113,7 @@ void BuriedForceGem_804AB258::update() {
     }
     case 1: {
         if (field_0x94 == 3 || field_0x94 == 5) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
                 break;
             }
@@ -187,7 +187,7 @@ void BuriedForceGem_804AB258::update() {
         break;
     }
     case 2: {
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             if (field_0x94 == 2) {
                 fn_801F0D20(3);
                 field_0x230 = 0;

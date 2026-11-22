@@ -252,15 +252,15 @@ public:
     // 4 units. Sets or clears it.
     void fn_802D7F84(s32 bit, bool set);
     // 46 units / 103 calls. Tests bit `bit` of field_0x178[row][col]
-    // (ActorBase_804A5770::vfunc_0x34 passes vfunc_0x3C()).
+    // (ActorBase_804A5770::isScreenFlagSet_0x34 passes getScreenFlagBit_0x3C()).
     bool fn_802D800C(s32 bit);
     // 44 units / 126 calls. With set: sets the bit, increments
     // field_0x308[bit] (saturating at 0xFF) and stores value in
     // field_0x328[bit]; else clears the bit and stores 0xFF there.
-    // ActorBase_804A5770::vfunc_0x30 passes (vfunc_0x3C(), set, value).
+    // ActorBase_804A5770::setScreenFlag_0x30 passes (getScreenFlagBit_0x3C(), set, value).
     void fn_802D8050(s32 bit, bool set, u8 value);
     // 1 unit (this unused). field_0x308[index] (lbz). An int: ActorBase's
-    // vfunc_0x38 returns it without the clrlwi a u8 return would need.
+    // getScreenFlagCount_0x38 returns it without the clrlwi a u8 return would need.
     s32 fn_802D7E04(s32 index);
     // 2 units (this unused). field_0x328[index] (lbz). An int: its callers
     // store it with stw and compare it with cmpw, no clrlwi.

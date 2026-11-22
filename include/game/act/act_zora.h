@@ -17,14 +17,14 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     void fn_801BACE8(s32 state);
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     // Vtable slot 0xA0 (fn_801BA854, overriding EnemyBase's vfunc_0xA0):
     // once mState is set, the camera collects mPos (addFocusPoint_8030C210) so that it
     // stays in view.
     /* 0xA0 */ virtual void vfunc_0xA0();
     // Vtable slot 0x4C (fn_801BA88C): tile code 0xD (fn_8022461C) blocks
     // the position outright; anything else falls to ActorBase's test.
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // Slots 0xA4-0xB0, the four this class appends. ZoraEnemy's own are
     // empty (0xAC returns false); the lotus Zora (cls_804AC3E0,
     // act_zora_lotus.cpp) overrides all four.

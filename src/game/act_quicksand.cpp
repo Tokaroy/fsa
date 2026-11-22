@@ -247,13 +247,13 @@ void cls_804A6270::fn_802121C8() {
     }
 }
 
-void cls_804A6270::vfunc_0x54() {
+void cls_804A6270::onFirstUpdate_0x54() {
     if (mFlags & 0x8000 && field_0x2bc != 0) {
         field_0x2c0.fn_800FE3EC(field_0x2bc, mPos, field_0x4);
     }
 }
 
-// Not auto-inlined: vfunc_0x90 calls fn_80211EB0 and fn_80211C94 out of line in the
+// Not auto-inlined: updateState_0x90 calls fn_80211EB0 and fn_80211C94 out of line in the
 // original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // FIXME(shotgun): 97.78 %, missing/extra; behaviour near.
@@ -301,7 +301,7 @@ void cls_804A6270::fn_80211C94() {
 
 // FIXME: 99.30 %, regalloc-only; behaviour drift.
 // FIXME: regalloc-only (r29/r30 swapped in inlined releaseView).
-void cls_804A6270::vfunc_0x90(u8 mapHit) {
+void cls_804A6270::updateState_0x90(u8 mapHit) {
     fn_80211EB0();
     fn_80211C94();
     switch (mState) {
@@ -416,8 +416,8 @@ void cls_804A6270::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A6270::vfunc_0x9C(u8 mapHit) {
-    EnemyBase_804A4808::vfunc_0x9C(mapHit);
+void cls_804A6270::updateBehavior_0x9C(u8 mapHit) {
+    EnemyBase_804A4808::updateBehavior_0x9C(mapHit);
     bool active = false;
     if (mState != 0 && field_0x54.x != 0.0f && field_0x398 != 0.0f) {
         active = true;
@@ -486,7 +486,7 @@ void cls_804A6270::fn_802110A8() {
     }
 }
 
-void cls_804A6270::vfunc_0x88() {
+void cls_804A6270::calcVelocity_0x88() {
     field_0x3c.set(0.0f, 0.0f, 0.0f);
     fn_802110A8();
 }

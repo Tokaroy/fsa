@@ -186,7 +186,7 @@ void BTINPC_804A927C::update() {
     JGeometry::TVec3f pos;
     switch (field_0x230) {
     case 0:
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34() == true) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             if (field_0x258 != 0) {
                 if (field_0x4 >= 8) {
                     pos.x = mPos.x + 8.0f;
@@ -204,7 +204,7 @@ void BTINPC_804A927C::update() {
         break;
     case 1:
         if (field_0x240 == 2 || field_0x240 == 3) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 if (field_0x258 != 0) {
                     if (field_0x4 >= 8) {
                         pos.x = mPos.x + 8.0f;
@@ -222,7 +222,7 @@ void BTINPC_804A927C::update() {
             }
         }
         if (field_0x240 == 4) {
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 field_0x230 = 2;
             }
         }
@@ -249,7 +249,7 @@ void BTINPC_804A927C::draw() {
             params.field_0x23 = 1;
         }
         if (field_0x234 == 0x22) {
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 void* res = fn_804032E8('TIMG', "en_8_3_koware.bti");
                 if (field_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);

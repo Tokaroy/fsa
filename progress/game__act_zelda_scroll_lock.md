@@ -12,7 +12,7 @@ Now:      total: 4449 / 11561 functions, 800052 / 4442088 bytes of code (18.01 %
   `__sinit` (template: act_talking_npc_2).
 - update is a two-state switch on 0x230: state 0 waits until
   fn_802DCD0C(getGameView_802D6A9C()) is false, then fn_8022ADE4() and state 1;
-  state 1 calls fn_8022ADE4() every frame and, once vfunc_0x34() returns
+  state 1 calls fn_8022ADE4() every frame and, once isScreenFlagSet_0x34() returns
   true, fn_8022ADCC() and fn_801F3668(this).
 
 
@@ -30,7 +30,7 @@ Now:      total: 4449 / 11561 functions, 800052 / 4442088 bytes of code (18.01 %
 ## Rebase onto headers v2 (3729a91)
 - Local `// TODO(shared)` declarations removed; the unit uses ActorBase.h /
   GameGlobals.h (fn_801F0D20 and fn_801F3668 are now ActorBase members).
-- The former FIXME'd update (vfunc_0x30(u8, bool) / bool vfunc_0x34()) now
+- The former FIXME'd update (setScreenFlag_0x30(u8, bool) / bool isScreenFlagSet_0x34()) now
   matches; the vtable matches with the renamed slot functions.
 
 ## SHARED-EDITS

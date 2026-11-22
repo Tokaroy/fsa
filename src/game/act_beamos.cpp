@@ -49,7 +49,7 @@ void Beamos_804A40E0::init() {
     }
 }
 
-// Not auto-inlined: fn_801BE6C4 calls fn_801BE86C out of line in the original, and vfunc_0x90
+// Not auto-inlined: fn_801BE6C4 calls fn_801BE86C out of line in the original, and updateState_0x90
 // calls fn_801BE6C4 out of line (bl in its asm); docs/INLINING.md pragma rule 1.
 #pragma auto_inline off
 // FIXME: 80.85 %, scheduling+regalloc + reloc-name; behaviour clean.
@@ -114,7 +114,7 @@ void Beamos_804A40E0::fn_801BE6C4(s32 state) {
 #pragma auto_inline reset
 
 // FIXME(shotgun): 99.05 %, regalloc-only; behaviour clean.
-void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
+void Beamos_804A40E0::updateState_0x90(u8 mapHit) {
     if (mFlags & 0x2000) {
         s32 sw = field_0x2b0;
         if (sw != 0 && getGameView_802D6A9C()->fn_802D800C(sw)) {
@@ -181,7 +181,7 @@ void Beamos_804A40E0::vfunc_0x90(u8 mapHit) {
 // FIXME: 90.76 %, scheduling+regalloc; behaviour clean.
 // FIXME: The original keeps `this` in r30 (ours uses r31), and its box corners
 // load mPos.y before 8.0f and add as (y, c) where ours adds (c, y).
-void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
+void Beamos_804A40E0::updateBehavior_0x9C(u8 mapHit) {
     JGeometry::TBox2f listBox;
     fn_801CE2BC(mapHit);
     if (field_0x2aa != 0) {
@@ -195,14 +195,14 @@ void Beamos_804A40E0::vfunc_0x9C(u8 mapHit) {
     }
 }
 
-void Beamos_804A40E0::vfunc_0x98() {}
+void Beamos_804A40E0::move_0x98() {}
 
-u8 Beamos_804A40E0::vfunc_0x60() {
+u8 Beamos_804A40E0::checkHitByActor_0x60() {
     u32 includeId = field_0x2aa != 0 ? 'NULL' : mActorId;
     return fn_801F2DB4(includeId, 'SWBM', NULL);
 }
 
-u8 Beamos_804A40E0::vfunc_0x5C() {
+u8 Beamos_804A40E0::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (mState == 2) {
         for (s32 i = 0; i < 4; i++) {
@@ -226,11 +226,11 @@ u8 Beamos_804A40E0::vfunc_0x5C() {
     return hit;
 }
 
-void Beamos_804A40E0::vfunc_0x24() {
+void Beamos_804A40E0::die_0x24() {
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x70, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x71, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(field_0x4, &mPos, 0x72, 0, 0, NULL, NULL, true, 1.0f);
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 void Beamos_804A40E0::draw() {

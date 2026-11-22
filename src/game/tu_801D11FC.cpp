@@ -87,7 +87,7 @@ bool cls_804A46F4::fn_801D12CC() {
             pos.set(playerPos.x, playerPos.y, playerPos.z);
         }
         probe.set(pos.x, pos.y, 0.0f);
-        if (vfunc_0x4C(field_0x4, &probe)) {
+        if (isBlocked_0x4C(field_0x4, &probe)) {
             s32 code = fn_802265FC(&pos, field_0x4);
             if (code >= 0x2C || code < 0x27) {
                 mPathCount = 0;

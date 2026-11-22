@@ -60,7 +60,7 @@ void Cucco_804AB8C0::init() {
     field_0x2a3 = (field_0x90 >> 15) & 1;
     field_0x2a7 = (field_0x90 >> 14) & 1;
     field_0x2a8 = 0;
-    if (vfunc_0x34() == true) {
+    if (isScreenFlagSet_0x34() == true) {
         field_0x2a7 = 0;
     }
     field_0x2a4[0] = 1;
@@ -432,7 +432,7 @@ void Cucco_804AB8C0::fn_80331E6C() {
             f32 dy = other->mPos.y - mPos.y;
             if (JGeometry::TUtil<f32>::sqrt(square(dx) + square(dy)) < 12.0f) {
                 if (other->mActorId == ACTOR_WARP) {
-                    if (other->vfunc_0x3C() == 0 || other->vfunc_0x34() == true) {
+                    if (other->getScreenFlagBit_0x3C() == 0 || other->isScreenFlagSet_0x34() == true) {
                         warpSerial = other->mSerial;
                         break;
                     }
@@ -662,7 +662,7 @@ void Cucco_804AB8C0::fn_803319B8() {
 #pragma auto_inline reset
 
 // FIXME(shotgun): 96.97 %, missing/extra; behaviour near.
-bool Cucco_804AB8C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
     if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == 1) {
@@ -723,7 +723,7 @@ void Cucco_804AB8C0::update() {
         return;
     }
     if (field_0x2a7 == 1) {
-        if (vfunc_0x34() == true) {
+        if (isScreenFlagSet_0x34() == true) {
             field_0x2a7 = 0;
         }
         return;

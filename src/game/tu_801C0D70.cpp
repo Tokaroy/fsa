@@ -111,7 +111,7 @@ void cls_801C0D70::fn_801C1224(s32 value) const {
             static_cast<ShadowLink2_804A43E8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]));
         if (actor != NULL && !(actor->mFlags & 0x10000)) {
             actor->field_0x10c = value;
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     }
 }

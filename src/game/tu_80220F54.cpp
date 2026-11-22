@@ -162,7 +162,7 @@ void ShadowLinkBase_804A6A00::fn_8022149C(s32 state) {
 void ShadowLinkBase_804A6A00::fn_80221408() {
     if (mStateTimer >= 0xA0) {
         fn_801CB434(field_0x4, &mPos, false);
-        vfunc_0x24();
+        die_0x24();
     } else if (mStateTimer % 8 == 0) {
         field_0x98 = fn_801CD30C(field_0x98);
         mAnim.startAnim_801D22DC(field_0x98, 0, false);
@@ -200,18 +200,18 @@ void ShadowLinkBase_804A6A00::fn_80221250() {
     fn_801D01A0((const JGeometry::TVec3f*)&field_0x2b0, &d, mSpeed);
     field_0x3c.x = d.x;
     field_0x3c.y = d.y;
-    vfunc_0x84();
+    applyGravity_0x84();
 }
 
-void ShadowLinkBase_804A6A00::vfunc_0x9C(u8 mapHit) {
+void ShadowLinkBase_804A6A00::updateBehavior_0x9C(u8 mapHit) {
     if (!(mFlags & 7)) {
         fn_801CE2BC(mapHit);
     } else {
-        vfunc_0x94();
+        updateAnim_0x94();
     }
 }
 
-void ShadowLinkBase_804A6A00::vfunc_0x6C() {
+void ShadowLinkBase_804A6A00::onHitByPlayer_0x6C() {
     s32 angle = JMath::atanTable_.atan2_(field_0x3c.x, field_0x3c.y) *
                 (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
     field_0x98 = fn_801F681C(angle - 0x8000);
@@ -219,11 +219,11 @@ void ShadowLinkBase_804A6A00::vfunc_0x6C() {
     startSound_801F0E34(0x400C2, 0);
 }
 
-void ShadowLinkBase_804A6A00::vfunc_0x74() {
+void ShadowLinkBase_804A6A00::onHitReactionEnd_0x74() {
     fn_8022149C(0);
 }
 
-u8 ShadowLinkBase_804A6A00::vfunc_0x60() {
+u8 ShadowLinkBase_804A6A00::checkHitByActor_0x60() {
     return 0;
 }
 

@@ -10,7 +10,7 @@ void ChainSwitch_804AA3E8::init() {
     mSwitchBit = (field_0x90 >> 22) & 0x1F;
     field_0x242 = field_0x90 >> 27;
     mTimer = 0;
-    mWasOn = vfunc_0x34();
+    mWasOn = isScreenFlagSet_0x34();
 }
 
 void ChainSwitch_804AA3E8::update() {
@@ -18,9 +18,9 @@ void ChainSwitch_804AA3E8::update() {
         mTimer--;
         if (mTimer == 0) {
             if (mSoundMode == 1) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             } else if (mSoundMode == 2) {
-                vfunc_0x30(0xFF, false);
+                setScreenFlag_0x30(0xFF, false);
             }
             if (mSwitchMode == 0) {
                 getGameView_802D6A9C()->fn_802D8050(mSwitchBit, true, 0xFF);
@@ -28,16 +28,16 @@ void ChainSwitch_804AA3E8::update() {
                 getGameView_802D6A9C()->fn_802D8050(mSwitchBit, false, 0xFF);
             }
             if (mCallWhenDone == 1) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
     } else {
         if (!mWasOn) {
-            if (vfunc_0x34() == 1) {
+            if (isScreenFlagSet_0x34() == 1) {
                 mTimer = mDelay;
             }
         }
-        mWasOn = vfunc_0x34();
+        mWasOn = isScreenFlagSet_0x34();
     }
 }
 

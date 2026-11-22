@@ -85,9 +85,9 @@ void cls_804A1718::vfunc_0x44() {
     field_0x230 = 4;
 }
 
-void cls_804A1718::vfunc_0x18() {
+void cls_804A1718::checkPlayerContact_0x18() {
     fn_80212AC0()->fn_80212AF0(&mPos);
-    ActorBase_804A5770::vfunc_0x18();
+    ActorBase_804A5770::checkPlayerContact_0x18();
 }
 
 cls_804A1718::~cls_804A1718() {
@@ -121,7 +121,7 @@ void cls_804A1718::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x260 == 1) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
             }
             break;

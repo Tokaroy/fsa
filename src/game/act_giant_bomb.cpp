@@ -196,7 +196,7 @@ void GiantBomb_804AC588::update() {
         }
         break;
     case 2:
-        if (vfunc_0x34() == 1 || vfunc_0x3C() == 0) {
+        if (isScreenFlagSet_0x34() == 1 || getScreenFlagBit_0x3C() == 0) {
             if (field_0x24c == 1 && getGameView_802D6A9C()->field_0x4 == 1 &&
                 getGameView_802D6A9C()->field_0x8 == 0) {
                 fn_801F3604();

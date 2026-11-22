@@ -650,7 +650,7 @@ void cls_804A00C8::update() {
             break;
         }
         if (field_0x280 == -2) {
-            vfunc_0x24();
+            die_0x24();
             break;
         }
         field_0x23c = 10;
@@ -781,7 +781,7 @@ void cls_804A00C8::update() {
             field_0x278 = 1;
         }
         if (field_0x280 == -2) {
-            vfunc_0x24();
+            die_0x24();
             break;
         }
         if (dir >= 0) {
@@ -1059,7 +1059,7 @@ void cls_804A00C8::update() {
             } else {
                 field_0x280 = -2;
                 if (field_0x28c == 1) {
-                    vfunc_0x24();
+                    die_0x24();
                 }
             }
         }

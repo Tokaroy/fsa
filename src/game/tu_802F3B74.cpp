@@ -23,7 +23,7 @@ void UnknownDMYK_804AA6A0::init() {
     }
 }
 
-void UnknownDMYK_804AA6A0::vfunc_0x24() {
+void UnknownDMYK_804AA6A0::die_0x24() {
     s32 serial = mEffectSerial;
     if (serial >= 0) {
         ActorBase_804A5770* effect = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -37,7 +37,7 @@ void UnknownDMYK_804AA6A0::vfunc_0x24() {
 
 void UnknownDMYK_804AA6A0::update() {
     if (fn_80388EEC(mPlayer)) {
-        vfunc_0x24();
+        die_0x24();
     }
 }
 

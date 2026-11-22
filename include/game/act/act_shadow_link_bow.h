@@ -13,8 +13,8 @@ public:
     cls_804A6B70();
     virtual ~cls_804A6B70();
     /* 0x0C */ virtual void init();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
 
     // 0x80222668: sets up the animation / timer of `state` (3, 5, 6, 7),
     // then clears mStateTimer and stores the state.

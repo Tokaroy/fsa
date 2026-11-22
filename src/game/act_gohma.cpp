@@ -202,7 +202,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     }
 
     if (mLife < 1000) {
-        vfunc_0x24();
+        die_0x24();
         return;
     }
 
@@ -420,7 +420,7 @@ void Gohma_804A307C::fn_801AAF44() {
     }
 
     if (mLife < 1000) {
-        vfunc_0x24();
+        die_0x24();
         field_0xb0 = 0;
         return;
     }

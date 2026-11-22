@@ -38,7 +38,7 @@ void ZoraFishHerding_804A2E30::init() {
         field_0x240 = 0;
     }
     mKind = field_0x90 & 0xF;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         fn_801F3668();
         return;
     }
@@ -52,7 +52,7 @@ void ZoraFishHerding_804A2E30::init() {
         field_0x254 = field_0x240 + 12;
         // fall through
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mState = 10;
         } else {
             mState = 0;
@@ -473,7 +473,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
         if (fn_803865B8(fn_8022EA0C(0)) && fn_80384C58(fn_8022EA0C(0), mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             fn_8022B1C8();
             if (field_0x250 != 3 && field_0x250 != 1) {
                 field_0x250 = 3;

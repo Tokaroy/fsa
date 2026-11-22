@@ -335,7 +335,7 @@ void cls_8049CEE0::update() {
             fn_801096C8(1);
             break;
         }
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             fn_801096C8(15);
             break;
         }

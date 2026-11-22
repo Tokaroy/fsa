@@ -158,7 +158,7 @@ void TrickFloor2_804AA628::init() {
 
 // FIXME(shotgun): 95.00 %, missing/extra + reloc-name; behaviour near.
 // Finds who stands on the floor (fn_8023AF14, the 'SBAL' ball, fn_8023A97C per player), then:
-// 0 reads the tile under it, 2 waits for a rider (vfunc_0x34) and drops (tiles 6, state 3) or,
+// 0 reads the tile under it, 2 waits for a rider (isScreenFlagSet_0x34) and drops (tiles 6, state 3) or,
 // for types 4 / 5, waits for all four players to open (state 6), 3 sinks to 1.6384, 4 holds
 // while ridden, 5 rises back and restores the tiles, 6 / 7 fall away (camera shake, debris),
 // 8 stays down.
@@ -229,7 +229,7 @@ void TrickFloor2_804AA628::update() {
         case 2:
         case 3:
         case 6:
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 break;
             }
             if (player < 0 && ball < 0) {
@@ -245,7 +245,7 @@ void TrickFloor2_804AA628::update() {
             if (count != 4) {
                 break;
             }
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             startSound_801F0E34(0x30009, 0);
             fillTiles(this, mPos.x, 0x7C);
             field_0x24c = 0.07f;
@@ -275,7 +275,7 @@ void TrickFloor2_804AA628::update() {
         }
         if (field_0x244 != 0) {
             field_0x244--;
-            if (field_0x244 == 0 && field_0x23c != 0 && vfunc_0x34() == true) {
+            if (field_0x244 == 0 && field_0x23c != 0 && isScreenFlagSet_0x34() == true) {
                 field_0x244 = 1;
             }
         }

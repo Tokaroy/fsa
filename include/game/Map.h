@@ -15,7 +15,7 @@
 //   fn_802F9908; positions outside the box give 0xF.
 // * game/tu_8020D58C.cpp: the actor collision boxes (42 consumer units),
 //   double-buffered lists of boxes that actors register each frame and
-//   ActorBase_804A5770::vfunc_0x4C tests a position against after the tile
+//   ActorBase_804A5770::isBlocked_0x4C tests a position against after the tile
 //   check.
 //
 // Conventions follow GameView.h: members for functions called with the
@@ -597,7 +597,7 @@ void fn_80226CA8(s32 index, s32 layer, JGeometry::TVec3f* out);
 // further cases. Returns 0 or 1.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag); // reads pos+0/+4 only
 // 19 units / 37 calls. A plain call of fn_802260DC with the same
-// arguments (ActorBase_804A5770::vfunc_0x4C passes flag 0).
+// arguments (ActorBase_804A5770::isBlocked_0x4C passes flag 0).
 bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag);
 // 4-5 units each. Tile-code range tests at pos; return 0 or 1 (callers
 // clrlwi 24). fn_80224B88 also reads GameView byte 0x131F1.

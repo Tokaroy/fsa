@@ -80,7 +80,7 @@ void WarpEntranceWall_804AE948::init() {
 }
 
 void WarpEntranceWall_804AE948::update() {
-    if (field_0x234 == 0 || vfunc_0x34()) {
+    if (field_0x234 == 0 || isScreenFlagSet_0x34()) {
         JGeometry::TBox2f box;
         switch (field_0x230) {
         case 0:

@@ -97,7 +97,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
 
     switch (mState) {
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mState = 1;
             field_0x238 = 0;
             mStateTimer = field_0x90 & 0x7F;
@@ -204,7 +204,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             mStateTimer = 300;
             mState = 10;
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
-                if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+                if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
                     gGameRoot_8053AAF8->fn_80138B7C();
                 }
             }
@@ -212,7 +212,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
         break;
     case 10:
         if (mStateTimer <= 0) {
-            if (vfunc_0x3C() == 0 || (vfunc_0x3C() != 0 && vfunc_0x34() == 1)) {
+            if (getScreenFlagBit_0x3C() == 0 || (getScreenFlagBit_0x3C() != 0 && isScreenFlagSet_0x34() == 1)) {
                 if (gGameRoot_8053AAF8->field_0x7f == 1) {
                     if (gAudioMgr_8053AF80->field_0x58 != 0x100000D) {
                         gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);

@@ -95,7 +95,7 @@ void TwoSwordMotion_804ABA90::init() {
 // Scheduling and register allocation only: the original keeps layer in r29
 // and the serial (loaded before the fn_8020D58C call) in r30; ours assigns them the other
 // way round, which moves an mr pair. The tile code is an s32 local (cmpwi after the clrlwi.).
-bool TwoSwordMotion_804ABA90::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool TwoSwordMotion_804ABA90::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes;
     boxes = fn_8020D58C();
@@ -271,7 +271,7 @@ void TwoSwordMotion_804ABA90::update() {
                 if (field_0x280 == 0) {
                     JGeometry::TVec3f p20((field_0x27c + 0.5f) * swingPhase(count, field_0x278) + field_0x294.x,
                                           field_0x294.y, field_0x294.z);
-                    if (vfunc_0x4C(field_0x4, &p20) == true) {
+                    if (isBlocked_0x4C(field_0x4, &p20) == true) {
                         field_0x280 = 1;
                     }
                 }

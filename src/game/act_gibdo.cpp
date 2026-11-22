@@ -196,7 +196,7 @@ void Gibdo_804A3BF8::fn_801B9DD4(s32 mode) {
 // the timer compare); ours reuses the first load. The two jump tables
 // (jumptable_804A3C9C, jumptable_804A3CE4) and the 120.0f / 0.1f literals are
 // @NNN here (reloc-name, a data split).
-void Gibdo_804A3BF8::vfunc_0x90(u8 mapHit) {
+void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mFlags & 0x8000) {
@@ -325,9 +325,9 @@ void Gibdo_804A3BF8::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void Gibdo_804A3BF8::vfunc_0x24() {
+void Gibdo_804A3BF8::die_0x24() {
     if (mFlags & 0x4000) {
-        ActorBase_804A5770::vfunc_0x24();
+        ActorBase_804A5770::die_0x24();
         JPABaseEmitter* emitter = spawnEmitter_8013CC50(field_0x4, &mPos, 0x32B, 1, 1, NULL, NULL, true, 1.0f);
         if (emitter != NULL) {
             JUtility::TColor color = gGameRoot2_8053AB10->field_0x2c->field_0x4;
@@ -338,7 +338,7 @@ void Gibdo_804A3BF8::vfunc_0x24() {
     }
 }
 
-void Gibdo_804A3BF8::vfunc_0x98() {
+void Gibdo_804A3BF8::move_0x98() {
     bool step = false;
     const u32 hits = ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR;
     if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || field_0xfc != 5))) {
@@ -349,7 +349,7 @@ void Gibdo_804A3BF8::vfunc_0x98() {
     }
 }
 
-void Gibdo_804A3BF8::vfunc_0x9C(u8 mapHit) {
+void Gibdo_804A3BF8::updateBehavior_0x9C(u8 mapHit) {
     bool step = false;
     const u32 hits = ENEMY_FLAG_HIT | ENEMY_FLAG_HIT_PLAYER | ENEMY_FLAG_HIT_ACTOR;
     if (mState == 3 || (mLife > 0 && ((mFlags & hits) == 0 || field_0xfc != 5))) {

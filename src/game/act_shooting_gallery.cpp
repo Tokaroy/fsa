@@ -93,7 +93,7 @@ void ShootingGallery_804A2B18::init() {
         lbl_8053ABB8[3] = 0;
         lbl_804C6330[3] = 0;
         field_0xb0 = 0x0A040004;
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mState = 6;
         } else {
             mState = 0;
@@ -407,7 +407,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
                 }
             }
             gGameRoot_8053AAF8->fn_80138B7C();
-            vfunc_0x30(0xff, true);
+            setScreenFlag_0x30(0xff, true);
             fn_8022B17C();
             mState = 6;
         }

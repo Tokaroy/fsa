@@ -82,7 +82,7 @@ void cls_804AB528::init() {
 // FIXME(shotgun): 93.02 %, missing/extra; behaviour near.
 void cls_804AB528::update() {
     if (field_0x25c < 1.0f) {
-        if (vfunc_0x34() == 1 && field_0x25a == 1) {
+        if (isScreenFlagSet_0x34() == 1 && field_0x25a == 1) {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, (f32)(field_0x240 + 1));
             startSound_801F0E34(0x30003, 0);
             field_0x25a = 0;

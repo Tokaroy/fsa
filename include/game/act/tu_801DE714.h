@@ -21,10 +21,10 @@ public:
     // The overrides below come from the asm only (shotgun pass); the helper
     // names are their addresses.
     /* 0x0C */ virtual void init();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x8C */ virtual void vfunc_0x8C();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x8C */ virtual void onMoved_0x8C();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
     void fn_801E1E08();                         // back to the start (state 0)
     bool fn_801E1DB4() const;                   // mAnim.mAnim in 0..2 or 0xD..0x10
     bool fn_801E1CF8() const;
@@ -48,17 +48,17 @@ public:
     // it in y and 6 to the side the actor faces (field_0x98).
     void fn_8020D2AC() const;
     // tu_801DE714 (0x801DE714, vtable slot 0x80): calls EnemyBase's
-    // vfunc_0x80 (the floor check) only while mState is 0xA.
-    void vfunc_0x80();
+    // checkFloor_0x80 (the floor check) only while mState is 0xA.
+    void checkFloor_0x80();
     // tu_801DE714 (0x801DE9C0, vtable slot 0x9C): EnemyBase's fn_801CE2BC
     // (the step without the hit-bit test) with mapHit passed on, then
     // fn_8021835C.
-    void vfunc_0x9C(u8 mapHit);
+    void updateBehavior_0x9C(u8 mapHit);
     // tu_801DE714 (0x801E2004, vtable slot 0x54): removes the other live actors of mActorId
     // (ActorManager fn_801F7AB8, this one excepted by serial), then sets mPos.x
     // from the visible box's left edge (the second box from layer 8 up) and
     // copies mPos.x and mPos.y to field_0x2c4.
-    /* 0x54 */ virtual void vfunc_0x54();
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
     // tu_801DE714 (0x801E1D7C): whether mState is 0xB or 0xC.
     bool fn_801E1D7C();
     // tu_801DE714 (0x801E1D9C): whether mAnim's current animation is 2.
@@ -69,15 +69,15 @@ public:
     // tu_8021827C (0x8021827C), the last slot of the vtable (EnemyBase's
     // vfunc_0xA0).
     void vfunc_0xA0();
-    // tu_8021827C (0x8021835C): called from vfunc_0x9C's override (0x801DE9C0).
+    // tu_8021827C (0x8021835C): called from updateBehavior_0x9C's override (0x801DE9C0).
     void fn_8021835C();
     // tu_8021827C (0x80218538): whether the actor's box is in view.
     bool fn_80218538() const;
     // tu_801E2540 (this unit's vtable slots 0x5C / 0x60 / 0x64 and helpers, 0x801E2540-0x801E2F40).
     /* 0x58 */ virtual bool vfunc_0x58();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x64 */ virtual u8 vfunc_0x64();
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x64 */ virtual u8 sweepMap_0x64();
     // 0x801E2D88: sets the boxes for the current state.
     void fn_801E2D88();
     // 0x801E2EE4: registers the actor's box (8 around mPos) with the tile map.
@@ -96,7 +96,7 @@ public:
     /* 0x2B8 */ s32 field_0x2b8;
     /* 0x2BC */ s32 mTargetSerial; // serial of the actor fn_8021FDB8 moves
     /* 0x2C0 */ s32 field_0x2c0;
-    /* 0x2C4 */ JGeometry::TVec2f field_0x2c4; // vfunc_0x54: set(mPos.x, mPos.y)
+    /* 0x2C4 */ JGeometry::TVec2f field_0x2c4; // onFirstUpdate_0x54: set(mPos.x, mPos.y)
     /* 0x2CC */ u16 field_0x2cc;
     /* 0x2CE */ u16 field_0x2ce;
     /* 0x2D0 */ s32 field_0x2d0;

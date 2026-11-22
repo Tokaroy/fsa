@@ -28,7 +28,7 @@ void cls_804AC9A8::init() {
         field_0x254[i].set(0.0f, 0.0f, 0.0f);
     }
     field_0x230 = 0;
-    if (field_0x234 == 1 && vfunc_0x34() == true) {
+    if (field_0x234 == 1 && isScreenFlagSet_0x34() == true) {
         field_0x238 = 2;
         field_0x230 = 4;
     }
@@ -81,7 +81,7 @@ void cls_804AC9A8::update() {
                 }
                 field_0x238 = 1;
                 field_0x244 = 5;
-            } else if (field_0x244 <= 0 && !vfunc_0x34()) {
+            } else if (field_0x244 <= 0 && !isScreenFlagSet_0x34()) {
                 wait = false;
                 if (fn_8023077C()) {
                     JGeometry::TVec3f shift(0.0f, 0.0f, 0.0f);
@@ -102,7 +102,7 @@ void cls_804AC9A8::update() {
         }
         }
         if (field_0x234 == 0 && field_0x240 == 4 && count < 4) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
         }
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && !fn_8023EA28(i)) {
@@ -142,7 +142,7 @@ void cls_804AC9A8::update() {
         if (field_0x244 == 0) {
             if (field_0x248 >= 13) {
                 fn_801F0D20(3);
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 field_0x244 = 15;
                 field_0x230 = 3;
             } else {

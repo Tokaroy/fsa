@@ -78,13 +78,13 @@ void RotatingSkull_804A8588::update() {
         mPos.x = 176.0f * JMath::sincosTable_.sinShort(field_0x244) + field_0x234.x;
         mPos.y = 176.0f * JMath::sincosTable_.cosShort(field_0x244) + field_0x234.y;
         field_0x25c = 0;
-        if (vfunc_0x38() >= 6) {
+        if (getScreenFlagCount_0x38() >= 6) {
             mAlive = false;
         } else {
-            if (vfunc_0x38() >= 3) {
+            if (getScreenFlagCount_0x38() >= 3) {
                 field_0x25c = 1;
             }
-            if (vfunc_0x38() == 3 && !(field_0x90 & 0xF)) {
+            if (getScreenFlagCount_0x38() == 3 && !(field_0x90 & 0xF)) {
                 field_0x25c = 0;
             }
         }
@@ -137,7 +137,7 @@ void RotatingSkull_804A8588::update() {
         break;
     }
     case 2:
-        if (vfunc_0x34() == 1) {
+        if (isScreenFlagSet_0x34() == 1) {
             field_0x260.x = field_0x260.y = field_0x260.z = 0.0f;
             field_0x260 += field_0x3c;
             field_0x270.normalize();
@@ -294,7 +294,7 @@ void RotatingSkull_804A8588::fn_802B21EC() {
 }
 
 u8 RotatingSkull_804A8588::fn_802B21AC(s32 layer, const JGeometry::TVec3f* pos) {
-    bool result = ActorBase_804A5770::vfunc_0x4C(layer, pos);
+    bool result = ActorBase_804A5770::isBlocked_0x4C(layer, pos);
     if (!result) {
         field_0x27c = 0;
     }

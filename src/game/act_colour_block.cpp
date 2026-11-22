@@ -73,7 +73,7 @@ void ColourBlock1Player_804AE620::init() {
     if (field_0x248 == 0) {
         if (fn_8028D4DC(&mPos, 0, field_0x16c)) {
             field_0x244 = 1;
-            vfunc_0x30(0xFF, 1);
+            setScreenFlag_0x30(0xFF, 1);
             field_0x240 = 0;
         }
     }
@@ -163,7 +163,7 @@ void ColourBlock1Player_804AE620::update() {
         field_0x230 = mPos;
         field_0x3c.set(0.0f, 0.0f, 0.0f);
         mPrevPos = mPos;
-        vfunc_0x30(0xFF, 1);
+        setScreenFlag_0x30(0xFF, 1);
         field_0x240 = 0;
         field_0x244 = 1;
         return;

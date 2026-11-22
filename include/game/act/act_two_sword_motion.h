@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
 
     // Placeholder name. Advances field_0x26c (phase, 36-frame cycle) and
     // calls fn_80230498 for field_0x24c and field_0x250; returns 1 once

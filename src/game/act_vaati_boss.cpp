@@ -166,7 +166,7 @@ void VaatiBoss_804A4958::init() {
     gGameRoot2_8053AB10->field_0x20->fn_802F9714(res, 0, 0, 0x7000, 0);
 }
 
-void VaatiBoss_804A4958::vfunc_0x54() {
+void VaatiBoss_804A4958::onFirstUpdate_0x54() {
     gAudioMgr_8053AF80->fn_80458F9C(60);
 }
 
@@ -392,7 +392,7 @@ inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
     return found;
 }
 
-// Not auto-inlined: vfunc_0x90 calls fn_801D5B70 out of line in the original.
+// Not auto-inlined: updateState_0x90 calls fn_801D5B70 out of line in the original.
 #pragma auto_inline off
 void VaatiBoss_804A4958::fn_801D5B70() {
     if (mStateTimer >= field_0x250) {
@@ -440,7 +440,7 @@ static inline s32 pickTarget(VaatiBoss_804A4958* boss) {
 }
 
 // FIXME(shotgun): 99.46 %, different; behaviour drift.
-void VaatiBoss_804A4958::vfunc_0x90(u8 mapHit) {
+void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (fn_801CD228(field_0x4) && getActorManager_801F856C()->fn_801F68E0() != 0) {
@@ -639,7 +639,7 @@ void VaatiBoss_804A4958::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void VaatiBoss_804A4958::vfunc_0x94() {
+void VaatiBoss_804A4958::updateAnim_0x94() {
     switch (mState) {
     case 6:
     case 7:
@@ -656,7 +656,7 @@ void VaatiBoss_804A4958::vfunc_0x94() {
 }
 
 // The step of the vtable slot 0x9C (0x801D5180, a plain `fn_801D5180` symbol in the original).
-void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
+void VaatiBoss_804A4958::updateBehavior_0x9C(u8 mapHit) {
     if (!(mFlags & 0x2000)) {
         switch (mState) {
         case 1:
@@ -711,7 +711,7 @@ void VaatiBoss_804A4958::vfunc_0x9C(u8 mapHit) {
 // The step of the vtable slot 0x98 (0x801D4ED4, a plain `fn_801D4ED4` symbol in the original).
 // The sin/cos products sit in other float registers (f1/f0 and the cos in f3 in the original).
 // FIXME: 99.82 %, regalloc-only; behaviour drift.
-void VaatiBoss_804A4958::vfunc_0x98() {
+void VaatiBoss_804A4958::move_0x98() {
     bool step = false;
     if (field_0x5d1 != 0) {
         field_0x5d1--;
@@ -760,7 +760,7 @@ void VaatiBoss_804A4958::vfunc_0x98() {
         }
         bool turn = false;
         JGeometry::TVec3f probe(field_0x5bc.x, field_0x5bc.y, 0.0f);
-        if (vfunc_0x4C(field_0x4, &probe)) {
+        if (isBlocked_0x4C(field_0x4, &probe)) {
             field_0x5bc.x = old.x;
             field_0x5bc.y = old.y;
             turn = true;
@@ -883,7 +883,7 @@ void VaatiBoss_804A4958::fn_801D4C70() {
     addCalc2_801F71A4(&field_0x3c.y, d.y, 0.3f, 1.0f);
 }
 
-void VaatiBoss_804A4958::vfunc_0x88() {
+void VaatiBoss_804A4958::calcVelocity_0x88() {
     fn_801D4C70();
     switch (mState) {
     case 1:
@@ -905,7 +905,7 @@ void VaatiBoss_804A4958::vfunc_0x88() {
     }
 }
 
-void VaatiBoss_804A4958::vfunc_0x74() {
+void VaatiBoss_804A4958::onHitReactionEnd_0x74() {
     if (mState == 5) {
         fn_801E4D74();
     }
@@ -1014,6 +1014,6 @@ void VaatiBoss_804A4958::vfunc_0xA0() {
     }
 }
 
-void VaatiBoss_804A4958::vfunc_0x24() {}
+void VaatiBoss_804A4958::die_0x24() {}
 
 VaatiBoss_804A4958::~VaatiBoss_804A4958() {}

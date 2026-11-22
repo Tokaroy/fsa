@@ -42,7 +42,7 @@ void EnemyGenerator3_804AA1D0::init() {
 void EnemyGenerator3_804AA1D0::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             mState = 1;
             mTimer = 1;
         }
@@ -100,7 +100,7 @@ void EnemyGenerator3_804AA1D0::update() {
         }
         break;
     case 4:
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             mState = 0;
         }
         break;

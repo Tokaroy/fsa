@@ -44,7 +44,7 @@ void cls_804A6100::init() {
     mEmitter = spawnEmitter_8013CC50(field_0x4, &pos, 0x260, 0, 2, NULL, NULL, true, 1.0f);
 }
 
-void cls_804A6100::vfunc_0x90(u8 mapHit) {
+void cls_804A6100::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= 60) {
@@ -84,7 +84,7 @@ void cls_804A6100::vfunc_0x90(u8 mapHit) {
     }
 }
 
-u8 cls_804A6100::vfunc_0x60() {
+u8 cls_804A6100::checkHitByActor_0x60() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 serial = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
         if (serial >= 0 && serial != mSerial) {

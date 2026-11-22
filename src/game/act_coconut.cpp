@@ -43,9 +43,9 @@ void Coconut_804A9968::update() {
                     gBgRewrite_8053AC98->fn_802A381C(&mPos, field_0x4, 0x92);
                 }
             }
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(damage, field_0xc8, 4) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
     }
 }
@@ -61,7 +61,7 @@ void Coconut_804A9968::draw() {
     fn_801F02BC("enemy_both2_sob.bin", 0x1AE, &params, 7, 0, true, 1.0f, 1.0f);
 }
 
-void Coconut_804A9968::vfunc_0x24() {
+void Coconut_804A9968::die_0x24() {
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
@@ -88,12 +88,12 @@ void Coconut_804A9968::vfunc_0x24() {
     mAlive = false;
 }
 
-bool Coconut_804A9968::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Coconut_804A9968::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x230);
 }
 
 void Coconut_804A9968::vfunc_0x48() {
-    vfunc_0x24();
+    die_0x24();
 }
 
 Coconut_804A9968::~Coconut_804A9968() {}

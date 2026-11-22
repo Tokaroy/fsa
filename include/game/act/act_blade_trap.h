@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
 
     // Both update() states that set the trap moving inline this.
     inline void setMoveSpeed();
@@ -29,7 +29,7 @@ public:
     /* 0x240 */ s32 field_0x240; // 0 in init
     /* 0x244 */ s32 field_0x244; // 0 in init
     /* 0x248 */ s32 field_0x248; // 0 in init
-    /* 0x24C */ s32 field_0x24c; // vfunc_0x4C cooldown (120 after a 0x10-0x13 tile)
+    /* 0x24C */ s32 field_0x24c; // isBlocked_0x4C cooldown (120 after a 0x10-0x13 tile)
     /* 0x250 */ u8 field_0x250[4]; // not yet known
     /* 0x254 */ s32 field_0x254; // spawn parameter bit 4; draw's scale mode
     /* 0x258 */ s32 field_0x258; // spawn parameter bits 8-11; nonzero: "enemy_gc_sob.bin" animated

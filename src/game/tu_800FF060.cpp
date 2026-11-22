@@ -27,7 +27,7 @@ void HammerShopMinigame_8049C858::init() {
     field_0x230 = 0;
     field_0x248 = 0;
     field_0x260 = 600;
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         field_0x230 = 8;
         field_0x248 = 0;
     } else {
@@ -351,7 +351,7 @@ void HammerShopMinigame_8049C858::update() {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8022FE80(field_0x240, getPlayerLayer_8023DE58(field_0x240), mSerial, false, false);
         if (fn_803865B8(field_0x240) && fn_80384C58(field_0x240, mSerial)) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             field_0x230 = 8;
             field_0x248 = 0;
             getActorManager_801F856C()->fn_801F6884();

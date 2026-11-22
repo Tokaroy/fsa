@@ -57,7 +57,7 @@ void cls_804AA350::init() {
     field_0x260[1] = -1;
     field_0x275 = 0xFF;
     field_0x279 = 0;
-    if (vfunc_0x34() == true) {
+    if (isScreenFlagSet_0x34() == true) {
         mAlive = false;
         field_0x2cc = NULL;
         field_0x24c = 16;
@@ -81,7 +81,7 @@ void cls_804AA350::vfunc_0x10() {
     s32 count = getActorManager_801F856C()->mActorEnd;
     for (s32 i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
-        if (actor != NULL && actor->mActorId == ACTOR_WARP && field_0x25c == actor->vfunc_0x3C()) {
+        if (actor != NULL && actor->mActorId == ACTOR_WARP && field_0x25c == actor->getScreenFlagBit_0x3C()) {
             JGeometry::TVec3f pos = actor->mPos;
             pos.x = mPos.x;
             pos.y = 32.0f + mPos.y;

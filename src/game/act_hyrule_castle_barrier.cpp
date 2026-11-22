@@ -74,7 +74,7 @@ void HyruleCastleBarrier_8049DEE8::init() {
     field_0xbc = 3;
     field_0xb0 = 0x0A040304;
     fn_8011F314();
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         fn_8011F5C0(1);
     }
 }
@@ -89,7 +89,7 @@ void HyruleCastleBarrier_8049DEE8::update() {
     switch (field_0x230) {
     case 0: {
         startSound_801F0E34(0x50010, 0);
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             if (field_0x240) {
                 fn_8011F5C0(1);
             } else {
@@ -124,7 +124,7 @@ void HyruleCastleBarrier_8049DEE8::update() {
         }
         break;
     case 2:
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             fn_8011F5C0(0);
         }
         break;

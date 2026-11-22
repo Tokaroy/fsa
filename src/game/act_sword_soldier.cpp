@@ -510,7 +510,7 @@ void SwordSoldier_8049FCA0::update() {
         } else {
             field_0x2a4 = -2;
             if (field_0x2a8 == 1) {
-                vfunc_0x24();
+                die_0x24();
                 return;
             }
         }

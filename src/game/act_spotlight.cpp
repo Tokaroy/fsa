@@ -44,7 +44,7 @@ Spotlight_804A84C8::~Spotlight_804A84C8() {
 void Spotlight_804A84C8::update() {
     switch (mState) {
     case 0:
-        if (vfunc_0x34() || getGameView_802D6A9C()->fn_802D800C(mViewBit0) ||
+        if (isScreenFlagSet_0x34() || getGameView_802D6A9C()->fn_802D800C(mViewBit0) ||
             getGameView_802D6A9C()->fn_802D800C(mViewBit1) || getGameView_802D6A9C()->fn_802D800C(mViewBit2)) {
             mOn = 1;
             if (mEmitter238 == NULL) {
@@ -68,7 +68,7 @@ void Spotlight_804A84C8::update() {
         }
         break;
     case 1:
-        if (!(vfunc_0x34() || getGameView_802D6A9C()->fn_802D800C(mViewBit0) ||
+        if (!(isScreenFlagSet_0x34() || getGameView_802D6A9C()->fn_802D800C(mViewBit0) ||
               getGameView_802D6A9C()->fn_802D800C(mViewBit1) || getGameView_802D6A9C()->fn_802D800C(mViewBit2))) {
             mOn = 0;
             if (mEmitter238 != NULL) {

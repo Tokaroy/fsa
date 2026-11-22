@@ -26,7 +26,7 @@ void FireManager_804AB2B0::init() {
 
 void FireManager_804AB2B0::update() {
     JGeometry::TVec3f pos = mBasePos;
-    if (!vfunc_0x34()) {
+    if (!isScreenFlagSet_0x34()) {
         if (field_0x240 == 0) {
             switch (field_0x248) {
             case 0:

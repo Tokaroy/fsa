@@ -87,7 +87,7 @@ void FleeingForceGem_804AB170::init() {
 }
 
 // FIXME(shotgun): 89.23 %, missing/extra; behaviour clean.
-bool FleeingForceGem_804AB170::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool FleeingForceGem_804AB170::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = (u16)fn_8022461C(pos, layer);
     if (tile == 3) {
         field_0x3c.z = 0.0f;
@@ -313,7 +313,7 @@ void FleeingForceGem_804AB170::update() {
                 mPos.y = getPlayerPos_8023E724(field_0x264)->y - 24.0f;
             }
             if (field_0x240[1] == 0) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 fn_801F3668();
             }
             break;
@@ -477,7 +477,7 @@ void FleeingForceGem_804AB170::update() {
             }
             break;
         case 8:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x240[3] = 0;
                 field_0x230 = 9;
             }

@@ -59,7 +59,7 @@ void cls_8049E5B8::init() {
 // FIXME: try.py class: missing/extra. Ours keeps this in r31 and the serial
 // in r30; the original has this in r30 and the serial in r31.
 void cls_8049E5B8::update() {
-    if (vfunc_0x3C() > 0 && !vfunc_0x34()) {
+    if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
         return;
     }
     switch (mState) {

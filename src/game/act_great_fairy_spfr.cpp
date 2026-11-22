@@ -96,7 +96,7 @@ void cls_8049EB8C::init() {
     mAnim.fn_801D1F14(0.0f);
     mPos.z = 8.0f;
     mDrawEnabled = false;
-    if (field_0x238 == 1 && vfunc_0x34()) {
+    if (field_0x238 == 1 && isScreenFlagSet_0x34()) {
         mDrawEnabled = true;
         JGeometry::TVec3f pos = mPos;
         field_0x288 = spawnEmitter_8013CC50(field_0x4, &pos, 0x184, 0, -1, NULL, NULL, true, 1.0f);
@@ -122,7 +122,7 @@ void cls_8049EB8C::update() {
             fn_80132454(4);
             break;
         case 1:
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 fn_8011921C()->fn_801186B0(14);
             }
             break;
@@ -371,7 +371,7 @@ void cls_8049EB8C::fn_80132454(s32 index) {
         startSound_801F0E34(0x400EF, 0);
         break;
     case 17: {
-        s32 bit = vfunc_0x3C();
+        s32 bit = getScreenFlagBit_0x3C();
         getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF);
         break;
     }

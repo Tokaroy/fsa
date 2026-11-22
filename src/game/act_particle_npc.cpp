@@ -138,7 +138,7 @@ void ParticleNpc_804A9AC8::update() {
     }
     switch (field_0x240) {
     case 0:
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         switch (field_0x250) {

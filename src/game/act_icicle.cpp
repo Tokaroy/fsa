@@ -38,7 +38,7 @@ void Icicle_8049CFC8::init() {
     mSprite.fn_801D2608(lbl_80539EE0, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
     mSprite.fn_801D1F14(0.0f);
-    if (vfunc_0x3C() > 0) {
+    if (getScreenFlagBit_0x3C() > 0) {
         mDrawEnabled = false;
         fn_8010B40C(5);
     }
@@ -151,7 +151,7 @@ void Icicle_8049CFC8::update() {
         }
         break;
     case 5:
-        if (vfunc_0x3C() > 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
             break;
         }
         mDrawEnabled = true;

@@ -216,7 +216,7 @@ void cls_804A5C88::init() {
     }
 }
 
-void cls_804A5C88::vfunc_0x54() {
+void cls_804A5C88::onFirstUpdate_0x54() {
     mPos.x = mSpawnPos.x;
     mPos.y = mSpawnPos.y;
     mPos.z = mSpawnPos.z;
@@ -255,7 +255,7 @@ void cls_804A5C88::vfunc_0xA8() {
 static inline void updateByState(cls_804A5C88* self) {
     switch (self->mState) {
     case 0:
-        if ((self->field_0x348 == 0 && self->mStateTimer >= self->field_0x250) || self->vfunc_0x34()) {
+        if ((self->field_0x348 == 0 && self->mStateTimer >= self->field_0x250) || self->isScreenFlagSet_0x34()) {
             for (s32 i = 0; i < 4; i++) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
                 if (actor != NULL) {
@@ -292,13 +292,13 @@ static inline void updateByState(cls_804A5C88* self) {
     }
 }
 
-void cls_804A5C88::vfunc_0x90(u8 mapHit) {
+void cls_804A5C88::updateState_0x90(u8 mapHit) {
     fn_80207A60();
     updateByState(this);
 }
 
 // field_0x3c handed on to the four slot actors. An inline of its own: its loop registers are
-// handed out before vfunc_0x88's (docs/REGALLOC.md, rule 4).
+// handed out before calcVelocity_0x88's (docs/REGALLOC.md, rule 4).
 static inline void copyField3cToSlotActors(cls_804A5C88* self) {
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(self->mSlots[i].mSerial);
@@ -308,7 +308,7 @@ static inline void copyField3cToSlotActors(cls_804A5C88* self) {
     }
 }
 
-void cls_804A5C88::vfunc_0x88() {
+void cls_804A5C88::calcVelocity_0x88() {
     switch (mState) {
     case 0:
     case 2:

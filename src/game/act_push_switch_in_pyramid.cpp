@@ -31,7 +31,7 @@ void PushSwitchInPyramid_804AE8F4::init() {
         if (getGameView_802D6A9C()->fn_802D7544(field_0x16c)) {
             field_0x241 = 3;
             mBox.set(-7.5f, -7.5f, 0.0f, 7.5f);
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             field_0x23c = 2;
         }
     }
@@ -64,7 +64,7 @@ void PushSwitchInPyramid_804AE8F4::update() {
                 mBox.set(-7.5f, -7.5f, 18.5f - (field_0x243 / 4), 7.5f);
                 if (field_0x241 == 3) {
                     mBox.set(-7.5f, -7.5f, 0.0f, 7.5f);
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     field_0x23c = 2;
                 }
             }
@@ -79,7 +79,7 @@ void PushSwitchInPyramid_804AE8F4::update() {
         mBox.set(lbl_804751F8[field_0x241][0], lbl_804751F8[field_0x241][1],
                  lbl_804751F8[field_0x241][2], lbl_804751F8[field_0x241][3]);
         if (field_0x241 == 4) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             field_0x23c = 2;
         } else {
             field_0x23c = 0;

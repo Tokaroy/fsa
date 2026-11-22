@@ -275,7 +275,7 @@ void FireRodFire_804A89F0::update() {
             }
         }
         if (field_0x264 == 3 || field_0x264 == 4) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 if (field_0x292 == 1) {
                     field_0x293 = 1;
                 } else {
@@ -389,7 +389,7 @@ void FireRodFire_804A89F0::update() {
                 if (field_0x264 == 3 || field_0x264 == 4) {
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, field_0x28c);
                     startSound_801F0E34(0x3002E, 0);
-                    vfunc_0x24();
+                    die_0x24();
                 } else {
                     field_0x25c = 5;
                     field_0x238 = 5;
@@ -419,7 +419,7 @@ void FireRodFire_804A89F0::update() {
                 if (fn_801F2618(NULL, false)) {
                     vfunc_0x58();
                 }
-                vfunc_0x24();
+                die_0x24();
             } else {
                 field_0x280--;
             }
@@ -435,7 +435,7 @@ void FireRodFire_804A89F0::update() {
     case 5:
         if (field_0x25c == 0) {
             startSound_801F0E34(0x3002E, 0);
-            vfunc_0x24();
+            die_0x24();
         } else {
             field_0x25c--;
         }
@@ -506,7 +506,7 @@ void FireRodFire_804A89F0::draw() {
     }
 }
 
-void FireRodFire_804A89F0::vfunc_0x24() {
+void FireRodFire_804A89F0::die_0x24() {
     if (field_0x264 != 3 && field_0x264 != 4) {
         if (field_0x264 == 0) {
             mPos.x = (s32)((u32)mPos.x & ~0xF);
@@ -648,7 +648,7 @@ void FireRodFire_804A89F0::vfunc_0x58() {
         mPos = field_0x248;
     } else {
         startSound_801F0E34(0x3002E, 0);
-        vfunc_0x24();
+        die_0x24();
     }
 }
 
@@ -710,7 +710,7 @@ s32 FireRodFire_804A89F0::fn_802BA9F0() {
 }
 
 // FIXME(shotgun): 96.44 %, scheduling+regalloc + reloc-name; behaviour clean.
-bool FireRodFire_804A89F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     u32 ignoreIds[5] = {'TOMI', 'IPOT', 'WDRY', 'ICEB', 'NULL'};
     if (field_0x264 != 1) {
         ignoreIds[3] = 'NULL';

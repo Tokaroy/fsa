@@ -13,7 +13,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x230 */ s32 field_0x230; // init zeroes it; nothing reads it
     /* 0x234 */ s32 field_0x234; // 30 after init; update counts it down by the speed
     /* 0x238 */ s32 field_0x238; // 0 or 1 (1 while field_0x234 <= 15); picks the sprite frame

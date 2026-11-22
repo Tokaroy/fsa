@@ -40,7 +40,7 @@ void FourPersonPullSwitch_804AE230::init() {
     field_0x80.f.y = 0.0f;
     mLife = 0;
     field_0x24c = 0;
-    field_0x250 = vfunc_0x34();
+    field_0x250 = isScreenFlagSet_0x34();
     if (field_0x250) {
         field_0x254 = 8.0f;
         mPos.y = mSpawnPos.y + field_0x254;
@@ -214,7 +214,7 @@ void FourPersonPullSwitch_804AE230::fn_8036CBBC() {
             field_0x25c = -1;
         }
     } else if (field_0x258 == 15) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
     }
 }
 #pragma auto_inline reset

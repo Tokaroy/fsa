@@ -19,13 +19,13 @@ public:
     // 0x8021D7A8: draws SOB sprite "enemy_both2_sob.bin".
     /* 0x20 */ virtual void draw();
     // 0x8021DA20.
-    /* 0x88 */ virtual void vfunc_0x88();
+    /* 0x88 */ virtual void calcVelocity_0x88();
     // 0x8021DC44: state handler.
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     // 0x8021D9D4.
-    /* 0x98 */ virtual void vfunc_0x98();
+    /* 0x98 */ virtual void move_0x98();
     // 0x8021DB24.
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     // 0x8021D938: focus point / screen flash.
     /* 0xA0 */ virtual void vfunc_0xA0();
 

@@ -34,9 +34,9 @@ void Sign_804A94D8::update() {
             damage = 0;
         }
         if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
-            vfunc_0x24();
+            die_0x24();
         } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
-            vfunc_0x24();
+            die_0x24();
         }
     }
 }
@@ -54,7 +54,7 @@ void Sign_804A94D8::draw() {
     fn_801F02BC("enemy_both2_sob.bin", 0x28, &params, flags, 0, true, 1.0f, 1.0f);
 }
 
-void Sign_804A94D8::vfunc_0x24() {
+void Sign_804A94D8::die_0x24() {
     if (field_0x4 >= 8) {
         JGeometry::TVec3f pos(mPos);
         pos.z = 0.0f;
@@ -81,12 +81,12 @@ void Sign_804A94D8::vfunc_0x24() {
     mAlive = false;
 }
 
-bool Sign_804A94D8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Sign_804A94D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x230);
 }
 
 void Sign_804A94D8::vfunc_0x48() {
-    vfunc_0x24();
+    die_0x24();
 }
 
 Sign_804A94D8::~Sign_804A94D8() {}

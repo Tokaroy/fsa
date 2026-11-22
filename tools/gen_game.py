@@ -151,28 +151,20 @@ VT_SIZE = 8 + 4 * VT_SLOTS  # 0x54
 BSS_SIZE = 0x100            # 9 x 0xC chain + 9 x 0x10 pools + 4 pad
 N_POOLS = 9
 
-# ActorBase_804A5770 slot declarations (include/game/ActorBase.h). The slot
-# offset is into the vtable (two header words, slot 0x08 = destructor).
-SLOT_DECLS = {
-    0x0C: "virtual void init();",
-    0x10: "virtual void vfunc_0x10();",
-    0x14: "virtual void update();",
-    0x18: "virtual void vfunc_0x18();",
-    0x1C: "virtual void savePrevPos();",
-    0x20: "virtual void draw();",
-    0x24: "virtual void vfunc_0x24();",
-    0x28: "virtual void vfunc_0x28(s32, f32, f32);",
-    0x2C: "virtual bool vfunc_0x2C(f32 x, f32 y, f32 scale);",
-    0x30: "virtual void vfunc_0x30(u8, bool);",
-    0x34: "virtual bool vfunc_0x34();",
-    0x38: "virtual s32 vfunc_0x38();",
-    0x3C: "virtual s32 vfunc_0x3C();",
-    0x40: "virtual void vfunc_0x40();",
-    0x44: "virtual void vfunc_0x44();",
-    0x48: "virtual void vfunc_0x48();",
-    0x4C: "virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);",
-    0x50: "virtual bool vfunc_0x50(s32 layer, const JGeometry::TVec3f* pos);",
-}
+# ActorBase_804A5770 slot declarations: the `/* 0xNN */ virtual ...;` lines
+# of include/game/ActorBase.h from 0x0C (the offset is into the vtable: two
+# header words, slot 0x08 = destructor). Read from the header, not spelled
+# out here, so a member rename (tools/rename.py, kind member) is followed.
+def actor_slot_decls():
+    out = {}
+    for m in re.finditer(r"^    /\* 0x([0-9A-F]{2}) \*/ (virtual [^;]*;)",
+                         Path("include/game/ActorBase.h").read_text(), re.M):
+        if int(m[1], 16) >= 0x0C:
+            out[int(m[1], 16)] = m[2]
+    return out
+
+
+SLOT_DECLS = actor_slot_decls()
 
 # ---------------------------------------------------------------- templates (the reviewed text)
 

@@ -12,14 +12,14 @@ public:
     /* 0x08 */ virtual ~cls_804A5E98();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
-    /* 0x54 */ virtual void vfunc_0x54();
+    /* 0x24 */ virtual void die_0x24();
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x58 */ virtual bool vfunc_0x58();
-    /* 0x5C */ virtual u8 vfunc_0x5C();
-    /* 0x60 */ virtual u8 vfunc_0x60();
-    /* 0x74 */ virtual void vfunc_0x74();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x5C */ virtual u8 checkHitByPlayer_0x5C();
+    /* 0x60 */ virtual u8 checkHitByActor_0x60();
+    /* 0x74 */ virtual void onHitReactionEnd_0x74();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0xA0 */ virtual void vfunc_0xA0();
 
     // 0x8020B3E4: like cls_804A5D60::fn_80209CA4 (a hit that landed clears ENEMY_FLAG_NO_HURT).
@@ -29,7 +29,7 @@ public:
     // 0x8020B500: in state 0, makes the hitbox 16x16 again; state 1.
     void fn_8020B500();
 
-    /* 0x2A8 */ s32 mTargetSerial; // the actor vfunc_0x24 looks up (findActorBySerial_801F666C); -1 from the constructor
+    /* 0x2A8 */ s32 mTargetSerial; // the actor die_0x24 looks up (findActorBySerial_801F666C); -1 from the constructor
 }; // Size: 0x2AC
 
 #endif

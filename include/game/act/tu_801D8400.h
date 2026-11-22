@@ -50,24 +50,24 @@ public:
     /* 0x14 */ virtual void update(); // fn_801D8430
     /* 0x20 */ virtual void draw();
     // 0x801D84E0: empty, no arguments read (vtable slot 0x24 of 0x804A4C58).
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     // 0x801DA0FC: gAudioMgr_8053AF80->fn_80458F9C(60).
-    /* 0x54 */ virtual void vfunc_0x54();
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
     // 0x801D8980: a mPos.y above field_0x2d0 is clamped to it (and
     // field_0x3c.y zeroed), then EnemyBase's floor check runs.
     // 0x801D85B0: after a hit, in state 0xB-0xE picks the next target column and facing.
-    /* 0x74 */ virtual void vfunc_0x74();
-    /* 0x80 */ virtual void vfunc_0x80();
+    /* 0x74 */ virtual void onHitReactionEnd_0x74();
+    /* 0x80 */ virtual void checkFloor_0x80();
     // 0x801D882C: in state 0xB-0xE steers toward the column at field_0x334.
-    /* 0x88 */ virtual void vfunc_0x88();
+    /* 0x88 */ virtual void calcVelocity_0x88();
     // 0x801D8B28: the per-state behaviour, not written yet.
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     // 0x801D8A30: steps the sequencer and plays sound 0x40058 on its landing frames.
-    /* 0x94 */ virtual void vfunc_0x94();
-    // 0x801D89BC: with a hit bit in mFlags (& 7), vfunc_0x94 once mState is
+    /* 0x94 */ virtual void updateAnim_0x94();
+    // 0x801D89BC: with a hit bit in mFlags (& 7), updateAnim_0x94 once mState is
     // 0xF; with none, fn_801CE2BC(mapHit). Then field_0x336 counts down to
     // 0 and fn_801E61C4 moves the pair at 0x2C8.
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
     // 0x801D84E4: the last slot of the vtable (0xA0). Below state 4 (and not
     // 0) a state 1-3 sets the flag at GameRoot2's 0x30 once and, when the
     // camera's 0x7F5 is clear, starts a scripted move to mPos; other states
@@ -116,11 +116,11 @@ public:
 
     /* 0x2A8 */ Sequencer_801DAA24 mSeq2a8;
     /* 0x2C0 */ JPABaseEmitter* mEmitter2c[4];
-    /* 0x2D0 */ f32 field_0x2d0; // vfunc_0x80's ceiling for mPos.y
+    /* 0x2D0 */ f32 field_0x2d0; // checkFloor_0x80's ceiling for mPos.y
     /* 0x2D4 */ JGeometry::TVec2f field_0x2d4[12]; // constructed by __construct_array (8-byte TVec2f)
     /* 0x334 */ u8 field_0x334; // zeroed by the constructor
     /* 0x335 */ u8 field_0x335; // not written by the constructor
-    /* 0x336 */ u16 field_0x336; // countdown, stepped down by vfunc_0x9C
+    /* 0x336 */ u16 field_0x336; // countdown, stepped down by updateBehavior_0x9C
     /* 0x338 */ u16 field_0x338; // zeroed by the constructor
     /* 0x33A */ u16 field_0x33a; // zeroed by the constructor
     /* 0x33C */ u16 field_0x33c; // zeroed by the constructor

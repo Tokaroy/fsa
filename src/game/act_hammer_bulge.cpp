@@ -21,7 +21,7 @@ void HammerBulge_804A88E8::init() {
     field_0x24c = 0;
     field_0x230 = 0;
 
-    if (vfunc_0x34()) {
+    if (isScreenFlagSet_0x34()) {
         if (field_0x234 > 0) {
             if (getGameView_802D6A9C()->field_0x4 == 2 && getGameView_802D6A9C()->field_0x8 == 1) {
                 u32 msg = 0x388;
@@ -165,7 +165,7 @@ void HammerBulge_804A88E8::update() {
                             fn_801F3668();
                         } else {
                             field_0x230 = 1;
-                            vfunc_0x30(0xFF, true);
+                            setScreenFlag_0x30(0xFF, true);
                         }
                         return;
                     } else if (dist < 50.0f * scale) {

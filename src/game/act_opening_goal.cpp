@@ -57,7 +57,7 @@ void cls_8049DB30::update() {
     fn_801902C0()->field_0x7a8 = 1;
     switch (field_0x234) {
     case 2:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             if (mEmitter254 == NULL) {
                 mEmitter254 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x111, 0, 0, NULL, NULL, true, 1.0f);
             }

@@ -12,10 +12,10 @@ public:
     /* 0x08 */ virtual ~cls_804A6340();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x44 */ virtual void vfunc_0x44();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x94 */ virtual void vfunc_0x94();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x94 */ virtual void updateAnim_0x94();
 
     // Placeholder names (see docs/PLAN.md). fn_80212F14 is not virtual: it is
     // only in an extabindex entry. fn_80213774 takes a mode argument (0 or 1).

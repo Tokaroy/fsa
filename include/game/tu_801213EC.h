@@ -23,7 +23,7 @@ public:
     // 0x58 is a flag, 0x5C returns a state number (3 here). fn_80124600 passes dir in r4.
     // 0x80123E9C: false on the eight tile ids of lbl_80464D84 (0x2C-0x2F, 0x28-0x2B), else the base's.
     /* 0x20 */ virtual void draw(); // fn_80123F9C: the life meters above the escort, then her sprite
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x54 */ virtual bool vfunc_0x54();
     /* 0x58 */ virtual bool vfunc_0x58();
     /* 0x5C */ virtual s32 vfunc_0x5C(const s32* dir);

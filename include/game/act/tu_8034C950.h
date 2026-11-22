@@ -15,8 +15,8 @@ public:
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x24 */ virtual void die_0x24();
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     /* 0x230 */ s32 field_0x230;
     /* 0x234 */ s32 field_0x234[4]; // -1 after init
     /* 0x244 */ s32 field_0x244[4];
@@ -26,7 +26,7 @@ public:
     /* 0x320 */ Elem_80200A80 field_0x320[4];
     /* 0x370 */ s32 field_0x370;
     /* 0x374 */ s32 field_0x374;
-    /* 0x378 */ s32 field_0x378; // timer for vfunc_0x4C (fn_801F132C)
+    /* 0x378 */ s32 field_0x378; // timer for isBlocked_0x4C (fn_801F132C)
     /* 0x37C */ s32 field_0x37c;
     /* 0x380 */ u8 field_0x380[6];
     /* 0x386 */ u8 field_0x386[2];

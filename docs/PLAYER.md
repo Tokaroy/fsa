@@ -751,7 +751,7 @@ The unit is the player's **hold / lift / throw** code. State names are provision
   without life (fn_80230D80 -> fn_8025FDD0 on the thrown player); an actor gets
   2.5 (CRTL crystal ball, BMTY Bombchu), 4 (GRAS grass), 6 (dead), else 4 along the
   facing (fn_801F3708); sound 0x20014.
-- fn_8025EB18 is the put-down check (tile / box / vfunc_0x4C at 0x2F4, a held player on
+- fn_8025EB18 is the put-down check (tile / box / isBlocked_0x4C at 0x2F4, a held player on
   a GBA layer checked on its own layer with the view-corner offset); fn_80261480 (from
   the states 0-3 updates) tries fn_80260C08, fn_802604CC, then fn_8026022C (lift / push
   starts; requests 0x11, 0x1A, 0x4F).

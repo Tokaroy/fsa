@@ -125,7 +125,7 @@ void Wizzrobe_804A0EDC::init() {
         field_0x250 = 3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1();
         field_0x250 &= 3;
         if (field_0x90 >> 27) {
-            if (!vfunc_0x34()) {
+            if (!isScreenFlagSet_0x34()) {
                 field_0x1a8 = 0;
                 field_0x2e5 = 1;
             }
@@ -188,7 +188,7 @@ void Wizzrobe_804A0EDC::update() {
     f32 dist = 0.0f;
 
     if (field_0x2e5 == 1 && (field_0x90 >> 27) != 0) {
-        if (!vfunc_0x34()) {
+        if (!isScreenFlagSet_0x34()) {
             return;
         }
         field_0x1a8 = 1;

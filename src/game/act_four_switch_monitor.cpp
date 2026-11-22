@@ -81,11 +81,11 @@ void FourSwitchMonitor_804A80A0::update() {
             if (slotsCollide(flags, field_0x244) == 0) {
                 if (field_0x234 == 3) {
                     fn_8022E2D8(0xF);
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     field_0x230 = 1;
                 } else if (gGameRoot_8053AAF8->field_0x7f == 0 || fixedSlot == -1) {
                     fn_8022E2D8(0xF);
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     for (s32 i = 0; i < 4; i++) {
                         getGameView_802D6A9C()->fn_802D8050(field_0x244[i], true, 0xFF);
                     }
@@ -120,16 +120,16 @@ void FourSwitchMonitor_804A80A0::update() {
     case 6:
     default:
         if (!getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 22) & 0x1F)) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
         } else if (!getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 17) & 0x1F)) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
         } else if (!getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 12) & 0x1F)) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
         } else if (!getGameView_802D6A9C()->fn_802D800C((field_0x90 >> 7) & 0x1F)) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x230 = 0;
         }
         break;
@@ -197,7 +197,7 @@ void FourSwitchMonitor_804A80A0::update() {
         if (field_0x234 == 4) {
             gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
             if (field_0x23c == field_0x240) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
             }
         } else {
             for (s32 i = 0; i < 4; i++) {
@@ -206,7 +206,7 @@ void FourSwitchMonitor_804A80A0::update() {
             }
         }
         if (field_0x23c == 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             for (s32 i = 0; i < 4; i++) {
                 getGameView_802D6A9C()->fn_802D8050(field_0x244[i], true, 0xFF);
             }
@@ -248,7 +248,7 @@ void FourSwitchMonitor_804A80A0::update() {
             }
         }
         if (count == 4) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             field_0x230 = 1;
         } else if (count != 0) {
             mAlive = false;

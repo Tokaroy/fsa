@@ -24,7 +24,7 @@ void EnemyCountWipeOutCheck_804A8250::update() {
         count = view->field_0x6748[layer < 8 ? 0 : layer - 7];
     }
     if (count >= field_0x238) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         if (field_0x244 != gAudioMgr_8053AF80->field_0x58 && field_0x240 == 0) {
             gGameRoot_8053AAF8->fn_80138B7C();
         }

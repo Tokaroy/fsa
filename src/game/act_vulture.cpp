@@ -199,7 +199,7 @@ void Vulture_804A4230::fn_801C0438(s32 state) {
 
 // FIXME: 97.68 %, scheduling+regalloc; behaviour drift.
 // Same instructions; registers (r29/r30) and the order of a few loads/stores differ.
-void Vulture_804A4230::vfunc_0x90(u8 mapHit) {
+void Vulture_804A4230::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250) {
@@ -330,7 +330,7 @@ void Vulture_804A4230::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void Vulture_804A4230::vfunc_0x88() {
+void Vulture_804A4230::calcVelocity_0x88() {
     field_0x3c.set(0.0f, 0.0f, 0.0f);
     JGeometry::TVec2f vel(0.0f, 0.0f);
 
@@ -374,7 +374,7 @@ void Vulture_804A4230::vfunc_0x88() {
     }
 }
 
-void Vulture_804A4230::vfunc_0x94() {
+void Vulture_804A4230::updateAnim_0x94() {
     f32 rate = 1.0f;
     switch (mState) {
     case 1:
@@ -384,10 +384,10 @@ void Vulture_804A4230::vfunc_0x94() {
         break;
     }
     mAnim.mFrameCtrl.setRate(rate);
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
-void Vulture_804A4230::vfunc_0x74() {
+void Vulture_804A4230::onHitReactionEnd_0x74() {
     field_0x2b8.x = mPos.x;
     field_0x2b8.y = mPos.y;
     if (field_0x2a8 >= 0) {
@@ -441,19 +441,19 @@ bool Vulture_804A4230::vfunc_0x58() {
 // FIXME: 96.88 %, missing/extra; behaviour near.
 // One extra clrlwi r3, r3, 24 before the return: our bool fn_801CEA60() result is
 // widened to the u8 return, the original returns r3 untouched.
-u8 Vulture_804A4230::vfunc_0x60() {
+u8 Vulture_804A4230::checkHitByActor_0x60() {
     u8 hit = 0;
     if (!(mFlags & 0x4000)) {
         if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f) {
             hit = fn_801CEA60();
         } else {
-            hit = EnemyBase_804A4808::vfunc_0x60();
+            hit = EnemyBase_804A4808::checkHitByActor_0x60();
         }
     }
     return hit;
 }
 
-u8 Vulture_804A4230::vfunc_0x5C() {
+u8 Vulture_804A4230::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (!(mFlags & 0x4000)) {
         if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {

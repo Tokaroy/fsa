@@ -107,7 +107,7 @@ void BeeManager_804AC810::update() {
     case 0: {
         bool triggered = false;
         if (field_0x278 == 2) {
-            if (vfunc_0x34() == true) {
+            if (isScreenFlagSet_0x34() == true) {
                 field_0x230 = 1;
                 triggered = true;
             }

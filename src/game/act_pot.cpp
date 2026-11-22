@@ -140,9 +140,9 @@ void Pot_804A9428::update() {
                         }
                     }
                 }
-                vfunc_0x24();
+                die_0x24();
             } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
-                vfunc_0x24();
+                die_0x24();
             }
         } else {
             if (!field_0x24c) {
@@ -154,7 +154,7 @@ void Pot_804A9428::update() {
             field_0x3c.y += 0.15f;
             mPos += field_0x3c;
             if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || fn_801F2618(NULL, false)) {
-                vfunc_0x24();
+                die_0x24();
             }
         }
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -204,7 +204,7 @@ void Pot_804A9428::draw() {
 
 // FIXME: 99.59 %, regalloc-only; behaviour drift.
 // FIXME: regalloc-only (r26/r27/r28 in loops and rupee type, f1/f2/f3 in heartPos)
-void Pot_804A9428::vfunc_0x24() {
+void Pot_804A9428::die_0x24() {
     JGeometry::TVec3f tilePos;
     JGeometry::TVec3f pos(mPos);
     if (field_0x234 == 0) {
@@ -310,10 +310,10 @@ void Pot_804A9428::vfunc_0x24() {
     mAlive = false;
 }
 
-bool Pot_804A9428::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Pot_804A9428::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_801F132C(layer, pos, &field_0x248);
 }
 
 void Pot_804A9428::vfunc_0x48() {
-    vfunc_0x24();
+    die_0x24();
 }

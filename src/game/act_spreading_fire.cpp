@@ -239,7 +239,7 @@ void SpreadingFire_804A8A50::update() {
     case 2:
         field_0x254--;
         if (field_0x254 == 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 3:
@@ -248,7 +248,7 @@ void SpreadingFire_804A8A50::update() {
             if (fn_801EE3C0(mTile) == true) {
                 gBgRewrite_8053AC98->fn_802A20F0(&mPos, field_0x258, field_0x4, 0x10000, 1);
             }
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     case 4:
@@ -279,12 +279,12 @@ void SpreadingFire_804A8A50::update() {
         }
         mPos.y += 16.0f;
         gBgRewrite_8053AC98->fn_802A3948(&mPos, 0, field_0x4, 0x3E0);
-        vfunc_0x24();
+        die_0x24();
         break;
     case 7:
         field_0x254--;
         if (field_0x254 == 0) {
-            vfunc_0x24();
+            die_0x24();
         }
         break;
     }
@@ -328,7 +328,7 @@ void SpreadingFire_804A8A50::vfunc_0x54() {
 }
 
 // 0x802BC83C.
-void SpreadingFire_804A8A50::vfunc_0x24() {
+void SpreadingFire_804A8A50::die_0x24() {
     vfunc_0x54();
     mAlive = false;
     getGameView_802D6A9C()->fn_802D73CC(mViewBit, false);

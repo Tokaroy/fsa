@@ -7,9 +7,9 @@
 #include "game/act/act_terrorpin.h"
 
 
-// FIXME: vfunc_0x24, 0x44, 0x68, 0x6C, 0x7C, 0x94 and init are instruction-identical;
+// FIXME: die_0x24, 0x44, 0x68, 0x6C, 0x7C, 0x94 and init are instruction-identical;
 // only their float literals are @NNN, not the original lbl_ (.sdata2 order; the
-// pool is complete only once vfunc_0x5C and vfunc_0x90 are 100 %).
+// pool is complete only once checkHitByPlayer_0x5C and updateState_0x90 are 100 %).
 
 // The two animations' keys (cel pairs for 10 frames each, then -1) and the
 // table the init hands to SpriteAnim::fn_801D2608 (names unknown).
@@ -187,7 +187,7 @@ void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
 
 // FIXME: 98.89 %, missing/extra; behaviour near.
 // try.py class missing/extra: the original copies the u8 mPlayersHit into its own register (one clrlwi r5, r0, 24) before the unrolled first-hit-player loop, we test the lbz result directly; the registers of mPlayersHit, the loop shift counts and the -1 initial player (li r30) differ accordingly.
-void Terrorpin_804A3B10::vfunc_0x90(u8 mapHit) {
+void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
     // Declared in this order: MWCC gives the later aggregate the lower stack
     // slot (normal at sp+0x20, box at sp+0x10, out at sp+0x8).
     JGeometry::TVec3f normal;
@@ -292,7 +292,7 @@ void Terrorpin_804A3B10::vfunc_0x90(u8 mapHit) {
 }
 
 // 0x2A0 is mAnim.mFrameCtrl.mRate (J3DFrameCtrl _0C at 0x270 + 0x24 + 0xC).
-void Terrorpin_804A3B10::vfunc_0x94() {
+void Terrorpin_804A3B10::updateAnim_0x94() {
     // The bool and the 0/1 argument are separate locals: the original keeps
     // both (li r3 / li r4) and tests the bool with clrlwi. to build the flag.
     s32 flag = 0;
@@ -314,10 +314,10 @@ void Terrorpin_804A3B10::vfunc_0x94() {
         rate = 2.0f;
     }
     mAnim.mFrameCtrl.setRate(rate);
-    EnemyBase_804A4808::vfunc_0x94();
+    EnemyBase_804A4808::updateAnim_0x94();
 }
 
-void Terrorpin_804A3B10::vfunc_0x88() {
+void Terrorpin_804A3B10::calcVelocity_0x88() {
     if (mState == 5) {
         field_0x3c.z += lbl_8053EFB8;
         s32 rem = field_0x250 - mStateTimer;
@@ -339,7 +339,7 @@ void Terrorpin_804A3B10::vfunc_0x88() {
             }
         }
     } else {
-        EnemyBase_804A4808::vfunc_0x88();
+        EnemyBase_804A4808::calcVelocity_0x88();
     }
 }
 
@@ -369,7 +369,7 @@ void Terrorpin_804A3B10::vfunc_0x44() {
     }
 }
 
-void Terrorpin_804A3B10::vfunc_0x7C() {
+void Terrorpin_804A3B10::onBounce_0x7C() {
     if (__fabsf(field_0x3c.z) >= 0.5f) {
         if (mFlags & 0x2000) {
             startSound_801F0E34(0x50014, 0);
@@ -379,7 +379,7 @@ void Terrorpin_804A3B10::vfunc_0x7C() {
     }
 }
 
-u8 Terrorpin_804A3B10::vfunc_0x60() {
+u8 Terrorpin_804A3B10::checkHitByActor_0x60() {
     u8 hit = 0;
     if (isVulnerable()) {
         fn_801F2DB4(mActorId, 'NULL', NULL);
@@ -392,7 +392,7 @@ u8 Terrorpin_804A3B10::vfunc_0x60() {
 // While mState is 5, spawns two 'RUPY' actors at mPos and sets each one's
 // field_0x3c: x is 1.5f for the first and its negation for the second,
 // y and z are fixed.
-void Terrorpin_804A3B10::vfunc_0x6C() {
+void Terrorpin_804A3B10::onHitByPlayer_0x6C() {
     if (mState == 5) {
         f32 speed = 1.5f;
         for (s32 i = 0; i < 2; i++) {
@@ -411,7 +411,7 @@ void Terrorpin_804A3B10::vfunc_0x6C() {
     }
 }
 
-u8 Terrorpin_804A3B10::vfunc_0x5C() {
+u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
     u8 hit = 0;
     if (isVulnerable()) {
         if (mFlags & 0x2000) {
@@ -441,7 +441,7 @@ u8 Terrorpin_804A3B10::vfunc_0x5C() {
     return hit;
 }
 
-u8 Terrorpin_804A3B10::vfunc_0x68() {
+u8 Terrorpin_804A3B10::attackPlayers_0x68() {
     u8 hit = 0;
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         bool inState = false;
@@ -473,7 +473,7 @@ u8 Terrorpin_804A3B10::vfunc_0x68() {
     return hit;
 }
 
-void Terrorpin_804A3B10::vfunc_0x24() {
+void Terrorpin_804A3B10::die_0x24() {
     // The original reads field_0x10c here, not mState (0x248) as the other vfuncs do.
     if ((mFlags & 0x2000) && (mFlags & 0x4000) && field_0x10c >= 0 && field_0x10c < 4 && field_0x10c == field_0x2a8) {
         f32 speed = 1.5f;
@@ -491,7 +491,7 @@ void Terrorpin_804A3B10::vfunc_0x24() {
             }
         }
     }
-    ActorBase_804A5770::vfunc_0x24();
+    ActorBase_804A5770::die_0x24();
 }
 
 void Terrorpin_804A3B10::draw() {

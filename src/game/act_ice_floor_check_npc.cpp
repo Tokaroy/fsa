@@ -24,8 +24,8 @@ void cls_8049E950::update() {
     switch (mState) {
     case 0:
         if (mTile != fn_80226850(&mPos, field_0x4)) {
-            if (vfunc_0x3C() > 0) {
-                vfunc_0x30(0xFF, true);
+            if (getScreenFlagBit_0x3C() > 0) {
+                setScreenFlag_0x30(0xFF, true);
             }
             mState = 1;
         }

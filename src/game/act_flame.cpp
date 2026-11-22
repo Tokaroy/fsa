@@ -141,7 +141,7 @@ void Flame_804A0330::fn_8015EA2C() {
     f32 dist = 0.0f;
     switch (mState) {
     case 0:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             if (field_0x240 != 0 && (field_0x94 == 4 || field_0x94 == 5)) {
                 fn_801F0D20(3);
             }
@@ -154,14 +154,14 @@ void Flame_804A0330::fn_8015EA2C() {
         }
         break;
     case 1:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x240 = 1;
         } else {
             field_0x240 = 0;
         }
         break;
     case 2:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x240 = 0;
             mState = 4;
         } else {
@@ -178,7 +178,7 @@ void Flame_804A0330::fn_8015EA2C() {
         }
         break;
     case 3:
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x240 = 0;
             mState = 4;
         } else if (field_0x234[1] != 0) {
@@ -215,13 +215,13 @@ void Flame_804A0330::fn_8015EA2C() {
         break;
     case 6:
         if (field_0x244 != 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             mAlive = false;
         }
         break;
     case 7:
         if (field_0x244 != 0) {
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             mAlive = false;
         }
         break;
@@ -229,12 +229,12 @@ void Flame_804A0330::fn_8015EA2C() {
         if (field_0x234[0] == 0) {
             if (field_0x248 == 0) {
                 if (field_0x244 != 0) {
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     field_0x234[0] = 8;
                     field_0x248 = 1;
                 }
             } else if (field_0x244 == 0) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 field_0x234[0] = 8;
                 field_0x248 = 0;
             }

@@ -1367,7 +1367,7 @@ void PrincessZeldaDemo_8049D208::fn_8010E2D4(s32 arg) {
         mAnim0.fn_801D1F14(0.0f);
         break;
     case 0x39:
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
         break;
     case 0x3A:
         mAnim0.startAnim_801D22DC(8, 2, false);

@@ -82,9 +82,9 @@ cls_804A1790::~cls_804A1790() {
     releaseEmitter_801EE434(mEmitter270);
 }
 
-void cls_804A1790::vfunc_0x18() {
+void cls_804A1790::checkPlayerContact_0x18() {
     fn_80212AC0()->fn_80212AF0(&mPos);
-    ActorBase_804A5770::vfunc_0x18();
+    ActorBase_804A5770::checkPlayerContact_0x18();
 }
 
 void cls_804A1790::update() {
@@ -114,7 +114,7 @@ void cls_804A1790::update() {
     switch (field_0x230) {
     case 0:
         if (field_0x25c == 1) {
-            if (vfunc_0x34()) {
+            if (isScreenFlagSet_0x34()) {
                 field_0x230 = 2;
             }
             break;

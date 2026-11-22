@@ -60,7 +60,7 @@ void CandlestickSwitch_804A8B78::update() {
         if (fn_80226998(&mPos, field_0x4) == 0x3D || fn_80226998(&mPos, field_0x4) == 0x1DE) {
             mEmitter234 = spawnEmitter_8013CC50(field_0x4, &mPos, 0xBD, 0, 0, NULL, NULL, true, 1.0f);
             mEmitter238 = spawnEmitter_8013CC50(field_0x4, &mPos, 0x54A, 0, 0, NULL, NULL, true, 1.0f);
-            vfunc_0x30(0xFF, true);
+            setScreenFlag_0x30(0xFF, true);
             startSound_801F0E34(0x30005, 0);
             field_0xb0 = 12;
             if (mEmitter23c != NULL) {
@@ -77,7 +77,7 @@ void CandlestickSwitch_804A8B78::update() {
         if (mLitTimer != 0) {
             mLitTimer--;
         }
-        if (!vfunc_0x34() || (mMode == 1 && mLitTimer == 0)) {
+        if (!isScreenFlagSet_0x34() || (mMode == 1 && mLitTimer == 0)) {
             mEmitter23c = spawnEmitter_8013CC50(field_0x4, &mPos, 0x57, 1, 0, NULL, NULL, true, 1.0f);
             mOutTimer = 40;
             if (mEmitter234 != NULL) {
@@ -88,7 +88,7 @@ void CandlestickSwitch_804A8B78::update() {
                 mEmitter238->becomeInvalidEmitter();
                 mEmitter238 = NULL;
             }
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0xb0 = 13;
             mState = 0;
             mLit = 0;

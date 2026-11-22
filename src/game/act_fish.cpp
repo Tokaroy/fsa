@@ -105,7 +105,7 @@ void Fish_804AC658::init() {
     field_0x230 = 0;
 }
 
-bool Fish_804AC658::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Fish_804AC658::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 tile = (u16)fn_8022461C(pos, layer);
     if (tile == 0xD || tile == 0x3A) {
         return false;

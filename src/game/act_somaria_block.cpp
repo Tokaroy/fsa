@@ -291,13 +291,13 @@ void CaneOfSomariaBlock_804AA9F0::draw() {
     fn_803075AC(mSerial, field_0x4, &mPos, 0x2FF, false, 2, -1, field_0xc4, 0, 0);
 }
 
-// Same shape as act_bombchu's vfunc_0x4C (the blocking tile codes as a != chain, the 0x25 /
+// Same shape as act_bombchu's isBlocked_0x4C (the blocking tile codes as a != chain, the 0x25 /
 // 0x26 results narrowed as bytes).
 // FIXME: 96.79 %, scheduling+regalloc; behaviour clean.
 // Scheduling and register allocation only: the target copies layer to r31
 // after the field_0x245 test (pos to r29 in the prologue), ours both in the prologue (pos
 // r30, layer r29, the tile code r31).
-bool CaneOfSomariaBlock_804AA9F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool CaneOfSomariaBlock_804AA9F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0x245 != 0) {
         return false;
     }

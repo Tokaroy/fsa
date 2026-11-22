@@ -15,10 +15,10 @@ public:
     /* 0x0C */ virtual void init();
     // 0x80220680: the movement step. State 2 calls ShadowLinkBase_804A6A00's
     // fn_80221250; states 4 and 6 add lbl_8053EFB8 to field_0x3c.z;
-    // others zero field_0x3c.xy and call vfunc_0x84.
-    /* 0x88 */ virtual void vfunc_0x88();
+    // others zero field_0x3c.xy and call applyGravity_0x84.
+    /* 0x88 */ virtual void calcVelocity_0x88();
     // 0x802206FC: the per-state handlers (states 0-6).
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
 
     // 0x8022089C: sets mState to `state`, after the state's box and velocity
     // setup (3-6; others only reset mStateTimer), then clears mStateTimer.

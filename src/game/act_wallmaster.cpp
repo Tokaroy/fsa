@@ -410,7 +410,7 @@ void cls_804A3E44::fn_801BC244() {
 
 // FIXME: 99.53 %, missing/extra; behaviour drift.
 // (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
-void cls_804A3E44::vfunc_0x90(u8 mapHit) {
+void cls_804A3E44::updateState_0x90(u8 mapHit) {
     fn_801BC244();
     switch (mState) {
     case 0:
@@ -575,7 +575,7 @@ void cls_804A3E44::vfunc_0x90(u8 mapHit) {
     }
 }
 
-void cls_804A3E44::vfunc_0x88() {
+void cls_804A3E44::calcVelocity_0x88() {
     field_0x3c.x = 0.0f;
     field_0x3c.y = 0.0f;
     field_0x3c.z = 0.0f;
@@ -610,15 +610,15 @@ void cls_804A3E44::vfunc_0x88() {
         field_0x3c.z = -0.5f;
         break;
     case 10:
-        EnemyBase_804A4808::vfunc_0x88();
+        EnemyBase_804A4808::calcVelocity_0x88();
         break;
     }
 }
 
-// vfunc_0x88 left unwritten: state 6 passes field_0x2b0 (a TVec2f slot) to
+// calcVelocity_0x88 left unwritten: state 6 passes field_0x2b0 (a TVec2f slot) to
 // fn_801D01A0, whose target parameter is typed TVec3f* in EnemyBase.
 
-void cls_804A3E44::vfunc_0x78() {
+void cls_804A3E44::onDeath_0x78() {
     if (field_0x2b8 >= 0 && fn_8022DCD8(field_0x2b8)) {
         if (!fn_8022DD74(field_0x2b8)) {
             mFlags |= 0x8000;
@@ -629,14 +629,14 @@ void cls_804A3E44::vfunc_0x78() {
 }
 
 // FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
-u8 cls_804A3E44::vfunc_0x60() {
+u8 cls_804A3E44::checkHitByActor_0x60() {
     if (!viewLayerFlag(field_0x4) && mPos.z > 16.0f) {
         return fn_801CEA60();
     }
-    return EnemyBase_804A4808::vfunc_0x60();
+    return EnemyBase_804A4808::checkHitByActor_0x60();
 }
 
-// vfunc_0x60 left unwritten: the target returns fn_801CEA60's r3 unconverted
+// checkHitByActor_0x60 left unwritten: the target returns fn_801CEA60's r3 unconverted
 // as the u8 of the EnemyBase slot, but fn_801CEA60 returns bool (100 %, mr r3),
 // so every form we can write adds a clrlwi (96.43 %).
 

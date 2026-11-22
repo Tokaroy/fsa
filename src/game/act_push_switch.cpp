@@ -51,9 +51,9 @@ void PushSwitch_804A7B38::update() {
         needed = (field_0x90 >> 22) & 0x1F;
     }
     if (count >= needed) {
-        vfunc_0x30(0xFF, true);
+        setScreenFlag_0x30(0xFF, true);
     } else {
-        vfunc_0x30(0xFF, false);
+        setScreenFlag_0x30(0xFF, false);
     }
 }
 

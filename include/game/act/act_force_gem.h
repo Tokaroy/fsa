@@ -17,7 +17,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x40 */ virtual void vfunc_0x40();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     // 0x8032ABE0: lets a player at or near it pick it up. 0x8032B0A4: reacts to the tile
     // under it (water, pit); returns whether it handled the tile.
     void fn_8032ABE0();
@@ -56,7 +56,7 @@ public:
     /* 0x27D */ u8 field_0x27d;
     /* 0x27E */ u8 field_0x27e;
     /* 0x27F */ u8 field_0x27f;
-    /* 0x280 */ u8 field_0x280; // cleared once vfunc_0x34 reports done (vfunc_0x10)
+    /* 0x280 */ u8 field_0x280; // cleared once isScreenFlagSet_0x34 reports done (vfunc_0x10)
     /* 0x281 */ u8 field_0x281;
     /* 0x282 */ u8 field_0x282;
     /* 0x283 */ u8 field_0x283;

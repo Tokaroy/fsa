@@ -16,10 +16,11 @@ and --revert undoes it exactly, because every new name carries its address
 occurred in the tree before the rename.
 
 Manifest columns (tab separated, `#` comments allowed):
-  address     8 hex digits: the vtable (class), the function, or the object (global)
-  kind        class | function | global
+  address     8 hex digits: the vtable (class, member), the function, or the object (global)
+  kind        class | function | global | member
   old         the current identifier (dtk placeholder or provisional name)
   new         the new identifier; must end in _<address> unless confidence is high
+              (member: in _0x<slot>, the slot offset of the old `vfunc_0x<slot>`)
   confidence  high | med | low   the honest evidence grade; never relabelled to get a row applied
   apply       yes | no           whether the row is applied; decided per row, not by the grade.
                                  Low rows are applied (owner decision 2026-11-05) and stay low:
@@ -48,6 +49,23 @@ text to the names the tree currently uses (an applied row's old name ->
 new, an unapplied row's new name -> old). So gen_game.tsv and the pinned
 blobs stay as recorded, and --apply / --revert need no generator edit.
 configure.py's comment lines are renamed too (its code never is).
+
+A member row names a virtual slot once, at the class that declares it (the
+row's address is that class's vtable): `vfunc_0x54` of EnemyBase_804A4808
+and of every class derived from it (the hierarchy is read from the
+`class X : public Y` declarations in include/ and src/). The same placeholder
+is also a different slot of unrelated classes (EscortBase_8049E0C8 declares
+its own vfunc_0x54), so the forward rename is scoped: an occurrence is
+renamed when its class is a descendant: `Cls::old`, the mangled `old__<n>Cls`,
+or the class body / `Cls::fn` definition it sits in. Occurrences with no
+such context (comments, docs) follow the file: renamed when every class
+the file resolves for `old` is a descendant (for progress/game__<unit>.md,
+the classes of src/game/<unit>.cpp), else left and counted. When no class
+outside the hierarchy has the member at all the rename is plain, as for a
+function. A wrong scope cannot pass unnoticed in code: the compiler (member
+not found) and the link (symbols.txt names) fail. --revert is plain: the new
+name is unique. to_current() renames plainly too: the generator's records
+are actors of ActorBase / EnemyBase only.
 """
 
 import argparse
@@ -62,7 +80,8 @@ MANIFEST = ROOT / "docs/names/names.tsv"
 SYMBOLS = "config/G4SE01/symbols.txt"
 SHA1_FILE = ROOT / "config/G4SE01/build.sha1"
 
-KINDS = {"class", "function", "global"}
+KINDS = {"class", "function", "global", "member"}
+SLOT = re.compile(r"_?(0x[0-9A-Fa-f]+)\Z")
 
 # Never rewritten. Paths are relative to the repository root.
 EXCLUDE_PREFIX = ("build/", "orig/", "site/", ".github/", "tools/", "config/")
@@ -129,7 +148,13 @@ def read_manifest():
         for x in (old, new):
             if not IDENT.match(x):
                 problems.append(f"names.tsv:{n}: {x!r} is not an identifier")
-        if conf != "high":
+        if kind == "member":
+            so = SLOT.search(old)
+            if not so:
+                problems.append(f"names.tsv:{n}: member {old} does not carry its slot (vfunc_0xNN)")
+            elif conf != "high" and not new.endswith("_" + so[1]):
+                problems.append(f"names.tsv:{n}: {new} must keep its slot (_{so[1]}) below high confidence")
+        elif conf != "high":
             m = ADDR_SUFFIX.search(new)
             if not m or m[1] != addr:
                 problems.append(f"names.tsv:{n}: {new} must keep its address (_{addr}) below high confidence")
@@ -202,6 +227,9 @@ def symbol_problems(r, syms, name):
             return None  # not in symbols.txt (yet); checked by the caller
         bad = [ad for ad in hits if ad != a]
         return f"{name} names symbol(s) at {', '.join(bad)}, not {a}" if bad else ""
+    if kind == "member":
+        hits = [s for s, _ in syms if base_name(s) == name]
+        return "" if hits else None
     vt = [ad for s, ad in syms if s == f"__vt__{len(name)}{name}"]
     if vt:
         return "" if vt == [a] else f"__vt__ of {name} is at {', '.join(vt)}, not {a}"
@@ -215,6 +243,8 @@ def row_state(r, syms):
         if r["kind"] == "class":
             pre = f"{len(name)}{name}"
             return any(pre in s for s, _ in syms)
+        if r["kind"] == "member":
+            return any(base_name(s) == name for s, _ in syms)
         return any(base_name(s) == name and ad == r["addr"] for s, ad in syms)
     if present(r["new"]):
         return True
@@ -255,6 +285,172 @@ def to_current(text):
     for a, b, kind in current_renames():
         text, _ = substitute(text, a, b, kind)
     return text
+
+
+# ---------------------------------------------------------------- member rows (virtual slots)
+
+CODE_SUFFIX = (".h", ".hpp", ".cpp", ".cp", ".c", ".inc")
+CLASS_RE = re.compile(r"\b(?:class|struct)\s+(\w+)\s*(?::\s*(?:public\s+|private\s+|protected\s+)?([\w:]+))?\s*\{")
+DEF_RE = re.compile(r"\b(\w+)::~?\w+\s*\([^;{}]*\)\s*(?:const\s*)?\{")
+
+
+def _brace_end(t, i):
+    """Index just past the brace block whose `{` is at t[i-1]."""
+    d = 1
+    while d and i < len(t):
+        c = t[i]
+        if c == "{":
+            d += 1
+        elif c == "}":
+            d -= 1
+        i += 1
+    return i
+
+
+_spans = {}
+
+
+def code_spans(t):
+    """[(start, end, class)] of class bodies and `Cls::fn(...) {` bodies, innermost last."""
+    key = hash(t)
+    if key in _spans:
+        return _spans[key]
+    out = []
+    for rx in (CLASS_RE, DEF_RE):
+        for m in rx.finditer(t):
+            out.append((m.end(), _brace_end(t, m.end()), m[1]))
+    out.sort(key=lambda s: (s[0], -s[1]))
+    _spans[key] = out
+    return out
+
+
+class Hierarchy:
+    """Class bases from the `class X : public Y {` declarations of the tree,
+    and which classes have a member called `old` (a class body that names
+    it, a `Cls::old` in code, or a symbols.txt symbol `old__<n>Cls...`)."""
+
+    def __init__(self, texts):
+        self.base, self.has = {}, {}
+        self.texts = {f: t for f, t in texts.items() if f.endswith(CODE_SUFFIX)}
+        for t in self.texts.values():
+            for m in CLASS_RE.finditer(t):
+                if m[2]:
+                    self.base[m[1]] = m[2].split("::")[-1]
+        self.syms = texts.get(SYMBOLS, "")
+
+    def unit_classes(self, unit):
+        """The classes whose bodies or member definitions src/game/<unit>.cpp holds."""
+        for suf in (".cpp", ".c"):
+            t = self.texts.get(f"src/game/{unit}{suf}")
+            if t is not None:
+                return {c for _, _, c in code_spans(t)}
+        return set()
+
+    def ancestors(self, c):
+        seen = [c]
+        while c in self.base and self.base[c] not in seen:
+            c = self.base[c]
+            seen.append(c)
+        return seen
+
+    def descends(self, c, root):
+        return root in self.ancestors(c)
+
+    def members(self, old):
+        if old not in self.has:
+            cls = set()
+            for t in self.texts.values():
+                if old not in t:
+                    continue
+                decl = re.compile(r"(?<![\w>.:])" + re.escape(old) + r"\s*\(")
+                for m in CLASS_RE.finditer(t):  # declared in the class body (not a call, not a comment)
+                    body = re.sub(r"//[^\n]*|/\*.*?\*/", "", t[m.end():_brace_end(t, m.end())], flags=re.S)
+                    body = re.sub(r"\{[^{}]*\}", "{}", body)  # inline bodies hold calls
+                    if decl.search(body):
+                        cls.add(m[1])
+                for m in re.finditer(r"(\w+)::" + re.escape(old) + r"(?![A-Za-z0-9_])", t):
+                    cls.add(m[1])
+            for m in re.finditer(r"(?<![A-Za-z0-9_])" + re.escape(old) + r"__(\d+)(\w+)", self.syms):
+                cls.add(m[2][:int(m[1])])
+            self.has[old] = cls
+        return self.has[old]
+
+
+_hier = None
+
+
+def hierarchy(texts):
+    global _hier
+    if _hier is None:
+        _hier = Hierarchy(texts)
+    return _hier
+
+
+def class_at(syms, addr):
+    """The class whose vtable symbols.txt places at addr."""
+    for s, ad in syms:
+        m = re.match(r"__vt__(\d+)(\w+)", s)
+        if m and ad == addr and len(m[2]) == int(m[1]):
+            return m[2]
+    return None
+
+
+def member_plan(f, t, old, inside, hier):
+    """Positions of `old` in text t (file f) that belong to the hierarchy:
+    (rename, left) lists of match objects. inside(cls) -> True / False /
+    None (a class that has no such member)."""
+    pat = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(old) + r"(?=__|(?![A-Za-z0-9_]))")
+    spans = code_spans(t) if f.endswith(CODE_SUFFIX) else []
+    yes, no, unknown = [], [], []
+    for m in pat.finditer(t):
+        cls = None
+        q = re.search(r"(\w+)::\s*\Z", t[max(0, m.start() - 80):m.start()])
+        mg = re.match(r"__(\d+)(\w+)", t[m.end():m.end() + 80])
+        if q:
+            cls = q[1]
+        elif mg:
+            cls = mg[2][:int(mg[1])]
+        else:
+            for s, e, c in spans:
+                if s <= m.start() < e:
+                    cls = c  # innermost wins (sorted outer first)
+        state = inside(cls) if cls else None
+        (yes if state else no if state is False else unknown).append(m)
+    if unknown:
+        ctx = set()
+        if f.startswith("progress/game__") and f.endswith(".md"):
+            ctx = {inside(c) for c in hier.unit_classes(f[len("progress/game__"):-3])} - {None}
+        decided = {True for _ in yes} | {False for _ in no} | ctx
+        if decided == {True}:
+            yes += unknown
+            unknown = []
+    return sorted(yes, key=lambda m: m.start()), unknown
+
+
+def member_substitute(f, t, r, src, dst, forward, syms, texts):
+    """(new text, renamed, left) for a member row."""
+    if src not in t:
+        return t, 0, 0
+    hier = hierarchy(texts)
+    if not forward:
+        return (*substitute(t, src, dst, "function"), 0)
+    root = class_at(syms, r["addr"])
+    if root is None:
+        return t, 0, 0
+    has = hier.members(src)
+    def inside(c):
+        if hier.descends(c, root):
+            return True
+        return False if c in has else None
+    if all(hier.descends(c, root) for c in has):
+        return (*substitute(t, src, dst, "function"), 0)
+    ren, left = member_plan(f, t, src, inside, hier)
+    out, last = [], 0
+    for m in ren:
+        out += [t[last:m.start()], dst]
+        last = m.end()
+    out.append(t[last:])
+    return "".join(out), len(ren), len(left)
 
 
 def main(argv):
@@ -319,9 +515,20 @@ def main(argv):
             if not args.quiet:
                 print(f"BLOCKED  {tag}: in {', '.join(hits[:4])}{' ...' if len(hits) > 4 else ''}")
             continue
-        n_src = sum(count(t, src, r["kind"]) for t in ctexts.values())
+        left = 0
+        if r["kind"] == "member":
+            n_src = 0
+            for f, t in texts.items():
+                if f in COMMENT_ONLY:
+                    continue
+                _, k, u = member_substitute(f, t, r, src, dst, forward, syms, texts)
+                n_src, left = n_src + k, left + u
+        else:
+            n_src = sum(count(t, src, r["kind"]) for t in ctexts.values())
         n_dst = sum(count(t, dst, r["kind"]) for t in ctexts.values())
         why = []
+        if r["kind"] == "member" and class_at(syms, r["addr"]) is None:
+            why.append(f"no __vt__ at {r['addr']} in symbols.txt")
         if r["kind"] == "class":
             tmpl = re.compile(r"<[^<>]*" + re.escape(f"{len(src)}{src}"))
             if any(tmpl.search(t) for t in texts.values()):
@@ -332,7 +539,7 @@ def main(argv):
         for s in (s_src, s_dst):
             if s:
                 why.append(s)
-        if r["kind"] in ("function", "global") and s_src is None and s_dst is None:
+        if r["kind"] in ("function", "global", "member") and s_src is None and s_dst is None:
             why.append(f"neither {src} nor {dst} is a symbol at {r['addr']} in symbols.txt")
         if r["kind"] == "class" and s_src is None and s_dst is None and not src.endswith(r["addr"]):
             why.append(f"no __vt__ for {src} and its name does not carry {r['addr']}")
@@ -349,7 +556,8 @@ def main(argv):
         todo.append((r, src, dst))
         if not args.quiet:
             print(f"{'APPLY ' if forward else 'REVERT'}   {tag}: {n_src} occurrence(s)"
-                  + (f" ({n_dst} already renamed)" if n_dst else ""))
+                  + (f" ({n_dst} already renamed)" if n_dst else "")
+                  + (f" ({left} left: no class context)" if left else ""))
 
     print("rename: " + ", ".join(f"{k} {v}" for k, v in report.items()))
     if report["refused"]:
@@ -359,7 +567,19 @@ def main(argv):
         return 0
 
     changed = set()
+    global _hier
+    _hier = None  # class rows above may have renamed classes: re-read the hierarchy
     for r, src, dst in todo:
+        if r["kind"] == "member":
+            msyms = parse_symbols(texts[SYMBOLS])
+            for f, t in texts.items():
+                if f in COMMENT_ONLY:
+                    continue
+                t2, k, _ = member_substitute(f, t, r, src, dst, forward, msyms, texts)
+                if k:
+                    texts[f] = t2
+                    changed.add(f)
+            continue
         for f, t in texts.items():
             t2, k = (on_comments if f in COMMENT_ONLY else substitute)(t, src, dst, r["kind"])
             if k:

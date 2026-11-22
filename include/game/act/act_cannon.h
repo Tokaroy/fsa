@@ -24,7 +24,7 @@ public:
     bool fn_80107360();
     /* 0x230 */ SpriteAnim_801D267C mAnim;
     /* 0x268 */ u8 field_0x268; // 1 after construction
-    /* 0x269 */ u8 field_0x269; // set by init() when vfunc_0x3C() and vfunc_0x34() hold
+    /* 0x269 */ u8 field_0x269; // set by init() when getScreenFlagBit_0x3C() and isScreenFlagSet_0x34() hold
     /* 0x26A */ u8 field_0x26a; // bit 16 of field_0x90 (init)
     /* 0x26C */ s32 field_0x26c; // -1 after construction; passed to fn_80230FD0
     /* 0x270 */ s32 field_0x270;

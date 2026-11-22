@@ -16,7 +16,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x24 */ virtual void vfunc_0x24();
+    /* 0x24 */ virtual void die_0x24();
     /* 0x54 */ virtual void vfunc_0x54();
     /* 0x58 */ virtual bool vfunc_0x58(JGeometry::TVec3f* pos);
 

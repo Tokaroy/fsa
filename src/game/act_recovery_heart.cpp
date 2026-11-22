@@ -104,7 +104,7 @@ void RecoveryHeart_8049F4F0::update() {
         JGeometry::TVec3f probe;
         probe.set(mPos);
         probe.y += 4.0f;
-        if (vfunc_0x4C(field_0x4, &probe) == true) {
+        if (isBlocked_0x4C(field_0x4, &probe) == true) {
             field_0x3c.x = 0.0f;
             field_0x3c.y = 0.0f;
             field_0x230 = 4;
@@ -166,9 +166,9 @@ void RecoveryHeart_8049F4F0::draw() {
 }
 
 // The ignore list is the multi-character tags 'TOMI' and 'NULL'.
-// Same shape as act_bombchu's vfunc_0x4C (the blocking tile codes as a != chain, the 0x25 /
+// Same shape as act_bombchu's isBlocked_0x4C (the blocking tile codes as a != chain, the 0x25 /
 // 0x26 results narrowed as bytes).
-bool RecoveryHeart_8049F4F0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool RecoveryHeart_8049F4F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     const u32 ignoreIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();

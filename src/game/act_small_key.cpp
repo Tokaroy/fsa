@@ -180,7 +180,7 @@ void SmallKey_804A8CD8::update() {
     switch (field_0x240) {
     case 0:
         field_0x294 = 0;
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34() == true) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x564, 0, 0, NULL, NULL, true, 0.5f);
             spawnEmitter_8013CC50(field_0x4, &mPos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
             startSound_801F0E34(0x30072, 0);
@@ -192,7 +192,7 @@ void SmallKey_804A8CD8::update() {
         break;
     case 1:
         field_0x294 = 0;
-        if ((field_0x90 >> 27) == 0 || vfunc_0x34() == true) {
+        if ((field_0x90 >> 27) == 0 || isScreenFlagSet_0x34() == true) {
             mPos.z = 200.0f;
             field_0x240 = 4;
             getActorManager_801F856C()->spawnActor_801F9484('SEN2', field_0x4, &mPos, 0x3C00, -1, -1);
@@ -1251,7 +1251,7 @@ void SmallKey_804A8CD8::fn_802C1D30(const JGeometry::TVec3f& pos, s32 layer) {
     field_0x2aa = ((col & 0xFF) << 8) | (row & 0xFF);
 }
 
-// The tile codes as act_bombchu's vfunc_0x4C (a != chain, the 0x25 / 0x26 results narrowed as
+// The tile codes as act_bombchu's isBlocked_0x4C (a != chain, the 0x25 / 0x26 results narrowed as
 // bytes).
 // FIXME: 99.02 %, scheduling+regalloc; behaviour clean.
 // Scheduling and register allocation only: pos and layer take r30 / r28 the
@@ -1322,7 +1322,7 @@ bool SmallKey_804A8CD8::fn_802C1970(s32 layer, const JGeometry::TVec3f* pos) {
     return false;
 }
 
-bool SmallKey_804A8CD8::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool SmallKey_804A8CD8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (field_0x288 == 0) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();

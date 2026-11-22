@@ -12,10 +12,10 @@ public:
     /* 0x08 */ virtual ~cls_804A5F40();
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x98 */ virtual void vfunc_0x98();
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x98 */ virtual void move_0x98();
     // 0x8020C6E8: picks the nearest player on this layer and switches between the idle,
     // walking and chasing states (mState 0-2).
     void fn_8020C6E8();

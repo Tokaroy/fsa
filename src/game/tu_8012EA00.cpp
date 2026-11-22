@@ -72,7 +72,7 @@ void cls_8049E8F8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
     case 0:
-        if (vfunc_0x3C() != 0 && !vfunc_0x34()) {
+        if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
             break;
         }
         if (playersInside()) {

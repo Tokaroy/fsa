@@ -179,7 +179,7 @@ void BGMChangeNPC_804A9DA0::update() {
     case 0: {
         u8 start = 0;
         if (field_0x240 == 0 || field_0x240 == 3 || field_0x240 == 4) {
-            if (field_0x258 >= 0 || (field_0x90 >> 27) == 0 || vfunc_0x34()) {
+            if (field_0x258 >= 0 || (field_0x90 >> 27) == 0 || isScreenFlagSet_0x34()) {
                 start = 1;
             }
         } else if (field_0x258 >= 0) {

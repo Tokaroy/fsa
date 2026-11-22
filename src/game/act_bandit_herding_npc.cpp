@@ -49,13 +49,13 @@ void BanditHerdingNPC_804ACB40::update() {
     // FIXME: 94%. The original materialises (field_0x238 >= field_0x234) as a bool
     // (srawi/srwi/subfc/adde, then cmplwi 1) and keeps the 1 stored to the flag in r0
     // rather than r30; the box test also loads x into f2 and y into f1 (mine: f1, f2).
-    if (field_0x238 >= field_0x234 && !vfunc_0x34()) {
-        vfunc_0x30(0xFF, true);
+    if (field_0x238 >= field_0x234 && !isScreenFlagSet_0x34()) {
+        setScreenFlag_0x30(0xFF, true);
         fn_80204638()->field_0x0 = 1;
     }
     s32 bit = field_0x23c;
-    if (bit > 0 && getGameView_802D6A9C()->fn_802D800C(bit) == true && vfunc_0x34() == true) {
-        vfunc_0x30(0xFF, false);
+    if (bit > 0 && getGameView_802D6A9C()->fn_802D800C(bit) == true && isScreenFlagSet_0x34() == true) {
+        setScreenFlag_0x30(0xFF, false);
     }
 }
 

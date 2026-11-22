@@ -454,7 +454,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   assigned `v.x = ...; v.y = ...;` (cls_800F802C::fn_800F802C).
 - Emitter deleted and cleared (field read again after bl getEffectSystem_8013C824):
   `deleteEmitter(&mEmitter)` (game/EmitterDelete.h: the manager in a local).
-  act_eyeball_switch EyeballSwitch_804AE678::vfunc_0x24.
+  act_eyeball_switch EyeballSwitch_804AE678::die_0x24.
 - Plain calls, no wrapper: effect `spawnEmitter_8013CC50(field_0x4, &mPos, id, ...)` and
   sound `startSound_801F0E34(id, 0)` (act_coconut.cpp:29-30); actor lookup / spawn
   `getActorManager_801F856C()->findActorBySerial_801F666C(serial)` (act_invisible_npc_wall_tomi.cpp:22),
@@ -519,7 +519,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   99.8 -> 99.2, so fn_80270ABC (100 % const) stays plain; act_icicle fn_8010B284 (mPos.z for a TVec3
   copy above the saves) made const falls 97.4 -> 84.2. A function already at reloc-name-only with the
   load above the saves needs nothing (tu_80125B58 fn_80125BF4 const: 99.8 -> 48).
-- The tile-code `vfunc_0x4C` family (fn_8022461C code, fn_80226850 tile): act_bombchu's form generalises —
+- The tile-code `isBlocked_0x4C` family (fn_8022461C code, fn_80226850 tile): act_bombchu's form generalises —
   the never-blocking codes as ONE `!=` chain `if (code != 0 && code != 4 && ...) { ... }` around the
   remaining tests, `return (u8)(view->field_0x171 == 0)` / `== 1` for 0x25 / 0x26 (extrwi), `if (code !=
   0x22 || view->field_0x170 == 1) return true;`, then `return false`. A switch gives a search tree, a

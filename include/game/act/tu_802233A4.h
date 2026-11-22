@@ -15,11 +15,11 @@ public:
     cls_804A6D00();
     /* 0x08 */ virtual ~cls_804A6D00();
     /* 0x0C */ virtual void init();
-    /* 0x68 */ virtual u8 vfunc_0x68();
-    /* 0x6C */ virtual void vfunc_0x6C();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
-    /* 0x9C */ virtual void vfunc_0x9C(u8 mapHit);
+    /* 0x68 */ virtual u8 attackPlayers_0x68();
+    /* 0x6C */ virtual void onHitByPlayer_0x6C();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
+    /* 0x9C */ virtual void updateBehavior_0x9C(u8 mapHit);
 
     // 0x80223AD8: enters state `state` (5-8); 0x802238CC: burns the tiles in front.
     void fn_80223AD8(s32 state);

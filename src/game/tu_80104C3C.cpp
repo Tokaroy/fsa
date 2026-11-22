@@ -18,7 +18,7 @@ void cls_8049CB58::init() {
     field_0x24a = 0;
     field_0x248 = 0;
     if (field_0x244) {
-        if (vfunc_0x34()) {
+        if (isScreenFlagSet_0x34()) {
             field_0x24e = 1;
         }
     }
@@ -117,7 +117,7 @@ void cls_8049CB58::update() {
         }
         if (ready) {
             if (fn_80104EB0()) {
-                vfunc_0x30(0xFF, true);
+                setScreenFlag_0x30(0xFF, true);
                 if (field_0x90 & 0x20) {
                     field_0x24c = 1;
                 }
@@ -127,7 +127,7 @@ void cls_8049CB58::update() {
                 }
             }
         } else {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x24c = 0;
             if (field_0x24f) {
                 field_0x24f = 0;

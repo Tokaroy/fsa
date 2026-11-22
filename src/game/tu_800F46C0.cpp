@@ -106,7 +106,7 @@ void Boulder_8049C4C0::fn_800F5E08() {
             mPos.x += 0.8f * JMath::sincosTable_.sinShort((field_0x244 & 3) << 14);
         }
         if (field_0x244 >= 0xB4) {
-            vfunc_0x30(0xFF, false);
+            setScreenFlag_0x30(0xFF, false);
             field_0x240 = 2;
             field_0x248++;
             if (field_0x248 == 0x3C) {
@@ -175,11 +175,11 @@ void Boulder_8049C4C0::fn_800F5E08() {
                 p.x += lbl_80463678[k * 2];
                 p.y += lbl_80463678[k * 2 + 1];
                 s32 code = fn_8022461C(&p, field_0x4);
-                if ((code == 3 || code == 0xE || code == 2) && !vfunc_0x34()) {
+                if ((code == 3 || code == 0xE || code == 2) && !isScreenFlagSet_0x34()) {
                     getGameView_802D6A9C()->fn_802D79E8(field_0x4, 4.0f, 0.0f, false);
                     spawnEmitter_8013CC50(field_0x4, &mPos, 0x76, 0, 0, NULL, NULL, true, 0.8f);
                     field_0x240 = 1;
-                    vfunc_0x30(0xFF, true);
+                    setScreenFlag_0x30(0xFF, true);
                     startSound_801F0E34(0x4002C, 0);
                     s32 btin = getActorManager_801F856C()->fn_801F778C(ACTOR_BTIN, &mPos, NULL);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(btin);
@@ -460,7 +460,7 @@ void Boulder_8049C4C0::update() {
 }
 
 // FIXME(shotgun): 91.96 %, scheduling+regalloc; behaviour clean.
-bool Boulder_8049C4C0::vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool Boulder_8049C4C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 code = fn_8022461C(pos, layer);
     if (code == 3 || code == 0xE || code == 2) {
         return false;
@@ -601,14 +601,14 @@ void BoulderSpawner_8049C46C::update() {
     if (field_0x234 == 0) {
         switch (field_0x230) {
         case 0:
-            if ((field_0x90 & 0xF8000000) != 0 && !vfunc_0x34()) {
+            if ((field_0x90 & 0xF8000000) != 0 && !isScreenFlagSet_0x34()) {
                 return;
             }
             getActorManager_801F856C()->spawnActor_801F9484(ACTOR_OIWA, field_0x4, &mPos, 0, -1, -1);
             field_0x234 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x96;
             break;
         case 1: {
-            if ((field_0x90 & 0xF8000000) != 0 && !vfunc_0x34()) {
+            if ((field_0x90 & 0xF8000000) != 0 && !isScreenFlagSet_0x34()) {
                 return;
             }
             pos = mPos;
@@ -628,7 +628,7 @@ void BoulderSpawner_8049C46C::update() {
             field_0x234 = (s32)(50.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 0x96;
             break;
         case 4: {
-            if ((field_0x90 & 0xF8000000) != 0 && !vfunc_0x34()) {
+            if ((field_0x90 & 0xF8000000) != 0 && !isScreenFlagSet_0x34()) {
                 return;
             }
             pos.set(mPos);

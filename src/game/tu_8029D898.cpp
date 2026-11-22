@@ -200,7 +200,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x40, -1, -1);
         actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else if (field_0x24 >= 0x45 && field_0x24 <= 0x49) {
         if (field_0x24 == 0x46) {
@@ -213,21 +213,21 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
         serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, field_0x24 - 0x45, -1, -1);
         actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else if (field_0x24 == 0x4E) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
         serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x80, -1, -1);
         actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else if (field_0x24 == 0x4F) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x11);
         serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, pos, 0x100, -1, -1);
         actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else {
         result = false;
@@ -246,7 +246,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
         gAudioMgr_8053AF80->fn_80458880(3, -1);
     } else if (field_0x24 == 0x68) {
@@ -254,14 +254,14 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else if (field_0x24 == 0x6A) {
         gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x50);
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
     } else if (field_0x24 == 0x70 || field_0x24 == 0x75 || field_0x24 == 0x6B) {
         if (a == 0x10000) {
@@ -297,7 +297,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
             }
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->vfunc_0x24();
+                actor->die_0x24();
             }
         }
     } else if (field_0x24 == 0x74) {
@@ -317,7 +317,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a + 0x100000, -1, -1);
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->vfunc_0x24();
+                actor->die_0x24();
             }
         }
     } else if (field_0x24 == 0x146) {
@@ -337,7 +337,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, pos, a + 0x100000, -1, -1);
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->vfunc_0x24();
+                actor->die_0x24();
             }
         }
     } else if (field_0x24 == 0xFA) {
@@ -374,7 +374,7 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         s32 serial = getActorManager_801F856C()->spawnActor_801F9484('BORD', layer, pos, 0, -1, -1);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
-            actor->vfunc_0x24();
+            actor->die_0x24();
         }
         spawnEmitter_8013CC50(layer, pos, 0x24A, 1, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(layer, pos, 0x24B, 1, 0, NULL, NULL, true, 1.0f);
@@ -552,7 +552,7 @@ void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('STON', 0, pos, 0, -1, -1);
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->vfunc_0x24();
+                actor->die_0x24();
             }
             break;
         }
@@ -561,7 +561,7 @@ void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
             s32 serial = getActorManager_801F856C()->spawnActor_801F9484('YASI', 0, pos, 0, -1, -1);
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (actor != NULL) {
-                actor->vfunc_0x24();
+                actor->die_0x24();
             }
             break;
         }
@@ -966,7 +966,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, &p, tile - 0x40, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     fn_80230FD0(player, 0x20025);
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
@@ -981,7 +981,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('TUBO', layer, &p, field_0x24 - 0x45, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     fn_80230FD0(player, 0x20025);
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
@@ -990,7 +990,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, &p, 0, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     gAudioMgr_8053AF80->fn_80458880(3, -1);
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
@@ -999,7 +999,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, &p, 0, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x6A) {
@@ -1007,7 +1007,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, &p, 0, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x70 || tile == 0x75 || tile == 0x6B) {
@@ -1026,7 +1026,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     }
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x74 || tile == 0x146) {
@@ -1034,7 +1034,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('GRAS', layer, &p, 0x100000, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x71) {
@@ -1042,7 +1042,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     serial = getActorManager_801F856C()->spawnActor_801F9484('BORD', layer, &p, 0, -1, -1);
                     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                     if (actor != NULL) {
-                        actor->vfunc_0x24();
+                        actor->die_0x24();
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('BLZE', layer, &p, 0xF, -1, -1);
                 } else if (tile == 0x81) {

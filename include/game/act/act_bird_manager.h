@@ -25,9 +25,9 @@ public:
     cls_804A5C88();
     /* 0x08 */ virtual ~cls_804A5C88();
     /* 0x0C */ virtual void init();
-    /* 0x54 */ virtual void vfunc_0x54();
-    /* 0x88 */ virtual void vfunc_0x88();
-    /* 0x90 */ virtual void vfunc_0x90(u8 mapHit);
+    /* 0x54 */ virtual void onFirstUpdate_0x54();
+    /* 0x88 */ virtual void calcVelocity_0x88();
+    /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0xA4 */ virtual void vfunc_0xA4();
     /* 0xA8 */ virtual void vfunc_0xA8();
 

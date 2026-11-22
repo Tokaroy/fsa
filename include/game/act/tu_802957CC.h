@@ -13,7 +13,7 @@ public:
     /* 0x08 */ virtual ~cls_804A7AE0();
 
     bool fn_802957CC(u8 dir);
-    virtual void vfunc_0x24(); // fn_80295C40
+    virtual void die_0x24(); // fn_80295C40
     void fn_80295EE8();
     void fn_802961AC();
     void fn_802984B0();

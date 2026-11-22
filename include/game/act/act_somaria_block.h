@@ -15,7 +15,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
-    /* 0x4C */ virtual bool vfunc_0x4C(s32 layer, const JGeometry::TVec3f* pos);
+    /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
     void fn_8030EA00();
     bool fn_8030EA0C() const;
     // Inline (no symbol; three copies in update): the tile under the centre of the 0x80 box;
@@ -30,7 +30,7 @@ public:
     /* 0x23C */ s32 field_0x23c; // -1 at init
     /* 0x240 */ s32 field_0x240; // -1 at init
     /* 0x244 */ u8 field_0x244;  // 0 at init
-    /* 0x245 */ u8 field_0x245;  // 0 at init; vfunc_0x4C returns 0 while it is set
+    /* 0x245 */ u8 field_0x245;  // 0 at init; isBlocked_0x4C returns 0 while it is set
     // Per player (update indexes it, lbzx): set once fn_8023B0F4 reports the player clear of
     // the block's box; 0 at init.
     /* 0x246 */ u8 field_0x246[4];
