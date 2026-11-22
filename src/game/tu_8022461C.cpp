@@ -123,7 +123,7 @@ static inline bool screenValueIs(s32 value) {
 // when the layer's GameView byte 0x131DF + layer is set (0 -> 2, 0x61 -> 0) and on stage (7, 2) /
 // (7, 3) (0xE -> 0x51).
 template <class V>
-static inline u16 collisionCodeAt(const V* pos, int layer) {
+static inline int collisionCodeAt(const V* pos, int layer) {
     u16 code = lbl_8046CB88[rawTileAt(pos, layer)];
     if (viewLayerFlag(layer) != 0) {
         if (code == 0) {
@@ -224,7 +224,7 @@ bool fn_802265DC(const JGeometry::TVec3f* pos, s32 layer, bool flag) {
 // the half-cell codes); `flag` selects further cases.
 // FIXME(shotgun): 98.41 %, missing/extra; behaviour near.
 bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
-    s32 code = collisionCodeAt(pos, layer);
+    s32 code = (u16)collisionCodeAt(pos, layer);
     if (code == 0 || code == 2 || code == 0x50) {
         return false;
     }
@@ -241,10 +241,10 @@ bool fn_802260DC(const JGeometry::TVec2f* pos, s32 layer, bool flag) {
         return false;
     }
     if (code == 0x25) {
-        return getGameView_802D6A9C()->field_0x171 == 0;
+        return (u8)!getGameView_802D6A9C()->field_0x171;
     }
     if (code == 0x26) {
-        return getGameView_802D6A9C()->field_0x171 == 1;
+        return (u8)(getGameView_802D6A9C()->field_0x171 == 1);
     }
     // Half and quarter cells: which 8-unit part of the 16-unit cell is solid.
     if (code == 4 && ((s32)pos->y & 0xF) >= 8) {
