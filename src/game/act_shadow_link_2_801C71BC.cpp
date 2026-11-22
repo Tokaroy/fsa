@@ -527,7 +527,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             setState_801C3B7C(0x1E);
             return;
         }
-        if (mFlags & 0x400000) {
+        if (checkFlag(0x400000)) {
             mFlags &= ~0x400000;
             setState_801C3B7C(0x12);
             return;
@@ -558,7 +558,7 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             gBgRewrite_8053AC98->fn_8029E248(&below, mLayer_0x4);
         }
     }
-    if (mLayer_0x4 != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
+    if (getField_0x4() != field_0x358.fn_80214244()->fn_800FE25C(0xFF)) {
         fn_801C79A0();
         return;
     }
@@ -580,63 +580,49 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
             if (field_0x524.field_0x0 & 0x40) {
                 return;
             }
-            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() >= 0.5f) {
-                return;
-            }
-            u8 start = field_0x358.fn_80214244()->field_0x3;
-            field_0x358.fn_80214244()->fn_800FD818(1);
-            u8 next = field_0x358.fn_80214244()->field_0x3;
-            cls_800FE3EC* rail = field_0x358.fn_80214244();
-            if (start < rail->field_0x2) {
-                rail->field_0x3 = start;
-            }
-            field_0x358.fn_80214244()->fn_800FD818(-1);
-            u8 prev = field_0x358.fn_80214244()->field_0x3;
-            rail = field_0x358.fn_80214244();
-            if (start < rail->field_0x2) {
-                rail->field_0x3 = start;
-            }
-            u8 opt[2];
-            opt[0] = prev;
-            opt[1] = next;
-            if (field_0x358.fn_80214244()->field_0x1 != 0) {
-                if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[0])) {
-                    JGeometry::TVec3f p0;
-                    getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), opt[0]);
-                    if (mPos.x < p0.x) {
+            if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
+                u8 next;
+                u8 prev;
+                getRailNeighbours(&next, &prev);
+                if (field_0x358.fn_80214244()->field_0x1 != 0) {
+                    if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(prev)) {
+                        JGeometry::TVec3f p0;
+                        getRailPointPos_800FE294(&p0, field_0x358.fn_80214244(), prev);
+                        if (mPos.x < p0.x) {
+                            field_0x33c = 0x4000;
+                        } else {
+                            field_0x33c = -0x4000;
+                        }
+                    } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                         field_0x33c = 0x4000;
                     } else {
                         field_0x33c = -0x4000;
                     }
-                } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                    field_0x33c = 0x4000;
                 } else {
-                    field_0x33c = -0x4000;
-                }
-            } else {
-                if (mLayer_0x4 == field_0x358.fn_80214244()->fn_800FE25C(opt[1])) {
-                    JGeometry::TVec3f p1;
-                    getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), opt[1]);
-                    if (mPos.x < p1.x) {
+                    if (getField_0x4() == field_0x358.fn_80214244()->fn_800FE25C(next)) {
+                        JGeometry::TVec3f p1;
+                        getRailPointPos_800FE294(&p1, field_0x358.fn_80214244(), next);
+                        if (mPos.x < p1.x) {
+                            field_0x33c = 0x4000;
+                        } else {
+                            field_0x33c = -0x4000;
+                        }
+                    } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                         field_0x33c = 0x4000;
                     } else {
                         field_0x33c = -0x4000;
                     }
-                } else if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
-                    field_0x33c = 0x4000;
-                } else {
-                    field_0x33c = -0x4000;
                 }
+                setState_801C3B7C(0x1C);
             }
-            setState_801C3B7C(0x1C);
             return;
         }
     } else if (flag != 0) {
         fn_801C8C84(1, 0);
     }
-    s16 targetAngle = fn_801D02E0(&field_0x32c);
+    s32 targetAngle = fn_801D02E0(&field_0x32c);
     if (mFlags & 0x20000) {
-        stepAngle_801CD930(&field_0x33c, targetAngle, 0x500);
+        stepAngle_801CD930(&field_0x33c, (s16)targetAngle, 0x500);
     } else {
         field_0x33c = targetAngle;
     }
