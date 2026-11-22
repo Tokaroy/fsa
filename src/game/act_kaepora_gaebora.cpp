@@ -48,11 +48,14 @@ void KaeporaGaebora_804A6550::init() {
     }
     if ((mSpawnParam_0x90 >> 19) & 1) {
         field_0x2b4 = 2;
-    } else if (cleared || viewFlag || (field_0x2b0 != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(field_0x2b0))) {
-        field_0x2b4 = 1;
-        mFlags &= ~0x10000;
     } else {
-        field_0x2b4 = 0;
+        s32 bit = field_0x2b0;
+        if (cleared || viewFlag || (bit != 0 && getGameView_802D6A9C()->isScreenFlagSet_802D800C(bit))) {
+            field_0x2b4 = 1;
+            mFlags &= ~0x10000;
+        } else {
+            field_0x2b4 = 0;
+        }
     }
     switch (field_0x2b4) {
     case 0:
