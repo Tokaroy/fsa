@@ -832,6 +832,16 @@ def report_map(wt):
             float(f.get("fuzzy_match_percent") or 0) for u in rep["units"] for f in u.get("functions", [])}
 
 
+def name_map(wt):
+    """report_map's function key (address, or name where there is none) -> the function's name."""
+    try:
+        rep = json.loads((wt / "build/G4SE01/report_honest.json").read_text())
+    except (OSError, ValueError):
+        return {}
+    return {(hex(int(f["metadata"]["virtual_address"])) if (f.get("metadata") or {}).get("virtual_address") else f["name"]): f["name"]
+            for u in rep["units"] for f in u.get("functions", [])}
+
+
 def rule_problem(wt, unit):
     added = [l for l in sh(["git", "diff", "-U0", "--", "src", "include", "libs"], wt).stdout.splitlines()
              if l.startswith("+") and not l.startswith("+++")]
@@ -1645,7 +1655,7 @@ def highlights(since, k=3):
     return kept, len(out_), [t for _, t in sorted(best, reverse=True)[:k]]
 
 
-def publish_once():
+def publish_once(accept_loss=()):
     """Reviewed grind2 work -> matching: fast-forward, full build with SHA-1, no 100 % function lost,
     no new unit out of address order, generator and gate clean, site data, commit, push; grind2 then
     follows matching. Everything on grind2 passed the adversarial review before it was integrated."""
@@ -1673,8 +1683,12 @@ def publish_once():
             return undo("build or SHA-1")
         after = report_map(MAIN) or {}
         lost = [f for (u, f), p in before.items() if p >= 100 and after.get((u, f), 0) < 100]
-        if lost:
-            return undo(f"{len(lost)} matched function(s) lost: {', '.join(lost[:3])}")
+        names = {f: n for f, n in name_map(MAIN).items()} if accept_loss else {}
+        # --accept-loss: the owner named these functions; any other loss still fails the publish.
+        unexpected = [f for f in lost if f not in accept_loss and names.get(f) not in accept_loss]
+        if unexpected:
+            return undo(f"{len(unexpected)} matched function(s) lost: {', '.join(unexpected[:3])}")
+        accepted = [names.get(f, f) for f in lost]
         order1 = set(re.findall(r"game/\w+\.cpp", sh(["python3", "tools/order_check.py"], MAIN).stdout))
         if order1 - order0:
             return undo("out of address order: " + ", ".join(sorted(order1 - order0)[:3]))
@@ -1687,10 +1701,12 @@ def publish_once():
         kept, tricks, top = highlights(last)
         n1 = progress_numbers(MAIN)
         subject = f"site: regenerate data (grind v2: {kept} reviewed changes" + (f", {n1[0] - n0[0]:+d} functions at 100 %" if n0 and n1 else "") + ")"
+        body = ("\n\nLost by the owner's decision (--accept-loss; their matches were tricks the review removed): "
+                + ", ".join(accepted)) if accepted else ""
         r = sh(["python3", "tools/site_data.py", "--subject", subject, "--stage"], MAIN)
         if r.returncode:
             return undo("site_data.py: " + (r.stdout + r.stderr).strip()[-200:])
-        sh(["git", "commit", "-qm", subject], MAIN, check=True)
+        sh(["git", "commit", "-qm", subject + body], MAIN, check=True)
         pushed = sh(["git", "push", "-q", "origin", "matching"], MAIN, timeout=300).returncode == 0
         sh(["git", "merge", "-q", "--ff-only", "matching"], INTEG)
         with open(LOGS / "publish.tsv", "a") as f:
@@ -1706,7 +1722,7 @@ def publish_once():
 def cmd_publish(args):
     while True:
         try:
-            res = publish_once()
+            res = publish_once(tuple(args.accept_loss or ()))
         except Exception as e:
             res = f"error: {e}"
         print(now(), res, flush=True)
@@ -1818,6 +1834,7 @@ def main():
     p.set_defaults(fn=cmd_rejudge)
     p = sub.add_parser("publish")
     p.add_argument("--every", type=int, default=0, help="repeat every N seconds until the workers are gone and nothing is new")
+    p.add_argument("--accept-loss", nargs="+", metavar="FN", help="one-time: these matched functions (mangled name or unit address key) may drop; any other loss still fails")
     p.set_defaults(fn=cmd_publish)
     p = sub.add_parser("watch")
     p.add_argument("--stop", type=float, required=True, help="weekly utilization (0..1) at which everything stops")
