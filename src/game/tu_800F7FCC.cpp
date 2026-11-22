@@ -1231,7 +1231,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     field_0x3c.set(v);
     mPos.add(field_0x3c);
     mAngle += 0x480;
-    mPos.z = 25.0f * __fabsf(JMath::sincosTable_.sinShort((s16)mAngle));
+    mPos.z = 25.0f * JMAAbs(JMath::sincosTable_.sinShort((s16)mAngle));
     if (mPos.z <= 1.5f) {
         startSound_801F0E34(0x50083, 0);
     }
@@ -1290,7 +1290,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
             mSoundTimer = 0;
         }
     }
-    if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
+    if (JMAAbs(field_0x3c.x) < 1.0f && JMAAbs(field_0x3c.y) < 1.0f) {
         JGeometry::TBox2f box(mPos.x - 10.0f, mPos.y - 10.0f, mPos.x + 10.0f, mPos.y + 10.0f);
         fn_80239914(&box, field_0x4, mSerial);
         if (fn_801F2740(-1)) {
@@ -1300,7 +1300,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
     } else {
         fn_801F2B7C(2, -1, 1);
     }
-    if (__fabsf(field_0x3c.x) < 1.0f && __fabsf(field_0x3c.y) < 1.0f) {
+    if (JMAAbs(field_0x3c.x) < 1.0f && JMAAbs(field_0x3c.y) < 1.0f) {
         s32 player = fn_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             JGeometry::TVec3f d(0.0f, 0.0f, 0.0f);
@@ -1394,7 +1394,7 @@ void StoneArrghusChildPuff_8049C678::draw() {
     f32 a = 0.0f;
     f32 b = 0.0f;
     if (mState == 2) {
-        f32 s = __fabsf(JMath::sincosTable_.sinShort((s16)(mAngle + 0x4000)));
+        f32 s = JMAAbs(JMath::sincosTable_.sinShort((s16)(mAngle + 0x4000)));
         a = 0.1f * s;
         b = -0.1f * s;
     }
