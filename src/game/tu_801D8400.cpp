@@ -12,6 +12,10 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
+// Hits before the knock-back state, read by tu_801DD1AC; the first object of
+// this unit's .sdata2 (0x8053F1C8).
+extern const u8 lbl_8053F1C8 = 4;
+
 static inline bool isColumnRight(cls_804A4C58* self) {
     bool right = false;
     if (self->mPos.x < self->field_0x2d4[self->field_0x334].x ||

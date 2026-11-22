@@ -1240,7 +1240,7 @@ config.libs = [
         Object(NonMatching, "game/tu_801D3CBC.cpp"),
         Object(NonMatching, "game/act_vaati_boss.cpp"),
         Object(NonMatching, "game/tu_801D6CEC.cpp"),
-        Object(NonMatching, "game/tu_801D7AFC.cpp"),
+        Object(Matching, "game/tu_801D7AFC.cpp"),
         Object(NonMatching, "game/tu_801D8400.cpp"),
         Object(NonMatching, "game/tu_801DA7C0.cpp"),
         Object(NonMatching, "game/tu_801DAC6C.cpp"),
