@@ -2787,12 +2787,13 @@ void cls_804AF72C::fn_8039ACD0(s16 mode) {
     ch[2] = 0;
     ch[1] = 0;
     ch[0] = 0;
-    s32 frames = lbl_8053AD78->field_0x44;
-    s32 minutes = frames / 3600;
-    s32 seconds = frames / 60 % 60;
-    if (seconds == 0) {
-        seconds = 1;
+    s32 time = lbl_8053AD78->field_0x44;
+    s32 minutes = time / 3600;
+    time = time / 60 % 60;
+    if (time == 0) {
+        time = 1;
     }
+    s32 seconds = time;
     if (mode == 0) {
         if (field_0x2d6 != 0) {
             s32 index = field_0x2cc;
