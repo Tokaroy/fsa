@@ -36,7 +36,7 @@ void HammerShopMinigame_8049C858::init() {
     }
 }
 
-// FIXME(shotgun): 91.30 %, missing/extra + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.96 %, reloc-name; behaviour clean.
 void HammerShopMinigame_8049C858::fn_801003F4() {
     s32 rank = 0;
     u8 used[4] = {0, 0, 0, 0};
@@ -101,7 +101,7 @@ inline void HammerShopMinigame_8049C858::facePlayer_inline() {
     }
 }
 
-// FIXME(shotgun): 95.84 %, missing/extra; behaviour near.
+// FIXME(shotgun): 95.85 %, missing/extra; behaviour near.
 void HammerShopMinigame_8049C858::update() {
     JGeometry::TVec3f msgPos = mPos;
     msgPos.y -= 50.0f;
