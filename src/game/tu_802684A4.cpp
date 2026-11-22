@@ -12,6 +12,13 @@
 #include "game/Effect.h"
 #include "game/PlayerBit.h"
 
+// The file spawns through one helper of its own: its arguments are evaluated before
+// getActorManager_801F856C is called (docs/analysis/INLINE_LEADS.md, round 2).
+static inline s32 spawnActor(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 param, s32 arg_0x16c,
+                             s32 arg_0x110) {
+    return getActorManager_801F856C()->spawnActor_801F9484(id, layer, pos, param, arg_0x16c, arg_0x110);
+}
+
 // One step of 16 along each facing (0: +x, 1: -x, 2: +y, 3: -y).
 static const Vec lbl_8046B998[4] = {
     {16.0f, 0.0f, 0.0f}, {-16.0f, 0.0f, 0.0f}, {0.0f, 16.0f, 0.0f}, {0.0f, -16.0f, 0.0f},
@@ -461,7 +468,7 @@ static inline void ledgeOrFloor(cls_804A71A8* p) {
 static inline void breakEffect(cls_804A71A8* p) {
     s32 layer = p->field_0x4->field_0x3b4;
     if (layer >= 8) {
-        getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, &p->field_0x8, 0, -1, -1);
+        spawnActor(ACTOR_KMRI, layer, &p->field_0x8, 0, -1, -1);
     } else {
         spawnEmitter_8013CC50(layer, &p->field_0x8, 0xF9, 1, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(p->field_0x4->field_0x3b4, &p->field_0x8, 0xFA, 1, 0, NULL, NULL, true, 1.0f);
@@ -577,7 +584,7 @@ static inline void pushOrTurn(cls_804A71A8* self) {
         JGeometry::TVec3f pos = self->field_0x8;
         pos.z = 0.0f;
         s32 dir = self->field_0x4->getFacing();
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLCK, self->field_0x4->field_0x3b4, &pos, (dir & 3) << 2, -1, -1);
+        s32 serial = spawnActor(ACTOR_BLCK, self->field_0x4->field_0x3b4, &pos, (dir & 3) << 2, -1, -1);
         if (fn_8022461C(&pos, self->field_0x4->field_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
             self->field_0x4->field_0xd94 = serial;
         }
@@ -591,9 +598,6 @@ void cls_804A71A8::fn_8026EE60() {
     pushOrTurn(this);
 }
 
-// FIXME: 99.87 %, regalloc-only; behaviour clean.
-// Regalloc only, as fn_8026EE60 (the serial in r28 where the original
-// reuses the facing's r29).
 void cls_804A71A8::fn_8026EC88(s32 player) {
     field_0xac = 1;
     if (player != field_0x4->fn_80240868()) {
@@ -602,8 +606,8 @@ void cls_804A71A8::fn_8026EC88(s32 player) {
         JGeometry::TVec3f pos = field_0x8;
         pos.z = 0.0f;
         s32 dir = field_0x4->getFacing();
-        s32 serial = getActorManager_801F856C()->spawnActor_801F9484(ACTOR_BLCK, field_0x4->field_0x3b4, &pos,
-                                                (dir & 3) << 2 | ((player + 1) & 7) << 4, -1, -1);
+        s32 serial = spawnActor(ACTOR_BLCK, field_0x4->field_0x3b4, &pos,
+                                (dir & 3) << 2 | ((player + 1) & 7) << 4, -1, -1);
         if (fn_8022461C(&pos, field_0x4->field_0x3b4) != 0x50 && getActorManager_801F856C()->findActorBySerial_801F666C(serial) != NULL) {
             field_0x4->field_0xd94 = serial;
         }

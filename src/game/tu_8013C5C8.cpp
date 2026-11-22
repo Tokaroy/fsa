@@ -14,6 +14,13 @@
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/J2D/J2DGrafContext.h"
 
+// The file spawns through one helper of its own: its arguments are evaluated before
+// getActorManager_801F856C is called (docs/analysis/INLINE_LEADS.md, round 2).
+static inline s32 spawnActor(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 param, s32 arg_0x16c,
+                             s32 arg_0x110) {
+    return getActorManager_801F856C()->spawnActor_801F9484(id, layer, pos, param, arg_0x16c, arg_0x110);
+}
+
 // The ten file names fn_8013DDEC indexes (five claw textures with their dummy
 // generators, 0x8049F118 in .data).
 const char* lbl_8049F118[10] = {
@@ -465,22 +472,22 @@ JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u
             // Other layers: helper actors for a few ids.
             switch (id) {
             case 0x172:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, pos, 0, -1, -1);
+                spawnActor(ACTOR_KMRI, layer, pos, 0, -1, -1);
                 break;
             case 0x33A:
             case 0x33B:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_KMRI, layer, pos, 2, -1, -1);
+                spawnActor(ACTOR_KMRI, layer, pos, 2, -1, -1);
                 break;
             case 0x19D:
             case 0x24A:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_DMGE, layer, pos, 0, -1, -1);
+                spawnActor(ACTOR_DMGE, layer, pos, 0, -1, -1);
                 break;
             case 0x174: case 0x175: case 0x176: case 0x177: case 0x178: case 0x179: case 0x17C:
             case 0x473:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_DMGE, layer, pos, 1, -1, -1);
+                spawnActor(ACTOR_DMGE, layer, pos, 1, -1, -1);
                 break;
             case 0xFF:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_DMGE, layer, pos, 0x80, -1, -1);
+                spawnActor(ACTOR_DMGE, layer, pos, 0x80, -1, -1);
                 break;
             case 0x116:
             case 0x24E: case 0x24F: case 0x250: case 0x251:
@@ -490,10 +497,10 @@ JPABaseEmitter* spawnEmitter_8013CC50(s32 layer, const JGeometry::TVec3f* pos, u
                 break;
             case 0x15B:
             case 0x3D0:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, layer, pos, 0x2C, -1, 0);
+                spawnActor(ACTOR_PEFF, layer, pos, 0x2C, -1, 0);
                 break;
             case 0x3CF:
-                getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, layer, pos, 0x34, -1, 0);
+                spawnActor(ACTOR_PEFF, layer, pos, 0x34, -1, 0);
                 break;
             }
         }
@@ -597,9 +604,8 @@ EffectSystem_8049F178* getEffectSystem_8013C824() {
     return gGameRoot2_8053AB10->field_0x28;
 }
 
-// FIXME: 99.53. regalloc-only: the original keeps the 'PEFF' arguments of case 0 in r29-r31
-// (reusing r31 once `this` is dead; here r28-r30). The early-outs are two returns: the mode
-// tests as one condition (bne over a `b` to the end), then field_0x94.
+// The early-outs are two returns: the mode tests as one condition (bne over a `b` to the
+// end), then field_0x94.
 void cls_8049F140::execute(JPABaseEmitter* emitter) {
     if (emitter->checkStatus(1)) {
         return;
@@ -616,15 +622,15 @@ void cls_8049F140::execute(JPABaseEmitter* emitter) {
     case 0:
         if (field_0xc >= 8) {
             field_0xc = 0;
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, getPlayerLayer_8023DE58(field_0x4), getPlayerPos_8023E724(field_0x4),
-                                       field_0x4 & 3, -1, field_0x4);
+            spawnActor(ACTOR_PEFF, getPlayerLayer_8023DE58(field_0x4), getPlayerPos_8023E724(field_0x4),
+                       field_0x4 & 3, -1, field_0x4);
         }
         break;
     case 1:
         if (field_0xc >= 8) {
             field_0xc = 0;
-            getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, getPlayerLayer_8023DE58(field_0x4), getPlayerPos_8023E724(field_0x4),
-                                       (field_0x4 & 3) | 0x30, -1, field_0x4);
+            spawnActor(ACTOR_PEFF, getPlayerLayer_8023DE58(field_0x4), getPlayerPos_8023E724(field_0x4),
+                       (field_0x4 & 3) | 0x30, -1, field_0x4);
         }
         break;
     }
