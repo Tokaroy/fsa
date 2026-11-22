@@ -614,25 +614,25 @@ void Player_804A6F38::fn_802870C8() {
             }
             field_0x1202 = false;
             field_0xb78 = false;
-            field_0x35c.z = 0.0f;
+            mPushVel_0x35c.z = 0.0f;
             if (fn_80241380() || mState_0x1240 == 8 || mState_0x1240 == 0x37) {
-                mPos += field_0x35c;
-                if (PSVECMag(&field_0x35c) > 2.0f) {
-                    field_0x35c.scale(0.95f);
+                mPos += mPushVel_0x35c;
+                if (PSVECMag(&mPushVel_0x35c) > 2.0f) {
+                    mPushVel_0x35c.scale(0.95f);
                 } else {
-                    field_0x35c.scale(0.9f);
+                    mPushVel_0x35c.scale(0.9f);
                 }
             } else if (mState_0x1240 == 0x12 || mState_0x1240 == 0x15 || mState_0x1240 == 0x16 ||
                        mState_0x1240 == 0x17 || mState_0x1240 == 0x18) {
-                mPos += field_0x35c;
-                field_0x35c.scale(0.6f);
+                mPos += mPushVel_0x35c;
+                mPushVel_0x35c.scale(0.6f);
             } else {
-                field_0x35c.scale(0.9f);
+                mPushVel_0x35c.scale(0.9f);
             }
-            if (PSVECMag(&field_0x35c) < 0.2f) {
-                field_0x35c.x = 0.0f;
-                field_0x35c.y = 0.0f;
-                field_0x35c.z = 0.0f;
+            if (PSVECMag(&mPushVel_0x35c) < 0.2f) {
+                mPushVel_0x35c.x = 0.0f;
+                mPushVel_0x35c.y = 0.0f;
+                mPushVel_0x35c.z = 0.0f;
             }
 
             switch (mState_0x1240) {
@@ -1054,16 +1054,16 @@ void Player_804A6F38::fn_802870C8() {
 
     if (fn_8025F418()) {
         if (fn_8022D75C(mHeldPlayer_0xd70) && fn_80234E30(mHeldPlayer_0xd70)) {
-            field_0xca0 = 0;
+            mAlpha_0xca0 = 0;
         } else {
-            field_0xca0 = fn_8023BCD4(mHeldPlayer_0xd70);
+            mAlpha_0xca0 = fn_8023BCD4(mHeldPlayer_0xd70);
         }
     } else if (!fn_8024BBB0()) {
         if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
             fn_80265D8C();
         } else if (fn_80240808() && fn_8022D75C(fn_80240644()) && fn_8022D498(fn_80240644()) != 0x27 &&
                    !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
-            field_0xca0 = 0;
+            mAlpha_0xca0 = 0;
         } else if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(fn_80240644()) &&
                    !fn_80236B50(fn_80240644()) && !fn_80270A8C()) {
             fn_80265D68();
@@ -1387,7 +1387,7 @@ void Player_804A6F38::fn_80285F44() {
             } else {
                 fn_8024F0E8(0x2001F);
             }
-            if (mState_0x1240 != 4 || field_0x45c != 4) {
+            if (mState_0x1240 != 4 || mAttackKind_0x45c != 4) {
                 JGeometry::TVec3f pos = mPos;
                 pos.y += 6.0f;
                 if (!fn_8024B24C() && (tile == 0xE || (fn_802DEB58() && fn_80225BE4(&mPos, getLayer()))) &&

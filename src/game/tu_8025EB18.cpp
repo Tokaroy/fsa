@@ -314,7 +314,7 @@ void Player_804A6F38::fn_80263BA0() {
 // Update of state 0x15 (with the held thing): poses 0-4 over 22 frames, then state 0x12;
 // at frame 11 a held thief ('TZOK') gets fn_80206168; at pose 2 the tile under the held
 // thing (fn_802A3164) triggers its vfunc_0x48; when it can be put down (fn_8025EB18)
-// the pose goes back to 1 and field_0x35c is turned against the facing as in 0x18.
+// the pose goes back to 1 and mPushVel_0x35c is turned against the facing as in 0x18.
 void Player_804A6F38::fn_80263860() {
     mStateTimer_0x3fc++;
     if (mStateTimer_0x3fc < 8) {
@@ -357,12 +357,12 @@ void Player_804A6F38::fn_80263860() {
         const Vec& back = lbl_8046B310[mSubPose_0x3fd + mFacing_0x3dc * 5];
         mHeldPos_0x2f4.set(back.x, back.y, back.z);
         mHeldPos_0x2f4 += mPos;
-        if (field_0x35c.length() < 1.0f) {
+        if (mPushVel_0x35c.length() < 1.0f) {
             const Vec& dir = lbl_8046B310[mFacing_0x3dc * 5 + 2];
-            field_0x35c.set(dir.x, dir.y, dir.z);
-            field_0x35c.z = 0.0f;
-            field_0x35c.normalize();
-            field_0x35c.scale(-1.0f);
+            mPushVel_0x35c.set(dir.x, dir.y, dir.z);
+            mPushVel_0x35c.z = 0.0f;
+            mPushVel_0x35c.normalize();
+            mPushVel_0x35c.scale(-1.0f);
         }
     }
     fn_80268B3C();
@@ -437,7 +437,7 @@ void Player_804A6F38::fn_802635C8() {
 
 // Update of state 0x18, the put-down: poses 0-2 over 11 frames, then 3 (4 for a held
 // player); at frame 12 state 0, letting go in place (an actor gets speed 0); the held
-// thing follows lbl_8046B580, and when it can be put down (fn_8025EB18) and field_0x35c
+// thing follows lbl_8046B580, and when it can be put down (fn_8025EB18) and mPushVel_0x35c
 // is shorter than 1 it becomes a unit vector against the facing (pose 3's offset, flat).
 void Player_804A6F38::fn_802632A8() {
     mStateTimer_0x3fc++;
@@ -476,12 +476,12 @@ void Player_804A6F38::fn_802632A8() {
     const Vec& offset = lbl_8046B580[mSubPose_0x3fd + mFacing_0x3dc * 5];
     mHeldPos_0x2f4.set(offset.x, offset.y, offset.z);
     mHeldPos_0x2f4 += mPos;
-    if (fn_8025EB18() && field_0x35c.length() < 1.0f) {
+    if (fn_8025EB18() && mPushVel_0x35c.length() < 1.0f) {
         const Vec& dir = lbl_8046B580[mFacing_0x3dc * 5 + 3];
-        field_0x35c.set(dir.x, dir.y, dir.z);
-        field_0x35c.z = 0.0f;
-        field_0x35c.normalize();
-        field_0x35c.scale(-1.0f);
+        mPushVel_0x35c.set(dir.x, dir.y, dir.z);
+        mPushVel_0x35c.z = 0.0f;
+        mPushVel_0x35c.normalize();
+        mPushVel_0x35c.scale(-1.0f);
     }
     fn_80268B3C();
 }
@@ -493,8 +493,8 @@ void Player_804A6F38::fn_802632A4() {}
 // f1 / f2); with the byte compared directly (cmplwi, not the original's cmpwi) they match.
 // Enter of state 0x13 (tu_80285E58's dispatch; update fn_80262BAC, the cucco glide): with
 // a held cucco ('NIWA') whose field_0x2a1 is 1, probe 16-steps along mVel_0x344.x inside the view box for the second tile 0x10-0x17; found,
-// field_0x324 becomes the point one step further on (fn_80262BAC glides toward its x);
-// else the player is put at field_0x324.y. Faces along mVel_0x344.x.
+// mGlideTarget_0x324 becomes the point one step further on (fn_80262BAC glides toward its x);
+// else the player is put at mGlideTarget_0x324.y. Faces along mVel_0x344.x.
 void Player_804A6F38::fn_80263078() {
     fn_8028414C();
     if (mHeldActorId_0xd6c == ACTOR_NIWA && !field_0x441) {
@@ -526,18 +526,18 @@ void Player_804A6F38::fn_80263078() {
                 } else {
                     pos.x -= 16.0f;
                 }
-                field_0x324.x = pos.x;
-                field_0x324.y = pos.y;
+                mGlideTarget_0x324.x = pos.x;
+                mGlideTarget_0x324.y = pos.y;
                 mVel_0x344.z = 2.0f;
             } else {
                 mVel_0x344.z = 2.0f;
-                mPos.z = field_0x324.y - mPos.y;
-                mPos.y = field_0x324.y;
+                mPos.z = mGlideTarget_0x324.y - mPos.y;
+                mPos.y = mGlideTarget_0x324.y;
             }
         } else {
             mVel_0x344.z = 2.0f;
-            mPos.z = field_0x324.y - mPos.y;
-            mPos.y = field_0x324.y;
+            mPos.z = mGlideTarget_0x324.y - mPos.y;
+            mPos.y = mGlideTarget_0x324.y;
         }
         if (mVel_0x344.x > 0.0f) {
             mFacing_0x3dc = 0;
@@ -551,21 +551,21 @@ void Player_804A6F38::fn_80263078() {
 
 // FIXME: 99.23 %, missing/extra; behaviour near.
 // Two lfs missing: the original reloads mPos.x for the 0.5 steps after
-// computing field_0x324.x - mPos.x; ours reuses the register.
+// computing mGlideTarget_0x324.x - mPos.x; ours reuses the register.
 // Update of state 0x13 (the fall while carrying, mVel_0x344 the speed): a cucco ('NIWA') is
-// carried gliding: the player moves 0.5 a frame toward field_0x324.x, bobbing with the
+// carried gliding: the player moves 0.5 a frame toward mGlideTarget_0x324.x, bobbing with the
 // distance, else falls and lands back in 0x12; anything else falls at 0.25 (0.17 down to
-// -6 while 0x43F / 0x441, floating at 8 below field_0x324.y), with the carry walk cycle
+// -6 while 0x43F / 0x441, floating at 8 below mGlideTarget_0x324.y), with the carry walk cycle
 // at lbl_8046B790 / lbl_8046B7B0 (fn_8026152C's) and sounds 0x1000D / 0x2003E when 0x440.
 void Player_804A6F38::fn_80262BAC() {
     if (mHeldActorId_0xd6c == ACTOR_NIWA && !field_0x441) {
-        f32 dx = field_0x324.x - mPos.x;
+        f32 dx = mGlideTarget_0x324.x - mPos.x;
         if (dx >= 0.5f) {
             mPos.x += 0.5f;
         } else if (dx <= -0.5f) {
             mPos.x -= 0.5f;
         } else if (0.0f != dx) {
-            mPos.x = field_0x324.x;
+            mPos.x = mGlideTarget_0x324.x;
         }
         if (0.0f != dx) {
             mVel_0x344.z -= 0.25f;
@@ -604,7 +604,7 @@ void Player_804A6F38::fn_80262BAC() {
             mVel_0x344.z -= 0.25f;
         }
         if (mPos.z <= 0.0f) {
-            if ((field_0x43f || field_0x441) && mPos.y < field_0x324.y) {
+            if ((field_0x43f || field_0x441) && mPos.y < mGlideTarget_0x324.y) {
                 mPos.z = 8.0f;
             } else {
                 mPos.z = 0.0f;

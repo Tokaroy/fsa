@@ -82,7 +82,7 @@ void Player_804A6F38::fn_80267ECC() {
         fn_80268194();
         return;
     }
-    switch (field_0x45c) {
+    switch (mAttackKind_0x45c) {
     case 0:
         setFacingFrame(this, 0x20, 0x27, 0x2E, 0x35);
         break;
@@ -221,7 +221,7 @@ void Player_804A6F38::fn_80267818() {
 }
 
 void Player_804A6F38::fn_80267748() {
-    if (field_0xb84 && mPose_0x3fb >= 5) {
+    if (mButtonHeld_0xb84 && mPose_0x3fb >= 5) {
         setFacingFrame(this, 0x1D2, 0x1D6, 0x1DA, 0x1E1);
         mCel_0x3c4 += mWalkFrame_0x3f9;
     } else {
@@ -316,13 +316,13 @@ void Player_804A6F38::fn_80265E88() {
     }
     if (field_0x456 == 1) {
         mCel_0x3c4 = field_0x450;
-        field_0xca0 = field_0xca2;
+        mAlpha_0xca0 = field_0xca2;
         field_0x456 = 0;
         return;
     }
     if (fn_802413E8()) {
         mCel_0x3c4 = field_0x450;
-        field_0xca0 = field_0xca2;
+        mAlpha_0xca0 = field_0xca2;
         return;
     }
     if (!fn_80241230() && field_0x488 == 0 && (field_0x464 & 2) == 2) {
@@ -697,19 +697,19 @@ void Player_804A6F38::fn_80265DB0() {
 
 // Fades it back in, 8 a frame, up to 0xFF.
 void Player_804A6F38::fn_80265D8C() {
-    if (field_0xca0 <= 0xF7) {
-        field_0xca0 += 8;
+    if (mAlpha_0xca0 <= 0xF7) {
+        mAlpha_0xca0 += 8;
     } else {
-        field_0xca0 = 0xFF;
+        mAlpha_0xca0 = 0xFF;
     }
 }
 
-// Fades the body sprite out (field_0xca0, the alpha fn_802413F0 tests), 8 a frame.
+// Fades the body sprite out (mAlpha_0xca0, the alpha fn_802413F0 tests), 8 a frame.
 void Player_804A6F38::fn_80265D68() {
-    if (field_0xca0 >= 8) {
-        field_0xca0 -= 8;
+    if (mAlpha_0xca0 >= 8) {
+        mAlpha_0xca0 -= 8;
     } else {
-        field_0xca0 = 0;
+        mAlpha_0xca0 = 0;
     }
 }
 
@@ -805,7 +805,7 @@ void Player_804A6F38::fn_80264998() {
         shadowParams.field_0x1d = -2;
         JGeometry::TVec3f pos;
         if (fn_80240DAC()) {
-            pos.set(mPos.x, field_0x324.y - 0.01f, -5.0f);
+            pos.set(mPos.x, mGlideTarget_0x324.y - 0.01f, -5.0f);
             shadowParams.field_0x1d += 2;
         } else {
             pos.set(mPos.x, mPos.y - 0.01f, -5.0f);
@@ -855,7 +855,7 @@ void Player_804A6F38::fn_80264998() {
             if (layer >= 8 && !viewLayerFlag(layer)) {
                 JGeometry::TVec3f groundPos;
                 if (fn_80240DAC()) {
-                    groundPos.set(mPos.x, field_0x324.y - 0.01f, 0.0f);
+                    groundPos.set(mPos.x, mGlideTarget_0x324.y - 0.01f, 0.0f);
                 } else {
                     groundPos.set(mPos.x, mPos.y - 0.01f, 0.0f);
                 }

@@ -22,7 +22,7 @@ inline bool playerFlags_802413F0(const Player_804A6F38* player) {
     if (player->field_0x1215) {
         return false;
     }
-    if (!player->field_0xca0) {
+    if (!player->mAlpha_0xca0) {
         return false;
     }
     return player->field_0xce9 != 0;
@@ -44,7 +44,7 @@ inline bool playerFlagsGate(const Player_804A6F38* player) {
     if (player->field_0x1215) {
         return false;
     }
-    if (!player->field_0xca0) {
+    if (!player->mAlpha_0xca0) {
         return false;
     }
     if (!player->field_0xce9) {

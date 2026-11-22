@@ -400,7 +400,7 @@ void Player_804A6F38::fn_80254744() {
     }
     mPrevCel_0x3c6 = mCel_0x3c4;
     field_0x458 = 0;
-    field_0x45c = 0;
+    mAttackKind_0x45c = 0;
     field_0x43d = 0;
     field_0x3d8 = 0;
     field_0x3d9 = 0;
@@ -413,7 +413,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x468 = 0;
     field_0x46c = 0;
     field_0x470 = 0;
-    field_0x474.set(0.0f, 0.0f, 0.0f);
+    mJoltOffset_0x474.set(0.0f, 0.0f, 0.0f);
     field_0x484 = 0;
     field_0x480 = 0;
     field_0x488 = 0;
@@ -440,9 +440,9 @@ void Player_804A6F38::fn_80254744() {
     field_0xcf0 = 0;
     mVel_0x344.set(0.0f, 0.0f, 0.0f);
     field_0x350.set(0.0f, 0.0f, 0.0f);
-    field_0x35c.set(0.0f, 0.0f, 0.0f);
+    mPushVel_0x35c.set(0.0f, 0.0f, 0.0f);
     field_0xd78.set(0.0f, 0.0f, 0.0f);
-    field_0x414.set(0.0f, 0.0f, 0.0f);
+    mConveyorVel_0x414.set(0.0f, 0.0f, 0.0f);
     field_0x420.set(0.0f, 0.0f, 0.0f);
     mKeptVel_0x368.set(0.0f, 0.0f, 0.0f);
     field_0x38c = 0.0f;
@@ -490,13 +490,13 @@ void Player_804A6F38::fn_80254744() {
     }
     field_0x1170 = 0;
     for (int i = 0; i < 3; i++) {
-        field_0xb00[i] = -1;
+        mArrowSerials_0xb00[i] = -1;
         field_0xb40[i] = -1;
     }
     field_0xb7c = -1;
     field_0xb74 = 0;
     for (int i = 0; i < 3; i++) {
-        field_0xb0c[i] = -1;
+        mSlingshotSerials_0xb0c[i] = -1;
         field_0xb4c[i] = -1;
     }
     field_0xb80 = -1;
@@ -509,7 +509,7 @@ void Player_804A6F38::fn_80254744() {
         field_0xb5c[i] = -1;
     }
     field_0xb78 = false;
-    field_0xb28 = -1;
+    mFireSerial_0xb28 = -1;
     field_0xb2c = -1;
     field_0xbb8 = 0;
     field_0xb38 = -1;
@@ -535,23 +535,23 @@ void Player_804A6F38::fn_80254744() {
     field_0xbac = 0;
     field_0xb79 = 0;
     field_0x1204 = 0;
-    field_0xca0 = 0xff;
+    mAlpha_0xca0 = 0xff;
     field_0xca1 = 0xff;
     field_0xca2 = 0xff;
     mFlashTimer_0xca8 = 0;
     field_0x1264 = 0;
     field_0x11dc = 0;
-    field_0x1274 = NULL;
-    field_0x128c = NULL;
+    mChargeEmitter_0x1274 = NULL;
+    mChargeEmitter_0x128c = NULL;
     field_0x12b0 = NULL;
     field_0x12b4 = NULL;
     field_0x12b8 = NULL;
     field_0x12bc = NULL;
-    field_0x12c0 = -1;
+    mChargeEffectSerial_0x12c0 = -1;
     field_0x12c4 = NULL;
     field_0x12c8 = NULL;
-    field_0x12cc = NULL;
-    field_0x12e4 = NULL;
+    mItemChargeEmitter_0x12cc = NULL;
+    mItemChargeEmitter_0x12e4 = NULL;
     field_0x1308 = NULL;
     field_0x132c = NULL;
     field_0x1350 = NULL;
@@ -568,7 +568,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x137c = NULL;
     field_0x1380 = NULL;
     field_0x1384 = NULL;
-    field_0x1388 = NULL;
+    mGroupSpotEmitter_0x1388 = NULL;
     field_0x138c = NULL;
     field_0x1390 = NULL;
     field_0x1394 = NULL;
@@ -603,8 +603,8 @@ void Player_804A6F38::fn_80254744() {
     field_0xd5c = 0;
     field_0x11fc = -1;
     field_0x460 = false;
-    field_0xb84 = false;
-    field_0x11b4 = mPos;
+    mButtonHeld_0xb84 = false;
+    mSpinCenter_0x11b4 = mPos;
     mSpinAngle_0x11c0 = 0;
     field_0xcee = 0;
     field_0xcef = 0;
@@ -658,7 +658,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x44c = 0;
     field_0x13b8 = 0;
     field_0xd84 = 0;
-    field_0x11f0 = 0;
+    mInputLockTimer_0x11f0 = 0;
     field_0x11e8 = 0;
     if (fn_802DEBF8()) {
         field_0x121e = 1;
@@ -814,8 +814,8 @@ void Player_804A6F38::fn_80253E6C() {
     if (field_0x1234 == 1 && lbl_8053AD30->fn_80309D90(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec)) > 0.0f) {
         field_0x1234 = 0;
     }
-    if (field_0x11f0 > 0) {
-        field_0x11f0--;
+    if (mInputLockTimer_0x11f0 > 0) {
+        mInputLockTimer_0x11f0--;
     }
     if (field_0x13b8) {
         gGameRoot2_8053AB10->field_0x20->field_0x216 = 1;
@@ -1124,7 +1124,7 @@ void Player_804A6F38::fn_80252F50(s32 arg) {
 }
 
 JGeometry::TVec3f* Player_804A6F38::fn_80252F48() {
-    return &field_0x11b4;
+    return &mSpinCenter_0x11b4;
 }
 
 void Player_804A6F38::fn_80252F40(s32 arg) {
@@ -2432,7 +2432,7 @@ bool Player_804A6F38::fn_8024D98C() {
     return true;
 }
 
-// Restarts the group-spot marker of a leader (field_0x1388): not in GameRoot
+// Restarts the group-spot marker of a leader (mGroupSpotEmitter_0x1388): not in GameRoot
 // mode 0x7E, for a group in modes 0-3 (not 4 / 5); clears field_0x121d and
 // spawns effect 0x35E / 0x360 / 0x35F / 0x361 by mode at the spot
 // fn_8027F1C8 also uses (beside the group by 8 a place in modes 0 / 1,
@@ -2452,7 +2452,7 @@ void Player_804A6F38::fn_8024D134() {
         return;
     }
     field_0x121d = false;
-    deleteEmitter(&field_0x1388);
+    deleteEmitter(&mGroupSpotEmitter_0x1388);
     JGeometry::TVec3f pos;
     pos.set(mPos);
     pos.z = 0.0f;
@@ -2469,7 +2469,7 @@ void Player_804A6F38::fn_8024D134() {
         break;
     case 3:
         if (fn_80241284()) {
-            pos.set(field_0x11b4);
+            pos.set(mSpinCenter_0x11b4);
         } else {
             switch (mPlayerNo_0x4) {
             case 0:
@@ -2490,16 +2490,16 @@ void Player_804A6F38::fn_8024D134() {
     }
     switch (fn_802486A0()) {
     case 0:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 1:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 2:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 3:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
         break;
     }
 }
@@ -2516,7 +2516,7 @@ bool Player_804A6F38::fn_8024D058(u8 reset) {
         field_0x454 = false;
     }
     field_0xd74 = 10;
-    field_0x11f0 = 10;
+    mInputLockTimer_0x11f0 = 10;
     fn_8024D134();
     return true;
 }
@@ -2961,15 +2961,15 @@ bool Player_804A6F38::fn_8024B108(s32 frames) {
             field_0x1230 = -1;
         } else if (field_0x121f == true) {
             field_0x121f = false;
-            if (field_0x11f0 < 5) {
-                field_0x11f0 = 5;
+            if (mInputLockTimer_0x11f0 < 5) {
+                mInputLockTimer_0x11f0 = 5;
             }
         }
         fn_80248004(4, false);
-        if (field_0x1388 != NULL) {
+        if (mGroupSpotEmitter_0x1388 != NULL) {
             JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
-            manager->forceDeleteEmitter(field_0x1388);
-            field_0x1388 = NULL;
+            manager->forceDeleteEmitter(mGroupSpotEmitter_0x1388);
+            mGroupSpotEmitter_0x1388 = NULL;
         }
         return true;
     }
@@ -3139,12 +3139,12 @@ void Player_804A6F38::fn_8024909C() {
 }
 
 // Clears field_0x121f (set by fn_8024909C; update B skips while it is set)
-// and holds field_0x11f0 at 5 or more.
+// and holds mInputLockTimer_0x11f0 at 5 or more.
 void Player_804A6F38::fn_80249070() {
     if (field_0x121f == 1) {
         field_0x121f = 0;
-        if (field_0x11f0 < 5) {
-            field_0x11f0 = 5;
+        if (mInputLockTimer_0x11f0 < 5) {
+            mInputLockTimer_0x11f0 = 5;
         }
     }
 }
@@ -3724,7 +3724,7 @@ bool Player_804A6F38::fn_802466B4() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x200) != 0;
@@ -3740,7 +3740,7 @@ bool Player_804A6F38::fn_80246464() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x200) != 0;
@@ -3753,7 +3753,7 @@ bool Player_804A6F38::fn_80246228() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x100) != 0;
@@ -3766,7 +3766,7 @@ bool Player_804A6F38::fn_80245FEC() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x100) != 0;
@@ -3779,7 +3779,7 @@ bool Player_804A6F38::fn_80245DB0() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x100) != 0;
@@ -3792,7 +3792,7 @@ bool Player_804A6F38::fn_80245B74() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309A78(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x100) != 0;
@@ -3805,7 +3805,7 @@ bool Player_804A6F38::fn_80245938() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x20) != 0;
@@ -3818,7 +3818,7 @@ bool Player_804A6F38::fn_802456FC() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309D24(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x20) != 0;
@@ -3831,7 +3831,7 @@ bool Player_804A6F38::fn_802454C0() {
     if (field_0x456) {
         return false;
     }
-    if (field_0x11f0 > 0) {
+    if (mInputLockTimer_0x11f0 > 0) {
         return false;
     }
     return lbl_8053AD30->fn_80309A54(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec), 0x20) != 0;
@@ -3940,51 +3940,51 @@ bool Player_804A6F38::fn_80243194(s32 other) {
     return fn_8022E438(mPlayerNo_0x4, other);
 }
 
-// Conveyor tiles: the tile under mPos (fn_80226850) pushes field_0x414 by
+// Conveyor tiles: the tile under mPos (fn_80226850) pushes mConveyorVel_0x414 by
 // 0.05 (tiles 0xB4-0xB7, speed up to 0.5) or 0.15 (0x95-0x98, up to 2.0)
 // along +x / -x / +y / -y; off them the push slows by 0.05 a frame. The
 // push is added to mPos.
 void Player_804A6F38::fn_80242DAC() {
     u16 tile = fn_80226850(&mPos, mLayer_0x3b4);
     if (tile == 0xb7) {
-        field_0x414.x += 0.05f;
+        mConveyorVel_0x414.x += 0.05f;
     } else if (tile == 0xb6) {
-        field_0x414.x -= 0.05f;
+        mConveyorVel_0x414.x -= 0.05f;
     } else if (tile == 0xb5) {
-        field_0x414.y += 0.05f;
+        mConveyorVel_0x414.y += 0.05f;
     } else if (tile == 0xb4) {
-        field_0x414.y -= 0.05f;
+        mConveyorVel_0x414.y -= 0.05f;
     } else if (tile == 0x98) {
-        field_0x414.x += 0.15f;
+        mConveyorVel_0x414.x += 0.15f;
     } else if (tile == 0x97) {
-        field_0x414.x -= 0.15f;
+        mConveyorVel_0x414.x -= 0.15f;
     } else if (tile == 0x96) {
-        field_0x414.y += 0.15f;
+        mConveyorVel_0x414.y += 0.15f;
     } else if (tile == 0x95) {
-        field_0x414.y -= 0.15f;
+        mConveyorVel_0x414.y -= 0.15f;
     } else {
-        f32 speed = PSVECMag(&field_0x414);
+        f32 speed = PSVECMag(&mConveyorVel_0x414);
         speed -= 0.05f;
         if (speed <= 0.0f) {
-            field_0x414.set(0.0f, 0.0f, 0.0f);
+            mConveyorVel_0x414.set(0.0f, 0.0f, 0.0f);
         } else {
-            field_0x414.normalize();
-            field_0x414.scale(speed);
+            mConveyorVel_0x414.normalize();
+            mConveyorVel_0x414.scale(speed);
         }
-        mPos += field_0x414;
+        mPos += mConveyorVel_0x414;
         return;
     }
-    f32 speed = PSVECMag(&field_0x414);
+    f32 speed = PSVECMag(&mConveyorVel_0x414);
     if (tile == 0x98 || tile == 0x97 || tile == 0x96 || tile == 0x95) {
         if (speed >= 2.0f) {
-            field_0x414.normalize();
-            field_0x414.scale(2.0f);
+            mConveyorVel_0x414.normalize();
+            mConveyorVel_0x414.scale(2.0f);
         }
     } else if (speed >= 0.5f) {
-        field_0x414.normalize();
-        field_0x414.scale(0.5f);
+        mConveyorVel_0x414.normalize();
+        mConveyorVel_0x414.scale(0.5f);
     }
-    mPos += field_0x414;
+    mPos += mConveyorVel_0x414;
 }
 
 // Clears field_0x43e (set to 1) for a player standing or walking (states
@@ -4173,16 +4173,16 @@ const JGeometry::TVec2f* Player_804A6F38::fn_802422C4() {
 // Deletes all of the player's emitters (0x1274-0x1394; 0x135C-0x1370 in the
 // original's order).
 void Player_804A6F38::fn_80241E64() {
-    deleteEmitter(&field_0x1274);
-    deleteEmitter(&field_0x128c);
+    deleteEmitter(&mChargeEmitter_0x1274);
+    deleteEmitter(&mChargeEmitter_0x128c);
     deleteEmitter(&field_0x12b0);
     deleteEmitter(&field_0x12b4);
     deleteEmitter(&field_0x12b8);
     deleteEmitter(&field_0x12bc);
     deleteEmitter(&field_0x12c4);
     deleteEmitter(&field_0x12c8);
-    deleteEmitter(&field_0x12cc);
-    deleteEmitter(&field_0x12e4);
+    deleteEmitter(&mItemChargeEmitter_0x12cc);
+    deleteEmitter(&mItemChargeEmitter_0x12e4);
     deleteEmitter(&field_0x1308);
     deleteEmitter(&field_0x132c);
     deleteEmitter(&field_0x1350);
@@ -4199,7 +4199,7 @@ void Player_804A6F38::fn_80241E64() {
     deleteEmitter(&field_0x137c);
     deleteEmitter(&field_0x1380);
     deleteEmitter(&field_0x1384);
-    deleteEmitter(&field_0x1388);
+    deleteEmitter(&mGroupSpotEmitter_0x1388);
     deleteEmitter(&field_0x138c);
     deleteEmitter(&field_0x1390);
     deleteEmitter(&field_0x1394);
@@ -4790,9 +4790,9 @@ bool Player_804A6F38::fn_8023FF50() {
 u8 Player_804A6F38::fn_8023FC5C() const {
     if (playerFlagsGate(this)) {
         if (fn_802486A0() == 4 && fn_80240670() && !field_0xcfe && !field_0x454) {
-            return field_0xca0 / 2;
+            return mAlpha_0xca0 / 2;
         }
-        return field_0xca0;
+        return mAlpha_0xca0;
     }
     return 0;
 }

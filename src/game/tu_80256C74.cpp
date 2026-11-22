@@ -696,7 +696,7 @@ void Player_804A6F38::fn_8025D090() {
 // State 0x3A (item 4, the bow; enter fn_8025D090, exit fn_8025C7BC): the slingshot's
 // state 0x3B with arrows. The charge (lbl_8046B010 for the point) runs twice as fast at
 // level >= 2 (fn_802415CC); letting go shoots an 'ARRW' into the first free slot of
-// field_0xb00[3] (argument 0x100 uncharged; its layer in field_0xb40), a used slot
+// mArrowSerials_0xb00[3] (argument 0x100 uncharged; its layer in field_0xb40), a used slot
 // passing on to the next only at level >= 2. A shot under fn_8022B160 starts the 60-frame
 // cooldown field_0xb74, which also ends the state instead of drawing again.
 void Player_804A6F38::fn_8025C894() {
@@ -718,45 +718,45 @@ void Player_804A6F38::fn_8025C894() {
             }
             if (mStateTimer_0x3fc == 48) {
                 const Vec& point = lbl_8046B010[mFacing_0x3dc];
-                field_0x12fc.set(point.x, point.y, point.z);
-                field_0x12fc += mPos;
-                if (field_0x12cc == NULL) {
-                    field_0x12d0.field_0x4.set(field_0x12fc);
-                    field_0x12cc = spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x12fc, 0xcb, 0, -1, NULL, &field_0x12d0,
+                mItemChargePos_0x12fc.set(point.x, point.y, point.z);
+                mItemChargePos_0x12fc += mPos;
+                if (mItemChargeEmitter_0x12cc == NULL) {
+                    field_0x12d0.field_0x4.set(mItemChargePos_0x12fc);
+                    mItemChargeEmitter_0x12cc = spawnEmitter_8013CC50(mLayer_0x3b4, &mItemChargePos_0x12fc, 0xcb, 0, -1, NULL, &field_0x12d0,
                                                          true, 1.0f);
-                    if (field_0x12cc != NULL) {
-                        field_0x12cc->setStatus(JPAEMIT_Immortal);
+                    if (mItemChargeEmitter_0x12cc != NULL) {
+                        mItemChargeEmitter_0x12cc->setStatus(JPAEMIT_Immortal);
                     }
                 }
-                if (field_0x12e4 == NULL) {
-                    field_0x12e8.field_0x4.set(field_0x12fc);
-                    field_0x12e4 = spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x12fc, 0xcc, 0, -1, NULL, &field_0x12e8,
+                if (mItemChargeEmitter_0x12e4 == NULL) {
+                    field_0x12e8.field_0x4.set(mItemChargePos_0x12fc);
+                    mItemChargeEmitter_0x12e4 = spawnEmitter_8013CC50(mLayer_0x3b4, &mItemChargePos_0x12fc, 0xcc, 0, -1, NULL, &field_0x12e8,
                                                          true, 1.0f);
-                    if (field_0x12e4 != NULL) {
-                        field_0x12e4->setStatus(JPAEMIT_Immortal);
+                    if (mItemChargeEmitter_0x12e4 != NULL) {
+                        mItemChargeEmitter_0x12e4->setStatus(JPAEMIT_Immortal);
                     }
                 }
-                if (field_0x12c0 < 0) {
-                    field_0x12c0 = getActorManager_801F856C()->spawnActor_801F9484(
-                        ACTOR_PEFF, mLayer_0x3b4, &field_0x12fc, (mPlayerNo_0x4 & 3) | 8, -1, -1);
+                if (mChargeEffectSerial_0x12c0 < 0) {
+                    mChargeEffectSerial_0x12c0 = getActorManager_801F856C()->spawnActor_801F9484(
+                        ACTOR_PEFF, mLayer_0x3b4, &mItemChargePos_0x12fc, (mPlayerNo_0x4 & 3) | 8, -1, -1);
                 }
                 fn_8024F0E8(0x2000d);
             }
         } else {
             const Vec& point = lbl_8046B010[mFacing_0x3dc];
-            field_0x12fc.set(point.x, point.y, point.z);
-            field_0x12fc += mPos;
-            if (field_0x12cc != NULL) {
-                field_0x12d0.field_0x4.set(field_0x12fc);
+            mItemChargePos_0x12fc.set(point.x, point.y, point.z);
+            mItemChargePos_0x12fc += mPos;
+            if (mItemChargeEmitter_0x12cc != NULL) {
+                field_0x12d0.field_0x4.set(mItemChargePos_0x12fc);
             }
-            if (field_0x12e4 != NULL) {
-                field_0x12e8.field_0x4.set(field_0x12fc);
+            if (mItemChargeEmitter_0x12e4 != NULL) {
+                field_0x12e8.field_0x4.set(mItemChargePos_0x12fc);
             }
-            s32 serial = field_0x12c0;
+            s32 serial = mChargeEffectSerial_0x12c0;
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->mPos = field_0x12fc;
+                    actor->mPos = mItemChargePos_0x12fc;
                 }
             }
         }
@@ -805,7 +805,7 @@ void Player_804A6F38::fn_8025C894() {
         } else {
             mAnimTimer_0x3fa++;
             for (int i = 0; i < 3; i++) {
-                if (field_0xb00[i] >= 0) {
+                if (mArrowSerials_0xb00[i] >= 0) {
                     // A used slot: the next one only at level >= 2.
                     if (fn_802415CC() >= 2) {
                         continue;
@@ -828,14 +828,14 @@ void Player_804A6F38::fn_8025C894() {
                     }
                     if (mStateTimer_0x3fc >= 48) {
                         s32 index = mPlayerNo_0x4;
-                        field_0xb00[i] = getActorManager_801F856C()->spawnActor_801F9484(
+                        mArrowSerials_0xb00[i] = getActorManager_801F856C()->spawnActor_801F9484(
                             ACTOR_ARRW, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | (index & 3), -1, index);
                     } else {
                         s32 index = mPlayerNo_0x4;
-                        field_0xb00[i] = getActorManager_801F856C()->spawnActor_801F9484(
+                        mArrowSerials_0xb00[i] = getActorManager_801F856C()->spawnActor_801F9484(
                             ACTOR_ARRW, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | 0x100 | (index & 3), -1, index);
                     }
-                    if (field_0xb00[i] >= 0) {
+                    if (mArrowSerials_0xb00[i] >= 0) {
                         field_0xb40[i] = mLayer_0x3b4;
                         fn_8024F0E8(0x20004);
                         if (fn_8022B160()) {
@@ -878,23 +878,23 @@ void Player_804A6F38::fn_8025C894() {
 }
 
 void Player_804A6F38::fn_8025C7BC() {
-    if (field_0x12cc != NULL) {
-        field_0x12cc->clearStatus(JPAEMIT_Immortal);
-        field_0x12cc->becomeInvalidEmitter();
-        field_0x12cc = NULL;
+    if (mItemChargeEmitter_0x12cc != NULL) {
+        mItemChargeEmitter_0x12cc->clearStatus(JPAEMIT_Immortal);
+        mItemChargeEmitter_0x12cc->becomeInvalidEmitter();
+        mItemChargeEmitter_0x12cc = NULL;
     }
-    if (field_0x12e4 != NULL) {
-        field_0x12e4->clearStatus(JPAEMIT_Immortal);
-        field_0x12e4->becomeInvalidEmitter();
-        field_0x12e4 = NULL;
+    if (mItemChargeEmitter_0x12e4 != NULL) {
+        mItemChargeEmitter_0x12e4->clearStatus(JPAEMIT_Immortal);
+        mItemChargeEmitter_0x12e4->becomeInvalidEmitter();
+        mItemChargeEmitter_0x12e4 = NULL;
     }
-    s32 serial = field_0x12c0;
+    s32 serial = mChargeEffectSerial_0x12c0;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->mAlive = false;
         }
-        field_0x12c0 = -1;
+        mChargeEffectSerial_0x12c0 = -1;
     }
     field_0x40c = 0;
 }
@@ -912,13 +912,13 @@ void Player_804A6F38::fn_8025C79C() {
 // built in r0 and moved to r30 (the original builds it in r30).
 // State 0x3B (item 10, the slingshot; enter fn_8025C79C, exit fn_8025BDD8): after six
 // frames of drawing, frame 6 holds while the button is held (fn_8022C274), charging
-// mStateTimer_0x3fc to 48: a full charge lights the point field_0x12fc (lbl_8046B040 by facing;
+// mStateTimer_0x3fc to 48: a full charge lights the point mItemChargePos_0x12fc (lbl_8046B040 by facing;
 // emitters 0xCB / 0xCC following it through the particle callbacks field_0x12d0 /
-// field_0x12e8 below layer 8, else a 'PEFF' actor in field_0x12c0). The player walks at
+// field_0x12e8 below layer 8, else a 'PEFF' actor in mChargeEffectSerial_0x12c0). The player walks at
 // 1.125 meanwhile (14-frame walk cycle) or hops on button 0x20 (2.5 along the stick, 1.5
 // up, the last landing speed mKeptVel_0x368 on a side wall; 0.25 gravity, 3 frames' rest
 // field_0x43d after landing). Letting go shoots a 'PCDM' (slingshot seed) into the first
-// free slot of field_0xb0c[3] (argument 0x100 uncharged); charged at level >= 2 with all
+// free slot of mSlingshotSerials_0xb0c[3] (argument 0x100 uncharged); charged at level >= 2 with all
 // three slots free, two more go out on the side directions of lbl_8046B070.
 void Player_804A6F38::fn_8025BEB0() {
     if (mAnimTimer_0x3fa < 3) {
@@ -932,47 +932,47 @@ void Player_804A6F38::fn_8025BEB0() {
             mStateTimer_0x3fc++;
             if (mStateTimer_0x3fc == 48) {
                 const Vec& point = lbl_8046B040[mFacing_0x3dc];
-                field_0x12fc.set(point.x, point.y, point.z);
-                field_0x12fc += mPos;
-                if (field_0x12cc == NULL && mLayer_0x3b4 < 8) {
-                    field_0x12d0.field_0x4.set(field_0x12fc);
-                    field_0x12cc = spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x12fc, 0xcb, 0, -1, NULL, &field_0x12d0,
+                mItemChargePos_0x12fc.set(point.x, point.y, point.z);
+                mItemChargePos_0x12fc += mPos;
+                if (mItemChargeEmitter_0x12cc == NULL && mLayer_0x3b4 < 8) {
+                    field_0x12d0.field_0x4.set(mItemChargePos_0x12fc);
+                    mItemChargeEmitter_0x12cc = spawnEmitter_8013CC50(mLayer_0x3b4, &mItemChargePos_0x12fc, 0xcb, 0, -1, NULL, &field_0x12d0,
                                                          true, 1.0f);
-                    if (field_0x12cc != NULL) {
-                        field_0x12cc->setStatus(JPAEMIT_Immortal);
+                    if (mItemChargeEmitter_0x12cc != NULL) {
+                        mItemChargeEmitter_0x12cc->setStatus(JPAEMIT_Immortal);
                     }
                 }
-                if (field_0x12e4 == NULL && mLayer_0x3b4 < 8) {
-                    field_0x12e8.field_0x4.set(field_0x12fc);
-                    field_0x12e4 = spawnEmitter_8013CC50(mLayer_0x3b4, &field_0x12fc, 0xcc, 0, -1, NULL, &field_0x12e8,
+                if (mItemChargeEmitter_0x12e4 == NULL && mLayer_0x3b4 < 8) {
+                    field_0x12e8.field_0x4.set(mItemChargePos_0x12fc);
+                    mItemChargeEmitter_0x12e4 = spawnEmitter_8013CC50(mLayer_0x3b4, &mItemChargePos_0x12fc, 0xcc, 0, -1, NULL, &field_0x12e8,
                                                          true, 1.0f);
-                    if (field_0x12e4 != NULL) {
-                        field_0x12e4->setStatus(JPAEMIT_Immortal);
+                    if (mItemChargeEmitter_0x12e4 != NULL) {
+                        mItemChargeEmitter_0x12e4->setStatus(JPAEMIT_Immortal);
                     }
                 }
-                if (field_0x12c0 < 0) {
-                    field_0x12c0 = getActorManager_801F856C()->spawnActor_801F9484(
-                        ACTOR_PEFF, mLayer_0x3b4, &field_0x12fc, (mPlayerNo_0x4 & 3) | 8, -1, -1);
+                if (mChargeEffectSerial_0x12c0 < 0) {
+                    mChargeEffectSerial_0x12c0 = getActorManager_801F856C()->spawnActor_801F9484(
+                        ACTOR_PEFF, mLayer_0x3b4, &mItemChargePos_0x12fc, (mPlayerNo_0x4 & 3) | 8, -1, -1);
                 }
                 fn_8024F0E8(0x2000d);
             }
         } else {
             const Vec& point = lbl_8046B040[mFacing_0x3dc];
-            field_0x12fc.set(point.x, point.y, point.z);
-            field_0x12fc += mPos;
-            if (field_0x12cc != NULL) {
-                field_0x12d0.field_0x4.set(field_0x12fc);
+            mItemChargePos_0x12fc.set(point.x, point.y, point.z);
+            mItemChargePos_0x12fc += mPos;
+            if (mItemChargeEmitter_0x12cc != NULL) {
+                field_0x12d0.field_0x4.set(mItemChargePos_0x12fc);
             }
-            if (field_0x12e4 != NULL) {
-                field_0x12e8.field_0x4.set(field_0x12fc);
+            if (mItemChargeEmitter_0x12e4 != NULL) {
+                field_0x12e8.field_0x4.set(mItemChargePos_0x12fc);
             }
-            s32 serial = field_0x12c0;
+            s32 serial = mChargeEffectSerial_0x12c0;
             if (serial >= 0) {
                 ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
                 if (actor != NULL) {
-                    actor->mPos = field_0x12fc;
+                    actor->mPos = mItemChargePos_0x12fc;
                 } else {
-                    field_0x12c0 = -1;
+                    mChargeEffectSerial_0x12c0 = -1;
                 }
             }
         }
@@ -1023,7 +1023,7 @@ void Player_804A6F38::fn_8025BEB0() {
             bool spread = true;
             if (fn_802415CC() >= 2 && mStateTimer_0x3fc >= 48) {
                 for (int i = 0; i < 3; i++) {
-                    if (field_0xb0c[i] >= 0) {
+                    if (mSlingshotSerials_0xb0c[i] >= 0) {
                         spread = false;
                         break;
                     }
@@ -1032,7 +1032,7 @@ void Player_804A6F38::fn_8025BEB0() {
                 spread = false;
             }
             for (int i = 0; i < 3; i++) {
-                if (field_0xb0c[i] < 0) {
+                if (mSlingshotSerials_0xb0c[i] < 0) {
                     JGeometry::TVec3f pos = mPos;
                     switch (mFacing_0x3dc) {
                     case 0:
@@ -1049,33 +1049,33 @@ void Player_804A6F38::fn_8025BEB0() {
                     }
                     if (mStateTimer_0x3fc >= 48) {
                         s32 index = mPlayerNo_0x4;
-                        field_0xb0c[i] = getActorManager_801F856C()->spawnActor_801F9484(
+                        mSlingshotSerials_0xb0c[i] = getActorManager_801F856C()->spawnActor_801F9484(
                             ACTOR_PCDM, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | (index & 3), -1, index);
                     } else {
                         s32 index = mPlayerNo_0x4;
-                        field_0xb0c[i] = getActorManager_801F856C()->spawnActor_801F9484(
+                        mSlingshotSerials_0xb0c[i] = getActorManager_801F856C()->spawnActor_801F9484(
                             ACTOR_PCDM, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | 0x100 | (index & 3), -1, index);
                     }
-                    if (field_0xb0c[i] >= 0) {
+                    if (mSlingshotSerials_0xb0c[i] >= 0) {
                         field_0xb4c[i] = mLayer_0x3b4;
                         fn_8024F0E8(0x20004);
                     }
                     if (spread == true) {
-                        if (field_0xb0c[1] < 0) {
+                        if (mSlingshotSerials_0xb0c[1] < 0) {
                             s32 index = mPlayerNo_0x4;
                             u32 arg = ((lbl_8046B070[mFacing_0x3dc][0] & 7) << 4) | (index & 3);
-                            field_0xb0c[1] = getActorManager_801F856C()->spawnActor_801F9484(
+                            mSlingshotSerials_0xb0c[1] = getActorManager_801F856C()->spawnActor_801F9484(
                                 ACTOR_PCDM, mLayer_0x3b4, &pos, arg, -1, index);
-                            if (field_0xb0c[1] >= 0) {
+                            if (mSlingshotSerials_0xb0c[1] >= 0) {
                                 field_0xb4c[1] = mLayer_0x3b4;
                             }
                         }
-                        if (field_0xb0c[2] < 0) {
+                        if (mSlingshotSerials_0xb0c[2] < 0) {
                             s32 index = mPlayerNo_0x4;
-                            field_0xb0c[2] = getActorManager_801F856C()->spawnActor_801F9484(
+                            mSlingshotSerials_0xb0c[2] = getActorManager_801F856C()->spawnActor_801F9484(
                                 ACTOR_PCDM, mLayer_0x3b4, &pos, ((lbl_8046B070[mFacing_0x3dc][1] & 7) << 4) | (index & 3),
                                 -1, index);
-                            if (field_0xb0c[2] >= 0) {
+                            if (mSlingshotSerials_0xb0c[2] >= 0) {
                                 field_0xb4c[2] = mLayer_0x3b4;
                             }
                         }
@@ -1113,23 +1113,23 @@ void Player_804A6F38::fn_8025BEB0() {
 }
 
 void Player_804A6F38::fn_8025BDD8() {
-    if (field_0x12cc != NULL) {
-        field_0x12cc->clearStatus(JPAEMIT_Immortal);
-        field_0x12cc->becomeInvalidEmitter();
-        field_0x12cc = NULL;
+    if (mItemChargeEmitter_0x12cc != NULL) {
+        mItemChargeEmitter_0x12cc->clearStatus(JPAEMIT_Immortal);
+        mItemChargeEmitter_0x12cc->becomeInvalidEmitter();
+        mItemChargeEmitter_0x12cc = NULL;
     }
-    if (field_0x12e4 != NULL) {
-        field_0x12e4->clearStatus(JPAEMIT_Immortal);
-        field_0x12e4->becomeInvalidEmitter();
-        field_0x12e4 = NULL;
+    if (mItemChargeEmitter_0x12e4 != NULL) {
+        mItemChargeEmitter_0x12e4->clearStatus(JPAEMIT_Immortal);
+        mItemChargeEmitter_0x12e4->becomeInvalidEmitter();
+        mItemChargeEmitter_0x12e4 = NULL;
     }
-    s32 serial = field_0x12c0;
+    s32 serial = mChargeEffectSerial_0x12c0;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->mAlive = false;
         }
-        field_0x12c0 = -1;
+        mChargeEffectSerial_0x12c0 = -1;
     }
     field_0x40c = 0;
 }
@@ -1154,17 +1154,17 @@ void Player_804A6F38::fn_8025B3F0() {
             mChargeEffectPos_0x12a4 += mPos;
             s32 layer = mLayer_0x3b4;
             if (layer < 8) {
-                if (field_0x1274 == NULL) {
-                    field_0x1274 = spawnEmitter_8013CC50(layer, &mChargeEffectPos_0x12a4, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
-                    if (field_0x1274 != NULL) {
-                        field_0x1274->setStatus(JPAEMIT_Immortal);
+                if (mChargeEmitter_0x1274 == NULL) {
+                    mChargeEmitter_0x1274 = spawnEmitter_8013CC50(layer, &mChargeEffectPos_0x12a4, 0xcb, 0, 0, NULL, NULL, true, 1.0f);
+                    if (mChargeEmitter_0x1274 != NULL) {
+                        mChargeEmitter_0x1274->setStatus(JPAEMIT_Immortal);
                     }
                 }
-                if (field_0x128c == NULL) {
-                    field_0x128c =
+                if (mChargeEmitter_0x128c == NULL) {
+                    mChargeEmitter_0x128c =
                         spawnEmitter_8013CC50(mLayer_0x3b4, &mChargeEffectPos_0x12a4, 0xcc, 0, 0, NULL, NULL, true, 1.0f);
-                    if (field_0x128c != NULL) {
-                        field_0x128c->setStatus(JPAEMIT_Immortal);
+                    if (mChargeEmitter_0x128c != NULL) {
+                        mChargeEmitter_0x128c->setStatus(JPAEMIT_Immortal);
                     }
                 }
             } else {
@@ -1352,15 +1352,15 @@ void Player_804A6F38::fn_8025B368() {
     field_0xb99 = false;
     field_0xb9a = false;
     field_0xb9b = false;
-    if (field_0x1274 != NULL) {
-        field_0x1274->clearStatus(JPAEMIT_Immortal);
-        field_0x1274->becomeInvalidEmitter();
-        field_0x1274 = NULL;
+    if (mChargeEmitter_0x1274 != NULL) {
+        mChargeEmitter_0x1274->clearStatus(JPAEMIT_Immortal);
+        mChargeEmitter_0x1274->becomeInvalidEmitter();
+        mChargeEmitter_0x1274 = NULL;
     }
-    if (field_0x128c != NULL) {
-        field_0x128c->clearStatus(JPAEMIT_Immortal);
-        field_0x128c->becomeInvalidEmitter();
-        field_0x128c = NULL;
+    if (mChargeEmitter_0x128c != NULL) {
+        mChargeEmitter_0x128c->clearStatus(JPAEMIT_Immortal);
+        mChargeEmitter_0x128c->becomeInvalidEmitter();
+        mChargeEmitter_0x128c = NULL;
     }
     field_0x40c = 0;
 }
@@ -1530,12 +1530,12 @@ bool Player_804A6F38::fn_8025AA24(s32 arg) {
 void Player_804A6F38::fn_8025A9C0() {
     field_0x458 = 0;
     if (fn_80241794() <= 0) {
-        field_0xb84 = false;
+        mButtonHeld_0xb84 = false;
     } else {
-        field_0xb84 = true;
+        mButtonHeld_0xb84 = true;
     }
     field_0xb88 = 0;
-    field_0xb28 = -1;
+    mFireSerial_0xb28 = -1;
     field_0xb8c = 0;
 }
 
@@ -1554,8 +1554,8 @@ void Player_804A6F38::fn_8025A15C() {
     if (field_0xb8c > 0) {
         field_0xb8c--;
     }
-    if (field_0xb84 == 1 && !fn_8022C274(mPlayerNo_0x4)) {
-        field_0xb84 = 0;
+    if (mButtonHeld_0xb84 == 1 && !fn_8022C274(mPlayerNo_0x4)) {
+        mButtonHeld_0xb84 = 0;
     }
     if (mAnimTimer_0x3fa < 2) {
         mPose_0x3fb = 0;
@@ -1600,7 +1600,7 @@ void Player_804A6F38::fn_8025A15C() {
             field_0x580.set(box);
             break;
         }
-        if (field_0xb84) {
+        if (mButtonHeld_0xb84) {
             fn_802808E8(1.125f);
             if (epsilonEquals(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
@@ -1628,21 +1628,21 @@ void Player_804A6F38::fn_8025A15C() {
                 mWalkFrame_0x3f9 = lbl_8046B150[mFacing_0x3dc][7];
             }
             if (!fn_80247594(1)) {
-                field_0xb84 = 0;
+                mButtonHeld_0xb84 = 0;
             }
-            if (field_0xb8c <= 0 && field_0xb28 < 0) {
+            if (field_0xb8c <= 0 && mFireSerial_0xb28 < 0) {
                 s32 index = mPlayerNo_0x4;
-                field_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
+                mFireSerial_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
                     ACTOR_FIRE, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | 0x1040 | (index & 3), -1, index);
             }
-            s32 fire = field_0xb28;
+            s32 fire = mFireSerial_0xb28;
             if (fire >= 0) {
                 FireRodFire_804A89F0* actor = static_cast<FireRodFire_804A89F0*>(
                     getActorManager_801F856C()->findActorBySerial_801F666C(fire));
                 if (actor != NULL) {
                     actor->fn_802BAA0C(&box);
                 } else {
-                    field_0xb28 = -1;
+                    mFireSerial_0xb28 = -1;
                     field_0xb8c = 60;
                 }
             }
@@ -1668,7 +1668,7 @@ void Player_804A6F38::fn_8025A15C() {
             if (field_0x12c4 != NULL) {
                 field_0x12c4->stopCreateParticle();
             }
-            if (field_0xb28 < 0) {
+            if (mFireSerial_0xb28 < 0) {
                 s32 count = 0;
                 for (int i = 0; i < 1; i++) {
                     if (field_0xb1c[i] >= 0) {
@@ -1722,25 +1722,25 @@ void Player_804A6F38::fn_8025A0B0() {
         field_0x12c8->becomeInvalidEmitter();
         field_0x12c8 = NULL;
     }
-    s32 serial = field_0xb28;
+    s32 serial = mFireSerial_0xb28;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->fn_802BAA00();
         }
-        field_0xb28 = -1;
+        mFireSerial_0xb28 = -1;
     }
 }
 
 void Player_804A6F38::fn_8025A04C() {
     field_0x458 = 0;
     if (fn_80241794() <= 0) {
-        field_0xb84 = false;
+        mButtonHeld_0xb84 = false;
     } else {
-        field_0xb84 = true;
+        mButtonHeld_0xb84 = true;
     }
     field_0xb88 = 0;
-    field_0xb28 = -1;
+    mFireSerial_0xb28 = -1;
     field_0xb8c = 0;
 }
 
@@ -1758,8 +1758,8 @@ void Player_804A6F38::fn_80259830() {
     if (field_0xb8c > 0) {
         field_0xb8c--;
     }
-    if (field_0xb84 == 1 && !fn_8022C274(mPlayerNo_0x4)) {
-        field_0xb84 = 0;
+    if (mButtonHeld_0xb84 == 1 && !fn_8022C274(mPlayerNo_0x4)) {
+        mButtonHeld_0xb84 = 0;
     }
     if (mAnimTimer_0x3fa < 2) {
         mPose_0x3fb = 0;
@@ -1777,7 +1777,7 @@ void Player_804A6F38::fn_80259830() {
         mPose_0x3fb = 5;
         fn_80251AEC(0);
     }
-    if (!field_0xb84 && mAnimTimer_0x3fa == 11) {
+    if (!mButtonHeld_0xb84 && mAnimTimer_0x3fa == 11) {
         if (!field_0xbb8) {
             lbl_8053AED0->fn_8043D67C(0xe8, mPlayerNo_0x4, 0);
             field_0xbb8 = 1;
@@ -1835,7 +1835,7 @@ void Player_804A6F38::fn_80259830() {
             field_0x580.set(box);
             break;
         }
-        if (field_0xb84) {
+        if (mButtonHeld_0xb84) {
             fn_802808E8(1.125f);
             if (epsilonEquals(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
@@ -1863,21 +1863,21 @@ void Player_804A6F38::fn_80259830() {
                 mWalkFrame_0x3f9 = lbl_8046B190[mFacing_0x3dc][7];
             }
             if (!fn_80247594(1)) {
-                field_0xb84 = 0;
+                mButtonHeld_0xb84 = 0;
             }
-            if (field_0xb8c <= 0 && field_0xb28 < 0) {
+            if (field_0xb8c <= 0 && mFireSerial_0xb28 < 0) {
                 s32 index = mPlayerNo_0x4;
-                field_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
+                mFireSerial_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
                     ACTOR_FIRE, mLayer_0x3b4, &pos, ((mFacing_0x3dc & 3) << 4) | 0x1040 | (index & 3), -1, index);
             }
-            s32 fire = field_0xb28;
+            s32 fire = mFireSerial_0xb28;
             if (fire >= 0) {
                 FireRodFire_804A89F0* actor = static_cast<FireRodFire_804A89F0*>(
                     getActorManager_801F856C()->findActorBySerial_801F666C(fire));
                 if (actor != NULL) {
                     actor->fn_802BAA0C(&box);
                 } else {
-                    field_0xb28 = -1;
+                    mFireSerial_0xb28 = -1;
                     field_0xb8c = 60;
                 }
             }
@@ -1928,13 +1928,13 @@ void Player_804A6F38::fn_80259784() {
         field_0x12c8->becomeInvalidEmitter();
         field_0x12c8 = NULL;
     }
-    s32 serial = field_0xb28;
+    s32 serial = mFireSerial_0xb28;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->fn_802BAA00();
         }
-        field_0xb28 = -1;
+        mFireSerial_0xb28 = -1;
     }
 }
 
@@ -2300,9 +2300,9 @@ void Player_804A6F38::fn_802586CC() {}
 
 void Player_804A6F38::fn_802585F4() {
     for (s32 i = 0; i < 3; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xb00[i]);
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mArrowSerials_0xb00[i]);
         if (actor == NULL) {
-            field_0xb00[i] = -1;
+            mArrowSerials_0xb00[i] = -1;
             field_0xb40[i] = -1;
         } else {
             JGeometry::TVec2<f32> pos;
@@ -2317,9 +2317,9 @@ void Player_804A6F38::fn_802585F4() {
 
 void Player_804A6F38::fn_8025851C() {
     for (s32 i = 0; i < 3; i++) {
-        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xb0c[i]);
+        ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlingshotSerials_0xb0c[i]);
         if (actor == NULL) {
-            field_0xb0c[i] = -1;
+            mSlingshotSerials_0xb0c[i] = -1;
             field_0xb4c[i] = -1;
         } else {
             JGeometry::TVec2<f32> pos;
@@ -2535,7 +2535,7 @@ bool Player_804A6F38::fn_80257DB4() {
 // unit to reloc-name); and this / the item index swap r30 / r31.
 // The per-frame item check: while fn_8022B334 and fn_8022C310 hold, the selected
 // item fn_802416C4 (1-10) requests its state. Items 3 and 6 allow three of their
-// actors (field_0xb00 / field_0xb1c) at a time, item 8 ('HBMB') two (field_0xb30).
+// actors (mArrowSerials_0xb00 / field_0xb1c) at a time, item 8 ('HBMB') two (field_0xb30).
 void Player_804A6F38::fn_8025785C() {
     if (field_0xb74 > 0) {
         field_0xb74--;
@@ -2555,7 +2555,7 @@ void Player_804A6F38::fn_8025785C() {
                 if (field_0xb18 < 0) {
                     s32 count = 0;
                     for (s32 i = 0; i < 3; i++) {
-                        if (field_0xb00[i] >= 0) {
+                        if (mArrowSerials_0xb00[i] >= 0) {
                             count++;
                         }
                     }
@@ -2687,7 +2687,7 @@ bool Player_804A6F38::fn_802577E0() {
 
 bool Player_804A6F38::fn_802576CC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out) {
     for (s32 i = 0; i < 3; i++) {
-        if (field_0xb00[i] >= 0 && field_0xb40[i] == layer) {
+        if (mArrowSerials_0xb00[i] >= 0 && field_0xb40[i] == layer) {
             JGeometry::TBox2f overlap(field_0x4e0[i]);
             if (overlap.intersect(*box)) {
                 out->x = field_0x4e0[i].f.x + (field_0x4e0[i].i.x - field_0x4e0[i].f.x) * 0.5f;
@@ -2703,7 +2703,7 @@ bool Player_804A6F38::fn_802576CC(const JGeometry::TBox2f* box, s32 layer, JGeom
 
 bool Player_804A6F38::fn_802575B8(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out) {
     for (s32 i = 0; i < 3; i++) {
-        if (field_0xb0c[i] >= 0 && field_0xb4c[i] == layer) {
+        if (mSlingshotSerials_0xb0c[i] >= 0 && field_0xb4c[i] == layer) {
             JGeometry::TBox2f overlap(field_0x510[i]);
             if (overlap.intersect(*box)) {
                 out->x = field_0x510[i].f.x + (field_0x510[i].i.x - field_0x510[i].f.x) * 0.5f;
@@ -2766,7 +2766,7 @@ bool Player_804A6F38::fn_802570BC(const JGeometry::TBox2f* box, s32 layer, JGeom
             }
         }
     }
-    if (field_0xb28 >= 0 && layer == mLayer_0x3b4) {
+    if (mFireSerial_0xb28 >= 0 && layer == mLayer_0x3b4) {
         JGeometry::TBox2f overlap(field_0x580);
         if (overlap.intersect(*box)) {
             out->x = field_0x580.f.x + (field_0x580.i.x - field_0x580.f.x) * 0.5f;

@@ -657,8 +657,8 @@ void Player_804A6F38::fn_8028414C() {
     field_0x318.x = mPos.x;
     field_0x318.y = mPos.y;
     field_0x318.z = mPos.z;
-    f32 dx = field_0x324.x - mPos.x;
-    f32 dy = field_0x324.y - mPos.y;
+    f32 dx = mGlideTarget_0x324.x - mPos.x;
+    f32 dy = mGlideTarget_0x324.y - mPos.y;
     if (field_0x43f || field_0x441) {
         mPos.z = 0.0f;
         mPos.y += dy;
@@ -704,8 +704,8 @@ void Player_804A6F38::fn_80283E70() {
         mVel_0x344.z -= 0.25f;
     }
     if (mPos.z <= 0.0f) {
-        if ((field_0x43f || field_0x441) && mPos.y < field_0x324.y) {
-            mPos.y += field_0x324.y - mPos.y;
+        if ((field_0x43f || field_0x441) && mPos.y < mGlideTarget_0x324.y) {
+            mPos.y += mGlideTarget_0x324.y - mPos.y;
             mPos.z = 8.0f;
         } else {
             mPos.z = 0.0f;
@@ -903,9 +903,9 @@ void Player_804A6F38::fn_80283848() {
     mVel_0x344.x = 0.0f;
     mVel_0x344.y = 0.0f;
     mVel_0x344.z = 0.0f;
-    field_0x414.x = 0.0f;
-    field_0x414.y = 0.0f;
-    field_0x414.z = 0.0f;
+    mConveyorVel_0x414.x = 0.0f;
+    mConveyorVel_0x414.y = 0.0f;
+    mConveyorVel_0x414.z = 0.0f;
     mDashCount_0x3ff = 0;
     field_0x400 = 0;
     field_0x401 = 0;
@@ -1099,9 +1099,9 @@ void Player_804A6F38::fn_80282E6C() {
     mVel_0x344.x = 0.0f;
     mVel_0x344.y = 0.0f;
     mVel_0x344.z = 0.0f;
-    field_0x414.x = 0.0f;
-    field_0x414.y = 0.0f;
-    field_0x414.z = 0.0f;
+    mConveyorVel_0x414.x = 0.0f;
+    mConveyorVel_0x414.y = 0.0f;
+    mConveyorVel_0x414.z = 0.0f;
     mDashCount_0x3ff = 0;
     field_0x410 = 0.0f;
     field_0x402 = 0;
@@ -1271,9 +1271,9 @@ void Player_804A6F38::fn_8028286C() {
     mVel_0x344.x = field_0x374.x;
     mVel_0x344.y = field_0x374.y;
     mVel_0x344.z = field_0x374.z;
-    field_0x380.x = 0.0f;
-    field_0x380.y = 0.0f;
-    field_0x380.z = 0.0f;
+    mSteerVel_0x380.x = 0.0f;
+    mSteerVel_0x380.y = 0.0f;
+    mSteerVel_0x380.z = 0.0f;
     field_0x458 = 0;
     field_0x394 = 0;
     field_0xcea = 0;
@@ -1336,7 +1336,7 @@ void Player_804A6F38::fn_80282178() {
         }
     } else {
         mPos += mVel_0x344;
-        mPos += field_0x380;
+        mPos += mSteerVel_0x380;
         if (field_0xce8 == true) {
             if (mDestLayer_0xce4 < 8) {
                 mStateTimer_0x3fc = 60;
@@ -1381,60 +1381,60 @@ void Player_804A6F38::fn_80282178() {
                 mPos.z = 0.0f;
             }
         }
-        if (field_0x380.x > 0.0f) {
+        if (mSteerVel_0x380.x > 0.0f) {
             if (fn_8022C82C(mPlayerNo_0x4) > 0.0f) {
-                field_0x380.x += 0.1f;
-                if (field_0x380.x > 1.6f) {
-                    field_0x380.x = 1.6f;
+                mSteerVel_0x380.x += 0.1f;
+                if (mSteerVel_0x380.x > 1.6f) {
+                    mSteerVel_0x380.x = 1.6f;
                 }
             } else {
-                field_0x380.x -= 0.1f;
-                if (field_0x380.x < 0.1f) {
-                    field_0x380.x = 0.1f;
+                mSteerVel_0x380.x -= 0.1f;
+                if (mSteerVel_0x380.x < 0.1f) {
+                    mSteerVel_0x380.x = 0.1f;
                 }
             }
-        } else if (field_0x380.x < 0.0f) {
+        } else if (mSteerVel_0x380.x < 0.0f) {
             if (fn_8022C82C(mPlayerNo_0x4) < 0.0f) {
-                field_0x380.x -= 0.1f;
-                if (field_0x380.x < -1.6f) {
-                    field_0x380.x = -1.6f;
+                mSteerVel_0x380.x -= 0.1f;
+                if (mSteerVel_0x380.x < -1.6f) {
+                    mSteerVel_0x380.x = -1.6f;
                 }
             } else {
-                field_0x380.x += 0.1f;
-                if (field_0x380.x > -0.1f) {
-                    field_0x380.x = -0.1f;
+                mSteerVel_0x380.x += 0.1f;
+                if (mSteerVel_0x380.x > -0.1f) {
+                    mSteerVel_0x380.x = -0.1f;
                 }
             }
         } else {
-            field_0x380.x = 0.8f * fn_8022C82C(mPlayerNo_0x4);
+            mSteerVel_0x380.x = 0.8f * fn_8022C82C(mPlayerNo_0x4);
         }
         if (!viewLayerFlag(mLayer_0x3b4)) {
-            if (field_0x380.y > 0.0f) {
+            if (mSteerVel_0x380.y > 0.0f) {
                 if (-fn_8022C76C(mPlayerNo_0x4) > 0.0f) {
-                    field_0x380.y += 0.1f;
-                    if (field_0x380.y > 1.6f) {
-                        field_0x380.y = 1.6f;
+                    mSteerVel_0x380.y += 0.1f;
+                    if (mSteerVel_0x380.y > 1.6f) {
+                        mSteerVel_0x380.y = 1.6f;
                     }
                 } else {
-                    field_0x380.y -= 0.1f;
-                    if (field_0x380.y < 0.1f) {
-                        field_0x380.y = 0.1f;
+                    mSteerVel_0x380.y -= 0.1f;
+                    if (mSteerVel_0x380.y < 0.1f) {
+                        mSteerVel_0x380.y = 0.1f;
                     }
                 }
-            } else if (field_0x380.y < 0.0f) {
+            } else if (mSteerVel_0x380.y < 0.0f) {
                 if (-fn_8022C76C(mPlayerNo_0x4) < 0.0f) {
-                    field_0x380.y -= 0.1f;
-                    if (field_0x380.y < -1.6f) {
-                        field_0x380.y = -1.6f;
+                    mSteerVel_0x380.y -= 0.1f;
+                    if (mSteerVel_0x380.y < -1.6f) {
+                        mSteerVel_0x380.y = -1.6f;
                     }
                 } else {
-                    field_0x380.y += 0.1f;
-                    if (field_0x380.y > -0.1f) {
-                        field_0x380.y = -0.1f;
+                    mSteerVel_0x380.y += 0.1f;
+                    if (mSteerVel_0x380.y > -0.1f) {
+                        mSteerVel_0x380.y = -0.1f;
                     }
                 }
             } else {
-                field_0x380.y = 0.8f * -fn_8022C76C(mPlayerNo_0x4);
+                mSteerVel_0x380.y = 0.8f * -fn_8022C76C(mPlayerNo_0x4);
             }
         }
         if (!field_0xce8 && fn_8022C3AC(mPlayerNo_0x4)) {
@@ -1670,9 +1670,9 @@ void Player_804A6F38::fn_80281760() {
             break;
         }
     }
-    if (field_0xb28 < 0) {
+    if (mFireSerial_0xb28 < 0) {
         s32 index = mPlayerNo_0x4;
-        field_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
+        mFireSerial_0xb28 = getActorManager_801F856C()->spawnActor_801F9484(
             ACTOR_FIRE, mLayer_0x3b4, &mPos, ((mFacing_0x3dc & 3) << 4) | 0x180 | (index & 3), -1, index);
     }
     field_0x408 = 0;
@@ -1712,7 +1712,7 @@ void Player_804A6F38::fn_8028126C() {
             mVel_0x344.z = 0.0f;
         }
     }
-    serial = field_0xb28;
+    serial = mFireSerial_0xb28;
     if (serial >= 0) {
         FireRodFire_804A89F0* fire =
             static_cast<FireRodFire_804A89F0*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
@@ -1801,13 +1801,13 @@ void Player_804A6F38::fn_802811C0() {
         field_0x135c->becomeInvalidEmitter();
         field_0x135c = NULL;
     }
-    s32 serial = field_0xb28;
+    s32 serial = mFireSerial_0xb28;
     if (serial >= 0) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor != NULL) {
             actor->fn_802BAA00();
         }
-        field_0xb28 = -1;
+        mFireSerial_0xb28 = -1;
     }
 }
 
@@ -1823,9 +1823,9 @@ void Player_804A6F38::fn_802810E4() {
     field_0x46c = 300;
     field_0x484 = 0;
     field_0x470 = 0;
-    field_0x474.x = 0.0f;
-    field_0x474.y = 0.0f;
-    field_0x474.z = 0.0f;
+    mJoltOffset_0x474.x = 0.0f;
+    mJoltOffset_0x474.y = 0.0f;
+    mJoltOffset_0x474.z = 0.0f;
     fn_8024F0E8(0x2003B);
 }
 
@@ -1846,10 +1846,10 @@ void Player_804A6F38::fn_80280E44() {
         if (field_0x470 > 0) {
             field_0x470--;
             if (field_0x470 == 0) {
-                mPos -= field_0x474;
-                field_0x474.x = 0.0f;
-                field_0x474.y = 0.0f;
-                field_0x474.z = 0.0f;
+                mPos -= mJoltOffset_0x474;
+                mJoltOffset_0x474.x = 0.0f;
+                mJoltOffset_0x474.y = 0.0f;
+                mJoltOffset_0x474.z = 0.0f;
             }
         }
         if (fn_80246D1C(0xF)) {
@@ -1858,17 +1858,17 @@ void Player_804A6F38::fn_80280E44() {
                 field_0x46c = 0;
             }
             field_0x470 = 5;
-            mPos -= field_0x474;
+            mPos -= mJoltOffset_0x474;
             if (fn_80246D1C(2)) {
-                field_0x474.set(1.0f, 0.0f, 0.0f);
+                mJoltOffset_0x474.set(1.0f, 0.0f, 0.0f);
             } else if (fn_80246D1C(1)) {
-                field_0x474.set(-1.0f, 0.0f, 0.0f);
+                mJoltOffset_0x474.set(-1.0f, 0.0f, 0.0f);
             } else if (fn_80246D1C(4)) {
-                field_0x474.set(0.0f, 1.0f, 0.0f);
+                mJoltOffset_0x474.set(0.0f, 1.0f, 0.0f);
             } else {
-                field_0x474.set(0.0f, -1.0f, 0.0f);
+                mJoltOffset_0x474.set(0.0f, -1.0f, 0.0f);
             }
-            mPos += field_0x474;
+            mPos += mJoltOffset_0x474;
         } else if (field_0x46c > 0) {
             field_0x46c--;
         }
@@ -1890,10 +1890,10 @@ void Player_804A6F38::fn_80280DD8() {
         field_0x1350 = NULL;
     }
     field_0x484 = 0;
-    mPos -= field_0x474;
-    field_0x474.x = 0.0f;
-    field_0x474.y = 0.0f;
-    field_0x474.z = 0.0f;
+    mPos -= mJoltOffset_0x474;
+    mJoltOffset_0x474.x = 0.0f;
+    mJoltOffset_0x474.y = 0.0f;
+    mJoltOffset_0x474.z = 0.0f;
     field_0x464 = 60;
 }
 
@@ -1951,7 +1951,7 @@ void Player_804A6F38::fn_802808E8(f32 speed) {
     if (field_0x1216) {
         return;
     }
-    if (!field_0x35c.isZero()) {
+    if (!mPushVel_0x35c.isZero()) {
         speedX = 0.0f;
         speedY = 0.0f;
     }
@@ -2361,7 +2361,7 @@ void Player_804A6F38::fn_8027F1C8() {
         return;
     }
     if (!fn_802341D0(mPlayerNo_0x4) || fn_8024BBB0()) {
-        deleteEmitter(&field_0x1388);
+        deleteEmitter(&mGroupSpotEmitter_0x1388);
         return;
     }
     JGeometry::TVec3f pos;
@@ -2380,7 +2380,7 @@ void Player_804A6F38::fn_8027F1C8() {
         break;
     case 3:
         if (fn_80241284()) {
-            pos.set(field_0x11b4);
+            pos.set(mSpinCenter_0x11b4);
         } else {
             switch (mPlayerNo_0x4) {
             case 0:
@@ -2401,49 +2401,49 @@ void Player_804A6F38::fn_8027F1C8() {
     }
     if (!field_0x121d) {
         if (!gGameRoot_8053AAF8->field_0x7e) {
-            if (field_0x1388 != NULL) {
-                setEmitterPos_8013CB44(field_0x1388, &pos, 0, -1, true);
+            if (mGroupSpotEmitter_0x1388 != NULL) {
+                setEmitterPos_8013CB44(mGroupSpotEmitter_0x1388, &pos, 0, -1, true);
             } else {
                 switch (fn_802486A0()) {
                 case 0:
-                    field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
+                    mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
                     break;
                 case 1:
-                    field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
+                    mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
                     break;
                 case 2:
-                    field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
+                    mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
                     break;
                 case 3:
-                    field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
+                    mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
                     break;
                 }
             }
         } else {
-            deleteEmitter(&field_0x1388);
+            deleteEmitter(&mGroupSpotEmitter_0x1388);
         }
         return;
     }
-    deleteEmitter(&field_0x1388);
+    deleteEmitter(&mGroupSpotEmitter_0x1388);
     switch (fn_802486A0()) {
     case 0:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35e, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1ba, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1bb, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 1:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x360, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b8, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b9, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 2:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x35f, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b5, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b6, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b7, 0, -1, NULL, NULL, true, 1.0f);
         break;
     case 3:
-        field_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
+        mGroupSpotEmitter_0x1388 = spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x361, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b2, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b3, 0, -1, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x3b4, &pos, 0x1b4, 0, -1, NULL, NULL, true, 1.0f);

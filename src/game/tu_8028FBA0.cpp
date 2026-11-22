@@ -407,7 +407,7 @@ void Player_804A6F38::fn_80294ADC() {
     if (mLayer_0x3b4 >= 8 && mDestLayer_0xce4 < 8) {
         fn_8024EFA0(false);
     }
-    field_0xca0 = 0xFF;
+    mAlpha_0xca0 = 0xFF;
 }
 
 void Player_804A6F38::fn_802948C0() {
@@ -513,9 +513,9 @@ void Player_804A6F38::fn_80294374() {
         gBgRewrite_8053AC98->fn_8029E508(&mPos, mPlayerNo_0x4, mLayer_0x3b4);
     }
     if (mTransitionKind_0xcf4 == 3) {
-        field_0xca0 = 0;
+        mAlpha_0xca0 = 0;
     } else {
-        field_0xca0 = 0xFF;
+        mAlpha_0xca0 = 0xFF;
     }
 }
 
@@ -1489,7 +1489,7 @@ void Player_804A6F38::fn_80290D58() {
         field_0xbdc = 1;
     }
     if (fn_80240D64()) {
-        field_0x11f0 = 5;
+        mInputLockTimer_0x11f0 = 5;
     }
     field_0xce8 = false;
     field_0xcf8 = mTransitionKind_0xcf4;

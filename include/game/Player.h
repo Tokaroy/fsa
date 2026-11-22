@@ -347,7 +347,7 @@ public:
     void fn_802702C4(); // called by tu_8023FBF0
     void fn_80270D34(s32 amount); // called by tu_8022AD64; subtracted from mLife_0xbfc
     // Damage / hit from player `attacker` at `pos` with hit kind `kind` (0x1B, 0xD-0xF, 0x16,
-    // 0x18 ...): knockback (field_0x350 / field_0x35c), facing, state request. Called by
+    // 0x18 ...): knockback (field_0x350 / mPushVel_0x35c), facing, state request. Called by
     // fn_80238548 (tu_8022AD64) for each player.
     bool fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVec2f* pos, s32 kind);
     void fn_80277104(); // called by tu_80285E58
@@ -357,18 +357,18 @@ public:
     void fn_80258070(); // drops field_0xb2c if its actor is gone or not a live Somaria block
     void fn_8025819C(); // tracks the actor field_0xb3c: its layer and box (+ position) into 0xb70 / 0x5a0
     void fn_80258384(); // the same for each of field_0xb1c[3]: field_0xb5c[] / field_0x550[]
-    void fn_802585F4(); // the same for each of field_0xb00[3]: field_0xb40[] / field_0x4e0[]
+    void fn_802585F4(); // the same for each of mArrowSerials_0xb00[3]: field_0xb40[] / field_0x4e0[]
     void fn_80258470(); // same for field_0xb18: 0xb58 / 0x540
-    void fn_8025851C(); // the same for each of field_0xb0c[3]: field_0xb4c[] / field_0x510[]
+    void fn_8025851C(); // the same for each of mSlingshotSerials_0xb0c[3]: field_0xb4c[] / field_0x510[]
     void fn_802586CC(); // empty
     void fn_80258880(); // field_0x458 = 0
     void fn_8025888C(); // empty
     void fn_80258BA8(); // clears 0x458, 0xb9f, 0xba0
     void fn_80258BBC(); // clears 0xb79 and 0x1204; mPos.z = 0 unless 0x1244 is 5 or 7
     void fn_80259778(); // field_0x34c = 5.4f
-    void fn_80259784(); // ends the emitters at 0x12c4 and 0x12c8, kills the actor field_0xb28 (fn_802BAA00)
+    void fn_80259784(); // ends the emitters at 0x12c4 and 0x12c8, kills the actor mFireSerial_0xb28 (fn_802BAA00)
     void fn_8025A0B0(); // same body as fn_80259784
-    void fn_8025A04C(); // clears 0x458; field_0xb84 = fn_80241794() > 0; 0xb88, 0xb8c = 0, 0xb28 = -1
+    void fn_8025A04C(); // clears 0x458; mButtonHeld_0xb84 = fn_80241794() > 0; 0xb88, 0xb8c = 0, 0xb28 = -1
     void fn_8025A9C0(); // same body as fn_8025A04C
     void fn_8025AAF4(); // field_0x11f8 = -1
     void fn_8025AEB0(); // mStateLocked_0x124d = 1, field_0x458 = 0
@@ -376,7 +376,7 @@ public:
     void fn_8025B218(); // mStateLocked_0x124d = 1, field_0x458 = 0
     void fn_8025B35C(); // field_0x458 = 0
     void fn_8025B368(); // clears 0xb99-0xb9b, ends the emitters at 0x1274 and 0x128c, clears 0x40c
-    void fn_8025BDD8(); // ends the emitters at 0x12cc and 0x12e4, kills the actor field_0x12c0, clears 0x40c
+    void fn_8025BDD8(); // ends the emitters at 0x12cc and 0x12e4, kills the actor mChargeEffectSerial_0x12c0, clears 0x40c
     void fn_8025BDC8(); // clears 0x458 and 0x40c
     void fn_8025C79C(); // clears 0x458, mVel_0x344 and 0x40c
     void fn_8025C7BC(); // same body as fn_8025BDD8
@@ -513,7 +513,7 @@ public:
     void fn_80267E18();
     void fn_80267ECC();
     void fn_80268194();
-    JGeometry::TVec3f* fn_80252F48(); // returns &field_0x11b4 (tu_8023FBF0)
+    JGeometry::TVec3f* fn_80252F48(); // returns &mSpinCenter_0x11b4 (tu_8023FBF0)
     bool fn_80275D9C(); // tu_8026FC20 (li r3, 1 / 0); true ends the state updates of tu_8027E5BC early
     void followStep();
     void fn_8027FA08(JGeometry::TVec3f* out); // tu_8027E5BC; called by update B and fn_8028676C
@@ -536,7 +536,7 @@ public:
     void fn_8027E5BC(f32 speed);
     void fn_8027EDDC();
     void fn_8027EEB4(); // steps the walk-animation counter mWalkAnimCounter_0x3f8 (frame mWalkFrame_0x3f9)
-    void fn_8027F1C8(); // places or spawns the effect in field_0x1388 (ids 0x35E-0x361)
+    void fn_8027F1C8(); // places or spawns the effect in mGroupSpotEmitter_0x1388 (ids 0x35E-0x361)
     void fn_8027F854(JGeometry::TVec3f* out, s32 player); // player's position plus an offset by fn_802486A0
     s32 fn_802487FC() const; // tu_8023FBF0 (0x802487FC); a count of players (r3 only)
     bool fn_80248A24(); // tu_8023FBF0; called by tu_8027E5BC (0x802846E4); sets 0x43f / 0x440
@@ -558,7 +558,7 @@ public:
     void fn_802790C0(); // called by tu_80285E58
     void fn_8027D4F4(); // called by tu_80285E58
     bool fn_80270ABC() const; // bool: its body only returns li 1 / li 0 and a neg/andc/srwi test; fn_80270C88 returns it unchanged as its bool
-    void fn_802709C8(); // BgRewrite fn_802A20F0 on field_0x30c; called by tu_80256C74
+    void fn_802709C8(); // BgRewrite fn_802A20F0 on mFrontPos_0x30c; called by tu_80256C74
     void fn_80270D08(); // counts field_0x464 and field_0x468 down; called by tu_8023FBF0 and tu_80285E58
     bool fn_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg); // fn_80238548 on this player; called with (0, &mPos, 0x12)
     void fn_8027221C(s32 value); // field_0xbf4 = value
@@ -650,20 +650,20 @@ public:
     /* 0x02E8 */ JGeometry::TVec3f field_0x2e8;
     /* 0x02F4 */ JGeometry::TVec3f mHeldPos_0x2f4;
     /* 0x0300 */ JGeometry::TVec3f field_0x300; // fn_8025EE0C stores its argument
-    /* 0x030C */ JGeometry::TVec3f field_0x30c;
+    /* 0x030C */ JGeometry::TVec3f mFrontPos_0x30c;
     /* 0x0318 */ JGeometry::TVec3f field_0x318;
     // The x and y that fn_8026E5F8 stores (its z is left alone).
-    /* 0x0324 */ JGeometry::TVec2f field_0x324;
+    /* 0x0324 */ JGeometry::TVec2f mGlideTarget_0x324;
     /* 0x032C */ JGeometry::TVec3f field_0x32c;
     // fn_80254744: mPos, or (battle mode) mPos moved 16 along the facing mFacing_0x3dc.
     /* 0x0338 */ JGeometry::TVec3f field_0x338;
     // Zeroed by fn_802954B8 (three stfs of 0.0f).
     /* 0x0344 */ JGeometry::TVec3f mVel_0x344;
     /* 0x0350 */ JGeometry::TVec3f field_0x350; // psq_l by tu_8026FC20 (0x80279844)
-    /* 0x035C */ JGeometry::TVec3f field_0x35c;
+    /* 0x035C */ JGeometry::TVec3f mPushVel_0x35c;
     /* 0x0368 */ JGeometry::TVec3f mKeptVel_0x368;
     /* 0x0374 */ JGeometry::TVec3f field_0x374;
-    /* 0x0380 */ JGeometry::TVec3f field_0x380;
+    /* 0x0380 */ JGeometry::TVec3f mSteerVel_0x380;
     /* 0x038C */ f32 field_0x38c;
     /* 0x0390 */ f32 field_0x390;
     /* 0x0394 */ s32 field_0x394;
@@ -719,7 +719,7 @@ public:
     /* 0x0408 */ s32 field_0x408;
     /* 0x040C */ s32 field_0x40c;
     /* 0x0410 */ f32 field_0x410;
-    /* 0x0414 */ JGeometry::TVec3f field_0x414;
+    /* 0x0414 */ JGeometry::TVec3f mConveyorVel_0x414;
     // Offset added to mPos at the end of fn_802685D4 (ps_add). Zeroed while
     // mPos.z > 0; otherwise its x and y decay under the tile code.
     /* 0x0420 */ JGeometry::TVec3f field_0x420;
@@ -760,7 +760,7 @@ public:
     // Cleared by fn_80263854 (stb r0).
     /* 0x0459 */ u8 field_0x459;
     /* 0x045A */ u8 field_0x45a[0x45C - 0x45A];
-    /* 0x045C */ s32 field_0x45c;
+    /* 0x045C */ s32 mAttackKind_0x45c;
     // Returned by fn_802412CC (lbz; blr), read through fn_80235448.
     /* 0x0460 */ bool field_0x460;
     /* 0x0461 */ u8 field_0x461[0x464 - 0x461];
@@ -768,7 +768,7 @@ public:
     /* 0x0468 */ s32 field_0x468;
     /* 0x046C */ s32 field_0x46c;
     /* 0x0470 */ s32 field_0x470;
-    /* 0x0474 */ JGeometry::TVec3f field_0x474;
+    /* 0x0474 */ JGeometry::TVec3f mJoltOffset_0x474;
     /* 0x0480 */ s32 field_0x480;
     /* 0x0484 */ u8 field_0x484;
     /* 0x0485 */ u8 field_0x485[0x488 - 0x485];
@@ -807,12 +807,12 @@ public:
     /* 0x05FC */ JGeometry::TBox2f field_0x5fc[0x50];
     /* 0x0AFC */ u8 field_0xafc;
     /* 0x0AFD */ u8 field_0xafd[0xB00 - 0xAFD];
-    /* 0x0B00 */ s32 field_0xb00[3];
-    /* 0x0B0C */ s32 field_0xb0c[3];
+    /* 0x0B00 */ s32 mArrowSerials_0xb00[3];
+    /* 0x0B0C */ s32 mSlingshotSerials_0xb0c[3];
     // Returned by fn_8023B22C (-1 without a player).
     /* 0x0B18 */ s32 field_0xb18;
     /* 0x0B1C */ s32 field_0xb1c[3];
-    /* 0x0B28 */ s32 field_0xb28;
+    /* 0x0B28 */ s32 mFireSerial_0xb28;
     /* 0x0B2C */ s32 field_0xb2c;
     /* 0x0B30 */ s32 field_0xb30[2];
     /* 0x0B38 */ s32 field_0xb38;
@@ -833,7 +833,7 @@ public:
     /* 0x0B7B */ bool field_0xb7b;
     /* 0x0B7C */ s32 field_0xb7c;
     /* 0x0B80 */ s32 field_0xb80;
-    /* 0x0B84 */ bool field_0xb84;
+    /* 0x0B84 */ bool mButtonHeld_0xb84;
     /* 0x0B85 */ u8 field_0xb85[0xB88 - 0xB85];
     /* 0x0B88 */ s32 field_0xb88;
     /* 0x0B8C */ s32 field_0xb8c;
@@ -914,7 +914,7 @@ public:
     /* 0x0C84 */ JGeometry::TVec3f mSquashScale_0xc84;
     /* 0x0C90 */ JGeometry::TVec3f mDrawScale_0xc90;
     /* 0x0C9C */ s32 field_0xc9c;
-    /* 0x0CA0 */ u8 field_0xca0;
+    /* 0x0CA0 */ u8 mAlpha_0xca0;
     /* 0x0CA1 */ u8 field_0xca1;
     /* 0x0CA2 */ u8 field_0xca2;
     /* 0x0CA3 */ s8 field_0xca3; // fn_80254744 stores -0x80
@@ -1024,12 +1024,12 @@ public:
     /* 0x1174 */ u8 field_0x1174;
     /* 0x1175 */ u8 field_0x1175[0x1178 - 0x1175];
     /* 0x1178 */ s32 field_0x1178; // stw in tu_8023FBF0 (0x8024B1A0); 0-2 pick the frames of state 0x49 (fn_80265E88)
-    /* 0x117C */ s32 field_0x117c[8]; // zeroed by fn_8027023C
-    /* 0x119C */ u8 field_0x119c[4][4]; // zeroed by fn_8027023C
+    /* 0x117C */ s32 mInputTimers_0x117c[8]; // zeroed by fn_8027023C
+    /* 0x119C */ u8 mPressHistory_0x119c[4][4]; // zeroed by fn_8027023C
     /* 0x11AC */ s32 field_0x11ac;
     /* 0x11B0 */ s32 field_0x11b0;
     // Copied as the effect position by fn_8027F1C8 when fn_80241284 is true.
-    /* 0x11B4 */ JGeometry::TVec3f field_0x11b4;
+    /* 0x11B4 */ JGeometry::TVec3f mSpinCenter_0x11b4;
     /* 0x11C0 */ s16 mSpinAngle_0x11c0;
     /* 0x11C2 */ u8 field_0x11c2[0x11C4 - 0x11C2];
     /* 0x11C4 */ s32 field_0x11c4;
@@ -1048,7 +1048,7 @@ public:
     /* 0x11EA */ u8 field_0x11ea;
     /* 0x11EB */ u8 field_0x11eb;
     /* 0x11EC */ s32 mPadPlayer_0x11ec; // a player index for getPlayerInputSlot_8030AAF4
-    /* 0x11F0 */ s32 field_0x11f0;
+    /* 0x11F0 */ s32 mInputLockTimer_0x11f0;
     /* 0x11F4 */ s32 mFreezeTimer_0x11f4;
     /* 0x11F8 */ s32 field_0x11f8;
     /* 0x11FC */ s32 field_0x11fc;
@@ -1098,10 +1098,10 @@ public:
     /* 0x1258 */ JGeometry::TVec3f mSoundPos_0x1258; // zeroed by the constructor
     /* 0x1264 */ s32 field_0x1264;
     /* 0x1268 */ JGeometry::TVec3f field_0x1268; // fn_8024C378 / fn_8024E0A0: mPos plus a view offset, returned as TVec3f*
-    /* 0x1274 */ JPABaseEmitter* field_0x1274;
+    /* 0x1274 */ JPABaseEmitter* mChargeEmitter_0x1274;
     // Six particle callbacks, constructed and destroyed with the player.
     /* 0x1278 */ cls_804A64A8 field_0x1278;
-    /* 0x128C */ JPABaseEmitter* field_0x128c;
+    /* 0x128C */ JPABaseEmitter* mChargeEmitter_0x128c;
     /* 0x1290 */ cls_804A64A8 field_0x1290;
     // Position of the emitters 0x12B0 / 0x12B4 (spawnEmitter_8013CC50 argument; stfs x).
     /* 0x12A4 */ JGeometry::TVec3f mChargeEffectPos_0x12a4;
@@ -1110,17 +1110,17 @@ public:
     /* 0x12B4 */ JPABaseEmitter* field_0x12b4;
     /* 0x12B8 */ JPABaseEmitter* field_0x12b8;
     /* 0x12BC */ JPABaseEmitter* field_0x12bc; // deleted with deleteEmitter() (fn_8027B5F0)
-    /* 0x12C0 */ s32 field_0x12c0;
+    /* 0x12C0 */ s32 mChargeEffectSerial_0x12c0;
     /* 0x12C4 */ JPABaseEmitter* field_0x12c4;
     /* 0x12C8 */ JPABaseEmitter* field_0x12c8;
-    /* 0x12CC */ JPABaseEmitter* field_0x12cc;
+    /* 0x12CC */ JPABaseEmitter* mItemChargeEmitter_0x12cc;
     /* 0x12D0 */ cls_804A64A8 field_0x12d0;
-    /* 0x12E4 */ JPABaseEmitter* field_0x12e4;
+    /* 0x12E4 */ JPABaseEmitter* mItemChargeEmitter_0x12e4;
     /* 0x12E8 */ cls_804A64A8 field_0x12e8;
     // The charge point of the bow / slingshot (states 0x3A / 0x3B, fn_8025C894 /
     // fn_8025BEB0), followed by the callbacks field_0x12d0 / field_0x12e8 and the 'PEFF'
-    // actor field_0x12c0.
-    /* 0x12FC */ JGeometry::TVec3f field_0x12fc;
+    // actor mChargeEffectSerial_0x12c0.
+    /* 0x12FC */ JGeometry::TVec3f mItemChargePos_0x12fc;
     /* 0x1308 */ JPABaseEmitter* field_0x1308; // deleted with deleteEmitter() (fn_802708E8)
     /* 0x130C */ cls_804A64A8 field_0x130c;
     // The point the particle callback field_0x130c follows (fn_80279FE8: mPos raised by 16).
@@ -1143,7 +1143,7 @@ public:
     /* 0x1380 */ JPABaseEmitter* field_0x1380;
     /* 0x1384 */ JPABaseEmitter* field_0x1384;
     // fn_8027F1C8's effect (ids 0x35E-0x361), moved with setEmitterPos_8013CB44.
-    /* 0x1388 */ JPABaseEmitter* field_0x1388;
+    /* 0x1388 */ JPABaseEmitter* mGroupSpotEmitter_0x1388;
     /* 0x138C */ JPABaseEmitter* field_0x138c;
     /* 0x1390 */ JPABaseEmitter* field_0x1390;
     /* 0x1394 */ JPABaseEmitter* field_0x1394;
@@ -1201,8 +1201,8 @@ public:
     bool fn_80272E98(const JGeometry::TBox2f* box, s32 layer); // via fn_80239C00
     bool fn_802724E0(const JGeometry::TBox2f* box, s32 layer); // via fn_80239C9C
     bool fn_802574CC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023AC74
-    bool fn_802575B8(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // field_0xb0c[3]; stores the hit index in 0xb80 (-1 if none)
-    bool fn_802576CC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // field_0xb00[3]; hit index in 0xb7c
+    bool fn_802575B8(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // mSlingshotSerials_0xb0c[3]; stores the hit index in 0xb80 (-1 if none)
+    bool fn_802576CC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // mArrowSerials_0xb00[3]; hit index in 0xb7c
     bool fn_802573E0(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // the single-slot box test over field_0xb38 / 0xb6c / 0x590
     bool fn_80273C30(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out, bool flag); // via fn_8023BA68
     void fn_80252CF0(const JGeometry::TVec3f* pos); // via fn_8023DF68
@@ -1858,7 +1858,7 @@ s32 fn_802340A0(s32 player);
 // -> fn_80290070; false without the player. 3 units (act_warp, act_magic_circle, tu_802957CC; clrlwi 24).
 bool fn_802316C8(s32 player, s32 layer, const JGeometry::TVec3f* pos);
 bool fn_802317F0(s32 player, s32 a, const JGeometry::TVec3f* b, const JGeometry::TVec3f* c, s32 d);
-// 1 unit (tu_8023FBF0). -> &field_0x324 (TVec2f); else &lbl_804CF460 (a TVec3f, its x / y).
+// 1 unit (tu_8023FBF0). -> &mGlideTarget_0x324 (TVec2f); else &lbl_804CF460 (a TVec3f, its x / y).
 const JGeometry::TVec2f* fn_80238430(s32 player);
 // Whether two boxes overlap (a copy of a clipped to b is not empty). Called by fn_80231DE4 and fn_80232A0C.
 bool fn_80233C9C(const JGeometry::TBox2f* a, const JGeometry::TBox2f* b);
@@ -1868,8 +1868,8 @@ s32 fn_8023B520(s32 player);
 u8 fn_8023B9CC(s32 player, const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* pos, bool flag);
 // 1 unit (act_seesaw_lift). -> fn_8023FF90 with a stack copy of *pos.
 void fn_8022BE24(s32 player, const JGeometry::TVec3f* pos);
-// 2 units (tu_801CB270, tu_801A3C50; mr. / blt). The serial the player's field_0xb00 /
-// field_0xb0c holds at index field_0xb7c / field_0xb80, or -1 (no player, index outside 0-2).
+// 2 units (tu_801CB270, tu_801A3C50; mr. / blt). The serial the player's mArrowSerials_0xb00 /
+// mSlingshotSerials_0xb0c holds at index field_0xb7c / field_0xb80, or -1 (no player, index outside 0-2).
 s32 fn_8023B2B0(s32 player);
 s32 fn_8023B358(s32 player);
 // 2 units (act_zora_lotus, act_seesaw_lift; they build the vector in the argument slot).

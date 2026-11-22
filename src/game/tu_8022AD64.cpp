@@ -955,7 +955,7 @@ bool fn_8023B400(s32 player) {
     return false;
 }
 
-// The serial in field_0xb0c picked by field_0xb80 (0-2), else -1.
+// The serial in mSlingshotSerials_0xb0c picked by field_0xb80 (0-2), else -1.
 s32 fn_8023B358(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return -1;
@@ -967,10 +967,10 @@ s32 fn_8023B358(s32 player) {
     if (p->field_0xb80 < 0 || p->field_0xb80 >= 3) {
         return -1;
     }
-    return p->field_0xb0c[p->field_0xb80];
+    return p->mSlingshotSerials_0xb0c[p->field_0xb80];
 }
 
-// The serial in field_0xb00 picked by field_0xb7c (0-2), else -1.
+// The serial in mArrowSerials_0xb00 picked by field_0xb7c (0-2), else -1.
 s32 fn_8023B2B0(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
         return -1;
@@ -982,7 +982,7 @@ s32 fn_8023B2B0(s32 player) {
     if (p->field_0xb7c < 0 || p->field_0xb7c >= 3) {
         return -1;
     }
-    return p->field_0xb00[p->field_0xb7c];
+    return p->mArrowSerials_0xb00[p->field_0xb7c];
 }
 
 s32 fn_8023B22C(s32 player) {
@@ -1592,7 +1592,7 @@ void fn_802384BC(s32 player) {
     }
 }
 
-// The player's field_0x324 (a TVec2f; the one caller reads x and y). The
+// The player's mGlideTarget_0x324 (a TVec2f; the one caller reads x and y). The
 // fallback is the shared no-player position, a TVec3f whose x and y it reads
 // in the same way.
 const JGeometry::TVec2f* fn_80238430(s32 player) {
@@ -1600,7 +1600,7 @@ const JGeometry::TVec2f* fn_80238430(s32 player) {
         return (const JGeometry::TVec2f*)&lbl_804CF460;
     }
     if (fn_8023F264(player)) {
-        return &gPlayerManager_8053AC90->mPlayers[player]->field_0x324;
+        return &gPlayerManager_8053AC90->mPlayers[player]->mGlideTarget_0x324;
     }
     return (const JGeometry::TVec2f*)&lbl_804CF460;
 }
@@ -2789,12 +2789,12 @@ void fn_80232A0C() {
                 a->fn_8024F0E8(0x20002);
                 fn_80238548(j, 0, (const JGeometry::TVec2f*)&a->mPos, 0x10);
                 b->fn_8024F0E8(0x20002);
-                a->field_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(i), *getPlayerPos_8023E724(j)));
-                fn_80233C08(&a->field_0x35c);
-                a->field_0x35c.scale(2.0f);
-                b->field_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(j), *getPlayerPos_8023E724(i)));
-                fn_80233C08(&b->field_0x35c);
-                b->field_0x35c.scale(2.0f);
+                a->mPushVel_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(i), *getPlayerPos_8023E724(j)));
+                fn_80233C08(&a->mPushVel_0x35c);
+                a->mPushVel_0x35c.scale(2.0f);
+                b->mPushVel_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(j), *getPlayerPos_8023E724(i)));
+                fn_80233C08(&b->mPushVel_0x35c);
+                b->mPushVel_0x35c.scale(2.0f);
                 continue;
             }
 
@@ -2805,12 +2805,12 @@ void fn_80232A0C() {
                 if (b->fn_80272224(&box, a->mLayer_0x3b4,
                                    a->field_0x458 == 1 ? a->field_0x3f0 : a->mFacing_0x3dc, true,
                                    true)) {
-                    a->field_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(i), *getPlayerPos_8023E724(j)));
-                    fn_80233C08(&a->field_0x35c);
-                    a->field_0x35c.scale(2.0f);
-                    b->field_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(j), *getPlayerPos_8023E724(i)));
-                    fn_80233C08(&b->field_0x35c);
-                    b->field_0x35c.scale(2.0f);
+                    a->mPushVel_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(i), *getPlayerPos_8023E724(j)));
+                    fn_80233C08(&a->mPushVel_0x35c);
+                    a->mPushVel_0x35c.scale(2.0f);
+                    b->mPushVel_0x35c.set(fn_80233BC4(*getPlayerPos_8023E724(j), *getPlayerPos_8023E724(i)));
+                    fn_80233C08(&b->mPushVel_0x35c);
+                    b->mPushVel_0x35c.scale(2.0f);
                 } else if (gGameRoot_8053AAF8->field_0x7f) {
                     fn_80238548(j, 0, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 1);
                 } else if (fn_8023B6CC(i) == 1) {
