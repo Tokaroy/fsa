@@ -995,6 +995,11 @@ def judge(wt, unit, base, focus_addr, full=None, dry=False):
     if unclose:
         return (f"lost structural credit in: {', '.join(unclose[:3])} (it was within 4 instructions of the original; "
                 "keep its instruction count as close or closer)"), ev, notes
+    # an open function (not the focus) falling by more than PCT_DROP points: the merge refuses it (regressions())
+    fell = [f"{e['name']} {old[a]['pct']:.2f} -> {e['pct']:.2f} %" for a, e in new.items() if a in old and a != focus_addr
+            and e["size"] >= 64 and old[a]["pct"] - e["pct"] > PCT_DROP]
+    if fell:
+        return f"another function got worse: {'; '.join(fell[:3])} (undo what caused it)", ev, notes
     worse = [e["name"] for a, e in new.items() if a in old and e["score"] > old[a]["score"]]
     if worse:  # weigh the unit as a whole: an unwritten function counts as two per instruction
         dist = lambda e: 2 * (e["size"] // 4) if e["cls"] == "missing" else e["score"]
