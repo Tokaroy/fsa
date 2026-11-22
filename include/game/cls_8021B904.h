@@ -6,7 +6,7 @@
 // A wandering-direction steering timer, defined in game/tu_8021B904.cpp.
 // No vtable; named after its first method (fn_8021BA30 initialises it).
 // Size: at least 0x12 (the size of the embedding actors' slot is unknown).
-class cls_8021B904 {
+class WanderSteerTimer_8021B904 {
 public:
     // With turn set, counts mTimer up to mTarget and then flips the heading
     // to roughly the opposite direction (plus up to +-0x2000 of noise);

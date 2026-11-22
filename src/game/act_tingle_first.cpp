@@ -37,7 +37,7 @@ static const Step_804AADC8* lbl_804AADC8[] = {
 };
 
 cls_804AADD8::cls_804AADD8() {
-    field_0x24c = new cls_8031709C;
+    field_0x24c = new SoundEffectSeq_8031709C;
 }
 
 cls_804AADD8::~cls_804AADD8() {

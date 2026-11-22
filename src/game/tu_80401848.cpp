@@ -13,9 +13,9 @@
 
 // The thread's command queue (TWW's mDoDvdThd_param_c). Named after the
 // thread function that runs it.
-class cls_80402054 {
+class DvdCommandQueue_80402054 {
 public:
-    cls_80402054() {
+    DvdCommandQueue_80402054() {
         OSInitMessageQueue(&mQueue, mMessages, 1);
         OSInitMutex(&mMutex);
         mHead = NULL;
@@ -79,7 +79,7 @@ inline BOOL cb(void* userData) {
 
 static OSThread lbl_80528980;
 static u8 lbl_80528CA0[0x1000] ATTRIBUTE_ALIGN(32); // the thread's stack
-static cls_80402054 lbl_80529CA0;
+static DvdCommandQueue_80402054 lbl_80529CA0;
 static JKRHeap* lbl_8053ADF0; // the commands are allocated here
 static JKRHeap* lbl_8053ADF4; // commands without a heap of their own load here
 static u8 lbl_8053A218 = 1;   // direction for commands created with 0
@@ -131,7 +131,7 @@ inline DvdMountMemArchiveCommand_804B0FC0::DvdMountMemArchiveCommand_804B0FC0(u8
 // loop gives different code).
 void* fn_80402054(void* param) {
     { JKRThread thread(OSGetCurrentThread(), 0); }
-    cls_80402054* queue = (cls_80402054*)param;
+    DvdCommandQueue_80402054* queue = (DvdCommandQueue_80402054*)param;
     while (queue->waitForKick()) {
         while (DvdCommand_804B0FD0* cmd = queue->getFirstCommand()) {
             queue->cut(cmd);

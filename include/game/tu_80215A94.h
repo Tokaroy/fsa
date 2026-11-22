@@ -25,15 +25,15 @@ struct cls_80216238Sub {
     void fn_802162B8(s32 id, s32 key);
 }; // Size: 0x10
 
-// One entry of the table, one per player (cls_80215E48() builds four with
+// One entry of the table, one per player (HorseRaceTable_80215E48() builds four with
 // __construct_array, stride 0x24); named after its constructor, 0x80216238.
-struct cls_80216238 {
+struct HorseRaceEntry_80216238 {
     /* 0x00 */ s32 mId;    // the entry's index; passed to fn_8043D874
     /* 0x04 */ s32 mKey;   // -1 from the constructor; the value fn_80215E58 searches for
     /* 0x08 */ cls_80216238Sub mSub;
-    /* 0x18 */ cls_801ED3DC mWatch;
+    /* 0x18 */ Stopwatch_801ED3DC mWatch;
     // 0x80216238: the entry's constructor (passed to __construct_array).
-    cls_80216238();
+    HorseRaceEntry_80216238();
     void init(s32 id) {
         mId = id;
         mKey = -1;
@@ -46,14 +46,14 @@ struct cls_80216238 {
 
 // The table the horse-race man keeps at 0x2B8 (constructor 0x80216178);
 // named after its lowest-address member function that takes it as `this`.
-struct cls_80215E48 {
+struct HorseRaceTable_80215E48 {
     /* 0x00 */ s32 mCount; // fn_80138A30(): the number of players
-    /* 0x04 */ cls_80216238 mEntries[4];
+    /* 0x04 */ HorseRaceEntry_80216238 mEntries[4];
     /* 0x94 */ cls_8021C024 field_0x94; // a cls_8021C024 (tu_8021BFA8.cpp), reset by fn_8021C078
     /* 0xA0 */ u8 field_0xa0;      // zeroed by fn_802160F4
     // 0x80216178: stores the player count (fn_80138A30), constructs the four
     // entries and field_0x94, then resets with fn_802160F4.
-    cls_80215E48();
+    HorseRaceTable_80215E48();
     // Entry `index`'s mKey.
     s32 fn_80215E48(s32 index);
     // Once entry `index`'s stopwatch has stopped (and not at its 2 minute

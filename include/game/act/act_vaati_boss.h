@@ -49,8 +49,8 @@ struct cls_801D6A58 {
 // 0x554 and fn_801D4ED4 steps them with fn_801E4A18. No vtable, ctor or dtor:
 // named after its lowest-address function, 0x801D6CEC (game/tu_801D6CEC.cpp,
 // not written yet; fn_801D6D08 there starts the z sine at 0x28).
-struct cls_801D6CEC {
-    cls_801D6CEC() {
+struct ShakeOffset_801D6CEC {
+    ShakeOffset_801D6CEC() {
         fn_801E4B0C(&field_0x0);
         fn_801E4B0C(&field_0x14);
         fn_801E4B0C(&field_0x28);
@@ -97,12 +97,12 @@ public:
 class VaatiBoss_804A4958;
 class JPABaseEmitter;
 
-class cls_80217F80 {
+class VaatiEmitters_80217F80 {
 public:
     // 0x80218020: clears the emitters and the owner.
-    cls_80217F80();
+    VaatiEmitters_80217F80();
     // 0x80217F80: frees the six emitters (releaseEmitter_801EE434 on 0x0..0x14).
-    ~cls_80217F80();
+    ~VaatiEmitters_80217F80();
     // 0x802179EC: frees and clears the emitters at 0x10 and 0x14.
     void fn_802179EC();
     // 0x80217A30: frees and clears the emitters at 0x8 and 0xC.
@@ -244,10 +244,10 @@ public:
 
     /* 0x2A8 */ cls_801D6A88 field_0x2a8[0x4];
     /* 0x308 */ cls_801D6A58 field_0x308[0x10];
-    /* 0x448 */ cls_80217F80 field_0x448;
+    /* 0x448 */ VaatiEmitters_80217F80 field_0x448;
     /* 0x464 */ cls_801EB8CC field_0x464;
     /* 0x4C4 */ cls_801D7730 field_0x4c4;
-    /* 0x52C */ cls_801D6CEC field_0x52c;
+    /* 0x52C */ ShakeOffset_801D6CEC field_0x52c;
     /* 0x568 */ cls_801E6AB8 field_0x568;
     /* 0x5B0 */ s32 field_0x5b0;
     /* 0x5B4 */ s32 field_0x5b4;

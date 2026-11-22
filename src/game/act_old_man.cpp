@@ -105,7 +105,7 @@ static void (cls_804AEED0::*lbl_804AEC48[54])() = {
 };
 
 cls_804AEED0::cls_804AEED0() {
-    field_0x274 = new cls_8031709C;
+    field_0x274 = new SoundEffectSeq_8031709C;
 }
 
 cls_804AEED0::~cls_804AEED0() {

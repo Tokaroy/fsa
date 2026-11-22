@@ -86,8 +86,8 @@ public:
     /* 0x354 */ s32 field_0x354;
     /* 0x358 */ JPABaseEmitter* mEmitter358;
     /* 0x35C */ Damped2D_801D2918 field_0x35c; // a hit player pushes it (attackPlayers_0x68)
-    /* 0x368 */ cls_80217374 field_0x368;      // wandering direction timer
-    /* 0x374 */ cls_8021B904 field_0x374;      // steering timer
+    /* 0x368 */ WanderTurnTimer_80217374 field_0x368;      // wandering direction timer
+    /* 0x374 */ WanderSteerTimer_8021B904 field_0x374;      // steering timer
 }; // Size: 0x388
 
 extern const Thief_804A5A30::TypeParams lbl_8046A238[];

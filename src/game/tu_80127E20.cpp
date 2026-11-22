@@ -5,24 +5,24 @@
 #include "game/act/act_zora_escort_goal.h"
 #include "game/tu_80127E20.h"
 
-cls_80128460* fn_801283E8() {
-    static cls_80128460 lbl_804BD36C;
+ZoraEscortGoalList_80128460* fn_801283E8() {
+    static ZoraEscortGoalList_80128460 lbl_804BD36C;
     return &lbl_804BD36C;
 }
 
-void cls_80128460::fn_801283BC() {
+void ZoraEscortGoalList_80128460::fn_801283BC() {
     mCount = 0;
     for (s32 i = 0; i < 8; i++) {
         mSerials[i] = 0;
     }
 }
 
-void cls_80128460::fn_80128398(const ActorBase_804A5770* actor) {
+void ZoraEscortGoalList_80128460::fn_80128398(const ActorBase_804A5770* actor) {
     mSerials[mCount] = actor->mSerial;
     mCount++;
 }
 
-bool cls_80128460::fn_801282E0() {
+bool ZoraEscortGoalList_80128460::fn_801282E0() {
     if (mCount <= 0) {
         return false;
     }
@@ -41,7 +41,7 @@ bool cls_80128460::fn_801282E0() {
     return true;
 }
 
-bool cls_80128460::fn_8012824C() {
+bool ZoraEscortGoalList_80128460::fn_8012824C() {
     fn_8023077C();
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
@@ -55,11 +55,11 @@ bool cls_80128460::fn_8012824C() {
     return true;
 }
 
-void cls_80128460::fn_80128228() {
+void ZoraEscortGoalList_80128460::fn_80128228() {
     fn_80230534(false);
 }
 
-void cls_80128460::fn_801281A4() {
+void ZoraEscortGoalList_80128460::fn_801281A4() {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA) {
@@ -68,7 +68,7 @@ void cls_80128460::fn_801281A4() {
     }
 }
 
-bool cls_80128460::fn_801280F8() {
+bool ZoraEscortGoalList_80128460::fn_801280F8() {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA) {
@@ -83,7 +83,7 @@ bool cls_80128460::fn_801280F8() {
     return false;
 }
 
-void cls_80128460::fn_80128074() {
+void ZoraEscortGoalList_80128460::fn_80128074() {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA) {
@@ -92,7 +92,7 @@ void cls_80128460::fn_80128074() {
     }
 }
 
-const JGeometry::TVec3f* cls_80128460::fn_80127F90() {
+const JGeometry::TVec3f* ZoraEscortGoalList_80128460::fn_80127F90() {
     if (mCount <= 1) {
         JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
         return &zero;
@@ -108,7 +108,7 @@ const JGeometry::TVec3f* cls_80128460::fn_80127F90() {
     return &center;
 }
 
-void cls_80128460::fn_80127ED8(const JGeometry::TVec3f* pos) {
+void ZoraEscortGoalList_80128460::fn_80127ED8(const JGeometry::TVec3f* pos) {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA &&
@@ -118,7 +118,7 @@ void cls_80128460::fn_80127ED8(const JGeometry::TVec3f* pos) {
     }
 }
 
-void cls_80128460::fn_80127E20(const JGeometry::TVec3f* pos) {
+void ZoraEscortGoalList_80128460::fn_80127E20(const JGeometry::TVec3f* pos) {
     for (s32 i = 0; i < mCount; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSerials[i]);
         if (actor != NULL && actor->mActorId == ACTOR_FZRA &&

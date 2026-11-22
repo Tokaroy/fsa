@@ -30,8 +30,8 @@ public:
     /* 0x2AC */ s32 field_0x2ac;   // zeroed by the constructor
     /* 0x2B0 */ s32 field_0x2b0;   // -1 from the constructor
     /* 0x2B4 */ u8 field_0x2b4;    // zeroed by the constructor
-    /* 0x2B6 */ cls_801ED828 mCountdown;
-    /* 0x2B8 */ cls_80215E48 mTable;
+    /* 0x2B6 */ StartCountdown_801ED828 mCountdown;
+    /* 0x2B8 */ HorseRaceTable_80215E48 mTable;
 };
 
 #endif

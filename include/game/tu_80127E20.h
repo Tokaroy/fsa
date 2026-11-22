@@ -9,14 +9,14 @@
 // The guarded static at 0x804BD36C (function-local static of fn_801283E8): the
 // serials of the escort's 'FZRA' (ZoraEscortGoal) actors. No vtable; named
 // after its destructor fn_80128460, which is passed to __register_global_object
-// (the constructor is inlined into fn_801283E8). Twin of cls_80131F6C.
-struct cls_80128460 {
-    cls_80128460() : mCount(0) {
+// (the constructor is inlined into fn_801283E8). Twin of EscortActorList_80131F6C.
+struct ZoraEscortGoalList_80128460 {
+    ZoraEscortGoalList_80128460() : mCount(0) {
         for (s32 i = 0; i < 8; i++) {
             mSerials[i] = 0;
         }
     }
-    ~cls_80128460() {}
+    ~ZoraEscortGoalList_80128460() {}
 
     // Move every 'FZRA' actor whose field_0x258 is 0 (fn_80127E20) / nonzero
     // (fn_80127ED8) to *pos.
@@ -47,6 +47,6 @@ struct cls_80128460 {
     /* 0x04 */ s32 mSerials[8];
 }; // Size: 0x24
 
-cls_80128460* fn_801283E8();
+ZoraEscortGoalList_80128460* fn_801283E8();
 
 #endif

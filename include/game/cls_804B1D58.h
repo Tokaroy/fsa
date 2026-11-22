@@ -11,10 +11,10 @@ struct J2DAnmTevRegKey;
 struct J2DAnmTextureSRTKey;
 
 // 0x10-byte element of field_0x164, named after its constructor
-// __ct__12cls_80453830Fv (fn_80453830, game/tu_8044C7F0.cpp), which
+// __ct__27WindowCornerColors_80453830Fv (fn_80453830, game/tu_8044C7F0.cpp), which
 // __construct_array runs on the two elements.
-struct cls_80453830 {
-    cls_80453830(); // out-of-line (game/tu_8044C7F0.cpp): every word -1
+struct WindowCornerColors_80453830 {
+    WindowCornerColors_80453830(); // out-of-line (game/tu_8044C7F0.cpp): every word -1
 
     // Four window corner colours (default TColor is 0xFFFFFFFF).
     /* 0x0 */ JUtility::TColor field_0x0;
@@ -102,7 +102,7 @@ public:
     /* 0x14C */ JUtility::TColor field_0x14c[2];
     /* 0x154 */ JUtility::TColor field_0x154[2];
     /* 0x15C */ JUtility::TColor field_0x15c[2];
-    /* 0x164 */ cls_80453830 field_0x164[2]; // constructed by __construct_array (0x10 x 2)
+    /* 0x164 */ WindowCornerColors_80453830 field_0x164[2]; // constructed by __construct_array (0x10 x 2)
     /* 0x184 */ s32 field_0x184; // fn_8044F664 returns it
 }; // Size: 0x188
 

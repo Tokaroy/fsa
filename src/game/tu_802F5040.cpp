@@ -138,13 +138,13 @@ struct TileShade_802FA3FC {
 // Forward declarations.
 void fn_802F5040(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, JGeometry::TVec3f* out);
 
-cls_803004C0::cls_803004C0() {}
+IntRect_803004C0::IntRect_803004C0() {}
 
-cls_803003AC::cls_803003AC() {}
+TimedSpriteEffect_803003AC::TimedSpriteEffect_803003AC() {}
 
 cls_803003A8::cls_803003A8() {}
 
-cls_8030029C::cls_8030029C() {}
+QueuedSprite_8030029C::QueuedSprite_8030029C() {}
 
 TileMap_804AA858::TileMap_804AA858(JKRHeap* heap) {
     heap->getTotalFreeSize();
@@ -338,7 +338,7 @@ void TileMap_804AA858::fn_802FF548() {
 // coloured before the strength-reduced pointer, as in an inlined loop).
 static inline void drawQueuedSprites_802FF3F0(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mQueuedSpriteNum_0xd320; i++) {
-        cls_8030029C* sprite = &self->mQueuedSprites_0xc220[i];
+        QueuedSprite_8030029C* sprite = &self->mQueuedSprites_0xc220[i];
         if (sprite->mRes != NULL) {
             self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
@@ -373,7 +373,7 @@ void TileMap_804AA858::fn_802FF3B0() {
 
 static inline void drawQueuedSprites_802FF2D8(TileMap_804AA858* self) {
     for (s32 i = 0; i < self->mLateQueuedSpriteNum_0xe424; i++) {
-        cls_8030029C* sprite = &self->mLateQueuedSprites_0xd324[i];
+        QueuedSprite_8030029C* sprite = &self->mLateQueuedSprites_0xd324[i];
         if (sprite->mRes != NULL) {
             self->fn_802F86CC(&sprite->mPos, sprite->mRes, sprite->mFrame, &sprite->mParams, 1.0f, 1.0f);
         } else if (sprite->mImage != NULL) {
@@ -437,7 +437,7 @@ void TileMap_804AA858::fn_802FF0EC() {
 // a scaled copy for the draw).
 void TileMap_804AA858::fn_802FEE68() {
     for (int i = 0xFF; i >= 0; i--) {
-        cls_803003AC* effect = &mFadeSprites_0x2398[i];
+        TimedSpriteEffect_803003AC* effect = &mFadeSprites_0x2398[i];
         if (effect->mTimer > 0) {
             f32 t = (f32)effect->mTimer / (f32)effect->mDuration;
             effect->mParams.field_0x10.r = effect->mColor.r;
@@ -1174,8 +1174,8 @@ void TileMap_804AA858::fn_802FC268(const JGeometry::TVec3f* origin, s32 layer, u
 // mCircleTex_0xe454. While paused a black box at the pause screen's alpha; count:
 // a mosaic of the panel (points of count + 1 pixels from the EFB); alpha: a
 // black box at 0xFF - alpha.
-void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, cls_803004C0* rect,
-                                   cls_803004C0* rect2, u8 flag, s32 count, u8 alpha) {
+void TileMap_804AA858::fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect,
+                                   IntRect_803004C0* rect2, u8 flag, s32 count, u8 alpha) {
     JGeometry::TBox2f box(rect->field_0x0, rect->field_0x4, rect->field_0x0 + rect->field_0x8,
                           rect->field_0x4 + rect->field_0xc);
     gGameRoot2_8053AB10->fn_8013B414(&box, false);
@@ -2937,7 +2937,7 @@ u8 TileMap_804AA858::fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 fr
     s32 period = lbl_80471180[kind];
     if (field_0xbf98 && ((u32)res + (u32)image + (u32)res3) % (u32)period == (u32)(gGameRoot_8053AAF8->field_0x5c % period)) {
         for (int i = 0; i < 0x100; i++) {
-            cls_803003AC* effect = &mFadeSprites_0x2398[i];
+            TimedSpriteEffect_803003AC* effect = &mFadeSprites_0x2398[i];
             if (effect->mTimer == 0) {
                 effect->mTimer = lbl_804710F0[kind];
                 effect->mScale = lbl_80471138[params->field_0x30];
@@ -2988,7 +2988,7 @@ u8 TileMap_804AA858::fn_802F654C(const JGeometry::TVec3f* pos, void* res, s32 fr
                                    void* res3, SpriteParams_801F5AE0* params) {
     bool result = false;
     if (mQueuedSpriteNum_0xd320 < 0x20) {
-        cls_8030029C* sprite = &mQueuedSprites_0xc220[mQueuedSpriteNum_0xd320];
+        QueuedSprite_8030029C* sprite = &mQueuedSprites_0xc220[mQueuedSpriteNum_0xd320];
         sprite->mPos.set(*pos);
         sprite->mRes = res;
         sprite->mFrame = frame;
@@ -3018,7 +3018,7 @@ u8 TileMap_804AA858::fn_802F6298(const JGeometry::TVec3f* pos, void* res, s32 fr
                                    void* res3, SpriteParams_801F5AE0* params) {
     bool result = false;
     if (mLateQueuedSpriteNum_0xe424 < 0x20) {
-        cls_8030029C* sprite = &mLateQueuedSprites_0xd324[mLateQueuedSpriteNum_0xe424];
+        QueuedSprite_8030029C* sprite = &mLateQueuedSprites_0xd324[mLateQueuedSpriteNum_0xe424];
         sprite->mPos.set(*pos);
         sprite->mRes = res;
         sprite->mFrame = frame;

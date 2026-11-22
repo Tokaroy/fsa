@@ -8,12 +8,12 @@
 #include "game/act/act_shadow_link_2.h"
 #include "game/act/act_bomb.h"
 
-cls_80218A8C::cls_80218A8C() {
+BombDropTimer_80218A8C::BombDropTimer_80218A8C() {
     mOwner = NULL;
     mTimer = fn_801CD664(0x79) + 0x3c;
 }
 
-bool cls_80218A8C::fn_802189AC() {
+bool BombDropTimer_80218A8C::fn_802189AC() {
     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
     bool found = false;
     s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_HBMB, mOwner->mLayer_0x4, actors, -1);
@@ -31,7 +31,7 @@ bool cls_80218A8C::fn_802189AC() {
     return found;
 }
 
-void cls_80218A8C::fn_802188B0() {
+void BombDropTimer_80218A8C::fn_802188B0() {
     if (fn_801C0D70()->field_0x0 & 0x400) {
         return;
     }

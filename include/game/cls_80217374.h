@@ -8,7 +8,7 @@
 // shadow Link (act_shadow_link_2, +0x550) and thief (act_thief, +0x368)
 // actors, which pass their facing angle (s16 at 0x33C) through fn_80217374
 // every frame.
-class cls_80217374 {
+class WanderTurnTimer_80217374 {
 public:
     // Counts mTimer up to mDuration; then from state 0 turns a quarter turn
     // left or right (state 1 or 2) for 60-120 frames, and from state 1 or 2

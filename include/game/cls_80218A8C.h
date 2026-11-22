@@ -9,9 +9,9 @@ class ShadowLink2_804A43E8;
 // +0x540; its constructor fn_801C573C calls this class's constructor
 // fn_80218A8C), defined in game/tu_802188B0.cpp. No vtable; named after its
 // constructor. Its owner is the actor itself.
-class cls_80218A8C {
+class BombDropTimer_80218A8C {
 public:
-    cls_80218A8C();
+    BombDropTimer_80218A8C();
     // Per-frame (fn_802188B0): while the timer runs down, nothing; at the
     // end, if the owner is on the ground and fast enough, no player is near
     // and it is in state 0x11 or 0x1b, spawns a bomb (HBMB) and restarts

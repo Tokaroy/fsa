@@ -10,9 +10,9 @@
 
 // No vtable; named after its constructor (fn_8021ACE0, zeroes every field,
 // called by the actors' constructors).
-class cls_8021ACE0 {
+class HeadSway_8021ACE0 {
 public:
-    cls_8021ACE0();
+    HeadSway_8021ACE0();
     // Advances one frame. `flag` selects the actor's "settle at the centre"
     // mode. Returns true on the frame a sway stops at an end and on the
     // frame a centre pause starts.

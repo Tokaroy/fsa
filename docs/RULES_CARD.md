@@ -452,13 +452,13 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - frsqrte, frsp, one Newton step (`x <= 0` returns x): JGeometry's
   `TUtilf::sqrt` / `inv_sqrt` via `TVec2f::length()`, `TVec3f::normalize()`
   (isZero loads `__float_epsilon`: include libs/sdk's "JSystem/JGeometry.h", not
-  a literal epsilon); bare `frsqrte; fmuls` is `JMAFastSqrt`. cls_800F802C::fn_800F802C
+  a literal epsilon); bare `frsqrte; fmuls` is `JMAFastSqrt`. HitRing_800F802C::fn_800F802C
   (tu_800F7FCC, 100 %: TVec2f::length / TUtilf::sqrt). normalize / isZero /
   inv_sqrt and JMAFastSqrt only in act_quicksand fn_80210E90 (86.6 %, not a
   counted match).
 - A TVec2 stored member by member around calls (stfs x before the second
   getPlayerPos_8023E724 call), then reused for another value: one named `TVec2f v;`
-  assigned `v.x = ...; v.y = ...;` (cls_800F802C::fn_800F802C).
+  assigned `v.x = ...; v.y = ...;` (HitRing_800F802C::fn_800F802C).
 - Emitter deleted and cleared (field read again after bl getEffectSystem_8013C824):
   `deleteEmitter(&mEmitter)` (game/EmitterDelete.h: the manager in a local).
   act_eyeball_switch EyeballSwitch_804AE678::die_0x24.

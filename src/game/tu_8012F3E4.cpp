@@ -4,24 +4,24 @@
 #include "game/act/act_ice_floor_check_npc.h"
 #include "game/tu_8012F3E4.h"
 
-cls_8012F64C* fn_8012F554() {
-    static cls_8012F64C lbl_804BDDFC;
+IceFloorCheckList_8012F64C* fn_8012F554() {
+    static IceFloorCheckList_8012F64C lbl_804BDDFC;
     return &lbl_804BDDFC;
 }
 
-void cls_8012F64C::fn_8012F530(const ActorBase_804A5770* actor) {
+void IceFloorCheckList_8012F64C::fn_8012F530(const ActorBase_804A5770* actor) {
     mSerials[mCount] = actor->mSerial;
     mCount++;
 }
 
-void cls_8012F64C::fn_8012F494() {
+void IceFloorCheckList_8012F64C::fn_8012F494() {
     mCount = 0;
     for (int i = 0; i < 64; i++) {
         mSerials[i] = -1;
     }
 }
 
-bool cls_8012F64C::fn_8012F3E4() const {
+bool IceFloorCheckList_8012F64C::fn_8012F3E4() const {
     if (mCount <= 0) {
         return false;
     }

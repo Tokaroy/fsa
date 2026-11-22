@@ -5,13 +5,13 @@
 #include "game/ActorManager.h"
 #include "game/cls_8021C2B4.h"
 
-cls_8021C5B0::cls_8021C5B0()
+FlyingPiece_8021C5B0::FlyingPiece_8021C5B0()
     : mActive(false), mDone(false), mPlayer(-1), mStart(0.0f, 0.0f), mTarget(0.0f, 0.0f),
       mPos(0.0f, 0.0f, 0.0f), mVel(0.0f, 0.0f, 0.0f) {}
 
-void cls_8021C2B4::fn_8021C468() {
+void FlyingPieces_8021C2B4::fn_8021C468() {
     for (int i = 0; i < 4; i++) {
-        cls_8021C5B0* piece = &mPieces[i];
+        FlyingPiece_8021C5B0* piece = &mPieces[i];
         if (fn_8023F264(i)) {
             JGeometry::TVec2f target;
             if (fn_801C0D70()->fn_801C0FEC(getPlayerPos_8023E724(i), &target)) {
@@ -44,9 +44,9 @@ void cls_8021C2B4::fn_8021C468() {
 // FIXME: 99.7 %. Regalloc only in the vel.x / vel.y computation after
 // fn_8021CB18: the target does fsubs f3, f4, f3 / fmuls f2, f6, f2 / fmuls f3, f6, f3
 // (reusing the operand registers); ours puts the results in f4, f3, f2.
-void cls_8021C2B4::fn_8021C2B4() {
+void FlyingPieces_8021C2B4::fn_8021C2B4() {
     for (int i = 0; i < 4; i++) {
-        cls_8021C5B0* piece = &mPieces[i];
+        FlyingPiece_8021C5B0* piece = &mPieces[i];
         if (piece->mActive && !piece->mDone) {
             piece->mVel.z += -0.2f;
             piece->mPos += piece->mVel;

@@ -10,7 +10,7 @@
 
 #include "types.h"
 
-class cls_800FE8C0 {
+class AnimFrameSeq_800FE8C0 {
 public:
     // Sets the state (r4), previous state 10 and direction 0, then updates.
     void fn_800FEB78(int state);

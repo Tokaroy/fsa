@@ -16,10 +16,10 @@ class JPABaseEmitter;
 // (120 frames, then 4), 4 done (update returns true), 5 shrink away: mPos.z
 // to mEndZ and mScale to 0 over 60 frames, then delete the emitters and
 // back to 0 (fn_8021F914 sets the state; the actor starts 5 from outside).
-class cls_8021FB44 {
+class EmitterMoveSeq_8021FB44 {
 public:
-    cls_8021FB44();
-    ~cls_8021FB44();
+    EmitterMoveSeq_8021FB44();
+    ~EmitterMoveSeq_8021FB44();
     // Advances the sequence one frame; returns true in states 4 and 5 and on
     // the frame state 3 ends.
     bool fn_8021F4B0();

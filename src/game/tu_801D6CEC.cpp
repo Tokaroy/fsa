@@ -238,7 +238,7 @@ void cls_801D7730::fn_801D6E20(const JGeometry::TVec3f* pos) {
     }
 }
 
-void cls_801D6CEC::fn_801D6D38(const JGeometry::TVec2f* dir) {
+void ShakeOffset_801D6CEC::fn_801D6D38(const JGeometry::TVec2f* dir) {
     JGeometry::TVec2f v(dir->x, dir->y);
     if (v.squared() <= JGeometry::TUtil<f32>::epsilon()) {
         v.x = 0.0f;
@@ -252,12 +252,12 @@ void cls_801D6CEC::fn_801D6D38(const JGeometry::TVec2f* dir) {
     fn_801E4AB0(&field_0x14, 0x3C, 0x2000, v.y);
 }
 
-void cls_801D6CEC::fn_801D6D08() {
+void ShakeOffset_801D6CEC::fn_801D6D08() {
     fn_801E4AB0(&field_0x28, 0x1E, 0x400, -3.0f);
 }
 
 // FIXME(shotgun): 81.43 %, scheduling+regalloc; behaviour clean.
-void cls_801D6CEC::fn_801D6CEC(JGeometry::TVec3f* out) {
+void ShakeOffset_801D6CEC::fn_801D6CEC(JGeometry::TVec3f* out) {
     out->x = field_0x0.value;
     out->y = field_0x14.value;
     out->z = 0.0f;

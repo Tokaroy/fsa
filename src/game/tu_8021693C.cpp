@@ -1,4 +1,4 @@
-// cls_80217128, an attack hit box of the shadow Link (see its header). The
+// SwordHitBox_80217128, an attack hit box of the shadow Link (see its header). The
 // unit's __sinit (the 9 JAudio pools) comes from the GameAudio.h include.
 
 #include "game/GameAudio.h"
@@ -8,21 +8,21 @@
 #include "game/ViewLayer.h"
 
 // The box (-8, -8)-(8, 8) moved by (x, y), with the swing direction.
-static inline void setBox(cls_80217128* hit, f32 x, f32 y, s32 type) {
+static inline void setBox(SwordHitBox_80217128* hit, f32 x, f32 y, s32 type) {
     hit->mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     hit->mBox.addPos(x, y);
     hit->mType = type;
 }
 
-cls_80217128::cls_80217128() {
+SwordHitBox_80217128::SwordHitBox_80217128() {
     mOwner = NULL;
     mType = 0;
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
 }
 
-void cls_80217128::fn_80216A8C() {
+void SwordHitBox_80217128::fn_80216A8C() {
     mBox.set(1.0f, 1.0f, -1.0f, -1.0f);
-    cls_800FE8C0& seq = mOwner->field_0x340;
+    AnimFrameSeq_800FE8C0& seq = mOwner->field_0x340;
     if (seq.mState == 2) {
         if (seq.mIndex < 3) {
             return;
@@ -99,7 +99,7 @@ void cls_80217128::fn_80216A8C() {
 // live for the copy (three fewer instructions) and allocates the owner and
 // mask to different registers. Tried: owner before / after the box copy,
 // box.set(mBox) into a declared box.
-u8 cls_80217128::fn_8021693C(u8 mask) {
+u8 SwordHitBox_80217128::fn_8021693C(u8 mask) {
     if (mask == 0) {
         return 0;
     }

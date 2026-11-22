@@ -6,7 +6,7 @@
 #include "game/ActorBase.h"
 #include "game/Message.h"
 
-class cls_8031709C;
+class SoundEffectSeq_8031709C;
 
 // Named after its vtable, 0x804AADD8. The slots it overrides: 0x08 the
 // destructor, 0x0C init, 0x14 update, 0x20 draw.
@@ -38,7 +38,7 @@ public:
     /* 0x240 */ s32 field_0x240;
     /* 0x244 */ s32 field_0x244;
     /* 0x248 */ s32 field_0x248;
-    /* 0x24C */ cls_8031709C* field_0x24c; // sound/effect sequencer, owned here
+    /* 0x24C */ SoundEffectSeq_8031709C* field_0x24c; // sound/effect sequencer, owned here
     /* 0x250 */ u8 field_0x250[0x260 - 0x250]; // not yet known
     /* 0x260 */ JGeometry::TBox2f field_0x260;
     /* 0x270 */ u8 field_0x270;

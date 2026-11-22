@@ -9,10 +9,10 @@
 // callers run after __nw__(0x1C)). Held through a pointer by the Tingle and
 // old-man actors (act_tingle_first +0x24C, act_tingle_tower +0x278,
 // act_old_man +0x274), which delete it with the destructor at 0x80317060.
-class cls_8031709C {
+class SoundEffectSeq_8031709C {
 public:
-    cls_8031709C();
-    ~cls_8031709C();
+    SoundEffectSeq_8031709C();
+    ~SoundEffectSeq_8031709C();
 
     // The id of the current step, or -1 when no state is active.
     s32 fn_80316E34();

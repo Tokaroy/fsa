@@ -67,15 +67,15 @@ void cls_80216238Sub::fn_802162B8(s32 id, s32 key) {
     }
 }
 
-cls_80216238::cls_80216238() {
+HorseRaceEntry_80216238::HorseRaceEntry_80216238() {
     init(0);
 }
 
-cls_80215E48::cls_80215E48() : mCount(gGameRoot_8053AAF8->fn_80138A30()) {
+HorseRaceTable_80215E48::HorseRaceTable_80215E48() : mCount(gGameRoot_8053AAF8->fn_80138A30()) {
     fn_802160F4();
 }
 
-void cls_80215E48::fn_802160F4() {
+void HorseRaceTable_80215E48::fn_802160F4() {
     for (s32 i = 0; i < mCount; i++) {
         mEntries[i].init(i);
     }
@@ -85,7 +85,7 @@ void cls_80215E48::fn_802160F4() {
 
 // const: the original loads mCount above `mr r30, r3` (the loop tests the member; a count
 // local keeps the load after the register saves).
-bool cls_80215E48::fn_8021606C() const {
+bool HorseRaceTable_80215E48::fn_8021606C() const {
     bool result = false;
     for (s32 i = 0; i < mCount; i++) {
         if (mEntries[i].mKey < 0) {
@@ -98,18 +98,18 @@ bool cls_80215E48::fn_8021606C() const {
     return result;
 }
 
-void cls_80215E48::fn_8021600C() {
+void HorseRaceTable_80215E48::fn_8021600C() {
     for (s32 i = 0; i < mCount; i++) {
         mEntries[i].mWatch.fn_801ED798();
     }
 }
 
-void cls_80215E48::fn_80215FB8(s32 index, s32 key, f32 fraction) {
+void HorseRaceTable_80215E48::fn_80215FB8(s32 index, s32 key, f32 fraction) {
     mEntries[index].mWatch.fn_801ED5C8(fraction);
     mEntries[index].mKey = key;
 }
 
-void cls_80215E48::fn_80215F30() {
+void HorseRaceTable_80215E48::fn_80215F30() {
     if (gGameRoot_8053AAF8->field_0x4c != 9 && gGameRoot_8053AAF8->field_0x4c != 0xB) {
         field_0xa0 = fn_801CD664(10);
     }
@@ -118,13 +118,13 @@ void cls_80215E48::fn_80215F30() {
     }
 }
 
-void cls_80215E48::fn_80215ECC() const {
+void HorseRaceTable_80215E48::fn_80215ECC() const {
     for (s32 i = 0; i < mCount; i++) {
         mEntries[i].mWatch.fn_801ED3DC(mEntries[i].mId, mEntries[i].mKey);
     }
 }
 
-s32 cls_80215E48::fn_80215E98() {
+s32 HorseRaceTable_80215E48::fn_80215E98() {
     s32 count = 0;
     for (s32 i = 0; i < mCount; i++) {
         if (mEntries[i].mKey >= 0) {
@@ -134,7 +134,7 @@ s32 cls_80215E48::fn_80215E98() {
     return count;
 }
 
-s32 cls_80215E48::fn_80215E58(s32 key) {
+s32 HorseRaceTable_80215E48::fn_80215E58(s32 key) {
     s32 result = -1;
     for (s32 i = 0; i < mCount; i++) {
         if (key == mEntries[i].mKey) {
@@ -145,24 +145,24 @@ s32 cls_80215E48::fn_80215E58(s32 key) {
     return result;
 }
 
-s32 cls_80215E48::fn_80215E48(s32 index) {
+s32 HorseRaceTable_80215E48::fn_80215E48(s32 index) {
     return mEntries[index].mKey;
 }
 
 // Not auto-inlined: fn_80215DB8 calls it out of line (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void cls_80216238::fn_80215E18() {
+void HorseRaceEntry_80216238::fn_80215E18() {
     mSub.fn_802162B8(mId, mKey);
 }
 #pragma auto_inline reset
 
-void cls_80215E48::fn_80215DB8() {
+void HorseRaceTable_80215E48::fn_80215DB8() {
     for (s32 i = 0; i < mCount; i++) {
         mEntries[i].fn_80215E18();
     }
 }
 
-void cls_80215E48::fn_80215D8C(s32 index) {
+void HorseRaceTable_80215E48::fn_80215D8C(s32 index) {
     if (mEntries[index].mSub.mFlag8 != 0) {
         return;
     }
@@ -172,7 +172,7 @@ void cls_80215E48::fn_80215D8C(s32 index) {
     mEntries[index].mSub.mFlag9 = 1;
 }
 
-bool cls_80215E48::fn_80215D38() {
+bool HorseRaceTable_80215E48::fn_80215D38() {
     bool ready;
     bool result = true;
     for (s32 i = 0; i < mCount; i++) {
@@ -190,14 +190,14 @@ bool cls_80215E48::fn_80215D38() {
     return result;
 }
 
-static inline void getWatchTime(const cls_801ED3DC& watch, u8* seconds, u8* centis) {
+static inline void getWatchTime(const Stopwatch_801ED3DC& watch, u8* seconds, u8* centis) {
     *seconds = watch.mSeconds;
     *centis = watch.mCentis;
 }
 
 // Inlined into fn_80215C6C: `result` gets r31 ahead of the `index * 0x24` temporary (r30),
 // and getWatchTime loads both bytes upfront with clrlwi on the out-parameters.
-static inline bool checkWatchRecord(const cls_801ED3DC& watch) {
+static inline bool checkWatchRecord(const Stopwatch_801ED3DC& watch) {
     bool result = false;
     if (watch.mStopped != 0 && !watch.fn_801ED7B0()) {
         u8 centis;
@@ -218,14 +218,14 @@ static inline bool checkWatchRecord(const cls_801ED3DC& watch) {
     return result;
 }
 
-bool cls_80215E48::fn_80215C6C(s32 index) {
+bool HorseRaceTable_80215E48::fn_80215C6C(s32 index) {
     return checkWatchRecord(mEntries[index].mWatch);
 }
 
 // FIXME: 93.62 %, scheduling+regalloc; behaviour clean.
 // The original loads mCentis (lbz 0x25) right after
 // mSeconds, before the second save-row index load; ours loads it after.
-void cls_80215E48::fn_80215BCC(s32 index) {
+void HorseRaceTable_80215E48::fn_80215BCC(s32 index) {
     if (mEntries[index].mWatch.mStopped != 0 && !mEntries[index].mWatch.fn_801ED7B0()) {
         lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x59 = mEntries[index].mWatch.mSeconds;
         lbl_8050EC80.mFiles[lbl_8050EC80.mCurrentFile].field_0x58 = mEntries[index].mWatch.mCentis;
@@ -233,7 +233,7 @@ void cls_80215E48::fn_80215BCC(s32 index) {
     }
 }
 
-void cls_80215E48::fn_80215B6C(s32 index) {
+void HorseRaceTable_80215E48::fn_80215B6C(s32 index) {
     s32 kind = mEntries[index].mKey;
     if (kind >= 0 && kind < 4) {
         s32 value = lbl_8046A590[kind];
@@ -244,7 +244,7 @@ void cls_80215E48::fn_80215B6C(s32 index) {
 }
 
 // FIXME: 85.56 %, missing/extra; behaviour drift.
-s32 cls_80215E48::fn_80215A94() {
+s32 HorseRaceTable_80215E48::fn_80215A94() {
     s32 result = -1;
     if (mCount >= 2 && mCount - 1 == fn_80215E98()) {
         s32 count = mCount;

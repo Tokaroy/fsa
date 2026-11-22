@@ -1385,8 +1385,8 @@ extern "C" cls_801192AC* fn_8011921C();
 // serials of the 'SLK2' actors it spawned are in mSerials[0..mCount), and
 // field_0x50 is the serial of the generator (-1 when there is none).
 class ShadowLink2_804A43E8;
-struct cls_801C0D70 {
-    cls_801C0D70(); // game/tu_801C0D70.cpp (inlined into the getter)
+struct ShadowLinkFight_801C0D70 {
+    ShadowLinkFight_801C0D70(); // game/tu_801C0D70.cpp (inlined into the getter)
     /* 0x00 */ u16 field_0x0;
     /* 0x02 */ u16 field_0x2;
     /* 0x04 */ u16 field_0x4;
@@ -1398,7 +1398,7 @@ struct cls_801C0D70 {
     /* 0x50 */ u32 field_0x50;
     /* 0x54 */ JGeometry::TVec3f field_0x54;
     // Owner tu_801C0D70. True when a target for the player at *pos was found;
-    // writes its x/y to *out. Called by cls_8021C2B4::fn_8021C468 and act_shadow_link_2.
+    // writes its x/y to *out. Called by FlyingPieces_8021C2B4::fn_8021C468 and act_shadow_link_2.
     bool fn_801C0FEC(const JGeometry::TVec3f* pos, JGeometry::TVec2f* out) const;
     // Owner tu_801C0D70 (symbol fn_801C12B8). Called by act_shadow_link_2's
     // fn_801C53F8 on the object from fn_801C0D70: marks one of the actors.
@@ -1415,7 +1415,7 @@ struct cls_801C0D70 {
     void fn_801C151C();
 }; // Size: 0x60
 // Getter of that object (returns its address).
-extern "C" cls_801C0D70* fn_801C0D70();
+extern "C" ShadowLinkFight_801C0D70* fn_801C0D70();
 
 // game/tu_80204638.cpp (owner unit, not written yet). The guarded static in
 // .bss at 0x804CADE0 (constructed on first use by fn_80204638, flag lbl_8053AC58);
@@ -1577,9 +1577,9 @@ extern BootLoader_804B0F50* lbl_8053AAF0;
 // (fn_803B9F40 is the thread's loop); main calls fn_803B9E2C on it every frame.
 // The game side posts a request in field_0x1fcc under the mutex and signals
 // the condition; the thread works it off and leaves the result in mState.
-class cls_803B9940 {
+class CardMgr_804AFB48 {
 public:
-    virtual ~cls_803B9940();
+    virtual ~CardMgr_804AFB48();
     void fn_803BA980();
     void fn_803B9E2C();
     void fn_803B9F40();
@@ -1631,7 +1631,7 @@ public:
     /* 0x2000 */ u16 field_0x2000; // the save image's header halfword (fn_803BAEF4)
     /* 0x2002 */ u8 field_0x2002[0x2020 - 0x2002];
 }; // Size: 0x2020
-extern cls_803B9940 lbl_8051C1A0;
+extern CardMgr_804AFB48 lbl_8051C1A0;
 
 extern "C" {
 // Owner: game/tu_803B8C74.cpp. Tests flag `index` (0..7)

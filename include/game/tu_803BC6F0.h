@@ -16,7 +16,7 @@ class PaneCtrl_804AF86C;
 // field_0x30 archive and stores `this` in lbl_8053ADB0 (the destructor
 // clears it). Three save files (the 'Pf1..', 'Pf2..', 'Pf3..' and 'Tf1date'
 // panes) are read from and written to the memory card through
-// lbl_8051C1A0 (cls_803B9940). fn_803CE9EC runs the state field_0x110
+// lbl_8051C1A0 (CardMgr_804AFB48). fn_803CE9EC runs the state field_0x110
 // through the pointer-to-member table lbl_804AFD70 (40 entries).
 //
 // "FileSelect" is a provisional descriptive name (the "file_select.blo"

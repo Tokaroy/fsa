@@ -10,7 +10,7 @@ static u8 lbl_80510E60[0x1000];
 static OSThread lbl_80511E60;
 static u8 lbl_80512180[0xA000] ATTRIBUTE_ALIGN(32);
 
-cls_803B9940 lbl_8051C1A0 ATTRIBUTE_ALIGN(32);
+CardMgr_804AFB48 lbl_8051C1A0 ATTRIBUTE_ALIGN(32);
 
 static void* fn_803BAA64(void*);
 
@@ -22,10 +22,10 @@ static void* fn_803BAA64(void*) {
 }
 
 // 0x803BAA1C
-cls_803B9940::~cls_803B9940() {}
+CardMgr_804AFB48::~CardMgr_804AFB48() {}
 
 // 0x803BA980
-void cls_803B9940::fn_803BA980() {
+void CardMgr_804AFB48::fn_803BA980() {
     CARDInit();
     field_0x1ff4 = 0;
     field_0x1fcc = 0;
@@ -43,7 +43,7 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst1, void* dst2, u32 size1, u32 size2
 s32 fn_803BBF08(CARDFileInfo* file, void* src1, void* src2, u32 size1, u32 size2);
 s32 fn_803BAE68(CARDFileInfo* file);
 
-static inline bool mapCardResult(cls_803B9940* self, s32 result) {
+static inline bool mapCardResult(CardMgr_804AFB48* self, s32 result) {
     bool ok = false;
     switch (result) {
     case -5:
@@ -73,7 +73,7 @@ static inline bool mapCardResult(cls_803B9940* self, s32 result) {
 
 // 0x803B9F40
 // FIXME(shotgun): 98 %, different (written from asm)
-void cls_803B9940::fn_803B9F40() {
+void CardMgr_804AFB48::fn_803B9F40() {
     while (true) {
         OSLockMutex(&mMutex);
         while (field_0x1fcc == 0) {
@@ -212,7 +212,7 @@ void cls_803B9940::fn_803B9F40() {
 }
 
 // 0x803B9E2C
-void cls_803B9940::fn_803B9E2C() {
+void CardMgr_804AFB48::fn_803B9E2C() {
     if (lbl_8053ACA8->fn_802B1DCC()) {
         OSLockMutex(&mMutex);
         field_0x1fcc = 6;
@@ -237,7 +237,7 @@ void cls_803B9940::fn_803B9E2C() {
 }
 
 // 0x803B9DDC
-void cls_803B9940::fn_803B9DDC() {
+void CardMgr_804AFB48::fn_803B9DDC() {
     if (OSTryLockMutex(&mMutex)) {
         field_0x1fcc = 4;
         OSUnlockMutex(&mMutex);
@@ -246,7 +246,7 @@ void cls_803B9940::fn_803B9DDC() {
 }
 
 // 0x803B9D54
-void cls_803B9940::fn_803B9D54(void* src1, u32 n1, void* src2, u32 n2, s32 offset) {
+void CardMgr_804AFB48::fn_803B9D54(void* src1, u32 n1, void* src2, u32 n2, s32 offset) {
     if (OSTryLockMutex(&mMutex)) {
         memcpy(&mHeader[offset], src1, n1);
         memcpy(&mSave[offset], src2, n2);
@@ -257,7 +257,7 @@ void cls_803B9940::fn_803B9D54(void* src1, u32 n1, void* src2, u32 n2, s32 offse
 }
 
 // 0x803B9CCC
-void cls_803B9940::fn_803B9CCC(void* src, u32 n, s32 offset) {
+void CardMgr_804AFB48::fn_803B9CCC(void* src, u32 n, s32 offset) {
     if (OSTryLockMutex(&mMutex)) {
         memcpy(&mHeader[offset], src, n);
         field_0x1fcc = 3;
@@ -267,7 +267,7 @@ void cls_803B9940::fn_803B9CCC(void* src, u32 n, s32 offset) {
 }
 
 // 0x803B9C5C
-s32 cls_803B9940::fn_803B9C5C() {
+s32 CardMgr_804AFB48::fn_803B9C5C() {
     s32 result = 0;
     if (OSTryLockMutex(&mMutex)) {
         if (mState == 5) {
@@ -282,7 +282,7 @@ s32 cls_803B9940::fn_803B9C5C() {
 }
 
 // 0x803B9BDC
-s32 cls_803B9940::fn_803B9BDC() {
+s32 CardMgr_804AFB48::fn_803B9BDC() {
     s32 result = 0;
     if (OSTryLockMutex(&mMutex)) {
         if (mState == 4) {
@@ -299,7 +299,7 @@ s32 cls_803B9940::fn_803B9BDC() {
 }
 
 // 0x803B9B8C
-void cls_803B9940::fn_803B9B8C() {
+void CardMgr_804AFB48::fn_803B9B8C() {
     if (OSTryLockMutex(&mMutex)) {
         field_0x1fcc = 1;
         OSUnlockMutex(&mMutex);
@@ -308,7 +308,7 @@ void cls_803B9940::fn_803B9B8C() {
 }
 
 // 0x803B9B3C
-void cls_803B9940::fn_803B9B3C() {
+void CardMgr_804AFB48::fn_803B9B3C() {
     if (OSTryLockMutex(&mMutex)) {
         field_0x1fcc = 2;
         OSUnlockMutex(&mMutex);
@@ -317,7 +317,7 @@ void cls_803B9940::fn_803B9B3C() {
 }
 
 // 0x803B9A94
-s32 cls_803B9940::fn_803B9A94(void* dst1, u32 size1, void* dst2, u32 size2, s32 offset) {
+s32 CardMgr_804AFB48::fn_803B9A94(void* dst1, u32 size1, void* dst2, u32 size2, s32 offset) {
     s32 result = 0;
     if (OSTryLockMutex(&mMutex)) {
         if (mState == 3) {
@@ -335,7 +335,7 @@ s32 cls_803B9940::fn_803B9A94(void* dst1, u32 size1, void* dst2, u32 size2, s32 
 }
 
 // 0x803B9A24
-s32 cls_803B9940::fn_803B9A24() {
+s32 CardMgr_804AFB48::fn_803B9A24() {
     s32 result = 0;
     if (OSTryLockMutex(&mMutex)) {
         if (mState == 3) {
@@ -350,7 +350,7 @@ s32 cls_803B9940::fn_803B9A24() {
 }
 
 // 0x803B9940
-u32 cls_803B9940::fn_803B9940(s32 unused) {
+u32 CardMgr_804AFB48::fn_803B9940(s32 unused) {
     if (OSTryLockMutex(&mMutex)) {
         u32 result;
         switch (mState) {

@@ -56,7 +56,7 @@ static const u16 lbl_80543DE0[4] = {0x1DC, 0x1DF, 0x1E5, 0x1E2};
 static const u16 lbl_80543DE8[4] = {0x1DD, 0x1E0, 0x1E6, 0x1E3};
 static const u16 lbl_80543DF0[4] = {0x1DE, 0x1E1, 0x1E7, 0x1E4};
 
-void fn_80453884(J2DWindow* window, cls_80453830 colors) {
+void fn_80453884(J2DWindow* window, WindowCornerColors_80453830 colors) {
     window->setContentsColor(colors.field_0x0, colors.field_0x4, colors.field_0x8, colors.field_0xc);
 }
 
@@ -76,7 +76,7 @@ bool fn_80453848(JPABaseEmitter* emitter) {
     return emitter->isEnableDeleteEmitter();
 }
 
-cls_80453830::cls_80453830() {}
+WindowCornerColors_80453830::WindowCornerColors_80453830() {}
 
 // FIXME: 97.31 %, missing/extra; behaviour near.
 CollectScreen_804B1D58::CollectScreen_804B1D58() {
