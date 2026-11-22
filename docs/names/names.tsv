@@ -224,3 +224,46 @@ address	kind	old	new	confidence	apply	evidence
 804B1288	field	field_0x5dc	mMessageText_0x5dc	med	yes	tu_80403D84 fn_80403F50: fn_803837A4 writes message field_0x390's text here, then it is strcpy'd into 'Tmt01' / 'Tmt02'
 804B1288	field	field_0x641	mPointAlpha_0x641	med	yes	tu_80403D84 ctor: = map_area.blo 'Ppoint02' getAlpha(); passed as the alpha when the Ppoint panes are shown again (setAlpha_804023D0, line 676)
 804B1288	field	field_0x659	mMessageState_0x659	med	yes	tu_80403D84 fn_804108B4: (this->*lbl_804B1230[field_0x659])(): 0 idle (fn_80403F50), 1 slide in, 2 wait, 3 slide out, the message window's own state machine
+804AF9A0	field	field_0x4	mResultScreens_0x4	med	yes	tu_803A8DFC ctor: [0-2] = new J2DScreen, setPriority("result_4P.blo" / "result_3P.blo" / "result_2P.blo"); fn_803A8F5C draws [field_0x450]
+804AF9A0	field	field_0x10	mScoreScreens_0x10	med	yes	tu_803A8DFC ctor: [0-2] = new J2DScreen, setPriority("result_score_4P.blo" / 3P / 2P); the 'Tscore..' text boxes are searched on [field_0x450]
+804AF9A0	field	field_0x1c	mBackScreen_0x1c	med	yes	tu_803A8DFC ctor: new J2DScreen, setPriority("result_back.blo"); fn_803A97A0 draws it
+804AF9A0	field	field_0x20	mTitleScreen_0x20	med	yes	tu_803A8DFC ctor: new J2DScreen, setPriority("result_title.blo"); 'Pttlbk05', 'Pwinbk05'.. are searched on it
+804AF9A0	field	field_0x24	mResultAnmTextures_0x24	med	yes	tu_803A8DFC ctor: [i] = J2DAnmLoaderDataBase::load("result_4P.btk" / "result_3P.btk" / "result_2P.btk"), setAnimation on field_0x4[i]; fn_803A9830 setFrame's [field_0x450]
+804AF9A0	field	field_0x70	mPttlbk05Pane_0x70	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pttlbk05') (shown; the others below are hidden)
+804AF9A0	field	field_0x74	mPdrwbk05Pane_0x74	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pdrwbk05')
+804AF9A0	field	field_0x78	mPwinbk05Pane_0x78	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pwinbk05')
+804AF9A0	field	field_0x7c	mPwnr01Pane_0x7c	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pwnr01')
+804AF9A0	field	field_0x80	mPwnr02Pane_0x80	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pwnr02')
+804AF9A0	field	field_0x8c	mPembsb06Pane_0x8c	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pembsb06')
+804AF9A0	field	field_0x90	mPrmhb06Pane_0x90	med	yes	tu_803A8DFC ctor: = result_title.blo search('Prmhb06')
+804AF9A0	field	field_0x94	mPllosb06Pane_0x94	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pllosb06')
+804AF9A0	field	field_0x98	mPlhbk02Pane_0x98	med	yes	tu_803A8DFC ctor: = result_title.blo search('Plhbk02')
+804AF9A0	field	field_0x9c	mPdhbk02Pane_0x9c	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pdhbk02')
+804AF9A0	field	field_0xa0	mPhabk02Pane_0xa0	med	yes	tu_803A8DFC ctor: = result_title.blo search('Phabk02')
+804AF9A0	field	field_0xa4	mPfobk02Pane_0xa4	med	yes	tu_803A8DFC ctor: = result_title.blo search('Pfobk02')
+804AF9A0	field	field_0xa8	mScoreSignTexts_0xa8	med	yes	tu_803A8DFC fn_803B38E8 / fn_803B42C0 / fn_803B5378: [p] = score screen 'Tscore<p+1>1'; fn_803A8F5C prints only "-" in it (in front of a four-digit score)
+804AF9A0	field	field_0xb8	mScoreThousandsTexts_0xb8	med	yes	setup fns: 'Tscore<p+1>2'; tu_803A8DFC fn_803A8F5C prints score % 10000 / 1000 in it (or the "-")
+804AF9A0	field	field_0xc8	mScoreHundredsTexts_0xc8	med	yes	setup fns: 'Tscore<p+1>3'; tu_803A8DFC fn_803A8F5C prints score % 1000 / 100 in it (or the "-")
+804AF9A0	field	field_0xd8	mScoreTensTexts_0xd8	med	yes	setup fns: 'Tscore<p+1>4'; tu_803A8DFC fn_803A8F5C prints score % 100 / 10 in it (or the "-")
+804AF9A0	field	field_0xe8	mScoreOnesTexts_0xe8	med	yes	setup fns: 'Tscore<p+1>5'; tu_803A8DFC fn_803A8F5C prints score % 10 in it
+804AF9A0	field	field_0xf8	mScorkSignTexts_0xf8	med	yes	setup fns: 'Tscork<p+1>1', the second text box given the same string as field_0xa8 in fn_803A8F5C
+804AF9A0	field	field_0x108	mScorkThousandsTexts_0x108	med	yes	setup fns: 'Tscork<p+1>2'; same string as field_0xb8 (fn_803A8F5C)
+804AF9A0	field	field_0x118	mScorkHundredsTexts_0x118	med	yes	setup fns: 'Tscork<p+1>3'; same string as field_0xc8 (fn_803A8F5C)
+804AF9A0	field	field_0x128	mScorkTensTexts_0x128	med	yes	setup fns: 'Tscork<p+1>4'; same string as field_0xd8 (fn_803A8F5C)
+804AF9A0	field	field_0x138	mScorkOnesTexts_0x138	med	yes	setup fns: 'Tscork<p+1>5'; same string as field_0xe8 (fn_803A8F5C)
+804AF9A0	field	field_0x158	mPrpstPanes_0x158	med	yes	setup fns: [p] = result screen 'Prpst0<p+1>'; fn_803B6768 turns its centre (with 'Ndata05''s offset) into the player sprite position field_0x2f0[p]
+804AF9A0	field	field_0x16c	mResultBgPane_0x16c	med	yes	setup fns: = result_back.blo search('Prsltbg'); fn_803A97A0 sets its alpha to 255 - fade alpha before drawing the back screen
+804AF9A0	field	field_0x170	mFadePicture_0x170	med	yes	tu_803A8DFC ctor: new J2DPicture("kk_black.bti"), black; fn_803A8F5C / fn_803B31AC setAlpha(field_0x4c2) and draw it 800 x 640 over the screen
+804AF9A0	field	field_0x174	mPlayerSoundObjs_0x174	med	yes	tu_803A8DFC ctor: new cls_804B20F8(i, NULL, NULL, 8) per player; fn_803B2FB0 field_0x174[i]->startSound(0x10008) on player i's button
+804AF9A0	field	field_0x184	mSoundObj_0x184	med	yes	tu_803A8DFC ctor: new ActorSoundObj_804578F4(&field_0x244, NULL, 8); uses are startSound(0x30029 / 0x3002A)
+804AF9A0	field	field_0x1c8	mEffects_0x1c8	med	yes	tu_803A8DFC spawnEffect / findFreeEffect: 30 emitter slots, the first NULL one takes spawnEmitter_8013CC50(id); freed with forceDeleteEmitter when done, the destructor deletes all
+804AF9A0	field	field_0x2f0	mPlayerSpritePos_0x2f0	med	yes	tu_803A8DFC fn_803B6768 computes it per player from the 'Prpst' pane centre in 256 x 192 space; fn_803A8F5C draws player_sob.bin there
+804AF9A0	field	field_0x3c0	mPlayerSpriteFrame_0x3c0	med	yes	tu_803A8DFC fn_803A8F5C: frame = field_0x3c0[i] passed with player_sob.bin to the sprite draw; 62 at reset
+804AF9A0	field	field_0x3e0	mTotalScore_0x3e0	med	yes	tu_803A8DFC updateScoreBars sums the per-player words into it (clamped -5000..9999); fn_803A8F5C prints it digit by digit
+804AF9A0	field	field_0x440	mStateTimer_0x440	med	yes	tu_803A8DFC: the wait of mode 0 (fn_803A9830 counts it to 0), and each field_0x4c1 state handler counts it down or up and sets it when it changes state (fn_803B1B60, fn_803B0FD4)
+804AF9A0	field	field_0x44c	mAnimFrame_0x44c	med	yes	tu_803A8DFC fn_803A9830: ++, wraps at field_0x24[layout]->getFrameMax(), then setFrame(field_0x44c)
+804AF9A0	field	field_0x450	mLayout_0x450	med	yes	tu_803A8DFC fn_803B6768: 0 / 1 / 2 for 4 / 3 / 2 players; indexes field_0x4, field_0x10 and field_0x24
+804AF9A0	field	field_0x454	mPlayerCount_0x454	med	yes	tu_803A8DFC fn_803B6768: 4 / 3 / 2 from the bits of GameRoot mPlayerMask; the bound of every per-player loop
+804AF9A0	field	field_0x4c0	mMode_0x4c0	med	yes	tu_803A8DFC fn_803A9830 switch: 0 wait, 1 fade in, 2-4 the result pages, 6 / 5 fades; tu_80379F84 reads it
+804AF9A0	field	field_0x4c1	mState_0x4c1	med	yes	tu_803A8DFC fn_803AA8F8: switch (field_0x4c1) over the 4P result states; each handler stores the next
+804AF9A0	field	field_0x4c2	mFadeAlpha_0x4c2	med	yes	tu_803A8DFC fn_803A9830 steps it 0-255 in modes 1 / 5 / 6; it is the alpha of the kk_black.bti picture (fn_803A8F5C)

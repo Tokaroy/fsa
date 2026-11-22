@@ -98,7 +98,7 @@ void cls_804AE9A0::fn_8037A708() {
 
 void cls_804AE9A0::fn_8037A664() {
     if (field_0x4 != NULL) {
-        const u8 mode = lbl_8053ADA0->field_0x4c0;
+        const u8 mode = lbl_8053ADA0->mMode_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7) {
             lbl_8053ADA0->fn_803A97A0();
         }
@@ -118,7 +118,7 @@ void cls_804AE9A0::fn_8037A664() {
 // Same mode-byte clrlwi as fn_80379F84 and fn_8037A664.
 void cls_804AE9A0::fn_8037A580() {
     if (field_0x4 != NULL) {
-        u8 mode = lbl_8053ADA0->field_0x4c0;
+        u8 mode = lbl_8053ADA0->mMode_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7) {
             lbl_8053ADA0->fn_803A8F5C();
         } else {
@@ -146,14 +146,14 @@ void cls_804AE9A0::fn_8037A580() {
 // (the clrlwi after the first mode compare)
 void cls_804AE9A0::fn_8037A174() {
     if (field_0x4 != NULL) {
-        u8 mode = lbl_8053ADA0->field_0x4c0;
+        u8 mode = lbl_8053ADA0->mMode_0x4c0;
         if (mode == 5) {
             if (field_0x1c != 5) {
                 fn_8037AA58();
             }
             fn_8037AA34();
             if (fn_8037AA28() == 0x1A) {
-                lbl_8053ADA0->field_0x4c0 = 8;
+                lbl_8053ADA0->mMode_0x4c0 = 8;
                 s32 stage = lbl_80529DEC.field_0x118;
                 if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
                     (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
@@ -168,12 +168,12 @@ void cls_804AE9A0::fn_8037A174() {
                     fn_80379FF4();
                 }
             } else if (fn_8037AA28() == 0x19) {
-                lbl_8053ADA0->field_0x4c0 = 7;
+                lbl_8053ADA0->mMode_0x4c0 = 7;
             }
         }
-        field_0x1c = lbl_8053ADA0->field_0x4c0;
+        field_0x1c = lbl_8053ADA0->mMode_0x4c0;
         lbl_8053ADA0->fn_803A9830();
-        if (lbl_8053ADA0->field_0x4c0 == 9) {
+        if (lbl_8053ADA0->mMode_0x4c0 == 9) {
             s32 stage = lbl_80529DEC.field_0x118;
             if ((stage == 0 && lbl_80529DEC.field_0x11c == 2) || (stage == 1 && lbl_80529DEC.field_0x11c == 2) ||
                 (stage == 2 && lbl_80529DEC.field_0x11c == 2) || (stage == 3 && lbl_80529DEC.field_0x11c == 2) ||
@@ -215,7 +215,7 @@ void cls_804AE9A0::fn_8037A174() {
 
 u8 fn_8037A120(void) {
     if (lbl_8053AD68->field_0x4 != NULL) {
-        return lbl_8053ADA0->field_0x4c0;
+        return lbl_8053ADA0->mMode_0x4c0;
     }
     if (lbl_8053AD68->field_0x8 != NULL) {
         return lbl_8053ADA8->field_0x294;
@@ -254,7 +254,7 @@ void fn_80379FF4(void) {
 bool cls_804AE9A0::fn_80379F84() {
     GameRoot_8049EF20* root = gGameRoot_8053AAF8;
     if (root->field_0x7f == 1 && root->field_0x7e == 1 && lbl_8053AD68 != NULL && field_0x4 != NULL) {
-        const u8 mode = lbl_8053ADA0->field_0x4c0;
+        const u8 mode = lbl_8053ADA0->mMode_0x4c0;
         if (mode != 5 && mode != 8 && mode != 7 && mode != 9) {
             return true;
         }
