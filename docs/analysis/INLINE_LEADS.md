@@ -60,6 +60,34 @@ inline: the same class cls_804A51E4 gains in tu_801DE714 and loses in tu_801E254
    `addis 0x3c6f` / `oris 0x3f80`, the TVec add sequences); the lead list is most useful
    with `--grep` for a call name.
 
+## Round 2 (2026-11-22, branch `inlines-2`)
+
+Same method, per class or file scope: each helper at every site of its scope, all affected
+units compiled, every function compared before/after. Counts are functions reaching or
+leaving 100 %.
+
+| Lead | Form tested | Units | Result |
+|---|---|---:|---|
+| member lookups `findActorBySerial_801F666C(<member>)`, grouped by (class, member), 2+ sites | inline taking the object, named local and `return expr;`; also as a real member (cls_804A5E98::targetActor) | 18 (22 groups) | **-3, 0 gained** (tu_8020B354 x2, tu_80209C14 checkHitByPlayer_0x5C); everything else unchanged. Member and free-function forms give identical code. |
+| same with an index (`mSerials[i]`, `field_0x240[i]`, `mSlots[i].mSerial`, ...) | inline (self, s32 i) | 14 (17 groups) | 0 / 0 (two units slightly worse) |
+| `getActorManager_801F856C()->spawnActor_801F9484(...)` | file-local inline with the same six parameters, named local / `return expr;` | 145 | named local +1 / -0, `return` form **+3 / -0**: the arguments are evaluated before getActorManager_801F856C is called. **Kept** (cc24e25cf) in tu_8013C5C8 (9 sites, cls_8049F140::execute) and tu_802684A4 (3 sites, fn_8026EC88); tu_801CDC8C gains too but has one site. |
+| `getActorManager_801F856C()->mActors[i]` | `getActor(i)` (existing accessor), file inline named local, file inline `return` | 37 | 0 / 0 for all three |
+| `s32 end = getActorManager_801F856C()->mActorEnd;` | `ActorManager_804A5800::getActorEnd() { return mActorEnd; }`; the same with a named local, and a free inline (named local or `return`) give identical code | 37 | **+9 / -1** game-wide (loss: act_battle_royale_end_check fn_803D6BDC 100 -> 99.59; moving its loop into an inline makes it worse, 96.03). **Kept** (5a2cbe993) in the 26 units where no function gets worse: +11 (gambling_shop, kaepora_gaebora_ending, knight_of_hyrule, navi_maiden_crystal, small_key, stop_npc, warp_entrance_wall, tu_802D39B8 x2; act_stop_npc and act_warp_entrance_wall reach 100 % .text). 11 units keep the direct read. |
+| `GameView_804A9950* view = getGameView_802D6A9C();` | file inline, named local | 62 | 0 / 0 |
+| `layer < 8 ? &view->mVisibleBox : &view->field_0xdc` (49 sites) | GameView member `screenBox(layer)` as `?:` and as if/return | 32 | 0 / 0 (one function -0.17) |
+
+What this adds: an inline call changes registers even when it only returns a member, if the
+object is a call result (`getActorManager_801F856C()->getActorEnd()` makes that result the
+inline's `this`). The accessor's pattern (gains in 8 units, no change in most, worse in 11)
+says the original had such an accessor and some files, or some programmers, read the field
+directly. A wrapper also changes the order of calls (arguments before the manager lookup),
+which is what the spawn helper fixes. Lookups of a member serial through a member inline
+gain nothing outside Player: heldActor's gains come from Player's deep inline chains.
+
+Next: for the 11 units left on the direct mActorEnd read, the loop or its owner is probably
+in an inline (fn_803D6BDC needs the bound in r30 and the offset in r29); `getActor(i)`
+combined with `getActorEnd()` per file was not tested.
+
 ## Ranked candidates
 
 Counts from report_honest.json of 2026-11-20 (before the two commits above).
