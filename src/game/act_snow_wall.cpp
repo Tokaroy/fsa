@@ -10,10 +10,10 @@
 
 static const char* lbl_80539F40[] = {"yuki_l.bti", NULL};
 
-cls_8049E8A0::cls_8049E8A0()
+SnowWall_8049E8A0::SnowWall_8049E8A0()
     : field_0x230(0), field_0x234(0), field_0x238(1.0f), field_0x23c(NULL), field_0x240(NULL), field_0x244(NULL) {}
 
-cls_8049E8A0::~cls_8049E8A0() {
+SnowWall_8049E8A0::~SnowWall_8049E8A0() {
     if (field_0x240 != NULL) {
         releaseEmitter_801EE434(field_0x240);
         field_0x240 = NULL;
@@ -24,7 +24,7 @@ cls_8049E8A0::~cls_8049E8A0() {
     }
 }
 
-void cls_8049E8A0::init() {
+void SnowWall_8049E8A0::init() {
     ActorBase_804A5770::init();
     mBox.i.x = -24.0f;
     mBox.i.y = -32.0f;
@@ -55,7 +55,7 @@ void cls_8049E8A0::init() {
     }
 }
 
-void cls_8049E8A0::update() {
+void SnowWall_8049E8A0::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -107,7 +107,7 @@ void cls_8049E8A0::update() {
 
 // FIXME: 93.67%. scheduling+regalloc. Same instructions modulo registers,
 // different order; target loads y before x when filling the scale matrix.
-void cls_8049E8A0::draw() {
+void SnowWall_8049E8A0::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 sp; // unused: the original constructs a second SpriteParams here (its reset loop at 0x8012E014)
@@ -144,7 +144,7 @@ void cls_8049E8A0::draw() {
 // 100 % with no new bl; the whole switch as one helper is not inlined): each
 // is exactly the case body update inlines, nothing else is proven.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 16-line definition): split out only where the .sdata2 order needs it.
-void cls_8049E8A0::shrink() {
+void SnowWall_8049E8A0::shrink() {
     mDrawEnabled = false;
     bool done;
     if (field_0x238 >= 0.5f && fn_801CD950(&field_0x238, 0.5f, -0.005f) != 0) {
@@ -162,7 +162,7 @@ void cls_8049E8A0::shrink() {
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
-void cls_8049E8A0::melt() {
+void SnowWall_8049E8A0::melt() {
     if (field_0x234 == 0) {
         JGeometry::TVec3f pos = mPos;
         pos.y += 16.0f;

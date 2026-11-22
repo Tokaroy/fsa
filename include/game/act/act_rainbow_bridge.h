@@ -9,10 +9,10 @@ class JPABaseEmitter;
 
 // Spawned for 'RNBW' ("Rainbow Bridge", docs/names/actors.tsv, high confidence).
 // Named after its vtable, 0x8049E610.
-class cls_8049E610 : public ActorBase_804A5770 {
+class RainbowBridge_8049E610 : public ActorBase_804A5770 {
 public:
-    cls_8049E610();
-    /* 0x08 */ virtual ~cls_8049E610();
+    RainbowBridge_8049E610();
+    /* 0x08 */ virtual ~RainbowBridge_8049E610();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
 

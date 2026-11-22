@@ -9,10 +9,10 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/SpriteAnim.h"
 
-class cls_8049D740 : public cls_8049D140 {
+class MaidenCutscene_8049D740 : public cls_8049D140 {
 public:
-    cls_8049D740();
-    /* 0x08 */ virtual ~cls_8049D740();
+    MaidenCutscene_8049D740();
+    /* 0x08 */ virtual ~MaidenCutscene_8049D740();
     // Calls cls_8049D140::init(), then sets mMode and the Maiden's animation
     // (key table, animation 5 in mode 2, frame 0).
     /* 0x0C */ virtual void init();

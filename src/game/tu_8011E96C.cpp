@@ -17,7 +17,7 @@ static inline bool isOnPlayerLayer(const ActorBase_804A5770* actor) {
     return false;
 }
 
-void cls_8049DE90::init() {
+void RandomToggleSwitch_8049DE90::init() {
     mDuration = mSpawnParam_0x90 & 0x3F;
     mDuration *= 10;
     mCycle = (mSpawnParam_0x90 >> 6) & 1;
@@ -40,7 +40,7 @@ void cls_8049DE90::init() {
 
 // Picks the next table entry (random, or in turn when mCycle is 1) and shows it alone. An inline
 // of its own: its values get their registers before update's (docs/REGALLOC.md, rule 4).
-static inline void showPickedEntry(cls_8049DE90* self) {
+static inline void showPickedEntry(RandomToggleSwitch_8049DE90* self) {
     s32 pick = fn_801CD664(4);
     if (self->mCycle == 1) {
         pick = self->mNext;
@@ -59,7 +59,7 @@ static inline void showPickedEntry(cls_8049DE90* self) {
     }
 }
 
-void cls_8049DE90::update() {
+void RandomToggleSwitch_8049DE90::update() {
     switch (mState) {
     case 0:
         if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
@@ -91,4 +91,4 @@ void cls_8049DE90::update() {
     }
 }
 
-cls_8049DE90::~cls_8049DE90() {}
+RandomToggleSwitch_8049DE90::~RandomToggleSwitch_8049DE90() {}

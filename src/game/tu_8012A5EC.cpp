@@ -13,30 +13,30 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 #include "game/act/tu_801F9484.h"
 
-static void (cls_8049E770::*lbl_8049E6EC[11])() = {
-    &cls_8049E770::fn_8012C334,
-    &cls_8049E770::fn_8012C170,
-    &cls_8049E770::fn_8012C030,
-    &cls_8049E770::fn_8012BE2C,
-    &cls_8049E770::fn_8012BC40,
-    &cls_8049E770::fn_8012B218,
-    &cls_8049E770::fn_8012B0D8,
-    &cls_8049E770::fn_8012B02C,
-    &cls_8049E770::fn_8012AA84,
-    &cls_8049E770::fn_8012A9A0,
-    &cls_8049E770::fn_8012A8C0,
+static void (TowerAppearanceDemo_8049E770::*lbl_8049E6EC[11])() = {
+    &TowerAppearanceDemo_8049E770::fn_8012C334,
+    &TowerAppearanceDemo_8049E770::fn_8012C170,
+    &TowerAppearanceDemo_8049E770::fn_8012C030,
+    &TowerAppearanceDemo_8049E770::fn_8012BE2C,
+    &TowerAppearanceDemo_8049E770::fn_8012BC40,
+    &TowerAppearanceDemo_8049E770::fn_8012B218,
+    &TowerAppearanceDemo_8049E770::fn_8012B0D8,
+    &TowerAppearanceDemo_8049E770::fn_8012B02C,
+    &TowerAppearanceDemo_8049E770::fn_8012AA84,
+    &TowerAppearanceDemo_8049E770::fn_8012A9A0,
+    &TowerAppearanceDemo_8049E770::fn_8012A8C0,
 };
 
 static const s32 lbl_804650B0[6] = {0x1B3, 0x1CD, 0x17F, 0x201, 0x1E7, 0x199};
 static const u32 lbl_804650C8[3] = {0x840, 0x841, 0x842};
 static const s16 lbl_804650D4[6] = {-0x4000, -0x1C00, 0x1C00, 0x4000, 0x6400, -0x6400};
 
-inline bool cls_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
+inline bool TowerAppearanceDemo_8049E770::talk(s32 layer, const JGeometry::TVec3f& pos) {
     return fn_8038BD08(0, lbl_804650C8[field_0x254], layer, pos, 0x22);
 }
 
 // FIXME(shotgun): 99.54 %, scheduling+regalloc; behaviour clean.
-void cls_8049E770::init() {
+void TowerAppearanceDemo_8049E770::init() {
     lbl_8053AD70->fn_8037AE00();
     field_0x3f4 = (s32)(mPos.y / 384.0f) * 384.0f;
     field_0x3f8 = (s32)(mPos.x / 512.0f) * 512.0f + 256.0f;
@@ -93,9 +93,9 @@ void cls_8049E770::init() {
     }
 }
 
-void cls_8049E770::reset() {}
+void TowerAppearanceDemo_8049E770::reset() {}
 
-void cls_8049E770::update() {
+void TowerAppearanceDemo_8049E770::update() {
     if (field_0x258 != 0) {
         field_0x258--;
     } else if (gAudioMgr_8053AF80->field_0x58 != 0x100001C) {
@@ -130,7 +130,7 @@ void cls_8049E770::update() {
     (this->*lbl_8049E6EC[field_0x230])();
 }
 
-void cls_8049E770::draw() {
+void TowerAppearanceDemo_8049E770::draw() {
     JGeometry::TVec3f savedPos(mPos);
     for (s32 i = 0; i < 6; i++) {
         mPos = field_0x25c[i];
@@ -148,7 +148,7 @@ void cls_8049E770::draw() {
 
 // An inline of its own: its loop registers are handed out before the destructor's
 // (docs/REGALLOC.md, rule 4).
-static inline void deleteEmitters(cls_8049E770* self) {
+static inline void deleteEmitters(TowerAppearanceDemo_8049E770* self) {
     for (s32 i = 0; i < 4; i++) {
         if (self->field_0x388[0][i] != NULL) {
             self->field_0x388[0][i]->setStatus(JPAEMIT_ForceDelete);
@@ -165,11 +165,11 @@ static inline void deleteEmitters(cls_8049E770* self) {
     }
 }
 
-cls_8049E770::~cls_8049E770() {
+TowerAppearanceDemo_8049E770::~TowerAppearanceDemo_8049E770() {
     deleteEmitters(this);
 }
 
-void cls_8049E770::fn_8012C334() {
+void TowerAppearanceDemo_8049E770::fn_8012C334() {
     s32 i;
     for (i = 0; i < 4; i++) {
         if (fn_80230188(i)) {
@@ -200,7 +200,7 @@ void cls_8049E770::fn_8012C334() {
     fn_8012A5EC();
 }
 
-void cls_8049E770::fn_8012C170() {
+void TowerAppearanceDemo_8049E770::fn_8012C170() {
     if (field_0x250 == 1) {
         fn_80119DD0()->fn_80119468(0, 0);
     }
@@ -236,7 +236,7 @@ void cls_8049E770::fn_8012C170() {
     }
 }
 
-void cls_8049E770::fn_8012C030() {
+void TowerAppearanceDemo_8049E770::fn_8012C030() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
@@ -254,7 +254,7 @@ void cls_8049E770::fn_8012C030() {
     }
 }
 
-void cls_8049E770::fn_8012BE2C() {
+void TowerAppearanceDemo_8049E770::fn_8012BE2C() {
     fn_8012A5EC();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_803865B8(0)) {
@@ -274,7 +274,7 @@ void cls_8049E770::fn_8012BE2C() {
     }
 }
 
-void cls_8049E770::fn_8012BC40() {
+void TowerAppearanceDemo_8049E770::fn_8012BC40() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 279.0f && field_0x248 == 105.0f && done == true) {
         static const u8 order[4] = {2, 0, 3, 1};
@@ -290,7 +290,7 @@ void cls_8049E770::fn_8012BC40() {
     }
 }
 
-inline void cls_8049E770::spawnEmitters() {
+inline void TowerAppearanceDemo_8049E770::spawnEmitters() {
     for (s32 i = 0; i < 4; i++) {
         field_0x328[0][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3C0 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
         field_0x328[1][i] = spawnEmitter_8013CC50(mLayer_0x4, &field_0x2c8[i], 0x3C1 + i * 3, 0, 0, NULL, NULL, true, 1.0f);
@@ -299,7 +299,7 @@ inline void cls_8049E770::spawnEmitters() {
 }
 
 // FIXME(shotgun): 98.79 %, operands; behaviour drift.
-void cls_8049E770::fn_8012B218() {
+void TowerAppearanceDemo_8049E770::fn_8012B218() {
     static JGeometry::TVec3f lbl_804BD7C0[4] = {
         JGeometry::TVec3f(-113.0f, 382.0f, 50.0f),
         JGeometry::TVec3f(109.0f, 300.0f, 50.0f),
@@ -446,7 +446,7 @@ void cls_8049E770::fn_8012B218() {
     }
 }
 
-void cls_8049E770::fn_8012B0D8() {
+void TowerAppearanceDemo_8049E770::fn_8012B0D8() {
     bool done = fn_8012A5EC();
     if (field_0x238.y == field_0x3f4 + 260.0f && field_0x248 == 85.0f && done == true) {
         const _GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
@@ -464,7 +464,7 @@ void cls_8049E770::fn_8012B0D8() {
     }
 }
 
-void cls_8049E770::fn_8012B02C() {
+void TowerAppearanceDemo_8049E770::fn_8012B02C() {
     fn_8012A5EC();
     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
     if (fn_803865B8(0)) {
@@ -478,7 +478,7 @@ void cls_8049E770::fn_8012B02C() {
 }
 
 // FIXME(shotgun): 97.13 %, different; behaviour clean.
-void cls_8049E770::fn_8012AA84() {
+void TowerAppearanceDemo_8049E770::fn_8012AA84() {
     if (field_0x250 >= 1300) {
         if (field_0x250 == 1300) {
             JGeometry::TVec3f p0(field_0x3f8, field_0x3f4 + 192.0f, 0.0f);
@@ -593,7 +593,7 @@ void cls_8049E770::fn_8012AA84() {
     }
 }
 
-void cls_8049E770::fn_8012A9A0() {
+void TowerAppearanceDemo_8049E770::fn_8012A9A0() {
     fn_8012A5EC();
     if (field_0x404 == 0) {
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -614,7 +614,7 @@ void cls_8049E770::fn_8012A9A0() {
     }
 }
 
-void cls_8049E770::fn_8012A8C0() {
+void TowerAppearanceDemo_8049E770::fn_8012A8C0() {
     JGeometry::TBox2f box(mBox);
     JGeometry::TBox2f baseBox(mBox);
     for (s32 i = 0; i < 6; i++) {
@@ -628,7 +628,7 @@ void cls_8049E770::fn_8012A8C0() {
 }
 
 // FIXME(shotgun): 99.53 %, regalloc-only + reloc-name; behaviour drift.
-bool cls_8049E770::fn_8012A5EC() {
+bool TowerAppearanceDemo_8049E770::fn_8012A5EC() {
     switch (field_0x230) {
     case 0:
     case 1:

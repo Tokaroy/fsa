@@ -21,12 +21,12 @@ static inline void fadeColour(u8& colour, s32 target, f32 frames) {
     }
 }
 
-cls_8049DB30::cls_8049DB30()
+GoalOpening_8049DB30::GoalOpening_8049DB30()
     : field_0x230(1), field_0x234(0), field_0x238(0), field_0x23c(0), field_0x240(0),
       field_0x244(0x9F), field_0x245(0xAF), field_0x246(0xFF), field_0x247(0), field_0x248(0xFF),
       mEmitter24c(NULL), mEmitter250(NULL), mEmitter254(NULL), mEmitter258(NULL) {}
 
-cls_8049DB30::~cls_8049DB30() {
+GoalOpening_8049DB30::~GoalOpening_8049DB30() {
     releaseEmitter_801EE434(mEmitter24c);
     mEmitter24c = NULL;
     releaseEmitter_801EE434(mEmitter250);
@@ -37,7 +37,7 @@ cls_8049DB30::~cls_8049DB30() {
     mEmitter258 = NULL;
 }
 
-void cls_8049DB30::init() {
+void GoalOpening_8049DB30::init() {
     cls_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 0xF;
     field_0x23c = (mSpawnParam_0x90 >> 4) & 0xF;
@@ -52,7 +52,7 @@ void cls_8049DB30::init() {
 // instead of loading it into r0 at the store, lacks the bge/b pair after the
 // switch's cmpwi 2, swaps f3/f4 in the box sums and loads the 1 of the bit mask
 // later (no clrlwi); the float literals are not split into this unit yet.
-void cls_8049DB30::update() {
+void GoalOpening_8049DB30::update() {
     cls_8049D140::update();
     fn_801902C0()->field_0x7a8 = 1;
     switch (field_0x234) {
@@ -108,11 +108,11 @@ void cls_8049DB30::update() {
     fn_8011A4BC();
 }
 
-void cls_8049DB30::draw() {
+void GoalOpening_8049DB30::draw() {
     cls_8049D140::draw();
 }
 
-void cls_8049DB30::vfunc_0x54() {
+void GoalOpening_8049DB30::vfunc_0x54() {
     switch (field_0x234) {
     case 3:
         if (fn_8011921C()->field_0x8 < 0x78) {
@@ -157,15 +157,15 @@ void cls_8049DB30::vfunc_0x54() {
     }
 }
 
-s32 cls_8049DB30::vfunc_0x58() {
+s32 GoalOpening_8049DB30::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 cls_8049DB30::vfunc_0x5C() {
+s32 GoalOpening_8049DB30::vfunc_0x5C() {
     return field_0x234 != 3;
 }
 
-void cls_8049DB30::fn_8011A4BC() {
+void GoalOpening_8049DB30::fn_8011A4BC() {
     switch (field_0x234) {
     case 1:
         field_0x240--;

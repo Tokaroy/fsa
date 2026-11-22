@@ -646,7 +646,7 @@ bool fn_801CC538(s32 player, const JGeometry::TVec2f* pos, JGeometry::TVec3f* ou
             if (outPlayer != NULL) {
                 *outPlayer = serial;
             }
-            ((cls_804A0738*)actor)->field_0x254 = 1;
+            ((UnknownBOME_804A0738*)actor)->field_0x254 = 1;
             if (out != NULL) {
                 JGeometry::TVec3f d = actor->mVel_0x3c;
                 d.scale(3.0f);

@@ -35,14 +35,14 @@ static inline void setScaleMtx(Mtx m, f32 sx, f32 sy, f32 sz) {
     m[2][2] = sz;
 }
 
-cls_8049D020::cls_8049D020()
+Snowball_8049D020::Snowball_8049D020()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(0),
       field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0), field_0x254(0),
       field_0x258(0), field_0x25c(0), field_0x260(1.0f), field_0x264(0.0f),
       field_0x268(0.0f), field_0x26c(1.0f), field_0x270(1.0f), mSprite(),
       mRail(), field_0x374(NULL), field_0x378(NULL), field_0x37c(NULL) {}
 
-cls_8049D020::~cls_8049D020() {
+Snowball_8049D020::~Snowball_8049D020() {
     releaseEmitter_801EE434(field_0x374);
     field_0x374 = NULL;
     releaseEmitter_801EE434(field_0x378);
@@ -51,7 +51,7 @@ cls_8049D020::~cls_8049D020() {
     field_0x37c = NULL;
 }
 
-void cls_8049D020::init() {
+void Snowball_8049D020::init() {
     ActorBase_804A5770::init();
     field_0x234 = mSpawnParam_0x90 & 0xF;
     switch ((s32)((mSpawnParam_0x90 >> 4) & 0xF)) {
@@ -98,7 +98,7 @@ void cls_8049D020::init() {
     }
 }
 
-void cls_8049D020::update() {
+void Snowball_8049D020::update() {
     ActorBase_804A5770::update();
     field_0x26c = 1.0f;
     JGeometry::TBox2<f32> box = mBox;
@@ -255,7 +255,7 @@ static inline void drawSprite(s32 layer, const JGeometry::TVec3f* pos, const cha
 
 // One instruction short: &mPos stays folded into r31+0xc instead of moving to r30 before the layer check.
 // FIXME: 99.17 %, missing/extra; behaviour clean.
-void cls_8049D020::draw() {
+void Snowball_8049D020::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params2;
     SpriteParams_801F5AE0 params;
@@ -283,7 +283,7 @@ static inline JGeometry::TVec3f negated(const JGeometry::TVec3f& v) {
 
 // FIXME: 95.64 %, missing/extra + reloc-name; behaviour drift.
 // missing/extra + reloc-name: ours has 2 fewer instrs (274 vs 276): the original keeps the table, the actor manager tag and the serial in r27-r29 (stmw/lmw r27) and negates case 5 through two stack TVec3f copies; the single-case switch in case 13 has an extra bge in the original.
-bool cls_8049D020::fn_8010C294(s32 state) {
+bool Snowball_8049D020::fn_8010C294(s32 state) {
     switch (state) {
     case 1:
         field_0x24c = 0;
@@ -385,7 +385,7 @@ bool cls_8049D020::fn_8010C294(s32 state) {
 
 // Turns towards the player, picks the speed by the distance and rolls on.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D020::chase(s32 target) {
+void Snowball_8049D020::chase(s32 target) {
     u16 angle = 0;
     s32 dir = 0;
     s32 player = 0;
@@ -414,7 +414,7 @@ void cls_8049D020::chase(s32 target) {
 
 // Moves along the rail and updates the trail emitter.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D020::followRail() {
+void Snowball_8049D020::followRail() {
     u16 angle = 0;
     JGeometry::TVec3f outStep(0.0f, 0.0f, 0.0f);
     s32 layer = mLayer_0x4;
@@ -430,7 +430,7 @@ void cls_8049D020::followRail() {
 
 // Grows with the distance rolled, up to twice the size; the boxes follow.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D020::grow() {
+void Snowball_8049D020::grow() {
     field_0x260 += (0.002f * field_0x264) / 1.6f;
     if (field_0x260 >= 2.0f) {
         field_0x260 = 2.0f;
@@ -452,7 +452,7 @@ void cls_8049D020::grow() {
 
 // Applies gravity to the velocity and moves; true once landed.
 // R2 pool helper (inlined at 3 call sites); was fallStep.
-bool cls_8049D020::pool_8053C4AC() {
+bool Snowball_8049D020::pool_8053C4AC() {
     fn_801CD950(&mVel_0x3c.z, -10.0f, -0.15f);
     mPos += mVel_0x3c;
     bool atGround;
@@ -468,7 +468,7 @@ bool cls_8049D020::pool_8053C4AC() {
 
 // The rupee a destroyed snowball leaves, by its size.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D020::dropRupee() {
+void Snowball_8049D020::dropRupee() {
     s32 kind = 0;
     if (field_0x270 >= 2.0f) {
         kind = 2;
@@ -486,7 +486,7 @@ void cls_8049D020::dropRupee() {
 
 // The three burst emitters, at the snowball's foot.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D020::spawnBurst() {
+void Snowball_8049D020::spawnBurst() {
     JGeometry::TVec3f pos = mPos;
     pos.y -= 16.0f * field_0x260;
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x44A, 0, 1, NULL, NULL, true, field_0x260);
@@ -496,7 +496,7 @@ void cls_8049D020::spawnBurst() {
 
 // Emits and updates the trail emitter.
 // R2 pool helper (inlined at 3 call sites); was updateTrailEmitter.
-void cls_8049D020::pool_8053C494() {
+void Snowball_8049D020::pool_8053C494() {
     if (mLayer_0x4 == 0) {
         if (field_0x374 == NULL) {
             field_0x374 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x3D3, 0, 0, NULL, NULL, true, 1.5f);
@@ -515,7 +515,7 @@ void cls_8049D020::pool_8053C494() {
 
 // Moves along the heading at the current speed.
 // R2 pool helper (inlined at 2 call sites); was advance.
-void cls_8049D020::pool_8053C490() {
+void Snowball_8049D020::pool_8053C490() {
     mVel_0x3c.x = field_0x264 * JMath::sincosTable_.sinShort(field_0x230);
     mVel_0x3c.y = field_0x264 * JMath::sincosTable_.cosShort(field_0x230);
     mVel_0x3c.z = 0.0f;

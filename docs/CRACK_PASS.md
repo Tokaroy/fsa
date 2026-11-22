@@ -177,48 +177,48 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_fish | `Fish_804AC658::stopSwim` | 6 | (none alone; needed jointly with the unit's other helpers) |
 | act_force_gem_winged | `WingedForceGem_804AB098::updateRise` | 32 | (none alone; needed jointly with the unit's other helpers) |
 | act_four_person_pull_switch | `FourPersonPullSwitch_804AE230::checkAllPulled` | 19 | `draw__29FourPersonPullSwitch_804AE230Fv`, `update__29FourPersonPullSwitch_804AE230Fv` |
-| act_four_sword_demo | `cls_8049DA0C::checkPlayers` | 22 | (none alone; needed jointly with the unit's other helpers) |
-| act_four_sword_demo | `cls_8049DA0C::raisePlayers` | 13 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
-| act_four_sword_demo | `cls_8049DA0C::showMessage` | 7 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv`, `__ct__12cls_8049DA0CFv` |
-| act_four_sword_demo | `cls_8049DA0C::spawnPlayerEffects` | 11 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
-| act_four_sword_demo | `cls_8049DA0C::spreadPlayers` | 16 | `fn_80117074__12cls_8049DA0CFl`, `draw__12cls_8049DA0CFv` |
+| act_four_sword_demo | `FourSwordCutscene_8049DA0C::checkPlayers` | 22 | (none alone; needed jointly with the unit's other helpers) |
+| act_four_sword_demo | `FourSwordCutscene_8049DA0C::raisePlayers` | 13 | `fn_80117074__26FourSwordCutscene_8049DA0CFl`, `draw__26FourSwordCutscene_8049DA0CFv` |
+| act_four_sword_demo | `FourSwordCutscene_8049DA0C::showMessage` | 7 | `fn_80117074__26FourSwordCutscene_8049DA0CFl`, `draw__26FourSwordCutscene_8049DA0CFv`, `__ct__26FourSwordCutscene_8049DA0CFv` |
+| act_four_sword_demo | `FourSwordCutscene_8049DA0C::spawnPlayerEffects` | 11 | `fn_80117074__26FourSwordCutscene_8049DA0CFl`, `draw__26FourSwordCutscene_8049DA0CFv` |
+| act_four_sword_demo | `FourSwordCutscene_8049DA0C::spreadPlayers` | 16 | `fn_80117074__26FourSwordCutscene_8049DA0CFl`, `draw__26FourSwordCutscene_8049DA0CFv` |
 | act_gambling_shop | `GamblingShop_804AAA70::swapTwoChests` | 23 | (none alone; needed jointly with the unit's other helpers) |
-| act_great_fairy_spfr | `cls_8049EB8C::placeAtBarrier` | 20 | `fn_801321E4__12cls_8049EB8CFv`, `init__12cls_8049EB8CFv` |
-| act_great_fairy_spfr | `cls_8049EB8C::spawnSoldier` | 15 | `fn_801321E4__12cls_8049EB8CFv`, `draw__12cls_8049EB8CFv`, `init__12cls_8049EB8CFv` |
-| act_great_fairy_spfr | `cls_8049EB8C::talkTo` | 21 | `fn_801321E4__12cls_8049EB8CFv` |
+| act_great_fairy_spfr | `GreatFairy_8049EB8C::placeAtBarrier` | 20 | `fn_801321E4__19GreatFairy_8049EB8CFv`, `init__19GreatFairy_8049EB8CFv` |
+| act_great_fairy_spfr | `GreatFairy_8049EB8C::spawnSoldier` | 15 | `fn_801321E4__19GreatFairy_8049EB8CFv`, `draw__19GreatFairy_8049EB8CFv`, `init__19GreatFairy_8049EB8CFv` |
+| act_great_fairy_spfr | `GreatFairy_8049EB8C::talkTo` | 21 | `fn_801321E4__19GreatFairy_8049EB8CFv` |
 | act_ice_melted_by_four_players | `IceMeltedByFourPlayers_804AE888::spawnMeltEmitter` | 5 | `fn_80378680__31IceMeltedByFourPlayers_804AE888Fv`, `update__31IceMeltedByFourPlayers_804AE888Fv`, `init__31IceMeltedByFourPlayers_804AE888Fv` |
 | act_ice_wall | `IceWall_8049DE18::hitByFire` | 14 | (none alone; needed jointly with the unit's other helpers) |
 | act_ice_wall | `IceWall_8049DE18::hitByWeapon` | 30 | (none alone; needed jointly with the unit's other helpers) |
 | act_ice_wall | `IceWall_8049DE18::startMelting` | 15 | `draw__16IceWall_8049DE18Fv`, `init__16IceWall_8049DE18Fv`, `__ct__16IceWall_8049DE18Fv` |
 | act_icicle | `Icicle_8049CFC8::fall` | 4 | `fn_8010B284__15Icicle_8049CFC8Fv`, `fn_8010B40C__15Icicle_8049CFC8Fl`, `draw__15Icicle_8049CFC8Fv`, `init__15Icicle_8049CFC8Fv`, `__ct__15Icicle_8049CFC8Fv` |
-| act_maiden_demo | `cls_8049D740::moveToGoal` | 15 | `fn_80112654__12cls_8049D740Fl`, `draw__12cls_8049D740Fv` |
-| act_princess_zelda | `cls_8049CEE0::approachPlayerSide` | 19 | `fn_80109534__12cls_8049CEE0Fv`, `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
-| act_princess_zelda | `cls_8049CEE0::followPlayerSide` | 25 | `fn_80109534__12cls_8049CEE0Fv`, `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
-| act_princess_zelda | `cls_8049CEE0::stepSpeed` | 7 | `fn_80109AE0__12cls_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__12cls_8049CEE0Fv`, `init__12cls_8049CEE0Fv` |
+| act_maiden_demo | `MaidenCutscene_8049D740::moveToGoal` | 15 | `fn_80112654__23MaidenCutscene_8049D740Fl`, `draw__23MaidenCutscene_8049D740Fv` |
+| act_princess_zelda | `PrincessZelda_8049CEE0::approachPlayerSide` | 19 | `fn_80109534__22PrincessZelda_8049CEE0Fv`, `fn_80109AE0__22PrincessZelda_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__22PrincessZelda_8049CEE0Fv`, `init__22PrincessZelda_8049CEE0Fv` |
+| act_princess_zelda | `PrincessZelda_8049CEE0::followPlayerSide` | 25 | `fn_80109534__22PrincessZelda_8049CEE0Fv`, `fn_80109AE0__22PrincessZelda_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__22PrincessZelda_8049CEE0Fv`, `init__22PrincessZelda_8049CEE0Fv` |
+| act_princess_zelda | `PrincessZelda_8049CEE0::stepSpeed` | 7 | `fn_80109AE0__22PrincessZelda_8049CEE0FPQ29JGeometry8TVec3<f>`, `draw__22PrincessZelda_8049CEE0Fv`, `init__22PrincessZelda_8049CEE0Fv` |
 | act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::flyToGoal` | 24 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
 | act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::lowerPlayers` | 13 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_8010F7EC__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
 | act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::sinkToPlayer` | 8 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_8010F4DC__26PrincessZeldaDemo_8049D208Fv`, `fn_8010F7EC__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `init__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
 | act_princess_zelda_demo | `PrincessZeldaDemo_8049D208::standBelow` | 5 | `fn_8010E2D4__26PrincessZeldaDemo_8049D208Fl`, `fn_80110454__26PrincessZeldaDemo_8049D208Fv`, `__ct__26PrincessZeldaDemo_8049D208Fv` |
-| act_rainbow_bridge | `cls_8049E610::isPlayerOn` | 26 | `init__12cls_8049E610Fv` |
-| act_room_transfer_lift | `cls_8049CC40::isInside` | 14 | `update__12cls_8049CC40Fv` |
+| act_rainbow_bridge | `RainbowBridge_8049E610::isPlayerOn` | 26 | `init__22RainbowBridge_8049E610Fv` |
+| act_room_transfer_lift | `RoomTransferLift_8049CC40::isInside` | 14 | `update__25RoomTransferLift_8049CC40Fv` |
 | act_score | `Score_804AF4C0::updateState1` | 10 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
 | act_score | `Score_804AF4C0::updateState2` | 7 | `fn_80393228__14Score_804AF4C0Fv`, `update__14Score_804AF4C0Fv` |
 | act_seesaw_lift | `SeesawLift_804AD348::isPlayerInside` | 9 | `fn_80358F98__19SeesawLift_804AD348Fv`, `fn_803597EC__19SeesawLift_804AD348Fv`, `fn_8035A210__19SeesawLift_804AD348Fv`, `fn_8035AC84__19SeesawLift_804AD348Fl`, `fn_8035AE9C__19SeesawLift_804AD348Fl` |
-| act_shadow_link_demo | `cls_8049DB90::hopDown` | 8 | `fn_8011B878__12cls_8049DB90Fl` |
-| act_shadow_link_demo | `cls_8049DB90::spawnFlash` | 5 | `fn_8011B878__12cls_8049DB90Fl` |
+| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::hopDown` | 8 | `fn_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
+| act_shadow_link_demo | `ShadowLinkCutscene_8049DB90::spawnFlash` | 5 | `fn_8011B878__27ShadowLinkCutscene_8049DB90Fl` |
 | act_shovel_old_timer | `ShovelOldTimer_804AAB40::findDigSpot` | 31 | `draw__23ShovelOldTimer_804AAB40Fv`, `init__23ShovelOldTimer_804AAB40Fv` |
 | act_small_key | `SmallKey_804A8CD8::bounceOffTile` | 19 | `fn_802C24A8__17SmallKey_804A8CD8Fv` |
 | act_small_key | `SmallKey_804A8CD8::dropAtPlayer` | 37 | (none alone; needed jointly with the unit's other helpers) |
-| act_snow_wall | `cls_8049E8A0::melt` | 19 | `update__12cls_8049E8A0Fv`, `init__12cls_8049E8A0Fv`, `__ct__12cls_8049E8A0Fv` |
-| act_snow_wall | `cls_8049E8A0::shrink` | 16 | `update__12cls_8049E8A0Fv`, `init__12cls_8049E8A0Fv` |
-| act_snowball | `cls_8049D020::chase` | 26 | `update__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
-| act_snowball | `cls_8049D020::dropRupee` | 15 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
-| act_snowball | `cls_8049D020::followRail` | 13 | (none alone; needed jointly with the unit's other helpers) |
-| act_snowball | `cls_8049D020::grow` | 19 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
-| act_snowball | `cls_8049D020::spawnBurst` | 7 | `update__12cls_8049D020Fv`, `init__12cls_8049D020Fv`, `__ct__12cls_8049D020Fv` |
+| act_snow_wall | `SnowWall_8049E8A0::melt` | 19 | `update__17SnowWall_8049E8A0Fv`, `init__17SnowWall_8049E8A0Fv`, `__ct__17SnowWall_8049E8A0Fv` |
+| act_snow_wall | `SnowWall_8049E8A0::shrink` | 16 | `update__17SnowWall_8049E8A0Fv`, `init__17SnowWall_8049E8A0Fv` |
+| act_snowball | `Snowball_8049D020::chase` | 26 | `update__17Snowball_8049D020Fv`, `__ct__17Snowball_8049D020Fv` |
+| act_snowball | `Snowball_8049D020::dropRupee` | 15 | `update__17Snowball_8049D020Fv`, `init__17Snowball_8049D020Fv`, `__ct__17Snowball_8049D020Fv` |
+| act_snowball | `Snowball_8049D020::followRail` | 13 | (none alone; needed jointly with the unit's other helpers) |
+| act_snowball | `Snowball_8049D020::grow` | 19 | `update__17Snowball_8049D020Fv`, `init__17Snowball_8049D020Fv`, `__ct__17Snowball_8049D020Fv` |
+| act_snowball | `Snowball_8049D020::spawnBurst` | 7 | `update__17Snowball_8049D020Fv`, `init__17Snowball_8049D020Fv`, `__ct__17Snowball_8049D020Fv` |
 | act_strange_block | `StrangeBlock_804AC2D8::blockedAtFullReach` | 10 | `fn_8033D4AC`, `init__21StrangeBlock_804AC2D8Fv` |
 | act_tingle_first | `cls_804AADD8::selectNearestPlayer` | 23 | `draw__12cls_804AADD8Fv` |
-| act_vaati_demo | `cls_8049D940::updateDescent` | 10 | `update__12cls_8049D940Fv` |
+| act_vaati_demo | `VaatiCutscene_8049D940::updateDescent` | 10 | `update__22VaatiCutscene_8049D940Fv` |
 | act_vaati_time_up | `VaatiTimeUp_804ACCC0::pickTarget` | 10 | `draw__20VaatiTimeUp_804ACCC0Fv` |
 | act_vaati_time_up | `VaatiTimeUp_804ACCC0::steer` | 12 | `draw__20VaatiTimeUp_804ACCC0Fv` |
 | act_warp | `updateSandHole` | 18 | `draw__13Warp_804A6DC8Fv` |
@@ -236,19 +236,19 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | act_zora_escort_goal | `ZoraEscortGoal_8049E424::spawnEmitters` | 6 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `draw__23ZoraEscortGoal_8049E424Fv`, `init__23ZoraEscortGoal_8049E424Fv`, `__ct__23ZoraEscortGoal_8049E424Fv` |
 | act_zora_escort_goal | `ZoraEscortGoal_8049E424::walkRail` | 25 | `fn_80126A4C__23ZoraEscortGoal_8049E424Fl`, `init__23ZoraEscortGoal_8049E424Fv` |
 | tu_8010089C | `WhackAMoleShop_8049C8EC::showTimer` | 10 | `draw__23WhackAMoleShop_8049C8ECFv`, `init__23WhackAMoleShop_8049C8ECFv` |
-| tu_80113788 | `cls_8049D83C::positionPlayers` | 12 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
-| tu_80113788 | `cls_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__12cls_8049D83CFv` |
-| tu_80113788 | `cls_8049D83C::spawnEmitters` | 12 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
-| tu_80113788 | `cls_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
-| tu_80113788 | `cls_8049D83C::updateCameraFocus` | 44 | `fn_80113790__12cls_8049D83CFv`, `__ct__12cls_8049D83CFv` |
+| tu_80113788 | `CrystalCutscene_8049D83C::positionPlayers` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| tu_80113788 | `CrystalCutscene_8049D83C::spawnBurstEmitters` | 4 | `fn_80113790__24CrystalCutscene_8049D83CFv` |
+| tu_80113788 | `CrystalCutscene_8049D83C::spawnEmitters` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| tu_80113788 | `CrystalCutscene_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
+| tu_80113788 | `CrystalCutscene_8049D83C::updateCameraFocus` | 44 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
 | tu_80118384 | `spawnFadeEmitters` | 7 | `fn_801194C4__12cls_80119E5CFv`, `fn_80119628__12cls_80119E5CFv`, `fn_80119998__12cls_80119E5CFlllllll` |
-| tu_8011CEC8 | `cls_8049DD68::setOverlayRect` | 21 | `update__12cls_8049DD68Fv` |
-| tu_8011CEC8 | `cls_8049DD68::startScroll` | 9 | `update__12cls_8049DD68Fv`, `init__12cls_8049DD68Fv` |
+| tu_8011CEC8 | `AfterGoalOpening_8049DD68::setOverlayRect` | 21 | `update__25AfterGoalOpening_8049DD68Fv` |
+| tu_8011CEC8 | `AfterGoalOpening_8049DD68::startScroll` | 9 | `update__25AfterGoalOpening_8049DD68Fv`, `init__25AfterGoalOpening_8049DD68Fv` |
 | tu_801213EC | `EscortBase_8049E0C8::respawnLifeMeters` | 9 | (none alone; needed jointly with the unit's other helpers) |
 | tu_801213EC | `EscortBase_8049E0C8::spawnLifeMeter` | 14 | (none alone; needed jointly with the unit's other helpers) |
-| tu_80125B58 | `cls_8049E350::startSignAnim` | 12 | `fn_80125BF4__12cls_8049E350Fv`, `fn_80125C58__12cls_8049E350Fb`, `draw__12cls_8049E350Fv`, `init__12cls_8049E350Fv` |
-| tu_80125B58 | `cls_8049E350::talkTo` | 5 | `fn_80125BF4__12cls_8049E350Fv`, `draw__12cls_8049E350Fv` |
-| tu_8013394C | `cls_8049ED30::spawnEmitters` | 8 | `init__12cls_8049ED30Fv` |
+| tu_80125B58 | `EscortedWomanArrivalPoint_8049E350::startSignAnim` | 12 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `fn_80125C58__34EscortedWomanArrivalPoint_8049E350Fb`, `draw__34EscortedWomanArrivalPoint_8049E350Fv`, `init__34EscortedWomanArrivalPoint_8049E350Fv` |
+| tu_80125B58 | `EscortedWomanArrivalPoint_8049E350::talkTo` | 5 | `fn_80125BF4__34EscortedWomanArrivalPoint_8049E350Fv`, `draw__34EscortedWomanArrivalPoint_8049E350Fv` |
+| tu_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
 | tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
 | tu_8018EB94 | `cls_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
 | tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `fn_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `fn_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |

@@ -205,7 +205,7 @@ Warp_804A6DC8::~Warp_804A6DC8() {
 }
 
 // Whether the bomb-flower rests: flagged, or its velocity is within 32 * FLT_EPSILON of field_0x364.
-static inline bool bomeAtRest(cls_804A0738* b) {
+static inline bool bomeAtRest(UnknownBOME_804A0738* b) {
     if (b->field_0x230 == 1 || epsilonEquals(b->mVel_0x3c, b->field_0x364, 32.0f * FLT_EPSILON)) {
         return true;
     }
@@ -341,7 +341,7 @@ void Warp_804A6DC8::update() {
         }
     }
     if (actor->mActorId == 'BOME') {
-        cls_804A0738* bome = static_cast<cls_804A0738*>(actor);
+        UnknownBOME_804A0738* bome = static_cast<UnknownBOME_804A0738*>(actor);
         getPlayerLayer_8023DE58(bome->mSpawnParam_0x90 & 0xF);
         // The original compares this result with 1 (cmplwi), the second one below with 0.
         if (bomeAtRest(bome) == true) {

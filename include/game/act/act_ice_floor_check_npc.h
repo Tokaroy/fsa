@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049E950.
-class cls_8049E950 : public ActorBase_804A5770 {
+class IceFloorCheckNPC_8049E950 : public ActorBase_804A5770 {
 public:
-    cls_8049E950();
-    /* 0x08 */ virtual ~cls_8049E950();
+    IceFloorCheckNPC_8049E950();
+    /* 0x08 */ virtual ~IceFloorCheckNPC_8049E950();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     // Non-virtual, called by game/tu_8012F3E4.cpp: true once mState is 1.

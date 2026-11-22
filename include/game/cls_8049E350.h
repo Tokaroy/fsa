@@ -2,7 +2,7 @@
 #define GAME_CLS_8049E350_H
 
 // Code: game/tu_80125B58.cpp. An actor named after its vtable, 0x8049E350
-// (__vt__12cls_8049E350; its constructor is not written yet). It has two
+// (__vt__34EscortedWomanArrivalPoint_8049E350; its constructor is not written yet). It has two
 // SpriteAnim members: mAnim244 (its J3DFrameCtrl at 0x268) and mAnim27c (its
 // J3DFrameCtrl at 0x2A0). The destructor (0x80125B58) destroys both.
 // Size: at least 0x2B4 (the end of mAnim27c).
@@ -10,10 +10,10 @@
 #include "game/ActorBase.h"
 #include "game/SpriteAnim.h"
 
-class cls_8049E350 : public ActorBase_804A5770 {
+class EscortedWomanArrivalPoint_8049E350 : public ActorBase_804A5770 {
 public:
-    cls_8049E350() : field_0x230(0), field_0x231(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(-1) {}
-    /* 0x08 */ virtual ~cls_8049E350();
+    EscortedWomanArrivalPoint_8049E350() : field_0x230(0), field_0x231(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(-1) {}
+    /* 0x08 */ virtual ~EscortedWomanArrivalPoint_8049E350();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

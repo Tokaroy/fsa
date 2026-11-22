@@ -113,7 +113,7 @@ void ChiefSoldier_804A0B90::fn_80175024() {
     if (serial < 0) {
         return;
     }
-    cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+    BowSoldier_804A00C8* partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
     if (partner == NULL) {
         s32 type = 7;
         s32 layer = mLayer_0x4;
@@ -124,7 +124,7 @@ void ChiefSoldier_804A0B90::fn_80175024() {
         field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', layer, &mPos, type, -1, -1);
         serial = field_0x238;
         if (serial >= 0) {
-            partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (partner != NULL) {
                 partner->mParamAtcp_0x114 = mParamAtcp_0x114;
                 partner->field_0x238 = mSerial;
@@ -244,7 +244,7 @@ void ChiefSoldier_804A0B90::init() {
         field_0x238 = getActorManager_801F856C()->spawnActor_801F9484('SLR4', layer, &mPos, type, -1, -1);
         s32 serial = field_0x238;
         if (serial >= 0) {
-            cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            BowSoldier_804A00C8* partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (partner != NULL) {
                 partner->mParamAtcp_0x114 = mParamAtcp_0x114;
                 partner->field_0x238 = mSerial;

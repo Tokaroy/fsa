@@ -73,7 +73,7 @@ static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
-cls_8049DA0C::cls_8049DA0C()
+FourSwordCutscene_8049DA0C::FourSwordCutscene_8049DA0C()
     : field_0x230(0),
       field_0x231(0),
       field_0x234(0),
@@ -87,7 +87,7 @@ cls_8049DA0C::cls_8049DA0C()
     }
 }
 
-cls_8049DA0C::~cls_8049DA0C() {
+FourSwordCutscene_8049DA0C::~FourSwordCutscene_8049DA0C() {
     for (s32 i = 0; i < 4; i++) {
         releaseEmitter_801EE434(mEmitters288[i]);
         mEmitters288[i] = NULL;
@@ -100,7 +100,7 @@ cls_8049DA0C::~cls_8049DA0C() {
 
 // FIXME: 99.65 %, regalloc-only; behaviour clean.
 // (regalloc-only). Minor register allocation differences in visibleBox center computation.
-void cls_8049DA0C::init() {
+void FourSwordCutscene_8049DA0C::init() {
     cls_8049D140::init();
     mAnim250.fn_801D2608(lbl_8049DA00, 3);
     mAnim250.startAnim_801D22DC(0, 2, false);
@@ -115,7 +115,7 @@ void cls_8049DA0C::init() {
 // (clrlwi / neg / or / srwi.; the shared declaration returns bool); the box corner adds store in another
 // order; case 2's camera setup reloads mPos.x / mPos.y where the original reuses registers; the loop
 // counters and base pointers of cases 5 and 8 sit in other saved registers.
-void cls_8049DA0C::update() {
+void FourSwordCutscene_8049DA0C::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -239,7 +239,7 @@ void cls_8049DA0C::update() {
     mAnim250.fn_801D1C18();
 }
 
-void cls_8049DA0C::draw() {
+void FourSwordCutscene_8049DA0C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     if (mSpriteParams.mMtx == NULL) {
@@ -253,7 +253,7 @@ void cls_8049DA0C::draw() {
     }
 }
 
-void cls_8049DA0C::vfunc_0x54() {
+void FourSwordCutscene_8049DA0C::vfunc_0x54() {
     if (fn_8011921C()->field_0x4 == 2) {
         s32 value = fn_8011921C()->field_0x8;
         if (value == lbl_80464A7C[2]) {
@@ -278,11 +278,11 @@ void cls_8049DA0C::vfunc_0x54() {
     }
 }
 
-s32 cls_8049DA0C::vfunc_0x58() {
+s32 FourSwordCutscene_8049DA0C::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 cls_8049DA0C::vfunc_0x5C() {
+s32 FourSwordCutscene_8049DA0C::vfunc_0x5C() {
     switch (field_0x234) {
     case 12:
         return 1;
@@ -291,7 +291,7 @@ s32 cls_8049DA0C::vfunc_0x5C() {
     }
 }
 
-inline void cls_8049DA0C::startState5() {
+inline void FourSwordCutscene_8049DA0C::startState5() {
     JGeometry::TVec3f pos;
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -306,7 +306,7 @@ inline void cls_8049DA0C::startState5() {
     fn_8011921C()->fn_80118454();
 }
 
-inline void cls_8049DA0C::releaseEmitters() {
+inline void FourSwordCutscene_8049DA0C::releaseEmitters() {
     for (s32 i = 0; i < 4; i++) {
         if (mEmitters288[i] != NULL) {
             mEmitters288[i]->becomeInvalidEmitter();
@@ -319,7 +319,7 @@ inline void cls_8049DA0C::releaseEmitters() {
     }
 }
 
-inline void cls_8049DA0C::startState7() {
+inline void FourSwordCutscene_8049DA0C::startState7() {
     JGeometry::TVec3f pos;
     s32 i;
     for (i = 0; i < 4; i++) {
@@ -332,7 +332,7 @@ inline void cls_8049DA0C::startState7() {
     releaseEmitters();
 }
 
-inline void cls_8049DA0C::startState8() {
+inline void FourSwordCutscene_8049DA0C::startState8() {
     mAnim250.startAnim_801D22DC(2, 0, false);
     mAnim250.fn_801D1F14(0.0f);
     mAnim250.mFrameCtrl.setRate(1.0f);
@@ -341,7 +341,7 @@ inline void cls_8049DA0C::startState8() {
     }
 }
 
-inline void cls_8049DA0C::startState11() {
+inline void FourSwordCutscene_8049DA0C::startState11() {
     spawnPlayerEffects();
     for (s32 i = 0; i < 4; i++) {
         fn_80230BF4(i, 3);
@@ -350,7 +350,7 @@ inline void cls_8049DA0C::startState11() {
     }
 }
 
-void cls_8049DA0C::fn_80117074(s32 index) {
+void FourSwordCutscene_8049DA0C::fn_80117074(s32 index) {
     switch (index) {
     case 2:
         fn_80119DD0()->fn_80119998(120, 0, 2, 0, 1, 0, 0);
@@ -391,7 +391,7 @@ void cls_8049DA0C::fn_80117074(s32 index) {
 // fn_80117074's, in the order of these functions from the bottom up (tools/pool.py).
 // Entering state 11: effect 0x33a 16 above each player.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 11-line definition): split out only where the .sdata2 order needs it.
-void cls_8049DA0C::spawnPlayerEffects() {
+void FourSwordCutscene_8049DA0C::spawnPlayerEffects() {
     JGeometry::TVec3f pos = mPos;
     for (s32 i = 0; i < 4; i++) {
         const JGeometry::TVec3f* playerPos = getPlayerPos_8023E724(i);
@@ -405,7 +405,7 @@ void cls_8049DA0C::spawnPlayerEffects() {
 
 // State 5: the players move apart sideways from field_0x244. True once the first is 24 away.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 16-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049DA0C::spreadPlayers() {
+bool FourSwordCutscene_8049DA0C::spreadPlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
@@ -424,7 +424,7 @@ bool cls_8049DA0C::spreadPlayers() {
 
 // State 9: the players rise to 80 above the actor. True once they are there.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 13-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049DA0C::raisePlayers() {
+bool FourSwordCutscene_8049DA0C::raisePlayers() {
     bool flag = false;
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
@@ -440,7 +440,7 @@ bool cls_8049DA0C::raisePlayers() {
 
 // State 0: whether all four players stand in front of the actor, facing it.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 22-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049DA0C::checkPlayers() {
+bool FourSwordCutscene_8049DA0C::checkPlayers() {
     for (s32 i = 0; i < 4; i++) {
         if (!fn_8023561C(i)) {
             return false;
@@ -465,7 +465,7 @@ bool cls_8049DA0C::checkPlayers() {
 
 // State 0: opens the message (0x4b2 the first time, 0x4b3 after a "no").
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049DA0C::showMessage() {
+bool FourSwordCutscene_8049DA0C::showMessage() {
     u32 msg = 0x4b2;
     if (field_0x230 != 0) {
         msg = 0x4b3;
@@ -473,7 +473,7 @@ bool cls_8049DA0C::showMessage() {
     return fn_8038BD08(0, (u16)msg, mLayer_0x4, JGeometry::TVec3f(0.0f, -10.0f, 0.0f), 0x22);
 }
 
-void cls_8049DA0C::fn_80116E8C() {
+void FourSwordCutscene_8049DA0C::fn_80116E8C() {
     if (field_0x234 >= 2 && field_0x234 <= 11) {
         if (fn_8011921C()->field_0x8 >= 50) {
             cls_804A03A8* obj = gGameRoot2_8053AB10->field_0x30;

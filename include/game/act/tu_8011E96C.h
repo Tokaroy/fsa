@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049DE90.
-class cls_8049DE90 : public ActorBase_804A5770 {
+class RandomToggleSwitch_8049DE90 : public ActorBase_804A5770 {
 public:
-    cls_8049DE90() : mState(1), mCycle(0), mTimer(0), mDuration(0), mNext(0) {}
-    /* 0x08 */ virtual ~cls_8049DE90();
+    RandomToggleSwitch_8049DE90() : mState(1), mCycle(0), mTimer(0), mDuration(0), mNext(0) {}
+    /* 0x08 */ virtual ~RandomToggleSwitch_8049DE90();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x230 */ s32 mState;      // 0 waiting for the bit, 1 counting down, 2 finished

@@ -38,6 +38,6 @@ units (tu_80158624 was out of order and is fixed).
 
 ## SHARED-EDITS
 - include/game/act/act_icicle.h: + Icicle_8049CFC8::fall().
-- include/game/act/tu_801F9484.h: + cls_8049E8A0::melt(), shrink().
+- include/game/act/tu_801F9484.h: + SnowWall_8049E8A0::melt(), shrink().
 - include/game/GameGlobals.h: + ShadowCircle_804A0160::fn_80158624 declaration.
 - config/G4SE01/symbols.txt: fn_80158624 -> fn_80158624__21ShadowCircle_804A0160FPCQ29JGeometry8TVec3<f>PCQ29JGeometry8TVec3<f>Q28JUtility6TColorf.

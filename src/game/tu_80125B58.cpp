@@ -17,7 +17,7 @@ static const s16* lbl_8049E330[4] = {lbl_80464EA0, lbl_80464EAC, lbl_80464EB8, l
 static const s16* lbl_8049E340[4] = {lbl_80464ED0, lbl_80464EDC, lbl_80464ED0, lbl_80464EDC};
 
 
-void cls_8049E350::init() {
+void EscortedWomanArrivalPoint_8049E350::init() {
     ActorBase_804A5770::init();
     field_0x238 = mSpawnParam_0x90 & 1;
     field_0x240 = (mSpawnParam_0x90 >> 22) & 0x1F;
@@ -59,7 +59,7 @@ void cls_8049E350::init() {
 #include "game/Message.h"
 #include "game/Player.h"
 
-inline void cls_8049E350::enterState() {
+inline void EscortedWomanArrivalPoint_8049E350::enterState() {
     switch (field_0x234) {
     case 0:
         field_0x230 = 0;
@@ -82,7 +82,7 @@ inline void cls_8049E350::enterState() {
 
 // 0x80125EFC.
 // FIXME: 93.08 %, missing/extra; behaviour clean.
-void cls_8049E350::update() {
+void EscortedWomanArrivalPoint_8049E350::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
     box.addPos(mPos.x, mPos.y);
@@ -158,7 +158,7 @@ void cls_8049E350::update() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 }
 
-void cls_8049E350::draw() {
+void EscortedWomanArrivalPoint_8049E350::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
     s32 baseFrame;
@@ -189,14 +189,14 @@ void cls_8049E350::draw() {
     }
 }
 
-void cls_8049E350::fn_80125C58(bool flag) {
+void EscortedWomanArrivalPoint_8049E350::fn_80125C58(bool flag) {
     field_0x231 = flag;
     if (field_0x231) {
         startSignAnim();
     }
 }
 
-void cls_8049E350::fn_80125BF4() {
+void EscortedWomanArrivalPoint_8049E350::fn_80125BF4() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -24.0f;
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
@@ -208,7 +208,7 @@ void cls_8049E350::fn_80125BF4() {
 // generated before it (tools/pool.py).
 // Opens message `msg` for `player`, 64 units above the actor.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049E350::talkTo(s32 player, u16 msg) {
+bool EscortedWomanArrivalPoint_8049E350::talkTo(s32 player, u16 msg) {
     JGeometry::TVec3f pos(mPos);
     pos.y -= 64.0f;
     return fn_8038AD24(player, msg, mSerial, mLayer_0x4, pos, 0x28);
@@ -216,7 +216,7 @@ bool cls_8049E350::talkTo(s32 player, u16 msg) {
 
 // Starts mAnim27c's animation for the actor's kind (field_0x238) at frame 0.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
-void cls_8049E350::startSignAnim() {
+void EscortedWomanArrivalPoint_8049E350::startSignAnim() {
     switch (field_0x238) {
     case 1:
         mAnim27c.startAnim_801D22DC(0, 0, false);
@@ -229,4 +229,4 @@ void cls_8049E350::startSignAnim() {
     mAnim27c.fn_801D1F14(0.0f);
 }
 
-cls_8049E350::~cls_8049E350() {}
+EscortedWomanArrivalPoint_8049E350::~EscortedWomanArrivalPoint_8049E350() {}

@@ -66,7 +66,7 @@ static const u16 lbl_80464948[7] = {0x2B0, 0x2BF, 0x2B6, 0x2B3, 0x2BC, 0x2B9, 0x
 static const u16 lbl_80464958[7] = {0x2B1, 0x2C0, 0x2B7, 0x2B4, 0x2BD, 0x2BA, 0x2C3};
 
 // 0x80115590.
-cls_8049D83C::cls_8049D83C()
+CrystalCutscene_8049D83C::CrystalCutscene_8049D83C()
     : field_0x230(1), field_0x231(1), field_0x232(0), field_0x233(0), field_0x234(1), field_0x238(0),
       field_0x23c(0), field_0x240(0), field_0x244(0), field_0x248(0), field_0x24c(0), field_0x250(0.0f),
       field_0x254(0.0f), field_0x258(0.0f), field_0x25c(0.0f), field_0x260(NULL) {
@@ -91,7 +91,7 @@ cls_8049D83C::cls_8049D83C()
 
 // An inline of its own: its loop registers are handed out before the destructor's
 // (docs/REGALLOC.md, rule 4).
-static inline void releaseEmitterArrays(cls_8049D83C* self) {
+static inline void releaseEmitterArrays(CrystalCutscene_8049D83C* self) {
     for (s32 i = 0; i < 7; i++) {
         releaseEmitter_801EE434(self->field_0x2a8[i]);
         self->field_0x2a8[i] = NULL;
@@ -111,7 +111,7 @@ static inline void releaseEmitterArrays(cls_8049D83C* self) {
 }
 
 // 0x80115430.
-cls_8049D83C::~cls_8049D83C() {
+CrystalCutscene_8049D83C::~CrystalCutscene_8049D83C() {
     if (field_0x2a0 != NULL) {
         releaseEmitter_801EE434(field_0x2a0);
         field_0x2a0 = NULL;
@@ -133,7 +133,7 @@ cls_8049D83C::~cls_8049D83C() {
 
 // 0x80115248.
 // FIXME(shotgun): 96.72 %, scheduling; behaviour clean.
-void cls_8049D83C::init() {
+void CrystalCutscene_8049D83C::init() {
     cls_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 0xFF;
     field_0x244 = (mSpawnParam_0x90 >> 22) & 0x1F;
@@ -162,7 +162,7 @@ void cls_8049D83C::init() {
 // 0x80114C98.
 // FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
-void cls_8049D83C::update() {
+void CrystalCutscene_8049D83C::update() {
     cls_8049D140::update();
     updateCameraFocus();
     switch (field_0x23c) {
@@ -261,7 +261,7 @@ void cls_8049D83C::update() {
 }
 
 // 0x80114C1C.
-void cls_8049D83C::draw() {
+void CrystalCutscene_8049D83C::draw() {
     cls_8049D140::draw();
     fn_80113790();
     switch (field_0x23c) {
@@ -277,7 +277,7 @@ void cls_8049D83C::draw() {
 }
 
 // 0x80114860.
-void cls_8049D83C::vfunc_0x54() {
+void CrystalCutscene_8049D83C::vfunc_0x54() {
     cls_801192AC* sub = fn_8011921C();
     s32 t = sub->field_0x8;
     switch (field_0x238) {
@@ -338,7 +338,7 @@ void cls_8049D83C::vfunc_0x54() {
 // Still differs: `this` and the .rodata base take each other's register (r31 / r29), the loop
 // counters rotate with them, and case 6 zeroes field_0x233 from the loop counter's register.
 // FIXME(shotgun): 97.93 %, scheduling+regalloc; behaviour drift.
-void cls_8049D83C::vfunc_0x60(s32 arg) {
+void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
     switch (arg) {
     case 2:
         field_0x234 = 0;
@@ -524,7 +524,7 @@ void cls_8049D83C::vfunc_0x60(s32 arg) {
 }
 
 // 0x80113E98.
-s32 cls_8049D83C::vfunc_0x5C() {
+s32 CrystalCutscene_8049D83C::vfunc_0x5C() {
     switch (field_0x23c) {
     case 0xA:
     case 0x11:
@@ -548,7 +548,7 @@ static inline void drawSob_80113B54(s32 layer, const JGeometry::TVec3f* pos, con
 }
 
 // FIXME: 96.91 %, missing/extra; behaviour clean.
-void cls_8049D83C::fn_80113B54(s32 arg) {
+void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     SpriteParams_801F5AE0 params;
     SpriteParams_801F5AE0 params2;
     JGeometry::TVec3f pos(mPos);
@@ -563,7 +563,7 @@ void cls_8049D83C::fn_80113B54(s32 arg) {
 }
 
 // FIXME(shotgun): 99.68 %, same-text; behaviour clean.
-void cls_8049D83C::fn_8011395C() {
+void CrystalCutscene_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
@@ -606,7 +606,7 @@ void cls_8049D83C::fn_8011395C() {
     }
 }
 
-void cls_8049D83C::fn_80113790() {
+void CrystalCutscene_8049D83C::fn_80113790() {
     if (field_0x248 > 0) {
         SpriteParams_801F5AE0 params;
         Mtx mtx;
@@ -635,14 +635,14 @@ void cls_8049D83C::fn_80113790() {
 #pragma auto_inline reset
 
 // 0x80113788.
-s32 cls_8049D83C::vfunc_0x58() {
+s32 CrystalCutscene_8049D83C::vfunc_0x58() {
     return field_0x23c;
 }
 
 // Plain function init inlines (the linker dropped its own copy): its literals 80.0f and 0.0f
 // are pooled before those of fn_80113790.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D83C::spawnEmitters() {
+void CrystalCutscene_8049D83C::spawnEmitters() {
     JGeometry::TVec3f pos[5] = {
         mPos,
         JGeometry::TVec3f(mSpawnPos.x - 80.0f, mSpawnPos.y - 48.0f, 0.0f),
@@ -658,7 +658,7 @@ void cls_8049D83C::spawnEmitters() {
 // Plain functions inlined by their callers (the linker dropped their out-of-line copies);
 // their order below spawnEmitters sets the .sdata2 float-literal pool order.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D83C::spawnSealEmitters() {
+void CrystalCutscene_8049D83C::spawnSealEmitters() {
     for (s32 i = 0; i < 7; i++) {
         field_0x2a8[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80464908[i], 0, 2, NULL, NULL, true, 0.5f);
     }
@@ -667,13 +667,13 @@ void cls_8049D83C::spawnSealEmitters() {
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 4-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D83C::spawnBurstEmitters() {
+void CrystalCutscene_8049D83C::spawnBurstEmitters() {
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x20, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x21, 0, 0, NULL, NULL, true, 1.0f);
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 12-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D83C::positionPlayers() {
+void CrystalCutscene_8049D83C::positionPlayers() {
     JGeometry::TVec3f pos = mSpawnPos;
     pos.y += 48.0f;
     pos.x -= 36.0f;
@@ -687,7 +687,7 @@ void cls_8049D83C::positionPlayers() {
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 44-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D83C::updateCameraFocus() {
+void CrystalCutscene_8049D83C::updateCameraFocus() {
     switch (field_0x23c) {
     case 0:
     case 1:
@@ -733,7 +733,7 @@ void cls_8049D83C::updateCameraFocus() {
 }
 
 // R2 pool helper (inlined at 2 call sites); was spawnCrystal.
-void cls_8049D83C::pool_8053C678(s32 crystal) {
+void CrystalCutscene_8049D83C::pool_8053C678(s32 crystal) {
     JGeometry::TVec3f spawnPos = mSpawnPos;
     spawnPos.z = 20.0f;
     getActorManager_801F856C()->spawnActor_801F9484('CRNV', mLayer_0x4, &spawnPos, crystal, -1, -1);

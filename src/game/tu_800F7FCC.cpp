@@ -77,7 +77,7 @@ static inline void moveToward(JGeometry::TVec3f& pos, JGeometry::TVec3f target, 
 }
 
 // The slot of puff index `idx` around `parent`.
-static inline void slotPos(cls_8049C718* parent, u32 idx, JGeometry::TVec3f& out) {
+static inline void slotPos(StoneArrghus_8049C718* parent, u32 idx, JGeometry::TVec3f& out) {
     s32 step;
     s32 ring = slotRing(idx, step);
     u16 ang = parent->mAngle + idx * step + (ring << 12);
@@ -90,13 +90,13 @@ static inline void slotPos(cls_8049C718* parent, u32 idx, JGeometry::TVec3f& out
     parent->mSlot++;
 }
 
-static inline JGeometry::TVec3f slotPosOf(cls_8049C718* parent, u32 idx) {
+static inline JGeometry::TVec3f slotPosOf(StoneArrghus_8049C718* parent, u32 idx) {
     JGeometry::TVec3f out;
     slotPos(parent, idx, out);
     return out;
 }
 
-static inline JGeometry::TVec3f linePosOf(cls_8049C718* parent, s32 slot) {
+static inline JGeometry::TVec3f linePosOf(StoneArrghus_8049C718* parent, s32 slot) {
     f32 off;
     s16 ang;
     if (slot & 1) {
@@ -114,7 +114,7 @@ static inline JGeometry::TVec3f linePosOf(cls_8049C718* parent, s32 slot) {
 }
 
 // The camera and the boss's fade-in that the intro and the first rise share.
-static inline void focusCamera(cls_8049C718* p) {
+static inline void focusCamera(StoneArrghus_8049C718* p) {
     cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
     if (sub->field_0x284 == 0) {
         sub->field_0x284 = 1;
@@ -133,9 +133,9 @@ static inline void focusCamera(cls_8049C718* p) {
     }
 }
 
-cls_8049C718::~cls_8049C718() {}
+StoneArrghus_8049C718::~StoneArrghus_8049C718() {}
 
-void cls_8049C718::init() {
+void StoneArrghus_8049C718::init() {
     mHome.x = mPos.x;
     mHome.y = mPos.y;
     mHome.z = mPos.z;
@@ -196,7 +196,7 @@ void cls_8049C718::init() {
     }
 }
 
-void cls_8049C718::fn_800FCCCC() {
+void StoneArrghus_8049C718::fn_800FCCCC() {
     u16 angle = 0;
     f32 dist = 0.0f;
     s32 dir = 0;
@@ -250,7 +250,7 @@ void cls_8049C718::fn_800FCCCC() {
 
 // FIXME(shotgun): 90.02 %, missing/extra + reloc-name; behaviour drift.
 // Ends the state early when the slot counter is 0 (the boss swaps to state 8).
-static inline bool trySwap(cls_8049C718* p) {
+static inline bool trySwap(StoneArrghus_8049C718* p) {
     if (p->mSlot == 0) {
         p->field_0xb0 = 4;
         p->mAnimState = 1;
@@ -264,7 +264,7 @@ static inline bool trySwap(cls_8049C718* p) {
 }
 
 // Advances the wobble; true while it is running.
-static inline bool stepWobble(cls_8049C718* p) {
+static inline bool stepWobble(StoneArrghus_8049C718* p) {
     if (p->mWobble != 0) {
         p->mWobble += 0x2000;
         if (p->mWobble > 0x20000) {
@@ -279,7 +279,7 @@ static inline bool stepWobble(cls_8049C718* p) {
 f32 pool_8053C094();
 s32 pool_8053C050(f32 x, f32 y);
 
-void cls_8049C718::fn_800FC984() {
+void StoneArrghus_8049C718::fn_800FC984() {
     if (trySwap(this)) {
         return;
     }
@@ -326,7 +326,7 @@ void cls_8049C718::fn_800FC984() {
     fn_801F3D94(1);
 }
 
-void cls_8049C718::fn_800FC4A8() {
+void StoneArrghus_8049C718::fn_800FC4A8() {
     if (trySwap(this)) {
         return;
     }
@@ -417,7 +417,7 @@ f32 pool_8053C094() {
     return 400.0f + (f32)(s32)(100.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
 }
 
-void cls_8049C718::fn_800FC128() {
+void StoneArrghus_8049C718::fn_800FC128() {
     if (trySwap(this)) {
         mSlotUsed[0] = 0;
         mSlotUsed[1] = 0;
@@ -477,7 +477,7 @@ void cls_8049C718::fn_800FC128() {
 }
 
 // FIXME(shotgun): 99.52 %, regalloc-only; behaviour clean.
-void cls_8049C718::fn_800FBD90() {
+void StoneArrghus_8049C718::fn_800FBD90() {
     if (mCooldown != 0) {
         mCooldown--;
     }
@@ -554,7 +554,7 @@ void cls_8049C718::fn_800FBD90() {
     }
 }
 
-void cls_8049C718::fn_800FBA14() {
+void StoneArrghus_8049C718::fn_800FBA14() {
     if (fn_801F3D94(1) == 1) {
         mVel_0x3c.set(0.0f, 0.0f, 10.0f);
         return;
@@ -606,7 +606,7 @@ void cls_8049C718::fn_800FBA14() {
 }
 
 // FIXME(shotgun): 99.84 %, operands; behaviour clean.
-void cls_8049C718::fn_800FB6E0(s32 mode) {
+void StoneArrghus_8049C718::fn_800FB6E0(s32 mode) {
     u16 angle = 0;
     f32 dist = 0.0f;
     s32 dir = 0;
@@ -659,7 +659,7 @@ void cls_8049C718::fn_800FB6E0(s32 mode) {
 }
 
 // FIXME(shotgun): 99.75 %, regalloc-only; behaviour clean.
-void cls_8049C718::fn_800FB32C() {
+void StoneArrghus_8049C718::fn_800FB32C() {
     fn_800FA1A4();
     if (mCooldown != 0) {
         mCooldown--;
@@ -719,7 +719,7 @@ void cls_8049C718::fn_800FB32C() {
     }
 }
 
-void cls_8049C718::fn_800FB070() {
+void StoneArrghus_8049C718::fn_800FB070() {
     mVel_0x3c.z -= 0.3f;
     mPos.add(mVel_0x3c);
     if (mPos.z <= 0.0f) {
@@ -780,7 +780,7 @@ void cls_8049C718::fn_800FB070() {
     }
 }
 
-void cls_8049C718::update() {
+void StoneArrghus_8049C718::update() {
     mBox2.set(-21.0f, -35.0f + mPos.z, 22.0f, -2.0f + mPos.z);
     if (updateBossDeath_0x2C(0.0f, -20.0f, 50.0f)) {
         return;
@@ -899,7 +899,7 @@ void cls_8049C718::update() {
 }
 
 // FIXME(shotgun): 91.96 %, scheduling+regalloc; behaviour clean.
-bool cls_8049C718::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
+bool StoneArrghus_8049C718::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 kind = fn_8022461C(pos, layer);
     if (kind == 3 || kind == 14 || kind == 2) {
         return false;
@@ -907,14 +907,14 @@ bool cls_8049C718::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     return fn_802265DC(pos, layer, 0);
 }
 
-void cls_8049C718::die_0x24() {
+void StoneArrghus_8049C718::die_0x24() {
     getGameView_802D6A9C()->fn_802D7440(0);
     startSound_801F0E34(0x40006, 0);
     mSignal = 2;
     startBossDeath_0x28(0, 0.0f, -20.0f);
 }
 
-void cls_8049C718::vfunc_0x44() {
+void StoneArrghus_8049C718::vfunc_0x44() {
     if (field_0xb0 == 4 || field_0xb0 == 0x12 || mCooldown != 0) {
         return;
     }
@@ -961,7 +961,7 @@ s32 pool_8053C050(f32 x, f32 y) {
 }
 
 // FIXME(shotgun): 99.96 %, scheduling+regalloc; behaviour drift.
-void cls_8049C718::fn_800FA6B0() {
+void StoneArrghus_8049C718::fn_800FA6B0() {
     if (mAnimState != mAnimPrev) {
         mAnimPrev = mAnimState;
         mAnimTime = 0;
@@ -1033,7 +1033,7 @@ void cls_8049C718::fn_800FA6B0() {
     mAnimTime++;
 }
 
-void cls_8049C718::fn_800FA1A4() {
+void StoneArrghus_8049C718::fn_800FA1A4() {
     if (!(mFlags & 8)) {
         return;
     }
@@ -1093,7 +1093,7 @@ static inline void setScaleMtx(Mtx m, f32 x, f32 y, f32 z) {
     m[2][2] = z;
 }
 
-void cls_8049C718::draw() {
+void StoneArrghus_8049C718::draw() {
     f32 s = JMath::sincosTable_.sinShort((s16)mWobble);
     f32 a = 0.4f * s;
     f32 b = -0.4f * s;
@@ -1166,7 +1166,7 @@ void StoneArrghusChildPuff_8049C678::init() {
 void StoneArrghusChildPuff_8049C678::fn_800F953C() {
     field_0xb0 = 0x80004;
     mParamDstr_0x1a8 = true;
-    cls_8049C718* parent = mParent;
+    StoneArrghus_8049C718* parent = mParent;
     JGeometry::TVec3f target;
     f32 speed;
     if (parent->mState == 3) {
@@ -1200,7 +1200,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F953C() {
 // FIXME(shotgun): 84.23 %, missing/extra + reloc-name; behaviour near.
 void StoneArrghusChildPuff_8049C678::fn_800F9170() {
     mFlag249 = 1;
-    cls_8049C718* parent = mParent;
+    StoneArrghus_8049C718* parent = mParent;
     JGeometry::TVec3f target = slotPosOf(parent, parent->mSlot);
     s32 serial = field_0xa0;
     if (serial != -1) {
@@ -1241,7 +1241,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F9170() {
 
 // FIXME(shotgun): 88.45 %, missing/extra + reloc-name; behaviour drift.
 void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
-    cls_8049C718* parent = mParent;
+    StoneArrghus_8049C718* parent = mParent;
     if (parent->mSlotUsed[mIndex] != 0) {
         f32 off;
         s16 ang;
@@ -1320,7 +1320,7 @@ void StoneArrghusChildPuff_8049C678::fn_800F8BAC() {
 
 void StoneArrghusChildPuff_8049C678::update() {
     if (mFrame == 0) {
-        mParent = (cls_8049C718*)getActorManager_801F856C()->findActorBySerial_801F666C(mSpawnParam_0x90 & 0xFFFF);
+        mParent = (StoneArrghus_8049C718*)getActorManager_801F856C()->findActorBySerial_801F666C(mSpawnParam_0x90 & 0xFFFF);
     }
     mFrame++;
     if (mFlag248 == 1) {

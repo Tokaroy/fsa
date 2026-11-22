@@ -5,7 +5,7 @@
 #include "game/Camera.h"
 #include "game/act/tu_80104C3C.h"
 
-void cls_8049CB58::init() {
+void LogicSwitchControl_8049CB58::init() {
     static const s32 lbl_80463EE0[4] = {22, 17, 12, 7};
     for (s32 i = 0; i < 4; i++) {
         field_0x230[i] = (mSpawnParam_0x90 >> lbl_80463EE0[i]) & 0x1F;
@@ -24,7 +24,7 @@ void cls_8049CB58::init() {
     }
 }
 
-bool cls_8049CB58::fn_80104EB0() {
+bool LogicSwitchControl_8049CB58::fn_80104EB0() {
     if (!(mSpawnParam_0x90 & 0x40)) {
         return true;
     }
@@ -72,7 +72,7 @@ bool cls_8049CB58::fn_80104EB0() {
     return false;
 }
 
-void cls_8049CB58::update() {
+void LogicSwitchControl_8049CB58::update() {
     if (field_0x24c) {
         field_0x24d++;
         if (field_0x24d == 0x32) {
@@ -138,6 +138,6 @@ void cls_8049CB58::update() {
     }
 }
 
-void cls_8049CB58::draw() {}
+void LogicSwitchControl_8049CB58::draw() {}
 
-cls_8049CB58::~cls_8049CB58() {}
+LogicSwitchControl_8049CB58::~LogicSwitchControl_8049CB58() {}

@@ -10,10 +10,10 @@ class JPABaseEmitter;
 // Spawned for 'DGTL' (Digdogger: its unit loads the boss_deg_*.bti textures). Named after
 // its vtable, 0x8049F6C8. The head is drawn at field_0x2c0[7] with a trail of segments
 // taken from the position history in field_0x3d8 (with the headings in field_0x338).
-class cls_8049F6C8 : public ActorBase_804A5770 {
+class BigMoldorm_8049F6C8 : public ActorBase_804A5770 {
 public:
-    cls_8049F6C8() {}
-    /* 0x08 */ virtual ~cls_8049F6C8();
+    BigMoldorm_8049F6C8() {}
+    /* 0x08 */ virtual ~BigMoldorm_8049F6C8();
     /* 0x0C */ virtual void init();   // fn_8014A5F4
     /* 0x14 */ virtual void update(); // fn_8014821C
     /* 0x20 */ virtual void draw();   // fn_80147B50

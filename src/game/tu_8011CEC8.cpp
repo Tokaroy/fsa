@@ -10,7 +10,7 @@
 #include "game/Unk_8045A080.h"
 #include <float.h>
 
-// 'DMGA' (cls_8049DD68): the demo camera. States 1-9 are set by fn_8011D1B8
+// 'DMGA' (AfterGoalOpening_8049DD68): the demo camera. States 1-9 are set by fn_8011D1B8
 // from vfunc_0x54, which compares the manager's counter with lbl_80464BBC.
 
 // The SpriteAnim frame tables (lbl_80464B98: anim 24-31, then the terminator).
@@ -22,7 +22,7 @@ static const s32 lbl_80464BBC[11] = {0, 0, 360, 800, 830, 950, 1040, 1160, 1325,
 
 s32 fn_801365A8();
 
-void cls_8049DD68::init() {
+void AfterGoalOpening_8049DD68::init() {
     cls_8049D140::init();
     field_0x274.fn_801D2608(lbl_80539F20, 1);
     field_0x274.startAnim_801D22DC(0, 2, false);
@@ -32,7 +32,7 @@ void cls_8049DD68::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 }
 
-void cls_8049DD68::update() {
+void AfterGoalOpening_8049DD68::update() {
     cls_8049D140::update();
     fn_8011CF48();
     static s32 lbl_8053AA98 = 0;
@@ -63,11 +63,11 @@ void cls_8049DD68::update() {
     field_0x274.fn_801D1C18();
 }
 
-void cls_8049DD68::draw() {
+void AfterGoalOpening_8049DD68::draw() {
     cls_8049D140::draw();
 }
 
-void cls_8049DD68::vfunc_0x54() {
+void AfterGoalOpening_8049DD68::vfunc_0x54() {
     if (fn_8011921C()->field_0x4 == 0x11) {
         s32 v = fn_8011921C()->field_0x8;
         if (v == lbl_80464BBC[2]) {
@@ -90,11 +90,11 @@ void cls_8049DD68::vfunc_0x54() {
     }
 }
 
-s32 cls_8049DD68::vfunc_0x58() {
+s32 AfterGoalOpening_8049DD68::vfunc_0x58() {
     return field_0x234;
 }
 
-s32 cls_8049DD68::vfunc_0x5C() {
+s32 AfterGoalOpening_8049DD68::vfunc_0x5C() {
     return field_0x234 == 9;
 }
 
@@ -103,7 +103,7 @@ s32 cls_8049DD68::vfunc_0x5C() {
 #pragma auto_inline off
 // FIXME(shotgun): 96.99 %, different; behaviour drift.
 // jump table is not yet a named jumptable_8049DDF0; stack layout still differs
-void cls_8049DD68::fn_8011D1B8(s32 state) {
+void AfterGoalOpening_8049DD68::fn_8011D1B8(s32 state) {
     switch (state) {
     case 1:
         fn_8011921C()->fn_801186B0(0x11);
@@ -178,7 +178,7 @@ void cls_8049DD68::fn_8011D1B8(s32 state) {
 // fn_8011D1B8's, so it was generated here (tools/pool.py). Gives lbl_8053AED0 its rect, 40 high
 // and centred on the camera's position on the screen, with field_0x238 as the alpha.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
-void cls_8049DD68::setOverlayRect() {
+void AfterGoalOpening_8049DD68::setOverlayRect() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     Vec out;
     Vec in;
@@ -202,7 +202,7 @@ void cls_8049DD68::setOverlayRect() {
 
 #pragma auto_inline off
 // FIXME(shotgun): 97.92 %, missing/extra; behaviour drift.
-void cls_8049DD68::fn_8011CF48() {
+void AfterGoalOpening_8049DD68::fn_8011CF48() {
     switch (field_0x234) {
     case 0:
     case 9:
@@ -269,7 +269,7 @@ void cls_8049DD68::fn_8011CF48() {
 // .sdata2 starts with 0.0f, ahead of fn_8011CF48's literals, so it was generated before it
 // (tools/pool.py). Entering state 2: the scroll speed and the overlay's alpha start at zero.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 9-line definition): split out only where the .sdata2 order needs it.
-void cls_8049DD68::startScroll() {
+void AfterGoalOpening_8049DD68::startScroll() {
     field_0x23c = 0.0f;
     field_0x238 = 0.0f;
     field_0x230 = 0;
@@ -279,4 +279,4 @@ void cls_8049DD68::startScroll() {
     getGameView_802D6A9C()->fn_802DCD1C(dir);
 }
 
-cls_8049DD68::~cls_8049DD68() {}
+AfterGoalOpening_8049DD68::~AfterGoalOpening_8049DD68() {}

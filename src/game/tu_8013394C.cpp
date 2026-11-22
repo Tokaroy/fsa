@@ -13,7 +13,7 @@ static const s16* lbl_80539F50[2] = {lbl_80465288, NULL};
 static const u32 lbl_804652A4[7] = {0x33B, 0x33C, 0x33D, 0x33E, 0x33F, 0x340, 0x340};
 static const s32 lbl_804652C0[6] = {0x1D6, 0x1E8, 0x1D0, 0x1EE, 0x1E2, 0x1DC};
 
-static inline void setState(cls_8049ED30* self, s32 state) {
+static inline void setState(NaviAfterCrystalCutscene_8049ED30* self, s32 state) {
     self->field_0x230 = state;
     switch (self->field_0x230) {
     case 0:
@@ -32,7 +32,7 @@ static inline void setState(cls_8049ED30* self, s32 state) {
     }
 }
 
-static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
+static inline s32 checkTalk(NaviAfterCrystalCutscene_8049ED30* self, u32 msg) {
     JGeometry::TBox2f box(self->mBox);
     box.i.x += self->mPos.x;
     box.f.x += self->mPos.x;
@@ -53,7 +53,7 @@ static inline s32 checkTalk(cls_8049ED30* self, u32 msg) {
 }
 
 // 0x8013416C.
-void cls_8049ED30::init() {
+void NaviAfterCrystalCutscene_8049ED30::init() {
     ActorBase_804A5770::init();
     field_0x234 = mSpawnParam_0x90 & 0x1F;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -73,7 +73,7 @@ void cls_8049ED30::init() {
 
 // 0x80133DD0.
 // FIXME(shotgun): 93.55 %, scheduling+regalloc; behaviour clean.
-void cls_8049ED30::update() {
+void NaviAfterCrystalCutscene_8049ED30::update() {
     ActorBase_804A5770::update();
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
@@ -111,7 +111,7 @@ void cls_8049ED30::update() {
 
 // 0x80133C6C.
 // FIXME(shotgun): 99.61 %, regalloc-only; behaviour clean.
-void cls_8049ED30::draw() {
+void NaviAfterCrystalCutscene_8049ED30::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
     fn_801F02BC("enemy_both2_sob.bin", lbl_804652C0[field_0x234] + field_0x240.mCel, &params, 7, 0, false, 1.0f, 1.0f);
@@ -123,7 +123,7 @@ bool fn_80133B58() {
     bool res = true;
     s32 serial = getActorManager_801F856C()->fn_801F7A08('CRNV');
     while (serial != -1) {
-        cls_8049ED30* actor = (cls_8049ED30*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+        NaviAfterCrystalCutscene_8049ED30* actor = (NaviAfterCrystalCutscene_8049ED30*)getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor == NULL) {
             break;
         }
@@ -146,7 +146,7 @@ bool fn_80133B58() {
 // starts with 1.0f, ahead of fn_80133B58's 0.0f, so it was generated before it (tools/pool.py).
 // Spawns the two emitters that are not there yet.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
-void cls_8049ED30::spawnEmitters() {
+void NaviAfterCrystalCutscene_8049ED30::spawnEmitters() {
     if (mEmitters[0] == NULL) {
         mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
     }
@@ -158,7 +158,7 @@ void cls_8049ED30::spawnEmitters() {
 // 0x801339EC.
 // Not auto-inlined: update() calls fn_801339EC out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-void cls_8049ED30::fn_801339EC() {
+void NaviAfterCrystalCutscene_8049ED30::fn_801339EC() {
     static JUtility::TColor colors[6] = {
         JUtility::TColor(0x2D, 0x78, 0xFF, 0xFF),
         JUtility::TColor(0xC8, 0xA0, 0x28, 0xFF),
@@ -177,7 +177,7 @@ void cls_8049ED30::fn_801339EC() {
 }
 #pragma auto_inline reset
 
-static inline void releaseEmitters(cls_8049ED30* self) {
+static inline void releaseEmitters(NaviAfterCrystalCutscene_8049ED30* self) {
     for (s32 i = 0; i < 2; i++) {
         releaseEmitter_801EE434(self->mEmitters[i]);
         self->mEmitters[i] = NULL;
@@ -185,6 +185,6 @@ static inline void releaseEmitters(cls_8049ED30* self) {
 }
 
 // 0x8013394C.
-cls_8049ED30::~cls_8049ED30() {
+NaviAfterCrystalCutscene_8049ED30::~NaviAfterCrystalCutscene_8049ED30() {
     releaseEmitters(this);
 }

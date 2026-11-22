@@ -7,7 +7,7 @@
 static const s32 lbl_804650F8[] = {0, 2, 1, 3, 4, 0};
 static const u16 lbl_8053CC30[] = {0x8B, 0x8C, 0x8D, 0x8E};
 
-void cls_8049E848::init() {
+void ColouredFloorToggle_8049E848::init() {
     field_0x23c = mSpawnParam_0x90 & 0x7F;
     field_0x23c *= 10;
     if (field_0x23c <= 0) {
@@ -21,7 +21,7 @@ void cls_8049E848::init() {
     field_0x244 = (mSpawnParam_0x90 >> 22) & 0x1F;
 }
 
-void cls_8049E848::update() {
+void ColouredFloorToggle_8049E848::update() {
     switch (field_0x230) {
     case 0: {
         if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
@@ -71,4 +71,4 @@ void cls_8049E848::update() {
     }
 }
 
-cls_8049E848::~cls_8049E848() {}
+ColouredFloorToggle_8049E848::~ColouredFloorToggle_8049E848() {}

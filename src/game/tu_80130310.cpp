@@ -21,7 +21,7 @@ static struct {
     {0x4BE, 2, 2},
 };
 
-inline void cls_8049EA88::setState(s32 state) {
+inline void MalonAndTalonController_8049EA88::setState(s32 state) {
     field_0x230 = state;
     switch (field_0x230) {
     case 1:
@@ -37,7 +37,7 @@ inline void cls_8049EA88::setState(s32 state) {
     }
 }
 
-void cls_8049EA88::init() {
+void MalonAndTalonController_8049EA88::init() {
     ActorBase_804A5770::init();
     mBox.i.x = -8.0f;
     mBox.i.y = -8.0f;
@@ -55,14 +55,14 @@ void cls_8049EA88::init() {
     field_0x240 = (mSpawnParam_0x90 >> 17) & 0x1F;
 }
 
-void cls_8049EA88::vfunc_0x10() {
+void MalonAndTalonController_8049EA88::vfunc_0x10() {
     s32 serial = getActorManager_801F856C()->fn_801F7884('OPGA', mLayer_0x4);
     while (serial != -1) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
         if (actor == NULL) {
             continue;
         }
-        if (static_cast<cls_8049E350*>(actor)->field_0x238 == 1) {
+        if (static_cast<EscortedWomanArrivalPoint_8049E350*>(actor)->field_0x238 == 1) {
             field_0x238 = actor->mSerial;
         } else {
             field_0x234 = actor->mSerial;
@@ -75,7 +75,7 @@ void cls_8049EA88::vfunc_0x10() {
 }
 
 // FIXME(shotgun): 90.39 %, missing/extra + reloc-name; behaviour near.
-void cls_8049EA88::update() {
+void MalonAndTalonController_8049EA88::update() {
     ActorBase_804A5770::update();
     if (field_0x230 >= 2 && field_0x230 <= 4) {
         gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
@@ -99,7 +99,7 @@ void cls_8049EA88::update() {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
             if (a != NULL && a->mDir_0x98 != 1) {
                 a->mDir_0x98 = 1;
-                static_cast<cls_8049E350*>(a)->fn_80125BF4();
+                static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125BF4();
             }
         }
         if (getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
@@ -162,7 +162,7 @@ void cls_8049EA88::update() {
             }
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
             if (a != NULL) {
-                static_cast<cls_8049E350*>(a)->fn_80125C58(false);
+                static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125C58(false);
             }
             done = true;
         }
@@ -179,7 +179,7 @@ void cls_8049EA88::update() {
 
 // Not auto-inlined: update calls fn_8013056C out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
-s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
+s32 MalonAndTalonController_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
     s32 serial = field_0x238;
     if (mode == 1) {
         serial = field_0x234;
@@ -191,7 +191,7 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234);
             if (a != NULL) {
                 a->mDir_0x98 = value;
-                static_cast<cls_8049E350*>(a)->fn_80125C58(true);
+                static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125C58(true);
             }
             break;
         }
@@ -199,7 +199,7 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
             if (a != NULL) {
                 a->mDir_0x98 = value;
-                static_cast<cls_8049E350*>(a)->fn_80125C58(true);
+                static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125C58(true);
             }
             break;
         }
@@ -207,7 +207,7 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
             ActorBase_804A5770* a = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
             if (a != NULL) {
                 a->mDir_0x98 = value;
-                static_cast<cls_8049E350*>(a)->fn_80125C58(true);
+                static_cast<EscortedWomanArrivalPoint_8049E350*>(a)->fn_80125C58(true);
                 ActorBase_804A5770* b = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x234);
                 if (b != NULL) {
                     b->mDir_0x98 = value;
@@ -223,7 +223,7 @@ s32 cls_8049EA88::fn_8013056C(u16 msg, s32 mode, s32 value) {
 #pragma auto_inline reset
 
 // FIXME(shotgun): 98.53 %, operands + reloc-name; behaviour near.
-bool cls_8049EA88::fn_80130370() {
+bool MalonAndTalonController_8049EA88::fn_80130370() {
     ActorBase_804A5770* target = getActorManager_801F856C()->findActorBySerial_801F666C(field_0x238);
     if (target == NULL) {
         return false;
@@ -266,4 +266,4 @@ bool cls_8049EA88::fn_80130370() {
 }
 
 
-cls_8049EA88::~cls_8049EA88() {}
+MalonAndTalonController_8049EA88::~MalonAndTalonController_8049EA88() {}

@@ -382,13 +382,13 @@ bool cls_800FE3EC::fn_800FD4C0(u8 a, u8 b) {
     return false;
 }
 
-void cls_8049C770::init() {
+void RailData_8049C770::init() {
     mPos.x += 8.0f;
     mPos.y += 8.0f;
 }
 
-void cls_8049C770::update() {}
+void RailData_8049C770::update() {}
 
-void cls_8049C770::draw() {}
+void RailData_8049C770::draw() {}
 
-cls_8049C770::~cls_8049C770() {}
+RailData_8049C770::~RailData_8049C770() {}

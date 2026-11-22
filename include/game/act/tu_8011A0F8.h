@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049DAD8.
-class cls_8049DAD8 : public ActorBase_804A5770 {
+class StoryDemoControlNPC_8049DAD8 : public ActorBase_804A5770 {
 public:
-    cls_8049DAD8();
-    /* 0x08 */ virtual ~cls_8049DAD8();
+    StoryDemoControlNPC_8049DAD8();
+    /* 0x08 */ virtual ~StoryDemoControlNPC_8049DAD8();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x230 */ u32 field_0x230; // init(): the top-5-bit-stripped low 5 bits of mSpawnParam_0x90

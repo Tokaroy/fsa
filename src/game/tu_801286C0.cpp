@@ -20,7 +20,7 @@ const char* lbl_80539F38 = "kk_black.bti";
 
 // Thresholds that the value at fn_8011921C()->field_0x8 is matched against.
 const s32 lbl_80464FC0[11] = {0, 60, 60, 60, 150, 280, 340, 610, 670, 820, 880};
-void cls_8049E500::init() {
+void OpeningNarration_8049E500::init() {
     cls_8049D140::init();
     // '????' (escaped: "??'" would be a trigraph).
     field_0x23c = gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_80539F38);
@@ -35,7 +35,7 @@ void cls_8049E500::init() {
 // jump table are @NNN in ours. Not yet pinned down; the .sdata2 order
 // probably depends on the unwritten fn_80128728, which uses the 0.5f, 0.0f,
 // 1.0f and 40.0f constants at lower addresses.
-void cls_8049E500::update() {
+void OpeningNarration_8049E500::update() {
     cls_8049D140::update();
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
@@ -106,7 +106,7 @@ void cls_8049E500::update() {
     }
 }
 
-void cls_8049E500::draw() {
+void OpeningNarration_8049E500::draw() {
     fn_80128C58((s32)field_0x234);
     if (field_0x230 >= 1 && field_0x230 <= 3) {
         lbl_8053AF38->fn_8044C028(field_0x238);
@@ -119,7 +119,7 @@ void fn_80128C58(s32 value) {
     gGameRoot2_8053AB10->field_0x2c->field_0xc = value;
 }
 
-void cls_8049E500::vfunc_0x54() {
+void OpeningNarration_8049E500::vfunc_0x54() {
     if (fn_8011921C()->field_0x4 != 0xC) {
         return;
     }
@@ -143,17 +143,17 @@ void cls_8049E500::vfunc_0x54() {
     }
 }
 
-s32 cls_8049E500::vfunc_0x58() {
+s32 OpeningNarration_8049E500::vfunc_0x58() {
     return field_0x230;
 }
 
-s32 cls_8049E500::vfunc_0x5C() {
+s32 OpeningNarration_8049E500::vfunc_0x5C() {
     return field_0x230 == 10;
 }
 
 // FIXME(shotgun): 68.90 %, missing/extra + reloc-name; behaviour drift.
 // the camera-box centre in case 4 and the screen-centre vector of cases 5 / 7 are built differently; jump table is @NNN
-void cls_8049E500::fn_80128728(int state) {
+void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
         fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 0, 0, 0);
@@ -223,6 +223,6 @@ void cls_8049E500::fn_80128728(int state) {
     field_0x230 = state;
 }
 
-cls_8049E500::~cls_8049E500() {
+OpeningNarration_8049E500::~OpeningNarration_8049E500() {
     field_0x23c = 0;
 }

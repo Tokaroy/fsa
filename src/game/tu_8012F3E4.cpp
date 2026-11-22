@@ -34,7 +34,7 @@ bool cls_8012F64C::fn_8012F3E4() const {
         if (actor->mActorId != ACTOR_IFCK) {
             return false;
         }
-        if (!static_cast<cls_8049E950*>(actor)->fn_8012F008()) {
+        if (!static_cast<IceFloorCheckNPC_8049E950*>(actor)->fn_8012F008()) {
             return false;
         }
     }

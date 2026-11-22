@@ -8,10 +8,10 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/cls_800FE8C0.h"
 
-class cls_8049DB90 : public cls_8049D140 {
+class ShadowLinkCutscene_8049DB90 : public cls_8049D140 {
 public:
-    cls_8049DB90();
-    /* 0x08 */ virtual ~cls_8049DB90();
+    ShadowLinkCutscene_8049DB90();
+    /* 0x08 */ virtual ~ShadowLinkCutscene_8049DB90();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update(); // 0x8011C308
     /* 0x20 */ virtual void draw();   // 0x8011C118

@@ -608,7 +608,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         if ((face ^ 1) != fn_801F681C((s32)(rad * 10430.378f))) {
             turned = true;
         }
-        if (other != NULL && static_cast<cls_804A0738*>(other)->field_0x254 != 0) {
+        if (other != NULL && static_cast<UnknownBOME_804A0738*>(other)->field_0x254 != 0) {
             turned = true;
         }
         if (!turned) {
@@ -630,7 +630,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         // fall through
     case 1:
         if (other != NULL) {
-            static_cast<cls_804A0738*>(other)->field_0x254 = 1;
+            static_cast<UnknownBOME_804A0738*>(other)->field_0x254 = 1;
         }
         mHitTimer_0xd8 = 0;
         mHitTimerStart_0xdc = 0;
@@ -676,7 +676,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
             own = 1;
         }
         if (field_0x94 == 0 || own == 1) {
-            cls_804A0738* bome = static_cast<cls_804A0738*>(other);
+            UnknownBOME_804A0738* bome = static_cast<UnknownBOME_804A0738*>(other);
             if (bome->field_0x254 != 2) {
                 bome->field_0x254 = 2;
                 field_0xa0 = fn_8023B22C(player);

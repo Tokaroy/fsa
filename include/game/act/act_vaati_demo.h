@@ -8,16 +8,16 @@
 #include "game/SpriteAnim.h"
 
 // Named after its vtable, 0x8049D940. Derives from cls_8049D140. Its
-// constructor, __ct__12cls_8049D940Fv (0x80116BE8, game/act_vaati_demo.cpp,
+// constructor, __ct__22VaatiCutscene_8049D940Fv (0x80116BE8, game/act_vaati_demo.cpp,
 // was fn_80116BE8), runs the base constructor, sets the vtable, then
 // initialises the members in declaration order.
-class cls_8049D940 : public cls_8049D140 {
+class VaatiCutscene_8049D940 : public cls_8049D140 {
 public:
-    cls_8049D940();
-    // __dt__12cls_8049D940Fv (0x80116B08, game/act_vaati_demo.cpp, was
+    VaatiCutscene_8049D940();
+    // __dt__22VaatiCutscene_8049D940Fv (0x80116B08, game/act_vaati_demo.cpp, was
     // fn_80116B08): clears 0x31C-0x32C, frees the emitters at 0x314 and 0x318
     // with releaseEmitter_801EE434, then the members and the base destructor run.
-    /* 0x08 */ virtual ~cls_8049D940();
+    /* 0x08 */ virtual ~VaatiCutscene_8049D940();
 
     // Slot 0x54, overriding cls_8049D140::vfunc_0x54 (0x801162E0, game/act_vaati_demo.cpp).
     // Reads mLayer_0x4 and field_0x8 of fn_8011921C()'s object and, when the
@@ -29,7 +29,7 @@ public:
     // was fn_801162B8): 1 when field_0x230 is 11, else 0.
     /* 0x5C */ virtual s32 vfunc_0x5C();
 
-    // Mangled fn_80115A7C__12cls_8049D940Fv (0x80115A7C, game/act_vaati_demo.cpp,
+    // Mangled fn_80115A7C__22VaatiCutscene_8049D940Fv (0x80115A7C, game/act_vaati_demo.cpp,
     // was fn_80115A7C). Called by update; returns true.
     bool fn_80115A7C();
     // 0x80115BC4 (same unit): takes this, the position and an output vector.
@@ -37,7 +37,7 @@ public:
     // 0x80115D8C (same unit): takes this, the position and an output vector.
     void fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out);
 
-    // Mangled fn_801158B8__12cls_8049D940Fv (0x801158B8, same unit):
+    // Mangled fn_801158B8__22VaatiCutscene_8049D940Fv (0x801158B8, same unit):
     // called by draw() when field_0x230 is 10 or more.
     void fn_801158B8();
 
@@ -49,7 +49,7 @@ public:
     // was fn_8011661C).
     /* 0x14 */ virtual void update();
 
-    // Mangled fn_80115F9C__12cls_8049D940Fl (0x80115F9C, same unit).
+    // Mangled fn_80115F9C__22VaatiCutscene_8049D940Fl (0x80115F9C, same unit).
     // Takes the table index 1..11 found by vfunc_0x54.
     void fn_80115F9C(s32 index);
 
@@ -57,7 +57,7 @@ public:
     void pool_8053C724();
     void updateDescent();
 
-    // Named after its vtable, 0x8049D940, slot 0x0C. __ct__12cls_8049D940Fv
+    // Named after its vtable, 0x8049D940, slot 0x0C. __ct__22VaatiCutscene_8049D940Fv
     // (game/act_vaati_demo.cpp) runs the base constructor, sets the vtable and
     // initialises the members in declaration order. init() (0x801169E8,
     // was fn_801169E8) runs cls_8049D140::init(), loads four 'TIMG'

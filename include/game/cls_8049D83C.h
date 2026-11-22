@@ -9,10 +9,10 @@
 
 class JPABaseEmitter;
 
-class cls_8049D83C : public cls_8049D140 {
+class CrystalCutscene_8049D83C : public cls_8049D140 {
 public:
-    cls_8049D83C();
-    /* 0x08 */ virtual ~cls_8049D83C();
+    CrystalCutscene_8049D83C();
+    /* 0x08 */ virtual ~CrystalCutscene_8049D83C();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

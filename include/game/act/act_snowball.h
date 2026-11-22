@@ -10,10 +10,10 @@
 // The SNBL actor ("Snowball", docs/names/actors.tsv, med confidence): the
 // spawner constructs it with its constructor (0x8010D7A0). Named after its
 // vtable, 0x8049D020.
-class cls_8049D020 : public ActorBase_804A5770 {
+class Snowball_8049D020 : public ActorBase_804A5770 {
 public:
-    cls_8049D020();
-    /* 0x08 */ virtual ~cls_8049D020();
+    Snowball_8049D020();
+    /* 0x08 */ virtual ~Snowball_8049D020();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

@@ -1,7 +1,7 @@
 #ifndef GAME_TU_8012FF9C_H
 #define GAME_TU_8012FF9C_H
 
-// Exports of game/tu_8012FF9C.cpp. Called by cls_8049EA00::init
+// Exports of game/tu_8012FF9C.cpp. Called by KeepsEscortedGirlFromGoing_8049EA00::init
 // (game/tu_8012FBCC.cpp).
 
 #include "dolphin/types.h"
@@ -14,7 +14,7 @@ struct cls_8012FFF4 {
     cls_8012FFF4() : mCount(0) {}
     ~cls_8012FFF4() {}
     // True when the tracked actor is gone or is not an 'OGST' actor, or
-    // else whatever cls_8049EA00::fn_8012FC2C returns for v.
+    // else whatever KeepsEscortedGirlFromGoing_8049EA00::fn_8012FC2C returns for v.
     bool fn_80130030(const s32* v);
     // When value is positive: stores it at mSerials[mCount] (the array is
     // 1 long as far as the asm shows; index 1 is mCount itself) and bumps

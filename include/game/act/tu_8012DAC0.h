@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049E848.
-class cls_8049E848 : public ActorBase_804A5770 {
+class ColouredFloorToggle_8049E848 : public ActorBase_804A5770 {
 public:
-    cls_8049E848() : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(0), field_0x240(0), field_0x244(0) {}
-    /* 0x08 */ virtual ~cls_8049E848();
+    ColouredFloorToggle_8049E848() : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(0), field_0x240(0), field_0x244(0) {}
+    /* 0x08 */ virtual ~ColouredFloorToggle_8049E848();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x230 */ s32 field_0x230; // state: 0 waiting, 1 held while getScreenFlagBit_0x3C() && !isScreenFlagSet_0x34()

@@ -39,7 +39,7 @@ struct Elem_80200A84 {
     s32 field_0x14; // -1 after cls_804AC950::init
 };
 
-// A recorded chaser trail point (cls_804A0738): two (x, y) records and their layers.
+// A recorded chaser trail point (UnknownBOME_804A0738): two (x, y) records and their layers.
 struct Elem_80203594 {
     Elem_80203594() {}
     JGeometry::TVec2f p0;

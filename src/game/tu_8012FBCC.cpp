@@ -5,13 +5,13 @@
 #include "game/act/tu_8012FBCC.h"
 #include "game/tu_8012FF9C.h"
 
-void cls_8049EA00::init() {
+void KeepsEscortedGirlFromGoing_8049EA00::init() {
     ActorBase_804A5770::init();
     mFlags = mSpawnParam_0x90 & 0xF;
     fn_8012FF9C()->fn_801300B4(mSerial);
 }
 
-bool cls_8049EA00::fn_8012FC2C(const s32* v) {
+bool KeepsEscortedGirlFromGoing_8049EA00::fn_8012FC2C(const s32* v) {
     s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_OPGL);
     if (serial < 0) {
         return true;
@@ -38,4 +38,4 @@ bool cls_8049EA00::fn_8012FC2C(const s32* v) {
     return false;
 }
 
-cls_8049EA00::~cls_8049EA00() {}
+KeepsEscortedGirlFromGoing_8049EA00::~KeepsEscortedGirlFromGoing_8049EA00() {}

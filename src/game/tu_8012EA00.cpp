@@ -5,7 +5,7 @@
 #include "game/Player.h"
 
 
-inline bool cls_8049E8F8::playersInside() {
+inline bool RoomWarpForL72_8049E8F8::playersInside() {
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.f.x += mPos.x;
@@ -39,7 +39,7 @@ inline bool cls_8049E8F8::playersInside() {
     return true;
 }
 
-inline void cls_8049E8F8::setState(s32 state) {
+inline void RoomWarpForL72_8049E8F8::setState(s32 state) {
     field_0x230 = state;
     switch (field_0x230) {
     case 1:
@@ -53,7 +53,7 @@ inline void cls_8049E8F8::setState(s32 state) {
     }
 }
 
-void cls_8049E8F8::init() {
+void RoomWarpForL72_8049E8F8::init() {
     ActorBase_804A5770::init();
     field_0x234 = (mSpawnParam_0x90 >> 8) & 0xF;
     field_0x238 = (mSpawnParam_0x90 >> 12) & 0xF;
@@ -68,7 +68,7 @@ void cls_8049E8F8::init() {
 // into f1 and f0 in the original and f0 and f1 here. (2) The inlined switch in
 // setState is compiled as cmpwi 1 / beq / bge, then cmpwi 3 / bge (case 2) in
 // the original, and as cmpwi 2 first here.
-void cls_8049E8F8::update() {
+void RoomWarpForL72_8049E8F8::update() {
     ActorBase_804A5770::update();
     switch (field_0x230) {
     case 0:
@@ -90,4 +90,4 @@ void cls_8049E8F8::update() {
     }
 }
 
-cls_8049E8F8::~cls_8049E8F8() {}
+RoomWarpForL72_8049E8F8::~RoomWarpForL72_8049E8F8() {}

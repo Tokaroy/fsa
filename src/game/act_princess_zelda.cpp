@@ -99,7 +99,7 @@ static const s16* lbl_8049CEA8[14] = {
     lbl_804641BC, lbl_804641D4, lbl_804641E0, lbl_804641EC, lbl_804641F8,
 };
 
-cls_8049CEE0::cls_8049CEE0()
+PrincessZelda_8049CEE0::PrincessZelda_8049CEE0()
     : field_0x2f8(0),
       field_0x2fc(0),
       field_0x300(-1),
@@ -118,11 +118,11 @@ cls_8049CEE0::cls_8049CEE0()
       field_0x338(1),
       field_0x339(1) {}
 
-cls_8049CEE0::~cls_8049CEE0() {
+PrincessZelda_8049CEE0::~PrincessZelda_8049CEE0() {
     lbl_8053AA81 = 0;
 }
 
-void cls_8049CEE0::init() {
+void PrincessZelda_8049CEE0::init() {
     ActorBase_804A5770::init();
     field_0x320 = mSpawnParam_0x90 & 0x1F;
     field_0x324 = (mSpawnParam_0x90 >> 4) & 0x1F;
@@ -162,7 +162,7 @@ static inline bool checkTile(u16 code) {
     return false;
 }
 
-inline bool cls_8049CEE0::stepRail() {
+inline bool PrincessZelda_8049CEE0::stepRail() {
     if (field_0x2fc <= 0) {
         return true;
     }
@@ -187,7 +187,7 @@ inline bool cls_8049CEE0::stepRail() {
 
 // FIXME: 98.14 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 4 fewer instrs (919 vs 923); some argument setups before calls are scheduled differently and one comparison compiles to an extra cror.
-void cls_8049CEE0::update() {
+void PrincessZelda_8049CEE0::update() {
     ActorBase_804A5770::update();
     field_0x330 = 1.0f;
     field_0x339 = 1;
@@ -510,7 +510,7 @@ void cls_8049CEE0::update() {
     }
 }
 
-void cls_8049CEE0::draw() {
+void PrincessZelda_8049CEE0::draw() {
     ActorBase_804A5770::draw();
     SpriteParams_801F5AE0 params;
     if (field_0x2f8 != 0) {
@@ -534,7 +534,7 @@ static inline bool overlaps(const JGeometry::TBox2f& a, const JGeometry::TBox2f&
     return result;
 }
 
-bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
+bool PrincessZelda_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
     outPos->zero();
     s32 serial = getActorManager_801F856C()->fn_801F7A08('CIRC');
     if (serial < 0) {
@@ -572,7 +572,7 @@ bool cls_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
 // No copy of its own in the original: update inlines it and the linker dropped the body.
 // A plain function at this place: its literals stand in front of fn_80109AE0's in .sdata2.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
-void cls_8049CEE0::stepSpeed(f32 dist) {
+void PrincessZelda_8049CEE0::stepSpeed(f32 dist) {
     if (dist >= 32.0f) {
         fn_801CD950(&field_0x334, 1.1f, 0.02f);
     } else {
@@ -582,7 +582,7 @@ void cls_8049CEE0::stepSpeed(f32 dist) {
 
 // FIXME: 99.54 %, missing/extra; behaviour drift.
 // missing/extra + reloc-name: ours has 1 more instr (263 vs 262): an extra clrlwi r4,r4,24 before a call, and some instructions are scheduled differently.
-bool cls_8049CEE0::fn_801096C8(s32 state) {
+bool PrincessZelda_8049CEE0::fn_801096C8(s32 state) {
     field_0x32c = field_0x328;
     field_0x328 = state;
     field_0x338 = 0;
@@ -695,7 +695,7 @@ static inline void setLifeMeter(LifeMeter_804B174C* meter, s32 serial, f32 yOffs
     meter->field_0x24c = index;
 }
 
-void cls_8049CEE0::fn_80109534() {
+void PrincessZelda_8049CEE0::fn_80109534() {
     if (field_0x310 < 0) {
         field_0x310 = getActorManager_801F856C()->spawnActor_801F9484('LIMT', mLayer_0x4, &mPos, 0, -1, -1);
         if (field_0x310 < 0) {
@@ -748,7 +748,7 @@ void cls_8049CEE0::fn_80109534() {
 
 // State 9: `ppos` (the player's position) moved 16 to the side mDir_0x98, mPos towards it by 2.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 19-line definition): split out only where the .sdata2 order needs it.
-void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
+void PrincessZelda_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
     switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
@@ -770,7 +770,7 @@ void cls_8049CEE0::approachPlayerSide(JGeometry::TVec3f& ppos) {
 
 // The same side position; mPos jumps to it on the player's layer, else moves towards it by 5.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 25-line definition): split out only where the .sdata2 order needs it.
-void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
+void PrincessZelda_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
     switch (mDir_0x98) {
     case 0:
         ppos.x -= 16.0f;
@@ -798,7 +798,7 @@ void cls_8049CEE0::followPlayerSide(JGeometry::TVec3f& ppos) {
 
 // Effect 0x33A 24 above mPos (states 7 and 8).
 // R2 pool helper (inlined at 2 call sites); was spawnEffect33A.
-void cls_8049CEE0::pool_8053C3E4() {
+void PrincessZelda_8049CEE0::pool_8053C3E4() {
     JGeometry::TVec3f pos = mPos;
     pos.y += -24.0f;
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
@@ -806,6 +806,6 @@ void cls_8049CEE0::pool_8053C3E4() {
 
 // mSpriteAnim.fn_801D1F14(0.0f).
 // R2 pool helper (inlined at 5 call sites; one-statement body); was resetAnimFrame.
-void cls_8049CEE0::pool_8053C3E0() {
+void PrincessZelda_8049CEE0::pool_8053C3E0() {
     mSpriteAnim.fn_801D1F14(0.0f);
 }

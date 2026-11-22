@@ -75,16 +75,16 @@ static const s16* lbl_8049EB80[3] = {
     lbl_804651CC,
 };
 
-cls_8049EB8C::cls_8049EB8C()
+GreatFairy_8049EB8C::GreatFairy_8049EB8C()
     : field_0x230(0), field_0x234(0), field_0x238(0), field_0x23c(-1), field_0x240(0),
       field_0x244(0), field_0x248(0), field_0x24c(0), field_0x288(0) {}
 
-cls_8049EB8C::~cls_8049EB8C() {
+GreatFairy_8049EB8C::~GreatFairy_8049EB8C() {
     releaseEmitter_801EE434(field_0x288);
     field_0x288 = 0;
 }
 
-void cls_8049EB8C::init() {
+void GreatFairy_8049EB8C::init() {
     cls_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 1;
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1f;
@@ -106,7 +106,7 @@ void cls_8049EB8C::init() {
 
 // FIXME: 98.52 %, scheduling+regalloc; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
-void cls_8049EB8C::update() {
+void GreatFairy_8049EB8C::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -209,13 +209,13 @@ void cls_8049EB8C::update() {
     }
 }
 
-void cls_8049EB8C::draw() {
+void GreatFairy_8049EB8C::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     fn_801F02BC("enemy_gc_sob.bin", mAnim.mCel + 0x2fb, &params, 0x407, 0, false, 1.0f, 1.0f);
 }
 
-void cls_8049EB8C::vfunc_0x54() {
+void GreatFairy_8049EB8C::vfunc_0x54() {
     if (fn_8011921C()->field_0x4 != 0xE) {
         return;
     }
@@ -278,7 +278,7 @@ void cls_8049EB8C::vfunc_0x54() {
     }
 }
 
-s32 cls_8049EB8C::vfunc_0x5C() {
+s32 GreatFairy_8049EB8C::vfunc_0x5C() {
     switch (field_0x234) {
     case 21:
     case 25:
@@ -290,7 +290,7 @@ s32 cls_8049EB8C::vfunc_0x5C() {
 
 // operands: case 5 pos stack slot order and fn_802303FC's 0xFF bool argument.
 // FIXME: 99.94 %, operands; behaviour drift.
-void cls_8049EB8C::fn_80132454(s32 index) {
+void GreatFairy_8049EB8C::fn_80132454(s32 index) {
     switch (field_0x234 = index) {
     case 1:
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x31, 0, 0, NULL, NULL, true, 1.0f);
@@ -436,7 +436,7 @@ static inline void camBox(f32 x0, f32 y0, f32 x1, f32 y1) {
     }
 }
 
-void cls_8049EB8C::fn_801321E4() {
+void GreatFairy_8049EB8C::fn_801321E4() {
     switch (field_0x234) {
     case 0:
     case 1:
@@ -509,7 +509,7 @@ void cls_8049EB8C::fn_801321E4() {
 // (tools/pool.py).
 // Checks for a talking player and opens message 0x2B6 for `player`, 64 units above the fairy.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
-s32 cls_8049EB8C::talkTo() {
+s32 GreatFairy_8049EB8C::talkTo() {
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -534,7 +534,7 @@ s32 cls_8049EB8C::talkTo() {
 // State 14: puts the fairy at the barrier ('BARI', or the origin) with y + 32 and the four players
 // in a row 20 units apart at y + 64.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 20-line definition): split out only where the .sdata2 order needs it.
-void cls_8049EB8C::placeAtBarrier() {
+void GreatFairy_8049EB8C::placeAtBarrier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
     if (bari >= 0) {
@@ -557,7 +557,7 @@ void cls_8049EB8C::placeAtBarrier() {
 
 // Spawns a soldier ('SLR1') at a random place in an 80 x 32 box, y + 180 from the barrier.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
-void cls_8049EB8C::spawnSoldier() {
+void GreatFairy_8049EB8C::spawnSoldier() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     s32 bari = getActorManager_801F856C()->fn_801F7A08('BARI');
     if (bari >= 0) {
@@ -573,6 +573,6 @@ void cls_8049EB8C::spawnSoldier() {
     getActorManager_801F856C()->spawnActor_801F9484('SLR1', mLayer_0x4, &pos, 0x102, -1, -1);
 }
 
-s32 cls_8049EB8C::vfunc_0x58() {
+s32 GreatFairy_8049EB8C::vfunc_0x58() {
     return field_0x234;
 }

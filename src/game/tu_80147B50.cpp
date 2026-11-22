@@ -54,7 +54,7 @@ static inline u16 dirToAngle(s32 dir) {
 }
 
 // FIXME(shotgun): 99.95 %, reloc-name; behaviour drift.
-void cls_8049F6C8::init() {
+void BigMoldorm_8049F6C8::init() {
     mMapBox_0x80.i.x = -8.0f;
     mMapBox_0x80.i.y = -8.0f;
     mMapBox_0x80.f.x = 8.0f;
@@ -144,7 +144,7 @@ void cls_8049F6C8::init() {
 }
 
 // FIXME(shotgun): 99.90 %, regalloc-only; behaviour clean.
-void cls_8049F6C8::fn_8014A2CC(s32 flag) {
+void BigMoldorm_8049F6C8::fn_8014A2CC(s32 flag) {
     s32 i;
     s32 base = 0;
     if (field_0x274 == 1) {
@@ -201,7 +201,7 @@ void cls_8049F6C8::fn_8014A2CC(s32 flag) {
 }
 
 // FIXME(shotgun): 99.63 %, regalloc-only; behaviour clean.
-bool cls_8049F6C8::fn_80149FDC() {
+bool BigMoldorm_8049F6C8::fn_80149FDC() {
     if (field_0x250 == 0) {
         return true;
     }
@@ -255,7 +255,7 @@ bool cls_8049F6C8::fn_80149FDC() {
 }
 
 // FIXME(shotgun): 99.37 %, regalloc-only; behaviour clean.
-bool cls_8049F6C8::fn_80149AEC() {
+bool BigMoldorm_8049F6C8::fn_80149AEC() {
     u8 hit = 0;
     s32 i;
     if (field_0x240 != 0 || field_0x24c != 0 || field_0x250 != 0) {
@@ -356,7 +356,7 @@ bool cls_8049F6C8::fn_80149AEC() {
     return true;
 }
 
-cls_8049F6C8::~cls_8049F6C8() {
+BigMoldorm_8049F6C8::~BigMoldorm_8049F6C8() {
     for (s32 i = 0; i < 10; i++) {
         releaseEmitter_801EE434(mEmitters798[i]);
     }
@@ -401,12 +401,12 @@ static inline s32 headingDir(u16 angle) {
     return dir;
 }
 
-static inline cls_8049F6C8* findDigdogger(s32 serial) {
-    return static_cast<cls_8049F6C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+static inline BigMoldorm_8049F6C8* findDigdogger(s32 serial) {
+    return static_cast<BigMoldorm_8049F6C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
 }
 
 // FIXME(shotgun): 95.00 %, missing/extra + reloc-name; behaviour drift.
-void cls_8049F6C8::update() {
+void BigMoldorm_8049F6C8::update() {
     // The copy of the velocity is never read, as in the original (0x8014827C).
     JGeometry::TVec3f vel = mVel_0x3c;
     JGeometry::TBox2f box(mBox);
@@ -630,7 +630,7 @@ void cls_8049F6C8::update() {
         if (mSpawnParam_0x90 == 1) {
             s32 serial = lbl_80539F58;
             if (serial >= 0) {
-                cls_8049F6C8* other = findDigdogger(serial);
+                BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
                     other->mPos = rel;
                     if (other->field_0x94 != 0) {
@@ -642,7 +642,7 @@ void cls_8049F6C8::update() {
         if (mSpawnParam_0x90 == 0) {
             s32 serial = lbl_80539F5C;
             if (serial >= 0) {
-                cls_8049F6C8* other = findDigdogger(serial);
+                BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
                     other->mPos = rel;
                     if (other->field_0x94 != 0) {
@@ -681,7 +681,7 @@ void cls_8049F6C8::update() {
         if (mSpawnParam_0x90 == 1) {
             s32 serial = lbl_80539F58;
             if (serial >= 0) {
-                cls_8049F6C8* other = findDigdogger(serial);
+                BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
                     other->field_0x248 = 100;
                     other->field_0x94 = 0;
@@ -691,7 +691,7 @@ void cls_8049F6C8::update() {
         if (mSpawnParam_0x90 == 0) {
             s32 serial = lbl_80539F5C;
             if (serial >= 0) {
-                cls_8049F6C8* other = findDigdogger(serial);
+                BigMoldorm_8049F6C8* other = findDigdogger(serial);
                 if (other != NULL) {
                     other->field_0x248 = 100;
                     other->field_0x94 = 0;
@@ -820,7 +820,7 @@ void cls_8049F6C8::update() {
 }
 
 // FIXME(shotgun): 88.64 %, missing/extra + reloc-name; behaviour near.
-void cls_8049F6C8::draw() {
+void BigMoldorm_8049F6C8::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;

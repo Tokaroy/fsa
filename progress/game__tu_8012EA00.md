@@ -3,9 +3,9 @@
 Baseline (progress.py): total 5820 / 11557 functions, 1165664 / 4442032 bytes (26.24 %).
 After: 5821 / 11557, 1165828 bytes (26.25 %).
 
-Matched: ~cls_8049E8F8, init, __sinit. update at 98.51 %.
+Matched: ~RoomWarpForL72_8049E8F8, init, __sinit. update at 98.51 %.
 
-Resistant: update__12cls_8049E8F8Fv (missing/extra, 98.51 %).
+Resistant: update__23RoomWarpForL72_8049E8F8Fv (missing/extra, 98.51 %).
 - Player x/y loaded into f1/f0 in the target, f0/f1 here (compare chain otherwise identical).
 - The inlined switch in setState: target cmpwi 1/beq/bge then cmpwi 3/bge; ours cmpwi 2 first.
   Tried: case order swap, default, empty cases.

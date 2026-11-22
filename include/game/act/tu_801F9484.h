@@ -70,10 +70,10 @@ public:
 #include "game/act/act_snowball.h"
 
 // Spawned for 'DMCR'.
-class cls_8049D83C : public ActorBase_804A5770 {
+class CrystalCutscene_8049D83C : public ActorBase_804A5770 {
 public:
-    cls_8049D83C();
-    /* 0x08 */ virtual ~cls_8049D83C();
+    CrystalCutscene_8049D83C();
+    /* 0x08 */ virtual ~CrystalCutscene_8049D83C();
     /* 0x230 */ u8 field_0x230[0xC0];
 }; // Size: 0x2F0
 
@@ -84,10 +84,10 @@ public:
 #include "game/act/act_rainbow_bridge.h"
 
 // Spawned for 'DMTW'.
-class cls_8049E770 : public ActorBase_804A5770 {
+class TowerAppearanceDemo_8049E770 : public ActorBase_804A5770 {
 public:
-    cls_8049E770() {}
-    /* 0x08 */ virtual ~cls_8049E770();
+    TowerAppearanceDemo_8049E770() {}
+    /* 0x08 */ virtual ~TowerAppearanceDemo_8049E770();
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void reset();
     /* 0x14 */ virtual void update();
@@ -140,10 +140,10 @@ public:
 }; // Size: 0x408
 
 // Spawned for 'SNWL'.
-class cls_8049E8A0 : public ActorBase_804A5770 {
+class SnowWall_8049E8A0 : public ActorBase_804A5770 {
 public:
-    cls_8049E8A0();
-    /* 0x08 */ virtual ~cls_8049E8A0();
+    SnowWall_8049E8A0();
+    /* 0x08 */ virtual ~SnowWall_8049E8A0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -161,13 +161,13 @@ public:
 }; // Size: 0x248
 
 // Spawned for 'CRNV'.
-class cls_8049ED30 : public ActorBase_804A5770 {
+class NaviAfterCrystalCutscene_8049ED30 : public ActorBase_804A5770 {
 public:
-    cls_8049ED30() : field_0x230(0), field_0x234(0), field_0x238(-1), field_0x23c(0.0f) {
+    NaviAfterCrystalCutscene_8049ED30() : field_0x230(0), field_0x234(0), field_0x238(-1), field_0x23c(0.0f) {
         mEmitters[0] = NULL;
         mEmitters[1] = NULL;
     }
-    /* 0x08 */ virtual ~cls_8049ED30();
+    /* 0x08 */ virtual ~NaviAfterCrystalCutscene_8049ED30();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -190,10 +190,10 @@ bool fn_80133B58();
 #include "game/act/act_hinox.h"
 
 // Spawned for 'SLR2'. Code: game/tu_801555D8.cpp.
-class cls_804A00C8 : public ActorBase_804A5770 {
+class BowSoldier_804A00C8 : public ActorBase_804A5770 {
 public:
-    cls_804A00C8() {}
-    /* 0x08 */ virtual ~cls_804A00C8();
+    BowSoldier_804A00C8() {}
+    /* 0x08 */ virtual ~BowSoldier_804A00C8();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -244,10 +244,10 @@ public:
 }; // Size: 0x2C4
 
 // Spawned for 'BPOH'. Code: game/tu_801618D0.cpp.
-class cls_804A0440 : public ActorBase_804A5770 {
+class BigPoe_804A0440 : public ActorBase_804A5770 {
 public:
-    cls_804A0440() {}
-    /* 0x08 */ virtual ~cls_804A0440();
+    BigPoe_804A0440() {}
+    /* 0x08 */ virtual ~BigPoe_804A0440();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

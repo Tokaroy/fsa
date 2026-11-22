@@ -9,17 +9,17 @@
 #include "game/act/act_ice_floor_check_npc.h"
 #include "game/tu_8012F3E4.h"
 
-cls_8049E950::cls_8049E950() : mState(0), mTile(0) {}
+IceFloorCheckNPC_8049E950::IceFloorCheckNPC_8049E950() : mState(0), mTile(0) {}
 
-cls_8049E950::~cls_8049E950() {}
+IceFloorCheckNPC_8049E950::~IceFloorCheckNPC_8049E950() {}
 
-void cls_8049E950::init() {
+void IceFloorCheckNPC_8049E950::init() {
     ActorBase_804A5770::init();
     mTile = fn_80226850(&mPos, mLayer_0x4);
     fn_8012F554()->fn_8012F530(this);
 }
 
-void cls_8049E950::update() {
+void IceFloorCheckNPC_8049E950::update() {
     ActorBase_804A5770::update();
     switch (mState) {
     case 0:
@@ -35,7 +35,7 @@ void cls_8049E950::update() {
     }
 }
 
-bool cls_8049E950::fn_8012F008() {
+bool IceFloorCheckNPC_8049E950::fn_8012F008() {
     switch (mState) {
     case 0:
         break;

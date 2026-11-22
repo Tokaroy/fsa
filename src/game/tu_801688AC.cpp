@@ -20,7 +20,7 @@ extern s32 lbl_804A0718[]; // per-variant angle (s16 units)
 
 // 0x80169DCC.
 // FIXME(shotgun): 99.86 %, regalloc-only; behaviour clean.
-void cls_804A0738::init() {
+void UnknownBOME_804A0738::init() {
     mDir_0x98 = (mSpawnParam_0x90 >> 4) & 7;
     field_0x25c = (mSpawnParam_0x90 >> 8) & 1;
     mSpawnParam_0x90 = mSpawnParam_0x90 & 3;
@@ -112,7 +112,7 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
 // 0x80169030. A chaser: it follows the trail of positions the player recorded, then the
 // player, and is caught by the player (state 1) or lost when it leaves the room.
 // FIXME(shotgun): 92.43 %, missing/extra; behaviour clean.
-void cls_804A0738::update() {
+void UnknownBOME_804A0738::update() {
     s32 target = mSpawnParam_0x90;
     if (fn_8022F478(mSpawnParam_0x90) == 1 && fn_8022F514(mSpawnParam_0x90) == 1) {
         target = fn_8022F3DC(mSpawnParam_0x90);
@@ -330,7 +330,7 @@ void cls_804A0738::update() {
 }
 
 // 0x80168E78.
-void cls_804A0738::draw() {
+void UnknownBOME_804A0738::draw() {
     SpriteParams_801F5AE0 params;
     params.field_0x30 = 0x11;
     s32 frame = field_0x250 + 0x69;
@@ -345,7 +345,7 @@ void cls_804A0738::draw() {
 // 0x80168C38. Whether a player standing in the (grown) hit box gets caught; every other
 // player is then pushed along.
 // FIXME(shotgun): 87.06 %, missing/extra; behaviour drift.
-bool cls_804A0738::fn_80168C38() {
+bool UnknownBOME_804A0738::fn_80168C38() {
     const JGeometry::TVec3f* first = getPlayerPos_8023E724(mSpawnParam_0x90);
     s32 found = -1;
     JGeometry::TVec2f d = xy(*first) - xy(mPos);
@@ -389,7 +389,7 @@ bool cls_804A0738::fn_80168C38() {
 }
 
 // 0x8016890C.
-void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometry::TBox2f* out) {
+void UnknownBOME_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometry::TBox2f* out) {
     if (layer == 0) {
         GameView_804A9950* view = getGameView_802D6A9C();
         const JGeometry::TBox2f& box = (layer < 8) ? view->mVisibleBox : view->field_0xdc;
@@ -461,4 +461,4 @@ void cls_804A0738::fn_8016890C(const JGeometry::TVec3f* pos, s32 layer, JGeometr
 
 // The original calls both of these with bl (update -> fn_80168C38, init/update -> fn_8016890C);
 // our deferred build would inline them.
-cls_804A0738::~cls_804A0738() {}
+UnknownBOME_804A0738::~UnknownBOME_804A0738() {}

@@ -20,7 +20,7 @@ static const s32 lbl_80464AF8[35] = {
     0x00000226, 0x00000280, 0x00000280, 0x000002F8, 0x00000320, 0x00000384, 0x00000000,
 };
 
-cls_8049DB90::cls_8049DB90() {
+ShadowLinkCutscene_8049DB90::ShadowLinkCutscene_8049DB90() {
     field_0x230 = 1;
     field_0x231 = false;
     field_0x234 = 0;
@@ -35,7 +35,7 @@ cls_8049DB90::cls_8049DB90() {
     field_0x258 = 0.0f;
 }
 
-void cls_8049DB90::init() {
+void ShadowLinkCutscene_8049DB90::init() {
     cls_8049D140::init();
     field_0x234 = mSpawnParam_0x90 & 0xF;
     mDir_0x98 = (s8)((mSpawnParam_0x90 >> 4) & 3);
@@ -60,7 +60,7 @@ void cls_8049DB90::init() {
 
 // The hop that update's states share: mVel_0x3c gets (vx, vy, base - 0.2 * t);
 // once t > 1 and the actor is back at z <= 0, it stops and the hop is over.
-static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
+static inline bool hop(ShadowLinkCutscene_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
     self->mVel_0x3c.z = base - 0.2f * t;
     self->mVel_0x3c.y = vy;
     self->mVel_0x3c.x = vx;
@@ -72,7 +72,7 @@ static inline bool hop(cls_8049DB90* self, s32 t, f32 base, f32 vy, f32 vx) {
 }
 
 // FIXME: 99.32 %, different; behaviour drift.
-void cls_8049DB90::update() {
+void ShadowLinkCutscene_8049DB90::update() {
     cls_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
@@ -228,7 +228,7 @@ static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* 
     }
 }
 
-void cls_8049DB90::draw() {
+void ShadowLinkCutscene_8049DB90::draw() {
     cls_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
@@ -237,7 +237,7 @@ void cls_8049DB90::draw() {
     fn_803075AC(mSerial, mLayer_0x4, &mPos, mSequencer.mFrame, 0, 1, -1, false, 0, 0);
 }
 
-void cls_8049DB90::vfunc_0x54() {
+void ShadowLinkCutscene_8049DB90::vfunc_0x54() {
     s32 value = fn_8011921C()->field_0x8;
     switch (field_0x234) {
     case 0:
@@ -303,11 +303,11 @@ void cls_8049DB90::vfunc_0x54() {
     }
 }
 
-s32 cls_8049DB90::vfunc_0x58() {
+s32 ShadowLinkCutscene_8049DB90::vfunc_0x58() {
     return field_0x238;
 }
 
-s32 cls_8049DB90::vfunc_0x5C() {
+s32 ShadowLinkCutscene_8049DB90::vfunc_0x5C() {
     switch (field_0x238) {
     case 12:
     case 21:
@@ -319,7 +319,7 @@ s32 cls_8049DB90::vfunc_0x5C() {
     return 0;
 }
 
-static inline void setupMoveToPlayer(cls_8049DB90* self) {
+static inline void setupMoveToPlayer(ShadowLinkCutscene_8049DB90* self) {
     for (s32 i = 0; i < 4; i++) {
         fn_80230BF4(i, 3);
     }
@@ -328,7 +328,7 @@ static inline void setupMoveToPlayer(cls_8049DB90* self) {
     self->field_0x26c = JGeometry::TVec3f(d.x / 60.0f, d.y / 60.0f, d.z / 60.0f);
 }
 
-static inline void spawnAppearEmitters(cls_8049DB90* self) {
+static inline void spawnAppearEmitters(ShadowLinkCutscene_8049DB90* self) {
     JGeometry::TVec3f pos(self->mPos);
     spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x41D, 0, 0, NULL, NULL, true, 1.0f);
     spawnEmitter_8013CC50(self->mLayer_0x4, &pos, 0x41E, 0, 0, NULL, NULL, true, 1.0f);
@@ -337,7 +337,7 @@ static inline void spawnAppearEmitters(cls_8049DB90* self) {
     self->startSound_801F0E34(0x30091, 0);
 }
 
-void cls_8049DB90::fn_8011B878(s32 index) {
+void ShadowLinkCutscene_8049DB90::fn_8011B878(s32 index) {
     switch (index) {
     case 0:
         mDrawEnabled = false;
@@ -470,7 +470,7 @@ void cls_8049DB90::fn_8011B878(s32 index) {
 
 // Effect 0x33B at mPos with y offset by -8.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 5-line definition): split out only where the .sdata2 order needs it.
-void cls_8049DB90::spawnFlash() {
+void ShadowLinkCutscene_8049DB90::spawnFlash() {
     JGeometry::TVec3f pos(mPos);
     pos.y += -8.0f;
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33B, 0, 0, NULL, NULL, true, 1.0f);
@@ -478,7 +478,7 @@ void cls_8049DB90::spawnFlash() {
 
 // State 9 of update: the hop of state 4 with mVel_0x3c.y -0.5 and mVel_0x3c.x left alone.
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 8-line definition): split out only where the .sdata2 order needs it.
-void cls_8049DB90::hopDown() {
+void ShadowLinkCutscene_8049DB90::hopDown() {
     s32 t = fn_8011921C()->field_0x8 - lbl_80464AF8[9];
     mVel_0x3c.z = 4.5f - 0.2f * t;
     mVel_0x3c.y = -0.5f;
@@ -488,7 +488,7 @@ void cls_8049DB90::hopDown() {
 }
 
 // Pushes the 4-float box at 0x250 to the scripted camera (mode 5).
-static inline void setCameraBox(cls_8049DB90* self) {
+static inline void setCameraBox(ShadowLinkCutscene_8049DB90* self) {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->mShowWholeArea_0x7f5 == 0) {
         cam->mFocusOverride_0x7f4 = 1;
@@ -501,7 +501,7 @@ static inline void setCameraBox(cls_8049DB90* self) {
     }
 }
 
-static inline void setCameraBoxPos(cls_8049DB90* self, f32 x, f32 y) {
+static inline void setCameraBoxPos(ShadowLinkCutscene_8049DB90* self, f32 x, f32 y) {
     self->field_0x250 = x - 64.0f;
     self->field_0x254 = y - 32.0f;
     self->field_0x258 = 64.0f + x;
@@ -510,7 +510,7 @@ static inline void setCameraBoxPos(cls_8049DB90* self, f32 x, f32 y) {
 }
 
 // FIXME: 96.72 %, scheduling+regalloc; behaviour clean.
-void cls_8049DB90::fn_8011B3F0() {
+void ShadowLinkCutscene_8049DB90::fn_8011B3F0() {
     Camera_804AA9E4* cam = gGameRoot2_8053AB10->field_0x24;
     if (cam->field_0x179 == 0) {
         cam->field_0x17a = 1;
@@ -583,4 +583,4 @@ void cls_8049DB90::fn_8011B3F0() {
     }
 }
 
-cls_8049DB90::~cls_8049DB90() {}
+ShadowLinkCutscene_8049DB90::~ShadowLinkCutscene_8049DB90() {}

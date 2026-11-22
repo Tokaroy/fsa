@@ -8,10 +8,10 @@
 
 class JPABaseEmitter;
 
-class cls_8049E7F0 : public ActorBase_804A5770 {
+class BlizzardBattle_8049E7F0 : public ActorBase_804A5770 {
 public:
-    cls_8049E7F0();
-    /* 0x08 */ virtual ~cls_8049E7F0();
+    BlizzardBattle_8049E7F0();
+    /* 0x08 */ virtual ~BlizzardBattle_8049E7F0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
 

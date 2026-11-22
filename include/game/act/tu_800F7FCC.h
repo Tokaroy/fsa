@@ -6,7 +6,7 @@
 #include "game/ActorBase.h"
 
 // A ring that grows from mPos and hits each player once (no vtable;
-// named after its lowest-address function). cls_8049C718 has one at 0x290,
+// named after its lowest-address function). StoneArrghus_8049C718 has one at 0x290,
 // ShadowLinkBase_804A6A00 (game/tu_80221B44.cpp) at 0x2BC.
 struct cls_800F802C {
     // Grows the ring (by mTimer, 40 or 20 frames by mType) and hits the
@@ -25,7 +25,7 @@ struct cls_800F802C {
     /* 0x16 */ u8 mHitMask; // bit i: player i was hit
 }; // Size: 0x18
 
-class cls_8049C718;
+class StoneArrghus_8049C718;
 
 // Named after its vtable, 0x8049C678.
 class StoneArrghusChildPuff_8049C678 : public ActorBase_804A5770 {
@@ -46,7 +46,7 @@ public:
     /* 0x234 */ s32 mState;   // 0 wait, 1 fn_800F953C, 2 fn_800F9170 (vfunc_0x40 sets 2)
     /* 0x238 */ s32 mStep;    // wait counter while mState == 0
     /* 0x23C */ s32 mVariant; // picks the sprite name (lbl_8049C648[mVariant + 1])
-    /* 0x240 */ cls_8049C718* mParent;
+    /* 0x240 */ StoneArrghus_8049C718* mParent;
     /* 0x244 */ u16 mAngle;
     /* 0x246 */ u8 mPhase;
     /* 0x247 */ u8 mIndex;   // 0x14 spawns four gems, else 1 to 2
@@ -60,12 +60,12 @@ public:
 
 // Named after its vtable, 0x8049C718 ("BWRT" per docs/names/actors.tsv: the
 // Stone Arrghus boss). Field names come from the asm only (shotgun pass).
-class cls_8049C718 : public ActorBase_804A5770 {
+class StoneArrghus_8049C718 : public ActorBase_804A5770 {
 public:
-    cls_8049C718() {
+    StoneArrghus_8049C718() {
         mRing.mActive = 0;
     }
-    /* 0x08 */ virtual ~cls_8049C718();
+    /* 0x08 */ virtual ~StoneArrghus_8049C718();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

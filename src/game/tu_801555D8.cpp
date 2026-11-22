@@ -37,7 +37,7 @@ void fn_801583D4(JGeometry::TVec3f* dst, f32 x, f32 y, f32 z) {
 }
 
 // FIXME(shotgun): 94.27 %, missing/extra + reloc-name; behaviour near.
-void cls_804A00C8::init() {
+void BowSoldier_804A00C8::init() {
     mBox.i.x = -8.0f;
     mBox.i.y = -12.0f;
     mBox.f.x = 8.0f;
@@ -136,10 +136,10 @@ void cls_804A00C8::init() {
     }
 }
 
-cls_804A00C8::~cls_804A00C8() {
+BowSoldier_804A00C8::~BowSoldier_804A00C8() {
     s32 partnerSerial = field_0x280;
     if (partnerSerial >= 0) {
-        cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(partnerSerial));
+        BowSoldier_804A00C8* partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(partnerSerial));
         if (partner != NULL) {
             partner->field_0x290--;
         }
@@ -155,7 +155,7 @@ cls_804A00C8::~cls_804A00C8() {
     }
 }
 
-void cls_804A00C8::vfunc_0x44() {
+void BowSoldier_804A00C8::vfunc_0x44() {
     s32 serial = field_0x284;
     if (serial >= 0) {
         ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -168,7 +168,7 @@ void cls_804A00C8::vfunc_0x44() {
     if (mLife <= 0) {
         s32 partnerSerial = field_0x280;
         if (partnerSerial >= 0) {
-            cls_804A00C8* partner = static_cast<cls_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(partnerSerial));
+            BowSoldier_804A00C8* partner = static_cast<BowSoldier_804A00C8*>(getActorManager_801F856C()->findActorBySerial_801F666C(partnerSerial));
             if (partner != NULL) {
                 partner->field_0x290--;
             }
@@ -176,7 +176,7 @@ void cls_804A00C8::vfunc_0x44() {
     }
 }
 
-bool cls_804A00C8::vfunc_0x54() {
+bool BowSoldier_804A00C8::vfunc_0x54() {
     if (mState == 0xD) {
         return true;
     }
@@ -213,7 +213,7 @@ bool cls_804A00C8::vfunc_0x54() {
 }
 
 // FIXME(shotgun): 85.53 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A00C8::update() {
+void BowSoldier_804A00C8::update() {
     JGeometry::TVec3f pos = mPos;
     u8 moved = 0;
     bool flag = true;
@@ -1067,7 +1067,7 @@ void cls_804A00C8::update() {
 }
 
 // FIXME(shotgun): 97.83 %, missing/extra; behaviour near.
-void cls_804A00C8::draw() {
+void BowSoldier_804A00C8::draw() {
     if (field_0x94 == 2 || field_0x278 != 0) {
         return;
     }

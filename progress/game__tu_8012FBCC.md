@@ -2,7 +2,7 @@
 
 Baseline: 5708 / 11557 functions, 1150032 bytes (25.89 %). After: 5710 / 11557, 1150364 bytes.
 
-Matched (4/4): ~cls_8049EA00, cls_8049EA00::fn_8012FC2C(const s32*) (the 3 flag
+Matched (4/4): ~KeepsEscortedGirlFromGoing_8049EA00, KeepsEscortedGirlFromGoing_8049EA00::fn_8012FC2C(const s32*) (the 3 flag
 tests are `(mFlags >> n) & 1`, which gives extrwi), init, __sinit.
 Resistant: none. Matching flag left NonMatching: extab/extabindex show 47 %
 in try.py (same as sibling tu_8012F8AC).

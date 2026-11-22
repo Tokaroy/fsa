@@ -12,10 +12,10 @@
 // emitter arrays, releasing each slot and clearing it; mEmitter2a8 is
 // released in every round. Then it destroys mAnim250 and runs
 // cls_8049D140's destructor.
-class cls_8049DA0C : public cls_8049D140 {
+class FourSwordCutscene_8049DA0C : public cls_8049D140 {
 public:
-    cls_8049DA0C();
-    /* 0x08 */ virtual ~cls_8049DA0C();
+    FourSwordCutscene_8049DA0C();
+    /* 0x08 */ virtual ~FourSwordCutscene_8049DA0C();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
@@ -26,7 +26,7 @@ public:
     // lbl_80464A7C entry.
     /* 0x54 */ virtual void vfunc_0x54();
 
-    // Mangled fn_80117074__12cls_8049DA0CFl (0x80117074, game/act_four_sword_demo.cpp).
+    // Mangled fn_80117074__26FourSwordCutscene_8049DA0CFl (0x80117074, game/act_four_sword_demo.cpp).
     // Takes the table index 2..12 found by vfunc_0x54.
     void fn_80117074(s32 index);
 

@@ -35,7 +35,7 @@ static const GXColor lbl_804661E0[8][3] = {
 s32 lbl_8053AB58;
 
 // 0x80164118.
-cls_804A0440::~cls_804A0440() {
+BigPoe_804A0440::~BigPoe_804A0440() {
     releaseEmitter_801EE434(field_0x2e8);
     if (field_0x268 == 2) {
         getGameView_802D6A9C()->fn_802D7440(true);
@@ -44,7 +44,7 @@ cls_804A0440::~cls_804A0440() {
 }
 
 // 0x80163E80.
-void cls_804A0440::init() {
+void BigPoe_804A0440::init() {
     field_0x94 = 0;
     mBox.set(-60.0f, -60.0f, 60.0f, 60.0f);
     field_0x244 = 0;
@@ -127,7 +127,7 @@ void cls_804A0440::init() {
 
 // 0x80162628.
 // FIXME(shotgun): 95.88 %, missing/extra + reloc-name; behaviour drift.
-void cls_804A0440::update() {
+void BigPoe_804A0440::update() {
     mLife = 10000;
     f32 x0 = -30.0f;
     f32 y0 = -30.0f;
@@ -346,7 +346,7 @@ void cls_804A0440::update() {
     case 3: {
         s32 serial = field_0x26c;
         if (serial >= 0) {
-            cls_804A0440* child = static_cast<cls_804A0440*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            BigPoe_804A0440* child = static_cast<BigPoe_804A0440*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             if (child != NULL) {
                 child->field_0x294[6] = mPos.x;
                 child->field_0x294[7] = mPos.y;
@@ -482,7 +482,7 @@ void cls_804A0440::update() {
             ActorBase_804A5770* list[0x400];
             s32 count = getActorManager_801F856C()->fn_801F7818('POOH', mLayer_0x4, list, -1);
             for (s32 i = 0; i < count; i++) {
-                cls_804A0440* pooh = static_cast<cls_804A0440*>(list[i]);
+                BigPoe_804A0440* pooh = static_cast<BigPoe_804A0440*>(list[i]);
                 if (pooh != NULL) {
                     pooh->field_0x234 = 1;
                 }
@@ -564,7 +564,7 @@ void cls_804A0440::update() {
 
 // 0x80162208.
 // FIXME(shotgun): 99.28 %, regalloc-only; behaviour clean.
-void cls_804A0440::draw() {
+void BigPoe_804A0440::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     mtx[0][3] = 0.0f;
@@ -624,7 +624,7 @@ void cls_804A0440::draw() {
 // Not auto-inlined: update calls fn_80161F98 out of line in the original (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // 0x80161F98.
-void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
+void BigPoe_804A0440::fn_80161F98(s32 set, s32 frames) {
     if (field_0x2ec != set) {
         if (field_0x2ec < 0) {
             field_0x2f4[0].set(lbl_804661E0[set][0]);
@@ -651,7 +651,7 @@ void cls_804A0440::fn_80161F98(s32 set, s32 frames) {
 #pragma auto_inline reset
 
 // 0x80161F20.
-void cls_804A0440::die_0x24() {
+void BigPoe_804A0440::die_0x24() {
     startSound_801F0E34(0x40015, 0);
     startBossDeath_0x28(7, 0.0f, 16.0f);
     s32 bit = field_0x270;
@@ -663,7 +663,7 @@ void cls_804A0440::die_0x24() {
 // 0x801618D0.
 // FIXME(shotgun): 99.96 %, same-text; behaviour near.
 // (the texture names sit after the extern colour table: +0x20 here, +0x60 in the original)
-void cls_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
+void BigPoe_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
     JUTTexture tex0(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_sirokuro.bti")), 0);
     JUTTexture tex1(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_ci.bti")), 0);
     JUTTexture tex2(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_eye.bti")), 0);

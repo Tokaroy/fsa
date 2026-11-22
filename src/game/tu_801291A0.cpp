@@ -26,7 +26,7 @@ static inline bool isNotSpawnedItem(u32 id) {
     return true;
 }
 
-void cls_8049E5B8::init() {
+void CrystalBallGenerator_8049E5B8::init() {
     mKind = mSpawnParam_0x90 & 0xF;
     field_0x280 |= 2;
     // 11 entries, one more than mItems holds: the last lands on mKinds[0],
@@ -58,7 +58,7 @@ void cls_8049E5B8::init() {
 // FIXME: 95.60 %, missing/extra; behaviour clean.
 // FIXME: try.py class: missing/extra. Ours keeps this in r31 and the serial
 // in r30; the original has this in r30 and the serial in r31.
-void cls_8049E5B8::update() {
+void CrystalBallGenerator_8049E5B8::update() {
     if (getScreenFlagBit_0x3C() > 0 && !isScreenFlagSet_0x34()) {
         return;
     }
@@ -102,7 +102,7 @@ void cls_8049E5B8::update() {
 // never entered with work to do, but the original's switch has a case 0.
 // Not auto-inlined: update calls fn_8012952C out of line in the original.
 #pragma auto_inline off
-void cls_8049E5B8::fn_8012952C(s32 state) {
+void CrystalBallGenerator_8049E5B8::fn_8012952C(s32 state) {
     switch (state) {
     case 0:
         break;
@@ -123,7 +123,7 @@ void cls_8049E5B8::fn_8012952C(s32 state) {
 // loads mItemCount into r5, and recomputes the multiplier (lis/addi) for the
 // third random call where ours reuses the register. The .sdata2 pool is also
 // ordered 1.0f, 10.0f, 0.8f in the original (ours 10.0f, 1.0f, 0.8f).
-bool cls_8049E5B8::fn_80129200() {
+bool CrystalBallGenerator_8049E5B8::fn_80129200() {
     JGeometry::TVec3f pos = mPos;
     s32 layer = mLayer_0x4;
     if (viewLayerFlag(layer) == 0) {
@@ -167,4 +167,4 @@ bool cls_8049E5B8::fn_80129200() {
     return true;
 }
 
-cls_8049E5B8::~cls_8049E5B8() {}
+CrystalBallGenerator_8049E5B8::~CrystalBallGenerator_8049E5B8() {}

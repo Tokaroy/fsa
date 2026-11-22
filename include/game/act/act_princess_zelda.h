@@ -8,10 +8,10 @@
 
 // The ZLDA actor ("Princess Zelda", docs/names/actors.tsv, high confidence):
 // spawned by spawnActor_801F9484 (0x8010AFC4). Named after its vtable, 0x8049CEE0.
-class cls_8049CEE0 : public ActorBase_804A5770 {
+class PrincessZelda_8049CEE0 : public ActorBase_804A5770 {
 public:
-    cls_8049CEE0();
-    /* 0x08 */ virtual ~cls_8049CEE0();
+    PrincessZelda_8049CEE0();
+    /* 0x08 */ virtual ~PrincessZelda_8049CEE0();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

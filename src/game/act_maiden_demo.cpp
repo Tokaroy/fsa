@@ -47,7 +47,7 @@ static const s32 lbl_80464774[6] = {0x14, 0x37, 0x4B, 0, 0x28, 0x41};
 static const s32 lbl_8046478C[6] = {5, 0xA, 0, 0, 0xF, 0x14};
 static const s32 lbl_804647A4[3] = {0x0235023D, 0x02340236, 0x02370238};
 
-cls_8049D740::cls_8049D740()
+MaidenCutscene_8049D740::MaidenCutscene_8049D740()
     : field_0x230(0),
       mMode(0),
       field_0x238(0),
@@ -62,7 +62,7 @@ cls_8049D740::cls_8049D740()
       mEmitter2a0(NULL) {
 }
 
-cls_8049D740::~cls_8049D740() {
+MaidenCutscene_8049D740::~MaidenCutscene_8049D740() {
     releaseEmitter_801EE434(mEmitter298);
     mEmitter298 = NULL;
     releaseEmitter_801EE434(mEmitter29c);
@@ -71,7 +71,7 @@ cls_8049D740::~cls_8049D740() {
     mEmitter2a0 = NULL;
 }
 
-void cls_8049D740::init() {
+void MaidenCutscene_8049D740::init() {
     cls_8049D140::init();
     mMode = mSpawnParam_0x90 & 0x1F;
     mAnim.fn_801D2608(lbl_8049D710, 12);
@@ -79,7 +79,7 @@ void cls_8049D740::init() {
     mAnim.fn_801D1F14(0.0f);
 }
 
-void cls_8049D740::vfunc_0x10() {
+void MaidenCutscene_8049D740::vfunc_0x10() {
     s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_DMGL);
     ActorBase_804A5770* goal = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     if (goal != NULL) {
@@ -88,7 +88,7 @@ void cls_8049D740::vfunc_0x10() {
 }
 
 // FIXME: 97.94 %, scheduling+regalloc; behaviour drift.
-void cls_8049D740::update() {
+void MaidenCutscene_8049D740::update() {
     cls_8049D140::update();
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
@@ -152,7 +152,7 @@ void cls_8049D740::update() {
     }
 }
 
-void cls_8049D740::draw() {
+void MaidenCutscene_8049D740::draw() {
     cls_8049D140::draw();
     if (field_0x230 == 0) {
         s32 baseFrame = lbl_80464704[mMode];
@@ -162,7 +162,7 @@ void cls_8049D740::draw() {
 }
 
 // FIXME: 98.43 %, regalloc-only; behaviour clean.
-void cls_8049D740::vfunc_0x54() {
+void MaidenCutscene_8049D740::vfunc_0x54() {
     s32 id = fn_8011921C()->field_0x8;
     switch (field_0x23c) {
     case 0:
@@ -195,11 +195,11 @@ void cls_8049D740::vfunc_0x54() {
     }
 }
 
-s32 cls_8049D740::vfunc_0x58() {
+s32 MaidenCutscene_8049D740::vfunc_0x58() {
     return field_0x238;
 }
 
-s32 cls_8049D740::vfunc_0x5C() {
+s32 MaidenCutscene_8049D740::vfunc_0x5C() {
     return 1;
 }
 
@@ -207,7 +207,7 @@ s32 cls_8049D740::vfunc_0x5C() {
 #pragma auto_inline off
 // FIXME: 99.89 %, scheduling; behaviour clean.
 // FIXME: lwz of field_0x244 and mMode are swapped.
-void cls_8049D740::fn_80112AE8() {
+void MaidenCutscene_8049D740::fn_80112AE8() {
     field_0x248 += 0.01f;
 
     Mtx mtx1;
@@ -244,7 +244,7 @@ void cls_8049D740::fn_80112AE8() {
 }
 #pragma auto_inline reset
 
-void cls_8049D740::fn_80112654(s32 kind) {
+void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
     switch (kind) {
     case 0:
     case 1:
@@ -406,7 +406,7 @@ u16 fn_801123C8(s32 kind, s32 mode) {
 // copies the linker dropped; defined at the bottom so deferred inlining pools
 // their .sdata2 constants before draw().
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 15-line definition): split out only where the .sdata2 order needs it.
-bool cls_8049D740::moveToGoal() {
+bool MaidenCutscene_8049D740::moveToGoal() {
     field_0x248 += 0.04f;
     fn_801CD950(&field_0x24c, 2.0f, 0.05f);
     s16 angle = (s32)(JMath::atanTable_.atan2_(mGoalPos.x - mPos.x, mGoalPos.y - mPos.y) *
@@ -423,6 +423,6 @@ bool cls_8049D740::moveToGoal() {
 }
 
 // R2 pool helper (one-statement body); was shrinkCrystal.
-void cls_8049D740::pool_8053C628() {
+void MaidenCutscene_8049D740::pool_8053C628() {
     fn_801CD950(&field_0x250, 0.0f, -0.02f);
 }

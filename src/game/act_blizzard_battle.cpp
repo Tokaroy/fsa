@@ -19,20 +19,20 @@ static inline void setCenter(JGeometry::TVec3f& pos, JGeometry::TBox2f box) {
     pos.z = 0.0f;
 }
 
-inline void cls_8049E7F0::stopEmitter() {
+inline void BlizzardBattle_8049E7F0::stopEmitter() {
     if (mEmitter != NULL) {
         mEmitter->stopCreateParticle();
     }
 }
 
-inline void cls_8049E7F0::playEmitter() {
+inline void BlizzardBattle_8049E7F0::playEmitter() {
     if (mEmitter != NULL) {
         mEmitter->playCreateParticle();
     }
 }
 
 // The SWEV actor (ACTOR_SWEV, the environment switch control) gets fn_802B39E8.
-inline void cls_8049E7F0::notifySwev() {
+inline void BlizzardBattle_8049E7F0::notifySwev() {
     s32 serial = getActorManager_801F856C()->fn_801F7A08(ACTOR_SWEV);
     ActorBase_804A5770* swev = getActorManager_801F856C()->findActorBySerial_801F666C(serial);
     if (swev != NULL) {
@@ -41,7 +41,7 @@ inline void cls_8049E7F0::notifySwev() {
 }
 
 // A sound and a particle burst at the view's centre, from the camera's translation.
-inline void cls_8049E7F0::spawnPuff() {
+inline void BlizzardBattle_8049E7F0::spawnPuff() {
     JGeometry::TVec3f pos(0.0f, 0.0f, 0.0f);
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     pos.x = -camera->mViewMtx_0x4[0][3];
@@ -52,7 +52,7 @@ inline void cls_8049E7F0::spawnPuff() {
 }
 
 // The phase dispatch: 0 stops the emitter, 1 starts it and notifies SWEV, 2 spawns the puff.
-inline void cls_8049E7F0::runPhase() {
+inline void BlizzardBattle_8049E7F0::runPhase() {
     switch (field_0x234) {
     case 0:
         stopEmitter();
@@ -68,7 +68,7 @@ inline void cls_8049E7F0::runPhase() {
     }
 }
 
-cls_8049E7F0::cls_8049E7F0() {
+BlizzardBattle_8049E7F0::BlizzardBattle_8049E7F0() {
     field_0x230 = 0;
     field_0x231 = 0;
     field_0x234 = 0;
@@ -76,14 +76,14 @@ cls_8049E7F0::cls_8049E7F0() {
     mEmitter = NULL;
 }
 
-cls_8049E7F0::~cls_8049E7F0() {
+BlizzardBattle_8049E7F0::~BlizzardBattle_8049E7F0() {
     releaseEmitter_801EE434(mEmitter);
     mEmitter = NULL;
 }
 
 // FIXME: 99.41 %. Regalloc only: the centre's x and y go to f0/f2 in the original
 // (we use f3/f0), and the 0.5f literal's relocation is named differently.
-void cls_8049E7F0::init() {
+void BlizzardBattle_8049E7F0::init() {
     ActorBase_804A5770::init();
     field_0x230 = mSpawnParam_0x90 & 1;
     field_0x231 = (mSpawnParam_0x90 >> 1) & 1;
@@ -100,7 +100,7 @@ void cls_8049E7F0::init() {
 // FIXME: 97.18 %. spawnPuff's camera position: the original stores z = 0 a second
 // time between x and y (stfs f1, 0x24 after the x store), we store it once in the
 // zeroed TVec3f. Its .sdata2 literals (1.0f, 0.5f) also come out in another order.
-void cls_8049E7F0::update() {
+void BlizzardBattle_8049E7F0::update() {
     ActorBase_804A5770::update();
     switch (field_0x234) {
     case 0:

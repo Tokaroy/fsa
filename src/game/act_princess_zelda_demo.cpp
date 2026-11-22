@@ -163,7 +163,7 @@ void PrincessZeldaDemo_8049D208::vfunc_0x10() {
         if (node == fn_8011921C()->mActors.mEnd) {
             break;
         }
-        cls_8049D740* maiden = static_cast<cls_8049D740*>(*node);
+        MaidenCutscene_8049D740* maiden = static_cast<MaidenCutscene_8049D740*>(*node);
         if (maiden->mMode < 6) {
             field_0x288[maiden->mMode] = maiden->mPos;
             node++;

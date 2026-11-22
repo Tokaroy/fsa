@@ -29,7 +29,7 @@ static const char* lbl_8049D930[4] = {
     "e_gufu_1.bti", "e_gufu_2.bti", "e_gufu_3.bti", "e_gufu_4.bti",
 };
 
-cls_8049D940::cls_8049D940() : field_0x230(0), field_0x234(0) {
+VaatiCutscene_8049D940::VaatiCutscene_8049D940() : field_0x230(0), field_0x234(0) {
     field_0x314 = 0;
     field_0x318 = 0;
     field_0x32c = 0;
@@ -39,7 +39,7 @@ cls_8049D940::cls_8049D940() : field_0x230(0), field_0x234(0) {
     field_0x31c[3] = 0;
 }
 
-cls_8049D940::~cls_8049D940() {
+VaatiCutscene_8049D940::~VaatiCutscene_8049D940() {
     field_0x31c[0] = 0;
     field_0x31c[1] = 0;
     field_0x31c[2] = 0;
@@ -51,7 +51,7 @@ cls_8049D940::~cls_8049D940() {
     field_0x318 = NULL;
 }
 
-void cls_8049D940::init() {
+void VaatiCutscene_8049D940::init() {
     cls_8049D140::init();
     for (s32 i = 0; i < 4; i++) {
         field_0x31c[i] = fn_804032E8('TIMG', lbl_8049D930[i]);
@@ -70,7 +70,7 @@ void cls_8049D940::init() {
     field_0x308 = mPos;
 }
 
-void cls_8049D940::update() {
+void VaatiCutscene_8049D940::update() {
     cls_8049D140::update();
     if (field_0x230 >= 2 && field_0x230 <= 10) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
@@ -153,7 +153,7 @@ void cls_8049D940::update() {
 // The only differences are the literal references (lbl_ in the
 // original, @NNN here: data split) and &mPos, which the original computes a
 // few instructions earlier, before the layer test.
-void cls_8049D940::draw() {
+void VaatiCutscene_8049D940::draw() {
     if (field_0x230 >= 10) {
         fn_801158B8();
     }
@@ -187,7 +187,7 @@ void cls_8049D940::draw() {
     }
 }
 
-void cls_8049D940::vfunc_0x54() {
+void VaatiCutscene_8049D940::vfunc_0x54() {
     if (fn_8011921C()->field_0x4 == 2) {
         s32 value = fn_8011921C()->field_0x8;
         if (value == lbl_804649A4[1]) {
@@ -216,11 +216,11 @@ void cls_8049D940::vfunc_0x54() {
     }
 }
 
-s32 cls_8049D940::vfunc_0x58() {
+s32 VaatiCutscene_8049D940::vfunc_0x58() {
     return field_0x230;
 }
 
-s32 cls_8049D940::vfunc_0x5C() {
+s32 VaatiCutscene_8049D940::vfunc_0x5C() {
     switch (field_0x230) {
     case 11:
         return 1;
@@ -232,7 +232,7 @@ s32 cls_8049D940::vfunc_0x5C() {
 // FIXME: 96.70 %, scheduling+regalloc; behaviour drift.
 // register allocation and instruction scheduling
 // in cases 9, 10 and 11, plus .sdata2 literal symbol names.
-void cls_8049D940::fn_80115F9C(s32 index) {
+void VaatiCutscene_8049D940::fn_80115F9C(s32 index) {
     switch (index) {
     case 1:
         field_0x2a8.fn_801EB710(mLayer_0x4, &field_0x308);
@@ -307,7 +307,7 @@ void cls_8049D940::fn_80115F9C(s32 index) {
 // Two plain functions that update inlines; the linker dropped their own copies. Their literals stand
 // in the pool between fn_80115D8C's and fn_80115F9C's, so they are defined here.
 // R2 pool helper (inlined at 2 call sites); was updateBobbing.
-void cls_8049D940::pool_8053C724() {
+void VaatiCutscene_8049D940::pool_8053C724() {
     static s16 lbl_8053AA88 = 0;
     mPos.z = 4.0f * JMath::sincosTable_.sinShort(lbl_8053AA88) + 20.0f;
     lbl_8053AA88 += 500;
@@ -320,7 +320,7 @@ void cls_8049D940::pool_8053C724() {
 }
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 10-line definition): split out only where the .sdata2 order needs it.
-void cls_8049D940::updateDescent() {
+void VaatiCutscene_8049D940::updateDescent() {
     if (mSpawnPos.y - mPos.y <= 24.0f) {
         fn_801CD950(&mVel_0x3c.y, 0.4f, 0.002f);
     } else {
@@ -337,7 +337,7 @@ void cls_8049D940::updateDescent() {
 // FIXME: 98.67 %, regalloc-only; behaviour clean.
 // FPR allocation in the distance and target position
 // math, plus .sdata2 literal symbol names.
-void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
+void VaatiCutscene_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
     out->x = 0.0f;
     out->y = 0.0f;
     out->z = 0.0f;
@@ -377,7 +377,7 @@ void cls_8049D940::fn_80115D8C(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
 // one extra frsp after the __fsel
 // (the intrinsic returns a double; the original scales by the fsel result directly),
 // plus .sdata2 literal symbol names.
-void cls_8049D940::fn_80115BC4(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
+void VaatiCutscene_8049D940::fn_80115BC4(const JGeometry::TVec3f* pos, JGeometry::TVec3f* out) {
     JGeometry::TVec3f pull(0.0f, 0.0f, 0.0f);
     if (pos->z <= 100.0f) {
         f32 dx = pos->x - mPos.x;
@@ -407,7 +407,7 @@ void cls_8049D940::fn_80115BC4(const JGeometry::TVec3f* pos, JGeometry::TVec3f* 
 // Not auto-inlined: update calls fn_80115A7C out of line in the original (docs/INLINING.md, pragma
 // rule 1).
 #pragma auto_inline off
-bool cls_8049D940::fn_80115A7C() {
+bool VaatiCutscene_8049D940::fn_80115A7C() {
     for (s32 i = 0; i < 4; i++) {
         JGeometry::TVec3f out;
         JGeometry::TVec3f pos = *getPlayerPos_8023E724(i);
@@ -433,7 +433,7 @@ bool cls_8049D940::fn_80115A7C() {
 // rule 1).
 #pragma auto_inline off
 // FIXME: 98.13 %, scheduling; behaviour clean.
-void cls_8049D940::fn_801158B8() {
+void VaatiCutscene_8049D940::fn_801158B8() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos;

@@ -8,10 +8,10 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/SpriteAnim.h"
 
-class cls_8049DB30 : public cls_8049D140 {
+class GoalOpening_8049DB30 : public cls_8049D140 {
 public:
-    cls_8049DB30();
-    /* 0x08 */ virtual ~cls_8049DB30();
+    GoalOpening_8049DB30();
+    /* 0x08 */ virtual ~GoalOpening_8049DB30();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

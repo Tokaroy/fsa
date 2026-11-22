@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049EA88.
-class cls_8049EA88 : public ActorBase_804A5770 {
+class MalonAndTalonController_8049EA88 : public ActorBase_804A5770 {
 public:
-    cls_8049EA88() : field_0x230(0), field_0x234(-1), field_0x238(-1), field_0x23c(-1), field_0x240(-1), field_0x244(0), field_0x248(0), field_0x24c(0) {}
-    /* 0x08 */ virtual ~cls_8049EA88();
+    MalonAndTalonController_8049EA88() : field_0x230(0), field_0x234(-1), field_0x238(-1), field_0x23c(-1), field_0x240(-1), field_0x244(0), field_0x248(0), field_0x24c(0) {}
+    /* 0x08 */ virtual ~MalonAndTalonController_8049EA88();
     /* 0x0C */ virtual void init();
     /* 0x10 */ virtual void vfunc_0x10();
     /* 0x14 */ virtual void update();

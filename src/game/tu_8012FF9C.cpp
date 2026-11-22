@@ -27,7 +27,7 @@ bool cls_8012FFF4::fn_80130030(const s32* v) {
     if (actor->mActorId != ACTOR_OGST) {
         return true;
     }
-    return static_cast<cls_8049EA00*>(actor)->fn_8012FC2C(v);
+    return static_cast<KeepsEscortedGirlFromGoing_8049EA00*>(actor)->fn_8012FC2C(v);
 }
 
 cls_8012FFF4* fn_8012FF9C() {
