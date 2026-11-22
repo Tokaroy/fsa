@@ -972,6 +972,13 @@ def judge(wt, unit, base, focus_addr, full=None, dry=False):
     lost = [e["name"] for a, e in new.items() if old.get(a, {}).get("pct", 0) >= 100 > e["pct"]]
     if lost:
         return f"lost matched function(s): {', '.join(lost[:3])}", ev, notes
+    # a function that had the original's instructions (registers/order aside) and lost them: the merge
+    # would refuse it anyway (regressions(), structural credit), so say it here, before the review
+    unstruct = [e["name"] for a, e in new.items() if a in old and e["pct"] < 100 and struct_done_cls(old[a]["cls"])
+                and not struct_done_cls(e["cls"]) and old[a]["pct"] < 100]
+    if unstruct:
+        return (f"lost structural match in: {', '.join(unstruct[:3])} (was same instructions up to registers/order; "
+                "now missing/extra or different)"), ev, notes
     worse = [e["name"] for a, e in new.items() if a in old and e["score"] > old[a]["score"]]
     if worse:  # weigh the unit as a whole: an unwritten function counts as two per instruction
         dist = lambda e: 2 * (e["size"] // 4) if e["cls"] == "missing" else e["score"]
