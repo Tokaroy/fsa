@@ -141,15 +141,11 @@ public:
         field_0x358.fn_80214244()->setIndex(start);
         return index;
     }
-    // The same with the current index as well (fn_801C8C84).
+    // The same with the current index as well.
     void getRailNeighbours(u8* next, u8* current, u8* prev) {
-        const u8 start = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->fn_800FD818(1);
-        u8 forward = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->setIndex(start);
-        field_0x358.fn_80214244()->fn_800FD818(-1);
-        u8 back = field_0x358.fn_80214244()->field_0x3;
-        field_0x358.fn_80214244()->setIndex(start);
+        u8 start = field_0x358.fn_80214244()->field_0x3;
+        u8 forward = stepRail(1, start);
+        u8 back = stepRail(-1, start);
         if (prev != NULL) {
             *prev = back;
         }
