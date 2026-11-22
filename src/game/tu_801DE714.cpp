@@ -8,6 +8,7 @@
 #include "game/act/act_force_gem.h"
 #include "game/act/act_tingle_buster.h"
 #include "game/act/tu_801DE714.h"
+#include "game/GameMath.h"
 #include "game/save_data_803B8C74.h"
 
 // The actor with this serial, or NULL. This file looks actors up through one inline
@@ -15,6 +16,22 @@
 // (97.22 %) (docs/analysis/INLINE_LEADS.md).
 static inline ActorBase_804A5770* actorBySerial(s32 serial) {
     return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
+}
+
+// Whether player `player` is present, not busy (fn_802375B0 is 0) and one of the
+// players taking part.
+static inline bool canTalkTo(s32 player) {
+    bool ok = false;
+    bool free = false;
+    if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) {
+        free = true;
+    }
+    if (free) {
+        if (player < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
+            ok = true;
+        }
+    }
+    return ok;
 }
 
 // The animation tables: pairs of frame and duration, ended by -1.
@@ -950,18 +967,10 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
                 break;
             }
             if (!(mFlags & 0x40000)) {
-                ActorBase_804A5770* found = NULL;
                 s32 s = field_0x2ac;
-                if (s >= 0) {
-                    found = actorBySerial(s);
-                }
-                if (found == NULL) {
+                if (!(s >= 0 && actorBySerial(s) != NULL)) {
                     s = field_0x2b0;
-                    if (s < 0) {
-                        break;
-                    }
-                    found = actorBySerial(s);
-                    if (found == NULL) {
+                    if (!(s >= 0 && actorBySerial(s) != NULL)) {
                         break;
                     }
                 }
@@ -978,22 +987,14 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
             }
             s32 player = field_0x2a8;
             if (player >= 0) {
-                bool ok = false;
-                bool cond = false;
-                if (fn_802375B0(player) == 0 && fn_801CCFE4(player)) {
-                    cond = true;
-                }
-                if (cond && player < gGameRoot_8053AAF8->getPlayerCount_80138A30()) {
-                    ok = true;
-                }
-                if (ok) {
-                    if (getPlayerLayer_8023DE58(field_0x2a8) == mLayer_0x4) {
+                if (canTalkTo(player)) {
+                    if (getPlayerLayer_8023DE58(field_0x2a8) == getField_0x4()) {
                         if (__fabsf(getPlayerPos_8023E724(field_0x2a8)->x - mPos.x) < 5.0f &&
                             __fabsf(getPlayerPos_8023E724(field_0x2a8)->y - mPos.y) < 5.0f) {
                             fn_8022FE80(field_0x2a8, mLayer_0x4, mSerial, false, false);
                             if (field_0x2a8 == fn_8022FD8C(mSerial) && fn_802308E0(field_0x2a8)) {
-                                JGeometry::TVec3f zero(0.0f, 0.0f, 0.0f);
-                                if (openMessage_8038AD24(field_0x2a8, 0xF0, mSerial, mLayer_0x4, zero, 4)) {
+                                if (openMessage_8038AD24(field_0x2a8, 0xF0, mSerial, mLayer_0x4,
+                                                         JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 4)) {
                                     setState_801E1594(0xF);
                                 } else {
                                     fn_8023061C(field_0x2a8, false);
@@ -1013,7 +1014,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
             if (target != NULL) {
                 f32 dx = target->mPos.x - mPos.x;
                 f32 dy = target->mPos.y - mPos.y;
-                if (dx * dx + dy * dy <= 0.36f) {
+                if (square(dx) + square(dy) <= 0.36f) {
                     setState_801E1594(2);
                 }
             }
@@ -1023,10 +1024,16 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         f32 height = 5.0f;
         if (mFlags & 0x20000) {
             height = 20.0f;
-        } else if (field_0x2ac >= 0 && actorBySerial(field_0x2ac) != NULL) {
-            height = 20.0f;
-        } else if (field_0x2b0 >= 0 && actorBySerial(field_0x2b0) != NULL) {
-            height = 20.0f;
+        } else {
+            s32 s = field_0x2ac;
+            if (s >= 0 && actorBySerial(s) != NULL) {
+                height = 20.0f;
+            } else {
+                s = field_0x2b0;
+                if (s >= 0 && actorBySerial(s) != NULL) {
+                    height = 20.0f;
+                }
+            }
         }
         if (mPos.z <= height) {
             mPos.z = height;
@@ -1156,10 +1163,16 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
         f32 height = 5.0f;
         if (mFlags & 0x20000) {
             height = 20.0f;
-        } else if (field_0x2ac >= 0 && actorBySerial(field_0x2ac) != NULL) {
-            height = 20.0f;
-        } else if (field_0x2b0 >= 0 && actorBySerial(field_0x2b0) != NULL) {
-            height = 20.0f;
+        } else {
+            s32 s = field_0x2ac;
+            if (s >= 0 && actorBySerial(s) != NULL) {
+                height = 20.0f;
+            } else {
+                s = field_0x2b0;
+                if (s >= 0 && actorBySerial(s) != NULL) {
+                    height = 20.0f;
+                }
+            }
         }
         if (mPos.z <= height) {
             mPos.z = height;
