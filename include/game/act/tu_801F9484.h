@@ -420,9 +420,8 @@ public:
     /* 0x269 */ u8 field_0x269[3];
     /* 0x26C */ f32 field_0x26c;
     /* 0x270 */ f32 field_0x270;
-    /* 0x274 */ f32 field_0x274;
-    /* 0x278 */ f32 field_0x278;
-    /* 0x27C */ f32 field_0x27c;
+    // A whole vector: fn_80198828 zeroes it with zeroVec_801546BC.
+    /* 0x274 */ JGeometry::TVec3f field_0x274;
     // Plain SDK Vec, not TVec3f: the spawner's inline constructor (PrincessZeldaGanonBattle_804A2944() {}) emits no
     // __construct_array for this range, and every use is a component-wise x/y/z copy.
     /* 0x280 */ Vec field_0x280[3];

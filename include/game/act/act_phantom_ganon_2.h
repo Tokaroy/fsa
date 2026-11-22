@@ -6,6 +6,12 @@
 #include "game/ActorBase.h"
 
 class JPABaseEmitter;
+class JPAEmitterManager;
+
+// Small out-of-line helpers of game/act_phantom_ganon_2.cpp, called from other units.
+void fn_8018A5C8(JPABaseEmitter* emitter, u8 alpha); // stb alpha, 0xbb(emitter)
+JPAEmitterManager* getEmitterManager_8018A5F0();
+s32 fn_8018A660();                                   // getActorManager_801F856C()->fn_801F68E0()
 
 // The FGN2 actor (Phantom Ganon 2, docs/names/actors.tsv, high confidence;
 // the spawner's case for ACTOR_FGN2). Named after its vtable, 0x804A1A98.
