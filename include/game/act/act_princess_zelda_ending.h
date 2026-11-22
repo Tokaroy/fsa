@@ -14,10 +14,10 @@
 // maidens (EMIK, act_maiden_ending) call the same step sequencer on
 // themselves, so these fields and the sequencer belong to this class. The
 // sequencer's code is in game/act_enemy_for_ending_control.cpp.
-class cls_804A5958 : public ActorBase_804A5770 {
+class EndingActorBase_804A5958 : public ActorBase_804A5770 {
 public:
-    cls_804A5958() {}
-    virtual ~cls_804A5958() {}
+    EndingActorBase_804A5958() {}
+    virtual ~EndingActorBase_804A5958() {}
 
     // 0x8035C15C: the step sequencer. When the step timer (0x244) is 0, reads
     // step 0x24C of table `seq` (lbl_804AD460): returns true at its end
@@ -40,7 +40,7 @@ public:
 // The EZLD actor ("Princess Zelda (ending)", docs/names/actors.tsv): the
 // spawner constructs it with fn_80200EDC, which stores this vtable
 // (config/G4SE01/game_units.tsv). Named after its vtable, 0x804AD6F0.
-class PrincessZeldaEnding_804AD6F0 : public cls_804A5958 {
+class PrincessZeldaEnding_804AD6F0 : public EndingActorBase_804A5958 {
 public:
     PrincessZeldaEnding_804AD6F0() {}
     /* 0x08 */ virtual ~PrincessZeldaEnding_804AD6F0();

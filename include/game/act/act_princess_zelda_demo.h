@@ -7,14 +7,14 @@
 #include "game/SpriteAnim.h"
 
 // The DMZL actor ("Princess Zelda (cutscene)", docs/names/actors.tsv). Its
-// ctor calls cls_8049D140's ctor, then stores this vtable, 0x8049D208. Named
+// ctor calls DemoActorBase_8049D140's ctor, then stores this vtable, 0x8049D208. Named
 // after that vtable. Its last three slots (0x54, 0x58, 0x5C) override
-// cls_8049D140's.
-class PrincessZeldaDemo_8049D208 : public cls_8049D140 {
+// DemoActorBase_8049D140's.
+class PrincessZeldaDemo_8049D208 : public DemoActorBase_8049D140 {
 public:
     PrincessZeldaDemo_8049D208();
     // Frees the emitters at 0x364, 0x368, 0x36C, 0x370[0..3] and 0x380[0..1]
-    // with releaseEmitter_801EE434, then the members and cls_8049D140's destructor run.
+    // with releaseEmitter_801EE434, then the members and DemoActorBase_8049D140's destructor run.
     /* 0x08 */ virtual ~PrincessZeldaDemo_8049D208();
     // 0x10: copies the Goal (DMGL) and Maiden (DMMD) actors' positions.
     // 0x0C: reads the actor's parameter word (mSpawnParam_0x90) into the fields below.

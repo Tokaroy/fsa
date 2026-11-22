@@ -6,7 +6,7 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/SpriteAnim.h"
 
-class AfterGoalOpening_8049DD68 : public cls_8049D140 {
+class AfterGoalOpening_8049DD68 : public DemoActorBase_8049D140 {
 public:
     AfterGoalOpening_8049DD68() : field_0x230(0), field_0x234(0), field_0x238(0.0f), field_0x23c(0.0f) {}
     /* 0x08 */ virtual ~AfterGoalOpening_8049DD68();

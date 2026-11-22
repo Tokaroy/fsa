@@ -229,7 +229,7 @@ Baseline (progress.py): `total: 8800 / 11557 functions, 1756492 / 4442032 bytes 
 After: `total: 8802 / 11557 functions, 1757340 / 4442032 bytes of code (39.56 %)`, structural 9256.
 
 ### Task 1: SaveRow_8050EC80[] retired
-- Every user now reads lbl_8050EC80 as cls_804AFB30 (game/tu_803B8C74.h) through two inline
+- Every user now reads lbl_8050EC80 as SaveData_804AFB30 (game/tu_803B8C74.h) through two inline
   accessors, `getFile(i)` and `getCurrentFile()` (= mFiles[mCurrentFile]). Evidence: with them
   fn_803B8CAC, fn_803B8EBC, fn_803B90E4 reach 100 % and fn_8019CE40 stays 100 %; indexing mFiles
   directly swaps the add's operands (97 %).

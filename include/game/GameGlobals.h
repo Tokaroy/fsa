@@ -159,7 +159,7 @@ struct GameRootSub04_801F856C {
 // (0x80139340). Named after its vtable, 0x8049EF20 (constructor
 // fn_80139300, allocated with __nw__(0x11C)); its real layout is unknown.
 struct AudioMgr_8045A080;
-class cls_804A8390;
+class BlackFade_804A8390;
 class cls_804AA8C8;
 // The 4-byte object of tu_803FF2C4 (lbl_80529DEC's field_0x60), defined in
 // game/tu_80301CD0.cpp (constructor fn_8030905C); named after its vtable,
@@ -207,7 +207,7 @@ struct GameRoot_8049EF20 {
     /* 0x08 */ cls_804AA8C8* field_0x8;
     /* 0x0C */ cls_804AA8B8* field_0xc;
     // The fade object (also lbl_8053ACA0); fn_80138C9C calls fn_802ACB58 on it.
-    /* 0x10 */ cls_804A8390* field_0x10;
+    /* 0x10 */ BlackFade_804A8390* field_0x10;
     /* 0x14 */ u8 field_0x14[0x18 - 0x14];
     /* 0x18 */ MessageManager_804AF070* mMessageManager_0x18; // new 0x158 in the constructor
     /* 0x1C */ cls_804AE9A0* field_0x1c;         // mode 12 (0x20 bytes)
@@ -230,7 +230,7 @@ struct GameRoot_8049EF20 {
     /* 0x50 */ s32 field_0x50;
     // Stored by fn_8019CDC4 (game/tu_80197070.cpp, 0x8019CDC4, stw of r3).
     /* 0x54 */ s32 field_0x54;
-    // The fade state tested by cls_804A8390::fn_802AC8B4 (tu_802AC8AC): 1 and
+    // The fade state tested by BlackFade_804A8390::fn_802AC8B4 (tu_802AC8AC): 1 and
     // 5 step the black picture up, 4 steps it down, 6 counts field_0x14 down.
     /* 0x58 */ s32 field_0x58;
     // A frame count: Title_804AF820::fn_803A44D8 (game/tu_803A3484.cpp)
@@ -1372,7 +1372,7 @@ struct cls_801192AC {
     ActorBase_804A5770** fn_8011871C(ActorBase_804A5770** from, u32 actorId);
     // 0x8011888C / 0x80118798 (not written yet). Register / remove an actor (its
     // serial at 0x198 is stored in / removed from the list at 0xC..0x14); called
-    // by cls_8049D140's init and destructor (tu_8010DF44) and act_opening_goal.
+    // by DemoActorBase_8049D140's init and destructor (tu_8010DF44) and act_opening_goal.
     void fn_8011888C(ActorBase_804A5770* actor);
     void fn_80118798(ActorBase_804A5770* actor);}; // Size: 0x20
 
@@ -2016,7 +2016,7 @@ public:
     void fn_8042F6DC();
     // Not in the binary: a plain function that fn_8042F6DC inlines.
     void scaleFrames(f32 w, f32 h);
-    // 0x80430368: appends the counted noun (the nouns of cls_804AF774::fn_803A2CB0) to out; 0.0f.
+    // 0x80430368: appends the counted noun (the nouns of MessageSequenceProcessor_804AF774::fn_803A2CB0) to out; 0.0f.
     f32 fn_80430368(u8 noun, s32 count, char* out);
     // 0x804310BC: clears field_0xe8 and field_0xec (owner game/tu_8042E964.cpp).
     void fn_804310BC();

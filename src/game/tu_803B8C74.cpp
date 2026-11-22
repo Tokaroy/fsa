@@ -8,7 +8,7 @@
 // both from 0x8050EC60: the save data at +0x20, cls_804AFB3C at +0x200C, each
 // after its destructor-chain object). The save data is 32-byte aligned: its chain
 // object at +0x0 is 0xC bytes and it starts at +0x20.
-cls_804AFB30 lbl_8050EC80 ATTRIBUTE_ALIGN(32);
+SaveData_804AFB30 lbl_8050EC80 ATTRIBUTE_ALIGN(32);
 cls_804AFB3C lbl_80510C6C;
 
 // Bit stage * 4 + sub of save file `file`'s flag word (stage 0-7, sub 0-3,
@@ -35,7 +35,7 @@ void fn_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body) {
 }
 
 // 0x803B94C4
-cls_804AFB30::~cls_804AFB30() {}
+SaveData_804AFB30::~SaveData_804AFB30() {}
 
 // A fresh file and body (fn_803B950C) copied into slot index. An inline of its own: the two
 // destination pointers get their registers before the caller's values (docs/REGALLOC.md, rule 4).
@@ -49,13 +49,13 @@ static inline void writeDefaults(SaveFile_803B950C *files, s32 index, SaveFileBo
     memcpy(dstBody, &body, sizeof(SaveFileBody_803B950C));
 }
 
-s32 cls_804AFB30::fn_803B93E8(SaveFile_803B950C* files, SaveFileBody_803B950C* bodies, s32 index) {
+s32 SaveData_804AFB30::fn_803B93E8(SaveFile_803B950C* files, SaveFileBody_803B950C* bodies, s32 index) {
     writeDefaults(files, index, bodies);
     return 0;
 }
 
 // 0x803B933C
-s32 cls_804AFB30::fn_803B933C(SaveFile_803B950C* files, s32 index) {
+s32 SaveData_804AFB30::fn_803B933C(SaveFile_803B950C* files, s32 index) {
     SaveFile_803B950C* dst = &files[index];
     SaveFile_803B950C file;
     memset(&file, 0, sizeof(SaveFile_803B950C));

@@ -23,7 +23,7 @@ static const s32 lbl_80464BBC[11] = {0, 0, 360, 800, 830, 950, 1040, 1160, 1325,
 s32 fn_801365A8();
 
 void AfterGoalOpening_8049DD68::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x274.fn_801D2608(lbl_80539F20, 1);
     field_0x274.startAnim_801D22DC(0, 2, false);
     field_0x274.fn_801D1F14(0.0f);
@@ -33,7 +33,7 @@ void AfterGoalOpening_8049DD68::init() {
 }
 
 void AfterGoalOpening_8049DD68::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     fn_8011CF48();
     static s32 lbl_8053AA98 = 0;
     switch (field_0x234) {
@@ -64,7 +64,7 @@ void AfterGoalOpening_8049DD68::update() {
 }
 
 void AfterGoalOpening_8049DD68::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
 }
 
 void AfterGoalOpening_8049DD68::vfunc_0x54() {

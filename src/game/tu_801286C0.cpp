@@ -21,7 +21,7 @@ const char* lbl_80539F38 = "kk_black.bti";
 // Thresholds that the value at fn_8011921C()->field_0x8 is matched against.
 const s32 lbl_80464FC0[11] = {0, 60, 60, 60, 150, 280, 340, 610, 670, 820, 880};
 void OpeningNarration_8049E500::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     // '????' (escaped: "??'" would be a trigraph).
     field_0x23c = gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', lbl_80539F38);
     getGameView_802D6A9C()->fn_802D7440(false);
@@ -36,7 +36,7 @@ void OpeningNarration_8049E500::init() {
 // probably depends on the unwritten fn_80128728, which uses the 0.5f, 0.0f,
 // 1.0f and 40.0f constants at lower addresses.
 void OpeningNarration_8049E500::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     gGameRoot2_8053AB10->field_0x24->field_0x179 = 1;
     Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
     if (camera->mBlendBoxOn_0x840 == 0) {
@@ -111,7 +111,7 @@ void OpeningNarration_8049E500::draw() {
     if (field_0x230 >= 1 && field_0x230 <= 3) {
         lbl_8053AF38->fn_8044C028(field_0x238);
     }
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
 }
 
 // Stores the value in the byte at 0xC of gGameRoot2_8053AB10->0x2C (ShadowCircle_804A0160).

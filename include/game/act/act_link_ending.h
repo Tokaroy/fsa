@@ -3,7 +3,7 @@
 
 // Code: game/act_link_ending.cpp.
 
-#include "game/act/act_princess_zelda_ending.h" // cls_804A5958
+#include "game/act/act_princess_zelda_ending.h" // EndingActorBase_804A5958
 
 // The ELNK actor ("Link (ending)", docs/names/actors.tsv): the spawner
 // constructs it with fn_80200BB4, which stores this vtable
@@ -11,7 +11,7 @@
 // partner is the Princess Zelda ending actor (EZLD, game/act_princess_zelda_ending.cpp):
 // the field_0x23c serial is EZLD's, and the two set each other's state and
 // go flags.
-class LinkEnding_804AD858 : public cls_804A5958 {
+class LinkEnding_804AD858 : public EndingActorBase_804A5958 {
 public:
     LinkEnding_804AD858() {}
     /* 0x08 */ virtual ~LinkEnding_804AD858();
@@ -31,7 +31,7 @@ public:
     void fn_8035E9A0();
     void fn_8035E93C();
 
-    // 0x230-0x253: cls_804A5958's fields (here 0x248 is the animation step 0-7,
+    // 0x230-0x253: EndingActorBase_804A5958's fields (here 0x248 is the animation step 0-7,
     // wrapped by the states; init() sets 0x250 to 0x18).
     // Three sprite x positions (32 + mPos.x + 32 * i), set by init().
     /* 0x254 */ f32 field_0x254[3];

@@ -8,7 +8,7 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/SpriteAnim.h"
 
-class GoalOpening_8049DB30 : public cls_8049D140 {
+class GoalOpening_8049DB30 : public DemoActorBase_8049D140 {
 public:
     GoalOpening_8049DB30();
     /* 0x08 */ virtual ~GoalOpening_8049DB30();

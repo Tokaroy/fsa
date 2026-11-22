@@ -38,7 +38,7 @@ GoalOpening_8049DB30::~GoalOpening_8049DB30() {
 }
 
 void GoalOpening_8049DB30::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 0xF;
     field_0x23c = (mSpawnParam_0x90 >> 4) & 0xF;
     mAnim.fn_801D2608(lbl_80539F18, 1);
@@ -53,7 +53,7 @@ void GoalOpening_8049DB30::init() {
 // switch's cmpwi 2, swaps f3/f4 in the box sums and loads the 1 of the bit mask
 // later (no clrlwi); the float literals are not split into this unit yet.
 void GoalOpening_8049DB30::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     fn_801902C0()->field_0x7a8 = 1;
     switch (field_0x234) {
     case 2:
@@ -109,7 +109,7 @@ void GoalOpening_8049DB30::update() {
 }
 
 void GoalOpening_8049DB30::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
 }
 
 void GoalOpening_8049DB30::vfunc_0x54() {

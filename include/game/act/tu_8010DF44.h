@@ -6,10 +6,10 @@
 #include "game/ActorBase.h"
 
 // Named after its vtable, 0x8049D140. Adds three slots after ActorBase's 19.
-class cls_8049D140 : public ActorBase_804A5770 {
+class DemoActorBase_8049D140 : public ActorBase_804A5770 {
 public:
-    cls_8049D140();
-    /* 0x08 */ virtual ~cls_8049D140();
+    DemoActorBase_8049D140();
+    /* 0x08 */ virtual ~DemoActorBase_8049D140();
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();

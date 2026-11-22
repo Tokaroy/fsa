@@ -52,7 +52,7 @@ VaatiCutscene_8049D940::~VaatiCutscene_8049D940() {
 }
 
 void VaatiCutscene_8049D940::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     for (s32 i = 0; i < 4; i++) {
         field_0x31c[i] = fn_804032E8('TIMG', lbl_8049D930[i]);
     }
@@ -71,7 +71,7 @@ void VaatiCutscene_8049D940::init() {
 }
 
 void VaatiCutscene_8049D940::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     if (field_0x230 >= 2 && field_0x230 <= 10) {
         cls_804A03A8* sub = gGameRoot2_8053AB10->field_0x30;
         if (sub->field_0x284 == 0) {
@@ -157,7 +157,7 @@ void VaatiCutscene_8049D940::draw() {
     if (field_0x230 >= 10) {
         fn_801158B8();
     }
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     params.field_0x30 = 8;

@@ -14,23 +14,23 @@
 class cls_804AF5A0;
 
 // Vtable 0x804AF6D4: a JMessage::TReference with do_word left to the base.
-class cls_804AF6D4 : public JMessage::TReference {
+class MessageReference_804AF6D4 : public JMessage::TReference {
 public:
     // Inlined by cls_804AF5A0's constructor (no out-of-line copy).
-    cls_804AF6D4() {}
-    virtual ~cls_804AF6D4();
+    MessageReference_804AF6D4() {}
+    virtual ~MessageReference_804AF6D4();
 };
 
 // Vtable 0x804AF774: the sequence processor of a window, slot 0x3C of the
 // object (its 0x60 points back at the window).
-class cls_804AF774 : public JMessage::TSequenceProcessor {
+class MessageSequenceProcessor_804AF774 : public JMessage::TSequenceProcessor {
 public:
     // Inlined by cls_804AF5A0's constructor (no out-of-line copy).
-    cls_804AF774(const JMessage::TReference* reference, JMessage::TControl* control)
+    MessageSequenceProcessor_804AF774(const JMessage::TReference* reference, JMessage::TControl* control)
         : JMessage::TSequenceProcessor(reference, control) {
         field_0x5c = 1;
     }
-    virtual ~cls_804AF774();
+    virtual ~MessageSequenceProcessor_804AF774();
     virtual void do_reset();
     virtual void do_begin(const void*, const char*);
     virtual void do_end();
@@ -75,7 +75,7 @@ public:
     virtual bool do_tag(u32, const void*, u32);
 
     // 0x80398700: adds the width of the counted noun after a number (the
-    // same nouns as cls_804AF774::fn_803A2CB0; singular when count is 1) to
+    // same nouns as MessageSequenceProcessor_804AF774::fn_803A2CB0; singular when count is 1) to
     // the current line, like do_character. Called by the do_tag (0x803997B8).
     void fn_80398700(u8 noun, s32 count);
     // 0x80398A34: adds the width of a number's characters to the current line (like do_character).

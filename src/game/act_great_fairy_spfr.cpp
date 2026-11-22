@@ -85,7 +85,7 @@ GreatFairy_8049EB8C::~GreatFairy_8049EB8C() {
 }
 
 void GreatFairy_8049EB8C::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 1;
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1f;
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
@@ -107,7 +107,7 @@ void GreatFairy_8049EB8C::init() {
 // FIXME: 98.52 %, scheduling+regalloc; behaviour drift.
 // missing/extra + reloc-name: ours has 1 fewer instr (346 vs 347); the TBox2f offset adds are scheduled differently (stfs order).
 void GreatFairy_8049EB8C::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -210,7 +210,7 @@ void GreatFairy_8049EB8C::update() {
 }
 
 void GreatFairy_8049EB8C::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     fn_801F02BC("enemy_gc_sob.bin", mAnim.mCel + 0x2fb, &params, 0x407, 0, false, 1.0f, 1.0f);
 }

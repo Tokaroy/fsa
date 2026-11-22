@@ -350,7 +350,7 @@ void cls_801192AC::fn_80118E20() {
     }
     bool done = true;
     for (ActorBase_804A5770** it = mActors.mBegin; it != mActors.mEnd; it++) {
-        cls_8049D140* actor = static_cast<cls_8049D140*>(*it);
+        DemoActorBase_8049D140* actor = static_cast<DemoActorBase_8049D140*>(*it);
         if (actor != NULL) {
             actor->vfunc_0x54();
             if (!actor->vfunc_0x5C()) {

@@ -21,7 +21,7 @@
 
 ## Evidence for new symbol names
 
-- `update__22VaatiCutscene_8049D940Fv` (`0x8011661C`): Occupies slot `0x14` (`ActorBase_804A5770::update`) of `__vt__22VaatiCutscene_8049D940` (`0x8049D940`), and begins by calling `cls_8049D140::update()` (`update__12cls_8049D140Fv`).
+- `update__22VaatiCutscene_8049D940Fv` (`0x8011661C`): Occupies slot `0x14` (`ActorBase_804A5770::update`) of `__vt__22VaatiCutscene_8049D940` (`0x8049D940`), and begins by calling `DemoActorBase_8049D140::update()` (`update__22DemoActorBase_8049D140Fv`).
 - `fn_80115D8C__22VaatiCutscene_8049D940FPCQ29JGeometry8TVec3<f>PQ29JGeometry8TVec3<f>` (`0x80115D8C`): Member of `VaatiCutscene_8049D940` (`r3` = `this`, reads `this->mPos` at `+0x18`/`+0x1C`, `r4` = `const JGeometry::TVec3f*`, `r5` = `JGeometry::TVec3f*`).
 - `fn_801EB418__12cls_801EB8CCFPCQ29JGeometry8TVec3<f>` (`0x801EB418`): Called on `&this->field_0x2a8` (`cls_801EB8CC`) with `&this->field_0x308` (`const JGeometry::TVec3f*`); inside `0x801EB418`, copies `r4->x, y, z` into `this+0x40..0x48` and updates `cls_801EB8CC` timers.
 - `fn_802B3A3C__33EnvironmentSwitchControl_804A8638Fv` (`0x802B3A3C`): Called on the `'SWEV'` actor (`EnvironmentSwitchControl_804A8638`, constructed by `fn_802B3A48` which sets `__vt__33EnvironmentSwitchControl_804A8638`); stores 0 to `this->field_0x2b8` (`li r0,0; stw r0,0x2b8(r3)`).

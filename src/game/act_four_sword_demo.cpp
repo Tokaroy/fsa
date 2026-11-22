@@ -101,7 +101,7 @@ FourSwordCutscene_8049DA0C::~FourSwordCutscene_8049DA0C() {
 // FIXME: 99.65 %, regalloc-only; behaviour clean.
 // (regalloc-only). Minor register allocation differences in visibleBox center computation.
 void FourSwordCutscene_8049DA0C::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     mAnim250.fn_801D2608(lbl_8049DA00, 3);
     mAnim250.startAnim_801D22DC(0, 2, false);
     mAnim250.fn_801D1F14(0.0f);
@@ -116,7 +116,7 @@ void FourSwordCutscene_8049DA0C::init() {
 // order; case 2's camera setup reloads mPos.x / mPos.y where the original reuses registers; the loop
 // counters and base pointers of cases 5 and 8 sit in other saved registers.
 void FourSwordCutscene_8049DA0C::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     JGeometry::TBox2f box(mBox);
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -240,7 +240,7 @@ void FourSwordCutscene_8049DA0C::update() {
 }
 
 void FourSwordCutscene_8049DA0C::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     if (mSpriteParams.mMtx == NULL) {
         fn_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);

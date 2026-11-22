@@ -8,7 +8,7 @@
 #include "game/act/tu_8010DF44.h"
 #include "game/cls_800FE8C0.h"
 
-class ShadowLinkCutscene_8049DB90 : public cls_8049D140 {
+class ShadowLinkCutscene_8049DB90 : public DemoActorBase_8049D140 {
 public:
     ShadowLinkCutscene_8049DB90();
     /* 0x08 */ virtual ~ShadowLinkCutscene_8049DB90();
@@ -18,7 +18,7 @@ public:
     void fn_8011B3F0();              // camera control by field_0x238
     /* 0x54 */ virtual void vfunc_0x54(); // compares fn_8011921C()'s field_0x8 with lbl_80464AF8
     /* 0x58 */ virtual s32 vfunc_0x58();
-    /* 0x5C */ virtual s32 vfunc_0x5C(); // 1 or 0, as cls_8049D140::vfunc_0x5C
+    /* 0x5C */ virtual s32 vfunc_0x5C(); // 1 or 0, as DemoActorBase_8049D140::vfunc_0x5C
 
     // 0x8011B878; called by vfunc_0x54 with the index of the matched entry.
     void fn_8011B878(s32 index);

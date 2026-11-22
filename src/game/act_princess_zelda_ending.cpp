@@ -162,8 +162,8 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E070() {
 void PrincessZeldaEnding_804AD6F0::fn_8035DFE4() {
     if (field_0x234 == 0) {
         if (field_0x238 == 0) {
-            cls_804A5958* partner =
-                static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x23c));
+            EndingActorBase_804A5958* partner =
+                static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x23c));
             if (partner != NULL) {
                 partner->field_0x234 = 1;
             }
@@ -185,8 +185,8 @@ void PrincessZeldaEnding_804AD6F0::fn_8035DF48() {
         }
         mPos.y += 0.23f;
     } else {
-        cls_804A5958* partner =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x23c));
+        EndingActorBase_804A5958* partner =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x23c));
         if (partner != NULL) {
             partner->mState = 7;
             partner->field_0x234 = 0;

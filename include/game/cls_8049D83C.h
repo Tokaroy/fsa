@@ -1,7 +1,7 @@
 #ifndef GAME_CLS_8049D83C_H
 #define GAME_CLS_8049D83C_H
 
-// Code: game/tu_80113788.cpp. A cls_8049D140 subclass named after its vtable,
+// Code: game/tu_80113788.cpp. A DemoActorBase_8049D140 subclass named after its vtable,
 // 0x8049D83C. Its constructor (0x80115590) zeroes field_0x23c.
 
 #include "game/act/tu_8010DF44.h"
@@ -9,7 +9,7 @@
 
 class JPABaseEmitter;
 
-class CrystalCutscene_8049D83C : public cls_8049D140 {
+class CrystalCutscene_8049D83C : public DemoActorBase_8049D140 {
 public:
     CrystalCutscene_8049D83C();
     /* 0x08 */ virtual ~CrystalCutscene_8049D83C();

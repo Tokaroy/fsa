@@ -28,10 +28,10 @@ game/act_princess_zelda.cpp	npcs	high	actors.tsv (actor spawner): npc ZLDA Princ
 game/act_icicle.cpp	objects	med	actors.tsv (actor spawner): object ICCL Icicle	auto
 game/act_snowball.cpp	enemies	med	actors.tsv (actor spawner): enemy SNBL Snowball	auto
 game/act_message_check_npc.cpp	objects	low	actors.tsv (actor spawner): debug DBMS Message-check NPC	auto
-game/tu_8010DF44.cpp	core	med	cls_8049D140: base class of 10 cutscene actors (PrincessZeldaDemo...)	hand
+game/tu_8010DF44.cpp	core	med	DemoActorBase_8049D140: base class of 10 cutscene actors (PrincessZeldaDemo...)	hand
 game/act_princess_zelda_demo.cpp	npcs	high	actors.tsv (actor spawner): npc DMZL Princess Zelda (cutscene)	auto
 game/act_maiden_demo.cpp	npcs	high	actors.tsv (actor spawner): npc DMMD Maiden (cutscene)	auto
-game/tu_80113788.cpp	objects	low	subclass of the cutscene base cls_8049D140, spawned	hand
+game/tu_80113788.cpp	objects	low	subclass of the cutscene base DemoActorBase_8049D140, spawned	hand
 game/act_vaati_demo.cpp	npcs	high	actors.tsv (actor spawner): npc DMGF Vaati (cutscene)	auto
 game/act_four_sword_demo.cpp	npcs	high	actors.tsv (actor spawner): npc DMSW Four Sword (cutscene)	auto
 game/tu_80118384.cpp	core	low	fade object (texture, fade length per mode), called by 31 cutscene/actor units	hand
@@ -49,7 +49,7 @@ game/tu_80125B58.cpp	objects	low	called only by tu_80130310	hand
 game/act_vaati_buster.cpp	objects	med	actors.tsv (actor spawner): system GFBS Vaati Buster	auto
 game/act_zora_escort_goal.cpp	npcs	med	actors.tsv (actor spawner): npc FZRA Zora (escort, arrival point)	auto
 game/tu_80127E20.cpp	npcs	low	called only by the Zora escort units	hand
-game/tu_801286C0.cpp	objects	low	subclass of the cutscene base cls_8049D140	hand
+game/tu_801286C0.cpp	objects	low	subclass of the cutscene base DemoActorBase_8049D140	hand
 game/tu_801291A0.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand
 game/act_rainbow_bridge.cpp	objects	med	actors.tsv (actor spawner): object RNBW Rainbow bridge	auto
 game/tu_8012A5EC.cpp	objects	low	actor-shaped (calls ActorBase, reached through its vtable); kind unknown	hand

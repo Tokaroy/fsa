@@ -1,6 +1,6 @@
 // Crystal (cutscene) actor: 'DCR2', spawned by tu_801F9484.cpp.
 // Declared in include/game/act/tu_801F9484.h (CrystalCutscene5464_804AE088).
-// Inherits from cls_8049D140 (tu_8010DF44).
+// Inherits from DemoActorBase_8049D140 (tu_8010DF44).
 
 #include "game/ActorBase.h"
 #include "game/ActorId.h"
@@ -129,7 +129,7 @@ static const u8 lbl_80474E34[6][3] = {
 
 // FIXME: 96.54 %, scheduling+regalloc + reloc-name; behaviour clean.
 void CrystalCutscene5464_804AE088::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x23c = mSpawnParam_0x90 & 0x1F;
     field_0x248 = (mSpawnParam_0x90 >> 22) & 0x1F;
     if (field_0x23c != 4 && field_0x23c != 5) {
@@ -208,7 +208,7 @@ void CrystalCutscene5464_804AE088::draw() {
         fn_803683AC();
         return;
     }
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     fn_8036A894();
     if (field_0x236 != 0) {
         fn_8036AC58(lbl_80474C48[field_0x23c]);
@@ -728,7 +728,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
             field_0x398 = NULL;
         }
     }
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) && field_0x240 >= 5 &&
         field_0x240 <= 13) {
         gGameRoot_8053AAF8->field_0x85 = 2;
@@ -939,7 +939,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
             }
         }
     }
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     if (isStageFlagSet(lbl_80529DEC.mStage_0x118, lbl_80529DEC.mLevel_0x11c) && field_0x270 == 0 &&
         field_0x240 >= 0x18 && field_0x240 <= 0x23) {
         gGameRoot_8053AAF8->field_0x85 = 2;

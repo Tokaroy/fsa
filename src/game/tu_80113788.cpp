@@ -134,7 +134,7 @@ CrystalCutscene_8049D83C::~CrystalCutscene_8049D83C() {
 // 0x80115248.
 // FIXME(shotgun): 96.72 %, scheduling; behaviour clean.
 void CrystalCutscene_8049D83C::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 0xFF;
     field_0x244 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x260 = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_80539F00);
@@ -163,7 +163,7 @@ void CrystalCutscene_8049D83C::init() {
 // FIXME(shotgun): 97.58 %, missing/extra; behaviour drift.
 // (case 5: the original keeps the flag test and the input test in a bool temporary)
 void CrystalCutscene_8049D83C::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     updateCameraFocus();
     switch (field_0x23c) {
     case 0:
@@ -262,7 +262,7 @@ void CrystalCutscene_8049D83C::update() {
 
 // 0x80114C1C.
 void CrystalCutscene_8049D83C::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     fn_80113790();
     switch (field_0x23c) {
     case 0x10:

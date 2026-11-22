@@ -800,7 +800,7 @@ public:
 }; // Size: 0x2E4
 
 // Spawned for 'EMIK'.
-class MaidenEnding_804AD5B8 : public cls_804A5958 {
+class MaidenEnding_804AD5B8 : public EndingActorBase_804A5958 {
 public:
     MaidenEnding_804AD5B8() {}
     /* 0x08 */ virtual ~MaidenEnding_804AD5B8();
@@ -810,7 +810,7 @@ public:
 // Spawned for 'DCR2'.
 class Navi54MaidenCrystalCutscene_804ADFE8;
 class J2DPicture;
-class CrystalCutscene5464_804AE088 : public cls_8049D140 {
+class CrystalCutscene5464_804AE088 : public DemoActorBase_8049D140 {
 public:
     CrystalCutscene5464_804AE088();
     /* 0x08 */ virtual ~CrystalCutscene5464_804AE088();

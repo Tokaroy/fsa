@@ -122,7 +122,7 @@ void EnemyForEndingControl_804AD48C::draw() {
 
 // Restarts the sequencer on table `seq`: stores `arg` (0x250), clears the
 // timer and the step index, then runs the first step (fn_8035C15C inlined).
-void cls_804A5958::fn_8035C1C4(s32 seq, s32 arg) {
+void EndingActorBase_804A5958::fn_8035C1C4(s32 seq, s32 arg) {
     field_0x250 = arg;
     field_0x244 = 0;
     field_0x24c = 0;
@@ -130,7 +130,7 @@ void cls_804A5958::fn_8035C1C4(s32 seq, s32 arg) {
 }
 
 // Advances the sequencer; true once the sequence is over.
-bool cls_804A5958::fn_8035C15C(s32 seq) {
+bool EndingActorBase_804A5958::fn_8035C15C(s32 seq) {
     if (field_0x244 == 0) {
         const EndingStep_804AD460* steps = lbl_804AD460[seq];
         if (steps[field_0x24c].value < 0) {
@@ -166,8 +166,8 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
         ACTOR_EZLD, mLayer_0x4, &(mPos + JGeometry::TVec3f(0.0f, -37.0f, 0.0f)), 0, -1, -1);
     s32 zelda = mActors[0];
     if (zelda >= 0) {
-        cls_804A5958* actor =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(zelda));
+        EndingActorBase_804A5958* actor =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(zelda));
         actor->field_0x23c = mSerial;
     }
 
@@ -176,8 +176,8 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
             ACTOR_EMIK, mLayer_0x4, &mPos, i, -1, -1);
         s32 serial = mActors[i + 1];
         if (serial >= 0) {
-            cls_804A5958* maiden =
-                static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
+            EndingActorBase_804A5958* maiden =
+                static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(serial));
             maiden->field_0x23c = mSerial;
         }
     }
@@ -187,8 +187,8 @@ void EnemyForEndingControl_804AD48C::fn_8035BE24() {
         ACTOR_ELNK, mLayer_0x4, &(mPos + JGeometry::TVec3f(-48.0f, 200.0f, 0.0f)), zeldaSerial, -1, -1);
     s32 link = mActors[7];
     if (link >= 0) {
-        cls_804A5958* actor =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(link));
+        EndingActorBase_804A5958* actor =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(link));
         actor->field_0x23c = mSerial;
     }
 
@@ -270,8 +270,8 @@ void EnemyForEndingControl_804AD48C::fn_8035B8C8() {
     }
     if (field_0x260 == 0xF0) {
         setActorFlag(0, 1);
-        cls_804A5958* ezld =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
+        EndingActorBase_804A5958* ezld =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
         if (ezld != NULL) {
             ezld->field_0x244 = 0;
             ezld->field_0x248 = 0;
@@ -293,8 +293,8 @@ void EnemyForEndingControl_804AD48C::fn_8035B8C8() {
             setActorFlag(i, 3);
         }
     } else {
-        cls_804A5958* maiden4 =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[5]));
+        EndingActorBase_804A5958* maiden4 =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[5]));
         if (maiden4 != NULL && maiden4->mState == 2 && maiden4->field_0x234 == 0) {
             for (int i = 1; i <= 6; i++) {
                 setActorFlag(i, 1);
@@ -320,8 +320,8 @@ void EnemyForEndingControl_804AD48C::fn_8035B81C() {
         arrived++;
     }
     if (arrived >= 2) {
-        cls_804A5958* ezld =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
+        EndingActorBase_804A5958* ezld =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
         if (ezld != NULL) {
             ezld->field_0x238 = 1;
         }
@@ -333,13 +333,13 @@ void EnemyForEndingControl_804AD48C::fn_8035B81C() {
 // setup flag.
 void EnemyForEndingControl_804AD48C::fn_8035B7A8() {
     if (field_0x234 != 0) {
-        cls_804A5958* ezld =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
+        EndingActorBase_804A5958* ezld =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[0]));
         if (ezld != NULL) {
             ezld->field_0x238 = 1;
         }
-        cls_804A5958* elnk =
-            static_cast<cls_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[7]));
+        EndingActorBase_804A5958* elnk =
+            static_cast<EndingActorBase_804A5958*>(getActorManager_801F856C()->findActorBySerial_801F666C(mActors[7]));
         if (elnk != NULL) {
             elnk->field_0x238 = 1;
         }

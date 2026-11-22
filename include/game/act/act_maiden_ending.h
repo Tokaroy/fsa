@@ -8,7 +8,7 @@
 
 // The EMIK actor ("Maiden (ending)", docs/names/actors.tsv): constructed by
 // fn_80200E94 for actor ID 'EMIK', which stores vtable 0x804AD5B8.
-class MaidenEnding_804AD5B8 : public cls_804A5958 {
+class MaidenEnding_804AD5B8 : public EndingActorBase_804A5958 {
 public:
     MaidenEnding_804AD5B8() {}
     /* 0x08 */ virtual ~MaidenEnding_804AD5B8();

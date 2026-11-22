@@ -43,9 +43,9 @@ struct TControl;
 struct TResourceContainer;
 }
 class cls_804B20F8;
-class cls_804AF6D4;
+class MessageReference_804AF6D4;
 class cls_804AF72C;
-class cls_804AF774;
+class MessageSequenceProcessor_804AF774;
 struct J2DPicture;
 class J2DPane;
 class J2DScreen;
@@ -74,8 +74,8 @@ public:
     /* 0x008 */ JMessage::TControl* field_0x8;
     // The constructor builds the reference (vtable 0x804AF6D4) and the
     // sequence processor (0x804AF774); the destructor deletes them.
-    /* 0x00C */ cls_804AF6D4* field_0xc;
-    /* 0x010 */ cls_804AF774* field_0x10;
+    /* 0x00C */ MessageReference_804AF6D4* field_0xc;
+    /* 0x010 */ MessageSequenceProcessor_804AF774* field_0x10;
     // The constructor builds it (0x2DC bytes, vtable 0x804AF72C).
     /* 0x014 */ cls_804AF72C* field_0x14;
     // The BMG file the constructor loads from gGameRoot_8053AAF8's msgus.arc
@@ -219,7 +219,7 @@ public:
     // its option flags (field_0x28 bits 0x40 and 0x100).
     /* 0x3B8 */ MessageWindow_804AF490* field_0x3b8;
     /* 0x3BC */ cls_804B20F8* field_0x3bc; // new'd by the constructor
-    // The constructor stores `this`; handed to the processors (cls_804AF774
+    // The constructor stores `this`; handed to the processors (MessageSequenceProcessor_804AF774
     // 0x60, cls_804AF72C 0x2D8).
     /* 0x3C0 */ cls_804AF5A0* field_0x3c0;
 
@@ -268,7 +268,7 @@ public:
     s32 fn_803A310C();
     void fn_803A3114();
     u8 fn_803A313C();
-    // Inlined by the constructor and cls_804AF774::do_reset (no address of
+    // Inlined by the constructor and MessageSequenceProcessor_804AF774::do_reset (no address of
     // its own). The four stores in this order through one load of the window (the
     // constructor and do_reset each have a copy; docs/RULES_CARD.md "Literals
     // before their first visible use" (2), the same reconstruction).

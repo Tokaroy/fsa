@@ -264,7 +264,7 @@ void fn_803A2FEC() {
 s32 fn_803A2FE0() {
     return lbl_8053AD78->field_0x10c;
 }
-void cls_804AF774::fn_803A2F74() {
+void MessageSequenceProcessor_804AF774::fn_803A2F74() {
     field_0x4c = 0;
     field_0x54 = 0;
     field_0x50 = 0;
@@ -281,7 +281,7 @@ void cls_804AF774::fn_803A2F74() {
 
 // Adds the number of characters `value` prints as (a sign, then its digits
 // without leading zeros, at most five) to the column count.
-void cls_804AF774::fn_803A2E48(s32 value) {
+void MessageSequenceProcessor_804AF774::fn_803A2E48(s32 value) {
     bool started = false;
     if (value < 0) {
         field_0x50++;
@@ -314,7 +314,7 @@ void cls_804AF774::fn_803A2E48(s32 value) {
 // Adds the length of the counted noun that follows a number (singular when
 // count is 1): the unit's " Force Gem" / " Force Gems" ... " Force Fairy" /
 // " Force Fairies" strings (lbl_80475DC8), plus one.
-void cls_804AF774::fn_803A2CB0(u8 noun, s32 count) {
+void MessageSequenceProcessor_804AF774::fn_803A2CB0(u8 noun, s32 count) {
     switch (noun) {
     case 1:
         if (count == 1) {
@@ -383,7 +383,7 @@ void cls_804AF774::fn_803A2CB0(u8 noun, s32 count) {
     field_0x50++;
 }
 
-void cls_804AF774::do_reset() {
+void MessageSequenceProcessor_804AF774::do_reset() {
     field_0x4c = 0;
     field_0x54 = 0;
     field_0x50 = 0;
@@ -406,11 +406,11 @@ void cls_804AF774::do_reset() {
     }
 }
 
-void cls_804AF774::do_begin(const void*, const char*) {
+void MessageSequenceProcessor_804AF774::do_begin(const void*, const char*) {
     field_0x5c = 1;
 }
 
-void cls_804AF774::do_end() {
+void MessageSequenceProcessor_804AF774::do_end() {
     field_0x60->field_0x3af = 0;
     if (field_0x60->field_0x1aa == 0) {
         field_0x60->field_0x3ae = 8;
@@ -419,7 +419,7 @@ void cls_804AF774::do_end() {
     }
 }
 
-bool cls_804AF774::do_isReady() {
+bool MessageSequenceProcessor_804AF774::do_isReady() {
     if (field_0x60->field_0x1aa == 0) {
         if (field_0x4c == 0) {
             return true;
@@ -466,7 +466,7 @@ bool cls_804AF774::do_isReady() {
 }
 
 
-void cls_804AF774::do_character(int c) {
+void MessageSequenceProcessor_804AF774::do_character(int c) {
     if (field_0x60->field_0x1aa == 0) {
         s8 lead = (c >> 8) & 0xFF;
         if (c == '\n') {
@@ -513,7 +513,7 @@ static const u32 lbl_805431D0[2] = {0, 0x1000007};
 // item tests, and in the text-image windows (window fn_803A313C) the
 // characters the tag's glyphs take.
 // FIXME: 97.35 %, missing/extra; behaviour drift.
-bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
+bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
     const u8* p = (const u8*)data;
     s32 work[4];
     if (field_0x60->fn_803A313C() == 0) {
@@ -1681,11 +1681,11 @@ bool cls_804AF774::do_tag(u32 tag, const void* data, u32) {
     return false;
 }
 
-bool cls_804AF774::do_jump_isReady() {
+bool MessageSequenceProcessor_804AF774::do_jump_isReady() {
     return true;
 }
 
-void cls_804AF774::do_jump(const void*, const char*) {}
+void MessageSequenceProcessor_804AF774::do_jump(const void*, const char*) {}
 
 void cls_804AF72C::do_reset() {
     *field_0x2c0 = 0;
@@ -3513,9 +3513,9 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0x8 = NULL;
     field_0x8 = new JMessage::TControl;
     field_0xc = NULL;
-    field_0xc = new cls_804AF6D4;
+    field_0xc = new MessageReference_804AF6D4;
     field_0x10 = NULL;
-    field_0x10 = new cls_804AF774(field_0xc, field_0x8);
+    field_0x10 = new MessageSequenceProcessor_804AF774(field_0xc, field_0x8);
     field_0x10->field_0x60 = field_0x3c0;
     field_0x14 = NULL;
     field_0x14 = new cls_804AF72C(field_0xc);
@@ -3546,9 +3546,9 @@ cls_804AF5A0::cls_804AF5A0(MessageWindow_804AF490* window, s32 index, const char
     field_0x8->resetResourceCache();
 }
 
-cls_804AF6D4::~cls_804AF6D4() {}
+MessageReference_804AF6D4::~MessageReference_804AF6D4() {}
 
-cls_804AF774::~cls_804AF774() {}
+MessageSequenceProcessor_804AF774::~MessageSequenceProcessor_804AF774() {}
 
 cls_804AF72C::~cls_804AF72C() {}
 

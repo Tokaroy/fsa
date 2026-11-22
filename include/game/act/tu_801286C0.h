@@ -5,10 +5,10 @@
 
 #include "game/act/tu_8010DF44.h"
 
-// Named after its vtable, 0x8049E500. Derives from cls_8049D140 and adds the
+// Named after its vtable, 0x8049E500. Derives from DemoActorBase_8049D140 and adds the
 // state word (field_0x230, 0..10 for the switch in fn_80128728), two floats
 // and the resource pointer that init() gets from the archive.
-class OpeningNarration_8049E500 : public cls_8049D140 {
+class OpeningNarration_8049E500 : public DemoActorBase_8049D140 {
 public:
     OpeningNarration_8049E500() : field_0x230(0), field_0x234(0.0f), field_0x238(0.0f), field_0x23c(0) {}
     /* 0x08 */ virtual ~OpeningNarration_8049E500();

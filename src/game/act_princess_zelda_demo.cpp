@@ -118,7 +118,7 @@ static const s32 lbl_80464550[] = {
 static const s32 lbl_8053C548[] = { 0x232, 0x4B0 };
 
 void PrincessZeldaDemo_8049D208::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x234 = mSpawnParam_0x90 & 0xFF;
     field_0x244 = (mSpawnParam_0x90 >> 8) & 0xF;
     field_0x248 = (mSpawnParam_0x90 >> 12) & 0xF;
@@ -174,7 +174,7 @@ void PrincessZeldaDemo_8049D208::vfunc_0x10() {
 }
 
 void PrincessZeldaDemo_8049D208::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     switch (field_0x234) {
     case 0:
     case 1:
@@ -760,7 +760,7 @@ void PrincessZeldaDemo_8049D208::fn_80110210() {
 }
 
 void PrincessZeldaDemo_8049D208::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     if (field_0x230 == 0) {
         if (mAnim0.mAnim >= 0x13) {
             fn_8010F7EC(0x21b);

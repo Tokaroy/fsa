@@ -72,7 +72,7 @@ MaidenCutscene_8049D740::~MaidenCutscene_8049D740() {
 }
 
 void MaidenCutscene_8049D740::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     mMode = mSpawnParam_0x90 & 0x1F;
     mAnim.fn_801D2608(lbl_8049D710, 12);
     mAnim.startAnim_801D22DC(5, 2, false);
@@ -89,7 +89,7 @@ void MaidenCutscene_8049D740::vfunc_0x10() {
 
 // FIXME: 97.94 %, scheduling+regalloc; behaviour drift.
 void MaidenCutscene_8049D740::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     JGeometry::TBox2f box = mBox;
     box.i.x += mPos.x;
     box.i.y += mPos.y;
@@ -153,7 +153,7 @@ void MaidenCutscene_8049D740::update() {
 }
 
 void MaidenCutscene_8049D740::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     if (field_0x230 == 0) {
         s32 baseFrame = lbl_80464704[mMode];
         SpriteParams_801F5AE0 params;

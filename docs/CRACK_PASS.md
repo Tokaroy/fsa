@@ -88,7 +88,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   tu_8045A640 now emits the weak __dt__Q29GameAudio16CustomSoundTableFv first;
   every function, .data and .sdata2 are 100 % (extab 71 %: check the weak-dedup
   trial link before flipping it).
-- **Save-data layout.** lbl_8050EC80 (cls_804AFB30, game/tu_803B8C74.h) is a 0x20-byte
+- **Save-data layout.** lbl_8050EC80 (SaveData_804AFB30, game/tu_803B8C74.h) is a 0x20-byte
   header, three 0xC8-byte SaveFile_803B950C at 0x20 and three 0x9C4-byte bodies at 0x280;
   every user reads it through getFile / getCurrentFile. Two functions read and write one field
   of the current file through a pointer the original holds at lbl_8050EC80 + file * 0xC8
@@ -97,7 +97,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
   pointer accessor, inline SaveFile member, nested table struct: 97.2-98.6 / 95.4-97.4 %) or
   CSEs the field address into an lwzu (direct expressions, 98.36 %).
   - **Trick:** `FAKEMATCH(crack-pass)` SaveFileRow_CrackPass (two fields, row offsets) and
-    cls_804AFB30::getCurrentRow_CrackPass (`reinterpret_cast<SaveFileRow_CrackPass*>(this)
+    SaveData_804AFB30::getCurrentRow_CrackPass (`reinterpret_cast<SaveFileRow_CrackPass*>(this)
     [mCurrentFile]`), used only by those two functions: 100 % and 97.86 % (their values
     under the old SaveRow_8050EC80 view).
   - **Honest fix would need:** the original's declaration that gives a 0xC8-stride object

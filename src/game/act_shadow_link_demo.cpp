@@ -36,7 +36,7 @@ ShadowLinkCutscene_8049DB90::ShadowLinkCutscene_8049DB90() {
 }
 
 void ShadowLinkCutscene_8049DB90::init() {
-    cls_8049D140::init();
+    DemoActorBase_8049D140::init();
     field_0x234 = mSpawnParam_0x90 & 0xF;
     mDir_0x98 = (s8)((mSpawnParam_0x90 >> 4) & 3);
     switch (field_0x234) {
@@ -73,7 +73,7 @@ static inline bool hop(ShadowLinkCutscene_8049DB90* self, s32 t, f32 base, f32 v
 
 // FIXME: 99.32 %, different; behaviour drift.
 void ShadowLinkCutscene_8049DB90::update() {
-    cls_8049D140::update();
+    DemoActorBase_8049D140::update();
     if (field_0x238 >= 2 && field_0x238 <= 11) {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         fn_8011B3F0();
@@ -229,7 +229,7 @@ static inline void drawSob(s32 layer, const JGeometry::TVec3f* pos, const char* 
 }
 
 void ShadowLinkCutscene_8049DB90::draw() {
-    cls_8049D140::draw();
+    DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     params.field_0x2e = 0x40;
     drawShadowSob(this, "player_sob.bin", mSequencer.mFrame, &params, 7);

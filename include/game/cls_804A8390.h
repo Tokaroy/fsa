@@ -10,10 +10,10 @@ class J2DPicture;
 // __nw__(0x1C, heap, 0) (0x801393E4) and the constructor fn_802ACBE8, which
 // stores it in lbl_8053ACA0 (in tu_8022AD64's .sbss). Vtable 0x804A8390:
 // only the destructor. Defined in game/tu_802AC8AC.cpp.
-class cls_804A8390 {
+class BlackFade_804A8390 {
 public:
-    cls_804A8390();
-    virtual ~cls_804A8390();
+    BlackFade_804A8390();
+    virtual ~BlackFade_804A8390();
 
     void fn_802AC8AC(s32 value);
     bool fn_802AC8B4();
@@ -33,6 +33,6 @@ public:
     /* 0x18 */ s32 field_0x18;
 }; // Size: 0x1C
 
-extern cls_804A8390* lbl_8053ACA0;
+extern BlackFade_804A8390* lbl_8053ACA0;
 
 #endif
