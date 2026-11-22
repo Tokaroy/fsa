@@ -200,7 +200,8 @@ void cls_804A5BD8::vfunc_0xA8() {
     }
 }
 
-// FIXME: 98.86% (regalloc-only). r25-r28 shifted by 1 in calcCenter loops and f2/f3/f4 vs f30/f31 in offset addition.
+// FIXME: 98.86 %, regalloc-only; behaviour clean.
+// (regalloc-only). r25-r28 shifted by 1 in calcCenter loops and f2/f3/f4 vs f30/f31 in offset addition.
 void cls_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* outStep) {
     if (field_0x2ac == 0) {
         outStep->x = 0.0f;
@@ -237,6 +238,7 @@ void cls_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* out
     outPos->y = center.y;
 }
 
+// FIXME: 99.09 %, operands; behaviour clean.
 // FIXME: r26/r27 regalloc swap in loops and stack frame offset swap (0xc vs 0x1c) between chooseDir and case 4.
 void cls_804A5BD8::fn_80208244(int state) {
     switch (state) {
@@ -285,7 +287,8 @@ void cls_804A5BD8::fn_80208244(int state) {
     mState = state;
 }
 
-// FIXME: 99.80% (regalloc-only). r29 vs r27 for loop counter i in checkTrigger case 2.
+// FIXME: 99.80 %, regalloc-only; behaviour clean.
+// (regalloc-only). r29 vs r27 for loop counter i in checkTrigger case 2.
 void cls_804A5BD8::vfunc_0x90(u8 mapHit) {
     fn_80207A60();
     switch (mState) {
