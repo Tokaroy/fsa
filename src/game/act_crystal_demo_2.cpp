@@ -1098,8 +1098,8 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
         case 0x1F:
             if (field_0x258 != 0) {
                 if (field_0x258 == 1) {
-                    pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                            (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                    pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                            (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                     pos.y += -16.0f;
                     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                     fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -1133,8 +1133,8 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
         case 0x23:
             if (field_0x258 != 0) {
                 if (field_0x258 == 1) {
-                    pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                            (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                    pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                            (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                     pos.y += -16.0f;
                     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                     fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
