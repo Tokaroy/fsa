@@ -179,7 +179,7 @@ void CrystalCutscene5464_804AE088::init() {
                            32.0f + (35.0f * JMath::sincosTable_.sinShort(angle) + mPos.y), 0.0f);
     }
     field_0x2a8[5] = mPos;
-    s32 count = getActorManager_801F856C()->mActorEnd;
+    s32 count = getActorManager_801F856C()->getActorEnd();
     for (i = 0; i < count; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
         if (actor != NULL && actor->mActorId == ACTOR_GOL2) {
@@ -267,14 +267,16 @@ void CrystalCutscene5464_804AE088::vfunc_0x54() {
     vfunc_0x60(arg);
 }
 
-// FIXME: 94.57 %, missing/extra + reloc-name; behaviour drift.
-// regalloc and stack-slot order differ.
+// FIXME: 95.75 %, missing/extra + reloc-name; behaviour near.
+// case 3 loads the loop's 0 twice (original copies it from i); case 16 lacks the
+// original's copy of fn_8023CBC0's result; regalloc and stack-slot order differ.
 void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
+    s32 i;
     JGeometry::TVec3f pos;
     switch (arg) {
     case 2:
         field_0x238 = 0;
-        for (s32 i = 0; i < 5; i++) {
+        for (i = 0; i < 5; i++) {
             field_0x384[i]->becomeInvalidEmitter();
             field_0x384[i] = NULL;
         }
@@ -288,8 +290,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         field_0x378[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
         field_0x358 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D5, 0);
-        s32 count = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < count; i++) {
+        s32 count = getActorManager_801F856C()->getActorEnd();
+        for (i = 0; i < count; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_SWEV) {
                 static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A3C();
@@ -359,7 +361,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 14:
         field_0x237 = 0;
-        for (s32 i = 0; i < 7; i++) {
+        for (i = 0; i < 7; i++) {
             field_0x35c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
         }
         field_0x2f0 = 300;
@@ -377,7 +379,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x24c = 1;
         JGeometry::TVec3f playerPos;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             playerPos = *getPlayerPos_8023E724(i);
             fn_80230498(i, &playerPos, fn_8023CBC0(i), 0xFF, -128, -128, true);
         }
@@ -399,7 +401,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
     }
     case 21:
         field_0x238 = 0;
-        for (s32 i = 0; i < 5; i++) {
+        for (i = 0; i < 5; i++) {
             field_0x384[i]->becomeInvalidEmitter();
             field_0x384[i] = NULL;
         }
@@ -413,8 +415,8 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         field_0x378[2] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D40[field_0x23c], 0, 1, NULL, NULL, true, 0.5f);
         field_0x358 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D50[field_0x23c], 0, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x400D5, 0);
-        s32 count = getActorManager_801F856C()->mActorEnd;
-        for (s32 i = 0; i < count; i++) {
+        s32 count = getActorManager_801F856C()->getActorEnd();
+        for (i = 0; i < count; i++) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[i];
             if (actor != NULL && actor->mActorId == ACTOR_SWEV) {
                 static_cast<EnvironmentSwitchControl_804A8638*>(actor)->fn_802B3A3C();
@@ -450,13 +452,13 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 25:
-        for (s32 i = 0; i < 5; i++) {
+        for (i = 0; i < 5; i++) {
             field_0x294[i] = lbl_80474CB0[i] + 0x46;
         }
         break;
     case 26:
         field_0x237 = 0;
-        for (s32 i = 0; i < 7; i++) {
+        for (i = 0; i < 7; i++) {
             field_0x35c[i] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80474D00[i], 0, 1, NULL, NULL, true, 0.5f);
         }
         field_0x2f0 = 300;
@@ -490,7 +492,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         pos.z = 0.0f;
         field_0x288 = 0.0f;
         field_0x28c = 0;
-        for (s32 i = 0; i < 6; i++) {
+        for (i = 0; i < 6; i++) {
             field_0x39c[i] = spawnEmitter_8013CC50(mLayer_0x4, &pos, lbl_80474D60[i], 0, 1, NULL, NULL, true, 1.0f);
             field_0x39c[i]->setGlobalAlpha(field_0x288);
         }
@@ -509,7 +511,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         fn_80119DD0()->startFade_80119998(0x96, 0, 0, 0, 0, 0x19, 0);
         field_0x24c = 1;
         field_0x2f4->fn_802E2990(0xFF);
-        for (s32 i = 0; i < 6; i++) {
+        for (i = 0; i < 6; i++) {
             deleteEmitterKeep(&field_0x39c[i]);
             field_0x39c[i] = NULL;
         }
@@ -910,7 +912,7 @@ void CrystalCutscene5464_804AE088::fn_80369DDC() {
     }
 }
 
-// FIXME: 96.75 %, different + reloc-name; behaviour near.
+// FIXME: 96.85 %, different + reloc-name; behaviour near.
 void CrystalCutscene5464_804AE088::fn_80368CD8() {
     if (field_0x258 != 0) {
         field_0x258--;
@@ -1096,8 +1098,8 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
         case 0x1F:
             if (field_0x258 != 0) {
                 if (field_0x258 == 1) {
-                    pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                            (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                    pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                            (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                     pos.y += -16.0f;
                     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                     fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
@@ -1131,8 +1133,8 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
         case 0x23:
             if (field_0x258 != 0) {
                 if (field_0x258 == 1) {
-                    pos.set((s32)JUTVideo::getManager()->getFbWidth() * 0.5f,
-                            (s32)JUTVideo::getManager()->getEfbHeight() * 0.5f, 0.0f);
+                    pos.set((s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+                            (s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
                     pos.y += -16.0f;
                     fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
                     fn_8038BD08(0, lbl_80474C68[field_0x268], mLayer_0x4, pos, 0x62);
