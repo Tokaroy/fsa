@@ -297,7 +297,7 @@ void fn_8019C4F4(JGeometry::TVec2f* v, f32 x, f32 y) {
     v->set(x, y);
 }
 
-// FIXME(shotgun): 80.13 %, missing/extra + reloc-name; behaviour drift.
+// FIXME(shotgun): 93.99 %, missing/extra + reloc-name; behaviour drift.
 void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     JGeometry::TVec3f pos;
     u16 angle = 0;
