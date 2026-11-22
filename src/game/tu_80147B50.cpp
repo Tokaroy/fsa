@@ -502,7 +502,7 @@ void BigMoldorm_8049F6C8::update() {
     switch (mState) {
     case 0: {
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->fn_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
             if (actor != NULL && actor->mSerial != lbl_80539F58 && actor->mSpawnParam_0x90 == 3) {
@@ -520,7 +520,7 @@ void BigMoldorm_8049F6C8::update() {
         lbl_8053AB34 = 1;
         field_0x26c = 0;
         ActorBase_804A5770* list[0x400];
-        s32 n = getActorManager_801F856C()->fn_801F7818('DGTL', lbl_8053AB38, list, -1);
+        s32 n = getActorManager_801F856C()->collectActorsById_801F7818('DGTL', lbl_8053AB38, list, -1);
         for (s32 i = 0; i < n; i++) {
             ActorBase_804A5770* actor = list[i];
             if (actor != NULL && actor->mSpawnParam_0x90 == 2) {

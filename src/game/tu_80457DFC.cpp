@@ -50,7 +50,7 @@ static inline void moveTempo(JAITempoMgr* tempoMgr, f32 tempo, u32 frames) {
 }
 
 // The bodies of fn_80458508 and fn_80458F04. Both are inlined into functions
-// that come before their out-of-line copies (fn_80457E54, fn_8045815C;
+// that come before their out-of-line copies (fn_80457E54, setMusicSlow_8045815C;
 // fn_80458880), which MWCC does only for an inline defined earlier, while
 // other units call the copies (18 and 10 calls): so the original defined them
 // inline ahead of their users, and the copies at their addresses call them,
@@ -416,7 +416,7 @@ void AudioMgr_8045A080::fn_80459674() {
         if ((u32)field_0x64 >= lbl_8053A25C) {
             if (field_0x4 == 0) {
                 field_0x30->startSound(field_0x5c, &field_0x80, NULL);
-                fn_8045815C(field_0x8b);
+                setMusicSlow_8045815C(field_0x8b);
                 switch (field_0x5c) {
                 case 0x100001A:
                     fn_80458408(field_0x5c, false);
@@ -607,7 +607,7 @@ void AudioMgr_8045A080::startBgm_80458FF0(s32 id, bool restart, u8 flag) {
         field_0x8d = flag;
     } else {
         field_0x30->startSound(id, &field_0x80, NULL);
-        fn_8045815C(field_0x8b);
+        setMusicSlow_8045815C(field_0x8b);
         switch (field_0x5c) {
         case 0x100001A:
             fn_80458408(field_0x5c, false);
@@ -894,7 +894,7 @@ void AudioMgr_8045A080::fn_80458408(s32 id, bool flag) {
 // FIXME: 99.97 %, reloc-name; behaviour clean.
 // only: 0.5f (movePitch) is lbl_80543EC4, pooled after
 // 0.7f, which only the unwritten fn_80459674 uses.
-void AudioMgr_8045A080::fn_8045815C(bool flag) {
+void AudioMgr_8045A080::setMusicSlow_8045815C(bool flag) {
     field_0x8b = flag;
     if (!field_0x80 && !field_0x84) {
         return;

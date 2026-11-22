@@ -200,7 +200,7 @@ void Cucco_804AB8C0::vfunc_0x10() {
         if (other->field_0x16c != field_0x16c) {
             continue;
         }
-        if (fn_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
+        if (isOutsideView_801F6758(&other->mPos, other->mLayer_0x4, 16.0f) && other->field_0xc4 != 1) {
             continue;
         }
         mAlive = false;
@@ -668,7 +668,7 @@ bool Cucco_804AB8C0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL) == 1) {
         return true;
     }
-    if (fn_801F6758(pos, layer, -8.0f)) {
+    if (isOutsideView_801F6758(pos, layer, -8.0f)) {
         return true;
     }
     s32 tile = fn_80226850(pos, layer);
@@ -1046,7 +1046,7 @@ void Cucco_804AB8C0::update() {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && i != field_0x25c && !arePlayersInSameGroup_8022E438(i, field_0x25c) && !hasPlayerLeader_8022F514(i) &&
                     ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) &&
-                    (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !fn_80236B50(i))
+                    (mLayer_0x4 == getPlayerLayer_8023DE58(i) || getPlayerLayer_8023DE58(i) < 8) && !isPlayerDead_80236B50(i))
                 {
                     if (gGameRoot_8053AAF8->field_0x7f == 1) {
                         if (r29 < fn_80236228(i)) {
@@ -1106,7 +1106,7 @@ void Cucco_804AB8C0::update() {
                 }
             }
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
             if (field_0x94 <= 3) {
                 if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x94)) {
                     if (getPlayerLayer_8023DE58(field_0x94) < 8) {
@@ -1220,14 +1220,14 @@ void Cucco_804AB8C0::update() {
         if (field_0x290 == 0xFFFF) {
             field_0x2b8.z += 0.1;
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) || r27) {
             mAlive = false;
         }
         break;
     case 9:
         if (field_0x238 == 0) {
             if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c) && fn_8023F264(field_0x25c) &&
-                !fn_8022DCD8(field_0x25c) && !fn_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
+                !fn_8022DCD8(field_0x25c) && !isPlayerDead_80236B50(field_0x25c) && !fn_8022D534(field_0x25c))
             {
                 f32 dx = mPos.x - getPlayerPos_8023E724(field_0x25c)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(field_0x25c)->y;
@@ -1245,7 +1245,7 @@ void Cucco_804AB8C0::update() {
                 outDist = 10000.0f;
             }
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
             if (mLayer_0x4 != getPlayerLayer_8023DE58(field_0x25c)) {
                 mLayer_0x4 = getPlayerLayer_8023DE58(field_0x25c);
                 s32 pLayer = getPlayerLayer_8023DE58(field_0x25c);
@@ -1259,7 +1259,7 @@ void Cucco_804AB8C0::update() {
                 field_0x238 = 1;
                 field_0x29c = 0;
                 field_0x29e = 0;
-            } else if (fn_80236B50(field_0x25c) == 1) {
+            } else if (isPlayerDead_80236B50(field_0x25c) == 1) {
                 mAlive = false;
             }
         }
@@ -1288,7 +1288,7 @@ void Cucco_804AB8C0::update() {
                     lbl_8053AED0->fn_8043D874(fn_8022F340(field_0x25c), v, 0);
                 }
             } else {
-                fn_80236554(field_0x25c, field_0x298, false);
+                healPlayerGroup_80236554(field_0x25c, field_0x298, false);
                 fn_80230EB8(field_0x25c, 9);
             }
             hit = 1;
@@ -1491,7 +1491,7 @@ void Cucco_804AB8C0::fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* ou
         onLayer = 1;
     }
     if (fn_8023F264(player) && !fn_8022DCD8(player) && onLayer != 0 && !fn_8022F478(player) &&
-        !fn_80236B50(player) && !fn_8022D534(player))
+        !isPlayerDead_80236B50(player) && !fn_8022D534(player))
     {
         f32 dx;
         f32 dy;

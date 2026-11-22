@@ -26,7 +26,7 @@ static inline void updateRepeat(const u32& held, const u32& pressed, u32& repeat
 // FIXME: __sinit_tu_803099FC_cpp (compiler-generated from the GameAudio.h include, no source
 // line of its own; precedent act_phantom_ganon_2.cpp) is 99.61 %: the JAudio pool records are
 // 0x10 lower in our .bss than in the original, whose first 0x10 bytes (0x805076E8) belong to an
-// object not identified yet (fn_8030A43C, now written, has no static).
+// object not identified yet (pollInputs_8030A43C, now written, has no static).
 
 // 0x8030AC4C
 cls_804AA8C8::cls_804AA8C8() {
@@ -83,7 +83,7 @@ s32 getPlayerInputSlot_8030AAF4(s32 player) {
 // subf; srwi.) as main in tu_801344C0 does, where we emit cmplwi 4; and the target does not mask
 // fn_803006E8's result at the call (ours clrlwi), which suggests it returns a 32-bit value.
 // 0x8030A43C
-void cls_804AA8C8::fn_8030A43C() {
+void cls_804AA8C8::pollInputs_8030A43C() {
     s32 i;
     for (i = 0; i < 4; i++) {
         field_0x14[i] = field_0x4[i];

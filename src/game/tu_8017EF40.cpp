@@ -171,7 +171,7 @@ void HelmarocKing_804A1630::init() {
         lbl_8053AB75 = 0;
         field_0x268 = -1;
         for (s32 i = 0; i < 4; i++) {
-            fn_80304C10(i, "gb_ch_obj_tr_sch0.szs", 0x6017000, 1, 0);
+            queueGbaFile_80304C10(i, "gb_ch_obj_tr_sch0.szs", 0x6017000, 1, 0);
         }
         gGameRoot2_8053AB10->field_0x20->fn_802F9714(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_sch0.szs"), 0, 0, 0x7000, 0);

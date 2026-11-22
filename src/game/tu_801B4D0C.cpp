@@ -183,7 +183,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                     if (getPlayerLeader_8022F3DC(i) < 0) {
                         fn_8022CA6C(i, 5, false);
                     }
-                    if (fn_80236B50(i)) {
+                    if (isPlayerDead_80236B50(i)) {
                         fn_8023764C(i, 1);
                     }
                 }
@@ -208,7 +208,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                         done++;
                         fn_80230498(i, &field_0x264[i], 0x3F, 0xFF, -0x80, -0x80, true);
                     } else {
-                        fn_80230BF4(i, fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
+                        setPlayerFacing_80230BF4(i, fn_801F681C((s32)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.378f)));
                         fn_802303FC(i, &field_0x264[i], true);
                     }
                 } else {

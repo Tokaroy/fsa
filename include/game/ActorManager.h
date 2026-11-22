@@ -145,11 +145,11 @@ public:
     // -9999 and 3); the entries past the last player repeat it.
     void fn_801F6068();
     // 2 units / 8 calls. mAllDefeated_0x305c = value (stb; callers pass li 0/1).
-    void fn_801F6204(u8 value);
+    void setAllDefeated_801F6204(u8 value);
     // EnemyParam.csv lookup: the value of `column` (ActorParamColumn) for
     // actor `id`, row 0's default when `id` has no row, 0 when the column
     // is missing. 2 units / 8 calls (the spawner, tu_802D39B8).
-    s32 fn_801F620C(u32 id, u32 column);
+    s32 getEnemyParam_801F620C(u32 id, u32 column);
     // 1 unit / 2 calls (ActorBase_804A5770::fn_801F1184 and startSound_801F0E34).
     // mSounds[slot], or mSharedSound_0x200c when mActors[slot]->mViewMtx_0x4 != 0.
     ActorSoundObj_804578F4* fn_801F6644(s32 slot);
@@ -216,7 +216,7 @@ public:
     s32 fn_801F778C(u32 id, const JGeometry::TVec3f* pos, f32* outDistSq);
     // 13 units / 16 calls. Writes every live `id` actor on `layer` other
     // than excludeSerial to out[] and returns the count.
-    s32 fn_801F7818(u32 id, s32 layer, ActorBase_804A5770** out, s32 excludeSerial);
+    s32 collectActorsById_801F7818(u32 id, s32 layer, ActorBase_804A5770** out, s32 excludeSerial);
     // 4 units / 4 calls. The serial of the first live `id` actor on
     // `layer`, or -1.
     s32 fn_801F7884(u32 id, s32 layer);
@@ -248,7 +248,7 @@ public:
     // 2 units / 2 calls (ActorBase_804A5770::fn_801F26CC, tu_801E9AFC).
     // The serial of the first live actor on actor's layer, other than
     // excludeSerial, whose mActorId is in `ids` ('NULL'-ended) and whose box
-    // (fn_801F31C4) overlaps actor's, or -1. Unless the view's flag for the
+    // (getBoxAtPos_801F31C4) overlaps actor's, or -1. Unless the view's flag for the
     // layer is set (GameView 0x131DF + layer), the two z must also be
     // within maxDz (fabs).
     s32 fn_801F7F58(ActorBase_804A5770* actor, const u32* ids, s32 excludeSerial, f32 maxDz) const;
@@ -325,7 +325,7 @@ public:
     /* 0x3040 */ u8 field_0x3040;
     /* 0x3041 */ u8 field_0x3041; // bit per player (fn_801F68E0 sets,
                                   // fn_801F6884 and fn_801F8E4C clear)
-    // EnemyParam.csv, read by fn_801F620C(id, column) (0 if missing):
+    // EnemyParam.csv, read by getEnemyParam_801F620C(id, column) (0 if missing):
     /* 0x3044 */ s32 mParamColumnNum;
     /* 0x3048 */ s32 mParamRowNum;
     /* 0x304C */ u32* mParamRowIds;    // ActorId per row
@@ -333,10 +333,10 @@ public:
     /* 0x3054 */ u32* mParamColumnIds; // 4-character column keys ('life', ...)
     /* 0x3058 */ s32* mParamValues;    // [row * mParamColumnNum + column];
                                        // row 0 holds the defaults
-    /* 0x305C */ u8 mAllDefeated_0x305c;      // set by fn_801F6204
+    /* 0x305C */ u8 mAllDefeated_0x305c;      // set by setAllDefeated_801F6204
 }; // Size: 0x3060
 
-// EnemyParam.csv column keys the spawner reads (fn_801F620C's 2nd argument),
+// EnemyParam.csv column keys the spawner reads (getEnemyParam_801F620C's 2nd argument),
 // with the ActorBase_804A5770 field each one sets.
 enum ActorParamColumn {
     ACTOR_PARAM_LIFE = 'life', // ActorBase_804A5770::mLife
@@ -359,7 +359,7 @@ ActorManager_804A5800* getActorManager_801F856C(void);
 // (getGameView_802D6A9C 0xCC, or 0xDC for layer 8 and up) grown by `margin` on
 // each side (<= / >= compares). Callers pass &mPos, mViewMtx_0x4 and a
 // literal, and test r3 with clrlwi. 24.
-bool fn_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin);
+bool isOutsideView_801F6758(const JGeometry::TVec3f* pos, s32 layer, f32 margin);
 
 // 29 units / 49 calls. The direction (0-3) of a 16-bit angle: 2 below
 // 0x2000 or from 0xE000, 0 below 0x6000, 3 up to 0xA000, else 1. Callers

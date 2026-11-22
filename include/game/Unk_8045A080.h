@@ -80,7 +80,7 @@ struct AudioMgr_8045A080 {
     /* 0x88 */ u8 field_0x88;
     /* 0x89 */ u8 field_0x89;
     /* 0x8A */ bool field_0x8a; // SE categories 3-6 paused (fn_80458658)
-    /* 0x8B */ bool field_0x8b; // fn_8045815C's flag (startBgm_80458FF0 passes it on unconverted)
+    /* 0x8B */ bool field_0x8b; // setMusicSlow_8045815C's flag (startBgm_80458FF0 passes it on unconverted)
     /* 0x8C */ u8 field_0x8c; // fn_80457E54's flag
     /* 0x8D */ u8 field_0x8d;
     /* 0x8E */ u8 field_0x8e; // set by fn_804593D4, cleared by fn_80459274
@@ -165,7 +165,7 @@ struct AudioMgr_8045A080 {
     // pitch 0.5, fx mix 1) and writes `flag` to port 0 of its tracks unless
     // the music is 0x1000001/2/4/0xD/0x23/0x2D. Called by
     // fn_80290E90 with false when the player's 0xCE4 is below 8, with true when it is 8.
-    void fn_8045815C(bool flag);
+    void setMusicSlow_8045815C(bool flag);
     // game/tu_80457DFC.cpp (0x80457DFC): stores r4 (a byte) at 0x6.
     void fn_80457DFC(u8 value);
     // game/tu_80457DFC.cpp (0x80457E04): when 0x8c and 0x8b are 0, calls

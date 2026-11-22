@@ -22,7 +22,7 @@ fn_80458744 99.81 reloc-name (jumptable_804B1EF0; tables defined at file end so 
 per symbol as in the original, which puts them after the jump tables in .data); startBgm_80458FF0 99.91
 reloc-name (jumptable_804B1FB4, same cause; inlines fn_80458408).
 Left unwritten, with reasons:
-- fn_80457E54, fn_8045815C: they inline fn_80458508 (defined later; sdata tempo read after the
+- fn_80457E54, setMusicSlow_8045815C: they inline fn_80458508 (defined later; sdata tempo read after the
   getTempoMgr call, per-branch handle check). Drafts in the scratchpad were 81.5 / 91.8 %.
 - fn_80459274, fn_804593D4: with fn_80458744 written MWCC inlines it into both; the original calls it.
   Bodies are simple (category pause / moveVolume 3); unknown why the original did not inline.
@@ -31,14 +31,14 @@ Left unwritten, with reasons:
 - fn_80459674 (per-frame update; calls 8880, inlines 959C and the music-start block shared with
   startBgm_80458FF0's else branch: a dead-stripped helper candidate). fn_80459AE4, the audience class
   (fn_8045A338 dtor, fn_8045A3D8; see GameAudio.h FIXME), fn_8045A0E4, __sinit.
-Fields: field_0x8b is bool (startBgm_80458FF0 passes it to fn_8045815C without conversion).
+Fields: field_0x8b is bool (startBgm_80458FF0 passes it to setMusicSlow_8045815C without conversion).
 SHARED-EDITS: include/game/GameGlobals.h (struct moved out), include/game/GameAudio.h (+include),
 new include/game/Unk_8045A080.h; symbols.txt renames (4 lines above).
 
 ## 2026-11-05 leverage wave 10 (Opus): AudioMgr round 2
 Baseline 8652 (honest). Unit 18/33 -> 19/33.
 Inlining resolved (reviewer's lead): fn_80458508 and fn_80458F04 are inlined into earlier
-functions (fn_80457E54, fn_8045815C; fn_80458880) while 7 / 6 other units call them out of
+functions (fn_80457E54, setMusicSlow_8045815C; fn_80458880) while 7 / 6 other units call them out of
 line. Tested on MWCC GC/2.6 -inline auto: a later definition is never inlined, whether the
 class declaration and/or the definition say `inline` (no copy emitted either), so the bodies
 were inline ahead of their users. Written as the playerFlags_802413F0 / fn_802413F0
@@ -47,7 +47,7 @@ top of the .cpp (declared in the class; not in the widely included header, per R
 and fn_80458508 / fn_80458F04 call them (unchanged %: 98.55 / 100).
 Written:
 - fn_80457E54 100 % (inlines moveMusicTempo_80458508).
-- fn_8045815C 99.97 % reloc-name only (0.5f pooled after 0.7f, used first by unwritten
+- setMusicSlow_8045815C 99.97 % reloc-name only (0.5f pooled after 0.7f, used first by unwritten
   fn_80459674). Needed JAISound::getID() by value (TP JAudio2 form; mkdd has const&): the
   original copies the ID through a temporary. SHARED-EDIT libs/sdk/include/.../JAISound.h.
 - fn_80458880 (393 callers) 99.66 % missing/extra (1 instr) + reloc-name. Two more inlines

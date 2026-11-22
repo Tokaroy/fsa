@@ -19,8 +19,8 @@ public:
     // 0x8011CF48: per-state camera centre / zoom, fed to the camera each frame.
     void fn_8011CF48();
     // 0x8011D1B8: enters a state (0-9) and stores it in field_0x234.
-    void fn_8011D1B8(s32 state);
-    // Not in the binary: plain functions that fn_8011D1B8 (state 2) and update inline.
+    void setState_8011D1B8(s32 state);
+    // Not in the binary: plain functions that setState_8011D1B8 (state 2) and update inline.
     void startScroll();
     void setOverlayRect();
 

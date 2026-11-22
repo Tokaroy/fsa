@@ -219,8 +219,8 @@ void Navi_804A6708::fn_8021E4F8() {
         tx = mSpawnPos.x;
         ty = mSpawnPos.y;
     }
-    fn_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
-    fn_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c8.x, tx, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c8.y, ty, 1.0f, 0.0f);
     JGeometry::TVec2f goal = field_0x2c8 + d;
     if (mState == 7 && isFollowing()) {
         fn_801CD754(&field_0x2c0, &goal, 0.3f, 1.0f, 4.0f);
@@ -325,7 +325,7 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
                     } else {
                         v = fn_801CD354(fn_801D0020(&mPos, p, false));
                     }
-                    fn_80230BF4(p, v);
+                    setPlayerFacing_80230BF4(p, v);
                     JGeometry::TVec3f pos(getPlayerPos_8023E724(p)->x, getPlayerPos_8023E724(p)->y, 0.0f);
                     fn_80230498(p, &pos, v + 0x3C, 0xFF, -0x80, -0x80, true);
                 }

@@ -151,7 +151,7 @@ void PlayerEffect_804A6E20::update() {
         field_0x234 = (u16)(field_0x230 / 3) + 0x1C3;
         if (getKind() == 14) {
             mPos.x -= 4.0f;
-            if (fn_80239D38() || !fn_80236B50(mSpawnParam_0x90 & 3) || fn_80236AB4(mSpawnParam_0x90 & 3)) {
+            if (fn_80239D38() || !isPlayerDead_80236B50(mSpawnParam_0x90 & 3) || fn_80236AB4(mSpawnParam_0x90 & 3)) {
                 mAlive = false;
             }
         } else if (!fn_80235274(mSpawnParam_0x90 & 3)) {

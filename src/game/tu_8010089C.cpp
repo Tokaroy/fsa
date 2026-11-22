@@ -102,7 +102,7 @@ static inline void focusCamera(const JGeometry::TVec3f& pos) {
 static inline void faceTowards(WhackAMoleShop_8049C8EC* shop, s32 player) {
     JGeometry::TVec3f dir;
     f32 dist;
-    shop->fn_801EE558(&dir, &dist, player + 1);
+    shop->getNearestPlayerDir_801EE558(&dir, &dist, player + 1);
     if (dist < 100.0f) {
         u32 angle = (u16)(s32)(10430.378f * JMath::atanTable_.atan2_(-dir.x, -dir.y));
         if (!(angle >= 0x2000 && angle < 0xE000)) {

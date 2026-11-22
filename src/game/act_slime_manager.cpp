@@ -177,7 +177,7 @@ void SlimeManager_804A5BD8::onFirstUpdate_0x54() {
 
 void SlimeManager_804A5BD8::vfunc_0xA4() {
     if (mState != 5) {
-        fn_80208244(5);
+        setState_80208244(5);
     }
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
@@ -189,7 +189,7 @@ void SlimeManager_804A5BD8::vfunc_0xA4() {
 
 void SlimeManager_804A5BD8::vfunc_0xA8() {
     if (mState != 7) {
-        fn_80208244(7);
+        setState_80208244(7);
     }
     for (s32 i = 0; i < 4; i++) {
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mSlots[i].mSerial);
@@ -240,7 +240,7 @@ void SlimeManager_804A5BD8::fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TV
 
 // FIXME: 99.09 %, operands; behaviour clean.
 // FIXME: r26/r27 regalloc swap in loops and stack frame offset swap (0xc vs 0x1c) between chooseDir and case 4.
-void SlimeManager_804A5BD8::fn_80208244(int state) {
+void SlimeManager_804A5BD8::setState_80208244(int state) {
     switch (state) {
     case 1:
         break;
@@ -295,15 +295,15 @@ void SlimeManager_804A5BD8::updateState_0x90(u8 mapHit) {
     case 0:
         if (checkTrigger()) {
             spawnSlimes();
-            fn_80208244(1);
+            setState_80208244(1);
         }
         break;
     case 2:
         if (mStateTimer >= field_0x250) {
             if (!(mFlags & 0x2000) && field_0x34a >= 5) {
-                fn_80208244(4);
+                setState_80208244(4);
             } else {
-                fn_80208244(3);
+                setState_80208244(3);
             }
         }
         break;
@@ -326,7 +326,7 @@ void SlimeManager_804A5BD8::calcVelocity_0x88() {
 void SlimeManager_804A5BD8::fn_80207ECC() {
     switch (mState) {
     case 1:
-        fn_80208244(3);
+        setState_80208244(3);
         break;
     }
 }
@@ -336,10 +336,10 @@ bool SlimeManager_804A5BD8::fn_80207E58() {
     switch (mState) {
     case 3:
         if (field_0x34a >= 10) {
-            fn_80208244(6);
+            setState_80208244(6);
             result = true;
         } else {
-            fn_80208244(2);
+            setState_80208244(2);
         }
         break;
     case 6:
@@ -352,7 +352,7 @@ bool SlimeManager_804A5BD8::fn_80207E58() {
 void SlimeManager_804A5BD8::fn_80207E24() {
     switch (mState) {
     case 4:
-        fn_80208244(2);
+        setState_80208244(2);
         break;
     }
 }

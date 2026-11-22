@@ -21,27 +21,27 @@ public:
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x88 */ virtual void calcVelocity_0x88();
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
-    // 0x802088B4: fn_80208244(5) unless already in state 5, then
+    // 0x802088B4: setState_80208244(5) unless already in state 5, then
     // fn_80209D44 on each slot's actor (findActorBySerial_801F666C of the slot's serial).
     /* 0xA4 */ virtual void vfunc_0xA4();
-    // 0x80208834: fn_80208244(7) unless already in state 7, then
+    // 0x80208834: setState_80208244(7) unless already in state 7, then
     // fn_80209CA4 on each slot's actor (findActorBySerial_801F666C of the slot's serial),
     // with the slot's player, attack, target and type.
     /* 0xA8 */ virtual void vfunc_0xA8();
 
-    // 0x80207E24: fn_80208244(2) while mState is 4.
+    // 0x80207E24: setState_80208244(2) while mState is 4.
     void fn_80207E24();
     // 0x80207E58: true in state 6; in state 3 it moves to 6 (true) once
     // field_0x34a reaches 10, else to state 2 (false).
     bool fn_80207E58();
-    // 0x80207ECC: fn_80208244(3) while mState is 1.
+    // 0x80207ECC: setState_80208244(3) while mState is 1.
     void fn_80207ECC();
     // 0x80208244, the state step (r4 = state); fn_80207ECC calls it with 3.
-    void fn_80208244(int state);
+    void setState_80208244(int state);
     // 0x80208520
     void fn_80208520(JGeometry::TVec2f* outPos, JGeometry::TVec2f* outStep);
 
-    // Inlined into init, updateState_0x90 and fn_80208244 (no standalone copy in the
+    // Inlined into init, updateState_0x90 and setState_80208244 (no standalone copy in the
     // original): spawn the four slimes of the formation, test the trigger
     // condition of mode field_0x340, average the live slimes' positions, and
     // pick a direction towards the nearest player.

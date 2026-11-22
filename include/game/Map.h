@@ -52,11 +52,11 @@ class GbaWindow_804B1668 {
 public:
     GbaWindow_804B1668();
     /* 0x08 */ virtual ~GbaWindow_804B1668();
-    // 0x80432750: called by TileMap_804AA858::fn_802FF0EC with
+    // 0x80432750: called by TileMap_804AA858::drawPlayerPanels_802FF0EC with
     // (field_0x230 == -1, the field_0x21c-0x228 rectangle as floats); r4 is
     // tested clrlwi. (bool).
     void fn_80432750(bool all, f32 x, f32 y, f32 w, f32 h);
-    // 0x80432638: called by fn_802FF0EC after the panels when fn_80432750 ran.
+    // 0x80432638: called by drawPlayerPanels_802FF0EC after the panels when fn_80432750 ran.
     void fn_80432638();
     // 0x80432AF8: updates the screens' animations and the timer digits.
     void fn_80432AF8();
@@ -148,7 +148,7 @@ union cls_804AA858Sub11C {
                 u32 field_0x4_0 : 5;
                 /* 0x05 */ u32 field_0x5_7 : 1;
                 u32 field_0x5_6 : 1;
-                u32 mOffsetMode : 2;           // fn_802FB69C: cls_804AA8D8::fn_8030B1E8's mode in mode 3
+                u32 mOffsetMode : 2;           // drawPlayerPanel_802FB69C: cls_804AA8D8::fn_8030B1E8's mode in mode 3
                 u32 field_0x5_0 : 4;
                 /* 0x06 */ u32 field_0x6 : 8;  // four 2-bit values
                 /* 0x07 */ u32 field_0x7_4 : 4; // four 1-bit values
@@ -174,7 +174,7 @@ union cls_804AA858Sub11C {
         } field_0x4;
         // Four player marks (fn_802FCE74 places a 48 x 48 view around mEntries[
         // lbl_80506DD8[player]]: x = mXLow | mXHigh << 8, y = mY); the high bits
-        // of their last bytes hold the panel's 9-bit scroll (fn_802FB69C): x =
+        // of their last bytes hold the panel's 9-bit scroll (drawPlayerPanel_802FB69C): x =
         // mEntries[0].mScroll << 5 | mEntries[0].mScrollBit << 4 | mEntries[1].mScroll,
         // y likewise from entries 2 and 3; mEntries[3].mScrollBit is the overlay flag.
         union {
@@ -200,13 +200,13 @@ void fn_803068D0(cls_804AA858Sub11C* record);
 s32 fn_803066F0(s32 unused, s32 player, s32 max);
 void fn_803064A8(s32 unused, s32 player, s32 max, s32 start);
 s32 fn_803074A4(s32 kind, s32 id);
-// Called by TileMap_804AA858::fn_802FB69C before (fn_8030275C) and after
-// (fn_803022C4) its tint boxes: the record, the player, fn_802FB69C's flag
+// Called by TileMap_804AA858::drawPlayerPanel_802FB69C before (fn_8030275C) and after
+// (fn_803022C4) its tint boxes: the record, the player, drawPlayerPanel_802FB69C's flag
 // byte and whether field_0x134[player] is set.
 void fn_803022C4(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
 void fn_8030275C(const cls_804AA858Sub11C* record, s32 player, u8 flag, bool set);
 void fn_80302F9C(const GbaSprite_80506F88* sprite, f32 scale, u8 flag, bool set);
-// Also tu_80301CD0's, read by TileMap_804AA858::fn_802FF0EC per player:
+// Also tu_80301CD0's, read by TileMap_804AA858::drawPlayerPanels_802FF0EC per player:
 // fn_80301D30's state (1 / 2), a byte counter (>> 1, or (0x10 - it) << 4)
 // and two s32 tables compared for equality.
 u8 fn_80301D30(s32 player);
@@ -236,7 +236,7 @@ public:
     /* 0x0C */ s32 field_0xc;
 }; // Size: 0x10
 
-// 0x100 at 0x2398: a timed sprite effect that fn_802F6800 adds (the first
+// 0x100 at 0x2398: a timed sprite effect that addFadeSprite_802F6800 adds (the first
 // entry with mTimer 0) from params' field_0x30 kind; fn_802FF568 counts
 // mTimer down each frame.
 class TimedSpriteEffect_803003AC {
@@ -245,7 +245,7 @@ public:
 
     /* 0x00 */ s32 mTimer;    // the kind's duration, counted down
     /* 0x04 */ s32 mDuration; // mTimer's start value
-    /* 0x08 */ f32 mScale;    // per kind; fn_802F6800 gives mMtx an identity when it is not 1.0f
+    /* 0x08 */ f32 mScale;    // per kind; addFadeSprite_802F6800 gives mMtx an identity when it is not 1.0f
     /* 0x0C */ JGeometry::TVec3f mPos;
     // The draw arguments of the sprite it came from (QueuedSprite_8030029C's).
     /* 0x18 */ void* mRes;
@@ -255,7 +255,7 @@ public:
     /* 0x28 */ SpriteParams_801F5AE0 mParams;
     /* 0x64 */ Mtx mMtx; // mParams.mMtx points here when set
     // params' field_0x10 times the kind's colour / 255, and params'
-    // field_0x14 plus the kind's colour clamped to 0xFF (fn_802F6800). The
+    // field_0x14 plus the kind's colour clamped to 0xFF (addFadeSprite_802F6800). The
     // constructor's two -1 stores after mParams are TColor's default constructor.
     /* 0x94 */ JUtility::TColor mColor;
     /* 0x98 */ JUtility::TColor mAddColor;
@@ -331,7 +331,7 @@ public:
     // field_0x30 is not -1; adds a mFadeSprites_0x2398 effect of that kind (tables
     // indexed by field_0x30) on frames where the sprite's resource address
     // (res + image + res3) matches the frame counter modulo its period.
-    u8 fn_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
+    u8 addFadeSprite_802F6800(const JGeometry::TVec3f* pos, void* res, s32 frame, void* image, void* res3,
                      SpriteParams_801F5AE0* params);
     // 5 units (act_shutter, act_red_blue_switch, act_spike_floor_check,
     // tu_802D39B8, tu_8029D898) plus BgRewrite's tile animation. Decodes
@@ -339,7 +339,7 @@ public:
     // from getResSize when `size` is 0) and rewrites the 4-bit tile data
     // at this + 4 + slot * 4 + dstOffset from res + srcOffset (0x802FA160).
     // Callers pass (res, 0 / 0xC0 / 0x180, 0, 0x40, 0xC0).
-    void fn_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
+    void loadTileImages_802FA160(void* res, u32 srcOffset, s32 slot, u32 dstOffset, u32 size);
     // 0x802F99DC: loads the u16 tile grid of `layer` (little-endian in res)
     // at byte dstOffset; tu_802D39B8 passes (res, 0, layer, 0, 0).
     void fn_802F99DC(void* res, u32 srcOffset, s32 layer, u32 dstOffset, u32 size);
@@ -366,7 +366,7 @@ public:
     // 1.0f, -2.0f).
     void fn_802F601C(const JGeometry::TVec3f* pos, s32 kind, const JGeometry::TVec3f* dir, f32 scaleX,
                      f32 scaleY);
-    // 0x802F9714 (game/tu_802F5040.cpp): the same arguments as fn_802FA160
+    // 0x802F9714 (game/tu_802F5040.cpp): the same arguments as loadTileImages_802FA160
     // (checkCompressed / getResSize for size 0); writes the nibble-swapped
     // bytes to mSpriteImages_0x88[slot] + dstOffset and flushes them; tu_8039003C's
     // constructor passes the 'SCH ' resources (slots 0, 0, 2, 3), as does
@@ -394,23 +394,23 @@ public:
     // 0x802F6BBC: copies the 0x1000 tiles of layer src to layer dst (the
     // same layer branches); tu_802D39B8 passes (0, 4) and (1, 5).
     void fn_802F6BBC(s32 src, s32 dst);
-    // 0x802FF0EC: draws the four players' panels (fn_802FB69C, for each
+    // 0x802FF0EC: draws the four players' panels (drawPlayerPanel_802FB69C, for each
     // field_0x148[player] set outside screen mode 12), with field_0xfc's
     // window around field_0x21c-0x228 first when field_0x214 is set and
     // field_0x230 is that player or -1 (all); clears field_0xbf98. Called by
     // GameRoot2_8049F108::fn_8013B538 / fn_8013B618 with field_0x20.
-    void fn_802FF0EC();
+    void drawPlayerPanels_802FF0EC();
     // 0x802FAC10: draws the panel tile grid field_0x48[layer] (2 x 2 blocks of
     // 16 x 16, mTileImages_0x4[1]'s colour-index texture, palette set mTilePalettes_0x18[1]
     // for layers 0 / 8 or a nonzero flag, else mTilePalettes_0x18[2]) scrolled by (x, y),
     // tinted grey / alpha unless both are 0xFF; offsets (or NULL): a shift per
-    // screen line (0xA0), averaged over each 8-line row. Called only by fn_802FB69C.
+    // screen line (0xA0), averaged over each 8-line row. Called only by drawPlayerPanel_802FB69C.
     void fn_802FAC10(s32 layer, s32 x, s32 y, s32 flag, u8 grey, u8 alpha, const s32* offsets);
-    // 0x802FB69C: one player's panel, from fn_802FF0EC:
+    // 0x802FB69C: one player's panel, from drawPlayerPanels_802FF0EC:
     // the player, its field_0x11c record, field_0x150 / field_0x190 rects,
     // field_0x210 byte (tested clrlwi.), a count (cmpwi 0, + 1) and an
     // alpha (0xFF - alpha).
-    void fn_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect, IntRect_803004C0* rect2,
+    void drawPlayerPanel_802FB69C(s32 player, cls_804AA858Sub11C* record, IntRect_803004C0* rect, IntRect_803004C0* rect2,
                      u8 flag, s32 count, u8 alpha);
     // 0x802FF3B0 (game/tu_802F5040.cpp): no arguments. Calls fn_802FA3FC
     // when byte 0xE451 is set and gGameRoot_8053AAF8->mTileImages_0x4 is not NULL.
@@ -492,7 +492,7 @@ public:
     /* 0x0216 */ u8 field_0x216; // 9 units set it to 1 (act_four_switch_monitor 0x802A9E78)
     /* 0x0217 */ u8 field_0x217[4]; // tu_80418B64 stores them (0x8041AEBC, 0x8041F43C-0x8041F48C)
     /* 0x021B */ u8 field_0x21b;
-    // A rectangle (x, y, w, h: fn_802FCE74 stores it, fn_802FF0EC passes it
+    // A rectangle (x, y, w, h: fn_802FCE74 stores it, drawPlayerPanels_802FF0EC passes it
     // as floats to field_0xfc's fn_80432750).
     /* 0x021C */ s32 field_0x21c;
     /* 0x0220 */ s32 field_0x220;
@@ -518,14 +518,14 @@ public:
     /* 0x0B5C */ GXTexObj mSpriteTexObjs_0xb5c[3][4][16];
     // Per-player bytes: tu_80139BE8 (0x80139C24), tu_802D39B8, tu_803A8DFC
     // and tu_803B7DCC store them; Camera_804AA9E4::fn_8030C85C /
-    // fn_8030C928 copy them to mLayer2Visible_0x2360.
+    // setNextVisibleBox_8030C928 copy them to mLayer2Visible_0x2360.
     /* 0x235C */ u8 mLayerVisible_0x235c[4];
     /* 0x2360 */ u8 mLayer2Visible_0x2360[4];
     // fn_802F86CC draws nothing while it is 0; 6 units set it to 1
     // (tu_802D39B8 0x802D9BFC).
     /* 0x2364 */ u8 mDrawSprites_0x2364;
     /* 0x2365 */ u8 field_0x2365;
-    // Camera_804AA9E4::fn_8030C928 moves mLayerOrigin_0x2368 to mLayer2Origin_0x2374 and
+    // Camera_804AA9E4::setNextVisibleBox_8030C928 moves mLayerOrigin_0x2368 to mLayer2Origin_0x2374 and
     // stores the new box's corner (x0, y0, constant) in mLayerOrigin_0x2368;
     // tu_8016A2B4 reads it (0x8016E014).
     /* 0x2368 */ JGeometry::TVec3f mLayerOrigin_0x2368;

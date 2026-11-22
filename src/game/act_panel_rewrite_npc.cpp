@@ -145,7 +145,7 @@ PanelRewriteNPC_804A8E40::~PanelRewriteNPC_804A8E40() {
         s32 cell = fn_80226BC4(&pos, mLayer_0x4);
         s32 slot = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, cell);
         if (slot != -1) {
-            getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, slot, false);
+            getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, slot, false);
         }
     }
 }

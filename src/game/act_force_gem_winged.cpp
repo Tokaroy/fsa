@@ -572,7 +572,7 @@ void WingedForceGem_804AB098::updateRise() {
         JGeometry::TVec3f dir;
         f32 dist;
         if (!found) {
-            fn_801EE558(&dir, &dist, 0);
+            getNearestPlayerDir_801EE558(&dir, &dist, 0);
         }
         if (found == 1 || dist < 48.0f) {
             addCalc2_801F71A4(&field_0x248, 20.0f, 0.3f, 4.0f);

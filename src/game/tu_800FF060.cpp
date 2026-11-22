@@ -86,7 +86,7 @@ void HammerShopMinigame_8049C858::fn_801003F4() {
 inline void HammerShopMinigame_8049C858::facePlayer_inline() {
     JGeometry::TVec3f dir;
     f32 dist;
-    fn_801EE558(&dir, &dist, field_0x240 + 1);
+    getNearestPlayerDir_801EE558(&dir, &dist, field_0x240 + 1);
     if (dist < 100.0f) {
         u32 angle = (u16)(s32)(10430.378f * JMath::atanTable_.atan2_(-dir.x, -dir.y));
         if (!(angle >= 0x2000 && angle < 0xE000)) {

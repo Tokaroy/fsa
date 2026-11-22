@@ -261,7 +261,7 @@ GameRoot_8049EF20::~GameRoot_8049EF20() {
 
 // Called once by main after the constructor: resets the per-game state and
 // picks the first game mode (the title after power-on, see SaveRegion 0x4/0x5).
-void GameRoot_8049EF20::fn_80138C9C() {
+void GameRoot_8049EF20::resetGameState_80138C9C() {
     field_0xa0->field_0x5 = 4;
     gGameRoot2_8053AB10->fn_8013BE04();
     field_0x10->fn_802ACB58();
@@ -362,7 +362,7 @@ s32 GameRoot_8049EF20::fn_80138A30() {
 // the target loads field_0x4 into r3 before each fn_80139D70 call).
 void GameRoot_8049EF20::fn_80137300() {
     field_0x5c++;
-    field_0x8->fn_8030A43C();
+    field_0x8->pollInputs_8030A43C();
     gGameRoot_8053AAF8->field_0x85 = 0;
     JUTGamePad* pad = JUTGamePad::getGamePad(0);
     if (field_0x108 != 0) {
@@ -795,7 +795,7 @@ void GameRoot_8049EF20::fn_80137300() {
             field_0x84 = 0;
             break;
         case 16:
-            getGameView_802D6A9C()->fn_802DA8DC();
+            getGameView_802D6A9C()->resetStage_802DA8DC();
             field_0x50 = 7;
             field_0x58 = 1;
             lbl_8053ACA0->fn_802AC8AC(0);
@@ -853,7 +853,7 @@ void GameRoot_8049EF20::fn_80137300() {
             fn_80135A04(field_0x50);
             field_0xfd = 2;
         }
-        fn_80135494(field_0x50);
+        applyRequestedMode_80135494(field_0x50);
     } else if (lbl_8053ACA0->fn_802AC8B4()) {
         s32 state = field_0x58;
         if (state == 1) {
@@ -866,9 +866,9 @@ void GameRoot_8049EF20::fn_80137300() {
             }
             fn_80135A04(field_0x50);
             field_0x58 = 8;
-            fn_80135494(field_0x50);
+            applyRequestedMode_80135494(field_0x50);
         } else if (state == 8) {
-            fn_80135494(field_0x50);
+            applyRequestedMode_80135494(field_0x50);
         } else if (state == 2) {
             field_0x58 = 4;
         } else if (state == 4) {
@@ -1326,7 +1326,7 @@ bool GameRoot_8049EF20::fn_80136320() {
 }
 
 // Switches to game mode `mode`: deletes the other modes' screens, reports the
-// heap and starts loading the mode's archives (fn_80401E10) or screen.
+// heap and starts loading the mode's archives (requestMountMemArchive_80401E10) or screen.
 void GameRoot_8049EF20::fn_80135A04(s32 mode) {
     if (field_0x84 != 0) {
         fn_801352F4(field_0x4c);
@@ -1351,16 +1351,16 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
                     strcpy(path, "/GC4Sword_usa/Boss/");
                 }
                 strcat(path, lbl_8049ED88[lbl_80529DEC.mStage_0x118][lbl_80529DEC.mLevel_0x11c]);
-                field_0xac = fn_80401E10(path, 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10(path, 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 2) {
-                field_0xac = fn_80401E10("/GC4Sword/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-                field_0xac = fn_80401E10("/GC4Sword_usa/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/Boss/boss500.arc", 0, lbl_80529DEC.mHeap);
             }
             if (fn_80021840() == 2) {
-                field_0xb0 = fn_80401E10("/GC4Sword/game2D.arc", 0, lbl_80529DEC.mHeap);
+                field_0xb0 = requestMountMemArchive_80401E10("/GC4Sword/game2D.arc", 0, lbl_80529DEC.mHeap);
             } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-                field_0xb0 = fn_80401E10("/GC4Sword_usa/game2D.arc", 0, lbl_80529DEC.mHeap);
+                field_0xb0 = requestMountMemArchive_80401E10("/GC4Sword_usa/game2D.arc", 0, lbl_80529DEC.mHeap);
             }
         }
         break;
@@ -1401,9 +1401,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("ModeSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/gamemode.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/gamemode.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/gamemode.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/gamemode.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1417,9 +1417,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("FileSelect　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/file.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/file.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/file.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/file.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1433,9 +1433,9 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
         OSReport("Menu　連続空き容量　%fK 残り空き容量　%fK\n",
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
-            field_0xac = fn_80401E10("/GC4Sword/entry.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword/entry.arc", 0, lbl_80529DEC.mHeap);
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
-            field_0xac = fn_80401E10("/GC4Sword_usa/entry.arc", 0, lbl_80529DEC.mHeap);
+            field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/entry.arc", 0, lbl_80529DEC.mHeap);
         }
         field_0xb0 = NULL;
         break;
@@ -1450,15 +1450,15 @@ void GameRoot_8049EF20::fn_80135A04(s32 mode) {
                  field_0x98->getFreeSize() / 1024.0f, (s32)field_0x98->getTotalFreeSize() / 1024.0f);
         if (fn_80021840() == 2) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                field_0xac = fn_80401E10("/GC4Sword/map1.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/map1.arc", 0, lbl_80529DEC.mHeap);
             } else {
-                field_0xac = fn_80401E10("/GC4Sword/map2.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword/map2.arc", 0, lbl_80529DEC.mHeap);
             }
         } else if (fn_80021840() == 0 || fn_80021840() == 1) {
             if (gGameRoot_8053AAF8->field_0x7f != 0) {
-                field_0xac = fn_80401E10("/GC4Sword_usa/map1.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/map1.arc", 0, lbl_80529DEC.mHeap);
             } else {
-                field_0xac = fn_80401E10("/GC4Sword_usa/map2.arc", 0, lbl_80529DEC.mHeap);
+                field_0xac = requestMountMemArchive_80401E10("/GC4Sword_usa/map2.arc", 0, lbl_80529DEC.mHeap);
             }
         }
         field_0xb0 = NULL;
@@ -1492,7 +1492,7 @@ static inline void playStageMusic(GameRoot_8049EF20* self) {
     }
 }
 
-void GameRoot_8049EF20::fn_80135494(s32 mode) {
+void GameRoot_8049EF20::applyRequestedMode_80135494(s32 mode) {
     bool changed = false;
     if ((mode == 2 && field_0x4c != 2 && field_0x4c != 5) || (mode == 5 && field_0x4c != 2 && field_0x4c != 5) ||
         mode == 3 || mode == 4 || mode == 6 || (mode == 7 && field_0x4 == 0)) {

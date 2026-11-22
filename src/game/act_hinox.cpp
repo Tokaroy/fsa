@@ -485,7 +485,7 @@ void Hinox_8049F9B4::update() {
         field_0x284 = 0.0f;
         field_0x280 = 0.0f;
         field_0x27c = 0.0f;
-        if (fn_801F6758(&mPos, mLayer_0x4, -130.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, -130.0f)) {
             s32 layer = mLayer_0x4;
             GameView_804A9950* view = getGameView_802D6A9C();
             const JGeometry::TBox2f* boxPtr = (layer < 8) ? &view->mVisibleBox : &view->field_0xdc;
@@ -559,7 +559,7 @@ void Hinox_8049F9B4::update() {
             }
         }
         if (field_0x254 >= 0) {
-            if (fn_80236B50(field_0x254) || fn_80230188(field_0x254) ||
+            if (isPlayerDead_80236B50(field_0x254) || fn_80230188(field_0x254) ||
                 fn_8022DCD8(field_0x254) || fn_8022F478(field_0x254) ||
                 fn_80237774(field_0x254) <= 0 || fn_8022D534(field_0x254)) {
                 if (releasePlayer()) {

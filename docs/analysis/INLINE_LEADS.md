@@ -107,12 +107,12 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 9 | 21 | 95888 | 25 | 25 | `getActorManager_801F856C(…)->fn_801F68E0(…)` |
 | 10 | 20 | 81416 | 25 | 24 | `getActorManager_801F856C(…)->fn_801F6884(…)` |
 | 11 | 17 | 40844 | 23 | 18 | `pos(…)` |
-| 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->fn_80119998(…)` |
+| 12 | 16 | 63952 | 22 | 18 | `fn_80119DD0(…)->startFade_80119998(…)` |
 | 13 | 16 | 25544 | 29 | 24 | `getActorManager_801F856C(…)->fn_801F78F4(…)` |
 | 14 | 14 | 62416 | 26 | 21 | `spawnEmitter_8013CC50(…)` |
 | 15 | 14 | 18712 | 34 | 23 | `getGameView_802D6A9C(…)->fn_802D7440(…)` |
 | 16 | 12 | 51728 | 29 | 14 | `getMessageText_803832BC(…)` |
-| 17 | 12 | 41000 | 14 | 13 | `getActorManager_801F856C(…)->fn_801F7818(…)` |
+| 17 | 12 | 41000 | 14 | 13 | `getActorManager_801F856C(…)->collectActorsById_801F7818(…)` |
 | 18 | 12 | 26844 | 16 | 16 | `fn_8020D58C(…)->addBox(…)` |
 | 19 | 11 | 40860 | 24 | 14 | `getPlayerPos_8023E724(…)` |
 | 20 | 11 | 26512 | 16 | 9 | `fn_8011921C(…)->fn_80118454(…)` |
@@ -140,7 +140,7 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 7 | 11 | 26512 | 16 | 9 | `fn_8011921C()->fn_80118454()` |
 | 8 | 9 | 21552 | 17 | 15 | `getGameView_802D6A9C()->fn_802D8050(bit, true, 0xFF)` |
 | 9 | 9 | 18700 | 16 | 8 | `fn_8011921C()->fn_801183BC()` |
-| 10 | 6 | 19664 | 8 | 3 | `getActorManager_801F856C()->fn_801F6204(0)` |
+| 10 | 6 | 19664 | 8 | 3 | `getActorManager_801F856C()->setAllDefeated_801F6204(0)` |
 | 11 | 6 | 12772 | 7 | 6 | `sqrt(square(dx)+ square(dy))` |
 | 12 | 6 | 6200 | 15 | 15 | `getGameView_802D6A9C()->fn_802D7440(false)` |
 | 13 | 6 | 6176 | 9 | 8 | `getGameView_802D6A9C()->fn_802D7440(0)` |

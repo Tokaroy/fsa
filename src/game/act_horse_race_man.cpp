@@ -66,7 +66,7 @@ static inline void shuffle(s32 count, s32* order, s32* pool) {
 }
 
 // FIXME: 99.55% (regalloc-only: target r29/r28/r31 vs ours r28/r29/r25 in case 7 and case 13 loops)
-void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
+void HorseRaceMan_804A5630::setState_801ECB08(s32 state) {
     s32 i;
     switch (state) {
     case 0:
@@ -79,7 +79,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
         mDir_0x98 = fn_801D0020(&mPos, field_0x2b0, false);
         break;
     case 6:
-        fn_80119DD0()->fn_80119998(0x78, 0, 2, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0x78, 0, 2, 0, 0, 0, 0);
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
         break;
     case 7: {
@@ -88,7 +88,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             getGameView_802D6A9C()->fn_802D8050(viewId, true, 0xff);
         }
         for (i = 0; i < field_0x2a8; i++) {
-            if (fn_80236B50(i)) {
+            if (isPlayerDead_80236B50(i)) {
                 fn_8023764C(i, 4);
             }
         }
@@ -112,7 +112,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             s32 p = hasPlayerLeader_8022F514(i) ? getPlayerLeader_8022F3DC(i) : i;
             pos.set(72.0f + box->i.x, box->i.y + 16.0f * (order[p] + 3.5f), 0.0f);
             fn_80230498(i, &pos, 0x356, 0xff, -0x80, -0x80, true);
-            fn_80230BF4(i, 0);
+            setPlayerFacing_80230BF4(i, 0);
         }
         mDir_0x98 = 2;
         mTable.fn_802160F4();
@@ -135,7 +135,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
         break;
     }
     case 12:
-        fn_80119DD0()->fn_80119998(0x78, 0, 2, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0x78, 0, 2, 0, 0, 0, 0);
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
         break;
     case 13: {
@@ -149,7 +149,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             s32 p = hasPlayerLeader_8022F514(i) ? getPlayerLeader_8022F3DC(i) : i;
             pos.set(mPos.x + 16.0f * (f32)p, mPos.y + 32.0f, 0.0f);
             fn_80230498(i, &pos, 0x3f, 0xff, -0x80, -0x80, true);
-            fn_80230BF4(i, 3);
+            setPlayerFacing_80230BF4(i, 3);
         }
         gGameRoot_8053AAF8->fn_80138B7C();
         break;
@@ -236,7 +236,7 @@ void HorseRaceMan_804A5630::fn_801EC7B8() {
 
     bool allFinished = mTable.fn_80215E98() == mTable.mCount;
     if (allFinished) {
-        fn_801ECB08(11);
+        setState_801ECB08(11);
         return;
     }
 
@@ -248,7 +248,7 @@ void HorseRaceMan_804A5630::fn_801EC7B8() {
             }
         }
         fn_801F0D20(0x3b);
-        fn_801ECB08(11);
+        setState_801ECB08(11);
     }
 }
 
@@ -292,9 +292,9 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
             }
             if (fn_8038AD24(field_0x2b0, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 0)) {
                 if (flag) {
-                    fn_801ECB08(1);
+                    setState_801ECB08(1);
                 } else {
-                    fn_801ECB08(2);
+                    setState_801ECB08(2);
                 }
             }
         }
@@ -304,7 +304,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
             mDir_0x98 = 2;
-            fn_801ECB08(0);
+            setState_801ECB08(0);
         }
         break;
     case 2:
@@ -313,11 +313,11 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         if (fn_803865B8(field_0x2b0)) {
             if (fn_8037EFB4(field_0x2b0) == 0) {
                 if (fn_8038470C(field_0x2b0, 0x35E)) {
-                    fn_801ECB08(3);
+                    setState_801ECB08(3);
                 }
             } else {
                 if (fn_8038470C(field_0x2b0, 0x35F)) {
-                    fn_801ECB08(4);
+                    setState_801ECB08(4);
                 }
             }
         }
@@ -327,9 +327,9 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
             if (fn_8023077C()) {
-                fn_801ECB08(6);
+                setState_801ECB08(6);
             } else {
-                fn_801ECB08(5);
+                setState_801ECB08(5);
             }
         }
         break;
@@ -338,34 +338,34 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
         if (fn_803865B8(field_0x2b0) && fn_80384C58(field_0x2b0, mSerial)) {
             mDir_0x98 = 2;
-            fn_801ECB08(0);
+            setState_801ECB08(0);
         }
         break;
     case 5:
         setCameraScript(mPos);
         if (fn_8023077C()) {
-            fn_801ECB08(6);
+            setState_801ECB08(6);
         }
         break;
     case 6:
         setCameraScript(mPos);
         if (mStateTimer >= 60) {
-            fn_801ECB08(7);
+            setState_801ECB08(7);
         }
         break;
     case 7:
         if (mStateTimer >= 60) {
-            fn_801ECB08(8);
+            setState_801ECB08(8);
         }
         break;
     case 8:
         if (mStateTimer >= 45) {
-            fn_801ECB08(9);
+            setState_801ECB08(9);
         }
         break;
     case 9:
         if (mStateTimer >= 180) {
-            fn_801ECB08(10);
+            setState_801ECB08(10);
         } else if (mStateTimer >= 120) {
             s32 val = mTable.field_0x94.fn_8021C024();
             for (i = 0; i < 4; i++) {
@@ -381,7 +381,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         mTable.fn_80215DB8();
         if (mStateTimer >= 30) {
             if (mTable.fn_80215D38()) {
-                fn_801ECB08(12);
+                setState_801ECB08(12);
             }
         } else {
             bool allFinished = mTable.fn_80215E98() == mTable.mCount;
@@ -392,13 +392,13 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         break;
     case 12:
         if (mStateTimer >= 60) {
-            fn_801ECB08(13);
+            setState_801ECB08(13);
         }
         break;
     case 13:
         setCameraFocus(mPos);
         if (mStateTimer >= 60) {
-            fn_801ECB08(14);
+            setState_801ECB08(14);
         }
         break;
     case 14: {
@@ -407,14 +407,14 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
         if (field_0x2b0 == fn_8022FD8C(mSerial)) {
             if (mTable.fn_80215E98() == 0) {
                 if (fn_8038AD24(field_0x2b0, 0x365, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
-                    fn_801ECB08(16);
+                    setState_801ECB08(16);
                 }
             } else {
                 s32 rank = mTable.fn_80215E58(0);
                 fn_803894BC(field_0x2b0, rank + 1);
                 if (fn_8038AD24(field_0x2b0, 0x366, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
                     field_0x2b4++;
-                    fn_801ECB08(15);
+                    setState_801ECB08(15);
                 }
             }
         }
@@ -427,7 +427,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
             mTable.fn_80215B6C(mTable.fn_80215E58(field_0x2b4 - 1));
             if (field_0x2b4 >= mTable.fn_80215E98()) {
                 if (fn_8038470C(field_0x2b0, 0x36A)) {
-                    fn_801ECB08(16);
+                    setState_801ECB08(16);
                 }
             } else {
                 s32 key2 = mTable.fn_80215E58(field_0x2b4);
@@ -454,7 +454,7 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
                 mTable.fn_80215BCC(i);
             }
             setScreenFlag_0x30(0xFF, true);
-            fn_801ECB08(0);
+            setState_801ECB08(0);
         }
         break;
     }

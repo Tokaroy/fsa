@@ -213,13 +213,13 @@ void MaidenCutscene_8049D740::fn_80112AE8() {
     Mtx mtx1;
     PSMTXTrans(mtx1, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axis1(1.0f, 0.0f, 0.0f);
-    fn_8010F668(mtx1, &axis1, 0.08726646f);
+    makeAxisRotation_8010F668(mtx1, &axis1, 0.08726646f);
 
     Mtx mtx2;
     mtx2[0][0] = mtx2[1][0] = mtx2[2][0] = mtx2[0][1] = mtx2[1][1] = mtx2[2][1] = mtx2[0][2] = mtx2[1][2] =
         mtx2[2][2] = mtx2[0][3] = mtx2[1][3] = mtx2[2][3] = 0.0f;
     JGeometry::TVec3f axis2(0.0f, 0.0f, 1.0f);
-    fn_8010F668(mtx2, &axis2, field_0x248);
+    makeAxisRotation_8010F668(mtx2, &axis2, field_0x248);
 
     PSMTXConcat(mtx1, mtx2, mtx1);
 

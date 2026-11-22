@@ -102,7 +102,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             dy *= 3.0f;
             mVel_0x3c.x = dx;
             mVel_0x3c.y = dy;
-            if (field_0x1dc.fn_801EAC20(player)) {
+            if (field_0x1dc.startTimer_801EAC20(player)) {
                 fn_80230FD0(player, 0x20002);
                 fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
@@ -215,7 +215,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             dy *= 3.0f;
             mVel_0x3c.x = dx;
             mVel_0x3c.y = dy;
-            if (field_0x1dc.fn_801EAC20(player)) {
+            if (field_0x1dc.startTimer_801EAC20(player)) {
                 startSound_801F0E34(0x400D1, 0);
                 fn_801CB4A4(mLayer_0x4, &JGeometry::TVec3f(hitX, hitY, 0.0f), 0, 0);
             }
@@ -344,7 +344,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                         u32 bit = 1 << j;
                         if (result & bit) {
                             if (mask & bit) {
-                                if (fn_801F329C(j)) {
+                                if (isPlayerOnLowerLayer_801F329C(j)) {
                                     JGeometry::TVec3f in(out.x, out.y, 0.0f);
                                     JGeometry::TVec3f res;
                                     fn_801CD0D0(&in, &res);

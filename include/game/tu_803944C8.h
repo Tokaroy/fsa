@@ -207,10 +207,10 @@ public:
     // 0x8039C9A0: writes a number's digits (with a leading '-', and a colour-code offset first).
     void fn_8039C9A0(s32 number);
     // 0x8039C630: appends a counted noun (the nouns of fn_803A2CB0), singular when count is 1.
-    void fn_8039C630(u8 noun, s32 count);
+    void appendCountedNoun_8039C630(u8 noun, s32 count);
     // 0x8039C258: the same number as fn_8039C9A0, as glyph codes in the first line buffer.
     void fn_8039C258(s32 number);
-    // 0x8039B3EC: the nouns of fn_8039C630 as glyph codes.
+    // 0x8039B3EC: the nouns of appendCountedNoun_8039C630 as glyph codes.
     void fn_8039B3EC(u8 noun, s32 count);
     // Inlined: appends a glyph code (two bytes) to the first line buffer.
     void appendGlyph(u16 glyph) {

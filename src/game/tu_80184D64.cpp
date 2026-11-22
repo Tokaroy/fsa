@@ -430,7 +430,7 @@ void ChainChomp_804A18E0::update() {
         JGeometry::TVec3f center;
         center.x = 0.5f * (x0 - x1) + x1;
         center.y = 0.5f * (y0 - y1) + y1;
-        if (fn_802265FC(&center, mLayer_0x4) == 0xC || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (fn_802265FC(&center, mLayer_0x4) == 0xC || isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f)) {
             if (field_0x258 == 0) {
                 field_0x258 = 1;
                 field_0x238 = 100;
@@ -463,7 +463,7 @@ void ChainChomp_804A18E0::update() {
                 }
             }
         }
-        if (field_0x258 == 2 && fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (field_0x258 == 2 && isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             mAlive = false;
         }
         break;

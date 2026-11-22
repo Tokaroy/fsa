@@ -44,7 +44,7 @@ static EndingControlFunc lbl_804AD400[8] = {
     &EnemyForEndingControl_804AD48C::fn_8035B650,
 };
 
-// The sequence tables by fn_8035C15C's argument (.data).
+// The sequence tables by stepSequence_8035C15C's argument (.data).
 const EndingStep_804AD460* lbl_804AD460[11] = {
     lbl_804724F8, lbl_80472518, lbl_80472538, lbl_80472558, lbl_80472570, lbl_804725B8,
     lbl_80472600, lbl_80472648, lbl_80472680, lbl_804726B8, lbl_804726C8,
@@ -70,7 +70,7 @@ void EnemyForEndingControl_804AD48C::init() {
     mEmitter298 = NULL;
     mEmitter29C = NULL;
     mEmitter2A0 = NULL;
-    fn_80119DD0()->fn_80119998(0x96, 0, 0, 0, 0, 0x14, 0);
+    fn_80119DD0()->startFade_80119998(0x96, 0, 0, 0, 0, 0x14, 0);
     field_0x270 = -1;
     field_0x274 = 0;
 }
@@ -121,16 +121,16 @@ void EnemyForEndingControl_804AD48C::draw() {
 }
 
 // Restarts the sequencer on table `seq`: stores `arg` (0x250), clears the
-// timer and the step index, then runs the first step (fn_8035C15C inlined).
+// timer and the step index, then runs the first step (stepSequence_8035C15C inlined).
 void EndingActorBase_804A5958::fn_8035C1C4(s32 seq, s32 arg) {
     field_0x250 = arg;
     field_0x244 = 0;
     field_0x24c = 0;
-    fn_8035C15C(seq);
+    stepSequence_8035C15C(seq);
 }
 
 // Advances the sequencer; true once the sequence is over.
-bool EndingActorBase_804A5958::fn_8035C15C(s32 seq) {
+bool EndingActorBase_804A5958::stepSequence_8035C15C(s32 seq) {
     if (field_0x244 == 0) {
         const EndingStep_804AD460* steps = lbl_804AD460[seq];
         if (steps[field_0x24c].value < 0) {
@@ -350,7 +350,7 @@ void EnemyForEndingControl_804AD48C::fn_8035B7A8() {
 // Phase handler in lbl_804AD3A0 (read by fn_8035C650).
 void EnemyForEndingControl_804AD48C::fn_8035B650() {
     if (field_0x234 == 0) {
-        fn_80119DD0()->fn_80119998(0x96, 0, 1, 0, 0, 0xFA, 0);
+        fn_80119DD0()->startFade_80119998(0x96, 0, 1, 0, 0, 0xFA, 0);
         field_0x234++;
         field_0x260 = 0x11C;
     } else if (field_0x260 == 0) {

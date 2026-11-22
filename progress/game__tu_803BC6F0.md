@@ -44,7 +44,7 @@ fn_803CE4B0 (boot path). .bss 100 % (@814..@822 + 9 weak memPool copies).
 
 ## Not written (46)
 Boot path first: ctor fn_803D0264 (8.6 KB), fn_803CF504, fn_803CB3DC,
-fn_803C24BC, fn_803C1734, fn_803CD75C, fn_803BDD44, fn_803CEED4, fn_803CE4CC
+fn_803C24BC, fn_803C1734, fn_803CD75C, fn_803BDD44, fn_803CEED4, refreshFileRows_803CE4CC
 (needs the 0x0/0x18/0x30 tag tables, the 0x730 table and the date string),
 fn_803CD2DC, fn_803CABAC. fn_803CC53C and fn_803CDEE8 / the ctor need
 lbl_8050EC80 as {0x20 header; rows[3] of 0xC8 at +0x20; blocks[3] of 0x9C4 at
@@ -69,10 +69,10 @@ After: same (no new 100 % function; the constructor is structurally close).
 
 - `__ct__19FileSelect_804AFF60Fv` written whole: 98.78 %, try.py
   `missing/extra + reloc-name`. Missing only the save-data setup (16
-  instructions: `for i < 3: fn_803B950C(lbl_8050EC80 + 0x20 + i*0xC8,
+  instructions: `for i < 3: initSaveFile_803B950C(lbl_8050EC80 + 0x20 + i*0xC8,
   lbl_8050EC80 + 0x280 + i*0x9C4)` and field_0x5c / field_0x60), which the
   SaveRow_8050EC80[] view can't express; registers around it shift (r7/r5,
-  r28/r29). String offsets are 0x58 short until fn_803BE3D8 / fn_803CE4CC
+  r28/r29). String offsets are 0x58 short until fn_803BE3D8 / refreshFileRows_803CE4CC
   (whose strings come first) are written.
 - Proved: field_0x88[3] / field_0x94[3] (Padhu bounds x / y), 0xE0 / 0xE4
   TColor (white / black of 'Pcopb01'; default TColor ctor inlined, the
@@ -89,7 +89,7 @@ After: same (no new 100 % function; the constructor is structurally close).
   line from the coordinator (not added by the worker).
 
 ### lbl_8050EC80 (save data) proposal, NOT applied
-Real layout (constructor, fn_803B950C, fn_803B9A94 sizes 0x258 / 0x1D4C):
+Real layout (constructor, initSaveFile_803B950C, fn_803B9A94 sizes 0x258 / 0x1D4C):
 {u8[8]; u64 serial @8; s32 current @0x10; pad to 0x20; SaveRow rows[3] (0xC8,
 @0x20); pad; u8 blocks[3][0x9C4] @0x280}, size 0x21E0; old row fields shift
 by -0x20 (0x28 -> 0x8 etc.); first method fn_803B93E8 (this = lbl_8050EC80).
@@ -114,7 +114,7 @@ did NOT move them (literals are pooled at use, not at parse). Open question.
 ### Next
 - blobs.txt array line for the two tag tables (coordinator).
 - fn_803BC6F0 (956 instr, TColor lerps of field_0xe8/0xfc by alpha), then
-  fn_803BE3D8 / fn_803CE4CC for the string offsets.
+  fn_803BE3D8 / refreshFileRows_803CE4CC for the string offsets.
 
 ### SHARED-EDITS
 - GameGlobals.h: `bool fn_803B8CAC(s32 file, s32 index)` (extern "C", owner
@@ -178,7 +178,7 @@ SHARED-EDITS
 ### Next
 - The literal pool: the four reloc-name near-misses (and the five new reloc-name functions) need the leading
   0, -200, 200, dbl, dbl, which nothing written produces; see above.
-- fn_803BDD44, fn_803CEED4, fn_803CE4CC, fn_803CABAC, fn_803C1734 (boot path, unwritten); fn_803BF9C4 next to them.
+- fn_803BDD44, fn_803CEED4, refreshFileRows_803CE4CC, fn_803CABAC, fn_803C1734 (boot path, unwritten); fn_803BF9C4 next to them.
 
 ## Session 2026-11-05 (Opus, third pass: boot path continued)
 
@@ -202,7 +202,7 @@ Written (try.py class):
 - fn_803C4330 99.95 reloc-name (instructions identical): back from the delete prompt, state 36.
 
 Not written:
-- fn_803CE4CC (boot path): needs `fn_803BADAC(row)` with the real row pointer (lbl_8050EC80 + 0x20 + i * 0xC8; the
+- refreshFileRows_803CE4CC (boot path): needs `isSaveChecksumValid_803BADAC(row)` with the real row pointer (lbl_8050EC80 + 0x20 + i * 0xC8; the
   checksum over 0xC0 bytes compared with the u64 at row + 0xC0). Blocked on the lbl_8050EC80 layout decision (see the
   proposal above); the SaveRow view can't pass a row start without a cast.
 
@@ -218,7 +218,7 @@ SHARED-EDITS
 - tu_803BC6F0.cpp includes JSystem/J2D/J2DGrafContext.h (J2DScreen::draw's grafcontext).
 
 ### Next
-- fn_803CE4CC after the lbl_8050EC80 decision; fn_803BE3D8 (0xC2C, called by the draw), fn_803C3904 (state 38),
+- refreshFileRows_803CE4CC after the lbl_8050EC80 decision; fn_803BE3D8 (0xC2C, called by the draw), fn_803C3904 (state 38),
   fn_803C4628 (35), fn_803C5190 (34), fn_803C5808 (32) ... in address order.
 - The stack-slot order of by-value TColor copies (fn_803BDD44 / fn_803BC6F0 / fn_803CABAC ascend, fn_803C1734 /
   fn_803BF9C4 descend like ours) is the common open question.
@@ -235,7 +235,7 @@ After: `total: 8802 / 11557 functions, 1757340 / 4442032 bytes of code (39.56 %)
   directly swaps the add's operands (97 %).
 - SaveFile_803B950C carved from the old row fields (row offset - 0x20): 0x0C s32, 0x14/0x16 u16,
   0x58/0x59, 0x5A[2], 0x5C..0x61, 0x65, 0x67..0x69, and the checksum words 0xC0 / 0xC4
-  (fn_803BADAC). mFlags is s32 (the old view's type).
+  (isSaveChecksumValid_803BADAC). mFlags is s32 (the old view's type).
 - isStageFlagSet (StageFlag.h) now reads getCurrentFile().mFlags; tu_803B8C74's duplicate
   isCurrentFileFlagSet is gone (fn_803B8EBC / fn_803B9120 use isStageFlagSet). isFileFlagSet (any
   file) stays local to tu_803B8C74.
@@ -248,13 +248,13 @@ After: `total: 8802 / 11557 functions, 1757340 / 4442032 bytes of code (39.56 %)
   a direct mFiles index for the clamp (lwzx, 91.8), a value local. Not found.
 
 ### Task 2: file select
-- Constructor: the save-data loop (`fn_803B950C(&mFiles[i], &mBodies[i])`) and field_0x5c /
+- Constructor: the save-data loop (`initSaveFile_803B950C(&mFiles[i], &mBodies[i])`) and field_0x5c /
   field_0x60 (now SaveFile_803B950C* / SaveFileBody_803B950C*) written: 98.83 -> 99.92
   (regalloc of the font pointer, string offsets +0x58, @NNN).
-- fn_803CE4CC written: 99.02 missing/extra (1 li). Inlined helper getProgressMsg (three inlined
+- refreshFileRows_803CE4CC written: 99.02 missing/extra (1 li). Inlined helper getProgressMsg (three inlined
   copies; two counters in the original's loop: cleared count and stage; out-of-line copy dropped
-  by the linker, as tu_8016A2B4's getMapTexView). fn_803BADAC (tu_803BACF8) declared in
-  tu_803B8C74.h. field_0x115's bit is set exactly when fn_803BADAC fails, so hasSaveData was
+  by the linker, as tu_8016A2B4's getMapTexView). isSaveChecksumValid_803BADAC (tu_803BACF8) declared in
+  tu_803B8C74.h. field_0x115's bit is set exactly when isSaveChecksumValid_803BADAC fails, so hasSaveData was
   renamed hasBadChecksum, with setBadChecksum / clearBadChecksum (the original clrlwi's `1 << i`
   at each use).
 - fn_803CABAC: OSGetTime() before the lookup -> 98.37 (cmpwi on field_0xff, copy slots remain).
@@ -262,13 +262,13 @@ After: `total: 8802 / 11557 functions, 1757340 / 4442032 bytes of code (39.56 %)
 
 SHARED-EDITS
 - tu_80379F84.h: SaveRow_8050EC80 and `extern lbl_8050EC80[]` deleted.
-- tu_803B8C74.h: SaveFile fields above, getFile / getCurrentFile, fn_803BADAC decl.
+- tu_803B8C74.h: SaveFile fields above, getFile / getCurrentFile, isSaveChecksumValid_803BADAC decl.
 - StageFlag.h: includes tu_803B8C74.h, reads getCurrentFile().mFlags.
 - Mechanical switch in act_fairy, act_rank_display, act_treasure_chest, tu_80197070, tu_801DE714,
   tu_80215A94, tu_8026FC20, tu_802D39B8, tu_80379F84, tu_803944C8, tu_803E1668, tu_80403D84,
   tu_80414F6C, tu_8043A0E8 (includes + field names only).
 - Comments only: GameGlobals.h, GameState.h, GameView.h.
-- symbols.txt: fn_803BADAC -> fn_803BADAC__FP17SaveFile_803B950C, fn_803BD5E0 ->
+- symbols.txt: isSaveChecksumValid_803BADAC -> isSaveChecksumValid_803BADAC__FP17SaveFile_803B950C, fn_803BD5E0 ->
   fn_803BD5E0__19FileSelect_804AFF60Fl.
 
 ### Next
@@ -310,7 +310,7 @@ literals 0, -200, 200 (see above) remain the reason for most reloc-name FIXMEs.
 
 ### File select states (what the written ones do)
 - 3 fn_803CDEE8: "start a new game?" (field_0x114 cursor 0 yes / 1 no). Yes clears the three files
-  (fn_803B950C), resets GameState (fn_80403680) and shows the list (fn_803C24BC); no -> state 1.
+  (initSaveFile_803B950C), resets GameState (fn_80403680) and shows the list (fn_803C24BC); no -> state 1.
 - 4 fn_803CD75C / 5 fn_803CD2DC: rows slide in; picking a file (A: fn_803BF9C4 for a file whose
   checksum bit is set, else fn_803C1734; B leaves).
 - 8 fn_803CC53C: writes the save data through the card manager (state 9 waits).
@@ -366,7 +366,7 @@ every reloc-name FIXME went: fn_803CF504, fn_803CEED4, fn_803CE9EC, fn_803CD2DC,
 fn_803C24BC, fn_803C21A8, fn_803C1340, fn_803BF698 -> 100.
 
 field_0xff: the original compares it as a signed int at all three tests (lbz + cmpwi; u8 / bool / s8 give cmplwi /
-extsb); `(s32)` cast in fn_803CABAC (98.46 -> 98.69) and fn_803CE4CC (99.02 -> 99.21). Flag for review: if a cast
+extsb); `(s32)` cast in fn_803CABAC (98.46 -> 98.69) and refreshFileRows_803CE4CC (99.02 -> 99.21). Flag for review: if a cast
 is judged codegen-steering, revert to the plain test (cmplwi, 2 instrs).
 
 Common open shapes (each in its FIXME):

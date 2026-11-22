@@ -277,7 +277,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
     if (mState == 3) {
         box.set(mPos.x - 8.0f, mPos.y - 8.0f, mPos.x + 8.0f, mPos.y + 8.0f);
     } else {
-        fn_801F31C4(&box);
+        getBoxAtPos_801F31C4(&box);
     }
     switch (mState) {
     case 0:
@@ -392,7 +392,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
                     s32 count = gGameRoot_8053AAF8->fn_80138A30();
                     for (s32 i = 0; i < count; i++) {
                         s32 dir = fn_801CD354(fn_801D0020(&mPos, i, false));
-                        fn_80230BF4(i, dir);
+                        setPlayerFacing_80230BF4(i, dir);
                         fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3c, 0xFF, -0x80, -0x80, true);
                     }
                 }
@@ -406,7 +406,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
             if (mFlags & 0x10000) {
                 s32 count = gGameRoot_8053AAF8->fn_80138A30();
                 for (s32 i = 0; i < count; i++) {
-                    fn_80230BF4(i, 1);
+                    setPlayerFacing_80230BF4(i, 1);
                     fn_80230498(i, getPlayerPos_8023E724(i), 0x3d, 0xFF, -0x80, -0x80, true);
                 }
             }
@@ -484,7 +484,7 @@ void KaeporaGaebora_804A6550::updateBehavior_0x9C(u8 mapHit) {
                     if (fn_801CD950(&field_0x2d8, 255.0f, 1.0f) == 0) {
                         s32 playerCount = gGameRoot_8053AAF8->fn_80138A30();
                         for (int i = 0; i < playerCount; i++) {
-                            fn_80230BF4(i, 1);
+                            setPlayerFacing_80230BF4(i, 1);
                             fn_80230498(i, getPlayerPos_8023E724(i), 0x3d, 0xff, -0x80, -0x80, true);
                         }
                     }

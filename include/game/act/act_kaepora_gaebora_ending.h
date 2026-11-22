@@ -41,7 +41,7 @@ public:
     void resetStep(s32 idx);
     void fn_8035FF70();
     void fn_8036003C();
-    void fn_80360914();
+    void nextCommand_80360914();
     void updateFacing();
     void pickStepTable();
     // Owned by this unit (0x8035F3C0); takes this and returns a byte, looped
@@ -81,7 +81,7 @@ public:
     /* 0x278 */ s32 mPtmfIndex;      // index into the member-function table (update)
     /* 0x27C */ s32 field_0x27C;
     /* 0x280 */ s32 field_0x280;
-    /* 0x284 */ const f32* field_0x284; // the command script fn_80360914 reads
+    /* 0x284 */ const f32* field_0x284; // the command script nextCommand_80360914 reads
     /* 0x288 */ JGeometry::TVec3f field_0x288;
     /* 0x294 */ u8 field_0x294;
     /* 0x295 */ u8 field_0x295[0x3]; // not yet known

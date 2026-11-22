@@ -302,7 +302,7 @@ EnvironmentSwitchControl_804A8638::~EnvironmentSwitchControl_804A8638() {
 void EnvironmentSwitchControl_804A8638::update() {
     bool paused = false;
     if ((gGameRoot_8053AAF8->field_0x7f != 0 &&
-         (fn_80236B50(0) && fn_80236B50(1) && fn_80236B50(2) && fn_80236B50(3) ||
+         (isPlayerDead_80236B50(0) && isPlayerDead_80236B50(1) && isPlayerDead_80236B50(2) && isPlayerDead_80236B50(3) ||
           (gGameRoot_8053AAF8->field_0x4c == 0xB || gGameRoot_8053AAF8->field_0x88 == 2))) ||
         lbl_80529DEC.field_0x240 != 0) {
         paused = true;

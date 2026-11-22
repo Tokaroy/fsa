@@ -304,10 +304,10 @@ void Bee_804AC600::update() {
         steerPieces(this);
         break;
     case 6:
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             bool gone = true;
             for (s32 i = 1; i < 7; i++) {
-                if (!fn_801F6758(&field_0x2a4[i], mLayer_0x4, 16.0f)) {
+                if (!isOutsideView_801F6758(&field_0x2a4[i], mLayer_0x4, 16.0f)) {
                     gone = false;
                     break;
                 }

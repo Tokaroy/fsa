@@ -478,7 +478,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   A plain `x == N`, a bool return or `return x == N;` fold into `cmpwi; bne`. tu_80285E58 fn_80286688
   88.7 -> 100 % and the copy inlined in fn_802870C8; tu_8026FC20 isGameMode(7) (fn_8027057C). Shape
   sweep (2026-11-06): tu_8013AAD4 fn_8013BBE0 and tu_80158624 fn_80159330 (mode 0xC, 100 %; read
-  gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 fn_802FB69C
+  gGameRoot_8053AAF8 directly, a `root` local moves the root register), tu_802F5040 drawPlayerPanel_802FB69C
   (both mode-11 tests). A file's own byte helper takes the same form: tu_8025EB18 isField0xd64One
   `p.field_0xd64 == 1 ? true : false` (fn_8025EE48, fn_8025F2CC to 100 %). It also holds for a bool
   ARGUMENT of an inlined helper (`cntlzw; extrwi.` for `== 0`, `neg; or; srwi.` for `!= 0`):
@@ -487,7 +487,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
 - Early-out tests ending `bne +8; b end` (the last test jumps over a `b` to the epilogue) instead of
   `beq end`: the tests are ONE condition, `if (a || b || !c) return;`, not separate `if`s
   (tu_80285E58 fn_80286688; separate `if`s or `if (!c) return;` give `beq`). Also under a guard:
-  tu_8023FBF0 fn_802416FC `if (!root->field_0x7f && (field_0xbfc <= 0 || fn_80270A8C())) return;`.
+  tu_8023FBF0 fn_802416FC `if (!root->field_0x7f && (field_0xbfc <= 0 || isDeadState_80270A8C())) return;`.
   The `bne +8; b` marks the END of an `||` chain, not always the last early-out: tu_8013C5C8 execute is
   `if (!isGameModeSet() || mode == 0xC) return; if (field_0x94) return;` (99.5 %, regalloc); all three
   tests in one `||` give `different` (97.8 %).

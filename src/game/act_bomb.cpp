@@ -61,7 +61,7 @@ void Bomb_8049F784::vfunc_0x44() {
 // FIXME: 99.77 %, regalloc-only; behaviour clean.
 void Bomb_8049F784::fn_8014D868(const JGeometry::TVec3f* pos) {
     ActorBase_804A5770* warps[ACTOR_MANAGER_MAX_ACTORS];
-    s32 count = getActorManager_801F856C()->fn_801F7818('WARP', mLayer_0x4, warps, -1);
+    s32 count = getActorManager_801F856C()->collectActorsById_801F7818('WARP', mLayer_0x4, warps, -1);
     for (s32 i = 0; i < count; i++) {
         if (warps[i] != NULL) {
             checkWarp(static_cast<Warp_804A6DC8*>(warps[i]), pos);
@@ -896,7 +896,7 @@ void Bomb_8049F784::draw() {
     s32 i;
     s32 count = 0;
     for (i = 0; i < 4; i++) {
-        if (fn_80236B50(i)) {
+        if (isPlayerDead_80236B50(i)) {
             count++;
         }
     }

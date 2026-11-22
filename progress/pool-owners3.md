@@ -32,7 +32,7 @@ units (tu_80158624 was out of order and is fixed).
 - act_sword_soldier: fn_8014FD5C only adds 0.0f / 1.0f; the 4 reloc-name functions sit behind
   fn_80150284 (3276 instr, unwritten). Not a lever.
 - tu_801213EC: the leading 8.0f still has no owner (spawnLifeMeter's double comes after fn_80121438's run).
-- tu_80118384: 1.0f at 0x8 could be the 0x3EC four-emitter block (two identical copies, fn_80119998 case 0
+- tu_80118384: 1.0f at 0x8 could be the 0x3EC four-emitter block (two identical copies, startFade_80119998 case 0
   and fn_80119628 case 2) as a plain helper between fn_80118E20 and fn_801194C4, but 0.05f needs
   fn_80118E20 first (static fade object + TVector erase; JGadget vector template).
 

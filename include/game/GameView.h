@@ -11,7 +11,7 @@
 // (docs/PLAN.md, "Placeholder names"; it was GameView_802D6A9C, after the
 // getter, until the vtable was found). The 10 x 10 grid below is the stage's
 // screens: mScreenX_0x14/mScreenY_0x18 are the current column/row (both checked
-// against [0, 10) by fn_802D8128 and stepped by fn_802DCD1C's direction), and
+// against [0, 10) by fn_802D8128 and stepped by stepScreen_802DCD1C's direction), and
 // most per-screen tables are indexed [mScreenY_0x18][mScreenX_0x14]. mStage_0x4 and
 // mLevel_0x8 select the stage: fn_802D8128 indexes the 16-byte rows of the
 // string table lbl_804A9530 with them to build "d_map%s_%d%d_mmm_2_%d.szs",
@@ -94,7 +94,7 @@ public:
     // 0x5A0 bytes; this unit only. Loads the current screen's tile grids
     // ('M' + stage name resources, layers 0/1 and 8-22) and sets mVisibleBox and
     // the tile map's cell counts; with reload, first copies layers 0/1 to 4/5
-    // (tested with clrlwi.; fn_802DCD1C passes 1, the reload paths 0).
+    // (tested with clrlwi.; stepScreen_802DCD1C passes 1, the reload paths 0).
     void fn_802D8D50(bool reload);
     // 1 unit. Entry field_0x44 of the 16-entry table lbl_804A96D0, or the
     // .sdata2 default lbl_805410DC.
@@ -124,12 +124,12 @@ public:
     // resets its state, rebuilds it (fn_802D8D50, fn_802D8328), places the
     // players and the camera and restarts the time limit.
     void fn_802DA010();
-    // Inlined by fn_802DA010, fn_802DA8DC (with field_0x131f1-0x131f3 stored
+    // Inlined by fn_802DA010, resetStage_802DA8DC (with field_0x131f1-0x131f3 stored
     // between them), fn_802DB6F0 and fn_802DCE5C; no out-of-line copy
     // (game/tu_802D39B8.cpp).
     inline void restartTimeLimit();
     inline void clearScreenState();
-    // Inlined by fn_802DA8DC, fn_802DBD60 and vfunc_0xC; no out-of-line copy.
+    // Inlined by resetStage_802DA8DC, fn_802DBD60 and vfunc_0xC; no out-of-line copy.
     inline void clearStageTables();
     inline void clearSlots();
     inline void placePlayers();
@@ -144,7 +144,7 @@ public:
     // 4 units. 0xE14 bytes; no arguments. Resets the whole stage state
     // (every per-screen table, the slot lists, the TVec2f slots) and enters
     // the screen (field_0x24, field_0x28) as fn_802DA010 does.
-    void fn_802DA8DC();
+    void resetStage_802DA8DC();
     // 1 unit. 0x670 bytes; no arguments.
     void fn_802DB6F0();
     // 3 units / 6 calls. 0xFAC bytes; no arguments.
@@ -153,19 +153,19 @@ public:
     u8 fn_802DCD0C();
     // 2 units / 5 calls. Unless fn_802DCD0C(), steps mScreenX_0x14 by the sign
     // of dir[0] or mScreenY_0x18 by that of dir[1], reloads the screen
-    // (fn_802D8D50, fn_802D8328, fn_8030C928 with &mVisibleBox); returns 0
+    // (fn_802D8D50, fn_802D8328, setNextVisibleBox_8030C928 with &mVisibleBox); returns 0
     // or 1. Callers pass the address of a stack pair (lwz 0/4); const s32*
     // is a guess, a two-int struct passed by value would look the same.
-    u8 fn_802DCD1C(const s32* dir);
-    // 1 unit. Clears the actors (fn_801F7CAC, fn_801F6204), field_0x131de and
+    u8 stepScreen_802DCD1C(const s32* dir);
+    // 1 unit. Clears the actors (fn_801F7CAC, setAllDefeated_801F6204), field_0x131de and
     // the effects (fn_8013C8CC), and field_0xc9; fn_802DA788 inlines it after a
     // fn_8038D454 call.
     void fn_802DCDF4();
-    // 1 unit. The screen change of fn_802DCD1C with dir read the same way
+    // 1 unit. The screen change of stepScreen_802DCD1C with dir read the same way
     // (lwz 0/4; the same guess); returns 0 or 1.
     u8 fn_802DCE5C(const s32* dir);
     // 1 unit. The same, after looking for a 'SDSM' actor; sets field_0xc8,
-    // clears field_0xc9; returns 0 or 1. dir as in fn_802DCD1C (a guess).
+    // clears field_0xc9; returns 0 or 1. dir as in stepScreen_802DCD1C (a guess).
     u8 fn_802DD3D4(const s32* dir);
 
     // --- per-layer actor-id slots (field_0x2948) and their per-screen
@@ -201,7 +201,7 @@ public:
     void fn_802D7BE8(s32 layer, s32 slot, u32 value);
     // 4 units / 85 calls. Sets or clears bit `bit` (__shl2i(0, 1, bit)) of
     // the screen's mask; callers pass fn_802D4C10's slot.
-    void fn_802D7D00(s32 layer, s32 bit, bool set);
+    void setScreenMaskBit_802D7D00(s32 layer, s32 bit, bool set);
 
     // --- the per-screen TVec2f slots at 0x13068-0x131A8 ---
     // The vectors are passed by value: every caller builds one, word-copies
@@ -350,7 +350,7 @@ public:
     /* 0x000C8 */ u8 field_0xc8; // set by fn_802DD3D4
     /* 0x000C9 */ u8 field_0xc9; // cleared by fn_802DCDF4 and fn_802DD3D4; act_sandstorm reads it
     // The visible area in top-down coordinates (x, y - z): 58 units take its
-    // address (e.g. fn_8030C928(cam, &mVisibleBox) in fn_802DCD1C) or copy
+    // address (e.g. setNextVisibleBox_8030C928(cam, &mVisibleBox) in stepScreen_802DCD1C) or copy
     // it word by word; ActorBase_804A5770's destructor lets an emitter
     // inside it run out instead of deleting it.
     /* 0x000CC */ JGeometry::TBox2f mVisibleBox;
@@ -371,7 +371,7 @@ public:
     // fn_802D7EB0 use the first screen's of [index].
     /* 0x003C8 */ u64 field_0x3c8[4][10][10];
     // Per screen and layer slot (the folded layer, as field_0x2948): every
-    // access adds 0x1048 + slot * 8 (fn_802D7AC4, fn_802D7D00), and the
+    // access adds 0x1048 + slot * 8 (fn_802D7AC4, setScreenMaskBit_802D7D00), and the
     // array ends where field_0x2948 starts.
     /* 0x01048 */ u64 field_0x1048[10][10][8];
     /* 0x02948 */ u16 field_0x2948[8][0x40]; // actor ids per layer slot (fn_802D4C10)
@@ -467,7 +467,7 @@ u8 fn_802DEDFC(const s32* dir);
 // 1 unit. Stage (6, 0), (6, 1) or (6, 3).
 bool fn_802DEA34(void);
 
-// Called by fn_802DA8DC, fn_802DBD60 and vfunc_0xC with r3 unset. Clears the
+// Called by resetStage_802DA8DC, fn_802DBD60 and vfunc_0xC with r3 unset. Clears the
 // four 64-bit masks per screen (field_0x3c8) of every screen.
 void fn_802DEE2C(void);
 

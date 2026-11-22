@@ -72,7 +72,7 @@ void TowerAppearanceDemo_8049E770::init() {
         field_0x388[1][i] = NULL;
         field_0x388[2][i] = NULL;
     }
-    fn_80119DD0()->fn_80119998(150, 0, 0, 0, 0, 110, 0);
+    fn_80119DD0()->startFade_80119998(150, 0, 0, 0, 0, 110, 0);
     field_0x250 = 60;
     f32 posX = field_0x238.x;
     f32 posY = field_0x238.y;
@@ -382,7 +382,7 @@ void TowerAppearanceDemo_8049E770::fn_8012B218() {
         break;
     case 4:
         if (field_0x250 == 360) {
-            fn_80119DD0()->fn_80119998(150, 0, 2, 0, 1, 150, 0);
+            fn_80119DD0()->startFade_80119998(150, 0, 2, 0, 1, 150, 0);
         } else if (field_0x250 == 210) {
             for (s32 i = 0; i < 4; i++) {
                 if (field_0x358[0][i] != NULL) {

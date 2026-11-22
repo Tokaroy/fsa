@@ -878,7 +878,7 @@ void BowSoldier_804A00C8::update() {
     case 14: {
         mState = 0;
         ActorBase_804A5770* list[1024];
-        s32 count = getActorManager_801F856C()->fn_801F7818('SLR4', mLayer_0x4, list, -1);
+        s32 count = getActorManager_801F856C()->collectActorsById_801F7818('SLR4', mLayer_0x4, list, -1);
         for (s32 i = 0; i < count; i++) {
             ChiefSoldier_804A0B90* chief = static_cast<ChiefSoldier_804A0B90*>(list[i]);
             if (chief != NULL && field_0x280 == chief->field_0x28c) {

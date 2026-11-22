@@ -7,9 +7,9 @@
 // (card serial, current file), three save files and their bodies.
 
 // One save file (0xC8 bytes); three of them follow the 0x20-byte header.
-// Named after fn_803B950C, the first function that fills one.
+// Named after initSaveFile_803B950C, the first function that fills one.
 struct SaveFile_803B950C {
-    // Sets the defaults every cleared file gets: fn_803B950C, and the copies
+    // Sets the defaults every cleared file gets: initSaveFile_803B950C, and the copies
     // fn_803B933C / fn_803B93E8 make on the stack, inline it after their memsets.
     void setDefaults() {
         field_0x5c = 1;
@@ -21,7 +21,7 @@ struct SaveFile_803B950C {
         field_0x68 = 1;
         field_0x69 = 1;
     }
-    // An empty file has no time (fn_803CE4CC tests the returned flag).
+    // An empty file has no time (refreshFileRows_803CE4CC tests the returned flag).
     BOOL isUsed() const {
         BOOL used = FALSE;
         if (field_0x0 != 0) {
@@ -67,7 +67,7 @@ struct SaveFile_803B950C {
     /* 0x69 */ u8 field_0x69;
     /* 0x6A */ u8 field_0x6a[0xC0 - 0x6A];
     // Checksum of bytes 0x00-0xBF: their sum, then the sum of their
-    // complements (fn_803BADAC compares both).
+    // complements (isSaveChecksumValid_803BADAC compares both).
     /* 0xC0 */ u32 field_0xc0;
     /* 0xC4 */ u32 field_0xc4;
 }; // Size: 0xC8
@@ -83,14 +83,14 @@ void fn_803B8C74(u8 value);
 
 // Owner: game/tu_803BACF8.cpp (0x803BADAC). True when `file`'s checksum words
 // (0xC0 / 0xC4) match its first 0xC0 bytes (cntlzw / srwi).
-bool fn_803BADAC(SaveFile_803B950C* file);
+bool isSaveChecksumValid_803BADAC(SaveFile_803B950C* file);
 // Owner: game/tu_803BACF8.cpp (0x803BACF8). Writes files[file]'s checksum
 // words: 0xC0 the byte sum of its first 0xC0 bytes, 0xC4 the sum of their
 // complements (the index is clrlwi'd: u8).
 void fn_803BACF8(SaveFile_803B950C* files, u8 file);
 
-// fn_803B950C: clears a file and its block and sets the file's defaults.
-void fn_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body);
+// initSaveFile_803B950C: clears a file and its block and sets the file's defaults.
+void initSaveFile_803B950C(SaveFile_803B950C* file, SaveFileBody_803B950C* body);
 
 // FAKEMATCH(crack-pass): docs/CRACK_PASS.md "Save-data layout". Save file i seen
 // 0x20 bytes early, as a 0xC8-byte row at lbl_8050EC80 + i * 0xC8 (row offset N is
@@ -109,12 +109,12 @@ struct SaveFileRow_CrackPass {
 class SaveData_804AFB30 {
 public:
     // Inlined into this unit's __sinit (0x803B961C): clears the header words and
-    // gives each of the three files and bodies fn_803B950C's defaults.
+    // gives each of the three files and bodies initSaveFile_803B950C's defaults.
     SaveData_804AFB30() {
         mCurrentFile = 0;
         field_0x8 = 0;
         for (int i = 0; i < 3; i++) {
-            fn_803B950C(&mFiles[i], &mBodies[i]);
+            initSaveFile_803B950C(&mFiles[i], &mBodies[i]);
         }
     }
     /* 0x08 */ virtual ~SaveData_804AFB30();

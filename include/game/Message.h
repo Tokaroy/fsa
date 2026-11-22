@@ -360,10 +360,10 @@ public:
     u8 fn_80390818();
 
     // Placeholder names, bodies in game/tu_80390818.cpp (not written yet):
-    // fn_80390C6C steps the window and returns its halfword at 0x26; fn_80391678
+    // fn_80390C6C steps the window and returns its halfword at 0x26; reset_80391678
     // resets it.
     u16 fn_80390C6C();
-    void fn_80391678();
+    void reset_80391678();
     // 0x803908D0: releases the chests the windows' serials refer to; false if one is not released yet.
     bool fn_803908D0();
     // Placeholder name: called by fn_8038D570 each frame for a player that
@@ -573,7 +573,7 @@ void fn_8038D570();
 bool fn_8038470C(s32 player, u32 msg);
 // Opens the window for message `value` when it is idle and the player's
 // fn_80303750 is 0: state 1, option bits 0x1000 / 0x80 / 0x20 set; true then.
-bool fn_80389BF0(s32 player, s32 value);
+bool openMessage_80389BF0(s32 player, s32 value);
 // The window's field_0x2c plus 1, wrapping to 0 after 3.
 s32 fn_8037EE8C(s32 player);
 // 16 units. field_0x114[window]->field_0x2c (callers cmpwi it).

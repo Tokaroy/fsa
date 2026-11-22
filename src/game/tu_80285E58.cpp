@@ -106,7 +106,7 @@ void Player_804A6F38::fn_802870C8() {
                         mPos = *getPlayerPos_8023E724(fn_80240644());
                         field_0xd1c = mRespawnPos_0xcbc = mPos;
                         if (low) {
-                            mLastTvPos_0xcb0 = *fn_8023E32C(fn_80240644());
+                            mLastTvPos_0xcb0 = *getPlayerLastTvPos_8023E32C(fn_80240644());
                         }
                         mViewBox_0xbec->fn_8030BD3C(getIndex());
                     }
@@ -124,7 +124,7 @@ void Player_804A6F38::fn_802870C8() {
                 mPos = *getPlayerPos_8023E724(fn_80240644());
                 field_0xd1c = mRespawnPos_0xcbc = mPos;
                 if (low) {
-                    mLastTvPos_0xcb0 = *fn_8023E32C(fn_80240644());
+                    mLastTvPos_0xcb0 = *getPlayerLastTvPos_8023E32C(fn_80240644());
                 }
                 mFacing_0x3dc = mMoveDir_0x3e8 = fn_80230CFC(fn_80240644());
                 mViewBox_0xbec->fn_8030BD3C(getIndex());
@@ -597,12 +597,12 @@ void Player_804A6F38::fn_802870C8() {
                 }
             }
 
-            fn_80131F0C();
+            getEscortActorList_80131F0C();
             // (s32) on the u8 flags: the original compares them with cmpwi (a plain u8 gives
             // cmplwi), as tu_8025EB18 fn_80263078 does for the cucco's 0x2A1.
             if (fn_80131D98() || (s32)lbl_8053ABA8 != 0 || (s32)lbl_8053ABF0 != 0) {
                 hitPlayerGroup_80238548(getIndex(), 0x20, (const JGeometry::TVec2f*)&mPos, 0x12);
-            } else if (fn_8024189C() <= 0 && !fn_80270A8C()) {
+            } else if (getLife_8024189C() <= 0 && !isDeadState_80270A8C()) {
                 fn_80251AEC(0x33);
             }
             field_0x11e9 = 0;
@@ -972,7 +972,7 @@ void Player_804A6F38::fn_802870C8() {
     fn_8024762C();
     fn_80265AE4();
     fn_8027F1C8();
-    if (fn_8025F590() && fn_80236B50(mHeldPlayer_0xd70) && mState_0x1240 != 0x11 && mRequestedState_0x1244 != 0x11) {
+    if (fn_8025F590() && isPlayerDead_80236B50(mHeldPlayer_0xd70) && mState_0x1240 != 0x11 && mRequestedState_0x1244 != 0x11) {
         fn_8025F698(false);
     }
     if (field_0x488 > 0) {
@@ -1065,7 +1065,7 @@ void Player_804A6F38::fn_802870C8() {
                    !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
             mAlpha_0xca0 = 0;
         } else if (fn_802486A0() != 4 && hasLeader_80240808() && fn_8023EA28(fn_80240644()) &&
-                   !fn_80236B50(fn_80240644()) && !fn_80270A8C()) {
+                   !isPlayerDead_80236B50(fn_80240644()) && !isDeadState_80270A8C()) {
             fn_80265D68();
         } else {
             fn_80265D8C();
@@ -1077,7 +1077,7 @@ void Player_804A6F38::fn_802870C8() {
             field_0x138c->becomeInvalidEmitter();
             field_0x138c = NULL;
         }
-        if (fn_802413E8() || field_0x456 || fn_80270A8C() || fn_802412A4() || !fn_802413F0() ||
+        if (fn_802413E8() || field_0x456 || isDeadState_80270A8C() || fn_802412A4() || !fn_802413F0() ||
             (fn_802486A0() == 4 && fn_80240670())) {
             invalidateEmitter(field_0x138c);
         } else if (field_0x138c == NULL) {
@@ -1105,7 +1105,7 @@ void Player_804A6F38::fn_802870C8() {
     }
 
     if (fn_802DEABC()) {
-        if (fn_802413E8() || fn_80270A8C() || fn_802412A4() || !fn_802413F0() ||
+        if (fn_802413E8() || isDeadState_80270A8C() || fn_802412A4() || !fn_802413F0() ||
             (viewLayerFlag(getLayer()) &&
              (!fn_802518AC(true) ||
               !fn_802255F4(&JGeometry::TVec3f(mPos.x, 8.0f + mPos.y, mPos.z), getLayer()))) ||
@@ -1121,7 +1121,7 @@ void Player_804A6F38::fn_802870C8() {
     }
 
     fn_80226850(&mPos, getLayer());
-    if (fn_802413E8() || fn_80270A8C() || fn_802412A4() || fn_80240D50() || !fn_802413F0() ||
+    if (fn_802413E8() || isDeadState_80270A8C() || fn_802412A4() || fn_80240D50() || !fn_802413F0() ||
         fn_8026FC20() > 0 || viewLayerFlag(getLayer()) || mPos.z > 0.0f ||
         planarLength(mPos - mLastPos_0x14) < 1.0f ||
         !(fn_80224E88(&mPos, getLayer()) || fn_80224B88(&mPos, getLayer()))) {
@@ -1151,7 +1151,7 @@ void Player_804A6F38::fn_80286E10() {
     }
     for (int i = 0; i < 4; i++) {
         if (arePlayersInSameGroup_8022E438(getIndex(), i)) {
-            if (fn_80236B50(i)) {
+            if (isPlayerDead_80236B50(i)) {
                 return;
             }
             if (fn_8022D75C(i)) {
@@ -1293,7 +1293,7 @@ void Player_804A6F38::fn_8028676C() {
         return;
     }
 
-    if (!fn_802413E8() && !fn_80270A8C() && !fn_80250D30() && !fn_8024FEFC() && mPos.z <= 0.0f &&
+    if (!fn_802413E8() && !isDeadState_80270A8C() && !fn_80250D30() && !fn_8024FEFC() && mPos.z <= 0.0f &&
         fn_8022BC38(fn_80240644(), getLayer(), &mPos)) {
         if (!fn_80234ECC(fn_80240644()) &&
             planarLength(*getPlayerPos_8023E724(fn_80240644()) - target) <= planarLength(mPos - target)) {
@@ -1355,7 +1355,7 @@ void Player_804A6F38::fn_80286688() {
 // while it walks on the ground.
 void Player_804A6F38::fn_80285F44() {
     if (!fn_802413F0() || !fn_80241E28(field_0x3b8, &mLastPos_0x14) ||
-        (hasLeader_80240808() && fn_80234E30(fn_80240644())) || fn_80270A8C()) {
+        (hasLeader_80240808() && fn_80234E30(fn_80240644())) || isDeadState_80270A8C()) {
         field_0x448 = 4;
     } else if ((mPos.z <= 0.0f && mLastPos_0x14.z > 0.0f &&
                 (mState_0x1240 != 0x1F || !viewLayerFlag(getLayer()))) ||

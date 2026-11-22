@@ -350,7 +350,7 @@ void GreatFairy_8049EB8C::fn_80132454(s32 index) {
     case 13:
         mAnim.startAnim_801D22DC(0, 2, false);
         mAnim.setFrame_801D1F14(0.0f);
-        fn_80119DD0()->fn_80119998(60, 0, 2, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(60, 0, 2, 0, 0, 0, 0);
         gGameRoot_8053AAF8->fn_80138B7C();
         lbl_8053AD70->fn_8037AE00();
         break;
@@ -549,7 +549,7 @@ void GreatFairy_8049EB8C::placeAtBarrier() {
     pos.x -= 50.0f;
     for (s32 i = 0; i < 4; i++) {
         pos.x += 20.0f;
-        fn_80230BF4(i, 3);
+        setPlayerFacing_80230BF4(i, 3);
         fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
         fn_802303FC(i, &pos, true);
     }

@@ -221,13 +221,13 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         s32 type;
         if (gGameRoot_8053AAF8->field_0x7e && !fn_801CD2F8(mLayer_0x4) && mState != 0xB && !field_0x5d1) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             box.i.x -= 8.0f;
             box.i.y -= 8.0f;
             box.f.x += 8.0f;
             box.f.y += 8.0f;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !fn_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
+                if (fn_8023F264(i) && !isPlayerDead_80236B50(i) && !fn_80230188(i) && !fn_8022D75C(i) &&
                     getPlayerLayer_8023DE58(i) == getField_0x4() && fn_80235448(i) &&
                     getPlayerPos_8023E724(i)->z <= 40.0f) {
                     f32 limit = fn_8023E578(i)->z;

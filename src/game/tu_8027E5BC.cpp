@@ -231,7 +231,7 @@ void Player_804A6F38::fn_80285690() {
             }
         }
     }
-    fn_802808E8(1.5f);
+    moveByStick_802808E8(1.5f);
     fn_8027EB04();
     fn_8027EEB4();
     fn_80261480();
@@ -536,7 +536,7 @@ void Player_804A6F38::fn_802844F8() {
                 fn_80231368();
             }
         } else {
-            if (fn_8025F684()) {
+            if (isLifting_8025F684()) {
                 fn_80251AEC(0x12);
             } else if (mSubPose_0x3fd == 1) {
                 fn_80251AEC(0x4a);
@@ -553,7 +553,7 @@ void Player_804A6F38::fn_802844F8() {
         }
     }
     if (!field_0x43f) {
-        if (fn_8025F684()) {
+        if (isLifting_8025F684()) {
             fn_8026152C(false);
         } else if (mSubPose_0x3fd == 0) {
             mWalkAnimCounter_0x3f8++;
@@ -800,7 +800,7 @@ void Player_804A6F38::fn_80283948() {
             return;
         }
     }
-    if (fn_8024189C() <= 0) {
+    if (getLife_8024189C() <= 0) {
         mStateLocked_0x124d = 0;
         fn_80251AEC(0x33);
         return;
@@ -936,7 +936,7 @@ void Player_804A6F38::fn_80283848() {
 // fn_8024B24C, the body frame, a dust effect 0x54E every 40 counts of 0x401 (by the distance
 // moved since mLastPos_0x14), and the frames 0x3FB / 0x3F9 (cooldown, mode, dash count 0x3FF, walk).
 void Player_804A6F38::fn_80282FE0() {
-    if (fn_8024189C() <= 0 && fn_80251AEC(0x33)) {
+    if (getLife_8024189C() <= 0 && fn_80251AEC(0x33)) {
         return;
     }
     if (hasLeader_80240808() && field_0x1215) {
@@ -1137,7 +1137,7 @@ void Player_804A6F38::fn_80282E6C() {
 // fn_80280074 and fn_80242DAC, the facing (up with pad 0x200), and the bob 0x410 on y (+0.02 a
 // frame to 0.3); it stands (0) once fn_80225BE4 fails.
 void Player_804A6F38::fn_80282ACC() {
-    if (fn_8024189C() <= 0 && fn_80251AEC(0x33)) {
+    if (getLife_8024189C() <= 0 && fn_80251AEC(0x33)) {
         return;
     }
     if (hasLeader_80240808() && field_0x1215) {
@@ -1288,9 +1288,9 @@ void Player_804A6F38::fn_8028286C() {
 // clamped to -7..-10 on view-flag layers, else y / z swapped and z clamped to 7..10), and at 0 the
 // landing (fn_80290D58, ground mark fn_802F601C below layer 8, effect 0x17D). In flight mPos moves
 // by 0x344 + 0x380; 0xCE8 starts the wait (60 below layer 8, else 20); on view-flag layers y
-// gains 0.25 to 6 and it lands (0x12 if fn_8025F684, else 0) at a wall (fn_8025190C: bounce 0x4E)
+// gains 0.25 to 6 and it lands (0x12 if isLifting_8025F684, else 0) at a wall (fn_8025190C: bounce 0x4E)
 // or out of the shrunk view box, elsewhere z loses 0.25 to -6 and it lands below 0; the stick
-// steers 0x380, the pad (fn_8022C3AC) cancels to state 5. The body frame, and with fn_8025F684
+// steers 0x380, the pad (fn_8022C3AC) cancels to state 5. The body frame, and with isLifting_8025F684
 // the carried actor's place 0x2F4 (18 up) and frame 0x3F9 (falling faster than 1).
 void Player_804A6F38::fn_80282178() {
     field_0x394++;
@@ -1358,7 +1358,7 @@ void Player_804A6F38::fn_80282178() {
                 fn_80251AEC(0x4e);
                 mPos.z = 0.0f;
             } else if (mVel_0x344.y >= 0.0f && (fn_802518AC(true) || !containsPoint(box, mPos))) {
-                if (fn_8025F684()) {
+                if (isLifting_8025F684()) {
                     fn_80251AEC(0x12);
                 } else {
                     fn_80251AEC(0);
@@ -1373,7 +1373,7 @@ void Player_804A6F38::fn_80282178() {
                 mVel_0x344.z = -6.0f;
             }
             if (mPos.z < 0.0f) {
-                if (fn_8025F684()) {
+                if (isLifting_8025F684()) {
                     fn_80251AEC(0x12);
                 } else {
                     fn_80251AEC(0);
@@ -1442,7 +1442,7 @@ void Player_804A6F38::fn_80282178() {
         }
     }
     fn_802685D4();
-    if (fn_8025F684()) {
+    if (isLifting_8025F684()) {
         mHeldPos_0x2f4.set(0.0f, 0.0f, 18.0f);
         mHeldPos_0x2f4 += mPos;
         if (mVel_0x344.z < -1.0f) {
@@ -1906,7 +1906,7 @@ void Player_804A6F38::fn_80280B30() {
         mKeptVel_0x368.x = 0.0f;
         mKeptVel_0x368.y = 0.0f;
         mKeptVel_0x368.z = 0.0f;
-    } else if (fn_8024BBB0() || fn_802413E8() || fn_80270A8C()) {
+    } else if (fn_8024BBB0() || fn_802413E8() || isDeadState_80270A8C()) {
         // left alone (no slide while these hold)
     } else if (field_0xbf0->field_0xb7) {
         if (mPos.z <= 0.0f) {
@@ -1945,7 +1945,7 @@ void Player_804A6F38::fn_80280B30() {
 // halved on tiles 0x2C-0x2F, x1.4 with fn_8022B244 and item 5) into 0x38C / 0x390, then mPos moves
 // by the stick (fn_8022C82C, fn_8022C76C); upward on view-flag layers only while one of the eight
 // probe points (fn_8024B298) stays off tile 2.
-void Player_804A6F38::fn_802808E8(f32 speed) {
+void Player_804A6F38::moveByStick_802808E8(f32 speed) {
     f32 speedX = speed;
     f32 speedY = speed;
     if (field_0x1216) {
@@ -2306,7 +2306,7 @@ void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 26-line definition): split out only where the .sdata2 order needs it.
 void Player_804A6F38::followStep() {
     if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) {
-        fn_802808E8(1.5f);
+        moveByStick_802808E8(1.5f);
     } else if (field_0x122c <= 0) {
         JGeometry::TVec3f to;
         fn_8027FA08(&to);

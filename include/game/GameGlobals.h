@@ -206,7 +206,7 @@ struct GameRoot_8049EF20 {
     // destructor deletes both through their vtables.
     /* 0x08 */ cls_804AA8C8* field_0x8;
     /* 0x0C */ cls_804AA8B8* field_0xc;
-    // The fade object (also lbl_8053ACA0); fn_80138C9C calls fn_802ACB58 on it.
+    // The fade object (also lbl_8053ACA0); resetGameState_80138C9C calls fn_802ACB58 on it.
     /* 0x10 */ BlackFade_804A8390* field_0x10;
     /* 0x14 */ u8 field_0x14[0x18 - 0x14];
     /* 0x18 */ MessageManager_804AF070* mMessageManager_0x18; // new 0x158 in the constructor
@@ -235,7 +235,7 @@ struct GameRoot_8049EF20 {
     /* 0x58 */ s32 field_0x58;
     // A frame count: Title_804AF820::fn_803A44D8 (game/tu_803A3484.cpp)
     // passes it to fn_8016D398, which takes it modulo the cloud animations'
-    // frame counts (divw). Cleared by fn_80138C9C.
+    // frame counts (divw). Cleared by resetGameState_80138C9C.
     /* 0x5C */ s32 field_0x5c;
     // Cleared by fn_8013670C (game/tu_80134C04.cpp, stw of 0).
     /* 0x60 */ s32 field_0x60;
@@ -243,39 +243,39 @@ struct GameRoot_8049EF20 {
     // Alphas (clrlwi 24 into J2DPicture/J2DTextBox::setAlpha in fn_80136828):
     // field_0x68 for the rival picture field_0xb8 and the text boxes,
     // field_0x6c for field_0xbc.
-    /* 0x68 */ s32 field_0x68; // cleared by fn_80138C9C
+    /* 0x68 */ s32 field_0x68; // cleared by resetGameState_80138C9C
     /* 0x6C */ s32 field_0x6c;
-    /* 0x70 */ s32 field_0x70; // cleared by fn_80138C9C
+    /* 0x70 */ s32 field_0x70; // cleared by resetGameState_80138C9C
     // Both cleared by fn_8019CDC4 (game/tu_80197070.cpp, stw of 0).
     /* 0x74 */ s32 field_0x74;
     /* 0x78 */ s32 field_0x78;
     /* 0x7C */ s16 field_0x7c; // cleared by the constructor (sth)
-    // A flag (lbz; cmplwi 0 at ~180 sites): set to 1 by fn_80138C9C and by
+    // A flag (lbz; cmplwi 0 at ~180 sites): set to 1 by resetGameState_80138C9C and by
     // ConnectScreen_804B0F10::fn_803FB6F4 once its controllers are connected,
     // cleared by AdvEntryScreen_804B0B00::fn_803EC804 when it enters player 0 alone
     // (mPlayerMask 0x11). While set, fn_80138AB0 checks the input slots of all
     // four players instead of player 0's only. Its meaning is not proven, so
     // it keeps its offset name.
     /* 0x7E */ u8 field_0x7e;
-    // A flag (lbz at ~420 sites): set to 1 by fn_80138C9C; the game mode
+    // A flag (lbz at ~420 sites): set to 1 by resetGameState_80138C9C; the game mode
     // screen (GameMode_804B0688::fn_803DE05C) stores 1 for menu entry 0 and 0
     // for entry 1. cls_804AF878 shows AdvEntryScreen_804B0B00 while it is set and
     // ConnectScreen_804B0F10 while it is clear; isGameModeSet (game/GameMode.h)
     // picks its mode set by it. Its meaning is not proven (the menu entries
     // aren't), so it keeps its offset name.
     /* 0x7F */ u8 field_0x7f;
-    /* 0x80 */ u8 field_0x80; // cleared by fn_80138C9C
-    /* 0x81 */ u8 field_0x81; // cleared by fn_80138C9C
+    /* 0x80 */ u8 field_0x80; // cleared by resetGameState_80138C9C
+    /* 0x81 */ u8 field_0x81; // cleared by resetGameState_80138C9C
     // Per-player bits (lbz; and. with 1 << player at ~200 sites). Bits 0-3:
     // player i takes part (fn_80138A30 counts them, fn_8023F98C tests one,
     // fn_801F6068); bits 4-7: player i's controller is connected (the connect
     // screens AdvEntryScreen_804B0B00::fn_803ED83C and ConnectScreen_804B0F10 set them).
-    // Cleared by fn_80138C9C.
+    // Cleared by resetGameState_80138C9C.
     /* 0x82 */ u8 mPlayerMask;
     // Four 2-bit fields, player i's at bits 2i-2i+1 ((x >> 2 * i) & 3 at ~25
     // sites): the connect screens store 1 for a taking-part player and 0 for
     // the others; AdvEntryScreen_804B0B00 stores 2 for player 0 alone without a
-    // controller in slot 0 (fn_8030A308). Cleared by fn_80138C9C.
+    // controller in slot 0 (fn_8030A308). Cleared by resetGameState_80138C9C.
     /* 0x83 */ u8 field_0x83;
     /* 0x84 */ u8 field_0x84;
     // Set to 1 by fn_8019CDC4 (game/tu_80197070.cpp, stb of 1).
@@ -316,8 +316,8 @@ struct GameRoot_8049EF20 {
     // build JKRAramArchive/JKRMemArchive (fn_80401AC8, fn_80401D20).
     /* 0xA4 */ JKRArchive* field_0xa4;
     /* 0xA8 */ JKRArchive* mMsgArchive_0xa8; // lbl_80529DEC's field_0x1c (msgus.arc)
-    // The archives fn_80135A04 starts loading for a game mode (fn_80401E10;
-    // the boss archive, game2D.arc, gamemode.arc, ...); fn_80135494 waits for
+    // The archives fn_80135A04 starts loading for a game mode (requestMountMemArchive_80401E10;
+    // the boss archive, game2D.arc, gamemode.arc, ...); applyRequestedMode_80135494 waits for
     // their byte 0x4 and deletes them.
     /* 0xAC */ DvdMountMemArchiveCommand_804B0FC0* field_0xac;
     /* 0xB0 */ DvdMountMemArchiveCommand_804B0FC0* field_0xb0;
@@ -328,18 +328,18 @@ struct GameRoot_8049EF20 {
     /* 0xB4 */ JMath::TRandom_fast_ mRandom;
     /* 0xB8 */ J2DPicture* field_0xb8; // made from 'TIMG' resources by the constructor
     /* 0xBC */ J2DPicture* field_0xbc;
-    // Two text boxes the constructor makes; fn_80138C9C copies field_0xc8
+    // Two text boxes the constructor makes; resetGameState_80138C9C copies field_0xc8
     // (message 0x42, getMessageText_803832BC) into both.
     /* 0xC0 */ J2DTextBox* field_0xc0;
     /* 0xC4 */ J2DTextBox* field_0xc4;
     /* 0xC8 */ char field_0xc8[0xF0 - 0xC8];
-    /* 0xF0 */ f32 field_0xf0; // 0.0f after fn_80138C9C
+    /* 0xF0 */ f32 field_0xf0; // 0.0f after resetGameState_80138C9C
     /* 0xF4 */ f32 field_0xf4; // getMessageText_803832BC's result for field_0xc8
     // Cleared to 0 by fn_801365C8 (game/tu_80134C04.cpp, 0x801365C8), together
     // with field_0xfc, when it is stored a 1 (stb of r4 at 0xFE first).
     /* 0xF8 */ s32 field_0xf8;
     /* 0xFC */ u8 field_0xfc;
-    /* 0xFD */ u8 field_0xfd; // cleared by the constructor; tested by fn_80135494
+    /* 0xFD */ u8 field_0xfd; // cleared by the constructor; tested by applyRequestedMode_80135494
     // Stored by fn_801365C8 (game/tu_80134C04.cpp, 0x801365C8, stb of r4).
     /* 0xFE */ u8 field_0xfe;
     // SHARED-EDIT (tu_803BC6F0): the file select screen sets it to 1 before
@@ -415,7 +415,7 @@ struct GameRoot_8049EF20 {
     GameRoot_8049EF20();
     // game/tu_80134C04.cpp (0x80138C9C), called once by main right after the
     // constructor. No further arguments.
-    void fn_80138C9C();
+    void resetGameState_80138C9C();
     // game/tu_80134C04.cpp (0x80136828 and 0x80137300): main calls them each
     // frame once the loader is done, between beginRender / endRender and
     // endRender / endFrame; the first only while lbl_80529DEC's byte 0x251 is 0.
@@ -438,7 +438,7 @@ struct GameRoot_8049EF20 {
     void fn_80136500();
     // 0x80136364 (game/tu_80134C04.cpp): called by GameRootSub04's fn_80139D9C.
     // 0x80135494: applies the requested mode (field_0x50) once its archives are loaded.
-    void fn_80135494(s32 mode);
+    void applyRequestedMode_80135494(s32 mode);
     void fn_80136364();
     // Owner: game/tu_80134C04.cpp (0x8013665C; act_tingle_tower, tu_8044C7F0).
     // fn_801365E8(a, b, 0), then stage (10, 2) also sets lbl_80529DEC's 0x24B
@@ -466,7 +466,7 @@ extern u8 lbl_8053ABB8[8];
 // registered with __register_global_object) built on first use. Named after
 // the function fn_80119DD0 registers with __register_global_object (as the
 // static's destructor), fn_80119E5C. Owner: game/tu_80118384.cpp.
-// 20+ units call fn_80119998 on it, e.g. game/tu_8012EA00.cpp
+// 20+ units call startFade_80119998 on it, e.g. game/tu_8012EA00.cpp
 // passes (0x3C, 0, 1, 0, 1, 0x5A, 0).
 class J2DPicture;
 class cls_80119E5C {
@@ -478,9 +478,9 @@ public:
 
     /* 0x00 */ u8 field_0x0; // tested by tu_801286C0's update (states 1 and 3)
     /* 0x01 */ u8 field_0x1; // set to 1 by tu_801286C0's update (state 3)
-    /* 0x02 */ u8 field_0x2; // fn_80119998 sets it to field_0x10 > 0
+    /* 0x02 */ u8 field_0x2; // startFade_80119998 sets it to field_0x10 > 0
     /* 0x04 */ s32 field_0x4; // compared with 0xB3 by tu_801286C0's update
-    /* 0x08 */ s32 field_0x8; // fn_80119998's first argument
+    /* 0x08 */ s32 field_0x8; // startFade_80119998's first argument
     /* 0x0C */ s32 field_0xc;
     /* 0x10 */ s32 field_0x10;
     /* 0x14 */ f32 field_0x14;
@@ -490,8 +490,8 @@ public:
     /* 0x24 */ s32 field_0x24; // 2 starts the effects 0x3EC-0x3EF / 0x3F0-0x3F3
     /* 0x28 */ s32 field_0x28;
     /* 0x2C */ J2DPicture* field_0x2c; // "kk_black.bti", made by fn_80119D48
-    void fn_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
-    // 0x80119468 (game/tu_80118384.cpp): fn_80119998 with the fade length picked by `mode`.
+    void startFade_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+    // 0x80119468 (game/tu_80118384.cpp): startFade_80119998 with the fade length picked by `mode`.
     void fn_80119468(s32 g, s32 mode);
     // 0x80119958: resets every field but the picture.
     void fn_80119958();
@@ -518,7 +518,7 @@ bool fn_80138AB0();
 extern AudioMgr_8045A080* gAudioMgr_8053AF80;
 
 // game/tu_80401848.cpp: the DVD loader thread's commands. fn_804019A8,
-// fn_80401BA4 and fn_80401E10 allocate one (0x20 / 0x1C / 0x1C bytes) for a
+// fn_80401BA4 and requestMountMemArchive_80401E10 allocate one (0x20 / 0x1C / 0x1C bytes) for a
 // file found by path and queue it on the thread; the thread calls each
 // command's vfunc_0xC once. They are named after their vtables (the base
 // 0x804B0FD0 is stored first, then the command's own).
@@ -581,7 +581,7 @@ public:
 // path doesn't exist.
 DvdToMainRamCommand_804B0FA0* fn_804019A8(const char* path, u8 direction, JKRHeap* heap);
 DvdMountAramArchiveCommand_804B0FB0* fn_80401BA4(const char* path, JKRAramArchive* archive, u8 direction, JKRHeap* heap);
-DvdMountMemArchiveCommand_804B0FC0* fn_80401E10(const char* path, u8 direction, JKRHeap* heap);
+DvdMountMemArchiveCommand_804B0FC0* requestMountMemArchive_80401E10(const char* path, u8 direction, JKRHeap* heap);
 
 extern "C" {
 // JSystem/JMath/JMath.cpp: fast vector magnitude
@@ -871,7 +871,7 @@ struct GameRoot2_8049F108 {
     // J2DScreen::draw.
     void fn_8013B490();
     // game/tu_8013AAD4.cpp. Called by GameRoot_8049EF20::fn_80137300
-    // (tu_80134C04); calls field_0x20->fn_802FF0EC() in the modes
+    // (tu_80134C04); calls field_0x20->drawPlayerPanels_802FF0EC() in the modes
     // isGameModeSet() (game/GameMode.h) accepts.
     void fn_8013B538();
     // game/tu_8013AAD4.cpp. Called 12 times by tu_80134C04: the same mode
@@ -890,7 +890,7 @@ struct GameRoot2_8049F108 {
 
 extern GameRoot2_8049F108* gGameRoot2_8053AB10;
 // game/tu_8013AAD4.cpp (0x8013B004): fills box with color (an untextured
-// quad); TileMap_804AA858::fn_802FB69C draws its panel tints with it.
+// quad); TileMap_804AA858::drawPlayerPanel_802FB69C draws its panel tints with it.
 void fn_8013B004(const JGeometry::TBox2f* box, const JUtility::TColor* color);
 
 // The input object *lbl_8053AD30 (game/tu_803099FC.cpp, owner not written
@@ -903,7 +903,7 @@ public:
     // 0xEC bytes by tu_803FF2C4.
     cls_804AA8C8();
     /* 0x08 */ virtual ~cls_804AA8C8();
-    // Four-slot arrays: each fn_8030A43C round copies 0x4 -> 0x14, 0x84 -> 0x94,
+    // Four-slot arrays: each pollInputs_8030A43C round copies 0x4 -> 0x14, 0x84 -> 0x94,
     // 0x24 -> 0x84 (fn_8030AB38 clears them in a loop of four). Slot -0x3E7 means no pad.
     /* 0x04 */ u32 field_0x4[4];
     /* 0x14 */ u32 field_0x14[4];
@@ -975,14 +975,14 @@ public:
     // 0x80309B74: the same "any player" test over field_0x4 (fn_80309D24).
     u32 fn_80309B74(u32 mask, s32 slot);
     // game/tu_803099FC.cpp (0x8030A43C): the per-frame poll of the four pads and GBA links.
-    void fn_8030A43C();
+    void pollInputs_8030A43C();
 };
 extern cls_804AA8C8* lbl_8053AD30;
 // Owner: game/tu_80301CD0.cpp (its sbss, 0x8053AD34; dtk sized it 1 byte).
 // game/tu_803099FC.cpp fn_8030AB38 clears four bytes from it in its loop.
 extern u8 lbl_8053AD34[4];
 // Owner: game/tu_80301CD0.cpp (its sbss): the per-port byte cls_804AA8C8::fn_8030A258 returns,
-// and the index into lbl_80541618 (the transfer length in words) that fn_8030A43C uses.
+// and the index into lbl_80541618 (the transfer length in words) that pollInputs_8030A43C uses.
 extern u8 lbl_8053ACE4[4];
 extern u8 lbl_8053AD08;
 // game/tu_803099FC.cpp (0x8030AAF4). Maps a player index (0-3) to an
@@ -1224,7 +1224,7 @@ public:
     /* 0x59 */ u8 field_0x59;
     /* 0x5A */ u8 field_0x5a;
     /* 0x5B */ u8 field_0x5b;
-    // An alpha: TileMap_804AA858::fn_802FB69C draws black boxes with it while paused.
+    // An alpha: TileMap_804AA858::drawPlayerPanel_802FB69C draws black boxes with it while paused.
     /* 0x5C */ u8 field_0x5c;
     // SHARED-EDIT: tested by fn_801914C4 (game/tu_801902C0.cpp) through lbl_8053AEC8.
     /* 0x5D */ u8 field_0x5d;
@@ -1342,7 +1342,7 @@ struct cls_801192AC {
     /* 0x0C */ ActorVector mActors;
     // 0x801190E4 (game/tu_80118384.cpp): makes room for 20
     // entries (new 0x50) in [mBegin, mEnd) when the capacity is below 20.
-    // GameRoot's fn_80138C9C calls it on fn_8011921C().
+    // GameRoot's resetGameState_80138C9C calls it on fn_8011921C().
     void fn_801190E4();
     // Inline: callers load the object first and the value after (bl fn_8011921C; li; stb 0x2).
     void setField_0x2(u8 value) { field_0x2 = value; }
@@ -1500,7 +1500,7 @@ extern const u8 lbl_8053F0C4;
 f32 fn_802F5FF4(f32 x);
 
 // Owner: game/tu_80301CD0.cpp
-bool fn_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4);
+bool queueGbaFile_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4);
 
 // Objects and functions of the boot sequence main (game/tu_801344C0.cpp)
 // runs; their owner units are not written yet. Named after their vtables.
@@ -1547,13 +1547,13 @@ public:
     /* 0x38 */ DvdMountMemArchiveCommand_804B0FC0* field_0x38;
     /* 0x3C */ DvdMountMemArchiveCommand_804B0FC0* field_0x3c;
     /* 0x40 */ DvdMountMemArchiveCommand_804B0FC0* field_0x40;
-    /* 0x44 */ DvdMountMemArchiveCommand_804B0FC0* field_0x44; // fn_80401E10("/GC4Sword_usa/agb/client_thread.arc")
+    /* 0x44 */ DvdMountMemArchiveCommand_804B0FC0* field_0x44; // requestMountMemArchive_80401E10("/GC4Sword_usa/agb/client_thread.arc")
     /* 0x48 */ DvdMountAramArchiveCommand_804B0FB0* field_0x48;
     /* 0x4C */ u8 field_0x4c[0x54 - 0x4C];
     /* 0x54 */ DvdMountAramArchiveCommand_804B0FB0* field_0x54;
     /* 0x58 */ DvdMountAramArchiveCommand_804B0FB0* field_0x58;
     /* 0x5C */ DvdMountAramArchiveCommand_804B0FB0* field_0x5c;
-    /* 0x60 */ u8 field_0x60; // tested by cls_804AA8C8::fn_8030A43C
+    /* 0x60 */ u8 field_0x60; // tested by cls_804AA8C8::pollInputs_8030A43C
     /* 0x61 */ u8 field_0x61[0x64 - 0x61];
     /* 0x64 */ f32 field_0x64;
     /* 0x68 */ f32 field_0x68;
@@ -1737,8 +1737,8 @@ extern const GXRenderModeObj lbl_8048C17C;
 struct GameRootSub24_8016A3AC {
     GameRootSub24_8016A3AC(JKRHeap* heap); // 0x8016F0BC
     /* 0x000 */ JKRSolidHeap* mSolidHeap_0x0; // destroyed by the destructor
-    // The models and their animations, loaded by the constructor with fn_8016A3BC.
-    // The J3DModels (0x4 ... 0xEC) are passed to fn_8016A7DC.
+    // The models and their animations, loaded by the constructor with loadModelWithAnims_8016A3BC.
+    // The J3DModels (0x4 ... 0xEC) are passed to drawParallaxModel_8016A7DC.
     /* 0x004 */ struct J3DModel* mYouganModel_0x4;               // yougan
     /* 0x008 */ struct J3DAnmTextureSRTKey* mYouganBtk_0x8;
     /* 0x00C */ struct J3DModel* mDokuYouganModel_0xc;               // doku_yougan
@@ -1860,9 +1860,9 @@ struct GameRootSub24_8016A3AC {
     // 0x8016A7DC: places model at pos plus an offset that follows the
     // 2D camera (x / y flags), scaled by `scale`, then runs the model's
     // calc / entry / viewCalc (vtable slots 0x10, 0xC, 0x1C). `this` is not read.
-    void fn_8016A7DC(struct J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale);
+    void drawParallaxModel_8016A7DC(struct J3DModel* model, const JGeometry::TVec3f& pos, s32 dir, bool followX, bool followY, f32 parallax, f32 scale);
 
-    // game/tu_8016A2B4.cpp: each draws one model when its flag is set (fn_8016A7DC).
+    // game/tu_8016A2B4.cpp: each draws one model when its flag is set (drawParallaxModel_8016A7DC).
     void fn_8016A9EC();
     void fn_8016AA48();
     void fn_8016AAA4();
@@ -1922,7 +1922,7 @@ class J3DAnmTevRegKey;
 // skipped when its name is NULL; the pointers receive the results (an output
 // is set to NULL when its animation is not loaded). Called by
 // GameRootSub20_801902C0's constructor (game/tu_801902C0.cpp).
-void fn_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const char* btk2,
+void loadModelWithAnims_8016A3BC(JKRArchive* archive, const char* bmd, const char* btk1, const char* btk2,
                  const char* brk1, const char* brk2, u32 flags, JKRHeap* heap, J3DModel** model,
                  J3DAnmTextureSRTKey** btk1Out, J3DAnmTextureSRTKey** btk2Out,
                  J3DAnmTevRegKey** brk1Out, J3DAnmTevRegKey** brk2Out);

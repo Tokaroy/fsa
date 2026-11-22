@@ -13,7 +13,7 @@
 // and then sets GameView_804A9950::field_0x131de through fn_802D782C(1),
 // which the BGWC actor ("BG-rewrite check switch", docs/names/actors.tsv,
 // game/act_bg_rewrite_check_switch.cpp) polls; the per-screen actor masks
-// are updated in the same breath (fn_802D4C10 / fn_802D7D00). fn_802A3A0C,
+// are updated in the same breath (fn_802D4C10 / setScreenMaskBit_802D7D00). fn_802A3A0C,
 // called once a frame by tu_80139BE8, animates tiles with three (delay,
 // frame) counters.
 //
@@ -78,7 +78,7 @@ public:
     // 8 units / 31 calls. The same write, remembering the cell in
     // field_0x20, then fn_802D782C(1) on the view, and when the tile code
     // is an actor id slot of the layer (fn_802D4C10(layer, (u16)cell) !=
-    // -1) clears that slot's bit in the screen mask (fn_802D7D00(layer,
+    // -1) clears that slot's bit in the screen mask (setScreenMaskBit_802D7D00(layer,
     // slot, false)). `player` is not read by the body: callers pass 0
     // (25 sites), -1 (1) or a word field (act_switch 0x250 at 0x802A7564);
     // its name and type are guesses. tile: callers pass lhz halfwords
@@ -98,13 +98,13 @@ public:
     // is tested with clrlwi 24 and cmplwi 1 in act_bomb, so it is a u8.
     // out: its type is a guess from the slot's size; the body is not read.
     u8 fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32 layer, JGeometry::TVec3f* out);
-    // 17 units / 62 calls. writeTileMarkView_802A3884 with fn_802D7D00(..., true): sets
+    // 17 units / 62 calls. writeTileMarkView_802A3884 with setScreenMaskBit_802D7D00(..., true): sets
     // the bit. `player` as above (0 at 41 sites, 1 at 3, act_gravestone's
     // 0x238 player index).
     void fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
     // 1 unit (tu_80139BE8, once a frame). Steps the tile animations: every
     // 10 calls field_0x8 wraps and field_0xc advances by 2 (mod 0x10) and
-    // the 'SCH ' resources are redrawn with fn_802FA160; field_0x18 /
+    // the 'SCH ' resources are redrawn with loadTileImages_802FA160; field_0x18 /
     // field_0x1c likewise (mod 8).
     void fn_802A3A0C();
     // 1 unit (tu_80139BE8). Resets the counters: 0x8/0x10/0x18 = 10,

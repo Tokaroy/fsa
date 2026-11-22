@@ -73,7 +73,7 @@ Not tricks: patterns no honest form explains yet. Revisit after the
 surrounding code exists, since finishing the rest of a unit may show the cause.
 
 - **Literals pooled before their first visible use.** PARTLY SOLVED 2026-11-05 (tu_8016A2B4): file-scope static const aggregates, and helpers defined early whose out-of-line copy was dead-stripped (see RULES_CARD "Known game-code shapes"); revisit the other units below with that in mind. tu_8016A2B4 (ten GXColor
-  objects then 0.125/1/0.5/0 ahead of fn_8016A7DC's literals), tu_801213EC (8.0f
+  objects then 0.125/1/0.5/0 ahead of drawParallaxModel_8016A7DC's literals), tu_801213EC (8.0f
   before 0.0f, 10430.378f before -24f), tu_803BC6F0 (0, -200, 200 first, used
   only by later functions) and tu_8027E5BC (1.5f, 3.0f). Literals are created per
   function in compile order, and an inline helper's aggregate initializers when
@@ -241,7 +241,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | tu_80113788 | `CrystalCutscene_8049D83C::spawnEmitters` | 12 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
 | tu_80113788 | `CrystalCutscene_8049D83C::spawnSealEmitters` | 7 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
 | tu_80113788 | `CrystalCutscene_8049D83C::updateCameraFocus` | 44 | `fn_80113790__24CrystalCutscene_8049D83CFv`, `__ct__24CrystalCutscene_8049D83CFv` |
-| tu_80118384 | `spawnFadeEmitters` | 7 | `fn_801194C4__12cls_80119E5CFv`, `fn_80119628__12cls_80119E5CFv`, `fn_80119998__12cls_80119E5CFlllllll` |
+| tu_80118384 | `spawnFadeEmitters` | 7 | `fn_801194C4__12cls_80119E5CFv`, `fn_80119628__12cls_80119E5CFv`, `startFade_80119998__12cls_80119E5CFlllllll` |
 | tu_8011CEC8 | `AfterGoalOpening_8049DD68::setOverlayRect` | 21 | `update__25AfterGoalOpening_8049DD68Fv` |
 | tu_8011CEC8 | `AfterGoalOpening_8049DD68::startScroll` | 9 | `update__25AfterGoalOpening_8049DD68Fv`, `init__25AfterGoalOpening_8049DD68Fv` |
 | tu_801213EC | `EscortBase_8049E0C8::respawnLifeMeters` | 9 | (none alone; needed jointly with the unit's other helpers) |
@@ -251,7 +251,7 @@ surrounding code exists, since finishing the rest of a unit may show the cause.
 | tu_8013394C | `NaviAfterCrystalCutscene_8049ED30::spawnEmitters` | 8 | `init__33NaviAfterCrystalCutscene_8049ED30Fv` |
 | tu_8015F454 | `drawLetterbox` | 5 | `fn_8015F454__FP10JUTTexturePCfPCf8_GXColorPC11_GXColorS10P10JUTTextureUcUc`, `fn_8016005C__12cls_804A03A8Fv` |
 | tu_8018EB94 | `BigMoldormTail_804A1FA0::setHeading` | 13 | (none alone; needed jointly with the unit's other helpers) |
-| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `fn_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `fn_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
+| tu_8027E5BC | `Player_804A6F38::followStep` | 26 | `fn_8027FA08__15Player_804A6F38FPQ29JGeometry8TVec3<f>`, `fn_80280074__15Player_804A6F38Fv`, `fn_802804E0__15Player_804A6F38Fv`, `moveByStick_802808E8__15Player_804A6F38Ff`, `fn_80280B30__15Player_804A6F38Fv`, `fn_8028126C__15Player_804A6F38Fv`, `fn_80281E98__15Player_804A6F38Fv`, `fn_80282094__15Player_804A6F38Fv`, `fn_80282ACC__15Player_804A6F38Fv`, `fn_80283D2C__15Player_804A6F38Fv`, `fn_80283E70__15Player_804A6F38Fv`, `fn_80284294__15Player_804A6F38Fv`, `fn_8028434C__15Player_804A6F38Fv`, `fn_80284430__15Player_804A6F38Fv`, `fn_802844F8__15Player_804A6F38Fv`, `fn_80285098__15Player_804A6F38Fv`, `fn_8028538C__15Player_804A6F38Fv`, `fn_80285690__15Player_804A6F38Fv` |
 | tu_802E9428 | `UnknownENDM_804AA0FC::stepZoom` | 12 | `init__20UnknownENDM_804AA0FCFv` |
 | tu_8030C058 | `Camera_804AA9E4::setScreenRectViewport` | 7 | `fn_8030C380__15Camera_804AA9E4FPQ29JGeometry8TVec3<f>`, `fn_8030C4A0__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>bPQ29JGeometry8TVec3<f>`, `fn_8030C5F0__15Camera_804AA9E4FPC3VecbbP3Vec`, `fn_8030C7C4__15Camera_804AA9E4FPCQ29JGeometry8TVec2<f>f`, `fn_8030DFE8__15Camera_804AA9E4Fb` |
 | tu_8034AA40 | `markRandomCucco` | 8 | `fn_8034AAA0__24CuccoHerdingNPC_804AC8C0Fv`, `vfunc_0x10__24CuccoHerdingNPC_804AC8C0Fv`, `init__24CuccoHerdingNPC_804AC8C0Fv` |

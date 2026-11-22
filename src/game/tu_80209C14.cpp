@@ -462,7 +462,7 @@ bool SlimeFormation_804A5D60::vfunc_0x58() {
     bool hit = false;
     if (player >= 0) {
         if (blocked) {
-            if (field_0x1dc.fn_801EAC20(player)) {
+            if (field_0x1dc.startTimer_801EAC20(player)) {
                 hit = true;
             }
         } else if (arrow || (id >= 0 && field_0x1dc.fn_801EAC54(id))) {

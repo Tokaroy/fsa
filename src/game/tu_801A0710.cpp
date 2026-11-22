@@ -890,7 +890,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         break;
     }
     if (field_0x230 != 0x11) {
-        if (mLife == 0 || dead || fn_801F6758(&mPos, mLayer_0x4, -16.0f)) {
+        if (mLife == 0 || dead || isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f)) {
             field_0x238[1] = 50;
             if (mLife != 0 && field_0x320 >= 0) {
                 TennisShop_804A2BF4* shop = static_cast<TennisShop_804A2BF4*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x320));

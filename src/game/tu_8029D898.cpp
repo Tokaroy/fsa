@@ -95,11 +95,11 @@ void BgRewrite_804A7C98::fn_802A3A0C() {
         }
         if (getGameView_802D6A9C()->field_0x40 == 0x10) {
             u32 off = lbl_8046C4A8[field_0xc] + 0x4000;
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_b_sch.bin"), off, 0, 0x3800, 0x800);
         } else {
             u32 off = lbl_8046C4A8[field_0xc];
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_b_sch.bin"), off, 0, 0x3800, 0x800);
         }
     }
@@ -114,26 +114,26 @@ void BgRewrite_804A7C98::fn_802A3A0C() {
         char c = *name;
         if (c == 'l') {
             u32 off = lbl_8046C4A8[field_0x1c] + 0x2000;
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_sch.bin"), off, 0, 0x5800, 0x400);
             field_0x18 = 0x14;
         } else if (c == 's' || c == 'w') {
             u32 off = lbl_8046C4A8[field_0x1c] + 0x6000;
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_sch.bin"), off, 0, 0x1c00, 0x400);
         } else if (c == 'k' || c == 'v') {
             if (field_0x1c >= 4) {
                 field_0x1c = 0;
             }
             u32 off = lbl_8046C4A8[field_0x1c] + 0x1000;
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_sch.bin"), off, 0, 0x5c00, 0x400);
         } else if (getGameView_802D6A9C()->field_0x40 == 0x1b || *name == 'y') {
             if (field_0x1c >= 4) {
                 field_0x1c = 0;
             }
             u32 off = lbl_8046C4A8[field_0x1c * 2] + 0x4000;
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_anim_sch.bin"), off, 0, 0x5800, 0x800);
         }
     }
@@ -149,7 +149,7 @@ inline void BgRewrite_804A7C98::writeTileMarkView(const JGeometry::TVec3f* pos, 
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
     slot = getGameView_802D6A9C()->fn_802D4C10(layer, field_0x20);
     if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, set);
+        getGameView_802D6A9C()->setScreenMaskBit_802D7D00(layer, slot, set);
     }
 }
 
@@ -1099,7 +1099,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     gGameRoot2_8053AB10->field_0x20->fn_802F9974(upper, wallCell, 0x6C);
                     s32 slot = getGameView_802D6A9C()->fn_802D4C10(upper, wallCell);
                     if (slot != -1) {
-                        getGameView_802D6A9C()->fn_802D7D00(upper, slot, true);
+                        getGameView_802D6A9C()->setScreenMaskBit_802D7D00(upper, slot, true);
                     }
                     wallCell++;
                     if ((wallCell & 0xF) == 0) {
@@ -1109,7 +1109,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                     gGameRoot2_8053AB10->field_0x20->fn_802F9974(upper, wallCell, 0x6D);
                     slot = getGameView_802D6A9C()->fn_802D4C10(upper, wallCell);
                     if (slot != -1) {
-                        getGameView_802D6A9C()->fn_802D7D00(upper, slot, true);
+                        getGameView_802D6A9C()->setScreenMaskBit_802D7D00(upper, slot, true);
                     }
                     getActorManager_801F856C()->spawnActor_801F9484('SEN2', layer, &wallPos, 0x3C00, -1, -1);
                     spawnEmitter_8013CC50(layer, pos, 0x24A, 1, 0, NULL, NULL, true, 1.0f);
@@ -1221,7 +1221,7 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19F);
                 s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
                 if (slot != -1) {
-                    getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
+                    getGameView_802D6A9C()->setScreenMaskBit_802D7D00(layer, slot, true);
                 }
                 playerPos.x = pos->x - 16.0f;
                 playerPos.y = pos->y;
@@ -1233,7 +1233,7 @@ bool BgRewrite_804A7C98::fn_8029E508(const JGeometry::TVec3f* pos, s32 player, s
                 gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, 0x19E);
                 s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
                 if (slot != -1) {
-                    getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
+                    getGameView_802D6A9C()->setScreenMaskBit_802D7D00(layer, slot, true);
                 }
                 playerPos.x = 16.0f + pos->x;
                 playerPos.y = pos->y;
@@ -1277,7 +1277,7 @@ static inline void writeCellMarkView(int layer, s32 cell, s16 tile) {
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
     s32 slot = getGameView_802D6A9C()->fn_802D4C10(layer, cell);
     if (slot != -1) {
-        getGameView_802D6A9C()->fn_802D7D00(layer, slot, true);
+        getGameView_802D6A9C()->setScreenMaskBit_802D7D00(layer, slot, true);
     }
 }
 

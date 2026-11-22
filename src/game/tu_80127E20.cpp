@@ -5,7 +5,7 @@
 #include "game/act/act_zora_escort_goal.h"
 #include "game/tu_80127E20.h"
 
-ZoraEscortGoalList_80128460* fn_801283E8() {
+ZoraEscortGoalList_80128460* getZoraEscortGoalList_801283E8() {
     static ZoraEscortGoalList_80128460 lbl_804BD36C;
     return &lbl_804BD36C;
 }

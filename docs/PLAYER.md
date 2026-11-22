@@ -59,14 +59,14 @@ objects at +0x1250/+0x1254.
 The destructor (0x802558E4) calls fn_80241E64 (emitter teardown), deletes
 0xBF0, 0xBEC, 0x1254, 0x1250, then destroys the eight callbacks;
 `__dt__23PlayerSoundObj_804B20F8Fv` (weak) follows it. Everything else is set by the
-per-slot reset fn_80254744 (0x11A0 bytes) and fn_80254660; those two prove
+per-slot reset resetSlot_80254744 (0x11A0 bytes) and fn_80254660; those two prove
 most of the remaining fields.
 
-Remaining padding (after fn_80254744, agent A 2026-11-05): 47 `u8` holes,
+Remaining padding (after resetSlot_80254744, agent A 2026-11-05): 47 `u8` holes,
 267 bytes. Largest: 0x20 at 0x4A0 / 0x5DC, 0x10 at 0x580 / 0xBC4, 0xC at
 0x12A4 / 0x12FC / 0x1320 / 0x1344 / 0x1268 / 0xD10.
 
-### Fields proven by the reset fn_80254744 / fn_802544B0 / update A
+### Fields proven by the reset resetSlot_80254744 / fn_802544B0 / update A
 
 Types come from the store widths plus loads elsewhere (`psq_l` = TVec3f;
 `lhz` = u16). Names stay `field_0x...`: nothing names them.
@@ -100,7 +100,7 @@ fn_8022DFD4's `const TVec2f*`), zeroed by update A every frame.
 
 ### Reset and state request (written)
 
-- **fn_80254744** (99.30 %): per-slot setup. `field_0xd00 >= 2` with the
+- **resetSlot_80254744** (99.30 %): per-slot setup. `field_0xd00 >= 2` with the
   view's save-row stage flag set clears 0xD00/0xCFE. The slot's part comes
   from the game mode: no 0x7F and the player not taking part (bit
   field_0x4 of gGameRoot_8053AAF8->field_0x82) -> inactive, start state 1 (also
@@ -113,7 +113,7 @@ fn_8022DFD4's `const TVec2f*`), zeroed by update A every frame.
   Then mPos is copied into the position history, fn_80276538 / fn_80276078,
   cls_804A71A8::fn_8026F710, fn_8027221C(0), fn_8027023C; with
   fn_802DEBF8 it requests state 3 (inlined fn_80251AEC(3)); last the camera
-  box fn_8030BD3C and, for 0xCFE / 0xD00 == 2, fn_8024DCD0 + fn_8024B2E0.
+  box fn_8030BD3C and, for 0xCFE / 0xD00 == 2, fn_8024DCD0 + resetTrail_8024B2E0.
 - **fn_802544B0** (code identical, literal pool only): fn_80254660's body,
   then 0xC04 and the counters 0xC1C-0xC7C.
 - **fn_80251AEC / fn_80251BFC** (100 %): as in State system below.
@@ -142,7 +142,7 @@ Update (GameRootSub04 fn_80139D9C -> **fn_8023F390**, PlayerManager update):
 2. unless gGameRoot_8053AAF8+0x94 == 1: each player **fn_80252FC0** (update B:
    player-vs-actor interactions, fn_8027FA08, fn_8025F448); clear the
    per-frame bytes 0x434/0x435; **fn_80232A0C** (cross-player pass, 0x1194);
-   **fn_80231DE4** only when gGameRoot_8053AAF8+0x7f; each player fn_80252FBC (empty).
+   **updateScreenChange_80231DE4** only when gGameRoot_8053AAF8+0x7f; each player fn_80252FBC (empty).
 3. active players: fn_80240670; then the audio manager byte.
 
 **fn_80285E58** (Player update): while the freeze counter 0x11F4 > 0,
@@ -152,8 +152,8 @@ count it down and reset the 0xDB0 / 0x1030 word arrays to -1; otherwise
 Draw (GameRoot fn_80136828 -> fn_80139CC4 -> **fn_8023F2BC**): players 3..0
 in two passes split by bit i of gGameRoot_8053AAF8+0x82, each **fn_80264998(player)**.
 
-Reset: fn_8023F78C -> **fn_80254744** (scene enter, GameRootSub04
-fn_8013A1A4; stage change, fn_802DA8DC / fn_802DBD60); fn_8023F728 ->
+Reset: fn_8023F78C -> **resetSlot_80254744** (scene enter, GameRootSub04
+fn_8013A1A4; stage change, resetStage_802DA8DC / fn_802DBD60); fn_8023F728 ->
 fn_802544B0; fn_8023F6C4 -> fn_80254660; fn_8023F088 -> fn_80252F80 when
 gGameRoot_8053AAF8+0x7e == 1.
 
@@ -178,7 +178,7 @@ states, 0x00-0x51.
   (jump table 0x804A7770, 79 entries); the commit `0x1248 = 0x1240; 0x1240 =
   0x1244` followed by fn_8025F698(true); an ENTER switch (0x804A7628, 82
   entries); and an UPDATE switch (0x804A74E0, 82 entries). Outside
-  fn_80254744 the commit is the only store to 0x1240. All three tables are
+  resetSlot_80254744 the commit is the only store to 0x1240. All three tables are
   compiler `switch` jump tables, so the source is three `switch`
   statements, each case being `handler(); break;`, not function-pointer
   tables.
@@ -293,7 +293,7 @@ fn_8023F264 (the player-active check), getPlayerLayer_8023DE58 and getRepresenta
 instructions). Measured from the p1-p3a coverage dumps. Everything else runs in the menu ->
 Shadow Battle phase: about 7.8k unmatched instructions (~31 KB). The most
 executed unmatched functions are:
-- tu_8023FBF0: fn_80254744 646, fn_80253E6C 188, fn_802490A8 180, fn_8024F63C 113, fn_80251D50 101, fn_80252FC0 100, fn_8025250C 81, fn_8024762C 80, fn_802544B0 80.
+- tu_8023FBF0: resetSlot_80254744 646, fn_80253E6C 188, fn_802490A8 180, fn_8024F63C 113, fn_80251D50 101, fn_80252FC0 100, fn_8025250C 81, fn_8024762C 80, fn_802544B0 80.
 - tu_8022AD64: fn_80232A0C 370, fn_8023F390 121, fn_8022B334 86, fn_80239F10 86, fn_8023F088 79.
 - tu_802684A4: fn_80269574 474, fn_80268BC4 274, fn_8026F710 162, fn_802685D4 121.
 - tu_80285E58: fn_802870C8 362, fn_80285F44 96, fn_80286E10 76, fn_80286B74 67.
@@ -304,7 +304,7 @@ the boot path. tu_8028FBA0 (states 0x1C-0x32) executes nothing there.
 
 ## Recommended order
 
-1. **tu_8023FBF0, the reset functions fn_80254744 (0x11A0) and fn_802544B0.**
+1. **tu_8023FBF0, the reset functions resetSlot_80254744 (0x11A0) and fn_802544B0.**
    They run first on the battle path (646 instructions executed) and store
    most of the fields that are still unnamed, so they finish the layout the
    constructor started.
@@ -345,10 +345,10 @@ from the tables' relocations, so every case below is the table entry):
   whole state machine is skipped while 0xCEE is set or fn_802413E8()
   (byte 0x454) holds; then the tick only restores mPos from the TVec3f at
   0x32C.
-- Between ENTER and UPDATE: fn_80131F0C(); a damage call
+- Between ENTER and UPDATE: getEscortActorList_80131F0C(); a damage call
   hitPlayerGroup_80238548(index, 0x20, &mPos, 0x12) when fn_80131D98() or
   lbl_8053ABA8 / lbl_8053ABF0 is set, else a request of state **0x33**
-  when fn_8024189C() <= 0 and !fn_80270A8C(); then the push vector at
+  when getLife_8024189C() <= 0 and !isDeadState_80270A8C(); then the push vector at
   0x35C is added to mPos and damped (x0.95 above length 2, x0.9 below) in
   states 8 / 0x37 (or when fn_80241380()), added and damped x0.6 in states
   0x12, 0x15-0x18, else damped x0.9, and zeroed below length 0.2.
@@ -484,7 +484,7 @@ form). With it every gated function here is registers-only (99.5-99.9 %).
 ### fn_802490A8 (input, 99.9 %, registers only)
 
 Skipped while 0x1220 > 0. Returns when the acting player (this one, or in
-mode 4 getRepresentativePlayer_8022EA0C of it) is fn_80230188 / fn_80236B50 / airborne (z > 0) /
+mode 4 getRepresentativePlayer_8022EA0C of it) is fn_80230188 / isPlayerDead_80236B50 / airborne (z > 0) /
 fn_8023EA28, or a player it can reach (arePlayersInSameGroup_8022E438) is busy (fn_8023E98C
 without arePlayersInSameGroup_8022E438 back, fn_8022DEAC outside mode 4, ten state queries);
 also in demo mode with 0xCFE == 1, fn_8022AF5C, or **0x121E == 1**. Then:
@@ -499,7 +499,7 @@ four directions, unless a reachable player has fn_8022DEAC or the pad
 
 ### fn_80252FC0 (update B, 99.1 %)
 
-Skipped for 0x121F, 0xCE8, 0x454, fn_80270A8C, fn_80241200, fn_8025F448,
+Skipped for 0x121F, 0xCE8, 0x454, isDeadState_80270A8C, fn_80241200, fn_8025F448,
 state 0x0E, mode 4. A follower (0xD60 >= 0, not held: **0xD9C / 0xDAC**
 < 0) or a player with **0x1216** set walks to fn_8027FA08's spot at 2 a
 frame while **0x1218** > 0, else 1.5 when cls_804A71A8::anyFlag48 (the
@@ -568,8 +568,8 @@ largest x / y of the reachable players' fn_8022DFD4 (cls_804A71A8 0x14 /
 - Left unwritten: fn_8027057C / fn_80270DDC / fn_80270F00 (fn_80270DDC is the
   heal routine on 0xBFC, inlined into the other two; it contains
   `old = x; x++; if (x == old) for (;;); x = old;` whose source form is
-  unknown, and inlines fn_80270A8C, defined after it), fn_80270948 (inlines
-  fn_80270A8C, also defined after it; with the deferred model a plain function
+  unknown, and inlines isDeadState_80270A8C, defined after it), fn_80270948 (inlines
+  isDeadState_80270A8C, also defined after it; with the deferred model a plain function
   may do, otherwise the header inline + wrapper of playerFlags_802413F0), fn_802796B8 (emitter stop sequence, as before).
 
 ## Round 4 (state handlers)
@@ -582,7 +582,7 @@ transition kind (0x29 = none; the arrive exit stores it in 0xCF8), 0xCD4 /
 the last position on the TV. Layers 8 and up are the GBA screens (houses,
 caves): the handlers wait while the player's GBA link is busy
 (fn_80301CD0, fn_80303750), notify it (fn_803037D4(player, 0xD),
-fn_80301D54) and switch the music (gAudioMgr_8053AF80->fn_8045815C by 0xCE4 < 8).
+fn_80301D54) and switch the music (gAudioMgr_8053AF80->setMusicSlow_8045815C by 0xCE4 < 8).
 The states come in pairs: the even one leaves (exit **fn_80290E90**: GBA
 notice, 0x400 = 0, music), the odd one arrives (exit **fn_80290D58**:
 respawn point 0xCBC / 0xD1C unless fn_80241E28, 0xCF8 = 0xCF4, 0xCF4 =
@@ -607,7 +607,7 @@ effects (spawnEmitter_8013CC50):
 | 0x30 / 0x31 | 80292124, 80291F10 / 80291E44, 80291D28 | **walk up through a door** (y - 0.1, frames 0-5, 'PEFF' dust at 4 and 8) / **arrive on the TV** (effects 0x15B/0x15C, sounds 0x20041/0x1000F, 0x5C frames; then 0x4A) |
 | 0x32 | 8029185C, 80290FC0 | **jump down a ledge** to 0xCD4: speed (0xCD4 - mPos) / 64 with z 8, gravity 0.25; kind 0xC adds the stage's splash emitters 0x242-0x249 (0x132C / 0x135C, turned by the facing table lbl_8046C228), kind 0xD a 130-frame scripted drop with per-player effects 0x16A-0x16F; extra exit fn_80290F20 kills both emitters |
 
-The transitions are started by **fn_80290070**(layer, from, to, kind)
+The transitions are started by **startTransition_80290070**(layer, from, to, kind)
 (0x80290070, 0xCE8 bytes; not written: it inlines fn_80290D58 and
 fn_80290E90, which come after it, so it needs the deferred model, now the
 project default).
@@ -619,7 +619,7 @@ Written in round 4: 51 of 53 at 100 % (all but two). fn_80290FC0 (state 0x32
 update) is 99.62 % (scheduling only; Player 0x1344 is now a TVec3f, the
 emitter position copied from mPos, moved 3 by facing and handed to the
 callback 0x1330's field_0x4); its .sdata2 literals set the pool order that
-makes the other 26 handlers match. Not written: fn_80290070 (above).
+makes the other 26 handlers match. Not written: startTransition_80290070 (above).
 
 ## Round 5 (tu_80256C74) (agent H, Opus 5.5, 2026-11-05)
 
@@ -643,7 +643,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
 | 4 | 0x3A | refused while 0xB18 is held, the 0xB74 cooldown runs, or (fn_8022B160) the player's byte of lbl_8053ABB8 is set |
 | 5 | 0x3C | - |
 | 6 | 0x45 (level >= 2) / 0x44 (at most three 0xB1C[3]) | - |
-| 7 | 0x46, or 0x14 while carrying (fn_8025F684) | refused while a living actor is held (0xD68), any player holds 'RCK2', the floor probe 2 above the hand point (fn_8024B298(2)) is tile 2 on floor layers, or mPos.z > 0 elsewhere |
+| 7 | 0x46, or 0x14 while carrying (isLifting_8025F684) | refused while a living actor is held (0xD68), any player holds 'RCK2', the floor probe 2 above the hand point (fn_8024B298(2)) is tile 2 on floor layers, or mPos.z > 0 elsewhere |
 | 8 | (no state) | **bombs (HBMB, "Bomb")**: two at a time (0xB30[2]), placed 12.999 in front (lbl_8046B220) unless that tile is 0xE; sound 0x20006 |
 | 9 | 0x47 (80258890 / 80258BA8 / 8025888C) | **dig** 16 in front at floor level: frame 11 sets the 8x8 box 0x5CC (0xB9E), frame 12 asks BgRewrite fn_802A1844 (result in 0xBA0; 1-4 dig something up, 8 another sound); results 1-4 give an effect by result and facing (lbl_8046B200) at frame 28; a miss switches to the short animation (0x3FD = 1) |
 | 10 | 0x3B | refused while 0xB18 is held |
@@ -661,7 +661,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
   fn_8022E1A0) is the same with a speed min(distance, 6), the facing turned away
   from the actor, and an end test on the arrow's field 0x230 (unwritten: that field
   is padding in act_arrow.h).
-- fn_80256C74 is a fourth box test (field_0x5DC, only while fn_80270A8C and 0xBA4);
+- fn_80256C74 is a fourth box test (field_0x5DC, only while isDeadState_80270A8C and 0xBA4);
   fn_80257DB4 is false when any of 21 state / flag tests holds, else 0xD3C < 0.
 - Data: .rodata is file-scope tables addressed off one base in the big handlers
   (offsets 0x30 / 0x50 / 0xB0 from fn_8025DACC, 0x190-0x2C0 from the others);
@@ -695,16 +695,16 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
   fn_802738F0 flipped to 100 %, fn_80273518 to regalloc-only.
 - **SaveRow_8050EC80 0x7E / 0x7F** (tu_80379F84.h): the hit path reads 0x7E while
   GameRoot 0x7F is set, else 0x7F; value 1 calls fn_8024E500 on damage >= 4.
-- **fn_80270A8C is an inline (isDown)**: fn_80270948 and fn_8027057C inline it
+- **isDeadState_80270A8C is an inline (isDown)**: fn_80270948 and fn_8027057C inline it
   before its definition. (Historical: this was found under `-inline auto`, where
   the .sdata2 literals pooled differently under deferred; the project has since
   switched to deferred with descending source order, docs/INLINING.md, so check
-  whether a plain fn_80270A8C now gives the same bytes.) Then isDown() is defined
-  at the top of the unit and fn_80270A8C returns it (precedent playerFlags_802413F0). fn_80270948 (100 %) stores 0xD10 (now a
+  whether a plain isDeadState_80270A8C now gives the same bytes.) Then isDown() is defined
+  at the top of the unit and isDeadState_80270A8C returns it (precedent playerFlags_802413F0). fn_80270948 (100 %) stores 0xD10 (now a
   TVec3f: the revive position, pos or mPos) once while down.
 - **fn_80270DDC is a real function (heal, 100 %)**, not an inline wrapper: its
   out-of-line shape (`beq; b` after the isDown test) comes only from calling
-  fn_80270A8C() (an auto-inlined function); an inline heal + wrapper gives 98.49 %.
+  isDeadState_80270A8C() (an auto-inlined function); an inline heal + wrapper gives 98.49 %.
   fn_80270F00 (max life 0xBF8 += n, cap 32, then full heal) calls it and is 100 %.
   The `old = x; x++; if (x == old) for (;;); x = old;` construct on 0xBFC is
   written literally (the reload of 0xBFC after the store is MWCC not forwarding a
@@ -732,7 +732,7 @@ The unit is the player's **hold / lift / throw** code. State names are provision
   index, 0xD68 the held actor serial, 0xD6C its mActorId ('NULL' when none), 0x2F4 the
   held thing's position (mPos + a per-facing / per-pose table offset every frame).
   File inlines (out-of-line copies in brackets): holdsPlayer [fn_8025F590],
-  isGrabbing_8025F448 [fn_8025F448], isLifting_8025F684 [fn_8025F684], canLift_8025F2CC
+  isGrabbing_8025F448 [fn_8025F448], isLifting_8025F684 [isLifting_8025F684], canLift_8025F2CC
   [fn_8025F2CC], letsGo_8025FCC8 [fn_8025FCC8]; earlier functions inline them.
 - **0x19 grab** (enter fn_80262188, sound 0x10007): fn_8025EE48(serial) grabs an actor;
   fn_802600A0(player) grabs a player, or pairs up with it instead by spawning 'TSNO'
@@ -781,12 +781,12 @@ fn_802413E8; 0x121 (= nothing drawn, see below) while 0x464 bit 1 and no
 picks a base by facing 0x3DC (right, left, down, up) and adds a counter:
 0x3F9 (walk cycle), 0x3FB (action), 0x3FD (sub-step). Per-state helpers
 fn_80267018-fn_80267ECC (all Player members now, r3 = this). Examples:
-standing 0x3C-0x3F (state 0 / 0x1F / 0x2A / 0x42; fn_80268194), walk 0x00 +
+standing 0x3C-0x3F (state 0 / 0x1F / 0x2A / 0x42; setStandingFrame_80268194), walk 0x00 +
 8 * facing + 0x3F9 (states 2, 3, 0x38), spin 0x8F-0x96 (fn_80267D30, states
 9 / 0xA), the carried pose 0x1BF-0x1C3 of player 4 of a group outside the
 leader's slot (fn_802486A0() == 4 && fn_80240888() != fn_80248778()), state
 0x49 by field_0x1178 (0 / 1 / 2 -> 0x35F / 0x3D0 / 0x296 + 0x3FD).
-**fn_80268194 is inlined** into the frame functions after fn_80265E88
+**setStandingFrame_80268194 is inlined** into the frame functions after fn_80265E88
 (fn_80267384 / fn_80267598 are just its body, fn_80267ECC and fn_80267470 use it)
 and has an out-of-line copy at 0x80268194 (just before __sinit) for fn_80265E88's
 call. It is written as an `inline` member definition after fn_80265E88 (100 %), a
@@ -825,7 +825,7 @@ do the same (historical note, not re-tested).
    != 0x121, at mPos + 0x2B8 rounded to whole units, TV layers only.
 6. Floor overlays ("enemy_both2_sob.bin", params 0x13 = 0x80 while 0x458 and
    facing down) at mPos + (0, 1) when on the floor: fn_8022517C -> cel 0x3C8
-   (fn_80265AE4's 0x195-0x197 cycle); tile 0x39 / 0xD / 0x3B with fn_80270A8C
+   (fn_80265AE4's 0x195-0x197 cycle); tile 0x39 / 0xD / 0x3B with isDeadState_80270A8C
    -> cel 0x3CA (0x18F-0x191; +3 on frames 0xC2-0xC4); else, unless
    fn_802412A4 without fn_80241200 or fn_8024BBB0, tile 0x39 or fn_80225BE4 ->
    cel 0x3CA. GBA layers: fn_803075AC (serial -10000 / -20000 - index).
@@ -846,7 +846,7 @@ computed z first, i.e. as inline-call arguments).
 ## Round 7 (tu_8027E5BC) (agent K, Opus 5.5, 2026-11-05)
 
 36 -> 45 of 73 at 100 % (+9 honest); structurally written (FIXMEs in the source): fn_8027FA08
-99.94 %, fn_802808E8 99.97 %, fn_80281E98 99.65 %, fn_80282094 99.41 % (literal names only),
+99.94 %, moveByStick_802808E8 99.97 %, fn_80281E98 99.65 %, fn_80282094 99.41 % (literal names only),
 fn_8028538C 99.90 % (two stack slots), fn_80283D2C 99.38 % (registers), fn_802859C4 99.54 % and
 fn_80285690 98.27 % (one cmpwi each, see "Forwarder types" below). States (update / enter / exit,
 names provisional, evidence = what the handlers do):
@@ -854,8 +854,8 @@ names provisional, evidence = what the handlers do):
 | state | handlers | what it is |
 |---|---|---|
 | 0x00 | 802859C4 / 80285C28 / - | **standing**: walks (2) when the stick moves (fn_80246F28 != 0), runs (3) with pad 0x40; a follower (hasLeader_80240808) runs when its leader holds 0x40 (fn_8022C5EC), moves (fn_8022C6AC) or is ahead on the same layer (fn_8022CFE8 > 0); facing toward the nearest player as player 4 outside the leader's slot (fn_8027E7E0), else fn_8027EB04; then pick-ups (fn_80261480) and the body frame |
-| 0x01 | 802857F0 / 802859B8 / - | **inactive / waiting slot** (fn_80254744 starts non-participants in 1): on tiles 3 / 0xE / 0x3A effect 0x503 and back to the return point 0x2C4 on layer 0; a leaderless player whose box 0x4C0 touches another present player that can pair (fn_802300EC) follows it (0xD60 = i), and with state 0 granted stores the pad slot 0x11EC and spawns **'TSNO'** (two-sword motion, actors.tsv) |
-| 0x02 | 80285690 / 802857C8 / - | **walk**: fn_802808E8(1.5) (the stick walk step), fn_8027EB04, the walk cycle fn_8027EEB4; a follower switches to 3 like state 0 |
+| 0x01 | 802857F0 / 802859B8 / - | **inactive / waiting slot** (resetSlot_80254744 starts non-participants in 1): on tiles 3 / 0xE / 0x3A effect 0x503 and back to the return point 0x2C4 on layer 0; a leaderless player whose box 0x4C0 touches another present player that can pair (fn_802300EC) follows it (0xD60 = i), and with state 0 granted stores the pad slot 0x11EC and spawns **'TSNO'** (two-sword motion, actors.tsv) |
+| 0x02 | 80285690 / 802857C8 / - | **walk**: moveByStick_802808E8(1.5) (the stick walk step), fn_8027EB04, the walk cycle fn_8027EEB4; a follower switches to 3 like state 0 |
 | 0x03 | 8028538C / 80285668 / 80285388 | **run / follow**: a follower with 0x1215 takes the leader's layer and position; formation 5 with cls_804A71A8 0xB4 walks by stick at 1.5; otherwise (0x122C <= 0) steps 0.5 a frame toward fn_8027FA08's target in x/y and on arrival stands (0) or walks (2) |
 | 0x4E | 80281E98 / 80282094 / 80281E84 | **bounce**: enter sets (-1, 3, 0), a view shake (GameView fn_802D79E8, 4) and the TV effect of kind 1 at 0xCB0; after 20 frames (0x3FC) it flies with 0x344 (y -0.1 a frame to -1, x +-0.1 a frame to +-5) and rebounds at (+-1, 3) on a wall (fn_802517F8) or past 5, counting rebounds in 0x3FA; from the second one on, landing (y <= 0), 0x3FD or fn_802518AC stops it; squash 0xC84 = (1, 1, 0.5) in flight; exit restores 0xC84 = 1 |
 | 0x4F | 80281A90 / 80281D50 / 80281A18 | **dash**: enter faces by the leader (fn_80230CFC) or the pad and sets speed 2 along the facing (lbl_8046BE78), sound 0x1000C; update moves by 0x344 plus the stick (fn_8022C82C / fn_8022C76C; y not on tile 2 of view-flag layers), poses 0x3FB 0-5 over 20 frames (0x3FA), then state 0; after frame 5 with fn_802466B4 and not fn_802DEBF8 it requests state 9 (0x11AC = 4); dust effect 0x3D3 (0x1354, 'PEFF' callback 0x1398) or on tile 0x39 0x3D4 (0x1358, 0x13A8); exit releases both and keeps the speed in 0x368 |
@@ -873,7 +873,7 @@ names provisional, evidence = what the handlers do):
   2 a 2x2 square, 3 a diamond around the leader (rotated by 0x11C0 around fn_80252F48 =
   &0x11B4 with fn_80241284, else by both indices), 4 mPos, 5 the leader's history 12 frames per
   place back (fn_8023E4E4).
-- **fn_802808E8(speed) = the stick walk step**: speed per axis (0 while 0x35C is not zero or
+- **moveByStick_802808E8(speed) = the stick walk step**: speed per axis (0 while 0x35C is not zero or
   0x3C1 / 0x3C2 block it; y halved on tiles 0x2C-0x2F; x1.4 with fn_8022B244 and item 5) into
   0x38C / 0x390, then mPos += speed * stick (fn_8022C82C x, -fn_8022C76C y); upward on view-flag
   layers only while one of the eight probes (fn_8024B298) is off tile 2.
@@ -883,7 +883,7 @@ names provisional, evidence = what the handlers do):
 - **.sdata2 blocker** (all later reloc-name misses): the original pool after the 0x4330 double is
   1.5, 0.5, 3.0, then fn_8027FA08's 4.0. fn_8027FA08 itself uses only 16, the double, 4.0, 0.5,
   in case order 3, 2, 0, 1, 5, 4 (its code order). 1.5 / 0.5 / 3.0 in that order is exactly the
-  literal sequence of the state 3 update's walk (fn_802808E8(1.5f), then |dir| >= 0.5 and the
+  literal sequence of the state 3 update's walk (moveByStick_802808E8(1.5f), then |dir| >= 0.5 and the
   normalize's 3.0), so a function or inline with that body was probably defined between
   fn_8027F854 and fn_8027FA08 and dead-stripped; its body is not proven, so nothing was invented.
   Until it is found every function using a literal from 0x80540378 on stays reloc-name.
@@ -912,7 +912,7 @@ names provisional, evidence = what the handlers do):
   direction, 0x10011 when leaving 4) and resets the trail.
 - **Trail** (0x38 TVec3f[0x31] + 0x284 u8[0x31]): fn_8024B9E8 pushes mPos
   and cls_804A71A8 0xB4 on the front; resetTrail (fn_80248604) refills it
-  with mPos (fn_8024B2E0 while 0x454); fn_802408C8 fills it with a spot
+  with mPos (resetTrail_8024B2E0 while 0x454); fn_802408C8 fills it with a spot
   on the ground and starts mode 5.
 - **Countdown 0x48C** (fn_8024762C, per frame): state 0xB while it runs,
   shared by the leader (fn_80247BD4 / fn_80247B9C), back to state 0 with
@@ -952,7 +952,7 @@ fn_8025D0B0 99.89 (literal names only).
 - **0x45** (item 6 at level >= 2; update fn_80259830): frame 11 places a Cane of
   Somaria block ('SMRI', actors.tsv med) 16 in front into field_0xb2c (message 0xE8
   once per player, field_0xbb8) or calls fn_8030EA00 on the existing one; while the
-  button is held (field_0xb84) it stays at frame 12, walks at 1.125 (fn_802808E8) with a
+  button is held (field_0xb84) it stays at frame 12, walks at 1.125 (moveByStick_802808E8) with a
   28-frame walk cycle (lbl_8046B190), keeps a 'FIRE' actor (field_0xb28, argument
   0x1040 | facing << 4 | player) centred on the box field_0x580 in front
   (FireRodFire_804A89F0::fn_802BAA0C), and emitters 0x1AB / 0x54A (0x12C4 / 0x12C8).
@@ -1197,7 +1197,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
     field_0x58 (tile 2, low part of 0x23; at height 0), field_0x60 (0x60, height 0),
     field_0x68 (3: on the ground (fn_802413F0, <= 1 up) and not fn_8024BBB0; 0x4C-0x4F the
     same for another player's tile 0x4C + i, i != index, when the root's player mask has the
-    owner or, in group mode 4, fn_80240888() == fn_80248778(), and neither fn_80270A8C nor
+    owner or, in group mode 4, fn_80240888() == fn_80248778(), and neither isDeadState_80270A8C nor
     fn_80241230), field_0x78 (0x0D, 0x3B: solid while fn_80241230, else on the ground),
     field_0x88 (0x0E, 0x3A: on the ground), field_0x50 (0x20: fn_802413F0, below 1),
     field_0x70 (0x50). 0x58-0x5F: diagonal cells, solid half as 8-0xB, the other half
@@ -1232,7 +1232,7 @@ distance moved: the original stores its TVec2f and squares unfused; neither leng
 reproduces both).
 
 - **The .sdata2 blocker was a dead-stripped inline, now `followStep()`**: the state 3 movement
-  (formation 5 with cls_804A71A8 0xB4: fn_802808E8(1.5f); else outside 0x122C a 0.5 step toward
+  (formation 5 with cls_804A71A8 0xB4: moveByStick_802808E8(1.5f); else outside 0x122C a 0.5 step toward
   fn_8027FA08's target). Defined between fn_8027F854 and fn_8027FA08 its own copy creates 1.5,
   then 0.5 and 3.0 (TUtilf::inv_sqrt inside TVec3f::normalize; 32 and 0 already exist), the
   original's order before fn_8027FA08's 4.0. Proof beyond the pool: fn_8028538C, which inlines it,
@@ -1281,7 +1281,7 @@ reproduces both).
   0x170); fn_802520C0 (now a Player member) moves a follower onto the acting player / leader,
   sets group mode 5, resets the trail and requests state 0x1B with targets 0x398 / 0x3A4 (56
   inside the opposite edge).
-- **0x454 mode** fn_8024DCD0: frame 0x450 by state (0x4A/0x4B, fn_8025F684, else not fn_80241200)
+- **0x454 mode** fn_8024DCD0: frame 0x450 by state (0x4A/0x4B, isLifting_8025F684, else not fn_80241200)
   and facing; deletes all emitters (fn_80241E64) and ends the 'FORM' actor.
 - **Conveyors** fn_80242DAC: tiles 0xB4-0xB7 (0.05, cap 0.5) and 0x95-0x98 (0.15, cap 2.0) push
   0x414; uses JGeometry TVec3f::normalize() (the file's normalizeVec inline is gone).
@@ -1299,8 +1299,8 @@ reproduces both).
 | function | state | % / try.py class | what it is |
 |---|---|---|---|
 | fn_80277F98 | 0x33 update | 99.92 regalloc | **down (no life left)**, see below |
-| fn_80279824 | 0x0F update | 99.32 scheduling | **knocked back by a hit**: push 0x350 with gravity 0.25 (to -4), poses 0-3 (0 / 1 by 0x488), lands from frame 20 (0x33 without life, back to a previous 0x4A / 0x4B, else 0); hit kind 3 keeps to the view, the others slide (fn_802808E8(1.5)); hit emitters 0x135C / 0x132C turned by facing (s32 yaw table lbl_8046BC98) |
-| fn_8027A1E0 | 0x0B update | 97.20 scheduling+regalloc | **the dash** (Pegasus-boots like): pose 1 runs along 0x3E8 (eight unit steps lbl_8046BC38, 0.7 diagonals) at 0xBBC, pad 0x100 hops (z 2, gravity 0.1), dust 0x24E / 0x24F (sand 0x250 / 0x251 on tile 0x39) restarted on a turn, BgRewrite at 0x30C and the eight probe points pushed out x2, 0xBC4 = 40x40 box (Player.h TBox2f); into a wall (fn_8025196C) it bounces (pose 2, sound 0x20010, view shake, 0x344 = 2.5 back, z 2) or, under fn_8022AF5C's alternative, turns the group (fn_80230BF4) |
+| fn_80279824 | 0x0F update | 99.32 scheduling | **knocked back by a hit**: push 0x350 with gravity 0.25 (to -4), poses 0-3 (0 / 1 by 0x488), lands from frame 20 (0x33 without life, back to a previous 0x4A / 0x4B, else 0); hit kind 3 keeps to the view, the others slide (moveByStick_802808E8(1.5)); hit emitters 0x135C / 0x132C turned by facing (s32 yaw table lbl_8046BC98) |
+| fn_8027A1E0 | 0x0B update | 97.20 scheduling+regalloc | **the dash** (Pegasus-boots like): pose 1 runs along 0x3E8 (eight unit steps lbl_8046BC38, 0.7 diagonals) at 0xBBC, pad 0x100 hops (z 2, gravity 0.1), dust 0x24E / 0x24F (sand 0x250 / 0x251 on tile 0x39) restarted on a turn, BgRewrite at 0x30C and the eight probe points pushed out x2, 0xBC4 = 40x40 box (Player.h TBox2f); into a wall (fn_8025196C) it bounces (pose 2, sound 0x20010, view shake, 0x344 = 2.5 back, z 2) or, under fn_8022AF5C's alternative, turns the group (setPlayerFacing_80230BF4) |
 | fn_8027AAD0 | 0x0A update | 99.60 stack offsets | **the spin attack**: fn_80274728 / fn_8027EB04; group spin (mode 3) moves the centre 0x11B4 2 a frame by the stick unless one of three tiles 24 ahead blocks (fn_802265DC), walks to the group spot from frame 11; else drifts 2 along 0x3E8 (lbl_8046BBD8); sound 0x20029; emitters 0x12B8 / 0x12BC (circling at 20 by 0x11C0) with depth / height from fn_8024EE0C / fn_8024EE14 |
 | fn_8027BE74 | 0x08 update | **100** | **the sword charge**: 0x403 charge, 0x404 frames, hop with pad 0x20 (0x344 = 2.5 * stick or 0x368), walk 1.125, attack check fn_80275D9C, wall push -> 0x37 (0x350 = lbl_8046BBA8 0.25 per facing, sound 0x20062 / 0x20061 by fn_8022486C), blade emitter 0x12B0 moving out `0x403 * 14 / 48 + 6`, 0x12B4 / 0x12B8, camera 0x7F5 after 30 frames, group cancel 0xCAE / 0xCAF |
 | fn_8027CC90 | 0x05 update | 99.37 scheduling | **the ground pound**: from frame 11 falls (gravity 0.25 to -6.5; on flagged layers drawn up the screen); frame 11 on the ground: tiles 3 / 0xE without fn_8024B24C cancel, else shake, rumble (fn_80134DE4(1, 0)), TV effect 1, sound 0x20024, emitters 0x23D-0x23F, 0x3D0 + 'PEFF' at 0x5C0 on tiles 0x39 / 0xD (else 0x3CF); state 6 at frame 20; emitter point 0x12A4 = mPos + lbl_8046BB78[facing] |
@@ -1328,11 +1328,11 @@ sound 0x20033, at 60 a hop (0x344 = (0, 0, 2), facing down), landing back in sta
 x / y * -0.5 off walls) and the grab: pad 0x100 / 0x200 / 0x20 inside the box (-24, -12, -8, 8)
 of a partner (fn_8023B0F4) sets 0xD08 = that player (sound 0x2004B, 0xD0C = 18), who drags
 the player 3 a frame toward 16 right of / 8 below itself (released at 16 or by fn_80234D94 with
-0xD0C = 120); the stick crawl is fn_802808E8(1.5 / 0.12). Last fn_8027057C (revive) and the
+0xD0C = 120); the stick crawl is moveByStick_802808E8(1.5 / 0.12). Last fn_8027057C (revive) and the
 callback point 0x1320 = mPos + (0, -4, 16).
 
 Evidence and fixes:
-- `!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))`: the asm skips when the
+- `!hasLeader_80240808() || (hasLeader_80240808() && !isPlayerDead_80236B50(fn_80240644()))`: the asm skips when the
   second hasLeader_80240808() is false (fn_8027776C had `!(... && ...)`, which reads the other way;
   corrected there too, 99.75 -> 99.77).
 - **fireSwordBeam** (shared by fn_8027B648 and fn_8027D5F0): the life test written as early
@@ -1367,7 +1367,7 @@ fn_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still 
 |---|---|---|
 | fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (fn_80458880, extsb index). Not in 0x454 mode |
 | fn_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, fn_80236074 |
-| fn_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (fn_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (arePlayersInSameGroup_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
+| resetTrail_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (fn_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (arePlayersInSameGroup_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
 | fn_8024D134 | 99.65 regalloc | **group-spot marker restart** (leader, not GameRoot 0x7E, modes 0-3): clears 0x121D, deletes 0x1388 and spawns 0x35E / 0x360 / 0x35F / 0x361 by mode at fn_8027F1C8's spot (8 a place beside the group in modes 0 / 1 via fn_802487FC, (8, 8) in mode 2, 0x11B4 in states 9 / 0xA else 16 toward the player's side in mode 3) |
 | fn_8024F63C | 99.07 scheduling+regalloc | **join a push** (state 0x1A): with pad 0x20 held (fn_802456FC), the partner 0xDAC's pushed actor (its 0xDA4) still alive, or a fresh press (fn_80245938), not a follower in mode 5, the point lbl_8046AE28[facing] (10 behind) free of fn_802265DC / fn_802684A4: a present player inside the box +-1 at mPos + lbl_8046AE58[facing], facing the same way and held by nobody (fn_80238EDC), is taken: from states 0 / 2 / 3 (0x11 unless fn_8025F500 / fn_8025F590) the push 0x1A is requested, else 0xDAC = it, 0xDA4 = its pushed actor, 0xDA8 = 3 frames; returns 0xDA8 > 0. Callers: fn_8024FE78, state 0x1A, tu_80285E58 |
 | fn_80250090 | 99.21 regalloc | **join a block carry** (state 0x0D's partner): on the ground and not a follower in mode 5, keeps 0xD9C while its fn_80241478 holds, else takes a present player whose fn_80250ACC holds inside the box +-1 at mPos + lbl_8046AE08[facing] while the stick points along the facing (fn_80247330 / fn_8024712C): 0xD9C = it, 0xD94 = its grabbed actor (fn_8024FF84), 0xD98 = 3 |
@@ -1377,7 +1377,7 @@ fn_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still 
 Evidence and fixes:
 - **0x31 loops count with `int`**: with `s32` (long) MWCC emits an entry test (cmpwi 0x31;
   bge) before the 7x-unrolled ctr loop, which the original never has. fn_802408C8 96.0 ->
-  99.05 (regalloc only) with `int i`, fn_8024B2E0 likewise.
+  99.05 (regalloc only) with `int i`, resetTrail_8024B2E0 likewise.
 - fn_80241920 as an `if` (`value >= 0` return value, else 0): its own copy stays branchless
   (100 %), the inlined copies in fn_8024E694 branch (cmpwi / blt) as in the original; `?:`
   made them branchless.
@@ -1403,7 +1403,7 @@ tu_80264998's 8-aligned data differs).
 
 | function | % / try.py class | what it is |
 |---|---|---|
-| fn_80263C64 | 100 | **update of state 0x12, the carry** (tu_80285E58's dispatch: case 0x12). The stick step (fn_8027FA08's z of 0 puts mPos.z on the floor unless 0x434); with fn_8022C13C (unless fn_802416C4 is 7): put down (0x18) a held player that fn_80236B50 rejects, a bomb ('HBMB') or a small key ('KEY0' via fn_8025F648), else throw (0x16, also when fn_8024B24C); fn_8022C0A0 throws (0x16); fn_802466B4 starts 0x15 unless the held actor's field_0x1a4 >= 2. Then walks (fn_802808E8 at 1.25 with a player, 1.5 with an actor whose field_0x1a4 is 0, none otherwise), fn_8027EB04, and the carry cycle fn_8026152C(false) inlined three times; a held player that stops being one (fn_8023EA28) or a lost actor ends the carry (state 0). First user of 1.25 / 1.5 |
+| fn_80263C64 | 100 | **update of state 0x12, the carry** (tu_80285E58's dispatch: case 0x12). The stick step (fn_8027FA08's z of 0 puts mPos.z on the floor unless 0x434); with fn_8022C13C (unless fn_802416C4 is 7): put down (0x18) a held player that isPlayerDead_80236B50 rejects, a bomb ('HBMB') or a small key ('KEY0' via fn_8025F648), else throw (0x16, also when fn_8024B24C); fn_8022C0A0 throws (0x16); fn_802466B4 starts 0x15 unless the held actor's field_0x1a4 >= 2. Then walks (moveByStick_802808E8 at 1.25 with a player, 1.5 with an actor whose field_0x1a4 is 0, none otherwise), fn_8027EB04, and the carry cycle fn_8026152C(false) inlined three times; a held player that stops being one (fn_8023EA28) or a lost actor ends the carry (state 0). First user of 1.25 / 1.5 |
 | fn_8026152C(slow) | 100 | the carry walk cycle (flipped by the VecEpsilon.h change below) |
 | fn_80263078 | 99.78 regalloc | **enter of state 0x13** (dispatch case 0x13; update fn_80262BAC): after fn_8028414C, with a held cucco ('NIWA', Cucco_804AB8C0 byte 0x2A1 == 1) and no 0x441, probe 16-steps along field_0x344.x inside the layer's view box (layerBox + containsPoint) for the second tile 0x10-0x17 (fn_802265FC); found, field_0x324 = the point one step further and the glide speed z 2; else mPos.y = field_0x324.y (z takes the difference). Faces along field_0x344.x (0x3DC / 0x3E8 = 0 right, 1 left) |
 
@@ -1423,12 +1423,12 @@ Corrections and evidence:
   bit 0x1000 of 0x90 (0x803331DC); the player compares it with **cmpwi 1**, which an int
   accessor gives (`getField0x2a1()`; the plain byte compare gives cmplwi, 99.35 %).
 - **Plain functions instead of file inlines** (deferred model): fn_8025F590 (holds a player),
-  fn_8025F448 (grabbing), fn_8025F2CC (may lift), fn_8025FCC8 (lets go) and fn_8025F684
+  fn_8025F448 (grabbing), fn_8025F2CC (may lift), fn_8025FCC8 (lets go) and isLifting_8025F684
   (lifting) now hold their bodies and the callers call them; no wrapper copies are left.
   Same results except fn_8025FCC8 87.39 -> 87.02 (still missing/extra: 0x11 tested on its own
   and the field_0xd64 == 1 byte recomputed in each inlined fn_8025F590). Tried and measured:
   a lone `state == 0x11` (separate early return or `x >= 0x12 && x <= 0x16`) does not fold
-  the range as the original; fn_8025F590 via `fn_8025F684() == true` gives FCC8 90.8 % but
+  the range as the original; fn_8025F590 via `isLifting_8025F684() == true` gives FCC8 90.8 % but
   turns fn_8025F698 into `different` (neg / or / srwi bool conversions).
 - fn_80262BAC calls fn_8026152C(false) instead of a hand-expanded copy of its body (same code).
 - Still open: fn_80261750 (one extra lwz of field_0xd70 before fn_8023EFEC; a local or
@@ -1573,19 +1573,19 @@ What the asm and experiments prove (toy files compiled with the unit's exact fla
 
 ## Structural push (tu_8022AD64 / tu_8023FBF0) (Opus 5.5, 2026-11-06)
 
-Honest total 9099 -> 9101 on matching 493ca0ce for tu_8022AD64 (+2: fn_80231DE4, fn_8023F390),
+Honest total 9099 -> 9101 on matching 493ca0ce for tu_8022AD64 (+2: updateScreenChange_80231DE4, fn_8023F390),
 no drops by address; tu_8023FBF0 +1 (fn_80241B44). Every Player function of the two units is
 now written; the remaining sub-100 % ones are structurally done or close.
 
 | function | before -> after (try.py class) | what changed / what it proved |
 |---|---|---|
-| fn_80231DE4 | unwritten -> **100** | **multiplayer screen change** (fn_8023F390 with GameRoot 0x7F): players with an exit direction (fn_802527B0) pull their group (fn_802381B8 -> fn_80248DB8); unless a manager flag (fn_8022ADFC / fn_8022ADB0) or GameRoot 0x96 is set, every present player able to (not fn_8022F478, fn_80251BFC(0x1B), not fn_80236A18 without 0xD2D) must report the same direction (lbl_8053A190 = the first one) and none may be busy (fn_80230188, fn_8022DCD8, fn_8022CCAC, fn_80234134, fn_80236AB4, fn_8022D75C unless 0x43F at stage (0, 0)); then the escort check fn_80124600 (0 / 1 refuse), the view's fn_802DD3D4, audio fn_80457F60, fn_8022BD70, fn_802DCE5C, and per player 0xD70 = -1 with 0xD64 / 0xD6C = 'NULL' (fn_8023ED8C) or z = 0 (fn_8023E98C), fn_802520C0(dir) unless fn_80236B50. The five forwarders only it inlines take the inverted form (Round 11). |
+| updateScreenChange_80231DE4 | unwritten -> **100** | **multiplayer screen change** (fn_8023F390 with GameRoot 0x7F): players with an exit direction (fn_802527B0) pull their group (fn_802381B8 -> fn_80248DB8); unless a manager flag (fn_8022ADFC / fn_8022ADB0) or GameRoot 0x96 is set, every present player able to (not fn_8022F478, fn_80251BFC(0x1B), not fn_80236A18 without 0xD2D) must report the same direction (lbl_8053A190 = the first one) and none may be busy (fn_80230188, fn_8022DCD8, fn_8022CCAC, fn_80234134, fn_80236AB4, fn_8022D75C unless 0x43F at stage (0, 0)); then the escort check fn_80124600 (0 / 1 refuse), the view's fn_802DD3D4, audio fn_80457F60, fn_8022BD70, fn_802DCE5C, and per player 0xD70 = -1 with 0xD64 / 0xD6C = 'NULL' (fn_8023ED8C) or z = 0 (fn_8023E98C), fn_802520C0(dir) unless isPlayerDead_80236B50. The five forwarders only it inlines take the inverted form (Round 11). |
 | fn_8023F390 | 99.71 different -> **100** | the last two loops share one counter (`s32 i;`): the audio loop's slot offset then starts as `mr r30, r31`. A loop counter reused from an earlier loop gives the copy, a fresh `for (s32 i = 0; ...)` gives `li`. |
 | fn_80232A0C | 97.25 missing/extra (-9) -> 99.40 scheduling+regalloc | the three pushes by -dir pass `&negated(dir)`, a file-local inline returning the negation by value (libs' JGeometry has no unary TVec3 operator-): one stack TVec3f for the negation, one for the returned copy (z through frsp), as in the original; frame 0x190. Left: the boxes' addPos loads i.y before i.x. |
 | hitPlayerGroup_80238548 | 91.52 missing/extra (-5), unchanged | `offset` stays in registers (the original stores it twice to the stack); a u8 return gives the original's clrlwi but breaks the four bool wrappers fn_80271038 / 68 / 98 / hitOwnGroup_80272160 (100 -> 55-67 %), so it stays bool. |
 | fn_80235B68 | 96.55 missing/extra (+1) + reloc-name, unchanged | the deepest recursion level calls fn_8018A614 (act_phantom_ganon_2) out of line, the shallower ones inline fn_8023F9B0 / fn_8023F98C by depth: fn_8018A614 looks like a header inline (`fn_8023F9B0()->fn_8023F98C(player)`) whose kept copy is act_phantom_ganon_2's; making it one changes that Matching unit, so not done. |
 | fn_80241B44 (tu_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller tu_8029C584 unwritten). |
-| fn_8024B2E0 (tu_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
+| resetTrail_8024B2E0 (tu_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |
 | fn_802487FC (tu_8023FBF0) | 94.95 different, unchanged | confirmed register-only: the own copy's second group loop (inlined fn_80248970) zeroes count / index li / li, ours li / mr; the instructions are the same. |
 
 Evidence:
@@ -1594,7 +1594,7 @@ Evidence:
   fixes here are that shape (negated, trailStep); a named local plus copy gives the same code
   but is the redundant named copy RULES_CARD rules out.
 - **Inlined loops start the slot offset as `mr`** (li count, mr offset), out-of-line copies
-  with two `li` (fn_8022BD70 own copy vs inlined in fn_80231DE4); a counter shared with an
+  with two `li` (fn_8022BD70 own copy vs inlined in updateScreenChange_80231DE4); a counter shared with an
   earlier loop gives the `mr` too (fn_8023F390).
 - fn_80124600 (tu_801213EC): declared in include/game/tu_801213EC.h with C++ linkage and renamed
   `fn_80124600__FPCQ29JGeometry8TVec2<l>`; with no escort list it asks the actor of serial
@@ -1648,10 +1648,10 @@ pair against `matching` 9c62f288.
 
 ## Structural push (tu_8028FBA0 / tu_8026FC20) (Opus 5.5, 2026-11-06)
 
-**tu_8028FBA0 fn_80290070** (0xCE8, unwritten -> 99.56 %; order / stack slots only) is
-Player::fn_80290070(layer, from, to, kind), the start of every screen / layer transition
+**tu_8028FBA0 startTransition_80290070** (0xCE8, unwritten -> 99.56 %; order / stack slots only) is
+Player::startTransition_80290070(layer, from, to, kind), the start of every screen / layer transition
 (states 0x1C-0x32 above). Refused while a transition runs (0xCE8; kind 0x24 may override it
-under fn_80240DAC), 0xCEE, 0x1216, 0x1238 > 0, down (fn_80270A8C), fn_8024189C() <= 0,
+under fn_80240DAC), 0xCEE, 0x1216, 0x1238 > 0, down (isDeadState_80270A8C), getLife_8024189C() <= 0,
 fn_8025F448(), or the GBA link busy for a target layer >= 8. Kind 0xC becomes 0x26 under
 fn_802DE93C or on a GBA layer. Kind 0x21 from a GBA layer is immediate: back to layer 0 at
 `to` (0xCBC = 0xCD4 = mPos, chained), with fn_80290E90 and fn_80290D58 both inlined (the leave
@@ -1672,7 +1672,7 @@ Remaining diff: the kind-4 group's offset vector sits at 0x2C (original 0x14, as
 after the other two), and kinds 0x17 / 0x18 load the 0.0f before from->y. The libs TVec3
 operator- is not const, so `*from - mPos` is written `TVec3f(*from) -= mPos` (the original's
 copy, subtract, copy-out; a named copy adds 4 instructions, 98.99 %).
-SHARED-EDITS: Player.h fn_80290070 parameter names; extern "C" fn_803020C8(s32, s32, s32, u8)
+SHARED-EDITS: Player.h startTransition_80290070 parameter names; extern "C" fn_803020C8(s32, s32, s32, u8)
 (tu_80301CD0, void: callers ignore r3, its tail sets no r3); fn_803049F0 / fn_80304B00
 (s32, s32) declared beside it (defined in tu_80301CD0.cpp, which includes Player.h).
 

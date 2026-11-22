@@ -321,7 +321,7 @@ s32 ShadowLinkCutscene_8049DB90::vfunc_0x5C() {
 
 static inline void setupMoveToPlayer(ShadowLinkCutscene_8049DB90* self) {
     for (s32 i = 0; i < 4; i++) {
-        fn_80230BF4(i, 3);
+        setPlayerFacing_80230BF4(i, 3);
     }
     self->field_0x260 = self->mSpawnPos;
     JGeometry::TVec3f d = self->mSpawnPos - *getPlayerPos_8023E724(0);

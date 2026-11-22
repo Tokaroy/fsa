@@ -68,7 +68,7 @@ EscortBase_8049E0C8::~EscortBase_8049E0C8() {
 
 // The escort's answer to a screen change (see the header).
 s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
-    s32 count = fn_80131F0C()->mCount;
+    s32 count = getEscortActorList_80131F0C()->mCount;
     if (count == 0) {
         s32 serial = lbl_80539F30;
         if (serial < 0) {
@@ -83,7 +83,7 @@ s32 fn_80124600(const JGeometry::TVec2<s32>* dir) {
     }
     u8 flag = 0;
     for (s32 i = 0; i < count; i++) {
-        EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(fn_80131F0C()->fn_80131E30(i));
+        EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(getEscortActorList_80131F0C()->fn_80131E30(i));
         if (escort != NULL && escort->mActorId == ACTOR_FAZR) {
             escort->field_0x334 = 1;
             switch (escort->vfunc_0x5C(&dir->x)) {
@@ -1142,8 +1142,8 @@ bool EscortBase_8049E0C8::fn_80121438(JGeometry::TVec3f* dir) {
     }
     JGeometry::TBox2f box;
     JGeometry::TBox2f circleBox;
-    fn_801F31C4(&box);
-    circle->fn_801F31C4(&circleBox);
+    getBoxAtPos_801F31C4(&box);
+    circle->getBoxAtPos_801F31C4(&circleBox);
     circleBox.i.x += -16.0f;
     circleBox.i.y += -16.0f;
     circleBox.f.x += 16.0f;

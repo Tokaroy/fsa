@@ -7,7 +7,7 @@
 
 // game/act_princess_zelda_demo.cpp (owner unit; the callers include tu_8013C5C8's fn_8013CAA4). The rotation of `angle` radians about `axis`
 // (normalised inside) into the 3x3 part of `m`; the translation is the caller's.
-void fn_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 angle);
+void makeAxisRotation_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 angle);
 
 // The rotation part of `m` from Euler angles x, y, z (radians; R = Rz Ry Rx),
 // every element times `scale`. Inlined in 20 functions of 19 units (draws

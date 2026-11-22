@@ -85,14 +85,14 @@ void Vulture_804A4230::fn_801C0634() {
         targetY = mSpawnPos.y;
     }
 
-    fn_801CD8E4(&field_0x2c0.x, targetX, 1.0f, 0.0f);
-    fn_801CD8E4(&field_0x2c0.y, targetY, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c0.x, targetX, 1.0f, 0.0f);
+    approachValue_801CD8E4(&field_0x2c0.y, targetY, 1.0f, 0.0f);
 
     JGeometry::TVec2f target = field_0x2c0;
     target.x += diff.x;
     target.y += diff.y;
-    fn_801CD8E4(&field_0x2b8.x, target.x, 0.05f, 0.0f);
-    fn_801CD8E4(&field_0x2b8.y, target.y, 0.05f, 0.0f);
+    approachValue_801CD8E4(&field_0x2b8.x, target.x, 0.05f, 0.0f);
+    approachValue_801CD8E4(&field_0x2b8.y, target.y, 0.05f, 0.0f);
 
     JGeometry::TVec2f diff2 = field_0x2b8;
     diff2.x -= field_0x2c0.x;
@@ -135,7 +135,7 @@ void Vulture_804A4230::fn_801C0634() {
     field_0x2b8 = res;
 }
 
-void Vulture_804A4230::fn_801C0438(s32 state) {
+void Vulture_804A4230::setState_801C0438(s32 state) {
     switch (state) {
     case 0:
         field_0x250 = fn_801CD664(55) + 6;
@@ -205,7 +205,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
         if (mStateTimer >= field_0x250) {
             field_0x2a8 = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (field_0x2a8 >= 0) {
-                fn_801C0438(1);
+                setState_801C0438(1);
             }
         }
         break;
@@ -220,7 +220,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
             } else {
                 mFlags |= 0x2000;
             }
-            fn_801C0438(2);
+            setState_801C0438(2);
         }
         break;
 
@@ -230,9 +230,9 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
                 break;
             }
@@ -241,7 +241,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 if (!fn_80230188(field_0x2a8)) {
                     f32 dist = getPlayerDistSq_801D0DA0(field_0x2a8, &mPos);
                     if (dist <= square(16.0f + field_0x2ac)) {
-                        fn_801C0438(3);
+                        setState_801C0438(3);
                         break;
                     }
                 }
@@ -250,7 +250,7 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
         } else {
             field_0x2a8 = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (field_0x2a8 >= 0) {
-                fn_801C0438(2);
+                setState_801C0438(2);
             } else {
                 fn_801C0634();
             }
@@ -263,12 +263,12 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
             } else {
-                fn_801C0438(4);
+                setState_801C0438(4);
             }
         }
         break;
@@ -279,12 +279,12 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
                 s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
                 if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                     field_0x2a8 = player;
-                    fn_801C0438(2);
+                    setState_801C0438(2);
                 } else {
-                    fn_801C0438(6);
+                    setState_801C0438(6);
                 }
             } else {
-                fn_801C0438(5);
+                setState_801C0438(5);
             }
         }
         break;
@@ -294,14 +294,14 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
             s32 player = findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x2b4);
             if (player >= 0 && player != field_0x2a8 && arePlayersInSameGroup_8022E438(player, field_0x2a8)) {
                 field_0x2a8 = player;
-                fn_801C0438(2);
+                setState_801C0438(2);
             } else {
-                fn_801C0438(6);
+                setState_801C0438(6);
             }
         } else {
             fn_801C0634();
             if (mStateTimer >= 20) {
-                fn_801C0438(2);
+                setState_801C0438(2);
             }
         }
         break;
@@ -321,9 +321,9 @@ void Vulture_804A4230::updateState_0x90(u8 mapHit) {
             }
             if (hit) {
                 field_0x2a8 = -1;
-                fn_801C0438(1);
+                setState_801C0438(1);
             } else {
-                fn_801C0438(0);
+                setState_801C0438(0);
             }
         }
         break;

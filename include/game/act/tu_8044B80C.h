@@ -29,7 +29,7 @@ public:
     /* 0x00 */ // vtable
     /* 0x04 */ J2DScreen* field_0x4;      // only freed by the destructor
     /* 0x08 */ J2DScreen* mScreen;
-    /* 0x0C */ DvdMountMemArchiveCommand_804B0FC0* mArchive;    // fn_80401E10 result
+    /* 0x0C */ DvdMountMemArchiveCommand_804B0FC0* mArchive;    // requestMountMemArchive_80401E10 result
     /* 0x10 */ u32 field_0x10;
     /* 0x14 */ bool mDraw;
     /* 0x15 */ u8 mPage;                  // 0xFF when none

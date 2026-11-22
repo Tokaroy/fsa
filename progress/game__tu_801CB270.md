@@ -2,7 +2,7 @@
 
 Baseline 8093 total, unit 20/51. After: 8096, unit 23/51.
 
-Matched (new): fn_801CB7CC (angle mirror), fn_801CCDA4, fn_801CD8E4.
+Matched (new): fn_801CB7CC (angle mirror), fn_801CCDA4, approachValue_801CD8E4.
 Written, below 100 % (FIXMEs in the source):
 - fn_801CB4A4 / fn_801CB538 / fn_801CB688 (86.5 %, scheduling+regalloc): saved registers assigned r31 layer, r30 depth, r29 height, r28 pos in the target; ours reversed.
 - fn_801CB71C (93.9 %): the target has no second NULL test from the inlined deleteEmitter().

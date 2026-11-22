@@ -52,7 +52,7 @@ public:
             /* 0x02 */ u16 magic1; // 0xDC96 when valid
             // [0]: 0xA7 once the game has booted since power-on; [1]: 0xA5
             // starts with the game mode screen (mode 2) instead (GameRoot's
-            // fn_80138C9C, tu_80134C04).
+            // resetGameState_80138C9C, tu_80134C04).
             /* 0x04 */ u8 field_0x4[0x09 - 0x04];
             /* 0x09 */ u8 field_0x9; // fn_802B1DCC tests it
             /* 0x0A */ u8 field_0xa;
@@ -75,7 +75,7 @@ public:
     // Out-of-line copy at 0x8042E780 in game/tu_80427D2C.cpp (the movie
     // player), built there with -inline off.
     JKRHeap* getHeap_8042E780() { return mHeap; }
-    // SHARED-EDIT (tu_80403D84 fn_80411230): inline getter; its call-site
+    // SHARED-EDIT (tu_80403D84 draw_80411230): inline getter; its call-site
     // evaluation order hoists the load of field_0x120 before getHeight/getWidth.
     s32 getField_0x120() const { return field_0x120; }
 
@@ -100,22 +100,22 @@ public:
     // fn_80401D20 create as JKRAramArchive or JKRMemArchive). The ones set
     // in fn_803FFAA8 (tu_803FF2C4) come from these paths (0x80400334-
     // 0x80400364 and 0x803FFBF0):
-    /* 0x010 */ JKRArchive* mBossArchive_0x10; // fn_80135494 (mode 7); getBossArchiveResource_804032E8
+    /* 0x010 */ JKRArchive* mBossArchive_0x10; // applyRequestedMode_80135494 (mode 7); getBossArchiveResource_804032E8
     /* 0x014 */ JKRArchive* mDataArchive_0x14; // "/GC4Sword_usa/data.arc"; copied to GameRoot +0xA4
     /* 0x018 */ JKRArchive* mLogoArchive_0x18; // "/GC4Sword_usa/logo.arc"; fn_80403244
     /* 0x01C */ JKRArchive* mMsgArchive_0x1c; // "/GC4Sword_usa/msgus.arc"
     /* 0x020 */ JKRArchive* mMain2DArchive_0x20; // "/GC4Sword_usa/main2D.arc"; fn_804030C4 (36 units)
     /* 0x024 */ JKRArchive* mTitleArchive_0x24; // "/GC4Sword_usa/title.arc"; fn_80403204
-    /* 0x028 */ JKRArchive* mEntryArchive_0x28; // fn_80135494 (mode 4); getEntryArchiveResource_804031C4
-    /* 0x02C */ JKRArchive* mGameModeArchive_0x2c; // fn_80135494 (modes 2, 5)
-    /* 0x030 */ JKRArchive* mFileArchive_0x30; // fn_80135494 (mode 3)
-    /* 0x034 */ JKRArchive* mMapArchive_0x34; // fn_80135494 (mode 6); fn_80403184
+    /* 0x028 */ JKRArchive* mEntryArchive_0x28; // applyRequestedMode_80135494 (mode 4); getEntryArchiveResource_804031C4
+    /* 0x02C */ JKRArchive* mGameModeArchive_0x2c; // applyRequestedMode_80135494 (modes 2, 5)
+    /* 0x030 */ JKRArchive* mFileArchive_0x30; // applyRequestedMode_80135494 (mode 3)
+    /* 0x034 */ JKRArchive* mMapArchive_0x34; // applyRequestedMode_80135494 (mode 6); fn_80403184
     /* 0x038 */ JKRArchive* mResultArchive_0x38; // "/GC4Sword_usa/result.arc"; fn_80403144
     /* 0x03C */ JKRArchive* mActiveResultArchive_0x3c; // fn_8037A8D4 (tu_80379F84); fn_80403104
     /* 0x040 */ JKRArchive* mResult1Archive_0x40; // "/GC4Sword_usa/result1.arc"
     /* 0x044 */ JKRArchive* mResult2Archive_0x44; // "/GC4Sword_usa/result2.arc"
     /* 0x048 */ void* field_0x48; // zeroed by the constructor and fn_8040384C's reset
-    /* 0x04C */ JKRArchive* mGame2DArchive_0x4c; // fn_80135494 (mode 7, second archive); getGame2DArchiveResource_80403084
+    /* 0x04C */ JKRArchive* mGame2DArchive_0x4c; // applyRequestedMode_80135494 (mode 7, second archive); getGame2DArchiveResource_80403084
     /* 0x050 */ void* field_0x50;
     /* 0x054 */ void* field_0x54;
     // fn_803FFAA8: the archive of the loader at its +0x44, the 0xEC-byte

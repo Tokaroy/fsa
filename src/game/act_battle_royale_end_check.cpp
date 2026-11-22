@@ -66,7 +66,7 @@ static inline void findStandingPlayer(BattleRoyaleEndCheck_804B0380* self) {
     for (s32 i = 0; i < 4; i++) {
         u8 bit = 1 << i;
         if (gGameRoot_8053AAF8->mPlayerMask & bit) {
-            if (!fn_80236B50(i)) {
+            if (!isPlayerDead_80236B50(i)) {
                 self->mWinner = i;
             }
         }
@@ -101,7 +101,7 @@ void BattleRoyaleEndCheck_804B0380::fn_803D6AE8() {
     s32 matched = 0;
     for (s32 i = 0; i < 4; i++) {
         mPlayerFlag[i] = 0;
-        if (!fn_80236B50(i)) {
+        if (!isPlayerDead_80236B50(i)) {
             count++;
             if (fn_802300EC(i) == true) {
                 mPlayerFlag[i] = 1;

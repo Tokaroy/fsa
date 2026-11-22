@@ -80,7 +80,7 @@ void ZoraEscortGoal_8049E424::init() {
     mAnim27c.setFrame_801D1F14(0.0f);
     mRail.clear();
     mDrawEnabled = false;
-    fn_801283E8()->fn_80128398(this);
+    getZoraEscortGoalList_801283E8()->fn_80128398(this);
     if (field_0x234 > 0) {
         if (!isScreenFlagSet_0x34() && getGameView_802D6A9C()->fn_802D800C(field_0x234)) {
             fn_80126A4C(1);
@@ -111,8 +111,8 @@ void ZoraEscortGoal_8049E424::update() {
         }
         break;
     case 1:
-        if (!fn_801283E8()->fn_801280F8()) {
-            if (fn_801283E8()->fn_801282E0()) {
+        if (!getZoraEscortGoalList_801283E8()->fn_801280F8()) {
+            if (getZoraEscortGoalList_801283E8()->fn_801282E0()) {
                 fn_80126A4C(12);
             } else {
                 s32 player = pool_8053CAB4(0x2B7);
@@ -157,7 +157,7 @@ void ZoraEscortGoal_8049E424::update() {
     }
     case 8: {
         pool_8053CAA8();
-        if (!fn_801283E8()->fn_801280F8()) {
+        if (!getZoraEscortGoalList_801283E8()->fn_801280F8()) {
             s32 player = pool_8053CAB4(0x3FB);
             if (player >= 0) {
                 field_0x23c = player;
@@ -170,7 +170,7 @@ void ZoraEscortGoal_8049E424::update() {
         pool_8053CAA8();
         fn_8022FF8C(field_0x23c, &box, mLayer_0x4, mSerial, true, false);
         if (fn_80388CAC(field_0x23c, mSerial)) {
-            fn_801283E8()->fn_801281A4();
+            getZoraEscortGoalList_801283E8()->fn_801281A4();
         }
         break;
     }
@@ -249,7 +249,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         field_0x23c = -1;
         break;
     case 4:
-        fn_801283E8()->fn_8012824C();
+        getZoraEscortGoalList_801283E8()->fn_8012824C();
         break;
     case 5:
         mRail.fn_800FE3EC(field_0x238, mPos, mLayer_0x4);
@@ -274,13 +274,13 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
             spawnEmitters();
         }
         getGameView_802D6A9C()->fn_802D8050(getScreenFlagBit_0x3C(), true, 0xFF);
-        fn_801283E8()->fn_80128228();
+        getZoraEscortGoalList_801283E8()->fn_80128228();
         break;
     }
     case 10:
         for (s32 i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-                fn_80236554(i, fn_80237810(i), false);
+                healPlayerGroup_80236554(i, fn_80237810(i), false);
                 fn_80237524(i, 0x180);
             }
         }
@@ -307,7 +307,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         mAnim27c.startAnim_801D22DC(6, 2, false);
         field_0x250 = 120;
         field_0x254 = 0;
-        field_0x270 = *fn_801283E8()->fn_80127F90();
+        field_0x270 = *getZoraEscortGoalList_801283E8()->fn_80127F90();
         if (field_0x258) {
             startSound_801F0E34(0x400EE, 0);
         }
@@ -319,7 +319,7 @@ void ZoraEscortGoal_8049E424::fn_80126A4C(s32 arg) {
         if (getActorManager_801F856C()->fn_801F7A08('SPFR') < 0) {
             u32 arg = getScreenFlagBit_0x3C() << 27;
             getActorManager_801F856C()->spawnActor_801F9484('SPFR', mLayer_0x4, &field_0x270, arg, -1, -1);
-            fn_801283E8()->fn_80128074();
+            getZoraEscortGoalList_801283E8()->fn_80128074();
         }
         break;
     case 16:

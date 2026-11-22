@@ -187,7 +187,7 @@ void Fairy_804A03B8::update() {
                 field_0x24c = 0;
                 mCounters[0] = 500;
                 field_0x244 = player;
-                fn_80236554(field_0x244, 0x20, false);
+                healPlayerGroup_80236554(field_0x244, 0x20, false);
                 s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(ACTOR_PEFF, layer, &mPos,

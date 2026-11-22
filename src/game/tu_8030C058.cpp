@@ -326,7 +326,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                     px = pos->x;
                     py = pos->y;
                 } else {
-                    const JGeometry::TVec3f* pos = fn_8023E32C(i);
+                    const JGeometry::TVec3f* pos = getPlayerLastTvPos_8023E32C(i);
                     px = pos->x;
                     py = pos->y;
                 }
@@ -339,7 +339,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
                     if (i != 0 && gGameRoot_8053AAF8->field_0x7e == 0) {
                         continue;
                     }
-                    const JGeometry::TVec3f* pos = fn_8023E32C(i);
+                    const JGeometry::TVec3f* pos = getPlayerLastTvPos_8023E32C(i);
                     px = pos->x;
                     py = pos->y;
                 }
@@ -799,9 +799,9 @@ void Camera_804AA9E4::fn_8030CB10(const JGeometry::TBox2f* box, f32 depth) {
 
 // Starts the focus transition to the new box: arms the camera, clears the damping, builds the
 // focus state from the table entry for mEntryIndex_0x174 (fn_8030CD18), then the same bookkeeping as
-// fn_8030C928.
+// setNextVisibleBox_8030C928.
 // FIXME(shotgun): 93.47 %, missing/extra; behaviour near.
-// (box copy order in inlined fn_8030C928)
+// (box copy order in inlined setNextVisibleBox_8030C928)
 void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     mInTransition_0x1e8 = 1;
     mTransitionTimer_0x1ec = 30;
@@ -809,12 +809,12 @@ void Camera_804AA9E4::fn_8030C9E4(const JGeometry::TBox2f* box) {
     mMargin_0x1d4 = -1.0f;
     mMinHalfWidth_0x1d8 = -1.0f;
     fn_8030CD18(box, &lbl_804AA8E8[mEntryIndex_0x174], NULL, &mTransitionEndBox_0x1a0, &mTransitionEndDepth_0x1b0);
-    fn_8030C928(box);
+    setNextVisibleBox_8030C928(box);
 }
 
 // FIXME(shotgun): 93.70 %, missing/extra; behaviour near.
 // (box copy order)
-void Camera_804AA9E4::fn_8030C928(const JGeometry::TBox2f* box) {
+void Camera_804AA9E4::setNextVisibleBox_8030C928(const JGeometry::TBox2f* box) {
     mNextVisibleBox_0x190.set(box->i.x, box->i.y, box->f.x, box->f.y);
     for (s32 i = 0; i < 4; i++) {
         gGameRoot2_8053AB10->field_0x20->mLayer2Visible_0x2360[i] = gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[i];

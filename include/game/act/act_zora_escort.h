@@ -17,7 +17,7 @@ public:
     /* 0x08 */ virtual ~ZoraEscort_8049DF78();
     // fn_801210A0: the base's fn_80124448; when mSpawnParam_0x90 bit 2 (mask 4) is set, takes bits 3-6
     // of mSpawnParam_0x90 as the state word field_0x344, registers itself with the escort list
-    // (fn_80131F0C) and enters state 7.
+    // (getEscortActorList_80131F0C) and enters state 7.
     /* 0x0C */ virtual void init();
     /* 0x14 */ virtual void update();
     // Slots the escort base (tu_801213EC, not written yet) declares only up
@@ -54,7 +54,7 @@ public:
     /* 0x9C */ virtual void vfunc_0x9C(s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6);
     // 0x80120040: returns 1.
     /* 0xC0 */ virtual s32 vfunc_0xC0();
-    // fn_8011FFD0: false with fewer than two escorts registered (fn_80131F0C); otherwise whether
+    // fn_8011FFD0: false with fewer than two escorts registered (getEscortActorList_80131F0C); otherwise whether
     // this actor's mSerial is the one of the escort at index 1.
     /* 0xC4 */ virtual bool vfunc_0xC4();
 

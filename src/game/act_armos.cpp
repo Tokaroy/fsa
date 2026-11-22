@@ -278,7 +278,7 @@ void Armos_8049F260::update() {
                 mVel_0x3c.set(0.0f, 0.0f, 0.0f);
             } else if (mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) {
                 ActorBase_804A5770* actors[1024];
-                s32 count = getActorManager_801F856C()->fn_801F7818('AMOS', mLayer_0x4, actors, -1);
+                s32 count = getActorManager_801F856C()->collectActorsById_801F7818('AMOS', mLayer_0x4, actors, -1);
                 for (s32 i = 0; i < count; i++) {
                     ActorBase_804A5770* actor = actors[i];
                     if (actor != NULL && actor->mSerial != mSerial) {

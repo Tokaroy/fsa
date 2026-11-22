@@ -26,7 +26,7 @@ MessageWindow_804AF490::~MessageWindow_804AF490() {
     field_0x4c = NULL;
 }
 
-void MessageWindow_804AF490::fn_80391678() {
+void MessageWindow_804AF490::reset_80391678() {
     field_0x8 = 0;
     field_0x20 = 0;
     field_0x24 = 0;

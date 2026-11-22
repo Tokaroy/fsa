@@ -545,7 +545,7 @@ u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle) {
         m[1][3] = 0.0f;
         m[2][3] = 0.0f;
         JGeometry::TVec3f axis(0.0f, 1.0f, 1.0f);
-        fn_8010F668(m, &axis, angle + JMath::TAngleConstant_<f32>::RADIAN_DEG180());
+        makeAxisRotation_8010F668(m, &axis, angle + JMath::TAngleConstant_<f32>::RADIAN_DEG180());
         m[0][0] *= -1.0f;
         m[0][1] *= -1.0f;
         m[0][2] *= -1.0f;

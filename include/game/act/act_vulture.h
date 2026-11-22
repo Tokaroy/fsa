@@ -22,7 +22,7 @@ public:
     /* 0x90 */ virtual void updateState_0x90(u8 mapHit);
     /* 0x94 */ virtual void updateAnim_0x94();
 
-    void fn_801C0438(s32 state);
+    void setState_801C0438(s32 state);
     void fn_801C0634();
 
     /* 0x2A8 */ s32 field_0x2a8;

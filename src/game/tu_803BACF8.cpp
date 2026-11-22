@@ -191,17 +191,17 @@ s32 fn_803BAEF4(CARDFileInfo* file, void* dst, void* bodyDst, u32 size, u32 body
     }
     SaveFile_803B950C* files1 = (SaveFile_803B950C*)img1->mData;
     SaveFile_803B950C* files2 = (SaveFile_803B950C*)img2->mData;
-    s32 ok1_0 = fn_803BADAC(&files1[0]);
-    s32 ok1_1 = fn_803BADAC(&files1[1]);
-    s32 ok1_2 = fn_803BADAC(&files1[2]);
+    s32 ok1_0 = isSaveChecksumValid_803BADAC(&files1[0]);
+    s32 ok1_1 = isSaveChecksumValid_803BADAC(&files1[1]);
+    s32 ok1_2 = isSaveChecksumValid_803BADAC(&files1[2]);
 
     res = CARDRead(file, img2, 0x2000, 0x4000);
     if (res != 0) {
         return res;
     }
-    s32 ok2_0 = fn_803BADAC(&files2[0]);
-    s32 ok2_1 = fn_803BADAC(&files2[1]);
-    s32 ok2_2 = fn_803BADAC(&files2[2]);
+    s32 ok2_0 = isSaveChecksumValid_803BADAC(&files2[0]);
+    s32 ok2_1 = isSaveChecksumValid_803BADAC(&files2[1]);
+    s32 ok2_2 = isSaveChecksumValid_803BADAC(&files2[2]);
 
     if (!ok1_0) {
         u32 sum = 0;
@@ -428,7 +428,7 @@ s32 fn_803BAE68(CARDFileInfo* file) {
 // True when the checksum words of the save file match its first 0xC0 bytes.
 // FIXME(shotgun): 60.55 %, missing/extra; behaviour clean.
 // (our unrolled checksum loop needs more registers)
-bool fn_803BADAC(SaveFile_803B950C* file) {
+bool isSaveChecksumValid_803BADAC(SaveFile_803B950C* file) {
     u32 sum = 0;
     u32 inverse = 0;
     const u8* bytes = (const u8*)file; // byte view for the checksum
@@ -442,7 +442,7 @@ bool fn_803BADAC(SaveFile_803B950C* file) {
 
 // Writes the checksum words of files[file].
 // FIXME(shotgun): 62.33 %, missing/extra; behaviour clean.
-// (as fn_803BADAC)
+// (as isSaveChecksumValid_803BADAC)
 void fn_803BACF8(SaveFile_803B950C* files, u8 file) {
     SaveFile_803B950C* f = &files[file];
     u32 sum = 0;

@@ -117,7 +117,7 @@ void PrincessZeldaSpawner_804A35AC::init() {
         break;
     }
     if (mAlive == true && mSpawnParam_0x90 != 2) {
-        fn_80119DD0()->fn_80119998(fade, 0, 0, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(fade, 0, 0, 0, 0, 0, 0);
     }
 }
 
@@ -217,7 +217,7 @@ void PrincessZeldaSpawner_804A35AC::fn_801B2000(f32 yOffset, s32 mode) {
                     fn_80230498(i, &field_0x288[i], 0x3E, 0xFF, -128, -128, true);
                 } else {
                     addCalc2_801F71A4(&field_0x288[i].y, y, 0.3f, 1.0f);
-                    fn_80230BF4(i, 2);
+                    setPlayerFacing_80230BF4(i, 2);
                     fn_802303FC(i, &field_0x288[i], 0xFF);
                     if (FABS(getPlayerPos_8023E724(i)->y - y) < 1.0f) {
                         field_0x258 = 1;
@@ -258,7 +258,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
                         pos.x = 16.0f * i + 4840.0f;
                         fn_80230498(i, &pos, 0x3E, 0xFF, -128, -128, true);
                         field_0x264.y = getPlayerPos_8023E724(i)->y;
-                        fn_80230BF4(i, 2);
+                        setPlayerFacing_80230BF4(i, 2);
                     }
                 }
             }
@@ -436,7 +436,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (field_0x244 < 120) {
             break;
         }
-        fn_80119DD0()->fn_80119998(100, 0, 1, 0, 0, 101, 0);
+        fn_80119DD0()->startFade_80119998(100, 0, 1, 0, 0, 101, 0);
         getGameView_802D6A9C()->fn_802D8050(0x10, true, 0xFF);
         field_0x244 = 100;
         field_0x230 = 14;
@@ -487,7 +487,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (!fn_80388CAC(0, mSerial)) {
             break;
         }
-        fn_80119DD0()->fn_80119998(50, 0, 1, 0, 0, 51, 0);
+        fn_80119DD0()->startFade_80119998(50, 0, 1, 0, 0, 51, 0);
         field_0x234 = 100;
         field_0x230 = 19;
     case 19:
@@ -554,7 +554,7 @@ void PrincessZeldaSpawner_804A35AC::update() {
         if (field_0x244 < 700) {
             break;
         }
-        fn_80119DD0()->fn_80119998(100, 0, 1, 0, 0, 101, 0);
+        fn_80119DD0()->startFade_80119998(100, 0, 1, 0, 0, 101, 0);
         field_0x238 = 200;
         field_0x244 = 0;
         field_0x230 = 23;

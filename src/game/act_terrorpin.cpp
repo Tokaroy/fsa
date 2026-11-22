@@ -131,7 +131,7 @@ void Terrorpin_804A3B10::init() {
     mAnim.fn_801D1D60();
 }
 
-void Terrorpin_804A3B10::fn_801B91A8(s32 state) {
+void Terrorpin_804A3B10::setState_801B91A8(s32 state) {
     switch (state) {
     case 0:
         field_0x250 = fn_801CD664(16) + 30;
@@ -214,12 +214,12 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
         if (found && mPos.z <= 0.0f) {
             switch (mState) {
             case 0:
-                fn_801B91A8(1);
+                setState_801B91A8(1);
                 break;
             case 2:
             case 3:
             case 5:
-                fn_801B91A8(4);
+                setState_801B91A8(4);
                 break;
             }
         }
@@ -230,31 +230,31 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
             mDir_0x98 = fn_801CF720(mDir_0x98);
             field_0x250 += 10;
         } else if (mStateTimer >= field_0x250) {
-            fn_801B91A8(0);
+            setState_801B91A8(0);
         }
         break;
     case 1:
         if (hasLanded()) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
-            fn_801B91A8(2);
+            setState_801B91A8(2);
         }
         break;
     case 2:
         if (mStateTimer >= field_0x250) {
-            fn_801B91A8(3);
+            setState_801B91A8(3);
         }
         break;
     case 3:
         if (mStateTimer >= field_0x250) {
-            fn_801B91A8(4);
+            setState_801B91A8(4);
         }
         break;
     case 4:
         if (hasLanded()) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
-            fn_801B91A8(0);
+            setState_801B91A8(0);
         }
         break;
     case 5:
@@ -272,7 +272,7 @@ void Terrorpin_804A3B10::updateState_0x90(u8 mapHit) {
             mVel_0x3c.z = 0.0f;
             mPos.z = 0.0f;
             mSpeed = 0.0f;
-            fn_801B91A8(2);
+            setState_801B91A8(2);
         }
         break;
     }
@@ -356,12 +356,12 @@ void Terrorpin_804A3B10::vfunc_0x44() {
         if (active && mPos.z <= 0.0f) {
             switch (mState) {
             case 0:
-                fn_801B91A8(1);
+                setState_801B91A8(1);
                 break;
             case 2:
             case 3:
             case 5:
-                fn_801B91A8(4);
+                setState_801B91A8(4);
                 break;
             }
         }
@@ -419,7 +419,7 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
         } else if (0 == mState) {
             s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
             if (player >= 0) {
-                fn_801B91A8(5);
+                setState_801B91A8(5);
                 JGeometry::TVec2f dir;
                 dir.y = mPos.y - getPlayerPos_8023E724(player)->y;
                 dir.x = mPos.x - getPlayerPos_8023E724(player)->x;
@@ -457,7 +457,7 @@ u8 Terrorpin_804A3B10::attackPlayers_0x68() {
         }
         if (inState) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             fn_802397B4(&box, mLayer_0x4, mSerial);
         } else {
             hit = fn_801F2B7C(mParamAtcp_0x114, -1, 1);

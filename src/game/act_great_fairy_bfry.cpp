@@ -147,7 +147,7 @@ void GreatFairy_804AF338::update() {
         if (mSpawnParam_0x90 != 3) {
             if (gGameRoot_8053AAF8->fn_80138A30() > 1 && mLayer_0x4 >= 8) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !fn_80236B50(i) &&
+                    if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
                         field_0x24c[fn_8022F340(i)] == 0)
                     {
                         fn_803037D4(fn_8022F340(i), 0x11);
@@ -179,7 +179,7 @@ void GreatFairy_804AF338::update() {
         case 0: {
             for (s32 i = 0; i < 4; i++) {
                 if (field_0x238 != i && getPlayerPos_8023E724(i)->z == 0.0f && !fn_8023EFEC(i) && !fn_8023EA28(i) &&
-                    !fn_80236B50(i))
+                    !isPlayerDead_80236B50(i))
                 {
                     if (!(gGameRoot_8053AAF8->field_0x7f == 0 && fn_80237060(fn_8022F340(i)) >= 2 &&
                           (fn_8023725C(fn_8022F340(i)) >= 2 || fn_8023725C(fn_8022F340(i)) == 0)))
@@ -213,7 +213,7 @@ void GreatFairy_804AF338::update() {
                 switch (mSpawnParam_0x90) {
                 case 0:
                     if (fn_80388CAC(field_0x234, mSerial)) {
-                        fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                        healPlayerGroup_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
                         s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(
@@ -254,7 +254,7 @@ void GreatFairy_804AF338::update() {
         case 2:
             fn_8022FEB8(&near, mLayer_0x4, mSerial, false, true);
             if (fn_80388CAC(field_0x234, mSerial)) {
-                fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                healPlayerGroup_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
                 s32 layer = mLayer_0x4;
                 if (layer >= 8) {
                     getActorManager_801F856C()->spawnActor_801F9484(
@@ -480,7 +480,7 @@ void GreatFairy_804AF338::update() {
                     } else {
                         mState = 13;
                         startSound_801F0E34(0x40090, 0);
-                        fn_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
+                        healPlayerGroup_80236554(fn_8022F340(field_0x234), fn_80237810(fn_8022F340(field_0x234)), false);
                         s32 layer = mLayer_0x4;
                         if (layer >= 8) {
                             getActorManager_801F856C()->spawnActor_801F9484(
@@ -524,7 +524,7 @@ void GreatFairy_804AF338::update() {
         active[2] = 0;
         active[3] = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !fn_80236B50(i)) {
+            if (getPlayerLayer_8023DE58(i) == mLayer_0x4 && !fn_8022F478(i) && !isPlayerDead_80236B50(i)) {
                 active[fn_8022F340(i)] = 1;
             }
         }

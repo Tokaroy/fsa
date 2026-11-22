@@ -26,7 +26,7 @@ public:
     /* 0x94 */ virtual void updateAnim_0x94();
     // 0x801B91A8 (in this unit): vfunc_0x44 calls it with 1 (state 0) or 4
     // (states 2, 3, 5). Its meaning is not known yet.
-    void fn_801B91A8(s32 arg);
+    void setState_801B91A8(s32 arg);
 
     bool isVulnerable() const;
     bool hasLanded() const;

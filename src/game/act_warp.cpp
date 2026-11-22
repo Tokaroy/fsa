@@ -292,7 +292,7 @@ void Warp_804A6DC8::update() {
                 playerBox.addPos(JGeometry::TVec2f(0.0f, dy));
             }
             if (fn_8023B0F4(i, &playerBox, mLayer_0x4, false, 8.0f)) {
-                fn_802317F0(i, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, mSpawnParam_0x90 & 0x7F);
+                startPlayerTransition_802317F0(i, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, mSpawnParam_0x90 & 0x7F);
             }
         }
     } else {
@@ -462,7 +462,7 @@ static void updateSandHole(Warp_804A6DC8* self) {
 }
 
 // 0x802278A8. Per player: the player's reaction to standing in the warp's box (by warp kind, the
-// low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (fn_802317F0).
+// low 7 bits of the spawn parameter): marks it, hurts it, or sends it through (startPlayerTransition_802317F0).
 // FIXME: 95.27 %, missing/extra; behaviour drift.
 // The box copy and offset keep their values in registers in the original (ours reloads them), and
 // the final grow's operand order differs.
@@ -526,7 +526,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
+            if (!startPlayerTransition_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
                 continue;
             }
             if (warpKind(mSpawnParam_0x90) != 4 || !hasPlayerLeader_8022F514(player)) {
@@ -580,7 +580,7 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
                     continue;
                 }
             }
-            if (!fn_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
+            if (!startPlayerTransition_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
                 continue;
             }
             if (field_0x254 != 1) {

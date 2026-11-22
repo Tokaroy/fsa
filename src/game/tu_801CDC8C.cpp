@@ -714,7 +714,7 @@ bool EnemyBase_804A4808::vfunc_0x58() {
     return false;
 }
 
-// For each player whose box overlaps mBox (findOverlappingPlayer_801F285C) and that fn_801EAC20
+// For each player whose box overlaps mBox (findOverlappingPlayer_801F285C) and that startTimer_801EAC20
 // accepts, a hit at the player's point goes to fn_801CB538 on this layer; one
 // hit plays sound 0x400D1. Returns whether any player was hit.
 u8 EnemyBase_804A4808::fn_801CEBD0() {
@@ -727,7 +727,7 @@ u8 EnemyBase_804A4808::fn_801CEBD0() {
             if (findOverlappingPlayer_801F285C(&xy, &flag, false, i) == i) {
                 fn_8023B6CC(i);
                 fn_802379E4(i, &mPos);
-                if (flag == 1 && field_0x1dc.fn_801EAC20(i)) {
+                if (flag == 1 && field_0x1dc.startTimer_801EAC20(i)) {
                     hitPos.set(xy.x, xy.y, 0.0f);
                     fn_801CB538(mLayer_0x4, &hitPos, 0, 0);
                     hit = 1;

@@ -259,7 +259,7 @@ void GiantGeneratorEffect_804AA350::update() {
         } else if (fn_802ED538()) {
             stopEmitter(mEmitter23c);
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
-                gAudioMgr_8053AF80->fn_8045815C(true);
+                gAudioMgr_8053AF80->setMusicSlow_8045815C(true);
                 field_0x279 = 1;
             } else {
                 startSound_801F0E34(0x5005B, 0);
@@ -408,7 +408,7 @@ bool GiantGeneratorEffect_804AA350::fn_802ED538() {
     bool result = true;
     for (s32 p = 0; p < 4; p++) {
         if (fn_8023F264(p) && getPlayerLayer_8023DE58(p) == mLayer_0x4) {
-            if (!fn_80236B50(p) && !fn_8023EA28(p) && !fn_80230188(p) && !fn_8022D534(p) &&
+            if (!isPlayerDead_80236B50(p) && !fn_8023EA28(p) && !fn_80230188(p) && !fn_8022D534(p) &&
                 !field_0x27c[p].mActive && fn_802300EC(p)) {
                 JGeometry::TVec3f* pos = getPlayerPos_8023E724(p);
                 if (pos->z == 0.0f) {

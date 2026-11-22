@@ -436,7 +436,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(field_0x254),
                                     (field_0x254 << 26) | (field_0x254 << 24) | 0x1000A, -1, -1);
-                            } else if (!fn_80236B50(i) && hasPlayerLeader_8022F514(i) == 1 && field_0x254 == getPlayerLeader_8022F3DC(i)) {
+                            } else if (!isPlayerDead_80236B50(i) && hasPlayerLeader_8022F514(i) == 1 && field_0x254 == getPlayerLeader_8022F3DC(i)) {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(i),
                                     (field_0x254 << 26) | 0x10000000 | (i << 24) | 0x1000A, -1, -1);
@@ -508,7 +508,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
 void CuccoHerdingNPC_804AC8C0::pool_80542558() {
     JGeometry::TVec3f dir;
     f32 dist;
-    fn_801EE558(&dir, &dist, 0);
+    getNearestPlayerDir_801EE558(&dir, &dist, 0);
     if (dist < 100.0f) {
         u16 angle = (s16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
                           (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));

@@ -6,10 +6,10 @@
 
 #include "game/ActorBase.h"
 
-// The guarded static at 0x804BD36C (function-local static of fn_801283E8): the
+// The guarded static at 0x804BD36C (function-local static of getZoraEscortGoalList_801283E8): the
 // serials of the escort's 'FZRA' (ZoraEscortGoal) actors. No vtable; named
 // after its destructor fn_80128460, which is passed to __register_global_object
-// (the constructor is inlined into fn_801283E8). Twin of EscortActorList_80131F6C.
+// (the constructor is inlined into getZoraEscortGoalList_801283E8). Twin of EscortActorList_80131F6C.
 struct ZoraEscortGoalList_80128460 {
     ZoraEscortGoalList_80128460() : mCount(0) {
         for (s32 i = 0; i < 8; i++) {
@@ -47,6 +47,6 @@ struct ZoraEscortGoalList_80128460 {
     /* 0x04 */ s32 mSerials[8];
 }; // Size: 0x24
 
-ZoraEscortGoalList_80128460* fn_801283E8();
+ZoraEscortGoalList_80128460* getZoraEscortGoalList_801283E8();
 
 #endif

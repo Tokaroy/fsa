@@ -1571,10 +1571,10 @@ void MovingHouse_804A7AE0::die_0x24() {
             v = (mSpawnParam_0x90 >> 7) & 0x1F;
             s32 layer = v == 0 ? 0 : v + 7;
             if (layer == getPlayerLayer_8023DE58(i)) {
-                if (fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
+                if (startPlayerTransition_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x1F)) {
                     mPlayerFlags[i] = 1;
                 } else {
-                    mPlayerFlags[i] = fn_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
+                    mPlayerFlags[i] = startPlayerTransition_802317F0(i, getField_0x4(), getPlayerPos_8023E724(i), &mPos, 0x21);
                 }
             }
         }

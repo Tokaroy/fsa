@@ -159,7 +159,7 @@ void VaatiBoss_804A4958::init() {
     getGameView_802D6A9C()->fn_802D7440(0);
 
     for (s32 i = 0; i < 4; i++) {
-        fn_80304C10(i, "gb_ch_obj_tr_sch5.szs", 0x6017000, 1, 0);
+        queueGbaFile_80304C10(i, "gb_ch_obj_tr_sch5.szs", 0x6017000, 1, 0);
     }
 
     void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "gb_ch_obj_tr_sch5.szs");

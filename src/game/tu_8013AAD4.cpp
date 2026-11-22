@@ -186,7 +186,7 @@ void GameRoot2_8049F108::fn_8013B71C() {
 
 void GameRoot2_8049F108::fn_8013B618() {
     if (isGameModeSet()) {
-        field_0x20->fn_802FF0EC();
+        field_0x20->drawPlayerPanels_802FF0EC();
     }
     field_0x28->fn_8013D5D4();
     field_0x8->frameInit();
@@ -195,7 +195,7 @@ void GameRoot2_8049F108::fn_8013B618() {
 
 void GameRoot2_8049F108::fn_8013B538() {
     if (isGameModeSet()) {
-        field_0x20->fn_802FF0EC();
+        field_0x20->drawPlayerPanels_802FF0EC();
     }
 }
 

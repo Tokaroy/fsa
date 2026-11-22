@@ -344,7 +344,7 @@ void MagicCircle_804A7960::update() {
             if (field_0x25c == 5) {
                 warpType = 20;
             }
-            if (fn_802317F0(i, getTargetLayer(mSpawnParam_0x90), &mPos, &field_0x268, warpType)) {
+            if (startPlayerTransition_802317F0(i, getTargetLayer(mSpawnParam_0x90), &mPos, &field_0x268, warpType)) {
                 field_0x238 = 180;
                 if ((field_0x24c >= 6 && field_0x24c <= 9) || (field_0x25c == 5 && field_0x24c == 0)) {
                     field_0x23c++;

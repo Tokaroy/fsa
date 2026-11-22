@@ -48,7 +48,7 @@ void ZoraEscort_8049DF78::init() {
     fn_80124448();
     if ((mSpawnParam_0x90 >> 2) & 1) {
         field_0x344 = (mSpawnParam_0x90 >> 3) & 0xF;
-        fn_80131F0C()->fn_80131EC0(this);
+        getEscortActorList_80131F0C()->fn_80131EC0(this);
         vfunc_0x6C(7);
     }
 }
@@ -135,7 +135,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             }
         }
         u16 msg = 0x2B7;
-        if (fn_80131F0C()->mCount == 1) {
+        if (getEscortActorList_80131F0C()->mCount == 1) {
             msg = 0x2B4;
         }
         s32 player = fn_80122898(msg);
@@ -159,7 +159,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
     case 2:
         field_0x3c8++;
         if (field_0x3c8 >= 60) {
-            if (fn_80131F0C()->mCount == 1) {
+            if (getEscortActorList_80131F0C()->mCount == 1) {
                 vfunc_0x6C(4);
             } else {
                 fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
@@ -187,7 +187,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             fn_8022FE80(field_0x3cc, mLayer_0x4, mSerial, false, false);
             if (field_0x3cc == fn_8022FD8C(mSerial)) {
                 u16 msg = 0x2B7;
-                if (fn_80131F0C()->mCount == 1) {
+                if (getEscortActorList_80131F0C()->mCount == 1) {
                     msg = 0x2B4;
                 }
                 if (fn_8038AD24(field_0x3cc, msg, mSerial, mLayer_0x4, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), 2)) {
@@ -219,8 +219,8 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             seq->field_0x2 = 1;
             fn_8011921C()->fn_80118454();
             lbl_8053AD70->fn_8037AE00();
-            for (s32 i = 0; i < fn_80131F0C()->mCount; i++) {
-                EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(fn_80131F0C()->fn_80131E30(i));
+            for (s32 i = 0; i < getEscortActorList_80131F0C()->mCount; i++) {
+                EscortBase_8049E0C8* escort = static_cast<EscortBase_8049E0C8*>(getEscortActorList_80131F0C()->fn_80131E30(i));
                 if (escort != NULL) {
                     escort->vfunc_0x6C(13);
                 }
@@ -293,7 +293,7 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
 
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 21-line definition): split out only where the .sdata2 order needs it.
 bool ZoraEscort_8049DF78::hasNearbyBari() {
-    if (fn_80131F0C()->mCount <= 1) {
+    if (getEscortActorList_80131F0C()->mCount <= 1) {
         return false;
     }
     f32 distSq = 300.0f;
@@ -406,16 +406,16 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         f32 dist2 = JGeometry::TUtilf::sqrt(square(mPos.x - pos2.x) + square(mPos.y - pos2.y));
         if (dist1 > dist2) {
             if (field_0x3c4) {
-                fn_801283E8()->fn_80127ED8(&pos2);
+                getZoraEscortGoalList_801283E8()->fn_80127ED8(&pos2);
             } else {
-                fn_801283E8()->fn_80127E20(&pos2);
+                getZoraEscortGoalList_801283E8()->fn_80127E20(&pos2);
             }
             field_0x35c = field_0x3d0;
         } else {
             if (field_0x3c4) {
-                fn_801283E8()->fn_80127ED8(&pos1);
+                getZoraEscortGoalList_801283E8()->fn_80127ED8(&pos1);
             } else {
-                fn_801283E8()->fn_80127E20(&pos1);
+                getZoraEscortGoalList_801283E8()->fn_80127E20(&pos1);
             }
         }
         fn_80121D68();
@@ -431,7 +431,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         mDrawEnabled = false;
         mAlive = false;
         lbl_80539F30 = -1;
-        fn_80131F0C()->fn_80131EE4();
+        getEscortActorList_80131F0C()->fn_80131EE4();
         break;
     }
     mAnim.setFrame_801D1F14(0.0f);
@@ -495,10 +495,10 @@ s32 ZoraEscort_8049DF78::vfunc_0xC0() {
 }
 
 bool ZoraEscort_8049DF78::vfunc_0xC4() {
-    if (fn_80131F0C()->mCount < 2) {
+    if (getEscortActorList_80131F0C()->mCount < 2) {
         return false;
     }
-    ActorBase_804A5770* other = fn_80131F0C()->fn_80131E30(1);
+    ActorBase_804A5770* other = getEscortActorList_80131F0C()->fn_80131E30(1);
     if (other == NULL) {
         return false;
     }

@@ -124,7 +124,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
                 fn_801F3128(&center);
                 for (s32 i = 0; i < 4; i++) {
                     if (hit & (1 << i)) {
-                        if (fn_801F329C(i)) {
+                        if (isPlayerOnLowerLayer_801F329C(i)) {
                             in.set(center.x, center.y, 0.0f);
                             fn_801CD0D0(&in, &out);
                             pos.x = out.x;
@@ -149,7 +149,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
         case 9:
             break;
         default: {
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             fn_802397B4(&box, mLayer_0x4, mSerial);
             break;
         }

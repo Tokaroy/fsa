@@ -160,10 +160,10 @@ public:
     // Size: 0x3C4
 };
 
-// fn_80124600 (tu_801213EC): with no escort list (fn_80131F0C's first word 0) the
+// fn_80124600 (tu_801213EC): with no escort list (getEscortActorList_80131F0C's first word 0) the
 // actor of serial lbl_80539F30 (3 when there is none), else each 'FAZR' escort,
 // is asked through its vtable's 0x5C slot with dir; returns a state number
-// (0-3). fn_80231DE4 (tu_8022AD64) lets a screen change through unless it is
+// (0-3). updateScreenChange_80231DE4 (tu_8022AD64) lets a screen change through unless it is
 // 0 or 1. The const is certain (the mangled name has PC). dir goes to the 0x5C slot in r4 (&dir->x).
 s32 fn_80124600(const JGeometry::TVec2<s32>* dir);
 

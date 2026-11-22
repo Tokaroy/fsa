@@ -128,7 +128,7 @@ void Pot_804A9428::update() {
                 }
                 if (field_0x234 == 2) {
                     ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-                    s32 count = getActorManager_801F856C()->fn_801F7818('BLZ2', mLayer_0x4, actors, -1);
+                    s32 count = getActorManager_801F856C()->collectActorsById_801F7818('BLZ2', mLayer_0x4, actors, -1);
                     for (s32 i = 0; i < count; i++) {
                         ActorBase_804A5770* actor = actors[i];
                         if (actor != NULL) {

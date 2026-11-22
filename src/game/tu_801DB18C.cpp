@@ -308,7 +308,7 @@ u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
             fn_801F3128(&center);
             for (s32 player = 0; player < 4; player++) {
                 if (hitPlayers & (1 << player)) {
-                    if (fn_801F329C(player)) {
+                    if (isPlayerOnLowerLayer_801F329C(player)) {
                         center3.x = center.x;
                         center3.y = center.y;
                         center3.z = 0.0f;

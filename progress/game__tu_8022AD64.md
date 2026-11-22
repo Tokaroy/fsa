@@ -8,7 +8,7 @@ Baseline 4985 functions (matching fb9ae32) -> 5015 (merged as 910c8d5).
   fn_8022B860 (void setter call, one argument), getPlayerLayer_8023DE58 (field),
   getPlayerPos_8023E724 (field address, fallback &lbl_804CF460).
 - tu_801CB270: fn_801CCF34, fn_801CD228, fn_801CD290.
-- tu_801EE24C: fn_801F329C.
+- tu_801EE24C: isPlayerOnLowerLayer_801F329C.
 
 ## Resistant
 - tu_801EE24C fn_801F320C 94.2 % (scheduling): lwz field_0x4 issued after
@@ -71,7 +71,7 @@ Now: total 7187 / 11557, 1402608 bytes (31.58 %); unit 278/373.
 - Field getters (new Player.h fields 0x14, 0x2c4, 0x43f, 0xb18, 0xb78, 0xb9f, 0xcc8, 0xcd4, 0xce0; arrays
   field_0x38[0x31] TVec3f and field_0x284[0x31] u8 (counts from fn_80252CF0 shifting entries up: last stores at 0x278 and 0x284)).
 - fn_80230B70 / fn_80230CFC use `isPlayerActive(player) == false` (materialised bool shape, RULES_CARD).
-- fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters fn_80230BF4, fn_8023A654, fn_8023E690.
+- fn_8023F728 / fn_8023F78C (boot path, called by fn_8013A1A4), setters setPlayerFacing_80230BF4, fn_8023A654, fn_8023E690.
 
 ## gen_game.py
 Could not be run for this unit: it refuses units claimed in progress/claims.json (ours is). The 41 template
@@ -105,7 +105,7 @@ Baseline (progress.py): total 8571 / 11557; unit 283/373. Now (rebased on matchi
 - 1 generated: fn_8023A6CC (loop family), by `gen_game.py tu_8022AD64` with the claim check
   bypassed in-process (no claims.json edit); its manifest row is new (coordinator approval).
 - Types proven from the asm: fn_80230224 takes s32 (the call truncates it with clrlwi 24 into
-  fn_8024D058, whose parameter is therefore u8); fn_80236554's flag is bool (passed unextended to
+  fn_8024D058, whose parameter is therefore u8); healPlayerGroup_80236554's flag is bool (passed unextended to
   fn_80270DDC); fn_802372F8 returns bool and takes (player, item, level) (fn_80241618's s32 pair);
   fn_80230498 returns fn_8024DC00's bool.
 - Defined functions leave Player.h's extern "C" block (a section after it); symbols.txt renamed to
@@ -148,7 +148,7 @@ structural 9129. .bss 100 % (sinit split).
   with them. __sinit_tu_8022AD64_cpp 100 % (symbols.txt: fn_8023F9B8 renamed, the 0x108 .bss
   placeholder split into the TVec3f, @9473-@9481 chain objects and 9 memPool_ copies; the @NNN
   names follow our object's numbering and move if an include adds inline functions).
-- Inverted forwarders: fn_8022D7F8, fn_8023CD74, fn_8023CE10, fn_80236AB4, fn_80236B50,
+- Inverted forwarders: fn_8022D7F8, fn_8023CD74, fn_8023CE10, fn_80236AB4, isPlayerDead_80236B50,
   getPlayerLeader_8022F3DC, hasPlayerLeader_8022F514, fn_80230188, fn_8022D75C, fn_80236A18 are now written
   `if (!isPlayerActive(p)) return F; return ...;` - the same code standalone, but the callers
   that inline them (fn_80238A68, fn_8023D4F8/9B0, fn_80239D38, fn_8023C830, fn_80239F10)
@@ -166,7 +166,7 @@ unit was therefore compiled with deferred inlining (or equivalent); see "Not don
 ## Not done (18 unwritten; 6 written below 100 %: the four recursive queries, fn_8023F088, fn_8023F390)
 - Inline later-defined functions (rule: left unwritten): fn_8022B334, fn_8022CFE8 (hasPlayerLeader_8022F514,
   fn_8023561C, getPlayerPos_8023E724 inlined; a test with calls gives 45.9 %), fn_8022D534,
-  arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50 (getPlayerLayer_8023DE58), fn_80231DE4
+  arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50 (getPlayerLayer_8023DE58), updateScreenChange_80231DE4
   (fn_8023ED8C), fn_80237A80 (fn_8023EA28), hitPlayerGroup_80238548, fn_8023885C (fn_80238A68),
   fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (getPlayerPos_8023E724).
 - Paired-single JGeometry: fn_80233C08 is exactly libs/sdk/include/JSystem/JGeometry/Vec.h's
@@ -243,12 +243,12 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
   playerAt stays (no address of its own either).
 
 ## Not done
-- fn_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
+- updateScreenChange_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
   Shape: loop over players with fn_802527B0 + arePlayersInSameGroup_8022E438 -> fn_80248DB8; then (no manager flag,
   no game-root 0x96, no 0x73) a long chain of inline queries on each player, fn_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then fn_8025F590 / fn_8025F418 /
-  fn_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
+  isDeadState_80270A8C and the free fn_802520C0(player, &point) (tu_8023FBF0: declare as a Player member).
 - fn_80235B68, fn_8023F390 unchanged.
 
 ## SHARED-EDITS

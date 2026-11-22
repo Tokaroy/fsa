@@ -120,7 +120,7 @@ public:
 EffectSystem_8049F178* getEffectSystem_8013C824(void);
 
 // 7 calls in 2 units (act_hyrule_castle_barrier, ...). For a non-NULL
-// emitter, builds a rotation of `angle` plus a constant (fn_8010F668), scales
+// emitter, builds a rotation of `angle` plus a constant (makeAxisRotation_8010F668), scales
 // it and sets it as the emitter's matrix at 0x68 (JPASetRMtxfromMtx);
 // returns 0 or 1.
 u8 fn_8013CAA4(JPABaseEmitter* emitter, f32 angle);

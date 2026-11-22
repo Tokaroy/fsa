@@ -191,7 +191,7 @@ Figures:
 | act_warp_cannon | landPlayers | `{ bool all = false; fn_801CD950(&field_0x27c, -10.0f, -0.2f); for (s32` | 12 | 1 | 0 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | recoil | `{ field_0x280 += 0.05f; JGeometry::TVec3f step(0.0f, 2.0f * (0.5f - fi` | 13 | 1 | 1 | 2 | pool only | - | - | - |  |
 | act_warp_cannon | fireRecoil | `{ static s32 counter = 0; static f32 phase = 0.0f; phase += 0.1f; if (` | 26 | 1 | 2 | 2 | pool only | - | - | - |  |
-| act_zora_escort | hasNearbyBari | `{ if (fn_80131F0C()->mCount <= 1) { return false; } f32 distSq = 300.0` | 21 | 1 | 0 | 0 | pool only | - | - | - |  |
+| act_zora_escort | hasNearbyBari | `{ if (getEscortActorList_80131F0C()->mCount <= 1) { return false; } f32 distSq = 300.0` | 21 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort | findNearbyPlayer | `{ if (field_0x33c != 0) { return -1; } u16 angle = 0; s32 dir = 0; s32` | 17 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort | stepToPlayer | `{ JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(field_0x3cc); t` | 24 | 1 | 0 | 0 | pool only | - | - | - |  |
 | act_zora_escort_goal | startTalk | `{ JGeometry::TBox2f box(mBox); box.i.x += mPos.x; box.i.y += mPos.y; b` | 21 | 2 | 2 | 4 | 2 call sites; same name in act_princess_zelda_demo | y | y | y |  |
@@ -226,11 +226,11 @@ Figures:
 | tu_8018A8D8 | angleOf | `{ return JMath::atanTable_.atan2_(x, y) * 10430.378f; }` | 3 | 1 | 1 | 1 | one statement; same name in tu_801213EC | - | y | y |  |
 | tu_8018EB94 | setHeading | `{ s16 angle = (s32)(4000.0f * (f32)field_0x98); field_0x27c.x = field_` | 13 | 1 | 0 | 0 | pool only | - | - | - |  |
 | tu_801CB270 | tileCenter | `{ return 8.0f + (u32)((s32)v & ~0xF); }` | 3 | 4 | 5 | 5 | 4 call sites; one statement; same name in tu_80285E58 | y | y | y |  |
-| tu_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { fn_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
+| tu_8027E5BC | followStep | `{ if (fn_802486A0() == 5 && field_0xbf0->field_0xb4) { moveByStick_802808E8(1.5` | 26 | 1 | 18 | 18 | pool only | - | - | - |  |
 | tu_802E9428 | updateCamera | `{ JGeometry::TVec2f pos(field_0x250.x, field_0x250.y); JGeometry::TVec` | 20 | 4 | 0 | 1 | 4 call sites | y | y | y |  |
 | tu_802E9428 | stepZoom | `{ if (field_0x270 != field_0x274) { field_0x270 += field_0x278; if (fi` | 12 | 1 | 1 | 1 | pool only | - | - | - |  |
 | tu_8030C058 | setScreenRectViewport | `{ u32 w = field_0x144.f.x - field_0x144.i.x; u32 h = field_0x144.f.y -` | 7 | 1 | 5 | 5 | pool only | - | - | - |  |
-| tu_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; fn_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
+| tu_8034AA40 | updateFacing | `{ JGeometry::TVec3f dir; f32 dist; getNearestPlayerDir_801EE558(&dir, &dist, 0); if (di` | 22 | 2 | 1 | 3 | 2 call sites; same name in act_special_conversation_npc, act_tingle_tower | y | y | y |  |
 | tu_8034AA40 | markRandomCucco | `{ f32 roll = gGameRoot_8053AAF8->mRandom.get_ufloat_1(); Cucco_804AB8C` | 8 | 1 | 3 | 3 | pool only | - | - | - |  |
 | tu_80362634 | faceOwl | `{ if (PSVECDistance(&mPos, &owl->mPos) >= 80.0f) { field_0x23c = 0; } ` | 17 | 2 | 5 | 12 | 2 call sites | y | y | y |  |
 | tu_80362634 | chaseOwl | `{ if (PSVECDistance(&mPos, &actor->mPos) < 100.0f) { field_0x24c = i; ` | 25 | 2 | 7 | 12 | 2 call sites | y | y | y |  |

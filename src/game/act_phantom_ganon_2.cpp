@@ -171,7 +171,7 @@ void ActorBase_804A5770::fn_8018A5A0(s32 value) {
     mDir_0x98 = value;
 }
 
-void ActorBase_804A5770::fn_8018A598(bool alive) {
+void ActorBase_804A5770::setAlive_8018A598(bool alive) {
     mAlive = alive;
 }
 
@@ -362,13 +362,13 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
         player = 0;
     }
     if (!(fn_8023F264(player) && getField_0x4() == getPlayerLayer_8023DE58(player) && !fn_80230188(player) &&
-          !fn_80236B50(player) && lbl_8053AB78 != 1))
+          !isPlayerDead_80236B50(player) && lbl_8053AB78 != 1))
     {
         s32 i;
         s32 pick = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         for (i = 0; i < 4; i++) {
             if (pick != player && fn_8023F264(pick) && getField_0x4() == getPlayerLayer_8023DE58(pick) &&
-                pick == getRepresentativePlayer_8022EA0C(pick) && !fn_80230188(pick) && !fn_80236B50(pick) &&
+                pick == getRepresentativePlayer_8022EA0C(pick) && !fn_80230188(pick) && !isPlayerDead_80236B50(pick) &&
                 !fn_8022DCD8(pick))
             {
                 field_0x94 = pick;
@@ -717,7 +717,7 @@ void PhantomGanon2_804A1A98::update() {
             }
         }
         if (field_0x248 == 0) {
-            findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
             if (outDir >= 0 && outDist < 50.0f) {
                 field_0x230 = 17;
             }
@@ -821,7 +821,7 @@ void PhantomGanon2_804A1A98::update() {
                 if (ball != NULL) {
                     field_0x258 = -1;
                     startSound_801F0E34(0x3002C, 0);
-                    ball->field_0x274 = fn_801545E8();
+                    ball->field_0x274 = getSerial_801545E8();
                     field_0x230 = 13;
                 }
             }
@@ -850,7 +850,7 @@ void PhantomGanon2_804A1A98::update() {
                     } else {
                         field_0x258 = (s32)(1.99f * fn_80154744());
                     }
-                    findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, field_0x94, 2);
+                    findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, NULL, NULL, field_0x94, 2);
                     copyVec3_8018A684(&mPos, &oldPos);
                     if (field_0x258 != 0) {
                         outAngle -= field_0x2ec;
@@ -893,7 +893,7 @@ void PhantomGanon2_804A1A98::update() {
         }
         // fall through
     case 16:
-        findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
         if (outDir >= 0 && outDist < 50.0f) {
             field_0x230 = 17;
             break;
@@ -990,7 +990,7 @@ void PhantomGanon2_804A1A98::update() {
             setBox_80154590(&mBox, -16.0f, -8.0f, 64.0f, 56.0f);
             if (field_0x26c == 0) {
                 startSound_801F0E34(0x40043, 0);
-                findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, 0, 0);
+                findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, NULL, NULL, 0, 0);
                 if (outDir < 0) {
                     field_0x230 = 8;
                     break;
@@ -1009,13 +1009,13 @@ void PhantomGanon2_804A1A98::update() {
             copyVec3_8018A684(&pos60, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
-            fn_801F2B7C(fn_80154510(), -1, 6);
+            fn_801F2B7C(getParamAtcp_80154510(), -1, 6);
             copyVec3_8018A684(&mPos, &pos60);
         }
         break;
     case 19:
         if (field_0x234 != 0) {
-            if (fn_801F6758(&mPos, mLayer_0x4, 48.0f)) {
+            if (isOutsideView_801F6758(&mPos, mLayer_0x4, 48.0f)) {
                 fn_801546BC(&field_0x2b0);
                 fn_801546BC(&mVel_0x3c);
             }
@@ -1120,7 +1120,7 @@ void PhantomGanon2_804A1A98::update() {
                     }
                     field_0x254++;
                 }
-                if (field_0x254 > 50 && fn_801F6758(&mPos, fn_8015461C(), -16.0f)) {
+                if (field_0x254 > 50 && isOutsideView_801F6758(&mPos, fn_8015461C(), -16.0f)) {
                     destroyed = 1;
                     if (mSpawnParam_0x90 == 10 && field_0x2f0 != 0) {
                         for (s32 i = 0; i < 4; i++) {
@@ -1156,7 +1156,7 @@ void PhantomGanon2_804A1A98::update() {
                         if (parent != NULL && parent->fn_8018A5B0() == true) {
                             parent->field_0x274 = -1;
                         }
-                        fn_8018A598(false);
+                        setAlive_8018A598(false);
                         return;
                     }
                 }
@@ -1230,7 +1230,7 @@ void PhantomGanon2_804A1A98::update() {
                         parent->field_0x274 = -1;
                         field_0x274 = -1;
                     }
-                    fn_8018A598(false);
+                    setAlive_8018A598(false);
                 }
             }
         }
@@ -1262,11 +1262,11 @@ void PhantomGanon2_804A1A98::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x36E, 1, 2, NULL, NULL, true, 0.5f);
             spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x36F, 1, 2, NULL, NULL, true, 0.5f);
             startSound_801F0E34(0x30037, 0);
-            fn_8018A598(false);
+            setAlive_8018A598(false);
         } else if (field_0x234 == 0 || lbl_8053AB84 == 1) {
             addCalc2_801F71A4(&field_0x290, 0.0f, 0.5f, 5.0f);
             if (field_0x290 < 10.0f) {
-                fn_8018A598(false);
+                setAlive_8018A598(false);
             }
         }
         break;
@@ -1304,7 +1304,7 @@ void PhantomGanon2_804A1A98::update() {
                 fn_8017EAB4(mEmitter314);
                 mEmitter314 = NULL;
             }
-            fn_8018A598(false);
+            setAlive_8018A598(false);
         }
         break;
     }
@@ -1322,7 +1322,7 @@ void PhantomGanon2_804A1A98::update() {
             if (field_0x274 >= 0) {
                 ActorBase_804A5770* ball = fn_8015445C(field_0x274);
                 if (ball != NULL) {
-                    ball->fn_8018A598(false);
+                    ball->setAlive_8018A598(false);
                 }
             }
             field_0x230 = 28;
@@ -1341,7 +1341,7 @@ void PhantomGanon2_804A1A98::update() {
                     field_0x94 == getPlayerLeader_8022F3DC(hitAct->fn_8018A590()) ||
                     hitAct->fn_8018A590() == getPlayerLeader_8022F3DC(field_0x94))
                 {
-                    if (hitAct->fn_801544C8() == 10 && field_0x230 != 18 && field_0x230 != 19) {
+                    if (hitAct->getSpawnParam_801544C8() == 10 && field_0x230 != 18 && field_0x230 != 19) {
                         PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)hitAct;
                         if (ball->field_0x2ef == 1) {
                             f32 thresh = 5.0f;
@@ -1351,7 +1351,7 @@ void PhantomGanon2_804A1A98::update() {
                             ball->field_0x238 = 0;
                             ball->field_0x23c = 0;
                             if (field_0x28c >= thresh) {
-                                ball->fn_8018A598(false);
+                                ball->setAlive_8018A598(false);
                                 if (field_0x268 >= 0) {
                                     lbl_804C17A8[field_0x268] = 0;
                                 }

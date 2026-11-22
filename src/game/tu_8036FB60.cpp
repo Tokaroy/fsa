@@ -484,7 +484,7 @@ void FourGirlsControl_804AE4B0::fn_8037100C() {
                 }
                 mState = 4;
                 lbl_8053AD70->fn_8037AE00();
-                fn_80119DD0()->fn_80119998(0x3C, 0, 2, 0, 0, 10, 0);
+                fn_80119DD0()->startFade_80119998(0x3C, 0, 2, 0, 0, 10, 0);
                 field_0x240 = 0x46;
                 gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, false, 0);
             }

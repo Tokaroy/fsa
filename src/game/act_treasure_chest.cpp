@@ -270,7 +270,7 @@ bool TreasureChest_804AA178::vfunc_0x54() {
             gBgRewrite_8053AC98->fn_802A3948(&field_0x25c, 0, mLayer_0x4, 0x10);
             s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, (u16)mCell);
             if (bit != -1) {
-                getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, true);
+                getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
             }
             JGeometry::TVec3f fxA(field_0x25c.x + 8.0f, field_0x25c.y + 8.0f, 0.0f);
             spawnEmitter_8013CC50(mLayer_0x4, &fxA, 0xD0, 0, 0, NULL, NULL, true, 1.0f);

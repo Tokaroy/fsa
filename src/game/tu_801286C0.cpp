@@ -156,7 +156,7 @@ s32 OpeningNarration_8049E500::vfunc_0x5C() {
 void OpeningNarration_8049E500::fn_80128728(int state) {
     switch (state) {
     case 0:
-        fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 0, 0, 0);
         fn_80119DD0()->field_0x1 = 1;
         break;
     case 1:
@@ -165,7 +165,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         fn_80119DD0()->field_0x1 = 0;
         break;
     case 3:
-        fn_80119DD0()->fn_80119998(0xB4, 0, 1, 0, 0, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 1, 0, 0, 0, 0);
         fn_80119DD0()->field_0x1 = 0;
         break;
     case 4: {
@@ -201,7 +201,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         getActorManager_801F856C()->spawnActor_801F9484('SEV2', mLayer_0x4, &mPos, 0x2000, -1, -1);
         break;
     case 8:
-        fn_80119DD0()->fn_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
+        fn_80119DD0()->startFade_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
         gAudioMgr_8053AF80->stopBgm_80458F9C(0x96);
         break;
     case 9: {
@@ -217,7 +217,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
     case 10:
         fn_8011921C()->fn_801184F0(false);
         getGameView_802D6A9C()->fn_802D9FF4(2, 4);
-        getGameView_802D6A9C()->fn_802DA8DC();
+        getGameView_802D6A9C()->resetStage_802DA8DC();
         break;
     }
     field_0x230 = state;

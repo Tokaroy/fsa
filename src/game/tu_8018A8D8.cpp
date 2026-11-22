@@ -491,7 +491,7 @@ void BigPoe2_804A1E50::fn_8018DC70(s32 mode) {
         }
         if (mode == 0 || mode == 1) {
             ActorBase_804A5770* fires[ACTOR_MANAGER_MAX_ACTORS];
-            s32 count = getActorManager_801F856C()->fn_801F7818('FIRE', mLayer_0x4, fires, -1);
+            s32 count = getActorManager_801F856C()->collectActorsById_801F7818('FIRE', mLayer_0x4, fires, -1);
             for (s32 j = 0; j < count; j++) {
                 ActorBase_804A5770* fire = fires[j];
                 if (fire != NULL && ((fire->mSpawnParam_0x90 >> 6) & 3) == 0) {
@@ -704,7 +704,7 @@ void BigPoe2_804A1E50::update() {
         fn_8018E8C0(&pos44, &mPos);
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
-        fn_801F2B7C(fn_80154510(), -1, 6);
+        fn_801F2B7C(getParamAtcp_80154510(), -1, 6);
         fn_8018E8C0(&mPos, &pos44);
     }
     u8 r28 = 0;
@@ -945,7 +945,7 @@ void BigPoe2_804A1E50::update() {
             }
         }
         setBox_80154590(&mBox, -42.0f, -32.0f, 34.0f, 32.0f);
-        fn_801F2B7C(fn_80154510(), -1, 6);
+        fn_801F2B7C(getParamAtcp_80154510(), -1, 6);
         fn_8018E8C0(&mPos, &pos44);
         if (lbl_80539FD0 < 9) {
             field_0x258++;
@@ -1234,7 +1234,7 @@ void BigPoe2_804A1E50::update() {
             fn_8018E8C0(&pos44, &lbl_804C18B8);
             pos44.x -= 64.0f;
             fn_8022CA6C(field_0x254, 5, false);
-            if (fn_802317F0(field_0x254, lbl_80539FC8, getPlayerPos_8023E724(field_0x254), &pos44, 0x1D)) {
+            if (startPlayerTransition_802317F0(field_0x254, lbl_80539FC8, getPlayerPos_8023E724(field_0x254), &pos44, 0x1D)) {
                 fn_8018E8C0(&pos44, &mPos);
                 pos44.y += 32.0f;
                 lbl_80539FC8 = fn_8015461C();
@@ -1283,7 +1283,7 @@ void BigPoe2_804A1E50::update() {
         fn_8018E8C0(&pos44, &mPos);
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
-        fn_801F2B7C(fn_80154510(), -1, 6);
+        fn_801F2B7C(getParamAtcp_80154510(), -1, 6);
         fn_8018E8C0(&mPos, &pos44);
         if (field_0x254 >= 0 && fn_8023F264(field_0x254) && lbl_80539FCC == field_0x254) {
             if (!fn_80230188(field_0x254)) {
@@ -1372,7 +1372,7 @@ void BigPoe2_804A1E50::update() {
             startSound_801F0E34(0x50086, 0);
         }
         if (lbl_80539FCC >= 0 && fn_8023F264(lbl_80539FCC)) {
-            findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, lbl_80539FCC, 2);
+            findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, &outDir, &outDist, NULL, lbl_80539FCC, 2);
             if (r28 == 1 || outDist > 80.0f) {
                 field_0x2ac.x = 0.0f;
                 field_0x2ac.y = 0.0f;
@@ -1441,7 +1441,7 @@ void BigPoe2_804A1E50::update() {
                         JGeometry::TVec3f vel;
                         fn_801546BC(&vel);
                         outAngle = 0;
-                        findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, NULL, NULL, NULL, 0, 0);
+                        findTargetPlayer_801EEC98(getSerial_801545E8(), &outAngle, NULL, NULL, NULL, 0, 0);
                         vel.x = 1.8f * sinShort_801544FC((s16)outAngle);
                         vel.y = 1.8f * cosShort_801544E4((s16)outAngle);
                         oktm->fn_8017EAF8(vel);
@@ -1528,7 +1528,7 @@ void BigPoe2_804A1E50::update() {
         }
         if (lbl_80539FCC != 10) {
             fn_8022CA6C(field_0x254, 5, false);
-            if (fn_802317F0(field_0x254, lbl_80539FC8, getPlayerPos_8023E724(field_0x254), &lbl_804C18B8, 0x1E)) {
+            if (startPlayerTransition_802317F0(field_0x254, lbl_80539FC8, getPlayerPos_8023E724(field_0x254), &lbl_804C18B8, 0x1E)) {
                 lbl_80539FC8 = fn_8015461C();
                 fn_8018E8C0(&lbl_804C18B8, &field_0x2a0);
                 lbl_80539FCC = -1;
@@ -1538,7 +1538,7 @@ void BigPoe2_804A1E50::update() {
                 if (lbl_80539FD0 > 0) {
                     mState = 26;
                 } else {
-                    fn_8018A598(false);
+                    setAlive_8018A598(false);
                 }
             }
         }

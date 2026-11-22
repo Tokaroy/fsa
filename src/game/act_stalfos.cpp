@@ -75,7 +75,7 @@ void Stalfos_804A0CD8::init() {
         mParamVoic_0x190 = 0;
         mLife = 1000;
         ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-        s32 count = getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1);
+        s32 count = getActorManager_801F856C()->collectActorsById_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1);
         for (int i = 0; i < count; i++) {
             ActorBase_804A5770* actor = actors[i];
             if (actor != NULL && actor->mSpawnParam_0x90 == 1) {
@@ -192,7 +192,7 @@ void Stalfos_804A0CD8::update() {
     case 0: {
         if (mSpawnParam_0x90 == 5) {
             ActorBase_804A5770* actors[ACTOR_MANAGER_MAX_ACTORS];
-            if (getActorManager_801F856C()->fn_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1) == 0) {
+            if (getActorManager_801F856C()->collectActorsById_801F7818(ACTOR_WIZR, mLayer_0x4, actors, -1) == 0) {
                 field_0x230 = 7;
                 break;
             }

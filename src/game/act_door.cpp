@@ -244,7 +244,7 @@ void Door_804A8D88::update() {
         if (field_0x230 == 3) {
             s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
             if (bit != -1) {
-                getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, true);
+                getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, true);
             }
         }
         u8 upper = 8;
@@ -511,7 +511,7 @@ void Door_804A8D88::update() {
         }
         s32 bit = getGameView_802D6A9C()->fn_802D4C10(mLayer_0x4, field_0x244);
         if (bit != -1) {
-            getGameView_802D6A9C()->fn_802D7D00(mLayer_0x4, bit, false);
+            getGameView_802D6A9C()->setScreenMaskBit_802D7D00(mLayer_0x4, bit, false);
         }
         switch (field_0x23c) {
         case 0: {

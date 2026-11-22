@@ -744,7 +744,7 @@ void AdventureHud_804B13D4::fn_8041EDB0() {
         if (gGameRoot2_8053AB10->field_0x20->field_0x14c[0] != 0) {
             gGameRoot2_8053AB10->field_0x20->field_0x217[0] = 1;
         }
-        if (gGameRoot_8053AAF8->field_0x4c != 11 && fn_80236B50(0) && fn_80237774(0) == 0) {
+        if (gGameRoot_8053AAF8->field_0x4c != 11 && isPlayerDead_80236B50(0) && fn_80237774(0) == 0) {
             if (field_0x292 >= 2) {
                 if (lbl_8053AEC8->field_0x5d == 0) {
                     lbl_8053AEC8->field_0x5d = 1;

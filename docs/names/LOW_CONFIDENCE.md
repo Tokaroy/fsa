@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-164 rows: 164 applied, 0 not applied.
+166 rows: 166 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -173,6 +173,8 @@ See METHOD.md.
 | `mPlayerSoundObjs_0x2b8` | 804B1288 | field | `field_0x2b8` | yes | tu_80403D84 ctor: new cls_804B20F8(i, NULL, NULL, 8) for i 0-3; fn_804108B4 calls fn_80456154 on each every frame; the header calls the class a sound object (ResultScreen: one per player), not proven here | evidence that proves the role or the name |
 | `mStickAnimTimer_0x420` | 804B1288 | field | `field_0x420` | yes | tu_80403D84 fn_80409014: 0-179 cycle that drives setBlendRatio and the 90 / 270 degree turn of 'Pms01' (the pane given kk_mStick_02.bti); "stick" from the texture name only | evidence that proves the role or the name |
 | `getRepresentativePlayer_8022EA0C` | 8022EA0C | function | `fn_8022EA0C` | yes | body: the player whose position stands for `player`: its leader's (recursively, fn_8022F514/fn_8022F3DC), in group mode 4 the n-th next group member, else itself, -1 without the manager; callers: act_blindfold, act_gambling_chest pass the result to getPlayerPos_8023E724. low: the mode-4 branch is not understood, 'representative' is a reading | evidence that proves the role or the name |
+| `isPlayerDead_80236B50` | 80236B50 | function | `fn_80236B50` | yes | body: active player's fn_80270A8C (state 0x33/0x34, requested when the life reaches 0), true without a manager or player; callers: targeting loops skip such players. low: as fn_80270A8C | evidence that proves the role or the name |
+| `isDeadState_80270A8C` | 80270A8C | function | `fn_80270A8C` | yes | body (Player): state 0x33 requested or current, or state 0x34; source comment: 0x33 is requested when the life 0xBFC reaches 0. low: the states are not named | evidence that proves the role or the name |
 | `gGameRoot_8053AAF8` | 8053AAF8 | global | `lbl_8053AAF8` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `gGameRoot2_8053AB10` | 8053AB10 | global | `lbl_8053AB10` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `updateState_0x90` | 804A4808 | member | `vfunc_0x90` | yes | EnemyBase base 0x801CE4E0 empty (include/game/EnemyBase.h); vfunc_0x9C calls it after mStateTimer++ with the map-hit flag; 36 overrides, which switch on the enemy's state (header: the per-state behaviour). Low: the role rests on the overrides' shape | evidence that proves the role or the name |

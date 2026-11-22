@@ -183,7 +183,7 @@ void NPCLaunchedByThwomp_804AC010::init() {
     if (field_0x268 == 1) {
         field_0x230 = 2;
         field_0x254 = 0;
-        if (!fn_801F6758(&field_0x278, mLayer_0x4, 0.0f)) {
+        if (!isOutsideView_801F6758(&field_0x278, mLayer_0x4, 0.0f)) {
             field_0x230 = 1;
             mPos = field_0x278;
         }
@@ -409,7 +409,7 @@ void NPCLaunchedByThwomp_804AC010::fn_80337A08() {
         field_0x244 = 20;
         JGeometry::TVec3f diff;
         f32 dist;
-        fn_801EE558(&diff, &dist, 0);
+        getNearestPlayerDir_801EE558(&diff, &dist, 0);
         if (dist < 100.0f) {
             u16 angle = (s32)(JMath::atanTable_.atan2_(-diff.x, -diff.y) *
                               (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180()));

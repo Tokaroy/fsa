@@ -129,7 +129,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
             s32 count = 0;
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
-                    !fn_80230188(i) && !fn_8022DCD8(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
+                    !fn_80230188(i) && !fn_8022DCD8(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i)) {
                     f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                     f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;
                     if (std::sqrtf(dx * dx + dy * dy) < 64.0f) {
@@ -230,7 +230,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
             fn_801F0D20(0x50);
             getActorManager_801F856C()->fn_801F6884();
             setViewBit(field_0x254);
-            fn_80119DD0()->fn_80119998(200, 0, 2, 0, 0, 100, 0);
+            fn_80119DD0()->startFade_80119998(200, 0, 2, 0, 0, 100, 0);
             startSound_801F0E34(0x400B7, 0);
             for (s32 i = 0; i < 4; i++) {
                 fn_80230FD0(i, 0x10003);
@@ -257,7 +257,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         if (field_0x234 == 0) {
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
-                    fn_80236554(i, 0x20, false);
+                    healPlayerGroup_80236554(i, 0x20, false);
                 }
             }
             getGameView_802D6A9C()->fn_802D9FF4(0, 9);

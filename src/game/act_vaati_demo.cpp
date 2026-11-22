@@ -270,7 +270,7 @@ void VaatiCutscene_8049D940::fn_80115F9C(s32 index) {
         startSound_801F0E34(0x400BA, 0);
         break;
     case 9: {
-        fn_80119DD0()->fn_80119998(120, 0, 1, 0, 0, 70, 0);
+        fn_80119DD0()->startFade_80119998(120, 0, 1, 0, 0, 70, 0);
         ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(
             getActorManager_801F856C()->fn_801F7A08('SWEV'));
         if (actor != NULL) {

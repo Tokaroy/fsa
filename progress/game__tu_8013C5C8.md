@@ -17,7 +17,7 @@ Camera_804AA9E4::field_0xe4 and the identity-initialised JPADrawInfo pair), fn_8
 fn_8013DDEC (0x158C).
 
 SHARED-EDITS: include/game/Effect.h (mHeap is JKRSolidHeap*, fn_8013C958 declared, getEffectSystem_8013C824 / CAA4 / CB44
-moved out of extern "C" and CAA4 / CB44 return u8, comments), include/game/RotMatrix.h (fn_8010F668 declaration,
+moved out of extern "C" and CAA4 / CB44 return u8, comments), include/game/RotMatrix.h (makeAxisRotation_8010F668 declaration,
 owner act_princess_zelda_demo). Symbols renamed in symbols.txt (callbacks, vtables, Entry ctor, sinit, the
 three free functions).
 

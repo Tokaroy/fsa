@@ -963,7 +963,7 @@ void ActorBase_804A5770::fn_801F33C4() {
 // while this is on 8.
 void ActorBase_804A5770::fn_801F32F4() {
     for (s32 i = 0; i < 4; i++) {
-        if (fn_801F329C(i)) {
+        if (isPlayerOnLowerLayer_801F329C(i)) {
             JGeometry::TVec3f pos;
             fn_801CD150(getPlayerPos_8023E724(i), &pos);
             mPlayerPos_0x1ac[i].set(pos);
@@ -974,7 +974,7 @@ void ActorBase_804A5770::fn_801F32F4() {
 }
 
 // Whether `player` is on a layer below 8 while this actor is on layer 8.
-bool ActorBase_804A5770::fn_801F329C(s32 player) const {
+bool ActorBase_804A5770::isPlayerOnLowerLayer_801F329C(s32 player) const {
     bool result = false;
     if (getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8) {
         result = true;
@@ -983,19 +983,19 @@ bool ActorBase_804A5770::fn_801F329C(s32 player) const {
 }
 
 // Whether `player` is on this actor's layer (getPlayerLayer_8023DE58), or counts as on
-// it through fn_801F329C.
+// it through isPlayerOnLowerLayer_801F329C.
 bool ActorBase_804A5770::fn_801F320C(s32 player) const {
     s32 layer = mLayer_0x4;
     bool result = false;
     s32 playerLayer = getPlayerLayer_8023DE58(player);
-    if (playerLayer == layer || fn_801F329C(player)) {
+    if (playerLayer == layer || isPlayerOnLowerLayer_801F329C(player)) {
         result = true;
     }
     return result;
 }
 
 // mBox in screen space.
-void ActorBase_804A5770::fn_801F31C4(JGeometry::TBox2f* out) const {
+void ActorBase_804A5770::getBoxAtPos_801F31C4(JGeometry::TBox2f* out) const {
     toScreenBox(out, mBox, mPos);
 }
 
@@ -1114,7 +1114,7 @@ u8 ActorBase_804A5770::fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg) {
                 continue;
             }
             JGeometry::TVec2f pos;
-            if (fn_801F329C(i)) {
+            if (isPlayerOnLowerLayer_801F329C(i)) {
                 JGeometry::TVec3f out;
                 JGeometry::TVec3f in(cx, cy, 0.0f);
                 fn_801CD0D0(&in, &out);
@@ -1167,12 +1167,12 @@ bool ActorBase_804A5770::fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b) {
 // FIXME: 99.82 %, regalloc-only; behaviour clean.
 // Register allocation only: before fn_8023B9CC the target moves
 // arg into r7 before player into r3, ours the other way round.
-// const: the screen box (the inlined fn_801F31C4) loads before the register
+// const: the screen box (the inlined getBoxAtPos_801F31C4) loads before the register
 // saves.
 s32 ActorBase_804A5770::findOverlappingPlayer_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg,
                                      s32 player) const {
     JGeometry::TBox2f box;
-    fn_801F31C4(&box);
+    getBoxAtPos_801F31C4(&box);
     JGeometry::TVec2f xy;
     s32 hit = -1;
     if (player >= 0) {
@@ -2117,7 +2117,7 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
             onLayer = 1;
         }
         if (fn_8023F264(i) && !fn_80230188(i) && !fn_8022DCD8(i) && onLayer != 0 &&
-            !fn_8022F478(i) && !fn_80236B50(i) && !fn_8022D534(i))
+            !fn_8022F478(i) && !isPlayerDead_80236B50(i) && !fn_8022D534(i))
         {
             f32 dx;
             f32 dy;
@@ -2189,7 +2189,7 @@ void ActorBase_804A5770::findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s3
     }
 }
 
-// fn_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
+// getNearestPlayerDir_801EE558 that also skips players failing fn_80230188 or fn_8022DCD8;
 // with no player found the direction is zero (and the distance unset).
 void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best;
@@ -2205,7 +2205,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
             i = player - 1;
         }
         if (fn_8023F264(i) && fn_801F320C(i) && !fn_80230188(i) && !fn_8022DCD8(i) &&
-            !fn_8022F478(i) && !fn_80236B50(i) &&
+            !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);
@@ -2245,7 +2245,7 @@ void ActorBase_804A5770::fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s3
 // this actor's top-down position (x, y - z) to the player's position in
 // mPlayerPos_0x1ac[] goes normalised to *outDir (z 0), the distance to *outDist.
 // With no player found the direction is (0, 512, 0).
-void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
+void ActorBase_804A5770::getNearestPlayerDir_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player) {
     JGeometry::TVec3f best(0.0f, 512.0f, 0.0f);
     JGeometry::TVec3f pos;
     pos.set(mPos);
@@ -2257,7 +2257,7 @@ void ActorBase_804A5770::fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s3
         if (player != 0) {
             i = player - 1;
         }
-        if (fn_8023F264(i) && fn_801F320C(i) && !fn_8022F478(i) && !fn_80236B50(i) &&
+        if (fn_8023F264(i) && fn_801F320C(i) && !fn_8022F478(i) && !isPlayerDead_80236B50(i) &&
             !fn_8022D534(i))
         {
             diff.sub(mPlayerPos_0x1ac[i], pos);

@@ -47,7 +47,7 @@ class JPABaseEmitter;
 struct ActorSub1DC_801EAD68 {
     ActorSub1DC_801EAD68();
     void fn_801EAB0C();
-    bool fn_801EAC20(int index);
+    bool startTimer_801EAC20(int index);
     bool fn_801EAC54(int id);
     bool isLive(int id);
     /* 0x00 */ u8 field_0x0[4];
@@ -194,11 +194,11 @@ public:
     // only player - 1; callers pass li 0 or index + 1): its position in
     // mPlayerPos_0x1ac[] relative to mPos goes normalised to *outDir (stfs
     // 0/4/8), the distance to *outDist.
-    void fn_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
-    // 6 units / 12 calls. fn_801EE558 with extra player filters
+    void getNearestPlayerDir_801EE558(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
+    // 6 units / 12 calls. getNearestPlayerDir_801EE558 with extra player filters
     // (fn_80230188, fn_8022DCD8 at 0x801EE9E0, 0x801EE9F0); with no player
-    // found *outDir is zero (fn_801EE558 gives (0, 512, 0)). Both skip
-    // players for which fn_8022F478, fn_80236B50 or fn_8022D534 holds and
+    // found *outDir is zero (getNearestPlayerDir_801EE558 gives (0, 512, 0)). Both skip
+    // players for which fn_8022F478, isPlayerDead_80236B50 or fn_8022D534 holds and
     // inline fn_801F320C's layer test.
     void fn_801EE8F4(JGeometry::TVec3f* outDir, f32* outDist, s32 player);
     // 58 units / 104 calls. Never reads r3, but every caller passes an actor
@@ -374,12 +374,12 @@ public:
     void fn_801F317C(JGeometry::TBox2f* out) const;
     // 11 units / 21 calls. The same for mBox; the manager's actor-vs-actor
     // test (0x801F801C) uses it too.
-    void fn_801F31C4(JGeometry::TBox2f* out) const;
+    void getBoxAtPos_801F31C4(JGeometry::TBox2f* out) const;
     // 2 units / 7 calls. getPlayerLayer_8023DE58(player) == mLayer_0x4, or
-    // fn_801F329C(player); returns 0 or 1.
+    // isPlayerOnLowerLayer_801F329C(player); returns 0 or 1.
     bool fn_801F320C(s32 player) const;
     // 4 units / 5 calls. getPlayerLayer_8023DE58(player) < 8 && mLayer_0x4 == 8.
-    bool fn_801F329C(s32 player) const;
+    bool isPlayerOnLowerLayer_801F329C(s32 player) const;
     // 1 unit / 2 calls (the manager's update loop, with mActors[i]). Fills
     // mPlayerPos_0x1ac[0..3] with each player's position (getPlayerPos_8023E724), adjusted
     // by fn_801CD150 for players on layer 8 and up while this is on 8.
@@ -499,20 +499,20 @@ public:
     s32 getField_0x90() const { return mSpawnParam_0x90; }
     // Out-of-line accessors in game/act_sword_soldier.cpp; act_ganon,
     // act_phantom_ganon_2, tu_80197070, tu_8018A8D8 (and tu_803944C8 for
-    // fn_801544C8) call them with a bl on actors of other classes.
-    u32 fn_801544C8() const;               // mSpawnParam_0x90 (0x801544C8)
+    // getSpawnParam_801544C8) call them with a bl on actors of other classes.
+    u32 getSpawnParam_801544C8() const;               // mSpawnParam_0x90 (0x801544C8)
     void fn_801544D0(s32 value);           // mHitTimer_0xd8 and mHitTimerStart_0xdc (0x801544D0)
     JGeometry::TVec3f* fn_801544DC();      // &mPos (0x801544DC)
-    s32 fn_80154510() const;               // mParamAtcp_0x114, the "atcp" damage (0x80154510)
+    s32 getParamAtcp_80154510() const;               // mParamAtcp_0x114, the "atcp" damage (0x80154510)
     u8 fn_801545C0(JGeometry::TVec3f* out, bool flag);   // sweepMapBox_801F2618 (0x801545C0)
     s32 fn_801545E0() const;               // field_0x9c (0x801545E0)
-    s32 fn_801545E8() const;               // mSerial (0x801545E8)
+    s32 getSerial_801545E8() const;               // mSerial (0x801545E8)
     void fn_80154614(s32 value);           // field_0xb8 (0x80154614)
     s32 fn_8015461C() const;               // mLayer_0x4, the layer (0x8015461C)
     // Out-of-line accessors in game/act_phantom_ganon_2.cpp (0x8018A590-0x8018A5B0);
     // act_ganon and tu_80197070 call them on other actors too.
     u16 fn_8018A590() const;               // field_0x94 (0x8018A590)
-    void fn_8018A598(bool alive);          // mAlive (0x8018A598)
+    void setAlive_8018A598(bool alive);          // mAlive (0x8018A598)
     void fn_8018A5A0(s32 value);           // mDir_0x98 (0x8018A5A0)
     void fn_8018A5A8(u16 value);           // field_0x94 (0x8018A5A8)
     bool fn_8018A5B0() const;              // mAlive (0x8018A5B0)

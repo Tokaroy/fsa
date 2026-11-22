@@ -122,8 +122,8 @@ static const Vec lbl_8046B92C[4] = {
 
 // mLifting_0xd64 == 1 as a u8, materialised (subfic / cntlzw / extrwi.) where the callers
 // inline it: `? true : false` keeps the byte (a plain `== 1` folds into cmplwi 1, as
-// isGameMode in game/GameMode.h); fn_8025F684 returns it. A member inline in Player.h
-// was measured: fn_8025F684 is then not emitted and fn_8023EFEC (inlines it) drops.
+// isGameMode in game/GameMode.h); isLifting_8025F684 returns it. A member inline in Player.h
+// was measured: isLifting_8025F684 is then not emitted and fn_8023EFEC (inlines it) drops.
 static inline u8 isField0xd64One(const Player_804A6F38& p) {
     return p.mLifting_0xd64 == 1 ? true : false;
 }
@@ -240,10 +240,10 @@ void Player_804A6F38::fn_80264410() {
 
 // Update of state 0x12, the carry (tu_80285E58's dispatch): the stick step (fn_8027FA08's z
 // of 0 drops mPos.z to the floor unless 0x434); fn_8022C13C (unless fn_802416C4 is 7): a
-// held player that fn_80236B50 rejects, a bomb ('HBMB') or a small key ('KEY0') is put
+// held player that isPlayerDead_80236B50 rejects, a bomb ('HBMB') or a small key ('KEY0') is put
 // down (0x18), anything else thrown (0x16, also when fn_8024B24C); fn_8022C0A0 throws
 // (0x16); fn_802466B4 starts 0x15 unless the held actor's field_0x1a4 is 2 or more. Then
-// it walks with the held thing (fn_802808E8 at 1.25 for a player, 1.5 for an actor with
+// it walks with the held thing (moveByStick_802808E8 at 1.25 for a player, 1.5 for an actor with
 // field_0x1a4 == 0, none otherwise) through the carry cycle fn_8026152C(false); a held
 // player that stops being one (fn_8023EA28) or a lost actor ends the carry (state 0).
 void Player_804A6F38::fn_80263C64() {
@@ -256,7 +256,7 @@ void Player_804A6F38::fn_80263C64() {
     if (fn_8022C13C(mPlayerNo_0x4)) {
         if (fn_802416C4() != 7) {
             if (!fn_8024B24C()
-                && ((fn_8025F590() && !fn_80236B50(mHeldPlayer_0xd70)) || fn_8025F648() == ACTOR_HBMB
+                && ((fn_8025F590() && !isPlayerDead_80236B50(mHeldPlayer_0xd70)) || fn_8025F648() == ACTOR_HBMB
                     || fn_8025F648() == ACTOR_KEY0)) {
                 fn_80251AEC(0x18);
             } else {
@@ -270,7 +270,7 @@ void Player_804A6F38::fn_80263C64() {
     }
     if (fn_8025F590()) {
         if (fn_8023EA28(mHeldPlayer_0xd70)) {
-            fn_802808E8(1.25f);
+            moveByStick_802808E8(1.25f);
             fn_8027EB04();
             fn_8026152C(false);
         } else {
@@ -279,7 +279,7 @@ void Player_804A6F38::fn_80263C64() {
         }
     } else if (actor != 0) {
         if (actor->field_0x1a4 == 0) {
-            fn_802808E8(1.5f);
+            moveByStick_802808E8(1.5f);
             fn_8027EB04();
             fn_8026152C(false);
         } else {
@@ -1322,8 +1322,8 @@ bool Player_804A6F38::fn_802604CC() {
             if (isPlayerBitSet(gGameRoot_8053AAF8, i) || arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)
                 || (gGameRoot_8053AAF8->field_0x7e != 0 && fn_8022CAF8(i) == 4)
                 || (mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8)) {
-                if ((fn_80236B50(i) || fn_80251BFC(0x19)) && fn_80251AEC(0x11)) {
-                    if (fn_80236B50(i)) {
+                if ((isPlayerDead_80236B50(i) || fn_80251BFC(0x19)) && fn_80251AEC(0x11)) {
+                    if (isPlayerDead_80236B50(i)) {
                         fn_80231230(i, mPlayerNo_0x4);
                     } else {
                         fn_802312CC(i, mPlayerNo_0x4);
@@ -1337,7 +1337,7 @@ bool Player_804A6F38::fn_802604CC() {
                     return true;
                 }
             } else {
-                if (fn_80236B50(i)) {
+                if (isPlayerDead_80236B50(i)) {
                     if (fn_80251AEC(0x11)) {
                         fn_80231230(i, mPlayerNo_0x4);
                         mHeldPos_0x2f4 = ahead;
@@ -1409,7 +1409,7 @@ void Player_804A6F38::fn_8026022C() {
 // Grab another player: lift it (state 0x19) when it can't take part in a pair
 // ('TSNO', "two-sword motion", docs/names/actors.tsv), else pair up with it.
 bool Player_804A6F38::fn_802600A0(s32 player) {
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
     if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !arePlayersInSameGroup_8022E438(mPlayerNo_0x4, player)
@@ -1438,7 +1438,7 @@ bool Player_804A6F38::fn_802600A0(s32 player) {
 }
 
 bool Player_804A6F38::fn_80260048(s32 arg) {
-    if (!fn_80270A8C()) {
+    if (!isDeadState_80270A8C()) {
         return false;
     }
     mHeldPlayer_0xd70 = arg;
@@ -1534,7 +1534,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
             step.y = dir.y;
             step.z = dir.z;
             step.scale(16.0f);
-            if (mRequestedState_0x1244 == 0x1E || mRequestedState_0x1244 == 0x32 || fn_8024189C() <= 0) {
+            if (mRequestedState_0x1244 == 0x1E || mRequestedState_0x1244 == 0x32 || getLife_8024189C() <= 0) {
                 speed.set(0.0f, 0.0f, 0.0f);
             } else {
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(mHeldPlayer_0xd70));
@@ -1605,7 +1605,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
 }
 
 // Lifting something (mLifting_0xd64 == 1).
-bool Player_804A6F38::fn_8025F684() {
+bool Player_804A6F38::isLifting_8025F684() {
     return isField0xd64One(*this);
 }
 
@@ -1702,10 +1702,10 @@ bool Player_804A6F38::fn_8025F418() {
 // 0x454), in the air, or a follower in mode 5 without a pending 0xD88). fn_8025EFFC
 // inlines it.
 bool Player_804A6F38::fn_8025F2CC() {
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
-    if (fn_8025F684()) {
+    if (isLifting_8025F684()) {
         return false;
     }
     if (fn_8025F448()) {
@@ -1739,7 +1739,7 @@ bool Player_804A6F38::fn_8025F2CC() {
 // player already holding or grabbing only claims it through fn_8025EF68.
 bool Player_804A6F38::fn_8025EFFC(s32 serial, bool lift, bool grabOnly) {
     if (grabOnly) {
-        if (fn_8025F684() || fn_8025F448() || fn_80241230() || fn_802412A4()) {
+        if (isLifting_8025F684() || fn_8025F448() || fn_80241230() || fn_802412A4()) {
             fn_8025EF68(serial);
             return true;
         }
@@ -1788,10 +1788,10 @@ bool Player_804A6F38::fn_8025EF68(s32 arg) {
 
 // Grab the actor `serial` (state 0x19).
 bool Player_804A6F38::fn_8025EE48(s32 serial) {
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
-    if (fn_8025F684()) {
+    if (isLifting_8025F684()) {
         return false;
     }
     if (fn_8025F448()) {

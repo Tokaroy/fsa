@@ -43,7 +43,7 @@ bool ActorSub1DC_801EAD68::fn_801EAC54(int id) {
 }
 
 // Starts the 24-frame timer of slot `index` (0-3) if it is idle.
-bool ActorSub1DC_801EAD68::fn_801EAC20(int index) {
+bool ActorSub1DC_801EAD68::startTimer_801EAC20(int index) {
     bool started = false;
     if (index >= 0 && index < 4 && field_0x0[index] == 0) {
         field_0x0[index] = 24;

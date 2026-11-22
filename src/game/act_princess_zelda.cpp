@@ -551,9 +551,9 @@ bool PrincessZelda_8049CEE0::fn_80109AE0(JGeometry::TVec3f* outPos) {
         return false;
     }
     JGeometry::TBox2f box1;
-    fn_801F31C4(&box1);
+    getBoxAtPos_801F31C4(&box1);
     JGeometry::TBox2f box2;
-    circle->fn_801F31C4(&box2);
+    circle->getBoxAtPos_801F31C4(&box2);
     box2.i.x += -16.0f;
     box2.i.y += -16.0f;
     box2.f.x += 16.0f;

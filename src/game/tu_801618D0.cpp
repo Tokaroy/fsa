@@ -280,7 +280,7 @@ void BigPoe_804A0440::update() {
                 break;
             case 3:
                 mParamDstr_0x1a8 = true;
-                getActorManager_801F856C()->fn_801F6204(0);
+                getActorManager_801F856C()->setAllDefeated_801F6204(0);
                 // fall through
             case 2:
                 field_0x234 = 30;
@@ -480,7 +480,7 @@ void BigPoe_804A0440::update() {
         addCalc2_801F71A4(&field_0x27c, field_0x280, 0.1f, field_0x284);
         if (std::fabsf(field_0x27c - field_0x280) < 0.1f) {
             ActorBase_804A5770* list[0x400];
-            s32 count = getActorManager_801F856C()->fn_801F7818('POOH', mLayer_0x4, list, -1);
+            s32 count = getActorManager_801F856C()->collectActorsById_801F7818('POOH', mLayer_0x4, list, -1);
             for (s32 i = 0; i < count; i++) {
                 BigPoe_804A0440* pooh = static_cast<BigPoe_804A0440*>(list[i]);
                 if (pooh != NULL) {
@@ -551,7 +551,7 @@ void BigPoe_804A0440::update() {
                 field_0x234 = 8;
                 field_0x258 = lbl_804A0430[field_0x244];
             }
-            if (field_0x23c == 0 || fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+            if (field_0x23c == 0 || isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
                 mAlive = false;
             }
         }

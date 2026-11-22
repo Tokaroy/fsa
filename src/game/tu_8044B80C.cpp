@@ -50,13 +50,13 @@ void StaffRollLoader_804B1D10::fn_8044B960() {
         gGameRoot_8053AAF8->field_0x4->field_0x30->becomeCurrentHeap();
         if (mState == 1) {
             snprintf(path, 0x1F, "/GC4Sword_usa/staff/staff%d.arc", mPage + 1);
-            mArchive = fn_80401E10(path, 0, gGameRoot_8053AAF8->field_0x4->field_0x30);
+            mArchive = requestMountMemArchive_80401E10(path, 0, gGameRoot_8053AAF8->field_0x4->field_0x30);
             mState = 2;
         }
         if (mArchive != NULL && mArchive->field_0x4 == 1) {
             mScreen = new J2DScreen();
             snprintf(name, 0x11, "staffroll_p%d.blo", mPage + 1);
-            // field_0x14 is the loaded archive (fn_80401E10's object).
+            // field_0x14 is the loaded archive (requestMountMemArchive_80401E10's object).
             mScreen->setPriority(name, 0x1100000, (JKRArchive*)mArchive->field_0x14);
             JUTResFont* font = lbl_8053AD78->mFont;
             ((J2DTextBox*)mScreen->search('Tstf01'))->setFont(font);

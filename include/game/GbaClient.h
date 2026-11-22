@@ -29,12 +29,12 @@ struct GbaClient_803007D0 {
     /* 0x48 */ OSTick field_0x48;
     /* 0x4C */ u8* mProgram;  // lbl_8053ACBC, passed to GBAJoyBoot
     /* 0x50 */ s32 mLength;   // lbl_8053ACC0, passed to GBAJoyBoot
-    /* 0x54 */ u32 mState;   // tested against 0x40000 (GBA linked) / 0 by cls_804AA8C8::fn_8030A43C
+    /* 0x54 */ u32 mState;   // tested against 0x40000 (GBA linked) / 0 by cls_804AA8C8::pollInputs_8030A43C
     /* 0x58 */ u32 field_0x58;
     /* 0x5C */ s32 field_0x5c;
-    /* 0x60 */ u32 mKeys;     // the packed key word fn_8030A43C decodes
+    /* 0x60 */ u32 mKeys;     // the packed key word pollInputs_8030A43C decodes
     /* 0x64 */ u32 field_0x64;
-    /* 0x68 */ u8 mTransfer[0xD0 - 0x68]; // fn_8030A43C copies lbl_80506DE8[port] in
+    /* 0x68 */ u8 mTransfer[0xD0 - 0x68]; // pollInputs_8030A43C copies lbl_80506DE8[port] in
     /* 0xD0 */ s8 mPort;      // the GBA channel of every GBA call
     /* 0xD1 */ u8 field_0xd1;
     /* 0xD2 */ u8 field_0xd2;
@@ -55,10 +55,10 @@ struct GbaClient_803007D0 {
 
 extern GbaClient_803007D0 lbl_804DB798[4];
 // The unit's .sdata2 table (0x80541618): transfer lengths in words, indexed by lbl_8053AD08;
-// cls_804AA8C8::fn_8030A43C copies that many words into each client's mTransfer.
+// cls_804AA8C8::pollInputs_8030A43C copies that many words into each client's mTransfer.
 extern const u8 lbl_80541618[4];
 // 0x803006E8 (not written yet): an 8-bit CRC (polynomial 0xCD) over the two low bytes of its
-// argument, low byte first; cls_804AA8C8::fn_8030A43C checks a GBA key word's low byte against it.
+// argument, low byte first; cls_804AA8C8::pollInputs_8030A43C checks a GBA key word's low byte against it.
 u8 fn_803006E8(u32 keys);
 
 #endif

@@ -173,7 +173,7 @@ static const u64 lbl_80476CD0[3] = {
 static const u64 lbl_80476CE8[3] = {
     'Pf1tbb08', 'Pf2tbb08', 'Pf3tbb08',
 };
-// Message ids (fn_803CE4CC).
+// Message ids (refreshFileRows_803CE4CC).
 static const s32 lbl_80476D00[8] = {
     0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33,
 };
@@ -423,7 +423,7 @@ FileSelect_804AFF60::FileSelect_804AFF60() {
     lbl_80529DEC.mHeap->getTotalFreeSize();
     gGameRoot_8053AAF8->field_0xff = 0;
     for (int i = 0; i < 3; i++) {
-        fn_803B950C(&lbl_8050EC80.mFiles[i], &lbl_8050EC80.mBodies[i]);
+        initSaveFile_803B950C(&lbl_8050EC80.mFiles[i], &lbl_8050EC80.mBodies[i]);
     }
     lbl_80529DEC.fn_80403680();
     if (!lbl_80529DEC.field_0x242) {
@@ -975,7 +975,7 @@ void FileSelect_804AFF60::fn_803CE9EC() {
 }
 
 // The progress message of save file `file`: the first stage (0-7) it has not
-// finished, or the last one's when all are done. fn_803CE4CC inlines it three
+// finished, or the last one's when all are done. refreshFileRows_803CE4CC inlines it three
 // times; the linker dropped its out-of-line copy.
 // R2 pool helper (inlined at 3 call sites); was getProgressMsg.
 static s32 inl_803CE4CC(s32 file) {
@@ -994,12 +994,12 @@ static s32 inl_803CE4CC(s32 file) {
 // 0x11D and its bit in field_0x115 (fn_803BD5E0); a used file shows the date
 // it was chosen last and every file's progress; an empty file (or no card)
 // shows message 0x6A.
-void FileSelect_804AFF60::fn_803CE4CC() {
+void FileSelect_804AFF60::refreshFileRows_803CE4CC() {
     for (s32 i = 0; i < 3; i++) {
         clearBadChecksum(i);
         // (s32): the original tests field_0xff signed (lbz + cmpwi), as in fn_803CABAC.
         if ((s32)gGameRoot_8053AAF8->field_0xff != 0) {
-            if (fn_803BADAC(&lbl_8050EC80.getFile(i))) {
+            if (isSaveChecksumValid_803BADAC(&lbl_8050EC80.getFile(i))) {
                 if (lbl_8050EC80.getFile(i).isUsed()) {
                     OSCalendarTime time;
                     OSTicksToCalendarTime(lbl_8050EC80.getFile(i).field_0x0, &time);
@@ -1179,7 +1179,7 @@ void FileSelect_804AFF60::fn_803CDEE8() {
             field_0x80 = 0;
             gGameRoot_8053AAF8->field_0xff = 0;
             for (s32 i = 0; i < 3; i++) {
-                fn_803B950C(&lbl_8050EC80.mFiles[i], &lbl_8050EC80.mBodies[i]);
+                initSaveFile_803B950C(&lbl_8050EC80.mFiles[i], &lbl_8050EC80.mBodies[i]);
             }
             lbl_80529DEC.fn_80403680();
             fn_803C24BC();
@@ -1445,7 +1445,7 @@ void FileSelect_804AFF60::fn_803CC490() {
         field_0xb0 = 0x5A;
     } else if (result == 2) {
         field_0x80 = 0x5A;
-        fn_803CE4CC();
+        refreshFileRows_803CE4CC();
         setState(0);
         field_0x113 = 0;
         lbl_80529DEC.field_0x24c = 0;
@@ -1666,7 +1666,7 @@ void FileSelect_804AFF60::fn_803CB3DC() {
 // start the chosen file, 1: copy, 2: delete, 3: back), B goes back, up /
 // down move the cursor (field_0xa0, skipping commands an empty file lacks);
 // the cursor pane field_0x34 bobs for ten frames after a move.
-// field_0xff is compared as a signed int here and in fn_803CE4CC (lbz +
+// field_0xff is compared as a signed int here and in refreshFileRows_803CE4CC (lbz +
 // cmpwi at all three tests; a u8, bool or s8 member gives cmplwi / extsb).
 void FileSelect_804AFF60::fn_803CABAC() {
     if (lbl_8053AD30->fn_80309C4C(0x1100, 1) != 0) {
@@ -2670,7 +2670,7 @@ void FileSelect_804AFF60::fn_803C5190() {
 // State 35 (after the delete's card write, from fn_803BF004): row field_0xa4
 // slides out between the first and third rows' places (fading its colours
 // back when its checksum failed); at its end it waits at the right with
-// message 0x60 and the rows are refreshed (fn_803CE4CC). The copy board
+// message 0x60 and the rows are refreshed (refreshFileRows_803CE4CC). The copy board
 // slides out and the row comes back in (timings lbl_8050DB0C
 // field_0x4c[0xDE..0xE3]); state 36.
 void FileSelect_804AFF60::fn_803C4628() {
@@ -2702,7 +2702,7 @@ void FileSelect_804AFF60::fn_803C4628() {
             setRowAlphas(this, field_0xa4);
             field_0x38[field_0xa4]->field_0x26 = 0;
             setMessage(0x60);
-            fn_803CE4CC();
+            refreshFileRows_803CE4CC();
             field_0x80 = 0;
         }
         if (hasBadChecksum(field_0xa4) != false) {
@@ -2725,7 +2725,7 @@ void FileSelect_804AFF60::fn_803C4628() {
 }
 
 // Back from the delete prompt (state 36), after its message or a button:
-// refreshes the rows (fn_803CE4CC), puts the title message back, hides the
+// refreshes the rows (refreshFileRows_803CE4CC), puts the title message back, hides the
 // file cursor and the command cursor, and goes to state 38.
 void FileSelect_804AFF60::fn_803C4330() {
     if (field_0xb0 > 0) {
@@ -2733,7 +2733,7 @@ void FileSelect_804AFF60::fn_803C4330() {
     }
     if (lbl_8053AD30->fn_80309C4C(0x1300, 1) != 0 || field_0xb0 == 0) {
         field_0xb0 = -1;
-        fn_803CE4CC();
+        refreshFileRows_803CE4CC();
         setMessage(0x117);
         field_0x50->moveFromCentre_80402E08(-300.0f, 0.0f);
         field_0x50->field_0x20 = 0;
@@ -2944,11 +2944,11 @@ void FileSelect_804AFF60::fn_803C2E24() {
     }
 }
 
-// Shows the three file rows: refreshes them (fn_803CE4CC), puts up the
+// Shows the three file rows: refreshes them (refreshFileRows_803CE4CC), puts up the
 // title message, slides the row panes in from their start positions with
 // alpha 0 and goes to state 4.
 void FileSelect_804AFF60::fn_803C24BC() {
-    fn_803CE4CC();
+    refreshFileRows_803CE4CC();
     setMessage(0x117);
     field_0x14->mPane->hide();
     field_0x18->mPane->hide();
@@ -2996,12 +2996,12 @@ void FileSelect_804AFF60::fn_803C24BC() {
     setState(4);
 }
 
-// fn_803CABAC (the file menu), closing it: rereads the files (fn_803CE4CC),
+// fn_803CABAC (the file menu), closing it: rereads the files (refreshFileRows_803CE4CC),
 // shows the file list's message (0x117 / 0x116 as fn_803C0018), slides the
 // file cursor off to the left and fades it, stops the rows, the board's
 // movers and the four buttons; state 6.
 void FileSelect_804AFF60::fn_803C21A8() {
-    fn_803CE4CC();
+    refreshFileRows_803CE4CC();
     setMessage(0x117);
     field_0x50->moveFromCentre_80402E08(-300.0f, 0.0f);
     field_0x50->field_0x20 = 0;
@@ -3209,7 +3209,7 @@ void FileSelect_804AFF60::fn_803C1054() {
 
 // Called by fn_803C9F14 after the copy's card write: shows the copied file
 // field_0xa0's board ('Pqb03'..'Pqb10' as in fn_803C05D8, its stage flags into
-// field_0xa8 / field_0xb8), message 0x64, refreshes the rows (fn_803CE4CC),
+// field_0xa8 / field_0xb8), message 0x64, refreshes the rows (refreshFileRows_803CE4CC),
 // resets the three boards' movers and alphas, puts row field_0xa0 back at the
 // first row's place with its alphas, then state 23 (sound 0x5B).
 void FileSelect_804AFF60::fn_803C0A34() {
@@ -3225,7 +3225,7 @@ void FileSelect_804AFF60::fn_803C0A34() {
         field_0xb8[i] = fn_803B8CAC(field_0xa0, i);
     }
     setMessage(0x64);
-    fn_803CE4CC();
+    refreshFileRows_803CE4CC();
     field_0x80 = 0;
     field_0x14->moveFromCentre_80402E08(0.0f, 0.0f);
     field_0x14->field_0x22 = 0;
@@ -3447,11 +3447,11 @@ void FileSelect_804AFF60::fn_803BF9C4() {
 }
 
 // fn_803C4054 (the delete prompt), the other answer: rereads the files
-// (fn_803CE4CC), shows the file list's message (0x117 / 0x116 as
+// (refreshFileRows_803CE4CC), shows the file list's message (0x117 / 0x116 as
 // fn_803C0018), slides the file cursor off to the left and fades it, stops
 // the rows, the board or the buttons and the first two buttons; state 39.
 void FileSelect_804AFF60::fn_803BF698() {
-    fn_803CE4CC();
+    refreshFileRows_803CE4CC();
     setMessage(0x117);
     field_0x50->moveFromCentre_80402E08(-300.0f, 0.0f);
     field_0x50->field_0x20 = 0;

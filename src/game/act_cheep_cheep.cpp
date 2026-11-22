@@ -71,7 +71,7 @@ bool CheepCheep_804A11B8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos
     return false;
 }
 
-// FIXME: 98.81%. try.py class different, same instruction count: the 0.0f / hitVec.y loads for the fcmpu are swapped between f0 and f1; in case 1 the constant loads (0.3f, 1.0f, 16.0f, 96.0f) and the get_ufloat_1 temporaries use other float registers, and the fabs/fsubs operands are scheduled differently; the stack slots of the float-conversion temporaries in case 1 (sp+0x8) and the std::sqrtf (sp+0xC) are swapped; the r3/r4 argument loads for fn_801F6758 in case 1 are swapped.
+// FIXME: 98.81%. try.py class different, same instruction count: the 0.0f / hitVec.y loads for the fcmpu are swapped between f0 and f1; in case 1 the constant loads (0.3f, 1.0f, 16.0f, 96.0f) and the get_ufloat_1 temporaries use other float registers, and the fabs/fsubs operands are scheduled differently; the stack slots of the float-conversion temporaries in case 1 (sp+0x8) and the std::sqrtf (sp+0xC) are swapped; the r3/r4 argument loads for isOutsideView_801F6758 in case 1 are swapped.
 void CheepCheep_804A11B8::update() {
     JGeometry::TVec3f hitVec;
     u8 turnAround = 0;
@@ -130,7 +130,7 @@ void CheepCheep_804A11B8::update() {
         }
         field_0x25c += 300;
         if (field_0x238 == 0 || hit) {
-            if (hit || fn_801F6758(&mPos, mLayer_0x4, 16.0f) || turnAround == 1) {
+            if (hit || isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) || turnAround == 1) {
                 s32 oldDir = mDir_0x98;
                 mDir_0x98 = 0;
                 if (field_0x270.x < mPos.x) {
@@ -215,7 +215,7 @@ void CheepCheep_804A11B8::update() {
             margin = -24.0f;
             hit = turnAround;
         }
-        if (hit || fn_801F6758(&mPos, mLayer_0x4, margin) || field_0x238 == 0) {
+        if (hit || isOutsideView_801F6758(&mPos, mLayer_0x4, margin) || field_0x238 == 0) {
             mDir_0x98 ^= 1;
             field_0x26c = 0.0f;
             field_0x268 = 0.0f;

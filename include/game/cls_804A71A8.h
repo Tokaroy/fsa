@@ -77,7 +77,7 @@ public:
     void fn_8026F388();
     void fn_8026F54C();
     // 0x8026F710: clears the per-direction flags, the counters and the
-    // owner's field_0xef0; called by the owner's reset fn_80254744.
+    // owner's field_0xef0; called by the owner's reset resetSlot_80254744.
     void fn_8026F710();
     // Whether any of the eight flags at 0x48 (only the first four without
     // `all`) is 1, flags 2, 4 and 5 not counting while field_0xb4 is set.

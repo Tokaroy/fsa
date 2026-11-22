@@ -442,7 +442,7 @@ bool cls_804A4C58::fn_801DD410() {
                     } else {
                         JGeometry::TVec2f p(mPos.x, mPos.y);
                         fn_80237948(i, &p);
-                        if (outFlag == 1 && field_0x1dc.fn_801EAC20(i)) {
+                        if (outFlag == 1 && field_0x1dc.startTimer_801EAC20(i)) {
                             JGeometry::TVec3f at(where.x, where.y, 0.0f);
                             fn_801CB538(mLayer_0x4, &at, 0, 0);
                             sound = true;

@@ -33,8 +33,8 @@ inline s32 LogMonitorNpc_804AD278::findLog() {
         if (log != NULL) {
             JGeometry::TBox2f box;
             JGeometry::TBox2f logBox;
-            fn_801F31C4(&box);
-            log->fn_801F31C4(&logBox);
+            getBoxAtPos_801F31C4(&box);
+            log->getBoxAtPos_801F31C4(&logBox);
             JGeometry::TBox2f overlap = box;
             if (overlap.intersect(logBox) && log->mPos.z <= 0.0f) {
                 serial = log->mSerial;

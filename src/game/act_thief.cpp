@@ -654,7 +654,7 @@ void Thief_804A5A30::updateBehavior_0x9C(u8 mapHit) {
     default:
         if (fn_80204638()->field_0x0 == 0 && !fn_802064E0()) {
             JGeometry::TBox2f box;
-            fn_801F31C4(&box);
+            getBoxAtPos_801F31C4(&box);
             for (s32 i = 0; i < 4; i++) {
                 if (fn_801CCFE4(i)) {
                     if (getPlayerLayer_8023DE58(i) == getField_0x4() &&

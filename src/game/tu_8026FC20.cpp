@@ -295,7 +295,7 @@ static const f32 lbl_8046BD88[4][2] = {{24.0f, 0.0f}, {-24.0f, 0.0f}, {2.0f, 24.
 // the player when none is out and the life is full (or under fn_80241284 with 0x11AC == 1 and
 // fn_80241544() >= 2, which also sets 0x100 in its argument). fn_8027B648, fn_8027D5F0.
 // The life test is the leader's (fn_80237774 / fn_80237810) under hasLeader_80240808, else the
-// player's own (fn_8024189C / fn_802417CC); as early returns it branches straight into the
+// player's own (getLife_8024189C / fn_802417CC); as early returns it branches straight into the
 // spawn, as in the original (a bool helper materialises li 0 / 1).
 static inline void fireSwordBeam(Player_804A6F38* player) {
     s32 facing = player->mFacing_0x3dc;
@@ -307,7 +307,7 @@ static inline void fireSwordBeam(Player_804A6F38* player) {
             if (fn_80237774(player->fn_80240644()) < fn_80237810(player->fn_80240644())) {
                 return;
             }
-        } else if (player->fn_8024189C() < player->fn_802417CC()) {
+        } else if (player->getLife_8024189C() < player->fn_802417CC()) {
             return;
         }
     }
@@ -826,7 +826,7 @@ void Player_804A6F38::fn_8027BE74() {
             mVel_0x344.z = 1.5f;
             fn_8024F0E8(0x10002);
         } else {
-            fn_802808E8(1.125f);
+            moveByStick_802808E8(1.125f);
         }
         fn_80275D9C();
         fn_80274CB8();
@@ -1190,7 +1190,7 @@ void Player_804A6F38::fn_8027A908() {
 // around the player and BgRewrite fn_802A20F0 runs at the player and at the eight probe points
 // pushed twice as far out. Running into a wall (fn_8025196C) bounces the player back (pose 2:
 // sound 0x20010, a view shake, 0x344 = 2.5 against the facing, z 2) or, under fn_8022AF5C's
-// alternative, hands the facing on to the group (fn_80230BF4). Pose 2 falls with 0x344 until
+// alternative, hands the facing on to the group (setPlayerFacing_80230BF4). Pose 2 falls with 0x344 until
 // it lands.
 // FIXME: 97.20 %, scheduling+regalloc; behaviour clean.
 // Scheduling and registers only: the original stores the three step floats to
@@ -1303,16 +1303,16 @@ void Player_804A6F38::fn_8027A1E0() {
                     if (fn_80243194(i)) {
                         switch (facing) {
                         case 0:
-                            fn_80230BF4(i, 1);
+                            setPlayerFacing_80230BF4(i, 1);
                             break;
                         case 1:
-                            fn_80230BF4(i, 0);
+                            setPlayerFacing_80230BF4(i, 0);
                             break;
                         case 2:
-                            fn_80230BF4(i, 3);
+                            setPlayerFacing_80230BF4(i, 3);
                             break;
                         case 3:
-                            fn_80230BF4(i, 2);
+                            setPlayerFacing_80230BF4(i, 2);
                             break;
                         }
                     }
@@ -1465,7 +1465,7 @@ static inline void updateStepEmitters(Player_804A6F38* player) {
 // Landing from a knock-back: down (0x33) with no life left, else back to the previous state
 // when it was 0x4A / 0x4B, else state 0.
 static inline void landFromHit(Player_804A6F38* player) {
-    if (player->fn_8024189C() <= 0) {
+    if (player->getLife_8024189C() <= 0) {
         player->fn_80251AEC(0x33);
     } else if (player->mPrevState_0x1248 == 0x4a || player->mPrevState_0x1248 == 0x4b) {
         player->fn_80251AEC(player->mPrevState_0x1248);
@@ -1477,7 +1477,7 @@ static inline void landFromHit(Player_804A6F38* player) {
 // Update of state 0x0F (knocked back by a hit): the push 0x350 with gravity 0.25 (down to -4),
 // poses 0 / 1 (0x488 > 0: hurt) until frame 10, 2, then 3 from 14; from frame 20 on the ground
 // it lands (landFromHit). Hit kind 3 (0x11E4) keeps the player in the view (0x11E9) and does not
-// slide; the others slide with the stick (fn_802808E8(1.5)). The hit emitters 0x135C / 0x132C
+// slide; the others slide with the stick (moveByStick_802808E8(1.5)). The hit emitters 0x135C / 0x132C
 // follow the player turned by facing, the step emitters run on the ground, and kinds 0x17 / 0x19
 // move with fn_802685D4. The kind-3 view box is computed and not used (the original keeps
 // its stack stores too).
@@ -1514,7 +1514,7 @@ void Player_804A6F38::fn_80279824() {
         }
     } else {
         if (mPos.z <= 0.0f) {
-            fn_802808E8(1.5f);
+            moveByStick_802808E8(1.5f);
         }
         if (mAnimTimer_0x3fa >= 20 && mPos.z <= 0.0f) {
             landFromHit(this);
@@ -1612,7 +1612,7 @@ void Player_804A6F38::fn_802791B0() {
         if (field_0xbf0->anyFlag48() || !contains(box, mPos) ||
             (hasLeader_80240808() && fn_802486A0() != 4 && !fn_80234B24(fn_80240644()))) {
             if (mAnimTimer_0x3fa >= 20) {
-                if (fn_8024189C() <= 0) {
+                if (getLife_8024189C() <= 0) {
                     fn_80251AEC(0x33);
                 } else {
                     mVel_0x344.x = field_0x350.x;
@@ -1875,8 +1875,8 @@ void Player_804A6F38::fn_80277F98() {
     } else if (field_0xd2d == 1) {
         if (field_0xd30 == 0) {
             if (!hasLeader_80240808() ||
-                (hasLeader_80240808() && !(fn_8023E98C(fn_80240644()) && fn_80236B50(fn_80240644())) &&
-                 !(!fn_80236AB4(fn_80240644()) && fn_80236B50(fn_80240644())))) {
+                (hasLeader_80240808() && !(fn_8023E98C(fn_80240644()) && isPlayerDead_80236B50(fn_80240644())) &&
+                 !(!fn_80236AB4(fn_80240644()) && isPlayerDead_80236B50(fn_80240644())))) {
                 fn_8024F0E8(0x20033);
                 field_0xd30++;
             }
@@ -1891,7 +1891,7 @@ void Player_804A6F38::fn_80277F98() {
                 mVel_0x344.z -= 0.25f;
             } else {
                 mPos.z = 0.0f;
-                if (!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))) {
+                if (!hasLeader_80240808() || (hasLeader_80240808() && !isPlayerDead_80236B50(fn_80240644()))) {
                     mStateLocked_0x124d = 0;
                     if (fn_80251AEC(0)) {
                         field_0xc00 = 0;
@@ -1942,9 +1942,9 @@ void Player_804A6F38::fn_80277F98() {
                 box.f.x += mPos.x;
                 box.f.y += mPos.y;
                 if (fn_80247330() < 0.0f) {
-                    fn_802808E8(1.5f);
+                    moveByStick_802808E8(1.5f);
                 } else {
-                    fn_802808E8(0.12f);
+                    moveByStick_802808E8(0.12f);
                 }
                 for (s32 i = 0; i < 4; i++) {
                     if (i != mPlayerNo_0x4 && isPlayerBitSet(gGameRoot_8053AAF8, i) &&
@@ -1956,7 +1956,7 @@ void Player_804A6F38::fn_80277F98() {
                 }
                 field_0xd0c = 18;
             } else {
-                fn_802808E8(0.12f);
+                moveByStick_802808E8(0.12f);
             }
         }
         if (field_0xbf0->anyFlag48()) {
@@ -2038,7 +2038,7 @@ static inline void startTingle(Player_804A6F38* player) {
 static inline void tingleHeal(Player_804A6F38* player) {
     if (player->field_0xd30 == 420) {
         player->field_0xc00 = 0;
-        if (player->fn_8024189C() <= 0) {
+        if (player->getLife_8024189C() <= 0) {
             player->fn_80270DDC(player->fn_802417CC() - 4, false);
         }
     }
@@ -2075,7 +2075,7 @@ void Player_804A6F38::fn_8027776C() {
         }
         tingleHeal(this);
         if (field_0xd30 >= 480) {
-            if (!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))) {
+            if (!hasLeader_80240808() || (hasLeader_80240808() && !isPlayerDead_80236B50(fn_80240644()))) {
                 mStateLocked_0x124d = 0;
                 fn_80251AEC(0);
             }
@@ -2145,7 +2145,7 @@ void Player_804A6F38::fn_80277220() {
     field_0x350.z = 0.0f;
     mPos.add(field_0x350);
     if (mPos.z <= 0.0f) {
-        fn_802808E8(1.5f);
+        moveByStick_802808E8(1.5f);
     }
     mStateTimer_0x3fc++;
     if (mStateTimer_0x3fc >= 20) {
@@ -3285,7 +3285,7 @@ bool Player_804A6F38::fn_802732C4(const JGeometry::TBox2f* box, s32 layer) {
     if (layer != mLayer_0x3b4) {
         return false;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
     if (fn_802413E8()) {
@@ -3319,7 +3319,7 @@ bool Player_804A6F38::fn_802730D8(const JGeometry::TBox2f* box, s32 layer, bool 
     if (layer != mLayer_0x3b4) {
         return false;
     }
-    if (!flag && fn_80270A8C()) {
+    if (!flag && isDeadState_80270A8C()) {
         return false;
     }
     if (fn_802413E8()) {
@@ -3509,7 +3509,7 @@ bool Player_804A6F38::fn_802724E0(const JGeometry::TBox2f* box, s32 layer) {
     if (mPos.z > 0.0f) {
         return false;
     }
-    if (!(fn_80270A8C() && fn_80270A04()) && !fn_80251BFC(0x19)) {
+    if (!(isDeadState_80270A8C() && fn_80270A04()) && !fn_80251BFC(0x19)) {
         return false;
     }
     return overlapsInView(this, *box, layer);
@@ -3636,7 +3636,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
             damage = damage / 2;
         }
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
     if (damage >= 4 && !gGameRoot_8053AAF8->field_0x7f && saveRowFlag() == 1) {
@@ -3673,14 +3673,14 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
             fn_80236468(mPlayerNo_0x4, damage);
         }
     }
-    if (fn_8024189C() <= 0) {
+    if (getLife_8024189C() <= 0) {
         fn_80251AEC(0x33);
         return true;
     }
     if (damage > 0) {
         field_0x488 = 4;
     }
-    if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && damage >= 4 && fn_8024189C() > 0) {
+    if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && damage >= 4 && getLife_8024189C() > 0) {
         lbl_8053AED0->fn_8043D67C(0x18f, mPlayerNo_0x4, 0);
     }
     if (damage >= 4) {
@@ -3949,7 +3949,7 @@ void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
         return;
     }
     if (!gGameRoot_8053AAF8->field_0x7f && isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
-        if (!(mLife_0xbfc > 0 && !fn_80270A8C())) {
+        if (!(mLife_0xbfc > 0 && !isDeadState_80270A8C())) {
             return;
         }
     }
@@ -4032,7 +4032,7 @@ bool Player_804A6F38::fn_80270ABC() const {
     if (fn_802411D8() == true) {
         return true;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return true;
     }
     if (fn_80270A58()) {
@@ -4057,7 +4057,7 @@ bool Player_804A6F38::fn_80270ABC() const {
 }
 
 // State 0x33 (requested when the life 0xBFC reaches 0) requested or current, or 0x34.
-bool Player_804A6F38::fn_80270A8C() const {
+bool Player_804A6F38::isDeadState_80270A8C() const {
     if (mRequestedState_0x1244 == 0x33 || mState_0x1240 == 0x33 || mState_0x1240 == 0x34) {
         return true;
     }
@@ -4084,7 +4084,7 @@ void Player_804A6F38::fn_802709C8() {
 }
 
 void Player_804A6F38::fn_80270948(const JGeometry::TVec3f* pos) {
-    if (!fn_80270A8C()) {
+    if (!isDeadState_80270A8C()) {
         return;
     }
     if (field_0xd2c == 1) {
@@ -4166,7 +4166,7 @@ void Player_804A6F38::fn_8027057C() {
                 } else {
                     field_0xcfc = 0;
                     for (s32 i = 0; i < 4; i++) {
-                        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_80236B50(i) && !fn_80236AB4(i)) {
+                        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && isPlayerDead_80236B50(i) && !fn_80236AB4(i)) {
                             fn_80236350(i);
                         }
                     }

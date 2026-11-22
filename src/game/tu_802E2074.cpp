@@ -67,7 +67,7 @@ void EnemyGenerator2_804A9BC8::update() {
                     lbl_8053ACB0--;
                     if (lbl_8053ACB0 == 0) {
                         ActorBase_804A5770* list[ACTOR_MANAGER_MAX_ACTORS];
-                        s32 count = getActorManager_801F856C()->fn_801F7818('GEN2', mLayer_0x4, list, -1);
+                        s32 count = getActorManager_801F856C()->collectActorsById_801F7818('GEN2', mLayer_0x4, list, -1);
                         for (s32 k = 0; k < count; k++) {
                             if (list[k] != NULL) {
                                 static_cast<EnemyGenerator2_804A9BC8*>(list[k])->field_0x230 = 1;

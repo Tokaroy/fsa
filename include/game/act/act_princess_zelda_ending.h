@@ -22,7 +22,7 @@ public:
     // 0x8035C15C: the step sequencer. When the step timer (0x244) is 0, reads
     // step 0x24C of table `seq` (lbl_804AD460): returns true at its end
     // marker, else loads the timer and the value (0x248) and advances.
-    bool fn_8035C15C(s32 seq);
+    bool stepSequence_8035C15C(s32 seq);
     // 0x8035C1C4: restarts the sequencer on table `seq` with `arg` in 0x250.
     void fn_8035C1C4(s32 seq, s32 arg);
 

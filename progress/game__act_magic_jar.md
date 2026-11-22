@@ -7,5 +7,5 @@ Matched: dtor, vfunc_0x40, draw, init, __sinit (generated; gen_game.tsv rows rem
 Resistant: update 99.63% (operands). Same instructions; stack slots differ: original probe vector
 at 0x1c and TBox2f at 0x28, ours box 0x1c and probe 0x2c (tried: hoisted declaration, braces around the box).
 
-SHARED-EDITS: include/game/Player.h (fn_8023B8E4, fn_80236B50, fn_802375B0, fn_80230EB8, fn_80237524 in
+SHARED-EDITS: include/game/Player.h (fn_8023B8E4, isPlayerDead_80236B50, fn_802375B0, fn_80230EB8, fn_80237524 in
 the extern "C" block); config/G4SE01/gen_game.tsv (act_magic_jar rows removed).

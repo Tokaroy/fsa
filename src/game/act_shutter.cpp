@@ -17,11 +17,11 @@ void Shutter_804A8118::init() {
         s32 layer = mLayer_0x4 + 1;
         JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
         gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
-        gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+        gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
         mAlive = false;
     } else {
-        gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+        gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0, 0, 0x40, 0xC0);
     }
 }
@@ -39,7 +39,7 @@ void Shutter_804A8118::update() {
                 mState = 2;
                 mTimer = 2;
             } else {
-                gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+                gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                     gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0, 0, 0x40, 0xC0);
                 mState = 1;
             }
@@ -54,7 +54,7 @@ void Shutter_804A8118::update() {
     case 2:
         mTimer--;
         if (mTimer == 0) {
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0xC0, 0, 0x40, 0xC0);
             startSound_801F0E34(0x30016, 0);
             mState = 3;
@@ -64,7 +64,7 @@ void Shutter_804A8118::update() {
     case 3:
         mTimer--;
         if (mTimer == 0) {
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0, 0, 0x40, 0xC0);
             mState = 1;
             mTimer = 2;
@@ -74,7 +74,7 @@ void Shutter_804A8118::update() {
         mTimer--;
         if (mTimer == 0) {
             if (mLayer_0x4 < 8) {
-                gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+                gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                     gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0xC0, 0, 0x40, 0xC0);
                 mState = 5;
                 mTimer = 2;
@@ -83,7 +83,7 @@ void Shutter_804A8118::update() {
                 s32 layer = mLayer_0x4 + 1;
                 JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
                 gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
-                gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+                gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                     gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
                 if (mFlag == 0) {
                     fn_801F35AC();
@@ -101,7 +101,7 @@ void Shutter_804A8118::update() {
             s32 layer = mLayer_0x4 + 1;
             JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
             gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
             if (mFlag == 0) {
                 fn_801F35AC();

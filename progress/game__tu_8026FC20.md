@@ -7,7 +7,7 @@ Left unwritten on purpose:
 - fn_80276538, fn_8027A0D4-style literal users (fn_80279FE8): new float literals (7, -15, 15, 6) enter our .sdata2 pool
   before 0.0f (second in the original), which turns every later 0.0f user (fn_8027966C, fn_8027CB24...) into reloc-name.
   Write them when the earlier literal users (fn_8026FD14 ...) exist.
-- fn_80270948, fn_80270DDC, fn_80270F00: inline fn_80270A8C (defined earlier; the original inlines it) plus more; not tried.
+- fn_80270948, fn_80270DDC, fn_80270F00: inline isDeadState_80270A8C (defined earlier; the original inlines it) plus more; not tried.
 - fn_802771C8, fn_802775C8, fn_8027A178, fn_8027CBB0: stop-emitter sequence on a JPABaseEmitter (+0xF4 |= 1, +0x24 = 1)
   that the TWW JPAEmitter.h layout does not have (see act_force_gem_wooden's FIXME).
 - fn_8027A0D4 passes &field_0x130c as the particle callback argument of spawnEmitter_8013CC50 (type unknown).
@@ -70,7 +70,7 @@ Structural: fn_802791B0 99.98 reloc-name (-2.0f pool slot; needs fn_80277F98 fir
 missing/extra (one dead `beq` after the Tingle null test), fn_80273FB8 98.59 -> 99.62 (now inlines
 fn_802730D8; auto_inline region because fn_80274238 calls it out of line; return is u8 in the original
 but fn_80274238 then converts it).
-Cleanup: the isDown() file inline is gone (deferred inlining: fn_80270A8C is the plain function).
+Cleanup: the isDown() file inline is gone (deferred inlining: isDeadState_80270A8C is the plain function).
 SHARED-EDITS: include/game/Player.h (isDown decl removed, comments), include/game/act/tu_803D9944.h
 (Tingle_804B0478 u8 field_0x251 from field_0x230[0x30], size unchanged; stb 0x251 in tu_803D9944).
 Next: fn_80277F98 (0x33 update, 0x1128; fixes the 24 / -24 / -12 / 1.625 / 0.12 literals before -2),

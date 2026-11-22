@@ -945,7 +945,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F9F0() {
 }
 
 // Not auto-inlined: draw calls fn_8010F7EC, update calls fn_8010F4DC out of line in the original
-// (docs/INLINING.md, pragma rule 1); fn_8010F4DC calls fn_8010F668 out of line twice.
+// (docs/INLINING.md, pragma rule 1); fn_8010F4DC calls makeAxisRotation_8010F668 out of line twice.
 #pragma auto_inline off
 // Draws the maiden's sprite (frame `arg` of the current animation): bobbing in z while state 0x2F.
 void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
@@ -982,7 +982,7 @@ void PrincessZeldaDemo_8049D208::fn_8010F7EC(s32 arg) {
 // The rotation matrix about `axis` by `rad` (the 3x3 part), with its own normalisation.
 // FIXME: 98.87 %, regalloc-only; behaviour clean.
 // FIXME(shotgun): register allocation and literal-pool names still differ.
-void fn_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 rad) {
+void makeAxisRotation_8010F668(Mtx m, const JGeometry::TVec3f* axis, f32 rad) {
     JGeometry::TVec3f n;
     n.normalize(*axis);
     f32 s = sin(rad);
@@ -1008,12 +1008,12 @@ void PrincessZeldaDemo_8049D208::fn_8010F4DC() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
-    fn_8010F668(mtx, &axisX, 0.08726646f);
+    makeAxisRotation_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
     rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
         rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
-    fn_8010F668(rot, &axisZ, field_0x268);
+    makeAxisRotation_8010F668(rot, &axisZ, field_0x268);
     PSMTXConcat(mtx, rot, mtx);
     field_0x240++;
     if (field_0x240 >= 200) {
@@ -1114,11 +1114,11 @@ void PrincessZeldaDemo_8049D208::fn_8010E7E8(s32 arg) {
         field_0x2dc.y -= 300.0f;
         break;
     case 12:
-        fn_80119DD0()->fn_80119998(0x5A, 0, 2, 0, 0, 0x3C, 0);
+        fn_80119DD0()->startFade_80119998(0x5A, 0, 2, 0, 0, 0x3C, 0);
         break;
     case 13:
         getGameView_802D6A9C()->fn_802D9FF4(field_0x244, field_0x248);
-        getGameView_802D6A9C()->fn_802DA8DC();
+        getGameView_802D6A9C()->resetStage_802DA8DC();
         break;
     case 14: {
         fn_8011921C()->setField_0x2(1);

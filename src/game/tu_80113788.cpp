@@ -413,7 +413,7 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
         }
         break;
     case 9: {
-        fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x248 = 1;
         positionPlayers();
         if (field_0x238 == 0) {
@@ -567,12 +567,12 @@ void CrystalCutscene_8049D83C::fn_8011395C() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
-    fn_8010F668(mtx, &axisX, 0.08726646f);
+    makeAxisRotation_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
     rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
         rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
-    fn_8010F668(rot, &axisZ, field_0x258);
+    makeAxisRotation_8010F668(rot, &axisZ, field_0x258);
     PSMTXConcat(mtx, rot, mtx);
     if (field_0x234 != 0) {
         field_0x24c++;
@@ -682,7 +682,7 @@ void CrystalCutscene_8049D83C::positionPlayers() {
             pos.x += 24.0f;
         }
         fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-        fn_80230BF4(i, 3);
+        setPlayerFacing_80230BF4(i, 3);
     }
 }
 

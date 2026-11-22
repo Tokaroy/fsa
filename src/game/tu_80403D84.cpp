@@ -155,7 +155,7 @@ static const s16 lbl_8048C95C[32][2] = {
 static const s16 lbl_8048C9DC[8][2] = {
     {161, 238}, {354, 90}, {435, 90}, {196, 105}, {295, 250}, {352, 125}, {224, 92}, {417, 129},
 };
-// The state handlers, indexed by mState_0x350 (fn_804108B4).
+// The state handlers, indexed by mState_0x350 (update_804108B4).
 static MapScreen_804B1288::StateFunc lbl_804B10F8[22] = {
     &MapScreen_804B1288::fn_8040F3AC,
     &MapScreen_804B1288::fn_8040F35C,
@@ -180,7 +180,7 @@ static MapScreen_804B1288::StateFunc lbl_804B10F8[22] = {
     &MapScreen_804B1288::fn_80409450,
     &MapScreen_804B1288::fn_80409330,
 };
-// The message-box handlers, indexed by mMessageState_0x659 (fn_804108B4).
+// The message-box handlers, indexed by mMessageState_0x659 (update_804108B4).
 static MapScreen_804B1288::StateFunc lbl_804B1230[4] = {
     &MapScreen_804B1288::fn_80403F50,
     &MapScreen_804B1288::fn_80403EAC,
@@ -816,7 +816,7 @@ void MapScreen_804B1288::fn_80411A94(f32 alpha) {
     mMapAreaScreen_0x10->search(0x54746C763134ull /* "Ttlv14" */)->setAlpha(field_0x64b[1] * (1.0f - alpha));
 }
 
-void MapScreen_804B1288::fn_80411230() {
+void MapScreen_804B1288::draw_80411230() {
     gGameRoot2_8053AB10->fn_8013B490();
     if (mStage_0x340 < 7 && !isStageFlagSet(mStage_0x340, 3) && (isCursorState() || mState_0x350 == 0x13)) {
         if (!mMapAreaScreen_0x10->search('Pphu01')->mIsVisible) {
@@ -888,7 +888,7 @@ void MapScreen_804B1288::fn_804111C4() {
     lbl_8053AED8->fn_80440EE8();
 }
 
-void MapScreen_804B1288::fn_804108B4() {
+void MapScreen_804B1288::update_804108B4() {
     (lbl_8053ADF8->*lbl_804B10F8[mState_0x350])();
     (lbl_8053ADF8->*lbl_804B1230[mMessageState_0x659])();
     fn_80408114();
@@ -3351,7 +3351,7 @@ void MapScreen_804B1288::fn_80403D84() {
 }
 
 // Slides field_0x2b4 from 200 above its place down to it and fades it in, eased by
-// (frame / frames)^2. Dead-stripped: fn_804108B4 inlines it twice (sliding in and
+// (frame / frames)^2. Dead-stripped: update_804108B4 inlines it twice (sliding in and
 // out); its own copy created the unit's first .sdata2 literals (0.0f, -200.0f,
 // 200.0f and the two int-to-float constants) before fn_80403D84.
 // R2 pool helper (inlined at 2 call sites); was slidePane.

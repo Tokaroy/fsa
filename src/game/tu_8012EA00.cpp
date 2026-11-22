@@ -44,7 +44,7 @@ inline void RoomWarpForL72_8049E8F8::setState(s32 state) {
     switch (field_0x230) {
     case 1:
         fn_8023077C();
-        fn_80119DD0()->fn_80119998(0x3C, 0, 1, 0, 1, 0x5A, 0);
+        fn_80119DD0()->startFade_80119998(0x3C, 0, 1, 0, 1, 0x5A, 0);
         break;
     case 2:
         getGameView_802D6A9C()->fn_802D9FF4(field_0x234, field_0x238);

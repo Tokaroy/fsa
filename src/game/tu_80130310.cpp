@@ -115,7 +115,7 @@ void MalonAndTalonController_8049EA88::update() {
         }
         if (fn_80130370()) {
             for (int i = 0; i < 4; i++) {
-                fn_80230BF4(i, 3);
+                setPlayerFacing_80230BF4(i, 3);
                 fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0xFF, -0x80, -0x80, true);
             }
             setState(3);
@@ -254,9 +254,9 @@ bool MalonAndTalonController_8049EA88::fn_80130370() {
         } else {
             yDone = true;
         }
-        fn_80230BF4(i, dir);
+        setPlayerFacing_80230BF4(i, dir);
         if (xDone && yDone) {
-            fn_80230BF4(i, 3);
+            setPlayerFacing_80230BF4(i, 3);
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0xFF, -0x80, -0x80, true);
         } else {
             fn_802303FC(i, &p, true);

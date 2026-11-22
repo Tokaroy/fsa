@@ -8,7 +8,7 @@ After: 24 / 53 at 100 % in the unit file plus 26 structurally done
 handlers)" for what each state is.
 
 Not written:
-- fn_80290070 (0xCE8): inlines fn_80290D58 and fn_80290E90, both defined
+- startTransition_80290070 (0xCE8): inlines fn_80290D58 and fn_80290E90, both defined
   after it (needs deferred inlining; left unwritten per the rules).
 - fn_80290FC0 (state 0x32 update): needs Player 0x1344 typed as
   `JGeometry::TVec3f field_0x1344;` (now `u8 field_0x1344[0x1350 - 0x1344]`;
@@ -24,7 +24,7 @@ SHARED-EDITS:
   spinFacing, stepWalkCycle, setHeldPos, stepTransitionAnim, spawnEffect17D,
   followCamera, requestArrival, spawnEffect15B, life, fallStep,
   riseToTarget: unit-local inlines of tu_8028FBA0; fn_8026152C(bool) of
-  tu_8025EB18); fn_80290070 returns bool (was u8; callers test clrlwi.).
+  tu_8025EB18); startTransition_80290070 returns bool (was u8; callers test clrlwi.).
 - include/game/GameGlobals.h: `bool fn_80301CD0(s32 layer);` (tu_80301CD0,
   already defined there with C++ linkage).
 - config/G4SE01/symbols.txt: fn_8026152C -> fn_8026152C__15Player_804A6F38Fb

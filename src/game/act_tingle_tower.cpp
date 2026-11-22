@@ -71,9 +71,9 @@ inline void TinglesTowerTingleAndSign_804AAD60::updateFacing() {
         JGeometry::TVec3f dir;
         f32 dist;
         if (field_0x254 < 0 || getPlayerLayer_8023DE58(field_0x254) != getField_0x4()) {
-            fn_801EE558(&dir, &dist, 0);
+            getNearestPlayerDir_801EE558(&dir, &dist, 0);
         } else {
-            fn_801EE558(&dir, &dist, field_0x254 + 1);
+            getNearestPlayerDir_801EE558(&dir, &dist, field_0x254 + 1);
         }
         if (dist < 80.0f) {
             u32 angle = (u16)(JMath::atanTable_.atan2_(-dir.x, -dir.y) *
@@ -231,7 +231,7 @@ void TinglesTowerTingleAndSign_804AAD60::fn_80315EE8() {
             if (startMessage(found, 0x47E, 0x110)) {
                 JGeometry::TVec3f targetPos = *getPlayerPos_8023E724(found);
                 targetPos.y = box.i.y - 1.0f;
-                fn_80230BF4(found, 3);
+                setPlayerFacing_80230BF4(found, 3);
                 fn_80230498(found, &targetPos, 0x3E, 0xFF, -0x80, -0x80, true);
                 startSound_801F0E34(0x50057, 0);
             }

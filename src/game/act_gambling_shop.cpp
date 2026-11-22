@@ -152,9 +152,9 @@ void GamblingShop_804AAA70::update() {
             f32 dist;
             // The layer is on the left: that compare order is what the original emits.
             if (player < 0 || getPlayerLayer_8023DE58(player) != getField_0x4()) {
-                fn_801EE558(&dir, &dist, 0);
+                getNearestPlayerDir_801EE558(&dir, &dist, 0);
             } else {
-                fn_801EE558(&dir, &dist, player + 1);
+                getNearestPlayerDir_801EE558(&dir, &dist, player + 1);
             }
             if (dist >= 80.0f) {
                 field_0x238 = 2;

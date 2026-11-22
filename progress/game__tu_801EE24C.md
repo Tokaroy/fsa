@@ -20,7 +20,7 @@ Next: the remaining ~95 functions of the unit (die_0x24..0x50 first),
 then the .sdata2 order resolves the ctor.
 
 ## 2026-11-05 pass (Sonnet 5.5)
-Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, fn_801F3668, fn_801F4694 (const).
+Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), getBoxAtPos_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, fn_801F3668, fn_801F4694 (const).
 Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / fn_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
 SHARED-EDITS: include/game/ActorBase.h (fn_801EE3C0 moved out of extern "C"; fn_801F4694 / fn_801F317C const); symbols.txt renames fn_801EE3C0__FUs, fn_801F4694...CFv, fn_801F317C...CF....
 Next: releaseEmitter_801EE434 (0xBC), sweepMapBox_801F2618, fn_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
@@ -47,7 +47,7 @@ SHARED-EDITS: symbols.txt releaseEmitter_801EE434 -> releaseEmitter_801EE434__FP
 fn_8022BB48 -> fn_8022BB48__FlPCQ29JGeometry8TVec3<f>; Player.h declares
 fn_8022BB48; ActorBase.h startSound_801F0E34 returns JAISoundHandle*, releaseEmitter_801EE434 out
 of extern "C"; tools/gen_game.py EMIT_RELEASE (protected: needs approval).
-Next: fn_801EE558 / fn_801EE8F4 (literal order), findTargetPlayer_801EEC98, drawSprite_801F06F0
+Next: getNearestPlayerDir_801EE558 / fn_801EE8F4 (literal order), findTargetPlayer_801EEC98, drawSprite_801F06F0
 (SpriteParams copy), findOverlappingPlayer_801F285C, takeHit_801F37AC, drawShadow_801EF830, fn_801F52A4.
 
 ## 2026-11-05 leverage wave 7, ActorBase round 2 (Opus 5.5)
@@ -66,7 +66,7 @@ Written (all with FIXMEs):
   objects (lbl_8053F728/72C 'NULL' first in .sdata2; lbl_80543F40-4C zero in .sbss2, not yet
   in this unit's splits); MWCC emits one 8-byte @NNN per array here. Unresolved; file-scope
   consts fold.
-- fn_801EE558 99.4 / fn_801EE8F4 99.6 scheduling+regalloc (pos load order in the prologue).
+- getNearestPlayerDir_801EE558 99.4 / fn_801EE8F4 99.6 scheduling+regalloc (pos load order in the prologue).
   They inline fn_801F320C: new static inline isPlayerOnLayer (fn_801F320C now calls it),
   following the existing isPlayerBelowLayer8 precedent.
 - startBossDeath_0x28 99.7, fn_801F2A10 99.9: instructions identical, literal names only.
@@ -95,7 +95,7 @@ Written:
   bool narrowing), fn_801F23BC 98.7 (bool narrowing only).
 - lbl_80469EF8 (hurt voices) as data; fn_801F4694 now pairs (rodata offsets).
 Simplified: isPlayerBelowLayer8 / isPlayerOnActorLayer inline workarounds are
-gone; fn_801F329C (now const, symbols.txt renamed) and fn_801F320C are plain
+gone; isPlayerOnLowerLayer_801F329C (now const, symbols.txt renamed) and fn_801F320C are plain
 functions their callers inline under deferred, every % kept.
 Re-measured under deferred, unchanged: the ctor (99.91, reloc-name only: 1.0f
 needs fn_801EF574 written first, 6.0f/doubles drawSprite, ...); the bool
@@ -106,7 +106,7 @@ vfunc_0x5C/0x60/0x64 100 -> 84-86, Terrorpin/Beamos/Thief vfunc_0x60/0x64,
 act_sword_soldier fn_801545C0, several update()s): needs a joint retype of
 those virtuals; experiment saved, not merged.
 Shared headers: isStageFlagSet / fn_8019CE40 return BOOL (cmpwi at every
-caller; fn_8019CE40 stays 100, Player fn_80254744 98.72 -> 98.83);
+caller; fn_8019CE40 stays 100, Player resetSlot_80254744 98.72 -> 98.83);
 ActorManager::fn_801F6718 takes s32 a/b/c (callers pass raw words; callee 100,
 symbols.txt renamed).
 Not written (drafts in the round's scratchpad): drawSprite_801F06F0,
@@ -123,11 +123,11 @@ candidate in the headers without a cast).
 where ours hoists ...rodata.0; with the tables extern the hoist goes away, so
 the tables (0x80469D48-0x8046A048) probably belong to another unit (split
 change, not done).
-SHARED-EDITS: ActorBase.h (fn_801F329C const, fn_801F172C member decl,
+SHARED-EDITS: ActorBase.h (isPlayerOnLowerLayer_801F329C const, fn_801F172C member decl,
 fn_801F23BC param names to/from, hit-field comments, docs); EnemyBase.h
 (fn_801CB5CC extern "C", fn_801CCDA4); StageFlag.h + tu_80379F84.h +
 tu_80197070.cpp (BOOL); ActorManager.h + tu_801F6058.cpp (fn_801F6718 ints);
-symbols.txt (fn_801F329C CFl, fn_801F172C member, fn_801F6718 FllPC...ll).
+symbols.txt (isPlayerOnLowerLayer_801F329C CFl, fn_801F172C member, fn_801F6718 FllPC...ll).
 
 ## 2026-11-06 leverage, ActorBase round 4 (Opus 5.5)
 Baseline 9018 honest -> 9020 (+2); unit 47 -> 49 / 75 at 100 %. No function anywhere

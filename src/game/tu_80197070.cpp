@@ -749,7 +749,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         if (field_0x24c < 0) {
             field_0x248 = 0;
             field_0x24c = 0;
-            fn_80119DD0()->fn_80119998(100, 0, 0, 0, 0, 0, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 0, 0, 0, 0, 0);
             if (mEmitters[11] != NULL) {
                 getEffectSystem_8013C824()->mEmitterManager->forceDeleteEmitter(mEmitters[11]);
                 mEmitters[11] = NULL;
@@ -818,7 +818,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
         for (s32 i = 0; i < 4; i++) {
             if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i)) {
                 copyVec3_8019CECC(&field_0x2d4[i], getPlayerPos_8023E724(i));
-                if (fn_80236B50(i)) {
+                if (isPlayerDead_80236B50(i)) {
                     fn_8023764C(i, 1);
                 }
             }
@@ -1542,7 +1542,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
     case 0x3C: {
         copyVec3_8019CECC(&savedPos, &mPos);
         addCalc2_801F71A4(&field_0x2d4[0].y, field_0x280[2].y, 0.3f, 1.0f);
-        fn_80230BF4(0, 3);
+        setPlayerFacing_80230BF4(0, 3);
         fn_802303FC(0, &field_0x2d4[0], true);
         if (std::fabsf(field_0x280[2].y - field_0x2d4[0].y) <= 1.0f) {
             mTimers[1] = 8;
@@ -1671,7 +1671,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80198828() {
             copyVec3_8019CECC(&mPos, &savedPos);
         }
         if (field_0x248 >= 1440) {
-            fn_80119DD0()->fn_80119998(100, 0, 2, 0, 0, 100, 0);
+            fn_80119DD0()->startFade_80119998(100, 0, 2, 0, 0, 100, 0);
             fn_80230498(0, getPlayerPos_8023E724(0), 0x3F, 0xFF, -0x80, -0x80, true);
             mTimers[1] = 200;
             field_0x248 = 0;
@@ -1784,7 +1784,7 @@ void PrincessZeldaGanonBattle_804A2944::fn_80197EB0() {
             mEmitters[2]->becomeInvalidEmitter();
             mEmitters[2] = NULL;
         }
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f)) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f)) {
             field_0x258 = 0;
             break;
         }

@@ -213,7 +213,7 @@ public:
     // field_0x164 when it landed. Returns 0 or 1.
     bool fn_801CEA60();
     // 3 units / 3 calls. For each player overlapping this actor and
-    // passing fn_801EAC20 (field_0x1dc): fn_801CB538 at the hit point; then
+    // passing startTimer_801EAC20 (field_0x1dc): fn_801CB538 at the hit point; then
     // sound 0x400D1. Returns whether any player was hit (u8: Beamos
     // checkHitByPlayer_0x5C keeps r3 raw, mr).
     u8 fn_801CEBD0();
@@ -369,7 +369,7 @@ s32 fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer);
 // Moves *value towards target by the fraction `factor` (at most 1) of the
 // distance; true while it is further than `threshold` away.
-bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
+bool approachValue_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
 // Returns the next sprite direction for `value` (mDir_0x98 is stored back
 // from it, then startAnim_801D22DC plays it): 0 -> 3, 1 -> 2, 3 -> 1, else 0.
 s32 fn_801CD30C(s32 value);
@@ -426,7 +426,7 @@ extern "C" {
 
 // game/tu_801CB270.cpp (not written yet; 0x801CCFE4, 0xEC bytes). Whether
 // player `player` is present: fn_8023F264 and none of a list of player
-// state tests (fn_80236B50, fn_8022DCD8, ...). Callers test r3 with clrlwi.
+// state tests (isPlayerDead_80236B50, fn_8022DCD8, ...). Callers test r3 with clrlwi.
 bool fn_801CCFE4(s32 player);
 
 // game/tu_801CB270.cpp (owner unit, not written yet; 1 caller unit,

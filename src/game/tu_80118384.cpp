@@ -93,7 +93,7 @@ void cls_80119E5C::fn_80119D48() {
     }
 }
 
-void cls_80119E5C::fn_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
+void cls_80119E5C::startFade_80119998(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
     field_0x0 = 1;
     field_0x1 = 0;
     field_0x2 = 0;
@@ -250,7 +250,7 @@ void cls_80119E5C::fn_801194C4() {
     }
 }
 
-// A plain function that fn_80119628 inlines (fn_80119998 has the same code written out; calling
+// A plain function that fn_80119628 inlines (startFade_80119998 has the same code written out; calling
 // this there costs its match) and whose own copy the linker dropped: the original's .sdata2 has its 1.0f ahead of fn_801194C4's conversion constant, so it was
 // generated before it (tools/pool.py). The four emitters of the fade of kind 2 (field_0x24).
 // FAKEMATCH(crack-pass): pool helper failing R2 (1 call site, 7-line definition): split out only where the .sdata2 order needs it.
@@ -263,7 +263,7 @@ void spawnFadeEmitters() {
 }
 
 void cls_80119E5C::fn_80119468(s32 g, s32 mode) {
-    fn_80119998(fadeFrames(mode), 0, mode, 0, 2, 0, g);
+    startFade_80119998(fadeFrames(mode), 0, mode, 0, 2, 0, g);
 }
 
 // JGadget::TVector::erase(first, last): copies the tail down, then destroys the rest.

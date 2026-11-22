@@ -70,7 +70,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
                 continue;
             }
             JGeometry::TBox2f liftBox;
-            actor->fn_801F31C4(&liftBox);
+            actor->getBoxAtPos_801F31C4(&liftBox);
             OBJLift_804ACA00* lift = static_cast<OBJLift_804ACA00*>(actor);
             if (lift->field_0x258 != 0xB) {
                 continue;

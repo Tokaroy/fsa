@@ -63,17 +63,17 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E394() {
     }
 }
 
-// State 1: a sequence of steps on field_0x238, each waiting for fn_8035C15C
+// State 1: a sequence of steps on field_0x238, each waiting for stepSequence_8035C15C
 // (the sequencer) before it starts its fn_8035C1C4 action.
 void PrincessZeldaEnding_804AD6F0::fn_8035E274() {
     if (field_0x238 == 0) {
-        if (fn_8035C15C(0) == 1) {
+        if (stepSequence_8035C15C(0) == 1) {
             fn_8035C1C4(1, 0x21b);
             field_0x240 = 0;
             field_0x238 = 4;
         }
     } else if (field_0x238 == 4) {
-        if (fn_8035C15C(1) == 1) {
+        if (stepSequence_8035C15C(1) == 1) {
             fn_8035C1C4(1, 0x21b);
         }
     } else if (field_0x238 == 1) {
@@ -81,7 +81,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E274() {
         field_0x240 = 1;
         field_0x238 = 2;
     } else if (field_0x238 == 2) {
-        if (fn_8035C15C(2) == 1) {
+        if (stepSequence_8035C15C(2) == 1) {
             fn_8035C1C4(2, 0x274);
         }
     } else if (field_0x238 == 3) {
@@ -116,7 +116,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E070() {
         }
     } else {
         if (field_0x238 == 0) {
-            if (fn_8035C15C(5) == 1) {
+            if (stepSequence_8035C15C(5) == 1) {
                 fn_8035C1C4(5, 0x9b);
             }
             if (mPos.x >= 1234.0f) {
@@ -128,7 +128,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E070() {
                 field_0x234 = 0x10;
             }
         } else if (field_0x238 == 1) {
-            if (fn_8035C15C(6) == 1) {
+            if (stepSequence_8035C15C(6) == 1) {
                 fn_8035C1C4(6, 0x9b);
             }
             if (mPos.y < 1810.0f) {
@@ -140,7 +140,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035E070() {
                 field_0x234 = 0x10;
             }
         } else {
-            if (fn_8035C15C(4) == 1) {
+            if (stepSequence_8035C15C(4) == 1) {
                 fn_8035C1C4(4, 0x9b);
             }
             if (mPos.x < 1260.0f) {
@@ -180,7 +180,7 @@ void PrincessZeldaEnding_804AD6F0::fn_8035DFE4() {
 // clears mAlive.
 void PrincessZeldaEnding_804AD6F0::fn_8035DF48() {
     if (mPos.y < 1966.0f) {
-        if (fn_8035C15C(6) == 1) {
+        if (stepSequence_8035C15C(6) == 1) {
             fn_8035C1C4(6, 0x9b);
         }
         mPos.y += 0.23f;

@@ -86,7 +86,7 @@ void UnknownBOME_804A0738::init() {
     field_0x230 = 0;
 }
 
-// Same box-margin check as fn_801F6758 (tu_801F6058.cpp), on an arbitrary TBox2f.
+// Same box-margin check as isOutsideView_801F6758 (tu_801F6058.cpp), on an arbitrary TBox2f.
 static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::TBox2f* box, f32 margin) {
     if (pos->x <= box->i.x - margin || pos->x >= box->f.x + margin ||
         pos->y <= box->i.y - margin || pos->y >= box->f.y + margin) {
@@ -129,7 +129,7 @@ void UnknownBOME_804A0738::update() {
             field_0x364.y = mVel_0x3c.y;
         }
     }
-    if (fn_801F6758(&mPos, mLayer_0x4, 300.0f)) {
+    if (isOutsideView_801F6758(&mPos, mLayer_0x4, 300.0f)) {
         mAlive = false;
     }
     if (field_0x268 < 5) {
@@ -199,7 +199,7 @@ void UnknownBOME_804A0738::update() {
                 fn_8016890C(&mPos, mLayer_0x4, (JGeometry::TBox2f*)field_0x370);
             }
         }
-        if ((mLayer_0x4 == 0 && fn_801F6758(&mPos, mLayer_0x4, -16.0f) == 1) ||
+        if ((mLayer_0x4 == 0 && isOutsideView_801F6758(&mPos, mLayer_0x4, -16.0f) == 1) ||
             (mLayer_0x4 >= 8 && isOutsideBox(&mPos, (const JGeometry::TBox2f*)field_0x370, -9.0f) == 1)) {
             mVel_0x3c.zero();
             field_0x364.z = 0.0f;
@@ -324,7 +324,7 @@ void UnknownBOME_804A0738::update() {
             startSound_801F0E34(0x3008D, 0);
         }
     }
-    if (!fn_801F6758(&mPos, mLayer_0x4, 0.0f)) {
+    if (!isOutsideView_801F6758(&mPos, mLayer_0x4, 0.0f)) {
         gBgRewrite_8053AC98->fn_802A20F0(&mPos, mSpawnParam_0x90, mLayer_0x4, 0, 0);
     }
 }

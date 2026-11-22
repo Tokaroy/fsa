@@ -374,7 +374,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 16: {
         field_0x236 = 0;
-        fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         field_0x24c = 1;
         JGeometry::TVec3f playerPos;
         for (s32 i = 0; i < 4; i++) {
@@ -471,7 +471,7 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     case 28:
         field_0x24c = 1;
-        fn_80119DD0()->fn_80119998(0xB4, 0, 0, 0, 1, 0, 0);
+        fn_80119DD0()->startFade_80119998(0xB4, 0, 0, 0, 1, 0, 0);
         fn_8036A65C();
         mPos += JGeometry::TVec3f(0.0f, 16.0f, 0.0f);
         field_0x258 = 0xB4;
@@ -501,12 +501,12 @@ void CrystalCutscene5464_804AE088::vfunc_0x60(s32 arg) {
         break;
     }
     case 32:
-        fn_80119DD0()->fn_80119998(0x96, 0, 1, 0, 0, 0x32, 0);
+        fn_80119DD0()->startFade_80119998(0x96, 0, 1, 0, 0, 0x32, 0);
         field_0x258 = 0xB9;
         startSound_801F0E34(0x40041, 0);
         break;
     case 33:
-        fn_80119DD0()->fn_80119998(0x96, 0, 0, 0, 0, 0x19, 0);
+        fn_80119DD0()->startFade_80119998(0x96, 0, 0, 0, 0, 0x19, 0);
         field_0x24c = 1;
         field_0x2f4->fn_802E2990(0xFF);
         for (s32 i = 0; i < 6; i++) {
@@ -611,12 +611,12 @@ void CrystalCutscene5464_804AE088::fn_8036AA60() {
     Mtx mtx;
     PSMTXTrans(mtx, mPos.x, mPos.y, mPos.z);
     JGeometry::TVec3f axisX(1.0f, 0.0f, 0.0f);
-    fn_8010F668(mtx, &axisX, 0.08726646f);
+    makeAxisRotation_8010F668(mtx, &axisX, 0.08726646f);
     Mtx rot;
     rot[0][0] = rot[1][0] = rot[2][0] = rot[0][1] = rot[1][1] = rot[2][1] = rot[0][2] = rot[1][2] =
         rot[2][2] = rot[0][3] = rot[1][3] = rot[2][3] = 0.0f;
     JGeometry::TVec3f axisZ(0.0f, 0.0f, 1.0f);
-    fn_8010F668(rot, &axisZ, field_0x280);
+    makeAxisRotation_8010F668(rot, &axisZ, field_0x280);
     PSMTXConcat(mtx, rot, mtx);
     if (field_0x238 != 0) {
         field_0x254++;
@@ -1200,7 +1200,7 @@ void CrystalCutscene5464_804AE088::fn_80368CD8() {
             break;
         }
         case 0x26:
-            fn_80119DD0()->fn_80119998(0x78, 0, 0, 0, 1, 0, 0);
+            fn_80119DD0()->startFade_80119998(0x78, 0, 0, 0, 1, 0, 0);
             break;
         }
     }

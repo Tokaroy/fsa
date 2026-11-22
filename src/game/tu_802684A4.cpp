@@ -281,9 +281,9 @@ static inline void leaveBy88(cls_804A71A8* p) {
         }
     }
     if (fn_802DEB58()) {
-        p->field_0x4->fn_80290070(p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos, &p->field_0x4->field_0xd1c, 0xD);
+        p->field_0x4->startTransition_80290070(p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos, &p->field_0x4->field_0xd1c, 0xD);
     } else {
-        p->field_0x4->fn_80290070(p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos, &p->field_0x4->field_0xd1c, 0xC);
+        p->field_0x4->startTransition_80290070(p->field_0x4->mLayer_0x3b4, &p->field_0x4->mPos, &p->field_0x4->field_0xd1c, 0xC);
     }
 }
 
@@ -311,13 +311,13 @@ static inline void climbUp(cls_804A71A8* p) {
             return;
         }
     }
-    if (p->field_0x4->fn_802486A0() == 4 || !p->field_0x4->hasLeader_80240808() || p->field_0x4->fn_80270A8C()) {
+    if (p->field_0x4->fn_802486A0() == 4 || !p->field_0x4->hasLeader_80240808() || p->field_0x4->isDeadState_80270A8C()) {
         p->field_0xb4 = 1;
         p->field_0xb6 = 1;
         if (!(p->field_0x4->fn_80240F28() && p->field_0x4->fn_802415CC() >= 2 &&
               (p->field_0x4->mFacing_0x3dc == 0 || p->field_0x4->mFacing_0x3dc == 1)) &&
             !p->field_0x4->fn_80240B34() && !p->field_0x4->fn_80240D64() && !p->field_0x4->fn_80240860() &&
-            !(p->field_0x4->fn_80270A8C() && p->field_0x4->mDragPlayer_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
+            !(p->field_0x4->isDeadState_80270A8C() && p->field_0x4->mDragPlayer_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
         {
             p->field_0x4->mPos.y += 4.0f;
         }
@@ -1094,7 +1094,7 @@ void cls_804A71A8::fn_8026C350(u16 tile) {
         // it is the owner's turn).
         if (((field_0x4->fn_802486A0() != 4 && isPlayerBitSet(gGameRoot_8053AAF8, field_0x4->mPlayerNo_0x4) == true) ||
              (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() == field_0x4->fn_80248778())) &&
-            tile - 0x4C != field_0x4->getIndex() && !field_0x4->fn_80270A8C() && !field_0x4->fn_80241230())
+            tile - 0x4C != field_0x4->getIndex() && !field_0x4->isDeadState_80270A8C() && !field_0x4->fn_80241230())
         {
             mark68(this);
         }
@@ -1472,7 +1472,7 @@ void cls_804A71A8::fn_80269574() {
         }
 warp: // the counter runs: look for a 'WARP' actor
         if (field_0x4->fn_802486A0() == 4 && field_0x4->fn_80240888() != field_0x4->fn_80248778()) {
-            field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 9);
+            field_0x4->startTransition_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 9);
             field_0xbc = 0;
             return;
         }
@@ -1519,7 +1519,7 @@ warp: // the counter runs: look for a 'WARP' actor
                     layer += 7;
                 }
                 if (layer >= 8 && gGameRoot_8053AAF8->field_0x7e && !field_0x4->fn_80247534()) {
-                    if (field_0x4->fn_80290070(0, &field_0x4->mPos, &field_0x4->field_0xd1c, 9)) {
+                    if (field_0x4->startTransition_80290070(0, &field_0x4->mPos, &field_0x4->field_0xd1c, 9)) {
                         field_0xbc = 0;
                         return;
                     }
@@ -1529,7 +1529,7 @@ warp: // the counter runs: look for a 'WARP' actor
                 dest.x = 8.0f + (((type >> 16) & 0x3F) * 8 + x);
                 dest.y = 8.0f + (((type >> 8) & 0x3F) * 8 + y);
                 dest.z = 0.0f;
-                if (field_0x4->fn_80290070(layer, &field_0x4->mPos, &dest, 7)) {
+                if (field_0x4->startTransition_80290070(layer, &field_0x4->mPos, &dest, 7)) {
                     field_0xbc = 0;
                     return;
                 }
@@ -1545,13 +1545,13 @@ warp: // the counter runs: look for a 'WARP' actor
                 pos.x += layerBox(layer)->i.x;
                 pos.y += layerBox(layer)->i.y;
                 if (layer >= 8 && gGameRoot_8053AAF8->field_0x7e && !field_0x4->fn_80247534()) {
-                    if (field_0x4->fn_80290070(0, &field_0x4->mPos, &field_0x4->field_0xd1c, 9)) {
+                    if (field_0x4->startTransition_80290070(0, &field_0x4->mPos, &field_0x4->field_0xd1c, 9)) {
                         field_0xbc = 0;
                         return;
                     }
                     continue;
                 }
-                if (field_0x4->fn_80290070(layer, &field_0x4->mPos, &pos, 8)) {
+                if (field_0x4->startTransition_80290070(layer, &field_0x4->mPos, &pos, 8)) {
                     field_0xbc = 0;
                     return;
                 }
@@ -1562,7 +1562,7 @@ warp: // the counter runs: look for a 'WARP' actor
             field_0x4->field_0x457 = 1;
         }
         if (field_0xbc >= 3) {
-            field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 9);
+            field_0x4->startTransition_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 9);
             field_0xbc = 0;
             return;
         }
@@ -1615,7 +1615,7 @@ slowFloor: // the owner stands near a 'WARP' actor, or the alignment is done
         climbUp(this);
     }
     if (field_0xba == 1) {
-        field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->mRespawnPos_0xcbc, 0xD);
+        field_0x4->startTransition_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->mRespawnPos_0xcbc, 0xD);
     }
     liftOn60(this);
     if (field_0x4->fn_8026FC20() <= 0) {
@@ -1641,7 +1641,7 @@ slowFloor: // the owner stands near a 'WARP' actor, or the alignment is done
         if ((field_0x4->fn_80241230() && countClosed() >= 7) ||
             (!field_0x4->fn_80241230() && allClosed()) || field_0xa8 >= 60)
         {
-            field_0x4->fn_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 0x22);
+            field_0x4->startTransition_80290070(field_0x4->mLayer_0x3b4, &field_0x4->mPos, &field_0x4->field_0xd1c, 0x22);
         } else {
             for (s32 i = 0; i < 8; i++) {
                 if (field_0x38[i] != 0) {

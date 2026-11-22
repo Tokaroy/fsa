@@ -10,7 +10,7 @@
 #include "game/Map.h"
 #include "game/Player.h"
 
-bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
+bool approachValue_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold);
 bool fn_801CD1D0(s32 player);
 bool fn_802316C8(s32 player, s32 layer, const JGeometry::TVec3f* pos);
 
@@ -281,9 +281,9 @@ inline void Floormaster_804A6004::updateGrabbedPlayer_8020EB08() {
     } else {
         dest.set(mPos.x, mPos.y, 0.0f);
     }
-    fn_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
-    fn_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
-    fn_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.x, dest.x, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.y, dest.y, 0.2f, 0.0f);
+    approachValue_801CD8E4(&targetPos.z, dest.z, 0.2f, 0.0f);
 
     if (mState == 5) {
         fn_80230498(field_0x2b8, &targetPos, (u16)fn_8023CBC0(field_0x2b8), 0xFF, -0x80, -0x80, true);
@@ -581,7 +581,7 @@ bool Floormaster_804A6004::vfunc_0x58() {
         if (b1) {
             hitOccurred = true;
         } else if (b2) {
-            if (field_0x1dc.fn_801EAC20(hit)) {
+            if (field_0x1dc.startTimer_801EAC20(hit)) {
                 hitOccurred = true;
             }
         } else if ((hit = actorSerial) >= 0) {
@@ -623,7 +623,7 @@ u8 Floormaster_804A6004::checkHitByPlayer_0x5C() {
             JGeometry::TVec2f pos;
             if (i == findOverlappingPlayer_801F285C(&pos, &flag, true, i)) {
                 fn_8023B6CC(i);
-                if (field_0x1dc.fn_801EAC20(i)) {
+                if (field_0x1dc.startTimer_801EAC20(i)) {
                     JGeometry::TVec3f effectPos(pos.x, pos.y, 0.0f);
                     result = 1;
                     fn_801CB538(mLayer_0x4, &effectPos, 0, 0);

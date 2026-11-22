@@ -154,7 +154,7 @@ Title_804AF820::Title_804AF820() {
     mHeap = JKRSolidHeap::create(0x80000, parent, false);
     mHeap->becomeCurrentHeap();
     for (int i = 0; i < 6; i++) {
-        fn_8016A3BC(lbl_80529DEC.mTitleArchive_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
+        loadModelWithAnims_8016A3BC(lbl_80529DEC.mTitleArchive_0x24, lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], NULL, lbl_804AF7D8[i][2],
                     NULL, 0x10240000, mHeap, &field_0x104[i], &field_0x11c[i], NULL, &field_0x134[i], NULL);
         if (field_0x11c[i] != NULL) {
             field_0x11c[i]->setFrame(0.0f);

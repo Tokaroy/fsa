@@ -131,7 +131,7 @@ int main() {
         if (lbl_8053AAF0->mState >= 4) {
             lbl_8053AAF0->fn_803FF2C4();
             gGameRoot_8053AAF8 = new GameRoot_8049EF20();
-            gGameRoot_8053AAF8->fn_80138C9C();
+            gGameRoot_8053AAF8->resetGameState_80138C9C();
             JFWDisplay::getManager()->endFrame();
             continue;
         }

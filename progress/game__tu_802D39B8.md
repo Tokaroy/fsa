@@ -16,14 +16,14 @@ SHARED-EDITS: GameGlobals.h (extern "C" void fn_80308D0C(), owner tu_80301CD0); 
 
 ## Wave 2 (Opus 5.5, 2026-11-05)
 Baseline 8468 (matching c13ba094), unit 53/109. After: 8474, unit 59/109 (+6 honest); structural +13 (8860 after).
-100 %: fn_802D79A4, fn_802D79E8, fn_802D7D00 (85 calls), fn_802D9C1C, fn_802D9C4C, fn_802D9C7C.
+100 %: fn_802D79A4, fn_802D79E8, setScreenMaskBit_802D7D00 (85 calls), fn_802D9C1C, fn_802D9C4C, fn_802D9C7C.
 Structural (FIXME in source): __ct__ 99.9 reloc-name (512.0f pool position); fn_802D3A18 99.5 (z stored twice
 in the target: x, z, z, y); fn_802D46D8 78.3 sched+regalloc (table lis/addi order); fn_802D4C10 94.8
 sched+regalloc (view + i*2 before the row); fn_802D6C10 98.1 regalloc; fn_802D6D70 84.6 missing 3 (b.x hoisted,
 mView reloaded before the id test); fn_802D6F38 96.4 (free-slot loop has no entry test in the target; a for/break
 gets unrolled); fn_802D7BE8 99.4 regalloc (as 7B34); fn_802D8128 / 8228 96.5 sched+regalloc (field_0x18 read after
 the column checks, field_0x8 before field_0x4: looks like an inlined (stage, level) lookup, cf. fn_802D9C7C, whose
-default "500" differs from fn_802D8D50's "001"); fn_802DCD1C 94.2 / fn_802DD3D4 99.0 (result returned via
+default "500" differs from fn_802D8D50's "001"); stepScreen_802DCD1C 94.2 / fn_802DD3D4 99.0 (result returned via
 clrlwi r3, rN, 24 in the target).
 Data: .data 73 % (string tables lbl_804A9530/9660/96D0/9710/9830 as source), .sdata2 94 % (their literals open
 the pool), .rodata 85 % (lbl_8046E1CC masks + the map CSV strings). Still to write: lbl_8046E148 (4 x
@@ -56,7 +56,7 @@ Inline-before-use pattern (proven 4 times): MWCC only inlines what is defined ea
 bodies of later out-of-line copies. So the original had inlines defined first; written as inline helpers + the
 out-of-line copy calling them: screenMask (copy fn_802D7AC4; inlined by 4768/4874/49A8/4ADC), isStage93OrFrom13
 (copy fn_802DEBA0; vfunc_0x10), clearScreen (copy fn_802DCDF4; fn_802DA788). Both copies stay at 100 %.
-Shared inlines without a copy (identical in fn_802DA010, fn_802DA8DC, fn_802DB6F0, fn_802DCE5C): restartTimeLimit
+Shared inlines without a copy (identical in fn_802DA010, resetStage_802DA8DC, fn_802DB6F0, fn_802DCE5C): restartTimeLimit
 (fn_802D752C(0) + fn_802D7440(saved == 1)) and clearScreenState (0x178 low bits, 0x308, 0x328/0x12F68, 0x6748/0x2948).
 Codegen findings: a shift loop with its test at the top and a plain `b` back (0x802D48FC) is `for (;;) { if (i == 0)
 break; ... }` (while/for get rotated and unrolled); bit-table word clears whose word offset is stepped in a register are
@@ -65,7 +65,7 @@ field_0x844 corners are stored f.x, i.x, f.y, i.y: chained `i.x = f.x = p->x` (T
 pattern unmatched in tu_8017C01C fn_8017EC70).
 Layout proven: field_0x3c8 = u64 [4][10][10] (fn_802DEE2C clears 0x3C8/0x6E8/0xA08/0xD28 + row*0x50 + col*8);
 field_0x2c = s32[2] (the step passed to fn_802DEDFC by fn_802DA788).
-Unwritten: fn_802DA8DC — full draft 83.8 % (75 instructions long): the two TVec2f-slot clear loops (0x802DAE38,
+Unwritten: resetStage_802DA8DC — full draft 83.8 % (75 instructions long): the two TVec2f-slot clear loops (0x802DAE38,
 0x802DAF04) unroll by 2 with offsets stepped in registers in the target, fully in ours (u32/s32 counters, zero() do not
 change it); everything else lines up. vfunc_0xC and fn_802DBD60 not started (time).
 SHARED-EDITS: include/game/GameView.h (field_0x2c s32 -> s32[2] replacing field_0x30 padding; field_0x3c8 u8[0xC80]
@@ -85,15 +85,15 @@ order_check OK; no function anywhere drops (by address against the baseline and 
   clearScreenState stay inline members (no out-of-line copy exists; as plain functions they would emit extra copies).
 - getGameView_802D6A9C(): the whole file now reaches the view through this unit's accessor (inlined under deferred).
   Proof: with gGameRoot->field_0x4->mView written out, the TVec2f-slot loop unrolls fully (75 extra instructions in
-  fn_802DA8DC / fn_802DBD60 / vfunc_0xC); through the accessor's inline nodes it unrolls by two as in the target.
+  resetStage_802DA8DC / fn_802DBD60 / vfunc_0xC); through the accessor's inline nodes it unrolls by two as in the target.
   The global switch lost nothing and brought fn_802D46D8 to 100 % (78.3 before).
 - fn_802D7440's flag is u8 (inlined, (byte == 1) is narrowed with extrwi 8 and compared with 1 again; a bool folds it):
   the "2 instructions short" FIXMEs are gone (fn_802DA010 / fn_802DB6F0 now regalloc-only, fn_802DCE5C one li).
 - Shared inlines without a copy (each proven by identical instruction runs): clearStageTables (fn_802DEE2C + tables)
-  and clearSlots (447 instructions identical in fn_802DA8DC, fn_802DBD60, vfunc_0xC; as a single inline it is too
+  and clearSlots (447 instructions identical in resetStage_802DA8DC, fn_802DBD60, vfunc_0xC; as a single inline it is too
   large to be inlined), placePlayers (fn_802DA010, DA788, DA8DC, DB6F0, vfunc_0xC; it also fixed the stack layout:
   fn_802DA788 100 %).
-- New: fn_802DA8DC 98.6, fn_802DBD60 98.8, vfunc_0xC 97.6 (structurally close, FIXMEs), fn_802DEE2C 100 %.
+- New: resetStage_802DA8DC 98.6, fn_802DBD60 98.8, vfunc_0xC 97.6 (structurally close, FIXMEs), fn_802DEE2C 100 %.
 - Unwritten: fn_802DED40 / fn_802DEC40 = view->fn_802D7B34 / fn_802D7BE8 inlined into free functions, 78 / 80 %
   as forwards (the fn_802DE9A0 view-reload family); fn_802D3D48, fn_802D4CCC, fn_802D8328, fn_802D8D50, fn_802D92F0.
 SHARED-EDITS: include/game/GameView.h (fn_802D7440 bool -> u8; removed screenMask / clearScreen inline decls; added

@@ -1384,7 +1384,7 @@ void fn_80304D64() {
 
 // Queues the file `name` for the player's GBA at `address`.
 // 0x80304C10
-bool fn_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4) {
+bool queueGbaFile_80304C10(s32 player, const char* name, u32 address, u8 arg3, s32 arg4) {
     if (name == NULL) {
         return false;
     }
@@ -1505,21 +1505,21 @@ void fn_80303CE4(s32 player) {
     for (int i = 0; i < 0x2000; i++) {
         lbl_804DBC18[player][i] = 0xCDCDCDCD;
     }
-    fn_80304C10(player, "end_code_scl.bin", 0xAAAAAAAA, 0, 0);
-    fn_80304C10(player, "sound_data.szs", 0x02033000, 1, 0);
-    fn_80304C10(player, "gb_ch_obj_base_sch.szs", 0x06010000, 1, 0);
-    fn_80304C10(player, "gb_cl_obj_base_scl.szs", 0x05000201, 1, 0);
-    fn_80304C10(player, "player_sch.szs", 0x02034000, 1, 0);
-    fn_80304C10(player, "bg_a_spl.szs", 0x0203C000, 1, 0);
-    fn_80304C10(player, "player_sob.szs", 0x02010000, 1, 0);
-    fn_80304C10(player, "enemy_both_sob.szs", 0x02021000, 1, 0);
-    fn_80304C10(player, "enemy_both2_sob.szs", 0x02018E00, 1, 0);
+    queueGbaFile_80304C10(player, "end_code_scl.bin", 0xAAAAAAAA, 0, 0);
+    queueGbaFile_80304C10(player, "sound_data.szs", 0x02033000, 1, 0);
+    queueGbaFile_80304C10(player, "gb_ch_obj_base_sch.szs", 0x06010000, 1, 0);
+    queueGbaFile_80304C10(player, "gb_cl_obj_base_scl.szs", 0x05000201, 1, 0);
+    queueGbaFile_80304C10(player, "player_sch.szs", 0x02034000, 1, 0);
+    queueGbaFile_80304C10(player, "bg_a_spl.szs", 0x0203C000, 1, 0);
+    queueGbaFile_80304C10(player, "player_sob.szs", 0x02010000, 1, 0);
+    queueGbaFile_80304C10(player, "enemy_both_sob.szs", 0x02021000, 1, 0);
+    queueGbaFile_80304C10(player, "enemy_both2_sob.szs", 0x02018E00, 1, 0);
     if (fn_801365A8() == 2) {
-        fn_80304C10(player, "moji_japan_test_sch.szs", 0x02038000, 1, 0);
+        queueGbaFile_80304C10(player, "moji_japan_test_sch.szs", 0x02038000, 1, 0);
     } else if (fn_801365A8() == 0 || fn_801365A8() == 1) {
-        fn_80304C10(player, "moji_english_sch.szs", 0x02038000, 1, 0);
+        queueGbaFile_80304C10(player, "moji_english_sch.szs", 0x02038000, 1, 0);
     }
-    fn_80304C10(player, "end_code_scl.bin", 0xFFFFFFFF, 0, 0);
+    queueGbaFile_80304C10(player, "end_code_scl.bin", 0xFFFFFFFF, 0, 0);
 }
 
 // 0x80303870
@@ -1530,14 +1530,14 @@ void fn_80303870(s32 player) {
     const char* str = getGameView_802D6A9C()->fn_802D9C4C();
     if (str[0] != 'c') {
         sprintf(name, "bg_%s_sch.szs", str);
-        fn_80304C10(player, name, 0x6000000, 1, 0);
+        queueGbaFile_80304C10(player, name, 0x6000000, 1, 0);
     } else {
-        fn_80304C10(player, "bg_c2_sch.szs", 0x6000000, 1, 0);
+        queueGbaFile_80304C10(player, "bg_c2_sch.szs", 0x6000000, 1, 0);
     }
     sprintf(name2, "bg_%s_gb_scl.szs", str);
-    fn_80304C10(player, name2, 0x5000001, 1, 0);
+    queueGbaFile_80304C10(player, name2, 0x5000001, 1, 0);
     sprintf(name, "gb_ch_obj_tr_sch%s.szs", getGameView_802D6A9C()->fn_802D9C1C());
-    fn_80304C10(player, name, 0x6017000, 1, 0);
+    queueGbaFile_80304C10(player, name, 0x6017000, 1, 0);
     lbl_8053ACE4[player] = 1;
 }
 

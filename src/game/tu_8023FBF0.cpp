@@ -221,7 +221,7 @@ Player_804A6F38::~Player_804A6F38() {
 // (fn_8023F78C). Picks the slot's part (field_0xcac, the partner mLeader_0xd60,
 // the pad owner mPadPlayer_0x11ec and the start state 0 or 1) from the game mode,
 // places the player and clears nearly every per-player field.
-void Player_804A6F38::fn_80254744() {
+void Player_804A6F38::resetSlot_80254744() {
     if (field_0xd00 >= 2 && isStageFlagSet(getGameView_802D6A9C()->mStage_0x4, getGameView_802D6A9C()->mLevel_0x8)) {
         field_0xd00 = 0;
         field_0xcfe = false;
@@ -712,7 +712,7 @@ void Player_804A6F38::fn_80254744() {
             // Both operands load mPos (0x8) in the original (mPos - field_0x32c reloads 0x32c: 98.0 %).
             const JGeometry::TVec3f& diff = mPos - mPos;
             if (PSVECMag(&diff) >= 0.1f) {
-                fn_8024B2E0();
+                resetTrail_8024B2E0();
             }
             lbl_8053AD70->fn_8037AE00();
         }
@@ -726,7 +726,7 @@ void Player_804A6F38::fn_80254744() {
         // As above: both operands load mPos (mPos - field_0x32c reloads 0x32c).
         const JGeometry::TVec3f& diff = mPos - mPos;
         if (PSVECMag(&diff) >= 0.1f) {
-            fn_8024B2E0();
+            resetTrail_8024B2E0();
         }
         field_0xcfe = false;
         lbl_8053AD70->fn_8037AE00();
@@ -919,7 +919,7 @@ void Player_804A6F38::fn_80252FC0() {
     if (field_0x454) {
         return;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return;
     }
     if (fn_80241200()) {
@@ -2246,8 +2246,8 @@ void Player_804A6F38::fn_8024E344() {
 // (docs/INLINING.md, pragma rule 1).
 #pragma auto_inline off
 // Every 60 frames (field_0x1264), in the game modes of isGameModeSet, for a
-// player acting on its own with a life (fn_8024189C) of 4 or less, not in
-// fn_80270A8C's state and without field_0x454: fn_803037D4(field_0x4, 6)
+// player acting on its own with a life (getLife_8024189C) of 4 or less, not in
+// isDeadState_80270A8C's state and without field_0x454: fn_803037D4(field_0x4, 6)
 // when fn_8030A308 and fn_8030381C allow it, else sound 5. Then the sound
 // objects' position mSoundPos_0x1258 follows the player (fn_8024C378 from layer
 // 8 on) and both run fn_80456154.
@@ -2255,7 +2255,7 @@ void Player_804A6F38::fn_8024E0A0() {
     field_0x1264++;
     if (field_0x1264 >= 0x3c) {
         field_0x1264 = 0;
-        if (isGameModeSet() && !fn_80270A8C() && !field_0x454 && fn_8024189C() <= 4 && mLeader_0xd60 < 0) {
+        if (isGameModeSet() && !isDeadState_80270A8C() && !field_0x454 && getLife_8024189C() <= 4 && mLeader_0xd60 < 0) {
             if (lbl_8053AD30->fn_8030A308(getPlayerInputSlot_8030AAF4(mPadPlayer_0x11ec)) && fn_8030381C(mPlayerNo_0x4)) {
                 fn_803037D4(mPlayerNo_0x4, 6);
             } else {
@@ -2321,7 +2321,7 @@ bool Player_804A6F38::fn_8024DCD0() {
     field_0x32c = mPos;
     field_0x455 = 0;
     field_0x450 = mCel_0x3c4;
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         field_0x450 = mCel_0x3c4;
     } else if (fn_8025F448()) {
         field_0x450 = mCel_0x3c4;
@@ -2335,7 +2335,7 @@ bool Player_804A6F38::fn_8024DCD0() {
         } else {
             field_0x450 = 0x1f4;
         }
-    } else if (fn_8025F684()) {
+    } else if (isLifting_8025F684()) {
         if (mFacing_0x3dc == 0) {
             field_0x450 = 0x2c0;
         } else if (mFacing_0x3dc == 1) {
@@ -2366,7 +2366,7 @@ bool Player_804A6F38::fn_8024DCD0() {
 }
 
 // Sets the target 0x32C to pos, the frame 0x450 (unless negative) and the
-// bytes 0xCA2-0xCA4; with `check`, fn_8024B2E0 when the player is at
+// bytes 0xCA2-0xCA4; with `check`, resetTrail_8024B2E0 when the player is at
 // least 0.1 away from pos. Frame 0xC3 keeps field_0xcfe.
 bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a, s8 b, s8 c, bool check) {
     field_0x32c = *pos;
@@ -2378,7 +2378,7 @@ bool Player_804A6F38::fn_8024DC00(const JGeometry::TVec3f* pos, s32 frame, u8 a,
     field_0xca4 = c;
     if (check == true) {
         if (magnitude(mPos - *pos) >= 0.1f) {
-            fn_8024B2E0();
+            resetTrail_8024B2E0();
         }
     }
     if (frame != 0xc3) {
@@ -2405,7 +2405,7 @@ bool Player_804A6F38::fn_8024DA64(s32 id, bool flag) {
 }
 
 // Sets the target 0x32C to pos and steps the frame counter 0x452 (0-23);
-// 0x450 = 8 * facing + 0x452 / 3, 0xCA2 = flag; then fn_8024B2E0.
+// 0x450 = 8 * facing + 0x452 / 3, 0xCA2 = flag; then resetTrail_8024B2E0.
 bool Player_804A6F38::fn_8024D99C(const JGeometry::TVec3f* pos, bool flag) {
     field_0x32c = *pos;
     field_0x452++;
@@ -2423,7 +2423,7 @@ bool Player_804A6F38::fn_8024D99C(const JGeometry::TVec3f* pos, bool flag) {
     }
     field_0x450 += (u8)(field_0x452 / 3);
     field_0xca2 = flag;
-    fn_8024B2E0();
+    resetTrail_8024B2E0();
     return true;
 }
 
@@ -2505,14 +2505,14 @@ void Player_804A6F38::fn_8024D134() {
 }
 
 // Clears field_0x454: with `reset` the trail is reset to the current
-// position (fn_80248604), else fn_8024B2E0 runs first. Then the timers
+// position (fn_80248604), else resetTrail_8024B2E0 runs first. Then the timers
 // 0xD74 / 0x11F0 = 10 and fn_8024D134.
 bool Player_804A6F38::fn_8024D058(u8 reset) {
     if (reset) {
         field_0x454 = false;
         fn_80248604();
     } else {
-        fn_8024B2E0();
+        resetTrail_8024B2E0();
         field_0x454 = false;
     }
     field_0xd74 = 10;
@@ -2821,13 +2821,13 @@ void Player_804A6F38::fn_8024BB88() {
 
 // Resets the position trail (mPosHistory_0x38, 0x31 entries) and its airborne
 // flags (field_0x284) to the current position, unless the player is walking
-// to its spot (field_0x1216); while field_0x454 is set fn_8024B2E0 does it.
+// to its spot (field_0x1216); while field_0x454 is set resetTrail_8024B2E0 does it.
 void Player_804A6F38::fn_8024BAEC() {
     if (field_0x1216) {
         return;
     }
     if (field_0x454) {
-        fn_8024B2E0();
+        resetTrail_8024B2E0();
         return;
     }
     for (s32 i = 0; i < 0x31; i++) {
@@ -2856,7 +2856,7 @@ void Player_804A6F38::fn_8024B9E8() {
     field_0x284[0] = field_0xbf0->field_0xb4;
 }
 
-// Step j of 12 on the line from `from` to `to` (fn_8024B2E0's trail), returned
+// Step j of 12 on the line from `from` to `to` (resetTrail_8024B2E0's trail), returned
 // by value: the original builds it in one stack TVec3f and copies it out
 // through a second (the return value), as this does.
 static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const JGeometry::TVec3f& to, s32 j) {
@@ -2877,7 +2877,7 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
 // and stored to `from` at the end); each step comes back by value from
 // trailStep (two stack TVec3fs: the step, then the returned copy, z through
 // frsp) and is stored with set().
-void Player_804A6F38::fn_8024B2E0() {
+void Player_804A6F38::resetTrail_8024B2E0() {
     if (field_0x1216) {
         return;
     }
@@ -3006,7 +3006,7 @@ void Player_804A6F38::fn_802490A8() {
     if (fn_80230188(player)) {
         return;
     }
-    if (fn_80236B50(player)) {
+    if (isPlayerDead_80236B50(player)) {
         return;
     }
     if (getPlayerPos_8023E724(player)->z > 0.0f) {
@@ -3336,7 +3336,7 @@ s32 Player_804A6F38::fn_802487FC() const {
 }
 
 // The place of this player in its partner's line (1 for the first follower),
-// or 0 without a partner. fn_80254744 inlines it and reloads both fields on
+// or 0 without a partner. resetSlot_80254744 inlines it and reloads both fields on
 // every pass; this const copy keeps them in registers.
 s32 Player_804A6F38::fn_80248778() const {
     if (mLeader_0xd60 < 0) {
@@ -3416,7 +3416,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
             mDepartLayer_0xce0 = oldLayer;
             mDestLayer_0xce4 = mLayer_0x3b4;
             if (mLayer_0x3b4 >= 8 && oldLayer < 8) {
-                mLastTvPos_0xcb0.set(*fn_8023E32C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
+                mLastTvPos_0xcb0.set(*getPlayerLastTvPos_8023E32C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             }
             mPos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             mPrevPos_0x2c.set(mPos);
@@ -3490,7 +3490,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
 
 void Player_804A6F38::fn_80247F58() {
     s32 team = mLeader_0xd60;
-    if (team >= 0 && fn_80236B50(team)) {
+    if (team >= 0 && isPlayerDead_80236B50(team)) {
         if (fn_80251BFC(0x33)) {
             // positions are read as TVec2f (x, y) by the callee
             hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
@@ -4124,7 +4124,7 @@ void Player_804A6F38::fn_80242560() {
 }
 
 // Brings the player back to the acting player (lbl_8053A190): through
-// fn_80270948 when fn_80270A8C holds and fn_8025F448 does not; else, when it
+// fn_80270948 when isDeadState_80270A8C holds and fn_8025F448 does not; else, when it
 // is on layer 8 or more or outside the visible box, onto that player's x / y
 // on layer 0. Then the saved positions 0x2C4 / 0xCB0 / 0xD1C, 0x344 / 0x368
 // cleared, field_0xd54 = 10, the trail reset (fn_80248604), the held key or
@@ -4132,7 +4132,7 @@ void Player_804A6F38::fn_80242560() {
 // Registers only: the box test's x / y (f2 / f1 in the original, f1 / f2 here).
 // FIXME: 99.82 %, regalloc-only; behaviour clean.
 void Player_804A6F38::fn_802422D0() {
-    if (fn_80270A8C() && !fn_8025F448()) {
+    if (isDeadState_80270A8C() && !fn_8025F448()) {
         fn_80270948(getPlayerPos_8023E724(lbl_8053A190));
     } else {
         JGeometry::TBox2f box;
@@ -4302,7 +4302,7 @@ s32 Player_804A6F38::fn_802418E8() {
     return field_0xc04;
 }
 
-s32 Player_804A6F38::fn_8024189C() {
+s32 Player_804A6F38::getLife_8024189C() {
     s32 team = mLeader_0xd60;
     if (team >= 0) {
         return fn_80237774(team);
@@ -4357,7 +4357,7 @@ void Player_804A6F38::fn_802416FC(s32 arg) {
         fn_80237524(team, arg);
         return;
     }
-    if (!gGameRoot_8053AAF8->field_0x7f && (mLife_0xbfc <= 0 || fn_80270A8C())) {
+    if (!gGameRoot_8053AAF8->field_0x7f && (mLife_0xbfc <= 0 || isDeadState_80270A8C())) {
         return;
     }
     field_0xc08 += arg;
@@ -4638,7 +4638,7 @@ bool Player_804A6F38::fn_80240AD4() {
 // The trail loop counts with `int`: with s32 (long) MWCC tests the
 // unrolled loop's entry (cmpwi r5, 0x31; bge), which the original does not.
 void Player_804A6F38::fn_802408C8(s32 layer, const JGeometry::TVec3f* pos) {
-    if (mLeader_0xd60 < 0 && mViewBox_0xbec->fn_8030B110(layer, *pos) && !fn_80270A8C() && !field_0xce8) {
+    if (mLeader_0xd60 < 0 && mViewBox_0xbec->fn_8030B110(layer, *pos) && !isDeadState_80270A8C() && !field_0xce8) {
         fn_80248004(5, false);
         if (fn_802486A0() == 5) {
             for (int i = 0; i < 0x31; i++) {

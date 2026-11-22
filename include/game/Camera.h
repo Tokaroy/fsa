@@ -91,10 +91,10 @@ public:
     // map's bytes 0x2360-0x2363 whose byte 0x235C-0x235F is set, clears the
     // view (fn_802DCDF4) and copies mNextVisibleBox_0x190 to mVisibleBox_0x154.
     void fn_8030C85C();
-    // 1 unit (GameView fn_802DCD1C passes &mVisibleBox). Stores box in
+    // 1 unit (GameView stepScreen_802DCD1C passes &mVisibleBox). Stores box in
     // mNextVisibleBox_0x190 and updates the map object's scroll state (its 0x2360 and
     // 0x2368 / 0x2374, see Map.h).
-    void fn_8030C928(const JGeometry::TBox2f* box);
+    void setNextVisibleBox_8030C928(const JGeometry::TBox2f* box);
     // 1 unit (GameView fn_802DD3D4 passes &mVisibleBox). Starts a screen
     // change towards box: mInTransition_0x1e8 = 1, 0x1EC = 30, mShowWholeArea_0x7f5 = 0
     // (0x8030CA14-0x8030CA2C).
@@ -160,7 +160,7 @@ public:
     /* 0x17D */ u8 mSkipUpdate_0x17d;
     /* 0x17E */ u8 mUseRequestedBox_0x17e; // set by fn_8030C7C4
     /* 0x180 */ JGeometry::TBox2f mRequestedBox_0x180; // fn_8030C7C4
-    /* 0x190 */ JGeometry::TBox2f mNextVisibleBox_0x190; // fn_8030C928; fn_8030C85C
+    /* 0x190 */ JGeometry::TBox2f mNextVisibleBox_0x190; // setNextVisibleBox_8030C928; fn_8030C85C
     /* 0x1A0 */ JGeometry::TBox2f mTransitionEndBox_0x1a0; // the box the transition leaves (fn_8030E154 blends from it)
     /* 0x1B0 */ f32 mTransitionEndDepth_0x1b0;     // and its depth
     // fn_8030C85C sets all four floats to one constant.

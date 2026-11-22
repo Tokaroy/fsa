@@ -118,7 +118,7 @@ void fn_801CD930(s16* angle, s32 target, s32 step) {
 
 // Moves *value towards target by the fraction `factor` (at most 1) of the
 // distance; true while it is further than `threshold` away.
-bool fn_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold) {
+bool approachValue_801CD8E4(f32* value, f32 target, f32 factor, f32 threshold) {
     if (factor > 1.0f) {
         factor = 1.0f;
     }
@@ -330,7 +330,7 @@ void fn_801CD0D0(const JGeometry::TVec3f* in, JGeometry::TVec3f* out) {
 bool fn_801CCFE4(s32 player) {
     bool result = false;
     if (fn_8023F264(player)) {
-        if (!fn_80236B50(player) && !fn_8022DCD8(player) && !fn_80234C5C(player) && !fn_8023EA28(player) &&
+        if (!isPlayerDead_80236B50(player) && !fn_8022DCD8(player) && !fn_80234C5C(player) && !fn_8023EA28(player) &&
             !fn_80230188(player) && !fn_8022D534(player) && !fn_802349EC(player)) {
             switch (fn_8022CAF8(player)) {
             case 4:

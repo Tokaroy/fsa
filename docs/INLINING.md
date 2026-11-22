@@ -125,16 +125,16 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 
 | Unit | Function(s) | Type | Callee(s) / detail | Source |
 |---|---|---|---|---|
-| tu_8022AD64 | fn_8022B334, fn_8022CFE8, fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50, fn_80231DE4, fn_80237A80, hitPlayerGroup_80238548, fn_8023885C, fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (16, unwritten) | L | hasPlayerLeader_8022F514, fn_8023561C, getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_8023ED8C, fn_8023EA28, fn_80238A68 (35-87 instr) | progress/game__tu_8022AD64.md r11 |
+| tu_8022AD64 | fn_8022B334, fn_8022CFE8, fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50, updateScreenChange_80231DE4, fn_80237A80, hitPlayerGroup_80238548, fn_8023885C, fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (16, unwritten) | L | hasPlayerLeader_8022F514, fn_8023561C, getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_8023ED8C, fn_8023EA28, fn_80238A68 (35-87 instr) | progress/game__tu_8022AD64.md r11 |
 | tu_8022AD64 | fn_80232A0C (unwritten, 52.8 % draft) | E | fn_8022D75C, hasPlayerLeader_8022F514, getPlayerLeader_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C out of line; header inlines normalize / operator- / TBox2::set out of line too | r12 |
 | tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to fn_8023F264 / fn_8018A614 | r11 |
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
-| tu_8028FBA0 | fn_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
+| tu_8028FBA0 | startTransition_80290070 | L | fn_80290D58, fn_80290E90 | progress, PLAYER.md |
 | tu_802D39B8 | fn_802D49A8, fn_802D4ADC | L | fn_802D7AC4 | progress |
-| tu_80457DFC | fn_80457E54, fn_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
+| tu_80457DFC | fn_80457E54, setMusicSlow_8045815C, fn_80458880 | L | fn_80458508, fn_80458F04 | progress |
 | tu_80457DFC | fn_80457E04 | E/L | fn_80458744 out of line (deferred+auto over-inlines it) | progress |
-| tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for fn_80270A8C) | progress |
+| tu_8026FC20 | fn_8027057C | L | fn_80270DDC (isDown workaround already used for isDeadState_80270A8C) | progress |
 | tu_8023FBF0 | fn_80248FF0 | L | fn_80249070 | progress |
 | tu_8023FBF0 | fn_8024FEFC | E | fn_8024FEBC, fn_8024FE78 out of line | progress |
 | tu_801F6058 | fn_801F8108 | L | fn_801F7F58 | progress |
@@ -290,8 +290,8 @@ Sections, deferred model vs base (game units):
   `fn_8023F264`). Result: 349 → **352**/373. fn_8023434C, fn_8023BEA8 and
   fn_8023C36C reach 100 % (their depth-limit call is now `bl fn_8023F264`), and
   nothing is lost. Patch: scratchpad `inl/tu_8022AD64_deferred.diff`.
-- tu_8026FC20: delete the `isDown()` workaround inline, give fn_80270A8C the body
-  and call fn_80270A8C everywhere. Still 97/120. The workaround is not needed
+- tu_8026FC20: delete the `isDown()` workaround inline, give isDeadState_80270A8C the body
+  and call isDeadState_80270A8C everywhere. Still 97/120. The workaround is not needed
   under the model.
 
 ## Hypotheses tested
@@ -324,7 +324,7 @@ original wrote those callees in a different way, are still needed in a few place
 3. **Plain functions, no wrappers**: write each function once, at its own address,
    with its real body. Callers inline it in either direction. Drop the
    "file inline + out-of-line wrapper" and "static inline copy" workarounds as
-   units are touched: isDown / fn_80270A8C, follows_80240670, playerFlags_802413F0,
+   units are touched: isDown / isDeadState_80270A8C, follows_80240670, playerFlags_802413F0,
    tu_8021A570, tu_802F5040, tu_803944C8 setters, `isPlayerActive` → fn_8023F264.
    Header `inline` stays for real header inlines (JGeometry, accessors used across
    units whose copy is placed after a caller).

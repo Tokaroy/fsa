@@ -272,7 +272,7 @@ void BeeFormation_804AC7B8::update() {
         }
         break;
     case 4:
-        if (fn_801F6758(&mPos, mLayer_0x4, 16.0f) != 0 && fn_801F6758(&mPos, mLayer_0x4, 16.0f) == 1) {
+        if (isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) != 0 && isOutsideView_801F6758(&mPos, mLayer_0x4, 16.0f) == 1) {
             field_0x262 = 1;
         }
         break;

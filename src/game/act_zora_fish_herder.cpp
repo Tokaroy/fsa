@@ -289,7 +289,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x270 = -1;
         if ((field_0x258 & 0xF) == 0) {
             ActorBase_804A5770* fishes[0x400];
-            field_0x270 = getActorManager_801F856C()->fn_801F7818('FISH', mLayer_0x4, fishes, -1);
+            field_0x270 = getActorManager_801F856C()->collectActorsById_801F7818('FISH', mLayer_0x4, fishes, -1);
         }
         if (field_0x258 < 0 || field_0x270 == 0) {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
@@ -405,7 +405,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             field_0x244 = 50;
             if (field_0x25c >= 10) {
                 ActorBase_804A5770* sayas[0x400];
-                s32 n = getActorManager_801F856C()->fn_801F7818('SAYA', mLayer_0x4, sayas, -1);
+                s32 n = getActorManager_801F856C()->collectActorsById_801F7818('SAYA', mLayer_0x4, sayas, -1);
                 JGeometry::TVec3f spots[8];
                 s32 spotCount = 0;
                 for (s32 i = 0; i < n && spotCount < 7; i++) {

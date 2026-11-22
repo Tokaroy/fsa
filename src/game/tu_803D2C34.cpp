@@ -1063,7 +1063,7 @@ void SaveScreen_804B0288::fn_803D2C9C() {
     }
     if (result == 1) {
         if (lbl_8050EC80.field_0x8 == lbl_8051C1A0.field_0x1ff8) {
-            fn_803BADAC(&field_0x1c0[lbl_8050EC80.mCurrentFile]);
+            isSaveChecksumValid_803BADAC(&field_0x1c0[lbl_8050EC80.mCurrentFile]);
             OSTime time = OSGetTime();
             lbl_8050EC80.getCurrentFile().field_0x0 = time;
             if ((lbl_8050EC80.getCurrentFile().field_0x65 & 1) == 0) {

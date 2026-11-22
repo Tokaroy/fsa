@@ -56,9 +56,9 @@ void RedBlueSwitch_804A9020::update() {
     case 0:
         if (player >= 0 || fn_801F2DB4('HBMB', 'NULL', NULL)) {
             gBgRewrite_8053AC98->fn_802A3948(&mPos, player, mLayer_0x4, 0xAF);
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x2C0, 0, 0x5C0, 0x40);
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x300, 0, 0x7C0, 0x40);
             field_0x240 = 1;
             startSound_801F0E34(0x30051, 0);
@@ -107,9 +107,9 @@ void RedBlueSwitch_804A9020::update() {
     case 2:
         if (player >= 0 || fn_801F2DB4('HBMB', 'NULL', NULL)) {
             gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, 0xAE);
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x240, 0, 0x5C0, 0x40);
-            gGameRoot2_8053AB10->field_0x20->fn_802FA160(
+            gGameRoot2_8053AB10->field_0x20->loadTileImages_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x280, 0, 0x7C0, 0x40);
             field_0x240 = 3;
             startSound_801F0E34(0x30051, 0);

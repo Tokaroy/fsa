@@ -624,7 +624,7 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
     vfunc_0x44();
     switch (kind) {
     case 4:
-        if (field_0x1dc.fn_801EAC20(player)) {
+        if (field_0x1dc.startTimer_801EAC20(player)) {
             startSound_801F0E34(0x400D1, 0);
         }
         // fall through

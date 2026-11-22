@@ -105,10 +105,10 @@ void TingleFirstAppearance_804AADD8::update() {
         if (getActorManager_801F856C()->fn_801F68E0() != 0) {
             for (int i = 0; i < 4; i++) {
                 if (getPlayerLayer_8023DE58(i) == getField_0x4() && !fn_80233E40(i) &&
-                    !fn_8023EA28(i) && !fn_80236B50(i)) {
+                    !fn_8023EA28(i) && !isPlayerDead_80236B50(i)) {
                     s32 dir = (getPlayerPos_8023E724(i)->x > mPos.x) ? 1 : 0;
                     fn_80230498(i, getPlayerPos_8023E724(i), dir + 0x3C, 0xFF, -0x80, -0x80, true);
-                    fn_80230BF4(i, dir);
+                    setPlayerFacing_80230BF4(i, dir);
                 }
             }
             selectNearestPlayer();

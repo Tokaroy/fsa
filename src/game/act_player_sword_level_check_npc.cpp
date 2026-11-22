@@ -271,7 +271,7 @@ void PlayerSwordLevelCheckNPC_804AA590::update() {
                         }
                         fn_80230FD0(i, 0x10001);
                         if ((gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) != 0) {
-                            fn_80236554(i, fn_80237810(i), false);
+                            healPlayerGroup_80236554(i, fn_80237810(i), false);
                         }
                     }
                 }

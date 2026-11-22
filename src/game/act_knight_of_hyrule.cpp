@@ -99,11 +99,11 @@ void KnightOfHyrule_804AABA8::update() {
                     fn_8022CA6C(i, 5, false);
                     fn_80230C6C(i);
                     if (!hasPlayerLeader_8022F514(i)) {
-                        fn_802317F0(i, 0, getPlayerPos_8023E724(i), &pos, 0x1F);
+                        startPlayerTransition_802317F0(i, 0, getPlayerPos_8023E724(i), &pos, 0x1F);
                     }
                 } else if (fn_8023188C(i)) {
                     fn_80230C6C(i);
-                    fn_80230BF4(i, 3);
+                    setPlayerFacing_80230BF4(i, 3);
                     fn_80230AD4(i);
                     fn_8022CA6C(i, 5, false);
                     field_0x240 |= (1 << i);
@@ -137,7 +137,7 @@ void KnightOfHyrule_804AABA8::update() {
             pos.x += 24.0f;
             pos.y -= 8.0f;
             fn_80230498(field_0x244, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
-            fn_80230BF4(field_0x244, 3);
+            setPlayerFacing_80230BF4(field_0x244, 3);
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x244 && arePlayersInSameGroup_8022E438(i, field_0x244)) {
                     pos.set(*getPlayerPos_8023E724(i));
@@ -146,7 +146,7 @@ void KnightOfHyrule_804AABA8::update() {
                 }
             }
             gBgRewrite_8053AC98->fn_8029D898(0x1A);
-            gAudioMgr_8053AF80->fn_8045815C(false);
+            gAudioMgr_8053AF80->setMusicSlow_8045815C(false);
             mState = 3;
             mTimer = 10;
         }

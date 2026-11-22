@@ -93,7 +93,7 @@ void GoalOpening_8049DB30::update() {
             if (flag) {
                 fn_8011921C()->fn_8011888C(this);
                 fn_8011921C()->fn_801186B0(0xE);
-                fn_80119DD0()->fn_80119998(0xB4, 0, 2, 0, 1, 0x3C, 0);
+                fn_80119DD0()->startFade_80119998(0xB4, 0, 2, 0, 1, 0x3C, 0);
                 field_0x234 = 3;
             }
         }
@@ -120,7 +120,7 @@ void GoalOpening_8049DB30::vfunc_0x54() {
         }
         fn_8011921C()->fn_801184F0(false);
         getGameView_802D6A9C()->fn_802D9FF4(field_0x238, field_0x23c);
-        getGameView_802D6A9C()->fn_802DA8DC();
+        getGameView_802D6A9C()->resetStage_802DA8DC();
         field_0x234 = 4;
         break;
     case 0:

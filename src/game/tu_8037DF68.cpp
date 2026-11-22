@@ -149,7 +149,7 @@ MessageManager_804AF070::~MessageManager_804AF070() {
 
 void fn_8038D870() {
     for (s32 i = 0; i < 4; i++) {
-        lbl_8053AD78->mWindows[i]->fn_80391678();
+        lbl_8053AD78->mWindows[i]->reset_80391678();
         lbl_8053AD78->mWindows[i]->field_0x4 = lbl_8053AD78->mBmg;
         lbl_8053AD78->field_0xfc[i] = -1;
         lbl_8053AD78->field_0xf0[i] = 0;
@@ -240,7 +240,7 @@ void fn_8038D4A8() {
 
 void fn_8038D454() {
     for (s32 i = 0; i < 4; i++) {
-        lbl_8053AD78->mWindows[i]->fn_80391678();
+        lbl_8053AD78->mWindows[i]->reset_80391678();
     }
 }
 
@@ -596,7 +596,7 @@ bool MessageManager_804AF070::fn_80389F78(s32 player, s32 arg, s32 value, JGeome
     return false;
 }
 
-bool fn_80389BF0(s32 player, s32 value) {
+bool openMessage_80389BF0(s32 player, s32 value) {
     s32 index = windowIndex(player);
     if (fn_8037F1E4(index) == 0 && !fn_80303750(index)) {
         lbl_8053AD78->mWindows[index]->fn_80390E40(value, false);
@@ -799,7 +799,7 @@ bool fn_80387494(s32 player) {
                             gAudioMgr_8053AF80->fn_80458880(0x29, -1);
                         }
                     }
-                    lbl_8053AD78->mWindows[window]->fn_80391678();
+                    lbl_8053AD78->mWindows[window]->reset_80391678();
                     return true;
                 }
                 w->field_0x42 = 1;
@@ -818,7 +818,7 @@ bool fn_80387494(s32 player) {
                     gAudioMgr_8053AF80->fn_80458880(0x29, -1);
                 }
             }
-            lbl_8053AD78->mWindows[window]->fn_80391678();
+            lbl_8053AD78->mWindows[window]->reset_80391678();
             return true;
         }
         w->field_0x42 = 1;
@@ -951,7 +951,7 @@ bool fn_80385960(s32 player) {
     if (mappedWindow(window)->field_0x24 == 5 || mappedWindow(window)->field_0x24 == 8) {
         if (mappedWindow(window)->field_0x40 == 0) {
             if (((lbl_8053AD78->mWindows[window]->field_0x28 >> 12) & 1) == 1) {
-                lbl_8053AD78->mWindows[window]->fn_80391678();
+                lbl_8053AD78->mWindows[window]->reset_80391678();
                 return true;
             }
             if (!(lbl_8053AD78->mWindows[window]->field_0x28 & 1)) {
@@ -963,7 +963,7 @@ bool fn_80385960(s32 player) {
                             gAudioMgr_8053AF80->fn_80458880(0x29, -1);
                         }
                     }
-                    lbl_8053AD78->mWindows[window]->fn_80391678();
+                    lbl_8053AD78->mWindows[window]->reset_80391678();
                     return true;
                 }
             } else {
@@ -975,7 +975,7 @@ bool fn_80385960(s32 player) {
                         gAudioMgr_8053AF80->fn_80458880(0x29, -1);
                     }
                 }
-                lbl_8053AD78->mWindows[window]->fn_80391678();
+                lbl_8053AD78->mWindows[window]->reset_80391678();
                 return true;
             }
         }
@@ -1017,7 +1017,7 @@ bool fn_80384C58(s32 player, s32 serial) {
                 if (!(opt2 & 0x800)) {
                     b = true;
                 }
-                lbl_8053AD78->mWindows[window]->fn_80391678();
+                lbl_8053AD78->mWindows[window]->reset_80391678();
                 lbl_8053AD78->fn_803895EC(player, serial, a, b);
                 return true;
                 }
@@ -1033,7 +1033,7 @@ bool fn_80384C58(s32 player, s32 serial) {
             if (!(lbl_8053AD78->mWindows[window]->field_0x28 >> 11 & 1)) {
                 b = true;
             }
-            lbl_8053AD78->mWindows[window]->fn_80391678();
+            lbl_8053AD78->mWindows[window]->reset_80391678();
             lbl_8053AD78->fn_803895EC(player, serial, false, b);
             return true;
             }

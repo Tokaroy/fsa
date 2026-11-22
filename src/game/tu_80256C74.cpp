@@ -783,7 +783,7 @@ void Player_804A6F38::fn_8025C894() {
                 mVel_0x344.z = 1.5f;
                 fn_8024F0E8(0x10002);
             } else {
-                fn_802808E8(1.125f);
+                moveByStick_802808E8(1.125f);
             }
             if (epsilonEqualsXY(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
@@ -999,7 +999,7 @@ void Player_804A6F38::fn_8025BEB0() {
                 mVel_0x344.z = 1.5f;
                 fn_8024F0E8(0x10002);
             } else {
-                fn_802808E8(1.125f);
+                moveByStick_802808E8(1.125f);
             }
             if (epsilonEqualsXY(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
@@ -1601,7 +1601,7 @@ void Player_804A6F38::fn_8025A15C() {
             break;
         }
         if (mButtonHeld_0xb84) {
-            fn_802808E8(1.125f);
+            moveByStick_802808E8(1.125f);
             if (epsilonEquals(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
             } else {
@@ -1750,7 +1750,7 @@ void Player_804A6F38::fn_8025A04C() {
 // State 0x45 (item 6 at level >= 2; enter fn_8025A04C, exit fn_80259784): frame 11 places
 // a Cane of Somaria block ('SMRI', 16 in front, field_0xb2c; message 0xE8 once, 0xBB8)
 // or acts on the one that exists (fn_8030EA00); while the button is held (0xB84,
-// fn_8022C274) the player stays at frame 12 walking at 1.125 (fn_802808E8) with the
+// fn_8022C274) the player stays at frame 12 walking at 1.125 (moveByStick_802808E8) with the
 // 28-frame walk cycle, keeps a 'FIRE' actor (0xB28; 60 frames 0xB8C after it goes) on
 // the box field_0x580 in front (fn_802BAA0C) and the emitters 0x1AB / 0x54A
 // (0x12C4 / 0x12C8) turned to the facing; letting go stops them and runs to frame 13.
@@ -1836,7 +1836,7 @@ void Player_804A6F38::fn_80259830() {
             break;
         }
         if (mButtonHeld_0xb84) {
-            fn_802808E8(1.125f);
+            moveByStick_802808E8(1.125f);
             if (epsilonEquals(mPos, mLastPos_0x14, JGeometry::TUtilf::epsilon())) {
                 mWalkAnimCounter_0x3f8 = 0;
             } else {
@@ -2414,7 +2414,7 @@ void Player_804A6F38::fn_8025819C() {
 
 void Player_804A6F38::fn_802580E0() {
     f32 target;
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         target = 0.0f;
     } else if (gGameRoot_8053AAF8->field_0x7f) {
         if (fn_802416C4() == 2) {
@@ -2470,10 +2470,10 @@ bool Player_804A6F38::fn_80257DB4() {
     if (fn_802413E8()) {
         return false;
     }
-    if (fn_80270A8C()) {
+    if (isDeadState_80270A8C()) {
         return false;
     }
-    if (fn_8025F684() && fn_802416C4() != 7) {
+    if (isLifting_8025F684() && fn_802416C4() != 7) {
         return false;
     }
     if (fn_8025F448()) {
@@ -2665,7 +2665,7 @@ inline void Player_804A6F38::requestJump_8025785C() {
             return;
         }
     }
-    if (fn_8025F684()) {
+    if (isLifting_8025F684()) {
         fn_80251AEC(0x14);
     } else {
         fn_80251AEC(0x46);
@@ -2842,7 +2842,7 @@ bool Player_804A6F38::fn_80256C74(const JGeometry::TBox2f* box, s32 layer) {
     if (fn_802413E8()) {
         return false;
     }
-    if (!fn_80270A8C()) {
+    if (!isDeadState_80270A8C()) {
         return false;
     }
     if (!field_0xba4) {
