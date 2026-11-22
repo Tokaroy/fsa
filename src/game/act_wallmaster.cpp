@@ -160,7 +160,6 @@ void Wallmaster_804A3E44::init() {
     }
 }
 
-// FIXME: 99.62 %, missing/extra; behaviour drift.
 void Wallmaster_804A3E44::setState_801BC554(s32 state) {
     switch (state) {
     case 0:
@@ -364,7 +363,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
     }
 }
 
-// FIXME: 99.53 %, missing/extra; behaviour drift.
+// FIXME: 99.77 %, missing/extra; behaviour drift.
 // (missing/extra: 2 extra instrs, 528 vs 526; reloc-name)
 void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
     fn_801BC244();
