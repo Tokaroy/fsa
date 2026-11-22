@@ -162,7 +162,7 @@ void SmallKey_804A8CD8::fn_802C5284() {
 }
 
 // 0x802C4498.
-// FIXME(shotgun): 96.90 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.33 %, missing/extra; behaviour near.
 void SmallKey_804A8CD8::update() {
     field_0x2ad = 0xFF;
     field_0x2ac = 0;
@@ -635,7 +635,7 @@ void SmallKey_804A8CD8::fn_802C3AE4() {
 }
 
 // 0x802C2C30.
-// FIXME(shotgun): 97.73 %, missing/extra; behaviour clean.
+// FIXME(shotgun): 98.75 %, missing/extra; behaviour clean.
 // Still differs: each of the 3 packed-value blocks has an extra mr; one shared inline for the block removes it but leaves the 0x280 load one slot early.
 void SmallKey_804A8CD8::fn_802C2C30() {
     JGeometry::TVec3f wall;
