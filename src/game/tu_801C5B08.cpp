@@ -130,12 +130,12 @@ void ShadowLink2_804A43E8::fn_801C5EBC(s32 player, bool flag) {
     field_0x596 = fn_801CD664(0x15) + 0x14;
     JGeometry::TVec3f* playerPos = &field_0x1ac[player];
     if (viewFlag != 0 && !fn_801CC9F8(&mPos, field_0x4)) {
-        if (__fabsf((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
+        if (JMAAbs((f32)(s16)(field_0x33c + 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
             fn_801CFA70(&mPos, playerPos, field_0x4) == true) {
             field_0x33c = -0x4000;
             return;
         }
-        if (__fabsf((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
+        if (JMAAbs((f32)(s16)(field_0x33c - 0x4000)) * (1.0f / 32768.0f) < 0.05f &&
             fn_801CFA70(&mPos, playerPos, field_0x4) == true) {
             field_0x33c = 0x4000;
             return;
@@ -234,7 +234,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
             } else {
                 s16 angle = fn_801D02E0(&target);
                 s16 delta = field_0x33c - angle;
-                f32 d = __fabsf((f32)delta) * (1.0f / 32768.0f);
+                f32 d = JMAAbs((f32)delta) * (1.0f / 32768.0f);
                 if (d <= 0.3f) {
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.05f) {
                         found = true;
