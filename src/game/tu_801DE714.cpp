@@ -727,7 +727,7 @@ void cls_804A51E4::fn_801E1300() {
 }
 #pragma auto_inline reset
 
-// FIXME(shotgun): 96.43 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.53 %, regalloc-only; behaviour clean.
 void cls_804A51E4::fn_801E0CF4() {
     if (mState == 0) {
         followPlayer(this, -1);
@@ -814,7 +814,7 @@ void cls_804A51E4::fn_801E0CF4() {
     }
 }
 
-// FIXME(shotgun): 99.00 %, different; behaviour near.
+// FIXME(shotgun): 99.28 %, different; behaviour clean.
 void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     if (target != NULL && field_0x2ac >= 0) {
         if (mStateTimer >= mAnim.mLength * 2) {
@@ -914,7 +914,7 @@ void cls_804A51E4::fn_801E002C(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 99.19 %, missing/extra; behaviour near.
+// FIXME(shotgun): 99.94 %, regalloc-only; behaviour clean.
 void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     if (mStateTimer < field_0x250) {
         return;
@@ -948,7 +948,7 @@ void cls_804A51E4::fn_801DF9D8(ActorBase_804A5770* target) {
     }
 }
 
-// FIXME(shotgun): 97.62 %, missing/extra; behaviour drift.
+// FIXME(shotgun): 99.83 %, regalloc-only; behaviour near.
 void cls_804A51E4::updateState_0x90(u8 mapHit) {
     if (field_0x2cc == 0) {
         fn_801E0CF4();
@@ -1233,7 +1233,6 @@ void cls_804A51E4::updateBehavior_0x9C(u8 mapHit) {
     fn_8021835C();
 }
 
-// FIXME(shotgun): 97.22 %, scheduling+regalloc; behaviour drift.
 void cls_804A51E4::calcVelocity_0x88() {
     bool blocked = fn_801CCF7C();
     mVel_0x3c.x = 0.0f;
