@@ -63,84 +63,84 @@ static inline JUTTexture* loadTexture(JKRArchive* archive, const char* name, JKR
 
 // FIXME: 97.43 %, scheduling+regalloc + reloc-name; behaviour clean.
 GameRootSub24_8016A3AC::GameRootSub24_8016A3AC(JKRHeap* heap) {
-    field_0x0 = JKRSolidHeap::create(-1, heap, false);
-    field_0x0->becomeCurrentHeap();
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, field_0x0,
-                &field_0x4, &field_0x8, NULL, NULL, NULL);
+    mSolidHeap_0x0 = JKRSolidHeap::create(-1, heap, false);
+    mSolidHeap_0x0->becomeCurrentHeap();
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yougan.bmd", "yougan.btk", NULL, NULL, NULL, 0x240000, mSolidHeap_0x0,
+                &mYouganModel_0x4, &mYouganBtk_0x8, NULL, NULL, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "doku_yougan.bmd", "doku_yougan.btk", NULL, NULL, NULL, 0x240000,
-                field_0x0, &field_0xc, &field_0x10, NULL, NULL, NULL);
+                mSolidHeap_0x0, &mDokuYouganModel_0xc, &mDokuYouganBtk_0x10, NULL, NULL, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "yami_yougan.bmd", "yami_yougan.btk", NULL, NULL, NULL, 0x240000,
-                field_0x0, &field_0x14, &field_0x18, NULL, NULL, NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, field_0x0,
-                &field_0x1c, &field_0x20, NULL, &field_0x24, NULL);
+                mSolidHeap_0x0, &mYamiYouganModel_0x14, &mYamiYouganBtk_0x18, NULL, NULL, NULL);
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya.bmd", "moya.btk", NULL, "moya.brk", NULL, 0x240000, mSolidHeap_0x0,
+                &mMoyaModel_0x1c, &mMoyaBtk_0x20, NULL, &mMoyaBrk_0x24, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", NULL,
-                0x11240000, field_0x0, &field_0x28, &field_0x2c, NULL, &field_0x30, NULL);
+                0x11240000, mSolidHeap_0x0, &mDarkFilterModel_0x28, &mDarkFilterBtk_0x2c, NULL, &mDarkFilterBrk_0x30, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", NULL,
-                0x11240000, field_0x0, &field_0x90, &field_0x94, NULL, &field_0x98, NULL);
+                0x11240000, mSolidHeap_0x0, &mFogFilterModel_0x90, &mFogFilterBtk_0x94, NULL, &mFogFilterBrk_0x98, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "cloudShadowFilter00.bmd", "cloudShadowFilter00.btk", NULL,
-                "cloudShadowFilter00.brk", NULL, 0x11240000, field_0x0, &field_0x9c, &field_0xa0, NULL,
-                &field_0xa4, NULL);
+                "cloudShadowFilter00.brk", NULL, 0x11240000, mSolidHeap_0x0, &mCloudShadowFilterModel_0x9c, &mCloudShadowFilterBtk_0xa0, NULL,
+                &mCloudShadowFilterBrk_0xa4, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "poisonSwamp00.bmd", "poisonSwamp00.btk", NULL, "poisonSwamp00.brk",
-                NULL, 0x11240000, field_0x0, &field_0xa8, &field_0xac, NULL, &field_0xb0, NULL);
+                NULL, 0x11240000, mSolidHeap_0x0, &mPoisonSwampModel_0xa8, &mPoisonSwampBtk_0xac, NULL, &mPoisonSwampBrk_0xb0, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "blackCloudFilter.bmd", "blackCloudFilter.btk", NULL,
-                "blackCloudFilter.brk", NULL, 0x11240000, field_0x0, &field_0xb4, &field_0xb8, NULL, &field_0xbc,
+                "blackCloudFilter.brk", NULL, 0x11240000, mSolidHeap_0x0, &mBlackCloudFilterModel_0xb4, &mBlackCloudFilterBtk_0xb8, NULL, &mBlackCloudFilterBrk_0xbc,
                 NULL);
-    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, field_0x0,
-                &field_0x34, &field_0x38, NULL, NULL, NULL);
+    fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "mekakusi.bmd", "mekakusi.btk", NULL, NULL, NULL, 0x1240000, mSolidHeap_0x0,
+                &mMekakusiModel_0x34, &mMekakusiBtk_0x38, NULL, NULL, NULL);
 
-    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0, &field_0xec,
+    fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_2.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0, &mYukaModel_0xec,
                 NULL, NULL, NULL, NULL);
-    field_0xf0 = NULL;
-    if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
-                    &field_0xec, NULL, NULL, NULL, NULL);
+    mYukaBtk_0xf0 = NULL;
+    if (mYukaModel_0xec == NULL) {
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_4.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+                    &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
-    if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, field_0x0,
-                    &field_0xec, &field_0xf0, NULL, NULL, NULL);
+    if (mYukaModel_0xec == NULL) {
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_6.bmd", "yuka_6.btk", NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+                    &mYukaModel_0xec, &mYukaBtk_0xf0, NULL, NULL, NULL);
     }
-    if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
-                    &field_0xec, NULL, NULL, NULL, NULL);
+    if (mYukaModel_0xec == NULL) {
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_7.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+                    &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
-    if (field_0xec == NULL) {
-        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, field_0x0,
-                    &field_0xec, NULL, NULL, NULL, NULL);
+    if (mYukaModel_0xec == NULL) {
+        fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "yuka_8.bmd", NULL, NULL, NULL, NULL, 0x220000, mSolidHeap_0x0,
+                    &mYukaModel_0xec, NULL, NULL, NULL, NULL);
     }
 
     for (int i = 0; i < 6; i++) {
         fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, lbl_804A0790[i][0], lbl_804A0790[i][1], NULL, lbl_804A0790[i][2],
-                    NULL, 0x10240000, field_0x0, &field_0x3c[i], &field_0x54[i], NULL, &field_0x6c[i], NULL);
+                    NULL, 0x10240000, mSolidHeap_0x0, &mKumoModels_0x3c[i], &mKumoBtks_0x54[i], NULL, &mKumoBrks_0x6c[i], NULL);
     }
     fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk",
-                NULL, 0x11240000, field_0x0, &field_0x84, &field_0x88, NULL, &field_0x8c, NULL);
+                NULL, 0x11240000, mSolidHeap_0x0, &mForestFilterModel_0x84, &mForestFilterBtk_0x88, NULL, &mForestFilterBrk_0x8c, NULL);
     fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "morningLight00.bmd", "morningLight00.btk", NULL, "morningLight00.brk",
-                NULL, 0x240000, field_0x0, &field_0xc0, &field_0xc4, NULL, &field_0xc8, NULL);
+                NULL, 0x240000, mSolidHeap_0x0, &mMorningLightModel_0xc0, &mMorningLightBtk_0xc4, NULL, &mMorningLightBrk_0xc8, NULL);
     fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "nagarekumo.bmd", "nagarekumo.btk", NULL, NULL, NULL, 0x240000,
-                field_0x0, &field_0xcc, &field_0xd0, NULL, NULL, NULL);
+                mSolidHeap_0x0, &mNagarekumoModel_0xcc, &mNagarekumoBtk_0xd0, NULL, NULL, NULL);
     fn_8016A3BC(lbl_80529DEC.mBossArchive_0x10, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", NULL,
-                0x11240000, field_0x0, &field_0xd4, &field_0xd8, NULL, &field_0xdc, NULL);
+                0x11240000, mSolidHeap_0x0, &mDarkFogModel_0xd4, &mDarkFogBtk_0xd8, NULL, &mDarkFogBrk_0xdc, NULL);
     fn_8016A3BC(lbl_80529DEC.mDataArchive_0x14, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", NULL, 0x240000,
-                field_0x0, &field_0xe0, &field_0xe4, NULL, &field_0xe8, NULL);
-    field_0x0->adjustSize();
+                mSolidHeap_0x0, &mMoyaRedModel_0xe0, &mMoyaRedBtk_0xe4, NULL, &mMoyaRedBrk_0xe8, NULL);
+    mSolidHeap_0x0->adjustSize();
     heap->becomeCurrentHeap();
 
-    field_0xf4 = new (heap, 0) JUTTexture(
+    mKumoEnvTexture_0xf4 = new (heap, 0) JUTTexture(
         static_cast<const ResTIMG*>(gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "kumo_env.bti")), 0);
-    field_0xf8 = new (heap, 0) JUTTexture(
+    mSmokeTexture_0xf8 = new (heap, 0) JUTTexture(
         static_cast<const ResTIMG*>(gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "smoke.bti")), 0);
-    field_0xfc = new (heap, 0) JUTTexture(
+    mKawazokoTexture_0xfc = new (heap, 0) JUTTexture(
         static_cast<const ResTIMG*>(gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "kawazoko.bti")), 0);
-    field_0x100 = new (heap, 0) JUTTexture(static_cast<const ResTIMG*>(
+    mNoizeKawazokoTexture_0x100 = new (heap, 0) JUTTexture(static_cast<const ResTIMG*>(
         gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "noize_kawazoko_1.bti")), 0);
-    field_0x104 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_mori.bti", heap);
-    field_0x108 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei.bti", heap);
-    field_0x10c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei_dark.bti", heap);
-    field_0x110 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall.bti", heap);
-    field_0x114 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky.bti", heap);
-    field_0x118 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall_koware.bti", heap);
-    field_0x11c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky_koware.bti", heap);
-    field_0x120 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_piramid.bti", heap);
+    mBgMoriTexture_0x104 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_mori.bti", heap);
+    mEnkeiTexture_0x108 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei.bti", heap);
+    mEnkeiDarkTexture_0x10c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "enkei_dark.bti", heap);
+    mWallTexture_0x110 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall.bti", heap);
+    mSkyTexture_0x114 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky.bti", heap);
+    mWallKowareTexture_0x118 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "wall_koware.bti", heap);
+    mSkyKowareTexture_0x11c = loadTexture(lbl_80529DEC.mBossArchive_0x10, "sky_koware.bti", heap);
+    mBgPiramidTexture_0x120 = loadTexture(lbl_80529DEC.mBossArchive_0x10, "bg_piramid.bti", heap);
 
     for (int i = 0; i < 4; i++) {
         field_0x140.mEntries[i].field_0x18 = new ActorSoundObj_804578F4(NULL, NULL, 8);
@@ -185,35 +185,35 @@ GameRootSub24_8016A3AC::~GameRootSub24_8016A3AC() {
         JPAEmitterManager* manager = getEffectSystem_8013C824()->mEmitterManager;
         manager->forceDeleteEmitter(field_0x12c);
     }
-    if (field_0x120 != NULL) {
-        delete field_0x120;
+    if (mBgPiramidTexture_0x120 != NULL) {
+        delete mBgPiramidTexture_0x120;
     }
-    if (field_0x11c != NULL) {
-        delete field_0x11c;
+    if (mSkyKowareTexture_0x11c != NULL) {
+        delete mSkyKowareTexture_0x11c;
     }
-    if (field_0x118 != NULL) {
-        delete field_0x118;
+    if (mWallKowareTexture_0x118 != NULL) {
+        delete mWallKowareTexture_0x118;
     }
-    if (field_0x114 != NULL) {
-        delete field_0x114;
+    if (mSkyTexture_0x114 != NULL) {
+        delete mSkyTexture_0x114;
     }
-    if (field_0x110 != NULL) {
-        delete field_0x110;
+    if (mWallTexture_0x110 != NULL) {
+        delete mWallTexture_0x110;
     }
-    if (field_0x10c != NULL) {
-        delete field_0x10c;
+    if (mEnkeiDarkTexture_0x10c != NULL) {
+        delete mEnkeiDarkTexture_0x10c;
     }
-    if (field_0x108 != NULL) {
-        delete field_0x108;
+    if (mEnkeiTexture_0x108 != NULL) {
+        delete mEnkeiTexture_0x108;
     }
-    if (field_0x104 != NULL) {
-        delete field_0x104;
+    if (mBgMoriTexture_0x104 != NULL) {
+        delete mBgMoriTexture_0x104;
     }
-    delete field_0x100;
-    delete field_0xfc;
-    delete field_0xf8;
-    delete field_0xf4;
-    field_0x0->destroy();
+    delete mNoizeKawazokoTexture_0x100;
+    delete mKawazokoTexture_0xfc;
+    delete mSmokeTexture_0xf8;
+    delete mKumoEnvTexture_0xf4;
+    mSolidHeap_0x0->destroy();
 }
 
 void GameRootSub24_8016A3AC::fn_8016EDB0() {
@@ -366,47 +366,47 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
             field_0x124 = spawnEmitter_8013CC50(0, &pos, 0x54b, 0, 0, NULL, NULL, true, 1.0f);
         }
 
-        if (field_0x8 != NULL) {
-            field_0x8->setFrame((f32)(frame % field_0x8->getTotalFrameCount()));
+        if (mYouganBtk_0x8 != NULL) {
+            mYouganBtk_0x8->setFrame((f32)(frame % mYouganBtk_0x8->getTotalFrameCount()));
         }
-        if (field_0x10 != NULL) {
-            field_0x10->setFrame((f32)(frame % field_0x10->getTotalFrameCount()));
+        if (mDokuYouganBtk_0x10 != NULL) {
+            mDokuYouganBtk_0x10->setFrame((f32)(frame % mDokuYouganBtk_0x10->getTotalFrameCount()));
         }
-        if (field_0x18 != NULL) {
-            field_0x18->setFrame((f32)(frame % field_0x18->getTotalFrameCount()));
+        if (mYamiYouganBtk_0x18 != NULL) {
+            mYamiYouganBtk_0x18->setFrame((f32)(frame % mYamiYouganBtk_0x18->getTotalFrameCount()));
         }
-        if (field_0x20 != NULL) {
-            field_0x20->setFrame((f32)(frame % field_0x20->getTotalFrameCount()));
-            field_0x24->setFrame((f32)(field_0x1ed * 120 / 255 + 1));
+        if (mMoyaBtk_0x20 != NULL) {
+            mMoyaBtk_0x20->setFrame((f32)(frame % mMoyaBtk_0x20->getTotalFrameCount()));
+            mMoyaBrk_0x24->setFrame((f32)(field_0x1ed * 120 / 255 + 1));
         }
-        if (field_0x2c != NULL) {
-            field_0x2c->setFrame((f32)(frame % field_0x2c->getTotalFrameCount()));
-            field_0x30->setFrame((f32)(field_0x1ef * 100 / 255));
+        if (mDarkFilterBtk_0x2c != NULL) {
+            mDarkFilterBtk_0x2c->setFrame((f32)(frame % mDarkFilterBtk_0x2c->getTotalFrameCount()));
+            mDarkFilterBrk_0x30->setFrame((f32)(field_0x1ef * 100 / 255));
         }
-        if (field_0x38 != NULL) {
-            field_0x38->setFrame((f32)(frame % field_0x38->getTotalFrameCount()));
+        if (mMekakusiBtk_0x38 != NULL) {
+            mMekakusiBtk_0x38->setFrame((f32)(frame % mMekakusiBtk_0x38->getTotalFrameCount()));
         }
-        if (field_0x88 != NULL) {
-            field_0x88->setFrame((f32)(frame % field_0x88->getTotalFrameCount()));
-            field_0x8c->setFrame(100.0f);
+        if (mForestFilterBtk_0x88 != NULL) {
+            mForestFilterBtk_0x88->setFrame((f32)(frame % mForestFilterBtk_0x88->getTotalFrameCount()));
+            mForestFilterBrk_0x8c->setFrame(100.0f);
         }
-        if (field_0x94 != NULL) {
-            field_0x94->setFrame((f32)(frame % field_0x94->getTotalFrameCount()));
-            field_0x98->setFrame((f32)(field_0x1f1 * 100 / 255));
+        if (mFogFilterBtk_0x94 != NULL) {
+            mFogFilterBtk_0x94->setFrame((f32)(frame % mFogFilterBtk_0x94->getTotalFrameCount()));
+            mFogFilterBrk_0x98->setFrame((f32)(field_0x1f1 * 100 / 255));
         }
-        if (field_0xa0 != NULL) {
-            field_0xa0->setFrame((f32)(frame % field_0xa0->getTotalFrameCount()));
-            field_0xa4->setFrame((f32)(field_0x1f2 * 100 / 255));
+        if (mCloudShadowFilterBtk_0xa0 != NULL) {
+            mCloudShadowFilterBtk_0xa0->setFrame((f32)(frame % mCloudShadowFilterBtk_0xa0->getTotalFrameCount()));
+            mCloudShadowFilterBrk_0xa4->setFrame((f32)(field_0x1f2 * 100 / 255));
         }
-        if (field_0xac != NULL) {
-            field_0xac->setFrame((f32)(frame % field_0xac->getTotalFrameCount()));
-            field_0xb0->setFrame((f32)(frame % field_0xb0->getTotalFrameCount()));
+        if (mPoisonSwampBtk_0xac != NULL) {
+            mPoisonSwampBtk_0xac->setFrame((f32)(frame % mPoisonSwampBtk_0xac->getTotalFrameCount()));
+            mPoisonSwampBrk_0xb0->setFrame((f32)(frame % mPoisonSwampBrk_0xb0->getTotalFrameCount()));
         }
-        if (field_0xb8 != NULL) {
-            field_0xb8->setFrame((f32)(frame % field_0xb8->getTotalFrameCount()));
-            field_0xbc->setFrame((f32)(field_0x1f3 * 100 / 255));
+        if (mBlackCloudFilterBtk_0xb8 != NULL) {
+            mBlackCloudFilterBtk_0xb8->setFrame((f32)(frame % mBlackCloudFilterBtk_0xb8->getTotalFrameCount()));
+            mBlackCloudFilterBrk_0xbc->setFrame((f32)(field_0x1f3 * 100 / 255));
         }
-        if (field_0xc4 != NULL) {
+        if (mMorningLightBtk_0xc4 != NULL) {
             s32 minX = 0x200;
             s32 alpha = 100 - gGameRoot2_8053AB10->field_0x2c->field_0xc * 100 / 255;
             for (s32 i = 0; i < 4; i++) {
@@ -424,22 +424,22 @@ void GameRootSub24_8016A3AC::fn_8016DE30() {
                 s32 v = (256 - field_0x1d8) * 100 / 256;
                 alpha = v >= alpha ? v : alpha;
             }
-            field_0xc4->setFrame((f32)(frame % field_0xc4->getTotalFrameCount()));
-            field_0xc8->setFrame((f32)alpha);
+            mMorningLightBtk_0xc4->setFrame((f32)(frame % mMorningLightBtk_0xc4->getTotalFrameCount()));
+            mMorningLightBrk_0xc8->setFrame((f32)alpha);
         }
-        if (field_0xd0 != NULL) {
-            field_0xd0->setFrame((f32)(frame % field_0xd0->getTotalFrameCount()));
+        if (mNagarekumoBtk_0xd0 != NULL) {
+            mNagarekumoBtk_0xd0->setFrame((f32)(frame % mNagarekumoBtk_0xd0->getTotalFrameCount()));
         }
-        if (field_0xd8 != NULL) {
-            field_0xd8->setFrame((f32)(frame % field_0xd8->getTotalFrameCount()));
-            field_0xdc->setFrame((f32)(field_0x1f4 * 100 / 255));
+        if (mDarkFogBtk_0xd8 != NULL) {
+            mDarkFogBtk_0xd8->setFrame((f32)(frame % mDarkFogBtk_0xd8->getTotalFrameCount()));
+            mDarkFogBrk_0xdc->setFrame((f32)(field_0x1f4 * 100 / 255));
         }
-        if (field_0xe4 != NULL) {
-            field_0xe4->setFrame((f32)(frame % field_0xe4->getTotalFrameCount()));
-            field_0xe8->setFrame((f32)(field_0x1f5 * 100 / 255));
+        if (mMoyaRedBtk_0xe4 != NULL) {
+            mMoyaRedBtk_0xe4->setFrame((f32)(frame % mMoyaRedBtk_0xe4->getTotalFrameCount()));
+            mMoyaRedBrk_0xe8->setFrame((f32)(field_0x1f5 * 100 / 255));
         }
-        if (field_0xf0 != NULL) {
-            field_0xf0->setFrame((f32)(frame % field_0xf0->getTotalFrameCount()));
+        if (mYukaBtk_0xf0 != NULL) {
+            mYukaBtk_0xf0->setFrame((f32)(frame % mYukaBtk_0xf0->getTotalFrameCount()));
         }
     }
 }
@@ -448,7 +448,7 @@ void GameRootSub24_8016A3AC::fn_8016DCEC() {
     if (isGameModeSet() && field_0x1cf && gGameRoot_8053AAF8->field_0x4c != 0xB) {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         fn_8016D398(camera->field_0x4, field_0x1c0, false, !field_0x1d0, &field_0x140, &field_0x1b0,
-                    &field_0x1b8, &field_0x1b4, field_0x54, field_0x6c, 6.0f / camera->field_0x858);
+                    &field_0x1b8, &field_0x1b4, mKumoBtks_0x54, mKumoBrks_0x6c, 6.0f / camera->field_0x858);
     }
 }
 
@@ -618,21 +618,21 @@ void fn_8016D398(Mtx view, s32 frame, bool arg2, bool arg3, cls_8016ED88* entrie
 void GameRootSub24_8016A3AC::fn_8016D33C() {
     if (field_0x1c4) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x4, pos, -1, true, true, 0.5f, 10.24f);
+        fn_8016A7DC(mYouganModel_0x4, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016D2E0() {
     if (field_0x1c5) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xc, pos, -1, true, true, 0.5f, 10.24f);
+        fn_8016A7DC(mDokuYouganModel_0xc, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016D284() {
     if (field_0x1c6) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x14, pos, -1, true, true, 0.5f, 10.24f);
+        fn_8016A7DC(mYamiYouganModel_0x14, pos, -1, true, true, 0.5f, 10.24f);
     }
 }
 
@@ -674,9 +674,9 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
         GXSetTexCoordGen2(GX_TEXCOORD1, GX_TG_MTX2x4, GX_TG_TEX1, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
         GXSetTexCoordGen2(GX_TEXCOORD2, GX_TG_MTX2x4, GX_TG_TEX2, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
         GXSetNumTexGens(3);
-        field_0xfc->load(GX_TEXMAP0);
-        field_0xf4->load(GX_TEXMAP1);
-        field_0x100->load(GX_TEXMAP2);
+        mKawazokoTexture_0xfc->load(GX_TEXMAP0);
+        mKumoEnvTexture_0xf4->load(GX_TEXMAP1);
+        mNoizeKawazokoTexture_0x100->load(GX_TEXMAP2);
         GXSetNumIndStages(2);
         GXSetIndTexOrder(GX_INDTEXSTAGE0, GX_TEXCOORD2, GX_TEXMAP2);
         GXSetIndTexOrder(GX_INDTEXSTAGE1, GX_TEXCOORD2, GX_TEXMAP2);
@@ -733,7 +733,7 @@ void GameRootSub24_8016A3AC::fn_8016CB14() {
 
 // FIXME: 69.69 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016C2FC() {
-    if (field_0x1c8 && field_0x104 != NULL) {
+    if (field_0x1c8 && mBgMoriTexture_0x104 != NULL) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
@@ -742,7 +742,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         half.mul(JGeometry::TVec3f(2.0f, 1.5f, 2.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0x104->load(GX_TEXMAP0);
+        mBgMoriTexture_0x104->load(GX_TEXMAP0);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition3f32(0.0f, 0.0f, 0.0f);
@@ -762,7 +762,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
         half.mul(JGeometry::TVec3f(3.0f, 2.25f, 3.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0xf4->load(GX_TEXMAP0);
+        mKumoEnvTexture_0xf4->load(GX_TEXMAP0);
         GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
         GXSetTevColor(GX_TEVREG0, lbl_8053D918);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
@@ -818,7 +818,7 @@ void GameRootSub24_8016A3AC::fn_8016C2FC() {
 
 // FIXME: 62.89 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016B910() {
-    if ((field_0x1c9 && field_0x108 != NULL) || (field_0x1ca && field_0x10c != NULL)) {
+    if ((field_0x1c9 && mEnkeiTexture_0x108 != NULL) || (field_0x1ca && mEnkeiDarkTexture_0x10c != NULL)) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
@@ -830,9 +830,9 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
         if (field_0x1ca) {
-            field_0x10c->load(GX_TEXMAP0);
+            mEnkeiDarkTexture_0x10c->load(GX_TEXMAP0);
         } else {
-            field_0x108->load(GX_TEXMAP0);
+            mEnkeiTexture_0x108->load(GX_TEXMAP0);
         }
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
@@ -854,7 +854,7 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
         half.mul(JGeometry::TVec3f(3.0f, 2.25f, 3.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0xf4->load(GX_TEXMAP0);
+        mKumoEnvTexture_0xf4->load(GX_TEXMAP0);
         GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
         GXSetTevColor(GX_TEVREG0, lbl_8053D924);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
@@ -921,13 +921,13 @@ void GameRootSub24_8016A3AC::fn_8016B910() {
 void GameRootSub24_8016A3AC::fn_8016B8AC() {
     if (field_0x1cb[0]) {
         JGeometry::TVec3f pos(256.0f, 256.0f + field_0x1e4, 0.0f);
-        fn_8016A7DC(field_0x34, pos, 1, true, false, 1.0f, 102.4f);
+        fn_8016A7DC(mMekakusiModel_0x34, pos, 1, true, false, 1.0f, 102.4f);
     }
 }
 
 // FIXME: 82.12 %, scheduling+regalloc + reloc-name; behaviour clean.
 void GameRootSub24_8016A3AC::fn_8016B4D4() {
-    if ((field_0x1cb[1] && field_0x110 != NULL) || (field_0x1cb[2] && field_0x118 != NULL)) {
+    if ((field_0x1cb[1] && mWallTexture_0x110 != NULL) || (field_0x1cb[2] && mWallKowareTexture_0x118 != NULL)) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         f32 scroll = 0.000244140625f * (f32)(field_0x1c0 & 0xFFF);
@@ -947,9 +947,9 @@ void GameRootSub24_8016A3AC::fn_8016B4D4() {
         gGameRoot2_8053AB10->fn_8013B1E8();
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         if (field_0x1cb[1]) {
-            field_0x114->load(GX_TEXMAP0);
+            mSkyTexture_0x114->load(GX_TEXMAP0);
         } else {
-            field_0x11c->load(GX_TEXMAP0);
+            mSkyKowareTexture_0x11c->load(GX_TEXMAP0);
         }
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition3f32(0.0f, 0.0f, 0.0f);
@@ -962,9 +962,9 @@ void GameRootSub24_8016A3AC::fn_8016B4D4() {
         GXTexCoord2f32(center1.x - half1.x, center1.y + half1.y);
         GXEnd();
         if (field_0x1cb[1]) {
-            field_0x110->load(GX_TEXMAP0);
+            mWallTexture_0x110->load(GX_TEXMAP0);
         } else {
-            field_0x118->load(GX_TEXMAP0);
+            mWallKowareTexture_0x118->load(GX_TEXMAP0);
         }
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition3f32(0.0f, 0.0f, 0.0f);
@@ -985,9 +985,9 @@ void GameRootSub24_8016A3AC::fn_8016B4D4() {
 // scheduling + regalloc only (same instructions): the original
 // interleaves the loads of getMapTexView differently (camera before the
 // second map count) and stores the zero z components earlier.
-// Draws field_0x120 over the screen, its view shifted and halved in x and y.
+// Draws mBgPiramidTexture_0x120 over the screen, its view shifted and halved in x and y.
 void GameRootSub24_8016A3AC::fn_8016B248() {
-    if (field_0x120 != NULL && field_0x1cb[3]) {
+    if (mBgPiramidTexture_0x120 != NULL && field_0x1cb[3]) {
         f32 width = (s32)JUTVideo::getManager()->getFbWidth();
         f32 height = (s32)JUTVideo::getManager()->getEfbHeight();
         JGeometry::TVec3f center;
@@ -1001,7 +1001,7 @@ void GameRootSub24_8016A3AC::fn_8016B248() {
         half.mul(JGeometry::TVec3f(1.0f, 0.75f, 1.0f));
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0x120->load(GX_TEXMAP0);
+        mBgPiramidTexture_0x120->load(GX_TEXMAP0);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition3f32(0.0f, 0.0f, 0.0f);
@@ -1021,7 +1021,7 @@ void GameRootSub24_8016A3AC::fn_8016B0B0() {
         Camera_804AA9E4* camera = gGameRoot2_8053AB10->field_0x24;
         f32 scale = 6.0f / camera->field_0x858;
         for (s32 i = 0; i < 6; i++) {
-            if (field_0x3c[i] == NULL) {
+            if (mKumoModels_0x3c[i] == NULL) {
                 continue;
             }
             if (i == 3 && field_0x1d0 == 0) {
@@ -1046,11 +1046,11 @@ void GameRootSub24_8016A3AC::fn_8016B0B0() {
             mtx[2][1] = 1.0f;
             mtx[2][2] = 0.0f;
             mtx[2][3] = z;
-            field_0x3c[i]->setBaseScale(scale, scale, scale);
-            PSMTXCopy(mtx, field_0x3c[i]->mPosMtx);
-            field_0x3c[i]->calc();
-            field_0x3c[i]->entry();
-            field_0x3c[i]->viewCalc();
+            mKumoModels_0x3c[i]->setBaseScale(scale, scale, scale);
+            PSMTXCopy(mtx, mKumoModels_0x3c[i]->mPosMtx);
+            mKumoModels_0x3c[i]->calc();
+            mKumoModels_0x3c[i]->entry();
+            mKumoModels_0x3c[i]->viewCalc();
         }
     }
 }
@@ -1061,7 +1061,7 @@ void GameRootSub24_8016A3AC::fn_8016B0B0() {
 void GameRootSub24_8016A3AC::fn_8016B054() {
     if (field_0x1d3) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xa8, pos, -1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mPoisonSwampModel_0xa8, pos, -1, true, true, 1.0f, 10.0f);
     }
 }
 #pragma auto_inline reset
@@ -1085,7 +1085,7 @@ void GameRootSub24_8016A3AC::fn_8016ADE0() {
         center.y -= scroll;
         gGameRoot2_8053AB10->fn_8013B460();
         gGameRoot2_8053AB10->fn_8013B1E8();
-        field_0xf4->load(GX_TEXMAP0);
+        mKumoEnvTexture_0xf4->load(GX_TEXMAP0);
         setTevAlpha(this);
         GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
         GXSetZCompLoc(GX_FALSE);
@@ -1108,77 +1108,77 @@ void GameRootSub24_8016A3AC::fn_8016ADE0() {
 void GameRootSub24_8016A3AC::fn_8016AD84() {
     if (field_0x1ed) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x1c, pos, 1, true, true, 1.5f, 10.24f);
+        fn_8016A7DC(mMoyaModel_0x1c, pos, 1, true, true, 1.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AD28() {
     if (field_0x1ef) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x28, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mDarkFilterModel_0x28, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016ACCC() {
     if (field_0x1f0) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x84, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mForestFilterModel_0x84, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AC70() {
     if (field_0x1f1) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x90, pos, 1, true, true, 1.5f, 10.0f);
+        fn_8016A7DC(mFogFilterModel_0x90, pos, 1, true, true, 1.5f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AC14() {
     if (field_0x1f2) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0x9c, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mCloudShadowFilterModel_0x9c, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016ABB8() {
     if (field_0x1f3) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xb4, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mBlackCloudFilterModel_0xb4, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AB5C() {
     if (field_0x1d8 > 0) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xc0, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mMorningLightModel_0xc0, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AB00() {
     if (field_0x1f4) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xd4, pos, 1, true, true, 1.0f, 10.0f);
+        fn_8016A7DC(mDarkFogModel_0xd4, pos, 1, true, true, 1.0f, 10.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AAA4() {
     if (field_0x1dc) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xcc, pos, 1, true, true, 1.5f, 1.0f);
+        fn_8016A7DC(mNagarekumoModel_0xcc, pos, 1, true, true, 1.5f, 1.0f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016AA48() {
     if (field_0x1f5) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xe0, pos, 1, true, true, 1.5f, 10.24f);
+        fn_8016A7DC(mMoyaRedModel_0xe0, pos, 1, true, true, 1.5f, 10.24f);
     }
 }
 
 void GameRootSub24_8016A3AC::fn_8016A9EC() {
     if (field_0x1dd) {
         JGeometry::TVec3f pos(256.0f, 256.0f, 0.0f);
-        fn_8016A7DC(field_0xec, pos, -1, true, true, 0.5f, 10.0f);
+        fn_8016A7DC(mYukaModel_0xec, pos, -1, true, true, 0.5f, 10.0f);
     }
 }
 #pragma auto_inline reset

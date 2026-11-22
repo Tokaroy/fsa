@@ -335,3 +335,61 @@ address	kind	old	new	confidence	apply	evidence
 804B0FE0	field	field_0x118	mStage_0x118	med	yes	tu_80134C04 fn_80135020 copies it into GameView::mStage_0x4; it is the first index of the boss archive table lbl_8049ED88[stage][level]; MapScreen's selected stage is read from it
 804B0FE0	field	field_0x11c	mLevel_0x11c	med	yes	tu_80134C04 fn_80135020 copies it into GameView::mLevel_0x8; second index of lbl_8049ED88[stage][level]
 804B0FE0	field	field_0x245	mSoundMode_0x245	med	yes	tu_80442810 ctor: 0 when OSGetSoundMode() == 0, else 1 (with gAudioMgr fn_804594E4(0 / 1))
+8016F0BC	field	field_0x0	mSolidHeap_0x0	med	yes	tu_8016A2B4 ctor: = JKRSolidHeap::create(-1, heap), made current while the models load, adjustSize() after; the destructor destroys it
+8016F0BC	field	field_0x4	mYouganModel_0x4	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "yougan.bmd", "yougan.btk", .., &field_0x4, &field_0x8, ..)
+8016F0BC	field	field_0x8	mYouganBtk_0x8	med	yes	tu_8016A2B4 ctor: the "yougan.btk" output of the same fn_8016A3BC call
+8016F0BC	field	field_0xc	mDokuYouganModel_0xc	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "doku_yougan.bmd", "doku_yougan.btk", .., &field_0xc, &field_0x10, ..)
+8016F0BC	field	field_0x10	mDokuYouganBtk_0x10	med	yes	tu_8016A2B4 ctor: the "doku_yougan.btk" output of the same call
+8016F0BC	field	field_0x14	mYamiYouganModel_0x14	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "yami_yougan.bmd", "yami_yougan.btk", .., &field_0x14, &field_0x18, ..)
+8016F0BC	field	field_0x18	mYamiYouganBtk_0x18	med	yes	tu_8016A2B4 ctor: the "yami_yougan.btk" output of the same call
+8016F0BC	field	field_0x1c	mMoyaModel_0x1c	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "moya.bmd", "moya.btk", NULL, "moya.brk", .., &field_0x1c, &field_0x20, NULL, &field_0x24, NULL)
+8016F0BC	field	field_0x20	mMoyaBtk_0x20	med	yes	tu_8016A2B4 ctor: the "moya.btk" output of the same call
+8016F0BC	field	field_0x24	mMoyaBrk_0x24	med	yes	tu_8016A2B4 ctor: the "moya.brk" output of the same call
+8016F0BC	field	field_0x28	mDarkFilterModel_0x28	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "darkFilter00.bmd", "darkFilter00.btk", NULL, "darkFilter00.brk", .., &field_0x28, &field_0x2c, NULL, &field_0x30, NULL)
+8016F0BC	field	field_0x2c	mDarkFilterBtk_0x2c	med	yes	tu_8016A2B4 ctor: the "darkFilter00.btk" output of the same call
+8016F0BC	field	field_0x30	mDarkFilterBrk_0x30	med	yes	tu_8016A2B4 ctor: the "darkFilter00.brk" output of the same call
+8016F0BC	field	field_0x34	mMekakusiModel_0x34	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "mekakusi.bmd", "mekakusi.btk", .., &field_0x34, &field_0x38, ..)
+8016F0BC	field	field_0x38	mMekakusiBtk_0x38	med	yes	tu_8016A2B4 ctor: the "mekakusi.btk" output of the same call
+8016F0BC	field	field_0x3c	mKumoModels_0x3c	med	yes	tu_8016A2B4 ctor: [i] from lbl_804A0790[i][0] ("w_kumo.bmd", "w_kumo1.bmd" .. "w_kumo5.bmd") of the boss archive
+8016F0BC	field	field_0x54	mKumoBtks_0x54	med	yes	tu_8016A2B4 ctor: [i] from lbl_804A0790[i][1] ("w_kumo.btk" .. "w_kumo4.btk") in the same call
+8016F0BC	field	field_0x6c	mKumoBrks_0x6c	med	yes	tu_8016A2B4 ctor: [i] from lbl_804A0790[i][2] ("w_kumo1.brk" .. "w_kumo4.brk") in the same call
+8016F0BC	field	field_0x84	mForestFilterModel_0x84	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(boss archive, "forestFilter00.bmd", "forestFilter00.btk", NULL, "forestFilter00.brk", .., &field_0x84, &field_0x88, NULL, &field_0x8c, NULL)
+8016F0BC	field	field_0x88	mForestFilterBtk_0x88	med	yes	tu_8016A2B4 ctor: the "forestFilter00.btk" output of the same call
+8016F0BC	field	field_0x8c	mForestFilterBrk_0x8c	med	yes	tu_8016A2B4 ctor: the "forestFilter00.brk" output of the same call
+8016F0BC	field	field_0x90	mFogFilterModel_0x90	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "fogFilter00.bmd", "fogFilter00.btk", NULL, "fogFilter00.brk", .., &field_0x90, &field_0x94, NULL, &field_0x98, NULL)
+8016F0BC	field	field_0x94	mFogFilterBtk_0x94	med	yes	tu_8016A2B4 ctor: the "fogFilter00.btk" output of the same call
+8016F0BC	field	field_0x98	mFogFilterBrk_0x98	med	yes	tu_8016A2B4 ctor: the "fogFilter00.brk" output of the same call
+8016F0BC	field	field_0x9c	mCloudShadowFilterModel_0x9c	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "cloudShadowFilter00.bmd", ".btk", NULL, ".brk", .., &field_0x9c, &field_0xa0, NULL, &field_0xa4, NULL)
+8016F0BC	field	field_0xa0	mCloudShadowFilterBtk_0xa0	med	yes	tu_8016A2B4 ctor: the "cloudShadowFilter00.btk" output of the same call
+8016F0BC	field	field_0xa4	mCloudShadowFilterBrk_0xa4	med	yes	tu_8016A2B4 ctor: the "cloudShadowFilter00.brk" output of the same call
+8016F0BC	field	field_0xa8	mPoisonSwampModel_0xa8	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "poisonSwamp00.bmd", ".btk", NULL, ".brk", .., &field_0xa8, &field_0xac, NULL, &field_0xb0, NULL)
+8016F0BC	field	field_0xac	mPoisonSwampBtk_0xac	med	yes	tu_8016A2B4 ctor: the "poisonSwamp00.btk" output of the same call
+8016F0BC	field	field_0xb0	mPoisonSwampBrk_0xb0	med	yes	tu_8016A2B4 ctor: the "poisonSwamp00.brk" output of the same call
+8016F0BC	field	field_0xb4	mBlackCloudFilterModel_0xb4	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "blackCloudFilter.bmd", ".btk", NULL, ".brk", .., &field_0xb4, &field_0xb8, NULL, &field_0xbc, NULL)
+8016F0BC	field	field_0xb8	mBlackCloudFilterBtk_0xb8	med	yes	tu_8016A2B4 ctor: the "blackCloudFilter.btk" output of the same call
+8016F0BC	field	field_0xbc	mBlackCloudFilterBrk_0xbc	med	yes	tu_8016A2B4 ctor: the "blackCloudFilter.brk" output of the same call
+8016F0BC	field	field_0xc0	mMorningLightModel_0xc0	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(boss archive, "morningLight00.bmd", ".btk", NULL, ".brk", .., &field_0xc0, &field_0xc4, NULL, &field_0xc8, NULL)
+8016F0BC	field	field_0xc4	mMorningLightBtk_0xc4	med	yes	tu_8016A2B4 ctor: the "morningLight00.btk" output of the same call
+8016F0BC	field	field_0xc8	mMorningLightBrk_0xc8	med	yes	tu_8016A2B4 ctor: the "morningLight00.brk" output of the same call
+8016F0BC	field	field_0xcc	mNagarekumoModel_0xcc	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(boss archive, "nagarekumo.bmd", "nagarekumo.btk", .., &field_0xcc, &field_0xd0, ..)
+8016F0BC	field	field_0xd0	mNagarekumoBtk_0xd0	med	yes	tu_8016A2B4 ctor: the "nagarekumo.btk" output of the same call
+8016F0BC	field	field_0xd4	mDarkFogModel_0xd4	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(boss archive, "darkFog00.bmd", "darkFog00.btk", NULL, "darkFog00.brk", .., &field_0xd4, &field_0xd8, NULL, &field_0xdc, NULL)
+8016F0BC	field	field_0xd8	mDarkFogBtk_0xd8	med	yes	tu_8016A2B4 ctor: the "darkFog00.btk" output of the same call
+8016F0BC	field	field_0xdc	mDarkFogBrk_0xdc	med	yes	tu_8016A2B4 ctor: the "darkFog00.brk" output of the same call
+8016F0BC	field	field_0xe0	mMoyaRedModel_0xe0	med	yes	tu_8016A2B4 ctor: fn_8016A3BC(data.arc, "moya_red.bmd", "moya_red.btk", NULL, "moya_red.brk", .., &field_0xe0, &field_0xe4, NULL, &field_0xe8, NULL)
+8016F0BC	field	field_0xe4	mMoyaRedBtk_0xe4	med	yes	tu_8016A2B4 ctor: the "moya_red.btk" output of the same call
+8016F0BC	field	field_0xe8	mMoyaRedBrk_0xe8	med	yes	tu_8016A2B4 ctor: the "moya_red.brk" output of the same call
+8016F0BC	field	field_0xec	mYukaModel_0xec	med	yes	tu_8016A2B4 ctor: the first found of "yuka_2.bmd" / "yuka_4.bmd" / "yuka_6.bmd" / "yuka_7.bmd" / "yuka_8.bmd" in the boss archive
+8016F0BC	field	field_0xf0	mYukaBtk_0xf0	med	yes	tu_8016A2B4 ctor: NULL, or "yuka_6.btk" when yuka_6.bmd is the model loaded
+8016F0BC	field	field_0xf4	mKumoEnvTexture_0xf4	med	yes	tu_8016A2B4 ctor: new JUTTexture(getResource("kumo_env.bti"))
+8016F0BC	field	field_0xf8	mSmokeTexture_0xf8	med	yes	tu_8016A2B4 ctor: new JUTTexture(getResource("smoke.bti"))
+8016F0BC	field	field_0xfc	mKawazokoTexture_0xfc	med	yes	tu_8016A2B4 ctor: new JUTTexture(getResource("kawazoko.bti"))
+8016F0BC	field	field_0x100	mNoizeKawazokoTexture_0x100	med	yes	tu_8016A2B4 ctor: new JUTTexture(getResource("noize_kawazoko_1.bti"))
+8016F0BC	field	field_0x104	mBgMoriTexture_0x104	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "bg_mori.bti")
+8016F0BC	field	field_0x108	mEnkeiTexture_0x108	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "enkei.bti")
+8016F0BC	field	field_0x10c	mEnkeiDarkTexture_0x10c	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "enkei_dark.bti")
+8016F0BC	field	field_0x110	mWallTexture_0x110	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "wall.bti")
+8016F0BC	field	field_0x114	mSkyTexture_0x114	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "sky.bti")
+8016F0BC	field	field_0x118	mWallKowareTexture_0x118	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "wall_koware.bti")
+8016F0BC	field	field_0x11c	mSkyKowareTexture_0x11c	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "sky_koware.bti")
+8016F0BC	field	field_0x120	mBgPiramidTexture_0x120	med	yes	tu_8016A2B4 ctor: loadTexture(boss archive, "bg_piramid.bti")

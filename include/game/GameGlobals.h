@@ -1736,73 +1736,73 @@ extern const GXRenderModeObj lbl_8048C17C;
 // the bytes act_environment_control_2 writes are declared.
 struct GameRootSub24_8016A3AC {
     GameRootSub24_8016A3AC(JKRHeap* heap); // 0x8016F0BC
-    /* 0x000 */ JKRSolidHeap* field_0x0; // destroyed by the destructor
+    /* 0x000 */ JKRSolidHeap* mSolidHeap_0x0; // destroyed by the destructor
     // The models and their animations, loaded by the constructor with fn_8016A3BC.
     // The J3DModels (0x4 ... 0xEC) are passed to fn_8016A7DC.
-    /* 0x004 */ struct J3DModel* field_0x4;               // yougan
-    /* 0x008 */ struct J3DAnmTextureSRTKey* field_0x8;
-    /* 0x00C */ struct J3DModel* field_0xc;               // doku_yougan
-    /* 0x010 */ struct J3DAnmTextureSRTKey* field_0x10;
-    /* 0x014 */ struct J3DModel* field_0x14;              // yami_yougan
-    /* 0x018 */ struct J3DAnmTextureSRTKey* field_0x18;
-    /* 0x01C */ struct J3DModel* field_0x1c;              // moya
-    /* 0x020 */ struct J3DAnmTextureSRTKey* field_0x20;
-    /* 0x024 */ struct J3DAnmTevRegKey* field_0x24;
-    /* 0x028 */ struct J3DModel* field_0x28;              // darkFilter00
-    /* 0x02C */ struct J3DAnmTextureSRTKey* field_0x2c;
-    /* 0x030 */ struct J3DAnmTevRegKey* field_0x30;
-    /* 0x034 */ struct J3DModel* field_0x34;              // mekakusi
-    /* 0x038 */ struct J3DAnmTextureSRTKey* field_0x38;
+    /* 0x004 */ struct J3DModel* mYouganModel_0x4;               // yougan
+    /* 0x008 */ struct J3DAnmTextureSRTKey* mYouganBtk_0x8;
+    /* 0x00C */ struct J3DModel* mDokuYouganModel_0xc;               // doku_yougan
+    /* 0x010 */ struct J3DAnmTextureSRTKey* mDokuYouganBtk_0x10;
+    /* 0x014 */ struct J3DModel* mYamiYouganModel_0x14;              // yami_yougan
+    /* 0x018 */ struct J3DAnmTextureSRTKey* mYamiYouganBtk_0x18;
+    /* 0x01C */ struct J3DModel* mMoyaModel_0x1c;              // moya
+    /* 0x020 */ struct J3DAnmTextureSRTKey* mMoyaBtk_0x20;
+    /* 0x024 */ struct J3DAnmTevRegKey* mMoyaBrk_0x24;
+    /* 0x028 */ struct J3DModel* mDarkFilterModel_0x28;              // darkFilter00
+    /* 0x02C */ struct J3DAnmTextureSRTKey* mDarkFilterBtk_0x2c;
+    /* 0x030 */ struct J3DAnmTevRegKey* mDarkFilterBrk_0x30;
+    /* 0x034 */ struct J3DModel* mMekakusiModel_0x34;              // mekakusi
+    /* 0x038 */ struct J3DAnmTextureSRTKey* mMekakusiBtk_0x38;
     // Six cloud models (w_kumo .. w_kumo5), placed by fn_8016B0B0 (loop over i < 6).
-    /* 0x03C */ struct J3DModel* field_0x3c[6];
+    /* 0x03C */ struct J3DModel* mKumoModels_0x3c[6];
     // Their texture-SRT and TEV-register animations; fn_8016DCEC passes them to fn_8016D398.
-    /* 0x054 */ struct J3DAnmTextureSRTKey* field_0x54[6];
-    /* 0x06C */ struct J3DAnmTevRegKey* field_0x6c[6];
-    /* 0x084 */ struct J3DModel* field_0x84;              // forestFilter00
-    /* 0x088 */ struct J3DAnmTextureSRTKey* field_0x88;
-    /* 0x08C */ struct J3DAnmTevRegKey* field_0x8c;
-    /* 0x090 */ struct J3DModel* field_0x90;              // fogFilter00
-    /* 0x094 */ struct J3DAnmTextureSRTKey* field_0x94;
-    /* 0x098 */ struct J3DAnmTevRegKey* field_0x98;
-    /* 0x09C */ struct J3DModel* field_0x9c;              // cloudShadowFilter00
-    /* 0x0A0 */ struct J3DAnmTextureSRTKey* field_0xa0;
-    /* 0x0A4 */ struct J3DAnmTevRegKey* field_0xa4;
-    /* 0x0A8 */ struct J3DModel* field_0xa8;              // poisonSwamp00
-    /* 0x0AC */ struct J3DAnmTextureSRTKey* field_0xac;
-    /* 0x0B0 */ struct J3DAnmTevRegKey* field_0xb0;
-    /* 0x0B4 */ struct J3DModel* field_0xb4;              // blackCloudFilter
-    /* 0x0B8 */ struct J3DAnmTextureSRTKey* field_0xb8;
-    /* 0x0BC */ struct J3DAnmTevRegKey* field_0xbc;
-    /* 0x0C0 */ struct J3DModel* field_0xc0;              // morningLight00
-    /* 0x0C4 */ struct J3DAnmTextureSRTKey* field_0xc4;
-    /* 0x0C8 */ struct J3DAnmTevRegKey* field_0xc8;
-    /* 0x0CC */ struct J3DModel* field_0xcc;              // nagarekumo
-    /* 0x0D0 */ struct J3DAnmTextureSRTKey* field_0xd0;
-    /* 0x0D4 */ struct J3DModel* field_0xd4;              // darkFog00
-    /* 0x0D8 */ struct J3DAnmTextureSRTKey* field_0xd8;
-    /* 0x0DC */ struct J3DAnmTevRegKey* field_0xdc;
-    /* 0x0E0 */ struct J3DModel* field_0xe0;              // moya_red
-    /* 0x0E4 */ struct J3DAnmTextureSRTKey* field_0xe4;
-    /* 0x0E8 */ struct J3DAnmTevRegKey* field_0xe8;
+    /* 0x054 */ struct J3DAnmTextureSRTKey* mKumoBtks_0x54[6];
+    /* 0x06C */ struct J3DAnmTevRegKey* mKumoBrks_0x6c[6];
+    /* 0x084 */ struct J3DModel* mForestFilterModel_0x84;              // forestFilter00
+    /* 0x088 */ struct J3DAnmTextureSRTKey* mForestFilterBtk_0x88;
+    /* 0x08C */ struct J3DAnmTevRegKey* mForestFilterBrk_0x8c;
+    /* 0x090 */ struct J3DModel* mFogFilterModel_0x90;              // fogFilter00
+    /* 0x094 */ struct J3DAnmTextureSRTKey* mFogFilterBtk_0x94;
+    /* 0x098 */ struct J3DAnmTevRegKey* mFogFilterBrk_0x98;
+    /* 0x09C */ struct J3DModel* mCloudShadowFilterModel_0x9c;              // cloudShadowFilter00
+    /* 0x0A0 */ struct J3DAnmTextureSRTKey* mCloudShadowFilterBtk_0xa0;
+    /* 0x0A4 */ struct J3DAnmTevRegKey* mCloudShadowFilterBrk_0xa4;
+    /* 0x0A8 */ struct J3DModel* mPoisonSwampModel_0xa8;              // poisonSwamp00
+    /* 0x0AC */ struct J3DAnmTextureSRTKey* mPoisonSwampBtk_0xac;
+    /* 0x0B0 */ struct J3DAnmTevRegKey* mPoisonSwampBrk_0xb0;
+    /* 0x0B4 */ struct J3DModel* mBlackCloudFilterModel_0xb4;              // blackCloudFilter
+    /* 0x0B8 */ struct J3DAnmTextureSRTKey* mBlackCloudFilterBtk_0xb8;
+    /* 0x0BC */ struct J3DAnmTevRegKey* mBlackCloudFilterBrk_0xbc;
+    /* 0x0C0 */ struct J3DModel* mMorningLightModel_0xc0;              // morningLight00
+    /* 0x0C4 */ struct J3DAnmTextureSRTKey* mMorningLightBtk_0xc4;
+    /* 0x0C8 */ struct J3DAnmTevRegKey* mMorningLightBrk_0xc8;
+    /* 0x0CC */ struct J3DModel* mNagarekumoModel_0xcc;              // nagarekumo
+    /* 0x0D0 */ struct J3DAnmTextureSRTKey* mNagarekumoBtk_0xd0;
+    /* 0x0D4 */ struct J3DModel* mDarkFogModel_0xd4;              // darkFog00
+    /* 0x0D8 */ struct J3DAnmTextureSRTKey* mDarkFogBtk_0xd8;
+    /* 0x0DC */ struct J3DAnmTevRegKey* mDarkFogBrk_0xdc;
+    /* 0x0E0 */ struct J3DModel* mMoyaRedModel_0xe0;              // moya_red
+    /* 0x0E4 */ struct J3DAnmTextureSRTKey* mMoyaRedBtk_0xe4;
+    /* 0x0E8 */ struct J3DAnmTevRegKey* mMoyaRedBrk_0xe8;
     // The first of yuka_2 / 4 / 6 / 7 / 8 found (yuka_6 with its btk).
-    /* 0x0EC */ struct J3DModel* field_0xec;
-    /* 0x0F0 */ struct J3DAnmTextureSRTKey* field_0xf0;
+    /* 0x0EC */ struct J3DModel* mYukaModel_0xec;
+    /* 0x0F0 */ struct J3DAnmTextureSRTKey* mYukaBtk_0xf0;
     // The full-screen backdrop texture fn_8016ADE0 draws.
-    /* 0x0F4 */ struct JUTTexture* field_0xf4;
+    /* 0x0F4 */ struct JUTTexture* mKumoEnvTexture_0xf4;
     // The destructor deletes 0xF4-0x120.
-    /* 0x0F8 */ struct JUTTexture* field_0xf8;
-    /* 0x0FC */ struct JUTTexture* field_0xfc;
-    /* 0x100 */ struct JUTTexture* field_0x100;
-    /* 0x104 */ struct JUTTexture* field_0x104;
-    /* 0x108 */ struct JUTTexture* field_0x108;
-    /* 0x10C */ struct JUTTexture* field_0x10c;
+    /* 0x0F8 */ struct JUTTexture* mSmokeTexture_0xf8;
+    /* 0x0FC */ struct JUTTexture* mKawazokoTexture_0xfc;
+    /* 0x100 */ struct JUTTexture* mNoizeKawazokoTexture_0x100;
+    /* 0x104 */ struct JUTTexture* mBgMoriTexture_0x104;
+    /* 0x108 */ struct JUTTexture* mEnkeiTexture_0x108;
+    /* 0x10C */ struct JUTTexture* mEnkeiDarkTexture_0x10c;
     // Backdrop textures: fn_8016B4D4 draws 0x114 / 0x110 (or 0x11C / 0x118),
     // fn_8016B248 draws 0x120.
-    /* 0x110 */ struct JUTTexture* field_0x110;
-    /* 0x114 */ struct JUTTexture* field_0x114;
-    /* 0x118 */ struct JUTTexture* field_0x118;
-    /* 0x11C */ struct JUTTexture* field_0x11c;
-    /* 0x120 */ struct JUTTexture* field_0x120;
+    /* 0x110 */ struct JUTTexture* mWallTexture_0x110;
+    /* 0x114 */ struct JUTTexture* mSkyTexture_0x114;
+    /* 0x118 */ struct JUTTexture* mWallKowareTexture_0x118;
+    /* 0x11C */ struct JUTTexture* mSkyKowareTexture_0x11c;
+    /* 0x120 */ struct JUTTexture* mBgPiramidTexture_0x120;
     // The three emitters fn_8016A2B4 deletes.
     /* 0x124 */ struct JPABaseEmitter* field_0x124;
     /* 0x128 */ struct JPABaseEmitter* field_0x128;
@@ -1885,11 +1885,11 @@ struct GameRootSub24_8016A3AC {
     void fn_8016CB14();
     // 0x8016B8AC.
     void fn_8016B8AC();
-    // 0x8016B0B0: places the six models of field_0x3c against the 2D camera.
+    // 0x8016B0B0: places the six models of mKumoModels_0x3c against the 2D camera.
     void fn_8016B0B0();
-    // 0x8016ADE0: draws field_0xf4 over the screen (called by fn_8016DA6C / fn_8016DB60).
+    // 0x8016ADE0: draws mKumoEnvTexture_0xf4 over the screen (called by fn_8016DA6C / fn_8016DB60).
     void fn_8016ADE0();
-    // 0x8016B248: draws field_0x120 over the screen.
+    // 0x8016B248: draws mBgPiramidTexture_0x120 over the screen.
     void fn_8016B248();
     // 0x8016DCEC: in the isGameModeSet() modes (not mode 0xB), while
     // field_0x1cf is set, runs fn_8016D398 with the camera matrix.
@@ -1908,7 +1908,7 @@ struct GameRootSub24_8016A3AC {
     void fn_8016EDB0();
     // 0x8016EE84 (game/tu_8016A2B4.cpp): deletes the entries' emitters and
     // sound objects, the emitters, the textures, and destroys the heap.
-    // GameRootSub04_801F856C's destructor deletes field_0x24 with it.
+    // GameRootSub04_801F856C's destructor deletes mMoyaBrk_0x24 with it.
     ~GameRootSub24_8016A3AC();
 };
 // game/tu_8016A2B4.cpp (0x8016A3AC): returns gGameRoot_8053AAF8->field_0x4->field_0x24.

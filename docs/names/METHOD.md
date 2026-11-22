@@ -185,7 +185,8 @@ it follows member renames.
 ## Fields (kind `field`)
 
 A data member is named once, at the class that declares it; the row's
-address is that class's vtable (as for member rows), `old` its
+address is that class's vtable (as for member rows; its constructor's
+address when the class has no vtable, e.g. `8016F0BC` GameRootSub24), `old` its
 `field_0x<off>` placeholder. Grades as above. A field has no address, so
 below high the **offset** stays in the name as a trailing `_0x<off>` spelled
 as in the old name (`field_0xd8` -> `mHitTimer_0xd8`); only a proven name

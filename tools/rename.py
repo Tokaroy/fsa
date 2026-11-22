@@ -426,6 +426,16 @@ def class_at(syms, addr):
     return None
 
 
+def ctor_class_at(syms, addr):
+    """The class whose constructor symbols.txt places at addr: the address of
+    a field row whose class has no vtable (METHOD.md: "else the constructor")."""
+    for s, ad in syms:
+        m = re.match(r"__ct__(\d+)(\w+)", s)
+        if m and ad == addr and len(m[2]) > int(m[1]) and m[2][int(m[1])] == "F":
+            return m[2][:int(m[1])]
+    return None
+
+
 def member_plan(f, t, old, inside, hier):
     """Positions of `old` in text t (file f) that belong to the hierarchy:
     (rename, left) lists of match objects. inside(cls) -> True / False /
@@ -648,10 +658,10 @@ def field_plan(frows, forward, syms, texts, report, quiet):
         if not r["apply"]:
             report["not-applied"] += 1
             continue
-        root = class_at(syms, r["addr"])
+        root = class_at(syms, r["addr"]) or ctor_class_at(syms, r["addr"])
         if root is None:
             report["refused"] += 1
-            print(f"REFUSED  {tag}: no __vt__ at {r['addr']} in symbols.txt")
+            print(f"REFUSED  {tag}: no __vt__ or __ct__ at {r['addr']} in symbols.txt")
             continue
         st = rf.state(tree, r, root)
         if st is None:
