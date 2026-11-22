@@ -357,7 +357,7 @@ static inline f32 paneH(PaneCtrl_804AF86C* c) {
     return c->mPane->getHeight();
 }
 
-// FIXME(shotgun): 96.98 %, missing/extra; behaviour near.
+// FIXME(shotgun): 98.22 %, scheduling+regalloc; behaviour clean.
 void SaveScreen_804B0288::fn_803D49A4() {
     f32 w0 = field_0x2c[0]->field_0x18;
     f32 wide = paneW(field_0x2c[0]);
@@ -935,7 +935,6 @@ void SaveScreen_804B0288::fn_803D335C() {
     field_0x216c = 0x10;
 }
 
-// FIXME(shotgun): 97.39 %, missing/extra; behaviour drift.
 void SaveScreen_804B0288::fn_803D3214() {
     s32 result = lbl_8051C1A0.fn_803B9BDC();
     if (result == 1) {
@@ -1016,7 +1015,6 @@ void SaveScreen_804B0288::fn_803D2FFC() {
     }
 }
 
-// FIXME(shotgun): 98.26 %, missing/extra; behaviour drift.
 void SaveScreen_804B0288::fn_803D2E10() {
     if (lbl_8053AD30->fn_80309C4C(1, -1)) {
         if (field_0x2170 != 0) {
