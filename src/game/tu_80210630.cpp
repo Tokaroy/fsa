@@ -104,7 +104,7 @@ u8 cls_804A61C8::checkHitByPlayer_0x5C() {
 // this code needs only r28-r31 and schedules the loads and the stores of the sprite parameters
 // after each other.
 void cls_804A61C8::fn_80210630(u8 arg0, u8 arg1, u8 arg2, s32 arg3) {
-    ResTIMG* res = (ResTIMG*)fn_804032E8('TIMG', lbl_804A61A8[mDir_0x98 + (arg0 ? 4 : 0)]);
+    ResTIMG* res = (ResTIMG*)getBossArchiveResource_804032E8('TIMG', lbl_804A61A8[mDir_0x98 + (arg0 ? 4 : 0)]);
     SpriteParams_801F5AE0 params;
     Mtx mtx;
     JGeometry::TVec3f pos(mPos);

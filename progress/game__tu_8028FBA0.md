@@ -96,7 +96,7 @@ index 18c75968..52fbdc0c 100644
 +            return;
 +        }
 +        if (!fn_80240670()) {
-+            fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
++            hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
 +        }
 +        s32 hp = life();
 +        s32 state = 0;
@@ -168,9 +168,9 @@ index 18c75968..52fbdc0c 100644
 +        if (field_0x344.z < 0.0f && mPos.z <= 0.0f) {
 +            mPos.z = 0.0f;
 +            if (!fn_80240670() && (field_0xcf4 == 0xC || field_0xcf4 == 0xD || field_0xcf4 == 0x26)) {
-+                fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
++                hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
 +            } else {
-+                fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
++                hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
 +            }
 +            s32 hp = life();
 +        s32 state = 0;

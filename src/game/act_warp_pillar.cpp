@@ -162,8 +162,8 @@ void WarpPillar_804AC0A8::update() {
         } else {
             for (s32 i = 0; i < 4; i++) {
                 s32 owner = i;
-                if (fn_8022F514(i)) {
-                    owner = fn_8022F3DC(i);
+                if (hasPlayerLeader_8022F514(i)) {
+                    owner = getPlayerLeader_8022F3DC(i);
                 }
                 JGeometry::TVec3f pos(*getPlayerPos_8023E724(i));
                 if (field_0x260[owner]) {

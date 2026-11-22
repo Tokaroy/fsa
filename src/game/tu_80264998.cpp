@@ -245,7 +245,7 @@ void Player_804A6F38::fn_80267598() {
 }
 
 void Player_804A6F38::fn_80267470() {
-    if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !fn_80240808()) {
+    if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !hasLeader_80240808()) {
         mCel_0x3c4 = 0x31D;
     } else {
         fn_80268194();
@@ -801,7 +801,7 @@ void Player_804A6F38::fn_80264998() {
                                               &markParams, 1.0f, 1.0f);
     }
     SpriteParams_801F5AE0 shadowParams;
-    if (!(fn_80240808() && fn_80240DAC()) && fn_802413F0()) {
+    if (!(hasLeader_80240808() && fn_80240DAC()) && fn_802413F0()) {
         shadowParams.field_0x1d = -2;
         JGeometry::TVec3f pos;
         if (fn_80240DAC()) {
@@ -951,7 +951,7 @@ void Player_804A6F38::fn_80264998() {
     if (alpha < 0x20) {
         return;
     }
-    if (fn_80240808() && fn_802486A0() != 4 && !fn_8023188C(fn_80240644())) {
+    if (hasLeader_80240808() && fn_802486A0() != 4 && !fn_8023188C(fn_80240644())) {
         return;
     }
     u16 frame = mCel_0x3c4;

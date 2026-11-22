@@ -251,7 +251,7 @@ bool ForceGem_804AB6D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) 
     u32 skipIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, skipIds) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, skipIds) == 1) {
         return true;
     }
     bool result;
@@ -316,7 +316,7 @@ void ForceGem_804AB6D8::update() {
                 mVel_0x3c.x = 0.0f;
                 mVel_0x3c.y = 0.0f;
             }
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
         }
         if (field_0x17d == 1 && field_0x280 == 1) {
             fn_801F0D20(0x42);
@@ -371,7 +371,7 @@ void ForceGem_804AB6D8::update() {
         break;
     case 2:
         tickTimer();
-        if (fn_801F2618(NULL, false) || field_0x24c <= 0) {
+        if (sweepMapBox_801F2618(NULL, false) || field_0x24c <= 0) {
             fn_801F3668();
         }
         break;
@@ -817,7 +817,7 @@ void ForceGem_804AB6D8::fn_8032B7C0() {
         field_0x284.y = 0.0f;
         field_0x284.x = 0.0f;
         field_0x283 = 1;
-        field_0x27e = fn_801F2618(&field_0x284, false);
+        field_0x27e = sweepMapBox_801F2618(&field_0x284, false);
         if (field_0x283 == 1) {
             mPos = field_0x29c;
         }
@@ -1065,8 +1065,8 @@ void ForceGem_804AB6D8::fn_8032ABE0() {
     }
     field_0x238 = 1.0f;
     s32 other = found;
-    if (fn_8022F514(found) == true) {
-        other = fn_8022F3DC(found);
+    if (hasPlayerLeader_8022F514(found) == true) {
+        other = getPlayerLeader_8022F3DC(found);
     }
     if (getGameView_802D6A9C()->mStage_0x4 == 0 && getGameView_802D6A9C()->mLevel_0x8 == 0 &&
         !getGameView_802D6A9C()->fn_802D7F40(0)) {

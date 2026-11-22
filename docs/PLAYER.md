@@ -289,7 +289,7 @@ No Player object exists from boot to the main menu (the manager at
 gPlayerManager_8053AC90 is not constructed), and the only Player-range code that runs
 there is the units' `__sinit` functions, the static-init function
 fn_8023F9B8 and three manager guards that return early on the null manager:
-fn_8023F264 (the player-active check), getPlayerLayer_8023DE58 and fn_8022EA0C (14
+fn_8023F264 (the player-active check), getPlayerLayer_8023DE58 and getRepresentativePlayer_8022EA0C (14
 instructions). Measured from the p1-p3a coverage dumps. Everything else runs in the menu ->
 Shadow Battle phase: about 7.8k unmatched instructions (~31 KB). The most
 executed unmatched functions are:
@@ -346,7 +346,7 @@ from the tables' relocations, so every case below is the table entry):
   (byte 0x454) holds; then the tick only restores mPos from the TVec3f at
   0x32C.
 - Between ENTER and UPDATE: fn_80131F0C(); a damage call
-  fn_80238548(index, 0x20, &mPos, 0x12) when fn_80131D98() or
+  hitPlayerGroup_80238548(index, 0x20, &mPos, 0x12) when fn_80131D98() or
   lbl_8053ABA8 / lbl_8053ABF0 is set, else a request of state **0x33**
   when fn_8024189C() <= 0 and !fn_80270A8C(); then the push vector at
   0x35C is added to mPos and damped (x0.95 above length 2, x0.9 below) in
@@ -453,7 +453,7 @@ placed before it, so these can become plain functions where the asm has both an
 out-of-line copy and inlined uses; converting them is a follow-up and only
 tu_8023FBF0 is affected. The findings below are what the inlining proved.)
 - **groupSize** (fn_80248970): this player, its leader 0xD60 and every
-  follower (fn_8022F514) whose leader (fn_8022F3DC) is that leader (or this
+  follower (hasPlayerLeader_8022F514) whose leader (getPlayerLeader_8022F3DC) is that leader (or this
   player when 0xD60 < 0).
 - **groupMode** (fn_802486A0): 5 alone, else the leader's mode (fn_8022CAF8)
   or, leading, **0x120C**. Mode 4 = turn-based: **groupTurn** (fn_80240888:
@@ -484,9 +484,9 @@ form). With it every gated function here is registers-only (99.5-99.9 %).
 ### fn_802490A8 (input, 99.9 %, registers only)
 
 Skipped while 0x1220 > 0. Returns when the acting player (this one, or in
-mode 4 fn_8022EA0C of it) is fn_80230188 / fn_80236B50 / airborne (z > 0) /
-fn_8023EA28, or a player it can reach (fn_8022E438) is busy (fn_8023E98C
-without fn_8022E438 back, fn_8022DEAC outside mode 4, ten state queries);
+mode 4 getRepresentativePlayer_8022EA0C of it) is fn_80230188 / fn_80236B50 / airborne (z > 0) /
+fn_8023EA28, or a player it can reach (arePlayersInSameGroup_8022E438) is busy (fn_8023E98C
+without arePlayersInSameGroup_8022E438 back, fn_8022DEAC outside mode 4, ten state queries);
 also in demo mode with 0xCFE == 1, fn_8022AF5C, or **0x121E == 1**. Then:
 a leader (0xD60 < 0) of a group of 2+ pressing 0x40 (fn_80309D6C) either
 spawns the 'FORM' actor (mode 5; serial in **0x1230**, fn_80134FE0(1)
@@ -632,7 +632,7 @@ fn_8025AED0 99.8 %, fn_80258890 99.97 % (rodata placement only), fn_8025D6AC 99.
 **fn_8025785C, the item check** (every frame; first user of the .sdata2 floats 2.0 / 0.0):
 while fn_8022B334(player) and fn_8022C310(player) hold, the selected item
 **fn_802416C4** (Player 0xC10, set with its level 0xC14 by fn_80241618) requests its
-state. A leader / follower copies the leader's item first (fn_80240808, fn_802373EC).
+state. A leader / follower copies the leader's item first (hasLeader_80240808, fn_802373EC).
 Evidence for the item names is the actor each state spawns (docs/names/actors.tsv):
 
 | item | state (update / enter / exit) | what it is |
@@ -675,7 +675,7 @@ Evidence for the item names is the actor each state spawns (docs/names/actors.ts
 67 -> 74 of 120 at 100 % (+7 honest), structural +6. Proven:
 
 - **fn_802710C8 = Player::fn_802710C8(attacker, damage, const TVec2f* pos, kind)**,
-  the hit / damage entry (one caller: fn_80238548 in tu_8022AD64, per player).
+  the hit / damage entry (one caller: hitPlayerGroup_80238548 in tu_8022AD64, per player).
   98.54 % structure-first. Damage 0 under fn_80240B5C, halved under fn_80241498;
   refused while isDown(), for kinds 0x11-0x13 / 0xD-0xF / others by fn_80240670 /
   fn_80270C88, kind 0x1B in stage (0, 2) of the save. 0x11E4 = last kind; kind 0x12
@@ -804,7 +804,7 @@ do the same (historical note, not re-tested).
    0x73 + index * 3 + (frame counter 0x5C / 6) % 3 at 0xCB0 (a 3-frame blink
    per player), params 0x1C = 0x2D = 1.
 4. Sprite shadow ("player_sob.bin", the body cel itself darkened), unless
-   fn_80240808 && fn_80240DAC, and only with fn_802413F0: at (x, y - 0.01, -5)
+   hasLeader_80240808 && fn_80240DAC, and only with fn_802413F0: at (x, y - 0.01, -5)
    (y from 0x328 on fn_80240DAC), plus on layer 8 the view's top-left
    (GameView mVisibleBox.i, the per-layer view offset) and (0, -z) (height
    drawn as a y offset); alpha min(alpha, 0xCA1), cap 0x9F, minus z / 2 in
@@ -853,7 +853,7 @@ names provisional, evidence = what the handlers do):
 
 | state | handlers | what it is |
 |---|---|---|
-| 0x00 | 802859C4 / 80285C28 / - | **standing**: walks (2) when the stick moves (fn_80246F28 != 0), runs (3) with pad 0x40; a follower (fn_80240808) runs when its leader holds 0x40 (fn_8022C5EC), moves (fn_8022C6AC) or is ahead on the same layer (fn_8022CFE8 > 0); facing toward the nearest player as player 4 outside the leader's slot (fn_8027E7E0), else fn_8027EB04; then pick-ups (fn_80261480) and the body frame |
+| 0x00 | 802859C4 / 80285C28 / - | **standing**: walks (2) when the stick moves (fn_80246F28 != 0), runs (3) with pad 0x40; a follower (hasLeader_80240808) runs when its leader holds 0x40 (fn_8022C5EC), moves (fn_8022C6AC) or is ahead on the same layer (fn_8022CFE8 > 0); facing toward the nearest player as player 4 outside the leader's slot (fn_8027E7E0), else fn_8027EB04; then pick-ups (fn_80261480) and the body frame |
 | 0x01 | 802857F0 / 802859B8 / - | **inactive / waiting slot** (fn_80254744 starts non-participants in 1): on tiles 3 / 0xE / 0x3A effect 0x503 and back to the return point 0x2C4 on layer 0; a leaderless player whose box 0x4C0 touches another present player that can pair (fn_802300EC) follows it (0xD60 = i), and with state 0 granted stores the pad slot 0x11EC and spawns **'TSNO'** (two-sword motion, actors.tsv) |
 | 0x02 | 80285690 / 802857C8 / - | **walk**: fn_802808E8(1.5) (the stick walk step), fn_8027EB04, the walk cycle fn_8027EEB4; a follower switches to 3 like state 0 |
 | 0x03 | 8028538C / 80285668 / 80285388 | **run / follow**: a follower with 0x1215 takes the leader's layer and position; formation 5 with cls_804A71A8 0xB4 walks by stick at 1.5; otherwise (0x122C <= 0) steps 0.5 a frame toward fn_8027FA08's target in x/y and on arrival stands (0) or walks (2) |
@@ -861,7 +861,7 @@ names provisional, evidence = what the handlers do):
 | 0x4F | 80281A90 / 80281D50 / 80281A18 | **dash**: enter faces by the leader (fn_80230CFC) or the pad and sets speed 2 along the facing (lbl_8046BE78), sound 0x1000C; update moves by 0x344 plus the stick (fn_8022C82C / fn_8022C76C; y not on tile 2 of view-flag layers), poses 0x3FB 0-5 over 20 frames (0x3FA), then state 0; after frame 5 with fn_802466B4 and not fn_802DEBF8 it requests state 9 (0x11AC = 4); dust effect 0x3D3 (0x1354, 'PEFF' callback 0x1398) or on tile 0x39 0x3D4 (0x1358, 0x13A8); exit releases both and keeps the speed in 0x368 |
 | 0x50 | 8028126C / 80281760 / 802811C0 | **burning** (hit kind 0x16, round 5): enter hops (2 along the facing, 3 up: lbl_8046BEA8), fire effects by facing into 0x135C (0x246-0x249) and 0x132C (0x242-0x245, particle callback 0x1330), spawns **ACTOR_FIRE** ("Fire Rod fire", actors.tsv high) on the player into **0xB28** with argument 0x180 \| facing << 4 \| index, sounds 0x10014 / 0x2004C; exit releases 0x132C / 0x135C and kills the 0xB28 actor (fn_802BAA00) |
 | 0x51 | 80280E44 / 802810E4 / 80280DD8 | (hit kind 0x18): enter effects 0x289 / 0x28A (0x1350), 0x46C = 300, sound 0x2003B; exit releases 0x1350, takes the offset 0x474 back out of mPos, 0x464 = 60 |
-| 0x38 | 80283E70 / 8028414C / 80283D2C | exit (written): 0x440 keeps mPos as the return point 0x2C4; unless 0xCF4 is 0x24 it clears 0xCE8 and, without the carry flag 0x43F, releases the players following this one (fn_802384BC on each i with fn_8022F3DC(i) == index) and on tile 0xD spawns effect 0x3D0 (scale 1.2); with 0x43F it keeps 0x444 = 0x344.z for state 0x1B or clears 0x43F / 0x440 / 0x444 |
+| 0x38 | 80283E70 / 8028414C / 80283D2C | exit (written): 0x440 keeps mPos as the return point 0x2C4; unless 0xCF4 is 0x24 it clears 0xCE8 and, without the carry flag 0x43F, releases the players following this one (fn_802384BC on each i with getPlayerLeader_8022F3DC(i) == index) and on tile 0xD spawns effect 0x3D0 (scale 1.2); with 0x43F it keeps 0x444 = 0x344.z for state 0x1B or clears 0x43F / 0x440 / 0x444 |
 
 - **fn_8027EB04 = facing / walk direction** (0x3DC / 0x3E8, 100 %): in a group from the formation
   (formation 3 with fn_80248970() >= 2: lbl_8046C0B8 / lbl_8046C0C8 by index, by viewLayerFlag) or
@@ -947,7 +947,7 @@ fn_8025D0B0 99.89 (literal names only).
   animation frame (8 frames of 4). Name: descriptive (z speed, gravity, landing), no
   string evidence for the item.
 - **gatherOthers** (inline member, no out-of-line copy; inlined 4x): in formation mode 5
-  (fn_802486A0) and not following (fn_80240808), every other present player is moved
+  (fn_802486A0) and not following (hasLeader_80240808), every other present player is moved
   to mPos (fn_8023E690), then fn_8024BAEC. Called on landing / jump start.
 - **0x45** (item 6 at level >= 2; update fn_80259830): frame 11 places a Cane of
   Somaria block ('SMRI', actors.tsv med) 16 in front into field_0xb2c (message 0xE8
@@ -1134,7 +1134,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
   0x115 elsewhere); the first 10 frames wind up and stop when the button is let go, then
   the player runs (fn_8025D0B0) burning the eight points lbl_8046AF50 around it
   (fn_802A20F0) until field_0xba8 counts down; a side flag along the facing or another
-  player ahead (fn_8022E438 / fn_802350A0) recoils (0x41). At level >= 2 off view-flag
+  player ahead (arePlayersInSameGroup_8022E438 / fn_802350A0) recoils (0x41). At level >= 2 off view-flag
   layers it runs ledges: the leader with its player bit (isPlayerBitSet) and
   field_0xbf0->field_0xb8 scans 16 a step inside the view box less 16 for the facing's
   ledge tile (0x12 / 0x13 / 0x10 / 0x11), counting field_0xbac; followers copy the
@@ -1204,7 +1204,7 @@ section's last 4 bytes are padding). Left unwritten: none of the state handlers.
     field_0x88 under fn_802DEB58 (0x5C-0x5F: else as 0x0D). 0x0E tests fn_802DEB58 and does
     the same either way.
   - Breakables: 0x51 solid; unless fn_80270C88, field_0xba when the tile on layer + 8 (or 1)
-    is 0x60, else fn_80272160(1, probe, 4). 0x52 / 0x53 solid; on the first pass with
+    is 0x60, else hitOwnGroup_80272160(1, probe, 4). 0x52 / 0x53 solid; on the first pass with
     fn_80240F28, BgRewrite fn_802A3948 to tile 0x9D / 0x3E0 (0x53 also sound 0x20025 via
     fn_80230FD0) and 'KMRI' smoke (layer >= 8) or emitters 0xF9 / 0xFA.
   - While fn_8026FC20() >= 1 the switch is skipped: only 0x10-0x13 set field_0xb8.
@@ -1320,7 +1320,7 @@ by rank (fn_801F6718 kind 3 / 5 / 6 / 7 into 0x49C, not while a 'BLZD' blizzard 
 emitter 0x565 (callback 0x130C, unless fn_80239D38) and a 'PEFF'; held by another player its
 actor is killed. Pad 0x100 on the ground wiggles (0x3FA = 24, sound 0x20032; frame 16 sets the
 box 0x5DC = mPos + (-24, -12, -8, 8) and 0xBA4). First frame: 0xCFC = 1 and, under fn_80239D38,
-the music stops (lbl_80529DEC 0x1AC = AudioMgr 0x58 once, 0x253; fn_80458F9C(20)). Then one of:
+the music stops (lbl_80529DEC 0x1AC = AudioMgr 0x58 once, 0x253; stopBgm_80458F9C(20)). Then one of:
 held (fn_8025F418): rides on the holder (mPos from fn_8023E7B0 moved between the view corners,
 +2 y / z, facing fn_80230CFC; fn_80230C6C when the holder is on a GBA layer); revived (0xD2D):
 sound 0x20033, at 60 a hop (0x344 = (0, 0, 2), facing down), landing back in state 0 healed
@@ -1332,8 +1332,8 @@ the player 3 a frame toward 16 right of / 8 below itself (released at 16 or by f
 callback point 0x1320 = mPos + (0, -4, 16).
 
 Evidence and fixes:
-- `!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))`: the asm skips when the
-  second fn_80240808() is false (fn_8027776C had `!(... && ...)`, which reads the other way;
+- `!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))`: the asm skips when the
+  second hasLeader_80240808() is false (fn_8027776C had `!(... && ...)`, which reads the other way;
   corrected there too, 99.75 -> 99.77).
 - **fireSwordBeam** (shared by fn_8027B648 and fn_8027D5F0): the life test written as early
   returns branches straight into the spawn as in the original; the old bool `lifeFull` inline
@@ -1367,7 +1367,7 @@ fn_802527B0, fn_8024E344 / E3D8 / E46C, fn_8024DC00). Only fn_80241B44 is still 
 |---|---|---|
 | fn_8024BDBC | 99.53 regalloc | **call marker** of a player on its own (fn_80248970 < 2) in GameRoot mode 0x7F: pad bit 0x40 held (fn_80246B10) shows effect-system marker 5 (fn_8015F8FC) at the player (layer < 8 on its layer; layer 8 at mPos + GameView mVisibleBox.i, layer 0; above at 0xCB0); a fresh press (fn_80246D1C) adds the pad rumble (fn_8030381C) and sound 0x1E (fn_80458880, extsb index). Not in 0x454 mode |
 | fn_8024E694(value, single) | 99.82 regalloc | **Force Gem drop**: at most the counter (fn_80241920) as an ACTOR_GOLD at the player (or at the acting player when it is not this player's turn in mode 4); on a GBA layer (8+) or with `single` the amount is rounded down to one gem value (1 / 5 / 20 / 50 / 100 / 150 / 200 / 300 / 1000 / 1500 / 2000 / 3000 = kinds 0-11, param kind \| 0x40000, 0x70000 in state 0x51), else the amount itself (\| 0x60000 in state 0x51); then fn_8024ED4C(-amount). Callers: fn_8024E344 / E3D8 / E46C (5 / 20 / 50 + random), state 0x33's defeat loss (fn_80277F98), fn_80271FD8, fn_80236074 |
-| fn_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (fn_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (fn_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
+| fn_8024B2E0 | 92.26 missing/extra (-4) | **trail reset in 0x454 mode** (fn_8024BAEC): follower: trail = 0x32C, grounded; alone: 0x32C; leader: 12 entries per follower interpolated linearly from its position to the next group member (arePlayersInSameGroup_8022E438), the rest at the last; then 0x284[i] = entry z > 0 |
 | fn_8024D134 | 99.65 regalloc | **group-spot marker restart** (leader, not GameRoot 0x7E, modes 0-3): clears 0x121D, deletes 0x1388 and spawns 0x35E / 0x360 / 0x35F / 0x361 by mode at fn_8027F1C8's spot (8 a place beside the group in modes 0 / 1 via fn_802487FC, (8, 8) in mode 2, 0x11B4 in states 9 / 0xA else 16 toward the player's side in mode 3) |
 | fn_8024F63C | 99.07 scheduling+regalloc | **join a push** (state 0x1A): with pad 0x20 held (fn_802456FC), the partner 0xDAC's pushed actor (its 0xDA4) still alive, or a fresh press (fn_80245938), not a follower in mode 5, the point lbl_8046AE28[facing] (10 behind) free of fn_802265DC / fn_802684A4: a present player inside the box +-1 at mPos + lbl_8046AE58[facing], facing the same way and held by nobody (fn_80238EDC), is taken: from states 0 / 2 / 3 (0x11 unless fn_8025F500 / fn_8025F590) the push 0x1A is requested, else 0xDAC = it, 0xDA4 = its pushed actor, 0xDA8 = 3 frames; returns 0xDA8 > 0. Callers: fn_8024FE78, state 0x1A, tu_80285E58 |
 | fn_80250090 | 99.21 regalloc | **join a block carry** (state 0x0D's partner): on the ground and not a follower in mode 5, keeps 0xD9C while its fn_80241478 holds, else takes a present player whose fn_80250ACC holds inside the box +-1 at mPos + lbl_8046AE08[facing] while the stick points along the facing (fn_80247330 / fn_8024712C): 0xD9C = it, 0xD94 = its grabbed actor (fn_8024FF84), 0xD98 = 3 |
@@ -1582,7 +1582,7 @@ now written; the remaining sub-100 % ones are structurally done or close.
 | fn_80231DE4 | unwritten -> **100** | **multiplayer screen change** (fn_8023F390 with GameRoot 0x7F): players with an exit direction (fn_802527B0) pull their group (fn_802381B8 -> fn_80248DB8); unless a manager flag (fn_8022ADFC / fn_8022ADB0) or GameRoot 0x96 is set, every present player able to (not fn_8022F478, fn_80251BFC(0x1B), not fn_80236A18 without 0xD2D) must report the same direction (lbl_8053A190 = the first one) and none may be busy (fn_80230188, fn_8022DCD8, fn_8022CCAC, fn_80234134, fn_80236AB4, fn_8022D75C unless 0x43F at stage (0, 0)); then the escort check fn_80124600 (0 / 1 refuse), the view's fn_802DD3D4, audio fn_80457F60, fn_8022BD70, fn_802DCE5C, and per player 0xD70 = -1 with 0xD64 / 0xD6C = 'NULL' (fn_8023ED8C) or z = 0 (fn_8023E98C), fn_802520C0(dir) unless fn_80236B50. The five forwarders only it inlines take the inverted form (Round 11). |
 | fn_8023F390 | 99.71 different -> **100** | the last two loops share one counter (`s32 i;`): the audio loop's slot offset then starts as `mr r30, r31`. A loop counter reused from an earlier loop gives the copy, a fresh `for (s32 i = 0; ...)` gives `li`. |
 | fn_80232A0C | 97.25 missing/extra (-9) -> 99.40 scheduling+regalloc | the three pushes by -dir pass `&negated(dir)`, a file-local inline returning the negation by value (libs' JGeometry has no unary TVec3 operator-): one stack TVec3f for the negation, one for the returned copy (z through frsp), as in the original; frame 0x190. Left: the boxes' addPos loads i.y before i.x. |
-| fn_80238548 | 91.52 missing/extra (-5), unchanged | `offset` stays in registers (the original stores it twice to the stack); a u8 return gives the original's clrlwi but breaks the four bool wrappers fn_80271038 / 68 / 98 / fn_80272160 (100 -> 55-67 %), so it stays bool. |
+| hitPlayerGroup_80238548 | 91.52 missing/extra (-5), unchanged | `offset` stays in registers (the original stores it twice to the stack); a u8 return gives the original's clrlwi but breaks the four bool wrappers fn_80271038 / 68 / 98 / hitOwnGroup_80272160 (100 -> 55-67 %), so it stays bool. |
 | fn_80235B68 | 96.55 missing/extra (+1) + reloc-name, unchanged | the deepest recursion level calls fn_8018A614 (act_phantom_ganon_2) out of line, the shallower ones inline fn_8023F9B0 / fn_8023F98C by depth: fn_8018A614 looks like a header inline (`fn_8023F9B0()->fn_8023F98C(player)`) whose kept copy is act_phantom_ganon_2's; making it one changes that Matching unit, so not done. |
 | fn_80241B44 (tu_8023FBF0) | unwritten -> **100** | the visible box: the camera's field_0x164 below layer 8 (`out->set(...)`, TBox2::set gives the lfs / stfs copy; `*out =` copies words), else field_0xbec->fn_8030AE84. Its parameter is a TBox2f*: fn_8022B8EC / fn_80241B44 renamed `...TBox2<f>` (caller tu_8029C584 unwritten). |
 | fn_8024B2E0 (tu_8023FBF0) | 92.26 missing/extra (-4) -> 99.29 regalloc-only | the next member's position is a local `to.set(*getPlayerPos(...))` (kept in registers, stored to `from` with set at the end) and each step comes back by value from a file-local trailStep, stored with `set()` (the original's two stack temporaries and frsp on z). |

@@ -169,7 +169,7 @@ void PanelRewriteNPC_804A8E40::update() {
             break;
         case 1:
             if (hit < 0) {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
                 vfunc_0x54(0);
                 field_0x230 = 0;
             }
@@ -185,7 +185,7 @@ void PanelRewriteNPC_804A8E40::update() {
             break;
         case 1:
             if (!isScreenFlagSet_0x34()) {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
                 vfunc_0x54(0);
                 field_0x230 = 0;
             }
@@ -194,7 +194,7 @@ void PanelRewriteNPC_804A8E40::update() {
             // Nothing sets state 2 here; the original's dispatch still tests it.
             break;
         case 3:
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4 + field_0x256, field_0x254);
             field_0x230 = 0;
             break;
         }

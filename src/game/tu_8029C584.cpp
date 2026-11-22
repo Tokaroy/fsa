@@ -15,7 +15,7 @@
 // (tried: index before/after the end load, actor hoisted). The 30.0f literal is
 // lbl_8054075C in the original and an anonymous literal here (data split).
 void UnknownFORM_804A7BE8::init() {
-    if (fn_8022F514(mSpawnParam_0x90 & 3)) {
+    if (hasPlayerLeader_8022F514(mSpawnParam_0x90 & 3)) {
         mAlive = false;
         return;
     }
@@ -33,7 +33,7 @@ void UnknownFORM_804A7BE8::init() {
 
     s32 count = 3;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022F514(i)) {
+        if (hasPlayerLeader_8022F514(i)) {
             count--;
         }
     }

@@ -151,7 +151,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
     s32 player = -1;
     for (s32 i = 0; i < 4; i++) {
         if (player < 0) {
-            player = fn_801F285C(NULL, NULL, true, i);
+            player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
         }
     }
 
@@ -170,10 +170,10 @@ void OkameSan_804A3448::fn_801AF1EC() {
     case 2:
         mBox.set(-6.0f + field_0x26c, -6.0f + field_0x270, 6.0f + field_0x26c, 6.0f + field_0x270);
         if (player >= 0) {
-            fn_801EEC98(mSerial, NULL, &result, NULL, NULL, player, 2);
+            findTargetPlayer_801EEC98(mSerial, NULL, &result, NULL, NULL, player, 2);
             if (result >= 0 && (result & 2) != 0) {
-                if (fn_801F305C()) {
-                    fn_801F2618(NULL, false);
+                if (checkHits_801F305C()) {
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
             }
@@ -189,10 +189,10 @@ void OkameSan_804A3448::fn_801AF1EC() {
     case 6:
         mBox.set(-6.0f + field_0x26c, -6.0f + field_0x270, 6.0f + field_0x26c, 6.0f + field_0x270);
         if (player >= 0) {
-            fn_801EEC98(mSerial, NULL, &result, NULL, NULL, player, 2);
+            findTargetPlayer_801EEC98(mSerial, NULL, &result, NULL, NULL, player, 2);
             if (result >= 0 && (result & 2) == 0) {
-                if (fn_801F305C()) {
-                    fn_801F2618(NULL, false);
+                if (checkHits_801F305C()) {
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
             }
@@ -208,7 +208,7 @@ void OkameSan_804A3448::fn_801AF1EC() {
     box.set(mBox);
     pos.set(mPos.x, mPos.y);
     for (s32 i = 0; i < 4; i++) {
-        s32 hit = fn_801F285C(NULL, NULL, false, i);
+        s32 hit = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
         if (hit >= 0) {
             box.addPos(pos);
             center.x = 0.5f * (box.i.x - box.f.x) + box.f.x;
@@ -274,7 +274,7 @@ void OkameSan_804A3448::init() {
 // FIXME(shotgun): 95.44 %, missing/extra; behaviour drift.
 void OkameSan_804A3448::update() {
     if (fn_801F3D94(1)) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x260, 0.3f, 1.0f);
@@ -283,7 +283,7 @@ void OkameSan_804A3448::update() {
     addCalc2_801F71A4(&field_0x270, field_0x27c, 0.5f, 1.0f);
     mPos += mVel_0x3c;
     fn_801AF1EC();
-    bool hit = fn_801F2618(NULL, false);
+    bool hit = sweepMapBox_801F2618(NULL, false);
 
     switch (field_0x230) {
     case 0:

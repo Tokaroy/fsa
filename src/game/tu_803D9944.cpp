@@ -34,7 +34,7 @@ void Tingle_804B0478::init() {
     field_0x251 = 0;
     mUpdateWhilePaused_0x11f = 1;
     if ((s32)mSpawnParam_0x90 == 0) {
-        s32 player = fn_8022EA0C(0);
+        s32 player = getRepresentativePlayer_8022EA0C(0);
         if (player >= 0) {
             const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
             mPos.x = p->x;

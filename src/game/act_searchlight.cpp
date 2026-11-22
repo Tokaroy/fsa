@@ -172,7 +172,7 @@ void Searchlight_804A0FF8::update() {
     case 4:
         field_0x2f8 = 5;
     case 5:
-        fn_801EEC98(mSerial, NULL, NULL, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, NULL, &dist, &player, 0, 0);
         break;
     case 6:
         if (field_0x328 != 0) {
@@ -266,7 +266,7 @@ void Searchlight_804A0FF8::update() {
     }
     }
     if (field_0x2f8 == 0 || field_0x2f8 == 1 || field_0x2f8 == 3 || field_0x2f8 == 7 || field_0x2f8 == 8) {
-        fn_801EEC98(mSerial, NULL, NULL, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, NULL, &dist, &player, 0, 0);
         if (field_0x320 != 0) {
             if (getActorManager_801F856C()->fn_801F68E0() == 0) {
                 return;
@@ -286,7 +286,7 @@ void Searchlight_804A0FF8::update() {
                 field_0x310 = 1;
             }
             if (field_0x328 != 0) {
-                gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
                 field_0x300 = 0x104;
             } else {
                 field_0x300 = 100;

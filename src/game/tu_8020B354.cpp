@@ -32,7 +32,7 @@ void BirdFormation_804A5E98::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A170, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A170, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     s32 layer = mLayer_0x4;
     GameView_804A9950* view = getGameView_802D6A9C();
@@ -137,7 +137,7 @@ u8 BirdFormation_804A5E98::checkHitByActor_0x60() {
 u8 BirdFormation_804A5E98::checkHitByPlayer_0x5C() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         s32 flag;
-        s32 player = fn_801F285C(NULL, &flag, true, -1);
+        s32 player = findOverlappingPlayer_801F285C(NULL, &flag, true, -1);
         if (player >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (actor != NULL) {
@@ -190,7 +190,7 @@ void BirdFormation_804A5E98::draw() {
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
     }
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
@@ -224,7 +224,7 @@ void BirdFormation_804A5E98::fn_8020B434() {
 }
 
 void BirdFormation_804A5E98::fn_8020B3E4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
-    if (fn_801F37AC(attack, from, 0, type, player)) {
+    if (takeHit_801F37AC(attack, from, 0, type, player)) {
         mFlags &= ~ENEMY_FLAG_NO_HURT;
     }
 }

@@ -15,8 +15,8 @@
 #include "std/math.h"
 
 f32 fn_80154744();
-f32 fn_80154378(f32);
-void fn_80154590(JGeometry::TBox2f*, f32, f32, f32, f32);
+f32 sqrtf_80154378(f32);
+void setBox_80154590(JGeometry::TBox2f*, f32, f32, f32, f32);
 
 struct Table_8049FFD8 {
     s32 tiles[6][2];
@@ -278,22 +278,22 @@ void BowSoldier_804A00C8::update() {
             field_0x2ac = 0.0f;
         }
         if (!vfunc_0x54()) {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
         }
         return;
     }
 
     if (mState == 8 || mState == 11) {
         if (fn_801F2DB4('BLZE', 'NULL', NULL)) {
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     } else if (field_0x254 == 0) {
         u32 excludeId = 'NULL';
         if (mSpawnParam_0x90 == 2 && field_0x258 == 0 && field_0x284 < 0) {
-            fn_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
+            setBox_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
             field_0x284 = fn_801F2718('HBMB');
-            fn_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
+            setBox_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
             if (field_0x284 >= 0) {
                 Bomb_8049F784* bomb = static_cast<Bomb_8049F784*>(getActorManager_801F856C()->findActorBySerial_801F666C(field_0x284));
                 if (bomb != NULL) {
@@ -337,7 +337,7 @@ void BowSoldier_804A00C8::update() {
                     field_0x2b4 = 0.0f;
                     field_0x2b0 = 0.0f;
                     field_0x2ac = 0.0f;
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
                 if (mState != 3 && mState != 12 && mState != 13 && mState != 4 && mSpawnParam_0x90 != 2) {
@@ -352,14 +352,14 @@ void BowSoldier_804A00C8::update() {
                     }
                     field_0x284 = -1;
                 }
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 return;
             }
         }
     }
 
     if (mState != 12 && mState != 13) {
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &field_0x268, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &field_0x268, 0, 0);
         if (dir == -1) {
             if (mState == 3 || mState == 4) {
                 mState = 0;
@@ -378,7 +378,7 @@ void BowSoldier_804A00C8::update() {
             startSound_801F0E34(0x40010, 0);
         }
         if (mState == 0 || mState == 4 || mState == 5) {
-            moved = fn_801F2618(NULL, false);
+            moved = sweepMapBox_801F2618(NULL, false);
         }
     }
 
@@ -572,7 +572,7 @@ void BowSoldier_804A00C8::update() {
             f32 c = sincos.cosShort(field_0x264);
             f32 py = getPlayerPos_8023E724(field_0x268)->y + 70.0f * c;
             f32 dy = mPos.y - py;
-            dist = fn_80154378(dx * dx + dy * dy);
+            dist = sqrtf_80154378(dx * dx + dy * dy);
             angle = (s32)(10430.378f * JMath::atanTable_.atan2_(-dx, -dy));
             if (dir != -1) {
                 mDir_0x98 = dir;
@@ -583,7 +583,7 @@ void BowSoldier_804A00C8::update() {
                     f32 ldx = leader->mPos.x - mPos.x;
                     f32 ldy = leader->mPos.y - mPos.y;
                     field_0x250 = (s32)((f32)(field_0x27c & 7) * fn_80154744()) + 20;
-                    if (fn_80154378(ldx * ldx + ldy * ldy) > 40.0f) {
+                    if (sqrtf_80154378(ldx * ldx + ldy * ldy) > 40.0f) {
                         angle = (s32)(10430.378f * JMath::atanTable_.atan2_(ldx, ldy));
                         angle += (s32)(4096.0f - 8192.0f * fn_80154744());
                     }
@@ -836,7 +836,7 @@ void BowSoldier_804A00C8::update() {
         mHitTimerStart_0xdc = 0;
         addCalc2_801F71A4(&mPos.x, field_0x2b8.x, 0.1f, 0.5f);
         addCalc2_801F71A4(&mPos.y, field_0x2b8.y, 0.1f, 0.5f);
-        if (field_0x23c == 0 && fn_80154378((mPos.x - field_0x2b8.x) * (mPos.x - field_0x2b8.x) + (mPos.y - field_0x2b8.y) * (mPos.y - field_0x2b8.y)) < 2.0f) {
+        if (field_0x23c == 0 && sqrtf_80154378((mPos.x - field_0x2b8.x) * (mPos.x - field_0x2b8.x) + (mPos.y - field_0x2b8.y) * (mPos.y - field_0x2b8.y)) < 2.0f) {
             if (mSpawnParam_0x90 == 2) {
                 if (field_0x274 != 20) {
                     startSound_801F0E34(0x4001A, 0);

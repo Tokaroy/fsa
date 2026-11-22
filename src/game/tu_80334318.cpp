@@ -24,7 +24,7 @@ static inline void breakTiles(IronBallHoming_804AB9C0* self, u16 angle, f32 radi
 }
 
 // States 1 and 2 turn toward the last player position seen (field_0x260), or away from
-// a wall (fn_801F2618) for 10 frames.
+// a wall (sweepMapBox_801F2618) for 10 frames.
 static inline void steer(IronBallHoming_804AB9C0* self, u8 hitWall, s32 player) {
     if (self->field_0x254 == 0 && player >= 0) {
         if (hitWall) {
@@ -109,8 +109,8 @@ void IronBallHoming_804AB9C0::update() {
         breakTiles(this, field_0x26c + 0x1500, 13.0f);
         breakTiles(this, field_0x26c - 0x1500, 13.0f);
     }
-    u8 hitWall = fn_801F2618(NULL, false);
-    fn_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 1);
+    u8 hitWall = sweepMapBox_801F2618(NULL, false);
+    findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, &player, 0, 1);
     if (player >= 0) {
         field_0x260 = *getPlayerPos_8023E724(player);
     }

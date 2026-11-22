@@ -134,7 +134,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
     s32 nearPlayer = -1;
     f32 nearDist;
     if (mKind == 1) {
-        fn_801EEC98(mSerial, NULL, &nearPlayer, &nearDist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &nearPlayer, &nearDist, NULL, 0, 0);
     }
     msgPos.y -= 50.0f;
     JGeometry::TVec3f dropPos(mPos.x, mPos.y, mPos.z);
@@ -268,7 +268,7 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             fn_80230534(false);
             field_0x258 = 3600;
             fn_801F0D20(0x3A);
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             fn_8022B1E0();
             field_0x244 = 0;
             field_0x248 = 0;
@@ -369,9 +369,9 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         if (field_0x244 > 50) {
             field_0x244 = 51;
             s32 layer = getPlayerLayer_8023DE58(0);
-            fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
-                fn_8038AD24(fn_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
+                fn_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x41D, mSerial, mLayer_0x4, msgPos, 0x102);
                 mState = 6;
             }
         }
@@ -379,13 +379,13 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
     case 6: {
         gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
         s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
-        if (fn_803865B8(fn_8022EA0C(0))) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        if (fn_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             gGameRoot_8053AAF8->fn_80138B7C();
             if (field_0x25c >= 10) {
-                fn_8038470C(fn_8022EA0C(0), 0x41E);
+                fn_8038470C(getRepresentativePlayer_8022EA0C(0), 0x41E);
             } else {
-                fn_8038470C(fn_8022EA0C(0), 0x420);
+                fn_8038470C(getRepresentativePlayer_8022EA0C(0), 0x420);
             }
             mState = 7;
         }
@@ -400,8 +400,8 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->mOverrideBlend_0x7f6 = 0;
         }
         s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
-        if (fn_803865B8(fn_8022EA0C(0))) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        if (fn_803865B8(getRepresentativePlayer_8022EA0C(0))) {
             field_0x244 = 50;
             if (field_0x25c >= 10) {
                 ActorBase_804A5770* sayas[0x400];
@@ -449,9 +449,9 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
         field_0x244++;
         if (field_0x244 > 50) {
             if (field_0x25c >= 10) {
-                fn_8038470C(fn_8022EA0C(0), 0x41F);
+                fn_8038470C(getRepresentativePlayer_8022EA0C(0), 0x41F);
             } else {
-                fn_8038470C(fn_8022EA0C(0), 0x421);
+                fn_8038470C(getRepresentativePlayer_8022EA0C(0), 0x421);
             }
             if (field_0x250 != 0) {
                 field_0x250 = 0;
@@ -470,8 +470,8 @@ void ZoraFishHerding_804A2E30::fn_801A68DC() {
             cam->mOverrideBlend_0x7f6 = 0;
         }
         s32 layer = getPlayerLayer_8023DE58(0);
-        fn_8022FE80(fn_8022EA0C(0), layer, mSerial, false, false);
-        if (fn_803865B8(fn_8022EA0C(0)) && fn_80384C58(fn_8022EA0C(0), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), layer, mSerial, false, false);
+        if (fn_803865B8(getRepresentativePlayer_8022EA0C(0)) && fn_80384C58(getRepresentativePlayer_8022EA0C(0), mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
             setScreenFlag_0x30(0xFF, true);
             fn_8022B1C8();

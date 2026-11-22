@@ -35,7 +35,7 @@ void Deadrock_8049F498::update() {
     if (field_0x230 == 2 || field_0x230 == 3 || field_0x230 == 4) {
         fn_802397B4(&box, mLayer_0x4, mSerial);
         for (s32 i = 0; i < 4; i++) {
-            s32 player = fn_801F285C(NULL, NULL, false, i);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
             if (player < 0) {
                 continue;
             }
@@ -55,14 +55,14 @@ void Deadrock_8049F498::update() {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         mVel_0x3c.z = 0.0f;
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
     if (field_0x230 != 2 && field_0x230 != 3 && field_0x230 != 4) {
         field_0xb0 = 0x08042104;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_801F285C(NULL, NULL, true, i) >= 0 || fn_801A6108(mSerial, &box, &pos) ||
+            if (findOverlappingPlayer_801F285C(NULL, NULL, true, i) >= 0 || fn_801A6108(mSerial, &box, &pos) ||
                 fn_801A4D1C(mSerial, &box, &pos) || fn_801A46FC(mSerial, &box, &pos))
             {
                 mLife = 4;
@@ -76,7 +76,7 @@ void Deadrock_8049F498::update() {
                     mVel_0x3c.x = 0.0f;
                     field_0x230 = 2;
                 }
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 return;
             }
         }
@@ -93,7 +93,7 @@ void Deadrock_8049F498::update() {
                 mVel_0x3c.x = 0.0f;
                 field_0x230 = 2;
             }
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     } else {
@@ -121,7 +121,7 @@ void Deadrock_8049F498::update() {
     }
 
     mPos += mVel_0x3c;
-    u8 landed = fn_801F2618(NULL, false);
+    u8 landed = sweepMapBox_801F2618(NULL, false);
     if (field_0x230 != 2 && field_0x230 != 3 && field_0x230 != 4) {
         fn_801F2B7C(-100, -1, 1);
     }

@@ -117,8 +117,8 @@ void BigMoldormTail_804A1FA0::update() {
     if (field_0x230 == 0) {
         for (s32 i = 0; i < 3; i++) {
             mPos = field_0x288[i];
-            if (fn_801F3D94(true) != 0 || fn_801F305C()) {
-                fn_801F2618(NULL, false);
+            if (fn_801F3D94(true) != 0 || checkHits_801F305C()) {
+                sweepMapBox_801F2618(NULL, false);
                 hit = 1;
                 break;
             }
@@ -130,7 +130,7 @@ void BigMoldormTail_804A1FA0::update() {
             addCalc2_801F71A4(&mVel_0x3c.y, field_0x27c.y, field_0x268, field_0x26c);
             mPos += mVel_0x3c;
             fn_801F2B7C(mParamAtcp_0x114, -1, 1);
-            if (fn_801F2618(NULL, false) && field_0x234[1] == 0) {
+            if (sweepMapBox_801F2618(NULL, false) && field_0x234[1] == 0) {
                 mDir_0x98 += 8;
                 mDir_0x98 &= 0xF;
                 if (field_0x264 == mDir_0x98) {
@@ -174,7 +174,7 @@ void BigMoldormTail_804A1FA0::update() {
         if (field_0x234[2] == 0 && !hit) {
             u16 outAngle = 0;
             field_0x234[2] = (s32)(30.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 30;
-            fn_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, 0);
             f32 a = (f32)outAngle;
             s32 idx = 0;
             for (s32 i = 0; i < 15; i++) {

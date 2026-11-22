@@ -25,7 +25,7 @@ public:
     // state 3: fn_8023061C(field_0x234, 0) and back to state 0.
     void fn_80310E98();
     // act_gambling_shop (0x80310500). Opens the chest: tile 0x30
-    // (BgRewrite_804A7C98::fn_802A3884) and stores the three arguments
+    // (BgRewrite_804A7C98::writeTileMarkView_802A3884) and stores the three arguments
     // (the shop's 0x248 word, a word it points at and its mSerial), state 1.
     // s32 for the three words is a guess (lwz at the call site).
     void fn_80310F50(s32 a, s32 b, s32 serial);

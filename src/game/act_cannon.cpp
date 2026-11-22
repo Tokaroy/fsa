@@ -58,9 +58,9 @@ void Cannon_8049CCF0::init() {
     mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
-    mAnim.fn_801D2608(lbl_80539ED0, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539ED0, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     mHomePos.set(mPos);
     if (getScreenFlagBit_0x3C()) {
         if (isScreenFlagSet_0x34()) {
@@ -139,7 +139,7 @@ void Cannon_8049CCF0::update() {
         } else if (field_0x270 >= 300) {
             fn_80231590(field_0x26c, mSerial);
         }
-        if (fn_801F285C(NULL, NULL, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             fn_80231590(field_0x26c, mSerial);
         } else {
             // Declared in this order: MWCC gives the later aggregate the lower

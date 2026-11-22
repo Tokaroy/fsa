@@ -76,7 +76,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         bool hit = false;
         mBox.set(mHitBox.mBox);
         for (p = 0; p < 4; p++) {
-            if (p == fn_801F285C(&where, NULL, true, p)) {
+            if (p == findOverlappingPlayer_801F285C(&where, NULL, true, p)) {
                 if (!fn_801CAED4(p)) {
                     hitX = where.x;
                     hitY = where.y;
@@ -170,7 +170,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
         bool hit = false;
         mBox.set(x0, y0, x1, y1);
         for (p = 0; p < 4; p++) {
-            if (p == fn_801F285C(&where, NULL, true, p)) {
+            if (p == findOverlappingPlayer_801F285C(&where, NULL, true, p)) {
                 if (fn_801D0020(&mPos, p, false) == mDir_0x98) {
                     if (locked) {
                         fn_8023B6CC(p);
@@ -227,7 +227,7 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         bool touched = false;
         for (p = 0; p < 4; p++) {
-            if (p == fn_801F285C(NULL, NULL, true, p)) {
+            if (p == findOverlappingPlayer_801F285C(NULL, NULL, true, p)) {
                 if (locked) {
                     fn_8023B6CC(p);
                     fn_80237948(p, (const JGeometry::TVec2f*)&mPos);
@@ -250,8 +250,8 @@ bool ShadowLink2_804A43E8::fn_801CA564() {
             JGeometry::TVec3f savedVel = mVel_0x3c;
             for (p = 0; p < 4; p++) {
                 s32 flag;
-                if (p == fn_801F285C(NULL, &flag, true, p)) {
-                    if (fn_801F37AC(fn_8023B6CC(p), getPlayerPos_8023E724(p), 0, flag, p)) {
+                if (p == findOverlappingPlayer_801F285C(NULL, &flag, true, p)) {
+                    if (takeHit_801F37AC(fn_8023B6CC(p), getPlayerPos_8023E724(p), 0, flag, p)) {
                         result = true;
                         field_0x338 = p;
                     }
@@ -354,7 +354,7 @@ u8 ShadowLink2_804A43E8::fn_801CA274() {
                                     v.x = out.x;
                                     v.y = out.y;
                                 }
-                                fn_80238548(j, mParamAtcp_0x114, &v, 2);
+                                hitPlayerGroup_80238548(j, mParamAtcp_0x114, &v, 2);
                             } else {
                                 result &= ~bit;
                             }
@@ -389,7 +389,7 @@ bool ShadowLink2_804A43E8::fn_801CA0F8() {
             }
             JGeometry::TVec3f from(mPos);
             from -= other->mVel_0x3c;
-            hit = fn_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
+            hit = takeHit_801F37AC(0, &from, 0, other->field_0x168, other->field_0x110);
             if (hit) {
                 other->field_0x164 = 1;
                 if (mState == 16) {
@@ -451,7 +451,7 @@ bool ShadowLink2_804A43E8::fn_801C9EB8() {
                 type = 3;
             }
         }
-        hit = fn_801F37AC(0, &from, 0, type, player);
+        hit = takeHit_801F37AC(0, &from, 0, type, player);
         if (hit) {
             if (mState == 16) {
                 mFlags |= 0x800000;
@@ -481,7 +481,7 @@ u8 ShadowLink2_804A43E8::fn_801C9CB0() {
             mPos.y = mPos.y - mPos.z;
             mPos.z = 0.0f;
         }
-        hit = fn_801F2618(&mMapHitDir, lbl_8053EFC0);
+        hit = sweepMapBox_801F2618(&mMapHitDir, lbl_8053EFC0);
         if (lifted) {
             mPrevPos.x = savedPrev.x;
             mPrevPos.y = savedPrev.y;
@@ -548,7 +548,7 @@ bool ShadowLink2_804A43E8::fn_801C9AF8(s32 layer, const JGeometry::TVec3f* pos) 
     if (!fn_802265DC(&p, layer, false)) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, &p, serial, lbl_8053EF18)) {
+        if (!boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, &p, serial, lbl_8053EF18)) {
             ok = false;
         }
     }

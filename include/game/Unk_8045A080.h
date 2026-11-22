@@ -9,7 +9,7 @@
 // pointers) and owns the sound manager, the SE / sequence managers, the
 // audience and the section heap. Its members play system sounds
 // (fn_80458880, 393 calls), start and stop the background music (the
-// sequence handle at 0x80: fn_80458FF0, fn_80458F9C), the second sequence
+// sequence handle at 0x80: startBgm_80458FF0, stopBgm_80458F9C), the second sequence
 // at 0x84 (fn_80458F04), and pause / fade the SE categories (fn_80458658,
 // fn_80459274, fn_804593D4). Its role matches Twilight Princess's
 // Z2AudioMgr (a structural reference only; the layout is FSA's).
@@ -38,7 +38,7 @@ namespace GameAudio { class CustomSoundTable; } // Inagaki/GameSoundTable.h
 
 struct AudioMgr_8045A080 {
     /* 0x00 */ u32 field_0x0;
-    /* 0x04 */ u8 field_0x4; // set: no music / second sequence starts (fn_80458FF0, fn_80458F04)
+    /* 0x04 */ u8 field_0x4; // set: no music / second sequence starts (startBgm_80458FF0, fn_80458F04)
     /* 0x05 */ u8 field_0x5; // the number of players: system sounds are panned by player when 2-4
     /* 0x06 */ u8 field_0x6;
     /* 0x07 */ u8 field_0x7;
@@ -57,7 +57,7 @@ struct AudioMgr_8045A080 {
     /* 0x4C */ f32 field_0x4c; // music volume (fn_80458744 tables), times field_0x54
     /* 0x50 */ f32 field_0x50; // second sequence volume (fn_80458744 tables)
     /* 0x54 */ f32 field_0x54; // music volume factor
-    /* 0x58 */ u32 field_0x58; // the music id last started (fn_80458FF0)
+    /* 0x58 */ u32 field_0x58; // the music id last started (startBgm_80458FF0)
     /* 0x5C */ u32 field_0x5c; // music id waiting for the current one to stop
     /* 0x60 */ u32 field_0x60;
     /* 0x64 */ s32 field_0x64;
@@ -80,7 +80,7 @@ struct AudioMgr_8045A080 {
     /* 0x88 */ u8 field_0x88;
     /* 0x89 */ u8 field_0x89;
     /* 0x8A */ bool field_0x8a; // SE categories 3-6 paused (fn_80458658)
-    /* 0x8B */ bool field_0x8b; // fn_8045815C's flag (fn_80458FF0 passes it on unconverted)
+    /* 0x8B */ bool field_0x8b; // fn_8045815C's flag (startBgm_80458FF0 passes it on unconverted)
     /* 0x8C */ u8 field_0x8c; // fn_80457E54's flag
     /* 0x8D */ u8 field_0x8d;
     /* 0x8E */ u8 field_0x8e; // set by fn_804593D4, cleared by fn_80459274
@@ -114,7 +114,7 @@ struct AudioMgr_8045A080 {
     // compares r4 against 0x1000000+n, tests r5 with clrlwi. 24 (0x8045908C) and
     // stores r6 (a byte) at 0x8d. The third argument is a u8: GameRoot's
     // fn_80138B7C (tu_80134C04) passes an s32 count with clrlwi 24.
-    void fn_80458FF0(s32 id, bool arg1, u8 flag);
+    void startBgm_80458FF0(s32 id, bool arg1, u8 flag);
     // game/tu_80457DFC.cpp (0x8045A080): the constructor main calls on the
     // 0x90-byte object it allocates in the main heap.
     AudioMgr_8045A080();
@@ -140,7 +140,7 @@ struct AudioMgr_8045A080 {
     // game/tu_80457DFC.cpp (0x80458F9C). 30+ units pass 0x3C (the argument is
     // not read): stops the sound at 0x80 and clears the fields at
     // 0x58-0x68.
-    void fn_80458F9C(s32 frames);
+    void stopBgm_80458F9C(s32 frames);
     // game/tu_80457DFC.cpp (0x80459274, same unit). Called on gAudioMgr_8053AF80
     // by GbaConnectErrorWindow_804B19F0::fn_80441A1C (game/tu_80441A1C.cpp) after the 0x0 call.
     void fn_80459274();

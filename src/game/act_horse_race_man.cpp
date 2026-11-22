@@ -49,7 +49,7 @@ void HorseRaceMan_804A5630::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A5620, 4);
+    mAnim.setKeyTables_801D2608(lbl_804A5620, 4);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
 }
 
@@ -80,7 +80,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
         break;
     case 6:
         fn_80119DD0()->fn_80119998(0x78, 0, 2, 0, 0, 0, 0);
-        gAudioMgr_8053AF80->fn_80458F9C(0x3c);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
         break;
     case 7: {
         s32 viewId = field_0x2ac;
@@ -109,7 +109,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
             shuffle(count, order, pool);
         }
         for (i = 0; i < 4; i++) {
-            s32 p = fn_8022F514(i) ? fn_8022F3DC(i) : i;
+            s32 p = hasPlayerLeader_8022F514(i) ? getPlayerLeader_8022F3DC(i) : i;
             pos.set(72.0f + box->i.x, box->i.y + 16.0f * (order[p] + 3.5f), 0.0f);
             fn_80230498(i, &pos, 0x356, 0xff, -0x80, -0x80, true);
             fn_80230BF4(i, 0);
@@ -124,7 +124,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
     case 10:
         fn_80230534(false);
         fn_801F0D20(0x3a);
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
         mTable.fn_8021600C();
         break;
     case 11: {
@@ -136,7 +136,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
     }
     case 12:
         fn_80119DD0()->fn_80119998(0x78, 0, 2, 0, 0, 0, 0);
-        gAudioMgr_8053AF80->fn_80458F9C(0x3c);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
         break;
     case 13: {
         JGeometry::TVec3f pos;
@@ -146,7 +146,7 @@ void HorseRaceMan_804A5630::fn_801ECB08(s32 state) {
         }
         fn_8022AF78();
         for (i = 0; i < 4; i++) {
-            s32 p = fn_8022F514(i) ? fn_8022F3DC(i) : i;
+            s32 p = hasPlayerLeader_8022F514(i) ? getPlayerLeader_8022F3DC(i) : i;
             pos.set(mPos.x + 16.0f * (f32)p, mPos.y + 32.0f, 0.0f);
             fn_80230498(i, &pos, 0x3f, 0xff, -0x80, -0x80, true);
             fn_80230BF4(i, 3);
@@ -448,8 +448,8 @@ void HorseRaceMan_804A5630::updateState_0x90(u8 mapHit) {
             }
             if (mFlags & 0x2000) {
                 i = field_0x2b0;
-                if (fn_8022F514(i)) {
-                    i = fn_8022F3DC(field_0x2b0);
+                if (hasPlayerLeader_8022F514(i)) {
+                    i = getPlayerLeader_8022F3DC(field_0x2b0);
                 }
                 mTable.fn_80215BCC(i);
             }
@@ -480,7 +480,7 @@ void HorseRaceMan_804A5630::updateBehavior_0x9C(u8 mapHit) {
 
 void HorseRaceMan_804A5630::draw() {
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, NULL, 0, "kage_sob.bin", 0, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, NULL, 0, "kage_sob.bin", 0, NULL);
     }
     s32 frame = mAnim.mCel + 0x319;
     if (mLayer_0x4 < 8) {

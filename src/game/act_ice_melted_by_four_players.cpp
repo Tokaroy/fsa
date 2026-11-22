@@ -257,7 +257,7 @@ void IceMeltedByFourPlayers_804AE888::draw() {
         mtx[2][2] = scale;
         params.mMtx = mtx;
     }
-    void* res = fn_804032E8('TIMG', "yukikabe.bti");
+    void* res = getBossArchiveResource_804032E8('TIMG', "yukikabe.bti");
     if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
     }

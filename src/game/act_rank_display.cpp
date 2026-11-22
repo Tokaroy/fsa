@@ -221,7 +221,7 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = fn_804030C4('TIMG', lbl_804A8F50[field_0x244[i]]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
@@ -251,7 +251,7 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = fn_804030C4('TIMG', "kk_noItem_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
@@ -281,7 +281,7 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.4f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = fn_804030C4('TIMG', "kk_noMagic_01.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);
@@ -315,7 +315,7 @@ void RankDisplay_804A8F74::draw() {
             mtx[2][1] = 0.0f;
             mtx[2][2] = 0.5f;
             params.mMtx = mtx;
-            mPos = *getPlayerPos_8023E724(fn_8022EA0C(i));
+            mPos = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i));
             {
                 void* res = fn_804030C4('TIMG', lbl_804A8F60[field_0x28c[i] - 4]);
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 28.0f, mPos.z);

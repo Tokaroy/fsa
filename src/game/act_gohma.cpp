@@ -118,7 +118,7 @@ void Gohma_804A307C::init() {
         field_0x230 = 1;
         if (field_0x254 == 2) {
             if (lbl_8053ABD8[0] == 0) {
-                gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
                 lbl_8053ABD8[0]++;
                 field_0x230 = 0;
             }
@@ -138,7 +138,7 @@ void Gohma_804A307C::init() {
         field_0x230 = 8;
         if (field_0x254 == 3) {
             if (lbl_8053ABD8[0] == 0) {
-                gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
                 lbl_8053ABD8[0]++;
                 field_0x230 = 7;
             }
@@ -197,7 +197,7 @@ void Gohma_804A307C::fn_801AB6A8() {
     box.addPos(mPos.x, mPos.y);
 
     if (fn_801F3D94(1)) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
@@ -223,11 +223,11 @@ void Gohma_804A307C::fn_801AB6A8() {
         f32 centerY = box.f.y + 0.5f * (box.i.y - box.f.y);
 
         for (s32 i = 0; i < 4; i++) {
-            s32 hitPlayer = fn_801F285C(NULL, NULL, false, i);
+            s32 hitPlayer = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
             if (hitPlayer >= 0) {
                 u16 angle;
                 s32 dir;
-                fn_801EEC98(mSerial, &angle, &dir, NULL, NULL, hitPlayer, 2);
+                findTargetPlayer_801EEC98(mSerial, &angle, &dir, NULL, NULL, hitPlayer, 2);
                 if (dir >= 0) {
                     if (!viewLayerFlag(mLayer_0x4)) {
                         mDir_0x98 = dir;
@@ -283,11 +283,11 @@ void Gohma_804A307C::fn_801AB6A8() {
 
     fn_801EF510();
     JGeometry::TVec3f vec(0.0f, 0.0f, 0.0f);
-    u8 r31 = fn_801F2618(&vec, false);
+    u8 r31 = sweepMapBox_801F2618(&vec, false);
 
     switch (field_0x230) {
     case 0:
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
         field_0x230 = 1;
         // fallthrough
     case 1:
@@ -328,7 +328,7 @@ void Gohma_804A307C::fn_801AB6A8() {
                         mVel_0x3c.x = 0.0f;
                         setMoveDir(field_0x264, mDir_0x98, 16.0f);
                         mPos += field_0x264;
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             mDir_0x98 ^= 1;
                         }
                         mPos.x = saveX;
@@ -380,7 +380,7 @@ void Gohma_804A307C::fn_801AB6A8() {
                 mVel_0x3c.x = 0.0f;
                 setMoveDir(field_0x264, mDir_0x98, 16.0f);
                 mPos += field_0x264;
-                if (fn_801F2618(NULL, false)) {
+                if (sweepMapBox_801F2618(NULL, false)) {
                     mDir_0x98 ^= 1;
                 }
                 mPos.x = saveX;
@@ -409,13 +409,13 @@ void Gohma_804A307C::fn_801AB6A8() {
 // FIXME: 91.51 %, missing/extra + reloc-name; behaviour drift.
 // (missing/extra + reloc-name). Scheduling, ours has 2 fewer instructions: the 0.0f that zeroes
 // mVel_0x3c is loaded earlier in the original (before the case-8/9 speed and timer arithmetic), the `li` argument
-// setup of the fn_801EEC98 call and `li r30, 1` are ordered differently, and in case 11 the original stores
+// setup of the findTargetPlayer_801EEC98 call and `li r30, 1` are ordered differently, and in case 11 the original stores
 // field_0x244 and reloads it for the `> 2` test.
 void Gohma_804A307C::fn_801AAF44() {
     gGameRoot2_8053AB10->field_0x24->addFocusPoint_8030C210(&mPos);
 
     if (fn_801F3D94(1)) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
@@ -442,7 +442,7 @@ void Gohma_804A307C::fn_801AAF44() {
     mPos += mVel_0x3c;
 
     fn_801F2B7C(-100, -1, 1);
-    u8 r31 = fn_801F2618(NULL, false);
+    u8 r31 = sweepMapBox_801F2618(NULL, false);
 
     field_0x270 = 1.5f;
     field_0x274 = 1.2f;
@@ -465,7 +465,7 @@ void Gohma_804A307C::fn_801AAF44() {
 
     switch (field_0x230) {
     case 7:
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
         field_0x230 = 8;
         // fallthrough
     case 8:
@@ -502,7 +502,7 @@ void Gohma_804A307C::fn_801AAF44() {
             mPos.y += 8.0f;
             u16 angle = 0;
             s32 count = 1;
-            fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
+            findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, NULL, 0, 4);
             if (field_0x258 == 1) {
                 count = 3;
                 angle -= 0x2000;

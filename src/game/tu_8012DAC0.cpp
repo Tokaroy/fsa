@@ -54,7 +54,7 @@ void ColouredFloorToggle_8049E848::update() {
                 }
                 idx = field_0x240;
             }
-            gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, lbl_8053CC30[idx]);
+            gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, lbl_8053CC30[idx]);
             field_0x238 = 0;
         }
         break;

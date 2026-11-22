@@ -139,7 +139,7 @@ void Dodongo_804A3334::init() {
         break;
     case 2:
         if (lbl_8053ABE0 == 0) {
-            gAudioMgr_8053AF80->fn_80458F9C(0x3c);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x3c);
             field_0x230 = 0;
             lbl_8053ABE0++;
         } else {
@@ -189,13 +189,13 @@ void Dodongo_804A3334::fn_801ACFF4() {
         }
     }
     fn_801EF510();
-    u8 hitWall = fn_801F2618(NULL, false);
+    u8 hitWall = sweepMapBox_801F2618(NULL, false);
 
     f32 centerX = (boxIX - boxFX) * 0.5f + boxFX;
     f32 centerY = (boxIY - boxFY) * 0.5f + boxFY;
 
     for (int i = 0; i < 4; i++) {
-        if (fn_801F285C(NULL, NULL, NULL, i) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, NULL, i) >= 0) {
             JGeometry::TVec2f center(centerX, centerY);
             if (fn_80237948(0, &center)) {
                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x117, 0, 1, NULL, NULL, true, 1.0f);
@@ -207,7 +207,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
 
     switch (field_0x230) {
     case 0:
-        gAudioMgr_8053AF80->fn_80458FF0(0x10004, 0, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x10004, 0, 0);
         field_0x230 = 1;
         // fallthrough
     case 1:
@@ -260,7 +260,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                             r28 = 2;
                         }
                     }
-                    fn_801EEC98(mSerial, 0, &dir, 0, 0, 0, 0);
+                    findTargetPlayer_801EEC98(mSerial, 0, &dir, 0, 0, 0, 0);
                     if (dir >= 0) {
                         mDir_0x98 = dir;
                         mTimers[0] = 2;
@@ -324,7 +324,7 @@ void Dodongo_804A3334::fn_801ACFF4() {
                 break;
             }
             mPos += field_0x268;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mDir_0x98 ^= 1;
             }
             mPos.x = savedPos.x;
@@ -740,7 +740,7 @@ void Dodongo_804A3334::fn_801AC930() {
     void* res;
     if (field_0x294 == 1) {
         s32 index = texIdx + 0x24;
-        res = fn_804032E8('TIMG', lbl_804A3208[index]);
+        res = getBossArchiveResource_804032E8('TIMG', lbl_804A3208[index]);
     } else {
         res = gGameRoot_8053AAF8->field_0xa4->getResource('TIMG', lbl_804A3208[texIdx]);
     }

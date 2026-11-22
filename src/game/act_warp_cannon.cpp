@@ -37,9 +37,9 @@ void WarpCannon_8049EAE0::init() {
     mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
     field_0xb0 = 0x50303;
-    mAnim.fn_801D2608(lbl_80539F48, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539F48, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     field_0x284 = mPos.x;
     field_0x288 = mPos.y;
     field_0x28c = mPos.z;

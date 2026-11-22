@@ -155,9 +155,9 @@ void PointCheckNPC_804A81C8::update() {
                         spawnEmitter_8013CC50(layer, &pos, 0x503, 1, 0, NULL, NULL, true, 1.0f);
                     }
                     if (field_0x234 == 4) {
-                        gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0x4F);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x4F);
                     } else {
-                        gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0x4E);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x4E);
                     }
                     field_0x230 = 1;
                 } else {

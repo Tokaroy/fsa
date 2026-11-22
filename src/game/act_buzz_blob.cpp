@@ -31,7 +31,7 @@ void BuzzBlob_8049F444::init() {
 void BuzzBlob_8049F444::update() {
     if (fn_801F3D94(1) != 0) {
         field_0x258.set(1.0f, 1.0f, 1.0f);
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
@@ -63,7 +63,7 @@ void BuzzBlob_8049F444::update() {
             if (player >= 0 && !fn_8023E854(player)) {
                 JGeometry::TVec2f center(box.f.x + 0.5f * (box.i.x - box.f.x),
                                          box.f.y + 0.5f * (box.i.y - box.f.y));
-                fn_80238548(player, 1, &center, 10);
+                hitPlayerGroup_80238548(player, 1, &center, 10);
                 startSound_801F0E34(0x4000C, 0);
                 // Stored twice (here and below); dropping this first store drops update to 98.26 % missing/extra.
                 field_0x258.set(1.0f, 1.0f, 1.0f);
@@ -74,11 +74,11 @@ void BuzzBlob_8049F444::update() {
                 field_0x230 = 3;
             }
             for (int i = 0; i < 4; i++) {
-                s32 p = fn_801F285C(NULL, NULL, true, i);
+                s32 p = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 if (p >= 0) {
                     if (!fn_8023E854(p)) {
                         JGeometry::TVec2f pos2d(mPos.x, mPos.y);
-                        fn_80238548(p, 1, &pos2d, 10);
+                        hitPlayerGroup_80238548(p, 1, &pos2d, 10);
                         startSound_801F0E34(0x4000C, 0);
                         if (field_0x230 != 3) {
                             field_0x244 = 0;
@@ -94,7 +94,7 @@ void BuzzBlob_8049F444::update() {
                 }
             }
             fn_801F2DB4('NULL', 'NULL', NULL);
-            landed = fn_801F2618(NULL, false);
+            landed = sweepMapBox_801F2618(NULL, false);
         }
     }
 
@@ -119,7 +119,7 @@ void BuzzBlob_8049F444::update() {
             f32 dist = 0.0f;
             s32 player = -1;
             s32 dir = -1;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (dir >= 0 && (FABS(getPlayerPos_8023E724(player)->y - mPos.y) < 24.0f ||
                              FABS(getPlayerPos_8023E724(player)->x - mPos.x) < 24.0f))
             {

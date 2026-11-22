@@ -151,7 +151,7 @@ void Wallmaster_804A3E44::init() {
     mStateTimer = 0;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A3E30, 5);
+    mAnim.setKeyTables_801D2608(lbl_804A3E30, 5);
     mAnim.startAnim_801D22DC(0, 0, false);
     bool b = false;
     switch (mState) {
@@ -345,7 +345,7 @@ void Wallmaster_804A3E44::fn_801BC244() {
     case 1:
     case 2: {
         field_0x2bc++;
-        s32 player = fn_801D05F8(&mPos, 0.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
         if (player != field_0x2b8) {
             if (player < 0) {
                 if (mState != 1 || mStateTimer >= 60) {
@@ -415,7 +415,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if (mStateTimer >= field_0x250 && !(mFlags & 0x2000)) {
-            s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
+            s32 p = findNearestPlayer_801D05F8(&mSpawnPos, 48.0f);
             if (p >= 0) {
                 field_0x2b8 = p;
                 fn_801BC554(1);
@@ -489,7 +489,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
         }
         break;
     case 5: {
-        s32 p = fn_801D05F8(&mSpawnPos, 48.0f);
+        s32 p = findNearestPlayer_801D05F8(&mSpawnPos, 48.0f);
         if (mStateTimer >= 100 && !(mFlags & 0x2000) && p >= 0) {
             field_0x2b8 = p;
             fn_801BC554(1);
@@ -560,7 +560,7 @@ void Wallmaster_804A3E44::updateState_0x90(u8 mapHit) {
             fn_801BC554(9);
         } else {
             mDir_0x98 = mParam.mTarget;
-            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 if (checkPlayerHit()) {
                     if (fn_8022DE10(field_0x2b8, 0)) {

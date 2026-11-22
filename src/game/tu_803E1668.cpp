@@ -428,8 +428,8 @@ AdvEntryScreen_804B0B00::AdvEntryScreen_804B0B00() {
         field_0x28[i]->setPriority("entry_connect_anim.blo", 0x1100000, lbl_80529DEC.mEntryArchive_0x28);
     }
     OSInitFastCast();
-    void* arrowAnm = fn_804031C4('SCRN', "entry_arrow_anim.bck");
-    void* connectAnm = fn_804031C4('SCRN', "entry_connect_anim.bck");
+    void* arrowAnm = getEntryArchiveResource_804031C4('SCRN', "entry_arrow_anim.bck");
+    void* connectAnm = getEntryArchiveResource_804031C4('SCRN', "entry_connect_anim.bck");
     for (int i = 0; i < 4; i++) {
         field_0x38[i] = static_cast<J2DAnmTransform*>(J2DAnmLoaderDataBase::load(arrowAnm));
         field_0x48[i] = static_cast<J2DAnmTransform*>(J2DAnmLoaderDataBase::load(connectAnm));
@@ -1815,14 +1815,14 @@ void AdvEntryScreen_804B0B00::fn_803E8210() {
     u8 done2 = false;
     field_0x260++;
     if (field_0x260 > 0) {
-        done0 = field_0x64->fn_80402940(22, 0, -200.0f, 0.0f);
+        done0 = field_0x64->animateMoveY_80402940(22, 0, -200.0f, 0.0f);
     }
     if (field_0x260 > 16) {
-        done1 = field_0x78->fn_80402940(24, 0, -200.0f, 0.0f);
+        done1 = field_0x78->animateMoveY_80402940(24, 0, -200.0f, 0.0f);
     }
     for (s32 i = 0; i < 4; i++) {
         if (i <= field_0x1bc && field_0x260 > i * 5 + 4) {
-            done2 = field_0x68[i]->fn_80402940(18, 0, 150.0f, 0.0f);
+            done2 = field_0x68[i]->animateMoveY_80402940(18, 0, 150.0f, 0.0f);
         }
     }
     if (done0 && done1 && done2) {
@@ -2458,15 +2458,15 @@ void AdvEntryScreen_804B0B00::fn_803E4308() {
 // animation lengths in field_0x230 / field_0x240) or hidden ('Ppln' at 128).
 void AdvEntryScreen_804B0B00::fn_803E3CB0() {
     if (field_0x1bc == 1) {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP2_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP2_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     } else if (field_0x1bc == 2) {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP3_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP3_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     } else {
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP4_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP4_01.bti");
         static_cast<J2DPicture*>(field_0x8->search('Ptn02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0x8->search('Ptn01'))->changeTexture(tex, 0);
     }
@@ -2564,7 +2564,7 @@ void AdvEntryScreen_804B0B00::fn_803E3564() {
         getMessageText_803832BC(sta, 0x11B, 0, NULL, NULL);
         getMessageText_803832BC(han, 0x11B, 0, NULL, NULL);
         getMessageText_803832BC(rule, 0xF7, 0, NULL, NULL);
-        const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP1_01.bti");
+        const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP1_01.bti");
         static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
         static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         field_0xc->search('Pstab04')->hide();
@@ -2575,15 +2575,15 @@ void AdvEntryScreen_804B0B00::fn_803E3564() {
         field_0xc->search('Pgba02')->hide();
         field_0xc->search('Pcon02')->show();
         if (field_0x1bc == 1) {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP2_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP2_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         } else if (field_0x1bc == 2) {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP3_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP3_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         } else {
-            const ResTIMG* tex = (const ResTIMG*)fn_804031C4('TIMG', "kk_nPlayerP4_01.bti");
+            const ResTIMG* tex = (const ResTIMG*)getEntryArchiveResource_804031C4('TIMG', "kk_nPlayerP4_01.bti");
             static_cast<J2DPicture*>(field_0xc->search('Pnop02'))->changeTexture(tex, 0);
             static_cast<J2DPicture*>(field_0xc->search('Pnop01'))->changeTexture(tex, 0);
         }

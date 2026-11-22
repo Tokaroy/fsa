@@ -64,9 +64,9 @@ void Cloud_8049CBE0::init() {
     }
     mBox2.set(mBox);
     mMapBox_0x80.set(mBox);
-    mSprite.fn_801D2608(lbl_80539EC0, 1);
+    mSprite.setKeyTables_801D2608(lbl_80539EC0, 1);
     mSprite.startAnim_801D22DC(0, 2, false);
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
 }
 
 static bool pool_8053C228(s32 player);

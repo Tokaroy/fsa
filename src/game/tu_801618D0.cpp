@@ -664,9 +664,9 @@ void BigPoe_804A0440::die_0x24() {
 // FIXME(shotgun): 99.96 %, same-text; behaviour near.
 // (the texture names sit after the extern colour table: +0x20 here, +0x60 in the original)
 void BigPoe_804A0440::fn_801618D0(const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params) {
-    JUTTexture tex0(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_sirokuro.bti")), 0);
-    JUTTexture tex1(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_ci.bti")), 0);
-    JUTTexture tex2(static_cast<const ResTIMG*>(fn_804032E8('BPOH', "obake_eye.bti")), 0);
+    JUTTexture tex0(static_cast<const ResTIMG*>(getBossArchiveResource_804032E8('BPOH', "obake_sirokuro.bti")), 0);
+    JUTTexture tex1(static_cast<const ResTIMG*>(getBossArchiveResource_804032E8('BPOH', "obake_ci.bti")), 0);
+    JUTTexture tex2(static_cast<const ResTIMG*>(getBossArchiveResource_804032E8('BPOH', "obake_eye.bti")), 0);
     f32 w = tex0.getWidth();
     f32 h = tex0.getHeight();
     JGeometry::TVec3f out;

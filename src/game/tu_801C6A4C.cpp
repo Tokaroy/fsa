@@ -9,7 +9,7 @@ void ShadowLink2_804A43E8::fn_801C6C7C() {
     if (mStateTimer >= field_0x250) {
         done = true;
     } else if (field_0x338 >= 0 && !fn_801CAED4(field_0x338) && fn_801D0B44(field_0x338)) {
-        f32 dist = fn_801D0DA0(field_0x338, &mPos);
+        f32 dist = getPlayerDistSq_801D0DA0(field_0x338, &mPos);
         if (mStateTimer > 1 && (field_0x524.field_0x0 & 0x8) && dist <= square(field_0x5b0)) {
             if (field_0x524.field_0x0 & 0x20) {
                 switch (fn_801CD664(6)) {
@@ -116,7 +116,7 @@ void ShadowLink2_804A43E8::fn_801C6A4C() {
             limit = 20;
             startSound_801F0E34(0x400D0, 0);
             if (field_0x338 >= 0 && !fn_801CAED4(field_0x338) && fn_801D0B44(field_0x338)) {
-                fn_801CD930(&field_0x33c, fn_801D0280(field_0x338), 0x500);
+                fn_801CD930(&field_0x33c, getAngleToPlayer_801D0280(field_0x338), 0x500);
             }
         }
         if (field_0x594 >= limit) {

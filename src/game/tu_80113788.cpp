@@ -86,7 +86,7 @@ CrystalCutscene_8049D83C::CrystalCutscene_8049D83C()
             field_0x2d0[i] = NULL;
         }
     }
-    gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
 }
 
 // An inline of its own: its loop registers are handed out before the destructor's
@@ -138,7 +138,7 @@ void CrystalCutscene_8049D83C::init() {
     field_0x238 = mSpawnParam_0x90 & 0xFF;
     field_0x244 = (mSpawnParam_0x90 >> 22) & 0x1F;
     field_0x260 = gGameRoot_8053AAF8->field_0xa4->getResource('????', lbl_80539F00);
-    mAnim.fn_801D2608(lbl_8049D820, 7);
+    mAnim.setKeyTables_801D2608(lbl_8049D820, 7);
     switch (field_0x238) {
     case 0:
     case 1:
@@ -153,7 +153,7 @@ void CrystalCutscene_8049D83C::init() {
         mAnim.startAnim_801D22DC(6, 2, false);
         break;
     }
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     mPos.y -= 32.0f;
     spawnEmitters();
     getGameView_802D6A9C()->fn_802D7440(0);
@@ -167,7 +167,7 @@ void CrystalCutscene_8049D83C::update() {
     updateCameraFocus();
     switch (field_0x23c) {
     case 0:
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001B, false, 0);
         vfunc_0x60(1);
         break;
     case 3:
@@ -180,7 +180,7 @@ void CrystalCutscene_8049D83C::update() {
             fn_80230498(i, &playerPos, fn_8023CBC0(i), level, -0x80, -0x80, true);
         }
         if (fn_8011921C()->field_0x8 == 0x1B8) {
-            gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
         }
         if (fn_8016A3AC()->field_0x1ef == 0 && field_0x2e4 == NULL) {
             field_0x2e4 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x54C, 0, 0, NULL, NULL, true, 1.0f);
@@ -376,10 +376,10 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
     case 4:
         switch (field_0x238) {
         case 6:
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000F, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000F, false, 0);
             break;
         default:
-            gAudioMgr_8053AF80->fn_80458FF0(0x100001C, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100001C, false, 0);
             break;
         }
         field_0x233 = 1;
@@ -473,11 +473,11 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
         field_0x232 = 1;
         field_0x254 = 0.0f;
         mAnim.startAnim_801D22DC(4, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 12:
         mAnim.startAnim_801D22DC(5, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 13:
         fn_8022FE80(0, mLayer_0x4, mSerial, true, false);
@@ -496,7 +496,7 @@ void CrystalCutscene_8049D83C::vfunc_0x60(s32 arg) {
         field_0x2e8[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x32C, 0, 0, NULL, NULL, true, 1.0f);
         field_0x2e8[1] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x183, 0, 0, NULL, NULL, true, 1.0f);
         mAnim.startAnim_801D22DC(2, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 17: {
         fn_8011921C()->setField_0x2(0);
@@ -554,10 +554,10 @@ void CrystalCutscene_8049D83C::fn_80113B54(s32 arg) {
     JGeometry::TVec3f pos(mPos);
     pos.y = mSpawnPos.y;
     if (arg == 0x1D6) {
-        fn_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
+        drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_both2_sob.bin", arg + mAnim.mCel, NULL);
         drawSob_80113B54(mLayer_0x4, &mPos, "enemy_both2_sob.bin", arg + mAnim.mCel, &params);
     } else {
-        fn_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
+        drawShadow_801EF830(mLayer_0x4, &pos, &params2, 7, "enemy_gc_sob.bin", arg + mAnim.mCel, NULL);
         drawSob_80113B54(mLayer_0x4, &mPos, "enemy_gc_sob.bin", arg + mAnim.mCel, &params);
     }
 }

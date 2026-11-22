@@ -67,13 +67,13 @@ void HardhatBeetle_804A06C0::update() {
         }
         if (fn_801F3D94(true) != 0 || fn_801F2DB4('NULL', 'NULL', NULL)) {
             field_0x234[2] = 20;
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
         addCalc2_801F71A4(&mVel_0x3c.x, field_0x26c.x, 0.1f, field_0x278);
         addCalc2_801F71A4(&mVel_0x3c.y, field_0x26c.y, 0.1f, field_0x27c);
         mPos += mVel_0x3c;
-        fn_801EEC98(mSerial, &angle, &outDir, &outDist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &outDir, &outDist, NULL, 0, 0);
         if (fn_801F2B7C(-100, -1, 1) && mState == 0) {
             mVel_0x3c.x = -2.0f * JMath::sincosTable_.sinShort(angle);
             mVel_0x3c.y = -2.0f * JMath::sincosTable_.cosShort(angle);
@@ -81,7 +81,7 @@ void HardhatBeetle_804A06C0::update() {
             field_0x248 = 0;
             mState = 1;
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
     }
     for (s32 i = 0; i < 4; i++) {
         if (field_0x234[i] > 0) {
@@ -117,7 +117,7 @@ void HardhatBeetle_804A06C0::update() {
             break;
         }
         for (s32 i = 0; i < 4; i++) {
-            s32 player = fn_801F285C(NULL, NULL, true, i);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (player < 0) {
                 continue;
             }

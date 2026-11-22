@@ -270,7 +270,7 @@ bool cls_804A4C58::fn_801DDBE4() {
             if (touched) {
                 s32 life = mLife;
                 JGeometry::TVec3f from = mPos - other->mVel_0x3c;
-                if (fn_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
+                if (takeHit_801F37AC(other->mParamAtcn_0x118, &from, 0, other->field_0x168, other->field_0x110)) {
                     if (mLife != life) {
                         hit = true;
                         if (mState != 0x11) {
@@ -358,7 +358,7 @@ bool cls_804A4C58::fn_801DD410() {
         mBox.i.y = -16.0f;
         mBox.f.x = 40.0f;
         mBox.f.y = 50.0f;
-        if (fn_801F285C(NULL, &outFlag, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, &outFlag, true, -1) >= 0) {
             fn_801D9C58(5);
         }
         mBox.set(saved);
@@ -376,8 +376,8 @@ bool cls_804A4C58::fn_801DD410() {
             mBox.f.x = -left;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (i == fn_801F285C(NULL, &outFlag, true, i) && fn_80235448(i)) {
-                if (fn_801F37AC(0, getPlayerPos_8023E724(i), 0, outFlag, i)) {
+            if (i == findOverlappingPlayer_801F285C(NULL, &outFlag, true, i) && fn_80235448(i)) {
+                if (takeHit_801F37AC(0, getPlayerPos_8023E724(i), 0, outFlag, i)) {
                     hit = true;
                     break;
                 }
@@ -403,8 +403,8 @@ bool cls_804A4C58::fn_801DD410() {
         mBox.set(saved);
         if (!hit && mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
             for (s32 i = 0; i < 4; i++) {
-                if (i == fn_801F285C(NULL, &outFlag, true, i)) {
-                    if (playerTouches(this, i) && fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 0, outFlag, i)) {
+                if (i == findOverlappingPlayer_801F285C(NULL, &outFlag, true, i)) {
+                    if (playerTouches(this, i) && takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 0, outFlag, i)) {
                         hit = true;
                     }
                 }
@@ -433,10 +433,10 @@ bool cls_804A4C58::fn_801DD410() {
             bool sound = false;
             JGeometry::TVec2f where;
             for (s32 i = 0; i < 4; i++) {
-                if (i == fn_801F285C(&where, &outFlag, true, i)) {
+                if (i == findOverlappingPlayer_801F285C(&where, &outFlag, true, i)) {
                     fn_8023B6CC(i);
                     if (playerTouches(this, i)) {
-                        if (fn_801F37AC(0, getPlayerPos_8023E724(i), 0, outFlag, i)) {
+                        if (takeHit_801F37AC(0, getPlayerPos_8023E724(i), 0, outFlag, i)) {
                             hit = true;
                         }
                     } else {

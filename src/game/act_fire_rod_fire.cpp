@@ -340,12 +340,12 @@ void FireRodFire_804A89F0::update() {
                             field_0x270 = 0;
                         }
                     } else {
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             vfunc_0x58();
                         }
                     }
                 } else {
-                    if (fn_801F2618(NULL, false)) {
+                    if (sweepMapBox_801F2618(NULL, false)) {
                         vfunc_0x58();
                     }
                     if (mAlive && field_0x264 == 0 && field_0x268 == 2 && field_0x290 == 0) {
@@ -362,7 +362,7 @@ void FireRodFire_804A89F0::update() {
                             mPos.x += 16.0f;
                             break;
                         }
-                        if (fn_801F2618(NULL, false)) {
+                        if (sweepMapBox_801F2618(NULL, false)) {
                             vfunc_0x58();
                         }
                         if (field_0x254 == 0) {
@@ -385,7 +385,7 @@ void FireRodFire_804A89F0::update() {
             } else if (field_0x264 != 5 && field_0x293 == 0) {
                 fn_801F2B7C(-100, -1, true);
             }
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 if (field_0x264 == 3 || field_0x264 == 4) {
                     spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x19D, 0, 0, NULL, NULL, true, field_0x28c);
                     startSound_801F0E34(0x3002E, 0);
@@ -416,7 +416,7 @@ void FireRodFire_804A89F0::update() {
         if (field_0x264 == 5 && mAlive) {
             field_0x270 = 0;
             if (field_0x280 == 0) {
-                if (fn_801F2618(NULL, false)) {
+                if (sweepMapBox_801F2618(NULL, false)) {
                     vfunc_0x58();
                 }
                 die_0x24();
@@ -717,7 +717,7 @@ bool FireRodFire_804A89F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     }
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds) == 1) {
         return true;
     }
     if (field_0x264 != 3 && field_0x264 != 4) {

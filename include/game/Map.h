@@ -315,7 +315,7 @@ public:
                      SpriteParams_801F5AE0* params, f32 scaleX, f32 scaleY);
     // Draws the sprite `res` (a "TIMG" resource, act_life_meter's heart image
     // from fn_804030C4) at pos with the stack SpriteParams_801F5AE0 `params`
-    // (fn_801EF830 calls it the same way, 0x801EFC74).
+    // (drawShadow_801EF830 calls it the same way, 0x801EFC74).
     void fn_802F745C(const JGeometry::TVec3f* pos, void* res, SpriteParams_801F5AE0* params);
     // 0x802F6298 / 0x802F654C: queue a sprite (pos, the "SOB " resource and
     // frame, or the image of fn_802F745C, or the fn_802F6CF4 resource) with a
@@ -637,7 +637,7 @@ struct CollisionBox_8020D65C {
 
     /* 0x00 */ JGeometry::TBox2f mBox;
     /* 0x10 */ s32 mLayer;  // the actor's field_0x4 (fn_8020D7D0)
-    /* 0x14 */ s32 mSerial; // the actor's mSerial; fn_8020D6AC skips its own
+    /* 0x14 */ s32 mSerial; // the actor's mSerial; containsPointOfOther_8020D6AC skips its own
 }; // Size: 0x18
 
 // Named after its constructor __ct__25CollisionBoxList_8020D60C (count = 0,
@@ -651,7 +651,7 @@ public:
     // ending in 'NULL', cmplw against ActorBase_804A5770::mActorId of the
     // box's actor, findActorBySerial_801F666C), boxes of those actors don't count.
     // Returns 0 or 1. Callers use the read list (field_0x1).
-    bool fn_8020D6AC(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) const;
+    bool containsPointOfOther_8020D6AC(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) const;
     // 15 units / 16 calls. Registers the box of the actor `serial` (its
     // box at 0x80 moved by mPos.x / mPos.y, layer field_0x4) if the actor
     // has byte 0x11C set, the box is not empty and fewer than 0x50 are
@@ -695,7 +695,7 @@ public:
     }
 
     /* 0x000 */ u8 field_0x0; // the list fn_8020D7D0 / fn_8020D8C0 fill
-    /* 0x001 */ u8 field_0x1; // the list fn_8020D6AC reads
+    /* 0x001 */ u8 field_0x1; // the list containsPointOfOther_8020D6AC reads
     /* 0x004 */ CollisionBoxList_8020D60C mLists[2];
 }; // Size: 0xF0C
 

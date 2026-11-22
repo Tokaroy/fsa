@@ -32,7 +32,7 @@ void cls_804A48B0::init() {
     mLifeBackup = mLife;
     field_0x194 = 1;
     mParamAtcp_0x114 = 2;
-    mAnim.fn_801D2608(lbl_8053A130, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A130, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
 }

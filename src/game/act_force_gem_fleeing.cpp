@@ -180,7 +180,7 @@ void FleeingForceGem_804AB170::update() {
         mPos += mVel_0x3c;
     }
     if (field_0x94 == 3 && field_0x230 != 7 && field_0x230 != 6) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
     }
     if (field_0x230 == 0 || field_0x230 == 3 || field_0x230 == 4 || field_0x230 == 10) {
         for (s32 i = 0; i < 4; i++) {
@@ -227,7 +227,7 @@ void FleeingForceGem_804AB170::update() {
             }
         }
         s32 hit = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (hit < 0) {
             for (s32 i = 0; i < 4; i++) {
                 if (!fn_80230188(i) && !fn_8023EA28(i)) {
@@ -241,8 +241,8 @@ void FleeingForceGem_804AB170::update() {
         }
         if (hit >= 0 && !fn_80234C5C(hit) && !fn_8022B7C4(hit) && !fn_80230188(hit) && !fn_80234ECC(hit) &&
             !fn_8023EA28(hit)) {
-            if (fn_8022F514(hit) == 1) {
-                fn_8022F3DC(hit);
+            if (hasPlayerLeader_8022F514(hit) == 1) {
+                getPlayerLeader_8022F3DC(hit);
             }
             if (field_0x230 == 3 || field_0x230 == 4) {
                 if (!fn_8023ED8C(hit) && !fn_8023EBB8(hit) && !fn_80233DA4(hit)) {
@@ -290,8 +290,8 @@ void FleeingForceGem_804AB170::update() {
             field_0x230 = 2;
             {
                 s32 target = field_0x264;
-                if (fn_8022F514(field_0x264) == 1) {
-                    target = fn_8022F3DC(field_0x264);
+                if (hasPlayerLeader_8022F514(field_0x264) == 1) {
+                    target = getPlayerLeader_8022F3DC(field_0x264);
                 }
                 lbl_8053AED0->fn_8043D874(target, lbl_804AB160[field_0x268], 0);
                 if (getPlayerLayer_8023DE58(target) >= 8 && gGameRoot_8053AAF8->field_0x7e == 1) {
@@ -330,7 +330,7 @@ void FleeingForceGem_804AB170::update() {
                 mVel_0x3c.y = 0.0f;
                 mVel_0x3c.x = 0.0f;
             }
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             break;
         case 4:
             bobForceGem(this);
@@ -360,7 +360,7 @@ void FleeingForceGem_804AB170::update() {
                             mPos += JGeometry::TVec3f(0.0f, field_0x27c.y, 0.0f);
                         } else {
                             mPos += field_0x27c;
-                            fn_801F2618(NULL, false);
+                            sweepMapBox_801F2618(NULL, false);
                         }
                         if (rect.i.x - 20.0f > mPos.x || rect.f.x + 20.0f < mPos.x || rect.i.y - 20.0f > mPos.y ||
                             rect.f.y + 20.0f < mPos.y) {
@@ -386,7 +386,7 @@ void FleeingForceGem_804AB170::update() {
                         field_0x27c.y = 0.0f;
                         field_0x27c.z = 0.0f;
                         field_0x230 = 3;
-                        fn_801F2618(NULL, false);
+                        sweepMapBox_801F2618(NULL, false);
                     }
                 } else {
                     if (field_0x270 != mLayer_0x4) {
@@ -402,7 +402,7 @@ void FleeingForceGem_804AB170::update() {
                     if (dist < 100.0f || field_0x174 != 0) {
                         field_0x274 = field_0x276;
                         mPos += field_0x27c;
-                        fn_801F2618(NULL, false);
+                        sweepMapBox_801F2618(NULL, false);
                         if (field_0x174 == 0 || field_0x240[1] == 0) {
                             field_0x274 = angle + 0x8000;
                             if (epsilonEquals(field_0x288, mPos, JGeometry::TUtil<f32>::epsilon())) {
@@ -422,7 +422,7 @@ void FleeingForceGem_804AB170::update() {
                         field_0x27c.y = 0.0f;
                         field_0x27c.z = 0.0f;
                         field_0x230 = 3;
-                        fn_801F2618(NULL, false);
+                        sweepMapBox_801F2618(NULL, false);
                     }
                 }
             }
@@ -430,7 +430,7 @@ void FleeingForceGem_804AB170::update() {
         case 6:
         case 7:
             mPos += field_0x27c;
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             if (field_0x240[2] <= 0) {
                 mVel_0x3c.z = 0.0f;
                 mVel_0x3c.y = 0.0f;
@@ -504,7 +504,7 @@ void FleeingForceGem_804AB170::update() {
             field_0x268 = mSpawnParam_0x90 & 3;
             field_0x230 = 3;
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
     }
     if (mVel_0x3c.squared() > 0.1f) {
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x345, 0, 0, NULL, NULL, true, 0.15f);

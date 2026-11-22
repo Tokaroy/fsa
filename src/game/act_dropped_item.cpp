@@ -89,7 +89,7 @@ void DroppedItem_804A8C80::init() {
         }
 
         JGeometry::TVec3f hit;
-        if (fn_801F2618(&hit, false)) {
+        if (sweepMapBox_801F2618(&hit, false)) {
             if (hit.x != 0.0f) {
                 mVel_0x3c.x *= -1.0f;
             }
@@ -180,7 +180,7 @@ void DroppedItem_804A8C80::update() {
             if (mPos.z > 0.0f) {
                 mVel_0x3c.z -= 0.3f;
                 JGeometry::TVec3f hit(0.0f, 0.0f, 0.0f);
-                if (fn_801F2618(&hit, false)) {
+                if (sweepMapBox_801F2618(&hit, false)) {
                     if (hit.x != 0.0f) {
                         mVel_0x3c.x *= -1.0f;
                     }
@@ -196,7 +196,7 @@ void DroppedItem_804A8C80::update() {
             }
         } else {
             JGeometry::TVec3f hit;
-            if (fn_801F2618(&hit, false) == 1) {
+            if (sweepMapBox_801F2618(&hit, false) == 1) {
                 if (hit.y != 0.0f) {
                     mVel_0x3c.z = 0.0f;
                     mVel_0x3c.y = 0.0f;
@@ -220,8 +220,8 @@ void DroppedItem_804A8C80::update() {
             } else if (gGameRoot_8053AAF8->field_0x7f == 1) {
                 if (fn_8022CAF8(player) != 4 || !fn_8022F478(player)) {
                     field_0x260 = player;
-                    if (fn_8022F514(player)) {
-                        field_0x260 = fn_8022F3DC(player);
+                    if (hasPlayerLeader_8022F514(player)) {
+                        field_0x260 = getPlayerLeader_8022F3DC(player);
                     }
                     if (!getGameView_802D6A9C()->fn_802D46D8(field_0x260, 0x151, false) && fn_802DE7CC()) {
                         field_0x25c = player;
@@ -355,7 +355,7 @@ void DroppedItem_804A8C80::fn_802C0570() {
         }
     }
     if (hitFlags != 0) {
-        if (fn_801F2618(NULL, false) == 1) {
+        if (sweepMapBox_801F2618(NULL, false) == 1) {
             mPos = savedPos;
         }
     }
@@ -398,8 +398,8 @@ void DroppedItem_804A8C80::draw() {
 // register (r22, an inlined leader lookup) and orders the 0x30000000 addis / param add differently.
 bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
     s32 leader = player;
-    if (fn_8022F514(player)) {
-        leader = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        leader = getPlayerLeader_8022F3DC(player);
     }
     if (gGameRoot_8053AAF8->field_0x7e == 1) {
         if (!fn_802308E0(leader)) {
@@ -422,8 +422,8 @@ bool DroppedItem_804A8C80::fn_802BFF30(s32 player) {
         JGeometry::TVec3f pos(1.0f + p.x, p.y - 12.0f, p.z);
 
         if (gGameRoot_8053AAF8->field_0x7e == 1) {
-            if (fn_8022F514(i) == 1) {
-                if (leader != fn_8022F3DC(i)) {
+            if (hasPlayerLeader_8022F514(i) == 1) {
+                if (leader != getPlayerLeader_8022F3DC(i)) {
                     continue;
                 }
                 if (i == player) {
@@ -464,7 +464,7 @@ bool DroppedItem_804A8C80::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* po
     if (field_0x258 == 0) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+        if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
             return true;
         }
         s32 tileCode = fn_8022461C(pos, layer);

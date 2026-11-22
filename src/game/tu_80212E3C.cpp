@@ -50,7 +50,7 @@ void Antlion_804A6340::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A6330, 4);
+    mAnim.setKeyTables_801D2608(lbl_804A6330, 4);
     mAnim.startAnim_801D22DC(1, 2, false);
 }
 

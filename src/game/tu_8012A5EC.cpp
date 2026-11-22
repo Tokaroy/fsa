@@ -63,7 +63,7 @@ void TowerAppearanceDemo_8049E770::init() {
     mBox.f.x = 8.0f;
     mBox.f.y = 8.0f;
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001C) {
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         field_0x258 = 60;
     }
     field_0x404 = 0;
@@ -99,7 +99,7 @@ void TowerAppearanceDemo_8049E770::update() {
     if (field_0x258 != 0) {
         field_0x258--;
     } else if (gAudioMgr_8053AF80->field_0x58 != 0x100001C) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001C, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001C, false, 0);
     }
     if (field_0x3f0 != 0) {
         field_0x3f0--;

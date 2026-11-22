@@ -16,7 +16,7 @@
 #include "JSystem/J2D/J2DAnmLoader.h"
 #include "dolphin/os/OSFastCast.h"
 
-void* fn_80403084(u32 type, const char* name);
+void* getGame2DArchiveResource_80403084(u32 type, const char* name);
 
 // The pane tag tables of the unit (.rodata 0x80490FC8..0x804912E8, back to back).
 static const u64 lbl_80490FC8[3] = {'Pcntn01', 'Psc01', 'Psg01'};
@@ -85,24 +85,24 @@ CollectScreen_804B1D58::CollectScreen_804B1D58() {
     mScreen->setPriority("collect.blo", 0x1100000, lbl_80529DEC.mGame2DArchive_0x4c);
     OSInitFastCast();
     for (s32 i = 0; i < 4; i++) {
-        field_0xd4 = fn_80403084('SCRN', "collect.btk");
+        field_0xd4 = getGame2DArchiveResource_80403084('SCRN', "collect.btk");
         field_0xd8[i] = static_cast<J2DAnmTextureSRTKey*>(J2DAnmLoaderDataBase::load(field_0xd4));
         field_0xd8[i]->searchUpdateMaterialID(mScreen);
         mScreen->search(lbl_80491250[i])->setAnimation(field_0xd8[i]);
     }
     field_0x124 = 0;
-    field_0xe8 = fn_80403084('SCRN', "collect_02.btk");
+    field_0xe8 = getGame2DArchiveResource_80403084('SCRN', "collect_02.btk");
     field_0xec = static_cast<J2DAnmTextureSRTKey*>(J2DAnmLoaderDataBase::load(field_0xe8));
     field_0xec->searchUpdateMaterialID(mScreen);
     mScreen->search('Ppo01')->setAnimation(field_0xec);
     field_0x128 = 0;
-    field_0xf0 = fn_80403084('SCRN', "collect_03.btk");
+    field_0xf0 = getGame2DArchiveResource_80403084('SCRN', "collect_03.btk");
     mAnm_0xf4 = static_cast<J2DAnmTextureSRTKey*>(J2DAnmLoaderDataBase::load(field_0xf0));
     mAnm_0xf4->searchUpdateMaterialID(mScreen);
     mScreen->search('Ppo02')->setAnimation(mAnm_0xf4);
     field_0x12c = 0;
     field_0x13e = 0;
-    field_0xcc = fn_80403084('SCRN', "collect.brk");
+    field_0xcc = getGame2DArchiveResource_80403084('SCRN', "collect.brk");
     mAnm_0xd0 = static_cast<J2DAnmTevRegKey*>(J2DAnmLoaderDataBase::load(field_0xcc));
     mScreen->setAnimation(mAnm_0xd0);
     field_0x130 = 0;
@@ -325,7 +325,7 @@ void CollectScreen_804B1D58::fn_80452350() {
         const ResTIMG* image = static_cast<const ResTIMG*>(fn_804030C4('TIMG', "kk_pYback_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     } else {
-        const ResTIMG* image = static_cast<const ResTIMG*>(fn_80403084('TIMG', "kk_pCselect_01.bti"));
+        const ResTIMG* image = static_cast<const ResTIMG*>(getGame2DArchiveResource_80403084('TIMG', "kk_pCselect_01.bti"));
         static_cast<J2DPicture*>(mScreen->search('Psc01'))->changeTexture(image, 0);
     }
     fn_8044D894();
@@ -368,9 +368,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                             field_0x48[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
                         }
                         field_0x60[i]->fn_80402B10(frames, 0, 300.0f, 0.0f);
-                        field_0x48[i]->fn_80402628(frames, 0, field_0x48[i]->field_0x28);
-                        field_0x54[i]->fn_80402628(frames, 0, field_0x54[i]->field_0x28);
-                        field_0x60[i]->fn_80402628(frames, 0, field_0x60[i]->field_0x28);
+                        field_0x48[i]->animateAlpha_80402628(frames, 0, field_0x48[i]->field_0x28);
+                        field_0x54[i]->animateAlpha_80402628(frames, 0, field_0x54[i]->field_0x28);
+                        field_0x60[i]->animateAlpha_80402628(frames, 0, field_0x60[i]->field_0x28);
                         if (i == field_0xf8) {
                             f32 x = field_0x48[i]->mPane->getBounds()->i.x;
                             mScreen->search('Pcul01')->move(field_0x114 + (x - field_0x48[i]->field_0x8),
@@ -395,11 +395,11 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
     switch (field_0xfa) {
     case 2:
         if (field_0x137 == 0) {
-            field_0x8->fn_80402628(16, 0, field_0x8->field_0x28);
-            u8 arrived = field_0xc[0]->fn_80402940(16, 0, -480.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
+            field_0x8->animateAlpha_80402628(16, 0, field_0x8->field_0x28);
+            u8 arrived = field_0xc[0]->animateMoveY_80402940(16, 0, -480.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
             for (s32 i = 1; i < 15; i++) {
                 if (i != 14) {
-                    field_0xc[i]->fn_80402940(16, 0, -480.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
+                    field_0xc[i]->animateMoveY_80402940(16, 0, -480.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
                 }
             }
             if (arrived) {
@@ -421,10 +421,10 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 field_0xfa = 3;
             }
         } else {
-            field_0x8->fn_80402628(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, field_0x8->field_0x28);
-            u8 arrived = field_0xc[0]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, -480.0f, 0.0f);
+            field_0x8->animateAlpha_80402628(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, field_0x8->field_0x28);
+            u8 arrived = field_0xc[0]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, -480.0f, 0.0f);
             for (s32 i = 1; i < 15; i++) {
-                field_0xc[i]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, -480.0f, 0.0f);
+                field_0xc[i]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x8C - 0x4C) / 2], 0, -480.0f, 0.0f);
             }
             if (arrived) {
                 field_0xc[0]->field_0x22 = 0;
@@ -451,11 +451,11 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
         }
         break;
     case 3: {
-        u8 arrived = field_0xc[0]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x8E - 0x4C) / 2], 2,
+        u8 arrived = field_0xc[0]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x8E - 0x4C) / 2], 2,
                                                lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], 0.0f);
         for (s32 i = 1; i < 15; i++) {
             if (i != 14 || field_0x137 != 0) {
-                field_0xc[i]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x8E - 0x4C) / 2], 2,
+                field_0xc[i]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x8E - 0x4C) / 2], 2,
                                           lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], 0.0f);
             }
         }
@@ -691,9 +691,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
         break;
     }
     case 11: {
-        u8 arrived = field_0xc[0]->fn_80402940(5, 2, 0.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
+        u8 arrived = field_0xc[0]->animateMoveY_80402940(5, 2, 0.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
         for (s32 i = 1; i < 15; i++) {
-            field_0xc[i]->fn_80402940(5, 2, 0.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
+            field_0xc[i]->animateMoveY_80402940(5, 2, 0.0f, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2]);
         }
         if (arrived) {
             field_0xc[0]->field_0x22 = 0;
@@ -718,16 +718,16 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
     case 12: {
         u8 arrived;
         if (field_0x137 == 0) {
-            field_0x8->fn_80402628(10, field_0x8->field_0x28, 0);
-            arrived = field_0xc[0]->fn_80402940(10, 0, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], -480.0f);
+            field_0x8->animateAlpha_80402628(10, field_0x8->field_0x28, 0);
+            arrived = field_0xc[0]->animateMoveY_80402940(10, 0, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], -480.0f);
             for (s32 i = 1; i < 15; i++) {
-                field_0xc[i]->fn_80402940(10, 0, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], -480.0f);
+                field_0xc[i]->animateMoveY_80402940(10, 0, lbl_8050DB0C.field_0x4c[(0x90 - 0x4C) / 2], -480.0f);
             }
         } else {
-            field_0x8->fn_80402628(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], field_0x8->field_0x28, 0);
-            arrived = field_0xc[0]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], 0, 0.0f, -480.0f);
+            field_0x8->animateAlpha_80402628(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], field_0x8->field_0x28, 0);
+            arrived = field_0xc[0]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], 0, 0.0f, -480.0f);
             for (s32 i = 1; i < 15; i++) {
-                field_0xc[i]->fn_80402940(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], 0, 0.0f, -480.0f);
+                field_0xc[i]->animateMoveY_80402940(lbl_8050DB0C.field_0x4c[(0x94 - 0x4C) / 2], 0, 0.0f, -480.0f);
             }
         }
         if (arrived) {
@@ -748,9 +748,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
         break;
     }
     case 13: {
-        u8 arrived = field_0xc[0]->fn_80402940(10, 0, 0.0f, 480.0f);
+        u8 arrived = field_0xc[0]->animateMoveY_80402940(10, 0, 0.0f, 480.0f);
         for (s32 i = 1; i < 15; i++) {
-            field_0xc[i]->fn_80402940(10, 0, 0.0f, 480.0f);
+            field_0xc[i]->animateMoveY_80402940(10, 0, 0.0f, 480.0f);
         }
         if (arrived) {
             field_0xfa = 7;
@@ -791,9 +791,9 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
     case 9: {
         u8 arrived;
         if (field_0x136 == 0) {
-            arrived = field_0xc[0]->fn_80402940(10, 0, 0.0f, 480.0f);
+            arrived = field_0xc[0]->animateMoveY_80402940(10, 0, 0.0f, 480.0f);
             for (s32 i = 1; i < 15; i++) {
-                field_0xc[i]->fn_80402940(10, 0, 0.0f, 480.0f);
+                field_0xc[i]->animateMoveY_80402940(10, 0, 0.0f, 480.0f);
             }
         } else {
             arrived = 1;
@@ -802,7 +802,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
             if (field_0x136 == 0) {
                 if (field_0xf8 == 1) {
                     gAudioMgr_8053AF80->fn_80458880(0xC, -1);
-                    gAudioMgr_8053AF80->fn_80458F9C(0);
+                    gAudioMgr_8053AF80->stopBgm_80458F9C(0);
                     gAudioMgr_8053AF80->fn_80459274();
                     s32 mode;
                     if (gGameRoot_8053AAF8->field_0x7f != 0 &&
@@ -829,7 +829,7 @@ s32 CollectScreen_804B1D58::fn_8044F680() {
                 } else {
                     field_0x184 = 2;
                     gAudioMgr_8053AF80->fn_80458880(0xC, -1);
-                    gAudioMgr_8053AF80->fn_80458F9C(0);
+                    gAudioMgr_8053AF80->stopBgm_80458F9C(0);
                     gAudioMgr_8053AF80->fn_80459274();
                 }
             } else {

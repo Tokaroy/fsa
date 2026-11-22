@@ -212,7 +212,7 @@ void StrangeBlock_804AC2D8::fn_8033D4CC() {
             s32 dir = fn_80238BC4(mSerial);
             JGeometry::TVec3f saved = mPos;
             mPos += JGeometry::TVec3f(lbl_804A79E0[dir * 3], lbl_804A79E0[dir * 3 + 1], lbl_804A79E0[dir * 3 + 2]);
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mPos = saved;
                 return;
             }
@@ -359,7 +359,7 @@ bool StrangeBlock_804AC2D8::fn_8033D264(u8 dir) {
     mVel_0x3c.set(lbl_80471E28[dir].x, lbl_80471E28[dir].y, lbl_80471E28[dir].z);
     mPos.add(mVel_0x3c);
     JGeometry::TVec3f out(0.0f, 0.0f, 0.0f);
-    if (fn_801F2618(&out, false)) {
+    if (sweepMapBox_801F2618(&out, false)) {
         switch (dir) {
         case 0:
             if (out.x >= 0.0f) {
@@ -479,7 +479,7 @@ void StrangeBlock_804AC2D8::draw() {
         break;
     }
     case 4: {
-        void* res = fn_804032E8('TIMG', "kazari_piramid.bti");
+        void* res = getBossArchiveResource_804032E8('TIMG', "kazari_piramid.bti");
         fn_801EFD34(res, NULL, 7, 0.0f, 0.0f, 0.0f);
         break;
     }

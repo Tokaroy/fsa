@@ -42,7 +42,7 @@ inline void ShovelOldTimer_804AAB40::setDigPos(const JGeometry::TVec3f& pos) {
 }
 
 inline void ShovelOldTimer_804AAB40::showHint(s32 player, s32 msg) {
-    if (player == field_0x250 || (fn_8022E438(player, field_0x250) && fn_8022CAF8(player) == 4)) {
+    if (player == field_0x250 || (arePlayersInSameGroup_8022E438(player, field_0x250) && fn_8022CAF8(player) == 4)) {
         lbl_8053AED0->fn_8043D67C(msg, player, 0);
     }
 }
@@ -109,7 +109,7 @@ void ShovelOldTimer_804AAB40::update() {
             if (p >= 0) {
                 if (fn_802300EC(p)) {
                     u32 msg;
-                    if (fn_8022E438(p, field_0x250)) {
+                    if (arePlayersInSameGroup_8022E438(p, field_0x250)) {
                         if (getGameView_802D6A9C()->fn_802D800C(0x14)) {
                             msg = 0x834;
                         } else {

@@ -19,7 +19,7 @@ cls_801E6AB8::cls_801E6AB8() : mState(0), mTimer(0), field_0x8(1) {
     mActive[1] = 0;
     mActive[2] = 0;
     mActive[3] = 0;
-    mAnim.fn_801D2608(lbl_8053A158, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A158, 1);
 }
 
 void cls_801E6AB8::fn_801E6A84(s32 arg) {
@@ -40,11 +40,11 @@ void cls_801E6AB8::fn_801E67C4(s32 state) {
         s32 j; // j before i to match (99.49 % otherwise)
         s32 i;
         for (i = 0; i < count; i++) {
-            if (fn_8023F264(i) && !fn_8022F514(i)) {
+            if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i)) {
                 mActive[i] = 1;
             }
             for (j = i + 1; j < 4; j++) {
-                if (fn_8023F264(j) && fn_8022F514(j) && fn_8022F3DC(j) == i && !fn_802349EC(j)) {
+                if (fn_8023F264(j) && hasPlayerLeader_8022F514(j) && getPlayerLeader_8022F3DC(j) == i && !fn_802349EC(j)) {
                     mActive[j] = 1;
                 }
             }
@@ -54,7 +54,7 @@ void cls_801E6AB8::fn_801E67C4(s32 state) {
                 fn_80230498(i, getPlayerPos_8023E724(i), 0x3E, 0xFF, -0x80, -0x80, true);
             }
         }
-        gAudioMgr_8053AF80->fn_80458F9C(0);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0);
         gAudioMgr_8053AF80->fn_80458F04(0x1000001);
         break;
     }

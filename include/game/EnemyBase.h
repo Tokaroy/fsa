@@ -97,11 +97,11 @@ public:
     // tests r3 with clrlwi. and then sets ENEMY_FLAG_HIT_ACTOR and calls
     // onHitByActor_0x70.
     /* 0x60 */ virtual u8 checkHitByActor_0x60();
-    // 0x801CE98C: unless ENEMY_FLAG_NO_MAP_HIT, fn_801F2618(&mMapHitDir,
+    // 0x801CE98C: unless ENEMY_FLAG_NO_MAP_HIT, sweepMapBox_801F2618(&mMapHitDir,
     // false) when mMapBox_0x80 is not empty, else 0. 5 overrides, no
     // arguments read; update() passes r3 on to updateBehavior_0x9C (clrlwi 24).
     // checkHitByPlayer_0x5C/0x60/0x64 are u8 like the ActorBase hit tests they return
-    // (fn_801F2FAC / fn_801F2DB4 / fn_801F2618 results go out with mr, no
+    // (fn_801F2FAC / fn_801F2DB4 / sweepMapBox_801F2618 results go out with mr, no
     // bool conversion; overrides likewise).
     /* 0x64 */ virtual u8 sweepMap_0x64();
     // 0x801CE928: fn_801F2B7C(mParamAtcp_0x114, -1, 1) (the players hit, a
@@ -209,7 +209,7 @@ public:
     void fn_801CE800();
     // 2 units / 2 calls (act_vulture, act_wallmaster vfunc_0x60s). Hit by
     // the overlapping actor (fn_801F82CC) unless it is a live 'BMTY'
-    // (fn_801CC8E4): fn_801F37AC with its attack and direction; sets its
+    // (fn_801CC8E4): takeHit_801F37AC with its attack and direction; sets its
     // field_0x164 when it landed. Returns 0 or 1.
     bool fn_801CEA60();
     // 3 units / 3 calls. For each player overlapping this actor and
@@ -277,7 +277,7 @@ public:
     // 8 units / 11 calls. The 16-bit angle (atan2 * 10430.378f, fctiwz) from
     // mPos to `player` (mPlayerPos_0x1ac[player]); callers store it with sth or
     // extsh it, the body returns it unnarrowed.
-    s32 fn_801D0280(s32 player) const;
+    s32 getAngleToPlayer_801D0280(s32 player) const;
     // 4 units / 8 calls. The same angle from mPos to *pos.
     s32 fn_801D02E0(const JGeometry::TVec3f* pos) const;
     // 1 unit / 3 calls. The player whose angle from *from is nearest to
@@ -286,12 +286,12 @@ public:
     s32 fn_801D0338(const JGeometry::TVec3f* from, s16 angle);
     // 22 units / 49 calls. The nearest present player within `range`
     // (squared, f1) of *pos, or -1.
-    s32 fn_801D05F8(const JGeometry::TVec3f* pos, f32 range);
+    s32 findNearestPlayer_801D05F8(const JGeometry::TVec3f* pos, f32 range);
     // 5 units / 8 calls (clrlwi.). Whether `player` can be targeted (mr.
     // r27, r4: >= 0 and present) and is within `range` of *pos.
     bool fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f32 range);
     // 9 units / 18 calls (clrlwi.). Whether `player` can be targeted (the
-    // player tests fn_8022CAF8 / fn_8022F514 and the actor-id list of
+    // player tests fn_8022CAF8 / hasPlayerLeader_8022F514 and the actor-id list of
     // fn_801D0338).
     bool fn_801D0B44(s32 player);
     // 2 units / 6 calls (clrlwi.). Whether mPlayerPos_0x1ac[player] is within
@@ -299,7 +299,7 @@ public:
     bool fn_801D0D50(s32 player, const JGeometry::TVec3f* pos, f32 dist);
     // 5 units / 7 calls. The squared (x, y) distance from *pos to
     // mPlayerPos_0x1ac[player].
-    f32 fn_801D0DA0(s32 player, const JGeometry::TVec3f* pos);
+    f32 getPlayerDistSq_801D0DA0(s32 player, const JGeometry::TVec3f* pos);
     // 6 units / 13 calls (clrlwi.). On a floor layer: ENEMY_FLAG_LANDED or
     // 0x10 set; elsewhere mPos.z <= 0.
     bool fn_801D0DD4() const;
@@ -313,7 +313,7 @@ public:
     // game/tu_801CDC8C.cpp.
     void moveStep();
     void stateStep(u8 mapHit);
-    // The player search fn_801D0B44 / fn_801D05F8 / fn_801D0DA0 do, inlined
+    // The player search fn_801D0B44 / findNearestPlayer_801D05F8 / getPlayerDistSq_801D0DA0 do, inlined
     // in the other searches of the unit.
     bool isPlayerOnLayer(s32 player);
     bool canTargetPlayer(s32 player);
@@ -341,12 +341,12 @@ public:
     /* 0x258 */ f32 mTargetSpeed; // move_0x98 moves mSpeed toward it
     /* 0x25C */ f32 mAccel;       // 0.1f; the step while mSpeed < mTargetSpeed
     /* 0x260 */ f32 mDecel;       // 0.2f; the step while mSpeed > mTargetSpeed
-    /* 0x264 */ JGeometry::TVec3f mMapHitDir; // sweepMap_0x64's fn_801F2618 out
+    /* 0x264 */ JGeometry::TVec3f mMapHitDir; // sweepMap_0x64's sweepMapBox_801F2618 out
     /* 0x270 */ SpriteAnim_801D267C mAnim;
 }; // Size: 0x2A8
 
 // A const bool defined (false) in game/tu_801CDC8C.cpp, first in its
-// .sdata2. sweepMap_0x64 passes a literal 0 as fn_801F2618's flag (li r5, 0),
+// .sdata2. sweepMap_0x64 passes a literal 0 as sweepMapBox_801F2618's flag (li r5, 0),
 // while overrides in act_thief (0x80204FC0), tu_801C9AF8 and tu_80206B30
 // load this byte for it (lbz r5): they see only this declaration. Its
 // name is unknown.
@@ -354,7 +354,7 @@ extern const bool lbl_8053EFC0;
 
 // Helpers of game/tu_801CB270.cpp the enemy code uses.
 
-// Whether `layer` is 8 or more (cmpwi 8): the layers fn_801EF830 and the
+// Whether `layer` is 8 or more (cmpwi 8): the layers drawShadow_801EF830 and the
 // view's boxes (0xDC instead of 0xCC) treat as the upper ones. 0 or 1.
 bool fn_801CD1D0(s32 player);
 // Takes a layer, returns a bool (clrlwi 24); act_vaati_boss's update tests it before its first state.
@@ -395,7 +395,7 @@ void fn_801CB688(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6);
 // (die_0x24) compares it with the killer's fn_8022F340.
 s32 fn_801CCDA4();
 // game/tu_801CB270.cpp (not written yet; C linkage keeps the dtk name): an
-// effect at *pos on `layer` like fn_801CB688, for strong hits (fn_801F37AC
+// effect at *pos on `layer` like fn_801CB688, for strong hits (takeHit_801F37AC
 // with attack > 4 and type 1, or type 5 with life left).
 extern "C" void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s32 arg6);
 // game/tu_801CB270.cpp (0x801CBB98, 0x704 bytes).
@@ -404,8 +404,8 @@ extern "C" void fn_801CB5CC(s32 layer, const JGeometry::TVec3f* pos, s32 arg5, s
 void fn_801CBB98(const JGeometry::TBox2f* box, const JGeometry::TVec3f* spawnPos, s32 angle, f32 dist,
                  JGeometry::TVec2f* out);
 
-// game/tu_801CB270.cpp (0x801CCF34): fn_80236228 for the player `player` stands for (fn_8022F3DC's
-// while fn_8022F514 says it has one).
+// game/tu_801CB270.cpp (0x801CCF34): fn_80236228 for the player `player` stands for (getPlayerLeader_8022F3DC's
+// while hasPlayerLeader_8022F514 says it has one).
 s32 fn_801CCF34(s32 player);
 
 // game/tu_801CB270.cpp (0x801CC350; 1 caller unit, act_terrorpin updateState_0x90). Reflects the 2D

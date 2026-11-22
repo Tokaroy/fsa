@@ -172,7 +172,7 @@ bool RecoveryHeart_8049F4F0::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     const u32 ignoreIds[2] = {'TOMI', 'NULL'};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds) == true) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds) == true) {
         return true;
     }
     s32 kind = fn_8022461C(pos, layer);

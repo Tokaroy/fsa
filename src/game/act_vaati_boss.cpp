@@ -152,7 +152,7 @@ void VaatiBoss_804A4958::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
 
-    mAnim.fn_801D2608(lbl_8053A138, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A138, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
 
@@ -167,7 +167,7 @@ void VaatiBoss_804A4958::init() {
 }
 
 void VaatiBoss_804A4958::onFirstUpdate_0x54() {
-    gAudioMgr_8053AF80->fn_80458F9C(60);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(60);
 }
 
 // FIXME: 97.99 %, regalloc-only; behaviour clean.
@@ -368,7 +368,7 @@ void VaatiBoss_804A4958::fn_801D5D84(s32 state) {
 
 inline bool VaatiBoss_804A4958::calcTargetFar_801D5B70(JGeometry::TVec2f* out) {
     bool found = false;
-    s32 player = fn_801D05F8(&mPos, 160.0f);
+    s32 player = findNearestPlayer_801D05F8(&mPos, 160.0f);
     if (player >= 0) {
         const JGeometry::TVec3f* p = getPlayerPos_8023E724(player);
         JGeometry::TVec2f target;
@@ -461,7 +461,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
     case 3:
         if (mStateTimer >= 60) {
             getActorManager_801F856C()->fn_801F6884();
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, true, 0);
             fn_801D5D84(4);
         }
         break;
@@ -548,7 +548,7 @@ void VaatiBoss_804A4958::updateState_0x90(u8 mapHit) {
         if (field_0x5cf != 0) {
             field_0x5cf--;
             if (field_0x5cf == 0) {
-                field_0x4c4.fn_801D70BC(&mPos, fn_801D05F8(&mPos, 0.0f));
+                field_0x4c4.fn_801D70BC(&mPos, findNearestPlayer_801D05F8(&mPos, 0.0f));
                 startSound_801F0E34(0x40069, 0);
                 fn_801D5D84(16);
             }

@@ -65,9 +65,9 @@ void NaviAfterCrystalCutscene_8049ED30::init() {
     mMapBox_0x80.i.y = mBox.i.y;
     mMapBox_0x80.f.x = mBox.f.x;
     mMapBox_0x80.f.y = mBox.f.y;
-    field_0x240.fn_801D2608(lbl_80539F50, 1);
+    field_0x240.setKeyTables_801D2608(lbl_80539F50, 1);
     field_0x240.startAnim_801D22DC(0, 2, false);
-    field_0x240.fn_801D1F14(0.0f);
+    field_0x240.setFrame_801D1F14(0.0f);
     spawnEmitters();
 }
 

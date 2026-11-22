@@ -130,7 +130,7 @@ void Keese_804A02B8::update() {
     f32 dist = 0.0f;
     s32 dir = 0;
     s32 player = -1;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     addCalc2_801F71A4(&mVel_0x3c.x, field_0x274, 0.3f, 1.0f);
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x278, 0.3f, 1.0f);
     mPos += mVel_0x3c;

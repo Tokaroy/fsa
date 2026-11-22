@@ -117,14 +117,14 @@ extern s32 lbl_80539FD0;
 
 void fn_80154718(const JGeometry::TVec3f* pos);
 void fn_801546BC(JGeometry::TVec3f* v);
-s32 fn_8015465C(f32 y, f32 x);
+s32 atan2Short_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
-void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
+void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
 void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
-f32 fn_801544FC(s16 angle);
-f32 fn_801544E4(s16 angle);
+f32 sinShort_801544FC(s16 angle);
+f32 cosShort_801544E4(s16 angle);
 ActorBase_804A5770* fn_8015445C(s32 serial);
-f32 fn_80154378(f32 x);
+f32 sqrtf_80154378(f32 x);
 f32 fn_8015436C(f32 x);
 s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
 s32 fn_801542AC(u32 id, s32 layer, ActorBase_804A5770** out, s32 excludeSerial);
@@ -238,7 +238,7 @@ void BigPoe2_804A1E50::init() {
         mBox.i.y = -40.0f;
         mBox.f.x = 42.0f;
         mBox.f.y = 40.0f;
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         mState = 0;
     } else {
         mBox.i.x = -8.0f;
@@ -628,9 +628,9 @@ void BigPoe2_804A1E50::update() {
     addCalc2_801F71A4(&field_0x2b8, 1.0f, 0.1f, 0.1f);
     addCalc2_801F71A4(&field_0x2bc, 1.0f, 0.1f, 0.1f);
     if (field_0x26c == 0) {
-        field_0x2ac.z = 60.0f + 6.0f * fn_801544E4(field_0x278);
+        field_0x2ac.z = 60.0f + 6.0f * cosShort_801544E4(field_0x278);
         field_0x278 += 0x300;
-        field_0x28c = fn_801544FC((s16)field_0x250);
+        field_0x28c = sinShort_801544FC((s16)field_0x250);
         field_0x250 += field_0x274;
         addCalc2_801F71A4(&field_0x280, field_0x284, 0.5f, 2.0f);
         addCalc2_801F71A4(&mPos.z, field_0x2ac.z, 0.3f, field_0x2c0);
@@ -642,7 +642,7 @@ void BigPoe2_804A1E50::update() {
         if (field_0x330 != NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * sinShort_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             setEmitterPos_8013CB44(field_0x330, &pos44, 1, 2, true);
         }
@@ -734,7 +734,7 @@ void BigPoe2_804A1E50::update() {
         if (field_0x330 == NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * sinShort_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             field_0x330 = spawnEmitter_8013CC50(mLayer_0x4, &pos44, 0x56, 1, 2, NULL, NULL, true, 1.0f);
         }
@@ -795,7 +795,7 @@ void BigPoe2_804A1E50::update() {
                     fn_8018E8C0(&field_0x2f8[i], sw->fn_801544DC());
                 }
             }
-            fn_8018A6AC()->fn_80458FF0(0x1000004, false, 0);
+            fn_8018A6AC()->startBgm_80458FF0(0x1000004, false, 0);
             fn_8018A63C();
             field_0x280 = 100.0f;
             field_0x244 = 300;
@@ -827,7 +827,7 @@ void BigPoe2_804A1E50::update() {
         if (field_0x330 == NULL) {
             fn_8018E8C0(&pos44, &mPos);
             pos44.x -= 46.0f;
-            pos44.x += -16.0f * fn_801544FC((s16)(8192.0f * field_0x28c));
+            pos44.x += -16.0f * sinShort_801544FC((s16)(8192.0f * field_0x28c));
             pos44.y += 40.0f;
             field_0x330 = spawnEmitter_8013CC50(mLayer_0x4, &pos44, 0x56, 1, 2, NULL, NULL, true, 1.0f);
         }
@@ -837,7 +837,7 @@ void BigPoe2_804A1E50::update() {
                     !fn_80230188(i)) {
                     f32 dx = field_0x2c4[1].x - getPlayerPos_8023E724(i)->x;
                     f32 dy = field_0x2c4[1].y - getPlayerPos_8023E724(i)->y;
-                    if (fn_80154378(dx * dx + dy * dy) < 48.0f) {
+                    if (sqrtf_80154378(dx * dx + dy * dy) < 48.0f) {
                         if (fn_802308E0(i) != 1) {
                             return;
                         }
@@ -864,14 +864,14 @@ void BigPoe2_804A1E50::update() {
             if (field_0x238 < 30) {
                 field_0x238 = 30;
             }
-            field_0x2ac.x = 1.2f * fn_801544FC(fn_8015465C(dx, dy));
-            field_0x2ac.y = 1.2f * fn_801544E4(fn_8015465C(dx, dy));
+            field_0x2ac.x = 1.2f * sinShort_801544FC(atan2Short_8015465C(dx, dy));
+            field_0x2ac.y = 1.2f * cosShort_801544E4(atan2Short_8015465C(dx, dy));
         } else if (field_0x238 == 0) {
             if (fn_80154744() < 0.6f || (field_0x2ac.x == 0.0f && field_0x2ac.y == 0.0f)) {
                 s32 ang = (s32)(65536.0f * fn_80154744());
                 field_0x238 = (s32)(300.0f * fn_80154744() + 300.0f);
-                field_0x2ac.x = 1.2f * fn_801544FC((s16)ang);
-                field_0x2ac.y = 1.2f * fn_801544E4((s16)ang);
+                field_0x2ac.x = 1.2f * sinShort_801544FC((s16)ang);
+                field_0x2ac.y = 1.2f * cosShort_801544E4((s16)ang);
                 field_0x2b8 = 0.0f;
                 field_0x2bc = 0.0f;
             } else {
@@ -892,7 +892,7 @@ void BigPoe2_804A1E50::update() {
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
         field_0x258 = 0;
-        field_0x25c = (s16)fn_8015465C(field_0x2a0.x - mPos.x, field_0x2a0.y - mPos.y);
+        field_0x25c = (s16)atan2Short_8015465C(field_0x2a0.x - mPos.x, field_0x2a0.y - mPos.y);
         field_0x2b8 = 0.0f;
         field_0x2bc = 0.0f;
         mState = 7;
@@ -908,8 +908,8 @@ void BigPoe2_804A1E50::update() {
         mPos.y -= mPos.z;
         mPos.z = 0.0f;
         if (field_0x27a == 1 && field_0x2ac.x == 0.0f && field_0x2ac.y == 0.0f) {
-            field_0x2ac.x = 1.2f * fn_801544FC((s16)field_0x25c);
-            field_0x2ac.y = 1.2f * fn_801544E4((s16)field_0x25c);
+            field_0x2ac.x = 1.2f * sinShort_801544FC((s16)field_0x25c);
+            field_0x2ac.y = 1.2f * cosShort_801544E4((s16)field_0x25c);
         }
         if (r29 == true) {
             if (fn_80154744() < 0.5f) {
@@ -918,22 +918,22 @@ void BigPoe2_804A1E50::update() {
                 field_0x25c -= 0x2000;
             }
             field_0x25c = (u16)field_0x25c;
-            field_0x2ac.x = 1.2f * fn_801544FC((s16)field_0x25c);
-            field_0x2ac.y = 1.2f * fn_801544E4((s16)field_0x25c);
+            field_0x2ac.x = 1.2f * sinShort_801544FC((s16)field_0x25c);
+            field_0x2ac.y = 1.2f * cosShort_801544E4((s16)field_0x25c);
             mVel_0x3c.x = field_0x2ac.x;
             mVel_0x3c.y = field_0x2ac.y;
         }
-        fn_80154590(&mBox, -50.0f, -40.0f, 42.0f, 40.0f);
+        setBox_80154590(&mBox, -50.0f, -40.0f, 42.0f, 40.0f);
         if (fn_801F2FAC()) {
             for (s32 i = 0; i < 4; i++) {
-                s32 hit = fn_801F285C(NULL, NULL, true, i);
+                s32 hit = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 field_0x2ac.x = 0.0f;
                 field_0x2ac.y = 0.0f;
                 mVel_0x3c.x = 0.0f;
                 mVel_0x3c.y = 0.0f;
                 if (hit >= 0) {
-                    if (fn_8022F514(hit)) {
-                        field_0x254 = fn_8022F3DC(hit);
+                    if (hasPlayerLeader_8022F514(hit)) {
+                        field_0x254 = getPlayerLeader_8022F3DC(hit);
                     } else {
                         field_0x254 = hit;
                     }
@@ -944,7 +944,7 @@ void BigPoe2_804A1E50::update() {
                 }
             }
         }
-        fn_80154590(&mBox, -42.0f, -32.0f, 34.0f, 32.0f);
+        setBox_80154590(&mBox, -42.0f, -32.0f, 34.0f, 32.0f);
         fn_801F2B7C(fn_80154510(), -1, 6);
         fn_8018E8C0(&mPos, &pos44);
         if (lbl_80539FD0 < 9) {
@@ -1017,14 +1017,14 @@ void BigPoe2_804A1E50::update() {
             }
             field_0x258++;
             if (field_0x2ac.x == 0.0f && field_0x2ac.y == 0.0f) {
-                field_0x2ac.x = 1.5f * fn_801544FC((s16)field_0x25c);
-                field_0x2ac.y = 1.5f * fn_801544E4((s16)field_0x25c);
+                field_0x2ac.x = 1.5f * sinShort_801544FC((s16)field_0x25c);
+                field_0x2ac.y = 1.5f * cosShort_801544E4((s16)field_0x25c);
             }
             if (r29 == true) {
                 field_0x25c += field_0x260;
                 field_0x25c = (u16)field_0x25c;
-                field_0x2ac.x = 1.5f * fn_801544FC((s16)field_0x25c);
-                field_0x2ac.y = 1.5f * fn_801544E4((s16)field_0x25c);
+                field_0x2ac.x = 1.5f * sinShort_801544FC((s16)field_0x25c);
+                field_0x2ac.y = 1.5f * cosShort_801544E4((s16)field_0x25c);
                 mVel_0x3c.x = field_0x2ac.x;
                 mVel_0x3c.y = field_0x2ac.y;
             }
@@ -1142,9 +1142,9 @@ void BigPoe2_804A1E50::update() {
             fn_8015461C() == getPlayerLayer_8023DE58(field_0x254)) {
             f32 dx = getPlayerPos_8023E724(field_0x254)->x - mPos.x;
             f32 dy = (getPlayerPos_8023E724(field_0x254)->y - 64.0f) - mPos.y;
-            if (fn_80154378(dx * dx + dy * dy) > 16.0f) {
-                field_0x2ac.x = 3.0f * fn_801544FC(fn_8015465C(dx, dy));
-                field_0x2ac.y = 3.0f * fn_801544E4(fn_8015465C(dx, dy));
+            if (sqrtf_80154378(dx * dx + dy * dy) > 16.0f) {
+                field_0x2ac.x = 3.0f * sinShort_801544FC(atan2Short_8015465C(dx, dy));
+                field_0x2ac.y = 3.0f * cosShort_801544E4(atan2Short_8015465C(dx, dy));
             } else {
                 field_0x2ac.x = 0.0f;
                 field_0x2ac.y = 0.0f;
@@ -1194,13 +1194,13 @@ void BigPoe2_804A1E50::update() {
                 f32 dy = field_0x2c4[0].y - pos44.y;
                 f32 dx = field_0x2c4[0].x - pos44.x;
                 f32 dz = field_0x2c4[0].z - pos44.z;
-                if (fn_80154378(dx * dx + dy * dy + dz * dz) < 80.0f) {
+                if (sqrtf_80154378(dx * dx + dy * dy + dz * dz) < 80.0f) {
                     field_0x290 = 3.0f;
                 }
                 fn_80230498(field_0x254, &field_0x2c4[0], field_0x258 + 0xAF, 0xFF, -0x80, -0x80, true);
                 for (s32 i = 0; i < 4; i++) {
                     if (fn_8023F264(i) && fn_8015461C() == getPlayerLayer_8023DE58(i) &&
-                        fn_8022F514(i) && field_0x254 == fn_8022F3DC(i)) {
+                        hasPlayerLeader_8022F514(i) && field_0x254 == getPlayerLeader_8022F3DC(i)) {
                         fn_8018E8C0(&pos38, getPlayerPos_8023E724(i));
                         addCalc2_801F71A4(&pos38.x, pos44.x, 0.1f, 2.0f * field_0x290);
                         addCalc2_801F71A4(&pos38.y, pos44.y, 0.1f, 2.0f * field_0x290);
@@ -1217,7 +1217,7 @@ void BigPoe2_804A1E50::update() {
                 }
                 f32 pdx = getPlayerPos_8023E724(field_0x254)->x - pos44.x;
                 f32 pdy = getPlayerPos_8023E724(field_0x254)->y - pos44.y;
-                if (fn_80154378(pdx * pdx + pdy * pdy) > 8.0f) {
+                if (sqrtf_80154378(pdx * pdx + pdy * pdy) > 8.0f) {
                     break;
                 }
                 startSound_801F0E34(0x4005C, 0);
@@ -1255,8 +1255,8 @@ void BigPoe2_804A1E50::update() {
             field_0x32c = NULL;
         }
         for (s32 i = 0; i < 4; i++) {
-            if (i != field_0x254 && fn_8023F264(i) && fn_8022F514(i) &&
-                field_0x254 == fn_8022F3DC(i)) {
+            if (i != field_0x254 && fn_8023F264(i) && hasPlayerLeader_8022F514(i) &&
+                field_0x254 == getPlayerLeader_8022F3DC(i)) {
                 fn_8018E8C0(&pos38, getPlayerPos_8023E724(i));
                 addCalc2_801F71A4(&pos38.x, field_0x2c4[0].x, 0.1f, 2.0f * field_0x290);
                 addCalc2_801F71A4(&pos38.y, field_0x2c4[0].y, 0.1f, 2.0f * field_0x290);
@@ -1372,7 +1372,7 @@ void BigPoe2_804A1E50::update() {
             startSound_801F0E34(0x50086, 0);
         }
         if (lbl_80539FCC >= 0 && fn_8023F264(lbl_80539FCC)) {
-            fn_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, lbl_80539FCC, 2);
+            findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, lbl_80539FCC, 2);
             if (r28 == 1 || outDist > 80.0f) {
                 field_0x2ac.x = 0.0f;
                 field_0x2ac.y = 0.0f;
@@ -1397,8 +1397,8 @@ void BigPoe2_804A1E50::update() {
             } else if (field_0x23c == 0) {
                 field_0x254 = outAngle + 0x8000;
             }
-            field_0x2ac.x = 2.5f * fn_801544FC((s16)(field_0x254 + field_0x250));
-            field_0x2ac.y = 2.5f * fn_801544E4((s16)(field_0x254 + field_0x250));
+            field_0x2ac.x = 2.5f * sinShort_801544FC((s16)(field_0x254 + field_0x250));
+            field_0x2ac.y = 2.5f * cosShort_801544E4((s16)(field_0x254 + field_0x250));
         }
         if (field_0x234 == 0) {
             field_0x24c++;
@@ -1441,9 +1441,9 @@ void BigPoe2_804A1E50::update() {
                         JGeometry::TVec3f vel;
                         fn_801546BC(&vel);
                         outAngle = 0;
-                        fn_801EEC98(fn_801545E8(), &outAngle, NULL, NULL, NULL, 0, 0);
-                        vel.x = 1.8f * fn_801544FC((s16)outAngle);
-                        vel.y = 1.8f * fn_801544E4((s16)outAngle);
+                        findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, NULL, NULL, NULL, 0, 0);
+                        vel.x = 1.8f * sinShort_801544FC((s16)outAngle);
+                        vel.y = 1.8f * cosShort_801544E4((s16)outAngle);
                         oktm->fn_8017EAF8(vel);
                     }
                 }
@@ -1579,7 +1579,7 @@ void BigPoe2_804A1E50::draw() {
             return;
         }
         params.field_0x1f = 0;
-        void* res = fn_804032E8('BIGP', "boss_p_rantan.bti");
+        void* res = getBossArchiveResource_804032E8('BIGP', "boss_p_rantan.bti");
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, field_0x28c, 0.0f), 1.0f);
         params.field_0x1d = 2;
         params.field_0x1c = 1;
@@ -1625,10 +1625,10 @@ void BigPoe2_804A1E50::draw() {
 
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, 0.0f, 0.0f), field_0x294);
         params.mMtx = mtx;
-        res = fn_804032E8('BIGP', lbl_804A1D24[field_0x270 + field_0x264]);
+        res = getBossArchiveResource_804032E8('BIGP', lbl_804A1D24[field_0x270 + field_0x264]);
         fn_801EFD34(res, &params, -1, 0.0f, -8.0f, 0.0f);
         if (field_0x268 == 2) {
-            res = fn_804032E8('BIGP', lbl_804A1D24[0xE8 / 4]);
+            res = getBossArchiveResource_804032E8('BIGP', lbl_804A1D24[0xE8 / 4]);
             params.field_0x26 = 1;
             params.field_0x1d = 1;
             params.field_0x1c = 0;

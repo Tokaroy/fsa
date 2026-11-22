@@ -33,7 +33,7 @@ static inline void followEmitter(Geldman_804A1790* self) {
 // The actor was hit (or is held): the emitter follows it and the rest of update() is skipped.
 static inline void followHeld(Geldman_804A1790* self) {
     followEmitter(self);
-    self->fn_801F2618(NULL, false);
+    self->sweepMapBox_801F2618(NULL, false);
 }
 
 // Structure after tu_80182914.cpp (Leever_804A1718::init), a sibling actor.
@@ -96,7 +96,7 @@ void Geldman_804A1790::update() {
         followHeld(this);
         return;
     }
-    if (field_0x258 != 0 && fn_801F305C()) {
+    if (field_0x258 != 0 && checkHits_801F305C()) {
         followHeld(this);
         return;
     }
@@ -105,11 +105,11 @@ void Geldman_804A1790::update() {
     addCalc2_801F71A4(&mVel_0x3c.y, field_0x264.y, 0.3f, 1.0f);
     mPos += mVel_0x3c;
     fn_80212AC0()->fn_80212AF0(&mPos);
-    fn_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, NULL, &dist, &player, 0, 0);
     if (field_0x258 != 0) {
         fn_801F2B7C(-100, -1, 1);
     }
-    fn_801F2618(NULL, false);
+    sweepMapBox_801F2618(NULL, false);
 
     switch (field_0x230) {
     case 0:

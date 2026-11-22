@@ -137,7 +137,7 @@ void TowerCollapseEffect_8049CA40::draw() {
     case 1:
         if (field_0x230 == 2) {
             SpriteParams_801F5AE0 params;
-            void* res = fn_804032E8('TIMG', "gareki.bti");
+            void* res = getBossArchiveResource_804032E8('TIMG', "gareki.bti");
             fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
         }
         break;
@@ -154,7 +154,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     Mtx mtx;
     JGeometry::TVec3f savedPos = mPos;
     params.field_0x1d = -3;
-    void* res = fn_804032E8('TIMG', "kowareyuka_a.bti");
+    void* res = getBossArchiveResource_804032E8('TIMG', "kowareyuka_a.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[0].x;
@@ -166,7 +166,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[0] / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
     params.field_0x1d = 1;
-    res = fn_804032E8('TIMG', "kowareyuka_b.bti");
+    res = getBossArchiveResource_804032E8('TIMG', "kowareyuka_b.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[1].x;
@@ -177,7 +177,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     mtx[2][3] = 0.0f;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[1] / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    res = fn_804032E8('TIMG', "kowareyuka_c.bti");
+    res = getBossArchiveResource_804032E8('TIMG', "kowareyuka_c.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.x = field_0x238[2].x;
@@ -188,7 +188,7 @@ void TowerCollapseEffect_8049CA40::fn_80103348() {
     mtx[2][3] = 0.0f;
     setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x264[2] / -10430.228f, 0.0f), 1.0f);
     params.mMtx = mtx;
-    res = fn_804032E8('TIMG', "kowareyuka_d.bti");
+    res = getBossArchiveResource_804032E8('TIMG', "kowareyuka_d.bti");
     fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
 
     mPos.set(savedPos);

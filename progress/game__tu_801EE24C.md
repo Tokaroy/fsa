@@ -23,7 +23,7 @@ then the .sdata2 order resolves the ctor.
 Baseline 8112 -> 8121. Written: fn_801EE3C0 (now C++ free fn_801EE3C0__FUs), fn_801EE508, fn_801EF510, fn_801F3128, fn_801F317C (const), fn_801F31C4, fn_801F3518, fn_801F355C, fn_801F35AC, fn_801F3604, fn_801F3668, fn_801F4694 (const).
 Resistant: fn_801EE3C0 78.6 % (target truncates each `tile - lo` with clrlwi; ours extends the u16 once). fn_801EF510 / fn_801F3128 / fn_801F4694: instructions identical, only rodata/sdata2 relocation names (lbl_80469FC8, lbl_8053F74C, lbl_80469F38) pending the unit's data order.
 SHARED-EDITS: include/game/ActorBase.h (fn_801EE3C0 moved out of extern "C"; fn_801F4694 / fn_801F317C const); symbols.txt renames fn_801EE3C0__FUs, fn_801F4694...CFv, fn_801F317C...CF....
-Next: releaseEmitter_801EE434 (0xBC), fn_801F2618, fn_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
+Next: releaseEmitter_801EE434 (0xBC), sweepMapBox_801F2618, fn_801F2FAC, fn_801F32F4, isBlockedOrOutOfView_0x50, then the larger ones.
 
 ## 2026-11-05 leverage wave 1 (Opus 5.5)
 Baseline 8397 -> 8401 (+4 honest). 100 %: releaseEmitter_801EE434 (now C++
@@ -31,30 +31,30 @@ releaseEmitter_801EE434__FP14JPABaseEmitter; it replaces the destructor's inline
 destructor inlines it), fn_801F0D20, fn_801F32F4, fn_801F33C4.
 Structural (FIXME each): fn_801EE24C 99.95 reloc-name (200.0f), startSound_801F0E34
 99.25 regalloc, fn_801F2B7C 98.2 regalloc+reloc (inlines fn_801F2740),
-fn_801F2DB4 99.4, fn_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
+fn_801F2DB4 99.4, sweepMapBox_801F2618 98.7, fn_801F2FAC 98.6 (bool narrowed with
 clrlwi at the return: a u8 return type matches the bodies 100 % but lowers ~20
-bool-using callers, EnemyBase vfunc_0x60/0x64 etc.; left bool), fn_801F305C
+bool-using callers, EnemyBase vfunc_0x60/0x64 etc.; left bool), checkHits_801F305C
 97.9 (inlines fn_801F2FAC), isBlockedOrOutOfView_0x50 94.4 regalloc, fn_801F2740 85.0 (an
 unexplained clrlwi at the return + prologue scheduling).
 Constructor: cannot reach 100 % until the whole .sdata2 is in order. The pool
 starts with four aggregate objects emitted before the literals and in reverse
 function order (lbl_8053F728/72C 'NULL' words from fn_801F52A4, lbl_8053F730
-s16[4] and lbl_8053F738 u8[4] from fn_801EF830; .rodata shows the same reverse
+s16[4] and lbl_8053F738 u8[4] from drawShadow_801EF830; .rodata shows the same reverse
 order), then the floats in first-use order; objdiff pairs @NNN literals by
-offset, so fn_801EF830 and fn_801F52A4 (and every literal-introducing
+offset, so drawShadow_801EF830 and fn_801F52A4 (and every literal-introducing
 function before the ctor) must be written first.
 SHARED-EDITS: symbols.txt releaseEmitter_801EE434 -> releaseEmitter_801EE434__FP14JPABaseEmitter,
 fn_8022BB48 -> fn_8022BB48__FlPCQ29JGeometry8TVec3<f>; Player.h declares
 fn_8022BB48; ActorBase.h startSound_801F0E34 returns JAISoundHandle*, releaseEmitter_801EE434 out
 of extern "C"; tools/gen_game.py EMIT_RELEASE (protected: needs approval).
-Next: fn_801EE558 / fn_801EE8F4 (literal order), fn_801EEC98, drawSprite_801F06F0
-(SpriteParams copy), fn_801F285C, fn_801F37AC, fn_801EF830, fn_801F52A4.
+Next: fn_801EE558 / fn_801EE8F4 (literal order), findTargetPlayer_801EEC98, drawSprite_801F06F0
+(SpriteParams copy), findOverlappingPlayer_801F285C, takeHit_801F37AC, drawShadow_801EF830, fn_801F52A4.
 
 ## 2026-11-05 leverage wave 7, ActorBase round 2 (Opus 5.5)
 Baseline 8623 honest / 9046 structural -> 8623 / 9050 (+0 honest, +4 structural); no
 function anywhere drops (compared by address against the main report).
 Written (all with FIXMEs):
-- fn_801EF830 93.3 % missing/extra (now C++ fn_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv):
+- drawShadow_801EF830 93.3 % missing/extra (now C++ drawShadow_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv):
   it draws the actor's SHADOW ("kage_sob.bin" frame kind scaled by lbl_80469FA8[kind],
   kind 7 a flattened copy of the sprite, tile 0x39 an animated "enemy_both2_sob.bin" frame).
   One extra instruction: MWCC hoists the .rodata base (table + both strings) into r30, the
@@ -75,9 +75,9 @@ start of .sdata2 as in the original (function-local statics land in function ord
 Ctor: still needs every literal user before it (all floats up to lbl_8053F7F8) in order; not
 reachable this round.
 Not written: drawSprite_801F06F0 (copies *sp.mMtx into a stack Mtx after PSMTXIdentity with a
-12-word struct copy: the Mtx wrapper type is unknown), fn_801EEC98, the rest.
-SHARED-EDITS: symbols.txt renames fn_801EF830 -> C++ name, fn_801F52A4 -> member;
-ActorBase.h (fn_801EF830 out of extern "C", fn_801F52A4 member, comments, fn_801F2A10 param
+12-word struct copy: the Mtx wrapper type is unknown), findTargetPlayer_801EEC98, the rest.
+SHARED-EDITS: symbols.txt renames drawShadow_801EF830 -> C++ name, fn_801F52A4 -> member;
+ActorBase.h (drawShadow_801EF830 out of extern "C", fn_801F52A4 member, comments, fn_801F2A10 param
 names); Player.h declares extern "C" bool fn_8022D534(s32) (owner tu_8022AD64; no fields
 touched); libs/sdk JMath.h TSinCosTable::cosDegree (from tp JMATrigonometric.h).
 
@@ -87,11 +87,11 @@ drops (by address against the round's baseline report).
 fn_801EE3C0 100 %: it takes an int (s32; symbols.txt __FUs -> __Fl): the
 parameter is never extended and each test truncates to 16 bits.
 Written:
-- fn_801EEC98 100 % (104 callers; layerBox for the view box, std::sqrtf).
+- findTargetPlayer_801EEC98 100 % (104 callers; layerBox for the view box, std::sqrtf).
 - fn_801F11B4 99.4 regalloc, die_0x24 99.75 regalloc (death), updateBossDeath_0x2C 98.8
-  regalloc (boss death explosion), fn_801F285C 88.8 scheduling (box before the
+  regalloc (boss death explosion), findOverlappingPlayer_801F285C 88.8 scheduling (box before the
   register saves, as fn_801F2740), fn_801F3D94 99.0 missing/extra 1 (hit
-  reaction), fn_801F37AC 94.4 missing/extra (hit handler: .rodata base hoist +
+  reaction), takeHit_801F37AC 94.4 missing/extra (hit handler: .rodata base hoist +
   bool narrowing), fn_801F23BC 98.7 (bool narrowing only).
 - lbl_80469EF8 (hurt voices) as data; fn_801F4694 now pairs (rodata offsets).
 Simplified: isPlayerBelowLayer8 / isPlayerOnActorLayer inline workarounds are
@@ -99,8 +99,8 @@ gone; fn_801F329C (now const, symbols.txt renamed) and fn_801F320C are plain
 functions their callers inline under deferred, every % kept.
 Re-measured under deferred, unchanged: the ctor (99.91, reloc-name only: 1.0f
 needs fn_801EF574 written first, 6.0f/doubles drawSprite, ...); the bool
-narrowing family (fn_801F2618, fn_801F2FAC, fn_801F2DB4, fn_801F305C, now also
-fn_801F23BC, fn_801F37AC): u8 returns make all five bodies 100 % (fn_801F305C
+narrowing family (sweepMapBox_801F2618, fn_801F2FAC, fn_801F2DB4, checkHits_801F305C, now also
+fn_801F23BC, takeHit_801F37AC): u8 returns make all five bodies 100 % (checkHits_801F305C
 with `u8 hit; if (hit == false)`), but 15 written callers drop (EnemyBase
 vfunc_0x5C/0x60/0x64 100 -> 84-86, Terrorpin/Beamos/Thief vfunc_0x60/0x64,
 act_sword_soldier fn_801545C0, several update()s): needs a joint retype of
@@ -119,7 +119,7 @@ the original here; tried operator=, copy-ctor, temporaries, const/restrict
 source, reference parameters, a TColor copy ctor: no change. drawSprite also
 copies *sp.mMtx with a 12-word struct copy (a struct-of-Mtx type; no
 candidate in the headers without a cast).
-.rodata: fn_801F37AC and fn_801EF830 address each table with its own lis/addi
+.rodata: takeHit_801F37AC and drawShadow_801EF830 address each table with its own lis/addi
 where ours hoists ...rodata.0; with the tables extern the hoist goes away, so
 the tables (0x80469D48-0x8046A048) probably belong to another unit (split
 change, not done).
@@ -139,15 +139,15 @@ drops (compared by address across the whole report against the main report_hones
   `? true : false` and plain `==` give srwi here.
 - isBlockedOrOutOfView_0x50 94.4 -> 100 %: `return isBlocked_0x4C(...) || pos->x < ... ;` (the
   `bool result = false; if (...) result = true;` form keeps layer and the result apart).
-- fn_801F2740 85.1 -> 99.15 and fn_801F285C 88.8 -> 99.8: const (the box loads off
+- fn_801F2740 85.1 -> 99.15 and findOverlappingPlayer_801F285C 88.8 -> 99.8: const (the box loads off
   `this` sit above the register saves; symbols.txt ...CFl / ...CFPQ...Plbl). Left:
   fn_801F2740's final clrlwi (an s32 accumulator drops the in-loop one instead),
-  fn_801F285C the order of two argument moves.
+  findOverlappingPlayer_801F285C the order of two argument moves.
 - fn_801F172C 92.0 % structurally close (new, 3.2 KB): four edge sweeps with
   `s32 hits[3] = {0, 0, 0}` counters (lbl_80469F78-9C are their initialisers), the push
   decision, corner diagonals (8-0xB) and TVec3f::isZero / normalize. u8 return (clrlwi at
   the return from a bool local). Differences: the .rodata base hoist (r31, as in
-  fn_801EF830 / fn_801F37AC) and the counter increment's scheduling.
+  drawShadow_801EF830 / takeHit_801F37AC) and the counter increment's scheduling.
 Tried, not merged:
 - fn_801EF574 (struct copy blocker): written naturally it is 60 % (interleaved copy, no
   stmw); a named temporary `tmp = *params; sp = tmp;` gives stmw r14 and load-all but a
@@ -156,6 +156,6 @@ Tried, not merged:
   although &sp goes to fn_802F86CC. Draft: scratchpad r4_draft_801EF574.cpp.
 - isBlocked_0x4C: getSerial() (layer fixed, pos/this swap), early returns, `||` with a box
   helper: none beat 89.5.
-SHARED-EDITS: ActorBase.h (fn_801F2740 / fn_801F285C const; fn_801F172C returns u8;
+SHARED-EDITS: ActorBase.h (fn_801F2740 / findOverlappingPlayer_801F285C const; fn_801F172C returns u8;
 fn_801F132C param timer; comments); symbols.txt renames fn_801F2740__18ActorBase_804A5770CFl,
-fn_801F285C__18ActorBase_804A5770CFPQ29JGeometry8TVec2<f>Plbl. Layout unchanged.
+findOverlappingPlayer_801F285C__18ActorBase_804A5770CFPQ29JGeometry8TVec2<f>Plbl. Layout unchanged.

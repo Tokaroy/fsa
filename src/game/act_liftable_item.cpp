@@ -48,8 +48,8 @@ void LiftableItem_804A01D0::init() {
     field_0x288 = 0;
     field_0x27c = *getPlayerPos_8023E724(field_0x250);
     field_0x274 = field_0x250;
-    if (fn_8022F514(field_0x250)) {
-        field_0x274 = fn_8022F3DC(field_0x250);
+    if (hasPlayerLeader_8022F514(field_0x250)) {
+        field_0x274 = getPlayerLeader_8022F3DC(field_0x250);
     }
     field_0x28c = 10;
     switch (field_0x234) {

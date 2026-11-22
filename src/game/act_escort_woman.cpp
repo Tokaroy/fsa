@@ -88,7 +88,7 @@ s32 EscortWoman_8049E1D0::vfunc_0x5C(const s32* dir) {
         case 3:
             break;
         default:
-            fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
             s32 player = fn_8022FD8C(mSerial);
             if (player >= 0) {
                 if (talk(player, 0x442, mSerial, mLayer_0x4, mPos, 0x28)) {
@@ -172,8 +172,8 @@ void EscortWoman_8049E1D0::vfunc_0x68() {
             camera->mMargin_0x1d4 = -1.0f;
             camera->mMinHalfWidth_0x1d8 = -1.0f;
         }
-        fn_8022FE80(fn_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
-        if (fn_80388CAC(fn_8022EA0C(fn_8012285C()), mSerial)) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(fn_8012285C()), mLayer_0x4, mSerial, false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(fn_8012285C()), mSerial)) {
             vfunc_0x6C(field_0x3d0);
         }
         break;
@@ -387,9 +387,9 @@ s32 EscortWoman_8049E1D0::vfunc_0x6C(s32 state) {
 }
 
 void EscortWoman_8049E1D0::vfunc_0x70() {
-    mAnim.fn_801D2608(lbl_8049E198, 14);
+    mAnim.setKeyTables_801D2608(lbl_8049E198, 14);
     mAnim.startAnim_801D22DC(7, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void EscortWoman_8049E1D0::vfunc_0x74() {

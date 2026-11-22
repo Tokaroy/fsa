@@ -33,7 +33,7 @@ void Sign_804A94D8::update() {
         if (gGameRoot_8053AAF8->field_0x7f) {
             damage = 0;
         }
-        if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+        if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
             die_0x24();
         } else if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0)) {
             die_0x24();

@@ -155,7 +155,7 @@ bool ShadowLink2_804A43E8::fn_801C53C4() {
 
 bool ShadowLink2_804A43E8::fn_801C5348(f32 range) {
     bool near = false;
-    s32 player = fn_801D05F8(&mPos, 0.0f);
+    s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
     if (player >= 0 && fn_801D0D50(player, &mPos, range)) {
         near = true;
     }
@@ -341,7 +341,7 @@ void ShadowLink2_804A43E8::fn_801C3B7C(int state) {
     case 0xC:
         if (mFlags & 0x2000) {
             lbl_8053AED0->fn_8043D67C(0x19B, 0, 0);
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000D, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, true, 0);
             getGameView_802D6A9C()->fn_802D6BC8(1);
         }
         break;
@@ -782,14 +782,14 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
     switch (mState) {
     case 0:
         if ((mFlags & 0x2000) && fn_801CD228(mLayer_0x4)) {
-            if (fn_801D05F8(&mPos, 16.0f * (f32)field_0x55c[2]) >= 0) {
+            if (findNearestPlayer_801D05F8(&mPos, 16.0f * (f32)field_0x55c[2]) >= 0) {
                 fn_801C3B7C(1);
             }
         }
         break;
     case 1:
         if (getActorManager_801F856C()->fn_801F68E0() != 0) {
-            gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
             fn_801C0D70()->field_0x0 |= 8;
         }
         break;
@@ -866,7 +866,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
         break;
     case 0xE:
     case 0xF:
-        if (mStateTimer >= field_0x250 && fn_801D05F8(&mPos, field_0x5a4) >= 0) {
+        if (mStateTimer >= field_0x250 && findNearestPlayer_801D05F8(&mPos, field_0x5a4) >= 0) {
             if (field_0x59c == 0) {
                 field_0x4ec.fn_80214E50();
                 field_0x59c = 0x3C;
@@ -949,7 +949,7 @@ void ShadowLink2_804A43E8::updateState_0x90(u8 mapHit) {
                 mPos.x = field_0x580.x;
                 mPos.y = field_0x580.y;
                 mPos.z = field_0x580.z;
-                s32 p = fn_801D05F8(&mPos, 60.0f);
+                s32 p = findNearestPlayer_801D05F8(&mPos, 60.0f);
                 mLayer_0x4 = savedLayer;
                 mPos.x = savedPos.x;
                 mPos.y = savedPos.y;
@@ -1236,7 +1236,7 @@ void ShadowLink2_804A43E8::move_0x98() {
             break;
         default:
             if (fn_8022461C(&mPos, mLayer_0x4) == 0 && fn_80226850(&mPos, mLayer_0x4) != 0xAD) {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0xAD);
+                gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0xAD);
                 startSound_801F0E34(0x3008A, 0);
             }
             break;

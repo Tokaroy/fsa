@@ -81,7 +81,7 @@ inline void SeesawLift_804AD348::checkContactBox(s32 p) {
 }
 
 inline void SeesawLift_804AD348::pushPlayer(s32 p) {
-    if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !fn_8022F514(p)) {
+    if (fn_8023F264(p) && field_0x246[p] != 0 && !fn_8022D75C(p) && !fn_80230188(p) && !hasPlayerLeader_8022F514(p)) {
         f32 sinVal = JMath::sincosTable_.sinShort(field_0x230);
         f32 push = 1.8f * (sinVal * JGeometry::TUtilf::abs(sinVal));
         if (gGameRoot_8053AAF8->field_0x7e != 0 && getKind() >= 2) {
@@ -323,7 +323,7 @@ void SeesawLift_804AD348::fn_8035A210() {
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
             for (s32 q = 0; q < 4; q++) {
-                if (!fn_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
+                if (!hasPlayerLeader_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
                     fn_802314D8(q, JGeometry::TVec3f(0.0f, 0.0f, 10.0f));
                 }
             }
@@ -473,7 +473,7 @@ void SeesawLift_804AD348::fn_803597EC() {
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
             for (s32 q = 0; q < 4; q++) {
-                if (!fn_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
+                if (!hasPlayerLeader_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
                     fn_802314D8(q, JGeometry::TVec3f(0.0f, 0.0f, 10.0f));
                 }
             }
@@ -528,7 +528,7 @@ void SeesawLift_804AD348::fn_80358F98() {
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
             for (s32 q = 0; q < 4; q++) {
-                if (!fn_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
+                if (!hasPlayerLeader_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
                     fn_802314D8(q, JGeometry::TVec3f(0.0f, 0.0f, 10.0f));
                 }
             }
@@ -658,7 +658,7 @@ void SeesawLift_804AD348::fn_803584C0() {
     for (s32 p = 0; p < 4; p++) {
         if (field_0x24a[p] != 0) {
             for (s32 q = 0; q < 4; q++) {
-                if (!fn_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
+                if (!hasPlayerLeader_8022F514(q) && field_0x24a[q] == 0 && field_0x246[q] != 0 && field_0x24a[p] * field_0x246[q] < 0) {
                     fn_802314D8(q, JGeometry::TVec3f(0.0f, 0.0f, 10.0f));
                 }
             }
@@ -746,7 +746,7 @@ void SeesawLift_804AD348::pool_8054286C(s32 state) {
     field_0x258 = state;
     for (int row = 0; row < 6; row++) {
         for (int col = 0; col < 6; col++) {
-            gBgRewrite_8053AC98->fn_802A381C(&p, mLayer_0x4, lbl_80542868[state]);
+            gBgRewrite_8053AC98->writeTile_802A381C(&p, mLayer_0x4, lbl_80542868[state]);
             p.y += 16.0f;
         }
         p.y = base.y;

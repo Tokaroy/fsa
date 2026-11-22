@@ -139,7 +139,7 @@ void BlizzardBattle_8049E7F0::update() {
             JGeometry::TVec2<f32> p(player->x, player->y);
             p.x += 0.1f;
             p.y -= 0.1f;
-            fn_80238548(i, 1, &p, 1);
+            hitPlayerGroup_80238548(i, 1, &p, 1);
             lbl_80529DEC.field_0x239 |= (u8)(1 << i);
         }
         field_0x238++;

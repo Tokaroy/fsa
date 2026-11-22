@@ -206,7 +206,7 @@ void TingleTimeUpManager_804ACBF0::update() {
             lbl_8053AED0->fn_8043D67C(0x148, 0, 0);
             for (s32 i = 0; i < 4; i++) {
                 bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
-                if (takesPart == true && !fn_8022F514(i)) {
+                if (takesPart == true && !hasPlayerLeader_8022F514(i)) {
                     lbl_8053AED0->fn_8043D874(i, -300, 1);
                 }
             }

@@ -122,7 +122,7 @@ void Player_804A6F38::fn_802859C4() {
         mPos.z = 0.0f;
     }
     if (!fn_80275D9C()) {
-        if (fn_80240808()) {
+        if (hasLeader_80240808()) {
             if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
                 if (fn_80246F28() != 0.0f) {
                     fn_80251AEC(2);
@@ -218,7 +218,7 @@ void Player_804A6F38::fn_802857C8() {
 // leader moves; then the stick walk step at 1.5, the facing, the walk cycle, pick-ups, body frame.
 // The follow target (fn_8027FA08) is computed and not used.
 void Player_804A6F38::fn_80285690() {
-    if (!fn_80275D9C() && fn_80240808()) {
+    if (!fn_80275D9C() && hasLeader_80240808()) {
         JGeometry::TVec3f target;
         fn_8027FA08(&target);
         if (fn_8022C5EC(fn_80240644(), 0x40)) {
@@ -255,7 +255,7 @@ void Player_804A6F38::fn_8028538C() {
     if (target.z == 0.0f && mPos.z != 0.0f && !field_0x434) {
         mPos.z = 0.0f;
     }
-    if (fn_80240808() && field_0x1215) {
+    if (hasLeader_80240808() && field_0x1215) {
         mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_80240644());
         mPos = *getPlayerPos_8023E724(fn_80240644());
         return;
@@ -618,7 +618,7 @@ void Player_804A6F38::fn_8028434C() {
     if (mVel_0x344.z < 0.0f && mPos.z <= 0.0f) {
         mPos.z = 0.0f;
         mStateLocked_0x124d = 0;
-        if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << mPlayerNo_0x4)) && !fn_80240808()) {
+        if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << mPlayerNo_0x4)) && !hasLeader_80240808()) {
             fn_80251AEC(0);
         } else {
             fn_80251AEC(0xc);
@@ -747,9 +747,9 @@ void Player_804A6F38::fn_80283D2C() {
     if (mTransitionKind_0xcf4 != 0x24) {
         field_0xce8 = false;
         if (!field_0x43f) {
-            if (fn_802486A0() != 4 && !fn_80240808()) {
+            if (fn_802486A0() != 4 && !hasLeader_80240808()) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F3DC(i) == getIndex()) {
+                    if (getPlayerLeader_8022F3DC(i) == getIndex()) {
                         fn_802384BC(i);
                     }
                 }
@@ -792,7 +792,7 @@ void Player_804A6F38::fn_80283948() {
     if (field_0xce8 == true) {
         mLayer_0x3b4 = mDestLayer_0xce4;
         mPos = mDestPos_0xcd4;
-        if (mDestLayer_0xce4 == mDepartLayer_0xce0 || fn_80240808() || !fn_80303750(mPlayerNo_0x4)) {
+        if (mDestLayer_0xce4 == mDepartLayer_0xce0 || hasLeader_80240808() || !fn_80303750(mPlayerNo_0x4)) {
             mViewBox_0xbec->fn_8030BD3C(mPlayerNo_0x4);
             fn_80290E90();
             fn_80290D58();
@@ -939,7 +939,7 @@ void Player_804A6F38::fn_80282FE0() {
     if (fn_8024189C() <= 0 && fn_80251AEC(0x33)) {
         return;
     }
-    if (fn_80240808() && field_0x1215) {
+    if (hasLeader_80240808() && field_0x1215) {
         mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_80240644());
         mPos = *getPlayerPos_8023E724(fn_80240644());
         if (viewLayerFlag(mLayer_0x3b4)) {
@@ -981,7 +981,7 @@ void Player_804A6F38::fn_80282FE0() {
                 spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x15b, 0, 1, NULL, NULL, true, 1.0f);
                 spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x15c, -1, 0, NULL, NULL, true, 1.0f);
             }
-        } else if (!fn_8022B7C4(fn_8022EA0C(mPlayerNo_0x4))) {
+        } else if (!fn_8022B7C4(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4))) {
             if (field_0x42c == true) {
                 field_0x42c = false;
                 field_0xbe0 = 0;
@@ -1109,7 +1109,7 @@ void Player_804A6F38::fn_80282E6C() {
     if (mPrevState_0x1248 != 0x1b && mPrevState_0x1248 != 3 && mPrevState_0x1248 != 0x1d) {
         fn_8024F0E8(0x2003A);
     }
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         mFacing_0x3dc = mMoveDir_0x3e8 = fn_80230CFC(fn_80240644());
     }
     if (!field_0xbe8) {
@@ -1140,7 +1140,7 @@ void Player_804A6F38::fn_80282ACC() {
     if (fn_8024189C() <= 0 && fn_80251AEC(0x33)) {
         return;
     }
-    if (fn_80240808() && field_0x1215) {
+    if (hasLeader_80240808() && field_0x1215) {
         mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_80240644());
         mPos = *getPlayerPos_8023E724(fn_80240644());
         if (!viewLayerFlag(mLayer_0x3b4)) {
@@ -1817,7 +1817,7 @@ void Player_804A6F38::fn_802810E4() {
     if (field_0x1350 == NULL) {
         field_0x1350 = spawnEmitter_8013CC50(mLayer_0x3b4, &mPos, 0x28a, 0, 1, NULL, NULL, true, 1.0f);
     }
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         fn_8024E3D8();
     }
     field_0x46c = 300;
@@ -2002,7 +2002,7 @@ void Player_804A6F38::fn_802808E8(f32 speed) {
 // Update helper of state 0x4A (fn_80282FE0): fn_80280074's movement with lbl_8046BED8, a speed
 // read once, 0.18 added on counts 11-15, and while 0x430 runs only the decay to 0.
 void Player_804A6F38::fn_802804E0() {
-    bool follow = fn_80240808();
+    bool follow = hasLeader_80240808();
     if (fn_802486A0() == 4 && fn_80240888() == fn_80248778()) {
         follow = false;
     }
@@ -2089,7 +2089,7 @@ void Player_804A6F38::fn_802804E0() {
 // (stick held) or 0, and the dash counter 0x3FF (started by fn_80245238, sound 0x20039) shapes
 // it: kept to 9, 1 with 0x410 = -0.6 at 10, +0.25 to 15, then decays to 1.2, back to 0 after 33.
 void Player_804A6F38::fn_80280074() {
-    bool follow = fn_80240808();
+    bool follow = hasLeader_80240808();
     if (fn_802486A0() == 4 && fn_80240888() == fn_80248778()) {
         follow = false;
     }
@@ -2179,11 +2179,11 @@ void Player_804A6F38::fn_80280074() {
 // (0 a row along x, 1 a column along y, 2 a 2x2 square, 3 a diamond around the leader turned by
 // 0x11C0 or by both indices, 4 mPos, 5 the leader's history 12 frames per place back).
 void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
-    if (!fn_80240808() && field_0x1216) {
+    if (!hasLeader_80240808() && field_0x1216) {
         *out = mPosHistory_0x38[0];
         return;
     }
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         if (fn_8022DCD8(fn_80240644())) {
             *out = mPos;
             return;
@@ -2203,7 +2203,7 @@ void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
     } else {
         *out = mPos;
     }
-    if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(fn_80240644())) {
+    if (fn_802486A0() != 4 && hasLeader_80240808() && fn_8023EA28(fn_80240644())) {
         return;
     }
     if (field_0x1214) {
@@ -2220,7 +2220,7 @@ void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
                 out->y = center.y + 16.0f * JMath::sincosTable_.sinShort(mSpinAngle_0x11c0);
             }
             out->z = center.z;
-        } else if (fn_80240808()) {
+        } else if (hasLeader_80240808()) {
             switch (fn_80240644()) {
             case 0:
                 if (viewLayerFlag(mLayer_0x3b4)) {
@@ -2286,7 +2286,7 @@ void Player_804A6F38::fn_8027FA08(JGeometry::TVec3f* out) {
         }
         break;
     case 5:
-        if (fn_80240808()) {
+        if (hasLeader_80240808()) {
             out->set(*fn_8023E4E4(fn_80240644(), fn_80248778() * 12));
         } else {
             *out = *getPlayerPos_8023E724(mPlayerNo_0x4);
@@ -2324,7 +2324,7 @@ void Player_804A6F38::followStep() {
                 } else {
                     fn_80251AEC(0);
                 }
-            } else if (!fn_80240808()) {
+            } else if (!hasLeader_80240808()) {
                 fn_80251AEC(0);
             }
         }
@@ -2450,7 +2450,7 @@ void Player_804A6F38::fn_8027F1C8() {
         break;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i)) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
             fn_8022B860(i, 5);
         }
     }
@@ -2461,7 +2461,7 @@ void Player_804A6F38::fn_8027F1C8() {
 }
 
 void Player_804A6F38::fn_8027F16C() {
-    if (!fn_80240808() && !fn_80245FEC() && field_0x1201 != 1) {
+    if (!hasLeader_80240808() && !fn_80245FEC() && field_0x1201 != 1) {
         fn_802416FC(0x180);
     }
 }
@@ -2471,7 +2471,7 @@ void Player_804A6F38::fn_8027F16C() {
 // 32.0f constant (f2) and keeps the difference in f0 / -epsilon in f3; ours uses f1-f4. In the 0.0f test the
 // fcmpu operands are swapped (f1, f0 in the original).
 void Player_804A6F38::fn_8027EEB4() {
-    if ((!fn_80240808() || !fn_80234ECC(fn_80240644())) && fn_80250D30()) {
+    if ((!hasLeader_80240808() || !fn_80234ECC(fn_80240644())) && fn_80250D30()) {
         fn_80251AEC(13);
     } else if (mState_0x1240 != 3 && field_0xbf0->field_0xb7 != 0 && mKeptVel_0x368.isZero() &&
                field_0xbf0->field_0xa0 == 0) {
@@ -2534,7 +2534,7 @@ void Player_804A6F38::fn_8027EDDC() {
 // else from the pad directions (fn_80246B10: 1 left, 2 right, 4 down, 8 up; 4-7 are diagonals).
 void Player_804A6F38::fn_8027EB04() {
     if (!fn_80241230() && !fn_802412A4() && !field_0x1214) {
-        if (fn_802486A0() != 4 && fn_80240808() && fn_8022D75C(fn_80240644())) {
+        if (fn_802486A0() != 4 && hasLeader_80240808() && fn_8022D75C(fn_80240644())) {
             return;
         }
         if (fn_802486A0() == 3 && fn_80248970() >= 2) {
@@ -2549,7 +2549,7 @@ void Player_804A6F38::fn_8027EB04() {
             }
             return;
         }
-        if (fn_80240808() && fn_802486A0() != 5 && fn_802486A0() != 4) {
+        if (hasLeader_80240808() && fn_802486A0() != 5 && fn_802486A0() != 4) {
             mFacing_0x3dc = fn_80230CFC(fn_80240644());
             mMoveDir_0x3e8 = fn_80230B70(fn_80240644());
             return;

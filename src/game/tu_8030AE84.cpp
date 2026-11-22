@@ -155,7 +155,7 @@ void cls_804AA8D8::fn_8030B774() {
 }
 
 s32 cls_804AA8D8::fn_8030B570(s32* outA, s32* outB) {
-    s32 player = fn_8022EA0C(field_0x288);
+    s32 player = getRepresentativePlayer_8022EA0C(field_0x288);
     if (fn_80234950(player)) {
         player = field_0x2b4;
     }

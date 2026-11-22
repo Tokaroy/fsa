@@ -55,8 +55,8 @@ docs/RULES_CARD.md ("Source order and inlining").
   addresses each table on its own (an extern), and the tables lead `.data`
   ahead of the unit's jump tables. They are now defined in the preceding unit,
   tu_80457C08 (whose functions were all dead-stripped), and fn_80458744 and
-  fn_80458FF0 reach 100 %. tu_80457DFC needs a region around fn_80458744, not
-  the whole-file `off` (fn_80458FF0 inlines fn_80458408).
+  startBgm_80458FF0 reach 100 %. tu_80457DFC needs a region around fn_80458744, not
+  the whole-file `off` (startBgm_80458FF0 inlines fn_80458408).
 - tu_802684A4: the verifier's single region over fn_8026EB1C..fn_8026F54C also
   covers fn_8026EE60, which fn_8026F000-F54C inline in the original (they drop
   90 → 14.5 %). The switch uses two regions (fn_8026F54C..F000, and
@@ -125,8 +125,8 @@ under `-inline auto`). **E** = calls a small EARLIER callee out of line, where o
 
 | Unit | Function(s) | Type | Callee(s) / detail | Source |
 |---|---|---|---|---|
-| tu_8022AD64 | fn_8022B334, fn_8022CFE8, fn_8022D534, fn_8022E438, fn_8022EA0C, fn_802316C8, fn_80231A50, fn_80231DE4, fn_80237A80, fn_80238548, fn_8023885C, fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (16, unwritten) | L | fn_8022F514, fn_8023561C, getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_8023ED8C, fn_8023EA28, fn_80238A68 (35-87 instr) | progress/game__tu_8022AD64.md r11 |
-| tu_8022AD64 | fn_80232A0C (unwritten, 52.8 % draft) | E | fn_8022D75C, fn_8022F514, fn_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C out of line; header inlines normalize / operator- / TBox2::set out of line too | r12 |
+| tu_8022AD64 | fn_8022B334, fn_8022CFE8, fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50, fn_80231DE4, fn_80237A80, hitPlayerGroup_80238548, fn_8023885C, fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (16, unwritten) | L | hasPlayerLeader_8022F514, fn_8023561C, getPlayerPos_8023E724, getPlayerLayer_8023DE58, fn_8023ED8C, fn_8023EA28, fn_80238A68 (35-87 instr) | progress/game__tu_8022AD64.md r11 |
+| tu_8022AD64 | fn_80232A0C (unwritten, 52.8 % draft) | E | fn_8022D75C, hasPlayerLeader_8022F514, getPlayerLeader_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C out of line; header inlines normalize / operator- / TBox2::set out of line too | r12 |
 | tu_8022AD64 | fn_8023434C, fn_8023BEA8, fn_8023C36C (99.95), fn_80235B68 (96.5) | R | depth-limit call goes to fn_8023F264 / fn_8018A614 | r11 |
 | tu_803099FC | fn_80309A9C, fn_80309B74, fn_80309C4C, fn_80309D90 | L | getPlayerInputSlot_8030AAF4 + D48/D24/D6C; fn_80309F20, fn_80309FCC | progress, src FIXME |
 | tu_803944C8 | do_reset, fn_803A2F74 | L | setters fn_803A3070/30A4/30DC/30FC | progress (coordinator) |
@@ -213,7 +213,7 @@ taken):
 
 Consequence for (c): fn_8023F264 sits at its own source position between strong
 functions (fn_8023F1D4, fn_8023F2BC). It is not right after its first
-out-of-line referencer (fn_8022EA0C). So it is **not** a header inline's weak copy.
+out-of-line referencer (getRepresentativePlayer_8022EA0C). So it is **not** a header inline's weak copy.
 It is a plain function, and earlier functions inline it. Under `-inline auto` that
 is impossible. Under deferred it is the default behaviour.
 

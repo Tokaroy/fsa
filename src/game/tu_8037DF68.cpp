@@ -63,7 +63,7 @@ static inline bool checkSync(s32 window, u32 msg) {
         return true;
     }
     if (text[0] == 0x1A && text[2] == 2 && text[4] == 0x2F && lbl_8053AD78->field_0xed == 0 &&
-        gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(fn_8022EA0C(index)) >= 8) {
+        gGameRoot_8053AAF8->fn_80138A30() >= 2 && getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(index)) >= 8) {
         lbl_8053AD78->field_0xed = 1;
         lbl_8053AD78->field_0x110 = index;
         lbl_8053AD78->field_0xee = text[5];
@@ -254,7 +254,7 @@ static inline void syncOtherPlayers(s32 player, s32 serial, u16 flags) {
     for (s32 i = 0; i < 4; i++) {
         if (i != self && (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i))) {
             if (fn_8022CAF8(i) == 4) {
-                fn_8022FBB8(fn_8022EA0C(i), serial);
+                fn_8022FBB8(getRepresentativePlayer_8022EA0C(i), serial);
             } else {
                 fn_8022FBB8(i, serial);
             }
@@ -619,7 +619,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u16 flags) {
                     if (fn_80230188(i)) {
                         ready[i] = 1;
                         for (s32 j = 0; j < 4; j++) {
-                            if (fn_8022E438(i, j) && !fn_80230188(j)) {
+                            if (arePlayersInSameGroup_8022E438(i, j) && !fn_80230188(j)) {
                                 ready[i] = 0;
                             }
                         }
@@ -627,7 +627,7 @@ bool MessageManager_804AF070::fn_80389964(s32 exclude, u32 msg, u16 flags) {
                 } else if (fn_802300EC(i)) {
                     ready[i] = 1;
                     for (s32 j = 0; j < 4; j++) {
-                        if (fn_8022E438(i, j) && !fn_802300EC(j)) {
+                        if (arePlayersInSameGroup_8022E438(i, j) && !fn_802300EC(j)) {
                             ready[i] = 0;
                         }
                     }
@@ -654,7 +654,7 @@ void MessageManager_804AF070::fn_803895EC(s32 player, s32 arg, bool a, bool b) {
                 if (i == mapped) {
                     fn_8022FB1C(player, arg);
                 } else if (fn_8022CAF8(i) == 4) {
-                    fn_8022FB1C(fn_8022EA0C(i), arg);
+                    fn_8022FB1C(getRepresentativePlayer_8022EA0C(i), arg);
                 } else {
                     fn_8022FB1C(i, arg);
                 }
@@ -1087,7 +1087,7 @@ u16 fn_803846A4(s32 index) {
 // next message id (by a key or other holdable the player carries, a random draw, the player
 // count, the player's slot, a stage flag, a view bit...). Returns the message that has no command.
 u32 fn_80383EB0(s32 window, u32 msg) {
-    s32 player = fn_8022EA0C(window);
+    s32 player = getRepresentativePlayer_8022EA0C(window);
     bool listed = isGameModeSet();
     s32 slot;
     if (listed) {

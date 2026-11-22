@@ -164,7 +164,7 @@ void EscortBase_8049E0C8::update() {
     }
     JGeometry::TVec3f out;
     if (field_0x331) {
-        fn_801F2618(&out, false);
+        sweepMapBox_801F2618(&out, false);
     }
     JGeometry::TVec3f dir;
     dir.set(0.0f, 0.0f, 0.0f);
@@ -292,7 +292,7 @@ void EscortBase_8049E0C8::vfunc_0x98(s32 a, s32 b, f32 limit) {
     s32 dir;
     s32 who;
     f32 dist;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &who, a, b);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &who, a, b);
     if (dir >= 0 && !(dist > limit)) {
         fn_80122730(dir, true, true);
     }
@@ -415,7 +415,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
                 mDir_0x98 = dir;
                 if (dir + 5 != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir + 5, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -429,7 +429,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
             mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.fn_801D1F14(0.0f);
+                mAnim.setFrame_801D1F14(0.0f);
             }
         }
     }
@@ -438,7 +438,7 @@ void EscortBase_8049E0C8::vfunc_0x9C(s32 player, f32 arg2, f32 arg3, f32 arg4, f
 // FIXME(shotgun): 98.87 %, scheduling+regalloc; behaviour clean.
 void EscortBase_8049E0C8::fn_8012309C(u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player) {
     if (field_0x334) {
-        fn_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
+        findTargetPlayer_801EEC98(mSerial, outAngle, outDir, outDist, outPlayer, player, 2);
         field_0x334 = 0;
     } else {
         s32 who = player;
@@ -555,7 +555,7 @@ void EscortBase_8049E0C8::vfunc_0xB0(f32* x, f32* y, s32* player) {
     if (vfunc_0xC4()) {
         v = 16.0f;
     }
-    *player = fn_8022EA0C(*player);
+    *player = getRepresentativePlayer_8022EA0C(*player);
     *x = v;
     *y = 16.0f + v;
 }
@@ -567,7 +567,7 @@ static inline s32 findGroupMember(s32 target) {
     s32 i;
     s32 result = target;
     for (i = 0; i < 4; i++) {
-        if (fn_8022E438(i, target)) {
+        if (arePlayersInSameGroup_8022E438(i, target)) {
             result = i;
         }
     }
@@ -670,7 +670,7 @@ s32 EscortBase_8049E0C8::fn_8012285C() const {
     if (field_0x344 < 0 || field_0x344 >= 4) {
         return -1;
     }
-    return fn_8022EA0C(field_0x344);
+    return getRepresentativePlayer_8022EA0C(field_0x344);
 }
 
 bool EscortBase_8049E0C8::fn_80122834() {
@@ -716,7 +716,7 @@ void EscortBase_8049E0C8::fn_80122730(s32 anim, bool shifted, bool throttled) {
         }
         if (anim != mAnim.mAnim) {
             mAnim.startAnim_801D22DC(anim, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
     }
 }
@@ -754,7 +754,7 @@ void EscortBase_8049E0C8::fn_80122548() {
                 mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -836,7 +836,7 @@ void EscortBase_8049E0C8::fn_80122148() {
                 mDir_0x98 = dir;
                 if (dir != mAnim.mAnim) {
                     mAnim.startAnim_801D22DC(dir, 2, false);
-                    mAnim.fn_801D1F14(0.0f);
+                    mAnim.setFrame_801D1F14(0.0f);
                 }
             }
         }
@@ -959,7 +959,7 @@ bool EscortBase_8049E0C8::vfunc_0xC8(const JGeometry::TVec3f& vec, f32 speed) {
             mDir_0x98 = dir;
             if (dir != mAnim.mAnim) {
                 mAnim.startAnim_801D22DC(dir, 2, false);
-                mAnim.fn_801D1F14(0.0f);
+                mAnim.setFrame_801D1F14(0.0f);
             }
         }
     }

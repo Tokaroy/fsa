@@ -46,7 +46,7 @@ void Gibdo_804A3BF8::init() {
     field_0x250 = fn_801CD664(0x3D) + 0x3C;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A3BB8, 0x10);
+    mAnim.setKeyTables_801D2608(lbl_804A3BB8, 0x10);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
     mAnim.fn_801D1D60();
 }
@@ -208,7 +208,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
             s32 dir = fn_801CF1B0(true, 120.0f, 0.1f);
             if (dir == mDir_0x98) {
                 field_0x250 += 10;
-            } else if (fn_801D05F8(&mPos, 120.0f) < 0) {
+            } else if (findNearestPlayer_801D05F8(&mPos, 120.0f) < 0) {
                 mFlags |= 0x2000;
                 fn_801B9DD4(1);
             } else {
@@ -216,7 +216,7 @@ void Gibdo_804A3BF8::updateState_0x90(u8 mapHit) {
                 fn_801B9DD4(2);
             }
         } else if (mStateTimer >= field_0x250) {
-            if (fn_801D05F8(&mPos, 120.0f) < 0) {
+            if (findNearestPlayer_801D05F8(&mPos, 120.0f) < 0) {
                 fn_801B9DD4(1);
             } else {
                 bool turn = false;

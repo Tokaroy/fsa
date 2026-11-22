@@ -155,7 +155,7 @@ void Navi_804A6708::init() {
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
 
-    mAnim.fn_801D2608(lbl_8053A188, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A188, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
 
@@ -320,8 +320,8 @@ void Navi_804A6708::fn_8021DFAC(s32 newState) {
                     s32 v;
                     if (mFlags & 0x4000) {
                         v = 3;
-                    } else if (fn_8022F514(p)) {
-                        v = fn_80230CFC(fn_8022F3DC(p));
+                    } else if (hasPlayerLeader_8022F514(p)) {
+                        v = fn_80230CFC(getPlayerLeader_8022F3DC(p));
                     } else {
                         v = fn_801CD354(fn_801D0020(&mPos, p, false));
                     }
@@ -392,7 +392,7 @@ void Navi_804A6708::updateState_0x90(u8 mapHit) {
         }
         break;
     case 3: {
-        field_0x2b4 = fn_801D05F8(&mPos, field_0x2ad * 16.0f);
+        field_0x2b4 = findNearestPlayer_801D05F8(&mPos, field_0x2ad * 16.0f);
         if (field_0x2b4 < 0) {
             break;
         }

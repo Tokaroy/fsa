@@ -120,7 +120,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         if (field_0x25c == 0) {
             break;
         }
-        fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
         if (mKind == 3) {
             if (dir < 0 || dist > 32.0f) {
                 break;
@@ -128,7 +128,7 @@ void PrincessZeldaMotionObjectSpawner_804A375C::update() {
         } else {
             s32 count = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && i == fn_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
+                if (fn_8023F264(i) && i == getRepresentativePlayer_8022EA0C(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) &&
                     !fn_80230188(i) && !fn_8022DCD8(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
                     f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                     f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;

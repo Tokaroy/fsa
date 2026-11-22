@@ -39,7 +39,7 @@ void CaneOfSomariaBlock_804AA9F0::init() {
     field_0x254 = 0;
 
     s32 count = 0;
-    while (fn_801F2618(NULL, false)) {
+    while (sweepMapBox_801F2618(NULL, false)) {
         s32 dir = fn_80230CFC(field_0x110) ^ 1;
         count++;
         mPos.x += 2.0f * lbl_80471368[dir][0];
@@ -123,7 +123,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
             JGeometry::TVec3f saved = mPos;
             JGeometry::TVec3f step(lbl_80471368[dir][0], lbl_80471368[dir][1], lbl_80471368[dir][2]);
             mPos.add(step);
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 mPos = saved;
                 break;
             }
@@ -171,7 +171,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         if (!pool_80541738()) {
             break;
         }
-        if (!fn_801F2618(NULL, false)) {
+        if (!sweepMapBox_801F2618(NULL, false)) {
             field_0x238--;
             if (field_0x238 > 0) {
                 break;
@@ -213,7 +213,7 @@ void CaneOfSomariaBlock_804AA9F0::update() {
         } else {
             mVel_0x3c.z -= 0.8f;
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         if (mPos.z < 0.0f && mVel_0x3c.z < 0.0f) {
             if (!pool_80541738()) {
                 break;

@@ -320,11 +320,11 @@ void ResultScreen_804AF9A0::fn_803B6768() {
     mState_0x4c1 = 1;
     mStateTimer_0x440 = 128;
     if (lbl_80529DEC.mStage_0x118 == 7 && lbl_80529DEC.mLevel_0x11c == 3) {
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
     } else if (mMode_0x4c0 == 5) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100002F, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100002F, false, 0);
     } else {
-        gAudioMgr_8053AF80->fn_80458FF0(0x1000005, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x1000005, true, 0);
     }
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[0] = 0;
     gGameRoot2_8053AB10->field_0x20->mLayerVisible_0x235c[1] = 0;

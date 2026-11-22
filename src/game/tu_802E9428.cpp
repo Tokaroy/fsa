@@ -122,7 +122,7 @@ void UnknownENDM_804AA0FC::init() {
     field_0x270 = 300.0f;
     field_0x274 = 300.0f;
     field_0x278 = 0.0f;
-    gAudioMgr_8053AF80->fn_80458FF0(0x1000028, true, 0);
+    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000028, true, 0);
     field_0x234 = 0;
     field_0x231 = 0;
     field_0x29a = lbl_8053AF30->fn_8044B80C(field_0x294);

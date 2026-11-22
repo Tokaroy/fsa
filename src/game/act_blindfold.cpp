@@ -54,19 +54,19 @@ void Blindfold_804A8EF8::update() {
             bool takesPart = gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i);
             // Both branches are the same: the original has two full copies of the body (separate stack slots).
             if (takesPart == true) {
-                if (contains(box, *getPlayerPos_8023E724(fn_8022EA0C(i)))) {
+                if (contains(box, *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)))) {
                     covered = true;
                     break;
                 }
             } else {
-                if (contains(box, *getPlayerPos_8023E724(fn_8022EA0C(i)))) {
+                if (contains(box, *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)))) {
                     covered = true;
                     break;
                 }
             }
         }
     } else {
-        if (contains(box, *getPlayerPos_8023E724(fn_8022EA0C(0)))) {
+        if (contains(box, *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(0)))) {
             covered = true;
         }
     }

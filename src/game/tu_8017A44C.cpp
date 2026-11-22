@@ -8,7 +8,7 @@
 #include "game/ActorManager.h"
 #include "game/act/tu_8017A44C.h"
 
-// .rodata: the actor ids fn_8020D6AC skips, ended by 'NULL'.
+// .rodata: the actor ids containsPointOfOther_8020D6AC skips, ended by 'NULL'.
 static const u32 lbl_80466880[5] = {'TOMI', 'BMST', 'IPOT', 'IBBM', 'NULL'};
 
 // .data: the 3-entry-per-direction frame tables update() reads (index
@@ -65,13 +65,13 @@ void UnknownSWBM_804A1160::init() {
 
 // The tile codes as act_bombchu's isBlocked_0x4C (a != chain around the remaining tests).
 // FIXME: 98.97. Register allocation only, plus one move: the target keeps a second copy of
-// layer in r29 (mr r29, r28 before the fn_8020D6AC call) for the two later fn_80226850
+// layer in r29 (mr r29, r28 before the containsPointOfOther_8020D6AC call) for the two later fn_80226850
 // calls, as if they read it through another variable; ours reuses one register. this / pos
 // / layer also take r31 / r27 / r28 there, r29 / r28 / r27 here.
 bool UnknownSWBM_804A1160::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, lbl_80466880) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, lbl_80466880) == 1) {
         return true;
     }
 
@@ -154,7 +154,7 @@ void UnknownSWBM_804A1160::update() {
         }
     }
 
-    u8 moved = fn_801F2618(NULL, false);
+    u8 moved = sweepMapBox_801F2618(NULL, false);
     if (field_0x230 != 2 && (moved || fn_801F2B20(2))) {
         if (!moved) {
             mAlive = false;

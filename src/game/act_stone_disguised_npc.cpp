@@ -91,9 +91,9 @@ void NPCDisguisedAsAStone_804A8750::update() {
         mVel_0x3c.z -= 0.1f;
         mPos.add(mVel_0x3c);
         JGeometry::TVec3f savedPos(mPos);
-        if (fn_801F3D94(true) || fn_801F305C()) {
+        if (fn_801F3D94(true) || checkHits_801F305C()) {
             die_0x24();
-        } else if (fn_801F2618(NULL, false)) {
+        } else if (sweepMapBox_801F2618(NULL, false)) {
             mPos = savedPos;
             die_0x24();
         } else if (mPos.z < 0.0f) {

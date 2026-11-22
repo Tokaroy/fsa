@@ -135,9 +135,9 @@ void cls_804A4C58::init() {
 }
 
 // Vtable slot 0x54 (0x801DA0FC): EnemyBase's start hook; asks
-// gAudioMgr_8053AF80 for fn_80458F9C(60).
+// gAudioMgr_8053AF80 for stopBgm_80458F9C(60).
 void cls_804A4C58::onFirstUpdate_0x54() {
-    gAudioMgr_8053AF80->fn_80458F9C(60);
+    gAudioMgr_8053AF80->stopBgm_80458F9C(60);
 }
 
 // FIXME(shotgun): 99.98 %, reloc-name; behaviour drift.
@@ -438,7 +438,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
     case 3:
         if (mSeq2a8.field_0x14 & 1) {
             getActorManager_801F856C()->fn_801F6884();
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000004, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, true, 0);
             field_0x33a = fn_801CD664(0x1E1) + 0x258;
             fn_801D9C58(4);
         } else if (mStateTimer == 6) {
@@ -464,7 +464,7 @@ void cls_804A4C58::updateState_0x90(u8 mapHit) {
         if (field_0x33a == 0) {
             field_0x33a = fn_801CD664(0x1E1) + 0x258;
             bool ok = false;
-            if (fn_801D05F8(&mPos, 0.0f) >= 0 && fn_801DAC6C()->mCount < 30 && !(fn_801DAC6C()->field_0x84 & 1)) {
+            if (findNearestPlayer_801D05F8(&mPos, 0.0f) >= 0 && fn_801DAC6C()->mCount < 30 && !(fn_801DAC6C()->field_0x84 & 1)) {
                 ok = true;
             }
             if (ok) {

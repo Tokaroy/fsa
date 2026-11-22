@@ -127,7 +127,7 @@ void Bumper_804A0260::update() {
         }
     }
 
-    s32 touchPlayer = fn_801F285C(NULL, NULL, false, -1);
+    s32 touchPlayer = findOverlappingPlayer_801F285C(NULL, NULL, false, -1);
     s32 actorHit = getActorManager_801F856C()->fn_801F82CC(this, field_0x195, 32.0f);
     field_0xb0 = 0x42304;
 

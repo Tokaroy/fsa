@@ -11,7 +11,7 @@
 static s32 lbl_804A1808[16] = {0, 1, 0, 2, 3, 4, 3, 5, 6, 7, 8, 7, 10, 9, 11, 9};
 static s32 lbl_804A1848[16] = {4, 9, 4, 9, 4, 9, 4, 9, 9, 4, 9, 4, 9, 4, 9, 4};
 
-// The hit reaction update() runs after fn_801F3D94 or fn_801F305C reports a
+// The hit reaction update() runs after fn_801F3D94 or checkHits_801F305C reports a
 // hit; the original has this code twice (inlined at both checks).
 static inline void hitReaction(Pengator_804A1888* self) {
     self->field_0xbc = 2;
@@ -21,7 +21,7 @@ static inline void hitReaction(Pengator_804A1888* self) {
         self->mPos.z = 0.0f;
         self->mVel_0x3c.z = 0.0f;
     }
-    self->fn_801F2618(NULL, false);
+    self->sweepMapBox_801F2618(NULL, false);
 }
 
 // FIXME: 99.00 %, regalloc-only; behaviour clean.
@@ -86,7 +86,7 @@ void Pengator_804A1888::update() {
         hitReaction(this);
         return;
     }
-    if (fn_801F305C()) {
+    if (checkHits_801F305C()) {
         hitReaction(this);
         return;
     }
@@ -96,8 +96,8 @@ void Pengator_804A1888::update() {
     mPos += mVel_0x3c;
     fn_80212AC0()->fn_80212AF0(&mPos);
     fn_801F2B7C(-100, -1, 1);
-    fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, 0, 0);
-    u8 moved = fn_801F2618(NULL, false);
+    findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, 0, 0);
+    u8 moved = sweepMapBox_801F2618(NULL, false);
 
     box.addPos(pos);
     center.x = box.f.x + 0.5f * (box.i.x - box.f.x);

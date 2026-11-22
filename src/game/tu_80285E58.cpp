@@ -78,13 +78,13 @@ void Player_804A6F38::fn_802870C8() {
             field_0x123c = 0;
         }
 
-        if (fn_802486A0() != 4 && fn_80240808() && (!fn_8025F418() || fn_8022F478(mHeldPlayer_0xd70))) {
+        if (fn_802486A0() != 4 && hasLeader_80240808() && (!fn_8025F418() || fn_8022F478(mHeldPlayer_0xd70))) {
             if (fn_8022D75C(fn_80240644()) && !fn_80234ECC(fn_80240644()) && fn_8022D498(fn_80240644()) != 0xC &&
                 fn_8022D498(fn_80240644()) != 0xD && fn_8022D498(fn_80240644()) != 0x26) {
                 if (!fn_8024BBB0() &&
                     !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
                     if (mState_0x1240 == 8 || mState_0x1240 == 9 || mState_0x1240 == 10 || mState_0x1240 == 0x39) {
-                        if (fn_8022D75C(fn_8022EA0C(getIndex()))) {
+                        if (fn_8022D75C(getRepresentativePlayer_8022EA0C(getIndex()))) {
                             fn_80251AEC(0);
                         }
                     }
@@ -601,7 +601,7 @@ void Player_804A6F38::fn_802870C8() {
             // (s32) on the u8 flags: the original compares them with cmpwi (a plain u8 gives
             // cmplwi), as tu_8025EB18 fn_80263078 does for the cucco's 0x2A1.
             if (fn_80131D98() || (s32)lbl_8053ABA8 != 0 || (s32)lbl_8053ABF0 != 0) {
-                fn_80238548(getIndex(), 0x20, (const JGeometry::TVec2f*)&mPos, 0x12);
+                hitPlayerGroup_80238548(getIndex(), 0x20, (const JGeometry::TVec2f*)&mPos, 0x12);
             } else if (fn_8024189C() <= 0 && !fn_80270A8C()) {
                 fn_80251AEC(0x33);
             }
@@ -1031,7 +1031,7 @@ void Player_804A6F38::fn_802870C8() {
     fn_80286688();
     fn_80286B74();
     fn_8028676C();
-    if (fn_80240808() && field_0xcfe == true && fn_802486A0() != 4) {
+    if (hasLeader_80240808() && field_0xcfe == true && fn_802486A0() != 4) {
         field_0xcfe = false;
     }
     if (!fn_802413E8() && !fn_802DEBF8() && !fn_802DEBA0() && !gGameRoot_8053AAF8->field_0x7e && !fn_80240670() &&
@@ -1061,10 +1061,10 @@ void Player_804A6F38::fn_802870C8() {
     } else if (!fn_8024BBB0()) {
         if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
             fn_80265D8C();
-        } else if (fn_80240808() && fn_8022D75C(fn_80240644()) && fn_8022D498(fn_80240644()) != 0x27 &&
+        } else if (hasLeader_80240808() && fn_8022D75C(fn_80240644()) && fn_8022D498(fn_80240644()) != 0x27 &&
                    !fn_8022BC38(fn_80240644(), fn_8023E10C(fn_80240644()), fn_8023E214(fn_80240644()))) {
             mAlpha_0xca0 = 0;
-        } else if (fn_802486A0() != 4 && fn_80240808() && fn_8023EA28(fn_80240644()) &&
+        } else if (fn_802486A0() != 4 && hasLeader_80240808() && fn_8023EA28(fn_80240644()) &&
                    !fn_80236B50(fn_80240644()) && !fn_80270A8C()) {
             fn_80265D68();
         } else {
@@ -1133,7 +1133,7 @@ void Player_804A6F38::fn_802870C8() {
     }
 
     if (!field_0xce9) {
-        if (magnitude(mRespawnPos_0xcbc - mPos) > 10.0f && fn_80240808() && !fn_8022D75C(fn_80240644())) {
+        if (magnitude(mRespawnPos_0xcbc - mPos) > 10.0f && hasLeader_80240808() && !fn_8022D75C(fn_80240644())) {
             field_0xce9 = 1;
         }
     }
@@ -1150,7 +1150,7 @@ void Player_804A6F38::fn_80286E10() {
         return;
     }
     for (int i = 0; i < 4; i++) {
-        if (fn_8022E438(getIndex(), i)) {
+        if (arePlayersInSameGroup_8022E438(getIndex(), i)) {
             if (fn_80236B50(i)) {
                 return;
             }
@@ -1159,12 +1159,12 @@ void Player_804A6F38::fn_80286E10() {
             }
         }
     }
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         return;
     }
     s32 player = getIndex();
     if (fn_802486A0() == 4) {
-        player = fn_8022EA0C(getIndex());
+        player = getRepresentativePlayer_8022EA0C(getIndex());
     }
     if (fn_80230188(player)) {
         return;
@@ -1213,13 +1213,13 @@ void Player_804A6F38::fn_80286E10() {
     }
     if (fn_802486A0() == 4) {
         start = mGroupTurn_0x1224;
-        partner = fn_8022EA0C(getIndex());
+        partner = getRepresentativePlayer_8022EA0C(getIndex());
         do {
             mGroupTurn_0x1224++;
             if (mGroupTurn_0x1224 >= fn_80248970()) {
                 mGroupTurn_0x1224 = 0;
             }
-            other = fn_8022EA0C(getIndex());
+            other = getRepresentativePlayer_8022EA0C(getIndex());
             if (!fn_80234134(other) && !fn_8023EA28(other) &&
                 fn_8022BC38(other, getPlayerLayer_8023DE58(partner), getPlayerPos_8023E724(partner))) {
                 break;
@@ -1279,7 +1279,7 @@ void Player_804A6F38::fn_80286B74() {
 void Player_804A6F38::fn_8028676C() {
     JGeometry::TVec3f target;
     fn_8027FA08(&target);
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         if (field_0x1216) {
             field_0x1228++;
             if (fn_8025197C(true) || field_0x1228 > 180) {
@@ -1355,7 +1355,7 @@ void Player_804A6F38::fn_80286688() {
 // while it walks on the ground.
 void Player_804A6F38::fn_80285F44() {
     if (!fn_802413F0() || !fn_80241E28(field_0x3b8, &mLastPos_0x14) ||
-        (fn_80240808() && fn_80234E30(fn_80240644())) || fn_80270A8C()) {
+        (hasLeader_80240808() && fn_80234E30(fn_80240644())) || fn_80270A8C()) {
         field_0x448 = 4;
     } else if ((mPos.z <= 0.0f && mLastPos_0x14.z > 0.0f &&
                 (mState_0x1240 != 0x1F || !viewLayerFlag(getLayer()))) ||

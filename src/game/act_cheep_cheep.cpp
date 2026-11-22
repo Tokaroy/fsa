@@ -83,7 +83,7 @@ void CheepCheep_804A11B8::update() {
     hitVec.z = 0.0f;
     hitVec.y = 0.0f;
     hitVec.x = 0.0f;
-    u8 hit = fn_801F2618(&hitVec, false);
+    u8 hit = sweepMapBox_801F2618(&hitVec, false);
     if (field_0x258 == 1 && hitVec.y != 0.0f) {
         hit = 0;
     }
@@ -150,7 +150,7 @@ void CheepCheep_804A11B8::update() {
         }
         if (field_0x23c == 0) {
             s32 outDir;
-            fn_801EEC98(mSerial, NULL, &outDir, &outDist, &outPlayer, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, &outDir, &outDist, &outPlayer, 0, 0);
             if (outPlayer >= 0 && mDir_0x98 == outDir) {
                 if (field_0x258 == 0) {
                     if (outDist < 96.0f) {

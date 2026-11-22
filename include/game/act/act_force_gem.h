@@ -60,7 +60,7 @@ public:
     /* 0x281 */ u8 field_0x281;
     /* 0x282 */ u8 field_0x282;
     /* 0x283 */ u8 field_0x283;
-    /* 0x284 */ JGeometry::TVec3f field_0x284; // out-vector of fn_801F2618
+    /* 0x284 */ JGeometry::TVec3f field_0x284; // out-vector of sweepMapBox_801F2618
     /* 0x290 */ JGeometry::TVec3f field_0x290;
     /* 0x29C */ JGeometry::TVec3f field_0x29c;
 }; // Size: 0x2A8

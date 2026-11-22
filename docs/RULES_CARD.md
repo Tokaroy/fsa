@@ -417,7 +417,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   return `if (x > hi || x < lo) return;` (a switch gives `cmpwi hi+1; bge`).
 - Positions built on the stack as 8-byte objects (y stored with x, frame
   slots of 8): the callee takes `const JGeometry::TVec2f*`
-  (fn_80238548, fn_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
+  (hitPlayerGroup_80238548, fn_80226BC4 tile probes); build `TVec2f p(x, y)`, and TVec3f
   callers pass `(const JGeometry::TVec2f*)&mPos` with a one-line comment.
   Check the callee's body reads only +0/+4 first.
 - `cmpw` operands swapped against a call result (`cmpw r3, rN` in the
@@ -447,7 +447,7 @@ donor symbol, SDK header, string, `docs/names/actors.tsv`, EnemyParam.csv.
   (game/RotMatrix.h; scalar 0.0f angles become lfd doubles). tu_801A908C
   fn_801A90D4 and act_hardhat_beetle's draw: 99.0 %, regalloc only.
 - frsqrte + three double Newton steps + NaN/fpclassify tail: `std::sqrtf(x)`
-  (std/math.h). Not a counted match: act_sword_soldier fn_80154378 is 99.74 %,
+  (std/math.h). Not a counted match: act_sword_soldier sqrtf_80154378 is 99.74 %,
   instructions identical, only its .sdata2 relocations differ.
 - frsqrte, frsp, one Newton step (`x <= 0` returns x): JGeometry's
   `TUtilf::sqrt` / `inv_sqrt` via `TVec2f::length()`, `TVec3f::normalize()`

@@ -5,8 +5,8 @@
 
 #include "game/ActorBase.h"
 
-void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
-f32 fn_80154378(f32 x);
+void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
+f32 sqrtf_80154378(f32 x);
 
 class JPABaseEmitter;
 

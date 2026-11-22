@@ -38,7 +38,7 @@ void FrostareTail_804A4F90::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A150, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A150, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
     fn_801DAC6C()->fn_801DAF3C(mSerial);
@@ -110,9 +110,9 @@ u8 FrostareTail_804A4F90::checkHitByPlayer_0x5C() {
     if (mBox.getWidth() > 0.0f && mBox.getHeight() > 0.0f) {
         for (s32 i = 0; i < 4; i++) {
             s32 flag;
-            if (i == fn_801F285C(NULL, &flag, true, i)) {
+            if (i == findOverlappingPlayer_801F285C(NULL, &flag, true, i)) {
                 fn_8023B6CC(i);
-                if (fn_801F37AC(0, getPlayerPos_8023E724(i), 0, flag, i)) {
+                if (takeHit_801F37AC(0, getPlayerPos_8023E724(i), 0, flag, i)) {
                     hit = 1;
                     mHitCount++;
                     u8 upper = viewLayerFlag(mLayer_0x4);

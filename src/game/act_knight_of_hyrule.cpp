@@ -78,7 +78,7 @@ void KnightOfHyrule_804AABA8::update() {
     switch (mState) {
     case 0:
         if (getGameView_802D6A9C()->fn_802D800C(field_0x23c)) {
-            gAudioMgr_8053AF80->fn_80458F9C(60);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(60);
             mState = 1;
         } else {
             break;
@@ -98,7 +98,7 @@ void KnightOfHyrule_804AABA8::update() {
                 if (getPlayerLayer_8023DE58(i) != 0) {
                     fn_8022CA6C(i, 5, false);
                     fn_80230C6C(i);
-                    if (!fn_8022F514(i)) {
+                    if (!hasPlayerLeader_8022F514(i)) {
                         fn_802317F0(i, 0, getPlayerPos_8023E724(i), &pos, 0x1F);
                     }
                 } else if (fn_8023188C(i)) {
@@ -133,13 +133,13 @@ void KnightOfHyrule_804AABA8::update() {
         if (mTimer <= 0) {
             pos.set(field_0x25c);
             field_0x244 = lbl_804AAB98[field_0x234];
-            field_0x248 = fn_8022EA0C(field_0x244);
+            field_0x248 = getRepresentativePlayer_8022EA0C(field_0x244);
             pos.x += 24.0f;
             pos.y -= 8.0f;
             fn_80230498(field_0x244, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
             fn_80230BF4(field_0x244, 3);
             for (s32 i = 0; i < 4; i++) {
-                if (i != field_0x244 && fn_8022E438(i, field_0x244)) {
+                if (i != field_0x244 && arePlayersInSameGroup_8022E438(i, field_0x244)) {
                     pos.set(*getPlayerPos_8023E724(i));
                     pos.y += 32.0f;
                     fn_80230498(i, &pos, 0x3F, 0xFF, -0x80, -0x80, true);
@@ -360,7 +360,7 @@ void KnightOfHyrule_804AABA8::update() {
             lbl_8053AD70->fn_8037AD70(field_0x234);
             mState = 22;
             for (s32 i = 0; i < 4; i++) {
-                if (i != field_0x244 && fn_8022E438(i, field_0x244)) {
+                if (i != field_0x244 && arePlayersInSameGroup_8022E438(i, field_0x244)) {
                     fn_80230498(i, getPlayerPos_8023E724(field_0x244), 0x3F, 0xFF, -0x80, -0x80, true);
                 }
             }

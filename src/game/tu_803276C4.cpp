@@ -121,7 +121,7 @@ void OshinUnidentified_804AB528::update() {
 
     s32 blocked = 0;
     if (!fn_801F6758(&mPos, mLayer_0x4, -40.0f)) {
-        blocked = fn_801F2618(NULL, false);
+        blocked = sweepMapBox_801F2618(NULL, false);
     }
     field_0x238 = 0;
     fn_80239914(&worldBox, mLayer_0x4, mSerial);
@@ -143,7 +143,7 @@ void OshinUnidentified_804AB528::update() {
                         field_0x238 += fn_8022E970(i);
                     }
                     for (s32 j = 0; j < 4; j++) {
-                        if (field_0x254[j] == 0 && fn_8022CAF8(j) != 4 && i != j && fn_8022E438(i, j) == 1) {
+                        if (field_0x254[j] == 0 && fn_8022CAF8(j) != 4 && i != j && arePlayersInSameGroup_8022E438(i, j) == 1) {
                             field_0x254[j] = 1;
                         }
                     }

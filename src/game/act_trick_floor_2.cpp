@@ -201,7 +201,7 @@ void TrickFloor2_804AA628::update() {
     JGeometry::TBox2f box = mBox;
     box.addPos(p);
     s32 player = fn_8023AF14(&box, mLayer_0x4, false, 4.5f);
-    if (player >= 0 && fn_8022F514(player) == true && fn_8022F478(player) == player) {
+    if (player >= 0 && hasPlayerLeader_8022F514(player) == true && fn_8022F478(player) == player) {
         player = -1;
     }
     if (field_0x23c == 1 && player >= 0 && !fn_80234F68(player)) {

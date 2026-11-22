@@ -108,7 +108,7 @@ void cls_804A51E4::draw() {
         }
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, flags, "enemy_both2_sob.bin", frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, flags, "enemy_both2_sob.bin", frame, NULL);
     }
     if (mLayer_0x4 < 8) {
         void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_both2_sob.bin");

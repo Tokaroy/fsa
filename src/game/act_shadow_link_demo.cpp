@@ -217,7 +217,7 @@ void ShadowLinkCutscene_8049DB90::update() {
 static inline void drawShadowSob(ActorBase_804A5770* actor, const char* name, s32 frame,
                                  SpriteParams_801F5AE0* params, s32 flags) {
     if (actor->mSpriteParams.mMtx == NULL) {
-        fn_801EF830(actor->mLayer_0x4, &actor->mPos, params, flags, name, frame, NULL);
+        drawShadow_801EF830(actor->mLayer_0x4, &actor->mPos, params, flags, name, frame, NULL);
     }
 }
 

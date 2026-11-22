@@ -33,7 +33,7 @@ static const char* lbl_8053A24C = "GC4Sword_usa/AudioRes/Seqs/JaiSeqs.arc";
 static u32 lbl_8053A250 = 5;
 static u32 lbl_8053A254 = 0x14;
 static u32 lbl_8053A258 = 5; // the music / second sequence volume fade (fn_80458744)
-static u32 lbl_8053A25C = 0x5A; // the music fade-out when another is queued (fn_80458FF0)
+static u32 lbl_8053A25C = 0x5A; // the music fade-out when another is queued (startBgm_80458FF0)
 static f32 lbl_8053A260 = 1.3f; // fast tempo (fn_80458508 kind 1)
 static u32 lbl_8053A264 = 0x1E; // its frames
 static f32 lbl_8053A268 = 0.7f; // slow tempo (fn_80458508 kind 2)
@@ -573,7 +573,7 @@ void AudioMgr_8045A080::fn_80459274() {
 }
 
 // 0x80458FF0
-void AudioMgr_8045A080::fn_80458FF0(s32 id, bool restart, u8 flag) {
+void AudioMgr_8045A080::startBgm_80458FF0(s32 id, bool restart, u8 flag) {
     if (field_0x4 != 0) {
         return;
     }
@@ -634,7 +634,7 @@ void AudioMgr_8045A080::fn_80458FF0(s32 id, bool restart, u8 flag) {
 }
 
 // 0x80458F9C
-void AudioMgr_8045A080::fn_80458F9C(s32 frames) {
+void AudioMgr_8045A080::stopBgm_80458F9C(s32 frames) {
     if (field_0x80) {
         field_0x80->stop(frames);
     }

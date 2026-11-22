@@ -67,12 +67,12 @@ s32 ActorBase_804A5770::fn_801A6160() {
         }
         field_0xa4 = count - 1;
         result = 1;
-        if (fn_801F305C()) {
+        if (checkHits_801F305C()) {
             if (field_0xbc == 3) {
                 mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
             }
             result = 2;
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
         }
     }
     if (result > 1) {
@@ -329,7 +329,7 @@ s32 ActorBase_804A5770::fn_801A5400(const JGeometry::TBox2f* box, JGeometry::TVe
             if (kind == 1 || kind == 2 || kind == 5 || kind == 16) {
                 JGeometry::TVec3f from = mPos;
                 from -= arrow->mVel_0x3c;
-                fn_801F37AC(0, &from, 0, 3, -1);
+                takeHit_801F37AC(0, &from, 0, 3, -1);
                 if (field_0xbc == 3 || kind == 5) {
                     mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
                 }
@@ -518,7 +518,7 @@ s32 ActorBase_804A5770::fn_801A4D74(const JGeometry::TBox2f* box, JGeometry::TVe
                 }
             }
             mLife = life;
-            fn_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
+            takeHit_801F37AC(0, getPlayerPos_8023E724(player), 0, 4, -1);
             if (field_0xbc == 3) {
                 mVel_0x3c = JGeometry::TVec3f(0.0f, 0.0f, 0.0f);
             }
@@ -668,8 +668,8 @@ s32 ActorBase_804A5770::fn_801A4754(const JGeometry::TBox2f* box, JGeometry::TVe
         if (other != NULL) {
         s32 idx = field_0x94 - 1;
         s32 own = 0;
-        if (fn_8022F514(player)) {
-            if (idx == fn_8022F3DC(player)) {
+        if (hasPlayerLeader_8022F514(player)) {
+            if (idx == getPlayerLeader_8022F3DC(player)) {
                 own = 1;
             }
         } else if (idx == player) {
@@ -866,7 +866,7 @@ s32 ActorBase_804A5770::fn_801A41D8(const JGeometry::TBox2f* box, JGeometry::TVe
         if (result != 0 && (kind == 1 || kind == 2 || kind == 5)) {
             JGeometry::TVec3f from = mPos;
             from -= weapon->mVel_0x3c;
-            fn_801F37AC(0, &from, 3, 0, -1);
+            takeHit_801F37AC(0, &from, 3, 0, -1);
         }
     }
     return result;

@@ -81,8 +81,8 @@ void MapEdOverlay_804B1AE8::fn_804435B8() {
 void MapEdOverlay_804B1AE8::fn_804434B8() {
     mTimer++;
     mPtestmap->fn_80402B10(30, 0, 0.0f, (f32)lbl_8048FBA4[mKind]);
-    mPtestmap->fn_80402940(30, 0, 0.0f, (f32)lbl_8048FBB4[mKind]);
-    mPtestmap->fn_8040271C(30, 1.0f, lbl_8048FB88[mKind] / mPtestmap->field_0x18);
+    mPtestmap->animateMoveY_80402940(30, 0, 0.0f, (f32)lbl_8048FBB4[mKind]);
+    mPtestmap->animateScale_8040271C(30, 1.0f, lbl_8048FB88[mKind] / mPtestmap->field_0x18);
     if (mTimer >= 30) {
         mState = 2;
     }

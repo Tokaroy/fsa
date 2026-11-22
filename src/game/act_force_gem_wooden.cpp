@@ -207,7 +207,7 @@ void WoodenForceGem_804AB1F0::draw() {
         saved = mPos;
         mPos.y -= 1.0f;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 7, name, frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, name, frame, NULL);
         }
         mPos = saved;
     } else {

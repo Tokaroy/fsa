@@ -118,7 +118,7 @@ void ShootingGallery_804A2B18::init() {
 // own: its loop registers are handed out before the destructor's (docs/REGALLOC.md, rule 4).
 static inline void restorePlayerItems(ShootingGallery_804A2B18* self) {
     for (int i = 0; i < 4; i++) {
-        if (!fn_8022F514(i)) {
+        if (!hasPlayerLeader_8022F514(i)) {
             fn_802372F8(i, self->field_0x26c[i], self->field_0x27c[i]);
         }
     }
@@ -222,7 +222,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         if (fn_80388CAC(field_0x250, mSerial)) {
             fn_80230534(false);
             fn_801F0D20(0x3a);
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             fn_8022B194();
             mDir_0x98 = 2;
             field_0x24c = 0;
@@ -278,7 +278,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
             if (lbl_804C6330[slot] >= 10) {
                 lbl_8053ABB8[i] = 1;
             }
-            if (lbl_8053ABB8[i] == 1 || fn_8022F514(i)) {
+            if (lbl_8053ABB8[i] == 1 || hasPlayerLeader_8022F514(i)) {
                 doneCount++;
             }
         }
@@ -311,7 +311,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         if (field_0x258 == 0) {
             s32 halfCount = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (lbl_804C6330[i] >= 5 || fn_8022F514(i)) {
+                if (lbl_804C6330[i] >= 5 || hasPlayerLeader_8022F514(i)) {
                     halfCount++;
                 }
             }
@@ -402,7 +402,7 @@ void ShootingGallery_804A2B18::fn_8019F3AC() {
         if (fn_803865B8(field_0x2ac) && fn_80384C58(field_0x2ac, mSerial)) {
             getActorManager_801F856C()->fn_801F6884();
             for (int i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
+                if (!hasPlayerLeader_8022F514(i)) {
                     fn_802372F8(i, field_0x26c[i], field_0x27c[i]);
                 }
             }

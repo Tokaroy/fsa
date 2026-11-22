@@ -96,7 +96,7 @@ void TingleFirstAppearance_804AADD8::update() {
             field_0x230 = 1;
         }
         if (field_0x270 == 0) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000025, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000025, false, 0);
             field_0x270 = 1;
         }
         break;
@@ -283,7 +283,7 @@ void TingleFirstAppearance_804AADD8::selectNearestPlayer() {
     s32 bestPlayer = 0;
     f32 bestDist = 65536.0f;
     for (s32 i = 0; i < count; i++) {
-        s32 player = fn_8022EA0C(i);
+        s32 player = getRepresentativePlayer_8022EA0C(i);
         if (getPlayerLayer_8023DE58(player) == getField_0x4()) {
             const JGeometry::TVec3f* pPos = getPlayerPos_8023E724(player);
             f32 dx = mPos.x - pPos->x;

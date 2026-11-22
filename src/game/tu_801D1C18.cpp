@@ -72,7 +72,7 @@ SpriteAnim_801D267C::SpriteAnim_801D267C()
     : mTables(NULL), mTableCount(0), mAnim(-1), mLength(0), mCel(0), mMinCel(0x7FFFFFFF),
       mMaxCel(0x80000000), mKey(0), mHold(0) {}
 
-void SpriteAnim_801D267C::fn_801D2608(const s16** tables, s32 count) {
+void SpriteAnim_801D267C::setKeyTables_801D2608(const s16** tables, s32 count) {
     mTables = tables;
     mTableCount = count;
     for (s32 i = 0; i < mTableCount; i++) {
@@ -151,7 +151,7 @@ bool SpriteAnim_801D267C::fn_801D208C() {
     return result;
 }
 
-void SpriteAnim_801D267C::fn_801D1F14(f32 frame) {
+void SpriteAnim_801D267C::setFrame_801D1F14(f32 frame) {
     setFrameInline(frame);
 }
 

@@ -68,7 +68,7 @@ void FrostareChildFrosteye_804A4EE8::init() {
     }
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A148, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A148, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.mFrameCtrl.setRate(0.25f);
     mAnim.fn_801D1D60();
@@ -158,7 +158,7 @@ void FrostareChildFrosteye_804A4EE8::fn_801DB950(s32 state) {
         mAnim.mFrameCtrl.setRate(1.0f);
         field_0x2ac = 0;
         fn_801DB9CC();
-        mTargetPlayer = fn_801D05F8(&mSearchPos, mSearchRange);
+        mTargetPlayer = findNearestPlayer_801D05F8(&mSearchPos, mSearchRange);
         break;
     }
     mStateTimer = 0;
@@ -234,7 +234,7 @@ void FrostareChildFrosteye_804A4EE8::updateState_0x90(u8 mapHit) {
             }
             fn_801CD930(&mAngleSpeed, 0x200, step);
         }
-        s32 target = fn_801D05F8(&mSearchPos, mSearchRange);
+        s32 target = findNearestPlayer_801D05F8(&mSearchPos, mSearchRange);
         if (target == -1) {
             mTargetPlayer = -1;
             field_0x2ac = 0;
@@ -318,7 +318,7 @@ u8 FrostareChildFrosteye_804A4EE8::attackPlayers_0x68() {
                     } else {
                         pos = center;
                     }
-                    fn_80238548(player, mParamAtcp_0x114, &pos, 1);
+                    hitPlayerGroup_80238548(player, mParamAtcp_0x114, &pos, 1);
                 }
             }
         }

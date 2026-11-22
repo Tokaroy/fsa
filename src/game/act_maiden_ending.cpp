@@ -112,7 +112,7 @@ void MaidenEnding_804AD5B8::draw() {
         }
         s32 frame = field_0x250 + field_0x248;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }

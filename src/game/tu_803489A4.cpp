@@ -47,7 +47,7 @@ void BeeFormation_804AC7B8::update() {
     }
 
     if (field_0x230 != 0 && field_0x264 == 0) {
-        field_0x24c = fn_801F285C(NULL, NULL, true, -1);
+        field_0x24c = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (field_0x24c >= 0 && fn_802353AC(field_0x24c) == true) {
             field_0x264 = 1;
             field_0x240 = 10;
@@ -61,14 +61,14 @@ void BeeFormation_804AC7B8::update() {
 
     if (field_0x265 == 1) {
         const JGeometry::TVec3f* pos = getPlayerPos_8023E724(field_0x24c);
-        fn_801F37AC(fn_8023B6CC(field_0x24c), pos, 0, 1, -1);
+        takeHit_801F37AC(fn_8023B6CC(field_0x24c), pos, 0, 1, -1);
         s32 mgrSerial = field_0x250;
         if (mgrSerial >= 0) {
             BeeManager_804AC810* m = (BeeManager_804AC810*)getActorManager_801F856C()->findActorBySerial_801F666C(mgrSerial);
             if (m != NULL) {
                 s32 player = field_0x24c;
-                if (player >= 0 && fn_8022F514(player) == true) {
-                    m->field_0x27c = fn_8022F3DC(player);
+                if (player >= 0 && hasPlayerLeader_8022F514(player) == true) {
+                    m->field_0x27c = getPlayerLeader_8022F3DC(player);
                 } else {
                     m->field_0x27c = player;
                 }
@@ -155,7 +155,7 @@ void BeeFormation_804AC7B8::update() {
                         }
                         break;
                     case 4:
-                        field_0x268 = *getPlayerPos_8023E724(fn_8022EA0C(field_0x244));
+                        field_0x268 = *getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(field_0x244));
                         break;
                     case 5:
                         break;

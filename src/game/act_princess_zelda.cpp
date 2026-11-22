@@ -143,9 +143,9 @@ void PrincessZelda_8049CEE0::init() {
     field_0xb8 = 2;
     field_0x11e = 1;
     if (field_0x320 == 0) {
-        mSpriteAnim.fn_801D2608(lbl_8049CEA8, 14);
+        mSpriteAnim.setKeyTables_801D2608(lbl_8049CEA8, 14);
     } else {
-        mSpriteAnim.fn_801D2608(lbl_8049CE70, 14);
+        mSpriteAnim.setKeyTables_801D2608(lbl_8049CE70, 14);
     }
     mSpriteAnim.startAnim_801D22DC(2, 2, 0);
     pool_8053C3E0();
@@ -267,7 +267,7 @@ void PrincessZelda_8049CEE0::update() {
             s32 dir;
             f32 dist;
             s32 unk;
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &unk, 0, 1);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &unk, 0, 1);
             if (dir >= 0 && dist <= 64.0f) {
                 if (field_0x328 == 1) {
                     if (dir >= 0 && dir + 5 != mSpriteAnim.mAnim) {
@@ -280,7 +280,7 @@ void PrincessZelda_8049CEE0::update() {
             case 0: {
                 fn_8022FEB8(&box, mLayer_0x4, mSerial, true, false);
                 s32 player = fn_8022FD8C(mSerial);
-                if (player >= 0 && !fn_8022F514(player)) {
+                if (player >= 0 && !hasPlayerLeader_8022F514(player)) {
                     if (talk(player, 0x230, mSerial, mLayer_0x4, mPos, 0x28)) {
                         field_0x300 = player;
                         fn_801096C8(2);
@@ -361,7 +361,7 @@ void PrincessZelda_8049CEE0::update() {
         s32 dir = 0;
         f32 dist = 0.0f;
         s32 unk = 0;
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &unk, player, 2);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &unk, player, 2);
         stepSpeed(dist);
         mVel_0x3c.x = field_0x334 * JMath::sincosTable_.sinShort(angle);
         mVel_0x3c.y = field_0x334 * JMath::sincosTable_.cosShort(angle);
@@ -490,7 +490,7 @@ void PrincessZelda_8049CEE0::update() {
         if (!fn_8022C52C(field_0x300, 0x400)) {
             if (!checkTile(fn_8022461C(&mPos, mLayer_0x4))) {
                 JGeometry::TVec3f pos;
-                fn_801F2618(&pos, false);
+                sweepMapBox_801F2618(&pos, false);
             }
         }
     }
@@ -804,8 +804,8 @@ void PrincessZelda_8049CEE0::pool_8053C3E4() {
     spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33A, 0, 0, NULL, NULL, true, 1.0f);
 }
 
-// mSpriteAnim.fn_801D1F14(0.0f).
+// mSpriteAnim.setFrame_801D1F14(0.0f).
 // R2 pool helper (inlined at 5 call sites; one-statement body); was resetAnimFrame.
 void PrincessZelda_8049CEE0::pool_8053C3E0() {
-    mSpriteAnim.fn_801D1F14(0.0f);
+    mSpriteAnim.setFrame_801D1F14(0.0f);
 }

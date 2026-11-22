@@ -84,7 +84,7 @@ Hinox_8049F9B4::~Hinox_8049F9B4() {
         mPos.x = playerPos->x;
         mPos.y = playerPos->y;
         mPos.z = playerPos->z;
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
             dir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
             dir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
@@ -132,7 +132,7 @@ inline s32 Hinox_8049F9B4::releasePlayer() {
         f32 y = mPos.y;
         f32 z = mPos.z;
         mPos.set(*getPlayerPos_8023E724(field_0x254));
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             f32 angle = JMath::atanTable_.atan2_(x - mPos.x, y - mPos.y) * 10430.378f;
             releaseDir.x = 3.0f * JMath::sincosTable_.sinShort((s16)(s32)angle);
             releaseDir.y = 3.0f * JMath::sincosTable_.cosShort((s16)(s32)angle);
@@ -178,11 +178,11 @@ void Hinox_8049F9B4::update() {
         dead = false;
     }
     if (fn_801F3D94(dead) != 0 && mLife <= 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
-    fn_801EEC98(mSerial, NULL, &playerDir, &playerDist, &field_0x268, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, NULL, &playerDir, &playerDist, &field_0x268, 0, 0);
 
     savedVel.set(mVel_0x3c);
     s32 hitSerial = field_0x9c;
@@ -213,7 +213,7 @@ void Hinox_8049F9B4::update() {
                 mState = 1;
             }
         }
-        fn_801F285C(NULL, NULL, true, -1);
+        findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (mState == 7) {
             s32 serial = field_0x250;
             if (serial >= 0) {
@@ -271,7 +271,7 @@ void Hinox_8049F9B4::update() {
         }
     }
 
-    u8 hitWall = fn_801F2618(NULL, false);
+    u8 hitWall = sweepMapBox_801F2618(NULL, false);
 
     switch (mState) {
     case 0:
@@ -363,7 +363,7 @@ void Hinox_8049F9B4::update() {
         field_0x270 = 0.0f;
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
-        fn_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, NULL, field_0x268, 2);
+        findTargetPlayer_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, NULL, field_0x268, 2);
         if (playerDir == -1) {
             hitWall = 1;
         } else {
@@ -416,7 +416,7 @@ void Hinox_8049F9B4::update() {
         field_0x270 = 0.0f;
         mVel_0x3c.x = 0.0f;
         mVel_0x3c.y = 0.0f;
-        fn_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, &field_0x268, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &field_0x26c, &playerDir, &playerDist, &field_0x268, 0, 0);
         mState = 7;
         // fallthrough
     case 7:
@@ -592,7 +592,7 @@ void Hinox_8049F9B4::update() {
                     JGeometry::TVec3f savedPos;
                     savedPos.set(mPos);
                     mPos.set(*getPlayerPos_8023E724(field_0x254));
-                    if (fn_801F2618(NULL, false)) {
+                    if (sweepMapBox_801F2618(NULL, false)) {
                         checkDir.zero();
                     }
                     mPos.set(savedPos);

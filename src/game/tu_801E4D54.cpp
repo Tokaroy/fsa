@@ -45,9 +45,9 @@ void VaatiBoss_804A4958::fn_801E5BA8(const ActorBase_804A5770* actor, const JGeo
                 field_0x308[i].field_0x5 = 1;
                 return;
             } else {
-                s32 player = fn_801D05F8(&mPos, 160.0f);
+                s32 player = findNearestPlayer_801D05F8(&mPos, 160.0f);
                 if (player >= 0 && field_0x2a8[player].field_0x0 == 0) {
-                    s32 angle = fn_801D0280(player);
+                    s32 angle = getAngleToPlayer_801D0280(player);
                     v.x = JMath::sincosTable_.mTable[static_cast<u16>(angle) >> 5].first;
                     v.y = JMath::sincosTable_.mTable[static_cast<u16>(angle) >> 5].second;
                 } else {
@@ -151,10 +151,10 @@ void VaatiBoss_804A4958::fn_801E5754() {
                 bool hit = false;
                 if (!(mFlags & 0x4000)) {
                     started = true;
-                    hit = fn_80238548(i, 0, &v, 0x19);
+                    hit = hitPlayerGroup_80238548(i, 0, &v, 0x19);
                 } else if (sum.z > field_0x464.field_0xc.field_0x8) {
                     queued = true;
-                    hit = fn_80238548(i, mParamAtcp_0x114, &v, 0x17);
+                    hit = hitPlayerGroup_80238548(i, mParamAtcp_0x114, &v, 0x17);
                 }
                 if (started || queued) {
                     fn_80230224(i, false);

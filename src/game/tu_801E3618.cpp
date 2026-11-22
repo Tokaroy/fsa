@@ -163,7 +163,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
             if (bomb != NULL && bomb->mActorId == 'HBMB' && bomb->field_0x94 == 1) {
                 JGeometry::TVec3f d(mPos);
                 d.sub(bomb->mVel_0x3c);
-                result = fn_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
+                result = takeHit_801F37AC(0, &d, 2, bomb->field_0x168, bomb->field_0x110);
                 if (result) {
                     bomb->field_0x164 = 1;
                     mKnockbackKind_0xf8 = 0;
@@ -192,7 +192,7 @@ u8 VaatiBoss_804A4958::fn_801E4094() {
 
 // vtable slot 0x5C. The bomb/player hit test: a player on the boss's layer that is inside its
 // area (and below its head) turns it towards that player; otherwise each player that hit it
-// this frame is run through fn_801F37AC.
+// this frame is run through takeHit_801F37AC.
 // FIXME(shotgun): 99.32 %, missing/extra; behaviour near.
 u8 VaatiBoss_804A4958::fn_801E3B2C() {
     u8 result = 0;
@@ -252,8 +252,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
         }
         if (fn_801CD2F8(mLayer_0x4)) {
             for (s32 i = 0; i < 4; i++) {
-                if (i == fn_801F285C(NULL, &type, true, i)) {
-                    if (fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
+                if (i == findOverlappingPlayer_801F285C(NULL, &type, true, i)) {
+                    if (takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         result = 1;
                         if (fn_80235448(i)) {
                             mFlags |= 0x10000;
@@ -280,8 +280,8 @@ u8 VaatiBoss_804A4958::fn_801E3B2C() {
             }
             if (mState != 9) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (i == fn_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
-                        fn_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
+                    if (i == findOverlappingPlayer_801F285C(NULL, &type, true, i) && fn_80235448(i) &&
+                        takeHit_801F37AC(fn_8023B6CC(i), getPlayerPos_8023E724(i), 2, type, i)) {
                         mFlags |= 0x10000;
                         mKnockbackKind_0xf8 = 0;
                         mVel_0x3c.set(0.0f, 0.0f, 0.0f);

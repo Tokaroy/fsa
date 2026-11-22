@@ -106,7 +106,7 @@ void RedBlueSwitch_804A9020::update() {
 
     case 2:
         if (player >= 0 || fn_801F2DB4('HBMB', 'NULL', NULL)) {
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, 0xAE);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, 0xAE);
             gGameRoot2_8053AB10->field_0x20->fn_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x240, 0, 0x5C0, 0x40);
             gGameRoot2_8053AB10->field_0x20->fn_802FA160(
@@ -130,7 +130,7 @@ void RedBlueSwitch_804A9020::update() {
             }
             field_0x244 = 60;
         } else if (getGameView_802D6A9C()->field_0x171 == 1) {
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, player, mLayer_0x4, 0xAE);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, player, mLayer_0x4, 0xAE);
             JGeometry::TVec3f p9(mPos.x + 8.0f, mPos.y + 8.0f, mPos.z);
             mEmitter238 = spawnEmitter_8013CC50(mLayer_0x4, &p9, 0x42D, 1, 0, NULL, NULL, true, 1.0f);
             JGeometry::TVec3f p10(mPos.x + 8.0f, mPos.y + 8.0f, mPos.z);

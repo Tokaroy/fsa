@@ -54,12 +54,12 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
         addCalc2_801F71A4(&field_0x254, 1.0f, 10.0f, 0.0f);
         mEmitter26c->setGlobalAlpha((s32)field_0x254);
     }
-    if (fn_801F3D94(1) != 0 || fn_801F305C()) {
+    if (fn_801F3D94(1) != 0 || checkHits_801F305C()) {
         if (mEmitter26c != NULL) {
             mEmitter26c->becomeInvalidEmitter();
             mEmitter26c = NULL;
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     if (field_0x234 > 0) {
@@ -89,7 +89,7 @@ void MojamojaUnidentifiedEnemy_804A0668::update() {
             field_0x230 = 3;
         } else {
             fn_801F2B7C(-100, -1, 1);
-            hitWall = fn_801F2618(NULL, false);
+            hitWall = sweepMapBox_801F2618(NULL, false);
         }
     }
     switch (field_0x230) {

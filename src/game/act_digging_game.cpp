@@ -148,7 +148,7 @@ void DiggingGameKeeper_8049C970::update() {
                 fn_802372F8(i, 9, 2);
             }
             for (s32 j = 0; j < 4; j++) {
-                if (!fn_8022F514(j)) {
+                if (!hasPlayerLeader_8022F514(j)) {
                     fn_8023619C(j, -100);
                     field_0x274[j] = fn_80236100(j);
                 }
@@ -182,7 +182,7 @@ void DiggingGameKeeper_8049C970::update() {
             fn_8022B148();
             fn_801F0D20(0x3a);
             field_0x248 = gAudioMgr_8053AF80->field_0x58;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             getGameView_802D6A9C()->fn_802D8050(field_0x24c, true, 0xff);
         }
         break;
@@ -234,7 +234,7 @@ void DiggingGameKeeper_8049C970::update() {
         s32 maxDiff = -10000;
         for (s32 i = 0; i < 4; i++) {
             score[i] = 0;
-            if (!fn_8022F514(i)) {
+            if (!hasPlayerLeader_8022F514(i)) {
                 score[i] = fn_80236100(i) - field_0x274[i];
                 if (score[i] > maxDiff) {
                     maxDiff = score[i];
@@ -242,13 +242,13 @@ void DiggingGameKeeper_8049C970::update() {
             }
         }
         for (s32 j = 0; j < 4; j++) {
-            if (!fn_8022F514(j)) {
+            if (!hasPlayerLeader_8022F514(j)) {
                 if (maxDiff != score[j]) {
                     fn_802372F8(j, field_0x254[j], field_0x264[j]);
                 }
             }
         }
-        gAudioMgr_8053AF80->fn_80458FF0(field_0x248, true, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(field_0x248, true, 0);
         break;
     }
     case 7: {

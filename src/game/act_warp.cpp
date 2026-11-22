@@ -478,7 +478,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
         if (kind == 0x10) {
             return;
         }
-        if (fn_8022F514(player)) {
+        if (hasPlayerLeader_8022F514(player)) {
             kind = mSpawnParam_0x90 & 0x7F;
             if (kind == 0 || (u32)(kind - 1) <= 2 || kind == 0x17 || kind == 0x18) {
                 if (fn_8023B0F4(player, box, mLayer_0x4, false, 8.0f)) {
@@ -529,7 +529,7 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             if (!fn_802317F0(player, warpLayer(mSpawnParam_0x90), &mPos, &field_0x238, warpKind(mSpawnParam_0x90))) {
                 continue;
             }
-            if (warpKind(mSpawnParam_0x90) != 4 || !fn_8022F514(player)) {
+            if (warpKind(mSpawnParam_0x90) != 4 || !hasPlayerLeader_8022F514(player)) {
                 continue;
             }
             s32 layer = getPlayerLayer_8023DE58(player);
@@ -539,11 +539,11 @@ void Warp_804A6DC8::fn_802278A8(JGeometry::TBox2f* box) {
             if (fn_8022CAF8(player) == 4 || fn_8022CAF8(player) == 5) {
                 continue;
             }
-            if (!fn_8022BC38(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player))) {
+            if (!fn_8022BC38(getPlayerLeader_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player))) {
                 continue;
             }
-            fn_802381B8(fn_8022F3DC(player));
-            fn_802348C4(fn_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player));
+            fn_802381B8(getPlayerLeader_8022F3DC(player));
+            fn_802348C4(getPlayerLeader_8022F3DC(player), getPlayerLayer_8023DE58(player), getPlayerPos_8023E724(player));
         } else {
             box->set(box->i.x - 1.0f, box->i.y - 1.0f, box->f.x + 1.0f, box->f.y + 1.0f);
             if (!fn_8023B0F4(player, box, mLayer_0x4, false, 0.0f)) {
@@ -574,8 +574,8 @@ void Warp_804A6DC8::fn_80227530(JGeometry::TBox2f* box) {
             if (fn_802373EC(player) == 1 && fn_8023725C(player) >= 2 && fn_8023513C(player)) {
                 continue;
             }
-            if (fn_8022F514(player) && fn_8022CAF8(player) != 4) {
-                s32 leader = fn_8022F3DC(player);
+            if (hasPlayerLeader_8022F514(player) && fn_8022CAF8(player) != 4) {
+                s32 leader = getPlayerLeader_8022F3DC(player);
                 if (fn_802373EC(leader) == 1 && fn_8023725C(leader) >= 2 && fn_8023513C(leader)) {
                     continue;
                 }

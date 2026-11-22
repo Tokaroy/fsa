@@ -114,8 +114,8 @@ static inline bool isOutsideBox(const JGeometry::TVec3f* pos, const JGeometry::T
 // FIXME(shotgun): 92.43 %, missing/extra; behaviour clean.
 void UnknownBOME_804A0738::update() {
     s32 target = mSpawnParam_0x90;
-    if (fn_8022F478(mSpawnParam_0x90) == 1 && fn_8022F514(mSpawnParam_0x90) == 1) {
-        target = fn_8022F3DC(mSpawnParam_0x90);
+    if (fn_8022F478(mSpawnParam_0x90) == 1 && hasPlayerLeader_8022F514(mSpawnParam_0x90) == 1) {
+        target = getPlayerLeader_8022F3DC(mSpawnParam_0x90);
     }
     if (field_0x23c == 0) {
         if (std::fabsf(mVel_0x3c.x - field_0x364.x) > 0.01f) {
@@ -357,8 +357,8 @@ bool UnknownBOME_804A0738::fn_80168C38() {
     box.f.y += 4.0f;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
-            if (!fn_8022E438(i, mSpawnParam_0x90) ||
-                (fn_8022E438(i, mSpawnParam_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
+            if (!arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) ||
+                (arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) == 1 && i != getField_0x90() && fn_80235580(i) == 1)) {
                 if (fn_8023B0F4(i, &box, mLayer_0x4, false, 0.0f)) {
                     found = i;
                 }
@@ -368,11 +368,11 @@ bool UnknownBOME_804A0738::fn_80168C38() {
     if (found >= 0) {
         if (fn_8022CAF8(found) != 4) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022E438(i, found) == 1) {
+                if (arePlayersInSameGroup_8022E438(i, found) == 1) {
                     field_0x261 = 1;
                     fn_8022E23C(i, mSerial);
                     fn_8022CC20(i);
-                    if (fn_8022F514(i) == 1) {
+                    if (hasPlayerLeader_8022F514(i) == 1) {
                         JGeometry::TVec3f d = mPos;
                         d -= *getPlayerPos_8023E724(i);
                         fn_8023DFF4(i, &d);

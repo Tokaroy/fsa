@@ -299,10 +299,10 @@ bool fn_801CD228(s32 layer) {
     return result;
 }
 
-// Whether `player` has no owner (fn_8022F514 is false) and fn_80303750 says yes.
+// Whether `player` has no owner (hasPlayerLeader_8022F514 is false) and fn_80303750 says yes.
 bool fn_801CD1D0(s32 player) {
     bool result = false;
-    if (!fn_8022F514(player)) {
+    if (!hasPlayerLeader_8022F514(player)) {
         if (fn_80303750(player)) {
             result = true;
         }
@@ -360,11 +360,11 @@ bool fn_801CCF7C() {
 }
 
 // fn_80236228 for the player that `player` stands for: the one
-// fn_8022F3DC names while fn_8022F514 says it has one, else itself.
+// getPlayerLeader_8022F3DC names while hasPlayerLeader_8022F514 says it has one, else itself.
 s32 fn_801CCF34(s32 player) {
     s32 target = player;
-    if (fn_8022F514(player)) {
-        target = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        target = getPlayerLeader_8022F3DC(player);
     }
     return fn_80236228(target);
 }
@@ -373,7 +373,7 @@ s32 fn_801CCE3C(const JGeometry::TVec3f* pos, s32 layer) {
     s32 best = -1;
     f32 bestDist = FLT_MAX;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && layer == getPlayerLayer_8023DE58(i) && !fn_8022F514(i)) {
+        if (fn_8023F264(i) && layer == getPlayerLayer_8023DE58(i) && !hasPlayerLeader_8022F514(i)) {
             f32 d = square(getPlayerPos_8023E724(i)->x - pos->x) +
                     square(getPlayerPos_8023E724(i)->y - pos->y);
             if (d < bestDist) {

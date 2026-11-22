@@ -39,7 +39,7 @@ void cls_804A4C58::fn_801E61C4() {
 }
 
 void cls_804A4C58::draw() {
-    void* res = fn_804032E8('ICEB', mSeq2a8.fn_801DA938());
+    void* res = getBossArchiveResource_804032E8('ICEB', mSeq2a8.fn_801DA938());
     if (res != NULL) {
         SpriteParams_801F5AE0 params;
         Mtx mtx;

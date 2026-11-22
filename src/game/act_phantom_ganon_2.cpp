@@ -79,12 +79,12 @@ void fn_80154718(const JGeometry::TVec3f* pos);
 void fn_801546BC(JGeometry::TVec3f* v);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
 void fn_80154558(JGeometry::TVec2f* a, const JGeometry::TVec2f* b);
-void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
+void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
 void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src);
-s32 fn_8015465C(f32 y, f32 x);
-f32 fn_801544FC(s16 angle);
-f32 fn_801544E4(s16 angle);
-f32 fn_80154378(f32 x);
+s32 atan2Short_8015465C(f32 y, f32 x);
+f32 sinShort_801544FC(s16 angle);
+f32 cosShort_801544E4(s16 angle);
+f32 sqrtf_80154378(f32 x);
 f32 fn_8015436C(f32 x);
 ActorBase_804A5770* fn_8015445C(s32 serial);
 s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
@@ -116,7 +116,7 @@ void fn_8018A6A0(JGeometry::TVec2f* v, f32 x, f32 y) {
 }
 
 // Out-of-line copy of TVec3<f32>::set(const TVec3&).
-void fn_8018A684(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
+void copyVec3_8018A684(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
@@ -357,7 +357,7 @@ PhantomGanon2_804A1A98::~PhantomGanon2_804A1A98() {
 }
 
 u16 PhantomGanon2_804A1A98::fn_80189DEC() {
-    s32 player = fn_8022EA0C(field_0x94);
+    s32 player = getRepresentativePlayer_8022EA0C(field_0x94);
     if (player < 0) {
         player = 0;
     }
@@ -368,7 +368,7 @@ u16 PhantomGanon2_804A1A98::fn_80189DEC() {
         s32 pick = (s32)(3.99f * gGameRoot_8053AAF8->mRandom.get_ufloat_1());
         for (i = 0; i < 4; i++) {
             if (pick != player && fn_8023F264(pick) && getField_0x4() == getPlayerLayer_8023DE58(pick) &&
-                pick == fn_8022EA0C(pick) && !fn_80230188(pick) && !fn_80236B50(pick) &&
+                pick == getRepresentativePlayer_8022EA0C(pick) && !fn_80230188(pick) && !fn_80236B50(pick) &&
                 !fn_8022DCD8(pick))
             {
                 field_0x94 = pick;
@@ -397,7 +397,7 @@ void PhantomGanon2_804A1A98::update() {
     f32 outDist;
     s32 hitPlayer = -1;
     u16 outAngle = 0;
-    fn_8018A684(&pos60, &mPos);
+    copyVec3_8018A684(&pos60, &mPos);
     pos60.y -= 40.0f;
     if (mSpawnParam_0x90 == 0) {
         mLife = 10000;
@@ -476,7 +476,7 @@ void PhantomGanon2_804A1A98::update() {
             break;
         }
         if (lbl_80539FBC == 0) {
-            fn_8018A6AC()->fn_80458F9C(60);
+            fn_8018A6AC()->stopBgm_80458F9C(60);
         }
         fn_8022ADE4();
         field_0x280 = 2.0f;
@@ -489,7 +489,7 @@ void PhantomGanon2_804A1A98::update() {
         field_0x230 = 1;
         // fall through
     case 1:
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         pos60.y -= 40.0f;
         if (lbl_80539FBC == 0) {
             fn_8017EB44(&pos60);
@@ -513,7 +513,7 @@ void PhantomGanon2_804A1A98::update() {
         // fall through
     case 2:
         if (lbl_80539FBC == 0) {
-            fn_8018A684(&pos60, &mPos);
+            copyVec3_8018A684(&pos60, &mPos);
             pos60.y -= 40.0f;
             fn_8017EB44(&pos60);
             fn_8017EB1C(0.05f);
@@ -522,7 +522,7 @@ void PhantomGanon2_804A1A98::update() {
                 break;
             }
         } else {
-            fn_8018A684(&pos60, &mPos);
+            copyVec3_8018A684(&pos60, &mPos);
             pos60.y -= 40.0f;
             fn_8017EC70(&pos60, 1.0f);
         }
@@ -532,7 +532,7 @@ void PhantomGanon2_804A1A98::update() {
         field_0x230 = 3;
         // fall through
     case 3:
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         pos60.y -= 40.0f;
         fn_8017EB44(&pos60);
         fn_8017EB1C(0.05f);
@@ -542,7 +542,7 @@ void PhantomGanon2_804A1A98::update() {
         if (field_0x2c8.x >= 0.99f && field_0x290 >= 254.0f) {
             JGeometry::TVec3f vec1C;
             fn_8018A5B8(&vec1C, 1.0f, 1.0f, 1.0f);
-            fn_8018A684(&field_0x2c8, &vec1C);
+            copyVec3_8018A684(&field_0x2c8, &vec1C);
             field_0x290 = 255.0f;
             field_0x250 = 0;
             field_0x238 = 1;
@@ -557,7 +557,7 @@ void PhantomGanon2_804A1A98::update() {
         }
         break;
     case 4:
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         pos60.y -= 40.0f;
         fn_8017EB44(&pos60);
         fn_8017EB1C(0.05f);
@@ -568,8 +568,8 @@ void PhantomGanon2_804A1A98::update() {
                     PhantomGanon2_804A1A98* child = (PhantomGanon2_804A1A98*)fn_8015445C(ser);
                     if (child != NULL && child->fn_8018A5B0() == true) {
                         lbl_8053AB7C++;
-                        fn_8018A684(&child->field_0x2e0, &field_0x2e0);
-                        fn_8018A684(&child->field_0x2bc, &field_0x2bc);
+                        copyVec3_8018A684(&child->field_0x2e0, &field_0x2e0);
+                        copyVec3_8018A684(&child->field_0x2bc, &field_0x2bc);
                         child->field_0x260 = field_0x260;
                         if (fn_8018A614(i)) {
                             lbl_8053AB78++;
@@ -599,7 +599,7 @@ void PhantomGanon2_804A1A98::update() {
         // fall through
     case 6:
         if (mSpawnParam_0x90 == 0) {
-            fn_8018A684(&pos60, &mPos);
+            copyVec3_8018A684(&pos60, &mPos);
             pos60.x = field_0x2bc.x - 8.0f;
             pos60.y -= 40.0f;
             fn_8017EB44(&pos60);
@@ -635,7 +635,7 @@ void PhantomGanon2_804A1A98::update() {
                 }
             } else if (field_0x238 == 1) {
                 if (lbl_80539FBC == 0) {
-                    fn_8018A6AC()->fn_80458FF0(0x1000004, false, 0);
+                    fn_8018A6AC()->startBgm_80458FF0(0x1000004, false, 0);
                 }
                 lbl_80539FBC = 1;
                 field_0x230 = 7;
@@ -697,17 +697,17 @@ void PhantomGanon2_804A1A98::update() {
             f32 dy = field_0x2bc.y - mPos.y;
             if (mPos.z >= 40.0f) {
                 s16 rndAngle = (s32)(8192.0f - 16384.0f * fn_80154744());
-                s16 angle = fn_8015465C(dx, dy) + rndAngle;
+                s16 angle = atan2Short_8015465C(dx, dy) + rndAngle;
                 if (field_0x250 != 0) {
-                    angle = fn_8015465C(dx, dy);
+                    angle = atan2Short_8015465C(dx, dy);
                 }
                 if (field_0x23c == 0) {
-                    field_0x2b0.x = 2.0f * fn_801544FC(angle);
-                    field_0x2b0.y = 2.0f * fn_801544E4(angle);
+                    field_0x2b0.x = 2.0f * sinShort_801544FC(angle);
+                    field_0x2b0.y = 2.0f * cosShort_801544E4(angle);
                     field_0x23c = (s32)(50.0f + 50.0f * fn_80154744());
                 }
             }
-            if (fn_80154378(dx * dx + dy * dy) > 64.0f) {
+            if (sqrtf_80154378(dx * dx + dy * dy) > 64.0f) {
                 if (field_0x250 == 0) {
                     fn_801546BC(&field_0x2b0);
                     field_0x250 = 1;
@@ -717,7 +717,7 @@ void PhantomGanon2_804A1A98::update() {
             }
         }
         if (field_0x248 == 0) {
-            fn_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
             if (outDir >= 0 && outDist < 50.0f) {
                 field_0x230 = 17;
             }
@@ -804,7 +804,7 @@ void PhantomGanon2_804A1A98::update() {
         }
     case 12:
         {
-            fn_8018A684(&pos60, &mPos);
+            copyVec3_8018A684(&pos60, &mPos);
             u32 ballArg = 10;
             pos60.x -= 20.0f;
             pos60.y -= 110.0f;
@@ -840,8 +840,8 @@ void PhantomGanon2_804A1A98::update() {
                     fn_801546D0(&oldPos, &mPos);
                     startSound_801F0E34(0x40043, 0);
                     fn_801546BC(&vec54);
-                    fn_8018A684(&mPos, ball->fn_801544DC());
-                    if (field_0x27c != field_0x94 && field_0x27c != fn_8022F3DC(field_0x94) && field_0x94 != fn_8022F3DC(field_0x27c)) {
+                    copyVec3_8018A684(&mPos, ball->fn_801544DC());
+                    if (field_0x27c != field_0x94 && field_0x27c != getPlayerLeader_8022F3DC(field_0x94) && field_0x94 != getPlayerLeader_8022F3DC(field_0x27c)) {
                         field_0x94 = field_0x27c;
                     }
                     if (field_0x258 >= 0) {
@@ -850,8 +850,8 @@ void PhantomGanon2_804A1A98::update() {
                     } else {
                         field_0x258 = (s32)(1.99f * fn_80154744());
                     }
-                    fn_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, field_0x94, 2);
-                    fn_8018A684(&mPos, &oldPos);
+                    findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, field_0x94, 2);
+                    copyVec3_8018A684(&mPos, &oldPos);
                     if (field_0x258 != 0) {
                         outAngle -= field_0x2ec;
                     } else {
@@ -860,8 +860,8 @@ void PhantomGanon2_804A1A98::update() {
                     field_0x258 = (field_0x258 + 1) & 1;
                     field_0x2ec = 0x800;
                     fn_801546BC(&vec54);
-                    vec54.x = field_0x28c * fn_801544FC(outAngle);
-                    vec54.y = field_0x28c * fn_801544E4(outAngle);
+                    vec54.x = field_0x28c * sinShort_801544FC(outAngle);
+                    vec54.y = field_0x28c * cosShort_801544E4(outAngle);
                     ball->field_0x2ef = 0;
                     ball->fn_8018A5A8(field_0x94);
                     ball->fn_8017EAF8(vec54);
@@ -893,7 +893,7 @@ void PhantomGanon2_804A1A98::update() {
         }
         // fall through
     case 16:
-        fn_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, &outDist, NULL, 0, 0);
         if (outDir >= 0 && outDist < 50.0f) {
             field_0x230 = 17;
             break;
@@ -932,7 +932,7 @@ void PhantomGanon2_804A1A98::update() {
         lbl_804C17A8[1] = 0;
         lbl_804C17A8[2] = 0;
         lbl_804C17A8[3] = 0;
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         if (mEmitter314 != NULL) {
             fn_8017EAB4(mEmitter314);
             mEmitter314 = NULL;
@@ -951,7 +951,7 @@ void PhantomGanon2_804A1A98::update() {
         field_0x230 = 21;
         // fall through
     case 21:
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         pos60.y -= 16.0f;
         fn_8017EC70(&pos60, 1.0f);
         if (field_0x234 == 0) {
@@ -976,7 +976,7 @@ void PhantomGanon2_804A1A98::update() {
         fn_801546BC(&mVel_0x3c);
         field_0x26c = 0;
         field_0x234 += 30;
-        fn_8018A684(&pos60, &mPos);
+        copyVec3_8018A684(&pos60, &mPos);
         pos60.x -= 20.0f;
         pos60.y -= 70.0f;
         spawnEmitter_8013CC50(mLayer_0x4, &pos60, 0xCB, 1, 5, NULL, NULL, true, 2.0f);
@@ -987,16 +987,16 @@ void PhantomGanon2_804A1A98::update() {
     case 18:
         if (field_0x234 == 0) {
             field_0x278 = 1;
-            fn_80154590(&mBox, -16.0f, -8.0f, 64.0f, 56.0f);
+            setBox_80154590(&mBox, -16.0f, -8.0f, 64.0f, 56.0f);
             if (field_0x26c == 0) {
                 startSound_801F0E34(0x40043, 0);
-                fn_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, 0, 0);
+                findTargetPlayer_801EEC98(fn_801545E8(), &outAngle, &outDir, NULL, NULL, 0, 0);
                 if (outDir < 0) {
                     field_0x230 = 8;
                     break;
                 }
-                mVel_0x3c.x = 13.0f * fn_801544FC(outAngle);
-                mVel_0x3c.y = 13.0f * fn_801544E4(outAngle);
+                mVel_0x3c.x = 13.0f * sinShort_801544FC(outAngle);
+                mVel_0x3c.y = 13.0f * cosShort_801544E4(outAngle);
             }
             field_0x26c++;
             field_0x234 = lbl_804A19A8[field_0x26c];
@@ -1006,11 +1006,11 @@ void PhantomGanon2_804A1A98::update() {
             }
         }
         if (field_0x278 == 1) {
-            fn_8018A684(&pos60, &mPos);
+            copyVec3_8018A684(&pos60, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
             fn_801F2B7C(fn_80154510(), -1, 6);
-            fn_8018A684(&mPos, &pos60);
+            copyVec3_8018A684(&mPos, &pos60);
         }
         break;
     case 19:
@@ -1025,7 +1025,7 @@ void PhantomGanon2_804A1A98::update() {
                 field_0x234 = lbl_804A19A8[field_0x26c];
             } else {
                 field_0x26c = 0;
-                fn_80154590(&mBox, -16.0f, -8.0f, 16.0f, 40.0f);
+                setBox_80154590(&mBox, -16.0f, -8.0f, 16.0f, 40.0f);
                 field_0x26c = 0;
                 field_0x234 = lbl_804A19BC[field_0x26c];
                 field_0x28c = 3.0f;
@@ -1077,8 +1077,8 @@ void PhantomGanon2_804A1A98::update() {
         addCalc2_801F71A4(&field_0x2c8.y, 5.0f, 0.3f, 3.0f);
         addCalc2_801F71A4(&field_0x2c8.x, 0.0f, 0.3f, 0.1f);
         if (field_0x2c8.x < 0.1f) {
-            fn_8018A684(&mPos, &field_0x2e0);
-            fn_8018A684(&field_0x2d4, &mPos);
+            copyVec3_8018A684(&mPos, &field_0x2e0);
+            copyVec3_8018A684(&field_0x2d4, &mPos);
             field_0x290 = 0.0f;
             field_0x230 = 0;
         }
@@ -1135,7 +1135,7 @@ void PhantomGanon2_804A1A98::update() {
                         }
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1A00[field_0x94 * 2], 1, 2, NULL, NULL, true, 1.0f);
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_804A1A00[field_0x94 * 2 + 1], 1, 2, NULL, NULL, true, 1.0f);
-                        s32 baseAngle = (u16)fn_8015465C(250.0f - mPos.x, 200.0f - mPos.y) + 0xD000;
+                        s32 baseAngle = (u16)atan2Short_8015465C(250.0f - mPos.x, 200.0f - mPos.y) + 0xD000;
                         fn_801546BC(&vec54);
                         for (s32 i = 0; i < 7; i++) {
                             s32 sparkSer = fn_80154310('FGN2', fn_8015461C(), &mPos, 12, -1, -1);
@@ -1145,8 +1145,8 @@ void PhantomGanon2_804A1A98::update() {
                                 if (spark != NULL) {
                                     spark->fn_8018A5A8(field_0x94);
                                     s16 a = (s16)baseAngle;
-                                    vec54.x = 5.0f * fn_801544FC(a);
-                                    vec54.y = 5.0f * fn_801544E4(a);
+                                    vec54.x = 5.0f * sinShort_801544FC(a);
+                                    vec54.y = 5.0f * cosShort_801544E4(a);
                                     spark->fn_8017EAF8(vec54);
                                 }
                             }
@@ -1161,8 +1161,8 @@ void PhantomGanon2_804A1A98::update() {
                     }
                 }
                 if (destroyed == 0) {
-                    hitPlayer = fn_801F285C(NULL, NULL, true, -1);
-                    if (hitPlayer >= 0 && (field_0x94 == hitPlayer || field_0x94 == fn_8022F3DC(hitPlayer) || hitPlayer == fn_8022F3DC(field_0x94))) {
+                    hitPlayer = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
+                    if (hitPlayer >= 0 && (field_0x94 == hitPlayer || field_0x94 == getPlayerLeader_8022F3DC(hitPlayer) || hitPlayer == getPlayerLeader_8022F3DC(field_0x94))) {
                         if (mSpawnParam_0x90 == 10) {
                             PhantomGanon2_804A1A98* parent = (PhantomGanon2_804A1A98*)fn_8015445C(field_0x274);
                             if (parent != NULL) {
@@ -1177,11 +1177,11 @@ void PhantomGanon2_804A1A98::update() {
                                 f32 dx = parent->fn_801544DC()->x - mPos.x;
                                 f32 zOff = 8.0f + parent->fn_801544DC()->z;
                                 f32 dy = (parent->fn_801544DC()->y - zOff) - mPos.y;
-                                outAngle = fn_8015465C(dx, dy);
+                                outAngle = atan2Short_8015465C(dx, dy);
                                 fn_80230FD0(hitPlayer, 0x20038);
                                 spawnEmitter_8013CC50(mLayer_0x4, &mPos, lbl_80539FC0[field_0x94], 1, 2, NULL, NULL, true, 1.0f);
-                                mVel_0x3c.x = parent->field_0x28c * fn_801544FC(outAngle);
-                                mVel_0x3c.y = parent->field_0x28c * fn_801544E4(outAngle);
+                                mVel_0x3c.x = parent->field_0x28c * sinShort_801544FC(outAngle);
+                                mVel_0x3c.y = parent->field_0x28c * cosShort_801544E4(outAngle);
                                 field_0x2ef = 1;
                                 field_0x238 = 30;
                                 field_0x23c = 100;
@@ -1309,7 +1309,7 @@ void PhantomGanon2_804A1A98::update() {
         break;
     }
     if (field_0x230 == 9 || field_0x230 == 16 || field_0x230 == 23) {
-        field_0x288 = 40.0f + 4.0f * fn_801544E4((s16)field_0x24c);
+        field_0x288 = 40.0f + 4.0f * cosShort_801544E4((s16)field_0x24c);
         field_0x24c += 0x300;
     }
     if (field_0x264 != 0) {
@@ -1338,8 +1338,8 @@ void PhantomGanon2_804A1A98::update() {
             ActorBase_804A5770* hitAct = fn_8015445C(hitSer);
             if (hitAct != NULL) {
                 if (field_0x94 == hitAct->fn_8018A590() ||
-                    field_0x94 == fn_8022F3DC(hitAct->fn_8018A590()) ||
-                    hitAct->fn_8018A590() == fn_8022F3DC(field_0x94))
+                    field_0x94 == getPlayerLeader_8022F3DC(hitAct->fn_8018A590()) ||
+                    hitAct->fn_8018A590() == getPlayerLeader_8022F3DC(field_0x94))
                 {
                     if (hitAct->fn_801544C8() == 10 && field_0x230 != 18 && field_0x230 != 19) {
                         PhantomGanon2_804A1A98* ball = (PhantomGanon2_804A1A98*)hitAct;
@@ -1367,7 +1367,7 @@ void PhantomGanon2_804A1A98::update() {
                                     field_0x94 = 0;
                                     field_0x27c = field_0x94;
                                     field_0x270 = lbl_80539FB8;
-                                    fn_8018A684(&field_0x2d4, &mPos);
+                                    copyVec3_8018A684(&field_0x2d4, &mPos);
                                     startSound_801F0E34(0x40044, 0);
                                     field_0x230 = 20;
                                 } else {
@@ -1405,19 +1405,19 @@ void PhantomGanon2_804A1A98::draw() {
         void* res;
         switch (field_0x278) {
         case 0:
-            res = fn_804032E8('FGAN', lbl_804A1A10[field_0x26c]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1A10[field_0x26c]);
             break;
         case 1:
-            res = fn_804032E8('FGAN', lbl_804A1A50[field_0x26c]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1A50[field_0x26c]);
             scaleX = lbl_804A1A28[field_0x26c][0];
             scaleY = lbl_804A1A28[field_0x26c][1];
             break;
         case 2:
-            res = fn_804032E8('FGAN', lbl_804A1A64[field_0x26c]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1A64[field_0x26c]);
             scaleY = -21.0f;
             break;
         case 3:
-            res = fn_804032E8('FGAN', lbl_804A1A84[field_0x26c]);
+            res = getBossArchiveResource_804032E8('FGAN', lbl_804A1A84[field_0x26c]);
             break;
         }
         params.field_0x1c = 0;

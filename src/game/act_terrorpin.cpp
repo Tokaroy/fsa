@@ -12,7 +12,7 @@
 // pool is complete only once checkHitByPlayer_0x5C and updateState_0x90 are 100 %).
 
 // The two animations' keys (cel pairs for 10 frames each, then -1) and the
-// table the init hands to SpriteAnim::fn_801D2608 (names unknown).
+// table the init hands to SpriteAnim::setKeyTables_801D2608 (names unknown).
 static const s16 lbl_80469180[6] = {0, 10, 1, 10, -1, -1};
 static const s16 lbl_8046918C[6] = {2, 10, 3, 10, -1, -1};
 static const s16* lbl_8053A120[2] = {lbl_80469180, lbl_8046918C};
@@ -126,7 +126,7 @@ void Terrorpin_804A3B10::init() {
     field_0x250 = fn_801CD664(16) + 30;
     mSpeed = 0.35f;
     mTargetSpeed = 0.35f;
-    mAnim.fn_801D2608(lbl_8053A120, 2);
+    mAnim.setKeyTables_801D2608(lbl_8053A120, 2);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
 }
@@ -417,7 +417,7 @@ u8 Terrorpin_804A3B10::checkHitByPlayer_0x5C() {
         if (mFlags & 0x2000) {
             fn_801CEBD0();
         } else if (0 == mState) {
-            s32 player = fn_801F285C(NULL, NULL, true, -1);
+            s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
             if (player >= 0) {
                 fn_801B91A8(5);
                 JGeometry::TVec2f dir;

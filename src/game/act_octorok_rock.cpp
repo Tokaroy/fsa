@@ -56,7 +56,7 @@ void OctorokRock_8049F5D8::init() {
 bool OctorokRock_8049F5D8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos) {
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL)) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL)) {
         return true;
     }
     s32 tile = fn_8022461C(pos, layer);
@@ -102,7 +102,7 @@ void OctorokRock_8049F5D8::update() {
                 mAlive = false;
                 break;
             }
-            blocked = fn_801F2618(NULL, false);
+            blocked = sweepMapBox_801F2618(NULL, false);
         }
         if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3) {
             facing = -1;

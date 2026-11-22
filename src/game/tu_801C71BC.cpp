@@ -537,13 +537,13 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     bool nearFlag = fn_801C53C4();
     if (!(mFlags & 0x2000000) && !nearFlag && field_0x55c[1] == 0) {
-        if (fn_801D05F8(&mPos, field_0x5a8) < 0) {
+        if (findNearestPlayer_801D05F8(&mPos, field_0x5a8) < 0) {
             fn_801C3B7C(0xF);
             return;
         }
     }
     if (!(mFlags & 0x2000000) && !nearFlag && field_0x598 == 0) {
-        if (fn_801D05F8(&mPos, 60.0f) >= 0) {
+        if (findNearestPlayer_801D05F8(&mPos, 60.0f) >= 0) {
             fn_801C3B7C(0x1B);
             return;
         }
@@ -639,9 +639,9 @@ void ShadowLink2_804A43E8::fn_801C7370(u8 flag) {
     }
     if (mStateTimer % 30 == 0 && !nearFlag) {
         bool doReset = false;
-        s32 player = fn_801D05F8(&mPos, 100.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 100.0f);
         if (player >= 0) {
-            s16 pAngle = fn_801D0280(player);
+            s16 pAngle = getAngleToPlayer_801D0280(player);
             f32 diff = __fabsf((f32)(s16)(field_0x33c - pAngle));
             if (0.000030517578f * diff <= 0.3f) {
                 doReset = true;

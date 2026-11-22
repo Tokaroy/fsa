@@ -241,7 +241,7 @@ void ActorManager_804A5800::fn_801F871C() {
                 s32 serial = actor->mSerial;
                 s32 layer = actor->mLayer_0x4;
                 CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-                if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, &actor->mPos, serial, NULL)) {
+                if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, &actor->mPos, serial, NULL)) {
                     mActors[i]->die_0x24();
                 }
             }

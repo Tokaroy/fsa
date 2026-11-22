@@ -59,7 +59,7 @@ void OpeningNarration_8049E500::update() {
     switch (field_0x230) {
     case 0:
         if (fn_8011921C()->field_0x0 == 0) {
-            gAudioMgr_8053AF80->fn_80458F9C(60);
+            gAudioMgr_8053AF80->stopBgm_80458F9C(60);
             fn_8011921C()->fn_801186B0(12);
         }
         break;
@@ -160,7 +160,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         fn_80119DD0()->field_0x1 = 1;
         break;
     case 1:
-        gAudioMgr_8053AF80->fn_80458FF0(0x100002C, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100002C, false, 0);
         fn_8011921C()->fn_80118454();
         fn_80119DD0()->field_0x1 = 0;
         break;
@@ -169,7 +169,7 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         fn_80119DD0()->field_0x1 = 0;
         break;
     case 4: {
-        gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
         fn_80119DD0()->field_0x1 = 0;
         GameView_804A9950* view = getGameView_802D6A9C();
         JGeometry::TBox2f box = view->mVisibleBox;
@@ -197,12 +197,12 @@ void OpeningNarration_8049E500::fn_80128728(int state) {
         break;
     }
     case 6:
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001D, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001D, false, 0);
         getActorManager_801F856C()->spawnActor_801F9484('SEV2', mLayer_0x4, &mPos, 0x2000, -1, -1);
         break;
     case 8:
         fn_80119DD0()->fn_80119998(0x10E, 0, 2, 0, 0, 0x3C, 0);
-        gAudioMgr_8053AF80->fn_80458F9C(0x96);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(0x96);
         break;
     case 9: {
         s32 serial = getActorManager_801F856C()->fn_801F7A08('SEV2');

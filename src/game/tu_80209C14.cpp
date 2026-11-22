@@ -50,7 +50,7 @@ void SlimeFormation_804A5D60::init() {
     field_0x194 = 1;
     mTargetSerial = mSpawnParam_0x90;
     SlimeManager_804A5BD8* manager = static_cast<SlimeManager_804A5BD8*>(getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial));
-    mAnim.fn_801D2608(lbl_804A5D38, 10);
+    mAnim.setKeyTables_801D2608(lbl_804A5D38, 10);
     switch (manager->field_0x340) {
     case 0:
         mState = 6;
@@ -69,10 +69,10 @@ void SlimeFormation_804A5D60::init() {
         mState = 3;
         mAnim.startAnim_801D22DC(7, 0, false);
         startSound_801F0E34(0x50037, 0);
-        s32 player = fn_801D05F8(&mPos, 0.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
         s16 angle;
         if (player >= 0) {
-            angle = fn_801D0280(player) - 0x8000;
+            angle = getAngleToPlayer_801D0280(player) - 0x8000;
         } else {
             angle = fn_801CD664(0x10000);
         }
@@ -160,10 +160,10 @@ void SlimeFormation_804A5D60::fn_8020AA78(s32 state) {
     case 8: {
         mFlags &= ~0x2000;
         mAnim.startAnim_801D22DC(1, 0, false);
-        s32 player = fn_801D05F8(&mPos, 0.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
         s16 angle;
         if (player >= 0) {
-            angle = fn_801D0280(player) - 0x8000;
+            angle = getAngleToPlayer_801D0280(player) - 0x8000;
         } else {
             angle = fn_801CD664(0x10000);
         }
@@ -484,7 +484,7 @@ u8 SlimeFormation_804A5D60::checkHitByActor_0x60() {
 u8 SlimeFormation_804A5D60::checkHitByPlayer_0x5C() {
     if (mBox.f.x - mBox.i.x > 0.0f && mBox.f.y - mBox.i.y > 0.0f) {
         s32 flag;
-        s32 player = fn_801F285C(NULL, &flag, true, -1);
+        s32 player = findOverlappingPlayer_801F285C(NULL, &flag, true, -1);
         if (player >= 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(mTargetSerial);
             if (actor != NULL) {
@@ -537,7 +537,7 @@ void SlimeFormation_804A5D60::draw() {
         drawSprite_801F06F0("enemy_gc_sob.bin", frame, &params, 7, 1.0f, 1.0f);
     } else {
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
         }
         if (mLayer_0x4 < 8) {
             void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "enemy_gc_sob.bin");
@@ -566,7 +566,7 @@ void SlimeFormation_804A5D60::fn_80209CF4(const JGeometry::TVec2f* target) {
 }
 
 void SlimeFormation_804A5D60::fn_80209CA4(s32 player, s32 attack, const JGeometry::TVec3f* from, s32 type) {
-    if (fn_801F37AC(attack, from, 0, type, player)) {
+    if (takeHit_801F37AC(attack, from, 0, type, player)) {
         mFlags &= ~ENEMY_FLAG_NO_HURT;
     }
 }

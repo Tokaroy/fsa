@@ -35,7 +35,7 @@ void EnemyGenerator2_804A9BC8::init() {
     u32 type = 'B   ';
     sprintf(buf, "d_enemy_map%s_%d%d.bin", name, tile / 10, tile % 10);
     type += ((name[0] - ' ') << 16) + ((name[1] - ' ') << 8) + (name[2] - ' ');
-    field_0x244 = (u8*)fn_804032E8(type, buf);
+    field_0x244 = (u8*)getBossArchiveResource_804032E8(type, buf);
     field_0x248 = 0;
     field_0x23c = (mSpawnParam_0x90 >> 16) & 7;
     field_0x24c = 0;

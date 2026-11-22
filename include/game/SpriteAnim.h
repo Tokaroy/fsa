@@ -28,13 +28,13 @@ public:
     // mKey for the new frame; skipped once after setAnim(.., false) and while
     // no animation is set (mAnim outside [0, mTableCount)).
     void fn_801D1C18();
-    // 11 units / 11 calls. fn_801D1F14 at a random frame in [0, mLength]
+    // 11 units / 11 calls. setFrame_801D1F14 at a random frame in [0, mLength]
     // (fn_801CD664(mLength + 1)).
     void fn_801D1D60();
     // 25 units / 102 calls (callers pass lfs values). Sets the frame,
     // clamped to [0, mLength] and kept below mLength (0 for a looping
     // animation, mode 2), and updates mCel and mKey.
-    void fn_801D1F14(f32 frame);
+    void setFrame_801D1F14(f32 frame);
     // 4 units / 9 calls; callers test r3 with clrlwi 24. fn_801D21F0 for
     // mode 0, fn_801D217C for mode 2, else 0.
     bool fn_801D208C();
@@ -52,17 +52,17 @@ public:
     // 54 units / 262 calls. Starts animation `anim` (an index into mTables)
     // in J3DFrameCtrl mode `mode` (stb 0x28; callers pass li 0 or 2): mLength
     // = the sum of its key durations (minus 1 unless mode 2). With keepFrame
-    // (clrlwi. r30 at 0x801D2370) the previous frame is kept as fn_801D1F14
+    // (clrlwi. r30 at 0x801D2370) the previous frame is kept as setFrame_801D1F14
     // would set it; otherwise the frame starts at 0 and the next update is
     // skipped. mode is compared as an int (cmpwi 2), so it is no u8.
     void startAnim_801D22DC(s32 anim, s32 mode, bool keepFrame);
     // 48 units / 52 calls. Sets the key tables and computes mMinCel/mMaxCel
     // over all their keys. Callers pass a .data table of pointers (addi
     // @l) and its count (li). The tables are read-only (.rodata).
-    void fn_801D2608(const s16** tables, s32 count);
+    void setKeyTables_801D2608(const s16** tables, s32 count);
 
     // Inline helpers: their code is repeated in fn_801D1C18, fn_801D1D60,
-    // fn_801D1F14 and startAnim_801D22DC (fn_801D208C repeats fn_801D217C and
+    // setFrame_801D1F14 and startAnim_801D22DC (fn_801D208C repeats fn_801D217C and
     // fn_801D21F0 the same way). Not called out of line anywhere.
     void calcCel();
     void setFrameInline(f32 frame);

@@ -44,8 +44,8 @@ void BeeManager_804AC810::update() {
             for (int i = 0; i < 14; i++) {
                 BeeFormation_804AC7B8* bee = (BeeFormation_804AC7B8*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x240[i]);
                 if (bee != NULL) {
-                    if (field_0x238 >= 0 && fn_8022F514(field_0x238) == true) {
-                        field_0x238 = fn_8022F3DC(field_0x238);
+                    if (field_0x238 >= 0 && hasPlayerLeader_8022F514(field_0x238) == true) {
+                        field_0x238 = getPlayerLeader_8022F3DC(field_0x238);
                     }
                     bee->field_0x244 = field_0x238;
                     if (bee->field_0x230 != 4) {
@@ -125,7 +125,7 @@ void BeeManager_804AC810::update() {
             }
         }
         if (triggered == true) {
-            fn_801EEC98(mSerial, NULL, NULL, NULL, &field_0x238, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &field_0x238, 0, 0);
             if (field_0x238 >= 0) {
                 field_0x230 = 1;
             }
@@ -162,7 +162,7 @@ void BeeManager_804AC810::update() {
             field_0x234 = (s32)(60.0f * gGameRoot_8053AAF8->mRandom.get_ufloat_1()) + 180;
             field_0x230 = 2;
         } else if (noneInState1 == true) {
-            fn_801EEC98(mSerial, NULL, NULL, NULL, &field_0x238, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, NULL, NULL, &field_0x238, 0, 0);
             for (int i = 0; i < 14; i++) {
                 BeeFormation_804AC7B8* bee = (BeeFormation_804AC7B8*)getActorManager_801F856C()->findActorBySerial_801F666C(field_0x240[i]);
                 if (bee != NULL) {

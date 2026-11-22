@@ -208,7 +208,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
                 }
                 field_0x29c[i] = 1;
                 for (s32 j = 0; j < 4; j++) {
-                    if (i == fn_8022F3DC(j)) {
+                    if (i == getPlayerLeader_8022F3DC(j)) {
                         field_0x27c[j] = j;
                         field_0x2ac[j] = 1;
                         field_0x29c[j] = 1;
@@ -241,7 +241,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             }
             if (field_0x2ac[i] >= 360) {
                 for (s32 j = 0; j < 4; j++) {
-                    if (i == fn_8022F3DC(j)) {
+                    if (i == getPlayerLeader_8022F3DC(j)) {
                         deleteEmitter(&mEmitters[j]);
                         field_0x27c[j] = -1;
                     }
@@ -275,7 +275,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
     case 1: {
         s32 dir;
         f32 dist;
-        fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
         if (dir < 0 || dist > 64.0f) {
             break;
         }
@@ -317,7 +317,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
             fn_80230534(false);
             field_0x2c4 = 3600;
             fn_801F0D20(0x3A);
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             fn_8022AF44();
             field_0x230 = 4;
         }
@@ -404,7 +404,7 @@ void TennisShop_804A2BF4::fn_801A17B8() {
                     }
                     startSound_801F0E34(0x40091, 0);
                     u16 angle;
-                    fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, ball->field_0x264, 2);
+                    findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, NULL, ball->field_0x264, 2);
                     vel.x = lbl_8053A0F8[0] * JMath::sincosTable_.sinShort(angle);
                     vel.y = lbl_8053A0F8[0] * JMath::sincosTable_.cosShort(angle);
                     ball->mVel_0x3c = vel;
@@ -769,7 +769,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         mBox.f.y = 4.0f;
         if (u8 mask = fn_801F2740(-1)) {
             s32 p = highestPlayer(mask);
-            if (field_0x264 == p || field_0x264 == fn_8022F3DC(p)) {
+            if (field_0x264 == p || field_0x264 == getPlayerLeader_8022F3DC(p)) {
                 if (fn_801F2B7C(0, -1, 1)) {
                     startSound_801F0E34(0x3004D, 0);
                     dead = true;
@@ -782,11 +782,11 @@ void TennisShop_804A2BF4::fn_801A0F90() {
         mBox.i.y = -10.0f;
         mBox.f.x = 10.0f;
         mBox.f.y = 10.0f;
-        field_0x278 = fn_801F285C(NULL, NULL, true, -1);
+        field_0x278 = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (field_0x278 < 0) {
             break;
         }
-        if (field_0x264 == field_0x278 || field_0x264 == fn_8022F3DC(field_0x278)) {
+        if (field_0x264 == field_0x278 || field_0x264 == getPlayerLeader_8022F3DC(field_0x278)) {
             if (playerIdInRange(field_0x278)) {
                 break;
             }
@@ -804,7 +804,7 @@ void TennisShop_804A2BF4::fn_801A0F90() {
             if (field_0x248 < gGameRoot_8053AAF8->fn_80138A30()) {
                 if (fn_8023F264(field_0x264) && mLayer_0x4 == getPlayerLayer_8023DE58(field_0x264) && !fn_80230188(field_0x264)) {
                     u16 angle;
-                    fn_801EEC98(mSerial, &angle, NULL, NULL, NULL, field_0x264, 2);
+                    findTargetPlayer_801EEC98(mSerial, &angle, NULL, NULL, NULL, field_0x264, 2);
                     if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.5f) {
                         angle -= 0x600;
                     } else {
@@ -1021,7 +1021,7 @@ void TennisShop_804A2BF4::fn_801A0910() {
     mtx[2][2] = field_0x324[1];
     params.mMtx = mtx;
     mPos.y = savedY + (field_0x33c - 16.0f);
-    fn_801EFD34(fn_804032E8('TIMG', lbl_804A2BE4[field_0x264]), &params, 7, 0.0f, -2.0f, 0.0f);
+    fn_801EFD34(getBossArchiveResource_804032E8('TIMG', lbl_804A2BE4[field_0x264]), &params, 7, 0.0f, -2.0f, 0.0f);
     mPos.y = savedY;
     if (field_0x2c4 >= 0) {
         lbl_8053AF28->field_0x10 = (u8)field_0x26c;

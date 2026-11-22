@@ -189,7 +189,7 @@ void CrystalBall_804AB308::fn_80322F44() {
             s32 hi, lo, base;
             base = hi = lo = fn_80236228(field_0x23c);
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
+                if (!hasPlayerLeader_8022F514(i)) {
                     if (hi < fn_80236228(i)) {
                         hi = fn_80236228(i);
                     }
@@ -367,7 +367,7 @@ void CrystalBall_804AB308::fn_80322964() {
             bit <<= 1;
         }
     }
-    if (fn_801F2618(NULL, false) == 1) {
+    if (sweepMapBox_801F2618(NULL, false) == 1) {
         mPos = saved;
     }
     mBox.i.x = -8.0f;
@@ -550,7 +550,7 @@ void CrystalBall_804AB308::update() {
             } else if (mPos.z < 0.0f) {
                 if (field_0x2a4 == 0) {
                     field_0x230 = 0;
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                     if (field_0x2a8 > 0 || field_0x2ac == 1) {
                         return;
                     }
@@ -571,10 +571,10 @@ void CrystalBall_804AB308::update() {
             if (field_0x230 != 0) {
                 break;
             }
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
         } else {
             JGeometry::TVec3f hitNormal(0.0f, 0.0f, 0.0f);
-            fn_801F2618(&hitNormal, false);
+            sweepMapBox_801F2618(&hitNormal, false);
             if (hitNormal.y == 0.0f) {
                 if (field_0x27c == 0) {
                     startSound_801F0E34(0x30048, 0);
@@ -660,7 +660,7 @@ void CrystalBall_804AB308::update() {
             } else {
                 mVel_0x3c.z += -0.1f;
                 mPos += mVel_0x3c;
-                if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+                if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                     die_0x24();
                 }
             }
@@ -681,7 +681,7 @@ void CrystalBall_804AB308::update() {
                 mVel_0x3c.y += 0.15f;
             }
             mPos += mVel_0x3c;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 die_0x24();
             }
         }
@@ -704,7 +704,7 @@ void CrystalBall_804AB308::update() {
             } else {
                 mVel_0x3c.z += -0.1f;
                 mPos += mVel_0x3c;
-                if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+                if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                     die_0x24();
                 }
             }
@@ -725,7 +725,7 @@ void CrystalBall_804AB308::update() {
                 mVel_0x3c.y += 0.15f;
             }
             mPos += mVel_0x3c;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 die_0x24();
             }
         }

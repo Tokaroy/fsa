@@ -151,7 +151,7 @@ BOOL WarningWindow_804B1634::fn_804317AC() {
 
 BOOL WarningWindow_804B1634::fn_80431740() {
     if (field_0xec != 0) {
-        if (field_0xc->fn_80402940(10, 0, 0.0f, 480.0f) == 0) {
+        if (field_0xc->animateMoveY_80402940(10, 0, 0.0f, 480.0f) == 0) {
             return FALSE;
         }
         field_0xe8 = 0;
@@ -726,7 +726,7 @@ BOOL StageSelectWindow_804B1600::fn_8042EC7C() {
         if (field_0x10 < 8) {
             s32 n = (8 - field_0x10) * (8 - field_0x10);
             field_0x8->moveFromCentre_80402E08(0.0f, -500.0f * n / 64.0f + 26.0f);
-            field_0xc->fn_80402628(8, 0, field_0xc->field_0x28);
+            field_0xc->animateAlpha_80402628(8, 0, field_0xc->field_0x28);
         } else {
             s32 n = (11 - field_0x10) * (11 - field_0x10);
             field_0x8->moveFromCentre_80402E08(0.0f, 26.0f * n / 9.0f);
@@ -743,8 +743,8 @@ BOOL StageSelectWindow_804B1600::fn_8042EC7C() {
 
 BOOL StageSelectWindow_804B1600::fn_8042EBEC() {
     if (field_0x12 != 0) {
-        u8 done = field_0x8->fn_80402940(10, 0, 0.0f, -480.0f);
-        field_0xc->fn_80402628(10, field_0xc->field_0x28, 0);
+        u8 done = field_0x8->animateMoveY_80402940(10, 0, 0.0f, -480.0f);
+        field_0xc->animateAlpha_80402628(10, field_0xc->field_0x28, 0);
         if (done == 0) {
             return false;
         }

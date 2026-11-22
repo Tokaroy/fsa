@@ -957,7 +957,7 @@ void OtherCharactersEnding_804ADF28::fn_803645B4() {
             }
         } else {
             mPos.add(mVel_0x3c);
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             ActorBase_804A5770* actor = getActorManager_801F856C()->getActor(field_0x24c);
             if (actor == NULL) {
                 field_0x24c = -1;
@@ -1212,7 +1212,7 @@ void OtherCharactersEnding_804ADF28::fn_80363664() {
         }
     }
     if (!(mVel_0x3c.squared() <= 32.0f * FLT_EPSILON)) {
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             mVel_0x3c.zero();
             field_0x248 = fn_801CD664(10) + 15;
             field_0x264 = 0;
@@ -1460,7 +1460,7 @@ void OtherCharactersEnding_804ADF28::fn_80362B74() {
 }
 
 void OtherCharactersEnding_804ADF28::fn_80362B14() {
-    void* res = fn_804032E8('TIMG', "fune.bti");
+    void* res = getBossArchiveResource_804032E8('TIMG', "fune.bti");
     if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, NULL);
     }
@@ -1501,7 +1501,7 @@ void OtherCharactersEnding_804ADF28::fn_803628D4() {
     params.mMtx = identity;
     s32 frame = field_0x26c + field_0x264;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 

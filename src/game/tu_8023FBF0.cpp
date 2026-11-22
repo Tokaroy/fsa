@@ -1020,7 +1020,7 @@ void Player_804A6F38::fn_80252FC0() {
         return;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (i != mPlayerNo_0x4 && fn_8022E438(i, mPlayerNo_0x4) && fn_8023EBB8(i)) {
+        if (i != mPlayerNo_0x4 && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4) && fn_8023EBB8(i)) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(i));
             if (actor != NULL && actor->field_0x1a4 != 0) {
                 mPos.x = mLastPos_0x14.x;
@@ -1045,7 +1045,7 @@ void Player_804A6F38::fn_80252FC0() {
     f32 pushX = 0.0f;
     f32 pushY = pushX;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && fn_8022E438(i, mPlayerNo_0x4)) {
+        if (fn_8023F264(i) && arePlayersInSameGroup_8022E438(i, mPlayerNo_0x4)) {
             if (fn_8022D930(i) || fn_8022D894(i) || fn_8022D9CC(i)) {
                 JGeometry::TVec3f target;
                 fn_8027F854(&target, i);
@@ -1293,8 +1293,8 @@ void Player_804A6F38::fn_802520C0(JGeometry::TVec2<s32>* dir) {
     bool takesPart = isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4);
     if (takesPart) {
         if (fn_80240670()) {
-            mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
-            mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+            mPos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
+            mLayer_0x3b4 = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
             mPrevPos_0x2c.set(mPos);
         }
         field_0x1216 = false;
@@ -1988,11 +1988,11 @@ void Player_804A6F38::fn_8024EE24() {
                 }
             }
         }
-        if (fn_8023E10C(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
+        if (fn_8023E10C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) < 8) {
             s32 player = mPlayerNo_0x4;
-            fn_80402FBC(player, *fn_8023E214(fn_8022EA0C(player)));
+            fn_80402FBC(player, *fn_8023E214(getRepresentativePlayer_8022EA0C(player)));
         }
-    } else if (getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4)) < 8) {
+    } else if (getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) < 8) {
         lbl_8053ACD8[mPlayerNo_0x4] = 1;
     } else {
         lbl_8053ACD8[mPlayerNo_0x4] = 0;
@@ -2086,8 +2086,8 @@ void Player_804A6F38::fn_8024E694(s32 value, s32 single) {
     JGeometry::TVec3f pos = mPos;
     s32 layer = mLayer_0x3b4;
     if (fn_802486A0() == 4 && fn_80240888() != fn_80248778()) {
-        pos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
-        layer = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+        pos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
+        layer = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     bool state51 = false;
     if (mState_0x1240 == 0x51) {
@@ -2777,7 +2777,7 @@ void Player_804A6F38::fn_8024BDBC() {
 
 // Requests state 0x3F (once, for the first match) when another present
 // player (fn_8023A51C) on this layer that this one cannot reach
-// (fn_8022E438) is closer than 50 in x/y (80 with fn_8022B244, else 100 at
+// (arePlayersInSameGroup_8022E438) is closer than 50 in x/y (80 with fn_8022B244, else 100 at
 // its item level 2+, fn_8023725C); not while fn_80270C88 or in state 0x3F /
 // 0xC; skipped with field_0xb9a, field_0xcf0 or state 0x3C current or
 // requested; then clears field_0xb9d.
@@ -2787,7 +2787,7 @@ void Player_804A6F38::fn_8024BBB8() {
     }
     if (!field_0xb9a && !field_0xcf0 && mState_0x1240 != 0x3c && mRequestedState_0x1244 != 0x3c) {
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8022E438(mPlayerNo_0x4, i) && fn_8023A51C(i) && getLayer() == getPlayerLayer_8023DE58(i)) {
+            if (!arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023A51C(i) && getLayer() == getPlayerLayer_8023DE58(i)) {
                 f32 range = 50.0f;
                 if (fn_8022B244()) {
                     range = 80.0f;
@@ -2869,7 +2869,7 @@ static inline JGeometry::TVec3f trailStep(const JGeometry::TVec3f& from, const J
 // The trail reset in 0x454 mode (fn_8024BAEC): a follower fills the trail
 // with field_0x32c, grounded; a player alone with field_0x32c; a leader lays
 // it along its group, 12 entries per follower from its own position to the
-// next group member (fn_8022E438) by linear steps, the rest at the last one;
+// next group member (arePlayersInSameGroup_8022E438) by linear steps, the rest at the last one;
 // then the airborne flags follow each entry's height.
 // The 0x31 loops count with `int`: with s32 (long) MWCC tests the unrolled
 // loop's entry (cmpwi 0x31; bge), which the original does not.
@@ -2899,7 +2899,7 @@ void Player_804A6F38::fn_8024B2E0() {
     } else {
         JGeometry::TVec3f from = mPos;
         for (s32 n = 1, other = mPlayerNo_0x4 + 1; n < fn_80248970(); n++, other++) {
-            while (!fn_8022E438(mPlayerNo_0x4, other)) {
+            while (!arePlayersInSameGroup_8022E438(mPlayerNo_0x4, other)) {
                 if (other >= 4) {
                     break;
                 }
@@ -3001,7 +3001,7 @@ void Player_804A6F38::fn_802490A8() {
     }
     s32 player = mPlayerNo_0x4;
     if (fn_802486A0() == 4) {
-        player = fn_8022EA0C(mPlayerNo_0x4);
+        player = getRepresentativePlayer_8022EA0C(mPlayerNo_0x4);
     }
     if (fn_80230188(player)) {
         return;
@@ -3016,8 +3016,8 @@ void Player_804A6F38::fn_802490A8() {
         return;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i)) {
-            if (fn_8023E98C(i) && !fn_8022E438(i, fn_8023EC54(i))) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
+            if (fn_8023E98C(i) && !arePlayersInSameGroup_8022E438(i, fn_8023EC54(i))) {
                 return;
             }
             if (fn_8022DEAC(i) && fn_802486A0() != 4) {
@@ -3105,7 +3105,7 @@ void Player_804A6F38::fn_802490A8() {
     }
     bool busy = false;
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i) && fn_8022DEAC(i)) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8022DEAC(i)) {
             busy = true;
             break;
         }
@@ -3167,20 +3167,20 @@ void Player_804A6F38::fn_80248FF0() {
 
 // Sets field_0x1214 to `flag` (state 3 requested when set, field_0x1215
 // cleared when not), unless field_0x121e, field_0xbac > 0 or, for false,
-// fn_8022AF5C; not while a player this one can reach (fn_8022E438) is in
+// fn_8022AF5C; not while a player this one can reach (arePlayersInSameGroup_8022E438) is in
 // fn_8023EFEC (for true) or fn_8023EA28. The original tests `flag != true`
 // first, which makes the later `flag == true` branch dead; written as is.
 void Player_804A6F38::fn_80248E94(bool flag) {
     if (flag != true && field_0x121e != 1 && field_0xbac <= 0 && (flag || !fn_8022AF5C())) {
         if (flag == true) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023EFEC(i)) {
+                if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023EFEC(i)) {
                     return;
                 }
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023EA28(i)) {
+            if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023EA28(i)) {
                 return;
             }
         }
@@ -3290,7 +3290,7 @@ bool Player_804A6F38::fn_80248A24() {
 }
 
 // The size of this player's group: itself, its leader (mLeader_0xd60) and
-// every active follower (fn_8022F514) whose leader (fn_8022F3DC) is that
+// every active follower (hasPlayerLeader_8022F514) whose leader (getPlayerLeader_8022F3DC) is that
 // leader, or this player when it leads.
 // `leader` is declared first so that it gets the highest register (r30) as in
 // the original (declared in its branch it takes r28). fn_802487FC (unwritten)
@@ -3304,15 +3304,15 @@ s32 Player_804A6F38::fn_80248970() const {
     for (s32 i = 0; i < 4; i++) {
         if (i == mPlayerNo_0x4) {
             count++;
-        } else if (fn_8022F514(i)) {
+        } else if (hasPlayerLeader_8022F514(i)) {
             leader = groupLeader(this);
             if (leader >= 0) {
-                if (leader == fn_8022F3DC(i)) {
+                if (leader == getPlayerLeader_8022F3DC(i)) {
                     count++;
                 }
             } else {
                 self = selfOf(this);
-                if (self == fn_8022F3DC(i)) {
+                if (self == getPlayerLeader_8022F3DC(i)) {
                     count++;
                 }
             }
@@ -3345,7 +3345,7 @@ s32 Player_804A6F38::fn_80248778() const {
     s32 count = 0;
     for (s32 i = 0; i < mPlayerNo_0x4; i++) {
         s32 partner = groupLeader(this);
-        if (partner == fn_8022F3DC(i)) {
+        if (partner == getPlayerLeader_8022F3DC(i)) {
             count++;
         }
     }
@@ -3391,7 +3391,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     if (gGameRoot_8053AAF8->field_0x7e && field_0xcfe == true) {
         return;
     }
-    if (viewLayerFlag(getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4))) && mode != 4) {
+    if (viewLayerFlag(getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4))) && mode != 4) {
         mode = 5;
     }
     if (gGameRoot_8053AAF8->fn_80138A30() == 2 || gGameRoot_8053AAF8->fn_80138A30() == 3) {
@@ -3408,30 +3408,30 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
         return;
     }
     if (isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && mode != 4 && field_0x120c == 4 && fn_80240888() != 0) {
-        JGeometry::TVec3f* pos = getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4));
-        s32 layer = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+        JGeometry::TVec3f* pos = getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
+        s32 layer = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
         if (!mViewBox_0xbec->fn_8030B110(layer, *pos)) {
             s32 oldLayer = mLayer_0x3b4;
-            mLayer_0x3b4 = getPlayerLayer_8023DE58(fn_8022EA0C(mPlayerNo_0x4));
+            mLayer_0x3b4 = getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
             mDepartLayer_0xce0 = oldLayer;
             mDestLayer_0xce4 = mLayer_0x3b4;
             if (mLayer_0x3b4 >= 8 && oldLayer < 8) {
-                mLastTvPos_0xcb0.set(*fn_8023E32C(fn_8022EA0C(mPlayerNo_0x4)));
+                mLastTvPos_0xcb0.set(*fn_8023E32C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             }
-            mPos.set(*getPlayerPos_8023E724(fn_8022EA0C(mPlayerNo_0x4)));
+            mPos.set(*getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)));
             mPrevPos_0x2c.set(mPos);
             field_0xd1c = mRespawnPos_0xcbc = mPos;
         }
         for (s32 i = 0; i < 0x31; i++) {
-            mPosHistory_0x38[i].set(*fn_8023E4E4(fn_8022EA0C(mPlayerNo_0x4), 0));
-            field_0x284[i] = fn_8023E45C(fn_8022EA0C(mPlayerNo_0x4), 0);
+            mPosHistory_0x38[i].set(*fn_8023E4E4(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4), 0));
+            field_0x284[i] = fn_8023E45C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4), 0);
         }
         if (!getGameView_802D6A9C()->fn_802DCD0C()) {
             field_0x1216 = true;
         }
     }
     for (s32 i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i) && fn_8023ED8C(i) &&
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_8023ED8C(i) &&
             (fn_8022F478(i) || (field_0x120c == 4 && mode != 4))) {
             fn_8023105C(fn_8023ECF0(i));
             fn_802310F8(i);
@@ -3459,11 +3459,11 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     fn_80248604();
     if (field_0x1210 == 4) {
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8022E438(mPlayerNo_0x4, i)) {
+            if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
                 if (cue == true) {
                     fn_80230FD0(i, 0x10011);
                 }
-                if (fn_8022F514(i)) {
+                if (hasPlayerLeader_8022F514(i)) {
                     fn_80238244(i);
                 }
             }
@@ -3493,10 +3493,10 @@ void Player_804A6F38::fn_80247F58() {
     if (team >= 0 && fn_80236B50(team)) {
         if (fn_80251BFC(0x33)) {
             // positions are read as TVec2f (x, y) by the callee
-            fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
+            hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
         }
     } else if (fn_80239D38() && !field_0xd34 && fn_80251BFC(0x33)) {
-        fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
+        hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x12);
     }
 }
 
@@ -3604,7 +3604,7 @@ void Player_804A6F38::fn_8024762C() {
     if (field_0xce8) {
         return;
     }
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         if (field_0x48c > 0) {
             field_0x48c--;
             if (field_0x491 == 1) {
@@ -3928,7 +3928,7 @@ s32 Player_804A6F38::fn_8024322C() {
 bool Player_804A6F38::fn_802431B8() {
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023697C(i) >= 0) {
-            if (fn_8022E438(fn_8023697C(i), mPlayerNo_0x4)) {
+            if (arePlayersInSameGroup_8022E438(fn_8023697C(i), mPlayerNo_0x4)) {
                 return true;
             }
         }
@@ -3937,7 +3937,7 @@ bool Player_804A6F38::fn_802431B8() {
 }
 
 bool Player_804A6F38::fn_80243194(s32 other) {
-    return fn_8022E438(mPlayerNo_0x4, other);
+    return arePlayersInSameGroup_8022E438(mPlayerNo_0x4, other);
 }
 
 // Conveyor tiles: the tile under mPos (fn_80226850) pushes mConveyorVel_0x414 by
@@ -4259,7 +4259,7 @@ void Player_804A6F38::fn_80241B44(JGeometry::TBox2f* out) {
 }
 
 // True alone (fn_80248970 <= 1) or in group mode 4; else only when every
-// other player this one can reach (fn_8022E438) has fn_802349EC (byte
+// other player this one can reach (arePlayersInSameGroup_8022E438) has fn_802349EC (byte
 // 0x1215 of that player, set on arriving at its spot).
 // FIXME: 98.96 %, regalloc-only; behaviour clean.
 // Registers and scheduling only: the first group loop's count /
@@ -4273,7 +4273,7 @@ bool Player_804A6F38::fn_80241964() {
         return true;
     }
     for (s32 i = 0; i < 4; i++) {
-        if (i != mPlayerNo_0x4 && fn_8022E438(mPlayerNo_0x4, i) && !fn_802349EC(i)) {
+        if (i != mPlayerNo_0x4 && arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && !fn_802349EC(i)) {
             return false;
         }
     }
@@ -4550,7 +4550,7 @@ bool Player_804A6F38::fn_8024119C() {
 // field_0x4 is hoisted (r28), as in fn_80240670.
 bool Player_804A6F38::fn_80240F28() const {
     if (fn_802486A0() == 5 && fn_80240670()) {
-        return fn_8023513C(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_8023513C(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     return mState_0x1240 == 0x39;
 }
@@ -4590,11 +4590,11 @@ bool Player_804A6F38::fn_80240D50() {
     return mState_0x1240 == 0x4f;
 }
 
-// Whether the player is busy: through its leader (fn_8022EA0C's
+// Whether the player is busy: through its leader (getRepresentativePlayer_8022EA0C's
 // fn_80233EDC) when it follows, else when it is in state 0x1B. Const like
 // fn_80240670: the inlined group loops hoist field_0x4.
 bool Player_804A6F38::fn_80240B84() const {
-    return fn_80240670() ? fn_80233EDC(fn_8022EA0C(mPlayerNo_0x4)) : inState1B(this);
+    return fn_80240670() ? fn_80233EDC(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4)) : inState1B(this);
 }
 
 bool Player_804A6F38::fn_80240B70() {
@@ -4693,7 +4693,7 @@ bool Player_804A6F38::fn_80240818() const {
     return mState_0x1240 == 0x49 || mRequestedState_0x1244 == 0x49;
 }
 
-bool Player_804A6F38::fn_80240808() const {
+bool Player_804A6F38::hasLeader_80240808() const {
     return mLeader_0xd60 >= 0;
 }
 
@@ -4711,7 +4711,7 @@ bool Player_804A6F38::fn_80240670() const {
 }
 
 s32 Player_804A6F38::fn_8024064C() const {
-    return fn_8022EA0C(mPlayerNo_0x4);
+    return getRepresentativePlayer_8022EA0C(mPlayerNo_0x4);
 }
 
 s32 Player_804A6F38::fn_80240644() {
@@ -4736,7 +4736,7 @@ void Player_804A6F38::fn_8024051C() {
 
 s32 Player_804A6F38::fn_80240354() {
     if (fn_80240670()) {
-        return fn_80236768(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_80236768(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0xbdc) {
         return field_0xbd8;
@@ -4746,7 +4746,7 @@ s32 Player_804A6F38::fn_80240354() {
 
 s32 Player_804A6F38::fn_8024018C() {
     if (fn_80240670()) {
-        return fn_802366CC(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_802366CC(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0x42c) {
         return field_0xbe0;
@@ -4756,7 +4756,7 @@ s32 Player_804A6F38::fn_8024018C() {
 
 s32 Player_804A6F38::fn_8023FFC4() {
     if (fn_80240670()) {
-        return fn_80236630(fn_8022EA0C(mPlayerNo_0x4));
+        return fn_80236630(getRepresentativePlayer_8022EA0C(mPlayerNo_0x4));
     }
     if (field_0xbe8) {
         return field_0xbe4;

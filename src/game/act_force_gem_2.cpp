@@ -115,9 +115,9 @@ void ForceGem2_804AB850::update() {
     if (mState == 0 || mState == 3 || mState == 4) {
         s32 idx = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (mState != 0) {
-            fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
             if (field_0x94 != 6 || mPos.z == 0.0f) {
-                moved = fn_801F2618(NULL, false);
+                moved = sweepMapBox_801F2618(NULL, false);
             }
         }
         if (idx >= 0) {

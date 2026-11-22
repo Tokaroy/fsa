@@ -106,7 +106,7 @@ void RotatingSkull_804A8588::update() {
         addCalc2_801F71A4(&field_0x26c, 1.0f, 0.1f, 0.1f);
         mPos += mVel_0x3c;
         JGeometry::TVec3f hit;
-        if (fn_801F2618(&hit, false)) {
+        if (sweepMapBox_801F2618(&hit, false)) {
             if (hit.x != 0.0f) {
                 if (hit.x >= 0.0f) {
                     field_0x260.x = 1.0f;
@@ -150,7 +150,7 @@ void RotatingSkull_804A8588::update() {
             switch (field_0x230) {
             case 0:
                 mPos += mVel_0x3c;
-                if (fn_801F2618(&field_0x270, false) == 1) {
+                if (sweepMapBox_801F2618(&field_0x270, false) == 1) {
                     field_0x230 = 1;
                     field_0x270.normalize();
                     field_0x270.scale(-1.0f);
@@ -204,11 +204,11 @@ void RotatingSkull_804A8588::fn_802B21EC() {
     JGeometry::TVec3f savedVel2(field_0x270);
     field_0x27c = 0;
     mPos += mVel_0x3c;
-    u8 hit = fn_801F2618(&hitA, false);
+    u8 hit = sweepMapBox_801F2618(&hitA, false);
     if (field_0x270.x != 0.0f) {
         field_0x27c = 1;
         mPos += field_0x270;
-        u8 hit2 = fn_801F2618(&hitB, false);
+        u8 hit2 = sweepMapBox_801F2618(&hitB, false);
         if (hit == 1 && hitA.y != 0.0f) {
             if (field_0x270.x > 0.0f) {
                 if (!(mVel_0x3c.y > 0.0f)) {
@@ -236,7 +236,7 @@ void RotatingSkull_804A8588::fn_802B21EC() {
             JGeometry::TVec3f prev(mPos);
             mPos += mVel_0x3c * 3.0f + field_0x270;
             JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
-            if (fn_801F2618(&hitC, false)) {
+            if (sweepMapBox_801F2618(&hitC, false)) {
                 mPos = prev;
             } else {
                 mPos = savedPos;
@@ -248,7 +248,7 @@ void RotatingSkull_804A8588::fn_802B21EC() {
     } else if (field_0x270.y != 0.0f) {
         field_0x27c = 1;
         mPos += field_0x270;
-        u8 hit2 = fn_801F2618(&hitB, false);
+        u8 hit2 = sweepMapBox_801F2618(&hitB, false);
         if (hit == 1 && hitA.x != 0.0f) {
             if (field_0x270.y > 0.0f) {
                 if (!(mVel_0x3c.x > 0.0f)) {
@@ -276,7 +276,7 @@ void RotatingSkull_804A8588::fn_802B21EC() {
             JGeometry::TVec3f prev(mPos);
             mPos += mVel_0x3c * 3.0f + field_0x270;
             JGeometry::TVec3f hitC(0.0f, 0.0f, 0.0f);
-            if (fn_801F2618(&hitC, false)) {
+            if (sweepMapBox_801F2618(&hitC, false)) {
                 mPos = prev;
             } else {
                 mPos = savedPos;

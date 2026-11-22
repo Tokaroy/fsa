@@ -63,7 +63,7 @@ void SpawnerGenerator_804A9328::update() {
                 field_0x268 = 12;
                 field_0x264 = 0;
                 if (fn_802DE764(0, 3, 10)) {
-                    gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                    gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
                 }
             }
             field_0x248--;

@@ -166,7 +166,7 @@ void Flame_804A0330::fn_8015EA2C() {
             mState = 4;
         } else {
             s32 dir;
-            fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
             if (field_0x240 == 0) {
                 if (dir >= 0 && dist <= 80.0f) {
                     field_0x240 = 1;

@@ -65,7 +65,7 @@ void ZoraEnemy_804A3D7C::init() {
     field_0x250 = fn_801CD664(121) + 60;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A3D68, 5);
+    mAnim.setKeyTables_801D2608(lbl_804A3D68, 5);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
     mSpawnParam_0x90 = clamp(mSpawnParam_0x90, 0U, 15U);
@@ -167,7 +167,7 @@ void ZoraEnemy_804A3D7C::updateState_0x90(u8 mapHit) {
         }
         vfunc_0xA8();
         if (mStateTimer >= field_0x250) {
-            if (fn_801D05F8(&mPos, 300.0f) >= 0) {
+            if (findNearestPlayer_801D05F8(&mPos, 300.0f) >= 0) {
                 fn_801BACE8(1);
             }
         }

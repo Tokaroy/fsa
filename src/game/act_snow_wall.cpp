@@ -45,7 +45,7 @@ void SnowWall_8049E8A0::init() {
     field_0x1a4 = 1;
     field_0xb0 = 0x0a040304;
     if (field_0x23c == NULL) {
-        field_0x23c = fn_804032E8('TIMG', lbl_80539F40[0]);
+        field_0x23c = getBossArchiveResource_804032E8('TIMG', lbl_80539F40[0]);
     }
     if (field_0x240 == NULL) {
         field_0x240 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x452, 0, 0, NULL, NULL, true, 1.0f);
@@ -67,7 +67,7 @@ void SnowWall_8049E8A0::update() {
     case 0: {
         startSound_801F0E34(0x50069, 0);
         fn_801F2DB4('NULL', 'NULL', NULL);
-        s32 player = fn_801F285C(NULL, NULL, true, -1);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         if (player >= 0) {
             startSound_801F0E34(0x400d1, 0);
             // fn_802379E4 reads only x / y (as in tu_8022AD64), the original stores just those two.

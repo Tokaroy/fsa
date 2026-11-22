@@ -1029,7 +1029,7 @@ void Player_804A6F38::fn_8026152C(bool slow) {
 }
 
 void Player_804A6F38::fn_80261480() {
-    if (field_0xc9c <= 0 && field_0xd74 == 0 && !(fn_80240808() && fn_802486A0() == 5)) {
+    if (field_0xc9c <= 0 && field_0xd74 == 0 && !(hasLeader_80240808() && fn_802486A0() == 5)) {
         if (fn_80260C08()) {
             field_0xd74 = 3;
             field_0x1174 = 1;
@@ -1262,7 +1262,7 @@ bool Player_804A6F38::fn_802604CC() {
     if (fn_8022AF10()) {
         return false;
     }
-    if (fn_802486A0() != 4 && fn_80240808()) {
+    if (fn_802486A0() != 4 && hasLeader_80240808()) {
         return false;
     }
     if (gGameRoot_8053AAF8->field_0x7e == 0 && fn_802486A0() != 4) {
@@ -1278,10 +1278,10 @@ bool Player_804A6F38::fn_802604CC() {
                 || fn_80230188(i) || fn_80236AB4(i) || fn_802354E4(i) || fn_8022D894(i)) {
                 continue;
             }
-            if (mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8 && fn_8022CAF8(i) != 4 && fn_8022F514(i)) {
+            if (mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8 && fn_8022CAF8(i) != 4 && hasPlayerLeader_8022F514(i)) {
                 continue;
             }
-            if (fn_802486A0() != 4 && fn_8022E438(mPlayerNo_0x4, i) && fn_80246F28() > 0.0f) {
+            if (fn_802486A0() != 4 && arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_80246F28() > 0.0f) {
                 continue;
             }
             // This player's position on the other player's layer.
@@ -1319,7 +1319,7 @@ bool Player_804A6F38::fn_802604CC() {
             if (!fn_80239C9C(i, &at, mLayer_0x3b4)) {
                 continue;
             }
-            if (isPlayerBitSet(gGameRoot_8053AAF8, i) || fn_8022E438(mPlayerNo_0x4, i)
+            if (isPlayerBitSet(gGameRoot_8053AAF8, i) || arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)
                 || (gGameRoot_8053AAF8->field_0x7e != 0 && fn_8022CAF8(i) == 4)
                 || (mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(i) < 8)) {
                 if ((fn_80236B50(i) || fn_80251BFC(0x19)) && fn_80251AEC(0x11)) {
@@ -1412,7 +1412,7 @@ bool Player_804A6F38::fn_802600A0(s32 player) {
     if (fn_80270A8C()) {
         return false;
     }
-    if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !fn_8022E438(mPlayerNo_0x4, player)
+    if (!isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4) && !arePlayersInSameGroup_8022E438(mPlayerNo_0x4, player)
         && (gGameRoot_8053AAF8->field_0x7e == 0 || fn_802486A0() != 4)
         && (getPlayerLayer_8023DE58(player) != 8 || mLayer_0x3b4 >= 8)) {
         mLeader_0xd60 = fn_8022F340(player);
@@ -1593,7 +1593,7 @@ void Player_804A6F38::fn_8025F698(bool checkState) {
         field_0xd74 = 3;
         if (held == true && fn_802486A0() != 4 && isPlayerBitSet(gGameRoot_8053AAF8, mPlayerNo_0x4)) {
             for (int i = 0; i < 4; i++) {
-                if (fn_8022E438(mPlayerNo_0x4, i) && i != mPlayerNo_0x4) {
+                if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && i != mPlayerNo_0x4) {
                     ActorBase_804A5770* other = getActorManager_801F856C()->findActorBySerial_801F666C(fn_8023EF50(i));
                     if (other != 0 && other->field_0x1a4 <= 0) {
                         fn_80230C6C(i);
@@ -1726,7 +1726,7 @@ bool Player_804A6F38::fn_8025F2CC() {
     if (mPos.z > 0.0f) {
         return false;
     }
-    if (field_0xd88 < 0 && fn_80240808() && fn_802486A0() == 5) {
+    if (field_0xd88 < 0 && hasLeader_80240808() && fn_802486A0() == 5) {
         return false;
     }
     return true;

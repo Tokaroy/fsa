@@ -160,7 +160,7 @@ void HelmarocKing_804A1630::init() {
         mBox2.f.x = 16.0f;
         mBox2.f.y = 16.0f;
         getGameView_802D6A9C()->fn_802D7440(false);
-        gAudioMgr_8053AF80->fn_80458F9C(60);
+        gAudioMgr_8053AF80->stopBgm_80458F9C(60);
         lbl_8053AB70 = 0;
         lbl_80539F98 = 8;
         lbl_80539F9C = 180;
@@ -403,7 +403,7 @@ void HelmarocKing_804A1630::update() {
             mBox.set(-58.0f, -24.0f, 58.0f, 24.0f);
             mBox2.set(-58.0f, -24.0f, 58.0f, 24.0f);
         }
-        fn_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 1);
+        findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 1);
     }
     if (mState != 0 && mState != 1 && mState != 0x17 && mState != 0x18 && mState != 0x19) {
         if (lbl_8053AB75 == 1) {
@@ -689,7 +689,7 @@ void HelmarocKing_804A1630::update() {
                 }
             }
             if (field_0x260 == 1) {
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000004, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000004, false, 0);
                 field_0x260 = 2;
                 getActorManager_801F856C()->fn_801F6884();
                 lbl_8053AB75 = 1;
@@ -1152,7 +1152,7 @@ void HelmarocKing_804A1630::update() {
             }
         }
         mVel_0x3c.y += 0.25f;
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             if (field_0x250 == 0) {
                 field_0x250 = 1;
                 mVel_0x3c.y = -(1.0f + gGameRoot_8053AAF8->mRandom.get_ufloat_1());
@@ -1209,7 +1209,7 @@ void HelmarocKing_804A1630::draw() {
             setRotScaleMtx3(mtx, rot, -1.0f, 1.0f, 1.0f);
         }
         params.mMtx = mtx;
-        void* res = fn_804032E8('GROC', "geki_ana.bti");
+        void* res = getBossArchiveResource_804032E8('GROC', "geki_ana.bti");
         params.field_0x1d = -2;
         params.field_0x1c = 1;
         fn_801EFD34(res, &params, -1, x, -6.0f, 0.0f);
@@ -1278,10 +1278,10 @@ void HelmarocKing_804A1630::draw() {
                 frame = 0x1D;
             }
         }
-        res = fn_804032E8('GROC', lbl_804A1460[frame]);
+        res = getBossArchiveResource_804032E8('GROC', lbl_804A1460[frame]);
         offset = lbl_804A14D8[frame];
     } else {
-        res = fn_804032E8('GROC', lbl_804A1550[frame]);
+        res = getBossArchiveResource_804032E8('GROC', lbl_804A1550[frame]);
         offset = lbl_804A15C0[frame];
     }
     setRotScaleMtx(mtx, rot, 1.0f);
@@ -1317,10 +1317,10 @@ void HelmarocKing_804A1630::draw() {
                 frame = 0x1D;
             }
         }
-        res = fn_804032E8('GROC', lbl_804A1460[frame]);
+        res = getBossArchiveResource_804032E8('GROC', lbl_804A1460[frame]);
         offset = lbl_804A14D8[frame];
     } else {
-        res = fn_804032E8('GROC', lbl_804A1550[frame]);
+        res = getBossArchiveResource_804032E8('GROC', lbl_804A1550[frame]);
         offset = lbl_804A15C0[frame];
     }
     params.field_0x1d = 1;

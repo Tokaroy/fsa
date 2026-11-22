@@ -176,7 +176,7 @@ public:
     /* 0x0C */ virtual void init();
     /* 0x20 */ virtual void draw();
     /* 0x24 */ virtual void die_0x24(); // empty override
-    // 0x801D652C: gAudioMgr_8053AF80->fn_80458F9C(60).
+    // 0x801D652C: gAudioMgr_8053AF80->stopBgm_80458F9C(60).
     /* 0x54 */ virtual void onFirstUpdate_0x54();
     /* 0x74 */ virtual void onHitReactionEnd_0x74();
     /* 0x88 */ virtual void calcVelocity_0x88();

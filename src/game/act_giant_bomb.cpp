@@ -103,8 +103,8 @@ void GiantBomb_804AC588::fn_8034335C(s32 layer, const JGeometry::TVec3f* pos) {
     for (int i = 0; i < 4; i++) {
         if (fn_8023F264(i) && !fn_8022F478(i) && getPlayerLayer_8023DE58(i) < 8 &&
             !fn_80230188(i) && !fn_8022B7C4(i) && !fn_802349EC(i) && !unk[i]) {
-            // fn_80238548 reads pos+0/+4 (TVec2f) only
-            fn_80238548(i, 0x20, (const JGeometry::TVec2f*)pos, 0x13);
+            // hitPlayerGroup_80238548 reads pos+0/+4 (TVec2f) only
+            hitPlayerGroup_80238548(i, 0x20, (const JGeometry::TVec2f*)pos, 0x13);
         }
     }
 
@@ -157,7 +157,7 @@ void GiantBomb_804AC588::update() {
             s32 hit1 = fn_801A6108(mSerial, &box, &pos2);
             s32 hit2 = fn_801A4F5C(mSerial, &box, &pos2);
             s32 hit3 = fn_801A46FC(mSerial, &box, &pos2);
-            if (fn_801F305C() || hit0 > 0 || hit1 > 0 || hit2 > 0 || hit3 > 0) {
+            if (checkHits_801F305C() || hit0 > 0 || hit1 > 0 || hit2 > 0 || hit3 > 0) {
                 mTimer -= 60;
                 field_0x238 = 15;
                 return;
@@ -215,7 +215,7 @@ void GiantBomb_804AC588::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x3CF, 0, -1, NULL, NULL, true, 2.5f);
             startSound_801F0E34(0x3000F, 0);
             if (field_0x261 == 1) {
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
             }
             mVel_0x3c.z = 0.0f;
             mTimer = 15;
@@ -390,7 +390,7 @@ void GiantBomb_804AC588::vfunc_0x54(void* res, SpriteParams_801F5AE0* params, s3
         return;
     }
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
+        drawShadow_801EF830(mLayer_0x4, &mPos, params, flags, NULL, 0, res);
     }
     SpriteParams_801F5AE0 sp;
     if (mHitTimer_0xd8 > 0) {

@@ -35,9 +35,9 @@ void Icicle_8049CFC8::init() {
     mMapBox_0x80.i.y = -8.0f;
     mMapBox_0x80.f.x = 8.0f;
     mMapBox_0x80.f.y = 8.0f;
-    mSprite.fn_801D2608(lbl_80539EE0, 2);
+    mSprite.setKeyTables_801D2608(lbl_80539EE0, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     if (getScreenFlagBit_0x3C() > 0) {
         mDrawEnabled = false;
         fn_8010B40C(5);
@@ -89,7 +89,7 @@ void Icicle_8049CFC8::update() {
             fn_8010B40C(1);
             break;
         }
-        if (fn_801F285C(NULL, NULL, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             fn_8010B40C(1);
             break;
         }
@@ -109,12 +109,12 @@ void Icicle_8049CFC8::update() {
         }
         {
             JGeometry::TVec3f hitDir;
-            if (fn_801F2618(&hitDir, false)) {
+            if (sweepMapBox_801F2618(&hitDir, false)) {
                 JGeometry::TVec3f probe = mPos;
                 probe.y += 16.0f;
                 u16 tile = fn_80226850(&probe, mLayer_0x4);
                 if (tile >= 0x3F0 || (tile >= 0x250 && tile <= 0x26F) || tile == 0x3ED) {
-                    gBgRewrite_8053AC98->fn_802A381C(&probe, mLayer_0x4, 0x34);
+                    gBgRewrite_8053AC98->writeTile_802A381C(&probe, mLayer_0x4, 0x34);
                 }
                 fn_8010B40C(3);
                 break;
@@ -124,7 +124,7 @@ void Icicle_8049CFC8::update() {
         if (field_0x234 < 30) {
             break;
         }
-        if (fn_801F285C(NULL, NULL, true, -1) >= 0) {
+        if (findOverlappingPlayer_801F285C(NULL, NULL, true, -1) >= 0) {
             fn_8010B40C(3);
             break;
         }
@@ -233,7 +233,7 @@ bool Icicle_8049CFC8::fn_8010B40C(s32 state) {
         field_0x238 = 0;
         break;
     }
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     field_0x230 = state;
     field_0x234 = 0;
     return true;

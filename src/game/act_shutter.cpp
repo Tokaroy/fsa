@@ -13,10 +13,10 @@ void Shutter_804A8118::init() {
     mState = 0;
     mTile = gGameRoot2_8053AB10->field_0x20->fn_802F9908(mLayer_0x4, fn_80226AE0(&mPos, mLayer_0x4));
     if (getGameView_802D6A9C()->fn_802D800C(mSwitch)) {
-        gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, mTile);
+        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, mTile);
         s32 layer = mLayer_0x4 + 1;
         JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
-        gBgRewrite_8053AC98->fn_802A3884(&p, 0, layer, 0);
+        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
         gGameRoot2_8053AB10->field_0x20->fn_802FA160(
             gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
         mAlive = false;
@@ -79,10 +79,10 @@ void Shutter_804A8118::update() {
                 mState = 5;
                 mTimer = 2;
             } else {
-                gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, mTile);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, mTile);
                 s32 layer = mLayer_0x4 + 1;
                 JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
-                gBgRewrite_8053AC98->fn_802A3884(&p, 0, layer, 0);
+                gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
                 gGameRoot2_8053AB10->field_0x20->fn_802FA160(
                     gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
                 if (mFlag == 0) {
@@ -97,10 +97,10 @@ void Shutter_804A8118::update() {
     case 5:
         mTimer--;
         if (mTimer == 0) {
-            gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, mTile);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, mTile);
             s32 layer = mLayer_0x4 + 1;
             JGeometry::TVec3f p(mPos.x, mPos.y - 16.0f, 0.0f);
-            gBgRewrite_8053AC98->fn_802A3884(&p, 0, layer, 0);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0);
             gGameRoot2_8053AB10->field_0x20->fn_802FA160(
                 gGameRoot_8053AAF8->field_0xa4->getResource('SCH ', "bg_tenso_sch.bin"), 0x180, 0, 0x40, 0xC0);
             if (mFlag == 0) {

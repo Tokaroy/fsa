@@ -315,18 +315,18 @@ void GameRoot_8049EF20::fn_80138B7C() {
         if (id == 0x14 || id == 0x1E) {
             field_0xa0->fn_80458F04(lbl_804652F0[id]);
         } else {
-            field_0xa0->fn_80458FF0(lbl_804652F0[id], false, count);
+            field_0xa0->startBgm_80458FF0(lbl_804652F0[id], false, count);
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x1328c = count + 1;
         }
     } else if (id != 0x19) {
         if (field_0x86 == 0) {
-            field_0xa0->fn_80458FF0(0x1000004, false, false);
+            field_0xa0->startBgm_80458FF0(0x1000004, false, false);
         } else {
-            field_0xa0->fn_80458FF0(0x100000D, false, false);
+            field_0xa0->startBgm_80458FF0(0x100000D, false, false);
         }
     } else {
-        field_0xa0->fn_80458FF0(0x1000019, false, false);
+        field_0xa0->startBgm_80458FF0(0x1000019, false, false);
     }
 }
 
@@ -713,7 +713,7 @@ void GameRoot_8049EF20::fn_80137300() {
                 field_0x4->fn_80139D9C();
                 lbl_8053AEC8->fn_80438E10(0);
                 if (lbl_80529DEC.field_0x1ac != 0) {
-                    field_0xa0->fn_80458FF0(lbl_80529DEC.field_0x1ac, false, 0);
+                    field_0xa0->startBgm_80458FF0(lbl_80529DEC.field_0x1ac, false, 0);
                 }
                 lbl_80529DEC.field_0x253 = 0;
                 field_0x4c = 7;
@@ -739,7 +739,7 @@ void GameRoot_8049EF20::fn_80137300() {
                     lbl_8053ACA0->fn_802AC8AC(0);
                     field_0x84 = 0;
                     gGameRoot2_8053AB10->fn_8013B4C0();
-                    field_0xa0->fn_80458F9C(0xA);
+                    field_0xa0->stopBgm_80458F9C(0xA);
                 }
             } else if (fn_8037A120() == 8 || fn_8037A120() == 9) {
                 if (gGameRoot_8053AAF8->field_0x7e != 0) {
@@ -768,7 +768,7 @@ void GameRoot_8049EF20::fn_80137300() {
                 lbl_8053ACA0->fn_802AC8AC(0);
                 field_0x84 = 0;
                 gGameRoot2_8053AB10->fn_8013B4C0();
-                field_0xa0->fn_80458F9C(0xA);
+                field_0xa0->stopBgm_80458F9C(0xA);
             }
             break;
         case 13:
@@ -874,7 +874,7 @@ void GameRoot_8049EF20::fn_80137300() {
         } else if (state == 4) {
             field_0x58 = 0;
         } else if (state == 5) {
-            field_0xa0->fn_80458F9C(0xA);
+            field_0xa0->stopBgm_80458F9C(0xA);
             if (lbl_8053ACA8->fn_802B1DB0()) {
                 field_0xa0->fn_804595E4(false);
             } else {
@@ -1477,18 +1477,18 @@ static inline void playStageMusic(GameRoot_8049EF20* self) {
         if (sound == 0x14 || sound == 0x1E) {
             self->field_0xa0->fn_80458F04(lbl_804652F0[sound]);
         } else {
-            self->field_0xa0->fn_80458FF0(lbl_804652F0[sound], false, count);
+            self->field_0xa0->startBgm_80458FF0(lbl_804652F0[sound], false, count);
             GameView_804A9950* view = getGameView_802D6A9C();
             view->field_0x1328c = count + 1;
         }
     } else if (sound != 0x19) {
         if (self->field_0x86 == 0) {
-            self->field_0xa0->fn_80458FF0(0x1000004, false, 0);
+            self->field_0xa0->startBgm_80458FF0(0x1000004, false, 0);
         } else {
-            self->field_0xa0->fn_80458FF0(0x100000D, false, 0);
+            self->field_0xa0->startBgm_80458FF0(0x100000D, false, 0);
         }
     } else {
-        self->field_0xa0->fn_80458FF0(0x1000019, false, 0);
+        self->field_0xa0->startBgm_80458FF0(0x1000019, false, 0);
     }
 }
 

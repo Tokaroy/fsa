@@ -113,7 +113,7 @@ inline void SlimeManager_804A5BD8::calcCenter(f32* outX, f32* outY) {
 inline s32 SlimeManager_804A5BD8::chooseDir() {
     JGeometry::TVec3f center;
     calcCenter(&center.x, &center.y);
-    s32 player = fn_801D05F8(&center, 0.0f);
+    s32 player = findNearestPlayer_801D05F8(&center, 0.0f);
     if (player < 0) {
         return fn_801CD664(4);
     }

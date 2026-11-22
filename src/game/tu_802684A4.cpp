@@ -181,7 +181,7 @@ block: // some direction of field_0x50 is unmarked
     }
 }
 
-// A follower (fn_80240808, not in group mode 4) closed in on every side
+// A follower (hasLeader_80240808, not in group mode 4) closed in on every side
 // (field_0x68, 0x88 or 0x38) asks fn_8022BC38 to move to its leader.
 static inline void followLeader(cls_804A71A8* p) {
     if (p->field_0x4->fn_80240F28() && p->field_0x4->fn_802415CC() >= 2) {
@@ -198,7 +198,7 @@ static inline void followLeader(cls_804A71A8* p) {
     {
         return;
     }
-    if (!p->field_0x4->fn_80240808() || p->field_0x4->fn_802486A0() == 4) {
+    if (!p->field_0x4->hasLeader_80240808() || p->field_0x4->fn_802486A0() == 4) {
         return;
     }
     for (s32 i = 0; i < 8; i++) {
@@ -292,7 +292,7 @@ static inline void leaveBy88(cls_804A71A8* p) {
 // direction is open in field_0x38 / 0x58 / 0x78 either, climb: field_0xb4,
 // 0xb6 and 0x9a set and the owner 4 up unless one of its states holds it.
 static inline void climbUp(cls_804A71A8* p) {
-    if (p->field_0x4->fn_80240808() || p->field_0x4->fn_80240D50()) {
+    if (p->field_0x4->hasLeader_80240808() || p->field_0x4->fn_80240D50()) {
         if (p->field_0x38[2] == 1 || p->field_0x28[2] == 1) {
             p->field_0xb4 = 0;
             p->field_0xb6 = 0;
@@ -311,7 +311,7 @@ static inline void climbUp(cls_804A71A8* p) {
             return;
         }
     }
-    if (p->field_0x4->fn_802486A0() == 4 || !p->field_0x4->fn_80240808() || p->field_0x4->fn_80270A8C()) {
+    if (p->field_0x4->fn_802486A0() == 4 || !p->field_0x4->hasLeader_80240808() || p->field_0x4->fn_80270A8C()) {
         p->field_0xb4 = 1;
         p->field_0xb6 = 1;
         if (!(p->field_0x4->fn_80240F28() && p->field_0x4->fn_802415CC() >= 2 &&
@@ -1114,7 +1114,7 @@ void cls_804A71A8::fn_8026C350(u16 tile) {
             if (under == 0x60) {
                 field_0xba = 1;
             } else {
-                field_0x4->fn_80272160(1, (const JGeometry::TVec2f*)&field_0x8, 4);
+                field_0x4->hitOwnGroup_80272160(1, (const JGeometry::TVec2f*)&field_0x8, 4);
             }
         }
         break;
@@ -1493,10 +1493,10 @@ warp: // the counter runs: look for a 'WARP' actor
             }
             u32 type = warp->mSpawnParam_0x90;
             if ((type & 0xFF) == 4) {
-                if (fn_8022F514(field_0x4->mPlayerNo_0x4)) {
+                if (hasPlayerLeader_8022F514(field_0x4->mPlayerNo_0x4)) {
                     continue;
                 }
-                if (!fn_8022F514(field_0x4->mPlayerNo_0x4) && fn_8022CAF8(field_0x4->mPlayerNo_0x4) == 4 &&
+                if (!hasPlayerLeader_8022F514(field_0x4->mPlayerNo_0x4) && fn_8022CAF8(field_0x4->mPlayerNo_0x4) == 4 &&
                     fn_80234004(field_0x4->mPlayerNo_0x4) != field_0x4->fn_80248778())
                 {
                     continue;
@@ -1574,7 +1574,7 @@ align: // the counter was reset or did not run
         !(field_0x4->fn_802486A0() == 5 && field_0x4->fn_80240670() &&
           fn_80234950(fn_8022F340(field_0x4->mPlayerNo_0x4))))
     {
-        if (field_0x4->fn_80240808() && field_0x4->fn_802486A0() != 4) {
+        if (field_0x4->hasLeader_80240808() && field_0x4->fn_802486A0() != 4) {
             askLeader(this);
         } else if (field_0xb0 <= 1) {
             if ((field_0x88[0] == 1 || field_0x68[0] == 1) && field_0x88[1] == 0 && field_0x68[1] == 0) {
@@ -1791,9 +1791,9 @@ void cls_804A71A8::fn_80268BC4() {
 }
 
 // Runs fn_802685D4 with mPos.z held at 0.0f unless the player is in
-// state 5 and fn_80240808 is set; the z is kept only if fn_802685D4 left it.
+// state 5 and hasLeader_80240808 is set; the z is kept only if fn_802685D4 left it.
 void Player_804A6F38::fn_80268B3C() {
-    if (fn_802486A0() == 5 && fn_80240808()) {
+    if (fn_802486A0() == 5 && hasLeader_80240808()) {
         fn_802685D4();
         return;
     }

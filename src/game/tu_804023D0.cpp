@@ -304,7 +304,7 @@ void* fn_80403328(const char* name) {
     return lbl_80529DEC.mBossArchive_0x10->getResource('????', name);
 }
 
-void* fn_804032E8(u32 type, const char* name) {
+void* getBossArchiveResource_804032E8(u32 type, const char* name) {
     return lbl_80529DEC.mBossArchive_0x10->getResource(type, name);
 }
 
@@ -320,7 +320,7 @@ void* fn_80403204(u32 type, const char* name) {
     return lbl_80529DEC.mTitleArchive_0x24->getResource(type, name);
 }
 
-void* fn_804031C4(u32 type, const char* name) {
+void* getEntryArchiveResource_804031C4(u32 type, const char* name) {
     return lbl_80529DEC.mEntryArchive_0x28->getResource(type, name);
 }
 
@@ -340,7 +340,7 @@ void* fn_804030C4(u32 type, const char* name) {
     return lbl_80529DEC.mMain2DArchive_0x20->getResource(type, name);
 }
 
-void* fn_80403084(u32 type, const char* name) {
+void* getGame2DArchiveResource_80403084(u32 type, const char* name) {
     return lbl_80529DEC.mGame2DArchive_0x4c->getResource(type, name);
 }
 
@@ -419,7 +419,7 @@ u8 PaneCtrl_804AF86C::fn_80402B10(s16 frames, u8 mode, f32 x, f32 y) {
     return 0;
 }
 
-u8 PaneCtrl_804AF86C::fn_80402940(s16 frames, u8 mode, f32 x, f32 y) {
+u8 PaneCtrl_804AF86C::animateMoveY_80402940(s16 frames, u8 mode, f32 x, f32 y) {
     if (field_0x22 < frames - 1) {
         field_0x22++;
         f32 t;
@@ -446,7 +446,7 @@ u8 PaneCtrl_804AF86C::fn_80402940(s16 frames, u8 mode, f32 x, f32 y) {
 // FIXME: 99.56 %, regalloc-only; behaviour clean.
 // Regalloc only: the original keeps the old width in f31 and the old y in f28, ours
 // gets the four saved floats in a different order.
-u8 PaneCtrl_804AF86C::fn_8040271C(s16 frames, f32 x, f32 y) {
+u8 PaneCtrl_804AF86C::animateScale_8040271C(s16 frames, f32 x, f32 y) {
     if (field_0x24 < frames - 1) {
         field_0x24++;
         f32 t = (f32)(field_0x24 * field_0x24) / (f32)(frames * frames);
@@ -460,7 +460,7 @@ u8 PaneCtrl_804AF86C::fn_8040271C(s16 frames, f32 x, f32 y) {
     return 0;
 }
 
-bool PaneCtrl_804AF86C::fn_80402628(s16 frames, u8 from, u8 to) {
+bool PaneCtrl_804AF86C::animateAlpha_80402628(s16 frames, u8 from, u8 to) {
     if (field_0x26 < frames - 1) {
         field_0x26++;
         f32 t = (f32)field_0x26 / (f32)frames;

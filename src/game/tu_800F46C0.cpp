@@ -299,7 +299,7 @@ void Boulder_8049C4C0::fn_800F555C() {
                 }
             }
         }
-        if (fn_801F2618(NULL, false)) {
+        if (sweepMapBox_801F2618(NULL, false)) {
             mVel_0x3c.x = 0.0f;
             mVel_0x3c.y = 0.0f;
             mVel_0x3c.z = 3.0f;
@@ -568,7 +568,7 @@ void Boulder_8049C4C0::draw() {
         mtx[2][3] = 0.0f;
         setRotScaleMtx(mtx, JGeometry::TVec3f(0.0f, (f32)field_0x244 / -10430.228f, 0.0f), 1.0f);
         params.mMtx = mtx;
-        void* res = fn_804032E8('TIMG', lbl_8049C458[field_0x240]);
+        void* res = getBossArchiveResource_804032E8('TIMG', lbl_8049C458[field_0x240]);
         fn_801EFD34(res, &params, -1, 0.0f, 0.0f, 0.0f);
         return;
     }

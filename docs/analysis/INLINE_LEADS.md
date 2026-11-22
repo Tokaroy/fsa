@@ -30,7 +30,7 @@ The model case is 2290324a7: 14 copies of
 | Lead | Form tested | Units | Result |
 |---|---|---:|---|
 | `getActorManager_801F856C()->findActorBySerial_801F666C(x)` | one header inline `actorBySerial(serial)` at all 380 sites; once `return ...;`, once with a named local | 171 | +3 / -7 for both forms (losses: tu_8020B354 x3, tu_80209C14, tu_801E2540, act_sword_soldier dtor, act_ice_melted_by_four_players). **Not a game-wide header inline.** |
-| same, per file | file-local `static inline actorBySerial` at every site of the unit | 3 units gain | **kept**: tu_8020D58C (2 sites, fn_8020D6AC 97.67 -> 100 %), tu_801DE714 (36 sites, cls_804A51E4::calcVelocity_0x88 97.22 -> 100 %). act_life_meter gains too (update 99.32 -> 100 %) but has one site: not kept. |
+| same, per file | file-local `static inline actorBySerial` at every site of the unit | 3 units gain | **kept**: tu_8020D58C (2 sites, containsPointOfOther_8020D6AC 97.67 -> 100 %), tu_801DE714 (36 sites, cls_804A51E4::calcVelocity_0x88 97.22 -> 100 %). act_life_meter gains too (update 99.32 -> 100 %) but has one site: not kept. |
 | `getGameView_802D6A9C()->fn_802DCD0C()` | file-local inline at every site | 31 | no change at all |
 | `getActorManager_801F856C()->fn_801F68E0()` | same | 25 | no change (one function +0.02) |
 | `getActorManager_801F856C()->fn_801F6884();` | same | 24 | no change |
@@ -160,14 +160,14 @@ Counts from report_honest.json of 2026-11-20 (before the two commits above).
 | 7 | 34 | 100792 | 51 | 30 | `mPos.add(field_0x3c);` |
 | 8 | 34 | 94724 | 65 | 59 | `setScreenFlag_0x30(0xFF, true);` |
 | 9 | 33 | 133964 | 55 | 40 | `die_0x24();` |
-| 10 | 29 | 107504 | 34 | 32 | `fn_801F2618(NULL, false);` |
+| 10 | 29 | 107504 | 34 | 32 | `sweepMapBox_801F2618(NULL, false);` |
 
 ### Statement pairs, top 10
 
 | # | non-100 fns | their bytes | fns | units | lead |
 |---:|---:|---:|---:|---:|---|
 | 1 | 20 | 32684 | 22 | 18 | `s32 end = getActorManager_801F856C()->mActorEnd; for(s32 i = 0;` |
-| 2 | 18 | 59456 | 19 | 17 | `fn_801F2618(NULL, false); return;` |
+| 2 | 18 | 59456 | 19 | 17 | `sweepMapBox_801F2618(NULL, false); return;` |
 | 3 | 16 | 27812 | 25 | 21 | `s32 layer = field_0x4; GameView_804A9950* view = getGameView_802D6A9C();` |
 | 4 | 15 | 29764 | 29 | 23 | `JGeometry::TBox2f box(mBox); box.i.x += mPos.x;` |
 | 5 | 14 | 40544 | 30 | 23 | `box.f.y += mPos.y; fn_80239914(&box, field_0x4, mSerial);` |

@@ -234,7 +234,7 @@ void fn_80308D0C() {
 // 0x803085A4
 // FIXME: 97.08 %, missing/extra; behaviour near.
 void cls_804AA8B8::fn_803085A4(s32 player) {
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     lbl_80506DE8[player].f.field_0x3_0 = lbl_8053AD08;
     lbl_80506DE8[player].f.mPlayer = layer;
     if (getPlayerLayer_8023DE58(layer) < 8) {
@@ -400,7 +400,7 @@ void cls_804AA8B8::fn_8030801C(s32 player) {
     lbl_80506DE8[player].f.mEntries[2].mScroll = 0;
     lbl_80506DE8[player].f.mEntries[2].mScrollBit = 0;
     lbl_80506DE8[player].f.mEntries[3].mScroll = 0;
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     if (lbl_8053AAF0->mState >= 4) {
         u8 flag = 0;
         if (fn_8037F1E4(player) >= 1) {
@@ -554,7 +554,7 @@ bool fn_80307830(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
     }
     bool result = false;
     for (int p = 0; p < 4; p++) {
-        s32 slot = fn_8022EA0C(p);
+        s32 slot = getRepresentativePlayer_8022EA0C(p);
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p))) {
             continue;
         }
@@ -619,7 +619,7 @@ bool fn_803075AC(s32 serial, s32 layer, const JGeometry::TVec3f* pos, s32 id, u8
     }
     bool result = false;
     for (int p = 0; p < 4; p++) {
-        s32 slot = fn_8022EA0C(p);
+        s32 slot = getRepresentativePlayer_8022EA0C(p);
         if (!(gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << p))) {
             continue;
         }
@@ -717,7 +717,7 @@ void cls_804AA8B8::fn_80306A94(s32 player) {
         lbl_80506DE8[player].f.mKind = 14;
     }
     fn_803085A4(player);
-    s32 layer = fn_8022EA0C(player);
+    s32 layer = getRepresentativePlayer_8022EA0C(player);
     for (s32 i = 0; i < 4; i++) {
         s32 idx = fn_802340A0(i);
         if (!fn_8023F264(i) || !fn_8023188C(i) || getPlayerLayer_8023DE58(layer) < 8 ||
@@ -894,7 +894,7 @@ s32 fn_803066F0(s32 unused, s32 player, s32 max) {
     GbaSprite_80506F88* dst = lbl_80506DE8[player].f.field_0x18;
     s32 count = 0;
     s32 big = 0;
-    s32 slot = fn_8022EA0C(player);
+    s32 slot = getRepresentativePlayer_8022EA0C(player);
     for (s32 timer = 5; timer >= 0; timer--) {
         cls_803099FC* sprite = lbl_80504A38[player];
         for (s32 i = 0; i < 16; i++) {
@@ -951,7 +951,7 @@ void fn_803064A8(s32 unused, s32 player, s32 max, s32 start) {
     if (max == 0) {
         return;
     }
-    s32 slot = fn_8022EA0C(player);
+    s32 slot = getRepresentativePlayer_8022EA0C(player);
     for (int timer = 5; timer > 0; timer--) {
         for (int i = 0; i < 40; i++) {
             cls_803099FC* entry = &lbl_80505438[player][i];
@@ -1024,7 +1024,7 @@ void cls_804AA8B8::fn_80304FB0() {
         lbl_8053AD08 = (lbl_8053AD08 - 1) & 3;
     }
     for (s32 player = 0; player < 4; player++, client++) {
-        s32 layer = fn_8022EA0C(player);
+        s32 layer = getRepresentativePlayer_8022EA0C(player);
         cls_804AA858Sub11C* record = &lbl_80506DE8[player];
         if (lbl_8053AD30->fn_8030A364(getPlayerInputSlot_8030AAF4(player))) {
             if (lbl_8053ACD0 && isPlayerBitSet(gGameRoot_8053AAF8, player) != 0) {
@@ -1992,7 +1992,7 @@ void fn_803020C8(s32 player, s32 a, s32 b, u8 mode) {
 
 // Resets the player's link state (or marks it 0xFF while lbl_8053ACF0 is
 // set), then does the same for the player fn_8023ECF0 names, while there is
-// one that is its own fn_8022EA0C.
+// one that is its own getRepresentativePlayer_8022EA0C.
 void fn_80301D54(s32 player) {
     s32 slot = fn_8022F340(player);
     if (lbl_8053ACF0[slot] == 0) {
@@ -2005,7 +2005,7 @@ void fn_80301D54(s32 player) {
     lbl_8053ACF8[player] = 0;
     if (fn_8023ED8C(player)) {
         s32 other = fn_8023ECF0(player);
-        if (other == fn_8022EA0C(other)) {
+        if (other == getRepresentativePlayer_8022EA0C(other)) {
             fn_80301D54(other);
         }
     }

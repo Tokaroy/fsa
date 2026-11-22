@@ -1263,7 +1263,7 @@ void GameView_804A9950::fn_802D8328(bool reset, bool flag) {
         u32 type = 'B   ';
         sprintf(name, "d_enemy_map%s_%d%d.bin", stage, screen / 10, screen % 10);
         type += ((stage[0] - ' ') << 16) + ((stage[1] - ' ') << 8) + (stage[2] - ' ');
-        const u8* table = (const u8*)fn_804032E8(type, name);
+        const u8* table = (const u8*)getBossArchiveResource_804032E8(type, name);
         s32 count = 0;
         fn_801E9AFC()->fn_801EA384(reset);
         fn_80204638()->fn_80204ABC(reset);
@@ -2276,19 +2276,19 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                             break;
                         case 0x300:
                         case 0x304:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 0, 0x2ea, 0x2ee, 0x2ee, 0x2eb);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 0, 0x2ea, 0x2ee, 0x2ee, 0x2eb);
                             break;
                         case 0x310:
                         case 0x314:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 0, 0x2fa, 0x2fe, 0x2fe, 0x2fb);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 0, 0x2fa, 0x2fe, 0x2fe, 0x2fb);
                             break;
                         case 0x302:
                         case 0x306:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 2, 0x2ec, 0x2ef, 0x2ef, 0x2fc);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 2, 0x2ec, 0x2ef, 0x2ef, 0x2fc);
                             break;
                         case 0x303:
                         case 0x307:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 2, 0x2ed, 0x2ff, 0x2ff, 0x2fd);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 2, 0x2ed, 0x2ff, 0x2ff, 0x2fd);
                             break;
                         case 0x308:
                         case 0x30a:
@@ -2323,20 +2323,20 @@ void GameView_804A9950::fn_802D4CCC(s32 layer) {
                             gBgRewrite_8053AC98->fn_8029DEBC(layer + step, right, 1, 0x32f, 0x33f);
                             break;
                         case 0x30e:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 0, 0x2ca, 0x2ce, 0x2ce, 0x2cb);
-                            gBgRewrite_8053AC98->fn_8029DD50(layer + step, up, 0, 0x2c4, 0x2c5, 0x2c5, 0x2c6);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 0, 0x2ca, 0x2ce, 0x2ce, 0x2cb);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer + step, up, 0, 0x2c4, 0x2c5, 0x2c5, 0x2c6);
                             break;
                         case 0x31e:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 0, 0x2da, 0x2de, 0x2de, 0x2db);
-                            gBgRewrite_8053AC98->fn_8029DD50(layer + step, down, 0, 0x2d4, 0x2d5, 0x2d5, 0x2d6);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 0, 0x2da, 0x2de, 0x2de, 0x2db);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer + step, down, 0, 0x2d4, 0x2d5, 0x2d5, 0x2d6);
                             break;
                         case 0x30f:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 1, 0x2cc, 0x2cf, 0x2cf, 0x2dc);
-                            gBgRewrite_8053AC98->fn_8029DD50(layer + step, left, 1, 0x2c7, 0x2c8, 0x2c8, 0x2c9);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 1, 0x2cc, 0x2cf, 0x2cf, 0x2dc);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer + step, left, 1, 0x2c7, 0x2c8, 0x2c8, 0x2c9);
                             break;
                         case 0x31f:
-                            gBgRewrite_8053AC98->fn_8029DD50(layer, cell, 1, 0x2cd, 0x2df, 0x2df, 0x2dd);
-                            gBgRewrite_8053AC98->fn_8029DD50(layer + step, right, 1, 0x2d7, 0x2d8, 0x2d8, 0x2d9);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer, cell, 1, 0x2cd, 0x2df, 0x2df, 0x2dd);
+                            gBgRewrite_8053AC98->writeFourTiles_8029DD50(layer + step, right, 1, 0x2d7, 0x2d8, 0x2d8, 0x2d9);
                             break;
                         case 0x3a8:
                             gBgRewrite_8053AC98->fn_8029DEBC(layer, cell, 0, 0x3b0, 0x3b1);

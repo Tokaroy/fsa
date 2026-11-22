@@ -31,9 +31,9 @@ void Merchant_8049CD48::init() {
     mBox.set(-8.0f, -8.0f, 8.0f, 8.0f);
     mMapBox_0x80.set(0.0f, 0.0f, 0.0f, 0.0f);
     mLife = 0;
-    mAnim.fn_801D2608(lbl_80539ED8, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539ED8, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 // FIXME: 92.13%, scheduling only. In the fn_8038AD24 call the original loads mSerial, the

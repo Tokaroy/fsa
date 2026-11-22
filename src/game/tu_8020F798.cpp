@@ -49,7 +49,7 @@ void Thief_804A5A30::fn_8020F80C(s32 frame) {
     params.field_0x1c = 0;
     params.field_0x1d = 0;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0, "kage_sob.bin", 0, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0, "kage_sob.bin", 0, NULL);
     }
     s32 mode = 0;
     params.field_0x1f = 0;

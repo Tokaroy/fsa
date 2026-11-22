@@ -317,7 +317,7 @@ void Camera_804AA9E4::fn_8030CD18(const JGeometry::TBox2f* bounds, const CameraE
             if (entry->field_0x20 != 0 &&
                 !(fn_8022CAF8(0) == 4 && mInTransition_0x1e8 == 0 && !fn_80234134(0))) {
                 if (i != 0 || (fn_8022CAF8(0) == 4 && !fn_80234134(0))) {
-                    if (mInTransition_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != fn_8022EA0C(0)) {
+                    if (mInTransition_0x1e8 == 0 || fn_8022CAF8(0) != 4 || i != getRepresentativePlayer_8022EA0C(0)) {
                         continue;
                     }
                 }

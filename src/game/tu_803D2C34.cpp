@@ -407,28 +407,28 @@ void SaveScreen_804B0288::fn_803D4770() {
     s16 t11 = lbl_8050DB0C.field_0x4c[(0xE0 - 0x4C) / 2];
     field_0x84++;
     if (field_0x84 > t0) {
-        done1 = field_0x14->fn_80402628(t1, 0, field_0x14->field_0x28);
+        done1 = field_0x14->animateAlpha_80402628(t1, 0, field_0x14->field_0x28);
     }
     if (field_0x84 > t2) {
-        done2 = field_0x24->fn_80402940(t3, 0, -250.0f, 0.0f);
+        done2 = field_0x24->animateMoveY_80402940(t3, 0, -250.0f, 0.0f);
         if (field_0x2176 != 0) {
-            field_0x4c->fn_80402940(t3, 0, -200.0f, 0.0f);
+            field_0x4c->animateMoveY_80402940(t3, 0, -200.0f, 0.0f);
         }
     }
     if (field_0x84 > t4 + t5) {
-        done3 = field_0x18->fn_80402940(t6, 0, 26.0f, 0.0f);
+        done3 = field_0x18->animateMoveY_80402940(t6, 0, 26.0f, 0.0f);
     } else if (field_0x84 > t4) {
-        field_0x18->fn_80402940(t5, 0, -480.0f, 26.0f);
+        field_0x18->animateMoveY_80402940(t5, 0, -480.0f, 26.0f);
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0x84 > t7 + t9 * i) {
-            done4 = field_0x1c[i]->fn_80402940(t8, 0, 200.0f, 0.0f);
+            done4 = field_0x1c[i]->animateMoveY_80402940(t8, 0, 200.0f, 0.0f);
         }
     }
     if (field_0x84 > t10) {
         for (s32 i = 0; i < 8; i++) {
-            done5 = field_0x2c[i]->fn_8040271C(t11, 2.0f, 1.0f);
-            field_0x2c[i]->fn_80402628(t11, 0, field_0x2c[i]->field_0x28);
+            done5 = field_0x2c[i]->animateScale_8040271C(t11, 2.0f, 1.0f);
+            field_0x2c[i]->animateAlpha_80402628(t11, 0, field_0x2c[i]->field_0x28);
         }
         fn_803D49A4();
     }
@@ -454,7 +454,7 @@ void SaveScreen_804B0288::fn_803D4484() {
     if (field_0x216f == 1) {
         for (s32 i = 0; i < 2; i++) {
             if (field_0x86 > start + i * stagger) {
-                flags[i] = field_0x1c[i]->fn_80402940(length, 0, 200.0f, 0.0f);
+                flags[i] = field_0x1c[i]->animateMoveY_80402940(length, 0, 200.0f, 0.0f);
             }
         }
         if (flags[0] && flags[1]) {
@@ -465,7 +465,7 @@ void SaveScreen_804B0288::fn_803D4484() {
     } else if (field_0x216f == 2) {
         for (s32 i = 0; i < 2; i++) {
             if (field_0x86 > start + i * stagger) {
-                flags[i] = field_0x1c[i]->fn_80402940(length, 0, 0.0f, 200.0f);
+                flags[i] = field_0x1c[i]->animateMoveY_80402940(length, 0, 0.0f, 200.0f);
             }
         }
         if (field_0x86 > start + 1) {
@@ -611,23 +611,23 @@ void SaveScreen_804B0288::fn_803D3EC8() {
     u8 done3 = 0;
     field_0x84++;
     if (field_0x84 > t0) {
-        done1 = field_0x24->fn_80402940(t1, 0, 0.0f, 480.0f);
+        done1 = field_0x24->animateMoveY_80402940(t1, 0, 0.0f, 480.0f);
         if (field_0x2176 != 0) {
-            field_0x4c->fn_80402940(t1, 0, 0.0f, -200.0f);
+            field_0x4c->animateMoveY_80402940(t1, 0, 0.0f, -200.0f);
         }
-        field_0x14->fn_80402628(t1, field_0x14->field_0x28, 0);
+        field_0x14->animateAlpha_80402628(t1, field_0x14->field_0x28, 0);
         for (s32 i = 0; i < 8; i++) {
-            field_0x2c[i]->fn_8040271C(t1, 1.0f, 2.0f);
-            field_0x2c[i]->fn_80402628(t1, field_0x2c[i]->field_0x28, 0);
+            field_0x2c[i]->animateScale_8040271C(t1, 1.0f, 2.0f);
+            field_0x2c[i]->animateAlpha_80402628(t1, field_0x2c[i]->field_0x28, 0);
         }
         fn_803D49A4();
     }
     if (field_0x84 > t2) {
-        done2 = field_0x18->fn_80402940(t3, 0, 0.0f, 480.0f);
+        done2 = field_0x18->animateMoveY_80402940(t3, 0, 0.0f, 480.0f);
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0x84 > t4 + t6 * i) {
-            done3 = field_0x1c[i]->fn_80402940(t5, 0, 0.0f, 200.0f);
+            done3 = field_0x1c[i]->animateMoveY_80402940(t5, 0, 0.0f, 200.0f);
         }
     }
     if (done1 && done2 && done3) {

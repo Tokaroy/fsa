@@ -250,18 +250,18 @@ void BTINPC_804A927C::draw() {
         }
         if (field_0x234 == 0x22) {
             if (isScreenFlagSet_0x34() == true) {
-                void* res = fn_804032E8('TIMG', "en_8_3_koware.bti");
+                void* res = getBossArchiveResource_804032E8('TIMG', "en_8_3_koware.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
                 }
             } else {
-                void* res = fn_804032E8('TIMG', lbl_804A90F0[field_0x234]);
+                void* res = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[field_0x234]);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
                 }
             }
         } else {
-            void* res = fn_804032E8('TIMG', lbl_804A90F0[field_0x234]);
+            void* res = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[field_0x234]);
             if (mLayer_0x4 + field_0x259 < 8) {
                 gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
             }
@@ -273,54 +273,54 @@ void BTINPC_804A927C::draw() {
                 params.field_0x10.a = 0x96;
                 params.field_0x2c = 0;
                 params.field_0x24 = 0;
-                void* res2 = fn_804032E8('TIMG', lbl_804A90F0[0x51 + field_0x234]);
+                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[0x51 + field_0x234]);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x15) {
                 params.field_0x2d = 1;
-                void* res2 = fn_804032E8('TIMG', "rouya_a.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "rouya_a.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x31) {
-                void* res2 = fn_804032E8('TIMG', "tent_a.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "tent_a.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x33) {
                 params.field_0x24 = 1;
-                void* res2 = fn_804032E8('TIMG', "kairo_ue.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "kairo_ue.bti");
                 JGeometry::TVec3f pos(mPos.x, mPos.y - 144.0f, 0.0f);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res2, &params);
                 }
             } else if (field_0x234 == 0x34) {
-                void* res2 = fn_804032E8('TIMG', "naporu_tent_a.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "naporu_tent_a.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 >= 0x37 && field_0x234 <= 0x39) {
                 params.field_0x2c = 0;
                 params.field_0x24 = 1;
-                void* res2 = fn_804032E8('TIMG', lbl_804A90F0[0x60 + field_0x234 - 0x37]);
+                void* res2 = getBossArchiveResource_804032E8('TIMG', lbl_804A90F0[0x60 + field_0x234 - 0x37]);
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x3E) {
-                void* res2 = fn_804032E8('TIMG', "piramid_s_kabuse.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "piramid_s_kabuse.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x42) {
                 params.field_0x24 = 1;
-                void* res2 = fn_804032E8('TIMG', "kanban_hidari_a.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "kanban_hidari_a.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }
             } else if (field_0x234 == 0x43) {
                 params.field_0x24 = 1;
-                void* res2 = fn_804032E8('TIMG', "kanban_migi_a.bti");
+                void* res2 = getBossArchiveResource_804032E8('TIMG', "kanban_migi_a.bti");
                 if (mLayer_0x4 + field_0x259 < 8) {
                     gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res2, &params);
                 }

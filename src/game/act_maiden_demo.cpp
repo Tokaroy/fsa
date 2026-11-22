@@ -74,9 +74,9 @@ MaidenCutscene_8049D740::~MaidenCutscene_8049D740() {
 void MaidenCutscene_8049D740::init() {
     DemoActorBase_8049D140::init();
     mMode = mSpawnParam_0x90 & 0x1F;
-    mAnim.fn_801D2608(lbl_8049D710, 12);
+    mAnim.setKeyTables_801D2608(lbl_8049D710, 12);
     mAnim.startAnim_801D22DC(5, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void MaidenCutscene_8049D740::vfunc_0x10() {
@@ -125,13 +125,13 @@ void MaidenCutscene_8049D740::update() {
     case 3:
         if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
         break;
     case 4:
         if (mAnim.fn_801D208C() && mAnim.mAnim == 0xA) {
             mAnim.startAnim_801D22DC(0, 2, false);
-            mAnim.fn_801D1F14(0.0f);
+            mAnim.setFrame_801D1F14(0.0f);
         }
         break;
     case 12:
@@ -254,7 +254,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
         mEmitter298 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(0, mMode), 0, 0, NULL, NULL, true, 1.0f);
         mEmitter29c = spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(1, mMode), 0, 0, NULL, NULL, true, 1.0f);
         mAnim.startAnim_801D22DC(0xA, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 4:
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, fn_801123C8(2, mMode), 0, 0, NULL, NULL, true, 1.0f);
@@ -264,7 +264,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
         break;
     case 5:
         mAnim.startAnim_801D22DC(8, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 6:
         if (mEmitter298 != NULL) {
@@ -280,7 +280,7 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
             mEmitter2a0 = NULL;
         }
         mAnim.startAnim_801D22DC(0xB, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 7: {
         JGeometry::TVec3f pos = mPos;
@@ -309,15 +309,15 @@ void MaidenCutscene_8049D740::fn_80112654(s32 kind) {
             mAnim.startAnim_801D22DC(2, 2, false);
             break;
         }
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 9:
         mAnim.startAnim_801D22DC(3, 2, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         break;
     case 10:
         mAnim.startAnim_801D22DC(6, 0, false);
-        mAnim.fn_801D1F14(0.0f);
+        mAnim.setFrame_801D1F14(0.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC1, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC2, 0, 0, NULL, NULL, true, 1.0f);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0xC3, 0, 0, NULL, NULL, true, 1.0f);

@@ -111,7 +111,7 @@ void Floormaster_804A6004::init() {
     field_0x250 = fn_801CD664(61) + 60;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A5FE8, 7);
+    mAnim.setKeyTables_801D2608(lbl_804A5FE8, 7);
     mAnim.startAnim_801D22DC(0, 0, false);
 }
 
@@ -304,7 +304,7 @@ void Floormaster_804A6004::fn_8020EB08() {
         if (field_0x2b8 >= 0) {
             field_0x2bc++;
         }
-        s32 player = fn_801D05F8(&mPos, 0.0f);
+        s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
         if (player != field_0x2b8) {
             if (field_0x2b8 < 0) {
                 field_0x2b8 = player;
@@ -352,7 +352,7 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     case 0:
         if (!(mFlags & 0x4000) && mStateTimer >= field_0x250) {
             field_0x2bc = 0;
-            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 fn_8020ED5C(1);
             }
@@ -419,7 +419,7 @@ void Floormaster_804A6004::updateState_0x90(u8 mapHit) {
     case 4:
         if (mStateTimer >= 120) {
             field_0x2bc = 0;
-            field_0x2b8 = fn_801D05F8(&mPos, 48.0f);
+            field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 48.0f);
             if (field_0x2b8 >= 0) {
                 fn_8020ED5C(3);
             } else {
@@ -621,7 +621,7 @@ u8 Floormaster_804A6004::checkHitByPlayer_0x5C() {
         for (int i = 0; i < 4; i++) {
             s32 flag;
             JGeometry::TVec2f pos;
-            if (i == fn_801F285C(&pos, &flag, true, i)) {
+            if (i == findOverlappingPlayer_801F285C(&pos, &flag, true, i)) {
                 fn_8023B6CC(i);
                 if (field_0x1dc.fn_801EAC20(i)) {
                     JGeometry::TVec3f effectPos(pos.x, pos.y, 0.0f);

@@ -423,7 +423,7 @@ public:
     // player is ready for a message: players that do not take part, and
     // `exclude`, count as ready; the others need their window idle (state 0) and
     // fn_80230188 (flags 2 / 4 or msg 0x265) or fn_802300EC to hold for them and
-    // for everyone fn_8022E438 pairs them with.
+    // for everyone arePlayersInSameGroup_8022E438 pairs them with.
     bool fn_80389964(s32 exclude, u32 msg, u16 flags);
     // (this is the manager and is unused.)
 

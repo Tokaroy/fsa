@@ -231,7 +231,7 @@ void cls_804A51E4::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A51A0, 0x11);
+    mAnim.setKeyTables_801D2608(lbl_804A51A0, 0x11);
     mAnim.startAnim_801D22DC(0, 2, false);
 }
 
@@ -1100,7 +1100,7 @@ void cls_804A51E4::updateState_0x90(u8 mapHit) {
                 if (mStateTimer >= field_0x250) {
                     fn_801E1594(13);
                 } else {
-                    s32 player = fn_801D05F8(&mPos, 0.0f);
+                    s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
                     if (player >= 0) {
                         s32 dir = fn_801D0020(&mPos, player, false);
                         if (dir != mDir_0x98) {

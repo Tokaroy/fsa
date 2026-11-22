@@ -90,9 +90,9 @@ void Snowball_8049D020::init() {
     mParamAtcp_0x114 = 2;
     field_0x240 = mDir_0x98;
     field_0xb0 = 0x0A040304;
-    mSprite.fn_801D2608(lbl_80539EE8, 2);
+    mSprite.setKeyTables_801D2608(lbl_80539EE8, 2);
     mSprite.startAnim_801D22DC(0, 2, false);
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     if (field_0x258 > 0) {
         fn_8010C294(3);
     }
@@ -120,7 +120,7 @@ void Snowball_8049D020::update() {
         s32 dir;
         s32 player;
         f32 dist;
-        fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
         if (player >= 0 && dist < 64.0f) {
             field_0x23c = player;
             fn_8010C294(1);
@@ -145,7 +145,7 @@ void Snowball_8049D020::update() {
         }
         {
             JGeometry::TVec3f unkVec;
-            if (fn_801F2618(&unkVec, false)) {
+            if (sweepMapBox_801F2618(&unkVec, false)) {
                 fn_8010C294(5);
             }
         }
@@ -183,7 +183,7 @@ void Snowball_8049D020::update() {
             field_0x248 = 60;
         }
         JGeometry::TVec3f unkVec;
-        if (fn_801F2618(&unkVec, false)) {
+        if (sweepMapBox_801F2618(&unkVec, false)) {
             fn_8010C294(5);
             break;
         }
@@ -208,7 +208,7 @@ void Snowball_8049D020::update() {
         break;
     case 9: {
         JGeometry::TVec3f unkVec;
-        if (fn_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || fn_801F2618(&unkVec, false)) {
+        if (fn_801F2B7C(mParamAtcp_0x114, field_0x23c, 1) || fn_801F2B20(0) || sweepMapBox_801F2618(&unkVec, false)) {
             fn_8010C294(10);
             break;
         }
@@ -270,7 +270,7 @@ void Snowball_8049D020::draw() {
         params.mMtx = mtx2;
     }
     params.field_0x10.a = 0x80;
-    fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
+    drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", mSprite.mCel + 0x165, NULL);
     drawSprite(mLayer_0x4, &mPos, "enemy_gc_sob.bin", mSprite.mCel + 0x165, &params2);
 }
 
@@ -300,7 +300,7 @@ bool Snowball_8049D020::fn_8010C294(s32 state) {
         outDir = 0;
         outPlayer = 0;
         outDist = 0.0f;
-        fn_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, field_0x23c, 2);
+        findTargetPlayer_801EEC98(mSerial, &outAngle, &outDir, &outDist, &outPlayer, field_0x23c, 2);
         field_0x230 = outAngle;
         break;
     }
@@ -376,7 +376,7 @@ bool Snowball_8049D020::fn_8010C294(s32 state) {
         break;
     }
     field_0x238 = state;
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
     return true;
 }
 
@@ -390,7 +390,7 @@ void Snowball_8049D020::chase(s32 target) {
     s32 dir = 0;
     s32 player = 0;
     f32 dist = 0.0f;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, target, 2);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, target, 2);
     s32 step;
     if (JMath::sincosTable_.cosShort((s16)(field_0x230 - angle)) >= 0.0f) {
         step = (s16)((s32)fabs(300.0f * JMath::sincosTable_.sinShort((s16)(field_0x230 - angle))) + 100);

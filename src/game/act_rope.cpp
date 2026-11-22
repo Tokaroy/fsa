@@ -36,7 +36,7 @@ void Rope_804A3A68::init() {
     mStateTimer = 0;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A3A58, 4);
+    mAnim.setKeyTables_801D2608(lbl_804A3A58, 4);
     mAnim.startAnim_801D22DC(mDir_0x98, 2, false);
     mAnim.fn_801D1D60();
 }
@@ -59,7 +59,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
                     f32 dx = __fabsf(mPos.x - getPlayerPos_8023E724(i)->x);
                     f32 dy = __fabsf(mPos.y - getPlayerPos_8023E724(i)->y);
                     if (dx <= 10.0f) {
-                        f32 dist = fn_801D0DA0(i, &mPos);
+                        f32 dist = getPlayerDistSq_801D0DA0(i, &mPos);
                         if (100.0f < dist && dist < 14400.0f && dist < best) {
                             if (mPos.y < getPlayerPos_8023E724(i)->y) {
                                 if (!fn_801CFD68(2, dy)) {
@@ -76,7 +76,7 @@ void Rope_804A3A68::updateState_0x90(u8 mapHit) {
                             }
                         }
                     } else if (dy <= 10.0f) {
-                        f32 dist = fn_801D0DA0(i, &mPos);
+                        f32 dist = getPlayerDistSq_801D0DA0(i, &mPos);
                         if (100.0f < dist && dist < 14400.0f && dist < best) {
                             if (mPos.x < getPlayerPos_8023E724(i)->x) {
                                 if (!fn_801CFD68(0, dx)) {

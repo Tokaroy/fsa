@@ -40,7 +40,7 @@ cls_804AF480::cls_804AF480() {
         field_0x8 = new BattleStageSelect_804B1378;
     }
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001A) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001A, true, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001A, true, false);
         gAudioMgr_8053AF80->fn_80458408(0x100001A, true);
         lbl_80529DEC.field_0x248 = 1;
     } else if (lbl_80529DEC.field_0x248 != 1) {

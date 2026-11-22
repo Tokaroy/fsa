@@ -126,8 +126,8 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
             }
             if (fn_802308E0(nearPlayer)) {
                 field_0x3cc = nearPlayer;
-                if (fn_8022F514(nearPlayer)) {
-                    fn_8022F3DC(nearPlayer);
+                if (hasPlayerLeader_8022F514(nearPlayer)) {
+                    getPlayerLeader_8022F3DC(nearPlayer);
                 }
                 field_0x344 = nearPlayer;
                 vfunc_0x6C(2);
@@ -140,8 +140,8 @@ void ZoraEscort_8049DF78::vfunc_0x68() {
         }
         s32 player = fn_80122898(msg);
         if (player >= 0) {
-            if (fn_8022F514(player)) {
-                player = fn_8022F3DC(player);
+            if (hasPlayerLeader_8022F514(player)) {
+                player = getPlayerLeader_8022F3DC(player);
             }
             field_0x344 = player;
             vfunc_0x6C(1);
@@ -323,7 +323,7 @@ s32 ZoraEscort_8049DF78::findNearbyPlayer() {
     s32 dir = 0;
     s32 player = 0;
     f32 dist = 0.0f;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (player < 0 || player >= 4) {
         return -1;
     }
@@ -434,7 +434,7 @@ s32 ZoraEscort_8049DF78::vfunc_0x6C(s32 state) {
         fn_80131F0C()->fn_80131EE4();
         break;
     }
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     return EscortBase_8049E0C8::vfunc_0x6C(state);
 }
 
@@ -465,9 +465,9 @@ bool ZoraEscort_8049DF78::stepToPlayer() {
 }
 
 void ZoraEscort_8049DF78::vfunc_0x70() {
-    mAnim.fn_801D2608(lbl_8049DF40, 14);
+    mAnim.setKeyTables_801D2608(lbl_8049DF40, 14);
     mAnim.startAnim_801D22DC(7, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 void ZoraEscort_8049DF78::vfunc_0x74() {

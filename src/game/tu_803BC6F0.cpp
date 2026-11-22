@@ -678,7 +678,7 @@ FileSelect_804AFF60::FileSelect_804AFF60() {
     field_0xda = 0;
 
     if (gAudioMgr_8053AF80->field_0x58 != 0x100001A) {
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001A, false, false);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001A, false, false);
         gAudioMgr_8053AF80->fn_80458408(0x100001A, false);
         lbl_80529DEC.field_0x248 = 0;
     } else if (lbl_80529DEC.field_0x248) {
@@ -1079,7 +1079,7 @@ void FileSelect_804AFF60::fn_803CE11C() {
     u32 cardState = lbl_8051C1A0.fn_803B9940(0);
     if (field_0x20->mPane->getBounds()->i.x - field_0x20->field_0x8 < 600.0f) {
         field_0x20->fn_80402B10(lbl_8050DB0C.field_0x4c[0xC3], 0, 0.0f, 600.0f);
-        field_0x20->fn_80402628(lbl_8050DB0C.field_0x4c[0xC3], field_0x20->field_0x28, 0);
+        field_0x20->animateAlpha_80402628(lbl_8050DB0C.field_0x4c[0xC3], field_0x20->field_0x28, 0);
         restoreAlphas_80476938(this);
         field_0x117 = 0;
         return;
@@ -1224,17 +1224,17 @@ void FileSelect_804AFF60::fn_803CD75C() {
     }
     for (s32 i = 0; i < 3; i++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
-            field_0x38[2 - i]->fn_80402940(frames, 0, 300.0f, 0.0f);
-            field_0x38[2 - i]->fn_80402628(frames, 0, field_0x38[2 - i]->field_0x28);
+            field_0x38[2 - i]->animateMoveY_80402940(frames, 0, 300.0f, 0.0f);
+            field_0x38[2 - i]->animateAlpha_80402628(frames, 0, field_0x38[2 - i]->field_0x28);
             setRowAlphas(this, 2 - i);
             field_0x44[i]->fn_80402B10(frames, 0, -300.0f, 0.0f);
-            field_0x44[i]->fn_80402628(frames, 0, field_0x44[i]->field_0x28);
+            field_0x44[i]->animateAlpha_80402628(frames, 0, field_0x44[i]->field_0x28);
             setTabAlphas(this, i);
         }
     }
     if (field_0xd8 > boardDelay) {
-        field_0x54->fn_80402940(boardFrames, 0, -200.0f, 0.0f);
-        field_0x54->fn_80402628(boardFrames, 0, field_0x54->field_0x28);
+        field_0x54->animateMoveY_80402940(boardFrames, 0, -200.0f, 0.0f);
+        field_0x54->animateAlpha_80402628(boardFrames, 0, field_0x54->field_0x28);
     }
     if (field_0xd8 == kkDelay + 1) {
         field_0x1a4 = 1;
@@ -1351,36 +1351,36 @@ void FileSelect_804AFF60::fn_803CC760() {
     field_0xd8++;
     if (field_0xd8 > boardDelay) {
         field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+        field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
         field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+        field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
         field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+        field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
     }
     for (s32 i = 0; i < 4; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             restoreButtonAlphas(this, i);
         }
     }
     for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            field_0x38[*other]->animateAlpha_80402628(frames, 0, field_0x38[*other]->field_0x28);
             setRowAlphas(this, *other);
             field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            field_0x44[*other]->animateAlpha_80402628(frames, 0, field_0x44[*other]->field_0x28);
             setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
-        field_0x38[field_0xa4]->fn_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
+        field_0x38[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
                                             0.0f);
-        field_0x44[field_0xa4]->fn_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
+        field_0x44[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
                                             0.0f);
     }
     if (field_0xd8 > end) {
@@ -1626,34 +1626,34 @@ void FileSelect_804AFF60::fn_803CB3DC() {
     for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
+            field_0x38[*other]->animateAlpha_80402628(frames, field_0x38[*other]->field_0x28, 0);
             setRowAlphas(this, *other);
             field_0x44[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x44[*other]->fn_80402628(frames, field_0x44[*other]->field_0x28, 0);
+            field_0x44[*other]->animateAlpha_80402628(frames, field_0x44[*other]->field_0x28, 0);
             setTabAlphas(this, *other);
         }
     }
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
-        field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
+        field_0x38[field_0xa4]->animateMoveY_80402940(frames, 0, 0.0f,
                                             field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
-        field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
+        field_0x44[field_0xa4]->animateMoveY_80402940(frames, 0, 0.0f,
                                             field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x14->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-        field_0x14->fn_80402628(boardFrames, 0, field_0x14->field_0x28);
+        field_0x14->animateAlpha_80402628(boardFrames, 0, field_0x14->field_0x28);
         field_0x18->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-        field_0x18->fn_80402628(boardFrames, 0, field_0x18->field_0x28);
+        field_0x18->animateAlpha_80402628(boardFrames, 0, field_0x18->field_0x28);
         field_0x1c->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-        field_0x1c->fn_80402628(boardFrames, 0, field_0x1c->field_0x28);
+        field_0x1c->animateAlpha_80402628(boardFrames, 0, field_0x1c->field_0x28);
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
     }
     for (s32 i = 0; i < 4; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 100.0f, 0.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
             restoreButtonAlphas(this, i);
         }
     }
@@ -1846,11 +1846,11 @@ void FileSelect_804AFF60::fn_803C9F80() {
     field_0xd8++;
     if (field_0xd8 > boardDelay) {
         field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+        field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
         field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+        field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
         field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+        field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
         if (field_0xd8 <= boardDelay + boardFrames) {
@@ -1859,8 +1859,8 @@ void FileSelect_804AFF60::fn_803C9F80() {
     }
     for (s32 i = 0; i < 4; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             restoreButtonAlphas(this, i);
         }
     }
@@ -1886,10 +1886,10 @@ void FileSelect_804AFF60::fn_803C9F80() {
                 field_0x44[others[i]]->moveFromCentre_80402E08(0.0f, field_0x64[2]);
             }
             field_0x38[others[i]]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x38[others[i]]->fn_80402628(rowFrames, 0, field_0x38[others[i]]->field_0x28);
+            field_0x38[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x38[others[i]]->field_0x28);
             setRowAlphas(this, others[i]);
             field_0x44[others[i]]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-            field_0x44[others[i]]->fn_80402628(rowFrames, 0, field_0x44[others[i]]->field_0x28);
+            field_0x44[others[i]]->animateAlpha_80402628(rowFrames, 0, field_0x44[others[i]]->field_0x28);
             setTabAlphas(this, others[i]);
         }
     }
@@ -1942,7 +1942,7 @@ void FileSelect_804AFF60::fn_803C9898() {
     if (field_0xd8 > boardDelay && field_0xd8 <= boardEnd) {
         if (hasBadChecksum(field_0xa0)) {
             field_0x20->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+            field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
             restoreAlphas_80476938(this);
             if (field_0xd8 == boardEnd) {
                 field_0x20->moveFromCentre_80402E08(600.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
@@ -1953,11 +1953,11 @@ void FileSelect_804AFF60::fn_803C9898() {
             }
         } else {
             field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+            field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
             field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+            field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
             field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+            field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
@@ -1969,8 +1969,8 @@ void FileSelect_804AFF60::fn_803C9898() {
     }
     for (int i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             switch (i) {
             case 0:
                 for (int j = 0; j < 4; j++) {
@@ -1997,7 +1997,7 @@ void FileSelect_804AFF60::fn_803C9898() {
     }
     if (field_0xd8 > inDelay) {
         field_0x20->fn_80402B10(inFrames, 0, 600.0f, 0.0f);
-        field_0x20->fn_80402628(inFrames, 0, field_0x20->field_0x28);
+        field_0x20->animateAlpha_80402628(inFrames, 0, field_0x20->field_0x28);
         restoreAlphas_80476938(this);
     }
     if (field_0xd8 > end) {
@@ -2019,22 +2019,22 @@ void FileSelect_804AFF60::fn_803C9338() {
     }
     field_0xd8++;
     if (field_0xd8 > rowDelay) {
-        field_0x38[field_0xa0]->fn_80402940(rowFrames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa0]->field_0xc,
+        field_0x38[field_0xa0]->animateMoveY_80402940(rowFrames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa0]->field_0xc,
                                             field_0x38[1]->field_0xc - field_0x38[field_0xa0]->field_0xc);
-        field_0x38[field_0xa0]->fn_80402628(rowFrames, 0, field_0x38[field_0xa0]->field_0x28);
+        field_0x38[field_0xa0]->animateAlpha_80402628(rowFrames, 0, field_0x38[field_0xa0]->field_0x28);
         setRowAlphas(this, field_0xa0);
-        field_0x14->fn_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
-        field_0x14->fn_80402628(rowFrames, 0, field_0x14->field_0x28);
-        field_0x18->fn_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
-        field_0x18->fn_80402628(rowFrames, 0, field_0x18->field_0x28);
-        field_0x1c->fn_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
-        field_0x1c->fn_80402628(rowFrames, 0, field_0x1c->field_0x28);
+        field_0x14->animateMoveY_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
+        field_0x14->animateAlpha_80402628(rowFrames, 0, field_0x14->field_0x28);
+        field_0x18->animateMoveY_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
+        field_0x18->animateAlpha_80402628(rowFrames, 0, field_0x18->field_0x28);
+        field_0x1c->animateMoveY_80402940(rowFrames, 0, 0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
+        field_0x1c->animateAlpha_80402628(rowFrames, 0, field_0x1c->field_0x28);
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
     }
     if (field_0xd8 > boardDelay) {
         field_0x20->fn_80402B10(boardFrames, 0, 0.0f, -600.0f);
-        field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+        field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
         restoreAlphas_80476938(this);
     }
     if (field_0xd8 > end) {
@@ -2193,26 +2193,26 @@ void FileSelect_804AFF60::fn_803C7F7C() {
         if (hasBadChecksum(field_0xa0)) {
             field_0x20->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x20->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-            field_0x20->fn_80402628(boardFrames, 0, field_0x20->field_0x28);
+            field_0x20->animateAlpha_80402628(boardFrames, 0, field_0x20->field_0x28);
             restoreAlphas_80476938(this);
         } else {
             field_0x14->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x14->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-            field_0x14->fn_80402628(boardFrames, 0, field_0x14->field_0x28);
+            field_0x14->animateAlpha_80402628(boardFrames, 0, field_0x14->field_0x28);
             field_0x18->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x18->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-            field_0x18->fn_80402628(boardFrames, 0, field_0x18->field_0x28);
+            field_0x18->animateAlpha_80402628(boardFrames, 0, field_0x18->field_0x28);
             field_0x1c->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x1c->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-            field_0x1c->fn_80402628(boardFrames, 0, field_0x1c->field_0x28);
+            field_0x1c->animateAlpha_80402628(boardFrames, 0, field_0x1c->field_0x28);
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 100.0f, 0.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
             restoreButtonAlphas(this, i);
         }
     }
@@ -2223,15 +2223,15 @@ void FileSelect_804AFF60::fn_803C7F7C() {
                     field_0x38[i]->moveFromCentre_80402E08(0.0f, field_0x70[i]);
                     field_0x44[i]->moveFromCentre_80402E08(0.0f, field_0x64[i]);
                     field_0x38[i]->fn_80402B10(rowFrames, 0, 0.0f, 600.0f);
-                    field_0x38[i]->fn_80402628(rowFrames, field_0x38[i]->field_0x28, 0);
+                    field_0x38[i]->animateAlpha_80402628(rowFrames, field_0x38[i]->field_0x28, 0);
                     setRowAlphas(this, i);
                     field_0x44[i]->fn_80402B10(rowFrames, 0, 0.0f, 600.0f);
-                    field_0x44[i]->fn_80402628(rowFrames, field_0x44[i]->field_0x28, 0);
+                    field_0x44[i]->animateAlpha_80402628(rowFrames, field_0x44[i]->field_0x28, 0);
                     setTabAlphas(this, i);
                 }
             } else if (field_0xd8 > rowDelay) {
-                field_0x38[i]->fn_80402940(rowFrames, 0, field_0x70[i], field_0x38[1]->field_0xc - field_0x38[i]->field_0xc);
-                field_0x44[i]->fn_80402940(rowFrames, 0, field_0x64[i], field_0x44[1]->field_0xc - field_0x44[i]->field_0xc);
+                field_0x38[i]->animateMoveY_80402940(rowFrames, 0, field_0x70[i], field_0x38[1]->field_0xc - field_0x38[i]->field_0xc);
+                field_0x44[i]->animateMoveY_80402940(rowFrames, 0, field_0x64[i], field_0x44[1]->field_0xc - field_0x44[i]->field_0xc);
             }
         }
     }
@@ -2318,26 +2318,26 @@ void FileSelect_804AFF60::fn_803C70B8() {
         if (hasBadChecksum(field_0xa0)) {
             field_0x20->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x20->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+            field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
             restoreAlphas_80476938(this);
         } else {
             field_0x14->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+            field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
             field_0x18->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+            field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
             field_0x1c->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
             field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+            field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             restoreButtonAlphas(this, i);
         }
     }
@@ -2347,14 +2347,14 @@ void FileSelect_804AFF60::fn_803C70B8() {
                 field_0x38[i]->moveFromCentre_80402E08(0.0f, 0.0f);
                 field_0x44[i]->moveFromCentre_80402E08(0.0f, 0.0f);
                 field_0x38[i]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-                field_0x38[i]->fn_80402628(rowFrames, 0, field_0x38[i]->field_0x28);
+                field_0x38[i]->animateAlpha_80402628(rowFrames, 0, field_0x38[i]->field_0x28);
                 setRowAlphas(this, i);
                 field_0x44[i]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-                field_0x44[i]->fn_80402628(rowFrames, 0, field_0x44[i]->field_0x28);
+                field_0x44[i]->animateAlpha_80402628(rowFrames, 0, field_0x44[i]->field_0x28);
                 setTabAlphas(this, i);
             } else {
-                field_0x38[i]->fn_80402940(rowFrames, 0, field_0x70[i], 0.0f);
-                field_0x44[i]->fn_80402940(rowFrames, 0, field_0x64[i], 0.0f);
+                field_0x38[i]->animateMoveY_80402940(rowFrames, 0, field_0x70[i], 0.0f);
+                field_0x44[i]->animateMoveY_80402940(rowFrames, 0, field_0x64[i], 0.0f);
             }
         }
         fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - rowDelay) / (f32)rowFrames);
@@ -2384,13 +2384,13 @@ void FileSelect_804AFF60::fn_803C6798() {
     if (field_0xd8 > boardDelay) {
         field_0x14->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
         field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+        field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
         field_0x18->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
         field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+        field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
         field_0x1c->moveFromCentre_80402E08(0.0f, field_0x38[1]->field_0xc - field_0x38[0]->field_0xc);
         field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+        field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
         restoreAlphas_80476618(this);
         restoreAlphas_804768A0(this);
     }
@@ -2400,14 +2400,14 @@ void FileSelect_804AFF60::fn_803C6798() {
                 field_0x38[i]->moveFromCentre_80402E08(0.0f, 0.0f);
                 field_0x44[i]->moveFromCentre_80402E08(0.0f, 0.0f);
                 field_0x38[i]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-                field_0x38[i]->fn_80402628(rowFrames, 0, field_0x38[i]->field_0x28);
+                field_0x38[i]->animateAlpha_80402628(rowFrames, 0, field_0x38[i]->field_0x28);
                 setRowAlphas(this, i);
                 field_0x44[i]->fn_80402B10(rowFrames, 0, 600.0f, 0.0f);
-                field_0x44[i]->fn_80402628(rowFrames, 0, field_0x44[i]->field_0x28);
+                field_0x44[i]->animateAlpha_80402628(rowFrames, 0, field_0x44[i]->field_0x28);
                 setTabAlphas(this, i);
             } else {
-                field_0x38[i]->fn_80402940(rowFrames, 0, field_0x70[i], 0.0f);
-                field_0x44[i]->fn_80402940(rowFrames, 0, field_0x64[i], 0.0f);
+                field_0x38[i]->animateMoveY_80402940(rowFrames, 0, field_0x70[i], 0.0f);
+                field_0x44[i]->animateMoveY_80402940(rowFrames, 0, field_0x64[i], 0.0f);
             }
         }
     }
@@ -2423,8 +2423,8 @@ void FileSelect_804AFF60::fn_803C6690() {
     field_0xd8++;
     if (field_0xd8 > delay) {
         for (s32 i = 0; i < 3; i++) {
-            field_0x38[i]->fn_80402940(frames, 0, field_0x70[i], 0.0f);
-            field_0x44[i]->fn_80402940(frames, 0, field_0x64[i], 0.0f);
+            field_0x38[i]->animateMoveY_80402940(frames, 0, field_0x70[i], 0.0f);
+            field_0x44[i]->animateMoveY_80402940(frames, 0, field_0x64[i], 0.0f);
         }
         fn_803BC6F0(field_0xa4, 1.0f - (f32)(field_0xd8 - delay) / (f32)frames);
     }
@@ -2457,8 +2457,8 @@ void FileSelect_804AFF60::fn_803C61C4() {
             if (field_0xd8 > outDelay + i * outStep) {
                 s32 done = outFrames + (outDelay + i * outStep);
                 if (field_0xd8 <= done) {
-                    field_0x24[i]->fn_80402940(outFrames, 0, 0.0f, 100.0f);
-                    field_0x24[i]->fn_80402628(outFrames, field_0x24[i]->field_0x28, 0);
+                    field_0x24[i]->animateMoveY_80402940(outFrames, 0, 0.0f, 100.0f);
+                    field_0x24[i]->animateAlpha_80402628(outFrames, field_0x24[i]->field_0x28, 0);
                     restoreButtonAlphas(this, i);
                     if (field_0xd8 == done) {
                         if (i == 0) {
@@ -2477,8 +2477,8 @@ void FileSelect_804AFF60::fn_803C61C4() {
     }
     for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > inDelay + i * inStep) {
-            field_0x24[i]->fn_80402940(inFrames, 0, 100.0f, 0.0f);
-            field_0x24[i]->fn_80402628(inFrames, 0, field_0x24[i]->field_0x28);
+            field_0x24[i]->animateMoveY_80402940(inFrames, 0, 100.0f, 0.0f);
+            field_0x24[i]->animateAlpha_80402628(inFrames, 0, field_0x24[i]->field_0x28);
             restoreButtonAlphas(this, i);
         }
     }
@@ -2527,30 +2527,30 @@ void FileSelect_804AFF60::fn_803C5808() {
     for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x38[*other]->fn_80402628(frames, field_0x38[*other]->field_0x28, 0);
+            field_0x38[*other]->animateAlpha_80402628(frames, field_0x38[*other]->field_0x28, 0);
             setRowAlphas(this, *other);
             field_0x44[*other]->fn_80402B10(frames, 0, 0.0f, 600.0f);
-            field_0x44[*other]->fn_80402628(frames, field_0x44[*other]->field_0x28, 0);
+            field_0x44[*other]->animateAlpha_80402628(frames, field_0x44[*other]->field_0x28, 0);
             setTabAlphas(this, *other);
         }
     }
     // The chosen row moves up to the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
-        field_0x38[field_0xa4]->fn_80402940(frames, 0, 0.0f,
+        field_0x38[field_0xa4]->animateMoveY_80402940(frames, 0, 0.0f,
                                             field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
-        field_0x44[field_0xa4]->fn_80402940(frames, 0, 0.0f,
+        field_0x44[field_0xa4]->animateMoveY_80402940(frames, 0, 0.0f,
                                             field_0x44[0]->getY() - field_0x44[field_0xa4]->getY());
     }
     if (field_0xd8 > boardDelay) {
         field_0x20->fn_80402B10(boardFrames, 0, 600.0f, 0.0f);
-        field_0x20->fn_80402628(boardFrames, 0, field_0x20->field_0x28);
+        field_0x20->animateAlpha_80402628(boardFrames, 0, field_0x20->field_0x28);
         restoreAlphas_80476938(this);
     }
     // Only the first two buttons, although `end` allows for four.
     for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 100.0f, 0.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 100.0f, 0.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, 0, field_0x24[i]->field_0x28);
             restoreButtonAlphas(this, i);
         }
     }
@@ -2602,7 +2602,7 @@ void FileSelect_804AFF60::fn_803C5190() {
     if (field_0xd8 > boardDelay && field_0xd8 <= boardEnd) {
         if (hasBadChecksum(field_0xa4)) {
             field_0x20->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+            field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
             restoreAlphas_80476938(this);
             if (field_0xd8 == boardEnd) {
                 field_0x20->moveFromCentre_80402E08(600.0f, 0.0f);
@@ -2613,11 +2613,11 @@ void FileSelect_804AFF60::fn_803C5190() {
             }
         } else {
             field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+            field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
             field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+            field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
             field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+            field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
@@ -2628,8 +2628,8 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
     for (int i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             switch (i) {
             case 0:
                 for (int j = 0; j < 4; j++) {
@@ -2656,7 +2656,7 @@ void FileSelect_804AFF60::fn_803C5190() {
     }
     if (field_0xd8 > inDelay) {
         field_0x20->fn_80402B10(inFrames, 0, 600.0f, 0.0f);
-        field_0x20->fn_80402628(inFrames, 0, field_0x20->field_0x28);
+        field_0x20->animateAlpha_80402628(inFrames, 0, field_0x20->field_0x28);
         restoreAlphas_80476938(this);
     }
     if (field_0xd8 > end) {
@@ -2691,9 +2691,9 @@ void FileSelect_804AFF60::fn_803C4628() {
 
     field_0xd8++;
     if (field_0xd8 > outDelay && field_0xd8 <= outEnd) {
-        field_0x38[field_0xa4]->fn_80402940(outFrames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
+        field_0x38[field_0xa4]->animateMoveY_80402940(outFrames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
                                             field_0x38[2]->field_0xc - field_0x38[field_0xa4]->field_0xc);
-        field_0x38[field_0xa4]->fn_80402628(outFrames, field_0x38[field_0xa4]->field_0x28, 0);
+        field_0x38[field_0xa4]->animateAlpha_80402628(outFrames, field_0x38[field_0xa4]->field_0x28, 0);
         setRowAlphas(this, field_0xa4);
         if (field_0xd8 == outEnd) {
             field_0x38[field_0xa4]->moveFromCentre_80402E08(600.0f, field_0x38[0]->getY() - field_0x38[field_0xa4]->getY());
@@ -2711,12 +2711,12 @@ void FileSelect_804AFF60::fn_803C4628() {
     }
     if (field_0xd8 > boardDelay) {
         field_0x20->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-        field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+        field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
         restoreAlphas_80476938(this);
     }
     if (field_0xd8 > inDelay) {
         field_0x38[field_0xa4]->fn_80402B10(inFrames, 0, 600.0f, 0.0f);
-        field_0x38[field_0xa4]->fn_80402628(inFrames, 0, field_0x38[field_0xa4]->field_0x28);
+        field_0x38[field_0xa4]->animateAlpha_80402628(inFrames, 0, field_0x38[field_0xa4]->field_0x28);
         setRowAlphas(this, field_0xa4);
     }
     if (field_0xd8 > end) {
@@ -2840,18 +2840,18 @@ void FileSelect_804AFF60::fn_803C3904() {
     for (int i = 0; i < 2; i++, row++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*row]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[*row]->fn_80402628(frames, 0, field_0x38[*row]->field_0x28);
+            field_0x38[*row]->animateAlpha_80402628(frames, 0, field_0x38[*row]->field_0x28);
             setRowAlphas(this, *row);
             field_0x44[*row]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[*row]->fn_80402628(frames, 0, field_0x44[*row]->field_0x28);
+            field_0x44[*row]->animateAlpha_80402628(frames, 0, field_0x44[*row]->field_0x28);
             setTabAlphas(this, *row);
         }
     }
     // The chosen row moves back down from the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
-        field_0x38[field_0xa4]->fn_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
+        field_0x38[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
                                             0.0f);
-        field_0x44[field_0xa4]->fn_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
+        field_0x44[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
                                             0.0f);
     }
     if (field_0xd8 > end) {
@@ -2901,15 +2901,15 @@ void FileSelect_804AFF60::fn_803C2E24() {
     if (field_0xd8 > boardDelay) {
         if (hasBadChecksum(field_0xa4)) {
             field_0x20->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x20->fn_80402628(boardFrames, field_0x20->field_0x28, 0);
+            field_0x20->animateAlpha_80402628(boardFrames, field_0x20->field_0x28, 0);
             restoreAlphas_80476938(this);
         } else {
             field_0x14->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x14->fn_80402628(boardFrames, field_0x14->field_0x28, 0);
+            field_0x14->animateAlpha_80402628(boardFrames, field_0x14->field_0x28, 0);
             field_0x18->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x18->fn_80402628(boardFrames, field_0x18->field_0x28, 0);
+            field_0x18->animateAlpha_80402628(boardFrames, field_0x18->field_0x28, 0);
             field_0x1c->fn_80402B10(boardFrames, 0, 0.0f, 600.0f);
-            field_0x1c->fn_80402628(boardFrames, field_0x1c->field_0x28, 0);
+            field_0x1c->animateAlpha_80402628(boardFrames, field_0x1c->field_0x28, 0);
             restoreAlphas_80476618(this);
             restoreAlphas_804768A0(this);
         }
@@ -2917,26 +2917,26 @@ void FileSelect_804AFF60::fn_803C2E24() {
     // Only the first two buttons, although `end` allows for four.
     for (s32 i = 0; i < 2; i++) {
         if (field_0xd8 > buttonDelay + i * buttonStep) {
-            field_0x24[i]->fn_80402940(buttonFrames, 0, 0.0f, 100.0f);
-            field_0x24[i]->fn_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
+            field_0x24[i]->animateMoveY_80402940(buttonFrames, 0, 0.0f, 100.0f);
+            field_0x24[i]->animateAlpha_80402628(buttonFrames, field_0x24[i]->field_0x28, 0);
             restoreButtonAlphas(this, i);
         }
     }
     for (int i = 0; i < 2; i++, other++) {
         if (field_0xd8 > rowDelay + i * rowStep) {
             field_0x38[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x38[*other]->fn_80402628(frames, 0, field_0x38[*other]->field_0x28);
+            field_0x38[*other]->animateAlpha_80402628(frames, 0, field_0x38[*other]->field_0x28);
             setRowAlphas(this, *other);
             field_0x44[*other]->fn_80402B10(frames, 0, 600.0f, 0.0f);
-            field_0x44[*other]->fn_80402628(frames, 0, field_0x44[*other]->field_0x28);
+            field_0x44[*other]->animateAlpha_80402628(frames, 0, field_0x44[*other]->field_0x28);
             setTabAlphas(this, *other);
         }
     }
     // The chosen row moves back down from the first row's place.
     if (field_0xa4 != 0 && field_0xd8 > rowDelay) {
-        field_0x38[field_0xa4]->fn_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
+        field_0x38[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x38[0]->field_0xc - field_0x38[field_0xa4]->field_0xc,
                                             0.0f);
-        field_0x44[field_0xa4]->fn_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
+        field_0x44[field_0xa4]->animateMoveY_80402940(frames, 0, field_0x44[0]->field_0xc - field_0x44[field_0xa4]->field_0xc,
                                             0.0f);
     }
     if (field_0xd8 > end) {

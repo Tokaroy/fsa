@@ -126,7 +126,7 @@ bool SlingshotSeed_804AB3A8::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     u32 ids[2] = {'TOMI', ACTOR_NULL};
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ids) == 1) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ids) == 1) {
         return true;
     }
     s32 tile = fn_8022461C(pos, layer);
@@ -310,7 +310,7 @@ void SlingshotSeed_804AB3A8::update() {
         field_0x268 = 0;
         JGeometry::TVec3f wall;
         wall.zero();
-        s32 blocked = fn_801F2618(&wall, false);
+        s32 blocked = sweepMapBox_801F2618(&wall, false);
         if ((field_0x26a == 0 && fn_801F2A10(mSpawnParam_0x90, mDir_0x98, false, false)) || mLife == 0 ||
             blocked != 0)
         {
@@ -396,15 +396,15 @@ void SlingshotSeed_804AB3A8::update() {
         box.addPos(mPos.x, mPos.y);
         if (field_0x26a == 0) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !fn_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
+                if (fn_8023F264(i) && !arePlayersInSameGroup_8022E438(i, mSpawnParam_0x90) && fn_8023B190(i, &box, mLayer_0x4)) {
                     JGeometry::TVec2f centre;
                     centre.x = box.f.x + 0.5f * (box.i.x - box.f.x);
                     centre.y = box.f.y + 0.5f * (box.i.y - box.f.y);
                     if (field_0x94 == 0 && gGameRoot_8053AAF8->field_0x7f == 0) {
-                        fn_80238548(i, 1, &centre, 1);
+                        hitPlayerGroup_80238548(i, 1, &centre, 1);
                         mAlive = false;
                     } else {
-                        fn_80238548(i, 0, &centre, 0xB);
+                        hitPlayerGroup_80238548(i, 0, &centre, 0xB);
                         mAlive = false;
                     }
                     field_0x26a = 1;

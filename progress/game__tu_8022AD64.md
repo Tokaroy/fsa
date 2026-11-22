@@ -100,7 +100,7 @@ Baseline (progress.py): total 8571 / 11557; unit 283/373. Now (rebased on matchi
   offset and return its address).
 - 47 hand-written functions (all 100 %): forwarders with non-placeholder getters, the inverted
   `!isPlayerActive` shapes, all-player "any" / "find first" / "find last" / "each" loops, the
-  group loops over fn_8022E438, PlayerManager_804A6F28's constructor and destructor, fn_8022DFD4
+  group loops over arePlayersInSameGroup_8022E438, PlayerManager_804A6F28's constructor and destructor, fn_8022DFD4
   (after rebasing on agent M's cls_804A71A8 0x14 TVec2f: its fallbacks return a zeroed local's address).
 - 1 generated: fn_8023A6CC (loop family), by `gen_game.py tu_8022AD64` with the claim check
   bypassed in-process (no claims.json edit); its manifest row is new (coordinator approval).
@@ -149,7 +149,7 @@ structural 9129. .bss 100 % (sinit split).
   placeholder split into the TVec3f, @9473-@9481 chain objects and 9 memPool_ copies; the @NNN
   names follow our object's numbering and move if an include adds inline functions).
 - Inverted forwarders: fn_8022D7F8, fn_8023CD74, fn_8023CE10, fn_80236AB4, fn_80236B50,
-  fn_8022F3DC, fn_8022F514, fn_80230188, fn_8022D75C, fn_80236A18 are now written
+  getPlayerLeader_8022F3DC, hasPlayerLeader_8022F514, fn_80230188, fn_8022D75C, fn_80236A18 are now written
   `if (!isPlayerActive(p)) return F; return ...;` - the same code standalone, but the callers
   that inline them (fn_80238A68, fn_8023D4F8/9B0, fn_80239D38, fn_8023C830, fn_80239F10)
   show this block layout and reach 100 % only with it.
@@ -164,10 +164,10 @@ one-argument mPlayerMask test whose level-2/3 copies are fn_8023F9B0()->fn_8023F
 unit was therefore compiled with deferred inlining (or equivalent); see "Not done".
 
 ## Not done (18 unwritten; 6 written below 100 %: the four recursive queries, fn_8023F088, fn_8023F390)
-- Inline later-defined functions (rule: left unwritten): fn_8022B334, fn_8022CFE8 (fn_8022F514,
+- Inline later-defined functions (rule: left unwritten): fn_8022B334, fn_8022CFE8 (hasPlayerLeader_8022F514,
   fn_8023561C, getPlayerPos_8023E724 inlined; a test with calls gives 45.9 %), fn_8022D534,
-  fn_8022E438, fn_8022EA0C, fn_802316C8, fn_80231A50 (getPlayerLayer_8023DE58), fn_80231DE4
-  (fn_8023ED8C), fn_80237A80 (fn_8023EA28), fn_80238548, fn_8023885C (fn_80238A68),
+  arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_802316C8, fn_80231A50 (getPlayerLayer_8023DE58), fn_80231DE4
+  (fn_8023ED8C), fn_80237A80 (fn_8023EA28), hitPlayerGroup_80238548, fn_8023885C (fn_80238A68),
   fn_80239108, fn_8023CEAC, fn_8023D21C, fn_8023D644, fn_8023DAF4 (getPlayerPos_8023E724).
 - Paired-single JGeometry: fn_80233C08 is exactly libs/sdk/include/JSystem/JGeometry/Vec.h's
   TVec3<f32>::normalize() (JMathInlineVEC::PSVECSquareMag, 32 * FLT_EPSILON, inv_sqrt, PSVECScale,
@@ -191,7 +191,7 @@ Baseline total 8693 honest. Now 8693 honest (fn_80233C08 is 99.73 %), structural
 - fn_80232A0C (player push-apart + player-on-player hits, 0x1194): written in full (kept at
   scratchpad tu_with_a0c.cpp, not committed): 52.82 %, missing/extra, 460 extra instructions.
   The original calls the unit's own EARLIER-defined queries out of line (fn_8022D75C,
-  fn_8022F514, fn_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C) and also the JGeometry inlines
+  hasPlayerLeader_8022F514, getPlayerLeader_8022F3DC, fn_8022CAF8, fn_8022CCAC, fn_8023188C) and also the JGeometry inlines
   normalize / operator- / TBox2::set (fn_80233C08, fn_80233BC4, fn_80233BA0, act_sword_soldier's
   fn_801546F4), while it inlines isPlayerActive, layerBox, viewLayerFlag, isZero, scale, addPos.
   Our MWCC auto-inlines the earlier queries; `#pragma inline_max_total_size` (10..8000) and
@@ -203,7 +203,7 @@ Baseline total 8693 honest. Now 8693 honest (fn_80233C08 is 99.73 %), structural
   `dir.isZero()` -> (1,0,0), else |x| < 0.1 -> x = 0.1, else |y| < 0.1 -> y = 0.1; the push of
   j passes a negated copy (two stack TVec3s, 0x28 then 0x7c: a by-value inline return, still
   unexplained). Loop 2 i, j < 4: fabs(z diff) < 15, field_0x458 boxes 0x4a0/0x4b0 via
-  fn_80233C9C -> fn_80238548(.., 0x10) both ways and field_0x35c.set(fn_80233BC4(pos i, pos j)),
+  fn_80233C9C -> hitPlayerGroup_80238548(.., 0x10) both ways and field_0x35c.set(fn_80233BC4(pos i, pos j)),
   fn_80233C08, scale(2.0f); else the fn_80273E7C / fn_80273518 / fn_802573E0 / fn_80273FB8 /
   fn_80256F44 hit chain. MWCC evaluates the call operands right to left (pos(j) before pos(i)).
 
@@ -216,11 +216,11 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 
 ## Done (100 % unless said)
 - The "inline later-defined functions" list, now plain functions: fn_8022B334, fn_8022CFE8,
-  fn_8022D534, fn_8022E438 (group test), fn_8022EA0C (recursive leader mapping; MWCC unrolls it
+  fn_8022D534, arePlayersInSameGroup_8022E438 (group test), getRepresentativePlayer_8022EA0C (recursive leader mapping; MWCC unrolls it
   and calls fn_8023F264 out of line at the depth limit, as the original), fn_802316C8,
   fn_80231A50, fn_80237A80, fn_8023885C, fn_80239108, fn_8023D21C, fn_8023D644, fn_8023DAF4.
 - fn_8023CEAC 99.84 % (regalloc-only: box / first position registers swapped).
-- fn_80238548 91.52 % (structurally close: the original keeps the TVec2f offset on the stack,
+- hitPlayerGroup_80238548 91.52 % (structurally close: the original keeps the TVec2f offset on the stack,
   frame 0x40, and returns `clrlwi r3, hit, 24`; ours 5 instructions fewer).
 - fn_80232A0C (boot path) 97.25 % (missing/extra, 9 fewer): from the round-12 draft. Under deferred
   the default budget keeps the six earlier queries (and the later forwarders) out of line, as
@@ -244,7 +244,7 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 
 ## Not done
 - fn_80231DE4 (0xC28, 778 instructions; the frame's player screen-exit check): not written (time).
-  Shape: loop over players with fn_802527B0 + fn_8022E438 -> fn_80248DB8; then (no manager flag,
+  Shape: loop over players with fn_802527B0 + arePlayersInSameGroup_8022E438 -> fn_80248DB8; then (no manager flag,
   no game-root 0x96, no 0x73) a long chain of inline queries on each player, fn_802527B0 points
   compared as in fn_80231A50 (stores lbl_8053A190), fn_80124600(&point), GameView fn_802DD3D4 /
   fn_802DCE5C, AudioMgr fn_80457F60, per player fn_80241E64, then fn_8025F590 / fn_8025F418 /
@@ -254,7 +254,7 @@ gate --base matching flags only config/G4SE01/gen_game.tsv (the re-pins, coordin
 ## SHARED-EDITS
 - include/game/Player.h: Player::fn_802527B0(JGeometry::TVec2<s32>*) declared (tu_8023FBF0;
   symbols.txt renamed to fn_802527B0__15Player_804A6F38FPQ29JGeometry8TVec2<l>); fn_8022CFE8,
-  fn_8022D534, fn_8022E438, fn_8022EA0C, fn_80231A50, fn_80237A80, fn_80238548, fn_80239108 leave
+  fn_8022D534, arePlayersInSameGroup_8022E438, getRepresentativePlayer_8022EA0C, fn_80231A50, fn_80237A80, hitPlayerGroup_80238548, fn_80239108 leave
   the extern "C" block (C++ names; the empty nested extern "C" block is gone).
 - config/G4SE01/symbols.txt: the written functions renamed to the names our object emits.
 - config/G4SE01/gen_game.tsv: src_before re-pinned three times (pairs 99cf6d84/e06d7e33,

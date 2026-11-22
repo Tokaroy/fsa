@@ -41,9 +41,9 @@ void GoalOpening_8049DB30::init() {
     DemoActorBase_8049D140::init();
     field_0x238 = mSpawnParam_0x90 & 0xF;
     field_0x23c = (mSpawnParam_0x90 >> 4) & 0xF;
-    mAnim.fn_801D2608(lbl_80539F18, 1);
+    mAnim.setKeyTables_801D2608(lbl_80539F18, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
     getGameView_802D6A9C()->fn_802D7440(false);
 }
 

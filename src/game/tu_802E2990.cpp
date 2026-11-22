@@ -344,7 +344,7 @@ void Goal2_804A9C20::update() {
                         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x7B, 0, 0, NULL, NULL, true, 1.0f);
                         JGeometry::TVec2f hit;
                         hit.set(mPos.x, mPos.y);
-                        fn_80238548(player, 0, &hit, 10);
+                        hitPlayerGroup_80238548(player, 0, &hit, 10);
                         startSound_801F0E34(0x3008B, 0);
                         field_0x230 = 2;
                         field_0x2c4 = 0x2D;

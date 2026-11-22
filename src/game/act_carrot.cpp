@@ -127,7 +127,7 @@ void Carrot_804AC6B0::update() {
             mVel_0x3c.z = 0.0f;
             mVel_0x3c.y += 0.2f;
             mPos += mVel_0x3c;
-            if (fn_801F2618(NULL, false) == 1) {
+            if (sweepMapBox_801F2618(NULL, false) == 1) {
                 mVel_0x3c.x = -mVel_0x3c.x;
                 if (mVel_0x3c.y <= 1.0f) {
                     mVel_0x3c.z = 0.0f;
@@ -148,7 +148,7 @@ void Carrot_804AC6B0::update() {
                 }
             }
             mPos += mVel_0x3c;
-            if (fn_801F2618(NULL, false) == 1) {
+            if (sweepMapBox_801F2618(NULL, false) == 1) {
                 mVel_0x3c.x = -mVel_0x3c.x;
                 mVel_0x3c.y = -mVel_0x3c.y;
             }
@@ -175,7 +175,7 @@ void Carrot_804AC6B0::update() {
                         ok = true;
                         mode4 = true;
                     }
-                } else if (isPlayerBitSet(gGameRoot_8053AAF8, field_0x250) != 0 || fn_8022F514(field_0x250)) {
+                } else if (isPlayerBitSet(gGameRoot_8053AAF8, field_0x250) != 0 || hasPlayerLeader_8022F514(field_0x250)) {
                     ok = true;
                 }
                 if (!ok) {
@@ -184,8 +184,8 @@ void Carrot_804AC6B0::update() {
             }
             if (ok == true && !fn_80235580(field_0x250) && !fn_8023EA28(field_0x250)) {
                 field_0x24c = 0x2D0;
-                if (!mode4 && fn_8022F514(field_0x250)) {
-                    field_0x250 = fn_8022F3DC(field_0x250);
+                if (!mode4 && hasPlayerLeader_8022F514(field_0x250)) {
+                    field_0x250 = getPlayerLeader_8022F3DC(field_0x250);
                 }
                 if (fn_8023EBB8(field_0x250) == true) {
                     fn_80230C6C(field_0x250);

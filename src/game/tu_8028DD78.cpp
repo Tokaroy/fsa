@@ -446,7 +446,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[0] = 0;
             if (fn_8022E970(0) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 0) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 0) {
                         out[n++] = i;
                     }
                 }
@@ -454,7 +454,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[n++] = 1;
             if (fn_8022E970(1) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 1) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 1) {
                         out[n++] = i;
                     }
                 }
@@ -463,7 +463,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[0] = 1;
             if (fn_8022E970(1) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 1) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 1) {
                         out[n++] = i;
                     }
                 }
@@ -471,7 +471,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
             out[n++] = 0;
             if (fn_8022E970(0) > 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8022F340(i) == 0) {
+                    if (hasPlayerLeader_8022F514(i) && fn_8022F340(i) == 0) {
                         out[n++] = i;
                     }
                 }
@@ -493,7 +493,7 @@ void SpiralStaircase_804A7A68::fn_8028DDD8(s32* out) {
                 i = -1;
             }
         }
-        s32 leader = fn_8022F3DC(3);
+        s32 leader = getPlayerLeader_8022F3DC(3);
         for (s32 i = 0; i < 3; i++) {
             if (leader == out[i]) {
                 if (i == 2) {

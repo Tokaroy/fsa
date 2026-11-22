@@ -16,8 +16,8 @@ void Blizzard_804AC388::init() {
 
 // FIXME: 91.71 %, missing/extra; behaviour drift.
 // Three differences remain. (1) The original builds the
-// fn_80238548 position as an 8-byte stack object (x, y copied from the player
-// at 0x8/0xC, then +0.1 and -0.1; fn_80238548 reads only x and y), while a
+// hitPlayerGroup_80238548 position as an 8-byte stack object (x, y copied from the player
+// at 0x8/0xC, then +0.1 and -0.1; hitPlayerGroup_80238548 reads only x and y), while a
 // TVec3f local puts it at 0x14 and skips the copy; a const TVec2f* prototype
 // would fit but act_attack_hitbox_when_player_is_thrown passes &mPos. (2) The
 // visible box is copied to the stack with lwz/stw (0x1C..0x28) and then read
@@ -45,7 +45,7 @@ void Blizzard_804AC388::update() {
                     pos.y = player->y;
                     pos.x += 0.1f;
                     pos.y -= 0.1f;
-                    fn_80238548(i, 1, &pos, 1);
+                    hitPlayerGroup_80238548(i, 1, &pos, 1);
                     lbl_80529DEC.field_0x239 |= (u8)(1 << i);
                     spawned = true;
                 }
@@ -61,7 +61,7 @@ void Blizzard_804AC388::update() {
             spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x1bc, 2, 2, NULL, NULL, true, 1.0f);
         }
         for (s32 i = 0; i < 4; i++) {
-            if (!fn_8022F514(i) && fn_80236A18(i) && fn_8023F264(i)) {
+            if (!hasPlayerLeader_8022F514(i) && fn_80236A18(i) && fn_8023F264(i)) {
                 field_0x23c = true;
             }
         }

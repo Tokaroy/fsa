@@ -6,7 +6,7 @@
 #include "game/GameGlobals.h"
 
 // The actor with this serial, or NULL. This file looks actors up through one inline
-// helper, used at all 2 sites: written out by hand, CollisionBoxList_8020D60C::fn_8020D6AC differs
+// helper, used at all 2 sites: written out by hand, CollisionBoxList_8020D60C::containsPointOfOther_8020D6AC differs
 // (97.67 %) (docs/analysis/INLINE_LEADS.md).
 static inline ActorBase_804A5770* actorBySerial(s32 serial) {
     return getActorManager_801F856C()->findActorBySerial_801F666C(serial);
@@ -72,7 +72,7 @@ void CollisionBoxList_8020D60C::fn_8020D7D0(s32 serial) {
 // Registers only: the original keeps the box pointer, `found`
 // and the counter in r26/r24/r23, ours in other callee-saved registers. The
 // method is const (the original loads mCount above the prologue moves).
-bool CollisionBoxList_8020D60C::fn_8020D6AC(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) const {
+bool CollisionBoxList_8020D60C::containsPointOfOther_8020D6AC(s32 layer, const JGeometry::TVec3f* pos, s32 serial, const u32* ignoreIds) const {
     bool found = false;
     for (s32 i = 0; i < mCount; i++) {
         if (mBoxes[i].mLayer == layer && mBoxes[i].mSerial != serial && contains(mBoxes[i].mBox, *pos)) {

@@ -102,9 +102,9 @@ FourSwordCutscene_8049DA0C::~FourSwordCutscene_8049DA0C() {
 // (regalloc-only). Minor register allocation differences in visibleBox center computation.
 void FourSwordCutscene_8049DA0C::init() {
     DemoActorBase_8049D140::init();
-    mAnim250.fn_801D2608(lbl_8049DA00, 3);
+    mAnim250.setKeyTables_801D2608(lbl_8049DA00, 3);
     mAnim250.startAnim_801D22DC(0, 2, false);
-    mAnim250.fn_801D1F14(0.0f);
+    mAnim250.setFrame_801D1F14(0.0f);
     JGeometry::TVec3f pos;
     setCenter(pos, getGameView_802D6A9C()->mVisibleBox);
     mEmitter2a8 = spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x33e, 0, 0, NULL, NULL, true, 1.0f);
@@ -179,7 +179,7 @@ void FourSwordCutscene_8049DA0C::update() {
                 fn_80230498(i, &field_0x244, 0x31a, 0xff, -128, -128, true);
             }
             mAnim250.startAnim_801D22DC(1, 0, false);
-            mAnim250.fn_801D1F14(0.0f);
+            mAnim250.setFrame_801D1F14(0.0f);
             mAnim250.mFrameCtrl.setRate(0.0f);
         }
         if (fn_8011921C()->field_0x8 > 60) {
@@ -243,7 +243,7 @@ void FourSwordCutscene_8049DA0C::draw() {
     DemoActorBase_8049D140::draw();
     SpriteParams_801F5AE0 params;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 1, "enemy_gc_sob.bin", 0x179, NULL);
     }
     JGeometry::TVec3f pos = mPos;
     pos.y += 6.0f;
@@ -334,7 +334,7 @@ inline void FourSwordCutscene_8049DA0C::startState7() {
 
 inline void FourSwordCutscene_8049DA0C::startState8() {
     mAnim250.startAnim_801D22DC(2, 0, false);
-    mAnim250.fn_801D1F14(0.0f);
+    mAnim250.setFrame_801D1F14(0.0f);
     mAnim250.mFrameCtrl.setRate(1.0f);
     for (s32 i = 0; i < 4; i++) {
         fn_80230FD0(i, 0x20047);
@@ -356,7 +356,7 @@ void FourSwordCutscene_8049DA0C::fn_80117074(s32 index) {
         fn_80119DD0()->fn_80119998(120, 0, 2, 0, 1, 0, 0);
         fn_80234810();
         fn_802382D0(0, false);
-        gAudioMgr_8053AF80->fn_80458FF0(0x01000020, 1, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x01000020, 1, 0);
         if (mEmitter2a8 != NULL) {
             mEmitter2a8->becomeInvalidEmitter();
             mEmitter2a8 = NULL;
@@ -453,7 +453,7 @@ bool FourSwordCutscene_8049DA0C::checkPlayers() {
     s32 dir;
     s32 player;
     f32 dist;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (dir != 2) {
         return false;
     }

@@ -17,7 +17,7 @@ public:
     /* 0x14 */ virtual void update();
     /* 0x20 */ virtual void draw();
     /* 0x4C */ virtual bool isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* pos);
-    // 0x8032F148: a one-player version of ActorBase::fn_801EEC98 (angle, direction, distance of an actor seen from `player`).
+    // 0x8032F148: a one-player version of ActorBase::findTargetPlayer_801EEC98 (angle, direction, distance of an actor seen from `player`).
     void fn_8032F148(s32 serial, u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer, s32 player);
     void fn_80331E6C();
     void fn_803324A8();

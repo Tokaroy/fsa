@@ -70,7 +70,7 @@ u8 fn_80154698() {
 
 // inline: its 10430.378f is pooled right after update()'s literals (first
 // use), while its out-of-line copy sits at the end of the unit.
-inline s32 fn_8015465C(f32 y, f32 x) {
+inline s32 atan2Short_8015465C(f32 y, f32 x) {
     return JMath::atanTable_.atan2_(y, x) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
 
@@ -99,14 +99,14 @@ s32 ActorBase_804A5770::fn_801545E0() const {
 }
 
 u8 ActorBase_804A5770::fn_801545C0(JGeometry::TVec3f* out, bool flag) {
-    return fn_801F2618(out, flag);
+    return sweepMapBox_801F2618(out, flag);
 }
 
 void fn_801545A4(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
-void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1) {
+void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1) {
     box->set(x0, y0, x1, y1);
 }
 
@@ -132,11 +132,11 @@ s32 ActorBase_804A5770::fn_80154510() const {
     return mParamAtcp_0x114;
 }
 
-f32 fn_801544FC(s16 angle) {
+f32 sinShort_801544FC(s16 angle) {
     return JMASinShort(angle);
 }
 
-f32 fn_801544E4(s16 angle) {
+f32 cosShort_801544E4(s16 angle) {
     return JMACosShort(angle);
 }
 
@@ -184,7 +184,7 @@ ActorBase_804A5770* fn_8015445C(s32 serial) {
 
 // std::sqrtf out of line; 13 calls from 7 units. inline: its constants are
 // pooled right after update()'s literals (first use).
-inline f32 fn_80154378(f32 x) {
+inline f32 sqrtf_80154378(f32 x) {
     return std::sqrtf(x);
 }
 
@@ -577,7 +577,7 @@ void SwordSoldier_8049FCA0::update() {
 
     if (mState != 16 && mState != 9 && mState != 10 && mState != 17 && mState != 18 &&
         mState != 19 && mState != 20) {
-        if (field_0x250 == 0 && fn_801F305C()) {
+        if (field_0x250 == 0 && checkHits_801F305C()) {
             if (mSpawnParam_0x90 == 6) {
                 if (mLife > 0) {
                     fn_801546BC(&mVel_0x3c);
@@ -625,10 +625,10 @@ void SwordSoldier_8049FCA0::update() {
             f32* boxTbl = (f32*)(lbl_8049FA30 + 0x1C8 / 4);
             mPos.x += offsetTbl[idx1 * 2];
             mPos.y += offsetTbl[idx1 * 2 + 1];
-            fn_80154590(&mBox, boxTbl[idx2 * 4], boxTbl[idx2 * 4 + 1], boxTbl[idx2 * 4 + 2],
+            setBox_80154590(&mBox, boxTbl[idx2 * 4], boxTbl[idx2 * 4 + 1], boxTbl[idx2 * 4 + 2],
                         boxTbl[idx2 * 4 + 3]);
             for (s32 i = 0; i < 4; i++) {
-                playerIdx = fn_801F285C(NULL, NULL, true, i);
+                playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 if (playerIdx >= 0) {
                     JGeometry::TVec2f tmp28;
                     JGeometry::TVec2f tmp60;
@@ -676,11 +676,11 @@ void SwordSoldier_8049FCA0::update() {
     }
 
     if (mSpawnParam_0x90 == 6 || field_0x288 == 3) {
-        fn_80154590(&mBox, -6.0f, -14.0f, 6.0f, 4.0f);
+        setBox_80154590(&mBox, -6.0f, -14.0f, 6.0f, 4.0f);
     } else if (mState != 16) {
-        fn_80154590(&mBox, -4.0f, -6.0f, 4.0f, 2.0f);
+        setBox_80154590(&mBox, -4.0f, -6.0f, 4.0f, 2.0f);
     } else {
-        fn_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
+        setBox_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
     }
 
     if (mState == 16 || mState == 17 || mState == 18 || mState == 19 || mState == 20) {
@@ -693,7 +693,7 @@ void SwordSoldier_8049FCA0::update() {
             }
         }
         for (s32 i = 0; i < 4; i++) {
-            playerIdx = fn_801F285C(NULL, NULL, true, i);
+            playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (playerIdx >= 0) {
                 JGeometry::TVec2f tmp20;
                 JGeometry::TVec2f tmp50;
@@ -723,11 +723,11 @@ void SwordSoldier_8049FCA0::update() {
     if (mSpawnParam_0x90 == 6 && field_0x288 != 1 && field_0x288 != 3) {
         fn_801F2B7C(fn_80154510(), -1, 3);
         for (s32 i = 0; i < 4; i++) {
-            playerIdx = fn_801F285C(NULL, NULL, true, i);
+            playerIdx = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (playerIdx >= 0 && !fn_80235448(playerIdx)) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(playerIdx)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(playerIdx)->y;
-                u16 ang = (u16)fn_8015465C(-dx, -dy);
+                u16 ang = (u16)atan2Short_8015465C(-dx, -dy);
                 if (fn_801F681C(ang) == (s32)mDir_0x98) {
                     field_0x250 = 2;
                     break;
@@ -743,7 +743,7 @@ void SwordSoldier_8049FCA0::update() {
     }
 
     if (mState != 13 && mState != 14) {
-        fn_801EEC98(fn_801545E8(), &angle, &dir, &dist, &playerIdx, 0, 0);
+        findTargetPlayer_801EEC98(fn_801545E8(), &angle, &dir, &dist, &playerIdx, 0, 0);
         if (dir < 0 && (mState == 4 || mState == 5 || mState == 6)) {
             for (s32 i = 0; i < 4; i++) {
                 if (lbl_804BF850[i] == fn_801545E8()) {
@@ -765,14 +765,14 @@ void SwordSoldier_8049FCA0::update() {
             lbl_804BF850[playerIdx] != fn_801545E8()) {
             if (lbl_804BF850[playerIdx] >= 0) {
                 if (mState == 6) {
-                    field_0x2ac.x = field_0x28c * fn_801544FC((s16)(angle + 0x7000));
-                    field_0x2ac.y = field_0x28c * fn_801544E4((s16)(angle + 0x7000));
+                    field_0x2ac.x = field_0x28c * sinShort_801544FC((s16)(angle + 0x7000));
+                    field_0x2ac.y = field_0x28c * cosShort_801544E4((s16)(angle + 0x7000));
                 }
             } else if (mState == 6 && fn_801545E0() < 0) {
                 lbl_80539F68 -= lbl_8053AB48;
                 if (lbl_80539F68 > 0) {
-                    field_0x2ac.x = field_0x28c * fn_801544FC((s16)(angle + 0x7000));
-                    field_0x2ac.y = field_0x28c * fn_801544E4((s16)(angle + 0x7000));
+                    field_0x2ac.x = field_0x28c * sinShort_801544FC((s16)(angle + 0x7000));
+                    field_0x2ac.y = field_0x28c * cosShort_801544E4((s16)(angle + 0x7000));
                 } else {
                     if (lbl_804BF850[playerIdx] != fn_801545E8()) {
                         if (mSpawnParam_0x90 == 2 || mSpawnParam_0x90 == 3 || mSpawnParam_0x90 == 1) {
@@ -1097,8 +1097,8 @@ void SwordSoldier_8049FCA0::update() {
                         field_0x2a0 = 0;
                         f32 dx = leader->fn_801544DC()->x - mPos.x;
                         f32 dy = leader->fn_801544DC()->y - mPos.y;
-                        if (fn_80154378(dx * dx + dy * dy) > 40.0f) {
-                            field_0x29e = (s16)fn_8015465C(dx, dy);
+                        if (sqrtf_80154378(dx * dx + dy * dy) > 40.0f) {
+                            field_0x29e = (s16)atan2Short_8015465C(dx, dy);
                             field_0x29e += (s16)(4096.0f - 8192.0f * fn_80154744());
                         }
                     } else {
@@ -1121,16 +1121,16 @@ void SwordSoldier_8049FCA0::update() {
                     dist = 0.0f;
                     field_0x2a0 = angle + 0x8000;
                 }
-                f32 tx = getPlayerPos_8023E724(playerIdx)->x + dist * fn_801544FC((s16)field_0x2a0);
+                f32 tx = getPlayerPos_8023E724(playerIdx)->x + dist * sinShort_801544FC((s16)field_0x2a0);
                 addCalc2_801F71A4(&mPos.x, tx, 0.2f, 1.0f);
-                f32 ty = getPlayerPos_8023E724(playerIdx)->y + dist * fn_801544E4((s16)field_0x2a0);
+                f32 ty = getPlayerPos_8023E724(playerIdx)->y + dist * cosShort_801544E4((s16)field_0x2a0);
                 addCalc2_801F71A4(&mPos.y, ty, 0.2f, 1.0f);
                 field_0x240 = 0;
                 break;
             }
             if (field_0x254 == 0) {
-                field_0x2ac.x = field_0x28c * fn_801544FC(field_0x29e);
-                field_0x2ac.y = field_0x28c * fn_801544E4(field_0x29e);
+                field_0x2ac.x = field_0x28c * sinShort_801544FC(field_0x29e);
+                field_0x2ac.y = field_0x28c * cosShort_801544E4(field_0x29e);
             }
             if (field_0x2a4 != -2 &&
                 (mSpawnParam_0x90 == 6 || (u32)(mSpawnParam_0x90 - 2) <= 1 || mSpawnParam_0x90 == 1) &&
@@ -1171,8 +1171,8 @@ void SwordSoldier_8049FCA0::update() {
             field_0x264 = 0;
         }
         mDir_0x98 = fn_801F681C(field_0x29e);
-        field_0x2ac.x = 1.5f * fn_801544FC(field_0x29e);
-        field_0x2ac.y = 1.5f * fn_801544E4(field_0x29e);
+        field_0x2ac.x = 1.5f * sinShort_801544FC(field_0x29e);
+        field_0x2ac.y = 1.5f * cosShort_801544E4(field_0x29e);
         fn_80154558(&boxD8.i, &pos70);
         fn_80154558(&boxD8.f, &pos70);
         fn_80154528(&boxD8, &vec68);
@@ -1340,7 +1340,7 @@ void SwordSoldier_8049FCA0::update() {
         {
             f32 dx = mPos.x - field_0x2b8.x;
             f32 dy = mPos.y - field_0x2b8.y;
-            if (field_0x23c == 0 && fn_80154378(dx * dx + dy * dy) < 2.0f) {
+            if (field_0x23c == 0 && sqrtf_80154378(dx * dx + dy * dy) < 2.0f) {
                 if (field_0x274 != 24) {
                     startSound_801F0E34(0x4001A, 0);
                 }
@@ -1544,7 +1544,7 @@ void SwordSoldier_8049FCA0::update() {
                 fn_8015461C() == getPlayerLayer_8023DE58(i) && !fn_8022D534(i)) {
                 f32 dx = mPos.x - getPlayerPos_8023E724(i)->x;
                 f32 dy = mPos.y - getPlayerPos_8023E724(i)->y;
-                if (fn_80154378(dx * dx + dy * dy) < 48.0f) {
+                if (sqrtf_80154378(dx * dx + dy * dy) < 48.0f) {
                     field_0x258 = 0;
                     field_0x238 = (lbl_8049FA30 + 0x24C / 4)[field_0x258];
                     field_0x274 = (lbl_8049FA30 + 0x228 / 4)[field_0x258];

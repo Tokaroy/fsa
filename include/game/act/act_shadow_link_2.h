@@ -31,7 +31,7 @@ public:
     /* 0xA0 */ virtual void vfunc_0xA0();
     // 0x801C50A8: fn_801C3B7C calls it.
     void fn_801C50A8(int state);
-    // game/tu_801C0D70.cpp. Whether a player is near mPos (fn_801D05F8 with
+    // game/tu_801C0D70.cpp. Whether a player is near mPos (findNearestPlayer_801D05F8 with
     // 1.0f, then fn_801D0D50 with `range`); 0 or 1.
     bool fn_801C5348(f32 range);
     // game/tu_8021CDE4.cpp: state change; 1, 2 and 3 set up the members
@@ -45,7 +45,7 @@ public:
     void fn_801C3B7C(int);
     // game/tu_801C5B08.cpp (0x801C6784): turns field_0x33c to the side of
     // player field_0x590 that mPos is on (0x4000 or -0x4000), or to the
-    // angle toward that player (fn_801D0280) when the layer's view flag is
+    // angle toward that player (getAngleToPlayer_801D0280) when the layer's view flag is
     // clear or fn_801CC9F8 holds.
     void fn_801C6784();
     // game/tu_801C5B08.cpp (0x801C5EBC): the turn toward player `player`,
@@ -162,7 +162,7 @@ public:
     }
     bool fn_801CAEF4(const JGeometry::TVec3f* pos, s32 layer);
     // game/tu_801C9AF8.cpp (0x801CA0F8): hits the actor overlapping this one
-    // (fn_801F82CC) with fn_801F37AC unless it is 'SWBM' or 'FLME'; true if it hit.
+    // (fn_801F82CC) with takeHit_801F37AC unless it is 'SWBM' or 'FLME'; true if it hit.
     bool fn_801CA0F8();
     bool fn_801CA564();
     u8 fn_801CA274();
@@ -218,7 +218,7 @@ public:
     /* 0x5A2 */ u16 field_0x5a2;
     /* 0x5A4 */ f32 field_0x5a4;
     /* 0x5A8 */ f32 field_0x5a8;
-    /* 0x5AC */ f32 field_0x5ac; // the range fn_801C5B08 gives fn_801D05F8
+    /* 0x5AC */ f32 field_0x5ac; // the range fn_801C5B08 gives findNearestPlayer_801D05F8
     /* 0x5B0 */ f32 field_0x5b0; // squared against the distance to the player
 }; // Size: at least 0x5B4
 

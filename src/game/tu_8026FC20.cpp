@@ -294,7 +294,7 @@ static const f32 lbl_8046BD88[4][2] = {{24.0f, 0.0f}, {-24.0f, 0.0f}, {2.0f, 24.
 // The sword beam: a 'SWBM' (into 0xB38, its layer into 0xB6C) at lbl_8046BD88[facing] from
 // the player when none is out and the life is full (or under fn_80241284 with 0x11AC == 1 and
 // fn_80241544() >= 2, which also sets 0x100 in its argument). fn_8027B648, fn_8027D5F0.
-// The life test is the leader's (fn_80237774 / fn_80237810) under fn_80240808, else the
+// The life test is the leader's (fn_80237774 / fn_80237810) under hasLeader_80240808, else the
 // player's own (fn_8024189C / fn_802417CC); as early returns it branches straight into the
 // spawn, as in the original (a bool helper materialises li 0 / 1).
 static inline void fireSwordBeam(Player_804A6F38* player) {
@@ -303,7 +303,7 @@ static inline void fireSwordBeam(Player_804A6F38* player) {
         return;
     }
     if (!(player->fn_80241284() && player->field_0x11ac == 1 && player->fn_80241544() >= 2)) {
-        if (player->fn_80240808()) {
+        if (player->hasLeader_80240808()) {
             if (fn_80237774(player->fn_80240644()) < fn_80237810(player->fn_80240644())) {
                 return;
             }
@@ -955,7 +955,7 @@ void Player_804A6F38::fn_8027BC90() {
     }
     if (field_0xcae == 1) {
         for (s32 i = 0; i < 4; i++) {
-            if (i != mPlayerNo_0x4 && fn_8022E438(mPlayerNo_0x4, i)) {
+            if (i != mPlayerNo_0x4 && arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i)) {
                 fn_802356B8(i);
             }
         }
@@ -1556,7 +1556,7 @@ void Player_804A6F38::fn_80279824() {
 // By the last hit kind 0x11E4 (fn_802710C8): 4 / 7, 5 / 8, 6 / 9 each have their own reaction
 // (tu_8023FBF0), for the acting player of a group or a lone one; then four emitters stop.
 void Player_804A6F38::fn_802796B8() {
-    if ((fn_802486A0() == 4 && fn_80240888() == fn_80248778()) || (fn_802486A0() != 4 && !fn_80240808())) {
+    if ((fn_802486A0() == 4 && fn_80240888() == fn_80248778()) || (fn_802486A0() != 4 && !hasLeader_80240808())) {
         s32 kind = field_0x11e4;
         if (kind == 4 || kind == 7) {
             fn_8024E46C();
@@ -1610,7 +1610,7 @@ void Player_804A6F38::fn_802791B0() {
         box = *layerBox(mLayer_0x3b4);
         growBox(box, -16.0f);
         if (field_0xbf0->anyFlag48() || !contains(box, mPos) ||
-            (fn_80240808() && fn_802486A0() != 4 && !fn_80234B24(fn_80240644()))) {
+            (hasLeader_80240808() && fn_802486A0() != 4 && !fn_80234B24(fn_80240644()))) {
             if (mAnimTimer_0x3fa >= 20) {
                 if (fn_8024189C() <= 0) {
                     fn_80251AEC(0x33);
@@ -1674,7 +1674,7 @@ void Player_804A6F38::fn_802790C0() {
     field_0xc00 = 1;
     fn_8024F0E8(0x10005);
     fn_8024EFF8(10);
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         fn_802382D0(mPlayerNo_0x4, 0);
     }
     mPos.z = 0.0f;
@@ -1778,7 +1778,7 @@ void Player_804A6F38::fn_80277F98() {
                 field_0x494 = 180;
                 break;
             }
-            if (!fn_80240808() && field_0x49c < 0 && getActorManager_801F856C()->fn_801F7A08('BLZD') < 0) {
+            if (!hasLeader_80240808() && field_0x49c < 0 && getActorManager_801F856C()->fn_801F7A08('BLZD') < 0) {
                 switch (rank) {
                 case 1:
                     field_0x49c = getActorManager_801F856C()->fn_801F6718(mPlayerNo_0x4, mLayer_0x3b4, &mPos, 0, 3);
@@ -1846,7 +1846,7 @@ void Player_804A6F38::fn_80277F98() {
                     lbl_80529DEC.field_0x253 = 1;
                 }
                 if (gAudioMgr_8053AF80->field_0x58 != 0) {
-                    gAudioMgr_8053AF80->fn_80458F9C(20);
+                    gAudioMgr_8053AF80->stopBgm_80458F9C(20);
                 }
             }
         }
@@ -1874,8 +1874,8 @@ void Player_804A6F38::fn_80277F98() {
         }
     } else if (field_0xd2d == 1) {
         if (field_0xd30 == 0) {
-            if (!fn_80240808() ||
-                (fn_80240808() && !(fn_8023E98C(fn_80240644()) && fn_80236B50(fn_80240644())) &&
+            if (!hasLeader_80240808() ||
+                (hasLeader_80240808() && !(fn_8023E98C(fn_80240644()) && fn_80236B50(fn_80240644())) &&
                  !(!fn_80236AB4(fn_80240644()) && fn_80236B50(fn_80240644())))) {
                 fn_8024F0E8(0x20033);
                 field_0xd30++;
@@ -1891,7 +1891,7 @@ void Player_804A6F38::fn_80277F98() {
                 mVel_0x344.z -= 0.25f;
             } else {
                 mPos.z = 0.0f;
-                if (!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))) {
+                if (!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))) {
                     mStateLocked_0x124d = 0;
                     if (fn_80251AEC(0)) {
                         field_0xc00 = 0;
@@ -2046,7 +2046,7 @@ static inline void tingleHeal(Player_804A6F38* player) {
 
 // Update of state 0x34 (Tingle revives the player): from frame 60 his effects, at 420 the heal,
 // at 480 back to state 0. Outside GameRoot 0x7E it waits for a 'TNGL' actor's 0x251 first.
-// The second fn_80240808() call is in the original (an inline's own test, source unknown).
+// The second hasLeader_80240808() call is in the original (an inline's own test, source unknown).
 // FIXME: 99.77 %, missing/extra; behaviour near.
 // One instruction missing: after the actor's null test the original has a second,
 // dead `beq` to the function's end (cmplwi r3, 0 / beq / beq / lbz 0x251).
@@ -2075,7 +2075,7 @@ void Player_804A6F38::fn_8027776C() {
         }
         tingleHeal(this);
         if (field_0xd30 >= 480) {
-            if (!fn_80240808() || (fn_80240808() && !fn_80236B50(fn_80240644()))) {
+            if (!hasLeader_80240808() || (hasLeader_80240808() && !fn_80236B50(fn_80240644()))) {
                 mStateLocked_0x124d = 0;
                 fn_80251AEC(0);
             }
@@ -2409,10 +2409,10 @@ bool Player_804A6F38::fn_80275D9C() {
     if (field_0xc9c > 0) {
         return false;
     }
-    if (fn_80240808() && fn_802486A0() == 5) {
+    if (hasLeader_80240808() && fn_802486A0() == 5) {
         return false;
     }
-    if (fn_80240808() && fn_8023EA28(fn_80240644()) && fn_802486A0() != 4) {
+    if (hasLeader_80240808() && fn_8023EA28(fn_80240644()) && fn_802486A0() != 4) {
         return false;
     }
     if (fn_802DEBF8()) {
@@ -3532,7 +3532,7 @@ bool Player_804A6F38::fn_80272224(const JGeometry::TBox2f* box, s32 layer, s32 d
     if (!field_0xb98) {
         return false;
     }
-    if (fn_80240808() && fn_802486A0() == 5) {
+    if (hasLeader_80240808() && fn_802486A0() == 5) {
         return false;
     }
     if (fn_80241200()) {
@@ -3613,8 +3613,8 @@ s32 Player_804A6F38::fn_80272184() {
     return 4;
 }
 
-bool Player_804A6F38::fn_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
-    return fn_80238548(mPlayerNo_0x4, damage, pos, arg);
+bool Player_804A6F38::hitOwnGroup_80272160(s32 damage, const JGeometry::TVec2f* pos, s32 arg) {
+    return hitPlayerGroup_80238548(mPlayerNo_0x4, damage, pos, arg);
 }
 
 // FIXME: 98.54 %, missing/extra; behaviour clean.
@@ -3667,7 +3667,7 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
     if (kind == 0x12 || kind == 0x13) {
         mLife_0xbfc = 0;
     } else if (attacker == mPlayerNo_0x4) {
-        if (fn_80240808()) {
+        if (hasLeader_80240808()) {
             fn_80236468(fn_80240644(), damage);
         } else {
             fn_80236468(mPlayerNo_0x4, damage);
@@ -3924,16 +3924,16 @@ bool Player_804A6F38::fn_802710C8(s32 attacker, s32 damage, const JGeometry::TVe
 }
 
 bool Player_804A6F38::fn_80271098(const JGeometry::TVec3f* pos) {
-    // fn_80238548 reads only pos.x and pos.y
-    return fn_80238548(mPlayerNo_0x4, 0, (const JGeometry::TVec2f*)pos, 0xd);
+    // hitPlayerGroup_80238548 reads only pos.x and pos.y
+    return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, (const JGeometry::TVec2f*)pos, 0xd);
 }
 
 bool Player_804A6F38::fn_80271068(const JGeometry::TVec2f* pos) {
-    return fn_80238548(mPlayerNo_0x4, 0, pos, 0xe);
+    return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, pos, 0xe);
 }
 
 bool Player_804A6F38::fn_80271038(const JGeometry::TVec2f* pos) {
-    return fn_80238548(mPlayerNo_0x4, 0, pos, 0xf);
+    return hitPlayerGroup_80238548(mPlayerNo_0x4, 0, pos, 0xf);
 }
 
 void Player_804A6F38::fn_80270F00(s32 arg) {
@@ -3962,7 +3962,7 @@ void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
         }
     }
     mLife_0xbfc = life;
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         mLife_0xbfc = fn_802376D8(fn_80240644());
     } else {
         mLife_0xbfc += amount;
@@ -3975,7 +3975,7 @@ void Player_804A6F38::fn_80270DDC(s32 amount, bool flag) {
 
 // The argument is subtracted from mLife_0xbfc.
 void Player_804A6F38::fn_80270D34(s32 amount) {
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         mLife_0xbfc = fn_80237774(fn_80240644());
     } else {
         mLife_0xbfc -= amount;
@@ -4038,7 +4038,7 @@ bool Player_804A6F38::fn_80270ABC() const {
     if (fn_80270A58()) {
         return true;
     }
-    if (fn_80240808() && fn_802486A0() == 5) {
+    if (hasLeader_80240808() && fn_802486A0() == 5) {
         return true;
     }
     if (mState_0x1240 == 1) {
@@ -4166,7 +4166,7 @@ void Player_804A6F38::fn_8027057C() {
                 } else {
                     field_0xcfc = 0;
                     for (s32 i = 0; i < 4; i++) {
-                        if (fn_8022E438(mPlayerNo_0x4, i) && fn_80236B50(i) && !fn_80236AB4(i)) {
+                        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_80236B50(i) && !fn_80236AB4(i)) {
                             fn_80236350(i);
                         }
                     }
@@ -4463,7 +4463,7 @@ s32 Player_804A6F38::fn_8026FC68() {
 }
 
 s32 Player_804A6F38::fn_8026FC20() {
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         return fn_8023A1A4(fn_80240644());
     }
     return field_0xbac;

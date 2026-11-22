@@ -72,9 +72,9 @@ void IceWall_8049DE18::init() {
     field_0xb0 = 0x06040304;
     mParamAtcn_0x118 = 0;
     field_0xbc = 3;
-    mSprite.fn_801D2608(lbl_80539F28, 1);
+    mSprite.setKeyTables_801D2608(lbl_80539F28, 1);
     mSprite.startAnim_801D22DC(0, 2, false);
-    mSprite.fn_801D1F14(0.0f);
+    mSprite.setFrame_801D1F14(0.0f);
 }
 
 // FIXME: 99.90 %, regalloc-only; behaviour clean.
@@ -93,7 +93,7 @@ void IceWall_8049DE18::update() {
     switch (field_0x234) {
     case 0: {
         fn_80239914(&box, mLayer_0x4, mSerial);
-        s32 player = fn_801F285C(NULL, NULL, true, -1);
+        s32 player = findOverlappingPlayer_801F285C(NULL, NULL, true, -1);
         bool hit; // the original tests the result of an inlined bool helper (li 1 / li 0, clrlwi.)
         if (player >= 0) {
             startSound_801F0E34(0x400D1, 0);

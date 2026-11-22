@@ -87,7 +87,7 @@ void fn_8045B030(ActorSoundObj_804578F4* obj, u8 index, s8 port9) {
         if (id == 0x1000002 || id == 0x1000023) {
             gAudioMgr_8053AF80->fn_80458F04(id);
         } else {
-            gAudioMgr_8053AF80->fn_80458FF0(id, true, false);
+            gAudioMgr_8053AF80->startBgm_80458FF0(id, true, false);
         }
         return;
     }

@@ -24,9 +24,9 @@ s32 fn_801365A8();
 
 void AfterGoalOpening_8049DD68::init() {
     DemoActorBase_8049D140::init();
-    field_0x274.fn_801D2608(lbl_80539F20, 1);
+    field_0x274.setKeyTables_801D2608(lbl_80539F20, 1);
     field_0x274.startAnim_801D22DC(0, 2, false);
-    field_0x274.fn_801D1F14(0.0f);
+    field_0x274.setFrame_801D1F14(0.0f);
     field_0x240 = mPos;
     field_0x258 = 284.0f;
     getGameView_802D6A9C()->fn_802D7440(0);
@@ -112,7 +112,7 @@ void AfterGoalOpening_8049DD68::fn_8011D1B8(s32 state) {
             fn_80230498(i, getPlayerPos_8023E724(i), 0x3F, 0, -0x80, -0x80, true);
         }
         fn_8011921C()->field_0x2 = 1;
-        gAudioMgr_8053AF80->fn_80458FF0(0x100001B, false, 0);
+        gAudioMgr_8053AF80->startBgm_80458FF0(0x100001B, false, 0);
         break;
     case 2:
         startScroll();

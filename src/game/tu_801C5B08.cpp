@@ -18,7 +18,7 @@ void ShadowLink2_804A43E8::fn_801C6784() {
             field_0x33c = -0x4000;
         }
     } else {
-        field_0x33c = fn_801D0280(field_0x590);
+        field_0x33c = getAngleToPlayer_801D0280(field_0x590);
     }
 }
 
@@ -26,7 +26,7 @@ void ShadowLink2_804A43E8::fn_801C6784() {
 // Called by fn_801C5B08 once field_0x338 holds the nearest player: picks the
 // attack state (0x22, 0x25, 0x26) when close, or turns away and switches to 0x1C.
 void ShadowLink2_804A43E8::fn_801C6260() {
-    f32 dist = fn_801D0DA0(field_0x338, &mPos);
+    f32 dist = getPlayerDistSq_801D0DA0(field_0x338, &mPos);
     bool near = fn_801D183C(1.0f);
     bool notTarget = !fn_801CAED4(field_0x338);
     if (field_0x597 == 0 && near && notTarget && (field_0x524.field_0x0 & 0x10) && dist <= 900.0f) {
@@ -181,7 +181,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
         fn_801C3B7C(0x1E);
         return;
     }
-    s32 player = fn_801D05F8(&mPos, field_0x5ac);
+    s32 player = findNearestPlayer_801D05F8(&mPos, field_0x5ac);
     if (player < 0) {
         if (gGameRoot_8053AAF8->mRandom.get_ufloat_1() < 0.6f) {
             fn_801C3B7C(0xF);
@@ -204,7 +204,7 @@ void ShadowLink2_804A43E8::fn_801C5B08(bool flag) {
                 field_0x33c = -0x4000;
             }
         } else {
-            field_0x33c = fn_801D0280(player);
+            field_0x33c = getAngleToPlayer_801D0280(player);
             s32 rnd = fn_801CD664(0x4001);
             field_0x33c = field_0x33c + rnd - 0x2000;
         }

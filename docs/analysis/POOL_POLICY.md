@@ -134,7 +134,7 @@ Figures:
 | act_princess_zelda | approachPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 19 | 1 | 4 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | followPlayerSide | `{ switch (field_0x98) { case 0: ppos.x -= 16.0f; break; case 1: ppos.x` | 25 | 1 | 4 | 5 | pool only | - | - | - |  |
 | act_princess_zelda | spawnEffect33A | `{ JGeometry::TVec3f pos = mPos; pos.y += -24.0f; spawnEmitter_8013CC50` | 5 | 2 | 4 | 5 | 2 call sites | y | y | y |  |
-| act_princess_zelda | resetAnimFrame | `{ mSpriteAnim.fn_801D1F14(0.0f); }` | 3 | 5 | 5 | 5 | 5 call sites; one statement | y | y | y |  |
+| act_princess_zelda | resetAnimFrame | `{ mSpriteAnim.setFrame_801D1F14(0.0f); }` | 3 | 5 | 5 | 5 | 5 call sites; one statement | y | y | y |  |
 | act_princess_zelda_demo | faceDir | `{ if (dir >= 0) { field_0x98 = dir; if (dir + 6 != mAnim0.mAnim) { mAn` | 9 | 2 | 0 | 5 | 2 call sites | y | y | y |  |
 | act_princess_zelda_demo | flashAtFeet | `{ JGeometry::TVec3f pos = mPos; pos.y += -16.0f; spawnEmitter_8013CC50` | 6 | 2 | 3 | 5 | 2 call sites | y | y | y | rejected |
 | act_princess_zelda_demo | setCenter | `{ pos.x = box.f.x + 0.5f * (box.i.x - box.f.x); pos.y = box.f.y + 0.5f` | 5 | 1 | 3 | 5 | same body in act_four_sword_demo, act_blizzard_battle | - | - | y |  |

@@ -280,7 +280,7 @@ void Door_804A8D88::update() {
             break;
         }
         case 1: {
-            gBgRewrite_8053AC98->fn_8029DD50(
+            gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                 mLayer_0x4, cell, (field_0x238 >> 1) & 1,
                 tiles.mWidth2[field_0x234][field_0x238][0],
                 tiles.mWidth2[field_0x234][field_0x238][1],
@@ -300,7 +300,7 @@ void Door_804A8D88::update() {
             if (field_0x234 == 2) {
                 JGeometry::TVec2f pos2(field_0x258.x + tiles.mLayer2DX[field_0x238], field_0x258.y + tiles.mLayer2DY[field_0x238]);
                 s32 cell2 = fn_80226BC4(&pos2, mLayer_0x4);
-                gBgRewrite_8053AC98->fn_8029DD50(
+                gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                     mLayer_0x4 + upper, cell2, (field_0x238 >> 1) & 1,
                     tiles.mLayer2Width2[field_0x238][0],
                     tiles.mLayer2Width2[field_0x238][1],
@@ -403,7 +403,7 @@ void Door_804A8D88::update() {
                 break;
             }
             for (s32 i = 0; i < 4; i++) {
-                if (i == field_0x248 || (fn_8022F514(i) == true && field_0x248 == fn_8022F3DC(i))) {
+                if (i == field_0x248 || (hasPlayerLeader_8022F514(i) == true && field_0x248 == getPlayerLeader_8022F3DC(i))) {
                     if (fn_8023EEB4(i) != 'KEY0') {
                         continue;
                     }
@@ -532,7 +532,7 @@ void Door_804A8D88::update() {
             break;
         }
         case 1: {
-            gBgRewrite_8053AC98->fn_8029DD50(
+            gBgRewrite_8053AC98->writeFourTiles_8029DD50(
                 mLayer_0x4, cell, (field_0x238 >> 1) & 1,
                 tiles.mOpenWidth2[field_0x238][0],
                 tiles.mOpenWidth2[field_0x238][1],
@@ -595,8 +595,8 @@ void Door_804A8D88::update() {
             break;
         }
         s32 leader = field_0x248;
-        if (fn_8022F514(field_0x248)) {
-            leader = fn_8022F3DC(field_0x248);
+        if (hasPlayerLeader_8022F514(field_0x248)) {
+            leader = getPlayerLeader_8022F3DC(field_0x248);
         }
         for (s32 i = 0; i < 4; i++) {
             JGeometry::TVec3f player = *getPlayerPos_8023E724(i);
@@ -604,7 +604,7 @@ void Door_804A8D88::update() {
             p.x = 1.0f + player.x;
             p.y = player.y - 12.0f;
             p.z = player.z;
-            if (fn_8022F514(i) == true && leader == fn_8022F3DC(i)) {
+            if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
                 if (i == field_0x248) {
                     getActorManager_801F856C()->spawnActor_801F9484('IMUP', mLayer_0x4, &p, 0x800004 + (i << 24) + (field_0x248 << 26), -1, -1);
                 }

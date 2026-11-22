@@ -683,7 +683,7 @@ inline void KaeporaGaeboraEnding_804ADAC8::drawOther() {
     params.field_0x10.a = 200;
     s32 frame = field_0x23C + 0x25C;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
     }
 }
 
@@ -710,7 +710,7 @@ void KaeporaGaeboraEnding_804ADAC8::draw() {
         }
         s32 frame = field_0x238 + field_0x23C;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_both2_sob.bin", frame, NULL);
         }
     }
 }
@@ -723,7 +723,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     drawSprite_801F06F0("enemy_gc_sob.bin", 0x279, &params, -1, 1.0f, 1.0f);
     params.field_0x10.a = 200;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x279, NULL);
     }
     params.reset();
     params.field_0x1f = 0;
@@ -747,7 +747,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_803616FC() {
     params.field_0x10.a = 200;
     mPos.y += -10.5f;
     if (mSpriteParams.mMtx == NULL) {
-        fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
+        drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", 0x27A, NULL);
     }
     mPos.y -= -10.5f;
     mPos = savedPos;
@@ -801,7 +801,7 @@ void KaeporaGaeboraEnding_804ADAC8::fn_80361424() {
         params.field_0x1d = -1;
         s32 frame = field_0x23C + 0x3E0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 0x407, "enemy_gc_sob.bin", frame, NULL);
         }
     }
 }

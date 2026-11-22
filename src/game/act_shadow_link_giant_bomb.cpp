@@ -114,7 +114,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             }
         }
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
         }
         mState = 2;
         mStateTimer = 60;
@@ -215,7 +215,7 @@ void ShadowLinkGiantBomb_804AC4D0::update() {
             if (getScreenFlagBit_0x3C() == 0 || (getScreenFlagBit_0x3C() != 0 && isScreenFlagSet_0x34() == 1)) {
                 if (gGameRoot_8053AAF8->field_0x7f == 1) {
                     if (gAudioMgr_8053AF80->field_0x58 != 0x100000D) {
-                        gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+                        gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
                     }
                 }
                 field_0x250 = 0.0f;

@@ -253,14 +253,14 @@ void fn_80154718(const JGeometry::TVec3f* pos);
 void fn_801546F4(JGeometry::TBox2f* dst, const JGeometry::TBox2f* src);
 void fn_801546D0(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src);
 void fn_801546BC(JGeometry::TVec3f* v);
-s32 fn_8015465C(f32 y, f32 x);
+s32 atan2Short_8015465C(f32 y, f32 x);
 void fn_801545F0(JGeometry::TVec3f* a, const JGeometry::TVec3f* b);
-void fn_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
+void setBox_80154590(JGeometry::TBox2f* box, f32 x0, f32 y0, f32 x1, f32 y1);
 void fn_80154558(JGeometry::TVec2f* dst, const JGeometry::TVec2f* src);
-f32 fn_801544FC(s16 angle);
-f32 fn_801544E4(s16 angle);
+f32 sinShort_801544FC(s16 angle);
+f32 cosShort_801544E4(s16 angle);
 ActorBase_804A5770* fn_8015445C(s32 serial);
-f32 fn_80154378(f32 x);
+f32 sqrtf_80154378(f32 x);
 f32 fn_8015436C(f32 x);
 s32 fn_80154310(u32 id, s32 layer, const JGeometry::TVec3f* pos, u32 arg, s32 a, s32 b);
 u8 fn_8017ECC0();
@@ -321,7 +321,7 @@ void fn_80196D8C(s32 index, bool flag, f32 a, f32 b) {
 }
 
 // Out-of-line copy of TVec3<f32>::set(const TVec3&).
-void fn_80196D70(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
+void copyVec3_80196D70(JGeometry::TVec3f* dst, const JGeometry::TVec3f* src) {
     dst->set(*src);
 }
 
@@ -622,8 +622,8 @@ void Ganon_804A25F0::fn_80196020(s32 player) {
         mEmitters[0] = spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(player), 0x2A6, 0, 0, NULL, NULL, true, 1.0f);
         mEmitters[1] = spawnEmitter_8013CC50(mLayer_0x4, getPlayerPos_8023E724(player), 0x2A7, 0, 0, NULL, NULL, true, 1.0f);
     }
-    if (fn_8022F3DC(player) >= 0) {
-        player = fn_8022F3DC(player);
+    if (getPlayerLeader_8022F3DC(player) >= 0) {
+        player = getPlayerLeader_8022F3DC(player);
     }
     fn_8022CA6C(player, 5, false);
     if (fn_802317F0(player, lbl_804C1BC0[player], getPlayerPos_8023E724(player), &lbl_804C1BD0[player], 6)) {
@@ -683,24 +683,24 @@ void Ganon_804A25F0::update() {
             }
         } else if (field_0x2a6 == 0) {
             for (s32 i = 0; i < 4; i++) {
-                s32 hitPlayer = fn_801F285C(NULL, NULL, true, i);
+                s32 hitPlayer = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
                 if (hitPlayer >= 0) {
                     JGeometry::TVec2f dir;
                     fn_801F3128(&dir);
-                    fn_80238548(hitPlayer, 0, &dir, 3);
+                    hitPlayerGroup_80238548(hitPlayer, 0, &dir, 3);
                 }
             }
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             mPos.y -= mPos.z;
             mPos.z = 0.0f;
             s32 hitSer = fn_801F2718('GNON');
-            fn_80196D70(&mPos, &posA);
+            copyVec3_80196D70(&mPos, &posA);
             if (hitSer >= 0) {
                 ActorBase_804A5770* hit = fn_8015445C(hitSer);
                 if (hit != NULL && hit->fn_8018A590() == 1 &&
                     (hit->fn_801544C8() == 20 || (hit->fn_801544C8() - 21) <= 1u || hit->fn_801544C8() == 23)) {
                     field_0x298 = (s32)((f32)field_0x298 - 64.0f);
-                    fn_801F37AC(0, &mPos, 3, 0, -1);
+                    takeHit_801F37AC(0, &mPos, 3, 0, -1);
                     fn_801544D0(0);
                     lbl_8053AB90 = 1;
                     startSound_801F0E34(0x50005, 0);
@@ -740,13 +740,13 @@ void Ganon_804A25F0::update() {
     if (mSpawnParam_0x90 == 0) {
         if (mState != 9 && mState != 10 && mState != 12 && mState != 25 && mState != 26 &&
             mState != 27 && field_0x2ac == 255.0f) {
-            fn_80154590(&mBox, -32.0f, -32.0f, 32.0f, 32.0f);
+            setBox_80154590(&mBox, -32.0f, -32.0f, 32.0f, 32.0f);
             if (field_0x2a0 != 3) {
                 fn_801F2B7C(-100, -1, 1);
             } else {
                 fn_801F2B7C(fn_80154510(), -1, 3);
             }
-            fn_80154590(&mBox, -48.0f, -48.0f, 48.0f, 48.0f);
+            setBox_80154590(&mBox, -48.0f, -48.0f, 48.0f, 48.0f);
         }
         fn_80196208(0);
         if (mState != 12 && mState != 11 && mState != 16 && mState != 17 && mState != 18) {
@@ -784,7 +784,7 @@ void Ganon_804A25F0::update() {
     }
     switch (mState) {
     case 0:
-        fn_80196D70(&posA, &mPos);
+        copyVec3_80196D70(&posA, &mPos);
         posA.y += 16.0f;
         field_0x26c = 1;
         fn_8017EB44(&posA);
@@ -798,31 +798,31 @@ void Ganon_804A25F0::update() {
         }
         // fall through
     case 1: {
-        fn_80196D70(&posA, &mPos);
+        copyVec3_80196D70(&posA, &mPos);
         posA.y += 16.0f;
         fn_8017EB44(&posA);
         fn_8017EB1C(0.05f);
         field_0x28c = 6;
-        fn_8022FE80(fn_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
         fn_801546BC(&posA);
         posA.y = -10.0f;
         JGeometry::TVec3f msgPos;
         fn_801546D0(&msgPos, &posA);
-        if (fn_8038AD24(fn_8022EA0C(0), 0x34E, fn_801545E8(), fn_8015461C(), msgPos, 0x4102)) {
+        if (fn_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x34E, fn_801545E8(), fn_8015461C(), msgPos, 0x4102)) {
             mState = 2;
         }
         // fall through
     }
     case 2:
-        fn_80196D70(&posA, &mPos);
+        copyVec3_80196D70(&posA, &mPos);
         posA.y += 16.0f;
         fn_8017EB44(&posA);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), fn_801545E8())) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), fn_801545E8())) {
             fn_8018A63C();
             field_0x94 = 1;
-            fn_8018A6AC()->fn_80458FF0(0x100000C, false, 0);
+            fn_8018A6AC()->startBgm_80458FF0(0x100000C, false, 0);
             field_0x2b6 = -0x8000;
             mState = 3;
         }
@@ -846,8 +846,8 @@ void Ganon_804A25F0::update() {
         mState = 4;
         // fall through
     case 4:
-        field_0x2b8.x = 3.0f * fn_801544FC(field_0x2b6);
-        field_0x2b8.y = 3.0f * fn_801544E4(field_0x2b6);
+        field_0x2b8.x = 3.0f * sinShort_801544FC(field_0x2b6);
+        field_0x2b8.y = 3.0f * cosShort_801544E4(field_0x2b6);
         if (field_0x2a0 == 3 && mPos.y > 32.0f + field_0x2dc.y && mVel_0x3c.y > 1.0f && field_0x234[6] == 0) {
             field_0x234[2] = 0;
             field_0x274 = 1;
@@ -855,10 +855,10 @@ void Ganon_804A25F0::update() {
         field_0x2b4 += 0x1000;
         startSound_801F0E34(0x400B2, 0);
         if (field_0x2a5 == 0) {
-            fn_80196D70(&posA, &mPos);
-            fn_80196D70(&mPos, &field_0x2c4);
+            copyVec3_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&mPos, &field_0x2c4);
             startSound_801F0E34(0x30052, 0);
-            fn_80196D70(&mPos, &posA);
+            copyVec3_80196D70(&mPos, &posA);
         }
         if ((wallHit || field_0x234[2] == 0) && field_0x234[7] == 0) {
             fn_801546BC(&field_0x2b8);
@@ -896,10 +896,10 @@ void Ganon_804A25F0::update() {
         if (field_0x234[2] == 0 && field_0x2a5 == 0) {
             field_0x234[3] = field_0x264;
             mState = 3;
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             if (fn_80154744() < 0.3f && field_0x2fc >= 0) {
-                mPos.x += 16.0f * fn_801544FC(field_0x304);
-                mPos.y += 16.0f * fn_801544E4(field_0x304);
+                mPos.x += 16.0f * sinShort_801544FC(field_0x304);
+                mPos.y += 16.0f * cosShort_801544E4(field_0x304);
                 mPos.z = 35.0f;
                 if (!fn_801545C0(NULL, false)) {
                     field_0x2b6 = field_0x304;
@@ -908,23 +908,23 @@ void Ganon_804A25F0::update() {
                         field_0x234[6] = 30;
                         field_0x2b6 = (s16)(-0x7000 - (s32)(8192.0f * fn_80154744()));
                     }
-                    fn_80196D70(&mPos, &posA);
+                    copyVec3_80196D70(&mPos, &posA);
                     break;
                 }
             }
             f32 dx = field_0x2dc.x - mPos.x;
             f32 dy = field_0x2dc.y - mPos.y;
-            field_0x2b6 = (s16)fn_8015465C(dx, dy);
+            field_0x2b6 = (s16)atan2Short_8015465C(dx, dy);
             field_0x2b6 += (s16)(8192.0f - 16384.0f * fn_80154744());
             field_0x274 = 0;
-            fn_80196D70(&posA, &mPos);
-            mPos.x += 16.0f * fn_801544FC(field_0x2b6);
-            mPos.y += 16.0f * fn_801544E4(field_0x2b6);
+            copyVec3_80196D70(&posA, &mPos);
+            mPos.x += 16.0f * sinShort_801544FC(field_0x2b6);
+            mPos.y += 16.0f * cosShort_801544E4(field_0x2b6);
             mPos.z = 35.0f;
             if (fn_801545C0(NULL, false)) {
-                field_0x2b6 = (s16)fn_8015465C(dx, dy);
+                field_0x2b6 = (s16)atan2Short_8015465C(dx, dy);
             }
-            fn_80196D70(&mPos, &posA);
+            copyVec3_80196D70(&mPos, &posA);
         }
         break;
     case 7:
@@ -939,12 +939,12 @@ void Ganon_804A25F0::update() {
         }
         f32 dy = field_0x2dc.y - mPos.y;
         f32 dx = field_0x2dc.x - mPos.x;
-        if (fn_80154378(dx * dx + dy * dy) > 2.0f) {
+        if (sqrtf_80154378(dx * dx + dy * dy) > 2.0f) {
             field_0x2b4 += 0x1000;
             startSound_801F0E34(0x400B2, 0);
-            field_0x2b6 = (s16)fn_8015465C(dx, dy);
-            field_0x2b8.x = 4.0f * fn_801544FC(field_0x2b6);
-            field_0x2b8.y = 4.0f * fn_801544E4(field_0x2b6);
+            field_0x2b6 = (s16)atan2Short_8015465C(dx, dy);
+            field_0x2b8.x = 4.0f * sinShort_801544FC(field_0x2b6);
+            field_0x2b8.y = 4.0f * cosShort_801544E4(field_0x2b6);
         } else {
             field_0x28c = 1;
             fn_801546BC(&field_0x2b8);
@@ -962,7 +962,7 @@ void Ganon_804A25F0::update() {
             }
             JGeometry::TVec3f one;
             fn_80196D60(&one, 1.0f, 1.0f, 1.0f);
-            fn_80196D70(&field_0x2d0, &one);
+            copyVec3_80196D70(&field_0x2d0, &one);
             field_0x294 = -1;
             field_0x2a5 = 0;
         }
@@ -996,7 +996,7 @@ void Ganon_804A25F0::update() {
             lbl_8053AB90 = 1;
             field_0x298 = 0x140;
             field_0x234[4] = field_0x29c * 100 + 500;
-            fn_80154590(&mBox2, -48.0f, -48.0f, 48.0f, 48.0f);
+            setBox_80154590(&mBox2, -48.0f, -48.0f, 48.0f, 48.0f);
             field_0xb0 = 14;
         }
         mState = 10;
@@ -1015,7 +1015,7 @@ void Ganon_804A25F0::update() {
             fn_80196D30(2, 0);
             mState = 13;
         } else if (field_0x2a0 == 1) {
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             fn_8017EC70(&posA, 1.0f);
             fn_8017EB1C(0.05f);
             if (field_0x2a4 == 1) {
@@ -1026,7 +1026,7 @@ void Ganon_804A25F0::update() {
                 mState = 11;
             }
         } else if (field_0x234[4] <= 1) {
-            fn_80154590(&mBox2, -48.0f, -48.0f, 48.0f, 48.0f);
+            setBox_80154590(&mBox2, -48.0f, -48.0f, 48.0f, 48.0f);
             field_0xb0 = 0xA040004;
             field_0x2a6 = 1;
             field_0x28c = 11;
@@ -1035,13 +1035,13 @@ void Ganon_804A25F0::update() {
         break;
     case 11:
         if (field_0x234[2] != 0) {
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             fn_8017EC70(&posA, 1.0f);
             fn_8017EB1C(0.05f);
         } else {
             field_0x94 = 2;
             field_0x2b0 = field_0x2ac;
-            fn_80196D70(&mPos, &field_0x2dc);
+            copyVec3_80196D70(&mPos, &field_0x2dc);
             mPos.x -= 200.0f;
             if (field_0x28c == 11) {
                 field_0x94 = 4;
@@ -1071,7 +1071,7 @@ void Ganon_804A25F0::update() {
         }
         field_0x2a5 = 1;
         fn_80196E00();
-        fn_8018A6AC()->fn_80458F9C(60);
+        fn_8018A6AC()->stopBgm_80458F9C(60);
         spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x6D, 0, 0, NULL, NULL, true, 1.0f);
         field_0x234[1] = 0;
         field_0x264 = 0;
@@ -1090,7 +1090,7 @@ void Ganon_804A25F0::update() {
         if (field_0x264 >= 370) {
             field_0x2ac = 0.0f;
             field_0x234[1] = 10;
-            fn_80196D70(&mPos, &field_0x2dc);
+            copyVec3_80196D70(&mPos, &field_0x2dc);
             field_0x94 = 6;
             if (mEmitters[0] != NULL) {
                 fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
@@ -1108,7 +1108,7 @@ void Ganon_804A25F0::update() {
         }
         break;
     case 16: {
-        fn_80196D70(&posA, &field_0x2dc);
+        copyVec3_80196D70(&posA, &field_0x2dc);
         posA.y = field_0x2dc.y - 80.0f;
         fn_8017EC70(&posA, 1.0f);
         fn_8017EB1C(0.05f);
@@ -1127,7 +1127,7 @@ void Ganon_804A25F0::update() {
         break;
     }
     case 17: {
-        fn_80196D70(&posA, &mPos);
+        copyVec3_80196D70(&posA, &mPos);
         fn_8017EC70(&posA, 1.0f);
         fn_8017EB1C(0.05f);
         field_0x264++;
@@ -1135,10 +1135,10 @@ void Ganon_804A25F0::update() {
             field_0x264 = 50;
             fn_801546BC(&posA);
             posA.y = -10.0f;
-            fn_8022FE80(fn_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
+            fn_8022FE80(getRepresentativePlayer_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
             JGeometry::TVec3f msgPos2;
             fn_801546D0(&msgPos2, &posA);
-            if (fn_8038AD24(fn_8022EA0C(0), 0x2DD, fn_801545E8(), fn_8015461C(), msgPos2, 0x102)) {
+            if (fn_8038AD24(getRepresentativePlayer_8022EA0C(0), 0x2DD, fn_801545E8(), fn_8015461C(), msgPos2, 0x102)) {
                 field_0x28c = 6;
                 mState = 18;
             }
@@ -1146,11 +1146,11 @@ void Ganon_804A25F0::update() {
         break;
     }
     case 18:
-        fn_80196D70(&posA, &mPos);
+        copyVec3_80196D70(&posA, &mPos);
         fn_8017EC70(&posA, 1.0f);
         fn_8017EB1C(0.05f);
-        fn_8022FE80(fn_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
-        if (fn_80388CAC(fn_8022EA0C(0), fn_801545E8())) {
+        fn_8022FE80(getRepresentativePlayer_8022EA0C(0), fn_8015461C(), fn_801545E8(), false, false);
+        if (fn_80388CAC(getRepresentativePlayer_8022EA0C(0), fn_801545E8())) {
             fn_8018A63C();
             field_0x94 = 3;
             field_0x2a0 = 3;
@@ -1178,7 +1178,7 @@ void Ganon_804A25F0::update() {
         // fall through
     case 20:
         if (field_0x2a4 == 1) {
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             posA.x += -58.0f;
             posA.y += -110.0f;
             posA.z = 0.0f;
@@ -1255,7 +1255,7 @@ void Ganon_804A25F0::update() {
     case 23:
         if (field_0x2a4 != 0 && field_0x234[2] == 0) {
             s32 angAcc = 0;
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             posA.x += -58.0f;
             posA.y += -110.0f;
             field_0x234[2] = 80;
@@ -1266,7 +1266,7 @@ void Ganon_804A25F0::update() {
                     if (sub != NULL) {
                         sub->field_0x2b6 = (s16)angAcc;
                         angAcc += 0x3333;
-                        fn_80196D70(&sub->field_0x2e8, &field_0x2dc);
+                        copyVec3_80196D70(&sub->field_0x2e8, &field_0x2dc);
                         sub->field_0x2f8 = field_0x2f8;
                         sub->field_0x294 = i;
                     }
@@ -1308,7 +1308,7 @@ void Ganon_804A25F0::update() {
             for (s32 i = 0; i < 4; i++) {
                 fn_80230C6C(i);
             }
-            fn_80196D70(&posA, &mPos);
+            copyVec3_80196D70(&posA, &mPos);
             posA.x += -58.0f;
             posA.y += -110.0f;
             fn_801F0D20(0x44);
@@ -1326,7 +1326,7 @@ void Ganon_804A25F0::update() {
             field_0x318[3] = -1;
             field_0x300 = 0;
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8023F264(i) && !fn_8022F514(i) && fn_8015461C() == getPlayerLayer_8023DE58(i)) {
+                if (fn_8023F264(i) && !hasPlayerLeader_8022F514(i) && fn_8015461C() == getPlayerLayer_8023DE58(i)) {
                     field_0x308[field_0x300] = i;
                     field_0x300++;
                 }
@@ -1345,12 +1345,12 @@ void Ganon_804A25F0::update() {
                 fn_80230498(field_0x308[0], getPlayerPos_8023E724(field_0x308[field_0x300 - 1]), 0xAF, 0xFF, -0x80, -0x80, true);
             }
             if (field_0x234[2] == 2 && field_0x300 > 0) {
-                fn_80196D70(&posB, &mPos);
+                copyVec3_80196D70(&posB, &mPos);
                 s32 idx = (s32)((f32)field_0x300 * fn_80154744());
                 if (idx >= field_0x300) {
                     idx = 0;
                 }
-                fn_80196D70(&mPos, getPlayerPos_8023E724(field_0x308[idx]));
+                copyVec3_80196D70(&mPos, getPlayerPos_8023E724(field_0x308[idx]));
                 fn_8017EC38(&box58, fn_801826A4(fn_8015461C()));
                 if (mPos.y < box58.i.y + 100.0f) {
                     mPos.y = box58.i.y + 100.0f;
@@ -1368,8 +1368,8 @@ void Ganon_804A25F0::update() {
             }
             if (field_0x234[2] == 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) && fn_8015461C() == getPlayerLayer_8023DE58(i) && fn_8022F3DC(i) >= 0) {
-                        fn_80230498(i, getPlayerPos_8023E724(fn_8022F3DC(i)), 0xAF, 0xFF, -0x80, -0x80, true);
+                    if (hasPlayerLeader_8022F514(i) && fn_8015461C() == getPlayerLayer_8023DE58(i) && getPlayerLeader_8022F3DC(i) >= 0) {
+                        fn_80230498(i, getPlayerPos_8023E724(getPlayerLeader_8022F3DC(i)), 0xAF, 0xFF, -0x80, -0x80, true);
                     }
                 }
             }
@@ -1391,7 +1391,7 @@ void Ganon_804A25F0::update() {
         break;
     case 28:
         if (field_0x25c == 6 && field_0x294 < 0) {
-            fn_80196D70(&posA, &field_0x2c4);
+            copyVec3_80196D70(&posA, &field_0x2c4);
             field_0x294 = fn_80154310('GNON', fn_8015461C(), &posA, 30, -1, -1);
             if (field_0x294 < 0) {
                 break;
@@ -1409,7 +1409,7 @@ void Ganon_804A25F0::update() {
             spear->field_0x294 = fn_801545E8();
         }
         if (field_0x2a4 == 1) {
-            field_0x2b6 = (s16)fn_8015465C(field_0x2dc.x - mPos.x, field_0x2dc.y - mPos.y);
+            field_0x2b6 = (s16)atan2Short_8015465C(field_0x2dc.x - mPos.x, field_0x2dc.y - mPos.y);
             field_0x234[7] = 50;
             mState = 3;
         }
@@ -1420,7 +1420,7 @@ void Ganon_804A25F0::update() {
         fn_801546BC(&mVel_0x3c);
         JGeometry::TVec3f one;
         fn_80196D60(&one, 1.0f, 1.0f, 1.0f);
-        fn_80196D70(&field_0x2d0, &one);
+        copyVec3_80196D70(&field_0x2d0, &one);
         field_0x28c = 8;
         mState = 30;
         // fall through
@@ -1428,7 +1428,7 @@ void Ganon_804A25F0::update() {
     case 30:
         if (field_0x2a4 == 1) {
             field_0x234[3] = 0;
-            field_0x2b6 = (s16)fn_8015465C(field_0x2dc.x - mPos.x, field_0x2dc.y - mPos.y);
+            field_0x2b6 = (s16)atan2Short_8015465C(field_0x2dc.x - mPos.x, field_0x2dc.y - mPos.y);
             mState = 3;
         }
         break;
@@ -1445,9 +1445,9 @@ void Ganon_804A25F0::update() {
         if (mSpawnParam_0x90 != 14) {
             field_0x2b6 += (s16)((mSpawnParam_0x90 - 10) << 12);
         }
-        mVel_0x3c.x = 10.0f * fn_801544FC(field_0x2b6);
-        mVel_0x3c.y = 10.0f * fn_801544E4(field_0x2b6);
-        fn_80196D70(&field_0x2b8, &mVel_0x3c);
+        mVel_0x3c.x = 10.0f * sinShort_801544FC(field_0x2b6);
+        mVel_0x3c.y = 10.0f * cosShort_801544E4(field_0x2b6);
+        copyVec3_80196D70(&field_0x2b8, &mVel_0x3c);
         field_0x268 = -1;
         field_0x234[1] = 20;
         field_0x234[0] = 100;
@@ -1534,9 +1534,9 @@ void Ganon_804A25F0::update() {
         mState = 36;
         // fall through
     case 36:
-        fn_80196D70(&mPos, &field_0x2dc);
-        mPos.x += field_0x2f4 * fn_801544FC(field_0x2b6);
-        mPos.y += field_0x2f4 * fn_801544E4(field_0x2b6);
+        copyVec3_80196D70(&mPos, &field_0x2dc);
+        mPos.x += field_0x2f4 * sinShort_801544FC(field_0x2b6);
+        mPos.y += field_0x2f4 * cosShort_801544E4(field_0x2b6);
         for (s32 i = 0; i < 4; i++) {
             setEmitterPos_8013CB44(mEmitters[i], &mPos, 1, 7, true);
         }
@@ -1550,10 +1550,10 @@ void Ganon_804A25F0::update() {
             if (rnd == 0) {
                 startSound_801F0E34(0x50001, 0);
             }
-            field_0x2b6 = (s16)fn_8015465C(field_0x2e8.x - mPos.x, field_0x2e8.y - mPos.y);
+            field_0x2b6 = (s16)atan2Short_8015465C(field_0x2e8.x - mPos.x, field_0x2e8.y - mPos.y);
             field_0x2b6 += 0x2000 - (rnd << 12);
-            field_0x2b8.x = 5.0f * fn_801544FC(field_0x2b6);
-            field_0x2b8.y = 5.0f * fn_801544E4(field_0x2b6);
+            field_0x2b8.x = 5.0f * sinShort_801544FC(field_0x2b6);
+            field_0x2b8.y = 5.0f * cosShort_801544E4(field_0x2b6);
             field_0x234[0] = 200;
             startSound_801F0E34(0x5001E, 0);
             mState = 37;
@@ -1566,16 +1566,16 @@ void Ganon_804A25F0::update() {
             mState = 39;
             break;
         }
-        fn_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
+        setBox_80154590(&mBox, -12.0f, -12.0f, 12.0f, 12.0f);
         for (s32 i = 0; i < 4; i++) {
-            s32 hitPlayer = fn_801F285C(NULL, NULL, true, i);
-            fn_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
+            s32 hitPlayer = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
+            setBox_80154590(&mBox, -8.0f, -8.0f, 8.0f, 8.0f);
             if (hitPlayer >= 0) {
-                if (field_0x264 == hitPlayer || (fn_8022F514(hitPlayer) && field_0x264 == fn_8022F3DC(hitPlayer))) {
+                if (field_0x264 == hitPlayer || (hasPlayerLeader_8022F514(hitPlayer) && field_0x264 == getPlayerLeader_8022F3DC(hitPlayer))) {
                     field_0x94 = 1;
-                    mVel_0x3c.x = 10.0f * fn_801544FC(-0x8000);
-                    mVel_0x3c.y = 10.0f * fn_801544E4(-0x8000);
-                    fn_80196D70(&field_0x2b8, &mVel_0x3c);
+                    mVel_0x3c.x = 10.0f * sinShort_801544FC(-0x8000);
+                    mVel_0x3c.y = 10.0f * cosShort_801544E4(-0x8000);
+                    copyVec3_80196D70(&field_0x2b8, &mVel_0x3c);
                     startSound_801F0E34(0x30037, 0);
                     field_0x234[0] = 100;
                     mState = 38;
@@ -1594,7 +1594,7 @@ void Ganon_804A25F0::update() {
             if (owner != NULL) {
                 f32 dx = owner->fn_801544DC()->x - mPos.x;
                 f32 dy = owner->fn_801544DC()->y - mPos.y;
-                if (fn_80154378(dx * dx + dy * dy) < 8.0f) {
+                if (sqrtf_80154378(dx * dx + dy * dy) < 8.0f) {
                     fn_801546BC(&field_0x2b8);
                     fn_801546BC(&mVel_0x3c);
                     mState = 39;
@@ -1685,7 +1685,7 @@ void Ganon_804A25F0::update() {
             for (s32 i = 0; i < 4; i++) {
                 if (field_0x260 < 4) {
                     if (field_0x318[i] == -1) {
-                        fn_80196D70(&posA, &mPos);
+                        copyVec3_80196D70(&posA, &mPos);
                         if (field_0x264 >= 4) {
                             field_0x260 = 4;
                         }
@@ -1719,15 +1719,15 @@ void Ganon_804A25F0::update() {
         fn_801F2B7C(fn_80154510(), -1, 3);
         addCalc2_801F71A4(&mVel_0x3c.x, field_0x2b8.x, 0.2f, 2.0f);
         addCalc2_801F71A4(&mVel_0x3c.y, field_0x2b8.y, 0.2f, 2.0f);
-        posB.x = 5.0f * fn_801544FC(field_0x2b6);
-        posB.y = 5.0f * fn_801544E4(field_0x2b6);
-        fn_80196D70(&field_0x2b8, &posB);
+        posB.x = 5.0f * sinShort_801544FC(field_0x2b6);
+        posB.y = 5.0f * cosShort_801544E4(field_0x2b6);
+        copyVec3_80196D70(&field_0x2b8, &posB);
         addCalc2_801F71A4(&field_0x2a8, 512.0f, 0.4f, 4.0f);
         field_0x25c += (s32)field_0x2a8;
         field_0x2b6 += (s16)field_0x2a8;
-        fn_80196D70(&posA, &mPos);
-        posA.x += 74.0f * fn_801544FC((s16)(field_0x2b4 + 0xA000));
-        posA.y += 74.0f * fn_801544E4((s16)(field_0x2b4 + 0xA000));
+        copyVec3_80196D70(&posA, &mPos);
+        posA.x += 74.0f * sinShort_801544FC((s16)(field_0x2b4 + 0xA000));
+        posA.y += 74.0f * cosShort_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
             if (!fn_801F6758(&posA, mLayer_0x4, 16.0f)) {
                 fn_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
@@ -1742,9 +1742,9 @@ void Ganon_804A25F0::update() {
     case 43:
         field_0x2b4 += 0x900;
         startSound_801F0E34(0x30055, 0);
-        fn_80196D70(&posA, &mPos);
-        posA.x += 74.0f * fn_801544FC((s16)(field_0x2b4 + 0xA000));
-        posA.y += 74.0f * fn_801544E4((s16)(field_0x2b4 + 0xA000));
+        copyVec3_80196D70(&posA, &mPos);
+        posA.x += 74.0f * sinShort_801544FC((s16)(field_0x2b4 + 0xA000));
+        posA.y += 74.0f * cosShort_801544E4((s16)(field_0x2b4 + 0xA000));
         if (field_0x234[1] == 0) {
             if (!fn_801F6758(&posA, mLayer_0x4, 16.0f)) {
                 fn_80154310('GNON', mLayer_0x4, &posA, 31, -1, -1);
@@ -1760,15 +1760,15 @@ void Ganon_804A25F0::update() {
                 f32 dx = owner->field_0x2c4.x - mPos.x;
                 f32 dy = owner->field_0x2c4.y - mPos.y;
                 if (owner->mState == 4 || owner->mState == 6 || owner->mState == 9) {
-                    if (fn_80154378(dx * dx + dy * dy) < 64.0f) {
+                    if (sqrtf_80154378(dx * dx + dy * dy) < 64.0f) {
                         owner->mState = 29;
                     }
                 }
-                field_0x2b6 = (s16)fn_8015465C(dx, dy);
-                posB.x = 5.0f * fn_801544FC(field_0x2b6);
-                posB.y = 5.0f * fn_801544E4(field_0x2b6);
-                fn_80196D70(&field_0x2b8, &posB);
-                if (fn_80154378(dx * dx + dy * dy) <= 7.0f && owner->mState == 30) {
+                field_0x2b6 = (s16)atan2Short_8015465C(dx, dy);
+                posB.x = 5.0f * sinShort_801544FC(field_0x2b6);
+                posB.y = 5.0f * cosShort_801544E4(field_0x2b6);
+                copyVec3_80196D70(&field_0x2b8, &posB);
+                if (sqrtf_80154378(dx * dx + dy * dy) <= 7.0f && owner->mState == 30) {
                     owner->field_0x264 = 1;
                     if (mEmitters[0] != NULL) {
                         fn_8018A5F0()->forceDeleteEmitter(mEmitters[0]);
@@ -1833,7 +1833,7 @@ void Ganon_804A25F0::draw() {
             mtx[2][3] = 0.0f;
             JGeometry::TVec3f rot(0.0f, (f32)field_0x2b4 / -10430.228f, 0.0f);
             setRotScaleMtx(mtx, rot, 1.4f);
-            void* res = fn_804032E8('GANO', "boss_butag_yari_mawashi_01.bti");
+            void* res = getBossArchiveResource_804032E8('GANO', "boss_butag_yari_mawashi_01.bti");
             params.mMtx = mtx;
             params.field_0x10.a = (u8)field_0x2b0;
             params.field_0x30 = -1;
@@ -1846,7 +1846,7 @@ void Ganon_804A25F0::draw() {
         mPos.z = 0.0f;
         params.field_0x10.set(0, 0, 0, 100);
         params.field_0x1d = -2;
-        ResTIMG* res1 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2398[field_0x284]));
+        ResTIMG* res1 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', lbl_804A2398[field_0x284]));
         fn_801EFD34(res1, &params, -1, 0.0f, 0.0f, 0.0f);
         JUTTexture tex1(res1, 0);
         offX = -(f32)tex1.getWidth() * 0.5f;
@@ -1858,10 +1858,10 @@ void Ganon_804A25F0::draw() {
             mtx[2][3] = 0.0f;
             JGeometry::TVec3f rot(0.0f, (f32)field_0x2b4 / -10430.228f, 0.0f);
             setRotScaleMtx(mtx, rot, 1.4f);
-            res2 = static_cast<ResTIMG*>(fn_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
+            res2 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
         } else {
             setScaleMtx(mtx, field_0x2d0.x, field_0x2d0.y, field_0x2d0.y);
-            res2 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2484[field_0x288]));
+            res2 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', lbl_804A2484[field_0x288]));
         }
         params.mMtx = mtx;
         params.field_0x10.set(0, 0, 0, 100);
@@ -1890,7 +1890,7 @@ void Ganon_804A25F0::draw() {
     } else {
         params.field_0x30 = 17;
     }
-    ResTIMG* res3 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2398[field_0x284]));
+    ResTIMG* res3 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', lbl_804A2398[field_0x284]));
     fn_801EFD34(res3, &params, -1, 0.0f, 0.0f, 0.0f);
     JUTTexture tex3(res3, 0);
     offX = -(f32)tex3.getWidth() * 0.5f;
@@ -1902,10 +1902,10 @@ void Ganon_804A25F0::draw() {
         mtx[2][3] = 0.0f;
         JGeometry::TVec3f rot(0.0f, (f32)field_0x2b4 / -10430.228f, 0.0f);
         setRotScaleMtx3(mtx, rot, 1.4f * field_0x2d0.x, 1.4f * field_0x2d0.y, 1.4f * field_0x2d0.y);
-        res4 = static_cast<ResTIMG*>(fn_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
+        res4 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', "boss_butag_yari_mawashi_01.bti"));
     } else {
         setScaleMtx(mtx, field_0x2d0.x, field_0x2d0.y, field_0x2d0.y);
-        res4 = static_cast<ResTIMG*>(fn_804032E8('GANO', lbl_804A2484[field_0x288]));
+        res4 = static_cast<ResTIMG*>(getBossArchiveResource_804032E8('GANO', lbl_804A2484[field_0x288]));
     }
     params.mMtx = mtx;
     params.field_0x10.a = (u8)field_0x2b0;

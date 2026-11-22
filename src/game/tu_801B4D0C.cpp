@@ -123,7 +123,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
         s32 dir;
         f32 dist;
         s32 player;
-        fn_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
+        findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, &player, 0, 0);
         switch (field_0x230) {
         case 0:
             mEmitters294[0] = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x48B, 0, 0, NULL, NULL, true, 1.0f);
@@ -180,7 +180,7 @@ void TinglesTowerWarp_804A38D4::fn_801B56A0() {
                     field_0x264[i].y = ppos->y;
                     field_0x264[i].z = ppos->z;
                     field_0x264[i].z = 0.0f;
-                    if (fn_8022F3DC(i) < 0) {
+                    if (getPlayerLeader_8022F3DC(i) < 0) {
                         fn_8022CA6C(i, 5, false);
                     }
                     if (fn_80236B50(i)) {

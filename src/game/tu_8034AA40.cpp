@@ -200,7 +200,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
             case 3:
             case 5:
                 fn_801F0D20(0x3a);
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
                 fn_8022ADE4();
                 field_0x230 = 6;
                 break;
@@ -436,7 +436,7 @@ void CuccoHerdingNPC_804AC8C0::update() {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(field_0x254),
                                     (field_0x254 << 26) | (field_0x254 << 24) | 0x1000A, -1, -1);
-                            } else if (!fn_80236B50(i) && fn_8022F514(i) == 1 && field_0x254 == fn_8022F3DC(i)) {
+                            } else if (!fn_80236B50(i) && hasPlayerLeader_8022F514(i) == 1 && field_0x254 == getPlayerLeader_8022F3DC(i)) {
                                 getActorManager_801F856C()->spawnActor_801F9484(
                                     ACTOR_IMUP, mLayer_0x4, getPlayerPos_8023E724(i),
                                     (field_0x254 << 26) | 0x10000000 | (i << 24) | 0x1000A, -1, -1);

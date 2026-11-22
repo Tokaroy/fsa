@@ -140,15 +140,15 @@ void MapYaguraWindow_804B1B60::fn_80444650() {
 }
 
 void MapYaguraWindow_804B1B60::fn_804445E0() {
-    field_0xc->fn_80402628(0x10, 0, field_0xc->field_0x28);
-    if (field_0x8->fn_80402940(0x10, 0, -480.0f, 26.0f)) {
+    field_0xc->animateAlpha_80402628(0x10, 0, field_0xc->field_0x28);
+    if (field_0x8->animateMoveY_80402940(0x10, 0, -480.0f, 26.0f)) {
         field_0x8->field_0x22 = 0;
         field_0x4d = 1;
     }
 }
 
 void MapYaguraWindow_804B1B60::fn_80444590() {
-    if (field_0x8->fn_80402940(5, 0, 26.0f, 0.0f)) {
+    if (field_0x8->animateMoveY_80402940(5, 0, 26.0f, 0.0f)) {
         field_0x4d = 2;
     }
 }
@@ -231,7 +231,7 @@ void MapYaguraWindow_804B1B60::fn_80443DAC() {
 }
 
 void MapYaguraWindow_804B1B60::fn_80443D5C() {
-    if (field_0x8->fn_80402940(10, 0, 0.0f, 480.0f)) {
+    if (field_0x8->animateMoveY_80402940(10, 0, 0.0f, 480.0f)) {
         field_0x4d = 4;
     }
 }

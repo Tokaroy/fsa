@@ -241,7 +241,7 @@ void ForceGemSpawner_804AB660::update() {
                 break;
             }
         }
-        if ((mSparkTimer_0xe4 == 1 && mSparksLeft_0xe8 > 0) || fn_801F305C()) {
+        if ((mSparkTimer_0xe4 == 1 && mSparksLeft_0xe8 > 0) || checkHits_801F305C()) {
             u16 outAngle = 0;
             mHitTimer_0xd8 = 20;
             mHitTimerStart_0xdc = 20;
@@ -258,7 +258,7 @@ void ForceGemSpawner_804AB660::update() {
             JGeometry::TVec3f savedPos(mPos);
             mPos.x += 8.0f;
             mPos.y += 8.0f;
-            fn_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, 0);
+            findTargetPlayer_801EEC98(mSerial, &outAngle, NULL, NULL, NULL, 0, 0);
             mPos = savedPos;
             fn_8032A4FC(mSerial, (u16)(outAngle + 0x8000), true);
         }

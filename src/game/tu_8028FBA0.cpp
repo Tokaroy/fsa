@@ -100,10 +100,10 @@ inline void Player_804A6F38::spawnEffect15B() {
 }
 
 // The life that decides between landing and state 0x33: the leader's
-// (fn_80237774 of fn_80240644) when fn_80240808 holds, else the player's own.
+// (fn_80237774 of fn_80240644) when hasLeader_80240808 holds, else the player's own.
 // fn_80293900 inlines it, and the unwritten fn_80290FC0 twice.
 inline s32 Player_804A6F38::life() {
-    if (fn_80240808()) {
+    if (hasLeader_80240808()) {
         return fn_80237774(fn_80240644());
     }
     return fn_8024189C();
@@ -624,7 +624,7 @@ void Player_804A6F38::fn_80293B30() {
             mStateLocked_0x124d = 0;
             if (fn_80251AEC(0x1F)) {
                 if (fn_80241E28(mDestLayer_0xce4, &mDestPos_0xcd4)) {
-                    if (fn_802486A0() == 5 && fn_80240808()) {
+                    if (fn_802486A0() == 5 && hasLeader_80240808()) {
                         mDestPos_0xcd4.set(*getPlayerPos_8023E724(fn_80240644()));
                     }
                     u16 tile = fn_8022461C(&mDestPos_0xcd4, mDestLayer_0xce4);
@@ -640,13 +640,13 @@ void Player_804A6F38::fn_80293B30() {
                 }
                 mLayer_0x3b4 = mDestLayer_0xce4;
                 mPos = mDestPos_0xcd4;
-                // fn_80272160 reads only x and y of the position.
+                // hitOwnGroup_80272160 reads only x and y of the position.
                 if (fn_802DEABC() && mLayer_0x3b4 <= 8 && (mTransitionKind_0xcf4 == 9 || mTransitionKind_0xcf4 == 0x12)) {
                     if (!fn_80240670()) {
-                        fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                        hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
                     }
                 } else if (mLayer_0x3b4 > 8 && (mTransitionKind_0xcf4 == 9 || mTransitionKind_0xcf4 == 0x12) && !fn_80240670()) {
-                    fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                    hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
                 }
                 if (mTransitionKind_0xcf4 == 9) {
                     mPos.z = 0.0f;
@@ -1336,7 +1336,7 @@ void Player_804A6F38::fn_80290FC0() {
             return;
         }
         if (!fn_80240670()) {
-            fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+            hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
         }
         s32 hp = life();
         s32 state = 0;
@@ -1408,9 +1408,9 @@ void Player_804A6F38::fn_80290FC0() {
         if (mVel_0x344.z < 0.0f && mPos.z <= 0.0f) {
             mPos.z = 0.0f;
             if (!fn_80240670() && (mTransitionKind_0xcf4 == 0xC || mTransitionKind_0xcf4 == 0xD || mTransitionKind_0xcf4 == 0x26)) {
-                fn_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
+                hitOwnGroup_80272160(2, (const JGeometry::TVec2f*)&mPos, 0x11);
             } else {
-                fn_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
+                hitOwnGroup_80272160(0, (const JGeometry::TVec2f*)&mPos, 0x11);
             }
             s32 hp = life();
         s32 state = 0;
@@ -1461,7 +1461,7 @@ void Player_804A6F38::fn_80290F20() {
         field_0x135c->becomeInvalidEmitter();
         field_0x135c = NULL;
     }
-    if (fn_802486A0() != 4 && fn_80240808()) {
+    if (fn_802486A0() != 4 && hasLeader_80240808()) {
         fn_80238244(mPlayerNo_0x4);
     }
 }
@@ -1587,10 +1587,10 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
         return true;
     }
     if (kind == 4 || kind == 7 || kind == 8 || kind == 9 || kind == 0x20 || kind == 0x24) {
-        if (!fn_80240808() && field_0x1216 == true) {
+        if (!hasLeader_80240808() && field_0x1216 == true) {
             return false;
         }
-        if (fn_80240808() && field_0x1238 > 0) {
+        if (hasLeader_80240808() && field_0x1238 > 0) {
             return false;
         }
         if (fn_80251AEC(0x1E)) {
@@ -1607,8 +1607,8 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
             return false;
         }
     } else if (kind == 0xC || kind == 0xD || kind == 0x26) {
-        if ((!fn_80240808() && field_0x1216 == true) ||
-            (fn_80240808() && !fn_8022D75C(fn_80240644()) && field_0x1238 > 0))
+        if ((!hasLeader_80240808() && field_0x1216 == true) ||
+            (hasLeader_80240808() && !fn_8022D75C(fn_80240644()) && field_0x1238 > 0))
         {
             return false;
         }
@@ -1723,7 +1723,7 @@ bool Player_804A6F38::fn_80290070(s32 layer, const JGeometry::TVec3f* from, cons
     if (mDestLayer_0xce4 != 8) {
         field_0xcf2 = 0;
     }
-    if (!fn_80240808()) {
+    if (!hasLeader_80240808()) {
         fn_8022D36C(mPlayerNo_0x4);
     }
     if (fn_8025F590() && mLayer_0x3b4 == 8 && getPlayerLayer_8023DE58(mHeldPlayer_0xd70) < 8) {

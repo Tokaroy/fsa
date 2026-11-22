@@ -39,7 +39,7 @@ void GamblingShopChest_804AAAE8::update() {
         box.i.y += mPos.y;
         box.f.x += mPos.x;
         box.f.y += mPos.y;
-        s32 player = fn_8022EA0C(field_0x234);
+        s32 player = getRepresentativePlayer_8022EA0C(field_0x234);
         if (player == fn_8023AF14(&box, mLayer_0x4, false, 0.0f)) {
             if (fn_80230CFC(player) == 3 && !fn_8023EFEC(player)) {
                 if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F340(player)), 0x100) != 0 &&
@@ -124,7 +124,7 @@ void GamblingShopChest_804AAAE8::draw() {
 }
 
 void GamblingShopChest_804AAAE8::fn_80310F50(s32 a, s32 b, s32 serial) {
-    gBgRewrite_8053AC98->fn_802A3884(&mPos, 0, mLayer_0x4, 0x30);
+    gBgRewrite_8053AC98->writeTileMarkView_802A3884(&mPos, 0, mLayer_0x4, 0x30);
     field_0x234 = a;
     field_0x238 = b;
     field_0x23c = serial;

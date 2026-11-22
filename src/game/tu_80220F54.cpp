@@ -79,7 +79,7 @@ void ShadowLinkBase_804A6A00::init() {
     field_0x194 = 1;
     field_0x2b0.x = mPos.x;
     field_0x2b0.y = mPos.y;
-    mAnim.fn_801D2608(lbl_804A6990, 0x1C);
+    mAnim.setKeyTables_801D2608(lbl_804A6990, 0x1C);
 }
 
 // FIXME: 96.07 %. missing/extra: ours has 2 fewer instrs (54 vs 56); common-subexpression reuses the mFlags loaded in r5 in cases 0 and 3 instead of reloading it
@@ -94,12 +94,12 @@ void ShadowLinkBase_804A6A00::fn_802216E8(s32 limit) {
         }
         break;
     case 1:
-        if (fn_801D05F8(&mPos, 96.0f) >= 0) {
+        if (findNearestPlayer_801D05F8(&mPos, 96.0f) >= 0) {
             mFlags |= CLS_804A6A00_FLAG_0x2000;
         }
         break;
     case 2:
-        if (fn_801D05F8(&mPos, 192.0f) >= 0) {
+        if (findNearestPlayer_801D05F8(&mPos, 192.0f) >= 0) {
             mFlags |= CLS_804A6A00_FLAG_0x2000;
         }
         break;

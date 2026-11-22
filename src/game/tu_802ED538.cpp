@@ -62,7 +62,7 @@ void GiantGeneratorEffect_804AA350::init() {
         field_0x2cc = NULL;
         field_0x24c = 16;
     } else {
-        field_0x2cc = fn_804032E8('TIMG', lbl_804AA330[field_0x254]);
+        field_0x2cc = getBossArchiveResource_804032E8('TIMG', lbl_804AA330[field_0x254]);
         mEmitter230 = spawnEmitter_8013CC50(mLayer_0x4, &mPos, 0x4E, 0, 0, NULL, NULL, true, 1.0f);
     }
     for (s32 i = 0; i < 4; i++) {
@@ -172,7 +172,7 @@ void GiantGeneratorEffect_804AA350::update() {
             if (getActorManager_801F856C()->fn_801F68E0() != 0) {
                 field_0x250 = 20;
                 field_0x24c++;
-                gAudioMgr_8053AF80->fn_80458FF0(0x100000D, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x100000D, false, 0);
                 fn_8022ADE4();
             }
         }
@@ -297,7 +297,7 @@ void GiantGeneratorEffect_804AA350::update() {
             s32 base = field_0x254 * 3;
             mEmitter240 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x268, lbl_8046F55C[base], 0, 0, NULL, NULL, true, 1.0f);
             mEmitter244 = spawnEmitter_8013CC50(mLayer_0x4, &field_0x268, lbl_8046F55C[base + 1], 0, 0, NULL, NULL, true, 1.0f);
-            field_0x2cc = fn_804032E8('TIMG', lbl_804AA340[field_0x254]);
+            field_0x2cc = getBossArchiveResource_804032E8('TIMG', lbl_804AA340[field_0x254]);
             mVel_0x3c.z = 0.3f;
             field_0x24c++;
         }

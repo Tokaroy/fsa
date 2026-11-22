@@ -152,7 +152,7 @@ public:
     // act_seesaw_lift (0x803587F0); r3 never read.
     /* 0x48 */ virtual void vfunc_0x48();
     // 0x801F15BC: the layer (cmpwi 8 in 0x801F165C) and a position go to
-    // fn_802265DC(pos, layer, 0) and fn_8020D6AC; returns 0 or 1. 51
+    // fn_802265DC(pos, layer, 0) and containsPointOfOther_8020D6AC; returns 0 or 1. 51
     // overrides (48 functions; 30 read r4 and r5, 9 only r5, 9 neither, all
     // return 0/1); 17 calls in 12 units pass r4 = an lwz (the layer), r5 = a
     // stack or member TVec3f, and test r3 with clrlwi 24.
@@ -176,7 +176,7 @@ public:
     // their order is not visible in the asm; ints first is a guess. Out-pointers
     // are NULL-checked by the body unless said otherwise. Exports that are not
     // members are below the class (fn_801EE3C0, releaseEmitter_801EE434 C++; fn_801EF574,
-    // fn_801EF830 extern "C").
+    // drawShadow_801EF830 extern "C").
 
     // 1 unit / 4 calls. Looks for a 'WARP' actor (fn_801F78F4) on this
     // layer whose (mSpawnParam_0x90 & 0xFF) == 8, moves mPos by the view boxes'
@@ -208,13 +208,13 @@ public:
     // player is used in mode 2): *outAngle (sth; callers read it back with
     // lhz), *outDir (stw), *outDist (stfs), *outPlayer (stw; -1 in both
     // when the actor is gone, 0x801EED14, 0x801EED24).
-    void fn_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer,
+    void findTargetPlayer_801EEC98(s32 serial, u16* outAngle, s32* outDir, f32* outDist, s32* outPlayer,
                      s32 player, s32 mode);
     // 7 units / 10 calls. fn_801F2DB4(this, 'NULL', 'NULL', list) with a
     // stack copy of the 0x44-byte list lbl_80469FC8 (0x801EF518-0x801EF560).
     void fn_801EF510();
     // 23 units / 49 calls. drawSprite_801F06F0 with a resource already loaded
-    // (fn_801EF830's res, used when no name is given) instead of a name;
+    // (drawShadow_801EF830's res, used when no name is given) instead of a name;
     // skipped while mSpriteParams.mMtx is set. f1-f3 are kept in f30, f31,
     // f28. `res` is only passed on; void* is still a guess.
     void fn_801EFD34(void* res, SpriteParams_801F5AE0* params, s32 flags, f32 scaleX, f32 scaleY,
@@ -226,7 +226,7 @@ public:
     void fn_801F02BC(const char* name, s32 frame, SpriteParams_801F5AE0* params, s32 flags,
                      s32 mode, bool arg, f32 scaleX, f32 scaleY);
     // 116 units / 193 calls. Draws frame `frame` of the "SOB " sprite bank
-    // `name` at mPos on this actor's layer: fn_801EF830(mLayer_0x4, &mPos,
+    // `name` at mPos on this actor's layer: drawShadow_801EF830(mLayer_0x4, &mPos,
     // params, flags, name, frame, NULL) (0x801F0740-0x801F0758). params may
     // be NULL (callers: a stack struct 131 times, 0 61 times); flags is -1,
     // 0 or 7 at most calls.
@@ -264,7 +264,7 @@ public:
     // passing their own (layer, pos) and a member
     // (this + 0x230), a countdown: while *timer runs nothing blocks; tiles
     // 0x10-0x13 / 0x140-0x15F start it at 0x78. Otherwise the base isBlocked_0x4C's
-    // tests (fn_8020D6AC, then the tile codes of fn_8022461C/fn_80226850);
+    // tests (containsPointOfOther_8020D6AC, then the tile codes of fn_8022461C/fn_80226850);
     // returns 0 or 1.
     bool fn_801F132C(s32 layer, const JGeometry::TVec3f* pos, s32* timer);
     // 1 call (fn_801F23BC). Probes the four edges of `box` at *pos on
@@ -279,7 +279,7 @@ public:
     // `layer` in steps of under half the box's smaller side (at most 8):
     // fn_801F172C at each step until it hits (then *outPos gets the step's
     // position) or `to` is reached. out2 and flag go to fn_801F172C.
-    // Returns whether it hit. (fn_801F2618 passes &mPos as `to` and
+    // Returns whether it hit. (sweepMapBox_801F2618 passes &mPos as `to` and
     // &mPrevPos as `from`.)
     u8 fn_801F23BC(s32 layer, const JGeometry::TVec3f* to, const JGeometry::TVec3f* from,
                    const JGeometry::TBox2f* box, JGeometry::TVec3f* outPos,
@@ -289,12 +289,12 @@ public:
     // box, ...)), moves mPos to the result and stores a vector in *out
     // (0x801F2670-0x801F2688); returns 0 or 1. Callers pass 0 or a stack
     // TVec3f for out and 0 for `flag` (197 of 201).
-    // u8, as fn_801F23BC / fn_801F2DB4 / fn_801F2FAC / fn_801F305C: each
+    // u8, as fn_801F23BC / fn_801F2DB4 / fn_801F2FAC / checkHits_801F305C: each
     // narrows its bool local at the return (clrlwi r3, rN, 24) and the
     // callers keep r3 raw (EnemyBase vfunc_0x5C/0x60/0x64 and their
     // overrides return it with mr; update()s keep it in a u8 local, tested
     // with clrlwi.).
-    u8 fn_801F2618(JGeometry::TVec3f* out, bool flag);
+    u8 sweepMapBox_801F2618(JGeometry::TVec3f* out, bool flag);
     // 6 units / 7 calls. fn_801F7F58(mgr, this, ids, mSerial, 32.0f): the
     // serial of an actor overlapping this one whose mActorId is in `ids` (a
     // 'NULL'-ended list, walked by 4 and compared with cmplw; callers pass
@@ -316,9 +316,9 @@ public:
     // forwarded to fn_8023B9CC and on to fn_802738F0, which tests it with
     // clrlwi. 24 (0x80273AF8); callers pass 1 in 54 of 65. const: the box
     // loads from `this` come before the register saves.
-    s32 fn_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg, s32 player) const;
+    s32 findOverlappingPlayer_801F285C(JGeometry::TVec2f* outXY, s32* outFlag, bool arg, s32 player) const;
     // 6 units / 6 calls. The mBox overlap test of fn_801F2740 against
-    // fn_8022E438(player, skipPlayer) and fn_80239B64(.., arg2, arg3, arg4),
+    // arePlayersInSameGroup_8022E438(player, skipPlayer) and fn_80239B64(.., arg2, arg3, arg4),
     // whose last two are clrlwi 24 bytes; returns 0 or 1.
     bool fn_801F2A10(s32 skipPlayer, s32 type, bool a, bool b);
     // 27 units / 42 calls. field_0x168 = arg and links the actor into the
@@ -350,22 +350,22 @@ public:
     s32 fn_801A6160();
     // 88 units / 153 calls. Hits every player (except skipPlayer; -1 in 138
     // calls) whose box (fn_8023B190) overlaps mBox on this layer, with
-    // fn_80238548(player, damage, &pos, arg); damage -100 means mParamAtcp_0x114
+    // hitPlayerGroup_80238548(player, damage, &pos, arg); damage -100 means mParamAtcp_0x114
     // (EnemyParam "atcp", 0x801F2D60). Returns the bitmask of players hit.
     u8 fn_801F2B7C(s32 damage, s32 skipPlayer, s32 arg);
     // 27 units / 41 calls. Takes a hit from an overlapping actor
     // (fn_801F82CC) whose mActorId is includeId (or any, 'NULL'), is not
     // excludeId and is not in the 'NULL'-ended list excludeIds (or NULL):
-    // fn_801F37AC(this, attacker->mParamAtcn_0x118, ...) (0x801F2ECC). Returns
+    // takeHit_801F37AC(this, attacker->mParamAtcn_0x118, ...) (0x801F2ECC). Returns
     // 0 or 1.
     u8 fn_801F2DB4(u32 includeId, u32 excludeId, const u32* excludeIds);
     // 20 units / 22 calls. For each player overlapping this actor
-    // (fn_801F285C), fn_801F37AC(this, fn_8023B6CC(i), getPlayerPos_8023E724(i), 0,
+    // (findOverlappingPlayer_801F285C), takeHit_801F37AC(this, fn_8023B6CC(i), getPlayerPos_8023E724(i), 0,
     // flag, i); returns whether any hit landed.
     u8 fn_801F2FAC();
     // 22 units / 25 calls. fn_801F2FAC(), else fn_801F2DB4(this, 'NULL',
     // 'NULL', NULL) (0x801F30F0-0x801F3104).
-    u8 fn_801F305C();
+    u8 checkHits_801F305C();
     // 9 units / 9 calls. The centre of mBox around mPos in screen space
     // (x, y - z): two floats only (0x801F3128-0x801F3174).
     void fn_801F3128(JGeometry::TVec2f* out);
@@ -439,7 +439,7 @@ public:
     // field_0xb0's bits) and the attacking player (-1 for none; mHitPlayers_0xd5
     // collects the players that hit during mHitTimer_0xd8, mLastAttacker_0x10c keeps the
     // last). Returns 1 when the hit counts (also when absorbed), else 0.
-    bool fn_801F37AC(s32 attack, const JGeometry::TVec3f* from, s32 strength, s32 type,
+    bool takeHit_801F37AC(s32 attack, const JGeometry::TVec3f* from, s32 strength, s32 type,
                      s32 player);
     // 48 units / 63 calls. The per-frame hit reaction (written): moves by
     // the knock-back mVel_0x3c while mHitTimer_0xd8 runs (when `flag`), starts
@@ -504,7 +504,7 @@ public:
     void fn_801544D0(s32 value);           // mHitTimer_0xd8 and mHitTimerStart_0xdc (0x801544D0)
     JGeometry::TVec3f* fn_801544DC();      // &mPos (0x801544DC)
     s32 fn_80154510() const;               // mParamAtcp_0x114, the "atcp" damage (0x80154510)
-    u8 fn_801545C0(JGeometry::TVec3f* out, bool flag);   // fn_801F2618 (0x801545C0)
+    u8 fn_801545C0(JGeometry::TVec3f* out, bool flag);   // sweepMapBox_801F2618 (0x801545C0)
     s32 fn_801545E0() const;               // field_0x9c (0x801545E0)
     s32 fn_801545E8() const;               // mSerial (0x801545E8)
     void fn_80154614(s32 value);           // field_0xb8 (0x80154614)
@@ -546,13 +546,13 @@ public:
     /* 0x018 */ JGeometry::TVec3f mPrevPos;  // copy of mPos before update()
     /* 0x024 */ JGeometry::TVec3f mSpawnPos; // set only by the spawner
     /* 0x030 */ JGeometry::TVec3f field_0x30;
-    /* 0x03C */ JGeometry::TVec3f mVel_0x3c; // knock-back velocity (fn_801F37AC, fn_801F3D94)
+    /* 0x03C */ JGeometry::TVec3f mVel_0x3c; // knock-back velocity (takeHit_801F37AC, fn_801F3D94)
     /* 0x048 */ JGeometry::TVec3f field_0x48; // 1.0f
     /* 0x054 */ JGeometry::TVec3f field_0x54; // 1.0f
     /* 0x060 */ JGeometry::TBox2f mBox;  // (-8, -8)-(8, 8)
     /* 0x070 */ JGeometry::TBox2f mBox2; // zero; the spawner copies mBox here if
                                 // init() left it all zero
-    // A third box (min i, max f), relative to mPos like mBox: fn_801F2618
+    // A third box (min i, max f), relative to mPos like mBox: sweepMapBox_801F2618
     // sweeps it against the map (it hands &mMapBox_0x80 to fn_801F23BC as the
     // box), fn_801F11B4 tests its width and height, and 182
     // actor units set it with four stfs (act_log_monitor_npc's init sets it
@@ -582,8 +582,8 @@ public:
     /* 0x0CC */ u8 field_0xcc;  // update loop: updates the actor if set
     /* 0x0D0 */ s32 field_0xd0;
     /* 0x0D4 */ u8 field_0xd4;
-    /* 0x0D5 */ u8 mHitPlayers_0xd5; // players that hit during mHitTimer_0xd8 (1 << player; fn_801F37AC)
-    /* 0x0D8 */ s32 mHitTimer_0xd8; // hit-reaction timer (24 per hit, fn_801F37AC / fn_801F3D94)
+    /* 0x0D5 */ u8 mHitPlayers_0xd5; // players that hit during mHitTimer_0xd8 (1 << player; takeHit_801F37AC)
+    /* 0x0D8 */ s32 mHitTimer_0xd8; // hit-reaction timer (24 per hit, takeHit_801F37AC / fn_801F3D94)
     /* 0x0DC */ s32 mHitTimerStart_0xdc; // its start value
     /* 0x0E0 */ s32 mDeathTimer_0xe0; // death timer (1 or 30; die_0x24 at 0)
     /* 0x0E4 */ s32 mSparkTimer_0xe4; // frames to the next hit spark
@@ -594,7 +594,7 @@ public:
     /* 0x100 */ JPABaseEmitter* mEmitter100; // released by the destructor
     /* 0x104 */ JPABaseEmitter* mEmitter104; // released by the destructor
     /* 0x108 */ s32 mLife;       // EnemyParam.csv column "life"
-    /* 0x10C */ s32 mLastAttacker_0x10c; // the last attacking player (fn_801F37AC; die_0x24 credits it)
+    /* 0x10C */ s32 mLastAttacker_0x10c; // the last attacking player (takeHit_801F37AC; die_0x24 credits it)
     /* 0x110 */ s32 field_0x110; // spawner's 7th argument (default -1)
     /* 0x114 */ s32 mParamAtcp_0x114; // EnemyParam.csv column "atcp"
     /* 0x118 */ s32 mParamAtcn_0x118; // EnemyParam.csv column "atcn"
@@ -662,8 +662,8 @@ void releaseEmitter_801EE434(JPABaseEmitter* emitter);
 // loaded `res`, fn_802F745C), on tile 0x39 an "enemy_both2_sob.bin" frame.
 // params (or NULL) gives the alpha (flag 0x400), 0x1C/0x1D and the matrix.
 // Callers pass an actor's field_0x4 and &mPos. Defined in this unit, so a
-// C++ name (fn_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv).
-void fn_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
+// C++ name (drawShadow_801EF830__FlPCQ29JGeometry8TVec3<f>P21SpriteParams_801F5AE0lPCclPv).
+void drawShadow_801EF830(s32 layer, const JGeometry::TVec3f* pos, SpriteParams_801F5AE0* params, s32 flags,
                  const char* name, s32 frame, void* res);
 
 extern "C" {

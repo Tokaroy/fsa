@@ -66,8 +66,8 @@ void LinkEnding_804AD858::update() {
         if (value < 0) {
             player = 0;
         }
-        if (fn_8022F514(player)) {
-            player = fn_8022F3DC(player);
+        if (hasPlayerLeader_8022F514(player)) {
+            player = getPlayerLeader_8022F3DC(player);
         }
         fn_80230498(player, &mPos, field_0x250 + field_0x248, 0xff, -0x80, -0x80, true);
     }

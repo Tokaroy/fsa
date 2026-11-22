@@ -135,7 +135,7 @@ void Stalfos_804A0CD8::update() {
     }
 
     if (fn_801F3D94(1)) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
 
@@ -144,7 +144,7 @@ void Stalfos_804A0CD8::update() {
         if ((u32)field_0xb0 == 0) {
             field_0xb0 = 0x42205;
         }
-        if ((mSpawnParam_0x90 == 0 || field_0x230 != 4) && mPos.z == 0.0f && fn_801F305C()) {
+        if ((mSpawnParam_0x90 == 0 || field_0x230 != 4) && mPos.z == 0.0f && checkHits_801F305C()) {
             if (mSpawnParam_0x90 == 5) {
                 field_0x25c -= 10000 - mLife;
                 if (field_0x25c <= 0) {
@@ -159,7 +159,7 @@ void Stalfos_804A0CD8::update() {
                     startSound_801F0E34(0x4009E, 0);
                 }
             }
-            fn_801F2618(NULL, false);
+            sweepMapBox_801F2618(NULL, false);
             return;
         }
     }
@@ -175,8 +175,8 @@ void Stalfos_804A0CD8::update() {
         fn_801F2B7C(-100, -1, 1);
     }
 
-    u8 blocked = fn_801F2618(&push, false);
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &playerIdx, 0, 0);
+    u8 blocked = sweepMapBox_801F2618(&push, false);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &playerIdx, 0, 0);
 
     if ((mSpawnParam_0x90 == 1 || mSpawnParam_0x90 == 2) && field_0x230 == 1 && dist < 50.0f) {
         for (int i = 0; i < 4; i++) {

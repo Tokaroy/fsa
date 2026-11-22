@@ -198,7 +198,7 @@ void WingedForceGem_804AB098::update() {
         mPos.y -= mPos.z;
         s32 player = fn_8023AF14(&box, mLayer_0x4, false, mPos.z);
         if (viewLayerFlag(mLayer_0x4)) {
-            hitWall = fn_801F2618(NULL, false);
+            hitWall = sweepMapBox_801F2618(NULL, false);
         }
         if (player < 0) {
             for (s32 i = 0; i < 4; i++) {
@@ -235,8 +235,8 @@ void WingedForceGem_804AB098::update() {
                         fn_80230498(player, &pos, 0xED, 0xFF, -0x80, -0x80, true);
                     }
                     s32 who = player;
-                    if (fn_8022F514(player) == 1) {
-                        who = fn_8022F3DC(player);
+                    if (hasPlayerLeader_8022F514(player) == 1) {
+                        who = getPlayerLeader_8022F3DC(player);
                     }
                     showMessage(who);
                     getActorManager_801F856C()->spawnActor_801F9484(
@@ -396,8 +396,8 @@ void WingedForceGem_804AB098::update() {
     case 5: {
         fixKind(this);
         s32 who = field_0x26c;
-        if (fn_8022F514(field_0x26c) == 1) {
-            who = fn_8022F3DC(field_0x26c);
+        if (hasPlayerLeader_8022F514(field_0x26c) == 1) {
+            who = getPlayerLeader_8022F3DC(field_0x26c);
         }
         showMessage(who);
         if (field_0x270 != 5 && field_0x270 != 6 && field_0x270 != 7) {
@@ -536,7 +536,7 @@ void WingedForceGem_804AB098::draw() {
         params.field_0x1d = -1;
         params.field_0x1c = 0;
         if (mSpriteParams.mMtx == NULL) {
-            fn_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x25c + lbl_804AB038[kind],
+            drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "enemy_both2_sob.bin", field_0x25c + lbl_804AB038[kind],
                         NULL);
         }
     } else {

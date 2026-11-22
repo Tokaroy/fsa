@@ -118,7 +118,7 @@ void ShadowLinkJumpMinor_804A68D0::updateState_0x90(u8 mapHit) {
             if (mPos.z <= 0.0f) {
                 fn_8022089C(4);
             }
-        } else if (fn_801D05F8(&mPos, 48.0f) >= 0) {
+        } else if (findNearestPlayer_801D05F8(&mPos, 48.0f) >= 0) {
             mFlags |= 0x4000;
             setBox(mBox, 1.0f, -1.0f);
             mBox2.i = mBox.i;

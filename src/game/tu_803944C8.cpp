@@ -741,69 +741,69 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 1:
             case 2:
             case 16:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
-                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                        fn_8015445C(fn_8023EF50(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
                         (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
                         work[2] = work[0];
                         if (take != 0) {
-                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                         }
                     }
                 }
                 break;
             case 3:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 4:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 5:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 6:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 7:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 8:
             case 9:
             case 10:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
-                    ActorBase_804A5770* pot = fn_8015445C(fn_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                    ActorBase_804A5770* pot = fn_8015445C(getRepresentativePlayer_8022EA0C(fn_8023EF50(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
                         work[2] = work[0];
                         if (take != 0) {
-                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                         }
                     }
                 }
@@ -812,17 +812,17 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 12:
             case 13:
             case 14:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
-                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
                         work[2] = work[0];
                     }
                 }
                 break;
             case 15:
-                if (!fn_8023EFEC(fn_8022EA0C(field_0x60->fn_803A30BC()))) {
+                if (!fn_8023EFEC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()))) {
                     work[2] = work[0];
                 }
                 break;
@@ -966,9 +966,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
-                                                           getPlayerPos_8023E724(fn_8022EA0C(i)),
-                                                           (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
+                                                           getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
+                                                           (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
                 }
             }
             return true;
@@ -1012,7 +1012,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x2002D:
-            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
             return true;
         case 0x2002E:
             if (field_0x60->fn_803A30BC() >= 0 && field_0x60->fn_803A30BC() < 4 &&
@@ -1038,24 +1038,24 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             if (music == 0) {
                 fn_803A3144();
             } else {
-                gAudioMgr_8053AF80->fn_80458FF0(lbl_805431D0[music], true, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(lbl_805431D0[music], true, 0);
             }
             return true;
         }
         case 0x20032:
-            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
-                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
-                            getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
-                            (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
-                                fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
+            if (fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
+                fn_80154310('LSTI', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
+                            getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
+                            (fn_8023725C(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
+                                fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
                             -1, -1);
-                fn_802372F8(fn_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
+                fn_802372F8(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
             }
             return true;
         case 0x20033: {
             work[0] = ((const s32*)data)[0];
             work[1] = ((const s32*)data)[1];
-            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
+            if (fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
                 field_0x60->fn_803A30DC(work[0]);
             } else {
                 field_0x60->fn_803A30DC(work[1]);
@@ -1324,69 +1324,69 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 1:
             case 2:
             case 16:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'KEY0') {
                     SmallKey_804A8CD8* key = static_cast<SmallKey_804A8CD8*>(
-                        fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC()))));
+                        fn_8015445C(fn_8023EF50(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()))));
                     if ((key->fn_803A3220() == 0 && kind == 0) || (key->fn_803A3220() == 1 && kind == 1) ||
                         (key->fn_803A3220() == 2 && kind == 2) || (key->fn_803A3220() == 9 && kind == 16)) {
                         work[2] = work[0];
                         if (take != 0) {
-                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                         }
                     }
                 }
                 break;
             case 3:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'BORD') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 4:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'STON') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 5:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'HBMB') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 6:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'NIWA') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 7:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'GRAS') {
                     work[2] = work[0];
                     if (take != 0) {
-                        fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                        fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                     }
                 }
                 break;
             case 8:
             case 9:
             case 10:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
-                    ActorBase_804A5770* pot = fn_8015445C(fn_8023EF50(fn_8022EA0C(field_0x60->fn_803A30BC())));
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'TUBO') {
+                    ActorBase_804A5770* pot = fn_8015445C(fn_8023EF50(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())));
                     if ((((pot->fn_801544C8() >> 7) & 0x1F) == 0 && kind == 10) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 1 && kind == 8) ||
                         (((pot->fn_801544C8() >> 7) & 0x1F) == 2 && kind == 9)) {
                         work[2] = work[0];
                         if (take != 0) {
-                            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+                            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
                         }
                     }
                 }
@@ -1395,17 +1395,17 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             case 12:
             case 13:
             case 14:
-                if (fn_8023EEB4(fn_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
-                    if ((fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
-                        (fn_8023ECF0(fn_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
+                if (fn_8023EEB4(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 'PLAY') {
+                    if ((fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 0 && kind == 11) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 1 && kind == 12) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 2 && kind == 13) ||
+                        (fn_8023ECF0(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 3 && kind == 14)) {
                         work[2] = work[0];
                     }
                 }
                 break;
             case 15:
-                if (!fn_8023EFEC(fn_8022EA0C(field_0x60->fn_803A30BC()))) {
+                if (!fn_8023EFEC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()))) {
                     work[2] = work[0];
                 }
                 break;
@@ -1548,9 +1548,9 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             }
             for (s32 i = 0; i < 4; i++) {
                 if (fn_8018A614(i) && (i == work[0] || who == 5)) {
-                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(fn_8022EA0C(i)),
-                                                           getPlayerPos_8023E724(fn_8022EA0C(i)),
-                                                           (fn_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
+                    field_0x60->fn_803A3084(i, fn_80154310('TKRA', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(i)),
+                                                           getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(i)),
+                                                           (getRepresentativePlayer_8022EA0C(i) << 12) | 0x100 | code, -1, -1));
                 }
             }
             return true;
@@ -1594,7 +1594,7 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             return true;
         }
         case 0x2002D:
-            fn_8023EE28(fn_8022EA0C(field_0x60->fn_803A30BC()));
+            fn_8023EE28(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()));
             return true;
         case 0x2002E:
             if (field_0x60->fn_803A30BC() >= 0 && field_0x60->fn_803A30BC() < 4 &&
@@ -1620,24 +1620,24 @@ bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
             if (music == 0) {
                 fn_803A3144();
             } else {
-                gAudioMgr_8053AF80->fn_80458FF0(lbl_805431D0[music], true, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(lbl_805431D0[music], true, 0);
             }
             return true;
         }
         case 0x20032:
-            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
-                fn_80154310('LSTI', getPlayerLayer_8023DE58(fn_8022EA0C(field_0x60->fn_803A30BC())),
-                            getPlayerPos_8023E724(fn_8022EA0C(field_0x60->fn_803A30BC())),
-                            (fn_8023725C(fn_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
-                                fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())),
+            if (fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) != 0) {
+                fn_80154310('LSTI', getPlayerLayer_8023DE58(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
+                            getPlayerPos_8023E724(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
+                            (fn_8023725C(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) << 22) |
+                                fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())),
                             -1, -1);
-                fn_802372F8(fn_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
+                fn_802372F8(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC()), 0, 1);
             }
             return true;
         case 0x20033: {
             work[0] = ((const s32*)data)[0];
             work[1] = ((const s32*)data)[1];
-            if (fn_802373EC(fn_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
+            if (fn_802373EC(getRepresentativePlayer_8022EA0C(field_0x60->fn_803A30BC())) == 1) {
                 field_0x60->fn_803A30DC(work[0]);
             } else {
                 field_0x60->fn_803A30DC(work[1]);

@@ -19,7 +19,7 @@ extern const f32 lbl_8046ACC8[37][2];
 void PlayerEffect_804A6E20::init() {
     if (getKind() != 5) {
         if (getKind() == 1) {
-            if (fn_8022F514(mSpawnParam_0x90 & 3)) {
+            if (hasPlayerLeader_8022F514(mSpawnParam_0x90 & 3)) {
                 mAlive = false;
                 return;
             }

@@ -75,9 +75,9 @@ void ZoraEscortGoal_8049E424::init() {
     mBox.set(-10.0f, -8.0f, 10.0f, 8.0f);
     mBox2.set(mBox);
     mMapBox_0x80.set(mBox);
-    mAnim27c.fn_801D2608(lbl_8049E400, 9);
+    mAnim27c.setKeyTables_801D2608(lbl_8049E400, 9);
     mAnim27c.startAnim_801D22DC(6, 2, false);
-    mAnim27c.fn_801D1F14(0.0f);
+    mAnim27c.setFrame_801D1F14(0.0f);
     mRail.clear();
     mDrawEnabled = false;
     fn_801283E8()->fn_80128398(this);
@@ -384,7 +384,7 @@ bool ZoraEscortGoal_8049E424::walkRail() {
             s32 anim = fn_801F681C(angle);
             if (anim != mAnim27c.mAnim) {
                 mAnim27c.startAnim_801D22DC(anim, 2, false);
-                mAnim27c.fn_801D1F14(0.0f);
+                mAnim27c.setFrame_801D1F14(0.0f);
             }
             flag = false;
         }

@@ -26,7 +26,7 @@
 // parameter type is a symbols.txt rename too. "N units" counts the other
 // game units calling the function. "layer" is an actor layer
 // (ActorBase_804A5770::field_0x4). Not declared yet: the 2-unit tile
-// pattern writers fn_8029DB2C, fn_8029DD50, fn_8029DEBC, fn_8029DF80,
+// pattern writers fn_8029DB2C, writeFourTiles_8029DD50, fn_8029DEBC, fn_8029DF80,
 // fn_8029EC84 (act_door, tu_802D39B8),
 // fn_802A20F0 (10 units; spreads fire over burnable tiles) and the 1-unit
 // ones; their argument types need their bodies read first.
@@ -67,10 +67,10 @@ public:
     // `layer` (fn_80226BC4(pos', layer & 0xFE), then fn_802F9974(layer,
     // cell, tile)); nothing else. this unused. pos: callers pass
     // &mPos; the body copies x and y to a stack TVec3f for fn_80226BC4.
-    // tile: u16, as for fn_802A3884.
+    // tile: u16, as for writeTileMarkView_802A3884.
     // `const TVec3f*` (here and below) is a guess: the asm can't tell it from
     // a reference or a non-const pointer.
-    void fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u16 tile);
+    void writeTile_802A381C(const JGeometry::TVec3f* pos, s32 layer, u16 tile);
     // 2 units (act_item_pedestal, tu_802D39B8). Writes a pair of tiles (tileA, then the cell
     // 16 columns left, or 0x110 back at a screen edge, gets tileB) on layer + layerOffset and
     // marks the view cell.
@@ -84,8 +84,8 @@ public:
     // its name and type are guesses. tile: callers pass lhz halfwords
     // (act_switch 0x802A756C) or clrlwi 16 a word first
     // (act_panel_rewrite_npc), so it is a u16.
-    void fn_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
-    // Shared body of fn_802A3884 / fn_802A3948, inlined into both and into their callers.
+    void writeTileMarkView_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
+    // Shared body of writeTileMarkView_802A3884 / fn_802A3948, inlined into both and into their callers.
     void writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set);
     // 1 unit besides tu_8029D898 (act_gravestone). Writes the four tile
     // codes a..d (u16, clrlwi 16 / lhz) into the cells at and after pos on
@@ -98,7 +98,7 @@ public:
     // is tested with clrlwi 24 and cmplwi 1 in act_bomb, so it is a u8.
     // out: its type is a guess from the slot's size; the body is not read.
     u8 fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32 layer, JGeometry::TVec3f* out);
-    // 17 units / 62 calls. fn_802A3884 with fn_802D7D00(..., true): sets
+    // 17 units / 62 calls. writeTileMarkView_802A3884 with fn_802D7D00(..., true): sets
     // the bit. `player` as above (0 at 41 sites, 1 at 3, act_gravestone's
     // 0x238 player index).
     void fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile);
@@ -144,7 +144,7 @@ public:
     void fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s32 b);
     // 2 units (see above). As fn_8029DEBC for four (DD50) or six (DB2C) tile codes in a row
     // or column. this unused.
-    void fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
+    void writeFourTiles_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d);
     void fn_8029DB2C(s32 layer, s32 cell, s32 vertical, u16 a, u16 b, u16 c, u16 d, u16 e, u16 f);
     // 2 units (act_door, tu_802D39B8). The 2 x 2 block of tile codes a..d at
     // cell (right neighbour and the row below as in fn_8029DEBC). this unused.
@@ -178,7 +178,7 @@ public:
     /* 0x14 */ s32 field_0x14; // frame
     /* 0x18 */ s32 field_0x18; // delay
     /* 0x1C */ s32 field_0x1c; // frame, mod 8
-    /* 0x20 */ s32 field_0x20; // the last cell written (fn_802A3884 / fn_802A3948)
+    /* 0x20 */ s32 field_0x20; // the last cell written (writeTileMarkView_802A3884 / fn_802A3948)
     /* 0x24 */ u16 field_0x24; // the tile code at field_0x20 (fn_802F9908; sth / lhz)
     /* 0x26 */ u8 field_0x26[0x28 - 0x26];
 }; // Size: 0x28

@@ -100,11 +100,11 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
     mPos += mVel_0x3c;
     s32 dir;
     f32 dist;
-    fn_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, NULL, &dir, &dist, NULL, 0, 0);
     JGeometry::TVec3f wall;
     wall.x = wall.y = wall.z = 0.0f;
     if (field_0x2f8 != 9) {
-        fn_801F2618(&wall, false);
+        sweepMapBox_801F2618(&wall, false);
     }
     mLife = 10000;
     if (field_0x308 == 0 || field_0x2f8 == 7) {
@@ -345,7 +345,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
                     actor->mAlive = false;
                 }
             }
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000022, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000022, false, 0);
             field_0x310 = -1;
             field_0x2f8 = 1;
         }
@@ -359,7 +359,7 @@ void PrincessZeldaSpawnerEscape_804A3698::update() {
         }
         s32 near = 0;
         for (s32 i = 0; i < 4; i++) {
-            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && fn_8022EA0C(i) == i &&
+            if (fn_8023F264(i) && mLayer_0x4 == getPlayerLayer_8023DE58(i) && getRepresentativePlayer_8022EA0C(i) == i &&
                 !fn_80230188(i) && !fn_8022DCD8(i) && !fn_80236B50(i) && !fn_8022D534(i)) {
                 f32 dx = getPlayerPos_8023E724(i)->x - mPos.x;
                 f32 dy = getPlayerPos_8023E724(i)->y - mPos.y;

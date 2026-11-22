@@ -54,19 +54,19 @@ VaatiCutscene_8049D940::~VaatiCutscene_8049D940() {
 void VaatiCutscene_8049D940::init() {
     DemoActorBase_8049D140::init();
     for (s32 i = 0; i < 4; i++) {
-        field_0x31c[i] = fn_804032E8('TIMG', lbl_8049D930[i]);
+        field_0x31c[i] = getBossArchiveResource_804032E8('TIMG', lbl_8049D930[i]);
     }
     // '????' (escaped: "??'" would be a trigraph).
     field_0x32c = gGameRoot_8053AAF8->field_0xa4->getResource('?\?\?\?', "kk_black.bti");
     mPos.z = 20.0f;
     mVel_0x3c.x = mVel_0x3c.y = mVel_0x3c.z = 0.0f;
     mDrawEnabled = false;
-    field_0x238.fn_801D2608(lbl_80539F08, 1);
+    field_0x238.setKeyTables_801D2608(lbl_80539F08, 1);
     field_0x238.startAnim_801D22DC(0, 2, false);
-    field_0x238.fn_801D1F14(0.0f);
-    field_0x270.fn_801D2608(lbl_80539F08, 1);
+    field_0x238.setFrame_801D1F14(0.0f);
+    field_0x270.setKeyTables_801D2608(lbl_80539F08, 1);
     field_0x270.startAnim_801D22DC(0, 2, false);
-    field_0x270.fn_801D1F14(0.0f);
+    field_0x270.setFrame_801D1F14(0.0f);
     field_0x308 = mPos;
 }
 

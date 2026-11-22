@@ -48,10 +48,10 @@ void BGMChangeNPC_804A9DA0::update() {
                 }
             }
             if (field_0x258 >= 0) {
-                field_0x25c = fn_8022EA0C(field_0x258);
+                field_0x25c = getRepresentativePlayer_8022EA0C(field_0x258);
             }
         } else {
-            field_0x25c = fn_8022EA0C(0);
+            field_0x25c = getRepresentativePlayer_8022EA0C(0);
             if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
                 JGeometry::TVec3f pos = *getPlayerPos_8023E724(field_0x25c);
                 if (containsPoint(box, pos)) {
@@ -72,14 +72,14 @@ void BGMChangeNPC_804A9DA0::update() {
             }
         }
         if (field_0x258 >= 0) {
-            field_0x25c = fn_8022EA0C(field_0x258);
+            field_0x25c = getRepresentativePlayer_8022EA0C(field_0x258);
             if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
                 field_0x258 = field_0x25c;
                 field_0x94 = field_0x25c;
             }
         }
     } else {
-        field_0x25c = fn_8022EA0C(0);
+        field_0x25c = getRepresentativePlayer_8022EA0C(0);
         if (mLayer_0x4 == getPlayerLayer_8023DE58(field_0x25c)) {
             field_0x258 = field_0x25c;
             field_0x94 = field_0x25c;
@@ -191,12 +191,12 @@ void BGMChangeNPC_804A9DA0::update() {
             }
             s32 id = field_0x234;
             if (id == 0x11) {
-                gAudioMgr_8053AF80->fn_80458F9C(0x3C);
+                gAudioMgr_8053AF80->stopBgm_80458F9C(0x3C);
             } else {
                 if (id == 0x14 || id == 0x1E) {
                     gAudioMgr_8053AF80->fn_80458F04(lbl_8046F1C8[id]);
                 } else {
-                    gAudioMgr_8053AF80->fn_80458FF0(lbl_8046F1C8[id], false, 0);
+                    gAudioMgr_8053AF80->startBgm_80458FF0(lbl_8046F1C8[id], false, 0);
                 }
                 s32 view = field_0x234;
                 if (view < 0x11 || view == 0x26) {
@@ -223,7 +223,7 @@ void BGMChangeNPC_804A9DA0::update() {
             s32 id = field_0x234;
             if (id != 0x11 && current != lbl_8046F1C8[id] && current - 0x1000000 != 0x21 &&
                 current - 0x1000000 != 0x19) {
-                gAudioMgr_8053AF80->fn_80458FF0(lbl_8046F1C8[id], false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(lbl_8046F1C8[id], false, 0);
             }
         }
         break;

@@ -146,7 +146,7 @@ void GamblingShop_804AAA70::update() {
             field_0x23c = 0x14;
             s32 player = field_0x248;
             if (player >= 0) {
-                player = fn_8022EA0C(player);
+                player = getRepresentativePlayer_8022EA0C(player);
             }
             JGeometry::TVec3f dir;
             f32 dist;
@@ -286,7 +286,7 @@ void GamblingShop_804AAA70::update() {
         break;
     }
     case 4: {
-        s32 player = fn_8022EA0C(field_0x248);
+        s32 player = getRepresentativePlayer_8022EA0C(field_0x248);
         if (getPlayerLayer_8023DE58(player) != getField_0x4()) {
             for (s32 k = 0; k < field_0x24c; k++) {
                 s32 actorSlot = field_0x250[k];
@@ -362,7 +362,7 @@ void GamblingShop_804AAA70::update() {
                 break;
             }
         }
-        s32 player = fn_8022EA0C(field_0x248);
+        s32 player = getRepresentativePlayer_8022EA0C(field_0x248);
         if (talkAtFlags21(player, msg, mLayer_0x4, mPos)) {
             for (s32 k = 0; k < field_0x24c; k++) {
                 s32 actorSlot = field_0x250[k];

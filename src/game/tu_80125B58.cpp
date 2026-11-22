@@ -25,12 +25,12 @@ void EscortedWomanArrivalPoint_8049E350::init() {
     mBox2.set(mBox);
     mMapBox_0x80.set(mBox);
     mDir_0x98 = 2;
-    mAnim244.fn_801D2608(lbl_8049E330, 4);
+    mAnim244.setKeyTables_801D2608(lbl_8049E330, 4);
     mAnim244.startAnim_801D22DC(2, 2, false);
-    mAnim244.fn_801D1F14(0.0f);
-    mAnim27c.fn_801D2608(lbl_8049E340, 4);
+    mAnim244.setFrame_801D1F14(0.0f);
+    mAnim27c.setKeyTables_801D2608(lbl_8049E340, 4);
     mAnim27c.startAnim_801D22DC(0, 0, false);
-    mAnim27c.fn_801D1F14(0.0f);
+    mAnim27c.setFrame_801D1F14(0.0f);
     mDrawEnabled = false;
     if (getScreenFlagBit_0x3C() != 0 && !isScreenFlagSet_0x34()) {
         return;
@@ -145,7 +145,7 @@ void EscortedWomanArrivalPoint_8049E350::update() {
         mDir_0x98 = anim;
         if (anim != mAnim244.mAnim) {
             mAnim244.startAnim_801D22DC(anim, 2, false);
-            mAnim244.fn_801D1F14(0.0f);
+            mAnim244.setFrame_801D1F14(0.0f);
         }
     }
     if (field_0x231) {
@@ -226,7 +226,7 @@ void EscortedWomanArrivalPoint_8049E350::startSignAnim() {
         mAnim27c.startAnim_801D22DC(1, 0, false);
         break;
     }
-    mAnim27c.fn_801D1F14(0.0f);
+    mAnim27c.setFrame_801D1F14(0.0f);
 }
 
 EscortedWomanArrivalPoint_8049E350::~EscortedWomanArrivalPoint_8049E350() {}

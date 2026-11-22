@@ -4,4 +4,4 @@ After: 5752 / 11557, 1155276 bytes.
 Matched: dtor, init, __sinit (generated).
 Resistant: none; update fixed with an empty case 2 (reviewer).
 SHARED-EDITS: none.
-Next: name the fields once the class's purpose is known (writes tiles through BgRewrite::fn_802A381C).
+Next: name the fields once the class's purpose is known (writes tiles through BgRewrite::writeTile_802A381C).

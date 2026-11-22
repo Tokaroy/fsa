@@ -50,9 +50,9 @@ void ShopItem_8049CDC0::init() {
     mMsgPos.y = mPos.y;
     mMsgPos.z = mPos.z;
     mMsgPos.y -= 32.0f;
-    mAnim.fn_801D2608(lbl_8049CDA0, 8);
+    mAnim.setKeyTables_801D2608(lbl_8049CDA0, 8);
     mAnim.startAnim_801D22DC(mKind, 2, false);
-    mAnim.fn_801D1F14(0.0f);
+    mAnim.setFrame_801D1F14(0.0f);
 }
 
 // FIXME: 97.63 %. In state 1 the original reloads mPlayer (lwz 0x270) where ours
@@ -78,8 +78,8 @@ void ShopItem_8049CDC0::update() {
             break;
         }
         s32 slot = player;
-        if (fn_8022F514(player)) {
-            slot = fn_8022F3DC(player);
+        if (hasPlayerLeader_8022F514(player)) {
+            slot = getPlayerLeader_8022F3DC(player);
         }
         if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(slot), 0x120) == 0) {
             break;

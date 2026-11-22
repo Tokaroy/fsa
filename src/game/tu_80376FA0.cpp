@@ -311,14 +311,14 @@ void RockDroppedIntoTheRiver11_804AE7D8::draw() {
 
     switch (field_0x244) {
     case 0: {
-        void* res = fn_804032E8('TIMG', "yy_1_1_iwa1.bti");
+        void* res = getBossArchiveResource_804032E8('TIMG', "yy_1_1_iwa1.bti");
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
         }
         break;
     }
     case 1: {
-        void* res = fn_804032E8('TIMG', "yy_1_1_iwa2.bti");
+        void* res = getBossArchiveResource_804032E8('TIMG', "yy_1_1_iwa2.bti");
         if (mLayer_0x4 < 8) {
             gGameRoot2_8053AB10->field_0x20->fn_802F745C(&mPos, res, &params);
         }

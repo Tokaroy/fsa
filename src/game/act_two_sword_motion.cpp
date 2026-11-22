@@ -51,7 +51,7 @@ void TwoSwordMotion_804ABA90::init() {
     field_0x285 = 1;
     for (s32 i = 0; i < 4; i++) {
         if (i != field_0x24c && i != field_0x250) {
-            if (fn_8022E438(i, field_0x24c) != true) {
+            if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                 continue;
             }
             if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -66,7 +66,7 @@ void TwoSwordMotion_804ABA90::init() {
     if (field_0x285 == 1) {
         for (s32 i = 0; i < 4; i++) {
             if (i != field_0x24c && i != field_0x250) {
-                if (fn_8022E438(i, field_0x24c) != true) {
+                if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                     continue;
                 }
                 if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -99,7 +99,7 @@ bool TwoSwordMotion_804ABA90::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f*
     s32 serial = mSerial;
     CollisionBoxes_8020D58C* boxes;
     boxes = fn_8020D58C();
-    if (boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, NULL) == true) {
+    if (boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, NULL) == true) {
         return true;
     }
     s32 code = fn_8022461C(pos, layer);
@@ -144,7 +144,7 @@ void TwoSwordMotion_804ABA90::update() {
             field_0x230 = 1;
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
-                    if (fn_8022E438(i, field_0x24c) != true) {
+                    if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                         continue;
                     }
                     if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -157,7 +157,7 @@ void TwoSwordMotion_804ABA90::update() {
             field_0x285 = 1;
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
-                    if (fn_8022E438(i, field_0x24c) != true) {
+                    if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                         continue;
                     }
                     if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -172,7 +172,7 @@ void TwoSwordMotion_804ABA90::update() {
             if (field_0x285 == 1) {
                 for (s32 i = 0; i < 4; i++) {
                     if (i != field_0x24c && i != field_0x250) {
-                        if (fn_8022E438(i, field_0x24c) != true) {
+                        if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                             continue;
                         }
                         if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -188,7 +188,7 @@ void TwoSwordMotion_804ABA90::update() {
         if (fn_80336040() == true) {
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
-                    if (fn_8022E438(i, field_0x24c) != true) {
+                    if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                         continue;
                     }
                     if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -250,7 +250,7 @@ void TwoSwordMotion_804ABA90::update() {
             s32 count = 0;
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
-                    if (fn_8022E438(i, field_0x24c) != true) {
+                    if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                         continue;
                     }
                     if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {
@@ -295,7 +295,7 @@ void TwoSwordMotion_804ABA90::update() {
             s32 none = true;
             for (s32 i = 0; i < 4; i++) {
                 if (i != field_0x24c && i != field_0x250) {
-                    if (fn_8022E438(i, field_0x24c) != true) {
+                    if (arePlayersInSameGroup_8022E438(i, field_0x24c) != true) {
                         continue;
                     }
                     if (fn_8022CAF8(i) == 4 && fn_8022F478(i)) {

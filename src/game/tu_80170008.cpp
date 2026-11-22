@@ -108,7 +108,7 @@ void BallAndChainSoldier_804A0810::init() {
     } else if (field_0x94 != 5) {
         field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', mLayer_0x4, &mPos, 5, -1, -1);
         if (gGameRoot_8053AAF8->field_0x7f == 1) {
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
         }
     }
 }
@@ -173,7 +173,7 @@ void BallAndChainSoldier_804A0810::update() {
         }
         if (field_0x26c == 0) {
             if (gGameRoot_8053AAF8->field_0x7f == 1) {
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000021, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000021, false, 0);
             }
             field_0x26c = getActorManager_801F856C()->spawnActor_801F9484('SLR3', mLayer_0x4, &mPos, 5, -1, -1);
         }
@@ -234,7 +234,7 @@ void BallAndChainSoldier_804A0810::update() {
             startSound_801F0E34(0x40087, 0);
         }
         for (s32 i = 0; i < 4; i++) {
-            player = fn_801F285C(NULL, NULL, true, i);
+            player = findOverlappingPlayer_801F285C(NULL, NULL, true, i);
             if (player >= 0) {
                 left += x;
                 right += x;
@@ -273,7 +273,7 @@ void BallAndChainSoldier_804A0810::update() {
                 }
             }
         }
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         if (mLife <= 0) {
             s32 serial = field_0x26c;
             if (serial != 0) {
@@ -286,7 +286,7 @@ void BallAndChainSoldier_804A0810::update() {
             return;
         }
     }
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     if (player >= 0) {
         JGeometry::TVec3f* pos = getPlayerPos_8023E724(player);
         field_0x32c[0] = pos->x;
@@ -362,7 +362,7 @@ void BallAndChainSoldier_804A0810::update() {
         }
     }
     fn_801F2B7C(-100, -1, 1);
-    fn_801F2618(NULL, false);
+    sweepMapBox_801F2618(NULL, false);
     switch (field_0x230) {
     case 0:
         if (field_0x94 == 2) {

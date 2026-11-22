@@ -244,18 +244,18 @@ void RuleScreen_804B16A8::fn_8043651C() {
     u8 c = 0;
     field_0x58++;
     if (field_0x58 > 0) {
-        a = field_0x8->fn_80402940(0x10, 0, -448.0f, 0.0f);
+        a = field_0x8->animateMoveY_80402940(0x10, 0, -448.0f, 0.0f);
         for (int i = 0; i < 2; i++) {
-            field_0xc[i]->fn_80402940(0x10, 0, -448.0f + field_0x44, field_0x44);
+            field_0xc[i]->animateMoveY_80402940(0x10, 0, -448.0f + field_0x44, field_0x44);
         }
-        field_0x14->fn_80402940(0x10, 0, -448.0f, 0.0f);
-        field_0x18->fn_80402940(0x10, 0, -448.0f, 0.0f);
+        field_0x14->animateMoveY_80402940(0x10, 0, -448.0f, 0.0f);
+        field_0x18->animateMoveY_80402940(0x10, 0, -448.0f, 0.0f);
     }
     if (field_0x58 > 0) {
-        b = field_0x34->fn_80402940(0x14, 0, -200.0f, 0.0f);
+        b = field_0x34->animateMoveY_80402940(0x14, 0, -200.0f, 0.0f);
     }
     if (field_0x58 > 10) {
-        c = field_0x38->fn_80402940(0x16, 0, -200.0f, 0.0f);
+        c = field_0x38->animateMoveY_80402940(0x16, 0, -200.0f, 0.0f);
     }
     if (a && b && c) {
         field_0x6b = 1;

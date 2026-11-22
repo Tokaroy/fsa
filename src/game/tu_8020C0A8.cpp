@@ -41,7 +41,7 @@ void ZolSmallSlime_804A5F40::init() {
     field_0x250 = fn_801CD664(0x3D) + 0x28;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_8053A178, 1);
+    mAnim.setKeyTables_801D2608(lbl_8053A178, 1);
     mAnim.startAnim_801D22DC(0, 2, false);
     mAnim.fn_801D1D60();
     if (mFlags & 0x2000) {
@@ -81,7 +81,7 @@ void ZolSmallSlime_804A5F40::fn_8020C6E8() {
             if (getPlayerLayer_8023DE58(i) != getField_0x4()) {
                 continue;
             }
-            f32 dist = fn_801D0DA0(i, &mPos);
+            f32 dist = getPlayerDistSq_801D0DA0(i, &mPos);
             if (dist < best) {
                 best = dist;
                 nearest = i;
@@ -174,7 +174,7 @@ void ZolSmallSlime_804A5F40::updateState_0x90(u8 mapHit) {
         field_0x2ae = fn_801F6874(mDir_0x98);
         break;
     case 2:
-        field_0x2ae = fn_801D0280(field_0x2a8) - 0x8000;
+        field_0x2ae = getAngleToPlayer_801D0280(field_0x2a8) - 0x8000;
         if (viewLayerFlag(mLayer_0x4)) {
             if (!(fn_801D0DD4() && fn_801CC9F8(&mPos, mLayer_0x4))) {
                 if (field_0x2ae > 0) {
@@ -223,7 +223,7 @@ bool ZolSmallSlime_804A5F40::isBlocked_0x4C(s32 layer, const JGeometry::TVec3f* 
     if (!fn_802265DC(pos, layer, false)) {
         s32 serial = mSerial;
         CollisionBoxes_8020D58C* boxes = fn_8020D58C();
-        if (!boxes->mLists[boxes->field_0x1].fn_8020D6AC(layer, pos, serial, ignoreIds)) {
+        if (!boxes->mLists[boxes->field_0x1].containsPointOfOther_8020D6AC(layer, pos, serial, ignoreIds)) {
             result = false;
         }
     }

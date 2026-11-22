@@ -236,7 +236,7 @@ void TwoPersonLiftableRock_804AC950::update() {
         }
         if (field_0x230 == 1) {
             for (s32 i = 0; i < 4; i++) {
-                if (fn_8022E438(field_0x254[0], i) == 1 || fn_8022E438(field_0x254[1], i) == 1) {
+                if (arePlayersInSameGroup_8022E438(field_0x254[0], i) == 1 || arePlayersInSameGroup_8022E438(field_0x254[1], i) == 1) {
                     field_0x320[i].field_0x0 = 0;
                 }
             }
@@ -291,12 +291,12 @@ void TwoPersonLiftableRock_804AC950::update() {
         } else {
             mVel_0x3c.z += -0.15f;
             mPos.add(mVel_0x3c);
-            if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+            if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
                     if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                     } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
                 field_0x230 = 2;
@@ -307,8 +307,8 @@ void TwoPersonLiftableRock_804AC950::update() {
                 if (mask > 0) {
                     for (s32 i = 0; i < 4; i++) {
                         if (field_0x234[i] != field_0x388 && (mask & (1 << i)) > 0 &&
-                            !fn_8022E438(field_0x254[0], i) && !fn_8022E438(field_0x254[1], i)) {
-                            fn_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 5);
+                            !arePlayersInSameGroup_8022E438(field_0x254[0], i) && !arePlayersInSameGroup_8022E438(field_0x254[1], i)) {
+                            hitPlayerGroup_80238548(i, 0, (const JGeometry::TVec2f*)&mPos, 5);
                             hit = true;
                         }
                     }

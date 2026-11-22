@@ -285,7 +285,7 @@ HudMgr_804B1920::HudMgr_804B1920() {
     field_0x253 = 0;
 
     if (gGameRoot_8053AAF8->field_0x7f != 0 && lbl_80529DEC.mStage_0x118 == 8 && lbl_80529DEC.mLevel_0x11c == 3) {
-        img = (const ResTIMG*)fn_804032E8('TIMG', "kk_op4sbase_01.bti");
+        img = (const ResTIMG*)getBossArchiveResource_804032E8('TIMG', "kk_op4sbase_01.bti");
         field_0x10 = new J2DPicture(img);
     } else {
         field_0x10 = NULL;
@@ -686,7 +686,7 @@ void HudMgr_804B1920::fn_8043D8B4() {
     if (gGameRoot_8053AAF8->field_0x7e == 0) {
         for (int i = 0; i < 4; i++) {
             if (gGameRoot_8053AAF8->mPlayerMask & (u8)(1 << i)) {
-                s32 player = fn_8022EA0C(i);
+                s32 player = getRepresentativePlayer_8022EA0C(i);
                 if (getPlayerLayer_8023DE58(player) < 8) {
                     JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
                     fn_804408F0(&pos);
@@ -939,9 +939,9 @@ void HudMgr_804B1920::fn_8043CF40() {
         y = 13.0f - field_0x40[9]->field_0xc;
         x = y - 100.0f;
     }
-    u8 done = field_0x40[0]->fn_80402940(19, 0, x, y);
+    u8 done = field_0x40[0]->animateMoveY_80402940(19, 0, x, y);
     for (int i = 1; i < 12; i++) {
-        field_0x40[i]->fn_80402940(19, 0, x, y);
+        field_0x40[i]->animateMoveY_80402940(19, 0, x, y);
     }
     if (done) {
         field_0x104 = 160;
@@ -973,9 +973,9 @@ void HudMgr_804B1920::fn_8043CDA0() {
         x = 13.0f - field_0x40[9]->field_0xc;
         y = x - 100.0f;
     }
-    u8 done = field_0x40[0]->fn_80402940(11, 0, x, y);
+    u8 done = field_0x40[0]->animateMoveY_80402940(11, 0, x, y);
     for (int i = 1; i < 12; i++) {
-        field_0x40[i]->fn_80402940(11, 0, x, y);
+        field_0x40[i]->animateMoveY_80402940(11, 0, x, y);
     }
     if (done) {
         HudMgr_804B1920* screen = lbl_8053AED0;
@@ -1242,7 +1242,7 @@ void HudMgr_804B1920::fn_8043ABCC(s32 index, s32 unused) {
     index = index < 0 ? 0 : index;
     void* res;
     if (index != 1) {
-        res = fn_804032E8('TIMG', lbl_804B1900[index]);
+        res = getBossArchiveResource_804032E8('TIMG', lbl_804B1900[index]);
     } else {
         res = fn_804030C4('TIMG', lbl_804B1900[index]);
     }
@@ -1323,7 +1323,7 @@ void HudMgr_804B1920::fn_8043A450(s32 stage, s32 sub) {
         s32 index = sub + stage * 4;
         void* res;
         if (index != 0) {
-            res = fn_804032E8('TIMG', lbl_804B1820[index]);
+            res = getBossArchiveResource_804032E8('TIMG', lbl_804B1820[index]);
         } else {
             res = fn_804030C4('TIMG', lbl_804B1820[index]);
         }
@@ -1345,7 +1345,7 @@ void HudMgr_804B1920::fn_8043A268(s32 stage, s32 sub, s16 value, f32 x, f32 y) {
         s32 index = sub + stage * 4;
         void* res;
         if (index != 0) {
-            res = fn_804032E8('TIMG', lbl_804B1820[index]);
+            res = getBossArchiveResource_804032E8('TIMG', lbl_804B1820[index]);
         } else {
             res = fn_804030C4('TIMG', lbl_804B1820[index]);
         }

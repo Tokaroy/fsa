@@ -118,12 +118,12 @@ void Pot_804A9428::update() {
         if (!viewLayerFlag(mLayer_0x4)) {
             mVel_0x3c.z += -0.15f;
             mPos += mVel_0x3c;
-            if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+            if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
                 if (mPos.z < 0.0f) {
                     if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                     } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91 || fn_80226850(&mPos, mLayer_0x4) == 0x22E) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                     }
                 }
                 if (field_0x234 == 2) {
@@ -153,7 +153,7 @@ void Pot_804A9428::update() {
             }
             mVel_0x3c.y += 0.15f;
             mPos += mVel_0x3c;
-            if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || fn_801F2618(NULL, false)) {
+            if (fn_801F2B7C(damage, field_0xc8, 1) || fn_801F2B20(0) || sweepMapBox_801F2618(NULL, false)) {
                 die_0x24();
             }
         }

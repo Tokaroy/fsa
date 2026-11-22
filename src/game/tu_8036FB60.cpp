@@ -92,7 +92,7 @@ void FourGirlsControl_804AE4B0::update() {
     if (mTimer != 0) {
         mTimer--;
     }
-    field_0x39c = fn_8022EA0C(0);
+    field_0x39c = getRepresentativePlayer_8022EA0C(0);
     s32 i;
     for (i = 0; i < 4; i++) {
         field_0x264[i] = *getPlayerPos_8023E724(i);
@@ -486,7 +486,7 @@ void FourGirlsControl_804AE4B0::fn_8037100C() {
                 lbl_8053AD70->fn_8037AE00();
                 fn_80119DD0()->fn_80119998(0x3C, 0, 2, 0, 0, 10, 0);
                 field_0x240 = 0x46;
-                gAudioMgr_8053AF80->fn_80458FF0(0x1000007, false, 0);
+                gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, false, 0);
             }
         }
     }
@@ -640,7 +640,7 @@ void FourGirlsControl_804AE4B0::fn_803706AC() {
                 mState = 10;
                 field_0x368 = 0x104;
             }
-            gAudioMgr_8053AF80->fn_80458FF0(0x100000B, false, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x100000B, false, 0);
         } else {
             mState = 6;
             field_0x240 = 0x1E;

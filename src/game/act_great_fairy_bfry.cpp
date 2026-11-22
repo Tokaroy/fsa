@@ -306,7 +306,7 @@ void GreatFairy_804AF338::update() {
                     }
                 } else {
                     if (fn_8023B0F4(i, &far, mLayer_0x4, false, 500.0f) && !fn_8022F478(i) &&
-                        (!fn_8022E438(i, field_0x234) || fn_8022CAF8(field_0x234) == 4))
+                        (!arePlayersInSameGroup_8022E438(i, field_0x234) || fn_8022CAF8(field_0x234) == 4))
                     {
                         mState = 0;
                         break;

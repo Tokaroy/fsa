@@ -78,12 +78,12 @@ void Armos_8049F260::update() {
     box.f.x += mPos.x;
     box.f.y += mPos.y;
     if (fn_801F3D94(true) != 0) {
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         return;
     }
     if (field_0x2f8 == 2 || field_0x2f8 == 5) {
         if (field_0x94 != 3 && field_0x94 != 5) {
-            if (fn_801F305C()) {
+            if (checkHits_801F305C()) {
                 if (field_0x2f8 != 2) {
                     field_0x318 = 0;
                     field_0x2f8 = 2;
@@ -91,12 +91,12 @@ void Armos_8049F260::update() {
                 if (mLife <= 0) {
                     startSound_801F0E34(0x400A1, 0);
                 }
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
                 return;
             }
         } else {
             for (s32 i = 0; i < 4; i++) {
-                s32 player = fn_801F285C(NULL, NULL, false, i);
+                s32 player = findOverlappingPlayer_801F285C(NULL, NULL, false, i);
                 if (player < 0) {
                     continue;
                 }
@@ -188,7 +188,7 @@ void Armos_8049F260::update() {
             if (field_0x94 == 3 || field_0x94 == 4) {
                 s32 outDir = -1;
                 s32 outPlayer = -1;
-                fn_801EEC98(mSerial, NULL, &outDir, NULL, &outPlayer, 0, 0);
+                findTargetPlayer_801EEC98(mSerial, NULL, &outDir, NULL, &outPlayer, 0, 0);
                 bool away = false;
                 if (outPlayer < 0) {
                     away = true;
@@ -206,7 +206,7 @@ void Armos_8049F260::update() {
                     fn_80239914(&box, mLayer_0x4, mSerial);
                     fn_801EF510();
                     fn_801F2B7C(-100, -1, 1);
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                     return;
                 }
             }
@@ -217,7 +217,7 @@ void Armos_8049F260::update() {
             mVel_0x3c.z = 2.0f;
         }
         fn_801F2B7C(-100, -1, 1);
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         break;
     case 3: {
         fn_8020D58C()->addBox(mSerial);
@@ -246,7 +246,7 @@ void Armos_8049F260::update() {
             field_0x300 = 8;
             return;
         }
-        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && fn_801F2618(NULL, false)) {
+        if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f) && sweepMapBox_801F2618(NULL, false)) {
             mPos.x = (f32)((((s32)mPos.x + 4) / 8) * 8);
             mPos.y = (f32)((((s32)mPos.y + 4) / 8) * 8);
             field_0x320 = mPos;
@@ -383,7 +383,7 @@ void Armos_8049F260::update() {
             mVel_0x3c.z = 2.0f;
         }
         fn_801F2B7C(-100, -1, 1);
-        fn_801F2618(NULL, false);
+        sweepMapBox_801F2618(NULL, false);
         s32 serial = fn_801F8108(this, 'LNBM', -1, 32.0f);
         if (serial != 0) {
             ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(serial);

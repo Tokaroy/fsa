@@ -290,7 +290,7 @@ void Quicksand_804A6270::fn_80211C94() {
                 return;
             }
         }
-        if (field_0x2ac == 4 && fn_801D05F8(&mPos, field_0x3a0) < 0) {
+        if (field_0x2ac == 4 && findNearestPlayer_801D05F8(&mPos, field_0x3a0) < 0) {
             leaveSand(this);
         }
         break;
@@ -310,7 +310,7 @@ void Quicksand_804A6270::updateState_0x90(u8 mapHit) {
         switch (field_0x2ac) {
         case 1:
         case 4:
-            if (fn_801D05F8(&mPos, field_0x39c) >= 0) {
+            if (findNearestPlayer_801D05F8(&mPos, field_0x39c) >= 0) {
                 trigger = true;
             }
             break;
@@ -457,7 +457,7 @@ void Quicksand_804A6270::fn_802110A8() {
             if (field_0x3b0 != 0) {
                 field_0x3b0--;
             }
-            s32 player = fn_801D05F8(&mPos, 0.0f);
+            s32 player = findNearestPlayer_801D05F8(&mPos, 0.0f);
             if (player != field_0x3ac) {
                 if (player < 0) {
                     field_0x3ac = -1;

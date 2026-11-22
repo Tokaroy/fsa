@@ -83,7 +83,7 @@ void ForceLike_8049C578::update() {
     u16 angle = 0;
     s32 dir = 0;
     s32 player = -1;
-    fn_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
+    findTargetPlayer_801EEC98(mSerial, &angle, &dir, &dist, &player, 0, 0);
     field_0x24c++;
     switch (field_0x230) {
     case 4:
@@ -132,7 +132,7 @@ void ForceLike_8049C578::update() {
         if (fn_801F3D94(1) != 0) {
             break;
         }
-        if (fn_801F305C()) {
+        if (checkHits_801F305C()) {
             break;
         }
         stepFrame(this);
@@ -179,11 +179,11 @@ void ForceLike_8049C578::update() {
     }
     case 2: {
         s32 target = field_0x238;
-        if (fn_8022F514(field_0x238)) {
-            target = fn_8022F3DC(field_0x238);
+        if (hasPlayerLeader_8022F514(field_0x238)) {
+            target = getPlayerLeader_8022F3DC(field_0x238);
         }
         s32 life = mLife;
-        if (fn_801F305C()) {
+        if (checkHits_801F305C()) {
             field_0x248 += life - mLife;
             mLife = life;
             if (fn_80236228(target) > 20) {
@@ -211,7 +211,7 @@ void ForceLike_8049C578::update() {
             JGeometry::TVec2f p;
             p.x = mPos.x;
             p.y = mPos.y;
-            fn_80238548(field_0x238, 0, &p, 1);
+            hitPlayerGroup_80238548(field_0x238, 0, &p, 1);
         }
         if (player != -1) {
             field_0x254.x = mPos.x - getPlayerPos_8023E724(player)->x;
@@ -247,7 +247,7 @@ void ForceLike_8049C578::update() {
     }
     case 3: {
         f32 z = mVel_0x3c.z;
-        if (fn_801F3D94(1) != 0 || fn_801F305C()) {
+        if (fn_801F3D94(1) != 0 || checkHits_801F305C()) {
             mVel_0x3c.z = z;
         } else {
             fn_801F2B7C(-100, -1, 1);
@@ -280,7 +280,7 @@ void ForceLike_8049C578::update() {
         break;
     }
     }
-    fn_801F2618(NULL, false);
+    sweepMapBox_801F2618(NULL, false);
 }
 
 // FIXME(shotgun): 99.72 %, reloc-name; behaviour clean.

@@ -91,7 +91,7 @@ void WarpEntranceWall_804AE948::update() {
         case 1: {
             JGeometry::TVec3f pos(mPos);
             bool result = false;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 result = true;
             }
             mPos = pos;

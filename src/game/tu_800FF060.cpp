@@ -228,7 +228,7 @@ void HammerShopMinigame_8049C858::update() {
             fn_8022B278();
             fn_801F0D20(0x3A);
             field_0x288 = gAudioMgr_8053AF80->field_0x58;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
             if (field_0x239 != 0) {
                 getGameView_802D6A9C()->fn_802D8050(field_0x239, true, 0xFF);
             }
@@ -263,7 +263,7 @@ void HammerShopMinigame_8049C858::update() {
             }
         } else if (field_0x237 == -1) {
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_8022F514(i) && fn_8023A3DC(i) && field_0x240 != i) {
+                if (!hasPlayerLeader_8022F514(i) && fn_8023A3DC(i) && field_0x240 != i) {
                     field_0x237 = i;
                     field_0x238 = 0;
                 }
@@ -297,7 +297,7 @@ void HammerShopMinigame_8049C858::update() {
         field_0x248++;
         s32 status = getActorManager_801F856C()->fn_801F68E0();
         if (field_0x248 > 50 && status == 1) {
-            field_0x240 = fn_8022EA0C(field_0x240);
+            field_0x240 = getRepresentativePlayer_8022EA0C(field_0x240);
             fn_8022FE80(field_0x240, getPlayerLayer_8023DE58(field_0x240), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
                 fn_801003F4();
@@ -356,7 +356,7 @@ void HammerShopMinigame_8049C858::update() {
             field_0x248 = 0;
             getActorManager_801F856C()->fn_801F6884();
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
+                if (!hasPlayerLeader_8022F514(i)) {
                     fn_802372F8(i, field_0x28c[i], field_0x29c[i]);
                 }
             }

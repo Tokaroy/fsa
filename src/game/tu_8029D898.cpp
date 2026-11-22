@@ -139,7 +139,7 @@ void BgRewrite_804A7C98::fn_802A3A0C() {
     }
 }
 
-// Shared body of fn_802A3884 / fn_802A3948 (`set` is the bit value written to the screen mask).
+// Shared body of writeTileMarkView_802A3884 / fn_802A3948 (`set` is the bit value written to the screen mask).
 inline void BgRewrite_804A7C98::writeTileMarkView(const JGeometry::TVec3f* pos, s32 layer, s16 tile, bool set) {
     s32 slot;
     JGeometry::TVec2f p(pos->x, pos->y);
@@ -157,13 +157,13 @@ void BgRewrite_804A7C98::fn_802A3948(const JGeometry::TVec3f* pos, s32 player, s
     writeTileMarkView(pos, layer, tile, true);
 }
 
-void BgRewrite_804A7C98::fn_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile) {
+void BgRewrite_804A7C98::writeTileMarkView_802A3884(const JGeometry::TVec3f* pos, s32 player, s32 layer, u16 tile) {
     writeTileMarkView(pos, layer, tile, false);
 }
 
 // FIXME: 97.69 %, different; behaviour near.
 // As fn_802A3948: only the clrlwi r6, r31, 16 on tile is missing.
-void BgRewrite_804A7C98::fn_802A381C(const JGeometry::TVec3f* pos, s32 layer, u16 tile) {
+void BgRewrite_804A7C98::writeTile_802A381C(const JGeometry::TVec3f* pos, s32 layer, u16 tile) {
     JGeometry::TVec2f p(pos->x, pos->y);
     s32 cell = fn_80226BC4(&p, layer & 0xFE);
     gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, tile);
@@ -179,7 +179,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
     ActorBase_804A5770* actor;
     if (field_0x24 >= 0x40 && field_0x24 <= 0x44) {
         if (field_0x24 == 0x41) {
-            gBgRewrite_8053AC98->fn_802A3884(pos, 0, layer, 0x12);
+            gBgRewrite_8053AC98->writeTileMarkView_802A3884(pos, 0, layer, 0x12);
             s32 count = getActorManager_801F856C()->mActorEnd;
             for (s32 i = 0; i < count; i++) {
                 actor = getActorManager_801F856C()->mActors[i];
@@ -579,8 +579,8 @@ void BgRewrite_804A7C98::fn_802A1050(const JGeometry::TVec3f* pos) {
 // FIXME: 90.64 %, missing/extra; behaviour drift.
 bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     s32 leader = player;
-    if (fn_8022F514(player)) {
-        leader = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        leader = getPlayerLeader_8022F3DC(player);
     }
     JGeometry::TVec3f pos = *getPlayerPos_8023E724(player);
     u8 layerOffset = 8;
@@ -592,7 +592,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
     if (tile == 0xE) {
         return false;
     }
-    if (player != fn_8022EA0C(player)) {
+    if (player != getRepresentativePlayer_8022EA0C(player)) {
         return false;
     }
     if (tile != 0 || item != 0) {
@@ -701,7 +701,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
             fn_802372F8(player, 0, 1);
             if (gGameRoot_8053AAF8->field_0x7e == 1) {
                 for (s32 i = 0; i < 4; i++) {
-                    if (fn_8022F514(i) == true && leader == fn_8022F3DC(i)) {
+                    if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
                         getActorManager_801F856C()->spawnActor_801F9484(
                             'DMYK', getPlayerLayer_8023DE58(i), &effectPos, (player << 16) + (i << 12) + 0xD5, -1, -1);
                     } else if (i == leader) {
@@ -724,7 +724,7 @@ bool BgRewrite_804A7C98::fn_802A0800(s32 player, s32 layer) {
         for (s32 i = 0; i < 4; i++) {
             pos = *getPlayerPos_8023E724(i);
             effectPos.set(1.0f + pos.x, pos.y - 12.0f, pos.z);
-            if (fn_8022F514(i) == true && leader == fn_8022F3DC(i)) {
+            if (hasPlayerLeader_8022F514(i) == true && leader == getPlayerLeader_8022F3DC(i)) {
                 if (i == player) {
                     getActorManager_801F856C()->spawnActor_801F9484(
                         'IMUP', getPlayerLayer_8023DE58(i), &effectPos, code + ((i << 24) + (player << 26) + 0x10000000), -1, -1);
@@ -945,7 +945,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                 s32 serial;
                 if (tile >= 0x40 && tile <= 0x44) {
                     if (tile == 0x41) {
-                        gBgRewrite_8053AC98->fn_802A3884(&p, 0, layer, 0x12);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0x12);
                         s32 count = getActorManager_801F856C()->mActorEnd;
                         for (s32 k = 0; k < count; k++) {
                             ActorBase_804A5770* actor = getActorManager_801F856C()->mActors[k];
@@ -959,7 +959,7 @@ u8 BgRewrite_804A7C98::fn_8029EDB8(const JGeometry::TVec3f* pos, s32 player, s32
                             }
                         }
                     } else if (tile == 0x43) {
-                        gBgRewrite_8053AC98->fn_802A3884(&p, 0, layer, 0x50);
+                        gBgRewrite_8053AC98->writeTileMarkView_802A3884(&p, 0, layer, 0x50);
                     } else {
                         gBgRewrite_8053AC98->fn_802A3948(&p, 0, layer, 0x11);
                     }
@@ -1354,7 +1354,7 @@ void BgRewrite_804A7C98::fn_8029DEBC(s32 layer, s32 cell, s32 vertical, s32 a, s
 
 // Register allocation and placement only: the original copies layer into r27 / r31 inside each branch; ours saves it in r30 before the branch.
 // FIXME: 94.12 %, missing/extra; behaviour clean.
-void BgRewrite_804A7C98::fn_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
+void BgRewrite_804A7C98::writeFourTiles_8029DD50(s32 layer, s32 cell, s32 vertical, s32 a, s32 b, s32 c, s32 d) {
     if (vertical == 0) {
         gGameRoot2_8053AB10->field_0x20->fn_802F9974(layer, cell, a);
         cell++;

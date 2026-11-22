@@ -809,7 +809,7 @@ void TileMap_804AA858::fn_802FCE74() {
         for (i = 0; i < 4; i++) {
             if (field_0x138[i] > 0) {
                 if (field_0x230 == i) {
-                    s32 player = fn_8022EA0C(i);
+                    s32 player = getRepresentativePlayer_8022EA0C(i);
                     Vec screen;
                     JGeometry::TVec3f pos;
                     if (fn_8023E10C(player) < 8) {
@@ -878,7 +878,7 @@ void TileMap_804AA858::fn_802FCE74() {
             field_0x217[i] = 0;
         }
     } else if (field_0x138[0] > 0 && !fn_8022C8EC(0)) {
-        s32 player = fn_8022EA0C(0);
+        s32 player = getRepresentativePlayer_8022EA0C(0);
         Vec screen;
         JGeometry::TVec3f pos;
         if (fn_8023E10C(player) < 8) {
@@ -3243,7 +3243,7 @@ void TileMap_804AA858::fn_802F53F4(s32 slot, const cls_804AA858Sub11C* record) {
                 lbl_80506DA8[slot][i] = (record->f.field_0x4.mOdd.field_0x6 >> (i * 2)) & 3;
                 lbl_80506DB8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_4 >> i) & 1;
                 lbl_80506DC8[slot][i] = (record->f.field_0x4.mOdd.field_0x7_0 >> i) & 1;
-                lbl_80506DD8[slot] = fn_8022EA0C(slot);
+                lbl_80506DD8[slot] = getRepresentativePlayer_8022EA0C(slot);
             }
         }
     }

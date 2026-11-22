@@ -221,7 +221,7 @@ void ZoraLotus_804AC3E0::updateState_0x90(u8 mapHit) {
         resetBoxes(this);
         vfunc_0xA8();
         if (mStateTimer >= field_0x250) {
-            if (fn_801D05F8(&mPos, 300.0f) >= 0) {
+            if (findNearestPlayer_801D05F8(&mPos, 300.0f) >= 0) {
                 fn_801BACE8(1);
             }
         }

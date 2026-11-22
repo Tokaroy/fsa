@@ -113,7 +113,7 @@ void KaeporaGaebora_804A6550::init() {
     field_0x250 = -1;
     mSpeed = 0.0f;
     mTargetSpeed = 0.0f;
-    mAnim.fn_801D2608(lbl_804A6540, 4);
+    mAnim.setKeyTables_801D2608(lbl_804A6540, 4);
     mAnim.startAnim_801D22DC(0, 0, false);
     if (mFlags & 0x10000) {
         gGameRoot2_8053AB10->field_0x2c->field_0xc = (u8)field_0x2d8;
@@ -296,7 +296,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         }
         break;
     case 2:
-        field_0x2b8 = fn_801D05F8(&mPos, 16.0f * field_0x2ac);
+        field_0x2b8 = findNearestPlayer_801D05F8(&mPos, 16.0f * field_0x2ac);
         if (field_0x2b8 >= 0 && fn_8023077C()) {
             if (field_0x2b4 == 0) {
                 fn_80219AFC(4);
@@ -312,7 +312,7 @@ void KaeporaGaebora_804A6550::updateState_0x90(u8 mapHit) {
         bool found = false;
         for (int i = 0; i < 4; i++) {
             if (fn_801D0B44(i)) {
-                if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(fn_8022F514(i) ? fn_8022F3DC(i) : i), 0x100)) {
+                if (lbl_8053AD30->fn_80309D6C(getPlayerInputSlot_8030AAF4(hasPlayerLeader_8022F514(i) ? getPlayerLeader_8022F3DC(i) : i), 0x100)) {
                     JGeometry::TVec2f p;
                     p.y = lbl_8046A640[fn_80230CFC(i)][1];
                     p.x = lbl_8046A640[fn_80230CFC(i)][0];

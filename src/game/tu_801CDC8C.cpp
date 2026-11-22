@@ -1,8 +1,8 @@
 // EnemyBase_804A4808 (game/EnemyBase.h): the enemy base class, its
 // per-frame driver and the helpers its descendants call.
 //
-// Every function is written. The player searches (fn_801D0B44, fn_801D05F8,
-// fn_801D0D50, fn_801D0DA0, fn_801D0020, fn_801D01A0) are inlined into the
+// Every function is written. The player searches (fn_801D0B44, findNearestPlayer_801D05F8,
+// fn_801D0D50, getPlayerDistSq_801D0DA0, fn_801D0020, fn_801D01A0) are inlined into the
 // functions before them, so their bodies are inline helpers (canTargetPlayer,
 // nearestPlayer, ...) defined ahead of the first use; likewise the landing
 // shared by checkFloor_0x80 and fn_801CE800 (landStep).
@@ -76,7 +76,7 @@ inline void EnemyBase_804A4808::moveStep() {
 }
 
 // The player tests fn_801D0B44 makes, inlined in every player search below
-// (fn_801CECF4, fn_801D05F8, fn_801D08B4). These actors only need the player
+// (fn_801CECF4, findNearestPlayer_801D05F8, fn_801D08B4). These actors only need the player
 // on their own layer; the others ask fn_801F320C.
 inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
     bool onLayer = false;
@@ -104,7 +104,7 @@ inline bool EnemyBase_804A4808::isPlayerOnLayer(s32 player) {
 }
 
 // Whether player `player` is present (fn_801CCFE4) and on this actor's layer;
-// for these actors also that fn_8022CAF8 is 4 or fn_8022F514 is false.
+// for these actors also that fn_8022CAF8 is 4 or hasPlayerLeader_8022F514 is false.
 inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
     bool ok = false;
     if (fn_801CCFE4(player)) {
@@ -139,7 +139,7 @@ inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
             case ACTOR_TZOK:
                 if (fn_8022CAF8(player) == 4) {
                     ok = true;
-                } else if (!fn_8022F514(player)) {
+                } else if (!hasPlayerLeader_8022F514(player)) {
                     ok = true;
                 }
                 break;
@@ -152,7 +152,7 @@ inline bool EnemyBase_804A4808::canTargetPlayer(s32 player) {
     return ok;
 }
 
-// fn_801D0DA0's body: the squared (x, y) distance from *pos to the player.
+// getPlayerDistSq_801D0DA0's body: the squared (x, y) distance from *pos to the player.
 inline f32 EnemyBase_804A4808::playerDistSq(s32 player, const JGeometry::TVec3f* pos) {
     JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     f32 dy = playerPos->y - pos->y;
@@ -172,7 +172,7 @@ inline bool EnemyBase_804A4808::isPlayerNear(s32 player, const JGeometry::TVec3f
     return result;
 }
 
-// fn_801D05F8's body: the nearest player that can be targeted, within
+// findNearestPlayer_801D05F8's body: the nearest player that can be targeted, within
 // `range` of *pos (any distance when `range` is 0), or -1.
 inline s32 EnemyBase_804A4808::nearestPlayer(const JGeometry::TVec3f* pos, f32 range) {
     f32 rangeSq = range * range;
@@ -271,7 +271,7 @@ bool EnemyBase_804A4808::fn_801D0DD4() const {
 }
 
 // The squared (x, y) distance from *pos to player `player`.
-f32 EnemyBase_804A4808::fn_801D0DA0(s32 player, const JGeometry::TVec3f* pos) {
+f32 EnemyBase_804A4808::getPlayerDistSq_801D0DA0(s32 player, const JGeometry::TVec3f* pos) {
     return playerDistSq(player, pos);
 }
 
@@ -316,7 +316,7 @@ bool EnemyBase_804A4808::fn_801D0B44(s32 player) {
             case ACTOR_TZOK:
                 if (fn_8022CAF8(player) == 4) {
                     ok = true;
-                } else if (!fn_8022F514(player)) {
+                } else if (!hasPlayerLeader_8022F514(player)) {
                     ok = true;
                 }
                 break;
@@ -341,7 +341,7 @@ bool EnemyBase_804A4808::fn_801D08B4(s32 player, const JGeometry::TVec3f* pos, f
 // registers and the order of the first loads in the prologue.
 // The nearest player that can be targeted within `range` of *pos (any
 // distance when `range` is 0), or -1.
-s32 EnemyBase_804A4808::fn_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
+s32 EnemyBase_804A4808::findNearestPlayer_801D05F8(const JGeometry::TVec3f* pos, f32 range) {
     f32 rangeSq = range * range;
     f32 best = FLT_MAX;
     s32 nearest = -1;
@@ -384,7 +384,7 @@ s32 EnemyBase_804A4808::fn_801D02E0(const JGeometry::TVec3f* pos) const {
 }
 
 // The 16-bit angle from mPos to player `player`.
-s32 EnemyBase_804A4808::fn_801D0280(s32 player) const {
+s32 EnemyBase_804A4808::getAngleToPlayer_801D0280(s32 player) const {
     const JGeometry::TVec3f* playerPos = &mPlayerPos_0x1ac[player];
     return JMath::atanTable_.atan2_(playerPos->x - mPos.x, playerPos->y - mPos.y) * (32768.0f / JMath::TAngleConstant_<f32>::RADIAN_DEG180());
 }
@@ -714,7 +714,7 @@ bool EnemyBase_804A4808::vfunc_0x58() {
     return false;
 }
 
-// For each player whose box overlaps mBox (fn_801F285C) and that fn_801EAC20
+// For each player whose box overlaps mBox (findOverlappingPlayer_801F285C) and that fn_801EAC20
 // accepts, a hit at the player's point goes to fn_801CB538 on this layer; one
 // hit plays sound 0x400D1. Returns whether any player was hit.
 u8 EnemyBase_804A4808::fn_801CEBD0() {
@@ -724,7 +724,7 @@ u8 EnemyBase_804A4808::fn_801CEBD0() {
         for (s32 i = 0; i < 4; i++) {
             JGeometry::TVec2f xy;
             s32 flag;
-            if (fn_801F285C(&xy, &flag, false, i) == i) {
+            if (findOverlappingPlayer_801F285C(&xy, &flag, false, i) == i) {
                 fn_8023B6CC(i);
                 fn_802379E4(i, &mPos);
                 if (flag == 1 && field_0x1dc.fn_801EAC20(i)) {
@@ -750,7 +750,7 @@ u8 EnemyBase_804A4808::checkHitByPlayer_0x5C() {
 }
 
 // Hit by the actor overlapping this one (fn_801F82CC, within 32 in z), unless
-// it is a live Bombchu (fn_801CC8E4): fn_801F37AC with its attack, its
+// it is a live Bombchu (fn_801CC8E4): takeHit_801F37AC with its attack, its
 // position relative to ours, its field_0x168 and field_0x110. The attacker's
 // field_0x164 is set when the hit landed. Returns whether it did.
 bool EnemyBase_804A4808::fn_801CEA60() {
@@ -765,7 +765,7 @@ bool EnemyBase_804A4808::fn_801CEA60() {
                 } else {
                     JGeometry::TVec3f from = mPos;
                     from -= actor->mVel_0x3c;
-                    hit = fn_801F37AC(actor->mParamAtcn_0x118, &from, 0, actor->field_0x168,
+                    hit = takeHit_801F37AC(actor->mParamAtcn_0x118, &from, 0, actor->field_0x168,
                                       actor->field_0x110);
                 }
             }
@@ -790,7 +790,7 @@ u8 EnemyBase_804A4808::sweepMap_0x64() {
     if (!(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.getWidth() > 0.0f &&
         mMapBox_0x80.getHeight() > 0.0f)
     {
-        hit = fn_801F2618(&mMapHitDir, lbl_8053EFC0);
+        hit = sweepMapBox_801F2618(&mMapHitDir, lbl_8053EFC0);
     }
     return hit;
 }

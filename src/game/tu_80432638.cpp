@@ -174,8 +174,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         return;
     }
     if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-        fn_80236768(fn_8022EA0C(player)) > 0 && fn_80236768(fn_8022EA0C(player)) < 900) {
-        s32 val = fn_80236768(fn_8022EA0C(player)) / 60 + 1;
+        fn_80236768(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_80236768(getRepresentativePlayer_8022EA0C(player)) < 900) {
+        s32 val = fn_80236768(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;
@@ -207,8 +207,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         field_0x98 = val;
         field_0xac = 1;
     } else if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-               fn_80236630(fn_8022EA0C(player)) > 0 && fn_80236630(fn_8022EA0C(player)) < 1200) {
-        s32 val = fn_80236630(fn_8022EA0C(player)) / 60 + 1;
+               fn_80236630(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_80236630(getRepresentativePlayer_8022EA0C(player)) < 1200) {
+        s32 val = fn_80236630(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;
@@ -240,8 +240,8 @@ void GbaWindow_804B1668::fn_80432AF8() {
         field_0x98 = val;
         field_0xac = 1;
     } else if (!(gGameRoot_8053AAF8->field_0x4c == 11 ? true : (gGameRoot_8053AAF8->field_0x88 == 2)) &&
-               fn_802366CC(fn_8022EA0C(player)) > 0 && fn_802366CC(fn_8022EA0C(player)) < 300) {
-        s32 val = fn_802366CC(fn_8022EA0C(player)) / 60 + 1;
+               fn_802366CC(getRepresentativePlayer_8022EA0C(player)) > 0 && fn_802366CC(getRepresentativePlayer_8022EA0C(player)) < 300) {
+        s32 val = fn_802366CC(getRepresentativePlayer_8022EA0C(player)) / 60 + 1;
         if (val != field_0x98) {
             if (val > 99) {
                 val = 99;

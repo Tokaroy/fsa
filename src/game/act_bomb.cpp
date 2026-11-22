@@ -390,7 +390,7 @@ void Bomb_8049F784::update() {
             JGeometry::TVec3f saved;
             saved.set(mPos);
             mPos.y += 8.0f;
-            if (fn_801F2618(NULL, false)) {
+            if (sweepMapBox_801F2618(NULL, false)) {
                 landed = true;
                 mVel_0x3c.zero();
             }
@@ -463,7 +463,7 @@ void Bomb_8049F784::update() {
                 break;
             }
             if ((mVel_0x3c.x != 0.0f || mVel_0x3c.y != 0.0f || mVel_0x3c.z != 0.0f) && mSpawnParam_0x90 != 6 && field_0x230 != 10) {
-                fn_801F2618(NULL, false);
+                sweepMapBox_801F2618(NULL, false);
             }
         } else {
             mVel_0x3c.y += 0.15f;
@@ -471,7 +471,7 @@ void Bomb_8049F784::update() {
                 mVel_0x3c.y = 10.0f;
             }
             JGeometry::TVec3f hit;
-            if (fn_801F2618(&hit, false)) {
+            if (sweepMapBox_801F2618(&hit, false)) {
                 if (std::fabsf(hit.y - -1.0f) < 0.001f) {
                     mVel_0x3c.zero();
                 } else if (hit.x != 0.0f) {
@@ -488,9 +488,9 @@ void Bomb_8049F784::update() {
                     field_0xb0 = 0x73308;
                     mSpawnParam_0x90 = 0;
                     if (field_0x270 == 0) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x59);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x59);
                     } else {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x85);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x85);
                     }
                     mBox.set(-7.0f, -7.0f, 7.0f, 7.0f);
                     field_0x274 = 1.0f;
@@ -530,7 +530,7 @@ void Bomb_8049F784::update() {
                     }
                 }
                 if (mSpawnParam_0x90 != 6) {
-                    fn_801F2618(NULL, false);
+                    sweepMapBox_801F2618(NULL, false);
                 }
             }
             if (mPos.z >= 0.0f || mVel_0x3c.z >= 0.0f) {
@@ -576,7 +576,7 @@ void Bomb_8049F784::update() {
                 mVel_0x3c.y += 0.15f;
             }
             JGeometry::TVec3f hit;
-            if (!fn_801F2618(&hit, false)) {
+            if (!sweepMapBox_801F2618(&hit, false)) {
                 break;
             }
             if (std::fabsf(hit.y - -1.0f) < 0.001f) {
@@ -721,9 +721,9 @@ void Bomb_8049F784::update() {
                 break;
             }
             if (field_0x270 == 0) {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x58);
+                gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x58);
             } else {
-                gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x84);
+                gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x84);
             }
             if (field_0x250 != 0) {
                 startSound_801F0E34(0x3001A, 0);
@@ -761,16 +761,16 @@ void Bomb_8049F784::update() {
                 }
                 if (field_0x260 >= 0) {
                     if (player != field_0x260) {
-                        if (!fn_8022F514(field_0x260)) {
-                            if (field_0x260 != fn_8022F3DC(player)) {
+                        if (!hasPlayerLeader_8022F514(field_0x260)) {
+                            if (field_0x260 != getPlayerLeader_8022F3DC(player)) {
                                 other = true;
                             }
-                        } else if (player != fn_8022F3DC(field_0x260) && fn_8022F3DC(player) != fn_8022F3DC(field_0x260)) {
+                        } else if (player != getPlayerLeader_8022F3DC(field_0x260) && getPlayerLeader_8022F3DC(player) != getPlayerLeader_8022F3DC(field_0x260)) {
                             other = true;
                         }
                         if (other == true) {
                             fn_801F3128(&mid);
-                            fn_80238548(player, damage, &mid, 5);
+                            hitPlayerGroup_80238548(player, damage, &mid, 5);
                             hit = 1;
                         }
                     }
@@ -830,16 +830,16 @@ void Bomb_8049F784::update() {
                 }
             }
             for (s32 i = 0; i < 4; i++) {
-                if (!hit && fn_801F285C(NULL, NULL, true, i) >= 0) {
+                if (!hit && findOverlappingPlayer_801F285C(NULL, NULL, true, i) >= 0) {
                     hit = 2;
                 }
             }
             if (hit || mLife == 0) {
                 if (field_0x230 == 10) {
                     if (field_0x270 == 0) {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x59);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x59);
                     } else {
-                        gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x85);
+                        gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x85);
                     }
                 }
                 vfunc_0x54();

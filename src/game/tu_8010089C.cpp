@@ -253,7 +253,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
             fn_801F0D20(0x3A);
             getGameView_802D6A9C()->fn_802D8050(field_0x248, true, 0xFF);
             field_0x240 = gAudioMgr_8053AF80->field_0x58;
-            gAudioMgr_8053AF80->fn_80458FF0(0x1000007, true, 0);
+            gAudioMgr_8053AF80->startBgm_80458FF0(0x1000007, true, 0);
         }
         break;
     case 5:
@@ -285,7 +285,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
         field_0x234++;
         s32 count = getActorManager_801F856C()->fn_801F68E0();
         if (field_0x234 > 50 && count == 1) {
-            field_0x238 = fn_8022EA0C(field_0x238);
+            field_0x238 = getRepresentativePlayer_8022EA0C(field_0x238);
             fn_8022FE80(field_0x238, getPlayerLayer_8023DE58(field_0x238), mSerial, false, false);
             if (fn_8022FD8C(mSerial) >= 0) {
                 fn_8038AD24(field_0x238, 0x322, mSerial, mLayer_0x4, msgPos, 2);
@@ -335,7 +335,7 @@ void WhackAMoleShop_8049C8EC::fn_80100D28() {
             field_0x234 = 0;
             getActorManager_801F856C()->fn_801F6884();
             for (s32 i = 0; i < 4; i++) {
-                if (!fn_8022F514(i)) {
+                if (!hasPlayerLeader_8022F514(i)) {
                     fn_802372F8(i, field_0x270[i], field_0x280[i]);
                 }
             }
@@ -475,8 +475,8 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
         return;
     }
     startSound_801F0E34(0x40099, 0);
-    if (fn_8022F514(player)) {
-        player = fn_8022F3DC(player);
+    if (hasPlayerLeader_8022F514(player)) {
+        player = getPlayerLeader_8022F3DC(player);
     }
     if (field_0x244 == 1) {
         JGeometry::TVec3f pos = mPos;
@@ -486,7 +486,7 @@ void WhackAMoleShop_8049C8EC::vfunc_0x44() {
         spawnEmitter_8013CC50(mLayer_0x4, &pos, 0x5B, 1, 1, NULL, NULL, true, 1.0f);
         startSound_801F0E34(0x30001, 0);
         JGeometry::TVec2f pos2(pos.x, pos.y);
-        fn_80238548(player, 0, &pos2, 0xb);
+        hitPlayerGroup_80238548(player, 0, &pos2, 0xb);
     } else {
         s32 hits = 1;
         s32 total = 0;

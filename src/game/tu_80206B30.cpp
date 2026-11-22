@@ -63,7 +63,7 @@ bool Thief_804A5A30::vfunc_0x58() {
                 type = 3;
             }
         }
-        hit = fn_801F37AC(0, &from, 0, type, player);
+        hit = takeHit_801F37AC(0, &from, 0, type, player);
         if (hit) {
             fn_80205E0C(7);
         }
@@ -89,9 +89,9 @@ u8 Thief_804A5A30::checkHitByPlayer_0x5C() {
         mBox.getHeight() > 0.0f) {
         for (s32 i = 0; i < 4; i++) {
             s32 type;
-            if (i == fn_801F285C(NULL, &type, true, i)) {
+            if (i == findOverlappingPlayer_801F285C(NULL, &type, true, i)) {
                 fn_8023B6CC(i);
-                if (fn_801F37AC(0, getPlayerPos_8023E724(i), 0, type, i)) {
+                if (takeHit_801F37AC(0, getPlayerPos_8023E724(i), 0, type, i)) {
                     hit = 1;
                 }
             }
@@ -133,7 +133,7 @@ u8 Thief_804A5A30::attackPlayers_0x68() {
                             pos.x = center.x;
                             pos.y = center.y;
                         }
-                        fn_80238548(i, 0, &pos, lbl_8046A238[mType].field_0x8);
+                        hitPlayerGroup_80238548(i, 0, &pos, lbl_8046A238[mType].field_0x8);
                         if (mState != 5) {
                             // Only x and y of the player's position are read.
                             fn_801D2978(&field_0x35c, &pos, (const JGeometry::TVec2f*)getPlayerPos_8023E724(i), 24, 1.0f);
@@ -162,7 +162,7 @@ u8 Thief_804A5A30::sweepMap_0x64() {
     u8 hit = 0;
     if (!fn_8020609C() && !(mFlags & ENEMY_FLAG_NO_MAP_HIT) && mMapBox_0x80.getWidth() > 0.0f &&
         mMapBox_0x80.getHeight() > 0.0f) {
-        hit = fn_801F2618(&mMapHitDir, lbl_8053EFC0);
+        hit = sweepMapBox_801F2618(&mMapHitDir, lbl_8053EFC0);
     }
     return hit;
 }

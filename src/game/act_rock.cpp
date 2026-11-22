@@ -32,12 +32,12 @@ void Rock_804A9480::update() {
     } else {
         mVel_0x3c.z += -0.15f;
         mPos += mVel_0x3c;
-        if (mPos.z < 0.0f || fn_801F2618(NULL, false)) {
+        if (mPos.z < 0.0f || sweepMapBox_801F2618(NULL, false)) {
             if (mPos.z < 0.0f) {
                 if (fn_80226850(&mPos, mLayer_0x4) == 0x90) {
-                    gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x91);
+                    gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x91);
                 } else if (fn_80226850(&mPos, mLayer_0x4) == 0x91) {
-                    gBgRewrite_8053AC98->fn_802A381C(&mPos, mLayer_0x4, 0x92);
+                    gBgRewrite_8053AC98->writeTile_802A381C(&mPos, mLayer_0x4, 0x92);
                 }
             }
             die_0x24();

@@ -119,7 +119,7 @@ static const Vec lbl_8046B220[4] = {
 
 // Inlined by fn_80259660 and fn_80258BE8 (no out-of-line copy).
 inline void Player_804A6F38::gatherOthers() {
-    if (fn_802486A0() == 5 && !fn_80240808()) {
+    if (fn_802486A0() == 5 && !hasLeader_80240808()) {
         for (int i = 0; i < 4; i++) {
             if (fn_80243194(i) && i != mPlayerNo_0x4) {
                 fn_8023E690(i, &mPos);
@@ -132,7 +132,7 @@ inline void Player_804A6F38::gatherOthers() {
 void Player_804A6F38::fn_8025E79C() {
     fn_8027221C(6);
     field_0x458 = 1;
-    if (fn_80240808() && fn_802486A0() != 4) {
+    if (hasLeader_80240808() && fn_802486A0() != 4) {
         s32 facing = fn_80230CFC(fn_80240644());
         mFacing_0x3dc = facing;
         mMoveDir_0x3e8 = facing;
@@ -179,7 +179,7 @@ void Player_804A6F38::fn_8025E79C() {
 // by ground, walk frame per two frames) and end when the button is let go; then the
 // player runs (fn_8025D0B0) with sounds by ground, burning the eight points around it
 // (BgRewrite fn_802A20F0, lbl_8046AF50), until field_0xba8 counts down; a side flag
-// along the facing or a player hit ahead (fn_8022E438 / fn_802350A0) recoils (0x41).
+// along the facing or a player hit ahead (arePlayersInSameGroup_8022E438 / fn_802350A0) recoils (0x41).
 // The actor field_0xbb4 is kept 34 ahead (lbl_8046AFB0).
 void Player_804A6F38::fn_8025DACC() {
     fn_80276E5C();
@@ -243,7 +243,7 @@ void Player_804A6F38::fn_8025DACC() {
         }
     }
     if (fn_802415CC() >= 2 && !viewLayerFlag(mLayer_0x3b4)) {
-        if (fn_80240808()) {
+        if (hasLeader_80240808()) {
             s32 count = fn_8023A1A4(fn_80240644());
             if (count > 0) {
                 if (field_0xbac == 0 && !field_0xce8) {
@@ -419,11 +419,11 @@ void Player_804A6F38::fn_8025DACC() {
         }
     }
     for (int i = 0; i < 4; i++) {
-        if (fn_8022E438(mPlayerNo_0x4, i) && fn_802350A0(i)) {
+        if (arePlayersInSameGroup_8022E438(mPlayerNo_0x4, i) && fn_802350A0(i)) {
             fn_80251AEC(0x41);
         }
     }
-    if (fn_80240808() && fn_802350A0(fn_80240644())) {
+    if (hasLeader_80240808() && fn_802350A0(fn_80240644())) {
         fn_80251AEC(0x41);
     }
     ActorBase_804A5770* actor = getActorManager_801F856C()->findActorBySerial_801F666C(field_0xbb4);
@@ -840,8 +840,8 @@ void Player_804A6F38::fn_8025C894() {
                         fn_8024F0E8(0x20004);
                         if (fn_8022B160()) {
                             field_0xb74 = 60;
-                        } else if (fn_80240808()) {
-                            // Nothing: the original calls fn_80240808 and ignores it.
+                        } else if (hasLeader_80240808()) {
+                            // Nothing: the original calls hasLeader_80240808 and ignores it.
                         }
                     }
                     mStateTimer_0x3fc = 0;
@@ -1675,7 +1675,7 @@ void Player_804A6F38::fn_8025A15C() {
                         count++;
                     }
                 }
-                if (count < 1 && (!fn_80240808() || fn_802486A0() == 4 || fn_8023B400(fn_80240644())) &&
+                if (count < 1 && (!hasLeader_80240808() || fn_802486A0() == 4 || fn_8023B400(fn_80240644())) &&
                     fn_80247594(0)) {
                     JGeometry::TVec3f placed = mPos;
                     switch (mFacing_0x3dc) {
@@ -2464,7 +2464,7 @@ bool Player_804A6F38::fn_80257DB4() {
     if (field_0x1174) {
         return false;
     }
-    if (fn_80240808() && fn_80230188(fn_80240644())) {
+    if (hasLeader_80240808() && fn_80230188(fn_80240644())) {
         return false;
     }
     if (fn_802413E8()) {
@@ -2541,7 +2541,7 @@ void Player_804A6F38::fn_8025785C() {
         field_0xb74--;
     }
     if (fn_8022B334(mPlayerNo_0x4)) {
-        if (fn_80240808()) {
+        if (hasLeader_80240808()) {
             if (fn_802373EC(fn_80240644()) != fn_802416C4()) {
                 fn_80241618(fn_802373EC(fn_80240644()), 1);
             }
@@ -2565,7 +2565,7 @@ void Player_804A6F38::fn_8025785C() {
                 }
             } else if (fn_802416C4() == 4) {
                 if (field_0xb18 < 0 && field_0xb74 <= 0 &&
-                    (!fn_8022B160() || ((!fn_80240808() || fn_802486A0() == 4) && !lbl_8053ABB8[mPlayerNo_0x4]))) {
+                    (!fn_8022B160() || ((!hasLeader_80240808() || fn_802486A0() == 4) && !lbl_8053ABB8[mPlayerNo_0x4]))) {
                     fn_80251AEC(0x3a);
                 }
             } else if (fn_802416C4() == 5) {

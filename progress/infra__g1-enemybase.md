@@ -27,11 +27,11 @@ Baseline 5021 / 11557 functions (game 309); after: 5056 (game 344).
   fn_801CC910/960/9B0, fn_801CD2F8); act_fuse_point 0 -> 4/5.
 - Resistant (FIXMEs in source): update 92.3 (regalloc this/flag, mFlags
   reloads, hit-bit bool test); vfunc_0x98 / fn_801CE32C ~96; fn_801CE5D4
-  99.8 regalloc; fn_801D0DA0 / fn_801D0D50 (target does not fuse
-  dx*dx + dy*dy into fmadds); fn_801D0280 / 02E0 (atan2 operand order);
+  99.8 regalloc; getPlayerDistSq_801D0DA0 / fn_801D0D50 (target does not fuse
+  dx*dx + dy*dy into fmadds); getAngleToPlayer_801D0280 / 02E0 (atan2 operand order);
   fn_801D0DD4; fn_801CDCD0 / fn_801CE010; SpriteAnim calcCel regalloc
   (four functions at ~98.5), fn_801D208C 94.4, fn_801D21F0 86.2,
-  fn_801D2608 91.7. init / ctor / vfunc_0x84 / fn_801CFCF0 differ only in
+  setKeyTables_801D2608 91.7. init / ctor / vfunc_0x84 / fn_801CFCF0 differ only in
   .sdata2 literal order, which completes once the unwritten functions
   (fn_801CE694 uses 8.0f, fn_801CEA60 32.0f, ...) are in.
 

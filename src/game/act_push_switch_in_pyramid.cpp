@@ -114,7 +114,7 @@ void PushSwitchInPyramid_804AE8F4::draw() {
     JGeometry::TVec3f pos;
     pos.set(mPos);
     pos.x += 8.0f;
-    void* res = fn_804032E8('TIMG', lbl_804AE8E0[field_0x241]);
+    void* res = getBossArchiveResource_804032E8('TIMG', lbl_804AE8E0[field_0x241]);
     if (mLayer_0x4 < 8) {
         gGameRoot2_8053AB10->field_0x20->fn_802F745C(&pos, res, &params);
     }

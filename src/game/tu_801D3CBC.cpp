@@ -78,7 +78,7 @@ void ShadowLink2_804A43E8::fn_801D3DAC(s32 frame) const {
         }
         if (mState == 0x10) {
             if (mSpriteParams.mMtx == NULL) {
-                fn_801EF830(mLayer_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
+                drawShadow_801EF830(mLayer_0x4, &mPos, &params, 7, "player_sob.bin", frame, NULL);
             }
             if (mLayer_0x4 < 8) {
                 void* res = gGameRoot_8053AAF8->field_0xa4->getResource('SOB ', "player_sob.bin");
