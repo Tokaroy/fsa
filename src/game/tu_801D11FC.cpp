@@ -9,7 +9,7 @@
 // The distance between two angles as a fraction of a half turn.
 static inline f32 angleDist(s16 a, s16 b) {
     s16 diff = a - b;
-    return (1.0f / 32768.0f) * __fabsf(diff);
+    return (1.0f / 32768.0f) * JMAAbs(diff);
 }
 
 // The waypoint `i` of mPath, or the first when it is past the end.
