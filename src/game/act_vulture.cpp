@@ -34,17 +34,10 @@ Vulture_804A4230::Vulture_804A4230() {
     field_0x2c8.y = 0.0f;
 }
 
-// FIXME: 87.60 %, scheduling+regalloc; behaviour clean.
-// Same instructions; field_0x90's low byte is loaded into another register, and in the else
-// branch the original loads/stores the four floats copied from mBox to mBox2 (0x60..0x6C to 0x70..0x7C) in a different order.
 void Vulture_804A4230::init() {
     EnemyBase_804A4808::init();
-    u32 val = 4;
-    u32 param = (u8)field_0x90;
-    if (param > 4) {
-        val = param;
-    }
-    field_0x2b4 = val;
+    u8 param = (u8)field_0x90;
+    field_0x2b4 = param > 4 ? param : 4;
     if (field_0x90 >> 31) {
         mFlags |= 0x4000;
     }
@@ -54,13 +47,13 @@ void Vulture_804A4230::init() {
         mBox2.set(1.0f, 1.0f, -1.0f, -1.0f);
         field_0xb0 = 0;
     } else {
-        mBox2.set(mBox.i.x, mBox.i.y, mBox.f.x, mBox.f.y);
+        mBox2.set(mBox);
         field_0xb0 = 0x50202;
     }
     field_0x98 = 2;
+    mFlags |= ENEMY_FLAG_NO_FLOOR;
     field_0x194 = 1;
     mPos.z = 1.0f;
-    mFlags |= ENEMY_FLAG_NO_FLOOR;
     mState = 0;
     mStateTimer = 0;
     field_0x250 = fn_801CD664(55) + 6;
