@@ -180,7 +180,7 @@ void Thief_804A5A30::init() {
 }
 
 bool Thief_804A5A30::fn_802064E0() {
-    s32 bit = getField_0x354();
+    s32 bit = field_0x354;
     return bit != 0 && getGameView_802D6A9C()->fn_802D7F40(bit);
 }
 
