@@ -236,6 +236,7 @@ bool BgRewrite_804A7C98::fn_802A3164(const JGeometry::TVec3f* pos, s32 player, s
 }
 
 // FIXME: 98.51 %, missing/extra; behaviour near.
+// Still differs: the original keeps layer in a second register (mr r31, r29; the spawn calls read the first).
 void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s32 layer, s32 a, s32 b) {
     JGeometry::TVec2f p(pos->x, pos->y);
     field_0x20 = getCellIndex_80226BC4(&p, layer);
@@ -362,8 +363,8 @@ void BgRewrite_804A7C98::fn_802A20F0(const JGeometry::TVec3f* pos, s32 player, s
         }
     } else if (field_0x24 == 0x71) {
         if (a == 0) {
-            // both outcomes write 0x7B in the original
-            if (fn_802353AC(player)) {
+            // both outcomes write 0x7B in the original; the result is compared with 1 (cmplwi)
+            if (fn_802353AC(player) == true) {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7B);
             } else {
                 gBgRewrite_8053AC98->fn_802A3948(pos, 0, layer, 0x7B);
