@@ -504,7 +504,7 @@ void MovingHouse_804A7AE0::fn_80299FB0() {
     }
 }
 
-// Remaining: two `cmplwi 1` bool tests and one loop pointer copy in `bakeTiles`.
+// Remaining: one loop pointer copy in `bakeTiles`.
 // FIXME: 98.65 %, missing/extra; behaviour drift.
 void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!field_0x250.isZero()) {
@@ -538,7 +538,7 @@ void MovingHouse_804A7AE0::fn_80299AD0() {
     p.z = 0.0f;
     bool ok = true;
     for (int k = 0; k < 6; k++) {
-        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL)) {
+        if (!gBgRewrite_8053AC98->fn_802A1554(&p) || testBox(mLayer_0x4, &p, mSerial, NULL) == 1) {
             ok = false;
             break;
         }
@@ -551,7 +551,7 @@ void MovingHouse_804A7AE0::fn_80299AD0() {
     if (!fn_802957CC(0)) {
         ok = false;
     }
-    if (ok) {
+    if (ok == 1) {
         if (dir == 0) {
             fn_80238E08(mSerial);
             mVel_0x3c.x = 0.32f;
