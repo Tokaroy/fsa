@@ -512,7 +512,7 @@ static const u32 lbl_805431D0[2] = {0, 0x1000007};
 // Counts and acts on a message tag: the window's choices, flags, rupees and
 // item tests, and in the text-image windows (window fn_803A313C) the
 // characters the tag's glyphs take.
-// FIXME: 98.34 %, missing/extra; behaviour near.
+// FIXME: 98.47 %, missing/extra; behaviour near.
 bool MessageSequenceProcessor_804AF774::do_tag(u32 tag, const void* data, u32) {
     const u8* p = (const u8*)data;
     s32 work[4];
