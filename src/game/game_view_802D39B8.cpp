@@ -2483,10 +2483,23 @@ bool GameView_804A9950::testOrSetBit_802D46D8(s32 index, u32 bit, bool set) {
     return true;
 }
 
+// The number of set player bits. An inline of its own: fn_802D3D48's unrolled copy shares
+// the count's register with the constants 0 and 1 (li r6, 0; slw r0, r4, r6; mr r6, r4),
+// which the loop written out in the function does not give.
+static inline s32 countPlayerBits() {
+    s32 count = 0;
+    for (s32 i = 0; i < 4; i++) {
+        if (isPlayerBitSet(gGameRoot_8053AAF8, i) == 1) {
+            count++;
+        }
+    }
+    return count;
+}
+
 // Reads the stage's map CSV: the start screen, the stage settings (field_0x34-0x58) and
 // the per-screen values of field_0x60 (one row per line up to "end"; 'N' skips a cell).
 // The second variant (gGameRoot_8053AAF8->field_0x7f clear) reads one line of map500.csv.
-// Still differs: the players count loop materializes p=0 separately instead of reusing players=0 (r6).
+// Still differs: registers only (the player count and gGameRoot swap r5/r6).
 // FIXME: 99.49 %, missing/extra; behaviour clean.
 void GameView_804A9950::fn_802D3D48() {
     getGameView_802D6A9C()->field_0x1328c = 0;
@@ -2628,12 +2641,7 @@ void GameView_804A9950::fn_802D3D48() {
         }
     } else {
         gGameRoot_8053AAF8->fn_80134DC0();
-        s32 players = 0;
-        for (s32 p = 0; p < 4; p++) {
-            if (isPlayerBitSet(gGameRoot_8053AAF8, p) == 1) {
-                players++;
-            }
-        }
+        s32 players = countPlayerBits();
         s32 controllers = 0;
         for (s32 p = 0; p < players; p++) {
             u32 mode = (gGameRoot_8053AAF8->field_0x83 >> (p * 2)) & 3;
