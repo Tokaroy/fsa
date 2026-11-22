@@ -349,7 +349,7 @@ void fn_80196CF4(JPABaseEmitter* emitter, const JGeometry::TVec3f* scale) {
     emitter->setGlobalScale(*scale);
 }
 
-// FIXME(shotgun): 89.48 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 99.25 %, scheduling; behaviour clean.
 void Ganon_804A25F0::init() {
     field_0x25c = 0;
     field_0x260 = 0;
@@ -569,7 +569,7 @@ void Ganon_804A25F0::fn_801964AC() {
 
 // Picks the player (of those on this layer) with the most hearts (mode 0) or most of the other
 // stat (mode 1), the nearest on ties by a coin flip; stores its distance, angle and index.
-// FIXME(shotgun): 99.92 %, operands; behaviour clean.
+// FIXME(shotgun): 99.98 %, operands; behaviour clean.
 void Ganon_804A25F0::fn_80196208(s32 mode) {
     field_0x2fc = -1;
     s32 best = -1;
@@ -1809,7 +1809,7 @@ void Ganon_804A25F0::fn_80192BD8() {
     }
 }
 
-// FIXME(shotgun): 94.74 %, scheduling+regalloc + reloc-name; behaviour clean.
+// FIXME(shotgun): 98.29 %, scheduling+regalloc + reloc-name; behaviour clean.
 void Ganon_804A25F0::draw() {
     SpriteParams_801F5AE0 params;
     Mtx mtx;
