@@ -9,7 +9,7 @@ new evidence turns up; promoting one means raising `confidence` in `names.tsv` o
 evidence is there, replacing it means a new row (the address stays in the name either way).
 See METHOD.md.
 
-78 rows: 78 applied, 0 not applied.
+83 rows: 83 applied, 0 not applied.
 
 | new name | address | kind | old name | applied | why it is low | would confirm or replace it |
 |---|---|---|---|---|---|---|
@@ -87,6 +87,11 @@ See METHOD.md.
 | `mPressHistory_0x119c` | 804A6F38 | field | `field_0x119c` | yes | fn_80270088: a 4-deep history per direction column (newest 1 in row 0), tested for consecutive presses by the attack pick; zeroed by fn_8027023C. Read from fn_80270088 | evidence that proves the role or the name |
 | `mItemChargePos_0x12fc` | 804A6F38 | field | `field_0x12fc` | yes | fn_8025BEB0 / fn_8025C894: set(point by facing) += mPos on a full charge, the position of emitters 0xcb / 0xcc and their callbacks field_0x12d0 / field_0x12e8. Two item states | evidence that proves the role or the name |
 | `mGroupSpotEmitter_0x1388` | 804A6F38 | field | `field_0x1388` | yes | fn_8024D134 / fn_8027F1C8: deleted and respawned as 0x35e-0x361 by formation mode at the group spot (PLAYER.md: group-spot marker restart). What the effect looks like is not checked | evidence that proves the role or the name |
+| `mFloorCel_0x3ca` | 804A6F38 | field | `field_0x3ca` | yes | draw fn_80264998: drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca, ...) and drawGba(..., floorPos, field_0x3ca); fn_80265AE4 sets 0x190, reset 0x18f. Which of the two floor overlays it is, is not told apart | evidence that proves the role or the name |
+| `mBobY_0x410` | 804A6F38 | field | `field_0x410` | yes | tu_8027E5BC fn_80282ACC (state 0x4B): mPos.y += field_0x410, += 0.02 a frame; fn_80280074 / fn_802804E0 restart it at -0.6. One state | evidence that proves the role or the name |
+| `mDragPlayer_0xd08` | 804A6F38 | field | `field_0xd08` | yes | tu_8026FC20 fn_80277F98: the partner that grabbed this player (>= 0) and drags it, fn_8022BC38(field_0xd08, mLayer, &mPos); -1 when none (fn_80277EBC); fn_8024322C returns it. One state | evidence that proves the role or the name |
+| `mGroupTurn_0x1224` | 804A6F38 | field | `field_0x1224` | yes | tu_80285E58 fn_80286E10: ++ and wrapped at the group size fn_80248970() to pass the turn (formation mode 4, PLAYER.md groupTurn); fn_80240888 returns it for a leader. Read from the turn code only | evidence that proves the role or the name |
+| `mSpinEmitter_0x12bc` | 804A6F38 | field | `field_0x12bc` | yes | spin enters fn_8027B304 / fn_8027BA2C: spawnEmitter_8013CC50(mLayer, &mPos, 0x26a, ...); the updates fn_8027AAD0 / fn_8027B648 move it around mPos by mSpinAngle_0x11c0; deleted by fn_8027AA10 / fn_8027B5F0. Spin states only | evidence that proves the role or the name |
 | `gGameRoot_8053AAF8` | 8053AAF8 | global | `lbl_8053AAF8` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `gGameRoot2_8053AB10` | 8053AB10 | global | `lbl_8053AB10` | yes | "GameRoot"/"GameRoot2" only echo the provisional type name and say nothing about the role (GameRoot2 holds draw buffers, ortho graphs, map, camera, effects, shadow); the address name is more honest until the role is named | a name for the object's role that is proven (a string, a donor's equivalent, or enough documented use to name it); until then the name only restates the type |
 | `updateState_0x90` | 804A4808 | member | `vfunc_0x90` | yes | EnemyBase base 0x801CE4E0 empty (include/game/EnemyBase.h); vfunc_0x9C calls it after mStateTimer++ with the map-hit flag; 36 overrides, which switch on the enemy's state (header: the per-state behaviour). Low: the role rests on the overrides' shape | evidence that proves the role or the name |

@@ -345,7 +345,7 @@ void Player_804A6F38::fn_802870C8() {
                 field_0x43d = 0;
                 field_0x38c = 0.0f;
                 field_0x390 = 0.0f;
-                field_0x2b8.set(0.0f, 0.0f, 0.0f);
+                mDrawOffset_0x2b8.set(0.0f, 0.0f, 0.0f);
                 fn_8025F698(true);
                 switch (mState_0x1240) {
                 case 0x00:
@@ -1212,20 +1212,20 @@ void Player_804A6F38::fn_80286E10() {
         return;
     }
     if (fn_802486A0() == 4) {
-        start = field_0x1224;
+        start = mGroupTurn_0x1224;
         partner = fn_8022EA0C(getIndex());
         do {
-            field_0x1224++;
-            if (field_0x1224 >= fn_80248970()) {
-                field_0x1224 = 0;
+            mGroupTurn_0x1224++;
+            if (mGroupTurn_0x1224 >= fn_80248970()) {
+                mGroupTurn_0x1224 = 0;
             }
             other = fn_8022EA0C(getIndex());
             if (!fn_80234134(other) && !fn_8023EA28(other) &&
                 fn_8022BC38(other, getPlayerLayer_8023DE58(partner), getPlayerPos_8023E724(partner))) {
                 break;
             }
-        } while (start != field_0x1224);
-        if (start != field_0x1224) {
+        } while (start != mGroupTurn_0x1224);
+        if (start != mGroupTurn_0x1224) {
             fn_80230FD0(other, 0x10010);
             if (fn_8023ED8C(partner)) {
                 fn_8023105C(fn_8023ECF0(partner));

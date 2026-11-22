@@ -378,7 +378,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x404 = 0;
     field_0x40c = 0;
     field_0x408 = 0;
-    field_0x410 = 0.0f;
+    mBobY_0x410 = 0.0f;
     if (mState_0x1240 == 1) {
         mCel_0x3c4 = 0x31d;
     } else {
@@ -448,7 +448,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x38c = 0.0f;
     field_0x390 = 0.0f;
     field_0x374.set(0.0f, 0.0f, 0.0f);
-    field_0x2b8.set(0.0f, 0.0f, 0.0f);
+    mDrawOffset_0x2b8.set(0.0f, 0.0f, 0.0f);
     if (gGameRoot_8053AAF8->field_0x7f) {
         field_0xc80 = 1;
     } else {
@@ -460,7 +460,7 @@ void Player_804A6F38::fn_80254744() {
     fn_8027221C(0);
     field_0xcfc = 0;
     field_0xcfd = 0;
-    field_0xd08 = -1;
+    mDragPlayer_0xd08 = -1;
     field_0xd0c = 0;
     field_0xd2c = 0;
     field_0xd2d = 0;
@@ -536,7 +536,7 @@ void Player_804A6F38::fn_80254744() {
     field_0xb79 = 0;
     field_0x1204 = 0;
     mAlpha_0xca0 = 0xff;
-    field_0xca1 = 0xff;
+    mShadowAlpha_0xca1 = 0xff;
     field_0xca2 = 0xff;
     mFlashTimer_0xca8 = 0;
     field_0x1264 = 0;
@@ -546,7 +546,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x12b0 = NULL;
     field_0x12b4 = NULL;
     field_0x12b8 = NULL;
-    field_0x12bc = NULL;
+    mSpinEmitter_0x12bc = NULL;
     mChargeEffectSerial_0x12c0 = -1;
     field_0x12c4 = NULL;
     field_0x12c8 = NULL;
@@ -626,7 +626,7 @@ void Player_804A6F38::fn_80254744() {
     field_0x1215 = false;
     field_0x1217 = false;
     field_0x1218 = 0;
-    field_0x1224 = 0;
+    mGroupTurn_0x1224 = 0;
     field_0x123c = 0;
     field_0x1228 = 0;
     field_0x122c = 0;
@@ -641,8 +641,8 @@ void Player_804A6F38::fn_80254744() {
     field_0x11d4 = 0;
     field_0x11d8 = 0;
     field_0x11cc = 0;
-    field_0x3c8 = 0x195;
-    field_0x3ca = 0x18f;
+    mFloorCel_0x3c8 = 0x195;
+    mFloorCel_0x3ca = 0x18f;
     field_0x3cc = 0;
     field_0x3d0 = 0;
     field_0x3d4 = 0;
@@ -668,7 +668,7 @@ void Player_804A6F38::fn_80254744() {
             mPos.set(*getPlayerPos_8023E724(mLeader_0xd60));
             fn_80251AEC(3);
         }
-        field_0x1224 = 0;
+        mGroupTurn_0x1224 = 0;
         field_0x1217 = false;
     } else {
         field_0x121e = 0;
@@ -2299,11 +2299,11 @@ bool Player_804A6F38::fn_8024E03C() {
 }
 
 void Player_804A6F38::fn_8024E020(const JGeometry::TVec3f* arg) {
-    field_0x2b8.set(arg->x, arg->y, arg->z);
+    mDrawOffset_0x2b8.set(arg->x, arg->y, arg->z);
 }
 
 JGeometry::TVec3f* Player_804A6F38::fn_8024E018() {
-    return &field_0x2b8;
+    return &mDrawOffset_0x2b8;
 }
 
 // Puts the player into the 0x454 mode (fn_8024E060 must allow it; state 0x4F
@@ -3210,7 +3210,7 @@ void Player_804A6F38::fn_80248DD8() {
             }
         }
     }
-    field_0x1224 = 0;
+    mGroupTurn_0x1224 = 0;
     field_0x1217 = false;
 }
 
@@ -3439,7 +3439,7 @@ void Player_804A6F38::fn_80248004(s32 mode, bool cue) {
     }
     field_0x1210 = field_0x120c;
     field_0x120c = mode;
-    field_0x1224 = 0;
+    mGroupTurn_0x1224 = 0;
     if (field_0x120c != 4) {
         fn_802382D0(mPlayerNo_0x4, 0);
     }
@@ -3922,7 +3922,7 @@ bool Player_804A6F38::fn_80243234() {
 }
 
 s32 Player_804A6F38::fn_8024322C() {
-    return field_0xd08;
+    return mDragPlayer_0xd08;
 }
 
 bool Player_804A6F38::fn_802431B8() {
@@ -4178,7 +4178,7 @@ void Player_804A6F38::fn_80241E64() {
     deleteEmitter(&field_0x12b0);
     deleteEmitter(&field_0x12b4);
     deleteEmitter(&field_0x12b8);
-    deleteEmitter(&field_0x12bc);
+    deleteEmitter(&mSpinEmitter_0x12bc);
     deleteEmitter(&field_0x12c4);
     deleteEmitter(&field_0x12c8);
     deleteEmitter(&mItemChargeEmitter_0x12cc);
@@ -4656,17 +4656,17 @@ bool Player_804A6F38::fn_802408C0() {
 }
 
 // Whose turn it is in the group: the leader's (fn_80234004) or, leading,
-// field_0x1224.
+// mGroupTurn_0x1224.
 s32 Player_804A6F38::fn_80240888() const {
     s32 team = mLeader_0xd60;
     if (team >= 0) {
         return fn_80234004(team);
     }
-    return field_0x1224;
+    return mGroupTurn_0x1224;
 }
 
 void Player_804A6F38::fn_80240878() {
-    field_0x1224++;
+    mGroupTurn_0x1224++;
 }
 
 bool Player_804A6F38::fn_80240870() {

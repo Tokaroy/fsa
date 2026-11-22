@@ -909,7 +909,7 @@ void Player_804A6F38::fn_80283848() {
     mDashCount_0x3ff = 0;
     field_0x400 = 0;
     field_0x401 = 0;
-    field_0x410 = 0.0f;
+    mBobY_0x410 = 0.0f;
     field_0x42c = false;
     field_0xbe0 = 0;
     field_0x42d = 0;
@@ -1103,7 +1103,7 @@ void Player_804A6F38::fn_80282E6C() {
     mConveyorVel_0x414.y = 0.0f;
     mConveyorVel_0x414.z = 0.0f;
     mDashCount_0x3ff = 0;
-    field_0x410 = 0.0f;
+    mBobY_0x410 = 0.0f;
     field_0x402 = 0;
     mPos.z = 0.0f;
     if (mPrevState_0x1248 != 0x1b && mPrevState_0x1248 != 3 && mPrevState_0x1248 != 0x1d) {
@@ -1197,10 +1197,10 @@ void Player_804A6F38::fn_80282ACC() {
     } else {
         fn_8027EB04();
     }
-    mPos.y += field_0x410;
-    field_0x410 += 0.02f;
-    if (field_0x410 >= 0.3f) {
-        field_0x410 = 0.3f;
+    mPos.y += mBobY_0x410;
+    mBobY_0x410 += 0.02f;
+    if (mBobY_0x410 >= 0.3f) {
+        mBobY_0x410 = 0.3f;
     }
     if (!fn_80225BE4(&mPos, mLayer_0x3b4)) {
         fn_80251AEC(0);
@@ -2060,7 +2060,7 @@ void Player_804A6F38::fn_802804E0() {
             if (mDashCount_0x3ff < 10) {
                 // the speed is kept
             } else if (mDashCount_0x3ff == 10) {
-                field_0x410 = -0.6f;
+                mBobY_0x410 = -0.6f;
                 speed = 1.0f;
             } else if (mDashCount_0x3ff < 16) {
                 speed += 0.18f;
@@ -2149,7 +2149,7 @@ void Player_804A6F38::fn_80280074() {
             if (mDashCount_0x3ff < 10) {
                 speed = magnitude(mVel_0x344);
             } else if (mDashCount_0x3ff == 10) {
-                field_0x410 = -0.6f;
+                mBobY_0x410 = -0.6f;
                 speed = 1.0f;
             } else if (mDashCount_0x3ff < 16) {
                 speed = magnitude(mVel_0x344);

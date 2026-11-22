@@ -159,7 +159,7 @@ public:
     void fn_8024CD20(const JGeometry::TBox2f* box, s32 layer, s32 serial, bool a, bool b); // via fn_8022FEB8
     // via fn_8022FE80; a is stored with stb at 0xD4E, b tested with clrlwi 24.
     void fn_8024CAC8(s32 layer, s32 serial, bool a, bool b);
-    JGeometry::TVec3f* fn_8024E018(); // &field_0x2b8; via fn_8023D7B0's callers (tu_8022AD64)
+    JGeometry::TVec3f* fn_8024E018(); // &mDrawOffset_0x2b8; via fn_8023D7B0's callers (tu_8022AD64)
     void fn_8024E020(const JGeometry::TVec3f* arg); // via fn_8022FFC4
     void fn_8024F54C(s32 arg); // via fn_80230F44
     bool fn_802570BC(const JGeometry::TBox2f* box, s32 layer, JGeometry::TVec2f* out); // via fn_8023AB94
@@ -642,7 +642,7 @@ public:
     /* 0x0284 */ u8 field_0x284[0x31];
     /* 0x02B5 */ u8 field_0x2b5[0x2B8 - 0x2B5];
     // fn_8024E020 stores a TVec3 here; fn_8024E018 returns its address.
-    /* 0x02B8 */ JGeometry::TVec3f field_0x2b8;
+    /* 0x02B8 */ JGeometry::TVec3f mDrawOffset_0x2b8;
     // Address returned by fn_8023E604.
     /* 0x02C4 */ JGeometry::TVec3f mReturnPos_0x2c4;
     /* 0x02D0 */ JGeometry::TVec3f field_0x2d0;
@@ -683,8 +683,8 @@ public:
     /* 0x03C3 */ u8 field_0x3c3[0x3C4 - 0x3C3];
     /* 0x03C4 */ u16 mCel_0x3c4;
     /* 0x03C6 */ u16 mPrevCel_0x3c6; // fn_80254744: copy of mCel_0x3c4
-    /* 0x03C8 */ u16 field_0x3c8; // lhz in tu_80264998
-    /* 0x03CA */ u16 field_0x3ca;
+    /* 0x03C8 */ u16 mFloorCel_0x3c8; // lhz in tu_80264998
+    /* 0x03CA */ u16 mFloorCel_0x3ca;
     /* 0x03CC */ s32 field_0x3cc;
     /* 0x03D0 */ s32 field_0x3d0;
     /* 0x03D4 */ s32 field_0x3d4;
@@ -718,7 +718,7 @@ public:
     /* 0x0405 */ u8 field_0x405[0x408 - 0x405];
     /* 0x0408 */ s32 field_0x408;
     /* 0x040C */ s32 field_0x40c;
-    /* 0x0410 */ f32 field_0x410;
+    /* 0x0410 */ f32 mBobY_0x410;
     /* 0x0414 */ JGeometry::TVec3f mConveyorVel_0x414;
     // Offset added to mPos at the end of fn_802685D4 (ps_add). Zeroed while
     // mPos.z > 0; otherwise its x and y decay under the tile code.
@@ -915,7 +915,7 @@ public:
     /* 0x0C90 */ JGeometry::TVec3f mDrawScale_0xc90;
     /* 0x0C9C */ s32 field_0xc9c;
     /* 0x0CA0 */ u8 mAlpha_0xca0;
-    /* 0x0CA1 */ u8 field_0xca1;
+    /* 0x0CA1 */ u8 mShadowAlpha_0xca1;
     /* 0x0CA2 */ u8 field_0xca2;
     /* 0x0CA3 */ s8 field_0xca3; // fn_80254744 stores -0x80
     /* 0x0CA4 */ s8 field_0xca4;
@@ -964,7 +964,7 @@ public:
     /* 0x0D04 */ u8 field_0xd04;
     /* 0x0D05 */ u8 field_0xd05[0xD08 - 0xD05];
     // Returned by fn_8024322C (via fn_8023697C, which returns -1 without a player).
-    /* 0x0D08 */ s32 field_0xd08;
+    /* 0x0D08 */ s32 mDragPlayer_0xd08;
     /* 0x0D0C */ s32 field_0xd0c;
     // Where the player comes back after state 0x33 (fn_80270948 stores it, fn_8027057C restores mPos).
     /* 0x0D10 */ JGeometry::TVec3f field_0xd10;
@@ -994,7 +994,7 @@ public:
     /* 0x0D5D */ u8 field_0xd5d[0xD60 - 0xD5D];
     // Another player's index, or negative for none: fn_80246F28 asks the
     // per-player queries about it (fn_8022CAF8, fn_80234004) and reads its
-    // own field_0x120c / field_0x1224 instead when it is negative.
+    // own field_0x120c / mGroupTurn_0x1224 instead when it is negative.
     /* 0x0D60 */ s32 mLeader_0xd60;
     /* 0x0D64 */ u8 mLifting_0xd64;
     /* 0x0D65 */ u8 field_0xd65[0xD68 - 0xD65];
@@ -1076,7 +1076,7 @@ public:
     // A bool: fn_80249068 returns it as loaded (lbz; blr).
     /* 0x121F */ bool field_0x121f;
     /* 0x1220 */ s32 field_0x1220;
-    /* 0x1224 */ s32 field_0x1224;
+    /* 0x1224 */ s32 mGroupTurn_0x1224;
     // Word compared with 0 (lwz; cmpwi) by fn_802685D4.
     /* 0x1228 */ s32 field_0x1228;
     /* 0x122C */ s32 field_0x122c;
@@ -1109,7 +1109,7 @@ public:
     /* 0x12B0 */ JPABaseEmitter* field_0x12b0;
     /* 0x12B4 */ JPABaseEmitter* field_0x12b4;
     /* 0x12B8 */ JPABaseEmitter* field_0x12b8;
-    /* 0x12BC */ JPABaseEmitter* field_0x12bc; // deleted with deleteEmitter() (fn_8027B5F0)
+    /* 0x12BC */ JPABaseEmitter* mSpinEmitter_0x12bc; // deleted with deleteEmitter() (fn_8027B5F0)
     /* 0x12C0 */ s32 mChargeEffectSerial_0x12c0;
     /* 0x12C4 */ JPABaseEmitter* field_0x12c4;
     /* 0x12C8 */ JPABaseEmitter* field_0x12c8;

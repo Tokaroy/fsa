@@ -317,7 +317,7 @@ static inline void climbUp(cls_804A71A8* p) {
         if (!(p->field_0x4->fn_80240F28() && p->field_0x4->fn_802415CC() >= 2 &&
               (p->field_0x4->mFacing_0x3dc == 0 || p->field_0x4->mFacing_0x3dc == 1)) &&
             !p->field_0x4->fn_80240B34() && !p->field_0x4->fn_80240D64() && !p->field_0x4->fn_80240860() &&
-            !(p->field_0x4->fn_80270A8C() && p->field_0x4->field_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
+            !(p->field_0x4->fn_80270A8C() && p->field_0x4->mDragPlayer_0xd08 >= 0) && !p->field_0x4->fn_8024BBB0())
         {
             p->field_0x4->mPos.y += 4.0f;
         }

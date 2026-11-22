@@ -674,24 +674,24 @@ void Player_804A6F38::fn_80265E88() {
     }
 }
 
-// The shadow's alpha field_0xca1: none on the frames 0x122 and 0xB7-0xBC and
+// The shadow's alpha mShadowAlpha_0xca1: none on the frames 0x122 and 0xB7-0xBC and
 // above the GBA layer 8, full on layer 8; otherwise it fades out while
 // fn_8025F448 holds and the actor mHeldPlayer_0xd70 is not on layer 8, else in.
 void Player_804A6F38::fn_80265DB0() {
     if (mCel_0x3c4 == 0x122 || (mCel_0x3c4 >= 0xB7 && mCel_0x3c4 < 0xBD) || mLayer_0x3b4 > 8) {
-        field_0xca1 = 0;
+        mShadowAlpha_0xca1 = 0;
     } else if (mLayer_0x3b4 == 8) {
-        field_0xca1 = 0xFF;
+        mShadowAlpha_0xca1 = 0xFF;
     } else if (fn_8025F448() && (mHeldPlayer_0xd70 < 0 || getPlayerLayer_8023DE58(mHeldPlayer_0xd70) != 8)) {
-        if (field_0xca1 >= 8) {
-            field_0xca1 -= 8;
+        if (mShadowAlpha_0xca1 >= 8) {
+            mShadowAlpha_0xca1 -= 8;
         } else {
-            field_0xca1 = 0;
+            mShadowAlpha_0xca1 = 0;
         }
-    } else if (field_0xca1 <= 0xF7) {
-        field_0xca1 += 8;
+    } else if (mShadowAlpha_0xca1 <= 0xF7) {
+        mShadowAlpha_0xca1 += 8;
     } else {
-        field_0xca1 = 0xFF;
+        mShadowAlpha_0xca1 = 0xFF;
     }
 }
 
@@ -714,8 +714,8 @@ void Player_804A6F38::fn_80265D68() {
 }
 
 // The idle animation counters: field_0x3d0 (0-15, held at 0 after 8 still
-// frames, field_0x3cc) picks the floor frame field_0x3c8 and field_0x3d4
-// (0-11) the frame field_0x3ca. While the player moves or changes frame on a
+// frames, field_0x3cc) picks the floor frame mFloorCel_0x3c8 and field_0x3d4
+// (0-11) the frame mFloorCel_0x3ca. While the player moves or changes frame on a
 // tile 0x39 at floor level, effect 0x4D2 follows the player (field_0x1384).
 void Player_804A6F38::fn_80265AE4() {
     if (mCel_0x3c4 != mPrevCel_0x3c6 || magnitude(mPos - mLastPos_0x14) > 0.5f) {
@@ -730,26 +730,26 @@ void Player_804A6F38::fn_80265AE4() {
         field_0x3d0 = 0;
     }
     if (field_0x3d0 < 4) {
-        field_0x3c8 = 0x195;
+        mFloorCel_0x3c8 = 0x195;
     } else if (field_0x3d0 < 8) {
-        field_0x3c8 = 0x196;
+        mFloorCel_0x3c8 = 0x196;
     } else if (field_0x3d0 < 0xC) {
-        field_0x3c8 = 0x197;
+        mFloorCel_0x3c8 = 0x197;
     } else {
-        field_0x3c8 = 0x196;
+        mFloorCel_0x3c8 = 0x196;
     }
     field_0x3d4++;
     if (field_0x3d4 >= 0xC) {
         field_0x3d4 = 0;
     }
     if (field_0x3d4 < 3) {
-        field_0x3ca = 0x18F;
+        mFloorCel_0x3ca = 0x18F;
     } else if (field_0x3d4 < 6) {
-        field_0x3ca = 0x190;
+        mFloorCel_0x3ca = 0x190;
     } else if (field_0x3d4 < 9) {
-        field_0x3ca = 0x191;
+        mFloorCel_0x3ca = 0x191;
     } else {
-        field_0x3ca = 0x190;
+        mFloorCel_0x3ca = 0x190;
     }
     if (mPos.z <= 0.0f && fn_8022461C(&mPos, mLayer_0x3b4) == 0x39 &&
         (mCel_0x3c4 != mPrevCel_0x3c6 || magnitude(mPos - mLastPos_0x14) > 0.5f))
@@ -771,7 +771,7 @@ void Player_804A6F38::fn_80265AE4() {
 // The player's draw (fn_8023F2BC, every player each frame): the shadow, the
 // GBA-layer marker above the player, the body sprite (frame mCel_0x3c4 of
 // "player_sob.bin") with its tint and scale, the height shadow on the GBA
-// layers, and the floor overlays (frames field_0x3c8 / field_0x3ca of
+// layers, and the floor overlays (frames mFloorCel_0x3c8 / mFloorCel_0x3ca of
 // "enemy_both2_sob.bin").
 void Player_804A6F38::fn_80264998() {
     if (!mActive) {
@@ -815,13 +815,13 @@ void Player_804A6F38::fn_80264998() {
             pos += JGeometry::TVec3f(view->mVisibleBox.i.x, view->mVisibleBox.i.y, 0.0f);
             pos += JGeometry::TVec3f(0.0f, -mPos.z, 0.0f);
         }
-        if (field_0xca1 < 0xFF) {
+        if (mShadowAlpha_0xca1 < 0xFF) {
             shadowParams.field_0x2c = 0;
         }
-        if (alpha < field_0xca1) {
+        if (alpha < mShadowAlpha_0xca1) {
             shadowParams.field_0x10.a = alpha;
         } else {
-            shadowParams.field_0x10.a = field_0xca1;
+            shadowParams.field_0x10.a = mShadowAlpha_0xca1;
         }
         if (shadowParams.field_0x10.a >= 0x9F) {
             shadowParams.field_0x10.a = 0x9F;
@@ -845,9 +845,9 @@ void Player_804A6F38::fn_80264998() {
         shadowParams.field_0x14.b = 0x28;
         if (field_0x43f != true) {
             if (mLayer_0x3b4 == 8) {
-                drawSob("player_sob.bin", pos + field_0x2b8, mCel_0x3c4, &shadowParams);
+                drawSob("player_sob.bin", pos + mDrawOffset_0x2b8, mCel_0x3c4, &shadowParams);
             } else {
-                drawSobOnTv(mLayer_0x3b4, "player_sob.bin", pos + field_0x2b8, mCel_0x3c4, &shadowParams);
+                drawSobOnTv(mLayer_0x3b4, "player_sob.bin", pos + mDrawOffset_0x2b8, mCel_0x3c4, &shadowParams);
             }
         }
         if (mPos.z > 0.0f) {
@@ -859,7 +859,7 @@ void Player_804A6F38::fn_80264998() {
                 } else {
                     groundPos.set(mPos.x, mPos.y - 0.01f, 0.0f);
                 }
-                drawGba(-40000 - mPlayerNo_0x4, mLayer_0x3b4, groundPos + field_0x2b8, 0x3CD);
+                drawGba(-40000 - mPlayerNo_0x4, mLayer_0x3b4, groundPos + mDrawOffset_0x2b8, 0x3CD);
             }
         }
     }
@@ -960,7 +960,7 @@ void Player_804A6F38::fn_80264998() {
     }
     // The body is drawn at whole units. The original keeps the sum in the
     // temporary itself (no named copy), as a reference bound to it does.
-    const JGeometry::TVec3f& bodyPos = mPos + field_0x2b8;
+    const JGeometry::TVec3f& bodyPos = mPos + mDrawOffset_0x2b8;
     JGeometry::TVec3f drawPos(bodyPos.x, bodyPos.y, bodyPos.z);
     drawPos.set((s32)drawPos.x, (s32)drawPos.y, (s32)drawPos.z);
     if (mLayer_0x3b4 < 8) {
@@ -976,24 +976,24 @@ void Player_804A6F38::fn_80264998() {
     if (mPos.z <= 0.0f && fn_8022517C(&mPos, mLayer_0x3b4)) {
         s32 layer = mLayer_0x3b4;
         if (layer < 8) {
-            drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3c8, &floorParams);
+            drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, mFloorCel_0x3c8, &floorParams);
         } else {
-            drawGba(-10000 - mPlayerNo_0x4, layer, floorPos, field_0x3c8);
+            drawGba(-10000 - mPlayerNo_0x4, layer, floorPos, mFloorCel_0x3c8);
         }
     } else if (mPos.z <= 0.0f && fn_80270A8C() && (tile == 0x39 || tile == 0xD || tile == 0x3B)) {
         if (mCel_0x3c4 >= 0xC2 && mCel_0x3c4 < 0xC5) {
             s32 layer = mLayer_0x3b4;
             if (layer < 8) {
-                drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca + 3, &floorParams);
+                drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, mFloorCel_0x3ca + 3, &floorParams);
             } else {
-                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca + 3);
+                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, mFloorCel_0x3ca + 3);
             }
         } else {
             s32 layer = mLayer_0x3b4;
             if (layer < 8) {
-                drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca, &floorParams);
+                drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, mFloorCel_0x3ca, &floorParams);
             } else {
-                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca);
+                drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, mFloorCel_0x3ca);
             }
         }
     } else if (mPos.z <= 0.0f) {
@@ -1008,9 +1008,9 @@ void Player_804A6F38::fn_80264998() {
         }
         s32 layer = mLayer_0x3b4;
         if (layer < 8) {
-            drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, field_0x3ca, &floorParams);
+            drawSobOnTv(layer, "enemy_both2_sob.bin", floorPos, mFloorCel_0x3ca, &floorParams);
         } else {
-            drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, field_0x3ca);
+            drawGba(-20000 - mPlayerNo_0x4, layer, floorPos, mFloorCel_0x3ca);
         }
     }
 }

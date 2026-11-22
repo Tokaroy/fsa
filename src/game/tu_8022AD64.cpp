@@ -42,7 +42,7 @@ static inline Player_804A6F38* playerAt(s32 i) {
     return gPlayerManager_8053AC90->mPlayers[i];
 }
 
-// The player's field_0x2b8 (fn_8024E018), or &lbl_804CF460 without the player.
+// The player's mDrawOffset_0x2b8 (fn_8024E018), or &lbl_804CF460 without the player.
 // No out-of-line copy exists: fn_8023D644 and fn_8023DAF4 inline it.
 static inline JGeometry::TVec3f* playerOffset2B8(s32 player) {
     if (gPlayerManager_8053AC90 == NULL) {
@@ -564,7 +564,7 @@ s32 getPlayerLayer_8023DE58(s32 player) {
     return gPlayerManager_8053AC90->mPlayers[player]->mLayer_0x3b4;
 }
 
-// fn_8023D9B0 of player `player`'s position plus its field_0x2b8, as seen by `viewer`.
+// fn_8023D9B0 of player `player`'s position plus its mDrawOffset_0x2b8, as seen by `viewer`.
 u16 fn_8023DAF4(s32 player, s32 viewer) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0x180;
@@ -596,7 +596,7 @@ u16 fn_8023D9B0(const JGeometry::TVec3f* pos, s32 player) {
     return 0x180;
 }
 
-// fn_8023D4F8 of player `player`'s position plus its field_0x2b8, as seen by `viewer`.
+// fn_8023D4F8 of player `player`'s position plus its mDrawOffset_0x2b8, as seen by `viewer`.
 u16 fn_8023D644(s32 player, s32 viewer) {
     if (gPlayerManager_8053AC90 == NULL) {
         return 0xE0;
@@ -2636,7 +2636,7 @@ void fn_80232A0C() {
         if (viewLayerFlag(getPlayerLayer_8023DE58(i)) && fn_8022F514(i)) {
             continue;
         }
-        if (!fn_8023188C(i) || a->field_0xd58 > 0 || a->field_0xd08 >= 0) {
+        if (!fn_8023188C(i) || a->field_0xd58 > 0 || a->mDragPlayer_0xd08 >= 0) {
             continue;
         }
         JGeometry::TBox2f boxA;
@@ -2668,7 +2668,7 @@ void fn_80232A0C() {
             if (viewLayerFlag(getPlayerLayer_8023DE58(j)) && fn_8022F514(j)) {
                 continue;
             }
-            if (!fn_8023188C(j) || b->field_0xd58 > 0 || b->field_0xd08 >= 0) {
+            if (!fn_8023188C(j) || b->field_0xd58 > 0 || b->mDragPlayer_0xd08 >= 0) {
                 continue;
             }
             JGeometry::TBox2f boxB;
